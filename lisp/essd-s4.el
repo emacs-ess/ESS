@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2003/11/06 13:23:19 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: essd-s4.el,v 5.12 2003/11/06 13:23:19 maechler Exp $
+;; Modified: $Date: 2004/05/03 02:17:19 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: essd-s4.el,v 5.13 2004/05/03 02:17:19 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -117,7 +117,7 @@
   (interactive)
   (setq ess-customize-alist S4-customize-alist)
   (ess-mode S4-customize-alist proc-name)
-  (if ess-S-use-imenu (ess-imenu-R)))
+  (if ess-imenu-use-S (ess-imenu-R)))
 
 
 ;; From RMH:    ALL THIS SHOULD BE INCORPORATED BY 5.0!

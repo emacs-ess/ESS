@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: ESS Core Team <ESS-core@stat.math.ethz.ch>
 ;; Created: 2001/02/06
-;; Modified: $Date: 2003/11/06 13:23:19 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: essd-sp6.el,v 1.12 2003/11/06 13:23:19 maechler Exp $
+;; Modified: $Date: 2004/05/03 02:17:19 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: essd-sp6.el,v 1.13 2004/05/03 02:17:19 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -137,7 +137,7 @@ New way to do it."
   (interactive)
   (setq ess-customize-alist S+6-customize-alist)
   (ess-mode S+6-customize-alist proc-name)
-  (if ess-S-use-imenu (ess-imenu-S)))
+  (if ess-imenu-use-S (ess-imenu-S)))
 
 (defun S+6-transcript-mode ()
   "S-PLUS 6 transcript mode."

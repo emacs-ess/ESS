@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2003/11/06 13:23:19 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: essd-sp4.el,v 1.16 2003/11/06 13:23:19 maechler Exp $
+;; Modified: $Date: 2004/05/03 02:17:19 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: essd-sp4.el,v 1.17 2004/05/03 02:17:19 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -318,7 +318,7 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
   (interactive)
   (setq ess-customize-alist S+4-customize-alist)
   (ess-mode S+4-customize-alist proc-name)
-  (if ess-S-use-imenu (ess-imenu-R)))
+  (if ess-imenu-use-S (ess-imenu-R)))
 
 (defun S+4-transcript-mode ()
   "S-PLUS 4.x transcript mode."

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2003/11/06 13:23:19 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: essd-s3.el,v 5.14 2003/11/06 13:23:19 maechler Exp $
+;; Modified: $Date: 2004/05/03 02:17:19 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: essd-s3.el,v 5.15 2004/05/03 02:17:19 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -91,7 +91,7 @@
   (interactive)
   (setq ess-customize-alist S3-customize-alist)
   (ess-mode S3-customize-alist proc-name)
-  (if ess-S-use-imenu (ess-imenu-R)))
+  (if ess-imenu-use-S (ess-imenu-R)))
 
 
  ; Provide package

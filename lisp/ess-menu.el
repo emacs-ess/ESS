@@ -5,9 +5,9 @@
 ;; Kurt Hornik, Martin Maechler, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
-;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
+;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>, Stephen Eglen <stephen@anc.ed.ac.uk> 
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.21 2004/04/22 15:37:07 stephen Exp $
+;; Version: $Id: ess-menu.el,v 1.22 2004/05/03 02:17:19 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
