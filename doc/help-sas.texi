@@ -326,7 +326,11 @@ C-F5 C-F6 append-to-log
 C-F6 C-F7 append-to-output 
                     append ess-temp.lst to the current .lst file
 
-C-F9 C-F9 kill-em-all
+C-F9 C-F9 INSIGHT 
+                    open an interactive INSIGHT session on the SAS 
+                    dataset near point
+
+C-F10 C-F10 kill-em-all
                     kill all buffers associated with a .sas program
 @end display
 

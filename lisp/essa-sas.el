@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/04/12 22:00:30 $
-;; Version: $Revision: 1.160 $
-;; RCS: $Id: essa-sas.el,v 1.160 2004/04/12 22:00:30 rsparapa Exp $
+;; Modified: $Date: 2004/04/13 21:14:06 $
+;; Version: $Revision: 1.161 $
+;; RCS: $Id: essa-sas.el,v 1.161 2004/04/13 21:14:06 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -47,24 +47,39 @@
     "Full path-name of the sas file to perform operations on.")
 
 (defcustom ess-sas-data-view-libname " "
-    "*SAS code to define a library for `ess-sas-data-view'."
+"*SAS code to define a library for `ess-sas-data-view-fsview'
+or `ess-sas-data-view-insight'."
     :group 'ess-sas  
     :type  'string
 )
 
 (defcustom ess-sas-data-view-fsview-command "; proc fsview data=" 
-    "*SAS code to open a SAS dataset with `ess-sas-data-view'."
+    "*SAS code to open a SAS dataset with `ess-sas-data-view-fsview'."
     :group 'ess-sas  
     :type  'string
 )
 
 (defcustom ess-sas-data-view-fsview-statement " "
-    "*SAS code to perform a PROC FSVIEW statement with `ess-sas-data-view'."
+    "*SAS code to perform a PROC FSVIEW statement with `ess-sas-data-view-fsview'."
     :group 'ess-sas  
     :type  'string
 )
 
 (make-variable-buffer-local 'ess-sas-data-view-fsview-statement)
+
+(defcustom ess-sas-data-view-insight-command "; proc insight data=" 
+    "*SAS code to open a SAS dataset with `ess-sas-data-view-insight'."
+    :group 'ess-sas  
+    :type  'string
+)
+
+(defcustom ess-sas-data-view-insight-statement " "
+    "*SAS code to perform a PROC FSVIEW statement with `ess-sas-data-view-insight'."
+    :group 'ess-sas  
+    :type  'string
+)
+
+(make-variable-buffer-local 'ess-sas-data-view-insight-statement)
 
 (defcustom ess-sas-graph-suffix-regexp 
     "[.]\\([eE]?[pP][sS]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\)"
@@ -154,7 +169,8 @@ should set this variable to 'sh regardless of their local shell
 (defcustom ess-sas-data-view-submit-options 
     (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
 	"-nodms -nosysin -log /dev/null")
-    "*The options necessary for your enviromment and your operating system."
+"*The command-line options necessary for your OS with respect to
+`ess-sas-data-view-fsview' and `ess-sas-data-view-insight'."
     :group 'ess-sas  
     :type  'string
 )
@@ -362,7 +378,7 @@ current buffer if nil."
 
 (ess-change-alist 'ess-kermit-remote-directory ess-kermit-remote-directory nil))
 
-(defun ess-sas-data-view (&optional ess-sas-data)
+(defun ess-sas-data-view-fsview (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
     (ess-save-and-set-local-variables)
@@ -392,6 +408,40 @@ current buffer if nil."
 	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
 	    " -initstmt \"" ess-sas-data-view-libname ess-sas-data-view-fsview-command 
 	    ess-sas-data ";" ess-tmp-sas-data-view-fsview-statement "; run;\" " 
+	    ess-sas-data-view-submit-options " " ess-sas-submit-post-command))
+    (comint-send-input)
+)))))
+
+(defun ess-sas-data-view-insight (&optional ess-sas-data)
+  "Open a dataset for viewing with PROC INSIGHT."
+    (interactive)
+    (ess-save-and-set-local-variables)
+
+ (save-excursion (let ((ess-tmp-sas-data nil) 
+    (ess-tmp-sas-data-view-insight-statement ess-sas-data-view-insight-statement)
+    (ess-search-regexp 
+    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[ ,()\t;]")
+    (ess-search-except 
+    "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
+
+    (if ess-sas-data nil (save-match-data 
+	(search-backward-regexp "[ \t=]" nil t)
+
+        (save-excursion 
+	    (setq ess-tmp-sas-data 
+		(ess-search-except ess-search-regexp ess-search-except)))
+
+        (if (not ess-tmp-sas-data) 
+	    (setq ess-tmp-sas-data 
+		(ess-search-except ess-search-regexp ess-search-except t)))
+
+	(setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
+
+        (ess-sas-goto-shell t)
+
+	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
+	    " -initstmt \"" ess-sas-data-view-libname ess-sas-data-view-insight-command 
+	    ess-sas-data ";" ess-tmp-sas-data-view-insight-statement "; run;\" " 
 	    ess-sas-data-view-submit-options " " ess-sas-submit-post-command))
     (comint-send-input)
 )))))
@@ -990,9 +1040,10 @@ accepted for backward compatibility, however, arg is ignored."
   (global-set-key [(control f7)] 'ess-sas-append-lst)
   (global-set-key (quote [f8]) 'ess-sas-submit)
   (global-set-key [(control f8)] 'ess-sas-submit-region)
-  (global-set-key (quote [f9]) 'ess-sas-data-view)
-  (global-set-key [(control f9)] 'ess-sas-kill-buffers)
+  (global-set-key (quote [f9]) 'ess-sas-data-view-fsview)
+  (global-set-key [(control f9)] 'ess-sas-data-view-insight)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
+  (global-set-key [(control f10)] 'ess-sas-kill-buffers)
   (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
   (if (and ess-sas-edit-keys-toggle
@@ -1025,9 +1076,10 @@ accepted for backward compatibility, however, arg is ignored."
   (global-set-key [(control f6)] 'ess-sas-append-lst)
   (global-set-key (quote [f7]) 'ess-sas-goto-file-1)
   (global-set-key (quote [f8]) 'ess-sas-goto-shell)
-  (global-set-key (quote [f9]) 'ess-sas-data-view)
-  (global-set-key [(control f9)] 'ess-sas-kill-buffers)
+  (global-set-key (quote [f9]) 'ess-sas-data-view-fsview)
+  (global-set-key [(control f9)] 'ess-sas-data-view-insight)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
+  (global-set-key [(control f10)] 'ess-sas-kill-buffers)
   (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
 	(if (and ess-sas-edit-keys-toggle
@@ -1061,9 +1113,10 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map [(control f7)] 'ess-sas-append-lst)
   (define-key sas-mode-local-map (quote [f8]) 'ess-sas-submit)
   (define-key sas-mode-local-map [(control f8)] 'ess-sas-submit-region)
-  (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
-  (define-key sas-mode-local-map [(control f9)] 'ess-sas-kill-buffers)
+  (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view-fsview)
+  (define-key sas-mode-local-map [(control f9)] 'ess-sas-data-view-insight)
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
+  (define-key sas-mode-local-map [(control f10)] 'ess-sas-kill-buffers)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
   ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path) 
@@ -1092,9 +1145,10 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map [(control f6)] 'ess-sas-append-lst)
   (define-key sas-mode-local-map (quote [f7]) 'ess-sas-goto-file-1)
   (define-key sas-mode-local-map (quote [f8]) 'ess-sas-goto-shell)
-  (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
-  (define-key sas-mode-local-map [(control f9)] 'ess-sas-kill-buffers)
+  (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view-fsview)
+  (define-key sas-mode-local-map [(control f9)] 'ess-sas-data-view-insight)
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
+  (define-key sas-mode-local-map [(control f10)] 'ess-sas-kill-buffers)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
   ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path) 
