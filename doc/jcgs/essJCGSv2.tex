@@ -160,9 +160,9 @@ batch file processing.
 
 The present paper provides historical and non-technical information on
 Emacs and ESS.  A general introduction and usage instructions can be
-found in \cite{heiberger:dsc:2001}.  Examples of its use are included in the
-documentation that comes with the ESS source code.  Details of the implementation
-of ESS are also provided.  We first describe the Emacs editor, the platform on which ESS
+found in \cite{heiberger:dsc:2001}.  The
+documentation that comes with ESS provides details of its implementation
+and examples of its use.  We first describe the Emacs editor, the platform on which ESS
 is built.  This is followed by the details of ESS
 and how it facilitates the statistician's activities.  ESS's unique history
 as an open source project is described, and we conclude with future
@@ -176,18 +176,18 @@ Emacs \citep{RMS:2000} is a mature, powerful, and extensible
 text editing system which is
 freely available under the GNU General Public License for a large
 number of platforms, including most flavors of Unix, Microsoft Windows and 
-Apple Macintosh.  Emacs shares
-some features with word processors, and more importantly, shares many
+Apple Macintosh.  Emacs shares many features with word processors, and some
 characteristics with operating systems.  Most importantly, Emacs can
 interact with and control other programs.
 % either as subprocesses or as cooperating processes.
 
-Emacs can be used in a terminal, keyboard-only, implementation
-on those platforms which support it.  But, most platforms also
-provide a graphical user interface (GUI) allowing the user to interact
-with either the keyboard or a mouse.  Therefore, recent versions of Emacs
-provide GUI support.  Emacs menus and toolbars allow mouse access to frequently used actions
-for instances when you don't know or can't remember the keyboard
+Emacs can be used when the keyboard is the only input device.  But, this is
+mainly for special purposes like remote access via a modem or the internet.
+In most instances, Emacs relies on
+a graphical user interface (GUI) which allows the user to interact
+with either a keyboard or a mouse and provides applications with the ability to 
+share space on a single display.  Emacs menus and toolbars allow mouse access to 
+frequently used actions; for instance, when you don't know or can't remember the keyboard
 equivalent.  User-defined menus and toolbars can be constructed as needed.  
 
 Emacs provides facilities that go beyond just text editing.  Emacs creates a 
@@ -199,13 +199,11 @@ and control one or more programs at the same time.
 %visual comparison of two similar files; and navigation 
 %in units of characters, words, lines, sentences, paragraphs, and pages.  
 
-Emacs capabilities are extended by packages written in a
-dialect of Lisp called Emacs Lisp which is also known as E-Lisp 
-\citep{RChassell1999,PGraham:1996}.  The main E-Lisp
-construct is called a function and related functions are grouped together into
-packages.  Packages may provide their support in the form of what are called modes.  Major-modes
-provide support for types of files determined by the file name;
-specifically the file name's extension which are the characters at the end
+Emacs capabilities are extended by text files containing Emacs Lisp, also 
+known as E-Lisp, a dialect of Lisp \citep{RChassell1999,PGraham:1996}.  
+The most important extensions to Emacs are called modes.  Major-modes
+provide support for types of files determined by the file name's extension,
+i.e. the characters at the end
 of the file name that follow a period like ``txt'', ``s'' or ``sas''.  Since
 they are dictated by the file name, you can only utilize one major-mode at a
 time.  Minor-modes, by contrast, provide services that are not mutually exclusive
@@ -217,20 +215,20 @@ automatic indentation and navigation in units of characters, words, lines, sente
 paragraphs, and pages as well as many other features.
 
 Most programming and documentation tasks fall under the realm of text
-editing.  This work can be enhanced by common IDE features such as
+editing.  This work can be enhanced by features such as
 contextual highlighting and recognition of special reserved words
 appropriate to the programming language in use.  In addition, editor
 behaviors such as folding, outlining, and bookmarks can assist with
-maneuvering around a file.  Type-setting and word-processing, which
-focus on the presentation of a document, are tasks that are not pure
-text-editing.  Emacs shares many features with word-processing
+maneuvering around a file.  Emacs shares many features with word-processing
 programs and cooperates with document preparation systems such as
-(\LaTeX; SGML, \textsc{xml}, and XSLT; and Noweb).
+\LaTeX, SGML, \textsc{xml}, XSLT, and Noweb.
+%Type-setting and word-processing, which
+%focus on the presentation of a document, are tasks that are not pure
+%text-editing.
 
-The capabilities can be extended in an orthogonal manner to include
-other Emacs packages for assisting with documentation as noted above;
-version control (RCS, CVS, SCCS, PRCS); and remote editing via FTP or
-secure transport mechanisms such as ssh and scp.  Emacs handles the
+The capabilities can be extended to include other Emacs modes for
+interacting with version control packages like RCS, CVS, SCCS, or PRCS; 
+and remote editing via ftp/telnet or scp/ssh.  Emacs handles the
 interface to both source code and transcripts contextually, providing
 syntax highlighting, bookmarking features, interfaces to directory
 structure, and command-history.  Other extensions to Emacs allow it to
@@ -240,21 +238,19 @@ other common text-based tools such as spell checking programs.  The
 Emacs keyboard and mouse interface can be re-mapped to resemble that
 of other text-editors, such as ed, vi, wordstar, and brief.
 
-The above reasons suggest that Emacs is a reasonable starting choice
-for providing a universal interface for data analysis and programming.
-ESS extends Emacs to provide a functional, easily extensible and
-uniform interface for multiple statistical packages.
 
 \section{ESS extends Emacs}
 \label{sec:ess-extends-emacs}
 
-
-ESS extends Emacs by providing a number of features for statistical
-programming.  This is done by extending the editor to provide
-additional useful features, and in the case of interactive statistical
-programs, sitting ``in front of'' their CLI and intercepting and
-modifying I/O as needed.  We describe the exact features more in this
-section.  
+The above reasons suggest that Emacs is a reasonable starting choice
+for providing an interface for statistical analysis packages.
+ESS extends Emacs to provide a functional, easily extensible and
+uniform interface for multiple statistical packages.
+%This is done by extending the editor to provide
+%additional useful features, and in the case of interactive statistical
+%programs, sitting ``in front of'' their CLI and intercepting and
+%modifying I/O as needed.  We describe the exact features more in this
+%section.  
 
 %% change/edit
 %Figure~\ref{fig:1} provides an example of how it looks when being used
