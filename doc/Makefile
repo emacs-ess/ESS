@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.38 $.
+### File: $Revision: 1.39 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -36,7 +36,9 @@ pdf  : ess.pdf readme.pdf
 ps   : ess.ps  readme.ps
 
 ess.dvi : $(TEXISRC); texi2dvi $<
-ess.pdf : $(TEXISRC); pdftex $<; pdftex $<
+ess.pdf : $(TEXISRC)
+	texi2pdf ess.texi
+#ess.pdf : $(TEXISRC); pdftex $<; pdftex $<
 ess.ps  : ess.dvi; dvips $< -o $@
 
 readme.dvi : $(TEXISRC); texi2dvi $<

@@ -3,26 +3,28 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.40 2002/10/21 18:25:02 rsparapa Exp $
+@comment $Id: ess.texi,v 5.41 2002/10/30 21:28:30 rsparapa Exp $
 
 @synindex pg vr
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics 
-@subtitle (Documentation $Revision: 5.40 $ $Date: 2002/10/21 18:25:02 $)
-@author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.A. Sparapani.
+@subtitle (Documentation $Revision: 5.41 $ $Date: 2002/10/30 21:28:30 $)
+@author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik, 
+@author M. Maechler and R.A. Sparapani)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @c @author                and David Smith)
 @c @ifhtml
 @c <P><HR></P>
 @c @end ifhtml
 @c 
-@author Current Documentation by A.J. Rossini
-@author Copyright @copyright{} 1996--2002 A.J. Rossini.
+@author Current Documentation by The ESS Developers
+@author Copyright @copyright{} 2002 The ESS Developers
+@author Copyright @copyright{} 1996--2001 A.J. Rossini
 @c (@email{rossini@@biostat.washington.edu})
 @c @author Department of Biostatistics
 @c @author University of Washington, USA.
-@author Original Documentation by David Smith
+@author Original Documentation by David M. Smith
 @author Copyright @copyright{} 1992--1995 David M. Smith
 @c (@email{D.M.Smith@@lancaster.ac.uk})
 @c @author Department of Mathematics and Statistics
@@ -51,7 +53,7 @@
 ESS version 
 @include ../VERSION
 
-        (Documentation $Revision: 5.40 $ $Date: 2002/10/21 18:25:02 $).
+        (Documentation $Revision: 5.41 $ $Date: 2002/10/30 21:28:30 $).
 
 @display
 by  A.J. Rossini, 

@@ -1,4 +1,3 @@
-
 ESS[BUGS] was designed for use with BUGS software.  It was developed by
 Rodney A. Sparapani and has some similarities with ESS[SAS].
 ESS facilitates BUGS batch with ESS[BUGS], the mode for files with the .bug 
@@ -98,5 +97,4 @@ the batch process is running, it will not appear in ESS[BUGS] mode unless
 you modify the auto-mode-alist variable.  If you have done so, then you
 may find F2 useful to refresh the .log if the batch process over-writes or
 appends it.
-
 

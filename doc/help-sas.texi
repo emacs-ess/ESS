@@ -1,5 +1,3 @@
-\input texinfo
-@setfilename DUMMY
 ESS[SAS] was designed for use with SAS.  It is descended from emacs 
 macros developed by John Sall for editing SAS programs and SAS-mode by 
 Tom Cook.  Those editing features and new advanced features are part of 
@@ -571,4 +569,3 @@ Or you can mark regions with the mouse and submit the code with
 
 @end itemize
 
-@bye
