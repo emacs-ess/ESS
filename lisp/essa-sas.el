@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/09 18:00:26 $
-;; Version: $Revision: 1.59 $
-;; RCS: $Id: essa-sas.el,v 1.59 2002/01/09 18:00:26 rsparapa Exp $
+;; Modified: $Date: 2002/01/09 19:16:42 $
+;; Version: $Revision: 1.60 $
+;; RCS: $Id: essa-sas.el,v 1.60 2002/01/09 19:16:42 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -69,8 +69,9 @@
 )
 
 (defvar ess-sas-submit-method 
-  (if (and ess-microsoft-p (not (w32-shell-dos-semantics))) 'sh
-    system-type)
+  (if ess-microsoft-p 
+    (if (w32-shell-dos-semantics) 'windows-nt 'sh)
+    (if (equal system-type 'Apple-Macintosh) 'Apple-Macintosh 'sh))
   "Method used by `ess-sas-submit'.
 The default is based on the value of the emacs variable `system-type'
 and, on Windows machines, the function `w32-shell-dos-semantics'.
@@ -92,7 +93,7 @@ or `ESS-elsewhere' should have one of the following in ~/.emacs
 
 (defcustom ess-sas-data-view-options 
     (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
-	(if (equal ess-sas-submit-method 'sh) "-nodms -nosysin -log /dev/null"))
+	"-nodms -nosysin -log /dev/null")
     "*The options necessary for your enviromment and your operating system."
     :group 'ess-sas
     :type  'string
@@ -100,7 +101,7 @@ or `ESS-elsewhere' should have one of the following in ~/.emacs
 
 (defcustom ess-sas-submit-post-command 
     (if (equal ess-sas-submit-method 'sh) "-rsasuser &" 
-	(if ess-microsoft-p "-rsasuser -icon"))
+	(if ess-microsoft-p "-rsasuser -icon"))    
     "*Command-line statement to post-modify SAS invocation, e.g. -rsasuser"
     :group 'ess-sas
     :type  'string
@@ -268,26 +269,32 @@ on the way."
 (defun ess-sas-data-view (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
-    (save-match-data (save-excursion 
-    (search-backward-regexp "[ \t=]" nil t)
-    (search-forward-regexp 
-	"[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ ,()\t;]"
-	nil t)
 
-    (let ((ess-tmp-sas-data (match-string 1)))
-      (if (get-buffer "*shell*") (set-buffer "*shell*")
-          (shell))
-      (if ess-sas-data nil
-	  (if (string-match "^\\(first\\|last\\)[.]" ess-tmp-sas-data)
-	      (setq ess-tmp-sas-data nil)) 
-	  (setq ess-sas-data 
-	    (read-string "SAS Dataset: " ess-tmp-sas-data nil ess-tmp-sas-data)))
+ (save-excursion (let ((ess-tmp-sas-data nil))
+    (if ess-sas-data nil (save-match-data 
+       (search-backward-regexp "[ \t=]" nil t)
+
+       (if (or
+           (search-forward-regexp 
+	     "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ ,()\t;]"
+	     nil t)
+           (search-backward-regexp 
+	     "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ ,()\t;]"
+	     nil t)) (setq ess-tmp-sas-data (match-string 1)))
+
+       (if (and ess-tmp-sas-data 
+	  (not (string-match "^\\(first\\|last\\)[.]" ess-tmp-sas-data)))
+	    (setq ess-sas-data (read-string "SAS Dataset: " ess-tmp-sas-data))
+	    (setq ess-sas-data (read-string "SAS Dataset: ")))
+
+       (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
+
 	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
 	    " -initstmt \"" ess-sas-data-view-libname "; proc fsview data=" 
 	    ess-sas-data "; run;\" " ess-sas-data-view-options " " 
 	    ess-sas-submit-post-command))
     (comint-send-input)
-))))
+)))))
 
 (defun ess-kermit-get ()
   "Get a file with Kermit."
