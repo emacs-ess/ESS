@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.51 2004/05/04 14:19:39 stephen Exp $
+@comment $Id: ess.texi,v 5.52 2004/05/05 11:56:48 stephen Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.51 $ $Date: 2004/05/04 14:19:39 $)
+@subtitle (Documentation $Revision: 5.52 $ $Date: 2004/05/05 11:56:48 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.51 $ $Date: 2004/05/04 14:19:39 $).
+        (Documentation $Revision: 5.52 $ $Date: 2004/05/05 11:56:48 $).
 
 @display
 by  A.J. Rossini,
@@ -2499,11 +2499,13 @@ this variable.
 
 S+6.2 on Windows contains a java library that supports graphics.  Send
 the commands:
+
 @example
 library(winjava)
 java.graph()
 @end example
-to start the graphics driver.  This allows you to use ESS for both
+
+@noindent to start the graphics driver.  This allows you to use ESS for both
 interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
 this information.)
 
