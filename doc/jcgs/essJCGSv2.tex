@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 19:08:14 $ - $Revision: 1.221 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/20 19:09:58 $ - $Revision: 1.222 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -617,39 +617,8 @@ ESS helps by providing a single point of contact to both tools, though
 the typical interfaces (interactive for R, batch for BUGS) are
 different.
 
-%\begin{Comment}
-%\begin{description}
-% \item[Rodney:]  I think I see where we were going with this.  We would go on to
-%say that ESS is here to help people solve this problem.  However,
-%we can't say that ESS provides a uniform interface to BUGS and R because
-%it doesn't.  I didn't know what the R interface was supposed to look like
-%when I created \stexttt{ESS[BUGS]} so I modeled it on \stexttt{ESS[SAS]}.  Furthermore,
-%\stexttt{ESS[SAS]} and \stexttt{ESS[R]} are very different by design, i.e. \stexttt{ESS[SAS]} was not
-%designed like Emacs, but rather Display Manager.  I'm not sure how we can tell
-%people that this is such a big advantage.  Maybe the above paragraph
-%should talk about SAS and BUGS?  Comments welcome.
-
-%\item[Martin:] I see. Actually, I think this is \textbf{really bad} to hear.
-%  I thought people using BUGS would rather come from an S background
-%  (R or S-Plus) rather than SAS, and I---as Tony seemed---naturally
-%  assumed the BUGS interface would be close to the S one.
-
-%  Wouldn't this even be something we should change?  Maybe we should find
-%  out who is currently using ESS[BUGS] at all. It could be only very
-%  people; since I know that most BUGS users use WinBUGS...
-
 %\item[Rodney:]  I can't speak for everyone, but the BUGS users I know are
-%pretty evenly divided between SAS and S.  OTOH, they are almost 
-%unanimously opposed to WinBUGS and use batch BUGS nearly exclusively.
-%I think it's because of their aversion to Windows since nearly all of
-%them are Unix fanatics.  
-%Having thought some more about this...  The reason that BUGS batch file
-%processing is based on SAS batch file processing is \textbf{batch file processing}.
-%In other words, BUGS and SAS probably have more in common operationally
-%than BUGS and R/S do.  Of course, BUGS has an interactive mode, but that
-%would only be of use in rare circumstances.  Maybe we should just have an 
-%option to make the key sequence be SAS-like or R/S-like (what would that be 
-%by the way?).  That way everyone should be happy and the above illustration
+% .. lots deleted by AJR
 %will make sense.  Besides, the most pressing need for me is to get 
 %ESS-elsewhere to work with ESS[BUGS] rather than creating inferior-BUGS.
 
@@ -675,16 +644,15 @@ different.
 %\end{Comment}
 
 \paragraph{Simplifying Keymap Differences.}
-Simple conflicts between interfaces are exemplified by different
-key sequences for editing tasks such as cut, copy, paste, beginning of
+Simple conflicts between interfaces are exemplified by different key
+sequences for editing tasks such as cut, copy, paste, beginning of
 line, end of line, etc.  These may be the most aggravating because our
-fingers are typing ``instinctively'', 
-%without our brains having to specifically think about it, 
-but differences in interfaces circumvent this learned
-behavior.  ESS solves this problem by providing a uniform interface to
-keyboard actions across the variety of statistical packages that
-might be used.  That is, the same key sequences are used for cursor movement, 
-evaluation, and basic tasks such as loading files for editing.
+fingers are typing ``instinctively'', but differences in interfaces
+circumvent this learned behavior.  ESS solves this problem by
+providing a uniform interface to keyboard actions across the variety
+of statistical packages that might be used.  That is, the same key
+sequences are used for cursor movement, evaluation, and basic tasks
+such as loading files for editing.
 
 
 \paragraph{Concurrent Use of Multiple Machines and Operating Systems.}
