@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@biostat.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/07/22 13:02:04 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: ess-mode.el,v 5.8 1999/07/22 13:02:04 maechler Exp $
+;; Modified: $Date: 1999/09/01 18:44:57 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: ess-mode.el,v 5.9 1999/09/01 18:44:57 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -201,6 +201,7 @@
     ["Undo"              undo                                t]
     ["About"             (ess-goto-info "Edit buffer")       t]
     )
+   ["Switch Process"   ess-switch-process           t]
    "------"
    ["Describe"         describe-mode                t]
    ["About"            (ess-goto-info "Editing")    t]
