@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.3 1998/12/16 17:44:10 maechler Exp $
+@comment $Id: ess.texi,v 5.4 1998/12/16 17:52:53 maechler Exp $
 
 @synindex pg vr
 
@@ -38,7 +38,7 @@ Statistics, University of South Carolina, Columbia, SC, 29208, USA.
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.0   (Documentation version $Revision: 5.3 $ $Date: 1998/12/16 17:44:10 $)
+@subtitle version 5.0 (Documentation $Revision: 5.4 $ $Date: 1998/12/16 17:52:53 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter and David Smith)
 @ifhtml
@@ -80,7 +80,7 @@ permission notice identical to this one.
 @node Top, Introduction, (dir), (dir)
 @top ESS: Emacs Speaks Statistics
 
-ESS version 5.0.
+ESS version 5.0 (Documentation $Revision: 5.4 $ $Date: 1998/12/16 17:52:53 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
