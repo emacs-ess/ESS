@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/07 00:26:42 $ - $Revision: 1.141 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/07 00:38:29 $ - $Revision: 1.142 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -463,7 +463,7 @@ version and source code control systems, tools for accessing programs
 or files on remote machines, and interfaces to documentation systems
 including \LaTeX\ and \textsc{xml}.  In addition, Emacs can assist
 with, or be programmed to perform, many tasks related to data
-cleaning, management, and editing.  
+cleaning, management, and editing.
 
 % repetitive
 %Below, we describe some of the
@@ -509,36 +509,34 @@ cleaning, management, and editing.
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
 
-ESS strongly supports the S family (S, \Splus, and R)\@.  \SAS\ and BUGS
-are also well supported.  \Stata, \XLispStat\ (including extensions
-ARC and ViSta) are supported with the basic functionality of syntax
-highlighting and process-interfacing.  ESS and its interface are fully
-discussed in the next section.
+ESS strongly supports the S family (S, \Splus, and R)\@.  \SAS\ and
+BUGS are also well supported.  \Stata, \XLispStat\ (including
+extensions ARC and ViSta) are supported with the basic functionality
+of syntax highlighting and process-interfacing.  ESS and its interface
+are fully discussed in the next section.
 
 \paragraph{Syntactic highlighting and indentation of source code.}
 The programmers task is eased when language constructs (such as
 reserved words, function calls, strings, and comments) are visually
 identifiable and when lines of code are automatically indented to a
 depth appropriate to their context (e.g., if--then clauses, loops).
-ESS provides both of these to the programmer by
-including a description of the syntax of each
-supported statistical language in the form used by
-\stexttt{font-lock-mode}.  
+ESS provides both of these to the programmer by including a
+description of the syntax of each supported statistical language in
+the form used by \stexttt{font-lock-mode}.
 
-Figure \ref{f.font} shows an example of font-locking a
-complicated S statement.  The top panel shows an \stexttt{if}
-statement with a long expression in the condition and a multi-line
-consequence.  The keyword \stexttt{if} is shown in purple,
-the string \stexttt{"deltat"} in RosyBrown.  The
-comments are in red.  Everything else is in the standard
-font.  The consequence is indented and the continuations of the
-consequence are further indented.  The matching parentheses are shown
-in green.  The cursor is indicated
-by a solid box.  In the bottom panel we replaced the matching
-parenthesis with an unbalanced bracket.  Emacs immediately marks that
-with the paren-mismatch font, bright purple in this example.
-On a black and white terminal we would use bold, underline, italic,
-and reverse-video, rather than colors, to distinguish the fonts.
+Figure \ref{f.font} shows an example of font-locking a complicated S
+statement.  The top panel shows an \stexttt{if} statement with a long
+expression in the condition and a multi-line consequence.  The keyword
+\stexttt{if} is shown in purple, the string \stexttt{"deltat"} in
+RosyBrown.  The comments are in red.  Everything else is in the
+standard font.  The consequence is indented and the continuations of
+the consequence are further indented.  The matching parentheses are
+shown in green.  The cursor is indicated by a solid box.  In the
+bottom panel we replaced the matching parenthesis with an unbalanced
+bracket.  Emacs immediately marks that with the paren-mismatch font,
+bright purple in this example.  On a black and white terminal we would
+use bold, underline, italic, and reverse-video, rather than colors, to
+distinguish the fonts.
 
 % Figure \ref{f.font} shows a black-and-white example of font-locking a
 % complicated S statement.  The top panel shows an \stexttt{if}
@@ -559,12 +557,9 @@ supplied by Emacs as the lines are typed.  The user has several
 options for mapping of colors or fonts to each of the syntactic types.
 We selected
 %black-and-white font-mapping for display here.  On a terminal we might use 
-purple for the keywords, red for comments, green
-for matching parens, and inverse-video purple for mismatched parens.
-Emacs makes default choices of colors and ESS
-provides several other optional schemes.
-
-
+purple for the keywords, red for comments, green for matching parens,
+and inverse-video purple for mismatched parens.  Emacs makes default
+choices of colors and ESS provides several other optional schemes.
 
 %\begin{figure}
 %a: balanced parentheses\\
@@ -642,43 +637,31 @@ their jobs.  This is the proper role of the auditor IMHO.  I think
 ESS should stay out of it, at least as far as the paper goes.
 \end{Comment}
 
-%\begin{figure}
-%\ifdraft
-%  \emptyfig
-%\else
-%  \psfig{file=hilock-sas.ps.gz,angle=270,width=\textwidth}
-%\fi
-%\caption[Enforce company coding standards.]{Enforce company coding
-%standards.  The standard here is that all \stexttt{PROC} statements must use
-%the \stexttt{DATA=datasetname} option.  Lines that satisfy the standard
-%turn green, lines that don't turn red.  Ambiguous ones turn yellow.\\
-%{\it hilock-sas.ps.gz}
-%\label{f.hilock}}
-%\end{figure}
-\begin{figure}[htbp]
+\begin{figure}[tbp]
   \centering
-  \includegraphics[angle=270,width=\textwidth]{hilock-sas}
-  \caption{Enforce company coding
-    standards.  The standard here is that all \stexttt{PROC}
-    statements must use the \stexttt{DATA=datasetname} option.  Lines
-    that satisfy the standard turn green, lines that don't turn red.
-    Ambiguous ones turn yellow.} %% \it hilock-sas.ps.gz
+  \ifdraft
+     \emptyfig
+  \else
+     \includegraphics[angle=270,width=\textwidth]{hilock-sas}
+  \caption{Enforce company coding standards.  The standard here is
+    that all \stexttt{PROC} statements must use the
+    \stexttt{DATA=datasetname} option.  Lines that satisfy the
+    standard turn green, lines that don't turn red.
+    Ambiguous ones turn yellow.}
   \label{f.hilock}
 \end{figure}
-
 
 \paragraph{Process interaction.}
 Emacs has historically referred to processes under its control as
 ``inferior'', accounting for the name inferior ESS (\stexttt{iESS}) to
 denote the mode for interfacing with the statistical package.  The
-output of the package goes directly to an editable buffer
-whose major mode is crafted to allow for command-line editing.  This
-mode remembers and uses the command history allowing for the recall and
+output of the package goes directly to an editable buffer whose major
+mode is crafted to allow for command-line editing.  This mode
+remembers and uses the command history allowing for the recall and
 searching of previously entered commands.  Filename completion for
 local directories is also available.
 
 \paragraph{Source-level Debugging}% Code Checking and Partial Code Evaluation.}
-
 ESS facilitates the editing of source code files, sets of commands
 written in the package's language by the statistical analyst, by
 providing a means for loading and error-checking small sections of
