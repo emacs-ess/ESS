@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.17 2001/08/10 10:07:10 maechler Exp $
+@comment $Id: ess.texi,v 5.18 2001/08/10 10:29:27 maechler Exp $
 
 @synindex pg vr
 
@@ -39,7 +39,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.19 (Documentation $Revision: 5.17 $ $Date: 2001/08/10 10:07:10 $)
+@subtitle version 5.1.19 (Documentation $Revision: 5.18 $ $Date: 2001/08/10 10:29:27 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -84,7 +84,7 @@ permission notice identical to this one.
 
 ESS version 5.1.19
 
-        (Documentation $Revision: 5.17 $ $Date: 2001/08/10 10:07:10 $).
+        (Documentation $Revision: 5.18 $ $Date: 2001/08/10 10:29:27 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
@@ -106,7 +106,7 @@ development.
 * Help::                        Reading help files in ESS
 * Transcript Mode::             Manipulating saved transcript files
 * Miscellaneous::               Other features of ESS
-* Bugs::                        Known bugs in ESS
+* Bugs Etc::
 * Help Statistics::
 * Help OS::
 * Installation::                Installing ESS on your system
@@ -176,6 +176,12 @@ Using graphics with ESS
 
 * printer::                     The printer() graphics driver
 * X11::                         The X11() (and other X-windows based) driver
+
+Bugs and Bug Reporting, Mailing Lists
+
+* Bugs::
+* Reporting Bugs::
+* Mailing Lists::
 
 Help, arranged by Statistical Package
 
@@ -2069,7 +2075,7 @@ buffer for inclusion in a function definition, or may be evaluated
 directly (@pxref{Evaluating code}) using the code evaluation commands
 from @b{S} mode, also available in @b{S} Transcript Mode.
 
-@node Miscellaneous, Bugs, Transcript Mode, Top
+@node Miscellaneous, Bugs Etc, Transcript Mode, Top
 @comment  node-name,  next,  previous,  up
 @chapter Other features of ESS
 
@@ -2202,18 +2208,35 @@ For R:
 directory, move it there).
 
 
-@node Bugs, Help Statistics, Miscellaneous, Top
+@node Bugs Etc, Help Statistics, Miscellaneous, Top
 @comment  node-name,  next,  previous,  up@chapter Using S4
-@chapter Known bugs in ESS
+@chapter Bugs and Bug Reporting, Mailing Lists
 
+@menu
+* Bugs::
+* Reporting Bugs::
+* Mailing Lists::
+@end menu
+
+@node Bugs, Reporting Bugs, Bugs Etc, Bugs Etc
+@section Bugs
 @cindex bugs
 @include bugs.texi
 
+@node Reporting Bugs, Mailing Lists, Bugs, Bugs Etc
+@comment  node-name,  next,  previous,  up
+@section Reporting Bugs
 @cindex Bug reports
 @pindex ess-submit-bug-report
 @include bugrept.texi
 
-@node Help Statistics, Help OS, Bugs, Top
+@node Mailing Lists,  , Reporting Bugs, Bugs Etc
+@comment  node-name,  next,  previous,  up
+@section Mailing Lists
+
+@include mailing.texi
+
+@node Help Statistics, Help OS, Bugs Etc, Top
 @comment  node-name,  next,  previous,  up@chapter Using S4
 @chapter Help, arranged by Statistical Package
 
