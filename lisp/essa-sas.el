@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/25 03:21:37 $
-;; Version: $Revision: 1.113 $
-;; RCS: $Id: essa-sas.el,v 1.113 2002/07/25 03:21:37 rsparapa Exp $
+;; Modified: $Date: 2002/07/25 16:33:21 $
+;; Version: $Revision: 1.114 $
+;; RCS: $Id: essa-sas.el,v 1.114 2002/07/25 16:33:21 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -191,8 +191,9 @@ should set this variable to 'sh regardless of their local shell
     :type  'string
 )
 
-(defcustom ess-sleep-for 5
-    "*Default for ess-sas-submit-sh is to sleep for 5 seconds."
+(defcustom ess-sleep-for (if ess-microsoft-p 5 0)
+"*`ess-sas-submit-sh' may need to pause before sending output 
+to the shell on Windows when `ess-sas-submit-method' is 'sh."
     :group 'ess-sas  
     :type  'number
 )
