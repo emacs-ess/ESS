@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/06/13 15:48:21 $
-;; Version: $Revision: 1.26 $
-;; RCS: $Id: essa-sas.el,v 1.26 2001/06/13 15:48:21 ess Exp $
+;; Modified: $Date: 2001/06/14 00:43:04 $
+;; Version: $Revision: 1.27 $
+;; RCS: $Id: essa-sas.el,v 1.27 2001/06/14 00:43:04 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -503,6 +503,7 @@ Without arg, toggle between these options."
   "Non-nil if function keys use PC-like SAS key definitions in all modes.")
 (defun ess-sas-global-pc-keys ()
   "PC-like SAS key definitions"
+  (interactive)
   (global-set-key [f2] 'ess-revert-wisely)
   (global-set-key [f3] 'shell)
   (global-set-key [f4] 'ess-sas-goto-file-1)
@@ -521,6 +522,7 @@ Without arg, toggle between these options."
   "Non-nil if function keys use Unix-like SAS key definitions in all modes.")
 (defun ess-sas-global-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
+  (interactive)
   (global-set-key [f2] 'ess-revert-wisely)
   (global-set-key [f3] 'ess-sas-submit)
   (global-set-key [(control f3)] 'ess-sas-submit-region)
@@ -540,6 +542,7 @@ Without arg, toggle between these options."
 in SAS-mode and related modes.")
 (defun ess-sas-local-pc-keys ()
   "PC-like SAS key definitions."
+  (interactive)
   (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
   (define-key sas-mode-local-map [f3] 'shell)
   (define-key sas-mode-local-map [f4] 'ess-sas-goto-file-1)
@@ -559,6 +562,7 @@ in SAS-mode and related modes.")
 in SAS-mode and related modes.")
 (defun ess-sas-local-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
+  (interactive)
   (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
   (define-key sas-mode-local-map [f3] 'ess-sas-submit)
   (define-key sas-mode-local-map [(control f3)] 'ess-sas-submit-region)
