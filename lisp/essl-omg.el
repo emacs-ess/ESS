@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 Aug 1999
-;; Modified: $Date: 1999/09/01 02:41:46 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: essl-omg.el,v 5.1 1999/09/01 02:41:46 ess Exp $
+;; Modified: $Date: 1999/11/10 05:29:59 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: essl-omg.el,v 5.2 1999/11/10 05:29:59 ess Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -41,9 +41,9 @@
 (defun OMG-comment-indent ()
   "Indentation for Omega comments."
 
-  (if (looking-at "###")
+  (if (looking-at "////")
       (current-column)
-    (if (looking-at "##")
+    (if (looking-at "///")
 	(let ((tem (S-calculate-indent)))
 	  (if (listp tem) (car tem) tem))
       (skip-chars-backward " \t")
@@ -63,11 +63,11 @@ Return the amount the indentation changed by."
 	   (setq indent (current-indentation)))
 	  (t
 	   (skip-chars-forward " \t")
-	   (if (and ess-fancy-comments (looking-at "###"))
+	   (if (and ess-fancy-comments (looking-at "////"))
 	       (setq indent 0))
 	   (if (and ess-fancy-comments
-		    (looking-at "#")
-		    (not (looking-at "##")))
+		    (looking-at "//")
+		    (not (looking-at "///")))
 	       (setq indent comment-column)
 	     (if (eq indent t) (setq indent 0))
 	     (if (listp indent) (setq indent (car indent)))
@@ -188,7 +188,7 @@ Returns nil if line starts inside a string, t if in a comment."
 		 (save-excursion
 		   (forward-char 1)
 		   (while (progn (skip-chars-forward " \t\n")
-				 (looking-at "#"))
+				 (looking-at "//"))
 		     ;; Skip over comments following openbrace.
 		     (forward-line 1))
 		   ;; The first following code counts
@@ -222,7 +222,7 @@ Returns nil if line starts inside a string, t if in a comment."
 
 
 
-(defvar S-syntax-table nil "Syntax table for S code.")
+(defvar OMG-syntax-table nil "Syntax table for Omegahat code.")
 (if S-syntax-table
     nil
   (setq S-syntax-table (make-syntax-table))
@@ -236,7 +236,7 @@ Returns nil if line starts inside a string, t if in a comment."
   (modify-syntax-entry ?&  "."  S-syntax-table)
   (modify-syntax-entry ?|  "."  S-syntax-table)
   (modify-syntax-entry ?\' "\"" S-syntax-table)
-  (modify-syntax-entry ?#  "<"  S-syntax-table) ; open comment
+  (modify-syntax-entry ?//  "<"  S-syntax-table) ; open comment
   (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
   ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
   (modify-syntax-entry ?.  "_"  S-syntax-table) ; see above/below,
@@ -249,13 +249,13 @@ Returns nil if line starts inside a string, t if in a comment."
   (modify-syntax-entry ?/  "."  S-syntax-table))
 
 
-(defvar S-editing-alist
+(defvar OMG-editing-alist
   '((paragraph-start              . (concat "^$\\|" page-delimiter))
     (paragraph-separate           . (concat "^$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
     (require-final-newline        . t)
-    (comment-start                . "#")
-    (comment-start-skip           . "#+ *")
+    (comment-start                . "//")
+    (comment-start-skip           . "//+ *")
     (comment-column               . 40)
     ;;(comment-indent-function  . 'S-comment-indent)
     ;;(ess-comment-indent           . 'S-comment-indent)
@@ -269,7 +269,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (ess-mode-syntax-table        . S-syntax-table)
     (font-lock-defaults           . '(ess-mode-font-lock-keywords
 				      nil nil ((?\. . "w")))))
-  "General options for editing S, S+, and R source files.")
+  "General options for Omegahat source files.")
 
 
 ;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in essl-s!).
@@ -297,19 +297,18 @@ Returns nil if line starts inside a string, t if in a comment."
 (defconst ess-help-OMG-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file")
 
-
 ;;;    S-mode extras of Martin Maechler, Statistik, ETH Zurich.
 
 ;;>> Moved things into --> ./ess-utils.el
 
 (defvar ess-function-outline-file
-  (concat ess-lisp-directory "/../etc/" "function-outline.S")
+  (concat ess-lisp-directory "/../etc/" "function-outline.omg")
   "The file name of the ess-function outline that is to be inserted at point,
 when \\<ess-mode-map>\\[ess-insert-function-outline] is used.
 Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
 
 ;; Use the user's own ~/S/emacs-fun.outline  is (s)he has one : ---
-(let ((outline-file (concat (getenv "HOME") "/S/function-outline.S")))
+(let ((outline-file (concat (getenv "HOME") "/S/function-outline.omg")))
   (if (file-exists-p outline-file)
       (setq ess-function-outline-file outline-file)))
 
@@ -330,12 +329,12 @@ Uses the file given by the variable ess-function-outline-file."
 ;;*;; S/R  Pretty-Editing
 
 (defun ess-fix-comments (&optional dont-query verbose)
-  "Fix ess-mode buffer so that single-line comments start with at least `##'."
+  "Fix ess-mode buffer so that single-line comments start with at least `//'."
   (interactive "P")
   (save-excursion
     (goto-char (point-min))
-    (let ((rgxp "^\\([ \t]*#\\)\\([^#]\\)")
-	  (to   "\\1#\\2"))
+    (let ((rgxp "^\\([ \t]*/\\)\\([^/]\\)")
+	  (to   "\\1/\\2"))
       (if dont-query
 	  (ess-rep-regexp     rgxp to nil nil verbose)
 	(query-replace-regexp rgxp to nil)))))
@@ -412,5 +411,5 @@ Uses the file given by the variable ess-function-outline-file."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; essl-s.el ends here
+;;; essl-omg.el ends here
 
