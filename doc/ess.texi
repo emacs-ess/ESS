@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.49 2004/04/18 15:20:28 stephen Exp $
+@comment $Id: ess.texi,v 5.50 2004/04/28 10:21:22 stephen Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.49 $ $Date: 2004/04/18 15:20:28 $)
+@subtitle (Documentation $Revision: 5.50 $ $Date: 2004/04/28 10:21:22 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.49 $ $Date: 2004/04/18 15:20:28 $).
+        (Documentation $Revision: 5.50 $ $Date: 2004/04/28 10:21:22 $).
 
 @display
 by  A.J. Rossini,
@@ -709,7 +709,7 @@ non-@code{nil} value (as it does by default) then the value of
 starting directory.  Incidentally, @code{ess-directory} is an ideal
 variable to set in @code{ess-pre-run-hook}.
 
-If you like to keep a records of your @Sl{} sessions, set the variable
+If you like to keep a record of your @Sl{} sessions, set the variable
 @code{ess-ask-about-transfile} to @code{t}, and you will be asked for a
 filename for the transcript before the ESS process starts.
 
@@ -739,6 +739,9 @@ It is not normally necessary to pass arguments to the @Sl{} program; in
 particular do not pass the @samp{-e} option to @code{Splus}, since ESS
 provides its own command history mechanism.
 
+By default, the new process will be displayed in another window in the
+current frame.  If you wish your S process to appear in a separate
+variable, customize the variable @code{inferior-ess-own-frame}.
 
 @comment  node-name,  next,  previous,  up
 @node Help for the S family, Help for SAS, Starting up, Top
@@ -2298,6 +2301,12 @@ you either need to kill the help buffer first, or pass a prefix argument
 
 Help buffers are marked as temporary buffers in ESS, and are deleted
 when @code{ess-quit} or @code{ess-cleanup} are called.
+
+Help buffers normally appear in another window within the current
+frame.  If you wish help buffers to appear in their own frame (either
+one per help buffer, or one for all help buffers), you can customize the
+variable @code{ess-help-own-frame}.
+
 @pindex ess-quit
 @pindex ess-cleanup
 @cindex temporary buffers
@@ -2444,6 +2453,7 @@ features for dealing with such plots.
 @menu
 * printer::                     The printer() graphics driver
 * X11::                         The X11() (and other X-windows based) driver
+* winjava::                     Java Graphics Device
 @end menu
 
 @comment  node-name,  next,  previous,  up
@@ -2465,7 +2475,7 @@ graphics immediately, but are stored until the @code{show()} command
 is issued, which displays the current figure.
 
 @comment  node-name,  next,  previous,  up
-@node X11,  , printer, Graphics
+@node X11, winjava, printer, Graphics
 @subsection Using ESS with windowing devices
 
 @cindex X windows
@@ -2479,7 +2489,21 @@ DISPLAY before the ESS process is started if the variable
 is non-@code{nil}.  @xref{Variables for starting ESS}, for details of
 this variable.
 
+@comment  node-name,  next,  previous,  up
+@node winjava,  , X11, Graphics
+@subsection Java Graphics Device
 
+@cindex winjava
+
+S+6.2 on Windows contains a java library that supports graphics.  Send
+the commands:
+@example
+library(winjava)
+java.graph()
+@end example
+to start the graphics driver.  This allows you to use ESS for both
+interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
+this information.)
 
 @comment  node-name,  next,  previous,  up
 @node Object Completion,  , Graphics, Miscellaneous
