@@ -62,7 +62,7 @@
 
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
     (ess-loop-timeout              . ess-S-loop-timeout)
-    (ess-dump-filename-template    . (replace-regexp-in-string
+    (ess-dump-filename-template    . (ess-replace-regexp-in-string
 				      "S$" ess-suffix ; in the one from custom:
 				      ess-dump-filename-template-proto))
     (ess-object-name-db-file       . "ess-sp5-namedb.el")
