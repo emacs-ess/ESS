@@ -107,12 +107,12 @@ info:	ess.info
 
 html:	html/ess_toc.html
 
-dvi:	ess.dvi
+dvi:	ess.texi
 
-ps:	ess.ps
+ps:	ess.dvi
 	dvips ess.dvi -o ess.ps
 
-pdf: 	ess.pdf
+pdf: 	ess.ps
 	rm ess.pdf
 	ps2pdf ess.ps > ess.pdf
 

@@ -1,6 +1,6 @@
 -*- view -*-
 
-($Revision: 1.25 $)
+($Revision: 1.26 $)
 
 Emacs Speaks Statistics (ESS), version 5.0
 ------------------------------------------
@@ -240,7 +240,7 @@ The HTML version of the documentation can be found at:
       M-x R
   (get running.  once you have reached the R prompt, do:)
       M-x ess-create-object-name-db
-  (this will create the file: ess-s+3-namedb.el; if it isn't in the
+  (this will create the file: ess-r-namedb.el; if it isn't in the
    ESS directory, move it there).
    
 

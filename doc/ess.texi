@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 1.16 1997/11/14 14:58:40 rossini Exp $
+@comment $Id: ess.texi,v 1.17 1997/11/17 14:06:43 rossini Exp $
 
 @synindex pg vr
 
@@ -2320,7 +2320,7 @@ DISPLAY when beginning an @b{S} session.
 
 
 If you are running S-PLUS or R, you might consider installing the
-database files.  For this, start up Emacs (or XEmacs) in the directory
+database files.  From within (X)Emacs, "C-x d" to the directory
 containing ESS.  Now:
 
 @code{M-x S+3}
@@ -2343,7 +2343,7 @@ For R:
 
 @code{M-x ess-create-object-name-db}
 
-(this will create the file: ess-s+3-namedb.el; if it isn't in the ESS
+(this will create the file: ess-r-namedb.el; if it isn't in the ESS
 directory, move it there).
 
 

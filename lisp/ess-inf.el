@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/14 02:10:07 $
-;; Version: $Revision: 1.93 $
-;; RCS: $Id: ess-inf.el,v 1.93 1997/11/14 02:10:07 rossini Exp $
+;; Modified: $Date: 1997/11/17 14:01:07 $
+;; Version: $Revision: 1.94 $
+;; RCS: $Id: ess-inf.el,v 1.94 1997/11/17 14:01:07 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -78,7 +78,7 @@
     (concat name ":" n)))
   
 (defun inferior-ess (&optional ess-start-args)
-  "Start or switch to inferior ESS process N.
+  "Start inferior ESS process.
 
 Without a prefix argument, starts a new ESS process, or switches
   to the ESS process associated with the current buffer.
@@ -100,11 +100,6 @@ accompany the call for inferior-ess-program.
   ;; Use the current buffer if it is in inferior-ess-mode or ess-trans-mode
   ;; If not, maybe ask about starting directory and/or transcript file.
   ;; If no transfile, use buffer *S*
-  ;;
-  ;; Switch to buffer of ess-local-process-name if it
-  ;; exists, maybe starting a new process; If not, find first N
-  ;; s.t. there is no process `ess-dialect'+N.
-  ;; Ask as above.
   ;;
   ;; This function is primarily used to figure out the Process and
   ;; buffer names to use for inferior-ess.
