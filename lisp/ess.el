@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.18 2000/06/13 05:14:26 ess Exp $
+;; Version: $Id: ess.el,v 5.19 2000/07/03 14:40:00 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -124,36 +124,24 @@
 ;;;
 
 (require 'easymenu)
-(if window-system
+(if (or window-system
+	noninteractive ; compilation!
+	)
     (require 'font-lock))
 
 (require 'ess-emcs)
 
-;;;; taken from W3, for use of new custom features with old custom.
-;;(eval-and-compile
-;;  (condition-case ()
-;;      (require 'custom)
-;;    (error nil))
-;;  (if (and (featurep 'custom) (fboundp 'custom-declare-variable))
-;;      nil ;; We've got what we needed
-;;    ;; We have the old custom-library, hack around it!
-;;    (defmacro defgroup (&rest args)
-;;      nil)
-;;    (defmacro defface (var values doc &rest args)
-;;      (` (make-face (, var))))
-;;    (defmacro defcustom (var value doc &rest args) 
-;;      (` (defvar (, var) (, value) (, doc))))))
-
 ;; Remove messages after we debug...
-
 
 (if (or (ess-running-emacs-version-or-newer 20 2) ess-local-custom-available)
     (eval-and-compile  ; was progn
+      (ess-message "--++ LOADING CUSTOM ++--")
       (require 'ess-cust)
-      (message "--++ LOADING CUSTOM ++--"))
+      )
   (eval-and-compile  ; was progn
+    (ess-message "--++ NOT NOT NOT loading custom ++--")
     (require 'ess-vars)
-    (message "--++ NOT NOT NOT LOADING CUSTOM ++--")))
+    ))
 
  ; ess-mode: editing S/R/XLS/SAS source
 
