@@ -16,6 +16,6 @@
 @email{maechler@@stat.math.ethz.ch}
 @c --------
 @item
-@uref{http://www.mcw.edu/pcor/rsparapa,Rodney Sparapani}
+@uref{http://www.mcw.edu/pcor/rsparapa,Rodney A. Sparapani}
 @email{rsparapa@@mcw.edu}
 @end itemize

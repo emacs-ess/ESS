@@ -1,19 +1,25 @@
-ESS is based on Olin Shivers' excellent comint package (which is supplied
 @cindex comint
 @cindex authors
 @cindex credits
-with version 19 of GNU Emacs).  The original version of ESS (then known
-as `S-mode') was written by Doug Bates (@email{bates@@stat.wisc.edu}) and
-Ed Kademan (@email{kademan@@stat.wisc.edu}).  Frank Ritter
-(@email{ritter@@psy.cmu.edu}) then merged this version with his own
-S-mode mode to form @file{S.el} version 2.1.
 
-Version 2.1 of @file{S.el} was then updated and expanded by David Smith
-to form version 3.4.  This was then updated for Emacs 19 to create
-version 4.  Most bugs have now been fixed (and several new ones
-introduced) and many new features have been added.  Thanks must go to
-the many people who have helped with the development of the present
-version of ESS:
+The ESS environment is built on the open-source projects of
+many contributors, dating back over 10 years.
+Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and Splus
+files in GNU Emacs.  Frank Ritter and Mike Meyer added features,
+creating version 2.  Meyer and David Smith made further contributions,
+creating version 3.  For version 4, David Smith provided process 
+interaction based on Olin Shivers' comint package.
+
+John Sall wrote GNU Emacs macros for SAS source code around 1990.
+Tom Cook added more functionality creating SAS-mode which was
+distributed in 1994.  Also in 1994, A.J. Rossini extended S-mode 
+to support XEmacs.  Together with extensions written by Martin Maechler, 
+this became version 4.7 and supported S, Splus, and R.
+In 1995, Rossini extended SAS-mode to work with XEmacs.
+
+In 1997, Rossini merged S-mode and SAS-mode into a single Emacs
+package for statistical programming; the product of this marriage was
+called ESS version 5.
 
 @itemize @bullet
 @item
@@ -41,7 +47,6 @@ Last but definitely not least, thanks to the many beta testers of the
 S-mode and ESS mailing lists.
 @end itemize
 
-The new version, @emph{ESS} version 5, is being developed and currently
-maintained by
+@emph{ESS} version 5 is being developed and currently maintained by
 
 @include authors.texi

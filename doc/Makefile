@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.33 $.
+### File: $Revision: 1.34 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -20,7 +20,7 @@ SPLITCHAP = -split_chapter -menu -glossary
 TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 	credits.texi currfeat.texi ess.texi getting.texi help-s.texi        \
 	help-sas.texi inst_cvs.texi inst_tar.texi license.texi mailing.texi \
-	newfeat.texi readme.texi requires.texi stabilty.texi version.texi 
+	newfeat.texi readme.texi requires.texi stabilty.texi ../VERSION
 
 ### Targets --
 
@@ -65,12 +65,6 @@ README.Microsoft : README.Microsoft.texi
 
 ### File Dependencies
 
-version.texi: ../VERSION
-	test -f $@ && rm -f $@ || true
-	echo "@macro essver{}" > $@
-	echo $(ESSVERSION) >> $@
-	echo "@end macro" >> $@
-
 $(INFODIR)/ess.info: $(TEXISRC)
 	@echo "making Info documentation..."
 	$(MAKEINFO) ess.texi
@@ -79,9 +73,10 @@ $(INFODIR)/ess.info: $(TEXISRC)
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess_toc.html: $(TEXISRC)
 	@echo "making HTML documentation..."
-	-(mkdir -p html; cd html; $(TEXI2HTML) $(SPLITCHAP) ../ess.texi)
-	-@(cd html; rm -f index.html; ln -s ess_toc.html index.html)
-	@echo "Test by pointing your browser to 'file://localhost/$$PWD/html/index.html'"
+	$(TEXI2HTML) $(SPLITCHAP) ess.texi
+	$(INSTALL) ess_toc.html index.html
+	$(INSTALL) ess*.html index.html html
 
 html/readme_toc.html: $(TEXISRC)
-	-(mkdir -p html; cd html; $(TEXI2HTML) ../readme.texi)
+	$(TEXI2HTML) readme.texi
+	$(INSTALL) readme*.html html

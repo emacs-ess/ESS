@@ -1,10 +1,17 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.48 $, for ESS version 5.1.22)
+   ($Revision: 5.49 $, for ESS version
 
-   This is the README file for the distribution of ESS version 5.1.22,
-the gamma series we are using on the way to producing 5.2 (the next
+   5.1.22
+
+   )
+
+   This is the README file for the distribution of ESS version
+
+   5.1.22
+
+   , the gamma series we are using on the way to producing 5.2 (the next
 stable distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported include:
 S dialects (S 3/4, S-PLUS 3/4/5/6, and R), LispStat dialects (XLispStat,
@@ -438,32 +445,32 @@ Unix installation
   1. cd to a directory where you want to install ESS, creating it if
      necessary.  This directory will be referred to below as ESSDIR.
 
-  2. Retrieve the gzipped tar file
-     (http://software.biostat.washington.edu/ess/ess-5.1.22.tar.gz) to
+  2. Retrieve the latest version from gzipped tar file
+     (http://software.biostat.washington.edu/ess/ess-VERSION.tar.gz) to
      ESSDIR.
 
   3. Decompress/unarchive the files from the disribution.
-          gunzip ess-5.1.22.tar.gz
-          tar xvf ess-5.1.22.tar
+          gunzip ess-VERSION.tar.gz
+          tar xvf ess-VERSION.tar
 
-          (or: `gunzip < ess-5.1.22.tar.gz | tar xvf -' ).
-          (or using GNU tar:  `tar zxvf ess-5.1.22.tar.gz').
+          (or: `gunzip < ess-VERSION.tar.gz | tar xvf -' ).
+          (or using GNU tar:  `tar zxvf ess-VERSION.tar.gz').
 
-     The `tar' command will create the subdirectory ess-5.1.22 and
+     The `tar' command will create the subdirectory ess-VERSION and
      unarchive the files there.
 
      If you are using GNU Emacs 19.29, decompress/unarchive
-     `ESSDIR/ess-5.1.22/lisp/19.29.tar.gz', read
-     `ESSDIR/ess-5.1.22/lisp/19.29/README', follow the instructions and
-     you might be able to get ESS to work.  _Please note that GNU Emacs
-     19.29 is no longer supported_.  For a list of supported versions
-     of emacs, see *Note Requirements::.
+     `ESSDIR/ess-VERSION/lisp/19.29.tar.gz', read
+     `ESSDIR/ess-VERSION/lisp/19.29/README', follow the instructions
+     and you might be able to get ESS to work.  _Please note that GNU
+     Emacs 19.29 is no longer supported_.  For a list of supported
+     versions of emacs, see *Note Requirements::.
 
-  4. Edit the file `ESSDIR/ess-5.1.22/lisp/ess-site.el' as explained in
-     the comments section of that file.
+  4. Edit the file `ESSDIR/ess-VERSION/lisp/ess-site.el' as explained
+     in the comments section of that file.
 
   5.  Add the line
-          (load "ESSDIR/ess-5.1.22/lisp/ess-site")
+          (load "ESSDIR/ess-VERSION/lisp/ess-site")
      to your user or system installation file (GNU Emacs uses
      `$HOME/.emacs' and XEmacs uses `$HOME/.xemacs/init.el' for the
      user initialization file.  GNU Emacs uses default.el or
@@ -499,9 +506,9 @@ Unix installation
 
   8. (OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     In the ESSDIR/ess-5.1.22 directory, edit the file `Makeconf' if you
-     want to place the compiled files in other locations; see LISPDIR
-     and INFODIR.
+     In the ESSDIR/ess-VERSION directory, edit the file `Makeconf' if
+     you want to place the compiled files in other locations; see
+     LISPDIR and INFODIR.
 
      Then type:
           make all
@@ -543,33 +550,33 @@ Microsoft Windows installation
      directory (for example, `c:\emacs\') to hold the distribution.
      This directory will be referred to below as "the ESS distribution
      directory".  It will contain, at the end, either the tar file
-     `ess-5.1.22.tar.gz' or the zip file `ess-5.1.22.zip', and a
-     directory for the ESS source, which will be termed "the ESS-5.1.22
-     source directory".
+     `ess-VERSION.tar.gz' or the zip file `ess-VERSION.zip', and a
+     directory for the ESS source, which will be termed "the
+     ESS-VERSION source directory".
 
-  2. Retrieve the compressed tar file `ess-5.1.22.tar.gz' or the zipped
-     file `ess-5.1.22.zip' from one of the FTP or WWW archive sites via
-     FTP (or HTTP).  Be aware that http browsers on Windows frequently
-     change the "." and "-" characters in filenames to other
+  2. Retrieve the compressed tar file `ess-VERSION.tar.gz' or the
+     zipped file `ess-VERSION.zip' from one of the FTP or WWW archive
+     sites via FTP (or HTTP).  Be aware that http browsers on Windows
+     frequently change the "." and "-" characters in filenames to other
      punctuation.  Please change the names back to their original form.
 
-  3. Copy `ess-5.1.22.tar.gz' to the location where you want the
-     ess-5.1.22 directory, for example to `c:\emacs\ess-5.1.22.tar.gz',
-     and cd there.  For example,
+  3. Copy `ess-VERSION.tar.gz' to the location where you want the
+     ess-VERSION directory, for example to
+     `c:\emacs\ess-VERSION.tar.gz', and cd there.  For example,
 
           cd c:\emacs
 
      Extract the files from the distribution, which will unpack into a
-     subdirectory, `ess-5.1.22'.
-          gunzip ess-5.1.22.tar.gz
-          tar xvf ess-5.1.22.tar
-          (or: `gunzip < ess-5.1.22.tar.gz | tar xvf -' ).
-          (or: from the zip file: `unzip ess-5.1.22.zip')
+     subdirectory, `ess-VERSION'.
+          gunzip ess-VERSION.tar.gz
+          tar xvf ess-VERSION.tar
+          (or: `gunzip < ess-VERSION.tar.gz | tar xvf -' ).
+          (or: from the zip file: `unzip ess-VERSION.zip')
 
      The `tar' command will extract files into the current directory.
 
-     Do not create `ess-5.1.22' yourself, or you will get an extra level
-     of depth to your directory structure.
+     Do not create `ess-VERSION' yourself, or you will get an extra
+     level of depth to your directory structure.
 
   4. Windows users will usually be able to use the `lisp/ess-site.el'
      as distributed.  Only rarely will changes be needed.
@@ -769,6 +776,6 @@ Authors
    * Martin Maechler (http://stat.ethz.ch/~maechler/)
      <maechler@stat.math.ethz.ch>
 
-   * Rodney Sparapani (http://www.mcw.edu/pcor/rsparapa)
+   * Rodney A. Sparapani (http://www.mcw.edu/pcor/rsparapa)
      <rsparapa@mcw.edu>
 

@@ -3,16 +3,15 @@
 @setfilename announc.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: announc.texi,v 1.28 2002/05/09 21:08:27 rsparapa Exp $
+@comment $Id: announc.texi,v 1.29 2002/07/31 20:48:29 rsparapa Exp $
 
 @comment  node-name,  next,  previous,  up
 @node Announce, Latest Version, General Information, General Information
 @chapter ANNOUNCING ESS
 @cindex ANNOUNCE
 
-@include version.texi
-
-The ESS Developers proudly announce the release of ESS @essver{}
+The ESS Developers proudly announce the release of ESS 
+@include ../VERSION
 --------------------------------------------------------------------
 
 Emacs Speaks Statistics (ESS) provides an intelligent, consistent 

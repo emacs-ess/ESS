@@ -51,7 +51,7 @@ SAS Display Manager does.  The interactive capabilities of ESS require you to
 start an inferior SAS process with M-x SAS
 (@xref{iESS(SAS)--Interactive SAS processes}.)
 
-At this writing (@essver{}), the indenting and syntax highlighting are generally 
+At this writing, the indenting and syntax highlighting are generally 
 correct.  Known issues:  for multiple line * or %*
 comments, only the first line is highlighted; for .log files, only the first
 line of a NOTE:, WARNING: or ERROR: message is highlighted; unmatched single/double

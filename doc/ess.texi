@@ -3,12 +3,9 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.36 2002/07/31 16:20:50 rsparapa Exp $
-
-@include version.texi
+@comment $Id: ess.texi,v 5.37 2002/07/31 20:48:29 rsparapa Exp $
 
 @synindex pg vr
-
 
 @ifinfo
 @majorheading ESS --- Emacs Speaks Statistics
@@ -28,7 +25,9 @@ any other interactive `statistical' languages in an `inferior' buffer,
 editing source code in these languages and interacting with the running
 program.
 
-This documentation relates to Version @essver{} of @code{ESS}.
+This documentation relates to version 
+@include ../VERSION
+of @code{ESS}.
 
 Current Info Author: A.J. Rossini
 (@email{rossini@@biostat.washington.edu}), Department of Biostatistics,
@@ -40,8 +39,8 @@ Department of Mathematics and Statistics, Lancaster University, UK.
 @end ifinfo
 
 @titlepage
-@title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.36 $ $Date: 2002/07/31 16:20:50 $)
+@title ESS --- Emacs Speaks Statistics 
+@subtitle (Documentation $Revision: 5.37 $ $Date: 2002/07/31 20:48:29 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.A. Sparapani.
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @c @author                and David Smith)
@@ -49,7 +48,10 @@ Department of Mathematics and Statistics, Lancaster University, UK.
 <P><HR></P>
 @end ifhtml
 @sp 2
-Emacs Speaks Statistics (ESS) provides an intelligent, consistent 
+ESS --- Emacs Speaks Statistics --- version
+@include ../VERSION
+
+ESS provides an intelligent, consistent 
 interface between the user and the software.  ESS interfaces with 
 SAS, S-PLUS, R, BUGS and other statistical analysis packages under
 the Unix, Microsoft Windows, and Apple Mac operating systems.  ESS
@@ -90,9 +92,10 @@ permission notice identical to this one.
 @node Top, Introduction, (dir), (dir)
 @top ESS: Emacs Speaks Statistics
 
-ESS version @essver{}
+ESS version 
+@include ../VERSION
 
-        (Documentation $Revision: 5.36 $ $Date: 2002/07/31 16:20:50 $).
+        (Documentation $Revision: 5.37 $ $Date: 2002/07/31 20:48:29 $).
 
 @display
 by  A.J. Rossini, 

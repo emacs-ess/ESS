@@ -16,49 +16,49 @@ For Microsoft Windows Installation please skip to the
 cd to a directory where you want to install ESS, creating it if necessary.
 This directory will be referred to below as ESSDIR.  
 @comment It will contain,
-@comment at the end, the tar file @file{ess-@essver{}.tar.gz}, and a directory for
-@comment the ESS source, which will be termed "the ESS-@essver{} source directory".
+@comment at the end, the tar file @file{ess-VERSION.tar.gz}, and a directory for
+@comment the ESS source, which will be termed "the ESS-VERSION source directory".
 @comment Note that the .elc files may be installed elsewhere (as specified in the
 @comment Makefile) if desired.
 
 @item
-Retrieve the  
-@uref{http://software.biostat.washington.edu/ess/ess-@essver{}.tar.gz, gzipped tar file } 
+Retrieve the latest version from 
+@uref{http://software.biostat.washington.edu/ess/ess-VERSION.tar.gz, gzipped tar file } 
 to ESSDIR.
 
 @item
 Decompress/unarchive the files from the disribution.
 @example
-gunzip ess-@essver{}.tar.gz
-tar xvf ess-@essver{}.tar
+gunzip ess-VERSION.tar.gz
+tar xvf ess-VERSION.tar
 @end example
 @display
-(or: @code{gunzip < ess-@essver{}.tar.gz | tar xvf -} ).
-(or using GNU tar:  @code{tar zxvf ess-@essver{}.tar.gz}).
+(or: @code{gunzip < ess-VERSION.tar.gz | tar xvf -} ).
+(or using GNU tar:  @code{tar zxvf ess-VERSION.tar.gz}).
 @end display
 
-The @code{tar} command will create the subdirectory ess-@essver{} and unarchive
+The @code{tar} command will create the subdirectory ess-VERSION and unarchive
 the files there.
 
 If you are using GNU Emacs 19.29, decompress/unarchive
-@file{ESSDIR/ess-@essver{}/lisp/19.29.tar.gz}, 
-read @file{ESSDIR/ess-@essver{}/lisp/19.29/README}, follow the instructions
+@file{ESSDIR/ess-VERSION/lisp/19.29.tar.gz}, 
+read @file{ESSDIR/ess-VERSION/lisp/19.29/README}, follow the instructions
 and you might be able to get ESS to work.  
 @emph{Please note that GNU Emacs 19.29 is no longer supported}.
 For a list of supported versions of emacs, see @xref{Requirements}.
 
 @item
-Edit the file @file{ESSDIR/ess-@essver{}/lisp/ess-site.el} as explained in the 
+Edit the file @file{ESSDIR/ess-VERSION/lisp/ess-site.el} as explained in the 
 comments section of that file.  
 @comment Installations that are using ESS only for S-Plus
 @comment 6.x will probably not need to make any changes.  Installations that also
 @comment have one or more of (S4, S+3/4/5, R, SAS, BUGS, XLispStat, Stata)
-@comment may need to uncomment corresponding lines in @file{ESSDIR/ess-@essver{}/lisp/ess-site.el}.
+@comment may need to uncomment corresponding lines in @file{ESSDIR/ess-VERSION/lisp/ess-site.el}.
 
 @item
  Add the line
 @example
-(load "ESSDIR/ess-@essver{}/lisp/ess-site")
+(load "ESSDIR/ess-VERSION/lisp/ess-site")
 @end example
 to your user or system installation file
 (GNU Emacs uses @file{$HOME/.emacs} and XEmacs uses @file{$HOME/.xemacs/init.el}
@@ -104,7 +104,7 @@ and then @code{M-x ess-create-object-name-db} creating
 @item
 @b{(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING}:
 
-In the ESSDIR/ess-@essver{} directory, edit the file @file{Makeconf} if you
+In the ESSDIR/ess-VERSION directory, edit the file @file{Makeconf} if you
 want to place the compiled files in other locations; see LISPDIR and INFODIR.
 
 Then type:
@@ -160,40 +160,40 @@ cd to a directory where you keep emacs lisp files, or create a new
 directory (for example, @file{c:\emacs\}) to hold the distribution.  This
 directory will be referred to below as "the ESS distribution
 directory".  It will contain, at the end, either the tar file
-@file{ess-@essver{}.tar.gz} or the zip file @file{ess-@essver{}.zip}, and a
+@file{ess-VERSION.tar.gz} or the zip file @file{ess-VERSION.zip}, and a
 directory 
-for the ESS source, which will be termed "the ESS-@essver{} source
+for the ESS source, which will be termed "the ESS-VERSION source
 directory".
 
 @item
-Retrieve the compressed tar file @file{ess-@essver{}.tar.gz} or the
-zipped file @file{ess-@essver{}.zip} from one of the FTP or WWW
+Retrieve the compressed tar file @file{ess-VERSION.tar.gz} or the
+zipped file @file{ess-VERSION.zip} from one of the FTP or WWW
 archive sites 
 via FTP (or HTTP).  Be aware that http browsers on Windows
 frequently change the "." and "-" characters in filenames to other
 punctuation.  Please change the names back to their original form.
 
 @item
-Copy @file{ess-@essver{}.tar.gz} to the location where you want the
-ess-@essver{} directory, for example to
-@file{c:\emacs\ess-@essver{}.tar.gz}, and cd there.  For example,
+Copy @file{ess-VERSION.tar.gz} to the location where you want the
+ess-VERSION directory, for example to
+@file{c:\emacs\ess-VERSION.tar.gz}, and cd there.  For example,
 
 @example
 cd c:\emacs
 @end example
 
 Extract the files from the distribution, which will unpack
-into a subdirectory, @file{ess-@essver{}}.
+into a subdirectory, @file{ess-VERSION}.
 @example
-gunzip ess-@essver{}.tar.gz
-tar xvf ess-@essver{}.tar
-(or: @code{gunzip < ess-@essver{}.tar.gz | tar xvf -} ).
-(or: from the zip file: @code{unzip ess-@essver{}.zip})
+gunzip ess-VERSION.tar.gz
+tar xvf ess-VERSION.tar
+(or: @code{gunzip < ess-VERSION.tar.gz | tar xvf -} ).
+(or: from the zip file: @code{unzip ess-VERSION.zip})
 @end example
 
 The @code{tar} command will extract files into the current directory.
 
-Do not create @file{ess-@essver{}} yourself, or you will get an extra level
+Do not create @file{ess-VERSION} yourself, or you will get an extra level
 of depth to your directory structure.
 
 @item
