@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.0 1997/12/01 16:05:23 rossini Exp $
+@comment $Id: ess.texi,v 5.1 1997/12/01 21:48:13 rossini Exp $
 
 @synindex pg vr
 
@@ -606,10 +606,10 @@ you require; completion is provided over the names of all running S
 processes.  This is a good command to consider binding to a global key.
 
 @pindex ess-plain-first-buffername
-With the old version of S-mode, there initial process was not marked,
-i.e. S instead of S1 was used.  To obtain this behavior, set the
-variable @code{ess-plain-first-buffername} to @code{t}.  See
-@file{ess-site} for how to set this for all users.
+With the predecessor to ESS (S-mode 4.8), the initial process was not
+visibly numbered, i.e. S instead of S1 was used in the mode-line.  To
+obtain this behavior, set the variable @code{ess-plain-first-buffername}
+to @code{t}.  See @file{ess-site} for how to set this for all users.
 
 
 @node Customizing startup,  , Multiple ESS processes, Starting Up
