@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/06/27 21:49:30 $
-;; Version: $Revision: 1.28 $
-;; RCS: $Id: essa-sas.el,v 1.28 2001/06/27 21:49:30 rossini Exp $
+;; Modified: $Date: 2001/07/18 20:50:29 $
+;; Version: $Revision: 1.29 $
+;; RCS: $Id: essa-sas.el,v 1.29 2001/07/18 20:50:29 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -269,7 +269,7 @@ on the way."
   "Find a file associated with the SAS file and revert if necessary."
   (let* ((tail (if (fboundp 'file-name-extension) (file-name-extension (buffer-name))
 		 (substring (buffer-name) -3)))
-	 (tail-in-tail-list (member tail (list "sas" "log" "lst"
+	 (tail-in-tail-list (member tail (list "sas" "log" "lst" "sas<2>" "log<2>" "lst<2>"
 			     ess-sas-suffix-1 ess-sas-suffix-2)))
 	 (root (if tail-in-tail-list (expand-file-name (buffer-name))
 		 ess-sas-file-path))
@@ -409,7 +409,7 @@ i.e. let `ess-sas-arg' be your local equivalent of
     (insert "cd " (file-name-directory ess-sas-file-path))
     (comint-send-input)
     (insert ess-sas-submit-pre-command " " ess-sas-arg " " 
-	ess-sas-file-path " " ess-sas-submit-post-command)
+	(file-name-sans-extension ess-sas-file-path) " " ess-sas-submit-post-command)
     (comint-send-input)
     (if (featurep 'xemacs) (sleep-for ess-sleep-for)
        (sleep-for 0 (truncate (* ess-sleep-for 1000)))
@@ -442,7 +442,7 @@ Keep in mind that the maximum command line length in MS-DOS is
 	(file-name-directory ess-sas-file-path)) "\"")
     (comint-send-input)
     (insert "start " ess-sas-arg " -sysin \"" 
-	(convert-standard-filename ess-sas-file-path) "\"")
+	(convert-standard-filename (file-name-sans-extension ess-sas-file-path)) "\"")
     (comint-send-input))
 
 
