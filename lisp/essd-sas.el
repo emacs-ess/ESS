@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/27 15:22:16 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: essd-sas.el,v 1.20 1997/10/27 15:22:16 rossini Exp $
+;; Modified: $Date: 1997/11/07 18:53:16 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: essd-sas.el,v 1.21 1997/11/07 18:53:16 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -50,8 +50,19 @@
   "Set up log and list files for interactive SAS."
 
   (let* ((ess-shell-buffer-name-flag (get-buffer "*shell*"))
-	 ess-shell-buffer-name)
-
+	 ess-shell-buffer-name
+	 ;; doesn't work completely yet.
+	 ;;  ess-local-process-name is defined after this function.
+	 ;;  it needs to be defined prior to this function.
+	 ;;  therefore the log and lst buffernames are out of phase
+	 (tmp-local-process-name (if (not ess-local-process-name)
+				     (if (not ess-current-process-name)
+					 ess-dialect  ;;"SAS"
+				       ess-current-process-name)
+				   ess-local-process-name))
+	 (ess-sas-lst-bufname (concat "*" tmp-local-process-name ".lst*"))
+	 (ess-sas-log-bufname (concat "*" tmp-local-process-name ".log*")))
+    
     ;; If someone is running a *shell* buffer, rename it to avoid
     ;; inadvertent nuking.
     (if ess-shell-buffer-name-flag
@@ -61,22 +72,29 @@
 		(rename-buffer "*ess-shell-regular*" t))))
   
     ;; Construct the LST buffer for output
-    (if (get-buffer "*myfile.lst*")
+    (if (get-buffer ess-sas-lst-bufname)
 	nil
       (shell)
       (accept-process-output (get-buffer-process (current-buffer)))
       (sleep-for 0.5) ; need to wait, else working too fast!
       (setq ess-sas-lst (ess-insert-accept "tty"))
-      (rename-buffer "*myfile.lst*"))
+      (SAS-listing-mode)
+       (shell-mode)
+       (ess-listing-minor-mode t)
+       (rename-buffer ess-sas-lst-bufname t))
     
     ;; Construct the LOG buffer for output
-    (if (get-buffer "*myfile.log*")
+    (if (get-buffer  ess-sas-log-bufname)
 	nil
       (shell)
       (accept-process-output (get-buffer-process (current-buffer)))
       (sleep-for 0.5) ; need to wait, else working too fast!
       (setq ess-sas-log (ess-insert-accept "tty"))
-      (rename-buffer "*myfile.log*"))
+      (SAS-log-mode)
+      (shell-mode)
+      (ess-transcript-minor-mode t)
+      (rename-buffer ess-sas-log-bufname t))
+
     (setq additional-inferior-SAS-args (concat " "
 					       ess-sas-lst
 					       " "
@@ -95,10 +113,10 @@
     (split-window-vertically)
     (switch-to-buffer (nth 2 (buffer-list)))
     (other-window 2)
-    (switch-to-buffer "*myfile.log*")
+    (switch-to-buffer ess-sas-log-bufname)
     (split-window-vertically)
     (other-window 1)
-    (switch-to-buffer "*myfile.lst*")
+    (switch-to-buffer ess-sas-lst-bufname)
     (other-window 2)
     
     ;;workaround
@@ -125,6 +143,7 @@
     (ess-language                  . "SAS")
     (ess-dialect                   . "SAS")
     (ess-mode-editing-alist        . SAS-editing-alist) ; from essl-sas.el
+    (ess-mode-syntax-table         . SAS-syntax-table)
     (inferior-ess-program          . inferior-SAS-program-name)
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . " ")
