@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/11/26 15:37:44 $
-;; Version: $Revision: 4.54 $
-;; RCS: $Id: essl-s.el,v 4.54 1997/11/26 15:37:44 rossini Exp $
+;; Modified: $Date: 1997/11/30 17:09:40 $
+;; Version: $Revision: 4.55 $
+;; RCS: $Id: essl-s.el,v 4.55 1997/11/30 17:09:40 rossini Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -260,7 +260,7 @@ Returns nil if line starts inside a string, t if in a comment."
     ;;(ess-comment-indent           . 'S-comment-indent)
     ;;(ess-indent-line                      . 'S-indent-line)
     ;;(ess-calculate-indent           . 'S-calculate-indent)
-    ;;(indent-line-function            . 'S-indent-line)
+    (indent-line-function            . 'S-indent-line)
     (parse-sexp-ignore-comments   . t)
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
