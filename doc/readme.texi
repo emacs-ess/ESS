@@ -3,14 +3,14 @@
 @setfilename readme.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: readme.texi,v 1.18 2000/10/30 14:38:17 rossini Exp $
+@comment $Id: readme.texi,v 1.19 2001/08/10 10:31:17 maechler Exp $
 
 @node General Information
 @comment  node-name,  next,  previous,  up
 @chapter General Information: README
 @cindex README
 
-($Revision: 1.18 $, for ESS 5.1.x)
+($Revision: 1.19 $, for ESS 5.1.19)
 
 This is the README file for the distribution of ESS version 5.1.19, the
 alpha/beta series we are using on the way to producing 5.2 (the next
@@ -67,7 +67,6 @@ The name is @b{ESS}.  Not ESS-mode.
 * Requirements::
 * Latest Version::
 * Installation (from tar file)::
-* Installation (from anonymous CVS)::
 * Reporting Bugs::
 * Mailing Lists::
 * Authors::
@@ -108,20 +107,15 @@ The name is @b{ESS}.  Not ESS-mode.
 @section Getting the Latest Version
 
 @include getting.texi
+@c NOTE: The above INCLUDES inst_cvs.texi (CVS Installation)
 
-@node Installation (from tar file), Installation (from anonymous CVS), Latest Version, General Information
+@node Installation (from tar file), Reporting Bugs, Latest Version, General Information
 @comment  node-name,  next,  previous,  up
 @section Installation (from tar file)
 
 @include inst_tar.texi
 
-@node Installation (from anonymous CVS), Reporting Bugs, Installation (from tar file), General Information
-@comment  node-name,  next,  previous,  up
-@section Installation (from anonymous CVS)
-
-@include inst_cvs.texi
-
-@node Reporting Bugs, Mailing Lists, Installation (from anonymous CVS), General Information
+@node Reporting Bugs, Mailing Lists, Installation (from tar file), General Information
 @comment  node-name,  next,  previous,  up
 @section Reporting Bugs
 
