@@ -66,15 +66,14 @@ funs.for.package()."
     (ess-execute str nil "ess-rlib")
     (pop-to-buffer "*ess-rlib*")
     (goto-char (point-min))
-    (while (re-search-forward "^[^ ]+ " nil t)
+    (while (re-search-forward "^[^ ]" nil t)
       (beginning-of-line)
       (setq beg (point))
-      (re-search-forward "[ \t]")
+      (re-search-forward "\\s-")
       (add-text-properties beg (1- (point)) 
 			   '(face underline
 				  mouse-face highlight
 				  help-xref function))
-      (end-of-line)
       ))
   
   ;; End of mark up, so add some text to the top of buffer.
@@ -83,8 +82,9 @@ funs.for.package()."
   (goto-char (point-min))
   (ess-rpackage-mode)
   )
+
 (defun ess-rpackage-list ()
-  "Return list of packages"
+  "Return list of packages currently loaded."
   (save-window-excursion
     (ess-execute "cat(.packages(), '\\n')")
     (pop-to-buffer "*ess-output*")
@@ -184,7 +184,7 @@ Old version."
 
 
 (defun ess-rpackage-show-help ()
-  "Show help file for item on current line."
+  "Show ESS help  for item on current line."
   (interactive)
   (let 
       (beg fn type)
@@ -194,7 +194,7 @@ Old version."
       (if (looking-at "[ \t\n]")
 	  (message "No function on this line.")
 	(setq type (get-text-property (point) 'help-xref))
-	(re-search-forward "[ \t]")
+	(re-search-forward "\\s-")
 	(setq fn (buffer-substring-no-properties beg (1- (point))))
 	(if (equal type 'function)
 	    (ess-display-help-on-object fn)
