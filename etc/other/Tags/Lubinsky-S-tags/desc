@@ -1,4 +1,3 @@
-A version of the gnuemacs tags program which has been modified to find S funct
-ion
-definitions.  You can use this to find function defintions or arbitrary
-strings in multiple related files.
+A version of the gnuemacs tags program which has been modified to find
+S funct ion definitions.  You can use this to find function defintions
+or arbitrary strings in multiple related files.
