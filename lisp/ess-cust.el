@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2000/07/03 16:33:54 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: ess-cust.el,v 1.8 2000/07/03 16:33:54 maechler Exp $
+;; Modified: $Date: 2000/07/10 09:41:58 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: ess-cust.el,v 1.9 2000/07/10 09:41:58 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -147,7 +147,7 @@ Full documentation will be available after autoloading the function."
   :group 'ess
   :type 'boolean)
 
-(defcustom ess-ask-for-directory t
+(defcustom ess-ask-for-ess-directory t
   "*If non-nil, the process directory will be requested each time S is run"
   :group 'ess
   :type 'boolean)
