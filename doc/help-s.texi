@@ -122,10 +122,8 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
 @node ESS-help--assistance with viewing help, Philosophies for using ESS(S), Handling and Reusing Transcripts, Help for the S family
 @comment  node-name,  next,  previous,  up
 @section ESS-help--assistance with viewing help
-@itemize @bullet
-@item move between help sections
-@item send examples to S for evaluation
-@end itemize
+
+ESS has built-in facilities for viewing help files from S.  @xref{Help}.
 
 
 @node Philosophies for using ESS(S), Scenarios for use (possibilities--based on actual usage), ESS-help--assistance with viewing help, Help for the S family
@@ -282,7 +280,7 @@ prefixed by "##").
    using S version 4, and sick and tired of the buffer-name *S+3*
    we've stuck you with.  Simply edit the "ess-dialect" alist entry in
    the essd-sp3.el and essd-s4.el files to be "S" instead of "S4" and
-   "S+3".  This will insure that all the inferior process buffer names
+   "S+3".  This will ensure that all the inferior process buffer names
    are "*S*".
 
 2. Suppose that you WANT to have the first buffer name indexed by
