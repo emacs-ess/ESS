@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/05/05 14:37:21 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: ess-trns.el,v 5.12 2002/05/05 14:37:21 rmh Exp $
+;; Modified: $Date: 2002/05/08 16:07:55 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: ess-trns.el,v 5.13 2002/05/08 16:07:55 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -262,21 +262,21 @@ prompt from those lines that remain.  Prefix argument means to use
 \\[toggle-read-only] to clean even if the buffer is \\[read-only]."
   (interactive "r\nP")
   (let ((do-toggle (and buffer-read-only even-if-read-only)))
-    (if do-toggle (toggle-read-only 0))
     (save-excursion
+      (if do-toggle (toggle-read-only 0))
       (save-restriction
 	(deactivate-mark)
 	(narrow-to-region beg end)
 	(goto-char (point-min))
 	(delete-non-matching-lines (concat "^" inferior-ess-prompt))
 	(goto-char (point-min))
-	(replace-regexp (concat "^" inferior-ess-prompt) "")))
-    (if do-toggle (toggle-read-only 1))))
+	(replace-regexp (concat "^" inferior-ess-prompt) ""))
+      (if do-toggle (toggle-read-only 1)))))
 
 (defun ess-transcript-DO-clean-region (beg end)
   "Clean the current via \\[ess-transcript-clean-region] even if the buffer is read-only."
   (interactive "r")
-  (ess-transcript-clean-region (beg end 'In-ANY-case)))
+  (ess-transcript-clean-region beg end 'In-ANY-case))
 
  ; Local variables section
 

@@ -1,3 +1,13 @@
+2002-04-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-sp6.el (S+6-customize-alist): ess-setup-directory-function
+	and other changes from Jeff Mincy; not yet fully tested.
+
+2002-04-23  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-trns.el (ess-transcript-mode-menu): add ..DO-clean-region to
+	menu, using new argument (prefix) for escaping read-only state.
+
 2002-02-15  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (S-editing-alist): introduce S "global"
