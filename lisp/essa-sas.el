@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/08 22:25:14 $
-;; Version: $Revision: 1.57 $
-;; RCS: $Id: essa-sas.el,v 1.57 2002/01/08 22:25:14 rsparapa Exp $
+;; Modified: $Date: 2002/01/09 16:25:48 $
+;; Version: $Revision: 1.58 $
+;; RCS: $Id: essa-sas.el,v 1.58 2002/01/09 16:25:48 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -130,7 +130,6 @@ or `ESS-elsewhere' should have one of the following in ~/.emacs
 (defvar ess-sas-tab-stop-alist
  '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120)
   "List of tab stop positions used by `tab-to-tab-stop' in ESS[SAS].")
-
 
 (defcustom ess-sas-temp-root "ess-temp"
     "*The root of the temporary .sas file for `ess-sas-submit-region'."
@@ -386,14 +385,12 @@ on the way."
 ;;  (switch-to-buffer "*shell*")
 ;;)
 
-
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that
 depends on the value of  `ess-sas-submit-method'"
   (interactive)
-;  (ess-sas-goto-sas)
   (ess-sas-file-path)
-  (ess-sas-goto "sas")
+  (ess-sas-goto-sas)
   (save-buffer)
   (cond
    ((eq ess-sas-submit-method 'Apple-Macintosh) 
@@ -405,8 +402,7 @@ depends on the value of  `ess-sas-submit-method'"
    ((eq ess-sas-submit-method 'sh) 
 	(ess-sas-submit-sh ess-sas-submit-command)) 
    (t (ess-sas-submit-sh ess-sas-submit-command)))
-;  (ess-sas-goto-sas)
-  (ess-sas-goto "sas")
+  (ess-sas-goto-sas)
 )
 
 (defun ess-sas-submit-iESS (ess-sas-arg)
