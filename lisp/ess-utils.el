@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/08/07 16:22:57 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: ess-utils.el,v 5.16 2002/08/07 16:22:57 rsparapa Exp $
+;; Modified: $Date: 2002/09/05 15:43:58 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: ess-utils.el,v 5.17 2002/09/05 15:43:58 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -89,8 +89,10 @@
 ; file rather than refreshing.  Apparently, it ignores the file on disk.  
 ; This change actually makes some sense, but it isn't what we want. 
 
-  (if (not (verify-visited-file-modtime (current-buffer)))
-      (revert-buffer t t)))
+  (if (not (verify-visited-file-modtime (current-buffer))) (progn
+      (revert-buffer t t)
+      t)
+  nil))
 
 ;;      (cond ((and (fboundp 'vc-backend-deduce)
 ;;		  (vc-backend-deduce (buffer-file-name))) (vc-revert-buffer))

@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/09/04 04:21:25 $
-;; Version: $Revision: 1.117 $
-;; RCS: $Id: essa-sas.el,v 1.117 2002/09/04 04:21:25 rmh Exp $
+;; Modified: $Date: 2002/09/05 15:43:58 $
+;; Version: $Revision: 1.118 $
+;; RCS: $Id: essa-sas.el,v 1.118 2002/09/05 15:43:58 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -429,10 +429,10 @@ on the way."
 	    (if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
 	        (find-file ess-sas-temp-file))
 	
-	    (if revert (ess-revert-wisely))
-
 	    (if (or (string-equal suffix "log") (string-equal suffix "lst"))
 		(ess-kermit-get (file-name-nondirectory ess-sas-temp-file)))
+
+	    (if revert (ess-revert-wisely) nil)
 ))))))
 
 ;;(defun ess-sas-file (suffix &optional revert)
@@ -466,7 +466,6 @@ on the way."
 (defun ess-sas-goto-log ()
   "Switch to the .log file, revert from disk and search for error messages."
   (interactive)
-  (ess-sas-goto "log" 'revert)
 
   (let ((ess-sas-error (concat "^ERROR [0-9]+-[0-9]+:\\|^ERROR:\\|_ERROR_=1 _\\|_ERROR_=1[ ]?$"
     "\\|NOTE: MERGE statement has more than one data set with repeats of BY values."
@@ -474,6 +473,8 @@ on the way."
     "\\|WARNING: Apparent symbolic reference .* not resolved."
     "\\|NOTE 485-185: Informat .* was not found or could not be loaded."
     "\\|Bus Error In Task\\|Segmentation Violation In Task")))
+
+  (if (ess-sas-goto "log" 'revert) (goto-char (point-min)))
 
   (if (not (search-forward-regexp ess-sas-error nil t)) 
         (if (search-backward-regexp ess-sas-error nil t) 
