@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/06/17 16:46:08 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: essd-s3.el,v 5.5 1999/06/17 16:46:08 maechler Exp $
+;; Modified: $Date: 1999/06/17 17:34:06 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: essd-s3.el,v 5.6 1999/06/17 17:34:06 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -43,19 +43,15 @@
     (ess-language                  . "S")
     (ess-dialect                   . "S3")
     (ess-suffix                    . "S")
-
     (ess-loop-timeout              . 500000 )
-
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
 					     ess-suffix))
-
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
 ;;;    (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S3-help-sec-keys-alist)
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
-    (ess-mode-edit                 . 'S3-mode)
     (ess-object-name-db-file       . "ess-s3-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
@@ -65,8 +61,6 @@
     (inferior-ess-program          . inferior-S3-program-name) ;        "S")
     (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-exit-command     . "q()\n")
-    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
     (inferior-ess-objects-command  . "objects(%d)\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
