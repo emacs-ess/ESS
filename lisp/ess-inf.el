@@ -7,12 +7,16 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/18 18:40:08 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: ess-inf.el,v 1.9 1997/06/18 18:40:08 rossini Exp $
+;; Modified: $Date: 1997/06/19 20:46:42 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: ess-inf.el,v 1.10 1997/06/19 20:46:42 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.10  1997/06/19 20:46:42  rossini
+;; added run-hooks for BEING ABLE TO set local directory to be default
+;; (different from doing it -- still have to do it...).
+;;
 ;; Revision 1.9  1997/06/18 18:40:08  rossini
 ;; ess -> S (thanks, MM).
 ;;
@@ -319,6 +323,7 @@ when invoking S.
 	      (ess-multi inferior-ess-procname (get-buffer buf-name-str))
 	    ;; Ask for transcript file and startdir
 	    ;; FIXME -- this should be in ess-get-transfile
+	    (run-hooks 'S-pre-run-hook);;rmh
 	    (let* ((startdir
 		    (if ess-ask-for-ess-directory (ess-get-directory ess-defdir)
 		      ess-directory))
