@@ -7,8 +7,8 @@ Changes/New Features in 5.2.0:
 README.* files are no longer supported.  However, they
 are still distributed for what it's worth.
 @item ESS is now an XEmacs package!  See 
-@url{http://www.xemacs.org/Install/index.html} for details
-(specifically, items 10-15).
+@uref{http://www.xemacs.org/Install/index.html, XEmacs Installation HOWTO} 
+for details (specifically, items 10-15).
 @item ESS[SAS]: more user-friendly enhancements for remote
 SAS batch jobs with Kermit file transfers (LOG and OUTPUT
 function key features now supported).
