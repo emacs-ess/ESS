@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.8 $)
+($Revision: 1.9 $)
 
 ESS: Using The S family of statistical languages
 ================================================
@@ -26,8 +26,9 @@ file, buffer, region, description of keys etc.  If not, please read
 the New Users guide (found in the info pages, "C-h i" (by pressing
 control h, i) or Tutorial, "C-h t").
 
-To find the key-sequences for commands, please the view the keymap for
-how to activate/use the features (C-h b).
+To find the key-sequences for commands, you can view the keymap (C-h
+b) or view the help for the current mode (ESS[S+3] for example) with
+(C-h m).
 
 ESS[S]: Editing Files
 =====================
