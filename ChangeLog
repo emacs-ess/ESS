@@ -1,3 +1,61 @@
+Thu Nov 20 18:38:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sta.el: 
+	* essl-sas.el:
+	* essl-s.el:
+	* essl-lsp.el:
+	* essddr.el:
+	* essd-xls.el:
+	* essd-vst.el:
+	* essd-sas.el: 
+	* essd-s4.el: 
+	* essd-s3.el: 
+	* essd-s+3.el: incr version.
+
+	* essd-r.el: incr version, comments.
+
+	* ess.texi: small edits, incr version
+
+	* ess.el: ess-mode is ESS. incr version
+
+	* ess-vars.el: incr version, added comments.
+
+Thu Nov 20 18:21:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el: part of ESS; comments.
+
+Thu Nov 20 18:20:12 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: incr, edits.
+
+Thu Nov 20 18:19:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: errors.
+
+Thu Nov 20 18:17:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* COPYING: trying.
+
+Thu Nov 20 18:15:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-trns.el: added copyright, incr version.
+
+Thu Nov 20 18:12:06 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: edited copyright. incr version.
+
+Thu Nov 20 18:11:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: removed silly university locations. incr version.
+
+Thu Nov 20 18:09:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: added copyright, edited comments, incr version.
+
+Thu Nov 20 18:07:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-help.el: edited comments, incr version.
+
 Thu Nov 20 18:03:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-debug.el: edit, end, upgraded version.
@@ -1447,6 +1505,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 4.2  1997/11/20 23:39:23  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 4.1  1997/11/20 23:03:20  rossini
 	* Removing *** empty log message ***
 	* Removing

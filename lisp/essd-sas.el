@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/19 17:01:52 $
-;; Version: $Revision: 1.36 $
-;; RCS: $Id: essd-sas.el,v 1.36 1997/11/19 17:01:52 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:31:31 $
+;; Version: $Revision: 4.0 $
+;; RCS: $Id: essd-sas.el,v 4.0 1997/11/20 23:31:31 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -28,7 +28,9 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the SAS customizations for  ESS.
+;; This file defines all the SAS customizations for  ESS behaviors.  See
+;; essl-sas for the underlying general modifications.
+
 
 ;;; Autoloads:
 

@@ -5,13 +5,13 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/11/19 15:55:38 $
-;; Version: $Revision: 1.38 $
-;; RCS: $Id: essd-s+3.el,v 1.38 1997/11/19 15:55:38 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:28:53 $
+;; Version: $Revision: 4.0 $
+;; RCS: $Id: essd-s+3.el,v 4.0 1997/11/20 23:28:53 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
-;; This file is part of ess-mode.
+;; This file is part of ESS
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

@@ -2,7 +2,7 @@
 
 ;;; Copyright (C) 1997 KH <Kurt.Hornik@ci.tuwien.ac.at>
 
-;; This file is part ESS (Emacs Speaks Statistics).
+;; This file is part of ESS (Emacs Speaks Statistics).
 
 ;; This file is free software; you may redistribute it and/or modify it
 ;; under the terms of the GNU General Public License as published by the
@@ -19,9 +19,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-
-;;; ESS RCS: $Id: essddr.el,v 1.6 1997/11/18 22:38:55 rossini Exp $
-;;;
+;;; ESS RCS: $Id: essddr.el,v 4.0 1997/11/20 23:34:42 rossini Exp $
 
 ;;; Code:
 

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 1 Sept 1997
-;; Modified: $Date: 1997/09/16 20:19:36 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essl-lsp.el,v 1.6 1997/09/16 20:19:36 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:35:32 $
+;; Version: $Revision: 4.0 $
+;; RCS: $Id: essl-lsp.el,v 4.0 1997/11/20 23:35:32 rossini Exp $
 
 ;; This file is part of ESS.
 
@@ -27,13 +27,15 @@
 
 ;;; Commentary:
 
-;; Configurations for editing XLispStat source code.
+;; Configurations for editing XLispStat source code.  Contains any underlying
+;; changes that need to be made.
 
 ;;; Code:
 
  ; Requires and autoloads
 
-(require 'lisp-mode) ;; Contents "translated" from lisp-mode.el
+;; Contents "translated" from lisp-mode.el
+(require 'lisp-mode)
 
  ; Configuration variables
 

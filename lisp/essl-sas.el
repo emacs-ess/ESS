@@ -5,13 +5,13 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/09 20:26:32 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: essl-sas.el,v 1.24 1997/11/09 20:26:32 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:38:02 $
+;; Version: $Revision: 4.0 $
+;; RCS: $Id: essl-sas.el,v 4.0 1997/11/20 23:38:02 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
-;; This file is part of ESS.
+;; This file is part of ESS (Emacs Speaks Statistics).
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

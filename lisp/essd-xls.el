@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/11/19 16:56:08 $
-;; Version: $Revision: 1.33 $
-;; RCS: $Id: essd-xls.el,v 1.33 1997/11/19 16:56:08 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:32:37 $
+;; Version: $Revision: 4.0 $
+;; RCS: $Id: essd-xls.el,v 4.0 1997/11/20 23:32:37 rossini Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -28,7 +28,8 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the XLispStat customizations for ESS.
+;;; This file defines all the XLispStat customizations for ESS.  See
+;;; essl-lsp for general Lisp modifications.
 
 ;;; Requires and Autoloads:
 
