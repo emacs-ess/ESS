@@ -370,6 +370,13 @@ as the buffer-local variable ess-sas-data-view-fsview-statement.  If you
 have your SAS LIBNAMEs defined in autoexec.sas, then the defaults for
 these variables should be sufficient.
 
+Similarly, C-F9 will prompt you for the name of a permanent SAS dataset
+near point to be opened for viewing by PROC INSIGHT.  You can control
+the SAS batch command-line with ess-sas-data-view-submit-options.  For
+controlling the SAS batch commands, you have the global variables
+ess-sas-data-view-libname and ess-sas-data-view-insight-command as well
+as the buffer-local variable ess-sas-data-view-insight-statement. 
+
 F10 toggles ESS[SAS] mode for .log files which is off by default
 (technically, it is SAS-log-mode, but it looks the same).  The syntax
 highlighting can be helpful in certain debugging situations, but large
