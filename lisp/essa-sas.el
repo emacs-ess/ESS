@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/03 14:49:55 $
-;; Version: $Revision: 1.41 $
-;; RCS: $Id: essa-sas.el,v 1.41 2002/01/03 14:49:55 ess Exp $
+;; Modified: $Date: 2002/01/03 18:43:06 $
+;; Version: $Revision: 1.42 $
+;; RCS: $Id: essa-sas.el,v 1.42 2002/01/03 18:43:06 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -305,7 +305,11 @@ on the way."
 (defun ess-sas-file-path ()
  "Define the variable `ess-sas-file-path' to be the file in the current buffer"
   (interactive)
-  (setq ess-sas-file-path (expand-file-name (buffer-name))))
+  (setq ess-sas-file-path (expand-file-name (buffer-name)))
+
+  (if (eq ess-sas-submit-method 'sh) (progn
+    (setq ess-sas-file-path (car (last (split-string ess-sas-file-path "\\(:\\|]\\)"))))
+    (setq ess-sas-file-path (first (split-string ess-sas-file-path "[@]"))))))
 
 (defun ess-sas-goto-file-1 ()
   "Switch to ess-sas-file-1 and revert from disk."
@@ -375,7 +379,8 @@ depends on the value of  `ess-sas-submit-method'"
    ((eq ess-sas-submit-method 'sh) 
 	(ess-sas-submit-sh ess-sas-submit-command)) 
    (t (ess-sas-submit-sh ess-sas-submit-command)))
-  (ess-sas-goto-sas))
+  (ess-sas-goto-sas)
+)
 
 (defun ess-sas-submit-iESS (ess-sas-arg)
   "iESS
@@ -446,13 +451,13 @@ i.e. let `ess-sas-arg' be your local equivalent of
     (insert "cd " (file-name-directory ess-sas-file-path))
     (comint-send-input)
     (insert ess-sas-submit-pre-command " " ess-sas-arg " " 
-	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) " " ess-sas-submit-post-command)
+	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 
+	" " ess-sas-submit-post-command)
     (comint-send-input)
     (if (featurep 'xemacs) (sleep-for ess-sleep-for)
        (sleep-for 0 (truncate (* ess-sleep-for 1000)))
     )
     (comint-send-input))
-
 
 (defun ess-sas-submit-windows (ess-sas-arg)
   "Windows using MS-DOS prompt in the *shell* buffer.
