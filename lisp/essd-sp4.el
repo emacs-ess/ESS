@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/01/09 13:53:54 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essd-sp4.el,v 1.8 2002/01/09 13:53:54 rmh Exp $
+;; Modified: $Date: 2002/01/20 06:14:36 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essd-sp4.el,v 1.9 2002/01/20 06:14:36 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -86,7 +86,19 @@ connects it to the *S+4 ddeclient* window.")
 				      inferior-S+4-print-command
 				      " S_PROJ="
 				      (directory-file-name default-directory))
-				   ))
+				   )
+    (ess-STERM  . "ddeESS")
+    (ess-editor . S-editor)
+    (ess-pager  . S-pager)
+    (inferior-ess-language-start .
+				 (concat "options("
+					 "STERM='"  ess-STERM  "'"
+					 (if ess-editor 
+					     (concat ", editor='" ess-editor "'"))
+					 (if ess-pager 
+					     (concat ", pager='"  ess-pager  "'"))
+					 ")"))
+)
  "Variables to customize for S+4")
 
 (defvar Sqpe+4-customize-alist
@@ -115,7 +127,19 @@ connects it to the *S+4 ddeclient* window.")
     (inferior-ess-secondary-prompt . "+ ?")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S+4")
-    (inferior-ess-start-args       . ""))
+    (inferior-ess-start-args       . "")
+    (ess-STERM  . "iESS")
+    (ess-editor . S-editor)
+    (ess-pager  . S-pager)
+    (inferior-ess-language-start .
+				 (concat "options("
+					 "STERM='"  ess-STERM  "'"
+					 (if ess-editor 
+					     (concat ", editor='" ess-editor "'"))
+					 (if ess-pager 
+					     (concat ", pager='"  ess-pager  "'"))
+					 ")"))
+)
  "Variables to customize for Sqpe+4.")
 
 
@@ -214,7 +238,9 @@ Splus Commands window appear in this buffer.\n\n")
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
     (toggle-read-only t)		; force buffer to be read-only
     (setq mode-name "ddeESS")
-    (ess-eval-linewise inferior-S+4-editor-pager-command)
+;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
+    (if inferior-ess-language-start
+	(ess-eval-linewise inferior-ess-language-start))
     ))
 
 
@@ -285,7 +311,9 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
     (insert "options(interactive=T)")
     (inferior-ess-send-input)
     (setq mode-name "iESS(Sqpe)")
-    (ess-eval-linewise inferior-S+4-editor-pager-command)
+;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
+    (if inferior-ess-language-start
+	(ess-eval-linewise inferior-ess-language-start))
     (if shome-nil-p (setenv "SHOME" nil))))
 
 
@@ -375,7 +403,7 @@ There is a 30 second delay when this program starts during which the
 emacs screen will be partially blank.\n
 Remember to
 `q()' from S-Plus and
- then M-x C-q exit from the `*S+4 ddeclient* buffer,
+ then M-x C-q exit from the `*S+4 ddeclient*' buffer,
 or take the risk of not being able to shut down your computer
 and suffering through scandisk.\n
 Any results of the   !system.command   typed at the S prompt in the
@@ -384,7 +412,9 @@ Splus Commands window (are supposed to) appear in this buffer.\n\n")
     (use-local-map comint-mode-map)    ; a shell buffer after Splus is finished.
     (toggle-read-only t)	       ; force buffer to be read-only
     (setq mode-name "ddeESS")
-    (ess-eval-linewise inferior-S+4-editor-pager-command)
+;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
+    (if inferior-ess-language-start
+      (ess-eval-linewise inferior-ess-language-start))
     ))
 
 (defun S+4-msdos-existing (&optional proc-name)

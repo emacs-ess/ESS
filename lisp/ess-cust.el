@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2002/01/09 13:53:54 $
-;; Version: $Revision: 1.27 $
-;; RCS: $Id: ess-cust.el,v 1.27 2002/01/09 13:53:54 rmh Exp $
+;; Modified: $Date: 2002/01/20 06:14:36 $
+;; Version: $Revision: 1.28 $
+;; RCS: $Id: ess-cust.el,v 1.28 2002/01/20 06:14:36 rmh Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -582,10 +582,11 @@ by `ess-function-template'."
 
 ;; If you need to change the *-program-name variables, do so in
 ;; ess-site.el.  Do NOT make the changes here!!
+;; Keep a copy of your revised ess-site.el to use as a starting point
+;; for upgrades of ESS.
 
 (defvar inferior-R-program-name
-  (if (or (equal window-system 'w32) (equal window-system 'win32))
-      "Rterm"  "R")
+  (if ess-microsoft-p "Rterm"  "R")
   "*Program name for invoking an inferior ESS with \\[R].")
 
 
@@ -635,7 +636,7 @@ change this value in ess-site.el or site-start.el.  Use the 8.3
 version of the pathname."
   :group 'ess-S
   :type 'string)
-;;(if (or (equal window-system 'w32) (equal window-system 'win32))
+;;(if ess-microsoft-p
 ;;    (let* ((SHOME (getenv "SHOME"))
 ;;	   (PATH (getenv "PATH"))
 ;;	   (split-PATH (split-string PATH ";")) ;; Unix uses ":"
@@ -673,7 +674,7 @@ different computer."
   :group 'ess-S
   :type 'string)
 
-(if (or (equal window-system 'w32) (equal window-system 'win32))
+(if ess-microsoft-p
     (defcustom inferior-S+6-program-name
       "c:/progra~1/insigh~1/splus6/cmd/Splus.exe"
       "*Program name for invoking an external GUI S+6 for Windows.
@@ -716,7 +717,7 @@ change this value in ess-site.el or site-start.el.  Use the 8.3
 version of the pathname."
   :group 'ess-S
   :type 'string)
-;;(if (or (equal window-system 'w32) (equal window-system 'win32))
+;;(if ess-microsoft-p
 ;;    (let* ((SHOME (getenv "SHOME"))
 ;;	   (PATH (getenv "PATH"))
 ;;	   (split-PATH (split-string PATH ";")) ;; Unix uses ":"
@@ -763,6 +764,71 @@ order for it to work right.  And Emacs is too smart for it."
   "*Program name for invoking an inferior ESS with omegahat()."
   :group 'ess-OMG
   :type 'string)
+
+
+;;;;; names for setting the pager and editor options of the
+;;;;; inferior-ess-process
+;;;
+;;; S-editor and S-pager,
+;;; R-editor and R-pager,
+;;; ess-editor and ess-pager,
+;;; and inferior-ess-language-start
+;;; apply in principle to the 15 files essd[s-]*.el
+;;; Several of the files (essd-sp4.el and essdsp6w.el) have more
+;;; than one *-customize-alist.
+;;; These variables are currently used only with the S language files for
+;;; S S-Plus R.
+
+(defcustom R-editor 
+  (if ess-microsoft-p "gnuclient.exe"
+    (if (equal system-type 'Apple-Macintosh) nil
+      "emacslient")) ;; unix
+  "*Editor called by R process with 'edit()' command."
+:group 'ess
+:type "string")
+
+(defcustom R-pager  nil ; Usually nil is correct as ESS and page() cooperate.
+  "*Pager called by R process with 'page()' command."
+:group 'ess
+:type "string")
+
+(defcustom S-editor
+  (if ess-microsoft-p "gnuclient.exe"
+    (if (equal system-type 'Apple-Macintosh) nil
+      "emacslient")) ;; unix
+  "*Editor called by S process with 'edit()' command."
+:group 'ess
+:type "string")
+
+(defcustom S-pager
+  (if ess-microsoft-p "gnuclientw.exe"
+    (if (equal system-type 'Apple-Macintosh) nil
+      "emacslient")) ;; unix
+  "*Pager called by S process with 'page()' command."
+:group 'ess
+:type "string")
+
+(defcustom ess-editor nil
+  "*Editor by which the process sends information to an emacs buffer
+for editing and then to be returned to the process."
+  :group 'ess-proc
+  :type 'string)
+
+(defcustom ess-pager nil
+  "*Pager by which the process sends information to an emacs buffer."
+  :group 'ess-proc
+  :type 'string)
+
+(defcustom inferior-ess-language-start nil
+  "*Initialization commands sent to the ess process."
+  :group 'ess-proc
+  :type 'string)
+
+(make-variable-buffer-local 'ess-editor)
+(make-variable-buffer-local 'ess-pager)
+(make-variable-buffer-local 'inferior-ess-language-start)
+
+
 
 ;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
 

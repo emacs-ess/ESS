@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: ?? ??? 2001
-;; Modified: $Date: 2001/08/21 16:17:02 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-sp6.el,v 1.6 2001/08/21 16:17:02 maechler Exp $
+;; Modified: $Date: 2002/01/20 06:14:36 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essd-sp6.el,v 1.7 2002/01/20 06:14:36 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -98,9 +98,21 @@
     (inferior-ess-exit-command     . "q()\n")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?"))
+    (inferior-ess-secondary-prompt . "+ ?")
+    (ess-STERM  . "iESS")
+    (ess-editor . S-editor)
+    (ess-pager  . S-pager)
+    (inferior-ess-language-start .
+				 (concat "options("
+					 "STERM='"  ess-STERM  "'"
+					 (if ess-editor 
+					     (concat ", editor='" ess-editor "'"))
+					 (if ess-pager 
+					     (concat ", pager='"  ess-pager  "'"))
+					 ")"))
+)
 
-  "Variables to customize for S.")
+  "Variables to customize for S+6.")
 
 
 (defun S+6 (&optional proc-name)
@@ -110,7 +122,9 @@ New way to do it."
   (setq ess-customize-alist S+6-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S+6): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
-  (inferior-ess))
+  (inferior-ess)
+  (if inferior-ess-language-start
+      (ess-eval-linewise inferior-ess-language-start)))
 
 
 (defun S+6-mode (&optional proc-name)

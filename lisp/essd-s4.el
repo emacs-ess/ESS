@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: essd-s4.el,v 5.7 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2002/01/20 06:14:36 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: essd-s4.el,v 5.8 2002/01/20 06:14:36 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -78,8 +78,22 @@
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-load-command     . ".SmodeLoad(\"%s\")\n")
     (inferior-ess-dump-command     . ".SmodeDump(\"%s\", \"%s\")\n")
-    (inferior-ess-search-list-command . ".SmodePaths()\n"))
-  "Variables to customize for S.")
+    (inferior-ess-search-list-command . ".SmodePaths()\n")
+    (inferior-ess-start-file       . nil) ;"~/.ess-S3")
+    (inferior-ess-start-args       . "")
+    (ess-STERM  . "iESS")
+    (ess-editor . S-editor)
+    (ess-pager  . S-pager)
+    (inferior-ess-language-start .
+				 (concat "options("
+					 "STERM='"  ess-STERM  "'"
+					 (if ess-editor 
+					     (concat ", editor='" ess-editor "'"))
+					 (if ess-pager 
+					     (concat ", pager='"  ess-pager  "'"))
+					 ")"))
+)
+  "Variables to customize for S4.")
 
 ;; For loading up the S code required for the above.
 ;;(add-hook 'ess-post-run-hook
@@ -100,7 +114,9 @@
   (setq ess-customize-alist S4-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S4): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
-  (inferior-ess))
+  (inferior-ess)
+  (if inferior-ess-language-start
+      (ess-eval-linewise inferior-ess-language-start)))
 
 
 (defun S4-mode (&optional proc-name)

@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: essd-els.el,v 1.12 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2002/01/20 06:14:36 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: essd-els.el,v 1.13 2002/01/20 06:14:36 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -68,7 +68,19 @@
     (inferior-ess-secondary-prompt . "[+>] ?")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
-    (inferior-ess-start-args       . "-i"))
+    (inferior-ess-start-args       . "-i")
+    (ess-STERM  . "iESS")
+    (ess-editor . S-editor)
+    (ess-pager  . S-pager)
+    (inferior-ess-language-start .
+				 (concat "options("
+					 "STERM='"  ess-STERM  "'"
+					 (if ess-editor 
+					     (concat ", editor='" ess-editor "'"))
+					 (if ess-pager 
+					     (concat ", pager='"  ess-pager  "'"))
+					 ")"))
+)
  "Variables to customize for S+elsewhere")
 
 
@@ -79,7 +91,9 @@
   (ess-write-to-dribble-buffer
    (format "\n(S+elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
 	   (current-buffer)))
-  (inferior-ess))
+  (inferior-ess)
+  (if inferior-ess-language-start
+      (ess-eval-linewise inferior-ess-language-start)))
 
 
 (defun S+elsewhere-mode (&optional proc-name)
@@ -138,7 +152,10 @@ return new alist whose car is the new pair and cdr is ALIST.
     (ess-write-to-dribble-buffer
      (format "\n(ESS-elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
 	     (current-buffer)))
-    (inferior-ess)))
+    (inferior-ess)
+    (if (equal ess-language "S")
+	(if inferior-ess-language-start
+	    (ess-eval-linewise inferior-ess-language-start)))))
 
 
  ; Provide package

@@ -5,13 +5,13 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: essd-s3.el,v 5.8 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2002/01/20 06:14:36 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: essd-s3.el,v 5.9 2002/01/20 06:14:36 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
-;; This file is part of ESS
+;; This file is part of ESS.
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -67,24 +67,38 @@
     (inferior-ess-secondary-prompt . "+ ?")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S3")
-    (inferior-ess-start-args       . ""))
+    (inferior-ess-start-args       . "")
+    (ess-STERM  . "iESS")
+    (ess-editor . S-editor)
+    (ess-pager  . S-pager)
+    (inferior-ess-language-start .
+				 (concat "options("
+					 "STERM='"  ess-STERM  "'"
+					 (if ess-editor 
+					     (concat ", editor='" ess-editor "'"))
+					 (if ess-pager 
+					     (concat ", pager='"  ess-pager  "'"))
+					 ")"))
+)
   "Variables to customize for S3")
-
-
-(defun S3-mode (&optional proc-name)
-  "Major mode for editing S3 source.  See `ess-mode' for more help."
-  (interactive)
-  (setq-default ess-customize-alist S3-customize-alist)
-  (ess-mode S3-customize-alist proc-name))
 
 
 (defun S3 (&optional proc-name)
   "Call 'S 3.x', the version from AT&T."
   (interactive)
-  (setq-default ess-customize-alist S3-customize-alist)
+  (setq ess-customize-alist S3-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S3): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
-  (inferior-ess))
+  (inferior-ess)
+  (if inferior-ess-language-start
+      (ess-eval-linewise inferior-ess-language-start)))
+
+
+(defun S3-mode (&optional proc-name)
+  "Major mode for editing S3 source.  See `ess-mode' for more help."
+  (interactive)
+  (setq ess-customize-alist S3-customize-alist)
+  (ess-mode S3-customize-alist proc-name))
 
  ; Provide package
 

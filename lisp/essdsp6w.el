@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2002/01/09 21:15:01 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: essdsp6w.el,v 5.7 2002/01/09 21:15:01 rmh Exp $
+;; Modified: $Date: 2002/01/20 06:14:36 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: essdsp6w.el,v 5.8 2002/01/20 06:14:36 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -88,7 +88,20 @@ connects it to the *S+6 ddeclient* window.")
 				      " "
 				      inferior-S+6-print-command
 				      " S_PROJ="
-				      (directory-file-name default-directory))))
+				      (directory-file-name default-directory))
+				   )
+    (ess-STERM  . "ddeESS")
+    (ess-editor . S-editor)
+    (ess-pager  . S-pager)
+    (inferior-ess-language-start .
+				 (concat "options("
+					 "STERM='"  ess-STERM  "'"
+					 (if ess-editor 
+					     (concat ", editor='" ess-editor "'"))
+					 (if ess-pager 
+					     (concat ", pager='"  ess-pager  "'"))
+					 ")"))
+)
  "Variables to customize for S+6")
 
 (defvar Sqpe+6-customize-alist
@@ -117,7 +130,19 @@ connects it to the *S+6 ddeclient* window.")
     (inferior-ess-secondary-prompt . "+ ?")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S+6")
-    (inferior-ess-start-args       . "ALWAYS_PROMPT=X")) ;;workaround for bug in S-Plus 6 for Windows
+    (inferior-ess-start-args       . "ALWAYS_PROMPT=X") ;;workaround for bug in S-Plus 6 for Windows
+    (ess-STERM  . "iESS")
+    (ess-editor . S-editor)
+    (ess-pager  . S-pager)
+    (inferior-ess-language-start .
+				 (concat "options("
+					 "STERM='"  ess-STERM  "'"
+					 (if ess-editor 
+					     (concat ", editor='" ess-editor "'"))
+					 (if ess-pager 
+					     (concat ", pager='"  ess-pager  "'"))
+					 ")"))
+)
  "Variables to customize for Sqpe+6.")
 
 
@@ -227,7 +252,9 @@ Splus Commands window appear in this buffer.\n\n")
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
     (toggle-read-only t)		; force buffer to be read-only
     (setq mode-name "ddeESS")
-    (ess-eval-linewise inferior-S+6-editor-pager-command)
+;;  (ess-eval-linewise inferior-S+6-editor-pager-command)
+    (if inferior-ess-language-start
+	(ess-eval-linewise inferior-ess-language-start))
     ))
 
 
@@ -298,7 +325,9 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
     (insert "options(interactive=T)")
     (inferior-ess-send-input)
     (setq mode-name "iESS(Sqpe)")
-    (ess-eval-linewise inferior-S+6-editor-pager-command)
+;;  (ess-eval-linewise inferior-S+6-editor-pager-command)
+    (if inferior-ess-language-start
+	(ess-eval-linewise inferior-ess-language-start))
     (if shome-nil-p (setenv "SHOME" nil))))
 
 
@@ -409,7 +438,9 @@ Splus Commands window (are supposed to) appear in this buffer.\n\n")
     (use-local-map comint-mode-map)    ; a shell buffer after Splus is finished.
     (toggle-read-only t)	       ; force buffer to be read-only
     (setq mode-name "ddeESS")
-    (ess-eval-linewise inferior-S+6-editor-pager-command)
+;;  (ess-eval-linewise inferior-S+6-editor-pager-command)
+    (if inferior-ess-language-start
+      (ess-eval-linewise inferior-ess-language-start))
     ))
 
 (defun S+6-msdos-existing (&optional proc-name)

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-sp3.el,v 1.6 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2002/01/20 06:14:36 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essd-sp3.el,v 1.7 2002/01/20 06:14:36 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -37,7 +37,7 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-; Code:
+;;; Code:
 
 (defvar S+3-dialect-name "S+3"
   "Name of 'dialect' for S-PLUS 3.x.");easily changeable in a user's .emacs
@@ -69,7 +69,19 @@
     (inferior-ess-secondary-prompt . "+ ?")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
-    (inferior-ess-start-args       . ""))
+    (inferior-ess-start-args       . "")
+    (ess-STERM  . "iESS")
+    (ess-editor . S-editor)
+    (ess-pager  . S-pager)
+    (inferior-ess-language-start .
+				 (concat "options("
+					 "STERM='"  ess-STERM  "'"
+					 (if ess-editor 
+					     (concat ", editor='" ess-editor "'"))
+					 (if ess-pager 
+					     (concat ", pager='"  ess-pager  "'"))
+					 ")"))
+)
  "Variables to customize for S+3.")
 
 
@@ -79,7 +91,9 @@
   (setq ess-customize-alist S+3-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S+3): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
-  (inferior-ess))
+  (inferior-ess)
+  (if inferior-ess-language-start
+      (ess-eval-linewise inferior-ess-language-start)))
 
 (defun S+3-mode (&optional proc-name)
   "Major mode for editing S+3 source.  See `ess-mode' for more help."

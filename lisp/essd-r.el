@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/01/11 19:51:57 $
-;; Version: $Revision: 5.33 $
-;; RCS: $Id: essd-r.el,v 5.33 2002/01/11 19:51:57 rmh Exp $
+;; Modified: $Date: 2002/01/20 06:14:36 $
+;; Version: $Revision: 5.34 $
+;; RCS: $Id: essd-r.el,v 5.34 2002/01/20 06:14:36 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,24 +46,6 @@
 
 ;;; Code:
 
-;;; S-editor and S-pager, ess-editor and ess-pager,
-;;; and inferior-ess-language-start
-;;; apply in principle to the 15 files essd[p-]*.el
-;;; Several of the files have more than one *-customize-alist.
-;;; I am currently planning to add this only to the S language files for
-;;; S S-Plus R, and specifically starting with a test of essd-r.el
-
-(defcustom S-editor nil ;(if ess-microsoft-p "gnuclient.exe" "emacslient")
-  "*Editor called by S process with 'edit()' command."
-:group 'ess
-:type "string")
-
-(defcustom S-pager  nil ;(if ess-microsoft-p "gnuclientw.exe" "emacsclient")
-  "*Pager called by S process with 'page()' command."
-:group 'ess
-:type "string")
-
-
 (defvar R-customize-alist
   '((ess-local-customize-alist     . 'R-customize-alist)
     (ess-language                  . "S")
@@ -94,8 +76,8 @@
     (inferior-ess-start-file       . nil)            ;; "~/.ess-R"
     (inferior-ess-start-args       . "")
     (ess-STERM  . "iESS")
-    (ess-editor . S-editor)
-    (ess-pager  . S-pager)
+    (ess-editor . R-editor)
+    (ess-pager  . R-pager)
     (inferior-ess-language-start .
 				 (concat "options("
 					 "STERM='"  ess-STERM  "'"
@@ -109,18 +91,6 @@
 
 ;;; AJR: Need to condition on this...!
 (require 'ess-menu)
-
-(defun R-mode  (&optional proc-name)
-  "Major mode for editing R source.  See `ess-mode' for more help."
-  (interactive)
-  (setq ess-customize-alist R-customize-alist)
-  ;;(setq imenu-generic-expression R-imenu-generic-expression)
-  (ess-mode R-customize-alist proc-name)
-  ;;; AJR: Need to condition on this...!
-  ;; MM: and you probably should really use ess-imenu-mode-function from above!
-  (ess-imenu-R))
-
-(fset 'r-mode 'R-mode)
 
 ;; R that does the right thing irregardless of OS.
 (defun R (&optional start-args)
@@ -149,19 +119,32 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
     (if ess-microsoft-p
 	(setq default-process-coding-system '(undecided-dos . undecided-dos)))
     (inferior-ess r-start-args) ;; (R)
-    (if inferior-ess-language-start  ;; new for this test
+    (if inferior-ess-language-start
 	(ess-eval-linewise inferior-ess-language-start))))
+
+
+(defun R-mode  (&optional proc-name)
+  "Major mode for editing R source.  See `ess-mode' for more help."
+  (interactive)
+  (setq ess-customize-alist R-customize-alist)
+  ;;(setq imenu-generic-expression R-imenu-generic-expression)
+  (ess-mode R-customize-alist proc-name)
+  ;;; AJR: Need to condition on this...!
+  ;; MM: and you probably should really use ess-imenu-mode-function from above!
+  (ess-imenu-R))
+
+(fset 'r-mode 'R-mode)
 
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files." t)
 
-(defun r-transcript-mode ()
+(defun R-transcript-mode ()
   "Does the right thing."
   (interactive)
   (ess-transcript-mode R-customize-alist))
 
-(fset 'R-transcript-mode 'r-transcript-mode)
+(fset 'r-transcript-mode 'R-transcript-mode)
 
 (defun R-fix-T-F (&optional from quietly)
   "Fix T/F into TRUE and FALSE --- CAUTIOUSLY"
