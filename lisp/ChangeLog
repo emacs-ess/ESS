@@ -1,3 +1,10 @@
+2004-05-18  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-inf.el (ess-eval-linewise): If eob, remember to go to the
+	end of the S buffer after evaluation.  This was a bug that I
+	introduced when introducing the ability to have R in different
+	frames.
+
 2004-05-17  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (ess-fix-EQ-assign): new S source cleaners;
