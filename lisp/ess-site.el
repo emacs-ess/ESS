@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/01 14:57:30 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: ess-site.el,v 1.20 1997/07/01 14:57:30 rossini Exp $
+;; Modified: $Date: 1997/07/24 12:33:54 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: ess-site.el,v 1.21 1997/07/24 12:33:54 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.21  1997/07/24 12:33:54  rossini
+;;: fixed documentation typos.
+;;:
 ;;: Revision 1.20  1997/07/01 14:57:30  rossini
 ;;: S -> ESS
 ;;:
@@ -312,7 +315,8 @@
 ;;; (3.5) ess-directory default  (correlated with above)
 ;;; The default location for running the subprocess is configurable.
 ;;; By default, that is the default-directory (a lisp variable which
-;;; initially contains the driectory from which Emacs is started).
+;;; initially contains the driectory from which the inferior ESS
+;;; statistical package/process  is started).
 ;;; For example, the following function (added to the pre-run-hook, by
 ;;; the line following it) will set the default directory to be your
 ;;; home directory:
@@ -330,7 +334,8 @@
 ;;; directory.
 ;;;
 ;;; The default is to have ess to start up in the current buffer's
-;;; directory (the one in which you started Emacs).  This is obtained
+;;; directory (the one in which you started the inferior ESS
+;;; statistical package/process).  This is obtained
 ;;; by setting ess-directory to nil, i.e. 
 ;; (setq-default ess-directory nil) ; this is the default.
 
