@@ -29,8 +29,8 @@
 
 %%---End of package requiring ---------- Own Definitions -------------
 
-\newcommand*{\SAS}{\textsc{SAS}$^{\mbox{\scriptsize\textregistered}}$}
-\newcommand*{\Splus}{\textsc{S-Plus}}
+\newcommand{\SAS}{\textsc{SAS}$^{\mbox{\scriptsize\textregistered}}$}
+\newcommand{\Splus}{\textsc{S-Plus}}
 \newcommand*{\XLispStat}{\textsc{XLispStat}}
 \newcommand*{\Stata}{\textsc{Stata}}
 \newcommand*{\Rgui}{\textsc{Rgui}}
@@ -55,15 +55,19 @@
 
 \author{Rodney Sparapani \footnote{%
 Rodney Sparapani is Senior Biostatistician at the Medical College
-of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
+of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu).
+Acknowledgements.  A special thanks to all of the ESS developers, both past
+    and present:  A.J. Rossini, Richard M. Heiberger, Martin M{\"a}chler, 
+    Kurt Hornik, Jeff Mincy, Doug Bates, Ed Kademan, Frank Ritter, Mike Meyer, 
+    David Smith, Tom Cook, John Sall and Brian Ripley.  Also, I'd like to thank
+    all of the developers of GNU Emacs, XEmacs and their many modes without which
+    none of this would have been possible.}}
 
 \date{\today}
 
 \begin{document}
 
 \maketitle
-
-%\baselineskip=2pc
 
 \section{Introduction}
 \label{sec:introduction}
@@ -79,7 +83,7 @@ activity involves some form of computer use.  Many
 statistical research activities, particularly data analysis and
 communication, are enhanced by computers.  This puts the computer
 in the critical role of facilitating these
-tasks.  One such RAD is Emacs Speaks Statistics (ESS) \citep{ESS}.
+tasks.  One such RAD is Emacs Speaks Statistics (ESS).
 
 ESS provides an interface to statistical packages, and provides,
 through Emacs, additional tools which facilitate both statistical
@@ -87,11 +91,8 @@ software development and data analysis.  The most beneficial part
 comes from learning a powerful RAD tool like Emacs and using it for 
 many common tasks and statistical analysis package programming as well. 
 ESS currently supports the S family of languages (which include
-S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus{} \citep{Splus}, and R
-\citep{ihak:gent:1996}); \SAS\ \citep{SAS:8};  BUGS \citep{BUGS}; 
-\Stata\ \citep{Stata:6.0}; and \XLispStat\
-\citep{Tier90} and its extensions Arc \citep{Cook:Weisberg:1999} and
-ViSta \citep{youn:fald:mcfa:1992}.  ESS can be
+S, \Splus, and R); \SAS;  BUGS; \Stata; and \XLispStat
+and its extensions Arc and ViSta.  ESS can be
 extended to accommodate most statistical packages which provide either
 an interactive command-line or batch file processing.  The documentation 
 that comes with ESS provides details of its implementation and examples 
@@ -105,8 +106,8 @@ Emacs is a mature, powerful, and extensible text editing system which
 is freely available under the GNU General Public License for a large
 number of platforms, including most flavors of Unix, Microsoft Windows
 and Apple Macintosh.  There are two open-source, free-software
-implementations of Emacs:  GNU Emacs \citep{GNU-Emacs} and XEmacs
-\citep{XEmacs}.  Emacs shares many features with
+implementations of Emacs:  GNU Emacs and XEmacs.
+Emacs shares many features with
 word processors, and some characteristics with operating systems.
 Most importantly, Emacs can interact with and control other programs.
 
@@ -125,7 +126,6 @@ encourage multiple applications to share a single display.  Emacs
 menus allow mouse access to frequently used actions and provide a 
 graphical alternative when the user doesn't know or can't remember 
 a key-mapping.  
-%User-defined menus and toolbars can be constructed as needed.
 
 \paragraph{Buffers for Editing and for Running a Shell.}
 Emacs provides facilities which go beyond ordinary text editing.  When
@@ -138,13 +138,11 @@ Buffers allow the user to simultaneously edit multiple files and control
 multiple programs simply by switching between buffers.  Frequently an 
 interactive command line interpreter, called an operating system shell, 
 is run inside a buffer.
-%%  Therefore, most programs can be run from a buffer 
-%%since most programs can be run from a shell.  
 
 \paragraph{Emacs Modes.}
 Emacs capabilities are extended by loading text files containing code
-written in Emacs Lisp (elisp) \citep{RChassell1999}, a dialect of Lisp
-\citep{PGraham:1996} which stands for List Processing.  Emacs commands, 
+written in Emacs Lisp (elisp), a dialect of Lisp
+which stands for List Processing.  Emacs commands, 
 written in elisp, can be called interactively by name or by their associated 
 key-map.  Emacs functions are also written in elisp, but they can only be 
 called by Emacs commands or other Emacs functions rather than by
@@ -158,9 +156,6 @@ is often determined by the file name extension, i.e. the characters at the
 end of the file name that follow a period like \stexttt{txt}, \stexttt{R} or
 \stexttt{sas}.  Examples of this kind of major-mode are \stexttt{ESS[S]} and 
 \stexttt{ESS[SAS]} (technically, both are special cases of \stexttt{ess-mode}).
-%%Major-modes of this kind provide automatic indentation and navigation in units 
-%%of characters, words, lines, sentences, paragraphs, and pages as well as many other
-%%features.
 
 Second, they provide the ability to run other programs.
 In this case, the other program's standard input can be drawn from a buffer
@@ -191,20 +186,10 @@ Most programming and documentation tasks fall under the realm of text
 editing.  This work can be enhanced by modes which provide features such
 as contextual highlighting and recognition of special reserved words
 appropriate to the programming language in use.  
-%%Emacs supports
-%%folding, outlining, and bookmarks which can assist with maneuvering
-%%around a file.  
 Emacs shares many features with word processing
 programs and cooperates with document preparation systems
 such as \LaTeX\ for typesetting or \textsc{html} and \textsc{xml}
 for hypertext markup.
-%insertion and deletion: viewing two or more files at once; editing formatted text;
-%visual comparison of two similar files; and navigation
-%in units of characters, words, lines, sentences, paragraphs, and pages.
-%%Emacs handles the
-%%interface to both source code and transcripts contextually, providing
-%%syntax highlighting, bookmarking features, interfaces to directory
-%%structure, and command-history.  
 Other extensions to Emacs allow it to act as a web browser, a mail and news
 reader, and as an interface to
 other common text-based tools such as spell checking programs.  The
@@ -220,39 +205,23 @@ build an interface for statistical analysis packages.  ESS extends
 Emacs to provide a functional and extensible interface
 for multiple statistical packages. 
 ESS most strongly supports the S family (S, \Splus, and R), \SAS\ and BUGS.  
-\Stata\ and \XLispStat\ (and the \XLispStat\ extensions, ARC and ViSta) are
+\Stata\ and \XLispStat\ (and its extensions, ARC and ViSta) are
 also supported.
 
 \paragraph{Syntactic indentation and color/font-based source code
   highlighting.}  The ESS interface includes a description of the
 syntax of each statistical language it supports.
-%%  This gives ESS the ability to edit the programming language code,
-%% often more smoothly than with editors distributed with the languages.
 The process of programming is enhanced as ESS provides the user with
 syntax highlighting of language constructs such as reserved words,
 function calls, strings, and comments.  ESS allows the user to specify
 the increment of indentation and each new line is indented
 to the same level as the previous line.
 
-%%\paragraph{Source code checking.}
-%%ESS facilitates the editing of source code by providing a means for
-%%loading and error-checking of small sections of code for S,
-%%\XLispStat, and \SAS.  This allows for source-level debugging of batch
-%%files.
-
 \paragraph{Code execution.}
 ESS can send individual lines, marked regions, or whole buffers to the 
 statistical analysis package for execution.  ESS sends the code to
 the statistical package and receives the output that results.   The results
 are received in an editable Emacs buffer. 
-
-%%\paragraph{Help File Editing (R).}
-%%ESS provides an interface for writing help files for R functions
-%%and packages.  It provides the ability to view and execute embedded R
-%%source code directly from the help file in the same manner as ESS
-%%normally handles code from a source file.  \stexttt{Rd-mode} provides
-%%syntax highlighting and the ability to submit code to a running ESS
-%%process, either R or \Splus.
 
 \paragraph{Conflicts in key-maps.}
 \label{sec:confl-keym}
@@ -280,11 +249,6 @@ Important extensions which should be implemented in the near future
 include source code look-up of function definitions, data browsing, 
 remote access to files over secure network protocols and secure remote 
 execution of statistical code.
-
-\bibliographystyle{plainnat}
-%\pdfbookmark[1]{References}{section.7}
-\bibliography{jms2002}
-
 
 \end{document}
 
