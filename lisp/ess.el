@@ -11,7 +11,7 @@
 ;;                Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;;                Rodney Sparapani <rsparapa@mcw.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.27 2003/08/05 17:11:12 stephen Exp $
+;; Version: $Id: ess.el,v 5.28 2004/04/27 11:41:13 stephen Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -249,6 +249,9 @@
 (defun ess-write-to-dribble-buffer (text)
   "Write TEXT to dribble buffer."
   (save-excursion
+    (if (not (buffer-live-p ess-dribble-buffer))
+	;; ESS dribble buffer must be re-created.
+	(setq ess-dribble-buffer (get-buffer-create "*ESS*")))
     (set-buffer ess-dribble-buffer)
     (goto-char (point-max))
     (insert-string text)))
@@ -345,11 +348,6 @@
 ;;	R-customize-alist)
 
 
-;; The following code causes the *ESS* buffer to be recreated (if necessary)
-;; before it is used; Jeff Mincy <jeff@delphioutpost.com>, 27 Jul 2001.
-(defadvice ess-write-to-dribble-buffer
-  (before get-dribble-buffer first activate)
-  (setq ess-dribble-buffer (get-buffer-create "*ESS*")))
 
 ; Run load hook and provide package
 
