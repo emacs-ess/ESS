@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2002/05/01 05:15:16 $
-;; Version: $Revision: 5.88 $
-;; RCS: $Id: ess-site.el,v 5.88 2002/05/01 05:15:16 rmh Exp $
+;; Modified: $Date: 2002/06/19 20:39:59 $
+;; Version: $Revision: 5.89 $
+;; RCS: $Id: ess-site.el,v 5.89 2002/06/19 20:39:59 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -293,7 +293,8 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;; These are the defaults.  Change them here if the defaults don't work.
 ;;; Use the 8.3 version of the pathname because embedded blanks will cause
 ;;; trouble.
-;;; The emacs command `w32-short-file-name' will help you find the 8.3 name.
+;;; The NTemacs command `w32-short-file-name' or
+;;; Xemacs command `win32-short-file-name' will help you find the 8.3 name.
 ;;(setq-default inferior-S+4-program-name "c:/progra~1/SPLS45SE/cmd/Splus")
 ;;(setq-default inferior-Sqpe+4-SHOME-name "c:/progra~1/SPLS45SE")
 ;;(setq-default inferior-Sqpe+4-program-name "c:/progra~1/SPLS45SE/cmd/Sqpe.exe")

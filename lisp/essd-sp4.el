@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/02/25 12:40:36 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: essd-sp4.el,v 1.11 2002/02/25 12:40:36 maechler Exp $
+;; Modified: $Date: 2002/06/19 20:39:59 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: essd-sp4.el,v 1.12 2002/06/19 20:39:59 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -140,7 +140,7 @@ connects it to the '(ddeESS [S+4])' window.")
 ;;; There are extra complications in S+4 (compared to S+3) because
 ;;;
 ;;; (1) The StatSci supplied Splus.exe doesn't work in an emacs
-;;;     buffer.  It works as as a GUI window and we must send commands
+;;;     buffer.  It works as a GUI window and we must send commands
 ;;;     to it through ddeclient.  Nonetheless, we need to give it a
 ;;;     process name and be sure that that there is a valid running
 ;;;     process in the '(ddeESS [S+4])' buffer.  Therefore we create an
@@ -186,9 +186,13 @@ is here to allow slow disks to start the Splus program."
 	  (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
     (setq ess-customize-alist		; change inferior-ess-start-args
 	  (append ess-customize-alist '((inferior-ess-start-args   . "-i"))))
-    (let ((s-proj (getenv "S_PROJ"))
-	  (manpath (getenv "MANPATH")))
-      (cd (w32-short-file-name (directory-file-name default-directory)))
+    (let* ((s-proj (getenv "S_PROJ"))
+	   (manpath (getenv "MANPATH"))
+	   (dfn-dd (directory-file-name default-directory))
+	   (sfn (if (featurep 'xemacs)
+		    (win32-short-file-name dfn-dd)
+		  (w32-short-file-name dfn-dd))))
+      (cd sfn)
       (setenv "S_PROJ" default-directory)
       ;; I don't know why this PATH/MANPATH game is needed,
       ;; except that it doesn't work without it.
@@ -354,8 +358,12 @@ is here to allow slow disks to start the Splus program."
 	  (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
     (setq ess-customize-alist		; change inferior-ess-start-args
 	  (append ess-customize-alist '((inferior-ess-start-args   . ""))))
-    (let ((s-proj (getenv "S_PROJ")))
-      (cd (w32-short-file-name (directory-file-name default-directory)))
+    (let* ((s-proj (getenv "S_PROJ"))
+	   (dfn-dd (directory-file-name default-directory))
+	   (sfn (if (featurep 'xemacs)
+		    (win32-short-file-name dfn-dd)
+		  (w32-short-file-name dfn-dd))))
+      (cd sfn)
       (setenv "S_PROJ" default-directory)
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
