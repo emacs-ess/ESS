@@ -1,3 +1,8 @@
+1997-10-24  Anthony Rossini  <rossini@urn.math.sc.edu>
+
+	* ess-site.el ((assoc "\\.[rR]\\'" auto-mode-alist)): changes for
+	R, 0.50 vs. 0.60.
+
 Fri Oct 24 08:56:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ESS-5.0-pre1 released.
@@ -535,6 +540,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.11  1997/10/24 16:11:56  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.10  1997/10/24 12:57:08  rossini
 	* Removing *** empty log message ***
 	* Removing
