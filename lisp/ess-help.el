@@ -2,15 +2,17 @@
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997, A.J. Rossini <rossini@stat.sc.edu>
-;; Copyright (C) 1998--2000	A.J. Rossini, Martin Maechler,
-;;				Kurt Hornik, and Richard M. Heiberger.
+;; Copyright (C) 1998--2001	A.J. Rossini <rossini@u.washington.edu>,
+;; Martin Maechler <maechler@stat.math.ethz.ch>, Kurt Hornik < >,
+;; and Richard M. Heiberger <rmh@temple.edu>.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>, MM
+;; Maintainers: A.J. Rossini <rossini@u.washington.edu>,
+;;              Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/08/09 13:12:18 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: ess-help.el,v 5.14 2000/08/09 13:12:18 maechler Exp $
+;; Modified: $Date: 2001/01/08 00:56:36 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: ess-help.el,v 5.15 2001/01/08 00:56:36 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -29,8 +31,9 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
+
 ;; Code for dealing with ESS help files.  See README.<LANGUAGE> where
-;; <LANGUAGE> is one of `S', `SAS', or `XLispStat'.
+;; <LANGUAGE> is one of `S', `SAS', `Stata'or `XLispStat'.
 
 ;;; Code:
 
