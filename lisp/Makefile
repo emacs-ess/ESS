@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.31 1997/06/17 02:14:20 rossini Exp $
+## $Id: Makefile,v 1.32 1997/06/18 18:30:07 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.32  1997/06/18 18:30:07  rossini
+## added $(INSTALL)  (thanks, MM).
+##
 ## Revision 1.31  1997/06/17 02:14:20  rossini
 ## ess-extras - ess-xtra.el
 ##
@@ -60,6 +63,9 @@ EMACS = emacs
 INFODIR = $(PREFIX)/info
 ## XEmacs
 #INFODIR = $(PREFIX)/lib/$(EMACS)/info
+
+## For strange setups...
+INSTALL = cp
 
 # program to convert .texi{nfo} to .info
 MAKEINFO = makeinfo
@@ -131,8 +137,8 @@ all:	S-mode info html
 info:   S-mode.info
 html:	html/S-mode_toc.html
 install:	all
-	cp S-mode.info* $(INFODIR)
-	-cp *.elc $(LISPDIR)
+	$(INSTALL) S-mode.info* $(INFODIR)
+	$(INSTALL) *.elc $(LISPDIR)
 
 clean:
 	rm -f $(OBJECTS) S-mode.info* S-mode.aux S-mode.cp S-mode.dvi \
