@@ -1,17 +1,17 @@
 -*- view -*-
 
-($Revision: 1.29 $)
+($Revision: 1.30 $)
 
 Emacs Speaks Statistics (ESS), version 5.0
 ------------------------------------------
 
 This is the README file for the distribution of ESS version 5.0, which
-used to be S-mode.  This is an Emacs-Lisp interface to interactive
-statistical programming and data analysis languages, including: S
-dialects (S 3/4, S-PLUS 3.x, and R), LispStat dialects (XLispStat,
-ViSta), and SAS.  Stata, and SPSS dialect (SPSS, Fiasco) support is
-being examined possible future implementation (a preliminary Stata
-mode is distributed).
+used to be S-mode.  ESS is an Emacs-Lisp interface for interactive
+statistical programming and data analysis.  Languages supported
+include: S dialects (S 3/4, S-PLUS 3.x, and R), LispStat dialects
+(XLispStat, ViSta), and SAS.  Stata and SPSS dialect (SPSS, Fiasco)
+support is being examined for possible future implementation (a
+preliminary Stata mode is distributed).
 
 ESS grew out of the desire for bug fixes and extensions to S-mode-4.8.
 In particular, XEmacs support as well as extensions to incorporate R
@@ -123,9 +123,10 @@ It has been most thoroughly tested with:
 
 	Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.4.
 
-It may need some work with other configurations.  One user has added
-configuration suggestions for emacs 19.28 and SAS.  Those instructions
-are included in Doc/README-19.28.
+It may need some work with other configurations.  We include
+configuration suggestions for emacs 19.28 in Doc/README-19.28.
+These are the changes we made in order to use ESS with SAS on a Digital
+Alpha running Emacs 19.28.
 
 Suggestions and information about attempts to port to
 Microsoft-developed operating systems are encouraged.  In particular,
@@ -178,7 +179,10 @@ The HTML version of the documentation can be found at:
   depth to your directory structure.
 
 * Edit the file ess-site.el as explained in the comments section of
-  that file.
+  that file.  Installations that are using ESS only for S-plus 3.x
+  will probably not need to make any changes.  Installations that also
+  have one or more of (S4 R SAS XLispStat Stata) will need to uncomment
+  corresponding lines in ess-site.el.
 
 * READ THIS ITEM THOROUGHLY BEFORE STARTING: 
 
