@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 1.2 $.
+### File: $Revision: 1.3 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -42,7 +42,6 @@ LASTVERSION = 5.0
 MYWWWDIR = /stat2/faculty/rossini/public_html/projects
 MYFTPDIR = /m2/ftp/rossini
 
-
 DOCS = 	README README.S README.XLispStat README.SAS \
 	ess.texi dir ess.info ess.info-1 ess.info-2 ess.info-3 ess.dvi \
 	TODO Why_S-mode_Rocks.DMS \
@@ -61,7 +60,9 @@ DOCDIST = ess.ps ess.pdf \
 
 all: ess.info html ess.dvi
 
-ess.info: ess.texi
+# Documentation mentions info, not ess.info
+
+info : ess.info
 
 #
 # If indexes don't index, run:  "texindex ess.??" to obtain the sorted indices.
