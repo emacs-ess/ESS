@@ -1,3 +1,19 @@
+Changes/New Features in 5.2.0:
+@itemize @bullet
+@item Stable release.  Final release of the 5.x series
+(except for necessary bug-fixes).  Next release will be 
+6.0 which will be a radical departure.
+@item Now that info documentation is available, the 
+README.* files are no longer supported.  However, they
+are still distributed for what it's worth.
+@item ESS is now an XEmacs package!  See 
+@url{http://www.xemacs.org/Install/index.html} for details
+(specifically, items 10-15).
+@item ESS[SAS]: more user-friendly enhancements for remote
+SAS batch jobs with Kermit file transfers (LOG and OUTPUT
+function key features now supported).
+@end itemize
+
 Changes/New Features in 5.1.21:
 @itemize @bullet
 @item ESS[SAS]: info documentation now available!, see
