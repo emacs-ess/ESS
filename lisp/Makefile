@@ -25,7 +25,7 @@ INSTALL = cp
 MAKEINFO = makeinfo
 
 # program to convert .texi{nfo} to .html
-MAKEHTML = texi2html -split_chapter -menu -glossary
+MAKEHTML = texi2html -verbose -iso -split_chapter -menu -glossary
 
 # where the .elc, files should go
 LISPDIR = .
@@ -101,6 +101,8 @@ info:	ess.info
 
 html:	html/ess_toc.html
 
+dvi:	ess.dvi
+
 install: all
 	mkdir -p $(INFODIR)
 	$(INSTALL) ess.info* $(INFODIR)
@@ -109,7 +111,7 @@ install: all
 
 clean:
 	rm -f $(OBJECTS) ess.info* ess.aux ess.cp ess.dvi \
-	  ess.ky ess.log ess.pg ess.toc ess.tp ess.vr \
+	  ess.ky ess.log ess.pg ess.toc ess.tp ess.vr ess.cps ess.fns ess.vrs \
 	  ess.fn texput.log
 
 dist:
