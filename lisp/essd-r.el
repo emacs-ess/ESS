@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/02 19:43:38 $
-;; Version: $Revision: 1.35 $
-;; RCS: $Id: essd-r.el,v 1.35 1997/09/02 19:43:38 rossini Exp $
+;; Modified: $Date: 1997/09/02 20:05:41 $
+;; Version: $Revision: 1.36 $
+;; RCS: $Id: essd-r.el,v 1.36 1997/09/02 20:05:41 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -42,13 +42,16 @@
 (defvar R-customize-alist
   '((ess-language                  . "S")
     (ess-dialect                   . "R")
+    (ess-suffix                    . "R")
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-help-sec-regex            . ess-help-R-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-R-sec-keys-alist) 
     (ess-loop-timeout              . 100000 )
     (ess-object-name-db-file       . "ess-r-namedb.el" )
-    (ess-retr-lastvalue-command    . ".Last.value <- get(\"smode.lvsave\",envir=1)\n")
-    (ess-save-lastvalue-command    . "assign(\"smode.lvsave\",.Last.value,envir=1)\n")
+    (ess-retr-lastvalue-command
+     . ".Last.value <- get(\"smode.lvsave\",inherits=T)\n") ; envir=1
+    (ess-save-lastvalue-command
+     . "assign(\"smode.lvsave\",.Last.value,inherits=T)\n") ;envir=1
     (inferior-ess-program          . inferior-R-program-name)
     (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-objects-command  . "objects(pos = %d)\n")

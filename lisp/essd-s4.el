@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/02 19:43:50 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essd-s4.el,v 1.8 1997/09/02 19:43:50 rossini Exp $
+;; Modified: $Date: 1997/09/02 20:06:30 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essd-s4.el,v 1.9 1997/09/02 20:06:30 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -35,6 +35,9 @@
 
 ;;;
 ;;; $Log: essd-s4.el,v $
+;;; Revision 1.9  1997/09/02 20:06:30  rossini
+;;; *** empty log message ***
+;;;
 ;;; Revision 1.8  1997/09/02 19:43:50  rossini
 ;;; *** empty log message ***
 ;;;
@@ -73,6 +76,7 @@
 (defvar S4-customize-alist
   '((ess-language                  . "S")
     (ess-dialect                   . "S4")
+    (ess-suffix                    . "S")
     (inferior-ess-program          . inferior-S4-program-name) ;"S")
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . S4-help-sec-keys-alist)
