@@ -15,9 +15,9 @@ ESS: Emacs Speaks Statistics
 
 ESS version
 
-   5.2.0rc3
+   5.2.0
 
-   (Documentation $Revision: 1.25 $ $Date: 2004/04/22 16:14:36 $).
+   (Documentation $Revision: 1.26 $ $Date: 2004/04/28 10:17:16 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -221,7 +221,9 @@ Changes/New Features in 5.2.0:
      goto .log; C-c C-y for goto .lst
 
    * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
-     pressing underscore twice inserts a literal underscore;
+     pressing underscore twice inserts a literal underscore.  To stop
+     this smart behaviour, add "(ess-smart-underscore nil)" to your
+     .emacs after ess-site has been loaded;
      ess-dump-filename-template-proto (new name!) now can be customized
      successfully (for S language dialects); Support for Imenu has been
      improved; set ess-imenu-use-S to non-nil to get an "Imenu-S" item
@@ -1099,7 +1101,7 @@ does by default) then the value of `ess-directory' provides the default
 when prompting for the starting directory.  Incidentally,
 `ess-directory' is an ideal variable to set in `ess-pre-run-hook'.
 
-   If you like to keep a records of your S sessions, set the variable
+   If you like to keep a record of your S sessions, set the variable
 `ess-ask-about-transfile' to `t', and you will be asked for a filename
 for the transcript before the ESS process starts.
 
@@ -1123,6 +1125,10 @@ this program, they may be specified in the variable
 normally necessary to pass arguments to the S program; in particular do
 not pass the `-e' option to `Splus', since ESS provides its own command
 history mechanism.
+
+   By default, the new process will be displayed in another window in
+the current frame.  If you wish your S process to appear in a separate
+variable, customize the variable `inferior-ess-own-frame'.
 
 
 File: ess.info,  Node: Help for the S family,  Next: Help for SAS,  Prev: Starting up,  Up: Top
@@ -3347,6 +3353,11 @@ either need to kill the help buffer first, or pass a prefix argument
    Help buffers are marked as temporary buffers in ESS, and are deleted
 when `ess-quit' or `ess-cleanup' are called.
 
+   Help buffers normally appear in another window within the current
+frame.  If you wish help buffers to appear in their own frame (either
+one per help buffer, or one for all help buffers), you can customize the
+variable `ess-help-own-frame'.
+
 
 File: ess.info,  Node: Transcript Mode,  Next: Miscellaneous,  Prev: Help,  Up: Top
 
@@ -3479,6 +3490,7 @@ for dealing with such plots.
 
 * printer::                     The printer() graphics driver
 * X11::                         The X11() (and other X-windows based) driver
+* winjava::                     Java Graphics Device
 
 
 File: ess.info,  Node: printer,  Next: X11,  Prev: Graphics,  Up: Graphics
@@ -3498,7 +3510,7 @@ graphics immediately, but are stored until the `show()' command is
 issued, which displays the current figure.
 
 
-File: ess.info,  Node: X11,  Prev: printer,  Up: Graphics
+File: ess.info,  Node: X11,  Next: winjava,  Prev: printer,  Up: Graphics
 
 Using ESS with windowing devices
 --------------------------------
@@ -3510,6 +3522,20 @@ Emacs process.  ESS provides a facility for setting the value of
 DISPLAY before the ESS process is started if the variable
 `ess-ask-about-display' is non-`nil'.  *Note Variables for starting
 ESS::, for details of this variable.
+
+
+File: ess.info,  Node: winjava,  Prev: X11,  Up: Graphics
+
+Java Graphics Device
+--------------------
+
+S+6.2 on Windows contains a java library that supports graphics.  Send
+the commands:
+     library(winjava)
+     java.graph()
+   to start the graphics driver.  This allows you to use ESS for both
+interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
+this information.)
 
 
 File: ess.info,  Node: Object Completion,  Prev: Graphics,  Up: Miscellaneous
@@ -4091,6 +4117,7 @@ Concept Index
 * transcripts of S sessions:             Introduction.
 * using S interactively:                 Introduction.
 * variables:                             Variables.
+* winjava:                               winjava.
 * working directory <1>:                 Source Directories.
 * working directory:                     Starting up.
 * X windows <1>:                         Variables for starting ESS.
@@ -4262,96 +4289,97 @@ Variable and command index
 
 Tag Table:
 Node: Top249
-Node: Introduction2043
-Node: Features5009
-Node: New features8097
-Node: Credits19493
-Node: Latest version21679
-Node: Manual22145
-Node: Installation22906
-Node: Unix installation23699
-Node: Microsoft Windows installation27514
-Node: Requirements33442
-Ref: Requirements-Footnote-134199
-Ref: Requirements-Footnote-234293
-Node: System dependent34759
-Node: Starting up37032
-Node: Multiple ESS processes37862
-Node: ESS processes on Remote Computers39162
-Node: S+elsewhere and ESS-elsewhere42045
-Node: Customizing startup44796
-Node: Help for the S family46779
-Node: ESS(S)--Editing files47223
-Node: iESS(S)--Inferior ESS processes48268
-Node: Handling and Reusing Transcripts50405
-Node: ESS-help--assistance with viewing help51016
-Node: Philosophies for using ESS(S)51338
-Node: Scenarios for use (possibilities--based on actual usage)52467
-Node: Customization Examples and Solutions to Problems57291
-Node: Help for SAS58570
-Node: ESS(SAS)--Design philosophy59315
-Node: ESS(SAS)--Editing files60231
-Node: iESS(SAS)--Interactive SAS processes62123
-Node: ESS(SAS)--Batch SAS processes63892
-Node: ESS(SAS)--Function keys for batch processing67568
-Node: ESS(SAS)--TAB key76119
-Node: ESS(SAS)--Usage scenarios77391
-Node: iESS(SAS)--Common problems81559
-Node: ESS(SAS)--MS Windows82707
-Node: Help for BUGS83294
-Node: ESS(BUGS)--Model files84324
-Node: ESS(BUGS)--Command files87229
-Node: ESS(BUGS)--Log files88454
-Node: Entering commands89056
-Node: Command-line editing90341
-Node: Completion91617
-Node: Completion details94376
-Ref: Completion details-Footnote-196283
-Node: Transcript96563
-Node: Last command98332
-Node: Process buffer motion99938
-Node: Transcript resubmit101447
-Node: Saving transcripts104042
-Node: Command History106075
-Node: History expansion108691
-Node: Hot keys111891
-Node: Statistical Process running in ESS?115344
-Node: Emacsclient116641
-Node: Other117440
-Node: Editing118474
-Node: Edit buffer119629
-Node: Loading121657
-Node: Error Checking122698
-Node: Evaluating code123736
-Node: Indenting127203
-Node: Other edit buffer commands130216
-Node: Source Files132086
-Node: Source Directories136605
-Node: Help139729
-Node: Transcript Mode143294
-Node: Resubmit144426
-Node: Clean145498
-Node: Miscellaneous146209
-Node: Highlighting146570
-Node: Graphics147987
-Node: printer148458
-Node: X11149217
-Node: Object Completion149785
-Node: Bugs Etc150587
-Node: Bugs150809
-Node: Reporting Bugs152057
-Node: Mailing Lists152847
-Node: Customization153561
-Node: Variables154408
-Node: Variables for starting ESS155353
-Node: Dump file variables157366
-Node: Indentation variables158537
-Node: Variables controlling interaction161518
-Node: Editing assembly files162402
-Node: Hooks163201
-Node: Keybindings164344
-Node: Key Index165372
-Node: Concept Index165515
-Node: Variable and command index172671
+Node: Introduction2040
+Node: Features5006
+Node: New features8094
+Node: Credits19611
+Node: Latest version21797
+Node: Manual22263
+Node: Installation23024
+Node: Unix installation23817
+Node: Microsoft Windows installation27632
+Node: Requirements33560
+Ref: Requirements-Footnote-134317
+Ref: Requirements-Footnote-234411
+Node: System dependent34877
+Node: Starting up37150
+Node: Multiple ESS processes37980
+Node: ESS processes on Remote Computers39280
+Node: S+elsewhere and ESS-elsewhere42163
+Node: Customizing startup44914
+Node: Help for the S family47097
+Node: ESS(S)--Editing files47541
+Node: iESS(S)--Inferior ESS processes48586
+Node: Handling and Reusing Transcripts50723
+Node: ESS-help--assistance with viewing help51334
+Node: Philosophies for using ESS(S)51656
+Node: Scenarios for use (possibilities--based on actual usage)52785
+Node: Customization Examples and Solutions to Problems57609
+Node: Help for SAS58888
+Node: ESS(SAS)--Design philosophy59633
+Node: ESS(SAS)--Editing files60549
+Node: iESS(SAS)--Interactive SAS processes62441
+Node: ESS(SAS)--Batch SAS processes64210
+Node: ESS(SAS)--Function keys for batch processing67886
+Node: ESS(SAS)--TAB key76437
+Node: ESS(SAS)--Usage scenarios77709
+Node: iESS(SAS)--Common problems81877
+Node: ESS(SAS)--MS Windows83025
+Node: Help for BUGS83612
+Node: ESS(BUGS)--Model files84642
+Node: ESS(BUGS)--Command files87547
+Node: ESS(BUGS)--Log files88772
+Node: Entering commands89374
+Node: Command-line editing90659
+Node: Completion91935
+Node: Completion details94694
+Ref: Completion details-Footnote-196601
+Node: Transcript96881
+Node: Last command98650
+Node: Process buffer motion100256
+Node: Transcript resubmit101765
+Node: Saving transcripts104360
+Node: Command History106393
+Node: History expansion109009
+Node: Hot keys112209
+Node: Statistical Process running in ESS?115662
+Node: Emacsclient116959
+Node: Other117758
+Node: Editing118792
+Node: Edit buffer119947
+Node: Loading121975
+Node: Error Checking123016
+Node: Evaluating code124054
+Node: Indenting127521
+Node: Other edit buffer commands130534
+Node: Source Files132404
+Node: Source Directories136923
+Node: Help140047
+Node: Transcript Mode143856
+Node: Resubmit144988
+Node: Clean146060
+Node: Miscellaneous146771
+Node: Highlighting147132
+Node: Graphics148549
+Node: printer149073
+Node: X11149832
+Node: winjava150416
+Node: Object Completion150806
+Node: Bugs Etc151608
+Node: Bugs151830
+Node: Reporting Bugs153078
+Node: Mailing Lists153868
+Node: Customization154582
+Node: Variables155429
+Node: Variables for starting ESS156374
+Node: Dump file variables158387
+Node: Indentation variables159558
+Node: Variables controlling interaction162539
+Node: Editing assembly files163423
+Node: Hooks164222
+Node: Keybindings165365
+Node: Key Index166393
+Node: Concept Index166536
+Node: Variable and command index173742
 
 End Tag Table
