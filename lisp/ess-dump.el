@@ -1,6 +1,6 @@
 ;;; ess-dump.el --- Getting objects into text files for editing
 
-;; Copyright (C) 2000   A.J. (Tony) Rossini <rossini@biostat.washington.edu>
+;; Copyright (C) 2000--2001 A.J. Rossini <rossini@u.washington.edu>
 ;;			Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;			Martin Maechler <maechler@stat.math.ethz.ch>
 ;;                      Richard M. Heiberger <rmh@fisher.stat.temple.edu>
@@ -8,9 +8,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 3 Sept 2000
-;; Modified: $Date: 2000/09/03 19:23:16 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: ess-dump.el,v 5.1 2000/09/03 19:23:16 rossini Exp $
+;; Modified: $Date: 2001/01/08 00:44:29 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: ess-dump.el,v 5.2 2001/01/08 00:44:29 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -31,6 +31,8 @@
 ;;; Commentary:
 
 ;; Code for sending statistical objects to text files for editing.
+;;
+;; THIS IS STRICTLY NOT USED, BUT IS FOR PLANNING.
 
 ;;; Code:
 
