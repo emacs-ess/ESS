@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.9 2000/03/02 18:28:14 maechler Exp $
+;; Version: $Id: ess.el,v 5.10 2000/03/21 07:42:07 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -95,9 +95,9 @@
 ;;; INSTALLATION
 ;;; See README and S-site for details.
 
-;;; GETTING LATER RELEASES OF S MODE
-;;; <-- NEED NEW STUFF HERE -->
-
+;;; GETTING RELEASES OF ESS
+;;; ===> http://ess.stat.wisc.edu/
+;;;
 
 ;;; CREDITS.
 ;;; Thanks to shiba@shun.isac.co.jp (Ken'ichi "Modal" Shibayama) for
@@ -265,6 +265,10 @@
       (eq (car-safe object) 'lambda)
       (and (symbolp object) (fboundp object))))
 )
+
+;;-- more emacs 19 back compatibility
+(if (not (fboundp 'cadr)); could (require 'cl) but that is too big
+ (defun cadr (list) (car (cdr list))))
 
 
 ;;; versions thanks to Barry Margolin <barmar@bbnplanet.com>.
