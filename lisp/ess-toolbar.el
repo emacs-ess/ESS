@@ -2,9 +2,9 @@
 ;;; Thu 06 May 2004
 ;;; Stephen Eglen
 ;;; GPL.
-;; Modified: $Date: 2004/06/23 13:13:31 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: ess-toolbar.el,v 1.15 2004/06/23 13:13:31 stephen Exp $
+;; Modified: $Date: 2004/06/24 12:05:22 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: ess-toolbar.el,v 1.16 2004/06/24 12:05:22 stephen Exp $
 
 ;;; Commentary:
 
@@ -47,11 +47,10 @@
   :link '(emacs-commentary-link :tag "Commentary" "ess-toolbar.el")
   :prefix "ess-")
 
-;; Check default for XEmacs?
 (defcustom ess-use-toolbar 
   (if (featurep 'xemacs)
-      (featurep 'toolbar)
-    (fboundp 'tool-bar-add-item))
+      (memq (device-type) '(x gtk mswindows))
+    (and (fboundp 'display-images-p) (display-images-p)))
   "*Non-nil means ESS should support the toolbar.
 Currently works only under Emacs 21 and maybe XEmacs 21.4."
   :group 'ess-toolbar
