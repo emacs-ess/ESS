@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/05/22 16:07:15 $
-;; Version: $Revision: 5.90 $
-;; RCS: $Id: ess-inf.el,v 5.90 2004/05/22 16:07:15 stephen Exp $
+;; Modified: $Date: 2004/06/18 06:48:33 $
+;; Version: $Revision: 5.91 $
+;; RCS: $Id: ess-inf.el,v 5.91 2004/06/18 06:48:33 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -524,8 +524,8 @@ Returns the name of the selected process."
     (save-excursion
       (set-buffer (process-buffer (get-process proc)))
       (ess-make-buffer-current))
-    (if noswitch 
-	nil 
+    (if noswitch
+	nil
       (ess-show-buffer (buffer-name (process-buffer (get-process proc))) t))
     proc))
 
@@ -562,7 +562,7 @@ prompt for a process name with PROMPT.
 (defun ess-switch-to-ESS (eob-p)
   "Switch to the current inferior ESS process buffer.
 With (prefix) EOB-P non-nil, positions cursor at end of buffer.
-This function should follow the description in `ess-show-buffer' 
+This function should follow the description in `ess-show-buffer'
 for showing the iESS buffer, except that the iESS buffer is also
 made current."
   (interactive "P")
@@ -570,7 +570,7 @@ made current."
   (if (and ess-current-process-name (get-process ess-current-process-name))
       (progn
 	;; Display the buffer, but don't select it yet.
-	(ess-show-buffer 
+	(ess-show-buffer
 	 (buffer-name (process-buffer (get-process ess-current-process-name)))
 	 t)
 	(if eob-p (goto-char (point-max))))
@@ -605,7 +605,7 @@ made current."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ess-show-buffer
 ;; Something like this almost works, but problems with XEmacs and Emacs
-;; differing implementations of the args to display-buffer make this 
+;; differing implementations of the args to display-buffer make this
 ;; too tough to pursue.  The longer version below works.
 ;; (defun ess-show-buffer (buf)
 ;;   "Display the buffer BUF, a string, but do not select it.
@@ -613,7 +613,7 @@ made current."
 ;;   ;; On XEmacs, I get an error if third arg to display-buffer is t and
 ;;   ;; the BUF is in another frame.  Emacs does not have this problem.
 ;;   (if (featurep 'xemacs)
-;;       (display-buffer buf nil (get-frame-for-buffer buf))      
+;;       (display-buffer buf nil (get-frame-for-buffer buf))
 ;;     (display-buffer buf nil t)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun ess-show-buffer (buf &optional visit)
@@ -625,7 +625,7 @@ This handles several cases:
 1. If BUF is visible in the current frame, nothing is done.
 2. If BUF is visible in another frame, then we ensure that frame is
 visible (it may have been iconified).
-3. If buffer is not visible in any frame, simply show it in another window 
+3. If buffer is not visible in any frame, simply show it in another window
 in the current frame.
 
 Iff VISIT is non-nil, as well as making BUF visible, we also select it
@@ -635,7 +635,7 @@ as the current buffer."
 	;;1. Nothing to do, BUF visible in this frame; just return window
 	;; where this buffer is.
 	t
-      
+
       ;; 2. Maybe BUF visible in another frame.
       (setq frame (ess-buffer-visible-other-frame buf))
       (if frame
@@ -649,7 +649,7 @@ as the current buffer."
     ;; At this stage, the buffer should now be visible on screen,
     ;; although it won't have been made current.
     (if visit
-	(progn 
+	(progn
 	  ;; Need to select the buffer.
 	  ;;
 	  ;; First of all, check case 2 if buffer is in another frame
@@ -948,7 +948,7 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 	  (ess-show-buffer (buffer-name sbuffer) nil)
 	  ;; Once SBUFFER is visible, we can then move the point in that
 	  ;; window to the end of the buffer.
-	  (set-window-point (get-buffer-window sbuffer t) 
+	  (set-window-point (get-buffer-window sbuffer t)
 			    (with-current-buffer sbuffer (point-max))))
       (set-buffer cbuffer))
     ))
@@ -1120,7 +1120,6 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
 		      (buffer-file-name))
 		 (expand-file-name
 		  (read-file-name "Load S file: " nil nil t)))))
-  (require 'ess-inf)
   (ess-make-buffer-current)
   (let ((source-buffer (get-file-buffer filename)))
     (if (ess-check-source filename)
