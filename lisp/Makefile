@@ -75,7 +75,7 @@ SOURCES = ess-vars.el ess.el ess-site.el \
 	essddr.el
 
 DOCS = 	README README.S README.XLispStat README.SAS \
-	ess.texi ess.info ess.info-1 ess.info-2 ess.info-3 ess.dvi \
+	ess.texi dir ess.info ess.info-1 ess.info-2 ess.info-3 ess.dvi \
 	Doc/TODO Doc/Why_S-mode_Rocks.DMS \
 	Doc/README-19.28 Doc/README.additions Doc/NEWS \
 	Doc/ajr-talk.tex Doc/rmh-talk.tex Doc/slverb.sty 
