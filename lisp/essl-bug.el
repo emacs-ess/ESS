@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2004/02/18 21:04:17 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: essl-bug.el,v 1.24 2004/02/18 21:04:17 rsparapa Exp $/ini
+;; Modified: $Date: 2004/05/13 10:52:38 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: essl-bug.el,v 1.25 2004/05/13 10:52:38 stephen Exp $/ini
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -81,6 +81,9 @@ Users whose default is not 'sh, but are accessing a remote machine with
     :type  'string
 )
 
+;; SJE Thu 13 May 2004
+;; The "backbugs" scripts can be found in ess-etc-directory, so maybe we
+;; can use ess-etc-directory here too.
 (defcustom ess-bugs-batch-command 
     (if (equal ess-bugs-batch-version "0.6") "backbugs" "backbug5")
   "*ESS[BUGS]: The name of the command to run BUGS in batch mode.
