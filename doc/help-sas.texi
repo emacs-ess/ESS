@@ -315,6 +315,10 @@ F12  F12  viewgraph
                     open a GSASFILE near point for viewing either in emacs or 
                     with an external viewer
 
+C-F1 C-F1 create-rtf
+                    create an MS RTF file from the current buffer and base
+                    the new file name on it by replacing the file extension
+                    with .rtf
 C-F3 C-F8 submit-region    
                     write region to ess-temp.sas and submit
 

@@ -10,7 +10,8 @@ SUBMIT opens a buffer on the remote host via the local variable
 ess-sas-shell-buffer-remote-init which defaults to "ssh";
 changed the definition of the variable ess-sas-edit-keys-toggle 
 to boolean rather than 0/1; added the function ess-electric-run-semicolon
-which automatically reverse indents lines containing only "run;"
+which automatically reverse indents lines containing only "run;";
+C-F1 creates an MS RTF file from the current buffer and name it accordingly
 @end itemize
 
 Changes/New Features in 5.1.24:
