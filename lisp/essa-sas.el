@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/05/13 20:47:13 $
-;; Version: $Revision: 1.94 $
-;; RCS: $Id: essa-sas.el,v 1.94 2002/05/13 20:47:13 rsparapa Exp $
+;; Modified: $Date: 2002/05/14 19:02:48 $
+;; Version: $Revision: 1.95 $
+;; RCS: $Id: essa-sas.el,v 1.95 2002/05/14 19:02:48 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -397,10 +397,10 @@ on the way."
 
        (if (or
            (search-forward-regexp 
-	     "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ ,()\t;]"
+	     "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)&.*[ ,()\t;]"
 	     nil t)
            (search-backward-regexp 
-	     "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ ,()\t;]"
+	     "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)&.*[ ,()\t;]"
 	     nil t)) (setq ess-tmp-sas-data (match-string 1)))
 
        (if (and ess-tmp-sas-data 
