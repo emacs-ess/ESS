@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 Aug 1999
-;; Modified: $Date: 1999/12/01 00:41:09 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essl-omg.el,v 5.3 1999/12/01 00:41:09 ess Exp $
+;; Modified: $Date: 2000/01/26 20:27:31 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essl-omg.el,v 5.4 2000/01/26 20:27:31 ess Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -390,7 +390,6 @@ Returns nil if line starts inside a string, t if in a comment."
 ;(defun ess-add-MM-keys ()
 ;  (require 'ess-mode)
 ;  (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline))
-
 
 (provide 'essl-omg)
 
