@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/03 13:36:16 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essd-xls.el,v 1.9 1997/07/03 13:36:16 rossini Exp $
+;; Modified: $Date: 1997/07/07 16:51:45 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essd-xls.el,v 1.10 1997/07/07 16:51:45 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.10  1997/07/07 16:51:45  rossini
+;;: added new-style language variable setup.
+;;:
 ;;: Revision 1.9  1997/07/03 13:36:16  rossini
 ;;: added inferior-ess autoload.
 ;;:
@@ -60,16 +63,46 @@
 ;;  (remove-hook 'ess-pre-run-hook 'ess-XLS-shortcut-pre-run-hook))
 
 
-(defun XLS () "Call 'XLS', but this is only minimally correct..."
+(defvar XLS-customize-alist
+  '((ess-customize-alist           .  XLS-customize-alist       )
+    (ess-proc-prefix               .  inferior-XLS-program-name )
+    (ess-version-running           .  "XLS"                     )
+    (inferior-ess-program          .  "XLS"                     )
+    ;;(inferior-ess-objects-command  .                     )
+    ;;(ess-help-sec-regex            .  
+    ;;(ess-help-sec-keys-alist       .  
+    (inferior-ess-help-command     .  "(help '%s)\n"            )
+    (inferior-ess-exit-command     .  "(exit)\n")               )
+    (ess-loop-timeout              .  100000                    )
+    (inferior-ess-primary-prompt   .  "> ?"                     )
+  "Variables to customize for XLS")
+
+
+(defun XLS ()
+  "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ).
+New way to do it."
+  (interactive)
+  ;; Setup the needed vars
+  (setq ess-customize-alist XLS-customize-alist) ; setq or setq-default?
+  (ess-set-vars-default ess-customize-alist (current-buffer))
+  ;; debug, only
+  (message "(XLS): ess-proc-prefix=%s , buf=%s"
+	   ess-proc-prefix (current-buffer))
+  ;; now run...
+  (inferior-ess))
+
+
+(defun XLS-old () "Call 'XLS', but this is only minimally correct..."
   (interactive)
   ;;(add-hook 'ess-pre-run-hook  'ess-XLS-shortcut-pre-run-hook)
   ;;(add-hook 'ess-post-run-hook 'ess-XLS-shortcut-post-run-hook)
   (setq-default inferior-ess-program          inferior-XLS-program-name
-		ess-proc-prefix               "XLS"
-		ess-version-running           "XLS"
-		inferior-ess-primary-prompt   "> ?" 
-		inferior-ess-help-command     "(help '%s)\n"
-		inferior-ess-exit-command     "(exit)\n")
+		ess-proc-prefix               "XLS"                    
+		ess-version-running           "XLS"                    
+		inferior-ess-primary-prompt   "> ?"                    
+		inferior-ess-help-command     "(help '%s)\n"           
+		inferior-ess-exit-command     "(exit)\n")              
+		 
   (inferior-ess))
 
 
