@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.7 2001/05/03 09:43:27 rossini Exp $
+;; Version: $Id: ess-menu.el,v 1.8 2001/05/14 20:39:45 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -238,12 +238,14 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
 
  ;;; Speedbar stuff.
 
+
 (defun S-speedbar-buttons (buffer)
   "attempted hack."
   
   (speedbar-with-writable)
-  (speedbar-make-tag-line)
-  (speedbar-insert-button))
+  ;;(speedbar-make-tag-line)
+  ;;(speedbar-insert-button)
+  )
 
 (fset 'R-speedbar-buttons 'S-speedbar-buttons)
 
@@ -256,8 +258,11 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
   (speedbar-add-supported-extension ".S")
   (speedbar-add-supported-extension ".s")
   (speedbar-add-supported-extension ".q"))
-  
-;(ess-S-initialize-speedbar)
+
+(if (featurep 'speedbar)
+    (message "speedbar support enabled")
+    (require 'speedbar)
+    (ess-S-initialize-speedbar))
 
  ; Run load hook and provide package
 
