@@ -22,21 +22,21 @@
 	(or: @code{gunzip < ESS-5.1.13.tar.gz | tar vxf -} ).
 	(or using GNU tar:  @code{tar zvxf ESS-5.1.13.tar.gz}).
 
-  The tar command will extract files into the current directory.
+  The @code{tar} command will extract files into the current directory.
 
   Do not create ESS-5.1.13 yourself, or you will get an extra level of
   depth to your directory structure.
 @item
-  Edit the file @file{ess-site.el} as explained in the comments section of
-  that file.  Installations that are using ESS only for S-plus 3.x
-  will probably not need to make any changes.  Installations that also
+  Edit the file @file{lisp/ess-site.el} as explained in the comments
+  section of that file.  Installations that are using ESS only for S-plus
+  3.x will probably not need to make any changes.  Installations that also
   have one or more of (S+5 S4 R SAS XLispStat Stata) may need to uncomment
   corresponding lines in @file{ess-site.el}.
 @item
   @b{READ THIS ITEM THOROUGHLY BEFORE STARTING}:
 
-  In the ESS-5.1.13 directory, edit the file Makeconf (only if you want
-  to place the executables in other locations; see LISPDIR and
+  In the ESS-5.1.13 directory, edit the file @file{Makeconf} (only if you
+  want to place the executables in other locations; see LISPDIR and
   INFODIR) and then type:
 @example
 	make
@@ -65,7 +65,7 @@
 @end example
   instead of editing the Makefile.
 
-  @emph{Note} that you might need to use @bold{GNU make} for everything to
+  @emph{Note} that you might need to use @b{GNU make} for everything to
   work properly
 
   An alternative, if you are running XEmacs and have access to the
