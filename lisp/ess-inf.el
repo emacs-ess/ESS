@@ -3,13 +3,11 @@
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainers: Hornik,
-;;                       Maechler <maechler@stat.math.ethz.ch>,
-;;                       Rossini <rossini@stat.sc.edu>
+;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/08 13:52:55 $
-;; Version: $Revision: 1.60 $
-;; RCS: $Id: ess-inf.el,v 1.60 1997/10/08 13:52:55 rossini Exp $
+;; Modified: $Date: 1997/10/20 18:58:10 $
+;; Version: $Revision: 1.61 $
+;; RCS: $Id: ess-inf.el,v 1.61 1997/10/20 18:58:10 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -73,10 +71,11 @@
 
 ;;*;; Starting a process
 
-(defun ess-proc-name (n)
+(defun ess-proc-name (n name)
   "Return process name of process N, as a string."
   ;;(concat ess-dialect (if (> n 1) n)))
-  (concat ess-dialect ":" n))
+  ;;(concat (cdr (rassoc ess-dialect ess-customize-alist)) ":" n))
+  (concat name ":" n))
 
 ;; AJR: Moved S,R,XLS to ess-site.
 
@@ -121,17 +120,22 @@ accompany the call for inferior-ess-program.
   ;; etc).
   (save-excursion 
     (set-buffer ess-dribble-buffer)
-    (ess-setq-vars-default ess-customize-alist (current-buffer)))
+    ;; next line isn't necessary now???
+    (ess-setq-vars-default ess-customize-alist (current-buffer))
+    (setq temp-ess-dialect (cdr (rassoc ess-dialect ess-customize-alist))))
 
-  (ess-setq-vars-local ess-customize-alist (current-buffer))
+  ;;(ess-setq-vars-local ess-customize-alist (current-buffer))
+
   ;; run hooks now, to overwrite the above!
   (run-hooks 'ess-pre-run-hook)    
   (ess-write-to-dribble-buffer 
-   (format "(inferior-ess 1): ess-language=%s, ess-dialect=%s, buf=%s \n"
+   (format "(inferior-ess 1): ess-language=%s, ess-dialect=%s, temp-dialect=%s, buf=%s \n"
 	   ess-language
 	   ess-dialect
+	   temp-ess-dialect
 	   (current-buffer)))
   (let* ((defdir (directory-file-name (or ess-directory default-directory)))
+	 (temp-dialect temp-ess-dialect)
 ;;	(procname
 ;;	 (if n (ess-proc-name (prefix-numeric-value n))
 ;;	   ;; no prefix arg
@@ -145,7 +149,9 @@ accompany the call for inferior-ess-program.
 ;;		   (setq ntry (1+ ntry))
 ;;		   (setq done (not (get-process (ess-proc-name ntry)))))
 ;;		 (ess-proc-name ntry))))
-	 (procname (if n (ess-proc-name (prefix-numeric-value n))
+
+	 (procname (if n (ess-proc-name (prefix-numeric-value n)
+					temp-dialect)
 		     ;; no prefix arg
 		     (or (and (not (comint-check-proc (current-buffer)))
 			      ;; Don't start a new process in current buffer if
@@ -157,12 +163,19 @@ accompany the call for inferior-ess-program.
 			   (while (not done)
 			     (setq ntry (1+ ntry)
 				   done (not
-					 (get-process (ess-proc-name ntry)))))
-			   (ess-proc-name ntry)))))
+					 (get-process (ess-proc-name
+						       ntry
+						       temp-dialect)))))
+			   (ess-proc-name ntry temp-dialect)))))
 	 (startdir nil)
 	 (buf nil)
 	 (buf-name-str  (concat "*" procname "*")))
 
+    (ess-write-to-dribble-buffer
+     (format "(inferior-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
+	     procname
+	     temp-dialect
+	     buf-name-str))
     (cond
      ;; If process is running, we use it:
      ((get-process procname)
