@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/03/24 15:20:35 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: ess-inf.el,v 5.16 1999/03/24 15:20:35 maechler Exp $
+;; Modified: $Date: 1999/03/31 23:40:51 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: ess-inf.el,v 5.17 1999/03/31 23:40:51 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -667,7 +667,8 @@ Guarantees that the value of .Last.value will be preserved."
 	      (erase-buffer)
 	      (set-marker (process-mark sprocess) (point-min))
 	      (process-send-string sprocess ess-save-lastvalue-command)
-	      (sleep-for 0.5)
+	      (if (or (equal window-system 'w32) (equal window-system 'win32))
+		  (sleep-for 0.5))
 	      (ess-prompt-wait sprocess)
 	      (erase-buffer)
 	      (process-send-string sprocess com)
@@ -675,7 +676,8 @@ Guarantees that the value of .Last.value will be preserved."
 		  (sleep-for 4))	;this much time is needed for
 					;enss-create-object-name-db on PC
 	      (ess-prompt-wait sprocess)
-	      (sleep-for 0.5)
+	      (if (or (equal window-system 'w32) (equal window-system 'win32))
+		  (sleep-for 0.5))
 	      (goto-char (point-max))
 	      (save-excursion
 		(beginning-of-line)	; so prompt will be deleted
@@ -683,7 +685,8 @@ Guarantees that the value of .Last.value will be preserved."
 	      (process-send-string sprocess ess-retr-lastvalue-command)
 
 	      ;; For S+4
-	      (sleep-for 0.5)
+	      (if (or (equal window-system 'w32) (equal window-system 'win32))
+		  (sleep-for 0.5))
 	      (ess-prompt-wait sprocess end-of-output)
 
 	      ;; Old version.
