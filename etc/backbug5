@@ -6,10 +6,14 @@
 if [ ${BUGS:?} = "BUGS: parameter null or not set" ]
 then 
     case `config.guess` in
-	i?86-pc-cygwin)     BUGS=bugs0603.exe;;
-	i?86-*-linux*)      BUGS=bugs0600.linux;;
-	sparc-sun-solaris*) BUGS=bugs603.sparc;;
-	mips-sgi-irix*)     BUGS=bugs06.sgi;;
+	alpha*-dec-*)       BUGS=bugs05.decalpha;;
+        hppa*-hp-hpux*)     BUGS=bugs05.hp;;
+	i?86-pc-cygwin)     BUGS=bugs05.exe;;
+	i?86-*-freebsd*)    BUGS=bugs05.freebsd;;
+	powerpc*-*-*)       BUGS=bugs05.rs6000;;
+	sparc-sun-solaris*) BUGS=bugs05.sparc;;
+	mips-sgi-irix*)     BUGS=bugs05.sgi;;
+	mips-dec-*)         BUGS=bugs05.decmips;;
     esac
 fi
 
