@@ -11,7 +11,8 @@ XLispStat:
 	and the name for the tag will be simply
 	xxx:methodname
 
-	I've tried it only in MS-DOS right nomw, but it should work also in unix.
+	I've tried it only in MS-DOS right nomw, but it should work
+	also in unix.
 
 	On Sun, 13 Dec 1998, Johannes Huesing wrote:
 
