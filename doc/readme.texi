@@ -3,16 +3,16 @@
 @setfilename readme.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: readme.texi,v 1.16 2000/10/10 16:56:54 rossini Exp $
+@comment $Id: readme.texi,v 1.17 2000/10/17 13:14:28 rossini Exp $
 
 @node General Information
 @comment  node-name,  next,  previous,  up
 @chapter General Information: README
 @cindex README
 
-($Revision: 1.16 $, for ESS 5.1.x)
+($Revision: 1.17 $, for ESS 5.1.x)
 
-This is the README file for the distribution of ESS version 5.1.17, the
+This is the README file for the distribution of ESS version 5.1.18, the
 alpha/beta series we are using on the way to producing 5.2 (the next
 stable distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported include:
