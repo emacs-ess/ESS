@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/12 16:59:55 $ - $Revision: 1.162 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/12 17:05:32 $ - $Revision: 1.163 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -918,24 +918,25 @@ provides the same editing features, including syntactic highlighting
 and string-search, as the editing mode \stexttt{ESS[S]}.  It also
 provides an interactive history mechanism; transcript recording and
 editing; and the ability to resubmit the contents of a multi-line
-command to the executing process with a single keystroke.  The
-statistical processes S and R are started by using the Emacs function
-call \stexttt{M-x~S} or \stexttt{M-x~R} on Unix or Windows and the
-call \stexttt{M-x~Sqpe} on Windows.
+command to the executing process with a single keystroke.  %The
+%statistical processes S and R are started by using the Emacs function
+%call \stexttt{M-x~S} or \stexttt{M-x~R} on Unix or Windows and the
+%call \stexttt{M-x~Sqpe} on Windows.
 
-ESS uses two different protocols for communicating with the S language
-program.  For S, \Splus, and R on Unix and for R and \stexttt{Sqpe} on Windows
-(see below for more on \Splus\ for Windows and \stexttt{Sqpe}), ESS uses
-standard-input/standard-output in the \stexttt{iESS[S]} buffer.  In
-these cases the ESS commands \stexttt{M-x~S} on Unix,
-\stexttt{M-x~Sqpe} on Windows, and \stexttt{M-x~R} on both create a
-new \stexttt{iESS[S]} buffer and start the S language process inside
-that buffer.
+ESS uses two different approaches for communicating with the S language
+program.  For the older command-line interface, %For S, \Splus, and R on Unix and for R and \stexttt{Sqpe} on Windows
+%(see below for more on \Splus\ for Windows and \stexttt{Sqpe}),
+ESS redirects and controls the standard-input/standard-output% in the
+%\stexttt{iESS[S]} buffer.  In 
+%these cases the ESS commands \stexttt{M-x~S} on Unix,
+%\stexttt{M-x~Sqpe} on Windows, and \stexttt{M-x~R} on both create a
+%new \stexttt{iESS[S]} buffer and start the S language process inside
+%that buffer.
 
-\begin{Comment} Rich: Martin, what do we do with R on Macintosh?\end{Comment}
-\begin{Comment} Rodney: If it is R for X11, then it's just like Unix.  
-Carbonized R is problematic at this time, so we should discourage it in 
-README.R  When things change, we can change with them.\end{Comment}
+%\begin{Comment} Rich: Martin, what do we do with R on Macintosh?\end{Comment}
+%\begin{Comment} Rodney: If it is R for X11, then it's just like Unix.  
+%Carbonized R is problematic at this time, so we should discourage it in 
+%README.R  When things change, we can change with them.\end{Comment}
 
 One useful extension in ESS is relaxation of the requirement that the
 statistics program be available on the local machine.  ESS provides
@@ -959,48 +960,50 @@ machine.  If the X11 Windowing system is running on the local machine,
 it is even possible to bring up visual displays and graphics from
 remote Unix systems onto a local Microsoft Windows display.
 
-With \Splus\ on Unix, and with R on all platforms, the ESS buffer in
-\stexttt{iESS} mode talks directly to the computing engine, the
-program that does the statistical work.  Printed results appear in the
-\stexttt{iESS} buffer and interactive graphics appear in secondary
-windows controlled by the S language process.
+%With \Splus\ on Unix, and with R on all platforms, the ESS buffer in
+%\stexttt{iESS} mode talks directly to the computing engine, the
+%program that does the statistical work.  Printed results appear in the
+%\stexttt{iESS} buffer and interactive graphics appear in secondary
+%windows controlled by the S language process.
 
-On Windows the ESS buffer in \stexttt{iESS} mode talks directly to
-\stexttt{Sqpe} for text input and output.  Interactive graphics and
-other GUI features are not available when we use \stexttt{iESS} mode
-(see the next section for interactive graphics on Windows).
-Static graphics, for instance by PostScript, are available.  In the
-near future, we anticipate that \Splus\ 6 will overcome the design
-limitations of Windows by using the \stexttt{connections} class of the
-new S4 engine.  We will then have both interactive graphics and transcript
-recording and editing on the Windows platform.
+%On Windows the ESS buffer in \stexttt{iESS} mode talks directly to
+%\stexttt{Sqpe} for text input and output.  Interactive graphics and
+%other GUI features are not available when we use \stexttt{iESS} mode
+%(see the next section for interactive graphics on Windows).
+%Static graphics, for instance by PostScript, are available.  In the
+%near future, we anticipate that \Splus\ 6 will overcome the design
+%limitations of Windows by using the \stexttt{connections} class of the
+%new S4 engine.  We will then have both interactive graphics and transcript
+%recording and editing on the Windows platform.
 
-\paragraph{\Splus\ for Windows.}
-The GUI for \Splus\ 4 and 6 on Windows is independent of Emacs; it is not
-an inferior process.  Full GUI
-capability is available by switching to the \Splus\ window.
-ESS uses the Windows DDE (Dynamic Data Exchange) protocol,
-through a buffer in \stexttt{ddeESS} mode, for one-way communication with
-the \Splus\ GUI.
-ESS can send commands to the GUI, but the printed
-output does not come back to an Emacs buffer.  Instead the output appears in
-the \Splus\ Commands Window.  Transcripts must be physically copied to
-an Emacs buffer to get the transcript editing features.
+%\paragraph{\Splus\ for Windows.}
+However, the GUI for \Splus\ 4 and 6 on Windows is independent of
+Emacs and can not be cast in the role of an inferior process with
+redirected input and output.  
+%Full GUI capability is available by
+%switching to the \Splus\ window.  
+ESS uses the Windows DDE (Dynamic
+Data Exchange) protocol, through a buffer in \stexttt{ddeESS} mode,
+for one-way communication with the \Splus\ GUI.  ESS can send commands
+to the GUI, but the printed output does not come back to an Emacs
+buffer.  %Instead the output appears in the \Splus\ Commands Window.
+Transcripts must be physically copied to an Emacs buffer to get the
+transcript editing features.
 
-There are two strong advantages to using even this limited communication
-with the \Splus\ GUI through ESS.  First, the user gets the full
-editing capabilities of Emacs.  Second, S language commands are sent
-from the Emacs buffer directly to the GUI Commands window with the
-familiar Emacs keystrokes.  Hence the user can work in a powerful
-editing environment and is protected from the delay and ergonomic
-challenges of using the mouse for copy and paste operations across
-windows.
+There are two %strong 
+advantages to using even this limited communication with the \Splus\ 
+GUI through ESS.  First, the user gets the full editing capabilities
+of Emacs.  Second, S language commands are sent from the Emacs buffer
+directly to the GUI Commands window with the familiar Emacs
+keystrokes.  Hence the user can work in a powerful editing environment
+and is protected from the delay and ergonomic challenges of using the
+mouse for copy and paste operations across windows.
 
-In \Splus\ for Windows, the GUI
-talks to the computing engine and the user accesses the computing
-engine indirectly by interacting with the GUI.  ESS uses
-\stexttt{ddeESS} mode to send commands to the GUI but can't receive
-results back.
+%In \Splus\ for Windows, the GUI
+%talks to the computing engine and the user accesses the computing
+%engine indirectly by interacting with the GUI.  ESS uses
+%\stexttt{ddeESS} mode to send commands to the GUI but can't receive
+%results back.
 
 \paragraph{\SAS---Interactive in Emacs buffers.}
 
