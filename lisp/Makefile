@@ -169,8 +169,19 @@ ess.elc: ess.el ess-vars.elc
 ess-site.elc: ess-site.el ess.elc
 
 ess-inf.elc: ess-inf.el $(CORE)
+	@echo " "
+	@echo "For the next compile, please disregard the message"
+	@echo "    ** assignment to free variable comint-last-input-end"
+	@echo "from the byte compiler if it occurs. It is completely normal."
+	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-inf.el
+
 
 ess-mode.elc: ess-mode.el $(CORE)
+	@echo " "
+	@echo "For the next compile, please disregard the message"
+	@echo "    ** variable last-sexp bound but not referenced"
+	@echo "from the byte compiler if it occurs. It is completely normal."
+	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-mode.el
 
 ess-trns.elc: ess-trns.el $(CORE)
 
