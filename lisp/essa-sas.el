@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/04/30 16:59:01 $
-;; Version: $Revision: 1.162 $
-;; RCS: $Id: essa-sas.el,v 1.162 2004/04/30 16:59:01 rsparapa Exp $
+;; Modified: $Date: 2004/04/30 21:31:55 $
+;; Version: $Revision: 1.163 $
+;; RCS: $Id: essa-sas.el,v 1.163 2004/04/30 21:31:55 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -53,6 +53,15 @@ or `ess-sas-data-view-insight'."
     :type  'string
 )
 
+(defcustom ess-sas-data-view-submit-options 
+    (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
+	"-nodms -nosysin -log /dev/null")
+"*The command-line options necessary for your OS with respect to
+`ess-sas-data-view-fsview' and `ess-sas-data-view-insight'."
+    :group 'ess-sas  
+    :type  'string
+)
+
 (defcustom ess-sas-data-view-fsview-command "; proc fsview data=" 
     "*SAS code to open a SAS dataset with `ess-sas-data-view-fsview'."
     :group 'ess-sas  
@@ -84,6 +93,14 @@ or `ess-sas-data-view-insight'."
 (defcustom ess-sas-graph-suffix-regexp 
     "[.]\\([eE]?[pP][sS]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\)"
     "*GSASFILE suffix regexp."
+    :group 'ess-sas  
+    :type  'string
+)
+
+(defcustom ess-sas-image-viewer
+    (if ess-microsoft-p "kodakimg" 
+	(if (equal ess-sas-submit-method 'sh) "sdtimage"))
+    "*Application to view GSASFILE."
     :group 'ess-sas  
     :type  'string
 )
@@ -166,23 +183,6 @@ should set this variable to 'sh regardless of their local shell
 
 (make-variable-buffer-local 'ess-sas-submit-method)
 
-(defcustom ess-sas-data-view-submit-options 
-    (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
-	"-nodms -nosysin -log /dev/null")
-"*The command-line options necessary for your OS with respect to
-`ess-sas-data-view-fsview' and `ess-sas-data-view-insight'."
-    :group 'ess-sas  
-    :type  'string
-)
-
-(defcustom ess-sas-image-viewer
-    (if ess-microsoft-p "kodakimg" 
-	(if (equal ess-sas-submit-method 'sh) "sdtimage"))
-    "*Application to view GSASFILE."
-    :group 'ess-sas  
-    :type  'string
-)
-
 (defcustom ess-sas-submit-post-command 
     (if (equal ess-sas-submit-method 'sh) "-rsasuser &" 
 	(if ess-microsoft-p "-rsasuser -icon"))    
@@ -206,7 +206,7 @@ should set this variable to 'sh regardless of their local shell
 	;; behavior if csh or variant is not recognized
 	;; this should avoid the necessity of each user needing to set this
 	;; variable correctly based on the shell that they use and provide
-	;; an environment where all users are treated equally
+	;; an environment where all shells are treated equally
 	(let* ((temp-shell (getenv "SHELL"))
 	       (temp-char (string-match "/" temp-shell)))
             
