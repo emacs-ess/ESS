@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/17 02:24:03 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: ess-site.el,v 1.11 1997/06/17 02:24:03 rossini Exp $
+;; Modified: $Date: 1997/06/18 17:19:14 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: ess-site.el,v 1.12 1997/06/18 17:19:14 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.12  1997/06/18 17:19:14  rossini
+;;: misc formatting and editing.  Added S-mode to autoloads.
+;;:
 ;;: Revision 1.11  1997/06/17 02:24:03  rossini
 ;;: added R_mode.  Whoops.
 ;;:
@@ -153,19 +156,17 @@
 
 (eval-and-compile
 
+  ;; Not important in XEmacs, if unpacking from ../xemacs/site-lisp/
+  ;; directory.
   (defvar ess-lisp-directory
-    ;;  (directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
-    (directory-file-name "/stat2/faculty/rossini/S-mode"))
-
-  ;; Or replace directly with:
+    (directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
   ;;(directory-file-name "/usr/local/share/emacs/site-lisp/ess-mode"))
-  ;; Not needed in XEmacs (if in the site-lisp directory, but might as
-  ;; well add):
-  ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
+  ;;(directory-file-name "/stat2/faculty/rossini/S-mode"))
 
   (add-to-list 'load-path ess-lisp-directory))
 
 ;;*;; Requires : can't require, until path is set.
+
 (require 'ess)
 
 ;;; (1.2) Files ending in .q and .S are considered to be S source files
@@ -184,34 +185,31 @@
 	   ("\\.St$" . ess-transcript-mode))
 	 auto-mode-alist)))
 
-
 ;;; (1.3) Autoloads.  You should not need to change this bit.
 
-;; Do we need the lower-case versions, or should we just move the
-;; (fset) commands here?
-
-(autoload 'ess-mode "ess-mode" "Major mode for editing S source code" t)
-(autoload 'R-mode "ess-mode" "Major mode for editing R source code" t)
-
-(autoload 'ess-transcript-mode "ess-trans" "ESS source eval mode" t)
-(autoload 'ess-transcript-mode "ess-trans" "ESS source eval mode" t)
-
+(autoload 'S-mode "ess-mode"
+  "Major mode for editing S source code." t)
+(autoload 'R-mode "ess-mode"
+  "Major mode for editing R source code." t)
+;;(autoload 'XLS-mode "ess-mode"
+;;    "major mode for editing XLispStat code." t)
+(autoload 'ess-transcript-mode
+  "ess-trans" "ESS source eval mode" t)
 (autoload 'inferior-ess "ess-inf"
   "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
 
-;; Require the needed dialects for your setup.
+;; (1.4) Require the needed dialects for your setup.
 
 (require 'essd-s+3)
 (require 'essd-r)
 (require 'essd-xls)
-
+;; (require 'essd-vst) ; built on essd-xls.
 
 ;;TODO:
-;;  ViSta (essd-vst)
-;;  S4 (essd-s4)
-;;  S3 (essd-s3)
-;;  S+4 (essd-s+4)
-;;  SAS (essd-sas)
+;;  (require 'essd-s4)
+;;  (require 'essd-s3)
+;;  (require 'essd-s+4)
+;;  (require 'essd-sas)
 
 
 ;;; 2. Site Specific setup
@@ -219,20 +217,23 @@
 
 ;;; Set this to the name of the program you use to run S or Splus.  It
 ;;; can be an absolute pathname, if you wish.
-;;(setq inferior-S-program "Splus")
-;;(setq inferior-S-program (concat (getenv "SHOME") "/Splus"))
+;;(setq inferior-ess-program "Splus")
+;;(setq inferior-ess-program (concat (getenv "SHOME") "/Splus"))
 
+;;; You will need to change the following two variables if you use a
+;;; non-standard S prompt.
+;; (setq inferior-S-primary-prompt "[a-zA-Z0-9() ]*> ?")
+;; (setq inferior-S-secondary-prompt "+ ?")
+
+
+;;; --------- OLD STUFF -----------
 ;;; Set this to nil if you are running vanilla (AT&T) S instead of S-plus
 ;;(setq S-plus t)
 
 ;;; Set this to "2.3" if you are running a pre-3.0 version of S or S-plus
 ;;; Otherwise do not change it (still use "3.0" for any version after 3.0)
 ;; (setq ess-version-running "3.0")
-
-;;; You will need to change the following two variables if you use a
-;;; non-standard S prompt.
-;; (setq inferior-S-primary-prompt "[a-zA-Z0-9() ]*> ?")
-;; (setq inferior-S-secondary-prompt "+ ?")
+;;; -------------------------------
 
 
 ;;; 3. Customization (and commented out examples) for your site
@@ -243,6 +244,7 @@
 ;; The following two expressions automatically enable font-lock-mode
 ;; for S-mode and inferior-S-mode buffers.
 
+;; XEmacs has font-lock for ttys, as well.
 (if window-system
     (progn
       (add-hook 'S-mode-hook 'turn-on-font-lock t)
@@ -256,7 +258,6 @@
 ;;; C-h k, etc.  To enable, uncomment both lines of code below).
 ;;;
 ;;; Works only with Emacs at this time.
-
 ;; (cond (window-system
 ;;       (require 'framepop)))
 
@@ -268,14 +269,12 @@
 ;;; Anything else, never delete.  This variable only affects the behaviour
 ;;; of S-load-file.  Dump files are never deleted if an error occurs
 ;;; during the load. 
-
 ;;; RH sez: which I found imperative.  The default was to throw away
 ;;; files at the wrong time (I think it was something like, if you M-x
 ;;; S-load a file twice, while you are working on it, the file is
 ;;; deleted).  I believe source is real and the S object is temporary.
 ;;; The default behavior is for people who believe the object is real
 ;;; and the source file temporary.
-
 (setq ess-keep-dump-files "always")
 
  ; Local variables section
@@ -287,7 +286,6 @@
 ;;; Subsections: ;;;*;;;
 ;;; Components:  defuns, defvars, defconsts
 ;;;              Random code beginning with a ;;;;* comment
-
 ;;; Local variables:
 ;;; mode: emacs-lisp
 ;;; mode: outline-minor
