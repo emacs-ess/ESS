@@ -63,7 +63,7 @@
 \usepackage{alltt}
 
 %% Postscript fonts
-\usepackage{times}
+%\usepackage{times}
 \usepackage{graphicx}
 %\usepackage{psfig}
 
@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 22:05:23 $ - $Revision: 1.234 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/20 22:19:22 $ - $Revision: 1.235 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -959,6 +959,7 @@ This history is summarized in Table \ref{tab:timeline}.
 
 \begin{table}[tbp]
   \centering
+  {\tiny
   \begin{tabular}{c ll c ll}
 \hline
     Year  \\ 
@@ -983,11 +984,13 @@ This history is summarized in Table \ref{tab:timeline}.
     2001 & v.5.1.19 & (GNU Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS batch; Mac: R \\
 %%    2002 & v.5.1.20 & (Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS batch, Mac: R \\
 %%    2002 & v.5.2 & (Emacs/XEmacs, Unix/Windows/Mac) &&& ? \\
-\hline
+    \hline
   \end{tabular}
+  }
   \caption{History and Ancestors of ESS}
   \label{tab:timeline}
 \end{table}
+
 
 %\section{Future Work}
 
