@@ -1,5 +1,9 @@
 Changes/New Features in 5.1.22:
 @itemize @bullet
+@item Besides info documentation, PDF and HTML 
+documentation are also provided and now available
+on the web as well; see @uref{http://software.biostat.washington.edu/ess/doc, ESS web page}
+and @uref{http://lib.stat.cmu.edu/general/ESS/doc, StatLib}
 @item Now that info documentation is available, the 
 README.* files are no longer supported.  However, they
 are still distributed for what it's worth.
@@ -18,14 +22,13 @@ ess-sas-shell-buffer to unique buffer names.
 Changes/New Features in 5.1.21:
 @itemize @bullet
 @item ESS[SAS]: info documentation now available!, see
-ESS->Help for Statistical Packages->Help for SAS; F12 opens
-GSASFILE nearest point for viewing either within emacs, when
-available, or via an external viewer; more syntax highlighting
-keywords; more enhancements for remote SAS batch jobs with 
-Kermit; new framework for remote SAS interactive jobs, see
-ess-remote
+ESS->Help for SAS; F12 opens GSASFILE nearest point for viewing 
+either within emacs, when available, or via an external viewer; 
+more syntax highlighting keywords; more enhancements for remote 
+SAS batch jobs with Kermit; new framework for remote SAS interactive 
+jobs, see ess-remote
 @item ESS[S]: info documentation now available!, see
-ESS->Help for Statistical Packages->Help for the S family
+ESS->Help for the S family
 @item Makefile: tag now independent of rel; info files
 made by doc/Makefile and installed in new info sub-directory
 @end itemize
@@ -111,16 +114,14 @@ and comments where plain "_" is used instead. (MM)
 
 Changes/New Features in 5.1.17:
 @itemize @bullet
-@item Documentation for Windows Installation (Rich Heiberger
-(@email{rmh@@surfer.stat.temple.edu}))
+@item Documentation for Windows Installation (Rich Heiberger)
 @item removal of ess-vars, finalization of customize support (in the
 sense that there is no more use of ess-vars, but that we need to
-fix ess-cust) (AJ Rossini (@email{rossini@@u.washington.edu}))
-@item Many small (and large) fixes/contributions (MMaechler,
-(@email{maechler@@stat.math.ethz.ch})).
+fix ess-cust) (AJ Rossini)
+@item Many small (and large) fixes/contributions (MMaechler)
 @item addition of the "S-equal" variable and provide M-x ess-add-MM-keys
 a way to remap "_" to `ess-S-assign', typically " <- ", but
-customizable. (MMaechler, (@email{maechler@@stat.math.ethz.ch})).
+customizable. (MMaechler)
 @end itemize
 
 Changes/New Features in 5.1.16:
@@ -136,21 +137,16 @@ Changes/New Features in 5.1.15:
 
 Changes/New Features in 5.1.14:
 @itemize @bullet
-@item Yet more fixes to SAS mode, (Rich Heiberger
-(@email{rmh@@surfer.stat.temple.edu}) and Rodney Sparapani
-@email{rsparapa@@mcw.edu})).
-@item Customize support (for most Emacsen which support it) (AJRossini,
-(@email{rossini@@biostat.washington.edu})
-@item ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini,
-@email{rossini@@biostat.washington.edu})
+@item Yet more fixes to SAS mode, (Rich Heiberger and Rodney Sparapani)
+@item Customize support (for most Emacsen which support it) (AJRossini)
+@item ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini)
 @end itemize
 
 Changes/New Features in 5.1.13:
 @itemize @bullet
 @item Version numbering finally all depending on the ./VERSION file,
 thanks to Martin Maechler.
-@item Yet more fixes to SAS mode, thanks to Rich Heiberger
-(@email{rmh@@surfer.stat.temple.edu}).
+@item Yet more fixes to SAS mode, thanks to Rich Heiberger.
 @end itemize
 
 Changes/New Features in 5.1.12:
@@ -158,19 +154,17 @@ Changes/New Features in 5.1.12:
 @item Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
 Chuck Taylor, and others.
 @item More fixes to SAS mode, thanks to Rodney Sparapani
-(@email{rsparapa@@mcw.edu}) and Rich Heiberger
-(@email{rmh@@surfer.stat.temple.edu}).
+and Rich Heiberger.
 @end itemize
 
 Changes/New Features in 5.1.11:
 @itemize @bullet
-@item More fixes to Stata mode, thanks to Brendan Halpin
-(@email{brendan@@essex.ac.uk})
+@item More fixes to Stata mode, thanks to
+@uref{mailto:brendan@@essex.ac.uk, Brendan Halpin}.
 @item fixed bugs in ESS-elsewhere, thanks to many testers
 @item README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
-to David Brahm (@email{brahm@@alum.mit.edu}).
+to @uref{mailto:brahm@@alum.mit.edu, David Brahm}.
 @item Fixes to SAS mode, thanks to Rodney Sparapani
-(@email{rsparapa@@mcw.edu})
 @end itemize
 
 Changes/New Features in 5.1.10:

@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from readme.texi on 5 August 2002 -->
+<!-- Created by texi2html 1.56k from readme.texi on 6 August 2002 -->
 
 <TITLE>ESS -- Emacs Speaks Statistics</TITLE>
 </HEAD>
@@ -76,6 +76,11 @@ details.
 Changes/New Features in 5.1.22:
 
 <UL>
+<LI>Besides info documentation, PDF and HTML
+
+documentation are also provided and now available
+on the web as well; see <A HREF="http://software.biostat.washington.edu/ess/doc">ESS web page</A>
+and <A HREF="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</A>
 <LI>Now that info documentation is available, the
 
 README.* files are no longer supported.  However, they
@@ -101,15 +106,14 @@ Changes/New Features in 5.1.21:
 <UL>
 <LI>ESS[SAS]: info documentation now available!, see
 
-ESS-&#62;Help for Statistical Packages-&#62;Help for SAS; F12 opens
-GSASFILE nearest point for viewing either within emacs, when
-available, or via an external viewer; more syntax highlighting
-keywords; more enhancements for remote SAS batch jobs with 
-Kermit; new framework for remote SAS interactive jobs, see
-ess-remote
+ESS-&#62;Help for SAS; F12 opens GSASFILE nearest point for viewing 
+either within emacs, when available, or via an external viewer; 
+more syntax highlighting keywords; more enhancements for remote 
+SAS batch jobs with Kermit; new framework for remote SAS interactive 
+jobs, see ess-remote
 <LI>ESS[S]: info documentation now available!, see
 
-ESS-&#62;Help for Statistical Packages-&#62;Help for the S family
+ESS-&#62;Help for the S family
 <LI>Makefile: tag now independent of rel; info files
 
 made by doc/Makefile and installed in new info sub-directory
@@ -231,20 +235,18 @@ and comments where plain "_" is used instead. (MM)
 Changes/New Features in 5.1.17:
 
 <UL>
-<LI>Documentation for Windows Installation (Rich Heiberger
+<LI>Documentation for Windows Installation (Rich Heiberger)
 
-(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>))
 <LI>removal of ess-vars, finalization of customize support (in the
 
 sense that there is no more use of ess-vars, but that we need to
-fix ess-cust) (AJ Rossini (<A HREF="mailto:rossini@u.washington.edu">rossini@u.washington.edu</A>))
-<LI>Many small (and large) fixes/contributions (MMaechler,
+fix ess-cust) (AJ Rossini)
+<LI>Many small (and large) fixes/contributions (MMaechler)
 
-(<A HREF="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</A>)).
 <LI>addition of the "S-equal" variable and provide M-x ess-add-MM-keys
 
 a way to remap "_" to `ess-S-assign', typically " &#60;- ", but
-customizable. (MMaechler, (<A HREF="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</A>)).
+customizable. (MMaechler)
 </UL>
 
 <P>
@@ -269,16 +271,12 @@ Changes/New Features in 5.1.15:
 Changes/New Features in 5.1.14:
 
 <UL>
-<LI>Yet more fixes to SAS mode, (Rich Heiberger
+<LI>Yet more fixes to SAS mode, (Rich Heiberger and Rodney Sparapani)
 
-(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>) and Rodney Sparapani
-<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>)).
-<LI>Customize support (for most Emacsen which support it) (AJRossini,
+<LI>Customize support (for most Emacsen which support it) (AJRossini)
 
-(<A HREF="mailto:rossini@biostat.washington.edu">rossini@biostat.washington.edu</A>)
-<LI>ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini,
+<LI>ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini)
 
-<A HREF="mailto:rossini@biostat.washington.edu">rossini@biostat.washington.edu</A>)
 </UL>
 
 <P>
@@ -288,9 +286,8 @@ Changes/New Features in 5.1.13:
 <LI>Version numbering finally all depending on the ./VERSION file,
 
 thanks to Martin Maechler.
-<LI>Yet more fixes to SAS mode, thanks to Rich Heiberger
+<LI>Yet more fixes to SAS mode, thanks to Rich Heiberger.
 
-(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>).
 </UL>
 
 <P>
@@ -302,25 +299,23 @@ Changes/New Features in 5.1.12:
 Chuck Taylor, and others.
 <LI>More fixes to SAS mode, thanks to Rodney Sparapani
 
-(<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>) and Rich Heiberger
-(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>).
+and Rich Heiberger.
 </UL>
 
 <P>
 Changes/New Features in 5.1.11:
 
 <UL>
-<LI>More fixes to Stata mode, thanks to Brendan Halpin
+<LI>More fixes to Stata mode, thanks to
 
-(<A HREF="mailto:brendan@essex.ac.uk">brendan@essex.ac.uk</A>)
+<A HREF="mailto:brendan@essex.ac.uk">Brendan Halpin</A>.
 <LI>fixed bugs in ESS-elsewhere, thanks to many testers
 
 <LI>README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
 
-to David Brahm (<A HREF="mailto:brahm@alum.mit.edu">brahm@alum.mit.edu</A>).
+to <A HREF="mailto:brahm@alum.mit.edu">David Brahm</A>.
 <LI>Fixes to SAS mode, thanks to Rodney Sparapani
 
-(<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>)
 </UL>
 
 <P>
@@ -469,7 +464,7 @@ suggested coding fixes with bug reports are much appreciated!
 <H2><A NAME="SEC6" HREF="readme_toc.html#TOC6">Requirements</A></H2>
 
 <P>
-ESS version 5.1.n (n &#62;= 2) works best with either GNU Emacs version 20.3 or higher, or
+ESS works best with either GNU Emacs version 20.3 or higher, or
 XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
 
 
@@ -533,32 +528,34 @@ The latest stable version of ESS is always available on the web at:
 
 
 <P>
-The latest (no more than 24 hours behind the developers) version of
-ESS can also be retrieved using anonymous cvs:
+The latest public version of ESS can also be retrieved via cvs client.  
+If you have a firewall, then you may need to take appropriate action.
 
 
 <P>
-You need a cvs client (that works with your firewall, if any)
+The repository name is
+
+<PRE>
+:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs
+</PRE>
+
+<P>
+Using a command-line cvs client (i.e. on Unix or DOS), first type:
+
+<PRE>
+cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login
+</PRE>
+
+<P>
+The password is "anoncvs".
 
 
 <P>
-the repository name is
-   <CODE>:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs</CODE>
+Then type:
 
-
-<P>
-using a command-line cvs client (i.e. on Unix or DOS), first type:
-   <CODE>cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login</CODE>
-
-
-<P>
-password is anoncvs
-
-
-<P>
-then type:
-   <CODE>cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess</CODE>
-
+<PRE>
+cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess
+</PRE>
 
 
 
@@ -940,7 +937,7 @@ there).
 
 <H2><A NAME="SEC11" HREF="readme_toc.html#TOC11">Requirements</A></H2>
 <P>
-ESS version 5.1.n (n &#62;= 2) works best with either GNU Emacs version 20.3 or higher, or
+ESS works best with either GNU Emacs version 20.3 or higher, or
 XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
 
 
@@ -1069,28 +1066,23 @@ The purposes of the mailing list include
 <UL>
 <LI>
 
-<A HREF="http://www.biostat.washington.edu/~rossini/">A.J. Rossini</A>
-<A HREF="mailto:rossini@u.washington.edu">rossini@u.washington.edu</A>
+<A HREF="mailto:rossini@u.washington.edu">A.J. Rossini</A>
 <LI>
 
-<A HREF="http://www.sbm.temple.edu/departments/statistics/">Richard M. Heiberger</A>
-<A HREF="mailto:rmh@surfer.sbm.temple.edu">rmh@surfer.sbm.temple.edu</A>
+<A HREF="mailto:rmh@surfer.sbm.temple.edu">Richard M. Heiberger</A>
 <LI>
 
-<A HREF="http://www.ci.tuwien.ac.at/~hornik">Kurt Hornik</A>
-<A HREF="mailto:hornik@ci.tuwien.ac.at">hornik@ci.tuwien.ac.at</A>
+<A HREF="mailto:hornik@ci.tuwien.ac.at">Kurt Hornik</A>
 <LI>
 
-<A HREF="http://stat.ethz.ch/~maechler/">Martin Maechler</A>
-<A HREF="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</A>
+<A HREF="mailto:maechler@stat.math.ethz.ch">Martin Maechler</A>
 <LI>
 
-<A HREF="http://www.mcw.edu/pcor/rsparapa">Rodney A. Sparapani</A>
-<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>
+<A HREF="mailto:rsparapa@mcw.edu">Rodney A. Sparapani</A>
 </UL>
 
 <P><HR><P>
-This document was generated on 5 August 2002 using
+This document was generated on 6 August 2002 using
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>

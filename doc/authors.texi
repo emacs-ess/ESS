@@ -1,21 +1,21 @@
 @itemize @bullet
 @item
-@uref{http://www.biostat.washington.edu/~rossini/,A.J. Rossini}
-@email{rossini@@u.washington.edu}
+@c @uref{http://www.biostat.washington.edu/~rossini/,A.J. Rossini}
+@uref{mailto:rossini@@u.washington.edu, A.J. Rossini}
 @c --------
 @item
-@uref{http://www.sbm.temple.edu/departments/statistics/,Richard M. Heiberger}
-@email{rmh@@surfer.sbm.temple.edu}
+@c @uref{http://www.sbm.temple.edu/departments/statistics/,Richard M. Heiberger}
+@uref{mailto:rmh@@surfer.sbm.temple.edu, Richard M. Heiberger}
 @c --------
 @item
-@uref{http://www.ci.tuwien.ac.at/~hornik,Kurt Hornik}
-@email{hornik@@ci.tuwien.ac.at}
+@c @uref{http://www.ci.tuwien.ac.at/~hornik,Kurt Hornik}
+@uref{mailto:hornik@@ci.tuwien.ac.at, Kurt Hornik}
 @c --------
 @item
-@uref{http://stat.ethz.ch/~maechler/,Martin Maechler}
-@email{maechler@@stat.math.ethz.ch}
+@c @uref{http://stat.ethz.ch/~maechler/,Martin Maechler}
+@uref{mailto:maechler@@stat.math.ethz.ch, Martin Maechler}
 @c --------
 @item
-@uref{http://www.mcw.edu/pcor/rsparapa,Rodney A. Sparapani}
-@email{rsparapa@@mcw.edu}
+@c @uref{http://www.mcw.edu/pcor/rsparapa,Rodney A. Sparapani}
+@uref{mailto:rsparapa@@mcw.edu, Rodney A. Sparapani}
 @end itemize

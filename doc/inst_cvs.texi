@@ -1,13 +1,20 @@
-You need a cvs client (that works with your firewall, if any)
+The latest public version of ESS can also be retrieved via cvs client.  
+If you have a firewall, then you may need to take appropriate action.
 
-the repository name is
-   @code{:pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs}
+The repository name is
+@display
+:pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs
+@end display
 
-using a command-line cvs client (i.e. on Unix or DOS), first type:
-   @code{cvs -d :pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs login}
+Using a command-line cvs client (i.e. on Unix or DOS), first type:
+@display
+cvs -d :pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs login
+@end display
 
-password is anoncvs
+The password is "anoncvs".
 
-then type:
-   @code{cvs -d :pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs co ess}
+Then type:
+@display
+cvs -d :pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs co ess
+@end display
 

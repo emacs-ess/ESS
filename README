@@ -46,6 +46,11 @@ New Features
 ============
 
    Changes/New Features in 5.1.22:
+   * Besides info documentation, PDF and HTML documentation are also
+     provided and now available on the web as well; see ESS web page
+     (http://software.biostat.washington.edu/ess/doc) and StatLib
+     (http://lib.stat.cmu.edu/general/ESS/doc)
+
    * Now that info documentation is available, the README.* files are
      no longer supported.  However, they are still distributed for what
      it's worth.
@@ -65,14 +70,14 @@ New Features
 
    Changes/New Features in 5.1.21:
    * ESS[SAS]: info documentation now available!, see ESS->Help for
-     Statistical Packages->Help for SAS; F12 opens GSASFILE nearest
-     point for viewing either within emacs, when available, or via an
-     external viewer; more syntax highlighting keywords; more
-     enhancements for remote SAS batch jobs with Kermit; new framework
-     for remote SAS interactive jobs, see ess-remote
+     SAS; F12 opens GSASFILE nearest point for viewing either within
+     emacs, when available, or via an external viewer; more syntax
+     highlighting keywords; more enhancements for remote SAS batch jobs
+     with Kermit; new framework for remote SAS interactive jobs, see
+     ess-remote
 
-   * ESS[S]: info documentation now available!, see ESS->Help for
-     Statistical Packages->Help for the S family
+   * ESS[S]: info documentation now available!, see ESS->Help for the S
+     family
 
    * Makefile: tag now independent of rel; info files made by
      doc/Makefile and installed in new info sub-directory
@@ -180,19 +185,17 @@ New Features
    * Fixes for longstanding interactive SAS breakage (RMH)
 
    Changes/New Features in 5.1.17:
-   * Documentation for Windows Installation (Rich Heiberger
-     (<rmh@surfer.stat.temple.edu>))
+   * Documentation for Windows Installation (Rich Heiberger)
 
    * removal of ess-vars, finalization of customize support (in the
      sense that there is no more use of ess-vars, but that we need to
-     fix ess-cust) (AJ Rossini (<rossini@u.washington.edu>))
+     fix ess-cust) (AJ Rossini)
 
-   * Many small (and large) fixes/contributions (MMaechler,
-     (<maechler@stat.math.ethz.ch>)).
+   * Many small (and large) fixes/contributions (MMaechler)
 
    * addition of the "S-equal" variable and provide M-x ess-add-MM-keys
      a way to remap "_" to `ess-S-assign', typically " <- ", but
-     customizable. (MMaechler, (<maechler@stat.math.ethz.ch>)).
+     customizable. (MMaechler)
 
    Changes/New Features in 5.1.16:
    * BUG FIXES
@@ -203,41 +206,36 @@ New Features
    * BUG FIXES
 
    Changes/New Features in 5.1.14:
-   * Yet more fixes to SAS mode, (Rich Heiberger
-     (<rmh@surfer.stat.temple.edu>) and Rodney Sparapani
-     <rsparapa@mcw.edu>)).
+   * Yet more fixes to SAS mode, (Rich Heiberger and Rodney Sparapani)
 
-   * Customize support (for most Emacsen which support it) (AJRossini,
-     (<rossini@biostat.washington.edu>)
+   * Customize support (for most Emacsen which support it) (AJRossini)
 
    * ARC and ViSta support out of the box, and fixes for XLispStat
-     (AJRossini, <rossini@biostat.washington.edu>)
+     (AJRossini)
 
    Changes/New Features in 5.1.13:
    * Version numbering finally all depending on the ./VERSION file,
      thanks to Martin Maechler.
 
-   * Yet more fixes to SAS mode, thanks to Rich Heiberger
-     (<rmh@surfer.stat.temple.edu>).
+   * Yet more fixes to SAS mode, thanks to Rich Heiberger.
 
    Changes/New Features in 5.1.12:
    * Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
      Chuck Taylor, and others.
 
-   * More fixes to SAS mode, thanks to Rodney Sparapani
-     (<rsparapa@mcw.edu>) and Rich Heiberger
-     (<rmh@surfer.stat.temple.edu>).
+   * More fixes to SAS mode, thanks to Rodney Sparapani and Rich
+     Heiberger.
 
    Changes/New Features in 5.1.11:
    * More fixes to Stata mode, thanks to Brendan Halpin
-     (<brendan@essex.ac.uk>)
+     (mailto:brendan@essex.ac.uk).
 
    * fixed bugs in ESS-elsewhere, thanks to many testers
 
    * README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
-     to David Brahm (<brahm@alum.mit.edu>).
+     to David Brahm (mailto:brahm@alum.mit.edu).
 
-   * Fixes to SAS mode, thanks to Rodney Sparapani (<rsparapa@mcw.edu>)
+   * Fixes to SAS mode, thanks to Rodney Sparapani
 
    Changes/New Features in 5.1.10:
    * More fixes to Stata mode
@@ -331,9 +329,8 @@ fixes with bug reports are much appreciated!
 Requirements
 ============
 
-   ESS version 5.1.n (n >= 2) works best with either GNU Emacs version
-20.3 or higher, or XEmacs version 20.0 or higher.  It has been most
-thoroughly tested with:
+   ESS works best with either GNU Emacs version 20.3 or higher, or
+XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
 
    * S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
 
@@ -384,22 +381,20 @@ Getting the Latest Version
 ESS web page (http://software.biostat.washington.edu/ess/) or StatLib
 (http://lib.stat.cmu.edu/general/ESS/)
 
-   The latest (no more than 24 hours behind the developers) version of
-ESS can also be retrieved using anonymous cvs:
+   The latest public version of ESS can also be retrieved via cvs
+client.  If you have a firewall, then you may need to take appropriate
+action.
 
-   You need a cvs client (that works with your firewall, if any)
+   The repository name is
+     :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs
 
-   the repository name is
-`:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs'
+   Using a command-line cvs client (i.e. on Unix or DOS), first type:
+     cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login
 
-   using a command-line cvs client (i.e. on Unix or DOS), first type:
-`cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs
-login'
+   The password is "anoncvs".
 
-   password is anoncvs
-
-   then type:    `cvs -d
-:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess'
+   Then type:
+     cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess
 
 Installation (from tar file)
 ============================
@@ -647,9 +642,8 @@ Microsoft Windows installation
 Requirements
 ============
 
-   ESS version 5.1.n (n >= 2) works best with either GNU Emacs version
-20.3 or higher, or XEmacs version 20.0 or higher.  It has been most
-thoroughly tested with:
+   ESS works best with either GNU Emacs version 20.3 or higher, or
+XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
 
    * S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
 
@@ -735,19 +729,13 @@ low-volume mailing list.
 Authors
 =======
 
-   * A.J. Rossini (http://www.biostat.washington.edu/~rossini/)
-     <rossini@u.washington.edu>
+   * A.J. Rossini (mailto:rossini@u.washington.edu)
 
-   * Richard M. Heiberger
-     (http://www.sbm.temple.edu/departments/statistics/)
-     <rmh@surfer.sbm.temple.edu>
+   * Richard M. Heiberger (mailto:rmh@surfer.sbm.temple.edu)
 
-   * Kurt Hornik (http://www.ci.tuwien.ac.at/~hornik)
-     <hornik@ci.tuwien.ac.at>
+   * Kurt Hornik (mailto:hornik@ci.tuwien.ac.at)
 
-   * Martin Maechler (http://stat.ethz.ch/~maechler/)
-     <maechler@stat.math.ethz.ch>
+   * Martin Maechler (mailto:maechler@stat.math.ethz.ch)
 
-   * Rodney A. Sparapani (http://www.mcw.edu/pcor/rsparapa)
-     <rsparapa@mcw.edu>
+   * Rodney A. Sparapani (mailto:rsparapa@mcw.edu)
 

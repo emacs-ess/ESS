@@ -2,16 +2,5 @@ The latest stable version of ESS is always available on the web at:
 @uref{http://software.biostat.washington.edu/ess/, ESS web page} or
 @uref{http://lib.stat.cmu.edu/general/ESS/, StatLib}
 
-@comment The HTML version of the documentation can be found at:
-@comment 
-@comment         @code{http://stat.ethz.ch/ESS/}
-@comment
-The latest (no more than 24 hours behind the developers) version of
-ESS can also be retrieved using anonymous cvs:
-
 @include inst_cvs.texi
-@comment
-@comment not sure what we are refering to; this is already in ANNOUNCE
-@comment Check the @file{README}  file first to see which files you need.
-@comment Look at @file{ANNOUNCE} to learn about new user-visible features;
-@comment also, many changes are listed in the @file{ChangeLog} file.
+
