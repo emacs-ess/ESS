@@ -1,17 +1,17 @@
 ;;; ess-emcs.el --- simple determination of Emacs/XEmacs and version #.
 
-;; Copyright (C) 2000--2001 A.J. Rossini <rossini@u.washington.edu>, 
-;; R.M. Heiberger <rmh@surfer.sbm.temple.edu>, 
+;; Copyright (C) 2000--2001 A.J. Rossini <rossini@u.washington.edu>,
+;; R.M. Heiberger <rmh@surfer.sbm.temple.edu>,
 ;; Martin Maechler <maechler@stat.math.ethz.ch>,
-;; Kurt Hornik <hornik@ci.tuwien.ac.at>, and 
+;; Kurt Hornik <hornik@ci.tuwien.ac.at>, and
 ;; Rodney Sparapani <rsparapa@mcw.edu>.
 
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2001/07/27 18:12:14 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: ess-emcs.el,v 5.11 2001/07/27 18:12:14 ess Exp $
+;; Modified: $Date: 2001/08/10 13:46:07 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: ess-emcs.el,v 5.12 2001/08/10 13:46:07 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -67,10 +67,10 @@
 (defvar ess-running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
 
 (defvar ess-local-custom-available (featurep 'custom)
-  "Value is nil if custom.el not available, t if available.  
+  "Value is nil if custom.el not available, t if available.
 Only a concern with earlier versions of Emacs.")
 
-(defvar ess-microsoft-p (or (equal window-system 'w32) 
+(defvar ess-microsoft-p (or (equal window-system 'w32)
 			    ;; XEmacs only...
 ;;;			    (equal (console-type) 'pc)
 ;;;			    (equal (console-type) 'mswindows)
@@ -82,12 +82,12 @@ Only a concern with earlier versions of Emacs.")
 ;; These definitions are for Emacs versions < 20.4 or XEmacs
 ;; These are taken verbatim from the file emacs-20.6/lisp/w32-fns.el
 ;;
-;; Note: 20.3 and 19.x NTemacs users are strongly encouraged to upgrade to 
+;; Note: 20.3 and 19.x NTemacs users are strongly encouraged to upgrade to
 ;; version 20.4 or higher.  NTemacs 20.2 is not supported by ESS.
 
 ;; XEmacs 20.x needs this
 
-(if (not (fboundp 'find-buffer-visiting)) 
+(if (not (fboundp 'find-buffer-visiting))
     (fset 'find-buffer-visiting 'get-file-buffer))
 
 ;; XEmacs and NTemacs 19.x need these
@@ -141,4 +141,4 @@ Only a concern with earlier versions of Emacs.")
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-site.el ends here
+;;; ess-emcs.el ends here
