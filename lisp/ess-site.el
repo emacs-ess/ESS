@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/08/26 22:54:23 $
-;; Version: $Revision: 1.34 $
-;; RCS: $Id: ess-site.el,v 1.34 1997/08/26 22:54:23 rossini Exp $
+;; Modified: $Date: 1997/08/28 13:04:23 $
+;; Version: $Revision: 1.35 $
+;; RCS: $Id: ess-site.el,v 1.35 1997/08/28 13:04:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,6 +47,8 @@
 (provide 'ess-site)
 
 ;;; Code:
+
+(setq debug-on-error t)
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
@@ -92,22 +94,6 @@
 	   ("\\.Rt$\\'" . R-transcript-mode))
 	 auto-mode-alist)))
 
-;;; (1.3) Autoloads.  You should not need to change this bit.
-
-(autoload 'S-mode "ess-mode"
-  "Major mode for editing S source code." t)
-(autoload 'R-mode "ess-mode"
-  "Major mode for editing R source code." t)
-;;(autoload 'XLS-mode "ess-mode"
-;;    "major mode for editing XLispStat code." t)
-(autoload 'S-transcript-mode
-  "ess-trns" "ESS source eval mode" t)
-(autoload 'R-transcript-mode
-  "ess-trns" "ESS source eval mode" t)
-(autoload 'inferior-ess "ess-inf"
-  "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
-
-
 ;; (1.4) Customize the dialects for your setup.
 
 ;;;; Choices for *(), where * is from inferior-*-program....
@@ -138,7 +124,7 @@
 ;;TODO, for 5.0 :-).
 ;; (require 'essd-vst) ; built on essd-xls.
 ;; (require 'essd-s+4)
-;; (require 'essd-sas)
+;;(require 'essd-sas)
 
 ;;; 2. Site Specific setup
 ;;;; ===============================================
