@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/20 14:19:29 $
-;; Version: $Revision: 1.101 $
-;; RCS: $Id: ess-inf.el,v 1.101 1997/11/20 14:19:29 rossini Exp $
+;; Modified: $Date: 1997/11/20 21:41:49 $
+;; Version: $Revision: 1.102 $
+;; RCS: $Id: ess-inf.el,v 1.102 1997/11/20 21:41:49 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -1072,23 +1072,10 @@ process buffer. Arg has same meaning as for ess-eval-region."
    ["Load source file"  ess-load-file                      t]
    ["Edit S Object"     ess-dump-object-into-edit-buffer   t]
    "------"
-   ["Describe"  describe-mode                            t]
-   ;;["About" (lambda nil (interactive) (ess-goto-info "Entering Commands")) t]
+   ["Describe"         describe-mode                       t]
+   ["About"            (ess-goto-info "Entering Commands") t]
    ["Send bug report"  ess-submit-bug-report               t]
    ))
-
-
-;; NOT NEEDED!
-;;(if (not (string-match "XEmacs" emacs-version))
-;;    (progn
-;;      (if (featurep 'ess-inf)
-;;	  (define-key inferior-ess-mode-map [menu-bar ess-run]
-;;	     (cons "ess-run" inferior-ess-mode-menu))
-;;	(eval-after-load "ess-inf"
-;;			  '(define-key inferior-ess-mode-map
-;;			     [menu-bar ess-run]
-;;			     (cons "ess-run"
-;;				   inferior-ess-mode-menu))))))
 
 
 (defun inferior-ess-mode-xemacs-menu ()

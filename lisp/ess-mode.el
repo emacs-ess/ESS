@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/20 21:37:22 $
-;; Version: $Revision: 1.75 $
-;; RCS: $Id: ess-mode.el,v 1.75 1997/11/20 21:37:22 rossini Exp $
+;; Modified: $Date: 1997/11/20 21:38:34 $
+;; Version: $Revision: 1.76 $
+;; RCS: $Id: ess-mode.el,v 1.76 1997/11/20 21:38:34 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -145,27 +145,27 @@
  '("ESS" ; ESS-mode
    ["Load file"  ess-load-file t]
    ("Eval and Go"
-    ["Eval buffer"   ess-eval-buffer-and-go   t]
-    ["Eval region"   ess-eval-region-and-go   t]
-    ["Eval function" ess-eval-function-and-go t]
-    ["Eval line"     ess-eval-line-and-go     t]
+    ["Eval buffer"   ess-eval-buffer-and-go            t]
+    ["Eval region"   ess-eval-region-and-go            t]
+    ["Eval function" ess-eval-function-and-go          t]
+    ["Eval line"     ess-eval-line-and-go              t]
     ["About"         (ess-goto-info "Evaluating code") t]
     )
    ("ESS Eval"
-    ["Eval buffer"       ess-eval-buffer             t]
-    ["Eval region"       ess-eval-region             t]
-    ["Eval function"     ess-eval-function           t]
-    ["Step through line" ess-eval-line-and-next-line t]
-    ["Enter expression"  ess-execute-in-tb           t]
-    ["Eval line"         ess-eval-line               t]
+    ["Eval buffer"       ess-eval-buffer                   t]
+    ["Eval region"       ess-eval-region                   t]
+    ["Eval function"     ess-eval-function                 t]
+    ["Step through line" ess-eval-line-and-next-line       t]
+    ["Enter expression"  ess-execute-in-tb                 t]
+    ["Eval line"         ess-eval-line                     t]
     ["About"             (ess-goto-info "Evaluating code") t]
     )
    ("Motion..."
     ["Edit new object"       ess-dump-object-into-edit-buffer t]
-    ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS      t]
-    ["Switch to ESS buffer"    ess-switch-to-ESS             t]
-    ["End of function"	    ess-end-of-function              t]
-    ["Beginning of function" ess-beginning-of-function       t])
+    ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS       t]
+    ["Switch to ESS buffer"    ess-switch-to-ESS              t]
+    ["End of function"	    ess-end-of-function               t]
+    ["Beginning of function" ess-beginning-of-function        t])
    ("ESS list..."
     ["Backward list"         backward-list                   t]
     ["Forward list"          forward-list                    t]
@@ -187,7 +187,7 @@
     )
    "------"
    ["Describe"         describe-mode                t]
-   ["About"            (ess-goto-info "Editing"))   t]
+   ["About"            (ess-goto-info "Editing")    t]
    ["Send bug report"  ess-submit-bug-report        t]
    ))
 

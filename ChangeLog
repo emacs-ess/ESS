@@ -1,3 +1,28 @@
+Thu Nov 20 16:41:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: fixed menus.
+
+Thu Nov 20 16:40:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-trns.el: fixed menus.
+
+Thu Nov 20 16:38:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: formatting. extra  ).
+
+Thu Nov 20 16:37:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: cleaned up menus.  removed useless comments.
+
+Thu Nov 20 16:29:15 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: fixed goto-info stuff.
+
+Thu Nov 20 16:13:43 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-help.el (ess-goto-info): ess isn't ess-mode.  Split window,
+	not other-window.
+
 Thu Nov 20 10:04:28 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README: added comments on help file editing.
@@ -60,8 +85,11 @@ Thu Nov 20 09:19:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* ess-inf.el (inferior-ess-mode-menu): 
 	* ess-mode.el (ess-mode-menu): removed About from menu, for now. 
 
+
 Wed Nov 19 12:24:22 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
+	* RELEASED 5.0, lastpre.
+	
 	* Makefile: removed veryclean.  unnecessary target.  Fixed
  	dist-doc target.
 
@@ -1411,6 +1439,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.41  1997/11/20 21:44:45  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.40  1997/11/20 15:06:48  rossini
 	* Removing *** empty log message ***
 	* Removing
