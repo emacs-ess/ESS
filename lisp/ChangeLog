@@ -1,3 +1,7 @@
+Wed Oct 11 15:16:21 2000  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-smart-underscore): new function, assigned to "_" key.
+
 2000-10-09  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-vars.el:

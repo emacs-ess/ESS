@@ -1,6 +1,14 @@
+Changes/New Features in 5.1.18:
+@itemize @bullet
+@item New `ess-smart-underscore' function, now assigned to "_" by default.
+      Inserts `ess-S-assign' (customizable " <- "), unless inside string
+      and comments where plain "_" is used instead.
+@end itemize
+
+
 Changes/New Features in 5.1.17:
 @itemize @bullet
-@item Documentation for Windows Installation (Rich Heiberger 
+@item Documentation for Windows Installation (Rich Heiberger
       (@email{rmh@@surfer.stat.temple.edu}))
 @item removal of ess-vars, finalization of customize support (in the
       sense that there is no more use of ess-vars, but that we need to
@@ -8,28 +16,28 @@ Changes/New Features in 5.1.17:
 @item Many small (and large) fixes/contributions (MMaechler,
       (@email{maechler@@stat.math.ethz.ch})).
 @item addition of the "S-equal" variable and provide M-x ess-add-MM-keys
-      a way to remap "_" to 'S-equal, typically " <- ", but
-      configurable. (MMaechler, (@email{maechler@@stat.math.ethz.ch})). 
+      a way to remap "_" to `ess-S-assign', typically " <- ", but
+      customizable. (MMaechler, (@email{maechler@@stat.math.ethz.ch})).
 @end itemize
 
 Changes/New Features in 5.1.16:
 @itemize @bullet
-@item BUG FIXES 
+@item BUG FIXES
 @item Better SAS support
 @end itemize
 
 Changes/New Features in 5.1.15:
 @itemize @bullet
-@item BUG FIXES 
+@item BUG FIXES
 @end itemize
 
 Changes/New Features in 5.1.14:
 @itemize @bullet
-@item Yet more fixes to SAS mode, (Rich Heiberger 
+@item Yet more fixes to SAS mode, (Rich Heiberger
       (@email{rmh@@surfer.stat.temple.edu}) and Rodney Sparapani
        @email{spara002@@onyx.dcri.duke.edu})).
 @item Customize support (for most Emacsen which support it) (AJRossini,
-      (@email{rossini@@biostat.washington.edu}) 
+      (@email{rossini@@biostat.washington.edu})
 @item ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini,
       @email{rossini@@biostat.washington.edu})
 @end itemize

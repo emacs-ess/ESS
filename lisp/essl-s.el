@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/10/09 07:38:05 $
-;; Version: $Revision: 5.19 $
-;; RCS: $Id: essl-s.el,v 5.19 2000/10/09 07:38:05 maechler Exp $
+;; Modified: $Date: 2000/10/11 13:29:43 $
+;; Version: $Revision: 5.20 $
+;; RCS: $Id: essl-s.el,v 5.20 2000/10/11 13:29:43 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -471,12 +471,17 @@ Uses the file given by the variable `ess-function-outline-file'."
 		     "\\1\n}" 'fix nil verbose)
     ))
 
-;;; FIXME: MM thinkgs the following should be *on* by default.
-;;; -----  The user can always customize `ess-S-assign' ...
+(defun ess-smart-underscore ()
+  "Electrical \"_\" key: insert `ess-S-assign' unless in string/comment.
+  `ess-S-assign', typically \" <- \", can be customized."
+  (interactive)
+  (insert (if (inside-string/comment-p (point)) "_" ess-S-assign)))
+
 (defun ess-toggle-underscore (force)
-  "(Re)define the \"_\" (underscore) key to `ess-S-assign' or back to \"_\".
- Toggle current definition, unless FORCE is non-nil, when `ess-S-assign' is
- set unconditionally. `ess-S-assign', typically \" <- \", can be customized.
+  "Set the \"_\" (underscore) key to \\[ess-smart-underscore] or back to \"_\".
+ Toggle the current definition, unless FORCE is non-nil, where
+ \\[ess-smart-underscore] is set unconditionally.
+
  Using \"C-q _\" will always just insert the underscore character."
   (interactive "P")
   (require 'ess-mode)
@@ -489,8 +494,8 @@ Uses the file given by the variable `ess-function-outline-file'."
 	 (define-key ess-mode-map          "_" nil); 'self-insert-command
 	 (define-key inferior-ess-mode-map "_" nil))
       ;; else : "force" or uscore is "nil", i.e. default
-      (define-key ess-mode-map          "_" ess-S-assign)
-      (define-key inferior-ess-mode-map "_" ess-S-assign))
+      (define-key ess-mode-map          "_" 'ess-smart-underscore)
+      (define-key inferior-ess-mode-map "_" 'ess-smart-underscore))
     ))
 
 (defun ess-add-MM-keys ()
@@ -498,8 +503,11 @@ Uses the file given by the variable `ess-function-outline-file'."
   (interactive)
   (require 'ess-mode)
   (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline)
-  (ess-toggle-underscore 'force-to-S-assign)
 )
+
+;; NOTA BENE: "_" is smart *by default* :
+;; -----  The user can always customize `ess-S-assign' ...
+(ess-toggle-underscore 'force-to-S-assign)
 
 
 (provide 'essl-s)
