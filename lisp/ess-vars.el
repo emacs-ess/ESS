@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/25 15:25:15 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: ess-vars.el,v 1.1 1997/07/25 15:25:15 rossini Exp $
+;; Modified: $Date: 1997/07/26 01:11:00 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: ess-vars.el,v 1.2 1997/07/26 01:11:00 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,6 +29,9 @@
 
 ;;
 ;; $Log: ess-vars.el,v $
+;; Revision 1.2  1997/07/26 01:11:00  rossini
+;; removed more to ess.el
+;;
 ;; Revision 1.1  1997/07/25 15:25:15  rossini
 ;; Initial revision
 ;;
@@ -691,27 +694,6 @@ browse-url to find the location")
 
 
  ; ess-mode: editing S source
-
-(autoload 'ess-dump-object-into-edit-buffer "ess-mode"
-  "Edit an S object" t)
-
-(autoload 'ess-parse-errors "ess-mode"
-  "Jump to the last error generated from a sourced file" t)
-
-(autoload 'ess-load-file "ess-mode"
-  "Source a file into S.")
-
-;;;;* Alias ess-mode to s-mode
-;;; Emacs will set the mode for a file based on the file's header.
-;;; The mode name is indicated by putting it between -*- on the top line. 
-;;; (Other commands can go here too, see an Emacs manual.)
-;;; For a file you also load, you will want a leading # (comment to S)
-;;; Emacs will downcase the name of the mode, e.g., S, so we must provide
-;;; s-mode in lower case too.  That is, "#-*- S-*-" invokes s-mode and 
-;;; not S-mode.
-(fset 's-mode 'S-mode)
-(fset 'r-mode 'R-mode)
-
 
 ;;; This syntax table is required by ess-mode.el, ess-inf.el and
 ;;; ess-trans.el, so we provide it here.
