@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/09/26 14:15:26 $
-;; Version: $Revision: 1.38 $
-;; RCS: $Id: essa-sas.el,v 1.38 2001/09/26 14:15:26 ess Exp $
+;; Modified: $Date: 2001/12/17 14:59:52 $
+;; Version: $Revision: 1.39 $
+;; RCS: $Id: essa-sas.el,v 1.39 2001/12/17 14:59:52 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -537,18 +537,18 @@ Without args, toggle between these options."
 (defun ess-sas-global-pc-keys ()
   "PC-like SAS key definitions"
   (interactive)
-  (global-set-key [f2] 'ess-revert-wisely)
-  (global-set-key [f3] 'shell)
-  (global-set-key [f4] 'ess-sas-goto-file-1)
-  (global-set-key [f5] 'ess-sas-goto-sas)
-  (global-set-key [f6] 'ess-sas-goto-log)
+  (global-set-key (quote [f2]) 'ess-revert-wisely)
+  (global-set-key (quote [f3]) 'shell)
+  (global-set-key (quote [f4]) 'ess-sas-goto-file-1)
+  (global-set-key (quote [f5]) 'ess-sas-goto-sas)
+  (global-set-key (quote [f6]) 'ess-sas-goto-log)
   (global-set-key [(control f6)] 'ess-sas-append-log)
-  (global-set-key [f7] 'ess-sas-goto-lst)
+  (global-set-key (quote [f7]) 'ess-sas-goto-lst)
   (global-set-key [(control f7)] 'ess-sas-append-lst)
-  (global-set-key [f8] 'ess-sas-submit)
+  (global-set-key (quote [f8]) 'ess-sas-submit)
   (global-set-key [(control f8)] 'ess-sas-submit-region)
-  (global-set-key [f9] 'ess-sas-data-view)
-  (global-set-key [f10] 'ess-sas-toggle-sas-mode)
+  (global-set-key (quote [f9]) 'ess-sas-data-view)
+  (global-set-key (quote [f10]) 'ess-sas-toggle-sas-mode)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 (defvar ess-sas-global-unix-keys nil
@@ -556,19 +556,19 @@ Without args, toggle between these options."
 (defun ess-sas-global-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
-  (global-set-key [f2] 'ess-revert-wisely)
-  (global-set-key [f3] 'ess-sas-submit)
+  (global-set-key (quote [f2]) 'ess-revert-wisely)
+  (global-set-key (quote [f3]) 'ess-sas-submit)
   (global-set-key [(control f3)] 'ess-sas-submit-region)
-  (global-set-key [f4] 'ess-sas-goto-sas)
-  (global-set-key [f5] 'ess-sas-goto-log)
+  (global-set-key (quote [f4]) 'ess-sas-goto-sas)
+  (global-set-key (quote [f5]) 'ess-sas-goto-log)
   (global-set-key [(control f5)] 'ess-sas-append-log)
-  (global-set-key [f6] 'ess-sas-goto-lst)
+  (global-set-key (quote [f6]) 'ess-sas-goto-lst)
   (global-set-key [(control f6)] 'ess-sas-append-lst)
-  (global-set-key [f7] 'ess-sas-goto-file-1)
-  (global-set-key [f8] 'shell)
-  (global-set-key [f9] 'ess-sas-data-view)
-  (global-set-key [f10] 'ess-sas-toggle-sas-mode)
-  (global-set-key [f11] 'ess-sas-goto-file-2)
+  (global-set-key (quote [f7]) 'ess-sas-goto-file-1)
+  (global-set-key (quote [f8]) 'shell)
+  (global-set-key (quote [f9]) 'ess-sas-data-view)
+  (global-set-key (quote [f10]) 'ess-sas-toggle-sas-mode)
+  (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
 	(if (and ess-sas-edit-keys-toggle
 	    (equal emacs-major-version 19) (equal emacs-minor-version 28))
 	    (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
@@ -582,19 +582,19 @@ in SAS-mode and related modes.")
 (defun ess-sas-local-pc-keys ()
   "PC-like SAS key definitions."
   (interactive)
-  (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
-  (define-key sas-mode-local-map [f3] 'shell)
-  (define-key sas-mode-local-map [f4] 'ess-sas-goto-file-1)
-  (define-key sas-mode-local-map [f5] 'ess-sas-goto-sas)
-  (define-key sas-mode-local-map [f6] 'ess-sas-goto-log)
+  (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
+  (define-key sas-mode-local-map (quote [f3]) 'shell)
+  (define-key sas-mode-local-map (quote [f4]) 'ess-sas-goto-file-1)
+  (define-key sas-mode-local-map (quote [f5]) 'ess-sas-goto-sas)
+  (define-key sas-mode-local-map (quote [f6]) 'ess-sas-goto-log)
   (define-key sas-mode-local-map [(control f6)] 'ess-sas-append-log)
-  (define-key sas-mode-local-map [f7] 'ess-sas-goto-lst)
+  (define-key sas-mode-local-map (quote [f7]) 'ess-sas-goto-lst)
   (define-key sas-mode-local-map [(control f7)] 'ess-sas-append-lst)
-  (define-key sas-mode-local-map [f8] 'ess-sas-submit)
+  (define-key sas-mode-local-map (quote [f8]) 'ess-sas-submit)
   (define-key sas-mode-local-map [(control f8)] 'ess-sas-submit-region)
-  (define-key sas-mode-local-map [f9] 'ess-sas-data-view)
-  (define-key sas-mode-local-map [f10] 'ess-sas-toggle-sas-mode)
-  (define-key sas-mode-local-map [f11] 'ess-sas-goto-file-2)
+  (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
+  (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-mode)
+  (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 (defvar ess-sas-local-unix-keys nil
@@ -603,19 +603,19 @@ in SAS-mode and related modes.")
 (defun ess-sas-local-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
-  (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
-  (define-key sas-mode-local-map [f3] 'ess-sas-submit)
+  (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
+  (define-key sas-mode-local-map (quote [f3]) 'ess-sas-submit)
   (define-key sas-mode-local-map [(control f3)] 'ess-sas-submit-region)
-  (define-key sas-mode-local-map [f4] 'ess-sas-goto-sas)
-  (define-key sas-mode-local-map [f5] 'ess-sas-goto-log)
+  (define-key sas-mode-local-map (quote [f4]) 'ess-sas-goto-sas)
+  (define-key sas-mode-local-map (quote [f5]) 'ess-sas-goto-log)
   (define-key sas-mode-local-map [(control f5)] 'ess-sas-append-log)
-  (define-key sas-mode-local-map [f6] 'ess-sas-goto-lst)
+  (define-key sas-mode-local-map (quote [f6]) 'ess-sas-goto-lst)
   (define-key sas-mode-local-map [(control f6)] 'ess-sas-append-lst)
-  (define-key sas-mode-local-map [f7] 'ess-sas-goto-file-1)
-  (define-key sas-mode-local-map [f8] 'shell)
-  (define-key sas-mode-local-map [f9] 'ess-sas-data-view)
-  (define-key sas-mode-local-map [f10] 'ess-sas-toggle-sas-mode)
-  (define-key sas-mode-local-map [f11] 'ess-sas-goto-file-2)
+  (define-key sas-mode-local-map (quote [f7]) 'ess-sas-goto-file-1)
+  (define-key sas-mode-local-map (quote [f8]) 'shell)
+  (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
+  (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-mode)
+  (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 

@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/11/26 16:34:17 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: essl-bug.el,v 1.15 2001/11/26 16:34:17 ess Exp $
+;; Modified: $Date: 2001/12/17 14:59:52 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: essl-bug.el,v 1.16 2001/12/17 14:59:52 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -141,8 +141,8 @@
 
 (if ess-bugs-mode-map nil
     (setq ess-bugs-mode-map (make-keymap))
-    (define-key ess-bugs-mode-map [f2]  'ess-revert)
-    (define-key ess-bugs-mode-map [f12] 'ess-bugs-next-action)
+    (define-key ess-bugs-mode-map (quote [f2])  'ess-revert)
+    (define-key ess-bugs-mode-map (quote [f12]) 'ess-bugs-next-action)
 )
 
 
