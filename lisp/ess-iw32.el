@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 1998/12/11 19:49:45 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: ess-iw32.el,v 1.2 1998/12/11 19:49:45 rossini Exp $
+;; Modified: $Date: 1999/01/11 16:46:48 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: ess-iw32.el,v 1.3 1999/01/11 16:46:48 maechler Exp $
 
 
 ;; This file is part of ESS
@@ -35,70 +35,92 @@
  ; Requires and autoloads
 
 (require 'ess-mode)
+(require 'ess-inf)
+(require 'ess-help)
 
 
 ;; C-c C-r
 (defun ess-eval-region-ddeclient (start end toggle &optional message)
-  "Send the current region to the inferior ESS process."
+"*Loop through lines in region and send them to ESS via ddeclient."
+  (narrow-to-region start end)
+  (beginning-of-buffer)
+  (let ((beg))
+    (while (< (point) (point-max))
+      (setq beg (point))
+      (end-of-line)
+      ;;(call-process-region start end
+      ;;                     "ddeclient" nil nil nil "S-PLUS" "SCommand")
+      (call-process-region
+       beg (point)
+       inferior-ess-ddeclient nil nil nil
+       inferior-ess-client-name inferior-ess-client-command)
+      (forward-line 1))
+    (widen)))
+
+(fset 'ess-eval-region-original (symbol-function  'ess-eval-region))
+
+(defun ess-eval-region (start end toggle &optional message)
   (interactive "r\nP")
-;;(call-process-region start end
-;;                     "ddeclient" nil nil nil "S-PLUS" "SCommand")
-  (call-process-region start end
-                       inferior-ess-ddeclient nil nil nil
-		       inferior-ess-client-name inferior-ess-client-command)
+  (if (equal (ess-get-process-variable
+	      ess-current-process-name 'inferior-ess-ddeclient)
+	     (default-value 'inferior-ess-ddeclient))
+      (ess-eval-region-original start end toggle message)
+    (ess-force-buffer-current "Process to load into: ")
+    (ess-eval-region-ddeclient start end toggle message))
 )
 
-;; C-c C-n
-(defun ess-eval-line-and-next-line-ddeclient ()
-  "Evaluate the current line visibly and move to the next line."
-  ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
-  (interactive)
-  (save-excursion
-    (end-of-line)
-    (let ((end (point)))
-      (beginning-of-line)
-      ;; RDB modified to go to end of S buffer so user can see result
-      (ess-eval-region-ddeclient (buffer-substring (point) end) nil t)))
-  (next-line 1))
+
+;; (defun ess-eval-visibly-ddeclient (start end toggle &optional message)
+;; defun ess-eval-region-visibly-ddeclient (start end toggle &optional message)
+;;  "Send the current region to the inferior ESS process."
+;;  (interactive "r\nP")
+;; ;(call-process-region start end
+;; ;                     "ddeclient" nil nil nil "S-PLUS" "SCommand")
+;;  (call-process-region start end
+;; 			 inferior-ess-ddeclient nil nil nil
+;; 			  inferior-ess-client-name inferior-ess-client-command)
+;; 
+
+;;; switch between Splus by ddeclient and Splus running in an emacs buffer
+(defun ess-eval-visibly-ddeclient (text-withtabs &optional invisibly eob)
+    (save-excursion
+      (set-buffer (get-buffer-create "*ESS-temporary*"))
+      (ess-setq-vars-local ess-customize-alist (current-buffer))
+      (erase-buffer)
+      (insert text-withtabs)
+      (ess-eval-region-ddeclient (point-min) (point-max) t t)))
+
+(fset 'ess-eval-visibly-original (symbol-function  'ess-eval-visibly))
+
+(defun ess-eval-visibly (text-withtabs &optional invisibly eob)
+  (if (equal (ess-get-process-variable
+	      ess-current-process-name 'inferior-ess-ddeclient)
+	     (default-value 'inferior-ess-ddeclient))
+      (ess-eval-visibly-original text-withtabs invisibly eob)
+      (ess-eval-visibly-ddeclient text-withtabs invisibly eob)))
 
 
+;; C-c C-v
+;;; this works for Sqpe+4 and S+4
+(defun ess-display-help-on-object-ddeclient (object)
+  "Display the ESS documentation for OBJECT in another window.
+If prefix arg is given, forces a query of the ESS process for the help
+file.  Otherwise just pops to an existing buffer if it exists."
+  (ess-force-buffer-current "Process to load into: ")
+  (ess-eval-visibly (concat "help(" object ")")))
 
 
-(put 'ess-external-minor-mode 'permanent-local t)
-(or (assq 'ess-external-minor-mode minor-mode-alist)
-;    (let ((mode-name (concat " [external " inferior-ess-program-name "]")))
-	  (setq minor-mode-alist
-		(append minor-mode-alist
-			(list '(ess-external-minor-mode
-;				mode-name
-				" [external]"
-)))))
-;)
+(fset 'ess-display-help-on-object-original
+      (symbol-function  'ess-display-help-on-object))
 
-
-(if ess-external-mode-map
-    nil
-  (progn
-    (setq ess-external-mode-map (copy-keymap ess-mode-map))
-    (define-key ess-external-mode-map "\C-c\C-n" 'ess-eval-line-and-next-line-ddeclient)
-    (define-key ess-external-mode-map "\C-c\C-r" 'ess-eval-region-ddeclient)
-))
-
-
-(defun ess-external-minor-mode (&optional arg)
-  "Toggle Ess-external minor mode.
-With arg, turn ess-external minor mode on if arg is positive, off otherwise.
-ess-external minor mode uses dde to send lines to an ESS process external to emacs."
-  (interactive "P")
-  (if (setq ess-external-minor-mode
-	    (if (null arg) (not ess-external-minor-mode)
-	      (> (prefix-numeric-value arg) 0)))
-      (use-local-map ess-external-mode-map)  ;; external program, say Sqpe
-      (use-local-map ess-mode-map))          ;; iESS[] buffer running, say SPlus
-
-  (force-mode-line-update)
-  (setq mode-line-process ess-dialect)
-)
+(defun ess-display-help-on-object (object)
+  (interactive "sHelp on: ")
+  (if (equal (ess-get-process-variable
+	      ess-current-process-name 'inferior-ess-ddeclient)
+	     (default-value 'inferior-ess-ddeclient))
+      (ess-display-help-on-object-original object)
+    (ess-display-help-on-object-ddeclient object))
+  (widen))
 
 (provide 'ess-iw32)
 
