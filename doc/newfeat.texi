@@ -2,6 +2,7 @@ Changes/New Features in 5.2.3:
 @itemize @bullet
 @item New variables inferior-Splus-args and inferior-R-args provide a
 way to pass command line arguments to starting S and R processes.
+@end itemize
 
 Changes/New Features in 5.2.2:
 @itemize @bullet
@@ -16,7 +17,7 @@ By default only Unix programs beginning "R-1" and
 "R-2" and Windows programs parallel to the
 version of R in your exec-path will be found,
 but see ess-r-versions and ess-rterm-versions for ways to find other
-versions of R.  
+versions of R.
 @item ESS[R]: Other versions of R, such as "R-1.8.1" on Unix and "rw1081" on
 Windows, are added to the
 "ESS / Start Process / Other" menu.
@@ -46,7 +47,7 @@ Thanks to David Smith from Insightful for the S-plus logo.
 external file viewers for each graphics file type via the alist
 ess-sas-graph-view-viewer-alist; also .jpg/.gif are now handled
 by image-mode on XEmacs, if available, otherwise by graphics
-primitives as before 
+primitives as before
 @end itemize
 
 Changes/New Features in 5.2.0:
