@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/19 18:38:41 $ - $Revision: 1.198 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/19 18:52:22 $ - $Revision: 1.199 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -397,7 +397,7 @@ optimized for statistical programming and interactive data analysis.
 Statistical programming is the writing of computer programs for data
 analysis and processing.  These programs might be written in a
 computer language that requires a compiler, such as C or \Fortran.
-But, more likely, they are written in a statistical analysis language 
+But, more likely, they are written in a statistical analysis language
 that only requires an interpreter such as R, \SAS\ or \XLispStat.
 %% An interpreted language is executed by an interpreter, but a
 %% compiled language must be processed by a compiler which creates an
@@ -423,8 +423,7 @@ that only requires an interpreter such as R, \SAS\ or \XLispStat.
 ESS fully supports the S family (S, \Splus, and R)\@.  \SAS\ and BUGS
 are also well supported.  \Stata, \XLispStat\ (including extensions
 ARC and ViSta) are supported with the basic functionality of syntax
-highlighting and process-interfacing.  %ESS and its interface are fully
-%discussed in the next section.
+highlighting and process-interfacing.
 
 ESS extends Emacs to provide a functional and extensible interface
 which is uniform and consistent across multiple statistical packages.
@@ -1268,6 +1267,26 @@ rather than standard-input/standard-output.
 
 This history is summarized in Table \ref{tab:timeline}.
 
+
+\section{Conclusion}
+\label{sec:concl}
+
+
+%%\section{Extensions}
+
+ESS provides 
+an enhanced, powerful interface for efficient interactive data
+analysis and statistical programming.  
+It allows the user complete control over the communications among the
+files in which the analysis is specified, the statistical process doing
+the computation, and the output.  Because all are within the same programming
+environment, and therefore are accessed with the same
+editing and searching concepts and the same key sequences,
+user efficiency is increased.
+It is completely customizable
+to satisfy individual desires for interface styles as well as being
+extensible to additional statistical languages and analysis packages.
+
 %\begin{Comment}
 %Rich: see my discussion of ESS-elsewhere terminology.
 
@@ -1283,9 +1302,6 @@ This history is summarized in Table \ref{tab:timeline}.
 %%includes support for syntax highlighting and template-based source file
 %%generation that provides the capability of specifying all the necessary
 %%parameters for a BUGS batch run in a single file.
-
-%%\section{Extensions}
-%%\label{sec:extensions}
 
 %%There are two active areas of extensions for user environments.  One
 %%is to enhance the capabilities of the IDE for statistical practice;
@@ -1322,22 +1338,6 @@ groups to provide standardized templates for initiating an analysis.
 
 %ESS is one of the first  Rapid Application Development (RAD)
 %environments intended for statisticians.  It provides
-
-\section{Conclusion}
-
-ESS provides 
-an enhanced, powerful interface for efficient interactive data
-analysis and statistical programming.  
-It allows the user complete control over the communications among the
-files in which the analysis is specified, the statistical process doing
-the computation, and the output.  Because all are within the same programming
-environment, and therefore are accessed with the same
-editing and searching concepts and the same key sequences,
-user efficiency is increased.
-It is completely customizable
-to satisfy individual desires for interface styles as well as being
-extensible to additional statistical languages and analysis packages.
-
 
 
 \bibliographystyle{plainnat}
