@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/23 22:05:35 $
-;; Version: $Revision: 1.81 $
-;; RCS: $Id: essa-sas.el,v 1.81 2002/01/23 22:05:35 rsparapa Exp $
+;; Modified: $Date: 2002/02/07 17:14:55 $
+;; Version: $Revision: 1.82 $
+;; RCS: $Id: essa-sas.el,v 1.82 2002/02/07 17:14:55 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -685,6 +685,11 @@ Without args, toggle between these options."
   (global-set-key [(control f8)] 'ess-sas-submit-region)
   (global-set-key (quote [f9]) 'ess-sas-data-view)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
+	(if (and ess-sas-edit-keys-toggle
+	    (equal emacs-major-version 19) (equal emacs-minor-version 28))
+	    (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
+	    ;else
+	    (global-set-key [(control tab)] 'ess-sas-backward-delete-tab))
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 (defvar ess-sas-global-unix-keys nil
