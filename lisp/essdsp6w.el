@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2002/01/09 13:53:54 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: essdsp6w.el,v 5.6 2002/01/09 13:53:54 rmh Exp $
+;; Modified: $Date: 2002/01/09 21:15:01 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: essdsp6w.el,v 5.7 2002/01/09 21:15:01 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -67,7 +67,7 @@ connects it to the *S+6 ddeclient* window.")
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
     (ess-loop-timeout              . 500000 )
-    (ess-object-name-db-file       . "ess-sp4-namedb.el" )
+    (ess-object-name-db-file       . "ess-sp6-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
     (ess-save-lastvalue-command
@@ -104,7 +104,7 @@ connects it to the *S+6 ddeclient* window.")
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
     (ess-loop-timeout              . 500000 )
-    (ess-object-name-db-file       . "ess-sp4-namedb.el" )
+    (ess-object-name-db-file       . "ess-sp6-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
     (ess-save-lastvalue-command
