@@ -5,11 +5,12 @@
 ;; Martin Maechler <maechler@stat.math.ethz.ch>.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
+;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/06/21 22:17:57 $
-;; Version: $Revision: 5.61 $
-;; RCS: $Id: ess-inf.el,v 5.61 2001/06/21 22:17:57 rossini Exp $
+;; Modified: $Date: 2001/06/27 20:05:30 $
+;; Version: $Revision: 5.62 $
+;; RCS: $Id: ess-inf.el,v 5.62 2001/06/27 20:05:30 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -1314,9 +1315,7 @@ to continue it."
   ;;(ess-write-to-dribble-buffer (format "(inf..-R-..): string=«%s»; " string))
 
   (if (or (string-match inferior-R-1-input-help string)
-	  (string-match inferior-R-2-input-help string)
-	;;(string-match "\? *['\"]?\\([^,=)]*\\)['\"]?" string)
-	  )
+	  (string-match inferior-R-2-input-help string))
       (progn
 	(insert-before-markers string)
 	(let ((string (match-string 2 string)))
@@ -1325,9 +1324,8 @@ to continue it."
 	   (if (string= string "") "help" string)))
 	(ess-eval-linewise "\n"))
     ;; else:  normal command
-    (inferior-ess-input-sender proc string)
-    )
-  )
+    (inferior-ess-input-sender proc string)))
+
 
 (defun inferior-ess-send-input ()
   "Sends the command on the current line to the ESS process."
