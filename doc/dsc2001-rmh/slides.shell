@@ -1,0 +1,24 @@
+Trying... Connected to sbm.
+
+============== Welcome To The FOX School of Business & Management ========
+	       Temple University, Philadelphia, Pennsylvania, USA.
+IRIX (surfer)
+
+login: rmh
+Password:
+IRIX Release 6.5 IP19 surfer
+Copyright 1987-2000 Silicon Graphics, Inc. All Rights Reserved.
+You have mail.
+sbm:/userdata/usr1/rmh> mail
+Mail version SGI.950426.  Type ? for help.
+"/usr/mail/rmh": 36 messages 2 new 4 unread
+ N 35 rossini@blindglobe  Fri Mar  9 14:40  Re: paper for DSC conferenc
+ N 36 rossini@blindglobe  Fri Mar  9 14:40  Re: paper for DSC conferenc
+& 
+
+
+
+Make this file come up in shell-mode
+Local variables:
+mode: shell
+End:
