@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/07 18:47:30 $
-;; Version: $Revision: 1.33 $
-;; RCS: $Id: ess-vars.el,v 1.33 1997/11/07 18:47:30 rossini Exp $
+;; Modified: $Date: 1997/11/07 19:30:33 $
+;; Version: $Revision: 1.34 $
+;; RCS: $Id: ess-vars.el,v 1.34 1997/11/07 19:30:33 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -829,6 +829,7 @@ browse-url to find the location")
 (defvar ess-mode-syntax-table nil "Syntax table for ess-mode.")
 (make-variable-buffer-local 'ess-mode-syntax-table)
 
+
  ; Buffer local customization stuff
 
 (defvar ess-source-modes '(ess-mode)
@@ -856,7 +857,17 @@ Used to store the values for passing on to newly created buffers.")
 (make-variable-buffer-local 'ess-local-customize-alist)
 
 (defvar ess-mode-editing-alist nil
-  "Variable settins for ess-mode.")
+  "Variable settings for ess-mode.")
+
+(defvar ess-transcript-minor-mode nil
+  "Non-nil if using ess-transcript mode as a minor mode of some other mode.")
+
+(make-variable-buffer-local 'ess-transcript-minor-mode)
+
+(defvar ess-listing-minor-mode nil
+  "Non-nil if using ess-listing mode as a minor mode of some other mode.")
+
+(make-variable-buffer-local 'ess-listing-minor-mode)
 
 (provide 'ess-vars)
 
