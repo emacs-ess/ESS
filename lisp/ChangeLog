@@ -1,3 +1,7 @@
+2004-11-24  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (S-editing-alist): change comment-start from "#" to "##"
+
 2004-11-19  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-noweb.el: remove setting of global-font-lock-mode

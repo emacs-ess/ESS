@@ -69,7 +69,7 @@
     (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
     (require-final-newline	  . t)
-    (comment-start		  . "#")
+    (comment-start		  . "##")
     (comment-start-skip		  . "#+ *")
     (comment-column		  . 40)
     ;;(comment-indent-function	. 'S-comment-indent)
