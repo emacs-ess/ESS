@@ -1,0 +1,184 @@
+							-*- text -*-
+
+ESS VERSION 4.9
+------------------
+
+This directory contains the distribution of ESS version 4.9, which
+used to be S-mode.  This is an Emacs-Lisp interface to interactive
+statistical programming and data analysis languages, including the S
+dialects, S, Splus, and R, as well as the LispStat dialect, XLispStat.
+
+
+0. LICENCE
+----------
+
+ESS is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2, or (at your option) any later
+version.
+	
+ESS is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+in the file COPYING in the same directory as this file for more
+details.
+
+
+1. FEATURES
+-----------
+
+Editing source code (S3, S+3, S4, R)
+
+        Syntactic indentation and highlighting of source code 
+        Partial evaluations of code 
+        Loading and error-checking of code 
+        Source code revision maintenance 
+
+Interacting with the process (S3, S+3, S4, R, XLispStat)
+
+        Command-line editing 
+        Searchable command history 
+        Command-line completion of S object names and file names 
+        Quick access to object lists and search lists 
+        Transcript recording 
+        Interface to the help system 
+
+Transcript manipulation (S3, S+3, S4, R, XLispStat)
+
+        Recording and saving transcript files 
+        Manipulating and editing saved transcripts 
+        Re-evaluating commands from transcript files 
+
+See the accompanying manual ESS.texi for details of features of ESS.
+See the file NEWS for changes in recent versions.
+
+
+2. REQUIREMENTS
+---------------
+
+ESS version 4.9 requires Emacs version 19.29 or later, or version
+XEmacs 19.14 or later.  ESS is supposed to work with any version of S,
+Splus, R, or XLispStat.  However it is most thoroughly tested with
+Splus 3.3, R 0.49 and 0.50, and XLispStat 3.50 on SunOS, Solaris, and
+Linux (Unix) systems; it may need some work with other configurations, 
+
+
+3. STABILITY
+------------
+
+Version 4.9 is a functional release.  However, there are a few known
+bugs (and countless other undiscovered ones); see the TODO file for
+details.  Bug reports are solicited; see the BUGS section below.
+Fixes and patches with bug reports are generously accepted.
+
+
+4. INSTALLATION  (AJR: NEEDS TO BE CHANGED!).
+---------------
+
+* cd to a directory where you keep emacs lisp files, or create a new
+  directory to hold the distribution.  This directory will be referred
+  to below as "the ESS-4.9 directory".  Note that the .elc files
+  may be installed elswehere (as specified in the Makefile) if
+  desired.
+
+* Copy ESS-4.9.tar.gz to the ESS-4.9 directory, and cd there.  Extract
+  the files from the distribution: 
+
+	gunzip ESS-4.9.tar.gz
+	tar xvf ESS-4.9.tar
+
+	(or using GNU tar:  tar zxvf ESS-4.9.tar.gz).
+
+  The tar commmand will extract files into the current directory.
+
+* Edit the file ess-site.el as explained in the comments section of
+  that file.
+
+* In the ESS-4.9 directory, edit the file Makefile and then type:
+
+	make
+	make install
+
+  This will install the info files (and the lisp files, if they
+  are to go in another directory).  Don't forget to edit the file
+  `dir' in the info directory specified by INFODIR in the Makefile.
+
+* Add the line
+
+	(load "/PATH/ess-site")
+
+  to your .emacs file (or to default.el, for a site-wide
+  installation).  Replace `/PATH' above with the value of
+  S-lisp-directory as defined in S-site.el.
+
+* Start Emacs, and run S with:
+
+	M-x S
+
+  You should be asked for a pathname ("S starting data directory?");
+  enter /PATH as defined above.
+
+  After the S prompt appears, type M-x S-create-object-name-db.  This
+  creates a database of object names (for completion purposes) in the
+  file S-namedb.el in the current S directory (i.e. /PATH).  Check
+  that /PATH now contains a file called S-namedb.el.  
+
+
+  If you wish to run R, you can start it with:
+
+	M-x R
+
+
+  XLispStat can be run with 
+	M-x XLS
+
+* That's it!
+
+
+5. BUGS
+-------
+
+Please send bug reports, suggestions etc. to rossini@stat.sc.edu.  The
+easiest way to do this is within Emacs by typing 
+
+	M-x ess-submit-bug-report 
+
+This also gives me valuable information about your installation with
+may help me to identify or even fix the bug.
+
+
+6. GETTING THE LATEST VERSION
+-----------------------------
+
+The latest version of ESS is always available by WWW from
+http://www.maths.lancs.ac.uk:2080/~maa036/elisp/S-mode/.  ESS is
+also available via anonymous FTP from
+wingra.stat.wisc.edu:pub/src/emacs-lisp/.
+
+
+7. THE ESS MAILING LIST
+--------------------------
+
+There is a mailing list for discussions and announcements relating to
+ESS.  Join the list by sending an e-mail with "subscribe ess"
+(or "help") in the body to ess-request@stat.math.ethz.ch;
+contributions to the list may be mailed to ess@stat.math.ethz.ch.
+Rest assured, this is a fairly low-volume mailing list.
+
+The purposes of the mailing list include
+
+- helping users of ESS to get along with it.
+- discussing aspects of using ESS for GNU Emacs and XEmacs.
+- suggestions for improvements.
+- announcements of new [beta] releases of ESS.
+- posting small patches to ESS.
+
+
+----
+Kurt Hornik, hornik@ci.tuwien.ac.at  Stat. Dept., TU-Vienna (<- ??)
+Richard Heiberger, rmh@fisher.stat.temple.edu, Stat Dept., Temple U.
+Martin Maechler, maechler@stat.math.ethz.ch  Stat. Dept., ETH
+A.J. Rossini, rossini@stat.sc.edu Stat. Dept., U South Carolina
+
+
+
