@@ -1,4 +1,3 @@
-
 We now discuss installation, which might happen under Unix or
 Microsoft Windows.  First, we discuss Unix installation.  
 
@@ -12,6 +11,7 @@ Please skip to the next
   to below as "the ESS distribution directory".  It will contain,
   at the end, the tar file @file{ESS-5.1.19.tar.gz}, and a directory for
   the ESS source, which will be termed "the ESS-5.1.19 source directory".
+
   Note that the .elc files may be installed elsewhere (as specified in the
   Makefile) if desired.
 @item
@@ -28,8 +28,8 @@ Please skip to the next
 	(or: @code{gunzip < ESS-5.1.19.tar.gz | tar vxf -} ).
 	(or using GNU tar:  @code{tar zvxf ESS-5.1.19.tar.gz}).
 
-  The @code{tar} command will extract files into the current directory.
 
+  The @code{tar} command will extract files into the current directory.
   Do not create ESS-5.1.19 yourself, or you will get an extra level of
   depth to your directory structure.
 @item
@@ -40,11 +40,6 @@ Please skip to the next
   corresponding lines in @file{ess-site.el}.
 @item
   @b{READ THIS ITEM THOROUGHLY BEFORE STARTING}:
-
-  YOU DO NOT NEED TO RUN THROUGH THESE STEPS IN ORDER TO USE ESS.  YOU
-  ONLY NEED TO EDIT AND LOAD (into Emacs) @file{lisp/ess-site} TO
-  START USING ESS.  THESE STEPS COMPILE (for a small gain in speed)
-  AND CREATE THE DOCUMENTATION.
 
   In the ESS-5.1.19 directory, edit the file @file{Makeconf} (only if you
   want to place the executables in other locations; see LISPDIR and
