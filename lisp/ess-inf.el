@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/04/18 11:07:46 $
-;; Version: $Revision: 5.84 $
-;; RCS: $Id: ess-inf.el,v 5.84 2004/04/18 11:07:46 stephen Exp $
+;; Modified: $Date: 2004/04/26 15:36:37 $
+;; Version: $Revision: 5.85 $
+;; RCS: $Id: ess-inf.el,v 5.85 2004/04/26 15:36:37 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -557,14 +557,18 @@ prompt for a process name with PROMPT.
 
 (defun ess-switch-to-ESS (eob-p)
   "Switch to the current inferior ESS process buffer.
-With (prefix) EOB-P non-nil, positions cursor at end of buffer."
+With (prefix) EOB-P non-nil, positions cursor at end of buffer.
+This function should follow the description in `ess-show-buffer' 
+for showing the iESS buffer, except that the iESS buffer is also
+made current."
   (interactive "P")
   (ess-make-buffer-current)
   (if (and ess-current-process-name (get-process ess-current-process-name))
-      (let ((special-display-regexps 
-	     (if inferior-ess-own-frame '(".") nil)))
-	(pop-to-buffer
-	 (process-buffer (get-process ess-current-process-name)))
+      (progn
+	;; Display the buffer, but don't select it yet.
+	(ess-show-buffer 
+	 (buffer-name (process-buffer (get-process ess-current-process-name)))
+	 t)
 	(if eob-p (goto-char (point-max))))
     (message "No inferior ESS process")
     (ding)))
@@ -593,6 +597,98 @@ With (prefix) EOB-P non-nil, positions cursor at end of buffer."
      defunct))
   (if (eq (length ess-process-name-list) 0)
       (setq ess-current-process-name nil)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ess-show-buffer
+;; Something like this almost works, but problems with XEmacs and Emacs
+;; differing implementations of the args to display-buffer make this 
+;; too tough to pursue.  The longer version below works.
+;; (defun ess-show-buffer (buf)
+;;   "Display the buffer BUF, a string, but do not select it.
+;; Returns the window corresponding to the buffer."
+;;   ;; On XEmacs, I get an error if third arg to display-buffer is t and
+;;   ;; the BUF is in another frame.  Emacs does not have this problem.
+;;   (if (featurep 'xemacs)
+;;       (display-buffer buf nil (get-frame-for-buffer buf))      
+;;     (display-buffer buf nil t)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun ess-show-buffer (buf &optional visit)
+  "Ensure the ESS buffer BUF is visible.
+The buffer, specified as a string, is typically an iESS (e.g. *R*) buffer.
+
+This handles several cases:
+
+1. If BUF is visible in the current frame, nothing is done.
+2. If BUF is visible in another frame, then we ensure that frame is
+visible (it may have been iconified).
+3. If buffer is not visible in any frame, simply show it in another window 
+in the current frame.
+
+Iff VISIT is non-nil, as well as making BUF visible, we also select it
+as the current buffer."
+  (let ( (frame))
+    (if (ess-buffer-visible-this-frame buf)
+	;;1. Nothing to do, BUF visible in this frame; just return window
+	;; where this buffer is.
+	t
+      
+      ;; 2. Maybe BUF visible in another frame.
+      (setq frame (ess-buffer-visible-other-frame buf))
+      (if frame
+	  ;; BUF is visible in frame, so just check frame is raised.
+	  (if (not (eq (frame-visible-p frame) t))
+	      ;; frame is not yet visible, so raise it.
+	      (raise-frame frame))
+	;; 3. else BUF not visible in any frame, so show it (but do
+	;; not select it) in another window in current frame.
+	(display-buffer buf)))
+    ;; At this stage, the buffer should now be visible on screen,
+    ;; although it won't have been made current.
+    (if visit
+	(progn 
+	  ;; Need to select the buffer.
+	  ;;
+	  ;; First of all, check case 2 if buffer is in another frame
+	  ;; but that frame may not be selected.
+	  (if (and frame (not (featurep 'xemacs)))
+	      (progn
+		;; need to select the frame
+		(select-frame frame)
+		;; reposition mouse to make frame active.
+		(set-mouse-position (selected-frame) (1- (frame-width)) 0)))
+	  (select-window (get-buffer-window buf 0))))))
+
+
+;; The next few functions are copied from my (SJE) iswitchb library.
+(defun ess-get-bufname (win)
+  "Used by `ess-get-buffers-in-frames' to walk through all windows."
+  (let ((buf (buffer-name (window-buffer win))))
+    (if (not (member buf ess-bufs-in-frame))
+	;; Only add buf if it is not already in list.
+	;; This prevents same buf in two different windows being
+	;; put into the list twice.
+	(setq ess-bufs-in-frame
+	      (cons buf ess-bufs-in-frame)))))
+
+(defun ess-get-buffers-in-frames (&optional current)
+ "Return the list of buffers that are visible in the current frame.
+If optional argument CURRENT is given, restrict searching to the
+current frame, rather than all frames."
+ (let ((ess-bufs-in-frame nil))
+   (walk-windows 'ess-get-bufname nil (if current nil 0))
+   ess-bufs-in-frame))
+
+(defun ess-buffer-visible-this-frame (buf)
+ "Return t if BUF is visible in current frame."
+ (member buf (ess-get-buffers-in-frames t)))
+
+(defun ess-buffer-visible-other-frame (buf)
+ "Return t if BUF is visible in another frame.
+Assumes that buffer has not already been in found in current frame."
+ (if (member buf (ess-get-buffers-in-frames))
+     (window-frame (get-buffer-window buf 0))
+   nil))
+
 
  ; Functions for evaluating code
 
@@ -844,12 +940,10 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 		 (not (looking-at inferior-ess-prompt))))))
     (goto-char (marker-position (process-mark sprocess)))
     (if eob
-	(progn
-	  (set-buffer cbuffer)
-	  (switch-to-buffer-other-window sbuffer)
-	  (goto-char (point-max))
-	  (switch-to-buffer-other-window cbuffer))
-      (set-buffer cbuffer))))
+	;; SJE: not sure about (goto-char (point-max)) removed here.
+	(ess-show-buffer (buffer-name sbuffer) nil))
+    (set-buffer cbuffer)
+    ))
 
 ;;;*;;; Evaluate only
 
