@@ -1,17 +1,13 @@
-## $Id: Makefile,v 5.2 1998/04/17 12:15:34 maechler Exp $
+## $Id: Makefile,v 5.3 1998/09/10 06:10:54 hornik Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
 Subdirs = lisp doc
 
-all:
-	for D in $(Subdirs); do cd $$D; make $@ ; cd .. ; done
+all install clean distclean:
+	@for D in $(Subdirs); do cd $$D; $(MAKE) $@ ; cd .. ; done
 
 ESS:
 	cd lisp; make all
 docs:
 	cd doc; make all
-
-
-clean distclean:
-	for D in $(Subdirs); do cd $$D; make $@ ; cd .. ; done
