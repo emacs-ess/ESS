@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/04 21:48:19 $ - $Revision: 1.99 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/05 03:23:02 $ - $Revision: 1.100 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -173,7 +173,6 @@ intelligent environment for statistical analysis}
 \begin{abstract}
   Emacs Speaks Statistics (ESS) provides an intelligent user
   interface for statistical programming and data analysis 
-% that works the same way 
   for a variety of statistical analysis packages on a
   variety of computer operating systems.  ESS is based on the Emacs
   text editor programming environment and relies 
@@ -182,9 +181,9 @@ intelligent environment for statistical analysis}
   it can increase statistical programming efficiency.
 \end{abstract}
 
-\noindent Keywords: Data Analysis, Programming, %ESS, Emacs,
+\noindent Keywords: Data Analysis, Programming, ESS, Emacs,
 S, \SAS, \Splus, R, \XLispStat, \Stata, BUGS, free-software,
-open-source%, multi-platform, cross-platform
+open-source, multi-platform, cross-platform
 
 
 \section{Introduction}
@@ -208,13 +207,12 @@ extensions Arc \citep{Cook:Weisberg:1999} and ViSta
 \citep{youn:fald:mcfa:1992}; \Stata\ \citep{Stata:6.0}; Omegahat
 \citep{DTLang:2000}; and BUGS \citep{BUGS}.  ESS can be extended to
 accommodate most statistical packages which provide either an
-interactive command-line or run analyses using batch files for
-instructions.
+interactive command-line or process batch files for instructions.
 
 The rest of the paper is organized as follows; we first describe the
 Emacs text editor, the platform on which ESS is built.  Next, we
 discuss the details of ESS and how it facilitates common statistical
-computing activities.  The history ESS follows; ESS is unique as an
+computing activities.  The history of ESS follows; ESS is unique as an
 open-source, free-software project that has been passed down by
 multiple generations of developers and has united various Emacs
 extensions which support statistical language programming.  Finally,
@@ -224,14 +222,15 @@ we conclude with future extensions.
 \label{sec:emacs}
 
 Emacs is a mature, powerful, and extensible text editing system which
-is freely available under the GNU General Public License for a large
+is freely available under the GNU General Public License (GPL) for a large
 number of platforms, including most distributions of Unix\regstrd, Microsoft
 Windows\regstrd\ and Apple Mac\tm\ OS.  There are two open-source
-implementations of Emacs which are released for use under the GNU
-General Public License: GNU Emacs \citep{GNU-Emacs} and XEmacs
+implementations of Emacs which are released for use under the GPL:  GNU 
+Emacs \citep{GNU-Emacs} and XEmacs
 \citep{XEmacs}.  Emacs shares many features with word processors, and
 some characteristics with operating systems.
-Emacs provides facilities which go beyond ordinary text editing, including intelligent completion as well as content presentation.
+Emacs provides facilities which go beyond ordinary text editing.
+%, including intelligent completion as well as content presentation.
 %% When opening a file, Emacs can complete partially-typed file names by
 %% referring to the operating system file directory.  
 Most importantly, Emacs can interact with and control other programs.
@@ -245,8 +244,9 @@ graphics-based windowing systems such as X11\tm, Microsoft Windows,
 and Apple Mac OS.  These windowing systems provide a graphical user
 interface (GUI) which allows the user to interact with either a
 keyboard or a mouse, and encourage multiple applications to share a
-single display.  Presently, Emacs is more often used in a windowing
-environment within its own window, but command keymapping is still an
+single display.  Presently, Emacs is more often used with a GUI,
+%in a windowing environment within its own window, 
+but command keymapping is still an
 important time-saving feature.  Emacs menus and toolbars on the
 display screen allow mouse access to frequently used actions and
 provide a graphical alternative when the user does not know or can not
@@ -276,8 +276,9 @@ written in Emacs Lisp (elisp) \citep{RChassell1999}, a dialect of Lisp
 \citep{PGraham:1996}.  Emacs commands, which are actually Lisp
 functions, can be called interactively either by name or by pressing
 their mapped key.  Not all functions are interactive in nature, and
-only those that are can be keymapped.  For the purposes of this paper,
-the most important extensions to Emacs are called modes, which can be
+only those that are can be keymapped.  
+%For the purposes of this paper,
+The most important extensions to Emacs are called modes, which can be
 major or minor, depending on the extent to which they take over the
 editing behavior.
 
@@ -292,7 +293,7 @@ Examples of this kind of major-mode are \stexttt{ESS[S]} and
 \stexttt{ess-mode}).  Major-modes of this kind provide automatic
 indentation; navigation in units of characters, words, lines,
 sentences, paragraphs, and pages; syntax-based fontification and
-coloration; and many other features.
+colorization; and many other features.
 
 Second, major modes provide the ability to run other programs.  In
 this case, the other program's standard-input can be drawn from a
@@ -306,13 +307,13 @@ packages.  Other major modes are \stexttt{telnet} mode for logging in
 to a remote machine, either securely by running \stexttt{ssh} or
 non-securely by running \stexttt{telnet}, and a directory editor mode
 \stexttt{dired} that permits access to files (for viewing, editing,
-and saving back) on the local or remote machine with equal ease.
+and saving) on the local or remote machine with equal ease.
 
 By contrast, minor-modes provide services that are useful, perhaps
 after a minor amount of customization, across a variety of major
 modes.  For example, the minor-mode \stexttt{font-lock-mode} allows
 Emacs to highlight, with fonts or colors, the syntax of a programming
-language whose characteristics are described by a major-mode like ESS{}.
+language whose characteristics are described by a major-mode like ESS.
 \stexttt{overwrite-mode}, usually mapped to the \ssf{Insert} key,
 determines whether typed characters replace the existing text or push
 it to the right.  Minor modes can be used to change the key bindings,
@@ -365,10 +366,8 @@ Interacting with revision control programs is provided by the
 minor-mode \stexttt{vc-mode} for packages like CVS, RCS, and SCCS (or
 the more specialized \stexttt{pcl-cvs-mode} for CVS only).
 
-Comparison of two files, for example successive drafts of a paper
-by multiple authors, is simplified by \stexttt{ediff}, a visual 
-way to browse simultaneously through
-the differences between a pair (or a triple) of files or buffers.
+Comparison of files, two or three drafts of a paper for example,
+is simplified by \stexttt{ediff}.
 An example is shown in Figure \ref{f.ediff}.  The lines that are similar
 are highlighted in the two buffers, one for each file, and the specific
 words that mismatch are highlighted in a contrasting color.
@@ -397,6 +396,15 @@ files and in entire directories.
 %editors that don't provide that :o)
 %\end{Comment}
 
+\begin{Comment} Rodney: Is the 1st sentence of the next paragraph
+a reference to dired?  If so, let's be specific.  And, also note that 
+dired was introduced in Modes.  I think we should either keep the 
+discussions together or make them complementary by a cross-reference
+like (see Modes).  I feel the same way about the two seperate discussions 
+of shell-mode and file name completion which is brought up again in 
+Process Interaction.
+\end{Comment}
+
 Emacs interfaces to the computer's directory structure to provide a
 file-manager capability, and stores the command-history of editing
 tasks.  Other extensions to Emacs allow it to act as a web browser, a
@@ -411,6 +419,15 @@ For example, syntax highlighting can help enforce company coding
 standards.  Figure \ref{f.hilock} shows how to enforce a standard for
 \SAS\ programming that says all \stexttt{PROC} statements must use the
 \stexttt{DATA=datasetname} option.
+
+\begin{Comment} Rodney: I agree that this is possible, however, I 
+ have never seen a company attempt to enforce such standards.  In fact,
+ I don't think it would be a good idea.  It would waste valuable time 
+ checking SAS code that would be better spent verifying that the results 
+ generated are correct (you have hit one of my pet peeves :o).
+ I'd like to drop this controversial subject.  It makes us look like
+ a bunch of auditors, rather than statisticians.
+\end{Comment}
 
 %\begin{figure}
 %\ifdraft
@@ -453,14 +470,17 @@ parsing of help and evaluation assistance.
 Complex conflicts between interfaces can be the result of coordinating
 several data files, multiple statistical software packages, and the
 corresponding source code for each of these packages into a single
-analysis.  ESS helps to remediate the problem by including support for
+analysis.  ESS helps solve these problems by including support for
 version and source code control systems, tools for accessing programs
 or files on remote machines, and interfaces to documentation systems
 including \LaTeX\ and \textsc{xml}.  In addition, Emacs can assist
 with, or be programmed to perform, many tasks related to data
-cleaning, management, and editing.  Below, we describe some of the
-problems that one encounters, and how ESS/Emacs help to minimize the
-impact of the problems.
+cleaning, management, and editing.  
+
+% repetitive
+%Below, we describe some of the
+%problems that one encounters, and how ESS/Emacs can minimize the
+%impact of the problems.
 
 %This is done by extending the editor to provide
 %additional useful features, and in the case of interactive statistical
@@ -512,16 +532,16 @@ The programmers task is eased when language constructs (such as
 reserved words, function calls, strings, and comments) are visually
 identifiable and when lines of code are automatically indented to a
 depth appropriate to their context (e.g., if--then clauses, loops).
-ESS provides both of these supports to the programmer by
+ESS provides support for both of these to the programmer by
 including a description of the syntax of each
-supported statistical language in the form used by the standard Emacs
+supported statistical language in the form used by
 \stexttt{font-lock-mode}.  
 
 Figure \ref{f.font} shows an example of font-locking a
 complicated S statement.  The top panel shows an \stexttt{if}
 statement with a long expression in the condition and a multi-line
 consequence.  The keyword \stexttt{if} is shown in purple,
-the string \stexttt{"deltat"} in rosypurple.  The
+the string \stexttt{"deltat"} in rosy-purple.  The
 comments are in red.  Everything else is in the standard
 font.  The consequence is indented and the continuations of the
 consequence are further indented.  The matching parentheses are shown
@@ -602,8 +622,8 @@ Emacs has historically referred to processes under its control as
 denote the mode for interfacing with the statistical package.  The
 output of the package goes directly to an editing buffer in Emacs,
 whose major mode is crafted to allow for command-line editing.  This
-mode remembers and uses the command history.  allowing for recall and
-searching for previously entered commands.  Filename completion for
+mode remembers and uses the command history allowing for the recall and
+searching of previously entered commands.  Filename completion for
 local directories is also available.%  In addition (currently only for
 %S languages), there exists object-name and function-name completion;
 %these are based on tables which can be reconstructed automatically or
@@ -963,7 +983,7 @@ results back.
 interactive \SAS\ session.  The \SAS\ session can be on either the
 same computer or a remote computer.  \stexttt{iESS[SAS]} mode works by
 sending the \stexttt{-stdio} command-line option to the \stexttt{sas}
-command.  At this writing \SAS\ accepts the \stexttt{-stdio} option
+command.  As of this writing, \SAS\ supports the \stexttt{-stdio} option
 only on Unix machines.
 
 The user highlights a region (normally a \stexttt{PROC ... RUN;}
@@ -1001,10 +1021,11 @@ Interactive processing with statistical analysis packages is very
 useful for exploratory data analysis.% with descriptive statistics and graphics.
 However, there are %statistical programming 
 situations for which it is not ideal.  Batch file processing with
-statistical analysis packages is a better choice when the long
-execution times are needed (such as in complex resampling or MCMC
-analyses), or when the results do not require immediate action, such
-as in time-based reports.
+statistical analysis packages is a better choice when the execution times 
+are longer than the user is willing to wait for them to complete.
+% (such as in complex resampling or MCMC
+% analyses), or when the results do not require immediate action, such
+%as in time-based reports.
 %necessary for execution is more than a few seconds such as processing
 %and analyzing a large amount of data.
 
@@ -1012,14 +1033,13 @@ as in time-based reports.
 \label{sec:sas-batch}
 
 \SAS\ is a popular choice for processing and analyzing large amounts
-of data.  However, interactive \SAS\ is rarely used in these
-situations.  Instead, a file containing \SAS\ commands is created and
-\SAS\ executes these commands in the background, or batch, while the
-user moves on to other activities.
+of data.  However, interactive \SAS\ is rarely used in these situations
+due to the length of time involved.  Instead, a file containing \SAS\ 
+commands is created and \SAS\ executes these commands in the background, 
+or batch, while the user moves on to other activities.
 
-Emacs and ESS facilitate \SAS\ batch usage beginning with
-\stexttt{ESS[SAS]}, the mode in which files with the \stexttt{sas}
-extension are opened.  ESS defines \SAS\ syntax so that
+Emacs and ESS facilitate \SAS\ batch with \stexttt{ESS[SAS]}, the mode 
+for files with the \stexttt{sas} extension.  ESS defines \SAS\ syntax so that
 \stexttt{font-lock-mode} can highlight statements, procedures,
 functions, macros, datasets, comments and character string literals in
 \SAS\ programs.  Optionally, the same language features are
@@ -1034,11 +1054,10 @@ files (with extensions of \stexttt{log} and \stexttt{lst}
 respectively).
 
 Only one function key press is needed to submit a \SAS\ batch process.
-Other function keys bring up the \SAS\ program, the \SAS\ log and the
-\SAS\ listing buffers.  Note that %% When accessed in this manner, 
-the \SAS\ log and \SAS\ listing in the Emacs buffer are automatically
-updated to match the files concurrently being appended by the \SAS\ 
-batch process.  In addition, the \SAS\ log is searched for error
+Other function keys open the \SAS\ program, the \SAS\ log and the
+\SAS\ listing buffers.  When accessed in this manner, the \SAS\ log and 
+\SAS\ listing buffers are automatically updated as they are being appended 
+by the \SAS\ batch process.  In addition, the \SAS\ log is searched for error
 messages and the error messages, if any, are sequentially displayed
 with consecutive key presses.
 
@@ -1121,9 +1140,9 @@ can take a long time. %number
 % and can be very time-consuming.
 Most BUGS programs are executed as batch processes.
 
-Emacs and ESS facilitate BUGS batch beginning with
-\stexttt{ESS[BUGS]}, the mode in which files with the \stexttt{bug}
-extension are opened.  ESS defines BUGS syntax so that
+Emacs and ESS facilitate BUGS by \stexttt{ESS[BUGS]}, the mode in which 
+files with the \stexttt{bug} extension are opened.  ESS defines BUGS 
+syntax so that
 \stexttt{font-lock-mode} can highlight statements, distributions,
 functions, commands and comments in BUGS model files, command files
 and log files.  ESS creates templates for the command file from the
@@ -1152,7 +1171,7 @@ Commands Window.
 
 ESS is an example of how open-source projects can develop beyond what
 their initial authors planned.  To date, there have been 3 generations
-of developers, with 5 total projects.  ESS descended from and combined
+of developers, with 5 major versions released.  ESS descended from and combined
 2 Emacs modes: S-mode and SAS-mode.
 
 \begin{figure}[tbp]
