@@ -4,38 +4,17 @@
 #
 
 case $# in
-     1) if test -f bugs.log
-	    then rm -f bugs.log
-	fi
-
+     1) ln -f bugs.log bugs.bog
 	bugs603.sparc 32 bugs $1
 	rm bugs.buf
-
-	if test -f bugs.log
-	    then mv -f bugs.log bugs.bog
-	fi;;
-
-     2)	if test -f $1.log
-	    then rm -f $1.log
-	fi
-
+	;;
+     2)	ln -f $1.log $1.bog
         bugs603.sparc 32 $1 $2
 	rm $1.buf
-
-	if test -f $1.log
-	    then mv -f $1.log $1.bog
-	fi;;
-
-     3)	if test -f $2.log
-	    then rm -f $2.log
-	fi
-
+	;;
+     3)	ln -f $2.log $2.bog
         bugs603.sparc $1 $2 $3
 	rm $2.buf
-
-	if test -f $2.log
-	    then mv -f $2.log $2.bog
-	fi;;
-
+	;;
      *) echo "usage: $0 [[number_of_bins] default_output_name] command_file";;
 esac

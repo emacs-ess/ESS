@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/07/30 21:56:03 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: essl-bug.el,v 1.13 2001/07/30 21:56:03 ess Exp $
+;; Modified: $Date: 2001/07/31 01:20:06 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: essl-bug.el,v 1.14 2001/07/31 01:20:06 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -250,7 +250,8 @@
 	    (insert (concat "update(" ess-bugs-default-update ")\n"))
 	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in2\")\n"))
 	    (insert "#%STATS\n\n#%STATS\n")
-	    (insert "q(\"" ess-bugs-file-dir ess-bugs-file-root ".bog\")\n")
+	    (insert "q()\n")
+	    ;;(insert "q(\"" ess-bugs-file-dir ess-bugs-file-root ".bog\")\n")
 	))
     ))
 )
@@ -259,8 +260,7 @@
   "Detect completion or failure of submitted job and notify the user."
   (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
 	 (beg (string-match exit-done string)))
-    (if beg
-	(message (substring string beg (match-end 0))))))
+    (if beg (message (substring string beg (match-end 0))))))
 
 (defun ess-revert ()
   "ESS: Revert from disk if file and buffer modification times are different."
