@@ -28,7 +28,7 @@
 %           1) SAS
 %           2) BUGS
 %           3) S family
-%4. ESS as an open source project
+%4. ESS as an open-source project
 %        a) origins
 %                1)S-mode
 %                2)SAS-mode
@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/18 22:35:57 $ - $Revision: 1.187 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/19 04:44:58 $ - $Revision: 1.188 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -226,11 +226,13 @@ interactive command-line or process batch files for instructions.
 We start by describing the Emacs text editor, the underlying
 platform on which ESS is built.  Next, we discuss how ESS enhances a
 statistician's daily activities by presenting its features
-and showing how it facilitates statistical computing.  The unique
-history of ESS as an open source project follows; it is a
-synthesis of several independent projects and has passed through 
-generations of developers.  We conclude with future
-extensions and related work.
+and showing how it facilitates statistical computing.
+%  The unique
+We give a short history of the development of ESS.
+% as an open-source project follows; it is a
+% synthesis of several independent projects and has passed through 
+% generations of developers.
+We conclude with future extensions and related work.
 
 \section{Emacs}
 \label{sec:emacs}
@@ -433,7 +435,7 @@ that only requires an interpreter such as R, \SAS\ or \XLispStat.
 %% program, but the program will not run as fast as if it had been
 %% compiled.  Another advantage of interpreted languages is the
 %% support they provide for specialized tasks.  For example, C and
-%% \Fortran don't provide you with the statistical analysis
+%% \Fortran\ don't provide you with the statistical analysis
 %% capabilities that R, \SAS\ or \XLispStat do.  Compiled programs and
 %% interpreted programs can be used in conjunction.  For instance, a
 %% compiled C function could be called from an interpreted language
@@ -663,7 +665,7 @@ available.
   \fi
   \caption{Line-by-line execution of a command file. The cursor is
     placed on a line in the \stexttt{ESS[S]} buffer and then with a single
-    press of the \stexttt{RETURN} key
+    key sequence
     the line is sent to the \stexttt{*R*} buffer for
     execution.  The output of the package goes directly to the
     editable \stexttt{*R*} buffer.}
@@ -1021,7 +1023,7 @@ designs the command file in \stexttt{ESS[SAS]} mode and highlights
 regions to be forwarded to \SAS\ for processing.
 %
 % Rodney: I don't see this as a feature of either ESS or emacs.  And,
-% what the authors prefer is certainly not germaine.
+% what the authors prefer is certainly not germane.
 %
 %
 % rmh: This is my preferred mode for interacting with SAS.  I tried another
@@ -1197,28 +1199,57 @@ evaluation independent of ESS, \stexttt{S BATCH}.
 \section{History of ESS}
 \label{sec:ESS:history}
 
-ESS is an example of how open-source projects can develop beyond what
-their initial authors planned.  To date, there have been 3 generations
-of developers, with 5 major versions released.  ESS descended from and combined
-2 Emacs modes: S-mode and SAS-mode.
-
+ESS (Emacs Speaks Statistics) is built on Emacs, the editing system for
+which Richard Stallman won a MacArthur Foundation Fellowship in 1990.
 Emacs has a long history of being a programmer's editor.  Many
 statisticians got their first taste of the power of Emacs with the
-\Fortran mode first distributed in 1986. However, statistician's
-preferences for programming were changing
-from generalist compiled languages like \Fortran to specialist interactive 
-statistical analysis packages like S and SAS.  Emacs modes for S and SAS soon 
+\Fortran\ mode made available in 1986.  As statisticians' preferences changed
+from generalist compiled languages such as \Fortran\ to specialist interactive 
+statistical analysis packages like S and SAS, Emacs modes for S and SAS soon 
 followed.
-%\begin{figure}[tbp]
-%  \centering
-%\ifdraft
-%  \emptyfig
-%\else
-%  \includegraphics[height=3in,width=5.5in]{timeline} %% please use the eps.gz
-%\fi
-%  \caption{The history and timeline of ESS and its ancestors}
-%  \label{fig:history}
-%\end{figure}
+
+Doug Bates and Ed Kademan wrote S-mode in 1989
+to edit S and \Splus\ files in GNU Emacs.
+Frank Ritter and Mike Meyer added features, creating  version 2.
+Meyer and David
+Smith made further contributions, creating version 3. David Smith
+provided process interaction changes for version 4.
+%%David Smith was the next primary maintainer, and his most
+%%important contribution was to enhance the \Splus\
+%%command-line interface and allow for control of multiple processes
+%%simultaneously.  
+In 1995, A.J. Rossini extended S-mode to support XEmacs.  Together
+with extensions written by Martin M{\"a}chler, this
+became version 4.5.  By 1996, S-mode was available for GNU Emacs and
+XEmacs and supported S, \Splus, and R.
+%%Kurt Hornik was instrumental in enhancing support for R,
+%%in particular, providing \stexttt{Rd-mode}.
+
+Tom Cook wrote SAS-mode in 1994, partially basing it on GNU Emacs
+macros written by John Sall.  Rossini extended SAS-mode to work with
+XEmacs in 1995.
+
+In 1995 Rossini merged S-mode and SAS-mode into a single Emacs package
+for statistical programming.  The product of this marriage, along with
+additional changes to accommodate multiple languages in a flexible
+way, was called ESS version 5.
+
+During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
+At the same time, SAS-mode was further integrated into ESS.
+
+In 1997, more changes in the internal structure of ESS were made to
+facilitate support for additional statistical languages.   \Stata\
+and \XLispStat were added to ESS's capabilitities.
+
+Most of the work, until 1998, was for Unix statistics packages that
+use the standard-input/standard-output model of inter-process
+communication for both the command-line interface and batch file
+processing.  ESS could not communicate with Windows versions of
+statistical packages that did not use the
+standard-input/standard-output model.  This hurdle fell in 1998 when
+Brian Ripley demonstrated how ESS could use the Windows Dynamic Data
+Exchange (DDE) protocol.  Heiberger used DDE to provide
+interactive interfaces for Windows versions of \Splus.
 
 \begin{table}[tbp]
   \centering
@@ -1252,55 +1283,6 @@ followed.
   \label{tab:timeline}
 \end{table}
 
-%% ESS originated as S-mode, which provided an interface for
-%% programming and process control under GNU Emacs for \Splus\ version 3,
-The history of ESS can be traced back to 1989, when S-mode was written
-as an extension to GNU Emacs for editing S and \Splus\ files.  Version
-1 was written by Doug Bates and Ed Kademan.  This was extended by
-Frank Ritter and Mike Meyer to become version 2.  Meyer and David
-Smith made further contributions which was version 3. David Smith
-provided changes for version 4.
-%%This was written by Doug Bates, Ed Kademan, Frank Ritter, and
-%%Mike Meyer.  David Smith was the next primary maintainer, and his most
-%%important contribution was to enhance the \Splus\
-%%command-line interface and allow for control of multiple processes
-%%simultaneously.  
-In 1995, A.J. Rossini extended S-mode to support XEmacs.  Together
-with extensions written by Martin M{\"a}chler, this
-became version 4.5.  By 1996, S-mode was available for GNU Emacs and
-XEmacs and supported S, \Splus, and R.  %Kurt Hornik was instrumental
-%in enhancing support for R.
-%%, in particular, providing \stexttt{Rd-mode}.
-
-The other ancestor of ESS is SAS-mode, written by Tom Cook, which
-began in 1994 and was partially based on GNU Emacs macros written by
-John Sall.
-%%\textbf{NEED TO GET DATES FROM AJR's ARCHIVE!?}.
-Rossini extended SAS-mode to work with XEmacs in 1995, and this provided the
-impetus for a single mode for statistical programming.
-%%The extension to a language-independent, generic interface was further prompted
-%%by the success of R and the desire for more complete R support.
-This led to a merger of SAS-mode and S-mode along with changes
-to accommodate multiple languages in a flexible way.  The product of this
-marriage was called ESS version 5.
-
-During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
-At the same time, SAS-mode was further integrated into ESS.
-
-In 1997, more changes were made to facilitate
-%% the grand redesign of the internals occurred, where by a generic
-%% means for
-support for additional statistical languages like \Stata\ and \XLispStat.
-
-Most of the work, until 1998, was for Unix statistics packages that
-used the standard-input/standard-output model of inter-process
-communication for both the command-line interface and batch file
-processing.  ESS could not communicate with Windows versions of
-statistical packages that did not use the
-standard-input/standard-output model.  This hurdle fell in 1998 when
-Brian Ripley demonstrated how ESS could use the Windows Dynamic Data
-Exchange (DDE) protocol as an interface.  A variant of this was
-incorporated soon after into ESS.
 %  Based on this work, Heiberger provided interactive
 %interfaces for Windows versions of \Splus.
 
