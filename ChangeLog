@@ -1,3 +1,7 @@
+Wed Nov 26 16:33:10 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* RELEASED: 5.0-gettingcloser.
+
 Wed Nov 26 16:10:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (dist): do the right thing w/ README.
@@ -1744,6 +1748,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 4.10  1997/11/26 21:33:51  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 4.9  1997/11/26 21:10:23  rossini
 	* Removing *** empty log message ***
 	* Removing
