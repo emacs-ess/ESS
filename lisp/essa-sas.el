@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/11 19:09:04 $
-;; Version: $Revision: 1.103 $
-;; RCS: $Id: essa-sas.el,v 1.103 2002/07/11 19:09:04 rsparapa Exp $
+;; Modified: $Date: 2002/07/11 19:26:43 $
+;; Version: $Revision: 1.104 $
+;; RCS: $Id: essa-sas.el,v 1.104 2002/07/11 19:26:43 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -389,26 +389,20 @@ on the way."
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
 
- (save-excursion (let ((ess-tmp-sas-data nil))
+ (save-excursion (let ((ess-tmp-sas-data nil)
+    (ess-search-regexp "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[ ,()\t;]")
+    (ess-search-except "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
+
     (if ess-sas-data nil (save-match-data 
-       (search-backward-regexp "[ \t=]" nil t)
+	(search-backward-regexp "[ \t=]" nil t)
 
-       (if (or
-           (and (search-forward-regexp 
-	        "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[ ,()\t;]"
-	        nil t)
-	        (setq ess-tmp-sas-data (match-string 1))
-                (not (string-match "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]" 
-                ess-tmp-sas-data))
-	   )
-	   (and (search-backward-regexp "[ \t=]" nil t)
-                (search-backward-regexp 
-	        "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[ ,()\t;]"
-	        nil t))) 
-           (setq ess-tmp-sas-data (match-string 1)))
+        (save-excursion 
+	    (setq ess-tmp-sas-data (ess-search-except ess-search-regexp ess-search-except)))
 
-       (if (and ess-tmp-sas-data 
-	  (not (string-match "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]" ess-tmp-sas-data)))
+        (if (not ess-tmp-sas-data) 
+	    (setq ess-tmp-sas-data (ess-search-except ess-search-regexp ess-search-except t)))
+
+        (if ess-tmp-sas-data 
 	    (setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 	    (setq ess-sas-data (read-string "Permanent SAS Dataset: ")))
 
