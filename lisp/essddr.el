@@ -6,9 +6,9 @@
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2001/04/11 22:34:52 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: essddr.el,v 5.16 2001/04/11 22:34:52 hornik Exp $
+;; Modified: $Date: 2001/09/20 10:27:28 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: essddr.el,v 5.17 2001/09/20 10:27:28 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.16 2001/04/11 22:34:52 hornik Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.17 2001/09/20 10:27:28 maechler Exp $
 
 ;;; Code:
 
@@ -58,7 +58,7 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev-table 'Rd-mode-abbrev-table ())
   (define-abbrev Rd-mode-abbrev-table "`ag" "\\arguments")
   (define-abbrev Rd-mode-abbrev-table "`al" "\\alias")
-  (define-abbrev Rd-mode-abbrev-table "`au" "\\author")  
+  (define-abbrev Rd-mode-abbrev-table "`au" "\\author")
   (define-abbrev Rd-mode-abbrev-table "`bf" "\\bold")
   (define-abbrev Rd-mode-abbrev-table "`co" "\\code")
   (define-abbrev Rd-mode-abbrev-table "`de" "\\describe")
@@ -171,10 +171,15 @@ All Rd mode abbrevs start with a grave accent (`).")
     (define-key map "\C-c\C-p" 'Rd-preview-help)
     (define-key map "\C-c\C-j" 'Rd-mode-insert-item)
     (define-key map "\C-c\C-e" 'Rd-mode-insert-skeleton)
+    ;;(define-key map "\C-c\C-f" ......prefix to "font" commands a la AUC-tex:
+    ;;  ^C^F ^E : \emph{ . }
+    ;;  ^C^F ^C : \code{ . }
+    ;;  ^C^F ^L : \code{\link{ . }}
     (define-key map "\C-c\C-s" 'Rd-mode-insert-section)
-    (define-key map "\C-c\C-w" 'ess-switch-process); is on C-c C-s in ess-mode..
-    (define-key map "\C-c\C-r" 'ess-eval-region)
     (define-key map "\C-c\C-n" 'ess-eval-line-and-step)
+    (define-key map "\C-c\C-r" 'ess-eval-region)
+    (define-key map "\C-c\C-v" 'ess-display-help-on-object)
+    (define-key map "\C-c\C-w" 'ess-switch-process); is on C-c C-s in ess-mode..
     (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
     (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
     (setq Rd-mode-map map)))
