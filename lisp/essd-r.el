@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/11/19 15:32:20 $
-;; Version: $Revision: 1.48 $
-;; RCS: $Id: essd-r.el,v 1.48 1997/11/19 15:32:20 rossini Exp $
+;; Modified: $Date: 1997/11/19 15:53:23 $
+;; Version: $Revision: 1.49 $
+;; RCS: $Id: essd-r.el,v 1.49 1997/11/19 15:53:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -72,7 +72,7 @@
 (defun R-mode  (&optional proc-name) 
   "Major mode for editing R source.  See ess-mode for more help."
   (interactive)
-  (setq-default ess-customize-alist R-customize-alist)
+  (setq ess-customize-alist R-customize-alist)
   (ess-mode R-customize-alist proc-name))
 
 (fset 'r-mode 'R-mode)
@@ -81,7 +81,7 @@
 (defun R (&optional start-args)
   "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ)."
   (interactive "P")
-  (setq-default ess-customize-alist R-customize-alist)
+  (setq ess-customize-alist R-customize-alist)
   ;; for debugging only
   (ess-write-to-dribble-buffer
    (format "(R): ess-dialect=%s , buf=%s, start-arg=%s\n"
