@@ -2,41 +2,6 @@
 
 $Revision: 4.13 $
 
-* C-c C-q from *R* buffers not working.
-
-From: Stephen Eglen <stephen@anc.ed.ac.uk>
-To: John Maindonald <john.maindonald@anu.edu.au>
-Cc: ess-bugs@stat.math.ethz.ch
-Subject: [ESS-bugs] ess-mode 5.2.1; Failure to exit with C-cC-q
-Date: Wed, 30 Jun 2004 22:43:16 +0100
-
-hi John,
- > if following C-cC-q I then answer "y" to the question
- > "Delete all buffers associated with the R process",
- > I get either
- > (1) the message
- > "Current buffer has no process", or
- > (2) (typically but not inevitably, having exited by
- > typing in q() directly and restarted with M-X R)
- > "Matches /Users/johnmq(... [1-]"
- > or some variation thereof.
-
-I get the same behaviour (Current buffer has no process), on the
-current sources and Emacs 21.3.  I had a quick backtrace through
-ess-quit and couldn't see what was causing the error, although it
-happened somewhere around the last line:
-
-	  (goto-char (marker-position (process-mark sprocess)))
-	  (insert inferior-ess-exit-command)
-	  (if (string-equal ess-dialect "R")
-
-
-I rarely use C-c C-q to kill an *R* session... I find C-x k much
-quicker, although I think it is not the suggested exit route!
-
-
-Stephen
-
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
