@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/25 18:06:37 $
-;; Version: $Revision: 4.52 $
-;; RCS: $Id: ess-inf.el,v 4.52 1997/11/25 18:06:37 rossini Exp $
+;; Modified: $Date: 1997/11/26 15:49:57 $
+;; Version: $Revision: 4.53 $
+;; RCS: $Id: ess-inf.el,v 4.53 1997/11/26 15:49:57 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -1287,7 +1287,7 @@ to continue it."
   (ess-make-buffer-current)
   (run-hooks 'ess-send-input-hook)
   (comint-send-input)
-  (setq ess-object-list nil)) ;; Will be reconstucted from cache if needs be
+  (setq ess-object-list nil)) ;; Will be reconstructed from cache if needs be
 
 (defun inferior-ess-get-old-input ()
   "Returns the ESS command surrounding point."
@@ -1428,9 +1428,9 @@ buffer (defaults to the command if BUFF is not given.)"
 ;;;*;;; Quitting
 
 (defun ess-quit ()
-  "Issue an exiting command the inferior process, and clean up."
+  "Issue an exiting command to the inferior process, and clean up."
   (interactive)
-  (ess-force-buffer-current "Process to load into: ")
+  (ess-force-buffer-current "Process to quit: ")
   (ess-make-buffer-current)
   (let ((sprocess (get-ess-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running."))
@@ -1785,8 +1785,8 @@ Elements which are apparently directories are expanded to full dirnames"
 ;;; ess-sl-modtime-alist is a list with elements as follows:
 ;;;  * key             (directory or object name)
 ;;;  * modtime         (list of 2 integers)
-;;;  * name, name ...  (accessible objects in search list posn labelled by key)
-;;; It has the same numner of elements and is in the same order as the
+;;;  * name, name ...  (accessible objects in search list posn labeled by key)
+;;; It has the same number of elements and is in the same order as the
 ;;; S search list
 
 (defun ess-get-modtime-list ()
