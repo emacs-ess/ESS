@@ -1,3 +1,7 @@
+2005-03-07  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (ess-S-keywords): add "terminate"
+
 2005-03-04  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el: use (regexp-opt .) constructor
