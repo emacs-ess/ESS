@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 1999/12/21 11:05:44 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essd-sp5.el,v 1.4 1999/12/21 11:05:44 maechler Exp $
+;; Modified: $Date: 2000/02/10 09:18:48 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essd-sp5.el,v 1.5 2000/02/10 09:18:48 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -79,11 +79,14 @@
     (inferior-ess-objects-command  . "objects(%d)\n")
     (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
     (inferior-ess-help-command     . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
+    ;; "paths": get the "/" needed by  (ess-dir-modtime dir)  in ./ess-inf.el:
+    (inferior-ess-search-list-command . "search(\"paths\")\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?"))
 
   "Variables to customize for S")
+
 
 ;; For loading up the S code required for the above.
 ;;(add-hook 'ess-post-run-hook
