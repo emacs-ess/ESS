@@ -1,17 +1,13 @@
 ;;; ess-mode.el --- Support for editing ESS source code
 
 ;; Copyright (C) 1989-1994 Doug Bates, Ed Kademan, Frank Ritter, David Smith.
-;; Copyright (C) 1997-1999 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;;			Kurt Hornik <hornik@ci.tuwien.ac.at>
-;;			Martin Maechler <maechler@stat.math.ethz.ch>
-;;			A.J. (Tony) Rossini <rossini@u.washington.edu>
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
+;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/07/02 07:45:48 $
-;; Version: $Revision: 5.33 $
-;; RCS: $Id: ess-mode.el,v 5.33 2004/07/02 07:45:48 rmh Exp $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Version: $Id: ess-mode.el,v 5.34 2004/07/08 07:48:58 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -22,11 +18,11 @@
 
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; along with GNU Emacs; see the file COPYING.	If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -40,12 +36,12 @@
 (require 'ess)
 
 ;;; AJR: THIS IS GROSS AND DISGUSTING (but I wrote it).
-;;; MM:  and I had to add all other 'ess-eval-*** ...
+;;; MM:	 and I had to add all other 'ess-eval-*** ...
 ;;; >>> why not just do the obvious instead of all these ? Namely,
 ;;; (require 'ess-inf)
 ;;; ------------------ ?
 ;;; AJR: The reason is that we ONLY need to load ess-inf for the
-;;; functions which are interactive in nature.   We don't want to load
+;;; functions which are interactive in nature.	 We don't want to load
 ;;; it when we are only editing.
 
 (autoload 'ess-mode-minibuffer-map	"ess-inf" "" nil 'keymap)
@@ -172,7 +168,7 @@
  ess-mode-menu ess-mode-map
  "Menu for use in `ess-mode'."
  '("ESS" ; ESS-mode
-   ["What is this? (beta)"    ess-mouse-me                      t]
+   ["What is this? (beta)"    ess-mouse-me			t]
    ["Load file"	 ess-load-file t]
    ("Eval and Go"
     ["Eval buffer"	ess-eval-buffer-and-go		  t]
@@ -222,17 +218,17 @@
     )
    ("Start Process"
     ;; SJE - :help not yet recognised in XEmacs.
-    ["R"     R   t] ;; :help "Start a new R process" :active t
-    ["S"     S   t] ;; :help "Start a new S process" :active t
+    ["R"     R	 t] ;; :help "Start a new R process" :active t
+    ["S"     S	 t] ;; :help "Start a new S process" :active t
     ["Sqpe" Sqpe ess-microsoft-p] ;; :help "Start a new Sqpe process" :active t
     ["S+6-exisiting" S+6-existing ess-microsoft-p] ;; :help "Access an existing S process" :active t
     ["SAS"   SAS-menu t] ;;  :help "Start a new SAS process" :active t
     ;; The following menu item "Other" is a place-holder that will
     ;; be replaced with the other versions of R and Sqpe that can be run.
     ;; See `ess-r-versions-create' and ess-site.el
-    ("Other"				
+    ("Other"
      ["No other R or Sqpe versions" R nil])
-    ["About" 
+    ["About"
      (ess-goto-info "Starting up") t]
      ;; :help "Read about starting a new ESS process" :active t]
     )
@@ -255,7 +251,7 @@
 (defun ess-mode-xemacs-menu ()
   "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
   (if 'ess-mode
-        (easy-menu-add ess-mode-menu)
+	(easy-menu-add ess-mode-menu)
     (easy-menu-remove ess-mode-menu)))
 
 (if (featurep 'xemacs)
@@ -268,7 +264,7 @@ Optional arg PROC-NAME is name of associated inferior process.
 
 \\{ess-mode-map}
 
-Extra binding to note:  'ESC C-\\' indent-region.
+Extra binding to note:	'ESC C-\\' indent-region.
 
 Entry to this mode runs the hooks in ess-mode-hook.
 
@@ -279,27 +275,27 @@ ESS source.
     `ess-eval-function' sends the current function to the ESS process.
     `ess-eval-line' sends the current line to the ESS process.
     `ess-beginning-of-function' and `ess-end-of-function' move the point to
-        the beginning and end of the current ESS function.
+	the beginning and end of the current ESS function.
     `ess-switch-to-ESS' switches the current buffer to the ESS process buffer.
     `ess-switch-to-end-of-ESS' switches the current buffer to the ESS process
-        buffer and puts point at the end of it.
+	buffer and puts point at the end of it.
 
     `ess-eval-region-and-go', `ess-eval-buffer-and-go',
-        `ess-eval-function-and-go', and `ess-eval-line-and-go' switch to the S
-        process buffer after sending their text.
+	`ess-eval-function-and-go', and `ess-eval-line-and-go' switch to the S
+	process buffer after sending their text.
 
     `ess-load-file' sources a file of commands to the ESS process.
 
 \\[ess-indent-command] indents for ESS code.
 \\[backward-delete-char-untabify] converts tabs to spaces as it moves back.
 Comments are indented in a similar way to Emacs-lisp mode:
-       `###'     beginning of line
-       `##'      the same level of indentation as the code
-       `#'       the same column on the right, or to the right of such a
-                 column if that is not possible.(default value 40).
-                 \\[indent-for-comment] command automatically inserts such a
-                 `#' in the right place, or aligns such a comment if it is
-                 already inserted.
+       `###'	 beginning of line
+       `##'	 the same level of indentation as the code
+       `#'	 the same column on the right, or to the right of such a
+		 column if that is not possible.(default value 40).
+		 \\[indent-for-comment] command automatically inserts such a
+		 `#' in the right place, or aligns such a comment if it is
+		 already inserted.
 \\[ess-indent-exp] command indents each line of the ESS grouping following point.
 
 Variables controlling indentation style:
@@ -420,16 +416,16 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   "Leave (and return) the point at the beginning of the current ESS function."
   (interactive)
   (let ((init-point (point))
- 	beg end done)
+	beg end done)
     ;;DBG (ess-write-to-dribble-buffer "ess-BEG-of-fun:")
     ;; in case we're sitting in a function header:
     (if (search-forward "(" (ess-line-end-position 2) t); at most end of next line
 	(forward-char 1))
     (while (not done)
       (if (re-search-backward ess-function-pattern (point-min) t)
- 	  nil
- 	(goto-char init-point)
- 	(error "Point is not in a function."))
+	  nil
+	(goto-char init-point)
+	(error "Point is not in a function."))
 
       (setq beg (point))
       ;;DBG (ess-write-to-dribble-buffer
@@ -752,8 +748,8 @@ of the expression are preserved."
 	    ;; Adjust line indentation according to its contents
 	    (if (= (following-char) ?})
 		;;(setq this-indent (- this-indent ess-indent-level)))
- 		(setq this-indent (+ this-indent
- 				     (- ess-close-brace-offset ess-indent-level))))
+		(setq this-indent (+ this-indent
+				     (- ess-close-brace-offset ess-indent-level))))
 	    (if (= (following-char) ?{)
 		(setq this-indent (+ this-indent ess-brace-offset)))
 	    ;; Put chosen indentation into effect.
@@ -1080,9 +1076,9 @@ generate the source buffer."
 	(error "Directory %s does not exist." dirname)))
 
     ;; Three options:
-    ;;  (1) Pop to an existing buffer containing the file in question
-    ;;  (2) Find an existing file
-    ;;  (3) Create a new file by issuing a dump() command to S
+    ;;	(1) Pop to an existing buffer containing the file in question
+    ;;	(2) Find an existing file
+    ;;	(3) Create a new file by issuing a dump() command to S
     ;; Force option (3) if there is a prefix arg
 
     (if current-prefix-arg
@@ -1174,11 +1170,11 @@ generate the source buffer."
 
 ;;; This file is automatically placed in Outline minor mode.
 ;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
+;;; Chapters:	  ^L ;
+;;; Sections:	 ;;*;;
 ;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
+;;; Components:	 defuns, defvars, defconsts
+;;;		 Random code beginning with a ;;;;* comment
 
 ;;; Local variables:
 ;;; mode: emacs-lisp

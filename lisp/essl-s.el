@@ -1,14 +1,14 @@
 ;;; essl-s.el --- Support for editing S source code
 
-;; Copyright (C) 1989-2001 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
-;; R.M. Heiberger, M. Maechler, and A.J. Rossini.
+;; Copyright (C) 1989-1997 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
+;;	R.M. Heiberger, M. Maechler, and A.J. Rossini.
+;; Copyright (C) 1998-2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@biostat.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2004/06/23 05:06:07 $
-;; Version: $Revision: 5.39 $
-;; RCS: $Id: essl-s.el,v 5.39 2004/06/23 05:06:07 hornik Exp $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Version: $Id: essl-s.el,v 5.40 2004/07/08 07:48:58 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -19,11 +19,11 @@
 
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; along with GNU Emacs; see the file COPYING.	If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -43,58 +43,58 @@
     nil
   (setq S-syntax-table (make-syntax-table))
   (modify-syntax-entry ?\\ "\\" S-syntax-table)
-  (modify-syntax-entry ?+  "."  S-syntax-table)
-  (modify-syntax-entry ?-  "."  S-syntax-table)
-  (modify-syntax-entry ?=  "."  S-syntax-table)
-  (modify-syntax-entry ?%  "."  S-syntax-table)
-  (modify-syntax-entry ?<  "."  S-syntax-table)
-  (modify-syntax-entry ?>  "."  S-syntax-table)
-  (modify-syntax-entry ?&  "."  S-syntax-table)
-  (modify-syntax-entry ?|  "."  S-syntax-table)
+  (modify-syntax-entry ?+  "."	S-syntax-table)
+  (modify-syntax-entry ?-  "."	S-syntax-table)
+  (modify-syntax-entry ?=  "."	S-syntax-table)
+  (modify-syntax-entry ?%  "."	S-syntax-table)
+  (modify-syntax-entry ?<  "."	S-syntax-table)
+  (modify-syntax-entry ?>  "."	S-syntax-table)
+  (modify-syntax-entry ?&  "."	S-syntax-table)
+  (modify-syntax-entry ?|  "."	S-syntax-table)
   (modify-syntax-entry ?\' "\"" S-syntax-table)
   (modify-syntax-entry ?\" "\"" S-syntax-table)
-  (modify-syntax-entry ?#  "<"  S-syntax-table) ; open comment
-  (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
+  (modify-syntax-entry ?#  "<"	S-syntax-table) ; open comment
+  (modify-syntax-entry ?\n ">"	S-syntax-table) ; close comment
   ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
-  (modify-syntax-entry ?.  "_"  S-syntax-table) ; see above/below,
+  (modify-syntax-entry ?.  "_"	S-syntax-table) ; see above/below,
 					; plus consider separation.
-  (modify-syntax-entry ?$  "_"  S-syntax-table) ; foo.bar$hack is 1 symbol
-  (modify-syntax-entry ?_  "."  S-syntax-table)
-  (modify-syntax-entry ?*  "."  S-syntax-table)
-  (modify-syntax-entry ?<  "."  S-syntax-table)
-  (modify-syntax-entry ?>  "."  S-syntax-table)
-  (modify-syntax-entry ?/  "."  S-syntax-table))
+  (modify-syntax-entry ?$  "_"	S-syntax-table) ; foo.bar$hack is 1 symbol
+  (modify-syntax-entry ?_  "."	S-syntax-table)
+  (modify-syntax-entry ?*  "."	S-syntax-table)
+  (modify-syntax-entry ?<  "."	S-syntax-table)
+  (modify-syntax-entry ?>  "."	S-syntax-table)
+  (modify-syntax-entry ?/  "."	S-syntax-table))
 
 (defvar S-editing-alist
-  '((paragraph-start              . (concat "\\s-*$\\|" page-delimiter))
-    (paragraph-separate           . (concat "\\s-*$\\|" page-delimiter))
+  '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
+    (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
-    (require-final-newline        . t)
-    (comment-start                . "#")
-    (comment-start-skip           . "#+ *")
-    (comment-column               . 40)
-    ;;(comment-indent-function  . 'S-comment-indent)
-    ;;(ess-comment-indent           . 'S-comment-indent)
-    ;;(ess-indent-line                      . 'S-indent-line)
-    ;;(ess-calculate-indent           . 'S-calculate-indent)
-    (indent-line-function            . 'S-indent-line)
-    (parse-sexp-ignore-comments   . t)
-    (ess-set-style                . ess-default-style)
-    (ess-local-process-name       . nil)
-    ;;(ess-keep-dump-files          . 'ask)
-    (ess-mode-syntax-table        . S-syntax-table)
+    (require-final-newline	  . t)
+    (comment-start		  . "#")
+    (comment-start-skip		  . "#+ *")
+    (comment-column		  . 40)
+    ;;(comment-indent-function	. 'S-comment-indent)
+    ;;(ess-comment-indent	    . 'S-comment-indent)
+    ;;(ess-indent-line			    . 'S-indent-line)
+    ;;(ess-calculate-indent	      . 'S-calculate-indent)
+    (indent-line-function	     . 'S-indent-line)
+    (parse-sexp-ignore-comments	  . t)
+    (ess-set-style		  . ess-default-style)
+    (ess-local-process-name	  . nil)
+    ;;(ess-keep-dump-files	    . 'ask)
+    (ess-mode-syntax-table	  . S-syntax-table)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function")
-    (font-lock-defaults           . '(ess-mode-font-lock-keywords
+    (font-lock-defaults		  . '(ess-mode-font-lock-keywords
 				      nil nil ((?\. . "w"))))
     )
   "General options for editing S, S+, and R source files.")
 
 (defvar inferior-S-language-start
   '(concat "options("
-	     "STERM='"  ess-STERM  "'"
+	     "STERM='"	ess-STERM  "'"
 	     (if ess-editor (concat ", editor='" ess-editor "'"))
-	     (if ess-pager  (concat ", pager='"  ess-pager  "', help.pager='"  ess-pager  "'"))
+	     (if ess-pager  (concat ", pager='"	 ess-pager  "', help.pager='"  ess-pager  "'"))
 	     ")")
   "S language expression for startup -- default for all S dialects.")
 
@@ -400,7 +400,7 @@ Uses the file given by the variable `ess-function-outline-file'."
 
 (defun ess-num-var-round (&optional dont-query verbose)
   "Is VERY useful for dump(.)'ed numeric variables; ROUND some of them by
-  replacing  endings of 000000*.. and 999999*.  Martin Maechler"
+  replacing  endings of 000000*.. and 999999*.	Martin Maechler"
   (interactive "P")
   (save-excursion
     (goto-char (point-min))
@@ -408,7 +408,7 @@ Uses the file given by the variable `ess-function-outline-file'."
     (let ((num 0)
 	  (str "")
 	  (rgxp "000000+[1-9]?[1-9]?\\>")
-	  (to   ""))
+	  (to	""))
       (if dont-query
 	  (ess-rep-regexp     rgxp to nil nil verbose)
 	(query-replace-regexp rgxp to nil))
@@ -424,15 +424,15 @@ Uses the file given by the variable `ess-function-outline-file'."
 
 (defun ess-fix-dot (before-chars &optional dont-query verbose)
   "Remove trailing decimal '.' (\"dot\"), before BEFORE; typically from S-plus"
-  ;; typically, before-chars =  "]:" or more
+  ;; typically, before-chars =	"]:" or more
   (ess-replace-regexp-dump-to-src
    (concat "\\([0-9]\\)\\.\\( *[" before-chars "]\\)")
-   ;;           111      ^
+   ;;		111	 ^
    "\\1\\2" dont-query verbose))
 
 (defun ess-fix-dot-1 (&optional do-query verbose)
   "Remove trailing decimal '.' (\"dot\"), before ':' or ']', i.e.,
-in cases where it's ugly and nonsense.  DO-QUERY(prefix) asks before replacing."
+in cases where it's ugly and nonsense.	DO-QUERY(prefix) asks before replacing."
   (interactive "P")
   (ess-fix-dot "]:" (not do-query) verbose))
 
@@ -520,7 +520,7 @@ and one that is well formatted in emacs ess-mode."
   "Smart \"_\" key: insert `ess-S-assign', unless in string/comment.
 If the underscore key is pressed a second time, the assignment
 operator is removed and replaced by the underscore.  `ess-S-assign',
-typically \" <- \", can be customized.  In ESS modes other than R/S,
+typically \" <- \", can be customized.	In ESS modes other than R/S,
 an underscore is always inserted. "
   (interactive)
   ;;(insert (if (inside-string/comment-p (point)) "_" ess-S-assign))
@@ -559,10 +559,10 @@ an underscore is always inserted. "
 	     ;; (stringp uscore) (string= uscore ess-S-assign)
 	     (not force))
 	(progn
-	 (define-key ess-mode-map          "_" nil); 'self-insert-command
+	 (define-key ess-mode-map	   "_" nil); 'self-insert-command
 	 (define-key inferior-ess-mode-map "_" nil))
       ;; else : "force" or uscore is "nil", i.e. default
-      (define-key ess-mode-map          "_" 'ess-smart-underscore)
+      (define-key ess-mode-map		"_" 'ess-smart-underscore)
       (define-key inferior-ess-mode-map "_" 'ess-smart-underscore))))
 
 ;; NOTA BENE: "_" is smart *by default* :
@@ -603,11 +603,11 @@ and I need to relearn emacs lisp (but I had to, anyway."
 
 ;;; This file is automatically placed in Outline minor mode.
 ;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
+;;; Chapters:	  ^L ;
+;;; Sections:	 ;;*;;
 ;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
+;;; Components:	 defuns, defvars, defconsts
+;;;		 Random code beginning with a ;;;;* comment
 
 ;;; Local variables:
 ;;; mode: emacs-lisp

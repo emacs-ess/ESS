@@ -1,17 +1,14 @@
 ;;; ess-site.el --- user customization of ess-mode
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--2004 A.J. Rossini, R.M. Heiberger, Martin
-;; Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
-;;             Martin Maechler <maechler@stat.math.ethz.ch>
+;; Original Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/07/08 01:16:04 $
-;; Version: $Revision: 5.116 $
-;; RCS: $Id: ess-site.el,v 5.116 2004/07/08 01:16:04 rsparapa Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Version: $Id: ess-site.el,v 5.117 2004/07/08 07:48:58 maechler Exp $
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS
@@ -192,10 +189,10 @@ for ESS, such as icons.")
   "*List of directories, relative to `ess-lisp-directory', to search for etc.")
 
 (while (and (listp ess-etc-directory-list) (consp ess-etc-directory-list))
-    (setq ess-etc-directory 
-	(expand-file-name (concat ess-lisp-directory 
+    (setq ess-etc-directory
+	(expand-file-name (concat ess-lisp-directory
 	    (car ess-etc-directory-list))))
-    (if (file-directory-p ess-etc-directory) 
+    (if (file-directory-p ess-etc-directory)
 	(setq ess-etc-directory-list nil)
 	(setq ess-etc-directory nil)
 	(setq ess-etc-directory-list (cdr ess-etc-directory-list))
@@ -212,23 +209,23 @@ The ESS info directory stores the ESS info files.")
 
 ;;(1.2) If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix & xemacs compatibility
-(unless 
-    (member t 
-	(mapcar 'file-exists-p 
+(unless
+    (member t
+	(mapcar 'file-exists-p
 	    (mapcar '(lambda (x) (concat (file-name-as-directory x) "ess.info"))
-		(if (featurep 'xemacs) 
+		(if (featurep 'xemacs)
 		    Info-directory-list Info-default-directory-list))))
-    (add-to-list (if (featurep 'xemacs) 
-		     'Info-directory-list 'Info-default-directory-list) 
-		     (expand-file-name 
-		         (concat ess-lisp-directory "/../doc/info/"))))
+    (add-to-list (if (featurep 'xemacs)
+		     'Info-directory-list 'Info-default-directory-list)
+		     (expand-file-name
+			 (concat ess-lisp-directory "/../doc/info/"))))
 
 ;;; (1.3) Files ending in .q and .S are considered to be S source files
 ;;; Files ending in .St are considered to be S transcript files
 ;;;
 ;;; NB: in standard Emacs, files ending in .s are assembler files.  If you
-;;; want to use assembler, you can comment the appropriate line below.  Of
-;;; course, different users will want different modes.  If a user wants to
+;;; want to use assembler, you can comment the appropriate line below.	Of
+;;; course, different users will want different modes.	If a user wants to
 ;;; restore default the default modes for assembly file extensions, the
 ;;; following can go into ~/.emacs:
 ;;;
@@ -324,7 +321,7 @@ between .s or .S files and assembly mode.
 ;;(setq-default inferior-S+6-program-name "Splus6")
 ;;(setq-default inferior-R-program-name "R")	  ; unix systems
 ;;(setq-default inferior-R-program-name "Rterm")  ; msdos systems
-;;(setq-default inferior-R-program-name "C:\\Program Files\\R\rw1081\\bin\\Rterm.exe")  ; msdos systems
+;;(setq-default inferior-R-program-name "C:\\Program Files\\R\rw1081\\bin\\Rterm.exe")	; msdos systems
 ;;(setq-default inferior-XLS-program-name "xlispstat")
 ;;(setq-default inferior-ARC-program-name "arc")
 ;;(setq-default inferior-VST-program-name "vista")
@@ -471,7 +468,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;; (1.9) Toolbar support
 
-;; To remove toolbar support under ESS, either comment-out 
+;; To remove toolbar support under ESS, either comment-out
 ;; (require 'ess-toolbar) below, or add "(setq ess-use-toolbar nil)"
 ;; to your .emacs before (require 'ess-site).
 (require 'ess-toolbar)
@@ -535,7 +532,7 @@ sending `inferior-ess-language-start' to S-Plus.")
        (ess-r-versions-created)
        (ess-versions-created)
        )
-  (if ess-microsoft-p 
+  (if ess-microsoft-p
       (progn
 	(setq ess-sqpe-versions-created
 	      (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
@@ -543,21 +540,21 @@ sending `inferior-ess-language-start' to S-Plus.")
 	(setq ess-rterm-versions-created
 	      (ess-rterm-versions-create))) ;; use ess-rterm-versions
     (setq ess-r-versions-created
-	  (ess-r-versions-create)))         ;; use ess-r-versions
-  
+	  (ess-r-versions-create)))	    ;; use ess-r-versions
+
   ;; Add the new defuns, if any, to the menu.
   ;; Check that each variable exists, before adding.
   ;; e.g. ess-sqpe-versions-created will not be created on Unix.
   (setq ess-versions-created
-	(ess-flatten-list 
+	(ess-flatten-list
 	 (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
-		 '(ess-r-versions-created 
+		 '(ess-r-versions-created
 		   ess-rterm-versions-created ess-sqpe-versions-created))))
 
   (when ess-versions-created
     ;; new-menu will be a list of 3-vectors, of the form:
     ;; ["R-1.8.1" R-1.8.1 t]
-    (let (( new-menu (mapcar '(lambda(x) (vector x (intern x) t)) 
+    (let (( new-menu (mapcar '(lambda(x) (vector x (intern x) t))
 			     ess-versions-created)))
     (easy-menu-add-item ess-mode-menu '("Start Process")
 			(cons "Other" new-menu)))))

@@ -1,17 +1,14 @@
 ;;; ess.el --- Emacs Speaks Statistics: statistical programming within Emacs
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997--2004 A.J. Rossini, Martin Maechler,
-;; Kurt Hornik, Richard M. Heiberger, Rodney Sparapani,
-;; and Stephen Eglen. 
-;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
-;; Maintainer(s): A.J. Rossini <rossini@biostat.washington.edu>
-;;                Martin Maechler  <maechler@stat.math.ethz.ch>
-;;                Kurt Hornik <hornik@ci.tuwien.ac.at>
-;;                Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;;                Rodney Sparapani <rsparapa@mcw.edu>
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+
+;; Original Authors: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.29 2004/05/13 13:47:38 stephen Exp $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Version: $Id: ess.el,v 5.30 2004/07/08 07:48:58 maechler Exp $
+
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -24,11 +21,11 @@
 ;;
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
 ;; GNU General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; along with GNU Emacs; see the file COPYING.	If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 ;;
 ;; In short: you may use this code any way you like, as long as you
@@ -41,7 +38,7 @@
 ;;;
 ;;; Interface to the S, SAS, and XLisp dialects of statistical
 ;;; programming languages, with potential extensions to other
-;;; languages.  Designed to be extendable to most other interactive
+;;; languages.	Designed to be extendable to most other interactive
 ;;; statistical programming situations.
 
 ;;; BRIEF OVERVIEW
@@ -68,7 +65,7 @@
 ;;; command history editing and job control, inferior S mode
 ;;; allows you to dump and load S objects into and from external
 ;;; files, and to display help on functions.  It also provides
-;;; name completion while you do these.  For more detailed
+;;; name completion while you do these.	 For more detailed
 ;;; information see the documentation strings for inferior-ess,
 ;;; inferior-ess-mode, ess-mode, and comint-mode.  There are also
 ;;; many variables and hooks available for customizing (see
@@ -191,7 +188,7 @@
 	    (load ess-object-name-db-file)
 	  (error
 	   ;;(message "%s does not exist.  Consider running ess-create-object-name-db."
-	   	;;    ess-object-name-db-file)
+		;;    ess-object-name-db-file)
 ;;	      (ding)
 	      (sit-for 1))))))
 
@@ -200,15 +197,15 @@
  ; Buffer local customization stuff
 
 ;; Parse a line into its constituent parts (words separated by
-;; whitespace).    Return a list of the words.
+;; whitespace).	   Return a list of the words.
 ;; Taken from rlogin.el, from the comint package, from XEmacs 20.3.
 (defun ess-line-to-list-of-words (line)
   (let ((list nil)
 	(posn 0))
-        ;; (match-data (match-data)))
+	;; (match-data (match-data)))
     (while (string-match "[^ \t\n]+" line posn)
       (setq list (cons (substring line (match-beginning 0) (match-end 0))
-                       list))
+		       list))
       (setq posn (match-end 0)))
     (store-match-data (match-data))
     (nreverse list)))
@@ -230,23 +227,23 @@
 	    (make-local-variable (car pair))
 	    (if (cdr pair)
 		(set (car pair) (eval (cdr pair)))))
-          alist)
+	  alist)
   (ess-write-to-dribble-buffer
    (format "(ess-setq-vars-LOCAL): language=%s, dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
-           ess-language ess-dialect buf comint-process-echoes comint-input-sender)))
+	   ess-language ess-dialect buf comint-process-echoes comint-input-sender)))
 
 (defun ess-setq-vars-default (alist &optional buf)
   "Set language variables from ALIST, in buffer BUF, if desired."
   (ess-write-to-dribble-buffer
    (format "ess-setq-vars-default 0: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
-           ess-language ess-dialect buf comint-process-echoes comint-input-sender))
+	   ess-language ess-dialect buf comint-process-echoes comint-input-sender))
   (if buf (set-buffer buf))
   (mapcar (lambda (pair)
-            (set-default (car pair) (eval (cdr pair))))
-          alist)
+	    (set-default (car pair) (eval (cdr pair))))
+	  alist)
   (ess-write-to-dribble-buffer
    (format "ess-setq-vars-default 1: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
-           ess-language ess-dialect buf comint-process-echoes comint-input-sender))
+	   ess-language ess-dialect buf comint-process-echoes comint-input-sender))
 )
 
 ;;--- emacs 19.34 compatibility [MM]:
@@ -285,29 +282,29 @@
 
 ;; Toby Speight <Toby.Speight@ansa.co.uk>
 ;;> ;; untested
-;;> (let ((l R-customize-alist))            ; or whatever
+;;> (let ((l R-customize-alist))	    ; or whatever
 ;;>   (while l
-;;>     (set (car (car l)) (cdr (car l)))   ; set, not setq!
-;;>     (setq l (cdr l))))
+;;>	(set (car (car l)) (cdr (car l)))   ; set, not setq!
+;;>	(setq l (cdr l))))
 ;;
 ;;
 ;;If they are to be buffer-local, you may need to
 ;;
-;;>     ;; untested
-;;>     (set (make-local-variable (car (car l))) (cdr (car l)))
+;;>	;; untested
+;;>	(set (make-local-variable (car (car l))) (cdr (car l)))
 ;;
 
 
 ;; Erik Naggum <erik@naggum.no>
 ;;
 ;;(mapcar (lambda (pair) (set (car pair) (cdr pair)))
-;;        R-customize-alist)
+;;	  R-customize-alist)
 ;;
 ;;if you want to evaluate these things along the way, which it appears that
 ;;you want, try:
 ;;
 ;;(mapcar (lambda (pair) (set (car pair) (eval (cdr pair))))
-;;        R-customize-alist)
+;;	  R-customize-alist)
 
 ;; jsa@alexandria.organon.com (Jon S Anthony)
 ;;(mapcar #'(lambda (x)
@@ -326,11 +323,11 @@
 
 ;;; This file is automatically placed in Outline minor mode.
 ;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
+;;; Chapters:	  ^L ;
+;;; Sections:	 ;;*;;
 ;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
+;;; Components:	 defuns, defvars, defconsts
+;;;		 Random code beginning with a ;;;;* comment
 
 ;;; Local variables:
 ;;; mode: emacs-lisp

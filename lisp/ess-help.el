@@ -2,17 +2,15 @@
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997, A.J. Rossini <rossini@stat.sc.edu>
-;; Copyright (C) 1998--2001	A.J. Rossini <rossini@u.washington.edu>,
-;; Martin Maechler <maechler@stat.math.ethz.ch>, Kurt Hornik < >,
-;; and Richard M. Heiberger <rmh@temple.edu>.
+;; Copyright (C) 1998--2001 A.J. Rossini, Martin Maechler, Kurt Hornik and
+;;	Richard M. Heiberger <rmh@temple.edu>.
+;; Copyright (C) 2001--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainers: A.J. Rossini <rossini@u.washington.edu>,
-;;              Martin Maechler <maechler@stat.math.ethz.ch>
+;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/05/06 13:55:50 $
-;; Version: $Revision: 5.23 $
-;; RCS: $Id: ess-help.el,v 5.23 2004/05/06 13:55:50 stephen Exp $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Version: $Id: ess-help.el,v 5.24 2004/07/08 07:48:58 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -128,10 +126,10 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 			  "](" object ")*"))
 	 (old-hb-p	(get-buffer hb-name))
 	 (curr-win-mode major-mode)
-	 (tbuffer 	(get-buffer-create hb-name))
+	 (tbuffer	(get-buffer-create hb-name))
 	 (curr-help-command		inferior-ess-help-command)
 	 ;;-- pass the buffer-local 'ess-help-sec-..'  to the ess-help buffer:
-	 (curr-help-sec-regex	        ess-help-sec-regex)
+	 (curr-help-sec-regex		ess-help-sec-regex)
 	 (curr-help-sec-keys-alist	ess-help-sec-keys-alist)
 	 (curr-help-syntax-table	(syntax-table))
 	 (alist		ess-local-customize-alist))
@@ -188,11 +186,11 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	  ;; else : show it
 
 	  ;;dbg (ess-write-to-dribble-buffer
-	  ;;dbg  (format "(ess-help «%s» before switch-to..\n" hb-name)
-	  (let ((special-display-regexps 
+	  ;;dbg	 (format "(ess-help «%s» before switch-to..\n" hb-name)
+	  (let ((special-display-regexps
 		 (if ess-help-own-frame '(".") nil))
 		(special-display-frame-alist ess-help-frame-alist)
-		(special-display-function 
+		(special-display-function
 		 (if (eq ess-help-own-frame 'one)
 		     'ess-help-own-frame
 		   special-display-function)))
@@ -209,7 +207,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 (defvar ess-help-frame nil
   "Stores the frame used for displaying R help buffers.")
 
-(defun  ess-help-own-frame (buffer &rest ignore)
+(defun	ess-help-own-frame (buffer &rest ignore)
   "Put all ESS help buffers into `ess-help-frame'."
   ;; SJE: Code adapted from Kevin Rodgers.
   (if (frame-live-p ess-help-frame)
@@ -352,9 +350,9 @@ Other keybindings are as follows:
 ;;*;; User commands defined in ESS help mode
 
 (defun ess-skip-to-help-section nil
-  "Jump to a section heading of a help buffer.  The section selected
+  "Jump to a section heading of a help buffer.	The section selected
 is determined by the command letter used to invoke the command, as
-indicated by `ess-help-sec-keys-alist'.  Use \\[ess-describe-sec-map]
+indicated by `ess-help-sec-keys-alist'.	 Use \\[ess-describe-sec-map]
 to see which keystrokes find which sections."
   (interactive)
   (let ((old-point (point))
