@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.33 1997/06/19 20:36:11 rossini Exp $
+## $Id: Makefile,v 1.34 1997/06/19 20:36:43 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.34  1997/06/19 20:36:43  rossini
+## removed spurrious comments.
+##
 ## Revision 1.33  1997/06/19 20:36:11  rossini
 ## redid dependencies.
 ##
@@ -201,12 +204,6 @@ ess-mode.elc:  ess-mode.el $(CORE)
 
 ess-trns.elc:  ess-trns.el $(CORE)
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-trns.el
-
-
-#S-xmacs.elc:  S-xmacs.el
-#S-menu.elc:  S-menu.el
-#	@echo compiling S-menu.el...
-#	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile S-menu.el
 
 # Ignore this.
 #(defun S-insert-make-rule (file)
