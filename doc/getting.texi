@@ -1,7 +1,7 @@
 The latest versions of ESS are always available by WWW from:
 
-	@code{http://franz.stat.wisc.edu/pub/ESS/}
-        @code{ftp://franz.stat.wisc.edu/pub/ESS/}
+	@code{http://ess.stat.wisc.edu/}
+        @code{ftp://ess.stat.wisc.edu/pub/ESS/}
 
 The HTML version of the documentation can be found at:
 
