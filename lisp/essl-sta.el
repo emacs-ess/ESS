@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/03/05 19:47:55 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: essl-sta.el,v 5.9 1999/03/05 19:47:55 rossini Exp $
+;; Modified: $Date: 1999/03/05 20:02:54 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: essl-sta.el,v 5.10 1999/03/05 20:02:54 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -77,7 +77,7 @@
     (?v . "\\s *Value[s]?")	;
     )) ;; "Alist of (key . string) pairs for use in section searching."
 
-(defconst ess-help-STA-sec-regex "^[A-Z. ---]+:$"
+(defconst ess-help-STA-sec-regex "^[-]+:$"
   "Reg(ular) Ex(pression) of section headers in help file")
 
 
