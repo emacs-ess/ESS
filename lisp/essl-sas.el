@@ -1,13 +1,13 @@
 ;;; essl-sas.el --- SAS customization
 
-;; Copyright (C) 1997--2000 Richard M. Heiberger and A. J. Rossini
+;; Copyright (C) 1997--2000 Richard M. Heiberger, A. J. Rossini, M. Maechler
 
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2000/03/06 10:34:30 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: essl-sas.el,v 5.5 2000/03/06 10:34:30 maechler Exp $
+;; Modified: $Date: 2000/03/20 09:16:25 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: essl-sas.el,v 5.6 2000/03/20 09:16:25 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -168,6 +168,11 @@ popup window when the SAS job is finished.")
 (modify-syntax-entry ?/  ". 14"  SAS-syntax-table) ; comment character
 (modify-syntax-entry ?.  "w"  SAS-syntax-table))
 
+;; The next two are ``the inside of [...] in a regexp'' to be used in
+;; (skip-chars-(for|back)ward SAS-..-chars)
+(defvar sas-white-chars " \t\n\f"); NOT escaping the blank (RMH, 2000/03/20)
+(defvar sas-comment-chars (concat sas-white-chars ";"))
+
 (defvar SAS-mode-font-lock-keywords
   '(
     ;; SAS comments
@@ -307,18 +312,19 @@ popup window when the SAS job is finished.")
 (defun beginning-of-sas-statement (arg &optional comment-start)
   "Move point to beginning of current sas statement."
   (interactive "P")
-  (let ((pos (point)))
+  (let ((pos (point))
+	)
     (if (search-forward ";" nil 1) (forward-char -1))
     (re-search-backward ";[ \n*/]*$" (point-min) 1 arg)
-    (skip-chars-forward "\ \t\n\f;")
+    (skip-chars-forward sas-comment-chars)
     (if comment-start nil
           (if (looking-at "\\*/")
               (progn (forward-char 2)
-                     (skip-chars-forward "\ \t\n\f;")))
+                     (skip-chars-forward sas-comment-chars)))
           (while (looking-at "/\\*")
             (if (not (search-forward "*/" pos t 1)) ;;(;; (point-max) 1 1)
                 (forward-char 2))
-            (skip-chars-forward "\ \t\n\f")))))
+            (skip-chars-forward sas-white-chars)))))
 
 (defun sas-indent-line ()
   "Indent function for SAS mode."
@@ -353,7 +359,7 @@ popup window when the SAS job is finished.")
              (setq indent (current-indentation)))
 	    ;;  Case where current statement not DATA, PROC etc...
             (t (beginning-of-line 1)
-               (skip-chars-backward " \n\f\t")
+               (skip-chars-backward sas-white-chars)
                (if (bobp) nil
                  (backward-char 1))
                (cond
@@ -369,7 +375,7 @@ popup window when the SAS job is finished.")
                    (search-forward "/*"
 				   prev-end 1 1)    ; after previous */
                    (backward-char 2)                ; 2/1/95 TDC
-                   (skip-chars-backward " \n\f\t")
+                   (skip-chars-backward sas-white-chars)
                    (setq indent
                          (if (bobp) 0
                            (if (looking-at ";")
@@ -391,7 +397,7 @@ popup window when the SAS job is finished.")
 		 (if (progn
 		       (save-excursion
 			 (beginning-of-line 1)
-			 (skip-chars-backward " \n\f\t")
+			 (skip-chars-backward sas-white-chars)
 			 (if (bobp) nil (backward-char 1))
 			 (or (looking-at ";")
 			     (bobp) (backward-char 1) (looking-at "\\*/"))))
@@ -451,7 +457,7 @@ This will (hopefully) be fixed in later versions."
         (while (and (not (bobp))
                     (not (looking-at "*/"))
                     (looking-at sas-indent-ignore-comment))
-          (skip-chars-backward " \n\f\t")
+          (skip-chars-backward sas-white-chars)
           (if (bobp) nil
             (backward-char 1))
           (setq prev-end (point))
@@ -1213,7 +1219,7 @@ page ;
       (if (> arg 1)
 	  (progn
 	    (re-search-forward page-delimiter (point-max) 1 (1- arg)))))
-  (skip-chars-forward " \f\n")
+  (skip-chars-forward sas-white-chars); was " \f\n" till 5.1.13
   (recenter 1))
 
 (defun forward-page-top-of-window (arg)
