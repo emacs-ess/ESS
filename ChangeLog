@@ -1,3 +1,87 @@
+Wed Nov 12 02:27:16 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el: seems to work, now.
+
+Tue Nov 11 19:20:50 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el: might need comint.
+
+Tue Nov 11 19:09:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.XLispStat: fixed small errors.
+
+Tue Nov 11 19:04:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.XLispStat : bad key-seq "C-c C-f" isn't find-file.
+
+Tue Nov 11 19:01:22 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S: merged rewrite (RMH)
+
+Tue Nov 11 16:49:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el: format cleaning.
+
+Tue Nov 11 16:42:28 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el: ess-SAS-pre-run-hook now called from SAS, not
+ 	inferior-ess.
+
+Tue Nov 11 16:34:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sta.el: wrong header!
+
+Tue Nov 11 16:32:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: added to New Features.
+
+Tue Nov 11 16:30:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: small typos. Distributed from Wisconsin.
+
+Tue Nov 11 16:27:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: added Splus 3.4.  Removed "futures".
+
+Tue Nov 11 16:25:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: inferior S -> inferior ESS
+
+Tue Nov 11 16:24:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el: small doc changes (RMH).
+
+Tue Nov 11 16:21:34 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S: edited how to find key-sequences (RMH)
+
+Tue Nov 11 16:19:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: removed comint symbols.  (RMH).  Need to read comint
+ 	docs (AJR).
+
+Tue Nov 11 16:19:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: small typos corrected.
+
+Tue Nov 11 16:04:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (ess-read-object-name): use
+	ess-read-object-name-dump.
+
+	* ess-inf.el (ess-read-object-name-default): reverted back to old
+	behavior. 
+
+	* ess-inf.el (ess-read-object-name-dump): new function.  Use it. 
+
+Tue Nov 11 15:56:03 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: XLisp-Stat, uniformly.
+
+Tue Nov 11 15:51:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: fixed titles (no @_{} commands).  Updated menus. (MM)
+
 Tue Nov 11 15:38:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README.XLispStat: removed "S(tm)".
@@ -857,6 +941,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.28  1997/11/12 07:27:28  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.27  1997/11/11 20:39:26  rossini
 	* Removing *** empty log message ***
 	* Removing
