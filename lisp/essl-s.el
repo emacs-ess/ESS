@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/12/02 14:13:51 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: essl-s.el,v 5.1 1997/12/02 14:13:51 rossini Exp $
+;; Modified: $Date: 1998/04/17 12:28:34 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: essl-s.el,v 5.2 1998/04/17 12:28:34 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -28,7 +28,7 @@
 
 ;;; Commentary:
 
-;; Code for general editing S source code (specializes to S, S+, R). 
+;; Code for general editing S source code (specializes to S, S+, R).
 
 ;;; Code:
 
@@ -237,11 +237,11 @@ Returns nil if line starts inside a string, t if in a comment."
   (modify-syntax-entry ?\' "\"" S-syntax-table)
   (modify-syntax-entry ?#  "<"  S-syntax-table) ; open comment
   (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
-  ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; used in S obj names
+  ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
   (modify-syntax-entry ?.  "_"  S-syntax-table) ; see above/below,
-					; plus consider separation. 
+					; plus consider separation.
   (modify-syntax-entry ?$  "_"  S-syntax-table) ; foo.bar$hack is 1 symbol
-  (modify-syntax-entry ?_  "."  S-syntax-table)  
+  (modify-syntax-entry ?_  "."  S-syntax-table)
   (modify-syntax-entry ?*  "."  S-syntax-table)
   (modify-syntax-entry ?<  "."  S-syntax-table)
   (modify-syntax-entry ?>  "."  S-syntax-table)
@@ -326,13 +326,13 @@ Returns nil if line starts inside a string, t if in a comment."
     (?v . "VALUE:"))
   "Help section keys for S4.")
 
-(defconst R-help-sec-keys-alist 
-  '((?a . "\\s *Arguments:") 
+(defconst R-help-sec-keys-alist
+  '((?a . "\\s *Arguments:")
     (?d . "\\s *Description:")
-    (?e . "\\s *Examples:") 
+    (?e . "\\s *Examples:")
     (?n . "\\s *Note:")
-    (?r . "\\s *References:") 
-    (?s . "\\s *See Also:") 
+    (?r . "\\s *References:")
+    (?s . "\\s *See Also:")
     (?v . "\\s *Value[s]?")	;
     )) ;; "Alist of (key . string) pairs for use in section searching."
 
@@ -348,7 +348,7 @@ Returns nil if line starts inside a string, t if in a comment."
 
 ;; Based on files from:
 ;;     Copyright (C) 1996, John M. Chambers.
-;; and 
+;; and
 ;;;    S-mode extras of SfS (Seminar für Statistik)
 
 
@@ -366,31 +366,22 @@ Returns nil if line starts inside a string, t if in a comment."
 	(concat day " " mon " " year
 		(if clock (concat ", " HM))))))
 
-(defvar ess-function-outline-file "/u/sfs/S/emacs-fun.outline"
+(defvar ess-function-outline-file
+  (concat ess-lisp-directory "/../etc/" "function-outline.S")
   "The file name of the ess-function outline that is to be inserted at point,
 when \\<ess-mode-map>\\[ess-insert-function-outline] is used.
 Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
-;;---------------------- currently :
-;;- f <- function()
-;;- {
-;;-   ## Purpose:
-;;-   ## ----------------------------------------------------------------------
-;;-   ## Arguments:
-;;-   ## ----------------------------------------------------------------------
-;;-   ## Author: $A$, Date: $D$
-;;- }
-
-
 
 ;; Use the user's own ~/S/emacs-fun.outline  is (s)he has one : ---
-(let ((outline-file (concat (getenv "HOME") "/S/emacs-fun.outline")))
+(let ((outline-file (concat (getenv "HOME") "/S/function-outline.S")))
   (if (file-exists-p outline-file)
       (setq ess-function-outline-file outline-file)))
 
 (defun ess-insert-function-outline ()
   "Insert an S function definition `outline' at point.
 Uses the file given by the variable ess-function-outline-file;
-M.Maechler,ess-extra" 
+M.Maechler,ess-extra"
+;;---- FIXME: This should be done such that ONE 'undo' undoes all ! ---
   (interactive)
   (let ((oldpos (point)))
     (insert-file-contents ess-function-outline-file)
