@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2004/06/23 21:46:43 $
-;; Version: $Revision: 5.31 $
-;; RCS: $Id: ess-utils.el,v 5.31 2004/06/23 21:46:43 rsparapa Exp $
+;; Modified: $Date: 2004/06/24 14:14:52 $
+;; Version: $Revision: 5.32 $
+;; RCS: $Id: ess-utils.el,v 5.32 2004/06/24 14:14:52 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -371,7 +371,7 @@ is specified, perform action in that buffer."
 (defun ess-find-exec (ess-root-arg ess-root-dir)
 "Given a root directory and the root of an executable file name, find it's full 
 name and path, if it exists, anywhere in the sub-tree."
-  (let* ((ess-tmp-dirs (directory-files ess-root-dir t "^[^.]" nil 'dir-only))
+  (let* ((ess-tmp-dirs (directory-files ess-root-dir t "^[^.]"))
 	 (ess-tmp-return (ess-find-exec-completions ess-root-arg ess-root-dir))
 	 (ess-tmp-dirs-n (length ess-tmp-dirs))
 	 (ess-tmp-dir nil)
@@ -380,8 +380,9 @@ name and path, if it exists, anywhere in the sub-tree."
 	(while (< i ess-tmp-dirs-n)
 	    (setq ess-tmp-dir (nth i ess-tmp-dirs))
 	    (setq i (+ i 1))
-	    (setq ess-tmp-return (nconc ess-tmp-return 
-		(ess-find-exec ess-root-arg ess-tmp-dir))))
+	    (if (file-directory-p ess-tmp-dir)
+		(setq ess-tmp-return (nconc ess-tmp-return 
+		    (ess-find-exec ess-root-arg ess-tmp-dir)))))
     ess-tmp-return))
 
 (defun ess-find-exec-completions (ess-root-arg &optional ess-exec-dir)
