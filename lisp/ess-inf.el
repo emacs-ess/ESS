@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/14 00:35:26 $
-;; Version: $Revision: 1.85 $
-;; RCS: $Id: ess-inf.el,v 1.85 1997/11/14 00:35:26 rossini Exp $
+;; Modified: $Date: 1997/11/14 00:53:41 $
+;; Version: $Revision: 1.86 $
+;; RCS: $Id: ess-inf.el,v 1.86 1997/11/14 00:53:41 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -69,9 +69,14 @@
 ;;*;; Starting a process
 
 (defun ess-proc-name (n name)
-  "Return process name of process N, as a string, with NAME prepended."
-  (concat name ":" n))
-
+  "Return process name of process N, as a string, with NAME
+  prepended."
+  (if ess-plain-first-buffername
+      (if (> n 1)
+	  (concat name ":" n)
+	(concat name))
+    (concat name ":" n))
+  
 (defun inferior-ess (&optional ess-start-args)
   "Start or switch to inferior ESS process N.
 
