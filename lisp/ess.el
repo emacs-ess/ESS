@@ -5,15 +5,16 @@
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1996--1997 Rossini, Heiberger, Hornik, and Maechler.
 
-;; Authors: Doug Bates, Ed Kademan, Frank Ritter, David Smith
-;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
-;;                       Martin Maechler  <maechler@stat.math.ethz.ch>
-;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
-;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;; Created: October 14, 1991
-;; Modified: $Date: 1997/11/14 01:51:35 $
-;; Version: $Revision: 1.66 $
-;; RCS: $Id: ess.el,v 1.66 1997/11/14 01:51:35 rossini Exp $
+;;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
+;;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;;;                       Martin Maechler  <maechler@stat.math.ethz.ch>
+;;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
+;;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;;; Created: October 14, 1991
+;;; Version: $Id: ess.el,v 1.67 1997/11/14 16:19:06 rossini Exp $
+;;; Keywords: statistical support
+;;; Summary: general functions for ESS
+
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. M. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   ess-bugs@stat.math.ethz.ch|
@@ -21,6 +22,7 @@
 ;;                   92-06-29|
 ;;                   5.0|
 ;;                   /ftp.math.sc.edu:rossini/ESS-5.0.tar.gz
+
 ;; This file is part of ess-mode
 
 ;; This file is free software; you can redistribute it and/or modify
