@@ -1,0 +1,32 @@
+Date: Sat, 11 Oct 2003 09:37:10 -0700
+From: rossini@blindglobe.net (A.J. Rossini)
+Subject: More teaching/training materials.
+To: ESS HelpRUS <ess-help@stat.math.ethz.ch>
+Message-ID: <85d6d3vih5.fsf@blindglobe.net>
+Content-Type: text/plain; charset=us-ascii
+
+
+
+http://www.analytics.washington.edu/~rossini/courses/cph-statcomp/
+
+Lecture/Labs 1 and 2 are on For ESS, ESS-Noweb-Sweave.
+
+Lecture/Lab 4 is on parallel computing with R
+
+(each Lecture/Lab was just under 2 hours).  
+
+Comments/corrections welcome, they were used last week here in
+Copenhagen, so "most" of the bugs are out.
+
+best,
+-tony
+
+p.s. Lecture/Lab 3 needs to be completely redone for WWW work; it
+doesn't translate well (some might say, "at all").
+
+-- 
+rossini@u.washington.edu            http://www.analytics.washington.edu/ 
+Biomedical and Health Informatics   University of Washington
+Biostatistics, SCHARP/HVTN          Fred Hutchinson Cancer Research Center
+UW (Tu/Th/F): 206-616-7630 FAX=206-543-3461 | Voicemail is unreliable
+FHCRC  (M/W): 206-667-7025 FAX=206-667-4812 | use Email
