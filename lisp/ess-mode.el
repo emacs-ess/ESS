@@ -6,12 +6,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/18 16:02:58 $
-;; Version: $Revision: 1.37 $
-;; RCS: $Id: ess-mode.el,v 1.37 1997/06/18 16:02:58 rossini Exp $
+;; Modified: $Date: 1997/07/01 14:44:57 $
+;; Version: $Revision: 1.38 $
+;; RCS: $Id: ess-mode.el,v 1.38 1997/07/01 14:44:57 rossini Exp $
 
 ;;
 ;; $Log: ess-mode.el,v $
+;; Revision 1.38  1997/07/01 14:44:57  rossini
+;; added RMH's ess-check-source solution.
+;;
 ;; Revision 1.37  1997/06/18 16:02:58  rossini
 ;; added S-mode, again :-).
 ;;
@@ -500,8 +503,16 @@ if this is the case."
   "If file FNAME has an unsaved buffer, offer to save it.
 Returns t if the buffer existed and was modified, but was not saved"
   (let ((buff (get-file-buffer fname)))
-    (if buff
-	(let ((deleted (not (file-exists-p (buffer-file-name)))))
+    ;; RMH: Corrections noted below are needed for C-c C-l to work
+    ;; correctly when issued from *S* buffer.
+    ;; The following barfs since 
+    ;; 1. `if' does not accept a buffer argument, `not' does.
+    ;; 2. (buffer-file-name) is not necessarily defined for *S*
+    ;;(if buff
+    ;; (let ((deleted (not (file-exists-p (buffer-file-name)))))
+    ;; Next 2 lines are RMH's solution:
+    (if (not(not buff))
+	(let ((deleted (not (file-exists-p fname))))
 	  (if (and deleted (not (buffer-modified-p buff)))
 	      ;; Buffer has been silently deleted, so silently save
 	      (save-excursion
@@ -522,7 +533,8 @@ Returns t if the buffer existed and was modified, but was not saved"
   "Load an S source file into an inferior S process."
   (interactive (list
 		(or
-		 (and (eq major-mode 'ess-mode) (buffer-file-name))
+		 (and (eq major-mode 'ess-mode)
+		      (buffer-file-name))
 		 (expand-file-name
 		  (read-file-name "Load S file: " nil nil t)))))
   (require 'ess-inf)
