@@ -82,8 +82,9 @@ Keywords: Statistical Analysis, Programming, User Interfaces
 \section{Introduction}
 \label{sec:intro}
 
-%% Introduce the topic; I'm still trying to work out the best
-%% approach, and this was my first thought.
+\textbf{Introduce the topic; I'm still trying to work out the best
+approach, and this was my first thought.}
+
 Integrated Development Environments (IDEs) are tools for increasing
 programmer efficiency.  The increased speed of software development
 can be partially attributed to the use of such Rapid Application
@@ -94,19 +95,24 @@ arises is that different tools have different strengths, and optimal
 use can require switching back and forth between tools for data
 analysis.
 
-%% Goals for the project as they've been stated (and have morphed). 
-The initial goal for Emacs Speaks Statistics (ESS) was to provide a
-single environment for using both multiple instances of a statistics
-program as well as multiple instances of different statistics
-programs.  For example, one might want to be connected to multiple R
-\citep{ihak:gent:1996} processes.  Reasons for this include
-verifying behavior on different versions of the same software, test
-and run scenarios where one process is doing long-term processing
-while the other is doing short-term testing, simulations, running
-multiple processes on multiple machines from the same place.  There
-are many additional other applications, as well.
+\textbf{Goals for the project as they've been stated (and have morphed).}
 
-%% Rationale for the goals?  This is weak.
+The initial goal for Emacs Speaks Statistics (ESS) was to provide a
+single point of user interface for all text-based statistical
+computing.  This includes statistical programming as well as data
+analysis.using both multiple instances of a statistics program as well
+as multiple instances of different statistics programs.  For example,
+one might want to be connected to multiple R \citep{ihak:gent:1996}
+processes.  Reasons for this include verifying behavior on different
+versions of the same software, test and run scenarios where one
+process is doing long-term processing while the other is doing
+short-term testing, simulations, running multiple processes on
+multiple machines from the same place.  There are many additional
+other applications, as well.
+
+
+\textbf{Rationale for the goals?  This is weak.}
+
 For small projects, it can be useful to have a single repository (file
 or directory with a few files) for documenting code which produces
 datasets and analysis results.  This is facilitated by being able to
@@ -114,18 +120,27 @@ edit files (different or the same) and being able to specify different
 modes for handling programming code for the different statistical
 languages.
 
-\textbf{This needs rewriting} The main point is that it acts as a
-uniform interface to the statistical programming code, the statistical
-program/process, documentation tools (\LaTeX, SGML, XML, Noweb), and
-revision control tools (RCS,CVS,SCCS, PRCS), on both local and remote
-machines.  It handles the interface to both source code and
-transcripts using context (syntax highlighting, bookmarking features,
-command-history).
+\textbf{AJR: This needs rewriting} 
+
+The main point is that it acts as a uniform interface to the
+statistical programming code, the statistical program/process,
+documentation tools (\LaTeX, SGML, XML, Noweb), and revision control
+tools (RCS,CVS,SCCS, PRCS), on both local and remote machines.  It
+handles the interface to both source code and transcripts using
+context (syntax highlighting, bookmarking features, command-history).
+
+In addition, Emacs is a sophisticated development environment for
+programming in traditional compiled languages such as C and Fortran as
+well as non-traditional byte-compiled and interpreted languages such
+as Perl, Java, and Python.  It provides interfaces to build tools such
+as make as well as debugging tools through the use of external
+debuggers such as JDebug, GDB, and DBX. 
 
 \subsection{Emacs}
 \label{sec:intro:emacs}
 
-%% Introduce and describe Emacs.  2-3 paragraphs?
+\textbf{AJR: Introduce and describe Emacs.  2-3 paragraphs?} 
+
 Emacs is powerful and extensible text editor which is
 available for a large number of platforms.  In addition, most
 programming and documentation falls under the realm of text
@@ -144,7 +159,7 @@ extension language has also facilitated the programming.
 Because of the above, the choice of Emacs as the basis for a universal
 interface is a natural one.  
 
-\textbf{Need an Introduction to EMACS}
+\textbf{AJR: Need an Introduction to EMACS}
 
 We assume that you are familiar with Emacs terminology and syntax:
 file, buffer, region, description of keys etc.  If not, please read
@@ -152,9 +167,12 @@ the New Users guide (found in the info pages, "C-h i" (by pressing
 control h, i) or Tutorial, "C-h t").
 
 To find the key-sequences for commands, view the keymap (C-h b) or
-view help for the current mode (C-h m).
+view help for the current mode (C-h m).  
 
-
+One of the strengths of Emacs is that every activity can be
+facilitated by keystrokes.  This has the advantage of eliminating the
+slowness and potential danger of mouse usages, but also has the
+disadvantage of requiring memory of location and behavior.
 
 \subsection{Other Statistical User Interfaces}
 \label{sec:intro:UI}
@@ -172,12 +190,11 @@ which include graph-based interfaces as implemented in ViSta
 \citep{youn:lubi:1995}, the SAS terminal interface, which divides the
 terminal window into 3 screens, and possibly others.
 
-
 \subsection{ESS}
 \label{sec:intro:ESS}
 
+\textbf{AJR: History of ESS.}
 
-%% History of ESS.
 ESS grew out of the programming and process interface of the Emacs
 S-mode (D. Bates, et.al; D. Smith).  The extension to a
 language-independent generic interface was prompted by the success of
@@ -186,7 +203,8 @@ R, and the need for an R-mode.  This led to a merger with the SAS-mode
 multiple languages in a flexible way.  A detailed  history can be
 found in section~\ref{sec:history}.
 
-%% Current State
+\textbf{AJR: Current State of ESS}
+
 ESS currently supports a number of statistical languages, with various
 levels of support depending on their capabilities and needs.  Because
 of it's history, ESS supports the S family of languages extremely
@@ -197,10 +215,11 @@ XLispStat (and the XLispStat extensions, ARC and ViSta) are marginally
 supported, providing mainly syntax highlighting and
 process-interfacing.  Note that even though we refer to it as marginal
 support, it is still the basic functionality that the majority of ESS
-users take advantage of to differentiate from the package-provided
-interfaces.
+users take advantage of.  This appears to be sufficient to
+differentiate from typical package-provided interfaces.
 
-%% Roadmap for the paper.
+\textbf{AJR: Roadmap for the paper.}
+
 We follow this up by describing how ESS can be used at first; then
 describe advanced usage.  The next sections explain where it can be
 obtained as well as some history of the project.  Finally, we close
@@ -266,8 +285,6 @@ Help File Editing (R)
 \item Sending Examples to running ESS process.
 \item Previewing
 \end{itemize}
-
-
 
 \subsection{Editing Files}
 \label{sec:basic:edit}
