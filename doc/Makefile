@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.24 $.
+### File: $Revision: 1.25 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -59,7 +59,7 @@ ess.dvi : ess.texi; texi2dvi ess.texi
 
 ess.ps  : ess.dvi; dvips $^ -o $@
 
-ess.pdf : ess.texi; pdftex $^
+ess.pdf : ess.texi; pdftex $^; pdftex $^
 ## If you don't have pdftex, you won't get the bookmarks, hyperlinks, etc..
 # ess.pdf: ess.ps ; rm -f ess.pdf ; ps2pdf ess.ps > ess.pdf
 
