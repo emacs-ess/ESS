@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/17 18:38:43 $
-;; Version: $Revision: 1.37 $
-;; RCS: $Id: ess-inf.el,v 1.37 1997/07/17 18:38:43 rossini Exp $
+;; Modified: $Date: 1997/07/17 19:12:06 $
+;; Version: $Revision: 1.38 $
+;; RCS: $Id: ess-inf.el,v 1.38 1997/07/17 19:12:06 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.38  1997/07/17 19:12:06  rossini
+;; renamed the setq-vars (and set-vars) stuff in ess.el
+;;
 ;; Revision 1.37  1997/07/17 18:38:43  rossini
 ;; formatting output.
 ;;
@@ -344,7 +347,7 @@ when invoking S.
   ;; set up for current language (need here, to get ess-proc-prefix,
   ;; etc).
   (set-buffer ess-dribble-buffer)
-  (ess-set-vars-default ess-customize-alist (current-buffer))
+  (ess-setq-vars-default ess-customize-alist (current-buffer))
 
   ;; run hooks now, to overwrite the above!
   (run-hooks 'ess-pre-run-hook)    
