@@ -1,9 +1,9 @@
-ANNOUNCING ESS
-**************
+1 ANNOUNCING ESS
+****************
 
-   The ESS Developers proudly announce the release of ESS
+The ESS Developers proudly announce the release of ESS
 
-   5.2.1
+   5.2.2
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -21,18 +21,18 @@ Please read the file COPYING which comes with the distribution, for
 more information about the license. For more detailed information,
 please read the README files that come with ESS.
 
-Getting the Latest Version
-==========================
+1.1 Getting the Latest Version
+==============================
 
-   The latest version of ESS is always available on the web at: ESS web
+The latest version of ESS is always available on the web at: ESS web
 page (http://www.analytics.washington.edu/downloads/ess/) or StatLib
 (http://lib.stat.cmu.edu/general/ESS/)
 
    There no longer is an anonymous CVS repository for ESS, due to lack
 of interest, little demand, and problems with security.
 
-Current Features
-================
+1.2 Current Features
+====================
 
    * Languages Supported:
         * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
@@ -86,10 +86,10 @@ Current Features
 
         * Previewing
 
-Requirements
-============
+1.3 Requirements
+================
 
-   ESS has been tested with
+ESS has been tested with
 
    * S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
 
@@ -120,7 +120,9 @@ Requirements
 
    * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
 
-   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17(1), 21.4.14-15
+   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17(1),
+     21.4.14-15; as of June 2004, ESS does not work with XEmacs Betas
+     such as 21.5.17
 
    * GNU Emacs <20.3 and XEmacs <21.0(2)
 
@@ -137,19 +139,19 @@ bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 19.34 is available for download here
 (ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz).
 
-Stability
-=========
+1.4 Stability
+=============
 
-   Versions 5.1.x are meant to be gamma-level releases.  While some bugs
+Versions 5.1.x are meant to be gamma-level releases.  While some bugs
 are fixed, others may have been introduced, especially with regards to
 new features.  See the file doc/TODO for details.  Bug reports are
 solicited; see the Bugs Section below.  Patches or suggested coding
 fixes with bug reports are much appreciated!
 
-Mailing List
-============
+1.5 Mailing List
+================
 
-   There is a mailing list for discussions and announcements relating to
+There is a mailing list for discussions and announcements relating to
 ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
 "help") in the body to <ess-help-request@stat.math.ethz.ch>;
 contributions to the list may be mailed to
@@ -168,10 +170,10 @@ low-volume mailing list.
 
    *  posting small patches to ESS.
 
-Reporting Bugs
-==============
+1.6 Reporting Bugs
+==================
 
-   Please send bug reports, suggestions etc. to
+Please send bug reports, suggestions etc. to
 
    <ESS-bugs@stat.math.ethz.ch>
 
@@ -190,8 +192,8 @@ containing debug information; send us that buffer.
    Note that comments, suggestions, words of praise and large cash
 donations are also more than welcome.
 
-Authors
-=======
+1.7 Authors
+===========
 
    * A.J. Rossini (mailto:rossini@u.washington.edu)
 
@@ -205,10 +207,10 @@ Authors
 
    * Stephen Eglen (mailto:stephen@gnu.org)
 
-License
-=======
+1.8 License
+===========
 
-   ESS is free software; you can redistribute it and/or modify it under
+ESS is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
@@ -218,16 +220,42 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 in the file COPYING in the same directory as this file for more details.
 
-New Features
-============
+1.9 New Features
+================
+
+Changes/New Features in 5.2.2:
+   * bug-fixes for 5.2.1 (require 'executable), html docs, etc.
+
+   * ess-lisp-directory/../doc/info added to Info-directory-list if
+     ess-info not found by info
+
+   * ESS[R]: If you have other versions of R on your exec-path, such as
+     "R-1.8.1" with Unix or "rw1081" with Windows, ESS will find them
+     and create appropriate functions, such as M-x R-1.8.1 or M-x
+     rw1081, for calling them.  By default only Unix programs beginning
+     "R-1" and "R-2" and Windows programs parallel to the version of R
+     in your exec-path will be found, but see ess-r-versions and
+     ess-rterm-versions for ways to find other versions of R.
+
+   * ESS[R]: Other versions of R, such as "R-1.8.1" on Unix and
+     "rw1081" on Windows, are added to the "ESS / Start Process /
+     Other" menu.
+
+   * ESS[S]: If you have other versions of S-Plus on your Windows
+     computer, such as S-Plus 6.1 or S-Plus 4.5, ESS will find them and
+     create appropriate functions, such as M-x splus61, for calling the
+     console version (Sqpe) inside an emacs buffer.  By default only
+     programs installed in the default location will be found, but see
+     ess-SHOME-versions for ways to find other versions of S-Plus.
+
+   * ESS[S]: Other versions of Sqpe on Windows, such as "splus61", are
+     added to the "ESS / Start Process / Other" menu.
+
+   * ESS[R]: (bug fix) ess-quit (bound to C-c C-q) should now quit the
+     inferior R process, when issued from either the inferior buffer,
+     or from a .R buffer.
 
    Changes/New Features in 5.2.1:
-   * ESS[R]: If you have other versions of R, such as "R-1.8.1" on your
-     exec-path, ESS will find and create appropriate functions, such as
-     M-x R-1.8.1, for calling them.  By default only programs beginning
-     "R-1" and "R-2" will be found, but see ess-r-versions for ways to
-     find other versions of R.
-
    * ESS[S] (R and S-plus): now have toolbar support with icons to
      evaluate code in the inferior process or to switch there.  This
      code is experimental and likely to change as XEmacs/Emacs issues
