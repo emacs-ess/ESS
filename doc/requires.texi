@@ -4,7 +4,7 @@ ESS has been most thoroughly tested with:
 @item S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1
 @item R >=0.49
 @item S4
-@item SAS 6.x, 7.x, 8.x
+@item SAS >=6.x
 @item BUGS 0.603
 @item Stata >=6.0
 @item XLispStat >=3.50
@@ -24,9 +24,9 @@ with the following versions of emacs
 
 @itemize @bullet
 @item GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
-@item XEmacs 21.0, 21.1.13, 21.1.14, 21.4.0-8, 21.4.9-13@footnote{
-21.4.9-13 requires the files.el patch to fix the Local Variables/revert-buffer
-problem}
+@item XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13@footnote{
+requires the files.el patch for the Local Variables updating
+problem}, 21.4.14
 @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no 
 longer supported, so an upgrade is recommended if you plan to use ESS.
 If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note
