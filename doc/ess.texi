@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.46 2003/06/14 10:08:11 maechler Exp $
+@comment $Id: ess.texi,v 5.47 2004/02/19 13:09:35 stephen Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.46 $ $Date: 2003/06/14 10:08:11 $)
+@subtitle (Documentation $Revision: 5.47 $ $Date: 2004/02/19 13:09:35 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.46 $ $Date: 2003/06/14 10:08:11 $).
+        (Documentation $Revision: 5.47 $ $Date: 2004/02/19 13:09:35 $).
 
 @display
 by  A.J. Rossini,
@@ -584,7 +584,9 @@ statistical program on remote computer is to start it from a telnet or
 ssh buffer and then connect ESS to that buffer.
 
 @enumerate
-@item Start a new telnet or ssh buffer and connect to the remote computer.
+@item Start a new telnet or ssh buffer and connect to the remote computer
+(e.g. use @samp{M-x telnet} or @samp{M-x ssh}; ssh.el is available at
+@uref{ftp://ftp.splode.com/pub/users/friedman/emacs-lisp/ssh.el}).
 
 @item Start the ESS process on the remote machine, for example with one of
 the commands @samp{Splus}, or @samp{R}, or @samp{sas -stdio}.
