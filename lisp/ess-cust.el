@@ -1250,6 +1250,15 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el"
   :group 'ess-command
   :type 'string)
 
+(defcustom ess-ms-slow nil
+  "Set to non-nil if your computer is slow so that ESS will include delays.
+These delays are introduced to prevent timeouts in certain processes, such
+as completion.  The value of this variable is only considered when 
+`ess-microsoft-p' is non-nil.
+This variable may need to become mode-specific."
+  :group 'ess-command
+  :type 'boolean)
+
 ;;*;; Regular expressions
 
 (defvar inferior-ess-prompt nil
