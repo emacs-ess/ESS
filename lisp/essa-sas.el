@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/06/17 15:49:35 $
-;; Version: $Revision: 1.170 $
-;; RCS: $Id: essa-sas.el,v 1.170 2004/06/17 15:49:35 rsparapa Exp $
+;; Modified: $Date: 2004/06/17 16:59:53 $
+;; Version: $Revision: 1.171 $
+;; RCS: $Id: essa-sas.el,v 1.171 2004/06/17 16:59:53 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -103,12 +103,15 @@ or `ess-sas-data-view-insight'."
 
     (if (not ess-tmp-file) (setq ess-tmp-file (ess-find-exec "ghostview")))
 
-    (if (not ess-tmp-file) (setq ess-tmp-file (ess-find-exec "gsview")))
+    (if (not ess-tmp-file) (setq ess-tmp-file (ess-find-exec 
+	(if ess-microsoft-p "gsview32" "gsview"))))
 
     (if ess-tmp-file 
 	(if ess-tmp-alist 
-	    (setq ess-tmp-alist (list ess-tmp-alist (cons "[eE]?[pP][sS]" ess-tmp-file)))
-	    (setq ess-tmp-alist (list (cons "[pP][dD][fF]" ess-tmp-file) (cons "[eE]?[pP][sS]" ess-tmp-file))))))
+	    (setq ess-tmp-alist (list ess-tmp-alist 
+		(cons "[eE]?[pP][sS]" ess-tmp-file)))
+	    (setq ess-tmp-alist (list (cons "[pP][dD][fF]" ess-tmp-file) 
+		(cons "[eE]?[pP][sS]" ess-tmp-file))))))
   "*Associate file name extensions with graphics image file viewers."
   :group 'ess-sas
   :type  'string)
