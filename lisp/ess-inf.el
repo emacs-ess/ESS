@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/09/16 16:33:54 $
-;; Version: $Revision: 5.28 $
-;; RCS: $Id: ess-inf.el,v 5.28 1999/09/16 16:33:54 rossini Exp $
+;; Modified: $Date: 1999/09/21 08:52:59 $
+;; Version: $Revision: 5.29 $
+;; RCS: $Id: ess-inf.el,v 5.29 1999/09/21 08:52:59 ess Exp $
 
 ;; This file is part of ESS
 
@@ -402,7 +402,9 @@ This was rewritten by KH in April 1996."
 		   (ess-error "Timeout waiting for prompt. Check inferior-ess-prompt or ess-loop-timeout."))
 	       (accept-process-output)
 	       (goto-char (point-max))
-	       (beginning-of-line); bol ==> no need for "^" in *-prompt!
+	       (beginning-of-line); bol ==> no need for "^" in *-prompt! (MM?) 
+	       ;; above, except for Stata, which has "broken" i/o,
+	       ;; sigh... (AJR)
 	       (setq r (looking-at inferior-ess-prompt))
 	       (not (or r (looking-at ".*\\?\\s *"))))))
     (goto-char (point-max))
