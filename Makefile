@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.66 2002/08/07 12:50:39 maechler Exp $
+## $Id: Makefile,v 5.67 2002/08/07 13:20:44 maechler Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -31,7 +31,7 @@ all clean distclean:
 
 dist:
 	cd doc;  $(MAKE) docs; cd ..
-	cd lisp; $(MAKE) ess-cust.el; grep 'ess-version' ess-cust.el; cd ..
+	cd lisp; $(MAKE) dist; grep 'ess-version' ess-cust.el; cd ..
 	@echo "** Committing README, ANNOUNCE and info **"
 	cvs commit -m "Updating README, ANNOUNCE for new version" \
 		README ANNOUNCE
