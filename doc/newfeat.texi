@@ -10,6 +10,13 @@ characters are not converted to ASCII prior to their display.  So,
 the function ess-ebcdic-to-ascii-search-and-replace is provided for
 convenience and is bound to C-F11.  This function requires the dd
 command so Windows users will need to have Cygwin or something like it.
+@item ESS: Completion of object names is now always done dynamically rather
+than allowing the option of using a pre-computed database (by
+`ess-create-object-name-db') since modern computers seem fast enough for
+dynamic completion.  (We expect few users, if any, have been using the
+pre-computed database method.)
+@item ESS: object completion in iESS buffers was very slow (for GNU
+Emacs, but not Xemacs, running on Windows) and has now been fixed.
 @end itemize
 
 Changes/New Features in 5.2.3:
