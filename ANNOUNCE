@@ -1,12 +1,12 @@
 ANNOUNCING ESS
 **************
 
-   The ESS Developers proudly announce the release of ESS-5.1.20
+   The ESS Developers proudly announce the release of ESS 5.1.20
 -------------------------------------------------------------------
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with SAS,
-S-PLUS, R, and other statistics analysis packages under the Unix,
+S-PLUS, R, BUGS and other statistics analysis packages under the Unix,
 Microsoft Windows, and Apple Mac operating systems.  ESS is itself a
 package within the Emacs text editor and uses Emacs features to
 streamline the creation and use of statistical software.  ESS knows the
@@ -27,8 +27,8 @@ Getting the Latest Version
 ==========================
 
    The latest stable version of ESS is always available on the web at:
-http://software.biostat.washington.edu/statsoft/ess/ or
-http://lib.stat.cmu.edu/general/ESS/
+ESS web page (http://software.biostat.washington.edu/statsoft/ess/) or
+StatLib (http://lib.stat.cmu.edu/general/ESS/)
 
 Current Features
 ================
@@ -186,7 +186,7 @@ Authors
 
    * Richard M. Heiberger
      (http://www.sbm.temple.edu/departments/statistics/)
-     <rmh@fisher.stat.temple.edu>
+     <rmh@surfer.sbm.temple.edu>
 
    * Kurt Hornik (http://www.ci.tuwien.ac.at/~hornik)
      <hornik@ci.tuwien.ac.at>

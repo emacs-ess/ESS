@@ -1,7 +1,7 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.31 $, for ESS version 5.1.20)
+   ($Revision: 5.32 $, for ESS version 5.1.20)
 
    This is the README file for the distribution of ESS version 5.1.20,
 the gamma series we are using on the way to producing 5.2 (the next
@@ -34,7 +34,7 @@ and has been the primary coder.  Martin Maechler
 (<maechler@stat.math.ethz.ch>) and Kurt Hornik
 (<hornik@ci.tuwien.ac.at>) have assisted with S-PLUS, S4, R, and
 XLispStat sub-modes, and Richard M. Heiberger
-(<rmh@fisher.stat.temple.edu>) has assisted with S-PLUS (under MS
+(<rmh@surfer.sbm.temple.edu>) has assisted with S-PLUS (under MS
 Windows and remote access) and S4 development.  Richard and Rodney
 Sparapani (<rsparapa@mcw.edu>) have done much of the work for
 implementing the SAS sub-mode.  Douglas Bates (<bates@stat.wisc.edu>)
@@ -368,8 +368,8 @@ Getting the Latest Version
 ==========================
 
    The latest stable version of ESS is always available on the web at:
-http://software.biostat.washington.edu/statsoft/ess/ or
-http://lib.stat.cmu.edu/general/ESS/
+ESS web page (http://software.biostat.washington.edu/statsoft/ess/) or
+StatLib (http://lib.stat.cmu.edu/general/ESS/)
 
 Installation (from tar file)
 ============================
@@ -704,7 +704,7 @@ Authors
 
    * Richard M. Heiberger
      (http://www.sbm.temple.edu/departments/statistics/)
-     <rmh@fisher.stat.temple.edu>
+     <rmh@surfer.sbm.temple.edu>
 
    * Kurt Hornik (http://www.ci.tuwien.ac.at/~hornik)
      <hornik@ci.tuwien.ac.at>
