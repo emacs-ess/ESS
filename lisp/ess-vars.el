@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/08/29 17:20:23 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: ess-vars.el,v 1.14 1997/08/29 17:20:23 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:53:19 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: ess-vars.el,v 1.15 1997/09/01 18:53:19 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -397,6 +397,10 @@ by ess-function-template.")
 
 (defvar inferior-S4-program-name "S4"
   "*Program name for invoking an inferior S with S4().")
+
+(defvar inferior-SAS-program-name "sas"
+  "*Program name for invoking an inferior S with SAS().")
+
 
 ;;;;; user settable defaults
 (defvar inferior-S-program-name  inferior-S+3-program-name
