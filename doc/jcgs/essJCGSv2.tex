@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/06 23:33:46 $ - $Revision: 1.131 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/06 23:38:14 $ - $Revision: 1.132 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -253,8 +253,8 @@ still provides an important time-saving feature.  Emacs menus and
 toolbars on the display screen allow mouse access to frequently used
 actions and provide a graphical alternative when the user does not
 know or can not recall a key binding.  User-defined menus and toolbars
-can be constructed to provide needed functionality; they can also
-display a corresponding key binding if one exists.
+can be constructed as needed and as a pedagogical feature, can display
+the corresponding key binding if one exists.
 
 \paragraph{Buffers give Emacs control.}
 Within Emacs, buffers provide the interface between the text editor
@@ -271,12 +271,15 @@ which optimize the users reading and navigation activities.  One
 common program that is run within Emacs buffers is the interactive
 operating system command line interpreter, called a shell.  By using
 this, most programs which take input from and provide output to the
-command-line can be run within an Emacs buffer and be
-controlled by programs written in Emacs Lisp.  This is the Emacs feature
-that ESS uses to run statistical packages.
+command-line can be run within and controlled by Emacs.
+% buffer and be controlled by programs written in Emacs Lisp. 
+%% AJR: we don't talk about Emacs Lisp yet, so postpone until later.
+% This is the Emacs feature that ESS uses to run statistical
+% packages. 
+%% AJR: no need to ``state the obvious''.
 The resulting buffer provides a copy of the entire transcript of the
-interaction, which can be edited and searched while the program is
-still running.  %% We talk about how this affects other things\ldots
+interaction, which can be edited and searched during the program's 
+execution.
 
 \paragraph{Major and Minor Modes.}
 \label{sec:modes}
