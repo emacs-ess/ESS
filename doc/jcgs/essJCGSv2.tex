@@ -2,9 +2,9 @@
 
 \newif\ifdraft
 % During writing: a draft:
-\drafttrue
+%\drafttrue
 % FINAL:
-%\draftfalse
+\draftfalse
 
 \ifdraft  %% generate tableofcontents down to the \paragraph
 \setcounter{tocdepth}{5}
@@ -35,7 +35,7 @@
 %        b) unification
 %                1)ESS-mode
 %                2)Emacs/XEmacs
-%                3)Unix/Windows/Macintosh
+%                3)Unix/Windows/Mac
 %5. conclusion
 %        a) summary
 %        b) what's next for ESS
@@ -145,7 +145,7 @@
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/30 04:34:41 $ - $Revision: 1.80 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/30 15:49:05 $ - $Revision: 1.81 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -239,7 +239,7 @@ keyboard entry were the most advanced method of computer access.
 Common Emacs commands were mapped (or bound) to control-key sequences
 for ease of use.  Over the last decade, Emacs has been extended to use
 graphics-based windowing systems such as X11\tm, Microsoft Windows,
-and Apple Macintosh.  These windowing systems provide a graphical user
+and Apple Mac OS.  These windowing systems provide a graphical user
 interface (GUI) which allows the user to interact with either a
 keyboard or a mouse, and encourage multiple applications to share a
 single display.  Presently, Emacs is more often used in a windowing
@@ -793,7 +793,11 @@ in the \stexttt{iESS[S]} buffer.
 In these cases the ESS command \stexttt{M-x~S} or \stexttt{M-x~R} on Unix
 and \stexttt{M-x~Sqpe} on Windows creates a new
 \stexttt{iESS[S]} buffer and starts the S process inside that buffer.
+
 \begin{Comment} Rich: Martin, what do we do with R on Macintosh?\end{Comment}
+\begin{Comment} Rodney: If it is R for X11, then it's just like Unix.  
+Carbonized R is problematic at this time, so we should discourage it in 
+README.R  When things change, we can change with them.\end{Comment}
 
 The GUI for \Splus\ 4 and 6 on Windows is independent of Emacs; it is not
 an inferior process.  Full GUI
@@ -1072,7 +1076,7 @@ Based on this work, Heiberger provided interactive interfaces
 for Windows versions of \Splus.
 
 In 1998, Rodney Sparapani designed \SAS\ batch file processing for ESS
-on Unix, Windows and Macintosh.  In 1999 and 2000, Sparapani and Heiberger
+on Unix, Windows and Mac.  In 1999 and 2000, Sparapani and Heiberger
 continually enhanced \SAS\ support. 
 In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.  
 
