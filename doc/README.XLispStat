@@ -1,3 +1,8 @@
+-*- indented-text -*-
+
+$Revision: 1.6 $
+
+
 ESS: Using the XLispStat family of statistical languages
 ========================================================
 
@@ -31,17 +36,6 @@ file, buffer, region, description of keys etc.  If not, please read
 the New Users guide (found in the info pages, "C-h i" (by pressing
 control h, i) or Tutorial, "C-h t").
 
-Emacs: General Features of Interest for Programming
-===================================================
-
-There are other general editing features of Emacs which are worth
-investigating. 
-
-- blinking parentheses and other means of keeping track of (),{}, and
-  [].
-- imenu/func-menu (for indexing bodies of code).  This is on the TODO
-  list for the transcript, and help modes (it has been done for Lisp).
-
 
 ESS[XLS]: Editing Files
 =====================
@@ -56,7 +50,6 @@ ESS[XLS] is the mode for editing XLS language files.  This mode handles:
   buffer (for the above).
 - The ability to request help from a process for variables and
   functions, and to have the results sent into a separate buffer.
-- completion of object names and file names.
 
 It should be automatically turned on when loading a file with the
 suffix *.lsp or as set in ess-site.el.  However, one will have to
@@ -103,7 +96,7 @@ prefixed by "##").
 1:  ## Start up XLispStat, in a process buffer (this will be *XLS:1*) 
     M-x XLS
     ## Load a buffer to work from
-    C-x C-f 971103work.lsp
+    C-x C-f todays_work.lsp
     ## enter program, functions, and code into work buffer, and send
     ## entire contents to XLispStat when ready
     C-c C-b
@@ -137,13 +130,3 @@ prefixed by "##").
     ## send regions, lines, or the entire file contents to S-PLUS (the 
     ## last one is demonstrated below)
     C-c C-b
-
-    
-
-
-
-$Revision: 1.5 $
-
-Local Variables: ***
-mode:indented-text ***
-End: ***
