@@ -1,3 +1,10 @@
+2004-05-10  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-toolbar.el
+	(ess-make-toolbar-R-emacs,ess-make-toolbar-S-emacs): Check that
+	tool-bar-map is non-nil before attempting copy-keymap (generates
+	error on Emacs 21.3+).
+
 2004-05-08  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-toolbar.el (ess-icon-directory): Guess default value based
