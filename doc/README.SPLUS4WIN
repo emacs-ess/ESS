@@ -204,3 +204,125 @@ interaction to use the ddeclient program that was first distributed
 with NTemacs 20.3.1.  He further developed the remaining functions
 to the point where all ESS functions now work with S-Plus 4.x on the
 Windows operating systems.
+
+
+Detailed Help For S-PLUS 2000 and the License Manager
+(Thanks to David Brahm, <brahm@alum.mit.edu>)
+=====================================================
+
+Found the solution to getting Sqpe-mode to work with the license manager - I
+set S_ELMHOST in Emacs with (setenv "S_ELMHOST" "123.45.67.890"), instead of
+trying to make it a command-line argument.  Thus I was also able to reduce
+the number of modifications to "essd-sp4.el".  I still change the delay time
+by hand (from 30 seconds to 10); I wish this were a variable so I could just
+put (setq-default inferior-ess-delay 10) in my .emacs.
+
+I've attached my new installation instructions, with these modifications.
+
+-- David Brahm
+
+How to Install S-Plus, Emacs, ESS, and Cygwin on NT. (David Brahm 11/9/99)
+
+1) S-Plus:
+>From MathSoft <http://www.mathsoft.com/splus> (800)569-0123
+Desktop icon "C:\Program Files\sp2000\cmd\splus.exe" u:/splus/init.s
+                s_proj=p:/home/s  s_elmhost=123.45.67.890
+              Start in P:\Home\S
+U:/Splus/init.s contains:
+  library("Lib", first=T, lib.loc="u:\\Splus")
+U:/Splus/Lib contains directories: _Data, _Prefs, Flat, and Source
+Resize S-Plus window to match Emacs window.
+In Options > General > Startup, check "Command Line"
+   Options > "Save Window Size/Properties as Default"
+
+2) Emacs:
+<ftp://ftp.gnu.org/gnu/windows/emacs/latest>             get "em2041.zip"
+<http://www.gnu.org/software/emacs/windows/ntemacs.html> for FAQ
+Extract (with WinZip) to C:\, thus creating C:/emacs-20.4
+Double-click on C:/emacs-20.4/bin/addpm.exe, copy icon to desktop.
+In "Emacs" icon shortcut, change to Start in P:/Home
+Create file C:/emacs-20.4/site-lisp/site-start.el (see below).
+User can put additional customization in P:/Home/.emacs
+
+3) ESS:
+<http://ess.stat.wisc.edu/>  get "ess-5.1.9.zip"
+Extract to C:\emacs-20.4, thus creating C:/emacs-20.4/ess-5.1.9
+In C:/emacs-20.4/ess-5.1.9/lisp/essd-sp4.el:
+  Change (sleep-for 30) to (sleep-for 10)  (twice)
+
+4) Cygwin:
+<http://sourceware.cygnus.com/cygwin/>  get "full.exe" (or "usertools.exe")
+Double-click on full.exe and accept all defaults, installing to C:/Cygnus
+Make directories C:/bin and C:/tmp
+Copy C:/Cygnus/Cygwin-B20/H-i586-cygwin32/bin/sh.exe to C:/bin
+Right-click My Computer > Properties > Environment, and append this to Path:
+    ";c:\bin;c:\Cygnus\Cygwin-B20\H-i586-cygwin32\bin"
+  *or* put this line into C:/autoexec.bat:
+    set PATH=c:\bin;c:\Cygnus\Cygwin-B20\H-i586-cygwin32\bin
+W95/98 only: If an error "Out of environment space" occurs, add to
+config.sys:
+  shell=C:\command.com /e:4096 /p
+
+
+Here is my site-start.el file:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+(setenv "HOME" "P:/Home")
+(setenv "PATH"
+	"C:/Cygnus/Cygwin-b20/H-i586-cygwin32/bin;C:/Progra~1/sp2000/cmd")
+
+; ESS and customization:
+(load "C:/Emacs-20.4/ess-5.1.9/lisp/ess-site")
+(setenv "SHELL" "C:/Cygnus/Cygwin-b20/H-i586-cygwin32/bin/bash")
+(setenv "S_ELMHOST" "123.45.67.890")
+(setenv "S_FIRST" "source(\"U:/Splus/init.s\")")          ; Initialization
+file
+(setenv "SHOME" "C:/Progra~1/sp2000")
+(setq-default inferior-Sqpe+4-program-name "c:/Progra~1/sp2000/cmd/Sqpe")
+(setq ess-ask-for-ess-directory nil)
+(setq ess-directory "P:/Home/S/")
+(setq ess-execute-in-process-buffer t)
+(make-local-variable 'comment-indent-function)
+(setq-default comment-indent-function 'ess-comment-indent)
+(fset 'run-s "\C-x2\M-xS\C-m")
+(global-set-key "\M-s" 'run-s)		    ; ESC-s runs "run-s" which
+starts S
+
+; Window size:
+(set-frame-size (selected-frame) 80 56)
+
+; Always auto-fill:
+(setq-default auto-fill-function 'do-auto-fill)
+(setq-default fill-column 79)
+
+; Macros and set-keys:
+(global-set-key "\C-u" 'query-replace-regexp)
+(load "hscroll")
+(defun flat (tabw) "Turns off line-wrap; prefix sets tab width."
+  (interactive "p")
+  (turn-on-hscroll) ; (setq truncate-lines 1)
+  (if (> tabw 1) (setq tab-width tabw))
+  (redraw-display))
+(global-set-key "\C-c\C-f" 'flat)
+
+; Fonts (uncomment the next line for a bolder font):
+; (set-default-font "-adobe-courier-bold-r-normal--*-140-*-*-m-*-iso8859-1")
+(global-font-lock-mode t)
+(custom-set-variables)
+(custom-set-faces
+ '(font-lock-comment-face
+   ((((class color) (background light)) (:foreground "Firebrick"))))
+ '(font-lock-string-face
+   ((((class color) (background light)) (:foreground "SeaGreen"))))
+ '(font-lock-keyword-face
+   ((((class color) (background light)) (:foreground "MediumBlue"))))
+ '(font-lock-constant-face
+   ((((class color) (background light)) (:foreground "VioletRed"))))
+ '(font-lock-type-face
+   ((((class color) (background light)) (:foreground "Goldenrod"))))
+ '(font-lock-variable-name-face
+   ((((class color) (background light)) (:foreground "Blue"))))
+ '(font-lock-function-name-face
+   ((((class color) (background light)) (:foreground "VioletRed"))))
+)
+
