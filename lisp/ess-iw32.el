@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: ess-iw32.el,v 1.10 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/04/03 15:27:35 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: ess-iw32.el,v 1.11 2000/04/03 15:27:35 maechler Exp $
 
 
 ;; This file is part of ESS
@@ -82,7 +82,7 @@
 
 
 ;;; switch between Splus by ddeclient and Splus running in an emacs buffer
-(defun ess-eval-visibly-ddeclient (text-withtabs &optional invisibly eob)
+(defun ess-eval-linewise-ddeclient (text-withtabs &optional invisibly eob)
     (save-excursion
       (set-buffer (get-buffer-create "*ESS-temporary*"))
       (ess-setq-vars-local ess-customize-alist (current-buffer))
@@ -90,14 +90,14 @@
       (insert text-withtabs)
       (ess-eval-region-ddeclient (point-min) (point-max) t t)))
 
-(fset 'ess-eval-visibly-original (symbol-function  'ess-eval-visibly))
+(fset 'ess-eval-linewise-original (symbol-function  'ess-eval-linewise))
 
-(defun ess-eval-visibly (text-withtabs &optional invisibly eob)
+(defun ess-eval-linewise (text-withtabs &optional invisibly eob)
   (if (equal (ess-get-process-variable
 	      ess-current-process-name 'inferior-ess-ddeclient)
              (default-value 'inferior-ess-ddeclient))
-      (ess-eval-visibly-original text-withtabs invisibly eob)
-      (ess-eval-visibly-ddeclient text-withtabs invisibly eob)))
+      (ess-eval-linewise-original text-withtabs invisibly eob)
+      (ess-eval-linewise-ddeclient text-withtabs invisibly eob)))
 
 
 ;; C-c C-v
@@ -107,7 +107,7 @@
 If prefix arg is given, forces a query of the ESS process for the help
 file.  Otherwise just pops to an existing buffer if it exists."
   (ess-force-buffer-current "Process to load into: ")
-  (ess-eval-visibly (concat "help(" object ")")))
+  (ess-eval-linewise (concat "help(" object ")")))
 
 
 (fset 'ess-display-help-on-object-original
@@ -149,7 +149,7 @@ file.  Otherwise just pops to an existing buffer if it exists."
 	    ;; it calls ess-command which requires two-way communication
 	    ;; with the S-Plus process
 	    )))
-    (ess-eval-visibly (format inferior-ess-load-command filename))))
+    (ess-eval-linewise (format inferior-ess-load-command filename))))
 
 (fset 'ess-load-file-original
       (symbol-function  'ess-load-file))
@@ -177,7 +177,7 @@ This version does not offer alternate buffers or editing capability."
 (defun ess-dump-object-ddeclient (object filename)
   "Dump the ESS object OBJECT into file FILENAME."
   (ess-force-buffer-current "Process to load into: ")
-  (ess-eval-visibly (concat "dump('" object "','" filename "')"))
+  (ess-eval-linewise (concat "dump('" object "','" filename "')"))
   (sleep-for 5)
   (find-file filename))
 

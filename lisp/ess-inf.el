@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/03/31 17:00:05 $
-;; Version: $Revision: 5.38 $
-;; RCS: $Id: ess-inf.el,v 5.38 2000/03/31 17:00:05 maechler Exp $
+;; Modified: $Date: 2000/04/03 15:27:35 $
+;; Version: $Revision: 5.39 $
+;; RCS: $Id: ess-inf.el,v 5.39 2000/04/03 15:27:35 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -688,14 +688,24 @@ Otherwise treat \\ in NEWTEXT string as special:
     (concat rtn-str (substring str start))))
 
 
-;;; RDB 28/8/92 added optional arg eob
-;;; AJR 971022:	 text-withtabs was text.
-(defun ess-eval-visibly (text-withtabs &optional invisibly eob)
+
+;;*;;  Evaluating lines, paragraphs, regions, and buffers.
+
+;;--- The two basic building blocks [called by all other ess-eval..] are
+;;	(ess-eval-linewise ....)
+;; and
+;;	(ess-eval-region   ....)
+
+(defun ess-eval-linewise (text-withtabs &optional invisibly eob even-empty)
+;; RDB 28/8/92 added optional arg eob
+;; AJR 971022:	 text-withtabs was text.
   "Evaluate TEXT-WITHTABS in the ESS process buffer as if typed in w/o tabs.
-If optional second arg INVISIBLY is non-nil, don't echo commands.  If
-it is a string, just include that string.  If optional third arg
-EOB is non-nil go to end of S buffer after evaluation.
-Waits for prompt after each line of input, so won't break on large texts."
+Waits for prompt after each line of input, so won't break on large texts.
+
+If optional second arg INVISIBLY is non-nil, don't echo commands.  If it
+is a string, just include that string.  If optional third arg
+EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
+4th arg EVEN-EMPTY is non-nil, also send empty text (e.g. an empty line)."
   ;; Use this to evaluate some code, but don't wait for output.
   (let* ((cbuffer (current-buffer))
 	 (sprocess (get-ess-process ess-current-process-name))
@@ -704,12 +714,10 @@ Waits for prompt after each line of input, so won't break on large texts."
 	 start-of-output
 	 com pos)
 
-    ;;(message "'ess-eval-visibly: sbuffer = %s" sbuffer)
+    ;;(message "'ess-eval-linewise: sbuffer = %s" sbuffer)
     (set-buffer sbuffer)
 
     ;; the following is required to make sure things work!
- ;;dbg (ess-write-to-dribble-buffer
- ;;dbg (format "(eval-visibly 0): lang invisibly=%s \n" ess-language invisibly))
     (if (string= ess-language "STA")
 	(setq invisibly t))
  ;;dbg (ess-write-to-dribble-buffer
@@ -721,10 +729,14 @@ Waits for prompt after each line of input, so won't break on large texts."
     ;; dbg
 ;;-     (ess-write-to-dribble-buffer
 ;;-      (format "(eval-visibly 2): text[%d]= «%s»\n" (length text) text))
-    (while (> (length text) 0)
-      (setq pos (string-match "\n\\|$" text))
-      (setq com (concat (substring text 0 pos) "\n"))
-      (setq text (substring text (min (length text) (1+ pos))))
+    (while (or even-empty
+	       (setq txt-gt-0 (> (length text) 0)))
+      (if even-empty (setq even-empty nil))
+      (if txt-gt-0
+	  (progn
+	    (setq pos (string-match "\n\\|$" text))
+	    (setq com (concat (substring text 0 pos) "\n"))
+	    (setq text (substring text (min (length text) (1+ pos))))))
       (goto-char (marker-position (process-mark sprocess)))
       (if (not invisibly)
 	  ;; Terrible kludge -- need to insert after all markers *except*`
@@ -748,14 +760,18 @@ Waits for prompt after each line of input, so won't break on large texts."
       (process-send-string sprocess com)
       ;; Don't hang around waiting for the prompt after the last
       ;; line of input
-      (if (eq (length text) 0) nil
-	  (while (progn
-		   (accept-process-output nil 0 100)
-		   (goto-char (marker-position (process-mark sprocess)))
-		   (beginning-of-line)
-		   (if (< (point) start-of-output)
-		       (goto-char start-of-output))
-		   (not (looking-at inferior-ess-prompt))))))
+      (if (eq (length text) 0)
+	  nil
+	;; else : text length > 0
+	(while (progn
+		 (accept-process-output nil 0 100)
+		 (goto-char (marker-position (process-mark sprocess)))
+		 (beginning-of-line)
+		 (if (< (point) start-of-output)
+		     (goto-char start-of-output))
+		 (not (looking-at inferior-ess-prompt)))
+	  ))
+    ); end{while}
     (goto-char (marker-position (process-mark sprocess)))
     (if eob
 	(progn
@@ -765,23 +781,7 @@ Waits for prompt after each line of input, so won't break on large texts."
 	  (switch-to-buffer-other-window cbuffer))
       (set-buffer cbuffer))))
 
-;;*;;  Evaluating lines, paragraphs, regions, and buffers.
-
 ;;;*;;; Evaluate only
-
-;; This is from	 Mary Lindstrom <lindstro@Biostat.Wisc.Edu>
-;; 31 Aug 1995 14:11:43		To: ess-mode@stat.math.ethz.ch
-(defun ess-eval-paragraph (vis-toggle)
-  "Send the current paragraph to the inferior ESS process.
-Prefix arg VIS-TOGGLE toggles visibility of ess-code as for `ess-eval-region'."
-  (interactive "P")
-  (ess-force-buffer-current "Process to load into: ")
-  (save-excursion
-    (forward-paragraph)
-    (let ((end (point)))
-      (backward-paragraph)
-      (ess-eval-region (point) end
-		       vis-toggle "Eval paragraph"))))
 
 (defun ess-eval-region (start end toggle &optional message)
   "Send the current region to the inferior ESS process.
@@ -793,28 +793,31 @@ With prefix argument, toggle meaning of `ess-eval-visibly-p'."
   (message "Starting evaluation...")
   (let ((visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p)))
     (if visibly
-	(ess-eval-visibly (buffer-substring start end))
+	(ess-eval-linewise (buffer-substring start end))
+      ;; else invisibly
       (if ess-synchronize-evals
-	  (ess-eval-visibly (buffer-substring start end)
+	  (ess-eval-linewise (buffer-substring start end)
 			  (or message "Eval region"))
-	(process-send-region (get-ess-process ess-current-process-name)
-			     start end)
-	(process-send-string (get-ess-process ess-current-process-name)
-			     "\n"))))
+	;; else [almost always!]
+	(let ((sprocess (get-ess-process ess-current-process-name)))
+	  (process-send-region sprocess start end)
+	  (process-send-string sprocess "\n")
+	  )
+	)))
   (message "Finished evaluation"))
 
 (defun ess-eval-buffer (vis)
   "Send the current buffer to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  (ess-force-buffer-current "Process to load into: ")
+  ;; already in eval-region: (ess-force-buffer-current "Process to load into: ")
   (ess-eval-region (point-min) (point-max) vis "Eval buffer"))
 
 (defun ess-eval-function (vis)
   "Send the current function to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  (ess-force-buffer-current "Process to load into: ")
+  ;; already in eval-region: (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (let* ((beg-end (ess-end-of-function))
 	   (beg (nth 0 beg-end))
@@ -825,6 +828,19 @@ Arg has same meaning as for `ess-eval-region'."
       (princ (concat "Loading: " name) t)
       (ess-eval-region beg end vis
 		       (concat "Eval function " name)))))
+
+;; This is from	 Mary Lindstrom <lindstro@Biostat.Wisc.Edu>
+;; 31 Aug 1995 14:11:43		To: S-mode@stat.math.ethz.ch
+(defun ess-eval-paragraph (vis)
+  "Send the current paragraph to the inferior ESS process.
+Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
+  (interactive "P")
+  (ess-force-buffer-current "Process to load into: ")
+  (save-excursion
+    (forward-paragraph)
+    (let ((end (point)))
+      (backward-paragraph)
+      (ess-eval-region (point) end vis "Eval paragraph"))))
 
 (defun ess-eval-line (vis)
   "Send the current line to the inferior ESS process.
@@ -859,19 +875,21 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
       (setq arg (- arg inc)))
     n))
 
-(defun ess-eval-line-and-next-line (&optional simple-next)
-  "Evaluate the current line visibly and move to the \"next\" line.
-\"next\" = the next line with non-comment code _unless_ a prefix arg
- (SIMPLE-NEXT) is set (non-nil)."
+(defun ess-eval-line-and-step (&optional simple-next even-empty)
+  "Evaluate the current line visibly and step to the \"next\" line.
+\"next\" = the next line with non-comment code _unless_ SIMPLE-NEXT is non-nil,
+possibly via prefix arg.  If second arg EVEN-EMPTY is non-nil [prefix],
+also send empty lines."
   ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
-  (interactive "P")
+  (interactive "PP")
   (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (end-of-line)
     (let ((end (point)))
       (beginning-of-line)
-      ;; RDB modified to go to end of S buffer so user can see result
-      (ess-eval-visibly (buffer-substring (point) end) nil t)))
+      ;; go to end of process buffer so user can see result
+      (ess-eval-linewise (buffer-substring (point) end) nil 'eob
+			 even-empty)))
   (if simple-next
       (forward-line 1)
     (ess-next-code-line 1)))
@@ -1242,10 +1260,10 @@ to continue it."
 ;;;*;;; Main user commands
 
 (defun inferior-ess-input-sender (proc string)
-  (ess-eval-visibly (concat string "\n")))
+  (ess-eval-linewise (concat string "\n")))
 
 (defun inferior-STA-input-sender (proc string)
-  (ess-eval-visibly (concat string "\n") t t))
+  (ess-eval-linewise (concat string "\n") t t))
 
 ;;> <PD writes>:
 ;;> Also, invoking help() from the command line may lead to confusing
@@ -1275,7 +1293,7 @@ to continue it."
 	  (ess-write-to-dribble-buffer (format " new string=«%s»\n" string))
 	  (ess-display-help-on-object
 	   (if (string= string "") "help" string)))
-	(ess-eval-visibly "\n"))
+	(ess-eval-linewise "\n"))
     ;; else:  normal command
     (inferior-ess-input-sender proc string)
     )
@@ -1388,7 +1406,8 @@ Doesn't work for data frames."
 Also sets the `length' option to 99999.
 This is a good thing to put in `ess-post-run-hook'."
   (interactive)
-  (ess-eval-visibly (format "options(width=%d,length=99999)" (1- (frame-width)))))
+  (ess-eval-linewise (format "options(width=%d,length=99999)"
+			     (1- (frame-width)))))
 
 (defun ess-execute (command &optional invert buff message)
   "Send a command to the ESS process.
@@ -1411,7 +1430,7 @@ to the command if BUFF is not given.)"
 				 (not ess-execute-in-process-buffer))
 		    ess-execute-in-process-buffer)))
     (if in-pbuff
-	(ess-eval-visibly the-command)
+	(ess-eval-linewise the-command)
       (let ((buff (ess-create-temp-buffer buff-name)))
 	(save-excursion
 	  (set-buffer buff)

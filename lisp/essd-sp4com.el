@@ -13,7 +13,7 @@
 ;;;    appear there, all results appear in the *S+4* buffer.
 ;;;  * Echoed input is reformatted by S-Plus.
 ;;;
-;;; 
+;;;
 ;;; Uses explicit file S-transcript.st in starting directory.
 ;;;
 
@@ -43,9 +43,9 @@ Should you say no, then you must rename it manually
 	 (format "Delete %s " "S-transcript.st"))
 	(delete-file "S-transcript.st")
       (error "Move the file `S-transcript.st' manually to somewhere else.
-Then place the cursor in the *S+4* buffer and 
+Then place the cursor in the *S+4* buffer and
 issue the command `M-x S+4-tail'"))
-    (ess-eval-visibly "options(echo=T);sink(file='S-transcript.st')")
+    (ess-eval-linewise "options(echo=T);sink(file='S-transcript.st')")
     (toggle-read-only nil)		; permit writing in ESS buffer
     (goto-char (point-max))
     (insert "tail -f S-transcript.st")
@@ -133,7 +133,7 @@ is here to allow slow disks to start the Splus program."
                    ; If the ess-current-process-name doesn't appear in the
        		   ; Splus Commands window increase the sleep-for time!
     (setq ess-local-process-name ess-current-process-name)
-    (ess-eval-visibly (concat "#" ess-current-process-name))
+    (ess-eval-linewise (concat "#" ess-current-process-name))
     (beginning-of-buffer)
     (insert
      "This is strictly a transcript buffer.  You can't type anything here.

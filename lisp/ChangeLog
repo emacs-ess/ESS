@@ -1,3 +1,9 @@
+2000-04-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el and other files:
+	Replace (function) ess-eval-visibly by ess-eval-linewise
+	Replace (function) ess-eval-line-and-next-line by *-line-and-step
+
 2000-03-31  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-next-code-line): new function from Stephen Eglen

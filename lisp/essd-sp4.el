@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essd-sp4.el,v 1.5 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/04/03 15:27:36 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essd-sp4.el,v 1.6 2000/04/03 15:27:36 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -194,7 +194,7 @@ is here to allow slow disks to start the Splus program."
                    ; If the ess-current-process-name doesn't appear in the
        		   ; Splus Commands window increase the sleep-for time!
     (setq ess-local-process-name ess-current-process-name)
-    (ess-eval-visibly (concat "#" ess-current-process-name))
+    (ess-eval-linewise (concat "#" ess-current-process-name))
     (beginning-of-buffer)
     (insert
      "This is a placeholder buffer.  You can't type anything here.
@@ -211,7 +211,7 @@ Splus Commands window appear in this buffer.\n\n")
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
     (toggle-read-only t)		; force buffer to be read-only
     (setq mode-name "ddeESS")
-    (ess-eval-visibly inferior-S+4-editor-pager-command)
+    (ess-eval-linewise inferior-S+4-editor-pager-command)
     ))
 
 
@@ -282,7 +282,7 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
     (insert "options(interactive=T)")
     (inferior-ess-send-input)
     (setq mode-name "iESS(Sqpe)")
-    (ess-eval-visibly inferior-S+4-editor-pager-command)
+    (ess-eval-linewise inferior-S+4-editor-pager-command)
     (if shome-nil-p (setenv "SHOME" nil))))
 
 
@@ -356,7 +356,7 @@ is here to allow slow disks to start the Splus program."
   (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
 ;;; end from msdos-minor-mode
     (setq ess-local-process-name ess-current-process-name)
-    (ess-eval-visibly (concat "#" ess-current-process-name))
+    (ess-eval-linewise (concat "#" ess-current-process-name))
     (beginning-of-buffer)
     (insert
      "This is a placeholder buffer.  You can't type anything here.
@@ -379,7 +379,7 @@ Splus Commands window (are supposed to) appear in this buffer.\n\n")
     (use-local-map comint-mode-map)    ; a shell buffer after Splus is finished.
     (toggle-read-only t)	       ; force buffer to be read-only
     (setq mode-name "ddeESS")
-    (ess-eval-visibly inferior-S+4-editor-pager-command)
+    (ess-eval-linewise inferior-S+4-editor-pager-command)
     ))
 
 (defun S+4-msdos-existing (&optional proc-name)

@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.11 2000/03/30 14:49:26 maechler Exp $
+;; Version: $Id: ess.el,v 5.12 2000/04/03 15:27:36 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -104,7 +104,7 @@
 ;;;   the indenting code.
 ;;; Thanks also to maechler@stat.math.ethz.ch (Martin Maechler) for
 ;;;   suggestions and bug fixes.
-;;; ess-eval-line-and-next-line is based on a function by Rod Ball
+;;; ess-eval-line-and-step is based on a function by Rod Ball
 ;;;   (rod@marcam.dsir.govt.nz)
 ;;; Also thanks from David Smith to the previous authors for all their
 ;;; help and suggestions.

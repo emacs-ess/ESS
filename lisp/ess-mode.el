@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@biostat.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/03/31 15:59:56 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: ess-mode.el,v 5.11 2000/03/31 15:59:56 maechler Exp $
+;; Modified: $Date: 2000/04/03 15:27:36 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: ess-mode.el,v 5.12 2000/04/03 15:27:36 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -48,13 +48,13 @@
 (autoload 'ess-read-object-name		"ess-inf" "" nil)
 (autoload 'ess-list-object-completions	"ess-inf" "" nil)
 
-(autoload 'ess-eval-visibly		"ess-inf" "" nil)
+(autoload 'ess-eval-linewise		"ess-inf" "" nil)
 (autoload 'ess-eval-paragraph		"ess-inf" "" nil)
 (autoload 'ess-eval-region		"ess-inf" "" nil)
 (autoload 'ess-eval-buffer		"ess-inf" "" nil)
 (autoload 'ess-eval-function		"ess-inf" "" nil)
 (autoload 'ess-eval-line		"ess-inf" "" nil)
-(autoload 'ess-eval-line-and-next-line	"ess-inf" "" nil)
+(autoload 'ess-eval-line-and-step	"ess-inf" "" nil)
 (autoload 'ess-eval-region-and-go	"ess-inf" "" nil)
 (autoload 'ess-eval-buffer-and-go	"ess-inf" "" nil)
 (autoload 'ess-eval-function-and-go	"ess-inf" "" nil)
@@ -111,7 +111,7 @@
   (define-key ess-eval-map "\C-f"    'ess-eval-function)
   (define-key ess-eval-map "\M-f"    'ess-eval-function-and-go)
   (define-key ess-eval-map "\C-x"    'ess-eval-function)
-  (define-key ess-eval-map "\C-n"    'ess-eval-line-and-next-line)
+  (define-key ess-eval-map "\C-n"    'ess-eval-line-and-step)
   (define-key ess-eval-map "\C-j"    'ess-eval-line)
   (define-key ess-eval-map "\M-j"    'ess-eval-line-and-go))
 
@@ -137,7 +137,7 @@
   (define-key ess-mode-map "\C-c\C-f"	'ess-eval-function)
   (define-key ess-mode-map "\C-c\M-f"	'ess-eval-function-and-go)
   (define-key ess-mode-map "\M-\C-x"	'ess-eval-function)
-  (define-key ess-mode-map "\C-c\C-n"	'ess-eval-line-and-next-line)
+  (define-key ess-mode-map "\C-c\C-n"	'ess-eval-line-and-step)
   (define-key ess-mode-map "\C-c\C-j"	'ess-eval-line)
   (define-key ess-mode-map "\C-c\M-j"	'ess-eval-line-and-go)
   (define-key ess-mode-map "\M-\C-a"	'ess-beginning-of-function)
@@ -187,7 +187,7 @@
     ["Eval function"	ess-eval-function		  t]
     ["Enter expression" ess-execute-in-tb		  t]
     ["Eval line"	ess-eval-line			  t]
-    ["Eval line & step" ess-eval-line-and-next-line	  t]
+    ["Eval line & step" ess-eval-line-and-step		  t]
     ["Eval chunk"	ess-eval-chunk		 noweb-mode]
     ["Eval thread"	ess-eval-thread		 noweb-mode]
     ["About"		(ess-goto-info "Evaluating code") t]

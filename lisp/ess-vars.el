@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/03/31 15:07:21 $
-;; Version: $Revision: 5.36 $
-;; RCS: $Id: ess-vars.el,v 5.36 2000/03/31 15:07:21 maechler Exp $
+;; Modified: $Date: 2000/04/03 15:27:36 $
+;; Version: $Revision: 5.37 $
+;; RCS: $Id: ess-vars.el,v 5.37 2000/04/03 15:27:36 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -513,19 +513,19 @@ Otherwise, they get their own temporary buffer.")
 in the process buffer.")
 
 (defvar ess-synchronize-evals nil
-  "*If t, then all evaluations will synchronize with ess process. This
+  "*If t, then all evaluations will synchronize with the ess process. This
 means ess-mode will wait for S to dent a prompt before sending the next
-line of code. This allows users of version 18.57 or less of Emacs to
-evaluate large regions of code without causing an error. Users or
-18.58 or later usually do not want this feature, since it locks up use
-of Emacs until the code has been successfully evaluated by S.")
+line of code. This allows users of Emacs version 18.57 or less to
+evaluate large regions of code without causing an error.  Users of newer
+Emacsen usually do not want this feature, since it locks up use
+of Emacs until the code has been successfully evaluated.")
 
 (defvar ess-eval-visibly-at-end t
   "*If non-nil, the ess-eval- commands display the results of evaluation
   at the bottom of the process buffer.")
 
 (defvar ess-save-lastvalue-command nil
-  "Default is currently the S+ version.")
+  "Default depends on the ESS language/dialect.")
 
 ;;(make-variable-buffer-local 'ess-save-lastvalue-command)
 ;;(setq-default ess-save-lastvalue-command

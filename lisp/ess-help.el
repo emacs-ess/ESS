@@ -8,9 +8,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>, MM
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/03/31 15:59:56 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: ess-help.el,v 5.9 2000/03/31 15:59:56 maechler Exp $
+;; Modified: $Date: 2000/04/03 15:27:35 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: ess-help.el,v 5.10 2000/04/03 15:27:35 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -49,7 +49,7 @@
 (autoload 'ess-eval-function-and-go	"ess-inf" "[autoload]" t)
 (autoload 'ess-eval-line		"ess-inf" "[autoload]" t)
 (autoload 'ess-eval-line-and-go		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-next-line	"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-step	"ess-inf" "[autoload]" t)
 
 (autoload 'ess-beginning-of-function	"ess-mode" "[autoload]" t)
 (autoload 'ess-end-of-function		"ess-mode" "[autoload]" t)
@@ -230,7 +230,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
   (define-key ess-help-mode-map "\177" 'scroll-down) ; DEL
   (define-key ess-help-mode-map "s" ess-help-sec-map)
   (define-key ess-help-mode-map "h" 'ess-display-help-on-object)
-  (define-key ess-help-mode-map "l" 'ess-eval-line-and-next-line)
+  (define-key ess-help-mode-map "l" 'ess-eval-line-and-step)
   (define-key ess-help-mode-map "r" 'ess-eval-region-and-go)
   (define-key ess-help-mode-map "n" 'ess-skip-to-next-section)
   (define-key ess-help-mode-map "p" 'ess-skip-to-previous-section)
@@ -269,7 +269,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	"-"
 	["Help on ..."			ess-display-help-on-object t]
 	"-"
-	["Eval Line"			ess-eval-line-and-next-line t]
+	["Eval Line"			ess-eval-line-and-step t]
 	["Eval Region & Go"		ess-eval-region-and-go t]
 	["Switch to ESS Process"	ess-switch-to-ESS t]
 	"-"

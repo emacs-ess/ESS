@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/03/31 15:59:56 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: ess-trns.el,v 5.5 2000/03/31 15:59:56 maechler Exp $
+;; Modified: $Date: 2000/04/03 15:27:36 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: ess-trns.el,v 5.6 2000/04/03 15:27:36 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -49,7 +49,7 @@
 (autoload 'ess-eval-function-and-go	"ess-inf" "[autoload]" t)
 (autoload 'ess-eval-line		"ess-inf" "[autoload]" t)
 (autoload 'ess-eval-line-and-go		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-next-line	"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-step	"ess-inf" "[autoload]" t)
 
 (autoload 'comint-previous-prompt	"comint" "[autoload]" t)
 (autoload 'comint-next-prompt		"comint" "[autoload]" t)
@@ -59,7 +59,7 @@
 (autoload 'get-ess-buffer		"ess-inf" "(autoload)" nil)
 (autoload 'ess-switch-to-ESS		"ess-inf" "(autoload)" nil)
 (autoload 'ess-switch-to-end-of-ESS	"ess-inf" "(autoload)" nil)
-(autoload 'ess-eval-visibly		"ess-inf" "(autoload)" nil)
+(autoload 'ess-eval-linewise		"ess-inf" "(autoload)" nil)
 (autoload 'inferior-ess-get-old-input	"ess-inf" "(autoload)" nil)
 
  ; ess-transcript-mode
@@ -116,7 +116,7 @@
 
   (define-key ess-transcript-mode-map "\C-c\C-p" 'comint-previous-prompt)
   (define-key ess-transcript-mode-map "\C-c\C-n" 'comint-next-prompt)
-  ;; (define-key ess-transcript-mode-map "\C-c\C-n"    'ess-eval-line-and-next-line)
+  ;; (define-key ess-transcript-mode-map "\C-c\C-n"    'ess-eval-line-and-step)
 
   (define-key ess-transcript-mode-map "\r"	 'ess-transcript-send-command-and-move)
   (define-key ess-transcript-mode-map "\M-\r"	 'ess-transcript-send-command)
@@ -227,7 +227,7 @@ is not already."
       (save-excursion
 	(set-buffer ess-buf)
 	(goto-char (point-max))
-	(ess-eval-visibly input)))))
+	(ess-eval-linewise input)))))
 
 (defun ess-transcript-send-command-and-move ()
   "Send the ess-command on this line, and move point to the next command"
