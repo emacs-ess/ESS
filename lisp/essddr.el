@@ -6,9 +6,9 @@
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2003/07/08 06:53:06 $
-;; Version: $Revision: 5.22 $
-;; RCS: $Id: essddr.el,v 5.22 2003/07/08 06:53:06 hornik Exp $
+;; Modified: $Date: 2003/07/08 13:35:19 $
+;; Version: $Revision: 5.23 $
+;; RCS: $Id: essddr.el,v 5.23 2003/07/08 13:35:19 hornik Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.22 2003/07/08 06:53:06 hornik Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.23 2003/07/08 13:35:19 hornik Exp $
 
 ;;; Code:
 
@@ -148,7 +148,7 @@ All Rd mode abbrevs start with a grave accent (`).")
     "command" "cr" "dQuote" "deqn" "dfn" "dots" "email" "emph" "env"
     "epsilon" "eqn" "file" "ge" "item" "kbd" "lambda" "ldots" "le"
     "left" "link" "method" "mu" "option" "pi" "pkg" "right" "sQuote"
-    "samp" "sigma" "strong" "tab" "url"))
+    "samp" "sigma" "strong" "tab" "url" "var"))
 
 ;; Need to fix Rd-bold-face problem.
 ;;
