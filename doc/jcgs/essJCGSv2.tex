@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 19:33:08 $ - $Revision: 1.228 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/20 19:41:36 $ - $Revision: 1.229 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -871,27 +871,19 @@ ESS user.
 %\end{Comment}
  
 \paragraph{BUGS.}
-\label{sec:bugs-batch}
-  
 BUGS software performs Markov Chain Monte Carlo integration.  There is
 an interactive capability, but it is not often used since the analyses
-can take a long time.  Most BUGS programs are executed as batch
+are time-consuming.  Most BUGS programs are executed as batch
 processes.
 
-
-ESS facilitates BUGS %by \stexttt{ESS[BUGS]}, the mode in
-%which files with the \stexttt{bug} extension are opened.  There are 
-through 4 features.
-% which ESS provides.  
-First, BUGS syntax is described to allow for proper fontification
-% so that \stexttt{font-lock-mode} can highlight 
-of statements, distributions, functions, commands and comments in BUGS
-model files, command files and log files.  Second, ESS creates
-templates for the command file from the model file so that a BUGS
-batch process can be defined by a single file.  Third, ESS provides
-a BUGS batch script that allows ESS to set BUGS batch parameters.
-Finally, key sequences are defined to create a command file and submit 
-a BUGS batch process.
+ESS facilitates BUGS through 4 features.  First, BUGS syntax is
+described to allow for proper fontification of statements,
+distributions, functions, commands and comments in BUGS model files,
+command files and log files.  Second, ESS creates templates for the
+command file from the model file so that a BUGS batch process can be
+defined by a single file.  Third, ESS provides a BUGS batch script
+that allows ESS to set BUGS batch parameters.  Finally, key sequences
+are defined to create a command file and submit a BUGS batch process.
 
 \paragraph{S, \Splus, and R.}
 ESS provides 2 facilities for batch processing of S files.  The first
@@ -901,21 +893,21 @@ being evaluated; errors can be found by examining the resulting
 transcript.  The second is the load-source mechanism, which provides a
 means of jumping to errors in the source file, but doesn't display the
 evaluated commands in the transcript.  These mechanisms provide
-different tools for debugging the source files.  Once the files are
-debugged, all S implementations have a standard feature for batch
-evaluation independent of ESS, \stexttt{S BATCH}.
+different tools for debugging the source files.
+% Once the files are debugged, all S implementations have a standard
+% feature for batch evaluation independent of ESS, \stexttt{S BATCH}.
 
 \section{History of ESS}
 \label{sec:ESS:history}
 
-%(Emacs Speaks Statistics)
-ESS is built on Emacs, the editing system for which Richard Stallman 
-won a MacArthur Foundation Fellowship in 1990.  Emacs has a long history 
-of being a programmer's editor.  Many statisticians got their first taste 
-of the power of Emacs with \Fortran\ mode which was introduced in 1986.  
-As statisticians' preferences changed from generalist compiled 
-languages such as \Fortran\ to specialist interactive statistical analysis 
-packages like S and \SAS, Emacs modes for them soon followed.
+ESS is built on Emacs, the editing system for which Richard Stallman
+won a MacArthur Foundation Fellowship in 1990.  Emacs has a long
+history of being a programmer's editor.  Many statisticians got their
+first taste of the power of Emacs with \Fortran\ mode which was
+introduced in 1986.  As statisticians' preferences changed from
+generalist compiled languages such as \Fortran\ to specialist
+interactive statistical analysis packages like S and \SAS, Emacs modes
+for them soon followed.
 
 Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and \Splus\ files 
 in GNU Emacs.  Frank Ritter and Mike Meyer added features, creating version 2.
