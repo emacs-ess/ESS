@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/15 08:42:53 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essd-s+3.el,v 1.9 1997/06/15 08:42:53 rossini Exp $
+;; Modified: $Date: 1997/06/19 21:17:02 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essd-s+3.el,v 1.10 1997/06/19 21:17:02 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s+3.el,v $
+;;: Revision 1.10  1997/06/19 21:17:02  rossini
+;;: added font-lock-keywords, ala RMH.
+;;:
 ;;: Revision 1.9  1997/06/15 08:42:53  rossini
 ;;: setq-> setq-default.  I think this is correct!@
 ;;:
@@ -80,6 +83,16 @@
   (add-hook 'ess-post-run-hook 'ess-S-shortcut-post-run-hook)
   (setq ess-proc-prefix "S")
   (inferior-ess))
+
+;; From RMH:  (for both s+3 and s3) ? 
+(add-to-list 'S-inf-font-lock-keywords
+	     '("^Syntax error" . font-lock-reference-face)) ; S-inf problems
+(add-to-list 'S-inf-font-lock-keywords
+	     '("^Error:" . font-lock-reference-face)) ; S-inf error
+(add-to-list 'S-inf-font-lock-keywords
+	     '("^Error in" . font-lock-reference-face)) ; S-inf error
+(add-to-list 'S-inf-font-lock-keywords
+	     '("^Dumped" . font-lock-reference-face)) ; S-inf error
 
 
  ; Provide package
