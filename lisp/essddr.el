@@ -19,7 +19,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.3 1997/12/09 20:45:05 rossini Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.4 1998/08/20 06:45:11 maechler Exp $
 
 ;;; Code:
 
@@ -51,11 +51,11 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev Rd-mode-abbrev-table "`de" "\\description")
   (define-abbrev Rd-mode-abbrev-table "`ex" "\\examples")
   (define-abbrev Rd-mode-abbrev-table "`em" "\\emph")
-  (define-abbrev Rd-mode-abbrev-table "`fi" "\\file")  
-  (define-abbrev Rd-mode-abbrev-table "`it" "\\item")  
+  (define-abbrev Rd-mode-abbrev-table "`fi" "\\file")
+  (define-abbrev Rd-mode-abbrev-table "`it" "\\item")
   (define-abbrev Rd-mode-abbrev-table "`kw" "\\keyword")
   (define-abbrev Rd-mode-abbrev-table "`li" "\\link")
-  (define-abbrev Rd-mode-abbrev-table "`na" "\\name")  
+  (define-abbrev Rd-mode-abbrev-table "`na" "\\name")
   (define-abbrev Rd-mode-abbrev-table "`re" "\\references")
   (define-abbrev Rd-mode-abbrev-table "`sa" "\\seealso")
   (define-abbrev Rd-mode-abbrev-table "`se" "\\section")
@@ -68,7 +68,7 @@ All Rd mode abbrevs start with a grave accent (`).")
 (if Rd-mode-syntax-table
     ()
   (setq Rd-mode-syntax-table (copy-syntax-table text-mode-syntax-table))
-  (modify-syntax-entry ?\\ "\\" Rd-mode-syntax-table)  
+  (modify-syntax-entry ?\\ "\\" Rd-mode-syntax-table)
   (modify-syntax-entry ?\{ "(}" Rd-mode-syntax-table)
   (modify-syntax-entry ?\} "){" Rd-mode-syntax-table)
   ;; Nice for editing, not for parsing ...
@@ -101,10 +101,18 @@ All Rd mode abbrevs start with a grave accent (`).")
 (defvar Rd-section-names
   '("arguments" "alias" "author" "description" "examples" "keyword"
     "name" "note" "references" "seealso" "section" "title" "usage"
-    "value"))
+    "value"
+    ;; NEW:
+    "details" "format" "source" "describe" "enumerate" "itemize" "tabular"
+    "verbatim"
+    ))
 (defvar Rd-keywords
   '("bold" "cr" "code" "deqn" "dots" "email" "emph" "eqn" "file" "item"
-    "ldots" "link" "url"))
+    "ldots" "link" "url"
+    ;; NEW
+    "Alpha" "alpha" "beta" "Gamma" "epsilon" "lambda" "mu" "pi" "sigma"
+    "le" "ge" "left" "right" "R" "tab"
+    ))
 
 ;; (defvar Rd-bold-face 'font-lock-function-name-face)
 (defvar Rd-bold-face 'bold)
@@ -191,7 +199,7 @@ following lines to your `.emacs' file:
   (text-mode)
   (kill-all-local-variables)
   (use-local-map Rd-mode-map)
-  (setq mode-name "Rd")  
+  (setq mode-name "Rd")
   (setq major-mode 'Rd-mode)
   (setq local-abbrev-table Rd-mode-abbrev-table)
   (set-syntax-table Rd-mode-syntax-table)
@@ -210,7 +218,7 @@ following lines to your `.emacs' file:
   (run-hooks 'Rd-mode-hook))
 
 (defun ess-point (position)
-  "Returns the value of point at certain positions." 
+  "Returns the value of point at certain positions."
   (save-excursion
     (cond
      ((eq position 'bol)  (beginning-of-line))
