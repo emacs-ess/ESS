@@ -3,7 +3,7 @@ ANNOUNCING ESS
 
    The ESS Developers proudly announce the release of ESS
 
-   5.2.4
+   5.2.5
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -249,6 +249,11 @@ in the file COPYING in the same directory as this file for more details.
 
 New Features
 ============
+
+   Changes/New Features in 5.2.5:
+   * ESS[R]: C-c C-q or "Quit S" from the menu now ask questions in the
+     emacs buffer (instead of *R*) and do not append "-exited" to the
+     buffer name.
 
    Changes/New Features in 5.2.4:
    * The documentation now includes an overview of how to use the emacs
