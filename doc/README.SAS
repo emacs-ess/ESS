@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.2 $)
+($Revision: 1.3 $)
 
 ESS: Using SAS
 ==============
@@ -48,10 +48,10 @@ ESS[SAS] is the mode for editing S language files.  This mode handles:
 - ability to switch between processes which would be the target of the 
   buffer (for the above).
 
-It should be automatically turned on when loading a file with a ".sas"
-suffix (or other, if specified in ess-site).  However, one will have
-to start up an inferior process to take advantage of the interactive
-capabilities.
+ESS[SAS] should be automatically turned on when loading a file with a
+".sas" suffix (or other, if specified in ess-site).  However, one will
+have to start up an inferior process to take advantage of the
+interactive capabilities.
 
 
 iESS: Inferior ESS processes.
