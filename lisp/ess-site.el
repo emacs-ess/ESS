@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/07/06 23:00:48 $
-;; Version: $Revision: 5.61 $
-;; RCS: $Id: ess-site.el,v 5.61 2000/07/06 23:00:48 rossini Exp $
+;; Modified: $Date: 2000/07/07 12:12:06 $
+;; Version: $Revision: 5.62 $
+;; RCS: $Id: ess-site.el,v 5.62 2000/07/07 12:12:06 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -165,8 +165,7 @@ The extension, in a file name, is the part that follows the last `.'."
     )
 ); eval-*-compile
 
-;; DEBUG:
-(setq ess-show-load-messages t); instead of nil above
+;; DEBUG: (setq ess-show-load-messages t); instead of nil above
 
 (ess-message "[ess-site:] after (eval-and-compile ..)")
 ;; load code to figure out what version/strain of Emacs we are running
