@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/12/20 16:25:46 $
-;; Version: $Revision: 1.40 $
-;; RCS: $Id: essa-sas.el,v 1.40 2001/12/20 16:25:46 ess Exp $
+;; Modified: $Date: 2002/01/03 14:49:55 $
+;; Version: $Revision: 1.41 $
+;; RCS: $Id: essa-sas.el,v 1.41 2002/01/03 14:49:55 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -446,7 +446,7 @@ i.e. let `ess-sas-arg' be your local equivalent of
     (insert "cd " (file-name-directory ess-sas-file-path))
     (comint-send-input)
     (insert ess-sas-submit-pre-command " " ess-sas-arg " " 
-	(file-name-sans-extension ess-sas-file-path) " " ess-sas-submit-post-command)
+	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) " " ess-sas-submit-post-command)
     (comint-send-input)
     (if (featurep 'xemacs) (sleep-for ess-sleep-for)
        (sleep-for 0 (truncate (* ess-sleep-for 1000)))
@@ -479,7 +479,7 @@ Keep in mind that the maximum command line length in MS-DOS is
 	(file-name-directory ess-sas-file-path)) "\"")
     (comint-send-input)
     (insert "start " ess-sas-arg " -sysin \"" 
-	(convert-standard-filename (file-name-sans-extension ess-sas-file-path)) "\"")
+	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) "\"")
     (comint-send-input))
 
 
