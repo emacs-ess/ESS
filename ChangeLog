@@ -1,3 +1,7 @@
+1999-07-23  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* Release 5.1.8
+
 1999-04-05  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* Makefile, doc/Makefile, doc/README.SPLUS4WIN, doc/inst_tar.texi, doc/readme.texi, doc/requires.texi, lisp/ess-site.el, lisp/ess-vars.el:
@@ -22,11 +26,11 @@
 
 	* ChangeLog: more stuff.
 
-Fri Apr  2 10:10:35 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Fri Apr	 2 10:10:35 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/getting.texi: fixed links.
 
-Wed Mar 31 14:08:39 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* Makefile (ESSVERSION): updated
 	* Makefile (ESSVERSIONMSDOS): updated
@@ -465,9 +469,9 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 1999/07/22 10:39:30 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 1999/07/23 19:38:01 $'; 5.0 -> 5.1.x
 
-Mon Dec 14 20:23:55 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* README: added 5.1.x comments, updated to current state of affairs.
 
@@ -482,7 +486,7 @@ Mon Dec 14 20:23:55 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* lisp/ess-site.el: commented out SHOME definition.
 
-Fri Dec 11 19:51:18 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Fri Dec 11 19:51:18 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/ess-vars.el: fixed copyright, rossini's email address.
 
@@ -516,11 +520,11 @@ Mon Nov 30 17:37:57 1998  Kurt Hornik <hornik@ci.tuwien.ac.at>
 	* lisp/Makefile:
 	Add essd-s+5.el to SOURCES (as it gets required in ess-site).
 
-Mon Nov 23 20:03:17 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Mon Nov 23 20:03:17 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/ChangeLog: *** empty log message ***
 
-Fri Nov 20 20:57:33 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Fri Nov 20 20:57:33 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/ess-vars.el: ess-help-w3-url-prefix points to pyrite.
 
@@ -533,14 +537,14 @@ Mon Nov 16 17:29:25 1998  Martin Maechler <maechler@stat.math.ethz.ch>
 
 	* lisp/ess-inf.el: do not need comint echo anymore..
 
-Sat Nov 14 00:23:19 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Sat Nov 14 00:23:19 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* Makefile, lisp/ChangeLog, ChangeLog: whitespace editing.
 
 	* doc/Makefile:
 	added info target.  removed spurrious ess.info/ess.texi target.
 
-Fri Nov 13 23:47:27 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Fri Nov 13 23:47:27 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* Makefile: added comment re: export vs checkout for "dist" target.
 
@@ -592,7 +596,7 @@ Tue Nov 10 17:45:11 1998  Martin Maechler <maechler@stat.math.ethz.ch>
 
 	* lisp/essd-s+5.el: provide typo fixed
 
-Mon Nov  9 23:50:26 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Mon Nov	 9 23:50:26 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ChangeLog: *** empty log message ***
 
@@ -619,7 +623,7 @@ Mon Nov  9 23:50:26 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* lisp/Makefile: added Stata stuff.
 
-Thu Sep 24 23:32:14 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Thu Sep 24 23:32:14 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/ChangeLog: more stuff.
 
@@ -643,7 +647,7 @@ Fri Sep 11 14:25:59 1998  Martin Maechler <maechler@stat.math.ethz.ch>
 
 	* lisp/essl-s.el: LOTS in "pretty edit source"
 
-	* lisp/essd-r.el: new function  (R-fix-T-F)
+	* lisp/essd-r.el: new function	(R-fix-T-F)
 
 Thu Sep 10 06:15:55 1998  Kurt Hornik <hornik@ci.tuwien.ac.at>
 
@@ -661,7 +665,7 @@ Thu Sep 10 06:15:55 1998  Kurt Hornik <hornik@ci.tuwien.ac.at>
 
 	* Makefile: Use `$(MAKE)' instead of `make'.
 
-Wed Sep  9 23:49:12 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Wed Sep	 9 23:49:12 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/ChangeLog: new stuff.
 
@@ -673,26 +677,26 @@ Wed Sep  9 23:49:12 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* lisp/Makefile: BATCHFLAGS should be --no-init-file, not --no-init-fil
 
-Wed Sep  9 08:45:26 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+Wed Sep	 9 08:45:26 1998  Martin Maechler <maechler@stat.math.ethz.ch>
 
 	* lisp/essl-s.el:
 	minor (save-recursion..) -- Committing from Shell to see permissions
 
-Tue Sep  8 21:18:33 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+Tue Sep	 8 21:18:33 1998  Martin Maechler <maechler@stat.math.ethz.ch>
 
 	* lisp/essl-s.el:
 	more things for (ess-dump-to-src), (ess-fix-comments),.... ess-MM-fix-src
 
-	* lisp/ess-mode.el: add optional  quiet  argument  to (set-ess-style)
+	* lisp/ess-mode.el: add optional  quiet	 argument  to (set-ess-style)
 
 	* lisp/ess-mode.el: only white space
 
 	* lisp/ChangeLog: ..
 
-	* lisp/essl-s.el: added  "&optional dont-ask" argument to
+	* lisp/essl-s.el: added	 "&optional dont-ask" argument to
 		ess-dump-to-src, ess-fix-comments,.... ess-MM-fix-src
 
-Mon Sep  7 16:27:37 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+Mon Sep	 7 16:27:37 1998  Martin Maechler <maechler@stat.math.ethz.ch>
 
 	* lisp/ChangeLog: ..
 
@@ -721,7 +725,7 @@ Thu Aug 20 06:48:48 1998  Martin Maechler <maechler@stat.math.ethz.ch>
 Tue Aug 18 08:44:54 1998  Martin Maechler <maechler@stat.math.ethz.ch>
 
 	* lisp/essd-s+3.el, lisp/essd-r.el, lisp/ChangeLog:
-	 "--no-readline" for R;  S+3-dialect-name for S-plus
+	 "--no-readline" for R;	 S+3-dialect-name for S-plus
 
 Fri Aug 14 16:32:23 1998  Martin Maechler <maechler@stat.math.ethz.ch>
 
@@ -743,20 +747,20 @@ Fri Apr 17 12:29:46 1998  Martin Maechler <maechler@stat.math.ethz.ch>
 	* Makefile, doc/Makefile, lisp/Makefile:
 	Makefiles separated; new for ./doc
 
-Mon Apr  6 20:35:04 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Mon Apr	 6 20:35:04 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/ChangeLog: Storing updates.
 
 	* lisp/ess-comp.el, lisp/ess-inf.el, lisp/ess-site.el, lisp/ess-vars.el:
 	See ChangeLog for more details. Not tagged.
 
-Tue Dec 16 00:17:44 1997  A.J. Rossini  <rossini@biostat.washington.edu>
+Tue Dec 16 00:17:44 1997  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/ChangeLog: *** empty log message ***
 
 	* lisp/essd-s4.el (S4-mode): New function, use it.
 
-Wed Dec 10 15:36:29 1997  A.J. Rossini  <rossini@biostat.washington.edu>
+Wed Dec 10 15:36:29 1997  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/ChangeLog, lisp/essd-xls.el:
 	XLS-mode is now the mode-name symbol.  (instead of ess-mode).  This is
@@ -764,7 +768,7 @@ Wed Dec 10 15:36:29 1997  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	ChangeLog documented to reflect this fact.
 
-Tue Dec  9 22:55:40 1997  A.J. Rossini  <rossini@biostat.washington.edu>
+Tue Dec	 9 22:55:40 1997  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/ChangeLog: *** empty log message ***
 
@@ -782,7 +786,7 @@ Tue Dec  9 22:55:40 1997  A.J. Rossini  <rossini@biostat.washington.edu>
 	* lisp/essddr.el:
 	added commented out face.  DB's error doesn't exist for me, though.
 
-Fri Dec  5 15:13:59 1997  A.J. Rossini  <rossini@biostat.washington.edu>
+Fri Dec	 5 15:13:59 1997  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/ChangeLog: *** empty log message ***
 
@@ -790,7 +794,7 @@ Fri Dec  5 15:13:59 1997  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* lisp/ess-site.el: added comments about Emacs 20.2 errors.
 
-Fri Dec  5 14:46:38 1997  ess  <ess@pyrite>
+Fri Dec	 5 14:46:38 1997  ess  <ess@pyrite>
 
 	* Makefile: Added top-level Makefile.  Needs definitions, though.
 
@@ -800,37 +804,37 @@ Fri Dec  5 14:46:38 1997  ess  <ess@pyrite>
 
 	* README : updated to 5.1.x
 
-Tue Dec  2 08:49:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Dec	 2 08:49:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile: info isn't a valid target, and cleaned up doc
- 	targets. (KH).
+	targets. (KH).
 
-Mon Dec  1 16:55:17 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Dec	 1 16:55:17 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.el: removed blank lines.
 
-Mon Dec  1 16:51:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Dec	 1 16:51:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.texi: small edit.
 
-Mon Dec  1 16:48:14 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Dec	 1 16:48:14 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.texi: changed wording around ess-plain-first-buffername
- 	(RMH).
+	(RMH).
 
-Mon Dec  1 16:42:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Dec	 1 16:42:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile: new branch (5.1.1.1).
 
-Mon Dec  1 16:36:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Dec	 1 16:36:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile: Batchflags are user serviceable.
 
-Mon Dec  1 10:59:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Dec	 1 10:59:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* RELEASED: version 5.0.
 
-Mon Dec  1 10:45:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Dec	 1 10:45:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README.SAS: added noise about ess-sas-sh-command stupidity that
 	AJR has personally experienced.
@@ -910,7 +914,7 @@ Wed Nov 26 16:05:20 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Nov 26 15:51:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el: modified args to try to have "one set" for SAS
- 	process (2nd is for redirect).
+	process (2nd is for redirect).
 
 Wed Nov 26 15:43:10 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -939,7 +943,7 @@ Wed Nov 26 11:01:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Nov 26 11:00:06 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-mode.el (ess-mode): added "indent-region" binding to
- 	doc-string.
+	doc-string.
 
 Wed Nov 26 10:52:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -948,7 +952,7 @@ Wed Nov 26 10:52:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Wed Nov 26 10:51:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* ess-trns.el: ispell-checked.  File name / header name mismatch
+	* ess-trns.el: ispell-checked.	File name / header name mismatch
 	corrected. (AJR)
 
 Wed Nov 26 10:49:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
@@ -958,12 +962,12 @@ Wed Nov 26 10:49:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Nov 26 10:42:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sas.el (SAS-editing-alist): function definitions are
- 	useless.  Remove.
+	useless.  Remove.
 
 Wed Nov 26 10:37:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-s.el (S-editing-alist): removed function definitions.  They
- 	don't work.
+	don't work.
 
 Wed Nov 26 10:29:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -981,7 +985,7 @@ Tue Nov 25 15:37:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Tue Nov 25 13:06:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (inferior-ess-mode): Make sure that silly moves like
- 	"ess-dialect=S" are not cause for a bailout. (AJR).
+	"ess-dialect=S" are not cause for a bailout. (AJR).
 
 Tue Nov 25 12:38:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1003,7 +1007,7 @@ Tue Nov 25 08:50:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Tue Nov 25 08:49:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el (SAS-mode): construct a sas-mode-local-map, from
- 	ess-mode-map, for modifying the tab key.
+	ess-mode-map, for modifying the tab key.
 
 Tue Nov 25 08:24:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1037,18 +1041,18 @@ Mon Nov 24 10:50:19 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Mon Nov 24 10:48:19 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-mode.el: commented out some language specific functions.
-  	Moved to essl-s.el
+	Moved to essl-s.el
 
 Mon Nov 24 10:45:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* essl-s.el: new functions; S for ESS.  Use them.
+	* essl-s.el: new functions; S for ESS.	Use them.
 
 Mon Nov 24 10:43:36 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-s.el (S-comment-indent):
 	* essl-s.el (S-indent-line):
 	* essl-s.el (S-calculate-indent): new functions; used to be
- 	ess-*.
+	ess-*.
 
 Mon Nov 24 10:39:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1074,7 +1078,7 @@ Mon Nov 24 10:17:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Mon Nov 24 10:16:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (ess-quit): since now possible to call from ess-mode,
- 	make sure that we are connected to a process.
+	make sure that we are connected to a process.
 
 Mon Nov 24 10:01:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1107,7 +1111,7 @@ Fri Nov 21 17:31:50 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Fri Nov 21 17:05:05 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* ess-trns.el: ess-mode -> ESS.   (RMH)
+	* ess-trns.el: ess-mode -> ESS.	  (RMH)
 	ess-mode-map ->	ess-transcript-mode-map
 
 Fri Nov 21 17:02:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
@@ -1115,7 +1119,7 @@ Fri Nov 21 17:02:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* Makefile (DISTSCRIPTS): commented out. (RMH)
 
 	* Makefile (dist-doc): commented out.  Will do by hand for
- 	5.0. (RMH)
+	5.0. (RMH)
 
 	* Makefile: Added comments for structure of Makefile. (RMH)
 
@@ -1295,8 +1299,8 @@ Wed Nov 19 12:24:22 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* RELEASED 5.0, lastpre.
 
-	* Makefile: removed veryclean.  unnecessary target.  Fixed
- 	dist-doc target.
+	* Makefile: removed veryclean.	unnecessary target.  Fixed
+	dist-doc target.
 
 Wed Nov 19 12:21:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1305,7 +1309,7 @@ Wed Nov 19 12:21:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Nov 19 12:21:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Doc/ajr-talk.tex: final version.  Not best, but we've got docs
- 	provided.
+	provided.
 
 Wed Nov 19 12:03:03 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1314,7 +1318,7 @@ Wed Nov 19 12:03:03 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Nov 19 12:01:53 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el (ess-SAS-pre-run-hook): never take name from a
- 	running process buffer.
+	running process buffer.
 
 Wed Nov 19 11:56:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1378,7 +1382,7 @@ Tue Nov 18 17:37:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Tue Nov 18 17:21:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-s+3.el (S+3-customize-alist): changed var name for
- 	consistency.
+	consistency.
 
 Tue Nov 18 17:20:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1405,7 +1409,7 @@ Tue Nov 18 17:03:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Tue Nov 18 16:58:06 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile: added warnings for set-keymap-parent; XEmacs,
- 	non-Emacs.
+	non-Emacs.
 
 Tue Nov 18 16:52:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1414,7 +1418,7 @@ Tue Nov 18 16:52:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Mon Nov 17 09:59:20 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (inferior-ess-mode-menu): reinstalled info
- 	connection.
+	connection.
 
 Mon Nov 17 09:58:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1435,11 +1439,11 @@ Mon Nov 17 09:05:50 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Mon Nov 17 09:04:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README/ess.texi: changed phrasing for creating object database
- 	files. (RMH)
+	files. (RMH)
 
 Mon Nov 17 09:00:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* ess-inf.el (inferior-ess): doc string edited.  Wrong comments
+	* ess-inf.el (inferior-ess): doc string edited.	 Wrong comments
 	removed (RMH).
 
 Mon Nov 17 08:57:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
@@ -1449,7 +1453,7 @@ Mon Nov 17 08:57:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Mon Nov 17 08:56:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.el: fixed Lisp-Dir-Entry; franz.stat.wisc.edu, not
- 	ftp.math.sc.edu. (RMH).
+	ftp.math.sc.edu. (RMH).
 
 Mon Nov 17 08:54:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1477,7 +1481,7 @@ Fri Nov 14 13:49:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Fri Nov 14 11:24:05 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* Makefile (DOCS): reordered variable.  Added info/dvi files.
+	* Makefile (DOCS): reordered variable.	Added info/dvi files.
 
 Fri Nov 14 11:22:03 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1531,12 +1535,12 @@ Thu Nov 13 21:40:12 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Thu Nov 13 20:51:36 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.el (ess-load-object-name-db-file): don't bomb if file
- 	doesn't exist..
+	doesn't exist..
 
 Thu Nov 13 20:31:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el: back to initial, except for new unused, commented
- 	out, variable)
+	out, variable)
 
 Thu Nov 13 20:28:06 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1565,13 +1569,13 @@ Thu Nov 13 20:06:12 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Thu Nov 13 19:56:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-site.el: added commented example for
- 	ess-plain-first-buffername.  TRUE by default, i.e. for "novice"
- 	mode.
+	ess-plain-first-buffername.  TRUE by default, i.e. for "novice"
+	mode.
 
 Thu Nov 13 19:54:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el: moved database loading to ess-mode and
- 	inferior-ess-mode; removed old comments.
+	inferior-ess-mode; removed old comments.
 
 Thu Nov 13 19:52:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1594,7 +1598,7 @@ Thu Nov 13 19:34:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Thu Nov 13 19:27:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (inferior-ess-mode): load object-name db file if
- 	exists.
+	exists.
 
 Thu Nov 13 19:19:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1603,7 +1607,7 @@ Thu Nov 13 19:19:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Thu Nov 13 19:17:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.texi: bare-bones description of how to create object-name
- 	databases.
+	databases.
 
 Thu Nov 13 19:09:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1638,7 +1642,7 @@ Thu Nov 13 09:40:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Thu Nov 13 09:39:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Doc/rmh-talk.tex: pointed to FRANZ.  added comment about where
- 	given.
+	given.
 
 1998-11-13  A.J. Rossini  <rossini@biostat.washington.edu>
 
@@ -1671,7 +1675,7 @@ Wed Nov 12 15:15:06 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Nov 12 15:12:25 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.texi: added installation (from README).  Use @file{} for
- 	file names.
+	file names.
 
 Wed Nov 12 14:56:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1685,7 +1689,7 @@ Wed Nov 12 14:30:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-trns.el:
 	* ess-help.el: added compile requires to remove byte-compiler
- 	warnings.
+	warnings.
 
 Wed Nov 12 14:21:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1694,7 +1698,7 @@ Wed Nov 12 14:21:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Nov 12 14:20:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essddr.el: added "require 'ess-help" to solve byte compiler
- 	errors.
+	errors.
 
 Wed Nov 12 14:16:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1734,7 +1738,7 @@ Tue Nov 11 16:49:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Tue Nov 11 16:42:28 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el: ess-SAS-pre-run-hook now called from SAS, not
- 	inferior-ess.
+	inferior-ess.
 
 Tue Nov 11 16:34:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1767,7 +1771,7 @@ Tue Nov 11 16:21:34 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Tue Nov 11 16:19:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el: removed comint symbols.  (RMH).  Need to read comint
- 	docs (AJR).
+	docs (AJR).
 
 Tue Nov 11 16:19:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1781,7 +1785,7 @@ Tue Nov 11 16:04:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* ess-inf.el (ess-read-object-name-default): reverted back to old
 	behavior.
 
-	* ess-inf.el (ess-read-object-name-dump): new function.  Use it.
+	* ess-inf.el (ess-read-object-name-dump): new function.	 Use it.
 
 Tue Nov 11 15:56:03 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1814,9 +1818,9 @@ Mon Nov 10 23:17:28 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Mon Nov 10 23:02:36 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
- 	* Releasing 5.0-pre3.
+	* Releasing 5.0-pre3.
 
- 	* essd-sas.el: changes made.  Watch out.
+	* essd-sas.el: changes made.  Watch out.
 
 	* ess-vars.el (ess-version): 5.0-pre3
 	* Makefile (VERSION): 5.0-pre3
@@ -1836,7 +1840,7 @@ Mon Nov 10 22:49:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Mon Nov 10 22:43:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (ess-read-object-name-default): handle defaults
- 	better.
+	better.
 
 Mon Nov 10 22:34:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1876,7 +1880,7 @@ Mon Nov 10 16:48:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Mon Nov 10 15:58:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.texi: added most, approx 300, of MM's changes.  A very few
- 	differences, though.
+	differences, though.
 
 Mon Nov 10 15:05:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1908,68 +1912,68 @@ Mon Nov 10 14:34:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (dvi): new target.  Use it (MM)
 
-Sun Nov  9 16:30:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 16:30:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Doc/TODO: cleaned out my email of TODO problems, except for
- 	SAS).
+	SAS).
 
-Sun Nov  9 16:24:39 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 16:24:39 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Doc/TODO: updated for what has been accomplished by this stage,
- 	for 5.0.
+	for 5.0.
 
-Sun Nov  9 15:32:34 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 15:32:34 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sta.el: cleaned up errors via lets.
 
-Sun Nov  9 15:26:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 15:26:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sas.el: removing unusable commands.
 
-Sun Nov  9 15:08:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 15:08:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (no-doc): new variable.  use it for autoload
- 	documentation.
+	documentation.
 
-Sun Nov  9 15:08:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 15:08:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile: ess-vars/ess/ess-site dependencies cleared up.
 
-Sun Nov  9 15:02:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 15:02:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el: changed documentation for autoloads.
 
-Sun Nov  9 14:56:32 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 14:56:32 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sas.el: one too many ")" (in editing sas-narrow-to-page).
 
-Sun Nov  9 14:48:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 14:48:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-site.el: cleaned up.
 
-Sun Nov  9 14:44:06 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 14:44:06 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-comp.el: cleaned up.
 
-Sun Nov  9 14:38:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 14:38:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sta.el: cleaned up format.
 
-Sun Nov  9 14:33:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 14:33:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el: cleaned up byte-compiler warnings and lisp.
 
-Sun Nov  9 14:32:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 14:32:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sas.el: need the right name at top.
 
 	* essl-sas.el: cleaned up byte-compiler warnings.
 
-Sun Nov  9 14:17:36 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 14:17:36 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile: cleaned dependencies for essd-*.el
 
-Sun Nov  9 14:00:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Nov	 9 14:00:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-version): upgrade to 5.0
 
@@ -1980,94 +1984,94 @@ Sun Nov  9 14:00:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* Makefile (dist): new top-level target.
 	(dist): uses scp to put it where it belongs.
 
-Fri Nov  7 19:43:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 19:43:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Released 5.0-pre2.
 
 	* Makefile (dist): copy makefile into the appropriate place.
 
-Fri Nov  7 19:41:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 19:41:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el (ess-SAS-pre-run-hook): fixed process name synch
 	problem.
 
-Fri Nov  7 19:18:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 19:18:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el (ess-SAS-pre-run-hook): set explicit-shell-file-name
- 	to "/bin/sh" to aviod prompt evilness.
+	to "/bin/sh" to aviod prompt evilness.
 
-Fri Nov  7 18:33:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 18:33:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Doc/TODO: SAS problems.
 
-Fri Nov  7 18:28:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 18:28:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (inferior-R-input-sender): patch to avoid problems
- 	with R, for "help()" (MM).
+	with R, for "help()" (MM).
 
-Fri Nov  7 18:17:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 18:17:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-site.el: added comments re: TT commenting/editing styles.
 
-Fri Nov  7 18:10:25 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 18:10:25 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-mode.el: indentation.
 
-Fri Nov  7 14:42:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 14:42:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-mode.el: changes for TT (RMH).
 
-Fri Nov  7 14:31:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 14:31:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sas.el (sas-require-confirmation): doc string edit.
 
-Fri Nov  7 14:30:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 14:30:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-transcript-minor-mode):
 
-	* ess-vars.el (ess-listing-minor-mode): new variables.  Use. (RMH)
+	* ess-vars.el (ess-listing-minor-mode): new variables.	Use. (RMH)
 
 
-Fri Nov  7 14:29:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 14:29:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* essl-sas.el:  fixes for multiple SAS processes. (RMH)
+	* essl-sas.el:	fixes for multiple SAS processes. (RMH)
 
-Fri Nov  7 13:53:16 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 13:53:16 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el: changes for SAS mode (RMH-2Nov).
 
-Fri Nov  7 13:47:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 13:47:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el: patches for Terry Thernau's suggested indentation
- 	(RMH)
+	(RMH)
 
-Fri Nov  7 13:37:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 13:37:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README.XLispStat: new file.  read it.
-	* README.SAS: New file.  Read it.
+	* README.SAS: New file.	 Read it.
 	* README.S: revision, not version.
 
-Fri Nov  7 11:41:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 11:41:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README.S: added gen'l features, id -> version.
 
-Fri Nov  7 09:23:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 09:23:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README.S: New file.  Include it.
 
-Fri Nov  7 09:20:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 09:20:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README: pointer to README.S, README.SAS, and README.XLispStat
 
-Fri Nov  7 09:17:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Nov	 7 09:17:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README: changes to mailing list and WWW documentation location
 	(MM).
 
-Thu Nov  6 10:42:10 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Thu Nov	 6 10:42:10 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (DOCS): added README.LANGUAGE files to the Makefile.
-  	Need to fill them in.
+	Need to fill them in.
 
 Wed Oct 29 14:08:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -2079,13 +2083,13 @@ Mon Oct 27 14:50:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Mon Oct 27 13:05:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* ess.texi: started editing section 1.  In particular, @b{S}
- 	refers to a generic statistical process, at this point.
+	* ess.texi: started editing section 1.	In particular, @b{S}
+	refers to a generic statistical process, at this point.
 
 Mon Oct 27 10:44:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.texi (Local Variables): TeX-master ought to be ess.texi.
-  	Whoops.
+	Whoops.
 
 Mon Oct 27 10:25:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -2148,7 +2152,7 @@ Fri Oct 24 08:07:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el (ess-SAS-pre-run-hook): after accepting process
 	input, sleep-for to allow the rest of the input to appear!  Else,
-	we don't read the correct tty.  Alternative: would have to grep
+	we don't read the correct tty.	Alternative: would have to grep
 	for tty, and figure out if we mean BSD or SYSV style unix.
 	Bleach.
 
@@ -2243,7 +2247,7 @@ Wed Oct 22 15:10:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Mon Oct 20 14:20:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-help.el (ess-display-help-on-object): set the customization
- 	variables properly.
+	variables properly.
 
 Thu Oct 16 14:25:59 1997  Anthony Rossini  <rossini@fhat.stat.sc.edu>
 
@@ -2259,12 +2263,12 @@ Fri Oct 10 12:05:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-trns.el (ess-transcript-mode): start up in read-only mode.
 
-Wed Oct  8 14:50:03 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Oct	 8 14:50:03 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (ess-proc-name): takes stringname for buffer; was
- 	ess-dialect.  Use it.
+	ess-dialect.  Use it.
 
-Wed Oct  8 13:56:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Oct	 8 13:56:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-s4.el (S4-customize-alist):  inferior-ess-*-command
 	variables must end in "\n".
@@ -2272,65 +2276,65 @@ Wed Oct  8 13:56:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* essd-s+3.el (S+3-customize-alist): inferior-ess-*-command
 	variables must end in "\n".
 
-Wed Oct  8 08:50:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Oct	 8 08:50:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (inferior-ess-names-command): add "\n" to end of
 	names(%s) command (KH).
 
-Wed Oct  8 05:36:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Oct	 8 05:36:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* ess-debug.el: new file for debugging and development.  Use it.
+	* ess-debug.el: new file for debugging and development.	 Use it.
 
-Tue Oct  7 15:46:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Oct	 7 15:46:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-site.el: commented out debug-on-error.
 
-Tue Oct  7 15:42:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Oct	 7 15:42:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (ess-get-words-from-vector): don't concat "\n", since
- 	we might have multi-line commands.  Make them do it in the command
- 	definition (KH).
+	we might have multi-line commands.  Make them do it in the command
+	definition (KH).
 
-Tue Oct  7 13:21:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Oct	 7 13:21:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (SOURCES): add ess-doc.el
 
-Thu Oct  2 08:52:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Thu Oct	 2 08:52:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (install): create INFODIR and LISPDIR as well as
 	parents before installing.
 
-Thu Oct  2 08:42:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Thu Oct	 2 08:42:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (ess-multi): removed ess-pre-run-hook execution; it
 	should only happen in inferior-ess.
 
-Thu Oct  2 01:12:22 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Thu Oct	 2 01:12:22 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-s.el (r-transcript-mode, s-transcript-mode): new functions.  Use it, and fset
 	it.
 
-Thu Oct  2 01:12:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Thu Oct	 2 01:12:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-trns.el (ess-transcript-mode): added alist parameter.  Use
 	it.
 
-Thu Oct  2 00:35:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Thu Oct	 2 00:35:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-function-pattern): tied the non-quoted function
 	name to either the beginning of a line or a space, instead of
 	beginning of a word.
 
-Wed Oct  1 21:50:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Oct	 1 21:50:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-s.el (S-syntax-table): modified . to be "_" (KH).
 
-Wed Oct  1 21:46:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Oct	 1 21:46:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el: Require ess-site, not just ess, so that language
- 	specific stuff will be loaded.
+	specific stuff will be loaded.
 
-Wed Oct  1 21:45:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Oct	 1 21:45:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-trns.el: Require ess-site, not just ess, so that language
 	specific stuff will be loaded.
@@ -2354,7 +2358,7 @@ Wed Sep 10 13:44:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Wed Sep 10 13:33:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* essl-sas.el: added Tom Cook's sas-data code.  Not integrated
+	* essl-sas.el: added Tom Cook's sas-data code.	Not integrated
 	yet.
 
 Wed Sep 10 09:42:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
@@ -2367,246 +2371,246 @@ Wed Sep 10 09:40:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* ess-site.el ((assoc "\\.[rR]\\'" auto-mode-alist)): change check
 	for setting auto-mode-alist (MM).
 
-Tue Sep  9 16:35:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 9 16:35:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-mode.el: removed code which generated a second "ess-mode"
- 	menu.
+	menu.
 
-Tue Sep  9 16:23:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 9 16:23:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-mode.el (ess-mode): mode name:  ess-language, not
 	ess-dialect.
 
-Tue Sep  9 16:22:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 9 16:22:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (inferior-ess-mode): mode name:
 	iESS [ess-dialect:proc]
 
-Tue Sep  9 10:39:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 9 10:39:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-[r][s+3].el (*-customize-alist): lastvalue command renamed
 	as ".ess.lvsave".
 
-Tue Sep  9 09:59:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 9 09:59:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el: what is (fset 'run-s (fset 'run-S (symbol-function
 	'S))) for??
 
-Tue Sep  9 09:15:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 9 09:15:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-version): incremented
 
 	* Makefile (VERSION): incremented
 
-Tue Sep  9 09:01:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 9 09:01:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* RELEASING beta 13
 
-Tue Sep  9 09:01:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 9 09:01:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (all): ess -> ESS
 
-Tue Sep  9 08:29:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 9 08:29:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-r.el (R-customize-alist): needs syntax table for inferior
 	processes.
 
-Mon Sep  8 15:22:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 15:22:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (inferior-ess-mode): need to fix syntax table.
 
-Mon Sep  8 14:28:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 14:28:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sas.el (sas-indent-line): renamed from
 	indent-sas-statement.
 
-Mon Sep  8 14:08:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 14:08:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-mode.el (ess-mode): add one more debugging statement.
 
-Mon Sep  8 13:23:20 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 13:23:20 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el: moved syntax table code to essl-s.el.
 
-Mon Sep  8 13:07:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 13:07:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-version): updated.
 
 	* Makefile: Updated version number
 
-Mon Sep  8 12:25:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 12:25:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-help.el (ess-find-help-file): doesn't search for
 	completions, with SAS or XLS.  Fine, since there isn't a really
 	good way to build the list [SAS] or it isn't coded yet [XLS].
 
-Mon Sep  8 12:24:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 12:24:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-help.el (ess-display-help-on-object): uses process name as
 	part of the buffer.
 
-Mon Sep  8 12:23:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 12:23:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el: removed inferior-ess-save-lastvalue-command and
 	inferior-ess-retr-lastvalue-command, not needed.
 
-Mon Sep  8 09:01:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 09:01:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sas.el: moved SAS language related autoloads and fsets from
 	ess.el to here.
 
-Mon Sep  8 08:59:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 08:59:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-s.el: moved S language related autoloads and fsets from
- 	ess.el to here.
+	ess.el to here.
 
-Mon Sep  8 08:51:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 08:51:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el (SAS-customize-alist): use ess-local-customize-alist.
 
-Mon Sep  8 08:46:32 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 08:46:32 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-r.el (R-customize-alist): use ess-local-customize-alist.
 
-Mon Sep  8 08:45:43 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 08:45:43 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-s+3.el (S+3-customize-alist): use ess-local-customize-alist.
 
-Mon Sep  8 08:45:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 08:45:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-s4.el (S4-customize-alist): use ess-local-customize-alist.
 
-Mon Sep  8 08:42:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 08:42:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-s3.el (S3-customize-alist): use ess-local-customize-alist.
 
-Mon Sep  8 08:41:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 08:41:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-local-customize-alist): new variable.  use it.
 
-Mon Sep  8 08:35:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 8 08:35:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-site.el: code to remove .[sS] from auto-mode-alist commented
 	out.  Need a version which works with Emacs.
 
-Fri Sep  5 14:20:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Sep	 5 14:20:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-mode.el (ess-eval-map): define it.  New keysequence:
 	C-c C-e ...  for evaluation of code.
 
-Fri Sep  5 14:19:43 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Sep	 5 14:19:43 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-eval-map): new variable.  use it.
 
-Wed Sep  3 12:54:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Sep	 3 12:54:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-trns.el: removed log section.
 
-Wed Sep  3 12:30:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Sep	 3 12:30:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-mode.el (ess-find-dump-file-other-window): changed
 	error to message, so that dumping non-existant R objects would
 	work.
 
-Wed Sep  3 12:29:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Sep	 3 12:29:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-help.el (ess-submit-bug-report): fixed to use ess-bugs, and
- 	to include *ESS* buffer contents.
+	to include *ESS* buffer contents.
 
-Wed Sep  3 12:27:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Sep	 3 12:27:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-s4.el: rolled in John Chamber's s4-modeadds.el
 
-Wed Sep  3 11:48:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Sep	 3 11:48:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-s4.el (S4-customize-alist): added
 	inferior-ess-search-list-command from the ess-xtras.
 
-Wed Sep  3 11:11:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Sep	 3 11:11:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-site.el ((assoc "\\.q" auto-mode-alist)): removed '$'.
 	(RMH).
 
-Wed Sep  3 10:42:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Sep	 3 10:42:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.texi : applied Martin's updates.
 
-Wed Sep  3 10:37:39 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Sep	 3 10:37:39 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile: applied Martin's patch, ESS -> ess, for texinfo
 	stuff.
 
-Tue Sep  2 16:36:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 2 16:36:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-*.el (ess-dump-filename-template): use it, with
 	ess-suffix.
 
-Tue Sep  2 16:19:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 2 16:19:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-delete-dump-files): changed default value to
 	nil.  Better safe than sorry.
 
-Tue Sep  2 16:05:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 2 16:05:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-*.el (*-customize-alist): ess-suffix.  Use it.
 
-Tue Sep  2 15:44:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 2 15:44:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-s.el: moved "general" variables from essd-s?.el,
 	essd-r.el.  There, should only be modifications to the standard S
-	customizations.  Avoids conflict with not loading certain
+	customizations.	 Avoids conflict with not loading certain
 	customization variables.
 
-Tue Sep  2 13:23:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 2 13:23:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (LASTVERSION): version set to 12.
 
-Tue Sep  2 10:22:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Sep	 2 10:22:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-version): Version 11 released; set to 12.
 
-Mon Sep  1 17:16:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 1 17:16:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-r.el (R-mode): setq-default the customize alist.
 
-Mon Sep  1 16:59:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 1 16:59:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-s+3.el (S+3-mode): need to set ess-customize-alist.
 
-Mon Sep  1 16:15:10 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 1 16:15:10 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-mode-font-lock-keywords): redid the assign
 	fontlocking.
 
-Mon Sep  1 15:53:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 1 15:53:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-mode-editing-alist): renamed.  Use it.
 
-Mon Sep  1 15:48:43 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 1 15:48:43 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (inferior-ess): corrected doc string.
 
-Mon Sep  1 14:54:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 1 14:54:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sas.el: added sas config variables here.
 
-Mon Sep  1 14:21:08 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 1 14:21:08 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el (SAS): works.
 
-Mon Sep  1 14:20:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 1 14:20:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el (SAS-mode): fixed and "modernized".
 
-Mon Sep  1 14:16:16 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 1 14:16:16 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.el (SAS-transcript-mode): load it.
 
-Mon Sep  1 14:16:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 1 14:16:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.el (SAS-mode): load it.
 
-Mon Sep  1 14:12:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Sep	 1 14:12:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-site.el (auto-mode-alist): XLS is recognized.  SAS is
 	recognized.
@@ -2646,7 +2650,7 @@ Thu Aug 28 09:02:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:33:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-mode.el (ess-mode): needed to set buffer local variables
-	AFTER they are killed.  Whoops.
+	AFTER they are killed.	Whoops.
 
 Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -2655,6 +2659,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.16  1999/07/23 19:38:01  maechler
+	* Removing .
+	* Removing
 	* Removing Revision 5.15  1999/07/22 10:39:30  maechler
 	* Removing lisp things are in lisp/Changelog!
 	* Removing
@@ -2673,28 +2680,28 @@ Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* Removing Revision 5.10  1999/03/17 17:51:43  rossini
 	* Removing changelog updates
 	* Removing
-	* Removing Revision 5.9  1999/03/16 18:17:36  rossini
+	* Removing Revision 5.9	 1999/03/16 18:17:36  rossini
 	* Removing Prep for 5.1.4
 	* Removing
-	* Removing Revision 5.8  1999/03/05 22:27:46  rossini
+	* Removing Revision 5.8	 1999/03/05 22:27:46  rossini
 	* Removing top level stuff, sigh!
 	* Removing
-	* Removing Revision 5.7  1999/03/03 23:34:05  rossini
+	* Removing Revision 5.7	 1999/03/03 23:34:05  rossini
 	* Removing updated changelog file.
 	* Removing
-	* Removing Revision 5.6  1998/12/16 18:30:49  maechler
+	* Removing Revision 5.6	 1998/12/16 18:30:49  maechler
 	* Removing ess.texi
 	* Removing
-	* Removing Revision 5.5  1998/12/14 20:46:07  rossini
+	* Removing Revision 5.5	 1998/12/14 20:46:07  rossini
 	* Removing updated.
 	* Removing
-	* Removing Revision 5.4  1998/11/14 00:23:18  rossini
+	* Removing Revision 5.4	 1998/11/14 00:23:18  rossini
 	* Removing whitespace editing.
 	* Removing
-	* Removing Revision 5.3  1998/11/09 23:50:26  rossini
+	* Removing Revision 5.3	 1998/11/09 23:50:26  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 5.2  1998/11/09 22:46:55  rossini
+	* Removing Revision 5.2	 1998/11/09 22:46:55  rossini
 	* Removing *** empty log message ***
 	* Removing
 	* Removing Revision 5.1.1.2  1997/12/02 14:06:08  rossini
@@ -2703,10 +2710,10 @@ Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* Removing Revision 5.1.1.1  1997/12/01 21:57:03  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 5.1  1997/12/01 21:55:30  rossini
+	* Removing Revision 5.1	 1997/12/01 21:55:30  rossini
 	* Removing new revision.
 	* Removing
-	* Removing Revision 5.0  1997/12/01 16:02:26  rossini
+	* Removing Revision 5.0	 1997/12/01 16:02:26  rossini
 	* Removing *** empty log message ***
 	* Removing
 	* Removing Revision 4.14  1997/12/01 15:59:42  rossini
@@ -2724,31 +2731,31 @@ Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* Removing Revision 4.10  1997/11/26 21:33:51  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 4.9  1997/11/26 21:10:23  rossini
+	* Removing Revision 4.9	 1997/11/26 21:10:23  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 4.8  1997/11/26 21:05:56  rossini
+	* Removing Revision 4.8	 1997/11/26 21:05:56  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 4.7  1997/11/25 21:24:13  rossini
+	* Removing Revision 4.7	 1997/11/25 21:24:13  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 4.6  1997/11/25 13:58:36  rossini
+	* Removing Revision 4.6	 1997/11/25 13:58:36  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 4.5  1997/11/24 17:17:07  rossini
+	* Removing Revision 4.5	 1997/11/24 17:17:07  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 4.4  1997/11/23 00:16:53  rossini
+	* Removing Revision 4.4	 1997/11/23 00:16:53  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 4.3  1997/11/21 22:40:12  rossini
+	* Removing Revision 4.3	 1997/11/21 22:40:12  rossini
 	* Removing last todo.  RMH gives seal of approval.
 	* Removing
-	* Removing Revision 4.2  1997/11/20 23:39:23  rossini
+	* Removing Revision 4.2	 1997/11/20 23:39:23  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 4.1  1997/11/20 23:03:20  rossini
+	* Removing Revision 4.1	 1997/11/20 23:03:20  rossini
 	* Removing *** empty log message ***
 	* Removing
 	* Removing Revision 1.41  1997/11/20 21:44:45  rossini
@@ -2847,31 +2854,31 @@ Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* Removing Revision 1.10  1997/10/24 12:57:08  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.9  1997/10/24 12:08:59  rossini
+	* Removing Revision 1.9	 1997/10/24 12:08:59  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.8  1997/10/23 17:18:12  rossini
+	* Removing Revision 1.8	 1997/10/23 17:18:12  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.7  1997/10/23 13:31:31  rossini
+	* Removing Revision 1.7	 1997/10/23 13:31:31  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.6  1997/10/22 19:54:22  rossini
+	* Removing Revision 1.6	 1997/10/22 19:54:22  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.5  1997/10/22 19:51:08  rossini
+	* Removing Revision 1.5	 1997/10/22 19:51:08  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.4  1997/10/22 19:12:30  rossini
+	* Removing Revision 1.4	 1997/10/22 19:12:30  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.3  1997/10/20 18:21:29  rossini
+	* Removing Revision 1.3	 1997/10/20 18:21:29  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.2  1997/10/02 01:51:47  rossini
+	* Removing Revision 1.2	 1997/10/02 01:51:47  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.1  1997/09/10 17:21:00  rossini
+	* Removing Revision 1.1	 1997/09/10 17:21:00  rossini
 	* Removing Initial revision
 	* Removing
 	* Removing Revision 1.11  1997/09/10 17:11:25  rossini
@@ -2880,28 +2887,28 @@ Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* Removing Revision 1.10  1997/09/09 13:16:09  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.9  1997/09/09 13:02:26  rossini
+	* Removing Revision 1.9	 1997/09/09 13:02:26  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.8  1997/09/09 13:01:13  rossini
+	* Removing Revision 1.8	 1997/09/09 13:01:13  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.7  1997/09/09 12:59:09  rossini
+	* Removing Revision 1.7	 1997/09/09 12:59:09  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.6  1997/09/08 16:27:18  rossini
+	* Removing Revision 1.6	 1997/09/08 16:27:18  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.5  1997/09/08 16:24:19  rossini
+	* Removing Revision 1.5	 1997/09/08 16:24:19  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.4  1997/09/05 18:20:47  rossini
+	* Removing Revision 1.4	 1997/09/05 18:20:47  rossini
 	* Removing *** empty log message ***
 	* Removing
-	* Removing Revision 1.3  1997/09/01 18:21:40  rossini
+	* Removing Revision 1.3	 1997/09/01 18:21:40  rossini
 	* Removing *** empty log message ***
 	* Removing from all files.  All comments now in ChangeLog
- 	file).
+	file).
 
 Wed Aug 27 11:55:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -2922,18 +2929,18 @@ Tue Aug 26 17:58:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Tue Aug 26 17:50:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* essl-sas.el:  new file.  SAS language editing mode (Cook's
-	mode).  Use it. (TC)
+	* essl-sas.el:	new file.  SAS language editing mode (Cook's
+	mode).	Use it. (TC)
 
 Tue Aug 26 17:48:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* essl-s.el : new file.  S language editing mode.  Use it.
-  	S specific stuff from ess-mode.
+	* essl-s.el : new file.	 S language editing mode.  Use it.
+	S specific stuff from ess-mode.
 
 Mon Aug 25 16:53:10 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-help.el (ess-find-help-file): added hack to complete non-S
- 	stuff. (KH)
+	stuff. (KH)
 
 Mon Aug 25 16:42:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -2954,8 +2961,8 @@ Mon Aug 18 15:27:41 1997  Maechler  <maechler@stat.math.ethz.ch>
 Mon Aug 25 16:35:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-site.el auto-mode-alist: Use \\' instead of $ [faster (?)],
- 	standard; Add ...src/library/[A-z]*/funs/.. for R source editing.
-  	(MM).
+	standard; Add ...src/library/[A-z]*/funs/.. for R source editing.
+	(MM).
 
 Mon Aug 25 11:02:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -3020,7 +3027,7 @@ Fri Aug 22 15:49:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Fri Aug 22 15:48:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (essd-S-inferior-font-lock-keywords): added RMH's
- 	error patterns.
+	error patterns.
 
 Fri Aug 22 12:28:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -3029,7 +3036,7 @@ Fri Aug 22 12:28:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Fri Aug 22 12:18:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-function-pattern): New pattern, thanks to
- 	Stephen C. Pope <scp@predict.com>.
+	Stephen C. Pope <scp@predict.com>.
 
 Fri Aug 22 11:59:32 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -3057,7 +3064,7 @@ Fri Aug 22 11:54:27 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Fri Aug 22 11:51:22 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-xls.el (XLS-customize-alist):  inferior-ess-start-file
-	("~/.ess-R").  inferior-ess-start-args.  Use it.
+	("~/.ess-R").  inferior-ess-start-args.	 Use it.
 
 
 Fri Aug 22 11:43:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
@@ -3107,7 +3114,7 @@ Mon Jul 28 09:57:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Mon Jul 28 09:55:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* ess-vars.el: added defvars for ess-site things below.  Still
+	* ess-vars.el: added defvars for ess-site things below.	 Still
 	need to add to essd-*.el's!
 
 	* ess-site.el: more customizations for the executable names.  Need
@@ -3150,14 +3157,14 @@ Mon Jul 28 09:55:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
 1997-07-01  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (inferior-ess): removed make-local-variables which
- 	should've been handled in ess.el
+	should've been handled in ess.el
 	(ess-multi): same as above.
 	(ess.el): fixed same.
 	(ess-execute): removed make-local-variable 'ess-local-process-name
 	(ess-force-buffer-current): removed make-local-variable
- 	'ess-local-process-name
+	'ess-local-process-name
 	(inferior-ess): let (done 0), for constructing
- 	inferior-ess-procname.
+	inferior-ess-procname.
 
 	* ess-site.el: added RMH's new docs, `ess-keep-dump-files'.
 
@@ -3168,11 +3175,11 @@ Mon Jul 28 09:55:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
 1997-06-16  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile: trans->trns.  Idea is to keep file names at the 8+3
-	length  for archaic OSs...
+	length	for archaic OSs...
 
 Sun Jun 15 04:39:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* NOTE:  SEE RCS Log files for program updates.  All
+	* NOTE:	 SEE RCS Log files for program updates.	 All
 	language/dialect specific code attempted to be moved to essd files
 	(d=dialect :-)..  need more movement, though...
 
@@ -3194,9 +3201,9 @@ Wed Apr 23 09:29:53 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* S.el (S-mode-version): incremented.
 
 	* S-help.el (S-display-help-on-object): (MM) S-help-sec-regex,
- 	S-help-sec-keys-alist take correct values (see yesterday's log for
- 	inferior-S-help-command).  Need to do similar with
- 	inferior-S-help-command hack!
+	S-help-sec-keys-alist take correct values (see yesterday's log for
+	inferior-S-help-command).  Need to do similar with
+	inferior-S-help-command hack!
 
 	* S.el : (MM) S-help-sec-regex, S-help-sec-keys-alist
 	buffer-local.
@@ -3292,7 +3299,7 @@ Wed Apr 16 14:36:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	cleaner way).
 
 
-Tue Apr  8 06:32:20 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Apr	 8 06:32:20 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* S-mode-4.9-b3 RELEASED.
 
@@ -3310,7 +3317,7 @@ Tue Apr  8 06:32:20 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* General: removed "FSF GNU" from all files.  It's not kosher.
 
-Mon Apr  7 07:52:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Apr	 7 07:52:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* S-inf.el (get-S-process): moved to prevent byte-compiler
 	warnings.
@@ -3327,7 +3334,7 @@ Mon Apr  7 07:52:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* S-inf.el: moved requires and eval-when-compile requires.
 
 	* S-site.el: moved XLS, R, S here from S-inf.  Added local vars at
- 	end.  Edited commented-out documentation.
+	end.  Edited commented-out documentation.
 
 	* S-inf.el: moved XLS, R, S to S-site
 	(XLS, R, S): S0 -> inferior-S
@@ -3335,7 +3342,7 @@ Mon Apr  7 07:52:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 
 	* S.el: Documentation cleaned, modified.  Old news moved to NEWS
- 	files.
+	files.
 	(S-mode-version): variable updated (wasn't, before.  Whoops!)
 
 	* S-mode-4.9-b2 RELEASED
@@ -3354,7 +3361,7 @@ Mon Apr  7 07:52:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* S-mode.el (S-mode-map): S-parse-errors binding changed to C-c`
 
-Sun Apr  6 14:23:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Sun Apr	 6 14:23:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* S-inf.el (inferior-S-make-comint): S-inf-pager ->
 	inferior-S-pager.
@@ -3365,7 +3372,7 @@ Sun Apr  6 14:23:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	(I need to verify this).
 	(inferior-S-pager): New variable.
 
-Fri Apr  4 10:38:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Apr	 4 10:38:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* S-mode-4.9-b1 RELEASED
 
@@ -3384,13 +3391,13 @@ Fri Apr  4 10:38:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* Makefile: More in line with GNU standards.  Still WRONG,
 	though.
 
-Thu Apr  3 14:38:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Thu Apr	 3 14:38:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* S-help.el: Support for W3 viewing of R files is included.  It
 	works (but could be better).  Removed until 5.0 :-).
 
 	* S.el (S-proc-prefix): Moved before S-history-file definition,
- 	which now depends on it.
+	which now depends on it.
 
 	* S-help.el (S-submit-bug-report): send to rossini@stat.sc.edu
 
@@ -3409,27 +3416,27 @@ Thu Apr  3 14:38:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	Bozo...).
 
 	* S-inf.el (inferior-S-font-lock-keywords): changed variable name
- 	from S-inf-font-lock-keywords.
+	from S-inf-font-lock-keywords.
 	(inferior-S-mode): changed variable name to
- 	inferior-S-font-lock-keywords from S-inf-font-lock-keywords.
+	inferior-S-font-lock-keywords from S-inf-font-lock-keywords.
 
 	* S-modeadds.el (S-mode-load-hook): changed name of
- 	S-inf-filenames-map to S-filenames-map-p
+	S-inf-filenames-map to S-filenames-map-p
 
 	* S-inf.el (S-dir-modtime): changed name of S-inf-filenames-map to
- 	S-filenames-map-p
+	S-filenames-map-p
 	(S-object-names): changed name of S-inf-filenames-map to
- 	S-filenames-map-p
+	S-filenames-map-p
 
 	* S-mode.el (S-check-modifications): changed name of
- 	S-inf-filenames-map to S-filenames-map-p
+	S-inf-filenames-map to S-filenames-map-p
 
 	* S-inf.el: removed S-inf-filenames-map defvar.
 
 	* S.el: Moved S-inf-filenames-map defvar here, renamed as
- 	S-filenames-map-p.
+	S-filenames-map-p.
 
-Wed Apr  2 09:38:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Apr	 2 09:38:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* TODO: updated ALL conversations and reasonings.
 
@@ -3441,21 +3448,21 @@ Wed Apr  2 09:38:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	Dalgaard, <p.dalgaard@biostat.ku.dk>).
 
 	* S-mode.el : changed default for S-else-offset to 0 (thanks:
- 	Peter Dalgaard, <p.dalgaard@biostat.ku.dk>).
+	Peter Dalgaard, <p.dalgaard@biostat.ku.dk>).
 
 Mon Mar 10 11:30:23 1997  Anthony Rossini  <rossini@fhat.stat.sc.edu>
 
 	* General : moved the rest of the easymenu startup code here
 	* General : edited Makefile for easier XEmacs distribution
 	* S-site.el : added example Splus call (thanks: Claudia Yastremiz
-    	<claudia@ms.com>)
+	<claudia@ms.com>)
 
-Fri Mar  7 17:42:36 1997  Anthony Rossini  <rossini@fhat.stat.sc.edu>
+Fri Mar	 7 17:42:36 1997  Anthony Rossini  <rossini@fhat.stat.sc.edu>
 
 	* S-trans.el : For easymenu menus, moved code from S-menu here.
 	* S-mode.el : For easymenu menus, moved code from S-menu here.
 	* S-inf.el : For easymenu menus, moved code from S-menu here.
-	* Added  code from Kurt H.
+	* Added	 code from Kurt H.
 
 Mon Feb 10 11:14:42 1997  Anthony Rossini  <rossini@fhat.stat.sc.edu>
 
@@ -3474,7 +3481,7 @@ Mon Feb 10 11:14:42 1997  Anthony Rossini  <rossini@fhat.stat.sc.edu>
 
 	* S-menu.el: added easymenu support, XEmacs menu hooks.
 
-Mon Oct 14 16:24:14 1996  Local  <local@florence>
+Mon Oct 14 16:24:14 1996  Local	 <local@florence>
 
 	* S-inf.el: inferior-S-program -- only new if  S <--> R
 
@@ -3484,7 +3491,7 @@ Tue Jun 25 08:53:12 1996  Martin Maechler <maechler@stat.math.ethz.ch>
 	after setting variables.
 
 	* S.el: added autoloads for 'R and 'R-mode.
-	defconst  for S-help-S... and S-help-R  used in S-inf.
+	defconst  for S-help-S... and S-help-R	used in S-inf.
 	* S-site.el: same autoloads
 
 	* S-help.el : S-help-sec-regex,etc: defconst for S- and R-
@@ -3493,7 +3500,7 @@ Tue Jun 25 08:53:12 1996  Martin Maechler <maechler@stat.math.ethz.ch>
 	* S-mode.el (R-mode): added
 	S-force-buffer-current: optional 2nd arg. 'force'
 
-Mon Dec  4 1995 -- Wed May 29 1996  Martin Maechler <maechler@stat.math.ethz.ch>
+Mon Dec	 4 1995 -- Wed May 29 1996  Martin Maechler <maechler@stat.math.ethz.ch>
 
 	* S.el: Fixed the syntax-table entry which broke 'beg.-of-function'.
 	New variable  S-proc-prefix  (for using "R" and "S" simultaneously).
@@ -3513,7 +3520,7 @@ Mon Dec  4 1995 -- Wed May 29 1996  Martin Maechler <maechler@stat.math.ethz.ch>
 
 	* Makefile: texi, not texinfo; support for non-GNU tar; minor..
 
-Mon Dec  4 1995 -- Wed May 29 1996  Martin Maechler <maechler@stat.math.ethz.ch>
+Mon Dec	 4 1995 -- Wed May 29 1996  Martin Maechler <maechler@stat.math.ethz.ch>
 
 	* S.el: Fixed the syntax-table entry which broke 'beg.-of-function'.
 	New variable  S-proc-prefix  (for using "R" and "S" simultaneously).
@@ -3534,13 +3541,13 @@ Mon Dec  4 1995 -- Wed May 29 1996  Martin Maechler <maechler@stat.math.ethz.ch>
 	* Makefile: texi, not texinfo; support for non-GNU tar; minor..
 
 
-Wed Dec 13 17:27:53 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Wed Dec 13 17:27:53 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-inf.el (S-search-list): Would return nil if S-search-list was
- 	  nil and the search path had not changed (which could happen,
- 	  apparently)
+	  nil and the search path had not changed (which could happen,
+	  apparently)
 
-Mon Dec  4 10:21:52 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Mon Dec	 4 10:21:52 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S.el: New syntax table.
 
@@ -3578,11 +3585,11 @@ Mon Dec  4 10:21:52 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
 	* Makefile: Deleted useless SCRATCH vbl.
 	Use S-mode.texi, not S-mode.texinfo.
 
-Thu Nov 30 13:10:17 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Thu Nov 30 13:10:17 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* Makefile: Version update
 
-Mon Nov 13 14:46:13 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Mon Nov 13 14:46:13 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S.el (S-mode-syntax-table): Made syntax table independent of
 	  c-mode-syntax-table
@@ -3590,19 +3597,19 @@ Mon Nov 13 14:46:13 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
 	* S-mode.el (S-check-modifications): Changed regexp to allow `w'
 	  and `_' class syntax in object names
 
-Wed Aug 23 16:37:10 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Wed Aug 23 16:37:10 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-inf.el (S-complete-filename): Checked form the beginning of
 	  the *last* command to determine if we should complete a
 	  filename.  History expansions work now.
 
-Mon Aug 21 15:35:29 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Mon Aug 21 15:35:29 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-menu.el (S-transcript-mode-menu): New menu
 	(S-inferior-S-mode-menu): Lotsa updates.
 
 	* S-trans.el (S-transcript-copy-command): Renamed from
- 	S-transcript-copy-commmand (mmm).  Also switches to the S process.
+	S-transcript-copy-commmand (mmm).  Also switches to the S process.
 
 	(S-trans-font-lock-keywords): strings keep other highlighting
 
@@ -3610,7 +3617,7 @@ Mon Aug 21 15:35:29 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
 
 	* S-help.el: Autoloads for stuff in S-mode.el
 
-Tue Aug  8 11:06:43 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Tue Aug	 8 11:06:43 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-mode.el (S-dump-object-into-edit-buffer): Run a lambda
 	S-source-directory in the process buffer
@@ -3625,12 +3632,12 @@ Tue Aug  8 11:06:43 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
 	(inferior-S-mode): Add S-search-path-tracker to
 	comint-input-filter-functions, not comint-input-sentinel.
 
-Tue Aug  1 16:13:14 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Tue Aug	 1 16:13:14 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-inf.el (inferior-S-mode): Don't anchor paragraph-start and
 	paragraph-separate with "^" (for 19.29).
 
-Tue Aug  1 14:44:32 1995  David M Smith  <maa036@mathssun5>
+Tue Aug	 1 14:44:32 1995  David M Smith	 <maa036@mathssun5>
 
 	* S-mode.el (S-eval-region): Make sure S-local-process-name is set.
 
@@ -3639,14 +3646,14 @@ Tue Aug  1 14:44:32 1995  David M Smith  <maa036@mathssun5>
 
 	* S-mode.el (S-eval-region): Make sure S-inf is loaded
 
-Thu Jul 27 16:43:01 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Thu Jul 27 16:43:01 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-inf.el (S-list-object-completions): New function
 	(inferior-S-mode-map): Bind it to M-?
 
 Tue Jul 25 16:07:10 1995  David Smith  <D.M.Smith@lancaster.ac.uk>
 
-        * Version 4.7 released.
+	* Version 4.7 released.
 
 	* Makefile (info): New target
 	(install): Ignore errors in second cp in case LISPDIR==.
@@ -3665,7 +3672,7 @@ Tue Jul 25 16:07:10 1995  David Smith  <D.M.Smith@lancaster.ac.uk>
 
 	(S-post-run-hook): New variable.
 
-Mon Jul 24 11:58:22 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Mon Jul 24 11:58:22 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S.el: Default for S-keep-dump-files is 'check
 
@@ -3682,12 +3689,12 @@ Mon Jul 24 11:58:22 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
 	hooks if window-system is non-nil.  Also add to
 	S-transcript-mode-hook.
 
-Thu Jul 20 12:21:43 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Thu Jul 20 12:21:43 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-inf.el (S-inf-font-lock-keywords): Strings in input don't
 	de-fontify anymore.
 
-Wed Jun 28 12:15:57 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Wed Jun 28 12:15:57 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-mode.texinfo: Updated e-mail addresses, and used @@ instead of
 	@.
@@ -3695,12 +3702,12 @@ Wed Jun 28 12:15:57 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
 	* S-mode.el (S-mode): Use S-mode-font-lock-keywords, not
 	S-inf-font-lock-keywords
 
-Mon Jun 26 12:14:10 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Mon Jun 26 12:14:10 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
-        * Version 4.6 released
+	* Version 4.6 released
 	* TODO, S-mode.texinfo, NEWS, Makefile: Update for 4.6
 
-Mon Jun 26 12:09:55 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Mon Jun 26 12:09:55 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-trans.el: Font-lock support.
 
@@ -3712,7 +3719,7 @@ Mon Jun 26 12:09:55 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
 
 	* S-site.el:
 	Deleted hilit19 patterns (font-lock patterns are now in the individual
-	source files).  S-site should now be much more lightweight to load.
+	source files).	S-site should now be much more lightweight to load.
 
 	Used add-to-list for the load-path.
 
@@ -3720,7 +3727,7 @@ Mon Jun 26 12:09:55 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
 
 	* S-mode.el: Font-lock support.
 
-Fri Jun 23 13:56:54 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Fri Jun 23 13:56:54 1995  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-inf.el:
 	Doesn't call comint-output-filter-functions in S-eval-visibly any more
@@ -3730,20 +3737,20 @@ Fri Jun 23 13:56:54 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
 
 	Bound M-RET to S-transcript-send-command-and-move.
 
-Wed Oct 26 12:37:15 1994  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Wed Oct 26 12:37:15 1994  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-mode.el (S-check-modifications):
 	Fixed a bug which occurred when the object
 	name could not be found.
 
-Tue Oct 25 16:28:54 1994  David M Smith  <D.M.Smith@lancaster.ac.uk>
+Tue Oct 25 16:28:54 1994  David M Smith	 <D.M.Smith@lancaster.ac.uk>
 
 	* S-inf.el: Moved S-local-process name to S.el.
 	(S-eval-visibly): Bugfix involving comint-last-output-end
 
-Wed Jun  1 11:03:34 1994  David M. Smith  (maa036@mathssun5)
+Wed Jun	 1 11:03:34 1994  David M. Smith  (maa036@mathssun5)
 
-        * Version 4.5 released.
+	* Version 4.5 released.
 
 	* Makefile: Update to distrib target
 
@@ -3753,7 +3760,7 @@ Wed Jun  1 11:03:34 1994  David M. Smith  (maa036@mathssun5)
 
 	* NEWS: *** empty log message ***
 
-Wed Jun  1 10:29:30 1994  David M. Smith  (maa036@mathssun5)
+Wed Jun	 1 10:29:30 1994  David M. Smith  (maa036@mathssun5)
 
 	* S-menu.el: Bugfix
 
@@ -3911,7 +3918,7 @@ Fri Feb 11 14:49:29 1994  David M. Smith  (maa036@mathssun5.lancs.ac.uk)
 	* splitup2/S-mode.el (S-mode): Set parse-sexp-ignore-comments to
 	  t; there are no longer any limitations with this in elisp.
 
-Wed Feb  9 13:25:12 1994  David M. Smith  (maa036@mathssun5.lancs.ac.uk)
+Wed Feb	 9 13:25:12 1994  David M. Smith  (maa036@mathssun5.lancs.ac.uk)
 
 	* splitup2/S-trans.el (S-transcript-send-command-and-move): New
 	  function
@@ -3923,7 +3930,7 @@ Wed Feb  9 13:25:12 1994  David M. Smith  (maa036@mathssun5.lancs.ac.uk)
 
 Wed Jan 26 11:15:46 1994  David Smith  (maa507@mathssun5.lancs.ac.uk)
 
-	* S.el 	(S-search-list): Caches result in S-search-list <v>
+	* S.el	(S-search-list): Caches result in S-search-list <v>
 	(S-execute-objects): Use it
 	(S-search-list <v>): Now just a cache. Don't access directly
 	Completions are now calculated on demand; as a result the first
@@ -3941,9 +3948,9 @@ Wed Jan 19 16:16:10 1994  David Smith  (maa507@mathssun5.lancs.ac.uk)
 	  users (even those without window systems) can safely require
 	  this file.
 
-Thu Jan  6 15:15:53 1994  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+Thu Jan	 6 15:15:53 1994  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 
-        Version 4.1alpha released to wingra
+	Version 4.1alpha released to wingra
 	* S.el: deleted S-set-display and associated variables.
 
 Fri Dec 24 11:56:00 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
@@ -3978,7 +3985,7 @@ Mon Dec 13 10:11:25 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 	  this work for DOS users.
 	(S-object-list): New buffer-local vbl; cache of completions
 
-Thu Dec  9 12:08:09 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+Thu Dec	 9 12:08:09 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 
 	* S.el (S-process-sentinel): Can now see message after q()
 
@@ -4016,7 +4023,7 @@ Thu Nov 11 12:30:06 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 	  multi-line inputs. Users should use LFD (not RET) to continue
 	  incomplete commands. Should automate this.
 
-Thu Oct  7 14:45:00 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+Thu Oct	 7 14:45:00 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 
 	* S.el (inferior-S-mode): Few mods to make it work with the new
 	  comint.
@@ -4052,8 +4059,8 @@ Wed Sep 15 11:47:51 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 Tue Sep 14 09:33:03 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 
 	* S.el (S-multi): Makes use of Simon Marshall's new comint.el. New
-  	  variable S-history-file for saving histories. Calls
-  	  comint-read-input-ring. Sets the sentinel.
+	  variable S-history-file for saving histories. Calls
+	  comint-read-input-ring. Sets the sentinel.
 	(S-process-sentinel): Created. Automatically saves the history
 	  ring if the S process dies.
 
@@ -4066,7 +4073,7 @@ Sun Sep 12 18:53:40 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 	  literal buffer name (no *'s are added); procname is the process
 	  name to use.
 
-Tue Sep  7 16:20:11 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+Tue Sep	 7 16:20:11 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 
 	* S.el (inferior-S-mode-map): Unbound comint-[mp]search input, and
 	comint-isearch, as I haven't tested them yet.
@@ -4078,7 +4085,7 @@ Tue Sep  7 16:20:11 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 
 	* comint-isearch.el: Back in the distribution
 
-Fri Sep  3 16:20:28 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+Fri Sep	 3 16:20:28 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 
 	* S.el (S-mode): Replaced the documentation string, and removed
 	the code which set it explicitly. Doing this was breaking the byte
@@ -4093,7 +4100,7 @@ Wed Aug 25 17:36:57 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 Sat Aug 14 14:48:11 1993  David Smith  (dsmith@spam)
 
 	* S.el (S-extract-onames-from-alist): Modified so that
-  	S-complete-object-name will work in the minibuffer (e.g. through
+	S-complete-object-name will work in the minibuffer (e.g. through
 	command S-execute.)
 
 	* S.el: Restructured the entire S.el file into meaningful
@@ -4107,7 +4114,7 @@ Sat Aug 14 14:48:11 1993  David Smith  (dsmith@spam)
 	Tek-related functions and variables in S.el to the end of this
 	file.
 
-Wed Aug  4 16:35:24 1993  David Smith  (dsmith@spam)
+Wed Aug	 4 16:35:24 1993  David Smith  (dsmith@spam)
 
 	* S.el (S-complete-object-name): Fixed regexp so that completion
 	over lists works properly.
@@ -4137,10 +4144,10 @@ The following is from the original Changelog section of S.el
   and announced on internet.s-news, netnews.gnu.emacs.sources, &
     andrew.programs.S
  -------------------------------------------------------
-     Jul 26          1991  Frank Ritter
+     Jul 26	     1991  Frank Ritter
    * added S-mode-load-hook & S-pre-run-hook
      and testing by neilc@research.att.com
-     Jul 9           1991  Frank Ritter
+     Jul 9	     1991  Frank Ritter
    * Changed S-command to use a register rather than
        the kill ring.
    * Better file header, comments now at 60 col so
@@ -4164,7 +4171,7 @@ The following is from the original Changelog section of S.el
 
  Thu Oct 18 12:41:52 1990  Ed Kademan  (kademan at hermes)
    * Added function S-nuke-help-bs to clean up nroff
-       style text in the S help buffer.  This function is
+       style text in the S help buffer.	 This function is
        a modification of nuke-nroff-bs from man.el.
  -------------------------------------------------------
  Unnumbered version released dated Thu Jun 14 09:56:56 CDT 1990
