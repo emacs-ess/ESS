@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/09/03 20:02:01 $
-;; Version: $Revision: 5.50 $
-;; RCS: $Id: ess-inf.el,v 5.50 2000/09/03 20:02:01 rossini Exp $
+;; Modified: $Date: 2000/09/04 00:20:46 $
+;; Version: $Revision: 5.51 $
+;; RCS: $Id: ess-inf.el,v 5.51 2000/09/04 00:20:46 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -1456,6 +1456,7 @@ to the command if BUFF is not given.)"
   (interactive)
   (ess-force-buffer-current "Process to quit: ")
   (ess-make-buffer-current)
+  ;; This needs to be modified to handle R, sigh...
   (let ((sprocess (get-ess-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running."))
     (if (yes-or-no-p (format "Really quit ESS (process %s)" sprocess))
