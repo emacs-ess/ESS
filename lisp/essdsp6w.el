@@ -3,7 +3,7 @@
 ;;; copied and edited from essd-sp4.el - Richard M. Heiberger, April 2001
 
 ;; Copyright (C) 2001 Richard M. Heiberger <rmh@sbm.temple.edu>
-;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2002--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: Richard M. Heiberger <rmh@sbm.temple.edu>
@@ -66,83 +66,49 @@ alternative nil uses an existing S+6 GUI (if there is one) and
 connects it to the '(ddeESS [S+6])' window.")
 
 (defvar S+6-customize-alist
-  '((ess-local-customize-alist     . 'S+6-customize-alist)
-    (ess-language                  . "S")
-    (ess-dialect                   . S+6-dialect-name)
-    (ess-suffix                    . "S")
-    (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . S-syntax-table)
-    (ess-change-sp-regexp	   . ess-S+-change-sp-regexp)
-    (ess-help-sec-regex            . ess-help-S+-sec-regex)
-    (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-    (ess-loop-timeout              . ess-S-loop-timeout)
-    (ess-object-name-db-file       . "ess-sp6-namedb.el" )
-    (ess-retr-lastvalue-command
-     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-    (inferior-ess-program          . inferior-S+6-program-name)
-;;    (inferior-ess-ddeclient        . "ddeclient")
-;;    (inferior-ess-client-name      . "S-PLUS")
-;;    (inferior-ess-client-command   . "SCommand")
-    (inferior-ess-objects-command  . inferior-Splus-objects-command)
-    (inferior-ess-help-command     . "help(\"%s\")\n")
-    (inferior-ess-exit-command     . "q()\n")
-    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
-    (inferior-ess-start-file       . nil) ;"~/.ess-S+6")
-    (inferior-ess-start-args       . (concat
-				      inferior-S+6-multipleinstances
-				      " "
-				      inferior-S+6-start-args
-				      " "
-				      inferior-S+6-print-command
-				      " S_PROJ="
-				      (directory-file-name default-directory))
-				   )
+  (append
+  '((ess-local-customize-alist  . 'S+6-customize-alist)
+    (ess-dialect                . S+6-dialect-name)
+    (ess-loop-timeout		. ess-S-loop-timeout);fixme: dialect spec.
+    (ess-object-name-db-file    . "ess-sp6-namedb.el" )
+    (inferior-ess-program       . inferior-S+6-program-name)
+    (inferior-ess-help-command  . "help(\"%s\")\n")
+    (inferior-ess-search-list-command . "searchPaths()\n")
+    (inferior-ess-start-file    . nil) ;"~/.ess-S+6")
+    (inferior-ess-start-args    . (concat
+				   inferior-S+6-multipleinstances
+				   " "
+				   inferior-S+6-start-args
+				   " "
+				   inferior-S+6-print-command
+				   " S_PROJ="
+				   (directory-file-name default-directory)))
+;;    (inferior-ess-ddeclient      . "ddeclient")
+;;    (inferior-ess-client-name    . "S-PLUS")
+;;    (inferior-ess-client-command . "SCommand")
     (ess-STERM  . "ddeESS")
-    (ess-editor . S-editor)
-    (ess-pager  . S-pager)
-    (inferior-ess-language-start . (eval inferior-S-language-start))
     )
- "Variables to customize for S+6")
-
+  S+common-cust-alist)
+  "Variables to customize for S+6")
 
 (defvar Sqpe+6-customize-alist
-  '((ess-local-customize-alist     . 'Sqpe+6-customize-alist)
-    (ess-language                  . "S")
-    (ess-dialect                   . S+6-dialect-name)
-    (ess-suffix                    . "S")
-    (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . S-syntax-table)
-    (ess-change-sp-regexp	   . ess-S+-change-sp-regexp)
-    (ess-help-sec-regex            . ess-help-S+-sec-regex)
-    (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-    (ess-loop-timeout              . 500000 )
-    (ess-object-name-db-file       . "ess-sp6-namedb.el" )
-    (ess-retr-lastvalue-command
-     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-    (inferior-ess-program          . inferior-Sqpe+6-program-name)
-    (inferior-ess-objects-command  . inferior-Splus-objects-command)
-    (inferior-ess-help-command     . "help(\"%s\")\n")
-    (inferior-ess-exit-command     . "q()\n")
-    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
-    (inferior-ess-start-file       . nil) ;"~/.ess-S+6")
-    (inferior-ess-start-args       . (concat
-				      "ALWAYS_PROMPT=X"  ;;workaround for bug in S-Plus 6 for Windows
-				      " "
-				      inferior-Sqpe-start-args ;; license manager for example
-				      ))
+  '((ess-local-customize-alist  . 'Sqpe+6-customize-alist)
+    (ess-dialect                . S+6-dialect-name)
+    (ess-loop-timeout           . 500000 );fixme: dialect specific custom.var
+    (ess-object-name-db-file    . "ess-sp6-namedb.el" )
+    (inferior-ess-program       . inferior-Sqpe+6-program-name)
+    (inferior-ess-help-command  . "help(\"%s\")\n")
+    (inferior-ess-search-list-command . "searchPaths()\n")
+    (inferior-ess-start-file    . nil) ;"~/.ess-S+6")
+    (inferior-ess-start-args    . (concat
+				   ;; workaround for bug in S-Plus 6 for Windows:
+				   "ALWAYS_PROMPT=X"
+				   " "
+				   inferior-Sqpe-start-args ;; e.g. license manager
+				   ))
     (ess-STERM  . "iESS")
-    (ess-editor . S-editor)
-    (ess-pager  . S-pager)
-    (inferior-ess-language-start . (eval inferior-S-language-start))
-)
+    )
+  S+common-cust-alist)
  "Variables to customize for Sqpe+6.")
 
 
