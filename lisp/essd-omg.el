@@ -52,6 +52,7 @@
 				      ess-dump-filename-template-proto))
     (ess-mode-editing-alist        . OMG-editing-alist)
     (ess-mode-syntax-table         . OMG-syntax-table)
+    (ess-change-sp-regexp          . "");fixme (if omegahat ever ..)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
     (ess-object-name-db-file       . "ess-omg-namedb.el" )

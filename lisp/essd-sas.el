@@ -176,8 +176,8 @@ Better logic needed!  (see 2 uses, in this file).")
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . " ")
     (ess-object-name-db-file       . "ess-sas-namedb.el")
-    (inferior-ess-objects-command  . "objects(%d)")
-    (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
+    (inferior-ess-objects-command  . "objects(%d)");;FIXME
+    (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n");;FIXME
     (inferior-ess-exit-command     . "endsas;\n")
     (ess-loop-timeout              .  500000 )
     (inferior-ess-primary-prompt   . "^")

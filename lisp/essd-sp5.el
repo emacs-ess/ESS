@@ -55,11 +55,10 @@
     (ess-dialect                   . S+5-dialect-name)
     (ess-suffix                    . "S")
     (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . S-syntax-table)
-    (ess-help-sec-regex            . ess-help-S+-sec-regex)
-					;or just "^[A-Z. ---]+:$"
-    (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-
+    (ess-mode-syntax-table	   . S-syntax-table)
+    (ess-change-sp-regexp	   . ess-S+-change-sp-regexp)
+    (ess-help-sec-regex		   . ess-help-S+-sec-regex)
+    (ess-help-sec-keys-alist	   . S+-help-sec-keys-alist)
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
     (ess-loop-timeout              . ess-S-loop-timeout)
     (ess-dump-filename-template    . (ess-replace-regexp-in-string

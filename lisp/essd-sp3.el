@@ -51,6 +51,7 @@
 				      ess-dump-filename-template-proto))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
+    (ess-change-sp-regexp	   . ess-S+-change-sp-regexp)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
     (ess-object-name-db-file       . "ess-s+3-namedb.el" )

@@ -81,9 +81,9 @@
     (ess-setup-directory-function  . S+6-setup-directory-function)
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
-    (ess-help-sec-regex            . ess-help-S+-sec-regex)
-					;or just "^[A-Z. ---]+:$"
-    (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
+    (ess-change-sp-regexp	   . ess-S+-change-sp-regexp)
+    (ess-help-sec-regex		   . ess-help-S+-sec-regex)
+    (ess-help-sec-keys-alist	   . S+-help-sec-keys-alist)
 
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
     (ess-loop-timeout              . ess-S-loop-timeout)
@@ -106,6 +106,12 @@
     (inferior-ess-help-command     . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
     ;; "paths": get the "/" needed by  (ess-dir-modtime dir)  in ./ess-inf.el:
     (inferior-ess-search-list-command . "search(\"paths\")\n")
+;; or better: evaluate these two on startup :
+;; assign(".ESS.apData", function(d) paste(d,".Data", sep="/"), frame=0)
+;; assign(".ESS.search", function(){s <- searchPaths(); .D <- sapply(s,function(d)is.dir(.ESS.apData(d))); s[.D] <- .ESS.apData(s[.D]); s}, frame=0)
+;; (inferior-ess-search-list-command . ".ESS.search()\n")
+
+
     (inferior-ess-exit-command     . "q()\n")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")

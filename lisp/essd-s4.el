@@ -49,6 +49,7 @@
     (ess-suffix                    . "S")
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
+    (ess-change-sp-regexp	   . ess-S-change-sp-regexp)
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . S4-help-sec-keys-alist)
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")

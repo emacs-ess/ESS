@@ -48,6 +48,7 @@
 				      ess-dump-filename-template-proto))
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
 ;;;    (ess-help-sec-regex            . ess-help-S+-sec-regex)
+    (ess-change-sp-regexp	   . ess-S-change-sp-regexp)
     (ess-help-sec-keys-alist       . S3-help-sec-keys-alist)
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)

@@ -1236,11 +1236,28 @@ This variable may need to become mode-specific."
 
 (make-variable-buffer-local 'inferior-ess-prompt)
 
-(defcustom ess-change-sp-regexp
-  "\\(attach(\\([^)]\\|$\\)\\|detach(\\|collection(\\|library(\\|require(\\|source(\\)"
-  "The regexp for matching the ESS commands that change the search path."
+(defvar ess-change-sp-regexp ""
+  "The regexp for matching the S/R/.. commands that change the search path.")
+(make-variable-buffer-local 'ess-change-sp-regexp)
+
+(defcustom ess-S+-change-sp-regexp
+  "\\(attach(\\([^)]\\|$\\)\\|detach(\\|collection(\\|library(\\|module(\\|source(\\)"
+  "The regexp for matching the S-plus commands that change the search path."
   :group 'ess-proc
   :type 'regexp)
+
+(defcustom ess-S-change-sp-regexp
+  "\\(attach(\\([^)]\\|$\\)\\|detach(\\|library(\\|source(\\)"
+  "The regexp for matching the S commands that change the search path."
+  :group 'ess-proc
+  :type 'regexp)
+
+(defcustom ess-R-change-sp-regexp
+  "\\(attach(\\([^)]\\|$\\)\\|detach(\\|library(\\|require(\\|source(\\)"
+  "The regexp for matching the R commands that change the search path."
+  :group 'ess-proc
+  :type 'regexp)
+
 
 ;;*;; Process-dependent variables
 
@@ -1459,10 +1476,6 @@ the variable `ess-help-own-frame' is non-nil."
   :group 'ess-help
   :type 'alist)
 
-(defconst ess-help-S-sec-regex "^[A-Z. ---]+:$"
-  "Reg(ular) Ex(pression) of section headers in help file")
-
-
 
  ; User changeable variables
 ;;;=====================================================
@@ -1495,7 +1508,7 @@ Choices are `separate-buffer', `s-process', `www'.  The latter uses
 
 ;;*;; Variables relating to ess-help-mode
 
-;;-- ess-help-S-.. and  ess-help-R-.. constants now  in   S.el (are used in ess-inf).
+;;-- ess-help-S-.. and  ess-help-R-.. : in  essl-s.el (are used in ess-inf).
 
 (defvar ess-help-sec-keys-alist nil
   "Alist of (key . string) pairs for use in section searching.")
