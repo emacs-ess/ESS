@@ -1,13 +1,13 @@
 ;;; ess-debug.el --- debugging start up for ESS
 
-;; Copyright (C) 1997--1999 A.J. Rossini
+;; Copyright (C) 1997--2001 A.J. Rossini
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: November 1997
-;; Modified: $Date: 1999/09/14 23:52:20 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: ess-debug.el,v 5.4 1999/09/14 23:52:20 rossini Exp $
+;; Modified: $Date: 2001/01/08 00:42:23 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: ess-debug.el,v 5.5 2001/01/08 00:42:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -27,19 +27,19 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;;
-;; Commentary:  Strictly for debugging and development.  usage is:
+;;; Commentary:  
+
+;; Strictly for debugging and development.  usage is:
 ;;           xemacs -no-site-file -no-init-file -load ess-debug.el -f S4    
 ;; (or similar!)
-;;
+
+;;; Code:
 
 
-;; For Tony's environment
-(require 'tex-site)
+;;; For Tony's environment
+;(require 'tex-site)
 ;(require 'x-symbol-hooks)
 ;(x-symbol-initialize)
-
-
 
 
 (defun ess-add-path (path &rest options)
@@ -48,7 +48,7 @@ directories and it does not exist in `load-path'.
 
 You can use following PATH styles:
 	load-path relative: \"PATH/\"
-			(it is searched from `defaul-load-path')
+			(it is searched from `default-load-path')
 	home directory relative: \"~/PATH/\" \"~USER/PATH/\"
 	absolute path: \"/HOO/BAR/BAZ/\"
 
@@ -75,7 +75,7 @@ default-load-path."
 		(cons p load-path))))))
 
 (setq-default debug-on-error t)
-(ess-add-path "~rossini/src/cvs/ess/lisp")
+(ess-add-path "~rossini/sandbox/Src/Emacs/ESS/ess/lisp")
 (require 'ess-site)
 
 ; Local variables section
