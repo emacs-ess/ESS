@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.7 1999/11/05 09:15:06 maechler Exp $
+;; Version: $Id: ess.el,v 5.8 2000/02/28 08:19:58 ess Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -124,7 +124,8 @@
 ;;;
 
 (require 'easymenu)
-(require 'font-lock)
+(if window-system
+    (require 'font-lock))
 (require 'ess-vars)
 
  ; ess-mode: editing S/R/XLS/SAS source
