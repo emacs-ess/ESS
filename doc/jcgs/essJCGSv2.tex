@@ -137,7 +137,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/14 00:44:30 $ - $Revision: 1.54 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/14 01:02:26 $ - $Revision: 1.55 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -909,12 +909,21 @@ to ESS-elsewhere to allow other languages than S to be used
 interactively.
 
 I have been using ESS for SAS remote BATCH for years, ever since you
-and started working on this together.  We initially defined
+and I started working on this together.  We initially defined
 ess-sas-submit-method to encapsulate the location of the sas process.
 Except for a few lines of elisp to get the connection started, the user
 behavior has been identical whether the SAS process is on the same or
 different machine.  Since we are not interactively talking to the SAS
 process in an inferior-ESS buffer I don't see this as ESS-elsewhere.
+
+Rodney: Remote submissions of SAS batch jobs never worked.  I only got
+it to work a couple of weeks ago.  The problem was with the cd command.
+You need to ignore the beginning and end of the expanded buffer name
+that are the ange-ftp/EFS/tramp stubs which tell emacs what the remote
+username and hostname are.  I find the batch usage of ESS-elsewhere
+entirely consistent with the interactive behavior.  OTOH, I don't find 
+the terminology particularly eluminating.  I think ESS-remote or 
+ESS-net would be more meaningful. 
 \end{Comment}
  
 \paragraph{BUGS Batch.}
