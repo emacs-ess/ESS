@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.6 1999/03/04 19:53:28 rossini Exp $
+@comment $Id: ess.texi,v 5.7 1999/03/05 18:32:25 rossini Exp $
 
 @synindex pg vr
 
@@ -38,22 +38,23 @@ Statistics, University of South Carolina, Columbia, SC, 29208, USA.
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.x (Documentation $Revision: 5.6 $ $Date: 1999/03/04 19:53:28 $)
+@subtitle version 5.1.x (Documentation $Revision: 5.7 $ $Date: 1999/03/05 18:32:25 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
-@author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter and David Smith)
+@author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
+@author                and David Smith)
 @ifhtml
 <P><HR></P>
 @end ifhtml
 @sp 2
 @author A programming and inferior mode package for (X)Emacs
 @author intended for interacting with statistical software packages
-@author (primarily S(plus), R, XLisp-Stat, and SAS), for data analysis
-@author and statistical software development
+@author (primarily S(plus), R, XLisp-Stat, SAS, and Stata), for data 
+@author analysis and statistical software development
 @sp 5
 @center Current Documentation by A.J. Rossini
-@center (@email{rossini@@stat.sc.edu})
-@center Department of Statistics
-@center University of South Carolina, USA.
+@center (@email{rossini@@biostat.washington.edu})
+@center Department of Biostatistics
+@center University of Washington, USA.
 @sp 2
 @center Original Documentation by David Smith
 @center (@email{D.M.Smith@@lancaster.ac.uk})
@@ -61,8 +62,8 @@ Statistics, University of South Carolina, Columbia, SC, 29208, USA.
 @center Lancaster University, UK
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1992, 1993, 1994, 1995 David M. Smith
-Copyright @copyright{} 1996, 1997, 1998 A.J. Rossini.
+Copyright @copyright{} 1992--1995 David M. Smith
+Copyright @copyright{} 1996--1999 A.J. Rossini.
 @sp 2
 
 Permission is granted to make and distribute verbatim copies of this
@@ -77,12 +78,12 @@ permission notice identical to this one.
 @end titlepage
 
 @ifinfo
-@node Top, Introduction, (dir), (dir)
+@node Top, General Information, (dir), (dir)
 @top ESS: Emacs Speaks Statistics
 
 ESS version 5.1.x
 
-        (Documentation $Revision: 5.6 $ $Date: 1999/03/04 19:53:28 $).
+        (Documentation $Revision: 5.7 $ $Date: 1999/03/05 18:32:25 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
@@ -97,8 +98,8 @@ development.
 @end ifinfo
 
 @menu
-* Introduction::                Overview of features provided by this package
 * General Information::         
+* Introduction::                Overview of features provided by this package
 * Starting Up::                 Starting the @b{ESS} process
 * Entering commands::           Interacting with the process buffer
 * Editing::                     How to create or edit @b{S} objects or functions
@@ -115,14 +116,6 @@ development.
 
 @detailmenu --- The Detailed Node Listing ---
 
-Introduction to @b{ESS}
-
-* Features::                    Why should I use ESS?
-* New features::                
-* Credits::                     Authors of and contributors to ESS
-* Latest version::              Getting the latest version of ESS
-* Manual::                      How to read this manual
-
 General Information: README
 
 * License::                     
@@ -136,6 +129,14 @@ General Information: README
 * Reporting Bugs::              
 * Mailing Lists::               
 * Authors::                     
+
+Introduction to @b{ESS}
+
+* Features::                    Why should I use ESS?
+* New features::                
+* Credits::                     Authors of and contributors to ESS
+* Latest version::              Getting the latest version of ESS
+* Manual::                      How to read this manual
 
 Starting the @b{ESS} process
 
@@ -208,7 +209,141 @@ Variables for customization
 @end detailmenu
 @end menu
 
-@node Introduction, General Information, Top, Top
+@node General Information, Introduction, Top, Top
+@comment  node-name,  next,  previous,  up
+@chapter General Information: README
+@cindex README
+
+($Revision: 5.7 $, for ESS 5.1.x)
+
+This is the README file for the distribution of ESS version 5.1.3, the
+alpha/beta series we are using on the way to producing 5.2 (the next
+stable distribution).  ESS is an Emacs-Lisp interface for interactive
+statistical programming and data analysis.  Languages supported include:
+S dialects (S 3/4, S-PLUS 3.x, and R), LispStat dialects (XLispStat,
+ViSta), and SAS.  Stata and SPSS dialect (SPSS, PSPP) support is being
+examined for possible future implementation (a preliminary Stata mode is
+distributed).
+
+ESS grew out of the desire for bug fixes and extensions to S-mode-4.8.
+In particular, XEmacs support as well as extensions to incorporate R
+were desired.  In addition, with new modes being developed for R,
+Stata, and SAS, it was felt that providing for a unifying framework
+would eliminate differences in the user interface, as well as to
+provide for faster development of production tools and statistical
+analysis.  5.0 has, for its guts, the basic framework from S-mode.
+However, it has been cleaned, streamlined, brought closer to
+conformance as a standard GNU Emacs package, and redesigned for
+modularity and reuse.
+
+The current development team is led by A.J. (Tony) Rossini
+(@email{rossini@@biostat.washington.edu}), who did the initial port to
+XEmacs and has been the primary coder.  Martin Maechler
+(@email{maechler@@stat.math.ethz.ch}) and Kurt Hornik
+(@email{hornik@@ci.tuwien.ac.at}) have assisted with S-PLUS, S4, R, and
+XLispStat sub-modes, and Richard M. Heiberger
+(@email{rmh@@fisher.stat.temple.edu}) has done much of the work for
+implementing the SAS sub-mode, as well as assisted with S-PLUS (under MS
+Windows and remote access) and S4 development.  Douglas Bates
+(@email{bates@@stat.wisc.edu}) contributed the initial S4 mode, as well
+as provided disk space, ftp and http access to the source for
+development purposes.
+
+We are grateful to David M. Smith, the previous developer (for S-mode
+3.x and 4.x), as well as to the initial developers of S-mode, Doug
+Bates, Ed Kademan and Frank Ritter.
+
+In addition, some of the code has been and will be borrowed from Tom
+Cook (from his excellent SAS mode) and Thomas Lumley (preliminary
+Stata mode), gratefully (from us) and with permission (from them).
+
+The name is @b{ESS}.  Not ESS-mode.
+
+@menu
+* License::                     
+* New Features::                
+* Current Features::            
+* Stability::                   
+* Requirements::                
+* Latest Version::              
+* Installation (from tar file)::  
+* Installation (from anonymous CVS)::  
+* Reporting Bugs::              
+* Mailing Lists::               
+* Authors::                     
+@end menu
+
+@node License, New Features, General Information, General Information
+@comment  node-name,  next,  previous,  up
+@section License
+
+@include license.texi
+
+@node New Features, Current Features, License, General Information
+@comment  node-name,  next,  previous,  up
+@section New Features
+
+@include newfeat.texi
+
+@node Current Features, Stability, New Features, General Information
+@comment  node-name,  next,  previous,  up
+@section Current Features
+
+@include currfeat.texi
+
+@node Stability, Requirements, Current Features, General Information
+@comment  node-name,  next,  previous,  up
+@section Stability
+
+Versions 5.1.x are meant as a beta-level releases.  While some bugs
+are fixed from 5.0, others have been introduced, especially with
+regards to new features.  See the file Doc/TODO for details.  Bug
+reports are solicited; see the BUGS section below.  Patches or
+suggested coding fixes with bug reports are much appreciated!
+
+@node Requirements, Latest Version, Stability, General Information
+@comment  node-name,  next,  previous,  up
+@section Requirements
+
+@include requires.texi
+
+@node Latest Version, Installation (from tar file), Requirements, General Information
+@comment  node-name,  next,  previous,  up
+@section Getting the Latest Version 
+
+@include getting.texi
+
+@node Installation (from tar file), Installation (from anonymous CVS), Latest Version, General Information
+@comment  node-name,  next,  previous,  up
+@section Installation (from tar file)
+
+@include inst_tar.texi
+
+@node Installation (from anonymous CVS), Reporting Bugs, Installation (from tar file), General Information
+@comment  node-name,  next,  previous,  up
+@section Installation (from anonymous CVS)
+
+@include inst_cvs.texi
+
+@node Reporting Bugs, Mailing Lists, Installation (from anonymous CVS), General Information
+@comment  node-name,  next,  previous,  up
+@section Reporting Bugs
+
+@include bugrept.texi
+
+@node Mailing Lists, Authors, Reporting Bugs, General Information
+@comment  node-name,  next,  previous,  up
+@section Mailing Lists
+
+@include mailing.texi
+
+@node Authors,  , Mailing Lists, General Information
+@comment  node-name,  next,  previous,  up
+@section Authors
+
+@include authors.texi
+
+@node Introduction, Starting Up, General Information, Top
 @comment  node-name,  next,  previous,  up
 @chapter Introduction to @b{ESS}
 @cindex introduction
@@ -562,445 +697,7 @@ buffer) is quite useful.  However the best source of information is, as
 always, experience --- try it out!
 
 
-@node General Information, Starting Up, Introduction, Top
-@comment  node-name,  next,  previous,  up
-@chapter General Information: README
-@cindex README
-
-($Revision: 5.6 $)
-
-Emacs Speaks Statistics (ESS), version 5.1.2
---------------------------------------------
-
-This is the README file for the distribution of ESS version 5.1.2, the
-alpha/beta series we are using on the way to producing 5.2 (the next
-stable distribution).  ESS is an Emacs-Lisp interface for interactive
-statistical programming and data analysis.  Languages supported
-include: S dialects (S 3/4, S-PLUS 3.x, and R), LispStat dialects
-(XLispStat, ViSta), and SAS.  Stata and SPSS dialect (SPSS, PSPP)
-support is being examined for possible future implementation (a
-preliminary Stata mode is distributed).
-
-ESS grew out of the desire for bug fixes and extensions to S-mode-4.8.
-In particular, XEmacs support as well as extensions to incorporate R
-were desired.  In addition, with new modes being developed for R,
-Stata, and SAS, it was felt that providing for a unifying framework
-would eliminate differences in the user interface, as well as to
-provide for faster development of production tools and statistical
-analysis.  5.0 has, for its guts, the basic framework from S-mode.
-However, it has been cleaned, streamlined, brought closer to
-conformance as a standard GNU Emacs package, and redesigned for
-modularity and reuse.
-
-The current development team is led by A.J. (Tony) Rossini
-(@email{rossini@@biostat.washington.edu}), who did the initial port to
-XEmacs and has been the primary coder.  Martin Maechler
-(@email{maechler@@stat.math.ethz.ch}) and Kurt Hornik
-(@email{hornik@@ci.tuwien.ac.at}) have assisted with S-PLUS, S4, R, and
-XLispStat sub-modes, and Richard M. Heiberger
-(@email{rmh@@fisher.stat.temple.edu}) has done much of the work for
-implementing the SAS sub-mode, as well as assisted with S-PLUS (under MS
-Windows and remote access) and S4 development.  Douglas Bates
-(@email{bates@@stat.wisc.edu}) contributed the initial S4 mode, as well
-as provided disk space, ftp and http access to the source for
-development purposes.
-
-We are grateful to David M. Smith, the previous developer (for S-mode
-3.x and 4.x), as well as to the initial developers of S-mode, Doug
-Bates, Ed Kademan and Frank Ritter.
-
-In addition, some of the code has been and will be borrowed from Tom
-Cook (from his excellent SAS mode) and Thomas Lumley (preliminary
-Stata mode), gratefully (from us) and with permission (from them).
-
-The name is @b{ESS}.  Not ESS-mode.
-
-@menu
-* License::                     
-* New Features::                
-* Current Features::            
-* Stability::                   
-* Requirements::                
-* Latest Version::              
-* Installation (from tar file)::  
-* Installation (from anonymous CVS)::  
-* Reporting Bugs::              
-* Mailing Lists::               
-* Authors::                     
-@end menu
-
-@node License, New Features, General Information, General Information
-@comment  node-name,  next,  previous,  up
-@section License
-
-0. License
-----------
-
-ESS is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free
-Software Foundation; either version 2, or (at your option) any later
-version.
-
-ESS is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-in the file COPYING in the same directory as this file for more
-details.
-
-@node New Features, Current Features, License, General Information
-@comment  node-name,  next,  previous,  up
-@section New Features
-
-0.5. NEW FEATURES IN THIS RELEASE!
-----------------------------------
-
-Beginning with ESS 5.1.2 we are able to use inferior iESS mode to
-communicate directly with a running S-Plus 4.x process using the
-Microsoft DDE protocol.  We use the familiar (from Unix ESS) C-c C-n
-and related key sequences to send lines from the S-mode file to the
-inferior S process.  We continue to edit S input files in ESS[S] mode
-and transcripts of previous S sessions in ESS Transcript mode.  All
-three modes know the S language, syntax, and indentation patterns and
-provide the syntactic highlighting that eases the programming tasks.
-
-For Microsoft platforms, the version of Emacs that this has been
-tested with is NTEmacs 20.2 and 20.3.  More information about NTEmacs
-can be retrieved from:
-
-@itemize @bullet
-@item
-@ifhtml
-  <a href="http://www.cs.washington.edu/homes/voelker/ntemacs.html">
-@end ifhtml
-  @code{http://www.cs.washington.edu/homes/voelker/ntemacs.html}
-@ifhtml
-  </a>
-@end ifhtml
-@end itemize
-
-including information on retrieval and installation.  This has not yet
-been tested with XEmacs for Microsoft Windows 95/98/NT.
-
-@node Current Features, Stability, New Features, General Information
-@comment  node-name,  next,  previous,  up
-@section Current Features
-
-1. CURRENT FEATURES
--------------------
-
-Languages Supported:
-
-	S dialects (S 3/4, S-PLUS 3.x/4.x/5.x, and R)
-	LispStat dialects (XLispStat, ViSta)
-	SAS
-	Stata (under development)
-	SPSS dialects (SPSS, Fiasco (GNU project)) (under development)
-	SCA (under development)
-
-Editing source code (S, LispStat, SAS)
-
-        Syntactic indentation and highlighting of source code
-        Partial evaluations of code
-        Loading and error-checking of code
-        Source code revision maintenance
-
-Interacting with the process (S, LispStat, SAS)
-
-        Command-line editing
-	Searchable Command history
-        Command-line completion of S object names and file names
-        Quick access to object lists and search lists
-        Transcript recording
-        Interface to the help system
-
-Transcript manipulation (S3, S+3, S4, R, XLispStat)
-
-        Recording and saving transcript files
-        Manipulating and editing saved transcripts
-        Re-evaluating commands from transcript files
-
-Help File Editing (R)
-
-        Syntactic indentation and highlighting of source code.
-        Sending Examples to running ESS process.
-	Previewing
-
-See the accompanying manual ess.texi for details of features of ESS.
-See the file Doc/NEWS for changes in recent versions.
-
-@node Stability, Requirements, Current Features, General Information
-@comment  node-name,  next,  previous,  up
-@section Stability
-
-2. STABILITY
-------------
-
-Versions 5.1.x are meant as a beta-level releases.  While some bugs
-are fixed from 5.0, others have been introduced, especially with
-regards to new features.  See the file Doc/TODO for details.  Bug
-reports are solicited; see the BUGS section below.  Patches or
-suggested coding fixes with bug reports are much appreciated!
-
-@node Requirements, Latest Version, Stability, General Information
-@comment  node-name,  next,  previous,  up
-@section Requirements
-
-3. REQUIREMENTS
----------------
-
-ESS version 5.1.3 requires Emacs version 19.29 or later, or version
-XEmacs 19.14 or later.  ESS is supposed to work with any version of S,
-S-PLUS, R, SAS, or XLispStat.
-
-It has been most thoroughly tested with:
-
-	S-PLUS versions 3.3, 3.4, 4.5, 5.0; R versions >=0.49;
-	XLispStat versions >=3.50; S4; and SAS;
-	
-	on the following systems:
-	   SunOS (all)
-	   Solaris (all)
-	   SGI (all)
-	   Linux (S-PLUS 5.0, R, XLispStat, S4)
-	   Microsoft Windows 95/98/NT (SPLUS 4.5)
-
-	Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.4, XEmacs 21.0
-
-	Emacs 19.28 with SAS (with additional modifications)
-
-	NTEmacs 20.2.1 with S-PLUS 4.5.
-
-It may need some work with other configurations.  We include
-configuration suggestions for emacs 19.28 in Doc/README-19.28.
-These are the changes we made in order to use ESS with SAS on a Digital
-Alpha running Emacs 19.28.
-
-Work for porting to Microsoft-developed operating systems is
-continuing, especially with Splus 4.x and NT Emacs.  Other possible
-connections include XLispStat (under the Splus DDE interface), R, SAS,
-SPSS, and Stata.  In addition, XEmacs support (for native NT and
-Cygwin versions) needs to be evaluated.
-
-@node Latest Version, Installation (from tar file), Requirements, General Information
-@comment  node-name,  next,  previous,  up
-@section Latest Version 
-
-4. GETTING THE LATEST VERSION
------------------------------
-
-The latest versions of ESS are always available by WWW from:
-
-	@code{http://franz.stat.wisc.edu/pub/ESS/}
-        @code{ftp://franz.stat.wisc.edu/pub/ESS/}
-
-The HTML version of the documentation can be found at:
-
-        @code{http://stat.ethz.ch/ESS/}
-
-The latest (no more than 24 hours behind the developers) version of
-ESS can also be retrieved using anonymous CVS.  Details on this are
-forthcoming.
-
-@node Installation (from tar file), Installation (from anonymous CVS), Latest Version, General Information
-@comment  node-name,  next,  previous,  up
-@section Installation (from tar file)
-
-5. INSTALLATION  (from tar file)
----------------------------
-
-* cd to a directory where you keep emacs lisp files, or create a new
-  directory to hold the distribution.  This directory will be referred
-  to below as "the ESS-5.1.2 distribution directory".  It will contain,
-  at the end, the tar file ESS-5.1.2.tar.gz, and a directory for
-  the ESS source, which will be termed "the ESS-5.1.2 directory".  Note
-  that the .elc files may be installed elsewhere (as specified in the
-  Makefile) if desired.
-
-* Retrieve the compressed tar file from one of the FTP or WWW archive
-  sites via FTP (or HTTP).
-
-* Copy ESS-5.1.2.tar.gz to the location where you want the ESS-5.1.2
-  directory, and cd there.  Extract the files from the distribution,
-  which will unpack into a subdirectory, ESS-5.1.2.
-
-	gunzip ESS-5.1.2.tar.gz
-	tar vxf ESS-5.1.2.tar
-
-	(or: gunzip < ESS-5.1.2.tar.gz | tar vxf - ).
-	(or using GNU tar:  tar zvxf ESS-5.1.2.tar.gz).
-
-  The tar command will extract files into the current directory.
-
-  Do not create ESS-5.1.2 yourself, or you will get an extra level of
-  depth to your directory structure.
-
-* Edit the file ess-site.el as explained in the comments section of
-  that file.  Installations that are using ESS only for S-plus 3.x
-  will probably not need to make any changes.  Installations that also
-  have one or more of (S4 R SAS XLispStat Stata) will need to uncomment
-  corresponding lines in ess-site.el.
-
-* READ THIS ITEM THOROUGHLY BEFORE STARTING:
-
-  In the ESS-5.1.2 directory, edit the file Makefile (only if you want
-  to place the executables in other locations; see LISPDIR and
-  INFODIR) and then type:
-
-	make
-	make install
-
-  This will install the info files (and the lisp files, if they
-  are to go in another directory).  Don't forget to edit the file
-  `dir' in the info directory specified by INFODIR in the Makefile.
-  See the sample `dir' file for an example of the line to add.
-
-  If you are using XEmacs, you might do:
-
-	make EMACS=xemacs
-	make EMACS=xemacs install
-
-  instead of editing the Makefile.
-
-  An alternative, if you are running XEmacs and have access to the
-  XEmacs system directories, would be to place the directory in the
-  site-lisp directory, and simply type "make"  (and copy the
-  documentation as appropriate).
-
-  For Emacs, you would still have to move the files into the top level
-  site-lisp directory.
-
-* Add the line
-
-	(load "/PATH/ess-site")
-
-  to your .emacs file (or default.el or site-init.el, for a site-wide
-  installation).  Replace `/PATH' above with the value of
-  ess-lisp-directory as defined in ess-site.el.
-
-  Alternatively, if ess-site.el is in your current Lisp path, you can
-  do:
-
-	(require 'ess-site)
-
-  to configure Emacs for ESS.
-
-* (OPTIONAL) If you are running S-PLUS or R, you might consider
-  installing the database files.  From within (X)Emacs, "C-x d" to the
-  directory containing ESS.  Now:
-
-       M-x S+3
-  (get running.  once you have reached the SPLUS 3.x prompt, do:)
-       M-x ess-create-object-name-db
-  (this will create the file: ess-s+3-namedb.el; if it isn't in the
-   ESS directory, move it there).
-
-  Then, completions will be autoloaded and will not be regenerated for
-  every session.
-
-  For R:
-      M-x R
-  (get running.  once you have reached the R prompt, do:)
-      M-x ess-create-object-name-db
-  (this will create the file: ess-r-namedb.el; if it isn't in the
-   ESS directory, move it there).
-
-
-* For more information on using ESS in your daily work, see the files
-  README.S, README.SAS, and README.XLispStat.
-
-
-  For the impatient, the quick version of usage follows:
-
-* To edit statistical programs, load the files with the requiste
-  extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and ".lsp"
-  for XLispStat).
-
-* To run statistical processes under (X)Emacs:
-
-  Run S-PLUS 3.x with:
-
-	M-x S+3
-
-  (or M-x S  using backwards compatibility).  You will then be asked
-  for a pathname ("S starting data directory?"), from which to start
-  the process.
-
-  If you wish to run R, you can start it with:
-
-	M-x R
-
-  XLispStat can be run with
-
-	M-x XLS
-
-  SAS can be run with:
-
-	M-x SAS
-
-* That's it!
-
-@node Installation (from anonymous CVS), Reporting Bugs, Installation (from tar file), General Information
-@comment  node-name,  next,  previous,  up
-@section Installation (from anonymous CVS)
-
-5.1 Installation (using anonymous-CVS)
---------------------------------
-
-To be added.
-
-@node Reporting Bugs, Mailing Lists, Installation (from anonymous CVS), General Information
-@comment  node-name,  next,  previous,  up
-@section Reporting Bugs
-
-6. BUGS
--------
-
-Please send bug reports, suggestions etc. to
-
-	@email{ess-bugs@@stat.math.ethz.ch}
-
-The easiest way to do this is within Emacs by typing
-
-	M-x ess-submit-bug-report
-
-This also gives the maintainers valuable information about your
-installation which may help us to identify or even fix the bug.
-
-@node Mailing Lists, Authors, Reporting Bugs, General Information
-@comment  node-name,  next,  previous,  up
-@section Mailing Lists
-
-7. THE ESS MAILING LIST
---------------------------
-
-There is a mailing list for discussions and announcements relating to
-ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
-"help") in the body to @email{ess-help-request@@stat.math.ethz.ch};
-contributions to the list may be mailed to
-@email{ess-help@@stat.math.ethz.ch}.  Rest assured, this is a fairly
-low-volume mailing list.
-
-The purposes of the mailing list include
-
-- helping users of ESS to get along with it.
-- discussing aspects of using ESS for GNU Emacs and XEmacs.
-- suggestions for improvements.
-- announcements of new [beta] releases of ESS.
-- posting small patches to ESS.
-
-@node Authors,  , Mailing Lists, General Information
-@comment  node-name,  next,  previous,  up
-@section Authors
-
-----
-Richard M. Heiberger <rmh@@fisher.stat.temple.edu>
-Kurt Hornik <hornik@@ci.tuwien.ac.at>
-Martin Maechler <maechler@@stat.math.ethz.ch>
-A.J. (Tony) Rossini <rossini@@biostat.washington.edu>
-
-
-
-@node Starting Up, Entering commands, General Information, Top
+@node Starting Up, Entering commands, Introduction, Top
 @comment  node-name,  next,  previous,  up
 @chapter Starting the @b{ESS} process
 @cindex starting ESS
