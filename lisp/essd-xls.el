@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/02 16:21:10 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essd-xls.el,v 1.8 1997/07/02 16:21:10 rossini Exp $
+;; Modified: $Date: 1997/07/03 13:36:16 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essd-xls.el,v 1.9 1997/07/03 13:36:16 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.9  1997/07/03 13:36:16  rossini
+;;: added inferior-ess autoload.
+;;:
 ;;: Revision 1.8  1997/07/02 16:21:10  rossini
 ;;: removed hooks.
 ;;:
@@ -42,6 +45,10 @@
 ;;: finally setup.
 ;;:
 ;;;
+
+;;; Autoloads:
+
+(autoload 'inferior-ess "ess-inf" "Run an ESS process")
 
 ;;; Code:
 
