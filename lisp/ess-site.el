@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2002/06/19 21:00:20 $
-;; Version: $Revision: 5.90 $
-;; RCS: $Id: ess-site.el,v 5.90 2002/06/19 21:00:20 rmh Exp $
+;; Modified: $Date: 2002/08/22 08:36:54 $
+;; Version: $Revision: 5.91 $
+;; RCS: $Id: ess-site.el,v 5.91 2002/08/22 08:36:54 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -520,7 +520,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; (3.4) ess-ask-for-ess-directory
 ;;; If t, will ask for the directory to use.  If nil, assumes the
 ;;; default (usually, the users home directory...).
-(setq ess-ask-for-ess-directory t)
+;;now rather in ./ess-cust.el : (setq ess-ask-for-ess-directory t)
 
 ;;; (3.5) ess-directory default	 (correlated with above)
 ;;; The default location for running the subprocess is configurable.
