@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2002/06/24 13:24:12 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: essdsp6w.el,v 5.16 2002/06/24 13:24:12 maechler Exp $
+;; Modified: $Date: 2003/09/16 04:54:20 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: essdsp6w.el,v 5.17 2003/09/16 04:54:20 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,6 +47,18 @@
 (defvar S+6-dialect-name "S+6"
   "Name of 'dialect' for S-PLUS 6.x.
 Easily changeable in a user's `.emacs'.")
+
+(defvar inferior-S+6-start-args " "
+  "Default is empty.  Can be used for license manager information, for example
+`(setq inferior-S+6-start-args \" S_ELMHOST=\\\\\\\\@123.456.789.012  ELMTIMEOUT=60 \")'."
+;; (setq inferior-S+6-start-args " S_ELMHOST=\\\\@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
+)
+
+(defvar inferior-Sqpe-start-args " " 
+  "Default is empty.  Can be used for license manager information, for example
+`(setq inferior-Sqpe-start-args \" S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 \")'."
+;; (setq inferior-Sqpe-start-args " S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
+)
 
 (defvar inferior-S+6-multipleinstances "/MULTIPLEINSTANCES"
   "Default \"/MULTIPLEINSTANCES\" opens up a new instance of S+6 in a
@@ -86,6 +98,8 @@ connects it to the '(ddeESS [S+6])' window.")
     (inferior-ess-start-args       . (concat
 				      inferior-S+6-multipleinstances
 				      " "
+				      inferior-S+6-start-args
+				      " "
 				      inferior-S+6-print-command
 				      " S_PROJ="
 				      (directory-file-name default-directory))
@@ -96,6 +110,7 @@ connects it to the '(ddeESS [S+6])' window.")
     (inferior-ess-language-start . (eval inferior-S-language-start))
     )
  "Variables to customize for S+6")
+
 
 (defvar Sqpe+6-customize-alist
   '((ess-local-customize-alist     . 'Sqpe+6-customize-alist)
@@ -123,7 +138,11 @@ connects it to the '(ddeESS [S+6])' window.")
     (inferior-ess-secondary-prompt . "+ ?")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S+6")
-    (inferior-ess-start-args       . "ALWAYS_PROMPT=X") ;;workaround for bug in S-Plus 6 for Windows
+    (inferior-ess-start-args       . (concat
+				      "ALWAYS_PROMPT=X"  ;;workaround for bug in S-Plus 6 for Windows
+				      " "
+				      inferior-Sqpe-start-args ;; license manager for example
+				      ))
     (ess-STERM  . "iESS")
     (ess-editor . S-editor)
     (ess-pager  . S-pager)
