@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/01 16:37:53 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: ess-inf.el,v 1.21 1997/07/01 16:37:53 rossini Exp $
+;; Modified: $Date: 1997/07/01 17:23:45 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: ess-inf.el,v 1.22 1997/07/01 17:23:45 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.22  1997/07/01 17:23:45  rossini
+;; Broken.  Need to go home.
+;;
 ;; Revision 1.21  1997/07/01 16:37:53  rossini
 ;; let (done 0).
 ;;
@@ -335,10 +338,16 @@ when invoking S.
 		(ess-proc-name ntry)))))
 
   (setq ess-defdir (directory-file-name (or ess-directory default-directory)))
+
+  (message "(inf-ess), before (ess-multi call): inf-ess-procname= %s" 
+	   inferior-ess-procname)
+
   ;; If this process is running, switch to it
   (if (get-process inferior-ess-procname)
-      (ess-multi inferior-ess-procname (process-buffer
-					(get-process inferior-ess-procname)))
+      (let ((my-buff-name (process-buffer
+			  (get-process inferior-ess-procname))))
+	(message "debug first way")
+	(ess-multi inferior-ess-procname my-buff-name))
     ;; This is a new or terminated process.
     ;; If no arg, try to use current buffer
     (if (and (not n)
@@ -348,33 +357,39 @@ when invoking S.
 	  (setq default-directory
 		(if ess-ask-for-ess-directory (ess-get-directory ess-defdir)
 		  ess-directory))
+	  (message "debug second way")
 	  (ess-multi inferior-ess-procname (current-buffer)))
       ;; Not an S buffer
       (let ((buf-name-str (concat "*" inferior-ess-procname "*")))
 	(if (get-buffer buf-name-str)
-	    (ess-multi inferior-ess-procname (get-buffer buf-name-str))
+	    (progn
+	      (message "debug third way")
+	      (ess-multi inferior-ess-procname (get-buffer buf-name-str)))
 	  ;; Ask for transcript file and startdir
 	  ;; FIXME -- this should be in ess-get-transfile
 	  (run-hooks 'S-pre-run-hook);;rmh
-	  (let* ((startdir
-		  (if ess-ask-for-ess-directory (ess-get-directory ess-defdir)
-		    ess-directory))
-		 transfilename
-		 buf)
+	  (let* ((startdir (if ess-ask-for-ess-directory
+			       (ess-get-directory ess-defdir) 
+			     ess-directory))
+		 (transfilename nil)
+		 (buf nil)
+		 (procname inferior-ess-procname))
 	    (if ess-ask-about-transfile
 		(progn
-		    (setq transfilename
-			  (read-file-name "Use transcript file (default none):"
-					  startdir ""))
-		    (if (string= transfilename "")
-			(setq transfilename nil)
-		      (setq transfilename (expand-file-name transfilename)))))
-	      (setq buf
-		    (if transfilename (find-file-noselect transfilename)
-		      (get-buffer-create buf-name-str)))
-	      (set-buffer buf)
-	      (setq default-directory startdir)
-	      (ess-multi inferior-ess-procname buf))))))) ;)for let.
+		  (setq transfilename
+			(read-file-name "Use transcript file (default none):"
+					startdir ""))
+		  (if (string= transfilename "")
+		      (setq transfilename nil)
+		    (setq transfilename (expand-file-name transfilename)))))
+	    (setq buf (if transfilename (find-file-noselect transfilename)
+			(get-buffer-create buf-name-str)))
+	    (set-buffer buf)
+	    (setq inferior-ess-procname procname)
+	    (setq default-directory startdir)
+	    (message "debug fourth way %s" inferior-ess-procname)
+	    (message "debug fourth way %s" procname)
+	    (ess-multi inferior-ess-procname buf))))))) ;)for let.
 
 ;;; A note on multiple processes: the following variables
 ;;;     ess-local-process-name
@@ -389,20 +404,23 @@ when invoking S.
 ;;; be accessed with the function ess-get-process-variable
 
 (defun ess-multi (name &optional buffer)
-  "Start or switch to S process named NAME in the buffer BUFFER
+  "Start or switch to S process named NAME in the buffer BUFFER.
 BUFFER is only needed if process NAME is not running. BUFFER must exist.
 Default-directory is the S starting directory. BUFFER may be visiting a file."
+
 ;; Start or switch to inferior S process number N.
 ;; If process N is currently running, just switch to that buffer.
 ;; If process N is not running but has a buffer, switch to that buffer
 ;; and start a new process. If there is no S process N, create a buffer
 ;; called *SN* (N is a number) and start a process in it.
 ;; Takes the program name from the variable inferior-ess-program.
-;; The S program name is used to make a symbol name such as `inferior-ess-args'.
+;; The S program name is used to make a symbol name such as
+;; `inferior-ess-args'. 
 ;; If that symbol is a variable its value is used as a string of arguments
 ;; when invoking S. An S process becomes the \"current\" S process by
 ;; being created or when a command is sent to it by typing
 ;; \(Type \\[describe-mode] in the process buffer for a list of commands.)
+
   ;; (if (< n 1) (error "Argument to ess-multi must be 1 or greater"))
   (let* ((proc-name name)
 	 (proc (get-process proc-name)))
@@ -450,8 +468,7 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
 	(set-buffer
 	 (if switches
 	     (inferior-ess-make-comint buf-name-str proc-name switches)
-	   (inferior-ess-make-comint buf-name-str proc-name)
-	   ))
+	   (inferior-ess-make-comint buf-name-str proc-name)))
 	;; Set the process sentinel to save the history
 	(set-process-sentinel (get-process proc-name) 'ess-process-sentinel)
 	;; Add this process to ess-process-name-list, if need be
