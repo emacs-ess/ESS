@@ -2,13 +2,25 @@
 ;;; Thu 06 May 2004
 ;;; Stephen Eglen
 ;;; GPL.
-;; Modified: $Date: 2004/05/10 11:19:10 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: ess-toolbar.el,v 1.5 2004/05/10 11:19:10 stephen Exp $
+;; Modified: $Date: 2004/05/12 10:06:24 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: ess-toolbar.el,v 1.6 2004/05/12 10:06:24 stephen Exp $
 
 ;;; Notes.
 
+;;; This code is experimental, and runs best on Emacs 21 and XEmacs
+;;; 21.  It has been tested only on Linux machines.  All feedback
+;;; appreciated.
+;;; To use this code, place the following in .emacs after you have
+;;; loaded ess-site:
+;;;
+;;; (setq ess-use-toolbar t)
+;;; (if (fboundp 'tool-bar-mode) (tool-bar-mode t))	;Emacs 21.
+;;; (require 'ess-toolbar)
 
+;;; If you see a toolbar, but no icons, check out the value of
+;;; ess-icon-directory.
+ 
 ;;; Emacs vs XEmacs.
 
 ;; Of course, Emacs and XEmacs have different interfaces and handle
@@ -18,7 +30,9 @@
 ;; code should be regarded as proof of concept.
 
 ;; Also, I think the Mac OS X version of GNU Emacs does not yet have
-;; tool-bar support.
+;; tool-bar support.  This may be present in very new versions of CVS
+;; Emacs.  Will check...
+
 
 
 ;;; Creating pixmaps:
@@ -29,7 +43,6 @@
 ;; whereas I have set "c None" to indicate the background pixel; this line 
 ;; seems to work for both toolbars.
 ;;;". c None s backgroundToolBarColor",
-
 
 
 (defvar ess-use-toolbar (fboundp 'tool-bar-add-item)
@@ -49,7 +62,6 @@ Icons should be found in ESS/etc/icons/ directory.")
 
 (if (not (file-exists-p ess-icon-directory))
     (message "Check that you have set `ess-icon-directory'."))
-
 
 ;; Emacs has the ability to clear the cache.
 ;; (clear-image-cache)
