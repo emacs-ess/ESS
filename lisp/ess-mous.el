@@ -3,9 +3,9 @@
 ;; Copyright (C) 2001 Richard M. Heiberger <rmh@sbm.temple.edu>
 
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
+;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: 25 Mar 2001
-;; Modified: $Date: 2001/03/26 01:04:20 $
+;; Modified: $Date: 2001/05/23 22:10:19 $
 ;; Version: $Revision: 
 ;; RCS: $Id: ess-mous.el
 
@@ -39,25 +39,51 @@
 
 ;;*;; Requires
 (require 'mouseme)
-;;   (global-set-key [S-mouse-2] 'mouse-me)
-;;   (define-key ess-mode-map "\C-c\C-w" 'ess-mouse-me)
-
-;;; place this in a customize-alist, do it manually in each ESS buffer
-;;; while we are designing this function.
-(make-variable-buffer-local 'mouse-me-menu-commands)
-(setq mouse-me-menu-commands ess-S-mouse-me-menu-commands)
-;;(mouse-me-build-menu "ESS")  ;; this seems not to be needed.
 
 
-(defun ess-mouse-me ()
-  "Popup a menu of functions to run on selected string or region."
-  (interactive)
-  (ess-mouse-me-helper #'(lambda ()
-    (or (x-popup-menu (list '(0 0) 
-			    (get-buffer-window (get-buffer (buffer-name))))
-		      (funcall mouse-me-build-menu-function name))
-        (error "No command to run")))))
 
+
+;;; Instructions:
+
+;;From: Rich Heiberger <rmh@surfer.sbm.temple.edu>
+;;Subject: Re: ess-send and ess-send2... which is right?
+;;To: Rich Heiberger <rmh@surfer.sbm.temple.edu>, rossini@u.washington.edu
+;;Date: Wed, 23 May 2001 17:30:42 -0400 (EDT)
+
+;;as i recall, both are preliminary and the real version is the one that'
+;;is in the cvs tree as ess-mous.el.  I checked ess-mous a few days ago and
+;;it works as long as you individually and manually execute the lines
+;;(make-variable-buffer-local 'mouse-me-menu-commands)
+;;(setq mouse-me-menu-commands ess-S-mouse-me-menu-commands-alist)
+;;for each ess buffer.  That needs to be turned on permanently and globally
+;;(within all ESS buffers).  And the ess-mous needs to be required in ess-site.
+
+;;get back to me after you try it out.  I can respond in the next few days.
+
+;;rich
+
+(if (not ess-running-xemacs)
+    (defun ess-mouse-me ()
+      "Popup a menu of functions to run on selected string or region."
+      (interactive)
+      (ess-mouse-me-helper
+       #'(lambda ()
+	   (or (x-popup-menu (list '(0 0) 
+				   (get-buffer-window (get-buffer (buffer-name))))
+			     (funcall mouse-me-build-menu-function name))
+	       (error "No command to run")))))
+  (defun ess-mouse-me ()
+      "Popup a menu of functions to run on selected string or region."
+      (interactive)
+      (ess-mouse-me-helper
+       #'(lambda ()
+	   (or (x-popup-menu (list '(0 0) 
+				   (get-buffer-window (get-buffer (buffer-name))))
+			     (funcall mouse-me-build-menu-function name))
+	       (error "No command to run"))))))
+
+    
+  
 (defun ess-mouse-me-helper (func)
   "Determine the string to use to process EVENT and call FUNC to get cmd."
   (let (name sp sm mouse beg end cmd mmtype)
@@ -106,7 +132,7 @@
           (t
            (funcall cmd name)))))
 
-(defcustom ess-S-mouse-me-menu-commands
+(defcustom ess-S-mouse-me-menu-commands-alist
   '(("print"       . ess-mouse-me-print)
     ("summary"     . ess-mouse-me-summary)
     ("show"        . ess-mouse-me-show)
@@ -117,7 +143,7 @@
     ("Browser on"  . ess-mouse-me-browser-on)
     ("Browser off" . ess-mouse-me-browser-off))
     "*Command menu used by `mouse-me-build-menu'.
-A list of elements where each element is either a cons cell or a string.
+A alist of elements where each element is either a cons cell or a string.
 If a cons cell the car is a string to be displayed in the menu and the
 cdr is either a function to call passing a string to, or a list which evals
 to a function to call passing a string to.  If the element is a string
@@ -166,6 +192,24 @@ process after first concating the head and tail."
  ; Provide package
 
 (provide 'ess-mous)
+
+
+
+;;;;;;;; STARTUP STUFF ;;;;;;;;;;;;
+
+;;; place this in a customize-alist, do it manually in each ESS buffer
+;;; while we are designing this function.
+(make-variable-buffer-local 'mouse-me-menu-commands)
+(setq mouse-me-menu-commands ess-S-mouse-me-menu-commands-alist)
+;;(mouse-me-build-menu "ESS")  ;; this seems not to be needed.
+
+
+(if (not ess-running-xemacs)
+	 (global-set-key [S-mouse-2] 'mouse-me)
+  (global-set-key [(shift button2)] 'mouse-me))
+
+(define-key ess-mode-map "\C-c\C-w" 'ess-mouse-me)
+
 
  ; Local variables section
 
