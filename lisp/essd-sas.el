@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/27 15:05:26 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: essd-sas.el,v 1.19 1997/10/27 15:05:26 rossini Exp $
+;; Modified: $Date: 1997/10/27 15:22:16 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: essd-sas.el,v 1.20 1997/10/27 15:22:16 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -48,8 +48,6 @@
 
 (defun ess-SAS-pre-run-hook ()
   "Set up log and list files for interactive SAS."
-
-  ;(interactive)  ; shouldn't be interactively called, correct?
 
   (let* ((ess-shell-buffer-name-flag (get-buffer "*shell*"))
 	 ess-shell-buffer-name)
