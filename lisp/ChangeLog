@@ -1,3 +1,11 @@
+2004-05-22  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-inf.el (ess-eval-linewise): Try again to get the point at
+	the end of the S buffer after evaluation.  Previous attempt still
+	didn't work, but I forgot that I had set
+	comint-scroll-to-bottom-on-output.  This version should work even
+	with that comint var set to nil.
+
 2004-05-18  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-inf.el (ess-eval-linewise): If eob, remember to go to the
