@@ -17,7 +17,7 @@ ESS version
 
    5.2.0rc2
 
-   (Documentation $Revision: 1.23 $ $Date: 2004/04/21 23:37:12 $).
+   (Documentation $Revision: 1.24 $ $Date: 2004/04/22 04:50:18 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -511,7 +511,7 @@ called ESS version 5.
 
    * A.J. Rossini (mailto:rossini@u.washington.edu)
 
-   * Richard M. Heiberger (mailto:rmh@surfer.sbm.temple.edu)
+   * Richard M. Heiberger (mailto:rmh@temple.edu)
 
    * Kurt Hornik (mailto:hornik@ci.tuwien.ac.at)
 

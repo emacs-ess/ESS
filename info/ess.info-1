@@ -17,7 +17,7 @@ ESS: Emacs Speaks Statistics
 
    5.2.0beta3
 
-   (Documentation $Revision: 1.29 $ $Date: 2003/12/09 23:11:05 $).
+   (Documentation $Revision: 1.30 $ $Date: 2004/04/22 04:50:18 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -498,7 +498,7 @@ called ESS version 5.
 
    * A.J. Rossini (mailto:rossini@u.washington.edu)
 
-   * Richard M. Heiberger (mailto:rmh@surfer.sbm.temple.edu)
+   * Richard M. Heiberger (mailto:rmh@temple.edu)
 
    * Kurt Hornik (mailto:hornik@ci.tuwien.ac.at)
 

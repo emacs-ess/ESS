@@ -18,7 +18,7 @@ features in one package.
 and has been the primary coder.  Martin Maechler
 (<maechler@stat.math.ethz.ch>) and Kurt Hornik
 (<hornik@ci.tuwien.ac.at>) have assisted with S-PLUS, S4, R, and
-XLispStat.  Richard M. Heiberger (<rmh@surfer.sbm.temple.edu>) has
+XLispStat.  Richard M. Heiberger (<rmh@temple.edu>) has
 assisted with S-PLUS and S4 development for Windows.  Richard and
 Rodney A. Sparapani (<rsparapa@mcw.edu>) have done much of the work
 implementing interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS])
@@ -786,7 +786,7 @@ Authors
 
    * A.J. Rossini (mailto:rossini@u.washington.edu)
 
-   * Richard M. Heiberger (mailto:rmh@surfer.sbm.temple.edu)
+   * Richard M. Heiberger (mailto:rmh@temple.edu)
 
    * Kurt Hornik (mailto:hornik@ci.tuwien.ac.at)
 

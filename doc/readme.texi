@@ -3,7 +3,7 @@
 @setfilename readme.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: readme.texi,v 1.30 2003/10/22 14:36:58 rsparapa Exp $
+@comment $Id: readme.texi,v 1.31 2004/04/22 04:50:18 rmh Exp $
 
 @node General Information
 @comment  node-name,  next,  previous,  up
@@ -26,7 +26,7 @@ The current development team is led by A.J. (Tony) Rossini
 XEmacs and has been the primary coder.  Martin Maechler
 (@email{maechler@@stat.math.ethz.ch}) and Kurt Hornik
 (@email{hornik@@ci.tuwien.ac.at}) have assisted with S-PLUS, S4, R, and
-XLispStat.  Richard M. Heiberger (@email{rmh@@surfer.sbm.temple.edu}) has 
+XLispStat.  Richard M. Heiberger (@email{rmh@@temple.edu}) has 
 assisted with S-PLUS and S4 development for Windows.  Richard and 
 Rodney A. Sparapani (@email{rsparapa@@mcw.edu}) have done much of the work 
 implementing interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.  

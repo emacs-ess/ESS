@@ -5,7 +5,7 @@
 @c --------
 @item
 @c @uref{http://www.sbm.temple.edu/departments/statistics/,Richard M. Heiberger}
-@uref{mailto:rmh@@surfer.sbm.temple.edu, Richard M. Heiberger}
+@uref{mailto:rmh@@temple.edu, Richard M. Heiberger}
 @c --------
 @item
 @c @uref{http://www.ci.tuwien.ac.at/~hornik,Kurt Hornik}
