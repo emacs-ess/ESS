@@ -162,7 +162,7 @@ intelligent environment for statistical analysis}
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/26 23:21:39 $ - $Revision: 1.13 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/27 14:12:14 $ - $Revision: 1.14 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -188,24 +188,24 @@ intelligent environment for statistical analysis}
 
 \begin{abstract}
   Computer programming is an important component of statistics
-  research and data analysis, and is necessary to use sophisticated
-  statistical packages and to write custom scripts and software to
-  perform data analysis using modern statistical methods.  Emacs
-  Speaks Statistics (ESS) provides an intelligent and consistent
-  interface between the user and software.  ESS interfaces with SAS,
-  S-PLUS, R, and other statistics packages under the Unix, Microsoft
-  Windows, and Apple Mac operating systems.  ESS extends the Emacs
-  text editor and uses its many features to streamline the use and
-  creation of statistical software.  ESS understands the syntax for
-  numerous data analysis languages and provides consistent display and
-  editing features across packages.  ESS assists in the interactive or
-  batch execution by the statistics packages of statements written in
-  their languages.
+  research and data analysis, and is a necessary for using
+  sophisticated statistical packages and for writing custom scripts
+  and software to perform data analysis using modern statistical
+  methods.  Emacs Speaks Statistics (ESS) provides an intelligent and
+  consistent interface between the user and statistics software.  ESS
+  interfaces with SAS, S-PLUS, R, and other statistics packages under
+  the Unix, Microsoft Windows, and Apple Mac operating systems.  ESS
+  extends the Emacs text editor to streamline the use and creation of
+  statistical software.  ESS understands the syntax for numerous data
+  analysis languages, provides consistent display and editing
+  features across packages, and assists in the interactive or batch
+  execution by the statistics packages of statements written in their
+  languages.
   %% Some statistics packages can be run as a subprocess of Emacs,
   %% allowing the user to work directly from the editor and thereby
   %% retain a consistent and constant look-and-feel.
-  We discuss how ESS works to increase statistical programming
-  efficiency.
+  We describe in detail the features which ESS provides for increasing
+  statistical programming efficiency.
 \end{abstract}
 
 \noindent Keywords: Data Analysis, Programming,
@@ -285,56 +285,58 @@ to accommodate most statistical packages which provide either a
 interactive command-line prompt for inputing instructions, or process
 batch files for instructions.
 
-We start by discuss how ESS enhances a statistician's daily activities
-by presenting its features and showing how it facilitates statistical
-computing.  Next, we describing the Emacs text editor, the underlying
-platform on which ESS is built.  We conclude with a short history of
-the development of ESS and goals for the future.
+We start by discussing how ESS enhances a statistician's daily
+activities by presenting its features and showing how it facilitates
+statistical computing.  Next, we describing the Emacs text editor, the
+underlying platform on which ESS is built.  We conclude with a short
+history of the development of ESS and goals for the future.
 
 \section{ESS and Statistical Practice}
 \label{sec:ess-extends-emacs}
 
 Statistical programming is the writing of data analysis scripts or
 general computer programs for data analysis and processing.  Both
-forms will be referred to as programming (the activity) or code (the
-textual result) in the sequel.  These programs might be written in a
-general compiled computer language such as \Fortran\ or C.
-Specialized scripting languages such as S, R, \SAS, \Stata, or
-\XLispStat are also a popular option among statisticians; however,
-they do not have the same range of sophisticated programming tools
-such as integrated development environments (IDEs) for writing and
-debugging code.
+forms will be referred to as programs or code (the textual result) or
+programming (the activity) in the sequel.  These programs can be
+written in a general compiled computer language such as \Fortran\, C,
+C$++$, or Java. However, specialized scripting languages supporting
+common statistical procedures are a popular option among
+statisticians.  These include \Splus, R, \SAS, \Stata, or
+\XLispStat\,; however, they do not have available the same range of
+sophisticated programming tools for writing and debugging code.
 
-ESS extends the Emacs text editor to provide an IDE for statistical
-languages.  The result is an environment with features targeting the
-complementary goals of statistical programming and data analysis.  It
-offers a single interface for a variety of statistical computing tasks
-including interactive data analysis and statistical programming.  ESS
-is able to provide a functional and extensible interface which is
-uniform and consistent across multiple statistical packages.  This is
-done by adding shortcuts and features for accelerated editing of files
-as well as by interacting with the particular statistical packages to
-provide, for example, control of input/output, assistance with
-evaluation, and specialized parsing of help files.
+ESS extends the Emacs text editor to provide an integrated development
+environment (IDE) for statistical programming languages. In
+particular, ESS provides many features which enhance the construction
+of data analysis scripts and statistical programming.  The result is
+an environment with features targeting the complementary goals of
+statistical programming and data analysis.  It offers a single
+interface for a variety of statistical computing tasks including
+interactive data analysis and statistical programming.  ESS is able to
+provide a functional and extensible interface which is uniform and
+consistent across multiple statistical packages.  This is done by
+adding shortcuts and features for accelerated editing of files as well
+as by interacting with the particular statistical packages to provide,
+for example, control of input/output, assistance with evaluation, and
+specialized parsing and editing of help documentation files.
 
 %ESS supports the S family (S, \Splus, and R) interactively.  \SAS\ and
 %BUGS are also well supported for batch processing.  \Stata\ and
 %\XLispStat\ (including ARC and ViSta) are supported through
 %highlighting and process-interfacing.
 
-ESS provides many features which enhance the construction of data
-analysis scripts and statistical programming. Some do not require
-direct interaction with a statistics package; these are textual script
-editing features such as syntactic fontification and colorization of
-scripts, detection of balanced and unbalanced parens and braces
-through highlighting, code indentation for readability, commenting out
-regions, and indexing of files by function.  However, the more novel
-features, such as help file parsing and viewing, object and function
-name completion, evaluation of scripts, and interactive editing of
-data and objects, require some interaction with the target statistics
-package through either interaction or by batch processing.
+Some features do not require direct interaction with a statistics
+package; these are textual script editing features such as syntactic
+fontification and colorization of scripts, detection of balanced and
+unbalanced parens and braces through highlighting, code indentation
+for readability, commenting out regions, and indexing of files by
+function.  However, the more novel features, such as help file parsing
+and viewing, object and function name completion, evaluation of
+scripts, and interactive editing of data and objects, require some
+interaction with the target statistical package through either
+direct interaction or indirectly through batch processing.
 
-\subsection{Editing advantages}
+\subsection{Editing}
 \label{sec:ESS:features}
 
 \paragraph{Syntactic highlighting and indentation of source code.}
