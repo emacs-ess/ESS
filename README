@@ -87,8 +87,9 @@ below.  Fixes and patches with bug reports are generously accepted.
   may be installed elswehere (as specified in the Makefile) if
   desired.
 
-* Copy ESS-4.9.tar.gz to the ESS-4.9 directory, and cd there.  Extract
-  the files from the distribution: 
+* Copy ESS-4.9.tar.gz to the location where you want the ESS-4.9
+  directory, and cd there.  Extract the files from the distribution,
+  which will unpack into a subdirectory, ESS-4.9.
 
 	gunzip ESS-4.9.tar.gz
 	tar xvf ESS-4.9.tar
@@ -96,6 +97,9 @@ below.  Fixes and patches with bug reports are generously accepted.
 	(or using GNU tar:  tar zxvf ESS-4.9.tar.gz).
 
   The tar commmand will extract files into the current directory.
+
+  Do not create ESS-4.9 yourself, or you will get an extra level of
+  depth to your directory structure.
 
 * Edit the file ess-site.el as explained in the comments section of
   that file.
