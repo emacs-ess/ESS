@@ -1,3 +1,13 @@
+2002-01-11  Richard Heiberger <rmh@surfer.stat.temple.edu>
+
+	* ess-inf.el: remove .in.ESS
+	* essd-r.el: first draft of options("STERM")
+
+2002-01-10  Richard Heiberger <rmh@surfer.stat.temple.edu>
+
+	* ess-mous.el: S-mouse-3 gets information from S/R about the
+	highlighted phrase or about the word at the cursor location.
+
 2002-01-10  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-help.el (ess-help-bogus-buffer-p): now also works in R when

@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/01/04 14:56:07 $
-;; Version: $Revision: 5.31 $
-;; RCS: $Id: essd-r.el,v 5.31 2002/01/04 14:56:07 maechler Exp $
+;; Modified: $Date: 2002/01/11 07:43:17 $
+;; Version: $Revision: 5.32 $
+;; RCS: $Id: essd-r.el,v 5.32 2002/01/11 07:43:17 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,22 @@
 
 ;;; Code:
 
+;;; this applies in principle to the 15 files essd[p-]*.el
+;;; several of them have more than one *-customize-alist
+;;; I am currently adding this only to the S language files S S-Plus R,
+;;; and specifically starting with a test of essd-r.el
+
+(defcustom S-editor (if ess-microsoft-p "gnuclient.exe" "emacslient")
+  "*Editor called by S process with 'edit()' command."
+:group 'ess
+:type "string")
+
+(defcustom S-pager  (if ess-microsoft-p "gnuclientw.exe" "emacsclient")
+  "*Pager called by S process with 'page()' command."
+:group 'ess
+:type "string")
+
+
 (defvar R-customize-alist
   '((ess-local-customize-alist     . 'R-customize-alist)
     (ess-language                  . "S")
@@ -74,7 +90,19 @@
     (inferior-ess-secondary-prompt . "+ ?")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil)            ;; "~/.ess-R"
-    (inferior-ess-start-args       . ""))
+    (inferior-ess-start-args       . "")
+    (ess-STERM  . "iESS")
+    (ess-editor . S-editor)
+    (ess-pager  . S-pager)
+    (inferior-ess-language-start .
+				 (concat "options("
+					 "STERM='"  ess-STERM  "'"
+					 (if ess-editor 
+					     (concat ", editor='" ess-editor "'"))
+					 (if ess-pager 
+					     (concat ", pager='"  ess-pager  "'"))
+					 ")"))
+)
   "Variables to customize for R")
 
 ;;; AJR: Need to condition on this...!
@@ -104,9 +132,7 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
     "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
     ess-dialect (current-buffer) start-args current-prefix-arg))
   (let* ((r-always-arg
-	  (if (or (equal window-system 'w32)
-		  (equal window-system 'win32)
-		  (equal window-system 'mswindows))
+	  (if ess-microsoft-p
 	      "--ess "
 	    "--no-readline "))
 	 (r-start-args
@@ -118,9 +144,11 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
 			       "'] ? "))
 		    nil)))
 	 default-process-coding-system)
-    (if (or (equal window-system 'w32) (equal window-system 'win32))
+    (if ess-microsoft-p
 	(setq default-process-coding-system '(undecided-dos . undecided-dos)))
-    (inferior-ess r-start-args)));; (R)
+    (inferior-ess r-start-args)
+    (if inferior-ess-language-start
+	(ess-eval-linewise inferior-ess-language-start))));; (R)
 
 
 (autoload 'ess-transcript-mode "ess-trns"
