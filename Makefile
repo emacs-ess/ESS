@@ -1,19 +1,37 @@
-## $Id: Makefile,v 5.43 2001/08/02 18:07:57 ess Exp $
+## $Id: Makefile,v 5.44 2001/08/02 21:47:41 ess Exp $
 ## Top Level Makefile
 
 include ./Makeconf
 ##      ========== {edit that one if any !}
 
-## Finally using the "ess/VERSION" file -- for everything.
-## These only work with GNU make, but are only used by ESS maintainers
+## Set ESSVERSION to the contents of VERSION
+## This is only set correctly by GNU make, but you will only 
+## need this if you are performing an XEmacs installation or
+## you are an ESS developer.
+## If you don't have GNU make, create an environment variable
+## ESSVERSION set to the contents of VERSION and use "make -e"
+
 ESSVERSION=$(shell cat VERSION)
 ESSVERSIONDIR=ess-$(ESSVERSION)
 ## The following MUST NOT contain "."'s.
 ESSVERSIONTAG=ess-$(shell sed 's/\./_/g' VERSION)
 
-## The following 2 variables facilitate imitation of an XEmacs distribution
-## You may need to over-ride them by environment variables with the -e option
-## If you are not using GNU make, then you may have to over-ride ESSVERSION too
+## XEMACSDIR and ESSDIR facilitate imitation of an XEmacs distribution
+## If you don't have XEmacs or ESS installed in the usual places, then
+## you will need to set them by "make -e" with environment variables 
+## If you are not using GNU make, then see remarks above.
+
+## make    xemacs-links	# w/  GNU make, XEmacs/ESS in the usual places
+## 
+
+## make -e xemacs-links	# w/  GNU make, XEmacs/ESS not in the usual places
+##                      # environment variables XEMACSDIR/ESSDIR set
+
+## make -e xemacs-links	# w/o GNU make, XEmacs/ESS in the usual places
+##                      # environment variable ESSVERSION set
+
+## make -e xemacs-links	# w/o GNU make, XEmacs/ESS not in the usual places
+##                      # environment variables ESSVERSION/XEMACSDIR/ESSDIR set
 
 ## XEMACSDIR:  parent directory of the xemacs-packages sub-directory
 XEMACSDIR=/usr/local/lib/xemacs
