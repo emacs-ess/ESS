@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/02/19 06:04:51 $
-;; Version: $Revision: 1.55 $
-;; RCS: $Id: ess-cust.el,v 1.55 2004/02/19 06:04:51 rossini Exp $
+;; Modified: $Date: 2004/02/27 19:38:15 $
+;; Version: $Revision: 1.56 $
+;; RCS: $Id: ess-cust.el,v 1.56 2004/02/27 19:38:15 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -417,7 +417,7 @@ If not number, the statements are indented at open-parenthesis following
 	       (ess-else-offset . 0)
 	       (ess-close-brace-offset . 0))
 	  ;; R added ajr 17Feb04 to match "common R" use
-	  (R   (ess-indent-level . 4)
+	  (RRR (ess-indent-level . 4)
 	       (ess-continued-statement-offset . 4)
 	       (ess-brace-offset . 0)
 	       (ess-arg-function-offset . 4)
@@ -512,6 +512,7 @@ Good for evaluating ESS code."
 (put 'inferior-ess-mode 'mode-class 'special)
 ;; FIXME AJR: Should the above be there?  I don't think so!
 ;;	 MM : the functionality should be, right? Move statement to ./ess.el ?
+;;       AJR: No, we should move the statement to ./ess-inf.el
 
 (defcustom ess-help-mode-hook nil
   "Functions to call when entering `ess-help-mode'. "
