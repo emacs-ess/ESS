@@ -1,8 +1,10 @@
-## $Id: Makefile,v 5.68 2002/08/07 14:30:57 maechler Exp $
+## $Id: Makefile,v 5.69 2002/08/08 09:04:35 maechler Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
+
+UPLOAD_SITE = software.biostat.washington.edu:/home/ess/downloads
 
 ## Set ESSVERSIONTAG to ESS-$(ESSVERSION) with .'s replaced by -s.
 ## CVS tags can NOT contain .'s.
@@ -60,6 +62,7 @@ dist: VERSION
 	zip -r $(ESSDIR).zip $(ESSDIR)
 	@echo "** Cleaning up **"
 	chmod -R u+w $(ESSDIR); rm -rf $(ESSDIR)
+	touch $@
 
 ChangeLog: VERSION
 	$(EMACSLOGCVS)
@@ -75,8 +78,7 @@ ChangeLog: VERSION
 #rel: ChangeLog dist tag
 rel: dist tag
 	@echo "** Placing tar and zip files **"
-	scp $(ESSDIR).tar.gz software.biostat.washington.edu:/home/ess/downloads
-	scp $(ESSDIR).zip    software.biostat.washington.edu:/home/ess/downloads
+	scp -p $(ESSDIR).tar.gz $(ESSDIR).zip $(UPLOAD_SITE)
 
 tag:
 	@echo "** Tagging the release **"
