@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/04/18 11:07:23 $
-;; Version: $Revision: 1.60 $
-;; RCS: $Id: ess-cust.el,v 1.60 2004/04/18 11:07:23 stephen Exp $
+;; Modified: $Date: 2004/04/18 14:50:38 $
+;; Version: $Revision: 1.61 $
+;; RCS: $Id: ess-cust.el,v 1.61 2004/04/18 14:50:38 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -69,6 +69,11 @@
 
 (defgroup ess-command nil
   "ESS: Commands for various things."
+  :group 'ess
+  :prefix "ess-")
+
+(defgroup ess-help nil
+  "ESS: help functions."
   :group 'ess
   :prefix "ess-")
 
@@ -1340,6 +1345,13 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 ;;*;; Variables relating to ess-help-mode
 
+(defcustom ess-help-own-frame nil
+  "*Non-nil means that ESS help buffers should start in a dedidated frame.
+The parameters of this frame are stored in `pop-up-frame-alist'.
+See also `inferior-ess-own-frame'."
+  :group 'ess-help
+  :type 'boolean)
+
 (defconst ess-help-S-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file")
 
@@ -1353,7 +1365,7 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 (defcustom ess-help-kill-bogus-buffers nil
   "*If non-nil, kill ESS help buffers immediately if they are \"bogus\"."
-  :group 'ess
+  :group 'ess-help
   :type 'boolean)
 
 (defvar ess-help-form 'separate-buffer
