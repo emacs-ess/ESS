@@ -1,3 +1,28 @@
+1999-03-17  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* essd-r.el, ess-site.el, ess-vars.el: RMH's changes
+
+1999-03-16  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* essd-r32-sh-dos.el, essd-sp4com.el: MS Dos stuff for R, S+4.x
+
+	* ChangeLog: Prep for 5.1.4
+
+	* essd-sp4.el, ess-iw32.el: RMH changes.
+
+	* ess-site.el: Merged RMH's work.
+
+	* ess-vars.el: incremented.
+
+	* ess-inf.el: RMH's changes.
+
+1999-03-16  maechler  <maechler@alpha>
+
+	* ChangeLog: mini change "foobar.Sout-45"
+
+	* ess-site.el:
+	auto-mode-alist:  "foobar.Sout-4.5" also turns on S-transcript-mode
+
 1999-03-16  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* essd-sp4.el, ess-iw32.el: RMH changes.
