@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.36 1997/06/22 23:36:39 rossini Exp $
+## $Id: Makefile,v 1.37 1997/07/03 13:32:14 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.37  1997/07/03 13:32:14  rossini
+## redid compile order.
+##
 ## Revision 1.36  1997/06/22 23:36:39  rossini
 ## added essd files.
 ##
@@ -120,9 +123,11 @@ CORE = ess.elc ess-site.elc
 ## Need both types, UNFORTUNATELY, since we want to BUILD and
 ## MAINTAIN.  Some one ought to fix this to be more GNUish.
 
-SOURCES = ess.el ess-site.el \
-	ess-inf.el ess-mode.el ess-trns.el ess-help.el ess-xtra.el \
-	essd-s+3.el essd-r.el essd-xls.el 
+SOURCES = ess.el \
+	essd-s+3.el essd-r.el essd-xls.el \
+	ess-site.el \
+	ess-inf.el ess-mode.el ess-trns.el ess-help.el ess-xtra.el
+
 
 OBJECTS=$(SOURCES:.el=.elc)
 
@@ -213,15 +218,20 @@ ess-trns.elc:  ess-trns.el $(CORE)
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-trns.el
 
 
-essd-r.elc : essd-r.el $(CORE)
+essd-r.elc : essd-r.el ess.el
+	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-r.el
 
-essd-s+3.elc : essd-s+3.el $(CORE)
+essd-s+3.elc : essd-s+3.el ess.el
+	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-s+3.el
 
-essd-s4.elc : essd-s4.el $(CORE)
+essd-s4.elc : essd-s4.el ess.el
+	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-s4.el
 
-essd-vst.elc : essd-vst.el $(CORE)
+essd-xls.elc : essd-xls.el ess.el
+	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-xls.el
 
-essd-xls.elc : essd-xls.el $(CORE)
+#essd-vst.elc : essd-vst.el ess.el
+#	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-r.el
 
 # Ignore this.
 #(defun S-insert-make-rule (file)
