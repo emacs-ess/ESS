@@ -1,3 +1,7 @@
+Mon Dec 15 19:17:27 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s4.el (S4-mode): New function, use it.
+
 Wed Dec 10 10:33:59 1997  Anthony Rossini  <rossini@hsph.harvard.edu>
 
 	* essd-xls.el: make sure that the major-mode is 'XLS-mode (might
