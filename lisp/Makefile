@@ -33,7 +33,7 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 4.9-b12
+VERSION = 4.9-b13
 
 LASTVERSION = 4.8.MM6.XE2
 
