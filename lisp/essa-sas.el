@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/09 16:25:48 $
-;; Version: $Revision: 1.58 $
-;; RCS: $Id: essa-sas.el,v 1.58 2002/01/09 16:25:48 rsparapa Exp $
+;; Modified: $Date: 2002/01/09 18:00:26 $
+;; Version: $Revision: 1.59 $
+;; RCS: $Id: essa-sas.el,v 1.59 2002/01/09 18:00:26 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -43,6 +43,11 @@
 
 ;;; Section 1:  Variable Definitions
 
+(defcustom ess-kermit-command "gkermit"
+    "*Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
+    :group 'ess-sas
+    :type  'string
+)
 
 (defvar ess-sas-file-path "."
     "Full path-name of the sas file to perform operations on.")
@@ -283,6 +288,27 @@ on the way."
 	    ess-sas-submit-post-command))
     (comint-send-input)
 ))))
+
+(defun ess-kermit-get ()
+  "Get a file with Kermit."
+)
+
+(defun ess-kermit-send ()
+  "Send a file with Kermit."
+    (interactive)
+
+    (save-excursion (save-match-data
+      (if (get-buffer "*shell*") (set-buffer "*shell*")
+          (shell))
+
+      (if (and (not (string-match "[" ess-sas-file-path)
+	  (string-match "]" ess-sas-file-path)))
+
+	  (let ((ess-sas-temp-file (substring ess-sas-file-path (match-end 0))))
+
+          (insert ess-kermit-command " -s ]" ess-sas-temp-file " -a " ess-sas-temp-file)
+         (comint-send-input)))))
+)
 
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with a SAS file by suffix and revert if necessary."
