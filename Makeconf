@@ -1,6 +1,6 @@
 ####======= Common Declarations for *all* ESS -*- Makefile -*- s ==========
 ###
-### File: $Revision: 5.20 $.
+### File: $Revision: 5.21 $.
 ###
 
 PREFIX=/usr/local
@@ -23,10 +23,8 @@ XEMACSDIR=/usr/local/lib/xemacs
 
 ## Updating ChangeLog via CVS with emacs requires the vc package!
 ## If this setting doesn't suit you, you can use the command line:
-## make ChangeLog EMACS=myemacs EMACSLOGCVS="-mychangelogflags"
-
-EMACSLOGCVS=$(shell expr $(EMACS) : '.*\(xemacs\).*' > /dev/null \
-&& echo '-f vc-update-changelogs' || echo '-f vc-update-change-log')
+## make ChangeLog EMACSLOGCVS="-f mychangelogfunc"
+EMACSLOGCVS=-f vc-update-change-log
 
 # Destination of your info files
 # defaults to the info directory relative to the doc directory
