@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/04 19:13:27 $ - $Revision: 1.94 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/04 19:38:58 $ - $Revision: 1.95 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -815,7 +815,7 @@ computer program for evaluation.
 %% but the results of all commands are of interest in the coding
 %% phase.
 
-\paragraph{Conflicts in keymappings.}
+\paragraph{Keymap Differences.} %Conflicts in keymaps.}
 \label{sec:confl-keym}
 
 Simple conflicts between interfaces are exemplified by different
@@ -824,17 +824,19 @@ line, end of line, etc.  These may be the most aggravating because our
 fingers are acting without our brains having to specifically think
 about it, but differences in interfaces circumvent this learned
 behavior.  ESS solves this problem by providing a uniform keyboard
-interface.
+interface despite the variety of statistical packages that might be
+used.  That is, the same keystrokes are used for cursor movement,
+evaluation, and basic tasks such as loading files for editing.
 
-Complex conflicts between interfaces can involve the coordination of
+Complex conflicts between interfaces can be the result of coordinating
 several data files, multiple statistical software packages, and the
-corresponding source code in each of these languages, combined for a
-single analysis.  ESS, as part of Emacs, has tools which assist in
-this, including support for version and source code control systems,
-tools for accessing programs or files on remote machines, and
-interfaces to documentation systems including \LaTeX\ and
-\textsc{xml}.  In addition, Emacs can assist with, or be programmed to
-perform, many tasks related to data cleaning, management, and editing.
+corresponding source code for each of these packages into a single
+analysis.  ESS helps to remediate the problem by including support for
+version and source code control systems, tools for accessing programs
+or files on remote machines, and interfaces to documentation systems
+including \LaTeX\ and \textsc{xml}.  In addition, Emacs can assist
+with, or be programmed to perform, many tasks related to data
+cleaning, management, and editing.
 
 \paragraph{Concurrent Use of Multiple Machines and Operating Systems.}
 \label{sec:conc-use-mult}
@@ -846,13 +848,13 @@ versions of statistical software packages, as well as large scale
 numerical simulations.  For example, one might want to be connected to
 multiple R processes of different versions in order to verify behavior
 on different versions of the same software; multiple processes of the
-same version to perform test-and-run scenarios where one process is
-doing long-term processing while the other is doing short-term
-testing; simulations; and to distribute the load over a variety of
-remote machines.
+same version to perform test-and-run scenarios with a mix of long-term
+computation and short-run testing; simulation studies and extensions
+which distribute the load over a variety of remote machines.
 
 \subsection{Interactive Processing.}
 \label{sec:interactive}
+
 \paragraph{S, \Splus, and R.}
 \label{sec:S:inf}
 
