@@ -1,10 +1,11 @@
-## $Id: Makefile,v 5.74 2004/05/03 20:26:12 rsparapa Exp $
+## $Id: Makefile,v 5.75 2004/05/04 14:03:17 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
-UPLOAD_SITE = cvs.analytics.washington.edu:/home/ess/downloads
+UPLOAD_SITE = cvs.analytics.washington.edu
+UPLOAD_DIR = /home/ess/downloads
 
 ## Set ESSVERSIONTAG to ESS-$(ESSVERSION) with .'s replaced by -s.
 ## CVS tags can NOT contain .'s.
@@ -91,11 +92,10 @@ ChangeLog: VERSION
 #rel: ChangeLog dist
 rel: dist
 	@echo "** Placing tar and zip files **"
-	scp -p $(ESSDIR).tar.gz $(ESSDIR).zip $(UPLOAD_SITE)
-	@echo "** and the new LATEST.IS. file **"
-	touch LATEST.IS.$(ESSDIR)
-	scp -p LATEST.IS.$(ESSDIR) $(UPLOAD_SITE)
-	@echo "** WARNING:  you must delete the old LATEST.IS. file manually **"
+	scp -p $(ESSDIR).tar.gz $(ESSDIR).zip $(UPLOAD_SITE):$(UPLOAD_DIR)
+	@echo "** Creating LATEST.IS. file **"
+	-ssh $(UPLOAD_SITE) rm "$(UPLOAD_DIR)/LATEST.IS.*"
+	ssh $(UPLOAD_SITE) touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)
 
 tag:
 	@echo "** Tagging the release **"
