@@ -31,22 +31,22 @@ XEMACSDIR=$(PREFIX)/lib/xemacs
 # defaults to the info directory relative to the doc directory
 INFODIR =$(PREFIX)/info
 
-# Destination of your byte-compiled elisp (.elc) files 
+# Destination of your byte-compiled elisp (.elc) files
 # Emacs
 LISPDIR =$(PREFIX)/share/emacs/site-lisp
 # XEmacs
 #LISPDIR = $(XEMACSDIR)/xemacs-packages/lisp/ess
 
-## two install commands are needed; one to create directories, 
+## two install commands are needed; one to create directories,
 ## if necessary, and another to copy the files
 #  to create directories
-INSTALLDIR = install -d 
+INSTALLDIR = install -d
 #INSTALLDIR = mkdir -p
 
 ## file copying commands expect source-file target-directory
 #  to copy the files
 INSTALL = cp -p
-#INSTALL = install 
+#INSTALL = install
 
 ## the sed that you want to use
 SED = sed
@@ -56,7 +56,7 @@ SED = sed
 GZCAT = zcat
 
 # program to convert .texi{nfo} to .info
-MAKEINFO = makeinfo
+MAKEINFO = LANG=C makeinfo
 MAKETXT = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 
 ## Set ESSVERSION to the contents of VERSION
