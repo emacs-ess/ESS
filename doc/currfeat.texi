@@ -1,37 +1,40 @@
-Languages Supported:
-
-	S dialects (S 3/4, S-PLUS 3.x/4.x/5.x, and R)
-	LispStat dialects (XLispStat, ViSta)
-	SAS
-	Stata (under development)
-	SPSS dialects (SPSS, Fiasco (GNU project)) (under development)
-	SCA (under development)
-
-Editing source code (S, LispStat, SAS)
-
-        Syntactic indentation and highlighting of source code
-        Partial evaluations of code
-        Loading and error-checking of code
-        Source code revision maintenance
-
-Interacting with the process (S, LispStat, SAS)
-
-        Command-line editing
-	Searchable Command history
-        Command-line completion of S object names and file names
-        Quick access to object lists and search lists
-        Transcript recording
-        Interface to the help system
-
-Transcript manipulation (S3, S+3, S4, R, XLispStat)
-
-        Recording and saving transcript files
-        Manipulating and editing saved transcripts
-        Re-evaluating commands from transcript files
-
-Help File Editing (R)
-
-        Syntactic indentation and highlighting of source code.
-        Sending Examples to running ESS process.
-	Previewing
+@itemize @bullet
+@item Languages Supported:
+  @itemize @bullet
+  @item S dialects (S 3/4, S-PLUS 3.x/4.x/5.x, and R)
+  @item LispStat dialects (XLispStat, ViSta under development)
+  @item SAS
+  @item Stata 
+  @item SPSS dialects (SPSS, Fiasco (GNU project)) (under development)
+  @item SCA (under development)
+  @end itemize
+@item Editing source code (S, LispStat, SAS)
+  @itemize @bullet
+  @item Syntactic indentation and highlighting of source code
+  @item Partial evaluations of code
+  @item Loading and error-checking of code
+  @item Source code revision maintenance
+  @end itemize
+@item Interacting with the process (S, LispStat, SAS)
+  @itemize @bullet
+  @item Command-line editing
+  @item Searchable Command history
+  @item Command-line completion of S object names and file names
+  @item Quick access to object lists and search lists
+  @item Transcript recording
+  @item Interface to the help system
+  @end itemize
+@item Transcript manipulation (S3, S+3, S4, R, XLispStat)
+  @itemize @bullet
+  @item Recording and saving transcript files
+  @item Manipulating and editing saved transcripts
+  @item Re-evaluating commands from transcript files
+  @end itemize
+@item Help File Editing (R)
+  @itemize @bullet
+  @item Syntactic indentation and highlighting of source code.
+  @item Sending Examples to running ESS process.
+  @item Previewing
+  @end itemize
+@end itemize
 
