@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/26 01:38:56 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: essd-r.el,v 1.24 1997/07/26 01:38:56 rossini Exp $
+;; Modified: $Date: 1997/07/26 02:12:28 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: essd-r.el,v 1.25 1997/07/26 02:12:28 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.25  1997/07/26 02:12:28  rossini
+;;: need primary prompt...
+;;:
 ;;: Revision 1.24  1997/07/26 01:38:56  rossini
 ;;: changed objects command, as per R-0.50-a1.
 ;;:
@@ -115,9 +118,7 @@
     (inferior-ess-objects-command  . "objects(pos = %d)\n")
     (inferior-ess-exit-command     . "q()\n")
     (ess-loop-timeout              . 100000 )
-    ;;(inferior-ess-primary-prompt   . "[][a-zA-Z0-9() ]*> ?") ;;
-    ;;correct in general, now?  see ess-vars.
-    )
+    (inferior-ess-primary-prompt   . "[][a-zA-Z0-9() ]*> ?"))
   "Variables to customize for R")
 
 (defun R ()
