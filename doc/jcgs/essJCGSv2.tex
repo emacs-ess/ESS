@@ -137,7 +137,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/14 18:00:37 $ - $Revision: 1.68 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/14 18:13:41 $ - $Revision: 1.69 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -425,7 +425,9 @@ tasks.  Other extensions to Emacs allow it to act as a web browser, a
 mail and news reader, and as an interface to other common text-based
 tools such as spell checking programs.  The Emacs keyboard and mouse
 interface can be re-mapped to resemble that of other text-editors,
-such as vi, wordstar, and brief.
+such as vi, wordstar, and brief.  Emacs can also interface with speech
+generation and recognition devices \textbf{(Cite: EmacSpeaks, AJR
+  needs to add the reference)}.
 
 For example, we can use syntax highlighting to help enforce company
 coding standards.  Figure \ref{f.hilock} shows how to enforce a
@@ -446,13 +448,14 @@ turn green, lines that don't turn red.  Ambiguous ones turn yellow.\\
 \section{ESS extends Emacs}
 \label{sec:ess-extends-emacs}
 
-Emacs' power and flexibility make it a sensible starting choice to
-build an interface for statistical analysis packages.  ESS extends
-Emacs to provide a functional, easily extensible and uniform interface
-for multiple statistical packages.  This is done in two ways.  First,
-shortcuts and features for accelerated editing of files have been
-implemented.  Second, interaction with the statistical
-language is split by function; general, obtaining help, programming.
+Emacs' power and flexibility make it a sensible starting point for
+building a statistical analysis interface.  ESS extends Emacs to
+provide a functional, easily extensible and uniform interface for
+multiple statistical packages.  This is done by first, adding
+shortcuts and features for accelerated editing of files, and second,
+by interacting with the statistical language through a number of
+activities, both general input/output handling as well as specialized
+parsing of help and evaluation assistance.
 
 \begin{Comment}
 AJR: THIS NEEDS WORK.
