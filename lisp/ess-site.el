@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/01 14:17:12 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: ess-site.el,v 1.18 1997/07/01 14:17:12 rossini Exp $
+;; Modified: $Date: 1997/07/01 14:56:49 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: ess-site.el,v 1.19 1997/07/01 14:56:49 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.19  1997/07/01 14:56:49  rossini
+;;: documentation for `ess-keep-dump-files' changed.
+;;:
 ;;: Revision 1.18  1997/07/01 14:17:12  rossini
 ;;: redid ess-directory defaults.
 ;;:
@@ -283,14 +286,18 @@
 ;;; *Variable controlling whether to delete dump files after a successful load.
 ;;; If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
 ;;; to delete, except for files created with ess-dump-object-into-edit-buffer.
-;;; Anything else, never delete.  This variable only affects the behaviour
+;;; Anything else (for example `always'): always keep and never delete.
+;;; This variable only affects the behaviour
 ;;; of ess-load-file.  Dump files are never deleted if an error occurs
 ;;; during the load. 
-;;; RH sez: which I found imperative.  The default was to throw away
+;;;
+;;; RH sez: I find the default `always' keep to be imperative.  The previous
+;;; default was to throw away
 ;;; files at the wrong time (I think it was something like, if you M-x
 ;;; ess-load a file twice, while you are working on it, the file is
-;;; deleted).  I believe source is real and the ESS object is temporary.
-;;; The default behavior is for people who believe the object is real
+;;; deleted).  I believe source is real and the S object is temporary.
+;;; The previous default behavior is dangerous for people who believe this way.
+;;; It made sense only for people who believe the object is real
 ;;; and the source file temporary.
 (setq ess-keep-dump-files "always")
 
