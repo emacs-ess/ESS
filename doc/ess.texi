@@ -282,14 +282,17 @@ your @Sl{} functions in specified source directories.
 @node Features, New features, Introduction, Introduction
 @section Why should I use ESS?
 
-S is a powerful system for manipulating and analyzing data, but its user
-interface --- particularly on Unix platforms --- leaves something to be
-desired.  ESS is a package which is designed to make @Sl{} easier to
-use.
+Statistical packages are powerful software systems for manipulating and 
+analyzing data, but their user interfaces often leave something something 
+to be desired:  they offer weak editor functionality and they differ
+among themselves so markedly that you have to re-learn how to do those
+things for each package.  ESS is a package which is designed to make 
+editing and interacting with statistical packages more uniform, 
+user-friendly and give you the power of emacs as well.
 
 ESS provides several features which make it easier to interact with the
-ESS process (i.e. enter commands and view the output).  These
-include:
+ESS process (a connection between your buffer and the statistical 
+package which is waiting for you to input commands).  These include:
 
 @itemize @bullet
 @item
@@ -651,8 +654,13 @@ ESS commands (@samp{C-c C-n} and its relatives) now work with the S
 language processes.  For SAS you need to use a different command
 @samp{C-c i} (that is a regular @samp{i}, not a @samp{C-i}) to send
 lines from your @file{myfile.sas} to the remote SAS process.
-@samp{C-c i} sends lines over invisibly and lets SAS display them
-formatted correctly as in a SAS log file.
+@samp{C-c i} sends lines over invisibly.
+@c and lets SAS display them formatted correctly as in a SAS log file.
+With ess-remote you get teletype behavior---the data input, the
+log, and the listing all appear in the same buffer.  To make this work, 
+you need to end every PROC and DATA step with a "RUN;" statement.  The 
+"RUN;" statement is what tells SAS that it should process the preceding 
+input statements.
 
 @item Graphics (interactive) on the remote machine.  If you run X11
 (@xref{X11}, X-windows)
@@ -1713,7 +1721,7 @@ constructs.
 
 @cindex dump files
 @cindex reverting function definitions
-@strong{Note:} when you dump a file with @kbd{C-c C-d}, ESS first checks
+Note: when you dump a file with @kbd{C-c C-d}, ESS first checks
 to see whether there already exists an edit buffer containing that
 object and, if so, pops you directly to that buffer.  If not, ESS next
 checks whether there is a file in the appropriate place with the

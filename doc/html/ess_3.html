@@ -206,8 +206,12 @@ ESS commands (`<samp>C-c C-n</samp>' and its relatives) now work with the S
 language processes.  For SAS you need to use a different command
 `<samp>C-c i</samp>' (that is a regular `<samp>i</samp>', not a `<samp>C-i</samp>') to send
 lines from your `<tt>myfile.sas</tt>' to the remote SAS process.
-`<samp>C-c i</samp>' sends lines over invisibly and lets SAS display them
-formatted correctly as in a SAS log file.
+`<samp>C-c i</samp>' sends lines over invisibly.
+With ess-remote you get teletype behavior--the data input, the
+log, and the listing all appear in the same buffer.  To make this work, 
+you need to end every PROC and DATA step with a &quot;RUN;&quot; statement.  The 
+&quot;RUN;&quot; statement is what tells SAS that it should process the preceding 
+input statements.
 
 </p></li><li><p> Graphics (interactive) on the remote machine.  If you run X11
 (See section <a href="ess_11.html#SEC72">Using ESS with windowing devices</a>, X-windows)

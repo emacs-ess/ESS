@@ -15,7 +15,7 @@ ESS: Emacs Speaks Statistics
 
 ESS version 5.2.2
 
-   (Documentation $Revision: 1.8 $ $Date: 2004/07/08 15:03:35 $).
+   (Documentation $Revision: 5.59 $ $Date: 2004/07/12 21:01:37 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -123,13 +123,17 @@ File: ess.info,  Node: Features,  Next: New features,  Prev: Introduction,  Up: 
 1.1 Why should I use ESS?
 =========================
 
-S is a powerful system for manipulating and analyzing data, but its user
-interface -- particularly on Unix platforms -- leaves something to be
-desired.  ESS is a package which is designed to make S easier to use.
+Statistical packages are powerful software systems for manipulating and
+analyzing data, but their user interfaces often leave something
+something to be desired:  they offer weak editor functionality and they
+differ among themselves so markedly that you have to re-learn how to do
+those things for each package.  ESS is a package which is designed to
+make editing and interacting with statistical packages more uniform,
+user-friendly and give you the power of emacs as well.
 
    ESS provides several features which make it easier to interact with
-the ESS process (i.e. enter commands and view the output).  These
-include:
+the ESS process (a connection between your buffer and the statistical
+package which is waiting for you to input commands).  These include:
 
    * Command-line editing for fixing mistakes in commands before they
      are entered.  The `-e' flag for S-plus provides something similar
@@ -677,13 +681,6 @@ A.1 Unix installation
      The `tar' command will create the subdirectory ess-VERSION and
      unarchive the files there.
 
-     If you are using GNU Emacs 19.29, decompress/unarchive
-     `ESSDIR/ess-VERSION/lisp/19.29.tar.gz', read
-     `ESSDIR/ess-VERSION/lisp/19.29/README', follow the instructions
-     and you might be able to get ESS to work.  _Please note that GNU
-     Emacs 19.29 is no longer supported_.  For a list of supported
-     versions of emacs, see *Note Requirements::.
-
   4. Edit the file `ESSDIR/ess-VERSION/lisp/ess-site.el' as explained
      in the comments section of that file.
 
@@ -700,9 +697,12 @@ A.1 Unix installation
           (require 'ess-site)
      to configure emacs for ESS.
 
-  6. That's it!  To edit statistical programs, load the files with the
-     requiste extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R,
-     and ".lsp" for XLispStat).
+  6. That's it!  If you are installing just a local copy of ESS for
+     yourself, ESS is now ready to be used.  (The remaining steps below
+     are for advanced installation.)  To edit statistical programs,
+     load the files with the requiste extensions (".sas" for SAS, ".S"
+     for S-PLUS, ".R" for R, and ".lsp" for XLispStat).  To start a
+     statistical process within Emacs, such as R, type `M-x R'.
 
   7. (OPTIONAL) If you are running S-PLUS or R, you might consider
      installing the database files.  From within emacs, `C-x d' to the
@@ -880,18 +880,6 @@ separate instructions above for UNIX *Note Unix installation::.
      Hopefully, this will change.  However, you can still edit with
      emacs, and cut and paste the results into the XLispStat *Listener*
      Window under Microsoft Windows.
-
-     SAS for Windows uses the batch access with function keys that is
-     described in *Note ESS(SAS)--MS Windows::.  The user can also edit
-     SAS files in an `ESS[SAS]' buffer and than manually copy and paste
-     them into an Editor window in the SAS Display Manager.
-
-     For Windows, inferior SAS in an `iESS[SAS]' buffer does not work
-     on the local machine.  It does work over a network connection to
-     SAS running on a remote Unix computer.
-
-     Reason:  we use ddeclient to interface with programs and SAS
-     doesn't provide the corresponding ddeserver capability.
 
   9. (OPTIONAL) If you are running Sqpe or R, you might consider
      installing the database files.  From within emacs, `C-x d' to the
@@ -1102,8 +1090,11 @@ ssh buffer and then connect ESS to that buffer.
      language processes.  For SAS you need to use a different command
      `C-c i' (that is a regular `i', not a `C-i') to send lines from
      your `myfile.sas' to the remote SAS process.  `C-c i' sends lines
-     over invisibly and lets SAS display them formatted correctly as in
-     a SAS log file.
+     over invisibly.  With ess-remote you get teletype behavior--the
+     data input, the log, and the listing all appear in the same
+     buffer.  To make this work, you need to end every PROC and DATA
+     step with a "RUN;" statement.  The "RUN;" statement is what tells
+     SAS that it should process the preceding input statements.
 
   4. Graphics (interactive) on the remote machine.  If you run X11
      (*Note X11::, X-windows) on both the local and remote machines
@@ -1592,12 +1583,12 @@ File: ess.info,  Node: Help for SAS,  Next: Help for BUGS,  Prev: Help for the S
 
 * ESS(SAS)--Design philosophy::
 * ESS(SAS)--Editing files::
-* iESS(SAS)--Interactive SAS processes::
+* ESS(SAS)--TAB key::
 * ESS(SAS)--Batch SAS processes::
 * ESS(SAS)--Function keys for batch processing::
-* ESS(SAS)--TAB key::
-* ESS(SAS)--Usage scenarios::
+* iESS(SAS)--Interactive SAS processes::
 * iESS(SAS)--Common problems::
+* ESS(SAS)--Graphics::
 * ESS(SAS)--MS Windows::
 
    ESS[SAS] was designed for use with SAS.  It is descended from emacs
@@ -1629,7 +1620,7 @@ and syntax highlighting, are provided transparently; appealing to
 advanced ESS[SAS] users.
 
 
-File: ess.info,  Node: ESS(SAS)--Editing files,  Next: iESS(SAS)--Interactive SAS processes,  Prev: ESS(SAS)--Design philosophy,  Up: Help for SAS
+File: ess.info,  Node: ESS(SAS)--Editing files,  Next: ESS(SAS)--TAB key,  Prev: ESS(SAS)--Design philosophy,  Up: Help for SAS
 
 4.2 ESS[SAS]-Editing files
 ==========================
@@ -1666,51 +1657,32 @@ or a DO ... TO ... BY statement, TOs are not highlighted (and neither is
 BY).
 
 
-File: ess.info,  Node: iESS(SAS)--Interactive SAS processes,  Next: ESS(SAS)--Batch SAS processes,  Prev: ESS(SAS)--Editing files,  Up: Help for SAS
+File: ess.info,  Node: ESS(SAS)--TAB key,  Next: ESS(SAS)--Batch SAS processes,  Prev: ESS(SAS)--Editing files,  Up: Help for SAS
 
-4.3 iESS[SAS]-Interactive SAS processes
-=======================================
+4.3 ESS[SAS]-TAB key
+====================
 
-iESS (inferior ESS) is the method for interfacing with interactive
-statistical processes (programs).  iESS[SAS] is what is needed for
-interactive SAS programming.  iESS[SAS] works best with the following
-settings for SAS command-line options (the default of
-inferior-SAS-args):
+Two options.  The TAB key is bound by default to sas-indent-line.  This
+function is used to syntactically indent SAS code so PROC and RUN are in
+the left margin, other statements are indented 4 spaces from the margin,
+continuation lines are indented 4 spaces in from the beginning column of
+that statement.  This is the type of functionality that emacs provides
+in most programming language modes.  This functionality is equivalent to
+uncommenting the following line in ess-site.el:
+     (setq ess-sas-edit-keys-toggle nil)
 
-     -stdio -linesize 80 -noovp -nosyntaxcheck
-
-     -stdio
-                 required to make the redirection of stdio work
-     -linesize 80
-                 keeps output lines from folding on standard terminals
-     -noovp
-                 prevents error messages from printing 3 times
-     -nosyntaxcheck
-                 permits recovery after syntax errors
-
-   To start up iESS[SAS] mode, use:
-        M-x SAS
-
-   The *SAS:1.log* buffer in ESStr mode corresponds to the file
-myfile.log in SAS batch usage and to the "SAS: LOG" window in the SAS
-Display Manager.  All commands submitted to SAS, informative messages,
-warnings, and errors appear here.
-
-   The *SAS:1.lst* buffer in ESSlst mode corresponds to the file
-myfile.lst in SAS batch usage and to the "SAS: OUTPUT" window in the
-SAS Display Manager.  All data related printed output from the PROCs
-appear in this window.
-
-   The iESS [SAS:1] buffer exists solely as a communications buffer.
-Files are edited in the myfile.sas buffer.  The C-c C-r key in ESS[SAS]
-is the functional equivalent of bringing a file into the "SAS: PROGRAM
-EDITOR" window followed by the 'Local' 'Submit' menu commands.  The
-user should never use this buffer directly.
-
-   Troubleshooting: *Note iESS(SAS)--Common problems::.
+   ESS provides an alternate behavior for the TAB key that makes it
+behave as it does in SAS Display Manager, i.e. move the cursor to the
+next tab stop.  The alternate behavior also provides a backwards TAB,
+C-TAB, that moves the cursor to the tab stop to the left and deletes
+any characters between them.  This functionality is obtained by
+uncommenting the following line in ess-site.el:
+     (setq ess-sas-edit-keys-toggle t)
+   Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
+and the tab stops are set at multiples of sas-indent-width.
 
 
-File: ess.info,  Node: ESS(SAS)--Batch SAS processes,  Next: ESS(SAS)--Function keys for batch processing,  Prev: iESS(SAS)--Interactive SAS processes,  Up: Help for SAS
+File: ess.info,  Node: ESS(SAS)--Batch SAS processes,  Next: ESS(SAS)--Function keys for batch processing,  Prev: ESS(SAS)--TAB key,  Up: Help for SAS
 
 4.4 ESS[SAS]-Batch SAS processes
 ================================
@@ -1780,8 +1752,37 @@ lower to speed things up.  You can over-ride the default in your .emacs
 file by:
      (setq ess-sleep-for 0.2)
 
+   For example, open the file you want to work with
+(ess-sas-global-unix-keys keys shown, ess-sas-global-pc-keys in
+parentheses; ESS[SAS] function keys are presented in the next section).
+     C-x C-f myfile.sas
+   myfile.sas will be in ESS[SAS] mode.  Edit as appropriate, then save
+and submit the batch SAS job.
+     F3 (F8)
+   The job runs in the shell buffer while you continue to edit
+myfile.sas.  If ess-sas-submit-method is 'sh, then the message buffer
+will display the shell notification when the job is complete.  The 'sh
+setting also allows you to terminate the SAS batch job before it is
+finished.
+     F8 (F3)
+   Terminating a SAS batch in the *shell* buffer.
+     kill %1
+   You may want to visit the .log (whether the job is still running or
+it is finished) and check for error messages.  The .log will be
+refreshed and you will be placed in it's buffer.  You will be taken to
+the 1st error message, if any.
+     F5 (F6)
+   Goto the next error message, if any.
+     F5 (F6)
+   Now, refresh the .lst and go to it's buffer.
+     F6 (F7)
+   If you wish to make changes, go to the .sas file with.
+     F4 (F5)
+   Make your editing changes and submit again.
+     F3 (F8)
+
 
-File: ess.info,  Node: ESS(SAS)--Function keys for batch processing,  Next: ESS(SAS)--TAB key,  Prev: ESS(SAS)--Batch SAS processes,  Up: Help for SAS
+File: ess.info,  Node: ESS(SAS)--Function keys for batch processing,  Next: iESS(SAS)--Interactive SAS processes,  Prev: ESS(SAS)--Batch SAS processes,  Up: Help for SAS
 
 4.5 ESS[SAS]-Function keys for batch processing
 ===============================================
@@ -1985,90 +1986,48 @@ landscape (first line for "global" key mapping, second for "local"):
      (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-a4-landscape)
 
 
-File: ess.info,  Node: ESS(SAS)--TAB key,  Next: ESS(SAS)--Usage scenarios,  Prev: ESS(SAS)--Function keys for batch processing,  Up: Help for SAS
+File: ess.info,  Node: iESS(SAS)--Interactive SAS processes,  Next: iESS(SAS)--Common problems,  Prev: ESS(SAS)--Function keys for batch processing,  Up: Help for SAS
 
-4.6 ESS[SAS]-TAB key
-====================
+4.6 iESS[SAS]-Interactive SAS processes
+=======================================
 
-Two options.  The TAB key is bound by default to sas-indent-line.  This
-function is used to syntactically indent SAS code so PROC and RUN are in
-the left margin, other statements are indented 4 spaces from the margin,
-continuation lines are indented 4 spaces in from the beginning column of
-that statement.  This is the type of functionality that emacs provides
-in most programming language modes.  This functionality is equivalent to
-uncommenting the following line in ess-site.el:
-     (setq ess-sas-edit-keys-toggle nil)
+iESS (inferior ESS) is the method for interfacing with interactive
+statistical processes (programs).  iESS[SAS] is what is needed for
+interactive SAS programming.  iESS[SAS] works best with the following
+settings for SAS command-line options (the default of
+inferior-SAS-args):
 
-   ESS provides an alternate behavior for the TAB key that makes it
-behave as it does in SAS Display Manager, i.e. move the cursor to the
-next tab stop.  The alternate behavior also provides a backwards TAB,
-C-TAB, that moves the cursor to the tab stop to the left and deletes
-any characters between them.  This functionality is obtained by
-uncommenting the following line in ess-site.el:
-     (setq ess-sas-edit-keys-toggle t)
-   Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
-and the tab stops are set at multiples of sas-indent-width.
+     -stdio -linesize 80 -noovp -nosyntaxcheck
 
-
-File: ess.info,  Node: ESS(SAS)--Usage scenarios,  Next: iESS(SAS)--Common problems,  Prev: ESS(SAS)--TAB key,  Up: Help for SAS
+     -stdio
+                 required to make the redirection of stdio work
+     -linesize 80
+                 keeps output lines from folding on standard terminals
+     -noovp
+                 prevents error messages from printing 3 times
+     -nosyntaxcheck
+                 permits recovery after syntax errors
 
-4.7 ESS[SAS]-Usage scenarios
-============================
+   To start up iESS[SAS] mode, use:
+        M-x SAS
 
-We present a batch and an interactive scenario for using ESS with SAS.
-The remarks with respect to graphics apply to either with exceptions
-noted.
+   The *SAS:1.log* buffer in ESStr mode corresponds to the file
+myfile.log in SAS batch usage and to the "SAS: LOG" window in the SAS
+Display Manager.  All commands submitted to SAS, informative messages,
+warnings, and errors appear here.
 
-   Graphics
+   The *SAS:1.lst* buffer in ESSlst mode corresponds to the file
+myfile.lst in SAS batch usage and to the "SAS: OUTPUT" window in the
+SAS Display Manager.  All data related printed output from the PROCs
+appear in this window.
 
-   Output from GPROCs can be displayed in a SAS/Graph window for SAS
-batch on Windows or for both SAS batch and interactive with X11 on
-Unix.  If you need to create graphics files and view them with F12,
-then include the following in myfile.sas (for F12 to work the FILENAME
-statement must be in myfile.sas, but the GOPTIONS statement can be in
-your autoexec.sas):
-     filename gsasfile 'graphics.ps';
-     goptions device=ps gsfname=gsasfile gsfmode=append;
-   PROC PLOT graphs can be viewed in the listing buffer.  You may wish
-to control the vertical spacing to allow the entire plot to be visible
-on screen, for example:
-     proc plot;
-         plot a*b / vpos=25;
-     run;
+   The iESS [SAS:1] buffer exists solely as a communications buffer.
+Files are edited in the myfile.sas buffer.  The C-c C-r key in ESS[SAS]
+is the functional equivalent of bringing a file into the "SAS: PROGRAM
+EDITOR" window followed by the 'Local' 'Submit' menu commands.  The
+user should never use this buffer directly.
 
-   SAS Batch (ess-sas-global-unix-keys keys shown,
-ess-sas-global-pc-keys in parentheses).
-
-   Open the file you want to work with.
-     C-x C-f myfile.sas
-   myfile.sas will be in ESS[SAS] mode.  Edit as appropriate, then save
-and submit the batch SAS job.
-     F3 (F8)
-   The job runs in the shell buffer while you continue to edit
-myfile.sas.  If ess-sas-submit-method is 'sh, then the message buffer
-will display the shell notification when the job is complete.  The 'sh
-setting also allows you to terminate the SAS batch job before it is
-finished.
-     F8 (F3)
-   Terminating a SAS batch in the *shell* buffer.
-     kill %1
-   You may want to visit the .log (whether the job is still running or
-it is finished) and check for error messages.  The .log will be
-refreshed and you will be placed in it's buffer.  You will be taken to
-the 1st error message, if any.
-     F5 (F6)
-   Goto the next error message, if any.
-     F5 (F6)
-   Now, refresh the .lst and go to it's buffer.
-     F6 (F7)
-   If you wish to make changes, go to the .sas file with.
-     F4 (F5)
-   Make your editing changes and submit again.
-     F3 (F8)
-
-   Interactive SAS
-
-   Open the file you want to work with.
+   For example, open the file you want to work with.
      C-x C-f myfile.sas
    myfile.sas will be in ESS[SAS] mode.  Edit as appropriate, and then
 start up SAS with the cursor in the myfile.sas buffer.
@@ -2110,10 +2069,12 @@ input file to SAS.
 need to read it or write to it.  Refer to the .lst and .log buffers for
 monitoring output!
 
-
-File: ess.info,  Node: iESS(SAS)--Common problems,  Next: ESS(SAS)--MS Windows,  Prev: ESS(SAS)--Usage scenarios,  Up: Help for SAS
+   Troubleshooting: *Note iESS(SAS)--Common problems::.
 
-4.8 iESS[SAS]-Common problems
+
+File: ess.info,  Node: iESS(SAS)--Common problems,  Next: ESS(SAS)--Graphics,  Prev: iESS(SAS)--Interactive SAS processes,  Up: Help for SAS
+
+4.7 iESS[SAS]-Common problems
 =============================
 
      1. iESS[SAS] does not work on Windows.  In order to run SAS inside
@@ -2135,7 +2096,26 @@ File: ess.info,  Node: iESS(SAS)--Common problems,  Next: ESS(SAS)--MS Windows, 
           find / -name sas -print
 
 
-File: ess.info,  Node: ESS(SAS)--MS Windows,  Prev: iESS(SAS)--Common problems,  Up: Help for SAS
+File: ess.info,  Node: ESS(SAS)--Graphics,  Next: ESS(SAS)--MS Windows,  Prev: iESS(SAS)--Common problems,  Up: Help for SAS
+
+4.8 ESS[SAS]-Graphics
+=====================
+
+Output from GPROCs can be displayed in a SAS/Graph window for SAS batch
+on Windows or for both SAS batch and interactive with X11 on Unix.  If
+you need to create graphics files and view them with F12, then include
+the following (either in myfile.sas or in your autoexec.sas):
+     filename gsasfile 'graphics.ps';
+     goptions device=ps gsfname=gsasfile gsfmode=append;
+   PROC PLOT graphs can be viewed in the listing buffer.  You may wish
+to control the vertical spacing to allow the entire plot to be visible
+on screen, for example:
+     proc plot;
+         plot a*b / vpos=25;
+     run;
+
+
+File: ess.info,  Node: ESS(SAS)--MS Windows,  Prev: ESS(SAS)--Graphics,  Up: Help for SAS
 
 4.9 ESS[SAS]-MS Windows
 =======================
@@ -2981,7 +2961,7 @@ major mode which provides a number of commands to facilitate editing S
 source code.  Commands are provided to intelligently indent S code,
 evaluate portions of S code and to move around S code constructs.
 
-   *Note:* when you dump a file with `C-c C-d', ESS first checks to see
+   Note: when you dump a file with `C-c C-d', ESS first checks to see
 whether there already exists an edit buffer containing that object and,
 if so, pops you directly to that buffer.  If not, ESS next checks
 whether there is a file in the appropriate place with the appropriate
@@ -4540,98 +4520,98 @@ Tag Table:
 Node: Top249
 Node: Introduction2049
 Node: Features5019
-Node: New features8115
-Node: Credits21922
-Node: Latest version24116
-Node: Manual24590
-Node: Installation27132
-Node: Unix installation27945
-Node: Microsoft Windows installation32102
-Node: Requirements39472
-Ref: Requirements-Footnote-140334
-Ref: Requirements-Footnote-240428
-Node: System dependent40894
-Node: Interactive ESS43167
-Node: Starting up44020
-Node: Multiple ESS processes44645
-Node: ESS processes on Remote Computers45680
-Node: S+elsewhere and ESS-elsewhere48575
-Node: Customizing startup51334
-Node: Help for the S family53530
-Node: ESS(S)--Editing files53982
-Node: iESS(S)--Inferior ESS processes55035
-Node: Handling and Reusing Transcripts59271
-Node: ESS-help--assistance with viewing help59890
-Node: Philosophies for using ESS(S)60222
-Node: Scenarios for use (possibilities--based on actual usage)61359
-Node: Customization Examples and Solutions to Problems66051
-Node: Help for SAS67338
-Node: ESS(SAS)--Design philosophy68087
-Node: ESS(SAS)--Editing files69010
-Node: iESS(SAS)--Interactive SAS processes70910
-Node: ESS(SAS)--Batch SAS processes72687
-Node: ESS(SAS)--Function keys for batch processing76371
-Node: ESS(SAS)--TAB key85946
-Node: ESS(SAS)--Usage scenarios87226
-Node: iESS(SAS)--Common problems91402
-Node: ESS(SAS)--MS Windows92548
-Node: Help for BUGS93143
-Node: ESS(BUGS)--Model files94177
-Node: ESS(BUGS)--Command files97090
-Node: ESS(BUGS)--Log files98323
-Node: Entering commands98933
-Node: Command-line editing100222
-Node: Completion101506
-Node: Completion details104275
-Ref: Completion details-Footnote-1106190
-Node: Transcript106470
-Node: Last command108245
-Node: Process buffer motion109863
-Node: Transcript resubmit111384
-Node: Saving transcripts113991
-Node: Command History116037
-Node: History expansion118661
-Node: Hot keys121869
-Node: Statistical Process running in ESS?125335
-Node: Emacsclient126640
-Node: Other127447
-Node: Editing128493
-Node: Edit buffer129652
-Node: Loading131688
-Node: Error Checking132739
-Node: Evaluating code133785
-Node: Indenting137275
-Node: Other edit buffer commands140323
-Node: Source Files142240
-Node: Source Directories146770
-Node: Help149909
-Node: Transcript Mode153889
-Node: Resubmit155025
-Node: Clean156109
-Node: Miscellaneous156828
-Node: Highlighting157311
-Node: Graphics158743
-Node: printer159265
-Node: X11160038
-Node: winjava160636
-Node: Imenu161039
-Node: Toolbar161521
-Node: Object Completion161949
-Node: Bugs Etc162760
-Node: Bugs162988
-Node: Reporting Bugs164246
-Node: Mailing Lists165046
-Node: Customization165770
-Node: Variables166639
-Node: Variables for starting ESS167595
-Node: Dump file variables169625
-Node: Indentation variables170813
-Node: Variables controlling interaction173818
-Node: Editing assembly files174717
-Node: Hooks175531
-Node: Keybindings176690
-Node: Key Index177731
-Node: Concept Index177886
-Node: Variable and command index188257
+Node: New features8440
+Node: Credits22247
+Node: Latest version24441
+Node: Manual24915
+Node: Installation27457
+Node: Unix installation28270
+Node: Microsoft Windows installation32296
+Node: Requirements39078
+Ref: Requirements-Footnote-139940
+Ref: Requirements-Footnote-240034
+Node: System dependent40500
+Node: Interactive ESS42773
+Node: Starting up43626
+Node: Multiple ESS processes44251
+Node: ESS processes on Remote Computers45286
+Node: S+elsewhere and ESS-elsewhere48426
+Node: Customizing startup51185
+Node: Help for the S family53381
+Node: ESS(S)--Editing files53833
+Node: iESS(S)--Inferior ESS processes54886
+Node: Handling and Reusing Transcripts59122
+Node: ESS-help--assistance with viewing help59741
+Node: Philosophies for using ESS(S)60073
+Node: Scenarios for use (possibilities--based on actual usage)61210
+Node: Customization Examples and Solutions to Problems65902
+Node: Help for SAS67189
+Node: ESS(SAS)--Design philosophy67931
+Node: ESS(SAS)--Editing files68854
+Node: ESS(SAS)--TAB key70735
+Node: ESS(SAS)--Batch SAS processes71998
+Node: ESS(SAS)--Function keys for batch processing76844
+Node: iESS(SAS)--Interactive SAS processes86438
+Node: iESS(SAS)--Common problems90243
+Node: ESS(SAS)--Graphics91398
+Node: ESS(SAS)--MS Windows92164
+Node: Help for BUGS92751
+Node: ESS(BUGS)--Model files93785
+Node: ESS(BUGS)--Command files96698
+Node: ESS(BUGS)--Log files97931
+Node: Entering commands98541
+Node: Command-line editing99830
+Node: Completion101114
+Node: Completion details103883
+Ref: Completion details-Footnote-1105798
+Node: Transcript106078
+Node: Last command107853
+Node: Process buffer motion109471
+Node: Transcript resubmit110992
+Node: Saving transcripts113599
+Node: Command History115645
+Node: History expansion118269
+Node: Hot keys121477
+Node: Statistical Process running in ESS?124943
+Node: Emacsclient126248
+Node: Other127055
+Node: Editing128101
+Node: Edit buffer129260
+Node: Loading131294
+Node: Error Checking132345
+Node: Evaluating code133391
+Node: Indenting136881
+Node: Other edit buffer commands139929
+Node: Source Files141846
+Node: Source Directories146376
+Node: Help149515
+Node: Transcript Mode153495
+Node: Resubmit154631
+Node: Clean155715
+Node: Miscellaneous156434
+Node: Highlighting156917
+Node: Graphics158349
+Node: printer158871
+Node: X11159644
+Node: winjava160242
+Node: Imenu160645
+Node: Toolbar161127
+Node: Object Completion161555
+Node: Bugs Etc162366
+Node: Bugs162594
+Node: Reporting Bugs163852
+Node: Mailing Lists164652
+Node: Customization165376
+Node: Variables166245
+Node: Variables for starting ESS167201
+Node: Dump file variables169231
+Node: Indentation variables170419
+Node: Variables controlling interaction173424
+Node: Editing assembly files174323
+Node: Hooks175137
+Node: Keybindings176296
+Node: Key Index177337
+Node: Concept Index177492
+Node: Variable and command index187863
 
 End Tag Table
