@@ -33,9 +33,6 @@ INSTALL = cp -p
 #GZCAT = gzcat
 GZCAT = zcat
 
-# make program
-MAKE = make
-
 # program to convert .texi{nfo} to .info
 MAKEINFO = makeinfo
 MAKETXT = $(MAKEINFO) --no-validate --no-headers --no-split -o -
