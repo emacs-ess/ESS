@@ -6,6 +6,7 @@
 	presumably no-one will want to customize this variable!  Comment
 	line prior to definiton already says that this variable is not
 	user-changeable.
+	(ess-dialect): Change from defcustom to defvar.
 
 2003-12-08  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
