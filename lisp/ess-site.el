@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/07/01 11:32:42 $
-;; Version: $Revision: 5.110 $
-;; RCS: $Id: ess-site.el,v 5.110 2004/07/01 11:32:42 stephen Exp $
+;; Modified: $Date: 2004/07/02 07:45:48 $
+;; Version: $Revision: 5.111 $
+;; RCS: $Id: ess-site.el,v 5.111 2004/07/02 07:45:48 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -551,19 +551,31 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; Create functions for calling older versions of R and Sqpe.
 (if ess-microsoft-p 
     (progn
-      (ess-sqpe-versions-create)   ;; use ess-SHOME-versions
-      (ess-rterm-versions-create)) ;; use ess-rterm-versions
-  (ess-r-versions-create))
-;; A side effect of calling ess-r-versions-create is that a list of strings,
-;; representing the new defuns will be stored in ess-r-versions-created.
-;; Add the R defuns, if any, to the menu.
-(when ess-r-versions-created
+      (setq ess-sqpe-versions-created
+	    (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
+      (setq ess-rterm-versions-created
+	    (ess-rterm-versions-create))) ;; use ess-rterm-versions
+  (setq ess-r-versions-created
+	(ess-r-versions-create)))         ;; use ess-r-versions
+;; A list of strings, representing the new defuns will be stored in
+;;    ess-sqpe-versions-created,
+;;    ess-rterm-versions-created,
+;;    ess-r-versions-created.
+;; Add the new defuns, if any, to the menu.
+(let ((ess-versions-created)
+      (a ess-r-versions-created)
+      (b ess-rterm-versions-created)
+      (c ess-sqpe-versions-created))
+  (setq ess-versions-created (nconc ess-versions-created a))
+  (setq ess-versions-created (nconc ess-versions-created b))
+  (setq ess-versions-created (nconc ess-versions-created c))
+  (when ess-versions-created
   ;; new-menu will be a list of 3-vectors, of the form:
   ;; ["R-1.8.1" R-1.8.1 t]
   (let (( new-menu (mapcar '(lambda(x) (vector x (intern x) t)) 
-			   ess-r-versions-created)))
+			   ess-versions-created)))
     (easy-menu-add-item ess-mode-menu '("Start Process")
-			(cons "Other" new-menu))))
+			(cons "Other" new-menu)))))
 
 
 ;;; 3. Customization (and commented out examples) for your site

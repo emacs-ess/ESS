@@ -91,8 +91,14 @@ and when ESS prompts for "Starting Args ? ", enter (for example):
 
 Then that R process will be started up using @code{R --vanilla}.
 
-If you have other versions of R available on the system, ESS is also
-able to start those versions.  For example, if you have "R-1.8.1" on
+
+Menubar access to other versions of R and Sqpe
+
+If you have other versions of R or S-Plus available on the system, ESS is also
+able to start those versions.  
+
+R on Unix systems:
+If you have "R-1.8.1" on
 your `exec-path', it can be started using @kbd{M-x R-1.8.1}.  By
 default, ESS will find versions of R beginning "R-1" or "R-2".  If your
 versions of R are called other names, consider renaming them with a
@@ -101,6 +107,30 @@ which defuns have been created for starting different versions of R,
 type @kbd{M-x R-} and then hit [Tab].  You will then see if any defuns
 for particular versions of R have been created.  These other versions of
 R can also be started from the "ESS / Start Process / Other" menu.
+
+R on Windows systems: 
+If you have "rw1081" on
+your `exec-path', it can be started using @kbd{M-x rw1081}.  By
+default, ESS will find versions of R located in directories
+parallel to the version of R in your @code{PATH}.  If your
+versions of R are called other names, you will need to change the variable
+@code{ess-rterm-versions}.  To see
+which defuns have been created for starting different versions of R,
+type @kbd{M-x rw} and then hit [Tab].  You will then see if any defuns
+for particular versions of R have been created.  These other versions of
+R can also be started from the "ESS / Start Process / Other" menu.
+
+Sqpe (S-Plus running inside an emacs buffer) on Windows systems:
+If you have an older version of S-Plus (S-Plus 6.1 for example) on your system,
+ir can be started inside an emacs buffer with @kbd{M-x splus61}.  By
+default, ESS will find versions of S-Plus located in the installation
+directories that Insightful uses by default.  If your
+versions of S-Plus are anywhere else, you will need to change the variable
+@code{ess-SHOME-versions}.  To see
+which defuns have been created for starting different versions of S-Plus,
+type @kbd{M-x spl} and then hit [Tab].  You will then see if any defuns
+for particular versions of S-Plus have been created.  These other versions of
+S-Plus can also be started from the "ESS / Start Process / Other" menu.
 
 New for ESS 5.1.2 (and later):  "S-elsewhere" command
 

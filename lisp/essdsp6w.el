@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2004/06/30 05:34:58 $
-;; Version: $Revision: 5.22 $
-;; RCS: $Id: essdsp6w.el,v 5.22 2004/06/30 05:34:58 rmh Exp $
+;; Modified: $Date: 2004/07/02 07:45:48 $
+;; Version: $Revision: 5.23 $
+;; RCS: $Id: essdsp6w.el,v 5.23 2004/07/02 07:45:48 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -495,17 +495,28 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
     (toggle-read-only t)		; restore ESS buffer to be read-only
     ))
 
+(defvar ess-sqpe-versions-created nil
+  "List of strings of the new defuns created by `ess-sqpe-versions-create'.
+This is used by the easymenu code to add the new defuns to the menubar
+under ESS -> Start Process -> Other.")
+
 (defun ess-sqpe-versions-create ()
   "Generate the `M-x splusxy' functions for starting other versions of
 Sqpe.  See `ess-sqpe-versions' for strings that determine which
 functions are created.  This works by creating a temp buffer where the
 template function `Sqpe+template' is edited by replacing the string
 'Sqpe+template' by the version name.  The list of functions actually
-created appears in the *ESS* buffer."
+created appears in the *ESS* buffer.
+
+The result `ess-sqpe-versions-created' will store a
+list of the new Sqpe defuns, if any, that were created.  The result will
+normally be bound to the added to global variable `ess-sqpe-versions-created'.
+The defuns will normally be placed on the menubar upon ESS initialisation."
   (let ((beg)
 	(versions)
 	(version)
 	(eval-buf (get-buffer-create "*ess-temp-sqpe-evals*"))
+	(ess-sqpe-versions-created)
 	)
     ;;
     (save-excursion
@@ -532,6 +543,9 @@ created appears in the *ESS* buffer."
 	      (while (search-forward "ess-SHOME" nil t)
 		(replace-match version t t))
 	      (goto-char (point-max))
+	      (setq ess-sqpe-versions-created
+		    (cons (file-name-nondirectory version)
+			  ess-sqpe-versions-created))
 	      (ess-write-to-dribble-buffer
 	       (format
 		"(Sqpe): ess-sqpe-versions-create making M-x defun %s for %s \n"
@@ -539,7 +553,8 @@ created appears in the *ESS* buffer."
 	      )))
       ;; buffer has now been created with defuns, so eval them!
       (eval-buffer)
-      (kill-buffer eval-buf))))
+      (kill-buffer eval-buf))
+    ess-sqpe-versions-created))
 
 ;; template function used by ess-sqpe-versions-create
 (defun Sqpe+template (&optional proc-name)
