@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/09/16 20:19:19 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: essl-s.el,v 1.12 1997/09/16 20:19:19 rossini Exp $
+;; Modified: $Date: 1997/10/02 01:52:36 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: essl-s.el,v 1.13 1997/10/02 01:52:36 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -83,7 +83,9 @@
   (modify-syntax-entry ?\' "\"" S-syntax-table)
   (modify-syntax-entry ?#  "<"  S-syntax-table) ; open comment
   (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
-  (modify-syntax-entry ?.  "w"  S-syntax-table) ; used in S obj names
+  ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; used in S obj names
+  (modify-syntax-entry ?.  "_"  S-syntax-table) ; see above/below,
+					; plus consider separation. 
   (modify-syntax-entry ?$  "_"  S-syntax-table) ; foo.bar$hack is 1 symbol
   (modify-syntax-entry ?_  "."  S-syntax-table)  
   (modify-syntax-entry ?*  "."  S-syntax-table)

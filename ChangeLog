@@ -1,3 +1,39 @@
+Wed Oct  1 21:50:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el (S-syntax-table): modified . to be "_" (KH). 
+
+Wed Oct  1 21:46:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: Require ess-site, not just ess, so that language
+ 	specific stuff will be loaded.
+	
+Wed Oct  1 21:45:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-trns.el: Require ess-site, not just ess, so that language
+	specific stuff will be loaded.
+
+Tue Sep 16 16:15:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el (SAS-editing-alist): 
+	* essl-lsp.el (Lisp-editing-alist): 
+	* essl-s.el (S-editing-alist): 
+
+	ess-keep-dump-files NEEDS to be	'ask. 
+
+Wed Sep 10 13:48:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-help.el (ess-submit-bug-report): ess-program-name doesn't
+	exist.
+
+Wed Sep 10 13:44:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el: can't require sas here.
+
+Wed Sep 10 13:33:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el: added Tom Cook's sas-data code.  Not integrated
+	yet.
+
 Wed Sep 10 09:42:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (html/ess_toc.html): Use explicit file "index.html",
@@ -296,6 +332,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.2  1997/10/02 01:51:47  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.1  1997/09/10 17:21:00  rossini
 	* Removing Initial revision
 	* Removing

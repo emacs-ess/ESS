@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/10 19:46:23 $
-;; Version: $Revision: 1.57 $
-;; RCS: $Id: ess-inf.el,v 1.57 1997/09/10 19:46:23 rossini Exp $
+;; Modified: $Date: 1997/10/02 01:47:08 $
+;; Version: $Revision: 1.58 $
+;; RCS: $Id: ess-inf.el,v 1.58 1997/10/02 01:47:08 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -38,7 +38,7 @@
  ; Requires and autoloads
 
 ;;*;; Requires
-(require 'ess)
+(require 'ess-site)
 (require 'comint)
 
 ;; Byte-compiler, SHUT-UP! 

@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/02 01:45:29 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: ess-trns.el,v 1.4 1997/10/02 01:45:29 rossini Exp $
+;; Modified: $Date: 1997/10/02 01:46:36 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: ess-trns.el,v 1.5 1997/10/02 01:46:36 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -34,7 +34,7 @@
 
  ; Requires and autoloads
 
-(require 'ess)
+(require 'ess-site)
 
 (eval-when-compile 
   (load "comint"))
