@@ -1,3 +1,9 @@
+2002-01-14  Richard Heiberger <rmh@surfer.stat.temple.edu>
+
+	* ess-mous.el: ess-mous is now on submenu of C-mouse-3 in
+	  ess-transript-mode, inferior-ess-mode, ess-mode.  This feature
+	  is still beta.
+
 2002-01-11  Richard Heiberger <rmh@surfer.stat.temple.edu>
 
 	* ess-inf.el: remove .in.ESS

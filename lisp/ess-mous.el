@@ -5,7 +5,7 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: 25 Mar 2001
-;; Modified: $Date: 2002/01/09 13:55:31 $
+;; Modified: $Date: 2002/01/15 01:52:54 $
 ;; Version: $Revision:
 ;; RCS: $Id: ess-mous.el
 
@@ -169,7 +169,9 @@ case the buffer containing the answer is renamed to the value of the
 constructed command.  If PAGE is non-nil and using ddeclient, expand
 the string one more time by embedding it in a \"page()\" command."
   (interactive)
-  (let* (scommand page-scommand)
+  (let* (scommand
+	 page-scommand
+	 (ess-mouse-customize-alist ess-local-customize-alist))
     (if (not head) (setq head "summary("))
     (if (not tail) (setq tail ")"))
     (if (not commands-buffer) (setq commands-buffer
@@ -181,18 +183,21 @@ the string one more time by embedding it in a \"page()\" command."
 	  (setq page-scommand (if page
 				  (concat "page(" scommand ")")
 				scommand))
+	  (set-buffer-file-coding-system 'undecided-dos)
 	  (ess-command page-scommand commands-buffer)
 	  (if (not value-returned)
 	      nil
 	    (sleep-for 2)
 	    (switch-to-buffer (car (buffer-list)))))
+      (ess-make-buffer-current)
       (switch-to-buffer commands-buffer)
-      (ess-setq-vars-local (eval ess-local-customize-alist) (current-buffer))
+      (ess-setq-vars-local (eval ess-mouse-customize-alist) (current-buffer))
+      (setq ess-local-process-name ess-current-process-name)
       (ess-command (concat scommand "\n") commands-buffer)
       (if (not value-returned) (switch-to-buffer (nth 1 (buffer-list)))))
     (if (not value-returned)
 	nil
-      (S-transcript-mode)
+      (ess-transcript-mode (eval ess-mouse-customize-alist))
       (setq ess-local-process-name ess-current-process-name)
       (rename-buffer scommand))))
 
@@ -215,23 +220,23 @@ the string one more time by embedding it in a \"page()\" command."
   (if (equal ess-language "S")
       (setq mouse-me-menu-commands ess-S-mouse-me-menu-commands-alist)))
 
-(if (not ess-running-xemacs)
-    (progn
-      ;;gnu emacs
-      (define-key ess-mode-map              [S-mouse-3] 'ess-mouse-me)
-      (define-key inferior-ess-mode-map     [S-mouse-3] 'ess-mouse-me)
-      (defun ess-S-mouse-me-ess-transcript-mode ()
-	(define-key ess-transcript-mode-map [S-mouse-3] 'ess-mouse-me)))
-  ;; xemacs
-  (define-key ess-mode-map              [(shift button3)] 'ess-mouse-me)
-  (define-key inferior-ess-mode-map     [(shift button3)] 'ess-mouse-me)
-  (defun ess-S-mouse-me-ess-transcript-mode ()
-    (define-key ess-transcript-mode-map [(shift button3)] 'ess-mouse-me)))
-
+;; (if (not ess-running-xemacs)
+;;     (progn
+;;       ;;gnu emacs
+;;       (define-key ess-mode-map              [S-mouse-3] 'ess-mouse-me)
+;;       (define-key inferior-ess-mode-map     [S-mouse-3] 'ess-mouse-me)
+;;       (defun ess-S-mouse-me-ess-transcript-mode ()
+;; 	(define-key ess-transcript-mode-map [S-mouse-3] 'ess-mouse-me)))
+;;   ;; xemacs
+;;   (define-key ess-mode-map              [(shift button3)] 'ess-mouse-me)
+;;   (define-key inferior-ess-mode-map     [(shift button3)] 'ess-mouse-me)
+;;   (defun ess-S-mouse-me-ess-transcript-mode ()
+;;     (define-key ess-transcript-mode-map [(shift button3)] 'ess-mouse-me)))
+;; 
 (add-hook 'ess-mode-hook            'ess-S-mouse-me-menu-commands)
 (add-hook 'inferior-ess-mode-hook   'ess-S-mouse-me-menu-commands)
 (add-hook 'ess-transcript-mode-hook 'ess-S-mouse-me-menu-commands)
-(add-hook 'ess-transcript-mode-hook 'ess-S-mouse-me-ess-transcript-mode)
+;; (add-hook 'ess-transcript-mode-hook 'ess-S-mouse-me-ess-transcript-mode)
 
 
  ; Local variables section

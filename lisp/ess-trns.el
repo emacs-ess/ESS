@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/10/16 09:47:34 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: ess-trns.el,v 5.9 2001/10/16 09:47:34 maechler Exp $
+;; Modified: $Date: 2002/01/15 01:52:54 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: ess-trns.el,v 5.10 2002/01/15 01:52:54 rmh Exp $
 
 ;; This file is part of ESS
 
@@ -126,7 +126,8 @@
 (easy-menu-define
  ess-transcript-mode-menu ess-transcript-mode-map
  "Menu for use in S transcript mode."
- '("ess-trans"
+ '("ESS-trans"
+   ["What is this? (beta)"    ess-mouse-me                      t]
    ["Describe"	       describe-mode			 t]
    ["About"	       (ess-goto-info "Transcript Mode") t]
    ["Send bug report"  ess-submit-bug-report		 t]

@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/01/13 06:36:57 $
-;; Version: $Revision: 5.73 $
-;; RCS: $Id: ess-inf.el,v 5.73 2002/01/13 06:36:57 rmh Exp $
+;; Modified: $Date: 2002/01/15 01:52:54 $
+;; Version: $Revision: 5.74 $
+;; RCS: $Id: ess-inf.el,v 5.74 2002/01/15 01:52:54 rmh Exp $
 
 ;; This file is part of ESS
 
@@ -430,7 +430,7 @@ This was rewritten by KH in April 1996."
   "Return the ESS process named by NAME."
   (update-ess-process-name-list)
   (if (null name)
-      (error "No ESS process is running now.")
+      (error "No ESS process is associated with this buffer now.")
     (if (assoc name ess-process-name-list)
 	(get-process name)
       (error "Process %s is not running." name))))
@@ -590,15 +590,13 @@ With (prefix) EOB-P non-nil, positions cursor at end of buffer."
  ; Functions for evaluating code
 
 (defun ess-ddeclient-p ()
-  "Returns t if the ess-current-process-name is associated with an
+  "Returns t if the ess-local-process-name is associated with an
 inferior-ess-ddeclient, and nil if the ess-process is running as an
 ordinary inferior process.  Alway nil on Unix machines."
   (interactive)
-  (if (or (equal window-system 'w32)
-	  (equal window-system 'win32)
-	  (equal window-system 'mswindows))
+  (if ess-microsoft-p
       (not (equal (ess-get-process-variable
-		   ess-current-process-name 'inferior-ess-ddeclient)
+		   ess-local-process-name 'inferior-ess-ddeclient)
 		  (default-value 'inferior-ess-ddeclient)))))
 
 (defun ess-prompt-wait (proc &optional start-of-output)
@@ -1101,6 +1099,7 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
  inferior-ess-mode-menu inferior-ess-mode-map
  "Menu for use in Inferior S mode"
  '("iESS"
+   ["What is this? (beta)"    ess-mouse-me                      t]
    ["Resynch S completions"  ess-resynch		   t]
    ["Quit S"		     ess-quit			   t]
    ["Display search list"    ess-execute-search		   t]

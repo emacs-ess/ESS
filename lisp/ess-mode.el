@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/09/20 10:27:41 $
-;; Version: $Revision: 5.19 $
-;; RCS: $Id: ess-mode.el,v 5.19 2001/09/20 10:27:41 maechler Exp $
+;; Modified: $Date: 2002/01/15 01:52:54 $
+;; Version: $Revision: 5.20 $
+;; RCS: $Id: ess-mode.el,v 5.20 2002/01/15 01:52:54 rmh Exp $
 
 ;; This file is part of ESS
 
@@ -172,6 +172,7 @@
  ess-mode-menu ess-mode-map
  "Menu for use in `ess-mode'."
  '("ESS" ; ESS-mode
+   ["What is this? (beta)"    ess-mouse-me                      t]
    ["Load file"	 ess-load-file t]
    ("Eval and Go"
     ["Eval buffer"	ess-eval-buffer-and-go		  t]
