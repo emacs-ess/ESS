@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.42 $.
+### File: $Revision: 5.43 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -97,10 +97,6 @@ distclean: clean
 ## Use $(shell ..) only here, so only these are GNU make dependent :
 ess-cust.el: ../VERSION
 	perl -pi -e 's/".*"/"$(shell cat $^)"/ if /ess-version/' $@
-# no longer needed (since at least 5.1.19):
-# ess-site.el: ../VERSION
-# 	perl -pi -e 's/$(ESSVER_NR_REGEXP)/$${1}-$(shell cat $^)/go' $@
-
 
 ### File Dependencies
 

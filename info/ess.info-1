@@ -1,4 +1,4 @@
-This is ess.info, produced by makeinfo version 4.0 from ess.texi.
+This is ess.info, produced by makeinfo version 4.2 from ess.texi.
 
 START-INFO-DIR-ENTRY
 * ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
@@ -15,7 +15,7 @@ Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.2.0 of `ESS'.
+   This documentation relates to Version 5.1.22 of `ESS'.
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -30,9 +30,9 @@ File: ess.info,  Node: Top,  Next: Introduction,  Prev: (dir),  Up: (dir)
 ESS: Emacs Speaks Statistics
 ****************************
 
-   ESS version 5.2.0
+   ESS version 5.1.22
 
-   (Documentation $Revision: 1.7 $ $Date: 2002/07/24 14:49:35 $).
+   (Documentation $Revision: 1.8 $ $Date: 2002/07/26 14:24:50 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
      Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and

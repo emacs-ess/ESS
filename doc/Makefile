@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.29 $.
+### File: $Revision: 1.30 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -96,15 +96,6 @@ realclean : distclean
 
 ### Targets below here are only for developers. --------------------
 
-
-### Replace Version numbers (as in ../lisp/Makefile !):
-## Use $(shell ..) only here, so only these are GNU make dependent :
-README.SPLUS4WIN announc.texi inst_*.texi : ../VERSION
-	perl -pi -e 's/$(ESSVER_NR_REGEXP)/$${1}-$(shell cat $^)/go' $@
-
-#readme.texi : ../VERSION $(ReadmeSRC)
-#	perl -pi -e 's/($(ESS_REGEXP) \s*[Vv]ersion)\s+$(VER_NR_REGEXP)/$${1} $(shell cat $^)/go' $@
-
 ../README: $(ReadmeSRC)
 	$(MAKEINFOascii) readme.texi \
 	| perl -pe 'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' \
@@ -113,11 +104,6 @@ README.SPLUS4WIN announc.texi inst_*.texi : ../VERSION
 ../ANNOUNCE: $(ReadmSRC)
 	$(MAKEINFOascii) announc.texi \
 	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
-
-## ess.texi: use the perl for the above two combined:
-ess.texi : ../VERSION
-	perl -pi -e 's/$(ESSVER_NR_REGEXP)/$${1}-$(shell cat $^)/go;s/($(ESS_REGEXP) \s*[Vv]ersion\s+)$(VER_NR_REGEXP)/$${1}$(shell cat $^)/go' $@
-
 
 ##dist-doc: $(DOCDISTFILES)
 ##	@echo "**********************************************************"

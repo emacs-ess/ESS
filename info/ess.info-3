@@ -1,4 +1,4 @@
-This is ess.info, produced by makeinfo version 4.0 from ess.texi.
+This is ess.info, produced by makeinfo version 4.2 from ess.texi.
 
 START-INFO-DIR-ENTRY
 * ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
@@ -15,7 +15,7 @@ Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.2.0 of `ESS'.
+   This documentation relates to Version 5.1.22 of `ESS'.
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -451,7 +451,7 @@ Manager uses.  The interactive capabilities of ESS require you to start
 an inferior SAS process with M-x SAS (*Note iESS(SAS)--Inferior ESS
 processes::.)
 
-   At this writing (5.2.0), the indenting and syntactic highlighting
+   At this writing (5.1.22), the indenting and syntactic highlighting
 are usually correct.
 
 
@@ -918,31 +918,31 @@ Unix installation
      necessary.  This directory will be referred to below as ESSDIR.
 
   2. Retrieve the gzipped tar file
-     (http://software.biostat.washington.edu/ess/ess-5.2.0.tar.gz) to
+     (http://software.biostat.washington.edu/ess/ess-5.1.22.tar.gz) to
      ESSDIR.
 
   3. Decompress/unarchive the files from the disribution.
-          gunzip ess-5.2.0.tar.gz
-          tar xvf ess-5.2.0.tar
+          gunzip ess-5.1.22.tar.gz
+          tar xvf ess-5.1.22.tar
 
-          (or: `gunzip < ess-5.2.0.tar.gz | tar xvf -' ).
-          (or using GNU tar:  `tar zxvf ess-5.2.0.tar.gz').
+          (or: `gunzip < ess-5.1.22.tar.gz | tar xvf -' ).
+          (or using GNU tar:  `tar zxvf ess-5.1.22.tar.gz').
 
-     The `tar' command will create the subdirectory ess-5.2.0 and
+     The `tar' command will create the subdirectory ess-5.1.22 and
      unarchive the files there.
 
      If you are using GNU Emacs 19.29, decompress/unarchive
-     `ESSDIR/ess-5.2.0/lisp/19.29.tar.gz', read
-     `ESSDIR/ess-5.2.0/lisp/19.29/README', follow the instructions and
+     `ESSDIR/ess-5.1.22/lisp/19.29.tar.gz', read
+     `ESSDIR/ess-5.1.22/lisp/19.29/README', follow the instructions and
      you might be able to get ESS to work.  _Please note that GNU Emacs
      19.29 is no longer supported_.  For a list of supported versions
      of emacs, see *Note Requirements::.
 
-  4. Edit the file `ESSDIR/ess-5.2.0/lisp/ess-site.el' as explained in
+  4. Edit the file `ESSDIR/ess-5.1.22/lisp/ess-site.el' as explained in
      the comments section of that file.
 
   5.  Add the line
-          (load "ESSDIR/ess-5.2.0/lisp/ess-site")
+          (load "ESSDIR/ess-5.1.22/lisp/ess-site")
      to your user or system installation file (GNU Emacs uses
      `$HOME/.emacs' and XEmacs uses `$HOME/.xemacs/init.el' for the
      user initialization file.  GNU Emacs uses default.el or
@@ -978,7 +978,7 @@ Unix installation
 
   8. (OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     In the ESSDIR/ess-5.2.0 directory, edit the file `Makeconf' if you
+     In the ESSDIR/ess-5.1.22 directory, edit the file `Makeconf' if you
      want to place the compiled files in other locations; see LISPDIR
      and INFODIR.
 
@@ -1025,32 +1025,32 @@ Microsoft Windows installation
      directory (for example, `c:\emacs\') to hold the distribution.
      This directory will be referred to below as "the ESS distribution
      directory".  It will contain, at the end, either the tar file
-     `ess-5.2.0.tar.gz' or the zip file `ess-5.2.0.zip', and a directory
-     for the ESS source, which will be termed "the ESS-5.2.0 source
-     directory".
+     `ess-5.1.22.tar.gz' or the zip file `ess-5.1.22.zip', and a
+     directory for the ESS source, which will be termed "the ESS-5.1.22
+     source directory".
 
-  2. Retrieve the compressed tar file `ess-5.2.0.tar.gz' or the zipped
-     file `ess-5.2.0.zip' from one of the FTP or WWW archive sites via
+  2. Retrieve the compressed tar file `ess-5.1.22.tar.gz' or the zipped
+     file `ess-5.1.22.zip' from one of the FTP or WWW archive sites via
      FTP (or HTTP).  Be aware that http browsers on Windows frequently
      change the "." and "-" characters in filenames to other
      punctuation.  Please change the names back to their original form.
 
-  3. Copy `ess-5.2.0.tar.gz' to the location where you want the
-     ess-5.2.0 directory, for example to `c:\emacs\ess-5.2.0.tar.gz',
+  3. Copy `ess-5.1.22.tar.gz' to the location where you want the
+     ess-5.1.22 directory, for example to `c:\emacs\ess-5.1.22.tar.gz',
      and cd there.  For example,
 
           cd c:\emacs
 
      Extract the files from the distribution, which will unpack into a
-     subdirectory, `ess-5.2.0'.
-          gunzip ess-5.2.0.tar.gz
-          tar xvf ess-5.2.0.tar
-          (or: `gunzip < ess-5.2.0.tar.gz | tar xvf -' ).
-          (or: from the zip file: `unzip ess-5.2.0.zip')
+     subdirectory, `ess-5.1.22'.
+          gunzip ess-5.1.22.tar.gz
+          tar xvf ess-5.1.22.tar
+          (or: `gunzip < ess-5.1.22.tar.gz | tar xvf -' ).
+          (or: from the zip file: `unzip ess-5.1.22.zip')
 
      The `tar' command will extract files into the current directory.
 
-     Do not create `ess-5.2.0' yourself, or you will get an extra level
+     Do not create `ess-5.1.22' yourself, or you will get an extra level
      of depth to your directory structure.
 
   4. Windows users will usually be able to use the `lisp/ess-site.el'
