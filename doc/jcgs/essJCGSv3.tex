@@ -130,7 +130,7 @@
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/10/02 09:48:48 $ - $Revision: 1.35 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/10/02 20:27:16 $ - $Revision: 1.36 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -231,7 +231,7 @@ ESS is an interface to statistical packages that provides tools which
 facilitate both statistical software development and data analysis.
 ESS provides assistance with both the writing and evaluation of
 analysis code for many types of statistical packages.  ESS currently
-supports the S family of languages (including S
+supports the S family of languages, including S
 \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\regstrd\ \citep{Splus}, and R
 \citep{ihak:gent:1996,R}; \SAS\regstrd\ \citep{SAS:8}; \Stata\
 \citep{Stata:7.0}; \XLispStat\ \citep{Tier90} and its extensions Arc
@@ -241,9 +241,9 @@ to accommodate most statistical packages which provide either an
 interactive command-line prompt for inputting instructions, or process
 batch files for instructions.
 
-We discuss how ESS enhances a statistician's daily activities
-by presenting its features and showing how it facilitates statistical
-computing.  We describe the Emacs text editor, the underlying
+We discuss how ESS enhances a statistician's daily activities by
+presenting its features and showing how it facilitates statistical
+computing.  Next, we describe the Emacs text editor, the underlying
 platform on which ESS is built.  We conclude with a short history of
 the development of ESS and goals for the future.
 
@@ -275,7 +275,7 @@ statistical packages.  This is done by adding shortcuts and features
 for accelerated editing of files as well as by interacting with the
 particular statistical packages to provide, for example, control of
 input/output, assistance with evaluation, and specialized display for
-viewing, navigating, and if necessary, editing of help documentation
+viewing, navigating, and if necessary, editing of  documentation
 files.
 
 Some features do not require direct interaction with a statistics
@@ -283,23 +283,30 @@ package; these include textual script editing features such as
 syntactic fontification and colorization of scripts, detection of
 balanced and unbalanced parentheses and braces through highlighting,
 code indentation for readability, commenting out regions, and indexing
-of files by function.   The more novel features, such as help
+of files by function.  The more interesting features, such as help
 file parsing and viewing, object and function name completion,
 evaluation of scripts, and interactive editing of data and objects,
-require some interaction with the target statistical package
-either by controlling interactive behavior or by batch processing.
+require some interaction with the target statistical package either by
+controlling interactive behavior or by batch processing.
 
 \subsection{Editing}
 \label{sec:ESS:features}
 
-\paragraph{Syntactic highlighting and indentation of source code.}
-The programmers task is eased when language constructs (such as
-reserved words, function calls, strings, and comments) are visually
+\paragraph{Source Code Formatting and Display}
+The task of programming is made easier when language constructs (such
+as reserved words, function calls, strings, and comments) are visually
 identifiable and when lines of code are automatically indented to a
 depth appropriate to their context (e.g., if--then clauses, loops).
 ESS provides both of these to the programmer by including a
 description of the syntax of each supported statistical language in
-the form used by \stexttt{font-lock-mode}.
+the form used by \stexttt{font-lock-mode}.  The font selection and the
+indentation depth are automatically set while the user is typing.
+There are several options for mapping of colors or fonts to each of
+the syntactic types.  We selected black-and-white font-mapping for
+display here.  On a color terminal we might use purple for the
+keywords, red for comments, green for matching parens, and
+inverse-video purple for mismatched parens.  Emacs makes default
+choices of colors and ESS provides several other optional schemes.
 
 %Figure \ref{f.font} shows an example of font-locking a complicated S
 %statement.  The top panel shows an \stexttt{if} statement with a long
@@ -328,14 +335,6 @@ by a solid box.  In the bottom panel we replaced the matching
 parenthesis with an unbalanced bracket.  Emacs immediately marks that
 with the paren-mismatch font, bright purple on a color terminal.
 
-The font selection and the indentation depth are automatically
-supplied by Emacs as the lines are typed.  The user has several
-options for mapping of colors or fonts to each of the syntactic types.
-We selected black-and-white font-mapping for display here.  On a color
-terminal we might use purple for the keywords, red for comments, green
-for matching parens, and inverse-video purple for mismatched parens.
-Emacs makes default choices of colors and ESS provides several other
-optional schemes.
 
 %\begin{figure}[tbp]%h
 %  \ESSfig{%
@@ -552,7 +551,7 @@ capabilities for transparent access to remote files over a network.
 This means that the user views, edits, and saves files on a remote
 machine exactly as if they were on the local machine.
 
-This relaxs the requirement that statistics programs be available on
+This relaxes the requirement that statistics programs be available on
 the local machine.  ESS provides both transparent editing of files and
 execution of statistics packages on a remote machine with
 \stexttt{iESS[S]} or \stexttt{iESS[SAS]}.  All the editing and
@@ -643,10 +642,10 @@ listing files (with extensions of \stexttt{log} and \stexttt{lst}
 respectively).
 
 Only one function key press is needed to submit a \SAS\ batch process.
-Other function keys open the \SAS\ program, the \SAS\ log and the
-\SAS\ listing buffers.  When accessed in this manner, the \SAS\ log
-and \SAS\ listing buffers are automatically updated since they may
-have been appended or over-written by the \SAS\ batch process.  In
+Other function keys open the \SAS\ program file, the log buffer, and
+the listing buffers.  When accessed in this manner, the \SAS\ log and
+\SAS\ listing buffers are automatically updated since they may have
+been appended or over-written by the \SAS\ batch process.  In
 addition, the \SAS\ log is searched for error messages and the error
 messages, if any, are sequentially displayed with consecutive key
 presses.
@@ -854,14 +853,14 @@ on which to construct a statistical analysis user interface.
 \section{History of ESS}
 \label{sec:ESS:history}
 
-ESS is built on GNU Emacs, the editing system for which Richard
-Stallman won a MacArthur Foundation Fellowship in 1990.  Emacs has a
-long history of being a programmer's editor.  Many statisticians got
-their first taste of the power of Emacs with \Fortran\ mode which was
-introduced in 1986.  As statisticians' preferences changed from
-general-purpose languages such as \Fortran\ to specialized statistical
-analysis languages and packages like S and \SAS, Emacs modes soon
-followed.
+ESS would never have existed without GNU Emacs, the editing system for
+which Richard Stallman won a MacArthur Foundation Fellowship in 1990.
+Emacs is one of the oldest popular editors and has a long history of
+being a programmer's editor.  Many statisticians got their first taste
+of the power of Emacs with \Fortran\ mode which was introduced in
+1986.  As statisticians' preferences changed from general-purpose
+languages such as \Fortran\ to specialized statistical analysis
+languages and packages like S and \SAS, Emacs modes soon followed.
 
 The ESS environment is built on the open-source projects of many
 contributors, dating back over 10 years.  Doug Bates and Ed Kademan
@@ -874,14 +873,16 @@ powerful process interaction.
 John Sall wrote GNU Emacs macros for \SAS\ source code in 1990.  Tom
 Cook added functions to submit jobs, review listing and log files, and
 produce basic views of a dataset, thus creating a SAS-mode which was
-distributed in 1994.
+distributed in 1994.  A.J. Rossini extended this SAS-mode to work with
+XEmacs.
 
-In 1994, A.J. Rossini extended S-mode to support XEmacs.  Together
-with extensions written by Martin M{\"a}chler, this became version 4.7
-and supported S, \Splus, and R.  In 1995, Rossini extended SAS-mode to
-work with XEmacs.
+Returning to the S languages, we note that in 1994, Rossini extended
+S-mode to support XEmacs.  In 1995, together with extensions written
+by Martin M{\"a}chler, this became version 4.7 and supported S, \Splus,
+and R.  Kurt Hornik contributed a mode for editing R documentation
+files shortly after.
 
-In 1997, Rossini merged S-mode and SAS-mode into a single Emacs
+During 1997, Rossini merged S-mode and SAS-mode into a single Emacs
 package for statistical programming; the product of this marriage was
 called ESS version 5.  Richard M. Heiberger designed the inferior mode
 for interactive \SAS\ and SAS-mode was further integrated into ESS.
