@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/08 19:10:21 $
-;; Version: $Revision: 1.56 $
-;; RCS: $Id: essa-sas.el,v 1.56 2002/01/08 19:10:21 rsparapa Exp $
+;; Modified: $Date: 2002/01/08 22:25:14 $
+;; Version: $Revision: 1.57 $
+;; RCS: $Id: essa-sas.el,v 1.57 2002/01/08 22:25:14 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -64,28 +64,26 @@
 )
 
 (defvar ess-sas-submit-method 
-  (if (and ess-microsoft-p
-	   (not (w32-shell-dos-semantics)))
-      'sh
+  (if (and ess-microsoft-p (not (w32-shell-dos-semantics))) 'sh
     system-type)
   "Method used by `ess-sas-submit'.
 The default is based on the value of the emacs variable `system-type'
 and, on Windows machines, the function `w32-shell-dos-semantics'.
 'Apple-Macintosh  AppleScript
-'windows-nt       if *shell* runs MS-DOS semantics
+'windows-nt       if *shell* follows MS-DOS semantics
 'iESS             inferior ESS, may be local or remote
-'sh and other     if *shell* runs sh or bash
+'sh and other     if *shell* runs sh, ksh, csh, tcsh or bash
 
 Windows users running an MS-DOS shell will get 'windows-nt by default.
 
 Windows users running bash in their *shell* buffer will get 'sh by default.
 
-Unix users will get `system-type', which behaves like 'sh, by default.
+Unix users will get `system-type' which defaults to 'sh behavior.
 
 Users accessing a remote machine with `telnet', `rlogin', `ssh',
-or `ESS-elsewhere' should use
+or `ESS-elsewhere' should have one of the following in ~/.emacs
    (setq-default ess-sas-submit-method 'iESS)
-in ess-site.el or in .emacs.")
+   (setq-default ess-sas-submit-method 'sh)")
 
 (defcustom ess-sas-data-view-options 
     (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
@@ -160,7 +158,6 @@ or comint buffer on the local computer."
 	 (beg (string-match exit-done string)))
     (if beg
 	(message (substring string beg (match-end 0))))))
-
 
 (defun ess-revert-wisely ()
   "Revert from disk if file and buffer last modification times are different."
@@ -264,11 +261,10 @@ on the way."
     ))
 ))
 
-
 (defun ess-sas-data-view (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
-    (save-excursion 
+    (save-match-data (save-excursion 
     (search-backward-regexp "[ \t=]" nil t)
     (search-forward-regexp 
 	"[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ ,()\t;]"
@@ -278,6 +274,8 @@ on the way."
       (if (get-buffer "*shell*") (set-buffer "*shell*")
           (shell))
       (if ess-sas-data nil
+	  (if (string-match "^\\(first\\|last\\)[.]" ess-tmp-sas-data)
+	      (setq ess-tmp-sas-data nil)) 
 	  (setq ess-sas-data 
 	    (read-string "SAS Dataset: " ess-tmp-sas-data nil ess-tmp-sas-data)))
 	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
@@ -285,12 +283,12 @@ on the way."
 	    ess-sas-data "; run;\" " ess-sas-data-view-options " " 
 	    ess-sas-submit-post-command))
     (comint-send-input)
-    ))
-)
+))))
 
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with a SAS file by suffix and revert if necessary."
-    (if (or (string-match 
+    (save-match-data 
+	(if (or (string-match 
 	    "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)\\(@.+\\)?" 
 	    (expand-file-name (buffer-name)))
 	
@@ -309,7 +307,7 @@ on the way."
 	    (find-file ess-sas-temp-file))
 
 	(if revert (ess-revert-wisely))
-))))
+)))))
 
 (defun ess-sas-file (suffix &optional revert)
   "Please use `ess-sas-goto' instead."
