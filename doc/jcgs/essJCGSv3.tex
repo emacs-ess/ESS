@@ -130,7 +130,7 @@
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/10/04 20:42:40 $ - $Revision: 1.44 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/10/04 21:32:55 $ - $Revision: 1.45 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -298,7 +298,9 @@ identifiable and when lines of code are automatically indented to a
 depth appropriate to their context (e.g., if--then clauses, loops).
 ESS provides both of these to the programmer by including a
 description of the syntax of each supported statistical language in
-the form used by \stexttt{font-lock-mode}.  The font selection and the
+the form used by \stexttt{font-lock-mode} (for a brief discussion of 
+Emacs modes and font-lock-mode; see section~\ref{sec:major:minor}).  
+The font selection and the
 indentation depth are automatically set while the user is typing.
 There are several options for mapping of colors or fonts to each of
 the syntactic types.  We selected black-and-white font-mapping for
@@ -727,14 +729,19 @@ resulting buffers provide a copy of the entire transcript of the
 interaction, which can be edited and searched while the program
 executes.
 
-\paragraph{Major and Minor Modes.}
+\subsection{Major and Minor Modes.}
+\label{sec:major:minor}
 Emacs capabilities are extended by loading files containing commands
 and functions written in Emacs Lisp (elisp) \citep{RChassell1999},
 which is a dialect of Lisp \citep{PGraham:1996}.  Emacs commands can
 be called interactively by pressing a key sequence mapped to the
 command or by name.  The most important extensions to Emacs take the
 form of modes, which provide significant and specific enhancements to
-the user interface behavior.  A full description of the role that
+the user interface behavior.  For
+example, \stexttt{font-lock-mode} allows Emacs to highlight, with
+fonts or colors, the syntax of a programming language whose
+characteristics are described within a major mode like
+\stexttt{ESS[S]}.  A full description of the role that
 modes play is beyond the scope of this paper; there is documentation
 built into Emacs describing both the range of modes, how they work,
 and how to implement them.  The critical point is that this flexible
