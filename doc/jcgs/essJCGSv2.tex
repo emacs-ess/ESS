@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/05 04:12:01 $ - $Revision: 1.101 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/05 16:04:52 $ - $Revision: 1.102 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -181,9 +181,9 @@ intelligent environment for statistical analysis}
   it can increase statistical programming efficiency.
 \end{abstract}
 
-\noindent Keywords: Data Analysis, Programming, ESS, Emacs,
+\noindent Keywords: Data Analysis, Programming, 
 S, \SAS, \Splus, R, \XLispStat, \Stata, BUGS, free-software,
-open-source, multi-platform, cross-platform
+open-source, cross-platform
 
 
 \section{Introduction}
@@ -443,6 +443,22 @@ something that was wanted but that no one knew how to do.  The fact
 the Emacs can do it was a selling point.  It was very well received
 when I presented it at the meeting.
 
+Rodney: Having been a pharmaceutical SAS user from '93-'00, I can say
+that this is an improper use of auditing.  An auditors time is very 
+valuable and there are never enough auditors when you need them.  
+I'll give you an example.  We had to audit the CRFs of 2500 patients 
+in Europe and the auditors were embarking.  I wrote an undocumented, 
+not-following-the-standards SAS program to generate the audit sheets.  
+Instead of having them look at the code to see if it was compliant, 
+I sent them 50 audit sheets for patients that they already had the 
+source documents for.  As luck would have it, we had one patient that's 
+CRF did not match the audit sheet.  Further digging showed that the 
+Oracle database was not reporting the actual value that was in
+it's table due to a bug introduced in an upgrade 3 months earlier.
+Several hundred audit sheets that were already printed off were
+recycled and two people responsible for the Oracle database lost 
+their jobs.  This is the proper role of the auditor IMHO.  I think
+ESS should stay out of it, at least as far as the paper goes.
 \end{Comment}
 
 %\begin{figure}
