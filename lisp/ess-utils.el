@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/10/01 18:31:39 $
-;; Version: $Revision: 5.20 $
-;; RCS: $Id: ess-utils.el,v 5.20 2002/10/01 18:31:39 rsparapa Exp $
+;; Modified: $Date: 2002/12/20 21:47:20 $
+;; Version: $Revision: 5.21 $
+;; RCS: $Id: ess-utils.el,v 5.21 2002/12/20 21:47:20 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -176,7 +176,7 @@ If not `nil' and not `t', query for each instance."
     ;; always return nil, in case this is on write-file-hooks.
     nil))
 
-(defun ess-kermit-get (&optional ess-file-arg)
+(defun ess-kermit-get (&optional ess-file-arg ess-dir-arg)
 "Get a file with Kermit.  WARNING:  Experimental!  From your *shell*
 buffer, start kermit and then log in to the remote machine.  Open 
 a file that starts with `ess-kermit-prefix'.  From that buffer, 
@@ -188,22 +188,27 @@ directory that you specify with the same name, but without the
 
 ;;     (save-match-data 
        (let ((ess-temp-file (if ess-file-arg ess-file-arg (buffer-name)))
-	     (ess-temp-file-remote-directory nil))
+	     (ess-temp-file-remote-directory ess-dir-arg))
      
 	(if (string-equal ess-kermit-prefix (substring ess-temp-file 0 1)) 
 	  (progn
 ;; I think there is a bug in the buffer-local variable handling in GNU Emacs 21.3
 ;; Setting ess-kermit-remote-directory every time is somehow resetting it to the
 ;; default on the second pass.  So, here's a temporary work-around.  It will fail
-;; if you change the default, so we need to re-visit this in later versions.
-	    (if (string-equal "$HOME" ess-kermit-remote-directory)
-		(setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
-		    ess-kermit-remote-directory)))
+;; if you change the default, so maybe this variable should not be customizable.
+;; In any case, there is also trouble with local variables in XEmacs 21.4.9 and 
+;; 21.4.10.  XEmacs 21.4.8 is fine.
+	    (if ess-temp-file-remote-directory 
+		(setq ess-kermit-remote-directory ess-temp-file-remote-directory)
+		
+		(if (string-equal "." ess-kermit-remote-directory) 
+		    (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
+		    ess-kermit-remote-directory))))
 
 	  (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
 ;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
 	  (ess-sas-goto-shell)
-	  (insert "cd $HOME; " ess-kermit-command " -s " ess-temp-file-remote-directory "/"
+	  (insert "cd " ess-temp-file-remote-directory "; " ess-kermit-command " -s "
 	    (substring ess-temp-file 1) " -a " ess-temp-file)
           (comint-send-input)	
 ;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
@@ -235,9 +240,11 @@ directory with the same name, but without the `ess-kermit-prefix'."
 	  (progn
 ;; I think there is a bug in the buffer-local variable handling in GNU Emacs 21.3
 ;; Setting ess-kermit-remote-directory every time is somehow resetting it to the
-;; default on the second pass.  So, here's a temporary work-around.  It will fail
-;; if you change the default, so we need to re-visit this in later versions.
-	    (if (string-equal "$HOME" ess-kermit-remote-directory)		
+;; default on the second pass.  Here's a temporary work-around.  It will fail
+;; if you change the default, so maybe this variable should not be customizable.
+;; In any case, there is also trouble with local variables in XEmacs 21.4.9 and 
+;; 21.4.10.  XEmacs 21.4.8 is fine.
+	    (if (string-equal "." ess-kermit-remote-directory)		
 	        (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file to: "
 		    ess-kermit-remote-directory)))
 
@@ -245,7 +252,7 @@ directory with the same name, but without the `ess-kermit-prefix'."
 		
 ;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
 	  (ess-sas-goto-shell)
-	  (insert "cd $HOME; " ess-kermit-command " -a " ess-temp-file-remote-directory "/"
+	  (insert "cd " ess-temp-file-remote-directory "; " ess-kermit-command " -a " 
 	    (substring (file-name-nondirectory ess-temp-file) 1) " -g "  ess-temp-file)
           (comint-send-input)	
 ;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))

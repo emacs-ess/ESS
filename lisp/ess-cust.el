@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2002/11/30 04:08:05 $
-;; Version: $Revision: 1.38 $
-;; RCS: $Id: ess-cust.el,v 1.38 2002/11/30 04:08:05 stephen Exp $
+;; Modified: $Date: 2002/12/20 21:47:20 $
+;; Version: $Revision: 1.39 $
+;; RCS: $Id: ess-cust.el,v 1.39 2002/12/20 21:47:20 rsparapa Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -551,7 +551,7 @@ Good for evaluating ESS code."
     :type  'string
 )
 
-(defcustom ess-kermit-remote-directory "$HOME"
+(defcustom ess-kermit-remote-directory "."
     "*Buffer local variable that designates remote directory of file."
     :group 'ess
     :type  'string
