@@ -2,9 +2,9 @@
 ;;; Thu 06 May 2004
 ;;; Stephen Eglen
 ;;; GPL.
-;; Modified: $Date: 2004/05/08 13:00:22 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: ess-toolbar.el,v 1.4 2004/05/08 13:00:22 stephen Exp $
+;; Modified: $Date: 2004/05/10 11:19:10 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: ess-toolbar.el,v 1.5 2004/05/10 11:19:10 stephen Exp $
 
 ;;; Notes.
 
@@ -76,7 +76,7 @@ Icons should be found in ESS/etc/icons/ directory.")
 (defun ess-make-toolbar-R-emacs ()
   "Make the toolbar for R under Emacs."
   (setq ess-toolbar-R 
-	(if ess-own-toolbar
+	(if (or ess-own-toolbar (null tool-bar-map))
 	    (make-sparse-keymap)
 	  (copy-keymap tool-bar-map)))
   (let ((tool-bar-map ess-toolbar-R)
@@ -96,7 +96,7 @@ Icons should be found in ESS/etc/icons/ directory.")
 (defun ess-make-toolbar-S-emacs ()
   "Make the toolbar for S under Emacs."
   (setq ess-toolbar-S
-	(if ess-own-toolbar
+	(if (or ess-own-toolbar (null tool-bar-map))
 	    (make-sparse-keymap)
 	  (copy-keymap tool-bar-map)))
   (let ((tool-bar-map ess-toolbar-S)
