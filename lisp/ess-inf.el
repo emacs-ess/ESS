@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/10/17 18:17:41 $
-;; Version: $Revision: 5.56 $
-;; RCS: $Id: ess-inf.el,v 5.56 2000/10/17 18:17:41 rossini Exp $
+;; Modified: $Date: 2000/10/17 18:34:58 $
+;; Version: $Revision: 5.57 $
+;; RCS: $Id: ess-inf.el,v 5.57 2000/10/17 18:34:58 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -169,7 +169,7 @@ accompany the call for `inferior-ess-program'.
 	     (not (comint-check-proc (current-buffer)))
 	     (memq major-mode '(inferior-ess-mode)))
 	(setq startdir
-	      (if ess-ask-for-ess-directory (ess-get-directory-2 defdir)
+	      (if ess-ask-for-ess-directory (ess-get-directory defdir)
 		ess-directory))
 	(setq buf (current-buffer))
 	(ess-write-to-dribble-buffer "(inferior-ess) Method #1\n"))
@@ -186,7 +186,7 @@ accompany the call for `inferior-ess-program'.
        ;;      be used again, to justify?
        ((not buf)
 	(setq startdir
-	      (if ess-ask-for-ess-directory (ess-get-directory-2 defdir)
+	      (if ess-ask-for-ess-directory (ess-get-directory defdir)
 		ess-directory))
 	(if ess-ask-about-transfile
 	    (let ((transfilename (read-file-name
@@ -202,8 +202,10 @@ accompany the call for `inferior-ess-program'.
       (set-buffer buf)
       ;; Now that we have the buffer, set buffer-local variables.
       (ess-setq-vars-local ess-customize-alist buf)
-      (if ess-start-args (setq inferior-ess-start-args ess-start-args)
-	(setq inferior-ess-start-args "")) ;; AJR: Errors with XLS?
+      (if ess-start-args (setq inferior-ess-start-args ess-start-args))
+      ;; Was:  if not, set to null.
+      ;;(setq inferior-ess-start-args "")) ;; AJR: Errors with XLS?
+      ;; I think I might have solved this?
 
       ;; Write out debug info
       (ess-write-to-dribble-buffer
