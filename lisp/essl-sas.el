@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/01/16 00:40:53 $
-;; Version: $Revision: 5.36 $
-;; RCS: $Id: essl-sas.el,v 5.36 2002/01/16 00:40:53 rsparapa Exp $
+;; Modified: $Date: 2002/01/16 15:39:31 $
+;; Version: $Revision: 5.37 $
+;; RCS: $Id: essl-sas.el,v 5.37 2002/01/16 15:39:31 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -137,10 +137,10 @@ the mode line."
   :group 'ess-sas
   :type  'boolean)
 
-;; added sas-program 4/29/94.  user can specify a different version of sas.
+;; user can specify the sas program name
 (defcustom sas-program 
   (if (equal system-type 'Apple-Macintosh) "invoke SAS using program file" "sas")
-  "*Command to invoke SAS."
+  "*Command to invoke SAS, default for buffer-local `ess-sas-submit-command'."
   :group 'ess-sas
   :type  'string)
 
@@ -392,8 +392,10 @@ number."
 		"\\>")				    font-lock-reference-face)
 
 	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
-		"\\(data\\|endsas\\|quit\\|run\\|proc[ \t]+[a-z][a-z_0-9]+\\)[ \t\n;]")
+		"\\(data\\|endsas\\|quit\\|run\\)[ \t\n;]")
 		      				    font-lock-reference-face)
+	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
+		"proc[ \t]+[a-z][a-z_0-9]+")        font-lock-reference-face)
 	 (cons (concat "\\(^[0-9]*\\|;\\|%then\\|%else\\)[ \t]*"
 		"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"
 		"\\>")				    font-lock-reference-face)
