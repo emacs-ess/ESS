@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/06/19 20:51:32 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: ess.el,v 1.8 1997/06/19 20:51:32 rossini Exp $
+;; Modified: $Date: 1997/06/19 21:15:53 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: ess.el,v 1.9 1997/06/19 21:15:53 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.9  1997/06/19 21:15:53  rossini
+;; matrix -> matriux.
+;;
 ;; Revision 1.8  1997/06/19 20:51:32  rossini
 ;; removed comments about customization, moved into ess-site.el
 ;;
@@ -791,7 +794,7 @@ before signaling an error.")
    ("^[>+]\\(.*$\\)" (1 font-lock-variable-name-face keep t)) ; input
    ("<-\\|_" . font-lock-reference-face)		; assign
    ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
-   ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matriux labels
+   ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
     . font-lock-type-face) ; keywords
    )
