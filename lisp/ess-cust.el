@@ -937,6 +937,16 @@ version of the pathname."
 ;;		(setq SHOME (expand-file-name (concat pathname "/../..")))))))
 ;;      (setq-default inferior-Sqpe+6-SHOME-name SHOME)))
 
+(defcustom ess-S-quit-kill-buffers-p nil
+  "Controls whether S buffers should also be killed once a process is killed.
+This is used only when an iESS process is killed using C-c C-q.
+Possible values:
+nil - do not kill any S buffers associated with the process.
+t - kill S buffers associated with the process.
+ask - ask the user whether the S buffers should be killed."
+  :group 'ess-S
+  :type '(choice (const nil) (const t) (const ask)))
+
 (defcustom inferior-XLS-program-name "xlispstat"
   "*Program name for invoking an inferior ESS with \\[XLS]."
   :group 'ess-XLS

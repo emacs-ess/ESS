@@ -1744,9 +1744,13 @@ before you quit.  It is run automatically by \\[ess-quit]."
   (let ((the-procname (or (ess-make-buffer-current) ess-local-process-name)))
     (if the-procname nil
       (error "I don't know which ESS process to clean up after!"))
-    (if (y-or-n-p
-	 (format
-	  "Delete all buffers associated with process %s? " the-procname))
+    (if 
+	(or (eq ess-S-quit-kill-buffers-p t)
+	    (and
+	     (eq ess-S-quit-kill-buffers-p 'ask)
+	     (y-or-n-p
+	      (format
+	       "Delete all buffers associated with process %s? " the-procname))))
 	(save-excursion
 	  (mapcar '(lambda (buf)
 		     (set-buffer buf)

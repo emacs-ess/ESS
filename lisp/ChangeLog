@@ -1,3 +1,9 @@
+2005-01-24  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-cleanup): Use ess-S-quit-kill-buffers-p.
+
+	* ess-cust.el (ess-S-quit-kill-buffers-p): New variable.
+
 2005-01-22  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-quit-r): Default response (if RET pressed on its
