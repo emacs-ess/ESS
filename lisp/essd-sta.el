@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 1998/09/09 23:48:45 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: essd-sta.el,v 1.2 1998/09/09 23:48:45 rossini Exp $
+;; Modified: $Date: 1998/09/24 23:17:25 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: essd-sta.el,v 1.3 1998/09/24 23:17:25 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -56,8 +56,8 @@
     (ess-help-sec-regex            . ess-help-STA-sec-regex)
     (ess-help-sec-keys-alist       . STA-help-sec-keys-alist)
     (ess-loop-timeout              . 100000 )
-    (ess-object-name-db-file       . "ess-stt-namedb.el" )
-    (ess-retr-lastvalue-command    . 'nil)
+    (ess-object-name-db-file       . "ess-sta-namedb.el" )
+    (ess-retr-last. evalue-command    . 'nil)
     (ess-save-lastvalue-command    . 'nil)
     (inferior-ess-program          . inferior-STA-program-name)
     (inferior-ess-objects-command  . "desc\n")
