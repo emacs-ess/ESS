@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/09/16 05:34:32 $
-;; Version: $Revision: 5.27 $
-;; RCS: $Id: ess-inf.el,v 5.27 1999/09/16 05:34:32 rossini Exp $
+;; Modified: $Date: 1999/09/16 16:33:54 $
+;; Version: $Revision: 5.28 $
+;; RCS: $Id: ess-inf.el,v 5.28 1999/09/16 16:33:54 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -707,8 +707,8 @@ Waits for prompt after each line of input, so won't break on large texts."
     ;; the following is required to make sure things work!
 ;    (ess-write-to-dribble-buffer
 ;     (format "(eval-visibly 0): lang invisibly=%s \n" ess-language invisibly))
-;    (if (string= ess-language "STA")
-;	(setq invisibly t))
+    (if (string= ess-language "STA")
+	(setq invisibly t))
 ;    (ess-write-to-dribble-buffer
 ;     (format "(eval-visibly 1): lang invisibly=%s \n" ess-language invisibly))
 
@@ -1145,13 +1145,14 @@ to continue it."
   ;; AJR: Stata is hell.   This is the primary configuration point.
   (if (string= ess-language "STA")
       (progn 
-	;(setq comint-input-sender 'inferior-STA-input-sender)
+	(setq comint-input-sender 'inferior-STA-input-sender)
 	(setq comint-process-echoes t)))
 
   ;; Configuration for Omegahat input handling
   (if (string= ess-language "OMG")
       (progn 
-	;(setq comint-input-sender 'inferior-STA-input-sender)
+	; the following doesn't exist (until needed?)
+	;(setq comint-input-sender 'inferior-OMG-input-sender)
 	(setq comint-process-echoes nil)))
 
   (ess-write-to-dribble-buffer
@@ -1212,7 +1213,7 @@ to continue it."
   (ess-eval-visibly (concat string "\n")))
 
 (defun inferior-STA-input-sender (proc string)
-  (ess-eval-visibly (concat string "\n"))) ; t t))
+  (ess-eval-visibly (concat string "\n") t t))
 
 ;;> <PD writes>:
 ;;> Also, invoking help() from the command line may lead to confusing
