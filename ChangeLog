@@ -1,3 +1,13 @@
+Fri Nov  7 13:37:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.XLispStat: new file.  read it.
+	* README.SAS: New file.  Read it.
+	* README.S: revision, not version.
+
+Fri Nov  7 11:41:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S: added gen'l features, id -> version.
+
 Fri Nov  7 09:23:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README.S: New file.  Include it.
@@ -602,6 +612,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.18  1997/11/07 18:37:51  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.17  1997/11/07 14:26:21  rossini
 	* Removing *** empty log message ***
 	* Removing
