@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/07/16 14:16:33 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: ess-utils.el,v 5.12 2002/07/16 14:16:33 rsparapa Exp $
+;; Modified: $Date: 2002/07/24 18:45:10 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: ess-utils.el,v 5.13 2002/07/24 18:45:10 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -248,5 +248,39 @@ directory with the same name, but without the `ess-kermit-prefix'."
 	  (switch-to-buffer (find-buffer-visiting ess-temp-file))
 	  (ess-revert-wisely)
 ))))
+
+(defun ess-search-except (regexp &optional except backward)
+"Search for a regexp, store as match 1, optionally ignore strings that match exceptions."
+    (interactive)
+    
+    (let ((continue t) (exit nil))
+
+    (while continue
+	(if (or (and backward (search-backward-regexp regexp nil t))
+                (and (not backward) (search-forward-regexp regexp nil t))) (progn
+	    (setq exit (match-string 1))
+            (setq continue (and except (string-match except exit)))
+	    (if continue (setq exit nil)))
+        ;else
+	    (setq continue nil))
+    )
+
+    exit)
+)
+
+(defun ess-save-and-set-local-variables ()
+"If buffer was modified, save file and set Local Variables if defined.  
+Return t if buffer was modified, nil otherwise."
+  (interactive)
+
+  (if (buffer-modified-p) (save-excursion 
+ ;; buffer has changed, save buffer now (before potential revert)
+    (save-buffer)
+ ;; buffer has changed and Local Variables are defined, so update them with revert
+    (beginning-of-line -1)
+    (save-match-data 
+	(if (search-forward "End:" nil t) (revert-buffer t t))))
+    t nil)
+)
 
 (provide 'ess-utils)
