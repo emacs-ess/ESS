@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-$Revision: 4.3 $
+$Revision: 4.4 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1124,52 +1124,26 @@ NOTE: Not all of these are clean OR are even consistent.
      don't seem to me to be the problem.
 
 
-* (RMH) SAS indenting and general mode problems.
+* (RMH)
+  Dumped problem in S+3
+  Here is an example of the Dumped font problem in S+3:
 
-  Request
-  
-  * sas mode
-  I would like in SAS-mode
-    (define-key ess-mode-map "\t"          'sas-indent-line)
-  This definition makes the tab key do the same (correct) indentation
-  that RET (newline-and-indent) does.
+  > "trellis.settings" + "x + z + abcdefghij + klmnopqrstuv"
+  Error in "trellis.settings" + "x + z + abcdefghij ..: Non-numeric first operand
+  Dumped
+  > 
 
-  Discussion
+  Note that the Error description from S+3 truncates the command and
+  adds the ".." to indicate the truncation.  Part of what gets
+  truncated is the closing quotation mark.  Hence everything from that
+  point on is still inside the opening quotation mark.  Everything
+  includes the rest of the error description, the word "Dumped", the
+  prompt on the next line, and all succeeding commands.  I normally go
+  back and edit the line by adding the closing quote in front of the
+  prompt
 
-  At the moment the definition changes the tab key for everything,
-  S-mode as well as SAS-mode.
+  Dumped
+  "> 
 
-  I may use this definition on the machine that has SAS and that
-  doesn't have S.  If I do, then I will have to disable S-mode (for
-  editing only) on that machine.
-
-  The only way I currently see to do this is to make a new
-  sas-mode-map, which is a copy of ess-mode-map with the redefinition
-  of the tab key.  That looks like too much work.
-
-
-  I had hoped another way to do the same thing would be to add the
-  line
-
-    (ess-indent-command . 'sas-indent-line)
-
-  to SAS-editing-alist in essl-sas.el
-
-  This doesn't work.  I think the left side [in this case,
-  ess-indent-command] needs to be magically set up first to receive
-  the name of a function.
-
-  This is probably the right way to do it:
-  IRIS 16% grep ess-indent-command *.el
-  ess-mode.el:  (define-key ess-mode-map "\t"          'ess-indent-command)
-  ess-mode.el:    ["Indent line"       ess-indent-command                  t]
-  ess-mode.el:\\[ess-indent-command] indents for ESS code.
-  ess-mode.el:(defun ess-indent-command (&optional whole-exp)
-  ess-trns.el:  (define-key ess-transcript-mode-map "\t"    'ess-indent-command)
-  IRIS 17%
-
-  I think these 5 references should be changed to `S-indent-command'.
-  Then a variable ess-indent-command should be defined in
-  S-editing-alist that has the value 'S-indent-command, and in
-  SAS-editing-alist that has the value 'sas-indent-line, and so forth.
-
+  I would love for iESS [S+3] to monitor the word "^Dumped" and make sure the
+  font is back to regular.
