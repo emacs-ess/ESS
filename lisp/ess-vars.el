@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/26 01:11:00 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: ess-vars.el,v 1.2 1997/07/26 01:11:00 rossini Exp $
+;; Modified: $Date: 1997/07/26 01:14:32 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: ess-vars.el,v 1.3 1997/07/26 01:14:32 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,14 +29,15 @@
 
 ;;
 ;; $Log: ess-vars.el,v $
+;; Revision 1.3  1997/07/26 01:14:32  rossini
+;; some ess -> ESS in docstrings.
+;;
 ;; Revision 1.2  1997/07/26 01:11:00  rossini
 ;; removed more to ess.el
 ;;
 ;; Revision 1.1  1997/07/25 15:25:15  rossini
 ;; Initial revision
 ;;
-;;
-
 
 ;;; Code:
 
@@ -63,7 +64,7 @@
   "*If non-nil, asks about a transcript file before running ess")
 
 (defvar ess-proc-prefix "S"
-  "*Prefix of all ess processes. Can be changed, e.g., to 'R'.
+  "*Prefix of all ESS processes. Can be changed, e.g., to 'R'.
 Use `setq-default' if setting it in .emacs")
 
 (make-variable-buffer-local 'ess-proc-prefix)
@@ -71,10 +72,10 @@ Use `setq-default' if setting it in .emacs")
 
 
 (defvar ess-directory nil
-  "*The directory ess is run from.  It must end in a slash.
+  "*The directory ESS is run from.  It must end in a slash.
 Provided as a default if ess-ask-for-ess-directory is non-nil.
 A nil value means use the current buffer's default directory.
-Buffer-local: in process buffers, this contains the directory ess was
+Buffer-local: in process buffers, this contains the directory ESS was
 run from.")
 
 (make-variable-buffer-local 'ess-directory)
@@ -88,10 +89,10 @@ If this is a relative file name, it is relative to ess-directory.")
 (make-variable-buffer-local 'ess-history-file)
 (setq-default ess-history-file (concat "." ess-proc-prefix "history"))
 
-;;*;; Variables relating to the ess executable
+;;*;; Variables relating to the ESS executable
 
 (defvar ess-version-running "3.0"
-  "Version of ess being run.
+  "Version of ESS being run.
 The value of this variable affects the default values of the following
 variables:
  	 inferior-ess-help-command
@@ -165,7 +166,7 @@ nil, and the file is successfully loaded back into S.")
 
 
 (defvar ess-mode-silently-save t
-  "*If non-nil, automatically save ess source buffers before loading")
+  "*If non-nil, automatically save ESS source buffers before loading")
 
 ;;*;; Variables controlling editing
 
@@ -271,7 +272,7 @@ If not number, the statements are indented at open-parenthesis following
   "*The default value of ess-style")
 
 (defvar ess-style ess-default-style
-  "*The buffer specific ess indentation style.")
+  "*The buffer specific ESS indentation style.")
 
 ;;*;; Variables controlling behaviour of dump files
 
@@ -308,12 +309,12 @@ current buffer.")
   "*Hook to call when ess.el is loaded.")
 
 (defvar ess-pre-run-hook nil
-  "*Hook to call before starting up ess.
+  "*Hook to call before starting up ESS.
 Good for setting up your directory.")
 
 (defvar ess-post-run-hook nil
-  "*Hook to call just after the ess process starts up.
-Good for evaluating ess code.")
+  "*Hook to call just after the ESS process starts up.
+Good for evaluating ESS code.")
 
 (defvar inferior-ess-mode-hook '()
   "*Hook for customizing inferior ess mode.
@@ -326,7 +327,7 @@ Called after inferior-ess-mode is entered and variables have been initialised.")
   "Hook called just before line input is sent to the process")
 
 (defvar ess-transcript-mode-hook nil
-  "Hook for customizing ess transcript mode.")
+  "Hook for customizing ESS transcript mode.")
 
  ; System variables
 
