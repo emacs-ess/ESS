@@ -84,7 +84,7 @@ ChangeLog: VERSION
 	svn commit -m 'Version $(ESSVERSION)' ChangeLog
 
 rel: ChangeLog dist tag
-	[ x$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
+	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
 	@echo "** Placing tar and zip files **"
 	cp -p $(ESSDIR).tar.gz $(ESSDIR).zip   $(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
