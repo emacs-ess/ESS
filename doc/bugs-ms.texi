@@ -1,7 +1,5 @@
-@node An Initial FAQ List for ESS problems under Microsoft Windows 95/98/NT.
-@comment  node-name,  next,  previous,  up
 
-Also see the file @file{README.SPLUS4WIN} for more information and
+See the file @file{README.SPLUS4WIN} as well, for more information and
 details.
 
 @itemize @bullet
