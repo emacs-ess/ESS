@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.42 1997/07/26 01:23:26 rossini Exp $
+## $Id: Makefile,v 1.43 1997/07/28 12:09:39 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.43  1997/07/28 12:09:39  rossini
+## updated version number.
+##
 ## Revision 1.42  1997/07/26 01:23:26  rossini
 ## redid again.
 ##
@@ -114,7 +117,7 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 4.9-b8
+VERSION = 4.9-b10
 
 LASTVERSION = 4.8.MM6.XE3
 
