@@ -5,12 +5,9 @@ ESS VERSION 5.0
 
 This directory contains the distribution of ESS version 5.0, which
 used to be S-mode.  This is an Emacs-Lisp interface to interactive
-statistical programming and data analysis languages, including:
-
-* S dialects (S 3, S 4, Splus 3.x, Splus 4.x and R)
-* LispStat dialects (XLispStat, ViSta, Common LispStat(?))
-* SAS
-* SPSS dialects (SPSS, Fiasco)
+statistical programming and data analysis languages, including: S
+dialects (S 3, S 4, Splus 3.x, Splus 4.x and R), LispStat dialects
+(XLispStat, ViSta), SAS, and SPSS dialects (SPSS, Fiasco).
 
 Note that not all of these languages are currently supported by ESS,
 or are even in production versions at this stage.  However, this is
@@ -35,6 +32,13 @@ details.
 1. FEATURES
 -----------
 
+Languages Supported (or planned to be supported)
+
+	S dialects (S 3, S 4, Splus 3.x, Splus 4.x and R)
+	LispStat dialects (XLispStat, ViSta, Common LispStat(?))
+	SAS
+	SPSS dialects (SPSS, Fiasco)
+	
 Editing source code (S, LispStat, SAS)
 
         Syntactic indentation and highlighting of source code 
@@ -93,28 +97,29 @@ below.  Fixes and patches with bug reports are appreciated!
 
 * cd to a directory where you keep emacs lisp files, or create a new
   directory to hold the distribution.  This directory will be referred
-  to below as "the ESS-4.9 directory".  Note that the .elc files
+  to below as "the ESS-5.0 directory".  Note that the .elc files
   may be installed elsewhere (as specified in the Makefile) if
   desired.
 
-* Copy ESS-4.9.tar.gz to the location where you want the ESS-4.9
+* Copy ESS-5.0.tar.gz to the location where you want the ESS-5.0
   directory, and cd there.  Extract the files from the distribution,
-  which will unpack into a subdirectory, ESS-4.9.
+  which will unpack into a subdirectory, ESS-5.0.
 
-	gunzip ESS-4.9.tar.gz
-	tar xvf ESS-4.9.tar
+	gunzip ESS-5.0.tar.gz
+	tar vxf ESS-5.0.tar
 
-	(or using GNU tar:  tar zxvf ESS-4.9.tar.gz).
+	(or: gunzip < ESS-5.0.tar.gz | tar vxf - ).
+	(or using GNU tar:  tar zvxf ESS-5.0.tar.gz).
 
   The tar command will extract files into the current directory.
 
-  Do not create ESS-4.9 yourself, or you will get an extra level of
+  Do not create ESS-5.0 yourself, or you will get an extra level of
   depth to your directory structure.
 
 * Edit the file ess-site.el as explained in the comments section of
   that file.
 
-* In the ESS-4.9 directory, edit the file Makefile and then type:
+* In the ESS-5.0 directory, edit the file Makefile and then type:
 
 	make
 	make install
@@ -165,19 +170,18 @@ The easiest way to do this is within Emacs by typing
 	M-x ess-submit-bug-report 
 
 This also gives the maintainers valuable information about your
-installation with may help me to identify or even fix the bug.
+installation which may help us to identify or even fix the bug.
 
 
 6. GETTING THE LATEST VERSION
 -----------------------------
 
-The latest stable version of ESS is always available by WWW from
+The latest stable version of ESS is always available by WWW from:
 
 	http://www.maths.lancs.ac.uk:2080/~maa036/elisp/S-mode/
-
-ESS is also available via anonymous FTP from
-
 	ftp://wingra.stat.wisc.edu/pub/src/emacs-lisp/.
+??	ftp://ftp.stat.wisc.edu/
+??	ftp://franz.stat.wisc.edu/
 
 The latest alpha version of ESS is available via WWW or FTP, and can be
 found in the directory specified by:
