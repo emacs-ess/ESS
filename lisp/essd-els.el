@@ -1,13 +1,14 @@
 ;;; essd-els.el --- S-PLUS 3.x at another location customization
 
-;; Copyright (C) 1997 A. J. Rossini
 
-;; Author: A.J. Rossini <rossini@stat.sc.edu>
+;; Copyright (C) 1998 Richard M. Heiberger
+
+;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/12/11 00:57:59 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-els.el,v 1.1 1998/12/11 00:57:59 rossini Exp $
+;; Created: December 1998
+;; Modified: $Date: 1998/12/11 19:43:20 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-els.el,v 1.2 1998/12/11 19:43:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
