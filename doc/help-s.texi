@@ -57,14 +57,19 @@ To start up iESS mode, use:
 @example
    M-x S+3
    M-x S4
+   M-x S+5
+   M-x S+6
    M-x R
 @end example
 
-(for S-PLUS 3.x, S4, and R, respectively.  This assumes that you have
-access to each).  Usually the site will have defined one of these programs
-(by default S+3) to the simpler name:
+(for S-PLUS 3.x, S4, S+5, S+6 and R, respectively.  This assumes that
+you have access to each).  Usually the site will have defined one of
+these programs (by default S+6) to the simpler name:
 
    M-x S
+
+In the (rare) case that you wish to pass command line arguments to the
+starting S+6 process, set the variable @code{inferior-Splus-args}.
 
 Note that R has some extremely useful command line arguments.  For
 example, @code{--vanilla} will ensure R starts up without loading in any init
