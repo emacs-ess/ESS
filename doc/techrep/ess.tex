@@ -69,15 +69,19 @@
 \title{Emacs Speaks Statistics: A Universal Interface for
   Statistical Analysis}  
 
-\author{A.J. Rossini\footnote{Department of Biostatistics, University
-    of Washington and Fred Hutchinson Cancer Research Center, Seattle,
-    WA, USA} \and Martin M{\"a}chler\footnote{Seminar for Statistics;
-    ETH Zurich; Zurich, Switzerland} \and Kurt
-  Hornik\footnote{Wirtschaftsuniversit{\"a}t Wien and Technische
-    Universit{\"a}t Wien, Vienna, Austria}
-  \and Richard M. Heiberger\footnote{Temple University; Philadelphia,
-    PA, USA} \and Rodney Sparapani\footnote{Medical College of
-    Wisconsin, Milwaukee, WI, USA}}
+\author{A.J. Rossini \and Martin M{\"a}chler \and Kurt Hornik \and Richard
+  M. Heiberger \and Rodney Sparapani \footnote{A.J. Rossini is
+    Research Assistant Professor in the Department of Biostatistics,
+    University of Washington and Joint Assistant Member at the Fred
+    Hutchinson Cancer Research Center, Seattle, WA, USA (E-mail:
+    rossini@u.washington.edu); Martin M{\"a}chler is ? in the Seminar for
+    Statistics, ETH Zurich, Zurich, Switzerland (E-mail:
+    maechler@stat.math.ethz.ch); Kurt Hornik is ? in the
+    Wirtschaftsuniversit{\"a}t Wien and Technische Universit{\"a}t Wien,
+    Vienna, Austria (E-mail: ?); Richard M. Heiberger is ? at Temple
+    University, Philadelphia, PA, USA (E-mail: ?); and Rodney
+    Sparapani is ? at the Medical College of Wisconsin, Milwaukee, WI,
+    USA (E-mail: ?)}}
 
 \date{\today}
 
@@ -317,12 +321,14 @@ section.
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
 
-Since ESS originated as S-mode, ESS strongly supports the S family of
-languages; these include recent versions of S, \Splus, and R.  SAS is
-also well supported.  \Stata\ and \XLispStat\ (and the \XLispStat\ 
-extensions, ARC and ViSta) are supported with the basic functionality
-of syntax highlighting and process-interfacing.  ESS and its interface
-are fully discussed in the next section.
+Since ESS originated as S-mode, which provided an interface for
+programming and process control under GNU Emacs for \Splus\ version 3,
+ESS strongly supports the S family of languages; these include recent
+versions of S, \Splus, and R.  SAS is also well supported.  \Stata\ 
+and \XLispStat\ (and the \XLispStat\ extensions, ARC and ViSta) are
+supported with the basic functionality of syntax highlighting and
+process-interfacing.  ESS and its interface are fully discussed in the
+next section.
 
 \paragraph{Syntactic indentation and color/font-based source code
   highlighting.}
@@ -358,7 +364,7 @@ developed at Bell Labs, \Splus, and R)
 ESS provides object-name completion of both user- and system-defined
 functions and data.  ESS can dump and save
 objects (user- and system-generated) into text files in a formatted
-manner for editing, and reload them (possiblly after editing) back
+manner for editing, and reload them (possibly after editing) back
 into the statistical language/program.
 
 \paragraph{Source code checking.}
@@ -449,7 +455,7 @@ maneuvering around a file.  Type-setting and word-processing, which
 focus on the presentation of a document, are tasks that are not pure
 text-editing.  Emacs shares many features with word-processing
 programs and cooperates with document preparation systems such as
-(\LaTeX; SGML, XML, and XSLT; and Noweb).
+(\LaTeX; SGML, \textsc{xml}, and XSLT; and Noweb).
 
 The capabilities can be extended in an orthogonal manner to include
 other Emacs packages for assisting with documentation as noted above;
@@ -588,16 +594,15 @@ with transparent execution of a statistics package on a remote
 machine.  The idea of \stexttt{S+elsewhere} is that we open a telnet,
 rlogin, or ssh connection to another machine from within a buffer
 called \file{*S+elsewhere*}, and then run S on the other machine in
-that buffer.  All the editing and interaction features described in
-sections \ref{sec:S:edit} and \ref{sec:S:inf} for the local machine
-work equally well on the remote machine.  The relevant commands get
-sent through the buffer \file{*S+elsewhere*} to be executed by the
-program on the other machine.  The interaction, including all the
-unique features of working with ESS, appears to the user exactly the
-same as if the program were running on the local machine.  With
-X-windows running on the local machine, it is even possible to bring
-up visual displays from remote Unix systems on a Windows local
-machine.
+that buffer.  All the editing and interaction features described on
+the local machine work equally well on the remote machine.  The
+relevant commands get sent through the buffer \file{*S+elsewhere*} to
+be executed by the program on the other machine.  The interaction,
+including all the unique features of working with ESS, appears to the
+user exactly the same as if the program were running on the local
+machine.  With X-windows running on the local machine, it is even
+possible to bring up visual displays from remote Unix systems on a
+Windows local machine.
 
 \subsection{Editing and Reusing Transcripts}
 \label{sec:S:trans}
