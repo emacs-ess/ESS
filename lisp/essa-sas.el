@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/05/03 14:05:20 $
-;; Version: $Revision: 1.165 $
-;; RCS: $Id: essa-sas.el,v 1.165 2004/05/03 14:05:20 rsparapa Exp $
+;; Modified: $Date: 2004/05/07 13:49:37 $
+;; Version: $Revision: 1.166 $
+;; RCS: $Id: essa-sas.el,v 1.166 2004/05/07 13:49:37 stephen Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -110,10 +110,9 @@ or `ess-sas-data-view-insight'."
 (make-variable-buffer-local 'ess-sas-shell-buffer)
 
 (defcustom ess-sas-shell-buffer-remote-host nil 
-"*Remote host that you want to open a shell on."
-    :group 'ess-sas
-    :type  'string
-)
+  "*Remote host that you want to open a shell on."
+  :group 'ess-sas
+  :type '(choice (const nil) string))
 
 (make-variable-buffer-local 'ess-sas-shell-buffer-remote-host)
 
