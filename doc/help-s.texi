@@ -96,7 +96,10 @@ able to start those versions.  For example, if you have "R-1.8.1" on
 your `exec-path', it can be started using @kbd{M-x R-1.8.1}.  By
 default, ESS will find versions of R beginning "R-1" or "R-2".  If your
 versions of R are called other names, consider renaming them with a
-symbolic link or change the variable @code{ess-r-versions}.
+symbolic link or change the variable @code{ess-r-versions}.  To see
+which defuns have been created for starting different versions of R,
+type @kbd{M-x R-} and then hit [Tab].  You will then see if any defuns
+for particular versions of R have been created.
 
 New for ESS 5.1.2 (and later):  "S-elsewhere" command
 
