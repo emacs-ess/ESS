@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/03/24 15:21:13 $
-;; Version: $Revision: 5.19 $
-;; RCS: $Id: ess-site.el,v 5.19 1999/03/24 15:21:13 maechler Exp $
+;; Modified: $Date: 1999/03/26 08:01:24 $
+;; Version: $Revision: 5.20 $
+;; RCS: $Id: ess-site.el,v 5.20 1999/03/26 08:01:24 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -67,8 +67,8 @@
   ;; Not important in XEmacs, if unpacking from ../xemacs/site-lisp/
   ;; directory.
 
-  ;; WARNING- WITH EMACS 20.2, MUST USE ONE OF THE FOLLOWING
-  ;; NON-DEFAULT SETTINGS
+  ;; WARNING: with Emacs 20.2 (and 20.3 in one case), MUST USE
+  ;; =======  ONE OF THE FOLLOWING NON-DEFAULT SETTINGS
 
   ;; A nice default
   (defvar ess-lisp-directory
@@ -77,14 +77,14 @@
 
   ;; NON DEFAULTS:
   ;;(defvar ess-lisp-directory
-  ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ESS"))
-
-  ;;(defvar ess-lisp-directory
-  ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
+  ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-5.1.5/lisp"))
+  ;;  >> or replace "ess-5.1.5" above by "ESS" which would be a symbolic link..
+  ;;  >> This way, your .emacs (or default.el or site-start.el)
+  ;;  >> won't have to change with each version of ESS
 
   ;; example of "local" or personal use 
   ;;(defvar ess-lisp-directory
-  ;;(directory-file-name "/stat2/faculty/rossini/ESS"))
+  ;;(directory-file-name "/stat2/faculty/rossini/ESS/lisp"))
   
   (add-to-list 'load-path ess-lisp-directory))
 
