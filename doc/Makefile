@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.22 $.
+### File: $Revision: 1.23 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -30,7 +30,7 @@ READMEtargets = README.SPLUS4WIN README.Microsoft
 
 DOCS =	$(READMEtargets) \
 	README README.S README.XLispStat README.SAS README.SPLUS4WIN \
-	ess.texi dir ess.info ess.info-1 ess.info-2 ess.info-3 ess.dvi \
+	ess.texi dir ess.info ess.info-1 ess.info-2 ess.info-3 ess.info-4 ess.dvi \
 	TODO Why_S-mode_Rocks.DMS \
 	README-19.28 README.additions NEWS \
 	ajr-talk.tex rmh-talk.tex slverb.sty
