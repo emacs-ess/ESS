@@ -109,7 +109,7 @@ prefixed by "##").
     C-c C-b
     ## Go to *XLS:1* buffer, which is the process buffer, and examine
     ## the results.
-    C-c y
+    C-c C-y
     ## the above is a shortcut for:  C-x b *XLS:1*
     ## Return to the work buffer (may/may not be prefixed)
     C-x C-b 971103work.S
@@ -129,7 +129,7 @@ prefixed by "##").
     C-c C-v normal-rand
 
 2:  ## Load the file you want to work with
-    C-c C-f file.lsp
+    C-x C-f file.lsp
     ## Edit as appropriate, and then start up S-PLUS 3.x
     M-x XLS
     ## Go back to the file editing buffer
@@ -142,7 +142,7 @@ prefixed by "##").
 
 
 
-$Revision: 1.3 $
+$Revision: 1.4 $
 
 Local Variables: ***
 mode:indented-text ***
