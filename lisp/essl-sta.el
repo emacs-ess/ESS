@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1997/11/21 23:18:23 $
-;; Version: $Revision: 4.50 $
-;; RCS: $Id: essl-sta.el,v 4.50 1997/11/21 23:18:23 rossini Exp $
+;; Modified: $Date: 1997/11/30 19:03:20 $
+;; Version: $Revision: 4.90 $
+;; RCS: $Id: essl-sta.el,v 4.90 1997/11/30 19:03:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 

@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/26 19:01:22 $
-;; Version: $Revision: 4.54 $
-;; RCS: $Id: ess-inf.el,v 4.54 1997/11/26 19:01:22 rossini Exp $
+;; Modified: $Date: 1997/11/30 19:03:20 $
+;; Version: $Revision: 4.90 $
+;; RCS: $Id: ess-inf.el,v 4.90 1997/11/30 19:03:20 rossini Exp $
 
 ;; This file is part of ESS
 

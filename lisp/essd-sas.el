@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/30 17:03:34 $
-;; Version: $Revision: 4.56 $
-;; RCS: $Id: essd-sas.el,v 4.56 1997/11/30 17:03:34 rossini Exp $
+;; Modified: $Date: 1997/11/30 19:03:20 $
+;; Version: $Revision: 4.90 $
+;; RCS: $Id: essd-sas.el,v 4.90 1997/11/30 19:03:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 

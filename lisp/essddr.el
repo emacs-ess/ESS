@@ -19,7 +19,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 4.51 1997/11/26 16:01:35 rossini Exp $
+;;; ESS RCS: $Id: essddr.el,v 4.90 1997/11/30 19:03:20 rossini Exp $
 
 ;;; Code:
 

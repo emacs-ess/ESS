@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/11/24 15:25:53 $
-;; Version: $Revision: 4.52 $
-;; RCS: $Id: essd-s4.el,v 4.52 1997/11/24 15:25:53 rossini Exp $
+;; Modified: $Date: 1997/11/30 19:03:20 $
+;; Version: $Revision: 4.90 $
+;; RCS: $Id: essd-s4.el,v 4.90 1997/11/30 19:03:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 

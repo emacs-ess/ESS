@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 1 Sept 1997
-;; Modified: $Date: 1997/11/30 17:15:19 $
-;; Version: $Revision: 4.51 $
-;; RCS: $Id: essl-lsp.el,v 4.51 1997/11/30 17:15:19 rossini Exp $
+;; Modified: $Date: 1997/11/30 19:03:20 $
+;; Version: $Revision: 4.90 $
+;; RCS: $Id: essl-lsp.el,v 4.90 1997/11/30 19:03:20 rossini Exp $
 
 ;; This file is part of ESS.
 
