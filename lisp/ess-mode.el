@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/21 21:19:52 $
-;; Version: $Revision: 1.63 $
-;; RCS: $Id: ess-mode.el,v 1.63 1997/10/21 21:19:52 rossini Exp $
+;; Modified: $Date: 1997/11/07 19:42:44 $
+;; Version: $Revision: 1.64 $
+;; RCS: $Id: ess-mode.el,v 1.64 1997/11/07 19:42:44 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -287,10 +287,14 @@ Variables controlling indentation style:
     this far to the right of the start of its line.
  ess-else-offset
     Extra indentation for line if it starts with `else'.
+ ess-close-brace-offset
+    Extra indentation for closing braces.
+ ess-fancy-comments
+    Non-nil means distinguish between #, ##, and ### for indentation.
 
 Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
-indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
- (quoted from C language style)."
+indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
+`CLB' (quoted from C language style)."
   (interactive)
   (kill-all-local-variables) ;; NOTICE THIS!
   (ess-setq-vars-local alist (current-buffer))
@@ -681,7 +685,9 @@ The relative indentation among the lines of the expression are preserved."
 			(setq this-indent val))))
 	    ;; Adjust line indentation according to its contents
 	    (if (= (following-char) ?})
-		(setq this-indent (- this-indent ess-indent-level)))
+		;;(setq this-indent (- this-indent ess-indent-level)))
+ 		(setq this-indent (+ this-indent 
+ 				     (- ess-close-brace-offset ess-indent-level))))
 	    (if (= (following-char) ?{)
 		(setq this-indent (+ this-indent ess-brace-offset)))
 	    ;; Put chosen indentation into effect.
@@ -693,9 +699,8 @@ The relative indentation among the lines of the expression are preserved."
 	    ;; Indent any comment following the text.
 	    (or (looking-at comment-start-skip)
 		(if (re-search-forward comment-start-skip (save-excursion (end-of-line) (point)) t)
-		    (progn (indent-for-comment) (beginning-of-line)))))))))
-					; (message "Indenting S expression...done")
-  )
+		    (progn (indent-for-comment) (beginning-of-line))))))))))
+;; (message "Indenting S expression...done")
 
 ;;;*;;; Support functions for indentation
 
@@ -722,9 +727,9 @@ Return the amount the indentation changed by."
 	   (setq indent (current-indentation)))
 	  (t
 	   (skip-chars-forward " \t")
-	   (if (looking-at "###")
+	   (if (and ess-fancy-comments (looking-at "###"))
 	       (setq indent 0))
-	   (if (and (looking-at "#") (not (looking-at "##")))
+	   (if (and ess-fancy-comments (looking-at "#") (not (looking-at "##")))
 	       (setq indent comment-column)
 	     (if (eq indent t) (setq indent 0))
 	     (if (listp indent) (setq indent (car indent)))
@@ -734,7 +739,7 @@ Return the amount the indentation changed by."
 				   (ess-backward-to-start-of-if)
 				   (+ ess-else-offset (current-indentation)))))
 		   ((= (following-char) ?})
-		    (setq indent (- indent ess-indent-level)))
+		    (setq indent (+ indent (- ess-close-brace-offset ess-indent-level))))
 		   ((= (following-char) ?{)
 		    (setq indent (+ indent ess-brace-offset)))))))
     (skip-chars-forward " \t")
