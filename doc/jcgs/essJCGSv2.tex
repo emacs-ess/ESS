@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/06 23:46:32 $ - $Revision: 1.134 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/06 23:55:06 $ - $Revision: 1.135 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -315,8 +315,9 @@ syntax-based fontification and colorization; and reformatting based on
 programmed conventions.
 %%% AJR: this isn't a user's manual:
 %% automatic indentation is normally bound to the tab and return keys.
-
-%Second, major modes provide the ability to run other programs.  In
+Major modes also provide the ability to perform tasks which aren't
+specifically text-editing.  They can interface with system programs to
+provide command shells, read mail, and control other programs. 
 %this case, the other program's standard-input is based upon input from
 %a buffer and its standard-output is redirected to either the same or a
 %different buffer.  An important example of this kind of major-mode is
@@ -329,17 +330,23 @@ programmed conventions.
 %and saving) on the local or remote machine with equal ease.
 
 By contrast, minor-modes provide services that are useful, perhaps
-after a minor amount of customization, across a variety of major
-modes.  For example, the minor-mode \stexttt{font-lock-mode} allows
-Emacs to highlight, with fonts or colors, the syntax of a programming
-language whose characteristics are described by a major-mode like
-ESS\@.  \stexttt{overwrite-mode}, usually mapped to the \ssf{Insert}
-key, determines whether typed characters replace the existing text or
-push it to the right.  Minor modes can be used to change the key
-bindings, for example to emulate the keys used by another editor such
-as \stexttt{vi}, as well as to control programs that transfer files
-over a network, perform version control operations, or perform many
-other tasks which are common across types of files.
+with a small amount of customization, for many major modes.  For
+example, \stexttt{font-lock-mode} allows Emacs to highlight, with
+fonts or colors, the syntax of a programming language whose
+characteristics are described within a major-mode like \stexttt{ESS[S]}.
+%%% AJR: previous, or should we revert to the next line?
+%% ESS\@.   
+The \stexttt{overwrite-mode}
+%%% AJR: again, not a user manual.
+%% usually mapped to the \ssf{Insert} key, 
+determines whether typed characters replace the existing text or are
+inserted at the cursor. Minor modes can be used to change key bindings
+to emulate the keys used by another editor such as \stexttt{vi}.  In
+addition, they can be used to
+%%% AJR: talked about in next paragraph
+%% transparently control programs that transfer files over a network
+perform version control operations and many other tasks which are
+nearly identical between file types.
 
 \paragraph{Network Support.}
 Emacs allows transparent access to remote files over a network.
