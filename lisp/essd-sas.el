@@ -1,13 +1,13 @@
 ;;; essd-sas.el --- SAS customization
 
-;; Copyright (C) 1997--1999 Richard M. Heiberger and A. J. Rossini
+;; Copyright (C) 1997--2000 Richard M. Heiberger and A. J. Rossini
 
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1999/11/04 00:33:32 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: essd-sas.el,v 5.5 1999/11/04 00:33:32 ess Exp $
+;; Modified: $Date: 2000/03/06 16:57:41 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: essd-sas.el,v 5.6 2000/03/06 16:57:41 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -37,6 +37,7 @@
 (require 'comint)
 (require 'shell)
 
+(require 'essa-sas)
 (require 'essl-sas)
 
 
@@ -193,10 +194,16 @@ Better logic needed!  (see 2 uses, in this file).")
   (setq ess-customize-alist SAS-customize-alist)
   (ess-mode SAS-customize-alist proc-name)
 
-  ;; Local map settings, AFTER initialization.
-  (setq sas-mode-local-map (copy-keymap (current-local-map)))
-  (use-local-map sas-mode-local-map)
-  (local-set-key "\t" 'sas-indent-line))
+  ;; Local map settings, AFTER initialization (only if not yet defined)
+  (if sas-mode-local-map
+      nil
+    (setq sas-mode-local-map (copy-keymap (current-local-map)))
+    (ess-sas-edit-keys-toggle ess-sas-edit-keys-toggle)
+    (if ess-sas-local-unix-keys (ess-sas-local-unix-keys))
+    (if ess-sas-local-pc-keys (ess-sas-local-pc-keys))
+    (if ess-sas-global-unix-keys (ess-sas-global-unix-keys))
+    (if ess-sas-global-pc-keys (ess-sas-global-pc-keys)))
+  (use-local-map sas-mode-local-map))
 
 (defun SAS ()
   "Call 'SAS', from SAS Institute."
@@ -208,7 +215,10 @@ Better logic needed!  (see 2 uses, in this file).")
 	     ess-dialect
 	     temp-dialect))
     (ess-SAS-pre-run-hook temp-dialect)
-    (inferior-ess)))
+    (inferior-ess)
+    (save-excursion
+      (set-buffer "*SAS*")
+      (use-local-map sas-mode-local-map))))
 
 
 (defun ess-multi-frame-SAS ()
