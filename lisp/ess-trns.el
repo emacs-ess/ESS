@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/21 21:19:48 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: ess-trns.el,v 1.10 1997/10/21 21:19:48 rossini Exp $
+;; Modified: $Date: 1997/11/10 20:02:32 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: ess-trns.el,v 1.11 1997/11/10 20:02:32 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -36,7 +36,7 @@
 
 (require 'ess)
 
-(eval-when-compile 
+(eval-when-compile
   (load "comint"))
 
 (autoload 'ess-eval-region "ess-mode" "[autoload]" t)
@@ -54,21 +54,21 @@
 (autoload 'ess-load-file "ess-inf" "[autoload]" t)
 (autoload 'ess-request-a-process "ess-inf" "(autoload)" nil)
 (autoload 'get-ess-buffer "ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-S "ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-end-of-S "ess-inf" "(autoload)" nil)
+(autoload 'ess-switch-to-ESS "ess-inf" "(autoload)" nil)
+(autoload 'ess-switch-to-end-of-ESS "ess-inf" "(autoload)" nil)
 (autoload 'ess-eval-visibly "ess-inf" "(autoload)" nil)
 (autoload 'inferior-ess-get-old-input "ess-inf" "(autoload)" nil)
 
  ; ess-transcript-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; In this section:
-;;;; 
+;;;;
 ;;;; * The major mode ess-transcript-mode
 ;;;; * Commands for ess-transcript-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;*;; Major mode definition
-(defvar ess-transcript-mode-map nil)
+(defvar ess-transcript-mode-map nil "Keymap for ess-transcript-mode.")
 (if ess-transcript-mode-map
     nil
 
@@ -91,8 +91,8 @@
   (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-transcript-send-command-and-move)
   (define-key ess-transcript-mode-map "\M-\C-a"  'ess-beginning-of-function)
   (define-key ess-transcript-mode-map "\M-\C-e"  'ess-end-of-function)
-  (define-key ess-transcript-mode-map "\C-c\C-y" 'ess-switch-to-S)
-  (define-key ess-transcript-mode-map "\C-c\C-z" 'ess-switch-to-end-of-S)
+  (define-key ess-transcript-mode-map "\C-c\C-y" 'ess-switch-to-ESS)
+  (define-key ess-transcript-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
   (define-key ess-transcript-mode-map "\C-c\C-v" 'ess-display-help-on-object)
   (define-key ess-transcript-mode-map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
   (define-key ess-transcript-mode-map "\C-c\C-t" 'ess-execute-in-tb)
@@ -106,7 +106,7 @@
   (define-key ess-transcript-mode-map "\e\C-q"   'ess-indent-exp)
   (define-key ess-transcript-mode-map "\177"     'backward-delete-char-untabify)
   (define-key ess-transcript-mode-map "\t"       'ess-indent-command)
-						
+
   (define-key ess-transcript-mode-map "\C-c\C-p" 'comint-previous-prompt)
   (define-key ess-transcript-mode-map "\C-c\C-n" 'comint-next-prompt)
   ;; (define-key ess-transcript-mode-map "\C-c\C-n"    'ess-eval-line-and-next-line)
@@ -181,7 +181,7 @@ in the region, leaving only the S commands.
   (setq mode-name "ESS Transcript")
   (use-local-map ess-transcript-mode-map)
   (set-syntax-table ess-mode-syntax-table)
-  (setq mode-line-process 
+  (setq mode-line-process
 	'(" [" ess-local-process-name "]"))
   (make-local-variable 'ess-local-process-name)
   (setq ess-local-process-name nil)
@@ -192,7 +192,7 @@ in the region, leaving only the S commands.
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   ;; font-lock support
   (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults 
+  (setq font-lock-defaults
 	'(ess-trans-font-lock-keywords nil nil ((?' . "."))))
   (run-hooks 'ess-transcript-mode-hook))
 
@@ -203,7 +203,7 @@ in the region, leaving only the S commands.
 The line should begin with a prompt. The S process buffer is displayed if it
 is not already."
   (interactive)
-  (let* ((proc (or ess-local-process-name 
+  (let* ((proc (or ess-local-process-name
 		   (ess-request-a-process "Evaluate into which process? " t)))
 	 (ess-buf (get-ess-buffer proc)))
     (setq ess-local-process-name proc)
@@ -224,7 +224,7 @@ is not already."
 (defun ess-transcript-copy-command ()
   "Copy the command at point to the command line of the S process"
   (interactive)
-  (let* ((proc (or ess-local-process-name 
+  (let* ((proc (or ess-local-process-name
 		   (ess-request-a-process "Evaluate into which process? " t)))
 	 (ess-buf (process-buffer (get-process proc)))
 	 (input (inferior-ess-get-old-input)))
@@ -235,7 +235,7 @@ is not already."
       (set-buffer ess-buf)
       (goto-char (point-max))
       (insert input)))
-  (ess-switch-to-end-of-S))
+  (ess-switch-to-end-of-ESS))
 
 (defun ess-transcript-clean-region (beg end)
   "Strip the transcript in the region, leaving only S commands.
@@ -254,7 +254,7 @@ prompt from those lines than remain."
 
 ;;; This file is automatically placed in Outline minor mode.
 ;;; The file is structured as follows:
-;;; Chapters:     ^L ; 
+;;; Chapters:     ^L ;
 ;;; Sections:    ;;*;;
 ;;; Subsections: ;;;*;;;
 ;;; Components:  defuns, defvars, defconsts
