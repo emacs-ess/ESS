@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.10 $.
+### File: $Revision: 1.11 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -35,9 +35,8 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-# GNU make, exclusively:
-ESSVERSION=$(shell cat ../VERSION)
-#nd VERSIONDIR = ESS-$(ESSVERSION)
+# GNU make, exclusively --> see comment below /ESSVERSION/
+## ESSVERSION=$(shell cat ../VERSION)
 
 MYWWWDIR = /none/at/this/time
 MYFTPDIR = /none/at/this/time
@@ -96,15 +95,18 @@ realclean: distclean
 
 ### Targets below here are only for developers.
 
+## commented above ESSVERSION=$(shell cat ../VERSION)
+##	s/ESSVERSION/shell cat $^/
+## Use $(shell ..) only here, so only these are GNU make dependent :
 README.SPLUS4WIN announc.texi inst_*.texi : ../VERSION
-	perl -pi -e 's/([Ee][Ss]{2})-([0-9]+\.){2}[0-9]+/\1-$(ESSVERSION)/go' $@
+	perl -pi -e 's/([Ee][Ss]{2})-([0-9]+\.){2}[0-9]+/\1-$(shell cat $^)/go' $@
 readme.texi : ../VERSION
-	perl -pi -e 's/([Ee][Ss]{2} \s*[Vv]ersion)\s+([0-9]+\.){2}[0-9]+/\1 $(ESSVERSION)/go' $@
+	perl -pi -e 's/([Ee][Ss]{2} \s*[Vv]ersion)\s+([0-9]+\.){2}[0-9]+/\1 $(shell cat $^)/go' $@
 
 
 ##dist-doc: $(DOCDISTFILES)
 ##	@echo "**********************************************************"
-##	@echo "** Making distribution of ESS-DOC for release $(ESSVERSION)"
+##	@echo "** Making distribution of ESS-DOC for release $(shell cat $^)"
 ##	@echo "**********************************************************"
 ##	tar hcovf $(VERSIONDIR)-doc.tar $(DOCDISTFILES)
 ##	gzip $(VERSIONDIR)-doc.tar
