@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: essdsp6w.el,v 5.4 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2001/08/24 21:36:18 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: essdsp6w.el,v 5.5 2001/08/24 21:36:18 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -117,7 +117,7 @@ connects it to the *S+6 ddeclient* window.")
     (inferior-ess-secondary-prompt . "+ ?")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S+6")
-    (inferior-ess-start-args       . ""))
+    (inferior-ess-start-args       . "ALWAYS_PROMPT=X")) ;;workaround for bug in S-Plus 6 for Windows
  "Variables to customize for Sqpe+6.")
 
 
