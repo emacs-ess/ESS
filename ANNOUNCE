@@ -25,6 +25,14 @@ file README with the distribution.
 New Features
 ============
 
+   Changes/New Features in 5.1.12:
+   * Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
+       Chuck Taylor, and others.
+
+   * More fixes to SAS mode, thanks to Rodney Sparapani
+     (<spara002@duke.edu>) and Rich Heiberger
+     (<rmh@surfer.stat.temple.edu>).
+
    Changes/New Features in 5.1.11:
    * More fixes to Stata mode, thanks to Brendan Halpin
      (<brendan@essex.ac.uk>)
