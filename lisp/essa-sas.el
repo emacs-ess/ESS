@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/07 17:35:48 $
-;; Version: $Revision: 1.48 $
-;; RCS: $Id: essa-sas.el,v 1.48 2002/01/07 17:35:48 ess Exp $
+;; Modified: $Date: 2002/01/07 19:38:34 $
+;; Version: $Revision: 1.49 $
+;; RCS: $Id: essa-sas.el,v 1.49 2002/01/07 19:38:34 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -296,7 +296,7 @@ on the way."
 	    ess-sas-file-path))
 
 	(progn
-	    (save-match-data (ess-sas-file-path))
+	    (ess-sas-file-path)
 
 	    (let* (
 		(ess-sas-temp-file (replace-match (concat "." suffix) t t ess-sas-file-path))
@@ -306,8 +306,7 @@ on the way."
 	    (find-file ess-sas-temp-file))
 
 	(if revert (ess-revert-wisely))
-    )))
-)
+    ))))
 
 (defun ess-sas-file (suffix &optional revert)
   "Find a file associated with the SAS file and revert if necessary."
@@ -330,13 +329,11 @@ on the way."
  "Define the variable `ess-sas-file-path' to be the file in the current buffer"
   (interactive)
 
-  (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
+  (save-match-data (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
     (if (string-match 
 	"[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)" 
 	ess-sas-temp-file) 
-	(setq ess-sas-file-path ess-sas-temp-file))))
-
-;    (setq ess-sas-file-path (first (split-string ess-sas-file-path "[@]")))
+	(setq ess-sas-file-path ess-sas-temp-file)))))
 
 (defun ess-sas-goto-file-1 ()
   "Switch to ess-sas-file-1 and revert from disk."
