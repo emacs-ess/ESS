@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/27 18:44:20 $
-;; Version: $Revision: 1.22 $
-;; RCS: $Id: essd-xls.el,v 1.22 1997/08/27 18:44:20 rossini Exp $
+;; Modified: $Date: 1997/09/01 17:47:39 $
+;; Version: $Revision: 1.23 $
+;; RCS: $Id: essd-xls.el,v 1.23 1997/09/01 17:47:39 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -30,15 +30,20 @@
 ;;; Commentary:
 ;;; This file defines all the Splus 3.x customizations for ess-mode.
 
-;;; Autoloads:
+;;; Requires and Autoloads:
+
+(require 'essl-lsp)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
 
 ;;; Code:
 
+(defvar XLS-editing-alist 'Lisp-editing-alist)
+
 (defvar XLS-customize-alist
   '((ess-language                  .  "XLS"               )
-    (ess-dialect                   .  "XLS"              )
+    (ess-dialect                   .  "XLS"               )
+    (ess-editing-alist             .  'XLS-editing-alist  )
     (ess-loop-timeout              .  10000               )
     (ess-object-name-db-file       .  "ess-xls-namedb.el" )
     (ess-help-sec-regex            .  " ")
@@ -48,7 +53,7 @@
     (inferior-ess-help-command     .  "(help '%s)\n"      )
     (inferior-ess-objects-command  .  "(variables)\n"     )
     (inferior-ess-exit-command     .  "(exit)\n"          )
-    (inferior-ess-start-file       . "~/.ess-XLS")
+    (inferior-ess-start-file       . nil)  ; "~/.ess-XLS")
     (inferior-ess-start-args       . nil))
   "Variables to customize for XLS")
 
@@ -91,4 +96,4 @@
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-site.el ends here
+;;; essd-xls.el ends here
