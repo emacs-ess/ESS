@@ -1,6 +1,6 @@
 ### Makefile - for DOCUMENTATION (./doc) of ESS distribution.
 ###
-### File: $Revision: 1.45 $.
+### File: $Revision: 1.46 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -74,7 +74,7 @@ info/ess.info: $(TEXISRC)
 install : info/ess.info 
 	-$(INSTALLDIR) $(INFODIR)
 	$(INSTALL) info/ess.info* $(INFODIR)
-	test -f $(INFODIR)/dir || $(INSTALL) dir $(INFODIR)
+	test -f $(INFODIR)/dir || $(INSTALL) info/dir $(INFODIR)
 
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess_toc.html: $(TEXISRC)
