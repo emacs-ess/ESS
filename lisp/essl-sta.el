@@ -65,7 +65,7 @@
 (eval-when-compile
   (setq max-lisp-eval-depth (max 600 max-lisp-eval-depth)))
 
-(defconst STA-help-sec-keys-alist
+(defconst ess-help-STA-sec-keys-alist
   '((?d . "Description")
     (?e . "Examples")
     (?o . "Options")

@@ -38,7 +38,7 @@
 
 ;;; Code:
 
-(defvar XLS-help-sec-keys-alist
+(defvar ess-help-XLS-sec-keys-alist
   '((?a . "Args:"))
   "Sparse online XLS help.")
 
@@ -52,7 +52,7 @@
     (ess-loop-timeout              . ess-XLS-loop-timeout)
     (ess-object-name-db-file       . "ess-xls-namedb.el" )
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
-    (ess-help-sec-keys-alist       . XLS-help-sec-keys-alist)
+    (ess-help-sec-keys-alist       . ess-help-XLS-sec-keys-alist)
     (ess-retr-lastvalue-command    . "()\n" )
     (ess-save-lastvalue-command    . "()\n" )
     (inferior-ess-primary-prompt   . "> ?"               )

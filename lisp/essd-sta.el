@@ -51,7 +51,7 @@
     (ess-mode-syntax-table         . STA-syntax-table)
     (ess-mode-edit                 . 'STA-mode)
     (ess-help-sec-regex            . ess-help-STA-sec-regex)
-    (ess-help-sec-keys-alist       . STA-help-sec-keys-alist)
+    (ess-help-sec-keys-alist       . ess-help-STA-sec-keys-alist)
     (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-sta-namedb.el" )
     (ess-retr-lastvalue-command    . "\n")
