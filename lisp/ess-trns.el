@@ -1,13 +1,17 @@
 ;;; ess-trans.el --- Support for manipulating S transcript files
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
+;; Copyright (C) 1997,  Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;;                                    Kurt Hornik <hornik@ci.tuwien.ac.at>
+;;                                    Martin Maechler <maechler@stat.math.ethz.ch>
+;;                                    A.J. (Tony) Rossini <rossini@stat.sc.edu>
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
+;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/20 21:40:28 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: ess-trns.el,v 1.15 1997/11/20 21:40:28 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:15:00 $
+;; Version: $Revision: 4.1 $
+;; RCS: $Id: ess-trns.el,v 4.1 1997/11/20 23:15:00 rossini Exp $
 
 ;; This file is part of ess-mode
 
