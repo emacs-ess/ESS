@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/04/25 08:28:57 $
-;; Version: $Revision: 5.38 $
-;; RCS: $Id: essd-r.el,v 5.38 2002/04/25 08:28:57 rossini Exp $
+;; Modified: $Date: 2002/06/18 08:42:13 $
+;; Version: $Revision: 5.39 $
+;; RCS: $Id: essd-r.el,v 5.39 2002/06/18 08:42:13 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -71,7 +71,7 @@
     (inferior-ess-help-command     . "help(\"%s\", htmlhelp=FALSE)\n")
     (inferior-ess-exit-command     . "q()")
     (inferior-ess-exit-prompt      . "Save workspace image? [y/n/c]: ")
-    (inferior-ess-primary-prompt   . "[A-Za-z0-9.]*> ")
+    (inferior-ess-primary-prompt   . "\\([A-Z][][A-Za-z0-9.]*\\)*> ")
     (inferior-ess-secondary-prompt . "+ ?")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil)            ;; "~/.ess-R"
