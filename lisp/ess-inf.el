@@ -1459,8 +1459,8 @@ to continue it."
 ;;>
 ;;> As promised, here is a quick hack:
 ;;  ___hack much improved by MM___ , both help(.) and ?... now work
-;;
-;; rmh: catch page() just like we catch help()
+;; FIXME: Note that  '??' nicely works in *R*, but
+;;        'type ? topic' doesn't use ess-help {but display in *R*}
 (defconst inferior-R-1-input-help (format "help *(%s)" ess-help-arg-regexp))
 (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
 (defconst inferior-R-page         (format "^ *page *(%s)" ess-help-arg-regexp))
