@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.38 1997/07/17 21:10:59 rossini Exp $
+## $Id: Makefile,v 1.39 1997/07/25 15:20:07 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.39  1997/07/25 15:20:07  rossini
+## redid to use ess-comp, rather than ess-mode, as the preload.
+##
 ## Revision 1.38  1997/07/17 21:10:59  rossini
 ## increased version.
 ##
@@ -109,7 +112,8 @@ LASTVERSION = 4.8.MM6.XE3
 # have to preload the files that contain macro definitions or the
 # byte compiler will compile everything that references them
 # incorrectly.  also preload a file that sets byte compiler options.
-PRELOADS = -l ./ess-site.el
+PRELOADS = -l ./ess-comp.el
+# above was ess-site.el
 
 ## compile with noninteractive and relatively clean environment
 ## XEMACS 19.xx and before.
