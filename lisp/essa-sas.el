@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/08 16:48:00 $
-;; Version: $Revision: 1.52 $
-;; RCS: $Id: essa-sas.el,v 1.52 2002/01/08 16:48:00 ess Exp $
+;; Modified: $Date: 2002/01/08 16:49:50 $
+;; Version: $Revision: 1.53 $
+;; RCS: $Id: essa-sas.el,v 1.53 2002/01/08 16:49:50 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -128,7 +128,7 @@ in ess-site.el or in .emacs.")
 
 (defvar ess-sas-tab-stop-alist
  '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120)
-  "List of tab stop positions used by `tab-to-tab-stop' in `SAS-mode'.")
+  "List of tab stop positions used by `tab-to-tab-stop' in ESS[SAS].")
 
 
 (defcustom ess-sas-temp-root "ess-temp"
