@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/07 19:42:44 $
-;; Version: $Revision: 1.64 $
-;; RCS: $Id: ess-mode.el,v 1.64 1997/11/07 19:42:44 rossini Exp $
+;; Modified: $Date: 1997/11/07 23:10:24 $
+;; Version: $Revision: 1.65 $
+;; RCS: $Id: ess-mode.el,v 1.65 1997/11/07 23:10:24 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -729,7 +729,9 @@ Return the amount the indentation changed by."
 	   (skip-chars-forward " \t")
 	   (if (and ess-fancy-comments (looking-at "###"))
 	       (setq indent 0))
-	   (if (and ess-fancy-comments (looking-at "#") (not (looking-at "##")))
+	   (if (and ess-fancy-comments
+		    (looking-at "#")
+		    (not (looking-at "##")))
 	       (setq indent comment-column)
 	     (if (eq indent t) (setq indent 0))
 	     (if (listp indent) (setq indent (car indent)))
@@ -739,7 +741,9 @@ Return the amount the indentation changed by."
 				   (ess-backward-to-start-of-if)
 				   (+ ess-else-offset (current-indentation)))))
 		   ((= (following-char) ?})
-		    (setq indent (+ indent (- ess-close-brace-offset ess-indent-level))))
+		    (setq indent
+			  (+ indent
+			     (- ess-close-brace-offset ess-indent-level))))
 		   ((= (following-char) ?{)
 		    (setq indent (+ indent ess-brace-offset)))))))
     (skip-chars-forward " \t")
