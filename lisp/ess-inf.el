@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/12/21 15:09:24 $
-;; Version: $Revision: 5.70 $
-;; RCS: $Id: ess-inf.el,v 5.70 2001/12/21 15:09:24 maechler Exp $
+;; Modified: $Date: 2002/01/03 08:44:36 $
+;; Version: $Revision: 5.71 $
+;; RCS: $Id: ess-inf.el,v 5.71 2002/01/03 08:44:36 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -523,7 +523,8 @@ is non-nil.  Returns the name of the selected process."
   "Make sure the current buffer is attached to an ESS process.
 If not, or  FORCE (prefix argument) is non-nil,
 prompt for a process name with PROMPT.
-`ess-local-process-name' is set to the name of the process selected."
+`ess-local-process-name' is set to the name of the process selected.
+`ess-dialect' is set to the dialect associated with the process selected."
   (interactive
    (list (concat ess-dialect " process to use: ") current-prefix-arg))
   (if (and (not force) (ess-make-buffer-current))
@@ -533,8 +534,13 @@ prompt for a process name with PROMPT.
 	(error "Process %s has died." ess-local-process-name)
       ;; ess-local-process-name is nil -- which process to attach to
       (save-excursion
-	(let ((proc (ess-request-a-process prompt 'no-switch)))
-	  (setq ess-local-process-name proc))))))
+	(let ((proc (ess-request-a-process prompt 'no-switch))
+	      dialect)
+	  (save-excursion
+	    (set-buffer (process-buffer (get-process proc)))
+	    (setq dialect ess-dialect))
+	  (setq ess-local-process-name proc)
+	  (setq ess-dialect dialect))))))
 
 (defun ess-switch-process ()
   "Force a switch to a new underlying process."
@@ -582,6 +588,18 @@ With (prefix) EOB-P non-nil, positions cursor at end of buffer."
       (setq ess-current-process-name nil)))
 
  ; Functions for evaluating code
+
+(defun ess-ddeclient-p ()
+  "Returns t if the ess-current-process-name is associated with an
+inferior-ess-ddeclient, and nil if the ess-process is running as an
+ordinary inferior process.  Alway nil on Unix machines."
+  (interactive)
+  (if (or (equal window-system 'w32)
+	  (equal window-system 'win32)
+	  (equal window-system 'mswindows))
+      (not (equal (ess-get-process-variable
+		   ess-current-process-name 'inferior-ess-ddeclient)
+		  (default-value 'inferior-ess-ddeclient)))))
 
 (defun ess-prompt-wait (proc &optional start-of-output)
   "Wait for a prompt to appear at BOL of current buffer.
