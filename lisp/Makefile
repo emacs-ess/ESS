@@ -79,7 +79,9 @@ info:	ess.info
 html:	html/ess_toc.html
 
 install: all
+	mkdir -p $(INFODIR)
 	$(INSTALL) ess.info* $(INFODIR)
+	mkdir -p $(LISPDIR)
 	$(INSTALL) *.elc $(LISPDIR)
 
 clean:
