@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/05/14 21:29:50 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: essa-sas.el,v 1.20 2001/05/14 21:29:50 ess Exp $
+;; Modified: $Date: 2001/05/18 19:33:25 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: essa-sas.el,v 1.21 2001/05/18 19:33:25 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -58,14 +58,15 @@
     :group 'ess-sas
 )
 
-(defcustom ess-sas-submit-post-command (if (w32-shell-dos-semantics) " " "&")
-    "*Command-line statement to post-modify SAS invocation, e.g. &"
+(defcustom ess-sas-submit-post-command 
+    (if (w32-shell-dos-semantics) "-rsasuser -icon" "-rsasuser &")
+    "*Command-line statement to post-modify SAS invocation, e.g. -rsasuser"
     :group 'ess-sas
     :type  'string
 )
 
-(defcustom ess-sas-submit-pre-command (if (w32-shell-dos-semantics) "start" " ")
-    "*Command-line statement to pre-modify SAS invocation, e.g. start"
+(defcustom ess-sas-submit-pre-command (if (w32-shell-dos-semantics) "start" "nohup")
+    "*Command-line statement to pre-modify SAS invocation, e.g. start or nohup"
     :group 'ess-sas
     :type  'string
 )
@@ -185,29 +186,29 @@ on the way."
 	  (backward-delete-char-untabify ess-sas-remainder t)
 	  (move-to-column (- ess-sas-column ess-sas-remainder))))))
 
-(defun ess-sas-data-list ()
-  "Parse .sas file and return a list of permanent datasets."
-  (interactive)
+;;(defun ess-sas-data-list ()
+;;  "Parse .sas file and return a list of permanent datasets."
+;;  (interactive)
 
-  (save-excursion (let ((search-match nil)
-    (search-match-begin)
-    (search-match-end)
-    (search-match-list (list)))
+;;  (save-excursion (let ((search-match nil)
+;;    (search-match-begin)
+;;    (search-match-end)
+;;    (search-match-list (list)))
 
-    (goto-char (point-min))
+;;    (goto-char (point-min))
 
-    (while (search-forward-regexp "\\(^\\|[ \t]\\)\\([a-zA-Z_][a-zA-Z_0-9]*\\.[a-zA-Z_][a-zA-Z_0-9]*\\)" nil t)
-	(setq search-match-end (point))
-	(setq search-match-begin (match-beginning 2))
-	(setq search-match (downcase (buffer-string search-match-begin search-match-end)))
+;;    (while (search-forward-regexp "\\(^\\|[ \t]\\)\\([a-zA-Z_][a-zA-Z_0-9]*\\.[a-zA-Z_][a-zA-Z_0-9]*\\)" nil t)
+;;	(setq search-match-end (point))
+;;	(setq search-match-begin (match-beginning 2))
+;;	(setq search-match (downcase (buffer-string search-match-begin search-match-end)))
 
-	(if (not (and (equal (substring search-match 0 5) "first.") (equal (substring search-match 0 4) "last."))) (progn
-	    (add-to-list 'search-match-list search-match)
+;;	(if (not (and (equal (substring search-match 0 5) "first.") (equal (substring search-match 0 4) "last."))) (progn
+;;	    (add-to-list 'search-match-list search-match)
 	;;    (message search-match-list)
-	))
-    )
-    search-match-list))
-)
+;;	))
+;;    )
+;;    search-match-list))
+;;)
 
 (defun ess-sas-data-view (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
@@ -366,7 +367,8 @@ i.e. let `ess-sas-arg' be your local equivalent of
                                           ;; nil t) works for newer emacsen
     (insert "cd " (file-name-directory ess-sas-file-path))
     (comint-send-input)
-    (insert ess-sas-arg " " ess-sas-file-path " &")
+    (insert ess-sas-submit-pre-command " " ess-sas-arg " " 
+	ess-sas-file-path " " ess-sas-submit-post-command)
     (comint-send-input)
     (if (featurep 'xemacs) (sleep-for ess-sleep-for)
        (sleep-for 0 (truncate (* ess-sleep-for 1000)))

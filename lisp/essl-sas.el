@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/05/04 20:13:03 $
-;; Version: $Revision: 5.21 $
-;; RCS: $Id: essl-sas.el,v 5.21 2001/05/04 20:13:03 ess Exp $
+;; Modified: $Date: 2001/05/18 19:33:25 $
+;; Version: $Revision: 5.22 $
+;; RCS: $Id: essl-sas.el,v 5.22 2001/05/18 19:33:25 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -381,7 +381,7 @@ number."
 		"\\>")				    font-lock-reference-face)
 
 	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
-		"\\(data\\|endsas\\|quit\\|run\\)[ \t;]")
+		"\\(data\\|endsas\\|quit\\|run\\)[ \t\n;]")
 		      				    font-lock-reference-face)
 	 (cons (concat "\\(^[0-9]*\\|;\\|%then\\|%else\\)[ \t]*"
 		"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"

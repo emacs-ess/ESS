@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/04/26 16:38:46 $
-;; Version: $Revision: 5.73 $
-;; RCS: $Id: ess-site.el,v 5.73 2001/04/26 16:38:46 ess Exp $
+;; Modified: $Date: 2001/05/18 19:33:25 $
+;; Version: $Revision: 5.74 $
+;; RCS: $Id: ess-site.el,v 5.74 2001/05/18 19:33:25 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -216,7 +216,7 @@ The extension, in a file name, is the part that follows the last `.'."
 	   ("\\.ado\\'"		. STA-mode)
 	   ("\\.sas\\'"		. SAS-mode)
 	   ("\\.SAS\\'"		. SAS-mode)
-	   ("\\.lst\\'"		. SAS-listing-mode);sasl
+	   ;;("\\.lst\\'"		. SAS-listing-mode);sasl
 	   ;; Too many *.log files, not only SAS :
 	   ;;("\\.log\\'"	. SAS-log-mode);sasl
 	   ("\\.[Ss]t\\'"	. S-transcript-mode)
