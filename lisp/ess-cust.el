@@ -978,7 +978,7 @@ order for it to work right.  And Emacs is too smart for it."
 ;;; ess-editor and ess-pager,
 ;;; and inferior-ess-language-start
 ;;; apply in principle to the 15 files essd[s-]*.el
-;;; Several of the files (essd-sp4.el and essdsp6w.el) have more
+;;; Several of the files (essd-sp4.el and essd-sp6w.el) have more
 ;;; than one *-customize-alist.
 ;;; These variables are currently used only with the S language files for
 ;;; S S-Plus R.
