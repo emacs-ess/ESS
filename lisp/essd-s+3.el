@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/01 19:53:35 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: essd-s+3.el,v 1.21 1997/09/01 19:53:35 rossini Exp $
+;; Modified: $Date: 1997/09/01 21:20:46 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: essd-s+3.el,v 1.22 1997/09/01 21:20:46 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -68,6 +68,7 @@
   '((ess-language                  . "S")
     (ess-dialect                   . "S+3")
     (ess-mode-editing-alist        . S-editing-alist)
+    (ess-mode-edit                 . 'S+3-mode)
     (ess-help-sec-regex            . ess-help-S+3-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-S+3-sec-keys-alist)
     (ess-loop-timeout              . 100000 )
@@ -87,14 +88,20 @@
 (defun S-mode (&optional proc-name)
   "Major mode for editing S+3 source.  See ess-mode for more help."
   (interactive)
+  (setq-default ess-customize-alist S+3-customize-alist)
+  (ess-mode S+3-customize-alist proc-name))
+
+(defun S+3-mode (&optional proc-name)
+  "Major mode for editing S+3 source.  See ess-mode for more help."
+  (interactive)
+  (setq-default ess-customize-alist S+3-customize-alist)
   (ess-mode S+3-customize-alist proc-name))
 
 
-(defun S+3 ()
-  "Call 'Splus 3.x', the 'Real Thing'  from StatSci.
-New way to do it."
+(defun S+3 (&optional proc-name)
+  "Call 'Splus 3.x', the 'Real Thing'  from StatSci."
   (interactive)
-  (setq ess-customize-alist S+3-customize-alist)
+  (setq-default ess-customize-alist S+3-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(S): ess-dialect=%s , buf=%s \n"
 	   ess-dialect
