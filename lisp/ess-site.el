@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/30 12:17:37 $
-;; Version: $Revision: 1.30 $
-;; RCS: $Id: ess-site.el,v 1.30 1997/07/30 12:17:37 rossini Exp $
+;; Modified: $Date: 1997/07/30 13:02:07 $
+;; Version: $Revision: 1.31 $
+;; RCS: $Id: ess-site.el,v 1.31 1997/07/30 13:02:07 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.31  1997/07/30 13:02:07  rossini
+;;: added comments for the program specifications.
+;;:
 ;;: Revision 1.30  1997/07/30 12:17:37  rossini
 ;;: needed ")" (in comments).
 ;;:
@@ -262,6 +265,14 @@
 ;; (1.4) Customize the dialects for your setup.
 
 ;;;; Choices for *(), where * is from inferior-*-program....
+;; Most sites will not need to use these customized program-names.  They are
+;; provided for cases where the program is not on the standard default path.
+;; If the program doesn't get located correctly by the default use of
+;; M-x S+3 (for example), then put the path name for your system into the
+;; the variable inferior-S+3-program-name.  If for any reason you want the
+;; default use of M-x S to refer to a different program than S+3, then
+;; redefine inferior-S-program-name.
+;;
 ;;(setq-default inferior-S+3-program-name "Splus")
 ;;(setq-default inferior-R-program-name "/disk05/rmh/xemacs/R/R-0.49/bin/R")
 ;;(setq-default inferior-XLS-program-name "xlispstat")
