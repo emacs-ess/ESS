@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/09 19:44:05 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: ess-comp.el,v 1.12 1997/11/09 19:44:05 rossini Exp $
+;; Modified: $Date: 1997/11/20 22:02:12 $
+;; Version: $Revision: 2.1 $
+;; RCS: $Id: ess-comp.el,v 2.1 1997/11/20 22:02:12 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;: $Log: ess-comp.el,v $
+;;: Revision 2.1  1997/11/20 22:02:12  rossini
+;;: incremented to 2.0
+;;:
 ;;: Revision 1.12  1997/11/09 19:44:05  rossini
 ;;: *** empty log message ***
 ;;:
@@ -109,3 +112,4 @@
 ;;; End:
 
 ;;; ess-comp.el ends here
+
