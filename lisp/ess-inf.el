@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/04/05 18:32:30 $
-;; Version: $Revision: 5.19 $
-;; RCS: $Id: ess-inf.el,v 5.19 1999/04/05 18:32:30 rossini Exp $
+;; Modified: $Date: 1999/04/05 21:15:15 $
+;; Version: $Revision: 5.20 $
+;; RCS: $Id: ess-inf.el,v 5.20 1999/04/05 21:15:15 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -602,8 +602,9 @@ PROC is the ESS process. Does not change point"
   (save-excursion
     (while (progn
 	     ;; get output if there is some ready
-	     (accept-process-output proc 0 500) ; AJR: why 1500?
-					        ; (reverted back to 500)
+	     (if (or (equal window-system 'w32) (equal window-system 'win32))
+		 (accept-process-output proc 0 1500) ; Microsoft is slow
+	       (accept-process-output proc 0 500))
 	     (goto-char (marker-position (process-mark proc)))
 	     (beginning-of-line)
 	     (if (< (point) start-of-output) (goto-char start-of-output))
