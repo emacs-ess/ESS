@@ -1,3 +1,8 @@
+2004-04-16  Stephen Eglen  <stephen@bushmills.inf.ed.ac.uk>
+
+	* ess-inf.el (ess-multi): Use pop-to-buffer rather than
+	switch-to-buffer, so that special-display-regexps should work.
+
 2004-04-15  Stephen Eglen  <stephen@bushmills.inf.ed.ac.uk>
 
 	* ess-cust.el (inferior-ess-client-command): Set :group and :type.
