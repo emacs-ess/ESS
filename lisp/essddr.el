@@ -6,9 +6,9 @@
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/04/03 15:26:43 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: essddr.el,v 5.13 2000/04/03 15:26:43 maechler Exp $
+;; Modified: $Date: 2000/11/29 12:16:00 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: essddr.el,v 5.14 2000/11/29 12:16:00 hornik Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.13 2000/04/03 15:26:43 maechler Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.14 2000/11/29 12:16:00 hornik Exp $
 
 ;;; Code:
 
@@ -290,13 +290,24 @@ following lines to your `.emacs' file:
 	    (error t))
 	nil))))
 
+(defun Rd-mode-in-preprocessor-line-p ()
+  (save-excursion
+    (beginning-of-line)
+    (looking-at "[ \t]*#\\(ifdef\\|endif\\)")))
+
 (defun Rd-mode-calculate-indent ()
   "Return appropriate indentation for current line in Rd mode."
   (interactive)
   (save-excursion
     (beginning-of-line)
-    (if (Rd-mode-in-verbatim-p)
-	nil				; Don't do anything in verbatims
+    (cond
+     ((Rd-mode-in-verbatim-p)
+      ;; Don't do anything in verbatims
+      nil)
+     ((Rd-mode-in-preprocessor-line-p)
+      ;; Indent to 0
+      0)
+     (t
       (let ((p (progn
 		 (re-search-forward "[ \t]*\\s)*" (ess-point 'eol) t)
 		 (point))))
@@ -304,7 +315,8 @@ following lines to your `.emacs' file:
 		(Rd-mode-in-verbatim-p))
 	    0
 	  (set-syntax-table Rd-mode-parse-syntax-table)
-	  (while (and (looking-at "[ \t]*$")
+	  (while (and (or (looking-at "[ \t]*$")
+			  (Rd-mode-in-preprocessor-line-p))
 		      (not (bobp)))
 	    (forward-line -1))
 	  (re-search-forward "[ \t]*\\s)*" (ess-point 'eol) t)
@@ -312,7 +324,7 @@ following lines to your `.emacs' file:
 	      (+ (current-indentation)
 		 (* (car (parse-partial-sexp (point) p))
 		    Rd-indent-level))
-	    (set-syntax-table Rd-mode-syntax-table)))))))
+	    (set-syntax-table Rd-mode-syntax-table))))))))
 
 (defun Rd-mode-indent-line ()
   "Indent current line as Rd source."
