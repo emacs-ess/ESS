@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2004/06/24 14:14:52 $
-;; Version: $Revision: 5.32 $
-;; RCS: $Id: ess-utils.el,v 5.32 2004/06/24 14:14:52 rsparapa Exp $
+;; Modified: $Date: 2004/06/25 13:24:50 $
+;; Version: $Revision: 5.33 $
+;; RCS: $Id: ess-utils.el,v 5.33 2004/06/25 13:24:50 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -357,7 +357,8 @@ is specified, perform action in that buffer."
 	    to-file-or-buffer))
 
 (defun ess-directory-sep (ess-dir-arg)
-"Given a directory, pad with directory-separator character, if necessary."
+"Deprecated.  Use file-name-as-directory instead.
+Given a directory, pad with directory-separator character, if necessary."
 (let ((ess-tmp-dir-last-char (substring ess-dir-arg -1)))
     (if (or (equal ess-tmp-dir-last-char "/")
 	(and ess-microsoft-p (equal ess-tmp-dir-last-char "\\")))
@@ -404,7 +405,7 @@ if any exist, in PATH."
 		(setq j 0)
 		(setq k (length ess-tmp-files))
 		(while (< j k)
-		    (setq ess-tmp-file (concat (ess-directory-sep ess-tmp-dir)
+		    (setq ess-tmp-file (concat (file-name-as-directory ess-tmp-dir)
 			(nth j ess-tmp-files)))
 		    (if (file-executable-p ess-tmp-file) 
 			(setq ess-tmp-exec (nconc ess-tmp-exec (list ess-tmp-file))))
