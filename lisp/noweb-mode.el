@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.11 1999/11/16 21:45:01 ess Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.12 2000/06/19 22:41:53 ess Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -94,7 +94,7 @@
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.11 1999/11/16 21:45:01 ess Exp $")
+  "$Id: noweb-mode.el,v 1.12 2000/06/19 22:41:53 ess Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")
@@ -1287,6 +1287,8 @@ The only sensible way to do this is to add a mode line to the chunk"
                   ;; Need to set major mode so that we can comment out
                   ;; the mode line
                   (funcall noweb-code-mode)
+		  (if (not (boundp 'comment-start))
+		      (setq comment-start "#"))
                   (insert comment-start
                           " -*- " mode
                           " -*- " comment-end "\n")))
