@@ -1,0 +1,1143 @@
+This is ess.info, produced by makeinfo version 4.5 from ess.texi.
+
+ESS -- Emacs Speaks Statistics
+******************************
+
+START-INFO-DIR-ENTRY
+* ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
+END-INFO-DIR-ENTRY
+
+
+File: ess.info,  Node: Transcript,  Next: Command History,  Prev: Completion details,  Up: Entering commands
+
+Manipulating the transcript
+===========================
+
+   Most of the time, the cursor spends most of its time at the bottom of
+the ESS process buffer, entering commands.  However all the input and
+output from the current (and previous) ESS sessions is stored in the
+process buffer (we call this the transcript) and often we want to move
+back up through the buffer, to look at the output from previous
+commands for example.
+
+   Within the process buffer, a paragraph is defined as the prompt, the
+command after the prompt, and the output from the command.  Thus `M-{'
+and `M-}' move you backwards and forwards, respectively, through
+commands in the transcript.  A particularly useful command is `M-h'
+(`mark-paragraph') which will allow you to mark a command and its
+entire output (for deletion, perhaps).  For more information about
+paragraph commands, *note Paragraphs: (emacs)Paragraphs..
+
+   If an ESS process finishes and you restart it in the same process
+buffer, the output from the new ESS process appears after the output
+from the first ESS process separated by a form-feed (`^L') character.
+Thus pages in the ESS process buffer correspond to ESS sessions.  Thus,
+for example, you may use `C-x [' and `C-x ]' to move backward and
+forwards through ESS sessions in a single ESS process buffer.  For more
+information about page commands, *note Pages: (emacs)Pages..
+
+* Menu:
+
+* Last command::                Manipulating the output from the last command
+* Process buffer motion::       Viewing older commands
+* Transcript resubmit::         Re-submitting commands from the transcript
+* Saving transcripts::          Keeping a record of your S session
+
+
+File: ess.info,  Node: Last command,  Next: Process buffer motion,  Prev: Transcript,  Up: Transcript
+
+Manipulating the output from the last command
+---------------------------------------------
+
+   Viewing the output of the command you have just entered is a common
+occurrence and ESS provides a number of facilities for doing this.
+Whenever a command produces a longish output, it is possible that the
+window will scroll, leaving the next prompt near the middle of the
+window.  The first part of the command output may have scrolled off the
+top of the window, even though the entire output would fit in the window
+if the prompt were near the bottom of the window.  If this happens, you
+can use the command
+
+   * `C-c C-e' (`comint-show-maximum-output')
+     Move to the end of the buffer, and place cursor on bottom line of
+     window.
+
+to make more of the last output visible.  (To make this happen
+automatically for all inputs, set the variable
+`comint-scroll-to-bottom-on-input' to `t'; for information on this and
+other options for handling process input and output *note Shell Mode
+Options: (emacs)Shell Options..)
+
+   If the first part of the output is still obscured, use
+   * `C-c C-r' (`comint-show-output')
+     Moves cursor to the previous command line and and places it at the
+     top of the window.
+
+to view it.  Finally, if you want to discard the last command output
+altogether, use
+
+   * `C-c C-o' (`comint-kill-output')
+     Deletes everything from the last command to the current prompt.
+
+to delete it.  Use this command judiciously to keep your transcript to a
+more manageable size.
+
+
+File: ess.info,  Node: Process buffer motion,  Next: Transcript resubmit,  Prev: Last command,  Up: Transcript
+
+Viewing older commands
+----------------------
+
+   If you want to view the output from more historic commands than the
+previous command, commands are also provided to move backwards and
+forwards through previously entered commands in the process buffer:
+
+   * `C-c C-p' (`comint-previous-input')
+     Moves point to the preceding command in the process buffer.
+
+   * `C-c C-n' (`comint-next-input')
+     Moves point to the next command in the process buffer.
+
+Note that these two commands are analogous to `C-p' and `C-n' but apply
+to command lines rather than text lines.  And just like `C-p' and
+`C-n', passing a prefix argument to these commands means to move to the
+ARG'th next (or previous) command.  (These commands are also discussed
+in *Note Shell History Copying: (emacs)Shell History Copying.)
+
+   There are also two similar commands (not bound to any keys by
+default) which move to preceding or succeeding commands, but which
+first prompt for a regular expression (*note Syntax of Regular
+Expression: (emacs)Regexps.), and then moves to the next (previous)
+command matching the pattern.
+
+   * `(comint-backward-matching-input regexp arg)'
+     `(comint-forward-matching-input regexp arg)'
+     Search backward (forward) through the transcript buffer for the
+     ARG'th previous (next) command matching REGEXP.  ARG is the prefix
+     argument; REGEXP is prompted for in the minibuffer.
+
+
+File: ess.info,  Node: Transcript resubmit,  Next: Saving transcripts,  Prev: Process buffer motion,  Up: Transcript
+
+Re-submitting commands from the transcript
+------------------------------------------
+
+   When moving through the transcript, you may wish to re-execute some
+of the commands you find there.  ESS provides three commands to do this;
+these commands may be used whenever the cursor is within a command line
+in the transcript (if the cursor is within some command _output_, an
+error is signaled).  Note all three commands involve the <RETURN> key.
+
+   * `RET' (`inferior-ess-send-input')
+     Copy the command under the cursor to the current command line, and
+     execute it.
+
+   * `C-c RET' (`comint-copy-old-input')
+     Copy the command under the cursor to the current command line, but
+     don't execute it.  Leaves the cursor on the command line so that
+     the copied command may be edited.
+
+   * `M-RET' (`ess-transcript-send-command-and-move')
+     Copy the command under the cursor to the current command line, and
+     execute it.  Moves the cursor to the following command.
+
+   When the cursor is not after the current prompt, the <RETURN> key
+has a slightly different behavior than usual.  Pressing `RET' on any
+line containing a command that you entered (i.e. a line beginning with a
+prompt) sends that command to the ESS process once again.  If you wish
+to edit the command before executing it, use `C-c RET' instead; it
+copies the command to the current prompt but does not execute it,
+allowing you to edit it before submitting it.
+
+   These two commands leave the cursor at the new command line, allowing
+you to continue with interactive use of S.  If you wish to resubmit a
+series of commands from the transcript, consider using `M-RET' instead,
+which leaves the cursor at the command line following the one you
+re-submitted.  Thus by using `M-RET' repeatedly, you can re-submit a
+whole series of commands.
+
+   These commands work even if if the current line is a continuation
+line (i.e. the prompt is `+' instead of `>') -- in this case all the
+lines that form the multi-line command are concatenated together and
+the resulting command is sent to the ESS process (currently this is the
+only way to resubmit a multi-line command to the ESS process in one
+go).  If the current line does not begin with a prompt, an error is
+signaled.  This feature, coupled with the command-based motion commands
+described above, could be used as a primitive history mechanism.  ESS
+provides a more sophisticated mechanism, however, which is described in
+*Note Command History::.
+
+
+File: ess.info,  Node: Saving transcripts,  Prev: Transcript resubmit,  Up: Transcript
+
+Keeping a record of your S session
+----------------------------------
+
+   To keep a record of your S session in a disk file, use the Emacs
+command `C-x C-w' (`write-file') to attach a file to the ESS process
+buffer.  The name of the process buffer will (probably) change to the
+name of the file, but this is not a problem.  You can still use S as
+usual; just remember to save the file before you quit Emacs with `C-x
+C-s'.  You can make ESS prompt you for a filename in which to save the
+transcript every time you start S by setting the variable
+`ess-ask-about-transfile' to `t'; see *Note Customizing startup::.  We
+recommend you save your transcripts with filenames that end in `.St'.
+There is a special mode (ESS transcript mode -- *note Transcript
+Mode::) for editing transcript files which is automatically selected
+for files with this suffix.
+
+   S transcripts can get very large, so some judicious editing is
+appropriate if you are saving it in a file.  Use `C-c C-o' whenever a
+command produces excessively long output (printing large arrays, for
+example).  Delete erroneous commands (and the resulting error messages
+or other output) by moving to the command (or its output) and typing
+`M-h C-w'.  Also, remember that `C-c C-e' (and other hot keys) may be
+used for commands whose output you do not wish to appear in the
+transcript.  These suggestions are appropriate even if you are not
+saving your transcript to disk, since the larger the transcript, the
+more memory your Emacs process will use on the host machine.
+
+   Finally, if you intend to produce S source code (suitable for using
+with `source()' or inclusion in an S function) from a transcript, then
+the command `M-x ess-transcript-clean-region' may be of use.  This
+command works in any Emacs buffer, and removes all prompts and command
+output from an ESS transcript within the current region, leaving only
+the commands.  Don't forget to remove any erroneous commands first!
+
+
+File: ess.info,  Node: Command History,  Next: History expansion,  Prev: Transcript,  Up: Entering commands
+
+Command History
+===============
+
+   ESS provides easy-to-use facilities for re-executing or editing
+previous commands.  An input history of the last few commands is
+maintained (by default the last 50 commands are stored, although this
+can be changed by setting the variable `comint-input-ring-size' in
+`inferior-ess-mode-hook'.) The simplest history commands simply select
+the next and previous commands in the input history:
+
+   * `M-p' (`comint-previous-input')
+     Select the previous command in the input history.
+
+   * `M-n'  (`comint-next-input')
+     Select the next command in the input history.
+
+For example, pressing `M-p' once will re-enter the last command into
+the process buffer after the prompt but does not send it to the ESS
+process, thus allowing editing or correction of the command before the
+ESS process sees it.  Once corrections have been made, press `RET' to
+send the edited command to the ESS process.
+
+   If you want to select a particular command from the history by
+matching it against a regular expression (*note Syntax of Regular
+Expression: (emacs)Regexps.), to search for a particular variable name
+for example, these commands are also available:
+
+   * `M-r' (`comint-previous-matching-input')
+     Prompt for a regular expression, and search backwards through the
+     input history for a command matching the expression.
+
+   * `M-s' (`comint-next-matching-input')
+     Prompt for a regular expression, and search backwards through the
+     input history for a command matching the expression.
+
+A common type of search is to find the last command that began with a
+particular sequence of characters; the following two commands provide an
+easy way to do this:
+
+   * `A-M-r' (`comint-previous-matching-input-from-input')
+     Select the previous command in the history which matches the string
+     typed so far.
+
+   * `A-M-s' (`comint-next-matching-input-from-input')
+     Select the next command in the history which matches the string
+     typed so far.
+
+Instead of prompting for a regular expression to match against, as they
+instead select commands starting with those characters already entered.
+For instance, if you wanted to re-execute the last `attach()' command,
+you may only need to type `att' and then `A-M-r' and `RET'.  (Note: you
+may not have an <ALT> key on your keyboard, in which case it may be a
+good idea to bind these commands to some other keys.)
+
+   *Note Shell History Ring: (emacs)Shell Ring, for a more detailed
+discussion of the history mechanism.
+
+
+File: ess.info,  Node: History expansion,  Next: Hot keys,  Prev: Command History,  Up: Entering commands
+
+References to historical commands
+=================================
+
+   Instead of searching through the command history using the command
+described in the previous section, you can alternatively refer to a
+historical command directly using a notation very similar to that used
+in `csh'.  History references are introduced by a `!' or `^' character
+and have meanings as follows:
+
+`!!'
+     The immediately previous command
+
+`!-N'
+     The Nth previous command
+
+`!text'
+     The last command beginning with the string `text'
+
+`!?text'
+     The last command containing the string `text'
+
+   In addition, you may follow the reference with a "word designator"
+to select particular "words" of the input.  A word is defined as a
+sequence of characters separated by whitespace.  (You can modify this
+definition by setting the value of `comint-delimiter-argument-list' to
+a list of characters that are allowed to separate words and themselves
+form words.)  Words are numbered beginning with zero.  The word
+designator usually begins with a `:' (colon) character; however it may
+be omitted if the word reference begins with a `^', `$', `*' or `-'.
+If the word is to be selected from the previous command, the second `!'
+character can be omitted from the event specification.  For instance,
+`!!:1' and `!:1' both refer to the first word of the previous command,
+while `!!$' and `!$' both refer to the last word in the previous
+command.  The format of word designators is as follows:
+
+`0'
+     The zeroth word (i.e. the first one on the command line)
+
+`N'
+     The Nth word, where N is a number
+
+`^'
+     The first word (i.e. the second one on the command line)
+
+`$'
+     The last word
+
+`X-Y'
+     A range of words; `-Y' abbreviates `0-Y'
+
+`*'
+     All the words except the zeroth word, or nothing if the command
+     had just one word (the zeroth)
+
+`X*'
+     Abbreviates X-$
+
+`X-'
+     Like `X*', but omitting the last word
+
+   In addition, you may surround the entire reference except for the
+first `!' by braces to allow it to be followed by other (non-whitespace)
+characters (which will be appended to the expanded reference).
+
+   Finally, ESS also provides quick substitution; a reference like
+`^old^new^' means "the last command, but with the first occurrence of
+the string `old' replaced with the string `new'" (the last `^' is
+optional).  Similarly, `^old^' means "the last command, with the first
+occurrence of the string `old' deleted" (again, the last `^' is
+optional).
+
+   To convert a history reference as described above to an input
+suitable for S, you need to "expand" the history reference, using the
+<TAB> key.  For this to work, the cursor must be preceded by a space
+(otherwise it would try to complete an object name) and not be within a
+string (otherwise it would try to complete a filename).  So to expand
+the history reference, type `SPC TAB'.  This will convert the history
+reference into an S command from the history, which you can then edit
+or press <RET> to execute.
+
+   For example, to execute the last command that referenced the variable
+`data', type `!?data SPC TAB RET'.
+
+
+File: ess.info,  Node: Hot keys,  Next: Statistical Process running in ESS?,  Prev: History expansion,  Up: Entering commands
+
+Hot keys for common commands
+============================
+
+   ESS provides a number of commands for executing the commonly used
+functions.  These commands below are basically information-gaining
+commands (such as `objects()' or `search()') which tend to clutter up
+your transcript and for this reason some of the hot keys display their
+output in a temporary buffer instead of the process buffer by default.
+This behavior is controlled by the variable
+`ess-execute-in-process-buffer' which, if non-`nil', means that these
+commands will produce their output in the process buffer instead.  In
+any case, passing a prefix argument to the commands (with `C-u') will
+reverse the meaning of `ess-execute-in-process-buffer' for that
+command, i.e. the output will be displayed in the process buffer if it
+usually goes to a temporary buffer, and vice-versa.  These are the hot
+keys that behave in this way:
+
+   * `C-c C-x' (`ess-execute-objects')
+     Sends the `objects()' command to the ESS process.  A prefix
+     argument specifies the position on the search list (use a negative
+     argument to toggle `es-execute-in-process-buffer' as well).  A
+     quick way to see what objects are in your working directory.
+
+   * `C-c C-s' (`ess-execute-search')
+     Sends the `search()' command to the ESS process.
+
+   * `C-c C-e' (`ess-execute')
+     Prompt for an ESS expression, and evaluate it.
+
+   `ess-execute' may seem pointless when you could just type the
+command in anyway, but it proves useful for `spot' calculations which
+would otherwise clutter your transcript, or for evaluating an expression
+while partway through entering a command.  You can also use this command
+to generate new hot keys using the Emacs keyboard macro facilities;
+*note Keyboard Macros: (emacs)Keyboard Macros..
+
+   The following hot keys do not use `ess-execute-in-process-buffer' to
+decide where to display the output -- they either always display in the
+process buffer or in a separate buffer, as indicated:
+
+   * `C-c C-a' (`ess-execute-attach')
+     Prompts for a directory to attach to the ESS process with the
+     `attach()' command.  If a numeric prefix argument is given it is
+     used as the position on the search list to attach the directory;
+     otherwise the S default of 2 is used.  The `attach()' command
+     actually executed appears in the process buffer.
+
+   * `C-c C-l' (`ess-load-file')
+     Prompts for a file to load into the ESS process using `source()'.
+     If there is an error during loading, you can jump to the error in
+     the file with `C-x `' (`ess-parse-errors').  *Note Error
+     Checking::, for more details.
+
+   * `C-c C-v' (`ess-display-help-on-object')
+     Pops up a help buffer for an S object or function.  See *Note
+     Help:: for more details.
+
+   * `C-c C-q' (`ess-quit')
+     Sends the `q()' command to the ESS process (or `(exit)' to the XLS
+     process), and cleans up any temporary buffers (such as help
+     buffers or edit buffers) you may have created along the way.  Use
+     this command when you have finished your S session instead of
+     simply typing `q()' yourself, otherwise you will need to issue the
+     command `M-x ess-cleanup' command explicitly to make sure that all
+     the files that need to be saved have been saved, and that all the
+     temporary buffers have been killed.
+
+
+File: ess.info,  Node: Statistical Process running in ESS?,  Next: Emacsclient,  Prev: Hot keys,  Up: Entering commands
+
+Is the Statistical Process running under ESS?
+=============================================
+
+   For the S languages (S, S-Plus, R) ESS sets an option in the current
+process that programs in the language can check to determine the
+environment in which they are currently running.
+
+   ESS sets `options(STERM="iESS")' for S language processes running in
+an inferior `iESS[S]' or `iESS[R]' buffer.
+
+   ESS sets `options(STERM="ddeESS")' for independent S-Plus for Windows
+processes running in the GUI and communicating with ESS via the DDE
+(Microsoft Dynamic Data Exchange) protocol through a `ddeESS[S]' buffer.
+
+   Other values of `options()$STERM' that we recommend are:
+
+   * `length':     Fixed length xterm or telnet window.
+
+   * `scrollable': Unlimited length xterm or telnet window.
+
+   * `server':     S-Plus Stat Server.
+
+   * `BATCH':      BATCH.
+
+   * `Rgui':       R GUI.
+
+   * `Commands':   S-Plus GUI without DDE interface to ESS.
+
+   Additional values may be recommended in the future as new interaction
+protocols are created.  Unlike the values `iESS' and `ddeESS', ESS
+can't set these other values since the S language program is not under
+the control of ESS.
+
+
+File: ess.info,  Node: Emacsclient,  Next: Other,  Prev: Statistical Process running in ESS?,  Up: Entering commands
+
+Using emacsclient
+=================
+
+   When starting R or S under Unix, ESS sets
+`options(editor="emacsclient")'.  (Under Microsoft Windows, it will use
+gnuclient.exe rather than emacsclient, but the same principle applies.)
+Within your R session, for example, if you have a function called
+`iterator', typing `fix(iterator)', will show that function in a
+temporary Emacs buffer.  You can then correct the function.  When you
+kill the buffer, the definition of the function is updated.  Using
+`edit()' rather than `fix()' means that the function is not updated.
+Finally, the S function `page(x)' will also show a text representation
+of the object `x' in a temporary Emacs buffer.
+
+
+File: ess.info,  Node: Other,  Prev: Emacsclient,  Up: Entering commands
+
+Other commands provided by inferior-ESS
+=======================================
+
+   The following commands are also provided in the process buffer:
+
+   * `C-c C-c' (`comint-interrupt-subjob')
+     Sends a Control-C signal to the ESS process.  This has the effect
+     of aborting the current command.
+
+   * `C-c C-z' (`ess-abort')
+     Sends a STOP signal to the ESS process, killing it immediately.
+     It's not a good idea to use this, in general: Neither `q()' nor
+     `.Last' will be executed and device drivers will not finish
+     cleanly.  This command is provided as a safety to
+     `comint-stop-subjob', which is usually bound to `C-c C-z'.  If you
+     want to quit from S, use `C-c C-q' (`ess-quit') instead.
+
+   * `C-c C-d' (`ess-dump-object-into-edit-buffer')
+     Prompts for an object to be edited in an edit buffer.  *Note
+     Editing::.
+
+   Other commands available is Inferior S mode are discussed in *Note
+Shell Mode: (emacs)Shell Mode.
+
+
+File: ess.info,  Node: Editing,  Next: Help,  Prev: Entering commands,  Up: Top
+
+Editing S functions
+*******************
+
+   ESS provides facilities for editing S objects within your Emacs
+session.  Most editing is performed on S functions, although in theory
+you may edit datasets as well.  Edit buffers are always associated with
+files, although you may choose to make these files temporary if you
+wish.  Alternatively, you may make use of a simple yet powerful
+mechanism for maintaining backups of text representations of S
+functions.  Error-checking is performed when S code is loaded into the
+ESS process.
+
+* Menu:
+
+* Edit buffer::                 Edit objects in a specialized buffer
+* Loading::                     Loading source files into the ESS process
+* Error Checking::              Detecting errors in source files
+* Evaluating code::             Sending code to the ESS process
+* Indenting::                   Indenting and formatting S code
+* Other edit buffer commands::  Commands for motion, completion and more
+* Source Files::                Maintaining S source files
+* Source Directories::          Names and locations of dump files
+
+
+File: ess.info,  Node: Edit buffer,  Next: Loading,  Prev: Editing,  Up: Editing
+
+Creating or modifying S objects
+===============================
+
+   To edit an S object, type
+
+   * `C-c C-d' (`ess-dump-object-into-edit-buffer')
+     Edit an S object in its own edit buffer.
+
+   from within the ESS process buffer (`*S*').  You will then be
+prompted for an object to edit: you may either type in the name of an
+existing object (for which completion is available using the `TAB' key),
+or you may enter the name of a new object.  A buffer will be created
+containing the text representation of the requested object or, if you
+entered the name of a non-existent object at the prompt and the
+variable `ess-function-template' is non-`nil', you will be presented
+with a template defined by that variable, which defaults to a skeleton
+function construct.
+
+   You may then edit the function as required.  The edit buffer
+generated by `ess-dump-object-into-edit-buffer' is placed in the `ESS'
+major mode which provides a number of commands to facilitate editing S
+source code.  Commands are provided to intelligently indent S code,
+evaluate portions of S code and to move around S code constructs.
+
+   *Note:* when you dump a file with `C-c C-d', ESS first checks to see
+whether there already exists an edit buffer containing that object and,
+if so, pops you directly to that buffer.  If not, ESS next checks
+whether there is a file in the appropriate place with the appropriate
+name (*note Source Files::) and if so, reads in that file.  You can use
+this facility to return to an object you were editing in a previous
+session (and which possibly was never loaded to the S session).
+Finally, if both these tests fail, the ESS process is consulted and a
+`dump()' command issued.  If you want to force ESS to ask the ESS
+process for the object's definition (say, to reformat an unmodified
+buffer or to revert back to S's idea of the object's definition) pass a
+prefix argument to `ess-dump-object-into-edit-buffer' by typing `C-u
+C-c C-d'.
+
+
+File: ess.info,  Node: Loading,  Next: Error Checking,  Prev: Edit buffer,  Up: Editing
+
+Loading source files into the ESS process
+=========================================
+
+   The best way to get information -- particularly function definitions
+-- into S is to load them in as source file, using S's `source'
+function.  You have already seen how to create source files using `C-c
+C-d'; ESS provides a complementary command for loading source files
+(even files not created with ESS!) into the ESS process:
+
+   * `C-c C-l' (`ess-load-file')
+     Loads a file into the ESS process using `source()'.
+
+After typing `C-c C-l' you will prompted for the name of the file to
+load into S; usually this is the current buffer's file which is the
+default value (selected by simply pressing `RET' at the prompt).  You
+will be asked to save the buffer first if it has been modified (this
+happens automatically if the buffer was generated with `C-c C-d').  The
+file will then be loaded, and if it loads successfully you will be
+returned to the ESS process.
+
+
+File: ess.info,  Node: Error Checking,  Next: Evaluating code,  Prev: Loading,  Up: Editing
+
+Detecting errors in source files
+================================
+
+   If any errors occur when loading a file with `C-c C-l', ESS will
+inform you of this fact.  In this case, you can jump directly to the
+line in the source file which caused the error by typing `C-x `'
+(`ess-parse-errors').  You will be returned to the offending file
+(loading it into a buffer if necessary) with point at the line S
+reported as containing the error.  You may then correct the error, and
+reload the file.  Note that none of the commands in an S source file
+will take effect if any part of the file contains errors.
+
+   Sometimes the error is not caused by a syntax error (loading a
+non-existent file for example). In this case typing `C-x `' will simply
+display a buffer containing S's error message.  You can force this
+behavior (and avoid jumping to the file when there _is_ a syntax error)
+by passing a prefix argument to `ess-parse-errors' with `C-u C-x `'.
+
+
+File: ess.info,  Node: Evaluating code,  Next: Indenting,  Prev: Error Checking,  Up: Editing
+
+Sending code to the ESS process
+===============================
+
+   Other commands are also available for evaluating portions of code in
+the S process.  These commands cause the selected code to be evaluated
+directly by the ESS process as if you had typed them in at the command
+line; the `source()' function is not used.  You may choose whether both
+the commands and their output appear in the process buffer (as if you
+had typed in the commands yourself) or if the output alone is echoed.
+The behavior is controlled by the variable `ess-eval-visibly-p' whose
+default is `nil' (display output only).  Passing a prefix argument
+(`C-u') to any of the following commands, however, reverses the meaning
+of `ess-eval-visibly-p' for that command only -- for example `C-u C-c
+C-j' echoes the current line of S (or other) code in the ESS process
+buffer, followed by its output.  This method of evaluation is an
+alternative to S's `source()' function when you want the input as well
+as the output to be displayed.  (You can sort of do this with
+`source()' when the option `echo=T' is set, except that prompts do not
+get displayed.  ESS puts prompts in the right places.) The commands for
+evaluating code are:
+
+   * `C-c C-j' (`ess-eval-line')
+     Send the line containing point to the ESS process.
+
+   * `C-c M-j' (`ess-eval-line-and-go')
+     As above, but returns you to the ESS process buffer as well.
+
+   * `C-c C-f' or `ESC C-x' (aka `M-C-x') (`ess-eval-function')
+     Send the S function containing point to the ESS process.
+
+   * `C-c M-f' (`ess-eval-function-and-go')
+     As above, but returns you to the ESS process buffer as well.
+
+   * `C-c C-r' (`ess-eval-region')
+     Send the text between point and mark to the ESS process.
+
+   * `C-c M-r' (`ess-eval-region-and-go')
+     As above, but returns you to the ESS process buffer as well.
+
+   * `C-c C-b' (`ess-eval-buffer')
+     Send the contents of the edit buffer to the ESS process.
+
+   * `C-c M-b' (`ess-eval-buffer-and-go')
+     As above, but returns you to the ESS process buffer as well.
+
+   * `C-c C-n' (`ess-eval-line-and-step')
+     Sends the current line to the ESS process, echoing it in the
+     process buffer, and moves point to the next line.  Useful when
+     debugging for stepping through your code.
+
+   It should be stressed once again that these `ess-eval-' commands
+should only be used for evaluating small portions of code for debugging
+purposes, or for generating transcripts from source files.  When editing
+S functions, `C-c C-l' is the command to use to update the function's
+value.  In particular, `ess-eval-buffer' is now largely obsolete.
+
+   One final command is provided for spot-evaluations of S code:
+
+     `C-c C-e' (`ess-execute-in-tb')
+     Prompt for an S expression and evaluate it.  Displays result in a
+     temporary buffer.
+
+This is useful for quick calculations, etc.
+
+   All the above commands are useful for evaluating small amounts of
+code and observing the results in the process buffer.  A useful way to
+work is to divide the frame into two windows; one containing the source
+code and the other containing the process buffer.  If you wish to make
+the process buffer scroll automatically when the output reaches the
+bottom of the window, you will need to set the variable
+`comint-scroll-to-bottom-on-output' to `others' or `t'.
+
+   *** Maybe a link to customization section here ***
+
+
+File: ess.info,  Node: Indenting,  Next: Other edit buffer commands,  Prev: Evaluating code,  Up: Editing
+
+Indenting and formatting S code
+===============================
+
+   ESS now provides a sophisticated mechanism for indenting S source
+code (thanks to Ken'ichi Shibayama).  Compound statements (delimited by
+`{' and `}') are indented relative to their enclosing block.  In
+addition, the braces have been electrified to automatically indent to
+the correct position when inserted, and optionally insert a newline at
+the appropriate place as well.  Lines which continue an incomplete
+expression are indented relative to the first line of the expression.
+Function definitions, `if' statements, calls to `expression()' and loop
+constructs are all recognized and indented appropriately.  User
+variables are provided to control the amount if indentation in each
+case, and there are also a number of predefined indentation styles to
+choose from.  *Note Indentation variables::.
+
+   Comments are also handled specially by ESS, using an idea borrowed
+from the Emacs-Lisp indentation style.  By default, comments beginning
+with `###' are aligned to the beginning of the line.  Comments
+beginning with `##' are aligned to the current level of indentation for
+the block containing the comment.  Finally, comments beginning with `#'
+are aligned to a column on the right (the 40th column by default, but
+this value is controlled by the variable `comment-column',) or just
+after the expression on the line containing the comment if it extends
+beyond the indentation column.  You turn off the default behavior by
+adding the line `(setq ess-fancy-comments nil)' to your `.emacs' file.
+
+   The indentation commands provided by ESS are:
+
+   * `TAB' (`ess-indent-command')
+     Indents the current line as S code.  If a prefix argument is given,
+     all following lines which are part of the same (compound)
+     expression are indented by the same amount (but relative indents
+     are preserved).
+
+   * `LFD' (`newline-and-indent')
+     Insert a newline, and indent the next line.  (Note: if your
+     keyboard does not have a <LINEFEED> key, you can use `C-j'
+     instead.)  Some people prefer to bind <RET> to this command.
+
+   * `ESC C-q' aka `M-C-q' aka `C-M-q' (`ess-indent-exp')
+     Indents each line in the S (compound) expression which follows
+     point.  Very useful for beautifying your S code.
+
+   * `{' and `}' (`ess-electric-brace')
+     The braces automatically indent to the correct position when typed.
+
+   * `M-;' (`indent-for-comment')
+     Indents a comment line appropriately, or inserts an empty
+     (single-`#') comment.
+
+   * `M-x ess-set-style'
+     Set the formatting style in this buffer to be one of the predefined
+     styles: `GNU', `BSD', `K&R', `CLB', and `C++'.  The `DEFAULT'
+     style uses the default values for the indenting variables (unless
+     they have been modified in your `.emacs' file.)  This command
+     causes all of the formatting variables *note Indentation
+     variables:: to be buffer-local.
+
+
+File: ess.info,  Node: Other edit buffer commands,  Next: Source Files,  Prev: Indenting,  Up: Editing
+
+Commands for motion, completion and more
+========================================
+
+   A number of commands are provided to move across function definitions
+in the edit buffer:
+   * `ESC C-a' aka `C-M-a' (`ess-beginning-of-function')
+     Moves point to the beginning of the function containing point.
+
+   * `ESC C-e' aka `C-M-e' (`ess-end-of-function')
+     Moves point to the end of the function containing point.
+
+   * `ESC C-h' aka `C-M-h' (`ess-mark-function')
+     Places point at the beginning of the S function containing point,
+     and mark at the end.
+
+Don't forget the usual Emacs commands for moving over balanced
+expressions and parentheses: *Note Lists and Sexps: (Emacs)Lists.
+
+   Completion is provided in the edit buffer in a similar fashion to the
+process buffer: `M-TAB' completes file names and `M-?' lists file
+completions.  Since <TAB> is used for indentation in the edit buffer,
+object completion is now performed with `C-c TAB'.  Note however that
+completion is only provided over globally known S objects (such as
+system functions) -- it will _not_ work for arguments to functions or
+other variables local to the function you are editing.
+
+   Finally, two commands are provided for returning to the ESS process
+buffer:
+
+   * `C-c C-z' (`ess-switch-to-end-of-ESS')
+     Returns you to the ESS process buffer, placing point at the end of
+     the buffer.
+
+   * `C-c C-y' (`ess-switch-to-ESS')
+     Also returns to to the ESS process buffer, but leaves point where
+     it is.
+
+   In addition some commands available in the process buffer are also
+available in the edit buffer.  You can still read help files with `C-c
+C-v', edit another function with `C-c C-d' and of course `C-c C-l' can
+be used to load a source file into S.  *Note Other::, for more details
+on these commands.
+
+
+File: ess.info,  Node: Source Files,  Next: Source Directories,  Prev: Other edit buffer commands,  Up: Editing
+
+Maintaining S source files
+==========================
+
+   Every edit buffer in ESS is associated with a "dump file" on disk.
+Dump files are created whenever you type `C-c C-d'
+(`ess-dump-object-into-edit-buffer'), and may either be deleted after
+use, or kept as a backup file or as a means of keeping several versions
+of an S function.
+
+ - User Option: ess-delete-dump-files
+     If non-`nil', dump files created with C-c C-d are deleted
+     immediately after they are created by the ess-process.
+
+   Since immediately after S dumps an object's definition to a disk
+file the source code on disk corresponds exactly to S's idea of the
+object's definition, the disk file isn't needed; deleting it now has the
+advantage that if you _don't_ modify the file (say, because you just
+wanted to look at the definition of one of the standard S functions)
+the source dump file won't be left around when you kill the buffer.
+Note that this variable only applies to files generated with S's `dump'
+function; it doesn't apply to source files which already exist.  The
+default value is `t'.
+
+ - User Option: ess-keep-dump-files
+     Option controlling what to do with the dump file after an object
+     has been successfully loaded into S.  Valid values are `nil'
+     (always delete), `ask' (always ask whether to delete), `check'
+     (delete files generated with `C-c C-d' in this Emacs session,
+     otherwise ask -- this is the default) and `t' (never delete).
+     This variable is buffer-local.
+
+   After an object has been successfully (i.e. without error) loaded
+back into S with `C-c C-l', the disk file again corresponds exactly
+(well, almost -- see below) to S's record of the object's definition,
+and so some people prefer to delete the disk file rather than
+unnecessarily use up space.  This option allows you to do just that.
+
+   If the value of `ess-keep-dump-files' is `t', dump files are never
+deleted after they are loaded.  Thus you can maintain a complete text
+record of the functions you have edited within ESS.  Backup files are
+kept as usual, and so by using the Emacs numbered backup facility --
+*note Single or Numbered Backups: (emacs)Backup Names., you can keep a
+historic record of function definitions.  Another possibility is to
+maintain the files with a version-control system such as RCS *Note
+Version Control: (emacs)Version Control.  As long as a dump file exists
+in the appropriate place for a particular object, editing that object
+with `C-c C-d' finds that file for editing (unless a prefix argument is
+given) -- the ESS process is not consulted.  Thus you can keep comments
+_outside_ the function definition as a means of documentation that does
+not clutter the S object itself.  Another useful feature is that you
+may format the code in any fashion you please without S re-indenting
+the code every time you edit it.  These features are particularly
+useful for project-based work.
+
+   If the value of `ess-keep-dump-files' is nil, the dump file is always
+silently deleted after a successful load with `C-c C-l'.  While this is
+useful for files that were created with `C-c C-d' it also applies to
+any other file you load (say, a source file of function definitions),
+and so can be dangerous to use unless you are careful.  Note that since
+`ess-keep-dump-files' is buffer-local, you can make sure particular
+files are not deleted by setting it to `t' in the Local Variables
+section of the file *Note Local Variables in Files: (emacs)File
+Variables.
+
+   A safer option is to set `ess-keep-dump-files' to `ask'; this means
+that ESS will always ask for confirmation before deleting the file.
+Since this can get annoying if you always want to delete dump files
+created with `C-c C-d', but not any other files, setting
+`ess-keep-dump-files' to `check' (the default value) will silently
+delete dump files created with `C-c C-d' in the current Emacs session,
+but query for any other file.  Note that in any case you will only be
+asked for confirmation once per file, and your answer is remembered for
+the rest of the Emacs session.
+
+   Note that in all cases, if an error (such as a syntax error) is
+detected while loading the file with `C-c C-l', the dump file is _never_
+deleted.  This is so that you can edit the file in a new Emacs session
+if you happen to quit Emacs before correcting the error.
+
+   Dump buffers are always autosaved, regardless of the value of
+`ess-keep-dump-files'.
+
+
+File: ess.info,  Node: Source Directories,  Prev: Source Files,  Up: Editing
+
+Names and locations of dump files
+=================================
+
+   Every dump file should be given a unique file name, usually the
+dumped object name with some additions.
+
+ - User Option: ess-dump-filename-template
+     Template for filenames of dumped objects.  `%s' is replaced by the
+     object name.
+
+By default, dump file names are the user name, followed by `.' and the
+object and ending with `.S'.  Thus if user `joe' dumps the object
+`myfun' the dump file will have name `joe.myfun.S'.  The username part
+is included to avoid clashes when dumping into a publicly-writable
+directory, such as `/tmp'; you may wish to remove this part if you are
+dumping into a directory owned by you.
+
+   You may also specify the directory in which dump files are written:
+
+ - User Option: ess-source-directory
+     Directory name (ending in a slash) where S dump files are to be
+     written.
+
+   By default, dump files are always written to `/tmp', which is fine
+when `ess-keep-dump-files' is `nil'.  If you are keeping dump files,
+then you will probably want to keep them somewhere in your home
+directory, say `~/S-source'.  This could be achieved by including the
+following line in your `.emacs' file:
+     (setq ess-source-directory (expand-file-name "~/S-source/"))
+
+   If you would prefer to keep your dump files in separate directories
+depending on the value of some variable, ESS provides a facility for
+this also.  By setting `ess-source-directory' to a lambda expression
+which evaluates to a directory name, you have a great deal of
+flexibility in selecting the directory for a particular source file to
+appear in.  The lambda expression is evaluated with the process buffer
+as the current buffer and so you can use the variables local to that
+buffer to make your choice.  For example, the following expression
+causes source files to be saved in the subdirectory `Src' of the
+directory the ESS process was run in.
+
+     (setq ess-source-directory
+           (lambda ()
+              (concat ess-directory "Src/")))
+
+(`ess-directory' is a buffer-local variable in process buffers which
+records the directory the ESS process was run from.)  This is useful if
+you keep your dump files and you often edit objects with the same name
+in different ESS processes.  Alternatively, if you often change your S
+working directory during an S session, you may like to keep dump files
+in some subdirectory of the directory pointed to by the first element
+of the current search list.  This way you can edit objects of the same
+name in different directories during the one S session:
+     (setq ess-source-directory
+        (lambda ()
+            (file-name-as-directory
+             (expand-file-name (concat
+                                (car ess-search-list)
+                                "/.Src")))))
+
+   If the directory generated by the lambda function does not exist but
+can be created, you will be asked whether you wish to create the
+directory.  If you choose not to, or the directory cannot be created,
+you will not be able to edit functions.
+
+
+File: ess.info,  Node: Help,  Next: Transcript Mode,  Prev: Editing,  Up: Top
+
+Reading help files in ESS
+*************************
+
+   ESS provides an easy-to-use facility for reading S help files from
+within Emacs.  From within the ESS process buffer or any ESS edit
+buffer, typing `C-c C-v' (`ess-display-help-on-object') will prompt you
+for the name of an object for which you would like documentation.
+Completion is provided over all objects which have help files.
+
+   If the requested object has documentation, you will be popped into a
+buffer (named `*help(OBJ-NAME)*') containing the help file.  This
+buffer is placed in a special `S Help' mode which disables the usual
+editing commands but which provides a number of keys for paging through
+the help file:
+
+     Help commands:
+
+   * `?' (`ess-describe-help-mode')
+     Pops up a help buffer with a list of the commands available in S
+     help mode.
+
+   * `h' (`ess-display-help-on-object')
+     Pop up a help buffer for a different object
+
+     Paging commands:
+
+   * `b' or `DEL' (`scroll-down')
+     Move one page backwards through the help file.
+
+   * `SPC' (`scroll-up')
+     Move one page forwards through the help file.
+
+   * `>' (`beginning-of-buffer') and `<' (`end-of-buffer')
+     Move to the beginning and end of the help file, respectively.
+
+     Section-based motion commands:
+
+   * `n' (`ess-skip-to-next-section') and `p'
+     (`ess-skip-to-previous-section')
+     Move to the next and previous section header in the help file,
+     respectively.  A section header consists of a number of
+     capitalized words, followed by a colon.
+
+     In addition, the `s' key followed by one of the following letters
+     will jump to a particular section in the help file:
+    `a'
+          ARGUMENTS:
+
+    `b'
+          BACKGROUND:
+
+    `B'
+          BUGS:
+
+    `d'
+          DETAILS:
+
+    `D'
+          DESCRIPTION:
+
+    `e'
+          EXAMPLES:
+
+    `n'
+          NOTE:
+
+    `o'
+          OPTIONAL ARGUMENTS:
+
+    `r'
+          REQUIRED ARGUMENTS:
+
+    `R'
+          REFERENCES:
+
+    `s'
+          SIDE EFFECTS:
+
+    `s'
+          SEE ALSO:
+
+    `u'
+          USAGE:
+
+    `v'
+          VALUE:
+
+    `<'
+          Jumps to beginning of file
+
+    `>'
+          Jumps to end of file
+
+    `?'
+          Pops up a help buffer with a list of the defined section
+          motion keys.
+
+     Miscellaneous:
+
+   * `r' (`ess-eval-region')
+     Send the contents of the current region to the ESS process.  Useful
+     for running examples in help files.
+
+   * `/' (`isearch-forward')
+     Same as `C-s'.
+
+     Quit commands:
+
+   * `q' (`ess-switch-to-end-of-ESS')
+     Returns to the ESS process buffer in another window, leaving the
+     help window visible.
+
+   * `k' (`kill-buffer')
+     Kills the help buffer.
+
+   * `x' (`ess-kill-buffer-and-go')
+     Return to the ESS process, killing this help buffer.
+
+   In addition, all of the ESS commands available in the edit buffers
+are also available in S help mode (*note Edit buffer::).  Of course, the
+usual (non-editing) Emacs commands are available, and for convenience
+the digits and <-> act as prefix arguments.
+
+   If a help buffer already exists for an object for which help is
+requested, that buffer is popped to immediately; the ESS process is not
+consulted at all.  If the contents of the help file have changed, you
+either need to kill the help buffer first, or pass a prefix argument
+(with `C-u') to `ess-display-help-on-object'.
+
+   Help buffers are marked as temporary buffers in ESS, and are deleted
+when `ess-quit' or `ess-cleanup' are called.
+
+   Help buffers normally appear in another window within the current
+frame.  If you wish help buffers to appear in their own frame (either
+one per help buffer, or one for all help buffers), you can customize the
+variable `ess-help-own-frame'.
+
+
+File: ess.info,  Node: Transcript Mode,  Next: Miscellaneous,  Prev: Help,  Up: Top
+
+Manipulating saved transcript files
+***********************************
+
+   Inferior S mode records the transcript (the list of all commands
+executed, and their output) in the process buffer, which can be saved as
+a "transcript file", which should normally have the suffix `.St'.  The
+most obvious use for a transcript file is as a static record of the
+actions you have performed in a particular S session.  Sometimes,
+however, you may wish to re-execute commands recorded in the transcript
+file by submitting them to a running ESS process.  This is what
+Transcript Mode is for.
+
+   If you load file a with the suffix `.St' into Emacs, it is placed in
+S Transcript Mode.  Transcript Mode is similar to Inferior S mode
+(*note Entering commands::): paragraphs are defined as a command and
+its output, and you can move though commands either with the paragraph
+commands or with `C-c C-p' and `C-c C-n'.
+
+* Menu:
+
+* Resubmit::                    Resubmitting commands from the transcript file
+* Clean::                       Cleaning transcript files
+
+
+File: ess.info,  Node: Resubmit,  Next: Clean,  Prev: Transcript Mode,  Up: Transcript Mode
+
+Resubmitting commands from the transcript file
+==============================================
+
+   Three commands are provided to re-submit command lines from the
+transcript file to a running ESS process.  They are:
+
+   * `RET' (`ess-transcript-send-command')
+     Send the current command line to the ESS process, and execute it.
+
+   * `C-c RET' (`ess-transcript-copy-command')
+     Copy the current command to the ESS process, and switch to the ESS
+     process buffer (ready to edit the copied command).
+
+   * `M-RET' (`ess-transcript-send-command-and-move')
+     Send the current command to the ESS process, and move to the next
+     command line.  This command is useful for submitting a series of
+     commands.
+
+Note that these commands are similar to those on the same keys in
+Inferior S Mode.  In all three cases, the commands should be executed
+when the cursor is on a command line in the transcript; the prompt is
+automatically removed before the command is submitted.
+
