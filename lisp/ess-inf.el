@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/01/12 10:14:45 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: ess-inf.el,v 5.8 1999/01/12 10:14:45 maechler Exp $
+;; Modified: $Date: 1999/01/12 10:17:45 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: ess-inf.el,v 5.9 1999/01/12 10:17:45 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -121,10 +121,12 @@ accompany the call for inferior-ess-program.
     (save-excursion
       ;;---- Is this needed ??? --- why should dribble-buffer need these ??
       (set-buffer ess-dribble-buffer)
-      ;; next line with "-local" instead of "-default" : 
-      ;; ==> comint-input-sender is not set to 'ess-input-  ==> no input echo!
-      ;; (ess-setq-vars-default ess-customize-alist (current-buffer))
-      (ess-setq-vars-local ess-customize-alist (current-buffer))
+      (ess-setq-vars-default ess-customize-alist (current-buffer))
+      ;;>> Doesn't set ess-language, 
+      ;;>> => comint-input-sender is not set to 'ess-input-  ==> no input echo!
+      ;;>> => that's why things fail:
+      ;;>> (ess-setq-vars-local ess-customize-alist (current-buffer))
+      ;;                 ======
       (setq temp-ess-dialect
 	    (eval(cdr(assoc 'ess-dialect ess-customize-alist))))
       (setq temp-ess-lang   
