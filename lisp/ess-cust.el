@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2003/11/21 15:03:52 $
-;; Version: $Revision: 1.47 $
-;; RCS: $Id: ess-cust.el,v 1.47 2003/11/21 15:03:52 rsparapa Exp $
+;; Modified: $Date: 2003/12/02 04:51:26 $
+;; Version: $Revision: 1.48 $
+;; RCS: $Id: ess-cust.el,v 1.48 2003/12/02 04:51:26 rmh Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -1219,7 +1219,7 @@ If nil, input is in the `font-lock-variable-name-face'."
      . font-lock-reference-face)
     ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>"
      . font-lock-keyword-face)
-    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function"
+    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\|_\\|=\\)\\(\\s-\\|\n\\)*function"
      1 font-lock-function-name-face t))
   "Font-lock patterns used in `ess-mode' buffers.")
 
