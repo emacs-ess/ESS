@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/06/24 18:33:51 $
-;; Version: $Revision: 1.100 $
-;; RCS: $Id: essa-sas.el,v 1.100 2002/06/24 18:33:51 rsparapa Exp $
+;; Modified: $Date: 2002/07/11 14:50:48 $
+;; Version: $Revision: 1.101 $
+;; RCS: $Id: essa-sas.el,v 1.101 2002/07/11 14:50:48 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -394,17 +394,23 @@ on the way."
        (search-backward-regexp "[ \t=]" nil t)
 
        (if (or
-           (search-forward-regexp 
-	     "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[ ,()\t;]"
-	     nil t)
-           (search-backward-regexp 
-	     "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[ ,()\t;]"
-	     nil t)) (setq ess-tmp-sas-data (match-string 1)))
+           (and (search-forward-regexp 
+	        "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[ ,()\t;]"
+	        nil t)
+	        (setq ess-tmp-sas-data (match-string 1))
+                (not (string-match "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]" 
+                ess-tmp-sas-data))
+	   )
+	   (and (search-backward-regexp "[ \t=]" nil t)
+                (search-backward-regexp 
+	        "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[ ,()\t;]"
+	        nil t))) 
+           (setq ess-tmp-sas-data (match-string 1)))
 
        (if (and ess-tmp-sas-data 
 	  (not (string-match "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]" ess-tmp-sas-data)))
-	    (setq ess-sas-data (read-string "SAS Permanent Dataset: " ess-tmp-sas-data))
-	    (setq ess-sas-data (read-string "SAS Permanent Dataset: ")))
+	    (setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
+	    (setq ess-sas-data (read-string "Permanent SAS Dataset: ")))
 
        (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
 
