@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/09/02 14:22:35 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: ess-vars.el,v 1.18 1997/09/02 14:22:35 rossini Exp $
+;; Modified: $Date: 1997/09/02 20:20:05 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: ess-vars.el,v 1.19 1997/09/02 20:20:05 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -150,7 +150,7 @@ during the load. ")
 ;;; Auto-save is always enabled in dump-file buffers to enable recovery
 ;;; from crashes.
 
-(defvar ess-delete-dump-files t
+(defvar ess-delete-dump-files nil
   "*If non-nil, delete dump files after they are created.
 This applies to dump files created with ess-dump-object-into-edit-buffer, only.
 
@@ -159,9 +159,7 @@ you don't actually modify.  Once the buffer is modified and saved
 however, the file is not subsequently unless ess-keep-dump-files is
 nil, and the file is successfully loaded back into S.")
 
-
 ;;; From ess-mode:
-
 
 (defvar ess-mode-silently-save t
   "*If non-nil, automatically save ESS source buffers before loading")
