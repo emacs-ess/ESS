@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.36 2001/04/27 21:29:06 ess Exp $
+## $Id: Makefile,v 5.37 2001/04/30 16:07:12 ess Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -36,7 +36,7 @@ ESS:
 	cd lisp; make all
 
 docs:
-	cd doc; make all
+	cd doc; make info
 
 ## This target is used to create a new version of the tar-file.
 ## prefix'ing with "-" implies that errors are non-critical.
@@ -89,9 +89,15 @@ tar:
 	@echo "** Cleaning up **"
 	rm -rf ess $(ESSVERSIONDIR)
 
-xemacs-links:  
-	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/info/ess-* \
-	    $(XEMACSDIR)/xemacs-packages/lisp/ess-*
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc  $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc  $(XEMACSDIR)/xemacs-packages/info/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
+doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3: doc/ess.texi 
+	cd doc; make info
+
+xemacs-links: doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3
+	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
+	    $(XEMACSDIR)/xemacs-packages/info/ess.info*
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc             $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp            $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info    $(XEMACSDIR)/xemacs-packages/info/ess.info
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info-1  $(XEMACSDIR)/xemacs-packages/info/ess.info-1
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info-2  $(XEMACSDIR)/xemacs-packages/info/ess.info-2
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info-3  $(XEMACSDIR)/xemacs-packages/info/ess.info-3
