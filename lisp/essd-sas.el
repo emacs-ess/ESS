@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/24 11:21:52 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: essd-sas.el,v 1.17 1997/10/24 11:21:52 rossini Exp $
+;; Modified: $Date: 1997/10/24 12:51:08 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: essd-sas.el,v 1.18 1997/10/24 12:51:08 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,70 +46,70 @@
 
 ;;; Code:
 
-;; Are these buffer local?
-;;(defvar ess-sas-shell-buffer-name nil
-;;  "buffer to run SAS in.")
-;;(defvar ess-sas-shell-buffer-name-flag nil
-;;  "Set if presently exists ess-shell-buffer-name.")
-
 (defun ess-SAS-pre-run-hook ()
   "Set up log and list files for interactive SAS."
 
   ;(interactive)  ; shouldn't be interactively called, correct?
-;;  (if (get-buffer "*shell*")
-;;      (save-excursion       
-;;	(set-buffer "*shell*")
-;;	(setq ess-shell-buffer-name (rename-buffer "*ess-shell-regular*"))
-;;	(setq ess-shell-buffer-name-flag t)))
+
+  (let* ((ess-shell-buffer-name-flag (get-buffer "*shell*"))
+	 ess-shell-buffer-name)
+
+    ;; If someone is running a *shell* buffer, rename it to avoid
+    ;; inadvertent nuking.
+    (if ess-shell-buffer-name-flag
+	(save-excursion       
+	  (set-buffer "*shell*")
+	  (setq ess-shell-buffer-name (rename-buffer "*ess-shell-regular*"))))
   
-  ;; Construct the LST buffer for output
-  (if (get-buffer "*myfile.lst*")
-      nil
-    (shell)
-    (accept-process-output (get-buffer-process (current-buffer)))
-    (setq ess-sas-lst (ess-insert-accept "tty"))
-    (rename-buffer "*myfile.lst*"))
-  
-  ;; Construct the LOG buffer for output
-  (if (get-buffer "*myfile.log*")
-      nil
-    (shell)
-    (accept-process-output (get-buffer-process (current-buffer)))
-    (setq ess-sas-log (ess-insert-accept "tty"))
-    (rename-buffer "*myfile.log*"))
-  (setq additional-inferior-SAS-args (concat " "
-					     ess-sas-lst
-					     " "
-					     ess-sas-log))
-  (setq inferior-SAS-args-temp (concat inferior-SAS-args
-				       additional-inferior-SAS-args))
-  
-;;  (if ess-shell-buffer-name-flag
-;;      (save-excursion       
-;;	(set-buffer ess-shell-buffer-name)
-;;	(rename-buffer "*shell*")
-;;	(setq ess-shell-buffer-name-flag nil)))
+    ;; Construct the LST buffer for output
+    (if (get-buffer "*myfile.lst*")
+	nil
+      (shell)
+      (accept-process-output (get-buffer-process (current-buffer)))
+      (sleep-for 0.5) ; need to wait, else working too fast!
+      (setq ess-sas-lst (ess-insert-accept "tty"))
+      (rename-buffer "*myfile.lst*"))
+    
+    ;; Construct the LOG buffer for output
+    (if (get-buffer "*myfile.log*")
+	nil
+      (shell)
+      (accept-process-output (get-buffer-process (current-buffer)))
+      (sleep-for 0.5) ; need to wait, else working too fast!
+      (setq ess-sas-log (ess-insert-accept "tty"))
+      (rename-buffer "*myfile.log*"))
+    (setq additional-inferior-SAS-args (concat " "
+					       ess-sas-lst
+					       " "
+					       ess-sas-log))
+    (setq inferior-SAS-args-temp (concat inferior-SAS-args
+					 additional-inferior-SAS-args))
 
-  (delete-other-windows)
-  (split-window-vertically)
-  (split-window-vertically)
-  (switch-to-buffer (nth 2 (buffer-list)))
-  (other-window 2)
-  (switch-to-buffer "*myfile.log*")
-  (split-window-vertically)
-  (other-window 1)
-  (switch-to-buffer "*myfile.lst*")
-  (other-window 2)
+    ;; Restore the *shell* buffer
+    (if ess-shell-buffer-name-flag
+	(save-excursion       
+	  (set-buffer ess-shell-buffer-name)
+	  (rename-buffer "*shell*")))
+    
+    (delete-other-windows)
+    (split-window-vertically)
+    (split-window-vertically)
+    (switch-to-buffer (nth 2 (buffer-list)))
+    (other-window 2)
+    (switch-to-buffer "*myfile.log*")
+    (split-window-vertically)
+    (other-window 1)
+    (switch-to-buffer "*myfile.lst*")
+    (other-window 2)
+    
+    ;;workaround
+    (setq inferior-SAS-program-name
+	  (concat ess-lisp-directory "/" "ess-sas-sh-command"))
+    (setq inferior-ess-program inferior-SAS-program-name)))
 
-  ;;workaround
-  (setq inferior-SAS-program-name
-	(concat ess-lisp-directory "/" "ess-sas-sh-command"))
-  (setq inferior-ess-program inferior-SAS-program-name)
-  ;; workaround
-
-  )
-
-(defun ess-insert-accept (command) "" (interactive)
+(defun ess-insert-accept (command)
+  "Submit command to process, get next line."
+  (interactive)
   (goto-char (point-max))
   (insert command)
   (comint-send-input)
