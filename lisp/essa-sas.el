@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/01/05 19:55:21 $
-;; Version: $Revision: 1.135 $
-;; RCS: $Id: essa-sas.el,v 1.135 2003/01/05 19:55:21 rmh Exp $
+;; Modified: $Date: 2003/06/24 19:52:13 $
+;; Version: $Revision: 1.136 $
+;; RCS: $Id: essa-sas.el,v 1.136 2003/06/24 19:52:13 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -78,13 +78,24 @@
 ;;    :group 'ess-sas
 ;;)
 
-(defcustom ess-sas-shell-buffer "*shell*"
+(defcustom ess-sas-shell-buffer 
+    (if (boundp 'message-make-host-name) 
+	(concat "*" (message-make-host-name) "*")
+	"*shell*")
 "*Name that you want to use for the shell buffer; buffer-local."
     :group 'ess-sas
     :type  'string
 )
 
 (make-variable-buffer-local 'ess-sas-shell-buffer)
+
+(defcustom ess-sas-shell-buffer-init nil 
+"*Command that you want to execute on shell startup."
+    :group 'ess-sas
+    :type  'string
+)
+
+(make-variable-buffer-local 'ess-sas-shell-buffer-init)
 
 (defcustom ess-sas-submit-mac-virtual-pc nil
 "*Non-nil means that you want to run Windows SAS in a
@@ -512,9 +523,15 @@ optional argument is non-nil, then set-buffer rather than switch."
 ; (let ((ess-temp-directory default-directory))
   (if (get-buffer ess-sas-shell-buffer) 
     (if set-buffer (set-buffer ess-sas-shell-buffer) (switch-to-buffer ess-sas-shell-buffer))
-    (let ((temp-shell-buffer ess-sas-shell-buffer))
+    (let ((temp-shell-buffer ess-sas-shell-buffer)
+	(temp-shell-buffer-init ess-sas-shell-buffer-init))
     (shell)
     (rename-buffer temp-shell-buffer)
+    
+    (if temp-shell-buffer-init (progn
+	(insert temp-shell-buffer-init)
+	(comint-send-input))
+    )
 
     (if (eq ess-sas-submit-method 'sh)
 	(add-hook 'comint-output-filter-functions 'ess-exit-notify-sh)) ;; 19.28
