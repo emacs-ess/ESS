@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/10/21 20:11:22 $
-;; Version: $Revision: 1.34 $
-;; RCS: $Id: essd-s+3.el,v 1.34 1997/10/21 20:11:22 rossini Exp $
+;; Modified: $Date: 1997/10/22 14:48:55 $
+;; Version: $Revision: 1.35 $
+;; RCS: $Id: essd-s+3.el,v 1.35 1997/10/22 14:48:55 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -68,11 +68,6 @@
     (inferior-ess-start-args       . ""))
  "Variables to customize for S+3")
 
-(defun S-mode (&optional proc-name)
-  "Major mode for editing S+3 source.  See ess-mode for more help."
-  (interactive)
-  (setq-default ess-customize-alist S+3-customize-alist)
-  (ess-mode S+3-customize-alist proc-name))
 
 (defun S+3-mode (&optional proc-name)
   "Major mode for editing S+3 source.  See ess-mode for more help."
