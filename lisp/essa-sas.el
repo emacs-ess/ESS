@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/03 23:07:03 $
-;; Version: $Revision: 1.43 $
-;; RCS: $Id: essa-sas.el,v 1.43 2002/01/03 23:07:03 ess Exp $
+;; Modified: $Date: 2002/01/04 20:03:05 $
+;; Version: $Revision: 1.44 $
+;; RCS: $Id: essa-sas.el,v 1.44 2002/01/04 20:03:05 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -287,10 +287,13 @@ on the way."
 
 (defun ess-sas-goto (suffix)
   "Find a file associated with the SAS file by suffix."
-    
-    (if (string-match "[.]sas" ess-sas-file-path)
-	(find-buffer-visiting (replace-match suffix t t ess-sas-file-path))
-    )
+    (if (string-match "[.]\\(sas\\|log\\|lst\\|txt\\)" ess-sas-file-path) (let* (
+	(ess-sas-temp-file (replace-match (concat "." suffix) t t ess-sas-file-path))
+	(ess-sas-temp-buff (find-buffer-visiting ess-sas-temp-file)))
+
+	(if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
+	    (find-file ess-sas-temp-file))
+    ))
 )
 
 (defun ess-sas-file (suffix &optional revert)
@@ -373,9 +376,9 @@ on the way."
 depends on the value of  `ess-sas-submit-method'"
   (interactive)
 ;  (ess-sas-goto-sas)
-  (ess-sas-goto ".sas")
-  (save-buffer)
   (ess-sas-file-path)
+  (ess-sas-goto "sas")
+  (save-buffer)
   (cond
    ((eq ess-sas-submit-method 'Apple-Macintosh) 
 	(ess-sas-submit-mac ess-sas-submit-command))
@@ -387,7 +390,7 @@ depends on the value of  `ess-sas-submit-method'"
 	(ess-sas-submit-sh ess-sas-submit-command)) 
    (t (ess-sas-submit-sh ess-sas-submit-command)))
 ;  (ess-sas-goto-sas)
-  (ess-sas-goto ".sas")
+  (ess-sas-goto "sas")
 )
 
 (defun ess-sas-submit-iESS (ess-sas-arg)
