@@ -1,3 +1,21 @@
+2004-12-31  Stephen Eglen  <stephen@gnu.org>
+
+	* doc/inst_tar.texi (Unix installation): Remove note regarding GNU
+	Make, as this is relevant only for developers, and so does not
+	need to be in the user's guide [the shorter the installation
+	instructions, the better!]
+
+2004-12-29  Stephen Eglen  <stephen@gnu.org>
+
+	* doc/newfeat.texi: Mention changes to completion.
+
+	* doc/inst_tar.texi (Unix installation): Comment out optional step
+	about creating database files for slow computers; delete later.
+
+	* doc/ess.texi (Completion details): Comment out note about slow
+	completion on old systems; delete later.
+	(Imenu): Add note about imenu regexps.
+
 2004-10-27  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* doc/ess.texi: added Debian patches from Camm Maguire
