@@ -101,7 +101,7 @@ Icons should be found in ESS/etc/icons/ directory.
 If `ess-icon-directory' is invalid, please report a bug.")
 
 (unless (file-directory-p ess-icon-directory)
-    (message "`ess-icon-directory' does not exist; using `ess-etc-directory'.")
+    (ess-message "`ess-icon-directory' does not exist; using `ess-etc-directory'.")
     (setq ess-icon-directory ess-etc-directory))
 
 (defvar ess-toolbar nil

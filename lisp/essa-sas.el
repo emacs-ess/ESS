@@ -35,6 +35,8 @@
 
 ;; Code:
 
+(require 'rtf-support)
+
 ;;; Table of Contents
 ;;; Section 1:  Variable Definitions
 ;;; Section 2:  Function Definitions
