@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/03 13:21:52 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: ess.el,v 1.21 1997/07/03 13:21:52 rossini Exp $
+;; Modified: $Date: 1997/07/03 13:27:57 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: ess.el,v 1.22 1997/07/03 13:27:57 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.22  1997/07/03 13:27:57  rossini
+;; made ess-customize-alist buffer-local
+;;
 ;; Revision 1.21  1997/07/03 13:21:52  rossini
 ;; added functions, alist var, for configuring variables.
 ;;
@@ -1018,7 +1021,10 @@ browse-url to find the location")
 
 (defvar ess-customize-alist nil
   "Variable settings to use for doing the proper  thing.")
-  
+
+(make-variable-buffer-local 'ess-customize-alist)
+(setq-default ess-customize-alist nil)
+
 (defun ess-set-vars (var-alist &optional buf) 
   "Set language variables from alist, in buffer `buf', if desired.
 This is SO UGLY.  But it'll work for now... 
