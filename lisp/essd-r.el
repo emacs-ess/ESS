@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/11/12 17:27:30 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: essd-r.el,v 5.5 1998/11/12 17:27:30 maechler Exp $
+;; Modified: $Date: 1999/03/15 18:49:57 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: essd-r.el,v 5.6 1999/03/15 18:49:57 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -92,6 +92,49 @@
 			 "Starting Args [other than `--no-readline'] ? ")
 	   nil))))
     (inferior-ess r-start-args)))
+
+(defun R-microsoft  (&optional start-args)
+  "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ)."
+  (interactive "P")
+  (setq ess-customize-alist R-customize-alist)
+  ;; for debugging only
+  (ess-write-to-dribble-buffer
+   (format 
+    "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
+    ess-dialect (current-buffer) start-args current-prefix-arg))
+  (let* ((r-always-arg
+	  (if (or (equal window-system 'w32) (equal window-system 'win32))
+	      "--ess "  "--no-readline "))
+	 (r-start-args 
+	  (concat r-always-arg
+		  (if start-args
+		      (read-string
+		       (concat "Starting Args [other than `"
+			       r-always-arg
+			       "'] ? "))
+		    nil))))
+    (inferior-ess r-start-args))
+  (if (or (equal window-system 'w32) (equal window-system 'win32))
+      (progn
+	(add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
+	(comint-strip-ctrl-m)           ; Timing problem in bash.
+					; Can't make startup ^M go away.
+	(goto-char (point-max))
+	(beginning-of-line)
+	(insert
+"The interaction of ESS 5.1.2 and R 0.63.2 Beta is slightly rough:\n
+To start the graphics window, you must explicitly use the `x11()'
+command.\n
+To see the graphics window, you must use the `locator()' command and
+then click on the graphics window.\n
+The `system(\"command\")' doesn't work when bash is the emacs shell.\n
+You must quit R with `q()' or you take the risk of not being able
+to shut down the computer cleanly.\n\n")
+	(goto-char (point-max)))))
+
+
+
+
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files" t)
