@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/02/07 17:14:55 $
-;; Version: $Revision: 1.82 $
-;; RCS: $Id: essa-sas.el,v 1.82 2002/02/07 17:14:55 rsparapa Exp $
+;; Modified: $Date: 2002/02/20 22:26:48 $
+;; Version: $Revision: 1.83 $
+;; RCS: $Id: essa-sas.el,v 1.83 2002/02/20 22:26:48 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -56,6 +56,13 @@
 
 (defcustom ess-sas-data-view-libname " "
     "*SAS code to define a library for `ess-sas-data-view'."
+    :group 'ess-sas
+    :type  'string
+)
+
+(defcustom ess-sas-graph-suffix-regexp 
+    "[.]\\([eE]?[pP][sS]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\)"
+    "*GSASFILE suffix regexp."
     :group 'ess-sas
     :type  'string
 )
@@ -108,6 +115,14 @@ or `ESS-elsewhere' should have one of the following in ~/.emacs
     (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
 	"-nodms -nosysin -log /dev/null")
     "*The options necessary for your enviromment and your operating system."
+    :group 'ess-sas
+    :type  'string
+)
+
+(defcustom ess-sas-image-viewer
+    (if ess-microsoft-p "kodakimg" 
+	(if (equal ess-sas-submit-method 'sh) "sdtimage"))
+    "*Application to view GSASFILE."
     :group 'ess-sas
     :type  'string
 )
@@ -364,6 +379,34 @@ on the way."
 	    ess-sas-submit-post-command))
     (comint-send-input)
 )))))
+
+(defun ess-sas-graph-view ()
+  "Open a GSASFILE for viewing."
+    (interactive)
+
+ (save-excursion (let ((ess-tmp-sas-graph nil))
+    (save-match-data 
+       (search-backward-regexp "[ \t=]" nil t)
+
+       (if (or
+           (search-forward-regexp 
+	     (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")
+	     nil t)
+           (search-backward-regexp 
+	     (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")
+	     nil t)) (setq ess-tmp-sas-graph (match-string 1)))
+
+       (if ess-tmp-sas-graph 
+	    (setq ess-tmp-sas-graph (read-string "GSASFILE: " ess-tmp-sas-graph))
+	    (setq ess-tmp-sas-graph (read-string "GSASFILE: " 
+		(file-name-non-directory ess-sas-file-path))))
+
+       (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
+
+       (insert ess-sas-submit-pre-command " " ess-sas-image-viewer " " ess-tmp-sas-graph 
+	    (if (equal ess-sas-submit-method 'sh) " &"))
+       (comint-send-input)
+))))
 
 (defun ess-sas-file-path ()
  "*Set `ess-sas-file-path' depending on suffix."
@@ -685,6 +728,7 @@ Without args, toggle between these options."
   (global-set-key [(control f8)] 'ess-sas-submit-region)
   (global-set-key (quote [f9]) 'ess-sas-data-view)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
+  (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
 	(if (and ess-sas-edit-keys-toggle
 	    (equal emacs-major-version 19) (equal emacs-minor-version 28))
 	    (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
@@ -710,6 +754,7 @@ Without args, toggle between these options."
   (global-set-key (quote [f9]) 'ess-sas-data-view)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
+  (global-set-key (quote [f12]) 'ess-sas-graph-view)
 	(if (and ess-sas-edit-keys-toggle
 	    (equal emacs-major-version 19) (equal emacs-minor-version 28))
 	    (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
