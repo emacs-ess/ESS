@@ -1,4 +1,4 @@
-The latest version of ESS is always available on the web at:
+The latest released version of ESS is always available on the web at:
 @uref{http://ess.r-project.org, ESS web page} or
 @uref{http://lib.stat.cmu.edu/general/ESS/, StatLib}
 
