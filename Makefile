@@ -10,19 +10,16 @@ Subdirs = lisp doc
 all install clean distclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd ..; done
 
-#ESS is now an official XEmacs package, but the xemacs-links target
+#ESS is now an official xemacs-package, but the xemacs-links target
 #persists since there is generally a lag between an ESS release and
-#the corresponding XEmacs ESS package release
-xemacs-links: doc/info/ess.info doc/info/ess.info-1 doc/info/ess.info-2 doc/info/ess.info-3 doc/info/ess.info-4
-	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
-	    $(XEMACSDIR)/xemacs-packages/info/ess.info*
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc                  $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp                 $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info    $(XEMACSDIR)/xemacs-packages/info/ess.info
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-1  $(XEMACSDIR)/xemacs-packages/info/ess.info-1
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-2  $(XEMACSDIR)/xemacs-packages/info/ess.info-2
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-3  $(XEMACSDIR)/xemacs-packages/info/ess.info-3
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-4  $(XEMACSDIR)/xemacs-packages/info/ess.info-4
+#the corresponding xemacs-package release
+#Unfortunately, this target does not include the info docs since ESS
+#itself no longer contains them.  So, you must install a real
+#xemacs-package to get info docs, although, they will be out of date
+xemacs-links: 
+	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess* $(XEMACSDIR)/xemacs-packages/lisp/ess* 
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc  $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
 
 ## the rest of the targets are for ESS developer's use only :
 
