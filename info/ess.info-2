@@ -15,7 +15,7 @@ Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.1.21 of `ESS'.
+   This documentation relates to Version 5.2.0 of `ESS'.
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.

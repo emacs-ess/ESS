@@ -15,7 +15,7 @@ Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.1.21 of `ESS'.
+   This documentation relates to Version 5.2.0 of `ESS'.
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -338,14 +338,13 @@ Help for SAS
 * ESS(SAS)--Common problems::
 * ESS(SAS)--MS Windows::
 
-   ESS[SAS] (originally SAS-mode) was designed for use with SAS.
-SAS-mode was developed by Cook
-<ftp://ftp.biostat.wisc.edu/pub/cook/sas-mode/sas.tar.gz>.  Those
-editing features and new advanced features are part of ESS[SAS].  The
-user interface of ESS[SAS] has similarities with ESS[S], the ESS
-interface for S, and to the SAS Display Manager.  By _emacs_ we mean
-either GNU Emacs from the Free Software Foundation or XEmacs from the
-XEmacs Project.
+   ESS[SAS] was designed for use with SAS.  It is descended from
+SAS-mode which was originally developed by Cook.  Those editing
+features and new advanced features are part of ESS[SAS].  The user
+interface of ESS[SAS] has similarities with ESS[S], the ESS interface
+for S, and to the SAS Display Manager.  By emacs, we mean either GNU
+Emacs from the Free Software Foundation or XEmacs from the XEmacs
+Project.
 
 
 File: ess.info,  Node: ESS(SAS)--Design philosophy,  Next: ESS(SAS)--Recommended autoexec,  Prev: Help for SAS,  Up: Help for SAS
@@ -452,7 +451,7 @@ Manager uses.  The interactive capabilities of ESS require you to start
 an inferior SAS process with M-x SAS (*Note iESS(SAS)--Inferior ESS
 processes::.)
 
-   At this writing (5.1.21), the indenting and syntactic highlighting
+   At this writing (5.2.0), the indenting and syntactic highlighting
 are usually correct.
 
 
@@ -897,9 +896,10 @@ running on your system.
 
 * Menu:
 
-* Unix installation::           Installing ESS on your Unix system
-* Microsoft Windows installation::  Installing ESS on your MS Windows system
-* System dependent::            Other variables you may need to change
+* Unix installation::              Installing ESS on your Unix system
+* Microsoft Windows installation:: Installing ESS on your MS Windows system
+* Requirements::         emacs, Operating Systems and Statistical Packages
+* System dependent::               Other variables you may need to change
 
    We now discuss installation, which might happen under Unix or
 Microsoft Windows.  First, we discuss Unix installation.  *Note Unix
@@ -914,95 +914,53 @@ File: ess.info,  Node: Unix installation,  Next: Microsoft Windows installation,
 Unix installation
 =================
 
-  1. cd to a directory where you keep emacs lisp files, or create a new
-     directory to hold the distribution.  This directory will be
-     referred to below as "the ESS distribution directory".  It will
-     contain, at the end, the tar file `ess-5.1.21.tar.gz', and a
-     directory for the ESS source, which will be termed "the ESS-5.1.21
-     source directory".
+  1. cd to a directory where you want to install ESS, creating it if
+     necessary.  This directory will be referred to below as ESSDIR.
 
-     Note that the .elc files may be installed elsewhere (as specified
-     in the Makefile) if desired.
+  2. Retrieve the gzipped tar file
+     (http://software.biostat.washington.edu/ess/ess-5.2.0.tar.gz) to
+     ESSDIR.
 
-  2. Retrieve the gzipped tar file or zipped file from
-     <http://software.biostat.washington.edu/statsoft/ess/essDL>
+  3. Decompress/unarchive the files from the disribution.
+          gunzip ess-5.2.0.tar.gz
+          tar xvf ess-5.2.0.tar
 
-  3. Copy `ess-5.1.21.tar.gz' to the location where you want the
-     ESS-5.1.21 directory, and cd there.  Extract the files from the
-     distribution, which will unpack into a subdirectory, ess-5.1.21.
-          gunzip ess-5.1.21.tar.gz
-          tar vxf ess-5.1.21.tar
+          (or: `gunzip < ess-5.2.0.tar.gz | tar xvf -' ).
+          (or using GNU tar:  `tar zxvf ess-5.2.0.tar.gz').
 
-          (or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).
-          (or using GNU tar:  `tar zvxf ess-5.1.21.tar.gz').
+     The `tar' command will create the subdirectory ess-5.2.0 and
+     unarchive the files there.
 
-     The `tar' command will extract files into the current directory.
-     Do not create ess-5.1.21 yourself, or you will get an extra level
-     of depth to your directory structure.
+     If you are using GNU Emacs 19.29, decompress/unarchive
+     `ESSDIR/ess-5.2.0/lisp/19.29.tar.gz', read
+     `ESSDIR/ess-5.2.0/lisp/19.29/README', follow the instructions and
+     you might be able to get ESS to work.  _Please note that GNU Emacs
+     19.29 is no longer supported_.  For a list of supported versions
+     of emacs, see *Note Requirements::.
 
-     Note if you have a very ancient version of GNU emacs (_and_  really
-     can not upgrade to Emacs 20 or higher!) you can unpack the
-     `lisp/19.29.tar.gz' file, read the ensuing `lisp/19.29/README' and
-     you may succeed...
+  4. Edit the file `ESSDIR/ess-5.2.0/lisp/ess-site.el' as explained in
+     the comments section of that file.
 
-  4. Edit the file `lisp/ess-site.el' as explained in the comments
-     section of that file.  Installations that are using ESS only for
-     S-Plus 6.x will probably not need to make any changes.
-     Installations that also have one or more of (S+5 S4 S+4 S+3 R SAS
-     XLispStat Stata) may need to uncomment corresponding lines in
-     `ess-site.el'.
+  5.  Add the line
+          (load "ESSDIR/ess-5.2.0/lisp/ess-site")
+     to your user or system installation file (GNU Emacs uses
+     `$HOME/.emacs' and XEmacs uses `$HOME/.xemacs/init.el' for the
+     user initialization file.  GNU Emacs uses default.el or
+     site-init.el and XEmacs uses site-start.el for the system
+     installation file).
 
-  5. READ THIS ITEM THOROUGHLY BEFORE STARTING:
-
-     In the ess-5.1.21 directory, edit the file `Makeconf' (only if you
-     want to place the executables in other locations; see LISPDIR and
-     INFODIR) and then type:
-          make
-
-     If this works, then you might try:
-          make install
-     Note that the latter does the former as well, so if you are feeling
-     lucky, you might want to skip it.
-
-     This will install the info files (and the lisp files, if they are
-     to go in another directory).  Don't forget to edit the file `dir'
-     in the info directory specified by `INFODIR' in `doc/Makefile'.
-     See the sample `dir' file for an example of the line to add.
-
-     If you are using XEmacs, you might do:
-          make EMACS=xemacs
-
-     and then
-          make EMACS=xemacs install
-     instead of editing the Makefile.
-
-     _Note_ that you might need to use GNU make for everything to work
-     properly
-
-     An alternative, if you are running XEmacs and have access to the
-     XEmacs system directories, would be to place the directory in the
-     site-lisp directory, and simply type `make' (and copy the
-     documentation as appropriate).
-
-     For Emacs, you would still have to move the files into the top
-     level site-lisp directory.
-
-  6.  Add the line
-          (load "/PATH/ess-site")
-     to your .emacs file (or default.el or site-init.el, for a site-wide
-     installation).  Replace `/PATH' above with the value of
-     ess-lisp-directory as defined in ess-site.el.  (GNU emacs uses the
-     filename `~/.emacs' and Xemacs uses the filename
-     `~/.xemacs/init.el' for the initialization file.)
-
-     Alternatively, if ess-site.el is in your current Lisp path, you can
-     do:
+     Alternatively, if ess-site.el is in your current Lisp path, you
+     can do:
           (require 'ess-site)
-     to configure Emacs for ESS.
+     to configure emacs for ESS.
+
+  6. That's it!  To edit statistical programs, load the files with the
+     requiste extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R,
+     and ".lsp" for XLispStat).
 
   7. (OPTIONAL) If you are running S-PLUS or R, you might consider
-     installing the database files.  From within (X)Emacs, `C-x d' to
-     the directory containing ESS.  Now:
+     installing the database files.  From within emacs, `C-x d' to the
+     directory containing ESS.  Now:
           M-x S+6
      get running.  once you have reached the SPLUS prompt, do:
           M-x ess-create-object-name-db
@@ -1018,39 +976,44 @@ Unix installation
      `ess-r-namedb.el'; if it isn't in the ESS directory, move it
      there).
 
-  8. For more information on using ESS in your daily work, see the files
-     README.S, README.SAS, and README.XLispStat.
+  8. (OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     For the impatient, the quick version of usage follows:
+     In the ESSDIR/ess-5.2.0 directory, edit the file `Makeconf' if you
+     want to place the compiled files in other locations; see LISPDIR
+     and INFODIR.
 
-  9. To edit statistical programs, load the files with the requiste
-     extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and
-     ".lsp" for XLispStat).
+     Then type:
+          make all
 
- 10. To run statistical processes under (X)Emacs:
+     If this works, then you might try:
+          make install
 
-     Run S-PLUS 6.x with:
-          M-x S+6
-     (or M-x S  using backwards compatibility).  You will then be asked
-     for a pathname ("S starting data directory?"), from which to start
-     the process.
+     This will install the info files (and the lisp files, if they are
+     to go in another directory).  Don't forget to edit the file `dir'
+     in the info directory specified by `INFODIR' in `doc/Makefile'.
+     See the sample `dir' file for an example of the line to add.
 
-     If you wish to run R, you can start it with:
-          M-x R
+     If you are using XEmacs, you might do:
+          make EMACS=xemacs all
 
-     XLispStat can be run with
-          M-x XLS
+     and then
+          make EMACS=xemacs install
+     instead of editing the Makefile.
 
-     An interactive SAS can be run in an `iESS[SAS]' buffer with:
-          M-x SAS
-     This works when SAS is running on a Unix machine, either the local
-     machine or over a network connection.  M-x SAS does not work when
-     SAS is running on a Windows machine.
+     _Note_ that you might need to use GNU make for everything to work
+     properly
 
- 11. That's it!
+     An alternative, if you are running XEmacs and have access to the
+     XEmacs system directories, would be to place the directory in the
+     site-lisp directory, and simply type `make all' (and copy the
+     documentation as appropriate).
+
+     For GNU Emacs, you would still have to move the files into the top
+     level site-lisp directory.
+
 
 
-File: ess.info,  Node: Microsoft Windows installation,  Prev: Unix installation,  Up: Installation
+File: ess.info,  Node: Microsoft Windows installation,  Next: Requirements,  Prev: Unix installation,  Up: Installation
 
 Microsoft Windows installation
 ==============================
@@ -1058,42 +1021,42 @@ Microsoft Windows installation
    For Microsoft Windows installation, please follow the next steps:
 (see separate instructions above for UNIX *Note Unix installation::.
 
-  1.  cd to a directory where you keep emacs lisp files, or create a new
+  1. cd to a directory where you keep emacs lisp files, or create a new
      directory (for example, `c:\emacs\') to hold the distribution.
      This directory will be referred to below as "the ESS distribution
      directory".  It will contain, at the end, either the tar file
-     `ess-5.1.21.tar.gz' or the zip file `ess-5.1.21.zip', and a
-     directory for the ESS source, which will be termed "the ESS-5.1.21
-     source directory".
+     `ess-5.2.0.tar.gz' or the zip file `ess-5.2.0.zip', and a directory
+     for the ESS source, which will be termed "the ESS-5.2.0 source
+     directory".
 
-  2.  Retrieve the compressed tar file `ess-5.1.21.tar.gz' or the
-     zipped file `ess-5.1.21.zip' from one of the FTP or WWW archive
-     sites via FTP (or HTTP).  Be aware that http browsers on Windows
-     frequently change the "." and "-" characters in filenames to other
+  2. Retrieve the compressed tar file `ess-5.2.0.tar.gz' or the zipped
+     file `ess-5.2.0.zip' from one of the FTP or WWW archive sites via
+     FTP (or HTTP).  Be aware that http browsers on Windows frequently
+     change the "." and "-" characters in filenames to other
      punctuation.  Please change the names back to their original form.
 
-  3.  Copy `ess-5.1.21.tar.gz' to the location where you want the
-     ess-5.1.21 directory, for example to `c:\emacs\ess-5.1.21.tar.gz',
+  3. Copy `ess-5.2.0.tar.gz' to the location where you want the
+     ess-5.2.0 directory, for example to `c:\emacs\ess-5.2.0.tar.gz',
      and cd there.  For example,
 
           cd c:\emacs
 
      Extract the files from the distribution, which will unpack into a
-     subdirectory, `ess-5.1.21'.
-          gunzip ess-5.1.21.tar.gz
-          tar vxf ess-5.1.21.tar
-          (or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).
-          (or: from the zip file: `unzip ess-5.1.21.zip')
+     subdirectory, `ess-5.2.0'.
+          gunzip ess-5.2.0.tar.gz
+          tar xvf ess-5.2.0.tar
+          (or: `gunzip < ess-5.2.0.tar.gz | tar xvf -' ).
+          (or: from the zip file: `unzip ess-5.2.0.zip')
 
      The `tar' command will extract files into the current directory.
 
-     Do not create `ess-5.1.21' yourself, or you will get an extra level
+     Do not create `ess-5.2.0' yourself, or you will get an extra level
      of depth to your directory structure.
 
   4. Windows users will usually be able to use the `lisp/ess-site.el'
      as distributed.  Only rarely will changes be needed.
 
-  5.  Windows users will need to make sure that the directories for the
+  5. Windows users will need to make sure that the directories for the
      software they will be using is in the PATH environment variable.
      On Windows 9x, add lines similar to the following to your
      `c:\autoexec.bat' file:
@@ -1105,44 +1068,20 @@ Microsoft Windows installation
      `progra~1' and not the long version with embedded blanks.  Use
      backslashes "\".
 
-  6.  Add the line
+  6. Add the line
           (load "/PATH/ess-site")
      to your .emacs (or _emacs) file (or default.el or site-init.el, for
      a site-wide installation).  Replace `/PATH' above with the value
      of ess-lisp-directory as defined in `ess-site.el'.  Use
-     forwardslashes `/'.  (GNU emacs uses the filename `~/.emacs' and
-     Xemacs uses the filename `~/.xemacs/init.el' for the
+     forwardslashes `/'.  (GNU Emacs uses the filename `%HOME%/.emacs'
+     and XEmacs uses the filename `%HOME%/.xemacs/init.el' for the
      initialization file.)
 
-  7.  (OPTIONAL) If you are running Sqpe or R, you might consider
-     installing the database files.  From within (X)Emacs, `C-x d' to
-     the   directory containing ESS.  Now:
-          M-x Sqpe+6
-     (get running.  once you have reached the SPLUS prompt, do:)
-          M-x ess-create-object-name-db
-     (this will create the file `ess-s+6-namedb.el'; if it isn't in the
-     ESS directory, move it there).
-
-     Then, completions will be autoloaded and will not be regenerated
-     for every session.
-
-     For R, do the same, using
-          M-x R
-     and then `M-x ess-create-object-name-db' creating
-     `ess-r-namedb.el'; if it isn't in the ESS directory, move it
-     there).
-
-  8.  For more information on using ESS in your daily work, see the
-     files doc/README.SPLUS4WIN, doc/README.S, doc/README.SAS, and
-     doc/README.XLispStat.
-
-     For the impatient, the quick version of usage follows:
-
-  9.  To edit statistical programs, load the files with the requisite
+  7. To edit statistical programs, load the files with the requisite
      extensions  (".sas" for SAS, ".S" or "s" or "q" or "Q" for S-PLUS,
      ".r" or ".R" for R, and ".lsp"   for XLispStat).
 
- 10.  To run statistical processes under (X)Emacs:
+  8. To run statistical processes under emacs:
 
      Run S-PLUS 6.x or 2000 with:
           M-x S+6
@@ -1172,7 +1111,7 @@ Microsoft Windows installation
      XLispStat can not currently be run with
           M-x XLS
      Hopefully, this will change.  However, you can still edit with
-     Emacs, and cut and paste the results into the XLispStat *Listener*
+     emacs, and cut and paste the results into the XLispStat *Listener*
      Window under Microsoft Windows.
 
      SAS for Windows uses the batch access with function keys that is
@@ -1187,6 +1126,76 @@ Microsoft Windows installation
      Reason:  we use ddeclient to interface with programs and SAS
      doesn't provide the corresponding ddeserver capability.
 
- 11. That's it!
+  9. (OPTIONAL) If you are running Sqpe or R, you might consider
+     installing the database files.  From within emacs, `C-x d' to the
+     directory containing ESS.  Now:
+          M-x Sqpe+6
+     (get running.  once you have reached the SPLUS prompt, do:)
+          M-x ess-create-object-name-db
+     (this will create the file `ess-s+6-namedb.el'; if it isn't in the
+     ESS directory, move it there).
 
+     Then, completions will be autoloaded and will not be regenerated
+     for every session.
+
+     For R, do the same, using
+          M-x R
+     and then `M-x ess-create-object-name-db' creating
+     `ess-r-namedb.el'; if it isn't in the ESS directory, move it
+     there).
+
+ 10. That's it!
+
+
+
+File: ess.info,  Node: Requirements,  Prev: Microsoft Windows installation,  Up: Installation
+
+Requirements
+============
+
+   ESS version 5.1.n (n >= 2) works best with either GNU Emacs version
+20.3 or higher, or XEmacs version 20.0 or higher.  It has been most
+thoroughly tested with:
+
+   * S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
+
+   * R versions >=0.49
+
+   * S4
+
+   * SAS 6.x, 7.x, 8.x
+
+   * BUGS 0.5, 0.603
+
+   * Stata >=6.0
+
+   * XLispStat versions >=3.50
+
+   on the following platforms
+
+   * Solaris/SunOS (all)
+
+   * SGI (all)
+
+   * Linux (S4, S-PLUS 5.x, R, XLispStat, Stata 6.0)
+
+   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
+
+   * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
+
+   with the following versions of emacs
+
+   * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
+
+   * XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
+
+   * XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34(1)
+
+   ---------- Footnotes ----------
+
+   (1) Note  that you must have `custom' support.  It is available at
+The Custom Library (http://www.dina.kvl.dk/~abraham/custom/).   These
+releases of emacs are no longer supported, so an upgrade is
+recommended if you plan to use ESS.  If you have GNU Emacs 19.29,  see
+*Note Unix installation::.
 

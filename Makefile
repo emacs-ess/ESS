@@ -1,59 +1,23 @@
-## $Id: Makefile,v 5.59 2002/05/28 14:23:28 rsparapa Exp $
+## $Id: Makefile,v 5.60 2002/07/24 14:49:35 rsparapa Exp $
 ## Top Level Makefile
 
 include ./Makeconf
 ##      ========== {edit that one if any!}
 
-## Set EMACS to either emacs or xemacs depending on your situation,
-## and batch compile with a clean environment:
-## EMACS 21
-EMACS=emacs
-BATCHFLAGS = --batch --no-site-file --no-init-file
-## XEMACS 21
-#EMACS=xemacs
-#BATCHFLAGS = -batch -no-site-file -no-init-file
-
-## Set ESSVERSION to the contents of VERSION
-## This is only set correctly by GNU make, but you will only
-## need this if you are performing an XEmacs installation or
-## you are an ESS developer.
-## If you don't have GNU make, create an environment variable
-## ESSVERSION set to the contents of VERSION and use "make -e"
-
-ESSVERSION=$(shell cat VERSION)
-ESSVERSIONDIR=ess-$(ESSVERSION)
-## The following MUST NOT contain "."'s.
+## Set ESSVERSIONTAG to ESS-$(ESSVERSION) with .'s replaced by -s.
+## CVS tags can NOT contain .'s.
+## This will only work with GNU make, but you won't
+## need to change this unless you are an ESS developer.
+## If you don't have GNU make, use the command line; for example:
+## make tag ESSVERSION=5.2.0 ESSVERSIONTAG=ESS-5-2-0
 ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
+ESSVERSIONDIR=ess-$(ESSVERSION)
 
-## XEMACSDIR and ESSDIR facilitate imitation of an XEmacs distribution
-## If you don't have XEmacs or ESS installed in the usual places, then
-## you will need to set them by "make -e" with environment variables
-## If you are not using GNU make, then see remarks above.
+## Updating ChangeLog via CVS with emacs requires the vc package!
+## If this setting doesn't suit you, you can use the command line:
+## make ChangeLog EMACSLOGCVS="myemacs -mybatchflags -mychangelogflags"
 
-## make    xemacs-links	# w/  GNU make, XEmacs/ESS in the usual places
-##
-
-## make -e xemacs-links	# w/  GNU make, XEmacs/ESS not in the usual places
-##                      # environment variables XEMACSDIR/ESSDIR set
-
-## make -e xemacs-links	# w/o GNU make, XEmacs/ESS in the usual places
-##                      # environment variable ESSVERSION set
-
-## make -e xemacs-links	# w/o GNU make, XEmacs/ESS not in the usual places
-##                      # environment variables ESSVERSION/XEMACSDIR/ESSDIR set
-
-## XEMACSDIR:  parent directory of the xemacs-packages sub-directory
-XEMACSDIR=/usr/local/lib/xemacs
-## ESSDIR:  parent directory of ESSVERSIONDIR
-ESSDIR=$(XEMACSDIR)/site-packages/ess
-
-## Updating ChangeLog via CVS with emacs
-## If you would like to build ChangeLog directly from CVS
-## with emacs, then you need to define EMACS and BATCHFLAGS
-## appropriately.  See above.
-## Note that this requires that the vc package is available!
-
-EMACSLOGCVS=$(EMACS) $(BATCHFLAGS) -f vc-update-changelogs
+EMACSLOGCVS=$(EMACSBATCH) -f vc-update-changelogs
 
 Subdirs = lisp doc
 
@@ -67,11 +31,11 @@ INTRO.DEPENDS= VERSION doc/credits.texi doc/inst_cvs.texi \
 ## However, you may still need to specify EMACS and BATCHFLAGS.
 ## See the discussion of EMACS and BATCHFLAGS above. 
 
-compile:
-	cd lisp; $(MAKE) all EMACS=$(EMACS) BATCHFLAGS="$(BATCHFLAGS)"
+default:
+	cd lisp; $(MAKE) all
 
 all install clean distclean realclean:
-	@for D in $(Subdirs); do cd $$D; $(MAKE) $@ EMACS=$(EMACS) BATCHFLAGS="$(BATCHFLAGS)"; cd .. ; done
+	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd .. ; done
 
 README: doc/readme.texi $(INTRO.DEPENDS)
 	cd doc; $(MAKE) readme.texi; $(MAKEINFOascii) readme.texi \
@@ -118,7 +82,7 @@ dist: docs
 	chmod -R u+w $(ESSVERSIONDIR); rm -rf $(ESSVERSIONDIR)
 
 ChangeLog:
-	$EMACSLOGCVS
+	$(EMACSLOGCVS)
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
 	(echo `date "+%Y-%m-%d "` \
@@ -139,13 +103,4 @@ tag:
 doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3 doc/ess.info-4: doc/ess.texi
 	$(MAKE) docs
 
-xemacs-links: doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3 doc/ess.info-4
-	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
-	    $(XEMACSDIR)/xemacs-packages/info/ess.info*
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc             $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp            $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info    $(XEMACSDIR)/xemacs-packages/info/ess.info
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info-1  $(XEMACSDIR)/xemacs-packages/info/ess.info-1
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info-2  $(XEMACSDIR)/xemacs-packages/info/ess.info-2
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info-3  $(XEMACSDIR)/xemacs-packages/info/ess.info-3
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info-4  $(XEMACSDIR)/xemacs-packages/info/ess.info-4
+

@@ -3,25 +3,13 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.41 $.
+### File: $Revision: 5.42 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
 ### Kyle and Per!
 
 include ../Makeconf
-
-# where the .elc, files should go
-LISPDIR = .
-
-## Set EMACS to either emacs or xemacs depending on your situation.
-EMACS=emacs
-
-## compile with non-interactive, clean environment:
-## EMACS 21
-BATCHFLAGS = --batch --no-site-file --no-init-file
-## XEMACS 21
-#BATCHFLAGS = -batch -no-site-file -no-init-file
 
 #### no user servicable parts beyond this point ####
 
@@ -117,14 +105,14 @@ ess-cust.el: ../VERSION
 ### File Dependencies
 
 .el.elc:
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
+	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile $<
 
 
 ess-cust.elc:	ess-cust.el
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-cust.el
+	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-cust.el
 
 ess.elc: ess.el ess-cust.elc
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -l ess-cust.elc -f batch-byte-compile ess.el
+	$(EMACSBATCH) $(PRELOADS) -l ess-cust.elc -f batch-byte-compile ess.el
 
 ess-site.elc: ess-site.el ess.elc
 
@@ -134,7 +122,7 @@ ess-inf.elc: ess-inf.el $(CORE)
 	@echo " ** the function set-keymap-parent is not known to be defined."
 	@echo " ** assignment to free variable comint-last-input-end"
 	@echo "from the byte compiler if they occur. It is completely normal."
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-inf.el
+	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-inf.el
 
 
 ess-mode.elc: ess-mode.el $(CORE)
@@ -143,14 +131,14 @@ ess-mode.elc: ess-mode.el $(CORE)
 	@echo " ** the function set-keymap-parent is not known to be defined."
 	@echo " ** variable last-sexp bound but not referenced"
 	@echo "from the byte compiler if they occur. It is completely normal."
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-mode.el
+	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-mode.el
 
 ess-trns.elc: ess-trns.el $(CORE)
 	@echo " "
 	@echo "For the next compile, please disregard the message"
 	@echo " ** the function set-keymap-parent is not known to be defined."
 	@echo "from the byte compiler if it occurs. It is completely normal."
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-trns.el
+	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-trns.el
 
 ess-help.elc: ess-help.el $(CORE)
 
@@ -191,4 +179,4 @@ essd-sta.elc : essd-sta.el ess.elc
 # Ignore this.
 #(defun S-insert-make-rule (file)
 #  (interactive "sFile:")
-#  (insert (format "%s.elc:  %s.el $(CORE)\n\t@echo compiling %s.el...\n\t@$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile %s.el" file file file file)))
+#  (insert (format "%s.elc:  %s.el $(CORE)\n\t@echo compiling %s.el...\n\t@$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile %s.el" file file file file)))

@@ -9,12 +9,12 @@ SHELL = /bin/sh
 ##
 
 ## EMACS 21
-EMACS=emacs
-EMACSBATCH = --batch --no-site-file --no-init-file
+#EMACS=emacs
+#EMACSBATCH = $(EMACS) --batch --no-site-file --no-init-file
 
 ## XEMACS 21
-#EMACS=xemacs
-#EMACSBATCH = -batch -no-site-file -no-init-file
+EMACS=xemacs
+EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 
 ## For strange setups...
 INSTALL = cp
@@ -33,6 +33,10 @@ MAKEINFOascii = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 ## If you don't have GNU make, edit this file; for example:
 ## ESSVERSION=5.2.0
 ESSVERSION=$(shell cat VERSION)
+
+# Destination of your byte-compiled elisp (.elc) files,
+# defaults to the same directory as source (.el) files
+LISPDIR = .
 
 ESS_REGEXP = [Ee][Ss]{2}
 VER_NR_REGEXP = ([0-9]+\.){2}[-0-9a-zA-Z]+

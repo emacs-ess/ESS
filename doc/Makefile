@@ -3,18 +3,13 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.27 $.
+### File: $Revision: 1.28 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
 ### Kyle and Per!
 
 include ../Makeconf
-
-# where the Info file should go
-#ESSINFODIR = $(PREFIX)/info
-## XEmacs
-#ESSINFODIR = $(PREFIX)/lib/$(EMACS)/info
 
 # program to convert .texi{nfo} to .html
 MAKEHTML = texi2html -verbose -iso
@@ -82,8 +77,8 @@ readme.ps  : readme.dvi; dvips $< -o $@
 
 install : all
 # no longer :  (directly via ../info/..
-# 	mkdir -p $(ESSINFODIR)
-# 	$(INSTALL) ess.info* $(ESSINFODIR)
+# 	mkdir -p $(INFODIR)
+# 	$(INSTALL) ess.info* $(INFODIR)
 
 clean : ; rm -f texput.log \
 	 ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
