@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/12/30 19:08:14 $
-;; Version: $Revision: 1.134 $
-;; RCS: $Id: essa-sas.el,v 1.134 2002/12/30 19:08:14 rsparapa Exp $
+;; Modified: $Date: 2003/01/05 19:55:21 $
+;; Version: $Revision: 1.135 $
+;; RCS: $Id: essa-sas.el,v 1.135 2003/01/05 19:55:21 rmh Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -210,17 +210,6 @@ to the shell on Windows when `ess-sas-submit-method' is 'sh."
 
 
 ;;; Section 2:  Function Definitions
-
-(defun ess-add-ess-process ()
-  "Execute this command from within a buffer running a process to add
-the process to `ess-process-name-alist' and to make it the
-`ess-current-process-name'.  This command will normally be run in a
-telnet buffer connected to another computer or in a shell or comint
-buffer on the local computer."
-  (interactive)
-  (setq ess-current-process-name
-	(process-name (get-buffer-process (buffer-name))))
-  (add-to-list 'ess-process-name-list (list ess-current-process-name)))
 
 
 (defun ess-exit-notify-sh (string)

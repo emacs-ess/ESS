@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/05/10 20:24:31 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: essd-els.el,v 1.20 2002/05/10 20:24:31 rmh Exp $
+;; Modified: $Date: 2003/01/05 19:55:21 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: essd-els.el,v 1.21 2003/01/05 19:55:21 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -159,6 +159,17 @@ return new alist whose car is the new pair and cdr is ALIST.
 	(if inferior-ess-language-start
 	    (ess-eval-linewise inferior-ess-language-start)))))
 
+
+(defun ess-add-ess-process ()
+  "Execute this command from within a buffer running a process to add
+the process to `ess-process-name-alist' and to make it the
+`ess-current-process-name'.  This command will normally be run in a
+telnet buffer connected to another computer or in a shell or comint
+buffer on the local computer."
+  (interactive)
+  (setq ess-current-process-name
+	(process-name (get-buffer-process (buffer-name))))
+  (add-to-list 'ess-process-name-list (list ess-current-process-name)))
 
 
 ;;; ess-remote is constructed by looking at ess-add-process and
