@@ -4,11 +4,12 @@
 ;; Martin Maechler, Kurt Hornik, and Richard M. Heiberger.
 
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
+;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/06/14 00:43:04 $
-;; Version: $Revision: 1.27 $
-;; RCS: $Id: essa-sas.el,v 1.27 2001/06/14 00:43:04 ess Exp $
+;; Modified: $Date: 2001/06/27 21:49:30 $
+;; Version: $Revision: 1.28 $
+;; RCS: $Id: essa-sas.el,v 1.28 2001/06/27 21:49:30 rossini Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
