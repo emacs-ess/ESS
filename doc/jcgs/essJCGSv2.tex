@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/07 17:07:36 $ - $Revision: 1.151 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/07 17:17:45 $ - $Revision: 1.152 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -741,24 +741,22 @@ ESS does this in several ways:%.
 \end{enumerate}
 
 \paragraph{Interactive transcripts.}
-A transcript is a complete record of all commands entered by the
-analyst and all textual responses (tables and comments) produced by
-the statistical program during an interactive statistical analysis
-session.  ESS knows the structure of transcripts and therefore
-provides tools such as syntactic highlighting to facilitate
-interaction.
-%%ng with them.  
-Once a transcript file is generated, perhaps by saving an
-\stexttt{iESS} buffer, \stexttt{transcript-mode} assists with reuse of
-part or all of the entered commands.  It permits editing and
-re-evaluating the commands directly from the saved transcript.  This
-is useful both for demonstration of techniques and for reconstruction
-and auditing of data analyses.  Special functions within ESS can
-``clean'' S language transcripts by finding all input lines and
-isolating them into an S language source file.  Transcript cleaning
-simplifies the use of an exploratory interactive analysis session for
-the construction of an idealized source file, perhaps to be used
-routinely in batch analyses of similar data sets.
+A transcript is a record of all commands entered by the analyst and
+all textual responses (tables and comments) produced by the
+statistical program during an interactive statistical analysis
+session.  Once a transcript file is generated, for example by saving
+an \stexttt{iESS} buffer, \stexttt{transcript-mode} assists with reuse
+of part or all of the entered commands.  ESS understands the syntax of
+transcripts and provides tools such as highlighting as well as
+knowledge of prompts to facilitate interaction.  It permits editing
+and re-evaluating the commands directly from the saved transcript.
+This is useful both for demonstration of techniques and for
+reconstruction and auditing of data analyses.  Special ESS functions
+can ``clean'' S language transcripts by isolating all input lines and
+placing them in a new S language source file.  Transcript cleaning
+facilitates the use of an exploratory interactive analysis session to
+construct functions as well as routine batch analyses for similar data
+sets and reporting.
 
 \paragraph{Remote Interaction with statistical programs}% on remote computers.}
 ESS provides the facility to edit files and run programs on remote
