@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/01 18:33:17 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: essd-sas.el,v 1.7 1997/09/01 18:33:17 rossini Exp $
+;; Modified: $Date: 1997/09/01 19:03:43 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: essd-sas.el,v 1.8 1997/09/01 19:03:43 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,7 +47,7 @@
     (ess-edit-alist                . SAS-edit-alist) ; from essl-sas.el
     (inferior-ess-program          . inferior-SAS-program-name)
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
-    (ess-help-sec-keys-alist       . " "
+    (ess-help-sec-keys-alist       . " ")
     (inferior-ess-objects-command  . "objects(%d)")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")
