@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.3 1999/09/14 20:26:06 rossini Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.4 1999/09/14 23:09:21 rossini Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -93,7 +93,7 @@
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.3 1999/09/14 20:26:06 rossini Exp $")
+  "$Id: noweb-mode.el,v 1.4 1999/09/14 23:09:21 rossini Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")
@@ -216,7 +216,9 @@ mouse-1, this will override your binding.")
   (if arg (newline arg) (newline 1)))
 
 (defvar noweb-mode-prefix-map 
-  (let ((map (make-sparse-keymap)))
+  (let ((map (if (string-match "XEmacs\\|Lucid" emacs-version)
+		 (make-keymap) ;; XEmacs/Emacs problems...
+	       (make-sparse-keymap))))
     (define-key map "\C-n" 'noweb-next-chunk)
     (define-key map "\C-p" 'noweb-previous-chunk)
     (define-key map "\M-n" 'noweb-goto-next)
@@ -263,7 +265,8 @@ mouse-1, this will override your binding.")
   "Noweb minor mode keymap")
 
 (easy-menu-define 
- noweb-minor-mode-menu noweb-minor-mode-map "Menu keymap for noweb."
+ noweb-minor-mode-menu noweb-minor-mode-map
+ "Menu keymap for noweb."
  '("Noweb"
    ("Movement"
     ["Previous chunk" noweb-previous-chunk t]
@@ -317,6 +320,20 @@ mouse-1, this will override your binding.")
     (setq minor-mode-map-alist 
           (cons (cons 'noweb-mode noweb-minor-mode-map)
                 minor-mode-map-alist)))
+
+;; Old XEmacs hacks.
+(defun noweb-mode-xemacs-menu ()
+  "Hook to install noweb-mode menu for XEmacs (w/ easymenu)."
+  (if 'noweb-mode 
+      (easy-menu-add noweb-minor-mode-menu)
+    (easy-menu-remove noweb-minor-mode-menu)
+    ))
+
+(if (string-match "XEmacs" emacs-version)
+    (progn 
+      (add-hook 'noweb-select-mode-hook 'noweb-mode-xemacs-menu)
+      ;; Next line handles some random problems... 
+      (easy-menu-add noweb-minor-mode-menu)))
 
 (defun noweb-minor-mode (&optional arg)
   "Minor meta mode for editing noweb files. See NOWEB-MODE."
@@ -533,16 +550,23 @@ otherwise."
   (let (beg end mode)
     (save-excursion  
       (beginning-of-line 1)                                                 
-      (and (search-forward "-*-"
-                           (save-excursion (end-of-line) (point))           
-                           t)
-           (progn                                                           
+      (and (progn
+	     (ess-write-to-dribble-buffer
+	      (format "(n-i-m-l: 1)"))
+	     (search-forward "-*-"
+			     (save-excursion (end-of-line) (point))           
+			     t))
+	   (progn                                                           
+	     (ess-write-to-dribble-buffer
+	      (format "(n-i-m-l: 2)"))
              (skip-chars-forward " \t")                                     
              (setq beg (point))                                             
              (search-forward "-*-"                                          
                              (save-excursion (end-of-line) (point))         
                              t))
            (progn               
+	     (ess-write-to-dribble-buffer
+	      (format "(n-i-m-l: 3)"))
              (forward-char -3)                                              
              (skip-chars-backward " \t")                                    
              (setq end (point))                                             
@@ -550,7 +574,7 @@ otherwise."
              (setq mode (concat                                            
                          (downcase (buffer-substring beg end))             
                          "-mode"))
-             (if (and (>= (length mode) 11)
+             (if (and (>= (length mode) 11))
                       (progn
                         (if
                             (equal (substring mode -10 -5) "-mode")
@@ -558,7 +582,10 @@ otherwise."
                         (if 
                             (equal (substring mode 0 5) "mode:")
                             (setq mode (substring mode 6))))))
-             (intern mode))))))
+	   (progn 
+	     (ess-write-to-dribble-buffer
+	      (format "(n-i-m-l: 3) mode=%s" mode))
+	     (intern mode))))))
 
 (defun noweb-find-chunk-index-buffer ()
   "Return the index of the current chunk in NOWEB-CHUNK-VECTOR."

@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/09/03 19:41:45 $
-;; Version: $Revision: 5.29 $
-;; RCS: $Id: ess-site.el,v 5.29 1999/09/03 19:41:45 maechler Exp $
+;; Modified: $Date: 1999/09/14 23:09:21 $
+;; Version: $Revision: 5.30 $
+;; RCS: $Id: ess-site.el,v 5.30 1999/09/14 23:09:21 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -122,8 +122,9 @@
 	   ("\\.[Ss]out"	. S-transcript-mode)
 	   ("\\.[Rr]t\\'"	. R-transcript-mode)
 	   ("\\.[Rr]out"	. R-transcript-mode)
-	   ("\\.Rd\\'"		. Rd-mode)) ;all R>=0.60
+	   ("\\.Rd\\'"		. Rd-mode))  ;all R>=0.60
 	 auto-mode-alist)))
+
 
 
 
@@ -398,6 +399,10 @@
 ;;popup window when the SAS job is finished.")
 ;;(defvar sas-tmp-libname "_tmp_" "*Libname to use for sas-get-dataset.")
 
+;;; 5.0 Noweb and Literate Data Analysis configuration
+
+;; Comment out if not wanted.
+(require 'ess-noweb)
 
 
  ; Local variables section

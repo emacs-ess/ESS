@@ -95,10 +95,6 @@
 (require 'noweb-mode)
 (require 'font-lock)
 
-;; Does this help with XEmacs problems (and font-lock evil)?
-(if (not (symbolp 'global-font-lock-mode))
-    (defvar global-font-lock-mode nil))
-
 (defvar noweb-font-lock-mode nil
   "Buffer local variable, t iff this buffer is using noweb-font-lock-mode.")
 
@@ -213,8 +209,8 @@ Each chunk is fontified in accordance with its own mode"
      (progn
        (if global-font-lock-mode
 	   (progn
-;	     (setq font-lock-fontify-buffer-function
-;		   'font-lock-default-fontify-buffer) 
+	     ;; (setq font-lock-fontify-buffer-function
+	     ;;	      'font-lock-default-fontify-buffer) 
 	     ;; Get back our unfontify buffer function
 	     (setq font-lock-unfontify-buffer-function
 		   'font-lock-default-unfontify-buffer)))
@@ -240,17 +236,30 @@ Each chunk is fontified in accordance with its own mode"
     (setq old-beginning-of-syntax font-lock-beginning-of-syntax-function)
     (setq font-lock-beginning-of-syntax-function 'noweb-start-of-syntax)
     (setq font-lock-keywords 
+;	  (append font-lock-keywords
+;		  '(("\\(\\[\\[\\)\\([^]]*\\]*\\)\\(\\]\\]\\|\\$\\)" 
+;		     (1 noweb-font-lock-brackets-face prepend )
+;		     (2 noweb-font-lock-code-quote-face prepend)
+;		     (3 noweb-font-lock-brackets-face prepend))
+;		    ("^[ \t\n]*\\(<<\\)\\([^>]*\\)\\(>>=?\\)"
+;		     (1 noweb-font-lock-brackets-face  prepend )
+;		     (2 noweb-font-lock-chunk-name-face prepend)
+;		     (3 noweb-font-lock-brackets-face prepend))
+;		    ("^@[ \t\n]+" 
+;		     (0 noweb-font-lock-doc-start-face prepend )))))
 	  (append font-lock-keywords
 		  '(("\\(\\[\\[\\)\\([^]]*\\]*\\)\\(\\]\\]\\|\\$\\)" 
-		     (1 noweb-font-lock-brackets-face prepend )
-		     (2 noweb-font-lock-code-quote-face prepend)
-		     (3 noweb-font-lock-brackets-face prepend))
+		     (1 font-lock-reference-face prepend )
+		     (2 font-lock-keyword-face prepend)
+		     (3 font-lock-reference-face prepend))
 		    ("^[ \t\n]*\\(<<\\)\\([^>]*\\)\\(>>=?\\)"
-		     (1 noweb-font-lock-brackets-face  prepend )
-		     (2 noweb-font-lock-chunk-name-face prepend)
-		     (3 noweb-font-lock-brackets-face prepend))
+		     (1 font-lock-reference-face  prepend )
+		     (2 font-lock-keyword-face prepend)
+		     (3 font-lock-reference-face prepend))
 		    ("^@[ \t\n]+" 
-		     (0 noweb-font-lock-doc-start-face prepend )))))
+		     (0 font-lock-reference-face prepend )))))
+
+
     (let ((r (cons (marker-position (cdr (aref noweb-chunk-vector 
 					       chunk-num)))
 		   (marker-position (cdr (aref noweb-chunk-vector 
