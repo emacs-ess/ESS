@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 1.4 $.
+### File: $Revision: 1.5 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -108,12 +108,12 @@ realclean: distclean
 
 ### File Dependencies
 
-ess.info: ess.texi
+ess.info: *.texi 
 	@echo "making Info documentation..."
 	$(MAKEINFO) ess.texi
 
-html/ess_toc.html: ess.texi
+html/ess_toc.html: *.texi
 	@echo "making HTML documentation..."
 	-(mkdir -p html; cd html; $(MAKEHTML) ../ess.texi)
-	-@(cd html; ln -s ess_toc.html index.html)
+	-@(cd html; rm -f index.html; ln -s ess_toc.html index.html)
 	@echo "Test by pointing your browser to 'file://localhost/$$PWD/html/index.html'"
