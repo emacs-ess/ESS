@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.14 2000/06/07 22:20:20 rossini Exp $
+;; Version: $Id: ess.el,v 5.15 2000/06/07 22:33:06 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -127,8 +127,22 @@
 (if window-system
     (require 'font-lock))
 
-
 (require 'ess-emcs)
+
+;;;; taken from W3, for use of new custom features with old custom.
+;;(eval-and-compile
+;;  (condition-case ()
+;;      (require 'custom)
+;;    (error nil))
+;;  (if (and (featurep 'custom) (fboundp 'custom-declare-variable))
+;;      nil ;; We've got what we needed
+;;    ;; We have the old custom-library, hack around it!
+;;    (defmacro defgroup (&rest args)
+;;      nil)
+;;    (defmacro defface (var values doc &rest args)
+;;      (` (make-face (, var))))
+;;    (defmacro defcustom (var value doc &rest args) 
+;;      (` (defvar (, var) (, value) (, doc))))))
 
 ;; Remove after we debug...
 (if (running-emacs-version-or-newer 20 1)
@@ -138,8 +152,6 @@
   (progn
     (require 'ess-vars)
     (message "--++ NOT NOT NOT LOADING CUSTOM ++--")))
-
-;(sleep-for 5)
 
  ; ess-mode: editing S/R/XLS/SAS source
 
