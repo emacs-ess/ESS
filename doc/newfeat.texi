@@ -1,4 +1,4 @@
-Changes/New Features in 5.2.0beta1:
+Changes/New Features in 5.2.0beta?:
 @itemize @bullet
 @item ESS[BUGS]:  now supports interactive processing thanks to
 @uref{mailto:Aki.Vehtari@@hut.fi, Aki Vehtari}; also new info documentation!

@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.72 2003/10/21 14:07:53 rsparapa Exp $
+## $Id: Makefile,v 5.73 2003/12/09 20:14:36 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -96,4 +96,17 @@ rel: dist
 tag:
 	@echo "** Tagging the release **"
 	cvs tag -R $(ESSVERSIONTAG)
+
+#deprecated:  ESS is now an official XEmacs package, but keep for convenience
+#see http://www.xemacs.org/Develop/packages.html#ess
+xemacs-links: info/ess.info info/ess.info-1 info/ess.info-2 info/ess.info-3 info/ess.info-4
+	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
+	    $(XEMACSDIR)/xemacs-packages/info/ess.info*
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc              $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp             $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info    $(XEMACSDIR)/xemacs-packages/info/ess.info
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-1  $(XEMACSDIR)/xemacs-packages/info/ess.info-1
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-2  $(XEMACSDIR)/xemacs-packages/info/ess.info-2
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-3  $(XEMACSDIR)/xemacs-packages/info/ess.info-3
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-4  $(XEMACSDIR)/xemacs-packages/info/ess.info-4
 
