@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/14 23:17:09 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: ess-site.el,v 1.6 1997/06/14 23:17:09 rossini Exp $
+;; Modified: $Date: 1997/06/15 09:09:30 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: ess-site.el,v 1.7 1997/06/15 09:09:30 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.7  1997/06/15 09:09:30  rossini
+;;: added ess-keep-dump-files example. (thanks RH)
+;;:
 ;;: Revision 1.6  1997/06/14 23:17:09  rossini
 ;;: moved language stuff into essd-* files.
 ;;:
@@ -186,27 +189,6 @@
 (require 'essd-r)
 (require 'essd-xls)
 
-(defun ess-XLS-shortcut-pre-run-hook ()
-  "Initialize variables."
-  (setq-default inferior-ess-program          inferior-XLS-program-name
-	ess-proc-prefix               "XLS"
-	ess-version-running           "XLS"
-	inferior-ess-primary-prompt   "> ?" 
-	inferior-ess-help-command     "(help '%s)\n"
-	inferior-ess-exit-command     "(exit)\n")
-)
-
-(defun ess-XLS-shortcut-post-run-hook ()
-  "Remove initialization."
-  (remove-hook 'ess-pre-run-hook 'ess-XLS-shortcut-pre-run-hook))
-
-
-(defun XLS () "Call 'XLS', but this is only minimally correct..."
-  (interactive)
-  (add-hook 'ess-pre-run-hook  'ess-XLS-shortcut-pre-run-hook)
-  (add-hook 'ess-post-run-hook 'ess-XLS-shortcut-post-run-hook)
-  (setq     ess-proc-prefix    "XLS")
-  (inferior-ess))
 
 ;;TODO:
 ;;  ViSta (essd-vst)
@@ -245,8 +227,6 @@
 ;; The following two expressions automatically enable font-lock-mode
 ;; for S-mode and inferior-S-mode buffers.
 
-;;(require 'font-lock) Moved to S.el
-
 (if window-system
     (progn
       (add-hook 'S-mode-hook 'turn-on-font-lock t)
@@ -263,6 +243,16 @@
 
 ;; (cond (window-system
 ;;       (require 'framepop)))
+
+;;; (3.3) S-keep-dump-files.
+;;; RH sez: which I found imperative.  The default was to throw away
+;;; files at the wrong time (I think it was something like, if you M-x
+;;; S-load a file twice, while you are working on it, the file is
+;;; deleted).  I believe source is real and the S object is temporary.
+;;; The default behavior is for people who believe the object is real
+;;; and the source file temporary.
+
+;;(setq ess-keep-dump-file "always")
 
  ; Local variables section
 
