@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 06 Feb 2000
-;; Modified: $Date: 2000/02/29 17:22:50 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: ess-font-lock.el,v 1.2 2000/02/29 17:22:50 ess Exp $
+;; Modified: $Date: 2000/03/02 18:27:40 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: ess-font-lock.el,v 1.3 2000/03/02 18:27:40 maechler Exp $
 
 ;; Keywords: ESS, font-lock
 
@@ -57,6 +57,7 @@
   "Set font-lock colors to Richard Heiberger's usual choice."
   (interactive)
 
+  (set-foreground-color "Black")
   (set-background-color "lightcyan")
   (set-face-background 'modeline "lightskyblue")
   (set-face-foreground 'modeline "midnightblue")
@@ -65,8 +66,8 @@
   (set-face-foreground 'font-lock-function-name-face "Blue")
   (set-face-foreground 'font-lock-keyword-face "Purple")
   (if (eq font-lock-reference-face 'font-lock-constant-face )
-      (set-face-foreground 'font-lock-constant-face "Brown")
-    (set-face-foreground 'font-lock-reference-face "Brown"))
+      (set-face-foreground 'font-lock-constant-face  "Brown")
+    (set-face-foreground   'font-lock-reference-face "Brown"))
   (set-face-foreground 'font-lock-string-face "VioletRed")
   (set-face-foreground 'font-lock-type-face "Sienna")
   (set-face-foreground 'font-lock-variable-name-face "Black")
@@ -87,8 +88,8 @@
   (set-face-foreground 'font-lock-function-name-face "Blue")
   (set-face-foreground 'font-lock-keyword-face "Purple")
   (if (eq font-lock-reference-face 'font-lock-constant-face )
-      (set-face-foreground 'font-lock-constant-face "Brown")
-    (set-face-foreground 'font-lock-reference-face "Brown"))
+      (set-face-foreground 'font-lock-constant-face  "Brown")
+    (set-face-foreground   'font-lock-reference-face "Brown"))
   (set-face-foreground 'font-lock-string-face "VioletRed")
   (set-face-foreground 'font-lock-type-face "Sienna")
   (set-face-foreground 'font-lock-variable-name-face "Black")
@@ -135,7 +136,7 @@
   (modify-face 'font-lock-function-name-face "black"	"white"	   nil	   t	  nil	   nil	     )
   (modify-face 'font-lock-keyword-face	     "black"	"white"	   nil	   nil	  nil	   t	     )
   (if (eq font-lock-reference-face 'font-lock-constant-face )
-      (modify-face 'font-lock-constant-face	 "black"    "white"    nil     t      nil      nil   )
+      (modify-face 'font-lock-constant-face  "black"    "white"    nil     t      nil      nil       )
     (modify-face 'font-lock-reference-face   "black"	"white"	   nil	   t	  nil	   nil	     ))
   (modify-face 'font-lock-string-face	     "black"	"white"	   nil	   nil	  t	   t	     )
   (modify-face 'font-lock-type-face	     "black"	"white"	   nil	   t	  t	   nil	     )
@@ -149,7 +150,7 @@
 
 ;; David Brahm <David.Brahm@fmr.com>
 (defun ess-font-lock-db ()
-  "Set font-lock colors to David Brahm's usual choice."
+  "Set font-lock colors to David Brahm's usual choice (leave [fore/back]ground)."
   (interactive)
   (set-face-foreground 'font-lock-comment-face	     "Firebrick")  ; #...    %...
   (set-face-foreground 'font-lock-string-face	     "SeaGreen")   ; "..."   "..."
