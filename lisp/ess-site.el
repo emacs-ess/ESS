@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/09/26 14:15:26 $
-;; Version: $Revision: 5.81 $
-;; RCS: $Id: ess-site.el,v 5.81 2001/09/26 14:15:26 ess Exp $
+;; Modified: $Date: 2001/12/19 04:58:02 $
+;; Version: $Revision: 5.82 $
+;; RCS: $Id: ess-site.el,v 5.82 2001/12/19 04:58:02 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -563,7 +563,7 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;;       columns at a time.  C-TAB moves backwards and deletes characters
 ;;;       up to 4 columns at a time.
 ;;;       Uncomment the following line for the optional behavior.
-(setq ess-sas-edit-keys-toggle 1)   ;; optional TAB and C-TAB in sas-mode
+;;;(setq ess-sas-edit-keys-toggle 1)   ;; optional TAB and C-TAB in sas-mode
 ;;;   Use the function call (ess-sas-edit-keys-toggle 0)
 ;;;   or                    (ess-sas-edit-keys-toggle 1)
 ;;;   to change the setting after the first SAS-mode buffer has been created.
@@ -577,7 +577,7 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;;   2b. Options: Uncomment at most one of the following four lines.
 ;;;(setq ess-sas-local-unix-keys t)  ;; [f2]--[f8] bound in sas-mode and related modes
 ;;;(setq ess-sas-local-pc-keys t)    ;; [f2]--[f8] bound in sas-mode and related modes
-(setq ess-sas-global-unix-keys t) ;; [f2]--[f8] bound in all modes
+;;;(setq ess-sas-global-unix-keys t) ;; [f2]--[f8] bound in all modes
 ;;;(setq ess-sas-global-pc-keys t)   ;; [f2]--[f8] bound in all modes
 ;;;
 ;;;   3. If it is more convenient to have "*Async Shell Command*"
