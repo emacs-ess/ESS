@@ -81,7 +81,6 @@ statistical processes (programs).  This mode handles:
 
 To start up this mode, use:
    M-x XLS
-   M-x VST
 
 
 ESS-help: assistance with viewing help
@@ -143,7 +142,7 @@ prefixed by "##").
 
 
 
-$Revision: 1.1 $
+$Revision: 1.2 $
 
 Local Variables: ***
 mode:indented-text ***
