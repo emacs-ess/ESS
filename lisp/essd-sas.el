@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/26 20:51:04 $
-;; Version: $Revision: 4.54 $
-;; RCS: $Id: essd-sas.el,v 4.54 1997/11/26 20:51:04 rossini Exp $
+;; Modified: $Date: 1997/11/26 21:04:08 $
+;; Version: $Revision: 4.55 $
+;; RCS: $Id: essd-sas.el,v 4.55 1997/11/26 21:04:08 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -121,13 +121,12 @@
       (rename-buffer ess-sas-log-bufname t))
     
     (setq inferior-SAS-redirect-args (concat " "
-					       ess-sas-lst
-					       " "
-					       ess-sas-log)
+					     ess-sas-lst
+					     " "
+					     ess-sas-log
+					     " ")
 	  inferior-SAS-args-temp (concat inferior-SAS-redirect-args
-					 " \\" "
-					 inferior-SAS-args
-					 " \\" "))
+					 inferior-SAS-args))
     
     ;; Restore the *shell* buffer
     (if ess-shell-buffer-name-flag
