@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/07/07 12:12:06 $
-;; Version: $Revision: 5.62 $
-;; RCS: $Id: ess-site.el,v 5.62 2000/07/07 12:12:06 maechler Exp $
+;; Modified: $Date: 2000/07/13 17:17:34 $
+;; Version: $Revision: 5.63 $
+;; RCS: $Id: ess-site.el,v 5.63 2000/07/13 17:17:34 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -148,9 +148,7 @@ The extension, in a file name, is the part that follows the last `.'."
 		    (expand-file-name (substring file 0 (match-beginning 0))
 				      directory)
 	          (substring file 0 (match-beginning 0)))
-	      filename))))
-    )
-
+	      filename)))))
 
   (add-to-list 'load-path ess-lisp-directory)
 
@@ -160,10 +158,8 @@ The extension, in a file name, is the part that follows the last `.'."
 	"If t, show many more \"loading ..\" messages."))
   (if (not (fboundp 'ess-message))
       (defun ess-message (msg)
-	(if ess-show-load-messages (message msg))
-	"Shortcut for \\[message] only if `ess-show-load-messages' is non-nil.")
-    )
-); eval-*-compile
+	"Shortcut for \\[message] only if `ess-show-load-messages' is non-nil."
+	(if ess-show-load-messages (message msg))))); eval-*-compile
 
 ;; DEBUG: (setq ess-show-load-messages t); instead of nil above
 
@@ -172,9 +168,12 @@ The extension, in a file name, is the part that follows the last `.'."
 ;; must come *AFTER* load-path is set !
 
 (require 'ess-emcs)
-;; sets the following ..custom-avaiable to nil.
-;; If we have custom available, make this "t":
-;; (setq ess-local-custom-available t)
+;;; The above require sets the following ess-local-custom-available to
+;;; true if custom is provided at this point.  If we think it will be,
+;;; then we can use the following (uncommented out) to make sure that
+;;; it will be.
+;; 
+;;(setq ess-local-custom-available t); if custom is available, uncomment
 
 
 ;;; (1.2) Uncomment the following 4 lines to fix the infopath, if needed.
@@ -182,7 +181,6 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;  (setq Info-default-directory-list
 ;;	(cons (expand-file-name newpath) Info-default-directory-list)))
 ;;(add-info-path (concat ess-lisp-directory "/../doc/"))
-
 
 
 ;;; (1.3) Files ending in .q and .S are considered to be S source files
@@ -193,12 +191,14 @@ The extension, in a file name, is the part that follows the last `.'."
 
 (autoload 'Rd-mode "essddr" "Major mode for editing R documentation." t)
 
-;; This fails in Emacs.	 How can it be done simply?  Should it be done?
+;; This fails in Emacs.  How can it be done simply?  Should it be
+;; done?  It works in XEmacs.
 ;;    ;; get rid of assembler mode.
 ;;    (set auto-mode-alist (remassoc "\\.[sS]\\'" auto-mode-alist))
+;; Our current solution is as follows.
 
-;; be careful of editing the following to get *.sty in a non-LaTeX
-;; mode!
+;; Be careful when editing the following. MISTAKES WILL RESULT IN
+;; *.sty BEING TREATED AS ESS[S], rather than LaTeX-mode!
 
 (if (assoc "\\.[rR]\\'" auto-mode-alist) nil
   (setq auto-mode-alist
@@ -228,18 +228,19 @@ The extension, in a file name, is the part that follows the last `.'."
 
 ;; (1.4) Customize the dialects for your setup.
 
-;;;; AS OF ESS 5.1.14, if you are using Emacs 20.x, x>3, or XEmacs
-;;;; 21.x, x>0, you can now use the "Customize" facility for customization.
+;;; AS OF ESS 5.1.14, if you are using Emacs 20.x, x>3, or XEmacs
+;;; 21.x, x>0, you can now use the "Customize" facility for
+;;; customization.
 
 ;;;; Choices for *(), where * is from inferior-*-program....
-;; Most sites will not need to use these customized program-names.  They are
-;; provided for cases where the program is not on the standard default path.
-;; If the program doesn't get located correctly by the default use of
-;; M-x S+3 (for example), then put the path name for your system into the
-;; the variable inferior-S+3-program-name.  If for any reason you want the
-;; default use of M-x S to refer to a different program than S+3, then
-;; redefine inferior-S-program-name.
-;;
+;;; Most sites will not need to use these customized program-names.  They are
+;;; provided for cases where the program is not on the standard default path.
+;;; If the program doesn't get located correctly by the default use of
+;;; M-x S+3 (for example), then put the path name for your system into the
+;;; the variable inferior-S+3-program-name.  If for any reason you want the
+;;; default use of M-x S to refer to a different program than S+3, then
+;;; redefine inferior-S-program-name.
+
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
 ;;(setq-default inferior-S+3-program-name "Splus")
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
@@ -253,7 +254,6 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;(setq-default inferior-SAS-program-name "sas")
 ;;(setq-default inferior-OMG-program-name "/home/rossini/src/anoncvs/Omegahat/org/omegahat/bin/omegahat")
 (setq-default inferior-OMG-program-name "omegahat")
-
 
 
 ;;; ESS on the Windows NT/95/98 assumes you have installed gnuclient
@@ -310,23 +310,24 @@ The extension, in a file name, is the part that follows the last `.'."
     (setq max-specpdl-size 700))
 
 (ess-message "[ess-site:] Before requiring dialect 'essd-** ....")
-
 (ess-message "[ess-site:] require 'essd-r ...")
 (require 'essd-r)    ;; S and common variants
 (ess-message "[ess-site:] require 'essd-s4 ...")
 (require 'essd-s4)
+;;(ess-message "[ess-site:] require 'essd-s3 ...")
+;;(require 'essd-s3)  ; THIS IS RARE.  You probably do not have this.
 (ess-message "[ess-site:] require 'essd-sp3 ...")
-(require 'essd-sp3)
+(require 'essd-sp3)  ;; "sp" refers to S-PLUS (MathSoft/StatSci).
 (ess-message "[ess-site:] require 'essd-sp5 ...")
 (require 'essd-sp5)
 (ess-message "[ess-site:] require 'essd-sta ...")
 (require 'essd-sta)  ;; for Stata.
 (ess-message "[ess-site:] require 'essd-xls ...")
-(require 'essd-xls)  ;; XLispStat and variants
+(require 'essd-xls)  ;; XLispStat
 (ess-message "[ess-site:] require 'essd-vst ...")
-(require 'essd-vst)
+(require 'essd-vst)  ;; ViSta
 (ess-message "[ess-site:] require 'essd-arc ...")
-(require 'essd-arc)
+(require 'essd-arc)  ;; Arc
 (ess-message "[ess-site:] require 'essd-sas ...")
 (require 'essd-sas)
 (ess-message "[ess-site:] require 'essd-els ...")
@@ -334,22 +335,15 @@ The extension, in a file name, is the part that follows the last `.'."
 (ess-message "[ess-site:] require 'essd-omg ...")
 (require 'essd-omg)  ;; for omegahat
 
+;;; Only useful under MS Windows.
 (if (or (equal window-system 'w32) (equal window-system 'win32))
-;;     (progn
-       (require 'essd-sp4)  ; PC
-;;	 (require 'essd-sq4))
-)
-
-;;TODO, for 5.2 :-), or rare.
-;;(require 'essd-s3)  ; You might not have this
-;;(require 'essd-vst) ; built on essd-xls.
+       (require 'essd-sp4))
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el]: ess-customize-alist=%s \n"
 	   ess-customize-alist))
 
-
-;; (1.7) Set up stuff for noweb-mode! {maybe comment out}
+;; (1.7) Literate Data Analysis
 (require 'ess-noweb)
 
 ;; ALWAYS:
