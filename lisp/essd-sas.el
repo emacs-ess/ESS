@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/14 01:59:25 $
-;; Version: $Revision: 1.33 $
-;; RCS: $Id: essd-sas.el,v 1.33 1997/11/14 01:59:25 rossini Exp $
+;; Modified: $Date: 1997/11/14 02:26:04 $
+;; Version: $Revision: 1.34 $
+;; RCS: $Id: essd-sas.el,v 1.34 1997/11/14 02:26:04 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -51,108 +51,103 @@
 
 ;;; Code:
 
-(defun ess-SAS-pre-run-hook (alist)
+(defun ess-SAS-pre-run-hook (temp-ess-dialect)
   "Set up log and list files for interactive SAS."
 
- (save-excursion
-   (set-buffer ess-dribble-buffer)
-   (ess-setq-vars-local ess-customize-alist (current-buffer))
-   (let* ((ess-shell-buffer-name-flag (get-buffer "*shell*"))
-	  ess-shell-buffer-name
-	  (temp-ess-dialect (cdr (rassoc ess-dialect alist)))
-	  ;; isn't pretty yet.
-	  ;;  ess-local-process-name is defined after this function.
-	  ;;  it needs to be defined prior to this function.
-	  ;;(n 0)
-	  (tmp-procname
-	   (or (and (not (comint-check-proc (current-buffer)))
-		    ;; Don't start a new process in current buffer if
-		    ;; one is already running
-		    ess-local-process-name)
-	       ;; find a non-existent process
-	       (let ((ntry 0)
-		     (done nil))
-		 (while (not done)
-		   (setq ntry (1+ ntry)
-			 done (not
-			       (get-process (ess-proc-name
-					     ntry
-					     temp-ess-dialect)))))
-		 (ess-proc-name ntry temp-ess-dialect)))) ;)
-	  ;; Following was tmp-local-process-name.  Stolen from inferior-ess
-	  (ess-sas-lst-bufname (concat "*" tmp-procname ".lst*"))
-	  (ess-sas-log-bufname (concat "*" tmp-procname ".log*"))
-	  (explicit-shell-file-name "/bin/sh")
-	  additional-inferior-SAS-args
-	  ess-sas-lst
-	  ess-sas-log)
-     
-     (ess-write-to-dribble-buffer
-      (format "(ess-SAS-pre-run-hook 1): ess-lang=%s, ess-dialect=%s, temp-dialect=%s, buf=%s \n"
-	      ess-language
-	      ess-dialect
-	      temp-ess-dialect
-	      (current-buffer)))
-     ;; If someone is running a *shell* buffer, rename it to avoid
-     ;; inadvertent nuking.
-     (if ess-shell-buffer-name-flag
-	 (save-excursion       
-	   (set-buffer "*shell*")
-	   (setq ess-shell-buffer-name
-		 (rename-buffer "*ess-shell-regular*" t))))
-     
-     ;; Construct the LST buffer for output
-     (if (get-buffer ess-sas-lst-bufname)
-	 nil
-       (shell)
-       (accept-process-output (get-buffer-process (current-buffer)))
-       (sleep-for 2) ; need to wait, else working too fast!
-       (setq ess-sas-lst (ess-insert-accept "tty"))
-       (SAS-listing-mode)
-       (shell-mode)
-       (ess-listing-minor-mode t)
-       (rename-buffer ess-sas-lst-bufname t))
-     
+  (let* ((ess-shell-buffer-name-flag (get-buffer "*shell*"))
+	 ess-shell-buffer-name
+	 ;; isn't pretty yet.
+	 ;;  ess-local-process-name is defined after this function.
+	 ;;  it needs to be defined prior to this function.
+	 (tmp-procname
+	  (or (and (not (comint-check-proc (current-buffer)))
+		   ;; Don't start a new process in current buffer if
+		   ;; one is already running
+		   ess-local-process-name)
+	      ;; find a non-existent process
+	      (let ((ntry 0)
+		    (done nil))
+		(while (not done)
+		  (setq ntry (1+ ntry)
+			done (not
+			      (get-process (ess-proc-name
+					    ntry
+					    temp-ess-dialect)))))
+		(ess-proc-name ntry temp-ess-dialect)))) ;)
+	 ;; Following was tmp-local-process-name.  Stolen from inferior-ess
+	 (ess-sas-lst-bufname (concat "*" tmp-procname ".lst*"))
+	 (ess-sas-log-bufname (concat "*" tmp-procname ".log*"))
+	 (explicit-shell-file-name "/bin/sh")
+	 additional-inferior-SAS-args
+	 ess-sas-lst
+	 ess-sas-log)
+    
+    (ess-write-to-dribble-buffer
+     (format "(ess-SAS-pre-run-hook 1): ess-lang=%s, ess-dialect=%s, temp-dialect=%s, buf=%s \n"
+	     ess-language
+	     ess-dialect
+	     temp-ess-dialect
+	     (current-buffer)))
+    ;; If someone is running a *shell* buffer, rename it to avoid
+    ;; inadvertent nuking.
+    (if ess-shell-buffer-name-flag
+	(save-excursion       
+	  (set-buffer "*shell*")
+	  (setq ess-shell-buffer-name
+		(rename-buffer "*ess-shell-regular*" t))))
+    
+    ;; Construct the LST buffer for output
+    (if (get-buffer ess-sas-lst-bufname)
+	nil
+      (shell)
+      (accept-process-output (get-buffer-process (current-buffer)))
+      (sleep-for 2) ; need to wait, else working too fast!
+      (setq ess-sas-lst (ess-insert-accept "tty"))
+      (SAS-listing-mode)
+      (shell-mode)
+      (ess-listing-minor-mode t)
+      (rename-buffer ess-sas-lst-bufname t))
+    
      ;; Construct the LOG buffer for output
-     (if (get-buffer  ess-sas-log-bufname)
-	 nil
-       (shell)
-       (accept-process-output (get-buffer-process (current-buffer)))
-       (sleep-for 2) ; need to wait, else working too fast!
-       (setq ess-sas-log (ess-insert-accept "tty"))
-       (SAS-log-mode)
-       (shell-mode)
-       (ess-transcript-minor-mode t)
-       (rename-buffer ess-sas-log-bufname t))
-     
-     (setq additional-inferior-SAS-args (concat " "
-						ess-sas-lst
-						" "
-						ess-sas-log)
-	   inferior-SAS-args-temp (concat inferior-SAS-args
-					  additional-inferior-SAS-args))
-     
-     ;; Restore the *shell* buffer
-     (if ess-shell-buffer-name-flag
-	 (save-excursion       
-	   (set-buffer ess-shell-buffer-name)
-	   (rename-buffer "*shell*")))
-     
-     (delete-other-windows)
-     (split-window-vertically)
-     (split-window-vertically)
-     (switch-to-buffer (nth 2 (buffer-list)))
-     (other-window 2)
-     (switch-to-buffer ess-sas-log-bufname)
-     (split-window-vertically)
-     (other-window 1)
-     (switch-to-buffer ess-sas-lst-bufname)
-     (other-window 2)
-     
-     ;;workaround
-     (setq inferior-SAS-program-name
-	   (concat ess-lisp-directory "/" "ess-sas-sh-command"))
-     (setq inferior-ess-program inferior-SAS-program-name))))
+    (if (get-buffer  ess-sas-log-bufname)
+	nil
+      (shell)
+      (accept-process-output (get-buffer-process (current-buffer)))
+      (sleep-for 2) ; need to wait, else working too fast!
+      (setq ess-sas-log (ess-insert-accept "tty"))
+      (SAS-log-mode)
+      (shell-mode)
+      (ess-transcript-minor-mode t)
+      (rename-buffer ess-sas-log-bufname t))
+    
+    (setq additional-inferior-SAS-args (concat " "
+					       ess-sas-lst
+					       " "
+					       ess-sas-log)
+	  inferior-SAS-args-temp (concat inferior-SAS-args
+					 additional-inferior-SAS-args))
+    
+    ;; Restore the *shell* buffer
+    (if ess-shell-buffer-name-flag
+	(save-excursion       
+	  (set-buffer ess-shell-buffer-name)
+	  (rename-buffer "*shell*")))
+    
+    (delete-other-windows)
+    (split-window-vertically)
+    (split-window-vertically)
+    (switch-to-buffer (nth 2 (buffer-list)))
+    (other-window 2)
+    (switch-to-buffer ess-sas-log-bufname)
+    (split-window-vertically)
+    (other-window 1)
+    (switch-to-buffer ess-sas-lst-bufname)
+    (other-window 2)
+    
+    ;;workaround
+    (setq inferior-SAS-program-name
+	  (concat ess-lisp-directory "/" "ess-sas-sh-command"))
+    (setq inferior-ess-program inferior-SAS-program-name)))
  
 (defun ess-insert-accept (command)
   "Submit command to process, get next line."
@@ -202,12 +197,14 @@
   "Call 'SAS', from SAS Institute."
   (interactive)
   (setq ess-customize-alist SAS-customize-alist)
-  (ess-write-to-dribble-buffer
-   (format "(SAS): ess-dialect=%s , buf=%s \n"
-	   ess-dialect
-	   (current-buffer)))
-  (ess-SAS-pre-run-hook SAS-customize-alist)
-  (inferior-ess))
+  (let ((temp-ess-dialect (cdr (rassoc ess-dialect ess-customize-alist))))
+    (ess-write-to-dribble-buffer
+     (format "(SAS): ess-dialect=%s , buf=%s temp-ess-dial=%s\n"
+	     ess-dialect
+	     (current-buffer)
+	     temp-ess-dialect))
+    (ess-SAS-pre-run-hook SAS-customize-alist temp-ess-dialect)
+    (inferior-ess)))
 
 
 
