@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/11/02 14:24:07 $
-;; Version: $Revision: 1.129 $
-;; RCS: $Id: essa-sas.el,v 1.129 2002/11/02 14:24:07 rsparapa Exp $
+;; Modified: $Date: 2002/11/04 19:03:52 $
+;; Version: $Revision: 1.130 $
+;; RCS: $Id: essa-sas.el,v 1.130 2002/11/04 19:03:52 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -526,7 +526,6 @@ optional argument is non-nil, then set-buffer rather than switch."
 "And now for something completely different."
     (interactive)
     (ess-sas-file-path)
-    (setq ess-sas-submit-method 'iESS)
 
     (let ((ess-temp-sas-file 
 (nth 0 (split-string (car (last (split-string ess-sas-file-path "\\([a-zA-Z][a-zA-Z]:\\|]\\)"))) "[.]"))))
@@ -538,6 +537,8 @@ optional argument is non-nil, then set-buffer rather than switch."
     (comint-send-input)
     (ess-add-ess-process)
     (ess-sas-goto-sas)
+    (setq ess-sas-submit-method 'iESS)
+    (setq ess-eval-visibly-p nil)
 ))
 ;;(defun ess-sas-interactive ()
 ;;    (interactive)
