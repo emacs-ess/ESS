@@ -9,9 +9,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2001/11/01 17:24:30 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: ess-emcs.el,v 5.13 2001/11/01 17:24:30 ess Exp $
+;; Modified: $Date: 2001/11/01 19:33:24 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: ess-emcs.el,v 5.14 2001/11/01 19:33:24 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -90,9 +90,10 @@ Only a concern with earlier versions of Emacs.")
     (fset 'find-buffer-visiting 'get-file-buffer))
 
 ;; XEmacs 21.x need this
+(if (not (fboundp 'w32-using-nt))
 (defun w32-using-nt ()
   "Return non-nil if literally running on Windows NT (i.e., not Windows 9X)."
-  (and (eq system-type 'windows-nt) (getenv "SystemRoot")))
+  (and (eq system-type 'windows-nt) (getenv "SystemRoot"))))
 
 ;; XEmacs and NTemacs 19.x need these
 (if (not (boundp 'w32-system-shells))
