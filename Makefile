@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.20 1999/09/01 19:19:34 maechler Exp $
+## $Id: Makefile,v 5.21 1999/09/01 19:50:49 maechler Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
@@ -38,7 +38,7 @@ ANNOUNCE: doc/announc.texi $(INTRO.DEPENDS)
 	cd doc; makeinfo --no-validate --no-headers --no-split -o - announc.texi \
 	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
 
-dist: README ANNOUNCE
+dist: README ANNOUNCE docs
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSVERSIONDIR)"
