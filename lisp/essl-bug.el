@@ -1,14 +1,14 @@
 ;;; essl-bug.el -- ESS BUGS customization
 
 ;; Copyright (C) 2001 Rodney Sparapani
-;; Copyright (C) 2002 Free Software Foundation, Inc.
+;; Copyright (C) 2002-2004 Free Software Foundation, Inc.
 
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2004/02/18 18:50:01 $
-;; Version: $Revision: 1.22 $
-;; RCS: $Id: essl-bug.el,v 1.22 2004/02/18 18:50:01 rsparapa Exp $/ini
+;; Modified: $Date: 2004/02/18 19:50:29 $
+;; Version: $Revision: 1.23 $
+;; RCS: $Id: essl-bug.el,v 1.23 2004/02/18 19:50:29 rsparapa Exp $/ini
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -75,10 +75,14 @@ Users whose default is not 'sh, but are accessing a remote machine with
     :group 'ess-bugs
 )
 
-(defcustom ess-bugs-batch-command "backbugs"
-;;    (convert-standard-filename 
-;;	(concat ess-lisp-directory "/../etc/" 
-;;	    (if (w32-shell-dos-semantics) "backbugs.bat" "backbugs")))
+(defcustom ess-bugs-batch-version "0.6"
+  "*ESS[BUGS]: The batch BUGS version to use."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-batch-command 
+    (if (equal ess-bugs-batch-version "0.6") "backbugs" "backbug5")
   "*ESS[BUGS]: The name of the command to run BUGS in batch mode.
 
 Set to the name of the batch BUGS script that comes with ESS or
@@ -280,15 +284,17 @@ and `ess-bugs-file-dir'."
             (insert "}\n")
 	))	
 
-	(if (equal ".bmd" suffix) (progn
-	    (insert (concat "compile(\"" ess-bugs-file-dir ess-bugs-file-root ".bug\")\n"))
-	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in0\")\n"))
+	(if (equal ".bmd" suffix) (let
+	    ((tmp-bugs-file-dir (if (equal ess-bugs-batch-version "0.6") ess-bugs-file-dir)))
+	    (insert (concat "compile(\"" tmp-bugs-file-dir ess-bugs-file-root ".bug\")\n"))
+	    (insert (concat "save(\"" tmp-bugs-file-dir ess-bugs-file-root ".in0\")\n"))
 	    (insert (concat "update(" ess-bugs-default-burn-in ")\n"))
-	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in1\")\n"))
+	    (insert (concat "save(\"" tmp-bugs-file-dir ess-bugs-file-root ".in1\")\n"))
 	    (insert "#%MONITOR\n\n#%MONITOR\n")
-	    (insert (concat "checkpoint(" ess-bugs-default-checkpoint ")\n"))
+	    (if (equal ess-bugs-batch-version "0.6") 
+		(insert (concat "checkpoint(" ess-bugs-default-checkpoint ")\n")))
 	    (insert (concat "update(" ess-bugs-default-update ")\n"))
-	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in2\")\n"))
+	    (insert (concat "save(\"" tmp-bugs-file-dir ess-bugs-file-root ".in2\")\n"))
 	    (insert "#%STATS\n\n#%STATS\n")
 	    (insert "q()\n")
 	    ;;(insert "q(\"" ess-bugs-file-dir ess-bugs-file-root ".bog\")\n")
@@ -331,8 +337,11 @@ and `ess-bugs-file-dir'."
 	(comint-send-input)
 
 	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " "
-	    ess-bugs-default-bins " " ess-bugs-file-root " " ess-bugs-file " " 
-	    ess-bugs-batch-post-command))
+	    (if (equal ess-bugs-batch-version "0.6") ess-bugs-default-bins)
+	     " " ess-bugs-file-root " "
+	    (if (equal ess-bugs-batch-version "0.6") 
+		 ess-bugs-file (concat ess-bugs-file-root ".bmd"))
+	     " " ess-bugs-batch-post-command))
 
 	(comint-send-input)
 )
