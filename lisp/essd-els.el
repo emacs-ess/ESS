@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: essd-els.el,v 1.10 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/06/30 21:29:42 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: essd-els.el,v 1.11 2000/06/30 21:29:42 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -64,8 +64,8 @@
     (inferior-ess-objects-command  . "objects(%d)\n")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")
-    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
+    (inferior-ess-primary-prompt   . "[/a-zA-Z0-9() ]*[>$%] ?")
+    (inferior-ess-secondary-prompt . "[+>] ?")
     (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
     (inferior-ess-start-args       . "-i"))
  "Variables to customize for S+elsewhere")
@@ -110,19 +110,20 @@ return new alist whose car is the new pair and cdr is ALIST.
 
 
 (defun ess-select-alist-dialect ()
-  "This is UGLY and NEEDS TO BE FIXED."
+  "Query user for an ESS dialect and return the matching customize-alist."
   (interactive)
   (let ((dialect (read-string
-		  "Dialect (enter one of: stata, r, sp3, sp5, xls)?")))
-    (if (string= dialect "stata")
-	STA-customize-alist
-      (if (string= dialect "sp3")
-	  S+3-customize-alist
-	(if (string= dialect "r")
-	    R-customize-alist
-	  (if (string= dialect "xls")
-	      XLS-customize-alist
-	    S+5-customize-alist))))))
+		  "Dialect (enter one of: stata, r, sp3, sp5, xls, sas)?")))
+    (cond
+     ((string= dialect "stata")	STA-customize-alist)
+     ((string= dialect "r")     R-customize-alist )
+     ((string= dialect "sp3")   S+3-customize-alist)
+     ((string= dialect "sp5")   S+5-customize-alist)
+     ((string= dialect "xls")   XLS-customize-alist)
+     ((string= dialect "sas")   S+elsewhere-customize-alist)
+     (t                         S+elsewhere-customize-alist)
+     )))
+
 
 (defun ESS-elsewhere (&optional proc-name)
   "Call an inferior process from ELSEWHERE."
