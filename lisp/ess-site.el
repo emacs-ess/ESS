@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/30 13:02:07 $
-;; Version: $Revision: 1.31 $
-;; RCS: $Id: ess-site.el,v 1.31 1997/07/30 13:02:07 rossini Exp $
+;; Modified: $Date: 1997/08/26 21:58:09 $
+;; Version: $Revision: 1.32 $
+;; RCS: $Id: ess-site.el,v 1.32 1997/08/26 21:58:09 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.32  1997/08/26 21:58:09  rossini
+;;: added SAS stuff.
+;;:
 ;;: Revision 1.31  1997/07/30 13:02:07  rossini
 ;;: added comments for the program specifications.
 ;;:
@@ -235,15 +238,17 @@
 (if (assoc "\\.q$" auto-mode-alist) nil
   (setq auto-mode-alist
 	(append
-	 '(("\\.q$" . S-mode)
-	   ("\\.s$"  . S-mode) ;; Comment for default asm-mode
-	   ("\\.S$"  . S-mode)
-	   ("\\.st$" . S-transcript-mode)
-	   ("\\.St$" . S-transcript-mode)
-	   ("\\.r$"  . R-mode)
-	   ("\\.R$"  . R-mode)
-	   ("\\.rt$" . R-transcript-mode)
-	   ("\\.Rt$" . R-transcript-mode))
+	 '(("\\.q$\\'" . S-mode)
+	   ("\\.s$\\'"  . S-mode) ;; Comment for default asm-mode
+	   ("\\.sp$\\'" . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
+	   ("\\.S$\\'"  . S-mode)
+	   ("\\.st$\\'" . S-transcript-mode)
+	   ("\\.St$\\'" . S-transcript-mode)
+	   ("\\.r$\\'"  . R-mode)
+	   ("\\.R$\\'"  . R-mode)
+	   ("R.*/src/library/[A-Za-z]+/funs/[A-Za-z]"  . R-mode)
+	   ("\\.rt$\\'" . R-transcript-mode)
+	   ("\\.Rt$\\'" . R-transcript-mode))
 	 auto-mode-alist)))
 
 ;;; (1.3) Autoloads.  You should not need to change this bit.
@@ -333,6 +338,11 @@
       (add-hook 'ess-transcript-mode-hook 'turn-on-font-lock t)
       (add-hook 'inferior-ess-mode-hook 'turn-on-font-lock t)))
 
+
+;; If nil, then don't font-lock the prompt.
+;; if t, font-lock (default).
+(setq inferior-ess-font-lock-input t) ; from RMH
+
 ;;; (3.2) Framepop.  Windows produced by ess-execute-objects etc. are
 ;;; often unneccessarily large. The framepop package makes such
 ;;; windows appear in a separate, shrink-wrapped frame. This will
@@ -395,6 +405,77 @@
 ;;; statistical package/process).  This is obtained
 ;;; by setting ess-directory to nil, i.e. 
 ;; (setq-default ess-directory nil) ; this is the default.
+
+
+
+;;; 4.0 SAS configuration
+
+;;-*-emacs-lisp-*-
+;;;  file name: sas-site.el
+;;;
+;;;  Version 1.4
+;;; 
+;;;    sas-mode:  indent, run etc, SAS programs.
+;;;    Copyright (C) 1994 Tom Cook
+;;;
+;;;    This program is free software; you can redistribute it and/or modify
+;;;    it under the terms of the GNU General Public License as published by
+;;;    the Free Software Foundation; either version 2 of the License, or
+;;;    (at your option) any later version.
+;;;
+;;;    This program is distributed in the hope that it will be useful,
+;;;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;;    GNU General Public License for more details.
+;;;
+;;;    You should have received a copy of the GNU General Public License
+;;;    along with this program; if not, write to the Free Software
+;;;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+;;;
+;;;  Author:   Tom Cook
+;;;            Dept. of Biostatistics
+;;;            University of Wisconsin - Madison
+;;;            Madison, WI 53706
+;;;            cook@biostat.wisc.edu
+;;   Last change: 2/1/95
+;;
+;;
+;;  Acknowledgements:  
+;;
+;;  Menu code for XEmacs/Lucid emacs and startup mods
+;;  contributed by arossini@biostats.hmc.psu.edu
+
+
+(defvar sas-require-confirmation t
+  "*Require confirmation when revisiting sas-output which has changed on disk.")
+;; added sas-program 4/29/94.  user can specify a different version of sas.
+(defvar sas-program "sas" "*Name of program which runs sas.")
+(defvar sas-pre-run-hook nil
+  "Hook to execute prior to running SAS vis submit-sas.")
+(defvar sas-custom-file-name "~/.sas"
+  "Customization file. If you plan to change this, this variable must be
+set before loading sas-mode.")
+(defvar sas-options-string ""
+  "*Options to be passed to sas as if typed on the command line.")
+(defvar sas-indent-width 4 "*Amount to indent sas statements")
+(defvar sas-notify t "*Beep and display message when job is done?")  ;; added 4/7/94
+(defvar sas-error-notify t
+  "*If sas-notify is t, then indicate errors in log file upon completion")
+;; added 5/2/94
+(defvar sas-get-options nil "Options to be passed to SAS in sas-get-dataset")
+(defvar sas-get-options-history nil "History list of Options passed to SAS in sas-get-dataset")
+(defvar sas-page-number-max-line 3
+  "*Number of lines from the page break in which to search for the page number")
+(defvar sas-indent-ignore-comment "*"
+  "*Comments with start with this string are ignored in indentation.")
+(defvar sas-notify-popup nil
+  "*If t (and sas-notify is also t), causes emacs to create a
+popup window when the SAS job is finished.")
+(defvar sas-tmp-libname "_tmp_" "*Libname to use for sas-get-dataset.")
+(provide 'sas-site)
+;;; End sas-site.el
+
+
 
 
  ; Local variables section
