@@ -1,15 +1,15 @@
 ;;; ess-site.el --- user customization of ess-mode
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--1999 A.J. Rossini, R.M. Heiberger, Martin
+;; Copyright (C) 1997--2000 A.J. Rossini, R.M. Heiberger, Martin
 ;; Maechler, Kurt Hornik.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/03/02 10:13:33 $
-;; Version: $Revision: 5.44 $
-;; RCS: $Id: ess-site.el,v 5.44 2000/03/02 10:13:33 maechler Exp $
+;; Modified: $Date: 2000/03/02 18:27:54 $
+;; Version: $Revision: 5.45 $
+;; RCS: $Id: ess-site.el,v 5.45 2000/03/02 18:27:54 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -82,7 +82,7 @@
 	;; A nice default
 	(directory-file-name (file-name-directory
 			      (file-truename load-file-name)))
-      (defun find-load-file-directory nil 
+      (defun find-load-file-directory nil
 	"Locate directory in which load-file sits."
 	(interactive)
 	(let ((load-file-directory)
@@ -120,7 +120,7 @@
 	(require 'cl)			; rassoc
 	;; add-to-list taken from subr.el
 	;; we use functions not in 19.28, so include them
-	(load-file (concat ess-lisp-directory "/19.29/extras.el"))  
+	(load-file (concat ess-lisp-directory "/19.29/extras.el"))
 	(load-file (concat ess-lisp-directory "/19.29/easymenu.el"))
 	(if window-system
 	    (progn
@@ -130,7 +130,7 @@
 	      ;; font-lock features not in 19.28
 	      (load-file (concat ess-lisp-directory
 				 "/19.29/font-lock.el"))))))
-  
+
   (add-to-list 'load-path ess-lisp-directory))
 
 
@@ -274,8 +274,10 @@
 	   ess-customize-alist))
 
 
-;; (1.7) Set up stuff for noweb-mode!
+;; (1.7) Set up stuff for noweb-mode! {maybe comment out}
 (require 'ess-noweb)
+
+;; ALWAYS:
 (require 'ess)
 
 (ess-write-to-dribble-buffer
@@ -464,8 +466,7 @@
 
 ;;; 5.0 Noweb and Literate Data Analysis configuration
 
-;;; Comment out if not wanted.
-;(require 'ess-noweb)
+;; already above [1.7]: (require 'ess-noweb)
 
 
  ; Local variables section
