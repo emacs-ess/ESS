@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/06/07 22:20:20 $
-;; Version: $Revision: 5.51 $
-;; RCS: $Id: ess-site.el,v 5.51 2000/06/07 22:20:20 rossini Exp $
+;; Modified: $Date: 2000/06/07 22:37:49 $
+;; Version: $Revision: 5.52 $
+;; RCS: $Id: ess-site.el,v 5.52 2000/06/07 22:37:49 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -61,6 +61,13 @@
 ;; load code to figure out what version/strain of Emacs we are running
 
 (require 'ess-emcs)
+
+;; If we have custom available, make this "t")
+
+(defvar ess-local-custom-available nil
+  "Value is nil if custom.el not available, t if available.  Only a
+concern with earlier versions of Emacs.")
+
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
