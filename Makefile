@@ -1,10 +1,10 @@
-## $Id: Makefile,v 5.25 1999/11/16 21:49:37 ess Exp $
+## $Id: Makefile,v 5.26 2000/02/29 17:45:35 ess Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
-ESSVERSION=5.1.11
+ESSVERSION=5.1.12
 ESSVERSIONDIR=ess-$(ESSVERSION)
-ESSVERSIONTAG=ess-5_1_11
+ESSVERSIONTAG=ess-5.1.12
 
 Subdirs = lisp doc
 
