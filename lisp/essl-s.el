@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: essl-s.el,v 5.14 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/03/31 15:12:19 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: essl-s.el,v 5.15 2000/03/31 15:12:19 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -36,6 +36,143 @@
 
 
  ; Configuration variables
+
+(defvar S-syntax-table nil "Syntax table for S code.")
+(if S-syntax-table
+    nil
+  (setq S-syntax-table (make-syntax-table))
+  (modify-syntax-entry ?\\ "\\" S-syntax-table)
+  (modify-syntax-entry ?+  "."  S-syntax-table)
+  (modify-syntax-entry ?-  "."  S-syntax-table)
+  (modify-syntax-entry ?=  "."  S-syntax-table)
+  (modify-syntax-entry ?%  "."  S-syntax-table)
+  (modify-syntax-entry ?<  "."  S-syntax-table)
+  (modify-syntax-entry ?>  "."  S-syntax-table)
+  (modify-syntax-entry ?&  "."  S-syntax-table)
+  (modify-syntax-entry ?|  "."  S-syntax-table)
+  (modify-syntax-entry ?\' "\"" S-syntax-table)
+  (modify-syntax-entry ?#  "<"  S-syntax-table) ; open comment
+  (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
+  ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
+  (modify-syntax-entry ?.  "_"  S-syntax-table) ; see above/below,
+					; plus consider separation.
+  (modify-syntax-entry ?$  "_"  S-syntax-table) ; foo.bar$hack is 1 symbol
+  (modify-syntax-entry ?_  "."  S-syntax-table)
+  (modify-syntax-entry ?*  "."  S-syntax-table)
+  (modify-syntax-entry ?<  "."  S-syntax-table)
+  (modify-syntax-entry ?>  "."  S-syntax-table)
+  (modify-syntax-entry ?/  "."  S-syntax-table))
+
+(defvar S-editing-alist
+  '((paragraph-start              . (concat "^$\\|" page-delimiter))
+    (paragraph-separate           . (concat "^$\\|" page-delimiter))
+    (paragraph-ignore-fill-prefix . t)
+    (require-final-newline        . t)
+    (comment-start                . "#")
+    (comment-start-skip           . "#+ *")
+    (comment-column               . 40)
+    ;;(comment-indent-function  . 'S-comment-indent)
+    ;;(ess-comment-indent           . 'S-comment-indent)
+    ;;(ess-indent-line                      . 'S-indent-line)
+    ;;(ess-calculate-indent           . 'S-calculate-indent)
+    (indent-line-function            . 'S-indent-line)
+    (parse-sexp-ignore-comments   . t)
+    (ess-set-style                . ess-default-style)
+    (ess-local-process-name       . nil)
+    ;;(ess-keep-dump-files          . 'ask)
+    (ess-mode-syntax-table        . S-syntax-table)
+    (font-lock-defaults           . '(ess-mode-font-lock-keywords
+				      nil nil ((?\. . "w")))))
+  "General options for editing S, S+, and R source files.")
+
+;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in essl-s!).
+
+(defconst S+-help-sec-keys-alist
+  '((?a . "ARGUMENTS:")
+    (?b . "BACKGROUND:")
+    (?B . "BUGS:")
+    (?d . "DESCRIPTION:")
+    (?D . "DETAILS:")
+    (?e . "EXAMPLES:")
+    (?n . "NOTE:")
+    (?O . "OPTIONAL ARGUMENTS:")
+    (?R . "REQUIRED ARGUMENTS:")
+    (?r . "REFERENCES:")
+    (?s . "SEE ALSO:")
+    (?S . "SIDE EFFECTS:")
+    (?u . "USAGE:")
+    (?v . "VALUE:"))
+  "Alist of (key . string) pairs for use in section searching.")
+;;; `key' indicates the keystroke to use to search for the section heading
+;;; `string' in an S help file. `string' is used as part of a
+;;; regexp-search, and so specials should be quoted.
+
+;; S ver.3 (NOT S-Plus)
+(defconst S3-help-sec-keys-alist
+  '((?a . "ARGUMENTS:")
+    (?b . "BACKGROUND:")
+    (?B . "BUGS:")
+    (?d . "DESCRIPTION:")
+    (?D . "DETAILS:")
+    (?e . "EXAMPLES:")
+    (?n . "NOTE:")
+    (?r . "REFERENCES:")
+    (?s . "SEE ALSO:")
+    (?S . "SIDE EFFECTS:")
+    (?u . "USAGE:")
+    (?v . "VALUE:"))
+  "Help section keys for S ver.3.")
+
+;; S ver.4 (NOT S-Plus)
+(defconst S4-help-sec-keys-alist
+  '((?a . "ARGUMENTS:")
+    (?b . "BACKGROUND:")
+    (?B . "BUGS:")
+    (?d . "DESCRIPTION:")
+    (?D . "DETAILS:")
+    (?e . "EXAMPLES:")
+    (?n . "NOTE:")
+    (?r . "REFERENCES:")
+    (?s . "SEE ALSO:")
+    (?S . "SIDE EFFECTS:")
+    (?u . "USAGE:")
+    (?v . "VALUE:"))
+  "Help section keys for S4.")
+
+;; R
+(defconst R-help-sec-keys-alist
+  '((?a . "\\s *Arguments:")
+    (?d . "\\s *Description:")
+    (?e . "\\s *Examples:")
+    (?n . "\\s *Note:")
+    (?r . "\\s *References:")
+    (?s . "\\s *See Also:")
+    (?v . "\\s *Value[s]?")	;
+    )
+  "Alist of (key . string) pairs for use in help section searching.")
+
+
+(defconst ess-help-S+-sec-regex "^[A-Z. ---]+:$"
+  "Reg(ular) Ex(pression) of section headers in help file.")
+
+(defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$"
+  "Reg(ular) Ex(pression) of section headers in help file.")
+
+;;; S-mode extras of Martin Maechler, Statistik, ETH Zurich.
+;;; See also ./ess-utils.el
+
+(defvar ess-function-outline-file
+  (concat ess-lisp-directory "/../etc/" "function-outline.S")
+  "The file name of the ess-function outline that is to be inserted at point,
+when \\<ess-mode-map>\\[ess-insert-function-outline] is used.
+Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
+
+;; Use the user's own ~/S/emacs-fun.outline  is (s)he has one : ---
+(let ((outline-file (concat (getenv "HOME") "/S/function-outline.S")))
+  (if (file-exists-p outline-file)
+      (setq ess-function-outline-file outline-file)))
+
+ ; Function Definitions
 
 (defun S-comment-indent ()
   "Indentation for S comments."
@@ -216,142 +353,6 @@ Returns nil if line starts inside a string, t if in a comment."
 			  (forward-sexp -1))
 		      ;; Get initial indentation of the line we are on.
 		      (current-indentation))))))))))
-
-
-(defvar S-syntax-table nil "Syntax table for S code.")
-(if S-syntax-table
-    nil
-  (setq S-syntax-table (make-syntax-table))
-  (modify-syntax-entry ?\\ "\\" S-syntax-table)
-  (modify-syntax-entry ?+  "."  S-syntax-table)
-  (modify-syntax-entry ?-  "."  S-syntax-table)
-  (modify-syntax-entry ?=  "."  S-syntax-table)
-  (modify-syntax-entry ?%  "."  S-syntax-table)
-  (modify-syntax-entry ?<  "."  S-syntax-table)
-  (modify-syntax-entry ?>  "."  S-syntax-table)
-  (modify-syntax-entry ?&  "."  S-syntax-table)
-  (modify-syntax-entry ?|  "."  S-syntax-table)
-  (modify-syntax-entry ?\' "\"" S-syntax-table)
-  (modify-syntax-entry ?#  "<"  S-syntax-table) ; open comment
-  (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
-  ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
-  (modify-syntax-entry ?.  "_"  S-syntax-table) ; see above/below,
-					; plus consider separation.
-  (modify-syntax-entry ?$  "_"  S-syntax-table) ; foo.bar$hack is 1 symbol
-  (modify-syntax-entry ?_  "."  S-syntax-table)
-  (modify-syntax-entry ?*  "."  S-syntax-table)
-  (modify-syntax-entry ?<  "."  S-syntax-table)
-  (modify-syntax-entry ?>  "."  S-syntax-table)
-  (modify-syntax-entry ?/  "."  S-syntax-table))
-
-(defvar S-editing-alist
-  '((paragraph-start              . (concat "^$\\|" page-delimiter))
-    (paragraph-separate           . (concat "^$\\|" page-delimiter))
-    (paragraph-ignore-fill-prefix . t)
-    (require-final-newline        . t)
-    (comment-start                . "#")
-    (comment-start-skip           . "#+ *")
-    (comment-column               . 40)
-    ;;(comment-indent-function  . 'S-comment-indent)
-    ;;(ess-comment-indent           . 'S-comment-indent)
-    ;;(ess-indent-line                      . 'S-indent-line)
-    ;;(ess-calculate-indent           . 'S-calculate-indent)
-    (indent-line-function            . 'S-indent-line)
-    (parse-sexp-ignore-comments   . t)
-    (ess-set-style                . ess-default-style)
-    (ess-local-process-name       . nil)
-    ;;(ess-keep-dump-files          . 'ask)
-    (ess-mode-syntax-table        . S-syntax-table)
-    (font-lock-defaults           . '(ess-mode-font-lock-keywords
-				      nil nil ((?\. . "w")))))
-  "General options for editing S, S+, and R source files.")
-
-;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in essl-s!).
-
-(defconst S+-help-sec-keys-alist
-  '((?a . "ARGUMENTS:")
-    (?b . "BACKGROUND:")
-    (?B . "BUGS:")
-    (?d . "DESCRIPTION:")
-    (?D . "DETAILS:")
-    (?e . "EXAMPLES:")
-    (?n . "NOTE:")
-    (?O . "OPTIONAL ARGUMENTS:")
-    (?R . "REQUIRED ARGUMENTS:")
-    (?r . "REFERENCES:")
-    (?s . "SEE ALSO:")
-    (?S . "SIDE EFFECTS:")
-    (?u . "USAGE:")
-    (?v . "VALUE:"))
-  "Alist of (key . string) pairs for use in section searching.")
-;;; `key' indicates the keystroke to use to search for the section heading
-;;; `string' in an S help file. `string' is used as part of a
-;;; regexp-search, and so specials should be quoted.
-
-;; S ver.3 (NOT S-Plus)
-(defconst S3-help-sec-keys-alist
-  '((?a . "ARGUMENTS:")
-    (?b . "BACKGROUND:")
-    (?B . "BUGS:")
-    (?d . "DESCRIPTION:")
-    (?D . "DETAILS:")
-    (?e . "EXAMPLES:")
-    (?n . "NOTE:")
-    (?r . "REFERENCES:")
-    (?s . "SEE ALSO:")
-    (?S . "SIDE EFFECTS:")
-    (?u . "USAGE:")
-    (?v . "VALUE:"))
-  "Help section keys for S ver.3.")
-
-;; S ver.4 (NOT S-Plus)
-(defconst S4-help-sec-keys-alist
-  '((?a . "ARGUMENTS:")
-    (?b . "BACKGROUND:")
-    (?B . "BUGS:")
-    (?d . "DESCRIPTION:")
-    (?D . "DETAILS:")
-    (?e . "EXAMPLES:")
-    (?n . "NOTE:")
-    (?r . "REFERENCES:")
-    (?s . "SEE ALSO:")
-    (?S . "SIDE EFFECTS:")
-    (?u . "USAGE:")
-    (?v . "VALUE:"))
-  "Help section keys for S4.")
-
-;; R 
-(defconst R-help-sec-keys-alist
-  '((?a . "\\s *Arguments:")
-    (?d . "\\s *Description:")
-    (?e . "\\s *Examples:")
-    (?n . "\\s *Note:")
-    (?r . "\\s *References:")
-    (?s . "\\s *See Also:")
-    (?v . "\\s *Value[s]?")	;
-    )
-  "Alist of (key . string) pairs for use in help section searching.")
-
-
-(defconst ess-help-S+-sec-regex "^[A-Z. ---]+:$"
-  "Reg(ular) Ex(pression) of section headers in help file.")
-
-(defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$"
-  "Reg(ular) Ex(pression) of section headers in help file.")
-
-;;; S-mode extras of Martin Maechler, Statistik, ETH Zurich.
-;;; See also ./ess-utils.el
-
-(defvar ess-function-outline-file
-  (concat ess-lisp-directory "/../etc/" "function-outline.S")
-  "The file name of the ess-function outline that is to be inserted at point,
-when \\<ess-mode-map>\\[ess-insert-function-outline] is used.
-Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
-
-;; Use the user's own ~/S/emacs-fun.outline  is (s)he has one : ---
-(let ((outline-file (concat (getenv "HOME") "/S/function-outline.S")))
-  (if (file-exists-p outline-file)
-      (setq ess-function-outline-file outline-file)))
 
 (defun ess-insert-function-outline ()
   "Insert an S function definition `outline' at point.
