@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/10/21 13:43:22 $
-;; Version: $Revision: 1.126 $
-;; RCS: $Id: essa-sas.el,v 1.126 2002/10/21 13:43:22 rsparapa Exp $
+;; Modified: $Date: 2002/10/21 19:41:33 $
+;; Version: $Revision: 1.127 $
+;; RCS: $Id: essa-sas.el,v 1.127 2002/10/21 19:41:33 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -688,11 +688,13 @@ Keep in mind that the maximum command line length in MS-DOS is
            "^\\(\\(1[ \t]+The SAS System\\|\\|NOTE\\|WARNING\\|ERROR\\|"
            "[ \t]+\\(\\(real\\|cpu\\) time\\|Licensed to\\|Engine:\\|"
 	   "Physical Name:\\|File Name=\\|Pipe command=\\|"
-	   "RECFM=[DFNPV],LRECL=\\|[0-9]+:[0-9]+[ /t]+[0-9]+:[0-9]+\\)\\).*$"
+	   "RECFM=[DFNPV],LRECL=\\|[0-9]+:[0-9]+[ /t]+[0-9]+:[0-9]+\\|"
+	   "[1-9][0-9]* at [0-9]+:[0-9]+[ /t]+[1-9][0-9]* at [0-9]+:[0-9]+\\)\\).*$"
            "\\|[0-9]+\\([ \t]+!\\)?\\|MPRINT([_A-Z]+):\\|"
 	   "[ \t]+\\(values at the places given by: (Line):(Column).\\|"
            "The m\\(in\\|ax\\)imum record length was [1-9][0-9]*.\\|"
 	   "One or more lines were truncated.\\|"
+	   "Each place is given by: (Number of times) at (Line):(Column).\\|"
            "[0-9][0-9]:[0-9][0-9] [MTWFS][aeioudhnrst]+day, [JFMASOND]"
            "[aeiouybcghlmnprstv]+ [1-9][0-9]?, 20[0-9][0-9]\\)\\)") 
            nil t) (replace-match (if strip " " "/*\\&*/") t))
