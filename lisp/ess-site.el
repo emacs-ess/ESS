@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/09/14 23:52:20 $
-;; Version: $Revision: 5.31 $
-;; RCS: $Id: ess-site.el,v 5.31 1999/09/14 23:52:20 rossini Exp $
+;; Modified: $Date: 1999/09/16 05:36:31 $
+;; Version: $Revision: 5.32 $
+;; RCS: $Id: ess-site.el,v 5.32 1999/09/16 05:36:31 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -111,6 +111,7 @@
 	   ("\\.[rR]\\'"  . R-mode)
 	   ("\\.[rR]profile\\'" . R-mode)
 	   ("\\.nw\\'"          . noweb-mode) ;; Literate Data Analysis
+	   ("\\.omg\\'"         . omegahat-mode)
 	   ("\\.lsp\\'"		. XLS-mode)
 	   ("\\.do\\'"		. STA-mode)
 	   ("\\.ado\\'"		. STA-mode)
@@ -146,6 +147,7 @@
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
 ;;(setq-default inferior-SAS-program-name "sas")
+(setq-default inferior-OMG-program-name "/home/rossini/src/anoncvs/Omegahat/org/omegahat/bin/omegahat")
 
 ;;; ESS on the Windows NT/95/98 assumes you have installed gnuclient
 ;;; with your NTemacs.
@@ -177,6 +179,10 @@
 ;;; see essd-els.el
 ;;(setq-default inferior-S-elsewhere-program-name "sh")
 
+;;; You might consider using ssh, if you can!  (and if you use
+;;; ssh-agent/etc, for securing you sessions.
+;;(setq-default inferior-S-elsewhere-program-name "ssh")
+
 ;;; These commands are for running the PC version of Sqpe of S+4 in
 ;;; an emacs buffer, using the same technology as ESS uses for Unix
 ;;; S-Plus.  Interactive graphics are unavailable in this mode.
@@ -198,10 +204,11 @@
 (require 'essd-s4)
 (require 'essd-sp3)
 (require 'essd-sp5)
-(require 'essd-sta) ; for Stata.
+(require 'essd-sta)  ;; for Stata.
 (require 'essd-xls)
 (require 'essd-sas)
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
+(require 'essd-omg)  ;; for omegahat
 
 (if (or (equal window-system 'w32) (equal window-system 'win32))
 ;;     (progn
