@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.11 1999/03/26 07:35:15 maechler Exp $
+@comment $Id: ess.texi,v 5.12 1999/04/05 18:53:50 rossini Exp $
 
 @synindex pg vr
 
@@ -38,7 +38,7 @@ Statistics, University of South Carolina, Columbia, SC, 29208, USA.
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.x (Documentation $Revision: 5.11 $ $Date: 1999/03/26 07:35:15 $)
+@subtitle version 5.1.x (Documentation $Revision: 5.12 $ $Date: 1999/04/05 18:53:50 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -83,7 +83,7 @@ permission notice identical to this one.
 
 ESS version 5.1.x
 
-        (Documentation $Revision: 5.11 $ $Date: 1999/03/26 07:35:15 $).
+        (Documentation $Revision: 5.12 $ $Date: 1999/04/05 18:53:50 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
@@ -395,9 +395,9 @@ unnecessary prompts.
 The latest (beta) versions are always available
 @itemize @bullet
 @item via WWW
-@uref{http://franz.stat.wisc.edu/pub/ESS/}
+@uref{http://ess.stat.wisc.edu/}
 @item or FTP, from the directory
-@uref{ftp://franz.stat.wisc.edu/pub/ESS/}
+@uref{ftp://ess.stat.wisc.edu/pub/ESS/}
 @end itemize
 
 Check the @code{README} file first to see which files you need.

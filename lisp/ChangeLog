@@ -1,3 +1,37 @@
+1999-04-05  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess.el: franz.stat.wisc.edu -> ess.stat.wisc.edu
+
+	* ess-site.el, ess-vars.el: 5.1.6 to 5.1.7 changes for possible release
+
+	* ess-inf.el: ess-prompt-wait duration changed?
+
+1999-04-01  maechler  <maechler@alpha>
+
+	* ess-inf.el: typo
+
+1999-04-01  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-site.el: about to release 5.1.6
+
+	* ess-vars.el: anything else?
+
+1999-03-31  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-iw32.el: whitespace modifications.
+
+	* ChangeLog: *** empty log message ***
+
+	* essd-r.el:
+	reverted.  We can simply leave R as given, and not worry about R-unix (thanks to Martin).
+
+	* essd-r.el: R -> R-unix.
+
+	* ess-inf.el:
+	sleep-fors are commented out except for Microsoft "operating systems", sigh...
+
+	* essd-r.el: preliminary changes
+
 Wed Mar 31 15:46:37 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* essd-r.el (R): reverted.  Martin fixed this right in ess-site.
