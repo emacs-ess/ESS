@@ -6,9 +6,9 @@
 ;;         Brendan Halpin <brendan@essex.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/12/01 00:14:53 $
-;; Version: $Revision: 5.22 $
-;; RCS: $Id: essl-sta.el,v 5.22 1999/12/01 00:14:53 ess Exp $
+;; Modified: $Date: 1999/12/03 22:45:39 $
+;; Version: $Revision: 5.23 $
+;; RCS: $Id: essl-sta.el,v 5.23 1999/12/03 22:45:39 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -78,7 +78,7 @@ regexp-search, and so specials should be quoted.
 
 (defvar STA-syntax-table nil "Syntax table for Stata code.")
 (if STA-syntax-table
-    ()
+    nil
   (setq STA-syntax-table (make-syntax-table))
   (modify-syntax-entry ?\\ "." STA-syntax-table) ;nullify escape meaning
   (modify-syntax-entry ?\$ "." STA-syntax-table)
@@ -94,8 +94,7 @@ regexp-search, and so specials should be quoted.
   (modify-syntax-entry ?> "." STA-syntax-table)
   (modify-syntax-entry ?& "." STA-syntax-table)
   (modify-syntax-entry ?| "." STA-syntax-table)
-  (modify-syntax-entry ?~ "." STA-syntax-table)
-  )
+  (modify-syntax-entry ?~ "." STA-syntax-table))
 
 
 (defun ado-set-font-lock-keywords ()
@@ -1109,6 +1108,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp"
       ))
    ))
 
+
 (defvar ess-STA-mode-font-lock-keywords (ado-set-font-lock-keywords)
   "Set the Stata mode font-lock keywords to Bill Rising's ado-mode keywords")
 
@@ -1401,17 +1401,18 @@ PROC is the stata process. Does not change point"
 ;;
 ;;
 ;;
-(defvar stata-help-mode-map nil)
-(setq stata-help-mode-map (cons 'keymap help-mode-map))
-(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
-(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
-(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
-(define-key stata-help-mode-map [menu-bar stata] 
-  (cons "Stata" (make-sparse-keymap "Stata")))
-(define-key stata-help-mode-map [menu-bar stata statahelp]
-  '("Help on..." . stata-help))
-(define-key stata-help-mode-map [menu-bar stata rehelp]
-  '("rehelp (hyperlink)" . stata-rehelp))
+
+;(defvar stata-help-mode-map nil)
+;(setq stata-help-mode-map (cons 'keymap help-mode-map))
+;(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
+;(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
+;(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
+;(define-key stata-help-mode-map [menu-bar stata] 
+;  (cons "Stata" (make-sparse-keymap "Stata")))
+;(define-key stata-help-mode-map [menu-bar stata statahelp]
+;  '("Help on..." . stata-help))
+;(define-key stata-help-mode-map [menu-bar stata rehelp]
+;  '("rehelp (hyperlink)" . stata-rehelp))
 ;;
 
 
@@ -1452,7 +1453,7 @@ Active commands are Help (\\[stata-help]) and hyperlink
   (interactive)
   (setq major-mode 'stata-help-mode)
   (setq mode-name "Stata help")
-  (use-local-map stata-help-mode-map)
+  ;;(use-local-map stata-help-mode-map)
   (setq buffer-read-only t))
 
 ;;
