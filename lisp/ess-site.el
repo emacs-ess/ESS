@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/28 13:57:50 $
-;; Version: $Revision: 1.26 $
-;; RCS: $Id: ess-site.el,v 1.26 1997/07/28 13:57:50 rossini Exp $
+;; Modified: $Date: 1997/07/29 10:48:59 $
+;; Version: $Revision: 1.27 $
+;; RCS: $Id: ess-site.el,v 1.27 1997/07/29 10:48:59 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.27  1997/07/29 10:48:59  rossini
+;;: changed back to [SR]-mode/[SR]-transcript-mode
+;;:
 ;;: Revision 1.26  1997/07/28 13:57:50  rossini
 ;;: added explanatory comments for the dialect customization...
 ;;:
@@ -220,11 +223,12 @@
 (if (assoc "\\.q$" auto-mode-alist) nil
   (setq auto-mode-alist
 	(append
-	 '(("\\.q$" . ess-mode)
-	   ("\\.s$"  . ess-mode) ;; Comment for default asm-mode
-	   ("\\.S$"  . ess-mode)
+	 '(("\\.q$" . S-mode)
+	   ("\\.s$"  . S-mode) ;; Comment for default asm-mode
+	   ("\\.S$"  . S-mode)
+	   ("\\.St$" . S-transcript-mode))
 	   ("\\.R$"  . R-mode)
-	   ("\\.St$" . ess-transcript-mode))
+	   ("\\.Rt$" . R-transcript-mode))
 	 auto-mode-alist)))
 
 ;;; (1.3) Autoloads.  You should not need to change this bit.
@@ -235,7 +239,9 @@
   "Major mode for editing R source code." t)
 ;;(autoload 'XLS-mode "ess-mode"
 ;;    "major mode for editing XLispStat code." t)
-(autoload 'ess-transcript-mode
+(autoload 'S-transcript-mode
+  "ess-trns" "ESS source eval mode" t)
+(autoload 'R-transcript-mode
   "ess-trns" "ESS source eval mode" t)
 (autoload 'inferior-ess "ess-inf"
   "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
