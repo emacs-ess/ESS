@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.35 $.
+### File: $Revision: 1.36 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -71,6 +71,7 @@ $(INFODIR)/ess.info: $(TEXISRC)
 	@echo "making Info documentation..."
 	$(MAKEINFO) ess.texi
 	$(INSTALL) ess.info* $(INFODIR)
+	test -f $(INFODIR)/dir || $(INSTALL) dir $(INFODIR)
 
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess_toc.html: $(TEXISRC)

@@ -197,7 +197,7 @@ are editing SAS files, and to behave normally when editing other files,
 then you will choose the local definitions.  The option can be chosen by 
 the person installing ESS for a site or by an individual.
 
-@enumerate
+@enumerate a
 @item
 For a site installation or an individual, uncomment ONLY ONE of the 
 following lines in your ess-site.el!
@@ -265,8 +265,7 @@ F11  F11  filetype-2    switch buffer to filetype-2 (defaults to .dat)
 F12  F12  viewgraph     open a GSASFILE near point for viewing either
                         in emacs or with an external viewer
 
-C-F3 C-F8 submit-region    write region to temporary file,
-                           and submit to SAS
+C-F3 C-F8 submit-region    write region to ess-temp.sas and submit
 
 C-F5 C-F6 append-to-log    append ess-temp.log to the current .log file
 
@@ -380,10 +379,10 @@ SAS Batch (ess-sas-global-unix-keys shown with
     ## Terminating a SAS batch job; typing in the *shell* buffer.
     kill %1
 
-    ## You may want to visit the .log (whether the job is still running or 
-    ## it is finished) and check for error messages.  The .log will be 
-    ## refreshed and you will be placed in it's buffer.  You will be taken 
-    ## to the 1st error message after the cursor, if any.  
+    ## You may want to visit the .log (whether the job is still running 
+    ## or it is finished) and check for error messages.  The .log will be
+    ## refreshed and you will be placed in it's buffer.  You will be 
+    ## taken to the 1st error message after the cursor, if any.  
     ## -pc- F6
     F5
 

@@ -396,7 +396,7 @@ editing SAS files, and to behave normally when editing other files,
 then you will choose the local definitions.  The option can be chosen by
 the person installing ESS for a site or by an individual.
 
-  1. For a site installation or an individual, uncomment ONLY ONE of the
+  a. For a site installation or an individual, uncomment ONLY ONE of the
      following lines in your ess-site.el!  ESS[SAS] Function keys are
      available in ESS[SAS] if you uncomment either 2 or 3 and in all
      modes if you uncomment 4 or 5:
@@ -409,7 +409,7 @@ the person installing ESS for a site or by an individual.
      system that you are running.  Rather, they mimic the definitions
      that the SAS Display Manager uses by default on those platforms.
 
-  2. If your site installation has configured the keys contrary to your
+  b. If your site installation has configured the keys contrary to your
      liking, say 2, you must turn it off before selecting a different
      option, say 3.
            (load "ess-site")
@@ -455,8 +455,7 @@ are in all capitals).
      F12  F12  viewgraph     open a GSASFILE near point for viewing either
                              in emacs or with an external viewer
      
-     C-F3 C-F8 submit-region    write region to temporary file,
-                                and submit to SAS
+     C-F3 C-F8 submit-region    write region to ess-temp.sas and submit
      
      C-F5 C-F6 append-to-log    append ess-temp.log to the current .log file
      
@@ -567,10 +566,10 @@ ess-sas-global-pc-keys denoted by -pc- comments)
          ## Terminating a SAS batch job; typing in the *shell* buffer.
          kill %1
      
-         ## You may want to visit the .log (whether the job is still running or
-         ## it is finished) and check for error messages.  The .log will be
-         ## refreshed and you will be placed in it's buffer.  You will be taken
-         ## to the 1st error message after the cursor, if any.
+         ## You may want to visit the .log (whether the job is still running
+         ## or it is finished) and check for error messages.  The .log will be
+         ## refreshed and you will be placed in it's buffer.  You will be
+         ## taken to the 1st error message after the cursor, if any.
          ## -pc- F6
          F5
      
