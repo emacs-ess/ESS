@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/30 13:07:00 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: ess-vars.el,v 1.8 1997/07/30 13:07:00 rossini Exp $
+;; Modified: $Date: 1997/07/31 11:51:41 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: ess-vars.el,v 1.9 1997/07/31 11:51:41 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,6 +29,10 @@
 
 ;;
 ;; $Log: ess-vars.el,v $
+;; Revision 1.9  1997/07/31 11:51:41  rossini
+;; changed meanings of ess-proc-prefix and ess-version-running to avoid
+;; repetition of intent!
+;;
 ;; Revision 1.8  1997/07/30 13:07:00  rossini
 ;; set up trans, inf modes to use same set of font-lock keywords.
 ;;
@@ -81,12 +85,55 @@
 (defvar ess-ask-about-transfile nil
   "*If non-nil, asks about a transcript file before running ess")
 
-(defvar ess-proc-prefix "S"
-  "*Prefix of all ESS processes. Can be changed, e.g., to 'R'.
-Use `setq-default' if setting it in .emacs")
+(defvar ess-proc-prefix "S+"
+  "*Prefix of all ESS processes, and defines the dialect in use.
+Currently acceptable values are 'S', 'R', 'XLS', 'S+'.
+Can be changed, e.g., to `R'.  Use `setq-default' if setting it in
+.emacs (also see ess-site.el).")
 
 (make-variable-buffer-local 'ess-proc-prefix)
 (setq-default ess-proc-prefix "S")
+
+(defvar ess-version-running "3.3"
+  "String version of the dialect being run for the inferior process.
+This, plus ess-proc-prefix, should be able to determine the exact
+version of the statistical package being executed in the particular
+buffer.  
+
+Current values could include: 
+for `ess-proc-prefix' = `S' :  3.0, 4.0
+                                   = `S+' : 3.0, 3.1, 3.2, 3.3, 4.0
+                                   = `R' : 0.49, 0.50
+                                   = `XLS' : 3.48, 3.50
+
+Used to adjust for changes in versions of the program")
+
+;;Old Docs for the above (unverified if they survived the changes):
+;;
+;;The value of this variable affects the default values of the following
+;;variables:
+;; 	 inferior-ess-help-command
+;;	 inferior-ess-search-list-command
+;;	 ess-dump-error-re
+;;
+;;Modifications to these variables are made at *load* time (provided, of
+;;course, they have not already been given values), hence changing the
+;;value of ess-version-running after this package is loaded will have no
+;;effect.
+;;
+;;Currently the string \"3.0\" is the only value of this variable with
+;;any real meaning; in this case the defaults are set to comply with the
+;;August '91 (3.0) version of S/Splus, defaults which also work for
+;;version 2.3. Any other value than \"3.0\" sets the defaults to comply
+;;with the 1988 version of S/Splus.
+;;
+;;Please reserve the following values as special:
+;;   \"3.0\"    Version 3.0 (August '91) of S/Splus
+;;   \"2.3\"    Version 2.3 of S/Splus
+;;   \"old\"    Any older version
+
+(make-variable-buffer-local 'ess-version-running)
+(setq-default ess-version-running "3.3")
 
 
 (defvar ess-directory nil
@@ -106,37 +153,6 @@ If this is a relative file name, it is relative to ess-directory.")
 (make-variable-buffer-local 'ess-history-file)
 (setq-default ess-history-file (concat "." ess-proc-prefix "history"))
 
-;;*;; Variables relating to the ESS executable
-
-(defvar ess-version-running "3.0"
-  "Version of ESS being run.
-The value of this variable affects the default values of the following
-variables:
- 	 inferior-ess-help-command
-	 inferior-ess-search-list-command
-	 ess-dump-error-re
-
-Modifications to these variables are made at *load* time (provided, of
-course, they have not already been given values), hence changing the
-value of ess-version-running after this package is loaded will have no
-effect.
- 
-Currently the string \"3.0\" is the only value of this variable with
-any real meaning; in this case the defaults are set to comply with the
-August '91 (3.0) version of S/Splus, defaults which also work for
-version 2.3. Any other value than \"3.0\" sets the defaults to comply
-with the 1988 version of S/Splus.
-
-Please reserve the following values as special:
-   \"3.0\"    Version 3.0 (August '91) of S/Splus
-   \"2.3\"    Version 2.3 of S/Splus
-   \"old\"    Any older version
-
-Choices should include:  old, 2.x, 3.x, 4.x, or S+3.x, S+4.x, or R
-Also need this buffer-local.")
-
-(make-variable-buffer-local 'ess-version-running)
-(setq-default ess-version-running "3.0")
 
 ;;*;; Variables concerning editing behaviour
 
