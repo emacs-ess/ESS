@@ -84,8 +84,6 @@ Keywords: Statistical Analysis, Programming, User Interfaces
 \section{Introduction}
 \label{sec:intro}
 
-%\textbf{Introduce the topic; I'm still trying to work out the best
-%approach, and this was my first thought.}
 Integrated Development Environments (IDEs) combine features and tools
 in a single interface in the attempt to increase programmer
 productivity and efficiency.  The increased speed in software
@@ -101,46 +99,72 @@ monte carlo (MCMC).
 One issue that quickly arises is that different tools have different
 strengths, and optimal use can require switching back and forth
 between tools for data analysis.  For example, general purpose tools
-such as R and S-PLUS are limited in scope for Bayesian analyses, which
-tools such as BUGS are useful for.  From another point of view,
-specialized tools such as BUGS are not as easy to construct more
-general analyses and graphics as S-PLUS and R.  This leads to an
-efficiency gain when using multiple tools for both theoretical and
-applied statistical research.
+such as R \citep{ihak:gent:1996} and S-PLUS are limited in scope for
+Bayesian analyses, which tools such as BUGS are useful for.  From
+another point of view, specialized tools such as BUGS are not as easy
+to construct more general analyses and graphics as S-PLUS and R.  This
+leads to an efficiency gain when using multiple tools for both
+theoretical and applied statistical research.
 
-%\textbf{Goals for the project as they've been stated (and have morphed).}
+The goal for the Emacs Speaks Statistics (ESS) project is to provide a
+single point of interface for text-based statistical computing.  The
+primary tasks that will be considered are statistical coding and
+interactive data analysis.  Statistical coding is the writing of
+computer code for data analysis.  This code might be compiled into an
+object file using a compiler, or might be run by an interpreter.  The
+task of entering of commands for interactive data analysis is similar.
+The primary difference is that the results of a small set of commands
+are of critical interest for review in the latter, but the results of
+all commands are of interest in the former.  Both of these tasks can
+be present at the same time, for example in the use of compiled
+Fortran code for optimization, which is being called from an
+interpreted language, such as S-PLUS, R, or XLispStat, containing the
+objective function to optimize.
 
-The initial goal for Emacs Speaks Statistics (ESS) was to provide a
-single point of user interface for all text-based statistical
-computing.  This includes statistical programming as well as data
-analysis.using both multiple instances of a statistics program as well
-as multiple instances of different statistics programs.  For example,
-one might want to be connected to multiple R \citep{ihak:gent:1996}
-processes.  Reasons for this include verifying behavior on different
-versions of the same software, test and run scenarios where one
-process is doing long-term processing while the other is doing
-short-term testing, simulations, running multiple processes on
-multiple machines from the same place.  There are many additional
-other applications, as well.
+One natural issue that follows is that not all of the languages or
+statistical packages have similar interfaces.  This means that it
+might be necessary for a statistical analyst to learn 2 or 3 different
+text-interfaces for editing and executing code.  Furthermore, it might
+be necessary for the analyst to consider dialects of a language, for
+example under the S family of languages, there is R, S-PLUS, the
+original S implementation, as well as different versions of all three.
+Testing code meant for use by others necessitates having it work in
+multiple versions, so being able to quickly test means having quick
+access to all versions; this might mean having to be able to access
+programs which can only run on completely different sets of machines.
+For example, one might want to be connected to multiple R processes.
+Reasons for this include verifying behavior on different versions of
+the same software, test and run scenarios where one process is doing
+long-term processing while the other is doing short-term testing,
+simulations, running multiple processes on multiple machines from the
+same place.
 
+ESS provides an interface which mitigates some of the problems noted
+above.  It provides an editing interface, an interface to statistical
+processes, and additional tools which can be useful for both
+statistical software development and data analysis.  It works with
+common statistical software including the S family of languages
+including S, S-PLUS, and R; XLispStat including the Arc and ViSta
+extensions; SAS; Stata; Omegahat; and can be extended in at least a
+limited way to most statistical packages which can be controlled from
+a command-line.
 
-\textbf{Rationale for the goals?  This is weak.}
+\subsection{Emacs}
+\label{sec:intro:emacs}
 
-For small projects, it can be useful to have a single repository (file
-or directory with a few files) for documenting code which produces
-datasets and analysis results.  This is facilitated by being able to
-edit files (different or the same) and being able to specify different
-modes for handling programming code for the different statistical
-languages.
+Emacs is powerful and extensible text editor which is
+available for a large number of platforms.  In addition, most
+programming and documentation falls under the realm of text
+processing, with additional features for IDEs and word processing
+needs such as contextual highlighting and recognition of data points.
 
-\textbf{AJR: This needs rewriting} 
-
-The main point is that it acts as a uniform interface to the
-statistical programming code, the statistical program/process,
-documentation tools (\LaTeX, SGML, XML, Noweb), and revision control
-tools (RCS,CVS,SCCS, PRCS), on both local and remote machines.  It
-handles the interface to both source code and transcripts using
-context (syntax highlighting, bookmarking features, command-history).
+The main point is that with the ESS extensions, Emacs acts as a
+uniform interface to the statistical programming code, the statistical
+program/process, documentation tools (\LaTeX, SGML, XML, Noweb), and
+revision control tools (RCS,CVS,SCCS, PRCS), on both local and remote
+machines.  It handles the interface to both source code and
+transcripts using context (syntax highlighting, bookmarking features,
+command-history).
 
 In addition, Emacs is a sophisticated development environment for
 programming in traditional compiled languages such as C and Fortran as
@@ -148,17 +172,6 @@ well as non-traditional byte-compiled and interpreted languages such
 as Perl, Java, and Python.  It provides interfaces to build tools such
 as make as well as debugging tools through the use of external
 debuggers such as JDebug, GDB, and DBX. 
-
-\subsection{Emacs}
-\label{sec:intro:emacs}
-
-\textbf{AJR: Introduce and describe Emacs.  2-3 paragraphs?} 
-
-Emacs is powerful and extensible text editor which is
-available for a large number of platforms.  In addition, most
-programming and documentation falls under the realm of text
-processing, with additional features for IDEs and word processing
-needs such as contextual highlighting and recognition of data points.
 
 Extensions to Emacs allow it to act as a World-Wide-Web browser, a
 highly sophisticated mail and news reader, a shell/terminal window
@@ -194,6 +207,15 @@ One of the strengths of Emacs is that every activity can be
 facilitated by keystrokes.  This has the advantage of eliminating the
 slowness and potential danger of mouse usages, but also has the
 disadvantage of requiring memory of location and behavior.
+
+%\textbf{Rationale for the goals?  This is weak.}
+
+For small projects, it can be useful to have a single repository (file
+or directory with a few files) for documenting code which produces
+datasets and analysis results.  This is facilitated by being able to
+edit files (different or the same) and being able to specify different
+modes for handling programming code for the different statistical
+languages.
 
 \subsection{Other Statistical User Interfaces}
 \label{sec:intro:UI}
