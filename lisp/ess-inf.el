@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1998/09/11 14:25:18 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: ess-inf.el,v 5.3 1998/09/11 14:25:18 maechler Exp $
+;; Modified: $Date: 1998/11/11 12:43:43 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: ess-inf.el,v 5.4 1998/11/11 12:43:43 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -106,10 +106,9 @@ accompany the call for inferior-ess-program.
   (interactive)
 
   (ess-write-to-dribble-buffer
-     (format "(inferior-ess 0): ess-start-args=%s \n"
-	     ess-start-args))
-  ;; set up for current language (need here, to get ess-language,
-  ;; etc).
+     (format "(inferior-ess 0): ess-start-args=%s \n" ess-start-args))
+
+  ;; set up for current language (need here, to get ess-language, etc).
   (let ((temp-ess-dialect (cdr (rassoc ess-dialect
 				       ess-customize-alist)))
 	(temp-ess-lang (cdr (rassoc ess-language
@@ -392,7 +391,9 @@ there is no process NAME)."
 	 (expand-file-name
 	  (file-name-as-directory
 	   (read-file-name
-	    "ESS starting data directory? " (file-name-as-directory default) (file-name-as-directory default) t nil)))))
+	    "ESS starting data directory? " 
+	    (file-name-as-directory default) 
+	    (file-name-as-directory default) t nil)))))
     (if (file-directory-p the-dir) nil
       (error "%s is not a valid directory" the-dir))
     the-dir))
@@ -1133,7 +1134,9 @@ to continue it."
   ;; except that XLS doesn't like it.  This is an ugly hack that ought
   ;; to go into the dialect configuration...
   (if (or (string= ess-language "XLS")
-	  (string= ess-language "SAS"))
+	  (string= ess-language "SAS")
+	  (string= ess-dialect "S+5")
+	  )
       (setq comint-process-echoes nil)
     (setq comint-process-echoes t))
 
