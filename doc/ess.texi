@@ -2505,6 +2505,8 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 * Graphics::                    Using graphics with ESS
 * Imenu::                       Support for Imenu in ESS
 * Toolbar::                     Support for toolbar in ESS
+* TAGS::                        Using TAGS for S files
+* Rdired::                      Directory editor for R objects
 @end menu
 
 @comment  node-name,  next,  previous,  up
@@ -2622,7 +2624,7 @@ particular parts of your source file (such as the starting point of each
 function definition).
 
 @comment  node-name,  next,  previous,  up
-@node Toolbar, , Imenu, Miscellaneous
+@node Toolbar, TAGS, Imenu, Miscellaneous
 @section Toolbar
 
 The R and S editing modes have support for a toolbar.  This toolbar
@@ -2631,8 +2633,76 @@ for evaluating regions of your source buffers.  The toolbar should be
 present if your emacs can display images.  @xref{Customization}, for ways
 to change the toolbar.
 
+@comment  node-name,  next,  previous,  up
+@node TAGS, Rdired, Toolbar, Miscellaneous
+@section TAGS
 
+The Emacs tags facility can be used to navigate around your files
+containing definitions of S functions.  This facility is independent of
+ESS usage, but is written here since ESS users may wish to take
+advantage of TAGS facility.  Read more about emacs tags in an emacs
+manual.
 
+Etags, the program that generates the TAGS file, does not yet know the
+syntax to recognise function definitions in S files.  Hence, you will
+need to provide a regexp that matches your function definitions.  Here
+is an example call (broken over two lines; type as one line) that should
+be appropriate.
+
+@example
+etags --language=none
+--regex='/\([^ \t]+\)[ \t]*<-[ \t]*function/\1/' *.R
+@end example
+
+This will find entries in your source file of the form:
+
+@example
+some.name <- function
+@end example
+
+with the function name starting in column 0.  Windows users may need to
+change the single quotes to double quotes.
+
+@comment  node-name,  next,  previous,  up
+@node Rdired, , TAGS, Miscellaneous
+@section Rdired
+
+Ess-rdired provides a dired-like buffer for viewing, editing and
+plotting objects in your current R session.  If you are used to using
+the dired (directory editor) facility in Emacs, this mode gives you
+similar functionality for R objects.
+
+To get started, first make sure you can load ess-rdired.  Add the
+following to your .emacs and then restart emacs.
+@example
+(autoload 'ess-rdired "ess-rdired" 
+  "View *R* objects in a dired-like buffer." t)
+@end example
+
+Start an R session with @kbd{M-x R} and then store a few
+variables, such as:
+
+@example
+s <- sin(seq(from=0, to=8*pi, length=100))
+x <- c(1, 4, 9)
+y <- rnorm(20)
+z <- TRUE
+@end example
+
+Then use @kbd{M-x ess-rdired} to create a buffer listing the
+objects in your current environment and display it in a new window:
+@example
+            mode length
+  s      numeric    100
+  x      numeric      3
+  y      numeric     20
+  z      logical      1
+@end example
+
+Type @kbd{C-h m} or @kbd{?} to get a list of the keybindings for this
+mode.  For example, with your point on the line of a variable, `p' will
+plot the object, `v' will view it, and `d' will mark the object for
+deletion (`x' will actually perform the deletion).
 
 @comment  node-name,  next,  previous,  up@chapter Using S4
 @node Mailing lists/bug reports, Customization, Miscellaneous, Top
