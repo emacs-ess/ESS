@@ -1,10 +1,13 @@
-# Makefile - for ESS distribution.
-#
-# Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
-# For ESS Version: 5.0
-#
-# Edit the makefile, type `make', and follow the instructions.
-# Based/Stolen from VM 5.70, AUC-TeX 9.7p distributions.  Thanks Kyle and Per!
+### Makefile - for ESS distribution.
+###
+### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+### For ESS Version: 5.0
+###
+### Revision: $Revision: 4.7 $.
+###
+### Edit the makefile, type `make', and follow the instructions.  Based
+### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
+### Kyle and Per!
 
 PREFIX=/usr/local
 
