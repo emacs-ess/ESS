@@ -35,7 +35,7 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.x
 
-   (Documentation $Revision: 1.6 $ $Date: 2000/07/13 18:09:51 $).
+   (Documentation $Revision: 1.7 $ $Date: 2000/10/10 18:46:07 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler
      (Formerly: Doug Bates, Ed Kademan, Frank Ritter and David Smith).
@@ -298,6 +298,29 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 New features in ESS
 ===================
 
+   Changes/New Features in 5.1.17:
+   * Documentation for Windows Installation (Rich Heiberger
+     (<rmh@surfer.stat.temple.edu>))
+
+   * removal of ess-vars, finalization of customize support (in the
+      sense that there is no more use of ess-vars, but that we need to
+          fix ess-cust) (AJ Rossini (<rossini@u.washington.edu>))
+
+   * Many small (and large) fixes/contributions (MMaechler,
+     (<maechler@stat.math.ethz.ch>)).
+
+   * addition of the "S-equal" variable and provide M-x ess-add-MM-keys
+          a way to remap "_" to 'S-equal, typically " <- ", but
+     configurable. (MMaechler, (<maechler@stat.math.ethz.ch>)).
+
+   Changes/New Features in 5.1.16:
+   * BUG FIXES
+
+   * Better SAS support
+
+   Changes/New Features in 5.1.15:
+   * BUG FIXES
+
    Changes/New Features in 5.1.14:
    * Yet more fixes to SAS mode, (Rich Heiberger
      (<rmh@surfer.stat.temple.edu>) and Rodney Sparapani
@@ -353,23 +376,15 @@ New features in ESS
 
    * R documentation mode defaults changed
 
-   Beginning with ESS 5.1.2 we are able to use inferior iESS mode to
-communicate directly with a running S-Plus 4.x process using the
-Microsoft DDE protocol.  We use the familiar (from Unix ESS) C-c C-n
-and related key sequences to send lines from the S-mode file to the
-inferior S process.  We continue to edit S input files in ESS[S] mode
-and transcripts of previous S sessions in ESS Transcript mode.  All
-three modes know the S language, syntax, and indentation patterns and
-provide the syntactic highlighting that eases the programming tasks.
-
-   For Microsoft platforms, the version of Emacs that this has been
-tested with is NTEmacs 20.x, x greater than 2.  More information about
-NTEmacs can be retrieved from:
-
-   *   `http://www.cs.washington.edu/homes/voelker/ntemacs.html'
-
-   including information on retrieval and installation.  This has not
-yet been tested with XEmacs for Microsoft Windows 95/98/NT.
+   Changes/New Features in 5.1.2:
+   * able to use inferior iESS mode to communicate directly with a
+     running S-Plus 4.x process using the Microsoft DDE protocol.  We
+     use the familiar (from Unix ESS) C-c C-n and related key sequences
+     to send lines from the S-mode file to the inferior S process.  We
+     continue to edit S input files in ESS[S] mode and transcripts of
+     previous S sessions in ESS Transcript mode.  All three modes know
+     the S language, syntax, and indentation patterns and provide the
+     syntactic highlighting that eases the programming tasks.
 
 
 File: ess.info,  Node: Credits,  Next: Latest version,  Prev: New features,  Up: Introduction
@@ -414,7 +429,7 @@ version of ESS:
 maintained by
 
    * A.J. Rossini (http://www.biostat.washington.edu/~rossini/)
-     <rossini@stat.sc.edu>
+     <rossini@u.washington.edu>
 
    * Richard M. Heiberger
      (http://www.sbm.temple.edu/departments/statistics/)
@@ -425,6 +440,9 @@ maintained by
 
    * Martin Maechler (http://stat.ethz.ch/~maechler/)
      <maechler@stat.math.ethz.ch>
+
+   * Rodney Sparapani (see http://www.duke.edu/~spara002/)
+     <rodney.sparapani@duke.edu>
 
 
 File: ess.info,  Node: Latest version,  Next: Manual,  Prev: Credits,  Up: Introduction
