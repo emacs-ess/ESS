@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/12 17:21:04 $ - $Revision: 1.164 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/12 17:33:10 $ - $Revision: 1.165 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -1050,11 +1050,15 @@ a remote computer with \SAS\ installed.
 \subsection{Batch File Processing.}
 \label{sec:batch-file}
 
-Interactive processing with statistical analysis packages is very
-useful for exploratory data analysis.  However, there are situations
-for which it is not ideal.  Batch file processing with statistical
-analysis packages is a better choice when the execution times are
-longer than the user is willing to wait for them to complete.
+Exploratory data analysis is most often accomplished interactively.
+But other situations exist for which interactive analyses are not
+ideal. % processing with statistical analysis packages is very
+%useful for .  However, there are situations
+%for which it is not ideal.
+Batch file processing with statistical analysis packages is a better
+choice when the execution times are longer than the user is willing to
+wait as well as for regularly updated reports based on statistical
+analyses.
 
 \paragraph{\SAS.}
 \label{sec:sas-batch}
@@ -1065,8 +1069,8 @@ due to the length of time involved.  Instead, a file containing \SAS\
 commands is created and \SAS\ executes these commands in the background, 
 or batch, while the user moves on to other activities.
 
-Emacs and ESS facilitate \SAS\ batch with \stexttt{ESS[SAS]}, the mode 
-for files with the \stexttt{sas} extension.  ESS defines \SAS\ syntax so that
+ESS facilitate \SAS\ batch with \stexttt{ESS[SAS]}, the mode for files
+with the \stexttt{sas} extension.  ESS defines \SAS\ syntax so that
 \stexttt{font-lock-mode} can highlight statements, procedures,
 functions, macros, datasets, comments and character string literals in
 \SAS\ programs.  Optionally, the same language features are
@@ -1098,13 +1102,16 @@ typically configured in Emacs.
 
 The \SAS\ batch process runs on the computer where the \SAS\ program
 resides.  If the \SAS\ program resides on a remote computer, then the
-program, log and output are accessed with one of the remote file modes
-(\stexttt{ange-ftp}, \stexttt{EFS} and \stexttt{tramp}) or Kermit.
+program, log and output are also accessed remotely.
+%with one of the remote file modes.
+%(\stexttt{ange-ftp}, \stexttt{EFS} and \stexttt{tramp}) or Kermit.
 This is important because any \SAS\ permanent datasets referenced in a
-\SAS\ program only exist on the computer where the \SAS\ program
-resides.  The \SAS\ batch processes are submitted to the remote
-computer via ssh or telnet running in a \stexttt{shell-mode} buffer.
-Running \SAS\ batch on remote computers is nearly transparent to the user.
+\SAS\ program must exist on the computer running \SAS.%\ program
+%resides.  The 
+%\SAS\ batch processes are submitted to the remote computer via ssh or
+%telnet running in a \stexttt{shell-mode} buffer.  
+Running \SAS\ batch on remote computers is nearly transparent to the
+ESS user.
 
 %\begin{Comment}
 %Rich's version:
@@ -1165,10 +1172,13 @@ an interactive capability, but it is not often used since the analyses
 can take a long time.  Most BUGS programs are executed as batch
 processes.
 
-Emacs and ESS facilitate BUGS by \stexttt{ESS[BUGS]}, the mode in
-which files with the \stexttt{bug} extension are opened.  There are 3
-main features which ESS provides.  First, BUGS syntax is described to
-allow for proper fontifiction
+%Emacs and 
+ESS facilitates BUGS %by \stexttt{ESS[BUGS]}, the mode in
+%which files with the \stexttt{bug} extension are opened.  There are 
+through 3
+main features.
+% which ESS provides.  
+First, BUGS syntax is described to allow for proper fontification
 % so that \stexttt{font-lock-mode} can highlight 
 of statements, distributions, functions, commands and comments in BUGS
 model files, command files and log files.  Second, ESS creates
