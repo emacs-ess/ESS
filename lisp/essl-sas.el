@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/24 12:15:19 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: essl-sas.el,v 1.17 1997/10/24 12:15:19 rossini Exp $
+;; Modified: $Date: 1997/11/07 19:29:48 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: essl-sas.el,v 1.18 1997/11/07 19:29:48 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -49,19 +49,53 @@
 
 (autoload 'ess-transcript-mode "ess-trns" "ESS source eval mode" t)
 
+(put 'ess-transcript-minor-mode 'permanent-local t)
+(or (assq 'ess-transcript-minor-mode minor-mode-alist)
+    (setq minor-mode-alist
+	  (append minor-mode-alist
+		  (list '(ess-transcript-minor-mode " ESStr")))))
+
+(put 'ess-listing-minor-mode 'permanent-local t)
+(or (assq 'ess-listing-minor-mode minor-mode-alist)
+    (setq minor-mode-alist
+	  (append minor-mode-alist
+		  (list '(ess-listing-minor-mode " ESSlst")))))
+
+(defun ess-transcript-minor-mode (&optional arg)
+  "Toggle Ess-Transcript minor mode.
+With arg, turn Ess-Transcript minor mode on if arg is positive, off otherwise.
+See the command `ess-transcript-mode' for more information on this mode."
+  (interactive "P")
+  (setq ess-transcript-minor-mode
+	(if (null arg) (not ess-transcript-minor-mode)
+	  (> (prefix-numeric-value arg) 0)))
+  (force-mode-line-update)
+  (setq mode-line-process 
+	'(" [" ess-local-process-name "]")))
+
+(defun ess-listing-minor-mode (&optional arg)
+  "Toggle Ess-Listing minor mode.
+With arg, turn Ess-Listing minor mode on if arg is positive, off otherwise.
+Ess-Listing mode is used solely to place an indicator on the mode line."
+  (interactive "P")
+  (setq ess-listing-minor-mode
+	(if (null arg) (not ess-listing-minor-mode)
+	  (> (prefix-numeric-value arg) 0)))
+  (force-mode-line-update)
+  (setq mode-line-process 
+	'(" [" ess-local-process-name "]")))
+
 (defun SAS-log-mode ()
-   "Fundamental mode with read-only."
-  (fundamental-mode)
+  "ess-transcript-mode for SAS."
+  (interactive)
+  (ess-transcript-mode SAS-customize-alist)
   (toggle-read-only t)) ;; to protect the buffer.
 
-;; Using this for the above, doesn't make sense wrt to SAS:
-;;    (ess-transcript-mode SAS-customize-alist)
-;; in particular, there are not any real prompts to use.
-
-
 (defun SAS-listing-mode()
-  "Fundamental mode with read-only."
+  "Fundamental mode with ess-listing-minor-mode and read-only."
+  (interactive)
   (fundamental-mode)
+  (ess-listing-minor-mode t)
   (toggle-read-only t)) ;; to protect the buffer.
 
 (fset 'sas-log-mode        'SAS-log-mode)
