@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.40 1997/07/25 21:06:07 rossini Exp $
+## $Id: Makefile,v 1.41 1997/07/25 21:13:37 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.41  1997/07/25 21:13:37  rossini
+## don't need ess-xtra yet!
+##
 ## Revision 1.40  1997/07/25 21:06:07  rossini
 ## added ess-vars, essd-s3, essd-s4 to SOURCES.
 ##
@@ -137,7 +140,7 @@ CORE = ess.elc ess-site.elc
 SOURCES = ess-vars.el ess.el \
 	essd-s3.el essd-s4.el essd-s+3.el essd-r.el essd-xls.el \
 	ess-site.el \
-	ess-inf.el ess-mode.el ess-trns.el ess-help.el ess-xtra.el
+	ess-inf.el ess-mode.el ess-trns.el ess-help.el # ess-xtra.el
 
 
 OBJECTS=$(SOURCES:.el=.elc)
