@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.12 1999/04/05 18:53:50 rossini Exp $
+@comment $Id: ess.texi,v 5.13 1999/08/04 16:42:58 rossini Exp $
 
 @synindex pg vr
 
@@ -38,7 +38,7 @@ Statistics, University of South Carolina, Columbia, SC, 29208, USA.
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.x (Documentation $Revision: 5.12 $ $Date: 1999/04/05 18:53:50 $)
+@subtitle version 5.1.x (Documentation $Revision: 5.13 $ $Date: 1999/08/04 16:42:58 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -83,7 +83,7 @@ permission notice identical to this one.
 
 ESS version 5.1.x
 
-        (Documentation $Revision: 5.12 $ $Date: 1999/04/05 18:53:50 $).
+        (Documentation $Revision: 5.13 $ $Date: 1999/08/04 16:42:58 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
@@ -1229,7 +1229,7 @@ Prompts for a file to load into the @b{ESS} process using
 @code{source()}.  If there is an error during loading, you can jump to
 the error in the file with @kbd{C-x `} (@code{ess-parse-errors}).
 @pindex ess-parse-errors
-@xref{Error Checking} for more details.
+@xref{Error Checking}, for more details.
 
 @item
 @kbd{C-c C-v} (@code{ess-display-help-on-object}) @* Pops up a help
@@ -1363,7 +1363,7 @@ constructs.
 to see whether there already exists an edit buffer containing that
 object and, if so, pops you directly to that buffer.  If not, ESS next
 checks whether there is a file in the appropriate place with the
-appropriate name (@xref{Source Files}) and if so, reads in that file.
+appropriate name (@pxref{Source Files}) and if so, reads in that file.
 You can use this facility to return to an object you were editing in a
 previous session (and which possibly was never loaded to the @b{S}
 session).  Finally, if both these tests fail, the @b{ESS} process is
@@ -1657,7 +1657,7 @@ Also returns to to the @b{ESS} process buffer, but leaves point where it is.
 In addition some commands available in the process buffer are also
 available in the edit buffer.  You can still read help files with
 @kbd{C-c C-v}, edit another function with @kbd{C-c C-d} and of course
-@kbd{C-c C-l} can be used to load a source file into S.  @xref{Other}
+@kbd{C-c C-l} can be used to load a source file into S.  @xref{Other},
 for more details on these commands.
 
 @node Source Files, Source Directories, Other edit buffer commands, Editing
@@ -1983,7 +1983,7 @@ Return to the @b{ESS} process, killing this help buffer.
 @end itemize
 
 In addition, all of the ESS commands available in the edit buffers are
-also available in @b{S} help mode (@xref{Edit buffer}).  Of course, the
+also available in @b{S} help mode (@pxref{Edit buffer}).  Of course, the
 usual (non-editing) Emacs commands are available, and for convenience
 the digits and @key{-} act as prefix arguments.
 
@@ -2173,7 +2173,7 @@ your Emacs process.  ESS provides a facility for setting the value of
 DISPLAY before the @b{ESS} process is started if the variable
 @code{ess-ask-about-display}
 @pindex ess-ask-about-display
-is non-@code{nil}.  @xref{Customization} for details of this variable,
+is non-@code{nil}.  @xref{Customization}, for details of this variable,
 and @pxref{Starting Up} for information on how to set the value of
 DISPLAY when beginning an @b{S} session.
 
@@ -2524,7 +2524,7 @@ session if @code{ess-ask-for-ess-directory} is @code{nil}, and the
 default when prompting for a directory if it is not.  For example, you
 may wish to set this to the value of the current buffer's working
 directory before starting @b{S} by adding the following line to your
-@file{.emacs} file (@xref{Hooks})
+@file{.emacs} file (@pxref{Hooks})
 @cindex @file{.emacs} file
 @example
 (setq ess-pre-run-hook
@@ -2583,14 +2583,14 @@ Alternative, dynamic method of specifying the directory for dump files.
 
 @defvr {User Option} ess-dump-filename-template
 Default: @var{user_name}@code{.}@var{object_name}@code{.S} @*
-Naming system to use for dumped object files.  @xref{Source Directories}
+Naming system to use for dumped object files.  @xref{Source Directories},
 for details of this and the previous two variables.
 @end defvr
 
 @defvr {User Option} ess-keep-dump-files
 Default: @code{nil} @*
 Boolean flag signifying whether to keep dump files or to delete them
-after each use.  @xref{Source Files} for more details.
+after each use.  @xref{Source Files}, for more details.
 @end defvr
 
 @node Indentation variables, Variables controlling interaction, Dump file variables, Variables
@@ -2684,7 +2684,7 @@ Default: @code{DEFAULT} @*
 The default formatting style to use in edit buffers.  The DEFAULT style
 uses the values of the above indentation variables at load-time, so that
 changing these variables in your @file{.emacs} file will affect your
-buffer defaults.  @xref{Edit buffer} for more details.
+buffer defaults.  @xref{Edit buffer}, for more details.
 @end defvr
 
 @node Variables controlling interaction,  , Indentation variables, Variables
