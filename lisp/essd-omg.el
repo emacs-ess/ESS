@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 August 1999
-;; Modified: $Date: 1999/11/10 05:28:27 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: essd-omg.el,v 5.4 1999/11/10 05:28:27 ess Exp $
+;; Modified: $Date: 1999/11/11 01:08:40 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: essd-omg.el,v 5.5 1999/11/11 01:08:40 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,7 +47,7 @@
     (ess-language                  . "OMG")
     (ess-dialect                   . "omegahat")
     (ess-suffix                    . "omg")
-    (ess-loop-timeout              . 500)
+    (ess-loop-timeout              . 5000)
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
 					     ess-suffix))
@@ -71,13 +71,22 @@
  "Variables to customize for OMG (Omegahat)")
 
 
-(defun OMG (&optional proc-name)
+(defun OMG (&optional start-args) ; proc-name)
   "Call Omegahat, from the Omega Group for Statistical Computing."
-  (interactive)
+  (interactive "P")
   (setq ess-customize-alist OMG-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "\n(S+3): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
-  (inferior-ess))
+   (format "\n(OMG): ess-dialect=%s, buf=%s\n"
+	   ess-dialect
+	   (current-buffer)))
+  (let ((omg-start-args
+	 (concat inferior-ess-start-args
+		 (if start-args (read-string
+				 "Starting Args [possibly -CORBA] ? ")
+		   nil))))
+    (inferior-ess)))
+
+
 
 (fset 'omegahat 'OMG)
 
