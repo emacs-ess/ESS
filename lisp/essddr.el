@@ -6,9 +6,9 @@
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2003/08/04 09:24:25 $
-;; Version: $Revision: 5.24 $
-;; RCS: $Id: essddr.el,v 5.24 2003/08/04 09:24:25 hornik Exp $
+;; Modified: $Date: 2003/08/20 10:17:15 $
+;; Version: $Revision: 5.25 $
+;; RCS: $Id: essddr.el,v 5.25 2003/08/20 10:17:15 hornik Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.24 2003/08/04 09:24:25 hornik Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.25 2003/08/20 10:17:15 hornik Exp $
 
 ;;; Code:
 
@@ -141,8 +141,8 @@ All Rd mode abbrevs start with a grave accent (`).")
 (defvar Rd-section-names
   '("arguments" "alias" "author" "concept" "describe" "description"
     "details" "docType" "enumerate" "examples" "format" "itemize"
-    "keyword" "name" "note" "references" "seealso" "section" "source"
-    "synopsis" "tabular" "title" "usage" "value"))
+    "keyword" "name" "note" "preformatted" "references" "seealso"
+    "section" "source" "synopsis" "tabular" "title" "usage" "value"))
 (defvar Rd-keywords
   '("Alpha" "Gamma" "R" "S3method" "S4method" "acronym" "alpha" "beta"
     "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dots"
