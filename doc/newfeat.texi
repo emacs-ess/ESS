@@ -5,6 +5,11 @@ with entries to evaluate code in the inferior process or to switch
 there.  This code is experimental and likely to change as XEmacs/Emacs
 issues get resolved. For details on how to enable the code, see the
 file lisp/ess-toolbar.el.
+@item ESS[SAS]: ess-sas-graph-view (F12) enhanced; you can specify
+external file viewers for each graphics file type via the alist
+ess-sas-graph-view-viewer-alist; also .jpg/.gif are now handled
+by image-mode on XEmacs, if available, otherwise by graphics
+primitives as before 
 @end itemize
 
 Changes/New Features in 5.2.0:

@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/05/28 19:18:22 $
-;; Version: $Revision: 1.168 $
-;; RCS: $Id: essa-sas.el,v 1.168 2004/05/28 19:18:22 rsparapa Exp $
+;; Modified: $Date: 2004/06/15 16:34:05 $
+;; Version: $Revision: 1.169 $
+;; RCS: $Id: essa-sas.el,v 1.169 2004/06/15 16:34:05 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -84,9 +84,15 @@ or `ess-sas-data-view-insight'."
 
 (make-variable-buffer-local 'ess-sas-data-view-insight-statement)
 
-(defcustom ess-sas-graph-suffix-regexp 
-  "[.]\\([eE]?[pP][sS]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\)"
+(defcustom ess-sas-graph-view-suffix-regexp 
+  "[.]\\([eE]?[pP][sS]\\|[pP][dD][fF]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\)"
   "*GSASFILE suffix regexp."
+  :group 'ess-sas
+  :type  'string)
+
+(defcustom ess-sas-graph-view-viewer-alist
+  '(("[eE]?[pP][sS]" . "gv") ("[pP][dD][fF]" . "acroread"))
+  "*Associate lower-case file name extensions with optional graphics image file viewers."
   :group 'ess-sas
   :type  'string)
 
@@ -164,10 +170,10 @@ should set this variable to 'sh regardless of their local shell
 
 (make-variable-buffer-local 'ess-sas-submit-method)
 
-(defcustom ess-sas-image-viewer
+(defcustom ess-sas-graph-view-viewer-default
   (if ess-microsoft-p "kodakimg" 
     (if (equal ess-sas-submit-method 'sh) "sdtimage"))
-  "*Application to view GSASFILE."
+  "*Default graphics image file viewer."
   :group 'ess-sas
   :type  'string)
 
@@ -432,53 +438,79 @@ current buffer if nil."
 ;  (ess-sas-file-path)
   (ess-sas-goto-log 'no-error-check)
 
-  (save-excursion (let ((ess-tmp-sas-graph nil)
-        (ess-tmp-sas-glyph nil)
-        (ess-tmp-sas-graph-regexp 
-	    (concat " RECORDS WRITTEN TO \\(.*" ess-sas-graph-suffix-regexp "\\)")))
+  (save-excursion (let (
+	(ess-tmp-length (length ess-sas-graph-view-viewer-alist))
+	(ess-tmp-counter 0)
+	(ess-tmp-graph nil)
+	(ess-tmp-graph-alist nil)
+        (ess-tmp-glyph nil)
+        (ess-tmp-graph-regexp 
+	    (concat " RECORDS WRITTEN TO \\(.*" ess-sas-graph-view-suffix-regexp "\\)")))
 ;	    (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
 
     (save-match-data 
        (search-backward-regexp "[ \t=]" nil t)
 
        (save-excursion 
-	    (setq ess-tmp-sas-graph (ess-search-except ess-tmp-sas-graph-regexp)))
+	    (setq ess-tmp-graph (ess-search-except ess-tmp-graph-regexp)))
 
-        (if (not ess-tmp-sas-graph) 
-	    (setq ess-tmp-sas-graph (ess-search-except ess-tmp-sas-graph-regexp nil t)))
+        (if (not ess-tmp-graph) 
+	    (setq ess-tmp-graph (ess-search-except ess-tmp-graph-regexp nil t)))
 
-	(setq ess-tmp-sas-graph (read-string "GSASFILE: " 
-	    (or ess-tmp-sas-graph ess-sas-file-path)))
-;	    (or ess-tmp-sas-graph (file-name-nondirectory ess-sas-file-path))))
+	(setq ess-tmp-graph (read-string "GSASFILE: " 
+	    (or ess-tmp-graph ess-sas-file-path)))
+;	    (or ess-tmp-graph (file-name-nondirectory ess-sas-file-path))))
 
-;	    (setq ess-tmp-sas-graph (convert-standard-filename 
-;		(concat (file-name-directory ess-sas-file-path) "/" ess-tmp-sas-graph)))
+;	    (setq ess-tmp-graph (convert-standard-filename 
+;		(concat (file-name-directory ess-sas-file-path) "/" ess-tmp-graph)))
 
 	  (if (fboundp 'ess-xemacs-insert-glyph) (progn
-	      (if (string-match "[.][gG][iI][fF]" ess-tmp-sas-graph)
-		 (setq ess-tmp-sas-glyph 'gif)
+	      (if (string-match "[.][gG][iI][fF]" ess-tmp-graph)
+		 (setq ess-tmp-glyph 'gif)
 	      ;;else
-	      (if (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-sas-graph)
-		 (setq ess-tmp-sas-glyph 'jpeg)))))
+	      (if (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph)
+		 (setq ess-tmp-glyph 'jpeg)))))
 
-	  (if ess-tmp-sas-glyph (progn
-		(switch-to-buffer (file-name-nondirectory ess-tmp-sas-graph))
-		(ess-xemacs-insert-glyph 
-		    (make-glyph (vector ess-tmp-sas-glyph :file ess-tmp-sas-graph)))
-	     )
-	  ;;else
+	  ;;GNU Emacs graphics file image viewing mode loaded?
 	  (if (and (boundp 'auto-image-file-mode) auto-image-file-mode
-	      (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-sas-graph))
-	      (find-file ess-tmp-sas-graph)
-          ;;else
-         
-            (ess-sas-goto-shell t)
+	      (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph))
+	      (find-file ess-tmp-graph)
+	  ;;else XEmacs graphics file image viewing mode loaded?
+	  (if (and (fboundp 'image-mode)
+		(string-match "[.]\\([jJ][pP][eE]?[gG]\\|[gG][iI][fF]\\)" 
+		    ess-tmp-graph))
+	      (find-file ess-tmp-graph)
+	  ;;else XEmacs graphics file image viewing primitives loaded?
+	  (if ess-tmp-glyph (progn
+		(switch-to-buffer (file-name-nondirectory ess-tmp-graph))
+		(ess-xemacs-insert-glyph 
+		    (make-glyph (vector ess-tmp-glyph :file ess-tmp-graph))))
+	  
+          ;;else use the appropriate graphics file image viewer
+	    (while (< ess-tmp-counter ess-tmp-length)
+		(setq ess-tmp-graph-alist 
+		    (nth ess-tmp-counter ess-sas-graph-view-viewer-alist))
+		(setq ess-tmp-graph-regexp (car ess-tmp-graph-alist))
 
-            (insert ess-sas-submit-pre-command " " ess-sas-image-viewer " " 
-	      ess-tmp-sas-graph 
-	      (if (equal ess-sas-submit-method 'sh) " &"))
-            (comint-send-input))
-)))))
+		(if (string-match 
+			(concat "[.]" ess-tmp-graph-regexp) ess-tmp-graph)
+		    (progn
+			(ess-sas-goto-shell t)
+			(insert ess-sas-submit-pre-command " " 
+			    (cdr ess-tmp-graph-alist) " " ess-tmp-graph 
+			    (if (equal ess-sas-submit-method 'sh) " &"))
+			(setq ess-tmp-glyph 'alist)
+			(setq ess-tmp-counter ess-tmp-length))
+		    ;;else
+		    (setq ess-tmp-counter (+ ess-tmp-counter 1))))
+	    
+	    (if (not ess-tmp-glyph) (progn
+                (ess-sas-goto-shell t)
+		(insert ess-sas-submit-pre-command " " 
+		    ess-sas-graph-view-viewer-default " " ess-tmp-graph 
+		    (if (equal ess-sas-submit-method 'sh) " &"))))
+
+            (comint-send-input))))))))
 
 (defun ess-sas-file-path ()
  "Define `ess-sas-file-path' to be the current buffer depending on suffix."

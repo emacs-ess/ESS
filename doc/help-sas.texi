@@ -384,14 +384,25 @@ highlighting can be helpful in certain debugging situations, but large
 
 F11 is the same as `filetype-1' except it is .dat by default.  
 
-F12 will prompt you for the name of a GSASFILE near point to be opened
-for viewing either with emacs or with an external viewer.  Depending on
-your version of emacs and the operating system you are using, emacs may
-support .gif and .jpg files internally.  You may need to change the
-following two variables for your own situation:
+F12 will prompt you for the name of a GSASFILE near the point in .log to
+be opened for viewing either with emacs or with an external viewer.
+Depending on your version of emacs and the operating system you are
+using, emacs may support .gif and .jpg files internally.  You may need
+to change the following variables for your own situation.  
+ess-sas-graph-view-suffix-regexp is a regular expression of supported 
+file types defined via file name extensions.  
+ess-sas-graph-view-viewer-default is the default external viewer for
+your platform.  ess-sas-graph-view-viewer-alist is an alist of 
+exceptions to the default; i.e. file types and their associated
+viewers which will be used rather than the default viewer.
 @example
-(setq ess-sas-graph-suffix-regexp "[.]\\(e?ps\\|gif\\|jpe?g\\|tiff?\\)")
-(setq ess-sas-image-viewer "kodakimg") ;; Windows default
+(setq ess-sas-graph-view-suffix-regexp (concat "[.]\\([eE]?[pP][sS]\\|"
+"[pP][dD][fF]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|"
+"[tT][iI][fF][fF]?\\)")) ;; default
+(setq ess-sas-graph-view-viewer-default "kodakimg") ;; Windows default
+(setq ess-sas-graph-view-viewer-default "sdtimage") ;; Solaris default
+(setq ess-sas-graph-view-viewer-alist
+  '(("[eE]?[pP][sS]" . "gv") ("[pP][dD][fF]" . "acroread")) ;; default
 @end example
 
 C-F2 produces US landscape by default, however, it can produce A4
