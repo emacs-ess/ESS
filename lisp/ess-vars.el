@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/09/05 18:19:42 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: ess-vars.el,v 1.20 1997/09/05 18:19:42 rossini Exp $
+;; Modified: $Date: 1997/09/08 12:41:29 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: ess-vars.el,v 1.21 1997/09/08 12:41:29 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -106,15 +106,15 @@ A nil value means use the current buffer's default directory.
 Buffer-local: in process buffers, this contains the directory ESS was
 run from.")
 
-(make-variable-buffer-local 'ess-directory)
-(setq-default ess-directory nil)
+;;(make-variable-buffer-local 'ess-directory)
+;;(setq-default ess-directory nil)
 
 (defvar ess-history-file nil
   "*File to pick up history from. 
 If this is a relative file name, it is relative to ess-directory.")
 
-(make-variable-buffer-local 'ess-history-file)
-(setq-default ess-history-file ".ESShistory")
+;;(make-variable-buffer-local 'ess-history-file)
+;;(setq-default ess-history-file ".ESShistory")
 
 ;;(concat "." ess-dialect "history"))
 
@@ -431,11 +431,9 @@ Useful for R and SAS.")
 
 (defvar inferior-ess-save-lastvalue-command nil
   "FIXME")
-(make-variable-buffer-local 'inferior-ess-save-lastvalue-command)
 
 (defvar inferior-ess-retr-lastvalue-command nil
   "FIXME")
-(make-variable-buffer-local 'inferior-ess-retr-lastvalue-command)
 
 (defvar inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?"
   "Regular expression used by ess-mode to detect the primary prompt.
@@ -853,8 +851,12 @@ Used for recording status of the program, mainly for debugging.")
 (defvar ess-customize-alist nil
   "Variable settings to use for proper behavior.
 Not buffer local!")
-;;(make-variable-buffer-local 'ess-customize-alist)
-;;(setq-default ess-customize-alist nil)
+
+(defvar ess-local-customize-alist nil
+  "Buffer local settings for proper behavior.
+Used to store the values for passing on to newly created buffers.")
+
+(make-variable-buffer-local 'ess-local-customize-alist)
 
 (defvar ess-mode-editing-alist nil
   "Variable settins for ess-mode.")
