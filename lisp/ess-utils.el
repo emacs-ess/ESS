@@ -452,7 +452,7 @@ if any exist, in PATH."
               ;;(goto-char (match-beginning 0))
 		    (delete-blank-lines)))))
 
-(defun ebcdic-to-ascii () 
+(defun ess-ebcdic-to-ascii-search-and-replace () 
     "*Search and replace EBCDIC text with ASCII equivalents."
     (interactive)
     (while (search-forward-regexp "[^\f\t\n -~][^\f\t\n -?A-JQ-Yb-jp-y]*[^\f\t\n -~]?" nil t)
