@@ -77,6 +77,8 @@
    '((ess-local-customize-alist		. 'S+6-customize-alist)
      (ess-dialect			. S+6-dialect-name)
      (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
+     (ess-function-pattern              . ess-R-function-pattern)
+
      (ess-object-name-db-file		. "ess-sp6-namedb.el")
      (inferior-ess-program		. inferior-S+6-program-name)
      (inferior-ess-help-command	  . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")

@@ -57,11 +57,13 @@
 					   "S$" ess-suffix ; in the one from custom:
 					   ess-dump-filename-template-proto))
      (ess-mode-syntax-table		. R-syntax-table)
+     (ess-mode-editing-alist	        . R-editing-alist)
      (ess-change-sp-regexp		. ess-R-change-sp-regexp)
      (ess-help-sec-regex		. ess-help-R-sec-regex)
      (ess-help-sec-keys-alist		. ess-help-R-sec-keys-alist)
      (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
      (ess-cmd-delay			. ess-R-cmd-delay)
+     (ess-function-pattern              . ess-R-function-pattern)
      (ess-object-name-db-file		. "ess-r-namedb.el" )
      (ess-retr-lastvalue-command	. "assign(\".Last.value\", .ess.lvsave, envir=NULL)\n") ; package:base
      (ess-save-lastvalue-command	. "assign(\".ess.lvsave\",.Last.value,inherits=TRUE)\n") ;envir=1
@@ -83,9 +85,6 @@
      )
    S-common-cust-alist)
   "Variables to customize for R")
-
-;;; AJR: Need to condition on this...!
-(require 'ess-menu)
 
 ;;;### autoload
 (defun R (&optional start-args)
@@ -135,10 +134,13 @@ to R, put them in the variable `inferior-R-args'."
   ;; ECB needs seminatic stuff.
   ;;  (if (featurep 'semantic)
   ;;      (setq semantic-toplevel-bovine-table r-toplevel-bovine-table))
-  ;; AJR: Need to condition on this...!
-  ;; MM: and you probably should really use ess-imenu-mode-function from the
+  (if ess-imenu-use-S
+      (progn (require 'ess-menu)
+	     (ess-imenu-R)))
+  ;; MM:      ^^^^^^^^^^^ should really use ess-imenu-mode-function from the
   ;;     alist above!
-  (if ess-imenu-use-S (ess-imenu-R)))
+  )
+
 
 (fset 'r-mode 'R-mode)
 

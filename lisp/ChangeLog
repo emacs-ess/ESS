@@ -1,4 +1,17 @@
 2005-03-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (ess-R-function-pattern): and ess-S-function-pattern
+		instead of ess-function-pattern.
+	* essl-s.el (S+common-cust-alist): set ess-function-pattern
+	* essd-r.el (R-customize-alist): set ess-function-pattern
+
+	* ess-cust.el (ess-R-mode-font-lock-keywords): and ess-S-*
+		instead of just one ess-mode-font-lock
+	* essl-s.el (R-editing-alist): additionally to S-editing-alist
+	* essd-r.el (R-customize-alist): use R-editing-alist
+
+
+2005-03-03  Martin Maechler  <maechler@stat.math.ethz.ch>
   from	    Kurt Hornik	 <Kurt.Hornik@wu-wien.ac.at>
 
 	* essl-s.el (add-hook 'ess-mode-hook): new ess-do-auto-fill

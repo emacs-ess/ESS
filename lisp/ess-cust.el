@@ -628,20 +628,28 @@ Good for evaluating ESS code."
 ;; FIXME : This is just for the S dialects;  need to define this for others,
 ;; -----
 ;;  {however  "XLS-mode" should just use standard lisp "beginning of function"}
-(defcustom ess-function-pattern
+
+(defcustom ess-R-function-pattern
   (concat
-;;-    "\\(" ; EITHER
-;;-    "\\s\"" ; quote
-;;-    "\\(\\sw\\|\\s_\\)+" ; symbol
-;;-    "\\s\"" ; quote
-;;-    "\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*" ; whitespace, assign, whitespace/nl
-;;-    "function\\s-*(" ; function keyword, parenthesis
-;;-    "\\)\\|\\(" ; OR
-;;-    "\\<\\(\\sw\\|\\s_\\)+" ; symbol
-;;-    "\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*" ; whitespace, assign, whitespace/nl
-;;-    "function\\s-*(" ; function keyword, parenthesis
-;;-    "\\)")
-   ;;----- new version by  "Stephen C. Pope" <scp@predict.com> :
+   "\\(\\(" ; EITHER
+   "\\s\"" ; quote
+   "\\(\\sw\\|\\s_\\)+\\(<-\\)?" ; symbol (replacement?)
+   "\\s\"" ; quote
+   "\\)\\|\\(" ; OR
+   "\\(^\\|[ ]\\)" ; beginning of name
+   "\\(\\sw\\|\\s_\\)+" ; symbol
+   "\\)\\)" ; END EITHER OR
+   "\\s-*\\(<-\\|=\\)" ; whitespace, assign, whitespace/nl
+   "\\(\\(\\s-\\|\n\\)*\\s<.*\\s>\\)*" ; whitespace, comment
+   "\\(\\s-\\|\n\\)*function\\s-*(" ; whitespace, function keyword, parenthesis
+   )
+  "The regular expression for matching the beginning of an R function."
+  :group 'ess
+  :type 'regexp)
+
+(defcustom ess-S-function-pattern
+  ;; the same as "R" - but allowing "_" in assign
+  (concat
    "\\(\\(" ; EITHER
    "\\s\"" ; quote
    "\\(\\sw\\|\\s_\\)+\\(<-\\)?" ; symbol (replacement?)
@@ -659,6 +667,7 @@ Good for evaluating ESS code."
   "The regular expression for matching the beginning of an S function."
   :group 'ess
   :type 'regexp)
+
 
 ;; Fixme: the following is just for S dialects :
 (defcustom ess-dumped-missing-re
@@ -1364,19 +1373,36 @@ If nil, input is in the `font-lock-variable-name-face'."
   :group 'ess
   :type 'boolean)
 
-(defvar ess-mode-font-lock-keywords
+(defvar ess-R-mode-font-lock-keywords
   '(("<<-\\|<-\\|->" ; 2004-01: dropped "_" -- TODO later: for function-name
-     . font-lock-reference-face)
-    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
+     . font-lock-reference-face)	; assign
+    ("\\<\\(TRUE\\|FALSE\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" ; no T|F
      . font-lock-type-face)
     ("\\<\\(library\\|require\\|attach\\|detach\\|source\\)\\>"
      . font-lock-reference-face)
     ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|message\\|function\\)\\>"
-     . font-lock-keyword-face) ; TODO : drop "_" (here and below)
-    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\|_\\|=\\)\\(\\s-\\|\n\\)*function"
-     1 font-lock-function-name-face t))
-  "Font-lock patterns used in `ess-mode' buffers.")
+     . font-lock-keyword-face)
+    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)\\(\\s-\\|\n\\)*function"
+     1 font-lock-function-name-face t)
+    )
+  "Font-lock patterns used in `R-mode' buffers.")
 
+(defvar ess-S-mode-font-lock-keywords
+  '(("<<-\\|<-\\|->" . font-lock-reference-face)	; assign
+    ("\\<\\(T\\|F\\|TRUE\\|FALSE\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" ; + T|F
+     . font-lock-type-face)
+    ("\\<\\(library\\|module\\|attach\\|detach\\|source\\)\\>"; s/require/module
+     . font-lock-reference-face)
+    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|message\\|function\\)\\>"
+     . font-lock-keyword-face) ; +  "_"  and "="
+    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\|_\\|=\\)\\(\\s-\\|\n\\)*function"
+     1 font-lock-function-name-face t)
+    )
+  "Font-lock patterns used in `S-mode' buffers.")
+
+
+;; FIXME:
+;; This should be split in  R and S versions too (at least because 'T' and 'F':
 (defvar inferior-ess-font-lock-keywords
   '(("<<-\\|<-\\|->"
      . font-lock-reference-face)		; assign

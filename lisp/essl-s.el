@@ -65,7 +65,7 @@
   (modify-syntax-entry ?>  "."	S-syntax-table)
   (modify-syntax-entry ?/  "."	S-syntax-table))
 
-(defvar S-editing-alist
+(defvar R-editing-alist
   '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
@@ -85,10 +85,19 @@
     (ess-mode-syntax-table	  . S-syntax-table)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function")
-    (font-lock-defaults		  . '(ess-mode-font-lock-keywords
-				      nil nil ((?\. . "w"))))
+    (font-lock-defaults		  . '(ess-R-mode-font-lock-keywords
+				      nil nil ((?\. . "w") (?\_ . "w"))))
     )
-  "General options for editing S, S+, and R source files.")
+  "General options for R source files.")
+
+(defvar S-editing-alist
+  ;; copy the R-list and modify :
+  (let ((S-alist (copy-alist R-editing-alist)))
+    (setcdr (assoc 'font-lock-defaults S-alist)
+	    (quote '(ess-S-mode-font-lock-keywords nil nil ((?\. . "w")))))
+    ;;      ^^ extra quote is needed - why?
+    S-alist)
+  "General options for editing S and S+ source files.")
 
 (defvar inferior-S-language-start
   '(concat "options("
@@ -101,7 +110,6 @@
 (defconst S-common-cust-alist
   '((ess-language                  . "S")
     (inferior-ess-exit-command     . "q()\n")
-    (ess-mode-editing-alist        . S-editing-alist)
     (inferior-ess-language-start   . (eval inferior-S-language-start))
     ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help(?) :
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
@@ -119,10 +127,14 @@
      (ess-cmd-delay		. (if (featurep 'xemacs); needs much less delay
 				      (* 0.1 ess-S+-cmd-delay)
 				    ess-S+-cmd-delay))
+     (ess-function-pattern      . ess-S-function-pattern)
      (ess-function-template	. " <- \n#\nfunction()\n{\n\n}\n")
      (ess-dump-filename-template . (ess-replace-regexp-in-string
 				    "S$" ess-suffix ; in the one from custom:
 				    ess-dump-filename-template-proto))
+
+     (ess-mode-editing-alist	. S-editing-alist)
+
      (ess-dumped-missing-re
       . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
      (ess-syntax-error-re

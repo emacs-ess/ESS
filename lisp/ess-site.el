@@ -398,13 +398,16 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (ess-message "[ess-site:] Before requiring dialect 'essd-** ....")
 (ess-message "[ess-site:] require 'essd-r ...")
-(require 'essd-r)    ;; S and common variants
-(ess-message "[ess-site:] require 'essd-s4 ...")
-(require 'essd-s4)
+(require 'essd-r)    ;; R
+;; (ess-message "[ess-site:] require 'essd-s4 ...")
+;; (require 'essd-s4) ; has become VERY RARE ..
+
 ;;(ess-message "[ess-site:] require 'essd-s3 ...")
 ;;(require 'essd-s3)  ; THIS IS RARE.  You probably do not have this.
+
+;; "sp" refers to S-PLUS (MathSoft/StatSci/Insightful):
 (ess-message "[ess-site:] require 'essd-sp3 ...")
-(require 'essd-sp3)  ;; "sp" refers to S-PLUS (MathSoft/StatSci).
+(require 'essd-sp3)
 
 (if ess-microsoft-p
     (progn
@@ -443,7 +446,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 (require 'ess-noweb)
 
 ;; ALWAYS:
-(require 'ess)
+(require 'ess); -> loads ess-cust.el and more
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el _2_]: ess-customize-alist=%s \n"

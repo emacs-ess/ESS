@@ -269,7 +269,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . S-syntax-table)
-    (font-lock-defaults           . '(ess-mode-font-lock-keywords
+    (font-lock-defaults           . '(ess-S-mode-font-lock-keywords
 				      nil nil ((?\. . "w")))))
   "General options for Omegahat source files.")
 
