@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/06/15 08:38:19 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: ess.el,v 1.5 1997/06/15 08:38:19 rossini Exp $
+;; Modified: $Date: 1997/06/18 18:31:44 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: ess.el,v 1.6 1997/06/18 18:31:44 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.6  1997/06/18 18:31:44  rossini
+;; incremented version to b7.
+;;
 ;; Revision 1.5  1997/06/15 08:38:19  rossini
 ;; documentation cleanup
 ;;
@@ -221,7 +224,7 @@
 (require 'easymenu)
 (require 'font-lock)
 
-(defconst ess-mode-version "4.9-b6" 
+(defconst ess-mode-version "4.9-b7" 
   "Version of ess-mode currently loaded.")
 
  ; User changeable variables
