@@ -1,13 +1,13 @@
-;;; essd-s+5.el --- S+5 customization
+;;; essd-s+5.el --- S-plus 5  customization
 
 ;; Copyright (C) 1998 A.J. Rossini
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 1998/11/10 17:44:42 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: essd-s+5.el,v 1.2 1998/11/10 17:44:42 maechler Exp $
+;; Modified: $Date: 1998/11/11 10:07:51 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: essd-s+5.el,v 1.3 1998/11/11 10:07:51 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -31,21 +31,25 @@
 ;;; AJR copied S4 to be S+5.
 ;;; DB contributed the changes from essd-s+3.el to
 ;;; essd-s4.el. (removed the old ugly approach).
-;;; This file defines S4 customizations for ess-mode.  Lots of thanks
+;;; This file defines S+5 customizations for ess-mode.  Lots of thanks
 ;;; to RMH and JMC for code and suggestions
 
-;;; Autoloads:
+;;; Requires and Autoloads:
 
 (require 'essl-s)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
+(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
 
 ;;; Code:
 
+(defvar S+5-dialect-name "S+5"
+  "Name of 'dialect' for S-PLUS 5.");easily changeable in a user's .emacs
+
 (defvar S+5-customize-alist
-  '((ess-local-customize-alist     . 'S4-customize-alist)
+  '((ess-local-customize-alist     . 'S+5-customize-alist)
     (ess-language                  . "S")
-    (ess-dialect                   . "S+5")
+    (ess-dialect                   . S+5-dialect-name)
     (ess-suffix                    . "S")
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
@@ -65,7 +69,7 @@
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
     (ess-save-lastvalue-command
      . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-    (inferior-ess-program          . inferior-S4-program-name)
+    (inferior-ess-program          . inferior-S+5-program-name)
     (inferior-ess-objects-command  . ".SmodeObs(%d, pattern=\"%s\")\n")
 					; ^ was "objects(%d)")
     (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
@@ -95,7 +99,7 @@
   "Call 'Splus5', based on S version 4, from Bell Labs
 New way to do it."
   (interactive)
-  (setq ess-customize-alist S4-customize-alist)
+  (setq ess-customize-alist S+5-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(S): ess-dialect=%s , buf=%s \n"
 	   ess-dialect
@@ -104,11 +108,15 @@ New way to do it."
 
 
 (defun S+5-mode (&optional proc-name)
-  "Major mode for editing S4 source.  See ess-mode for more help."
+  "Major mode for editing S+5 source.  See ess-mode for more help."
   (interactive)
   (setq ess-customize-alist S+5-customize-alist)
   (ess-mode S+5-customize-alist proc-name))
 
+(defun S+5-transcript-mode ()
+  "S-PLUS 5 transcript mode."
+  (interactive)
+  (ess-transcript-mode S+5-customize-alist))
 
 ;; From RMH:    ALL THIS SHOULD BE INCORPORATED BY 5.0!
 
@@ -306,32 +314,4 @@ New way to do it."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; essd-s4.el ends here
-
-
-
-
- ; Provide package
-
-(provide 'essd-s4)
-
- ; Local variables section
-
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
-
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; outline-minor-mode: nil
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
-
-;;; essd-s4.el ends here
-
-
+;;; essd-s+5.el ends here
