@@ -753,14 +753,13 @@ from the ESS process buffer.  If an optional second argument BUF exists
 save the output in that buffer. BUF is erased before use.
 COM should have a terminating newline.
 Guarantees that the value of .Last.value will be preserved."
-  ;; Use this function when you need to evaluate so S code, and the
+  ;; Use this function when you need to evaluate some S code, and the
   ;; result is needed immediately. Waits until the output is ready
   (let* ((sprocess (get-ess-process ess-current-process-name))
 	 sbuffer
 	 end-of-output
-	 oldpb
-	 oldpf
-	 oldpm)
+	 oldpb oldpf oldpm
+	 my-retr-cmd my-save-cmd)
     (if sprocess nil
       (error "Process %s is not running!" ess-current-process-name))
     (setq sbuffer (process-buffer sprocess))
@@ -776,16 +775,19 @@ Guarantees that the value of .Last.value will be preserved."
       (setq oldpf (process-filter sprocess))
       (setq oldpb (process-buffer sprocess))
       (setq oldpm (marker-position (process-mark sprocess)))
+      ;; need the buffer-local values in result buffer "buf":
+      (setq my-retr-cmd ess-retr-lastvalue-command)
+      (setq my-save-cmd ess-save-lastvalue-command)
       (unwind-protect
 	  (progn
 	    (set-process-buffer sprocess buf)
 	    (set-process-filter sprocess 'ordinary-insertion-filter)
-	    ;; Output is now going to BUF
+	    ;; Output is now going to BUF:
 	    (save-excursion
 	      (set-buffer buf)
 	      (erase-buffer)
 	      (set-marker (process-mark sprocess) (point-min))
-	      (process-send-string sprocess ess-save-lastvalue-command)
+	      (process-send-string sprocess my-save-cmd)
 	      (if (and ess-microsoft-p ess-ms-slow)
 		  (sleep-for 0.5))
 	      (ess-prompt-wait sprocess)
@@ -801,7 +803,7 @@ Guarantees that the value of .Last.value will be preserved."
 	      (save-excursion
 		(beginning-of-line)	; so prompt will be deleted
 		(setq end-of-output (point)))
-	      (process-send-string sprocess ess-retr-lastvalue-command)
+	      (process-send-string sprocess my-retr-cmd)
 
 	      ;; For S+4
 	      (if (and ess-microsoft-p ess-ms-slow)
@@ -2021,10 +2023,13 @@ and (indirectly) by \\[ess-get-help-files-list]."
   (save-excursion
     (let ((result nil))
       (set-buffer (get-ess-buffer ess-current-process-name))
-      (if (and ess-search-list (not ess-sp-change)); use cache
+      (if (and ess-search-list (not ess-sp-change))
+	  ;; use cache:
 	  ess-search-list
+	;; else, re-compute:
 	(let ((tbuffer (get-buffer-create " *search-list*"))
 	      (homedir ess-directory)
+	      (my-search-cmd inferior-ess-search-list-command); from ess-buffer
 	      elt)
 	  (save-excursion
 	    (set-buffer tbuffer)
@@ -2034,8 +2039,8 @@ and (indirectly) by \\[ess-get-help-files-list]."
 ;;-	     (format "(ess-search-list ..): tbuffer %s\n"
 ;;-		     (buffer-name tbuffer)))
 
-	    ;;unnecessary; ess-command does (erase-buffer)
-	    (ess-command inferior-ess-search-list-command tbuffer)
+	    ;;ess-command does (erase-buffer)
+	    (ess-command my-search-cmd tbuffer)
 	    (goto-char (point-min))
 	    (while (re-search-forward "\"\\([^\"]*\\)\"" nil t)
 	      (setq elt (buffer-substring (match-beginning 1) (match-end 1)))

@@ -676,11 +676,6 @@ by `ess-function-template'."
   :type 'regexp)
 
 ;;;; This is tested for S dialects (actually only for R) -- be careful with it!
-;;(defcustom ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
-;;  "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg."
-;;  :group 'ess
-;;  :type  'regexp)
-
 (defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
   "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg.")
 
@@ -1069,20 +1064,20 @@ for editing and then to be returned to the process."
 ;;;;; user settable defaults
 (defvar inferior-S-program-name  inferior-S+3-program-name
   "*Program name for invoking an inferior ESS with S().")
+;;- (setq inferior-S-program
+;;-       (cond ((string= S-proc-prefix "S") "Splus")
+;;- 	    ((string= S-proc-prefix "R") "R")
+;;- 	    (t "S")
+;;- 	    ))
+;;(make-local-variable 'inferior-S-program)
 
 (defvar inferior-ess-program nil ;inferior-S-program-name
   "*Default program name for invoking inferior-ess().
 The other variables ...-program-name should be changed, for the
 corresponding program.")
 
-;;(make-local-variable 'inferior-S-program)
 (make-variable-buffer-local 'inferior-ess-program)
 (setq-default inferior-ess-program inferior-S-program-name)
-;;- (setq inferior-S-program
-;;-       (cond ((string= S-proc-prefix "S") "Splus")
-;;- 	    ((string= S-proc-prefix "R") "R")
-;;- 	    (t "S")
-;;- 	    ))
 
 
 (defvar inferior-ess-start-args ""
@@ -1203,15 +1198,13 @@ This format string should use %s to substitute an object name."
 (make-variable-buffer-local 'inferior-ess-exit-command)
 (setq-default inferior-ess-exit-command "q()\n")
 
-(defcustom inferior-ess-search-list-command "search()\n"
+(defvar inferior-ess-search-list-command nil
   "`ess-language' command that prints out the search list;
 i.e. the list of directories and (recursive) objects that `ess-language' uses
 when it searches for objects.
 
-Really set in <ess-lang>-customize-alist in ess[dl]-*.el"
-  :group 'ess-command
-  :type 'string)
-
+Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
+;; and hence made buffer-local via that scheme...
 
 (defcustom inferior-ess-names-command "names(%s)\n"
   "Format string for ESS command to extract names from an object.
