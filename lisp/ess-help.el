@@ -10,9 +10,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>,
 ;;              Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2003/08/19 15:22:09 $
-;; Version: $Revision: 5.18 $
-;; RCS: $Id: ess-help.el,v 5.18 2003/08/19 15:22:09 stephen Exp $
+;; Modified: $Date: 2003/11/06 13:25:18 $
+;; Version: $Revision: 5.19 $
+;; RCS: $Id: ess-help.el,v 5.19 2003/11/06 13:25:18 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -137,7 +137,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	 (alist		ess-local-customize-alist))
 
     (set-buffer tbuffer)
-    (ess-setq-vars-local (eval alist) (current-buffer))
+    (ess-setq-vars-local (eval alist))
     (setq ess-help-sec-regex	  curr-help-sec-regex)
     (setq ess-help-sec-keys-alist curr-help-sec-keys-alist)
     ;; see above, do same for inferior-ess-help-command... (i.e. remove

@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/06/20 21:52:06 $
-;; Version: $Revision: 5.21 $
-;; RCS: $Id: ess-mode.el,v 5.21 2002/06/20 21:52:06 rsparapa Exp $
+;; Modified: $Date: 2003/11/06 13:25:18 $
+;; Version: $Revision: 5.22 $
+;; RCS: $Id: ess-mode.el,v 5.22 2003/11/06 13:25:18 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -320,7 +320,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 `CLB' (quoted from C language style)."
   (interactive)
   (kill-all-local-variables) ;; NOTICE THIS!
-  (ess-setq-vars-local alist (current-buffer))
+  (ess-setq-vars-local alist)
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1): ess-language=%s, ess-dialect=%s buf=%s \n"
 	   ess-language
@@ -338,7 +338,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1.6): editing-alist=%s \n"
 	   ess-mode-editing-alist))
-  (ess-setq-vars-local ess-mode-editing-alist (current-buffer))
+  (ess-setq-vars-local ess-mode-editing-alist)
 
   (use-local-map ess-mode-map)
   (set-syntax-table ess-mode-syntax-table)
