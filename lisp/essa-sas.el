@@ -670,7 +670,8 @@ current buffer if nil."
 (if ess-tmp-no-error-check (goto-char ess-sas-save-point)
   (if (not (and (search-forward-regexp ess-sas-error nil t)
 	    (or (push-mark (match-beginning 0) t)
-		(zmacs-activate-region) t)))
+		(zmacs-activate-region) 
+		(pop-mark) t)))
         (if (search-backward-regexp ess-sas-error nil t) (progn
                 (goto-char (point-min))
 		(search-forward-regexp ess-sas-error nil t)
