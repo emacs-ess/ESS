@@ -1004,10 +1004,7 @@ window.
 @noindent
 to make more of the last output visible.  (To make this happen
 automatically for all inputs, set the variable
-@code{comint-scroll-to-bottom-on-input} to @code{t}; for information on
-this and other options for handling process input and output
-@pxref{Shell Options,,Shell Mode Options, emacs, The GNU Emacs Reference
-Manual}.)
+@code{comint-scroll-to-bottom-on-input} to @code{t}.)
 
 If the first part of the output is still obscured, use
 @cindex reading long command outputs
