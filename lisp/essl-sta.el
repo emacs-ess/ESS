@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1998/09/09 23:48:13 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essl-sta.el,v 5.3 1998/09/09 23:48:13 rossini Exp $
+;; Modified: $Date: 1998/11/09 23:21:45 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essl-sta.el,v 5.4 1998/11/09 23:21:45 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -55,6 +55,10 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 ;;
+
+
+
+;; YOU USED TO HAVE TO (with Thomas's version): 
 ;;;;; Add the following to your .emacs file
 ;;
 ;;(autoload 'stata "~/essl-sta.el" "inferior stata mode" t )
@@ -75,6 +79,10 @@
 ;; 2 - what is the point of the review buffer?
 ;; 3 - how to quit?
 
+;;
+;; NOTE: all of Thomas's functions have been left here, to be removed
+;; or merged into real locations as we work on this.
+;;
 
 
 ;;;;;;;;; Things to change 
@@ -86,7 +94,7 @@
 
 ;;;;;;;;;;;;;;; 
 
-(require 'comint)
+;;(require 'comint)
 
 (defun stata-help (the-subject) "Stata help in other buffer"
   (interactive "sHelp on: ")
@@ -249,141 +257,141 @@ PROC is the stata process. Does not change point"
 	     (if (< (point) start-of-output) (goto-char start-of-output))
 	     (not (looking-at "^. "))))))
 
-(defvar inferior-stata-mode-map nil
-  "Keymap for Stata mode")
+;;(defvar inferior-stata-mode-map nil
+;;  "Keymap for Stata mode")
 
-(setq inferior-stata-mode-map (cons 'keymap comint-mode-map))
-(define-key inferior-stata-mode-map "\M-\t" 'comint-replace-by-expanded-filename)
-(define-key inferior-stata-mode-map "\C-c\C-v" 'stata-variables)
-(define-key inferior-stata-mode-map "\C-c\C-h" 'stata-help)
-(define-key inferior-stata-mode-map "\C-c\C-u" 'stata-lookup)
-(define-key inferior-stata-mode-map "\C-c\C-r"   'stata-review-window)
-(define-key inferior-stata-mode-map [menu-bar stata] 
-  (cons "Stata" (make-sparse-keymap "Stata")))
-(define-key inferior-stata-mode-map [menu-bar stata statahelp]
-  '("Help on..." . stata-help))
-(define-key inferior-stata-mode-map [menu-bar stata lookup]
-  '("Look up..." . stata-lookup))
-(define-key inferior-stata-mode-map [menu-bar stata variables]
-  '("Variables" . stata-variables))
-(define-key inferior-stata-mode-map [menu-bar stata review]
-  '("Review" . stata-review-window))
+;;(setq inferior-stata-mode-map (cons 'keymap comint-mode-map))
+;;(define-key inferior-stata-mode-map "\M-\t" 'comint-replace-by-expanded-filename)
+;;(define-key inferior-stata-mode-map "\C-c\C-v" 'stata-variables)
+;;(define-key inferior-stata-mode-map "\C-c\C-h" 'stata-help)
+;;(define-key inferior-stata-mode-map "\C-c\C-u" 'stata-lookup)
+;;(define-key inferior-stata-mode-map "\C-c\C-r"   'stata-review-window)
+;;(define-key inferior-stata-mode-map [menu-bar stata] 
+;;  (cons "Stata" (make-sparse-keymap "Stata")))
+;;(define-key inferior-stata-mode-map [menu-bar stata statahelp]
+;;  '("Help on..." . stata-help))
+;;(define-key inferior-stata-mode-map [menu-bar stata lookup]
+;;  '("Look up..." . stata-lookup))
+;;(define-key inferior-stata-mode-map [menu-bar stata variables]
+;;  '("Variables" . stata-variables))
+;;(define-key inferior-stata-mode-map [menu-bar stata review]
+;;  '("Review" . stata-review-window))
 
 
-(defvar stata-mode-map nil
-  "Keymap for Stata mode")
+;;(defvar stata-mode-map nil
+;;  "Keymap for Stata mode")
   
-(setq stata-mode-map (make-sparse-keymap))
-(define-key stata-mode-map "\C-c\C-r"    'stata-eval-region)
-(define-key stata-mode-map "\C-c\M-r" 'stata-eval-region-and-go)
-(define-key stata-mode-map "\C-c\C-b"    'stata-eval-buffer)
-(define-key stata-mode-map "\C-c\M-b" 'stata-eval-buffer-and-go)
-(define-key stata-mode-map "\C-c\C-f"    'stata-eval-function)
-(define-key stata-mode-map "\C-c\C-n"     'stata-eval-line-and-next-line)
-(define-key stata-mode-map "\C-c\C-j"    'stata-eval-line)
-(define-key stata-mode-map "\C-c\C-r"   'stata-review-window)
-(define-key stata-mode-map "\C-c\M-j" 'stata-eval-line-and-go)
-(define-key stata-mode-map "\C-c\C-y"    'stata-switch-to-stata)
-(define-key stata-mode-map "\C-c\C-z" 'stata-switch-to-end-of-stata)
-;;(define-key stata-mode-map "\C-c\C-l"    'stata-load-file)
-(define-key stata-mode-map "\C-c\C-h"    'stata-help)
-(define-key stata-mode-map "\C-c\C-v"    'stata-variables)
-(define-key stata-mode-map "\M-\t" 'comint-replace-by-expanded-filename)
-(define-key stata-mode-map "\177" 'backward-delete-char-untabify)
-(define-key stata-mode-map "\C-c\C-u" 'stata-lookup)
-(define-key stata-mode-map [menu-bar stata] 
-  (cons "Stata" (make-sparse-keymap "Stata")))
-(define-key stata-mode-map [menu-bar stata lookup]
-  '("Look up..." . stata-lookup))
-(define-key stata-mode-map [menu-bar stata statahelp]
-  '("Help on..." . stata-help))
-(define-key stata-mode-map [menu-bar stata variables]
-  '("Variables" . stata-variables))
-(define-key stata-mode-map [menu-bar stata review]
-  '("Review" . stata-review-window))
-(define-key stata-mode-map [menu-bar stata eval-line]
-  '("Eval line" . stata-eval-line))
-(define-key stata-mode-map [menu-bar stata eval-next]
-  '("Eval line and next line" . stata-eval-line-and-next-line))
-(define-key stata-mode-map [menu-bar stata eval-go]
-  '("Eval line and go" . stata-eval-line-and-go))
-(define-key stata-mode-map [menu-bar stata eval-buff]
-  '("Eval buffer" . stata-eval-buffer))
-(define-key stata-mode-map [menu-bar stata eval-buff-go]
-  '("Eval buffer and go" . stata-eval-buffer-and-go))
-(define-key stata-mode-map [menu-bar stata to-stata]
-  '("Switch to stata" . stata-switch-to-stata))
+;;(setq stata-mode-map (make-sparse-keymap))
+;;(define-key stata-mode-map "\C-c\C-r"    'stata-eval-region)
+;;(define-key stata-mode-map "\C-c\M-r" 'stata-eval-region-and-go)
+;;(define-key stata-mode-map "\C-c\C-b"    'stata-eval-buffer)
+;;(define-key stata-mode-map "\C-c\M-b" 'stata-eval-buffer-and-go)
+;;(define-key stata-mode-map "\C-c\C-f"    'stata-eval-function)
+;;(define-key stata-mode-map "\C-c\C-n"     'stata-eval-line-and-next-line)
+;;(define-key stata-mode-map "\C-c\C-j"    'stata-eval-line)
+;;(define-key stata-mode-map "\C-c\C-r"   'stata-review-window)
+;;(define-key stata-mode-map "\C-c\M-j" 'stata-eval-line-and-go)
+;;(define-key stata-mode-map "\C-c\C-y"    'stata-switch-to-stata)
+;;(define-key stata-mode-map "\C-c\C-z" 'stata-switch-to-end-of-stata)
+;;;;(define-key stata-mode-map "\C-c\C-l"    'stata-load-file)
+;;(define-key stata-mode-map "\C-c\C-h"    'stata-help)
+;;(define-key stata-mode-map "\C-c\C-v"    'stata-variables)
+;;(define-key stata-mode-map "\M-\t" 'comint-replace-by-expanded-filename)
+;;(define-key stata-mode-map "\177" 'backward-delete-char-untabify)
+;;(define-key stata-mode-map "\C-c\C-u" 'stata-lookup)
+;;(define-key stata-mode-map [menu-bar stata] 
+;;  (cons "Stata" (make-sparse-keymap "Stata")))
+;;(define-key stata-mode-map [menu-bar stata lookup]
+;;  '("Look up..." . stata-lookup))
+;;(define-key stata-mode-map [menu-bar stata statahelp]
+;;  '("Help on..." . stata-help))
+;;(define-key stata-mode-map [menu-bar stata variables]
+;;  '("Variables" . stata-variables))
+;;(define-key stata-mode-map [menu-bar stata review]
+;;  '("Review" . stata-review-window))
+;;(define-key stata-mode-map [menu-bar stata eval-line]
+;;  '("Eval line" . stata-eval-line))
+;;(define-key stata-mode-map [menu-bar stata eval-next]
+;;  '("Eval line and next line" . stata-eval-line-and-next-line))
+;;(define-key stata-mode-map [menu-bar stata eval-go]
+;;  '("Eval line and go" . stata-eval-line-and-go))
+;;(define-key stata-mode-map [menu-bar stata eval-buff]
+;;  '("Eval buffer" . stata-eval-buffer))
+;;(define-key stata-mode-map [menu-bar stata eval-buff-go]
+;;  '("Eval buffer and go" . stata-eval-buffer-and-go))
+;;(define-key stata-mode-map [menu-bar stata to-stata]
+;;  '("Switch to stata" . stata-switch-to-stata))
+;;
+;;
+;;
+;;(defvar stata-help-mode-map nil)
+;;(setq stata-help-mode-map (cons 'keymap help-mode-map))
+;;(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
+;;(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
+;;(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
+;;(define-key stata-help-mode-map [menu-bar stata] 
+;;  (cons "Stata" (make-sparse-keymap "Stata")))
+;;(define-key stata-help-mode-map [menu-bar stata statahelp]
+;;  '("Help on..." . stata-help))
+;;(define-key stata-help-mode-map [menu-bar stata rehelp]
+;;  '("rehelp (hyperlink)" . stata-rehelp))
+;;
 
 
-
-(defvar stata-help-mode-map nil)
-(setq stata-help-mode-map (cons 'keymap help-mode-map))
-(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
-(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
-(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
-(define-key stata-help-mode-map [menu-bar stata] 
-  (cons "Stata" (make-sparse-keymap "Stata")))
-(define-key stata-help-mode-map [menu-bar stata statahelp]
-  '("Help on..." . stata-help))
-(define-key stata-help-mode-map [menu-bar stata rehelp]
-  '("rehelp (hyperlink)" . stata-rehelp))
-
-
-
-(defun inferior-stata-mode ()
-"Major mode for running Stata. Based on comint-mode.
-Features include Help (\\[stata-help]), Review (\\[stata-review-window]) and
-Variables (\\[stata-variables]) mimicking the help, review and 
-variables windows of Stata for Windows
-\\{inferior-stata-mode-map}"
-  (interactive)
-  (make-comint "stata" "stata" 
-	       (and stata-profile
-		    (or (file-exists-p stata-profile)
-			(null (message "Startup file %s not found."
-				       stata-profile))) stata-profile)
-	       stata-switches)
-  (switch-to-buffer "*stata*" )
-  (setq comint-process-echoes t)
-  (set-process-filter (get-process "stata") 'stata-watch-for-menu-filter)
-  (setq comint-input-filter-functions
-	(cons 'stata-add-to-review-buffer comint-input-filter-functions))
-  (save-excursion
-    (set-buffer (get-buffer-create "*stata review*"))
-    (stata-mode))
-  (setq major-mode 'inferior-stata-mode)
-  (setq mode-name "inferior Stata")
-  (use-local-map inferior-stata-mode-map))
-
-(defun stata ()
-  (interactive)
-  (inferior-stata-mode))
-
-(defun stata-help-mode ()
-"Major mode for displaying Stata help in a read-only
-buffer. Active commands are Help (\\[stata-help]) and
-hyperlink (\\[stata-rehelp] or mouse-2)"
-  (interactive)
-  (setq major-mode 'stata-help-mode)
-  (setq mode-name "Stata help")
-  (use-local-map stata-help-mode-map)
-  (setq buffer-read-only t))
-
-
-(defun stata-mode ()
-"Major mode for editing Stata files. Commands for sending lines to
-Stata (\\[stata-eval-line], \\[stata-eval-line-and-go],
-\\[stata-eval-line-and-next-line]) 
-and for displaying Stata help (\\[stata-help]), variables (\\[stata-variables])
- and review window (\\[stata-review-window])
-\\{stata-mode-map}"
-  (interactive)
-  (kill-all-local-variables)
-  (setq major-mode 'stata-mode)
-  (setq mode-name "Stata")
-  (use-local-map stata-mode-map))
-
-
+;;(defun inferior-stata-mode ()
+;;"Major mode for running Stata. Based on comint-mode.
+;;Features include Help (\\[stata-help]), Review (\\[stata-review-window]) and
+;;Variables (\\[stata-variables]) mimicking the help, review and 
+;;variables windows of Stata for Windows
+;;\\{inferior-stata-mode-map}"
+;;  (interactive)
+;;  (make-comint "stata" "stata" 
+;;	       (and stata-profile
+;;		    (or (file-exists-p stata-profile)
+;;			(null (message "Startup file %s not found."
+;;				       stata-profile))) stata-profile)
+;;	       stata-switches)
+;;  (switch-to-buffer "*stata*" )
+;;  (setq comint-process-echoes t)
+;;  (set-process-filter (get-process "stata") 'stata-watch-for-menu-filter)
+;;  (setq comint-input-filter-functions
+;;	(cons 'stata-add-to-review-buffer comint-input-filter-functions))
+;;  (save-excursion
+;;    (set-buffer (get-buffer-create "*stata review*"))
+;;    (stata-mode))
+;;  (setq major-mode 'inferior-stata-mode)
+;;  (setq mode-name "inferior Stata")
+;;  (use-local-map inferior-stata-mode-map))
+;;
+;;(defun stata ()
+;;  (interactive)
+;;  (inferior-stata-mode))
+;;
+;;(defun stata-help-mode ()
+;;"Major mode for displaying Stata help in a read-only
+;;buffer. Active commands are Help (\\[stata-help]) and
+;;hyperlink (\\[stata-rehelp] or mouse-2)"
+;;  (interactive)
+;;  (setq major-mode 'stata-help-mode)
+;;  (setq mode-name "Stata help")
+;;  (use-local-map stata-help-mode-map)
+;;  (setq buffer-read-only t))
+;;
+;;
+;;(defun stata-mode ()
+;;"Major mode for editing Stata files. Commands for sending lines to
+;;Stata (\\[stata-eval-line], \\[stata-eval-line-and-go],
+;;\\[stata-eval-line-and-next-line]) 
+;;and for displaying Stata help (\\[stata-help]), variables (\\[stata-variables])
+;; and review window (\\[stata-review-window])
+;;\\{stata-mode-map}"
+;;  (interactive)
+;;  (kill-all-local-variables)
+;;  (setq major-mode 'stata-mode)
+;;  (setq mode-name "Stata")
+;;  (use-local-map stata-mode-map))
+;;
+;;
 (defun stata-eval-region (start end)
   "Send the current region to the inferior stata process."
   (interactive "r")
@@ -459,3 +467,6 @@ With argument, positions cursor at end of buffer."
   "Switch to the end of the inferior stata process buffer."
   (interactive)
   (stata-switch-to-stata t))
+
+
+(provide 'essl-sta)
