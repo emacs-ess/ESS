@@ -1,7 +1,7 @@
 ;;; ess.el --- Emacs Speaks Statistics: statistical programming within Emacs
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1996--2000 Rossini, Heiberger, Hornik, Maechler and
+;; Copyright (C) 1996--2001 Rossini, Heiberger, Hornik, Maechler and
 ;;                          Sparapani.
 
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
@@ -10,7 +10,7 @@
 ;;                Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.23 2001/03/23 15:28:54 ess Exp $
+;; Version: $Id: ess.el,v 5.24 2001/04/26 16:38:46 ess Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -48,11 +48,11 @@
 ;;           1994--1997    David Smith <maa036@lancaster.ac.uk>
 ;;
 ;;           1996--2000    Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>
-;;           1996--2000    Martin Maechler <maechler@stat.math.ethz.ch>
+;;           1996--2001    Martin Maechler <maechler@stat.math.ethz.ch>
 ;;           1996--2000    A.J. Rossini <rossini@stat.sc.edu>,
-;;           1998--2000                 <rossini@biostat.washington.edu>
-;;           1996--2000    Richard M. Heiberger <rmh@astro.ocis.temple.edu>
-;;           1999--2000    Rodney Sparapani <rsparapa@mcw.edu>
+;;           1998--2001                 <rossini@biostat.washington.edu>
+;;           1996--2001    Richard M. Heiberger <rmh@astro.ocis.temple.edu>
+;;           1999--2001    Rodney Sparapani <rsparapa@mcw.edu>
 ;;
 
 ;;; Commentary:

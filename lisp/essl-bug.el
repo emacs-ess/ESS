@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/02/27 21:47:25 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essl-bug.el,v 1.1 2001/02/27 21:47:25 ess Exp $
+;; Modified: $Date: 2001/04/26 16:38:46 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essl-bug.el,v 1.2 2001/04/26 16:38:46 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -36,6 +36,11 @@
 (require 'font-lock)
 (require 'comint)
 
+;; Begin Function definitions for Emacs versions < 20.4 or XEmacs
+;; These are taken verbatim from the file emacs-20.6/lisp/w32-fns.el
+(if (not (fboundp 'w32-shell-dos-semantics))
+	    (load-file (concat ess-lisp-directory "/essnt204.el")))
+;; End Function definitions for Emacs versions < 20.4 or XEmacs
 
 (if (assoc "\\.bug\\'" auto-mode-alist) nil
     (setq auto-mode-alist
@@ -119,8 +124,9 @@
 (defvar ess-bugs-batch-command "backbugs" 
    "ESS[BUGS]:  Set to name of backbugs script that comes with ESS[BUGS].")
 
-(defvar ess-bugs-batch-tail " " 
-   "ESS[BUGS]:  Modifiers at the end of the backbugs command line.")
+(defvar ess-bugs-batch-post-command
+    (if (w32-shell-dos-semantics) " " "&")
+    "ESS[BUGS]:  Modifiers at the end of the backbugs command line.")
 
 (defvar ess-file "."
    "ESS:  file with PATH.")
@@ -165,9 +171,9 @@
 		(ess-switch-to-suffix ".bug")
 	    )
 	    (insert (concat "const N = " temp ";\n"))
+	    (insert "var ;\n")
 	    (insert (concat "data  in \"" ess-file-dir ess-file-root ".dat\";\n"))
 	    (insert (concat "inits  in \"" ess-file-dir ess-file-root ".in\";\n"))
-	    (insert "var ;\n")
 	    (insert "{\n")
             (insert "    for (i in 1:N) {\n    \n")
             (insert "    }\n")
@@ -179,6 +185,7 @@
 	    (insert "update( )\n")
 	    (insert "monitor( )\n")
 	    (insert "update( )\n")
+	    (insert "checkpoint( )\n")
 	    (insert "stats( )\n")
 	    (insert "q( )\n")
 	))
@@ -208,9 +215,9 @@
    (if (equal ".cmd" ess-file-suffix) (progn
 	(save-buffer)
 	(shell)
-	(insert (concat ess-bugs-batch-command " " ess-file-root " " ess-file " " ess-bugs-batch-tail))
+	(insert (concat ess-bugs-batch-command " " ess-file-root " " ess-file " " ess-bugs-batch-post-command))
 	(comint-send-input)
-	(ess-switch-to-suffix ".log")
+;;	(ess-switch-to-suffix ".log")
    ))
 )
 

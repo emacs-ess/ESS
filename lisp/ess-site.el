@@ -1,15 +1,15 @@
 ;;; ess-site.el --- user customization of ess-mode
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--2000 A.J. Rossini, R.M. Heiberger, Martin
-;; Maechler, Kurt Hornik.
+;; Copyright (C) 1997--2001 A.J. Rossini, R.M. Heiberger, Martin
+;; Maechler, Kurt Hornik, Rodney Sparapani.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/04/17 03:28:11 $
-;; Version: $Revision: 5.72 $
-;; RCS: $Id: ess-site.el,v 5.72 2001/04/17 03:28:11 ess Exp $
+;; Modified: $Date: 2001/04/26 16:38:46 $
+;; Version: $Revision: 5.73 $
+;; RCS: $Id: ess-site.el,v 5.73 2001/04/26 16:38:46 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -223,7 +223,10 @@ The extension, in a file name, is the part that follows the last `.'."
 	   ("\\.[Ss]out"	. S-transcript-mode)
 	   ("\\.[Rr]t\\'"	. R-transcript-mode)
 	   ("\\.[Rr]out"	. R-transcript-mode)
-	   ("\\.Rd\\'"		. Rd-mode))
+	   ("\\.Rd\\'"		. Rd-mode)
+           ("\\.bug\\'"         . ess-bugs-mode)
+           ("\\.cmd\\'"         . ess-bugs-mode)
+          )
 	 auto-mode-alist)))
 
 ;; (1.4) Customize the dialects for your setup.
@@ -354,6 +357,8 @@ The extension, in a file name, is the part that follows the last `.'."
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 (ess-message "[ess-site:] require 'essd-omg ...")
 (require 'essd-omg)  ;; for omegahat
+(ess-message "[ess-site:] require 'essl-bug ...")
+(require 'essl-bug)  ;; for batch BUGS
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el]: ess-customize-alist=%s \n"

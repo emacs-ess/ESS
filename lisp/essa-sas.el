@@ -3,12 +3,12 @@
 ;; Copyright (C) 1997--2001 Rodney Sparapani, A.J. Rossini, 
 ;; Martin Maechler, Kurt Hornik, and Richard M. Heiberger.
 
-;; Author: Rodney Sparapani <rodney.sparapani@duke.edu>
+;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/04/03 21:50:22 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: essa-sas.el,v 1.15 2001/04/03 21:50:22 ess Exp $
+;; Modified: $Date: 2001/04/26 16:38:46 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: essa-sas.el,v 1.16 2001/04/26 16:38:46 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -38,43 +38,28 @@
 
 
 ;;; Table of Contents
-;;; Section 1:  Emacs/XEmacs Variant Issues
+;;; Section 1:  Emacs/XEmacs Version Issues
 ;;; Section 2:  Variable Definitions
 ;;; Section 3:  Function Definitions
 ;;; Section 4:  Key Definitions
 
 
-;;; Section 1:  Emacs/XEmacs Variant Issues
+;;; Section 1:  Emacs/XEmacs Version Issues
 
-;; Function definitions for users of Windows emacs versions < 20.4
+;; Begin Function definitions for Emacs versions < 20.4 or XEmacs
 ;; These are taken verbatim from the file emacs-20.6/lisp/w32-fns.el
-;; Note:  you are strongly encouraged to upgrade to the current release.
-(if (and (eq system-type 'windows-nt)
-         (or (< emacs-major-version 20)
-         (and (= emacs-major-version 20) (< emacs-minor-version 4))))
+(if (not (fboundp 'w32-shell-dos-semantics))
 	    (load-file (concat ess-lisp-directory "/essnt204.el")))
-;; End of Function definitions for users of Windows emacs versions < 20.4
-
-;; Variable/function definitions for XEmacs
-(if (featurep 'xemacs) (progn
-    (defvar explicit-command\.com-args nil
-	"Switches for COMMAND.COM.")
-
-    (defvar explicit-cmd\.exe-args nil
-	"Switches for CMD.EXE.")
-
-  (if (fboundp 'w32-shell-dos-semantics) nil
-    (defun w32-shell-dos-semantics ()
-	"Return t if the interactive shell being used expects MSDOS shell semantics."
-	(or (string-equal "COMMAND.COM" (file-name-nondirectory shell-file-name))
-	    (string-equal "CMD.EXE" (file-name-nondirectory shell-file-name)))))))
+;; End Function definitions for Emacs versions < 20.4 or XEmacs
 
 
 ;;; Section 2:  Variable Definitions
 
 (defvar ess-sas-data-view-options 
-  "-nosysin -log NUL: -noenhancededitor"
+   (if (eq system-type 'windows-nt) "-noenhancededitor -nosysin -log NUL:"
+     "-nodms -nosysin -log /dev/null")
   "The options necessary for your enviromment and your operating system.")
+
 
 (defvar ess-sas-file-path "."
 	"Full path-name of the sas file to perform operations on.")
@@ -82,13 +67,19 @@
 (defvar ess-sas-submit-command "sas"
     "Command to invoke SAS.")
 
+(defvar ess-sas-submit-post-command (if (w32-shell-dos-semantics) " " "&")
+    "Command-line statement to post-modify SAS invocation, e.g. &")
+
+(defvar ess-sas-submit-pre-command (if (w32-shell-dos-semantics) "start" " ")
+    "Command-line statement to pre-modify SAS invocation, e.g. start")
+
 
 (defvar ess-sas-submit-method 
   (if (and (eq system-type 'windows-nt)
 	   (not (w32-shell-dos-semantics)))
       'sh
     system-type)
-  "Method used by ``ess-sas-submit'.
+  "Method used by `ess-sas-submit'.
 The default is based on the value of the emacs variable `system-type'
 and, on Windows machines, the function `w32-shell-dos-semantics'.
 'Apple-Macintosh  AppleScript
@@ -215,13 +206,15 @@ on the way."
 (defun ess-sas-data-view ()
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
-    (ess-sas-file-path)
-    (shell)
-    (insert (concat ess-sas-submit-command " -initstmt \"proc fsview data=" 
-	(read-string "SAS Dataset: ")
-	"; run;\" " ess-sas-data-view-options))
+    (save-excursion 
+      (if (get-buffer "*shell*") (set-buffer "*shell*")
+          (shell))
+	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
+	    " -initstmt \"proc fsview data=" (read-string "SAS Dataset: ")
+	    "; run;\" " ess-sas-data-view-options " " ess-sas-submit-post-command))
     (comint-send-input)
-    (ess-sas-goto-sas))
+    )
+)
 
 (defun ess-sas-file (suffix &optional revert)
   "Find a file associated with the SAS file and revert if necessary."
@@ -343,22 +336,14 @@ their files from the remote computer.  Local copies of the .sas .lst
 (defun ess-sas-submit-region ()
     "Write region to temporary file, and submit to SAS."
     (interactive)
-    (save-buffer)
-    (write-region (region-beginning) (region-end) "ess-temp.sas" nil t)
-
-    (save-excursion (let ((ess-prev-buffer (current-buffer))
-	(ess-next-buffer (get-file-buffer "ess-temp.sas")))
-
-	(if (not ess-next-buffer) (find-file "ess-temp.sas")
-	    (switch-to-buffer ess-next-buffer)
-	    (ess-revert-wisely))
-
-	(ess-sas-submit)
-	(switch-to-buffer ess-prev-buffer)))
-
-	(ess-sas-file-path)
-;;	(ess-revert-wisely)
-;;	(ess-sas-file "sas")
+    (write-region (region-beginning) (region-end) "ess-temp.sas")
+    (save-excursion 
+      (if (get-buffer "*shell*") (set-buffer "*shell*")
+          (shell))
+      (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
+          " ess-temp.sas " ess-sas-submit-post-command))
+      (comint-send-input)
+    )
 )
 
 (defun ess-sas-submit-sh (ess-sas-arg)
