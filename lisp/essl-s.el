@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1998/09/08 21:18:33 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: essl-s.el,v 5.8 1998/09/08 21:18:33 maechler Exp $
+;; Modified: $Date: 1998/09/09 08:45:26 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: essl-s.el,v 5.9 1998/09/09 08:45:26 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -356,7 +356,7 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-time-string (&optional clock)
   "Returns a string for use as a timestamp. + hr:min if CLOCK is non-nil.
-	Currently returns strings like \"13 Mar 92\".  Redefine to taste."
+ Currently returns strings like \"13 Mar 1992\".  Redefine to taste."
   ;; RELIES on (current-time-string) : Must be  exactly
   ;; of this structure  [0..23], e.g. == "Mon Jan 27 17:30:45 1992"
   (let* ((time (current-time-string))
@@ -381,15 +381,15 @@ Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
 (defun ess-insert-function-outline ()
   "Insert an S function definition `outline' at point.
 Uses the file given by the variable ess-function-outline-file."
-;;---- FIXME: This should be done such that ONE 'undo' undoes all ! ---
   (interactive)
   (let ((oldpos (point)))
-    (insert-file-contents ess-function-outline-file)
-    (if (search-forward "$A$" nil t)
-	(replace-match (user-full-name) 'not-upcase 'literal))
-    (goto-char oldpos)
-    (if (search-forward "$D$" nil t)
-	(replace-match (ess-time-string 'clock) 'not-upcase 'literal))
+    (save-excursion
+      (insert-file-contents ess-function-outline-file)
+      (if (search-forward "$A$" nil t)
+	  (replace-match (user-full-name) 'not-upcase 'literal))
+      (goto-char oldpos)
+      (if (search-forward "$D$" nil t)
+	  (replace-match (ess-time-string 'clock) 'not-upcase 'literal)))
     (goto-char (1+ oldpos))))
 
 (defun ess-repl-regexp (regexp to-string &optional fixedcase literal)
@@ -435,8 +435,7 @@ Uses the file given by the variable ess-function-outline-file."
 	     "000000+[1-9]?[1-9]?\\>" "" nil)
       (while (< num 9)
 	(setq str (concat (int-to-string num) "999999+[0-8]*"))
-	(if (and (numberp verbose)
-		 (> verbose 1))
+	(if (and (numberp verbose) (> verbose 1))
 	    (message (format "\nregexp: '%s'" str)))
 	(goto-char (point-min))
 	(ess-repl-regexp str (int-to-string (1+ num)) 'fixedcase 'literal)
@@ -447,11 +446,10 @@ Uses the file given by the variable ess-function-outline-file."
  Produces more readable code, and one that is well formatted in emacs
  ess-mode. Martin Maechler, ETH Zurich."
   (interactive "P")
-  (save-excursion
-    (ess-dump-to-src dont-ask)
-    (ess-fix-comments dont-ask)
-    (ess-num-var-round dont-ask verbose)))
-
+  ;; the 3 following functions each do a save-excursion:
+  (ess-dump-to-src dont-ask)
+  (ess-fix-comments dont-ask)
+  (ess-num-var-round dont-ask verbose))
 
 (defun ess-add-MM-keys ()
   (require 'ess-mode)
