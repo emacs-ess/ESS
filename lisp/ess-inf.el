@@ -7,9 +7,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/02/06 17:47:19 $
-;; Version: $Revision: 5.59 $
-;; RCS: $Id: ess-inf.el,v 5.59 2001/02/06 17:47:19 rossini Exp $
+;; Modified: $Date: 2001/02/06 17:57:49 $
+;; Version: $Revision: 5.60 $
+;; RCS: $Id: ess-inf.el,v 5.60 2001/02/06 17:57:49 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -352,10 +352,8 @@ This was rewritten by KH in April 1996."
 	       (insert "\^L\n")))    ; page boundaries = Interactive sessions
 	   (let ((process-environment
 		  (nconc
-		   (list "TERM=emacs")
-		   ;; (format "TERMCAP=emacs:co#%d:tc=unknown:" (frame-width)))
-		   (list
-		    (format "PAGER=%s" inferior-ess-pager))
+		   (list "STATATERM=emacs"
+			 (format "PAGER=%s" inferior-ess-pager))
 		   process-environment)))
 	     (ess-write-to-dribble-buffer "Making Process...")
 	     (ess-write-to-dribble-buffer
