@@ -1,5 +1,4 @@
-
-## $Id: Makefile,v 5.7 1998/11/11 15:54:34 maechler Exp $
+## $Id: Makefile,v 5.8 1998/11/13 23:47:27 rossini Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
@@ -19,6 +18,8 @@ docs:
 ## This target is used to create a new version of the tar-file.
 ## prefix'ing with "-" implies that errors are non-critical.
 
+## Instead of doing a checkout and exclude, we could do an export,
+## which ought to morally be cleaner.
 dist: 
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(VERSION),"
