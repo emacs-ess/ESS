@@ -2,9 +2,9 @@
 ;;; Thu 06 May 2004
 ;;; Stephen Eglen
 ;;; GPL.
-;; Modified: $Date: 2004/05/17 14:20:48 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: ess-toolbar.el,v 1.10 2004/05/17 14:20:48 stephen Exp $
+;; Modified: $Date: 2004/05/17 17:19:32 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: ess-toolbar.el,v 1.11 2004/05/17 17:19:32 stephen Exp $
 
 ;;; Notes.
 
@@ -56,7 +56,7 @@ It might be better for the user if we have standard toolbar entries too,
 e.g. for saving/loading files.")
 
 (defvar ess-icon-directory 
-  (expand-file-name (concat ess-etc-directory "icons"))
+  (expand-file-name (concat ess-etc-directory "/icons"))
   "*Location for ESS icons.
 Icons should be found in ESS/etc/icons/ directory.")
 
