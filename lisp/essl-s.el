@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2004/05/19 13:10:44 $
-;; Version: $Revision: 5.38 $
-;; RCS: $Id: essl-s.el,v 5.38 2004/05/19 13:10:44 maechler Exp $
+;; Modified: $Date: 2004/06/23 05:06:07 $
+;; Version: $Revision: 5.39 $
+;; RCS: $Id: essl-s.el,v 5.39 2004/06/23 05:06:07 hornik Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -66,8 +66,8 @@
   (modify-syntax-entry ?/  "."  S-syntax-table))
 
 (defvar S-editing-alist
-  '((paragraph-start              . (concat "^$\\|" page-delimiter))
-    (paragraph-separate           . (concat "^$\\|" page-delimiter))
+  '((paragraph-start              . (concat "\\s-*$\\|" page-delimiter))
+    (paragraph-separate           . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
     (require-final-newline        . t)
     (comment-start                . "#")
