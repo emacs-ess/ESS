@@ -1,3 +1,8 @@
+2004-01-19  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-cust.el (inferior-R-program-name): Customize.
+	Add description of file to line 1.
+
 2003-12-08  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-noweb.el (ess-eval-chunk): The code chunk is evaluated in a
