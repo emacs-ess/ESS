@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: essd-sas.el,v 5.11 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2002/05/10 05:00:11 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: essd-sas.el,v 5.12 2002/05/10 05:00:11 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -208,6 +208,7 @@ Better logic needed!  (see 2 uses, in this file).")
     (if ess-sas-local-pc-keys (ess-sas-local-pc-keys))
     (if ess-sas-global-unix-keys (ess-sas-global-unix-keys))
     (if ess-sas-global-pc-keys (ess-sas-global-pc-keys)))
+  (define-key sas-mode-local-map "\C-ci" 'ess-eval-line-and-step-invisibly)
   (use-local-map sas-mode-local-map))
 
 (defun SAS ()
