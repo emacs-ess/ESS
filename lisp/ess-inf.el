@@ -1,4 +1,4 @@
-;; ess-inf.el --- Support for running S as an inferior Emacs process
+;;; ess-inf.el --- Support for running S as an inferior Emacs process
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997, A.J. Rossini
@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/03/08 04:23:04 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: ess-inf.el,v 5.14 1999/03/08 04:23:04 rossini Exp $
+;; Modified: $Date: 1999/03/16 14:30:56 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: ess-inf.el,v 5.15 1999/03/16 14:30:56 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -602,7 +602,7 @@ PROC is the ESS process. Does not change point"
   (save-excursion
     (while (progn
 	     ;; get output if there is some ready
-	     (accept-process-output proc 0 500)
+	     (accept-process-output proc 0 1500)
 	     (goto-char (marker-position (process-mark proc)))
 	     (beginning-of-line)
 	     (if (< (point) start-of-output) (goto-char start-of-output))
@@ -667,16 +667,27 @@ Guarantees that the value of .Last.value will be preserved."
 	      (erase-buffer)
 	      (set-marker (process-mark sprocess) (point-min))
 	      (process-send-string sprocess ess-save-lastvalue-command)
+	      (sleep-for 0.5)
 	      (ess-prompt-wait sprocess)
 	      (erase-buffer)
 	      (process-send-string sprocess com)
+	      (sleep-for 4)		;this much time is needed for
+					;ess-create-object-name-db on PC
 	      (ess-prompt-wait sprocess)
+	      (sleep-for 0.5)
 	      (goto-char (point-max))
 	      (save-excursion
 		(beginning-of-line)	; so prompt will be deleted
 		(setq end-of-output (point)))
 	      (process-send-string sprocess ess-retr-lastvalue-command)
-	      (ess-prompt-wait sprocess (point))
+
+	      ;; For S+4
+	      (sleep-for 0.5)
+	      (ess-prompt-wait sprocess end-of-output)
+
+	      ;; Old version.
+	      ;;(ess-prompt-wait sprocess (point))
+
 	      ;; Get rid out output from last assin
 	      (delete-region end-of-output (point-max))))
 	;; Restore old values for process filter
@@ -1687,10 +1698,10 @@ the load-path."
       (message "Searching %s" (car search-list))
       (setq temp-object-name-db (cons (cons (car search-list)
 					   (ess-object-names nil pos))
-				     ess-object-name-db))
+				     temp-object-name-db))
       (setq search-list (cdr search-list))
       (ess-write-to-dribble-buffer
-       (format "(object db): ess-obj-name-db=%s \n pos=%s"
+       (format "(object db): temp-obj-name-db=%s \n pos=%s"
 	       temp-object-name-db pos))
       (setq pos (1+ pos)))
 
@@ -1752,7 +1763,7 @@ the load-path."
   "Return the current search list as a list of strings
 Elements which are apparently directories are expanded to full dirnames"
   (save-excursion
-    (let ((result  ""))
+    (let ((result  nil)) ;; "" or nil?
       (set-buffer (get-ess-buffer ess-current-process-name))
       (if (and ess-search-list (not ess-sp-change))
 	  ess-search-list
