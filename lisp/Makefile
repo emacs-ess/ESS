@@ -39,7 +39,7 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 5.0-pre2
+VERSION = 5.0
 VERSIONDIR = ESS-$(VERSION)
 
 LASTVERSION = 4.8.MM6.XE2
@@ -126,19 +126,16 @@ dist:
 	cp $(VERSIONDIR)/README $(MYFTPDIR)/$(VERSIONDIR)-README
 	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
 
-
-
 patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 	-rm -rf ESS-$(VERSION)
 	mkdir ESS-$(VERSION)
 	(cd ESS-$(VERSION); $(GZCAT) ../ESS-$(VERSION).tar.gz | tar xvf -)
 	-rm -rf ESS-$(LASTVERSION)
 	mkdir ESS-$(LASTVERSION)
-	(cd ESS-$(LASTVERSION); $(GZCAT) ../ESS-$(LASTVERSION).tar.gz|tar xvf -)
+	(cd ESS-$(LASTVERSION); tar zxvf../ESS-$(LASTVERSION).tar.gz -)
 	-diff -bBw -C 2 ESS-$(LASTVERSION) ESS-$(VERSION) > diff-$(LASTVERSION)-$(VERSION)
 	-rm -rf ESS-$(VERSION)
 	-rm -rf ESS-$(LASTVERSION)
-
 
 ### TARGETS
 
@@ -157,26 +154,20 @@ html/ess_toc.html: ess.texi
 .el.elc:
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
 
-ess-site.elc:  ess-site.el ess.elc
+ess-site.elc: ess-site.el ess.elc
 #	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile ess-site.el
 
 ess-vars.elc:	ess-vars.el
-#	$(EMACS) $(BATCHFLAGS)  -f batch-byte-compile ess-vars.el
 
-ess.elc:	ess.el
-#	$(EMACS) $(BATCHFLAGS)  -f batch-byte-compile ess.el
+ess.elc: ess.el
 
+ess-inf.elc: ess-inf.el $(CORE)
 
-ess-inf.elc:  ess-inf.el $(CORE)
+ess-mode.elc: ess-mode.el $(CORE)
 
-ess-mode.elc:  ess-mode.el $(CORE)
+ess-trns.elc: ess-trns.el $(CORE)
 
-ess-trns.elc:  ess-trns.el $(CORE)
-
-ess-help.elc:  ess-help.el $(CORE)
-
-# For Dialect Files:
-#	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-r.el
+ess-help.elc: ess-help.el $(CORE)
 
 essd-sas.elc : essd-sas.el ess.el
 
