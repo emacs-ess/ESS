@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/24 13:12:00 $
-;; Version: $Revision: 1.43 $
-;; RCS: $Id: ess-inf.el,v 1.43 1997/07/24 13:12:00 rossini Exp $
+;; Modified: $Date: 1997/07/26 01:55:32 $
+;; Version: $Revision: 1.44 $
+;; RCS: $Id: ess-inf.el,v 1.44 1997/07/26 01:55:32 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.44  1997/07/26 01:55:32  rossini
+;; comint-process-echoes is nil if ess-proc-prefix is "XLS".
+;;
 ;; Revision 1.43  1997/07/24 13:12:00  rossini
 ;; moved menu items.
 ;;
@@ -1257,7 +1260,13 @@ to continue it."
 
   ;; We set comint-process-echoes to t because inferior-ess-input-sender
   ;; recopies the input. If comint-process-echoes was *meant* to be t ...
-  (setq comint-process-echoes t)
+  ;;
+  ;; except that XLS doesn't like it.  This is an ugly hack that ought 
+  ;; to go into the dialect configuration...
+  (if (string= ess-proc-prefix "XLS")
+      (setq comint-process-echoes nil)
+    (setq comint-process-echoes t))
+
   ;; AJR: add KH's fix.  This is ugly, change to do it right.
   ;; i.e. put it as a buffer local var, in S or R defuns...
   (cond ((string= ess-proc-prefix "S")
@@ -1340,8 +1349,7 @@ to continue it."
   (ess-make-buffer-current)
   (run-hooks 'ess-send-input-hook)
   (comint-send-input)
-  (setq ess-object-list nil) ;; Will be reconstucted from cache if needs be
-  )
+  (setq ess-object-list nil)) ;; Will be reconstucted from cache if needs be
 
 (defun inferior-ess-get-old-input ()
   "Returns the S command surrounding point."
