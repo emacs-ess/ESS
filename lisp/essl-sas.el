@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/01/15 17:18:42 $
-;; Version: $Revision: 5.33 $
-;; RCS: $Id: essl-sas.el,v 5.33 2002/01/15 17:18:42 rmh Exp $
+;; Modified: $Date: 2002/01/15 18:03:25 $
+;; Version: $Revision: 5.34 $
+;; RCS: $Id: essl-sas.el,v 5.34 2002/01/15 18:03:25 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -101,7 +101,7 @@ the mode line."
   "`ess-transcript-mode' for SAS."
   (interactive)
   (SAS-mode)
-  (ess-transcript-minor-mode)
+  (ess-transcript-minor-mode 1)
   (toggle-read-only t)) ;; to protect the buffer.
 
 (defun SAS-listing-mode()
