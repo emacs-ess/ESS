@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/19 00:48:21 $
-;; Version: $Revision: 1.107 $
-;; RCS: $Id: essa-sas.el,v 1.107 2002/07/19 00:48:21 rsparapa Exp $
+;; Modified: $Date: 2002/07/19 02:12:37 $
+;; Version: $Revision: 1.108 $
+;; RCS: $Id: essa-sas.el,v 1.108 2002/07/19 02:12:37 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -64,6 +64,13 @@
 ;;    :group 'ess-sas
 ;;)
 
+(defcustom ess-sas-submit-mac-virtual-pc nil
+"*Non-nil means that you want to run Windows SAS in a
+Virtual PC emulator on your Mac."
+    :group 'ess-sas)
+
+(make-variable-buffer-local 'ess-sas-submit-mac-virtual-pc)
+
 (defcustom ess-sas-submit-command sas-program
     "*Command to invoke SAS in batch; buffer-local."
     :group 'ess-sas  
@@ -83,13 +90,16 @@
 (defvar ess-sas-submit-method 
   (if ess-microsoft-p 
     (if (w32-shell-dos-semantics) 'ms-dos 'sh)
-    (if (equal system-type 'Apple-Macintosh) 'apple-script 'sh))
+    (if (or (equal system-type 'Apple-Macintosh) 
+	    (and ess-sas-submit-mac-virtual-pc (equal system-type 'darwin)))
+	'apple-script 'sh))
 "Method used by `ess-sas-submit'.
 The default is based on the value of the emacs variable `system-type'
 and, on Windows, the function `w32-shell-dos-semantics'.
 'sh               if *shell* runs sh, ksh, csh, tcsh or bash
 'ms-dos           if *shell* follows MS-DOS semantics
-'apple-script     *shell* unavailable in Mac Classic, use AppleScript
+'apple-script     *shell* unavailable in Mac Classic, use AppleScript,
+                  also for Windows SAS in Virtual PC on Mac OS X 
 
 Unix users will get 'sh by default.  
 
@@ -534,13 +544,15 @@ their files from the remote computer.  Local copies of the .sas .lst
   (ess-eval-linewise (concat arg1 " " arg2 " " (buffer-name) " &")))
 
 (defun ess-sas-submit-mac (arg1 arg2)
-  "Mac
-arg1 is assumed to be the AppleScript command
-\"invoke SAS using program file\".  If so, then arg2, if any, is a complex string
-of the form \"with options { \\\"option-1\\\", \\\"option-2\\\", etc.}\" ."
-  (do-applescript (concat arg1
-			  " \"" ;(convert-standard-filename default-directory)
-			  (buffer-name) "\"" arg2)))
+"If you are using Mac SAS, then arg1, `ess-sas-submit-command', should be 
+the AppleScript command \"invoke SAS using program file\", and, if necessary,
+arg2, `ess-sas-submit-command-options', is a string of the form 
+\"with options { \\\"option-1\\\", \\\"option-2\\\", etc.}\".  If you are
+using Windows SAS with the PC emulator Virtual PC, then `ess-sas-submit-command'
+should be ..."
+  (do-applescript (concat arg1 " \""
+     (if (not ess-sas-submit-mac-virtual-pc) (unix-filename-to-mac default-directory))
+	(buffer-name) "\"" arg2)))
 
 (defun ess-sas-submit-region ()
     "Write region to temporary file, and submit to SAS."
