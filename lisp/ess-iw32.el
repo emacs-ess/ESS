@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 1999/03/16 18:01:45 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: ess-iw32.el,v 1.8 1999/03/16 18:01:45 rossini Exp $
+;; Modified: $Date: 1999/03/31 23:53:41 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: ess-iw32.el,v 1.9 1999/03/31 23:53:41 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -179,8 +179,7 @@ This version does not offer alternate buffers or editing capability."
   (ess-force-buffer-current "Process to load into: ")
   (ess-eval-visibly (concat "dump('" object "','" filename "')"))
   (sleep-for 5)
-  (find-file filename)
-)
+  (find-file filename))
 
 
 (fset 'ess-dump-object-original
