@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2001/05/23 21:43:04 $
-;; Version: $Revision: 1.22 $
-;; RCS: $Id: ess-cust.el,v 1.22 2001/05/23 21:43:04 rossini Exp $
+;; Modified: $Date: 2001/05/23 21:43:42 $
+;; Version: $Revision: 1.23 $
+;; RCS: $Id: ess-cust.el,v 1.23 2001/05/23 21:43:42 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -120,7 +120,7 @@
 (defgroup ess-mouse nil
   "ESS: Mouse."
   :group 'ess
-  :prefx "ess-")
+  :prefix "ess-")
 
 ;; Variables (not user-changeable)
 
