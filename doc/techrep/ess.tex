@@ -29,7 +29,6 @@
 %\usepackage{html,heqn,htmllist}
 %\usepackage[latex2html]{hyperref} 
 
-
 \ifpdf
   \usepackage[pdftex]{graphicx}
   \usepackage[pdftex]{hyperref} 
@@ -162,6 +161,9 @@ extension language has also facilitated the programming.
 Because of the above, the choice of Emacs as the basis for a universal
 interface is a natural one.  
 
+Along with this, Emacs provides an interface to revision control
+systems for maintaining version history and a changelog for files.
+
 \textbf{AJR: Need an Introduction to EMACS}
 
 We assume that you are familiar with Emacs terminology and syntax:
@@ -232,26 +234,47 @@ might be realized in the future.
 \section{Features and Usage}
 \label{sec:basic}
 
+%%% MAKE THIS INTO A PARAGRAPH
+%%ESS provides a number of features, including:
+%%\begin{itemize}
+%%\item syntax highlighting 
+%%\item standard formating and customizable automatic indentation
+%%\item ability to send text regions and buffers to statistical programs
+%%\item command-line history searching 
+%%\end{itemize}
+ESS provides a number of features for statistical programming, beyond
+those generally provided by Emacs, which were listed in
+section~\ref{sec:intro:emacs}.
+
+For the interface with the programming language code as well as the
+interface with the statistical program, this includes syntax
+highlighting to denote assignment, reserved words, presence of
+strings.  For the programming code, to assist with providing a clear
+presentation, customizable automatic indentation is possible, with the
+customization relating to how one would want to indent groups of
+expression.  For the interface with the statistics package/program,
+there is also a means of searching the command-line history for
+previous commands as well as editing past commands for current use.
+These are connected by the ability to send, within Emacs, lines,
+functions, regions, and whole edited buffers from the programming code
+to the statistical program/package for execution.  In addition, it is
+possible to have Emacs complete file names from the current underlying
+working directory.
 
 %%% MAKE THIS INTO A PARAGRAPH
-ESS provides a number of features, including:
-\begin{itemize}
-\item syntax highlighting 
-\item standard formating and customizable automatic indentation
-\item ability to send text regions and buffers to statistical programs
-\item command-line history searching 
-\end{itemize}
-
-%%% MAKE THIS INTO A PARAGRAPH
-In addition, for S, S-PLUS, and R, ESS provides
-\begin{itemize}
-\item object-name completion
-\item ability dump, edit, save, and reload functions and similar
-  programming code.
-\end{itemize}
-
-Along with this, Emacs provides an interface to revision control
-systems for maintaining version history and a changelog for files.
+%%In addition, for S, S-PLUS, and R, ESS provides
+%%\begin{itemize}
+%%\item object-name completion
+%%\item ability dump, edit, save, and reload functions and similar
+%%  programming code.
+%%\end{itemize}
+In addition to the above, for languages in the S family, including S
+(versions 3 and 4, developed at Bell Labs), S-PLUS (all versions), and
+R (all versions), there is object-name completion of both user and
+system based functions and data.  There is also the ability to dump
+and save objects (user and system generated) into text files in a
+formatted manner for editing, as well as to reload after possible
+editing back into the statistical package/process.
 
 %%% MAKE THIS INTO A PARAGRAPH
 Editing source code (S, LispStat, SAS)
@@ -259,7 +282,6 @@ Editing source code (S, LispStat, SAS)
 \item Syntactic indentation and highlighting of source code
 \item Partial evaluations of code
 \item Loading and error-checking of code
-\item Source code revision maintenance
 \end{itemize}
 
 %%% MAKE THIS INTO A PARAGRAPH
@@ -281,16 +303,26 @@ Transcript manipulation (S3, S+3, S4, R, XLispStat)
 \item Re-evaluating commands from transcript files
 \end{itemize}
 
-%%% MAKE THIS INTO A PARAGRAPH
-Help File Editing (R)
-\begin{itemize}
-\item Syntactic indentation and highlighting of source code.
-\item Sending Examples to running ESS process.
-\item Previewing
-\end{itemize}
+%%%% MAKE THIS INTO A PARAGRAPH
+%%Help File Editing (R)
+%%\begin{itemize}
+%%\item Syntactic indentation and highlighting of source code.
+%%\item Sending Examples to running ESS process.
+%%\item Previewing
+%%\end{itemize}
+ESS also provides an interface for writing help files for R pfunctions
+and packages.    It provides the ability to preview, as well as
+handling embedded R source code in the same manner as ESS normally
+handles source code, including syntax highlighting as well as the
+ability to submit code to a running ESS process, for example R or
+S-PLUS. 
+
+
+\section{Using ESS with the S family of languages}
+\label{sec:S}
 
 \subsection{Editing Files}
-\label{sec:basic:edit}
+\label{sec:S:edit}
 
 
 ESS[S] is the mode for editing S language files.  This mode handles:
@@ -313,7 +345,7 @@ interactive features.
 
 
 \subsection{Inferior ESS processes}
-\label{sec:basic:inf}
+\label{sec:S:inf}
 
 iESS (inferior ESS) is the mode for interfacing with active
 statistical processes (programs).  This mode handles:
@@ -364,7 +396,7 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
                            
 
 \subsection{Handling and Reusing Transcripts}
-\label{sec:basic:trans}
+\label{sec:S:trans}
 
 - edit transcript
 - color and font highlighting based on syntax.
@@ -376,7 +408,7 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
 
 
 \subsection{Programming Language Help}
-\label{sec:basic:help}
+\label{sec:S:help}
 
 
 - move between help sections
@@ -384,7 +416,7 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
 
 
 \subsection{Philosophies for using ESS}
-\label{sec:basic:philosophy}
+\label{sec:S:philosophy}
 
 
 The first is preferred, and configured for.  The second one can be
@@ -409,7 +441,7 @@ better portability as well as external version control for code.
 
 
 \subsection{Scenarios for use}
-\label{sec:basic:scenarios}
+\label{sec:S:scenarios}
 
 We present some basic suggestions for using ESS to interact with S.
 These are just a subset of approaches, many better approaches are
@@ -526,7 +558,8 @@ prefixed by "\verb+##+").
 
     ## When you need help, use 
     C-c C-v rchisq
-    ## instead of entering:   help("rchisq")
+    ## but entering:   help("rchisq") or  ?rchisq   will bring up the
+    ## help file in a separate buffer.
 \end{verbatim}
 \end{itemize}
 
