@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.6 1999/09/15 06:03:39 ess Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.7 1999/09/15 06:06:07 ess Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -93,7 +93,7 @@
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.6 1999/09/15 06:03:39 ess Exp $")
+  "$Id: noweb-mode.el,v 1.7 1999/09/15 06:06:07 ess Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")
@@ -1617,8 +1617,10 @@ This may be useful in shell scripts, where the first line (or two) must have a
               (while (> noweb-line-number-skip-lines 0)
                 (append-to-buffer tangle-buffer 
                                   (point)
-                                  (save-excursion (progn
-                                                    (end-of-line) (point))))
+                                  (save-excursion
+				    (progn
+				      (end-of-line)
+				      (point))))
                 (beginning-of-line 2)
                 (1- noweb-line-number-skip-lines))
             (noweb-write-line-number line-number-format buffer))
@@ -1626,17 +1628,22 @@ This may be useful in shell scripts, where the first line (or two) must have a
 
           (while (< (point) chunk-end)
             (untabify (point) (save-excursion (beginning-of-line 2)(point)))
-            ;; This RE gave me trouble. Without the `\"', it recognised itself
-            ;; and so could not copy itself correctly.
-            (if (looking-at "\\([^\n\"@]*\\)<<\\(.*\\)\\(>>\\)\\([^\n\"]*\\)$")
+            ;; This RE gave me trouble. Without the `\"', it
+            ;; recognised itself and so could not copy itself
+            ;; correctly.
+            (if (looking-at
+		 "\\([^\n\"@]*\\)<<\\(.*\\)\\(>>\\)\\([^\n\"]*\\)$")
                 (progn
                   (save-restriction
                     (save-excursion
-                      (setq thread-name-re (concat "<<"
-                                                   (match-string 2)
-                                                   ">>="))
+                      (setq thread-name-re
+			    (concat "<<"
+				    (match-string 2)
+				    ">>="))
                       (setq pre-chunk (match-string 1))
-                      (if prefix-string (setq pre-chunk (concat prefix-string pre-chunk)))
+                      (if prefix-string
+			  (setq pre-chunk (concat prefix-string
+						  pre-chunk)))
                       (setq post-chunk (match-string 4))
                       (widen)
                       (goto-char (point-min))
@@ -1660,7 +1667,8 @@ This may be useful in shell scripts, where the first line (or two) must have a
                 ;; Add a prefix if necessary
                 (if (and prefix-string
                          (> (length pre-chunk) 1))
-                    (setq pre-chunk (concat prefix-string pre-chunk)))
+                    (setq pre-chunk (concat prefix-string
+					    pre-chunk)))
                 ;; And copy it to the buffer
                 (save-excursion
                   (set-buffer tangle-buffer)
@@ -1670,7 +1678,8 @@ This may be useful in shell scripts, where the first line (or two) must have a
             (if (and first-line
                      prefix-string)
                 (progn
-                  (setq prefix-string (make-string (length prefix-string) ?\  ))
+                  (setq prefix-string
+			(make-string (length prefix-string) ?\  ))
                   (setq first-line nil)))
             ;; Either way, go to the next line
             (beginning-of-line 2))
@@ -1695,8 +1704,9 @@ This may be useful in shell scripts, where the first line (or two) must have a
 ))))
 
 (defun noweb-tangle-thread ( name &optional buffer)
-  "Given the name of a thread, tangles the thread to buffer.
-If no buffer is given, create a new one with the same name as the thread."
+  "Given the name of a thread, tangles the thread to buffer.  
+If no buffer is given, create a new one with the same name as the
+thread."
   (interactive "sWhich thread ? ")
   (if (not buffer)
       (progn
@@ -1719,11 +1729,12 @@ If no buffer is given, create a new one with the same name as the thread."
 (defun noweb-tangle-current-thread ( &optional buffer)
   (interactive)
   (save-excursion
-    (let* ((chunk-start (progn
-                          (re-search-backward "^<<\\([^>]*\\)>>=[\t ]*$" 
-                                              nil t)
-                          (beginning-of-line 2)
-                          (point)))
+    (let* ((chunk-start
+	    (progn
+	      (re-search-backward "^<<\\([^>]*\\)>>=[\t ]*$" 
+				  nil t)
+	      (beginning-of-line 2)
+	      (point)))
            (chunk-name (buffer-substring-no-properties 
                         (match-end 1)
                         (match-beginning 1))))
