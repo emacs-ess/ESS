@@ -19,7 +19,7 @@
       (if source-buffer
 	  (save-excursion
 	    (set-buffer source-buffer)
-    (ess-force-buffer-current "Process to load into: ")
+	    (ess-force-buffer-current "Process to load into: ")
 	    (ess-check-modifications))))
     (ess-eval-visibly (format inferior-ess-load-command filename))))
 
