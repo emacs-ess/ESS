@@ -3,13 +3,12 @@
 @setfilename announc.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: announc.texi,v 1.22 2002/02/07 17:13:38 rsparapa Exp $
+@comment $Id: announc.texi,v 1.23 2002/02/18 16:28:02 rsparapa Exp $
 
-@node Announce, Introduction, Top, Top
 @comment  node-name,  next,  previous,  up
+@node Announce, Latest Version, Top, Top
 @chapter ANNOUNCING ESS
 @cindex ANNOUNCE
-
 
 Annoucing the release of ESS-5.1.20 (Emacs Speaks Statistics).
 -------------------------------------------------------------
@@ -32,59 +31,40 @@ And to help remove any further confusion:
 
 Thank you :-).
 
-@node New Features, Current Features, License, General Information
-@comment  node-name,  next,  previous,  up
-@section New Features
-
-@include newfeat.texi
-
-@node Current Features, Stability, New Features, General Information
-@comment  node-name,  next,  previous,  up
-@section Current Features
-
-@include currfeat.texi
-
-@node Stability, Requirements, Current Features, General Information
-@comment  node-name,  next,  previous,  up
-@section Stability
-
-@include stabilty.texi
-
-@node Requirements, Latest Version, Stability, General Information
-@comment  node-name,  next,  previous,  up
-@section Requirements
-
-@include requires.texi
-
-@node Latest Version, Installation (from tar file), Requirements, General Information
-@comment  node-name,  next,  previous,  up
+@node Latest Version, Requirements, Announce, General Information
 @section Getting the Latest Version 
-
 @include getting.texi
 
-@node Reporting Bugs, Mailing Lists, Installation (from anonymous CVS), General Information
-@comment  node-name,  next,  previous,  up
-@section Reporting Bugs
+@node Requirements, Mailing List, Latest Version, General Information
+@section Requirements
+@include requires.texi
 
-@include bugrept.texi
-
-@node Mailing Lists, Authors, Reporting Bugs, General Information
-@comment  node-name,  next,  previous,  up
-@section Mailing Lists
-
+@node Mailing List, Stability, Requirements, General Information
+@section Mailing List
 @include mailing.texi
 
-@node Authors,  , Mailing Lists, General Information
-@comment  node-name,  next,  previous,  up
-@section Authors
+@node Stability, Reporting Bugs, Mailing List, General Information
+@section Stability
+@include stabilty.texi
 
+@node Reporting Bugs, Current Features, Stability, General Information
+@section Reporting Bugs
+@include bugrept.texi
+
+@node Current Features, New Features, Reporting Bugs, General Information
+@section Current Features
+@include currfeat.texi
+
+@node New Features, Authors, Current Features, General Information
+@section New Features
+@include newfeat.texi
+
+@node Authors, License, Current Features, General Information
+@section Authors
 @include authors.texi
 
-
-@node License, New Features, General Information, General Information
-@comment  node-name,  next,  previous,  up
+@node License, , Authors, General Information
 @section License
-
 @include license.texi
 
 @bye
