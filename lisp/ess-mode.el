@@ -10,9 +10,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/24 16:32:12 $
-;; Version: $Revision: 4.54 $
-;; RCS: $Id: ess-mode.el,v 4.54 1997/11/24 16:32:12 rossini Exp $
+;; Modified: $Date: 1997/11/25 13:24:35 $
+;; Version: $Revision: 4.55 $
+;; RCS: $Id: ess-mode.el,v 4.55 1997/11/25 13:24:35 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -388,23 +388,13 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (interactive)
   (ess-beginning-of-function)
   (forward-list 1)			; get over arguments
-  (forward-sexp 1)			; move over braces
-  )
+  (forward-sexp 1))			; move over braces
 
 (defun ess-extract-word-name ()
   "Get the word you're on."
   (save-excursion
     (re-search-forward "\\<\\w+\\>" nil t)
     (buffer-substring (match-beginning 0) (match-end 0))))
-
-;;; Original ess-mode 4.8.6 version
-;;(defun ess-mark-function ()
-;;  "Put mark at end of ESS function, point at beginning."
-;;  (interactive)
-;;  (push-mark (point))
-;;  (ess-end-of-function)
-;;  (push-mark (point))
-;;  (ess-beginning-of-function))
 
 ;;; Kurt's version, suggested 970306.
 (defun ess-mark-function ()
