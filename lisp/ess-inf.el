@@ -917,7 +917,7 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 	(insert-before-markers (concat "*** " invisibly " ***\n")))
     ;; dbg:
     ;; dbg (ess-write-to-dribble-buffer
-    ;; dbg  (format "(eval-visibly 2): text[%d]= «%s»\n" (length text) text))
+    ;; dbg  (format "(eval-visibly 2): text[%d]= '%s'\n" (length text) text))
     (while (or (setq txt-gt-0 (> (length text) 0))
 	       even-empty)
       (if even-empty (setq even-empty nil))
@@ -1501,7 +1501,7 @@ to continue it."
 
 (defun inferior-R-input-sender (proc string)
   ;; REALLY only for debugging: this S_L_O_W_S D_O_W_N   [here AND below]
-  ;;(ess-write-to-dribble-buffer (format "(inf..-R-..): string=«%s»; " string))
+  ;;(ess-write-to-dribble-buffer (format "(inf..-R-..): string='%s'; " string))
   ;; rmh: 2002-01-12 catch page() in R
   (let ((help-string (or (string-match inferior-R-1-input-help string)
 			 (string-match inferior-R-2-input-help string)))
@@ -1509,7 +1509,7 @@ to continue it."
     (if (or help-string page-string)
 	(let* ((string2 (match-string 2 string))
 	       (string2-rt (concat string2 ".rt")))
-	  ;; (ess-write-to-dribble-buffer (format " new string=«%s»\n" string2))
+	  ;; (ess-write-to-dribble-buffer (format " new string='%s'\n" string2))
 	  (beginning-of-line)
 	  (if (looking-at inferior-ess-primary-prompt)
 	      (progn
@@ -1943,7 +1943,7 @@ A newline is automatically added to COMMAND."
 	(ess-write-to-dribble-buffer
 	 (if (> (length names) 5)
 	     (format " |-> (length names)= %d\n" (length names))
-	   (format " |-> names= «%s»\n" names))))
+	   (format " |-> names= '%s'\n" names))))
     names))
 
 (defun ess-compiled-dir (dir)
