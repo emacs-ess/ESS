@@ -60,9 +60,9 @@ statistical processes (programs).  This mode handles:
 @item
  completion of object names and file names.
 @item
- interactive history mechanism
+ interactive history mechanism.
 @item
- transcript recording and editing
+ transcript recording and editing.
 @end itemize
 
 To start up iESS mode, use:
@@ -78,16 +78,18 @@ access to each).  Usually the site will have defined one of these programs
 
    M-x S
 
-Note that R has some extremely useful command line arguments,
--v and -n.   To enter these, call R using a "prefix argument", by
+Note that R has some extremely useful command line arguments.  For
+example, @code{--vanilla} will ensure R starts up without loading in any init
+files.  To enter a command line argument, call R using a "prefix
+argument", by
 
    C-u M-x R
 
 and when ESS prompts for "Starting Args ? ", enter (for example):
 
-   -v 10000 -n 5000
+   @code{--vanilla}
 
-Then that R process will be started up using "R -v 10000 -n 5000".
+Then that R process will be started up using @code{R --vanilla}.
 
 New for ESS 5.1.2 (and later):  "S-elsewhere" command
 
@@ -105,11 +107,11 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
 @comment  node-name,  next,  previous,  up
 @section Handling and Reusing Transcripts
 
-- edit transcript
+- edit transcript.
 
 - color and font highlighting based on syntax.
 
-- resubmit multi-line commands to an active process buffer
+- resubmit multi-line commands to an active process buffer.
 
 - The ability to request help from an S process for variables and
   functions, and to have the results sent into a separate buffer.
@@ -140,10 +142,7 @@ retrieved again, by changing emacs variables.
 2: (older version): S objects are real.  Source code is a temporary
    realization of the objects.  Dumped buffers should not be saved.
    _We_strongly_discourage_this_approach_.  However, if you insist,
-   add the following lines to your .emacs file
-(GNU emacs uses the filename @file{~/.emacs} and
-Xemacs uses the filename @file{~/.xemacs/init.el}
-for the initialization file):
+   add the following lines to your .emacs file:
 @example
 (setq ess-keep-dump-files 'nil)
 (setq ess-delete-dump-files t)
@@ -282,7 +281,7 @@ prefixed by "##").
 1. Suppose that you are primarily an SPLUS 3.4 user, occasionally
    using S version 4, and sick and tired of the buffer-name *S+3*
    we've stuck you with.  Simply edit the "ess-dialect" alist entry in
-   the essd-s+3.el and essd-s4.el files to be "S" instead of "S4" and
+   the essd-sp3.el and essd-s4.el files to be "S" instead of "S4" and
    "S+3".  This will insure that all the inferior process buffer names
    are "*S*".
 
