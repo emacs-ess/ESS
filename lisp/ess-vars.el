@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1999/03/16 17:40:41 $
-;; Version: $Revision: 5.17 $
-;; RCS: $Id: ess-vars.el,v 5.17 1999/03/16 17:40:41 rossini Exp $
+;; Modified: $Date: 1999/03/17 17:42:45 $
+;; Version: $Revision: 5.18 $
+;; RCS: $Id: ess-vars.el,v 5.18 1999/03/17 17:42:45 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -391,7 +391,9 @@ by ess-function-template.")
 ;; If you need to change the *-program-name variables, do so in
 ;; ess-site.el.  Do NOT make the changes here!!
 
-(defvar inferior-R-program-name "R"
+(defvar inferior-R-program-name 
+  (if (or (equal window-system 'w32) (equal window-system 'win32))
+      "Rterm"  "R")
   "*Program name for invoking an inferior ESS with R().")
 
 (defvar inferior-XLS-program-name "xlispstat"

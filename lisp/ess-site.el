@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/03/16 17:51:02 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: ess-site.el,v 5.16 1999/03/16 17:51:02 rossini Exp $
+;; Modified: $Date: 1999/03/17 17:42:45 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: ess-site.el,v 5.17 1999/03/17 17:42:45 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -140,7 +140,8 @@
 ;;(setq-default inferior-S+3-program-name "Splus")
 ;;(setq-default inferior-S+4-program-name "Splus")
 ;;(setq-default inferior-S+5-program-name "Splus5")
-;;(setq-default inferior-R-program-name "/disk05/rmh/xemacs/R/R-0.49/bin/R")
+;;(setq-default inferior-R-program-name "R")      ; unix systems
+;;(setq-default inferior-R-program-name "Rterm")  ; msdos systems
 ;;(setq-default inferior-XLS-program-name "xlispstat")
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
@@ -229,7 +230,7 @@
 
 
 ;;; 2.1 Backwards compatibility (roll your own!)
-;;; What you want S to call...
+;;; What you want S and R to call...
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files" t)
@@ -247,6 +248,11 @@
       (fset 's-transcript-mode 'S+3-transcript-mode)
       )
 )
+
+;;; On a PC, the default is R-microsoft.  Elsewhere the default is R-unix.
+(if (or (equal window-system 'w32) (equal window-system 'win32))
+    (fset 'R 'R-microsoft)		; MS-Windows 9x/NT
+  (fset 'R 'R-unix))			; Unix
 
 ;;;;* Alias S-mode to s-mode
 ;;; Emacs will set the mode for a file based on the file's header.

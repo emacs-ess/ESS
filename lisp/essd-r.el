@@ -1,13 +1,15 @@
 ;;; essd-r.el --- R customization
 
-;; Copyright (C) 1997 A. J. Rossini
+;; Copyright (C) 1997--1999 A. J. Rossini, Richard M. Heiberger, Kurt
+;; Hornik, and Martin Maechler.
+
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/03/15 18:49:57 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: essd-r.el,v 5.6 1999/03/15 18:49:57 rossini Exp $
+;; Modified: $Date: 1999/03/17 17:42:46 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: essd-r.el,v 5.7 1999/03/17 17:42:46 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 

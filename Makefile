@@ -1,8 +1,10 @@
-## $Id: Makefile,v 5.14 1999/03/16 18:37:28 rossini Exp $
+## $Id: Makefile,v 5.15 1999/03/17 17:42:45 rossini Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
-ESSVERSION=5.1.4
+ESSVERSION=5.1.5
+ESSVERSIONMSDOS=5_1_5
+
 ESSVERSIONDIR=ess-$(ESSVERSION)
 
 Subdirs = lisp doc
@@ -55,8 +57,12 @@ dist:
 	-chmod a+w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
 	-chmod a+w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
 	rm $(ESSVERSIONDIR)
-	cvs release -d ess
+	rm -rf ess
 	scp ESS-$(ESSVERSION).tar.gz ess@franz.stat.wisc.edu:~/public_html
+#	tar zxvf ESS-$(ESSVERSION).tar.gz
+#	mv $(ESSVERSIONDIR ESS-$(ESSVERSIONMSDOS)
+#	zip ESS-$(ESSVERSION).zip ESS-$(ESSVERSIONMSDOS)
+#	scp ESS-$(ESSVERSIONMSDOS).zip ess@franz.stat.wisc.edu:~/public_html
 
 ## PA's version, infinitely interesting...
 #dist:   

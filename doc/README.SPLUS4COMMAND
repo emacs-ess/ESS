@@ -45,6 +45,8 @@ use the "&".
 ;;; The characteristics of this version of the ESS interface:
 ;;;  * We can't type in the *S+4* buffer.
 ;;;  * Prompts do NOT appear in the *S+4* buffer.
+;;;  * All error messages appear only in the S-Plus Commands window,
+;;;    NOT in the *S+4* buffer.
 ;;;  * We can type in the S-Plus Commands window, but no results
 ;;;    appear there, all results appear in the *S+4* buffer.
 ;;;  * Echoed input is reformatted by S-Plus.
