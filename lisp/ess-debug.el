@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/12/01 16:01:45 $
-;; Version: $Revision: 5.0 $
-;; RCS: $Id: ess-debug.el,v 5.0 1997/12/01 16:01:45 rossini Exp $
+;; Modified: $Date: 1997/12/02 14:09:55 $
+;; Version: $Revision: 5.1 $
+;; RCS: $Id: ess-debug.el,v 5.1 1997/12/02 14:09:55 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
