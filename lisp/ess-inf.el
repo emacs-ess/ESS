@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/19 20:46:42 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: ess-inf.el,v 1.10 1997/06/19 20:46:42 rossini Exp $
+;; Modified: $Date: 1997/06/30 22:22:05 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: ess-inf.el,v 1.11 1997/06/30 22:22:05 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.11  1997/06/30 22:22:05  rossini
+;; removed localized ess-directory, moved to proper place.
+;;
 ;; Revision 1.10  1997/06/19 20:46:42  rossini
 ;; added run-hooks for BEING ABLE TO set local directory to be default
 ;; (different from doing it -- still have to do it...).
@@ -398,8 +401,12 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
 	(inferior-ess-mode)
 	;;~~~~~~~~~~~~~~~
 	(goto-char (point-max))
-	(make-local-variable 'ess-directory)
-	(setq ess-directory default-directory)
+
+	;;This should be ELSEWHERE!  Like in ess.el, where it is
+	;;now... AJR.
+	;;(make-local-variable 'ess-directory)
+	;;(setq ess-directory default-directory)
+
 	(setq comint-input-ring-file-name
 	      (expand-file-name ess-history-file ess-directory))
 	(comint-read-input-ring)
