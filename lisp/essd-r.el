@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2000/09/04 17:40:42 $
-;; Version: $Revision: 5.21 $
-;; RCS: $Id: essd-r.el,v 5.21 2000/09/04 17:40:42 rossini Exp $
+;; Modified: $Date: 2000/10/17 19:36:28 $
+;; Version: $Revision: 5.22 $
+;; RCS: $Id: essd-r.el,v 5.22 2000/10/17 19:36:28 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -161,8 +161,26 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
 		    'fixcase nil (not quietly))
     (goto-char from)
     (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)F\\>" "\\1FALSE"
-		    'fixcase nil (not quietly))
-    ))
+		    'fixcase nil (not quietly))))
+
+
+;;; R package wizard.
+
+(defun R-package-wizard (&optional packages-directory)
+  "Create an R project skeleton.
+Top-level directory is one below `packages-directory', i.e. package
+contents will be placed in packages-directory/package-name."
+  (interactive "P")
+  (let* ((R-package-directory (if packages-directory
+				  (read-string
+				   (concat "Starting Directory: ?"))))
+	 (R-package-name   (read-string (concat "Package Name: "))))
+    
+    )
+  )
+
+
+
 
  ; Provide package
 
