@@ -1,0 +1,124 @@
+This file documents the changes from version 2.1 of S.el (also known
+as gnuemacs3 on Statlib) and the current version.
+
+For current users of S-mode, here are some of the incompatible
+changes and features new to version 3.3 of S-mode:
+
+   * Command-line completion of object names, and faster completion in
+     other situations.
+
+   * `Hot Keys' for the commonly-used functions `objects()',
+     `search()' and `attach()' and a facility to add your own hot keys
+     with keyboard macros.
+
+   * Simultaneous multiple function editing, with integrated
+     error-checking and parsing. Mnemonic names for edit buffers.
+
+   * Debugging features: facility for stepping through S code and
+     evaluating portions of code with the output appearing as if the
+     commands has been typed in manually.
+
+   * S can now be run from a different directory each session.
+
+   * A dedicated mode for viewing S help files. Individual help
+     buffers are maintained for quick repeated access. Completion for
+     help files without a corresponding object.
+
+   * Facility for maintaining organised backups of S source code.
+
+   * Indenting and formatting commands for editing S source code.
+
+   * Special handling of the S graphics facilities, including an
+     experimental Tek graphics mode.
+
+   * Better handling of temporary files and buffers.
+
+
+   * Some keybindings have changed to conform to GNU guidelines.
+
+Here are the changes to the keybindings from version 2.1:
+
+INFERIOR-S-MODE:
+
+C-c h    S-display-help-on-object    MOVED TO	   C-c C-h         [*]
+C-c d    S-dump-object-into-scratch  MOVED TO	   C-c C-d	   [*]
+C-c l    S-load-file		     MOVED TO	   C-c C-l	   [*]
+C-c C-o  comint-kill-output          REDEFINED AS  S-kill-output
+C-c C-z	 comint-stop-subjob	     REDEFINED AS  S-abort
+
+S-MODE:
+
+C-c h    S-display-help-on-object    MOVED TO	   C-c C-h	   [*]
+C-c l    S-load-file		     MOVED TO	   C-c C-l	   [*]
+C-c z    switch-to-S		     MOVED TO	   C-c C-y	   [*]
+C-c C-k  S-eval-line-and-go          MOVED TO	   C-c M-j	   [*]
+C-c k	 S-eval-line		     MOVED TO	   C-c C-j	   [*]
+C-c C-e  S-eval-function-and-go      MOVED TO	   C-c M-f
+				     REDEFINED AS  S-execute-in-tb
+C-c e    S-eval-function	     MOVED TO	   C-c C-f	   [*]
+C-c C-b	 S-eval-buffer-and-go	     MOVED TO	   C-c M-b	   
+C-c b	 S-eval-buffer		     MOVED TO	   C-c C-b	   [*]
+C-c C-r	 S-eval-region-and-go	     MOVED TO	   C-c M-r
+C-c r	 S-eval-region		     MOVED TO	   C-c C-r	   [*]
+
+If your fingers insist on using the old bindings, place the following
+piece of code in your .emacs to emulate the bindings marked [*] above:
+
+(setq S-mode-load-hook
+      '(lambda nil
+	 (define-key inferior-S-mode-map "\C-ch" 'S-display-help-on-object)
+	 (define-key inferior-S-mode-map "\C-cl" 'S-load-file)
+	 (define-key inferior-S-mode-map "\C-cd" 'S-dump-object-into-edit-buffer)
+	 (define-key S-mode-map "\C-ch" 'S-display-help-on-object)
+	 (define-key S-mode-map "\C-cl" 'S-load-file)
+	 (define-key S-mode-map "\C-cz" 'S-switch-to-S)
+	 (define-key S-mode-map "\C-c\C-k" 'S-eval-line-and-go)
+	 (define-key S-mode-map "\C-ck" 'S-eval-line)
+	 (define-key S-mode-map "\C-ce" 'S-eval-function)
+	 (define-key S-mode-map "\C-cb" 'S-eval-buffer)
+	 (define-key S-mode-map "\C-cr" 'S-eval-region)))
+
+However, I do encourage you to become familiar with the new bindings.
+
+
+   * General code cleanups and optimizations.
+
+In particular, a number of variable and function names have been
+changed. You may need to modify any hooks you used in version 2.1. The
+changes are:
+
+Before version 3.3		Version 3.3
+------------------		-----------
+explicit-Splus-args		inferior-Splus-args
+make-S-comint			inferior-S-make-comint
+S-send-input			inferior-S-send-input
+S-get-old-input			inferior-S-get-old-input
+wait-for-S-prompt		inferior-S-wait-for-prompt
+S-dump-object-into-scratch	S-dump-object-into-edit-buffer
+find-S-object-default		S-read-object-name-default
+find-S-object			S-read-object-name
+get-S-search-list		S-get-search-list
+get-S-object-list-r		S-get-object-list-r
+get-S-object-list		S-get-object-list
+command-to-S			S-command
+beginning-of-S-function		S-beginning-of-function
+end-of-S-function		S-end-of-function
+extract-word-name		S-extract-word-name
+switch-to-S			S-switch-to-S
+switch-to-end-of-S		S-switch-to-end-of-S
+make-S-function			S-make-function
+electric-S-brace		S-electric-brace
+calculate-S-indent		S-calculate-indent
+mark-S-function			S-mark-function
+indent-S-exp			S-indent-exp
+set-S-style			S-set-style
+find-S-help-file		S-find-help-file
+get-S-help-files-list		S-get-help-files-list
+nuke-S-help-bs			S-nuke-help-bs
+default-S-style			S-default-style
+
+(some of these symbols were not present in version 2.1 of S.el, but
+have been used in `private' releases since 2.1)
+
+In addition, many of the internal functions have been modified in
+implementation and/or usage. See S.el for more information.

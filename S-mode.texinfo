@@ -1,0 +1,2223 @@
+\input texinfo   @c -*-texinfo-*-
+@comment %**start of header (This is for running Texinfo on a region.)
+@setfilename S-mode.info
+@settitle S-mode
+@comment %**end of header (This is for running Texinfo on a region.)
+
+@synindex pg vr
+
+@node Top, Introduction, (dir), (dir)
+@comment  node-name,  next,  previous,  up
+
+@ifinfo
+@unnumbered S-mode
+
+This file documents @code{S.el}, a GNU Emacs mode for running
+@code{Splus} in a buffer.
+
+This info is current to Version 3.4 of @code{S.el}.
+
+Author: David Smith (dsmith@@stats.adelaide.edu.au), Department of
+Statistics, University of Adelaide, South Australia.
+
+Info version: 1.20
+@end ifinfo
+
+@titlepage
+@sp5
+@center @titlefont{S-mode}
+@center version 3.4
+@sp2
+@center An GNU Emacs package 
+@center for interacting with the
+@center S/Splus statistical software packages
+@sp7
+@center David Smith
+@center (@code{dsmith@@stats.adelaide.edu.au})
+@center Department of Statistics
+@center University of Adelaide, South Australia
+@sp7
+@center Documentation version: 1.20
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 1992 Department of Statistics, University of Adelaide.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+@end titlepage
+
+@menu
+* Introduction::                Overview of features provided by this package.
+* Starting Up::                 Starting the S process
+* Entering commands::           Interacting with the process buffer.
+* Editing::                     How to create or edit S objects or functions.
+* Help::                        Reading help files in S-mode
+* Graphics::                    Using graphics with S-mode
+* Bugs::                        Known bugs in S-mode
+* Installation::                Installing S-mode on your system
+* Customization::               Customizing S-mode
+* Concept Index::               
+* Variable and command index::  
+
+ --- The Detailed Node Listing ---
+
+Introduction to S-mode
+
+* Credits::                     Authors of and contributors to S-mode
+* Latest version::              Getting the latest version of S-mode
+* New features::                Changes from version 2.1
+* Manual::                      How to read this manual
+
+Interacting with the S process
+
+* Command-line editing::        Entering commands and fixing mistakes
+* Completion::                  Completion of object names
+* Process buffer motion::       Moving through the process buffer
+* Command History::             Command History
+* Hot keys::                    Hot keys for common commands
+* Other inferior-S-mode commands::  Other commands provided by inferior-S-mode
+
+Editing S functions
+
+* Edit buffer::                 The edit buffer
+* Modification::                Modification flags in edit buffers
+* Source Files::                Maintaining S source files
+* Source Directories::          Names and locations of dump files
+* Error Checking::              Detecting and correcting errors
+
+The edit buffer
+
+* Evaluating code::             Sending code to the S process
+* Indenting::                   Indenting and formatting S code
+* Other edit buffer commands::  Commands for motion, completion and more
+
+Using graphics with S-mode
+
+* printer::                     The printer() graphics driver
+* tek4014::                     The tek4014() graphics driver
+* X11::                         The X11() (and other X-windows based) driver
+
+Installing S-mode on your system
+
+* System dependent::            Other variables you may need to change
+
+Customizing S-mode
+
+* Variables::                   Variables for customization
+* Hooks::                       Customizing S-mode with hooks
+* Keybindings::                 Changing the default S-mode keybindings
+
+Variables for customization
+
+* Variables for starting S::    Variables for starting S
+* Dump file variables::         Variables for dump files
+* Indentation variables::       Variables controlling indentation
+* Variables controlling interaction::  Variables controlling interaction with the S process
+@end menu
+
+@node Introduction, Starting Up, Top, Top
+@comment  node-name,  next,  previous,  up
+@chapter Introduction to S-mode
+@cindex introduction
+
+The S and Splus packages provide sophisticated statistical and graphical
+routines for manipulating data. The S-mode package provides useful
+routines for making the use of these packages much easier. 
+
+A bit of notation before we begin. I will refer to both the `new S'
+package (as described in Becker, Chambers and Wilks, @cite{The New S
+Language: A programming environment for data analysis and graphics}) and
+`Splus' (an enhanced version of new S from Statsci) simply by
+``S''. The interface which is used to run S under Emacs (which this manual
+documents) will be referred to as ``S-mode'', which should not be
+confused with the GNU Emacs major mode @code{S-mode} which is used for
+editing S source. Finally, the GNU Emacs Lisp source code in which this
+package is defined will be referred to as @file{S.el}.
+
+@cindex interactive use of S
+@cindex using S interactively
+For exclusively interactive users of S, S-mode provides a number of
+features to make life easier. There is an easy-to-use command history
+mechanism, including a quick prefix-search history. To reduce typing,
+command-line completion is provided for all S objects and ``hot keys''
+are provided for common S function calls. Help files are easily
+accessible, and a paging mechanism is provided to view them. Finally, an
+incidental (but very useful) side-effect of S-mode is that a transcript of
+your session is kept for later saving or editing.
+@cindex transcripts of S sessions
+No special knowledge of Emacs is necessary when using S interactively
+under S-mode.
+
+@cindex programming in S
+For those that use S in the typical edit-test-revise cycle when
+programming S functions, S-mode provides for editing of S functions in
+Emacs edit buffers. Unlike the typical use of S where the editor is
+restarted every time an object is edited, S-mode uses the current Emacs
+session for editing. In practical terms, this means that you can edit
+more than one function at once, and that the S process is still
+available for use while editing. Error checking is performed on
+functions loaded back into S, and a mechanism to jump directly to the
+error is provided. S-mode also provides for maintaining text versions of
+your S functions in specified source directories.
+
+@menu
+* Credits::                     Authors of and contributors to S-mode
+* Latest version::              Getting the latest version of S-mode
+* New features::                Changes from version 2.1
+* Manual::                      How to read this manual
+@end menu
+
+@node Credits, Latest version,  , Introduction
+@comment  node-name,  next,  previous,  up
+@section Authors of and contributors to S-mode
+
+S-mode is based on Olin Shivers' excellent comint package (which comes
+@cindex comint
+@cindex authors
+@cindex credits
+with the S-mode distribution). The original version of S-mode was
+written by Doug Bates (@code{bates@@stat.wisc.edu}) and Ed Kademan
+(@code{kademan@@stat.wisc.edu}). Frank Ritter
+(@code{ritter@@psy.cmu.edu}) then merged this version with his own S
+mode to form @code{S.el} version 2.1.
+
+Version 2.1 of S.el was then updated and expanded by David Smith
+to form version 3.4. Most
+bugs have now been fixed (and several new ones introduced) and many new
+features have been added. Thanks must go to the beta testers for version
+3.4:
+
+@itemize @bullet
+@item
+@code{S-eval-line-and-next-line} is based in an idea by Rod Ball.
+
+@item
+Thanks to Doug Bates for many useful suggestions.
+
+@item
+@code{comint-isearch} was written by Terry Glanfield
+(@code{tg.southern@@rxuk.xerox.com}).
+
+@item 
+Thanks to Martin Maechler for reporting and fixing bugs.
+
+@item 
+Thanks to Frank Ritter for updates from the previous version,
+suggestions and invaluable comments on the manual.
+
+@item
+Thanks to Ken'ichi Shibayama for his
+excellent indenting code, and many comments and suggestions.
+
+@item
+Thans to Bob Stine for testing an early version of the Tek graphics
+support.
+@end itemize
+
+@node Latest version, New features, Credits, Introduction
+@comment  node-name,  next,  previous,  up
+@section Getting the latest version of S-mode
+
+The latest version of S-mode is always available for anonymous FTP from
+
+@display
+@code{attunga.stats.adelaide.edu.au} 
+@end display
+
+@noindent
+in the directory @file{pub/S-mode}.
+Check the @code{README} file first to see which files you need. S-mode
+is also available from the Emacs-Lisp archive on
+@code{archive.cis.ohio-state-edu} --- retrieve 
+
+@display
+@file{pub/gnu/emacs/elisp-archive/README}
+@end display
+
+@noindent
+for information on the
+archive. The latest version is also available from Statlib by sending a
+blank message with subject ``send index from S'' to
+@code{statlib@@stat.cmu.edu}, and following the directions from there.
+
+@node New features, Manual, Latest version, Introduction
+@comment  node-name,  next,  previous,  up
+@section Changes from version 2.1
+
+For current users of S-mode, here are some of the incompatible changes
+and features new to version 3.3 of
+S-mode:
+@cindex features of S-mode
+@cindex new features
+@cindex changes to S-mode
+
+@itemize @bullet
+@item
+Command-line completion of object names, and faster completion in other
+situations.
+
+@item
+`Hot Keys' for the commonly-used functions @code{objects()},
+@code{search()} and @code{attach()} and a facility to add your own hot
+keys with keyboard macros.
+
+@item
+Simultaneous multiple function editing, with integrated error-checking
+and parsing. Mnemonic names for edit buffers.
+
+@item
+Debugging features: facility for stepping through S code and evaluating
+portions of code with the output appearing as if the commands has been
+typed in manually.
+
+@item
+S can now be run from a different directory each session.
+
+@item
+A dedicated mode for viewing S help files. Individual help buffers are
+maintained for quick repeated access. Completion for help files
+without a corresponding object.
+
+@item
+Facility for maintaining organised backups of S source code.
+
+@item
+Indenting and formatting commands for editing S source code.
+
+@item
+Special handling of the S graphics facilities, including an
+experimental Tek graphics mode.
+
+@item
+Better handling of temporary files and buffers.
+
+@item
+Some keybindings have changed to conform to GNU guidelines.
+
+@item
+General code cleanups and optimizations.
+@end itemize
+
+@node Manual,  , New features, Introduction
+@comment  node-name,  next,  previous,  up
+@section How to read this manual
+
+If S-mode has already been installed on your system, the next chapter
+has details on how to get started using S under S-mode. 
+
+If you need to install S-mode, read @ref{Installation} for details on
+what needs to be done before proceeding to the next chapter.
+
+@ref{Customization} provides details of user variables you can change to
+customize S-mode to your taste, but it is recommended that you defer
+this section until you are more familiar with S-mode.
+
+Don't forget that this manual is not the only source of information
+about S-mode. In particular, the mode-based online help (obtained by
+pressing @kbd{C-h m} when in the process buffer, edit buffer or help
+buffer) is quite useful. However the best source of information is, as
+always, experience --- try it out!
+
+@node Starting Up, Entering commands, Introduction, Top
+@comment  node-name,  next,  previous,  up
+@chapter Starting the S process
+@cindex starting S-mode
+@cindex running S
+
+To start an S session, simply type @kbd{M-x S RET}, i.e. press
+@key{ESC}, then @key{x}, then capital @key{S} and then the @key{RETURN} key.
+@pindex S
+
+@cindex S process directory
+@cindex starting directory
+@cindex working directory
+@cindex directories
+If the variable @code{S-ask-for-S-directory}
+@vindex S-ask-for-S-directory
+has a non-@code{nil} value, you will be prompted with
+@example
+From which directory?
+@end example
+@noindent
+with a default value chosen on the basis of the variable
+@code{S-directory}.
+@vindex S-directory
+The S program will be run from the directory you
+specify at this point, that is S will use the @file{.Data} subdirectory
+@cindex @file{.Data} directory
+of this directory (if it exists.) Using this facility it is possible to
+have a number of distinct S directories for separate projects, etc. If
+the value of @code{S-ask-for-S-directory} is @code{nil}, the S program
+will be run from the directory specified by @code{S-directory} (which
+defaults to your home directory).
+
+Next, if the value of @code{S-ask-about-display}
+@vindex S-ask-about-display
+is non-@code{nil} you will be presented with the prompt
+@example
+Which X-display?
+@end example
+@noindent
+The value you enter here will be used as the value of the @code{DISPLAY}
+environment variable
+@cindex DISPLAY environment variable
+of the S process for use with the X windowing system.
+@cindex X windows
+Unless this variable is set correctly, S commands such as @code{X11()}
+@pindex X11()
+or @code{help.start()}
+@pindex help.start()
+will not work. Completion is provided on the basis of the
+variable @code{X-displays-list}.
+@vindex S-displays-list
+
+Once these questions are answered (if they are asked at all) the 
+program defined by @code{inferior-S-program} will be executed with
+@vindex inferior-S-program
+arguments specified by @code{explicit-@var{S_program_name}-args}.
+@cindex arguments to S program
+You will be popped into a buffer
+@cindex S process buffer
+@cindex process buffer
+with name @samp{*S*} which will be used
+for interacting with the S process, and you can start entering commands.
+
+@node Entering commands, Editing, Starting Up, Top
+@comment  node-name,  next,  previous,  up
+@chapter Interacting with the S process
+@cindex entering commands
+@cindex commands
+@cindex sending input
+
+The primary function of the S-mode package is to provide an easy-to-use
+front end to the S interpreter. This is achieved by running the S
+process from within an Emacs buffer, so that the Emacs editing commands
+are available to correct mistakes in commands, etc. A sophisticated
+command history and recall mechanism is also provided, thanks to the
+@code{comint} package. Command-line completion of S objects and a number
+of `hot keys' for commonly-used S commands are also provided for ease of
+typing.
+
+@menu
+* Command-line editing::        Entering commands and fixing mistakes
+* Completion::                  Completion of object names
+* Process buffer motion::       Moving through the process buffer
+* Command History::             Command History
+* Hot keys::                    Hot keys for common commands
+* Other inferior-S-mode commands::  Other commands provided by inferior-S-mode
+@end menu
+
+@node Command-line editing, Completion,  , Entering commands
+@comment  node-name,  next,  previous,  up
+@section Entering commands and fixing mistakes
+@cindex command-line editing
+
+Sending a command to the S process is as simple as typing it in and
+pressing the @key{RETURN} key:
+
+@itemize @bullet
+@item
+@kbd{RET} (@code{inferior-S-send-input}) @*
+@pindex inferior-S-send-input
+Send the command on the current line to the S process.
+@end itemize
+
+If you make a typing error before pressing @kbd{RET} all the usual Emacs
+editing commands are available to correct it (see @ref{Basic, Basic,
+Basic editing commands, emacs, The GNU Emacs Reference Manual}.) Once
+the command has been corrected you can press @key{RETURN} (even if the
+cursor is not at the end of the line) to send the corrected command to
+the S process.
+
+S-mode provides two other commands which are useful for fixing mistakes:
+
+@itemize @bullet
+@item
+@kbd{C-c C-w} (@code{backward-kill-word}) @*
+@pindex backward-kill-word
+Deletes the previous word (such as an object name) on the command line.
+
+@item
+@kbd{C-c C-u} (@code{comint-kill-input}) @*
+@pindex comint-kill-input
+Deletes everything from the prompt to point. Use this to abandon a
+command you have not yet sent to the S process.
+@end itemize
+
+Finally, the beginning-of-line command (@kbd{C-a}) has been slightly
+redefined to leave you at the start of the current command instead:
+
+@itemize @bullet
+@item
+@kbd{C-a} (@code{comint-bol}) @*
+@pindex comint-bol
+Move to the beginning of the line, and then skip forwards past the
+prompt, if any.
+@end itemize
+
+@node  Completion, Process buffer motion, Command-line editing, Entering commands
+@comment  node-name,  next,  previous,  up
+@section Completion of object names
+@cindex completion of object names
+@cindex command-line completion
+
+In the process buffer, @key{TAB} only inserts a @samp{TAB} character
+when the cursor is not following an object name. Otherwise, 
+the @key{TAB} key is for completion:
+
+@itemize @bullet
+@item
+@kbd{TAB} (@code{S-complete-object-name}) @*
+@pindex S-complete-object-name
+Complete the S object name before point.
+@end itemize
+
+When the cursor is just after a partially-completed object name,
+pressing @key{TAB} provides completion in a similar fashion to
+@code{tcsh}
+@cindex tcsh
+except that completion is performed over S object names instead of file
+names. S-mode maintains a list of all objects known to S at any given
+time, which basically consists of all objects (functions and datasets)
+in every attached
+directory listed by the @code{search()} command
+@pindex search()
+along with the component objects of attached data frames
+@cindex data frames
+(if your version of S supports them).
+
+For example, consider the three functions (available in Splus version
+3.0) called @code{binomplot()}, @code{binom.test()} and
+@code{binomial()}. Typing @kbd{bin TAB} after the S prompt will insert
+the characters @samp{om}, completing the longest prefix (@samp{binom})
+which distinguishes these three commands.  Pressing @kbd{TAB} once more
+provides a list of the three commands which have these prefix, allowing
+you to add more characters (say, @samp{.}) which specify the function
+you desire. After entering more characters pressing @kbd{TAB} yet again
+will complete the object name up to uniqueness, etc. If you just wish to
+see what completions exist without adding any extra characters, pass a
+prefix command to @code{S-complete-object-name} with @kbd{C-u TAB}.
+
+S-mode automatically keeps track of any objects added or deleted to the
+system to make completion as accurate as possible. As long as the
+command that changed the search list matched @code{S-change-sp-regex},
+@vindex S-change-sp-regex
+when a directory or data frame is attached, the objects associated with
+it immediately become available for a completion; when detached
+completion is no longer available on those objects. Efficiency is gained
+by maintaining a cache of objects currently known to S; when a new
+object becomes available or is deleted, only one component of the cache
+corresponding to the associated directory is refreshed. The command
+@kbd{M-x S-resynch}
+@pindex S-resynch
+forces the @emph{entire} cache to be refreshed --- use this command
+whenever S-mode gets confused about completion. 
+@cindex completion, not working on data frames
+One warning: S @emph{never} automatically refreshes its idea of the
+components of attached data frames;
+if the names of the components of a data frame are modified
+during an S session, S-mode will not recognise any new components (or
+ignore any deleted
+components) until the command @kbd{M-x S-resynch}
+is issued. 
+
+S-mode also provides completion over the components of named lists
+accessed using the @samp{$} notation, to any level of nested lists. Such
+information is never cached, and so is guaranteed to always be correct.
+This feature is particularly useful for checking what components of a
+list object exist while partway through entering a command: simply type
+the object name and @samp{$} and press @kbd{TAB} to see the names of
+existing list components for that object.
+@cindex lists, completion on
+@cindex completion on lists
+
+@node Process buffer motion, Command History, Completion, Entering commands
+@comment  node-name,  next,  previous,  up
+@section Moving through the process buffer
+
+Most of the time, the cursor spends most of its time at the bottom of
+the S process buffer, entering commands. Sometimes, however, we want to
+move back up through the buffer, to look at the output from previous
+commands for example.
+
+Viewing the output of the command you have just entered is a common
+occurence and S-mode provides a number of facilities for doing this.
+Within the S process buffer, the variable @code{scroll-step}
+@vindex scroll-step
+is set to 4 (you can redefine this using @code{inferior-S-mode-hook}
+@vindex inferior-S-mode-hook
+if you wish - @pxref{Hooks},) so that the cursor is usually near the
+bottom of the window. Longish command outputs may cause S to place the
+cursor at the middle of the window, however, making the first part of
+the output hidden above the top of the window. If this happens, you can
+use the command
+
+@itemize @bullet
+@item
+@kbd{C-c C-v} (@code{S-view-at-bottom}) @*
+@pindex S-view-at-bottom
+Move to the end of the buffer, and place cursor on bottom line of
+window.
+@end itemize
+
+@noindent
+will make more of the last output visible. If the first part of the
+output is still obscured, use 
+@cindex reading long command outputs
+
+@itemize @bullet
+@item
+@kbd{C-c C-r} (@code{comint-show-output}) @*
+@pindex comint-show-output
+Moves cursor to the previous command line and 
+and places it at the top of the window.
+@end itemize
+
+@noindent
+to view it. Finally, if you want to discard the last command output
+altogether, use
+
+@itemize @bullet
+@item
+@kbd{C-c C-o} (@code{S-kill-output}) @*
+@pindex S-kill-output
+@cindex deleting output
+@pindex comint-show-output
+Deletes everything from the last command to the current
+prompt.
+@end itemize
+
+@noindent
+to kill it.
+
+If you want to view the output from more historic commands than the
+previous command, commands are also provided to move backwards and
+forwards through previously entered commands in the process buffer:
+
+@itemize @bullet
+@item
+@kbd{M-P} (@code{comint-msearch-input}) @*
+@pindex comint-msearch-input
+Moves point to the preceding command in the process buffer.
+
+@item
+@kbd{M-N} (@code{comint-psearch-input}) @*
+@pindex comint-psearch-input
+Moves point to the next command in the process buffer.
+
+@item
+@kbd{C-c C-b} (@code{comint-msearch-input-matching}) @*
+@pindex comint-msearch-input-matching
+Prompts for a string and jump to the previous command you
+entered which matched that string.
+@end itemize
+
+When the cursor is not after the current prompt, the @key{RETURN} key
+has a slightly different behaviour than usual. Pressing @kbd{RET} on any
+line containing a command that you entered (i.e. a line beginning with a
+prompt) sends that command to the S process once again. This even works
+if the current line is a continuation line (i.e. the prompt is @samp{+ }
+instead of @samp{> }) --- in this case all the lines that form the
+multi-line command are concatenated together and the resulting command
+is sent to the S process (currently this is the only way to resubmit a
+multi-line command to the S process in one go.) If the current line does
+@cindex multi-line commands, resubmitting
+not begin with a prompt, an error is signalled. This feature, coupled
+with the command-based motion commands described above, could be used as
+a primitive history mechanism. S-mode provides a more sophisticated
+mechanism, however, which is described below.
+
+@node Command History, Hot keys, Process buffer motion, Entering commands
+@comment  node-name,  next,  previous,  up
+@section Command History
+@cindex command history
+@cindex editing commands
+@cindex re-executing commands
+
+S-mode provides easy-to-use facilities for re-executing or editing
+previous commands. An input history of the last few commands is
+maintained (by default the last 50 commands are stored, although this
+can be changed by setting the variable @code{input-ring-size} in
+@vindex input-ring-size
+@code{inferior-S-mode-hook}.) The simplest history commands simply
+select the next and previous commands in the input history:
+
+@itemize @bullet
+@item
+@kbd{M-p} (@code{comint-next-input}) @*
+@pindex comint-next-input
+Select the previous command in the input history.
+
+@item
+@kbd{M-n} (@code{comint-previous-input}) @*
+@pindex comint-next-input
+Select the next command in the input history.
+@end itemize
+
+@noindent
+For example, pressing @kbd{M-p} once will re-enter the last
+command into the process buffer after the prompt but does not send it to
+the S process, thus allowing editing or correction of the command before
+the S process sees it. Once corrections have been made, press @kbd{RET}
+to send the edited command to the S process.
+
+If you have an idea which command you want from the history, the commands
+
+@itemize @bullet
+@item
+@kbd{M-s} (@code{comint-previous-similar-input}) @*
+@pindex comint-previous-similar-input
+Select the previous command in the history which matches the string
+typed so far.
+
+@item
+@kbd{M-S} (@code{comint-next-similar-input}) @*
+@pindex comint-next-similar-input
+Select the next command in the history which matches the string
+typed so far.
+@end itemize
+
+@noindent
+may be more useful, as they only select commands starting with those
+characters already entered. For instance, if you wanted to re-execute
+the last @code{attach()} command, all you need to do is type
+@kbd{attach} and then @kbd{M-s} and @kbd{RET}.
+
+Sometimes you want to re-execute a command that matches a particular
+string (a variable name for example) which does not appear at the start
+of the command. In this case
+
+@itemize @bullet
+@item
+@kbd{M-r} (@code{comint-isearch}) @*
+@pindex comint-isearch
+Interactively search backwards through the input history for a string.
+@end itemize
+
+@noindent
+may be useful. This command is very similar to @code{isearch-backward},
+except that it operates on the input history instead of the buffer text.
+After typing @kbd{M-r}, commands which match the search string are
+displayed as you enter the string itself. If you entered some text
+before pressing @kbd{M-r} then only commands which begin with that text are
+considered as candidates, and the string is matched against the
+remaining part of the command. Use @kbd{C-r} to search further backwards
+and @kbd{C-s} to search forwards. @kbd{RET} sends the selected comand
+directly to the S process; use @kbd{ESC} if you wish to edit it first.
+
+@node Hot keys, Other inferior-S-mode commands, Command History, Entering commands
+@comment  node-name,  next,  previous,  up
+@section Hot keys for common commands
+
+S-mode provides a number of commands for executing the commonly used
+functions. These commands below are basically information-gaining
+commands (such as @code{objects()} or @code{search()}) which tend to
+clutter up your transcript and for this reason some of the hot keys
+display their output in a temporary buffer
+instead of the process buffer by default. This behaviour is controlled
+by the variable @code{S-execute-in-process-buffer} which, if
+@vindex S-execute-in-process-buffer
+non-@code{nil}, means that these commands will produce their output in
+the process buffer instead.  In any case, passing a prefix argument to
+the commands (with @kbd{C-u}) will reverse the meaning of
+@code{S-execute-in-process-buffer} for that command, i.e. the output
+will be displayed in the process buffer if it usually goes to a
+temporary buffer, and vice-versa. These are the hot keys that behave in
+this way:
+
+@itemize @bullet
+@item
+@kbd{C-c C-x} (@code{S-execute-objects}) @*
+@pindex S-execute-objects
+Sends the @code{objects()}
+@pindex objects()
+command to the S process. A prefix argument specifies the position on
+the search list (use a negative argument to toggle
+@code{S-execute-in-process-buffer} as well.)
+A quick way to see what objects are in your working
+directory.
+@cindex objects
+@pindex objects()
+
+@item
+@kbd{C-c C-s} (@code{S-execute-search}) @*
+@pindex S-execute-search
+Sends the @code{search()}
+@pindex search()
+command to the S process. 
+@cindex search list
+@pindex search()
+
+@item
+@kbd{C-c C-e} (@code{S-execute}) @*
+@pindex S-execute
+Prompt for an S expression, and evaluate it.
+@end itemize
+
+@code{S-execute} may seem pointless when you could just type the command
+in anyway, but it proves useful for `spot' calculations which would
+otherwise clutter your transcript, or for evaluating an expression while
+partway through entering a command. You can also use this command to
+generate new hot keys using the Emacs keyboard macro facilities;
+@pxref{Keyboard Macros, Keyboard Macros, Keyboard Macros, emacs, The GNU
+Emacs Reference Manual}.
+@cindex hot keys
+@cindex keyboard short cuts
+
+The following hot keys do not use @code{S-execute-in-process-buffer} to
+decide where to display the output --- they either always display in
+the process buffer or in a separate buffer, as indicated:
+
+@itemize @bullet
+@item
+@kbd{C-c C-a} (@code{S-execute-attach}) @*
+@pindex S-execute-attach
+Prompts for a directory to attach to the S process with the
+@code{attach()} command.
+@pindex attach()
+If a numeric prefix argument is given it is used as the position on the
+search list to attach the directory; otherwise the S default of 2 is
+used. The @code{attach()} command actually executed appears in the
+process buffer.
+
+@item
+@kbd{C-c C-l} (@code{S-load-file}) @*
+@pindex S-load-file
+Prompts for a file to load into the S process using @code{source()}. If
+there is an error during loading, you can jump to the error in the file
+with @kbd{C-x `} (@code{S-parse-errors}).
+@pindex S-parse-errors
+@xref{Error Checking} for more details.
+
+@item
+@kbd{C-c C-h} (@code{S-display-help-on-object}) @*
+Pops up a help buffer for an S object or function. See @xref{Help} for
+more details.
+
+@item
+@kbd{C-c C-q} (@code{S-quit}) @*
+@cindex quitting from S-mode
+@cindex killing the S process
+Sends the @code{q()} 
+@pindex q()
+command to the S process, and cleans up any temporary buffers (such as
+help buffers or edit buffers) you may have created along the way. Use
+this command when you have finished your S session instead of simply
+typing @code{q()} yourself, otherwise you will need to issue the command
+@kbd{M-x S-cleanup}
+@pindex S-cleanup
+@cindex cleaning up
+@cindex temporary buffers, killing
+@cindex killing temporary buffers
+command explicitly to make sure that all the files that need to be saved
+have been saved, and that all the temporary buffers have been killed.
+@end itemize
+
+@node Other inferior-S-mode commands,  , Hot keys, Entering commands
+@comment  node-name,  next,  previous,  up
+@section Other commands provided by inferior-S-mode
+
+The following commands are also provided in the process buffer:
+
+@itemize @bullet
+@item
+@kbd{C-c C-c} (@code{comint-interrupt-subjob}) @*
+@pindex comint-interrupt-subjob
+Sends a Control-C signal to the S process. This has the effect of
+@cindex aborting S commands
+@cindex interrupting S commands
+aborting the current command.
+
+@item
+@kbd{C-c C-z} (@code{S-abort}) @*
+@pindex S-abort
+@pindex comint-stop-subjob
+Sends a STOP signal to the S process, killing it immediately. It's not a
+good idea to use this, in general: Neither @code{q()} nor @code{.Last}
+will be executed and device drivers will not finish cleanly. This
+command is provided as a safety to @code{comint-stop-subjob}, which is
+usually bound to @kbd{C-c C-z}. If you want to quit from S, use @kbd{C-c
+C-q} (@code{S-quit}) instead.
+@pindex S-quit
+@cindex aborting the S process
+
+@item
+@kbd{C-c C-d} (@code{S-dump-object-into-edit-buffer}) @*
+@pindex S-dump-object-into-edit-buffer
+Prompts for an object to be edited in an edit buffer. @xref{Editing}.
+
+@item
+@kbd{C-c C-t} (@code{S-tek-mode-toggle}) @*
+Toggles Tek graphics mode. @xref{tek4014} for more details.
+@end itemize
+
+@node Editing, Help, Entering commands, Top
+@comment  node-name,  next,  previous,  up
+@chapter Editing S functions
+
+@cindex editing functions
+S-mode provides facilities for editing S objects within your Emacs
+session. Most editing is performed on S functions, although in theory
+you may edit datasets as well. Edit buffers are always associated with
+files, although you may choose to make these files temporary if you
+wish. Alternatively, you may make use of a simple yet powerful mechanism
+for maintaining backups of text representations of S functions.
+Error-checking is performed when S code is loaded into the S process.
+
+@menu
+* Edit buffer::                 The edit buffer
+* Modification::                Modification flags in edit buffers
+* Source Files::                Maintaining S source files
+* Source Directories::          Names and locations of dump files
+* Error Checking::              Detecting and correcting errors
+@end menu
+
+@node Edit buffer, Modification,  , Editing
+@comment  node-name,  next,  previous,  up
+@section The edit buffer
+@cindex edit buffer
+
+To edit an S object, type 
+
+@itemize @bullet
+@item
+@kbd{C-c C-d} (@code{S-dump-object-into-edit-buffer}) @*
+@pindex S-dump-object-into-edit-buffer
+Edit an S object in its own edit buffer.
+@end itemize
+
+from within the S process buffer (@code{*S*}).
+You will them be prompted for an object to edit: you may either type in
+the name of an existing object (for which completion is available using
+the @kbd{TAB} key,)
+@cindex completion, when prompted for object names
+or you may enter the name of a new object.
+@cindex creating new objects
+@cindex new objects, creating
+A buffer will be created containing the text representation of the
+requested object or, if you entered the name of a non-existent object at
+the prompt and the variable @code{S-insert-function-templates}
+@vindex S-insert-function-templates
+is non-@code{nil}, you will be presented with a template defined by
+@code{S-function-template}
+@vindex S-function-template
+which defaults to a skeleton function construct.
+
+You may then edit the function as required.
+The edit buffer generated by @code{S-dump-object-into-edit-buffer} is placed
+in the @code{S-mode} major mode which provides a number of commands to
+facilitate editing S source code. Commands are provided to intelligently
+indent S code, evaluate portions of S code and to move around S code
+constructs.
+
+@cindex dump files
+@cindex reverting function definitions
+@strong{Note:} when you dump a file with @kbd{C-c C-d}, S-mode first
+checks to see whether there already exists an edit buffer containing
+that object and, if so, pops you directly to that buffer. If not, S-mode
+next checks whether there is a file in the appropriate place with the
+appropriate name (@xref{Source Files}) and if so, reads in that file.
+You can use this facility to return to an object you were editing in a
+previous session (and which possibly was never loaded to the S session.)
+Finally, if both these tests fail, the S process is consulted and a
+@code{dump()} command issued.
+@pindex dump()
+If you want to force S-mode to ask the S process for the object's
+definition (say, to reformat an unmodified buffer or to revert back to
+S's idea of the object's definition) pass a prefix argument to
+@code{S-dump-object-into-edit-buffer} by typing @kbd{C-u C-c C-d}.
+
+@menu
+* Evaluating code::             Sending code to the S process
+* Indenting::                   Indenting and formatting S code
+* Other edit buffer commands::  Commands for motion, completion and more
+@end menu
+
+@node Evaluating code, Indenting,  , Edit buffer
+@comment  node-name,  next,  previous,  up
+@subsection Sending code to the S process
+
+There are a wide range of commands for sending code to the S process.
+The primary command is for loading the current buffer (which usually
+contains a single function) into the S process:
+
+@itemize @bullet
+@item
+@kbd{C-c C-l} (@code{S-load-file}) @*
+@pindex S-load-file
+Loads a file into the S process using @code{source()}.
+@pindex source()
+@end itemize
+
+@noindent
+After typing @kbd{C-c C-l} you will prompted for the name of the file to
+load into S; usually this is the current buffer's file which is the
+default value (selected by simply pressing @kbd{RET} at the prompt.)
+Your will be asked to save the buffer first if it has been modified
+(this happens automatically if the buffer was generated with @kbd{C-c
+C-d}.) If the buffer is not modified, S-mode assumed its contents are
+equivalent to S's value of the function and you will need to confirm
+that you want to load the file into S.  The file will then be loaded and
+you will be returned to the S process.  If any errors occur, S-mode will
+inform you of this fact: @xref{Error Checking}.
+
+Other commands are also available for evaluating portions of code in the
+S process. You may choose whether both the commands and their output
+appear in the process buffer (as if you had typed in the commands
+yourself) or if the output alone is echoed. The behaviour is controlled
+by the variable @code{S-eval-visibly-p} whose default is @code{nil}
+@vindex S-eval-visibly-p
+(display output only.) Passing a prefix argument (@kbd{C-u}) to any of
+the following commands, however, reverses the meaning of
+@code{S-eval-visibly-p} for that command only --- for example @kbd{C-u
+C-c C-j} echoes the current line of S-code in the S process buffer,
+followed by its output. This method of evaluation is an alternative to
+S's @code{source()} function
+@pindex source()
+@cindex echoing commands when evaluating
+@cindex evaluating code with echoed commands
+when you want the input as well as the output to be displayed. (You can
+sort of do this with @code{source()} when the option @code{echo=T} is
+set, except that prompts do not get displayed. S-mode puts prompts in
+the right places.) The commands for evaluating code are:
+
+@itemize @bullet
+@cindex evaluating S expressions
+@item
+@kbd{C-c C-j} (@code{S-eval-line}) @*
+@pindex S-eval-line
+Send the line containing point to the S process.
+
+@item
+@kbd{C-c M-j} (@code{S-eval-line-and-go}) @*
+@pindex S-eval-line-and-go
+As above, but returns you to the S process buffer as well.
+
+@item
+@kbd{C-c C-f} or @kbd{ESC C-x} (@code{S-eval-function}) @*
+@pindex S-eval-function
+Send the S function containing point to the S process.
+
+@item
+@kbd{C-c M-f} (@code{S-eval-function-and-go}) @*
+@pindex S-eval-function-and-go
+As above, but returns you to the S process buffer as well.
+
+@item
+@kbd{C-c C-r} (@code{S-eval-region}) @*
+@pindex S-eval-region
+Send the text between point and mark to the S process.
+
+@item
+@kbd{C-c M-r} (@code{S-eval-region-and-go}) @*
+@pindex S-eval-region-and-go
+As above, but returns you to the S process buffer as well.
+
+@item
+@kbd{C-c C-b} (@code{S-eval-buffer}) @*
+@pindex S-eval-buffer
+Send the contents of the edit buffer to the S process. 
+
+@item
+@kbd{C-c M-b} (@code{S-eval-buffer-and-go}) @*
+@pindex S-eval-function-and-go
+As above, but returns you to the S process buffer as well. 
+
+@item
+@kbd{C-c C-n} (@code{S-eval-line-and-next-line}) @*
+@pindex S-eval-line-and-next-line
+@cindex stepping through code
+@cindex debugging S functins
+Sends the current line to the S process, echoing it in the process
+buffer, and moves point to the next line. Useful when debugging for
+stepping through your code.
+@end itemize
+
+It should be stressed once again that these @code{S-eval-} commands
+should only be used for evaluating small portions of code for debugging
+purposes, or for generating transcripts from source files. When editing
+S functions, @kbd{C-c C-l} is the command to use to update the
+function's value. In particular, @code{S-eval-buffer} is now largely
+obsolete.
+
+One final command is provided for spot-evaluations of S code:
+
+@itemize @bullet
+@kbd{C-c C-e} (@code{S-execute-in-tb}) @*
+@pindex S-execute-in-tb
+Prompt for an S expression and evaluate it. Displays result in a
+temporary buffer.
+@end itemize
+
+@noindent
+This is useful for quick calculations, etc.
+
+@node Indenting, Other edit buffer commands, Evaluating code, Edit buffer
+@comment  node-name,  next,  previous,  up
+@subsection Indenting and formatting S code
+
+S-mode now provides a sophisticated mechanism for indenting S source
+code (thanks to Ken'ichi Shibayama.) Compound statements (delimited by
+@samp{@{} and @samp{@}}) are indented relative to their enclosing block.
+In addition, the braces have been electrified to automatically indent to
+the correct position when inserted, and optionally insert a newline at
+the appropriate place as well. Lines which continue an incomplete
+expression are indented relative to the first line of the expression.
+Function definitions, @code{if} statements, calls to @code{expression()}
+and loop constructs are all recognised and indented appropriately. User
+variables are provided to control the amount if indentation in each
+case, and there are also a number of predefined indentation styles to
+choose from. @xref{Indentation variables}.
+
+@cindex comments in S
+Comments are also handled specially by S-mode, using an idea borrowed
+from the Emacs-Lisp indentation style. Comments beginning with @samp{###}
+are aligned to the beginning of the line. Comments beginning with
+@samp{##} are aligned to the current level of indentation for the block
+containing the comment. Finally, comments beginning with @samp{#} are
+aligned to a column on the right (the 40th column by default, but this
+value is controlled by the variable @code{comment-column},)
+@vindex comment-column
+or just after the expression on the line containing the comment if it
+extends beyond the indentation column.
+
+The indentation commands provided by S-mode are:
+@cindex indenting
+@cindex formatting source code
+
+@itemize @bullet
+@item
+@kbd{TAB} (@code{S-indent-command}) @*
+Indents the current line as S code. If a prefix argument is given, all
+following lines which are part of the same (compound) expression are
+indented by the same amount (but relative indents are preserved).
+
+@item
+@kbd{ESC C-q} (@code{S-indent-exp}) @*
+Indents each line in the S (compound) expression which follows point.
+Very useful for beautifying your S code.
+
+@item
+@kbd{@{} and @kbd{@}} (@code{S-electric-brace}) @*
+The braces automatically indent to the correct position when typed.
+
+@item
+@kbd{M-;} (@code{indent-for-comment}) @*
+Indents a comment line appropriately, or inserts an empty
+(single-@samp{#}) comment.
+
+@item
+@kbd{M-x S-set-style} @*
+Set the formatting style in this buffer to be one of the predefined
+styles (@code{GNU}, @code{BSD}, @code{K&R} and @code{C++} by default).
+This command causes all of the formatting variables to be buffer-local.
+@end itemize
+
+@node Other edit buffer commands,  , Indenting, Edit buffer
+@comment  node-name,  next,  previous,  up
+@subsection Commands for motion, completion and more
+
+A number of commands are provided to move across function definitions
+in the edit buffer:
+@itemize @bullet
+@item
+@kbd{ESC C-e} (@code{S-beginning-of-function}) @*
+@pindex S-beginning-of-function
+Moves point to the beginning of the function containing point.
+
+@item
+@kbd{ESC C-a} (@code{S-end-of-function}) @*
+@pindex S-end-of-function
+Moves point to the end of the function containing point.
+
+@item
+@kbd{ESC C-h} (@code{S-mark-function}) @*
+Places point at the beginning of the S function containing point, and
+mark at the end.
+@end itemize
+@noindent
+Don't forget the usual Emacs commands for moving over balanced
+expressions and parentheses: @xref{Lists, Lists and Sexps, Lists and
+Sexps, Emacs, The GNU Emacs Reference Manual}.
+
+Completion is also available in the edit buffer:
+@itemize @bullet
+@item
+@kbd{ESC TAB} (@code{S-complete-object-name}) @*
+Completes the S object name before point.
+@end itemize
+Note however that completion is only provided over globally known S
+objects (such as system functions) --- it will @emph{not} work for
+arguments to functions or other variables local to the function you are
+editing.
+
+Finally, two commands are provided for returning to the S process buffer:
+
+@itemize @bullet
+@item
+@kbd{C-c C-z} (@code{S-switch-to-end-of-S}) @*
+@pindex S-switch-to-end-of-S
+Returns you to the S process buffer, placing point at the end of the
+buffer.
+
+@item
+@kbd{C-c C-y} (@code{S-switch-to-S}) @*
+@pindex S-switch-to-S
+Also returns to to the S process buffer, but leaves point where it is.
+@end itemize
+
+In addition some commands available in the process buffer are also
+available in the edit buffer. You can still read help files with
+@kbd{C-c C-h}, edit another function with @kbd{C-c C-d} and of course
+@kbd{C-c C-l} can be used to load a source file into S. @xref{Other
+inferior-S-mode commands} for more details on these commands.
+
+@node Modification, Source Files, Edit buffer, Editing
+@comment  node-name,  next,  previous,  up
+@section Modification flags in edit buffers
+
+@cindex modification flag
+Within S-mode edit buffers, the modification flag has a slightly
+different meaning than it usually does. In general, S-mode tries to set
+the modification flag whenever the contents of the edit buffer differ
+from S's idea of the objects value, and clears the flag whenever the
+edit buffer has been successfully loaded into the S process. Thus you
+will be warned whenever you attempt to kill a buffer which represents an
+edited (i.e. different) version of the existing S object.
+
+Edit buffers are marked as temporary buffers within S-mode, and will be
+killed whenever @code{S-quit} or @code{S-cleanup} are called. 
+@pindex S-quit
+@pindex S-cleanup
+If the modification flag is set, however, you will be warned before that
+buffer is killed.
+
+@node Source Files, Source Directories, Modification, Editing
+@comment  node-name,  next,  previous,  up
+@section Maintaining S source files
+
+Every edit buffer in S-mode is associated with a @dfn{dump file} on
+disk. Dump files are created whenever you type @kbd{C-c C-d}
+(@code{S-dump-object-into-edit-buffer}), and may either be deleted
+after use, or kept as a backup file or as a means of keeping
+several versions of an S function.
+@cindex dump files
+
+@defvr {User Option} S-keep-dump-files
+If this has a non-@code{nil} value, then dump files are never deleted.
+Otherwise dump files are silently deleted after each use, unless an
+error occurs.
+@end defvr
+
+When @code{S-keep-dump-files} is @code{nil}, the dump file is deleted
+immediately after it is read into the edit buffer. This is so that you
+can kill the edit buffer at any time without leaving the dump file
+behind. When loading the file back into S with @kbd{C-c C-l}, the dump
+file is again written out to disk and loaded into S. If the load is
+successful, the file is again deleted. If there is an error in your
+function, however, the file is retained so that you may edit the file at
+any time to correct the error.
+
+When @code{S-keep-dump-files} is non-@code{nil}, dump files are never
+deleted. Thus you can maintain a complete text record of the functions
+you have editied within S-mode. Backup files are always kept, and so by
+using the Emacs numbered backup facility --- @pxref{Backup Names, Single
+or Numbered Backups, Single or Numbered Backups, emacs, The Gnu Emacs
+Reference Manual}, you can keep a historic record of function
+definitions.  As long as a dump file exists in the appropriate place for
+a particular object, editing that object with @kbd{C-c C-d} finds that
+file for editing (unless a prefix argument is given) --- the S process
+is not consulted. Thus you can keep comments @emph{outside} the function
+definition as a means of documentation that does not clutter the S
+object itself. Another useful feature is that you may format the code in
+any fashion you please without S re-indenting the code every time you
+edit it. These features are particularly useful for project-based work.
+@cindex comments
+@cindex project work in S
+@cindex historic backups
+
+@cindex autosaving
+Dump buffers are always autosaved, regardless of the value of
+@code{S-keep-dump-files}. 
+
+When an object is dumped to a file, S-mode adds some comment lines to
+the end of the file, such as
+@cindex comments at end of file
+@example
+# Local Variables:
+# mode:S
+# S-temp-buffer-p:t
+# End:
+@end example
+These are included to ensure that whenever you next edit the file, it is
+in the correct mode for editing S source, and that the associated buffer
+is marked as a temporary buffer. If @code{S-keep-dump-files} is
+@code{nil} and you wish to keep the file associated with the edit
+buffer, remove the line
+@example
+# S-temp-buffer-p:t
+@end example
+@noindent
+and @emph{save} the buffer. 
+@cindex preserving dump files
+@cindex dump files, preserving
+The buffer will still be marked as temporary, however, and so deleted
+when you quit from S. You can change this by using @kbd{M-x
+set-variable} to set the value of @code{S-temp-buffer-p} to @code{nil}.
+@vindex S-temp-buffer-p
+@cindex temporary buffers
+
+@node Source Directories, Error Checking, Source Files, Editing
+@comment  node-name,  next,  previous,  up
+@section Names and locations of dump files
+
+@cindex dump file names
+Every dump file should be given a unique file name, usually the dumped
+object name with some additions.
+
+@defvr {User Option} S-dump-filename-template
+Template for filenames of dumped objects. @code{%s}
+is replaced by the object name.
+@end defvr
+
+@noindent
+By default, dump file names are the user name, followed by @samp{.} and
+the object and ending with @samp{.S}. Thus if user @code{joe} dumps the
+object @code{myfun} the dump file will have name @file{joe.myfun.S}. The
+username part is included to avoid clashes when dumping into a
+publicly-writable directory, such as @file{/tmp}; you may wish to remove
+this part if you are dumping into a directory owned by you.
+
+@cindex dump file directories
+You may also specify the directory in which dump files are written:
+
+@defvr {User Option} S-source-directory
+Directory name (ending in a slash) where S dump files are to be written.
+@end defvr
+
+By default, dump files are always written to @file{/tmp}, which is fine
+when @code{S-keep-dump-files} is @code{nil}.  If you are keeping dump
+files, then you will probably want to keep them somewhere in your home
+directory, say @file{~/S-source}. This could be achieved by including
+the following line in your @file{.emacs} file:
+@cindex @file{.emacs} file
+@example
+(setq S-source-directory (expand-file-name "~/S-source/"))
+@end example
+
+If you would prefer to keep your dump files in separate directories
+depending on the value of some variable, S-mode provides a facility for
+this also. 
+
+@defvr {User Option} S-source-directory-generator
+Variable whose value is a function which, when called with no arguments,
+will return a directory name (ending in @samp{/}) into which dump files
+will be written.  @code{nil} means use the value of
+@code{S-source-directory}.
+@end defvr
+
+@noindent
+If the directory generated by this function does not exist but can be
+created, you will be asked whether you wish to create the directory. If
+you do not or the directory cannot be created, the value of
+@code{S-source-directory} is used.
+
+One application of @code{S-source-directory-generator} is to keep dump
+files in some subdirectory of the current S directory:
+@example
+(setq S-source-directory-generator
+      '(lambda () 
+         (expand-file-name 
+          (concat 
+           (directory-file-name S-directory) 
+           "/Src/"))))
+@end example
+@noindent
+This is useful if you keep your dump files and you often edit objects
+with the same name in different directories.  Alternatively, if you
+often change your S working directory during an S session, you may like
+to keep dump files in some subdirectory of the directory pointed to by
+the first element of the current search list. This way you can edit
+objects of the same name in different directories during the one S
+session:
+@cindex search list
+@cindex working directory
+@example
+(setq S-source-directory-generator 
+    '(lambda () 
+       (file-name-as-directory 
+        (expand-file-name (concat
+                           (car S-search-list)
+                           "/.Src")))))
+@end example
+@vindex S-search-list
+
+@node Error Checking,  , Source Directories, Editing
+@comment  node-name,  next,  previous,  up
+@section Detecting and correcting errors
+@cindex errors
+@cindex parsing errors
+
+After loading a file into the S process with @kbd{C-c C-l}, S-mode will
+report whether the load was successful. If it was not (i.e. there was
+some sort of error in your code) you can return to the file from the S
+process buffer with @kbd{C-x `} (@code{S-parse-errors}).
+@pindex S-parse-errors
+You will be returned to the offending file (loading it into a buffer if
+necessary) with point at the line S reported as containing the error.
+You may then correct the error, and reload the file. Note that the
+corresponding S object will not be changed until the file has been
+successfully loaded; it is for this reason that temporary files
+containing errors are never deleted.
+
+Sometimes the error is not caused by a syntax error (loading a
+non-existent file for example.) In this case typing @kbd{C-x `} will
+simply display a buffer containing S's error message. You can force this
+behaviour (and avoid jumping to the file when there @emph{is} a syntax
+error) by passing a prefix argument to @code{S-parse-errors} with
+@kbd{C-u C-x `}.
+
+@node Help, Graphics, Editing, Top
+@comment  node-name,  next,  previous,  up
+@chapter Reading help files in S-mode
+@cindex help files
+
+S-mode provides an easy-to-use facility for reading S help files from
+within Emacs. From within the S process buffer or any S-mode edit
+buffer, typing @kbd{C-c C-h} (@code{S-display-help-on-object})
+@pindex S-display-help-on-object
+will prompt you for the name of an object for which you would like
+documentation. Completion is
+provided over all objects which have help files.
+
+If the requested object has documentation, you will be popped into a
+buffer (named @code{*help(@var{obj-name})*}) containing the help file.
+This buffer is placed in a special `S Help' mode which disables the
+usual editing commands but which provides a number
+of keys for paging through the help file:
+
+@itemize @bullet
+Help commands:
+
+@item
+@kbd{?} (@code{S-describe-help-mode}) @*
+@pindex S-describe-help-mode
+Pops up a help buffer with a list of the commands available in S help
+mode.
+
+@item
+@kbd{h} (@code{S-display-help-on-object}) @*
+@pindex S-display-help-on-object
+Pop up a help buffer for a different object
+
+Paging commands:
+
+@cindex paging commands in help buffers
+@item
+@kbd{b} or @kbd{DEL} (@code{scroll-down}) @*
+Move one page backwards through the help file.
+
+@item
+@kbd{SPC} (@code{scroll-up}) @*
+Move one page forwards through the help file.
+
+@item
+@kbd{>} (@code{beginning-of-buffer}) and @kbd{<} (@code{end-of-buffer}) @*
+Move to the beginning and end of the help file, respectively.
+
+Section-based motion commands:
+
+@item
+@kbd{n} (@code{S-skip-to-next-section}) and @kbd{p}
+(@code{S-skip-to-previous-section}) @* Move to the next and previous
+@pindex S-skip-to-next-section
+@pindex S-skip-to-previous-section
+section header in the help file, respectively. A section header consists
+of a number of capitalised words, followed by a colon.
+
+In addition, the @kbd{s} key followed by one of the following letters
+will jump to a particular section in the help file:
+@pindex S-skip-to-help-section
+@table @samp
+@item a
+ARGUMENTS:
+
+@item b
+BACKGROUND:
+
+@item B
+BUGS:
+
+@item d
+DETAILS:
+
+@item D
+DESCRIPTION:
+
+@item e
+EXAMPLES:
+
+@item n
+NOTE:
+
+@item o
+OPTIONAL ARGUMENTS:
+
+@item r
+REQUIRED ARGUMENTS:
+
+@item R
+REFERENCES:
+
+@item s
+SIDE EFFECTS:
+
+@item s
+SEE ALSO:
+
+@item u
+USAGE:
+
+@item v
+VALUE:
+
+@item <
+Jumps to beginning of file
+
+@item >
+Jumps to end of file
+
+@item ?
+Pops up a help buffer with a list of the defined section motion keys.
+@end table
+
+Miscellaneous:
+
+@item
+@kbd{r} (@code{S-eval-region}) @*
+@pindex S-eval-region
+Send the contents of the current region to the S process. Useful for
+running examples in help files.
+
+@item
+@kbd{/} (@code{isearch-forward}) @*
+Same as @kbd{C-s}.
+
+Quit commands:
+
+@item
+@kbd{q} (@code{S-switch-to-end-of-S}) @*
+@pindex S-switch-to-end-of-S
+Returns to the S process buffer in another window, leaving the help
+window visible.
+
+@item
+@kbd{x} (@code{S-kill-buffer-and-go}) @*
+Return to the S process, killing this help buffer.
+@end itemize
+
+In addition, all of the S-mode commands available in the edit buffers
+are also available in S help mode (@xref{Edit buffer}). Of course, the
+usual (non-editing) Emacs commands are available, and for convenience
+the digits and @samp{-} act as prefix arguments.
+
+If a help buffer already exists for an object for which help is
+requested, that buffer is popped to immediately; the S process is not
+consulted at all. If the contents of the help file have changed, you
+either need to kill the help buffer first, or pass a prefix argument
+(with @kbd{C-u}) to @code{S-display-help-on-object}.
+
+Help buffers are marked as temporary buffers in S-mode, and are deleted
+when @code{S-quit} or @code{S-cleanup} are called.
+@pindex S-quit
+@pindex S-cleanup
+@cindex temporary buffers
+
+@node Graphics, Bugs, Help, Top
+@comment  node-name,  next,  previous,  up
+@chapter Using graphics with S-mode
+
+@cindex graphics
+One of the main features of the @code{S} package is its ability to
+generate high-resolution graphics plots, and S-mode provides a number of
+features for dealing with such plots.
+
+@menu
+* printer::                     The printer() graphics driver
+* tek4014::                     The tek4014() graphics driver
+* X11::                         The X11() (and other X-windows based) driver
+@end menu
+
+@node printer, tek4014,  , Graphics
+@comment  node-name,  next,  previous,  up
+@section Using S-mode with the @code{printer()} driver
+
+This is the simplest (and least desirable) method of using graphics
+within S-mode. S's @code{printer()} device driver produces crude
+character based plots which can be contained within the S process buffer
+itself. To start using character graphics, issue the S command
+@example
+printer(width=79)
+@end example
+@pindex printer()
+(the @code{width=79} argument prevents Emacs line-wrapping at column
+80 on an 80-column terminal. Use a different value for a terminal with
+a different number of columns.) Plotting commands do not generate
+graphics immediately, but are stored until the @code{show()} command
+is issued, which displays the current figure.
+
+@node tek4014, X11, printer, Graphics
+@comment  node-name,  next,  previous,  up
+@section Using S-mode with the @code{tek4014()} driver
+@cindex tek4014 terminal
+
+When using @code{S} from the shell with the @code{tek4014()} driver
+active, control-codes are sent to your terminal to generate
+high-resolution graphics plots. The terminal recognizes these
+control-codes as graphics commands and duly generates the appropriate
+plots. When running @code{S} from Emacs, however, the control-codes are
+not treated specially by Emacs and simply appear as ``garbage'' in your
+@code{S} process buffer. 
+
+One way around this is to find out what tty you are using (by using the
+Unix @code{tty} command @emph{outside} of Emacs) and  using the
+@code{file=} argument to the @code{tek4014()} function to divert the
+graphics control codes directly to the terminal. For example, if the
+@code{tty} command returned @file{/dev/ttyp1} then the S command
+@example
+tek4014(file="/dev/ttyp1")
+@end example
+will send graphics to your terminal. You may even use some other
+terminal which you are logged on to to have the graphics appear on
+another terminal. There are some problems with this method, however:
+depending on your terminal you may need to switch into graphics mode
+before issuing the plotting command, and if you are displaying the
+graphics on the same terminal as your Emacs session, you will need to
+switch back to text mode afterwards. Issuing commands while in graphics
+mode presents its own problems, because control-codes issued by Emacs
+interfere with the display.
+
+S-mode attempts to automate this procedure by detecting output
+from @code{S} commands which looks like Tek graphics control-codes and
+sends those control-codes directly to the terminal. This behaviour is
+enabled by setting the variable @code{S-tek-mode} to any non-@code{nil}
+@vindex S-tek-mode
+value (which may be achieved by using the function @code{S-tek-mode-toggle},
+@pindex S-tek-mode-toggle
+bound to @kbd{C-c C-t} by default. Tek mode is designed to work with Tek
+terminals which use the same screen to share graphics an text and also
+with terminals which provide separate screens. In the former case
+(tested on a Vis603 terminal) the variable
+@code{S-tek-pause-for-graphics} should be set to @code{t}; in the latter
+case (tested using @code{xterm}'s Tek emulation facilities)
+@code{S-tek-pause-for-graphics} should be set to @code{nil}.
+@vindex S-tek-pause-for-graphics
+
+This mode depends on being able to work out where the graphics finish
+and normal (text) output starts. In the easiest case, it finishes with
+your prompt and S-mode has no trouble detecting that. Sometimes
+plotting functions also display some text afterwards, and provided the
+function finishes and your prompt is displayed @emph{at the start} of a
+line this is no problem either, but make sure any such function you
+write finishes any text with a newline. Functions like
+@example
+badfun <- function() @{ plot(1:10) cat("Hello") invisible() @}
+@end example
+@noindent
+will break the graphics detector. Other functions, such as 
+@code{gam(obj,ask=T)} present a menu after the plot and wait for input (and
+so your prompt isn't displayed). The variable
+@code{S-tek-possible-graph-prompts}
+@vindex S-tek-possible-graph-prompts
+is a regular expression used to detect any alternative prompt used in
+this case.
+
+When the graphics display has completed, press any key to return to
+your Emacs display. This mode also works with the @code{ask=T} option to
+@code{tek4014()}, however any single key is now the appropriate response to
+the @samp{GO?} prompt.
+
+Unexpected redisplays of the Emacs screen (such as caused by
+@code{display-time} or garbage collection) can possibly send garbage to
+your graphics display, but unfortunately there seems to way to prevent
+this.
+
+If you have a very simple prompt, it may by chance appear in the
+graphics output which could possibly cause problems; if this occurs
+you will be given a warning. It is advisable to choose a prompt with
+at least two characters. If your prompt changes during the S session,
+be sure to tell the Tek graphics detector with @code{M-x
+S-tek-get-simple-prompt}.
+@pindex S-tek-get-simple-prompt
+
+When @code{S-tek-mode} is enabled, S-mode will make your Emacs process
+unusable while waiting for the first output from a function (so it can
+determine whether or not it's graphics output). You may be stuck for a
+long time when executing a time-consuming function that produces no
+output. If this becomes a problem, use @kbd{C-c C-t} to turn Tek mode on
+just before pressing @kbd{RET} to issue a plotting command, and turn Tek
+mode off again after the plotting command has completed. 
+
+@subsection Warning
+
+Tek mode is really an experimental feature of S-mode, and has only been
+tested on one system, and even then not particularly thoroughly. If it
+works for you, well and good, but don't be surprised if it takes some
+tinkering before it produces any results on your system. @xref{Bugs} for
+a few of the things that can go wrong.
+
+@node X11,  , tek4014, Graphics
+@comment  node-name,  next,  previous,  up
+@section Using S-mode with windowing devices
+
+@cindex X windows
+Of course, the ideal way to use graphics with S-mode is to use a
+windowing system. Under X windows, this requires that the DISPLAY
+environment variable is appropriately set, which may not always be the
+case within your Emacs process. S-mode provides a facility for setting
+the value of DISPLAY before the S process is started if the variable
+@code{S-ask-about-display}
+@pindex S-ask-about-display
+is non-@code{nil}. @xref{Customization} for details of this variable,
+and @pxref{Starting Up} for information on how to set the value of
+DISPLAY when beginning an S session.
+
+@node Bugs, Installation, Graphics, Top
+@chapter Known bugs in S-mode
+@cindex bugs
+
+@itemize @bullet
+@item
+Commands like @code{S-display-help-on-object} and list completion cannot
+be used while the user is entering a multi-line command. The only real
+fix in this situation is to use another S process.
+
+@item
+The @code{S-eval-} commands can leave point in the S process buffer in
+the wrong place when point is at the same position as the last process
+output. This proves difficult to fix, in general, as we need to consider
+all @emph{windows} with @code{window-point} at the right place.
+
+@item
+It's possible to clear the modification flag (say, by saving the buffer)
+with the edit buffer not having been loaded into S.
+
+@item
+Backup files can sometimes be left behind, even when
+@code{S-keep-dump-files} is @code{nil}.
+
+@item
+Passing an incomplete S expression to @code{S-execute} causes S-mode to
+hang.
+
+@item
+Completing over lists indexed with @samp{$} destroys the value of
+@code{.Last.value}
+@vindex .Last.value
+
+@item
+The function-based commands don't always work as expected on functions
+whose body is not a parenthesised or compound expression, and don't even
+recognise anonymous functions (i.e. functions not assigned to any variable).
+
+@item
+Multi-line commands could be handled better by the command history
+mechanism.
+
+@item
+There's a zillion things wrong with Tek-mode:
+
+@itemize -
+@item 
+Any graphics output that does not come directly after the command is not
+detected.
+
+@item
+Graphics output that does not end with some text (either the prompt or
+something which matches @code{S-tek-possible-graph-prompts}) causes
+S-mode to hang.
+
+@item
+Spurious junk gets sent to the graphics display whenever Emacs updates
+its display --- @code{display-time} (which updates the mode line) and
+garbage collection (which puts a message in the echo area) are the main
+culprits. If only there were a way to stop Emacs from redisplaying for a
+time @dots{}
+
+@item
+Interaction with the plot (via the crosshair cursor) is not possible.
+
+@item
+@code{S-tek-mode} should really be a minor mode.
+@end itemize
+
+Let's face it, Tek mode is flaky. It really needs a major overhaul by
+someone who really knows about Tek control codes. It needs to be written
+using sentinels to detect the start and end of graphics streams, and an
+efficient method for swapping between text and graphics modes, including
+support for terminals with separate graphics and text screens. Anyone
+who wants to have a go at it is more than welcome!
+@end itemize
+
+Until the end of August 1992, please send bug reports to
+@code{dsmith@@stats.adelaide.edu.au}.  After this date, mail to that
+address will not be answered for some time; please contact Frank Ritter
+(@code{Frank_Ritter@@SHAMO.SOAR.CS.CMU.EDU}) or any of the other authors
+then (please @code{CC:} to @code{dsmith@@stats} as well though -- you
+never know your luck!)  Comments, suggestions, words of praise and large
+cash donations are also more than welcome.
+
+@node Installation, Customization, Bugs, Top
+@comment  node-name,  next,  previous,  up
+@appendix Installing S-mode on your system
+@cindex installation
+
+The following section details those steps necessary to get S-mode
+running on your system.
+
+First of all, you need to create a directory (say, @file{~/elisp}) to
+place the Emacs-Lisp files. Copy @file{S.el}, @file{S-tek.el},
+@file{comint.el}, @file{comint-isearch.el} and @file{comint-extra.el} to
+that directory, and add the lines
+@example
+(setq load-path (cons (expand-file-name "~/elisp") load-path))
+(autoload 'S "S" "Run an inferior S process" t)
+(autoload 's-mode "S" "Mode for editing S source" t)
+@end example
+@noindent
+to your @file{.emacs} file.
+@cindex @file{.emacs} file
+@cindex load path
+@vindex load-path
+
+This will be enough to get S-mode running on most systems --- 
+@pxref{Starting Up} for details on starting S-mode. If it does not work,
+@pxref{System dependent} for other variables you may need to
+change. @xref{Customization} for other variables you may wish to set in
+your @file{.emacs} file, but it is suggested you defer this section
+until you are more familiar with S-mode.
+
+It is recommended that the @code{.el}
+files all be byte-compiled
+@cindex byte compilation
+with @kbd{M-x byte-compile-file}
+@pindex byte-compile-file
+for efficiency.
+
+@menu
+* System dependent::            Other variables you may need to change
+@end menu
+
+@node System dependent,  ,  , Installation
+@comment  node-name,  next,  previous,  up
+@appendixsec Other variables you may need to change
+
+If you run the S program (from the shell) with a command other than
+@samp{Splus} you will need to set the variable @code{inferior-S-program}
+@vindex inferior-S-program
+to the name of the appropriate program by including a line such as
+@cindex S program name
+@cindex name of S program
+@cindex command to run S program
+@example
+(setq inferior-S-program "S+")
+@end example
+@noindent
+in your @file{.emacs} file
+@cindex @file{.emacs} file
+@noindent
+(substituting @samp{S+} for the name of your S program.)
+
+If you need to call this program with any arguments, the variable you
+@cindex arguments to S program
+need to set is dependent on the value of @code{inferior-S-program}; for
+example if it is @code{"Splus"}, set the variable
+@code{inferior-Splus-args}
+@vindex inferior-Splus-args
+to a string of arguments to the @code{Splus} program. If
+@code{inferior-S-program} has some other value, substitute the
+@code{Splus} part of @code{inferior-Splus-args} with the appropriate
+program name. There aren't many instances where you need to call S with
+arguments, however: in particular do not call the S program with the
+@samp{-e} command-line editor argument since S-mode provides this
+feature for you.
+
+If you are running an older version of S, you may need to set the
+@cindex versions of S
+variable @code{S-version-running}
+@vindex S-version-running
+to reflect this fact. The default is @code{"3.0"} which indicates the
+August '91 revision; any other value indicates an older version.
+@c For future compatibility reasons, please use the one of the following
+@c values when setting this variable:
+@c @table @code
+@c @item "3.0"
+@c Version 3.0 (August '91) of S/Splus (default)
+@c 
+@c @item "2.3"
+@c Version 2.3 of S/Splus
+@c 
+@c @item "old"
+@c Any older version
+@c @end table
+@c @noindent
+This variable is effective only when S-mode is @emph{loaded}; setting it
+during an S session has no effect.
+
+@cindex Splus
+@vindex S-plus
+If you are running Splus (the enhanced version of S from Statsci) you
+may also need to set the variable @code{S-plus} to @code{t}. If your
+value of @code{inferior-S-program} is @code{"S+"} or @code{Splus} this
+will not be necessary, however; @code{S-plus} defaults to @code{t} in
+this case.
+
+Finally, if you use a non-standard prompt within S, you will need to set the
+variable @code{inferior-S-prompt}
+@cindex prompts in S
+@vindex inferior-S-prompt
+to a regular expression which will match both the primary prompt (@code{"> "}
+@cindex primary prompt
+by default) and the continuing prompt (default of @code{"+ "}.) The
+@cindex continuing prompt
+default value of this variable matches S's default prompts. For example,
+if you use (@code{"$ "}) as your primary prompt (you have
+@w{@code{options(prompt="$ ")}} in your @code{.First} function), add the
+@pindex options()
+@cindex @code{.First} function
+following line to your @file{.emacs}:
+@example
+(setq inferior-S-prompt "^\\(\\+\\|[^\\$]*\\$\\) *")
+@end example
+@noindent
+You will also need to set the variable @code{inferior-S-primary-prompt}
+@vindex inferior-S-primary-prompt
+to a regular expression which matches the primary prompt only. Do not
+anchor the regexp to the beginning of the line with @samp{^}. Once
+again, the default value matches S's default prompt; in the example
+above the appropriate value would be @code{"[^\\$]*\\$ *"}.
+
+Once these variables are set appropriately, S-mode should work on any
+system.
+
+@node Customization, Concept Index, Installation, Top
+@comment  node-name,  next,  previous,  up
+@appendix Customizing S-mode
+@cindex customization
+
+S-mode can be easily customised to your taste simply by including the
+appropriate lines in your @file{.emacs} file. There are numerous
+variables which affect the behaviour of S-mode in certain situations
+which can be modified to your liking. Keybindings may be set or changed
+to your preferences, and for per-buffer customizations hooks are also
+available.
+
+@menu
+* Variables::                   Variables for customization
+* Hooks::                       Customizing S-mode with hooks
+* Keybindings::                 Changing the default S-mode keybindings
+@end menu
+
+@node Variables, Hooks,  , Customization
+@comment  node-name,  next,  previous,  up
+@appendixsec Variables for customization
+@cindex variables
+
+S-mode is easily customisable by means of setting variables in your
+@file{.emacs} file.
+@cindex @file{.emacs} file
+In most cases, you can change defaults by including lines of the form
+@cindex defaults
+@example
+(setq @var{variable-name} @var{value})
+@end example
+@noindent
+in your @file{.emacs}.
+
+In what follows, variable names will be listed along with their
+descriptions and default values. Just substitute the variable name and
+the new value into the template above.
+
+@menu
+* Variables for starting S::    Variables for starting S
+* Dump file variables::         Variables for dump files
+* Indentation variables::       Variables controlling indentation
+* Variables controlling interaction::  Variables controlling interaction with the S process
+@end menu
+
+@node Variables for starting S, Dump file variables,  , Variables
+@comment  node-name,  next,  previous,  up
+@appendixsubsec Variables for starting S
+
+@defvr {User Option} S-ask-for-S-directory
+Default: @code{t} @*
+@cindex starting directory
+@cindex directories
+If this variable has a non-@code{nil} value, then every time S-mode is
+run with @kbd{M-x S}
+@pindex S
+you will be prompted for a directory to use as the working directory for
+your S session; this directory should have a @file{.Data} subdirectory.
+@cindex @file{.Data} directory
+If the value of @code{S-ask-for-S-directory} is @code{nil}, the value of
+@code{S-directory}
+@vindex S-directory
+is used as the working directory.
+@end defvr
+
+@defvr {User Option} S-directory
+Default: Your home directory @*
+The working directory for your S session if @code{S-ask-for-S-directory}
+is @code{nil}, and the default when prompting for a directory if it is
+not. For example, you may wish to set this to the value of the current
+buffer's working directory before starting S by adding the following
+line to your @file{.emacs} file (@xref{Hooks})
+@cindex @file{.emacs} file
+@example
+(setq S-pre-run-hook 
+   '((lambda () (setq S-directory default-directory))))
+@end example
+@end defvr
+
+@defvr {User Option} S-ask-about-display
+Default: @code{nil} @*
+If this variable has a non-@code{nil} value, then every time S-mode is
+run with @kbd{M-x S}
+@pindex S
+you will be asked for a value for the @code{DISPLAY} environment
+variable
+@cindex DISPLAY environment variable
+@cindex environment variables
+to be used in the current S session. If this variable is not set
+correctly, S will not be able to create any windows under the X
+windowing environment.
+@cindex X windows
+Completion is provided over the @code{X-displays-list} variable; the
+default is the current value of @code{DISPLAY}. This feature is useful
+is you often run S on a different display than that of the machine you
+are running S from. If
+@code{S-ask-about-display} is @code{nil}, the current value of
+@code{DISPLAY} is used.
+@end defvr
+
+@defvr {User Option} X-displays-list
+Default: @code{'(":0.0")} @*
+List of possible values for the @code{DISPLAY} environment variable,
+provided for completion when prompting for such a value.
+@end defvr
+
+@node Dump file variables, Indentation variables, Variables for starting S, Variables
+@comment  node-name,  next,  previous,  up
+@appendixsubsec Variables for dump files
+
+@defvr {User Option} S-insert-function-templates
+Default: @code{t} @*
+If this variable has a non-@code{nil} value, then dumping a non-existent
+object will result in the edit buffer containing a skeleton function
+definition, ready for editing.
+@end defvr
+
+@defvr {User Option} S-source-directory
+Default: @code{"/tmp/"} @*
+@cindex dump files
+Directory name (ending in @samp{/}) in which dump files are placed. This
+should always be a writable directory.
+@end defvr
+
+@defvr {User Option} S-source-directory-generator
+Default: @code{nil} @*
+Alternative, dynamic method of specifying the directory for dump files.
+@end defvr
+
+@defvr {User Option} S-dump-filename-template
+Default: @var{user_name}@code{.}@var{object_name}@code{.S} @*
+Naming system to use for dumped object files. @xref{Source Directories}
+for details of this and the previous two variables.
+@end defvr
+
+@defvr {User Option} S-keep-dump-files
+Default: @code{nil} @*
+Boolean flag signifying whether to keep dump files or to delete them
+after each use. @xref{Source Files} for more details.
+@end defvr
+
+@node Indentation variables, Variables controlling interaction, Dump file variables, Variables
+@comment  node-name,  next,  previous,  up
+@appendixsubsec Variables controlling indentation
+@cindex formatting source code
+@cindex indentation
+
+@defvr {User Option} S-tab-always-indent
+Default: @code{t} @*
+If non-@code{nil}, then @kbd{TAB} in the edit buffer always indents the
+current line, regardless of the position of point in the line.
+Otherwise, indentation is only performed if point is in the lines
+indentation, and a tab character is inserted is point is after the first
+nonblank character.
+@end defvr
+
+@defvr {User Option} S-auto-newline
+Default: @code{nil} @*
+Non-@code{nil} means automatically newline before and after braces
+inserted in S code.
+@end defvr
+
+@defvr {User Option} S-indent-level
+Default: 2 @*
+Extra indentation of S statement sub-block with respect to enclosing
+braces.
+@end defvr
+
+@defvr {User Option} S-brace-imaginary-offset
+Default: 0 @*
+Extra indentation (over sub-block indentation) for block following an
+open brace which follows on the same line as a statement.
+@end defvr
+
+@defvr {User Option} S-brace-offset
+Default: 0 @*
+Extra indentation for braces, compared with other text in same context.
+@end defvr
+
+@defvr {User Option} S-continued-statement-offset
+Default: 0 @*
+Extra indent for lines not starting new statements.
+@end defvr
+
+@defvr {User Option} S-continued-brace-offset
+Default: 0 @*
+Extra indent for substatements that start with open-braces.
+This is in addition to @code{S-continued-statement-offset}.
+@end defvr
+
+@defvr {User Option} S-arg-function-offset
+Default: 2 @*
+Extra indent for arguments of function @code{foo} when it is called as
+the value of an argument to another function in
+@code{arg=foo(...)} form.  If not number, the statements are indented at
+open-parenthesis following @code{foo}.
+@end defvr
+
+@defvr {User Option} S-expression-offset
+Default: 4 @*
+Extra indent for internal substatements of the call to
+@code{expression()} specified in 
+@pindex expression()
+@example
+@code{obj <- expression(...)} 
+@end example
+@noindent
+form.  If not a number, the statements are indented at open-parenthesis
+following @samp{expression}.
+@end defvr
+
+@noindent
+In addition, a number of default styles are defined for you (in
+@code{S-style-alist}):
+@vindex S-style-alist
+
+@defvr {User Option} S-default-style
+Default: @code{GNU} @*
+The default formatting style to use in edit buffers: @xref{Edit buffer}
+for more details.
+@end defvr
+
+@node Variables controlling interaction,  , Indentation variables, Variables
+@comment  node-name,  next,  previous,  up
+@appendixsubsec Variables controlling interaction with the S process
+
+@defvr {User Option} input-ring-size
+Default: 50 @*
+Number of commands to store in the command history.
+@end defvr
+
+@defvr {User Option} S-execute-in-process-buffer
+Default: @code{nil} @*
+If this is @code{nil}, then the @code{S-execute-} commands (@pxref{Other
+inferior-S-mode commands}) output to a temporary buffer. Otherwise, the
+output goes to the S process.
+@end defvr
+
+@defvr {User Option} S-eval-visibly-p
+Default: @code{nil} @*
+If non-@code{nil}, then the @code{S-eval-} commands (@pxref{Edit
+buffer}) echo the S commands in the process buffer by default. In any
+case, passing a prefix argument to the eval command reverses the meaning
+of this variable.
+@end defvr
+
+@node Hooks, Keybindings, Variables, Customization
+@comment  node-name,  next,  previous,  up
+@appendixsec Customizing S-mode with hooks
+@cindex hooks
+
+S-mode provides five hooks, as follows:
+
+@defvr {Hook} S-mode-hook
+Called every time @code{S-mode} is run, i.e. every time an edit buffer
+is generated.
+@end defvr
+
+@defvr {Hook} S-pre-run-hook
+Called before the S process is started with @kbd{M-x S}.
+@pindex S
+@end defvr
+
+@defvr {Hook} S-mode-load-hook
+Called just after the file @file{S.el} is loaded. Useful for setting up
+your keybindings, etc. 
+@end defvr
+
+@defvr {Hook} inferior-S-mode-hook
+Called just after the S process starts up, when the S process buffer is
+initialised.
+@end defvr
+
+@defvr {Hook} S-help-mode-hook
+Called every time an S help buffer is generated.
+@end defvr
+
+@node Keybindings,  , Hooks, Customization
+@appendixsec Changing the default S-mode keybindings
+
+S-mode provides a separate keymap variable for the S process buffer, for
+edit buffers and for help buffers.
+
+@defvr {Keymap} inferior-S-mode-map
+@vindex comint-mode-map
+Keymap used in the S process buffer. The bindings from 
+@code{comint-mode-map} are automatically inherited.
+@end defvr
+
+@defvr {Keymap} S-mode-map
+Keymap used within edit buffers.
+@end defvr
+
+@defvr {Keymap} S-help-mode-map
+Keymap used within help buffers. In addition, @code{S-help-sec-map} is
+the keymap for the @samp{s} prefix key. Keys defined in
+@code{S-help-sec-keys-alist} are automatically inserted into this keymap
+@vindex S-help-sec-keys-alist
+when S-mode is loaded.
+@end defvr
+
+@node Concept Index, Variable and command index, Customization, Top
+@comment  node-name,  next,  previous,  up
+@unnumbered Concept Index
+
+@printindex cp
+
+@node Variable and command index,  , Concept Index, Top
+@unnumbered Variable and command index
+
+@printindex vr
+
+@contents
+
+@bye
