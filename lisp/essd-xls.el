@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/12/10 15:36:29 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essd-xls.el,v 5.2 1997/12/10 15:36:29 rossini Exp $
+;; Modified: $Date: 1999/06/17 16:46:09 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essd-xls.el,v 5.3 1999/06/17 16:46:09 maechler Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -50,7 +50,7 @@
     (ess-language                  . "XLS"               )
     (ess-dialect                   . "XLS"               )
     (ess-mode-editing-alist        . XLS-editing-alist   )
-    (ess-loop-timeout              . 10000               )
+    (ess-loop-timeout              . 50000               )
     (ess-object-name-db-file       . "ess-xls-namedb.el" )
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . XLS-help-sec-keys-alist)
@@ -62,7 +62,7 @@
     (inferior-ess-help-command     . "(help '%s)\n"      )
     (inferior-ess-objects-command  . "(variables)\n"     )
     (inferior-ess-exit-command     . "(exit)\n"          )
-    (inferior-ess-start-file       . nil)  
+    (inferior-ess-start-file       . nil)
     (inferior-ess-start-args       . ""))
   "Variables to customize for XLS")
 

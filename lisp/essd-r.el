@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/06/16 06:53:03 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: essd-r.el,v 5.12 1999/06/16 06:53:03 maechler Exp $
+;; Modified: $Date: 1999/06/17 16:46:08 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: essd-r.el,v 5.13 1999/06/17 16:46:08 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -54,7 +54,7 @@
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-R-sec-regex)
     (ess-help-sec-keys-alist       . R-help-sec-keys-alist)
-    (ess-loop-timeout              . 100000 )
+    (ess-loop-timeout              . 400000 )
     (ess-object-name-db-file       . "ess-r-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",inherits=T)\n") ; envir=1

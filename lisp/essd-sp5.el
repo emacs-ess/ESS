@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 1999/02/22 23:00:57 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-sp5.el,v 1.1 1999/02/22 23:00:57 rossini Exp $
+;; Modified: $Date: 1999/06/17 16:46:09 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-sp5.el,v 1.2 1999/06/17 16:46:09 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -57,14 +57,14 @@
 					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
-    (ess-help-sec-regex            . ess-help-S+-sec-regex) 
+    (ess-help-sec-regex            . ess-help-S+-sec-regex)
 					;or just "^[A-Z. ---]+:$"
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
 
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
-    (ess-loop-timeout              . 100000 )
+    (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-sp5-namedb.el")
-    (ess-dumped-missing-re  
+    (ess-dumped-missing-re
      . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
     (ess-syntax-error-re
      . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")

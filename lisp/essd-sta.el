@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 1999/03/05 21:19:42 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: essd-sta.el,v 1.17 1999/03/05 21:19:42 rossini Exp $
+;; Modified: $Date: 1999/06/17 16:46:09 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: essd-sta.el,v 1.18 1999/06/17 16:46:09 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,7 +47,7 @@
   '((ess-local-customize-alist     . 'STA-customize-alist)
     (ess-language                  . "Stata")
     (ess-dialect                   . STA-dialect-name)
-    (ess-suffix                    . "ado") 
+    (ess-suffix                    . "ado")
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
 					     ess-suffix))
@@ -56,7 +56,7 @@
     (ess-mode-edit                 . 'STA-mode)
     (ess-help-sec-regex            . ess-help-STA-sec-regex)
     (ess-help-sec-keys-alist       . STA-help-sec-keys-alist)
-    (ess-loop-timeout              . 100000 )
+    (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-sta-namedb.el" )
     (ess-retr-lastvalue-command    . "\n")
     (ess-save-lastvalue-command    . "\n")

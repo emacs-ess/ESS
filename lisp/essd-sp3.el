@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/02/22 23:00:56 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-sp3.el,v 1.1 1999/02/22 23:00:56 rossini Exp $
+;; Modified: $Date: 1999/06/17 16:46:09 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-sp3.el,v 1.2 1999/06/17 16:46:09 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -55,7 +55,7 @@
     ;;not used ?!(ess-mode-edit                 . 'S+3-mode)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-    (ess-loop-timeout              . 100000 )
+    (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-s+3-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")

@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 1999/02/22 23:01:14 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essd-els.el,v 1.5 1999/02/22 23:01:14 rossini Exp $
+;; Modified: $Date: 1999/06/17 16:46:08 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essd-els.el,v 1.6 1999/06/17 16:46:08 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -54,7 +54,7 @@
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-    (ess-loop-timeout              . 100000 )
+    (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-spelsewhere-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")

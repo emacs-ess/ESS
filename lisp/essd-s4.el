@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/02/22 23:01:14 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: essd-s4.el,v 5.4 1999/02/22 23:01:14 rossini Exp $
+;; Modified: $Date: 1999/06/17 16:46:08 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: essd-s4.el,v 5.5 1999/06/17 16:46:08 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -57,7 +57,7 @@
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . S4-help-sec-keys-alist)
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
-    (ess-loop-timeout              . 100000 )
+    (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-s4-namedb.el")
     (ess-dumped-missing-re
      . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")

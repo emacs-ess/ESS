@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 1999/03/16 18:07:36 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essd-sp4.el,v 1.3 1999/03/16 18:07:36 rossini Exp $
+;; Modified: $Date: 1999/06/17 16:46:09 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essd-sp4.el,v 1.4 1999/06/17 16:46:09 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -30,7 +30,7 @@
 
 ;;; Commentary:
 ;;; This file defines all the S-PLUS 4.x customizations for ess-mode
-;;; with ddeclient.  
+;;; with ddeclient.
 
 ;;; Requires and Autoloads:
 
@@ -63,7 +63,7 @@ connects it to the *S+4 ddeclient* window.")
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-    (ess-loop-timeout              . 100000 )
+    (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-sp4-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
@@ -100,7 +100,7 @@ connects it to the *S+4 ddeclient* window.")
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-    (ess-loop-timeout              . 100000 )
+    (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-sp4-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")

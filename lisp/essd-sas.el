@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1999/02/10 23:25:35 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essd-sas.el,v 5.3 1999/02/10 23:25:35 ess Exp $
+;; Modified: $Date: 1999/06/17 16:46:09 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essd-sas.el,v 5.4 1999/06/17 16:46:09 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -174,7 +174,7 @@ Better logic needed!  (see 2 uses, in this file).")
     (inferior-ess-objects-command  . "objects(%d)")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "endsas;\n")
-    (ess-loop-timeout              .  100000 )
+    (ess-loop-timeout              .  500000 )
     (inferior-ess-primary-prompt   . "^")
     (inferior-ess-secondary-prompt . "^")
     (inferior-ess-start-file       . nil) ;"~/.ess-SAS")
@@ -222,7 +222,7 @@ then enter C-c C-w to put *SAS* *SAS.log* *SAS.lst* buffers into
 their own frames."
   (interactive)
   (delete-other-windows)
-  (save-excursion       
+  (save-excursion
       (set-buffer "*SAS*")
       (make-frame)
       (set-buffer "*SAS.log*")

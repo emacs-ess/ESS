@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/12/02 14:13:51 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: essd-vst.el,v 5.1 1997/12/02 14:13:51 rossini Exp $
+;; Modified: $Date: 1999/06/17 16:46:09 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: essd-vst.el,v 5.2 1999/06/17 16:46:09 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -41,7 +41,7 @@
   '((ess-customize-alist           .  VST-customize-alist )
     (ess-language                  .  "XLS"               )
     (ess-dialect                   .  "ViSta"             )
-    (ess-loop-timeout              .  10000               )
+    (ess-loop-timeout              .  50000               )
     (ess-object-name-db-file       .  "ess-xls-namedb.el" )
     (ess-help-sec-regex            .  " ")
     (ess-help-sec-keys-alist       .  " ")
