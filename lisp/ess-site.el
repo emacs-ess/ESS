@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/06/21 22:29:59 $
-;; Version: $Revision: 5.77 $
-;; RCS: $Id: ess-site.el,v 5.77 2001/06/21 22:29:59 rossini Exp $
+;; Modified: $Date: 2001/07/27 18:12:14 $
+;; Version: $Revision: 5.78 $
+;; RCS: $Id: ess-site.el,v 5.78 2001/07/27 18:12:14 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -223,8 +223,9 @@ The extension, in a file name, is the part that follows the last `.'."
 	   ("\\.[Rr]t\\'"	. R-transcript-mode)
 	   ("\\.[Rr]out"	. R-transcript-mode)
 	   ("\\.Rd\\'"		. Rd-mode)
-           ("\\.bug\\'"         . ess-bugs-mode)
-           ("\\.cmd\\'"         . ess-bugs-mode)
+           ("\\.[Bb][Uu][Gg]\\'"         . ess-bugs-mode)
+           ("\\.[Bb][Oo][Gg]\\'"         . ess-bugs-mode)
+           ("\\.[Bb][Mm][Dd]\\'"         . ess-bugs-mode)
           )
 	 auto-mode-alist)))
 

@@ -9,9 +9,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2001/06/13 18:25:25 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: ess-emcs.el,v 5.10 2001/06/13 18:25:25 rossini Exp $
+;; Modified: $Date: 2001/07/27 18:12:14 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: ess-emcs.el,v 5.11 2001/07/27 18:12:14 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -82,12 +82,15 @@ Only a concern with earlier versions of Emacs.")
 ;; These definitions are for Emacs versions < 20.4 or XEmacs
 ;; These are taken verbatim from the file emacs-20.6/lisp/w32-fns.el
 ;;
-;; Note: 20.3 and 19.x NTemacs users are strongly encouraged to
-;; upgrade to version 20.4 or higher.
-;;
-;; NTemacs 20.2 is not supported by ESS.
+;; Note: 20.3 and 19.x NTemacs users are strongly encouraged to upgrade to 
+;; version 20.4 or higher.  NTemacs 20.2 is not supported by ESS.
 
-;; NTemacs 19.x needs these
+;; XEmacs 20.x needs this
+
+(if (not (fboundp 'find-buffer-visiting)) 
+    (fset 'find-buffer-visiting 'get-file-buffer))
+
+;; XEmacs and NTemacs 19.x need these
 (if (not (boundp 'w32-system-shells))
       (defvar w32-system-shells '("cmd" "cmd.exe" "command" "command.com"
 				  "4nt" "4nt.exe" "4dos" "4dos.exe"
@@ -112,7 +115,7 @@ Only a concern with earlier versions of Emacs.")
 	    "command.com"))
 )
 
-;; NTemacs 20.3 needs this
+;; XEmacs and NTemacs 20.3 need this
 (if (not (fboundp 'w32-shell-dos-semantics)) (defun w32-shell-dos-semantics ()
   "Return t if the interactive shell being used expects msdos shell semantics."
   (or (w32-system-shell-p (w32-shell-name))

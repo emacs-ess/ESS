@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/07/25 22:42:16 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essl-bug.el,v 1.9 2001/07/25 22:42:16 ess Exp $
+;; Modified: $Date: 2001/07/27 18:12:14 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essl-bug.el,v 1.10 2001/07/27 18:12:14 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -43,18 +43,18 @@
 	(append
 	   '(("\\.bug\\'"	. ess-bugs-mode)
 	       ("\\.BUG\\'"	. ess-bugs-mode)
-	       ("\\.cmd\\'"	. ess-bugs-mode)
-	       ("\\.CMD\\'"	. ess-bugs-mode)
-	       ("\\.log\\'"     . ess-bugs-mode)
-	       ("\\.LOG\\'"     . ess-bugs-mode)
+	       ("\\.bmd\\'"	. ess-bugs-mode)
+	       ("\\.BMD\\'"	. ess-bugs-mode)
+	       ("\\.bog\\'"     . ess-bugs-mode)
+	       ("\\.BOG\\'"     . ess-bugs-mode)
 	    )
 	auto-mode-alist)
     )
 )
 
-(defcustom ess-bugs-batch-command "backbugs" 
-"ESS[BUGS]:  Set to name and location of \"backbugs\" script.
-Note that the script that comes with ESS is an enhanced version."
+(defcustom ess-bugs-batch-command 
+	(convert-standard-filename (concat ess-lisp-directory "/../etc/" "backbugs")) 
+    "ESS[BUGS]:  Set to name and location of ESS \"backbugs\" script."
     :group 'ess-bugs
     :type  'string
 )
@@ -69,6 +69,30 @@ Note that the script that comes with ESS is an enhanced version."
 (defcustom ess-bugs-batch-post-command
     (if (w32-shell-dos-semantics) " " "&")
     "ESS[BUGS]:  Modifiers at the end of the backbugs command line."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-default-bins "32"
+"ESS[BUGS]:  number of bins to use in the Griddy algorithm (Metropolis sampling)."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-default-burn-in "500"
+    "ESS[BUGS]:  burn-in iterations to discard."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-default-update "1000"
+    "ESS[BUGS]:  iterations to store."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-default-checkpoint "100"
+    "ESS[BUGS]:  make a snapshot every this many iterations."
     :group 'ess-bugs
     :type  'string
 )
@@ -88,7 +112,7 @@ Note that the script that comes with ESS is an enhanced version."
 (defvar ess-bugs-file-data "."
    "ESS[BUGS]:  BUGS data file.")
 
-(defcustom ess-bugs-init-suffix ".ini"
+(defcustom ess-bugs-init-suffix ".in"
    "ESS[BUGS]:  BUGS init file suffix."
     :group 'ess-bugs
     :type  'string
@@ -116,7 +140,7 @@ Note that the script that comes with ESS is an enhanced version."
 (if ess-bugs-mode-map nil
     (setq ess-bugs-mode-map (make-keymap))
     (define-key ess-bugs-mode-map [f2]  'ess-revert)
-    (define-key ess-bugs-mode-map [f3]  'ess-bugs-next-action)
+    (define-key ess-bugs-mode-map [f12] 'ess-bugs-next-action)
 )
 
 
@@ -156,33 +180,41 @@ Note that the script that comes with ESS is an enhanced version."
 		"step\\|sum\\|I\\)[ \t\n]*(")
 					font-lock-function-name-face)
 
-	;; .cmd files
+	;; .bmd files
 	(cons (concat "\\<\\(clear\\|checkpoint\\|compile\\|data\\|"
 		"diag\\|help\\|inits\\|iter\\|model\\|monitor\\|"
 		"out\\|q\\|save\\|stats\\|update\\)[ \t\n]*(")
 					font-lock-function-name-face)
 
 	;; .dat files
-	(cons (concat "\\<\\(c\\|list\\)[ \t\n]*(")
-					font-lock-function-name-face)
+	;;(cons (concat "\\<\\(c\\|list\\)[ \t\n]*(")
+	;;				font-lock-function-name-face)
     )
     "ESS[BUGS]:  Font lock keywords."
 )
 
 
 (defun ess-bugs-file ()
-   "ESS:  Set `ess-bugs-file', `ess-bugs-file-root', `ess-bugs-file-suffix' and `ess-bugs-file-dir'."
+"ESS[BUGS]:  Set `ess-bugs-file', `ess-bugs-file-root', `ess-bugs-file-suffix'"
+" and `ess-bugs-file-dir'."
    (interactive)
 
    (let ((ess-bugs-temp-string (buffer-name)))
         (setq ess-bugs-file (expand-file-name ess-bugs-temp-string))
-        (setq ess-bugs-file-dir (file-name-directory ess-bugs-file))
-        (setq ess-bugs-file-root (file-name-nondirectory (file-name-sans-extension ess-bugs-file)))
+        (setq ess-bugs-file-dir 
+	    (convert-standard-filename (file-name-directory ess-bugs-file)))
+        (setq ess-bugs-file-root 
+	    (file-name-nondirectory (file-name-sans-extension ess-bugs-file)))
 
-        (if (fboundp 'file-name-extension) (setq ess-bugs-file-suffix (file-name-extension ess-bugs-temp-string))
-	     (setq ess-bugs-temp-string (split-string ess-bugs-temp-string "[.]"))
-	     (setq ess-bugs-file-suffix (nth (- (length ess-bugs-temp-string) 1) ess-bugs-temp-string)))
-	(setq ess-bugs-file-suffix (concat "." ess-bugs-file-suffix))
+        (if (fboundp 'file-name-extension) 
+	    (setq ess-bugs-file-suffix (file-name-extension ess-bugs-temp-string))
+	    ;;else
+	    (setq ess-bugs-temp-string (split-string ess-bugs-temp-string "[.]"))
+	    (setq ess-bugs-file-suffix 
+		(nth (- (length ess-bugs-temp-string) 1) ess-bugs-temp-string)))
+
+	(setq ess-bugs-file-suffix 
+	    (nth 0 (split-string (concat "." ess-bugs-file-suffix) "[<]")))
    )
 )
 
@@ -204,14 +236,14 @@ Note that the script that comes with ESS is an enhanced version."
             (insert "}\n")
 	))	
 
-	(if (equal ".cmd" suffix) (progn
+	(if (equal ".bmd" suffix) (progn
 	    (insert (concat "compile(\"" ess-bugs-file-dir ess-bugs-file-root ".bug\")\n"))
 	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in0\")\n"))
-	    (insert "update( )\n")
+	    (insert (concat "update(" ess-bugs-default-burn-in ")\n"))
 	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in1\")\n"))
 	    (insert "#%MONITOR\n\n#%MONITOR\n")
-	    (insert "checkpoint( )\n")
-	    (insert "update( )\n")
+	    (insert (concat "checkpoint(" ess-bugs-default-checkpoint ")\n"))
+	    (insert (concat "update(" ess-bugs-default-update ")\n"))
 	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in2\")\n"))
 	    (insert "#%STATS\n\n#%STATS\n")
 	    (insert "q(\"" ess-bugs-file-dir ess-bugs-file-root ".bog\")\n")
@@ -241,20 +273,11 @@ Note that the script that comes with ESS is an enhanced version."
 
    (if (equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
    ;;else 
-   (if (equal ".cmd" ess-bugs-file-suffix) (ess-bugs-na-cmd))
+   (if (equal ".bmd" ess-bugs-file-suffix) (ess-bugs-na-bmd))
 )
 
-(defun ess-bugs-na-cmd ()
-    "ESS[BUGS]:  Perform the Next-Action for .cmd."
-    (save-excursion
-	(goto-char (point-min))
-
-	(if (search-forward-regexp "#%MONITOR.*#%MONITOR" nil t) 
-	    (replace-match ess-bugs-monitor-vars t))
-
-	(if (search-forward-regexp "#%STATS.*#%STATS" nil t) 
-	    (replace-match ess-bugs-stats-vars t))
-    )
+(defun ess-bugs-na-bmd ()
+    "ESS[BUGS]:  Perform the Next-Action for .bmd."
 
     (save-buffer)
     (shell)
@@ -268,11 +291,12 @@ Note that the script that comes with ESS is an enhanced version."
 	)
     )
 
-	(insert (concat "cd \"" (convert-standard-filename (file-name-directory ess-bugs-file)) "\""))
+	(insert (concat "cd \"" ess-bugs-file-dir "\""))
 	(comint-send-input)
 
 	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " " 
-	    ess-bugs-file-root " " ess-bugs-file " " ess-bugs-batch-post-command))
+	    ess-bugs-default-bins " " ess-bugs-file-root " " ess-bugs-file " " 
+	    ess-bugs-batch-post-command))
 
 	(comint-send-input)
 )
@@ -289,29 +313,35 @@ Note that the script that comes with ESS is an enhanced version."
 		    (replace-match ess-bugs-file-root t t))
 
 	        (if (search-forward "%DATA" nil t) (progn
-		    (setq ess-bugs-file-data (concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-data-suffix))
+		    (setq ess-bugs-file-data 
+			(concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-data-suffix))
 		    (replace-match ess-bugs-file-data t t))
 	        ;;else
 	        (if (search-forward-regexp "data.+in[ \t\n]+\"\\(.*\\)\"" nil t)
 		    (setq ess-bugs-file-data (match-string 1))))
 
 	        (if (search-forward "%INITS" nil t) 
-		    (replace-match (concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-init-suffix) t t))
+		    (replace-match 
+			(concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-init-suffix) t t))
  
 		(let ((ess-bugs-temp-string " ")
 		    (ess-bugs-buffer-ptr nil))
 		    (goto-char (point-min))
 		
-		    (if (search-forward-regexp "N[ \t\n]*=[ \t\n]*[0-9]+;#%N" nil t) (progn
-			(save-excursion 
+		    (if (search-forward-regexp 
+			    "N[ \t]*=[ \t]*[0-9]+[ \t]*;[ \t]*#[ \t]*%N" nil t) (progn
+
+			(save-excursion (save-match-data
 			    (setq ess-bugs-buffer-ptr (find-buffer-visiting ess-bugs-file-data))
 
 			    (if ess-bugs-buffer-ptr (set-buffer ess-bugs-buffer-ptr)
 				(set-buffer (create-file-buffer ess-bugs-file-data))
 				(insert-file-contents ess-bugs-file-data t))
 
-			    (setq ess-bugs-temp-string (concat "N = " (int-to-string (count-lines (point-min) (point-max))) ";#%N"))
-			)
+			    (setq ess-bugs-temp-string 
+				(concat "N = " 
+				    (int-to-string (count-lines (point-min) (point-max))) ";#%N"))
+			))
 
 			(replace-match ess-bugs-temp-string t t)
 		    ))
@@ -335,13 +365,16 @@ Note that the script that comes with ESS is an enhanced version."
 		    (setq ess-bugs-monitor-vars "")
 		    
 		    (while (search-forward-regexp 
-			"[, \t\n#]+\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(\\]\\)\\)?" ess-bugs-search-max t)
+			"[, \t\n#]+\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(\\]\\)\\)?" 
+			ess-bugs-search-max t)
 
 			(setq ess-bugs-monitor-vars 
-			    (concat ess-bugs-monitor-vars "monitor(" (match-string 1) (match-string 3) (match-string 4) ")\n"))
+			    (concat ess-bugs-monitor-vars "monitor(" 
+				(match-string 1) (match-string 3) (match-string 4) ")\n"))
 		    )
 
-		    (setq ess-bugs-monitor-vars (concat "#%MONITOR\n" ess-bugs-monitor-vars "#%MONITOR\n"))
+		    (setq ess-bugs-monitor-vars 
+			(concat "#%MONITOR\n" ess-bugs-monitor-vars "#%MONITOR\n"))
 
 		    (goto-char (point-min))
 
@@ -353,40 +386,54 @@ Note that the script that comes with ESS is an enhanced version."
 			(setq ess-bugs-stats-vars "")
 		    
 			(while (search-forward-regexp 
-			    "[, \t\n#]+\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(\\]\\)\\)?" ess-bugs-search-max t)
+			    "[, \t\n#]+\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(\\]\\)\\)?" 
+			    ess-bugs-search-max t)
 
 			    (setq ess-bugs-stats-vars 
-				(concat ess-bugs-stats-vars "stats(" (match-string 1) (match-string 3) (match-string 4) ")\n"))
+				(concat ess-bugs-stats-vars "stats(" 
+				    (match-string 1) (match-string 3) (match-string 4) ")\n"))
 			)
 
 			(setq ess-bugs-stats-vars (concat "#%STATS\n" ess-bugs-stats-vars "#%STATS\n"))
 		    )
+
+;; replace-in-string may not be available, work-around necessary; see below
+;;			(setq ess-bugs-stats-vars 
+;;			    (replace-in-string ess-bugs-monitor-vars "#%MONITOR" "#%STATS"))
+;;			(setq ess-bugs-stats-vars 
+;;			    (replace-in-string ess-bugs-stats-vars "monitor" "stats" t))
+
 		    ;;else
-			(setq ess-bugs-stats-vars (replace-in-string ess-bugs-monitor-vars "#%MONITOR" "#%STATS"))
-			(setq ess-bugs-stats-vars (replace-in-string ess-bugs-stats-vars "monitor" "stats" t))
+		    (setq ess-bugs-stats-vars ess-bugs-monitor-vars)
+
+		    (while (string-match "#%MONITOR" ess-bugs-stats-vars)
+			(setq ess-bugs-stats-vars 
+			    (replace-match "#%STATS" t t ess-bugs-stats-vars)))
+
+		    (while (string-match "monitor" ess-bugs-stats-vars)
+			(setq ess-bugs-stats-vars 
+			    (replace-match "stats" t t ess-bugs-stats-vars)))
+
 		    )
 		)
 		    
 	    )
 
 	    (save-buffer)
-	    (ess-switch-to-suffix ".cmd")
+	    (ess-switch-to-suffix ".bmd")
+
+    (save-excursion
+	(goto-char (point-min))
+
+	(if (search-forward-regexp "#%MONITOR\\(.\\|\n\\)*#%MONITOR\n" nil t) 
+	    (replace-match ess-bugs-monitor-vars t))
+
+	(if (search-forward-regexp "#%STATS\\(.\\|\n\\)*#%STATS\n" nil t) 
+	    (replace-match ess-bugs-stats-vars t))
+    )
+
 	)	
 )
-
-;;(defun ess-log-toggle ()
-;;  "Toggle ESS sub-mode for .log files."
-;;  (interactive)
-;;
-;;  (if (member '("\\.log\\'" . SAS-mode) auto-mode-alist) 
-;;    (setq auto-mode-alist (delete '("\\.log\\'" . SAS-mode) auto-mode-alist))
-;;    (if (member '("\\.log\\'" . ess-bugs-mode) auto-mode-alist) 
-;;      (setq auto-mode-alist (delete '("\\.log\\'" . ess-bugs-mode) auto-mode-alist))))
-;;
-;;  (setq auto-mode-alist (append '(("\\.log\\'" . ess-bugs-mode)) auto-mode-alist))
-;;
-;;  (ess-switch-to-suffix "log")
-;;)
 
 
 (defun ess-bugs-mode ()
@@ -400,7 +447,9 @@ Note that the script that comes with ESS is an enhanced version."
    (make-local-variable 'font-lock-defaults)
    (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
    (run-hooks 'ess-bugs-mode-hook)
-   (if (not (w32-shell-dos-semantics)) (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh))
+
+   (if (not (w32-shell-dos-semantics)) 
+	(add-hook 'comint-output-filter-functions 'ess-exit-notify-sh))
 )
 
 

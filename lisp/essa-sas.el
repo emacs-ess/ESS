@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/07/20 21:25:42 $
-;; Version: $Revision: 1.31 $
-;; RCS: $Id: essa-sas.el,v 1.31 2001/07/20 21:25:42 ess Exp $
+;; Modified: $Date: 2001/07/27 18:12:14 $
+;; Version: $Revision: 1.32 $
+;; RCS: $Id: essa-sas.el,v 1.32 2001/07/27 18:12:14 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -274,7 +274,7 @@ on the way."
 	 (root (if tail-in-tail-list (expand-file-name (buffer-name))
 		 ess-sas-file-path))
 	 (ess-sas-arg (concat (file-name-sans-extension root) "." suffix))
-	 (ess-sas-buf (get-file-buffer ess-sas-arg)))
+	 (ess-sas-buf (find-buffer-visiting ess-sas-arg)))
     (if (equal tail suffix) (if revert (ess-revert-wisely))
 	(if (not ess-sas-buf) (find-file ess-sas-arg)
 	    (switch-to-buffer ess-sas-buf)
