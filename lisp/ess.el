@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.at>  <-- CHANGE
 ;;                       Richard Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/28 12:34:01 $
-;; Version: $Revision: 1.49 $
-;; RCS: $Id: ess.el,v 1.49 1997/07/28 12:34:01 rossini Exp $
+;; Modified: $Date: 1997/07/29 10:49:55 $
+;; Version: $Revision: 1.50 $
+;; RCS: $Id: ess.el,v 1.50 1997/07/29 10:49:55 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -114,6 +114,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.50  1997/07/29 10:49:55  rossini
+;; added [rR]-transcript-mode
+;;
 ;; Revision 1.49  1997/07/28 12:34:01  rossini
 ;; made ess-setq-vars* clean.  No ugly hacks!
 ;; cleaned up authorship.
@@ -397,6 +400,8 @@
 
 (fset 's-transcript-mode 'ess-transcript-mode)
 (fset 'S-transcript-mode 'ess-transcript-mode)
+(fset 'r-transcript-mode 'ess-transcript-mode)
+(fset 'R-transcript-mode 'ess-transcript-mode)
 
 (autoload 'ess-display-help-on-object "ess-help"
   "Display help on an S object" t)
