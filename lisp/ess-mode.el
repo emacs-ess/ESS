@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@biostat.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1998/12/14 18:04:45 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: ess-mode.el,v 5.5 1998/12/14 18:04:45 rossini Exp $
+;; Modified: $Date: 1999/04/20 21:17:34 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: ess-mode.el,v 5.6 1999/04/20 21:17:34 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -153,6 +153,8 @@
     ["Eval region"   ess-eval-region-and-go            t]
     ["Eval function" ess-eval-function-and-go          t]
     ["Eval line"     ess-eval-line-and-go              t]
+    ["Eval chunk"    ess-eval-chunk-and-go    noweb-mode]
+    ["Eval thread"   ess-eval-thread-and-go   noweb-mode]
     ["About"         (ess-goto-info "Evaluating code") t]
     )
    ("ESS Eval"
@@ -162,6 +164,8 @@
     ["Step through line" ess-eval-line-and-next-line       t]
     ["Enter expression"  ess-execute-in-tb                 t]
     ["Eval line"         ess-eval-line                     t]
+    ["Eval chunk"        ess-eval-chunk           noweb-mode]
+    ["Eval thread"       ess-eval-thread          noweb-mode]
     ["About"             (ess-goto-info "Evaluating code") t]
     )
    ("Motion..."
