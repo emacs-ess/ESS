@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/12/18 14:45:37 $
-;; Version: $Revision: 5.68 $
-;; RCS: $Id: ess-inf.el,v 5.68 2001/12/18 14:45:37 ess Exp $
+;; Modified: $Date: 2001/12/18 15:37:22 $
+;; Version: $Revision: 5.69 $
+;; RCS: $Id: ess-inf.el,v 5.69 2001/12/18 15:37:22 ess Exp $
 
 ;; This file is part of ESS
 
@@ -1326,15 +1326,14 @@ to continue it."
 	  (string-match inferior-R-2-input-help string))
 	(let ((string2 (match-string 2 string)))
 	  ;; (ess-write-to-dribble-buffer (format " new string=«%s»\n" string2))
-	  (progn
-	    (beginning-of-line)
-	    (if (looking-at inferior-ess-primary-prompt)
-		(progn 
-		  (end-of-line)
-		  (insert-before-markers string)) ;; emacs 21.0.105 and older
-	      (delete-backward-char 1))           ;; emacs 21.0.106 and newer
-	    (ess-display-help-on-object
-	     (if (string= string2 "") "help" string2)))
+	  (beginning-of-line)
+	  (if (looking-at inferior-ess-primary-prompt)
+	      (progn 
+		(end-of-line)
+		(insert-before-markers string)) ;; emacs 21.0.105 and older
+	    (delete-backward-char 1))           ;; emacs 21.0.106 and newer
+	  (ess-display-help-on-object
+	   (if (string= string2 "") "help" string2))
 	  (ess-eval-linewise "\n"))
     ;; else:  normal command
     (inferior-ess-input-sender proc string)))
