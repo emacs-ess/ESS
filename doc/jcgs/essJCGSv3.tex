@@ -66,10 +66,10 @@
 \usepackage{alltt}
 
 %% Postscript fonts
-\usepackage{times}
-\usepackage{mathptm}
-\usepackage{graphicx}
+%\usepackage{times}
+%\usepackage{mathptm}
 
+\usepackage{graphicx}
 \usepackage{endfloat}
 
 \ifx\pdfoutput\undefined
@@ -155,13 +155,14 @@ intelligent environment for statistical analysis}
 %%
     Kurt Hornik is Professor in the Institut f{\"u}r Statistik,
     Wirtschaftsuniversit{\"a}t Wien and the Institut f{\"u}r
-    Wahrscheinlichkeitstheorie und Statistik, Technische Universit{\"a}t
-    Wien, Vienna, Austria (E-mail: Kurt.Hornik@r-project.org).
-  Thanks go to the referrees and AE for suggesting changes which
-  substantially improved the presentation of the paper.}}
+    Wahrscheinlichkeitstheorie und Statistik, Technische
+    Universit{\"a}t Wien, Vienna, Austria (E-mail:
+    Kurt.Hornik@r-project.org).  The authors would like to thank the
+    referrees and associate editor for suggesting changes which
+    substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/26 23:05:10 $ - $Revision: 1.12 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/26 23:21:39 $ - $Revision: 1.13 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -480,7 +481,7 @@ case, the package's GUI tools are available for use.  Examples of this
 last situation include the Microsoft versions of SAS, Stata, and
 XLispStat.
 
-\subsection{Integration with Statistical Packages}
+%%\paragraph{Integration with Statistical Packages}
 Emacs has historically referred to processes under its control as
 \textit{inferior}, accounting for the name inferior ESS
 (\stexttt{iESS}) to denote the mode for interfacing with the
@@ -998,19 +999,20 @@ This history is summarized in Table \ref{tab:timeline}.
   \label{tab:timeline}
 \end{table}
 
-\section{Conclusions}
+\section{Discussion}
 \label{sec:concl}
 
 ESS provides an enhanced, powerful interface for efficient interactive
 data analysis and statistical programming.  It allows the user
 complete control over the communications among the files in which the
 analysis is specified, the statistical process doing the computation,
-and the output.  Because all are within the same programming
-environment, and therefore are accessed with the same editing and
+and the output.  Because all activities are contained within the same
+user environment and hence accessed with the same editing and
 searching concepts and the same key sequences, user efficiency is
-increased.  It is completely customizable to satisfy individual
-desires for interface styles and can be extended to support other
-statistical languages and data analysis packages.
+increased.  ESS is completely customizable to satisfy individual
+desires for interface styles and code formats, and can be easily
+extended to support other statistical languages and data analysis
+packages.
 
 %\section{Future Work}
 
