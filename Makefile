@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.28 2000/03/02 10:13:32 maechler Exp $
+## $Id: Makefile,v 5.29 2000/03/09 17:55:18 maechler Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
@@ -44,15 +44,15 @@ dist: README ANNOUNCE docs
 	@echo "** (must set CVSROOT, etc, prior to checkout for security)"
 	@echo "**********************************************************"
 	@echo "** Committing README and ANNOUNCE **"
-	cvs commit -m "Updating README and ANNOUNCE for new version"  README ANNOUNCE
-#	@echo "** Adding log-entry to ChangeLog file"
-#        mv ChangeLog ChangeLog.old
-#        echo `date "+%Y-%m-%d "` \
-#             " ESS Maintainers <ess@franz.stat.wisc.edu>" > ChangeLog
-#        echo >> ChangeLog
-#        echo "  * Version" $(TAG) released. >> ChangeLog
-#        echo >> ChangeLog
-#        cat ChangeLog.old >> ChangeLog
+	cvs commit -m "Updating README, ANNOUNCE for new version [make dist]" \
+		README ANNOUNCE
+	cvs commit -m "Updating docs for new version [make dist]" docs
+	@echo "** Adding log-entry to ChangeLog file"
+	mv ChangeLog ChangeLog.old
+	(echo `date "+%Y-%m-%d "` \
+	     " ESS Maintainers <ess@franz.stat.wisc.edu>" ; \
+	 echo; echo "  * Version $(ESSVERSION) released."; echo; \
+	 cat ChangeLog.old ) > ChangeLog
 	@echo "** Tagging the release **"
 	cvs tag -R $(ESSVERSIONTAG)
 	@echo "** Exporting Files **"
@@ -61,7 +61,7 @@ dist: README ANNOUNCE docs
 	ln -s ess $(ESSVERSIONDIR)
 	chmod a-w $(ESSVERSIONDIR)/lisp/*.el
 	chmod a-w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
-	-chmod a-w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
+#NO!	-chmod a-w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
 	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Makefile
 	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
 	tar hcvof ESS-$(ESSVERSION).tar $(ESSVERSIONDIR)
