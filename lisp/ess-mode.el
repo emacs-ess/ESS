@@ -10,9 +10,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1998/09/08 21:10:16 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: ess-mode.el,v 5.3 1998/09/08 21:10:16 maechler Exp $
+;; Modified: $Date: 1998/09/11 14:25:18 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: ess-mode.el,v 5.4 1998/09/11 14:25:18 maechler Exp $
 
 
 ;; This file is part of ESS
@@ -391,12 +391,6 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (ess-beginning-of-function)
   (forward-list 1)			; get over arguments
   (forward-sexp 1))			; move over braces
-
-(defun ess-extract-word-name ()
-  "Get the word you're on."
-  (save-excursion
-    (re-search-forward "\\<\\w+\\>" nil t)
-    (buffer-substring (match-beginning 0) (match-end 0))))
 
 ;;; Kurt's version, suggested 970306.
 (defun ess-mark-function ()

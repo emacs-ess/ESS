@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1998/04/06 20:18:41 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: ess-inf.el,v 5.2 1998/04/06 20:18:41 rossini Exp $
+;; Modified: $Date: 1998/09/11 14:25:18 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: ess-inf.el,v 5.3 1998/09/11 14:25:18 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -42,12 +42,11 @@
   (require 'comint))
 
 ;;*;; Autoloads
-(autoload 'ess-parse-errors "ess-mode" "(autoload)." t)
+(autoload 'ess-parse-errors          	"ess-mode" "(autoload)." t)
 (autoload 'ess-dump-object-into-edit-buffer "ess-mode" "(autoload)." t)
-(autoload 'ess-end-of-function "ess-mode" "(autoload)." t)
-(autoload 'ess-beginning-of-function "ess-mode" "(autoload)." t)
-(autoload 'ess-extract-word-name "ess-mode" "(autoload)." t)
-
+(autoload 'ess-end-of-function       	"ess-mode" "(autoload)." t)
+(autoload 'ess-beginning-of-function	"ess-mode" "(autoload)." t)
+(autoload 'ess-extract-word-name	"ess-utils" "(autoload)." t)
 
 (autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload)." t)
 
@@ -76,7 +75,7 @@
 	  (concat name ":" n)
 	(concat name))
     (concat name ":" n)))
-  
+
 (defun inferior-ess (&optional ess-start-args)
   "Start inferior ESS process.
 
@@ -121,7 +120,7 @@ accompany the call for inferior-ess-program.
       (ess-setq-vars-default ess-customize-alist (current-buffer))
       (setq temp-ess-dialect (cdr (rassoc ess-dialect ess-customize-alist)))
       (setq temp-ess-lang (cdr (rassoc ess-language ess-customize-alist))))
-    
+
     ;; run hooks now, to overwrite the above!
     (run-hooks 'ess-pre-run-hook)
     (ess-write-to-dribble-buffer
@@ -172,7 +171,7 @@ accompany the call for inferior-ess-program.
 	       temp-dialect
 	       buf-name-str))
       (cond
-       ;; If process is running, we use it: 
+       ;; If process is running, we use it:
        ;; AJR- NO!  We no longer use this for switching buffers!
        ;;((get-process procname)
        ;; (setq buf (process-buffer (get-process procname))))
@@ -1384,7 +1383,7 @@ buffer (defaults to the command if BUFF is not given.)"
   (ess-make-buffer-current)
   (let ((sprocess (get-ess-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running."))
-    (if (yes-or-no-p (format "Really quit ESS (process %s)" sprocess)) 
+    (if (yes-or-no-p (format "Really quit ESS (process %s)" sprocess))
 	;; or %S above?
 	(save-excursion
 	  (ess-cleanup)
@@ -1637,7 +1636,7 @@ the load-path."
 	(buffer (get-buffer-create " *ess-db*"))
 	(temp-object-name-db nil)
 	(temp-object-name-db-file ess-object-name-db-file))
-    
+
     (ess-write-to-dribble-buffer
        (format "(object db): search-list=%s \n "
 	       search-list))

@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.4 $.
+### File: $Revision: 5.5 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -12,7 +12,7 @@
 PREFIX=/usr/local
 
 # Emacs version that you are installing ESS for.
-EMACS = emacs
+EMACS = emacs-19.34
 #EMACS = xemacs
 
 ## For strange setups...
@@ -55,7 +55,7 @@ PRELOADS = -l ./ess-comp.el
 ## optimizations.  When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
 
-SOURCES = ess-vars.el ess.el ess-site.el \
+SOURCES = ess-vars.el ess.el ess-site.el ess-utils.el \
 	ess-inf.el ess-mode.el ess-trns.el ess-help.el \
 	ess-comp.el \
 	essl-s.el   essd-s3.el  essd-s4.el  essd-s+3.el essd-r.el \
