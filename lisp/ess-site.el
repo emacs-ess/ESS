@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/06/30 21:24:35 $
-;; Version: $Revision: 5.57 $
-;; RCS: $Id: ess-site.el,v 5.57 2000/06/30 21:24:35 rossini Exp $
+;; Modified: $Date: 2000/07/03 10:27:41 $
+;; Version: $Revision: 5.58 $
+;; RCS: $Id: ess-site.el,v 5.58 2000/07/03 10:27:41 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -150,7 +150,7 @@ The extension, in a file name, is the part that follows the last `.'."
 	          (substring file 0 (match-beginning 0)))
 	      filename))))
     )
- 
+
 
   (add-to-list 'load-path ess-lisp-directory)
 
@@ -161,9 +161,9 @@ The extension, in a file name, is the part that follows the last `.'."
 ;; must come *AFTER* load-path is set !
 
 (require 'ess-emcs)
-;; sets the following ..custom-avaiable to nil.  
+;; sets the following ..custom-avaiable to nil.
 ;; If we have custom available, make this "t":
-;; (setq ess-local-custom-available 't)
+;; (setq ess-local-custom-available t)
 
 
 ;;; (1.2) Files ending in .q and .S are considered to be S source files
@@ -210,7 +210,7 @@ The extension, in a file name, is the part that follows the last `.'."
 ;; (1.4) Customize the dialects for your setup.
 
 ;;;; AS OF ESS 5.1.14, if you are using Emacs 20.x, x>3, or XEmacs
-;;;; 21.x, x>0, you can now use the "Customize" facility for customization. 
+;;;; 21.x, x>0, you can now use the "Customize" facility for customization.
 
 ;;;; Choices for *(), where * is from inferior-*-program....
 ;; Most sites will not need to use these customized program-names.  They are
@@ -296,8 +296,8 @@ The extension, in a file name, is the part that follows the last `.'."
 (require 'essd-sp5)
 (require 'essd-sta)  ;; for Stata.
 (require 'essd-xls)  ;; XLispStat and variants
-(require 'essd-vst) 
-(require 'essd-arc) 
+(require 'essd-vst)
+(require 'essd-arc)
 (require 'essd-sas)
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 (require 'essd-omg)  ;; for omegahat
