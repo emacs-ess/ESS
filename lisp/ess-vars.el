@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/08/26 22:52:22 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: ess-vars.el,v 1.13 1997/08/26 22:52:22 rossini Exp $
+;; Modified: $Date: 1997/08/29 17:20:23 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: ess-vars.el,v 1.14 1997/08/29 17:20:23 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -374,17 +374,6 @@ by ess-function-template.")
 (defvar ess-dump-error-re
   (if (string= ess-language "S") "\nDumped\n\\'" "[Ee]rror")
   "Regexp used to detect an error when loading a file.")
-
-;;*;; Miscellaneous system variables
-
-(defvar ess-source-modes '(ess-mode)
-  "A list of modes used to determine if a buffer contains ess source code.")
-;;; If a file is loaded into a buffer that is in one of these major modes, it
-;;; is considered an ess source file.  The function ess-load-file uses this to
-;;; determine defaults.
-
-(defvar ess-error-buffer-name "*ESS-errors*"
-  "Name of buffer to keep error messages in.")
 
 
  ; ess-inf: variables for inferior-ess.
@@ -823,8 +812,19 @@ browse-url to find the location")
 
  ; Buffer local customization stuff
 
-(defvar ess-dribble-buffer (generate-new-buffer "ESS")
-  "Buffer for temporary use for setting default variable values.")
+(defvar ess-source-modes '(ess-mode)
+  "A list of modes used to determine if a buffer contains ess source code.")
+;;; If a file is loaded into a buffer that is in one of these major modes, it
+;;; is considered an ess source file.  The function ess-load-file uses this to
+;;; determine defaults.
+
+(defvar ess-error-buffer-name "*ESS-errors*"
+  "Name of buffer to keep process error messages in.   
+Created for each process.")
+
+(defvar ess-dribble-buffer (generate-new-buffer "*ESS*")
+  "Buffer for temporary use for setting default variable values.
+Used for recording status of the program, mainly for debugging.")
 
 (defvar ess-customize-alist nil
   "Variable settings to use for proper behavior.
