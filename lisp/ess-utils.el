@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2001/06/19 16:17:36 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: ess-utils.el,v 5.7 2001/06/19 16:17:36 maechler Exp $
+;; Modified: $Date: 2001/11/07 08:38:02 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: ess-utils.el,v 5.8 2001/11/07 08:38:02 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -81,17 +81,10 @@
 )
 
 (defun ess-time-string (&optional clock)
-  "Returns a string for use as a timestamp. + hr:min if CLOCK is non-nil.
- Currently returns strings like \"13 Mar 1992\".  Redefine to taste."
-  ;; RELIES on (current-time-string) : Must be  exactly
-  ;; of this structure  [0..23], e.g. == "Mon Jan 27 17:30:45 1992"
-  (let* ((time (current-time-string))
-	 (mon (substring time 4 7))
-	 (day (substring time 8 10))
-	 (HM  (if clock (substring time 11 16)))
-	 (year (substring time 20 24))); 4 digit year!
-    (concat day " " mon " " year
-	    (if clock (concat ", " HM)))))
+  "Returns a string for use as a timestamp. + hr:min if CLOCK is non-nil,
+ like \"13 Mar 1992\".  Redefine to taste."
+  (format-time-string (concat "%e %b %Y" (if clock ", %H:%M"))))
+
 
 ;;- From: friedman@gnu.ai.mit.edu (Noah Friedman)
 ;;- Date: 12 Feb 1995 21:30:56 -0500
@@ -104,9 +97,8 @@
 ;;- `require-final-newline', which is built in.  I hope the names make it
 ;;- obvious.
 
-;;  (add-hook 'write-file-hooks 'nuke-trailing-whitespace)
+;; (add-hook 'write-file-hooks 'nuke-trailing-whitespace)
 ;;or at least
-
 ;; (add-hook 'ess-mode-hook
 ;; 	  '(lambda ()
 ;; 	     (add-hook 'local-write-file-hooks 'nuke-trailing-whitespace)))
