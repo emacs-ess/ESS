@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2002/06/19 21:00:21 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: essdsp6w.el,v 5.15 2002/06/19 21:00:21 rmh Exp $
+;; Modified: $Date: 2002/06/24 13:24:12 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: essdsp6w.el,v 5.16 2002/06/24 13:24:12 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -338,7 +338,7 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
   (interactive)
   (setq ess-customize-alist S+6-customize-alist)
   (ess-mode S+6-customize-alist proc-name)
-)
+  (if ess-S-use-imenu (ess-imenu-R)))
 
 
 (defun S+6-transcript-mode ()
