@@ -324,8 +324,10 @@ language is split by function; general, obtaining help, programming.
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
 
-Since ESS originated as S-mode, which provided an interface for
-programming and process control under GNU Emacs for \Splus\ version 3,
+%% Rodney:  This is a historical comment and as such should be taken up in
+%% that section.
+%% Since ESS originated as S-mode, which provided an interface for
+%% programming and process control under GNU Emacs for \Splus\ version 3,
 ESS strongly supports the S family of languages; these include recent
 versions of S, \Splus, and R.  \SAS is also well supported.  \Stata\ 
 and \XLispStat\ (and the \XLispStat\ extensions, ARC and ViSta) are
@@ -335,29 +337,40 @@ next section.
 
 \paragraph{Syntactic indentation and color/font-based source code
   highlighting.}  The ESS interface includes a description of the
-syntax and grammar of each statistical language it knows about.  This
-gives ESS the ability to edit the programming language code, often
-more smoothly than with editors distributed with the languages.  The
-process of programming code is enhanced as ESS provides the user with
+syntax and grammar of each statistical language it knows about.
+%% Rodney:  Although, I believe the next sentence is true, I don't think it
+%% is appropriate since we cannot expect to be unbiased about such
+%% an assessment.
+%%  This
+%% gives ESS the ability to edit the programming language code, often
+%% more smoothly than with editors distributed with the languages. 
+The process of programming code is enhanced as ESS provides the user with
 a clear presentation of the code with syntax highlighting to denote
 assignment, reserved words, presence of strings, and comments.  ESS
 has customizable automatic indentation, with the customization based
-on the syntactic structure of groups of expressions.  ESS knows the
+on the syntactic structure of groups of expressions.  
+%% Rodney:  The previous remarks apply all the time, but the following
+%% remarks only apply to an interactive environment.  We should
+%% either split into two paragraphs or make this distinction clear.
+ESS knows the
 structure of transcripts of the executing session and provides
 syntactic highlighting for transcripts.  ESS interacts well with the
 executing statistics language/program and provides means for searching
 the command-line history for previous commands and editing them for
 current use.
 
+%% Rodney:  What does ``entire function definitions'' mean?
 \paragraph{Partial code evaluation.}
 Emacs can send individual lines, entire function definitions, marked
 regions, and whole edited buffers from the window in which the code is
-displayed for editing to the statistical language/program for
-execution.  Emacs can complete partially typed file names by referring
-to the current working directory.  Emacs sends the code directly to
-the running program and receives the printed output back from the
-program.  This is a major improvement over cut-and-paste as it does
-not require switching buffers or windows.  The response is received
+displayed for editing to the statistical package for
+execution.  
+%% Emacs can complete partially typed file names by referring
+%%to the current working directory.  
+Emacs sends the code directly to
+the statistical package and receives the output, if any, which is 
+the result.  This is a major improvement over cut-and-paste as it does
+not require switching between buffers or windows.  The response is received
 immediately in an editable Emacs buffer.
 
 \paragraph{Object name completion.}
