@@ -1,3 +1,7 @@
+1998-09-24  Anthony Rossini  <rossini@buffy.biostat.washington.edu>
+
+	* ess-site.el (auto-mode-alist): added stata mode, which is now STA (ref: Thomas Lumley)
+
 Fri Sep 11 16:20:14 1998  Martin Maechler  <maechler@sophie>
 
 	* essd-r.el: (R-fix-T-F): new function
