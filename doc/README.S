@@ -1,3 +1,7 @@
+-*- indented-text -*-
+
+($Revision: 1.5 $)
+
 ESS: Using The S family of statistical languages
 ================================================
 
@@ -179,15 +183,3 @@ prefixed by "##").
     ## When you need help, use 
     C-c C-v rchisq
     ## instead of entering:   help("rchisq")
-
-
-
-    
-
-
-
-$Revision: 1.4 $
-
-Local Variables: ***
-mode:indented-text ***
-End: ***
