@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.33 2000/06/30 21:34:23 rossini Exp $
+## $Id: Makefile,v 5.34 2000/07/03 15:59:37 maechler Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -13,7 +13,7 @@ ESSVERSIONTAG=ess-$(shell sed 's/\./_/g' VERSION)
 
 Subdirs = lisp doc
 
-INTRO.DEPENDS=doc/credits.texi doc/inst_cvs.texi \
+INTRO.DEPENDS= VERSION doc/credits.texi doc/inst_cvs.texi \
 	doc/newfeat.texi  doc/authors.texi  doc/currfeat.texi \
 	doc/inst_tar.texi doc/bugrept.texi  doc/license.texi  \
 	doc/requires.texi doc/bugs.texi     doc/getting.texi  \
@@ -33,12 +33,11 @@ docs:
 ## prefix'ing with "-" implies that errors are non-critical.
 
 README : doc/readme.texi $(INTRO.DEPENDS)
-	cd doc ; \
-	$(MAKEINFOascii) readme.texi | perl -pe \
-	'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' > ../README
+	cd doc ; $(MAKE) readme.texi; $(MAKEINFOascii) readme.texi \
+	| perl -pe 'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' > ../README
 
 ANNOUNCE: doc/announc.texi $(INTRO.DEPENDS)
-	cd doc; $(MAKEINFOascii) announc.texi \
+	cd doc; $(MAKE) readme.texi; $(MAKEINFOascii) announc.texi \
 	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
 
 dist: README ANNOUNCE docs
