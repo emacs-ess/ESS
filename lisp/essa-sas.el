@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/03/04 17:41:37 $
-;; Version: $Revision: 1.154 $
-;; RCS: $Id: essa-sas.el,v 1.154 2004/03/04 17:41:37 rsparapa Exp $
+;; Modified: $Date: 2004/03/11 15:21:25 $
+;; Version: $Revision: 1.155 $
+;; RCS: $Id: essa-sas.el,v 1.155 2004/03/11 15:21:25 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -956,13 +956,13 @@ Without args, toggle between these options."
       (progn
 	(if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
 	       (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab)
-	    ;else
-	       (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
 	;else
+	       (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
         (define-key sas-mode-local-map [return] 'newline)
 	(define-key sas-mode-local-map "\t" 'ess-sas-tab-to-tab-stop))
-    (define-key sas-mode-local-map [return] 'newline-and-indent)
-    (define-key sas-mode-local-map "\t" 'sas-indent-line)))
+  ;else
+      (define-key sas-mode-local-map [return] 'newline-and-indent)
+      (define-key sas-mode-local-map "\t" 'sas-indent-line)))
 
 (defvar ess-sas-global-pc-keys nil
   "Non-nil if function keys use PC-like SAS key definitions in all modes.")
