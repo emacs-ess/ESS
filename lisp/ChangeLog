@@ -1,3 +1,14 @@
+2004-05-07  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* essa-sas.el (ess-sas-submit-mac-virtual-pc): Assign :type to be
+	boolean.   Reformat defcustoms (whitespace changes only).
+
+	* essl-sas.el (sas-get-options, sas-file-name,
+	ess-sas-run-make-regexp):  Correct :type to prevent mismatch in
+	customization.
+
+	* essa-sas.el (ess-sas-shell-buffer-remote-host): Ditto.
+
 2004-05-06  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-toolbar.el (ess-make-toolbar-r-emacs): Use ess-load-file
