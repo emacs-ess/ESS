@@ -1,6 +1,6 @@
--*- indented-text -*-
+-*- view -*-
 
-($Revision: 1.13 $)
+($Revision: 1.14 $)
 
 ESS: Using The S family of statistical languages
 ================================================
