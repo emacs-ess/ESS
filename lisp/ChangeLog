@@ -1,3 +1,16 @@
+2004-06-23  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-utils.el (ess-uniq-list): New defun for removing duplicate
+	strings from a list.
+
+	* ess-site.el: Set up call to `ess-r-versions-create'.
+
+	* essd-r.el (ess-r-versions-create): New function to auto-generate
+	defuns to allow other versions of R to be called.
+
+	* ess-cust.el (ess-r-versions): New variable to control which
+	other versions of R are found.
+
 2004-06-21  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-toolbar.el: Add test at end to check for toolbar support.
