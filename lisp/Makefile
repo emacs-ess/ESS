@@ -136,7 +136,7 @@ patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 	(cd ESS-$(VERSION); $(GZCAT) ../ESS-$(VERSION).tar.gz | tar xvf -)
 	-rm -rf ESS-$(LASTVERSION)
 	mkdir ESS-$(LASTVERSION)
-	(cd ESS-$(LASTVERSION); tar zxvf../ESS-$(LASTVERSION).tar.gz -)
+	(cd ESS-$(LASTVERSION); tar zxvf ../ESS-$(LASTVERSION).tar.gz -)
 	-diff -bBw -C 2 ESS-$(LASTVERSION) ESS-$(VERSION) \
 		 > diff-$(LASTVERSION)-$(VERSION)
 	-rm -rf ESS-$(VERSION)
@@ -182,7 +182,7 @@ essl-s.elc : essl-s.el ess.elc
 
 essd-sas.elc : essd-sas.el ess.elc
 
-essd-s3.elc : essd-s+3.el essl-s.elc ess.elc
+essd-s3.elc : essd-s3.el essl-s.elc ess.elc
 
 essd-s+3.elc : essd-s+3.el essl-s.elc ess.elc
 
@@ -194,9 +194,9 @@ essd-r.elc : essd-r.el essl-s.elc ess.elc
 
 essl-lsp.elc : essl-lsp.el ess.elc
 
-essd-xls.elc : essd-xls.el essl-lsp.el ess.elc
+essd-xls.elc : essd-xls.el essl-lsp.elc ess.elc
 
-essd-vst.elc : essd-vst.el essl-lsp.el ess.elc
+essd-vst.elc : essd-vst.el essl-lsp.elc ess.elc
 
 ## SAS 
 
