@@ -58,12 +58,14 @@ inferior shell."
   :type '(choice (const :tag "None" nil) file)
   :group 'shell)
 
-(defcustom explicit-msdos-comspec-file-name "command.com"
+(defcustom explicit-msdos-comspec-file-name
+  (if (w32-using-nt)
+      "cmd.exe"
+    "command.com")
   "*If non-nil, is file name to use for explicitly requested COMSPEC
 environment variable."
   :type '(choice (const :tag "None" nil) file)
   :group 'shell)
-
 
 (defun msdos ()
   "Run an inferior msdos shell, with I/O through buffer *msdos*.
