@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2004/02/18 19:50:29 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: essl-bug.el,v 1.23 2004/02/18 19:50:29 rsparapa Exp $/ini
+;; Modified: $Date: 2004/02/18 21:04:17 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: essl-bug.el,v 1.24 2004/02/18 21:04:17 rsparapa Exp $/ini
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -351,7 +351,8 @@ and `ess-bugs-file-dir'."
     "ESS[BUGS]: Perform Next-Action for .bug"
 
 	(if (equal 0 (buffer-size)) (ess-switch-to-suffix ".bug")
-	    (save-excursion 
+	    (save-excursion (let
+		((tmp-bugs-file-dir (if (equal ess-bugs-batch-version "0.6") ess-bugs-file-dir)))
 		(goto-char (point-min))
 
 	        (if (search-forward "%MODEL" nil t) 
@@ -359,7 +360,7 @@ and `ess-bugs-file-dir'."
 
 	        (if (search-forward "%DATA" nil t) (progn
 		    (setq ess-bugs-file-data 
-			(concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-data-suffix))
+			(concat tmp-bugs-file-dir ess-bugs-file-root ess-bugs-data-suffix))
 		    (replace-match ess-bugs-file-data t t))
 	        ;;else
 	        (if (search-forward-regexp "data.+in[ \t\n]+\"\\(.*\\)\"" nil t)
@@ -370,7 +371,7 @@ and `ess-bugs-file-dir'."
 
 	        (if (search-forward "%INITS" nil t) 
 		    (replace-match 
-			(concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-inits-suffix) t t))
+			(concat tmp-bugs-file-dir ess-bugs-file-root ess-bugs-inits-suffix) t t))
  
 		(let ((ess-bugs-temp-string " ")
 		    (ess-bugs-buffer-ptr nil))
@@ -393,8 +394,7 @@ and `ess-bugs-file-dir'."
 
 			(replace-match ess-bugs-temp-string t t)
 		    ))
-
-		)
+		)	
 
 		(let (
 		    (ess-bugs-search-min nil)
@@ -465,7 +465,7 @@ and `ess-bugs-file-dir'."
 		    )
 		)
 		    
-	    )
+	    ))
 
 	    (save-buffer)
 	    (ess-switch-to-suffix ".bmd")
