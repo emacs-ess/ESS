@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/01/15 14:57:51 $
-;; Version: $Revision: 1.148 $
-;; RCS: $Id: essa-sas.el,v 1.148 2004/01/15 14:57:51 rsparapa Exp $
+;; Modified: $Date: 2004/01/29 22:15:37 $
+;; Version: $Revision: 1.149 $
+;; RCS: $Id: essa-sas.el,v 1.149 2004/01/29 22:15:37 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -398,12 +398,14 @@ current buffer if nil."
 (defun ess-sas-graph-view ()
   "Open a GSASFILE for viewing."
   (interactive)
-  (ess-sas-file-path)
+;  (ess-sas-file-path)
+  (ess-sas-goto-log 'no-error-check)
 
   (save-excursion (let ((ess-tmp-sas-graph nil)
         (ess-tmp-sas-glyph nil)
         (ess-tmp-sas-graph-regexp 
-	    (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
+	    (concat " RECORDS WRITTEN TO \\(.*" ess-sas-graph-suffix-regexp "\\)")))
+;	    (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
 
     (save-match-data 
        (search-backward-regexp "[ \t=]" nil t)
@@ -415,10 +417,11 @@ current buffer if nil."
 	    (setq ess-tmp-sas-graph (ess-search-except ess-tmp-sas-graph-regexp nil t)))
 
 	(setq ess-tmp-sas-graph (read-string "GSASFILE: " 
-	    (or ess-tmp-sas-graph (file-name-nondirectory ess-sas-file-path))))
+	    (or ess-tmp-sas-graph ess-sas-file-path)))
+;	    (or ess-tmp-sas-graph (file-name-nondirectory ess-sas-file-path))))
 
-	    (setq ess-tmp-sas-graph (convert-standard-filename 
-		(concat (file-name-directory ess-sas-file-path) "/" ess-tmp-sas-graph)))
+;	    (setq ess-tmp-sas-graph (convert-standard-filename 
+;		(concat (file-name-directory ess-sas-file-path) "/" ess-tmp-sas-graph)))
 
 	  (if (fboundp 'ess-xemacs-insert-glyph) (progn
 	      (if (string-match "[.][gG][iI][fF]" ess-tmp-sas-graph)
@@ -531,7 +534,7 @@ current buffer if nil."
   (interactive)
   (ess-sas-goto ess-sas-suffix-2 'revert))
 
-(defun ess-sas-goto-log ()
+(defun ess-sas-goto-log (&optional ess-tmp-no-error-check)
   "Switch to the .log file, revert from disk and search for error messages."
   (interactive)
 
@@ -550,6 +553,7 @@ current buffer if nil."
     (setq ess-sas-save-point (point))
   )
 
+(if ess-tmp-no-error-check (goto-char ess-sas-save-point)
   (if (not (search-forward-regexp ess-sas-error nil t)) 
         (if (search-backward-regexp ess-sas-error nil t) 
             (progn
@@ -558,7 +562,8 @@ current buffer if nil."
             )
 	    (goto-char ess-sas-save-point)
         )
-    ))
+    )
+))
 )
 
 (defun ess-sas-goto-lst ()
