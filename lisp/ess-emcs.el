@@ -7,9 +7,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2001/01/08 00:47:11 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: ess-emcs.el,v 5.6 2001/01/08 00:47:11 rossini Exp $
+;; Modified: $Date: 2001/04/26 16:35:33 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: ess-emcs.el,v 5.7 2001/04/26 16:35:33 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -67,6 +67,10 @@
 (defvar ess-local-custom-available (featurep 'custom)
   "Value is nil if custom.el not available, t if available.  
 Only a concern with earlier versions of Emacs.")
+
+(defvar ess-microsoft-p (or (equal window-system 'w32) 
+			    (equal window-system 'win32))
+  "Value is t if the OS is one of Microsoft's, nil otherwise.")
 
 (provide 'ess-emcs)
 
