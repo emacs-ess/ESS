@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/10/21 20:35:36 $
-;; Version: $Revision: 1.52 $
-;; RCS: $Id: ess-site.el,v 1.52 1997/10/21 20:35:36 rossini Exp $
+;; Modified: $Date: 1997/10/22 14:47:25 $
+;; Version: $Revision: 1.53 $
+;; RCS: $Id: ess-site.el,v 1.53 1997/10/22 14:47:25 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -155,17 +155,22 @@
 ;; (setq inferior-ess-secondary-prompt "+ ?")
 
 
+;;; 2.1 Backwards compatibility (roll your own!)
 ;;; What you want S to call...
 (defun S ()
   "Basic, usual, call..."
   (interactive)
   (S+3))
 
-
+;;; The basic mode.
+(defun S-mode (&optional proc-name)
+  "Major mode for editing S+3 source.  See ess-mode for more help."
+  (interactive)
+  (if proc-name (S+3-mode proc-name)
+    (S+3-mode)))
 
 ;;; 3. Customization (and commented out examples) for your site
 ;;;; ===============================================
-
 
 ;;; (3.1) Font-lock
 ;; The following two expressions automatically enable font-lock-mode
@@ -177,7 +182,6 @@
       (add-hook 'ess-mode-hook 'turn-on-font-lock t)
       (add-hook 'ess-transcript-mode-hook 'turn-on-font-lock t)
       (add-hook 'inferior-ess-mode-hook 'turn-on-font-lock t)))
-
 
 ;; If nil, then don't font-lock the input
 ;; if t, font-lock (default).
