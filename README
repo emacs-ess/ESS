@@ -58,18 +58,24 @@ See the file NEWS for changes in recent versions.
 
 ESS version 4.9 requires Emacs version 19.29 or later, or version
 XEmacs 19.14 or later.  ESS is supposed to work with any version of S,
-Splus, R, or XLispStat.  However it is most thoroughly tested with
-Splus 3.3, R 0.49 and 0.50, and XLispStat 3.50 on SunOS, Solaris, and
-Linux (Unix) systems; it may need some work with other configurations, 
+Splus, R, or XLispStat.  
+
+It has been most thoroughly tested with:
+	Splus 3.3, R 0.49 and 0.50, and XLispStat 3.50 on SunOS,
+	Solaris, and Linux (Unix) systems;
+
+	Emacs 19.29, 19.34, XEmacs 19.15, XEmacs 20.3 (beta versions)
+
+It may need some work with other configurations.
 
 
 3. STABILITY
 ------------
 
-Version 4.9 is a functional release.  However, there are a few known
-bugs (and countless other undiscovered ones); see the TODO file for
-details.  Bug reports are solicited; see the BUGS section below.
-Fixes and patches with bug reports are generously accepted.
+Version 4.9 is meant as a functional release.  However, there are a
+few known bugs (and countless other undiscovered ones); see the TODO
+file for details.  Bug reports are solicited; see the BUGS section
+below.  Fixes and patches with bug reports are generously accepted.
 
 
 4. INSTALLATION  (AJR: NEEDS TO BE CHANGED!).
@@ -123,11 +129,9 @@ Fixes and patches with bug reports are generously accepted.
   file S-namedb.el in the current S directory (i.e. /PATH).  Check
   that /PATH now contains a file called S-namedb.el.  
 
-
   If you wish to run R, you can start it with:
 
 	M-x R
-
 
   XLispStat can be run with 
 	M-x XLS
@@ -155,6 +159,11 @@ http://www.maths.lancs.ac.uk:2080/~maa036/elisp/S-mode/.  ESS is
 also available via anonymous FTP from
 wingra.stat.wisc.edu:pub/src/emacs-lisp/.
 
+The latest version of ESS is available via WWW or FTP, and can be
+found in the directory specified by:
+	http://www.stat.sc.edu/~rossini/projects/
+	ftp://ftp.math.sc.edu/rossini/
+
 
 7. THE ESS MAILING LIST
 --------------------------
@@ -175,8 +184,8 @@ The purposes of the mailing list include
 
 
 ----
+Richard M. Heiberger <rmh@fisher.stat.temple.edu>, Stat Dept., Temple U.
 Kurt Hornik <hornik@ci.tuwien.ac.at> Stat. Dept., TU-Vienna (<- ??)
-Richard Heiberger <rmh@fisher.stat.temple.edu>, Stat Dept., Temple U.
 Martin Maechler <maechler@stat.math.ethz.ch> Stat. Dept., ETH
 A.J. Rossini <rossini@stat.sc.edu> Stat. Dept., U South Carolina
 
