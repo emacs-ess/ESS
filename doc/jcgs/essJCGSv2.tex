@@ -147,8 +147,8 @@ providing shortcuts and extensions for often-performed tasks.
 %% statistical interfaces from programming it yourself to command line
 %% (SPSS/SAS/BDMP in the 80s), to spreadsheet-style interfaces
 %% (spreadsheets, AND minitab, spss now, etc), etc?  This would be the
-%% 2nd paragraph, if so. 
-%% 
+%% 2nd paragraph, if so.
+%%
 %% I don't think it is necessary, although, I'm not entirely opposed.
 %% AFAIC, anyone who wants to use ESS will not need to know all of
 %% that per se.  They will just need to know what works today IMO.
@@ -159,7 +159,7 @@ through Emacs, additional tools which facilitate both statistical
 software development and data analysis.  Currently supported
 statistical packages are the following:  the S family of languages (which include
 S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus{} \citep{Splus}, and R
-\citep{ihak:gent:1996}); \SAS \citep{SAS:8}; \XLispStat\ 
+\citep{ihak:gent:1996}); \SAS \citep{SAS:8}; \XLispStat\
 \citep{Tier90} and its extensions Arc \citep{Cook:Weisberg:1999} and
 ViSta \citep{youn:fald:mcfa:1992}; \Stata\ \citep{Stata:6.0}; Omegahat
 \citep{DTLang:2000}; and BUGS \citep{BUGS}.  ESS can be
@@ -173,8 +173,8 @@ ESS provides details of its implementation and examples of its use.
 We first describe the Emacs text editor, the platform on which ESS is
 built.  That is followed by the details of ESS and how it facilitates
 common statistical computing activities.  We then describe the unique
-history that ESS has had as an open-source, free-software project.  
-It has been passed down by generations of developers and has 
+history that ESS has had as an open-source, free-software project.
+It has been passed down by generations of developers and has
 united various Emacs packages which support
 statistical languages and programming.  Finally, we conclude with
 future tasks and extensions.
@@ -186,7 +186,7 @@ Emacs is a mature, powerful, and extensible text editing system which
 is freely available under the GNU General Public License for a large
 number of platforms, including most flavors of Unix, Microsoft Windows
 and Apple Macintosh.  There are two open-source, free-software
-implementations of Emacs (GNU Emacs \citep{GNU Emacs} and XEmacs
+implementations of Emacs (GNU Emacs \citep{GNU-Emacs} and XEmacs
 \citep{XEmacs}).  Emacs shares many features with
 word processors, and some characteristics with operating systems.
 Most importantly, Emacs can interact with and control other programs.
@@ -206,8 +206,8 @@ toolbars allow mouse access to frequently used actions; for instance,
 when you don't know or can't remember a key-mapping.  User-defined
 menus and toolbars can be constructed as needed.
 
-Emacs provides facilities which go beyond ordinary text editing.  
-When opening a file, Emacs can complete partially typed 
+Emacs provides facilities which go beyond ordinary text editing.
+When opening a file, Emacs can complete partially typed
 file names by referring to the typed directory.  This file is placed
 in a space created within the Emacs application called a buffer.
 Buffers can be used for more than just editing text files; for instance,
@@ -228,14 +228,14 @@ Major-modes provide two kinds of support.
 First, a customized environment (key-maps, capabilities) for file
 types which are determined from the file name's extension, i.e. the characters
 at the end of the file name that follow a period like ``txt'', ``R''
-or ``sas''.  When dictated by the file name, you can only utilize one 
-major-mode at a time.  An example of this kind of major-mode is ESS 
+or ``sas''.  When dictated by the file name, you can only utilize one
+major-mode at a time.  An example of this kind of major-mode is ESS
 (technically, the name is actually \stexttt{ess-mode}).  Major-modes of this
 kind provide automatic indentation and navigation in units of characters,
 words, lines, sentences, paragraphs, and pages as well as many other
-features.  The second kind of major-mode is for running other programs.  
+features.  The second kind of major-mode is for running other programs.
 In this case, the programs standard input can be drawn from a buffer
-or a file and its standard output can be directed to a buffer or a file.  
+or a file and its standard output can be directed to a buffer or a file.
 These buffers can control programs that transfer files over a network,
 perform version control operations or many other tasks.
 An important example of this kind of major-mode is \stexttt{shell-mode}.
@@ -253,8 +253,8 @@ programs is provided by the minor-mode \stexttt{vc-mode} (or the more
 specialized \stexttt{pcl-cvs}) for packages like CVS, RCS and SCCS.
 
 Most programming and documentation tasks fall under the realm of text
-editing.  This work can be enhanced by modes which provide features such 
-as contextual highlighting and recognition of special reserved words 
+editing.  This work can be enhanced by modes which provide features such
+as contextual highlighting and recognition of special reserved words
 appropriate to the programming language in use.  Emacs supports
 folding, outlining, and bookmarks which can assist with maneuvering
 around a file.  Emacs shares many features with word-processing
@@ -266,8 +266,8 @@ like HTML and XML.
 %text-editing.
 
 %insertion and deletion: viewing two or more files at once; editing formatted text;
-%visual comparison of two similar files; and navigation 
-%in units of characters, words, lines, sentences, paragraphs, and pages.  
+%visual comparison of two similar files; and navigation
+%in units of characters, words, lines, sentences, paragraphs, and pages.
 
  Emacs handles the
 interface to both source code and transcripts contextually, providing
@@ -296,7 +296,7 @@ language is split by function; general, obtaining help, programming.
 %additional useful features, and in the case of interactive statistical
 %programs, sitting ``in front of'' their CLI and intercepting and
 %modifying I/O as needed.  We describe the exact features more in this
-%section.  
+%section.
 
 %% change/edit
 %Figure~\ref{fig:1} provides an example of how it looks when being used
@@ -333,8 +333,8 @@ language is split by function; general, obtaining help, programming.
 \label{sec:ESS:features}
 
 
-ESS strongly supports the S family (S, \Splus, and R).  
-\SAS is also well supported.  \Stata\ 
+ESS strongly supports the S family (S, \Splus, and R).
+\SAS is also well supported.  \Stata\
 and \XLispStat\ (and the \XLispStat\ extensions, ARC and ViSta) are
 supported with the basic functionality of syntax highlighting and
 process-interfacing.  ESS and its interface are fully discussed in the
@@ -347,15 +347,15 @@ next section.
 \paragraph{Syntactic indentation and color/font-based source code
   highlighting.}  The ESS interface includes a description of the
 syntax and grammar of each statistical language it knows about.
-%%  This gives ESS the ability to edit the programming language code, 
-%% often more smoothly than with editors distributed with the languages. 
+%%  This gives ESS the ability to edit the programming language code,
+%% often more smoothly than with editors distributed with the languages.
 The process of programming code is enhanced as ESS provides the user with
 a clear presentation of the code with syntax highlighting to denote
 assignment, reserved words, presence of strings, and comments.  ESS
 has customizable automatic indentation, with the customization based
 on the syntactic structure of groups of expressions.  ESS knows the
 structure of transcripts of the executing session and provides
-syntactic highlighting for transcripts.  
+syntactic highlighting for transcripts.
 
 %% Rodney:  What is source code checking?  Should we lump this with highlighting?
 \paragraph{Source code checking.}
@@ -370,12 +370,12 @@ Emacs can send individual lines, entire function definitions, marked
 regions, and whole edited buffers from the window in which the code is
 displayed for editing to the statistical package for
 execution.  Emacs sends the code directly to
-the statistical package and receives the output, if any, which is 
+the statistical package and receives the output, if any, which is
 the result.  This is a major improvement over cut-and-paste as it does
 not require switching between buffers or windows.  The response is received
 immediately in an editable Emacs buffer.
 
-\paragraph{Interactive transcripts and history of commands.} 
+\paragraph{Interactive transcripts and history of commands.}
 ESS interacts well with the
 executing statistics language/program and provides means for searching
 the command-line history for previous commands and editing them for
@@ -410,7 +410,7 @@ calls to the internal help systems for S, \XLispStat, and \Stata.
 
 %% Rodney:  actually, I've not been able to get this to work with
 %% ange-ftp, EFS or Tramp.  The situation may have been different
-%% 3 or 4 years ago, but with the security crackdowns due to 
+%% 3 or 4 years ago, but with the security crackdowns due to
 %% flaws in telnet and ftp; this is not likely to work for most
 %% people.  I suggest that we either drop this section or move
 %% it to future work so we can nail it down.
@@ -443,19 +443,19 @@ process, either R or \Splus.
 \subsubsection{Multiple Tools}
 \label{sec:multiple-tools}
 
-Basically, statistical packages are either intended for general 
-statistical analyses or more specialized forms of statistical analyses.  
+Basically, statistical packages are either intended for general
+statistical analyses or more specialized forms of statistical analyses.
 The specialized statistical packages can be far more efficient for
 specialized statistical analyses, but this is balanced by their inability
-to perform a wide range of general statistical analyses.  Tightly coupled 
-inter-operability between general and specialized packages rarely exists, 
-but such a facility is often desired.  For example, a general purpose 
-package such as R does not perform Bayesian analyses as easily as BUGS does.  
-On the other hand, BUGS lacks breadth in the range of analyses and results 
-it can generate.  For this reason, BUGS is often distributed with R packages, 
+to perform a wide range of general statistical analyses.  Tightly coupled
+inter-operability between general and specialized packages rarely exists,
+but such a facility is often desired.  For example, a general purpose
+package such as R does not perform Bayesian analyses as easily as BUGS does.
+On the other hand, BUGS lacks breadth in the range of analyses and results
+it can generate.  For this reason, BUGS is often distributed with R packages,
 like CODA and BOA, for importing and analyzing the results in R.  Another
 point of contention is the difference in the interfaces between general
-packages and specialized packages.  For example, the interfaces for BUGS 
+packages and specialized packages.  For example, the interfaces for BUGS
 and R are somewhat similar, but there are enough differences to create confusion.
 
 ESS is an extension package for
@@ -463,7 +463,7 @@ the Emacs editor which provides a single interface for a variety of
 statistical computing tasks.  ESS is optimized for statistical programming
 and interactive data analysis.  Statistical programming is the writing of
 computer programs for data analysis and processing.  These programs might be
-written in a computer language that requires as a compiler such as C or 
+written in a computer language that requires as a compiler such as C or
 \Fortran.  But, more likely, they are written in a  computer
 language that only requires an interpreter such as R, \SAS or \XLispStat.
 %%An interpreted language is executed by an interpreter, but a compiled language
@@ -475,15 +475,15 @@ language that only requires an interpreter such as R, \SAS or \XLispStat.
 %%specialized tasks.  For example, C and \Fortran don't provide you with
 %%the statistical analysis capabilities that R, \SAS or \XLispStat
 %%do.  Compiled programs and interpreted programs can be used in conjunction.
-%%For instance, a compiled C function could be called from an interpreted 
+%%For instance, a compiled C function could be called from an interpreted
 %%language like R to speed up the calculations.
 Entering commands for interactive data analysis is a similar activity.
 In either case, text is written in a computer language and sent to a
-computer program for evaluation. 
+computer program for evaluation.
 %%The primary difference is that the
 %%results of a small set of commands are of critical interest for review
 %%in the analysis phase, but the results of all commands are of interest
-%%in the coding phase.  
+%%in the coding phase.
 
 \subsubsection{Conflicts in keymappings}
 \label{sec:confl-keym}
@@ -528,8 +528,8 @@ remote machines.
 
 ESS is an example of how open-source products can continue to
 develop beyond what their initial authors planned.  To date, there have been 3
-generations of developers and hopefully, there will be many more to come. 
-%%and the genealogy is more tree-like thanlinear.  
+generations of developers and hopefully, there will be many more to come.
+%%and the genealogy is more tree-like thanlinear.
 There were 2 modes from which ESS descended:  S-mode and SAS-mode.
 
 %% ESS originated as S-mode, which provided an interface for
@@ -556,18 +556,18 @@ XEmacs in 1995, and this provided the initial
 impetus for a uniform codebase for statistical programming.
 The extension to a language-independent, generic interface was further prompted
 by the success of R and the desire for more complete R support.  This led to a merger
-of SAS-mode and S-mode along with changes 
+of SAS-mode and S-mode along with changes
 to accommodate multiple languages in a flexible way.
 
 During 1996 and 1997, Richard M. Heiberger further incorporated
 SAS-mode into ESS and designed the inferior ESS mode for \SAS.  In
-1997, more changes were made to facilitate  
+1997, more changes were made to facilitate
 %% the grand redesign of the internals occurred, where by a generic
-%% means for 
+%% means for
 configuring ESS for new statistical languages like \Stata and \XLispStat.
 Most of the work, until 1998, was done for Unix-based statistics packages.
 The first example of interprocess communication for Windows using DDE
-was constructed in 1998 by Brian Ripley.  Based on this work, Heiberger provided 
+was constructed in 1998 by Brian Ripley.  Based on this work, Heiberger provided
 interfaces for Windows versions of \Splus.
 
 In 1998, Rodney Sparapani designed \SAS batch file processing for ESS.
@@ -577,13 +577,13 @@ a more comprehensive and efficient syntax highlighting scheme,
 automated error message lookup in the \SAS log file and extended the
 \stexttt{*ESS-elsewhere*} functionality to include \SAS.  This provides
 a powerful development environment for \SAS.
-%% Rodney:  I'm still not comfortable with placing SAS-elsewhere as 
+%% Rodney:  I'm still not comfortable with placing SAS-elsewhere as
 %% a done deal.  I think this should be a future direction.
 %% We could say something like:  we are currently working on remote
 %% file access with respect to ESS and there should be a new
 %% release by the time you read this.  Comments?
 
-In 2001, Sparapani added BUGS batch file processing for ESS.  This 
+In 2001, Sparapani added BUGS batch file processing for ESS.  This
 includes support for syntax highlighting and template-based source file
 generation that provides the capability of specifying all the necessary
 parameters for a BUGS batch run in a single file.
@@ -635,7 +635,7 @@ extensible to additional statistical languages and analysis packages.
 \end{document}
 
 
-%%% Local Variables: 
+%%% Local Variables:
 %%% mode: latex
 %%% TeX-master: t
-%%% End: 
+%%% End:
