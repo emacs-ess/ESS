@@ -80,7 +80,7 @@ ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
 SVN_URL = https://svn.R-project.org/ESS
 
 #MM UPLOAD_SITE = cvs.analytics.washington.edu
-UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads
+UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess
 
 
 .SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el .elc
