@@ -4,30 +4,17 @@ ANNOUNCING ESS
    Annoucing the release of ESS-5.1.11 (Emacs Speaks Statistics).
 ------------------------------------------------------------
 
-   (New: improvements to SAS support,       Splus 5 support,
-Splus 4.5 under Microsoft Windows support)
-
    ESS is an Emacs package which provides a standard interface between
 statistical programs and statistical processes.  It is intended to
 provide assistance for interactive statistical programming and data
 analysis, and was is based on and extends the capabilities of S-mode.
-The code is freely available but is not in the public domain.  It is
-distributed under the GNU GPL.  Please read the file COPYING for more
-information about the license.
 
-   ESS grew out of the desire to extend S-mode-4.8.  The current set of
-developers desired support for: - XEmacs - R - S4 - Microsoft Windows
+   The code is freely available but is not in the public domain.  It is
+distributed under the GNU GPL.  Please read the file COPYING which comes
+with the distribution, for more information about the license.
 
-   In addition, with new modes being developed for R, Stata, and SAS, it
-was felt a unifying interface and framework for the user interface,
-would benefit both the user and the developer, by helping both groups
-conform to standard Emacs usage.  The end result is an increase in
-efficiency for statistical programming and data analysis, over the
-usual tools.
-
-   We are grateful to David M. Smith , the previous developer (for
-S-mode 3.x and 4.x), as well as to the initial developers of S-mode,
-Doug Bates, Ed Kademan and Frank Ritter.
+   For more detailed information about ESS's abilities, please read the
+file README with the distribution.
 
    And to help remove any further confusion:
 
@@ -35,21 +22,20 @@ Doug Bates, Ed Kademan and Frank Ritter.
 
    Thank you :-).
 
-License
-=======
-
-   ESS is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free
-Software Foundation; either version 2, or (at your option) any later
-version.
-
-   ESS is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-in the file COPYING in the same directory as this file for more details.
-
 New Features
 ============
+
+   Changes/New Features in 5.1.11:
+   * More fixes to Stata mode, thanks to Brendan Halpin
+     (<brendan@essex.ac.uk>)
+
+   * fixed bugs in ESS-elsewhere, thanks to many testers
+
+   * README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
+          to David Brahm (<brahm@alum.mit.edu>).
+
+   * Fixes to SAS mode, thanks to Rodney Sparapani
+     (<spara002@duke.edu>)
 
    Changes/New Features in 5.1.10:
    * More fixes to Stata mode
@@ -78,8 +64,8 @@ three modes know the S language, syntax, and indentation patterns and
 provide the syntactic highlighting that eases the programming tasks.
 
    For Microsoft platforms, the version of Emacs that this has been
-tested with is NTEmacs 20.2 and 20.3.  More information about NTEmacs
-can be retrieved from:
+tested with is NTEmacs 20.x, x greater than 2.  More information about
+NTEmacs can be retrieved from:
 
    *   `http://www.cs.washington.edu/homes/voelker/ntemacs.html'
 
@@ -256,4 +242,17 @@ Authors
 
    * Martin Maechler (http://stat.ethz.ch/~maechler/)
      <maechler@stat.math.ethz.ch>
+
+License
+=======
+
+   ESS is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2, or (at your option) any later
+version.
+
+   ESS is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+in the file COPYING in the same directory as this file for more details.
 
