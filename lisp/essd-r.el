@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2000/10/30 14:41:50 $
-;; Version: $Revision: 5.23 $
-;; RCS: $Id: essd-r.el,v 5.23 2000/10/30 14:41:50 rossini Exp $
+;; Modified: $Date: 2000/11/02 22:52:22 $
+;; Version: $Revision: 5.24 $
+;; RCS: $Id: essd-r.el,v 5.24 2000/11/02 22:52:22 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -83,25 +83,6 @@
 
 (fset 'r-mode 'R-mode)
 
-;;
-;; R for unix-only systems.  This should go away.
-;;
-;;(defun R-original (&optional start-args)
-;;  "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ)."
-;;  (interactive "P")
-;;  (setq ess-customize-alist R-customize-alist)
-;;  ;; for debugging only
-;;  (ess-write-to-dribble-buffer
-;;   (format
-;;    "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n\t current-prefix-arg=%s\n"
-;;    ess-dialect (current-buffer) start-args
-;;    current-prefix-arg))
-;;  (let ((r-start-args  (concat "--no-readline "
-;;	 (if start-args (read-string
-;;			 "Starting Args [other than `--no-readline'] ? ")
-;;	   nil))))
-;;    (inferior-ess r-start-args)))
-
 ;; R that does the right thing irregardless of OS.
 (defun R (&optional start-args)
   "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ).
@@ -131,15 +112,7 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
 	(add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
 	(comint-strip-ctrl-m)           ; Timing problem in bash.
 					; Can't make startup ^M go away.
-;;- 	(goto-char (point-max))
-;;- 	(beginning-of-line)
-;;- 	(insert
-;;- "The interaction of ESS 5.1.x and R 0.63.3 pre-Beta is rough:\n
-;;- To start the graphics window, you must explicitly use the `x11()' command.\n
-;;- You must quit R with `q()' or you take the risk of not being able
-;;- to shut down the computer cleanly.\n\n")
-	(goto-char (point-max))))
-);; (R)
+	(goto-char (point-max)))));; (R)
 
 
 (autoload 'ess-transcript-mode "ess-trns"
