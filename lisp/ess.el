@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/06/30 22:21:05 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: ess.el,v 1.11 1997/06/30 22:21:05 rossini Exp $
+;; Modified: $Date: 1997/06/30 22:33:21 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: ess.el,v 1.12 1997/06/30 22:33:21 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.12  1997/06/30 22:33:21  rossini
+;; ess-directory defaults to "nil".
+;;
 ;; Revision 1.11  1997/06/30 22:21:05  rossini
 ;; forgot an ")".
 ;; whoops.
@@ -271,7 +274,7 @@ Use `setq-default' if setting it in .emacs")
 (setq-default ess-proc-prefix "S")
 
 
-(defvar ess-directory (file-name-as-directory (getenv "HOME"))
+(defvar ess-directory nil) 
   "*The directory ess is run from.  It must end in a slash.
 Provided as a default if ess-ask-for-ess-directory is non-nil.
 A nil value means use the current buffer's default directory.
@@ -279,7 +282,7 @@ Buffer-local: in process buffers, this contains the directory ess was
 run from.")
 
 (make-variable-buffer-local 'ess-directory)
-(setq-default ess-directory (file-name-as-directory (getenv "HOME")))
+(setq-default ess-directory nil)
 
 ;; MM, 13Mar97.  This should be set buffer-local!
 (defvar ess-history-file (concat "." ess-proc-prefix "history")
