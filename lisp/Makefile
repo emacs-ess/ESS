@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.46 1997/07/29 11:27:11 rossini Exp $
+## $Id: Makefile,v 1.47 1997/07/30 12:35:28 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.47  1997/07/30 12:35:28  rossini
+## ESS before all.
+##
 ## Revision 1.46  1997/07/29 11:27:11  rossini
 ## makefile is cleaner.  Added AucTeX stuff for information.
 ##
@@ -162,14 +165,13 @@ OBJECTS = $(SOURCES:.el=.elc)
 AUXFILES = COPYING Makefile NEWS README TODO \
 	ESS.texi ChangeLog
 
-
 ### Commands
-
-all:	ESS info html
 
 ESS: $(OBJECTS)
 
-info:   ESS.info
+all:	ESS info html
+
+info:	ESS.info
 
 html:	html/ESS_toc.html
 
