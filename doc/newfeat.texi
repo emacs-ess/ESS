@@ -1,5 +1,10 @@
 Changes/New Features in 5.2.1:
 @itemize @bullet
+@item ESS[R]: If you have other versions of R, such as "R-1.8.1" on your
+exec-path, ESS will find and create appropriate functions, such as M-x
+R-1.8.1, for calling them.  By default only programs beginning "R-1" and
+"R-2" will be found, but see ess-r-versions for ways to find other
+versions of R.
 @item ESS[S] (R and S-plus): now have tool-bar
 with entries to evaluate code in the inferior process or to switch
 there.  This code is experimental and likely to change as XEmacs/Emacs
