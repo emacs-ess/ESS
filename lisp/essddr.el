@@ -28,8 +28,10 @@
   "Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>"
   "Current maintainer of ess-doc.el.")
 
-(autoload 'ess-eval-region "ess-mode" "[autoload]" t)
+(autoload 'ess-eval-region             "ess-mode" "[autoload]" t)
 (autoload 'ess-eval-line-and-next-line "ess-mode" "[autoload]" t)
+(autoload 'ess-nuke-help-bs            "ess-help" "(autoload)" t)
+(autoload 'ess-help-mode               "ess-help" "(autoload)" t)
 
 (defvar Rd-mode-abbrev-table nil
   "Abbrev table for R documentation keywords.
