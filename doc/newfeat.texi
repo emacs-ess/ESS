@@ -8,7 +8,7 @@ Changes/New Features in 5.1.19:
       "data...in" and "init...in" filenames, "const N=" from your data
       file and "monitor()/stats()" commands.  Activated by pressing F12.
 @item Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
-@item You can change between PC and Unix, local and global SAS function-key 
+@item You can change between PC and Unix, local and global SAS function-key
       definitions interactively (Rich Heiberger)
 @item C-Submit a highlighted region to SAS batch (Rodney Sparapani)
 @item New and improved SAS syntax highlighting (Rodney Sparapani)
@@ -21,6 +21,8 @@ Changes/New Features in 5.1.19:
       and other ESS[SAS] variables (Rodney Sparapani)
 @item `ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
 @item Emacs/XEmacs, Unix/Windows issues collectively handled in ess-emcs.el
+@item defadvice solves problem of missing *ESS* (thanks to Jeff Mincy)
+@item Improved manual a bit by including things that were only in `README'.
 @end itemize
 
 Changes/New Features in 5.1.18:
