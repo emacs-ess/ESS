@@ -1,3 +1,21 @@
+Tue Nov 25 08:53:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* RELEASED: 5.0-honestlylastpre.
+	* README.S: added comment re: \" and fontlock.
+
+Tue Nov 25 08:50:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: removed SAS tabbing, added S dumping (RMH).
+
+Tue Nov 25 08:49:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (SAS-mode): construct a sas-mode-local-map, from
+ 	ess-mode-map, for modifying the tab key.
+
+Tue Nov 25 08:24:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-mode): removed white space, spurrious comment.
+
 Mon Nov 24 12:14:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Doc/TODO: SAS indent fixes.
@@ -192,7 +210,7 @@ Thu Nov 20 18:00:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Thu Nov 20 16:41:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* RELEASED: verylastpre.
+	* RELEASED: 5.0-verylastpre.
 	
 	* ess-inf.el: fixed menus.
 
@@ -1633,6 +1651,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 4.6  1997/11/25 13:58:36  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 4.5  1997/11/24 17:17:07  rossini
 	* Removing *** empty log message ***
 	* Removing
