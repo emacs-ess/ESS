@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2001/02/06 19:08:06 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: ess-cust.el,v 1.19 2001/02/06 19:08:06 rossini Exp $
+;; Modified: $Date: 2001/04/17 03:29:00 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: ess-cust.el,v 1.20 2001/04/17 03:29:00 ess Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -178,7 +178,7 @@ version of the statistical package being executed in the particular
 buffer.
 
 Current values could include:
-for `ess-dialect' = S3, S4, S+3, S+4, S+5, R, XLS, SAS, STA
+for `ess-dialect' = S3, S4, S+3, S+4, S+5, S+6, R, XLS, SAS, STA
 
 Used to adjust for changes in versions of the program"
   :group 'ess
@@ -188,6 +188,7 @@ Used to adjust for changes in versions of the program"
 		 (const :tag "S4"     :value "S4")
 		 (const :tag "Sp4"    :value "Sp4")
 		 (const :tag "Sp5"    :value "Sp5")
+		 (const :tag "Sp6"    :value "Sp6")
 		 (const :tag "XLS"    :value "XLS")
 		 (const :tag "SAS"    :value "SAS")
 		 (const :tag "Runix"  :value "Runix")
@@ -608,10 +609,26 @@ in S+4 Commands window and in Sqpe+4 buffer."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-Sqpe+4-SHOME-name "c:/Progra~1/spls45se"
+(defcustom inferior-Sqpe+4-SHOME-name nil
   "*SHOME name for invoking an inferior ESS with Sqpe+4()."
   :group 'ess-S
   :type 'string)
+(if (or (equal window-system 'w32) (equal window-system 'win32))
+    (let* ((SHOME (getenv "SHOME"))
+	   (PATH (getenv "PATH"))
+	   (split-PATH (split-string PATH ";")) ;; Unix uses ":"
+	   (num 0)
+	   pathname)
+      (if (not SHOME)
+	  (while (< num (length split-PATH))
+	    (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
+	    (if (not (file-exists-p pathname))
+		(setq num (1+ num))
+	      (progn
+		(setq num (length split-PATH))
+		(setq SHOME (expand-file-name (concat pathname "/../..")))))))
+      (setq-default inferior-Sqpe+4-SHOME-name SHOME)))
+
 
 (defcustom inferior-S-elsewhere-program-name "sh"
   "*Program name for invoking an inferior ESS with S on a different computer."
@@ -634,10 +651,52 @@ different computer."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-S+6-program-name "Splus6"
-  "*Program name for invoking an inferior ESS with S+6()."
+(if (or (equal window-system 'w32) (equal window-system 'win32))
+    (defcustom inferior-S+6-program-name "Splus"
+      "*Program name for invoking an external GUI S+6 for Windows."
+      :group 'ess-S
+      :type 'string)
+  (defcustom inferior-S+6-program-name "Splus6"
+    "*Program name for invoking an inferior ESS with S+6() for Unix."
+    :group 'ess-S
+    :type 'string))
+
+(defcustom inferior-S+6-print-command "S_PRINT_COMMAND=gnuclientw.exe"
+  "*Destination of print icon in S+6 for Windows Commands window."
   :group 'ess-S
   :type 'string)
+
+(defcustom inferior-S+6-editor-pager-command
+  "options(editor='gnuclient.exe', pager='gnuclientw.exe')"
+  "*Programs called by the editor() and pager() functions
+in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
+  :group 'ess-S
+  :type 'string)
+
+(defcustom inferior-Sqpe+6-program-name "Sqpe"
+  "*Program name for invoking an inferior ESS with Sqpe+6() for Windows."
+  :group 'ess-S
+  :type 'string)
+
+(defcustom inferior-Sqpe+6-SHOME-name nil
+  "*SHOME name for invoking an inferior ESS with Sqpe+6() for Windows."
+  :group 'ess-S
+  :type 'string)
+(if (or (equal window-system 'w32) (equal window-system 'win32))
+    (let* ((SHOME (getenv "SHOME"))
+	   (PATH (getenv "PATH"))
+	   (split-PATH (split-string PATH ";")) ;; Unix uses ":"
+	   (num 0)
+	   pathname)
+      (if (not SHOME)
+	  (while (< num (length split-PATH))
+	    (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
+	    (if (not (file-exists-p pathname))
+		(setq num (1+ num))
+	      (progn
+		(setq num (length split-PATH))
+		(setq SHOME (expand-file-name (concat pathname "/../..")))))))
+      (setq-default inferior-Sqpe+6-SHOME-name SHOME)))
 
 (defcustom inferior-XLS-program-name "xlispstat"
   "*Program name for invoking an inferior ESS with \\[XLS]."

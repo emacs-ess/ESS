@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/03/20 23:03:20 $
-;; Version: $Revision: 5.71 $
-;; RCS: $Id: ess-site.el,v 5.71 2001/03/20 23:03:20 ess Exp $
+;; Modified: $Date: 2001/04/17 03:28:11 $
+;; Version: $Revision: 5.72 $
+;; RCS: $Id: ess-site.el,v 5.72 2001/04/17 03:28:11 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -323,10 +323,18 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;(require 'essd-s3)  ; THIS IS RARE.  You probably do not have this.
 (ess-message "[ess-site:] require 'essd-sp3 ...")
 (require 'essd-sp3)  ;; "sp" refers to S-PLUS (MathSoft/StatSci).
-(ess-message "[ess-site:] require 'essd-sp5 ...")
-(require 'essd-sp5)
-(ess-message "[ess-site:] require 'essd-sp6 ...")
-(require 'essd-sp6)
+
+(if (or (equal window-system 'w32) (equal window-system 'win32))
+    (progn
+      (ess-message "[ess-site:] require 'essd-sp4 ...")
+      (require 'essd-sp4)
+      (ess-message "[ess-site:] require 'essdsp6w ...")
+      (require 'essdsp6w))
+  (ess-message "[ess-site:] require 'essd-sp5 ...")
+  (require 'essd-sp5)
+  (ess-message "[ess-site:] require 'essd-sp6 ...")
+  (require 'essd-sp6))
+
 (ess-message "[ess-site:] require 'essd-sta ...")
 (require 'essd-sta)  ;; for Stata.
 (ess-message "[ess-site:] require 'essd-xls ...")
@@ -346,10 +354,6 @@ The extension, in a file name, is the part that follows the last `.'."
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 (ess-message "[ess-site:] require 'essd-omg ...")
 (require 'essd-omg)  ;; for omegahat
-
-;;; Only useful under MS Windows.
-(if (or (equal window-system 'w32) (equal window-system 'win32))
-       (require 'essd-sp4))
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el]: ess-customize-alist=%s \n"
