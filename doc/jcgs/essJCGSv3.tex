@@ -162,7 +162,7 @@ intelligent environment for statistical analysis}
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/27 21:59:02 $ - $Revision: 1.16 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/28 00:51:30 $ - $Revision: 1.17 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -297,17 +297,18 @@ history of the development of ESS and goals for the future.
 
 Statistical programming is the writing of data analysis scripts or
 general computer programs for data analysis and processing.  Both
-forms will be referred to as programs or code (the textual result) or
-programming (the activity) in the sequel.  These programs can be
-written in a general compiled computer language such as \Fortran\, C,
-C$++$, or Java. However, specialized scripting languages supporting
+forms will be referred to as programs and source code (the textual result) or
+programming (the activity).
+% in the sequel.  huh?
+These programs can be written in a general computer language such as \Fortran\, 
+C/C$++$, or Java. However, specialized scripting languages supporting
 common statistical procedures are a popular option among
 statisticians.  These include \Splus, R, \SAS, \Stata, or
 \XLispStat\,; however, they do not have available the same range of
 sophisticated programming tools for writing and debugging code.
 
-ESS extends the Emacs text editor to provide an integrated development
-environment (IDE) for statistical programming languages. In
+ESS extends the Emacs text editor to provide a development
+environment for statistical programming languages. In
 particular, ESS provides many features which enhance the construction
 of data analysis scripts and statistical programming.  The result is
 an environment with features targeting the complementary goals of
@@ -329,13 +330,13 @@ specialized parsing and editing of help documentation files.
 Some features do not require direct interaction with a statistics
 package; these are textual script editing features such as syntactic
 fontification and colorization of scripts, detection of balanced and
-unbalanced parens and braces through highlighting, code indentation
+unbalanced parentheses and braces through highlighting, code indentation
 for readability, commenting out regions, and indexing of files by
 function.  However, the more novel features, such as help file parsing
 and viewing, object and function name completion, evaluation of
 scripts, and interactive editing of data and objects, require some
-interaction with the target statistical package through either
-direct interaction or indirectly through batch processing.
+interaction with the target statistical package through interactive or
+batch processing.
 
 \subsection{Editing}
 \label{sec:ESS:features}
@@ -413,12 +414,13 @@ styles, are defined by specifying the indentation level for nested
 statements, location of open-braces (at the end or at the beginning of
 a line), indentation offsets for if-then-else constructs, and similar
 characteristics.  XLispStat can also be reformatted.
-\textbf{RODNEY/RICH: CAN SAS BE REFORMATTED?}
+%Rodney:  Not that I know of.  \textbf{RODNEY/RICH: CAN SAS BE REFORMATTED?}
 
-Syntax highlighting can be used to help enforce coding
-standards.  Figure \ref{f.hilock} illustrates a standard for
-\SAS\ programming that says all \stexttt{PROC} statements must use the
-\stexttt{DATA=datasetname} option.
+Syntax highlighting can be used to enforce coding standards.  Figure 
+\ref{f.hilock} illustrates a standard for \SAS\ programming, but coding 
+standards aids could be implemented for other languages such as R or \Splus\.
+%that says all \stexttt{PROC} statements must use the
+%\stexttt{DATA=datasetname} option.
 
 %\begin{figure}[tbp]
 %  \ESSfig{\includegraphics[angle=270,width=\textwidth]{hilock-sas}}
@@ -442,7 +444,7 @@ standards.  Figure \ref{f.hilock} illustrates a standard for
 \end{figure}
 
 
-\paragraph{Help File Editing (R).}
+\paragraph{Help File Editing.}
 ESS provides an R documentation mode (\stexttt{Rd-mode}) which assists
 in writing help files for R functions, objects, and other topics worth
 documenting.  \stexttt{Rd-mode} provides the ability to view and
@@ -479,9 +481,9 @@ using DDE; and batch submission of whole or partial text files
 containing analysis scripts.  For packages which do not support any of
 these, the primary use of ESS is as an editing tool, with interaction
 done using windowing cut-and-paste techniques; this still provides
-benefits through the availability of useful editing features.  In this
-case, the package's GUI tools are available for use.  Examples of this
-last situation include the Microsoft versions of SAS, Stata, and
+benefits through the availability of useful editing features.  
+%too vague:  In this case, the package's GUI tools are available for use.  
+Examples of this last situation include Windows versions of SAS, Stata, and
 XLispStat.
 
 %%\paragraph{Integration with Statistical Packages}
@@ -626,7 +628,8 @@ including all the unique features of working with ESS, appears to the
 user as if the program were running on the local machine.  If the X11
 Windowing system is running on the local machine, it is even possible
 to bring up visual displays and graphics from remote Unix systems onto
-a local Microsoft Windows or Apple Mac display.
+a local display.
+%Microsoft Windows or Apple Mac display.
 
 \paragraph{Interactive S family}
 ESS for S family statistical languages, \stexttt{iESS[S]}, replaces
@@ -779,7 +782,7 @@ with other programs.
 
 We quickly describe features which enable ESS; these are not
 necessarily unique to Emacs, but Emacs was among the first to have
-them all available in the same, extensible, editor.
+them all available in an extensible editor.
 
 \paragraph{Keyboard and Mouse Input.}
 When Emacs was originally written, character-based terminals were the
@@ -910,7 +913,7 @@ for later editing for printing or re-use.  Emacs also includes web
 browsers, mail/newsgroup readers, and spell checking.
 
 Mechanisms for both open (\stexttt{ange-ftp} and \stexttt{EFS} use
-ftp) and secure (\stexttt{tramp} uses scp or ssh) access are
+ftp) and secure (\stexttt{tramp} uses scp or ssh) remote file access are
 available.  Emacs can also monitor and control remote processes
 running in a shell buffer.
 
@@ -929,7 +932,7 @@ Stallman won a MacArthur Foundation Fellowship in 1990.  Emacs has a
 long history of being a programmer's editor.  Many statisticians got
 their first taste of the power of Emacs with \Fortran\ mode which was
 introduced in 1986.  As statisticians' preferences changed from
-general-purpose compiled languages such as \Fortran\ to specialized
+general-purpose languages such as \Fortran\ to specialized
 statistical analysis languages and packages like S and \SAS, Emacs
 modes soon followed.
 
@@ -941,7 +944,7 @@ David Smith made further contributions, creating version 3.  For
 version 4, David Smith provided significant enhancements to allow for
 powerful process interaction.  
 
-John Sall wrote GNU Emacs macros for \SAS\ source code around 1990.
+John Sall wrote GNU Emacs macros for \SAS\ source code in 1990.
 Tom Cook added functions to submit jobs, review listing and log files,
 and produce basic views of a dataset, thus creating a SAS-mode which was
 distributed in 1994.
@@ -955,7 +958,7 @@ In 1997, Rossini merged S-mode and SAS-mode into a single Emacs
 package for statistical programming; the product of this marriage was
 called ESS version 5.  Richard M. Heiberger designed the inferior mode
 for interactive \SAS\ and SAS-mode was further integrated into ESS.
-Thomas Lumley's Stata mode, written around 1996, was also folded into
+Thomas Lumley's Stata mode, written in 1996, was also folded into
 ESS.  More changes were made to support additional statistical
 languages, particularly \XLispStat.
 
