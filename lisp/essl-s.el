@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1998/04/27 07:53:02 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essl-s.el,v 5.3 1998/04/27 07:53:02 maechler Exp $
+;; Modified: $Date: 1998/08/14 14:30:29 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essl-s.el,v 5.4 1998/08/14 14:30:29 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -342,29 +342,29 @@ Returns nil if line starts inside a string, t if in a comment."
 (defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$")
 
 
-
-
 ;;; S4 stuff.
 
 ;; Based on files from:
 ;;     Copyright (C) 1996, John M. Chambers.
-;; and
-;;;    S-mode extras of SfS (Seminar für Statistik)
+
+;; --> moved to essd-s4.el
 
 
-(if (not (fboundp 'ease:time-string))
-    (defun ease:time-string (&optional clock)
-      "Returns a string for use as a timestamp. + hr:min if CLOCK is non-nil.
+
+;;;    S-mode extras of Martin Maechler, Statistik, ETH Zurich.
+
+(defun ess-time-string (&optional clock)
+  "Returns a string for use as a timestamp. + hr:min if CLOCK is non-nil.
 	Currently returns strings like \"13 Mar 92\".  Redefine to taste."
-      ;; RELIES on (current-time-string) : Must be  exactly
-      ;; of this structure  [0..23], e.g. == "Mon Jan 27 17:30:45 1992"
-      (let* ((time (current-time-string))
-	     (mon (substring time 4 7))
-	     (day (substring time 8 10))
-	     (HM  (if clock (substring time 11 16)))
-	     (year (substring time 22 24)))
-	(concat day " " mon " " year
-		(if clock (concat ", " HM))))))
+  ;; RELIES on (current-time-string) : Must be  exactly
+  ;; of this structure  [0..23], e.g. == "Mon Jan 27 17:30:45 1992"
+  (let* ((time (current-time-string))
+	 (mon (substring time 4 7))
+	 (day (substring time 8 10))
+	 (HM  (if clock (substring time 11 16)))
+	 (year (substring time 22 24)))
+    (concat day " " mon " " year
+	    (if clock (concat ", " HM)))))
 
 (defvar ess-function-outline-file
   (concat ess-lisp-directory "/../etc/" "function-outline.S")
@@ -379,8 +379,7 @@ Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
 
 (defun ess-insert-function-outline ()
   "Insert an S function definition `outline' at point.
-Uses the file given by the variable ess-function-outline-file;
-M.Maechler,ess-extra"
+Uses the file given by the variable ess-function-outline-file."
 ;;---- FIXME: This should be done such that ONE 'undo' undoes all ! ---
   (interactive)
   (let ((oldpos (point)))
@@ -389,16 +388,15 @@ M.Maechler,ess-extra"
 	(replace-match (user-full-name) 'not-upcase 'literal))
     (goto-char oldpos)
     (if (search-forward "$D$" nil t)
-	(replace-match (ease:time-string 'clock) 'not-upcase 'literal))
+	(replace-match (ess-time-string 'clock) 'not-upcase 'literal))
     (goto-char (1+ oldpos))))
 
 (defun ess-fix-comments ()
  "Fix ess-mode buffer so that single-line comments start with '##'."
  (interactive)
- (let ((curr (point)))
+ (save-excursion
    (goto-char (point-min))
-   (query-replace-regexp "^\\([ \\t]*#\\)\\([^#]\\)" "\\1#\\2" nil)
-   (goto-char curr)))
+   (query-replace-regexp "^\\([ \\t]*#\\)\\([^#]\\)" "\\1#\\2" nil)))
 
 (defun ess-dump-to-src ()
   "Make the changes in an S - dump() file to improve human readability"
@@ -428,19 +426,13 @@ M.Maechler,ess-extra"
   (interactive)
   (let ((pm (point-min)))
     (save-excursion
-      (goto-char pm)
-      (ess-dump-to-src)
-      (goto-char pm)
-      (ess-fix-comments)
-      (goto-char pm)
-      (ess-num-var-round))))
-
-;;;--------- see earlier (RCS) versions of this file for older 'hacks..'
+      (goto-char pm) (ess-dump-to-src)
+      (goto-char pm) (ess-fix-comments)
+      (goto-char pm) (ess-num-var-round))))
 
 (defun ess-add-MM-keys ()
   (require 'ess-mode)
   (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline))
-
 
 
 (provide 'essl-s)
