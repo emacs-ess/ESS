@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/04/12 18:38:41 $
-;; Version: $Revision: 1.159 $
-;; RCS: $Id: essa-sas.el,v 1.159 2004/04/12 18:38:41 rsparapa Exp $
+;; Modified: $Date: 2004/04/12 22:00:30 $
+;; Version: $Revision: 1.160 $
+;; RCS: $Id: essa-sas.el,v 1.160 2004/04/12 22:00:30 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -964,7 +964,8 @@ Non-nil binds TAB to `ess-sas-tab-to-tab-stop',
 C-TAB to `ess-sas-backward-delete-tab', and RET to `newline'.")
 
 (defun ess-sas-edit-keys-toggle (&optional arg)
-  "Toggle `ess-sas-edit-keys-toggle'."
+"Toggle `ess-sas-edit-keys-toggle'.  Optional arg is still
+accepted for backward compatibility, however, arg is ignored."
   (interactive)
 
   (setq ess-sas-edit-keys-toggle (not ess-sas-edit-keys-toggle))
