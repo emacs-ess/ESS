@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/10/04 17:21:29 $
-;; Version: $Revision: 5.17 $
-;; RCS: $Id: essl-s.el,v 5.17 2000/10/04 17:21:29 maechler Exp $
+;; Modified: $Date: 2000/10/06 16:47:41 $
+;; Version: $Revision: 5.18 $
+;; RCS: $Id: essl-s.el,v 5.18 2000/10/06 16:47:41 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -420,12 +420,13 @@ Uses the file given by the variable `ess-function-outline-file'."
 			'fixedcase 'literal verbose)
 	(setq num (1+ num))))))
 
+;;; All of the above three :
 (defun ess-MM-fix-src (&optional dont-query verbose)
   "Clean up ess-source code which has been produced by  dump(..).
  Produces more readable code, and one that is well formatted in emacs
  ess-mode. Martin Maechler, ETH Zurich."
   (interactive "P")
-  ;; the 3 following functions each do a save-excursion:
+  ;; each of the following does a save-excursion:
   (ess-dump-to-src dont-query)
   (ess-fix-comments dont-query)
   (ess-num-var-round dont-query verbose))
