@@ -39,11 +39,11 @@ Thank you :-).
 
 Languages Supported (or planned for support)
 
-- S dialects (S 3/4, S-PLUS 3.x/4.x/5.x, and R)
-- LispStat dialects (XLispStat, ViSta)
+- S dialects: S 3/4, S-PLUS 3.x/4.x/5.x, and R
+- LispStat dialects: XLispStat (planned: ViSta)
 - SAS
-- Stata
-- SPSS dialects (SPSS, Fiasco (GNU project))
+- (planned: Stata)
+- (planned: SPSS dialects (SPSS, PSPP))
 
 Editing source code (S, LispStat, SAS)
 
@@ -64,7 +64,7 @@ Interacting with the process (S, LispStat, SAS)
 - Transcript recording
 - Interface to the help system
 
-Transcript manipulation (S3, S+3, S4, R, XLispStat)
+Transcript manipulation (S3, S+3, S+4, S4, S+5, R, XLispStat)
 
 - Recording and saving transcript files
 - Manipulating and editing saved transcripts
@@ -73,11 +73,8 @@ Transcript manipulation (S3, S+3, S4, R, XLispStat)
 2. STABILITY
 ------------
 
-Version 5.2 is meant as a functional release, and corrects many bugs
-in S-mode 4.8.  We do not consider it beta-software.  However, there
-are some holes as far as its functionality for the newly supported
-languages and operating systems (XLispStat, Splus on MS Windows); see
-the file Doc/TODO for details.
+Version 5.1.2 is meant as a new feature release, with some bug fixes
+from ESS 5.0.  We consider it BETA-software.  In particular, 
 
 3. REQUIREMENTS
 ---------------
