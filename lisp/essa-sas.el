@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/11 21:16:35 $
-;; Version: $Revision: 1.68 $
-;; RCS: $Id: essa-sas.el,v 1.68 2002/01/11 21:16:35 rsparapa Exp $
+;; Modified: $Date: 2002/01/14 17:21:53 $
+;; Version: $Revision: 1.69 $
+;; RCS: $Id: essa-sas.el,v 1.69 2002/01/14 17:21:53 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -64,9 +64,20 @@
 )
 
 (defcustom ess-sas-submit-command sas-program
-    "*Command to invoke SAS in batch; may differ from interactive SAS command."
+    "*Command to invoke SAS in batch; buffer-local."
     :group 'ess-sas
+    :type  'string
 )
+
+(make-variable-buffer-local 'ess-sas-submit-command)
+
+(defcustom ess-sas-submit-command-options " "
+    "*Options to pass to SAS in batch; buffer-local."
+    :group 'ess-sas
+    :type  'string
+)
+
+(make-variable-buffer-local 'ess-sas-submit-command-options)
 
 (defvar ess-sas-submit-method 
   (if ess-microsoft-p 
@@ -463,16 +474,16 @@ depends on the value of  `ess-sas-submit-method'"
    ((eq ess-sas-submit-method 'Apple-Macintosh) 
 	(ess-sas-submit-mac ess-sas-submit-command))
    ((eq ess-sas-submit-method 'windows-nt) 
-	(ess-sas-submit-windows ess-sas-submit-command))
+	(ess-sas-submit-windows ess-sas-submit-command ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'iESS) 
-	(ess-sas-submit-iESS ess-sas-submit-command))
+	(ess-sas-submit-iESS ess-sas-submit-command ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'sh) 
-	(ess-sas-submit-sh ess-sas-submit-command)) 
-   (t (ess-sas-submit-sh ess-sas-submit-command)))
+	(ess-sas-submit-sh ess-sas-submit-command ess-sas-submit-command-options)) 
+   (t (ess-sas-submit-sh ess-sas-submit-command ess-sas-submit-command-options)))
   (ess-sas-goto-sas)
 )
 
-(defun ess-sas-submit-iESS (ess-sas-arg)
+(defun ess-sas-submit-iESS (arg1 arg2)
   "iESS
 Submit a batch job in an inferior-ESS buffer.  The buffer should
 (1) have telnet access and be running a shell on a remote machine
@@ -489,13 +500,13 @@ their files from the remote computer.  Local copies of the .sas .lst
 .log and others may be made manually with `write-buffer'."
   (ess-force-buffer-current "Process to load into: ")
   (ess-eval-linewise (concat "cd " default-directory))
-  (ess-eval-linewise (concat ess-sas-arg " " (buffer-name) " &")))
+  (ess-eval-linewise (concat arg1 " " arg2 " " (buffer-name) " &")))
 
-(defun ess-sas-submit-mac (ess-sas-arg)
+(defun ess-sas-submit-mac (arg1)
   "Mac
-`ess-sas-arg' is assumed to be the AppleScript command
-\"invoke SAS using program file\"."
-  (do-applescript (concat ess-sas-arg
+arg1 is assumed to be the AppleScript command
+\"invoke SAS using program file\".  There is no arg2."
+  (do-applescript (concat arg1
 			  " \""
 			  (unix-filename-to-mac default-directory)
 			  (buffer-name) "\"")))
@@ -508,8 +519,7 @@ their files from the remote computer.  Local copies of the .sas .lst
 	(concat ess-sas-temp-root ".sas"))
 
     (save-excursion 
-      (if (get-buffer "*shell*") (set-buffer "*shell*")
-          (shell))
+      (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
 
     (if (and (w32-shell-dos-semantics)
 	(string-equal ":" (substring ess-sas-file-path 1 2)))
@@ -528,26 +538,26 @@ their files from the remote computer.  Local copies of the .sas .lst
     )
 )
 
-(defun ess-sas-submit-sh (ess-sas-arg)
+(defun ess-sas-submit-sh (arg1 arg2)
   "Unix or bash in the *shell* buffer.
 Multiple processing is supported on this platform.
 SAS may not be found in your PATH.  You can alter your PATH to include
 SAS or you can specify the PATHNAME (PATHNAME can NOT contain spaces),
-i.e. let `ess-sas-arg' be your local equivalent of
+i.e. let arg1 be your local equivalent of
 \"/usr/local/sas612/sas\"."
     (shell)
     (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh) ;; 19.28
                                           ;; nil t) works for newer emacsen
     (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)"))))
     (comint-send-input)
-    (insert ess-sas-submit-pre-command " " ess-sas-arg " " 
+    (insert ess-sas-submit-pre-command " " arg1 " "  
 	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 
-	" " ess-sas-submit-post-command)
+	" " arg2 " " ess-sas-submit-post-command)
     (comint-send-input)
     (ess-sleep)
     (comint-send-input))
 
-(defun ess-sas-submit-windows (ess-sas-arg)
+(defun ess-sas-submit-windows (arg1 arg2)
   "Windows using MS-DOS prompt in the *shell* buffer.
 Multiple processing is supported on this platform.
 On most Windows installations, SAS will not be found in your
@@ -571,8 +581,9 @@ Keep in mind that the maximum command line length in MS-DOS is
     (insert "cd \"" (convert-standard-filename 
 	(file-name-directory ess-sas-file-path)) "\"")
     (comint-send-input)
-    (insert "start " ess-sas-arg " -sysin \"" 
-	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) "\"")
+    (insert ess-sas-submit-pre-command " " arg1 " -sysin \"" 
+	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) "\" "
+	arg2 " " ess-sas-submit-post-command)
     (comint-send-input))
 
 
