@@ -46,14 +46,14 @@ dist: VERSION RPM.spec
 	svn checkout --quiet $(SVN_URL)/trunk $(ESSDIR)-svn
 	mkdir -p $(ESSDIR)
 	(cd $(ESSDIR)-svn; tar cvf - --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); tar xf - )
-	@echo "** Correct Write Permissions, Clean-up docs and Make docs **"
-	chmod a-w $(ESSDIR)/lisp/*.el
-	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
-	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
-	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
+	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
 	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 make all cleanaux ; cd ../..
+	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
+	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
+	chmod a-w $(ESSDIR)/lisp/*.el
+	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
 	test -f $(ESSDIR).tar.gz && rm -rf $(ESSDIR).tar.gz || true
 	@echo "** Creating tar file **"
 	tar hcvofz $(ESSDIR).tar.gz $(ESSDIR)
@@ -67,7 +67,7 @@ dist: VERSION RPM.spec
 cleanup-dist:
 	@echo "** Cleaning up **"
 	(if [ -d $(ESSDIR) ] ; then \
-	  chmod -R u+w $(ESSDIR) && rm -rf $(ESSDIR) $(ESSDIR)-svn; fi)
+	  chmod -R u+w $(ESSDIR) $(ESSDIR)-svn && rm -rf $(ESSDIR) $(ESSDIR)-svn; fi)
 
 %.spec: %.spec.in VERSION
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
@@ -90,7 +90,7 @@ rel: ChangeLog dist tag
 	@echo "** Placing tar and zip files **"
 	cp -p $(ESSDIR).tar.gz $(ESSDIR).zip   $(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
-	rm $(UPLOAD_DIR)/LATEST.IS.*
+	rm -f $(UPLOAD_DIR)/LATEST.IS.*
 	touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)
 
 tag:
