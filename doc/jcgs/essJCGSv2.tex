@@ -354,19 +354,21 @@ features.  Can someone help?
 
 \paragraph{Syntactic indentation and color/font-based source code
   highlighting.}  The ESS interface includes a description of the
-syntax and grammar of each statistical language it knows about.
+syntax of each statistical language it supports.
 %%  This gives ESS the ability to edit the programming language code,
 %% often more smoothly than with editors distributed with the languages.
-The process of programming code is enhanced as ESS provides the user with
-a clear presentation of the code with syntax highlighting to denote
-assignment, reserved words, presence of strings, and comments.  ESS
-has customizable automatic indentation, with the customization based
-on the syntactic structure of groups of expressions.  ESS knows the
-structure of transcripts of the executing session and provides
-syntactic highlighting for transcripts.
+The process of programming is enhanced as ESS provides the user with
+syntax highlighting of language constructs such as reserved words, 
+function calls, strings, and comments.  ESS allows the user to specify
+the increment of indentation and each new line that is created is indented
+to the same level as the previous line.
+%% ESS has customizable automatic indentation, with the customization based
+%%on the syntactic structure of groups of expressions. 
 
 \begin{quote}
  Rodney:  What is source code checking?  Should we lump this with highlighting?
+ It says that is ESS[SAS] has this feature and I wasn't aware of that.  In 
+ which ess?-sas.el file can it be found?
 \end{quote}
 
 \paragraph{Source code checking.}
@@ -381,33 +383,12 @@ files.
 
 \paragraph{Partial code evaluation.}
 Emacs can send individual lines, entire function definitions, marked
-regions, and whole edited buffers from the window in which the code is
-displayed for editing to the statistical package for
+regions, and whole buffers to the statistical analysis package for
 execution.  Emacs sends the code directly to
 the statistical package and receives the output, if any, which is
 the result.  This is a major improvement over cut-and-paste as it does
 not require switching between buffers or windows.  The response is received
 immediately in an editable Emacs buffer.
-
-\paragraph{Interactive transcripts and history of commands.}
-ESS interacts well with the
-executing statistics language/program and provides means for searching
-the command-line history for previous commands and editing them for
-current use.
-
-\begin{quote}
- Rodney:  should we merge these transcript sections?
-\end{quote}
-
-\paragraph{Transcription Editing and Reuse.}
-Once a transcript log is generated, perhaps by saving an \file{iESS}
-buffer, transcript-mode assists with reuse of part or all of the
-entered commands.  It permits editing and re-evaluating the commands
-directly from the saved transcript.  This is useful for
-demonstration of techniques as well as for reconstruction of data
-analyses.  There currently exist functions within ESS for cleaning
-transcripts from S languages back to source code by finding all input
-lines and isolating them into an input file.
 
 \begin{quote}
  Rodney:  inferior is about as opaque as it gets.  Let's say
@@ -423,18 +404,36 @@ output of the package goes directly to an editable text buffer in Emacs.
 This mode allows for command-line editing and saving history, as well as
 recalling and searching for previously entered commands.  Filename
 completion is available.  In addition (currently only for S languages),
-there exists object-name and function-name completion.  Transcripts are
-easily recorded and can be edited into an ideal activity log which can
-then be saved.  There is a good interface for handling and intercepting
-calls to the internal help systems for S, \XLispStat, and \Stata.
+there exists object-name and function-name completion.  
+%%Transcripts are
+%%easily recorded and can be edited into an ideal activity log which can
+%%then be saved.  There is a good interface for handling and intercepting
+%%calls to the internal help systems for S, \XLispStat, and \Stata.
+
+\paragraph{Interactive transcripts.}
+ESS can create transcripts, a recording of the commands issued in an
+interactive session with a statistical analysis package.
+%%ESS interacts well with the
+%%executing statistics language/program and 
+ESS provides means for searching
+the command-line history for previous commands and editing them for
+reuse.  ESS knows the structure of transcripts and provides
+syntactic highlighting for them.
+Once a transcript file is generated, perhaps by saving an \file{iESS}
+buffer, transcript-mode assists with reuse of part or all of the
+entered commands.  It permits editing and re-evaluating the commands
+directly from the saved transcript.  This is useful for
+demonstration of techniques as well as for reconstruction of data
+analyses.  There currently exist functions within ESS for cleaning
+transcripts from S languages back to source code by finding all input
+lines and isolating them into an input file.
 
 \begin{quote}
- Rodney:  actually, I've not been able to get this to work with
+ Rodney:  actually, I've not been able to get ess-elsewhere to work with
 ange-ftp, EFS or Tramp.  The situation may have been different
 3 or 4 years ago, but with the security crackdowns due to
 flaws in telnet and ftp; this is not likely to work for most
-people.  I suggest that we either drop this section or move
- it to future work so we can nail it down.
+people.  I suggest that we move it to future work.
 \end{quote}
 
 \paragraph{Interacting with statistical programs on remote computers.}
