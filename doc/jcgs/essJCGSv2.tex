@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/15 23:15:38 $ - $Revision: 1.181 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/16 16:01:58 $ - $Revision: 1.182 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -403,7 +403,7 @@ entered can be edited for printing or re-use.
 %directory.  
 Emacs also includes web browsers, mail and news readers, 
 and spell checking.
-% Rodney: You can't just whip out complex functionality like etags and 
+% Rodney: You can't just mention complex functionality like etags and 
 % speedbar.  We would need to introduce these packages.  Since they 
 % aren't critical to ESS at this time, let's ignore them.
 
@@ -424,8 +424,8 @@ optimized for statistical programming and interactive data analysis.
 Statistical programming is the writing of computer programs for data
 analysis and processing.  These programs might be written in a
 computer language that requires a compiler, such as C or \Fortran.
-But, more likely, they are written in a computer language that only
-requires an interpreter such as R, \SAS\ or \XLispStat.
+But, more likely, they are written in a statistical analysis language 
+that only requires an interpreter such as R, \SAS\ or \XLispStat.
 %% An interpreted language is executed by an interpreter, but a
 %% compiled language must be processed by a compiler which creates an
 %% executable form of the program that can be executed.  There is a
@@ -439,9 +439,9 @@ requires an interpreter such as R, \SAS\ or \XLispStat.
 %% interpreted programs can be used in conjunction.  For instance, a
 %% compiled C function could be called from an interpreted language
 %% like R to speed up the calculations. 
-Entering commands for interactive data analysis is a similar activity.
-In either case, text is written in a computer language and sent to a
-computer program for evaluation.
+%Entering commands for interactive data analysis is a similar activity.
+%In either case, text is written in a computer language and sent to a
+%computer program for evaluation.
 %% The primary difference is that the results of a small set of
 %% commands are of critical interest for review in the analysis phase,
 %% but the results of all commands are of interest in the coding
@@ -519,35 +519,6 @@ interfaces to documentation systems such as \LaTeX,
 
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
-
-ESS is an extension package for the Emacs editor which provides a
-single interface for a variety of statistical computing tasks.  ESS is
-optimized for statistical programming and interactive data analysis.
-Statistical programming is the writing of computer programs for data
-analysis and processing.  These programs might be written in a
-computer language that requires a compiler, such as C or \Fortran.
-But, more likely, they are written in a computer language that only
-requires an interpreter such as R, \SAS\ or \XLispStat.
-%% An interpreted language is executed by an interpreter, but a
-%% compiled language must be processed by a compiler which creates an
-%% executable form of the program that can be executed.  There is a
-%% trade-off in time between interpreted and compiled programs.  For
-%% interpreted languages you save time by not having to compile the
-%% program, but the program will not run as fast as if it had been
-%% compiled.  Another advantage of interpreted languages is the
-%% support they provide for specialized tasks.  For example, C and
-%% \Fortran don't provide you with the statistical analysis
-%% capabilities that R, \SAS\ or \XLispStat do.  Compiled programs and
-%% interpreted programs can be used in conjunction.  For instance, a
-%% compiled C function could be called from an interpreted language
-%% like R to speed up the calculations. 
-%Entering commands for interactive data analysis is a similar activity.
-%In either case, text is written in a computer language and sent to a
-%computer program for evaluation.
-%% The primary difference is that the results of a small set of
-%% commands are of critical interest for review in the analysis phase,
-%% but the results of all commands are of interest in the coding
-%% phase.
 
 ESS fully supports the S family (S, \Splus, and R)\@.  \SAS\ and BUGS
 are also well supported.  \Stata, \XLispStat\ (including extensions
