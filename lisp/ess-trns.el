@@ -1,0 +1,324 @@
+;;; ess-trans.el --- Support for manipulating S transcript files
+
+;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
+
+;; Author: David Smith <dsmith@stats.adelaide.edu.au>
+;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
+;; Created: 7 Jan 1994
+;; Modified: $Date: 1997/06/19 21:16:17 $
+;; Version: $Revision: 1.1 $
+;; RCS: $Id: ess-trns.el,v 1.1 1997/06/19 21:16:17 rossini Exp $
+
+;; AJR: Unlike other files, this one is accurate, wrt changes made for
+;; XEmacs.
+;;
+;; $Log: ess-trns.el,v $
+;; Revision 1.1  1997/06/19 21:16:17  rossini
+;; Initial revision
+;;
+;; Revision 1.3  1997/06/15 21:56:38  rossini
+;; *** empty log message ***
+;;
+;; Revision 1.2  1997/05/21 18:45:07  rossini
+;; S -> ess.
+;;
+;; Revision 1.1  1997/05/21 18:40:53  rossini
+;; Initial revision
+;;
+;; Revision 1.12  1997/04/17 00:09:35  rossini
+;; added autoloads to remove byte-compiler errors.
+;;
+;; Revision 1.11  1997/04/08 19:03:11  rossini
+;; Emacs -> GNU Emacs, when appropriate.
+;;
+;; Revision 1.10  1997/04/08 10:30:54  rossini
+;; removed FSF GNU from Emacs.
+;;
+;; Revision 1.9  1997/03/10 16:18:47  rossini
+;; added XEmacs menu hooks.
+;;
+;; Revision 1.8  1997/03/08 00:08:24  rossini
+;; *** empty log message ***
+;;
+;; Revision 1.7  1997/02/09 21:47:09  rossini
+;; No reason to inherit from comint mode.  I'm an idiot.
+;;
+;; Revision 1.6  1997/02/09 21:40:16  rossini
+;; added keymap stuff for transcript mode to be properly handled in
+;; XEmacs and Emacs.
+;;
+;;
+
+;; This file is part of ess-mode
+
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+
+;;; Commentary:
+
+;; Code for dealing with S transcripts. See S.el for more
+;; details.
+
+;;; Code:
+
+ ; Requires and autoloads
+
+(require 'ess)
+
+(eval-when-compile 
+  (load "comint"))
+
+(autoload 'ess-eval-region "ess-mode" "[autoload]" t)
+(autoload 'ess-eval-region-and-go "ess-mode" "[autoload]" t)
+(autoload 'ess-eval-function "ess-mode" "[autoload]" t)
+(autoload 'ess-eval-function-and-go "ess-mode" "[autoload]" t)
+(autoload 'ess-eval-line "ess-mode" "[autoload]" t)
+(autoload 'ess-eval-line-and-go "ess-mode" "[autoload]" t)
+(autoload 'ess-beginning-of-function "ess-mode" "[autoload]" t)
+(autoload 'ess-end-of-function "ess-mode" "[autoload]" t)
+(autoload 'ess-load-file "ess-mode" "[autoload]" t)
+
+(autoload 'comint-previous-prompt "comint" "[autoload]" t)
+(autoload 'comint-next-prompt "comint" "[autoload]" t)
+
+(autoload 'ess-request-a-process "ess-inf" "(autoload)" nil)
+(autoload 'get-ess-buffer "ess-inf" "(autoload)" nil)
+(autoload 'ess-switch-to-S "ess-inf" "(autoload)" nil)
+(autoload 'ess-switch-to-end-of-S "ess-inf" "(autoload)" nil)
+(autoload 'ess-eval-visibly "ess-inf" "(autoload)" nil)
+(autoload 'inferior-ess-get-old-input "ess-inf" "(autoload)" nil)
+
+ ; User changeable variables
+;;;=====================================================
+;;; Users note: Variables with document strings starting
+;;; with a * are the ones you can generally change safely, and
+;;; may have to upon occasion.
+
+ ; System variables
+
+(defvar ess-trans-font-lock-keywords
+ '(("^[>+]" . font-lock-keyword-face)	; prompt
+   ("^[>+]\\(.*$\\)" (1 font-lock-variable-name-face keep t)) ; input
+   ("<-\\|_" . font-lock-reference-face)		; assign
+   ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
+   ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
+   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" 
+    . font-lock-type-face) ; keywords
+   )
+ "Font-lock patterns used in ess-transcript-mode buffers.")
+
+
+ ; ess-transcript-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; In this section:
+;;;; 
+;;;; * The major mode ess-transcript-mode
+;;;; * Commands for ess-transcript-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;*;; Major mode definition
+(defvar ess-transcript-mode-map nil)
+(if ess-transcript-mode-map
+    nil
+
+  (cond ((string-match "XEmacs\\|Lucid" emacs-version)
+	 ;; Code for XEmacs
+ 	 (setq ess-transcript-mode-map (make-keymap))
+	 (set-keymap-parent ess-transcript-mode-map text-mode-map))
+	((not (string-match "XEmacs\\|Lucid" emacs-version))
+	 ;; Code for GNU Emacs
+	 (setq ess-transcript-mode-map (make-sparse-keymap))))
+
+  (define-key ess-transcript-mode-map "\C-c\C-r"    'ess-eval-region)
+  (define-key ess-transcript-mode-map "\C-c\M-r"    'ess-eval-region-and-go)
+  (define-key ess-transcript-mode-map "\M-\C-x"     'ess-eval-function)
+  (define-key ess-transcript-mode-map "\C-c\M-f"    'ess-eval-function-and-go)
+  (define-key ess-transcript-mode-map "\C-c\C-j"    'ess-eval-line)
+  (define-key ess-transcript-mode-map "\C-c\M-j"    'ess-eval-line-and-go)
+  ;; (define-key ess-transcript-mode-map "\C-c\C-n"    'ess-eval-line-and-next-line)
+  (define-key ess-transcript-mode-map "\M-\C-a"     'ess-beginning-of-function)
+  (define-key ess-transcript-mode-map "\M-\C-e"     'ess-end-of-function)
+  (define-key ess-transcript-mode-map "\C-c\C-y"    'ess-switch-to-S)
+  (define-key ess-transcript-mode-map "\C-c\C-z"    'ess-switch-to-end-of-S)
+  (define-key ess-transcript-mode-map "\C-c\C-v"    'ess-display-help-on-object)
+  (define-key ess-transcript-mode-map "\C-c\C-d"    'ess-dump-object-into-edit-buffer)
+  (define-key ess-transcript-mode-map "\C-c\C-t"    'ess-execute-in-tb)
+  (define-key ess-transcript-mode-map "\C-c\t"      'ess-complete-object-name)
+  (define-key ess-transcript-mode-map "\M-\t"       'comint-replace-by-expanded-filename)
+  (define-key ess-transcript-mode-map "\M-?"        'comint-dynamic-list-completions)
+  (define-key ess-transcript-mode-map "\C-c\C-k"    'ess-request-a-process)
+  (define-key ess-transcript-mode-map "{"           'ess-electric-brace)
+  (define-key ess-transcript-mode-map "}"           'ess-electric-brace)
+  (define-key ess-transcript-mode-map "\e\C-h"      'ess-mark-function)
+  (define-key ess-transcript-mode-map "\e\C-q"      'ess-indent-exp)
+  (define-key ess-transcript-mode-map "\177"        'backward-delete-char-untabify)
+  (define-key ess-transcript-mode-map "\t"          'ess-indent-command)
+
+  (define-key ess-transcript-mode-map "\C-c\C-p"    'comint-previous-prompt)
+  (define-key ess-transcript-mode-map "\C-c\C-n"    'comint-next-prompt)
+
+  (define-key ess-transcript-mode-map "\r"    'ess-transcript-send-command)
+  (define-key ess-transcript-mode-map "\M-\r" 'ess-transcript-send-command-and-move)
+  (define-key ess-transcript-mode-map "\C-c\r"  'ess-transcript-copy-command)
+  (define-key ess-transcript-mode-map "\C-c\C-w"    'ess-transcript-clean-region))
+
+
+
+
+
+(easy-menu-define
+ ess-transcript-mode-menu ess-transcript-mode-map
+ "Menu for use in S transcript mode."
+ '("ess-trans"
+   ["Describe"  describe-mode t]
+   ["About"  (lambda nil (interactive) (ess-goto-info "Transcript Mode")) t]
+   ["Send bug report"  ess-submit-bug-report t]
+   "------"
+   ["Mark cmd group"  mark-paragraph t]
+   ["Previous prompt"  comint-previous-prompt t]
+   ["Next prompt"  comint-next-prompt t]
+   "------"
+   ["Send and move"  ess-transcript-send-command-and-move t]
+   ["Copy command"   ess-transcript-copy-command t]
+   ["Send command"   ess-transcript-send-command t]
+   ))
+
+
+(if (not (string-match "XEmacs" emacs-version))
+    (progn
+       (if (featurep 'ess-trans)
+	   (define-key ess-transcript-mode-map [menu-bar ess-trans]
+	     (cons "ess-trans" ess-transcript-mode-menu))
+	 (eval-after-load "ess-trans"
+			  '(define-key ess-transcript-mode-map
+			     [menu-bar ess-trans]
+			     (cons "ess-trans"
+				   ess-transcript-mode-menu))))))
+
+
+(defun ess-transcript-mode-xemacs-menu ()
+  "Hook to install ess-transcript-mode menu for XEmacs (w/ easymenu)"
+  (if 'ess-transcript-mode
+        (easy-menu-add ess-transcript-mode-menu)
+    (easy-menu-remove ess-transcript-mode-menu)))
+
+(if (string-match "XEmacs" emacs-version)
+    (add-hook 'ess-transcript-mode-hook 'ess-transcript-mode-xemacs-menu))
+
+
+
+(defun ess-transcript-mode (&optional proc)
+  "Major mode for manipulating S transcript files
+
+Type \\[ess-transcript-send-command] to send a command in the transcript to
+the current S process. \\[ess-transcript-copy-commmand] copies the command but
+does not execute it, allowing you to edit it in the process buffer first.
+
+Type \\[ess-transcript-clean-region] to delete all outputs and prompts
+in the region, leaving only the S commands.
+
+\\{ess-transcript-mode-map}"
+  (interactive)
+  (require 'ess-inf)
+  (kill-all-local-variables)
+  (setq major-mode 'ess-transcript-mode)
+  (setq mode-name "ESS Transcript")
+  (use-local-map ess-transcript-mode-map)
+  (set-syntax-table ess-mode-syntax-table)
+  (setq mode-line-process 
+	'(" [" ess-local-process-name "]"))
+  (make-local-variable 'ess-local-process-name)
+  (setq ess-local-process-name nil)
+  (make-local-variable 'paragraph-start)
+  (setq paragraph-start (concat "^" inferior-ess-primary-prompt "\\|^\^L"))
+  (make-local-variable 'paragraph-separate)
+  (setq paragraph-separate "^\^L")
+  (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
+  ;; font-lock support
+  (make-local-variable 'font-lock-defaults)
+  (setq font-lock-defaults 
+	'(ess-trans-font-lock-keywords nil nil ((?' . "."))))
+  (run-hooks 'ess-transcript-mode-hook))
+
+;;*;; Commands used in S transcript mode
+
+(defun ess-transcript-send-command ()
+  "Send the command at point in the transcript to the S process
+The line should begin with a prompt. The S process buffer is displayed if it
+is not already."
+  (interactive)
+  (let* ((proc (or ess-local-process-name 
+		   (ess-request-a-process "Evaluate into which process? " t)))
+	 (ess-buf (get-ess-buffer proc)))
+    (setq ess-local-process-name proc)
+    (if (get-buffer-window ess-buf) nil
+      (display-buffer ess-buf t))
+    (let ((input (inferior-ess-get-old-input)))
+      (save-excursion
+	(set-buffer ess-buf)
+	(goto-char (point-max))
+	(ess-eval-visibly input)))))
+
+(defun ess-transcript-send-command-and-move ()
+  "Send the ess-command on this line, and move point to the next command"
+  (interactive)
+  (ess-transcript-send-command)
+  (comint-next-prompt 1))
+
+(defun ess-transcript-copy-command ()
+  "Copy the command at point to the command line of the S process"
+  (interactive)
+  (let* ((proc (or ess-local-process-name 
+		   (ess-request-a-process "Evaluate into which process? " t)))
+	 (ess-buf (process-buffer (get-process proc)))
+	 (input (inferior-ess-get-old-input)))
+    (setq ess-local-process-name proc)
+    (if (get-buffer-window ess-buf) nil
+      (display-buffer ess-buf t))
+    (save-excursion
+      (set-buffer ess-buf)
+      (goto-char (point-max))
+      (insert input)))
+  (ess-switch-to-end-of-S))
+
+(defun ess-transcript-clean-region (beg end)
+  "Strip the transcript in the region, leaving only S commands.
+Deletes any lines not beginning with an S prompt, and then removes the
+prompt from those lines than remain."
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region beg end)
+      (goto-char (point-min))
+      (delete-non-matching-lines (concat "^" inferior-ess-prompt))
+      (goto-char (point-min))
+      (replace-regexp (concat "^" inferior-ess-prompt) ""))))
+
+ ; Local variables section
+
+;;; This file is automatically placed in Outline minor mode.
+;;; The file is structured as follows:
+;;; Chapters:     ^L ; 
+;;; Sections:    ;;*;;
+;;; Subsections: ;;;*;;;
+;;; Components:  defuns, defvars, defconsts
+;;;              Random code beginning with a ;;;;* comment
+
+;;; Local variables:
+;;; mode: emacs-lisp
+;;; mode: outline-minor
+;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;;; End:
+
+;;; ess-trans.el ends here
