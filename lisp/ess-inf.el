@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/21 23:18:23 $
-;; Version: $Revision: 4.50 $
-;; RCS: $Id: ess-inf.el,v 4.50 1997/11/21 23:18:23 rossini Exp $
+;; Modified: $Date: 1997/11/24 15:16:39 $
+;; Version: $Revision: 4.51 $
+;; RCS: $Id: ess-inf.el,v 4.51 1997/11/24 15:16:39 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -1426,8 +1426,9 @@ buffer (defaults to the command if BUFF is not given.)"
 ;;;*;;; Quitting
 
 (defun ess-quit ()
-  "Issue the q() command to S/R, or (exit) to XLS, and clean up."
+  "Issue an exiting command the inferior process, and clean up."
   (interactive)
+  (ess-force-buffer-current "Process to load into: ")
   (ess-make-buffer-current)
   (let ((sprocess (get-ess-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running."))
