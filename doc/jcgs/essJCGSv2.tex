@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/07 19:10:17 $ - $Revision: 1.155 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/07 19:16:20 $ - $Revision: 1.156 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -255,21 +255,21 @@ user does not know or can not recall a key binding; these are also
 subject to user-customization.
 
 \paragraph{Buffers give Emacs control.}
-Within Emacs, buffers provide the interface between the text editor
-and the rest of the computer.  They can be thought of as a collection
-of scratch pads that both the computer and the user read and write, as
-well as act upon.  The user can simultaneously edit multiple files and
-control multiple programs through the employment of multiple buffers.
-With disk files, the working copy of the opened file is placed in an
-Emacs buffer where it can be viewed and edited either by the user or
-automatically by Emacs; Emacs will save a backup of the contents to disk at
-specified intervals based on some function of time and the amount of
-editing activity.  Emacs can present the buffers' contents in ways
-which optimize the users reading and navigation activities.  One
-common program that is run within Emacs buffers is the interactive
-operating system command line interpreter, called a shell.  By using
-this, most programs which take input from and provide output to the
-command-line can run within and be controlled by Emacs.
+Emacs buffers are the interface between the text editor and both the
+user as well as the rest of the computer.  They can be considered to
+be a collection of scratch pads that both the computer and the user
+can read, write, and respond to.  The user can simultaneously edit
+many files and control numerous programs by initializing multiple
+buffers.  With disk files, the working copy of the opened file is
+placed in an Emacs buffer where it can be viewed and edited either by
+the user or automatically by Emacs.  Emacs will save a backup of the
+contents to disk at specified intervals based on some function of time
+and the amount of editing activity.  Emacs can present the buffers'
+contents in ways which optimize the users reading and navigation
+activities.  One common program that is run within Emacs buffers is
+the interactive operating system command line interpreter, called a
+shell.  By using this, most programs which take input from and provide
+output to the command-line can run within and be controlled by Emacs.
 %% buffer and be controlled by programs written in Emacs Lisp. 
 %%% AJR: we don't talk about Emacs Lisp yet, so postpone until later.
 %% This is the Emacs feature that ESS uses to run statistical
