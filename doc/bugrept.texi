@@ -1,0 +1,11 @@
+
+Please send bug reports, suggestions etc. to
+
+	@email{ess-bugs@@stat.math.ethz.ch}
+
+The easiest way to do this is within Emacs by typing
+
+	M-x ess-submit-bug-report
+
+This also gives the maintainers valuable information about your
+installation which may help us to identify or even fix the bug.

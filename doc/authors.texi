@@ -1,0 +1,17 @@
+@itemize @bullet
+@item
+@uref{http://www.biostat.washington.edu/~rossini/,A.J. Rossini}
+(@email{rossini@@stat.sc.edu})
+@c --------
+@item
+@uref{http://www.sbm.temple.edu/departments/statistics/,Richard M. Heiberger}
+(@email{rmh@@fisher.stat.temple.edu})
+@c --------
+@item
+@uref{http://www.ci.tuwien.ac.at/~hornik,Kurt Hornik}
+(@email{hornik@@ci.tuwien.ac.at})
+@c --------
+@item
+@uref{http://stat.ethz.ch/~maechler/,Martin Maechler}
+(@email{maechler@@stat.math.ethz.ch})
+@end itemize

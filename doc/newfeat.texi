@@ -1,0 +1,26 @@
+Beginning with ESS 5.1.2 we are able to use inferior iESS mode to
+communicate directly with a running S-Plus 4.x process using the
+Microsoft DDE protocol.  We use the familiar (from Unix ESS) C-c C-n
+and related key sequences to send lines from the S-mode file to the
+inferior S process.  We continue to edit S input files in ESS[S] mode
+and transcripts of previous S sessions in ESS Transcript mode.  All
+three modes know the S language, syntax, and indentation patterns and
+provide the syntactic highlighting that eases the programming tasks.
+
+For Microsoft platforms, the version of Emacs that this has been
+tested with is NTEmacs 20.2 and 20.3.  More information about NTEmacs
+can be retrieved from:
+
+@itemize @bullet
+@item
+@ifhtml
+  <a href="http://www.cs.washington.edu/homes/voelker/ntemacs.html">
+@end ifhtml
+  @code{http://www.cs.washington.edu/homes/voelker/ntemacs.html}
+@ifhtml
+  </a>
+@end ifhtml
+@end itemize
+
+including information on retrieval and installation.  This has not yet
+been tested with XEmacs for Microsoft Windows 95/98/NT.

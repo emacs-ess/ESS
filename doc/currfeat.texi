@@ -1,0 +1,37 @@
+Languages Supported:
+
+	S dialects (S 3/4, S-PLUS 3.x/4.x/5.x, and R)
+	LispStat dialects (XLispStat, ViSta)
+	SAS
+	Stata (under development)
+	SPSS dialects (SPSS, Fiasco (GNU project)) (under development)
+	SCA (under development)
+
+Editing source code (S, LispStat, SAS)
+
+        Syntactic indentation and highlighting of source code
+        Partial evaluations of code
+        Loading and error-checking of code
+        Source code revision maintenance
+
+Interacting with the process (S, LispStat, SAS)
+
+        Command-line editing
+	Searchable Command history
+        Command-line completion of S object names and file names
+        Quick access to object lists and search lists
+        Transcript recording
+        Interface to the help system
+
+Transcript manipulation (S3, S+3, S4, R, XLispStat)
+
+        Recording and saving transcript files
+        Manipulating and editing saved transcripts
+        Re-evaluating commands from transcript files
+
+Help File Editing (R)
+
+        Syntactic indentation and highlighting of source code.
+        Sending Examples to running ESS process.
+	Previewing
+

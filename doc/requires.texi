@@ -1,0 +1,33 @@
+
+ESS version 5.1.3 requires Emacs version 19.29 or later, or version
+XEmacs 19.14 or later.  ESS is supposed to work with any version of S,
+S-PLUS, R, SAS, or XLispStat.
+
+It has been most thoroughly tested with:
+
+	S-PLUS versions 3.3, 3.4, 4.5, 5.0; R versions >=0.49;
+	XLispStat versions >=3.50; S4; and SAS;
+	
+	on the following systems:
+	   SunOS (all)
+	   Solaris (all)
+	   SGI (all)
+	   Linux (S-PLUS 5.0, R, XLispStat, S4)
+	   Microsoft Windows 95/98/NT (SPLUS 4.5)
+
+	Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.4, XEmacs 21.0
+
+	Emacs 19.28 with SAS (with additional modifications)
+
+	NTEmacs 20.2.1 with S-PLUS 4.5.
+
+It may need some work with other configurations.  We include
+configuration suggestions for emacs 19.28 in Doc/README-19.28.
+These are the changes we made in order to use ESS with SAS on a Digital
+Alpha running Emacs 19.28.
+
+Work for porting to Microsoft-developed operating systems is
+continuing, especially with Splus 4.x and NT Emacs.  Other possible
+connections include XLispStat (under the Splus DDE interface), R, SAS,
+SPSS, and Stata.  In addition, XEmacs support (for native NT and
+Cygwin versions) needs to be evaluated.

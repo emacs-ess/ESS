@@ -1,0 +1,15 @@
+
+There is a mailing list for discussions and announcements relating to
+ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
+"help") in the body to @email{ess-help-request@@stat.math.ethz.ch};
+contributions to the list may be mailed to
+@email{ess-help@@stat.math.ethz.ch}.  Rest assured, this is a fairly
+low-volume mailing list.
+
+The purposes of the mailing list include
+
+- helping users of ESS to get along with it.
+- discussing aspects of using ESS for GNU Emacs and XEmacs.
+- suggestions for improvements.
+- announcements of new [beta] releases of ESS.
+- posting small patches to ESS.

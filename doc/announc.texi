@@ -1,0 +1,117 @@
+\input texinfo   @c -*-texinfo-*-
+@comment %**start of header
+@setfilename announc.info
+@settitle ESS --- Emacs Speaks Statistics
+@comment %**end of header
+@comment $Id: announc.texi,v 1.1 1999/03/05 18:53:50 rossini Exp $
+
+@node Announce, Introduction, Top, Top
+@comment  node-name,  next,  previous,  up
+@chapter ANNOUNCING ESS
+@cindex ANNOUNCE
+
+
+Annoucing the release of ESS-5.1.2 (Emacs Speaks Statistics).
+-------------------------------------------------------------
+
+(New: improvements to SAS support,
+      Splus 5 support, 
+      Splus 4.5 under Microsoft Windows support)
+
+ESS is an Emacs package which provides a standard interface between
+statistical programs and statistical processes.  It is intended to
+provide assistance for interactive statistical programming and data
+analysis, and was is based on and extends the capabilities of S-mode.
+The code is freely available but is not in the public domain.  It is
+distributed under the GNU GPL.  Please read the file COPYING for more
+information about the license.
+
+ESS grew out of the desire to extend S-mode-4.8.  The current set of
+developers desired support for:
+- XEmacs
+- R
+- S4
+- Microsoft Windows
+
+In addition, with new modes being developed for R, Stata, and SAS, it
+was felt a unifying interface and framework for the user interface,
+would benefit both the user and the developer, by helping both groups
+conform to standard Emacs usage.  The end result is an increase in
+efficiency for statistical programming and data analysis, over the
+usual tools.
+
+We are grateful to David M. Smith , the previous developer (for S-mode
+3.x and 4.x), as well as to the initial developers of S-mode, Doug
+Bates, Ed Kademan and Frank Ritter.
+
+And to help remove any further confusion:
+
+	The name is __ESS__.  Not ESS-mode.
+
+Thank you :-).
+
+@node License, New Features, General Information, General Information
+@comment  node-name,  next,  previous,  up
+@section License
+
+@include license.texi
+
+@node New Features, Current Features, License, General Information
+@comment  node-name,  next,  previous,  up
+@section New Features
+
+@include newfeat.texi
+
+@node Current Features, Stability, New Features, General Information
+@comment  node-name,  next,  previous,  up
+@section Current Features
+
+@include currfeat.texi
+
+@node Stability, Requirements, Current Features, General Information
+@comment  node-name,  next,  previous,  up
+@section Stability
+
+@include stabilty.texi
+
+@node Requirements, Latest Version, Stability, General Information
+@comment  node-name,  next,  previous,  up
+@section Requirements
+
+@include requires.texi
+
+@node Latest Version, Installation (from tar file), Requirements, General Information
+@comment  node-name,  next,  previous,  up
+@section Getting the Latest Version 
+
+@include getting.texi
+
+@node Reporting Bugs, Mailing Lists, Installation (from anonymous CVS), General Information
+@comment  node-name,  next,  previous,  up
+@section Reporting Bugs
+
+@include bugrept.texi
+
+@node Mailing Lists, Authors, Reporting Bugs, General Information
+@comment  node-name,  next,  previous,  up
+@section Mailing Lists
+
+@include mailing.texi
+
+@node Authors,  , Mailing Lists, General Information
+@comment  node-name,  next,  previous,  up
+@section Authors
+
+@include authors.texi
+
+@bye
+@c Remember to delete these lines before creating the info file.
+@iftex
+@lucidbook
+@bindingoffset = 0.5in
+@parindent = 0pt
+@end iftex
+
+@comment Local Variables:
+@comment TeX-master: "announc.texi"
+@comment End:
