@@ -1,4 +1,4 @@
-Dies ist ess.info, hergestellt von Makeinfo Version 4.0 aus ess.texi.
+This is ess.info, produced by makeinfo version 4.0 from ess.texi.
 
 START-INFO-DIR-ENTRY
 * ESS: (ess).    Emacs Speaks Statistics (S/R, SAS, XLisp-Stat, etc).
@@ -35,7 +35,7 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.20
 
-   (Documentation $Revision: 1.15 $ $Date: 2001/08/21 16:17:02 $).
+   (Documentation $Revision: 1.16 $ $Date: 2001/09/28 15:30:14 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler
      (Formerly: Doug Bates, Ed Kademan, Frank Ritter and David Smith).
@@ -523,14 +523,12 @@ ESS can also be retrieved using anonymous cvs:
 `:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src'
 
    using a command-line cvs client (i.e. on Unix or DOS), first type:
-
-   `cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login'
+`cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login'
 
    password is anoncvs
 
-   then type:
-
-   `cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess'
+   then type:    `cvs -d
+:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess'
 
    Check the `README'  file first to see which files you need.  Look at
 `ANNOUNCE' to learn about new user-visible features; also, many changes

@@ -1,4 +1,4 @@
-Dies ist ess.info, hergestellt von Makeinfo Version 4.0 aus ess.texi.
+This is ess.info, produced by makeinfo version 4.0 from ess.texi.
 
 START-INFO-DIR-ENTRY
 * ESS: (ess).    Emacs Speaks Statistics (S/R, SAS, XLisp-Stat, etc).
@@ -812,17 +812,17 @@ in `ess-site.el' (*note Customization::).
    The font-lock patterns are defined in three variables, which you may
 modify if desired:
 
- - Variable: : ess-inf-font-lock-keywords
+ - Variable: ess-inf-font-lock-keywords
      Font-lock patterns for Inferior ESS Mode.  The default value
      highlights prompts, inputs, assignments, output messages, vector
      and matrix labels, and literals such as `NA' and `TRUE'.
 
- - Variable: : ESS-font-lock-keywords
+ - Variable: ESS-font-lock-keywords
      Font-lock patterns for ESS programming mode.  The default value
      highlights function names, literals, assignments, source functions
      and reserved words.
 
- - Variable: : ess-trans-font-lock-keywords
+ - Variable: ess-trans-font-lock-keywords
      Font-lock patterns for ESS Transcript Mode.  The default value
      highlights the same stuff as in Inferior ESS Mode.
 

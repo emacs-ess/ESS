@@ -331,10 +331,8 @@ For @b{Microsoft Windows installation}, please follow the next steps:
      SAS for Windows uses the batch access with function keys that is
      described in @file{doc/README.SAS}.
 
-     SAS for Windows @b{cannot} be run with:
-        @example
-          	M-x SAS
-        @end example
+     For Windows, only SAS batch functionality is available.
+
      Reason:  we use ddeclient to interface with programs and SAS doesn't
      provide the corresponding ddeserver capability.
 
