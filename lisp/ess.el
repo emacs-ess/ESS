@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/06/18 18:49:33 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: ess.el,v 1.7 1997/06/18 18:49:33 rossini Exp $
+;; Modified: $Date: 1997/06/19 20:51:32 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: ess.el,v 1.8 1997/06/19 20:51:32 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.8  1997/06/19 20:51:32  rossini
+;; removed comments about customization, moved into ess-site.el
+;;
 ;; Revision 1.7  1997/06/18 18:49:33  rossini
 ;; edited a bit more
 ;; .
@@ -264,17 +267,6 @@ Provided as a default if ess-ask-for-ess-directory is non-nil.
 A nil value means use the current buffer's default directory.
 Buffer-local: in process buffers, this contains the directory ess was
 run from.")
-;; You can put something like:
-;; (setq ess-directory (file-name-as-directory (concat (getenv "HOME") "/ess/")))
-;; in your ~/.emacs file and ess will always start up in your ~/ess directory.
-;; Alternatively, you can get ess to start up in the current buffer's directory 
-;; by putting this in your .emacs
-;; (setq ess-pre-run-hook '((lambda () (setq ess-directory default-directory))))
-;; Better (more correct) version:
-;;    (defun ajr:ess-set-directory () 
-;;	 "Set ess-directory to current directory."
-;;	 (setq ess-directory default-directory))
-;;    (add-hook 'ess-pre-run-hook 'ajr:ess-set-directory)
 
 ;; MM, 13Mar97.  This should be set buffer-local!
 (defvar ess-history-file (concat "." ess-proc-prefix "history")
