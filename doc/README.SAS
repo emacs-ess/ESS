@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.6 $)
+($Revision: 1.7 $)
 
 ESS: Using SAS
 ==============
@@ -180,18 +180,24 @@ with the interpretations:
   -noovp          prevents error messages from printing 3 times
   -nosyntaxcheck  permits recovery after syntax errors
 
-In addition there are several parameters that can't be set in the command line.
-For these we recomment the following line appear in your autoexec.sas in your
-home directory:
+In addition there are several parameters that can't be set in the
+command line.  For these, we recommend the following line appear in
+your autoexec.sas in your home directory:
+
   options noovp pagesize=60 linesize=80 formdlim=' ';
+
 Interpretations
+
   noovp          prevents error messages from printing 3 time
   pagesize=60    standard printed page length instead of window length
   linesize=80    keeps output lines from folding on standard terminals
-  formdlim=' '   blank replaces "C-l" formfeeds to prevent mostly empty pages
-The noovp and linesize=80 appear in both the inferior-SAS-args and in the
-autoexec.sas.  The redundancy means that these options are in effect for SAS
-batch usage and SAS window manager usage as well as for ESS[SAS] usage.
+  formdlim=' '   blank replaces "C-l" formfeeds to prevent mostly
+		 empty pages 
+
+The noovp and linesize=80 appear in both the inferior-SAS-args and in
+the autoexec.sas.  The redundancy means that these options are in
+effect for SAS batch usage and SAS window manager usage as well as for
+ESS[SAS] usage.
 
 
 
