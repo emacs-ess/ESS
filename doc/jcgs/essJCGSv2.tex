@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/07 19:21:00 $ - $Revision: 1.158 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/07 19:31:05 $ - $Revision: 1.159 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -255,18 +255,19 @@ user does not know or can not recall a key binding; these are also
 subject to user-customization.
 
 \paragraph{Buffers give Emacs control.}
-Emacs buffers are the interface between the text editor and both the
-user as well as the rest of the computer.  They can be considered to
-be a collection of scratch pads that both the computer and the user
+Emacs buffers are the interface between the user and computer.
+They can be considered to
+be a collection of scratch pads that both the user and computer
 can read, write, and respond to.  The user can simultaneously edit
 many files and control numerous programs by initializing multiple
 buffers.  With disk files, the working copy of the opened file is
 placed in an Emacs buffer where it can be viewed and edited either by
-the user or automatically by Emacs.  Emacs will save a backup of the
+the user or automatically by Emacs or another program under the control
+of Emacs.  Emacs will save a backup of the
 contents to disk at specified intervals based on some function of time
 and the amount of editing activity.  Emacs can present the buffers'
 contents in ways which optimize the users reading and navigation
-activities.  One common program that is run within Emacs buffers is
+activities.  One program that is commonly run within Emacs buffers is
 the interactive operating system command line interpreter, called a
 shell.  By using this, most programs which take input from and provide
 output to the command-line can run within and be controlled by Emacs.
@@ -1238,9 +1239,10 @@ of developers, with 5 major versions released.  ESS descended from and combined
          &\multicolumn{2}{c}{Operating System} &&\multicolumn{2}{c}{Additional Functionality}\\
 \cline{2-3} \cline{5-6}
     1997 & v.5.0 & (Emacs/XEmacs, Unix)         &&&  Stata, XLispStat, SAS interactive \\
-    1998 & v.5.1.1 & (Emacs/XEmacs, Unix/Windows) &&&  S-elsewhere; Windows: S+/R\\
+    1998 & v.5.1.1 & (Emacs/XEmacs, Unix/Windows) &&&  S+elsewhere; Windows: S+/R\\
     1999 & v.5.1.10 & (Emacs/XEmacs, Unix/Windows/Mac) &&& SAS batch; Omegahat \\
-    2001 & v.5.1.19 & (Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS batch, Mac: R \\
+%    2001 & v.5.1.19 & (Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS batch, Mac: R \\
+    2002 & v.5.1.20 & (Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS batch, Mac: R \\
 %%    2002 & v.5.2 & (Emacs/XEmacs, Unix/Windows/Mac) &&& ? \\
 \hline
   \end{tabular}
