@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2001/05/23 21:43:42 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: ess-cust.el,v 1.23 2001/05/23 21:43:42 rossini Exp $
+;; Modified: $Date: 2001/08/21 16:17:02 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: ess-cust.el,v 1.24 2001/08/21 16:17:02 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -124,7 +124,7 @@
 
 ;; Variables (not user-changeable)
 
-(defcustom ess-version "5.1.19"
+(defcustom ess-version "5.1.20"
   "Version of ESS currently loaded."
   :group 'ess
   :type 'string)
@@ -201,6 +201,12 @@ Used to adjust for changes in versions of the program"
 
 (make-variable-buffer-local 'ess-dialect)
 (setq-default ess-dialect "Initial-dialect")
+
+(defcustom ess-directory-function nil
+  "*Function to return the directory that ESS is run from.
+If nil or or if returns nil then you get `ess-directory'."
+  :group 'ess
+  :type 'directory)
 
 (defcustom ess-directory nil
   "*The directory ESS is run from.  It must end in a slash.

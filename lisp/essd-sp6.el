@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: ?? ??? 2001
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essd-sp6.el,v 1.5 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2001/08/21 16:17:02 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essd-sp6.el,v 1.6 2001/08/21 16:17:02 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -51,11 +51,23 @@
 (defvar S+6-dialect-name "S+6"
   "Name of 'dialect' for S-PLUS 6.");easily changeable in a user's .emacs
 
+(defvar ess-splus-directory-function
+   #'(lambda ()
+       (if (and default-directory (file-directory-p (concat default-directory ".Data")))
+           (progn
+             (if (getenv "S_WORK")
+                 (setenv "S_WORK" (concat default-directory ":" (getenv "S_WORK")))
+                 (setenv "S_WORK" default-directory))
+             default-directory)
+           (or ess-directory default-directory))))
+
+
 (defvar S+6-customize-alist
   '((ess-local-customize-alist     . 'S+6-customize-alist)
     (ess-language                  . "S")
     (ess-dialect                   . S+6-dialect-name)
     (ess-suffix                    . "S")
+    (ess-directory-function        . ess-splus-directory-function)
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
 					     ess-suffix))

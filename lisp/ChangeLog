@@ -1,3 +1,9 @@
+2001-08-21  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-directory-function): also ess-cust.el, essd-sp6.el:
+	Implement Jeff Mincy's patches for new function
+	--- currently only for S+6 (Unix) -- FIXME: Support R, other Spluses
+
 2001-08-10  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess.el: (defadvice ess-write-to-dribble-buffer ....) from Jeff Mincy

@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/06/27 20:05:30 $
-;; Version: $Revision: 5.62 $
-;; RCS: $Id: ess-inf.el,v 5.62 2001/06/27 20:05:30 rossini Exp $
+;; Modified: $Date: 2001/08/21 16:17:02 $
+;; Version: $Revision: 5.63 $
+;; RCS: $Id: ess-inf.el,v 5.63 2001/08/21 16:17:02 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -140,7 +140,9 @@ accompany the call for `inferior-ess-program'.
     (ess-write-to-dribble-buffer
      (format "(inf-ess 1): lang=%s, dialect=%s, tmp-dialect=%s, buf=%s\n"
 	     ess-language ess-dialect temp-ess-dialect (current-buffer)))
-    (let* ((defdir (directory-file-name (or ess-directory default-directory)))
+    (let* ((process-environment process-environment)
+           (defdir (or (and ess-directory-function (funcall ess-directory-function))
+                       ess-directory default-directory))
 	   (temp-dialect temp-ess-dialect)
 	   (temp-lang temp-ess-lang)
 	   (procname (let ((ntry 0) ;; find a non-existent process
@@ -167,16 +169,19 @@ accompany the call for `inferior-ess-program'.
 	     (not (comint-check-proc (current-buffer)))
 	     (memq major-mode '(inferior-ess-mode)))
 	(setq startdir
-	      (if ess-ask-for-ess-directory (ess-get-directory defdir)
-		ess-directory))
+	      (if ess-ask-for-ess-directory
+                  (ess-get-directory (directory-file-name defdir))
+                  defdir))
 	(setq buf (current-buffer))
-	(ess-write-to-dribble-buffer "(inferior-ess) Method #1\n"))
+	(ess-write-to-dribble-buffer
+         (format "(inferior-ess) Method #1 start=%s buf=%s\n" startdir buf)))
 
        ;;  Not an ESS buffer yet
        ((and (not buf)
 	     (get-buffer buf-name-str))
 	(setq buf (get-buffer buf-name-str))
-	(ess-write-to-dribble-buffer "(inferior-ess) Method #2\n"))
+	(ess-write-to-dribble-buffer 
+         (format "(inferior-ess) Method #2 buf=%s\n" buf)))
 
        ;; Ask for transcript file and startdir
        ;; FIXME -- this should be in ess-get-transfile
@@ -184,8 +189,9 @@ accompany the call for `inferior-ess-program'.
        ;;      be used again, to justify?
        ((not buf)
 	(setq startdir
-	      (if ess-ask-for-ess-directory (ess-get-directory defdir)
-		ess-directory))
+	      (if ess-ask-for-ess-directory
+                  (ess-get-directory (directory-file-name defdir))
+                  defdir))
 	(if ess-ask-about-transfile
 	    (let ((transfilename (read-file-name
 				  "Use transcript file (default none):"
@@ -195,7 +201,8 @@ accompany the call for `inferior-ess-program'.
 			  (find-file-noselect (expand-file-name
 					       transfilename)))))
 	  (setq buf (get-buffer-create buf-name-str)))
-	(ess-write-to-dribble-buffer "(inferior-ess) Method #3\n")))
+	(ess-write-to-dribble-buffer 
+         (format "(inferior-ess) Method #3 start=%s buf=%s\n" startdir buf))))
 
       (set-buffer buf)
       ;; Now that we have the buffer, set buffer-local variables.
@@ -229,7 +236,8 @@ accompany the call for `inferior-ess-program'.
       (setq-default ess-history-file
 		    (concat "." ess-dialect "history"))
       ;; initialize.
-      (ess-multi procname buf inferior-ess-start-args))))
+      (let ((ess-directory (if startdir default-directory ess-directory)))
+        (ess-multi procname buf inferior-ess-start-args)))))
 
 
 ;;; A note on multiple processes: the following variables
