@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/26 02:12:28 $
-;; Version: $Revision: 1.25 $
-;; RCS: $Id: essd-r.el,v 1.25 1997/07/26 02:12:28 rossini Exp $
+;; Modified: $Date: 1997/07/30 13:13:21 $
+;; Version: $Revision: 1.26 $
+;; RCS: $Id: essd-r.el,v 1.26 1997/07/30 13:13:21 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.26  1997/07/30 13:13:21  rossini
+;;: vars back.
+;;:
 ;;: Revision 1.25  1997/07/26 02:12:28  rossini
 ;;: need primary prompt...
 ;;:
@@ -105,7 +108,7 @@
   '((ess-customize-alist           . R-customize-alist)
     (ess-proc-prefix               . "R")
     (ess-version-running           . "R" )
-    (inferior-ess-program          . "R" ) ; inferior-R-program-name)
+    (inferior-ess-program          . inferior-R-program-name)
     (ess-help-sec-regex            . "^\\s *[A-Z[a-z. ---]+:$") ;ess-help-R-sec-regex)
     (ess-help-sec-keys-alist       . '((?a . "\\s *Arguments:")
 					(?d . "\\s *Description:")
