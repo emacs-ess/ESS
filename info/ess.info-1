@@ -1,4 +1,4 @@
-Dies ist ess.info, hergestellt von Makeinfo Version 4.0 aus ess.texi.
+This is ess.info, produced by makeinfo version 4.5 from ess.texi.
 
 ESS -- Emacs Speaks Statistics
 ******************************
@@ -15,15 +15,16 @@ ESS: Emacs Speaks Statistics
 
    ESS version
 
-   5.1.24
+   5.2.0
 
-   (Documentation $Revision: 1.20 $ $Date: 2002/08/08 10:03:11 $).
+   (Documentation $Revision: 1.21 $ $Date: 2003/10/20 14:37:26 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
          K. Hornik,
          M. Maechler,
-     and R.A. Sparapani
+         R.A. Sparapani
+     and S.J. Eglen.
 
      Emacs Speaks Statistics (ESS) provides an intelligent, consistent
      interface between the user and the software.  ESS interfaces with
@@ -44,6 +45,7 @@ ESS: Emacs Speaks Statistics
 * Starting up::                 Starting the ESS process
 * Help for the S family::
 * Help for SAS::
+* Help for BUGS::
 * Entering commands::           Interacting with the process buffer
 * Editing::                     How to create or edit S objects or functions
 * Help::                        Reading help files in ESS
@@ -52,7 +54,6 @@ ESS: Emacs Speaks Statistics
 * Bugs Etc::
 * Customization::               Customizing ESS
 * Key Index::
-* Command Index::
 * Concept Index::
 * Variable and command index::
 
@@ -197,9 +198,37 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 New features in ESS
 ===================
 
-   Changes/New Features in 5.1.23:
+   Changes/New Features in 5.2.0:
+   * ESS[BUGS]:  now supports interactive processing; special thanks to
+     Aki Vehtari (mailto:Aki.Vehtari@hut.fi); new info documentation!
+
+   * ESS[SAS]:  convert .log to .sas with ess-sas-transcript; info
+     documentation improved; Local Variable bug fixes; SAS/IML
+     statements/functions now highlighted; files edited remotely by
+     ange-ftp/EFS/tramp are recognized and pressing SUBMIT opens a
+     buffer on the remote host via the local variable
+     ess-sas-shell-buffer-remote-init which defaults to "ssh"; changed
+     the definition of the variable ess-sas-edit-keys-toggle to boolean
+     rather than 0/1; added the function ess-electric-run-semicolon
+     which automatically reverse indents lines containing only "run;";
+     C-F1 creates an MS RTF file from the current buffer and name it
+     accordingly
+
+   * ESS[S]:  ess-dump-filename-template-proto (new name!) now can be
+     customized successfully (for S language dialects).
+
+   * ESS[S]:  ess-help: Now using nice underlines (instead of `nuke-*
+     ^H_')
+
+   * ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
+     numbers from any Emacs buffer into an existing *R* process.
+
+   * ESS[R]:  M-x ess-rdired gives a "directory editor" of R objects.
+
+   Changes/New Features in 5.1.24:
    * The version number is now correct even inside ESS/Emacs
 
+   Changes/New Features in 5.1.23:
    * Minor more Makefile clean up.
 
    Changes/New Features in 5.1.22:
@@ -477,6 +506,8 @@ called ESS version 5.
 
    * Rodney A. Sparapani (mailto:rsparapa@mcw.edu)
 
+   * Stephen Eglen (mailto:stephen@gnu.org)
+
 
 File: ess.info,  Node: Latest version,  Next: Manual,  Prev: Credits,  Up: Introduction
 
@@ -598,7 +629,7 @@ Unix installation
      installing the database files.  From within emacs, `C-x d' to the
      directory containing ESS.  Now:
           M-x S+6
-     get running.  once you have reached the SPLUS prompt, do:
+     to get S running.  Once you see the SPLUS prompt, do:
           M-x ess-create-object-name-db
      (this will create the file `ess-s+6-namedb.el'; if it isn't in the
      ESS directory, move it there).
@@ -766,7 +797,7 @@ Microsoft Windows installation
      installing the database files.  From within emacs, `C-x d' to the
      directory containing ESS.  Now:
           M-x Sqpe+6
-     (get running.  once you have reached the SPLUS prompt, do:)
+     to get S running.  Once you see the SPLUS prompt, do:
           M-x ess-create-object-name-db
      (this will create the file `ess-s+6-namedb.el'; if it isn't in the
      ESS directory, move it there).
@@ -789,50 +820,53 @@ File: ess.info,  Node: Requirements,  Prev: Microsoft Windows installation,  Up:
 Requirements
 ============
 
-   ESS works best with either GNU Emacs version 20.3 or higher, or
-XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
+   ESS has been most thoroughly tested with:
 
-   * S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
+   * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
 
-   * R versions >=0.49
+   * R >=0.49
 
    * S4
 
-   * SAS 6.x, 7.x, 8.x
+   * SAS >=6.x
 
-   * BUGS 0.5, 0.603
+   * BUGS 0.603
 
    * Stata >=6.0
 
-   * XLispStat versions >=3.50
+   * XLispStat >=3.50
 
    on the following platforms
 
+   * Linux (all)
+
    * Solaris/SunOS (all)
 
-   * SGI (all)
-
-   * Linux (S4, S-PLUS 5.x, R, XLispStat, Stata 6.0)
-
-   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
+   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5/2000, R, SAS and BUGS)
 
    * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
 
    with the following versions of emacs
 
-   * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
+   * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
 
-   * XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
+   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13(1), 21.4.14
 
-   * XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34(1)
+   * GNU Emacs <20.3 and XEmacs <21.0(2)
 
    ---------- Footnotes ----------
 
-   (1) Note  that you must have `custom' support.  It is available at
-The Custom Library (http://www.dina.kvl.dk/~abraham/custom/).   These
-releases of emacs are no longer supported, so an upgrade is
-recommended if you plan to use ESS.  If you have GNU Emacs 19.29,  see
-*Note Unix installation::.
+   (1) requires the files.el patch for the Local Variables updating
+problem
+
+   (2) These releases of emacs are no longer supported, so an upgrade
+is recommended if you plan to use ESS.  If you have GNU Emacs 19.29,
+see *Note Unix installation::.  Also, note that the `custom' library
+bundled with Emacs 19.34 is too _old_, its API is incompatible with the
+`new custom' bundled with recent Emacsen.  The `new custom' for Emacs
+19.34 is available for download here
+(ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz)
+.
 
 
 File: ess.info,  Node: System dependent,  Prev: Installation,  Up: Installation
@@ -843,6 +877,7 @@ Other variables you may need to change
    If you run the S program (from the shell) with a command other than
 `Splus' you will need to set the variable `inferior-ess-program' to the
 name of the appropriate program by including a line such as
+
      (setq inferior-ess-program "S+")
 
 in your `.emacs' file
@@ -921,8 +956,7 @@ name of the process is shown in the mode line in square brackets (for
 example, `[S+3:2]'); this is useful if the process buffer is renamed.
 Without a prefix argument, `M-x S' starts a new ESS process, using the
 first available process number.  With a prefix argument (for R), `C-u
-M-x R' allows for the specification of command line options for the
-size of memory allocated to the R process, for example.
+M-x R' allows for the specification of command line options.
 
    You can switch to any active ESS process with the command `C-c C-k'
 (`ess-request-a-process').  Just enter the name of the process you
@@ -967,9 +1001,9 @@ ssh buffer and then connect ESS to that buffer.
      the `DISPLAY' environment variable appropriately.  Windows users
      can download `xfree86' from cygwin.
 
-  5. Graphics (static) on the remote machine.  If you don't run
-     X-windows on the local machine, then you can write graphics to a
-     file on the remote machine, and display the file in a graphics
+  5. Graphics (static) on the remote machine.  If you don't run the X
+     window system on the local machine, then you can write graphics to
+     a file on the remote machine, and display the file in a graphics
      viewer on the local machine.  Most statistical software can write
      one or more of postscript, GIF, or JPEG files.  Depending on the
      versions of emacs and the operating system that you are running,
@@ -987,12 +1021,12 @@ to convert it to an ESS buffer and allow you to use the ESS commands
 with it.
 
    We have two older commands, now deprecated, for accessing ESS
-processes on remote computers.  *Note S+elsewhere and ess-elsewhere::.
+processes on remote computers.  *Note S+elsewhere and ESS-elsewhere::.
 
 
-File: ess.info,  Node: S+elsewhere and ess-elsewhere,  Prev: ESS processes on Remote Computers,  Up: ESS processes on Remote Computers
+File: ess.info,  Node: S+elsewhere and ESS-elsewhere,  Prev: ESS processes on Remote Computers,  Up: ESS processes on Remote Computers
 
-S+elsewhere and ess-elsewhere
+S+elsewhere and ESS-elsewhere
 =============================
 
    These commands are now deprecated.  We recommend `ess-remote'.
@@ -1000,13 +1034,13 @@ S+elsewhere and ess-elsewhere
    We have two versions of the elsewhere function.
 
    `S+elsewhere' is specific for the S-Plus program.  The more general
-function `ess-elsewhere' is not as stable.
+function `ESS-elsewhere' is not as stable.
 
   1. Enter `M-x S+elsewhere'.  You will be prompted for a starting
      directory.  I usually give it my project directory on the local
      machine, say  `~myname/myproject/'
 
-     Or enter `M-x ess-elsewhere'.  You will be prompted for an ESS
+     Or enter `M-x ESS-elsewhere'.  You will be prompted for an ESS
      program and for a starting directory.  I usually give it my project
      directory on the local machine, say `~myname/myproject/'
 
@@ -1041,11 +1075,11 @@ function `ess-elsewhere' is not as stable.
      `*S+3*' buffer running the S or R or SAS program on the remote
      machine.
 
-  7. Graphics on the remote machine works fine.  If you run X-windows
-     graphics on the remote unix machine you should be able to display
-     them in `xfree86' on your PC.  If you don't run X-windows, then
-     you can write graphics to the postscript device and copy it to
-     your PC with dired and display it with ghostscript.
+  7. Graphics on the remote machine works fine.  If you run the X window
+     sysyem on the remote unix machine you should be able to display
+     them in `xfree86' on your PC.  If you don't run X11, then you can
+     write graphics to the postscript device and copy it to your PC
+     with dired and display it with ghostscript.
 
 
 File: ess.info,  Node: Customizing startup,  Prev: ESS processes on Remote Computers,  Up: Starting up
@@ -1072,7 +1106,7 @@ for the transcript before the ESS process starts.
 
    Enter the name of a file in which to save the transcript at the
 prompt.  If the file doesn't exist it will be created (and you should
-give it a file name ending in `.St'; if the file already exists the
+give it a file name ending in `.St'); if the file already exists the
 transcript will be appended to the file.  (Note: if you don't set this
 variable but you still want to save the transcript, you can still do it
 later -- *note Saving transcripts::.)
@@ -1154,9 +1188,9 @@ statistical processes (programs).  This mode handles:
 
    -  completion of object names and file names.
 
-   -  interactive history mechanism
+   -  interactive history mechanism.
 
-   -  transcript recording and editing
+   -  transcript recording and editing.
 
    To start up iESS mode, use:
         M-x S+3
@@ -1169,16 +1203,18 @@ programs (by default S+3) to the simpler name:
 
    M-x S
 
-   Note that R has some extremely useful command line arguments, -v and
--n.   To enter these, call R using a "prefix argument", by
+   Note that R has some extremely useful command line arguments.  For
+example, `--vanilla' will ensure R starts up without loading in any init
+files.  To enter a command line argument, call R using a "prefix
+argument", by
 
    C-u M-x R
 
    and when ESS prompts for "Starting Args ? ", enter (for example):
 
-   -v 10000 -n 5000
+   `--vanilla'
 
-   Then that R process will be started up using "R -v 10000 -n 5000".
+   Then that R process will be started up using `R --vanilla'.
 
    New for ESS 5.1.2 (and later):  "S-elsewhere" command
 
@@ -1191,32 +1227,4 @@ that buffer to the other machine and then starts S on the other
 machine.  The usual C-c C-n commands from myfile.s on the local
 machine get sent through the buffer "*S-elsewhere*" to be executed   by
 S on the other machine.
-
-
-File: ess.info,  Node: Handling and Reusing Transcripts,  Next: ESS-help--assistance with viewing help,  Prev: iESS(S)--Inferior ESS processes,  Up: Help for the S family
-
-Handling and Reusing Transcripts
-================================
-
-   - edit transcript
-
-   - color and font highlighting based on syntax.
-
-   - resubmit multi-line commands to an active process buffer
-
-   - The ability to request help from an S process for variables and
-functions, and to have the results sent into a separate buffer.
-
-   - ability to switch between processes which would be the target of
-the   buffer (for the above).
-
-
-File: ess.info,  Node: ESS-help--assistance with viewing help,  Next: Philosophies for using ESS(S),  Prev: Handling and Reusing Transcripts,  Up: Help for the S family
-
-ESS-help-assistance with viewing help
-=====================================
-
-   * move between help sections
-
-   * send examples to S for evaluation
 
