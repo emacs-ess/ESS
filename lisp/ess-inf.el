@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/14 01:21:02 $
-;; Version: $Revision: 1.88 $
-;; RCS: $Id: ess-inf.el,v 1.88 1997/11/14 01:21:02 rossini Exp $
+;; Modified: $Date: 1997/11/14 01:28:04 $
+;; Version: $Revision: 1.89 $
+;; RCS: $Id: ess-inf.el,v 1.89 1997/11/14 01:28:04 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -140,7 +140,7 @@ accompany the call for inferior-ess-program.
     (let* ((defdir (directory-file-name (or ess-directory default-directory)))
 	   (temp-dialect temp-ess-dialect)
 	   (temp-lang temp-ess-lang)
-	   (procname (or (and (not (comint-check-proc (current-buffer)))
+	   (procname-dialect (or (and (not (comint-check-proc (current-buffer)))
 			      ;; Don't start a new process in current buffer if
 			      ;; one is already running
 			      ess-local-process-name)
@@ -150,17 +150,28 @@ accompany the call for inferior-ess-program.
 			   (while (not done)
 			     (setq ntry (1+ ntry)
 				   done (not
-;;;					 (get-process (ess-proc-name
-;;;						       ntry
-;;;						       temp-dialect)))))
-;;;			   (ess-proc-name ntry temp-dialect))))
+					 (get-process (ess-proc-name
+						       ntry
+						       temp-dialect)))))
+			   (ess-proc-name ntry temp-dialect))))
+	   (procname-lang (or (and (not (comint-check-proc (current-buffer)))
+			      ;; Don't start a new process in current buffer if
+			      ;; one is already running
+			      ess-local-process-name)
+			 ;; find a non-existent process
+			 (let ((ntry 0)
+			       (done nil))
+			   (while (not done)
+			     (setq ntry (1+ ntry)
+				   done (not
 					 (get-process (ess-proc-name
 						       ntry
 						       temp-lang)))))
 			   (ess-proc-name ntry temp-lang))))
+
 	   (startdir nil)
 	   (buf nil)
-	   (buf-name-str  (concat "*" procname "*")))
+	   (buf-name-str  (concat "*" procname-dialect "*")))
 
       (ess-write-to-dribble-buffer
        (format "(inf-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
@@ -221,7 +232,7 @@ accompany the call for inferior-ess-program.
       (if startdir (setq default-directory startdir))
       (setq-default ess-history-file
 		    (concat "." ess-dialect "history"))
-      (ess-multi procname buf inferior-ess-start-args))))
+      (ess-multi procname-dialect buf inferior-ess-start-args))))
 
 ;; Old code:
 
