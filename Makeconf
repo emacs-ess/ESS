@@ -34,12 +34,12 @@ MAKETXT = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 ## ESSVERSION=5.2.0
 ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 
-# Destination of your info files
-# defaults to the info sub-directory
+# Destination of your info files relative to the doc directory
+# defaults to the info directory
 INFODIR = ../info
 
-# Destination of your byte-compiled elisp (.elc) files,
-# defaults to the same directory as source elisp (.el) files
+# Destination of your byte-compiled elisp (.elc) files
+# relative to the lisp directory (which is the default)
 LISPDIR = .
 
 .SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el .elc
