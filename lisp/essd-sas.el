@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/14 02:26:04 $
-;; Version: $Revision: 1.34 $
-;; RCS: $Id: essd-sas.el,v 1.34 1997/11/14 02:26:04 rossini Exp $
+;; Modified: $Date: 1997/11/14 02:40:11 $
+;; Version: $Revision: 1.35 $
+;; RCS: $Id: essd-sas.el,v 1.35 1997/11/14 02:40:11 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -196,14 +196,13 @@
 (defun SAS ()
   "Call 'SAS', from SAS Institute."
   (interactive)
-  (setq ess-customize-alist SAS-customize-alist)
-  (let ((temp-ess-dialect (cdr (rassoc ess-dialect ess-customize-alist))))
+  (setq-default ess-customize-alist SAS-customize-alist)
+  (let* ((temp-dialect "SAS")) ;(cdr (rassoc ess-dialect SAS-customize-alist))))
     (ess-write-to-dribble-buffer
-     (format "(SAS): ess-dialect=%s , buf=%s temp-ess-dial=%s\n"
+     (format "(SAS): ess-dial=%s, temp-dial=%s\n"
 	     ess-dialect
-	     (current-buffer)
-	     temp-ess-dialect))
-    (ess-SAS-pre-run-hook SAS-customize-alist temp-ess-dialect)
+	     temp-dialect))
+    (ess-SAS-pre-run-hook temp-dialect)
     (inferior-ess)))
 
 
