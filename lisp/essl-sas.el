@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/03/06 17:16:20 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: essl-sas.el,v 5.14 2001/03/06 17:16:20 ess Exp $
+;; Modified: $Date: 2001/03/12 16:06:49 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: essl-sas.el,v 5.15 2001/03/12 16:06:49 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -224,6 +224,7 @@ popup window when the SAS job is finished.")
 		   "change" "class" "exchange" "exclude" "freq" "id" "index"
 		   "model" "plot" "save" "sum" "tables?" "var" "weight" "with"
 		   "manova" "repeated" "value" "random"
+		   "means" "lsmeans" 
 		   ;; SAS macro statements not handled above
 		   "%global" "%include" "%local" "%let" "%sysexec"
 		   ) t) "\\>")
@@ -349,7 +350,8 @@ popup window when the SAS job is finished.")
 		"\\(a\\(bort\\|rray\\|ttrib\\)\\|by\\|d\\(elete\\|isplay\\|m\\|rop\\)"
 		"\\|error\\|f\\(ile\\(\\|name\\)\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\)"
 		"\\|go\\([ \t]*to\\|ptions\\)\\|i\\(f\\|n\\(f\\(ile\\|ormat\\)\\|put\\)\\)\\|keep\\|options"
-		"\\|l\\(abel\\|ength\\|i\\(bname\\|nk\\)\\)\\|m\\(erge\\|issing\\|odify\\)\\|note"
+		"\\|l\\(abel\\|ength\\|i\\(bname\\|nk\\)\\|smeans\\)\\|note"
+		"\\|m\\(anova\\|e\\(ans\\|rge\\)\\|issing\\|od\\(el\\|ify\\)\\)"
 		"\\|o\\(therwise\\|utput\\)\\|put\\|re\\(name\\|tain\\)\\|s\\(e\\(lect\\|t\\)\\|kip\\)"
 		"\\|title\\(10?\\|[2-9]\\)?\\|update\\|w\\(here\\|indow\\)"
 		"\\|c\\(hange\\|lass\\)\\|exc\\(hange\\|lude\\)\\|freq\\|i\\(d\\|ndex\\)"
