@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/07 17:29:30 $
-;; Version: $Revision: 1.47 $
-;; RCS: $Id: essa-sas.el,v 1.47 2002/01/07 17:29:30 ess Exp $
+;; Modified: $Date: 2002/01/07 17:35:48 $
+;; Version: $Revision: 1.48 $
+;; RCS: $Id: essa-sas.el,v 1.48 2002/01/07 17:35:48 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -296,7 +296,7 @@ on the way."
 	    ess-sas-file-path))
 
 	(progn
-	    (ess-sas-file-path)
+	    (save-match-data (ess-sas-file-path))
 
 	    (let* (
 		(ess-sas-temp-file (replace-match (concat "." suffix) t t ess-sas-file-path))
