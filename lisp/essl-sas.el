@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/09/01 21:47:23 $
-;; Version: $Revision: 5.43 $
-;; RCS: $Id: essl-sas.el,v 5.43 2002/09/01 21:47:23 rmh Exp $
+;; Modified: $Date: 2002/10/16 01:49:59 $
+;; Version: $Revision: 5.44 $
+;; RCS: $Id: essl-sas.el,v 5.44 2002/10/16 01:49:59 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -423,12 +423,11 @@ number."
 						    font-lock-keyword-face)
 
 	 ;; SAS statements
-
 	 (cons (concat
 		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
 		"\\(a\\(bort\\|rray\\|ttrib\\)\\|by"
 		"\\|c\\(hange\\|lass\\|ontrast\\)"
-		"\\|d\\(elete\\|isplay\\|m\\|rop\\)"
+		"\\|d\\(elete\\|isplay\\|m\\|o\\([ \t]+over\\)?\\|rop\\)"
 		"\\|e\\(rror\\|stimate\\|xc\\(hange\\|lude\\)\\)"
 		"\\|f\\(ile\\(name\\)?\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\|req\\)"
 		"\\|go\\([ \t]*to\\|ptions\\)"
@@ -439,11 +438,11 @@ number."
 		"\\|r\\(andom\\|e\\(name\\|peated\\|tain\\)\\)"
 		"\\|s\\(ave\\|e\\(lect\\|t\\)\\|kip\\|trata\\|umby\\)"
 		"\\|t\\(ables?\\|i\\(me\\|tle\\(10?\\|[2-9]\\)?\\)\\)\\|update"
-		"\\|va\\(lue\\|r\\)\\|w\\(eight\\|here\\|i\\(ndow\\|th\\)\\)\\)"
+		"\\|va\\(lue\\|r\\)\\|w\\(eight\\|here\\|i\\(ndow\\|th\\)\\)\\)?"
 		"\\>")				    font-lock-keyword-face)
-;;	 (cons "\\<\\(\\(\\(then\\|else\\)[ \t]*\\)?do\\([ \t]*over\\)?\\|else\\)\\>"
-	 (cons "\\<\\(\\(then\\|else\\)[ \t]*\\)?\\(do\\([ \t]*over\\)?\\|else\\)\\>"
-						    font-lock-keyword-face)
+
+;;	 (cons "\\<\\(\\(then\\|else\\)[ \t]*\\)?\\(do\\([ \t]*over\\)?\\|else\\)\\>"
+;;						    font-lock-keyword-face)
 
 	 ;; SAS statements that must be followed by a semi-colon
 	 (cons (concat
