@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/11 15:03:01 $
-;; Version: $Revision: 1.79 $
-;; RCS: $Id: ess-inf.el,v 1.79 1997/11/11 15:03:01 rossini Exp $
+;; Modified: $Date: 1997/11/11 21:19:50 $
+;; Version: $Revision: 1.80 $
+;; RCS: $Id: ess-inf.el,v 1.80 1997/11/11 21:19:50 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -434,10 +434,6 @@ visiting a file."
     (if (file-directory-p the-dir) nil
       (error "%s is not a valid directory" the-dir))
     the-dir))
-
-;;;;* define two commands consistent with other comint modes, run-ESS &
-;;;;  run-ESS.
-;;(fset 'run-ESS (fset 'run-ESS (symbol-function 'ESS)))
 
 ;;*;; General process handling code
 
@@ -1814,7 +1810,7 @@ The result is stored in ess-sl-modtime-alist"
 
 (defun ess-read-object-name (p-string)
   "Read an S object name from the minibuffer with completion, and return it"
-  (let* ((default (ess-read-object-name-default))
+  (let* ((default (ess-read-object-name-dump))
          (prompt-string (if default
                             (format "%s(default %s) " p-string default)
                           p-string))
@@ -1825,7 +1821,23 @@ The result is stored in ess-sl-modtime-alist"
            (t spec)))))
 
 (defun ess-read-object-name-default ()
-  ;; Return the object name at point, or nil if none
+  "Return the object name at point, or nil if none."
+  (condition-case ()
+      (save-excursion
+        ;; The following line circumvents an 18.57 bug in following-char
+        (if (eobp) (backward-char 1)) ; Hopefully buffer is not empty!
+        ;; Get onto a symbol
+        (catch 'nosym ; bail out if there's no symbol at all before point
+          (while (/= (char-syntax (following-char)) ?w)
+            (if (bobp) (throw 'nosym nil) (backward-char 1)))
+          (let*
+              ((end (progn (forward-sexp 1) (point)))
+               (beg (progn (backward-sexp 1) (point))))
+	    (buffer-substring beg end))))
+    (error nil)))
+
+(defun ess-read-object-name-dump ()
+  "Return the object name at point, or \"Temporary\" if none."
   (condition-case ()
       (save-excursion
         ;; The following line circumvents an 18.57 bug in following-char
@@ -1840,6 +1852,7 @@ The result is stored in ess-sl-modtime-alist"
                (object-name (buffer-substring beg end)))
             (or object-name "Temporary"))))
     (error nil)))
+
 
 ;;*;; Temporary buffer handling
 
