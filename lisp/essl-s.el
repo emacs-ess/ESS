@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2004/05/13 10:50:16 $
-;; Version: $Revision: 5.35 $
-;; RCS: $Id: essl-s.el,v 5.35 2004/05/13 10:50:16 stephen Exp $
+;; Modified: $Date: 2004/05/17 08:35:48 $
+;; Version: $Revision: 5.36 $
+;; RCS: $Id: essl-s.el,v 5.36 2004/05/17 08:35:48 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -177,7 +177,7 @@
 ;;; See also ./ess-utils.el
 
 (defvar ess-function-outline-file
-  (concat ess-etc-directory  "function-outline.S")
+  (concat ess-etc-directory  "/function-outline.S")
   "The file name of the ess-function outline that is to be inserted at point,
 when \\<ess-mode-map>\\[ess-insert-function-outline] is used.
 Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
@@ -495,13 +495,13 @@ Uses the file given by the variable `ess-function-outline-file'."
   "Smart \"_\" key: insert `ess-S-assign', unless in string/comment.
 If the underscore key is pressed a second time, the assignment
 operator is removed and replaced by the underscore.  `ess-S-assign',
-typically \" <- \", can be customized.  In ESS modes other than R/S, 
+typically \" <- \", can be customized.  In ESS modes other than R/S,
 an underscore is always inserted. "
   (interactive)
   ;;(insert (if (inside-string/comment-p (point)) "_" ess-S-assign))
-  (if (or 
+  (if (or
        (inside-string/comment-p (point))
-       (not (equal ess-language "S"))) 
+       (not (equal ess-language "S")))
       (insert "_")
     ;; Else one keypress produces ess-S-assign; a second keypress will delete
     ;; ess-S-assign and instead insert _
