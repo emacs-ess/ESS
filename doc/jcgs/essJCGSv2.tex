@@ -106,7 +106,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/02 17:36:32 $ - $Revision: 1.32 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/03 14:50:35 $ - $Revision: 1.33 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -654,13 +654,12 @@ The SAS batch file processing that you and I designed works equally
 well on local or remote SAS systems.   I think the modifications I made to
 the description of inferior SAS and batch SAS are sufficient.
 
-Rodney:  Remote batch file processing usually does not work.
-My original comment stands:
-I've not been able to get batch SAS file processing to work with
-ange-ftp, EFS or Tramp.  The situation may have been different
-3 or 4 years ago, but with the security crackdowns due to
-flaws in telnet and ftp; this is not likely to work for most
-people.  I suggest that we move it to future work.
+Rodney:  I just checked and remote SAS batch processing could not
+possibly work since the directory was part of the command, i.e.
+sas /path/file  So, I changed it to sas file  But, it still
+will not work since the cd command has to distinguish between host
+and path, i.e. [host]/path for tramp or /host:/path for ange-ftp and EFS.
+I'll try to get this working, but until then; the comment stands.
 \end{quote}
 
 In 2001, Sparapani added BUGS batch file processing for ESS.  This
