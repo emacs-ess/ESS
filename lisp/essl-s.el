@@ -1,14 +1,14 @@
 ;;; essl-s.el --- Support for editing S source code
 
-;; Copyright (C) 1989-1999 Bates, Kademan, Ritter, Smith, Hornik,
-;; Heiberger, Maechler, and Rossini.
+;; Copyright (C) 1989-2000 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
+;; R.M. Heiberger, M. Maechler, and A.J. Rossini.
 
-;; Author: A.J. Rossini <rossini@stat.sc.edu>
-;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
+;; Author: A.J. Rossini <rossini@biostat.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1999/09/21 08:31:10 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: essl-s.el,v 5.12 1999/09/21 08:31:10 ess Exp $
+;; Modified: $Date: 2000/01/31 14:20:34 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: essl-s.el,v 5.13 2000/01/31 14:20:34 rossini Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -218,8 +218,6 @@ Returns nil if line starts inside a string, t if in a comment."
 		      (current-indentation))))))))))
 
 
-
-
 (defvar S-syntax-table nil "Syntax table for S code.")
 (if S-syntax-table
     nil
@@ -246,7 +244,6 @@ Returns nil if line starts inside a string, t if in a comment."
   (modify-syntax-entry ?>  "."  S-syntax-table)
   (modify-syntax-entry ?/  "."  S-syntax-table))
 
-
 (defvar S-editing-alist
   '((paragraph-start              . (concat "^$\\|" page-delimiter))
     (paragraph-separate           . (concat "^$\\|" page-delimiter))
@@ -268,7 +265,6 @@ Returns nil if line starts inside a string, t if in a comment."
     (font-lock-defaults           . '(ess-mode-font-lock-keywords
 				      nil nil ((?\. . "w")))))
   "General options for editing S, S+, and R source files.")
-
 
 ;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in essl-s!).
 
@@ -292,7 +288,6 @@ Returns nil if line starts inside a string, t if in a comment."
 ;;; `string' in an S help file. `string' is used as part of a
 ;;; regexp-search, and so specials should be quoted.
 
-
 ;; S ver.3 (NOT S-Plus)
 (defconst S3-help-sec-keys-alist
   '((?a . "ARGUMENTS:")
@@ -309,7 +304,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (?v . "VALUE:"))
   "Help section keys for S ver.3.")
 
-
+;; S ver.4 (NOT S-Plus)
 (defconst S4-help-sec-keys-alist
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
@@ -325,6 +320,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (?v . "VALUE:"))
   "Help section keys for S4.")
 
+;; R 
 (defconst R-help-sec-keys-alist
   '((?a . "\\s *Arguments:")
     (?d . "\\s *Description:")
@@ -333,21 +329,18 @@ Returns nil if line starts inside a string, t if in a comment."
     (?r . "\\s *References:")
     (?s . "\\s *See Also:")
     (?v . "\\s *Value[s]?")	;
-    )) ;; "Alist of (key . string) pairs for use in section searching."
+    )
+  "Alist of (key . string) pairs for use in help section searching.")
+
 
 (defconst ess-help-S+-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file")
 
-(defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$")
+(defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$"
+  "Reg(ular) Ex(pression) of section headers in help file")
 
-
-;;; S4 stuff.
-;;            --> moved to essd-s4.el
-
-
-;;;    S-mode extras of Martin Maechler, Statistik, ETH Zurich.
-
-;;>> Moved things into --> ./ess-utils.el
+;;; S-mode extras of Martin Maechler, Statistik, ETH Zurich.
+;;; See also ./ess-utils.el
 
 (defvar ess-function-outline-file
   (concat ess-lisp-directory "/../etc/" "function-outline.S")
