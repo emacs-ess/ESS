@@ -1,6 +1,6 @@
 ### Makefile - for DOCUMENTATION (./doc) of ESS distribution.
 ###
-### File: $Revision: 1.44 $.
+### File: $Revision: 1.45 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -23,10 +23,10 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 ### Targets --
 
 all  : info text html dvi pdf
-info : ess.info 
+info : info/ess.info 
 text : ../README ../ANNOUNCE
-docs : info text html
 html : html/ess_toc.html html/readme_toc.html
+docs : info text html
 dvi  : ess.dvi readme.dvi
 pdf  : ess.pdf readme.pdf
 ps   : ess.ps  readme.ps
@@ -66,22 +66,23 @@ README.Microsoft : README.Microsoft.texi
 
 ### File Dependencies
 
-ess.info: $(TEXISRC)
+info/ess.info: $(TEXISRC)
 	@echo "making Info documentation..."
 	$(MAKEINFO) ess.texi
+	mv -f ess.info* info
 
-install : ess.info 
+install : info/ess.info 
 	-$(INSTALLDIR) $(INFODIR)
-	$(INSTALL) ess.info* $(INFODIR)
+	$(INSTALL) info/ess.info* $(INFODIR)
 	test -f $(INFODIR)/dir || $(INSTALL) dir $(INFODIR)
 
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess_toc.html: $(TEXISRC)
 	@echo "making HTML documentation..."
 	$(TEXI2HTML) $(SPLITCHAP) ess.texi
-	$(INSTALL) ess_toc.html index.html
-	$(INSTALL) ess*.html index.html html
+	cp -p ess_toc.html index.html
+	mv -f *.html html
 
 html/readme_toc.html: $(TEXISRC)
 	$(TEXI2HTML) readme.texi
-	$(INSTALL) readme*.html html
+	mv -f readme*.html html

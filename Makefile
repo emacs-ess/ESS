@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.79 2004/05/11 15:37:31 rsparapa Exp $
+## $Id: Makefile,v 5.80 2004/05/11 16:33:34 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -14,16 +14,16 @@ all install clean distclean:
 #ESS is now an official XEmacs package, but the xemacs-links target 
 #persists since there is generally a lag between an ESS release and 
 #the corresponding XEmacs ESS package release
-xemacs-links: info/ess.info info/ess.info-1 info/ess.info-2 info/ess.info-3 info/ess.info-4
+xemacs-links: doc/info/ess.info doc/info/ess.info-1 doc/info/ess.info-2 doc/info/ess.info-3 doc/info/ess.info-4
 	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
 	    $(XEMACSDIR)/xemacs-packages/info/ess.info*
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc              $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp             $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info    $(XEMACSDIR)/xemacs-packages/info/ess.info
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-1  $(XEMACSDIR)/xemacs-packages/info/ess.info-1
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-2  $(XEMACSDIR)/xemacs-packages/info/ess.info-2
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-3  $(XEMACSDIR)/xemacs-packages/info/ess.info-3
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-4  $(XEMACSDIR)/xemacs-packages/info/ess.info-4
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc                  $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp                 $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info    $(XEMACSDIR)/xemacs-packages/info/ess.info
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-1  $(XEMACSDIR)/xemacs-packages/info/ess.info-1
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-2  $(XEMACSDIR)/xemacs-packages/info/ess.info-2
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-3  $(XEMACSDIR)/xemacs-packages/info/ess.info-3
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-4  $(XEMACSDIR)/xemacs-packages/info/ess.info-4
 
 ## the rest of the targets are for ESS developer use
 ## --- PRE-release ---
@@ -34,7 +34,7 @@ dist: VERSION cleanup-dist
 	@echo "** Committing VERSION, README, ANNOUNCE and info **"
 	cvs commit -m "Updating toplevel files for new version" \
 		VERSION README ANNOUNCE
-	cvs commit -m "Updating info for new version" info
+	cvs commit -m "Updating info for new version" doc/info
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSDIR)"
