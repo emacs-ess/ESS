@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/06/30 19:46:19 $
-;; Version: $Revision: 5.109 $
-;; RCS: $Id: ess-site.el,v 5.109 2004/06/30 19:46:19 rsparapa Exp $
+;; Modified: $Date: 2004/07/01 11:32:42 $
+;; Version: $Revision: 5.110 $
+;; RCS: $Id: ess-site.el,v 5.110 2004/07/01 11:32:42 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -554,6 +554,17 @@ sending `inferior-ess-language-start' to S-Plus.")
       (ess-sqpe-versions-create)   ;; use ess-SHOME-versions
       (ess-rterm-versions-create)) ;; use ess-rterm-versions
   (ess-r-versions-create))
+;; A side effect of calling ess-r-versions-create is that a list of strings,
+;; representing the new defuns will be stored in ess-r-versions-created.
+;; Add the R defuns, if any, to the menu.
+(when ess-r-versions-created
+  ;; new-menu will be a list of 3-vectors, of the form:
+  ;; ["R-1.8.1" R-1.8.1 t]
+  (let (( new-menu (mapcar '(lambda(x) (vector x (intern x) t)) 
+			   ess-r-versions-created)))
+    (easy-menu-add-item ess-mode-menu '("Start Process")
+			(cons "Other" new-menu))))
+
 
 ;;; 3. Customization (and commented out examples) for your site
 ;;;; ===============================================
