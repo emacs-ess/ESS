@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/06/17 16:46:09 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essd-xls.el,v 5.3 1999/06/17 16:46:09 maechler Exp $
+;; Modified: $Date: 1999/09/15 05:56:13 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essd-xls.el,v 5.4 1999/09/15 05:56:13 ess Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -75,6 +75,7 @@
   (ess-mode XLS-customize-alist proc-name)
   (setq major-mode 'XLS-mode))
 
+(fset 'xlispstat-mode 'XLS-mode)
 
 (defun XLS ()
   "Call 'XLispStat', the Lisp statistical system from Luke Tierney."
