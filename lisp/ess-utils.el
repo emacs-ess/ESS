@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2004/05/17 21:19:48 $
-;; Version: $Revision: 5.25 $
-;; RCS: $Id: ess-utils.el,v 5.25 2004/05/17 21:19:48 maechler Exp $
+;; Modified: $Date: 2004/06/17 20:10:15 $
+;; Version: $Revision: 5.26 $
+;; RCS: $Id: ess-utils.el,v 5.26 2004/06/17 20:10:15 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -352,10 +352,13 @@ is specified, perform action in that buffer."
 "Clone local variables from one buffer to another buffer, current buffer if nil."
     (interactive)
 
-    (ess-set-local-variables (ess-sas-create-local-variables-alist from-file-or-buffer) to-file-or-buffer))
+    (ess-set-local-variables 
+	(ess-sas-create-local-variables-alist from-file-or-buffer) 
+	    to-file-or-buffer))
 
 (defun ess-find-exec (ess-root-arg)
-  "Given the root of an executable file name, find it's full name and path,
+  "Deprecated.  Use executable-find instead.
+Given the root of an executable file name, find it's full name and path,
 if it exists in PATH.  Note that emacs does not attempt to understand the
 various short-hands for CWD in PATH, but that shouldn't be a hindrance here."
 
