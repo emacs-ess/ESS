@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/06/17 16:46:08 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: essd-r.el,v 5.13 1999/06/17 16:46:08 maechler Exp $
+;; Modified: $Date: 1999/06/17 17:34:56 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: essd-r.el,v 5.14 1999/06/17 17:34:56 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,6 +47,7 @@
     (ess-language                  . "S")
     (ess-dialect                   . "R")
     (ess-suffix                    . "R")
+    (ess-loop-timeout              . 500000 )
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
 					     ess-suffix))
@@ -54,17 +55,17 @@
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-R-sec-regex)
     (ess-help-sec-keys-alist       . R-help-sec-keys-alist)
-    (ess-loop-timeout              . 400000 )
     (ess-object-name-db-file       . "ess-r-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",inherits=T)\n") ; envir=1
     (ess-save-lastvalue-command
      . "assign(\".ess.lvsave\",.Last.value,inherits=T)\n") ;envir=1
     (inferior-ess-program          . inferior-R-program-name)
-    (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-objects-command  . "objects(pos = %d)\n")
+    (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-exit-command     . "q()\n")
-    (inferior-ess-primary-prompt   . "[][a-zA-Z0-9() ]*> ?")
+    (inferior-ess-primary-prompt   . "[A-Za-z0-9.]*> ")
+    (inferior-ess-secondary-prompt . "+ ?")
     (inferior-ess-start-file       . nil) ; "~/.ess-R")
     (inferior-ess-start-args       . ""))
   "Variables to customize for R")
