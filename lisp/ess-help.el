@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/10 22:03:31 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: ess-help.el,v 1.16 1997/11/10 22:03:31 rossini Exp $
+;; Modified: $Date: 1997/11/12 19:29:36 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: ess-help.el,v 1.17 1997/11/12 19:29:36 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -35,7 +35,9 @@
  ; Requires and autoloads
 
 (eval-when-compile
-  (require 'reporter))
+  (require 'reporter)
+  (require 'ess-inf)
+  (require 'info))
 
 (require 'ess)
 
