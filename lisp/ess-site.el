@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/07/02 08:06:19 $
-;; Version: $Revision: 5.112 $
-;; RCS: $Id: ess-site.el,v 5.112 2004/07/02 08:06:19 rmh Exp $
+;; Modified: $Date: 2004/07/02 10:12:18 $
+;; Version: $Revision: 5.113 $
+;; RCS: $Id: ess-site.el,v 5.113 2004/07/02 10:12:18 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -563,13 +563,15 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;    ess-rterm-versions-created,
 ;;    ess-r-versions-created.
 ;; Add the new defuns, if any, to the menu.
-(let ((ess-versions-created)
-      (a ess-r-versions-created)
-      (b ess-rterm-versions-created)
-      (c ess-sqpe-versions-created))
-  (setq ess-versions-created (nconc ess-versions-created a))
-  (setq ess-versions-created (nconc ess-versions-created b))
-  (setq ess-versions-created (nconc ess-versions-created c))
+(let ((ess-versions-created))
+  ;; Check that each variable exists, before adding.
+  ;; e.g. ess-sqpe-versions-created will not be created on Unix.
+  (setq ess-versions-created
+	(ess-flatten-list 
+	 (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
+		 '(ess-r-versions-created 
+		   ess-rterm-versions-created ess-sqpe-versions-created))))
+
   (when ess-versions-created
   ;; new-menu will be a list of 3-vectors, of the form:
   ;; ["R-1.8.1" R-1.8.1 t]
