@@ -1,3 +1,50 @@
+1999-03-03  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* Makefile: updated version information
+
+	converted s+3 to sp3.
+
+	* ess-vars.el: updated version information.
+
+	* ess-iw32-load-file.el, essd-s+3.el, essd-s+4.el, essd-s+5.el, essd-s_2b4-msdos-existing.el, essd-s_2b4-msdos.el:
+	Tidied up ess-iw32*.el files.
+
+	* ess-iw32.el: copied all changes from ess-iw32-load-file.el here.
+
+	* ess-iw32-load-file.el: fixed.
+
+	* essd-s_2b4.el:
+	essd-s_2b4-msdos*.el were not needed.  Contents moved into base file.
+
+	* ess-iw32-load-file.el, ess-iw32.el, essd-r32.el, essd-s_2b4-msdos-existing.el, essd-s_2b4-msdos.el, essd-s_2b4.el, msdos.el:
+	RMH's changes, up to March 2nd
+
+1999-02-24  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-iw32.el: temp val left in distribution.  whoops (RMH).
+
+1999-02-22  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* essd-els.el, essd-s3.el, essd-s4.el, essd-sta.el, ess-site.el, essd-sp4.el, essd-sp5.el, essd-sp3.el:
+	Removed s+# to sp# for S-PLUS commands
+
+1999-02-12  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* Makefile: emacs, not "19.34"
+
+1999-02-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-sas.el: added RMH's new fixes for the 5.1.2 version.
+
+1999-02-02  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el: (last commit was with unsaved file)
+
+	* ChangeLog, ess-inf.el:
+	fix regex for "help(..);" also work for "?" with R-input-sender
+
+
+
 1999-02-02  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (inferior-R-input-sender): Change the regexp such
