@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/12/16 00:17:24 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essd-s4.el,v 5.2 1997/12/16 00:17:24 rossini Exp $
+;; Modified: $Date: 1998/11/12 17:08:12 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essd-s4.el,v 5.3 1998/11/12 17:08:12 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -41,6 +41,9 @@
 
 ;;; Code:
 
+;; Some of this is based on files from:
+;;     Copyright (C) 1996, John M. Chambers.
+
 (defvar S4-customize-alist
   '((ess-local-customize-alist     . 'S4-customize-alist)
     (ess-language                  . "S")
@@ -56,7 +59,7 @@
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
     (ess-loop-timeout              . 100000 )
     (ess-object-name-db-file       . "ess-s4-namedb.el")
-    (ess-dumped-missing-re  
+    (ess-dumped-missing-re
      . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
     (ess-syntax-error-re
      . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
@@ -91,14 +94,11 @@
 
 
 (defun S4 ()
-  "Call 'S version 4', from Bell Labs
-New way to do it."
+  "Call 'S version 4', from Bell Labs.  New way to do it."
   (interactive)
   (setq ess-customize-alist S4-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(S): ess-dialect=%s , buf=%s \n"
-	   ess-dialect
-	   (current-buffer)))
+   (format "\n(S4): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
   (inferior-ess))
 
 
@@ -131,7 +131,7 @@ New way to do it."
 ;;  (mapcar 'list
 ;;	  (apply 'append
 ;;		 (mapcar '(lambda (dirname)
-;;			    (if (file-directory-p dirname) 
+;;			    (if (file-directory-p dirname)
 ;;				(directory-files dirname)))
 ;;			 (mapcar '(lambda (str) (concat str "/__Help"))
 ;;				 (S-search-list))))))
@@ -262,7 +262,7 @@ New way to do it."
 ;;  (save-excursion
 ;;    (while (progn
 ;;	     ;; get output if there is some ready
-;;	     (accept-process-output proc 0 500) 
+;;	     (accept-process-output proc 0 500)
 ;;	     (goto-char (marker-position (process-mark proc)))
 ;;	     (beginning-of-line)
 ;;
@@ -306,31 +306,3 @@ New way to do it."
 ;;; End:
 
 ;;; essd-s4.el ends here
-
-
-
-
- ; Provide package
-
-(provide 'essd-s4)
-
- ; Local variables section
-
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
-
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; outline-minor-mode: nil
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
-
-;;; essd-s4.el ends here
-
-
