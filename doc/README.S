@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.11 $)
+($Revision: 1.12 $)
 
 ESS: Using The S family of statistical languages
 ================================================
@@ -116,13 +116,15 @@ retrieved again, by changing emacs variables.
 
 2: (older version): S objects are real.  Source code is a temporary
    realization of the objects.  Dumped buffers should not be saved.
-   The following emacs commands entered at the keyboard will make this
-   behavior active.  Placing these commands in the user's .emacs file
-   will make them the default for that user:
-     ****** need some commands here ****
+   _We_strongly_discourage_this_approach_.  However, if you insist,
+   add the following lines to your .emacs file:
 
-The second saves disk space.  The first allows for better portability
-of code.
+      (setq ess-keep-dump-files 'nil)
+      (setq ess-delete-dump-files t)
+      (setq ess-mode-silently-save nil)
+
+The second saves a small amount of disk space.  The first allows for
+better portability as well as external version control for code.
 
 
 Scenarios for use
