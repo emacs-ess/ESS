@@ -2,9 +2,9 @@
 ;;; Thu 06 May 2004
 ;;; Stephen Eglen
 ;;; GPL.
-;; Modified: $Date: 2004/06/20 17:05:53 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: ess-toolbar.el,v 1.13 2004/06/20 17:05:53 stephen Exp $
+;; Modified: $Date: 2004/06/21 10:52:49 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: ess-toolbar.el,v 1.14 2004/06/21 10:52:49 stephen Exp $
 
 ;;; Commentary:
 
@@ -198,5 +198,19 @@ is added globally when ess-toolbar.el is loaded."
 	    (setq tool-bar-map ess-toolbar)
 	    (ess-write-to-dribble-buffer "Creating global Emacs toolbar"))
 	    )))
+
+;;; Check for toolbar support.
+(or
+ ;; XEmacs test for image support, adapted from vm-version.el:
+ (and (featurep 'xemacs) (memq (device-type) '(x gtk mswindows)))
+ ;;
+ ;; Emacs support for images:
+ (and (fboundp 'display-images-p) (display-images-p))
+ ;; if above tests failed, give a warning.
+ (progn
+   (message "Toolbar support for ESS not available in this emacs.")
+   ;; Not sure if we want to delay startup of ESS.
+   ;;(sit-for 2)
+   ))
 
 (provide 'ess-toolbar)
