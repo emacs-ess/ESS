@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: essd-s4.el,v 5.6 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2001/08/08 19:25:07 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: essd-s4.el,v 5.7 2001/08/08 19:25:07 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -75,6 +75,7 @@
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?")
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-load-command     . ".SmodeLoad(\"%s\")\n")
     (inferior-ess-dump-command     . ".SmodeDump(\"%s\", \"%s\")\n")
     (inferior-ess-search-list-command . ".SmodePaths()\n"))

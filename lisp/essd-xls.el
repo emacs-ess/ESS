@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2000/10/17 18:35:55 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: essd-xls.el,v 5.6 2000/10/17 18:35:55 rossini Exp $
+;; Modified: $Date: 2001/08/08 19:25:07 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: essd-xls.el,v 5.7 2001/08/08 19:25:07 ess Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -58,6 +58,7 @@
     (ess-save-lastvalue-command    . "()\n" )
     (inferior-ess-primary-prompt   . "> ?"               )
     (inferior-ess-secondary-prompt . "^"                 )
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-program          . inferior-XLS-program-name)
     (inferior-ess-help-command     . "(help '%s)\n"      )
     (inferior-ess-objects-command  . "(variables)\n"     )

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 August 1999
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: essd-omg.el,v 5.7 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2001/08/08 19:25:07 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: essd-omg.el,v 5.8 2001/08/08 19:25:07 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -66,6 +66,7 @@
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "\\[[0-9]*\\]")
     (inferior-ess-secondary-prompt . ".. ?")
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-omg")
     (inferior-ess-start-args       . ""))
  "Variables to customize for OMG (Omegahat)")

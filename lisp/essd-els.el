@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2000/06/30 21:29:42 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: essd-els.el,v 1.11 2000/06/30 21:29:42 rossini Exp $
+;; Modified: $Date: 2001/08/08 19:25:07 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: essd-els.el,v 1.12 2001/08/08 19:25:07 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -66,6 +66,7 @@
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[/a-zA-Z0-9() ]*[>$%] ?")
     (inferior-ess-secondary-prompt . "[+>] ?")
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
     (inferior-ess-start-args       . "-i"))
  "Variables to customize for S+elsewhere")

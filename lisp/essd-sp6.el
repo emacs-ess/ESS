@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: ?? ??? 2001
-;; Modified: $Date: 2001/07/27 23:29:08 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essd-sp6.el,v 1.4 2001/07/27 23:29:08 rossini Exp $
+;; Modified: $Date: 2001/08/08 19:25:07 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essd-sp6.el,v 1.5 2001/08/08 19:25:07 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -84,6 +84,7 @@
     ;; (inferior-ess-search-list-command . "search(\"paths\")\n")
     (inferior-ess-search-list-command . "search()\n")
     (inferior-ess-exit-command     . "q()\n")
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?"))
 

@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/05/31 15:47:15 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: essd-sas.el,v 5.10 2001/05/31 15:47:15 ess Exp $
+;; Modified: $Date: 2001/08/08 19:25:07 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: essd-sas.el,v 5.11 2001/08/08 19:25:07 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -182,6 +182,7 @@ Better logic needed!  (see 2 uses, in this file).")
     (ess-loop-timeout              .  500000 )
     (inferior-ess-primary-prompt   . "^")
     (inferior-ess-secondary-prompt . "^")
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-SAS")
     (inferior-ess-start-args       . inferior-SAS-args-temp)
     ;; (ess-pre-run-hook              . 'ess-SAS-pre-run-hook)

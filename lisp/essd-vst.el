@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/11/02 16:47:48 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: essd-vst.el,v 5.6 2000/11/02 16:47:48 rossini Exp $
+;; Modified: $Date: 2001/08/08 19:25:07 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: essd-vst.el,v 5.7 2001/08/08 19:25:07 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -48,6 +48,7 @@
     (ess-help-sec-regex            .  " ")
     (ess-help-sec-keys-alist       .  " ")
     (inferior-ess-primary-prompt   .  "> ?"               )
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-program          .  inferior-VST-program-name)
     (inferior-ess-help-command     .  "(help '%s)\n"      )
     (inferior-ess-objects-command  .  "(variables)\n"     )

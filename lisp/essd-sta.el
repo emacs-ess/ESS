@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 2001/02/06 18:54:17 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: essd-sta.el,v 1.24 2001/02/06 18:54:17 rossini Exp $
+;; Modified: $Date: 2001/08/08 19:25:07 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: essd-sta.el,v 1.25 2001/08/08 19:25:07 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -66,6 +66,7 @@
     (inferior-ess-exit-command     . "exit\n")
     (inferior-ess-primary-prompt   . "^.") ;; "^. ?") 
     (inferior-ess-secondary-prompt . "^.") ;; "^. ?") 
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-stata")
     (inferior-ess-start-args       . "")) ; "-q"
  "Variables to customize for Stata.")

@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2000/04/03 15:27:36 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-sp4.el,v 1.6 2000/04/03 15:27:36 maechler Exp $
+;; Modified: $Date: 2001/08/08 19:25:07 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essd-sp4.el,v 1.7 2001/08/08 19:25:07 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -78,6 +78,7 @@ connects it to the *S+4 ddeclient* window.")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?")
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S+4")
     (inferior-ess-start-args       . (concat
 				      inferior-S+4-multipleinstances
@@ -112,6 +113,7 @@ connects it to the *S+4 ddeclient* window.")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?")
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S+4")
     (inferior-ess-start-args       . ""))
  "Variables to customize for Sqpe+4.")

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-sp5.el,v 1.6 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2001/08/08 19:25:07 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essd-sp5.el,v 1.7 2001/08/08 19:25:07 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -82,6 +82,7 @@
     ;; "paths": get the "/" needed by  (ess-dir-modtime dir)  in ./ess-inf.el:
     (inferior-ess-search-list-command . "search(\"paths\")\n")
     (inferior-ess-exit-command     . "q()\n")
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?"))
 

@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2001/06/12 05:43:14 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essdsp6w.el,v 5.3 2001/06/12 05:43:14 ess Exp $
+;; Modified: $Date: 2001/08/08 19:25:07 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essdsp6w.el,v 5.4 2001/08/08 19:25:07 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -81,6 +81,7 @@ connects it to the *S+6 ddeclient* window.")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?")
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S+6")
     (inferior-ess-start-args       . (concat
 				      inferior-S+6-multipleinstances
@@ -114,6 +115,7 @@ connects it to the *S+6 ddeclient* window.")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?")
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-S+6")
     (inferior-ess-start-args       . ""))
  "Variables to customize for Sqpe+6.")
