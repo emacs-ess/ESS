@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/06/21 21:57:58 $
-;; Version: $Revision: 1.174 $
-;; RCS: $Id: essa-sas.el,v 1.174 2004/06/21 21:57:58 rsparapa Exp $
+;; Modified: $Date: 2004/06/24 20:42:07 $
+;; Version: $Revision: 1.175 $
+;; RCS: $Id: essa-sas.el,v 1.175 2004/06/24 20:42:07 rsparapa Exp $
 
 ;; Keywords: SAS 
 
@@ -465,7 +465,8 @@ current buffer if nil."
 	(ess-tmp-graph-alist nil)
         (ess-tmp-glyph nil)
         (ess-tmp-graph-regexp 
-	    (concat "[ ]+RECORDS[ ]+WRITTEN[ ]+TO[ ]+\\(.*" ess-sas-graph-view-suffix-regexp "\\)")))
+	    (concat "[ ]+RECORDS[ ]+WRITTEN[ ]+TO[ \n]+\\(\\(.\\|\n\\)*" 
+		ess-sas-graph-view-suffix-regexp "\\)")))
 ;	    (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
 
     (save-match-data 
@@ -479,10 +480,6 @@ current buffer if nil."
 
 	(setq ess-tmp-graph (read-string "GSASFILE: " 
 	    (or ess-tmp-graph ess-sas-file-path)))
-;	    (or ess-tmp-graph (file-name-nondirectory ess-sas-file-path))))
-
-;	    (setq ess-tmp-graph (convert-standard-filename 
-;		(concat (file-name-directory ess-sas-file-path) "/" ess-tmp-graph)))
 
 	  (if (fboundp 'ess-xemacs-insert-glyph) (progn
 	      (if (string-match "[.][gG][iI][fF]" ess-tmp-graph)
