@@ -1,17 +1,21 @@
 ;;; ess-mode.el --- Support for editing ESS source code
 
-;; Copyright (C) 1989-1994 Bates, Kademan, Ritter, Smith, Hornik,
-;; Maechler, and Rossini.
+;; Copyright (C) 1989-1994 Bates, Kademan, Ritter, Smith.
+;; Copyright (C) 1997,  Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;;                                    Kurt Hornik <hornik@ci.tuwien.ac.at>
+;;                                    Martin Maechler <maechler@stat.math.ethz.ch>
+;;                                    A.J. (Tony) Rossini <rossini@stat.sc.edu>
+
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/20 21:38:34 $
-;; Version: $Revision: 1.76 $
-;; RCS: $Id: ess-mode.el,v 1.76 1997/11/20 21:38:34 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:12:05 $
+;; Version: $Revision: 4.1 $
+;; RCS: $Id: ess-mode.el,v 4.1 1997/11/20 23:12:05 rossini Exp $
 
 
-;; This file is part of ess-mode
+;; This file is part of ESS
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
