@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/20 19:44:35 $
-;; Version: $Revision: 1.62 $
-;; RCS: $Id: ess-inf.el,v 1.62 1997/10/20 19:44:35 rossini Exp $
+;; Modified: $Date: 1997/10/20 19:45:53 $
+;; Version: $Revision: 1.63 $
+;; RCS: $Id: ess-inf.el,v 1.63 1997/10/20 19:45:53 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -524,27 +524,26 @@ Returns the name of the selected process."
     (if noswitch nil (switch-to-buffer (process-buffer (get-process proc))))
     proc))
 
-(defun ess-switch-local-process (message)
- "Ask for a process, and make it the current S process.
-Also switches to the process buffer, if second arg NOSWITCH (prefix) is non-nil.
-Returns the name of the selected process."
-  (interactive
-   (list "Switch to which ESS process? ")) ;prefix sets 'noswitch
-  (update-ess-process-name-list)
-  (if (eq (length ess-process-name-list) 0)
-      (error "No S processes running."))
-  (let ((proc (completing-read message
-			       ess-process-name-list
-			       nil ; predicate
-			       'require-match
-			       ;; If in S buffer, don't offer current process
-			       ;; maybe rather
-			       ;; ess-local-process-name IF exists 
-			       (if (eq major-mode 'inferior-ess-mode)
-				   ess-language
-				 ess-current-process-name))))
-    (setq ess-local-process-name proc)))
-
+;;(defun ess-switch-local-process (message)
+;; "Ask for a process, and make it the current S process.
+;;Also switches to the process buffer, if second arg NOSWITCH (prefix) is non-nil.
+;;Returns the name of the selected process."
+;;  (interactive
+;;   (list "Switch to which ESS process? ")) ;prefix sets 'noswitch
+;;  (update-ess-process-name-list)
+;;  (if (eq (length ess-process-name-list) 0)
+;;      (error "No S processes running."))
+;;  (let ((proc (completing-read message
+;;			       ess-process-name-list
+;;			       nil ; predicate
+;;			       'require-match
+;;			       ;; If in S buffer, don't offer current process
+;;			       ;; maybe rather
+;;			       ;; ess-local-process-name IF exists 
+;;			       (if (eq major-mode 'inferior-ess-mode)
+;;				   ess-language
+;;				 ess-current-process-name))))
+;;    (setq ess-local-process-name proc)))
 
 (defun ess-force-buffer-current (prompt &optional force)
   "Make sure the current buffer is attached to an S process. 
@@ -561,10 +560,7 @@ ess-local-process-name is set to the name of the process selected."
       ;; ess-local-process-name is nil -- which process to attach to
       (save-excursion
 	(let ((proc (ess-request-a-process prompt 'no-switch)))
-	  ;;(make-local-variable 'ess-local-process-name)
-	  (setq ess-local-process-name proc)
-	  ;; why is the mode line not updated ??
-	  )))))
+	  (setq ess-local-process-name proc))))))
 
 (defun ess-switch-process ()
   "Force a switch to a new underlying process."
