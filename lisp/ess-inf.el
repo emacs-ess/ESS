@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/12 19:43:06 $
-;; Version: $Revision: 1.81 $
-;; RCS: $Id: ess-inf.el,v 1.81 1997/11/12 19:43:06 rossini Exp $
+;; Modified: $Date: 1997/11/12 21:33:31 $
+;; Version: $Revision: 1.82 $
+;; RCS: $Id: ess-inf.el,v 1.82 1997/11/12 21:33:31 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -70,19 +70,14 @@
 
 (defun ess-proc-name (n name)
   "Return process name of process N, as a string, with NAME prepended."
-  ;;(concat ess-dialect (if (> n 1) n)))
-  ;;(concat (cdr (rassoc ess-dialect ess-customize-alist)) ":" n))
   (concat name ":" n))
 
-;; AJR: Moved S,R,XLS to ess-site.
-
-;; AJR: was S0().
-(defun inferior-ess (&optional n)
+(defun inferior-ess (&optional ess-start-args)
   "Start or switch to inferior ESS process N.
 
-Without a prefix argument, either starts a new ESS process, or switches
+Without a prefix argument, starts a new ESS process, or switches
   to the ESS process associated with the current buffer.
-With a numeric prefix, starts or switches to process N.
+With a prefix, starts the process with those args.
 The current buffer is used if it is an inferior-ess-mode
 or ess-transcript-mode buffer.
 
@@ -97,14 +92,11 @@ accompany the call for inferior-ess-program.
 
 \(Type \\[describe-mode] in the process buffer for a list of commands.)"
 
-  ;; With prefix arg N: switch to process N if it is running, if not,
-  ;; start a new process N.
-  ;;
   ;; Use the current buffer if it is in inferior-ess-mode or ess-trans-mode
   ;; If not, maybe ask about starting directory and/or transcript file.
   ;; If no transfile, use buffer *S*
   ;;
-  ;; Without prefix arg: switch to buffer of ess-local-process-name if it
+  ;; Switch to buffer of ess-local-process-name if it
   ;; exists, maybe starting a new process; If not, find first N
   ;; s.t. there is no process `ess-dialect'+N.
   ;; Ask as above.
@@ -112,9 +104,14 @@ accompany the call for inferior-ess-program.
   ;; This function is primarily used to figure out the Process and
   ;; buffer names to use for inferior-ess.
 
-  (interactive "P")
+  (interactive)
   ;; set up for current language (need here, to get ess-language,
   ;; etc).
+
+  (ess-write-to-dribble-buffer
+     (format "(inferior-ess 0): ess-start-args=%s \n"
+	     ess-start-args))
+
   (let ((temp-ess-dialect (cdr (rassoc ess-dialect
 				       ess-customize-alist))))
     (save-excursion
@@ -135,43 +132,26 @@ accompany the call for inferior-ess-program.
 	     (current-buffer)))
     (let* ((defdir (directory-file-name (or ess-directory default-directory)))
 	   (temp-dialect temp-ess-dialect)
-	   ;;	(procname
-	   ;;	 (if n (ess-proc-name (prefix-numeric-value n))
-	   ;;	   ;; no prefix arg
-	   ;;	   (or (and (not (comint-check-proc (current-buffer)))
-	   ;;		    ;; Don't start a new process in current buffer if
-	   ;;		    ;; one is already running
-	   ;;		    ess-local-process-name)
-	   ;;	       ;; find a non-existent process
-	   ;;	       (let ((ntry 0) done)
-	   ;;		 (while (not done)
-	   ;;		   (setq ntry (1+ ntry))
-	   ;;		   (setq done (not (get-process (ess-proc-name ntry)))))
-	   ;;		 (ess-proc-name ntry))))
-
-	   (procname (if n (ess-proc-name (prefix-numeric-value n)
-					  temp-dialect)
-		       ;; no prefix arg
-		       (or (and (not (comint-check-proc (current-buffer)))
-				;; Don't start a new process in current buffer if
-				;; one is already running
-				ess-local-process-name)
-			   ;; find a non-existent process
-			   (let ((ntry 0)
-				 (done nil))
-			     (while (not done)
-			       (setq ntry (1+ ntry)
-				     done (not
-					   (get-process (ess-proc-name
-							 ntry
-							 temp-dialect)))))
-			     (ess-proc-name ntry temp-dialect)))))
+	   (procname (or (and (not (comint-check-proc (current-buffer)))
+			      ;; Don't start a new process in current buffer if
+			      ;; one is already running
+			      ess-local-process-name)
+			 ;; find a non-existent process
+			 (let ((ntry 0)
+			       (done nil))
+			   (while (not done)
+			     (setq ntry (1+ ntry)
+				   done (not
+					 (get-process (ess-proc-name
+						       ntry
+						       temp-dialect)))))
+			   (ess-proc-name ntry temp-dialect))))
 	   (startdir nil)
 	   (buf nil)
 	   (buf-name-str  (concat "*" procname "*")))
 
       (ess-write-to-dribble-buffer
-       (format "(inferior-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
+       (format "(inf-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
 	       procname
 	       temp-dialect
 	       buf-name-str))
@@ -182,7 +162,6 @@ accompany the call for inferior-ess-program.
 
        ;; Else (it's a new or terminated process) try to use current buffer
        ((and (not buf)
-	     (not n)
 	     (not (comint-check-proc (current-buffer)))
 	     (memq major-mode '(inferior-ess-mode))) ; ess-transcript-mode)))
 	(setq startdir
@@ -217,6 +196,7 @@ accompany the call for inferior-ess-program.
       (set-buffer buf)
       ;; Now that we have the buffer, set buffer-local variables.
       (ess-setq-vars-local ess-customize-alist buf)
+      (if ess-start-args (setq inferior-ess-start-args ess-start-args))
       (ess-write-to-dribble-buffer
        (format "(inferior-ess 2): ess-language=%s, ess-dialect=%s buf=%s \n"
 	       ess-language
@@ -404,7 +384,7 @@ visiting a file."
 		   process-environment)))
 	     (ess-write-to-dribble-buffer "Making Process...")
 	     (ess-write-to-dribble-buffer
-	      (format "Buf %s, Proc %s, Prog %s \n Start File %s, Args %s \n"
+	      (format "Buf %s, Proc %s, Prog %s\n Start File=%s, Args= %s.\n"
 		      buffer
 		      procname
 		      inferior-ess-program
