@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 4.90 $)
+($Revision: 4.91 $)
 
 ESS: Using SAS
 ==============
@@ -261,3 +261,17 @@ are SAS timings from the log files.  The SAS windows times include
 window management and communications times as well as calculation
 times.  The iESS times include only the calculations by the SAS
 computing engine.)
+
+
+Some Frequently Seen Problems
+=============================
+
+1. If M-x SAS gives weird errors upon startup, check the following:
+   - ess-sas-sh-command (in the ESS source directory) needs to be
+     executable (solution: "chmod ugo+rx ess-sas-sh-command").
+   - sas isn't in your executable path (verify using "which sas" from
+     a shell command-line)
+   - you need a copy of SAS (we can't solve this)
+
+
+
