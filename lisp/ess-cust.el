@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2000/10/17 13:11:06 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: ess-cust.el,v 1.12 2000/10/17 13:11:06 rossini Exp $
+;; Modified: $Date: 2000/10/17 14:54:12 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: ess-cust.el,v 1.13 2000/10/17 14:54:12 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -349,6 +349,8 @@ If not number, the statements are indented at open-parenthesis following
 `expression'.")
 
 ;;;*;;; Editing styles
+
+;;; **FIXME**  The following NEEDS to be customized.
 
 (defvar ess-default-style-list
   (list 'DEFAULT
