@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2002/11/12 10:58:31 $
-;; Version: $Revision: 5.93 $
-;; RCS: $Id: ess-site.el,v 5.93 2002/11/12 10:58:31 maechler Exp $
+;; Modified: $Date: 2003/01/02 00:30:45 $
+;; Version: $Revision: 5.94 $
+;; RCS: $Id: ess-site.el,v 5.94 2003/01/02 00:30:45 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -427,6 +427,9 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files." t)
+
+(autoload 'ess-rdired "ess-rdired" 
+  "View *R* objects in a dired-like buffer." t)
 
 ;;; On a PC, the default is S+6.
 ;; Elsewhere (unix and linux) the default is S+6
