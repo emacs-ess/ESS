@@ -25,8 +25,8 @@ with the following versions of emacs
 @itemize @bullet
 @item GNU Emacs 20.3-7, 21.1, 21.3, 21.4
 @item XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13@footnote{
-requires the files.el patch to revert-buffer for the Local Variables
-updating problem}, 21.4.14-15, 21.4.17, 21.5.18-19
+require the files.el patch to revert-buffer for the Local Variables 
+updating problem}, 21.4.14-15, 21.4.17, 21.5.18
 @c @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no
 @c longer supported, so an upgrade is recommended if you plan to use ESS.
 @c If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note

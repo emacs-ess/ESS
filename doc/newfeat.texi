@@ -2,15 +2,17 @@ Changes/New Features in 5.2.6:
 @itemize @bullet
 @item Removed non-ASCII characters in a few files.
 @item ESS[R]: now works better when UTF-8 locale is active; in
-particular, you get correct directional quotes in R's startup message
-for R-devel (unstable development version of R 2.1.0) when using
-environment variables LANGUAGE=en@@quot LC_ALL=en_US.UTF-8
+ particular, you get correct directional quotes in R's startup message
+ for R-devel (unstable development version of R 2.1.0) when using
+ environment variables LANGUAGE=en@@quot LC_ALL=en_US.UTF-8
 @item ESS[SAS]: toggling of .log mode improved (@kbd{F10}); toggling of
-.lst mode now also available (@kbd{C-F10}); in particular, opening of a
-@file{*.lst} file does not auto-mode to sas-listing.
-
-Killing all buffers associated with .sas program no longer bound to
-@kbd{C-F10} since it seems to be a bit overzealous.
+.lst mode now also available (@kbd{C-F10}); killing all buffers associated
+with .sas program no longer bound to @kbd{C-F10} since its a bit overzealous;
+EXPERIMENTAL new feature:  if your .log grows to more than 2.5MB, just
+the first 2.5MB are refreshed; this is helpful when your .sas program
+generates lots of error messages and gets too big for emacs to display;
+the truncation size is controlled by the variable ess-sas-log-max and
+defaults to 2500000.
 @item S-Plus 7 for Windows is now recognized.
 @item ESS[S] (incl.@: R): in auto-fill mode, strings are not wrapped anymore.
 @item ESS[S] (incl.@: R): font-lock now correctly differs between R and S.
@@ -20,17 +22,14 @@ Changes/New Features in 5.2.5:
 @itemize @bullet
 @item ESS[R]: @kbd{C-c C-q} or @samp{Quit S} from the menu now should work
 (again and less klunkily) and do not append @samp{-exited} to the
-buffer name.
-
-Further, the behavior of @code{(ess-cleanup)}, called from
+buffer name.  Further, the behavior of @code{(ess-cleanup)}, called from
 ess-quit, now depends on the new customizable variable
 @code{ess-S-quit-kill-buffers-p} which defaults to @code{nil}.
 Consequently, the question @emph{``Delete all buffers associated
 with ..?''} will not be asked anymore by default.
-
+@item ESS[SAS] -- ess-ebcdic-to-ascii-search-and-replace will now work 
+with the @code{recode} application as well which is available on many platforms 
 @item ESS[S] (incl.@: R): Name completion for slots of S4 objects now works!
-@item ESS[SAS] @code{ess-ebcdic-to-ascii-search-and-replace} will now
-work with the recode application (available on many platforms) as well.
 @end itemize
 
 Changes/New Features in 5.2.4:
@@ -43,8 +42,8 @@ distributed; this is no longer relevant and so has been deleted.)
 platform, .log NOTEs may display as gibberish since the EBCDIC
 characters are not converted to ASCII prior to their display.  So,
 the function ess-ebcdic-to-ascii-search-and-replace is provided for
-convenience and is bound to @kbd{C-F11}.  This function requires the
-@code{dd} command (unix).
+convenience and is bound to @kbd{C-F11}.  This function requires the 
+@code{dd} command (only available on unix or unix-like platforms).
 @item ESS: Completion of object names is now always done dynamically rather
 than allowing the option of using a pre-computed database (by
 @code{ess-create-object-name-db}) since modern computers seem fast
