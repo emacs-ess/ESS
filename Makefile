@@ -1,14 +1,29 @@
-## $Id: Makefile,v 5.10 1999/02/10 23:35:16 ess Exp $
+## $Id: Makefile,v 5.11 1999/03/05 22:27:46 rossini Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
-ESSVERSION=5.1.2
+ESSVERSION=5.1.3
 ESSVERSIONDIR=ess-$(ESSVERSION)
 
 Subdirs = lisp doc
 
+INTRO.DEPENDS=doc/credits.texi doc/inst_cvs.texi \
+	doc/newfeat.texi  doc/authors.texi  doc/currfeat.texi \
+	doc/inst_tar.texi doc/bugrept.texi  doc/license.texi  \
+	doc/requires.texi doc/bugs.texi     doc/getting.texi  \
+	doc/mailing.texi  doc/stabilty.texi 
+
+
 all install clean distclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@ ; cd .. ; done
+
+README : doc/readme.texi $(INTRO.DEPENDS)
+	cd doc ; makeinfo --no-validate --no-headers --no-split -o - readme.texi \
+	| perl -pe 'last if /^Concept Index/;' > ../README
+
+ANNOUNCE: doc/announc.texi $(INTRO.DEPENDS) 
+	cd doc; makeinfo --no-validate --no-headers --no-split -o - announc.texi \
+	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
 
 ESS:
 	cd lisp; make all
