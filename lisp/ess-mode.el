@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/06/21 12:01:09 $
-;; Version: $Revision: 5.29 $
-;; RCS: $Id: ess-mode.el,v 5.29 2004/06/21 12:01:09 rmh Exp $
+;; Modified: $Date: 2004/06/21 12:03:43 $
+;; Version: $Revision: 5.30 $
+;; RCS: $Id: ess-mode.el,v 5.30 2004/06/21 12:03:43 rmh Exp $
 
 ;; This file is part of ESS
 
@@ -243,7 +243,7 @@
   (interactive)
   (if ess-microsoft-p
       ;; replace with other choices for starting SAS under XEmacs?
-      (error "SAS cannot be started this way in in ESS on Windows.")
+      (error "SAS cannot be started this way in ESS on Windows.")
     (SAS)))
 
 (defun ess-mode-xemacs-menu ()
