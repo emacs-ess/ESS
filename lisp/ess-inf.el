@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/09/04 00:20:46 $
-;; Version: $Revision: 5.51 $
-;; RCS: $Id: ess-inf.el,v 5.51 2000/09/04 00:20:46 rossini Exp $
+;; Modified: $Date: 2000/09/04 16:57:02 $
+;; Version: $Revision: 5.52 $
+;; RCS: $Id: ess-inf.el,v 5.52 2000/09/04 16:57:02 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -182,6 +182,8 @@ accompany the call for `inferior-ess-program'.
 
        ;; Ask for transcript file and startdir
        ;; FIXME -- this should be in ess-get-transfile
+       ;; AJR: Why?  I'm not clear about the logic, i.e. when would it
+       ;;      be used again, to justify?
        ((not buf)
 	(setq startdir
 	      (if ess-ask-for-ess-directory (ess-get-directory defdir)
@@ -203,6 +205,7 @@ accompany the call for `inferior-ess-program'.
       (if ess-start-args (setq inferior-ess-start-args ess-start-args)
 	(setq inferior-ess-start-args "")) ;; AJR: Errors with XLS?
       
+      ;; Write out debug info
       (ess-write-to-dribble-buffer
        (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
 	       ess-language
@@ -212,9 +215,6 @@ accompany the call for `inferior-ess-program'.
        (format "(inf-ess 2.2): start args = %s, inf-ess-start-args=%s \n"
 	       ess-start-args
 	       inferior-ess-start-args))
-      (if startdir (setq default-directory startdir))
-      (setq-default ess-history-file
-		    (concat "." ess-dialect "history"))
       (ess-write-to-dribble-buffer
        (format "(inf-ess finish [%s(%s), %s(%s,%s)]\n"
 	       ess-language
@@ -222,6 +222,13 @@ accompany the call for `inferior-ess-program'.
 	       inferior-ess-program
 	       ess-current-process-name
 	       ess-local-process-name))
+
+      ;; Start from the "right" directory
+      (if startdir (setq default-directory startdir))
+      ;; Set up history
+      (setq-default ess-history-file
+		    (concat "." ess-dialect "history"))
+      ;; initialize.
       (ess-multi procname buf inferior-ess-start-args))))
 
 
@@ -265,7 +272,6 @@ there is no process NAME)."
 	       inf-ess-start-args comint-process-echoes))
 	(set-buffer buffer)
 	(setq-default inferior-ess-prompt
-
 		      ;; shouldn't be setq-default!  And I've
 		      ;; forgotten why!   (AJR)
 
@@ -298,7 +304,7 @@ there is no process NAME)."
 				     inf-ess-start-args)))
 	;; Set the process sentinel to save the history
 	(set-process-sentinel (get-process proc-name) 'ess-process-sentinel)
-	;; Add this process to ess-process-name-list, if need be
+	;; Add this process to ess-process-name-list, if needed
 	(let ((conselt (assoc proc-name ess-process-name-list)))
 	  (if conselt nil
 	    (setq ess-process-name-list
