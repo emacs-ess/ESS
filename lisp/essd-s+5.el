@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 1998/11/11 12:45:15 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essd-s+5.el,v 1.4 1998/11/11 12:45:15 maechler Exp $
+;; Modified: $Date: 1998/11/12 17:27:30 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essd-s+5.el,v 1.5 1998/11/12 17:27:30 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -100,7 +100,7 @@ New way to do it."
   (interactive)
   (setq ess-customize-alist S+5-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(S): ess-dialect=%s , buf=%s \n" ess-dialect (current-buffer)))
+   (format "\n(S+5): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
   (inferior-ess))
 
 

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/11/11 12:42:23 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essd-s3.el,v 5.2 1998/11/11 12:42:23 maechler Exp $
+;; Modified: $Date: 1998/11/12 17:27:30 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essd-s3.el,v 5.3 1998/11/12 17:27:30 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -88,9 +88,7 @@
   (interactive)
   (setq-default ess-customize-alist S3-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(S): ess-dialect=%s , buf=%s \n"
-	   ess-dialect
-	   (current-buffer)))
+   (format "\n(S3): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
   (inferior-ess))
 
  ; Provide package

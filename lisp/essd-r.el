@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/09/11 14:22:25 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: essd-r.el,v 5.4 1998/09/11 14:22:25 maechler Exp $
+;; Modified: $Date: 1998/11/12 17:27:30 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: essd-r.el,v 5.5 1998/11/12 17:27:30 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -78,19 +78,15 @@
 
 
 (defun R (&optional start-args)
-  "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ)."
+  "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ)."
   (interactive "P")
   (setq ess-customize-alist R-customize-alist)
   ;; for debugging only
   (ess-write-to-dribble-buffer
-   (format "(R): ess-dialect=%s , buf=%s, start-arg=%s\n"
-	   ess-dialect
-	   (current-buffer)
-	   start-args))
-  (ess-write-to-dribble-buffer
-   (format "(R): current-prefix-arg=%s \n"
-	   current-prefix-arg))
-
+   (format 
+    "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n\t current-prefix-arg=%s\n"
+    ess-dialect (current-buffer) start-args
+    current-prefix-arg))
   (let ((r-start-args  (concat "--no-readline "
 	 (if start-args (read-string
 			 "Starting Args [other than `--no-readline'] ? ")

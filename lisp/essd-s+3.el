@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/11/11 12:41:56 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: essd-s+3.el,v 5.4 1998/11/11 12:41:56 maechler Exp $
+;; Modified: $Date: 1998/11/12 17:27:30 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: essd-s+3.el,v 5.5 1998/11/12 17:27:30 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -77,7 +77,7 @@
   (interactive)
   (setq ess-customize-alist S+3-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(S): ess-dialect=%s , buf=%s \n" ess-dialect (current-buffer)))
+   (format "\n(S+3): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
   (inferior-ess))
 
 (defun S+3-mode (&optional proc-name)
