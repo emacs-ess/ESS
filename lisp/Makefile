@@ -3,30 +3,16 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.26 $.
+### File: $Revision: 5.27 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
 ### Kyle and Per!
 
-PREFIX=/usr/local
-
-## Emacs version that you are installing ESS for.  It might be simpler to do:
-##     make EMACS=xemacs
-## for example, than to edit this file.
-##
-EMACS = emacs
-#EMACS = xemacs
-
-## For strange setups...
-INSTALL = cp
+include ../Makeconf
 
 # where the .elc, files should go
 LISPDIR = .
-
-# What GZCAT is called on your system (GNU gzip "cat")
-#GZCAT = gzcat
-GZCAT = zcat
 
 ## compile with noninteractive and relatively clean environment:
 ## XEMACS 19.xx and before.
@@ -37,19 +23,14 @@ BATCHFLAGS = -batch --no-site-file --no-init-file
 
 #### no user servicable parts beyond this point ####
 
-# no csh please
-SHELL = /bin/sh
-
-# GNU make, exclusively --> see comment below /ESSVERSION/
-## ESSVERSION=$(shell cat ../VERSION)
-
 ## For noweb extraction of code and documentation.
 
 NOTANGLE=notangle -L
 #NOTANGLE=notangle for no indexing.
 NOWEAVE=noweave
 
-.SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el
+## GNU make only (?) (Sun make can't make readme.dvi) .. :
+## SUFFIXES are in ../Makeconf :
 .nw.html: ;     $(NOWEAVE) -filter l2h -index -html $*.nw > $*.html
 .nw.tex: ;      $(NOWEAVE) -index -delay $*.nw | cpif $*.tex
 .nw.el:  ;      $(NOTANGLE) -R$*.el | cpif $*.el
@@ -71,7 +52,7 @@ PRELOADS = -l ./ess-comp.el
 CORE = ess.elc ess-site.elc
 
 TOCOMPILE = ess-vars.el ess.el ess-site.el ess-utils.el \
-	ess-inf.el ess-iw32.el \
+ess-inf.el ess-iw32.el \
 	ess-mode.el ess-trns.el ess-help.el \
 	ess-comp.el \
 	essl-s.el essd-s3.el essd-s4.el essd-sp3.el essd-sp4.el essd-sp5.el \
@@ -120,7 +101,7 @@ distclean: clean
 ess-vars.el: ../VERSION
 	perl -pi -e 's/".*"/"$(shell cat $^)"/ if /ess-version/' $@
 ess-site.el: ../VERSION
-	perl -pi -e 's/ess-([0-9]+\.){2}[0-9]+/ess-$(shell cat $^)/go' $@
+	perl -pi -e 's/$(ESSVER_NR_REGEXP)/\1-$(shell cat $^)/go' $@
 
 
 ### File Dependencies

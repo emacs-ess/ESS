@@ -3,40 +3,24 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.11 $.
+### File: $Revision: 1.12 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
 ### Kyle and Per!
 
-PREFIX=/usr/local
+include ../Makeconf
 
 # where the Info file should go -- THIS MIGHT BE WRONG!
 INFODIR = $(PREFIX)/info
 ## XEmacs
 #INFODIR = $(PREFIX)/lib/$(EMACS)/info
 
-## For strange setups...
-INSTALL = cp
-
-# program to convert .texi{nfo} to .info
-MAKEINFO = makeinfo
-
 # program to convert .texi{nfo} to .html
 MAKEHTML = texi2html -verbose -iso
 MAKEHTMLs = $(MAKEHTML) -split_chapter -menu -glossary
 
-# What GZCAT is called on your system (GNU gzip "cat")
-#GZCAT = gzcat
-GZCAT = zcat
-
 #### no user servicable parts beyond this point ####
-
-# no csh please
-SHELL = /bin/sh
-
-# GNU make, exclusively --> see comment below /ESSVERSION/
-## ESSVERSION=$(shell cat ../VERSION)
 
 MYWWWDIR = /none/at/this/time
 MYFTPDIR = /none/at/this/time
@@ -81,12 +65,14 @@ install: all
 	mkdir -p $(INFODIR)
 	$(INSTALL) ess.info* $(INFODIR)
 
-clean:
-	rm -f ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
-	  ess.tp ess.vr ess.cps ess.fns ess.vrs ess.fn texput.log
+clean: ; rm -f texput.log \
+	 ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
+	 ess.tp ess.vr ess.cps ess.fns ess.vrs ess.fn \
+	 readme.aux readme.cp readme.ky readme.log readme.pg readme.toc \
+	 readme.tp readme.vr readme.cps readme.fns readme.vrs readme.fn
 
 distclean: clean
-	rm -f ess.dvi ess.ps ess.pdf
+	rm -f ess.dvi ess.ps ess.pdf readme.dvi readme.ps readme.pdf
 	rm -fr html
 
 ##-- Be careful: to recreate the info files you NEED a newer makeinfo !
@@ -99,9 +85,10 @@ realclean: distclean
 ##	s/ESSVERSION/shell cat $^/
 ## Use $(shell ..) only here, so only these are GNU make dependent :
 README.SPLUS4WIN announc.texi inst_*.texi : ../VERSION
-	perl -pi -e 's/([Ee][Ss]{2})-([0-9]+\.){2}[0-9]+/\1-$(shell cat $^)/go' $@
+	perl -pi -e 's/$(ESSVER_NR_REGEXP)/\1-$(shell cat $^)/go' $@
+
 readme.texi : ../VERSION
-	perl -pi -e 's/([Ee][Ss]{2} \s*[Vv]ersion)\s+([0-9]+\.){2}[0-9]+/\1 $(shell cat $^)/go' $@
+	perl -pi -e 's/($(ESS_REGEXP) \s*[Vv]ersion)\s+$(ESSVER_NR_REGEXP)/\1 $(shell cat $^)/go' $@
 
 
 ##dist-doc: $(DOCDISTFILES)

@@ -1,8 +1,11 @@
-## $Id: Makefile,v 5.29 2000/03/09 17:55:18 maechler Exp $
+## $Id: Makefile,v 5.30 2000/03/21 18:04:32 maechler Exp $
 ## Top Level Makefile
-SHELL = /bin/sh
 
-## Now finally use the "ess/VERSION" file -- for everything !
+include ./Makeconf
+##      ========== {edit that one if any !}
+
+## Finally using the "ess/VERSION" file -- for everything.
+## These only work with GNU make, but are only used by ESS maintainers
 ESSVERSION=$(shell cat VERSION)
 ESSVERSIONDIR=ess-$(ESSVERSION)
 ## The following MUST NOT contain "."'s.
@@ -17,7 +20,7 @@ INTRO.DEPENDS=doc/credits.texi doc/inst_cvs.texi \
 	doc/mailing.texi  doc/stabilty.texi
 
 
-all install clean distclean:
+all install clean distclean realclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@ ; cd .. ; done
 
 ESS:
@@ -30,11 +33,12 @@ docs:
 ## prefix'ing with "-" implies that errors are non-critical.
 
 README : doc/readme.texi $(INTRO.DEPENDS)
-	cd doc ; makeinfo --no-validate --no-headers --no-split -o - readme.texi \
-	| perl -pe 'last if /^Concept Index/;' > ../README
+	cd doc ; \
+	$(MAKEINFOascii) readme.texi | perl -pe \
+	'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' > ../README
 
 ANNOUNCE: doc/announc.texi $(INTRO.DEPENDS)
-	cd doc; makeinfo --no-validate --no-headers --no-split -o - announc.texi \
+	cd doc; $(MAKEINFOascii) announc.texi \
 	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
 
 dist: README ANNOUNCE docs
@@ -61,8 +65,8 @@ dist: README ANNOUNCE docs
 	ln -s ess $(ESSVERSIONDIR)
 	chmod a-w $(ESSVERSIONDIR)/lisp/*.el
 	chmod a-w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
-#NO!	-chmod a-w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
-	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Makefile
+	chmod u+w $(ESSVERSIONDIR)/doc/ess.info*
+	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Make*
 	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
 	tar hcvof ESS-$(ESSVERSION).tar $(ESSVERSIONDIR)
 	gzip ESS-$(ESSVERSION).tar

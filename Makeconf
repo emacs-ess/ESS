@@ -1,0 +1,32 @@
+####======= Common Declarations for *all* ESS -*- Makefile -*- s ==========
+
+PREFIX=/usr/local
+
+# no csh please
+SHELL = /bin/sh
+
+## Emacs version that you are installing ESS for.  It might be simpler to do:
+##     make EMACS=xemacs
+## for example, than to edit this file.
+##
+EMACS = emacs
+#EMACS = xemacs
+
+## For strange setups...
+INSTALL = cp
+
+# What GZCAT is called on your system (GNU gzip "cat")
+#GZCAT = gzcat
+GZCAT = zcat
+
+# program to convert .texi{nfo} to .info
+MAKEINFO = makeinfo
+MAKEINFOascii = $(MAKEINFO) --no-validate --no-headers --no-split -o -
+
+# GNU make, exclusively --> see comment below /ESSVERSION/
+## ESSVERSION=$(shell cat ../VERSION)
+ESS_REGEXP = [Ee][Ss]{2}
+VER_NR_REGEXP = ([0-9]+\.){2}[-.0-9a-zA-Z]+
+ESSVER_NR_REGEXP = ($(ESS_REGEXP))-$(VER_NR_REGEXP)
+
+.SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el
