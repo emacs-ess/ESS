@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/01 14:51:39 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: ess-inf.el,v 1.15 1997/07/01 14:51:39 rossini Exp $
+;; Modified: $Date: 1997/07/01 15:51:23 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: ess-inf.el,v 1.16 1997/07/01 15:51:23 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.16  1997/07/01 15:51:23  rossini
+;; removed (make-local-variable 'font-lock-defaults).
+;;
 ;; Revision 1.15  1997/07/01 14:51:39  rossini
 ;; doc-string change, ess-quit.
 ;;
@@ -400,14 +403,14 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
 		  (symbol-value switches-symbol)))
 	     (buf-name-str (buffer-name buffer)))
 	(set-buffer buffer)
-	(setq-default inferior-ess-prompt 	
+	(setq inferior-ess-prompt 	; shouldn't be setq-default!
 		      ;; Do not anchor to bol with `^'
 		      (concat "\\("
 			      inferior-ess-primary-prompt
 			      "\\|"
 			      inferior-ess-secondary-prompt
 			      "\\)"))
-	;;(message "in (ess-multi), before (inferior-ess-mode): inf.-ess-prompt= %s"
+	;;(message "(ess-multi), before (inferior-ess-mode): inf.-ess-prompt= %s" 
 	;;         inferior-ess-prompt)
 	(inferior-ess-mode)
 	;;~~~~~~~~~~~~~~~
@@ -1142,7 +1145,8 @@ to continue it."
 	 (setq comint-input-sender 'inferior-R-input-sender)))
 
   ;; Font-lock support
-  (make-local-variable 'font-lock-defaults)
+  ;; AJR: This is already the case!
+  ;;(make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults
 	'(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
 
