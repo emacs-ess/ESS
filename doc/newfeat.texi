@@ -3,7 +3,8 @@ Changes/New Features in 5.2.1:
 @item ESS[S] (R and S-plus): now have tool-bar
 with entries to evaluate code in the inferior process or to switch
 there.  This code is experimental and likely to change as XEmacs/Emacs
-issues get resolved.
+issues get resolved. For details on how to enable the code, see the
+file lisp/ess-toolbar.el.
 @end itemize
 
 Changes/New Features in 5.2.0:
