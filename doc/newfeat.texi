@@ -1,6 +1,16 @@
-Changes/New Features in 5.1.23:
+Changes/New Features in 5.2.0:
+@itemize @bullet
+@item ESS[BUGS] now supports interactive processing; special thanks to
+@uref{mailto:Aki.Vehtari@@hut.fi, Aki Vehtari}
+@end itemize
+
+Changes/New Features in 5.1.24:
 @itemize @bullet
 @item The version number is now correct even inside ESS/Emacs
+@end itemize
+
+Changes/New Features in 5.1.23:
+@itemize @bullet
 @item Minor more Makefile clean up.
 @end itemize
 
