@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.24 2002/04/17 20:08:46 rmh Exp $
+@comment $Id: ess.texi,v 5.25 2002/05/10 20:35:29 maechler Exp $
 
 @include version.texi
 
@@ -41,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.24 $ $Date: 2002/04/17 20:08:46 $)
+@subtitle version @essver{} (Documentation $Revision: 5.25 $ $Date: 2002/05/10 20:35:29 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -86,7 +86,7 @@ permission notice identical to this one.
 
 ESS version @essver{}
 
-        (Documentation $Revision: 5.24 $ $Date: 2002/04/17 20:08:46 $).
+        (Documentation $Revision: 5.25 $ $Date: 2002/05/10 20:35:29 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
@@ -108,17 +108,14 @@ development.
 * Help::                        Reading help files in ESS
 * Transcript Mode::             Manipulating saved transcript files
 * Miscellaneous::               Other features of ESS
-* Bugs Etc::
-* Help for Statistical Packages::
-* Help OS::
+* Bugs Etc::                    
+* Help for Statistical Packages::  
 * Installation::                Installing ESS on your system
-* Unix installation::           Installing ESS on your Unix system
-* Microsoft Windows installation::  Installing ESS on your MS Windows system
 * Customization::               Customizing ESS
-* Key Index::
-* Command Index::
-* Concept Index::
-* Variable and command index::
+* Key Index::                   
+* Command Index::               
+* Concept Index::               
+* Variable and command index::  
 
 @detailmenu
  --- The Detailed Node Listing ---
@@ -126,14 +123,14 @@ development.
 Introduction to @b{ESS}
 
 * Features::                    Why should I use ESS?
-* New features::
+* New features::                
 * Credits::                     Authors of and contributors to ESS
 * Latest version::              Getting the latest version of ESS
 * Manual::                      How to read this manual
 
 Starting the @b{ESS} process
 
-* Multiple ESS processes::
+* Multiple ESS processes::      
 * Customizing startup::         Changing the startup actions
 
 Interacting with the @b{ESS} process
@@ -144,8 +141,8 @@ Interacting with the @b{ESS} process
 * Transcript::                  Manipulating the transcript
 * Command History::             Command History
 * History expansion::           References to historical commands
-* Is the Statistical Process running under ESS?:: S language options()$STERM
 * Hot keys::                    Hot keys for common commands
+* Statistical Process running in ESS?::  
 * Other::                       Other commands provided by inferior-ESS
 
 Manipulating the transcript
@@ -175,7 +172,7 @@ Other features of ESS
 
 * Highlighting::                Syntactic highlighting of buffers
 * Graphics::                    Using graphics with ESS
-* Object Completion::
+* Object Completion::           
 
 Using graphics with ESS
 
@@ -184,20 +181,36 @@ Using graphics with ESS
 
 Bugs and Bug Reporting, Mailing Lists
 
-* Bugs::
-* Reporting Bugs::
-* Mailing Lists::
+* Bugs::                        
+* Reporting Bugs::              
+* Mailing Lists::               
 
 Help for Statistical Packages
 
-* Help for the S family::
-* Help for SAS::
+* Help for the S family::       
+* Help for SAS::                
 
-Help, arranged by Operating System
+Help for the S family
 
-* Unix installation::
-* Microsoft Windows installation:: 
-* System dependent::            Other variables you may need to change
+* ESS[S]--Editing files::
+* iESS[S]--Inferior ESS processes::
+* Handling and Reusing Transcripts::
+* ESS-help--assistance with viewing help::
+* Philosophies for using ESS[S]::
+* Scenarios for use (possibilities--based on actual usage)::
+* Customization Examples and Solutions to Problems::
+
+Help for SAS
+
+* ESS[SAS]--Design philosophy::
+* ESS[SAS]--Recommended autoexec.sas::
+* ESS[SAS]--Editing files::
+* iESS[SAS]--Inferior ESS processes::
+* ESS[SAS]--Batch processes::
+* ESS[SAS]--Function keys for batch processing::
+* ESS[SAS]--TAB key::
+* ESS[SAS]--Usage scenarios::
+* ESS[SAS]--Common problems::
 
 Installing ESS on your system
 
@@ -284,7 +297,7 @@ your @b{S} functions in specified source directories.
 
 @menu
 * Features::                    Why should I use ESS?
-* New features::
+* New features::                
 * Credits::                     Authors of and contributors to ESS
 * Latest version::              Getting the latest version of ESS
 * Manual::                      How to read this manual
@@ -459,7 +472,7 @@ with name @samp{*S*} which will be used
 for interacting with the @b{ESS} process, and you can start entering commands.
 
 @menu
-* Multiple ESS processes::
+* Multiple ESS processes::      
 * Customizing startup::         Changing the startup actions
 @end menu
 
@@ -568,8 +581,8 @@ typing.
 * Transcript::                  Manipulating the transcript
 * Command History::             Command History
 * History expansion::           References to historical commands
-* Is the Statistical Process running under ESS?:: S language options()$STERM
 * Hot keys::                    Hot keys for common commands
+* Statistical Process running in ESS?::  
 * Other::                       Other commands provided by inferior-ESS
 @end menu
 
@@ -1149,7 +1162,7 @@ then edit or press @key{RET} to execute.
 For example, to execute the last command that referenced the variable
 @code{data}, type @kbd{!?data SPC TAB RET}.
 
-@node Hot keys, Is the Statistical Process running under ESS?, History expansion, Entering commands
+@node Hot keys, Statistical Process running in ESS?, History expansion, Entering commands
 @comment  node-name,  next,  previous,  up
 @section Hot keys for common commands
 
@@ -1258,7 +1271,7 @@ command explicitly to make sure that all the files that need to be saved
 have been saved, and that all the temporary buffers have been killed.
 @end itemize
 
-@node Is the Statistical Process running under ESS?, Other, Hot keys, Entering commands
+@node Statistical Process running in ESS?, Other, Hot keys, Entering commands
 @comment  node-name,  next,  previous,  up
 @section Is the Statistical Process running under ESS?
 
@@ -1295,7 +1308,7 @@ ESS can't set these other values since the S language program is not
 under the control of ESS.
 
 
-@node Other,  , Is the Statistical Process running under ESS?, Entering commands
+@node Other,  , Statistical Process running in ESS?, Entering commands
 @comment  node-name,  next,  previous,  up
 @section Other commands provided by inferior-ESS
 
@@ -2131,7 +2144,7 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 @menu
 * Highlighting::                Syntactic highlighting of buffers
 * Graphics::                    Using graphics with ESS
-* Object Completion::
+* Object Completion::           
 @end menu
 
 @node Highlighting, Graphics, Miscellaneous, Miscellaneous
@@ -2260,9 +2273,9 @@ directory, move it there).
 @chapter Bugs and Bug Reporting, Mailing Lists
 
 @menu
-* Bugs::
-* Reporting Bugs::
-* Mailing Lists::
+* Bugs::                        
+* Reporting Bugs::              
+* Mailing Lists::               
 @end menu
 
 @node Bugs, Reporting Bugs, Bugs Etc, Bugs Etc
@@ -2285,17 +2298,17 @@ directory, move it there).
 
 @comment  node-name,  next,  previous,  up
 @comment @chapter Using S4
-@node Help for Statistical Packages, Help OS, Bugs Etc, Top
+@node Help for Statistical Packages, Installation, Bugs Etc, Top
 @chapter Help for Statistical Packages
 
 @menu
-* Help for the S family::
-* Help for SAS::
+* Help for the S family::       
+* Help for SAS::                
 @end menu
 
 
 @comment  node-name,  next,  previous,  up
-@node Help for the S family, Help for SAS, Help for Statistical Packages, Help for Statistical Packages 
+@node Help for the S family, Help for SAS, Help for Statistical Packages, Help for Statistical Packages
 @section Help for the S family
 @menu
 * ESS[S]--Editing files::
@@ -2309,7 +2322,7 @@ directory, move it there).
 @include help-s.texi
 
 @comment  node-name,  next,  previous,  up
-@node Help for SAS, , Help for the S family, Help for Statistical Packages 
+@node Help for SAS,  , Help for the S family, Help for Statistical Packages
 @section Help for SAS
 
 @menu
@@ -2325,19 +2338,18 @@ directory, move it there).
 @end menu
 @include help-sas.texi
 
+@c _not_yet_ @node Help OS, Installation, Help for Statistical Packages, Top
+@c _not_yet_ @comment  node-name,  next,  previous,  up
+@c _not_yet_ @chapter Help, arranged by Operating System
+@c _not_yet_ 
+@c _not_yet_ @menu
+@c _not_yet_ * Unix installation::
+@c _not_yet_ * Microsoft Windows installation:: 
+@c _not_yet_ * System dependent::            Other variables you may need to change
+@c _not_yet_ @end menu
 
-@node Help OS, Installation, Help for Statistical Packages, Top
-@comment  node-name,  next,  previous,  up
-@chapter Help, arranged by Operating System
 
-@menu
-* Unix installation::
-* Microsoft Windows installation:: 
-* System dependent::            Other variables you may need to change
-@end menu
-
-
-@node Installation, Customization, Help OS, Top
+@node Installation, Customization, Help for Statistical Packages, Top
 @comment  node-name,  next,  previous,  up
 @appendix Installing ESS on your system
 @cindex installation
@@ -2346,14 +2358,14 @@ The following section details those steps necessary to get ESS running
 on your system.
 
 @menu
-* Unix installation::
-* Microsoft Windows installation:: 
+* Unix installation::           Installing ESS on your Unix system
+* Microsoft Windows installation::  Installing ESS on your MS Windows system
 * System dependent::            Other variables you may need to change
 @end menu
 
 @include inst_tar.texi
 
-@node System dependent, , Microsoft Windows installation, Installation
+@node System dependent,  , Installation, Installation
 @comment  node-name,  next,  previous,  up
 @appendixsec Other variables you may need to change
 

@@ -6,7 +6,7 @@ Microsoft Windows.  First, we discuss Unix installation.
 For Microsoft Windows Installation please skip to the
 @xref{Microsoft Windows installation}.
 
-@node Unix installation, Microsoft Windows installation, , Top
+@node Unix installation, Microsoft Windows installation, , Installation
 @comment  node-name,  next,  previous,  up
 @section Unix installation
 @enumerate 
@@ -174,7 +174,7 @@ SAS is running on a Windows machine.
 That's it!
 @end enumerate
 
-@node Microsoft Windows installation, System dependent, Unix installation, Top
+@node Microsoft Windows installation, , Unix installation, Installation
 @comment  node-name,  next,  previous,  up
 @section Microsoft Windows installation
 
