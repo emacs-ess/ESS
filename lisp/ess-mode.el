@@ -1,18 +1,18 @@
 ;;; ess-mode.el --- Support for editing ESS source code
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter, Smith.
-;; Copyright (C) 1997,  Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;;                                    Kurt Hornik <hornik@ci.tuwien.ac.at>
-;;                                    Martin Maechler <maechler@stat.math.ethz.ch>
-;;                                    A.J. (Tony) Rossini <rossini@stat.sc.edu>
+;; Copyright (C) 1997,	Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;;			Kurt Hornik <hornik@ci.tuwien.ac.at>
+;;			Martin Maechler <maechler@stat.math.ethz.ch>
+;;			A.J. (Tony) Rossini <rossini@stat.sc.edu>
 
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/12/02 14:13:04 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: ess-mode.el,v 5.1 1997/12/02 14:13:04 rossini Exp $
+;; Modified: $Date: 1998/09/08 17:27:40 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: ess-mode.el,v 5.2 1998/09/08 17:27:40 maechler Exp $
 
 
 ;; This file is part of ESS
@@ -799,7 +799,7 @@ Returns nil if line starts inside a string, t if in a comment."
 		      (+ (current-column) ess-expression-offset))
 		     ((and (numberp ess-arg-function-offset)
 			   (re-search-backward
-			    "=[ \t]*\\s\"*\\(\\w\\|\\s_\\)+\\s\"*[ \t]*" 
+			    "=[ \t]*\\s\"*\\(\\w\\|\\s_\\)+\\s\"*[ \t]*"
 			    bol t))
 		      (forward-sexp -1)
 		      (+ (current-column) ess-arg-function-offset))
