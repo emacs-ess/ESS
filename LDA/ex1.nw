@@ -1,0 +1,21 @@
+\documentclass{article}
+
+\usepackage{noweb}
+
+\begin{document}
+
+<<test>>=
+-*- mode: xlispstat -*-
+(def test (normal-rand 20))
+(def test2 (normal-rand 20))
+(plot test test2)
+@ 
+
+<<test2>>= -*- mode: xlispstat -*-
+(def test (normal-rand 20))
+(def test2 (normal-rand 20))
+(plot test test2)
+@ 
+
+
+\end{document}
