@@ -1,3 +1,13 @@
+2004-06-21  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-toolbar.el: Add test at end to check for toolbar support.
+
+	* ess-mode.el (ess-mode-menu): Add Sqpe and S+6-exisiting to
+	"Start Process" menu but their active state is determined by
+	ess-microsoft-p and so will be greyed out unless on microsoft.
+	(SAS-menu): Simple wrapper to report error if SAS invoked on
+	microsoft machine.
+
 2004-06-20  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* essd-sp6.el (S+6-mode): Hook in toolbar support.
