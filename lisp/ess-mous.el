@@ -5,7 +5,7 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: 25 Mar 2001
-;; Modified: $Date: 2002/01/16 20:04:53 $
+;; Modified: $Date: 2002/06/20 21:52:06 $
 ;; Version: $Revision:
 ;; RCS: $Id: ess-mous.el
 
@@ -219,7 +219,7 @@ the string one more time by embedding it in a \"page()\" command."
   (if (equal ess-language "S")
       (setq mouse-me-menu-commands ess-S-mouse-me-menu-commands-alist)))
 
-;; (if (not ess-running-xemacs)
+;; (if (not (featurep 'xemacs))
 ;;     (progn
 ;;       ;;gnu emacs
 ;;       (define-key ess-mode-map              [S-mouse-3] 'ess-mouse-me)

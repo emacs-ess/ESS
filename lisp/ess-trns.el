@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/05/08 16:07:55 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: ess-trns.el,v 5.13 2002/05/08 16:07:55 maechler Exp $
+;; Modified: $Date: 2002/06/20 21:52:06 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: ess-trns.el,v 5.14 2002/06/20 21:52:06 rsparapa Exp $
 
 ;; This file is part of ESS
 
@@ -75,11 +75,11 @@
 (if ess-transcript-mode-map
     nil
 
-  (cond (ess-running-xemacs
+  (cond ((featurep 'xemacs)
 	 ;; Code for XEmacs
 	 (setq ess-transcript-mode-map (make-keymap))
 	 (set-keymap-parent ess-transcript-mode-map text-mode-map))
-	((not ess-running-xemacs)
+	((not (featurep 'xemacs))
 	 ;; Code for GNU Emacs
 	 (setq ess-transcript-mode-map (make-sparse-keymap))))
 

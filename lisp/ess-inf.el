@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/05/10 04:57:40 $
-;; Version: $Revision: 5.77 $
-;; RCS: $Id: ess-inf.el,v 5.77 2002/05/10 04:57:40 rmh Exp $
+;; Modified: $Date: 2002/06/20 21:52:06 $
+;; Version: $Revision: 5.78 $
+;; RCS: $Id: ess-inf.el,v 5.78 2002/06/20 21:52:06 rsparapa Exp $
 
 ;; This file is part of ESS
 
@@ -1063,11 +1063,11 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
 (if inferior-ess-mode-map
     nil
 
-  (cond (ess-running-xemacs
+  (cond ((featurep 'xemacs)
 	 ;; Code for XEmacs
 	 (setq inferior-ess-mode-map (make-keymap))
 	 (set-keymap-parent inferior-ess-mode-map comint-mode-map))
-	((not ess-running-xemacs)
+	((not (featurep 'xemacs))
 	 ;; Code for GNU Emacs
 	 (setq inferior-ess-mode-map (cons 'keymap comint-mode-map))))
 
@@ -1131,12 +1131,12 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
 
 (if ess-mode-minibuffer-map  nil
 
-  (cond (ess-running-xemacs
+  (cond ((featurep 'xemacs)
 	 ;; Code for XEmacs
 	 (setq ess-mode-minibuffer-map (make-keymap))
 	 (set-keymap-parent ess-mode-minibuffer-map minibuffer-local-map)))
 
-  (cond ((not ess-running-xemacs)
+  (cond ((not (featurep 'xemacs))
 	 ;; Code for Emacs
 	 (setq ess-mode-minibuffer-map (cons 'keymap minibuffer-local-map))))
 

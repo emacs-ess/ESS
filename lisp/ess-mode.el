@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/01/15 01:52:54 $
-;; Version: $Revision: 5.20 $
-;; RCS: $Id: ess-mode.el,v 5.20 2002/01/15 01:52:54 rmh Exp $
+;; Modified: $Date: 2002/06/20 21:52:06 $
+;; Version: $Revision: 5.21 $
+;; RCS: $Id: ess-mode.el,v 5.21 2002/06/20 21:52:06 rsparapa Exp $
 
 ;; This file is part of ESS
 
@@ -99,7 +99,7 @@
 
 (if ess-eval-map
     nil
-  (if ess-running-xemacs
+  (if (featurep 'xemacs)
       ;; Code for XEmacs
       (setq ess-eval-map (make-keymap))
     ;; else code for GNU Emacs
@@ -120,7 +120,7 @@
 (if ess-mode-map
     nil
 
-  (if ess-running-xemacs
+  (if (featurep 'xemacs)
       (progn ;; Code for XEmacs
 	(setq ess-mode-map (make-keymap))
 	(set-keymap-parent ess-mode-map text-mode-map)) ;; was comint?!?
@@ -232,7 +232,7 @@
         (easy-menu-add ess-mode-menu)
     (easy-menu-remove ess-mode-menu)))
 
-(if ess-running-xemacs
+(if (featurep 'xemacs)
     (add-hook 'ess-mode-hook 'ess-mode-xemacs-menu))
 
 (defun ess-mode (&optional alist proc-name)

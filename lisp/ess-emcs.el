@@ -9,9 +9,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2002/06/19 22:04:34 $
-;; Version: $Revision: 5.18 $
-;; RCS: $Id: ess-emcs.el,v 5.18 2002/06/19 22:04:34 rsparapa Exp $
+;; Modified: $Date: 2002/06/20 21:52:06 $
+;; Version: $Revision: 5.19 $
+;; RCS: $Id: ess-emcs.el,v 5.19 2002/06/20 21:52:06 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -64,7 +64,7 @@
       (and (= emacs-major-version major)
 	   (>= emacs-minor-version minor))))
 
-(defvar ess-running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
+;(defvar ess-running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
 
 (defvar ess-local-custom-available (featurep 'custom)
   "Value is nil if custom.el not available, t if available.

@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.17 2002/01/16 08:34:27 maechler Exp $
+;; Version: $Id: ess-menu.el,v 1.18 2002/06/20 21:52:06 rsparapa Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -37,7 +37,7 @@
 
 ;;(require 'ess-site)
 (require 'ess-cust)
-(if (and ess-running-xemacs; need this, since require in XEmacs has only 2 arg
+(if (and (featurep 'xemacs); need this, since require in XEmacs has only 2 arg
 	 (not (require 'imenu "imenu.elc")))
     (message "** warning: 'imenu not available for this version of XEmacs")
   )

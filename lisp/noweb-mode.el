@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.13 2001/09/20 10:27:41 maechler Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.14 2002/06/20 21:52:06 rsparapa Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -94,7 +94,7 @@
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.13 2001/09/20 10:27:41 maechler Exp $")
+  "$Id: noweb-mode.el,v 1.14 2002/06/20 21:52:06 rsparapa Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")
@@ -222,7 +222,7 @@ mouse-1, this will override your binding.")
   (if arg (newline arg) (newline 1)))
 
 (defvar noweb-mode-prefix-map
-  (let ((map (if ess-running-xemacs
+  (let ((map (if (featurep 'xemacs)
 		 (make-keymap) ;; XEmacs/Emacs problems...
 	       (make-sparse-keymap))))
     (define-key map "\C-n" 'noweb-next-chunk)
@@ -1533,14 +1533,14 @@ This may be useful in shell scripts, where the first line (or two) must have a
             (if (string-match
                  "mode:[ \t]*\\([^\t ]*\\)" this-line)
                 (setq noweb-code-mode
-		      (if ess-running-xemacs
+		      (if (featurep 'xemacs)
 			  (match-string 1 this-line)
 			(match-string-no-properties 1 this-line))
 		      ))
             (if (string-match
                  "noweb-line-number-format:[ \t]*\"\\([^\"]*\\)\"" this-line)
                 (setq noweb-line-number-format
-		      (if ess-running-xemacs
+		      (if (featurep 'xemacs)
 			  (match-string 1 this-line)
 			(match-string-no-properties 1 this-line))
 		      ))
@@ -1548,14 +1548,14 @@ This may be useful in shell scripts, where the first line (or two) must have a
                  "noweb-line-number-skip-lines:[ \t]*\\([^\t ]*\\)" this-line)
                 (setq noweb-line-number-skip-lines
                       (string-to-number
-		      (if ess-running-xemacs
+		      (if (featurep 'xemacs)
 			  (match-string 1 this-line)
 			(match-string-no-properties 1 this-line)))))
             (if (string-match
                  "noweb-tab-width:[ \t]*\\([^\t ]*\\)" this-line)
                 (setq noweb-tab-width
                       (string-to-number
-		      (if ess-running-xemacs
+		      (if (featurep 'xemacs)
 			  (match-string 1 this-line)
 			(match-string-no-properties 1 this-line)))))
             (beginning-of-line 2)))))))
