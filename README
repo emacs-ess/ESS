@@ -49,39 +49,45 @@ Changes/New Features in 5.2.6:
 
    * ESS[R]: now works better when UTF-8 locale is active; in
      particular, you get correct directional quotes in R's startup
-     message  for R-devel (unstable development version of R 2.1.0)
-     when using  environment variables LANGUAGE=en@quot
-     LC_ALL=en_US.UTF-8
+     message for R-devel (unstable development version of R 2.1.0) when
+     using environment variables LANGUAGE=en@quot LC_ALL=en_US.UTF-8
+
+   * ESS[SAS]: toggling of .log mode improved (`F10'); toggling of .lst
+     mode now also available (`C-F10'); in particular, opening of a
+     `*.lst' file does not auto-mode to sas-listing.
+
+     Killing all buffers associated with .sas program no longer bound to
+     `C-F10' since it seems to be a bit overzealous.
 
    Changes/New Features in 5.2.5:
-   * ESS[R]: C-c C-q or "Quit S" from the menu now should work (again
-     and less klunkily) and do not append "-exited" to the buffer name.
+   * ESS[R]: `C-c C-q' or `Quit S' from the menu now should work (again
+     and less klunkily) and do not append `-exited' to the buffer name.
 
-     Further, the behavior of (ess-cleanup), called from ess-quit, now
-     depends on the new customizable variable
-     `ess-S-quit-kill-buffers-p' which defaults to nil. Consequently,
-     the question "Delete all buffers associated with ..?" will not be
-     asked anymore by default.
+     Further, the behavior of `(ess-cleanup)', called from ess-quit,
+     now depends on the new customizable variable
+     `ess-S-quit-kill-buffers-p' which defaults to `nil'.
+     Consequently, the question _"Delete all buffers associated with
+     ..?"_ will not be asked anymore by default.
 
    * ESS[S] (incl. R): Name completion for slots of S4 objects now
      works!
 
-   * ESS[SAS] - ess-ebcdic-to-ascii-search-and-replace will now work if
-     have the recode application rather than dd (see below)
+   * ESS[SAS] `ess-ebcdic-to-ascii-search-and-replace' will now work
+     with the recode application (available on many platforms) as well.
 
    Changes/New Features in 5.2.4:
    * The documentation now includes an overview of how to use the emacs
      TAGS facility for S functions.  (The distribution also used to
-     contain a directory etc/other/Tags where a ~1990 version of
-     etags.c was distributed; this is no longer relevant and so has
+     contain a directory `etc/other/Tags' where a ~1990 version of
+     `etags.c' was distributed; this is no longer relevant and so has
      been deleted.)
 
    * ESS[SAS] - When you are working with EBCDIC files on an ASCII
      platform, .log NOTEs may display as gibberish since the EBCDIC
      characters are not converted to ASCII prior to their display.  So,
      the function ess-ebcdic-to-ascii-search-and-replace is provided for
-     convenience and is bound to C-F11.  This function requires the dd
-     command.
+     convenience and is bound to `C-F11'.  This function requires the
+     `dd' command (unix).
 
    * ESS: Completion of object names is now always done dynamically
      rather than allowing the option of using a pre-computed database
@@ -171,10 +177,9 @@ Changes/New Features in 5.2.6:
      which automatically reverse indents lines containing only "run;";
      C-F1 creates MS RTF portrait from the current buffer; C-F2 creates
      MS RTF landscape from the current buffer; C-F9 opens a SAS DATASET
-     with PROC INSIGHT rather than PROC FSVIEW; C-F10 kills all buffers
-     associated with .sas program; "inferior" aliases for SAS batch:
-     C-c C-r for submit region, C-c C-b for submit buffer, C-c C-x for
-     goto .log; C-c C-y for goto .lst
+     with PROC INSIGHT rather than PROC FSVIEW; "inferior" aliases for
+     SAS batch:  C-c C-r for submit region, C-c C-b for submit buffer,
+     C-c C-x for goto .log; C-c C-y for goto .lst
 
    * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
      pressing underscore twice inserts a literal underscore.  To stop

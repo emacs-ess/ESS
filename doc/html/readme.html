@@ -113,45 +113,51 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">Genera
      <ul>
 <li>Removed non-ASCII characters in a few files. 
 <li>ESS[R]: now works better when UTF-8 locale is active; in
- particular, you get correct directional quotes in R's startup message
- for R-devel (unstable development version of R 2.1.0) when using
- environment variables LANGUAGE=en@quot LC_ALL=en_US.UTF-8
+particular, you get correct directional quotes in R's startup message
+for R-devel (unstable development version of R 2.1.0) when using
+environment variables LANGUAGE=en@quot LC_ALL=en_US.UTF-8
+<li>ESS[SAS]: toggling of .log mode improved (<kbd>F10</kbd>); toggling of
+.lst mode now also available (<kbd>C-F10</kbd>); in particular, opening of a
+<samp><span class="file">*.lst</span></samp> file does not auto-mode to sas-listing.
+
+     <p>Killing all buffers associated with .sas program no longer bound to
+<kbd>C-F10</kbd> since it seems to be a bit overzealous. 
 </ul>
 
    <p>Changes/New Features in 5.2.5:
      <ul>
-<li>ESS[R]: C-c C-q or &ldquo;Quit S&rdquo; from the menu now should work
-(again and less klunkily) and do not append "-exited" to the
+<li>ESS[R]: <kbd>C-c C-q</kbd> or `<samp><span class="samp">Quit S</span></samp>' from the menu now should work
+(again and less klunkily) and do not append `<samp><span class="samp">-exited</span></samp>' to the
 buffer name.
 
-     <p>Further, the behavior of (ess-cleanup), called from
+     <p>Further, the behavior of <code>(ess-cleanup)</code>, called from
 ess-quit, now depends on the new customizable variable
-`ess-S-quit-kill-buffers-p' which defaults to nil. Consequently,
-the question &ldquo;Delete all buffers associated with ..?&rdquo; will not be
-asked anymore by default.
+<code>ess-S-quit-kill-buffers-p</code> which defaults to <code>nil</code>. 
+Consequently, the question <em>&ldquo;Delete all buffers associated
+with ..?&rdquo;</em> will not be asked anymore by default.
 
      <li>ESS[S] (incl. R): Name completion for slots of S4 objects now works! 
-<li>ESS[SAS] &ndash; ess-ebcdic-to-ascii-search-and-replace will now work if
-have the recode application rather than dd (see below)
+<li>ESS[SAS] <code>ess-ebcdic-to-ascii-search-and-replace</code> will now
+work with the recode application (available on many platforms) as well. 
 </ul>
 
    <p>Changes/New Features in 5.2.4:
      <ul>
 <li>The documentation now includes an overview of how to use the emacs
 TAGS facility for S functions.  (The distribution also used to contain a
-directory etc/other/Tags where a ~1990 version of etags.c was
+directory <samp><span class="file">etc/other/Tags</span></samp> where a ~1990 version of <samp><span class="file">etags.c</span></samp> was
 distributed; this is no longer relevant and so has been deleted.) 
 <li>ESS[SAS] &ndash; When you are working with EBCDIC files on an ASCII
 platform, .log NOTEs may display as gibberish since the EBCDIC
 characters are not converted to ASCII prior to their display.  So,
 the function ess-ebcdic-to-ascii-search-and-replace is provided for
-convenience and is bound to C-F11.  This function requires the dd
-command. 
+convenience and is bound to <kbd>C-F11</kbd>.  This function requires the
+<code>dd</code> command (unix). 
 <li>ESS: Completion of object names is now always done dynamically rather
 than allowing the option of using a pre-computed database (by
-`ess-create-object-name-db') since modern computers seem fast enough for
-dynamic completion.  (We expect few users, if any, have been using the
-pre-computed database method.) 
+<code>ess-create-object-name-db</code>) since modern computers seem fast
+enough for dynamic completion.  (We expect few users, if any, have
+been using the pre-computed database method.) 
 <li>ESS: object completion in iESS buffers running on Windows was
 very slow (for GNU Emacs, but not XEmacs) and has now been fixed. 
 Further, it was more or less broken for all versions of S-plus 6.x,
@@ -235,7 +241,6 @@ which automatically reverse indents lines containing only "run;";
 C-F1 creates MS RTF portrait from the current buffer;
 C-F2 creates MS RTF landscape from the current buffer;
 C-F9 opens a SAS DATASET with PROC INSIGHT rather than PROC FSVIEW;
-C-F10 kills all buffers associated with .sas program;
 "inferior" aliases for SAS batch:  C-c C-r for submit region,
 C-c C-b for submit buffer, C-c C-x for goto .log; C-c C-y for goto .lst
 <li>ESS[S]: Pressing underscore ("_") once inserts " &lt;- " (as before);
