@@ -186,7 +186,7 @@ prefixed by "##").
 
 
 
-$Version$
+$Revision: 1.4 $
 
 Local Variables: ***
 mode:indented-text ***
