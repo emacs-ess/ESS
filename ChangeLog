@@ -1,3 +1,10 @@
+Wed Mar 31 14:08:39 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* Makefile (ESSVERSION): updated
+	* Makefile (ESSVERSIONMSDOS): updated
+	* Makefile (ESSVERSIONTAG): new variable, use it.
+	* Makefile (dist): fixed to export both zip and gzip files.
+
 1999-03-17  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* ANNOUNCE, README, doc/Makefile, doc/README.SPLUS4WIN, doc/announc.texi, doc/inst_tar.texi, doc/readme.texi, doc/requires.texi:
@@ -430,7 +437,7 @@
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 1999/03/17 17:51:43 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 1999/03/31 22:09:03 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
@@ -2620,6 +2627,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.11  1999/03/31 22:09:03  rossini
+	* Removing updated makefile.
+	* Removing
 	* Removing Revision 5.10  1999/03/17 17:51:43  rossini
 	* Removing changelog updates
 	* Removing
