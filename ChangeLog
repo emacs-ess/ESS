@@ -1,3 +1,19 @@
+2002-11-29  Stephen Eglen  <stephen@gnu.org>
+
+	* doc/ess-defs.texi: New file to provide macros for formatting R,
+	S, SPLUS.
+	* doc/ess.texi:  Quite a few updates to the documentation:
+	Include ess-defs.texi for @Sl macro.
+	Add Stephen to author list.
+	Remove bold from ESS/S.
+	Remove Variable and command index (had just two entries).
+	Use "X window system" or "X11" rather than "X-windows" (see `man X').
+	Add section on editor=emacsclient.
+	Change "more historic"->"older"
+	Correct exit() entry in the variable and command index.
+	Remove multiple references to Emacs/XEmacs differences in
+	.emacs/init.el for init file.
+	
 2002-08-07  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* VERSION:
@@ -3780,7 +3796,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 2002/08/07 13:43:29 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 2002/11/30 03:33:50 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -5970,6 +5986,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.30  2002/11/30 03:33:50  stephen
+	* Removing Changes to doc.
+	* Removing
 	* Removing Revision 5.29  2002/08/07 13:43:29  maechler
 	* Removing Did (vc-update-change-log) manually, then query-replaced the
 	* Removing     "/home/ess/repository/gnu/ess/" {newly made by "update-change-log"}
