@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.35 2000/10/30 01:29:32 rossini Exp $
+## $Id: Makefile,v 5.36 2001/04/27 21:29:06 ess Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -10,6 +10,15 @@ ESSVERSION=$(shell cat VERSION)
 ESSVERSIONDIR=ess-$(ESSVERSION)
 ## The following MUST NOT contain "."'s.
 ESSVERSIONTAG=ess-$(shell sed 's/\./_/g' VERSION)
+
+## The following 2 variables facilitate imitation of an XEmacs distribution
+## You may need to over-ride them by environment variables with the -e option
+## If you are not using GNU make, then you may have to over-ride ESSVERSION too
+
+## XEMACSDIR:  parent directory of the xemacs-packages sub-directory
+XEMACSDIR=/usr/local/lib/xemacs
+## ESSDIR:  parent directory of ESS
+ESSDIR=$(XEMACSDIR)/site-lisp
 
 Subdirs = lisp doc
 
@@ -79,3 +88,10 @@ tar:
 	zip -r ESS-$(ESSVERSION).zip $(ESSVERSIONDIR)
 	@echo "** Cleaning up **"
 	rm -rf ess $(ESSVERSIONDIR)
+
+xemacs-links:  
+	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/info/ess-* \
+	    $(XEMACSDIR)/xemacs-packages/lisp/ess-*
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc  $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc  $(XEMACSDIR)/xemacs-packages/info/$(ESSVERSIONDIR)
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
