@@ -8,9 +8,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>, MM
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/03 15:27:35 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: ess-help.el,v 5.10 2000/04/03 15:27:35 maechler Exp $
+;; Modified: $Date: 2000/04/04 09:49:42 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: ess-help.el,v 5.11 2000/04/04 09:49:42 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -148,8 +148,8 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	  (delete-region (point-min) (point-max))
 	  (ess-help-mode)
 	  (setq ess-local-process-name ess-current-process-name)
-	  (ess-command (format curr-help-command object) tbuffer);; was
-	  ;; inferior-ess-help-command
+	  (ess-command (format curr-help-command object) tbuffer)
+	  ;; was inferior-ess-help-command
 
 	  ;; Stata is clean, so we get a big BARF from this.
 	  (if (not (string= ess-language "STA"))

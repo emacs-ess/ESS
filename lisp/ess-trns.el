@@ -1,7 +1,7 @@
 ;;; ess-trns.el --- Support for manipulating S transcript files
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997,	Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Copyright (C) 1997-2000 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;;				Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;				Martin Maechler <maechler@stat.math.ethz.ch>
 ;;				A.J. (Tony) Rossini <rossini@stat.sc.edu>
@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/03 15:27:36 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: ess-trns.el,v 5.6 2000/04/03 15:27:36 maechler Exp $
+;; Modified: $Date: 2000/04/04 09:49:42 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: ess-trns.el,v 5.7 2000/04/04 09:49:42 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -161,7 +161,7 @@
     (add-hook 'ess-transcript-mode-hook 'ess-transcript-mode-xemacs-menu))
 
 (defun ess-transcript-mode (alist &optional proc)
-  "Major mode for manipulating S transcript files.
+  "Major mode for manipulating {ESS} transcript files.
 
 Type \\[ess-transcript-send-command] to send a command in the
 transcript to the current S process. \\[ess-transcript-copy-command]
@@ -213,8 +213,8 @@ o
 ;;*;; Commands used in S transcript mode
 
 (defun ess-transcript-send-command ()
-  "Send the command at point in the transcript to the S process
-The line should begin with a prompt. The S process buffer is displayed if it
+  "Send the command at point in the transcript to the ESS process.
+The line should begin with a prompt.  The ESS process buffer is displayed if it
 is not already."
   (interactive)
   (let* ((proc (or ess-local-process-name
@@ -230,14 +230,14 @@ is not already."
 	(ess-eval-linewise input)))))
 
 (defun ess-transcript-send-command-and-move ()
-  "Send the ess-command on this line, and move point to the next command"
+  "Send the command on this line, and move point to the next command."
   (interactive)
   (ess-transcript-send-command)
   (goto-char ess-temp-point)
   (comint-next-prompt 1))
 
 (defun ess-transcript-copy-command ()
-  "Copy the command at point to the command line of the S process"
+  "Copy the command at point to the command line of the ESS process."
   (interactive)
   (let* ((proc (or ess-local-process-name
 		   (ess-request-a-process "Evaluate into which process? " t)))
@@ -253,8 +253,8 @@ is not already."
   (ess-switch-to-end-of-ESS))
 
 (defun ess-transcript-clean-region (beg end)
-  "Strip the transcript in the region, leaving only S commands.
-Deletes any lines not beginning with an S prompt, and then removes the
+  "Strip the transcript in the region, leaving only (R/S/Lsp/..) commands.
+Deletes any lines not beginning with a prompt, and then removes the
 prompt from those lines than remain."
   (interactive "r")
   (save-excursion
