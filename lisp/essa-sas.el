@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/07/30 21:56:03 $
-;; Version: $Revision: 1.33 $
-;; RCS: $Id: essa-sas.el,v 1.33 2001/07/30 21:56:03 ess Exp $
+;; Modified: $Date: 2001/08/01 20:48:19 $
+;; Version: $Revision: 1.34 $
+;; RCS: $Id: essa-sas.el,v 1.34 2001/08/01 20:48:19 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -388,13 +388,26 @@ their files from the remote computer.  Local copies of the .sas .lst
 (defun ess-sas-submit-region ()
     "Write region to temporary file, and submit to SAS."
     (interactive)
+    (ess-sas-file-path)
     (write-region (region-beginning) (region-end) "ess-temp.sas")
+
     (save-excursion 
       (if (get-buffer "*shell*") (set-buffer "*shell*")
           (shell))
-      (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
+
+    (if (and (w32-shell-dos-semantics) (string-equal ":" (substring ess-sas-file-path 1 2)))
+	(progn
+		(insert (substring ess-sas-file-path 0 2))
+		(comint-send-input)
+    ))
+
+    (insert "cd \"" (convert-standard-filename 
+	(file-name-directory ess-sas-file-path)) "\"")
+    (comint-send-input)
+
+    (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
           " ess-temp " ess-sas-submit-post-command))
-      (comint-send-input)
+    (comint-send-input)
     )
 )
 
