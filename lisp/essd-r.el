@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/08/18 08:44:53 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essd-r.el,v 5.3 1998/08/18 08:44:53 maechler Exp $
+;; Modified: $Date: 1998/09/11 14:22:25 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essd-r.el,v 5.4 1998/09/11 14:22:25 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -107,7 +107,15 @@
 
 (fset 'R-transcript-mode 'r-transcript-mode)
 
-
+(defun R-fix-T-F (&optional from quietly)
+  "Fix T/F into TRUE and FALSE --- CAUTIOUSLY"
+  (interactive "d\nP"); point and prefix (C-u)
+  (save-excursion
+    (goto-char from)
+    (ess-rep-regexp "\\(= *\\|<- *\\)T\\>" "\\1TRUE" 'fixcase nil (not quietly))
+    (goto-char from)
+    (ess-rep-regexp "\\(= *\\|<- *\\)F\\>" "\\1FALSE" 'fixcase nil(not quietly))
+    ))
 
  ; Provide package
 
