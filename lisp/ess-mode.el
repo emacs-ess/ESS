@@ -10,9 +10,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/21 23:18:23 $
-;; Version: $Revision: 4.50 $
-;; RCS: $Id: ess-mode.el,v 4.50 1997/11/21 23:18:23 rossini Exp $
+;; Modified: $Date: 1997/11/24 14:56:00 $
+;; Version: $Revision: 4.51 $
+;; RCS: $Id: ess-mode.el,v 4.51 1997/11/24 14:56:00 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -140,6 +140,7 @@
   (define-key ess-mode-map "\e\C-q"      'ess-indent-exp)
   (define-key ess-mode-map "\177"        'backward-delete-char-untabify)
   (define-key ess-mode-map "\t"          'ess-indent-command)
+  (define-key ess-mode-map "\C-c\C-q"    'ess-quit)
   (define-key ess-mode-map "\C-c\C-e"    ess-eval-map))
 
 
