@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.71 2003/10/20 14:46:45 rsparapa Exp $
+## $Id: Makefile,v 5.72 2003/10/21 14:07:53 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -47,7 +47,7 @@ dist: VERSION cleanup-dist
 	@echo "** (must set CVSROOT, etc, prior to checkout for security)"
 	@echo "**********************************************************"
 	@echo "** Exporting Files **"
-	cvs export -D today ess
+	-cvs export -D today ess
 	@echo "** Correct Write Permissions and RM Papers **"
 	mv ess $(ESSDIR)
 	chmod a-w $(ESSDIR)/lisp/*.el
