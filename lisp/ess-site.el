@@ -5,11 +5,11 @@
 ;; Maechler, Kurt Hornik.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1998/12/14 18:02:10 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: ess-site.el,v 5.10 1998/12/14 18:02:10 rossini Exp $
+;; Modified: $Date: 1998/12/14 20:53:49 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: ess-site.el,v 5.11 1998/12/14 20:53:49 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -158,7 +158,8 @@
 ;;(setq-default inferior-Sqpe+4-program-name "Sqpe")
 
 ;; THIS IS NEEDED BY MS-WINDOWS
-;;(if (eq (getenv "SHOME") nil)
+;;(if (and (or (equal  window-system 'w32) (equal window-system 'win32))
+;;	 (eq (getenv "SHOME") nil))
 ;;    (setenv "SHOME" "c:/Progra~1/spls45se"))
  
 ;;;; Choice for S().
