@@ -48,14 +48,12 @@ ESS version
 @ifnottex
 @majorheading ESS --- Emacs Speaks Statistics
 
-@ifinfo
 @direntry
 * ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
 @end direntry
 @c node-name,  next,  previous,  up
 @node Top, Introduction, (dir), (dir)
 @top ESS: Emacs Speaks Statistics
-@end ifinfo
 
 ESS version
 @include ../VERSION
