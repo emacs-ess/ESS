@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2001/11/07 08:38:02 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: ess-utils.el,v 5.8 2001/11/07 08:38:02 maechler Exp $
+;; Modified: $Date: 2002/01/16 00:39:53 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: ess-utils.el,v 5.9 2002/01/16 00:39:53 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -65,6 +65,20 @@
     ;;or (if (and verbose pl)
     ;;or  (message "s/%s/%s/ at %s" regexp to-string pl))
     ) )
+
+(defun ess-revert-wisely ()
+  "Revert from disk if file and buffer last modification times are different."
+  (interactive)
+; vc-revert-buffer acting strangely in Emacs 21.1
+; commented out until a solution can be found
+  (if (not (verify-visited-file-modtime (current-buffer)))
+      (revert-buffer t t)))
+
+;;      (cond ((and (fboundp 'vc-backend-deduce)
+;;		  (vc-backend-deduce (buffer-file-name))) (vc-revert-buffer))
+;;	    ((and (fboundp 'vc-backend)
+;;		  (vc-backend (buffer-file-name))) (vc-revert-buffer))
+;;	    (t (revert-buffer t t)))))
 
 (defun ess-space-around (word &optional from verbose)
   "Replace-regexp .. ensuring space around all occurences of WORD,
