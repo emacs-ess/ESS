@@ -1,4 +1,4 @@
-;;; ess-site.el --- user customization of ess-mode
+;;; ess-site.el --- user customization of ESS
 
 ;; Copyright (C) 1993 David M. Smith
 ;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
@@ -34,7 +34,7 @@
 ;;; directory location of this file must be supplied in
 ;;; ess-lisp-directory.	 The editing of remaining sections is
 ;;; optional.  It should then be byte-compiled, and users who wish to
-;;; use ess-mode should add the line:
+;;; use ESS should add the line:
 ;;;    (load "/PATH/TO/THIS/FILE/ess-site")
 ;;; (where /PATH/TO/THIS/FILE is the path to ess-site.elc: i.e. the
 ;;; value of ess-lisp-directory, below) to their .emacs file.
