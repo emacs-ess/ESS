@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/05/13 12:10:41 $
-;; Version: $Revision: 1.72 $
-;; RCS: $Id: ess-cust.el,v 1.72 2004/05/13 12:10:41 stephen Exp $
+;; Modified: $Date: 2004/06/07 18:02:24 $
+;; Version: $Revision: 1.73 $
+;; RCS: $Id: ess-cust.el,v 1.73 2004/06/07 18:02:24 hornik Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -117,7 +117,7 @@
   :group 'ess
   :prefix "ess-")
 
-(defgroup ess-XLS nil
+(defgroup ess-OMG nil
   "ESS: Omegahat."
   :group 'ess
   :prefix "ess-")
