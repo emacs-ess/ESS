@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/19 16:24:16 $
-;; Version: $Revision: 1.100 $
-;; RCS: $Id: ess-inf.el,v 1.100 1997/11/19 16:24:16 rossini Exp $
+;; Modified: $Date: 1997/11/20 14:19:29 $
+;; Version: $Revision: 1.101 $
+;; RCS: $Id: ess-inf.el,v 1.101 1997/11/20 14:19:29 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -1073,7 +1073,7 @@ process buffer. Arg has same meaning as for ess-eval-region."
    ["Edit S Object"     ess-dump-object-into-edit-buffer   t]
    "------"
    ["Describe"  describe-mode                            t]
-   ["About" (lambda nil (interactive) (ess-goto-info "Entering Commands")) t]
+   ;;["About" (lambda nil (interactive) (ess-goto-info "Entering Commands")) t]
    ["Send bug report"  ess-submit-bug-report               t]
    ))
 
