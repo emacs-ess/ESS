@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/03 18:43:06 $
-;; Version: $Revision: 1.42 $
-;; RCS: $Id: essa-sas.el,v 1.42 2002/01/03 18:43:06 ess Exp $
+;; Modified: $Date: 2002/01/03 23:07:03 $
+;; Version: $Revision: 1.43 $
+;; RCS: $Id: essa-sas.el,v 1.43 2002/01/03 23:07:03 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -285,6 +285,14 @@ on the way."
     ))
 )
 
+(defun ess-sas-goto (suffix)
+  "Find a file associated with the SAS file by suffix."
+    
+    (if (string-match "[.]sas" ess-sas-file-path)
+	(find-buffer-visiting (replace-match suffix t t ess-sas-file-path))
+    )
+)
+
 (defun ess-sas-file (suffix &optional revert)
   "Find a file associated with the SAS file and revert if necessary."
   (let* ((tail (downcase (car (split-string 
@@ -305,11 +313,9 @@ on the way."
 (defun ess-sas-file-path ()
  "Define the variable `ess-sas-file-path' to be the file in the current buffer"
   (interactive)
-  (setq ess-sas-file-path (expand-file-name (buffer-name)))
+  (setq ess-sas-file-path (expand-file-name (buffer-name))))
 
-  (if (eq ess-sas-submit-method 'sh) (progn
-    (setq ess-sas-file-path (car (last (split-string ess-sas-file-path "\\(:\\|]\\)"))))
-    (setq ess-sas-file-path (first (split-string ess-sas-file-path "[@]"))))))
+;    (setq ess-sas-file-path (first (split-string ess-sas-file-path "[@]")))
 
 (defun ess-sas-goto-file-1 ()
   "Switch to ess-sas-file-1 and revert from disk."
@@ -366,7 +372,8 @@ on the way."
   "Save the .sas file and submit to shell using a function that
 depends on the value of  `ess-sas-submit-method'"
   (interactive)
-  (ess-sas-goto-sas)
+;  (ess-sas-goto-sas)
+  (ess-sas-goto ".sas")
   (save-buffer)
   (ess-sas-file-path)
   (cond
@@ -379,7 +386,8 @@ depends on the value of  `ess-sas-submit-method'"
    ((eq ess-sas-submit-method 'sh) 
 	(ess-sas-submit-sh ess-sas-submit-command)) 
    (t (ess-sas-submit-sh ess-sas-submit-command)))
-  (ess-sas-goto-sas)
+;  (ess-sas-goto-sas)
+  (ess-sas-goto ".sas")
 )
 
 (defun ess-sas-submit-iESS (ess-sas-arg)
@@ -448,7 +456,7 @@ i.e. let `ess-sas-arg' be your local equivalent of
     (shell)
     (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh) ;; 19.28
                                           ;; nil t) works for newer emacsen
-    (insert "cd " (file-name-directory ess-sas-file-path))
+    (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)"))))
     (comint-send-input)
     (insert ess-sas-submit-pre-command " " ess-sas-arg " " 
 	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 
