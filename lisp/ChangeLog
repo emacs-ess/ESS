@@ -1,3 +1,14 @@
+Mon Apr  6 11:27:52 1998  Tony Rossini  <rossini@matthias>
+
+	* ess-inf.el (ess-object-names): 
+	* ess-inf.el (ess-execute-objects): add argument to call to
+	inferior-ess-objects-command, for S4 (suggested by Stephen Pope).
+
+Mon Apr  6 11:22:22 1998  Tony Rossini  <rossini@matthias>
+
+	* ess-vars.el (inferior-ess-font-lock-keywords): change, as
+	suggested by Stephen Pope (remove parens).
+
 Mon Dec 15 19:17:27 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-s4.el (S4-mode): New function, use it.
