@@ -5,14 +5,17 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/19 21:16:17 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: ess-trns.el,v 1.1 1997/06/19 21:16:17 rossini Exp $
+;; Modified: $Date: 1997/07/29 11:12:41 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: ess-trns.el,v 1.2 1997/07/29 11:12:41 rossini Exp $
 
 ;; AJR: Unlike other files, this one is accurate, wrt changes made for
 ;; XEmacs.
 ;;
 ;; $Log: ess-trns.el,v $
+;; Revision 1.2  1997/07/29 11:12:41  rossini
+;; moved font-lock stuff to ess-vars.
+;;
 ;; Revision 1.1  1997/06/19 21:16:17  rossini
 ;; Initial revision
 ;;
@@ -98,26 +101,6 @@
 (autoload 'ess-switch-to-end-of-S "ess-inf" "(autoload)" nil)
 (autoload 'ess-eval-visibly "ess-inf" "(autoload)" nil)
 (autoload 'inferior-ess-get-old-input "ess-inf" "(autoload)" nil)
-
- ; User changeable variables
-;;;=====================================================
-;;; Users note: Variables with document strings starting
-;;; with a * are the ones you can generally change safely, and
-;;; may have to upon occasion.
-
- ; System variables
-
-(defvar ess-trans-font-lock-keywords
- '(("^[>+]" . font-lock-keyword-face)	; prompt
-   ("^[>+]\\(.*$\\)" (1 font-lock-variable-name-face keep t)) ; input
-   ("<-\\|_" . font-lock-reference-face)		; assign
-   ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
-   ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
-   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" 
-    . font-lock-type-face) ; keywords
-   )
- "Font-lock patterns used in ess-transcript-mode buffers.")
-
 
  ; ess-transcript-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
