@@ -132,7 +132,8 @@ clean:
 
 ### Targets below here are only for developers.
 
-dist: ess.dvi ess.info
+# ess.dvi ess.info
+dist:  
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(VERSION)"
 	@echo "**********************************************************"
