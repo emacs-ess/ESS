@@ -404,7 +404,7 @@ current buffer if nil."
  (save-excursion (let ((ess-tmp-sas-data nil)
     (ess-tmp-sas-data-view-fsview-statement ess-sas-data-view-fsview-statement)
     (ess-search-regexp
-    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[. ,()\t;]")
+    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[.&,;() \t]")
     (ess-search-except
     "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
 
@@ -439,7 +439,7 @@ current buffer if nil."
  (save-excursion (let ((ess-tmp-sas-data nil)
     (ess-tmp-sas-data-view-insight-statement ess-sas-data-view-insight-statement)
     (ess-search-regexp
-    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[. ,()\t;]")
+    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[.&,;() \t]")
     (ess-search-except
     "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
 
