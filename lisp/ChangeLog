@@ -1,3 +1,9 @@
+1999-02-02  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (inferior-R-input-sender): Change the regexp such
+	that e.g. "help(pt, offline=T)" is treated as normal command;
+	New: "?lm" (e.g.) is also recognized as help command
+
 Mon Dec 14 18:04:45 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* ess-mode.el: fixed copyright and header information
@@ -44,7 +50,7 @@ Fri Nov 20 20:57:33 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* essd-s+5.el: trimmed out old S4 stuff.
 
-Mon Nov 16 17:29:25 1998  maechler  <maechler@pyrite>
+Mon Nov 16 17:29:25 1998  Martin Maechler  <maechler@...>
 
 	* ess-inf.el: do not need comint echo anymore..
 
@@ -60,7 +66,7 @@ Fri Nov 13 18:25:51 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* ess-site.el: added suffix for StatSci's script files.
 
-Thu Nov 12 17:27:30 1998  maechler  <maechler@pyrite>
+Thu Nov 12 17:27:30 1998  Martin Maechler  <maechler@...>
 
 	* essd-r.el, essd-s+3.el, essd-s+5.el, essd-s3.el:
 	newline in dribble buff
@@ -74,7 +80,7 @@ Thu Nov 12 17:27:30 1998  maechler  <maechler@pyrite>
 
 	* ess-vars.el: .
 
-Wed Nov 11 12:45:15 1998  maechler  <maechler@pyrite>
+Wed Nov 11 12:45:15 1998  Martin Maechler  <maechler@...>
 
 	* essd-s+5.el: omit .Smode() extras; new "S+" instead of "S+3"
 
@@ -94,7 +100,7 @@ Wed Nov 11 12:45:15 1998  maechler  <maechler@pyrite>
 
 	* ess-vars.el: require s+5
 
-Tue Nov 10 17:45:11 1998  maechler  <maechler@pyrite>
+Tue Nov 10 17:45:11 1998  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-site.el: s+5 is now distributed
 
@@ -129,11 +135,11 @@ Thu Sep 24 23:32:14 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* ess-site.el: added stata mode, which is now STA (ref: Thomas Lumley)
 
-Thu Sep 17 09:11:51 1998  maechler  <maechler@pyrite>
+Thu Sep 17 09:11:51 1998  Martin Maechler  <maechler@...>
 
 	* ChangeLog, ess-utils.el: several  small things
 
-Fri Sep 11 16:20:14 1998  Martin Maechler  <maechler@sophie>
+Fri Sep 11 16:20:14 1998  Martin Maechler  <maechler@...>
 
 	* essd-r.el: (R-fix-T-F): new function
 
@@ -175,7 +181,7 @@ Thu Aug 20 08:45:11 1998  Martin Maechler  <maechler@...>
 	* essddr.el (Rd-section-names): and (Rd-keywords): expanded
 	according to Kurt's suggestion.
 
-Tue Aug 18 10:42:08 1998  Martin Maechler  <maechler@stat.math.ethz.ch>
+Tue Aug 18 10:42:08 1998  Martin Maechler  <maechler@stat.math.ethz.ch>maechler
 
 	* essd-s+3.el (S+3-dialect-name): new variable for customization.
 

@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/01/12 10:17:45 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: ess-inf.el,v 5.9 1999/01/12 10:17:45 maechler Exp $
+;; Modified: $Date: 1999/02/02 13:59:17 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: ess-inf.el,v 5.10 1999/02/02 13:59:17 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -1156,7 +1156,8 @@ to continue it."
 
   (ess-write-to-dribble-buffer
    (format "(inf.ess-mode 1): buf=%s, ess-language=%s, comint..echoes=%s, comint..sender=%s,\n"
-	   (current-buffer) ess-language comint-process-echoes comint-input-sender))
+	   (current-buffer) ess-language 
+	   comint-process-echoes comint-input-sender))
   ;; We set comint-process-echoes to t because inferior-ess-input-sender
   ;; recopies the input. If comint-process-echoes was *meant* to be t ...
   ;;
@@ -1253,24 +1254,26 @@ to continue it."
 ;;As promised, here is a quick hack:
 ;;
 (defun inferior-R-input-sender (proc string)
-  (if (string-match "help *\(\\([^)]*\\)\)" string)
+  (ess-write-to-dribble-buffer (format "(inf-R-input): string='%s'" string))
+  (if (or (string-match "help *\(\\([^,=)]*\\)\)" string)
+	  (string-match "? *['\"]*\([^,=)]*\)['\"]" string))
       (progn
+	(ess-write-to-dribble-buffer " --> _help_\n")
 	(insert-before-markers string)
 	(let ((string (match-string 1 string)))
 	  (ess-display-help-on-object
-	   (if (string= string "") "help" string)))
+	   (if (string= string "") "help" string))
+	  (ess-write-to-dribble-buffer (format "\t\t\t(%s)\n" string))
+	  )
 	(ess-eval-visibly "\n"))
-    (inferior-ess-input-sender proc string)))
-
-;;
-;;(add-hook 'inferior-ess-mode-hook
-;;	  '(lambda ()
-;;	     (setq comint-input-sender 'inferior-R-input-sender)))
-;;
-;;Of course, this (currently) only works for the `help(name)' form, and
-;;not for `?name'.  And of course, it breaks for `help(data = name)',
-;;because ess-display-help-on-object does not support this.
-
+    ;; else:  normal command
+    (inferior-ess-input-sender proc string)
+    (ess-write-to-dribble-buffer "-- normal\n")
+    )
+  ;; Of course, this (currently) only works for the `help(name)' form, and
+  ;; not for `?name'.  And of course, it breaks for `help(data = name)',
+  ;; because ess-display-help-on-object does not support this.
+  )
 
 (defun inferior-ess-send-input ()
   "Sends the command on the current line to the ESS process."
