@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 1.1 $.
+### File: $Revision: 1.2 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -81,8 +81,6 @@ ess.pdf: ess.ps
 install: all
 	mkdir -p $(INFODIR)
 	$(INSTALL) ess.info* $(INFODIR)
-	mkdir -p $(LISPDIR)
-	if [ x$(LISPDIR) != x. ]; then $(INSTALL) *.elc $(LISPDIR) ; fi
 
 clean:
 	rm -f ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
