@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/06/30 05:34:58 $
-;; Version: $Revision: 5.107 $
-;; RCS: $Id: ess-site.el,v 5.107 2004/06/30 05:34:58 rmh Exp $
+;; Modified: $Date: 2004/06/30 17:29:26 $
+;; Version: $Revision: 5.108 $
+;; RCS: $Id: ess-site.el,v 5.108 2004/06/30 17:29:26 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -207,12 +207,22 @@ for ESS, such as icons.")
 	    "At least one of ../etc, ../etc/ess, ../../etc/ess must exist!"))
 	    (sit-for 4)))))
 
-;;; (1.2) Uncomment the following 4 lines to fix the infopath, if needed.
-;;(defun add-info-path (newpath)
-;;  (setq Info-default-directory-list
-
-;;	(cons (expand-file-name newpath) Info-default-directory-list)))
-;;(add-info-path (concat ess-lisp-directory "/../info/"))
+;;; (1.2) Uncomment the following lines to fix the infopath, if
+;; needed.  Check the Info-default-directory-list for ess.info; if we
+;; do not find it in the list, we should add on our directory to the
+;; list.  To save a bit of time, we could unconditionally add
+;; ../doc/info to the Info path, I'm not sure if that would be okay or
+;; a problem.
+;; Yet again (sigh), XEmacs vs Emacs raises its ugly head.  This code works on
+;; Emacs 21.3, yet the relevant variable in XEmacs 21 seems to be
+;; Info-directory-list.
+(unless (member t 
+		(mapcar 'file-exists-p
+			(mapcar '(lambda (x) (concat x "ess.info"))
+				Info-default-directory-list)))
+  (add-to-list 'Info-default-directory-list 
+	       (expand-file-name 
+		(concat ess-lisp-directory "/../doc/info/")) 'append) )
 
 
 ;;; (1.3) Files ending in .q and .S are considered to be S source files
