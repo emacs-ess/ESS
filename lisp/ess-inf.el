@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/01/21 03:19:41 $
-;; Version: $Revision: 5.75 $
-;; RCS: $Id: ess-inf.el,v 5.75 2002/01/21 03:19:41 rmh Exp $
+;; Modified: $Date: 2002/03/12 07:14:18 $
+;; Version: $Revision: 5.76 $
+;; RCS: $Id: ess-inf.el,v 5.76 2002/03/12 07:14:18 rmh Exp $
 
 ;; This file is part of ESS
 
@@ -1522,17 +1522,21 @@ to the command if BUFF is not given.)"
   (interactive)
   (ess-force-buffer-current "Process to quit: ")
   (ess-make-buffer-current)
-  ;; This needs to be modified to handle R, sigh...
+  ;;  Modified to handle R (rmh 2002 Mar 12)
   (let ((sprocess (get-ess-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running."))
-    (if (yes-or-no-p (format "Really quit ESS (process %s)" sprocess))
-	;; or %S above?
-	(save-excursion
+    (if (yes-or-no-p (format "Really quit ESS process %s? " sprocess))
+	(progn   ;;;;previouslyl (save-excursion
 	  (ess-cleanup)
 	  (ess-switch-to-ESS nil)
 	  (goto-char (marker-position (process-mark sprocess)))
 	  (insert inferior-ess-exit-command)
-	  (process-send-string sprocess inferior-ess-exit-command)
+	  (if (string-equal ess-dialect "R")
+	      (progn
+		(inferior-ess-send-input)
+		(setq inferior-ess-prompt inferior-ess-exit-prompt)
+		(inferior-ess-wait-for-prompt))
+	    (process-send-string sprocess inferior-ess-exit-command))
 	  (rename-buffer (concat (buffer-name) "-exited") t)))))
 
 (defun ess-abort ()
