@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.9 $.
+### File: $Revision: 5.10 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -77,6 +77,7 @@ SOURCES = ess-vars.el ess.el ess-site.el ess-utils.el \
 	ess-comp.el \
 	essl-s.el   essd-s3.el  essd-s4.el  essd-s+3.el essd-s+5.el \
 	essd-r.el \
+	essd-els.el \
 	essl-lsp.el essd-xls.el essd-vst.el \
 	essl-sas.el essd-sas.el \
 	essl-sta.el essd-sta.el \
