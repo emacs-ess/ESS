@@ -835,6 +835,12 @@ Use double backslashes if you use the msdos shell."
     :group 'ess-S
     :type 'string))
 
+(defcustom inferior-Splus-args ""
+  "*String of arguments used when starting S.
+These arguments are currently passed only to S+6."
+  :group 'ess-S
+  :type 'string)
+
 (defcustom inferior-S+6-print-command "S_PRINT_COMMAND=gnuclientw.exe"
   "*Destination of print icon in S+6 for Windows Commands window."
   :group 'ess-S
