@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 August 1999
-;; Modified: $Date: 1999/09/16 05:35:59 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essd-omg.el,v 5.3 1999/09/16 05:35:59 rossini Exp $
+;; Modified: $Date: 1999/11/10 05:28:27 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essd-omg.el,v 5.4 1999/11/10 05:28:27 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -51,8 +51,8 @@
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
 					     ess-suffix))
-    (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . S-syntax-table)
+    (ess-mode-editing-alist        . OMG-editing-alist)
+    (ess-mode-syntax-table         . OMG-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
     (ess-object-name-db-file       . "ess-omg-namedb.el" )
@@ -66,9 +66,9 @@
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "\\[[0-9]*\\]")
     (inferior-ess-secondary-prompt . ".. ?")
-    (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
+    (inferior-ess-start-file       . nil) ;"~/.ess-omg")
     (inferior-ess-start-args       . ""))
- "Variables to customize for OMG")
+ "Variables to customize for OMG (Omegahat)")
 
 
 (defun OMG (&optional proc-name)
@@ -95,8 +95,6 @@
   "Omegahat transcript mode."
   (interactive)
   (ess-transcript-mode OMG-customize-alist))
-
-
 
  ; Provide package
 
