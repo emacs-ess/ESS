@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/14 01:11:45 $
-;; Version: $Revision: 1.69 $
-;; RCS: $Id: ess-mode.el,v 1.69 1997/11/14 01:11:45 rossini Exp $
+;; Modified: $Date: 1997/11/17 14:58:35 $
+;; Version: $Revision: 1.70 $
+;; RCS: $Id: ess-mode.el,v 1.70 1997/11/17 14:58:35 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -149,7 +149,7 @@
     ["Eval region"   ess-eval-region-and-go   t]
     ["Eval function" ess-eval-function-and-go t]
     ["Eval line"     ess-eval-line-and-go     t]
-    ;;["About" (lambda nil (interactive) (ess-goto-info "Evaluating code")) t]
+    ["About" (lambda nil (interactive) (ess-goto-info "Evaluating code")) t]
     )
    ("ESS Eval"
     ["Eval buffer"       ess-eval-buffer             t]
@@ -158,7 +158,7 @@
     ["Step through line" ess-eval-line-and-next-line t]
     ["Enter expression"  ess-execute-in-tb           t]
     ["Eval line"         ess-eval-line               t]
-    ;;["About" (lambda nil (interactive) (ess-goto-info "Evaluating code"))]
+    ["About" (lambda nil (interactive) (ess-goto-info "Evaluating code"))]
     )
    ("Motion..."
     ["Edit new object"       ess-dump-object-into-edit-buffer t]
@@ -173,7 +173,7 @@
     ["Enclosing parenthesis" backward-up-list                t]
     ["Backward sexp"         backward-sexp                   t]
     ["Forward sexp"          forward-sexp                    t]
-    ;;["About"                 (Info-goto-node "(Emacs)Lists") t]
+    ["About"                 (Info-goto-node "(Emacs)Lists") t]
     )
    ("ESS Edit"
     ["Complete Filename" comint-replace-by-expanded-filename t]
@@ -183,11 +183,11 @@
     ["Indent expression" ess-indent-exp                        t]
     ["Indent line"       ess-indent-command                    t]
     ["Undo"              undo                                t]
-    ;;["About"   (lambda nil (interactive) (ess-goto-info "Edit buffer")) t]
+    ["About"   (lambda nil (interactive) (ess-goto-info "Edit buffer")) t]
     )
    "------"
    ["Describe"  describe-mode t]
-   ;;["About"  (lambda nil (interactive) (ess-goto-info "Editing")) t]
+   ["About"  (lambda nil (interactive) (ess-goto-info "Editing")) t]
    ["Send bug report"  ess-submit-bug-report t]
    ))
 
