@@ -68,7 +68,7 @@ are very welcome!
 @center (@code{rossini@@stat.sc.edu})
 @center Department of Statistics
 @center University of South Carolina, USA.
-@center Documentation version: $Version$
+@center Documentation version: $Revision: 1.4 $.
 @page
 @vskip 0pt plus 1filll
 Copyright @copyright{} 1992, 1993, 1994, 1995 David M. Smith
