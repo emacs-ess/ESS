@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.15 2001/09/26 14:15:26 ess Exp $
+;; Version: $Id: ess-menu.el,v 1.16 2001/12/20 16:25:46 ess Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -201,8 +201,8 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
   "SAS language Imenu support for ESS."
   (interactive)
   (setq imenu-generic-expression
-	'( (nil "[ \t\n=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ \t\n;]" 1)))
-  (imenu-add-to-menubar "SAS-fcts"))
+	'( (nil "[ \t\n=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ ,()\t\n;]" 1)))
+  (imenu-add-to-menubar "SAS Datasets"))
 
 
 ;;;; Example for C menus:

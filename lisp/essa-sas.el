@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/12/17 14:59:52 $
-;; Version: $Revision: 1.39 $
-;; RCS: $Id: essa-sas.el,v 1.39 2001/12/17 14:59:52 ess Exp $
+;; Modified: $Date: 2001/12/20 16:25:46 $
+;; Version: $Revision: 1.40 $
+;; RCS: $Id: essa-sas.el,v 1.40 2001/12/20 16:25:46 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -266,16 +266,23 @@ on the way."
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
     (save-excursion 
+    (search-backward-regexp "[ \t=]" nil t)
+    (search-forward-regexp 
+	"[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ ,()\t;]"
+	nil t)
+
+    (let ((ess-tmp-sas-data (match-string 1)))
       (if (get-buffer "*shell*") (set-buffer "*shell*")
           (shell))
       (if ess-sas-data nil
-	  (setq ess-sas-data (read-string "SAS Dataset: ")))
+	  (setq ess-sas-data 
+	    (read-string "SAS Dataset: " ess-tmp-sas-data nil ess-tmp-sas-data)))
 	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
 	    " -initstmt \"" ess-sas-data-view-libname "; proc fsview data=" 
 	    ess-sas-data "; run;\" " ess-sas-data-view-options " " 
 	    ess-sas-submit-post-command))
     (comint-send-input)
-    )
+    ))
 )
 
 (defun ess-sas-file (suffix &optional revert)
