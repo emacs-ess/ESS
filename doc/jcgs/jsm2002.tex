@@ -76,7 +76,7 @@ Software developers rely on Rapid Application Development (RAD)
 environments to assist them in the complex process of software
 development which includes the varied tasks of computer
 programming, project management and software testing.  The Emacs text
-editor is the basis of many RAD tools in the software developers' toolbox.
+editor is a powerful RAD tool in the software developers' toolbox.
 Common tasks faced by a statistician are not much different from those
 faced by software developers, since much statistical
 activity involves some form of computer use.  Many
@@ -91,7 +91,7 @@ software development and data analysis.  The most beneficial part
 comes from learning a powerful RAD tool like Emacs and using it for 
 many common tasks and statistical analysis package programming as well. 
 ESS currently supports the S family of languages (which include
-S, \Splus, and R); \SAS;  BUGS; \Stata; and \XLispStat
+S, \Splus, and R); \SAS;  BUGS; \Stata; and \XLispStat\
 and its extensions Arc and ViSta.  ESS can be
 extended to accommodate most statistical packages which provide either
 an interactive command-line or batch file processing.  The documentation 
@@ -123,8 +123,8 @@ systems such as X11, Microsoft Windows, and Apple Macintosh.  These
 windowing systems provide a graphical user interface (GUI) which
 allows the user to interact with either a keyboard or a mouse, and 
 encourage multiple applications to share a single display.  Emacs 
-menus allow mouse access to frequently used actions and provide a 
-graphical alternative when the user doesn't know or can't remember 
+menus allow mouse access to frequently used actions providing a
+speedy alternative when the user doesn't know or can't remember 
 a key-mapping.  
 
 \paragraph{Buffers for Editing and for Running a Shell.}
@@ -141,8 +141,7 @@ is run inside a buffer.
 
 \paragraph{Emacs Modes.}
 Emacs capabilities are extended by loading text files containing code
-written in Emacs Lisp (elisp), a dialect of Lisp
-which stands for List Processing.  Emacs commands, 
+written in Emacs Lisp (elisp), a dialect of Lisp.  Emacs commands, 
 written in elisp, can be called interactively by name or by their associated 
 key-map.  Emacs functions are also written in elisp, but they can only be 
 called by Emacs commands or other Emacs functions rather than by
@@ -179,7 +178,8 @@ non-secure access via ftp or \stexttt{tramp} for secure connections
 with scp or ssh, and telnet for non-secure connections.
 Interacting with revision control programs is provided by the minor-mode 
 \stexttt{vc-mode} for packages like CVS, RCS and SCCS (or the more
-specialized \stexttt{pcl-cvs-mode} for CVS only).
+specialized \stexttt{pcl-cvs-mode} for CVS which cooperates with 
+\stexttt{vc-mode}).
 
 \paragraph{Extensions to Editing.}
 Most programming and documentation tasks fall under the realm of text
@@ -189,12 +189,11 @@ appropriate to the programming language in use.
 Emacs shares many features with word processing
 programs and cooperates with document preparation systems
 such as \LaTeX\ for typesetting or \textsc{html} and \textsc{xml}
-for hypertext markup.
-Other extensions to Emacs allow it to act as a web browser, a mail and news
-reader, and as an interface to
+for hypertext markup.  Other extensions to Emacs allow it to act as a 
+web browser, a mail and news reader, and as an interface to
 other common text-based tools such as spell checking programs.  The
-Emacs keyboard and mouse interface can be re-mapped to resemble that
-of other text editors, such as vi, wordstar, and brief.
+Emacs key-maps can be re-configured to resemble other text editors, 
+such as vi and brief.
 
 
 \section{ESS extends Emacs}
@@ -221,7 +220,7 @@ to the same level as the previous line.
 ESS can send individual lines, marked regions, or whole buffers to the 
 statistical analysis package for execution.  ESS sends the code to
 the statistical package and receives the output that results.   The results
-are received in an editable Emacs buffer. 
+are received in an Emacs buffer. 
 
 \paragraph{Conflicts in key-maps.}
 \label{sec:confl-keym}
@@ -229,8 +228,8 @@ are received in an editable Emacs buffer.
 Simple conflicts between interfaces are exemplified by different
 key-maps for editing tasks such as cut, copy, paste, beginning of
 line, end of line, etc.  These may be the most aggravating
-because our fingers are acting without our brains having to
-specifically think about it, but differences in interfaces
+because our fingers act without our brains consciously
+thinking about it.  Differences in interfaces
 circumvent this learned behavior.  ESS, as part of Emacs, 
 solves this problem by providing a single key-map interface.
 
