@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/09/01 21:48:17 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essl-s.el,v 1.4 1997/09/01 21:48:17 rossini Exp $
+;; Modified: $Date: 1997/09/02 19:43:43 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essl-s.el,v 1.5 1997/09/02 19:43:43 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -53,6 +53,60 @@
     (ess-keep-dump-files          . nil)
     (font-lock-defaults           . '(ess-mode-font-lock-keywords)))
   "General options for editing S, S+, and R source files.")
+
+
+;;; Changes from S to Splus 3.x.  (standard S3 should be in essl-s!).
+
+(defconst ess-help-S+3-sec-keys-alist
+  '((?a . "ARGUMENTS:")
+    (?b . "BACKGROUND:")
+    (?B . "BUGS:")
+    (?D . "DESCRIPTION:")
+    (?d . "DETAILS:")
+    (?e . "EXAMPLES:")
+    (?n . "NOTE:")
+    (?o . "OPTIONAL ARGUMENTS:")
+    (?R . "REFERENCES:") 
+    (?r . "REQUIRED ARGUMENTS:")
+    (?S . "SEE ALSO:")
+    (?s . "SIDE EFFECTS:")
+    (?u . "USAGE:")
+    (?v . "VALUE:"))
+  "Alist of (key . string) pairs for use in section searching.")
+;;; `key' indicates the keystroke to use to search for the section heading
+;;; `string' in an S help file. `string' is used as part of a
+;;; regexp-search, and so specials should be quoted.
+
+(defvar S4-help-sec-keys-alist
+  '((?a . "ARGUMENTS:")
+    (?b . "BACKGROUND:")
+    (?B . "BUGS:")
+    (?d . "DESCRIPTION:")
+    (?D . "DETAILS:")
+    (?e . "EXAMPLES:")
+    (?n . "NOTE:")
+    (?r . "REFERENCES:")
+    (?s . "SEE ALSO:")
+    (?S . "SIDE EFFECTS:")
+    (?u . "USAGE:")
+    (?v . "VALUE:"))
+  "Help section keys for S4.")
+
+(defconst ess-help-R-sec-keys-alist 
+  '((?a . "\\s *Arguments:") 
+    (?d . "\\s *Description:")
+    (?e . "\\s *Examples:") 
+    (?n . "\\s *Note:")
+    (?r . "\\s *References:") 
+    (?s . "\\s *See Also:") 
+    (?v . "\\s *Value[s]?")	;
+    )) ;; "Alist of (key . string) pairs for use in section searching."
+
+(defconst ess-help-S+3-sec-regex "^[A-Z. ---]+:$"
+  "Reg(ular) Ex(pression) of section headers in help file")
+
+(defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$")
+
 
 (provide 'essl-s)
 

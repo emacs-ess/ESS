@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/01 21:16:41 $
-;; Version: $Revision: 1.34 $
-;; RCS: $Id: essd-r.el,v 1.34 1997/09/01 21:16:41 rossini Exp $
+;; Modified: $Date: 1997/09/02 19:43:38 $
+;; Version: $Revision: 1.35 $
+;; RCS: $Id: essd-r.el,v 1.35 1997/09/02 19:43:38 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -31,23 +31,12 @@
 ;;; This file defines all the R customizations for ess-mode.
 
 
-;;; Autoloads:
+;;; Autoloads: and Requires
 
+(require 'essl-s)
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
 
 ;;; Code:
-
-(defconst ess-help-R-sec-keys-alist 
-  '((?a . "\\s *Arguments:") 
-    (?d . "\\s *Description:")
-    (?e . "\\s *Examples:") 
-    (?n . "\\s *Note:")
-    (?r . "\\s *References:") 
-    (?s . "\\s *See Also:") 
-    (?v . "\\s *Value[s]?")	;
-    )) ;; "Alist of (key . string) pairs for use in section searching."
-
-(defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$")
 
 ;;(ess-customize-alist           . 'R-customize-alist)
 (defvar R-customize-alist
@@ -78,8 +67,7 @@
 
 
 (defun R ()
-  "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ).
-New way to do it."
+  "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ)."
   (interactive)
   (setq ess-customize-alist R-customize-alist)
   ;; for debugging only

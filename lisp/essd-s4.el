@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/26 22:54:23 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: essd-s4.el,v 1.7 1997/08/26 22:54:23 rossini Exp $
+;; Modified: $Date: 1997/09/02 19:43:50 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: essd-s4.el,v 1.8 1997/09/02 19:43:50 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -35,6 +35,9 @@
 
 ;;;
 ;;; $Log: essd-s4.el,v $
+;;; Revision 1.8  1997/09/02 19:43:50  rossini
+;;; *** empty log message ***
+;;;
 ;;; Revision 1.7  1997/08/26 22:54:23  rossini
 ;;; *** empty log message ***
 ;;;
@@ -61,23 +64,11 @@
 
 ;;; Autoloads:
 
+(require 'essl-s)
+
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
 
 ;;; Code:
-(defvar S4-help-sec-keys-alist
-  '((?a . "ARGUMENTS:")
-    (?b . "BACKGROUND:")
-    (?B . "BUGS:")
-    (?d . "DESCRIPTION:")
-    (?D . "DETAILS:")
-    (?e . "EXAMPLES:")
-    (?n . "NOTE:")
-    (?r . "REFERENCES:")
-    (?s . "SEE ALSO:")
-    (?S . "SIDE EFFECTS:")
-    (?u . "USAGE:")
-    (?v . "VALUE:"))
-  "Help section keys for S4.")
 
 (defvar S4-customize-alist
   '((ess-language                  . "S")

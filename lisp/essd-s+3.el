@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/02 14:48:22 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: essd-s+3.el,v 1.24 1997/09/02 14:48:22 rossini Exp $
+;; Modified: $Date: 1997/09/02 19:45:36 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: essd-s+3.el,v 1.25 1997/09/02 19:45:36 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -36,31 +36,6 @@
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process")
-
-;;; Changes from S to Splus 3.x.  (standard S3 should be in essl-s!).
-
-(defconst ess-help-S+3-sec-keys-alist
-  '((?a . "ARGUMENTS:")
-    (?b . "BACKGROUND:")
-    (?B . "BUGS:")
-    (?D . "DESCRIPTION:")
-    (?d . "DETAILS:")
-    (?e . "EXAMPLES:")
-    (?n . "NOTE:")
-    (?o . "OPTIONAL ARGUMENTS:")
-    (?R . "REFERENCES:") 
-    (?r . "REQUIRED ARGUMENTS:")
-    (?S . "SEE ALSO:")
-    (?s . "SIDE EFFECTS:")
-    (?u . "USAGE:")
-    (?v . "VALUE:"))
-  "Alist of (key . string) pairs for use in section searching.")
-;;; `key' indicates the keystroke to use to search for the section heading
-;;; `string' in an S help file. `string' is used as part of a
-;;; regexp-search, and so specials should be quoted.
-
-(defconst ess-help-S+3-sec-regex "^[A-Z. ---]+:$"
-  "Reg(ular) Ex(pression) of section headers in help file")
 
 ; Code:
 
