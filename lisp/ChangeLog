@@ -1,3 +1,8 @@
+2003-07-24  Stephen Eglen  <stephen@gnu.org>
+
+	* essa-r.el (ess-r-var): New function for loading numbers from any
+	Emacs buffer into an existing *R* process.
+
 2003-01-01  Stephen Eglen  <eglen@pcg.wustl.edu>
 
 	* ess-site.el (ess-rdired): Add autoload for ess-rdired.
