@@ -103,14 +103,14 @@ Development (RAD) tools and methodologies.  In the field of
 statistics, programming is an important skill which can be augmented
 and enhanced by the right tools and environment.  This is especially
 important with the rise of computational tools such as resampling
-methods such as the bootstrap and jackknife, as well as simulation
-methods such as Markov Chain Monte Carlo (MCMC).
+(bootstrap and jackknife approaches) and Markov Chain Monte Carlo
+(MCMC) sampling (such as Gibbs and Metropolis-Hastings).
 
 In the field of statistics, different analytic tools are targeted for
 particular styles of statistical analysis.  This suggests that
 efficiency work habits can require switching between data analysis
 tools.  One example is that general purpose tools such as R
-\citep{ihak:gent:1996} are not as easy to use performing Bayesian
+\citep{ihak:gent:1996} are not as easy to use to perform Bayesian
 analyses as special tools such as BUGS \citep{SpieThomBest:1999}.  On
 the other hand, these specialized tools can not be efficiently used to
 handle general analyses and graphical summaries.  This suggests a
@@ -178,13 +178,14 @@ extensions and related work.
 \label{sec:intro:emacs}
 
 Emacs \citep{RMS:2000} is a mature, powerful, and easily extensible
-text editor which is freely available, under the terms of the Free
-Software Foundation's Copy-left agreement, for a large number of
-environments.  These include frequently used statistical computing
-platforms such as Apple Corporation's Macintosh platform, and
-Microsoft-based operating system.  Emacs has been around for many
-years, and in the past was considered as one of the primary options
-for text editing on many Unix systems.
+text editor which is freely available under the GNU General Public
+License, version 2, for a large number of platforms, including those
+most frequently used for statistical computing.  These include Unix,
+the Apple Computer, Inc., Macintosh platform, and Microsoft-based
+platforms.  While Emacs is not a word processor, it does share some
+similar features and can behave to a limited extent as one.  Emacs has
+been around for many years, and in the past was considered as one of
+the primary options for text editing on many Unix systems.
 
 Most programming and documentation tasks fall under the realm of text
 editing.  This work can be enhanced by common IDE features such as
@@ -196,15 +197,15 @@ word processing, which focuses on producing a presentation of a
 document, in addition to text editing.  While Emacs is not a word
 processor, it does share some features.
 
-ESS provides Emacs with an easily extensible and uniform interface to
-text handling for statistical packages.  The capabilities can be
-extended in an orthogonal manner to include other Emacs packages for
-assisting with documentation (\LaTeX; SGML, XML, and XSLT; Noweb);
-version control (RCS,CVS,SCCS, PRCS); and remote editing via FTP or
-secure mechanisms such as SSH/SCP.  It handles the interface to both
-source code and transcripts contextually, providing syntax
-highlighting, bookmarking features, interfaces to directory structure,
-and command-history.
+ESS extends Emacs to provide an easily extensible and uniform
+interface for statistical packages.  The capabilities can be extended
+in an orthogonal manner to include other Emacs packages for assisting
+with documentation (\LaTeX; SGML, XML, and XSLT; Noweb); version
+control (RCS,CVS,SCCS, PRCS); and remote editing via FTP or secure
+mechanisms such as SSH/SCP.  It handles the interface to both source
+code and transcripts contextually, providing syntax highlighting,
+bookmarking features, interfaces to directory structure, and
+command-history.
 
 Emacs provides a sophisticated development environment for programming
 in traditional compiled languages such as C, C++, and Fortran as well
@@ -230,17 +231,17 @@ short-cuts.  Additional menus can be defined by the user should they
 be needed.
 
 Emacs was one of the first tools available with a programmable
-extension language, a dialect of Lisp
+extension language, Emacs Lisp, which is a dialect of Lisp
 \citep{RChassell1999,PGraham:1996}.  There are many examples of
 specialized extensions for assisting and facilitating common editing
-tasks.  This includes complex tasks such as connections with
-spreadsheets, mail and news interfaces, database front and backends,
-forms entry, and even interactive games such as tetris.  Fundamentally
-important editing tasks such as programming Makefiles, scripts, and
-compiled code in many standard as well as unusual computer languages
-are included.  Emacs also has an internal help system and tutorial for
-its use.  Appendix~\ref{app:scenarios} provides sample sessions to
-help familiarize one with approaches for using Emacs with ESS.
+tasks.  Fundamentally important editing tasks such as programming
+Makefiles, scripts, and compiled code in many computer languages are
+well supported.  In addition, many extensions for handling complex
+tasks have been developed, such as spreadsheets, mail and news
+interfaces, database front and backends, forms entry, and interactive
+games such as tetris.  Emacs also has an internal help system and
+tutorial for its use.  Appendix~\ref{app:scenarios} provides sample
+sessions for using Emacs with ESS.
 
 The above reasons suggest that Emacs is a reasonable starting choice
 for providing a universal interface for data analysis and programming.
@@ -252,33 +253,33 @@ common interface to multiple packages.
 
 For the purposes of the user interface, recent and traditional
 interfaces for statistical packages and languages can generally be
-classified into 3 forms.  There is the command-line interface that
-most of the packages have available; this is the interface that ESS
-needs for interfacing at the process level.  There is also the
-spreadsheet/MDI interface employed by spreadsheet packages as well as
-most Apple and Microsoft-based statistical packages.  In addition,
-there have been other specially designed implementation interfaces,
-which include graph-based interfaces as implemented in ViSta
-\citep{youn:lubi:1995}, the SAS terminal interface, which divides the
-terminal window into 3 screens, and possibly others.  Another approach
-is taken by DataDesk \citep{vell:prat:1989}, which provides a visual
-and tightly linked interface.
+classified into 3 forms.  There are command-line interfaces (CLIs)
+that most of the packages have available; this is the interface that
+ESS needs for interfacing at the process level.  For graphical user
+interfaces (GUIs), there is also the spreadsheet/MDI interface, where
+menus and toolbars are wrapped around a region used for displaying
+data graphically through figures and numerically in spreadsheets.
+This is employed by both spreadsheet packages as well as most Apple
+and Microsoft-based statistical packages.  In addition, there have
+been other one-time implementation interfaces.  Other interesting
+interfaces included the flow-chart guides, implemented as graph-based
+interfaces in ViSta \citep{youn:lubi:1995}; the SAS terminal
+interface, which divides the terminal window into 3 screens; and by
+DataDesk \citep{vell:prat:1989}, which provides a visual and tightly
+linked interface for the user.
 
 \subsection{Command line interfaces}
 \label{sec:UI:command}
 
-The classic command-line interface is still available for statistical
-packages on most Unix and mainframe computers.  This generally
-consists of typing a single line at a time, with some form of
-wrap-around for those lines which are extremely long in terms of
-character counts.  For example, \Splus, R, Stata, XLispStat, and SAS
-still have command-line interfaces, though they are currently deemphasized.
-For example, it is difficult to determine how to use
-it under SAS, and the Stata interface is deprecated towards use of a
-newer GUI.
-
-ESS assists command-line interfaces by providing a comprehensive
-interface layer on top of the command-line.
+The classic command-line interface is available for some statistical
+packages on most Unix and mainframe computers, though it is becoming
+rare.  This interface consists of typing a single line at a time with
+wrap-around for long lines.  Examples include \Splus, R, Stata,
+XLispStat, and SAS.  Currently, it can be difficult to determine how
+to use the CLI under SAS, as opposed to the more common 3-way
+split-screen interface, and in general, the Stata CLI is depreciated
+towards use of a newer GUI.  ESS assists command-line interfaces by
+providing a comprehensive interface layer on top of the command-line.
 
 \subsection{Graphical User Interfaces}
 \label{sec:UI:GUI}
@@ -298,20 +299,18 @@ DataDesk, ViSta, and many others.
 \subsection{ESS}
 \label{sec:UI:ESS}
 
-ESS provides a front-end text-based user interface to a variety of
-interactive statistical programs and interpreted statistical
-languages.  There are various levels of support depending on their
-capabilities and needs.  Because of it's history, ESS supports the S
-family of languages extremely well; these include recent versions of
-S, \Splus, and R.  SAS is also well supported, but to a lesser extent.
-Syntax highlighting and the extremely well-designed editing facilities
-of emacs are most heavily used, while the lack of objects in SAS has
-prevented the use of object completion facilities by self-discovery.
-Stata and XLispStat (and its extensions, ARC and ViSta) are supported
-with the basic functionality, including syntax highlighting and
-process-interfacing, that most ESS users take advantage of.  This
-appears to be sufficiently interesting to help differentiate from
-typical package-provided user interfaces.
+ESS currently supports a number of interactive statistical programs as
+well as a few interpreted statistical languages. There are various
+levels of support depending on their capabilities and needs.  Because
+of it's history, ESS supports the S family of languages extremely
+well; these include recent versions of S, \Splus, and R.  SAS is also
+well supported, but to a lesser extent.  Stata and XLispStat (and the
+XLispStat extensions, ARC and ViSta) are marginally supported,
+providing mainly syntax highlighting and process-interfacing.  Note
+that even though we refer to it as marginal support, it is the basic
+functionality that the majority of ESS users take advantage of.  This
+appears to be sufficient to differentiate from typical
+package-provided interfaces.
 
 \section{Features and Use}
 \label{sec:basic}
@@ -857,8 +856,16 @@ new statistical languages.
 Most of this was primarily done under Unix.  Beginning in 1998, thanks
 to an example of interprocess communication using Microsoft's DDE by
 Brian Ripley, Richard M. Heiberger provided interfaces for \Splus~4.x
-and then \Splus~2000 and \Splus~6.x.  Beginning in 2000, Rodney
-Sparapani designed the SAS batch interaction mode.
+and then \Splus~2000 and \Splus~6.x.  
+
+Beginning in 1998, Rodney Sparapani designed the SAS batch interaction
+mode.  \textbf{RODNEY} I'd put a plug in for further SAS refinements
+from 1998-2001 by Rich and myself.  I don't need to remind you that
+there was no SAS batch support, DMS-like key definitions, or coherent
+syntax highlighting up to this point; not to mention *elsewhere*
+functionality and automated error message lookup.  These are features
+that people using SAS today actually need and want.  ESS is now by far
+the best environment for SAS available at any price and it's free.
 
 Most of what has been done recently is debugging and tuning.  New
 features in the plans include robust extensions for Literate Data
@@ -892,6 +899,12 @@ code and analysis plan, Literate Statistical Analysis is a round-trip
 cycle, using document modification through the Document Object Model
 interface (W3 Consortium).  This is described more in
 \citep{ross:lunt:2001}. 
+
+\textbf{RODNEY:} Are you telling the reader where ESS is going?  If
+so, this is news to me.  I'm guessing that ESS is going to add BUGS
+(that's my plan) and will have better support for all of the packages
+you mentioned: S et.  al., SAS, Stata, XlispStat, etc.  If I am
+confused, then many readers will be to.
 
 \bibliographystyle{plainnat} %alpha}
 \bibliography{ess}
