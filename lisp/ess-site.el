@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/02/27 23:36:40 $
-;; Version: $Revision: 5.68 $
-;; RCS: $Id: ess-site.el,v 5.68 2001/02/27 23:36:40 ess Exp $
+;; Modified: $Date: 2001/03/01 16:43:04 $
+;; Version: $Revision: 5.69 $
+;; RCS: $Id: ess-site.el,v 5.69 2001/03/01 16:43:04 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -242,7 +242,7 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;; redefine inferior-S-program-name.
 
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
-(setq-default inferior-S+3-program-name "Splus34")
+;;(setq-default inferior-S+3-program-name "Splus34")
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S+4-program-name "Splus")
 ;;(setq-default inferior-S+5-program-name "Splus5")
