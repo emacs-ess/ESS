@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/10/22 14:47:25 $
-;; Version: $Revision: 1.53 $
-;; RCS: $Id: ess-site.el,v 1.53 1997/10/22 14:47:25 rossini Exp $
+;; Modified: $Date: 1997/10/22 15:53:50 $
+;; Version: $Revision: 1.54 $
+;; RCS: $Id: ess-site.el,v 1.54 1997/10/22 15:53:50 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -168,6 +168,10 @@
   (interactive)
   (if proc-name (S+3-mode proc-name)
     (S+3-mode)))
+
+;; Alternative method (better?)
+;;(fset 'S 'S+3)
+;;(fset 'S-mode 'S+3-mode)
 
 ;;; 3. Customization (and commented out examples) for your site
 ;;;; ===============================================
