@@ -106,7 +106,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/04 02:00:29 $ - $Revision: 1.35 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/04 13:55:23 $ - $Revision: 1.36 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -127,7 +127,8 @@
 \noindent Keywords: Data Analysis, Programming, Emacs, S, \SAS,
 \Splus, R, \XLispStat, \Stata, BUGS
 
-\baselineskip=2pc
+%% not for MM's reading -- maybe for submission (rather baselinestretch above?)
+%%S \baselineskip=2pc
 
 \section{Introduction}
 \label{sec:introduction}
@@ -175,7 +176,7 @@ an interactive command-line or batch file processing.
 The present paper summarizes historical and non-technical information on
 Emacs and ESS.  A more complete version is in \citep{RMHHS:2001}.
 A general introduction and usage instructions can be
-found in \citep{heiberger:dsc:2001}.  
+found in \citep{heiberger:dsc:2001}.
 An introduction for a SAS-oriented audience is in
 \citep{heiberger:philasugi:2001}.  The documentation that comes with
 ESS provides details of its implementation and examples of its use.
@@ -212,7 +213,7 @@ systems such as X11, Microsoft Windows, and Apple Macintosh.  These
 windowing systems provide a graphical user interface (GUI) which
 allows the user to interact with either a keyboard or a mouse, and encourage
 multiple applications to share a single display.  Emacs menus and
-toolbars on the display screen allow mouse access to frequently used 
+toolbars on the display screen allow mouse access to frequently used
 actions and provide a graphical alternative
 when the user doesn't know or can't remember a key-mapping.  User-defined
 menus and toolbars can be constructed as needed.
@@ -229,7 +230,7 @@ edit multiple files and control multiple
 programs simply by switching between buffers.  Frequently an operating
 system interactive command line interpreter, called a shell,
 is run inside a buffer; hence most programs can be run from a buffer
-since most programs can be run from a command line.  When a command line 
+since most programs can be run from a command line.  When a command line
 interpreter is run inside a buffer, the entire
 transcript of the interaction is immediately editable and searchable while the
 program is still running.
@@ -613,7 +614,7 @@ to accommodate multiple languages in a flexible way.
 During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS
 for \SAS, a mode that allows text-based \stexttt{PROC} by
 \stexttt{PROC} interaction with an inferior buffer running an interactive SAS
-session either on the same computer or a remote computer over a network.  
+session either on the same computer or a remote computer over a network.
 At the same time, SAS-mode was further incorporated into ESS.
 
 In 1997, more changes were made to facilitate
@@ -624,11 +625,11 @@ adding support for additional statistical languages like \Stata\ and
 
 Most of the work, until 1998, was for Unix statistics
 packages that used either a command-line interface or batch file
-processing for input/output.  ESS could not communicate 
+processing for input/output.  ESS could not communicate
 with Windows versions of statistical packages that did not provide
 the same method of input/output.  This hurdle
 fell in 1998 when Brian Ripley designed input/output based on
-the Windows technology of dynamic data exchange (DDE).  
+the Windows technology of dynamic data exchange (DDE).
 Based on this work, Heiberger provided interactive interfaces
 for Windows versions of \Splus.
 
@@ -636,13 +637,13 @@ In 1998, Rodney Sparapani designed \SAS\ batch file processing for ESS
 on Unix, Windows and Macintosh.
 Sparapani and Heiberger developed \SAS\ batch support including function
 key behavior which mimics the \SAS\ Display Manager,
-a more comprehensive and efficient syntax highlighting scheme for \SAS\ 
+a more comprehensive and efficient syntax highlighting scheme for \SAS\
 programs and logs, and automated and intelligent error message searching
 of the log.  In 2001 and 2002, they designed and implemented ESS-elsewhere
 for \SAS\.  ESS-elsewhere provides interactive and batch processing
-with \SAS\ running on a remote machine that is accessed over a 
-network. 
-% This provides a powerful development environment for \SAS. 
+with \SAS\ running on a remote machine that is accessed over a
+network.
+% This provides a powerful development environment for \SAS.
 
 In 2001, Sparapani added BUGS batch file processing for ESS.  This
 includes support for syntax highlighting and template-based source file
