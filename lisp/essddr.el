@@ -1,6 +1,14 @@
 ;; essddr.el --- Support for editing R documentation (Rd) source
 
-;;; Copyright (C) 1998 KH <Kurt.Hornik@ci.tuwien.ac.at>
+;;; Copyright (C) 1998--2000 KH <Kurt.Hornik@ci.tuwien.ac.at>, AJR
+;;; 
+
+;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
+;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Created: 25 July 1997
+;; Modified: $Date: 1999/11/17 18:57:59 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: essddr.el,v 5.8 1999/11/17 18:57:59 ess Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -19,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.7 1999/09/06 07:02:13 maechler Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.8 1999/11/17 18:57:59 ess Exp $
 
 ;;; Code:
 
@@ -116,7 +124,12 @@ All Rd mode abbrevs start with a grave accent (`).")
     "email" "emph" "epsilon" "eqn" "file" "ge" "item" "lambda" "ldots"
     "le" "left" "link" "mu" "pi" "right" "tab" "sigma" "url"))
 
-(defvar Rd-bold-face 'bold)
+;; Need to fix Rd-bold-face problem.
+;;
+;; (defvar Rd-bold-face 'bold)
+;(defvar Rd-bold-face nil)
+;(make-face Rd-bold-face "R documentation bold face")
+;(make-face-bold Rd-bold-face
 
 (defvar Rd-font-lock-keywords
   (list
@@ -124,7 +137,7 @@ All Rd mode abbrevs start with a grave accent (`).")
     (concat "\\\\\\("
 	    (mapconcat 'identity Rd-section-names "\\|")
 	    "\\>\\)")
-    'Rd-bold-face)
+    'font-lock-reference-face) ; Rd-bold-face
    (cons
     (concat "\\\\\\("
 	    (mapconcat 'identity Rd-keywords "\\|")
