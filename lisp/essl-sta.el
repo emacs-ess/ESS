@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/03/04 22:27:49 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: essl-sta.el,v 5.5 1999/03/04 22:27:49 rossini Exp $
+;; Modified: $Date: 1999/03/04 22:37:33 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: essl-sta.el,v 5.6 1999/03/04 22:37:33 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -57,6 +57,28 @@
 ;;
 
 
+
+(defvar STA-editing-alist
+  '((paragraph-start              . (concat "^$\\|" page-delimiter))
+    (paragraph-separate           . (concat "^$\\|" page-delimiter))
+    (paragraph-ignore-fill-prefix . t)
+    (require-final-newline        . t)
+    (comment-start                . "#")
+    (comment-start-skip           . "#+ *")
+    (comment-column               . 40)
+    ;;(comment-indent-function  . 'S-comment-indent)
+    ;;(ess-comment-indent           . 'S-comment-indent)
+    ;;(ess-indent-line                      . 'S-indent-line)
+    ;;(ess-calculate-indent           . 'S-calculate-indent)
+    (indent-line-function            . 'S-indent-line)
+    (parse-sexp-ignore-comments   . t)
+    (ess-set-style                . ess-default-style)
+    (ess-local-process-name       . nil)
+    ;;(ess-keep-dump-files          . 'ask)
+    (ess-mode-syntax-table        . S-syntax-table)
+    (font-lock-defaults           . '(ess-mode-font-lock-keywords
+				      nil nil ((?\. . "w")))))
+  "General options for editing Stata do and ado source files.")
 
 ;; YOU USED TO HAVE TO (with Thomas's version): 
 ;;;;; Add the following to your .emacs file
@@ -468,29 +490,6 @@ With argument, positions cursor at end of buffer."
   (interactive)
   (stata-switch-to-stata t))
 
-
-
-(defvar STA-editing-alist
-  '((paragraph-start              . (concat "^$\\|" page-delimiter))
-    (paragraph-separate           . (concat "^$\\|" page-delimiter))
-    (paragraph-ignore-fill-prefix . t)
-    (require-final-newline        . t)
-    (comment-start                . "#")
-    (comment-start-skip           . "#+ *")
-    (comment-column               . 40)
-    ;;(comment-indent-function  . 'S-comment-indent)
-    ;;(ess-comment-indent           . 'S-comment-indent)
-    ;;(ess-indent-line                      . 'S-indent-line)
-    ;;(ess-calculate-indent           . 'S-calculate-indent)
-    (indent-line-function            . 'S-indent-line)
-    (parse-sexp-ignore-comments   . t)
-    (ess-set-style                . ess-default-style)
-    (ess-local-process-name       . nil)
-    ;;(ess-keep-dump-files          . 'ask)
-    (ess-mode-syntax-table        . S-syntax-table)
-    (font-lock-defaults           . '(ess-mode-font-lock-keywords
-				      nil nil ((?\. . "w")))))
-  "General options for editing S, S+, and R source files.")
 
 
 (provide 'essl-sta)
