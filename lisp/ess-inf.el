@@ -7,9 +7,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/02/06 17:57:49 $
-;; Version: $Revision: 5.60 $
-;; RCS: $Id: ess-inf.el,v 5.60 2001/02/06 17:57:49 rossini Exp $
+;; Modified: $Date: 2001/06/21 22:17:57 $
+;; Version: $Revision: 5.61 $
+;; RCS: $Id: ess-inf.el,v 5.61 2001/06/21 22:17:57 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -1154,7 +1154,6 @@ C-h m (help for mode) in the other buffers.
     `ess-eval-region-and-go', `ess-eval-buffer-and-go',
 	`ess-eval-function-and-go', and `ess-eval-line-and-go' switch to the S
 	process buffer after sending their text.
-
     `ess-dump-object-into-edit-buffer' moves an S object into a temporary file
 	and buffer for editing
     `ess-load-file' sources a file of commands to the ESS process.
@@ -1218,6 +1217,7 @@ to continue it."
 	    (string= ess-dialect "S+3")
 	    (string= ess-dialect "S+4")
 	    (string= ess-dialect "S+5")
+	    (string= ess-dialect "S+6")
 	    (string= ess-dialect "S"))
 	(setq comint-input-sender 'inferior-ess-input-sender))))
 
