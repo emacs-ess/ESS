@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/03/02 16:37:20 $
-;; Version: $Revision: 5.70 $
-;; RCS: $Id: ess-site.el,v 5.70 2001/03/02 16:37:20 maechler Exp $
+;; Modified: $Date: 2001/03/20 23:03:20 $
+;; Version: $Revision: 5.71 $
+;; RCS: $Id: ess-site.el,v 5.71 2001/03/20 23:03:20 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -557,6 +557,12 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;;   3. If it is more convenient to have "*Async Shell Command*"
 ;;;      in same-window-buffer-names, then uncomment the following line
 ;;;(ess-same-window-async)
+;;;
+;;;   4. As of 5.1.19, a new and improved syntax highlighting scheme for .sas and .log 
+;;;	 files is available (press f10 to toggle between modes in .log).  If you are
+;;;      using XEmacs v. 20.x, then you need this as well, since it works around a 
+;;;      problem with make-regexp.el.  Uncomment the next line for this feature:
+;;;(setq ess-sas-run-make-regexp nil)
 
 
 ;(defvar sas-require-confirmation t

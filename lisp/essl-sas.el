@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/03/12 16:06:49 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: essl-sas.el,v 5.15 2001/03/12 16:06:49 ess Exp $
+;; Modified: $Date: 2001/03/20 23:03:20 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: essl-sas.el,v 5.16 2001/03/20 23:03:20 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -223,8 +223,7 @@ popup window when the SAS job is finished.")
 		   "skip" "title\\(10?\\|[2-9]\\)?" "where" "window" "update" "out"
 		   "change" "class" "exchange" "exclude" "freq" "id" "index"
 		   "model" "plot" "save" "sum" "tables?" "var" "weight" "with"
-		   "manova" "repeated" "value" "random"
-		   "means" "lsmeans" 
+		   "manova" "repeated" "value" "random" "means" "lsmeans"
 		   ;; SAS macro statements not handled above
 		   "%global" "%include" "%local" "%let" "%sysexec"
 		   ) t) "\\>")
@@ -328,37 +327,40 @@ popup window when the SAS job is finished.")
 		"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"
 		"\\>")				    font-lock-reference-face)
 
-	 (cons "\\<%\\(else\\|to\\|then\\)\\>"
+	 (cons "\\<%\\(by\\|else\\|t\\(o\\|hen\\)\\)\\>"
 						    font-lock-reference-face)
 
-	 ;; common SAS dataset options and PROC statements followed by an equal sign
+	 ;; SAS dataset options/PROC statements followed by an equal sign/left parentheses
 
 	 (cons (concat
 		"[ \t(,]"
-		"\\(data\\|out\\|attrib\\|format\\|length\\|\\(sorted\\)?by"
-		"\\|i\\(d\\|f\\|n\\)\\|compress\\|drop\\|keep\\|label"
-		"\\|order\\|\\(first\\)?obs\\|rename\\|where\\|var\\|split\\)"
+		"\\(attrib\\|by\\|compress\\|d\\(ata\\|rop\\)\\|f\\(irstobs\\|ormat\\)"
+		"\\|i\\(d\\|f\\|n\\)\\|ke\\(ep\\|y\\)\\|l\\(abel\\|ength\\)"
+		"\\|o\\(bs\\|rder\\|ut\\)\\|rename\\|s\\(ortedby\\|plit\\)"
+		"\\|var\\|where\\)"
 		"[ \t]*=")
 						    font-lock-keyword-face)
-	 (cons "\\<\\(in\\(dex[ \t]*=\\)?\\|when\\)[ \t]*("
+	 (cons "\\<\\(in\\(dex[ \t]*=\\)?\\|until\\|wh\\(en\\|ile\\)\\)[ \t]*("
 						    font-lock-keyword-face)
 
 	 ;; SAS statements
 
 	 (cons (concat
 		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
-		"\\(a\\(bort\\|rray\\|ttrib\\)\\|by\\|d\\(elete\\|isplay\\|m\\|rop\\)"
-		"\\|error\\|f\\(ile\\(\\|name\\)\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\)"
-		"\\|go\\([ \t]*to\\|ptions\\)\\|i\\(f\\|n\\(f\\(ile\\|ormat\\)\\|put\\)\\)\\|keep\\|options"
-		"\\|l\\(abel\\|ength\\|i\\(bname\\|nk\\)\\|smeans\\)\\|note"
-		"\\|m\\(anova\\|e\\(ans\\|rge\\)\\|issing\\|od\\(el\\|ify\\)\\)"
-		"\\|o\\(therwise\\|utput\\)\\|put\\|re\\(name\\|tain\\)\\|s\\(e\\(lect\\|t\\)\\|kip\\)"
-		"\\|title\\(10?\\|[2-9]\\)?\\|update\\|w\\(here\\|indow\\)"
-		"\\|c\\(hange\\|lass\\)\\|exc\\(hange\\|lude\\)\\|freq\\|i\\(d\\|ndex\\)"
-		"\\|plot\\|s\\(ave\\|um\\)\\|tables?\\|w\\(eight\\|ith\\)"
-		"\\|m\\(anova\\|odel\\)\\|r\\(andom\\|epeated\\)\\|va\\(lue\\|r\\)\\)"
+		"\\(a\\(bort\\|rray\\|ttrib\\)\\|by\\|c\\(hange\\|lass\\)"
+		"\\|d\\(elete\\|isplay\\|m\\|rop\\)\\|e\\(rror\\|xc\\(hange\\|lude\\)\\)"
+		"\\|f\\(ile\\(name\\)?\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\|req\\)"
+		"\\|go\\([ \t]*to\\|ptions\\)\\|i\\(d\\|f\\|n\\(dex\\|f\\(ile\\|ormat\\)\\|put\\)\\)"
+		"\\|keep\\|l\\(abel\\|ength\\|i\\(bname\\|nk\\)\\|smeans\\)"
+		"\\|m\\(anova\\|e\\(ans\\|rge\\)\\|issing\\|od\\(el\\|ify\\)\\)\\|note"
+		"\\|o\\(ptions\\|therwise\\|utput\\)\\|p\\(lot\\|ut\\)"
+		"\\|r\\(andom\\|e\\(name\\|peated\\|tain\\)\\)"
+		"\\|s\\(ave\\|e\\(lect\\|t\\)\\|kip\\|umby\\)"
+		"\\|t\\(ables?\\|itle\\(10?\\|[2-9]\\)?\\)\\|update"
+		"\\|va\\(lue\\|r\\)\\|w\\(eight\\|here\\|i\\(ndow\\|th\\)\\)\\)"
 		"\\>")				    font-lock-keyword-face)
-	 (cons "\\<\\(\\(\\(then\\|else\\)[ \t]*\\)?do[ \t]*\\(over\\|until\\|while\\)?\\|else\\)\\>"
+;;	 (cons "\\<\\(\\(\\(then\\|else\\)[ \t]*\\)?do\\([ \t]*over\\)?\\|else\\)\\>"
+	 (cons "\\<\\(\\(then\\|else\\)[ \t]*\\)?do\\([ \t]*over\\)?\\>"
 						    font-lock-keyword-face)
 
 	 ;; SAS statements that must be followed by a semi-colon
@@ -408,8 +410,8 @@ popup window when the SAS job is finished.")
 		
 ;;;    ;; SCL functions that are known to work with SAS macro function %sysfunc
 
-		"\\|attr[cn]\\|close\\|d\\(close\\|num\\|open\\|read\\)\\|f\\(close\\|open\\)"
-		"\\|cexist\\|exist\\|f\\(etchobs\\|i\\(leexist\\|nfo\\)\\|put\\|write\\)"
+		"\\|attr[cn]\\|c\\(exist\\|lose\\)\\|d\\(close\\|num\\|open\\|read\\)"
+		"\\|exist\\|f\\(close\\|etchobs\\|i\\(leexist\\|nfo\\)\\|open\\|put\\|write\\)"
 		"\\|get\\(option\\|var[cn]\\)\\|lib\\(name\\|ref\\)\\|op\\(en\\|t\\(getn\\|setn\\)\\)"
 		"\\|pathname\\|sysmsg\\|var\\(fmt\\|label\\|num\\|type\\)\\)"
 		"[ \t]*(")			    font-lock-function-name-face)
