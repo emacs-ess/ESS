@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.18 $.
+### File: $Revision: 1.19 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -43,48 +43,48 @@ DOCDIST = ess.ps ess.pdf \
 
 ### Targets --
 
-all: info txts html dvi
+all  : info txts html dvi
 
 # Documentation mentions info, not ess.info -- NOT readme.info <<< FIXME >>
 info : ess.info
-dvi :  ess.dvi readme.dvi
-txts: $(READMEtargets)
+dvi  :  ess.dvi readme.dvi
+txts : $(READMEtargets)
 
 #
 # If indexes don't index, run:	"texindex ess.??" to obtain the sorted indices.
 #
-html:	html/ess_toc.html html/readme_toc.html
+html :	html/ess_toc.html html/readme_toc.html
 
-ess.dvi: ess.texi; texi2dvi ess.texi
+ess.dvi : ess.texi; texi2dvi ess.texi
 
-ess.ps: ess.dvi; dvips $^ -o $@
+ess.ps  : ess.dvi; dvips $^ -o $@
 
-ess.pdf: ess.texi; pdftex $^
+ess.pdf : ess.texi; pdftex $^
 ## If you don't have pdftex, you won't get the bookmarks, hyperlinks, etc..
 # ess.pdf: ess.ps ; rm -f ess.pdf ; ps2pdf ess.ps > ess.pdf
 
-readme.dvi: readme.texi; texi2dvi readme.texi
+readme.dvi : readme.texi; texi2dvi readme.texi
 
-readme.ps: readme.dvi; dvips $^ -o $@
+readme.ps  : readme.dvi; dvips $^ -o $@
 
-readme.pdf: readme.texi; pdftex $^
+readme.pdf : readme.texi; pdftex $^
 
-install: all
+install : all
 	mkdir -p $(INFODIR)
 	$(INSTALL) ess.info* $(INFODIR)
 
-clean: ; rm -f texput.log \
+clean : ; rm -f texput.log \
 	 ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
 	 ess.tp ess.vr ess.cps ess.fns ess.vrs ess.fn \
 	 readme.aux readme.cp readme.ky readme.log readme.pg readme.toc \
 	 readme.tp readme.vr readme.cps readme.fns readme.vrs readme.fn
 
-distclean: clean
+distclean : clean
 	rm -f ess.dvi ess.ps ess.pdf readme.dvi readme.ps readme.pdf
 	rm -fr html
 
 ##-- Be careful: to recreate the info files you NEED a newer makeinfo !
-realclean: distclean
+realclean : distclean
 	rm -f ess.info*
 
 ### Targets below here are only for developers. --------------------
