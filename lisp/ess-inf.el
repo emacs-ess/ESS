@@ -758,12 +758,8 @@ will be used in a few places."
   ;; Use this function when you need to evaluate some S code, and the
   ;; result is needed immediately. Waits until the output is ready
   (let* ((sprocess (get-ess-process ess-current-process-name))
-	 (do-sleep (progn
-		     (if sleep
-			 (if (numberp sleep) nil (setq sleep 1)))
-		     (and ess-need-delay sleep)))
 	 sbuffer
-	 end-of-output
+	 do-sleep end-of-output
 	 oldpb oldpf oldpm
 	 my-retr-cmd my-save-cmd)
     (if sprocess nil
@@ -771,6 +767,11 @@ will be used in a few places."
     (setq sbuffer (process-buffer sprocess))
     (save-excursion
       (set-buffer sbuffer)
+      (setq do-sleep		    ; only now when in sprocess buffer
+	    (progn
+	      (if sleep
+		  (if (numberp sleep) nil (setq sleep 1)))
+	      (and ess-need-delay sleep)))
       (save-excursion
 	(goto-char (marker-position (process-mark sprocess)))
 	(beginning-of-line)
