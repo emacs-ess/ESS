@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/14 02:40:11 $
-;; Version: $Revision: 1.35 $
-;; RCS: $Id: essd-sas.el,v 1.35 1997/11/14 02:40:11 rossini Exp $
+;; Modified: $Date: 1997/11/19 17:01:52 $
+;; Version: $Revision: 1.36 $
+;; RCS: $Id: essd-sas.el,v 1.36 1997/11/19 17:01:52 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -59,21 +59,16 @@
 	 ;; isn't pretty yet.
 	 ;;  ess-local-process-name is defined after this function.
 	 ;;  it needs to be defined prior to this function.
-	 (tmp-procname
-	  (or (and (not (comint-check-proc (current-buffer)))
-		   ;; Don't start a new process in current buffer if
-		   ;; one is already running
-		   ess-local-process-name)
-	      ;; find a non-existent process
-	      (let ((ntry 0)
-		    (done nil))
-		(while (not done)
-		  (setq ntry (1+ ntry)
-			done (not
-			      (get-process (ess-proc-name
-					    ntry
-					    temp-ess-dialect)))))
-		(ess-proc-name ntry temp-ess-dialect)))) ;)
+	 (tmp-procname (let ((ntry 0)
+			     (done nil))
+			 ;; find a non-existent process
+			 (while (not done)
+			   (setq ntry (1+ ntry)
+				 done (not
+				       (get-process (ess-proc-name
+						     ntry
+						     temp-ess-dialect)))))
+			 (ess-proc-name ntry temp-ess-dialect)))
 	 ;; Following was tmp-local-process-name.  Stolen from inferior-ess
 	 (ess-sas-lst-bufname (concat "*" tmp-procname ".lst*"))
 	 (ess-sas-log-bufname (concat "*" tmp-procname ".log*"))
