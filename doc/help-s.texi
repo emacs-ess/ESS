@@ -1,39 +1,18 @@
+@comment @comment  node-name,  next,  previous,  up
+@comment @node emacs--General features, ESS[S]--Editing files, , Help for the S family
+@comment @section emacs--General features
+@comment 
+@comment We assume that you are familiar with Emacs terminology and syntax:
+@comment file, buffer, region, description of keys etc.  If not, please read
+@comment the New Users guide (found in the info pages, "C-h i" (by pressing
+@comment control h, i) or Tutorial, "C-h t").
+@comment 
+@comment To find the key-sequences for commands, view the keymap (C-h b) or
+@comment view help for the current mode (C-h m).
 
-ESS[S] (originally S-mode) was initially designed for use with S and
-S-PLUS(tm); hence, this family of statistical languages currently has
-the most support.  We denote by _S_, any of the currently available
-members of the family, including S 3.x, S 4.x, S-PLUS 3.x, S-PLUS 4.x,
-S-PLUS 5.x, S-PLUS 6.x, and R.  We denote by _emacs_, either GNU Emacs 
-from the Free Software Foundation or XEmacs from the XEmacs Project.
-
-The following is covered in this document:
-
-@itemize @bullet
-@item emacs: General features
-@item Editing files.
-@item running an S process as an inferior process to Emacs
-@item using transcripts.
-@item Scenarios for use (possibilities, based on actual usage)
-@item Philosophies
-@end itemize
-
-New in 5.1.2 and later: use under Microsoft Windows OS's with NTEmacs.
-See the file README.SPLUS4WIN for more details.
-
+@node ESS[S]--Editing files, iESS[S]--Inferior ESS processes, , Help for the S family
 @comment  node-name,  next,  previous,  up
-@node emacs: General features
-@section emacs: General features
-
-We assume that you are familiar with Emacs terminology and syntax:
-file, buffer, region, description of keys etc.  If not, please read
-the New Users guide (found in the info pages, "C-h i" (by pressing
-control h, i) or Tutorial, "C-h t").
-
-To find the key-sequences for commands, view the keymap (C-h b) or
-view help for the current mode (C-h m).
-
-@node ESS[S]: Editing Files
-@comment  node-name,  next,  previous,  up
+@section ESS[S]--Editing files
 
 ESS[S] is the mode for editing S language files.  This mode handles:
 
@@ -61,9 +40,9 @@ the suffices found in ess-site (*.R, *.S, *.s, etc).  However, one
 will have to start up an inferior process to take advantage of the
 interactive features.
 
-@node iESS: Inferior ESS processes.
+@node iESS[S]--Inferior ESS processes, Handling and Reusing Transcripts, ESS[S]--Editing files, Help for the S family
 @comment  node-name,  next,  previous,  up
-
+@section  iESS[S]--Inferior ESS processes
 iESS (inferior ESS) is the mode for interfacing with active
 statistical processes (programs).  This mode handles:
 
@@ -122,9 +101,9 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
   machine get sent through the buffer "*S-elsewhere*" to be executed
   by S on the other machine.
                            
-@node ESS-trans: Handling and Reusing Transcripts
+@node Handling and Reusing Transcripts, ESS-help--assistance with viewing help, iESS[S]--Inferior ESS processes, Help for the S family
 @comment  node-name,  next,  previous,  up
-
+@section Handling and Reusing Transcripts
 - edit transcript
 - color and font highlighting based on syntax.
 - resubmit multi-line commands to an active process buffer
@@ -133,16 +112,17 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
 - ability to switch between processes which would be the target of the 
   buffer (for the above).
 
-@node ESS-help: assistance with viewing help
+@node ESS-help--assistance with viewing help, Philosophies for using ESS[S], Handling and Reusing Transcripts, Help for the S family
 @comment  node-name,  next,  previous,  up
-
+@section ESS-help--assistance with viewing help
 @itemize @bullet
 @item move between help sections
 @item send examples to S for evaluation
 @end itemize
 
-Philosophies for using ESS
-==========================
+
+@node Philosophies for using ESS[S], Scenarios for use (possibilities--based on actual usage), ESS-help--assistance with viewing help, Help for the S family
+@section Philosophies for using ESS[S]
 
 The first is preferred, and configured for.  The second one can be
 retrieved again, by changing emacs variables.
@@ -164,9 +144,8 @@ retrieved again, by changing emacs variables.
 The second saves a small amount of disk space.  The first allows for
 better portability as well as external version control for code.
 
-
-Scenarios for use
-=================
+@node Scenarios for use (possibilities--based on actual usage), Customization Examples and Solutions to Problems, Philosophies for using ESS[S], Help for the S family
+@section Scenarios for use (possibilities--based on actual usage)
 
 We present some basic suggestions for using ESS to interact with S.
 These are just a subset of approaches, many better approaches are
@@ -289,8 +268,8 @@ prefixed by "##").
 
 
 
-Customization Examples and Solutions to Problems
-================================================
+@node Customization Examples and Solutions to Problems, ,Scenarios for use (possibilities--based on actual usage), Help for the S family
+@section Customization Examples and Solutions to Problems
 
 1. Suppose that you are primarily an SPLUS 3.4 user, occasionally
    using S version 4, and sick and tired of the buffer-name *S+3*

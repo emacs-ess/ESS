@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.23 2002/04/16 21:52:45 rsparapa Exp $
+@comment $Id: ess.texi,v 5.24 2002/04/17 20:08:46 rmh Exp $
 
 @include version.texi
 
@@ -28,7 +28,7 @@ any other interactive `statistical' languages in an `inferior' buffer,
 editing source code in these languages and interacting with the running
 program.
 
-This documentation relates to Version @essver of @code{ESS}.
+This documentation relates to Version @essver{} of @code{ESS}.
 
 Original Info Author: David M. Smith (@email{D.M.Smith@@lancaster.ac.uk}),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -41,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver (Documentation $Revision: 5.23 $ $Date: 2002/04/16 21:52:45 $)
+@subtitle version @essver{} (Documentation $Revision: 5.24 $ $Date: 2002/04/17 20:08:46 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -84,9 +84,9 @@ permission notice identical to this one.
 @node Top, Introduction, (dir), (dir)
 @top ESS: Emacs Speaks Statistics
 
-ESS version @essver
+ESS version @essver{}
 
-        (Documentation $Revision: 5.23 $ $Date: 2002/04/16 21:52:45 $).
+        (Documentation $Revision: 5.24 $ $Date: 2002/04/17 20:08:46 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
@@ -195,8 +195,9 @@ Help for Statistical Packages
 
 Help, arranged by Operating System
 
-* Help Unix::
-* Help Microsoft::
+* Unix installation::
+* Microsoft Windows installation:: 
+* System dependent::            Other variables you may need to change
 
 Installing ESS on your system
 
@@ -246,6 +247,7 @@ for instance.  The inferior process interface (the connection between
 Emacs and the running process) referred to as interactive ESS
 (@code{iESS}), is denoted in the modeline by @code{ESS[dialect]}, where
 @code{dialect} can take values @code{S3}, @code{S4}, @code{S+3},
+@code{S+4}, @code{S+5}, @code{S+6},
 @code{R}, @code{XLS}, @code{VST}, @code{SAS}, as well as others.
 
 Currently, the documentation contains many references to @cite{`S'}
@@ -2295,7 +2297,16 @@ directory, move it there).
 @comment  node-name,  next,  previous,  up
 @node Help for the S family, Help for SAS, Help for Statistical Packages, Help for Statistical Packages 
 @section Help for the S family
-@comment @include help-s.texi
+@menu
+* ESS[S]--Editing files::
+* iESS[S]--Inferior ESS processes::
+* Handling and Reusing Transcripts::
+* ESS-help--assistance with viewing help::
+* Philosophies for using ESS[S]::
+* Scenarios for use (possibilities--based on actual usage)::
+* Customization Examples and Solutions to Problems::
+@end menu
+@include help-s.texi
 
 @comment  node-name,  next,  previous,  up
 @node Help for SAS, , Help for the S family, Help for Statistical Packages 
@@ -2305,7 +2316,7 @@ directory, move it there).
 * ESS[SAS]--Design philosophy::
 * ESS[SAS]--Recommended autoexec.sas::
 * ESS[SAS]--Editing files::
-* iESS--Inferior ESS processes::
+* iESS[SAS]--Inferior ESS processes::
 * ESS[SAS]--Batch processes::
 * ESS[SAS]--Function keys for batch processing::
 * ESS[SAS]--TAB key::
@@ -2320,24 +2331,10 @@ directory, move it there).
 @chapter Help, arranged by Operating System
 
 @menu
-* Help Unix::
-* Help Microsoft::
+* Unix installation::
+* Microsoft Windows installation:: 
+* System dependent::            Other variables you may need to change
 @end menu
-
-@node Help Unix, Help Microsoft, Help OS, Help OS
-@comment  node-name,  next,  previous,  up
-@section Help for Unix
-
-@node Help Microsoft,  , Help Unix, Help OS
-@comment  node-name,  next,  previous,  up
-@section Help for Microsoft
-
-
-
-@menu
-* Installation::                Installing ESS on your system
-@end menu
-
 
 
 @node Installation, Customization, Help OS, Top
@@ -2356,7 +2353,7 @@ on your system.
 
 @include inst_tar.texi
 
-@node System dependent,  , Installation, Installation
+@node System dependent, , Microsoft Windows installation, Installation
 @comment  node-name,  next,  previous,  up
 @appendixsec Other variables you may need to change
 

@@ -18,7 +18,7 @@ input command files, such as myfile.sas, for SAS.  These are files
 containing SAS statements.  In a batch environment such files would be
 submitted to SAS by the operating system command:
 @example
-     sas myfile.sas
+sas myfile.sas
 @end example
 In a SAS window environment, these files would be brought into the
 "SAS: PROGRAM EDITOR" window and then submitted with the 'Local' 'Submit'
@@ -42,7 +42,8 @@ commands.  The user should never use this buffer directly.
 
 The ESS[SAS] mode was written with two primary goals.
 
-1. Using the emacs environment is desirable for users accessing a remote computer
+1. Using the emacs environment is desirable for users accessing a remote
+computer
 via a network or dial-up who can not use the native SAS window environment.
 
 2. Using the emacs environment is desirable for local users as well due to the
@@ -52,8 +53,12 @@ inherent efficiency of using the same superior interface all of the time.
 @node ESS[SAS]--Recommended autoexec.sas, ESS[SAS]--Editing files, ESS[SAS]--Design philosophy, Help for SAS
 @section ESS[SAS]--Recommended autoexec.sas
 
-The default settings of the inferior-SAS-args in essd-sas.el
-are "-stdio -linesize 80 -noovp -nosyntaxcheck"
+The default settings of the inferior-SAS-args in essd-sas.el are
+
+@example
+-stdio -linesize 80 -noovp -nosyntaxcheck
+@end example
+
 with the interpretations:
 @display
 -stdio          required to make the redirection of stdio work
@@ -67,7 +72,7 @@ command line.  For these, we recommend the following line appear in
 your autoexec.sas in your home directory:
 
 @example
-  options noovp pagesize=60 linesize=80 formdlim=' ';
+options noovp pagesize=60 linesize=80 formdlim=' ';
 @end example
 
 Interpretations
@@ -84,7 +89,7 @@ the autoexec.sas.  The redundancy means that these options are in
 effect for both SAS interactive and batch jobs.
 
 @comment  node-name,  next,  previous,  up
-@node ESS[SAS]--Editing files, iESS--Inferior ESS processes, ESS[SAS]--Recommended autoexec.sas, Help for SAS
+@node ESS[SAS]--Editing files, iESS[SAS]--Inferior ESS processes, ESS[SAS]--Recommended autoexec.sas, Help for SAS
 @section ESS[SAS]--Editing files
 
 ESS[SAS] is the mode for editing SAS language files.  This mode handles:
@@ -116,8 +121,8 @@ At this writing (@essver{}), the indenting and syntactic
 highlighting are usually correct.
 
 @comment  node-name,  next,  previous,  up
-@node  iESS--Inferior ESS processes, ESS[SAS]--Batch processes, ESS[SAS]--Editing files, Help for SAS
-@section iESS--Inferior ESS processes
+@node  iESS[SAS]--Inferior ESS processes, ESS[SAS]--Batch processes, ESS[SAS]--Editing files, Help for SAS
+@section iESS[SAS]--Inferior ESS processes
 
 iESS (inferior ESS) is the mode for interfacing with active
 statistical processes (programs).  
@@ -135,17 +140,19 @@ We plan to add
 @end display
 
 @comment  node-name,  next,  previous,  up
-@node  ESS[SAS]--Batch processes, ESS[SAS]--Function keys for batch processing, iESS--Inferior ESS processes, Help for SAS
+@node  ESS[SAS]--Batch processes, ESS[SAS]--Function keys for batch processing, iESS[SAS]--Inferior ESS processes, Help for SAS
 @section ESS[SAS]--Batch processes
 
 The default command used by the Submit function key (F3 or F8) to submit
 a batch SAS job is simply "sas".  If necessary, you can over-ride this in
 your .emacs file something like one of the following:
+
 @example
 ;;; (setq ess-sas-submit-command "nohup nice sas") ;; Unix
 ;;; (setq ess-sas-submit-command "c:/progra~1/sas/sas.exe") ;; Windows
 ;;; (setq ess-sas-submit-command "invoke SAS using program file") ;; Mac
 @end example
+
 Note that when you are specifying a path under Windows, you should
 avoid spaces (that is use "progra~1", not "Program Files") and you
 should use forward slashes "/".  There may be occasions when you want
@@ -184,12 +191,19 @@ intended to make ESS[SAS] mode behave similarly to other emacs modes.
 Users who are primarily familiar with SAS, and who are learning emacs
 as a way to approach SAS, will likely want to duplicate the function
 key capabilities that SAS Institute provides with its Display Manager.
-There are still options.  SAS provides different function key
-definitions with its PC and Unix products; ESS can use either.  The
-ESS[SAS] function key definitions can be active in all buffers
+There are still options.
+
+@enumerate
+@item
+SAS provides different function key
+definitions with its PC and Unix products; ESS can use either.
+@item
+The ESS[SAS] function key definitions can be active in all buffers
 (global) or limited (local) only to buffers that have SAS-related file
 extensions: .sas, .log, .lst, filetype-1 (which defaults to .txt),
 and filetype-2 which defaults to .dat.
+@end enumerate
+
 The distinction between local and global appears subtle.  If you want
 the ESS[SAS] definitions to work when you are in *shell* or when
 editing files other than the file extensions that SAS recognizes, you
@@ -201,6 +215,8 @@ then you will choose the local definitions.
 The option can be chosen by the person installing ESS for a site or by
 an individual.
 
+@enumerate
+@item
 The site manager can uncomment only one of the following lines.
 ESS[SAS] Function keys are available in ESS[SAS] and related modes if you
 uncomment either of the following lines in your ess-site.el:
@@ -208,16 +224,19 @@ uncomment either of the following lines in your ess-site.el:
 ;;2; (setq ess-sas-local-unix-keys t)
 ;;3; (setq ess-sas-local-pc-keys t)
 @end example
+
 ESS[SAS] Function keys are available in all emacs modes if you
 uncomment either of the following lines in your ess-site.el:
 @example
 ;;4; (setq ess-sas-global-unix-keys t)
 ;;5; (setq ess-sas-global-pc-keys t)
 @end example
+
 The names -unix- and -pc- have nothing to do with the operating system
 that you are running.  Rather they mimic the definitions that the SAS
 Display Manager uses by default on those platforms.
 
+@item
 The option can be selected by an individual by adding a line to the
 .emacs (or _emacs) file, immediately following the
 @example 
@@ -233,6 +252,7 @@ turn off an option, add the appropriate line (uncommented) to your
 ;;4; (setq ess-sas-global-unix-keys nil)
 ;;5; (setq ess-sas-global-pc-keys nil)
 @end example
+@end enumerate
 
 Finally, we get to what the function keys actually do.  You may recognize
 some of the Short Names as SAS Display Manager commands (they
@@ -250,12 +270,19 @@ F3   F8     SUBMIT      save the current .sas file (which is either the
                         current buffer) and submit the file as a batch 
                         SAS job.
 
+C-F3 C-F8   SUBMIT-REGION Write region to temporary file,
+                        and submit to SAS.
+
 F4   F5     PROGRAM     switch buffer to .sas file.
 
 F5   F6     LOG         switch buffer to .log file, `refresh' and goto 
                         next error message, if any.
 
+C-F5 C-F6   APPEND-TO-LOG Append ess-temp.log to the current .log file.
+
 F6   F7     OUTPUT      switch buffer to .lst file and `refresh'.
+
+C-F6 C-F7   APPEND-TO-OUTPUT Append ess-temp.lst to the current .lst file.
 
 F7   F4     filetype-1  switch buffer to filetype-1 (defaults to .txt) 
                         file and `refresh'.
@@ -484,17 +511,17 @@ Here is a typical myfile.sas:
 
    Change the line in ess-sas-sh command from:
    @example
-      sas </dev/tty 1>$stdout 2>$stderr $@
+sas </dev/tty 1>$stdout 2>$stderr $@
    @end example
    to a call to the complete path name of the sas executable on
    your system, for example:
    @example
-      /usr/local/sas612/sas </dev/tty 1>$stdout 2>$stderr $@
+/usr/local/sas612/sas </dev/tty 1>$stdout 2>$stderr $@
    @end example
    To find the complete path name on your system, you can
    execute the line (from the unix prompt):
    @example
-      find / -name 'sas' -exec ls -ld @{@} \;
+find / -name 'sas' -exec ls -ld @{@} \;
    @end example
    and expect a response similar to the following
    @example

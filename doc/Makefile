@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.21 $.
+### File: $Revision: 1.22 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -114,7 +114,7 @@ ess.texi : ../VERSION
 
 ### File Dependencies
 
-$(ESSINFODIR)/ess.info: ess.texi help-sas.texi
+$(ESSINFODIR)/ess.info: ess.texi help-sas.texi inst_tar.texi help-s.texi
 	@echo "making Info documentation..."
 	test -f version.texi && rm -f version.texi || true
 	echo "@macro essver{}" > version.texi
