@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 2001/02/06 18:09:39 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-sp6.el,v 1.1 2001/02/06 18:09:39 rossini Exp $
+;; Modified: $Date: 2001/07/27 23:04:17 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-sp6.el,v 1.2 2001/07/27 23:04:17 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -67,7 +67,7 @@
 
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
     (ess-loop-timeout              . 500000 )
-    (ess-object-name-db-file       . "ess-sp5-namedb.el")
+    (ess-object-name-db-file       . "ess-sp6-namedb.el")
     (ess-dumped-missing-re
      . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
     (ess-syntax-error-re
@@ -77,7 +77,7 @@
     (ess-save-lastvalue-command
      . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
     (inferior-ess-program          . inferior-S+6-program-name)
-    (inferior-ess-objects-command  . "objects(%d)\n")
+    (inferior-ess-objects-command  . "objects(where = %d)\n")
     (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
     (inferior-ess-help-command     . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
     ;; "paths": get the "/" needed by  (ess-dir-modtime dir)  in ./ess-inf.el:
@@ -100,13 +100,13 @@ New way to do it."
 
 
 (defun S+6-mode (&optional proc-name)
-  "Major mode for editing S+5 source.  See `ess-mode' for more help."
+  "Major mode for editing S+6 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+6-customize-alist)
   (ess-mode S+6-customize-alist proc-name))
 
 (defun S+6-transcript-mode ()
-  "S-PLUS 5 transcript mode."
+  "S-PLUS 6 transcript mode."
   (interactive)
   (ess-transcript-mode S+6-customize-alist))
 
