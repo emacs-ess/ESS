@@ -28,9 +28,10 @@ xemacs-links: doc/info/ess.info doc/info/ess.info-1 doc/info/ess.info-2 doc/info
 
 ## --- PRE-release ---
 
-dist: VERSION cleanup-dist RPM.spec
+dist: VERSION RPM.spec
 	cd doc;  $(MAKE) docs; cd ..
 	cd lisp; $(MAKE) dist; grep 'ess-version' ess-cust.el; cd ..
+	$(MAKE) cleanup-dist
 	svn cleanup
 	@echo "** Committing VERSION, README, ANNOUNCE, info etc **"
 	svn commit -m "Updating toplevel files for new version" \
@@ -62,6 +63,7 @@ dist: VERSION cleanup-dist RPM.spec
 	$(MAKE) cleanup-dist
 	touch $@
 
+.PHONY: cleanup-dist
 cleanup-dist:
 	@echo "** Cleaning up **"
 	(if [ -d $(ESSDIR) ] ; then \
