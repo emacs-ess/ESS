@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/09/03 19:23:16 $
-;; Version: $Revision: 5.65 $
-;; RCS: $Id: ess-site.el,v 5.65 2000/09/03 19:23:16 rossini Exp $
+;; Modified: $Date: 2000/09/05 13:42:20 $
+;; Version: $Revision: 5.66 $
+;; RCS: $Id: ess-site.el,v 5.66 2000/09/05 13:42:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -255,7 +255,6 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;(setq-default inferior-OMG-program-name "/home/rossini/src/anoncvs/Omegahat/org/omegahat/bin/omegahat")
 (setq-default inferior-OMG-program-name "omegahat")
 
-
 ;;; ESS on the Windows NT/95/98 assumes you have installed gnuclient
 ;;; with your NTemacs.
 ;;; http://www.cs.washington.edu/homes/voelker/ntemacs/contrib/gnuserv.zip
@@ -282,14 +281,6 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;(setq-default	 inferior-S+4-editor-pager-command
 ;;   "options(editor='gnuclient.exe', pager='gnuclientw.exe')")
 
-
-;;; see essd-els.el
-;;(setq-default inferior-S-elsewhere-program-name "sh")
-
-;;; You might consider using ssh, if you can!  (and if you use
-;;; ssh-agent/etc, for securing you sessions.
-;;(setq-default inferior-S-elsewhere-program-name "ssh")
-
 ;;; These commands are for running the PC version of Sqpe of S+4 in
 ;;; an emacs buffer, using the same technology as ESS uses for Unix
 ;;; S-Plus.  Interactive graphics are unavailable in this mode.
@@ -302,8 +293,22 @@ The extension, in a file name, is the part that follows the last `.'."
 (setq-default inferior-ess-client-name	     "Initial")
 (setq-default inferior-ess-client-command    "Initial")
 
+
+
+;;; see essd-els.el
+
+;;(setq-default inferior-S-elsewhere-program-name "sh")
+;;(setq-default inferior-S-elsewhere-program-name "ssh")
+;;; You might consider using ssh, if you can!  (and if you really do
+;;; this, use ssh-agent, etc, for securing your sessions).
+
+
 ;;;; Choice for S().
 ;;(setq-default inferior-S-program-name inferior-S+3-program-name)
+
+
+
+
 
 ;; (1.5) Require the needed dialects for your setup.
 (if (< max-specpdl-size 700)     ;;; ESS won't load at the default of 600
