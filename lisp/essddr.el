@@ -6,9 +6,9 @@
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2001/12/17 09:47:07 $
-;; Version: $Revision: 5.18 $
-;; RCS: $Id: essddr.el,v 5.18 2001/12/17 09:47:07 maechler Exp $
+;; Modified: $Date: 2002/01/28 08:35:20 $
+;; Version: $Revision: 5.19 $
+;; RCS: $Id: essddr.el,v 5.19 2002/01/28 08:35:20 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,19 +27,36 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.18 2001/12/17 09:47:07 maechler Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.19 2002/01/28 08:35:20 maechler Exp $
 
 ;;; Code:
 
 ;; To stave off byte compiler errors
 (eval-when-compile (require 'ess-help))
 
-(defvar essddr-version "0.1.9"
+(defvar essddr-version "0.9"
   "Current version of essddr.el.")
 
 (defvar essddr-maintainer-address
   "Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>"
   "Current maintainer of essddr.el.")
+
+;; Special support for XEmacs (curtesy of auctex):
+
+(when (featurep 'xemacs)
+
+  (defun Rd-active-mark ()
+    (and zmacs-regions (mark)))
+  )
+
+;; Special support for GNU Emacs
+
+(unless (featurep 'xemacs)
+
+  (defun Rd-active-mark ()
+    (and transient-mark-mode mark-active))
+  )
+
 
 (autoload 'ess-eval-region		"ess-inf" "[autoload]" t)
 (autoload 'ess-eval-line-and-step	"ess-inf" "[autoload]" t)
@@ -171,7 +188,7 @@ All Rd mode abbrevs start with a grave accent (`).")
     (define-key map "\C-c\C-p" 'Rd-preview-help)
     (define-key map "\C-c\C-j" 'Rd-mode-insert-item)
     (define-key map "\C-c\C-e" 'Rd-mode-insert-skeleton)
-    ;;(define-key map "\C-c\C-f" ......prefix to "font" commands a la AUC-tex:
+    (define-key map "\C-c\C-f" 'Rd-font)
     ;;  ^C^F ^E : \emph{ . }
     ;;  ^C^F ^C : \code{ . }
     ;;  ^C^F ^L : \code{\link{ . }}
@@ -186,6 +203,7 @@ All Rd mode abbrevs start with a grave accent (`).")
 
 (defvar Rd-mode-menu
   (list "Rd"
+	["Markup [word]"		Rd-font t]
 	["Insert Item"			Rd-mode-insert-item t]
 	["Insert Section"		Rd-mode-insert-section t]
 	["Insert Skeleton"		Rd-mode-insert-skeleton t]
@@ -273,6 +291,7 @@ following lines to your `.emacs' file:
   (message "Rd mode version %s" essddr-version)
   (run-hooks 'Rd-mode-hook))
 
+;; FIXME: The following should be moved to ess-utils.el, no? (MM thinks)
 (defun ess-point (position)
   "Returns the value of point at certain positions."
   (save-excursion
@@ -382,6 +401,70 @@ following lines to your `.emacs' file:
   (insert "\\examples{\n}\n")
   (insert "\\author{}\n")
   (insert "\\keyword{}"))
+
+;; This is an `easy' version of (defun TeX-font ..) in AUCtex's  tex.el ;
+;;  see TeX-font-list and also LaTeX-font-list in latex.el
+
+(defun Rd-font (what)
+  "Insert template for font command.
+ WHAT determines the font to use, as specified by `Rd-font-list'."
+  (interactive "c")
+  ;;TeX had : (Rd-update-style)
+  (let* ((entry (assoc what Rd-font-list))
+	 (before (nth 1 entry))
+	 (after (nth 2 entry)))
+    (cond ((null entry) ;; help on possibilities :
+	   (let ((help
+		  (concat
+		   "Rd Markup (available from C-c C-f):\n\n\t"
+		   "KEY          Rd-Markup\n\n"
+		   (mapconcat
+		    '(lambda (entry)
+		       ;; A textual description of an ENTRY in TeX-font-list.
+		       (concat (format "%11s  "
+				       (key-description
+					(char-to-string (nth 0 entry))))
+			       (format "%14s %-3s"
+				       (nth 1 entry) (nth 2 entry))))
+		    Rd-font-list "\n"))))
+	     (with-output-to-temp-buffer "*Help*"
+	       (set-buffer "*Help*")
+	       (insert help))))
+
+	  ((Rd-active-mark)
+	   (save-excursion
+	     (cond ((> (mark) (point))
+		    (insert before)
+		    (goto-char (mark))
+		    (insert after))
+		   (t
+		    (insert after)
+		    (goto-char (mark))
+		    (insert before)))))
+	  (t
+	   (insert before)
+	   (save-excursion
+	     (insert after))))))
+
+
+(defvar Rd-font-list
+  '((?\C-b "\\bold{"	"}")
+    (?\C-c "\\code{"	"}")
+    (?\C-e "\\emph{"	"}")
+    (?\C-l "\\link{"	"}")
+    (?l "\\code{\\link{" "}}")
+    (?\C-m "\\email{"	"}")
+    (?\C-q "\\eqn{"	"}")
+    (?\C-u "\\url{"	"}")
+    )
+  "List of ``fonts'' used by Rd-font.
+
+Each entry is a list.
+The first element is the key to activate the font.
+The second element is the string to insert before point, and the third
+element is the string to insert after point."
+)
+
 
 (defun Rd-preview-help ()
   (interactive)

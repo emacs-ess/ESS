@@ -1,6 +1,6 @@
 Changes/New Features in 5.1.20:
 @itemize @bullet
-@item New `options()$STERM' in the S languages (S, S-Plus, R).
+@item New `options()$STERM' in the S dialects (S, S-Plus, R).
       The S program can determine the environment in which it is
       currently running.  ESS sets the option to `iESS' or `ddeESS'
       when it starts an S language process.  We recommend other specific
@@ -14,14 +14,14 @@ Changes/New Features in 5.1.20:
 @item XEmacs on Win (NT) is better supported.
 @item Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
 @item should now work even when imenu is not available (for old Xemacsen).
-@item For S dialects, .in.ESS <- TRUE  is set initially such that
-      programmers can test if running in ESS by  if(.in.ESS) ...
 @item for SAS : XEmacs-Imenu fix; C-TAB.. ; you can specify your SAS
       library definitions outside of autoexec.sas for ess-sas-data-view
       with SAS code placed in the variable ess-sas-data-view-libname.
 @item for BUGS: font-lock with `in' fixed.
 @item for STATA: font-lock bug fixed.
 @item for Rd mode: C-c C-v and `switch-process' in menu.
+      further, C-c C-f prefix (Rd-font) for inserting or surrounding a word
+      by things such as \code@{.@}, \code@{\link@{.@}@}, \emph@{.@} etc.
 @item new functions (ess-directory-function) and (ess-narrow-to-defun)
       ess-directory <-> default-directory logic (Jeff Mincy).
 @item Better Makefile logic structure
