@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/06/30 17:29:26 $
-;; Version: $Revision: 5.108 $
-;; RCS: $Id: ess-site.el,v 5.108 2004/06/30 17:29:26 stephen Exp $
+;; Modified: $Date: 2004/06/30 19:46:19 $
+;; Version: $Revision: 5.109 $
+;; RCS: $Id: ess-site.el,v 5.109 2004/06/30 19:46:19 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -184,7 +184,6 @@ The extension, in a file name, is the part that follows the last `.'."
 ;; depends on ess-lisp-directory, and is needed by other modes that are
 ;; loaded before the custom code.
 (defvar ess-etc-directory nil
-;  (expand-file-name (concat ess-lisp-directory "/../etc/"))
   "*Location of the ESS etc/ directory.
 The ESS etc directory stores various auxillary files that are useful
 for ESS, such as icons.")
@@ -207,23 +206,41 @@ for ESS, such as icons.")
 	    "At least one of ../etc, ../etc/ess, ../../etc/ess must exist!"))
 	    (sit-for 4)))))
 
-;;; (1.2) Uncomment the following lines to fix the infopath, if
-;; needed.  Check the Info-default-directory-list for ess.info; if we
-;; do not find it in the list, we should add on our directory to the
-;; list.  To save a bit of time, we could unconditionally add
-;; ../doc/info to the Info path, I'm not sure if that would be okay or
-;; a problem.
-;; Yet again (sigh), XEmacs vs Emacs raises its ugly head.  This code works on
-;; Emacs 21.3, yet the relevant variable in XEmacs 21 seems to be
-;; Info-directory-list.
-(unless (member t 
-		(mapcar 'file-exists-p
-			(mapcar '(lambda (x) (concat x "ess.info"))
-				Info-default-directory-list)))
-  (add-to-list 'Info-default-directory-list 
-	       (expand-file-name 
-		(concat ess-lisp-directory "/../doc/info/")) 'append) )
+(defvar ess-info-directory nil
+  "*Location of the ESS info/ directory.
+The ESS info directory stores the ESS info files.")
 
+(defvar ess-info-directory-list '("/../doc/info" "/../../info/ess")
+  "*List of directories, relative to `ess-lisp-directory', to search for info.")
+
+;; commenting out Emacs-only version
+;;(unless (member t 
+;;		(mapcar 'file-exists-p
+;;			(mapcar '(lambda (x) (concat x "ess.info"))
+;;				Info-default-directory-list)))
+;; (add-to-list 'Info-default-directory-list 
+;;	       (expand-file-name 
+;;		(concat ess-lisp-directory "/../doc/info/")) 'append) )
+
+(while (and (listp ess-info-directory-list) (consp ess-info-directory-list))
+    (setq ess-info-directory 
+	(expand-file-name (concat ess-lisp-directory 
+	    (car ess-info-directory-list))))
+    (if (file-directory-p ess-info-directory) 
+	(setq ess-info-directory-list nil)
+	(setq ess-info-directory nil)
+	(setq ess-info-directory-list (cdr ess-info-directory-list))
+	(if (null ess-info-directory-list) (progn
+	    (beep 0) (beep 0) (message (concat
+	    "ERROR:ess-site.el:ess-info-directory\n"
+	    "Relative to ess-lisp-directory\n"
+	    "Neither ../doc/info nor ../../info/ess exist!"))
+	    (sit-for 4)))))
+
+;;; (1.2) Re-comment the following lines, if unneeded.
+(add-to-list 
+    (if (featurep 'xemacs) 'Info-directory-list 'Info-default-directory-list)
+     ess-info-directory 'append)
 
 ;;; (1.3) Files ending in .q and .S are considered to be S source files
 ;;; Files ending in .St are considered to be S transcript files
