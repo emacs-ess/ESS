@@ -1,4 +1,5 @@
-
+\input texinfo
+@setfilename DUMMY
 ESS[SAS] was designed for use with SAS.  It is descended from emacs 
 macros developed by John Sall for editing SAS programs and SAS-mode by 
 Tom Cook.  Those editing features and new advanced features are part of 
@@ -85,10 +86,14 @@ with the following settings for SAS command-line options
 @end example
 
 @display
--stdio          required to make the redirection of stdio work
--linesize 80    keeps output lines from folding on standard terminals
--noovp          prevents error messages from printing 3 times
--nosyntaxcheck  permits recovery after syntax errors
+-stdio          
+            required to make the redirection of stdio work
+-linesize 80    
+            keeps output lines from folding on standard terminals
+-noovp          
+            prevents error messages from printing 3 times
+-nosyntaxcheck  
+            permits recovery after syntax errors
 @end display
 
 To start up iESS[SAS] mode, use:
@@ -152,13 +157,20 @@ ess-sas-submit-command-options (the last of which is also buffer-local).
 Here are some examples for your .emacs file (you may also use 
 M-x customize-variable):
 @example
-(setq ess-sas-submit-pre-command "nohup")                 ;'sh default
-(setq ess-sas-submit-post-command "-rsasuser &")          ;'sh default
-(setq ess-sas-submit-command "/usr/local/sas/sas")        ;'sh example
-(setq ess-sas-submit-pre-command "start")                 ;'ms-dos default
-(setq ess-sas-submit-post-command "-rsasuser -icon")      ;'ms-dos default
-(setq ess-sas-submit-command "c:/progra~1/sas/sas.exe")   ;Windows example
-(setq ess-sas-submit-command "c:\\progra~1\\sas\\sas.exe");Windows example
+;'sh default
+(setq ess-sas-submit-pre-command "nohup")                 
+;'sh default
+(setq ess-sas-submit-post-command "-rsasuser &")          
+;'sh example
+(setq ess-sas-submit-command "/usr/local/sas/sas")        
+;'ms-dos default
+(setq ess-sas-submit-pre-command "start")                 
+;'ms-dos default
+(setq ess-sas-submit-post-command "-rsasuser -icon")      
+;Windows example
+(setq ess-sas-submit-command "c:/progra~1/sas/sas.exe")   
+;Windows example
+(setq ess-sas-submit-command "c:\\progra~1\\sas\\sas.exe")
 @end example
 
 There is a built-in delay before a batch SAS job is submitted when using
@@ -239,50 +251,63 @@ option, say 3.
 @end enumerate
 
 Finally, we get to what the function keys actually do.  You may recognize
-some of the Short Names as SAS Display Manager commands (they
-are in all capitals).
+some of the nicknames as SAS Display Manager commands (they are in all 
+capitals).
 
 @display
-Unix PC   Short Name    Long Description
+Unix PC  Nickname   Description  
 
-F2   F2   refresh       revert the current buffer with the file of the 
-                        same name if the file is newer than the buffer
+F2   F2  refresh
+                    revert the current buffer with the file of the same name 
+                    if the file is newer than the buffer
 
-F3   F8   SUBMIT        save the current .sas file (which is either the
-                        .sas file in the current buffer or the .sas
-                        file associated with the .lst or .log file in the
-                        current buffer) and submit the file as a batch 
-                        SAS job
+F3   F8  SUBMIT     
+                    save the current .sas file (which is either the .sas file 
+                    in the current buffer or the .sas file associated with the 
+                    .lst or .log file in the current buffer) and submit the 
+                    file as a batch SAS job
 
-F4   F5   PROGRAM       switch buffer to .sas file
+F4   F5  PROGRAM       
+                    switch buffer to .sas file
 
-F5   F6   LOG           switch buffer to .log file, `refresh' and goto 
-                        next error message, if any
+F5   F6  LOG        
+                    switch buffer to .log file, `refresh' and goto next error 
+                    message, if any
 
-F6   F7   OUTPUT        switch buffer to .lst file and `refresh'
+F6   F7  OUTPUT     
+                    switch buffer to .lst file and `refresh'
 
-F7   F4   filetype-1    switch buffer to filetype-1 (defaults to .txt) 
-                        file and `refresh'
+F7   F4  filetype-1    
+                    switch buffer to filetype-1 (defaults to .txt) file and 
+                    `refresh'
 
-F8   F3   shell         switch buffer to shell
+F8   F3  shell      
+                    switch buffer to shell
 
-F9   F9   VIEWTABLE     open an interactive FSEDIT/FSBROWSE session
-                        on the SAS dataset near point
+F9   F9  VIEWTABLE  
+                    open an interactive FSEDIT/FSBROWSE session on the SAS 
+                    dataset near point
 
-F10  F10  toggle-log    toggle ESS[SAS] for .log files; may be useful
-                        for certain debugging situations
+F10  F10  toggle-log    
+                    toggle ESS[SAS] for .log files; may be useful for certain 
+                    debugging situations
 
-F11  F11  filetype-2    switch buffer to filetype-2 (defaults to .dat) 
-                        file and `refresh'
+F11  F11  filetype-2
+                    switch buffer to filetype-2 (defaults to .dat) file and 
+                    `refresh'
 
-F12  F12  viewgraph     open a GSASFILE near point for viewing either
-                        in emacs or with an external viewer
+F12  F12  viewgraph
+                    open a GSASFILE near point for viewing either in emacs or 
+                    with an external viewer
 
-C-F3 C-F8 submit-region    write region to ess-temp.sas and submit
+C-F3 C-F8 submit-region    
+                    write region to ess-temp.sas and submit
 
-C-F5 C-F6 append-to-log    append ess-temp.log to the current .log file
+C-F5 C-F6 append-to-log    
+                    append ess-temp.log to the current .log file
 
-C-F6 C-F7 append-to-output append ess-temp.lst to the current .lst file
+C-F6 C-F7 append-to-output 
+                    append ess-temp.lst to the current .lst file
 @end display
 
 SUBMIT, PROGRAM, LOG and OUTPUT need no further explanation since
@@ -450,12 +475,13 @@ SAS with the cursor in the myfile.sas buffer.
 M-x SAS
 @end example
 Four buffers will appear on screen:
-@display
-myfile.sas  in  ESS[SAS]        mode:  your source file
-*SAS:1*     in  iESS [SAS:1]    mode:  ESS communication buffer
-*SAS:1.log* in  Shell [] ESStr  mode:  SAS log information
-*SAS:1.lst* in  Shell [] ESSlst mode:  SAS listing information
-@end display
+@example
+Buffer          Mode            Description
+myfile.sas      ESS[SAS]        your source file
+*SAS:1*         iESS [SAS:1]    ESS communication buffer
+*SAS:1.log*     Shell [] ESStr  SAS log information
+*SAS:1.lst*     Shell [] ESSlst SAS listing information
+@end example
 If you would prefer each of the four buffers to appear in its
 own individual frame, you can arrange for that.  Place the
 cursor in the buffer displaying myfile.sas.  Enter the
@@ -478,7 +504,6 @@ C-c C-r
 Information appears in the log buffer, analysis results in the
 listing buffer.  In case of errors, make the corrections in the
 myfile.sas buffer and resubmit with another C-c C-r
-
 
 At the end of the session you may save the log and listing
 buffers with the usual C-x C-s commands.  You will be prompted
@@ -514,7 +539,7 @@ never need to read it or write to it.  Refer to the .lst and
      a shell command-line)
 
 3. M-x SAS starts SAS Display Manager.  Probably, the command "sas" 
-   on your system calls a shell script.  Specify the path to the "sas"
+   on your system calls a shell script.  Specify the path to the real "sas"
    executable in the file ess-sas-sh-command, i.e.:
 @example
 /usr/local/sas612/sas </dev/tty 1>$stdout 2>$stderr $@@
@@ -545,3 +570,5 @@ Or you can mark regions with the mouse and submit the code with
 `submit-region' or paste them into SAS Display Manager.
 
 @end itemize
+
+@bye
