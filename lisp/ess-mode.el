@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/06/21 12:03:43 $
-;; Version: $Revision: 5.30 $
-;; RCS: $Id: ess-mode.el,v 5.30 2004/06/21 12:03:43 rmh Exp $
+;; Modified: $Date: 2004/06/30 16:50:16 $
+;; Version: $Revision: 5.31 $
+;; RCS: $Id: ess-mode.el,v 5.31 2004/06/30 16:50:16 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -234,7 +234,8 @@
    ["Switch Process"	ess-switch-process		t]
    "------"
    ["Describe"		describe-mode			t]
-   ["About"		(ess-goto-info "Editing")	t]
+   ["About editing" (ess-goto-info "Editing")	t]
+   ["Read ESS info" (ess-goto-info "") t]
    ["Send bug report"	ess-submit-bug-report		t]
    ))
 
