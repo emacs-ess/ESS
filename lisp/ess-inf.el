@@ -249,6 +249,13 @@ accompany the call for `inferior-ess-program'.
 	(ess-multi procname buf inferior-ess-start-args)))))
 
 
+(defvar inferior-ess-objects-command nil
+  "The language/dialect specific command for listing objects.
+It is initialized from the corresponding inferior-<lang>-objects-command
+and then made buffer local."); and the *-<lang>-* ones are customized!
+(make-variable-buffer-local 'inferior-ess-objects-command)
+
+
 ;;; A note on multiple processes: the following variables
 ;;;	ess-local-process-name
 ;;;	ess-search-list
@@ -1399,16 +1406,16 @@ to continue it."
 	   (current-buffer) comint-process-echoes comint-input-sender))
 
   ;; Completion support
-  ;; SJE: comint-dynamic-complete-functions is regarded as a hook, rather 
+  ;; SJE: comint-dynamic-complete-functions is regarded as a hook, rather
   ;; than a regular variable.
-  (add-hook 'comint-dynamic-complete-functions 
+  (add-hook 'comint-dynamic-complete-functions
 	    'ess-complete-object-name nil 'local)
-  (add-hook 'comint-dynamic-complete-functions 
+  (add-hook 'comint-dynamic-complete-functions
 	     'comint-replace-by-expanded-history 'append 'local)
   (add-hook 'comint-dynamic-complete-functions
 	    'ess-complete-filename 'append 'local)
-  
-  
+
+
 
   ;; (setq comint-completion-addsuffix nil) ; To avoid spaces after filenames
   ;; KH: next 2 lines solve.
@@ -1428,7 +1435,7 @@ to continue it."
 
   ;; SJE: is this the proper place for setting inferior-ess-prompt,
   ;; rather than within ess-multi?  Tony - have you remembered yet
-  
+
   ;; about the setq-default, as I changed it back to setq.
   (setq inferior-ess-prompt
 	;; shouldn't be setq-default!  And I've

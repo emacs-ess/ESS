@@ -59,7 +59,7 @@
     (ess-save-lastvalue-command
      . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
     (inferior-ess-program          . inferior-S+3-program-name)
-    (inferior-ess-objects-command  . "objects(%d)\n")
+    (inferior-ess-objects-command  . inferior-Splus-objects-command)
     (inferior-ess-search-list-command   . "search()\n")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")

@@ -70,7 +70,7 @@
      . "assign(\".ess.lvsave\",.Last.value,inherits=TRUE)\n") ;envir=1
     (ess-imenu-mode-function       . 'ess-imenu-R)
     (inferior-ess-program          . inferior-R-program-name)
-    (inferior-ess-objects-command  . "objects(pos = %d)\n")
+    (inferior-ess-objects-command  . inferior-R-objects-command)
     (inferior-ess-search-list-command   . "search()\n")
     (inferior-ess-help-command     . "help(\"%s\", htmlhelp=FALSE)\n")
     (inferior-ess-exit-command     . "q()")

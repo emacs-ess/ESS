@@ -101,7 +101,7 @@
      . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
     (inferior-ess-program          . inferior-S+6-program-name)
     (inferior-ess-start-args       . inferior-Splus-args)
-    (inferior-ess-objects-command  . "objects(where = %d)\n")
+    (inferior-ess-objects-command  . inferior-Splus-objects-command)
     (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
     (inferior-ess-help-command     . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
     ;; "paths": get the "/" needed by  (ess-dir-modtime dir)  in ./ess-inf.el:

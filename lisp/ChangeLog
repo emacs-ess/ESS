@@ -1,3 +1,14 @@
+2004-12-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el: replace inferior-ess-objects-command by the two
+	  inferior-R-objects-command and inferior-Splus-... (which differ).
+
+	* ess-inf.el (inferior-ess-objects-command): defvar here, instead
+
+	* essd-r.el, essd-sp6.el  -- and all essd-sp*.el essdsp6w.el:
+	  replace inferior-ess-objects-command
+
+
 2004-12-03  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-cust.el (inferior-ess-prompt): Make this a defvar as the

@@ -421,7 +421,7 @@ If not number, the statements are indented at open-parenthesis following
 ;;;*;;; Editing styles
 
 ;;; **FIXME**  The following NEEDS to be customized.
-;; SJE: I disagree; this variable should not be customized; individual vars, 
+;; SJE: I disagree; this variable should not be customized; individual vars,
 ;; such as ess-indent-level are already customizable.
 (defvar ess-default-style-list
   (list 'DEFAULT
@@ -490,9 +490,9 @@ The default style in use is controlled by `ess-default-style'.")
 
 (defcustom ess-default-style 'DEFAULT
   "*The default value of `ess-style'.
-See the variable `ess-style-alist' for how these groups (DEFAULT, 
+See the variable `ess-style-alist' for how these groups (DEFAULT,
 GNU, BSD, ...) map onto different settings for variables."
-  :type '(choice (const DEFAULT) 
+  :type '(choice (const DEFAULT)
 		 (const GNU)
 		 (const BSD)
 		 (const K&R)
@@ -727,6 +727,12 @@ been created using the variable `ess-r-versions'."
   :group 'ess-R
   :type 'string)
 
+(defcustom inferior-R-objects-command "objects(pos=%d, all.names=TRUE)\n"
+  "Format string for R command to get a list of objects at position %d.
+Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
+  :group 'ess-command
+  :type 'string)
+
 (defcustom ess-r-versions '( "R-1" "R-2")
   "*List of partial strings for versions of R to access within ESS.
 Each string specifies the start of a filename.  If a filename
@@ -884,6 +890,12 @@ Use double backslashes if you use the msdos shell."
   "*String of arguments used when starting S.
 These arguments are currently passed only to S+6."
   :group 'ess-S
+  :type 'string)
+
+(defcustom inferior-Splus-objects-command "objects(where=%d)\n"
+  "Format string for R command to get a list of objects at position %d.
+Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
+  :group 'ess-command
   :type 'string)
 
 (defcustom inferior-S+6-print-command "S_PRINT_COMMAND=gnuclientw.exe"
@@ -1232,16 +1244,6 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el"
 %s is replaced by the object name -- usually a list or data frame."
   :group 'ess-command
   :type 'string)
-
-(defcustom inferior-ess-objects-command "ls()\n" ;; others: in (S) or (R)
-  "Format string for ESS command to get a list of objects at position %d.
-
-Don't include a newline at the end! Used in ess-execute-objects."
-  :group 'ess-command
-  :type 'string)
-
-(make-variable-buffer-local 'inferior-ess-objects-command)
-(setq-default inferior-ess-objects-command "ls()\n")
 
 (defcustom inferior-ess-get-prompt-command "options()$prompt\n"
   "Command to find the value of the current S prompt."
