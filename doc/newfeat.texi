@@ -1,3 +1,12 @@
+Changes/New Features in 5.1.21:
+@itemize @bullet
+@item ESS[SAS]: info documentation now available!; see
+ESS->Help for Statistical Packages->Help for SAS; F12 opens
+GSASFILE nearest point for viewing either within emacs, when
+available, or via an external viewer
+@item Makefile: tag now independent of rel
+@end itemize
+
 Changes/New Features in 5.1.20:
 @itemize @bullet
 @item New `options()$STERM' in the S dialects (S, S-Plus, R).
@@ -15,7 +24,7 @@ This feature is still under development.
 @item XEmacs on Win (NT) is better supported.
 @item Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
 @item should now work even when imenu is not available (for old Xemacsen).
-@item for SAS : XEmacs-Imenu fix; C-TAB is globalized along with your 
+@item ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your 
 function-key definitions, if specified; you can specify your SAS
 library definitions outside of autoexec.sas for ess-sas-data-view
 with SAS code placed in the variable ess-sas-data-view-libname, 
@@ -32,7 +41,7 @@ local file variable sections at the end of your .sas files to
 request different executables or specify special options and the 
 local file variables are re-read at submit instead of only at file
 open so that if you make a change it is picked up immediately;
-@item for BUGS: font-lock with `in' fixed.
+@item ESS[BUGS]: font-lock with `in' fixed.
 @item for STATA: font-lock bug fixed.
 @item for Rd mode: C-c C-v and `switch-process' in menu.
 further, C-c C-f prefix (Rd-font) for inserting or surrounding a word

@@ -1,7 +1,7 @@
 
 ESS[SAS] (originally SAS-mode) was designed for use with SAS.  
 SAS-mode was developed by Cook
-(ftp://ftp.biostat.wisc.edu/pub/cook/sas-mode/sas.tar.gz).  Those
+@uref{ftp://ftp.biostat.wisc.edu/pub/cook/sas-mode/sas.tar.gz}.  Those
 editing features and new advanced features are part of ESS[SAS].  
 The user interface of ESS[SAS] has similarities with ESS[S], the ESS
 interface for S, and to the SAS Display Manager.  By _emacs_ we mean 
