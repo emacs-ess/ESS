@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.28 $.
+### File: $Revision: 5.29 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -62,6 +62,7 @@ ess-inf.el ess-iw32.el \
 	essl-sas.el essd-sas.el \
 	essl-sta.el essd-sta.el \
 	essl-omg.el essd-omg.el \
+	ess-noweb.el noweb-mode.el noweb-font-lock-mode.el \
 	essa-r.el essa-sas.el \
 	essddr.el
 
