@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/31 11:51:41 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: ess-vars.el,v 1.9 1997/07/31 11:51:41 rossini Exp $
+;; Modified: $Date: 1997/07/31 12:53:20 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: ess-vars.el,v 1.10 1997/07/31 12:53:20 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,6 +29,10 @@
 
 ;;
 ;; $Log: ess-vars.el,v $
+;; Revision 1.10  1997/07/31 12:53:20  rossini
+;; made ess-save-lastvalue-command, ess-retr-lastvalue-command both
+;; buffer local.
+;;
 ;; Revision 1.9  1997/07/31 11:51:41  rossini
 ;; changed meanings of ess-proc-prefix and ess-version-running to avoid
 ;; repetition of intent!
@@ -502,6 +506,22 @@ of Emacs until the code has been successfully evaluated by S.")
   at the bottom of the process buffer.")
 
 
+
+(defvar ess-save-lastvalue-command nil
+  "Default is currently the S+ version.")
+
+(make-variable-buffer-local 'ess-save-lastvalue-command)
+(setq-default ess-save-lastvalue-command
+  "assign(\"smode.lvsave\",.Last.value,frame=0)\n")
+
+(defvar ess-retr-lastvalue-command nil
+  "Default is currently the S+ version.")
+
+(make-variable-buffer-local 'ess-retr-lastvalue-command)
+(setq-default ess-retr-lastvalue-command
+	      ".Last.value <- get(\"smode.lvsave\",frame=0)\n")
+
+
  ; System variables
 
 ;;*;; Variables relating to multiple processes
@@ -693,19 +713,8 @@ important for R or XLispStat.")
 ;;; `string' in an S help file. `string' is used as part of a
 ;;; regexp-search, and so specials should be quoted.
 
-(defconst ess-help-R-sec-keys-alist 
-  '((?a . "\\s *Arguments:") 
-    (?d . "\\s *Description:")
-    (?n . "\\s *Note:")
-    (?r . "\\s *References:") 
-    (?v . "\\s *Value[s]?")	;
-    (?s . "\\s *See Also:") 
-    (?e . "\\s *Examples:") 
-    )) ;; "Alist of (key . string) pairs for use in section searching."
-
 (defconst ess-help-S-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file")
-(defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$")
 
 
 
