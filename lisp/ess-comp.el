@@ -1,13 +1,13 @@
 ;;; ess-comp.el --- setting for compiling, only.
 
-;; Copyright (C) 1997 A. J. Rossini
+;; Copyright (C) 1997--2001 A. J. Rossini
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/09/03 19:37:08 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: ess-comp.el,v 5.9 2000/09/03 19:37:08 rossini Exp $
+;; Modified: $Date: 2001/01/07 19:43:43 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: ess-comp.el,v 5.10 2001/01/07 19:43:43 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -38,17 +38,18 @@
 ;; Emacs doesn't include '.' in the emacs lisp load path.
 (add-to-list 'load-path nil)
 
-(setq ess-show-load-messages t); defvar'ed to nil in ./ess-site.el
+;; defvar'ed to nil in ./ess-site.el
+(setq ess-show-load-messages t)
 
 (defun ess-message (msg)
   "Shortcut for \\[message] only if `ess-show-load-messages' is non-nil."
   (if ess-show-load-messages (message msg)))
 
 ;; These are required by every other file.
-(ess-message "loading 'ess-emcs ..")    (require 'ess-emcs)
-(ess-message "loading 'ess-cust ..")    (require 'ess-cust) ;set up variables
-(ess-message "loading 'ess ..")		(require 'ess)      ;configure
-(ess-message "loading 'ess-site ..")	(require 'ess-site) ;overload defaults
+(ess-message "loading 'ess-emcs ..")  (require 'ess-emcs) ;set Emacsen diffs
+(ess-message "loading 'ess-cust ..")  (require 'ess-cust) ;set variables
+(ess-message "loading 'ess ..")	      (require 'ess)      ;configure
+(ess-message "loading 'ess-site ..")  (require 'ess-site) ;overload defaults
 
  ; Local variables section
 
