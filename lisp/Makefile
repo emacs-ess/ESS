@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.38 $.
+### File: $Revision: 5.39 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -14,12 +14,14 @@ include ../Makeconf
 # where the .elc, files should go
 LISPDIR = .
 
-## compile with noninteractive and relatively clean environment:
-## XEMACS 19.xx and before.
-#BATCHFLAGS = -batch -no-site-file -no-init-file
-## EMACS and XEMACS 20.x.
-BATCHFLAGS = -batch --no-site-file --no-init-file
+## Set EMACS to either emacs or xemacs depending on your situation.
+EMACS=emacs
 
+## compile with non-interactive, clean environment:
+## EMACS 21
+BATCHFLAGS = --batch --no-site-file --no-init-file
+## XEMACS 21
+#BATCHFLAGS = -batch -no-site-file -no-init-file
 
 #### no user servicable parts beyond this point ####
 

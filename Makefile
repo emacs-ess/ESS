@@ -1,8 +1,17 @@
-## $Id: Makefile,v 5.48 2001/09/28 15:34:57 ess Exp $
+## $Id: Makefile,v 5.49 2002/01/04 02:30:23 ess Exp $
 ## Top Level Makefile
 
 include ./Makeconf
 ##      ========== {edit that one if any !}
+
+## Set EMACS to either emacs or xemacs depending on your situation.
+EMACS=emacs
+
+## compile with non-interactive, clean environment:
+## EMACS 21
+BATCHFLAGS = --batch --no-site-file --no-init-file
+## XEMACS 21
+#BATCHFLAGS = -batch -no-site-file -no-init-file
 
 ## Set ESSVERSION to the contents of VERSION
 ## This is only set correctly by GNU make, but you will only
@@ -40,18 +49,11 @@ ESSDIR=$(XEMACSDIR)/site-packages/ess
 
 ## Updating ChangeLog via CVS with emacs
 ## If you would like to build ChangeLog directly from CVS
-## with emacs, then you need to re-define EMACSLOGCVS to
-## actually do something, i.e. uncomment one of the 
-## re-definitions or use an environment variable and make -e
+## with emacs, then you need to define EMACS and BATCHFLAGS
+## appropriately.  See above.
 ## Note that this requires that the vc package is available!
 
-EMACSLOGCVS=@echo "** ChangeLog was not updated via CVS **" 
-
-## if you are running Emacs
-## EMACSLOGCVS=emacs --batch -f vc-update-changelogs
-
-## if you are running XEmacs
-## EMACSLOGCVS=xemacs -batch -f vc-update-changelogs
+EMACSLOGCVS=$(EMACS) $(BATCHFLAGS) -f vc-update-changelogs
 
 Subdirs = lisp doc
 
@@ -65,7 +67,7 @@ all install clean distclean realclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@ ; cd .. ; done
 
 compile:
-	cd lisp; $(MAKE) all
+	cd lisp; $(MAKE) all EMACS=$(EMACS) BATCHFLAGS=$(BATCHFLAGS)
 
 README: doc/readme.texi $(INTRO.DEPENDS)
 	cd doc ; $(MAKE) readme.texi; $(MAKEINFOascii) readme.texi \
