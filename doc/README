@@ -1,15 +1,18 @@
 Source: *.texi  [texinfo]
 
-Targets:  
+Targets:
+
 	  ess.dvi	[DVI -> PostScript]
+	  readme.dvi
 
 	  ess.info*	[Info]
+	  readme.info*
 
 	  ./html/*html
 
 ----------------------
 
-Structure of Source:
+Structure of Source:  TWO main files
 
  ess.texi
   |
@@ -45,4 +48,4 @@ Structure of Source:
   |-- mailing.texi
   |
   |-- authors.texi
-  
+
