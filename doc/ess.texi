@@ -3,14 +3,16 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.59 2004/07/12 21:01:37 rsparapa Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.59 $ $Date: 2004/07/12 21:01:37 $)
+ESS version
+@include ../VERSION
+
+@c see '$Date' below @subtitle (Documentation $Revision: 5.59 $ $Date: 2004/07/12 21:01:37 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -48,13 +50,15 @@
 @direntry
 * ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
 @end direntry
+@c node-name,  next,  previous,  up
 @node Top, Introduction, (dir), (dir)
 @top ESS: Emacs Speaks Statistics
 
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.59 $ $Date: 2004/07/12 21:01:37 $).
+@c with all the include files, it doesn't make sense to 'date' this one:
+@c        (Documentation $Revision: 5.59 $ $Date: 2004/07/12 21:01:37 $).
 
 @display
 by  A.J. Rossini,
@@ -93,6 +97,7 @@ statements written in these statistical analysis languages.
 * Editing::                     How to create or edit S objects or functions
 * Help::                        Reading help files in ESS
 * Transcript Mode::             Manipulating saved transcript files
+* Editing R documentation files::
 * Miscellaneous::               Other features of ESS
 * Bugs Etc::
 * Customization::               Customizing ESS
@@ -282,16 +287,16 @@ your @Sl{} functions in specified source directories.
 @node Features, New features, Introduction, Introduction
 @section Why should I use ESS?
 
-Statistical packages are powerful software systems for manipulating and 
-analyzing data, but their user interfaces often leave something something 
+Statistical packages are powerful software systems for manipulating and
+analyzing data, but their user interfaces often leave something something
 to be desired:  they offer weak editor functionality and they differ
 among themselves so markedly that you have to re-learn how to do those
-things for each package.  ESS is a package which is designed to make 
-editing and interacting with statistical packages more uniform, 
+things for each package.  ESS is a package which is designed to make
+editing and interacting with statistical packages more uniform,
 user-friendly and give you the power of emacs as well.
 
 ESS provides several features which make it easier to interact with the
-ESS process (a connection between your buffer and the statistical 
+ESS process (a connection between your buffer and the statistical
 package which is waiting for you to input commands).  These include:
 
 @itemize @bullet
@@ -462,7 +467,7 @@ on your system.
 
 @include inst_tar.texi
 
-@node Requirements, System dependent, Installation, Installation
+@node Requirements, System dependent, Microsoft Windows installation, Installation
 @comment node-name,  next,  previous,  up
 @section Requirements
 @include requires.texi
@@ -555,11 +560,11 @@ with statistical programs.
 
 @comment  node-name,  next,  previous,  up
 @menu
-* Starting up::                 
-* Multiple ESS processes::      
-* ESS processes on Remote Computers::  
-* S+elsewhere and ESS-elsewhere::  
-* Customizing startup::         
+* Starting up::
+* Multiple ESS processes::
+* ESS processes on Remote Computers::
+* S+elsewhere and ESS-elsewhere::
+* Customizing startup::
 @end menu
 
 @node Starting up, Multiple ESS processes, Interactive ESS, Interactive ESS
@@ -657,9 +662,9 @@ lines from your @file{myfile.sas} to the remote SAS process.
 @samp{C-c i} sends lines over invisibly.
 @c and lets SAS display them formatted correctly as in a SAS log file.
 With ess-remote you get teletype behavior---the data input, the
-log, and the listing all appear in the same buffer.  To make this work, 
-you need to end every PROC and DATA step with a "RUN;" statement.  The 
-"RUN;" statement is what tells SAS that it should process the preceding 
+log, and the listing all appear in the same buffer.  To make this work,
+you need to end every PROC and DATA step with a "RUN;" statement.  The
+"RUN;" statement is what tells SAS that it should process the preceding
 input statements.
 
 @item Graphics (interactive) on the remote machine.  If you run X11
