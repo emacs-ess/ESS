@@ -2,9 +2,9 @@
 ;;; Thu 06 May 2004
 ;;; Stephen Eglen
 ;;; GPL.
-;; Modified: $Date: 2004/05/14 18:04:25 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: ess-toolbar.el,v 1.9 2004/05/14 18:04:25 rsparapa Exp $
+;; Modified: $Date: 2004/05/17 14:20:48 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: ess-toolbar.el,v 1.10 2004/05/17 14:20:48 stephen Exp $
 
 ;;; Notes.
 
@@ -126,12 +126,6 @@ Icons should be found in ESS/etc/icons/ directory.")
 (defun ess-make-toolbar-S-xemacs ()
   "Set up the R toolbar for XEmacs."
   (message "Sorry, S toolbar under XEmacs not ready yet."))
-
-;; Suggest adding "Start R" from the menu.  "Start process" to be
-;; generic.
-;; (ess-start-process) could then call the relevant function to start R/S etc.
-;; easy for R, but not sure about other modes.  Could have a completion list.
-
 
 (defun ess-make-toolbar-R-xemacs ()
   "Set up the R toolbar for XEmacs."
