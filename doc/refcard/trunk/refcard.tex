@@ -1,11 +1,11 @@
-%%%-- $Header: /scratch/CVS-ARCHIVE/ess-refcard/refcard.tex,v 1.9 1996/04/25 14:46:31 sfs Exp $
+%%%- $Header: /scratch/CVS-ARCHIVE/ess-refcard/refcard.tex,v 1.10 1996/04/25 15:20:08 sfs Exp $
 \documentstyle[a4,twocolumn,parskip]{article}
 %-Northamerica: \documentstyle[fullpage,twocolumn,parskip]{article}
 
 \newenvironment{tabI}{\begin{tabular}{p{1.5cm}l}}{\end{tabular}}
 \newenvironment{tabTit}[1]{\underline{\bf #1}\\ \begin{tabI}}{\end{tabI}}
-\newcommand{\Sect}[1]{\par\noindent\smallskip\fbox{\large\bf #1}
-  \vskip -1ex plus 1ex minus 1ex}
+\newcommand{\Sect}[1]{\par\noindent\medskip\fbox{\large\bf #1}
+  \vskip -.2ex plus 1ex minus 1ex}
 
 \raggedbottom \pagestyle{empty}
 
@@ -19,10 +19,10 @@
   {\small For version 3.43 
     \\--- some update for version 4 --- needs {\em more!\/}}
   \\ (SfS local version) %-SfS-added
-  \\[1ex] {\footnotesize \$Date: 1996/04/25 14:46:31 $ $ --- as of \today}
+  \\[1ex] {\footnotesize \$Date: 1996/04/25 15:20:08 $ $ --- as of \today}
 \end{center}
 
-\bigskip %\vspace{1.5cm}
+\bigskip
   
 \Sect{Interacting with the S process}
 %%    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,8 +106,7 @@ For use in {\tt S-mode} edit buffers, ({\tt *.S} files):
 \end{tabTit}
 
 \begin{tabTit}{Others}
-  %%-SfS- changed:
-  %%{\tt M-TAB} & Complete S object name \\
+  %%-SfS-deleted:  {\tt M-TAB} & Complete S object name \\
   {\tt C-c C-v }& Help for S object \\
   {\tt C-c C-d }& ``{\tt dump}'' -- Edit another object \\
   {\tt C-c C-y} & Return to S process \\
