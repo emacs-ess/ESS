@@ -20,9 +20,16 @@
 # For executing SAS, and running it in the proper manner for ESS
 # (feeding output back into appropriate ESS buffers).
 
-echo $0 $@
-sas </dev/tty 1>$1 2>$2 $3
+#echo $0 $@
+#sas </dev/tty 1>$1 2>$2 $3
 
+set -x
+stdout=$1
+stderr=$2
+shift 2
+set +x
+echo sas \</dev/tty 1\>$stdout 2\>$stderr $@
+sas </dev/tty 1>$stdout 2>$stderr $@
 
 ## From the SAS online tech support:
 ##
