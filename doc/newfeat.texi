@@ -1,3 +1,15 @@
+Changes/New Features in 5.1.14:
+@itemize @bullet
+@item Yet more fixes to SAS mode, (Rich Heiberger 
+      (@email{rmh@@surfer.stat.temple.edu}) and Rodney Sparapani
+      (@email{spara002@onyx.dcri.duke.edu})).
+@item Customize support (for most Emacsen which support it) (AJRossini,
+      @email{rossini@biostat.washington.edu}) 
+@item ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini,
+      @email{rossini@biostat.washington.edu})
+@end itemize
+
+
 Changes/New Features in 5.1.13:
 @itemize @bullet
 @item Version numbering finally all depending on the ./VERSION file,
