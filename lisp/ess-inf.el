@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/07/22 15:58:45 $
-;; Version: $Revision: 5.23 $
-;; RCS: $Id: ess-inf.el,v 5.23 1999/07/22 15:58:45 maechler Exp $
+;; Modified: $Date: 1999/09/14 18:06:35 $
+;; Version: $Revision: 5.24 $
+;; RCS: $Id: ess-inf.el,v 5.24 1999/09/14 18:06:35 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -103,6 +103,9 @@ accompany the call for inferior-ess-program.
   ;; This function is primarily used to figure out the Process and
   ;; buffer names to use for inferior-ess.
 
+  ;; Once, long ago, it was used for switching buffers, but we don't
+  ;; do that any more (at least not from here).
+
   (interactive)
 
   (ess-write-to-dribble-buffer
@@ -130,47 +133,25 @@ accompany the call for inferior-ess-program.
       (setq temp-ess-dialect
 	    (eval(cdr(assoc 'ess-dialect ess-customize-alist))))
       (setq temp-ess-lang
-	    (eval(cdr(assoc 'ess-language ess-customize-alist))))
-	    )
+	    (eval(cdr(assoc 'ess-language ess-customize-alist)))))
 
     ;; run hooks now, to overwrite the above!
     (run-hooks 'ess-pre-run-hook)
     (ess-write-to-dribble-buffer
-     (format "(inferior-ess 1): ess-lang=%s, ess-dialect=%s, temp-dialect=%s, buf=%s\n"
-	     ess-language	ess-dialect	temp-ess-dialect
-	     (current-buffer)))
+     (format "(inf-ess 1): lang=%s, dialect=%s, tmp-dialect=%s, buf=%s\n"
+	     ess-language ess-dialect temp-ess-dialect (current-buffer)))
     (let* ((defdir (directory-file-name (or ess-directory default-directory)))
 	   (temp-dialect temp-ess-dialect)
 	   (temp-lang temp-ess-lang)
-	   (procname ;;(or ;;(and (not (comint-check-proc (current-buffer)))
-			      ;; Don't start a new process in current buffer if
-			      ;; one is already running
-			      ;;ess-local-process-name)
-			 ;; find a non-existent process
-		      (let ((ntry 0)
-			    (done nil))
-			(while (not done)
-			  (setq ntry (1+ ntry)
-				done (not
-				      (get-process (ess-proc-name
-						    ntry
-						    temp-dialect)))))
-			(ess-proc-name ntry temp-dialect))) ;)
-;;	   (procname-lang (or (and (not (comint-check-proc (current-buffer)))
-;;			      ;; Don't start a new process in current buffer if
-;;			      ;; one is already running
-;;			      ess-local-process-name)
-;;			 ;; find a non-existent process
-;;			 (let ((ntry 0)
-;;			       (done nil))
-;;			   (while (not done)
-;;			     (setq ntry (1+ ntry)
-;;				   done (not
-;;					 (get-process (ess-proc-name
-;;						       ntry
-;;						       temp-lang)))))
-;;			   (ess-proc-name ntry temp-lang))))
-
+	   (procname (let ((ntry 0) ;; find a non-existent process
+			   (done nil))
+		       (while (not done)
+			 (setq ntry (1+ ntry)
+			       done (not
+				     (get-process (ess-proc-name
+						   ntry
+						   temp-dialect)))))
+		       (ess-proc-name ntry temp-dialect)))
 	   (startdir nil)
 	   (buf nil)
 	   (buf-name-str  (concat "*" procname "*")))
@@ -181,12 +162,7 @@ accompany the call for inferior-ess-program.
 	       temp-dialect
 	       buf-name-str))
       (cond
-       ;; If process is running, we use it:
-       ;; AJR- NO!  We no longer use this for switching buffers!
-       ;;((get-process procname)
-       ;; (setq buf (process-buffer (get-process procname))))
-
-       ;; Else (it's a new or terminated process) try to use current buffer
+       ;; Since it's a new or terminated process, try to use current buffer
        ((and (not buf)
 	     (not (comint-check-proc (current-buffer)))
 	     (memq major-mode '(inferior-ess-mode))) ; ess-transcript-mode)))
@@ -267,7 +243,6 @@ If ess-process NAME is running, switch to it.  If not, use COMINT to
 start up a new process, using NAME and BUFFER (which is needed if
 there is no process NAME)."
 
-  ;; (if (< n 1) (error "Argument to ess-multi must be 1 or greater"))
   (let* ((proc-name name)
 	 (proc (get-process proc-name)))
     ;; If ESS process NAME is running, switch to it
@@ -285,8 +260,11 @@ there is no process NAME)."
 	 (format "(ess-multi 0):  inf-ess-start-args=%s, comint-..echoes=%s\n"
 	       inf-ess-start-args comint-process-echoes))
 	(set-buffer buffer)
-	(setq-default inferior-ess-prompt	; shouldn't be
-						; setq-default!
+	(setq-default inferior-ess-prompt	
+
+		      ;; shouldn't be setq-default!  And I've
+		      ;; forgotten why!   (AJR)
+
 		      ;; Do not anchor to bol with `^'
 		      (concat "\\("
 			      inferior-ess-primary-prompt
@@ -295,16 +273,15 @@ there is no process NAME)."
 			      "\\)"))
 	(inferior-ess-mode)
 	(ess-write-to-dribble-buffer
-	 (format "(ess-multi after inf.ess-mode: ..start-args=%s, comint-..echoes=%s\n"
+	 (format "(ess-multi post inf-ess: start-args=%s, comint-echoes=%s\n"
 	       inf-ess-start-args comint-process-echoes))
 	(setq ess-local-process-name proc-name)
 	(goto-char (point-max))
 	(setq comint-input-ring-file-name
 	      (expand-file-name ess-history-file ess-directory))
 	(comint-read-input-ring)
-	;;(run-hooks 'ess-pre-run-hook) ONLY IN 'inferior-ess'
 	(ess-write-to-dribble-buffer
-	 (format "(ess-multi 1):  inf-ess-start-args=%s \n"
+	 (format "(ess-multi 1):  start-args=%s \n"
 	       inf-ess-start-args))
 	(set-buffer
 	 (if switches
@@ -342,32 +319,12 @@ there is no process NAME)."
      (format "\nProcess %s %s at %s\n"
 	     (process-name proc) message (current-time-string)))))
 
-;; Original version
-;;(defun inferior-ess-make-comint (bufname procname &rest switches)
-;;  "Make an S comint process in buffer NAME with process called PROC."
-;;;;; This function is a modification of make-comint from the comint.el
-;;;;; code of Olin Shivers.
-;;  (let*  ((buffer (get-buffer-create bufname))
-;;	  (proc (get-process procname)))
-;;    ;; If no process, or nuked process, crank up a new one and put buffer in
-;;    ;; comint mode. Otherwise, leave buffer and existing process alone.
-;;    (cond ((or (not proc) (not (memq (process-status proc) '(run stop))))
-;;	     (save-excursion
-;;	       (set-buffer buffer)
-;;	       (setq default-directory ess-directory)
-;;	     (if (eq (buffer-size) 0) nil
-;;	       (goto-char (point-max))
-;;	       (insert "\^L\n"))	; page boundaries are S sessions
-;;	       )
-;;	     (comint-exec buffer procname inferior-ess-program nil switches)))
-;;    buffer))
-
-;;KH's version, 6Apr96
 (defun inferior-ess-make-comint (bufname
 				 procname
 				 inferior-ess-start-args
 				 &rest switches)
-  "Make an S comint process in buffer NAME with process called PROC."
+  "Make an S comint process in buffer NAME with process called PROC.
+This was rewritten by KH in April 1996."
 ;;; This function is a modification of make-comint from the comint.el
 ;;; code of Olin Shivers.
   (let*	 ((buffer (get-buffer-create bufname))
@@ -401,10 +358,6 @@ there is no process NAME)."
 			  (ess-line-to-list-of-words
 			   inferior-ess-start-args)))))
     buffer))
-
-
-
-
 
 
 ;;*;; Requester functions called at startup
@@ -501,34 +454,13 @@ Returns the name of the selected process."
 			       (if (eq major-mode 'inferior-ess-mode)
 				   ess-language
 				 ess-current-process-name
-				 ;; maybe rather  ess-local-process-name IF exists
+				 ;; maybe ess-local-process-name IF exists?
 				 ))))
     (save-excursion
       (set-buffer (process-buffer (get-process proc)))
       (ess-make-buffer-current))
     (if noswitch nil (switch-to-buffer (process-buffer (get-process proc))))
     proc))
-
-;;(defun ess-switch-local-process (message)
-;; "Ask for a process, and make it the current ESS process.
-;;Also switches to the process buffer, if second arg NOSWITCH (prefix) is non-nil.
-;;Returns the name of the selected process."
-;;  (interactive
-;;   (list "Switch to which ESS process? ")) ;prefix sets 'noswitch
-;;  (update-ess-process-name-list)
-;;  (if (eq (length ess-process-name-list) 0)
-;;	(error "No ESS processes running."))
-;;  (let ((proc (completing-read message
-;;			       ess-process-name-list
-;;			       nil ; predicate
-;;			       'require-match
-;;			       ;; If in S buffer, don't offer current process
-;;			       ;; maybe rather
-;;			       ;; ess-local-process-name IF exists
-;;			       (if (eq major-mode 'inferior-ess-mode)
-;;				   ess-language
-;;				 ess-current-process-name))))
-;;    (setq ess-local-process-name proc)))
 
 (defun ess-force-buffer-current (prompt &optional force)
   "Make sure the current buffer is attached to an ESS process.
@@ -821,8 +753,6 @@ Waits for prompt after each line of input, so won't break on large texts."
 
 ;;;*;;; Evaluate only
 
-
-
 ;; This is from	 Mary Lindstrom <lindstro@Biostat.Wisc.Edu>
 ;; 31 Aug 1995 14:11:43		To: ess-mode@stat.math.ethz.ch
 (defun ess-eval-paragraph (vis-toggle)
@@ -836,8 +766,6 @@ Prefix arg. VIS-TOGGLE toggles visibility of ess-code as for ess-eval-region."
       (backward-paragraph)
       (ess-eval-region (point) end
 		       vis-toggle "Eval paragraph"))))
-
-
 
 (defun ess-eval-region (start end toggle &optional message)
   "Send the current region to the inferior ESS process.
@@ -947,7 +875,6 @@ process buffer. Arg has same meaning as for ess-eval-region."
 ;;; Related to the ess-eval-* commands, there are the ess-load
 ;;; commands.	Need to add appropriate stuff...
 
-
 (defun ess-load-file (filename)
   "Load an S source file into an inferior ESS process."
   (interactive (list
@@ -1001,8 +928,6 @@ process buffer. Arg has same meaning as for ess-eval-region."
 		     (set-buffer source-buffer)
 		     (setq ess-keep-dump-files doit)))))))
 	(ess-switch-to-ESS t)))))
-
-
 
  ; Inferior S mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1082,9 +1007,7 @@ process buffer. Arg has same meaning as for ess-eval-region."
 (if (string-match "XEmacs" emacs-version)
     (add-hook 'inferior-ess-mode-hook 'inferior-ess-mode-xemacs-menu))
 
-
-
-
+;; Need to move to ess-vars!  (AJR, 14Sept1999)
 (defvar ess-mode-minibuffer-map nil)
 
 (if ess-mode-minibuffer-map  nil
@@ -1184,20 +1107,21 @@ to continue it."
   ;; except that XLS doesn't like it.  This is an ugly hack that ought
   ;; to go into the dialect configuration...
   (make-local-variable 'comint-process-echoes)
-  (if (or (string= ess-language "XLS")
-	  (string= ess-language "SAS")
+  (if (or (string= ess-language "SAS")
 	  ;; not necessary, when comint-input-sender is set below:
 	  ;;	(string= ess-dialect "S+5")
-	  ;; Not necessary either.
-	  ;; (string= ess-language "STA")
-	  )
+	  ;; Not necessary either?
+	  (string= ess-language "STA")
+	  (string= ess-language "XLS"))
       (setq comint-process-echoes nil)
     (setq comint-process-echoes t))
 
   (make-local-variable 'comint-input-sender)
   ;; AJR: add KH's fix.	 This is ugly, change to do it right.
   ;; i.e. put it as a buffer local var, in S or R defuns...
-  (if (string= ess-language "S")
+  (if (or (string= ess-language "S")
+	  ;;(string= ess-language "STA")
+	  )
       (cond
        ((string= ess-dialect "R")
 	(setq comint-input-sender 'inferior-R-input-sender))
@@ -1207,15 +1131,17 @@ to continue it."
 	    (string= ess-dialect "S+4")
 	    (string= ess-dialect "S+5")
 	    (string= ess-dialect "S")
-	    (string= ess-dialect "STA")) ;; Stata
+	    ;;(string= ess-dialect "STA") ;; Stata
+	    )
 	(setq comint-input-sender 'inferior-ess-input-sender))))
 
   (ess-write-to-dribble-buffer
-   (format "(inf.ess-mode 2): buf=%s, ess-language=%s, comint..echoes=%s, comint..sender=%s,\n"
-	   (current-buffer) ess-language comint-process-echoes comint-input-sender))
+   (format "(i-ess 2): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
+	   (current-buffer) ess-language
+	   comint-process-echoes comint-input-sender))
   ;; Font-lock support
   ;; AJR: This (the following local-var is already the case!
-  ;; KH sez; only in XEmacs :-(.
+  ;; KH sez: only in XEmacs :-(.
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults
 	'(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
@@ -1223,7 +1149,7 @@ to continue it."
   (ess-setq-vars-local ess-customize-alist (current-buffer))
 
   (ess-write-to-dribble-buffer
-   (format "(inf.ess-mode 3): current-buffer=%s, comint..echoes=%s, comint..sender=%s,\n"
+   (format "(i-ess 3): curr-buf=%s, comint..echo=%s, comint..sender=%s,\n"
 	   (current-buffer) comint-process-echoes comint-input-sender))
 
   ;; Completion support
@@ -1373,8 +1299,6 @@ A negative prefix argument gets the objects for that position
 ;;			      pattern
 ;;			      ")\n")))
 ;;    (ess-execute the-command invert "S objects" the-message)))
-
-
 
 (defun ess-execute-search (invert)
   "Send the `inferior-ess-search-list-command' [search()] command to the S
@@ -1831,10 +1755,10 @@ The result is stored in ess-sl-modtime-alist"
 
 
 (defun ess-search-path-tracker (str)
-  "Check if input STR changed the search path."
-;;; This function monitors user input to the inferior ESS process so that
-;;; emacs can keep the ess-search-list up to date.  Completing-read uses this
-;;; list indirectly when it prompts for help or for an object to dump.
+  "Check if input STR changed the search path.
+This function monitors user input to the inferior ESS process so that
+emacs can keep the ess-search-list up to date.  Completing-read uses this
+list indirectly when it prompts for help or for an object to dump."
   (if (string-match ess-change-sp-regexp str)
       (setq ess-sp-change t)))
 
@@ -1848,7 +1772,8 @@ The result is stored in ess-sl-modtime-alist"
 	 (prompt-string (if default
 			    (format "%s(default %s) " p-string default)
 			  p-string))
-	 (ess-object-list (mapcar 'list (ess-get-object-list ess-local-process-name)))
+	 (ess-object-list (mapcar 'list (ess-get-object-list
+					 ess-local-process-name)))
 	 (spec (completing-read prompt-string ess-object-list)))
     (list (cond
 	   ((string= spec "") default)
