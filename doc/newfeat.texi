@@ -1,3 +1,8 @@
+Changes/New Features in 5.2.7:
+@itemize @bullet
+@item If you use Custom to change the variable ess-toolbar-items,
+the new toolbar is used in all subsequent ESS buffers.
+
 Changes/New Features in 5.2.6:
 @itemize @bullet
 @item Removed non-ASCII characters in a few files.
