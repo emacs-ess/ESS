@@ -72,7 +72,8 @@
     of Washington and Fred Hutchinson Cancer Research Center, Seattle,
     WA, USA} \and Martin M{\"a}chler\footnote{Seminar for Statistics;
     ETH Zurich; Zurich, Switzerland} \and Kurt
-  Hornik\footnote{Technische Universit{\"a}t Wien, Vienna, Austria}
+  Hornik\footnote{Wirtschaftsuniversit{\"a}t Wien and Technische
+    Universit{\"a}t Wien, Vienna, Austria}
   \and Richard M. Heiberger\footnote{Temple University; Philadelphia,
     PA, USA} \and Rodney Sparapani\footnote{Medical College of
     Wisconsin, Milwaukee, WI, USA}}
@@ -213,18 +214,18 @@ brings up related work and future extensions.
 \section{Statistical User Interfaces}
 \label{sec:UI}
 
-Human interfaces for statistical packages and languages can generally
-be classified into 3 forms, the command-line interface, the graphical
-user interface, and a catch-all category for specialized interfaces
-which only have 1 or 2 examples.  Command-line interfaces (CLIs) have
-historically been used by many packages.  This is the interface that
-ESS uses for control and provides a limited interface for.  Modern
+Human interfaces for statistical packages and languages can generally be
+classified into 3 forms, the command-line interface, the graphical user
+interface, and a catch-all category for specialized interfaces which
+only have 1 or 2 examples.  Command-line interfaces (CLIs) have
+historically been used by many packages.  This is the interface that ESS
+uses for control and provides a limited interface for.  Modern
 statistical packages have generally used graphical user interfaces
 (GUIs), sometimes exclusively.  In addition, there have been many
 single-implementation interfaces, including flow-chart guides,
 implemented as graph-based interfaces in ViSta \citep{youn:lubi:1995};
 the SAS terminal interface, which divides the terminal window into 3
-screens; and by the coherent implementation provided by DataDesk
+screens; and the coherent implementation provided by DataDesk
 \citep{vell:prat:1989}, which has a tight link between data and
 graphics.
 
@@ -261,15 +262,15 @@ version.
 
 The advent of Apple Macintosh (Mac) and Microsoft Windows (Windows)
 operating systems have encouraged a partial standardization of
-interfaces for statistical packages.  Many packages written for both
-Mac and Windows personal computers have adopted a data display
-descended from the spreadsheet data-table approach.  Generally, these
-feature a cases-by-variables spreadsheet representation of the data,
-along with pull-down menus and dialog boxes for data analysis
-activities.  Depending upon their nature, numerical results can be
-saved as well as displayed on the spreadsheet.  Statistical software
-packages that takes this basic approach include SPSS, Minitab, \Splus\ 
-(4.x for Windows and 6.x for Unix and Windows), DataDesk, and ViSta.
+interfaces for statistical packages.  Many packages written for both Mac
+and Windows personal computers have adopted a data display descended
+from the spreadsheet data-table approach.  Generally, these feature a
+cases-by-variables spreadsheet representation of the data, along with
+pull-down menus and dialog boxes for data analysis activities.
+Depending upon their nature, numerical results can be saved as well as
+displayed on the spreadsheet.  Statistical software packages that take
+this basic approach include SPSS, Minitab, \Splus{} (4.x for Windows and
+6.x for Unix and Windows), DataDesk, and ViSta.
 
 Most statistical software, including spreadsheets, use the Multiple
 Document Interface (MDI).  This user interface style encloses multiple
@@ -367,17 +368,16 @@ files.
 
 \paragraph{Process interaction.}
 Emacs has historically referred to processes under its control as
-inferior, accounting for the name inferior ESS (\stexttt{iESS}) to
+``inferior'', accounting for the name inferior ESS (\stexttt{iESS}) to
 denote the mode for interfacing with the statistical package.  The
-output of the package goes directly to an editable text buffer in
-Emacs.  This mode allows for command-line editing and saving history,
-as well as recalling and searching for previously entered commands.
-Filename completion is available.  In addition (currently only for
-S languages), there exists object-name and function-name completion.
-Transcripts are easily recorded and can be edited into an ideal
-activity log which can then be saved.  There is a good interface for
-handling and intercepting calls to the internal help systems for S,
-\XLispStat, and \Stata.
+output of the package goes directly to an editable text buffer in Emacs.
+This mode allows for command-line editing and saving history, as well as
+recalling and searching for previously entered commands.  Filename
+completion is available.  In addition (currently only for S languages),
+there exists object-name and function-name completion.  Transcripts are
+easily recorded and can be edited into an ideal activity log which can
+then be saved.  There is a good interface for handling and intercepting
+calls to the internal help systems for S, \XLispStat, and \Stata.
 
 \paragraph{Interacting with statistical programs on remote computers.}
 ESS provides the facility to edit and run programs on remote machines
@@ -510,10 +510,10 @@ In 1998, Rodney Sparapani designed the SAS batch interaction mode.
 Sparapani and Heiberger developed SAS batch support including function
 key behavior that followed SAS Institute's function key definitions,
 developed a more comprehensive and efficient syntax highlighting
-mechanism using the Emacs \stexttt{font-lock-mode}, extended the
+mechanism using the Emacs Font-lock mode, extended the
 \stexttt{*ESS-elsewhere*} functionality to include SAS processes, and
-provided automated error message lookup in the log file.  This
-provides a powerful development environment for SAS.
+provided automated error message lookup in the log file.  This provides
+a powerful development environment for SAS.
 
 
 \section{Using ESS with the S family of languages}
@@ -560,22 +560,22 @@ function call \stexttt{M-x~S} or \stexttt{M-x~R}.  This call opens up
 a buffer and starts the S process inside that buffer.
 
 \stexttt{iESS[S]} uses standard input/output to communicate with the S
-program, except with the GUI interface for \Splus\ 4 and 6 for Windows
+program, except with the GUI interface for \Splus{} 4 and 6 for Windows
 where standard input/output is not available.  ESS currently provides
 two options on Windows.  ESS can use the DDE (Dynamic Data Exchange)
 protocol to communicate with the GUI.  The editing features, including
-the sending of commands to \Splus, are as described above.  The
-printed output does not come back to an Emacs buffer, but instead
-appears in the \Splus\ Commands Window.  Transcripts must be
-physically copied to an Emacs buffer to get the transcript editing
-features.  Full GUI capability is available by switching to the
-\Splus\ window.  Or ESS can directly access Sqpe, the \Splus\ 
-computing engine, using exactly the same procedures as are used for
-Unix.  With this procedure interactive graphics and other GUI features
-are not available.  In the near future, we anticipate merging these
-approaches for \Splus\ 6 by using the \stexttt{connections} class of
-the new S4 engine.  We will then have both interactive GUI and
-transcript recording and editing on the Windows platform.
+the sending of commands to \Splus, are as described above.  The printed
+output does not come back to an Emacs buffer, but instead appears in the
+\Splus{} Commands Window.  Transcripts must be physically copied to an
+Emacs buffer to get the transcript editing features.  Full GUI
+capability is available by switching to the \Splus{} window.  Or ESS can
+directly access Sqpe, the \Splus{} computing engine, using exactly the
+same procedures as are used for Unix.  With this procedure interactive
+graphics and other GUI features are not available.  In the near future,
+we anticipate merging these approaches for \Splus{} 6 by using the
+\stexttt{connections} class of the new S4 engine.  We will then have
+both interactive GUI and transcript recording and editing on the Windows
+platform.
 
 One useful extension in ESS is relaxation of the requirement that the
 statistics program be available on the local machine.  ESS provides
@@ -616,12 +616,12 @@ a model for further program design.
 When viewing help pages, there's a new menu \textsf{[ESS help]} and
 useful 1-letter shortcuts for navigation and more, such as
 \begin{list}{}{\renewcommand{\makelabel}[1]{\bf#1\hfill}}
- \item[n,\,p] move to \textbf{n}ext or \textbf{p}revious help section
- \item[{s \textit{x}}] move to help section code ``\textit{x}'' where
-  \textit{x} is e.g. \stexttt{u} for ``Usage'', or \stexttt{e} for
-  ``Examples''.  You can see a full list by entering \stexttt{s ?} from
-  within an ESS Help buffer.
- \item[h] fast `hyperlink' to other help pages
+ \item[n,\,p] move to \textbf{n}ext or \textbf{p}revious help section.
+ \item[{s \textit{x}}] move to help \textbf{s}ection code ``\textit{x}''
+  where \textit{x} is e.g.\ `\stexttt{u}' for ``Usage'', or
+  `\stexttt{e}' for ``Examples''.  You can see a full list by entering
+  `\stexttt{s ?}' from within an ESS Help buffer.
+ \item[h] fast `\textbf{h}yperlink' to other help pages.
  \item[l] (after `\stexttt{s e}') send examples \textbf{l}inewise to S
   for evaluation, also \stexttt{C-c C-r} for sending a whole region.
   This is particularly useful in R which guarantees that all examples
