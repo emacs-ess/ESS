@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/06/17 17:33:50 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essd-sp3.el,v 1.3 1999/06/17 17:33:50 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essd-sp3.el,v 1.4 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -34,8 +34,8 @@
 
 (require 'essl-s)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
+(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
+(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
 ; Code:
 
@@ -68,7 +68,7 @@
     (inferior-ess-secondary-prompt . "+ ?")
     (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
     (inferior-ess-start-args       . ""))
- "Variables to customize for S+3")
+ "Variables to customize for S+3.")
 
 
 (defun S+3 (&optional proc-name)
@@ -80,7 +80,7 @@
   (inferior-ess))
 
 (defun S+3-mode (&optional proc-name)
-  "Major mode for editing S+3 source.  See ess-mode for more help."
+  "Major mode for editing S+3 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+3-customize-alist)
   (ess-mode S+3-customize-alist proc-name))

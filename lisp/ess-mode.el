@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@biostat.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/09/01 18:44:57 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: ess-mode.el,v 5.9 1999/09/01 18:44:57 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: ess-mode.el,v 5.10 2000/03/30 14:49:26 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -153,7 +153,7 @@
 
 (easy-menu-define
  ess-mode-menu ess-mode-map
- "Menu for use in ess-mode"
+ "Menu for use in `ess-mode'."
  '("ESS" ; ESS-mode
    ["Load file"  ess-load-file t]
    ("Eval and Go"
@@ -209,7 +209,7 @@
    ))
 
 (defun ess-mode-xemacs-menu ()
-  "Hook to install ess-mode menu for XEmacs (w/ easymenu)"
+  "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
   (if 'ess-mode
         (easy-menu-add ess-mode-menu)
     (easy-menu-remove ess-mode-menu)))
@@ -230,21 +230,21 @@ Entry to this mode runs the hooks in ess-mode-hook.
 
 You can send text to the inferior ESS process from other buffers containing
 ESS source.
-    ess-eval-region sends the current region to the ESS process.
-    ess-eval-buffer sends the current buffer to the ESS process.
-    ess-eval-function sends the current function to the ESS process.
-    ess-eval-line sends the current line to the ESS process.
-    ess-beginning-of-function and ess-end-of-function move the point to
+    `ess-eval-region' sends the current region to the ESS process.
+    `ess-eval-buffer' sends the current buffer to the ESS process.
+    `ess-eval-function' sends the current function to the ESS process.
+    `ess-eval-line' sends the current line to the ESS process.
+    `ess-beginning-of-function' and `ess-end-of-function' move the point to
         the beginning and end of the current ESS function.
-    ess-switch-to-ESS switches the current buffer to the ESS process buffer.
-    ess-switch-to-end-of-ESS switches the current buffer to the ESS process
+    `ess-switch-to-ESS' switches the current buffer to the ESS process buffer.
+    `ess-switch-to-end-of-ESS' switches the current buffer to the ESS process
         buffer and puts point at the end of it.
 
-    ess-eval-region-and-go, ess-eval-buffer-and-go,
-        ess-eval-function-and-go, and ess-eval-line-and-go switch to the S
+    `ess-eval-region-and-go', `ess-eval-buffer-and-go',
+        `ess-eval-function-and-go', and `ess-eval-line-and-go' switch to the S
         process buffer after sending their text.
 
-    ess-load-file sources a file of commands to the ESS process.
+    `ess-load-file' sources a file of commands to the ESS process.
 
 \\[ess-indent-command] indents for ESS code.
 \\[backward-delete-char-untabify] converts tabs to spaces as it moves back.
@@ -259,42 +259,42 @@ Comments are indented in a similar way to Emacs-lisp mode:
 \\[ess-indent-exp] command indents each line of the ESS grouping following point.
 
 Variables controlling indentation style:
- ess-tab-always-indent
+ `ess-tab-always-indent'
     Non-nil means TAB in ESS mode should always reindent the current line,
     regardless of where in the line point is when the TAB command is used.
- ess-auto-newline
+ `ess-auto-newline'
     Non-nil means automatically newline before and after braces inserted in S
     code.
- ess-indent-level
+ `ess-indent-level'
     Indentation of ESS statements within surrounding block.
     The surrounding block's indentation is the indentation of the line on
     which the open-brace appears.
- ess-continued-statement-offset
+ `ess-continued-statement-offset'
     Extra indentation given to a substatement, such as the then-clause of an
     if or body of a while.
- ess-continued-brace-offset
+ `ess-continued-brace-offset'
     Extra indentation given to a brace that starts a substatement.
     This is in addition to ess-continued-statement-offset.
- ess-brace-offset
+ `ess-brace-offset'
     Extra indentation for line if it starts with an open brace.
- ess-arg-function-offset
+ `ess-arg-function-offset'
     Extra indent for internal substatements of function `foo' that called
     in `arg=foo(...)' form.
    If not number, the statements are indented at open-parenthesis following
    `foo'.
- ess-expression-offset
+ `ess-expression-offset'
     Extra indent for internal substatements of `expression' that specified
     in `obj <- expression(...)' form.
     If not number, the statements are indented at open-parenthesis following
     `expression'.
- ess-brace-imaginary-offset
+ `ess-brace-imaginary-offset'
     An open brace following other text is treated as if it were
     this far to the right of the start of its line.
- ess-else-offset
+ `ess-else-offset'
     Extra indentation for line if it starts with `else'.
- ess-close-brace-offset
+ `ess-close-brace-offset'
     Extra indentation for closing braces.
- ess-fancy-comments
+ `ess-fancy-comments'
     Non-nil means distinguish between #, ##, and ### for indentation.
 
 Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
@@ -367,7 +367,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 ;;;*;;; Handy commands
 
 (defun ess-execute-in-tb ()
-  "Like ess-execute, but always evaluates in temp buffer."
+  "Like `ess-execute', but always evaluates in temp buffer."
   (interactive)
   (let ((ess-execute-in-process-buffer nil))
     (call-interactively 'ess-execute)))
@@ -464,7 +464,7 @@ if this is the case."
 
 (defun ess-check-source (fname)
   "If file FNAME has an unsaved buffer, offer to save it.
-Returns t if the buffer existed and was modified, but was not saved"
+Returns t if the buffer existed and was modified, but was not saved."
   (let ((buff (get-file-buffer fname)))
     ;; RMH: Corrections noted below are needed for C-c C-l to work
     ;; correctly when issued from *S* buffer.
@@ -558,14 +558,13 @@ With prefix argument, only shows the errors ESS reported."
 
 (defun ess-indent-command (&optional whole-exp)
   "Indent current line as ESS code, or in some cases insert a tab character.
-If ess-tab-always-indent is non-nil (the default), always indent current line.
-Otherwise, indent the current line only if point is at the left margin
-or in the line's indentation; otherwise insert a tab.
-
-A numeric argument, regardless of its value,
-means indent rigidly all the lines of the expression starting after point
-so that this line becomes properly indented.
-The relative indentation among the lines of the expression are preserved."
+If `ess-tab-always-indent' is non-nil (the default), always indent
+current line.  Otherwise, indent the current line only if point is at
+the left margin or in the line's indentation; otherwise insert a tab.
+A numeric argument, regardless of its value, means indent rigidly all
+the lines of the expression starting after point so that this line
+becomes properly indented.  The relative indentation among the lines
+of the expression are preserved."
   (interactive "P")
   (if whole-exp
       ;; If arg, always indent this line as S
@@ -954,9 +953,9 @@ Returns nil if line starts inside a string, t if in a comment."
 ;;;*;;; Predefined indentation styles
 
 (defun ess-set-style (&optional style quiet)
-  "Set up the ess-mode style variables from the ess-style variable or if
-  STYLE argument is given, use that.  It makes the ESS indentation style
-  variables buffer local."
+  "Set up the `ess-mode' style variables from the `ess-style' variable
+or if STYLE argument is given, use that.  It makes the ESS indentation
+style variables buffer local."
 
   (interactive)
 
@@ -1002,7 +1001,7 @@ Returns nil if line starts inside a string, t if in a comment."
   "Edit an ESS object in its own buffer.
 
 Without a prefix argument, this simply finds the file pointed to by
-ess-source-directory. If this file does not exist, or if a
+`ess-source-directory'. If this file does not exist, or if a
 prefix argument is given, a dump() command is sent to the ESS process to
 generate the source buffer."
   (interactive

@@ -22,18 +22,18 @@
 
 (defun S+4-command ()
   "Run S-Plus 4.x, the GUI, with the commands window in the emacs buffer.\n
-Enter `M-x S+4-command'.  S-Plus 4.x will begin.
+Enter \\[S+4-command].  S-Plus 4.x will begin.
 You will be asked for permission to delete previous `S-transcript.st'.
 You must say yes to continue!
 Should you say no, then you must rename it manually
- and then reissue `M-x S+4-command'."
+ and then reissue \\[S+4-command]."
   (interactive)
   (S+4-command-startup)	  ; S+4-command-startup uses "&" on the command
   (S+4-tail)
 )
 
 (defun S+4-tail ()
-  "Put the cursor in an *S+4* buffer and enter `M-x S+4-tail'."
+  "Put the cursor in an *S+4* buffer and enter \\[S+4-tail]."
   (interactive)
   (save-excursion
     (set-buffer (car (buffer-list))) ; get the ESS buffer just created
@@ -137,7 +137,7 @@ is here to allow slow disks to start the Splus program."
     (beginning-of-buffer)
     (insert
      "This is strictly a transcript buffer.  You can't type anything here.
-Split the screen with 'C-x 2' and use 'C-x b RET' to return to your file
+Split the screen with `C-x 2' and use `C-x b RET' to return to your file
 in the top half.\n
 Anything sent to this process from an S-mode buffer goes
 directly to the associated Splus Commands window which sends input and output

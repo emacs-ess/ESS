@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 1999/06/17 16:46:09 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essd-sp4.el,v 1.4 1999/06/17 16:46:09 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essd-sp4.el,v 1.5 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -37,8 +37,8 @@
 (require 'essl-s)
 (require 'ess-iw32)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
+(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
+(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
 ; Code:
 
@@ -114,7 +114,7 @@ connects it to the *S+4 ddeclient* window.")
     (inferior-ess-secondary-prompt . "+ ?")
     (inferior-ess-start-file       . nil) ;"~/.ess-S+4")
     (inferior-ess-start-args       . ""))
- "Variables to customize for Sqpe+4")
+ "Variables to customize for Sqpe+4.")
 
 
 
@@ -198,7 +198,7 @@ is here to allow slow disks to start the Splus program."
     (beginning-of-buffer)
     (insert
      "This is a placeholder buffer.  You can't type anything here.
-Use 'C-x b RET' to return to your file.\n
+Use `C-x b RET' to return to your file.\n
 Anything sent to this process from an S-mode buffer goes
 directly to the associated Splus Commands window.\n
 The S-Plus Commands window must be visible.
@@ -288,7 +288,7 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
 
 
 (defun S+4-mode (&optional proc-name)
-  "Major mode for editing S+4 source.  See ess-mode for more help."
+  "Major mode for editing S+4 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+4-customize-alist)
   (ess-mode S+4-customize-alist proc-name)

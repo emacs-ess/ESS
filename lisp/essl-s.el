@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/01/31 14:20:34 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: essl-s.el,v 5.13 2000/01/31 14:20:34 rossini Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: essl-s.el,v 5.14 2000/03/30 14:49:26 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -334,10 +334,10 @@ Returns nil if line starts inside a string, t if in a comment."
 
 
 (defconst ess-help-S+-sec-regex "^[A-Z. ---]+:$"
-  "Reg(ular) Ex(pression) of section headers in help file")
+  "Reg(ular) Ex(pression) of section headers in help file.")
 
 (defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$"
-  "Reg(ular) Ex(pression) of section headers in help file")
+  "Reg(ular) Ex(pression) of section headers in help file.")
 
 ;;; S-mode extras of Martin Maechler, Statistik, ETH Zurich.
 ;;; See also ./ess-utils.el
@@ -355,7 +355,7 @@ Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
 
 (defun ess-insert-function-outline ()
   "Insert an S function definition `outline' at point.
-Uses the file given by the variable ess-function-outline-file."
+Uses the file given by the variable `ess-function-outline-file'."
   (interactive)
   (let ((oldpos (point)))
     (save-excursion
@@ -382,7 +382,7 @@ Uses the file given by the variable ess-function-outline-file."
 
 
 (defun ess-dump-to-src (&optional dont-query verbose)
-  "Make the changes in an S - dump() file to improve human readability"
+  "Make the changes in an S - dump() file to improve human readability."
   (interactive "P")
   (save-excursion
     (if (not (equal major-mode 'ess-mode))

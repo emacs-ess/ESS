@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/09/27 13:17:31 $
-;; Version: $Revision: 5.17 $
-;; RCS: $Id: essd-r.el,v 5.17 1999/09/27 13:17:31 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.18 $
+;; RCS: $Id: essd-r.el,v 5.18 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -37,8 +37,8 @@
 
 (require 'essl-s)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
+(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
+(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
 ;;; Code:
 
@@ -72,7 +72,7 @@
 
 
 (defun R-mode  (&optional proc-name)
-  "Major mode for editing R source.  See ess-mode for more help."
+  "Major mode for editing R source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist R-customize-alist)
   (ess-mode R-customize-alist proc-name))
@@ -141,7 +141,7 @@ to shut down the computer cleanly.\n\n")
 
 
 (autoload 'ess-transcript-mode "ess-trns"
-  "Major mode for editing S transcript files" t)
+  "Major mode for editing S transcript files." t)
 
 (defun r-transcript-mode ()
   "Does the right thing."

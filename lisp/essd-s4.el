@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/06/17 16:46:08 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: essd-s4.el,v 5.5 1999/06/17 16:46:08 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: essd-s4.el,v 5.6 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -37,7 +37,7 @@
 
 (require 'essl-s)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
+(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 
 ;;; Code:
 
@@ -78,7 +78,7 @@
     (inferior-ess-load-command     . ".SmodeLoad(\"%s\")\n")
     (inferior-ess-dump-command     . ".SmodeDump(\"%s\", \"%s\")\n")
     (inferior-ess-search-list-command . ".SmodePaths()\n"))
-  "Variables to customize for S")
+  "Variables to customize for S.")
 
 ;; For loading up the S code required for the above.
 ;;(add-hook 'ess-post-run-hook
@@ -103,7 +103,7 @@
 
 
 (defun S4-mode (&optional proc-name)
-  "Major mode for editing S4 source.  See ess-mode for more help."
+  "Major mode for editing S4 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S4-customize-alist)
   (ess-mode S4-customize-alist proc-name))

@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rodney.sparapani@duke.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2000/03/06 16:57:57 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essa-sas.el,v 1.5 2000/03/06 16:57:57 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essa-sas.el,v 1.6 2000/03/30 14:49:26 maechler Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, asynchronous.
 
@@ -49,7 +49,7 @@
   "Root of the file to perform operations on.")
 
 (defvar ess-sas-dir "."
-  "Directory where .sas, .log, .lst and .txt files are stored")
+  "Directory where .sas, .log, .lst and .txt files are stored.")
 
 (defvar ess-sas-sas "."
   "The .sas file to perform operations on.")
@@ -64,10 +64,10 @@
   "The .txt file to perform operations on.")
 
 (defvar ess-sas-submit-command "sas"
-        "Command to invoke SAS.")
+  "Command to invoke SAS.")
 
 (defun ess-sas-file (ess-sas-arg)
-  "Create buffer and associate with the appropriate file"
+  "Create buffer and associate with the appropriate file."
   
   (if (not (get-file-buffer ess-sas-arg)) 
       (progn
@@ -84,9 +84,9 @@
 
 
 (defun ess-sas-set ()
-  "Set file names according to usage.  
-This sets up ess-sas-root, ess-sas-dir, ess-sas-sas, ess-sas-log,
-ess-sas-lst and ess-sas-txt"
+  "Set file names according to usage.
+  This sets up `ess-sas-root', `ess-sas-dir', `ess-sas-sas',
+`ess-sas-log', `ess-sas-lst' and `ess-sas-txt'."
   (if (or (string= ".sas" (substring (buffer-name) -4)) 
 	  (string= ".log" (substring (buffer-name) -4))
 	  (string= ".lst" (substring (buffer-name) -4))
@@ -109,7 +109,7 @@ ess-sas-lst and ess-sas-txt"
   (switch-to-buffer ess-sas-sas))
 
 (defun ess-sas-goto-sas ()
-  "Switch to the .sas file"
+  "Switch to the .sas file."
   (interactive)
   (ess-sas-set)
   (ess-sas-file ess-sas-sas))
@@ -160,7 +160,7 @@ ess-sas-lst and ess-sas-txt"
   (ess-sas-revert-wisely ess-sas-txt))
 
 (defun ess-sas-goto-shell ()
-  "Switch to the asynchronous shell buffer"
+  "Switch to the asynchronous shell buffer."
   (interactive)
   (switch-to-buffer "*Async Shell Command*"))
 
@@ -206,7 +206,7 @@ in SAS-mode and related modes.")
   "Non-nil if function keys use PC-like SAS key definitions
 in SAS-mode and related modes.")
 (defun ess-sas-local-pc-keys ()
-  "PC-like SAS key definitions"
+  "PC-like SAS key definitions."
   (define-key sas-mode-local-map [f2] 'ess-sas-revert)
   (define-key sas-mode-local-map [f3] 'ess-sas-goto-shell)
   (define-key sas-mode-local-map [f4] 'ess-sas-goto-txt)
@@ -222,11 +222,12 @@ in SAS-mode and related modes.")
 ;; compute tab stops for use in SAS-mode
 (defvar ess-sas-tab-stop-alist
  '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120)
-  "List of tab stop positions used by `tab-to-tab-stop' in SAS-mode")
+  "List of tab stop positions used by `tab-to-tab-stop' in `SAS-mode'.")
 
 
 (defun ess-sas-backward-delete-tab ()
-  "Moves the cursor to the previous tab-stop, deleting any characters on the way."
+  "Moves the cursor to the previous tab-stop, deleting any characters
+on the way."
   (interactive)
   
   (let* (;; current-column
@@ -243,12 +244,15 @@ in SAS-mode and related modes.")
 	  (move-to-column (- ess-sas-column ess-sas-remainder))))))
 
 (defvar ess-sas-edit-keys-toggle 0
-  "0 to bind TAB to 'sas-indent-line.
-Positive to bind TAB and C-TAB to 'tab-to-tab-stop and 'ess-sas-backward-delete-tab")
+  "0 to bind TAB to `sas-indent-line'.
+  Positive to bind TAB and C-TAB to `tab-to-tab-stop' and
+`ess-sas-backward-delete-tab'.")
+
 (defun ess-sas-edit-keys-toggle (&optional arg)
-  "Toggle TAB key in SAS-mode.
-If arg is 0, TAB is 'sas-indent-line.
-if arg is positive, TAB is 'tab-to-tab-stop and C-tab is ess-sas-backward-delete-tab.
+  "Toggle TAB key in `SAS-mode'.
+If arg is 0, TAB is `sas-indent-line'.
+If arg is positive, TAB is `tab-to-tab-stop' and C-tab is
+`ess-sas-backward-delete-tab'.
 Without arg, toggle between these options."
   (interactive "P")
   (setq ess-sas-edit-keys-toggle

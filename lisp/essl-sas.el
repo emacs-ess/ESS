@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2000/03/20 09:16:25 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: essl-sas.el,v 5.6 2000/03/20 09:16:25 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: essl-sas.el,v 5.7 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -48,7 +48,7 @@
 (require 'ess)
 (require 'ess-mode)
 
-(autoload 'ess-transcript-mode "ess-trns" "ESS source eval mode" t)
+(autoload 'ess-transcript-mode "ess-trns" "ESS source eval mode." t)
 
 (put 'ess-transcript-minor-mode 'permanent-local t)
 (or (assq 'ess-transcript-minor-mode minor-mode-alist)
@@ -87,14 +87,14 @@ Ess-Listing mode is used solely to place an indicator on the mode line."
 	'(" [" ess-local-process-name "]")))
 
 (defun SAS-log-mode ()
-  "ess-transcript-mode for SAS."
+  "`ess-transcript-mode' for SAS."
   (interactive)
   (ess-transcript-mode SAS-customize-alist)
   (use-local-map sas-mode-local-map)
   (toggle-read-only t)) ;; to protect the buffer.
 
 (defun SAS-listing-mode()
-  "Fundamental mode with ess-listing-minor-mode and read-only."
+  "Fundamental mode with `ess-listing-minor-mode' and read-only."
   (interactive)
   (fundamental-mode)
   (ess-listing-minor-mode t)
@@ -108,7 +108,7 @@ Ess-Listing mode is used solely to place an indicator on the mode line."
 (fset 'sas-listing-mode    'SAS-listing-mode)
 
 (defvar sas-indent-width 4
-  "*Amount to indent sas statements")
+  "*Amount to indent sas statements.")
 (defvar sas-indent-ignore-comment "*"
   "*Comments with start with this string are ignored in indentation.")
 (defvar sas-require-confirmation t
@@ -116,12 +116,12 @@ Ess-Listing mode is used solely to place an indicator on the mode line."
 ;; added sas-program 4/29/94.  user can specify a different version of sas.
 (defvar sas-program "sas" "*Name of program which runs sas.")
 (defvar sas-pre-run-hook nil
-  "Hook to execute prior to running SAS vis submit-sas.")
+  "Hook to execute prior to running SAS vis `submit-sas'.")
 (defvar sas-options-string ""
   "*Options to be passed to sas as if typed on the command line.")
 (defvar sas-notify t "*Beep and display message when job is done?")  ;; added 4/7/94
 (defvar sas-error-notify t
-  "*If sas-notify is t, then indicate errors in log file upon completion")
+  "*If `sas-notify' is t, then indicate errors in log file upon completion.")
 ;; added 5/2/94
 (defvar sas-get-options nil "Options to be passed to SAS in sas-get-dataset")
 (defvar sas-get-options-history nil "History list of Options passed to SAS in sas-get-dataset")
@@ -553,7 +553,8 @@ OFFSET to actual page number."
                           0 len))))))))
 
 (defun sas-page-fix (start)
-  "Fix page numbers in sas output from point to end of file.  If START is given this will be the number for the current page."
+  "Fix page numbers in sas output from point to end of file.
+If START is given this will be the number for the current page."
   (interactive "P")
   (let (offset (pnum (sas-page-number)))
   (if (not start) (setq offset 0)
@@ -631,7 +632,7 @@ $" "")
       (forward-char -1))))
 
 (defun set-sas-file-name ()
-  "Stores the name of the current sas file"
+  "Stores the name of the current sas file."
   (let ((name (buffer-file-name)))
     (cond ((not name))
           ((string-match (substring name -4 nil) "\\.sas\\|\\.lst\\|\\.log")
@@ -645,9 +646,9 @@ $" "")
 
 ;;  created 6/27/94
 (defun sas-set-alternate-file-name (name)
-  "Stores the NAME of an alternate sas file.  When this file is submitted with
-submit-sas, the  alternate file will be submitted instead.  sas-submitable
-is automatically sets to t."
+  "Stores the NAME of an alternate sas file.
+When this file is submitted with `submit-sas', the alternate file will
+be submitted instead.  `sas-submitable' is automatically sets to t."
     (interactive "f")
     (cond ((string-match (substring name -4 nil) "\\.sas\\|\\.lst\\|\\.log")
            (setq sas-file-name (substring name 0 (- (length name) 4)))
@@ -655,32 +656,32 @@ is automatically sets to t."
           (t (message "This file does not have a standard suffix"))))
 
 (defun switch-to-sas-source ()
-  "Switches to sas source file associated with the current file"
+  "Switches to sas source file associated with the current file."
   (interactive)
     (switch-to-sas-file "sas"))
 
 (defun switch-to-sas-lst ()
-  "Switches to sas source file associated with the current file"
+  "Switches to sas source file associated with the current file."
   (interactive)
     (switch-to-sas-file "lst"))
 
 (defun switch-to-sas-log ()
-  "Switches to sas source file associated with the current file"
+  "Switches to sas source file associated with the current file."
   (interactive)
     (switch-to-sas-file "log"))
 
 (defun switch-to-sas-source-other-window ()
-  "Switches to sas source file associated with the current file"
+  "Switches to sas source file associated with the current file."
   (interactive)
     (switch-to-sas-file-other-window "sas"))
 
 (defun switch-to-sas-lst-other-window ()
-  "Switches to sas source file associated with the current file"
+  "Switches to sas source file associated with the current file."
   (interactive)
     (switch-to-sas-file-other-window "lst"))
 
 (defun switch-to-sas-log-other-window ()
-  "Switches to sas source file associated with the current file"
+  "Switches to sas source file associated with the current file."
   (interactive)
      (switch-to-sas-file-other-window "log"))
 
@@ -724,18 +725,18 @@ is automatically sets to t."
 ;;	)))
 
 (defun switch-to-sas-file (suff)
-  "Switches to sas \"SUFF\" file associated with the current file"
+  "Switches to sas \"SUFF\" file associated with the current file."
   (switch-to-buffer (set-sas-file-buffer suff)))
 
 (defun switch-to-sas-file-other-window (suff)
-  "Switches to sas \"SUFF\" file associated with the current file"
+  "Switches to sas \"SUFF\" file associated with the current file."
   (switch-to-buffer-other-window (set-sas-file-buffer suff)))
 
 ;;  The following was created 6/7/94 to handle buffers without messing up
 ;;  windows.
 
 (defun set-sas-file-buffer (suff &optional revert silent)
-  "Sets current buffer to sas \"SUFF\" file associated with the current file"
+  "Sets current buffer to sas \"SUFF\" file associated with the current file."
   (let* ((sfile sas-file-name)
          (buf (get-file-buffer (concat sfile "." suff)))
          (sas-require-confirmation
@@ -754,7 +755,7 @@ is automatically sets to t."
   (current-buffer))
 
 (defun switch-to-sas-process-buffer ()
-  "Switch to sas-process-buffer"
+  "Switch to sas-process-buffer."
   (interactive)
   (let (buf proc-name)
     (setq proc-name (concat "SAS" sas-file-name)
@@ -825,7 +826,7 @@ is automatically sets to t."
 ;; 5/2/94 Modified sas-sentinel to check for errors in log file upon
 ;; completion.
 (defun sas-sentinel (proc arg);; created 4/7/94
-  "Notify user that SAS run is done"
+  "Notify user that SAS run is done."
   (beep)
   ;;(if (string-equal arg "finished\n")
   (save-excursion
@@ -1023,7 +1024,8 @@ page ;
 
 ;;  variables section
 (defvar sas-dir-mode-map nil)
-(defvar sas-directory-name nil "Name of directory associated with this buffer")
+(defvar sas-directory-name nil 
+  "Name of directory associated with this buffer.")
 (make-variable-buffer-local 'sas-directory-name)
 (defvar sas-dir-buf-end nil)
 (make-variable-buffer-local 'sas-dir-buf-end)
@@ -1066,7 +1068,7 @@ page ;
 ;(require 'sas)
 
 (defun sas-dir-mode ()
-  "Major mode for managing sas files"
+  "Major mode for managing sas files."
   (interactive)
   (kill-all-local-variables)
   (use-local-map sas-dir-mode-map)
@@ -1146,7 +1148,7 @@ page ;
         (goto-char (match-end 1))))
 
 (defun sas-next-line (arg)
-  "Move down one line"
+  "Move down one line."
   (interactive "p")
   (forward-line arg)
   (sas-move-to-filename (point-max)))
@@ -1155,7 +1157,7 @@ page ;
   ;;(sas-move-to-filename sas-dir-buf-end)))
 
 (defun sas-prev-line (arg)
-  "Move up one line"
+  "Move up one line."
   (interactive "p")
   (beginning-of-line)
   (re-search-backward "^ *[0-9]+ *<*[^:0-9\n]" (point-min) t)

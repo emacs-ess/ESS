@@ -6,10 +6,10 @@
 ;;          A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: April 18, 1999
-;; Version: $Revision: 1.8 $
+;; Version: $Revision: 1.9 $
 ;; Keywords: statistical support
 ;; Summary: Noweb support for ESS
-;; CVS: $Id: ess-noweb.el,v 1.8 2000/03/02 18:28:14 maechler Exp $
+;; CVS: $Id: ess-noweb.el,v 1.9 2000/03/30 14:49:26 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -38,7 +38,7 @@
  ; Variables
 
 (defvar ess-noweb-use-font-lock window-system
-  "Set to t if you want to use font-locking in ESS noweb buffers")
+  "Set to t if you want to use font-locking in ESS noweb buffers.")
 
 ;; this helps with XEmacs barfing, sigh...
 (setq global-font-lock-mode t)
@@ -52,7 +52,7 @@
 
 (defun ess-eval-chunk (vis)
   "Tangle the current chunk and send it to the inferior ESS process.
-Arg has same meaning as for ess-eval-region."
+Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (let (( temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
     (noweb-tangle-chunk temp-buffer)
@@ -62,7 +62,7 @@ Arg has same meaning as for ess-eval-region."
 
 (defun ess-eval-chunk-and-go (vis)
   "Tangle the current chunk, send to the ESS process, and go there.
-Arg has same meaning as for ess-eval-region."
+Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-chunk vis)
   (ess-switch-to-ESS t))
@@ -83,7 +83,7 @@ Arg has same meaning as for ess-eval-region."
 
 (defun ess-eval-thread (vis)
   "Tangle all chunks in the current chunk-thread and send to the ESS process.
-Arg has same meaning as for ess-eval-region."
+Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (let ((temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
     (noweb-tangle-current-thread temp-buffer)
@@ -92,8 +92,8 @@ Arg has same meaning as for ess-eval-region."
     (kill-buffer temp-buffer)))
 
 (defun ess-eval-thread-and-go (vis)
-  "Tangle all chunks in the current chunk-thread, send to ESS process, and go there.
-Arg has same meaning as for ess-eval-region."
+  "Tangle all chunks in the current chunk-thread, send to ESS process,
+and go there.  Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-thread vis)
   (ess-switch-to-ESS t))

@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 1999/03/31 23:53:41 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: ess-iw32.el,v 1.9 1999/03/31 23:53:41 rossini Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: ess-iw32.el,v 1.10 2000/03/30 14:49:26 maechler Exp $
 
 
 ;; This file is part of ESS
@@ -42,7 +42,7 @@
 
 ;; C-c C-r
 (defun ess-eval-region-ddeclient (start end toggle &optional message)
-"*Loop through lines in region and send them to ESS via ddeclient."
+  "Loop through lines in region and send them to ESS via ddeclient."
   (setq inferior-ess-ddeclient
 	(ess-get-process-variable
 	 ess-current-process-name 'inferior-ess-ddeclient))
@@ -155,7 +155,7 @@ file.  Otherwise just pops to an existing buffer if it exists."
       (symbol-function  'ess-load-file))
 
 (defun ess-load-file (filename)
-"Alternate version of ess-load-file, required with S+4.
+"Alternate version of `ess-load-file', required with S+4.
 This version sends the S-Plus command
      source(\"filename\")
 to S.  This version does not guarantee to save .Last.value
@@ -220,7 +220,7 @@ This version does not offer alternate buffers or editing capability."
   "Edit an ESS object in its own buffer.
 
 Without a prefix argument, this simply finds the file pointed to by
-ess-source-directory. If this file does not exist, or if a
+`ess-source-directory'. If this file does not exist, or if a
 prefix argument is given, a dump() command is sent to the ESS process to
 generate the source buffer."
   (interactive

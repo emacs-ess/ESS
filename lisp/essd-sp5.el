@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 2000/02/10 09:18:48 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essd-sp5.el,v 1.5 2000/02/10 09:18:48 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essd-sp5.el,v 1.6 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -39,8 +39,8 @@
 
 (require 'essl-s)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
+(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
+(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
 ;;; Code:
 
@@ -85,7 +85,7 @@
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?"))
 
-  "Variables to customize for S")
+  "Variables to customize for S.")
 
 
 ;; For loading up the S code required for the above.
@@ -112,7 +112,7 @@ New way to do it."
 
 
 (defun S+5-mode (&optional proc-name)
-  "Major mode for editing S+5 source.  See ess-mode for more help."
+  "Major mode for editing S+5 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+5-customize-alist)
   (ess-mode S+5-customize-alist proc-name))

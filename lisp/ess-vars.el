@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/03/21 18:19:24 $
-;; Version: $Revision: 5.34 $
-;; RCS: $Id: ess-vars.el,v 5.34 2000/03/21 18:19:24 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.35 $
+;; RCS: $Id: ess-vars.el,v 5.35 2000/03/30 14:49:26 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -64,7 +64,7 @@ Full documentation will be available after autoloading the function."
 
 (defvar ess-language nil
   "*Prefix of all ESS processes, and defines the dialect in use.
-Currently acceptable values are 'S',  'XLS', 'SAS'.
+Currently acceptable values are `S',  `XLS', `SAS'.
 Can be changed, e.g., to `R'.  Use `setq-default' if setting it in
 .emacs (also see ess-site.el).")
 
@@ -73,7 +73,7 @@ Can be changed, e.g., to `R'.  Use `setq-default' if setting it in
 
 (defvar ess-dialect nil
   "String version of the dialect being run for the inferior process.
-This, plus ess-language, should be able to determine the exact
+This, plus `ess-language', should be able to determine the exact
 version of the statistical package being executed in the particular
 buffer.
 
@@ -87,7 +87,7 @@ Used to adjust for changes in versions of the program")
 
 (defvar ess-directory nil
   "*The directory ESS is run from.  It must end in a slash.
-Provided as a default if ess-ask-for-ess-directory is non-nil.
+Provided as a default if `ess-ask-for-ess-directory' is non-nil.
 A nil value means use the current buffer's default directory.
 Buffer-local: in process buffers, this contains the directory ESS was
 run from.")
@@ -134,12 +134,13 @@ during the load. ")
 ;;; from crashes.
 
 (defvar ess-delete-dump-files nil
-  "*If non-nil, delete dump files after they are created.
-This applies to dump files created with ess-dump-object-into-edit-buffer, only.
+  "*If non-nil, delete dump files after they are created.  This
+applies to dump files created with `ess-dump-object-into-edit-buffer',
+only.
 
 This is useful to prevent sources file being created for objects
 you don't actually modify.  Once the buffer is modified and saved
-however, the file is not subsequently unless ess-keep-dump-files is
+however, the file is not subsequently unless `ess-keep-dump-files' is
 nil, and the file is successfully loaded back into S.")
 
 ;;; From ess-mode:
@@ -195,11 +196,11 @@ If not number, the statements are indented at open-parenthesis following foo.")
 
 ;;added rmh 2Nov97 at request of Terry Therneau
 (defvar ess-close-brace-offset 0
-  "*Extra indentation for closing braces")
+  "*Extra indentation for closing braces.")
 
 ;;added rmh 2Nov97 at request of Terry Therneau
 (defvar ess-fancy-comments t
-  "*Non-nil means distiguish between #, ##, and ### for indentation")
+  "*Non-nil means distiguish between #, ##, and ### for indentation.")
 
 
 ;; PD, 1Apr97 :
@@ -270,7 +271,7 @@ If not number, the statements are indented at open-parenthesis following
   "Predefined formatting styles for ess code")
 
 (defvar ess-default-style 'DEFAULT
-  "*The default value of ess-style")
+  "*The default value of `ess-style'.")
 
 (defvar ess-style ess-default-style
   "*The buffer specific ESS indentation style.")
@@ -318,18 +319,18 @@ Good for setting up your directory.")
 Good for evaluating ESS code.")
 
 (defvar inferior-ess-mode-hook '()
-  "*Hook for customizing inferior ess mode.
-Called after inferior-ess-mode is entered and variables have been initialised.")
+  "*Hook for customizing inferior ess mode.  Called after
+`inferior-ess-mode' is entered and variables have been initialised.")
 
 ;;; make it possible to save an inferior-ess-mode buffer without losing
 ;;; the connection to the running ESS process.
 (put 'inferior-ess-mode 'mode-class 'special)
 
 (defvar ess-help-mode-hook nil
-  "Functions to call when entering ess-help-mode. ")
+  "Functions to call when entering `ess-help-mode'. ")
 
 (defvar ess-send-input-hook nil
-  "Hook called just before line input is sent to the process")
+  "Hook called just before line input is sent to the process.")
 
 (defvar ess-transcript-mode-hook nil
   "Hook for customizing ESS transcript mode.")
@@ -377,7 +378,7 @@ Called after inferior-ess-mode is entered and variables have been initialised.")
 (defvar ess-dumped-missing-re
   "\\(<-\nDumped\n\\'\\)\\|\\(<-\\(\\s \\|\n\\)*\\'\\)"
   "If a dumped object's buffer matches this re, then it is replaced
-by ess-function-template.")
+by `ess-function-template'.")
 
 (defvar ess-dump-error-re
   (if (string= ess-language "S") "\nDumped\n\\'" "[Ee]rror")
@@ -447,7 +448,7 @@ different computer.")
 "*ddeclient program acting as intermediary between emacs and the ESS program.")
 (make-variable-buffer-local 'inferior-ess-ddeclient)
 (defvar inferior-ess-client-name       nil
-  "*name of ESS program ddeclient talks to.")
+  "*Name of ESS program ddeclient talks to.")
 (make-variable-buffer-local 'inferior-ess-client-name)
 (defvar inferior-ess-client-command    nil
   "*ddeclient command sent to the ESS program")
@@ -485,7 +486,7 @@ Useful for R and SAS.")
   "*Pager to use for reporting help files and similar things.")
 
 (defvar inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?"
-  "Regular expression used by ess-mode to detect the primary prompt.
+  "Regular expression used by `ess-mode' to detect the primary prompt.
 Do not anchor to bol with `^'.")
 
 (make-variable-buffer-local 'inferior-ess-primary-prompt)
@@ -599,8 +600,8 @@ of Emacs until the code has been successfully evaluated by S.")
 
 (defvar inferior-ess-prompt nil
   "The regular expression inferior ess mode uses for recognizing prompts.
- Constructed at run time from 'inferior-ess-primary-prompt and
-'inferior-ess-secondary-prompt")
+ Constructed at run time from `inferior-ess-primary-prompt' and
+`inferior-ess-secondary-prompt'.")
 
 (make-variable-buffer-local 'inferior-ess-prompt)
 
@@ -628,7 +629,7 @@ session.")
 
 (defvar ess-prev-load-dir/file nil
   "This symbol saves the (directory . file) pair used in the last
-ess-load-file command.  Used for determining the default in the next one.")
+`ess-load-file' command.  Used for determining the default in the next one.")
 
 (make-variable-buffer-local 'ess-prev-load-dir/file)
 
@@ -647,16 +648,16 @@ ess-load-file command.  Used for determining the default in the next one.")
  "Variable used to retain a buffer position past let or let*.")
 
 (defvar ess-mode-map nil
-  "Keymap for ess-mode.")
+  "Keymap for `ess-mode'.")
 
 (defvar ess-eval-map nil
   "Keymap for ess-eval functions.")
 
 (defvar inferior-ess-mode-map nil
-  "Keymap for inferior-ess mode.")
+  "Keymap for `inferior-ess' mode.")
 
 (defvar ess-object-name-db-file "ess-namedb"
-  "File containing definitions for ess-object-name-db.")
+  "File containing definitions for `ess-object-name-db'.")
 
 (defvar ess-object-name-db-file-loaded '()
   "List of programs whose name-db file has been loaded.")
@@ -664,7 +665,7 @@ ess-load-file command.  Used for determining the default in the next one.")
 (defvar ess-object-name-db nil
   "Alist of lists of object names, with directory names as keys.
 The file ess-namedb.el is loaded (if it exists) to define this variable.
-See also function ess-create-object-name-db.")
+See also function `ess-create-object-name-db'.")
 
 (make-variable-buffer-local 'ess-object-name-db)
 (setq-default ess-object-name-db nil)
@@ -683,7 +684,7 @@ important for XLispStat.  Increase this, if you have a fast(er) machine.")
 
 (defvar inferior-ess-font-lock-input t
   "*If non-nil, input is syntactically font-locked.
-If nil, input is in the font-lock-variable-name-face.")
+If nil, input is in the `font-lock-variable-name-face'.")
 
 (defvar ess-mode-font-lock-keywords
   '(("<<-\\|<-\\|_\\|->"
@@ -696,7 +697,7 @@ If nil, input is in the font-lock-variable-name-face.")
      . font-lock-keyword-face)
     ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function"
      1 font-lock-function-name-face t))
-  "Font-lock patterns used in ess-mode buffers.")
+  "Font-lock patterns used in `ess-mode' buffers.")
 
 (defvar inferior-ess-font-lock-keywords
   '(("<<-\\|<-\\|_\\|->"
@@ -745,7 +746,7 @@ If nil, input is in the font-lock-variable-name-face.")
 
 (defvar ess-trans-font-lock-keywords
  inferior-ess-font-lock-keywords
- "Font-lock patterns used in ess-transcript-mode buffers.")
+ "Font-lock patterns used in `ess-transcript-mode' buffers.")
 
 ;;
 ;;(defvar ess-mode-font-lock-keywords
@@ -807,14 +808,14 @@ If nil, input is in the font-lock-variable-name-face.")
 (defvar ess-help-form 'separate-buffer
   "*Place to show help.   NOT IMPLEMENTED YET.
 Choices are `separate-buffer', `s-process', `www'.  The latter uses
-browse-url to find the location")
+`browse-url' to find the location.")
 
 ;; WWW Help NOT included yet.  Be patient.
 (defvar ess-help-w3-url-prefix "http://pyrite.cfas.washington.edu/ESS/R/"
-  "*Head URL for finding function help")
+  "*Head URL for finding function help.")
 
 (defvar ess-help-w3-url-funs "funs/"
-  "Place to find functions")
+  "Place to find functions.")
 
 
  ; System variables
@@ -840,7 +841,7 @@ browse-url to find the location")
 
 ;;; This syntax table is required by ess-mode.el, ess-inf.el and
 ;;; ess-trans.el, so we provide it here.
-(defvar ess-mode-syntax-table nil "Syntax table for ess-mode.")
+(defvar ess-mode-syntax-table nil "Syntax table for `ess-mode'.")
 (make-variable-buffer-local 'ess-mode-syntax-table)
 
 
@@ -874,12 +875,12 @@ Used to store the values for passing on to newly created buffers.")
   "Variable settings for ess-mode.")
 
 (defvar ess-transcript-minor-mode nil
-  "Non-nil if using ess-transcript mode as a minor mode of some other mode.")
+  "Non-nil if using `ess-transcript-mode' as a minor mode of some other mode.")
 
 (make-variable-buffer-local 'ess-transcript-minor-mode)
 
 (defvar ess-listing-minor-mode nil
-  "Non-nil if using ess-listing mode as a minor mode of some other mode.")
+  "Non-nil if using ess-listing-minor-mode.")
 
 (make-variable-buffer-local 'ess-listing-minor-mode)
 

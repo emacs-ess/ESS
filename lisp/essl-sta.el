@@ -6,9 +6,9 @@
 ;;         Brendan Halpin <brendan@essex.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 2000/01/26 20:44:55 $
-;; Version: $Revision: 5.25 $
-;; RCS: $Id: essl-sta.el,v 5.25 2000/01/26 20:44:55 ess Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.26 $
+;; RCS: $Id: essl-sta.el,v 5.26 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -78,7 +78,7 @@ regexp-search, and so specials should be quoted.
 ")
 
 (defconst ess-help-STA-sec-regex "^[A-Z a-z]+:?\n^[-]+$"
-  "Reg(ular) Ex(pression) of section headers in help file")
+  "Reg(ular) Ex(pression) of section headers in help file.")
 
 (defvar STA-syntax-table nil "Syntax table for Stata code.")
 (if STA-syntax-table
@@ -103,7 +103,7 @@ regexp-search, and so specials should be quoted.
 
 (defun ado-set-font-lock-keywords ()
   "Create font lock keywords for Stata syntax. This is from the
-ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp"
+ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
   ;; (make-local-variable 'ado-font-lock-keywords)
   (interactive)
   (list
@@ -1114,7 +1114,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp"
 
 
 (defvar ess-STA-mode-font-lock-keywords (ado-set-font-lock-keywords)
-  "Set the Stata mode font-lock keywords to Bill Rising's ado-mode keywords")
+  "Set the Stata mode font-lock keywords to Bill Rising's ado-mode keywords.")
 
 (defvar STA-editing-alist
   '((paragraph-start              . (concat "^$\\|" page-delimiter))
@@ -1169,15 +1169,17 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp"
 ;;;;;;;;; Things to change 
 
 (defvar stata-switches "-q" 
-  "*Switches to apply to stata invocation")
+  "*Switches to apply to stata invocation.")
 
-(defvar stata-profile "~/.stataprofile"  "File to read on startup (nil for no file")
+(defvar stata-profile "~/.stataprofile"  
+  "File to read on startup (nil for no file).")
 
 ;;;;;;;;;;;;;;; 
 
 ;;(require 'comint)
 
-(defun stata-help (the-subject) "Stata help in other buffer"
+(defun stata-help (the-subject) 
+  "Stata help in other buffer."
   (interactive "sHelp on: ")
   (let* ((stata-process (get-process "stata"))
 	 (stata-buffer (process-buffer stata-process))
@@ -1237,7 +1239,8 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp"
 	(set-marker (process-mark stata-process) oldpm)))
     (display-buffer "*stata help*")))
   
-(defun stata-variables () "Stata variable list in other buffer"
+(defun stata-variables () 
+  "Stata variable list in other buffer."
   (interactive)
   (let* ((stata-process (get-process "stata"))
 	 (stata-buffer (if stata-process
@@ -1319,15 +1322,15 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp"
 ;;;; </IGNORE>
     
 (defun stata-add-to-review-buffer (string)
-"Adds input to review buffer"
-(save-excursion
-  (set-buffer (get-buffer-create "*stata review*"))
-  (goto-char (point-max))
-  (insert string)))
+  "Adds input to review buffer."
+  (save-excursion
+    (set-buffer (get-buffer-create "*stata review*"))
+    (goto-char (point-max))
+    (insert string)))
 
 (defun stata-prompt-wait (proc &optional start-of-output)
-  "Wait for a prompt to appear at BOL of current buffer
-PROC is the stata process. Does not change point"
+  "Wait for a prompt to appear at BOL of current buffer.
+PROC is the stata process. Does not change point."
   (if start-of-output nil (setq start-of-output (point-min)))
   (save-excursion
     (while (progn
@@ -1453,7 +1456,7 @@ PROC is the stata process. Does not change point"
 (defun stata-help-mode ()
   "Major mode for displaying Stata help in a read-only buffer. 
 Active commands are Help (\\[stata-help]) and hyperlink
-(\\[stata-rehelp] or mouse-2)" 
+(\\[stata-rehelp] or mouse-2)." 
   (interactive)
   (setq major-mode 'stata-help-mode)
   (setq mode-name "Stata help")

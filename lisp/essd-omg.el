@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 August 1999
-;; Modified: $Date: 1999/11/16 05:08:16 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: essd-omg.el,v 5.6 1999/11/16 05:08:16 ess Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: essd-omg.el,v 5.7 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -34,8 +34,8 @@
 
 (require 'essl-omg)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
+(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
+(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
 ; Code:
 

@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/03/21 09:21:56 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: ess-trns.el,v 5.3 2000/03/21 09:21:56 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: ess-trns.el,v 5.4 2000/03/30 14:49:26 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -72,7 +72,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;*;; Major mode definition
-(defvar ess-transcript-mode-map nil "Keymap for ess-transcript-mode.")
+(defvar ess-transcript-mode-map nil "Keymap for `ess-transcript-mode'.")
 (if ess-transcript-mode-map
     nil
 
@@ -153,7 +153,7 @@
 				   ess-transcript-mode-menu))))))
 
 (defun ess-transcript-mode-xemacs-menu ()
-  "Hook to install ess-transcript-mode menu for XEmacs (w/ easymenu)"
+  "Hook to install `ess-transcript-mode' menu for XEmacs (w/ easymenu)."
   (if 'ess-transcript-mode
         (easy-menu-add ess-transcript-mode-menu)
     (easy-menu-remove ess-transcript-mode-menu)))
@@ -162,7 +162,7 @@
     (add-hook 'ess-transcript-mode-hook 'ess-transcript-mode-xemacs-menu))
 
 (defun ess-transcript-mode (alist &optional proc)
-  "Major mode for manipulating S transcript files
+  "Major mode for manipulating S transcript files.
 
 Type \\[ess-transcript-send-command] to send a command in the
 transcript to the current S process. \\[ess-transcript-copy-command]
@@ -171,7 +171,7 @@ the process buffer first.
 
 Type \\[ess-transcript-clean-region] to delete all outputs and prompts
 in the region, leaving only the S commands.
-
+o
 \\{ess-transcript-mode-map}"
   (interactive)
   (require 'ess-inf)

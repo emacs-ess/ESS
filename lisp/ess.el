@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.10 2000/03/21 07:42:07 maechler Exp $
+;; Version: $Id: ess.el,v 5.11 2000/03/30 14:49:26 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -134,37 +134,37 @@
   "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
 
 (autoload 'ess-dump-object-into-edit-buffer "ess-mode"
-  "Edit an S object" t)
+  "Edit an S object." t)
 
 (autoload 'ess-parse-errors "ess-mode"
-  "Jump to the last error generated from a sourced file" t)
+  "Jump to the last error generated from a sourced file." t)
 
 (autoload 'ess-load-file "ess-inf" "Source a file into S.")
 
 (autoload 'inside-string/comment-p "ess-utils"
-  "non-nil, if inside string or comment" t)
-(autoload 'ess-rep-regexp "ess-utils" "Replace, but not in string/comment" t)
+  "Non-nil, if inside string or comment." t)
+(autoload 'ess-rep-regexp "ess-utils" "Replace, but not in string/comment." t)
 
-(autoload 'ess-time-string "ess-utils" "Return time-stamp string" t)
+(autoload 'ess-time-string "ess-utils" "Return time-stamp string." t)
 
 (autoload 'nuke-trailing-whitespace "ess-utils"
-  "Maybe get rid of trailing blanks" t)
+  "Maybe get rid of trailing blanks." t)
 
  ; ess-transcript-mode: editing ``outputs'
 
 (autoload 'ess-transcript-mode "ess-trns"
-  "Major mode for editing S transcript files" t)
+  "Major mode for editing S transcript files." t)
 
 (autoload 'ess-display-help-on-object "ess-help"
-  "Display help on an S object" t)
+  "Display help on an S object." t)
 
 (defalias 'ess-help 'ess-display-help-on-object)
 
 (autoload 'ess-goto-info "ess-help"
-  "Jump to the relevant section in the ess-mode manual" t)
+  "Jump to the relevant section in the `ess-mode' manual." t)
 
 (autoload 'ess-submit-bug-report "ess-help"
-  "Submit a bug report on the ess-mode package" t)
+  "Submit a bug report on the `ess-mode' package." t)
 
 ;;==> ess-inf.el  has its OWN autoload's !
 
@@ -225,14 +225,14 @@
     (nreverse list)))
 
 (defun ess-write-to-dribble-buffer (text)
-  "Write `text' to dribble buffer."
+  "Write TEXT to dribble buffer."
   (save-excursion
     (set-buffer ess-dribble-buffer)
     (goto-char (point-max))
     (insert-string text)))
 
 (defun ess-setq-vars-local (alist &optional buf)
-  "Set language variables from ALIST, in buffer `BUF', if desired."
+  "Set language variables from ALIST, in buffer BUF, if desired."
   (if buf (set-buffer buf))
   (mapcar (lambda (pair)
 	    (make-local-variable (car pair))
@@ -243,7 +243,7 @@
            ess-language ess-dialect buf comint-process-echoes comint-input-sender)))
 
 (defun ess-setq-vars-default (alist &optional buf)
-  "Set language variables from ALIST, in buffer `BUF', if desired."
+  "Set language variables from ALIST, in buffer BUF, if desired."
   (ess-write-to-dribble-buffer
    (format "ess-setq-vars-default 0: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
            ess-language ess-dialect buf comint-process-echoes comint-input-sender))

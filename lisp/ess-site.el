@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/03/06 10:33:33 $
-;; Version: $Revision: 5.46 $
-;; RCS: $Id: ess-site.el,v 5.46 2000/03/06 10:33:33 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.47 $
+;; RCS: $Id: ess-site.el,v 5.47 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -302,7 +302,7 @@
 ;;; What you want S and R to call...
 
 (autoload 'ess-transcript-mode "ess-trns"
-  "Major mode for editing S transcript files" t)
+  "Major mode for editing S transcript files." t)
 
 ;;; On a PC, the default is S+4.  Elsewhere (unix) the default is S+3
 (if (or (equal window-system 'w32) (equal window-system 'win32))

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/06/17 17:34:06 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: essd-s3.el,v 5.6 1999/06/17 17:34:06 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: essd-s3.el,v 5.7 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -34,7 +34,7 @@
 
 (require 'essl-s)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
+(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 
 ;;; Code:
 
@@ -71,7 +71,7 @@
 
 
 (defun S3-mode (&optional proc-name)
-  "Major mode for editing S3 source.  See ess-mode for more help."
+  "Major mode for editing S3 source.  See `ess-mode' for more help."
   (interactive)
   (setq-default ess-customize-alist S3-customize-alist)
   (ess-mode S3-customize-alist proc-name))

@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 1999/11/16 21:45:01 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essd-els.el,v 1.9 1999/11/16 21:45:01 ess Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essd-els.el,v 1.10 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,8 +33,8 @@
 
 (require 'essl-s)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
+(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
+(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
 ; Code:
 
@@ -82,7 +82,7 @@
 
 
 (defun S+elsewhere-mode (&optional proc-name)
-  "Major mode for editing S+3 source.  See ess-mode for more help."
+  "Major mode for editing S+3 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+elsewhere-customize-alist)
   (ess-mode S+elsewhere-customize-alist proc-name))

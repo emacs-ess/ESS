@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1999/06/17 16:46:09 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essd-vst.el,v 5.2 1999/06/17 16:46:09 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essd-vst.el,v 5.3 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,7 +33,7 @@
 
 ;;; Autoloads:
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
+(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 
 ;;; Code:
 
@@ -53,7 +53,7 @@
     (inferior-ess-start-file       . "~/.ess-VST")
     (inferior-ess-start-args       . nil)
     )
-  "Variables to customize for XLS")
+  "Variables to customize for XLS.")
 
 
 (defun VST-mode (&optional proc-name)

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 1999/10/04 15:12:43 $
-;; Version: $Revision: 1.22 $
-;; RCS: $Id: essd-sta.el,v 1.22 1999/10/04 15:12:43 ess Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 1.23 $
+;; RCS: $Id: essd-sta.el,v 1.23 2000/03/30 14:49:26 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -35,8 +35,8 @@
 
 (require 'essl-sta)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
+(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
+(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
 ; Code:
 
@@ -68,11 +68,11 @@
     (inferior-ess-secondary-prompt . "^.") ;; "^. ?") 
     (inferior-ess-start-file       . nil) ;"~/.ess-stata")
     (inferior-ess-start-args       . "")) ; "-q"
- "Variables to customize for Stata")
+ "Variables to customize for Stata.")
 
 
 (defun STA-mode (&optional proc-name)
-  "Major mode for editing Stata source.  See ess-mode for more help."
+  "Major mode for editing Stata source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist STA-customize-alist)
   (ess-mode STA-customize-alist proc-name))

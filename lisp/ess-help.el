@@ -8,9 +8,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>, MM
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/03/21 18:19:24 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: ess-help.el,v 5.7 2000/03/21 18:19:24 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: ess-help.el,v 5.8 2000/03/30 14:49:26 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -313,10 +313,10 @@ Other keybindings are as follows:
 ;;*;; User commands defined in ESS help mode
 
 (defun ess-skip-to-help-section nil
-  "Jump to a section heading of a help buffer. The section selected is
-determined by the command letter used to invoke the command, as
-indicated by ess-help-sec-keys-alist. Use \\[ess-describe-sec-map] to see
-which keystrokes find which sections."
+  "Jump to a section heading of a help buffer.  The section selected
+is determined by the command letter used to invoke the command, as
+indicated by `ess-help-sec-keys-alist'.  Use \\[ess-describe-sec-map]
+to see which keystrokes find which sections."
   (interactive)
   (let ((old-point (point))
 	(case-fold-search nil))
@@ -344,7 +344,7 @@ which keystrokes find which sections."
       (message "No previous section."))))
 
 (defun ess-describe-help-mode nil
-"Display help for ess-mode"
+  "Display help for `ess-mode'."
  (interactive)
  (describe-function 'ess-help-mode))
 
@@ -391,7 +391,7 @@ Keystroke    Section
 	(error nil))))
 
 (defun ess-find-help-file (p-string)
-  "Find help, prompting for p-string.  Note that we can't search SAS
+  "Find help, prompting for P-STRING.  Note that we can't search SAS
 or XLispStat for additional information."
   (ess-make-buffer-current)
   (if (not
@@ -418,7 +418,7 @@ or XLispStat for additional information."
 ;;*;; Utility functions
 
 (defun ess-get-help-files-list ()
-  "Return a list of files which have available help."
+  "Return a list of files which have help available."
   (mapcar 'list
 	  (apply 'append
 		 (mapcar '(lambda (dirname)

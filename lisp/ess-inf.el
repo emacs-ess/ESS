@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/03/21 09:21:56 $
-;; Version: $Revision: 5.35 $
-;; RCS: $Id: ess-inf.el,v 5.35 2000/03/21 09:21:56 maechler Exp $
+;; Modified: $Date: 2000/03/30 14:49:26 $
+;; Version: $Revision: 5.36 $
+;; RCS: $Id: ess-inf.el,v 5.36 2000/03/30 14:49:26 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -68,8 +68,7 @@
 ;;*;; Starting a process
 
 (defun ess-proc-name (n name)
-  "Return process name of process N, as a string, with NAME
-  prepended."
+  "Return name of process N, as a string, with NAME prepended."
   (if ess-plain-first-buffername
       (if (> n 1)
 	  (concat name ":" (number-to-string n))
@@ -82,17 +81,17 @@
 Without a prefix argument, starts a new ESS process, or switches
   to the ESS process associated with the current buffer.
 With a prefix, starts the process with those args.
-The current buffer is used if it is an inferior-ess-mode
-or ess-transcript-mode buffer.
+The current buffer is used if it is an `inferior-ess-mode'
+or `ess-transcript-mode' buffer.
 
-If ess-ask-about-transfile is non-nil, you will be asked for a
+If `ess-ask-about-transfile' is non-nil, you will be asked for a
 transcript file to use. If there is no transcript file, the buffer
 name will be like *S* or *S2*.
 
-Takes the program name from the variable inferior-ess-program.
+Takes the program name from the variable `inferior-ess-program'.
 An initialization file (dumped into the process) is specified by
 `inferior-ess-start-file', and `inferior-ess-start-args' is used to
-accompany the call for inferior-ess-program.
+accompany the call for `inferior-ess-program'.
 
 \(Type \\[describe-mode] in the process buffer for a list of commands.)"
 
@@ -323,7 +322,7 @@ there is no process NAME)."
 				 procname
 				 inferior-ess-start-args
 				 &rest switches)
-  "Make an S comint process in buffer NAME with process called PROC.
+  "Make an S comint process in buffer BUFNAME with process PROCNAME.
 This was rewritten by KH in April 1996."
 ;;; This function is a modification of make-comint from the comint.el
 ;;; code of Olin Shivers.
@@ -363,7 +362,7 @@ This was rewritten by KH in April 1996."
 ;;*;; Requester functions called at startup
 
 (defun ess-get-directory (default)
-  "Request and return S starting directory"
+  "Request and return S starting directory."
   (let ((the-dir
 	 (expand-file-name
 	  (file-name-as-directory
@@ -441,8 +440,8 @@ Returns the name of the process, or nil if the current buffer has none."
 
 (defun ess-request-a-process (message &optional noswitch)
   "Ask for a process, and make it the current ESS process.
-Also switches to the process buffer, if second arg NOSWITCH (prefix) is non-nil.
-Returns the name of the selected process."
+Also switches to the process buffer, if second arg NOSWITCH (prefix)
+is non-nil.  Returns the name of the selected process."
   (interactive
    (list "Switch to which ESS process? " current-prefix-arg)) ;prefix sets 'noswitch
   (update-ess-process-name-list)
@@ -468,7 +467,7 @@ Returns the name of the selected process."
   "Make sure the current buffer is attached to an ESS process.
 If not, or  FORCE (prefix argument) is non-nil,
 prompt for a process name with PROMPT.
-ess-local-process-name is set to the name of the process selected."
+`ess-local-process-name' is set to the name of the process selected."
   (interactive
    (list (concat ess-dialect " process to use: ") current-prefix-arg))
   (if (and (not force) (ess-make-buffer-current))
@@ -508,7 +507,7 @@ With argument, positions cursor at end of buffer."
 
 
 (defun get-ess-buffer (name)
-  "Return the buffer associated with the ESS process named by NAME"
+  "Return the buffer associated with the ESS process named by NAME."
   (process-buffer (get-ess-process name)))
 
 (defun update-ess-process-name-list ()
@@ -530,7 +529,7 @@ With argument, positions cursor at end of buffer."
  ; Functions for evaluating code
 
 (defun ess-prompt-wait (proc &optional start-of-output)
-  "Wait for a prompt to appear at BOL of current buffer
+  "Wait for a prompt to appear at BOL of current buffer.
 PROC is the ESS process. Does not change point"
   (if start-of-output nil (setq start-of-output (point-min)))
   (save-excursion
@@ -636,7 +635,7 @@ Guarantees that the value of .Last.value will be preserved."
 	(set-marker (process-mark sprocess) oldpm)))))
 
 (defun ess-replace-in-string (str regexp newtext &optional literal)
-  "Replaces all matches in STR for REGEXP with NEWTEXT string.
+  "Replace all matches in STR for REGEXP with NEWTEXT string.
 Optional LITERAL non-nil means do a literal replacement.
 Otherwise treat \\ in NEWTEXT string as special:
   \\& means substitute original matched text,
@@ -691,9 +690,9 @@ Otherwise treat \\ in NEWTEXT string as special:
 ;;; AJR 971022:	 text-withtabs was text.
 (defun ess-eval-visibly (text-withtabs &optional invisibly eob)
   "Evaluate TEXT-WITHTABS in the ESS process buffer as if typed in w/o tabs.
-If optional second arg INVISIBLY is non-nil, don't echo commands. If
-if is a string, just include that string. If optional third arg
-eob is non-nil go to end of S buffer after evaluation.
+If optional second arg INVISIBLY is non-nil, don't echo commands.  If
+it is a string, just include that string.  If optional third arg
+EOB is non-nil go to end of S buffer after evaluation.
 Waits for prompt after each line of input, so won't break on large texts."
   ;; Use this to evaluate some code, but don't wait for output.
   (let* ((cbuffer (current-buffer))
@@ -769,7 +768,7 @@ Waits for prompt after each line of input, so won't break on large texts."
 ;; 31 Aug 1995 14:11:43		To: ess-mode@stat.math.ethz.ch
 (defun ess-eval-paragraph (vis-toggle)
   "Send the current paragraph to the inferior ESS process.
-Prefix arg. VIS-TOGGLE toggles visibility of ess-code as for ess-eval-region."
+Prefix arg VIS-TOGGLE toggles visibility of ess-code as for `ess-eval-region'."
   (interactive "P")
   (ess-force-buffer-current "Process to load into: ")
   (save-excursion
@@ -781,7 +780,7 @@ Prefix arg. VIS-TOGGLE toggles visibility of ess-code as for ess-eval-region."
 
 (defun ess-eval-region (start end toggle &optional message)
   "Send the current region to the inferior ESS process.
-With prefix argument, toggle meaning of ess-eval-visibly-p."
+With prefix argument, toggle meaning of `ess-eval-visibly-p'."
   (interactive "r\nP")
   ;;(untabify (point-min) (point-max))
   ;;(untabify start end); do we really need to save-excursion?
@@ -801,14 +800,14 @@ With prefix argument, toggle meaning of ess-eval-visibly-p."
 
 (defun ess-eval-buffer (vis)
   "Send the current buffer to the inferior ESS process.
-Arg has same meaning as for ess-eval-region."
+Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-force-buffer-current "Process to load into: ")
   (ess-eval-region (point-min) (point-max) vis "Eval buffer"))
 
 (defun ess-eval-function (vis)
   "Send the current function to the inferior ESS process.
-Arg has same meaning as for ess-eval-region."
+Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-force-buffer-current "Process to load into: ")
   (save-excursion
@@ -824,7 +823,7 @@ Arg has same meaning as for ess-eval-region."
 
 (defun ess-eval-line (vis)
   "Send the current line to the inferior ESS process.
-Arg has same meaning as for ess-eval-region."
+Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-force-buffer-current "Process to load into: ")
   (save-excursion
@@ -858,28 +857,28 @@ Arg has same meaning as for ess-eval-region."
 
 (defun ess-eval-region-and-go (start end vis)
   "Send the current region to the inferior S and switch to the process buffer.
-Arg has same meaning as for ess-eval-region."
+Arg has same meaning as for `ess-eval-region'."
   (interactive "r\nP")
   (ess-eval-region start end vis)
   (ess-switch-to-ESS t))
 
 (defun ess-eval-buffer-and-go (vis)
   "Send the current buffer to the inferior S and switch to the process buffer.
-Arg has same meaning as for ess-eval-region."
+Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-buffer vis)
   (ess-switch-to-ESS t))
 
 (defun ess-eval-function-and-go (vis)
   "Send the current function to the inferior ESS process and switch to
-the process buffer. Arg has same meaning as for ess-eval-region."
+the process buffer. Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-function vis)
   (ess-switch-to-ESS t))
 
 (defun ess-eval-line-and-go (vis)
   "Send the current line to the inferior ESS process and switch to the
-process buffer. Arg has same meaning as for ess-eval-region."
+process buffer. Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-line vis)
   (ess-switch-to-ESS t))
@@ -1011,7 +1010,7 @@ process buffer. Arg has same meaning as for ess-eval-region."
 
 
 (defun inferior-ess-mode-xemacs-menu ()
-  "Hook to install ess-mode menu for XEmacs (w/ easymenu)"
+  "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
   (if 'inferior-ess-mode
 	(easy-menu-add inferior-ess-mode-menu)
     (easy-menu-remove inferior-ess-mode-menu)))
@@ -1040,7 +1039,7 @@ process buffer. Arg has same meaning as for ess-eval-region."
 (defun inferior-ess-mode ()
   "Major mode for interacting with an inferior ESS process.
 Runs an S interactive job as a subprocess of Emacs, with I/O through an
-Emacs buffer.  Variable inferior-ess-program controls which S
+Emacs buffer.  Variable `inferior-ess-program' controls which S
 is run.
 
 Commands are sent to the ESS process by typing them, and pressing
@@ -1051,35 +1050,35 @@ keybindings for this mode are:
 \\{inferior-ess-mode-map}
 
 When editing S objects, the use of \\[ess-load-file] is advocated.
-ess-load-file keeps source files (if ess-keep-dump-files is non-nil) in
-the directory specified by ess-source-directory, with the
-filename chosen according to ess-dump-filename-template. When a file is
-loaded, ess-mode parses error messages and jumps to the appropriate file
+`ess-load-file' keeps source files (if `ess-keep-dump-files' is non-nil) in
+the directory specified by `ess-source-directory', with the
+filename chosen according to `ess-dump-filename-template'. When a file is
+loaded, `ess-mode' parses error messages and jumps to the appropriate file
 if errors occur. The ess-eval- commands do not do this.
 
-Customization: Entry to this mode runs the hooks on comint-mode-hook and
-inferior-ess-mode-hook (in that order).
+Customization: Entry to this mode runs the hooks on `comint-mode-hook' and
+`inferior-ess-mode-hook' (in that order).
 
 You can send text to the inferior ESS process from other buffers containing
 S source. The key bindings of these commands can be found by typing
 C-h m (help for mode) in the other buffers.
-    ess-eval-region sends the current region to the ESS process.
-    ess-eval-buffer sends the current buffer to the ESS process.
-    ess-eval-function sends the current function to the ESS process.
-    ess-eval-line sends the current line to the ESS process.
-    ess-beginning-of-function and ess-end-of-function move the point to
+    `ess-eval-region' sends the current region to the ESS process.
+    `ess-eval-buffer' sends the current buffer to the ESS process.
+    `ess-eval-function' sends the current function to the ESS process.
+    `ess-eval-line' sends the current line to the ESS process.
+    `ess-beginning-of-function' and `ess-end-of-function' move the point to
 	the beginning and end of the current S function.
-    ess-switch-to-ESS switches the current buffer to the ESS process buffer.
-    ess-switch-to-end-of-ESS switches the current buffer to the ESS process
+    `ess-switch-to-ESS' switches the current buffer to the ESS process buffer.
+    `ess-switch-to-end-of-ESS' switches the current buffer to the ESS process
 	buffer and puts point at the end of it.
 
-    ess-eval-region-and-go, ess-eval-buffer-and-go,
-	ess-eval-function-and-go, and ess-eval-line-and-go switch to the S
+    `ess-eval-region-and-go', `ess-eval-buffer-and-go',
+	`ess-eval-function-and-go', and `ess-eval-line-and-go' switch to the S
 	process buffer after sending their text.
 
-    ess-dump-object-into-edit-buffer moves an S object into a temporary file
+    `ess-dump-object-into-edit-buffer' moves an S object into a temporary file
 	and buffer for editing
-    ess-load-file sources a file of commands to the ESS process.
+    `ess-load-file' sources a file of commands to the ESS process.
 
 Commands:
 Return after the end of the process' output sends the text from the
@@ -1253,7 +1252,7 @@ to continue it."
   (setq ess-object-list nil)) ;; Will be reconstructed from cache if needs be
 
 (defun inferior-ess-get-old-input ()
-  "Returns the ESS command surrounding point."
+  "Return the ESS command surrounding point."
   (save-excursion
     (beginning-of-line)
     (if (not (looking-at inferior-ess-prompt))
@@ -1281,10 +1280,10 @@ to continue it."
 (defun ess-execute-objects (posn)
   "Send the objects() command to the ESS process.
 By default, gives the objects at position 1.
-A prefix argument toggles the meaning of ess-execute-in-process-buffer.
+A prefix argument toggles the meaning of `ess-execute-in-process-buffer'.
 A prefix argument of 2 or more means get objects for that position.
 A negative prefix argument gets the objects for that position
-  and toggles ess-execute-in-process-buffer as well."
+  and toggles `ess-execute-in-process-buffer' as well."
   (interactive "P")
   (ess-make-buffer-current)
   (let* ((num-arg (if (listp posn)
@@ -1355,12 +1354,13 @@ This is a good thing to put in `ess-post-run-hook'."
 
 (defun ess-execute (command &optional invert buff message)
   "Send a command to the ESS process.
-A newline is automatically added to COMMAND. Prefix arg (or second arg INVERT)
-means invert the meaning of ess-execute-in-process-buffer. If INVERT is 'buffer,
-output is forced to go to the process buffer.
-If the output is going to a buffer, name it *BUFF*. This buffer is erased
-before use. Optional fourth arg MESSAGE is text to print at the top of the
-buffer (defaults to the command if BUFF is not given.)"
+A newline is automatically added to COMMAND.  Prefix arg (or second arg
+INVERT) means invert the meaning of
+`ess-execute-in-process-buffer'.  If INVERT is 'buffer, output is
+forced to go to the process buffer.  If the output is going to a
+buffer, name it *BUFF*.  This buffer is erased before use.  Optional
+fourth arg MESSAGE is text to print at the top of the buffer (defaults
+to the command if BUFF is not given.)"
   (interactive (list
 		(read-from-minibuffer "Execute> "
 				      nil
@@ -1421,9 +1421,9 @@ If you want to finish your session, use \\[ess-quit] instead."
     (message "Good move.")))
 
 (defun ess-cleanup ()
-  "Kill (or offer to kill) all buffers associated with this ESS process
-Leaves you in the ESS process buffer. It's a good idea to run this
-before you quit. It is run automatically by \\[ess-quit]."
+  "Kill (or offer to kill) all buffers associated with this ESS process.
+Leaves you in the ESS process buffer.  It's a good idea to run this
+before you quit.  It is run automatically by \\[ess-quit]."
   (interactive)
   (let ((the-procname (or (ess-make-buffer-current) ess-local-process-name)))
     (if the-procname nil
@@ -1447,7 +1447,7 @@ before you quit. It is run automatically by \\[ess-quit]."
 	  (ess-switch-to-ESS nil)))))
 
 (defun ess-kill-buffer-function nil
-  "Function run just before an ESS process buffer is killed"
+  "Function run just before an ESS process buffer is killed."
   ;; This simply deletes the buffers process to avoid an Emacs bug
   ;; where the sentinel is run *after* the buffer is deleted
   (let ((proc (get-buffer-process (current-buffer))))
@@ -1459,7 +1459,7 @@ before you quit. It is run automatically by \\[ess-quit]."
 (defun ess-complete-object-name (&optional listcomp)
   "Perform completion on S object preceding point.
 The object is compared against those objects known by
-ess-get-object-list and any additional characters up to ambiguity are
+`ess-get-object-list' and any additional characters up to ambiguity are
 inserted.  Completion only works on globally-known objects (including
 elements of attached data frames), and thus is most suitable for
 interactive command-line entry, and not so much for function editing
@@ -1513,10 +1513,10 @@ completions are listed."
 ;;;*;;; Support functions
 (defun ess-extract-onames-from-alist (alist posn &optional force)
   "Return the object names in position POSN of ALIST.
-ALIST is an alist like ess-sl-modtime alist. POSN should be 1 .. (length
+ALIST is an alist like `ess-sl-modtime alist'. POSN should be 1 .. (length
 ALIST).	 If optional third arg FORCE is t, the corresponding element
 of the search list is re-read. Otherwise it is only re-read if it's a
-directory and has been modified since it was last read"
+directory and has been modified since it was last read."
   (let* ((entry (nth (1- posn) alist))
 	 (dir (car entry))
 	 (timestamp (car (cdr entry)))
@@ -1528,7 +1528,7 @@ directory and has been modified since it was last read"
     (cdr (cdr entry))))
 
 (defun ess-dir-modtime (dir)
-  "Return the last modtime if dir is a directory, and nil otherwise."
+  "Return the last modtime if DIR is a directory, and nil otherwise."
   ;; Attached dataframes return a modtime of nil.
   (and ess-filenames-map (string-match "^/" dir)
        (nth 5 (file-attributes dir))))
@@ -1547,14 +1547,14 @@ Returns nil if that file cannot be found"
     (nth 5 result)))
 
 (defun ess-modtime-gt (mod1 mod2)
-  "Return t if mod1 is later than mod2"
+  "Return t if MOD1 is later than MOD2."
   (and mod1
        (or (> (car mod1) (car mod2))
 	   (and (= (car mod1) (car mod2))
 		(> (car (cdr mod1)) (car (cdr mod2)))))))
 
 (defun ess-get-object-list (name)
-  "Return an alist of current S object names associated with process NAME"
+  "Return an alist of current S object names associated with process NAME."
   (or ess-object-list
       (save-excursion
 	(set-buffer (process-buffer (get-ess-process name)))
@@ -1631,17 +1631,17 @@ In all cases, the value is an list of object names."
 
 
 (defun ess-create-object-name-db ()
-  "Create a database of object names in standard S directories.
-This database is saved in the file specified by ess-object-name-db-file,
-and is loaded when ess-mode is loaded.	It defines the variable
-ess-object-name-db, which is used for completions.
+  "Create a database of object names in standard S directories.  This
+database is saved in the file specified by `ess-object-name-db-file',
+and is loaded when `ess-mode' is loaded. It defines the variable
+`ess-object-name-db', which is used for completions.
 
 Before you call this function, modify the S search list so that it contains
 all the non-changing (i.e. system) S directories.  All positions of the search
 list except for position 1 are searched and stored in the database.
 
 After running this command, you should move ess-namedb.el to a directory in
-the load-path."
+the `load-path'."
   (interactive)
   (setq ess-object-name-db nil)
   (let ((search-list (cdr (ess-search-list)))
@@ -1678,7 +1678,8 @@ the load-path."
     (setq ess-object-name-db temp-object-name-db)))
 
 (defun ess-resynch nil
-"Reread all directories/objects in ess-search-list to form completions."
+  "Reread all directories/objects in variable `ess-search-list' to
+form completions."
  (interactive)
  (if (ess-make-buffer-current) nil
    (error "Not an ESS process buffer"))
@@ -1720,8 +1721,8 @@ the load-path."
 ;;*;; Functions handling the search list
 
 (defun ess-search-list ()
-  "Return the current search list as a list of strings
-Elements which are apparently directories are expanded to full dirnames"
+  "Return the current search list as a list of strings.
+Elements which are apparently directories are expanded to full dirnames."
   (save-excursion
     (let ((result  nil)) ;; "" or nil?
       (set-buffer (get-ess-buffer ess-current-process-name))
@@ -1757,7 +1758,7 @@ Elements which are apparently directories are expanded to full dirnames"
 (defun ess-get-modtime-list ()
   "Record the modification times of the directories in the search list,
 and the objects in those directories.
-The result is stored in ess-sl-modtime-alist"
+The result is stored in `ess-sl-modtime-alist'."
   ;; Operation applies to process of current buffer
   (let* ((searchlist (ess-search-list))
 	 (index 1)
@@ -1784,8 +1785,9 @@ The result is stored in ess-sl-modtime-alist"
 (defun ess-search-path-tracker (str)
   "Check if input STR changed the search path.
 This function monitors user input to the inferior ESS process so that
-emacs can keep the ess-search-list up to date.  Completing-read uses this
-list indirectly when it prompts for help or for an object to dump."
+Emacs can keep the variable `ess-search-list' up to date.
+Completing-read uses this list indirectly when it prompts for help or
+for an object to dump."
   (if (string-match ess-change-sp-regexp str)
       (setq ess-sp-change t)))
 
@@ -1794,7 +1796,8 @@ list indirectly when it prompts for help or for an object to dump."
 ;;;*;;; Routines for reading object names
 
 (defun ess-read-object-name (p-string)
-  "Read an S object name from the minibuffer with completion, and return it"
+  "Read an S object name from the minibuffer with completion, and return it.
+P-STRING is the prompt string."
   (let* ((default (ess-read-object-name-dump))
 	 (prompt-string (if default
 			    (format "%s(default %s) " p-string default)
@@ -1851,14 +1854,14 @@ list indirectly when it prompts for help or for an object to dump."
     buff))
 
 (defun ess-display-temp-buffer (buff)
-  "Display the buffer BUFF using temp-buffer-show-function"
+  "Display the buffer BUFF using `temp-buffer-show-function'."
   (funcall (or temp-buffer-show-function 'display-buffer) buff))
 
 ;;*;; Error messages
 
 (defun ess-error (msg)
-  "Something bad has happened. Display the S buffer, and cause an error
-displaying MSG."
+  "Something bad has happened.
+Display the S buffer, and cause an error displaying MSG."
   (display-buffer (process-buffer (get-ess-process ess-current-process-name)))
   (error msg))
 
