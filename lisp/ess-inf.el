@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/07/22 10:37:17 $
-;; Version: $Revision: 5.22 $
-;; RCS: $Id: ess-inf.el,v 5.22 1999/07/22 10:37:17 maechler Exp $
+;; Modified: $Date: 1999/07/22 15:58:45 $
+;; Version: $Revision: 5.23 $
+;; RCS: $Id: ess-inf.el,v 5.23 1999/07/22 15:58:45 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -873,8 +873,8 @@ Arg has same meaning as for ess-eval-region."
   (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (let* ((beg-end (ess-end-of-function))
-	   (beg (car beg-end))
-	   (end (cadr beg-end))
+	   (beg (nth 0 beg-end))
+	   (end (nth 1 beg-end))
 	   name)
       (goto-char beg)
       (setq name (ess-extract-word-name))
