@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/19 19:37:56 $ - $Revision: 1.202 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/19 19:42:05 $ - $Revision: 1.203 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -405,9 +405,9 @@ interface for a variety of statistical computing tasks including
 interactive data analysis and statistical programming.
 
 ESS supports the S family (S, \Splus, and R) interactively.  \SAS\ and
-BUGS are also well supported for batch-style processing.  \Stata,
-\XLispStat\ (including ARC and ViSta) are supported with the basic
-functionality of syntax highlighting and process-interfacing.
+BUGS are also well supported for batch-style processing.  \Stata and
+\XLispStat\ (including ARC and ViSta) are supported through
+highlighting and process-interfacing.
 
 ESS extends Emacs to provide a functional and extensible interface
 which is uniform and consistent across multiple statistical packages.
@@ -415,81 +415,6 @@ This is done by adding shortcuts and features for accelerated editing
 of files as well as by interacting with the particular statistical
 packages to provide, for example, control of input/output, assistance
 with evaluation, and specialized parsing of help files.
-
-%% An interpreted language is executed by an interpreter, but a
-%% compiled language must be processed by a compiler which creates an
-%% executable form of the program that can be executed.  There is a
-%% trade-off in time between interpreted and compiled programs.  For
-%% interpreted languages you save time by not having to compile the
-%% program, but the program will not run as fast as if it had been
-%% compiled.  Another advantage of interpreted languages is the
-%% support they provide for specialized tasks.  For example, C and
-%% \Fortran\ don't provide you with the statistical analysis
-%% capabilities that R, \SAS\ or \XLispStat do.  Compiled programs and
-%% interpreted programs can be used in conjunction.  For instance, a
-%% compiled C function could be called from an interpreted language
-%% like R to speed up the calculations. 
-%Entering commands for interactive data analysis is a similar activity.
-%In either case, text is written in a computer language and sent to a
-%computer program for evaluation.
-%% The primary difference is that the results of a small set of
-%% commands are of critical interest for review in the analysis phase,
-%% but the results of all commands are of interest in the coding
-%% phase.
-
-%Differences between user interfaces can arise from coordinating
-%several data files, multiple statistical software packages, and the
-%corresponding source code for each of these packages during a single
-%analysis.  ESS helps to remedy these differences by providing a single
-%point of contact for all tasks.  
-
-% Rodney:  same comment as above.
-%Other features which provide potential for efficient
-%computer usage are the use of source-code control
-%systems, tools for accessing programs or files on remote machines, and
-%interfaces to documentation systems such as \LaTeX,
-%\textsc{html}, and \textsc{xml}.  
-
-% repetitive
-%Below, we describe some of the
-%problems that one encounters, and how ESS/Emacs can minimize the
-%impact of the problems.
-
-%This is done by extending the editor to provide
-%additional useful features, and in the case of interactive statistical
-%programs, sitting ``in front of'' their CLI and intercepting and
-%modifying I/O as needed.  We describe the exact features more in this
-%section.
-
-%% change/edit
-%Figure~\ref{fig:1} provides an example of how it looks when being used
-%with XEmacs.  This screen-shot shows both SAS and R code being examined
-%at the same time, with an R interactive process being controlled from
-%within XEmacs.
-
-%Figure~\ref{fig:2} shows ESS running in NTemacs 21.0 on Microsoft
-%Windows 2000.  We are currently displaying 6 buffers.
-%\stexttt{highlight.s} illustrates several uses of syntactic
-%highlighting.  The most glaring one is the bright purple indicator for
-%the unbalanced parentheses.  We also see color choices for keywords
-%(\stexttt{if}), comments, and quoted strings.  The string on the last
-%line was not properly terminated and we are immediately warned by the
-%string color staying on through (what we think is) the end of the
-%line.
-
-%The two buffers \stexttt{transcript-before.st} and
-%\stexttt{transcript-after.st} show transcript editing.  A single ESS
-%command converted the before buffer into the after buffer by removing
-%all lines that do not begin with a prompt character.
-
-%The last three buffers show that a single S language source file can
-%be used with two (or more) executing processes.  In this example we
-%sent over first a subset of the line in \stexttt{tmps.s} and then the
-%entire line to the instance of S+4 running in an inferior
-%\stexttt{iESS[Sqpe]} buffer.  Then we switched the connection to send
-%the same line to the instance of R running in the \stexttt{iESS[R]}
-%buffer.  The dialog about the process switch appears in the message
-%line.
 
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
