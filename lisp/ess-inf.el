@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/05/05 13:06:38 $
-;; Version: $Revision: 5.86 $
-;; RCS: $Id: ess-inf.el,v 5.86 2004/05/05 13:06:38 stephen Exp $
+;; Modified: $Date: 2004/05/06 13:54:51 $
+;; Version: $Revision: 5.87 $
+;; RCS: $Id: ess-inf.el,v 5.87 2004/05/06 13:54:51 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -275,6 +275,7 @@ there is no process NAME)."
 
   (let* ((proc-name name)
 	 (special-display-regexps nil)
+	 (special-display-frame-alist inferior-ess-frame-alist)
 	 (proc (get-process proc-name)))
     (if inferior-ess-own-frame
 	(setq special-display-regexps '(".")))
