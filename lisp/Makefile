@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.43 1997/07/28 12:09:39 rossini Exp $
+## $Id: Makefile,v 1.44 1997/07/28 12:58:34 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.44  1997/07/28 12:58:34  rossini
+## S-mode -> ESS.
+##
 ## Revision 1.43  1997/07/28 12:09:39  rossini
 ## updated version number.
 ##
@@ -152,86 +155,89 @@ SOURCES = ess-vars.el ess.el \
 OBJECTS=$(SOURCES:.el=.elc)
 
 AUXFILES = COPYING Makefile NEWS README TODO \
-	S-mode.texi ChangeLog
+	ESS.texi ChangeLog
 
-S-mode: $(OBJECTS)
 
-all:	S-mode info html
+all:	ESS info html
 
-info:   S-mode.info
+ESS: $(OBJECTS)
 
-html:	html/S-mode_toc.html
+info:   ESS.info
+
+html:	html/ESS_toc.html
 
 install:	all
-	$(INSTALL) S-mode.info* $(INFODIR)
+	$(INSTALL) ESS.info* $(INFODIR)
 	$(INSTALL) *.elc $(LISPDIR)
 
 clean:
-	rm -f $(OBJECTS) S-mode.info* S-mode.aux S-mode.cp S-mode.dvi \
-	  S-mode.ky S-mode.log S-mode.pg S-mode.toc S-mode.tp S-mode.vr \
-	  S-mode.fn texput.log
+	rm -f $(OBJECTS) ESS.info* ESS.aux ESS.cp ESS.dvi \
+	  ESS.ky ESS.log ESS.pg ESS.toc ESS.tp ESS.vr \
+	  ESS.fn texput.log
 
 ##distrib: $(SOURCES) $(AUXFILES)
 ##	chmod a-w *.el
 ##	chmod u+w S-site.el Makefile
-##	tar cvf S-mode-$(VERSION).tar $(SOURCES) $(AUXFILES)
-##	gzip S-mode-$(VERSION).tar
+##	tar cvf ESS-$(VERSION).tar $(SOURCES) $(AUXFILES)
+##	gzip ESS-$(VERSION).tar
 
 ## In previous set of commands:  chmod u-w S-site.el Makefile
 
-patch: S-mode-$(VERSION).tar.gz S-mode-$(LASTVERSION).tar.gz
-	-rm -rf S-mode-$(VERSION)
-	mkdir S-mode-$(VERSION)
-	(cd S-mode-$(VERSION); $(GZCAT) ../S-mode-$(VERSION).tar.gz | tar xvf -)
-	-rm -rf S-mode-$(LASTVERSION)
-	mkdir S-mode-$(LASTVERSION)
-	(cd S-mode-$(LASTVERSION); $(GZCAT) ../S-mode-$(LASTVERSION).tar.gz|tar xvf -)
-	-diff -bBw -C 2 S-mode-$(LASTVERSION) S-mode-$(VERSION) > diff-$(LASTVERSION)-$(VERSION)
-	-rm -rf S-mode-$(VERSION)
-	-rm -rf S-mode-$(LASTVERSION)
+patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
+	-rm -rf ESS-$(VERSION)
+	mkdir ESS-$(VERSION)
+	(cd ESS-$(VERSION); $(GZCAT) ../ESS-$(VERSION).tar.gz | tar xvf -)
+	-rm -rf ESS-$(LASTVERSION)
+	mkdir ESS-$(LASTVERSION)
+	(cd ESS-$(LASTVERSION); $(GZCAT) ../ESS-$(LASTVERSION).tar.gz|tar xvf -)
+	-diff -bBw -C 2 ESS-$(LASTVERSION) ESS-$(VERSION) > diff-$(LASTVERSION)-$(VERSION)
+	-rm -rf ESS-$(VERSION)
+	-rm -rf ESS-$(LASTVERSION)
 
-S-mode.info:	S-mode.texi
-	@echo "making S-mode.info..."
-	$(MAKEINFO) S-mode.texi
+ESS.info:	ESS.texi
+	@echo "making ESS.info..."
+	$(MAKEINFO) ESS.texi
 
-html/S-mode_toc.html: S-mode.texi
+html/ESS_toc.html: ESS.texi
 	@echo "making  HTML Info documentation"
-	-(mkdir -p html; cd html; $(MAKEHTML) ../S-mode.texi)
-	-@(cd html; ln -s S-mode_toc.html index.html)
+	-(mkdir -p html; cd html; $(MAKEHTML) ../ESS.texi)
+	-@(cd html; ln -s ESS_toc.html index.html)
 	@echo "Test by pointing your browser to 'file://localhost/$$PWD/html/'"
 
 .el.elc:
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
 
-ess.elc:	ess.el
-#	$(EMACS) $(BATCHFLAGS)  -f batch-byte-compile ess.el
-
 ess-site.elc:  ess-site.el ess.elc
 #	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile ess-site.el
 
-ess-help.elc:  ess-help.el $(CORE)
-#	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-help.el
+ess-vars.elc:	ess-vars.el
+#	$(EMACS) $(BATCHFLAGS)  -f batch-byte-compile ess-vars.el
+
+ess.elc:	ess.el
+#	$(EMACS) $(BATCHFLAGS)  -f batch-byte-compile ess.el
+
 
 ess-inf.elc:  ess-inf.el $(CORE)
-#	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-inf.el
 
 ess-mode.elc:  ess-mode.el $(CORE)
-#	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-mode.el
 
 ess-trns.elc:  ess-trns.el $(CORE)
-#	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-trns.el
 
-essd-r.elc : essd-r.el ess.el
+ess-help.elc:  ess-help.el $(CORE)
+
+
+# For Dialect Files:
 #	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-r.el
 
+essd-s3.elc : essd-s+3.el ess.el
+
 essd-s+3.elc : essd-s+3.el ess.el
-#	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-s+3.el
 
 essd-s4.elc : essd-s4.el ess.el
-#	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-s4.el
+
+essd-r.elc : essd-r.el ess.el
 
 essd-xls.elc : essd-xls.el ess.el
-#	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-xls.el
 
 #essd-vst.elc : essd-vst.el ess.el
 #	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-r.el
