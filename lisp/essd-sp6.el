@@ -105,8 +105,7 @@
     (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
     (inferior-ess-help-command     . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
     ;; "paths": get the "/" needed by  (ess-dir-modtime dir)  in ./ess-inf.el:
-    ;; (inferior-ess-search-list-command . "search(\"paths\")\n")
-    (inferior-ess-search-list-command . "search()\n")
+    (inferior-ess-search-list-command . "search(\"paths\")\n")
     (inferior-ess-exit-command     . "q()\n")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
