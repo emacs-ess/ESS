@@ -531,16 +531,24 @@ Unix installation
      When that completes successfully, install the compiled files:
           make install
 
-     This will install the info files and the lisp files.  However, you
-     may have to edit the file `dir' that is found in the directory
-     specified by `INFODIR':  see the sample `dir' in
+     This will install the compiled info files and lisp files.  If you
+     are an XEmacs user, then you should be done.  If not, then you may
+     have to edit/create the file `dir' that is found in the directory
+     specified by `INFODIR': see the sample `dir' in
      ESSDIR/ess-VERSION/doc.  If `dir' does not exist in `INFODIR',
      then the sample `dir' will be installed.
 
-     _Note_ that you need to use GNU make for everything to work
-     smoothly; otherwise, edit the ESSVERSION and ESSVERSIONTAG entries
-     in `Makeconf' appropriately, e.g.: ESSVERSION=5.2.0 and
-     ESSVERSIONTAG=ESS-5-2-0
+     _Note 1:_ It is assumed that GNU make will be used; otherwise,
+     edit the ESSVERSION and ESSVERSIONTAG entries in `Makeconf'
+     appropriately, e.g.: ESSVERSION=5.2.0 and ESSVERSIONTAG=ESS-5-2-0
+
+     _Note 2:_  ESS can be installed for XEmacs as an XEmacs package
+     much more easily than what has been described anywhere above.
+     However, the latest ESS version will not be available at the same
+     time as an XEmacs package; generally, it can take weeks or months
+     to appear in the latter format.  For more information on
+     installing ESS as an XEmacs package see QuickStart
+     (http://www.xemacs.org/Documentation/packageGuide.html).
 
 
 Microsoft Windows installation
