@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.54 2004/05/17 13:56:52 stephen Exp $
+@comment $Id: ess.texi,v 5.55 2004/05/19 15:09:35 maechler Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.54 $ $Date: 2004/05/17 13:56:52 $)
+@subtitle (Documentation $Revision: 5.55 $ $Date: 2004/05/19 15:09:35 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.54 $ $Date: 2004/05/17 13:56:52 $).
+        (Documentation $Revision: 5.55 $ $Date: 2004/05/19 15:09:35 $).
 
 @display
 by  A.J. Rossini,
@@ -1833,7 +1833,7 @@ is to divide the frame into two windows; one containing the source code
 and the other containing the process buffer.  If you wish to make the
 process buffer scroll automatically when the output reaches the bottom
 of the window, you will need to set the variable
-@code{comint-scroll-to-bottom-on-output} to @code{others} or @code{t}.
+@code{comint-scroll-to-bottom-on-output} to @code{'others} or @code{t}.
 
 *** Maybe a link to customization section here ***
 
