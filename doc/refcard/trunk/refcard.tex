@@ -1,148 +1,174 @@
-%%%- $Header: /scratch/CVS-ARCHIVE/ess-refcard/refcard.tex,v 1.12 2003/10/28 09:04:46 maechler Exp $
-%%%\documentstyle[a4,twocolumn,parskip]{article}
+%%%- $Header: /scratch/CVS-ARCHIVE/ess-refcard/refcard.tex,v 1.13 2003/10/28 11:54:00 maechler Exp $
 \documentclass[twocolumn]{article}
-\usepackage{a4}
+%FIXME\usepackage{multicolumn}
+\usepackage{a4}%-Northamerica: {fullpage}
 \usepackage{parskip}
-%-Northamerica: \documentstyle[fullpage,twocolumn,parskip]{article}
 
 \newenvironment{tabI}{\begin{tabular}{p{1.5cm}l}}{\end{tabular}}
 \newenvironment{tabTit}[1]{\underline{\bf #1}\\ \begin{tabI}}{\end{tabI}}
-\newcommand{\Sect}[1]{\par\noindent\medskip\fbox{\large\bf #1}
+\newcommand{\Sect}[1]{\par\noindent\medskip\fbox{\large\textbf{#1}}
   \vskip -.2ex plus 1ex minus 1ex}
+
+\newcommand*{\Ecmd}[1]{$\left\langle \textrm{#1} \right\rangle$}
+\newcommand*{\sEcmd}[1]{{\small\Ecmd{#1}}}
+\newcommand*{\RET}[0]{\Ecmd{\textsc{ret}}}
+\newcommand*{\TAB}[0]{\Ecmd{\textsc{tab}}}
 
 \raggedbottom \pagestyle{empty}
 
-\begin{document} \twocolumn
-
+\begin{document}
+%FIXME doesn't work: \onecolumn
 \begin{center}
-  {\LARGE ESS {\normalsize \textbf{E}macs \textbf{S}peaks \textbf{Statistics}}
-      \\[.5ex]   Reference Card}
+  {\LARGE ESS \ \ \ \ {\large
+      [\textbf{E}macs \textbf{S}peaks \textbf{Statistics}]}
+      \\[.5ex] Reference Card for S and R}
 
   \smallskip
 
-  {\small For version 5.x
-    \\--- needs \em{more} updating!}
-  %%MM \\ (SfS local version) %-SfS-added
-  \\[1ex] {\footnotesize \$Date: 2003/10/28 09:04:46 $ $ --- as of \today}
+  {\small updated for ESS 5.x}% {\footnotesize --- needs \em{more} updating!}}
+  \\[1ex] {\tiny $ $Date: 2003/10/28 11:54:00 $ $}
+           \footnotesize --- as of \today
 \end{center}
+\begin{enumerate}
+\item  \textsc{Nota Bene:} S is the \emph{language},
+  R is one \emph{dialect}!
+\item This is a list of the more widely used \textbf{key - shortcuts}.
+  Many more are available, and most are accessible from the Emacs
+  \textbf{Menus} such as \texttt{iESS}, \texttt{ESS}, etc.
+\end{enumerate}
 
-\bigskip
+%%FIXME starts a new page (when above \onecolumn): \twocolumn
+\medskip
 
 \Sect{Interacting with the S process}
 %%    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For use in a  process buffer `{\tt *S*}' ({\footnotesize S-inferior-mode}):
+For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
 
 \begin{tabI}
-  {\tt RET   }& Send a command \\
-  {\tt TAB   }& Complete S object name \\
-  {\tt C-a   }& Beginning of command \\
-  {\tt C-c C-w }& Delete last word \\
-  {\tt C-c C-u }& Delete this command \\
-  {\tt C-c C-c }& Break
+  \texttt{\RET   }& Send a command \\
+  \texttt{\TAB   }& Complete S object name \\
+  \texttt{C-c C-c }& Break \\
+  \texttt{C-g}     & interrupt Emacs' waiting for S\\
+  \texttt{C-a} / \texttt{C-e} & Beginning / End of command \\
+  \texttt{C-c C-u }& Delete this command \\
+  \texttt{C-c C-w }& Delete last word
 \end{tabI}
 
-\begin{tabTit}{Command history --- Menu ``{\tt In/Out}''}
-  {\tt M-p   }& Previous            command \\
-  {\tt M-n   }& Next \hspace{1.4em} command \\
-  {\tt M-r   }& Previous            similar command \\
-  {\tt M-s   }& Next \hspace{1.4em} similar command \\
-  {\tt M-r   }& Interactive search \\
-  {\tt M-C-r }& String search
+\begin{tabTit}{Command history (part of Menu `\texttt{In/Out}')}
+  \texttt{M-p   }& Previous            command \\
+  \texttt{M-n   }& Next \hspace{1.4em} command \\
+  \texttt{$\uparrow =$ \Ecmd{up}}
+              & Previous            similar command \\
+  \texttt{$\downarrow=$\sEcmd{down}}
+              & Next \hspace{1.4em} similar command \\
+  \texttt{C-c\RET}& Copy current input \\
+%  \texttt{M-C-r }& String search
+  \texttt{C-c C-r }& Top of last output \\
+  \texttt{C-c C-o }& Delete last output
 \end{tabTit}
 
-\begin{tabTit}{Viewing the transcript}
-  {\tt M-P   }& Move to last command \\
-  {\tt M-N   }& Move to next command \\
-  {\tt C-c C-b }& String search and move \\
-  {\tt C-c C-v }& Prompt at bottom of screen \\
-  {\tt C-c C-r }& Top of last output \\
-  {\tt C-c C-o }& Delete last output
-\end{tabTit}
+%% == ESS-transcript mode ?? ---
+%\begin{tabTit}{Viewing the transcript}
+%  \texttt{M-P   }& Move to last command \\
+%  \texttt{M-N   }& Move to next command \\
+%  \texttt{C-c C-b }& String search and move \\
+%  \texttt{C-c C-v }& Prompt at bottom of screen \\
+%\end{tabTit}
 
 \begin{tabTit}{Hot keys}
-  {\tt C-c C-v }& Help for S object \\
-  {\tt C-c C-e }& Execute a command \\
-  {\tt C-c C-x }& List objects \\
-  {\tt C-c C-s }& Display search list \\
-  {\tt C-c C-a }& Attach a directory \\
-  {\tt C-c C-d }& Edit an object \\
-  {\tt C-c C-l }& Load a source file
+  \texttt{C-c C-v }& Help for S object \\
+  \texttt{C-c C-l }& \textbf{L}oad source file {\small ($+$ error check!)}\\
+  \texttt{C-c C-x }& List objects \\
+  \texttt{C-c C-s }& Display \texttt{\textbf{s}earch} list \\
+  \texttt{C-c C-a }& \textbf{A}ttach a directory \\
+  \texttt{C-c C-d }& Edit an object {\small (\textbf{d}ump to file)}
 \end{tabTit}
 
 \begin{tabTit}{Others}
-  {\tt C-x `   }& Jump to last error \\
-%  {\tt C-c C-t }& Toggle Tek mode \\
-  {\tt C-c C-q }& Quit from S \\
-  {\tt C-c C-z }& Kill the S process
+  \texttt{C-c `   }& Jump to error after \texttt{C-c C-l}\\
+%  \texttt{C-c C-t }& Toggle Tek mode \\
+  \texttt{C-c C-q }& Quit from S \\
+  \texttt{C-c C-z }& Kill the S process
 \end{tabTit}\\[0.5cm]
 
+
+\Sect{Inside S Transcripts (I + O)}
+%%    ~~~~~~~~~~~~~~~~
+
+Inside \texttt{ESS transcript} buffers, (\texttt{*.Rout} files):
+
+\begin{tabI}
+  \texttt{\RET} & Send and Move \\
+  \texttt{C-c C-n}& Next \hspace{1.4em} prompt \\
+  \texttt{C-c C-p}& Previous            prompt \\
+  \texttt{C-c C-w}& Clean Region (i.e., transform to input only)
+\end{tabI}
 \pagebreak
 %%%%%%%%%%================================================================
 
 
-\Sect{Editing S source)}
+\Sect{Editing S source}
 %%    ~~~~~~~~~~~~~~~~
-
-For use in {\tt S-mode} edit buffers, ({\tt *.S} files):
+For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
 \begin{tabI}
-  {\tt TAB} & Indent this line \\
-  {\tt M-C-a} & Beginning of function \\
-  {\tt M-C-e} & End of function \\
-  {\tt M-C-q} & Indent this expression (use at `\texttt{\{}')\\
-  {\tt M-C-h} & Mark this function
+  \texttt{\TAB} & Indent this line \\
+  \texttt{C-c\TAB}& Complete S object name \\
+  \texttt{M-\TAB} & Complete file- / path- name \\
+  \texttt{M-C-a} & Beginning of function \\
+  \texttt{M-C-e} & End of function \\
+  \texttt{M-C-q} & Indent this expression (use at `\texttt{\{}')\\
+  \texttt{M-C-h} & Mark this function
 \end{tabI}
 
 \begin{tabTit}{Evaluation commands}
-  {\tt C-c C-l} & Load this buffer -- detect errors !\\
-  {\tt C-c C-n} & \underline{Step through code -- line by line} \\
-  {\tt C-c C-e} & Evaluate an expression \\
-  {\tt C-c C-j} & Evaluate this line \\
-  {\tt C-c M-j} & Evaluate this line and go \\
-  {\tt M-C-x}   & Evaluate this function \\
-  {\tt C-c C-f} & \underline{Evaluate this function} \\
-  {\tt C-c M-f} & Evaluate this function and go \\
-  {\tt C-c C-r} & \underline{Evaluate this region} \\
-  {\tt C-c M-r} & Evaluate this region and go \\
-  {\tt C-c C-b} & Evaluate this buffer \\
-  {\tt C-c M-b} & Evaluate this buffer and go \\
+  \texttt{C-c C-l} & Load this buffer -- detect errors !\\
+  \texttt{C-c C-n} & \underline{Step through code -- line by line} \\
+  \texttt{C-c C-e} & Evaluate an expression \\
+  \texttt{C-c C-j} & Evaluate this line \\
+  \texttt{C-c M-j} & Evaluate this line and go \\
+  \texttt{M-C-x}   & Evaluate this function \\
+  \texttt{C-c C-f} & \underline{Evaluate this function} \\
+  \texttt{C-c M-f} & Evaluate this function and go \\
+  \texttt{C-c C-r} & \underline{Evaluate this region} \\
+  \texttt{C-c M-r} & Evaluate this region and go \\
+  \texttt{C-c C-b} & Evaluate this buffer \\
+  \texttt{C-c M-b} & Evaluate this buffer and go \\
 \end{tabTit}
 
 \begin{tabTit}{Others}
-  %%-SfS-deleted:  {\tt M-TAB} & Complete S object name \\
-  {\tt C-c C-v }& Help for S object \\
-  {\tt C-c C-d }& ``{\tt dump}'' -- Edit another object \\
-  {\tt C-c C-y} & Return to S process \\
-  {\tt C-c C-z} & Return to S process at prompt.
+  %%-SfS-deleted:  \texttt{M-\TAB} & Complete S object name \\
+  \texttt{C-c C-v }& Help for S object \\
+  \texttt{C-c C-d }& ``\texttt{dump}'' -- Edit another object \\
+  %%\texttt{C-c C-y} & Return to S process \\
+  \texttt{C-c C-z} & Return to S process (at prompt)
 \end{tabTit}
 
-\begin{tabTit}{SfS commands}                            %-SfS-added
-  {\tt C-c f}   & insert function() header \\         %-SfS-added
-  {\tt M-TAB}   & Complete UNIX file- / path- name \\     %-SfS-added
-  {\tt C-c TAB} & Complete S object name \\             %-SfS-added
+\begin{tabTit}{At SfS, or activated by \texttt{M-x ess-add-MM-keys}}%-SfS-added
+  \texttt{C-c f}   & insert function() definition outline%-SfS-added
 \end{tabTit}\\[0.5cm]                                   %-SfS-added
 
 \Sect{Reading help files}
 %%    ~~~~~~~~~~~~~~~~~~
 
-For use in `{\tt *help($\ldots$)*}' help buffers:
+For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
 
 \begin{tabI}
-  {\tt SPC} & Next page \\
-  {\tt DEL} & Previous page \\
-  {\tt b}   & Previous page \\
-  {\tt /}   & Search forwards \\
-  {\tt n}   & Next section \\
-  {\tt p}   & Previous section \\
-  {\tt s}   & Jump to a named section \\
-  {\tt s e} & e.g., jump to ``EXAMPLES'' \\
-  {\tt l}   & evaluate EXAMPLE line \\
-  {\tt h}   & Help on another object \\
-  {\tt ?}   & Help for this mode \\
-  {\tt r}   & Evaluate current region \\
-  {\tt q}   & Return to S process \\
-  {\tt x}   & Kill this buffer and return \\
+  \texttt{SPC} & Next page \\
+  \texttt{DEL} & Previous page \\
+  \texttt{b}   & Previous page (`\textbf{b}ack')\\
+  \texttt{/}   & Search forwards \\
+  \texttt{n}   & \textbf{N}ext section \\
+  \texttt{p}   & \textbf{P}revious section \\
+  \texttt{s}   & \textbf{S}kip (`jump') to a named section \\
+  \texttt{s e} & e.g., \textbf{s}kip to ``\texttt{\textbf{E}xamples:}'' \\
+  \texttt{l}   & \underline{Evaluate one `Example' \textbf{l}ine} \\
+  \texttt{r}   & Evaluate current \textbf{r}egion \\
+  \texttt{h}   &\textbf{H}elp on another object \\
+  \texttt{?}   & Help for this mode \\
+  \texttt{q}   & Return to S process (`\textbf{q}uit) \\
+  \texttt{x}   & Kill this buffer and return (`e\textbf{x}it) \\
 \end{tabI}
 
 \end{document}
