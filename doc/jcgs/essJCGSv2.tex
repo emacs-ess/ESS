@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/04 19:50:22 $ - $Revision: 1.96 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/04 19:58:21 $ - $Revision: 1.97 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -997,54 +997,57 @@ This can be done by either:
 \label{sec:batch-file}
 
 Interactive processing with statistical analysis packages is very
-useful for data analysis with descriptive statistics and graphics.
-However, there are statistical programming situations for which it
-is not ideal.  Batch file processing with statistical analysis
-packages is a better choice when the time necessary for execution
-is more than a few seconds such as processing and analyzing a
-large amount of data.
-
+useful for exploratory data analysis.% with descriptive statistics and graphics.
+However, there are %statistical programming 
+situations for which it is not ideal.  Batch file processing with
+statistical analysis packages is a better choice when the long
+execution times are needed (such as in complex resampling or MCMC
+analyses), or when the results do not require immediate action, such
+as in time-based reports.
+%necessary for execution is more than a few seconds such as processing
+%and analyzing a large amount of data.
 
 \paragraph{\SAS.}
 \label{sec:sas-batch}
 
-For processing and analyzing large amounts of data, \SAS\ is a popular
-choice.  However, interactive \SAS\ is rarely used in these situations.
-Instead, a file containing \SAS\ commands is created and \SAS\ executes
-these commands in the background, or batch, while the user moves on to 
-other activities.
+\SAS\ is a popular choice for processing and analyzing large amounts
+of data.  However, interactive \SAS\ is rarely used in these
+situations.  Instead, a file containing \SAS\ commands is created and
+\SAS\ executes these commands in the background, or batch, while the
+user moves on to other activities.
 
-Emacs and ESS facilitate \SAS\ batch usage beginning
-with \stexttt{ESS[SAS]},
-the mode in which files with the \stexttt{sas} extension are opened.
-ESS defines \SAS\ syntax so that \stexttt{font-lock-mode} can highlight
-statements, procedures, functions, macros, datasets, comments and character 
-string literals in \SAS\ programs.  Optionally, the same language features 
-are highlighted in the \SAS\ log with the addition of log notes, warnings 
+Emacs and ESS facilitate \SAS\ batch usage beginning with
+\stexttt{ESS[SAS]}, the mode in which files with the \stexttt{sas}
+extension are opened.  ESS defines \SAS\ syntax so that
+\stexttt{font-lock-mode} can highlight statements, procedures,
+functions, macros, datasets, comments and character string literals in
+\SAS\ programs.  Optionally, the same language features are
+highlighted in the \SAS\ log with the addition of log notes, warnings
 and error messages.
 
-ESS maps the function keys in \stexttt{ESS[SAS]} mode, for files with the
-\stexttt{sas} extension, to match the definitions used by \SAS\
-Display Manager.  These definitions are optionally
-available in all modes, which is particularly useful
-while viewing \SAS\ log and \SAS\ listing files (with extensions of
-\stexttt{log} and \stexttt{lst} respectively).
+For files with the \stexttt{sas} extension, ESS binds the function
+keys in \stexttt{ESS[SAS]} mode to match the definitions used by \SAS\ 
+Display Manager.  These definitions are optionally available in all
+modes which can be useful when viewing \SAS\ log and \SAS\ listing
+files (with extensions of \stexttt{log} and \stexttt{lst}
+respectively).
 
-With one function key, you submit a \SAS\ batch process.  With others,
-you move between the \SAS\ program, the \SAS\ log and the \SAS\
-listing.  When accessed in this manner, the \SAS\ log and \SAS\
-listing in the Emacs buffer are automatically updated to match the
-files concurrently being appended by the \SAS\ batch process.  In
-addition, the \SAS\ log is searched for error messages and the error
-messages, if any, are sequentially displayed with consecutive key
-presses.
+Only one function key press is needed to submit a \SAS\ batch process.
+Other function keys bring up the \SAS\ program, the \SAS\ log and the
+\SAS\ listing buffers.  Note that %% When accessed in this manner, 
+the \SAS\ log and \SAS\ listing in the Emacs buffer are automatically
+updated to match the files concurrently being appended by the \SAS\ 
+batch process.  In addition, the \SAS\ log is searched for error
+messages and the error messages, if any, are sequentially displayed
+with consecutive key presses.
 
-Another function key opens a \SAS\ permanent dataset for editing or viewing.  
-An option is provided so that the tab and return keys operate in typewriter 
-fashion like they do in \SAS\ Display Manager.  This option also defines a 
-key to move the cursor to a previous tab-stop and delete any 
-characters between its present position and the tab-stop.  This is a \SAS\
-Display Manager feature that is not available in Emacs otherwise. 
+Another function key opens a \SAS\ permanent dataset for editing or
+viewing.  An option is provided so that the tab and return keys
+operate in typewriter fashion like they do in \SAS\ Display Manager.
+This option also defines a key to move the cursor to a previous
+tab-stop and delete any characters between its present position and
+the tab-stop.  This is a \SAS\ Display Manager feature that is not
+typically configured in Emacs.
 
 The \SAS\ batch process runs on the computer where the \SAS\ program
 resides.  If the \SAS\ program resides on a remote computer, then the
@@ -1110,27 +1113,23 @@ Running \SAS\ batch on remote computers is nearly transparent to the user.
 \paragraph{BUGS.}
 \label{sec:bugs-batch}
   
-BUGS software performs Markov Chain Monte Carlo simulations.  There is an 
-interactive capability, but it is not often used since the number of iterations
-in a typical analysis is large.
+BUGS software performs Markov Chain Monte Carlo simulations.  There is
+an interactive capability, but it is not often used since the analyses
+can take a long time. %number
+%of iterations in a typical analysis is large.
 % and can be very time-consuming.
 Most BUGS programs are executed as batch processes.
 
-Emacs and ESS facilitate BUGS batch 
-beginning with \stexttt{ESS[BUGS]},
-% This RAD environment starts when you open a file with the 
-the mode in which files with the \stexttt{bug} extension are opened.
-ESS defines BUGS syntax so that \stexttt{font-lock-mode} can highlight
-statements, distributions, functions, commands and comments in BUGS
-model files, command files and log files.  ESS creates templates
-for the command file from the model file so that a BUGS batch process
-can be defined by a single file.
-ESS provides a BUGS batch script that allows ESS to set BUGS batch 
-parameters.  ESS also supplies key-mappings to submit a BUGS batch
-process.  
-%future enhancement perhaps
-%ESS provides the same ESS-elsewhere support for BUGS batch
-%that it does for \SAS\ batch (see above).
+Emacs and ESS facilitate BUGS batch beginning with
+\stexttt{ESS[BUGS]}, the mode in which files with the \stexttt{bug}
+extension are opened.  ESS defines BUGS syntax so that
+\stexttt{font-lock-mode} can highlight statements, distributions,
+functions, commands and comments in BUGS model files, command files
+and log files.  ESS creates templates for the command file from the
+model file so that a BUGS batch process can be defined by a single
+file.  ESS provides a BUGS batch script that allows ESS to set BUGS
+batch parameters.  ESS also supplies key-mappings to submit a BUGS
+batch process.
 
 \paragraph{S, \Splus, and R.}
 There are two ways to look at S Batch.  One is the traditional batch
@@ -1249,6 +1248,10 @@ Rodney: SAS batch now works and Kermit was added as a method of transfer.
 %%then be extracted from the documentation text for realizing the
 %%statistical analysis.
 
+%future enhancement perhaps
+%ESS provides the same ESS-elsewhere support for BUGS batch
+%that it does for \SAS\ batch (see above).
+
 Important extensions which should be implemented in future
 versions include class browsers, analysis templates, tool-tips, and
 similar features.  Class browsers can be thought of as a tree or
@@ -1275,10 +1278,20 @@ to satisfy individual desires for interface styles as well as being
 extensible to additional statistical languages and analysis packages.
 
 
-\section*{ESS Resources on the Internet}
+
+\bibliographystyle{plainnat}
+%\pdfbookmark[1]{References}{section.7}
+\addcontentsline {toc}{section}{\numberline {}References}
+\bibliography{essJCGSv2}
+
+
+\appendix 
+\section{ESS Resources on the Internet}
 \addcontentsline {toc}{section}{\numberline {}ESS Resources on the Internet}
 \label{sec:access}
+
 \paragraph{Latest Version.}
+
 ESS is constantly in flux.  New versions of statistical
 packages, Emacs and operating systems require new releases of ESS to
 support them.  The latest stable version of ESS can be found on the web at
@@ -1287,26 +1300,24 @@ with problems, send e-mail to \url{ess-help@stat.math.ethz.ch}.
 The latest development, hence unstable, version can be obtained by
 anonymous CVS.  First type:
 
-  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login}
-
-  You will be prompted for a password which is ``\stexttt{anoncvs}''.  Then type: 
-
-  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess}
+\stexttt{cvs -d
+  :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login}
   
+You will be prompted for a password which is ``\stexttt{anoncvs}''.
+Then type:
 
-\paragraph{Additional documentation.} An expanded version of
-the present paper is in
-\citep{RMHHS:2001}.  A general introduction and usage instructions can
-be found in \citep{heiberger:dsc:2001}; in addition, one which is more
-focused on SAS can be found in \citep{heiberger:philasugi:2001}.  The
+\stexttt{cvs -d
+  :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co
+  ess}
+
+\paragraph{Additional documentation.} 
+
+An expanded version of the present paper is in \citep{RMHHS:2001}.  A
+general introduction and usage instructions can be found in
+\citep{heiberger:dsc:2001}; in addition, one which is more focused on
+SAS can be found in \citep{heiberger:philasugi:2001}.  The
 documentation that comes with ESS provides details of its
 implementation as well as examples of its use.
-
-
-\bibliographystyle{plainnat}
-%\pdfbookmark[1]{References}{section.7}
-\addcontentsline {toc}{section}{\numberline {}References}
-\bibliography{essJCGSv2}
 
 
 \end{document}
