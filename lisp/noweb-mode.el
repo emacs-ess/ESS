@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.5 1999/09/14 23:52:20 rossini Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.6 1999/09/15 06:03:39 ess Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -93,7 +93,7 @@
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.5 1999/09/14 23:52:20 rossini Exp $")
+  "$Id: noweb-mode.el,v 1.6 1999/09/15 06:03:39 ess Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")
@@ -1772,11 +1772,11 @@ If no buffer is given, create a new one with the same name as the thread."
 ;; The menu was also reorganised to make it less cluttered, so there
 ;; would be room for adding tangling and weaving commands (one day).
 
-;; Mouse navigation is supported, in so far as clicking mouse-1 on the
-;; '<<' of a chunk name moves to the previous instance of that chunk
-;; name, and clicking in the '>>' moves to the next instance. They are
-;; not mouse-hightlighted, though: too much hassle for zero added
-;; functionality. 
+;; Mouse navigation (at least under Emacs (AJR)) is supported, in so
+;; far as clicking mouse-1 on the '<<' of a chunk name moves to the
+;; previous instance of that chunk name, and clicking in the '>>'
+;; moves to the next instance. They are not mouse-hightlighted,
+;; though: too much hassle for zero added functionality.
 
 ;; noweb-doc-mode has been given its own syntax-table. It is the same
 ;; as the current doc-mode syntax-table, except that [[ is a comment
@@ -1823,7 +1823,8 @@ If no buffer is given, create a new one with the same name as the thread."
 ;; The name of `noweb-post-command-hook' changed to
 ;; `noweb-post-command-function', since it is a function.
 
-;; All the highlighting code moved to a separate file (noweb-font-lock-mode.el)
+;; All the highlighting code moved to a separate file:
+;; (noweb-font-lock-mode.el)
 
 ;; Menu driven tangling is in the process of being added. It can
 ;; currently tangle a single chunk or a series of  chunks with the
