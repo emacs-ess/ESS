@@ -77,8 +77,7 @@
     ("Data" "^\\(.+\\)\\s-*<-[ \t\n]*\\(read\\|.*data\.frame\\).*(" 1)))
 
 (defun ess-imenu-S (&optional arg)
-  "S Language Imenu support for ESS.
-Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
+  "S Language Imenu support for ESS."
   (interactive)
   (setq imenu-generic-expression ess-imenu-S-generic-expression)
   (imenu-add-to-menubar "Imenu-S"))
