@@ -1,3 +1,12 @@
+Wed Oct 22 15:10:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (dist): dist target now works; being too ambitious
+	resulted in the loss of below.
+
+1997-10-22  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* WHOOPS.  Stupid mistake, lost 2 days of ChangeLog activity.
+
 Mon Oct 20 14:20:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-help.el (ess-display-help-on-object): set the customization
@@ -413,6 +422,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.4  1997/10/22 19:12:30  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.3  1997/10/20 18:21:29  rossini
 	* Removing *** empty log message ***
 	* Removing
