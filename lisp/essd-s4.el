@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/12/02 14:13:51 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: essd-s4.el,v 5.1 1997/12/02 14:13:51 rossini Exp $
+;; Modified: $Date: 1997/12/16 00:17:24 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: essd-s4.el,v 5.2 1997/12/16 00:17:24 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -102,6 +102,11 @@ New way to do it."
   (inferior-ess))
 
 
+(defun S4-mode (&optional proc-name)
+  "Major mode for editing S4 source.  See ess-mode for more help."
+  (interactive)
+  (setq ess-customize-alist S4-customize-alist)
+  (ess-mode S4-customize-alist proc-name))
 
 
 ;; From RMH:    ALL THIS SHOULD BE INCORPORATED BY 5.0!
