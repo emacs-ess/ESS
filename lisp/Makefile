@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.37 1997/07/03 13:32:14 rossini Exp $
+## $Id: Makefile,v 1.38 1997/07/17 21:10:59 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.38  1997/07/17 21:10:59  rossini
+## increased version.
+##
 ## Revision 1.37  1997/07/03 13:32:14  rossini
 ## redid compile order.
 ##
@@ -99,7 +102,8 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 4.9-b7
+VERSION = 4.9-b8
+
 LASTVERSION = 4.8.MM6.XE3
 
 # have to preload the files that contain macro definitions or the
