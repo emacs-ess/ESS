@@ -7,12 +7,16 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/26 01:55:32 $
-;; Version: $Revision: 1.44 $
-;; RCS: $Id: ess-inf.el,v 1.44 1997/07/26 01:55:32 rossini Exp $
+;; Modified: $Date: 1997/07/31 12:57:02 $
+;; Version: $Revision: 1.45 $
+;; RCS: $Id: ess-inf.el,v 1.45 1997/07/31 12:57:02 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.45  1997/07/31 12:57:02  rossini
+;; removed store/remove defvars to ess-var, made buffer local, and added
+;; customizations in essd-r, essd-s+3 (thanks, DB).
+;;
 ;; Revision 1.44  1997/07/26 01:55:32  rossini
 ;; comint-process-echoes is nil if ess-proc-prefix is "XLS".
 ;;
@@ -806,12 +810,6 @@ With argument, positions cursor at end of buffer."
       (setq ess-current-process-name nil)))
 
  ; Functions for evaluating code
-
-(defvar ess-save-lastvalue-command
-  "assign(\"smode.lvsave\",.Last.value,frame=0)\n")
-
-(defvar ess-retr-lastvalue-command
-  ".Last.value <- get(\"smode.lvsave\",frame=0)\n")
 
 (defun ess-prompt-wait (proc &optional start-of-output)
   "Wait for a prompt to appear at BOL of current buffer
