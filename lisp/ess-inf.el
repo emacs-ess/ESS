@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/09/14 20:26:06 $
-;; Version: $Revision: 5.25 $
-;; RCS: $Id: ess-inf.el,v 5.25 1999/09/14 20:26:06 rossini Exp $
+;; Modified: $Date: 1999/09/15 22:09:20 $
+;; Version: $Revision: 5.26 $
+;; RCS: $Id: ess-inf.el,v 5.26 1999/09/15 22:09:20 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -705,12 +705,12 @@ Waits for prompt after each line of input, so won't break on large texts."
     (set-buffer sbuffer)
 
     ;; the following is required to make sure things work!
-    (ess-write-to-dribble-buffer
-     (format "(eval-visibly 0): lang invisibly=%s \n" ess-language invisibly))
-    (if (string= ess-language "STA")
-	(setq invisibly t))
-    (ess-write-to-dribble-buffer
-     (format "(eval-visibly 1): lang invisibly=%s \n" ess-language invisibly))
+;    (ess-write-to-dribble-buffer
+;     (format "(eval-visibly 0): lang invisibly=%s \n" ess-language invisibly))
+;    (if (string= ess-language "STA")
+;	(setq invisibly t))
+;    (ess-write-to-dribble-buffer
+;     (format "(eval-visibly 1): lang invisibly=%s \n" ess-language invisibly))
 
     (goto-char (marker-position (process-mark sprocess)))
     (if (stringp invisibly)
@@ -1145,7 +1145,7 @@ to continue it."
   ;; AJR: Stata is hell.   This is the primary configuration point.
   (if (string= ess-language "STA")
       (progn 
-	(setq comint-input-sender 'inferior-STA-input-sender)
+	;(setq comint-input-sender 'inferior-STA-input-sender)
 	(setq comint-process-echoes t)))
 
   (ess-write-to-dribble-buffer
@@ -1206,7 +1206,7 @@ to continue it."
   (ess-eval-visibly (concat string "\n")))
 
 (defun inferior-STA-input-sender (proc string)
-  (ess-eval-visibly (concat string "\n") t t))
+  (ess-eval-visibly (concat string "\n"))) ; t t))
 
 ;;> <PD writes>:
 ;;> Also, invoking help() from the command line may lead to confusing
