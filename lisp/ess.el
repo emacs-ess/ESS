@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 1.69 1997/11/17 13:56:41 rossini Exp $
+;; Version: $Id: ess.el,v 1.70 1997/11/19 15:57:23 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -191,9 +191,9 @@
 	(condition-case ()
 	    (load ess-object-name-db-file)
 	  (error
-	   (message "%s does not exist.  Consider running ess-create-object-name-db."
-	   	    ess-object-name-db-file)
-	      (ding)
+	   ;;(message "%s does not exist.  Consider running ess-create-object-name-db."
+	   	;;    ess-object-name-db-file)
+;;	      (ding)
 	      (sit-for 1))))))
 
 
