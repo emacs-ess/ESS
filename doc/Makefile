@@ -44,12 +44,12 @@ readme.ps  : readme.dvi; dvips $^ -o $@
 
 ## this shall remove *exactly* those things that are *not* in version control:
 clean :
-	-@rm -f readme.pdf *.aux *.cp *.cps *.dvi *.fn *.fns *.ky *.kys \
+	-@rm -f $(PDFs) *.aux *.cp *.cps *.dvi *.fn *.fns *.ky *.kys \
 	  *.log *.out *.pg *.pgs *.ps *.ps-2 *.tmp *.toc *.tp *.vr *.vrs
 
 ## this removes also things in VC (when they are remade by "make"):
 distclean : clean
-	-@rm -f ess.pdf html/* info/*.info*
+	-@rm -f $(TXTs) html/* info/*.info*
 
 ../README: $(TEXISRC)
 	$(MAKETXT) readme.texi \
