@@ -58,17 +58,17 @@ are very welcome!
 @center for interacting with statistical
 @center software packages (primarily 
 @center S(plus), R, XLispStat, and SAS).
-@sp7
-@center Original Documentation by David Smith
-@center (@code{D.M.Smith@@lancaster.ac.uk})
-@center Department of Mathematic and Statistics
-@center Lancaster University, UK
-@sp7
+@sp5
 @center Current Documentation by A.J. Rossini
 @center (@code{rossini@@stat.sc.edu})
 @center Department of Statistics
 @center University of South Carolina, USA.
-@center Documentation version: $Revision: 1.4 $.
+@center Documentation version: $Revision: 1.5 $.
+@sp2
+@center Original Documentation by David Smith
+@center (@code{D.M.Smith@@lancaster.ac.uk})
+@center Department of Mathematic and Statistics
+@center Lancaster University, UK
 @page
 @vskip 0pt plus 1filll
 Copyright @copyright{} 1992, 1993, 1994, 1995 David M. Smith
