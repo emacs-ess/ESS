@@ -104,32 +104,34 @@ important with the rise of computational tools such as resampling
 methods such as the bootstrap and jackknife, as well as simulation
 methods such as Markov Chain Monte Carlo (MCMC).
 
-One issue that quickly arises is that different tools have different
-strengths, and optimal use can require switching back and forth
-between tools for data analysis.  For example, general purpose tools
-such as R \citep{ihak:gent:1996} and \Splus\ are limited in scope for
-Bayesian analyses, which tools such as BUGS are useful for.  From
-another point of view, specialized tools such as BUGS are not as easy
-to construct more general analyses and graphics as \Splus\ and R.  This
-leads to an efficiency gain when using multiple tools for both
-theoretical and applied statistical research.
+One issue that arises quickly is that different analytic tools are
+targeted for particular forms of statistical analysis.  This suggests
+that optimal use requires switching between data analysis tools.  For
+example, general purpose tools such as R \citep{ihak:gent:1996} and
+\Splus\ are limited in terms of ease of use for performing Bayesian
+analyses when compared to tools such as BUGS
+\citep{SpieThomBest:1999}.  From another point of view, specialized
+tools such as BUGS are not as easy to construct more general analyses
+and graphics as \Splus\ and R.  This leads to a potential efficiency
+gain through the use of using multiple computational tools for complex
+statistical analyses.
 
-The Emacs Speaks Statistics (ESS) project's primary goal is to provide
-a single point of interface for text-based input and output for
-statistical computing.  The primary user tasks which ESS focuses on
-for optimization and efficiency are statistical coding and interactive
-data analysis.  Statistical coding is the writing of computer code for
-data analysis.  This code might be compiled into an object file using
-a compiler, for example C or Fortran; or it might be run by an
-interpreter, for example, SAS, \Splus\, R, or Python.  The task of
-entering of commands for interactive data analysis is similar.  The
-primary difference is that the results of a small set of commands are
-of critical interest for review in the latter, but the results of all
-commands are of interest in the former.  Both of these tasks can be
-present at the same time, for example in the use of compiled Fortran
-code for optimization, which is being called from an interpreted
-language, such as \Splus, R, or XLispStat, containing the objective
-function to optimize.
+Emacs Speaks Statistics (ESS) is intended to provide a single point of
+interface for statistical computing tasks using a keyboard.  The
+primary user tasks which ESS focuses on for optimization and
+efficiency are statistical coding and interactive data analysis.
+Statistical coding is the writing of computer code for data analysis.
+This code might be compiled into an object file using a compiler, for
+example C or Fortran; or it might be run by an interpreter, for
+example, SAS, \Splus\, R, or Python.  The task of entering of commands
+for interactive data analysis is similar.  The primary difference is
+that the results of a small set of commands are of critical interest
+for review in the latter, but the results of all commands are of
+interest in the former.  Both of these tasks can be present at the
+same time, for example in the use of compiled Fortran code for
+optimization, which is being called from an interpreted language, such
+as \Splus, R, or XLispStat, containing the objective function to
+optimize.
 
 One natural issue that follows is that not all of the languages or
 statistical packages have similar interfaces.  This means that it
@@ -342,7 +344,7 @@ editing back into the statistical package/process.
 
 %%% MAKE THIS INTO A PARAGRAPH
 ESS also facilitates the editing of source code by providing a means
-for loading and error-checking of code for S, LispStat, and SAS.  This
+for loading and error-checking of code for S, XLispStat, and SAS.  This
 allows for one form of crude source-level debugging.
 
 %%% MAKE THIS INTO A PARAGRAPH
@@ -353,7 +355,7 @@ allows for one form of crude source-level debugging.
 %\item Command-line completion of object names (currently S only) and file names
 %\item Quick access to object lists and search lists (currently S only)
 %\item Transcript recording
-%\item Interface to the help system (currently S, LispStat, and Stata)
+%\item Interface to the help system (currently S, XLispStat, and Stata)
 %\end{itemize}
 iESS, the mode for controlling interactive processes, allows for
 command-line editing and saving history, as well as recalling and
@@ -361,7 +363,7 @@ searching for previously entered commands.  File completion exists,
 and for for S languages, there exists object and function completion.
 Transcripts are easily recorded and editable into a coherent activity
 log, and there is a good interface to the help systems for S,
-LispStat, and Stata.
+XLispStat, and Stata.
 
 %%% MAKE THIS INTO A PARAGRAPH
 %Transcript manipulation (S3, S+3, S4, R, XLispStat)
