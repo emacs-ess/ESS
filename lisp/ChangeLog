@@ -1,3 +1,8 @@
+2000-08-09  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-help.el (ess-display-help-on-object): Inherit syntax-table;
+	  this should make the "default prompt" work for "help inside help".
+
 2000-07-08  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): only when

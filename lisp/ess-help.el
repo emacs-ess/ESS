@@ -8,9 +8,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>, MM
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/06/19 22:40:33 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: ess-help.el,v 5.13 2000/06/19 22:40:33 ess Exp $
+;; Modified: $Date: 2000/08/09 13:12:18 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: ess-help.el,v 5.14 2000/08/09 13:12:18 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -120,14 +120,15 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
   (let* ((hb-name (concat "*help["
 			  ess-current-process-name
 			  "](" object ")*"))
-	 (old-hb-p (get-buffer hb-name))
+	 (old-hb-p	(get-buffer hb-name))
 	 (curr-win-mode major-mode)
-	 (tbuffer (get-buffer-create hb-name))
-	 (curr-help-command inferior-ess-help-command)
+	 (tbuffer 	(get-buffer-create hb-name))
+	 (curr-help-command		inferior-ess-help-command)
 	 ;;-- pass the buffer-local 'ess-help-sec-..'  to the ess-help buffer:
-	 (curr-help-sec-regex	   ess-help-sec-regex)
-	 (curr-help-sec-keys-alist ess-help-sec-keys-alist)
-	 (alist ess-local-customize-alist))
+	 (curr-help-sec-regex	        ess-help-sec-regex)
+	 (curr-help-sec-keys-alist	ess-help-sec-keys-alist)
+	 (curr-help-syntax-table	(syntax-table))
+	 (alist		ess-local-customize-alist))
 
     (set-buffer tbuffer)
     (ess-setq-vars-local (eval alist) (current-buffer))
@@ -184,6 +185,8 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	  (if (eq curr-win-mode 'ess-help-mode)
 	      (switch-to-buffer tbuffer)
 	    (ess-display-temp-buffer tbuffer))
+	  (if curr-help-syntax-table
+	      (set-syntax-table curr-help-syntax-table))
 	  (set-buffer-modified-p 'nil)
 	  (toggle-read-only t))))))
 
