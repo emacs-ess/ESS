@@ -1,13 +1,13 @@
 ;;; ess-batch.el --- Emacs functions used by ESS[SAS] and ESS[BUGS]
 
-;; Copyright (C) 2002 R. Sparapani.
+;; Copyright (C) 2002--2004 R. Sparapani.
 
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Created: 23 Jan 2002
-;; Modified: $Date: 2002/01/23 16:41:26 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: ess-batch.el,v 1.1 2002/01/23 16:41:26 rsparapa Exp $
+;; Modified: $Date: 2004/02/19 06:04:04 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: ess-batch.el,v 1.2 2004/02/19 06:04:04 rossini Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
