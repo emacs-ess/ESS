@@ -1,4 +1,4 @@
--*- text -*-
+-*- indented-text -*-
 
 ESS VERSION 5.0
 ------------------
@@ -67,7 +67,16 @@ See the file NEWS for changes in recent versions.
 Future features include a language-independent data analysis UI (and
 analysis GUI), as well as links with Literate Programming methodology.
 
-2. REQUIREMENTS
+2. STABILITY
+------------
+
+Version 5.0 is meant as a functional release.  However, there are a
+few known bugs (and countless other undiscovered ones); see the TODO
+file for details.  Bug reports are solicited; see the BUGS section
+below.  Fixes and patches with bug reports are appreciated!
+
+
+3. REQUIREMENTS
 ---------------
 
 ESS version 5.0 requires Emacs version 19.29 or later, or version
@@ -82,17 +91,31 @@ It has been most thoroughly tested with:
 
 It may need some work with other configurations.
 
+4. GETTING THE LATEST VERSION
+-----------------------------
 
-3. STABILITY
-------------
+The latest stable version of ESS is always available by WWW from:
 
-Version 5.0 is meant as a functional release.  However, there are a
-few known bugs (and countless other undiscovered ones); see the TODO
-file for details.  Bug reports are solicited; see the BUGS section
-below.  Fixes and patches with bug reports are appreciated!
+	http://www.stat.sc.edu/~rossini/projects/
+	ftp://ftp.math.sc.edu/rossini/
+	http://www.maths.lancs.ac.uk:2080/~maa036/elisp/S-mode/
+	ftp://wingra.stat.wisc.edu/pub/src/emacs-lisp/.
+??	ftp://ftp.stat.wisc.edu/
+??	ftp://franz.stat.wisc.edu/
+
+The latest alpha version of ESS is available via WWW or FTP, and can be
+found in the directory specified by:
+
+	http://www.stat.sc.edu/~rossini/projects/
+	ftp://ftp.math.sc.edu/rossini/
+
+Documentation can be found at:
+
+	http://www.stat.math.ethz.ch/ESS/
 
 
-4. INSTALLATION
+
+5. INSTALLATION
 ---------------
 
 * cd to a directory where you keep emacs lisp files, or create a new
@@ -102,6 +125,9 @@ below.  Fixes and patches with bug reports are appreciated!
   the ESS source, which will be termed "the ESS-5.0 directory".  Note
   that the .elc files may be installed elsewhere (as specified in the
   Makefile) if desired.
+
+* Retrieve the compressed tar file from one of the FTP or WWW archive
+  sites via FTP (or HTTP).
 
 * Copy ESS-5.0.tar.gz to the location where you want the ESS-5.0
   directory, and cd there.  Extract the files from the distribution,
@@ -145,7 +171,7 @@ below.  Fixes and patches with bug reports are appreciated!
 
   to your .emacs file (or to default.el, for a site-wide
   installation).  Replace `/PATH' above with the value of
-  S-lisp-directory as defined in S-site.el.
+  ess-lisp-directory as defined in ess-site.el.
 
 * To edit statistical programs, load the files with the requiste
   extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and ".lsp" 
@@ -176,7 +202,7 @@ below.  Fixes and patches with bug reports are appreciated!
 * That's it!
 
 
-5. BUGS
+6. BUGS
 -------
 
 Please send bug reports, suggestions etc. to
@@ -191,25 +217,6 @@ This also gives the maintainers valuable information about your
 installation which may help us to identify or even fix the bug.
 
 
-6. GETTING THE LATEST VERSION
------------------------------
-
-The latest stable version of ESS is always available by WWW from:
-
-	http://www.maths.lancs.ac.uk:2080/~maa036/elisp/S-mode/
-	ftp://wingra.stat.wisc.edu/pub/src/emacs-lisp/.
-??	ftp://ftp.stat.wisc.edu/
-??	ftp://franz.stat.wisc.edu/
-
-The latest alpha version of ESS is available via WWW or FTP, and can be
-found in the directory specified by:
-
-	http://www.stat.sc.edu/~rossini/projects/
-	ftp://ftp.math.sc.edu/rossini/
-
-Documentation can be found at:
-
-	http://www.stat.math.ethz.ch/ESS/
 
 
 7. THE ESS MAILING LIST
