@@ -1,7 +1,7 @@
 @itemize @bullet
 @item Languages Supported:
   @itemize @bullet
-  @item S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
+  @item S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x, and R)
   @item SAS
   @item BUGS
   @item Stata 

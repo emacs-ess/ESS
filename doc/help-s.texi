@@ -62,7 +62,7 @@ To start up iESS mode, use:
    M-x R
 @end example
 
-(for S-PLUS 3.x, S4, S+5, S+6 and R, respectively.  This assumes that
+(for S-PLUS 3.x, S4, S+5, S+6 or S+7, and R, respectively.  This assumes that
 you have access to each).  Usually the site will have defined one of
 these programs (by default S+6) to the simpler name:
 

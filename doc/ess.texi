@@ -244,7 +244,7 @@ mode @code{ESS[language]}, where @code{language} can take values such as
 (the connection between emacs and the running process) referred to as inferior ESS
 (@code{iESS}), is denoted in the modeline by @code{ESS[dialect]}, where
 @code{dialect} can take values such as @code{S3}, @code{S4}, @code{S+3},
-@code{S+4}, @code{S+5}, @code{S+6}, @code{R}, @code{XLS}, @code{VST}, @code{SAS}.
+@code{S+4}, @code{S+5}, @code{S+6}, @code{S+7}, @code{R}, @code{XLS}, @code{VST}, @code{SAS}.
 
 Currently, the documentation contains many references to @cite{`S'}
 where actually any supported (statistics) language is meant, i.e., `S'
@@ -2602,7 +2602,7 @@ is non-@code{nil}.
 
 @cindex winjava
 
-S+6.2 on Windows contains a java library that supports graphics.  Send
+S+6.1 and newer on Windows contains a java library that supports graphics.  Send
 the commands:
 
 @example

@@ -52,7 +52,7 @@ Edit the file @file{ESSDIR/ess-VERSION/lisp/ess-site.el} as explained in the
 comments section of that file.
 @comment Installations that are using ESS only for S-Plus
 @comment 6.x will probably not need to make any changes.  Installations that also
-@comment have one or more of (S4, S+3/4/5, R, SAS, BUGS, XLispStat, Stata)
+@comment have one or more of (S4, S+3/4/5/6/7, R, SAS, BUGS, XLispStat, Stata)
 @comment may need to uncomment corresponding lines in @file{ESSDIR/ess-VERSION/lisp/ess-site.el}.
 
 @item
@@ -238,7 +238,7 @@ extensions  (".sas" for SAS, ".S" or "s" or "q" or "Q" for S-PLUS,
 @item
 To run statistical processes under emacs:
 
-To start the S-PLUS 6.x GUI from ESS under emacs:
+To start the S-PLUS [67].x GUI from ESS under emacs:
 @example
 M-x S
 (or @code{M-x S+6}).
@@ -255,7 +255,7 @@ from the emacs buffer containing your S program (for example,
 @code{C-c C-n} or @code{C-c C-r} keys.
 (If you are still using S-PLUS 4.x or 2000, then use @code{M-x S+4}.)
 
-To start an S-PLUS 6.x session inside an emacs buffer---and
+To start an S-PLUS [67].x session inside an emacs buffer---and
 without the S-PLUS GUI:
 @example
 M-x Sqpe
