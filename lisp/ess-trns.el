@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/06/20 21:52:06 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: ess-trns.el,v 5.14 2002/06/20 21:52:06 rsparapa Exp $
+;; Modified: $Date: 2003/11/05 13:22:42 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: ess-trns.el,v 5.15 2003/11/05 13:22:42 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -104,6 +104,7 @@
   (define-key ess-transcript-mode-map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
   (define-key ess-transcript-mode-map "\C-c\C-t" 'ess-execute-in-tb)
   (define-key ess-transcript-mode-map "\C-c\t"	 'ess-complete-object-name)
+  (define-key ess-transcript-mode-map "\C-a"	 'comint-bol)
   (define-key ess-transcript-mode-map "\M-\t"	 'comint-replace-by-expanded-filename)
   (define-key ess-transcript-mode-map "\M-?"	 'comint-dynamic-list-completions)
   (define-key ess-transcript-mode-map "\C-c\C-k" 'ess-request-a-process)
@@ -179,7 +180,7 @@ in the region, leaving only the S commands.  Other keybindings are:
   (require 'ess-inf)
   (kill-all-local-variables)
   (toggle-read-only t) ;; to protect the buffer.
-  (ess-setq-vars-local alist (current-buffer))
+  (ess-setq-vars-local alist); (current-buffer))
   (setq major-mode 'ess-transcript-mode)
   (setq mode-name "ESS Transcript")
   (use-local-map ess-transcript-mode-map)
