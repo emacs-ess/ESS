@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2002/08/08 09:02:53 $
-;; Version: $Revision: 1.36 $
-;; RCS: $Id: ess-cust.el,v 1.36 2002/08/08 09:02:53 maechler Exp $
+;; Modified: $Date: 2002/08/26 09:29:37 $
+;; Version: $Revision: 1.37 $
+;; RCS: $Id: ess-cust.el,v 1.37 2002/08/26 09:29:37 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -201,7 +201,7 @@ Used to adjust for changes in versions of the program"
 
 (make-variable-buffer-local 'ess-dialect)
 ;;(setq-default ess-dialect "Initial-dialect")
-(setq-default ess-dialect nil)		
+(setq-default ess-dialect nil)
 ;;; SJE -- why use "Initial-dialect"?  If we use nil, it matches "None"
 ;;; in the custom choice.
 
@@ -260,7 +260,7 @@ incorrectly, the right things will probably still happen, however."
   :group 'ess-edit
   :type 'boolean)
 
-;;; SJE -- this is set in ess-site.el to be "always", so I changed 
+;;; SJE -- this is set in ess-site.el to be "always", so I changed
 ;;; value t to be "always", so that ess-site.el does not need editing.
 ;;; However, this is a bit messy, and would be nicer if ess-site.el
 ;;; value was t rather than "always".
@@ -541,19 +541,19 @@ Good for evaluating ESS code."
 
 (defcustom ess-kermit-command "gkermit -T"
     "*Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
-    :group 'ess  
+    :group 'ess
     :type  'string
 )
 
 (defcustom ess-kermit-prefix "#"
     "*String files must begin with to use kermit file transfer."
-    :group 'ess  
+    :group 'ess
     :type  'string
 )
 
 (defcustom ess-kermit-remote-directory "$HOME"
     "*Buffer local variable that designates remote directory of file."
-    :group 'ess  
+    :group 'ess
     :type  'string
 )
 
@@ -1056,7 +1056,7 @@ This format string should use %s to substitute an object name."
 
 This format string should use %s to substitute an object name."
   :group 'ess-command
-  :type 'ess-string)
+  :type 'string)
 
 (make-variable-buffer-local 'inferior-ess-exit-command)
 (setq-default inferior-ess-exit-command "q()\n")
