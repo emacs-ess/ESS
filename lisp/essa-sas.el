@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/08/19 20:56:57 $
-;; Version: $Revision: 1.145 $
-;; RCS: $Id: essa-sas.el,v 1.145 2003/08/19 20:56:57 rsparapa Exp $
+;; Modified: $Date: 2003/10/26 05:11:50 $
+;; Version: $Revision: 1.146 $
+;; RCS: $Id: essa-sas.el,v 1.146 2003/10/26 05:11:50 rmh Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -889,7 +889,8 @@ RET to `newline'.")
 (defun ess-sas-edit-keys-toggle (&optional arg)
   "Toggle TAB key in `SAS-mode'.
 If arg is null, toggle `ess-sas-edit-keys-toggle'.
-If arg is nil, TAB is `sas-indent-line'.
+If arg is nil, TAB is `sas-indent-line',
+RET is `newline-and-indent'.
 If arg is non-nil, TAB is `ess-sas-tab-to-tab-stop', 
 C-TAB is `ess-sas-backward-delete-tab' and
 RET is `newline'.
@@ -906,6 +907,7 @@ Without args, toggle between these options."
 	;else
         (define-key sas-mode-local-map [return] 'newline)
 	(define-key sas-mode-local-map "\t" 'ess-sas-tab-to-tab-stop))
+    (define-key sas-mode-local-map [return] 'newline-and-indent)
     (define-key sas-mode-local-map "\t" 'sas-indent-line)))
 
 (defvar ess-sas-global-pc-keys nil
