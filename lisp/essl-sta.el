@@ -6,9 +6,9 @@
 ;;         Brendan Halpin <brendan@essex.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/11/16 21:11:22 $
-;; Version: $Revision: 5.21 $
-;; RCS: $Id: essl-sta.el,v 5.21 1999/11/16 21:11:22 ess Exp $
+;; Modified: $Date: 1999/12/01 00:14:53 $
+;; Version: $Revision: 5.22 $
+;; RCS: $Id: essl-sta.el,v 5.22 1999/12/01 00:14:53 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -1196,7 +1196,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp"
 	(process-send-string stata-process the-subject)
 	(process-send-string stata-process "\n")
 	(stata-prompt-wait stata-process)
-	(stata-help-mode)
+	;;(stata-help-mode)
 	(set-buffer stata-buffer)
 	(set-process-buffer stata-process oldpb)
 	(set-process-filter stata-process oldpf)
@@ -1401,17 +1401,17 @@ PROC is the stata process. Does not change point"
 ;;
 ;;
 ;;
-;;(defvar stata-help-mode-map nil)
-;;(setq stata-help-mode-map (cons 'keymap help-mode-map))
-;;(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
-;;(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
-;;(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
-;;(define-key stata-help-mode-map [menu-bar stata] 
-;;  (cons "Stata" (make-sparse-keymap "Stata")))
-;;(define-key stata-help-mode-map [menu-bar stata statahelp]
-;;  '("Help on..." . stata-help))
-;;(define-key stata-help-mode-map [menu-bar stata rehelp]
-;;  '("rehelp (hyperlink)" . stata-rehelp))
+(defvar stata-help-mode-map nil)
+(setq stata-help-mode-map (cons 'keymap help-mode-map))
+(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
+(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
+(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
+(define-key stata-help-mode-map [menu-bar stata] 
+  (cons "Stata" (make-sparse-keymap "Stata")))
+(define-key stata-help-mode-map [menu-bar stata statahelp]
+  '("Help on..." . stata-help))
+(define-key stata-help-mode-map [menu-bar stata rehelp]
+  '("rehelp (hyperlink)" . stata-rehelp))
 ;;
 
 
@@ -1444,15 +1444,17 @@ PROC is the stata process. Does not change point"
 ;;  (interactive)
 ;;  (inferior-stata-mode))
 ;;
-;;(defun stata-help-mode ()
-;;"Major mode for displaying Stata help in a read-only
-;;buffer. Active commands are Help (\\[stata-help]) and
-;;hyperlink (\\[stata-rehelp] or mouse-2)"
-;;  (interactive)
-;;  (setq major-mode 'stata-help-mode)
-;;  (setq mode-name "Stata help")
-;;  (use-local-map stata-help-mode-map)
-;;  (setq buffer-read-only t))
+
+(defun stata-help-mode ()
+  "Major mode for displaying Stata help in a read-only buffer. 
+Active commands are Help (\\[stata-help]) and hyperlink
+(\\[stata-rehelp] or mouse-2)" 
+  (interactive)
+  (setq major-mode 'stata-help-mode)
+  (setq mode-name "Stata help")
+  (use-local-map stata-help-mode-map)
+  (setq buffer-read-only t))
+
 ;;
 ;;
 ;;(defun stata-mode ()
