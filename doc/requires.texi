@@ -1,11 +1,11 @@
-ESS has been most thoroughly tested with:
+ESS has been tested with
 
 @itemize @bullet
 @item S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
 @item R >=0.49
 @item S4
-@item SAS >=6.x
-@item BUGS 0.603
+@item SAS >=6.12
+@item BUGS 0.5, 0.603
 @item Stata >=6.0
 @item XLispStat >=3.50
 @end itemize
@@ -24,15 +24,14 @@ with the following versions of emacs
 
 @itemize @bullet
 @item GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
-@item XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13@footnote{
-requires the files.el patch for the Local Variables updating
-problem}, 21.4.14
+@item XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17@footnote{
+requires the files.el patch to revert-buffer for the Local Variables 
+updating problem}, 21.4.14-15
 @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no 
 longer supported, so an upgrade is recommended if you plan to use ESS.
 If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note
 that the `custom' library bundled with Emacs 19.34 is too _old_, its API is
 incompatible with the `new custom' bundled with recent Emacsen.
 The `new custom' for Emacs 19.34 is available for download
-@uref{ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz, here}
-.}
+@uref{ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz, here}.}
 @end itemize
