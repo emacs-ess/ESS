@@ -1,4 +1,11 @@
 
+Changes/New Features in 5.1.10:
+@itemize @bullet
+@item More fixes to Stata mode
+@item primitive generic version of ESS-elsewhere
+@item Small fixes to SAS/Stata.
+@end itemize
+
 Changes/New Features in 5.1.9:
 @itemize @bullet
 @item Stata mode works
