@@ -25,23 +25,23 @@ Getting the Latest Version
 ==========================
 
    The latest stable version of ESS is always available on the web at:
-ESS web page (http://software.biostat.washington.edu/ess/) or StatLib
-(http://lib.stat.cmu.edu/general/ESS/)
+ESS web page (http://www.analytics.washington.edu/downloads/ess/) or
+StatLib (http://lib.stat.cmu.edu/general/ESS/)
 
    The latest public version of ESS can also be retrieved via cvs
 client.  If you have a firewall, then you may need to take appropriate
 action.
 
    The repository name is
-     :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs
+     :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs
 
    Using a command-line cvs client (i.e. on Unix or DOS), first type:
-     cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login
+     cvs -d :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs login
 
    The password is "anoncvs".
 
    Then type:
-     cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess
+     cvs -d :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs co ess
 
 Current Features
 ================
@@ -226,9 +226,9 @@ in the file COPYING in the same directory as this file for more details.
 New Features
 ============
 
-   Changes/New Features in 5.2.0:
-   * ESS[BUGS]:  now supports interactive processing; special thanks to
-     Aki Vehtari (mailto:Aki.Vehtari@hut.fi); new info documentation!
+   Changes/New Features in 5.2.0beta1:
+   * ESS[BUGS]:  now supports interactive processing thanks to Aki
+     Vehtari (mailto:Aki.Vehtari@hut.fi); also new info documentation!
 
    * ESS[SAS]:  convert .log to .sas with ess-sas-transcript; info
      documentation improved; Local Variable bug fixes; SAS/IML
