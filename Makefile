@@ -1,5 +1,5 @@
 
-## $Id: Makefile,v 5.4 1998/11/09 22:40:21 rossini Exp $
+## $Id: Makefile,v 5.5 1998/11/09 23:28:14 rossini Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
@@ -17,6 +17,7 @@ docs:
 	cd doc; make all
 
 ## This target is used to create a new version of the tar-file.
+## prefix'ing with "-" implies that errors are non-critical.
 
 dist: 
 	@echo "**********************************************************"
@@ -29,10 +30,13 @@ dist:
 	tar hcvof ESS-$(ESSVERSION).tar $(ESSVERSIONDIR)
 	chmod a-w $(ESSVERSIONDIR)/lisp/*.el
 	chmod a-w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
-	chmod a-w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
+	-chmod a-w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
 	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Makefile
 	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
 	gzip ESS-$(ESSVERSION).tar
+	-chmod a+w $(ESSVERSIONDIR)/lisp/*.el
+	-chmod a+w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
+	-chmod a+w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
 	rm $(ESSVERSIONDIR)
 	cvs release -d ess
 

@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1998/09/24 23:12:26 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: ess-site.el,v 5.4 1998/09/24 23:12:26 rossini Exp $
+;; Modified: $Date: 1998/11/09 23:28:14 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: ess-site.el,v 5.5 1998/11/09 23:28:14 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -154,11 +154,12 @@
 (require 'essd-sas)
 (require 'essd-s4)
 
-;;TODO, for 5.0 :-), or rare.
+;;TODO, for 5.2 :-), or rare.
 ;;(require 'essd-s3)  ; You might not have this
 ;;(require 'essd-vst) ; built on essd-xls.
 ;;(require 'essd-s+4) ; for MS Windows NT/95.
 ;;(require 'essd-s+5) ; for Unix, not distributed.
+;;(require 'essd-sta) ; for Stata.
 
 (require 'ess)
 
