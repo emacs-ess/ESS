@@ -462,87 +462,15 @@ on your system.
 * Unix installation::              Installing ESS on your Unix system
 * Microsoft Windows installation:: Installing ESS on your MS Windows system
 * Requirements::         emacs, Operating Systems and Statistical Packages
-* System dependent::               Variables you may need to change
 @end menu
 
 @include inst_tar.texi
 
-@node Requirements, System dependent, Microsoft Windows installation, Installation
+@node Requirements, , Microsoft Windows installation, Installation
 @comment node-name,  next,  previous,  up
 @section Requirements
 @include requires.texi
 
-@comment  node-name,  next,  previous,  up
-@node System dependent,  , Requirements, Installation
-@appendixsec Variables you may need to change
-
-If you run the @Sl{} program (from the shell) with a command other than
-@samp{Splus} you will need to set the variable
-@code{inferior-ess-program}
-@vindex inferior-ess-program
-to the name of the appropriate program by including a line such as
-@cindex S program name
-@cindex name of S program
-@cindex command to run S program
-
-@example
-(setq inferior-ess-program "S+")
-@end example
-@noindent
-in your @file{.emacs} file
-@cindex @file{.emacs} file
-@noindent
-(substituting @samp{S+} for the name of your @Sl{} program.)
-
-If you need to call this program with any arguments, the variable you
-@cindex arguments to S program
-need to set is dependent on the value of @code{inferior-ess-program}; for
-example if it is @code{"Splus"}, set the variable
-@code{inferior-Splus-args}
-@vindex inferior-Splus-args
-to a string of arguments to the @code{Splus} program.  If
-@code{inferior-ess-program} has some other value, substitute the
-@code{Splus} part of @code{inferior-Splus-args} with the appropriate
-program name.  There aren't many instances where you need to call @Sl{}
-with arguments, however: in particular do not call the @Sl{} program
-with the @samp{-e} command-line editor argument since ESS provides this
-feature for you.
-
-@cindex Splus
-@vindex S-plus
-If you are running Splus (the enhanced version of @Sl{} from Statsci) you
-may also need to set the variable @code{S-plus} to @code{t}.  If your
-value of @code{inferior-ess-program} is @code{"S+"} or @code{Splus} this
-will not be necessary, however; @code{S-plus} defaults to @code{t} in
-this case.
-
-Finally, if you use a non-standard prompt within S, you will need to set the
-variable @code{inferior-ess-prompt}
-@cindex prompts in S
-@vindex inferior-ess-prompt
-to a regular expression which will match both the primary prompt (@code{"> "}
-@cindex primary prompt
-by default) and the continuing prompt (default of @code{"+ "}.) The
-@cindex continuing prompt
-default value of this variable matches S's default prompts.  For example,
-if you use (@code{"$ "}) as your primary prompt (you have
-@w{@code{options(prompt="$ ")}} in your @code{.First} function), add the
-@pindex options()
-@cindex @code{.First} function
-following line to your @file{.emacs}:
-@example
-(setq inferior-ess-prompt "^\\(\\+\\|[^\\$]*\\$\\) *")
-@end example
-@noindent
-You will also need to set the variable @code{inferior-ess-primary-prompt}
-@vindex inferior-ess-primary-prompt
-to a regular expression which matches the primary prompt only.  Do not
-anchor the regexp to the beginning of the line with @samp{^}.  Once
-again, the default value matches S's default prompt; in the example
-above the appropriate value would be @code{"[^\\$]*\\$ *"}.
-
-Once these variables are set appropriately, ESS should work on any
-system.
 
 @comment  node-name,  next,  previous,  up
 @node Interactive ESS, Help for the S family, Installation, Top
