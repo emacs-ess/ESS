@@ -1,3 +1,9 @@
+2004-12-04  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (inferior-ess-mode): setq inferior-ess-prompt at the
+	start of function so that its value can be used later in the
+	function (e.g. to set comint-prompt-regexp).
+
 2004-12-03  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el: replace inferior-ess-objects-command by the two
