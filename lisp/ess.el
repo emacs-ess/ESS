@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/03 13:33:15 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: ess.el,v 1.23 1997/07/03 13:33:15 rossini Exp $
+;; Modified: $Date: 1997/07/03 13:46:24 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: ess.el,v 1.24 1997/07/03 13:46:24 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.24  1997/07/03 13:46:24  rossini
+;; ess-loop-timeout -> buffer-local.
+;;
 ;; Revision 1.23  1997/07/03 13:33:15  rossini
 ;; redid doc string.
 ;;
@@ -839,6 +842,9 @@ See also function ess-create-object-name-db.")
 (defvar ess-loop-timeout 50000
   "Integer specifying how many loops ess-mode will wait for the prompt for
 before signaling an error.")
+
+(make-variable-buffer-local 'ess-loop-timeout)
+(setq-default ess-loop-timeout 100000)
 
 ;;*;; Font-lock patterns
 
