@@ -9,9 +9,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2002/04/15 21:40:21 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: ess-emcs.el,v 5.16 2002/04/15 21:40:21 rsparapa Exp $
+;; Modified: $Date: 2002/06/19 21:00:21 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: ess-emcs.el,v 5.17 2002/06/19 21:00:21 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -156,6 +156,11 @@ Only a concern with earlier versions of Emacs.")
 		   '("cmdproxy" "cmdproxy.exe"))
 	   (w32-system-shell-p (getenv "COMSPEC")))))
 )
+
+;; XEmacs on Windows needs this
+(if (and ess-microsoft-p
+	 (not (fboundp 'w32-short-file-name)))
+    (fset 'w32-short-file-name 'win32-short-file-name))
 
 (provide 'ess-emcs)
 

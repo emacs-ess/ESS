@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2002/06/19 20:39:59 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: essdsp6w.el,v 5.14 2002/06/19 20:39:59 rmh Exp $
+;; Modified: $Date: 2002/06/19 21:00:21 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: essdsp6w.el,v 5.15 2002/06/19 21:00:21 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -136,7 +136,7 @@ connects it to the '(ddeESS [S+6])' window.")
 ;;; There are extra complications in S+6 (compared to S+3) because
 ;;;
 ;;; (1) The StatSci supplied Splus.exe doesn't work in an emacs
-;;;     buffer.  It works as a GUI window and we must send commands
+;;;     buffer.  It works as as a GUI window and we must send commands
 ;;;     to it through ddeclient.  Nonetheless, we need to give it a
 ;;;     process name and be sure that that there is a valid running
 ;;;     process in the '(ddeESS [S+6])' buffer.  Therefore we create an
@@ -155,7 +155,7 @@ connects it to the '(ddeESS [S+6])' window.")
 ;;;     independent process and will be survive if the '(ddeESS [S+6])'
 ;;;     buffer is killed (or emacs is quit).  The '(ddeESS [S+6])' is
 ;;;     made read-only and a warning is placed in it saying that "You
-;;;     can't type anything here."  Actually, if the standalone Splus
+;;;     can't type anything here."  Actually, if thestandalone Splus
 ;;;     is killed and the '(ddeESS [S+6])' is made writable (C-x C-q),
 ;;;     then '(ddeESS [S+6])' becomes a shell buffer.
 ;;;
@@ -207,12 +207,8 @@ to start the Splus program."
 	  (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
     (setq ess-customize-alist		; change inferior-ess-start-args
 	  (append ess-customize-alist '((inferior-ess-start-args   . "-i"))))
-    (let* ((s-proj (getenv "S_PROJ"))
-	   (dfn-dd (directory-file-name default-directory))
-	   (sfn (if (featurep 'xemacs)
-		    (win32-short-file-name dfn-dd)
-		  (w32-short-file-name dfn-dd))))
-      (cd sfn)
+    (let ((s-proj (getenv "S_PROJ")))
+      (cd (w32-short-file-name (directory-file-name default-directory)))
       (setenv "S_PROJ" default-directory)
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
@@ -401,12 +397,8 @@ to start the Splus program."
 	  (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
     (setq ess-customize-alist		; change inferior-ess-start-args
 	  (append ess-customize-alist '((inferior-ess-start-args   . ""))))
-    (let* ((s-proj (getenv "S_PROJ"))
-	   (dfn-dd (directory-file-name default-directory))
-	   (sfn (if (featurep 'xemacs)
-		    (win32-short-file-name dfn-dd)
-		  (w32-short-file-name dfn-dd))))
-      (cd sfn)
+    (let ((s-proj (getenv "S_PROJ")))
+      (cd (w32-short-file-name (directory-file-name default-directory)))
       (setenv "S_PROJ" default-directory)
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
