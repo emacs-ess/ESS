@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/31 11:32:53 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: essd-xls.el,v 1.18 1997/07/31 11:32:53 rossini Exp $
+;; Modified: $Date: 1997/07/31 11:52:39 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: essd-xls.el,v 1.19 1997/07/31 11:52:39 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.19  1997/07/31 11:52:39  rossini
+;;: changed to reflect current.
+;;:
 ;;: Revision 1.18  1997/07/31 11:32:53  rossini
 ;;: added program name.
 ;;:
@@ -82,9 +85,9 @@
 (defvar XLS-customize-alist
   '((ess-customize-alist           .  XLS-customize-alist )
     (ess-proc-prefix               .  "XLS"               )
-    (ess-version-running           .  "XLS"               )
+    (ess-version-running           .  "3.50"              )
     (inferior-ess-exit-command     .  "(exit)\n"          )
-    (ess-loop-timeout              .  100000              )
+    (ess-loop-timeout              .  10000               )
     (inferior-ess-primary-prompt   .  "> ?"               )
     (inferior-ess-program          .  inferior-XLS-program-name)
     (inferior-ess-help-command     .  "(help '%s)\n"      )
@@ -98,9 +101,9 @@
 
   (interactive)
   (setq ess-customize-alist XLS-customize-alist)
-  (ess-write-to-dribble-buffer
-   (format "(XLS): ess-proc-prefix=%s , buf=%s\n"
-	   ess-proc-prefix (current-buffer)))
+  ;;(ess-write-to-dribble-buffer
+  ;;(format "(XLS): ess-proc-prefix=%s , buf=%s\n"
+  ;;	   ess-proc-prefix (current-buffer)))
   (inferior-ess))
 
  ; Provide package
