@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/09/23 21:00:44 $
-;; Version: $Revision: 5.18 $
-;; RCS: $Id: ess-utils.el,v 5.18 2002/09/23 21:00:44 rsparapa Exp $
+;; Modified: $Date: 2002/10/01 18:28:15 $
+;; Version: $Revision: 5.19 $
+;; RCS: $Id: ess-utils.el,v 5.19 2002/10/01 18:28:15 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -285,7 +285,8 @@ directory with the same name, but without the `ess-kermit-prefix'."
 Return t if buffer was modified, nil otherwise."
   (interactive)
 
-  (let ((ess-temp-return-value (buffer-modified-p)))
+  (let ((ess-temp-point (point))
+    (ess-temp-return-value (buffer-modified-p)))
 ;; if buffer has changed, save buffer now (before potential revert)
   (if ess-temp-return-value (save-buffer))
 
@@ -295,6 +296,9 @@ Return t if buffer was modified, nil otherwise."
     (beginning-of-line -1)
     (save-match-data 
 	(if (search-forward "End:" nil t) (revert-buffer t t))))
+;; save-excursion doesn't save point in the presence of a revert
+;; so you need to do it yourself
+    (goto-char ess-temp-point)
 
 ess-temp-return-value))
 
