@@ -1897,7 +1897,7 @@ A newline is automatically added to COMMAND."
 	(while (re-search-backward "\"\\([^\"]*\\)\"" nil t)
 	  (setq names (cons (buffer-substring (match-beginning 1)
 					      (match-end 1)) names))))
-      ;DBG: do *not*
+      ;;DBG, do *not* (i.e., comment):
       (kill-buffer tbuffer)
       )
     (if ess-verbose
@@ -1922,9 +1922,12 @@ If OBJ is an object name, returns result of S command names(OBJ).
 If OBJ is nil or not a directory, POS must be supplied, and objects(POS) is returned.
 In all cases, the value is an list of object names."
 
-;; FIXME: in both cases, below use same fallback "objects(POS)" -- merge!
+;; FIXME: in both cases below, use the same fallback "objects(POS)" -- merge!
   (if (and obj (file-accessible-directory-p obj))
       ;; Check the pre-compiled object list in ess-object-name-db first
+
+      ;; FIXME: If used at all, ess-object-name-db should not only
+      ;; -----  be used in the directory case !!
       (or (cdr-safe (assoc obj ess-object-name-db))
 	  ;; Take a directory listing
 	  (and ess-filenames-map
