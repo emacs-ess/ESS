@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/14 01:31:20 $
-;; Version: $Revision: 1.90 $
-;; RCS: $Id: ess-inf.el,v 1.90 1997/11/14 01:31:20 rossini Exp $
+;; Modified: $Date: 1997/11/14 01:43:29 $
+;; Version: $Revision: 1.91 $
+;; RCS: $Id: ess-inf.el,v 1.91 1997/11/14 01:43:29 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -110,13 +110,12 @@ accompany the call for inferior-ess-program.
   ;; buffer names to use for inferior-ess.
 
   (interactive)
-  ;; set up for current language (need here, to get ess-language,
-  ;; etc).
 
   (ess-write-to-dribble-buffer
      (format "(inferior-ess 0): ess-start-args=%s \n"
 	     ess-start-args))
-
+  ;; set up for current language (need here, to get ess-language,
+  ;; etc).
   (let ((temp-ess-dialect (cdr (rassoc ess-dialect
 				       ess-customize-alist)))
 	(temp-ess-lang (cdr (rassoc ess-language
@@ -125,10 +124,11 @@ accompany the call for inferior-ess-program.
       (set-buffer ess-dribble-buffer)
       ;; next line isn't necessary now???
       (ess-setq-vars-default ess-customize-alist (current-buffer))
+      (setq temp-ess-dialect (cdr (rassoc ess-dialect ess-customize-alist))))
       (setq temp-ess-lang (cdr (rassoc ess-language ess-customize-alist))))
-
+    
     ;;(ess-setq-vars-local ess-customize-alist (current-buffer))
-
+    
     ;; run hooks now, to overwrite the above!
     (run-hooks 'ess-pre-run-hook)
     (ess-write-to-dribble-buffer
@@ -153,7 +153,7 @@ accompany the call for inferior-ess-program.
 					 (get-process (ess-proc-name
 						       ntry
 						       temp-dialect)))))
-			   (ess-proc-name ntry temp-dialect)))))
+			   (ess-proc-name ntry temp-dialect))))
 ;;	   (procname-lang (or (and (not (comint-check-proc (current-buffer)))
 ;;			      ;; Don't start a new process in current buffer if
 ;;			      ;; one is already running
