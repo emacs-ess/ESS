@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/04 09:51:04 $
-;; Version: $Revision: 5.40 $
-;; RCS: $Id: ess-inf.el,v 5.40 2000/04/04 09:51:04 maechler Exp $
+;; Modified: $Date: 2000/04/05 08:25:36 $
+;; Version: $Revision: 5.41 $
+;; RCS: $Id: ess-inf.el,v 5.41 2000/04/05 08:25:36 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -121,9 +121,8 @@ accompany the call for `inferior-ess-program'.
 				       ess-customize-alist))))
 	(temp-ess-lang (eval (cdr (assoc 'ess-language
 				       ess-customize-alist)))))
-
     (save-excursion
-      ;;---- Is this needed ??? --- why should dribble-buffer need these ??
+      ;;- Is this needed? (no, but it's useful to see them there [MM])
       (set-buffer ess-dribble-buffer)
       (ess-setq-vars-default ess-customize-alist (current-buffer))
       ;;>> Doesn't set ess-language,
@@ -716,18 +715,18 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
     (if (string= ess-language "STA")
 	(setq invisibly t))
     ;; dbg:
-    (ess-write-to-dribble-buffer
-     (format "(eval-visibly 1): lang %s (invisibly=%s, eob=%s, even-empty=%s)\n"
-	     ess-language invisibly eob even-empty))
+    ;; dbg(ess-write-to-dribble-buffer
+    ;; dbg (format "(eval-visibly 1): lang %s (invis=%s, eob=%s, even-empty=%s)\n"
+    ;; dbg     ess-language invisibly eob even-empty))
 
     (goto-char (marker-position (process-mark sprocess)))
     (if (stringp invisibly)
 	(insert-before-markers (concat "*** " invisibly " ***\n")))
     ;; dbg:
-    (ess-write-to-dribble-buffer
-     (format "(eval-visibly 2): text[%d]= «%s»\n" (length text) text))
-    (while (or even-empty
-	       (setq txt-gt-0 (> (length text) 0)))
+    ;; dbg (ess-write-to-dribble-buffer
+    ;; dbg  (format "(eval-visibly 2): text[%d]= «%s»\n" (length text) text))
+    (while (or (setq txt-gt-0 (> (length text) 0))
+	       even-empty)
       (if even-empty (setq even-empty nil))
       (if txt-gt-0
 	  (progn
@@ -1281,7 +1280,7 @@ to continue it."
 
 (defun inferior-R-input-sender (proc string)
   ;; REALLY only for debugging: this S_L_O_W_S D_O_W_N   [here AND below]
-  (ess-write-to-dribble-buffer (format "(inf..-R-..): string=«%s»; " string))
+  ;;(ess-write-to-dribble-buffer (format "(inf..-R-..): string=«%s»; " string))
 
   (if (or (string-match inferior-R-1-input-help string)
 	  (string-match inferior-R-2-input-help string)
@@ -1290,7 +1289,7 @@ to continue it."
       (progn
 	(insert-before-markers string)
 	(let ((string (match-string 2 string)))
-	  (ess-write-to-dribble-buffer (format " new string=«%s»\n" string))
+	  ;; (ess-write-to-dribble-buffer (format " new string=«%s»\n" string))
 	  (ess-display-help-on-object
 	   (if (string= string "") "help" string)))
 	(ess-eval-linewise "\n"))
@@ -1708,8 +1707,7 @@ the `load-path'."
 	(temp-object-name-db-file ess-object-name-db-file))
 
     (ess-write-to-dribble-buffer
-       (format "(object db): search-list=%s \n "
-	       search-list))
+       (format "(object db): search-list=%s \n " search-list))
     (while search-list
       (message "Searching %s" (car search-list))
       (setq temp-object-name-db (cons (cons (car search-list)
