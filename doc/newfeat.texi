@@ -1,8 +1,5 @@
-Changes/New Features in 5.2.0:
+Changes/New Features in 5.1.22:
 @itemize @bullet
-@item Stable release.  Final release of the 5.x series
-(except for necessary bug-fixes).  Next release will be 
-6.0 which will be a radical departure.
 @item Now that info documentation is available, the 
 README.* files are no longer supported.  However, they
 are still distributed for what it's worth.
@@ -11,7 +8,11 @@ are still distributed for what it's worth.
 for details (specifically, items 10-15).
 @item ESS[SAS]: more user-friendly enhancements for remote
 SAS batch jobs with Kermit file transfers (LOG and OUTPUT
-function key features now supported).
+function key features now supported).  Multiple shells
+now supported so you can run SAS on different computers
+from different buffers by setting the buffer-local variable
+ess-sas-shell-buffer to unique buffer names.
+@item Major re-vamping of Makefile/Makeconf.
 @end itemize
 
 Changes/New Features in 5.1.21:

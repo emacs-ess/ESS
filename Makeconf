@@ -25,7 +25,7 @@ GZCAT = zcat
 
 # program to convert .texi{nfo} to .info
 MAKEINFO = makeinfo
-MAKEINFOascii = $(MAKEINFO) --no-validate --no-headers --no-split -o -
+MAKETXT = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 
 ## Set ESSVERSION to the contents of VERSION
 ## This will only work with GNU make, but you won't
@@ -33,6 +33,10 @@ MAKEINFOascii = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 ## If you don't have GNU make, edit this file; for example:
 ## ESSVERSION=5.2.0
 ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
+
+# Destination of your info files
+# defaults to the info sub-directory
+INFODIR = ../info
 
 # Destination of your byte-compiled elisp (.elc) files,
 # defaults to the same directory as source elisp (.el) files

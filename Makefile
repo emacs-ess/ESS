@@ -1,8 +1,8 @@
-## $Id: Makefile,v 5.61 2002/07/24 22:19:32 rsparapa Exp $
+## $Id: Makefile,v 5.62 2002/07/26 19:26:25 rsparapa Exp $
 ## Top Level Makefile
 
+## Before making changes here, please take a look at Makeconf
 include ./Makeconf
-##      ========== {edit that one if any!}
 
 ## Set ESSVERSIONTAG to ESS-$(ESSVERSION) with .'s replaced by -s.
 ## CVS tags can NOT contain .'s.
@@ -21,15 +21,7 @@ EMACSLOGCVS=$(EMACSBATCH) -f vc-update-changelogs
 
 Subdirs = lisp doc
 
-INTRO.DEPENDS= VERSION doc/credits.texi doc/inst_cvs.texi \
-	doc/newfeat.texi  doc/authors.texi  doc/currfeat.texi \
-	doc/inst_tar.texi doc/bugrept.texi  doc/license.texi  \
-	doc/requires.texi doc/bugs.texi     doc/getting.texi  \
-	doc/mailing.texi  doc/stabilty.texi
-
-## This is the default target, i.e. 'make' and 'make compile' are the same.
-## However, you may still need to specify EMACS and BATCHFLAGS.
-## See the discussion of EMACS and BATCHFLAGS above. 
+## This is the default target, i.e. 'make' and 'make default' are the same.
 
 default:
 	cd lisp; $(MAKE) all
@@ -37,14 +29,12 @@ default:
 all install clean distclean realclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd ..; done
 
-info:   VERSION
+dist:   
 	@echo "** Committing README, ANNOUNCE and info **"
-	cd doc; $(MAKE) $@; cd ..
+	cd doc; $(MAKE) info; cd ..
 	cvs commit -m "Updating README, ANNOUNCE for new version" \
 		README ANNOUNCE
-	cvs commit -m "Updating info for new version" doc
-
-dist: info
+	cvs commit -m "Updating info for new version" info
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSVERSIONDIR)"
@@ -56,7 +46,6 @@ dist: info
 	mv ess $(ESSVERSIONDIR)
 	chmod a-w $(ESSVERSIONDIR)/lisp/*.el
 	chmod a-w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
-#	chmod u+w $(ESSVERSIONDIR)/doc/ess.info*
 	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Make*
 	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
 	for D in jcgs techrep dsc2001-rmh; do DD=$(ESSVERSIONDIR)/doc/$$D; \
@@ -89,8 +78,4 @@ rel: ChangeLog dist
 tag: 
 	@echo "** Tagging the release **"
 	cvs tag -R $(ESSVERSIONTAG)
-
-#doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3 doc/ess.info-4: doc/ess.texi
-#	$(MAKE) docs
-
 
