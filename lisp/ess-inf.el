@@ -1705,21 +1705,24 @@ This version is for killing *R* processes; it asks the extra question
 regarding whether the workspace image should be saved."
   (ess-force-buffer-current "Process to quit: ")
   (ess-make-buffer-current)
-  (let (response cmd
-		 (sprocess (get-ess-process ess-current-process-name)))
+  (let (cmd
+;;Q 	response
+	(sprocess (get-ess-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running."))
-    (setq response (completing-read "Save workspace image? "
-				    '( ( "yes".1) ("no" . 1) ("cancel" . 1))
-				    nil t))
-    (if (string-equal response "")
-	(setq response "no"))		;default = do not save workspace.
-    (unless (string-equal response "cancel")
+;;Q     (setq response (completing-read "Save workspace image? "
+;;Q 				    '( ( "yes".1) ("no" . 1) ("cancel" . 1))
+;;Q 				    nil t))
+;;Q     (if (string-equal response "")
+;;Q 	(setq response "default")); which will ask again (in most situations)
+;;Q     (unless (string-equal response "cancel")
       (ess-cleanup)
-      (setq cmd (format "q(\"%s\")\n" response))
+;;Q   (setq cmd (format "q(\"%s\")\n" response))
+      (setq cmd "q()\n")
       (goto-char (marker-position (process-mark sprocess)))
       (process-send-string sprocess cmd)
       ;;(rename-buffer (concat (buffer-name) "-exited") t)
-      )))
+;;Q      )
+  ))
 
 (defun ess-abort ()
   "Kill the ESS process, without executing .Last or terminating devices.

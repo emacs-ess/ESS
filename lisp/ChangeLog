@@ -1,3 +1,10 @@
+2005-01-29  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-quit-r): comment out all "questioning":
+	it's wrong to do this when a user had something like "--save" on
+	startup.
+	
+
 2005-01-24  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-quit): drop 'dont-cleanup' argument
