@@ -336,6 +336,7 @@ Help for SAS
 * ESS(SAS)--TAB key::
 * ESS(SAS)--Usage scenarios::
 * ESS(SAS)--Common problems::
+* ESS(SAS)--MS Windows::
 
    ESS[SAS] (originally SAS-mode) was designed for use with SAS.
 SAS-mode was developed by Cook
@@ -448,7 +449,8 @@ turned on when editing a file with a ".sas" suffix (or other, if
 specified in ess-site).  The batch processing keypress commands are
 enabled by default to use the same function keys that the SAS Display
 Manager uses.  The interactive capabilities of ESS require you to start
-an inferior SAS process with M-x SAS (described below).
+an inferior SAS process with M-x SAS (*Note iESS(SAS)--Inferior ESS
+processes::.)
 
    At this writing (5.1.21), the indenting and syntactic highlighting
 are usually correct.
@@ -469,6 +471,8 @@ statistical processes (programs).
      - The ability to request help from a process for variables and
        functions, and to have the results sent into a separate buffer.
      - completion of object names and file names.
+
+   MS Windows: *Note ESS(SAS)--MS Windows::.
 
 
 File: ess.info,  Node: ESS(SAS)--Batch processes,  Next: ESS(SAS)--Function keys for batch processing,  Prev: iESS(SAS)--Inferior ESS processes,  Up: Help for SAS
@@ -823,12 +827,17 @@ enhancements)! (comments as to what should be happening are prefixed by
          run;
 
 
-File: ess.info,  Node: ESS(SAS)--Common problems,  Prev: ESS(SAS)--Usage scenarios,  Up: Help for SAS
+File: ess.info,  Node: ESS(SAS)--Common problems,  Next: ESS(SAS)--MS Windows,  Prev: ESS(SAS)--Usage scenarios,  Up: Help for SAS
 
 ESS[SAS]-Common problems
 ========================
 
-     1. If M-x SAS gives weird errors upon startup, check the following:
+     1. MS Windows users.
+        - M-x SAS does not work on MS Windows.  In order to run SAS inside
+        an Emacs buffer it is necessary to start SAS with the -stdio option.
+        SAS does not support the -stdio option on Windows.
+     
+     2. If M-x SAS gives weird errors upon startup, check the following:
         - you are running Windows:  SAS does not support stdio on Windows
         - ess-sas-sh-command (in the ESS source directory) needs to be
           executable (solution: "chmod ugo+rx ess-sas-sh-command").
@@ -836,7 +845,7 @@ ESS[SAS]-Common problems
           a shell command-line)
         - you need a copy of SAS (we can't solve this)
      
-     2. M-x SAS starts up SAS in the window system (motif, for example),
+     3. M-x SAS starts up SAS in the window system (motif, for example),
         instead of starting it up in the emacs buffers.
      
         Probably the unix command "sas" on your system calls a local
@@ -853,6 +862,29 @@ ESS[SAS]-Common problems
           find / -name 'sas' -exec ls -ld {} \;
         and expect a response similar to the following
           -rwxr-xr-x   1 sas  sas  2441216 Sep  9  1997 /usr/local/sas612/sas
+
+
+File: ess.info,  Node: ESS(SAS)--MS Windows,  Prev: ESS(SAS)--Common problems,  Up: Help for SAS
+
+ESS[SAS]-MS Windows
+===================
+
+   * `M-x SAS' does not work on MS Windows.  In order to run SAS inside
+     an Emacs buffer it is necessary to start SAS with the `-stdio'
+     option.  SAS does not support the `-stdio' option on Windows.
+
+   * ESS[SAS] mode for editing SAS language files works very well.
+     *Note ESS(SAS)--Editing files::.
+
+   * There are two execution options for SAS on Windows.  You can use
+     batch *Note ESS(SAS)--Batch processes::.  You do not get
+     interactive graphics this way.
+
+     Or you can pick up marked regions with the mouse and drop them into
+     the SAS editor and then submit them for processing.  This gives you
+     complete access to the SAS windowing system, including interactive
+     graphics.
+
 
 
 File: ess.info,  Node: Installation,  Next: Customization,  Prev: Help for Statistical Packages,  Up: Top

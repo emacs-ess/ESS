@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.30 2002/05/21 05:13:55 rmh Exp $
+@comment $Id: ess.texi,v 5.31 2002/05/28 18:53:23 rmh Exp $
 
 @include version.texi
 
@@ -41,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.30 $ $Date: 2002/05/21 05:13:55 $)
+@subtitle version @essver{} (Documentation $Revision: 5.31 $ $Date: 2002/05/28 18:53:23 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -86,7 +86,7 @@ permission notice identical to this one.
 
 ESS version @essver{}
 
-        (Documentation $Revision: 5.30 $ $Date: 2002/05/21 05:13:55 $).
+        (Documentation $Revision: 5.31 $ $Date: 2002/05/28 18:53:23 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
@@ -212,6 +212,7 @@ Help for SAS
 * ESS(SAS)--TAB key::
 * ESS(SAS)--Usage scenarios::
 * ESS(SAS)--Common problems::
+* ESS(SAS)--MS Windows::
 
 Installing ESS on your system
 
@@ -2461,6 +2462,7 @@ directory, move it there).
 * ESS(SAS)--TAB key::
 * ESS(SAS)--Usage scenarios::
 * ESS(SAS)--Common problems::
+* ESS(SAS)--MS Windows::
 @end menu
 @include help-sas.texi
 

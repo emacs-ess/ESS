@@ -115,7 +115,8 @@ turned on when editing a file with a ".sas" suffix (or other, if
 specified in ess-site).  The batch processing keypress commands are
 enabled by default to use the same function keys that the SAS Display
 Manager uses.  The interactive capabilities of ESS require you to
-start an inferior SAS process with M-x SAS (described below).
+start an inferior SAS process with M-x SAS
+(@xref{iESS(SAS)--Inferior ESS processes}.)
 
 At this writing (@essver{}), the indenting and syntactic
 highlighting are usually correct.
@@ -138,6 +139,8 @@ We plan to add
   functions, and to have the results sent into a separate buffer.
 - completion of object names and file names.
 @end display
+
+MS Windows: @xref{ESS(SAS)--MS Windows}.
 
 @comment  node-name,  next,  previous,  up
 @node  ESS(SAS)--Batch processes, ESS(SAS)--Function keys for batch processing, iESS(SAS)--Inferior ESS processes, Help for SAS
@@ -516,11 +519,16 @@ Here is a typical myfile.sas:
 @end example
 
 @comment  node-name,  next,  previous,  up
-@node   ESS(SAS)--Common problems, , ESS(SAS)--Usage scenarios, Help for SAS
+@node   ESS(SAS)--Common problems, ESS(SAS)--MS Windows, ESS(SAS)--Usage scenarios, Help for SAS
 @section ESS[SAS]--Common problems
 
 @display
-1. If M-x SAS gives weird errors upon startup, check the following:
+1. MS Windows users.
+   - M-x SAS does not work on MS Windows.  In order to run SAS inside
+   an Emacs buffer it is necessary to start SAS with the -stdio option.
+   SAS does not support the -stdio option on Windows.
+
+2. If M-x SAS gives weird errors upon startup, check the following:
    - you are running Windows:  SAS does not support stdio on Windows
    - ess-sas-sh-command (in the ESS source directory) needs to be
      executable (solution: "chmod ugo+rx ess-sas-sh-command").
@@ -528,7 +536,7 @@ Here is a typical myfile.sas:
      a shell command-line)
    - you need a copy of SAS (we can't solve this)
 
-2. M-x SAS starts up SAS in the window system (motif, for example),
+3. M-x SAS starts up SAS in the window system (motif, for example),
    instead of starting it up in the emacs buffers.
 
    Probably the unix command "sas" on your system calls a local
@@ -555,3 +563,30 @@ find / -name 'sas' -exec ls -ld @{@} \;
    @end example
 @end display
 
+
+
+@comment  node-name,  next,  previous,  up
+@node   ESS(SAS)--MS Windows, , ESS(SAS)--Common problems, Help for SAS
+@section ESS[SAS]--MS Windows
+
+@itemize @bullet
+@item
+@code{M-x SAS} does not work on MS Windows.  In order to run SAS inside
+an Emacs buffer it is necessary to start SAS with the @code{-stdio} option.
+SAS does not support the @code{-stdio} option on Windows.
+
+@item
+ESS[SAS] mode for editing SAS language files works very well.
+@xref{ESS(SAS)--Editing files}.
+
+@item
+There are two execution options for SAS on Windows.
+You can use batch @xref{ESS(SAS)--Batch processes}.
+You do not get interactive graphics this way.
+
+Or you can pick up marked regions with the mouse and drop them into
+the SAS editor and then submit them for processing.  This gives you
+complete access to the SAS windowing system, including interactive
+graphics.
+
+@end itemize
