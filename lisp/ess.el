@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.13 2000/06/05 21:59:02 ess Exp $
+;; Version: $Id: ess.el,v 5.14 2000/06/07 22:20:20 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -128,6 +128,9 @@
     (require 'font-lock))
 
 
+(require 'ess-emcs)
+
+;; Remove after we debug...
 (if (running-emacs-version-or-newer 20 1)
     (progn 
       (require 'ess-cust)

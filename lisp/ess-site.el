@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/06/06 18:33:03 $
-;; Version: $Revision: 5.50 $
-;; RCS: $Id: ess-site.el,v 5.50 2000/06/06 18:33:03 ess Exp $
+;; Modified: $Date: 2000/06/07 22:20:20 $
+;; Version: $Revision: 5.51 $
+;; RCS: $Id: ess-site.el,v 5.51 2000/06/07 22:20:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -57,36 +57,10 @@
 
 ;;; Code:
 
-;;;; 0. Determine Emacs version that we are running:
 
-;;; Older versions of emacs did not have these variables
-;;; (emacs-major-version and emacs-minor-version.)
-;;; Let's define them if they're not around, since they make
-;;; it much easier to conditionalize on the emacs version.
+;; load code to figure out what version/strain of Emacs we are running
 
-(if (and (not (boundp 'emacs-major-version))
-	 (string-match "^[0-9]+" emacs-version))
-    (setq emacs-major-version
-	  (string-to-int (substring emacs-version
-				    (match-beginning 0) (match-end 0)))))
-(if (and (not (boundp 'emacs-minor-version))
-	 (string-match "^[0-9]+\\.\\([0-9]+\\)" emacs-version))
-    (setq emacs-minor-version
-	  (string-to-int (substring emacs-version
-				    (match-beginning 1) (match-end 1)))))
-
-;;; Define a function to make it easier to check which version we're
-;;; running.
-
-(defun running-emacs-version-or-newer (major minor)
-  (or (> emacs-major-version major)
-      (and (= emacs-major-version major)
-	   (>= emacs-minor-version minor))))
-
-(defvar running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
-
-
-
+(require 'ess-emcs)
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================

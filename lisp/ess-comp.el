@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1998/04/06 20:18:41 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: ess-comp.el,v 5.2 1998/04/06 20:18:41 rossini Exp $
+;; Modified: $Date: 2000/06/07 22:20:20 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: ess-comp.el,v 5.3 2000/06/07 22:20:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -50,6 +50,7 @@
 
 ;; These are required by every other file.
 
+(require 'ess-emcs)  ; needed for following files.
 (require 'ess-vars)    ; set up the variables
 (require 'ess)         ; configure
 (require 'ess-site)    ; last, to overload previous settings.
