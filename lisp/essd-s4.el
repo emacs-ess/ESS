@@ -59,6 +59,7 @@
      (inferior-ess-dump-command     	. ".SmodeDump(\"%s\", \"%s\")\n")
 
      (inferior-ess-start-file       	. nil) ;"~/.ess-S3")
+     (inferior-ess-start-args       . "")
      (ess-STERM  . "iESS")
      )
    S+common-cust-alist); use S+ ones here; partly overwritten above!!

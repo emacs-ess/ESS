@@ -50,6 +50,7 @@
      (inferior-ess-help-command     	. "help(\"%s\",pager=\"cat\",window=F)\n")
      (inferior-ess-search-list-command  . "search()\n")
      (inferior-ess-start-file       	. nil) ;"~/.ess-S+3")
+     (inferior-ess-start-args       . "")
      (ess-STERM  . "iESS")
      )
    S+common-cust-alist)

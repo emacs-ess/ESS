@@ -50,6 +50,7 @@
      (inferior-ess-search-list-command	. "search()\n")
      (inferior-ess-objects-command  	. "objects(%d)\n")
      (inferior-ess-start-file       	. nil) ;"~/.ess-S3")
+     (inferior-ess-start-args       . "")
      (ess-STERM  . "iESS")
      )
    S+common-cust-alist); use S+ ones here; partly overwritten above!!

@@ -84,6 +84,7 @@
 
      (ess-directory-function		. S+6-directory-function)
      (ess-setup-directory-function	. S+6-setup-directory-function)
+     (inferior-ess-start-args       . inferior-Splus-args)
      (ess-STERM	 . "iESS")
      )
    S+common-cust-alist)

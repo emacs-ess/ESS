@@ -129,7 +129,6 @@
      (ess-save-lastvalue-command
       . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
 
-     (inferior-ess-start-args      . inferior-Splus-args)
      (inferior-ess-objects-command . inferior-Splus-objects-command)
 
      (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
