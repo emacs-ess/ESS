@@ -658,7 +658,7 @@ and I need to relearn emacs lisp (but I had to, anyway."
 	  (lambda ()
 	    (set (make-local-variable 'fill-nobreak-predicate)
 		 'ess-inside-string-p)
-	    (set (make-local-variable 'auto-fill-function)
+	    (set (make-local-variable 'normal-auto-fill-function)
 		 'ess-do-auto-fill)))
 
 (provide 'essl-s)

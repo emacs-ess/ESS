@@ -1,3 +1,8 @@
+2005-04-06  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-mode-hook): set *normal-*auto-fill-function, not
+	auto-fill-function itself.
+
 2005-03-21  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-emcs.el (enable-multibyte-characters): define (to nil) if
