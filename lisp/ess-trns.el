@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/20 18:58:30 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: ess-trns.el,v 1.7 1997/10/20 18:58:30 rossini Exp $
+;; Modified: $Date: 1997/10/20 19:58:32 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: ess-trns.el,v 1.8 1997/10/20 19:58:32 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -82,10 +82,12 @@
 
   (define-key ess-transcript-mode-map "\C-c\C-r" 'ess-eval-region)
   (define-key ess-transcript-mode-map "\C-c\M-r" 'ess-eval-region-and-go)
-  (define-key ess-transcript-mode-map "\M-\C-x"  'ess-eval-function)
-  (define-key ess-transcript-mode-map "\C-c\M-f" 'ess-eval-function-and-go)
-  (define-key ess-transcript-mode-map "\C-c\C-j" 'ess-eval-line)
-  (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-eval-line-and-go)
+;;  (define-key ess-transcript-mode-map "\M-\C-x"  'ess-eval-function)
+;;  (define-key ess-transcript-mode-map "\C-c\M-f" 'ess-eval-function-and-go)
+;;  (define-key ess-transcript-mode-map "\C-c\C-j" 'ess-eval-line)
+;;  (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-eval-line-and-go)
+  (define-key ess-transcript-mode-map "\C-c\C-j" 'ess-transcript-send-command)
+  (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-transcript-send-command-and-move)
   (define-key ess-transcript-mode-map "\M-\C-a"  'ess-beginning-of-function)
   (define-key ess-transcript-mode-map "\M-\C-e"  'ess-end-of-function)
   (define-key ess-transcript-mode-map "\C-c\C-y" 'ess-switch-to-S)
@@ -108,8 +110,8 @@
   (define-key ess-transcript-mode-map "\C-c\C-n" 'comint-next-prompt)
   ;; (define-key ess-transcript-mode-map "\C-c\C-n"    'ess-eval-line-and-next-line)
 
-  (define-key ess-transcript-mode-map "\r"       'ess-transcript-send-command)
-  (define-key ess-transcript-mode-map "\M-\r"    'ess-transcript-send-command-and-move)
+  (define-key ess-transcript-mode-map "\r"       'ess-transcript-send-command-and-move)
+  (define-key ess-transcript-mode-map "\M-\r"    'ess-transcript-send-command)
   (define-key ess-transcript-mode-map "\C-c\r"   'ess-transcript-copy-command)
   (define-key ess-transcript-mode-map "\C-c\C-w" 'ess-transcript-clean-region))
 
