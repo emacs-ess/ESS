@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.29 $.
+### File: $Revision: 5.30 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -52,17 +52,20 @@ PRELOADS = -l ./ess-comp.el
 CORE = ess.elc ess-site.elc
 
 TOCOMPILE = ess-vars.el ess.el ess-site.el ess-utils.el \
-ess-inf.el ess-iw32.el \
+	ess-inf.el ess-iw32.el \
 	ess-mode.el ess-trns.el ess-help.el \
 	ess-comp.el \
-	essl-s.el essd-s3.el essd-s4.el essd-sp3.el essd-sp4.el essd-sp5.el \
+	essl-s.el essd-s3.el essd-s4.el \
+	essd-sp3.el essd-sp4.el essd-sp4com.el essd-sp5.el \
 	essd-r.el \
 	essd-els.el \
 	essl-lsp.el essd-xls.el essd-vst.el \
 	essl-sas.el essd-sas.el \
-	essl-sta.el essd-sta.el \
+	essl-sta.el essd-sta.el make-regexp.el \
 	essl-omg.el essd-omg.el \
 	ess-noweb.el noweb-mode.el noweb-font-lock-mode.el \
+	ess-font-lock.el \
+##?	ess-latex.el \
 	essa-r.el essa-sas.el \
 	essddr.el
 
