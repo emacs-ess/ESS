@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/11/19 15:32:57 $
-;; Version: $Revision: 1.63 $
-;; RCS: $Id: ess-site.el,v 1.63 1997/11/19 15:32:57 rossini Exp $
+;; Modified: $Date: 1997/11/20 22:53:37 $
+;; Version: $Revision: 4.1 $
+;; RCS: $Id: ess-site.el,v 4.1 1997/11/20 22:53:37 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -40,7 +40,7 @@
 ;;; value of ess-lisp-directory, below) to their .emacs file.
 ;;;
 ;;; Alternatively, if the file is already in a directory specified by
-;;; the load-path variable, a simple:
+;;; the load-path variable:
 ;;;    (require 'ess-site)
 ;;; will work.
 
