@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2000/06/30 21:29:42 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: essl-sas.el,v 5.8 2000/06/30 21:29:42 rossini Exp $
+;; Modified: $Date: 2000/07/03 16:24:54 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: essl-sas.el,v 5.9 2000/07/03 16:24:54 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -45,8 +45,12 @@
 ;;;
 ;;; Last change: 2/1/95
 
+(ess-message "[essl-sas:] (require 'ess) ...")
 (require 'ess)
+(ess-message "[essl-sas:] (require 'ess-mode) ...")
 (require 'ess-mode)
+
+(ess-message "[essl-sas:] (autoload ..) (def** ..) etc ...")
 
 (autoload 'ess-transcript-mode "ess-trns" "ESS source eval mode." t)
 
@@ -111,6 +115,7 @@ Ess-Listing mode is used solely to place an indicator on the mode line."
   "*Amount to indent sas statements.")
 (defvar sas-indent-ignore-comment "*"
   "*Comments with start with this string are ignored in indentation.")
+
 (defvar sas-require-confirmation t
   "*Require confirmation when revisiting sas-output which changed on disk.")
 ;; added sas-program 4/29/94.  user can specify a different version of sas.
@@ -176,113 +181,122 @@ popup window when the SAS job is finished.")
 
 (defvar SAS-mode-font-lock-keywords
   (list
-    ;; SAS comments
-    (cons "^[ \t]*%?\\*.*;"		    font-lock-comment-face)
-    (cons ";[ \t]*%?\\*.*;"		    font-lock-comment-face)
-    (list "/\\*\\([^*/]\\)*\\*/"  0 font-lock-comment-face t)
+   ;; SAS comments
+   (cons "^[ \t]*%?\\*.*;"		font-lock-comment-face)
+   (cons ";[ \t]*%?\\*.*;"		font-lock-comment-face)
+   (list "/\\*\\([^*/]\\)*\\*/"      0  font-lock-comment-face t)
 
-    ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND
-    (cons "\\<\\(data\\|run\\|%macro\\|%mend\\)\\>"  font-lock-reference-face)
-    (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"             font-lock-reference-face)
+   ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND
+   (cons "\\<\\(data\\|run\\|%macro\\|%mend\\)\\>"  font-lock-reference-face)
+   (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"             font-lock-reference-face)
 
-    ;; SAS statements
+   ;; SAS statements
 
+   (cons (concat
+	  "\\<"
+	  "%?do[ \t]*" (make-regexp '("over" "%?until" "%?while") t) "?"
+	  "\\>")
+	 font-lock-keyword-face)
 
-(cons (concat "\\<"
-"%?do[ \t]*" (make-regexp '("over" "%?until" "%?while") t) "?"
-"\\>")
-      font-lock-keyword-face)
+   (cons (concat
+	  "\\<"
+	  (make-regexp
+	   '(
+	     "abort" "array" "attrib" "by" "delete" "display" "dm"
+	     "drop" "error" "file" "filename" "footnote\\(10?\\|[2-9]\\)?"
+	     "format"
+	     "%go[ \t]*to" "%if" "%then" "%else"
+	     "go[ \t]*to" "if" "then" "else"
+	     "infile" "informat" "input" "%input" "keep" "label"
+	     "length" "libname" "link"
+	     "merge" "missing" "modify" "note" "options" "goptions" "output"
+	     "otherwise" "put" "%put" "rename" "retain" "select" "when" "set"
+	     "skip" "title\\(10?\\|[2-9]\\)?" "where" "window" "update" "out"
+	     "change" "class" "exchange" "exclude" "freq" "id" "index"
+	     "model" "plot" "save" "sum" "tables?" "var" "weight" "with"
+	     "manova" "repeated" "value" "random"
+	     ;; SAS macro statements not handled above
+	     "%global" "%include" "%local" "%let" "%sysexec"
+	     ) t) "\\>")
+	 font-lock-keyword-face)
 
-(cons (concat "\\<"
-(make-regexp '(
-"abort" "array" "attrib" "by" "delete" "display" "dm"
-"drop" "error" "file" "filename" "footnote\\(10?\\|[2-9]\\)?"
-"format"
-"%go[ \t]*to" "%if" "%then" "%else"
-"go[ \t]*to" "if" "then" "else"
-"infile" "informat" "input" "%input" "keep" "label"
-"length" "libname" "link"
-"merge" "missing" "modify" "note" "options" "goptions" "output"
-"otherwise" "put" "%put" "rename" "retain" "select" "when" "set"
-"skip" "title\\(10?\\|[2-9]\\)?" "where" "window" "update" "out"
-"change" "class" "exchange" "exclude" "freq" "id" "index"
-"model" "plot" "save" "sum" "tables?" "var" "weight" "with"
-"manova" "repeated" "value" "random"
-;; SAS macro statements not handled above
-"%global" "%include" "%local" "%let" "%sysexec"
-) t) "\\>")
-      font-lock-keyword-face)
+   ;; SAS statements that must be followed by a semi-colon
+   (cons (concat
+	  "\\<"
+	  (make-regexp
+	   '(
+	     "cards4?" "end" "%end" "endsas" "list" "lostcard" "page"
+	     "return" "stop"
+	     ) t) "\\>" "[ \t]*;")
+	 font-lock-keyword-face)
 
-    ;; SAS statements that must be followed by a semi-colon
-(cons (concat "\\<"
-(make-regexp '(
-"cards4?" "end" "%end" "endsas" "list" "lostcard" "page" "return" "stop"
-) t) "\\>" "[ \t]*;")
-      font-lock-keyword-face)
+   ;; SAS/GRAPH statements not handled above
+   (cons (concat
+	  "\\<"
+	  (make-regexp
+	   '("axis" "legend" "pattern" "symbol") t) "\\([1-9][0-9]?\\)?"
+	  "\\>")
+	 font-lock-keyword-face)
 
+   ;; SAS functions and SAS macro functions
+   (cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
+	 font-lock-function-name-face)
+   (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
+	 font-lock-function-name-face)
 
-    ;; SAS/GRAPH statements not handled above
-(cons (concat "\\<"
-(make-regexp '("axis" "legend" "pattern" "symbol") t) "\\([1-9][0-9]?\\)?"
-"\\>")
-      font-lock-keyword-face)
-
-
-
-    ;; SAS functions and SAS macro functions
-    (cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
-      font-lock-function-name-face)
-    (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
-      font-lock-function-name-face)
-
-    (cons (concat "\\<"
-(make-regexp '(
-    "abs" "arcos" "arsin" "atan" "betainv" "byte" "ceil" "cinv"
-    "collate" "compress" "cosh?" "css" "cv"
-    "daccdb" "daccdbsl" "daccsl" "daccsyd" "dacctab"
-    "depdb" "depdbsl" "depsl" "depsyd" "deptab"
-    "date" "datejul" "datepart" "datetime" "day" "hms" "dhms" "dif"
-    "digamma" "dim" "erfc?" "exp" "finv"
-    "fipnamel?" "fipstate" "floor" "fuzz" "gaminv" "gamma"
-    "hbound" "hour" "indexc?" "input" "int" "intck" "intnx" "intrr"
-    "irr" "juldate" "kurtosis" "lag" "lbound" "left" "length"
-    "lgamma" "log" "log10" "log2" "max" "mdy" "mean" "min" "minute"
-    "mod" "month" "mort" "n" "netpv" "nmiss" "normal" "npv"
-;) t) "\\>" "[ \t]*(")
-;      font-lock-function-name-face)
-;
-;    (cons (concat "\\<"
-;(make-regexp '(
-    "probbeta" "probbnml" "probchi" "probf" "probgam" "probhypr" "probit" "probnegb" "probnorm" "probt"
-    "ordinal" "poisson" "put" "qtr" "range" "rank" "repeat"
-    "ranbin" "rancau" "ranexp" "rangam" "rannor" "ranpoi" "rantbl" "rantri" "ranuni"
-    "reverse" "right" "round" "saving" "scan" "second" "sign" "sinh?"
-    "sqrt" "std" "stderr" "stfips" "stnamel?" "substr" "sum"
-    "symget" "tanh?" "time" "timepart" "tinv" "today" "translate"
-    "trigamma" "trim" "trunc" "uniform" "upcase" "uss" "var"
-    "verify" "weekday" "year" "yyq"
-    "zipfips" "zipnamel?" "zipstate"
-;) t) "\\>" "[ \t]*(")
-;      font-lock-function-name-face)
-;
-;
-;    ;; SAS functions introduced in Technical Report P-222
-;    ;; SCL functions that are known to work with SAS macro function %sysfunc
-;    (cons (concat "\\<"
-;(make-regexp '(
-    "airy" "band" "blshift" "brshift" "bnot" "bor" "bxor"
-    "cnonct" "fnonct" "tnonct" "compbl" "dairy" "dequote" "ibessel" "jbessel" 
-    "indexw" "inputc" "inputn"  "lowcase"
-    "putc" "putn" "quote" "resolve" "soundex" "sysprod"
-    "tranwrd" "trimn"
-    "%sysfunc" "attrc" "attrn" "cexist" "close" "dclose" "dnum"
-    "dopen" "dread" "exist" "fclose" "fetchobs" "fileexist"
-    "finfo" "fopen" "fput" "fwrite" "getoption"
-    "getvarc" "getvarn" "libname" "libref" "open" "optgetn" "optsetn"
-    "pathname" "sysmsg" "varfmt" "varlabel" "varnum" "vartype"
-) t) "\\>" "[ \t]*(")
-      font-lock-function-name-face)
-)
+   (cons (concat
+	  "\\<"
+	  (make-regexp
+	   '(
+	     "abs" "arcos" "arsin" "atan" "betainv" "byte" "ceil" "cinv"
+	     "collate" "compress" "cosh?" "css" "cv"
+	     "daccdb" "daccdbsl" "daccsl" "daccsyd" "dacctab"
+	     "depdb" "depdbsl" "depsl" "depsyd" "deptab"
+	     "date" "datejul" "datepart" "datetime" "day" "hms" "dhms" "dif"
+	     "digamma" "dim" "erfc?" "exp" "finv"
+	     "fipnamel?" "fipstate" "floor" "fuzz" "gaminv" "gamma"
+	     "hbound" "hour" "indexc?" "input" "int" "intck" "intnx" "intrr"
+	     "irr" "juldate" "kurtosis" "lag" "lbound" "left" "length"
+	     "lgamma" "log" "log10" "log2" "max" "mdy" "mean" "min" "minute"
+	     "mod" "month" "mort" "n" "netpv" "nmiss" "normal" "npv"
+;;;) t) "\\>" "[ \t]*(")
+;;;      font-lock-function-name-face)
+;;;
+;;;    (cons (concat "\\<"
+;;;(make-regexp '(
+	     "probbeta" "probbnml" "probchi" "probf" "probgam" "probhypr"
+	     "probit" "probnegb" "probnorm" "probt"
+	     "ordinal" "poisson" "put" "qtr" "range" "rank" "repeat"
+	     "ranbin" "rancau" "ranexp" "rangam" "rannor" "ranpoi"
+	     "rantbl" "rantri" "ranuni"
+	     "reverse" "right" "round" "saving" "scan" "second" "sign" "sinh?"
+	     "sqrt" "std" "stderr" "stfips" "stnamel?" "substr" "sum"
+	     "symget" "tanh?" "time" "timepart" "tinv" "today" "translate"
+	     "trigamma" "trim" "trunc" "uniform" "upcase" "uss" "var"
+	     "verify" "weekday" "year" "yyq"
+	     "zipfips" "zipnamel?" "zipstate"
+;;;) t) "\\>" "[ \t]*(")
+;;;      font-lock-function-name-face)
+;;;
+;;;
+;;;    ;; SAS functions introduced in Technical Report P-222
+;;;    ;; SCL functions that are known to work with SAS macro function %sysfunc
+;;;    (cons (concat "\\<"
+;;;(make-regexp '(
+	     "airy" "band" "blshift" "brshift" "bnot" "bor" "bxor"
+	     "cnonct" "fnonct" "tnonct" "compbl" "dairy" "dequote"
+	     "ibessel" "jbessel"
+	     "indexw" "inputc" "inputn"  "lowcase"
+	     "putc" "putn" "quote" "resolve" "soundex" "sysprod"
+	     "tranwrd" "trimn"
+	     "%sysfunc" "attrc" "attrn" "cexist" "close" "dclose" "dnum"
+	     "dopen" "dread" "exist" "fclose" "fetchobs" "fileexist"
+	     "finfo" "fopen" "fput" "fwrite" "getoption"
+	     "getvarc" "getvarn" "libname" "libref" "open" "optgetn" "optsetn"
+	     "pathname" "sysmsg" "varfmt" "varlabel" "varnum" "vartype"
+	     ) t) "\\>" "[ \t]*(")
+	 font-lock-function-name-face)
+   )
   "Font Lock regexs for SAS.")
 
 (defvar SAS-editing-alist
@@ -1025,7 +1039,7 @@ page ;
 
 ;;  variables section
 (defvar sas-dir-mode-map nil)
-(defvar sas-directory-name nil 
+(defvar sas-directory-name nil
   "Name of directory associated with this buffer.")
 (make-variable-buffer-local 'sas-directory-name)
 (defvar sas-dir-buf-end nil)
