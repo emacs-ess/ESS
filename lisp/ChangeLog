@@ -1,3 +1,8 @@
+Tue Sep  8 19:18:07 1998  Martin Maechler  <maechler@..>
+
+	* essl-s.el: added  "&optional dont-ask" argument to
+	ess-dump-to-src, ess-fix-comments,.... ess-MM-fix-src
+
 Mon Sep  7 18:26:47 1998  Martin Maechler  <maechler@...>
 
 	* essl-s.el (ess-time-string): 4 digit year!
