@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rodney.sparapani@duke.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/03/06 21:40:13 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: essa-sas.el,v 1.12 2001/03/06 21:40:13 ess Exp $
+;; Modified: $Date: 2001/03/06 21:59:43 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: essa-sas.el,v 1.13 2001/03/06 21:59:43 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, asynchronous.
 
@@ -293,7 +293,7 @@ operating system.")
     (shell)
     (insert (concat ess-sas-submit-command " -initstmt \"proc fsview data=" 
 	(read-string "SAS Dataset: ")
-	"; run;\"" ess-sas-data-view-options))
+	"; run;\" " ess-sas-data-view-options))
     (comint-send-input)
     (ess-sas-goto-sas))
 
