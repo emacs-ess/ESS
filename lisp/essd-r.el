@@ -8,9 +8,9 @@
 ;;              M. Maechler <maechler@stat.math.ethz.ch>,
 ;;              Stephen Eglen < >
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2004/04/01 18:47:33 $
-;; Version: $Revision: 5.48 $
-;; RCS: $Id: essd-r.el,v 5.48 2004/04/01 18:47:33 rossini Exp $
+;; Modified: $Date: 2004/06/20 17:07:16 $
+;; Version: $Revision: 5.49 $
+;; RCS: $Id: essd-r.el,v 5.49 2004/06/20 17:07:16 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -136,6 +136,7 @@ Optional prefix (C-u) allows to set command line arguments, such as
   (setq ess-customize-alist R-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode R-customize-alist proc-name)
+  (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   ;; ECB needs seminatic stuff.
   ;;  (if (featurep 'semantic)
   ;;      (setq semantic-toplevel-bovine-table r-toplevel-bovine-table))
