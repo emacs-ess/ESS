@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/10/16 01:49:59 $
-;; Version: $Revision: 5.44 $
-;; RCS: $Id: essl-sas.el,v 5.44 2002/10/16 01:49:59 rsparapa Exp $
+;; Modified: $Date: 2003/05/02 16:57:37 $
+;; Version: $Revision: 5.45 $
+;; RCS: $Id: essl-sas.el,v 5.45 2003/05/02 16:57:37 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -395,7 +395,7 @@ number."
 						    font-lock-reference-face)
 
 	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
-		"\\(data\\|endsas\\|quit\\|run\\)[ \t\n;]")
+		"\\(data\\|endsas\\|finish\\|quit\\|run\\|start\\)[ \t\n;]")
 		      				    font-lock-reference-face)
 	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
 		"proc[ \t]+[a-z][a-z_0-9]+")        font-lock-reference-face)
@@ -427,19 +427,28 @@ number."
 		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
 		"\\(a\\(bort\\|rray\\|ttrib\\)\\|by"
 		"\\|c\\(hange\\|lass\\|ontrast\\)"
-		"\\|d\\(elete\\|isplay\\|m\\|o\\([ \t]+over\\)?\\|rop\\)"
+		"\\|d\\(elete\\|isplay\\|m\\|o\\([ \t]+\\(data\\|over\\)\\)?\\|rop\\)"
 		"\\|e\\(rror\\|stimate\\|xc\\(hange\\|lude\\)\\)"
 		"\\|f\\(ile\\(name\\)?\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\|req\\)"
 		"\\|go\\([ \t]*to\\|ptions\\)"
 		"\\|i\\(d\\|f\\|n\\(dex\\|f\\(ile\\|ormat\\)\\|put\\|value\\)\\)"
-		"\\|keep\\|l\\(abel\\|ength\\|i\\(bname\\|nk\\)\\|smeans\\)"
+		"\\|keep\\|l\\(abel\\|ength\\|i\\(bname\\|nk\\|st\\)\\|smeans\\)"
 		"\\|m\\(anova\\|e\\(ans\\|rge\\)\\|issing\\|od\\(el\\|ify\\)\\)\\|note"
 		"\\|o\\(ptions\\|therwise\\|utput\\)\\|p\\(lot\\|ut\\)"
 		"\\|r\\(andom\\|e\\(name\\|peated\\|tain\\)\\)"
 		"\\|s\\(ave\\|e\\(lect\\|t\\)\\|kip\\|trata\\|umby\\)"
 		"\\|t\\(ables?\\|i\\(me\\|tle\\(10?\\|[2-9]\\)?\\)\\)\\|update"
-		"\\|va\\(lue\\|r\\)\\|w\\(eight\\|here\\|i\\(ndow\\|th\\)\\)\\)?"
+		"\\|va\\(lue\\|r\\)\\|w\\(eight\\|here\\|i\\(ndow\\|th\\)\\)"
+
+	;; IML statements that are not also SAS statements
+		"\\|append\\|c\\(lose\\(file\\)?\\|reate\\)\\|edit\\|f\\(ind\\|orce\\|ree\\)"
+		"\\|insert\\|load\\|mattrib\\|p\\(a[ru]se\\|rint\\|urge\\)"
+		"\\|re\\(move\\|peat\\|place\\|set\\|sume\\)"
+		"\\|s\\(et\\(in\\|out\\)\\|how\\|ort\\|tore\\|ummary\\)\\|use\\)?"
+
 		"\\>")				    font-lock-keyword-face)
+		
+	
 
 ;;	 (cons "\\<\\(\\(then\\|else\\)[ \t]*\\)?\\(do\\([ \t]*over\\)?\\|else\\)\\>"
 ;;						    font-lock-keyword-face)
@@ -447,7 +456,7 @@ number."
 	 ;; SAS statements that must be followed by a semi-colon
 	 (cons (concat
 		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
-		"\\(cards4?\\|end\\|l\\(ist\\|ostcard\\)\\|page\\|return\\|stop\\)?"
+		"\\(cards4?\\|end\\|l\\(ostcard\\)\\|page\\|return\\|stop\\)?"
 		"[ \t]*;")			    font-lock-keyword-face)
 
 	 ;; SAS/GRAPH statements not handled above
@@ -456,7 +465,7 @@ number."
 		"\\(axis\\|legend\\|pattern\\|symbol\\)"
 		"\\([1-9][0-9]?\\)?\\>")	    font-lock-keyword-face)
 
-	 ;; SAS functions and SAS macro functions
+	 ;; SAS Datastep functions and SAS macro functions
 	 (cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
 						    font-lock-function-name-face)
 	 (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
@@ -488,6 +497,19 @@ number."
 		"\\|c\\(nonct\\|ompbl\\)\\|d\\(airy\\|equote\\)\\|fnonct\\|tnonct"
 		"\\|i\\(bessel\\|n\\(dexw\\|put[cn]\\)\\)\\|jbessel\\|put[cn]"
 		"\\|lowcase\\|quote\\|resolve\\|s\\(oundex\\|ysprod\\)\\|tr\\(anwrd\\|imn\\)"
+		
+;;;    ;; IML functions that are not also Datastep functions
+		"\\|a\\(ll\\|ny\\|pply\\|rmasim\\)\\|b\\(lock\\|ranks\\|tran\\)"
+		"\\|c\\(har\\|hoose\\|on\\(cat\\|tents\\|vexit\\|vmod\\)\\|ovlag\\|shape\\|usum\\|vexhull\\)"
+		"\\|d\\(atasets\\|esignf?\\|et\\|iag\\|o\\|uration\\)"
+		"\\|e\\(chelon\\|igv\\(al\\|ec\\)\\)\\|f\\(ft\\|orward\\)\\|ginv"
+		"\\|h\\(alf\\|ankel\\|dir\\|ermite\\|omogen\\)"
+		"\\|i\\(\\|fft\\|nsert\\|nv\\(updt\\)?\\)\\|j\\(\\|root\\)\\|loc\\|mad"
+		"\\|n\\(ame\\|col\\|leng\\|row\\|um\\)\\|o\\(pscal\\|rpol\\)"
+		"\\|p\\(olyroot\\|roduct\\|v\\)\\|r\\(anktie\\|ates\\|atio\\|emove\\|eturn\\|oot\\|owcatc?\\)"
+		"\\|s\\(etdif\\|hape\\|olve\\|plinev\\|pot\\|qrsym\\|ssq\\|torage\\|weep\\|ymsqr\\)"
+		"\\|t\\(\\|eigv\\(al\\|ec\\)\\|oeplitz\\|race\\|risolv\\|ype\\)"
+		"\\|uni\\(on\\|que\\)\\|v\\(alue\\|ecdiag\\)\\|x\\(mult\\|sect\\)\\|yield"
 		
 ;;;    ;; SCL functions that are known to work with SAS macro function %sysfunc
 
