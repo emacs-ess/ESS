@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/06 23:38:14 $ - $Revision: 1.132 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/06 23:39:37 $ - $Revision: 1.133 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -272,17 +272,19 @@ common program that is run within Emacs buffers is the interactive
 operating system command line interpreter, called a shell.  By using
 this, most programs which take input from and provide output to the
 command-line can be run within and controlled by Emacs.
-% buffer and be controlled by programs written in Emacs Lisp. 
-%% AJR: we don't talk about Emacs Lisp yet, so postpone until later.
-% This is the Emacs feature that ESS uses to run statistical
-% packages. 
-%% AJR: no need to ``state the obvious''.
+%% buffer and be controlled by programs written in Emacs Lisp. 
+%%% AJR: we don't talk about Emacs Lisp yet, so postpone until later.
+%% This is the Emacs feature that ESS uses to run statistical
+%% packages. 
+%%% AJR: no need to ``state the obvious''.
 The resulting buffer provides a copy of the entire transcript of the
 interaction, which can be edited and searched during the program's 
 execution.
 
 \paragraph{Major and Minor Modes.}
-\label{sec:modes}
+%% \label{sec:modes}  
+%%% AJR: WE CAN'T REFER PARAGRAPHS, BUT COULD IF WE MAKE THESE
+%%% SUBSECTIONS.
 Emacs capabilities are extended by loading text files containing code
 written in Emacs Lisp (elisp) \citep{RChassell1999}, a dialect of Lisp
 \citep{PGraham:1996}.  Emacs commands, which are actually Lisp
