@@ -1,12 +1,335 @@
-1998-11-13  A.J. Rossini  <rossini@biostat.washington.edu>
+Mon Dec 14 20:23:55 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* doc/Makefile: added "info" target.  Removed spurrious
-	ess.info/ess.texi dependency, i.e. the first.
+	* README: added 5.1.x comments, updated to current state of affairs.
 
-1998-11-09  A.J. Rossini  <rossini@biostat.washington.edu>
+	* etc/other/Tags/README: stuff for emacs text mode for editing.
 
-	* Makefile (dist): new top-level target.
-	(dist): uses scp to put it where it belongs.
+	* etc/other/Tags/README: Information on tagging for Emacs/VI and ESS.
+
+	* etc/other/Tags/Lubinsky-S-tags/README, etc/other/Tags/Lubinsky-S-tags/desc, etc/other/Tags/Lubinsky-S-tags/etags.c:
+	Modifications to gnu tag programs for S
+
+	* lisp/ess-mode.el: fixed copyright and header information
+
+	* lisp/ess-site.el: commented out SHOME definition.
+
+Fri Dec 11 19:51:18 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ess-vars.el: fixed copyright, rossini's email address.
+
+	* lisp/ess-iw32.el: fixed rossini's email address, headers, copyright.
+
+	* lisp/essd-els.el, lisp/essd-s+4.el: fixed rossini's email address.
+
+	* lisp/essd-sq4.el: fixed copyright and header attributions.
+
+	* lisp/essd-els.el: fixed header files and copyright.
+
+	* lisp/essd-s+4.el: added changes to copyright and header docs.
+
+	* etc/other/S-spread/gradexmp.s, etc/other/S-spread/sprd-emc.s, etc/other/S-spread/sprd-grd.s, etc/other/S-spread/sprd-int.el, etc/other/S-spread/sprd-spr.s, etc/other/S-spread/sprd-txt.s, etc/other/S-spread/sprd3d.how, etc/other/S-spread/README, etc/other/S-spread/S-spread.el, etc/other/S-spread/asaprc.ps:
+	RMH's S-spread, Oct 1997 version
+
+	* doc/rmh-essi121098-msw32.tex:
+	Adding Rich's documentation for Windows stuff.
+
+	* lisp/ess-vars.el: Merged RMH's changes.
+
+	* lisp/ess-iw32.el, lisp/essd-els.el, lisp/essd-s+4.el, lisp/essd-sq4.el:
+	New files for ESS for Splus/MSW/NT/98/95
+	New files for remote-ESS on Unix.
+
+	* lisp/ess-site.el:
+	Added RMH's changes for Microsoft Windows and Splus.
+
+Mon Nov 30 17:37:57 1998  Kurt Hornik <hornik@ci.tuwien.ac.at>
+
+	* lisp/Makefile:
+	Add essd-s+5.el to SOURCES (as it gets required in ess-site).
+
+Mon Nov 23 20:03:17 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ChangeLog: *** empty log message ***
+
+Fri Nov 20 20:57:33 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ess-vars.el: ess-help-w3-url-prefix points to pyrite.
+
+	* lisp/ess-vars.el:
+	removed spurrious comment about generic function, in front of a variable.
+
+	* lisp/essd-s+5.el: trimmed out old S4 stuff.
+
+Mon Nov 16 17:29:25 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/ess-inf.el: do not need comint echo anymore..
+
+Sat Nov 14 00:23:19 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* Makefile, lisp/ChangeLog, ChangeLog: whitespace editing.
+
+	* doc/Makefile:
+	added info target.  removed spurrious ess.info/ess.texi target.
+
+Fri Nov 13 23:47:27 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* Makefile: added comment re: export vs checkout for "dist" target.
+
+	* lisp/ess-site.el: added sample entry for S+5.
+
+	* lisp/ChangeLog: *** empty log message ***
+
+	* lisp/ess-site.el: added suffix for StatSci's script files.
+
+Thu Nov 12 17:27:30 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/essd-r.el, lisp/essd-s+3.el, lisp/essd-s+5.el, lisp/essd-s3.el:
+	newline in dribble buff
+
+	* lisp/ess-inf.el:
+	more details in prompt for ess-get-dir; more dribble; WHITE SPACE
+
+	* lisp/ess.el: slightly better dribble output
+
+	* lisp/essd-s4.el: drop doubled comments
+
+	* lisp/ess-vars.el: .
+
+Wed Nov 11 15:54:34 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* Makefile: -X CVS
+
+	* lisp/essd-s+5.el: omit .Smode() extras; new "S+" instead of "S+3"
+
+	* lisp/essl-s.el: new "S+" instead of "S+3"
+
+	* lisp/ess-inf.el: comint-echo : OFF for S+5
+
+	* lisp/essd-s3.el: comments only
+
+	* lisp/essd-s+3.el: comment out ess-mode-edit
+
+	* lisp/Makefile, lisp/ess-vars.el: new version numbers
+
+	* lisp/essd-s+5.el: several more s4 -> s+5 changes; still not ok
+
+	* lisp/essd-s+3.el: transpose to defs
+
+	* lisp/ess-vars.el: require s+5
+
+Tue Nov 10 17:45:11 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/ess-site.el: s+5 is now distributed
+
+	* lisp/essd-s+5.el: provide typo fixed
+
+Mon Nov  9 23:50:26 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ChangeLog: *** empty log message ***
+
+	* Makefile: uses scp to put the tar file where it belongs.
+
+	* Makefile, lisp/ChangeLog, lisp/Makefile, lisp/ess-site.el:
+	New material for Makefiles
+
+	* lisp/essl-sta.el: removed possible problems from stata mode.
+
+	* ChangeLog: *** empty log message ***
+
+	* Makefile: added new top-level dist target.
+
+	* lisp/essd-s+5.el: This is for Splus5, based on S4.
+
+	* lisp/ess-web.nw: last change, sigh.
+
+	* lisp/ess-web.nw: emacs lisp mode is wrong, sigh.
+
+	* lisp/ess-web.nw: Contains interface code between Noweb and ESS
+
+	* lisp/ChangeLog: added stata-dialect/lang to makefile
+
+	* lisp/Makefile: added Stata stuff.
+
+Thu Sep 24 23:32:14 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ChangeLog: more stuff.
+
+	* lisp/essd-sta.el: should be sta, not stt
+
+	* lisp/ChangeLog: update for ess-site.
+
+	* lisp/ess-site.el:
+	added stata mode, which is now STA (ref: Thomas Lumley)
+
+Thu Sep 17 09:11:51 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/ChangeLog, lisp/ess-utils.el: several  small things
+
+Fri Sep 11 14:25:59 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/ChangeLog: .
+
+	* lisp/Makefile, lisp/ess-inf.el, lisp/ess-mode.el, lisp/ess-utils.el, lisp/ess.el:
+	Adaptions to new ess-utils
+
+	* lisp/essl-s.el: LOTS in "pretty edit source"
+
+	* lisp/essd-r.el: new function  (R-fix-T-F)
+
+Thu Sep 10 06:15:55 1998  Kurt Hornik <hornik@ci.tuwien.ac.at>
+
+	* lisp/essddr.el: Change old `ess-doc' to `essddr'.
+	Expand Rd-mode-abbrev-table (abbrevs).
+	Change Rd-indent-level default to 4.
+	Add a preliminary Rd-mode menu.
+	Add a preliminary Rd-submit-bug-report().
+
+	* lisp/ess-vars.el:
+	Change ess-mode-font-lock-keyword so that assignment function
+	declarations are also fontified correctly (hopefully ...).
+
+	* doc/Makefile: Get rid of old LISPDIR code.
+
+	* Makefile: Use `$(MAKE)' instead of `make'.
+
+Wed Sep  9 23:49:12 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ChangeLog: new stuff.
+
+	* lisp/essd-sta.el: modified for stata commands.  What is quit?
+
+	* lisp/essl-sta.el: Small mods.
+
+	* lisp/essd-sta.el: Added first pass at a stata file.
+
+	* lisp/Makefile: BATCHFLAGS should be --no-init-file, not --no-init-fil
+
+Wed Sep  9 08:45:26 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/essl-s.el:
+	minor (save-recursion..) -- Committing from Shell to see permissions
+
+Tue Sep  8 21:18:33 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/essl-s.el:
+	more things for (ess-dump-to-src), (ess-fix-comments),.... ess-MM-fix-src
+
+	* lisp/ess-mode.el: add optional  quiet  argument  to (set-ess-style)
+
+	* lisp/ess-mode.el: only white space
+
+	* lisp/ChangeLog: ..
+
+	* lisp/essl-s.el: added  "&optional dont-ask" argument to
+		ess-dump-to-src, ess-fix-comments,.... ess-MM-fix-src
+
+Mon Sep  7 16:27:37 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/ChangeLog: ..
+
+	* lisp/essl-s.el: 4 digit year in ess-time-string!
+
+	* doc/README.SAS:
+	Added paragraph about  ess-sas-sh / PATH problems  at very end -- for RMH
+
+Wed Aug 26 12:18:54 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/ChangeLog, lisp/essl-s.el: font-lock: "." as word constituent
+
+Mon Aug 24 12:50:45 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* ANNOUNCE, README, doc/ess.texi:
+	stat.ethz short for www.stat.math.ethz
+
+Thu Aug 20 06:48:48 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/ChangeLog: ..
+
+	* lisp/essddr.el:
+	Expanded  Rd-section-names  and Rd-keywords	[following Kurt's
+	suggestion]
+
+Tue Aug 18 08:44:54 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/essd-s+3.el, lisp/essd-r.el, lisp/ChangeLog:
+	 "--no-readline" for R;  S+3-dialect-name for S-plus
+
+Fri Aug 14 16:32:23 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/ess-vars.el, lisp/Makefile: calling new version "pre5.1"
+
+	* lisp/essl-s.el: "ease:" replaced by "ess-"; fixed some comments
+
+Mon Apr 27 07:53:02 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/essl-s.el: improved ess-num-var-round
+
+Fri Apr 17 12:29:46 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/essd-sas.el: ../etc/ is place for sas-sh-command
+
+	* etc/function-outline.S, lisp/essl-s.el:
+	function-outline-file now in ../etc/
+
+	* Makefile, doc/Makefile, lisp/Makefile:
+	Makefiles separated; new for ./doc
+
+Mon Apr  6 20:35:04 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ChangeLog: Storing updates.
+
+	* lisp/ess-comp.el, lisp/ess-inf.el, lisp/ess-site.el, lisp/ess-vars.el:
+	See ChangeLog for more details. Not tagged.
+
+Tue Dec 16 00:17:44 1997  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ChangeLog: *** empty log message ***
+
+	* lisp/essd-s4.el (S4-mode): New function, use it.
+
+Wed Dec 10 15:36:29 1997  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ChangeLog, lisp/essd-xls.el:
+	XLS-mode is now the mode-name symbol.  (instead of ess-mode).  This is
+	required for noweb-mode to work nicely.
+
+	ChangeLog documented to reflect this fact.
+
+Tue Dec  9 22:55:40 1997  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ChangeLog: *** empty log message ***
+
+	* lisp/essd-r.el:
+	removed non-necessary autoload for a non-existant function (was
+	intended for start-args, but never was written or used).
+
+	* lisp/essl-sta.el:
+	Changed essl-sta.el to not use stat.el in the documentation comments.
+
+	* lisp/ChangeLog: *** empty log message ***
+
+	* lisp/essddr.el: one too many parens.
+
+	* lisp/essddr.el:
+	added commented out face.  DB's error doesn't exist for me, though.
+
+Fri Dec  5 15:13:59 1997  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ChangeLog: *** empty log message ***
+
+	* lisp/ChangeLog: ChangeLog file install
+
+	* lisp/ess-site.el: added comments about Emacs 20.2 errors.
+
+Fri Dec  5 14:46:38 1997  ess  <ess@pyrite>
+
+	* Makefile: Added top-level Makefile.  Needs definitions, though.
+
+	* etc/ess-s+3.S, etc/ess-s4.S: Initial revision
+
+1998-12-14  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* README : updated to 5.1.x
 
 Tue Dec  2 08:49:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -848,6 +1171,12 @@ Thu Nov 13 09:39:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* Doc/rmh-talk.tex: pointed to FRANZ.  added comment about where
  	given.
 
+1998-11-13  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* doc/Makefile: added "info" target.  Removed spurrious
+	ess.info/ess.texi dependency, i.e. the first.
+
+
 Thu Nov 13 08:54:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (dist-doc): new target.  Use it
@@ -1176,6 +1505,11 @@ Sun Nov  9 14:00:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
 	* ess-vars.el (ess-version): upgrade to 5.0
 
 	* Makefile: upgrade version to 5.0
+
+1998-11-09  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* Makefile (dist): new top-level target.
+	(dist): uses scp to put it where it belongs.
 
 Fri Nov  7 19:43:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1852,6 +2186,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.5  1998/12/14 20:46:07  rossini
+	* Removing updated.
+	* Removing
 	* Removing Revision 5.4  1998/11/14 00:23:18  rossini
 	* Removing whitespace editing.
 	* Removing
