@@ -3,13 +3,13 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 1.11 1997/11/11 20:51:47 rossini Exp $
+@comment $Id: ess.texi,v 1.12 1997/11/11 20:56:02 rossini Exp $
 
 @synindex pg vr
 
 @ifinfo
 @direntry
-* ESS: (ess).          Emacs Speaks Statistics (R, S, SAS, XLS, etc).
+* ESS: (ess).    Emacs Speaks Statistics (S/R, SAS, XLisp-Stat, etc).
 @end direntry
 
 @majorheading ESS --- Emacs Speaks Statistics
@@ -217,7 +217,7 @@ Emacs and the running process) referred to as interactive ESS
 
 Currently, the documentation contains many references to @cite{`S'}
 where actually any supported (statistics) language is meant, i.e., `S'
-could also mean `Xlisp-Stat' or `SAS'.
+could also mean `XLisp-Stat' or `SAS'.
 
 @cindex interactive use of S
 
@@ -273,7 +273,7 @@ include:
 @b{Command-line editing} for fixing mistakes in commands before they are
 entered.  The @samp{-e} flag for S-plus provides something similar to
 this, but here you have the full range of Emacs commands rather than a
-limited subset.  However, other packages such as Xlisp-Stat and S3 do not
+limited subset.  However, other packages such as XLisp-Stat and S3 do not
 necessarily have features like this built-in.
 @xref{Command-line editing}.
 
@@ -364,7 +364,7 @@ to fix can be found in the @file{Doc/TODO} file.
 
 @itemize @bullet
 @item
-@b{Additional Language support} for S language dialects, Xlisp-Stat, and 
+@b{Additional Language support} for S language dialects, XLisp-Stat, and 
 SAS.
 
 @item
