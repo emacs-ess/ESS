@@ -9,9 +9,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2001/04/26 21:15:30 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: ess-emcs.el,v 5.9 2001/04/26 21:15:30 rossini Exp $
+;; Modified: $Date: 2001/06/13 18:25:25 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: ess-emcs.el,v 5.10 2001/06/13 18:25:25 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -74,7 +74,8 @@ Only a concern with earlier versions of Emacs.")
 			    ;; XEmacs only...
 ;;;			    (equal (console-type) 'pc)
 ;;;			    (equal (console-type) 'mswindows)
-			    (equal window-system 'win32))
+			    (equal window-system 'win32)
+			    (equal window-system 'mswindows))
   "Value is t if the OS is one of Microsoft's, nil otherwise.")
 
 
