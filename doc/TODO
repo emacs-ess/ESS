@@ -1,6 +1,6 @@
 -*-indented-text-*-
 
-$Id: TODO,v 1.2 1997/10/22 19:34:53 rossini Exp $ 
+$Id: TODO,v 1.3 1997/10/23 12:29:02 rossini Exp $ 
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -651,29 +651,6 @@ NOTE: Not all of these are clean OR are even consistent.
   Recommendation 2.  Tell users in README about Info item
    - User Option: S-directory
   I for one always want the current buffer's working directory.
-  
-  
-  f. Problem:
-  S-eval-function can't find the correct beginning of a function with
-  multiple part names.  Instead it sends the function with only the last
-  part of the name to S.
-  
-  col.spacing <- function(x)
-  {
-    stuff
-  }
-  
-  Reason:
-  S-beginning-of-function stops at the beginning of "spacing", not
-  "col.spacing".
-  
-  My guess is that something is not right with S-function-pattern.
-  
-  Solution:
-  Send email to D.M.Smith@lancaster.ac.uk S-mode@stat.math.ethz.ch
-  
-  Workaround, use quotes:
-  "col.spacing" <- function(x)
   
   
   g. Question:
