@@ -1,14 +1,14 @@
 ;;; essl-s.el --- Support for editing S source code
 
-;; Copyright (C) 1989-1997 Bates, Kademan, Ritter, Smith, Hornik,
+;; Copyright (C) 1989-1999 Bates, Kademan, Ritter, Smith, Hornik,
 ;; Heiberger, Maechler, and Rossini.
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1998/11/11 12:44:49 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: essl-s.el,v 5.11 1998/11/11 12:44:49 maechler Exp $
+;; Modified: $Date: 1999/09/21 08:31:10 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: essl-s.el,v 5.12 1999/09/21 08:31:10 ess Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -36,8 +36,6 @@
 
 
  ; Configuration variables
-
-
 
 (defun S-comment-indent ()
   "Indentation for S comments."
@@ -97,7 +95,6 @@ Return the amount the indentation changed by."
 	  (goto-char (- (point-max) pos))))
     shift-amt))
 
-
 (defun S-calculate-indent (&optional parse-start)
   "Return appropriate indentation for current line as S code.
 In usual case returns an integer: the column to indent to.
@@ -144,7 +141,10 @@ Returns nil if line starts inside a string, t if in a comment."
 		      ;; End
 		      (+ (current-column) ess-expression-offset))
 		     ((and (numberp ess-arg-function-offset)
-			   (re-search-backward "=[ \t]*\\s\"*\\(\\w\\|\\s_\\)+\\s\"*[ \t]*" bol t))
+			   (re-search-backward
+			    "=[ \t]*\\s\"*\\(\\w\\|\\s_\\)+\\s\"*[ \t]*"
+			    bol
+			    t))
 		      (forward-sexp -1)
 		      (+ (current-column) ess-arg-function-offset))
 		     ;; "expression" is searched before "=".
@@ -195,8 +195,9 @@ Returns nil if line starts inside a string, t if in a comment."
 		 ;; If no previous statement,
 		 ;; indent it relative to line brace is on.
 		 ;; For open brace in column zero, don't let statement
-		 ;; start there too.  If ess-indent-level is zero,
-		 ;; use ess-brace-offset + ess-continued-statement-offset instead.
+		 ;; start there too.  If ess-indent-level is zero, use
+		 ;; ess-brace-offset + ess-continued-statement-offset
+		 ;; instead.
 		 ;; For open-braces not the first thing in a line,
 		 ;; add in ess-brace-imaginary-offset.
 		 (+ (if (and (bolp) (zerop ess-indent-level))
