@@ -71,10 +71,13 @@ SOURCES = ess-vars.el ess.el ess-site.el \
 	ess-inf.el ess-mode.el ess-trns.el ess-help.el \
 	essddr.el
 
+
 OBJECTS = $(SOURCES:.el=.elc)
 
-AUXFILES = COPYING Makefile NEWS README TODO \
-	ess.texi ChangeLog
+AUXFILES = COPYING Makefile README Doc ess.texi ChangeLog
+
+DISTFILES = $(addprefix $(VERSIONDIR)/,$(SOURCES)) \
+	    $(addprefix $(VERSIONDIR)/,$(AUXFILES)) 
 
 ### Commands
 
@@ -102,17 +105,9 @@ dist:
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(VERSION)"
 	@echo "**********************************************************"
-	-(cd $(VERSIONDIR) ; make clean )
-	-(cd $(VERSIONDIR) ; mv ChangeLog ChangeLog.old \
-	  echo `date "+%a %b %d %T %Y "` " A.J. Rossini <rossini@stat.sc.edu>" > ChangeLog \
-	  echo >> ChangeLog \
-	  echo "	* Version" $(VERSION) released. >> ChangeLog \
-	  echo >> ChangeLog \
-	 cat ChangeLog.old >> ChangeLog )
 	chmod a-w $(VERSIONDIR)/*.el
 	chmod u+w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
-	tar hcovf $(VERSIONDIR).tar $(VERSIONDIR)/$(SOURCES) \
-				 $(VERSIONDIR)/$(AUXFILES)
+	tar hcovf $(VERSIONDIR).tar $(DISTFILES)
 	gzip $(VERSIONDIR).tar
 	cp $(VERSIONDIR).tar.gz $(MYWWWDIR)
 	cp $(VERSIONDIR).tar.gz $(MYFTPDIR)
