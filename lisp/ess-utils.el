@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2004/06/21 20:51:31 $
-;; Version: $Revision: 5.28 $
-;; RCS: $Id: ess-utils.el,v 5.28 2004/06/21 20:51:31 rsparapa Exp $
+;; Modified: $Date: 2004/06/23 12:31:48 $
+;; Version: $Revision: 5.29 $
+;; RCS: $Id: ess-utils.el,v 5.29 2004/06/23 12:31:48 stephen Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -405,5 +405,17 @@ various short-hands for CWD in PATH, but that shouldn't be a hindrance here."
 		    (file-name-all-completions ess-root-arg ess-tmp-dir))))
 	(setq i (+ i 1)))
     ess-tmp-exec))
+
+(defun ess-uniq-list (items)
+  "Remove all duplicate strings from the list ITEMS."
+  ;; build up a new-list, only adding an item from ITEMS if it is not
+  ;; already present in new-list.
+  (let (new-list)
+    (while items
+      (if (not (member (car items) new-list))
+	  (setq new-list (cons (car items) new-list)))
+      (setq items (cdr items)))
+    new-list
+    ))
 
 (provide 'ess-utils)
