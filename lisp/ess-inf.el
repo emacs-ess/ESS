@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/12/18 15:37:22 $
-;; Version: $Revision: 5.69 $
-;; RCS: $Id: ess-inf.el,v 5.69 2001/12/18 15:37:22 ess Exp $
+;; Modified: $Date: 2001/12/21 15:09:24 $
+;; Version: $Revision: 5.70 $
+;; RCS: $Id: ess-inf.el,v 5.70 2001/12/21 15:09:24 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -326,7 +326,13 @@ there is no process NAME)."
 	;; Get search list when needed
 	(setq ess-sp-change t)
 	(if (string= ess-language "S")
-	    (ess-eval-linewise ".in.ESS <- TRUE"))
+	    ;; Tell S that it is running inside ESS
+	    ;; This is immediately before ess-post-run-hook since it like the
+	    ;; hook but should happen in any case
+	    (ess-eval-linewise
+	     (if (string= ess-dialect "R") ".in.ESS <- TRUE"
+	       ;; else S+ :
+	       "assign('.in.ESS', TRUE, frame=0)")))
 	(run-hooks 'ess-post-run-hook))
       (switch-to-buffer (process-buffer (get-process proc-name))))))
 
@@ -1328,7 +1334,7 @@ to continue it."
 	  ;; (ess-write-to-dribble-buffer (format " new string=«%s»\n" string2))
 	  (beginning-of-line)
 	  (if (looking-at inferior-ess-primary-prompt)
-	      (progn 
+	      (progn
 		(end-of-line)
 		(insert-before-markers string)) ;; emacs 21.0.105 and older
 	    (delete-backward-char 1))           ;; emacs 21.0.106 and newer
