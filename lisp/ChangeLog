@@ -1,3 +1,7 @@
+2005-01-24  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-quit): drop 'dont-cleanup' argument
+
 2005-01-24  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-cleanup): Use ess-S-quit-kill-buffers-p.
@@ -19,10 +23,10 @@
 
 2005-01-18  Martin Maechler  <maechler@stat.math.ethz.ch>
 
-	* ess-inf.el (ess-complete-object-name): add S4 object slot name 
+	* ess-inf.el (ess-complete-object-name): add S4 object slot name
 	completion.
 	* ess-inf.el (ess-slot-names): new (simplistic) function
-	
+
 2005-01-05  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-prompt-wait): new 3rd argument sleep
