@@ -156,12 +156,14 @@ html/ess_toc.html: ess.texi
 .el.elc:
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
 
-ess-site.elc: ess-site.el ess.elc
-#	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile ess-site.el
 
 ess-vars.elc:	ess-vars.el
+	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile ess-vars.el
 
-ess.elc: ess.el
+ess.elc: ess.el ess-vars.elc
+	$(EMACS) $(BATCHFLAGS) -l ess-vars.elc -f batch-byte-compile ess.el
+
+ess-site.elc: ess-site.el ess.elc
 
 ess-inf.elc: ess-inf.el $(CORE)
 
@@ -170,6 +172,10 @@ ess-mode.elc: ess-mode.el $(CORE)
 ess-trns.elc: ess-trns.el $(CORE)
 
 ess-help.elc: ess-help.el $(CORE)
+
+## S languages
+
+essl-s.elc : essl-s.el ess.elc
 
 essd-sas.elc : essd-sas.el ess.elc
 
@@ -181,10 +187,23 @@ essd-s4.elc : essd-s4.el essl-s.elc ess.elc
 
 essd-r.elc : essd-r.el essl-s.elc ess.elc
 
-essd-xls.elc : essd-xls.el ess.el
+## Lisp Languages
 
-#essd-vst.elc : essd-vst.el ess.el
-#	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-r.el
+essl-lsp.elc : essl-lsp.el ess.elc
+
+essd-xls.elc : essd-xls.el essl-lsp.el ess.elc
+
+essd-vst.elc : essd-vst.el essl-lsp.el ess.elc
+
+## SAS 
+
+essl-sas.elc : essl-sas.el ess.elc
+
+essd-sas.elc : essd-sas.el essl-sas.elc ess.elc
+
+## Stata
+
+essl-sta.elc : essl-sta.el ess.elc
 
 # Ignore this.
 #(defun S-insert-make-rule (file)
