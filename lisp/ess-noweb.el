@@ -1,15 +1,15 @@
 ;;; ess-noweb.el : support for Literate Data Analysis
 
-;; Copyright (C) 1999, Mark Lunt and A.J. Rossini
+;; Copyright (C) 1999--2000, Mark Lunt and A.J. Rossini
 
-;; Authors: Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk> 
+;; Authors: Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
 ;;          A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: April 18, 1999
-;; Version: $Revision: 1.7 $
+;; Version: $Revision: 1.8 $
 ;; Keywords: statistical support
 ;; Summary: Noweb support for ESS
-;; CVS: $Id: ess-noweb.el,v 1.7 2000/02/29 17:20:44 ess Exp $
+;; CVS: $Id: ess-noweb.el,v 1.8 2000/03/02 18:28:14 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -70,11 +70,11 @@ Arg has same meaning as for ess-eval-region."
 ;;*;; Thread code chunk evaluation
 
 ;;;
-;;; Threads are code chunks which fit into the same "buffer" (I'm (AJR) 
+;;; Threads are code chunks which fit into the same "buffer" (I'm (AJR)
 ;;; abusing terminology, but what I mean is things like:
 ;;; <<thing1>>=
 ;;;   code for thing1
-;;; @ 
+;;; @
 ;;; Documentation
 ;;; <<thing1>>=
 ;;;   continuing code for thing1

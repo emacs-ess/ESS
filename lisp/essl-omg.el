@@ -1,13 +1,13 @@
 ;;; essl-omg.el --- Support for editing Omega source code
 
-;; Copyright (C) 1999 A.J. Rossini.
+;; Copyright (C) 1999--2000 A.J. Rossini.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 Aug 1999
-;; Modified: $Date: 2000/01/26 20:27:31 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: essl-omg.el,v 5.4 2000/01/26 20:27:31 ess Exp $
+;; Modified: $Date: 2000/03/02 18:28:14 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: essl-omg.el,v 5.5 2000/03/02 18:28:14 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 

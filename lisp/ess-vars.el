@@ -1,14 +1,14 @@
 ;;;;; ess-vars.el --- Variable definitions for ESS.
 
-;; Copyright (C) 1997--1999 A.J. Rossini, Martin Maechler,
+;; Copyright (C) 1997--2000 A.J. Rossini, Martin Maechler,
 ;; Kurt Hornik, and Richard M. Heiberger.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/03/02 10:13:33 $
-;; Version: $Revision: 5.31 $
-;; RCS: $Id: ess-vars.el,v 5.31 2000/03/02 10:13:33 maechler Exp $
+;; Modified: $Date: 2000/03/02 18:28:14 $
+;; Version: $Revision: 5.32 $
+;; RCS: $Id: ess-vars.el,v 5.32 2000/03/02 18:28:14 maechler Exp $
 
 ;; Keywords: editing and process modes.
 

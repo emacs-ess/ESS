@@ -1,13 +1,13 @@
 ;;; essl-sas.el --- SAS customization
 
-;; Copyright (C) 1997 Richard M. Heiberger and A. J. Rossini
+;; Copyright (C) 1997--2000 Richard M. Heiberger and A. J. Rossini
 
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2000/02/29 17:08:41 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essl-sas.el,v 5.3 2000/02/29 17:08:41 ess Exp $
+;; Modified: $Date: 2000/03/02 18:28:14 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essl-sas.el,v 5.4 2000/03/02 18:28:14 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -39,7 +39,7 @@
 ;;;            Madison, WI 53706
 ;;;            cook@biostat.wisc.edu
 ;;;
-;;;  Acknowledgements: 
+;;;  Acknowledgements:
 ;;;  Menu code for XEmacs/Lucid emacs and startup mods
 ;;;  contributed by arossini@biostats.hmc.psu.edu
 ;;;
@@ -71,7 +71,7 @@ See the command `ess-transcript-mode' for more information on this mode."
 	(if (null arg) (not ess-transcript-minor-mode)
 	  (> (prefix-numeric-value arg) 0)))
   (force-mode-line-update)
-  (setq mode-line-process 
+  (setq mode-line-process
 	'(" [" ess-local-process-name "]")))
 
 (defun ess-listing-minor-mode (&optional arg)
@@ -83,7 +83,7 @@ Ess-Listing mode is used solely to place an indicator on the mode line."
 	(if (null arg) (not ess-listing-minor-mode)
 	  (> (prefix-numeric-value arg) 0)))
   (force-mode-line-update)
-  (setq mode-line-process 
+  (setq mode-line-process
 	'(" [" ess-local-process-name "]")))
 
 (defun SAS-log-mode ()
@@ -145,7 +145,7 @@ popup window when the SAS job is finished.")
 
 ;; (if (equal system-type 'windows-nt)
 ;;     ;; backslash is punctuation (used in MS file names)
-;;     (modify-syntax-entry ?\\ "."  SAS-syntax-table) 
+;;     (modify-syntax-entry ?\\ "."  SAS-syntax-table)
 ;;    ;; backslash is an escape character
 ;;    (modify-syntax-entry ?\\ "\\" SAS-syntax-table))
 (modify-syntax-entry ?\\ "."  SAS-syntax-table)  ;; backslash is punctuation
@@ -159,8 +159,8 @@ popup window when the SAS job is finished.")
 (modify-syntax-entry ?|  "."  SAS-syntax-table)
 (modify-syntax-entry ?\' "\"" SAS-syntax-table)
 (modify-syntax-entry ?*  ". 23"  SAS-syntax-table) ; comment character
-(modify-syntax-entry ?\; "."  SAS-syntax-table) 
-(modify-syntax-entry ?_  "w"  SAS-syntax-table)  
+(modify-syntax-entry ?\; "."  SAS-syntax-table)
+(modify-syntax-entry ?_  "w"  SAS-syntax-table)
 (modify-syntax-entry ?<  "."  SAS-syntax-table)
 (modify-syntax-entry ?>  "."  SAS-syntax-table)
 (modify-syntax-entry ?/  ". 14"  SAS-syntax-table) ; comment character
@@ -173,7 +173,7 @@ popup window when the SAS job is finished.")
     (";[ \t]*%?\\*.*;"		    . font-lock-comment-face)
     ("/\\*\\([^*/]\\)*\\*/"  0 font-lock-comment-face t)
     ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND
-    ("\\<\\(data\\|run\\|%macro\\|%mend\\)\\>" 
+    ("\\<\\(data\\|run\\|%macro\\|%mend\\)\\>"
      . font-lock-reference-face)
     ("\\<proc[ \t]+[a-z][a-z_0-9]+"
      . font-lock-reference-face)
@@ -270,7 +270,7 @@ popup window when the SAS job is finished.")
      . font-lock-function-name-face)
     ("\\<\\(pathname\\|sysmsg\\|varfmt\\|varlabel\\|varnum\\|vartype\\)[ \t]*("
      . font-lock-function-name-face)
-    ;; SAS PROC statements not handled above 
+    ;; SAS PROC statements not handled above
     ("\\<\\(change\\|class\\|exchange\\|exclude\\|freq\\|id\\|index\\)\\>"
      . font-lock-keyword-face)
     ("\\<\\(model\\|plot\\|save\\|sum\\|tables?\\|var\\|weight\\|with\\)\\>"
@@ -320,13 +320,13 @@ popup window when the SAS job is finished.")
 (defun sas-indent-line ()
   "Indent function for SAS mode."
   (interactive)
-  (let (indent prev-end 
+  (let (indent prev-end
                (pos (- (point-max) (point)))
                (case-fold-search t)
                (cur-ind (current-indentation))
                (comment-col (sas-comment-start-col))) ;; 2/1/95 TDC
     (save-excursion
-      (cond ((progn 
+      (cond ((progn
                (back-to-indentation)
                (or (bobp)
                    (looking-at
@@ -360,11 +360,11 @@ popup window when the SAS job is finished.")
                    (if (bobp) () (backward-char 1));; for end of comment
                    (setq prev-end (point))
                    (looking-at "*/"));;  improved 1/31/95
-                 (save-excursion                            
+                 (save-excursion
                    (search-backward "*/"
 				    (point-min) 1 1); comment start is first /*
                    (search-forward "/*"
-				   prev-end 1 1)    ; after previous */ 
+				   prev-end 1 1)    ; after previous */
                    (backward-char 2)                ; 2/1/95 TDC
                    (skip-chars-backward " \n\f\t")
                    (setq indent
@@ -373,7 +373,7 @@ popup window when the SAS job is finished.")
 			       (sas-next-statement-indentation)
                              (+ (current-indentation) sas-indent-width))))))
 
-		;; added 6/27/94 to leave "* ;" comments alone                  
+		;; added 6/27/94 to leave "* ;" comments alone
 		((save-excursion
 		   (progn
 		     (beginning-of-sas-statement 1 t)
@@ -394,7 +394,7 @@ popup window when the SAS job is finished.")
 			     (bobp) (backward-char 1) (looking-at "\\*/"))))
 		     (setq indent (+ (current-indentation) sas-indent-width))
 		   (setq indent (current-indentation))))))))
-    (save-excursion 
+    (save-excursion
       (let (beg end)
         (back-to-indentation)
         (setq end (point))
@@ -436,7 +436,7 @@ line of statement."
 	    (search-forward ";" (point-max) 1 1)
 	    (setq arg (1- arg)))))))
 
-;; added 9/31/94 
+;; added 9/31/94
 (defun sas-next-statement-indentation ()
   "Returns the correct indentation of the next sas statement.
 The current version assumes that point is at the end of the statement.
@@ -508,7 +508,7 @@ opening /* appears.  returns 0 otherwise."
 Proc Lifetest.  Operates on current region.  A major space saver if there is
 heavy censoring."
   (interactive "r")
-  (save-excursion 
+  (save-excursion
     (shell-command-on-region
      start end
      "sed \"\\?          *\\.          *\\.          *\\.    ?d\"" t)))
@@ -626,11 +626,11 @@ $" "")
   (let ((name (buffer-file-name)))
     (cond ((not name))
           ((string-match (substring name -4 nil) "\\.sas\\|\\.lst\\|\\.log")
-	   
+
            (setq sas-file-name (substring name 0 (- (length name) 4)))
            (setq sas-buffer-name (buffer-name))
 	   (setq sas-file-root (substring sas-buffer-name 0 (- (length sas-buffer-name) 4)))
-	   
+
            )
           (t (message "This file does not have a standard suffix")))))
 
@@ -694,7 +694,7 @@ is automatically sets to t."
 ;;           (sas-mode))
 ;;     (if (not (string-equal major-mode "sasl-mode"))
 ;;         (sasl-mode))))
-;; 
+;;
 ;;(defun switch-to-sas-file-other-window (suff)
 ;;  "Switches to sas \"SUFF\" file associated with the current file"
 ;;  (let* ((sfile sas-file-name)
@@ -761,16 +761,16 @@ is automatically sets to t."
           (progn
             (beep)
             (y-or-n-p
-             (format 
+             (format
 	      "Submission is disabled for this file.  Submit it anyway? "))
 	    ))
-      (progn 
+      (progn
 	;; if buffer name has changed, tell user
         (if (or
-             (string-equal sas-buffer-name (buffer-name)) 
+             (string-equal sas-buffer-name (buffer-name))
              (not
               (y-or-n-p
-               (format 
+               (format
 		"The name of this buffer has changed.  Submit the new file? "))
 	      ))
             (setq sas-buffer-name (buffer-name))
@@ -790,14 +790,14 @@ is automatically sets to t."
 		buf (concat "*" proc-name "*"))
           (if (get-buffer buf)
 	      (save-window-excursion (switch-to-buffer buf)
-                                     (erase-buffer) 
-				     (setq default-directory 
+                                     (erase-buffer)
+				     (setq default-directory
 					   (file-name-directory sas-file))))
 
           (run-hooks 'sas-pre-run-hook)  ;; added 8/24/94
 	  (message "----  Submitting SAS job   ----")
 	  ;; (switch-to-buffer buf)
-	  (make-comint proc-name 
+	  (make-comint proc-name
 		       sas-program     ;added sas-program 4/29/94
 		       nil
 		       sas-root)
@@ -824,7 +824,7 @@ is automatically sets to t."
       (setq msg
             (format "SAS %s %s"
                     (substring arg 0 -1)
-                    (if sas-error-notify 
+                    (if sas-error-notify
                         ;;(save-window-excursion
                         (progn
 			  (set-buffer sbuf)
@@ -833,7 +833,7 @@ is automatically sets to t."
 			  (setq win (get-buffer-window buf))
 			  (save-window-excursion
 			    (if win
-				(progn 
+				(progn
 				  (select-window win)
 				  (if (re-search-forward "^ERROR" nil t)
 				      " (See .log file for errors)"
@@ -854,7 +854,7 @@ is automatically sets to t."
       (princ msg))))
 
 ;; 5/2/94 Modified run-sas-on-region to separate log and output buffers.
-;; 
+;;
 ;;(defun run-sas-on-region (start end append &optional buffer)
 ;;  "Submit region to SAS"
 ;;  (interactive "r\nP")
@@ -865,7 +865,7 @@ is automatically sets to t."
 ;;    (setq buffer (or buffer "*SAS output*"))
 ;;    (save-excursion
 ;;      (shell-command-on-region
-;;       start end;; added sas-program 
+;;       start end;; added sas-program
 ;;       (concat sas-program " -nonews -stdio 2> /tmp/_temp_.log" nil))
 ;;      (get-buffer-create "*SAS Log*")
 ;;      (save-window-excursion
@@ -897,7 +897,7 @@ is automatically sets to t."
 ;;      (beep)
 ;;      (message "Error found in log file.")
 ;;      )))
-  
+
 (defun switch-to-dataset-log-buffer ()
   "Switch to log buffer for run-sas-on-region."
   (interactive)
@@ -909,7 +909,7 @@ is automatically sets to t."
   (switch-to-buffer-other-window (format " *sas-tmp-%s*" sas-dataset)))
 
 ;;(defun sas-get-dataset (filename &optional arg opts-p append buffer vars)
-;;  "Run proc contents and proc print on SAS dataset.  Automatically prompts 
+;;  "Run proc contents and proc print on SAS dataset.  Automatically prompts
 ;;for SAS options to use.  Default options are defined by the variable
 ;;`sas-get-options'.  Output may be updated from within output buffer with
 ;;C-cr if dataset changes.  Also, the source code which generates the output
@@ -933,7 +933,7 @@ is automatically sets to t."
 ;;      (switch-to-buffer buf)
 ;;      (erase-buffer)
 ;;      (setq default-directory dir)
-;;      (if opts 
+;;      (if opts
 ;;          (insert (format "options  %s ;\n" opts)))
 ;;      (insert (format "title \"Contents of SAS dataset `%s'\" ;\n" file))
 ;;      (insert (format "libname %s '%s' ;\n" sas-tmp-libname dir))
@@ -945,13 +945,13 @@ is automatically sets to t."
 ;;      (run-sas-on-region (point-min) (point-max) append
 ;;                         buffer)
 ;;      (get-buffer buffer)
-;;      (if append () (sasd-mode))  ;; added 5/5/94 
+;;      (if append () (sasd-mode))  ;; added 5/5/94
 ;;      (setq sas-dataset file))
 ;;    (if (get-buffer-window buffer t)
 ;;        (raise-frame (window-frame (get-buffer-window buffer t)))
 ;;    (display-buffer buffer (not append)))
 ;;    ))
-    
+
 ;;(defun revert-sas-dataset ()
 ;;  "Revert current sas dataset from disk version"
 ;;  (interactive)
@@ -964,10 +964,10 @@ is automatically sets to t."
 ;;                           (concat "*" file ".ssd01*"))
 ;;        )
 ;;      (goto-char pos)  ;; added 6/9/94
-;;    (sasd-mode)  ;; added 5/5/94 
+;;    (sasd-mode)  ;; added 5/5/94
 ;;    (setq sas-dataset file)))
 
-(defun sas-insert-local-variables ()  ;; created 6/17/94 
+(defun sas-insert-local-variables ()  ;; created 6/17/94
   "Add local variables code to end of sas source file."
   (interactive)
   (save-excursion
@@ -987,7 +987,7 @@ page ;
 ;;;  file name: sas-data.el
 ;;;
 ;;;  Version 1.0
-;;; 
+;;;
 ;;;    sas-data-mode:  manage sas datasets
 ;;;    Copyright (C) 1994 Tom Cook
 ;;;
@@ -1010,7 +1010,7 @@ page ;
 ;;;            University of Wisconsin - Madison
 ;;;            Madison, WI 53706
 ;;;            cook@biostat.wisc.edu
-;;   Created: 8/11/94          
+;;   Created: 8/11/94
 
 ;;  variables section
 (defvar sas-dir-mode-map nil)
@@ -1020,7 +1020,7 @@ page ;
 (make-variable-buffer-local 'sas-dir-buf-end)
 (defvar sas-sorted-by-num nil)
 (make-variable-buffer-local 'sas-sorted-by-num)
-;; user variables 
+;; user variables
 
 ;; keymaps etc...
 
@@ -1065,7 +1065,7 @@ page ;
   (setq mode-name "SAS")
   (setq sas-directory-name (expand-file-name default-directory))
   (toggle-read-only 1))
-  
+
 
 ;;(defun sas-make-library (directory &optional update)
 ;;  "Create a buffer with the names of all sas datasets from DIRECTORY."
@@ -1085,7 +1085,7 @@ page ;
 ;;    (setq default-directory dir)
 ;;    (setq pos (point))
 ;;    (if update
-;;        (progn 
+;;        (progn
 ;;          (save-window-excursion
 ;;            (set-buffer buf)
 ;;            (erase-buffer)
@@ -1104,7 +1104,7 @@ page ;
 ;;                  (erase-buffer)
 ;;                  (insert "There are no SAS datasets in this directory")
 ;;                  (pop-to-buffer out))
-;;              (save-excursion 
+;;              (save-excursion
 ;;                (set-buffer (get-buffer-create cont))
 ;;                (setq buffer-read-only t)
 ;;                (let ((buffer-read-only nil))
@@ -1165,7 +1165,7 @@ page ;
 (defun sas-get-filename ()
   "Return name of dataset on current line."
   (interactive)
-  (save-excursion 
+  (save-excursion
     (if (string-equal "*SAS-dir" (substring (buffer-name) 0 8))
         (sas-move-to-filename)
       (goto-char (point-min))
@@ -1195,20 +1195,20 @@ page ;
 ;;    (sas-get-dataset (sas-get-filename) 2 t t (buffer-name))
 ;;    (end-of-buffer)
 ;;    (backward-page-top-of-window 1)))
-;;  
+;;
 ;;(defun sas-print ()
 ;;  "Run proc contents on current file."
 ;;  (interactive)
 ;;  (sas-get-dataset (sas-get-filename) 1 nil nil nil
 ;;                   (sas-create-var-string)))
-  
+
 (defun sas-goto-page (arg)
   "Goto top of page ARG.  If no ARG, then goto top of file."
   (interactive "P")
   (goto-char 1)
   (if arg
       (if (> arg 1)
-	  (progn 
+	  (progn
 	    (re-search-forward page-delimiter (point-max) 1 (1- arg)))))
   (skip-chars-forward " \f\n")
   (recenter 1))
