@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/03/16 09:08:35 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: ess-site.el,v 5.15 1999/03/16 09:08:35 maechler Exp $
+;; Modified: $Date: 1999/03/16 17:51:02 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: ess-site.el,v 5.16 1999/03/16 17:51:02 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -146,6 +146,12 @@
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
 ;;(setq-default inferior-SAS-program-name "sas")
 
+;;; ESS on the Windows NT/95/98 assumes you have installed gnuclient
+;;; with your NTemacs.
+;;; http://www.cs.washington.edu/homes/voelker/ntemacs/contrib/gnuserv.zip
+;;; Should you choose not to use gnuclient, you will need to uncomment
+;;; the notepad definitions below.
+;;;
 ;;; Send Print from S+4 GUI Commands window print icon to emacs.
 ;;; StatSci's S+4 default print destination for the commands window is
 ;;(setq-default inferior-S+4-print-command "notepad/p")
@@ -155,6 +161,17 @@
 ;;; (1) edit the output into a clean ess-transcript file before printing, or
 ;;; (2) print a region of the file.
 ;;(setq-default inferior-S+4-print-command "S_PRINT_COMMAND=gnuclientw.exe")
+
+;;; The editor and pager output from S+4 and Sqpe+4 are sent by
+;;; StatSci default to notepad, effectively using the definition: 
+;;(setq-default  inferior-S+4-editor-pager-command
+;;   "options(editor='notepad', pager='notepad')")
+;;;
+;;; ESS sends the output from both commands to an emacs buffer using
+;;; the definition:
+;;(setq-default  inferior-S+4-editor-pager-command
+;;   "options(editor='gnuclient.exe', pager='gnuclientw.exe')")
+
 
 ;;; see essd-els.el
 ;;(setq-default inferior-S-elsewhere-program-name "sh")
