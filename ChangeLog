@@ -1,3 +1,84 @@
+Mon Oct 20 14:20:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-help.el (ess-display-help-on-object): set the customization
+ 	variables properly.
+
+Thu Oct 16 14:25:59 1997  Anthony Rossini  <rossini@fhat.stat.sc.edu>
+
+	* essd-sas.el (ess-mode): added autoload.
+
+	* essd-s+3.el: editing of spaces. 
+
+	* Makefile (SOURCES): changed edd-doc appropairately.i
+
+Fri Oct 10 12:05:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* beta 15 released.
+
+	* ess-trns.el (ess-transcript-mode): start up in read-only mode.
+
+Wed Oct  8 14:50:03 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (ess-proc-name): takes stringname for buffer; was
+ 	ess-dialect.  Use it.
+
+Wed Oct  8 13:56:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s4.el (S4-customize-alist):  inferior-ess-*-command
+	variables must end in "\n".
+
+	* essd-s+3.el (S+3-customize-alist): inferior-ess-*-command
+	variables must end in "\n".
+
+Wed Oct  8 08:50:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (inferior-ess-names-command): add "\n" to end of
+	names(%s) command (KH).
+
+Wed Oct  8 05:36:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-debug.el: new file for debugging and development.  Use it. 
+
+Tue Oct  7 15:46:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el: commented out debug-on-error.
+
+Tue Oct  7 15:42:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (ess-get-words-from-vector): don't concat "\n", since
+ 	we might have multi-line commands.  Make them do it in the command
+ 	definition (KH).
+
+Tue Oct  7 13:21:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (SOURCES): add ess-doc.el
+
+Thu Oct  2 08:52:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (install): create INFODIR and LISPDIR as well as
+	parents before installing.
+
+Thu Oct  2 08:42:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (ess-multi): removed ess-pre-run-hook execution; it
+	should only happen in inferior-ess.
+
+Thu Oct  2 01:12:22 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el (r-transcript-mode, s-transcript-mode): new functions.  Use it, and fset
+	it. 
+
+Thu Oct  2 01:12:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-trns.el (ess-transcript-mode): added alist parameter.  Use
+	it.
+
+Thu Oct  2 00:35:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-function-pattern): tied the non-quoted function 
+	name to either the beginning of a line or a space, instead of
+	beginning of a word.
+
 Wed Oct  1 21:50:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-s.el (S-syntax-table): modified . to be "_" (KH). 
@@ -332,6 +413,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.3  1997/10/20 18:21:29  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.2  1997/10/02 01:51:47  rossini
 	* Removing *** empty log message ***
 	* Removing
