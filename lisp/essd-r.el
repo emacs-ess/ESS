@@ -1,15 +1,16 @@
 ;;; essd-r.el --- R customization
 
-;; Copyright (C) 1997--1999 A. J. Rossini, Richard M. Heiberger, Kurt
-;; Hornik, and Martin Maechler.
+;; Copyright (C) 1997--2001 A. J. Rossini, Richard M. Heiberger, Kurt
+;; Hornik, Martin Maechler, and Rodney Sparapani.
 
 
-;; Author: A.J. Rossini <rossini@stat.sc.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Author: A.J. Rossini <rossini@u.washington.edu>
+;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
+;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2001/02/28 12:59:04 $
-;; Version: $Revision: 5.26 $
-;; RCS: $Id: essd-r.el,v 5.26 2001/02/28 12:59:04 maechler Exp $
+;; Modified: $Date: 2001/05/03 01:52:58 $
+;; Version: $Revision: 5.27 $
+;; RCS: $Id: essd-r.el,v 5.27 2001/05/03 01:52:58 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -63,6 +64,7 @@
      . ".Last.value <- get(\".ess.lvsave\",inherits=T)\n") ; envir=1
     (ess-save-lastvalue-command
      . "assign(\".ess.lvsave\",.Last.value,inherits=T)\n") ;envir=1
+    (ess-imenu-mode-function       . 'ess-imenu-R)
     (inferior-ess-program          . inferior-R-program-name)
     (inferior-ess-objects-command  . "objects(pos = %d)\n")
     (inferior-ess-search-list-command   . "search()\n")
@@ -70,17 +72,20 @@
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[A-Za-z0-9.]*> ")
     (inferior-ess-secondary-prompt . "+ ?")
-    (comint-use-prompt-regexp-instead-of-fields . t)  ;; emacs 21 and up
-    (inferior-ess-start-file       . nil) ; "~/.ess-R")
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
+    (inferior-ess-start-file       . nil)            ;; "~/.ess-R"
     (inferior-ess-start-args       . ""))
   "Variables to customize for R")
 
+(require 'ess-menu)
 
 (defun R-mode  (&optional proc-name)
   "Major mode for editing R source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist R-customize-alist)
-  (ess-mode R-customize-alist proc-name))
+  ;;(setq imenu-generic-expression R-imenu-generic-expression)
+  (ess-mode R-customize-alist proc-name)
+  (ess-imenu-S))
 
 (fset 'r-mode 'R-mode)
 
@@ -133,7 +138,6 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
     (goto-char from)
     (ess-rep-regexp "\\(\\([][=,()]\\|<-\\|_\\\) *\\)F\\>" "\\1FALSE"
 		    'fixcase nil (not quietly))))
-
 
 ;;; R package wizard tools.  See ``R-extensions'' manual for more details as to
 ;;; the construction of an R package.
