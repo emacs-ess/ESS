@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/10/21 21:19:43 $
-;; Version: $Revision: 1.64 $
-;; RCS: $Id: ess.el,v 1.64 1997/10/21 21:19:43 rossini Exp $
+;; Modified: $Date: 1997/11/14 00:35:58 $
+;; Version: $Revision: 1.65 $
+;; RCS: $Id: ess.el,v 1.65 1997/11/14 00:35:58 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. M. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   ess-bugs@stat.math.ethz.ch|
@@ -179,6 +179,15 @@
 ;; fume-function-name-regexp-alist)
 
 ;;; Imenu for Emacs...
+
+
+;;; Completion and Database code
+
+(defun ess-load-object-name-db-file ()
+  "Load object database file if present, mention if not."
+  (make-local-variable 'ess-object-name-db)
+  (if (not (load ess-object-name-db-file))
+      (message "Object-name database file (see Install directions)")))
 
 
 
