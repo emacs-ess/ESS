@@ -1,6 +1,21 @@
+Tue Aug 18 10:42:08 1998  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-s+3.el (S+3-dialect-name): new variable for customization.
+
+Tue Aug 18 10:28:22 1998  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r.el (R): add the "--no-readline" argument to r-start-args.
+
+Tue Aug 14 18:32:11 1998  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-vars.el: new version "pre5.1"
+	* Makefile: ditto
+	* essl-s.el: renamed "ease:time-string" to "ess-time-string";
+		cleaned up
+
 Mon Apr  6 11:27:52 1998  Tony Rossini  <rossini@matthias>
 
-	* ess-inf.el (ess-object-names): 
+	* ess-inf.el (ess-object-names):
 	* ess-inf.el (ess-execute-objects): add argument to call to
 	inferior-ess-objects-command, for S4 (suggested by Stephen Pope).
 
@@ -41,5 +56,5 @@ Fri Dec  5 10:12:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Fri Dec  5 10:09:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* CVS (ChangeLog): Starting 5.1 series.
-	
+
 

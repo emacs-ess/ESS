@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/12/09 22:54:25 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essd-r.el,v 5.2 1997/12/09 22:54:25 rossini Exp $
+;; Modified: $Date: 1998/08/18 08:44:53 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essd-r.el,v 5.3 1998/08/18 08:44:53 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -28,7 +28,7 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the R customizations for ESS.  See essl-s.el 
+;;; This file defines all the R customizations for ESS.  See essl-s.el
 ;;; for general S language customizations.
 
 ;;; Autoloads: and Requires
@@ -51,7 +51,7 @@
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-R-sec-regex)
-    (ess-help-sec-keys-alist       . R-help-sec-keys-alist) 
+    (ess-help-sec-keys-alist       . R-help-sec-keys-alist)
     (ess-loop-timeout              . 100000 )
     (ess-object-name-db-file       . "ess-r-namedb.el" )
     (ess-retr-lastvalue-command
@@ -68,7 +68,7 @@
   "Variables to customize for R")
 
 
-(defun R-mode  (&optional proc-name) 
+(defun R-mode  (&optional proc-name)
   "Major mode for editing R source.  See ess-mode for more help."
   (interactive)
   (setq ess-customize-alist R-customize-alist)
@@ -91,10 +91,11 @@
    (format "(R): current-prefix-arg=%s \n"
 	   current-prefix-arg))
 
-  (let ((r-start-args  (if start-args (read-string "Starting Args ? ") nil)))
-    (if (not start-args) (inferior-ess)
-      (inferior-ess r-start-args))))
-
+  (let ((r-start-args  (concat "--no-readline "
+	 (if start-args (read-string
+			 "Starting Args [other than `--no-readline'] ? ")
+	   nil))))
+    (inferior-ess r-start-args)))
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files" t)

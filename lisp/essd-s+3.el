@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/12/02 14:13:51 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: essd-s+3.el,v 5.1 1997/12/02 14:13:51 rossini Exp $
+;; Modified: $Date: 1998/08/18 08:44:54 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: essd-s+3.el,v 5.2 1998/08/18 08:44:54 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -39,10 +39,13 @@
 
 ; Code:
 
+(defvar S+3-dialect-name "S+3"
+  "Name of 'dialect' for S-PLUS 3.x.");easily changeable in a user's .emacs
+
 (defvar S+3-customize-alist
   '((ess-local-customize-alist     . 'S+3-customize-alist)
     (ess-language                  . "S")
-    (ess-dialect                   . "S+3")
+    (ess-dialect                   . S+3-dialect-name)
     (ess-suffix                    . "S")
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
