@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/11/03 22:54:17 $
-;; Version: $Revision: 5.36 $
-;; RCS: $Id: ess-site.el,v 5.36 1999/11/03 22:54:17 ess Exp $
+;; Modified: $Date: 1999/11/04 00:33:32 $
+;; Version: $Revision: 5.37 $
+;; RCS: $Id: ess-site.el,v 5.37 1999/11/04 00:33:32 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -83,8 +83,8 @@
 
   ;; NON DEFAULTS:
   ;;(defvar ess-lisp-directory
-  ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-5.1.9/lisp"))
-  ;;  >> or replace "ess-5.1.9" above by "ESS" which would be a symbolic link..
+  ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-5.1.10/lisp"))
+  ;;  >> or replace "ess-5.1.10" above by "ESS" which would be a symbolic link..
   ;;  >> This way, your .emacs (or default.el or site-start.el)
   ;;  >> won't have to change with each version of ESS
 

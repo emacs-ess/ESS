@@ -3,7 +3,7 @@
 @setfilename announc.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: announc.texi,v 1.8 1999/07/23 19:53:15 maechler Exp $
+@comment $Id: announc.texi,v 1.9 1999/11/04 00:33:32 ess Exp $
 
 @node Announce, Introduction, Top, Top
 @comment  node-name,  next,  previous,  up
@@ -11,7 +11,7 @@
 @cindex ANNOUNCE
 
 
-Annoucing the release of ESS-5.1.9 (Emacs Speaks Statistics).
+Annoucing the release of ESS-5.1.10 (Emacs Speaks Statistics).
 -------------------------------------------------------------
 
 (New: improvements to SAS support,

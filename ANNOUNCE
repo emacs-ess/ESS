@@ -1,7 +1,7 @@
 ANNOUNCING ESS
 **************
 
-   Annoucing the release of ESS-5.1.9 (Emacs Speaks Statistics).
+   Annoucing the release of ESS-5.1.10 (Emacs Speaks Statistics).
 ------------------------------------------------------------
 
    (New: improvements to SAS support,       Splus 5 support,
@@ -50,6 +50,13 @@ in the file COPYING in the same directory as this file for more details.
 
 New Features
 ============
+
+   Changes/New Features in 5.1.10:
+   * More fixes to Stata mode
+
+   * primitive generic version of ESS-elsewhere
+
+   * Small fixes to SAS/Stata.
 
    Changes/New Features in 5.1.9:
    * Stata mode works

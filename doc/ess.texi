@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.13 1999/08/04 16:42:58 rossini Exp $
+@comment $Id: ess.texi,v 5.14 1999/11/04 00:33:32 ess Exp $
 
 @synindex pg vr
 
@@ -31,14 +31,15 @@ This documentation relates to Version 5.1.x of @code{ESS}.
 Original Info Author: David M. Smith (@email{D.M.Smith@@lancaster.ac.uk}),
 Department of Mathematics and Statistics, Lancaster University, UK.
 
-Current Info Author: A.J. Rossini (@email{rossini@@stat.sc.edu}), Department of
-Statistics, University of South Carolina, Columbia, SC, 29208, USA.
+Current Info Author: A.J. Rossini
+(@email{rossini@@biostat.washington.edu}), Department of Biotatistics,
+University of Washington, Seattle, WA 98185, USA
 
 @end ifinfo
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.x (Documentation $Revision: 5.13 $ $Date: 1999/08/04 16:42:58 $)
+@subtitle version 5.1.x (Documentation $Revision: 5.14 $ $Date: 1999/11/04 00:33:32 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -83,7 +84,7 @@ permission notice identical to this one.
 
 ESS version 5.1.x
 
-        (Documentation $Revision: 5.13 $ $Date: 1999/08/04 16:42:58 $).
+        (Documentation $Revision: 5.14 $ $Date: 1999/11/04 00:33:32 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug

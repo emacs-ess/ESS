@@ -1,13 +1,13 @@
 ;;; essd-sas.el --- SAS customization
 
-;; Copyright (C) 1997 Richard M. Heiberger and A. J. Rossini
+;; Copyright (C) 1997--1999 Richard M. Heiberger and A. J. Rossini
 
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1999/06/17 16:46:09 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: essd-sas.el,v 5.4 1999/06/17 16:46:09 maechler Exp $
+;; Modified: $Date: 1999/11/04 00:33:32 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: essd-sas.el,v 5.5 1999/11/04 00:33:32 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 

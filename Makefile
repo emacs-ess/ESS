@@ -1,10 +1,10 @@
-## $Id: Makefile,v 5.22 1999/09/15 00:04:33 rossini Exp $
+## $Id: Makefile,v 5.23 1999/11/04 00:33:32 ess Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
-ESSVERSION=5.1.9
+ESSVERSION=5.1.10
 ESSVERSIONDIR=ess-$(ESSVERSION)
-ESSVERSIONTAG=ess-5_1_9
+ESSVERSIONTAG=ess-5_1_10
 
 Subdirs = lisp doc
 
@@ -27,9 +27,6 @@ docs:
 ## This target is used to create a new version of the tar-file.
 ## prefix'ing with "-" implies that errors are non-critical.
 
-## Instead of doing a checkout and exclude, we could do an export,
-## which ought to morally be cleaner.
-
 README : doc/readme.texi $(INTRO.DEPENDS)
 	cd doc ; makeinfo --no-validate --no-headers --no-split -o - readme.texi \
 	| perl -pe 'last if /^Concept Index/;' > ../README
@@ -46,6 +43,14 @@ dist: README ANNOUNCE docs
 	@echo "**********************************************************"
 	@echo "** Committing README and ANNOUNCE **"
 	cvs commit -m "Updating README and ANNOUNCE for new version"  README ANNOUNCE
+#	@echo "** Adding log-entry to ChangeLog file"
+#        mv ChangeLog ChangeLog.old
+#        echo `date "+%Y-%m-%d "` \
+#             " ESS Maintainers <ess@franz.stat.wisc.edu>" > ChangeLog
+#        echo >> ChangeLog
+#        echo "  * Version" $(TAG) released. >> ChangeLog
+#        echo >> ChangeLog
+#        cat ChangeLog.old >> ChangeLog
 	@echo "** Tagging the release **"
 	cvs tag -R $(ESSVERSIONTAG)
 	@echo "** Exporting Files **"
