@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/05/18 19:33:25 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: essa-sas.el,v 1.21 2001/05/18 19:33:25 ess Exp $
+;; Modified: $Date: 2001/05/31 15:47:15 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: essa-sas.el,v 1.22 2001/05/31 15:47:15 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -184,7 +184,10 @@ on the way."
 	      (setq ess-sas-remainder sas-indent-width))
 	  
 	  (backward-delete-char-untabify ess-sas-remainder t)
-	  (move-to-column (- ess-sas-column ess-sas-remainder))))))
+	  (setq ess-sas-column (- ess-sas-column ess-sas-remainder))
+	  (move-to-column ess-sas-column)
+	  (setq left-margin ess-sas-column)
+))))
 
 ;;(defun ess-sas-data-list ()
 ;;  "Parse .sas file and return a list of permanent datasets."
@@ -264,6 +267,7 @@ on the way."
     "\\|NOTE: MERGE statement has more than one data set with repeats of BY values."
     "\\|NOTE: Variable .* is uninitialized."
     "\\|WARNING: Apparent symbolic reference .* not resolved."
+    "\\|NOTE 485-185: Informat .* was not found or could not be loaded."
     "\\|Bus Error In Task\\|Segmentation Violation In Task")))
 
   (if (not (search-forward-regexp ess-sas-error nil t)) 
@@ -405,6 +409,13 @@ Keep in mind that the maximum command line length in MS-DOS is
     (comint-send-input))
 
 
+(defun ess-sas-tab-to-tab-stop ()
+  "Tab to next tab-stop and set left margin."
+  (interactive)
+  (tab-to-tab-stop)
+  (setq left-margin (current-column))
+)
+  
 (defun ess-sas-toggle-sas-mode ()
   "Toggle SAS-mode for .log files."
   (interactive)
@@ -428,14 +439,16 @@ Keep in mind that the maximum command line length in MS-DOS is
 
 (defvar ess-sas-edit-keys-toggle 0
   "0 to bind TAB to `sas-indent-line'.
-  Positive to bind TAB and C-TAB to `tab-to-tab-stop' and
-`ess-sas-backward-delete-tab'.")
+  Positive to bind TAB to `ess-sas-tab-to-tab-stop', 
+  C-TAB to `ess-sas-backward-delete-tab', and
+  RET to `newline'.")
 
 (defun ess-sas-edit-keys-toggle (&optional arg)
   "Toggle TAB key in `SAS-mode'.
 If arg is 0, TAB is `sas-indent-line'.
-If arg is positive, TAB is `tab-to-tab-stop' and C-tab is
-`ess-sas-backward-delete-tab'.
+If arg is positive, TAB is `ess-sas-tab-to-tab-stop', 
+C-TAB is `ess-sas-backward-delete-tab' and
+RET is `newline'.
 Without arg, toggle between these options."
   (interactive "P")
   (setq ess-sas-edit-keys-toggle
@@ -446,7 +459,8 @@ Without arg, toggle between these options."
 	(if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
 	    (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab)
 	  (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
-	(define-key sas-mode-local-map "\t" 'tab-to-tab-stop))
+        (define-key sas-mode-local-map [return] 'newline)
+	(define-key sas-mode-local-map "\t" 'ess-sas-tab-to-tab-stop))
     (define-key sas-mode-local-map "\t" 'sas-indent-line)))
 
 (defvar ess-sas-global-pc-keys nil

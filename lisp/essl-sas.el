@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/05/18 19:33:25 $
-;; Version: $Revision: 5.22 $
-;; RCS: $Id: essl-sas.el,v 5.22 2001/05/18 19:33:25 ess Exp $
+;; Modified: $Date: 2001/05/31 15:47:15 $
+;; Version: $Revision: 5.23 $
+;; RCS: $Id: essl-sas.el,v 5.23 2001/05/31 15:47:15 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -410,7 +410,8 @@ number."
 		"\\(a\\(bort\\|rray\\|ttrib\\)\\|by\\|c\\(hange\\|lass\\)"
 		"\\|d\\(elete\\|isplay\\|m\\|rop\\)\\|e\\(rror\\|xc\\(hange\\|lude\\)\\)"
 		"\\|f\\(ile\\(name\\)?\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\|req\\)"
-		"\\|go\\([ \t]*to\\|ptions\\)\\|i\\(d\\|f\\|n\\(dex\\|f\\(ile\\|ormat\\)\\|put\\)\\)"
+		"\\|go\\([ \t]*to\\|ptions\\)"
+		"\\|i\\(d\\|f\\|n\\(dex\\|f\\(ile\\|ormat\\)\\|put\\|value\\)\\)"
 		"\\|keep\\|l\\(abel\\|ength\\|i\\(bname\\|nk\\)\\|smeans\\)"
 		"\\|m\\(anova\\|e\\(ans\\|rge\\)\\|issing\\|od\\(el\\|ify\\)\\)\\|note"
 		"\\|o\\(ptions\\|therwise\\|utput\\)\\|p\\(lot\\|ut\\)"
