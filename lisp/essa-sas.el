@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/06/18 00:53:16 $
-;; Version: $Revision: 1.99 $
-;; RCS: $Id: essa-sas.el,v 1.99 2002/06/18 00:53:16 rsparapa Exp $
+;; Modified: $Date: 2002/06/24 18:33:51 $
+;; Version: $Revision: 1.100 $
+;; RCS: $Id: essa-sas.el,v 1.100 2002/06/24 18:33:51 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -402,9 +402,9 @@ on the way."
 	     nil t)) (setq ess-tmp-sas-data (match-string 1)))
 
        (if (and ess-tmp-sas-data 
-	  (not (string-match "^\\(first\\|last\\)[.]" ess-tmp-sas-data)))
-	    (setq ess-sas-data (read-string "SAS Dataset: " ess-tmp-sas-data))
-	    (setq ess-sas-data (read-string "SAS Dataset: ")))
+	  (not (string-match "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]" ess-tmp-sas-data)))
+	    (setq ess-sas-data (read-string "SAS Permanent Dataset: " ess-tmp-sas-data))
+	    (setq ess-sas-data (read-string "SAS Permanent Dataset: ")))
 
        (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
 
