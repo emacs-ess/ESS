@@ -1,7 +1,7 @@
-1 ANNOUNCING ESS
-****************
+ANNOUNCING ESS
+**************
 
-The ESS Developers proudly announce the release of ESS
+   The ESS Developers proudly announce the release of ESS
 
    5.2.1
 
@@ -21,18 +21,18 @@ Please read the file COPYING which comes with the distribution, for
 more information about the license. For more detailed information,
 please read the README files that come with ESS.
 
-1.1 Getting the Latest Version
-==============================
+Getting the Latest Version
+==========================
 
-The latest version of ESS is always available on the web at: ESS web
+   The latest version of ESS is always available on the web at: ESS web
 page (http://www.analytics.washington.edu/downloads/ess/) or StatLib
 (http://lib.stat.cmu.edu/general/ESS/)
 
    There no longer is an anonymous CVS repository for ESS, due to lack
 of interest, little demand, and problems with security.
 
-1.2 Current Features
-====================
+Current Features
+================
 
    * Languages Supported:
         * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
@@ -86,12 +86,12 @@ of interest, little demand, and problems with security.
 
         * Previewing
 
-1.3 Requirements
-================
+Requirements
+============
 
-ESS has been tested with
+   ESS has been tested with
 
-   * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
+   * S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
 
    * R >=0.49
 
@@ -111,7 +111,8 @@ ESS has been tested with
 
    * Solaris/SunOS (all)
 
-   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5/2000, R, SAS and BUGS)
+   * Microsoft Windows 95/98/NT/2000/XP (SPLUS 4.5/2000/6.*, R, SAS and
+     BUGS)
 
    * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
 
@@ -136,19 +137,19 @@ bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 19.34 is available for download here
 (ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz).
 
-1.4 Stability
-=============
+Stability
+=========
 
-Versions 5.1.x are meant to be gamma-level releases.  While some bugs
+   Versions 5.1.x are meant to be gamma-level releases.  While some bugs
 are fixed, others may have been introduced, especially with regards to
 new features.  See the file doc/TODO for details.  Bug reports are
 solicited; see the Bugs Section below.  Patches or suggested coding
 fixes with bug reports are much appreciated!
 
-1.5 Mailing List
-================
+Mailing List
+============
 
-There is a mailing list for discussions and announcements relating to
+   There is a mailing list for discussions and announcements relating to
 ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
 "help") in the body to <ess-help-request@stat.math.ethz.ch>;
 contributions to the list may be mailed to
@@ -167,10 +168,10 @@ low-volume mailing list.
 
    *  posting small patches to ESS.
 
-1.6 Reporting Bugs
-==================
+Reporting Bugs
+==============
 
-Please send bug reports, suggestions etc. to
+   Please send bug reports, suggestions etc. to
 
    <ESS-bugs@stat.math.ethz.ch>
 
@@ -189,8 +190,8 @@ containing debug information; send us that buffer.
    Note that comments, suggestions, words of praise and large cash
 donations are also more than welcome.
 
-1.7 Authors
-===========
+Authors
+=======
 
    * A.J. Rossini (mailto:rossini@u.washington.edu)
 
@@ -204,10 +205,10 @@ donations are also more than welcome.
 
    * Stephen Eglen (mailto:stephen@gnu.org)
 
-1.8 License
-===========
+License
+=======
 
-ESS is free software; you can redistribute it and/or modify it under
+   ESS is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
@@ -217,10 +218,10 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 in the file COPYING in the same directory as this file for more details.
 
-1.9 New Features
-================
+New Features
+============
 
-Changes/New Features in 5.2.1:
+   Changes/New Features in 5.2.1:
    * ESS[R]: If you have other versions of R, such as "R-1.8.1" on your
      exec-path, ESS will find and create appropriate functions, such as
      M-x R-1.8.1, for calling them.  By default only programs beginning

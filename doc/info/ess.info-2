@@ -146,6 +146,16 @@ argument", by
 
    Then that R process will be started up using `R --vanilla'.
 
+   If you have other versions of R available on the system, ESS is also
+able to start those versions.  For example, if you have "R-1.8.1" on
+your `exec-path', it can be started using `M-x R-1.8.1'.  By default,
+ESS will find versions of R beginning "R-1" or "R-2".  If your versions
+of R are called other names, consider renaming them with a symbolic
+link or change the variable `ess-r-versions'.  To see which defuns have
+been created for starting different versions of R, type `M-x R-' and
+then hit [Tab].  You will then see if any defuns for particular
+versions of R have been created.
+
    New for ESS 5.1.2 (and later):  "S-elsewhere" command
 
    The idea of "M-x S-elsewhere" is that we open a telnet (or rlogin)

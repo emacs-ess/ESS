@@ -235,6 +235,7 @@ Other features of ESS
 * Highlighting::                Syntactic highlighting of buffers
 * Graphics::                    Using graphics with ESS
 * Imenu::                       Support for Imenu in ESS
+* Toolbar::                     Support for toolbar in ESS
 * Object Completion::
 
 
@@ -335,7 +336,7 @@ interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
 this information.)
 
 
-File: ess.info,  Node: Imenu,  Next: Object Completion,  Prev: Graphics,  Up: Miscellaneous
+File: ess.info,  Node: Imenu,  Next: Toolbar,  Prev: Graphics,  Up: Miscellaneous
 
 Imenu
 =====
@@ -348,7 +349,19 @@ particular parts of your source file (such as the starting point of each
 function definition).
 
 
-File: ess.info,  Node: Object Completion,  Prev: Imenu,  Up: Miscellaneous
+File: ess.info,  Node: Toolbar,  Next: Object Completion,  Prev: Imenu,  Up: Miscellaneous
+
+Toolbar
+=======
+
+   The R and S editing modes have support for a toolbar.  This toolbar
+provides icons to act as shortcuts for starting new S/R processes, or
+for evaluating regions of your source buffers.  The toolbar should be
+present if your emacs can display images.  *Note Customization::, for
+ways to change the toolbar.
+
+
+File: ess.info,  Node: Object Completion,  Prev: Toolbar,  Up: Miscellaneous
 
 Object Completion
 =================

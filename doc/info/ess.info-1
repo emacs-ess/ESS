@@ -17,7 +17,7 @@ ESS: Emacs Speaks Statistics
 
    5.2.1
 
-   (Documentation $Revision: 1.3 $ $Date: 2004/06/22 04:08:51 $).
+   (Documentation $Revision: 1.4 $ $Date: 2004/06/29 03:07:49 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -199,11 +199,18 @@ New features in ESS
 ===================
 
    Changes/New Features in 5.2.1:
-   * ESS[S] (R and S-plus): now have tool-bar with entries to evaluate
-     code in the inferior process or to switch there.  This code is
-     experimental and likely to change as XEmacs/Emacs issues get
-     resolved. For details on how to enable the code, see the file
-     lisp/ess-toolbar.el.
+   * ESS[R]: If you have other versions of R, such as "R-1.8.1" on your
+     exec-path, ESS will find and create appropriate functions, such as
+     M-x R-1.8.1, for calling them.  By default only programs beginning
+     "R-1" and "R-2" will be found, but see ess-r-versions for ways to
+     find other versions of R.
+
+   * ESS[S] (R and S-plus): now have toolbar support with icons to
+     evaluate code in the inferior process or to switch there.  This
+     code is experimental and likely to change as XEmacs/Emacs issues
+     get resolved. The toolbar should be enabled if your Emacs displays
+     images, but can be disabled with the variable ess-use-toolbar.
+     Thanks to David Smith from Insightful for the S-plus logo.
 
    * ESS[SAS]: ess-sas-graph-view (F12) enhanced; you can specify
      external file viewers for each graphics file type via the alist
@@ -891,7 +898,7 @@ Requirements
 
    ESS has been tested with
 
-   * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
+   * S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
 
    * R >=0.49
 
@@ -911,7 +918,8 @@ Requirements
 
    * Solaris/SunOS (all)
 
-   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5/2000, R, SAS and BUGS)
+   * Microsoft Windows 95/98/NT/2000/XP (SPLUS 4.5/2000/6.*, R, SAS and
+     BUGS)
 
    * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
 

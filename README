@@ -1,7 +1,7 @@
-1 General Information: README
-*****************************
+General Information: README
+***************************
 
-This is the README file for the distribution of ESS version
+   This is the README file for the distribution of ESS version
 
    5.2.1
 
@@ -27,10 +27,10 @@ interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.
 Kademan, Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and
 Stata-mode (Thomas Lumley).
 
-1.1 License
-===========
+License
+=======
 
-ESS is free software; you can redistribute it and/or modify it under
+   ESS is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
@@ -40,10 +40,10 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 in the file COPYING in the same directory as this file for more details.
 
-1.2 New Features
-================
+New Features
+============
 
-Changes/New Features in 5.2.1:
+   Changes/New Features in 5.2.1:
    * ESS[R]: If you have other versions of R, such as "R-1.8.1" on your
      exec-path, ESS will find and create appropriate functions, such as
      M-x R-1.8.1, for calling them.  By default only programs beginning
@@ -333,8 +333,8 @@ Changes/New Features in 5.2.1:
      the S language, syntax, and indentation patterns and provide the
      syntactic highlighting that eases the programming tasks.
 
-1.3 Current Features
-====================
+Current Features
+================
 
    * Languages Supported:
         * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
@@ -388,21 +388,21 @@ Changes/New Features in 5.2.1:
 
         * Previewing
 
-1.4 Stability
-=============
+Stability
+=========
 
-Versions 5.1.x are meant to be gamma-level releases.  While some bugs
+   Versions 5.1.x are meant to be gamma-level releases.  While some bugs
 are fixed, others may have been introduced, especially with regards to
 new features.  See the file doc/TODO for details.  Bug reports are
 solicited; see the Bugs Section below.  Patches or suggested coding
 fixes with bug reports are much appreciated!
 
-1.5 Requirements
-================
+Requirements
+============
 
-ESS has been tested with
+   ESS has been tested with
 
-   * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
+   * S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
 
    * R >=0.49
 
@@ -422,7 +422,8 @@ ESS has been tested with
 
    * Solaris/SunOS (all)
 
-   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5/2000, R, SAS and BUGS)
+   * Microsoft Windows 95/98/NT/2000/XP (SPLUS 4.5/2000/6.*, R, SAS and
+     BUGS)
 
    * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
 
@@ -447,28 +448,28 @@ bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 19.34 is available for download here
 (ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz).
 
-1.6 Getting the Latest Version
-==============================
+Getting the Latest Version
+==========================
 
-The latest version of ESS is always available on the web at: ESS web
+   The latest version of ESS is always available on the web at: ESS web
 page (http://www.analytics.washington.edu/downloads/ess/) or StatLib
 (http://lib.stat.cmu.edu/general/ESS/)
 
    There no longer is an anonymous CVS repository for ESS, due to lack
 of interest, little demand, and problems with security.
 
-1.7 Installation (from tar file)
-================================
+Installation (from tar file)
+============================
 
-We now discuss installation, which might happen under Unix or Microsoft
-Windows.  First, we discuss Unix installation.  *Note Unix
+   We now discuss installation, which might happen under Unix or
+Microsoft Windows.  First, we discuss Unix installation.  *Note Unix
 installation::.
 
    For Microsoft Windows Installation please skip to the *Note
 Microsoft Windows installation::.
 
-1.8 Unix installation
-=====================
+Unix installation
+=================
 
   1. cd to a directory where you want to install ESS, creating it if
      necessary.  This directory will be referred to below as ESSDIR.
@@ -565,11 +566,11 @@ Microsoft Windows installation::.
      (http://www.xemacs.org/Documentation/packageGuide.html).
 
 
-1.9 Microsoft Windows installation
-==================================
+Microsoft Windows installation
+==============================
 
-For Microsoft Windows installation, please follow the next steps: (see
-separate instructions above for UNIX *Note Unix installation::.
+   For Microsoft Windows installation, please follow the next steps:
+(see separate instructions above for UNIX *Note Unix installation::.
 
   1. cd to a directory where you keep emacs lisp files, or create a new
      directory (for example, `c:\emacs\') to hold the distribution.
@@ -721,12 +722,12 @@ separate instructions above for UNIX *Note Unix installation::.
  10. That's it!
 
 
-1.10 Requirements
-=================
+Requirements
+============
 
-ESS has been tested with
+   ESS has been tested with
 
-   * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
+   * S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
 
    * R >=0.49
 
@@ -746,7 +747,8 @@ ESS has been tested with
 
    * Solaris/SunOS (all)
 
-   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5/2000, R, SAS and BUGS)
+   * Microsoft Windows 95/98/NT/2000/XP (SPLUS 4.5/2000/6.*, R, SAS and
+     BUGS)
 
    * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
 
@@ -771,10 +773,10 @@ bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 19.34 is available for download here
 (ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz).
 
-1.11 Reporting Bugs
-===================
+Reporting Bugs
+==============
 
-Please send bug reports, suggestions etc. to
+   Please send bug reports, suggestions etc. to
 
    <ESS-bugs@stat.math.ethz.ch>
 
@@ -793,10 +795,10 @@ containing debug information; send us that buffer.
    Note that comments, suggestions, words of praise and large cash
 donations are also more than welcome.
 
-1.12 Mailing Lists
-==================
+Mailing Lists
+=============
 
-There is a mailing list for discussions and announcements relating to
+   There is a mailing list for discussions and announcements relating to
 ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
 "help") in the body to <ess-help-request@stat.math.ethz.ch>;
 contributions to the list may be mailed to
@@ -815,8 +817,8 @@ low-volume mailing list.
 
    *  posting small patches to ESS.
 
-1.13 Authors
-============
+Authors
+=======
 
    * A.J. Rossini (mailto:rossini@u.washington.edu)
 
