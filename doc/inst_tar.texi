@@ -40,12 +40,12 @@ tar xvf ess-VERSION.tar
 The @code{tar} command will create the subdirectory ess-VERSION and unarchive
 the files there.
 
-If you are using GNU Emacs 19.29, decompress/unarchive
-@file{ESSDIR/ess-VERSION/lisp/19.29.tar.gz}, 
-read @file{ESSDIR/ess-VERSION/lisp/19.29/README}, follow the instructions
-and you might be able to get ESS to work.  
-@emph{Please note that GNU Emacs 19.29 is no longer supported}.
-For a list of supported versions of emacs, see @xref{Requirements}.
+@comment If you are using GNU Emacs 19.29, decompress/unarchive
+@comment @file{ESSDIR/ess-VERSION/lisp/19.29.tar.gz}, 
+@comment read @file{ESSDIR/ess-VERSION/lisp/19.29/README}, follow the instructions
+@comment and you might be able to get ESS to work.  
+@comment @emph{Please note that GNU Emacs 19.29 is no longer supported}.
+@comment For a list of supported versions of emacs, see @xref{Requirements}.
 
 @item
 Edit the file @file{ESSDIR/ess-VERSION/lisp/ess-site.el} as explained in the 
@@ -148,7 +148,7 @@ package see @uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickst
 
 @end enumerate
 
-@node Microsoft Windows installation, Requirements, Unix installation, Installation
+@node Microsoft Windows installation, , Unix installation, Installation
 @comment  node-name,  next,  previous,  up
 @section Microsoft Windows installation
 
@@ -313,19 +313,20 @@ Hopefully, this will change.  However, you can still edit with
 emacs, and cut and paste the results into the XLispStat
 *Listener* Window under Microsoft Windows.
 
-SAS for Windows uses the batch access with function keys that is
-described in @c @file{doc/README.SAS}.
-@xref{ESS(SAS)--MS Windows}.
-The user can also edit SAS files
-in an @code{ESS[SAS]} buffer and than manually copy and paste them into
-an Editor window in the SAS Display Manager.
-
-For Windows, inferior SAS in an @code{iESS[SAS]} buffer does not work
-on the local machine.  It does work over a network connection to
-SAS running on a remote Unix computer.
-
-Reason:  we use ddeclient to interface with programs and SAS doesn't
-provide the corresponding ddeserver capability.
+@comment SAS for Windows uses the batch access with function keys that is
+@comment described in 
+@comment @file{doc/README.SAS}.
+@comment @xref{ESS(SAS)--MS Windows}.
+@comment The user can also edit SAS files
+@comment in an @code{ESS[SAS]} buffer and than manually copy and paste them into
+@comment an Editor window in the SAS Display Manager.
+@comment 
+@comment For Windows, inferior SAS in an @code{iESS[SAS]} buffer does not work
+@comment on the local machine.  It does work over a network connection to
+@comment SAS running on a remote Unix computer.
+@comment 
+@comment Reason:  we use ddeclient to interface with programs and SAS doesn't
+@comment provide the corresponding ddeserver capability.
 
 @item
 (OPTIONAL) If you are running Sqpe or R, you might consider
@@ -355,8 +356,8 @@ there).
 @item That's it!
 
 @end enumerate
-
-@node Requirements, , Microsoft Windows installation, Installation
-@comment  node-name,  next,  previous,  up
-@section Requirements
-@include requires.texi
+@comment Requirements duplicated?
+@comment @node Requirements, , Microsoft Windows installation, Installation
+@comment node-name,  next,  previous,  up
+@comment @section Requirements
+@comment @include requires.texi

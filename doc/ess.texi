@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.58 2004/06/24 12:22:03 stephen Exp $
+@comment $Id: ess.texi,v 5.59 2004/07/12 21:01:37 rsparapa Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.58 $ $Date: 2004/06/24 12:22:03 $)
+@subtitle (Documentation $Revision: 5.59 $ $Date: 2004/07/12 21:01:37 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.58 $ $Date: 2004/06/24 12:22:03 $).
+        (Documentation $Revision: 5.59 $ $Date: 2004/07/12 21:01:37 $).
 
 @display
 by  A.J. Rossini,
@@ -458,6 +458,11 @@ on your system.
 @end menu
 
 @include inst_tar.texi
+
+@node Requirements, , Microsoft Windows installation, Installation
+@comment node-name,  next,  previous,  up
+@section Requirements
+@include requires.texi
 
 @comment  node-name,  next,  previous,  up
 @node System dependent,  , Installation, Installation
