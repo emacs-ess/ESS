@@ -159,7 +159,7 @@ intelligent environment for statistical analysis}
   substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/25 22:22:56 $ - $Revision: 1.8 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/26 00:31:57 $ - $Revision: 1.9 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -255,7 +255,7 @@ procedures being performed, is probably the best interface for
 auditable and reproducible research.
 %% THIS BELONGS IN HISTORY:
 %% It was as a reaction to enhancing this interface that ESS was
-%% initially concieved.
+%% initially conceived.
 The second approach is to provide a graphical user interface (GUI);
 this approach either partially or completely replaces the command-line
 with the use of toolbars and menus along with dialog boxes for
@@ -291,19 +291,21 @@ the development of ESS and goals for the future.
 \section{ESS and Statistical Practice}
 \label{sec:ess-extends-emacs}
 
-Statistical programming is the writing of computer programs for data
-analysis and processing.  These programs might be written in a
-computer language that requires a compiler, such as \Fortran\ or C.
-But, more likely, they are written in a statistical analysis language
-that only requires an interpreter such as R, \SAS, \Stata, or \XLispStat.
-General purpose languages such as \Fortran, C/C++, Java, and PERL
-have integrated development environments which facilitate writing and
+Statistical programming is the writing of data analysis scripts or
+general computer programs for data analysis and processing.  Both
+forms will be referred to as programming (the activity) or code (the
+textual result) in the sequel.  These programs might be written in a
+general compiled computer language such as \Fortran\ or C.
+Specialized scripting languages such as S, R, \SAS, \Stata, or
+\XLispStat are also a popular option among statisticians; however,
+they do not have the same range of sophisticated programming tools
+such as integrated development environments (IDEs) for writing and
 debugging code.
 
-ESS extends the Emacs text editor to provide an integrated development
-environment for statistical languages, to satisify the complementary
-goals of statistical programming and data analysis.  It offers a
-single interface for a variety of statistical computing tasks
+ESS extends the Emacs text editor to provide an IDE for statistical
+languages.  The result is an environment with features targeting the
+complementary goals of statistical programming and data analysis.  It
+offers a single interface for a variety of statistical computing tasks
 including interactive data analysis and statistical programming.  ESS
 is able to provide a functional and extensible interface which is
 uniform and consistent across multiple statistical packages.  This is
@@ -312,10 +314,22 @@ as well as by interacting with the particular statistical packages to
 provide, for example, control of input/output, assistance with
 evaluation, and specialized parsing of help files.
 
-ESS supports the S family (S, \Splus, and R) interactively.  \SAS\ and
-BUGS are also well supported for batch processing.  \Stata\ and
-\XLispStat\ (including ARC and ViSta) are supported through
-highlighting and process-interfacing.
+%ESS supports the S family (S, \Splus, and R) interactively.  \SAS\ and
+%BUGS are also well supported for batch processing.  \Stata\ and
+%\XLispStat\ (including ARC and ViSta) are supported through
+%highlighting and process-interfacing.
+
+ESS provides many features which enhance the construction of data
+analysis scripts and statistical programming. Some do not require
+direct interaction with a statistics package such as simple editing
+enhancements such as syntactic fontification and colorization of
+scripts, detection of balanced and unbalanced parens and braces
+through highlighting, code indentation for readability, commenting out
+regions, and indexing of files by function.  However, the more novel
+features, such as help file parsing and viewing, object and function
+name completion, evaluation of scripts, and interactive editing of
+data and objects, require some interaction with the target statistics
+package through either interaction or by batch processing.
 
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
@@ -354,18 +368,16 @@ consequence are further indented.  The matching parentheses are marked
 by a bold foreground and a shaded background.  The cursor is indicated
 by a solid box.  In the bottom panel we replaced the matching
 parenthesis with an unbalanced bracket.  Emacs immediately marks that
-with the paren-mismatch font, bright purple on
-a color terminal.
+with the paren-mismatch font, bright purple on a color terminal.
 
 The font selection and the indentation depth are automatically
 supplied by Emacs as the lines are typed.  The user has several
 options for mapping of colors or fonts to each of the syntactic types.
-We selected
-black-and-white font-mapping for display here.  On a color terminal
-we might use
-purple for the keywords, red for comments, green for matching parens,
-and inverse-video purple for mismatched parens.  Emacs makes default
-choices of colors and ESS provides several other optional schemes.
+We selected black-and-white font-mapping for display here.  On a color
+terminal we might use purple for the keywords, red for comments, green
+for matching parens, and inverse-video purple for mismatched parens.
+Emacs makes default choices of colors and ESS provides several other
+optional schemes.
 
 %\begin{figure}[tbp]%h
 %  \ESSfig{%
@@ -464,12 +476,6 @@ cleaning facilitates the use of an exploratory interactive analysis
 session to construct functions and batch files for routine analysis of
 similar data sets.
 
-\paragraph{Remote access to statistics packages.}
-ESS provides transparent facilities for editing files and running
-programs which might reside on numerous remote machines during the
-same session.  The remote machine could be a different platform than
-the local machine.
-
 \paragraph{Manipulating and Editing Objects (S family).}
 For languages in the S family, ESS provides object-name completion of
 both user- and system-defined functions and data.  ESS can dump and
@@ -522,6 +528,15 @@ simultaneously, either on a single machine or a variety of machines.
 This capability assists with large-scale numerical simulations as well
 as code design and testing across multiple versions of statistical
 software packages.
+
+\paragraph{Remote access to statistics packages.}
+ESS provides transparent facilities for editing files and running
+programs which might reside on numerous remote machines during the
+same session.  The remote machine could be a different platform than
+the local machine.  This is accomplished through the use of Emacs
+capabilities for transparent access to remote files over a network.
+This means that the user views, edits, and saves files on a remote
+machine exactly as if they were on the local machine.  
 
 \subsection{Interactive Processing.}
 \label{sec:interactive}
@@ -702,7 +717,11 @@ are two open-source implementations of Emacs: GNU Emacs
 features with word processors, and some characteristics with operating
 systems, including many facilities which go beyond ordinary text
 editing.  More important to our goals, Emacs can control and interact
-with other programs.
+with other programs.  
+
+We quickly describe features which enable ESS; these are not
+necessarily unique to Emacs, but Emacs was among the first to have
+them all available in the same, extensible, editor.
 
 \paragraph{Keyboard and Mouse Input.}
 When Emacs was originally written, character-based terminals were the
@@ -745,44 +764,41 @@ and functions written in Emacs Lisp (elisp) \citep{RChassell1999},
 which is a dialect of Lisp \citep{PGraham:1996}.  Emacs commands can
 be called interactively by pressing a key sequence mapped to the
 command or by name.  The most important extensions to Emacs take the
-form of modes, which provide specific enhancements to the editing
-behavior.
+form of modes, which provide significant and specific enhancements to
+the user interface behavior.  A full description of the role that
+modes play is beyond the scope of this paper; there is documentation
+built into Emacs describing both the range of modes, how they work,
+and how to implement them.  The critical point is that this flexible
+and extendable facility forms the basis for ESS's implementation.
 
-Major modes provide a customized environment consisting of mapped key
-sequences and associated commands for performing tasks such as file
-editing, reading mail, or browsing disk directories.  Only one major
-mode can be active for a given buffer at any time.  Major modes also
-can be written to intelligently control other programs such as
-statistics packages.  Major modes for file editing are often
-determined by the file type or extension, i.e.  the characters at the
-end of the file name that follow a period like \stexttt{txt},
-\stexttt{s}, or \stexttt{sas}.  Examples of this kind of major mode
-are \stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes understand a
-file's syntax and grammar and therefore provide intelligent actions
-such as automatic indentation; navigation in units of characters,
-words, lines, sentences, paragraphs, function definitions, and pages;
-syntax-based fontification and colorization; and reformatting based on
-programmed conventions.
+%Major modes provide a customized environment consisting of mapped key
+%sequences and associated commands for performing tasks such as file
+%editing, reading mail, or browsing disk directories.  Only one major
+%mode can be active for a given buffer at any time.  Major modes also
+%can be written to intelligently control other programs such as
+%statistics packages.  Major modes for file editing are often
+%determined by the file type or extension, i.e.  the characters at the
+%end of the file name that follow a period like \stexttt{txt},
+%\stexttt{s}, or \stexttt{sas}.  Examples of this kind of major mode
+%are \stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes understand a
+%file's syntax and grammar and therefore provide intelligent actions
+%such as automatic indentation; navigation in units of characters,
+%words, lines, sentences, paragraphs, function definitions, and pages;
+%syntax-based fontification and colorization; and reformatting based on
+%programmed conventions.
 
-Minor modes provide complementary services that that are applicable
-across major modes.  Many minor modes can be active at once.  For
-example, \stexttt{font-lock-mode} allows Emacs to highlight, with
-fonts or colors, the syntax of a programming language whose
-characteristics are described within a major mode like
-\stexttt{ESS[S]}.  The \stexttt{overwrite-mode} determines whether
-typed characters replace the existing text or are inserted at the
-cursor.  Minor modes can emulate the key sequences used by another
-editor such as \stexttt{vi}.  In addition, they can be used to perform
-version control operations and many other operations which are nearly
-identical across file types.
+%Minor modes provide complementary services that that are applicable
+%across major modes.  Many minor modes can be active at once.  For
+%example, \stexttt{font-lock-mode} allows Emacs to highlight, with
+%fonts or colors, the syntax of a programming language whose
+%characteristics are described within a major mode like
+%\stexttt{ESS[S]}.  The \stexttt{overwrite-mode} determines whether
+%typed characters replace the existing text or are inserted at the
+%cursor.  Minor modes can emulate the key sequences used by another
+%editor such as \stexttt{vi}.  In addition, they can be used to perform
+%version control operations and many other operations which are nearly
+%identical across file types.
 
-\paragraph{Network Support.}
-Emacs allows transparent access to remote files over a network.  This
-means that the user views, edits, and saves files on a remote machine
-exactly as if they were on the local machine.  Mechanisms for both
-open (\stexttt{ange-ftp} and \stexttt{EFS} use ftp) and secure
-(\stexttt{tramp} uses scp or ssh) access are available.  Emacs can
-also monitor and control remote processes running in a shell buffer.
 
 \paragraph{Editing Extensions.}
 Most programming and documentation tasks consist of editing text.
@@ -829,6 +845,11 @@ complete undo capability.  More importantly, for modes which control
 processes, the process input history is stored for recall as well as
 for later editing for printing or re-use.  Emacs also includes web
 browsers, mail/newsgroup readers, and spell checking.
+
+Mechanisms for both open (\stexttt{ange-ftp} and \stexttt{EFS} use
+ftp) and secure (\stexttt{tramp} uses scp or ssh) access are
+available.  Emacs can also monitor and control remote processes
+running in a shell buffer.
 
 In addition to being an extremely powerful editor, Emacs also
 includes capabilities usually found in an operating system.  Thus, it
