@@ -1,4 +1,7 @@
-1997-10-24  Anthony Rossini  <rossini@urn.math.sc.edu>
+Fri Oct 24 12:25:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-version): 
+	* Makefile (VERSION): 5.0-pre2
 
 	* ess-site.el ((assoc "\\.[rR]\\'" auto-mode-alist)): changes for
 	R, 0.50 vs. 0.60.
@@ -540,6 +543,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.12  1997/10/24 16:25:49  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.11  1997/10/24 16:11:56  rossini
 	* Removing *** empty log message ***
 	* Removing
