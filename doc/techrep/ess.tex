@@ -56,6 +56,7 @@
 \newenvironment{Salltt}{\small\begin{alltt}}{\end{alltt}}
 \newcommand{\US}{{\char'137}}        % \tt _
 \newcommand{\marpar}[1]{\marginpar{\raggedright#1}}
+\newcommand{\file}[1]{`\stexttt{#1}'}
 \parskip 1ex
 
 %%--------------------------------------------------------------- Start Text
@@ -210,14 +211,13 @@ document, are tasks that are not pure text-editing.  Emacs
 shares many features with word-processing programs and cooperates with 
 document preparation systems such as  (\LaTeX; SGML, XML, and XSLT; and Noweb).
 
-The capabilities can be extended
-in an orthogonal manner to include other Emacs packages for assisting
-with documentation as noted above; version
-control (RCS,CVS,SCCS, PRCS); and remote editing via FTP or secure
-transport mechanisms such as ssh and scp.  It handles the interface to
-both source code and transcripts contextually, providing syntax
-highlighting, bookmarking features, interfaces to directory structure,
-and command-history.
+The capabilities can be extended in an orthogonal manner to include
+other Emacs packages for assisting with documentation as noted above;
+version control (RCS,CVS, SCCS, PRCS); and remote editing via FTP or
+secure transport mechanisms such as ssh and scp.  It handles the
+interface to both source code and transcripts contextually, providing
+syntax highlighting, bookmarking features, interfaces to directory
+structure, and command-history.
 
 Emacs provides a sophisticated development environment for programming
 in traditional compiled languages such as C, C++, and Fortran as well
@@ -400,7 +400,7 @@ machine.
 
 \paragraph{Transcription Manipulation and Reuse.}
 Once a transcript log is generated, perhaps by saving an
-\stexttt{iESS} buffer, transcript-mode assists with reuse of part or
+\file{iESS} buffer, transcript-mode assists with reuse of part or
 all of the entered commands.  It permits editing and re-evaluating the
 commands directly from the saved transcript.  This is is useful for
 demonstration of techniques as well as for reconstruction of data
@@ -440,8 +440,8 @@ have the help results sent into a separate buffer; and completion of object
 names and file names.
 
 \stexttt{ESS[S]} mode is automatically turned on when loading a file with the
-file extensions \stexttt{.R}, \stexttt{.r},
-\stexttt{.S}, \stexttt{.s}, \stexttt{.ssc}, \stexttt{.q}.  An inferior
+file extensions \file{.R}, \file{.r},
+\file{.S}, \file{.s}, \file{.ssc}, \file{.q}.  An inferior
 process must be running to take advantage of the interactive features
 such as object- and file-name completion and help.
 
@@ -475,12 +475,12 @@ S or R program be available on the local machine.  The
 transparent execution of a statistics package on a remote machine.
 The idea of \stexttt{S+elsewhere} is that we open a telnet, rlogin, or
 ssh connection to another machine from within a buffer called
-\stexttt{*S+elsewhere*}, and then run S or R on the other machine in
+\file{*S+elsewhere*}, and then run S or R on the other machine in
 that buffer.  All the editing and interaction features described in sections
 \ref{sec:S:edit} and \ref{sec:S:inf} for the local machine
 work equally well on the remote machine.  The relevant commands
 get sent through the buffer
-\stexttt{*S+elsewhere*} to be executed by the program on the other
+\file{*S+elsewhere*} to be executed by the program on the other
 machine.  The interaction, including all the unique
 features of working with ESS, appears to the user exactly the same as if the
 program were running on the local machine.  With X-windows running on the
@@ -492,7 +492,7 @@ bring up visual displays from remote Unix systems on a Windows local machine.
 
 \stexttt{ESS Transcript mode} is designed
 for editing transcripts, constructed for example by saving
-an \stexttt{iESS} buffer.  This mode understands the form of S
+an \file{iESS} buffer.  This mode understands the form of S
 transcripts; it does color and font highlighting based on syntax; permits 
 resubmitting
 multi-line commands to an active process buffer; has the ability to
@@ -513,7 +513,7 @@ useful 1-letter shortcuts for navigation and more, such as
 \item[{s \textit{x}}] move to help section code ``\textit{x}'' where
   \textit{x} is e.g. \stexttt{u} for ``Usage'', or \stexttt{e} for
   ``Examples''.  You can see a full list by entering \stexttt{s ?} from within
-an \stexttt{ESS Help} buffer.
+an \file{ESS Help} buffer.
 \item[h] fast `hyperlink' to other help pages
 \item[l] (after \stexttt{"s e"}) send examples \textbf{l}inewise to S for
   evaluation, also \stexttt{C-c C-r} for sending a whole region.  This 
@@ -526,7 +526,7 @@ an \stexttt{ESS Help} buffer.
 \label{sec:S:philosophy}
 
 There are two primary philosophies for using ESS.  The first is that
-the source code (the file \stexttt{myfile.s}, for example) is real,
+the source code (the file \file{myfile.s}, for example) is real,
 and objects in S are temporary realizations of the source.  This is
 the approach preferred by the current group of developers and how ESS
 is initially configured.  A project is constructed by writing S
@@ -550,7 +550,7 @@ same, an assumption we are not willing to make.
 Details for this activating this configuration can be found in the
 documentation distributed with ESS.
 %However, it can be realized by adding the following lines to one's
-%\stexttt{.emacs} configuration file:
+%\file{.emacs} configuration file:
 %\begin{Salltt}
 %  (setq ess-keep-dump-files 'nil)
 %  (setq ess-delete-dump-files t)
@@ -593,12 +593,12 @@ editing a file even while SAS is running it;
 the capability of killing the batch SAS
 process through the shell buffer; the capability of allowing the
 SAS process to keep on
-running after you exit Emacs; single keypress navigation of \stexttt{.sas},
-\stexttt{.log} and \stexttt{.lst} files (\stexttt{.log} and \stexttt{.lst}
+running after you exit Emacs; single keypress navigation of \file{.sas},
+\file{.log} and \file{.lst} files (\file{.log} and \file{.lst}
 files are automatically refreshed with each keypress).
 
 \stexttt{ESS[SAS]}, the mode for editing SAS language files, is automatically
-turned on when editing a file with a \stexttt{.sas} suffix.
+turned on when editing a file with a \file{.sas} suffix.
 The batch processing keypress commands are
 enabled by default to use the same function keys that the SAS Display
 Manager uses.  The interactive capabilities of ESS require you to
@@ -630,13 +630,13 @@ statements are indented 4 spaces from the margin, continuation lines
 are indented 4 spaces in from the beginning column of that statement.
 This is the type of functionality that Emacs provides in most
 programming language modes.  This functionality is equivalent to
-uncommenting the following line in \stexttt{ess-site.el}:
+uncommenting the following line in \file{ess-site.el}:
 \elcode{;;; (setq ess-sas-edit-keys-toggle 0)}
 ESS provides an alternate behavior for the \stexttt{TAB} key that makes it
 behave as it does on non-Emacs terminals, i.e. move the cursor to the
 next tab stop.  The alternate behavior also provides a backwards \stexttt{TAB}
 key: \stexttt{C-TAB}.  This functionality is obtained by
-uncommenting the following line in \stexttt{ess-site.el}:
+uncommenting the following line in \file{ess-site.el}:
 \elcode{;;; (setq ess-sas-edit-keys-toggle 1)}
 Under the alternate behavior, the \stexttt{TAB} key is bound to
 \stexttt{tab-to-tab-stop} and the tab stops are set by default at multiples
@@ -675,15 +675,15 @@ those actions are:\\
 Unix& PC&\\
 \stexttt{F2} &\stexttt{F2}& Refresh:&revert the buffer with the file if the file on disk is newer\\
 \stexttt{}   &\stexttt{}  &         &       than the file currently in the buffer.\\
-\stexttt{F3} &\stexttt{F8}& Submit: &save   the current \stexttt{.sas} buffer (which may be the \stexttt{.sas}\\
-\stexttt{}   &\stexttt{}  &         &       file associated with the \stexttt{.lst} or \stexttt{.log} file you\\
+\stexttt{F3} &\stexttt{F8}& Submit: &save   the current \file{.sas} buffer (which may be the \file{.sas}\\
+\stexttt{}   &\stexttt{}  &         &       file associated with the \file{.lst} or \file{.log} file you\\
 \stexttt{}   &\stexttt{}  &         &       are actually looking at) to a file and submit\\
 \stexttt{}   &\stexttt{}  &         &       the file to a background SAS job.\\
-\stexttt{F4} &\stexttt{F5}& Program:&switch buffer to \stexttt{.sas} file.\\
-\stexttt{F5} &\stexttt{F6}& Log:    &switch buffer to \stexttt{.log} file, ``refresh" and \\
+\stexttt{F4} &\stexttt{F5}& Program:&switch buffer to \file{.sas} file.\\
+\stexttt{F5} &\stexttt{F6}& Log:    &switch buffer to \file{.log} file, ``refresh" and \\
 \stexttt{}   &\stexttt{}  &         &        goto next error message, if any.\\
-\stexttt{F6} &\stexttt{F7}& Listing:&switch buffer to \stexttt{.lst} file and ``refresh".\\
-\stexttt{F7} &\stexttt{F4}& Type-1: &switch buffer to \stexttt{Type-1} (defaults to \stexttt{.txt}) file and ``refresh".\\
+\stexttt{F6} &\stexttt{F7}& Listing:&switch buffer to \file{.lst} file and ``refresh".\\
+\stexttt{F7} &\stexttt{F4}& Type-1: &switch buffer to \stexttt{Type-1} (defaults to \file{.txt}) file and ``refresh".\\
 \stexttt{F8} &\stexttt{F3}& Shell:  &switch buffer to shell.\\
 \end{tabular}
 
@@ -695,11 +695,11 @@ compares the buffer date stamp with the file date stamp and replaces
 the buffer with the file if the file is newer.  This is the same
 operation that is automatically performed when Log, Listing, or
 \stexttt{Type-1} are pressed.  \stexttt{Type-1} takes you to a file
-with a user-specified extension; \stexttt{.txt} by default.
+with a user-specified extension; \file{.txt} by default.
 \stexttt{Type-1} files are not a standard from the SAS Institute, but
 are included here because many companies have developed internal
 standards that use them.  You can over-ride the default, by specifying
-a different extension in your \stexttt{.emacs} file:
+a different extension in your \file{.emacs} file:
 \elcode{(setq ess-sas-suffix-1 '.txt')}
 
 \paragraph{SAS Interface.}
@@ -707,7 +707,7 @@ a different extension in your \stexttt{.emacs} file:
 
 The default command used by the Submit function key (\stexttt{F3} or \stexttt{F8}) to
 submit a batch SAS job is simply \stexttt{sas}.  If necessary, you can
-over-ride this in your \stexttt{.emacs} file.
+over-ride this in your \file{.emacs} file.
 The default assumption is that SAS is run on the local machine.  This too
 can be overridden by changing \stexttt{ess-sas-submit-method} to point to
 SAS on a remote machine.
@@ -755,9 +755,9 @@ statistical processes (programs).  To start up \stexttt{iESS[SAS]} mode, use:
 % We plan to add the ability to request help from a process for
 % variables and functions, and to have the results sent into a separate
 % buffer, as well as the completion of object names and file names.
-A single instance of SAS is started in an \stexttt{iESS[SAS]} buffer.  Individual
+A single instance of SAS is started in an \file{iESS[SAS]} buffer.  Individual
 \stexttt{DATA} and \stexttt{PROC} steps are sent to this instance of SAS and the results
-are appended to the \stexttt{*log*} and \stexttt{*lst*} buffers.
+are appended to the \file{*log*} and \file{*lst*} buffers.
 
 The \stexttt{iESS[SAS]} mode was written with two primary goals.
 \begin{itemize}
@@ -816,7 +816,7 @@ log output and its lst output to the other two.
 \label{sec:SAS:phil}
 
 \stexttt{ESS[SAS]} mode was designed to aid the user in writing and maintaining
-input command files, such as \stexttt{myfile.sas}, for SAS.  These are files
+input command files, such as \file{myfile.sas}, for SAS.  These are files
 containing SAS statements.  In a batch environment such files would be
 submitted to SAS by the operating system command:
 \elcode{sas myfile.sas}
@@ -825,18 +825,18 @@ In a SAS window environment, these files would be brought into the
 \ssf{Local/Submit}
 menu commands.
 
-The \stexttt{*SAS:1.log*} or \stexttt{myfile.log} buffer in \stexttt{ESStr} mode
-corresponds to the file \stexttt{myfile.log} in SAS batch usage and to the
+The \file{*SAS:1.log*} or \file{myfile.log} buffer in \stexttt{ESStr} mode
+corresponds to the file \file{myfile.log} in SAS batch usage and to the
 \ssf{SAS: LOG} window in the SAS window environment.  All commands
 submitted to SAS, informative messages, warnings, and errors appear
 here.
 
-The \stexttt{*SAS:1.lst*} or \stexttt{myfile.lst} buffer in \stexttt{ESSlst} mode
-corresponds to the file \stexttt{myfile.lst} in SAS batch usage and to the
+The \file{*SAS:1.lst*} or \file{myfile.lst} buffer in \stexttt{ESSlst} mode
+corresponds to the file \file{myfile.lst} in SAS batch usage and to the
 \ssf{SAS: OUTPUT} window in the SAS window environment.  All data-related
 printed output from the \stexttt{PROC}s appear in this window.
 
-The interactive \stexttt{iESS [SAS:1]} buffer exists solely as a communications buffer.
+The interactive \file{iESS [SAS:1]} buffer exists solely as a communications buffer.
 Files are edited in the myfile.sas buffer.  The \stexttt{C-c C-r} key in
 \stexttt{ESS[SAS]} mode is the functional equivalent of bringing a file into the
 \ssf{SAS: PROGRAM EDITOR} window followed by the \ssf{Local/Submit} menu
@@ -848,7 +848,7 @@ commands.  The user should never use this buffer directly.
 ESS is primarily located at \stexttt{ess.stat.wisc.edu}, and is available by FTP
 or through the World-Wide-Web (WWW).  A basic installation consists of
 downloading the package, unpacking, and then adding a line to the
-Emacs initialization file (\stexttt{.emacs} or \stexttt{\US emacs}), pointing
+Emacs initialization file (\file{.emacs} or \file{\US emacs}), pointing
 to the lisp subdirectory of the unpacked archive.  Unix users, but not
 Windows users, may choose to do an optional installation by executing
 the Makefile that comes with the ESS package.
@@ -902,7 +902,7 @@ mode.  Sparapani and Heiberger developed SAS batch support including
 function key behavior that followed SAS Institute's function key
 definitions,  developed a more comprehensive and efficient syntax
 highlighting mechanism using the Emacs \stexttt{font-lock-mode},
-extended the  \stexttt{*ESS-elsewhere*} functionality to include SAS processes,
+extended the  \file{*ESS-elsewhere*} functionality to include SAS processes,
 and provided  automated error message lookup in the log file.
 These are features that people using SAS today
 actually need and want.  ESS is now by far the best environment for
@@ -994,7 +994,7 @@ Edit as appropriate, and then start up \Splus\ or S or R
   \elcode{M-x S}
 or 
   \elcode{M-x R}
-A new buffer \stexttt{*S+x:1*} or \stexttt{*R:1*} will appear.
+A new buffer \file{*S+x:1*} or \file{*R:1*} will appear.
 \Splus\ or R will have been started
 in this buffer.  The buffer is in \stexttt{iESS [S]} or \stexttt{iESS [R]} mode.
 Under Windows, the \Splus\ buffers are in  \stexttt{ddeESS [S]} mode.
@@ -1006,7 +1006,7 @@ For regions, highlight a region with keystrokes or mouse
 and then send with:
   \elcode{C-c C-r}
 For R on all platforms and for \Splus\ on Unix, the commands appear in
-the \stexttt{*S+x:1*} buffer and the program's response also appears.
+the \file{*S+x:1*} buffer and the program's response also appears.
 For \Splus\ on Windows, the commands are forwarded to the \Splus\ Commands
 window and the program's response also appears in the Commands window.
 
@@ -1015,12 +1015,12 @@ new commands here.  Send them to S by region with
   \elcode{C-c C-r}
 or one line at a time with
   \elcode{C-c C-n}
-Save the revised \stexttt{myfile.s} with \stexttt{C-x C-s}.
+Save the revised \file{myfile.s} with \stexttt{C-x C-s}.
 
-Save the entire \stexttt{*S+x:1*} interaction buffer with \stexttt{C-x C-s}.
+Save the entire \file{*S+x:1*} interaction buffer with \stexttt{C-x C-s}.
 You will be prompted for a file name.  The recommended name is
-\stexttt{myfile.St} (\stexttt{St} for S Transcript).
-Files with the \stexttt{*.St} suffix will automatically come up in ESS
+\file{myfile.St} (\stexttt{St} for S Transcript).
+Files with the \file{*.St} suffix will automatically come up in ESS
 Transcript mode the next time they are accessed from Emacs.
 
 
@@ -1028,11 +1028,11 @@ Transcript mode the next time they are accessed from Emacs.
 The current ESS developers recommend this procedure.
 
 \noindent
-Start up \Splus\ in a process buffer (this will be \stexttt{*S+3:1*})
+Start up \Splus\ in a process buffer (this will be \file{*S+3:1*})
   \elcode{M-x S}
 Load the file you want to work with
   \elcode{C-x C-f myfile.s}
-Edit program, functions, and code in \stexttt{myfile.s}.
+Edit program, functions, and code in \file{myfile.s}.
 When ready, send revised functions to S with
   \elcode{C-c C-f}
 or send highlighted regions with
@@ -1041,14 +1041,14 @@ or send individual lines with
   \elcode{C-c C-n}
 or load the entire buffer into S with
   \elcode{C-c C-l}
-Save the revised \stexttt{myfile.s} when you have finished
+Save the revised \file{myfile.s} when you have finished
   \elcode{C-x C-s}
 
 %\subsubsection{Program revision example (S object is real)}
 %The current ESS developers do {\bf not} recommend this procedure.
 
 %\noindent
-%Start up \Splus~3.x, in a process buffer (this will be \stexttt{*S+3:1*}) 
+%Start up \Splus~3.x, in a process buffer (this will be \file{*S+3:1*}) 
 %  \elcode{M-x S+3}
 %Dump an existing S object my.function into a buffer to work with
 %  \elcode{C-c C-d my.function}
@@ -1061,7 +1061,7 @@ Save the revised \stexttt{myfile.s} when you have finished
 %Enter program, functions, and code into work buffer,
 %and send entire contents to \Splus\ when ready:
 %  \elcode{C-c C-b}
-%Go to the \stexttt{*S+3:1*} buffer, which is the process buffer, and examine
+%Go to the \file{*S+3:1*} buffer, which is the process buffer, and examine
 %the results.
 %  \elcode{C-c C-y}
 %The sequence \stexttt{C-c C-y} is a shortcut for:  \stexttt{C-x b *S+3:1*}
@@ -1111,17 +1111,17 @@ Save the revised \stexttt{myfile.s} when you have finished
 We present three scenarios for using ESS to interact with SAS.  The
 first two mimic different aspects of the SAS Display Manager behavior.
 The Batch scenario sends an entire
-\stexttt{myfile.sas} file over to SAS and receives
-\stexttt{myfile.log} and \stexttt{myfile.lst} back.  The Interactive
+\file{myfile.sas} file over to SAS and receives
+\file{myfile.log} and \file{myfile.lst} back.  The Interactive
 scenario sends one \stexttt{DATA} step or one \stexttt{PROC} step over
-at a time and receives back increments to the \stexttt{myfile.log} and
-\stexttt{myfile.lst} files.  Both scenarios work with SAS running
+at a time and receives back increments to the \file{myfile.log} and
+\file{myfile.lst} files.  Both scenarios work with SAS running
 either on the same machine that Emacs is running on, or on a remote
 machine.  The third uses ESS for editing and then submits the file using the SAS
 Display Manager itself.  Further detailed instructions can be found in the ESS
 documentation.
 
-%We recommend the following line appear in your \stexttt{autoexec.sas}
+%We recommend the following line appear in your \file{autoexec.sas}
 %in your home directory on the machine running SAS: 
 %\elcode{options noovp pagesize=60 linesize=80 formdlim=' ';}
 %Interpretations\\
@@ -1142,31 +1142,31 @@ documentation.
 
 A complete SAS job, multiple \stexttt{DATA} and \stexttt{PROC} steps,
 is sent over to a new instance of SAS.  The results from the complete
-job are received back in \stexttt{log} and \stexttt{lst} files.
+job are received back in \file{.log} and \file{.lst} files.
 The keystrokes illustrated match the SAS Unix keystrokes.
 SAS Windows keys are identified in the comments
 
 Find the file you want to work with
     \elcode{C-x C-f myfile.sas}
-\stexttt{myfile.sas} will be in \stexttt{ESS[SAS]} mode.
+\file{myfile.sas} will be in \stexttt{ESS[SAS]} mode.
 Edit as appropriate, then save and submit the batch SAS job.
     \elcode{F3  /*-pc- F8*/}
 The job runs in the shell buffer while you continue to edit 
-\stexttt{myfile.sas}.  If you are running a Unix shell (under Unix or
+\file{myfile.sas}.  If you are running a Unix shell (under Unix or
 Windows) the message buffer will notify you with a shell
 notification when the job is complete.  If so, then you 
 will also have the option of terminating the batch job
 before it is finished.
     \elcode{F8  /*-pc- F3*/}
-In any case, you may want to visit the \stexttt{.log} while the process
+In any case, you may want to visit the \file{.log} while the process
 is still running (Unix only) or when it is done and check for
 error messages 
 (you will be taken to the next error message, if any).
-The \stexttt{.log} will be refreshed and it's buffer will be made active.
+The \file{.log} will be refreshed and it's buffer will be made active.
     \elcode{F5  /*-pc- F6*/}
-Now, refresh the \stexttt{.lst} and go to it's buffer.
+Now, refresh the \file{.lst} and go to it's buffer.
     \elcode{F6  /*-pc- F7*/}
-If you wish to make changes, go to the \stexttt{.sas} file with
+If you wish to make changes, go to the \file{.sas} file with
     \elcode{F4 /*-pc- F5*/}
 and make your editing changes.  The go back to the submit instruction.
 
@@ -1179,34 +1179,34 @@ file and be viewed later.  Include the lines
     goptions device=ps gsfname=grafout gsfmode=append gaccess=sasgastd;
 \end{Salltt}
 \noindent
-in \stexttt{myfile.sas}.
+in \file{myfile.sas}.
 
 
 \subsubsection{Interactive SAS in an inferior ESS buffer}
 A single instance of SAS is started in an \stexttt{iESS[SAS]} buffer.
 Individual \stexttt{DATA} and \stexttt{PROC} steps are sent to this
-instance of SAS and the results are appended to the \stexttt{*log*}
-and \stexttt{*lst*} buffers.
+instance of SAS and the results are appended to the \file{*log*}
+and \file{*lst*} buffers.
 
 Find the file you want to work with
     \elcode{C-x C-f myfile.sas}
-\stexttt{myfile.sas} will be in \stexttt{ESS[SAS]} mode.
+\file{myfile.sas} will be in \stexttt{ESS[SAS]} mode.
 Edit as appropriate, and then start up SAS with the cursor in
-the \stexttt{myfile.sas} buffer
+the \file{myfile.sas} buffer
     \elcode{M-x SAS}
 Four buffers will appear on screen:\\
 \begin{tabular}{lll}  \hline
   Buffer name     & Emacs mode         & use\\  \hline
-  \stexttt{myfile.sas}  & \stexttt{ESS[SAS]}       &source file   \\
-  \stexttt{*SAS:1*}     & \stexttt{iESS [SAS:1]}   &ESS communication buffer \\
-  \stexttt{*SAS:1.log*} & \stexttt{Shell [] ESStr} &SAS log information      \\
-  \stexttt{*SAS:1.lst*} & \stexttt{Shell [] ESSlst}&SAS listing information  \\
+  \file{myfile.sas}  & \stexttt{ESS[SAS]}       &source file   \\
+  \file{*SAS:1*}     & \stexttt{iESS [SAS:1]}   &ESS communication buffer \\
+  \file{*SAS:1.log*} & \stexttt{Shell [] ESStr} &SAS log information      \\
+  \file{*SAS:1.lst*} & \stexttt{Shell [] ESSlst}&SAS listing information  \\
   \hline
 \end{tabular}\\[1ex]
 If you would prefer each of the four buffers to appear in its own
 individual frame, you can arrange for that.  Place the cursor in the
-buffer displaying \stexttt{myfile.sas}.  Enter the sequence \stexttt{C-c C-w}.
-The cursor will normally be in buffer \stexttt{myfile.sas}.  If
+buffer displaying \file{myfile.sas}.  Enter the sequence \stexttt{C-c C-w}.
+The cursor will normally be in buffer \file{myfile.sas}.  If
 not, put it there:
     \elcode{C-x b myfile.sas}
 Send regions, lines, or the entire file contents to SAS
@@ -1216,7 +1216,7 @@ keyword \stexttt{RUN;}
     \elcode{C-c C-r}
 Information appears in the log buffer, analysis results in the
 listing buffer.  In case of errors, make the corrections in the
-\stexttt{myfile.sas} buffer and resubmit with another \stexttt{C-c C-r}
+\file{myfile.sas} buffer and resubmit with another \stexttt{C-c C-r}
 
 \stexttt{PROC GPLOT} graphs will normally be produced in a postscript
 file and be viewed later.  Include the lines
@@ -1227,7 +1227,7 @@ file and be viewed later.  Include the lines
     goptions device=ps gsfname=grafout gsfmode=append gaccess=sasgastd;
 \end{Salltt}
 \noindent
-in \stexttt{myfile.sas}.
+in \file{myfile.sas}.
 
 \stexttt{PROC PLOT} graphs can be viewed in the listing buffer.  You
 may wish to control the vertical spacing to allow the entire plot to
@@ -1236,22 +1236,22 @@ be visible on screen, for example, by
  
 At the end of the session you may save the log and listing buffers
 with the usual \stexttt{C-x C-s} commands.  You will be prompted for a
-file name.  Typically, the names \stexttt{myfile.log} and
-\stexttt{mfile.lst} will be used.  You will almost certainly want to
+file name.  Typically, the names \file{myfile.log} and
+\file{myfile.lst} will be used.  You will almost certainly want to
 edit the saved files before including them in a report.  The files are
 read-only by default.  You can make them writable by the Emacs command
 \stexttt{C-x C-q}.
  
-At the end of the session, the input file \stexttt{myfile.sas} will
+At the end of the session, the input file \file{myfile.sas} will
 typically have been revised.  You can save it.  It can be used later
 as the beginning of another \stexttt{iESS[SAS]} session.  It can also
 be used as a batch input file to SAS.
  
-The \stexttt{*SAS:1*} buffer is strictly for ESS use.  The user should
-never need to read it or write to it.  Refer to the \stexttt{.lst} and
-\stexttt{.log} buffers for monitoring output.
+The \file{*SAS:1*} buffer is strictly for ESS use.  The user should
+never need to read it or write to it.  Refer to the \file{.lst} and
+\file{.log} buffers for monitoring output.
 
-%% Here is a typical \stexttt{myfile.sas}:
+%% Here is a typical \file{myfile.sas}:
 %% \begin{Salltt}
 %%     title 'Analysis of Case 0502';
 %% 
@@ -1269,7 +1269,7 @@ never need to read it or write to it.  Refer to the \stexttt{.lst} and
 
 
 %For the Interactive scenario,
-%the default settings of the \stexttt{inferior-SAS-args} in \stexttt{essd-sas.el}
+%the default settings of the \stexttt{inferior-SAS-args} in \file{essd-sas.el}
 %are \stexttt{-stdio -linesize 80 -noovp -nosyntaxcheck}
 %with the interpretations:\\
 %\begin{tabular}{ll}
@@ -1279,7 +1279,7 @@ never need to read it or write to it.  Refer to the \stexttt{.lst} and
 %\stexttt  -nosyntaxcheck  &permits recovery after syntax errors                 \\
 %\end{tabular}\\
 %The \stexttt{noovp} and \stexttt{linesize=80} appear in both the
-%\stexttt{inferior-SAS-args} and in the \stexttt{autoexec.sas}.  The
+%\stexttt{inferior-SAS-args} and in the \file{autoexec.sas}.  The
 %redundancy means that these options are in effect for SAS batch usage
 %and SAS window manager usage as well as for \stexttt{iESS[SAS]} usage.
 
@@ -1291,15 +1291,15 @@ the access to the interactive graphics windows.
 
 Find the file you want to work with
     \elcode{C-x C-f myfile.sas}
-\stexttt{myfile.sas} will be in \stexttt{ESS[SAS]} mode.
+\file{myfile.sas} will be in \stexttt{ESS[SAS]} mode.
 Edit as appropriate, and then highlight a region to be submitted to
 SAS.  Move the cursor to the SAS Display Manager \ssf{PROGRAM EDITOR} window.
 Paste the region there and press the SAS \ssf{RUN} button.
 
-Revisions to the SAS code are made in the Emacs \stexttt{myfile.sas} buffer.
-Useful portions of the SAS log and listing windows can be copied and placed
-in new Emacs buffers or dropped directly into a document in Emacs or in another
-editor.
+Revisions to the SAS code are made in the Emacs \file{myfile.sas}
+buffer.  Useful portions of the SAS log and listing windows can be
+copied and placed in new Emacs buffers or dropped directly into a
+document in Emacs or in another editor.
 \end{document}
 
 %%% Local Variables: 
