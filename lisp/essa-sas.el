@@ -665,24 +665,18 @@ current buffer if nil."
   (if (ess-sas-goto "log" 'revert) (progn
 	(setq ess-sas-save-point (point))
 	(goto-char (point-min)))
-    (setq ess-sas-save-point (point))
-  )
+    (setq ess-sas-save-point (point)))
 
 (if ess-tmp-no-error-check (goto-char ess-sas-save-point)
   (if (not (and (search-forward-regexp ess-sas-error nil t)
 	    (or (push-mark (match-beginning 0) t)
 		(zmacs-activate-region) t)))
-        (if (search-backward-regexp ess-sas-error nil t) 
-            (progn
+        (if (search-backward-regexp ess-sas-error nil t) (progn
                 (goto-char (point-min))
-		(and (search-forward-regexp ess-sas-error nil t)
-		    (or (push-mark (match-beginning 0) t)
-		    (zmacs-activate-region) t)))
-	    (goto-char ess-sas-save-point)
-        )
-    )
-))
-)
+		(search-forward-regexp ess-sas-error nil t)
+		(push-mark (match-beginning 0) t)
+		(zmacs-activate-region))
+	    (goto-char ess-sas-save-point))))))
 
 (defun ess-sas-goto-lst ()
   "Switch to the .lst file and revert from disk."
