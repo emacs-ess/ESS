@@ -1,9 +1,59 @@
-Mon Nov 10 17:02:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Nov 10 23:03:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* ess-inf.el (inferior-ess-mode): keeps tabs out of the code
+	* ess-vars.el: 5.0-pre3
 
-Mon Nov 10 17:01:05 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Mon Nov 10 23:02:36 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
+ 	* Releasing 5.0-pre3.
+	* ess-vars.el (ess-version): 5.0-pre3
+	* Makefile (VERSION): 5.0-pre3
+
+Mon Nov 10 22:58:39 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: more S to ESS
+
+Mon Nov 10 22:52:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: more S/ESS fixes (RMH)
+
+Mon Nov 10 22:49:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.SAS: typo
+
+Mon Nov 10 22:43:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (ess-read-object-name-default): handle defaults
+ 	better.
+
+Mon Nov 10 22:34:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S: typo.
+
+Mon Nov 10 17:28:28 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.SAS: added some suggestions by RMH.
+
+Mon Nov 10 17:26:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S: edited as suggested by RMH.
+
+Mon Nov 10 17:17:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S: stuff.
+
+Mon Nov 10 17:16:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: changed mode/revision.
+
+Mon Nov 10 17:14:53 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: fixes (RMH)
+
+Mon Nov 10 17:04:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-trns.el (ess-transcript-mode): 
+	* ess-help.el (ess-help-mode):
+	* ess-inf.el (inferior-ess-mode):
 	* ess-mode.el (ess-mode): keep tabs out of the code.
 
 Mon Nov 10 16:48:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
@@ -787,6 +837,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.24  1997/11/11 04:03:44  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.23  1997/11/10 22:02:42  rossini
 	* Removing *** empty log message ***
 	* Removing
