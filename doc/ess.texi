@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.47 2004/02/19 13:09:35 stephen Exp $
+@comment $Id: ess.texi,v 5.48 2004/03/05 08:25:48 maechler Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.47 $ $Date: 2004/02/19 13:09:35 $)
+@subtitle (Documentation $Revision: 5.48 $ $Date: 2004/03/05 08:25:48 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.47 $ $Date: 2004/02/19 13:09:35 $).
+        (Documentation $Revision: 5.48 $ $Date: 2004/03/05 08:25:48 $).
 
 @display
 by  A.J. Rossini,
@@ -2598,6 +2598,8 @@ the new value into the template above.
 * Indentation variables::       Variables controlling indentation
 * Variables controlling interaction::  Variables controlling interaction
 					with the ESS process
+* Editing assembly files::      Variables for restoring assembly mode
+                                        associations
 @end menu
 
 @comment  node-name,  next,  previous,  up
@@ -2794,7 +2796,7 @@ See @file{ess-cust.el} for the complete definitions of the styles.
 @end defvr
 
 @comment  node-name,  next,  previous,  up
-@node Variables controlling interaction,  , Indentation variables, Variables
+@node Variables controlling interaction, Editing assembly files, Indentation variables, Variables
 @appendixsubsec Variables controlling interaction with the ESS process
 
 @defvr {User Option} comint-input-ring-size
@@ -2816,6 +2818,31 @@ buffer}) echo the @Sl{} commands in the process buffer by default.  In any
 case, passing a prefix argument to the eval command reverses the meaning
 of this variable.
 @end defvr
+
+@comment  node-name,  next,  previous,  up
+@node Editing assembly files, , Variables controlling interaction, Variables
+@appendixsubsec Variables for restoring assembly mode associations
+
+@defvr {User Option} auto-mode-alist
+Association list mapping file extensions to emacs modes.
+@end defvr
+
+@cindex Assembler mode
+@vindex auto-mode-alist
+@vindex ess-restore-asm-extns
+If you edit assembler files but not S files, you may want to retain
+the default mode for the .s and .S extensions, namely assembler
+mode.  ESS provides a function, @code{ess-restore-asm-extns} that you
+can use to restore default behavior for these files.
+
+You can add the following lisp to your @file{.emacs}:
+@example
+(add-hook 'ess-mode-hook 'ess-restore-asm-extns)
+(add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
+@end example
+@noindent
+This code removes the association between .s and .S files and S
+mode. 
 
 @comment  node-name,  next,  previous,  up
 @node Hooks, Keybindings, Variables, Customization
