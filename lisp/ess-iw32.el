@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 1999/03/03 22:32:51 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: ess-iw32.el,v 1.6 1999/03/03 22:32:51 rossini Exp $
+;; Modified: $Date: 1999/03/03 23:11:50 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: ess-iw32.el,v 1.7 1999/03/03 23:11:50 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -134,6 +134,7 @@ file.  Otherwise just pops to an existing buffer if it exists."
 ;;; this works for Sqpe+4 and S+4
 (defun ess-load-file-ddeclient (filename)
   "Load an S source file into an inferior ESS process."
+  (require 'ess-inf) ; what does this fix?
   (ess-make-buffer-current)
   (let ((source-buffer (get-file-buffer filename)))
     (if (ess-check-source filename)
@@ -142,7 +143,8 @@ file.  Otherwise just pops to an existing buffer if it exists."
       (if source-buffer
 	  (save-excursion
 	    (set-buffer source-buffer)
-    (ess-force-buffer-current "Process to load into: "))))
+	    (ess-force-buffer-current "Process to load into: ")
+	    (ess-check-modifications))))
     (ess-eval-visibly (format inferior-ess-load-command filename))))
 
 (fset 'ess-load-file-original
