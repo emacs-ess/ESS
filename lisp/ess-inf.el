@@ -5,12 +5,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainers: Hornik, Maechler, Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/15 08:29:31 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: ess-inf.el,v 1.5 1997/06/15 08:29:31 rossini Exp $
+;; Modified: $Date: 1997/06/15 08:50:14 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: ess-inf.el,v 1.6 1997/06/15 08:50:14 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.6  1997/06/15 08:50:14  rossini
+;; S data dir -> ESS data dir
+;;
 ;; Revision 1.5  1997/06/15 08:29:31  rossini
 ;; changed inferior mode name to just infESS, since process type is
 ;; already given.
@@ -476,7 +479,7 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
 	 (expand-file-name
 	  (file-name-as-directory
 	   (read-file-name
-	    "S starting data directory? " (file-name-as-directory default) (file-name-as-directory default) t nil)))))
+	    "ESS starting data directory? " (file-name-as-directory default) (file-name-as-directory default) t nil)))))
     (if (file-directory-p the-dir) nil
       (error "%s is not a valid directory" the-dir))
     the-dir))
