@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/16 18:44:31 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: essd-sas.el,v 1.12 1997/10/16 18:44:31 rossini Exp $
+;; Modified: $Date: 1997/10/20 20:09:26 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: essd-sas.el,v 1.13 1997/10/20 20:09:26 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -34,13 +34,81 @@
 
 (require 'essl-sas)
 
-(autoload 'inferior-ess "ess-inf"  "Run an ESS process")
+(autoload 'inferior-ess "ess-inf" "Run an ESS process")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process")
 
 (defvar inferior-SAS-args "-stdio -linesize 80 -noovp"
   "*Arguments to use for starting SAS.")
 
 ;;; Code:
+
+(defun ess-SAS-pre-run-hook () "Set up log and list files for interactive SAS."
+  (interactive)
+  (if (get-buffer "*shell*")
+      (save-excursion       
+	(set-buffer "*shell*")
+	(setq ess-shell-buffer-name (rename-buffer "*ess-shell-regular*"))
+	(setq ess-shell-buffer-name-p t)
+	))
+
+  (if (get-buffer "*myfile.lst*")
+      nil
+    (shell)
+    (accept-process-output (get-buffer-process (current-buffer)))
+    (setq ess-sas-lst (ess-insert-accept "tty"))
+    (rename-buffer "*myfile.lst*"))
+  
+  (if (get-buffer "*myfile.log*")
+      nil
+    (shell)
+    (accept-process-output (get-buffer-process (current-buffer)))
+    (setq ess-sas-log (ess-insert-accept "tty"))
+    (rename-buffer "*myfile.log*"))
+  (setq additional-inferior-SAS-args (concat " "
+					     ess-sas-lst
+					     " "
+					     ess-sas-log))
+  (setq inferior-SAS-args (concat inferior-SAS-args
+				  additional-inferior-SAS-args))
+  
+  (if ess-shell-buffer-name-p
+      (save-excursion       
+	(set-buffer ess-shell-buffer-name)
+	(rename-buffer "*shell*")
+	(setq ess-shell-buffer-name-p nil)
+	))
+
+  (delete-other-windows)
+  (split-window-vertically)
+  (split-window-vertically)
+  (switch-to-buffer (nth 2 (buffer-list)))
+  (other-window 2)
+  (switch-to-buffer "*myfile.log*")
+  (split-window-vertically)
+  (other-window 1)
+  (switch-to-buffer "*myfile.lst*")
+  (other-window 1)
+
+  ;;workaround
+  (setq inferior-SAS-program-name (concat ess-lisp-directory "/" "ess-sas-sh-command"))
+  (setq inferior-ess-program inferior-SAS-program-name)
+  ;; workaround
+
+  )
+
+(defun ess-insert-accept (command) "" (interactive)
+  (goto-char (point-max))
+  (insert command)
+  (comint-send-input)
+  (accept-process-output (get-buffer-process (current-buffer)))
+  (forward-line -1)
+  (let* ((beg (point))
+	 (ess-tty-name (progn (end-of-line) (buffer-substring beg (point)))))
+    (goto-char (point-max))
+    ess-tty-name
+    )
+  )
+
 
 (defvar SAS-customize-alist
   '((ess-local-customize-alist     . 'SAS-customize-alist)
@@ -57,7 +125,8 @@
     (inferior-ess-primary-prompt   . "^")
     (inferior-ess-secondary-prompt . "^")
     (inferior-ess-start-file       . nil) ;"~/.ess-SAS")
-    (inferior-ess-start-args       . inferior-SAS-args)
+    (inferior-ess-start-args       . inferior-SAS-args) 
+    (ess-pre-run-hook              . 'ess-SAS-pre-run-hook)
     (ess-local-process-name        . nil))
   "Variables to customize for SAS")
 
@@ -103,4 +172,6 @@
 ;;; End:
 
 ;;; essd-sas.el ends here
+
+
 

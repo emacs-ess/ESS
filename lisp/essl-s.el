@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/10/02 05:12:52 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essl-s.el,v 1.14 1997/10/02 05:12:52 rossini Exp $
+;; Modified: $Date: 1997/10/20 20:04:51 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essl-s.el,v 1.15 1997/10/20 20:04:51 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -121,7 +121,7 @@
   "General options for editing S, S+, and R source files.")
 
 
-;;; Changes from S to Splus 3.x.  (standard S3 should be in essl-s!).
+;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in essl-s!).
 
 (defconst ess-help-S+3-sec-keys-alist
   '((?a . "ARGUMENTS:")

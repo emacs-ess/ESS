@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/10/07 19:46:51 $
-;; Version: $Revision: 1.48 $
-;; RCS: $Id: ess-site.el,v 1.48 1997/10/07 19:46:51 rossini Exp $
+;; Modified: $Date: 1997/10/20 20:05:08 $
+;; Version: $Revision: 1.49 $
+;; RCS: $Id: ess-site.el,v 1.49 1997/10/20 20:05:08 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -145,7 +145,7 @@
 ;;; 2. Site Specific setup
 ;;;; ===============================================
 
-;;; Set this to the name of the program you use to run S or Splus.  It
+;;; Set this to the name of the program you use to run S or S-PLUS.  It
 ;;; can be an absolute pathname, if you wish.
 ;;(setq inferior-ess-program "Splus")
 ;;(setq inferior-ess-program (concat (getenv "SHOME") "/Splus"))

@@ -1,13 +1,13 @@
-;;; essd-s+3.el --- Splus 3.x customization
+;;; essd-s+3.el --- S-PLUS 3.x customization
 
 ;; Copyright (C) 1997 A. J. Rossini
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/10/16 18:43:36 $
-;; Version: $Revision: 1.32 $
-;; RCS: $Id: essd-s+3.el,v 1.32 1997/10/16 18:43:36 rossini Exp $
+;; Modified: $Date: 1997/10/20 20:04:18 $
+;; Version: $Revision: 1.33 $
+;; RCS: $Id: essd-s+3.el,v 1.33 1997/10/20 20:04:18 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -28,7 +28,7 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the Splus 3.x customizations for ess-mode.
+;;; This file defines all the S-PLUS 3.x customizations for ess-mode.
 
 ;;; Requires and Autoloads:
 
@@ -82,7 +82,7 @@
 
 
 (defun S+3 (&optional proc-name)
-  "Call 'Splus 3.x', the 'Real Thing'  from StatSci."
+  "Call 'S-PLUS 3.x', the 'Real Thing'  from StatSci."
   (interactive)
   (setq-default ess-customize-alist S+3-customize-alist)
   (ess-write-to-dribble-buffer

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/10/08 13:26:38 $
-;; Version: $Revision: 1.28 $
-;; RCS: $Id: ess-vars.el,v 1.28 1997/10/08 13:26:38 rossini Exp $
+;; Modified: $Date: 1997/10/20 20:05:00 $
+;; Version: $Revision: 1.29 $
+;; RCS: $Id: ess-vars.el,v 1.29 1997/10/20 20:05:00 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 
 ;;; Code:
 
-(defconst ess-version "4.9-b14" 
+(defconst ess-version "4.9-b16" 
   "Version of ESS currently loaded.")
 
  ; User changeable variables
@@ -90,9 +90,9 @@ Used to adjust for changes in versions of the program")
 ;;
 ;;Currently the string \"3.0\" is the only value of this variable with
 ;;any real meaning; in this case the defaults are set to comply with the
-;;August '91 (3.0) version of S/Splus, defaults which also work for
+;;August '91 (3.0) version of S/S-PLUS, defaults which also work for
 ;;version 2.3. Any other value than \"3.0\" sets the defaults to comply
-;;with the 1988 version of S/Splus.
+;;with the 1988 version of S/S-PLUS.
 ;;
 ;;Please reserve the following values as special:
 ;;   \"3.0\"    Version 3.0 (August '91) of S/Splus
@@ -536,12 +536,12 @@ of Emacs until the code has been successfully evaluated by S.")
   "Format string for ess command to extract names from an object.")
 ;;; %s is replaced by the object name -- usually a list or data frame
 
-(defvar inferior-ess-objects-command "ls()" ;; others: in (S) or (R)
+(defvar inferior-ess-objects-command "ls()\n" ;; others: in (S) or (R)
   "Format string for ess command to get a list of objects at position %d")
 ;;; Don't include a newline at the end! Used in ess-execute-objects
 
 (make-variable-buffer-local 'inferior-ess-objects-command)
-(setq-default inferior-ess-objects-command "ls()")
+(setq-default inferior-ess-objects-command "ls()\n")
 
 (defvar inferior-ess-get-prompt-command "options()$prompt\n"
   "Command to find the value of the current S prompt.")
@@ -625,7 +625,7 @@ See also function ess-create-object-name-db.")
 
 (defvar ess-loop-timeout 100000
   "Integer specifying how many loops ess-mode will wait for the prompt for
-before signaling an error.   This is important for Splus 3.x, not so
+before signaling an error.   This is important for S-PLUS 3.x, not so
 important for R or XLispStat.")
 
 (make-variable-buffer-local 'ess-loop-timeout)
