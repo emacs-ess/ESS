@@ -6,12 +6,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/26 01:20:12 $
-;; Version: $Revision: 1.41 $
-;; RCS: $Id: ess-mode.el,v 1.41 1997/07/26 01:20:12 rossini Exp $
+;; Modified: $Date: 1997/07/29 11:39:22 $
+;; Version: $Revision: 1.42 $
+;; RCS: $Id: ess-mode.el,v 1.42 1997/07/29 11:39:22 rossini Exp $
 
 ;;
 ;; $Log: ess-mode.el,v $
+;; Revision 1.42  1997/07/29 11:39:22  rossini
+;; stuff.
+;;
 ;; Revision 1.41  1997/07/26 01:20:12  rossini
 ;; newline -> newline-and-indent.
 ;;
@@ -293,9 +296,7 @@
   "Major mode for editing R source.  See ess-mode for more help."
   (interactive)
   (setq ess-proc-prefix "R"
-	;; ess-set-style "GNU"
-	ess-default-style 'GNU
-	)
+	ess-default-style 'GNU)
   (ess-mode proc-name))
 
 (defun S-mode (&optional proc-name)
@@ -385,7 +386,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
   (interactive)
   (kill-all-local-variables)
   (setq major-mode 'ess-mode)
-  (setq mode-name "ESS")
+  (setq mode-name "ESS [S]") ;; will be S.  
   (use-local-map ess-mode-map)
   (set-syntax-table ess-mode-syntax-table)
   (make-local-variable 'paragraph-start)
