@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.22 $)
+($Revision: 1.23 $)
 
 ESS VERSION 5.0
 ---------------
@@ -35,8 +35,8 @@ details.
 
 Languages Supported (or planned to be supported)
 
-	S dialects (S 3, S 4, S-PLUS 3.x, S-PLUS 4.x and R)
-	LispStat dialects (XLispStat, ViSta, Common LispStat(?))
+	S dialects (S 3/4, S-PLUS 3.x/4.x/5.x, and R)
+	LispStat dialects (XLispStat, ViSta)
 	SAS
 	Stata
 	SPSS dialects (SPSS, Fiasco)
@@ -70,9 +70,10 @@ See the file Doc/NEWS for changes in recent versions.
 ------------
 
 Version 5.0 is meant as a functional release.  However, there are a
-few known bugs (and countless other undiscovered ones); see the TODO
-file for details.  Bug reports are solicited; see the BUGS section
-below.  Fixes and patches with bug reports are appreciated!
+few known bugs (and countless other undiscovered ones); see the file
+Doc/TODO for details.  Bug reports are solicited; see the BUGS section
+below.  Patches or suggested coding fixes with bug reports are much
+appreciated!
 
 3. REQUIREMENTS
 ---------------
@@ -89,8 +90,16 @@ It has been most thoroughly tested with:
 
 	Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.4.
 
-It may need some work with other configurations.  Suggestions for emacs 19.28
+It may need some work with other configurations.  One user has added
+configuration suggestions for emacs 19.28 and SAS.  Those instructions
 are included in Doc/README-19.28.
+
+Suggestions and information about attempts to port to
+Microsoft-developed operating systems are encouraged.  In particular,
+it is an open question whether or not it can be implemented for
+XLispStat, ViSta, R, S-PLUS 4.0, Stata, and SAS under a Microsoft
+environment using NTEmacs (or the version of XEmacs currently under
+development).
 
 
 4. GETTING THE LATEST VERSION
@@ -98,9 +107,9 @@ are included in Doc/README-19.28.
 
 The latest versions of ESS are always available by WWW from:
 
-	http://franz.stat.wisc.edu/pub/ess/
-	ftp://franz.stat.wisc.edu/pub/ess/
-
+	http://franz.stat.wisc.edu/pub/ESS/
+	ftp://franz.stat.wisc.edu/pub/ESS/
+ 
 The HTML version of the documentation can be found at:
 
 	http://www.stat.math.ethz.ch/ESS/
@@ -138,7 +147,9 @@ The HTML version of the documentation can be found at:
 * Edit the file ess-site.el as explained in the comments section of
   that file.
 
-* In the ESS-5.0 directory, edit the file Makefile (only if you want
+* READ THIS ITEM THOROUGHLY BEFORE STARTING: 
+
+  In the ESS-5.0 directory, edit the file Makefile (only if you want
   to place the executables in other locations; see LISPDIR and
   INFODIR) and then type:
 
@@ -156,6 +167,13 @@ The HTML version of the documentation can be found at:
 
   instead of editing the Makefile.
 
+  An alternative, if you are running XEmacs and have access to the
+  XEmacs system directories, would be to place the directory in the
+  site-lisp directory, and simply type "make"  (and copy the
+  documentation as appropriate).  
+
+  For Emacs, you would still have to move the files into the top level 
+  site-lisp directory.
 
 * Add the line
 
