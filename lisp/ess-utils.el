@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/01/16 00:39:53 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: ess-utils.el,v 5.9 2002/01/16 00:39:53 rsparapa Exp $
+;; Modified: $Date: 2002/01/28 08:36:05 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: ess-utils.el,v 5.10 2002/01/28 08:36:05 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -39,6 +39,7 @@
 		pos))))
     (or (nth 3 pps) (nth 4 pps)))); 3: string,  4: comment
 
+;; simple alternative to ess-read-object-name-default of ./ess-inf.el :
 (defun ess-extract-word-name ()
   "Get the word you're on."
   (save-excursion
