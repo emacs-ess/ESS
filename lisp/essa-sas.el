@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/06/25 15:36:05 $
-;; Version: $Revision: 1.176 $
-;; RCS: $Id: essa-sas.el,v 1.176 2004/06/25 15:36:05 rsparapa Exp $
+;; Modified: $Date: 2004/06/30 15:34:13 $
+;; Version: $Revision: 1.177 $
+;; RCS: $Id: essa-sas.el,v 1.177 2004/06/30 15:34:13 rsparapa Exp $
 
 ;; Keywords: SAS 
 
@@ -91,11 +91,12 @@ or `ess-sas-data-view-insight'."
   :type  'string)
 
 (defcustom ess-sas-graph-view-viewer-alist
-;;'(("[pP][dD][fF]" . "acroread") ("[eE]?[pP][sS]" . "gv")))
+;;creates something like 
+;;'(("[pP][dD][fF]" . "/usr/local/bin/acroread") ("[eE]?[pP][sS]" . "/usr/local/bin/gv")))
     (let ((ess-tmp-alist nil)
         (ess-tmp-file nil))
 
-    (setq ess-tmp-file (executable-find "acroread"))
+    (setq ess-tmp-file (executable-find (if ess-microsoft-p "acrord32" "acroread")))
 
     (if ess-tmp-file 
 	(setq ess-tmp-alist (cons "[pP][dD][fF]" ess-tmp-file)))
