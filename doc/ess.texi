@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.33 2002/07/02 21:18:09 rsparapa Exp $
+@comment $Id: ess.texi,v 5.34 2002/07/26 22:01:20 rsparapa Exp $
 
 @include version.texi
 
@@ -41,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.33 $ $Date: 2002/07/02 21:18:09 $)
+@subtitle version @essver{} (Documentation $Revision: 5.34 $ $Date: 2002/07/26 22:01:20 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -86,7 +86,7 @@ permission notice identical to this one.
 
 ESS version @essver{}
 
-        (Documentation $Revision: 5.33 $ $Date: 2002/07/02 21:18:09 $).
+        (Documentation $Revision: 5.34 $ $Date: 2002/07/26 22:01:20 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
@@ -204,10 +204,9 @@ Help for the S family
 Help for SAS
 
 * ESS(SAS)--Design philosophy::
-* ESS(SAS)--Recommended autoexec::
 * ESS(SAS)--Editing files::
-* iESS(SAS)--Inferior ESS processes::
-* ESS(SAS)--Batch processes::
+* iESS(SAS)--Interactive SAS processes::
+* ESS(SAS)--Batch SAS processes::
 * ESS(SAS)--Function keys for batch processing::
 * ESS(SAS)--TAB key::
 * ESS(SAS)--Usage scenarios::
@@ -2454,10 +2453,9 @@ directory, move it there).
 
 @menu
 * ESS(SAS)--Design philosophy::
-* ESS(SAS)--Recommended autoexec::
 * ESS(SAS)--Editing files::
-* iESS(SAS)--Inferior ESS processes::
-* ESS(SAS)--Batch processes::
+* iESS(SAS)--Interactive SAS processes::
+* ESS(SAS)--Batch SAS processes::
 * ESS(SAS)--Function keys for batch processing::
 * ESS(SAS)--TAB key::
 * ESS(SAS)--Usage scenarios::
