@@ -3,17 +3,17 @@
 ;;; (Emacs Speaks Statistics).
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1996--1997 Rossini, Hornik, Heiberger, and Maechler.
+;; Copyright (C) 1996--1997 Rossini, Heiberger, Hornik, and Maechler.
 
 ;; Authors: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;;                       Martin Maechler  <maechler@stat.math.ethz.ch>
-;;                       Kurt Hornik <hornik@ci.tuwien.at>  <-- CHANGE
-;;                       Richard Heiberger <rmh@fisher.stat.temple.edu>
+;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
+;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/30 12:25:19 $
-;; Version: $Revision: 1.51 $
-;; RCS: $Id: ess.el,v 1.51 1997/07/30 12:25:19 rossini Exp $
+;; Modified: $Date: 1997/07/30 12:36:53 $
+;; Version: $Revision: 1.52 $
+;; RCS: $Id: ess.el,v 1.52 1997/07/30 12:36:53 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -114,6 +114,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.52  1997/07/30 12:36:53  rossini
+;; added M.
+;;
 ;; Revision 1.51  1997/07/30 12:25:19  rossini
 ;; added (require 'cl), (require 'cl-macs), since older Emacsen don't
 ;; have such things...
