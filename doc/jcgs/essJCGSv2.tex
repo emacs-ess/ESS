@@ -137,7 +137,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/14 17:10:25 $ - $Revision: 1.60 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/14 17:14:35 $ - $Revision: 1.61 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -183,7 +183,7 @@ across a variety of statistical analysis packages.  ESS, written as a
 package of extensions to the Emacs text editor, provides consistent
 shortcuts for frequent as well as complex tasks.
 
-ESS provides an interface to statistical packages, and provides,
+ESS is an interface to statistical packages, and provides,
 through Emacs, additional tools which facilitate both statistical
 software development and data analysis.  ESS currently supports
 the S family of languages (which include
@@ -195,61 +195,63 @@ ViSta \citep{youn:fald:mcfa:1992}; \Stata\ \citep{Stata:6.0}; Omegahat
 extended to accommodate most statistical packages which provide either
 an interactive command-line or batch file processing.
 
-\begin{Comment}
-  Rich: What is going on with the underlining?  Any reference that spans
-two lines in the dvi file has no underlining in the first line, and then the
-entire second line is underlined as a unit.
-
-AJR: what tools are you using?  I don't see this, currently (I suspect
-it was related in the past to the use of the hyperref package, but I
-still don't recall seeing this in DVI files, just PS/PDF stuff).
-
-Rich: probably something about hyperref.  I get warning messages from
-Miktex about hyperref.  I am using vanilla miktex.  The natbib.sty is
-not part of that distribution.  I got it from you last year.
-%Here is my latex log:
-
-%\begin{verbatim}
-%c:/emacs/ess-washington/ess/doc/jcgs\$ latex \\input essJCGSv2.tex
-%This is TeX, Version 3.14159 (MiKTeX 2.1)
-%LaTeX2e <2000/06/01>
-%Babel <v3.7h> and hyphenation patterns for english, french, german, ngerman, du
-%mylang, nohyphenation, loaded.
-%(essJCGSv2.tex (C:\texmf\tex\latex\base\article.cls
-%Document Class: article 2000/05/19 v1.4b Standard LaTeX document class
-%(C:\texmf\tex\latex\base\size10.clo)) (natbib.sty)
-%(C:\texmf\tex\latex\base\alltt.sty) (C:\texmf\tex\latex\graphics\graphicx.sty
-%(C:\texmf\tex\latex\graphics\keyval.sty)
-%(C:\texmf\tex\latex\graphics\graphics.sty (C:\texmf\tex\latex\graphics\trig.sty
-%) (C:\texmf\tex\latex\00miktex\graphics.cfg)
-%(C:\texmf\tex\latex\graphics\dvips.def)))
-%(C:\texmf\tex\latex\hyperref\hyperref.sty
-%(C:\texmf\tex\latex\hyperref\pd1enc.def)
-%(C:\texmf\tex\latex\00miktex\hyperref.cfg)
-%Implicit mode ON; LaTeX internals redefined
-%(C:\texmf\tex\latex\ltxmisc\url.sty))
-%*hyperref using driver hypertex*
-%(C:\texmf\tex\latex\hyperref\hypertex.def)
+%\begin{Comment}
+%  Rich: What is going on with the underlining?  Any reference that spans
+%two lines in the dvi file has no underlining in the first line, and then the
+%entire second line is underlined as a unit.
 %
-%Package hyperref Warning: Option `backref' has already been used,
-%(hyperref)                setting the option has no effect on input line 65.
+%AJR: what tools are you using?  I don't see this, currently (I suspect
+%it was related in the past to the use of the hyperref package, but I
+%still don't recall seeing this in DVI files, just PS/PDF stuff).
 %
+%Rich: probably something about hyperref.  I get warning messages from
+%Miktex about hyperref.  I am using vanilla miktex.  The natbib.sty is
+%not part of that distribution.  I got it from you last year.
+%%Here is my latex log:
 %
-%Package hyperref Warning: Option `pagebackref' has already been used,
-%(hyperref)                setting the option has no effect on input line 65.
+%%\begin{verbatim}
+%%c:/emacs/ess-washington/ess/doc/jcgs\$ latex \\input essJCGSv2.tex
+%%This is TeX, Version 3.14159 (MiKTeX 2.1)
+%%LaTeX2e <2000/06/01>
+%%Babel <v3.7h> and hyphenation patterns for english, french, german, ngerman, du
+%%mylang, nohyphenation, loaded.
+%%(essJCGSv2.tex (C:\texmf\tex\latex\base\article.cls
+%%Document Class: article 2000/05/19 v1.4b Standard LaTeX document class
+%%(C:\texmf\tex\latex\base\size10.clo)) (natbib.sty)
+%%(C:\texmf\tex\latex\base\alltt.sty) (C:\texmf\tex\latex\graphics\graphicx.sty
+%%(C:\texmf\tex\latex\graphics\keyval.sty)
+%%(C:\texmf\tex\latex\graphics\graphics.sty (C:\texmf\tex\latex\graphics\trig.sty
+%%) (C:\texmf\tex\latex\00miktex\graphics.cfg)
+%%(C:\texmf\tex\latex\graphics\dvips.def)))
+%%(C:\texmf\tex\latex\hyperref\hyperref.sty
+%%(C:\texmf\tex\latex\hyperref\pd1enc.def)
+%%(C:\texmf\tex\latex\00miktex\hyperref.cfg)
+%%Implicit mode ON; LaTeX internals redefined
+%%(C:\texmf\tex\latex\ltxmisc\url.sty))
+%%*hyperref using driver hypertex*
+%%(C:\texmf\tex\latex\hyperref\hypertex.def)
+%%
+%%Package hyperref Warning: Option `backref' has already been used,
+%%(hyperref)                setting the option has no effect on input line 65.
+%%
+%%
+%%Package hyperref Warning: Option `pagebackref' has already been used,
+%%(hyperref)                setting the option has no effect on input line 65.
+%%
+%%
+%%Package hyperref Warning: Option `hyperindex' has already been used,
+%%(hyperref)                setting the option has no effect on input line 65.
+%%
+%%(essJCGSv2.aux) (C:\texmf\tex\latex\hyperref\nameref.sty)
+%%(C:\texmf\tex\latex\base\omscmr.fd) [1] [2] [3] [4] [5] [6] [7] [8] [9]
+%%[10] (essJCGSv2.bbl [11]) [12] (essJCGSv2.aux) )
+%%Output written on essJCGSv2.dvi (12 pages, 51108 bytes).
+%%Transcript written on essJCGSv2.log.
+%%\end{verbatim}
 %
+%AJR: Weird -- are you using a current version of MIKTeX?  
 %
-%Package hyperref Warning: Option `hyperindex' has already been used,
-%(hyperref)                setting the option has no effect on input line 65.
-%
-%(essJCGSv2.aux) (C:\texmf\tex\latex\hyperref\nameref.sty)
-%(C:\texmf\tex\latex\base\omscmr.fd) [1] [2] [3] [4] [5] [6] [7] [8] [9]
-%[10] (essJCGSv2.bbl [11]) [12] (essJCGSv2.aux) )
-%Output written on essJCGSv2.dvi (12 pages, 51108 bytes).
-%Transcript written on essJCGSv2.log.
-%\end{verbatim}
-
-\end{Comment}
+%\end{Comment}
 
 The present paper summarizes historical and non-technical information on
 Emacs and ESS.  A more complete version is in \citep{RMHHS:2001}.
