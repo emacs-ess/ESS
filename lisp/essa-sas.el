@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/07/08 20:45:40 $
-;; Version: $Revision: 1.178 $
-;; RCS: $Id: essa-sas.el,v 1.178 2004/07/08 20:45:40 rsparapa Exp $
+;; Modified: $Date: 2004/07/15 14:57:30 $
+;; Version: $Revision: 1.179 $
+;; RCS: $Id: essa-sas.el,v 1.179 2004/07/15 14:57:30 rsparapa Exp $
 
 ;; Keywords: SAS 
 
@@ -406,7 +406,7 @@ current buffer if nil."
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
     (ess-save-and-set-local-variables)
-    (ess-sas-cd)
+    ;(ess-sas-cd)
 
  (save-excursion (let ((ess-tmp-sas-data nil) 
     (ess-tmp-sas-data-view-fsview-statement ess-sas-data-view-fsview-statement)
@@ -441,7 +441,7 @@ current buffer if nil."
   "Open a dataset for viewing with PROC INSIGHT."
     (interactive)
     (ess-save-and-set-local-variables)
-    (ess-sas-cd)
+    ;(ess-sas-cd)
 
  (save-excursion (let ((ess-tmp-sas-data nil) 
     (ess-tmp-sas-data-view-insight-statement ess-sas-data-view-insight-statement)
