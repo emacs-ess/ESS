@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/31 11:14:45 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: ess-comp.el,v 1.8 1997/07/31 11:14:45 rossini Exp $
+;; Modified: $Date: 1997/07/31 12:59:50 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: ess-comp.el,v 1.9 1997/07/31 12:59:50 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;: $Log: ess-comp.el,v $
+;;: Revision 1.9  1997/07/31 12:59:50  rossini
+;;: try with unresolved...
+;;:
 ;;: Revision 1.8  1997/07/31 11:14:45  rossini
 ;;: added comments.
 ;;:
@@ -72,7 +75,7 @@
 (if (not (string-match "XEmacs\\|Lucid" emacs-version))
     (setq byte-compile-warnings '(free-vars
 				  callargs 
-				  ;; unresolved
+				  unresolved
 				  redefine
 				  obsolete))
 
