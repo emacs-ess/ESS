@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/03/05 20:10:19 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: essl-sta.el,v 5.11 1999/03/05 20:10:19 rossini Exp $
+;; Modified: $Date: 1999/03/05 20:14:04 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: essl-sta.el,v 5.12 1999/03/05 20:14:04 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -69,21 +69,11 @@
 regexp-search, and so specials should be quoted.
 ")
 
-(defconst STA-help-sec-keys-alist
-  '((?a . "\\s *Arguments:")
-    (?d . "\\s *Description:")
-    (?e . "\\s *Examples:")
-    (?n . "\\s *Note:")
-    (?r . "\\s *References:")
-    (?s . "\\s *See Also:")
-    (?v . "\\s *Value[s]?")	;
-    )) ;; "Alist of (key . string) pairs for use in section searching."
-
 (defconst ess-help-STA-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file")
 
 
-(defvar STA-syntax-table nil "Syntax table for S code.")
+(defvar STA-syntax-table nil "Syntax table for Stata code.")
 (if STA-syntax-table
     nil
   (setq STA-syntax-table (make-syntax-table))
