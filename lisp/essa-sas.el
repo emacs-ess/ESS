@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/02/27 16:32:37 $
-;; Version: $Revision: 1.85 $
-;; RCS: $Id: essa-sas.el,v 1.85 2002/02/27 16:32:37 rsparapa Exp $
+;; Modified: $Date: 2002/03/19 20:33:23 $
+;; Version: $Revision: 1.86 $
+;; RCS: $Id: essa-sas.el,v 1.86 2002/03/19 20:33:23 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -431,12 +431,12 @@ on the way."
 )))))
 
 (defun ess-sas-file-path ()
- "*Set `ess-sas-file-path' depending on suffix."
+ "Define `ess-sas-file-path' to be the current buffer depending on suffix."
   (interactive)
 
-  (save-match-data (let ((ess-temp-file (expand-file-name (buffer-name))))
-    (if (string-match ess-sas-suffix-regexp ess-temp-file)
-        (setq ess-sas-file-path (nth 0 (split-string ess-temp-file "[<]")))))))
+  (save-match-data (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
+    (if (string-match ess-sas-suffix-regexp ess-sas-temp-file) 
+	(setq ess-sas-file-path (nth 0 (split-string ess-sas-temp-file "[<]")))))))
 
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with a SAS file by suffix and revert if necessary."
@@ -476,13 +476,6 @@ on the way."
 ;;	    (switch-to-buffer ess-sas-buf)
 ;;	    (if revert (ess-revert-wisely))))))
 
-(defun ess-sas-file-path ()
- "Define the variable `ess-sas-file-path' to be the file in the current buffer"
-  (interactive)
-
-  (save-match-data (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
-    (if (string-match ess-sas-suffix-regexp ess-sas-temp-file) 
-	(setq ess-sas-file-path (nth 0 (split-string ess-sas-temp-file "[<]")))))))
 
 (defun ess-sas-goto-file-1 ()
   "Switch to ess-sas-file-1 and revert from disk."
