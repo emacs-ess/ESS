@@ -15,17 +15,27 @@ Targets (see also ./Makefile):
 
 ----------------------
 
-Structure of Source:  TWO main files
+Structure:  TWO main files
+
+	    (note that a third one, announc.texi,
+	     is conceptually a subset of readme.texi and
+	     is only used to automatically produce ../ANNOUNCE)
 
  ess.texi
   |
   |-- newfeat.texi
   |
   |-- credits.texi
+  |      \-- authors.texi
+  |
+  |-- getting.texi
+  |      \-- inst_cvs.texi
   |
   |-- bugs.texi
   |
   |-- bugrept.texi
+  |
+  \-- mailing.texi
 
 
  readme.texi
@@ -41,14 +51,13 @@ Structure of Source:  TWO main files
   |-- requires.texi
   |
   |-- getting.texi
+  |      \-- inst_cvs.texi
   |
   |-- inst_tar.texi
-  |
-  |-- inst_cvs.texi
   |
   |-- bugrept.texi
   |
   |-- mailing.texi
   |
-  |-- authors.texi
+  \-- authors.texi
 
