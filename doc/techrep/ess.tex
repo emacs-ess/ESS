@@ -91,7 +91,7 @@
   extensions for increasing statistical programming efficiency.
 \end{abstract}
 
-Keywords: Data Analysis, Programming Tools, User Interfaces, SAS,
+\noindent Keywords: Data Analysis, Programming Tools, User Interfaces, SAS,
 \Splus, R, \XLispStat, \Stata
 
 \baselineskip=2pc
@@ -117,14 +117,14 @@ analysis or for specialized forms of statistical analyses.  The
 specialized tools can be orders of magnitude more efficient for
 generating data analyses.  This is balanced by the inability of the
 specialized tools to perform a wide range of common data analysis
-operations.  Tightly coupled interoperability between these programs
+operations.  Tightly coupled inter-operability between these programs
 rarely exists, while the need to switch between tools occurs much more
 often.  For example, general purpose tools such as R
 \citep{ihak:gent:1996} do not perform Bayesian analyses as easily as
 tools such as WinBUGS can \citep{SpieThomBest:1999}.  On the other
 hand, these specialized tools lack breadth in the range of analyses
 and graphics that can be generated.  For this reason, BUGS is
-distributed with applications providing loose interoperability for
+distributed with applications providing loose inter-operability for
 simplifying the transfer of output to R or \Splus{} for processing the
 results.  Although the interfaces for WinBUGS and R are similar, they
 are distinct enough to create tension for the analyst.
@@ -202,20 +202,20 @@ related work and future extensions.
 \section{Statistical User Interfaces}
 \label{sec:UI}
 
-Human interfaces for statistical packages and languages can generally be
-classified into 3 forms, the command-line interface, the graphical user
-interface, and a catch-all category for specialized interfaces which
-only have 1 or 2 examples.  Command-line interfaces (CLIs) have
-historically been used by many packages.  This is the interface that ESS
-uses for control and provides a limited interface for.  Modern
-statistical packages have generally used graphical user interfaces
-(GUIs), sometimes exclusively.  In addition, there have been many
-single-implementation interfaces, including flow-chart guides,
-implemented as graph-based interfaces in ViSta \citep{youn:lubi:1995};
-the SAS terminal interface, which divides the terminal window into 3
-screens; and the coherent implementation provided by DataDesk
-\citep{vell:prat:1989}, which has a tight link between data and
-graphics.
+Human interfaces for statistical packages and languages can generally
+be classified into three forms, the command-line interface, the
+graphical user interface, and a catch-all category for specialized
+interfaces which only have one or two examples.  Command-line
+interfaces (CLIs) have historically been used by many packages.  This
+is the interface that ESS uses for control and provides a limited
+interface for.  Modern statistical packages have generally used
+graphical user interfaces (GUIs), sometimes exclusively.  In addition,
+there have been many single-implementation interfaces, including
+flow-chart guides, implemented as graph-based interfaces in ViSta
+\citep{youn:lubi:1995}; the SAS terminal interface, which divides the
+terminal window into three screens; and the coherent implementation
+provided by DataDesk \citep{vell:prat:1989}, which has a tight link
+between data and graphics.
 
 Computer users strongly resist changes to their interface.  This can be
 observed in the choice of editors such as vi and emacs; mail user agents
@@ -232,18 +232,16 @@ initial investment in time.
 \label{sec:UI:command}
 
 The CLI is available for many statistical packages, particularly those
-that were originally developed under Unix, MS-DOS, and
-mainframe computers.  The CLI is the successor to the IBM punch-card
-based batch interface.  The CLI consists of entering
-commands one line at a time.  Current examples
-are \Splus, R, \Stata, and \XLispStat.  Note that
-the \Stata\ CLI is deprecated in favor of a new GUI, and this
-direction seems to be a general trend.  We note that SAS does not have
-a true CLI.  The two possible options for SAS are a prompt-less input
-device which sends a combined log and list-file text stream directly
-back to the same device, and second, the classic 3-window %graphical
-terminal interface which is being deprecated in favor of a GUI
-version.
+that were originally developed under Unix, MS-DOS, and mainframe
+computers.  The CLI is the successor to the IBM punch-card based batch
+interface.  The CLI consists of entering commands one line at a time.
+Current examples are \Splus, R, \Stata, and \XLispStat.  Note that the
+\Stata\ CLI is deprecated in favor of a new GUI, and this direction
+seems to be a general trend.  We note that SAS does not have a true
+CLI.  The two possible options for SAS are a prompt-less input device
+which sends a combined log and list-file text stream directly back to
+the same device, and second, the classic three-window terminal
+interface which is being deprecated in favor of a GUI version.
 
 \subsection{Graphical User Interfaces}
 \label{sec:UI:GUI}
@@ -303,18 +301,19 @@ section.
 
 %% change/edit
 Figure~\ref{fig:1} provides an example of how it looks when being used
-with XEmacs.  This screenshot shows both SAS and R code being examined
+with XEmacs.  This screen-shot shows both SAS and R code being examined
 at the same time, with an R interactive process being controlled from
 within XEmacs.
 
-Figure~\ref{fig:2} shows ESS running in NTemacs 21.0 on Windows 2000.
-We are currently displaying 6 buffers.  \stexttt{highlight.s}
-illustrates several uses of syntactic highlighting.  The most glaring
-one is the bright purple indicator for the unbalanced parentheses.  We
-also see color choices for keywords (\stexttt{if}), comments, and
-quoted strings.  The string on the last line was not properly
-terminated and we are immediately warned by the string color staying
-on through (what we think is) the end of the line.
+Figure~\ref{fig:2} shows ESS running in NTemacs 21.0 on Microsoft
+Windows 2000.  We are currently displaying 6 buffers.
+\stexttt{highlight.s} illustrates several uses of syntactic
+highlighting.  The most glaring one is the bright purple indicator for
+the unbalanced parentheses.  We also see color choices for keywords
+(\stexttt{if}), comments, and quoted strings.  The string on the last
+line was not properly terminated and we are immediately warned by the
+string color staying on through (what we think is) the end of the
+line.
 
 The two buffers \stexttt{transcript-before.st} and
 \stexttt{transcript-after.st} show transcript editing.  A single ESS
@@ -627,8 +626,9 @@ a model for further program design.
 \subsection{Programming Language Help}
 \label{sec:S:help}
 
-When viewing help pages, there's a new menu \textsf{[ESS help]} and
-useful 1-letter shortcuts for navigation and more, such as
+There is a new menu, \textsf{[ESS help]}, for viewing S help pages.
+In addition, additional keyboard shortcuts (using single keystrokes)
+are turned on, including:
 \begin{list}{}{\renewcommand{\makelabel}[1]{\bf#1\hfill}}
  \item[n,\,p] move to \textbf{n}ext or \textbf{p}revious help section.
  \item[{s \textit{x}}] move to help \textbf{s}ection code ``\textit{x}''
@@ -645,18 +645,20 @@ useful 1-letter shortcuts for navigation and more, such as
 \subsection{Philosophies for Combining S with ESS}
 \label{sec:S:philosophy}
 
-There are two primary philosophies for using ESS.  The first is that the
-source code (the file \file{myfile.s}, for example) is real, and objects
-in S are temporary realizations of the source.  This is the approach
-preferred by the current group of developers and the default when ESS is
-initially installed.  A project is constructed by writing S language
-source code for \emph{every} user defined function or data object.  The
-code is stored in one or more text files stored in a project directory
-or directories.  The code is read into S for a temporary realization as
-an object.  This approach allows for better portability, where the user
-might want to use the written code and perform the same or related
-analyses on different versions of the S language.  This approach also
-permits external version control for S language source code.
+There are two primary philosophies for using ESS.  The first is that
+the source code (the file \file{myfile.s}, for example) is real, and
+objects in S are temporary realizations of the source.  This is the
+approach preferred by the current group of developers and the default
+when ESS is initially installed.  A project is constructed by writing
+S language source code for \emph{every} user defined function or data
+object which is considered as the primary means for generating the
+objects.  The code is stored in one or more text files stored in a
+project directory or directories.  The code is read into S for a
+temporary realization as an object.  This approach allows for better
+portability, where the user might want to use the written code and
+perform the same or related analyses on different versions of the S
+language.  This approach also permits external version control for S
+language source code.
 
 The second, deprecated view, is that S objects are real.  The text
 version of the objects (source code, although we can't use that term
@@ -764,8 +766,8 @@ machine to SAS running on a Unix host.  Highlighted lines in the
 running in an \stexttt{iESS[SAS]} buffer.  The \file{.log} and
 \file{.lst} file information is received back incrementally in two
 other buffers.  This process simulates SAS Display Manager behavior on
-text-only terminals over slow telephone lines.
-
+text-only terminals over slow network connections, such as
+international internet access as well as telephone lines.
 
 \subsection{Design of \texttt{ESS[SAS]} mode}
 \label{sec:SAS:phil}
@@ -806,8 +808,10 @@ to statistical analysis as Literate Statistical Practice
 \citep{rossini:dsc:2001}.  The tools used are Noweb
 \citep{NRamsey:1994} and either \LaTeX, \textsc{html}, or \textsc{xml}
 for documenting and explaining the analysis.  This approach to
-programming suggests the use of a literary documentation style with
-embedded code to explain how the analysis approach is realized.
+programming encourages the use of a literary documentation style to
+explain the programming code for the data analysis.  The program can
+then be extracted from the documentation text for realizing the
+statistical analysis.
 
 Important IDE extensions which should be implemented in future
 versions include class browsers, analysis templates, tool-tips, and
@@ -822,9 +826,9 @@ programming.
 
 ESS is one of the first IDEs intended for statisticians.  It provides
 an enhanced, powerful interface for efficient interactive data
-analysis and statistical programming.  It is customizable for
-individual desires as well as extensible to other statistical
-languages and analysis packages.
+analysis and statistical programming.  It is completely customizable
+to satisfy individual desires for interface styles as well as being
+extensible to additional statistical languages and analysis packages.
 
 \baselineskip=1.5pc
 
