@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/04/30 21:31:55 $
-;; Version: $Revision: 1.163 $
-;; RCS: $Id: essa-sas.el,v 1.163 2004/04/30 21:31:55 rsparapa Exp $
+;; Modified: $Date: 2004/05/03 01:40:23 $
+;; Version: $Revision: 1.164 $
+;; RCS: $Id: essa-sas.el,v 1.164 2004/05/03 01:40:23 rossini Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -94,16 +94,9 @@ or `ess-sas-data-view-insight'."
     "[.]\\([eE]?[pP][sS]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\)"
     "*GSASFILE suffix regexp."
     :group 'ess-sas  
-    :type  'string
-)
+    :type  'string)
 
-(defcustom ess-sas-image-viewer
-    (if ess-microsoft-p "kodakimg" 
-	(if (equal ess-sas-submit-method 'sh) "sdtimage"))
-    "*Application to view GSASFILE."
-    :group 'ess-sas  
-    :type  'string
-)
+
 
 ;;(defcustom ess-sas-smart-back-tab nil
 ;;    "*Set to t to make C-TAB insert an end/%end; statement to close a block."
@@ -182,6 +175,14 @@ should set this variable to 'sh regardless of their local shell
 (since their remote shell is 'sh).")
 
 (make-variable-buffer-local 'ess-sas-submit-method)
+
+(defcustom ess-sas-image-viewer
+    (if ess-microsoft-p "kodakimg" 
+	(if (equal ess-sas-submit-method 'sh) "sdtimage"))
+    "*Application to view GSASFILE."
+    :group 'ess-sas  
+    :type  'string)
+
 
 (defcustom ess-sas-submit-post-command 
     (if (equal ess-sas-submit-method 'sh) "-rsasuser &" 
