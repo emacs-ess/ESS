@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/17 18:20:42 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: essd-r.el,v 1.21 1997/07/17 18:20:42 rossini Exp $
+;; Modified: $Date: 1997/07/17 18:31:57 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: essd-r.el,v 1.22 1997/07/17 18:31:57 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.22  1997/07/17 18:31:57  rossini
+;;: formatting.
+;;:
 ;;: Revision 1.21  1997/07/17 18:20:42  rossini
 ;;: replaced message with write to dribble buffer.
 ;;:
@@ -116,8 +119,11 @@ New way to do it."
   (interactive)
   ;; Setup the needed vars
   (setq ess-customize-alist R-customize-alist) ; setq or setq-default?
-  (ess-write-to-dribble-buffer (format "(R): ess-proc-prefix=%s , buf=%s"
-				       ess-proc-prefix (current-buffer)))
+  (ess-write-to-dribble-buffer
+   (format "(R): ess-proc-prefix=%s , buf=%s \n"
+	   ess-proc-prefix
+	   (current-buffer)))
+
   ;; now run...
   (inferior-ess))
 
