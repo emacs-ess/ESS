@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/11/14 00:56:57 $
-;; Version: $Revision: 1.62 $
-;; RCS: $Id: ess-site.el,v 1.62 1997/11/14 00:56:57 rossini Exp $
+;; Modified: $Date: 1997/11/19 15:32:57 $
+;; Version: $Revision: 1.63 $
+;; RCS: $Id: ess-site.el,v 1.63 1997/11/19 15:32:57 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -182,6 +182,7 @@
 
 (defun s-transcript-mode ()
   "Does the right thing."
+  (interactive)
   (ess-transcript-mode S+3-customize-alist))
 
 
