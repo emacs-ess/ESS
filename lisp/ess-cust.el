@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2001/05/02 21:55:51 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: ess-cust.el,v 1.21 2001/05/02 21:55:51 rossini Exp $
+;; Modified: $Date: 2001/05/23 21:43:04 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: ess-cust.el,v 1.22 2001/05/23 21:43:04 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -116,6 +116,11 @@
   "ESS: Omegahat."
   :group 'ess
   :prefix "ess-")
+
+(defgroup ess-mouse nil
+  "ESS: Mouse."
+  :group 'ess
+  :prefx "ess-")
 
 ;; Variables (not user-changeable)
 
