@@ -1,5 +1,14 @@
 2004-05-06  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
+	* ess-help.el (ess-display-help-on-object): Use ess-help-frame-alist.
+
+	* ess-inf.el (ess-multi): Use inferior-ess-frame-alist.
+
+	* ess-cust.el (ess-help-frame-alist, inferior-ess-frame-alist):
+	New variables to store frame parameters for iESS buffers and help
+	frames.
+	(ess-help-own-frame, inferior-ess-own-frame): Doc fixes.
+
 	* ess-help.el (ess-display-help-on-object): Fix bug introduced in
 	5.2.0 (reported by Robert Hankin).  If ess-help-own-frame is nil,
 	and we are currently in a help buffer, show new help buffer in
