@@ -83,8 +83,7 @@ directory containing ESS.  Now:
 @example
 M-x S+6
 @end example
-get running.  once you have reached the SPLUS
-prompt, do: 
+to get S running.  Once you see the SPLUS prompt, do: 
 @example
 M-x ess-create-object-name-db
 @end example
@@ -296,7 +295,7 @@ the   directory containing ESS.  Now:
 @example
 M-x Sqpe+6
 @end example
-(get running.  once you have reached the SPLUS prompt, do:)
+to get S running.  Once you see the SPLUS prompt, do:
 @example
 M-x ess-create-object-name-db
 @end example
