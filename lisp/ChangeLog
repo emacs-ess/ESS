@@ -1,3 +1,8 @@
+2002-11-01  Stephen Eglen  <eglen@thalamus.wustl.edu>
+
+	* essl-s.el (ess-help-R-sec-regex): Restrict regex so that capital
+	letter must be at start of line.
+
 2002-04-27  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-sp6.el (S+6-customize-alist): ess-setup-directory-function
