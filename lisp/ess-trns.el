@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/02 05:12:58 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: ess-trns.el,v 1.6 1997/10/02 05:12:58 rossini Exp $
+;; Modified: $Date: 1997/10/20 18:58:30 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: ess-trns.el,v 1.7 1997/10/20 18:58:30 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -172,6 +172,7 @@ in the region, leaving only the S commands.
   (interactive)
   (require 'ess-inf)
   (kill-all-local-variables)
+  (toggle-read-only t) ;; to protect the buffer.
   (ess-setq-vars-local alist (current-buffer))
   (setq major-mode 'ess-transcript-mode)
   (setq mode-name "ESS Transcript")

@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/10 17:48:55 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: ess-help.el,v 1.9 1997/09/10 17:48:55 rossini Exp $
+;; Modified: $Date: 1997/10/20 19:03:23 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: ess-help.el,v 1.10 1997/10/20 19:03:23 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -88,8 +88,10 @@ file.  Otherwise just pops to an existing buffer if it exists."
 	 ;;-- pass the buffer-local 'ess-help-sec-..'  to the ess-help buffer:
 	 (curr-help-sec-regex      ess-help-sec-regex)
 	 (curr-help-sec-keys-alist ess-help-sec-keys-alist)
-	 )
+	 (alist ess-local-customize-alist))
+
     (set-buffer tbuffer)
+    (ess-setq-vars-local (eval alist) (current-buffer))
     (setq ess-help-sec-regex      curr-help-sec-regex)
     (setq ess-help-sec-keys-alist curr-help-sec-keys-alist)
     ;; see above, do same for inferior-ess-help-command... (i.e. remove
@@ -119,8 +121,10 @@ file.  Otherwise just pops to an existing buffer if it exists."
 	      ;; Avoid using 'message here -- may be %'s in string
 	      (ding)
 	      (kill-buffer tbuffer))
-	  (if (eq curr-win-mode 'ess-help-mode) (switch-to-buffer tbuffer)
-	    (ess-display-temp-buffer tbuffer)))))))
+	  (if (eq curr-win-mode 'ess-help-mode)
+	      (switch-to-buffer tbuffer)
+	    (ess-display-temp-buffer tbuffer))
+	  (toggle-read-only t))))))
 
 
 ;;; THIS WORKS!

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/08 18:19:20 $
-;; Version: $Revision: 1.31 $
-;; RCS: $Id: essd-xls.el,v 1.31 1997/09/08 18:19:20 rossini Exp $
+;; Modified: $Date: 1997/10/20 18:59:10 $
+;; Version: $Revision: 1.32 $
+;; RCS: $Id: essd-xls.el,v 1.32 1997/10/20 18:59:10 rossini Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -53,6 +53,8 @@
     (ess-object-name-db-file       . "ess-xls-namedb.el" )
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . XLS-help-sec-keys-alist)
+    (ess-retr-lastvalue-command    . "()\n" )
+    (ess-save-lastvalue-command    . "()\n" )
     (inferior-ess-primary-prompt   . "> ?"               )
     (inferior-ess-secondary-prompt . "^"                 )
     (inferior-ess-program          . inferior-XLS-program-name)
