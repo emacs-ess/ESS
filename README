@@ -1,7 +1,7 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.40 $, for ESS version 5.1.21)
+   ($Revision: 5.41 $, for ESS version 5.1.21)
 
    This is the README file for the distribution of ESS version 5.1.21,
 the gamma series we are using on the way to producing 5.2 (the next
@@ -76,6 +76,10 @@ New Features
 
    * ESS[S]: info documentation now available!, see ESS->Help for
      Statistical Packages->Help for the S family
+
+   * ess-remote: improved access to statistical processes running on
+     remote machines.  ess-remote in now fully documented in the info
+     system, see ESS->ESS processes on Remote Computers
 
    * Makefile: tag now independent of rel; info files made by
      doc/Makefile and installed in new info sub-directory

@@ -318,26 +318,36 @@ F12  F12    viewgraph   open a GSASFILE near point for viewing either
                         in emacs or with an external viewer
 @end display
 
-Besides the keys that mimic SAS Display Manager commands, five other keys
-have been provided for convenience.  `shell' switches you to the *shell* 
+Besides the keys that mimic SAS Display Manager commands, six other keys
+have been provided for convenience.
+
+`shell' switches you to the *shell* 
 buffer where you can type operating system commands.  This is especially
-helpful if you would like to kill a SAS batch job.  F2 performs the `refresh' 
+helpful if you would like to kill a SAS batch job.  
+
+F2 performs the `refresh' 
 operation on the current buffer.  `refresh' compares the buffer date/time stamp 
 with the file date/time stamp and replaces the buffer with the file if the 
 file is newer.  This is the same operation that is automatically performed
-when LOG, OUTPUT, `filetype-1' or `filetype-2' are pressed.  `filetype-1' switches
+when LOG, OUTPUT, `filetype-1' or `filetype-2' are pressed.
+
+`filetype-1' switches
 you to a file with the same file root as your .sas file, but with a different 
-extension; .txt by default.  `filetype-2' is similar, except it is .dat by 
-default.  You can over-ride the default, by specifying a different extension 
+extension; .txt by default.  
+You can over-ride the default, by specifying a different extension 
 in your .emacs file.  For example, for `filetype-1': 
 @example
 (setq ess-sas-suffix-1 "txt")
 @end example
 
+`filetype-2' is similar, except it is .dat by default.  
+
 F10 toggles ESS[SAS] mode for .log files which is off by default (technically, 
 it is SAS-log-mode, but it looks the same).  The syntax highlighting can be 
 helpful in certain debugging situations, but large .log files will take a long 
-time to render.  F12 will open a GSASFILE near point for viewing either with
+time to render.  
+
+F12 will open a GSASFILE near point for viewing either with
 emacs or with an external viewer.  Depending on your version of emacs and
 the operating system you are using, emacs may support .gif and .jpg files
 internally.  You may need to change the following two variables for your

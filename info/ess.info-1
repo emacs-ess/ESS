@@ -32,7 +32,7 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.21
 
-   (Documentation $Revision: 1.4 $ $Date: 2002/05/17 21:28:04 $).
+   (Documentation $Revision: 1.5 $ $Date: 2002/05/21 05:13:55 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
      Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and
@@ -705,11 +705,25 @@ ssh buffer and then connect ESS to that buffer.
      over invisibly and lets SAS display them formatted correctly as in
      a SAS log file.
 
-  4. Graphics on the remote machine works fine.  If you run X-windows
-     graphics on the remote unix machine you should be able to display
-     them in `xfree86' on your PC.  If you don't run X-windows, then
-     you can write graphics to the postscript device and copy it to
-     your PC with dired and display it with ghostscript.
+  4. Graphics (interactive) on the remote machine.  If you run X11
+     (*Note X11::, X-windows) on both the local and remote machines
+     then you should be able to display the graphs locally by setting
+     the `DISPLAY' environment variable appropriately.  Windows users
+     can download `xfree86' from cygwin.
+
+  5. Graphics (static) on the remote machine.  If you don't run
+     X-windows on the local machine, then you can write graphics to a
+     file on the remote machine, and display the file in a graphics
+     viewer on the local machine.  Most statistical software can write
+     one or more of postscript, GIF, or JPEG files.  Depending on the
+     versions of emacs and the operating system that you are running,
+     emacs itself may display `.gif' and `.jpg' files.  Otherwise, a
+     graphics file viewer will be needed.  Ghostscript/ghostview may be
+     downloaded to display `.ps' and `.eps' files.  Viewers for GIF and
+     JPEG are usually included with operating systems.  *Note
+     ESS(SAS)--Function keys for batch processing::, for more
+     information on using the F12 key for displaying graphics files
+     with SAS.
 
    Should you or a colleague inadvertently start a statistical process
 in an ordinary `*shell*' buffer, the `ess-remote' command can be used
@@ -717,11 +731,7 @@ to convert it to an ESS buffer and allow you to use the ESS commands
 with it.
 
    We have two older commands, now deprecated, for accessing ESS
-processes on remote computers.
-
-* Menu:
-
-* S+elsewhere and ess-elsewhere::
+processes on remote computers.  *Note S+elsewhere and ess-elsewhere::.
 
 
 File: ess.info,  Node: S+elsewhere and ess-elsewhere,  Prev: ESS processes on Remote Computers,  Up: ESS processes on Remote Computers
@@ -1141,41 +1151,4 @@ signaled.  This feature, coupled with the command-based motion commands
 described above, could be used as a primitive history mechanism.  ESS
 provides a more sophisticated mechanism, however, which is described in
 *Note Command History::.
-
-
-File: ess.info,  Node: Saving transcripts,  Prev: Transcript resubmit,  Up: Transcript
-
-Keeping a record of your S session
-----------------------------------
-
-   To keep a record of your S session in a disk file, use the Emacs
-command `C-x C-w' (`write-file') to attach a file to the ESS process
-buffer.  The name of the process buffer will (probably) change to the
-name of the file, but this is not a problem.  You can still use S as
-usual; just remember to save the file before you quit Emacs with `C-x
-C-s'.  You can make ESS prompt you for a filename in which to save the
-transcript every time you start S by setting the variable
-`ess-ask-about-transfile' to `t'; see *Note Customizing startup::.  We
-recommend you save your transcripts with filenames that end in `.St'.
-There is a special mode (ESS transcript mode -- *note Transcript
-Mode::) for editing transcript files which is automatically selected
-for files with this suffix.
-
-   S transcripts can get very large, so some judicious editing is
-appropriate if you are saving it in a file.  Use `C-c C-o' whenever a
-command produces excessively long output (printing large arrays, for
-example).  Delete erroneous commands (and the resulting error messages
-or other output) by moving to the command (or its output) and typing
-`M-h C-w'.  Also, remember that `C-c C-e' (and other hot keys) may be
-used for commands whose output you do not wish to appear in the
-transcript.  These suggestions are appropriate even if you are not
-saving your transcript to disk, since the larger the transcript, the
-more memory your Emacs process will use on the host machine.
-
-   Finally, if it is your intention to produce S source code (suitable
-for using with `source()' or inclusion in an S function) from a
-transcript, then the command `M-x ess-clean-region' may be of use.
-This command works in any Emacs buffer, and removes all prompts and
-command output from an ESS transcript within the current region, leaving
-only the commands.  Don't forget to remove any erroneous commands first!
 

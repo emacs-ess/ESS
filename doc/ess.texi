@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.29 2002/05/17 21:28:04 rmh Exp $
+@comment $Id: ess.texi,v 5.30 2002/05/21 05:13:55 rmh Exp $
 
 @include version.texi
 
@@ -41,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.29 $ $Date: 2002/05/17 21:28:04 $)
+@subtitle version @essver{} (Documentation $Revision: 5.30 $ $Date: 2002/05/21 05:13:55 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -86,7 +86,7 @@ permission notice identical to this one.
 
 ESS version @essver{}
 
-        (Documentation $Revision: 5.29 $ $Date: 2002/05/17 21:28:04 $).
+        (Documentation $Revision: 5.30 $ $Date: 2002/05/21 05:13:55 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
@@ -542,11 +542,26 @@ lines from your @file{myfile.sas} to the remote SAS process.
 @samp{C-c i} sends lines over invisibly and lets SAS display them
 formatted correctly as in a SAS log file.
 
-@item Graphics on the remote machine works fine.  If you run X-windows
-graphics on the remote unix machine you should be able to display them
-in @samp{xfree86} on your PC.  If you don't run X-windows, then you can write
-graphics to the postscript device and copy it to your PC with dired
-and display it with ghostscript.
+@item Graphics (interactive) on the remote machine.  If you run X11
+(@xref{X11}, X-windows)
+on both the local and remote machines then you should be able to
+display the graphs locally by setting the @samp{DISPLAY} environment
+variable appropriately.  Windows users can download @samp{xfree86}
+from cygwin.
+
+@item Graphics (static) on the remote machine. 
+If you don't run X-windows on the local machine, then you can write
+graphics to a file on the remote machine, and display the file in
+a graphics viewer on the local machine.  Most statistical software can
+write one or more of postscript, GIF, or JPEG files.
+Depending on the versions of emacs and the operating system that you
+are running, emacs itself may display @samp{.gif} and @samp{.jpg}
+files.  Otherwise, a graphics file viewer will be needed.
+Ghostscript/ghostview may be downloaded to display @samp{.ps} and
+@samp{.eps} files.  Viewers for GIF and JPEG are usually included with
+operating systems.  @xref{ESS(SAS)--Function keys for batch processing},
+for more information on using the F12 key for displaying graphics files
+with SAS.
 @end enumerate
 
 Should you or a colleague inadvertently start a statistical process in
@@ -556,10 +571,8 @@ commands with it.
 
 We have two older commands, now deprecated, for accessing ESS processes
 on remote computers.
+@xref{S+elsewhere and ess-elsewhere}.
 
-@menu
-* S+elsewhere and ess-elsewhere::
-@end menu
 
 @node S+elsewhere and ess-elsewhere,  , ESS processes on Remote Computers, ESS processes on Remote Computers
 @comment  node-name,  next,  previous,  up
