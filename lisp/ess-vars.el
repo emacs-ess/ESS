@@ -1,13 +1,13 @@
-;;; ess-var.el --- Variable definitions for ESS.
+;;; ess-vars.el --- Variable definitions for ESS.
 
 ;; Copyright (C) 1997 A.J. Rossini
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/26 01:30:17 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: ess-vars.el,v 1.4 1997/07/26 01:30:17 rossini Exp $
+;; Modified: $Date: 1997/07/28 13:53:15 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: ess-vars.el,v 1.5 1997/07/28 13:53:15 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,6 +29,9 @@
 
 ;;
 ;; $Log: ess-vars.el,v $
+;; Revision 1.5  1997/07/28 13:53:15  rossini
+;; title wrong.
+;;
 ;; Revision 1.4  1997/07/26 01:30:17  rossini
 ;; fixed ess-loop-timeout.
 ;; implemented KH's fontlock suggestions.
