@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 1998/11/09 17:50:49 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-s+5.el,v 1.1 1998/11/09 17:50:49 rossini Exp $
+;; Modified: $Date: 1998/11/10 17:44:42 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-s+5.el,v 1.2 1998/11/10 17:44:42 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -287,7 +287,7 @@ New way to do it."
 
  ; Provide package
 
-(provide 'essd-s4)
+(provide 'essd-s+5)
 
  ; Local variables section
 
