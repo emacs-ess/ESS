@@ -1,4 +1,4 @@
-;;; essa-sas.el -- ESS local customizations for SAS, part a.
+;;; essa-sas.el -- clean-room implementation of many SAS-mode features
 
 ;; Copyright (C) 1997-2004 Rodney A. Sparapani, A.J. Rossini, 
 ;; Martin Maechler, Kurt Hornik, and Richard M. Heiberger.
@@ -7,11 +7,11 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/06/17 16:59:53 $
-;; Version: $Revision: 1.171 $
-;; RCS: $Id: essa-sas.el,v 1.171 2004/06/17 16:59:53 rsparapa Exp $
+;; Modified: $Date: 2004/06/17 18:50:12 $
+;; Version: $Revision: 1.172 $
+;; RCS: $Id: essa-sas.el,v 1.172 2004/06/17 18:50:12 rsparapa Exp $
 
-;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
+;; Keywords: SAS 
 
 ;; This file is part of ESS
 
