@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/06/28 09:24:31 $
-;; Version: $Revision: 5.55 $
-;; RCS: $Id: ess-site.el,v 5.55 2000/06/28 09:24:31 maechler Exp $
+;; Modified: $Date: 2000/06/30 19:44:24 $
+;; Version: $Revision: 5.56 $
+;; RCS: $Id: ess-site.el,v 5.56 2000/06/30 19:44:24 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -200,17 +200,21 @@
 ;; default use of M-x S to refer to a different program than S+3, then
 ;; redefine inferior-S-program-name.
 ;;
+;;(setq-default inferior-S3-program-name "/disk05/s/S")
 ;;(setq-default inferior-S+3-program-name "Splus")
+;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S+4-program-name "Splus")
 ;;(setq-default inferior-S+5-program-name "Splus5")
 ;;(setq-default inferior-R-program-name "R")	  ; unix systems
 ;;(setq-default inferior-R-program-name "Rterm")  ; msdos systems
 ;;(setq-default inferior-XLS-program-name "xlispstat")
-;;(setq-default inferior-S4-program-name "/disk05/s4/S")
-;;(setq-default inferior-S3-program-name "/disk05/s/S")
+;;(setq-default inferior-ARC-program-name "arc")
+;;(setq-default inferior-VST-program-name "vista")
 ;;(setq-default inferior-SAS-program-name "sas")
 ;;(setq-default inferior-OMG-program-name "/home/rossini/src/anoncvs/Omegahat/org/omegahat/bin/omegahat")
 (setq-default inferior-OMG-program-name "omegahat")
+
+
 
 ;;; ESS on the Windows NT/95/98 assumes you have installed gnuclient
 ;;; with your NTemacs.
@@ -263,12 +267,14 @@
 
 ;; (1.5) Require the needed dialects for your setup.
 
-(require 'essd-r)
+(require 'essd-r)    ;; S and common variants
 (require 'essd-s4)
 (require 'essd-sp3)
 (require 'essd-sp5)
 (require 'essd-sta)  ;; for Stata.
-(require 'essd-xls)
+(require 'essd-xls)  ;; XLispStat and variants
+(require 'essd-vst) 
+(require 'essd-arc) 
 (require 'essd-sas)
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 (require 'essd-omg)  ;; for omegahat
