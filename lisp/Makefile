@@ -39,7 +39,7 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 5.0-pre4
+VERSION = 5.0-pre5
 VERSIONDIR = ESS-$(VERSION)
 
 LASTVERSION = 4.8.MM6.XE2
