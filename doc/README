@@ -29,7 +29,7 @@ Structure:  TWO main files
   |      \-- authors.texi
   |
   |-- getting.texi
-  |      \-- inst_cvs.texi
+  |      \-- inst_svn.texi
   |
   |-- bugs.texi
   |
@@ -51,7 +51,7 @@ Structure:  TWO main files
   |-- requires.texi
   |
   |-- getting.texi
-  |      \-- inst_cvs.texi
+  |      \-- inst_svn.texi
   |
   |-- inst_tar.texi
   |
