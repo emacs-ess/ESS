@@ -1,14 +1,14 @@
 ;;; essa-r.el -- Possible local customizations for R with ESS.
 
-;; Copyright (C) 1997--1999 A.J. Rossini, Martin Maechler,
-;; Kurt Hornik, and Richard M. Heiberger.
+;; Copyright (C) 1997--2000	A.J. Rossini, Martin Maechler,
+;;				Kurt Hornik, and Richard M. Heiberger.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 1999/11/22 21:56:39 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essa-r.el,v 1.1 1999/11/22 21:56:39 ess Exp $
+;; Modified: $Date: 2000/02/10 08:00:21 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essa-r.el,v 1.2 2000/02/10 08:00:21 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -39,11 +39,11 @@
 
 (defalias 'essr
   (read-kbd-macro
-     "C-u M-x R RET - - vsize SPC 100M SPC - - nsize SPC 600000 2*RET"))
+     "C-u M-x R RET - - vsize SPC 40M SPC - - nsize SPC 400000 2*RET"))
 
 ;; you can invoke ESS/R from emacs by typing
 ;;      C-u M-x essr
-;; with vsize set to (for example) 100M, and nsize set to 600000.
+;; with vsize set to (for example) 40M, and nsize set to 400000.
 
 
  ; Provide package
