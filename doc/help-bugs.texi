@@ -1,0 +1,95 @@
+
+ESS[BUGS] was designed for use with BUGS software.  It was developed by
+Rodney A. Sparapani and has some similarities with ESS[SAS].
+ESS facilitates BUGS batch with ESS[BUGS], the mode for files with the .bug 
+extension.  ESS provides 5 features.  First, BUGS syntax is described to allow 
+for proper fontification of statements, distributions, functions, commands and
+comments in BUGS model files, command files and log files.  Second,
+ESS creates templates for the command file from the model file so that
+a BUGS batch process can be defined by a single file.  Third, ESS
+provides a BUGS batch script that allows ESS to set BUGS batch
+parameters.  Fourth, key sequences are defined to create a command
+file and submit a BUGS batch process.  Lastly, interactive submission of BUGS
+command is also supported.
+
+@comment  node-name,  next,  previous,  up
+@node ESS(BUGS)--Model files, ESS(SAS)--Command files, ESS for SAS, ESS for other languages
+@section ESS[BUGS]--Model files
+
+Model files (with the .bug extension) are edited in ESS[BUGS] mode.  Two keys 
+are bound for your use in ESS[BUGS], F2 and F12.  F2 performs the same action 
+as it does in ESS[SAS], so see that discussion at 
+@xref{ESS(SAS)--Function keys for batch processing}.  F12 performs the function
+ess-bugs-next-action which you will use a lot.  Pressing F12 in an empty buffer
+for a model file will produce a template for you.  
+
+ESS[BUGS] supports "replacement" variables.  These variables are created as
+part of the template, i.e. with the first press of F12 in an empty buffer.  
+They are named by
+all capitals and start with '%':  %DATA, %INIT, %MONITOR and %STATS.
+When you are finished editing your model file, pressing F12 will perform the
+necessary replacements and build your command file for you.  
+
+The %DATA variable appears in
+the line 'data  in "%DATA";'.  On the second press of F12, %DATA will be 
+replaced by the model file name except it will have the .dat extension.  If
+your data file is named something else, then change %DATA in the template to
+the appropriate file name and no replacement will occur.
+
+The %INIT variable appears in 
+the line 'inits in "%INIT";'.  On the second press of F12, %INIT will be 
+replaced by the model file name except it will have the .in extension.  If 
+your model will be generating it's own initial values, place a comment 
+character, #, at the beginning of the line.  Or, if your
+init file is named something else, then change %INIT in the template to the
+appropriate file name.  
+
+The %MONITOR variable appears on a line by itself.  Although it is commented,
+it is still active.  This line is a list of variables that you want monitored.
+When you press F12, the appropriate statements are created in
+the command file to monitor the list of variables.  If the line is blank, then
+the list is populated with the variables from the 'var' statement.
+
+The %STATS variable is similar to the %MONITOR variable.  It is a list of
+variables for which summary statistics will be calculated.  When you press
+F12, the appropriate statements will be generated in your command file.
+
+Note that the %DATA and %INIT variables are only replaced on the second press
+of F12, but the %MONITOR and %STATS variables re-build the command file for
+each press of F12.
+
+@comment  node-name,  next,  previous,  up
+@node ESS(BUGS)--Command files, ESS(SAS)--Log files, ESS(BUGS)--Model files, ESS for other languages
+@section ESS[BUGS]--Command files
+
+To avoid extension name collision, .bmd is used for BUGS command files.  When
+you have finished editing your model file and press F12, a command file is 
+created for you if one does not already exist.  However, the command file was
+created, it recognizes two "replacement" variables:  %MONITOR and %STATS.  
+
+Two %MONITOR variables appears on lines by themselves.  Although they are
+commented, they are still active.  Between them appears the necessary 
+statements to monitor the list of variables specified in the model file.  The
+behavior of the %STATS variable is similar.
+
+When you are finished editing your command file, pressing F12 again will submit
+your command file as a batch job.  Batch scripts are provided for both DOS and
+Unix in the etc sub-directory of the ESS distribution.  The DOS script is 
+called "BACKBUGS.BAT" and the Unix script is "backbugs".  These scripts allow
+you to change the number of bins to use in the Griddy algorithm 
+(Metropolis sampling).  That is handled by the variable ess-bugs-default-bins 
+which defaults to 32.
+
+@comment  node-name,  next,  previous,  up
+@node ESS(BUGS)--Log files, , ESS(BUGS)--Command files, ESS for other languages
+@section ESS[BUGS]--Log files
+
+To avoid extension name collision, .bog is used for BUGS log files.  The BUGS
+batch script provided with ESS creates the .bog file from the .log file when
+the batch process completes.  If you need to look at the .log file while 
+the batch process is running, it will not appear in ESS[BUGS] mode unless
+you modify the auto-mode-alist variable.  If you have done so, then you
+may find F2 useful to refresh the .log if the batch process over-writes or
+appends it.
+
+
