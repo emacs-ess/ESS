@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/05/16 20:58:46 $
-;; Version: $Revision: 1.96 $
-;; RCS: $Id: essa-sas.el,v 1.96 2002/05/16 20:58:46 rsparapa Exp $
+;; Modified: $Date: 2002/06/17 14:18:13 $
+;; Version: $Revision: 1.97 $
+;; RCS: $Id: essa-sas.el,v 1.97 2002/06/17 14:18:13 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -54,8 +54,8 @@
     :type  'string
 )
 
-(defcustom ess-kermit-prefix ":"
-    "*Character which files must begin with to use kermit; must be : or ]."
+(defcustom ess-kermit-prefix "#"
+    "*String files must begin with to use kermit file transfer."
     :group 'ess-sas
     :type  'string
 )
@@ -221,7 +221,7 @@ buffer on the local computer."
 	(message (substring string beg (match-end 0))))))
 
 
-(defun ess-kermit-get ()
+(defun ess-kermit-get (&optional ess-file-arg)
 "Get a file with Kermit.  WARNING:  Experimental!  From your *shell*
 buffer, start kermit and then log in to the remote machine.  Open 
 a file that starts with `ess-kermit-prefix'.  From that buffer, 
@@ -231,15 +231,14 @@ directory that you specify with the same name, but without the
 
     (interactive)
 
-    (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
-	  ess-kermit-remote-directory))
-
 ;;     (save-match-data 
-       (let ((ess-temp-file (buffer-name))
+       (let ((ess-temp-file (if ess-file-arg ess-file-arg (buffer-name)))
 	     (ess-temp-file-remote-directory ess-kermit-remote-directory))
      
 	(if (string-equal ess-kermit-prefix (substring ess-temp-file 0 1)) 
 	  (progn
+	    (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
+	  	    ess-kermit-remote-directory))
 
 ;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
 	  (shell)
@@ -491,10 +490,13 @@ on the way."
 		(ess-sas-temp-file (replace-match (concat "." suffix) t t ess-sas-file-path))
 		(ess-sas-temp-buff (find-buffer-visiting ess-sas-temp-file)))
 
-	(if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
-	    (find-file ess-sas-temp-file))
+	    (if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
+	        (find-file ess-sas-temp-file))
 	
-	  (if revert (ess-revert-wisely))
+	    (if revert (ess-revert-wisely))
+
+	    (if (or (equal suffix "log") (equal suffix "lst"))
+		(ess-kermit-get (file-name-nondirectory ess-sas-file-path)))
 ))))))
 
 ;;(defun ess-sas-file (suffix &optional revert)
