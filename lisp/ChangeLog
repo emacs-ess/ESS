@@ -1,3 +1,7 @@
+2005-03-04  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el: use (regexp-opt .) constructor
+
 2005-03-03  Martin Maechler  <maechler@stat.math.ethz.ch>
   based on much from Kurt Hornik
 

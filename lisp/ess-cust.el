@@ -1408,9 +1408,9 @@ If nil, input is in the `font-lock-variable-name-face'."
 )
 
 (defvar ess-R-function-name-regexp
-  (concat "\\s\"?\\(\\(\\sw\\|\\s_\\)+"
+  (concat "\\s\"?\\(" (regexp-opt '("\\sw" "\\s_") t) "+"
 	  "\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)"
-	  "\\(\\s-\\|\n\\)*function")
+	  (regexp-opt '("\\s-" "\n") t) "*function")
 )
 (defvar ess-S-function-name-regexp
   ess-R-function-name-regexp ; since "_" is deprecated for S-plus as well
@@ -1419,20 +1419,14 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 (defvar ess-R-mode-font-lock-keywords
   (list
-   (cons (mapconcat 'identity ess-R-assign-ops "\\|")
+   (cons (regexp-opt ess-R-assign-ops)
 	 'font-lock-reference-face)	; assign
-   (cons (concat "\\<\\("
-		 (mapconcat 'identity ess-R-constants "\\|")
-		 "\\)\\>")
+   (cons (concat "\\<" (regexp-opt ess-R-constants 'enc-paren) "\\>")
 	 'font-lock-type-face)		; constants
-   (cons (concat "\\<\\("
-		 (mapconcat 'identity ess-R-modifyiers "\\|")
-		 "\\)\\>")
+   (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
 	 'font-lock-reference-face)	; modify search list or source
 					; new definitions
-   (cons (concat "\\<\\("
-		 (mapconcat 'identity ess-R-keywords "\\|")
-		 "\\)\\>")
+   (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
 	 'font-lock-keyword-face)	; keywords
    (cons ess-R-function-name-regexp
 	 '(1 font-lock-function-name-face t))
@@ -1442,26 +1436,22 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 (defvar ess-S-mode-font-lock-keywords
   (list
-   (cons (mapconcat 'identity ess-S-assign-ops "\\|")
+   (cons (regexp-opt ess-S-assign-ops)
 	 'font-lock-reference-face)	; assign
-   (cons (concat "\\<\\("
-		 (mapconcat 'identity ess-S-constants "\\|")
-		 "\\)\\>")
+   (cons (concat "\\<" (regexp-opt ess-S-constants 'enc-paren) "\\>")
 	 'font-lock-type-face)		; constants
-   (cons (concat "\\<\\("
-		 (mapconcat 'identity ess-S-modifyiers "\\|")
-		 "\\)\\>")
+   (cons (concat "\\<" (regexp-opt ess-S-modifyiers 'enc-paren) "\\>")
 	 'font-lock-reference-face)	; modify search list or source
 					; new definitions
-   (cons (concat "\\<\\("
-		 (mapconcat 'identity ess-S-keywords "\\|")
-		 "\\)\\>")
+   (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
 	 'font-lock-keyword-face)	; keywords
    (cons ess-S-function-name-regexp
 	 '(1 font-lock-function-name-face t))
 					; function name
    )
-  "Font-lock patterns used in `R-mode' buffers.")
+  "Font-lock patterns used in `S-mode' buffers.")
+
+
 
 
 (defvar inferior-ess-R-font-lock-keywords
@@ -1477,8 +1467,7 @@ If nil, input is in the `font-lock-variable-name-face'."
    (list
     (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
     (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-reference-face);Vector/matrix labels
-    (cons (concat "^\\(" (mapconcat 'identity ess-R-message-prefixes "\\|")
-		  "\\)")
+    (cons (concat "^" (regexp-opt ess-R-message-prefixes 'enc-paren))
 	  'font-lock-reference-face) ; inferior-ess problems or errors
     (cons "#" 	'font-lock-comment-face) ; comment
     (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
@@ -1498,9 +1487,7 @@ If nil, input is in the `font-lock-variable-name-face'."
    (list
     (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face) ; ess-mode msg
     (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-reference-face);Vector/matrix labels
-    (cons (concat "^\\("
-		  (mapconcat 'identity ess-S-message-prefixes "\\|")
-		  "\\)")
+    (cons (concat "^" (regexp-opt ess-S-message-prefixes 'enc-paren))
 	  'font-lock-reference-face) ; inferior-ess problems or errors
     (cons "#" 'font-lock-comment-face)	; comment
     (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
