@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/09/10 13:42:04 $
-;; Version: $Revision: 1.47 $
-;; RCS: $Id: ess-site.el,v 1.47 1997/09/10 13:42:04 rossini Exp $
+;; Modified: $Date: 1997/10/07 19:46:51 $
+;; Version: $Revision: 1.48 $
+;; RCS: $Id: ess-site.el,v 1.48 1997/10/07 19:46:51 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -48,7 +48,7 @@
 
 ;;; Code:
 
-(setq-default debug-on-error t)
+;;(setq-default debug-on-error t)
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
@@ -101,7 +101,7 @@
 ;;-- if you don't have 'rd-mode.el' yet, use the following as substitute:
 ;;--   (fset 'Rd-mode 'R-mode)
 ;;-- else :
-(autoload 'Rd-mode "rd-mode" "Major mode for editing R manual pages." t)
+(autoload 'Rd-mode "ess-doc" "Major mode for editing R documentation." t)
 ;;---> /u/maechler/emacs/rd-mode.el <<<<
 
 
