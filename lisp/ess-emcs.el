@@ -9,9 +9,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2002/06/19 21:00:21 $
-;; Version: $Revision: 5.17 $
-;; RCS: $Id: ess-emcs.el,v 5.17 2002/06/19 21:00:21 rmh Exp $
+;; Modified: $Date: 2002/06/19 22:04:34 $
+;; Version: $Revision: 5.18 $
+;; RCS: $Id: ess-emcs.el,v 5.18 2002/06/19 22:04:34 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -89,13 +89,17 @@ Only a concern with earlier versions of Emacs.")
 (if (not (fboundp 'find-buffer-visiting))
     (fset 'find-buffer-visiting 'get-file-buffer))
 
+(if (and (not (featurep 'xemacs))
+	 (string-match "XEmacs\\|Lucid" emacs-version))
+    (provide 'xemacs))
+
 ;; XEmacs 21.x need this
 (if (not (fboundp 'w32-using-nt))
 (defun w32-using-nt ()
   "Return non-nil if literally running on Windows NT (i.e., not Windows 9X)."
   (and (eq system-type 'windows-nt) (getenv "SystemRoot"))))
 
-(if (and ess-running-xemacs (or (> emacs-major-version 21)
+(if (and (featurep 'xemacs) (or (> emacs-major-version 21)
     (and (= emacs-major-version 21) (>= emacs-minor-version 4))))
   (defun ess-xemacs-insert-glyph (gl)
      "Insert a glyph at the left edge of point."
