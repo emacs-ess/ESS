@@ -1,3 +1,103 @@
+Wed Nov 19 10:33:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s+3.el (S+3-transcript-mode): make interactive.
+
+Wed Nov 19 10:32:28 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el (s-transcript-mode): make interactive.
+
+Wed Nov 19 10:31:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-r.el (r-transcript-mode): make interactive.
+
+Tue Nov 18 17:38:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essddr.el: updated to 0.1.7. (KH)
+
+Tue Nov 18 17:37:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: ess-create-object-name-db, format
+
+Tue Nov 18 17:21:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s+3.el (S+3-customize-alist): changed var name for
+ 	consistency.
+
+Tue Nov 18 17:20:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-r.el (R-customize-alist): use R-help-sec-keys-alist. 
+
+Tue Nov 18 17:19:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: removed spurrious variable.
+
+Tue Nov 18 17:18:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: removed ess--help-S-sec-keys-alist; second def!
+	
+Tue Nov 18 17:14:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el (ess-help-*-sec-keys-alist): renamed to
+	  *-help-sec-keys-alist.  defvars to defconst.
+
+Tue Nov 18 17:03:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess): removed "switch-to" logic in
+	inferior-ess.  Now should strictly start-up a buffer.
+
+Tue Nov 18 16:58:06 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: added warnings for set-keymap-parent; XEmacs,
+ 	non-Emacs.
+
+Tue Nov 18 16:52:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el: added Martin's fix to documentation.
+
+Mon Nov 17 09:59:20 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess-mode-menu): reinstalled info
+ 	connection.
+
+Mon Nov 17 09:58:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: reinstalled info connection.
+	
+Mon Nov 17 09:25:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/rmh-talk.tex: added updates. (RMH)
+
+Mon Nov 17 09:09:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S: fixed grammar.
+
+Mon Nov 17 09:05:50 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README/ess.texi: R uses ess-r-namedb.el. (RMH)
+
+Mon Nov 17 09:04:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README/ess.texi: changed phrasing for creating object database
+ 	files. (RMH)
+
+Mon Nov 17 09:00:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess): doc string edited.  Wrong comments
+	removed (RMH).
+
+Mon Nov 17 08:57:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: fixed documentation dependencies (RMH)
+
+Mon Nov 17 08:56:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.el: fixed Lisp-Dir-Entry; franz.stat.wisc.edu, not
+ 	ftp.math.sc.edu. (RMH).
+
+Mon Nov 17 08:54:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/ajr-talk.tex: added comments for changing font usage (RMH).
+
 Fri Nov 14 17:44:14 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README: added more of an introduction and "history" statement.
@@ -1187,6 +1287,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.38  1997/11/19 15:35:29  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.37  1997/11/15 17:37:58  rossini
 	* Removing *** empty log message ***
 	* Removing
