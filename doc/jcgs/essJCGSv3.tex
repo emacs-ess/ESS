@@ -161,7 +161,7 @@ intelligent environment for statistical analysis}
   substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/26 22:02:39 $ - $Revision: 1.11 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/26 23:05:10 $ - $Revision: 1.12 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -323,8 +323,8 @@ evaluation, and specialized parsing of help files.
 
 ESS provides many features which enhance the construction of data
 analysis scripts and statistical programming. Some do not require
-direct interaction with a statistics package such as simple editing
-enhancements such as syntactic fontification and colorization of
+direct interaction with a statistics package; these are textual script
+editing features such as syntactic fontification and colorization of
 scripts, detection of balanced and unbalanced parens and braces
 through highlighting, code indentation for readability, commenting out
 regions, and indexing of files by function.  However, the more novel
@@ -333,7 +333,7 @@ name completion, evaluation of scripts, and interactive editing of
 data and objects, require some interaction with the target statistics
 package through either interaction or by batch processing.
 
-\subsection{Features and capabilities}
+\subsection{Editing advantages}
 \label{sec:ESS:features}
 
 \paragraph{Syntactic highlighting and indentation of source code.}
@@ -403,12 +403,13 @@ optional schemes.
   \label{f.font}
 \end{figure}
 
-Since S syntax is similar to that of C, ESS uses the Emacs tools for
-reformatting S code to match particular styles.  Common C format styles,
-as well as locally customized styles, are defined by specifying the indentation
-level for nested statements, location of open-braces (at the end or at the
-beginning of a line), indentation offsets for if-then-else constructs,
-and similar characteristics.
+ESS uses the Emacs tools for reformatting code to match particular
+styles.  For S, common C format styles, as well as locally customized
+styles, are defined by specifying the indentation level for nested
+statements, location of open-braces (at the end or at the beginning of
+a line), indentation offsets for if-then-else constructs, and similar
+characteristics.  XLispStat can also be reformatted.
+\textbf{RODNEY/RICH: CAN SAS BE REFORMATTED?}
 
 Syntax highlighting can be used to help enforce coding
 standards.  Figure \ref{f.hilock} illustrates a standard for
@@ -436,17 +437,61 @@ standards.  Figure \ref{f.hilock} illustrates a standard for
   \label{f.hilock}
 \end{figure}
 
-\paragraph{Process interaction.}
+
+\paragraph{Help File Editing (R).}
+ESS provides an R documentation mode (\stexttt{Rd-mode}) which assists
+in writing help files for R functions, objects, and other topics worth
+documenting.  \stexttt{Rd-mode} provides the ability to view and
+execute code embedded in the help file in the same manner as ESS
+handles code from any S language source file.  It provides syntax
+highlighting and the ability to submit code directly to a running ESS
+process, either R or \Splus, for evaluation and debugging.  This
+latter feature is useful for ensuring that code developed using R runs
+under \Splus.
+
+
+%\paragraph{Simplifying Keymap Differences.}
+%Simple conflicts between interfaces are exemplified by different key
+%sequences for editing tasks such as cut, copy, paste, beginning of
+%line, end of line, eptc.  These may be the most aggravating because our
+%fingers are typing ``instinctively'', but differences in interfaces
+%circumvent this learned behavior.  ESS solves this problem by
+%providing a uniform interface to keyboard actions across the variety
+%of statistical packages that might be used.  That is, the same key
+%sequences are used for cursor movement, evaluation, and basic tasks
+%such as loading files for editing.
+
+
+\subsection{Interactive Processing.}
+\label{sec:interactive}
+
+The increased popularity of exploratory data analysis as well as the
+advent of simple GUIs has made interactive data analysis an important
+component to statistical practices.  ESS uses three different
+approaches for communicating with statistical packages: inferior
+process control, which entails redirection of text input and output;
+peer-to-peer style communication, which is currently accomplished
+using DDE; and batch submission of whole or partial text files
+containing analysis scripts.  For packages which do not support any of
+these, the primary use of ESS is as an editing tool, with interaction
+done using windowing cut-and-paste techniques; this still provides
+benefits through the availability of useful editing features.  In this
+case, the package's GUI tools are available for use.  Examples of this
+last situation include the Microsoft versions of SAS, Stata, and
+XLispStat.
+
+\subsection{Integration with Statistical Packages}
 Emacs has historically referred to processes under its control as
-``inferior'', accounting for the name inferior ESS (\stexttt{iESS}) to
-denote the mode for interfacing with the statistical package.  Figure
-\ref{f.ess-demo} shows the S language program \stexttt{ess-demo.s} in
-the top buffer in \stexttt{ESS[S]} mode and the executing R process in
-the bottom buffer \stexttt{*R*}.  The \stexttt{iESS} major mode of the
-\stexttt{*R*} buffer is crafted for command-line editing.  This mode
-remembers and uses the command history, allowing for the recall and
-searching of previously entered commands.  Filename completion for
-local directories is also available.
+\textit{inferior}, accounting for the name inferior ESS
+(\stexttt{iESS}) to denote the mode for interfacing with the
+statistical package.  Figure \ref{f.ess-demo} shows the S language
+program \stexttt{ess-demo.s} in the top buffer in \stexttt{ESS[S]}
+mode and the executing R process in the bottom buffer \stexttt{*R*}.
+The \stexttt{iESS} major mode of the \stexttt{*R*} buffer is crafted
+for command-line editing.  This mode remembers and uses the command
+history, allowing for the recall and searching of previously entered
+commands.  Filename completion for local directories is also
+available.
 
 %\begin{figure}[tb]
 %  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo}}
@@ -527,17 +572,6 @@ between general packages and specialized packages.  ESS helps by
 providing a single point of contact to both tools, though the typical
 interfaces (interactive for R, batch for BUGS) are different.
 
-%\paragraph{Simplifying Keymap Differences.}
-%Simple conflicts between interfaces are exemplified by different key
-%sequences for editing tasks such as cut, copy, paste, beginning of
-%line, end of line, eptc.  These may be the most aggravating because our
-%fingers are typing ``instinctively'', but differences in interfaces
-%circumvent this learned behavior.  ESS solves this problem by
-%providing a uniform interface to keyboard actions across the variety
-%of statistical packages that might be used.  That is, the same key
-%sequences are used for cursor movement, evaluation, and basic tasks
-%such as loading files for editing.
-
 \paragraph{Concurrent Use of Multiple Machines and Operating Systems.}
 It can be useful to have multiple statistical processes running
 simultaneously, either on a single machine or a variety of machines.
@@ -553,35 +587,6 @@ the local machine.  This is accomplished through the use of Emacs
 capabilities for transparent access to remote files over a network.
 This means that the user views, edits, and saves files on a remote
 machine exactly as if they were on the local machine.  
-
-\paragraph{Help File Editing (R).}
-ESS provides an R documentation mode (\stexttt{Rd-mode}) which assists
-in writing help files for R functions, objects, and other topics worth
-documenting.  \stexttt{Rd-mode} provides the ability to view and
-execute code embedded in the help file in the same manner as ESS
-handles code from any S language source file.  It provides syntax
-highlighting and the ability to submit code directly to a running ESS
-process, either R or \Splus, for evaluation and debugging.  This
-latter feature is useful for ensuring that code developed using R runs
-under \Splus.
-
-\subsection{Interactive Processing.}
-\label{sec:interactive}
-
-The increased popularity of exploratory data analysis as well as the
-advent of simple GUIs has made interactive data analysis an important
-component to statistical practices.  ESS uses three different
-approaches for communicating with statistical packages: inferior
-process control, which entails redirection of text input and output;
-peer-to-peer style communication, which is currently accomplished
-using DDE; and batch submission of whole or partial text files
-containing analysis scripts.  For packages which do not support any of
-these, the primary use of ESS is as an editing tool, with interaction
-done using windowing cut-and-paste techniques; this still provides
-benefits through the availability of useful editing features.  In this
-case, the package's GUI tools are available for use.  Examples of this
-last situation include the Microsoft versions of SAS, Stata, and
-XLispStat.
 
 %\paragraph{Inter-Process Communication.}
 %Packages that use unix-style command-line interfaces can be run as an
@@ -992,9 +997,6 @@ This history is summarized in Table \ref{tab:timeline}.
   \caption{History and Ancestors of ESS}
   \label{tab:timeline}
 \end{table}
-
-
-
 
 \section{Conclusions}
 \label{sec:concl}
