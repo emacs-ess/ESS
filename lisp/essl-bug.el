@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/12/17 14:59:52 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: essl-bug.el,v 1.16 2001/12/17 14:59:52 ess Exp $
+;; Modified: $Date: 2002/01/16 00:42:33 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: essl-bug.el,v 1.17 2002/01/16 00:42:33 rsparapa Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -141,7 +141,7 @@
 
 (if ess-bugs-mode-map nil
     (setq ess-bugs-mode-map (make-keymap))
-    (define-key ess-bugs-mode-map (quote [f2])  'ess-revert)
+    (define-key ess-bugs-mode-map (quote [f2])  'ess-revert-wisely)
     (define-key ess-bugs-mode-map (quote [f12]) 'ess-bugs-next-action)
 )
 
@@ -261,14 +261,6 @@
   (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
 	 (beg (string-match exit-done string)))
     (if beg (message (substring string beg (match-end 0))))))
-
-(defun ess-revert ()
-  "ESS: Revert from disk if file and buffer modification times are different."
-  (interactive)
-  
-  (if (not(verify-visited-file-modtime (current-buffer)))
-	(revert-buffer t t)))
-
 
 (defun ess-bugs-next-action ()
    "ESS[BUGS]:  Perform the appropriate next action."
