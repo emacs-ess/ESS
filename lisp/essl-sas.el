@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/26 15:42:57 $
-;; Version: $Revision: 4.52 $
-;; RCS: $Id: essl-sas.el,v 4.52 1997/11/26 15:42:57 rossini Exp $
+;; Modified: $Date: 1997/11/30 17:08:24 $
+;; Version: $Revision: 4.53 $
+;; RCS: $Id: essl-sas.el,v 4.53 1997/11/30 17:08:24 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -189,7 +189,7 @@ popup window when the SAS job is finished.")
     (paragraph-ignore-fill-prefix . t)
     ;;(fill-paragraph-function      . 'lisp-fill-paragraph)
     (adaptive-fill-mode           . nil)
-    ;;(indent-line-function         . 'sas-indent-line)
+    (indent-line-function         . 'sas-indent-line)
     ;;(indent-region-function       . 'sas-indent-region)
     (require-final-newline        . t)
     (comment-start                . "\\*\\|/\\*")
@@ -311,16 +311,16 @@ popup window when the SAS job is finished.")
         (goto-char (- (point-max) pos)))))
 
 
-(defun sas-indent-region (start end)
-  "Indent a region of SAS code."
-  (interactive "r")
-  (save-excursion
-    (let ((endmark (copy-marker end)))
-      (goto-char start)
-      (and (bolp) (not (eolp))
-	   (sas-indent-line))
-      (indent-sexp endmark)
-      (set-marker endmark nil))))
+;;(defun sas-indent-region (start end)
+;;  "Indent a region of SAS code."
+;;  (interactive "r")
+;;  (save-excursion
+;;    (let ((endmark (copy-marker end)))
+;;      (goto-char start)
+;;      (and (bolp) (not (eolp))
+;;	   (sas-indent-line))
+;;      (indent-sexp endmark)
+;;      (set-marker endmark nil))))
 
 
 (defun indent-sas-statement (arg)
