@@ -1,6 +1,6 @@
-;; ess-doc.el --- Support for editing R documentation source
+;; essddr.el --- Support for editing R documentation (Rd) source
 
-;;; Copyright (C) 1997 KH <Kurt.Hornik@ci.tuwien.ac.at>
+;;; Copyright (C) 1998 KH <Kurt.Hornik@ci.tuwien.ac.at>
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -19,24 +19,24 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.4 1998/08/20 06:45:11 maechler Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.5 1998/09/10 06:15:55 hornik Exp $
 
 ;;; Code:
 
 ;; To stave off byte compiler errors
 (eval-when-compile (require 'ess-help))
 
-(defvar ess-doc-version "0.1.7"
-  "Current version of ess-doc.el.")
+(defvar essddr-version "0.1.8"
+  "Current version of essddr.el.")
 
-(defvar ess-doc-maintainer-address
+(defvar essddr-maintainer-address
   "Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>"
-  "Current maintainer of ess-doc.el.")
+  "Current maintainer of essddr.el.")
 
 (autoload 'ess-eval-region             "ess-mode" "[autoload]" t)
 (autoload 'ess-eval-line-and-next-line "ess-mode" "[autoload]" t)
-(autoload 'ess-nuke-help-bs            "ess-help" "(autoload)" t)
-(autoload 'ess-help-mode               "ess-help" "(autoload)" t)
+(autoload 'ess-nuke-help-bs            "ess-help" "[autoload]" t)
+(autoload 'ess-help-mode               "ess-help" "[autoload]" t)
 
 (defvar Rd-mode-abbrev-table nil
   "Abbrev table for R documentation keywords.
@@ -48,20 +48,28 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev Rd-mode-abbrev-table "`al" "\\alias")
   (define-abbrev Rd-mode-abbrev-table "`bf" "\\bold")
   (define-abbrev Rd-mode-abbrev-table "`co" "\\code")
-  (define-abbrev Rd-mode-abbrev-table "`de" "\\description")
+  (define-abbrev Rd-mode-abbrev-table "`de" "\\describe")
+  (define-abbrev Rd-mode-abbrev-table "`dn" "\\description")
+  (define-abbrev Rd-mode-abbrev-table "`dt" "\\details")
   (define-abbrev Rd-mode-abbrev-table "`ex" "\\examples")
   (define-abbrev Rd-mode-abbrev-table "`em" "\\emph")
+  (define-abbrev Rd-mode-abbrev-table "`em" "\\enumerate")
   (define-abbrev Rd-mode-abbrev-table "`fi" "\\file")
+  (define-abbrev Rd-mode-abbrev-table "`fi" "\\format")
   (define-abbrev Rd-mode-abbrev-table "`it" "\\item")
+  (define-abbrev Rd-mode-abbrev-table "`iz" "\\itemize")
   (define-abbrev Rd-mode-abbrev-table "`kw" "\\keyword")
   (define-abbrev Rd-mode-abbrev-table "`li" "\\link")
   (define-abbrev Rd-mode-abbrev-table "`na" "\\name")
   (define-abbrev Rd-mode-abbrev-table "`re" "\\references")
   (define-abbrev Rd-mode-abbrev-table "`sa" "\\seealso")
   (define-abbrev Rd-mode-abbrev-table "`se" "\\section")
+  (define-abbrev Rd-mode-abbrev-table "`se" "\\source")
+  (define-abbrev Rd-mode-abbrev-table "`ta" "\\tabular")
   (define-abbrev Rd-mode-abbrev-table "`ti" "\\title")
   (define-abbrev Rd-mode-abbrev-table "`us" "\\usage")
-  (define-abbrev Rd-mode-abbrev-table "`va" "\\value"))
+  (define-abbrev Rd-mode-abbrev-table "`va" "\\value")
+  (define-abbrev Rd-mode-abbrev-table "`ve" "\\verbatim"))
 
 (defvar Rd-mode-syntax-table nil
   "Syntax table for Rd mode.")
@@ -99,22 +107,15 @@ All Rd mode abbrevs start with a grave accent (`).")
   (modify-syntax-entry ?\] "_" Rd-mode-parse-syntax-table))
 
 (defvar Rd-section-names
-  '("arguments" "alias" "author" "description" "examples" "keyword"
-    "name" "note" "references" "seealso" "section" "title" "usage"
-    "value"
-    ;; NEW:
-    "details" "format" "source" "describe" "enumerate" "itemize" "tabular"
-    "verbatim"
-    ))
+  '("arguments" "alias" "author" "describe" "description" "details"
+    "enumerate" "examples" "format" "itemize" "keyword" "name" "note"
+    "references" "seealso" "section" "source" "tabular" "title" "usage"
+    "value" "verbatim"))
 (defvar Rd-keywords
-  '("bold" "cr" "code" "deqn" "dots" "email" "emph" "eqn" "file" "item"
-    "ldots" "link" "url"
-    ;; NEW
-    "Alpha" "alpha" "beta" "Gamma" "epsilon" "lambda" "mu" "pi" "sigma"
-    "le" "ge" "left" "right" "R" "tab"
-    ))
+  '("Alpha" "Gamma" "R" "alpha" "beta" "bold" "cr" "code" "deqn" "dots"
+    "email" "emph" "epsilon" "eqn" "file" "ge" "item" "lambda" "ldots"
+    "le" "left" "link" "mu" "pi" "right" "tab" "sigma" "url"))
 
-;; (defvar Rd-bold-face 'font-lock-function-name-face)
 (defvar Rd-bold-face 'bold)
 
 (defvar Rd-font-lock-keywords
@@ -131,7 +132,7 @@ All Rd mode abbrevs start with a grave accent (`).")
     'font-lock-keyword-face))
   "Additional Rd expressions to highlight.")
 
-(defvar Rd-indent-level 2
+(defvar Rd-indent-level 4
   "*Indentation of Rd code with respect to containing blocks.")
 
 (defvar Rd-mode-map nil
@@ -152,7 +153,24 @@ All Rd mode abbrevs start with a grave accent (`).")
     (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
     (setq Rd-mode-map map)))
 
-(defvar Rd-mode-menu nil
+(defvar Rd-mode-menu
+  (list "Rd"
+	["Insert Item"			Rd-mode-insert-item t]
+	["Insert Section"		Rd-mode-insert-section t]
+	["Insert Skeleton"		Rd-mode-insert-skeleton t]
+	"-"
+	["Preview"			Rd-preview-help t]
+	"-"
+	["Eval Line"			ess-eval-line-and-next-line t]
+	["Eval Region"			ess-eval-region t]
+	["Switch to Process"		ess-switch-to-ESS t]
+	"-"
+	["Toggle Abbrev Mode"		abbrev-mode t]
+	["Toggle Auto-Fill Mode"	auto-fill-mode t]
+	"-"
+	["Submit Bug Report"		Rd-submit-bug-report t]
+	"-"
+	["Describe Rd Mode"		Rd-describe-major-mode t])
   "Menu used in Rd mode.")
 
 (defvar Rd-mode-hook nil
@@ -182,7 +200,7 @@ Variables you can use to customize Rd mode
 
 Rd-indent-level
   Indentation of Rd code with respect to containing blocks.
-  Default is 2.
+  Default is 4.
 
 Turning on Rd mode runs the hook `Rd-mode-hook'.
 
@@ -213,8 +231,13 @@ following lines to your `.emacs' file:
        '(Rd-font-lock-keywords nil nil))
   ;; (set (make-local-variable 'parse-sexp-ignore-comments) t)
 
+  (require 'easymenu)
+  (easy-menu-define Rd-mode-menu-map Rd-mode-map
+		    "Menu keymap for Rd mode." Rd-mode-menu)
+  (easy-menu-add Rd-mode-menu-map Rd-mode-map)
+  
   (turn-on-auto-fill)
-  (message "Rd mode version %s" ess-doc-version)
+  (message "Rd mode version %s" essddr-version)
   (run-hooks 'Rd-mode-hook))
 
 (defun ess-point (position)
@@ -228,6 +251,11 @@ following lines to your `.emacs' file:
      ((eq position 'bopl) (forward-line -1))
      (t (error "unknown buffer position requested: %s" position)))
     (point)))
+
+(defun Rd-describe-major-mode ()
+  "Describe the current major mode."
+  (interactive)
+  (describe-function major-mode))
 
 (defun Rd-mode-in-verbatim-p ()
   (let ((pos (point)))
@@ -255,7 +283,8 @@ following lines to your `.emacs' file:
 		(Rd-mode-in-verbatim-p))
 	    0
 	  (set-syntax-table Rd-mode-parse-syntax-table)
-	  (while (looking-at "[ \t]*$")
+	  (while (and (looking-at "[ \t]*$")
+		      (not (bobp)))
 	    (forward-line -1))
 	  (re-search-forward "[ \t]*\\s)*" (ess-point 'eol) t)
 	  (prog1
@@ -295,16 +324,17 @@ following lines to your `.emacs' file:
 (defun Rd-mode-insert-skeleton ()
   (interactive)
   (insert "\\name{}\n")
-  (insert "\\title{}\n")
-  (insert "\\author{}\n")
-  (insert "\\usage{\n}\n")
   (insert "\\alias{}\n")
-  (insert "\\arguments{\n}\n")
+  (insert "\\title{}\n")
+  (insert "\\usage{\n}\n")
   (insert "\\description{\n}\n")
+  (insert "\\arguments{\n}\n")
   (insert "\\value{\n}\n")
+  (insert "\\details{\n}\n")
   (insert "\\references{\n}\n")
   (insert "\\seealso{\n}\n")
   (insert "\\examples{\n}\n")
+  (insert "\\author{}\n")
   (insert "\\keyword{}"))
 
 (defun Rd-preview-help ()
@@ -320,8 +350,21 @@ following lines to your `.emacs' file:
     (if (not (get-buffer-window pbuf 'visible))
 	(display-buffer pbuf t))))
 
+;; Bug reporting
+(defun Rd-submit-bug-report ()
+  "Submit a bug report on Rd mode via mail."
+  (interactive)
+  (require 'reporter)
+  (and
+   (y-or-n-p "Do you want to submit a bug report? ")
+   (reporter-submit-bug-report
+    essddr-maintainer-address
+    (concat "Emacs version " emacs-version)
+    (list
+     'essddr-version
+     'Rd-indent-level))))
+
 ;; Provide ourself
-(provide 'ess-doc)
+(provide 'essddr)
 
-;; ess-doc.el ends here
-
+;; essddr.el ends here
