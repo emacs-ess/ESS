@@ -1,8 +1,10 @@
-\documentstyle[a4,twocolumn,parskip]{article}
+\documentstyle[a4,twocolumn,parskip]{article}-- $Id: refcard.tex,v 1.5 1996/04/25 14:37:54 sfs Exp $
 %-Northamerica: \documentstyle[fullpage,twocolumn,parskip]{article}
 
 \newenvironment{tabI}{\begin{tabular}{p{1.5cm}l}}{\end{tabular}}
 \newenvironment{tabTit}[1]{\underline{\bf #1}\\ \begin{tabI}}{\end{tabI}}
+\newcommand{\Sect}[1]{\par\noindent\smallskip\fbox{\large\bf #1}
+  \vskip -1ex plus 1ex minus 1ex}
 
 \raggedbottom \pagestyle{empty}
 
@@ -10,21 +12,24 @@
 
 \begin{center}
   {\Large\bf   S-mode\\
-  Reference Card\\
-  }
+    Reference Card\\
+    }
   
-  {\large For version 3.43}
+  {\small For version 3.43 
+    \\--- some update for version 4 --- needs {\em more!\/}}
   \\ (SfS local version) %-SfS-added
+  \\ {\footnotesize as of \today}
 \end{center}
 
-\vspace{1.5cm}
+\bigskip %\vspace{1.5cm}
   
-\underline{\large\bf Interacting with the S process}
+\Sect{Interacting with the S process}
+%%    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For use in the process buffer `{\tt *S*}'.
+For use in a  process buffer `{\tt *S*}' ({\footnotesize S-inferior-mode}):
 
 \begin{tabI}
-  {\tt RET   }& Send a commmand \\
+  {\tt RET   }& Send a command \\
   {\tt TAB   }& Complete S object name \\
   {\tt C-a   }& Beginning of command \\
   {\tt C-c C-w }& Delete last word \\
@@ -32,13 +37,13 @@ For use in the process buffer `{\tt *S*}'.
   {\tt C-c C-c }& Break  
 \end{tabI}
 
-\begin{tabTit}{Command history}
-  {\tt M-p   }& Last command \\
-  {\tt M-n   }& Next command \\
-  {\tt M-s   }& Last similar command \\
-  {\tt M-S   }& Next similar command \\
+\begin{tabTit}{Command history --- Menu ``{\tt In/Out}''}
+  {\tt M-p   }& Previous            command \\
+  {\tt M-n   }& Next \hspace{1.4em} command \\
+  {\tt M-r   }& Previous            similar command \\
+  {\tt M-s   }& Next \hspace{1.4em} similar command \\
   {\tt M-r   }& Interactive search \\
-  {\tt M-C-r   }& String search
+  {\tt M-C-r }& String search
 \end{tabTit}
 
 \begin{tabTit}{Viewing the transcript}
@@ -51,7 +56,7 @@ For use in the process buffer `{\tt *S*}'.
 \end{tabTit}
 
 \begin{tabTit}{Hot keys} 
-  {\tt C-c C-h }& Help for S object \\
+  {\tt C-c C-v }& Help for S object \\
   {\tt C-c C-e }& Execute a command \\
   {\tt C-c C-x }& List objects \\
   {\tt C-c C-s }& Display search list \\
@@ -68,10 +73,13 @@ For use in the process buffer `{\tt *S*}'.
 \end{tabTit}\\[0.5cm]
 
 \pagebreak
+%%%%%%%%%%================================================================
+
 
-\underline{\large\bf Editing S source}
+\Sect{Editing S source)}
+%%    ~~~~~~~~~~~~~~~~
 
-For use in {\tt S-mode} edit buffers.
+For use in {\tt S-mode} edit buffers, ({\tt *.S} files):
 
 \begin{tabI}
   {\tt TAB} & Indent this line \\
@@ -88,32 +96,33 @@ For use in {\tt S-mode} edit buffers.
   {\tt C-c M-j} & Evaluate this line and go \\
   {\tt C-c C-n} & Step through code \\
   {\tt M-C-x}   & Evaluate this function \\
-  {\tt C-c C-f}   & Evaluate this function \\
-  {\tt C-c M-f}   & Evaluate this function and go \\
-  {\tt C-c C-r}   & Evaluate this region \\
-  {\tt C-c M-r}   & Evaluate this region and go \\
-  {\tt C-c C-b}   & Evaluate this buffer \\
-  {\tt C-c M-b}   & Evaluate this buffer and go \\
+  {\tt C-c C-f} & Evaluate this function \\
+  {\tt C-c M-f} & Evaluate this function and go \\
+  {\tt C-c C-r} & Evaluate this region \\
+  {\tt C-c M-r} & Evaluate this region and go \\
+  {\tt C-c C-b} & Evaluate this buffer \\
+  {\tt C-c M-b} & Evaluate this buffer and go \\
 \end{tabTit}
 
 \begin{tabTit}{Others}
   %%-SfS- changed:
   %%{\tt M-TAB} & Complete S object name \\
-  {\tt C-c C-h }& Help for S object \\
-  {\tt C-c C-d }& Edit another object \\
+  {\tt C-c C-v }& Help for S object \\
+  {\tt C-c C-d }& ``{\tt dump}'' -- Edit another object \\
   {\tt C-c C-y} & Return to S process \\
   {\tt C-c C-z} & Return to S process at prompt.
 \end{tabTit}
 
 \begin{tabTit}{SfS commands}                            %-SfS-added
   {\tt C-c f} & insert SfS function() header \\         %-SfS-added
-  {\tt M-TAB} & Complete UNIX file- / path- name \\     %-SfS-added
+  {\tt M-TAB, [GOLD]-Tab} & Complete UNIX file- / path- name \\     %-SfS-added
   {\tt C-c TAB} & Complete S object name \\             %-SfS-added
 \end{tabTit}\\[0.5cm]                                   %-SfS-added
 
-\underline{\large\bf Reading help files}
+\Sect{Reading help files}
+%%    ~~~~~~~~~~~~~~~~~~
 
-For use in `{\tt *help($\ldots$)*}' help buffers.
+For use in `{\tt *help($\ldots$)*}' help buffers:
 
 \begin{tabI}
   {\tt SPC} & Next page \\
@@ -123,6 +132,7 @@ For use in `{\tt *help($\ldots$)*}' help buffers.
   {\tt n}   & Next section \\
   {\tt p}   & Previous section \\
   {\tt s}   & Jump to a named section \\
+  {\tt s e} & e.g., jump to ``EXAMPLES'' \\
   {\tt h}   & Help on another object \\
   {\tt ?}   & Help for this mode \\
   {\tt r}   & Evaluate current region \\
