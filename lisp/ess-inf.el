@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2003/11/05 13:20:04 $
-;; Version: $Revision: 5.81 $
-;; RCS: $Id: ess-inf.el,v 5.81 2003/11/05 13:20:04 maechler Exp $
+;; Modified: $Date: 2004/02/12 23:48:08 $
+;; Version: $Revision: 5.82 $
+;; RCS: $Id: ess-inf.el,v 5.82 2004/02/12 23:48:08 rsparapa Exp $
 
 ;; This file is part of ESS
 
@@ -1236,6 +1236,8 @@ to continue it."
 
   (make-local-variable 'comint-process-echoes)
   (make-local-variable 'comint-input-sender)
+  (make-local-variable 'process-connection-type)
+  (setq process-connection-type t)
 
   ;; Configuration for SAS/XLispStat input handling
   ;; We set comint-process-echoes to t because inferior-ess-input-sender
