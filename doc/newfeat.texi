@@ -1,5 +1,8 @@
 Changes/New Features in 5.2.2:
 @itemize @bullet
+@item bug-fixes for 5.2.1 (require 'executable), html docs, etc.
+@item ess-lisp-directory/../doc/info added to Info-directory-list
+if ess-info not found by info
 @item ESS[R]: If you have other versions of R on your
 exec-path, such as "R-1.8.1" with Unix or "rw1081" with Windows,
 ESS will find them and create appropriate functions, such as M-x
