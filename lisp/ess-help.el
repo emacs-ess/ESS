@@ -8,9 +8,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>, MM
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/06 08:49:08 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: ess-help.el,v 5.12 2000/04/06 08:49:08 maechler Exp $
+;; Modified: $Date: 2000/06/19 22:40:33 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: ess-help.el,v 5.13 2000/06/19 22:40:33 ess Exp $
 
 ;; This file is part of ESS
 
@@ -62,7 +62,6 @@
 (autoload 'ess-make-buffer-current	"ess-inf" "(autoload)" nil)
 (autoload 'ess-search-list		"ess-inf" "(autoload)" nil)
 (autoload 'ess-get-object-list		"ess-inf" "(autoload)" nil)
-
 
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
