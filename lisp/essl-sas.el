@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/01/15 18:03:25 $
-;; Version: $Revision: 5.34 $
-;; RCS: $Id: essl-sas.el,v 5.34 2002/01/15 18:03:25 rmh Exp $
+;; Modified: $Date: 2002/01/15 18:21:47 $
+;; Version: $Revision: 5.35 $
+;; RCS: $Id: essl-sas.el,v 5.35 2002/01/15 18:21:47 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -48,6 +48,7 @@
 ;;;  contributed by arossini@biostats.hmc.psu.edu
 ;;;
 ;;; Last change: 2/1/95
+;;; Last change: 01/15/02
 
 (ess-message "[essl-sas:] (require 'ess) ...")
 (require 'ess)
@@ -111,6 +112,9 @@ the mode line."
   (ess-listing-minor-mode t)
   (use-local-map sas-mode-local-map)
   (toggle-read-only t)) ;; to protect the buffer.
+
+(setq auto-mode-alist (append '(("\\.lst\\'" . sas-listing-mode)) auto-mode-alist))
+(setq auto-mode-alist (append '(("\\.LST\\'" . sas-listing-mode)) auto-mode-alist))
 
 (fset 'sas-log-mode        'SAS-log-mode)
 (fset 'SAS-transcript-mode 'SAS-log-mode)
