@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/05/14 18:04:25 $
-;; Version: $Revision: 5.88 $
-;; RCS: $Id: ess-inf.el,v 5.88 2004/05/14 18:04:25 rsparapa Exp $
+;; Modified: $Date: 2004/05/18 14:34:35 $
+;; Version: $Revision: 5.89 $
+;; RCS: $Id: ess-inf.el,v 5.89 2004/05/18 14:34:35 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -944,8 +944,11 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 		 (not (looking-at inferior-ess-prompt))))))
     (goto-char (marker-position (process-mark sprocess)))
     (if eob
-	;; SJE: not sure about (goto-char (point-max)) removed here.
-	(ess-show-buffer (buffer-name sbuffer) nil))
+	(progn
+	  (save-excursion
+	    (set-buffer sbuffer)
+	    (goto-char (point-max)))
+	  (ess-show-buffer (buffer-name sbuffer) nil)))
     (set-buffer cbuffer)
     ))
 
