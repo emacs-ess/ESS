@@ -19,7 +19,7 @@ Up:<a rel="up" accesskey="u" href="#dir">(dir)</a>
 
    <p>This is the README file for the distribution of ESS version
 
-   <p>5.2.2
+   <p>5.2.3
 
    <p>The first release of the 5.2 series.  ESS is a GNU Emacs and XEmacs mode
 for interactive statistical programming and data analysis.  Languages
@@ -35,7 +35,8 @@ features in one package.
 XEmacs and has been the primary coder.  Martin Maechler
 (<a href="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</a>) and Kurt Hornik
 (<a href="mailto:hornik@ci.tuwien.ac.at">hornik@ci.tuwien.ac.at</a>) have assisted with S-PLUS, S4, R, and
-XLispStat.  Richard M. Heiberger (<a href="mailto:rmh@temple.edu">rmh@temple.edu</a>) has
+XLispStat.  Stephen Eglen (<a href="mailto:stephen@gnu.org">stephen@gnu.org</a>) has worked mostly
+on R support.  Richard M. Heiberger (<a href="mailto:rmh@temple.edu">rmh@temple.edu</a>) has
 assisted with S-PLUS and S4 development for Windows.  Richard and
 Rodney A. Sparapani (<a href="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</a>) have done much of the work
 implementing interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.
@@ -92,6 +93,10 @@ Up:<a rel="up" accesskey="u" href="#General%20Information">General Information</
 
    <p>Changes/New Features in 5.2.3:
      <ul>
+<li>ESS: When new inferior ESS processes are created, by default they
+will replace the current buffer (this restores behavior from pre
+5.2.0). If you wish new ESS processes to start in another window of the
+current frame, set inferior-ess-same-window to nil. 
 <li>New variables inferior-Splus-args and inferior-R-args provide a
 way to pass command line arguments to starting S and R processes. 
 </ul>
