@@ -87,6 +87,8 @@ AUXFILES = COPYING Makefile README ess.texi ChangeLog \
 DISTFILES = $(addprefix $(VERSIONDIR)/,$(SOURCES)) \
 	    $(addprefix $(VERSIONDIR)/,$(AUXFILES)) 
 
+DISTSCRIPTS = $(addprefix $(VERSIONDIR)/,$(SCRIPTS))
+
 ### Commands
 
 ESS: $(OBJECTS)
@@ -114,6 +116,7 @@ dist:
 	@echo "**********************************************************"
 	chmod a-w $(VERSIONDIR)/*.el $(VERSIONDIR)/ChangeLog
 	chmod u+w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
+	chmod ugo+x $(DISTSCRIPTS)
 	tar hcovf $(VERSIONDIR).tar $(DISTFILES)
 	gzip $(VERSIONDIR).tar
 	cp $(VERSIONDIR).tar.gz $(MYWWWDIR)
