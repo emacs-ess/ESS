@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.at>  <-- CHANGE
 ;;                       Richard Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/29 10:49:55 $
-;; Version: $Revision: 1.50 $
-;; RCS: $Id: ess.el,v 1.50 1997/07/29 10:49:55 rossini Exp $
+;; Modified: $Date: 1997/07/30 12:25:19 $
+;; Version: $Revision: 1.51 $
+;; RCS: $Id: ess.el,v 1.51 1997/07/30 12:25:19 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -114,6 +114,11 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.51  1997/07/30 12:25:19  rossini
+;; added (require 'cl), (require 'cl-macs), since older Emacsen don't
+;; have such things...
+;; (and we need them, for "dolist" macro).
+;;
 ;; Revision 1.50  1997/07/29 10:49:55  rossini
 ;; added [rR]-transcript-mode
 ;;
@@ -366,10 +371,11 @@
 ;;;=====================================================
 ;;;
 
+(require 'cl)
+(require 'cl-macs)
 (require 'easymenu)
 (require 'font-lock)
 (require 'ess-vars)
-
 
  ; ess-mode: editing S source
 
