@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2002/11/11 17:36:08 $
-;; Version: $Revision: 5.92 $
-;; RCS: $Id: ess-site.el,v 5.92 2002/11/11 17:36:08 maechler Exp $
+;; Modified: $Date: 2002/11/12 10:58:31 $
+;; Version: $Revision: 5.93 $
+;; RCS: $Id: ess-site.el,v 5.93 2002/11/12 10:58:31 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -207,7 +207,7 @@ The extension, in a file name, is the part that follows the last `.'."
 	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S
 	   ("\\.ssc\\'"	  . S-mode) ;; Splus 4.x script files.
 	   ("\\.[rR]\\'"  . R-mode)
-	   ("\\.[rR]nw\\'"  . Sweave-R-mode)
+	   ("\\.[rR]nw\\'"  . Rnw-mode)
 	   ("\\.[rR]profile\\'" . R-mode)
 	   ("\\.omg\\'"         . omegahat-mode)
 	   ("\\.hat\\'"         . omegahat-mode) ;; Duncan's pref'd...

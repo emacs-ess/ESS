@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/11/11 17:36:08 $
-;; Version: $Revision: 5.42 $
-;; RCS: $Id: essd-r.el,v 5.42 2002/11/11 17:36:08 maechler Exp $
+;; Modified: $Date: 2002/11/12 10:58:31 $
+;; Version: $Revision: 5.43 $
+;; RCS: $Id: essd-r.el,v 5.43 2002/11/12 10:58:31 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -136,8 +136,7 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
 
 (fset 'r-mode 'R-mode)
 
-
-(defun Sweave-R-mode ()
+(defun Rnw-mode ()
   "Major mode for editing Sweave(R) source.
 See `noweb-mode' and `R-mode' for more help."
   (interactive)
