@@ -124,7 +124,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/09 16:09:35 $ - $Revision: 1.41 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/09 22:37:43 $ - $Revision: 1.42 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -308,8 +308,7 @@ non-securely by running \texttt{telnet}, and a directory editor mode
 and saving back) on the local or remote machine with equal ease.
 
 Minor-modes, by contrast, provide services that are not mutually
-exclusive.
-For example, the minor-mode
+exclusive.  For example, the minor-mode
 \stexttt{font-lock-mode} allows Emacs to highlight, with fonts or
 colors, the syntax of a programming language whose characteristics are
 described by a major-mode like ESS.  \stexttt{overwrite-mode}, usually
@@ -319,10 +318,15 @@ Minor modes can be used to change the key mapping, for example to
 emulate the keys used by another editor.  This is often used
 by people who want the power of emacs without having to retrain their
 fingers to use the standard emacs key mappings.
-Remote editing of files is
-provided by minor-modes \stexttt{ange-ftp} and \stexttt{EFS} for
-non-secure access via ftp or \stexttt{tramp} for secure connections
-with scp or ssh, and telnet for non-secure connections.
+Minor modes are also used for remote access to files over a
+network.  \stexttt{ange-ftp} and \stexttt{EFS} are used for non-secure 
+connections via ftp and \stexttt{tramp} is used for both secure connections 
+via ssh or scp and non-secure connections via telnet.  This provides the
+the user with the ability to view, edit, and save any file they have remote
+access to, as if it were on their local machine.  
+%\stexttt{telnet} mode is 
+%used for logging in to a remote machine, either securely by running \stexttt{ssh} or
+%non-securely by running \stexttt{telnet}.
 Interacting with revision control
 programs is provided by the minor-mode \stexttt{vc-mode} for packages
 like CVS, RCS and SCCS (or the more
@@ -340,6 +344,33 @@ People will want to know if emacs is up to the job.  Of course, the
 alternative is to have a paragraph on hooks and I don't like that idea.
 Also, note that pcl-cvs-mode cooperates with vc-mode, but I think that
 is too much detail as well.
+
+Rich: Here is an attempt at rewording.
+
+{\bf
+Two different minor modes are used for remote access of files.
+\stexttt{ange-ftp} is used for non-secure connections via ftp and
+\stexttt{EFS} is used for secure connections with ssh.  With either,
+the user can view, edit, and save the file exactly as if it were on
+the local machine.  \stexttt{telnet} mode is used for logging in to a
+remote machine, either securely by running \stexttt{ssh} or
+non-securely by running \texttt{telnet}.
+}
+
+But I much prefer how I handled this issue above in the
+paragraph beginning  ``Second, major modes''.
+
+I still prefer to remove that bold-face sentence, in either
+phrasing.  If you think we need to emphasize even more strongly that
+emacs can transparently access and edit remote files, say so explicitly.
+
+Rodney: I like your re-wording of the remote access.  But, I think you are 
+misunderstanding the differences between ange-ftp, EFS and tramp.  
+ange-ftp and EFS basically provide the same functionality, non-secure 
+ftp access while tramp allows both secure connections, like scp and ssh, 
+and non-secure telnet.  So, it's ange-ftp or EFS for ftp and tramp for 
+anything else.  See my attempt above. (I think the last sentence is a bit
+overkill).
 \end{Comment}
 
 \paragraph{Extensions to Editing.}
