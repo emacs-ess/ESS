@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2001/02/17 12:55:06 $
-;; Version: $Revision: 5.23 $
-;; RCS: $Id: essl-s.el,v 5.23 2001/02/17 12:55:06 rossini Exp $
+;; Modified: $Date: 2001/02/17 13:02:41 $
+;; Version: $Revision: 5.24 $
+;; RCS: $Id: essl-s.el,v 5.24 2001/02/17 13:02:41 rossini Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -512,7 +512,14 @@ Uses the file given by the variable `ess-function-outline-file'."
   (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline))
 
 (defun ess-dump-args-and-go (Sfunc) ; &optional buff)
-  "Dump the function name, with arguments, to a buffer for editing."
+  "Dump the function name, with arguments, to a buffer for editing.
+
+Currently, this needs to:
+   1. set the buffer to the right mode, with the right settings
+   2. format the statement, 
+   3. c/function/Sfunc/
+and I need to relearn emacs lisp (but I had to, anyway."
+
   (interactive "sFunction ? ")
   (let* ((buffname "ess-complete.R")
 	 (buf (ess-execute (format "args(%s)" Sfunc)
