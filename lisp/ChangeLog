@@ -1,3 +1,8 @@
+2003-01-01  Stephen Eglen  <eglen@pcg.wustl.edu>
+
+	* ess-site.el (ess-rdired): Add autoload for ess-rdired.
+	* ess-rdired.el: New file.
+
 2002-11-12  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r.el (Rnw-mode): new (experimental) for Sweave{R} editing.
