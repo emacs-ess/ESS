@@ -8,8 +8,8 @@ ess-bugs@stat.math.ethz.ch.
 
 ESS (originally S-mode) was initially designed for use with S and
 S-PLUS(tm).  However, it has been recently extended to support other
-languages, including XLispStat(tm).  If you are looking for a stable,
-old XLispStat mode, we suggest ILISP and the recent modifications.
+languages, including XLispStat.  If you are looking for a stable, old
+XLispStat mode, we suggest ILISP and the recent modifications.
 However, those features and new advanced features are being merged
 with the development of ESS[XLS], which is similar in behavior to the
 interface for S (unlike ILISP).  We denote by _XLS_ the LispStat
@@ -142,7 +142,7 @@ prefixed by "##").
 
 
 
-$Revision: 1.4 $
+$Revision: 1.5 $
 
 Local Variables: ***
 mode:indented-text ***
