@@ -488,8 +488,18 @@ To change the value of variables in the DEFAULT group, change
 the corresponding variables, e.g. `ess-indent-level'.
 The default style in use is controlled by `ess-default-style'.")
 
-(defvar ess-default-style 'DEFAULT
-  "*The default value of `ess-style'.")
+(defcustom ess-default-style 'DEFAULT
+  "*The default value of `ess-style'.
+See the variable `ess-style-alist' for how these groups (DEFAULT, 
+GNU, BSD, ...) map onto different settings for variables."
+  :type '(choice (const DEFAULT) 
+		 (const GNU)
+		 (const BSD)
+		 (const K&R)
+		 (const C++)
+		 (const :tag "Common R" :value 'RRR)
+		 (const CLB))
+  :group 'ess-edit)
 
 (defvar ess-style ess-default-style
   "*The buffer specific ESS indentation style.")
