@@ -1,11 +1,11 @@
 -*- indented-text -*-
 
-($Revision: 1.7 $)
+($Revision: 1.8 $)
 
 ESS: Using The S family of statistical languages
 ================================================
 
-ESS (originally S-mode) was initially designed for use with S(tm) and
+ESS (originally S-mode) was initially designed for use with S and
 S-PLUS(tm); hence, this family of statistical languages currently has
 the most support.  We denote by _S_, any of the currently available
 members of the family, including S 3.x, S 4.x, S-PLUS 3.x, S-PLUS 4.x,
