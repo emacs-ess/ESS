@@ -3,7 +3,7 @@ Changes/New Features in 5.1.20:
 @item GNU Emacs 21.1 is now supported (fixed for S dialects, SAS & BUGS)
 @item XEmacs on Win (NT) is better supported.
 @item Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
-@item should now work even when imenu is not available {for old emacsen}.
+@item should now work even when imenu is not available (for old emacsen).
 @item For S dialects, .in.ESS <- TRUE  is set initially such that
       programmers can test if running in ESS by  if(.in.ESS) ...
 @item for SAS : XEmacs-Imenu fix; C-TAB ..
