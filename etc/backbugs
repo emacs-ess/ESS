@@ -1,0 +1,8 @@
+#!/bin/sh
+# runs BUGS taking commands from command file
+#
+
+case $# in
+     2) bugs603.sparc 32 $1 $2; rm $1.buf;;
+     *) echo "usage: $0 default_output_name command_file";;
+esac
