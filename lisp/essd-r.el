@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2001/06/13 18:19:01 $
-;; Version: $Revision: 5.28 $
-;; RCS: $Id: essd-r.el,v 5.28 2001/06/13 18:19:01 rossini Exp $
+;; Modified: $Date: 2001/06/21 22:34:14 $
+;; Version: $Revision: 5.29 $
+;; RCS: $Id: essd-r.el,v 5.29 2001/06/21 22:34:14 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -77,6 +77,7 @@
     (inferior-ess-start-args       . ""))
   "Variables to customize for R")
 
+;;; AJR: Need to condition on this...! 
 (require 'ess-menu)
 
 (defun R-mode  (&optional proc-name)
@@ -85,6 +86,7 @@
   (setq ess-customize-alist R-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode R-customize-alist proc-name)
+  ;;; AJR: Need to condition on this...!
   (ess-imenu-S))
 
 (fset 'r-mode 'R-mode)
