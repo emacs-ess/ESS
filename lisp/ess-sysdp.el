@@ -293,8 +293,8 @@
     (if posn 
  	(posn-point posn))))
 
-;; WMP - commenting these out so that Emacs 19 doesn't get screwed by them.
-;; In particular, this makes the 'custom' package blow up quite well.
+;;;; WMP - commenting these out so that Emacs 19 doesn't get screwed by them.
+;;;; In particular, this makes the 'custom' package blow up quite well.
 ;;(sysdep-defun add-submenu (menu-path submenu &optional before)
 ;;  "Add a menu to the menubar or one of its submenus.
 ;;If the named menu exists already, it is changed.
