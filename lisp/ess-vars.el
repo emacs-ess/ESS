@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/26 01:14:32 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: ess-vars.el,v 1.3 1997/07/26 01:14:32 rossini Exp $
+;; Modified: $Date: 1997/07/26 01:30:17 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: ess-vars.el,v 1.4 1997/07/26 01:30:17 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,6 +29,10 @@
 
 ;;
 ;; $Log: ess-vars.el,v $
+;; Revision 1.4  1997/07/26 01:30:17  rossini
+;; fixed ess-loop-timeout.
+;; implemented KH's fontlock suggestions.
+;;
 ;; Revision 1.3  1997/07/26 01:14:32  rossini
 ;; some ess -> ESS in docstrings.
 ;;
@@ -377,7 +381,7 @@ by ess-function-template.")
 ;;*;; Font-lock support
 (defvar ess-mode-font-lock-keywords
  '(("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function" 1 font-lock-function-name-face t)
-   ("<<?-" . font-lock-reference-face)
+   ("<<?-\\|_" . font-lock-reference-face)
    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" . font-lock-type-face)
    ("\\<\\(library\\|attach\\|detach\\|source\\)\\>" . font-lock-reference-face)
    "\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>")
@@ -598,9 +602,10 @@ See also function ess-create-object-name-db.")
 ;;   (ding)
 ;;   (sit-for 1)))
 
-(defvar ess-loop-timeout 50000
+(defvar ess-loop-timeout 100000
   "Integer specifying how many loops ess-mode will wait for the prompt for
-before signaling an error.")
+before signaling an error.   This is important for Splus 3.x, not so
+important for R or XLispStat.")
 
 (make-variable-buffer-local 'ess-loop-timeout)
 (setq-default ess-loop-timeout 100000)
@@ -608,8 +613,9 @@ before signaling an error.")
 ;;*;; Font-lock patterns
 
 (defvar inferior-ess-font-lock-keywords
- '(("^[>+]" . font-lock-keyword-face)	; prompt
-   ("^[>+]\\(.*$\\)" (1 font-lock-variable-name-face keep t)) ; input
+ '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)	; prompt
+   ("^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
+    (1 font-lock-variable-name-face keep t)) ; input
    ("<-\\|_" . font-lock-reference-face)		; assign
    ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
    ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
