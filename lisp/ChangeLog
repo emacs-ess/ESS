@@ -1,3 +1,7 @@
+2004-03-04  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-site.el (ess-restore-asm-extns): thanks to Es Cashin
+
 2004-02-19  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* essd-els.el (ess-select-alist-dialect): Use completing-read to

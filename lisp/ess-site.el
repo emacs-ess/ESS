@@ -1,15 +1,15 @@
 ;;; ess-site.el --- user customization of ess-mode
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--2003 A.J. Rossini, R.M. Heiberger, Martin
+;; Copyright (C) 1997--2004 A.J. Rossini, R.M. Heiberger, Martin
 ;; Maechler, Kurt Hornik, Rodney Sparapani.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/02/12 15:05:23 $
-;; Version: $Revision: 5.99 $
-;; RCS: $Id: ess-site.el,v 5.99 2004/02/12 15:05:23 stephen Exp $
+;; Modified: $Date: 2004/03/04 08:27:41 $
+;; Version: $Revision: 5.100 $
+;; RCS: $Id: ess-site.el,v 5.100 2004/03/04 08:27:41 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -188,17 +188,47 @@ The extension, in a file name, is the part that follows the last `.'."
 
 ;;; (1.3) Files ending in .q and .S are considered to be S source files
 ;;; Files ending in .St are considered to be S transcript files
+;;;
 ;;; NB: in standard Emacs, files ending in .s are assembler files.  If you
-;;; want to use assembler, comment the appropriate
-;;; line below.
+;;; want to use assembler, you can comment the appropriate line below.  Of
+;;; course, different users will want different modes.  If a user wants to
+;;; restore default the default modes for assembly file extensions, the
+;;; following can go into ~/.emacs:
+;;;
+;;;  (add-hook 'ess-mode-hook 'ess-restore-asm-extns)
+;;;  (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
 
 (autoload 'Rd-mode "essddr" "Major mode for editing R documentation." t)
 
-;; This fails in Emacs.	 How can it be done simply?  Should it be
-;; done?  It works in XEmacs.
-;;    ;; get rid of assembler mode.
-;;    (set auto-mode-alist (remassoc "\\.[sS]\\'" auto-mode-alist))
-;; Our current solution is as follows.
+;; remassoc exists as a built-in function in xemacs, but
+;; not in GNU emacs
+;;
+(if (not (functionp 'remassoc))
+    (defun remassoc (key a)
+      "remove an association pair from an alist"
+      (if a
+	  (let ((pair (car a)))
+	    (if (equal (car pair) key)
+		(cdr a)
+		(cons pair (remassoc key (cdr a))))))))
+
+;; This is thanks to  Ed L Cashin <ecashin@uga.edu>, 03 Mar 2004 :
+(defun ess-restore-asm-extns ()
+  "take away the S-Plus mode association for .s and .S files added by ESS
+Putting the following in ~/.emacs restores emacs' default association
+between .s or .S files and assembly mode.
+
+  (add-hook 'ess-mode-hook 'ess-restore-asm-extns)
+  (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
+"
+  (interactive)
+  (if (assoc "\\.[qsS]\\'" auto-mode-alist)
+      (progn
+	(setq auto-mode-alist
+	      (remassoc "\\.[qsS]\\'" auto-mode-alist))
+	;; put .q extention back
+	;; (add-to-list is in xemacs and GNU emacs)
+	(add-to-list 'auto-mode-alist '("\\.q\\'" . S-mode)))))
 
 ;; Be careful when editing the following. MISTAKES WILL RESULT IN
 ;; *.sty BEING TREATED AS ESS[S], rather than LaTeX-mode!
@@ -207,7 +237,7 @@ The extension, in a file name, is the part that follows the last `.'."
   (setq auto-mode-alist
 	(append
 	 '(("\\.sp\\'"	  . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
-	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S
+	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S [see ess-restore-asm-extns above!]
 	   ("\\.ssc\\'"	  . S-mode) ;; Splus 4.x script files.
 	   ("\\.[rR]\\'"  . R-mode)
 	   ("\\.[rR]nw\\'"  . Rnw-mode)
