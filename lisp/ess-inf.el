@@ -1,4 +1,4 @@
-;;; ess-inf.el --- Support for running S as an inferior Emacs process
+;; ess-inf.el --- Support for running S as an inferior Emacs process
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997, A.J. Rossini
@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/03/05 21:05:48 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: ess-inf.el,v 5.13 1999/03/05 21:05:48 rossini Exp $
+;; Modified: $Date: 1999/03/08 04:23:04 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: ess-inf.el,v 5.14 1999/03/08 04:23:04 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -1181,12 +1181,13 @@ to continue it."
       (cond
        ((string= ess-dialect "R")
 	(setq comint-input-sender 'inferior-R-input-sender))
-       ((or (string= ess-dialect "S3")
+       ((or (string= ess-dialect "S3") ;; S dialects
 	    (string= ess-dialect "S4")
 	    (string= ess-dialect "S+3")
 	    (string= ess-dialect "S+4")
 	    (string= ess-dialect "S+5")
-	    (string= ess-dialect "S"))
+	    (string= ess-dialect "S")
+	    (string= ess-dialect "STA")) ;; Stata
 	(setq comint-input-sender 'inferior-ess-input-sender))))
 
   (ess-write-to-dribble-buffer
