@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/07/27 18:12:14 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: essl-bug.el,v 1.10 2001/07/27 18:12:14 ess Exp $
+;; Modified: $Date: 2001/07/27 19:21:13 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: essl-bug.el,v 1.11 2001/07/27 19:21:13 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -112,7 +112,7 @@
 (defvar ess-bugs-file-data "."
    "ESS[BUGS]:  BUGS data file.")
 
-(defcustom ess-bugs-init-suffix ".in"
+(defcustom ess-bugs-inits-suffix ".in"
    "ESS[BUGS]:  BUGS init file suffix."
     :group 'ess-bugs
     :type  'string
@@ -322,7 +322,7 @@
 
 	        (if (search-forward "%INITS" nil t) 
 		    (replace-match 
-			(concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-init-suffix) t t))
+			(concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-inits-suffix) t t))
  
 		(let ((ess-bugs-temp-string " ")
 		    (ess-bugs-buffer-ptr nil))
