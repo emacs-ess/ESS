@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/12 00:20:50 $
-;; Version: $Revision: 1.29 $
-;; RCS: $Id: essd-sas.el,v 1.29 1997/11/12 00:20:50 rossini Exp $
+;; Modified: $Date: 1997/11/12 07:27:16 $
+;; Version: $Revision: 1.30 $
+;; RCS: $Id: essd-sas.el,v 1.30 1997/11/12 07:27:16 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -51,7 +51,7 @@
 
 ;;; Code:
 
-(defun ess-SAS-pre-run-hook ()
+(defun ess-SAS-pre-run-hook (temp-ess-dialect)
   "Set up log and list files for interactive SAS."
 
   (let* ((ess-shell-buffer-name-flag (get-buffer "*shell*"))
@@ -197,7 +197,7 @@
    (format "(SAS): ess-dialect=%s , buf=%s \n"
 	   ess-dialect
 	   (current-buffer)))
-  (ess-SAS-pre-run-hook)
+  (ess-SAS-pre-run-hook ess-dialect)
   (inferior-ess))
 
 
