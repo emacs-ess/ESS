@@ -30,8 +30,8 @@ University of Washington, Seattle, WA 98185, USA
 
 Indirect:
 ess.info-1: 1060
-ess.info-2: 50117
-ess.info-3: 99870
+ess.info-2: 50182
+ess.info-3: 99935
 
 Tag Table:
 (Indirect)
@@ -39,69 +39,69 @@ Node: Top1060
 Node: Introduction5592
 Node: Features8682
 Node: New features11743
-Node: Credits15147
-Node: Latest version17309
-Node: Manual17843
-Node: Starting Up18731
-Node: Multiple ESS processes19522
-Node: Customizing startup20874
-Node: Entering commands22849
-Node: Command-line editing24045
-Node: Completion25324
-Node: Completion details28091
-Ref: Completion details-Footnote-130001
-Node: Transcript30280
-Node: Last command32060
-Node: Process buffer motion33669
-Node: Transcript resubmit35203
-Node: Saving transcripts37801
-Node: Command History39835
-Node: History expansion42454
-Node: Hot keys45657
-Node: Other49083
-Node: Editing50117
-Node: Edit buffer51275
-Node: Loading53323
-Node: Error Checking54368
-Node: Evaluating code55409
-Node: Indenting58884
-Node: Other edit buffer commands61744
-Node: Source Files63617
-Node: Source Directories68148
-Node: Help71275
-Node: Transcript Mode74843
-Node: Resubmit75978
-Node: Clean77053
-Node: Miscellaneous77767
-Node: Highlighting78127
-Node: Graphics79538
-Node: printer80012
-Node: X1180774
-Node: Object Completion81442
-Node: Bugs82250
-Node: Help Statistics83934
-Node: Help on Unix Splus84224
-Node: Help on Microsoft Splus84392
-Node: Help on R84544
-Node: Help on SAS84671
-Node: Help on XLispStat84796
-Node: Help on Stata84937
-Node: Help OS85050
-Node: Help Unix85253
-Node: Help Microsoft85371
-Node: Installation85483
-Node: System dependent88061
-Node: Customization90336
-Node: Variables91007
-Node: Variables for starting ESS91832
-Node: Dump file variables93845
-Node: Indentation variables95016
-Node: Variables controlling interaction97871
-Node: Hooks98724
-Node: Keybindings99870
-Node: Key Index100901
-Node: Command Index101044
-Node: Concept Index101327
-Node: Variable and command index108204
+Node: Credits15212
+Node: Latest version17374
+Node: Manual17908
+Node: Starting Up18796
+Node: Multiple ESS processes19587
+Node: Customizing startup20939
+Node: Entering commands22914
+Node: Command-line editing24110
+Node: Completion25389
+Node: Completion details28156
+Ref: Completion details-Footnote-130066
+Node: Transcript30345
+Node: Last command32125
+Node: Process buffer motion33734
+Node: Transcript resubmit35268
+Node: Saving transcripts37866
+Node: Command History39900
+Node: History expansion42519
+Node: Hot keys45722
+Node: Other49148
+Node: Editing50182
+Node: Edit buffer51340
+Node: Loading53388
+Node: Error Checking54433
+Node: Evaluating code55474
+Node: Indenting58949
+Node: Other edit buffer commands61809
+Node: Source Files63682
+Node: Source Directories68213
+Node: Help71340
+Node: Transcript Mode74908
+Node: Resubmit76043
+Node: Clean77118
+Node: Miscellaneous77832
+Node: Highlighting78192
+Node: Graphics79603
+Node: printer80077
+Node: X1180839
+Node: Object Completion81507
+Node: Bugs82315
+Node: Help Statistics83999
+Node: Help on Unix Splus84289
+Node: Help on Microsoft Splus84457
+Node: Help on R84609
+Node: Help on SAS84736
+Node: Help on XLispStat84861
+Node: Help on Stata85002
+Node: Help OS85115
+Node: Help Unix85318
+Node: Help Microsoft85436
+Node: Installation85548
+Node: System dependent88126
+Node: Customization90401
+Node: Variables91072
+Node: Variables for starting ESS91897
+Node: Dump file variables93910
+Node: Indentation variables95081
+Node: Variables controlling interaction97936
+Node: Hooks98789
+Node: Keybindings99935
+Node: Key Index100966
+Node: Command Index101109
+Node: Concept Index101392
+Node: Variable and command index108269
 
 End Tag Table

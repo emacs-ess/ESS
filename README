@@ -1,9 +1,9 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.24 $, for ESS 5.1.x)
+   ($Revision: 5.25 $, for ESS 5.1.x)
 
-   This is the README file for the distribution of ESS version 5.1.17,
+   This is the README file for the distribution of ESS version 5.1.18,
 the alpha/beta series we are using on the way to producing 5.2 (the next
 stable distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported include:
@@ -67,6 +67,14 @@ in the file COPYING in the same directory as this file for more details.
 New Features
 ============
 
+   Changes/New Features in 5.1.18:
+   * New `ess-smart-underscore' function, now assigned to "_" by
+     default.        Inserts `ess-S-assign' (customizable " <- "),
+     unless inside string       and comments where plain "_" is used
+     instead. (MM)
+
+   * Fixes for longstanding interactive SAS breakage (RMH)
+
    Changes/New Features in 5.1.17:
    * Documentation for Windows Installation (Rich Heiberger
      (<rmh@surfer.stat.temple.edu>))
@@ -79,8 +87,8 @@ New Features
      (<maechler@stat.math.ethz.ch>)).
 
    * addition of the "S-equal" variable and provide M-x ess-add-MM-keys
-          a way to remap "_" to 'S-equal, typically " <- ", but
-     configurable. (MMaechler, (<maechler@stat.math.ethz.ch>)).
+          a way to remap "_" to `ess-S-assign', typically " <- ", but
+         customizable. (MMaechler, (<maechler@stat.math.ethz.ch>)).
 
    Changes/New Features in 5.1.16:
    * BUG FIXES
@@ -290,25 +298,25 @@ Microsoft Windows.  First, we discuss Unix installation.
   1.   cd to a directory where you keep emacs lisp files, or create a
      new   directory to hold the distribution.  This directory will be
      referred   to below as "the ESS distribution directory".  It will
-     contain,   at the end, the tar file `ESS-5.1.17.tar.gz', and a
+     contain,   at the end, the tar file `ESS-5.1.18.tar.gz', and a
      directory for   the ESS source, which will be termed "the
-     ESS-5.1.17 source directory".    Note that the .elc files may be
+     ESS-5.1.18 source directory".    Note that the .elc files may be
      installed elsewhere (as specified in the   Makefile) if desired.
 
   2.   Retrieve the compressed tar file from one of the FTP or WWW
      archive   sites via FTP (or HTTP).
 
-  3.   Copy `ESS-5.1.17.tar.gz' to the location where you want the
-     ESS-5.1.17 directory, and cd there.  Extract the files from the
-     distribution, which will unpack into a subdirectory, ESS-5.1.17.
-          	gunzip ESS-5.1.17.tar.gz
-          	tar vxf ESS-5.1.17.tar
-     	(or: `gunzip < ESS-5.1.17.tar.gz | tar vxf -' ).  	(or using GNU
-     tar:  `tar zvxf ESS-5.1.17.tar.gz').
+  3.   Copy `ESS-5.1.18.tar.gz' to the location where you want the
+     ESS-5.1.18 directory, and cd there.  Extract the files from the
+     distribution, which will unpack into a subdirectory, ESS-5.1.18.
+          	gunzip ESS-5.1.18.tar.gz
+          	tar vxf ESS-5.1.18.tar
+     	(or: `gunzip < ESS-5.1.18.tar.gz | tar vxf -' ).  	(or using GNU
+     tar:  `tar zvxf ESS-5.1.18.tar.gz').
 
      The `tar' command will extract files into the current directory.
 
-     Do not create ESS-5.1.17 yourself, or you will get an extra level
+     Do not create ESS-5.1.18 yourself, or you will get an extra level
      of   depth to your directory structure.
 
   4.   Edit the file `lisp/ess-site.el' as explained in the comments
@@ -325,7 +333,7 @@ Microsoft Windows.  First, we discuss Unix installation.
      START USING ESS.  THESE STEPS COMPILE (for a small gain in speed)
      AND CREATE THE DOCUMENTATION.
 
-     In the ESS-5.1.17 directory, edit the file `Makeconf' (only if you
+     In the ESS-5.1.18 directory, edit the file `Makeconf' (only if you
       want to place the executables in other locations; see LISPDIR and
       INFODIR) and then type:
           	make
@@ -424,33 +432,33 @@ Microsoft Windows.  First, we discuss Unix installation.
      new    directory (for example, `c:\emacs\') to hold the
      distribution.  This    directory will be referred to below as "the
      ESS distribution    directory".  It will contain, at the end,
-     either the tar file    `ESS-5.1.17.tar.gz' or the zip file
-     `ESS-5.1.17.zip', and a    directory    for the ESS source, which
-     will be termed "the ESS-5.1.16 source    directory".
+     either the tar file    `ESS-5.1.18.tar.gz' or the zip file
+     `ESS-5.1.18.zip', and a    directory    for the ESS source, which
+     will be termed "the ESS-5.1.18 source    directory".
 
-  2.       Retrieve the compressed tar file `ESS-5.1.17.tar.gz' or the
-        zipped file `ESS-5.1.17.zip' from one of the FTP or WWW
+  2.       Retrieve the compressed tar file `ESS-5.1.18.tar.gz' or the
+        zipped file `ESS-5.1.18.zip' from one of the FTP or WWW
      archive sites      via FTP (or HTTP).  Be aware that http browsers
      on Windows      frequently change the "." and "-" characters in
      filenames to other      punctuation.  Please change the names back
      to their original form.
 
-  3.       Copy `ESS-5.1.17.tar.gz' to the location where you want the
-        ESS-5.1.16 directory, for example to
-     `c:\emacs\ESS-5.1.16.tar.gz', and cd there.  For example,
+  3.       Copy `ESS-5.1.18.tar.gz' to the location where you want the
+        ESS-5.1.18 directory, for example to
+     `c:\emacs\ESS-5.1.18.tar.gz', and cd there.  For example,
 
                        cd c:\emacs
 
      Extract the files from the distribution, which will unpack
-     into a subdirectory, `ess-5.1.17'.
-                    	gunzip ESS-5.1.16.tar.gz
-                    	tar vxf ESS-5.1.16.tar
-          	(or: `gunzip < ESS-5.1.16.tar.gz | tar vxf -' ).
-        (or: from the zip file: `unzip ESS-5.1.17.zip')
+     into a subdirectory, `ess-5.1.18'.
+                    	gunzip ESS-5.1.18.tar.gz
+                    	tar vxf ESS-5.1.18.tar
+          	(or: `gunzip < ESS-5.1.18.tar.gz | tar vxf -' ).
+        (or: from the zip file: `unzip ESS-5.1.18.zip')
 
      The `tar' command will extract files into the current directory.
 
-     Do not create `ess-5.1.17' yourself, or you will get an extra level
+     Do not create `ess-5.1.18' yourself, or you will get an extra level
          of   depth to your directory structure.
 
   4.      Windows users will usually be able to use the
@@ -532,8 +540,11 @@ Microsoft Windows.  First, we discuss Unix installation.
      If you wish to run R, you can start it with:
                     	M-x R
 
-     XLispStat (unverified?) can be run with
+     XLispStat can not currently be run with
                     	M-x XLS
+          Hopefully, this will change.  However, you can still edit with
+         Emacs, and cut and paste the results into the XLispStat
+     *Listener* Window under Microsoft Windows.
 
      SAS for Windows uses the batch access with function keys that is
        described in `doc/README.SAS'.
@@ -606,6 +617,6 @@ Authors
    * Martin Maechler (http://stat.ethz.ch/~maechler/)
      <maechler@stat.math.ethz.ch>
 
-   * Rodney Sparapani (see http://www.duke.edu/~spara002/)
+   * Rodney Sparapani (http://www.duke.edu/~spara002/)
      <rodney.sparapani@duke.edu>
 

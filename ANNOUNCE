@@ -1,7 +1,7 @@
 ANNOUNCING ESS
 **************
 
-   Annoucing the release of ESS-5.1.17 (Emacs Speaks Statistics).
+   Annoucing the release of ESS-5.1.18 (Emacs Speaks Statistics).
 ------------------------------------------------------------
 
    ESS is an Emacs package which provides a standard interface between
@@ -25,6 +25,14 @@ file README with the distribution.
 New Features
 ============
 
+   Changes/New Features in 5.1.18:
+   * New `ess-smart-underscore' function, now assigned to "_" by
+     default.        Inserts `ess-S-assign' (customizable " <- "),
+     unless inside string       and comments where plain "_" is used
+     instead. (MM)
+
+   * Fixes for longstanding interactive SAS breakage (RMH)
+
    Changes/New Features in 5.1.17:
    * Documentation for Windows Installation (Rich Heiberger
      (<rmh@surfer.stat.temple.edu>))
@@ -37,8 +45,8 @@ New Features
      (<maechler@stat.math.ethz.ch>)).
 
    * addition of the "S-equal" variable and provide M-x ess-add-MM-keys
-          a way to remap "_" to 'S-equal, typically " <- ", but
-     configurable. (MMaechler, (<maechler@stat.math.ethz.ch>)).
+          a way to remap "_" to `ess-S-assign', typically " <- ", but
+         customizable. (MMaechler, (<maechler@stat.math.ethz.ch>)).
 
    Changes/New Features in 5.1.16:
    * BUG FIXES
@@ -292,7 +300,7 @@ Authors
    * Martin Maechler (http://stat.ethz.ch/~maechler/)
      <maechler@stat.math.ethz.ch>
 
-   * Rodney Sparapani (see http://www.duke.edu/~spara002/)
+   * Rodney Sparapani (http://www.duke.edu/~spara002/)
      <rodney.sparapani@duke.edu>
 
 License
