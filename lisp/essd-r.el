@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/30 13:13:21 $
-;; Version: $Revision: 1.26 $
-;; RCS: $Id: essd-r.el,v 1.26 1997/07/30 13:13:21 rossini Exp $
+;; Modified: $Date: 1997/07/31 12:51:50 $
+;; Version: $Revision: 1.27 $
+;; RCS: $Id: essd-r.el,v 1.27 1997/07/31 12:51:50 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.27  1997/07/31 12:51:50  rossini
+;;: changed the save call to reflect R.
+;;:
 ;;: Revision 1.26  1997/07/30 13:13:21  rossini
 ;;: vars back.
 ;;:
@@ -104,23 +107,33 @@
 
 ;;; Code:
 
+(defconst ess-help-R-sec-keys-alist 
+  '((?a . "\\s *Arguments:") 
+    (?d . "\\s *Description:")
+    (?n . "\\s *Note:")
+    (?r . "\\s *References:") 
+    (?v . "\\s *Value[s]?")	;
+    (?s . "\\s *See Also:") 
+    (?e . "\\s *Examples:") 
+    )) ;; "Alist of (key . string) pairs for use in section searching."
+
+(defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$")
+
 (defvar R-customize-alist
   '((ess-customize-alist           . R-customize-alist)
     (ess-proc-prefix               . "R")
-    (ess-version-running           . "R" )
+    (ess-version-running           . "0.50-a1" )
     (inferior-ess-program          . inferior-R-program-name)
-    (ess-help-sec-regex            . "^\\s *[A-Z[a-z. ---]+:$") ;ess-help-R-sec-regex)
-    (ess-help-sec-keys-alist       . '((?a . "\\s *Arguments:")
-					(?d . "\\s *Description:")
-					(?n . "\\s *Note:")
-					(?r . "\\s *References:")
-					(?v . "\\s *Value[s]?")
-					(?s . "\\s *See Also:")
-					(?e . "\\s *Examples:")))  ; ess-help-R-sec-keys-alist)
+    (ess-help-sec-regex            . ess-help-R-sec-regex)
+    (ess-help-sec-keys-alist       . ess-help-R-sec-keys-alist)
     (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-objects-command  . "objects(pos = %d)\n")
     (inferior-ess-exit-command     . "q()\n")
     (ess-loop-timeout              . 100000 )
+    (ess-retr-lastvalue-command .
+     ".Last.value <- get(\"smode.lvsave\",envir=1)\n")
+    (ess-save-lastvalue-command .
+     "assign(\"smode.lvsave\",.Last.value,envir=1)\n")
     (inferior-ess-primary-prompt   . "[][a-zA-Z0-9() ]*> ?"))
   "Variables to customize for R")
 
@@ -129,6 +142,7 @@
 New way to do it."
   (interactive)
   (setq ess-customize-alist R-customize-alist)
+  ;; for debugging only
   (ess-write-to-dribble-buffer
    (format "(R): ess-proc-prefix=%s , buf=%s \n"
 	   ess-proc-prefix
