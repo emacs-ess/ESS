@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/07/13 17:17:34 $
-;; Version: $Revision: 5.63 $
-;; RCS: $Id: ess-site.el,v 5.63 2000/07/13 17:17:34 rossini Exp $
+;; Modified: $Date: 2000/08/27 21:32:40 $
+;; Version: $Revision: 5.64 $
+;; RCS: $Id: ess-site.el,v 5.64 2000/08/27 21:32:40 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -167,12 +167,12 @@ The extension, in a file name, is the part that follows the last `.'."
 ;; load code to figure out what version/strain of Emacs we are running
 ;; must come *AFTER* load-path is set !
 
-(require 'ess-emcs)
-;;; The above require sets the following ess-local-custom-available to
+;;; The following require sets the following ess-local-custom-available to
 ;;; true if custom is provided at this point.  If we think it will be,
 ;;; then we can use the following (uncommented out) to make sure that
-;;; it will be.
-;; 
+;;; it will be.  (AJR).
+(require 'ess-emcs)
+;; This will override what Emacs thinks it can detect.
 ;;(setq ess-local-custom-available t); if custom is available, uncomment
 
 
