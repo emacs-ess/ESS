@@ -1409,10 +1409,16 @@ to continue it."
 	   (current-buffer) comint-process-echoes comint-input-sender))
 
   ;; Completion support
-  (setq comint-dynamic-complete-functions
-	'(ess-complete-filename
-	  ess-complete-object-name
-	  comint-replace-by-expanded-history))
+  ;; SJE: comint-dynamic-complete-functions is regarded as a hook, rather 
+  ;; than a regular variable.
+  (add-hook 'comint-dynamic-complete-functions 
+	    'ess-complete-object-name nil 'local)
+  (add-hook 'comint-dynamic-complete-functions 
+	     'comint-replace-by-expanded-history 'append 'local)
+  (add-hook 'comint-dynamic-complete-functions
+	    'ess-complete-filename 'append 'local)
+  
+  
 
   ;; (setq comint-completion-addsuffix nil) ; To avoid spaces after filenames
   ;; KH: next 2 lines solve.
