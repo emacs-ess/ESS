@@ -1,3 +1,8 @@
+1999-09-06  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essddr.el (Rd-indent-level): default 2 (back from 4):
+	We need horizontal space, and there's not a lot of nesting.
+
 1999-09-01  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el : add "Switch Process" menu entry to [ESS] menu.
