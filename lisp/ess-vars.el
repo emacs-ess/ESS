@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1998/12/11 19:51:18 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: ess-vars.el,v 5.11 1998/12/11 19:51:18 rossini Exp $
+;; Modified: $Date: 1998/12/17 13:56:44 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: ess-vars.el,v 5.12 1998/12/17 13:56:44 hornik Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -36,7 +36,6 @@
 
 (defconst ess-version "5.1.2"
   "Version of ESS currently loaded.")
-
 
 (defvar no-doc
   "This function is part of ESS, but has not yet been loaded.
@@ -571,7 +570,7 @@ of Emacs until the code has been successfully evaluated by S.")
 (make-variable-buffer-local 'inferior-ess-prompt)
 
 (defvar ess-change-sp-regexp
-  "\\(attach(\\([^)]\\|$\\)\\|detach(\\|collection(\\|library(\\)"
+  "\\(attach(\\([^)]\\|$\\)\\|detach(\\|collection(\\|library(\\|require(\\)"
   "The regexp for matching the ess commands that change the search path.")
 
 ;;*;; Process-dependent variables
