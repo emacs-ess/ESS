@@ -1,3 +1,7 @@
+1999-09-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r.el (R-customize-alist): help( .. htmlhelp = FALSE)
+
 Wed Sep 15 22:34:37 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* ess-inf.el (inferior-ess-mode): preliminary support for Omegahat.
@@ -34,7 +38,7 @@ Tue Sep 14 16:53:21 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
 Tue Sep 14 16:53:07 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* ess-debug.el: This is customized for me (AJR). 
+	* ess-debug.el: This is customized for me (AJR).
 
 Tue Sep 14 16:52:35 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
@@ -42,7 +46,7 @@ Tue Sep 14 16:52:35 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
 Tue Sep 14 16:10:04 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* ess-noweb.el (global-font-lock-mode): set true to prevent XEmacs 
+	* ess-noweb.el (global-font-lock-mode): set true to prevent XEmacs
 	from barfing.
 
 Tue Sep 14 13:26:36 1999  A.J. Rossini  <rossini@biostat.washington.edu>
