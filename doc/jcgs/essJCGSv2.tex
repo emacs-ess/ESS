@@ -57,12 +57,12 @@
 \usepackage{alltt}
 
 %% Postscript fonts
-%\usepackage{times}
+\usepackage{times}
 \usepackage{graphicx}
 
 \ifx\pdfoutput\undefined
   %% Stuff wout hyperref
-  \def\url#1{\stextsf{#1}} % To help fit in lines
+  \def\url#1{\stexttt{#1}} % To help fit in lines ?AJR: stextsf?
 \else
   %% Stuff with hyperref
   \usepackage{hyperref}
@@ -71,7 +71,7 @@
 \fi
 %%---End of package requiring ---------- Own Definitions -------------
 
-\newcommand*{\regstrd}{$^{\mbox{\scriptsize\textregistered}}$}
+\newcommand*{\regstrd}{$^{\mbox{\scriptsize{\textregistered}}}$}
 \newcommand*{\tm}{$^{\mbox{\scriptsize\sc tm}}$}
 \newcommand*{\SAS}{\textsc{SAS}}
 \newcommand*{\Splus}{\textsc{S-Plus}}
@@ -137,7 +137,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/14 15:59:50 $ - $Revision: 1.56 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/14 16:02:20 $ - $Revision: 1.57 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -1096,11 +1096,19 @@ with problems you can send e-mail to \url{ess-help@stat.math.ethz.ch}.
 The latest development, hence unstable, version can be obtained by
 anonymous CVS.  First type:
 
-\stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository login}
+\begin{Comment}
+  AJR:  THIS IS COMPLETELY WRONG.   WE \textbf{NEVER} LET THE SOURCE REPOSITORY BE THE ANON CVS REPOSITORY.
 
-You will be prompted for a password which is ``\stexttt{anoncvs}''.  Then type: 
+  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository login}
 
-\stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository co ess}
+  You will be prompted for a password which is ``\stexttt{anoncvs}''.  Then type: 
+
+  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository co ess}
+  
+  \textbf{Should be something like /var/anoncvs instead of
+    /home/ess/repository.}
+  
+\end{Comment}
 
 \bibliographystyle{plainnat}
 %\pdfbookmark[1]{References}{section.7}
