@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/07 00:11:09 $ - $Revision: 1.139 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/07 00:22:24 $ - $Revision: 1.140 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -419,22 +419,29 @@ deleted sections of code files, documentation, or papers.
 %Process Interaction.
 %\end{Comment}
 
-Emacs provides capabilities such as \stexttt{dired} mode,
+There are many features which Emacs has which, while innovative when
+introduced, are fairly common now.  Emacs provides file-manager
+capabilities such as \stexttt{dired},
 %%% AJR: can't reference a paragraph 
 %% (discussed in section \ref{sec:modes})
-which interfaces to the computer's directory structure to provide a
-file-manager capability.  Other capabilities include storing
-command-history records which date back to the beginning of an editing
-session, allowing a near-infinite undo capability; more importantly,
-for modes which control processes, the process input history, for
-example, the actual data analysis commands entered, are stored.  This
-can look very different from the edits which have taken place in that
-buffer!  Tools such as \stexttt{etags} combined with
-\stexttt{speedbar} provide a hyperlinked index to text objects, such
-as S function definitions and \SAS\ proc/run combinations, across
-files within a directory.  Other extensions to Emacs allow it to act
-as a web browser, a mail and news reader, and providing spell checking
-capabilities.
+which interfaces to the computer's directory structure.  It also
+stores command-history records from the beginning of an editing
+session, allowing a near-infinite undo capability.  More importantly,
+for modes which control processes, the process input history is
+stored; this is, for example, the actual data analysis commands
+entered and can be very different from observed buffer due to editing.
+Tools such as \stexttt{etags} combined with \stexttt{speedbar} provide
+a hyperlinked index to text objects, such as S function definitions
+and \SAS\ proc/run combinations, across files within a directory.
+Other extensions to Emacs include web browsers, mail and news readers,
+and spell checking.
+
+In conclusion, Emacs is an extremely powerful editor.  Claims have
+been made that Emacs provides most of the capabilities found in an
+operating system, and it is fairly close to the truth.  This provides
+a strong foundation for constructing an integrated development
+environment which caters to the needs of statisticians.  The next
+section focuses on ESS, which realizes this potential.
 
 
 \section{ESS extends Emacs}
