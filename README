@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.20 $)
+($Revision: 1.21 $)
 
 ESS VERSION 5.0
 ---------------
@@ -38,6 +38,7 @@ Languages Supported (or planned to be supported)
 	S dialects (S 3, S 4, S-PLUS 3.x, S-PLUS 4.x and R)
 	LispStat dialects (XLispStat, ViSta, Common LispStat(?))
 	SAS
+	Stata
 	SPSS dialects (SPSS, Fiasco)
 	
 Editing source code (S, LispStat, SAS)
@@ -105,7 +106,6 @@ The HTML version of the documentation can be found at:
 	http://www.stat.math.ethz.ch/ESS/
 
 
-
 5. INSTALLATION
 ---------------
 
@@ -160,7 +160,7 @@ The HTML version of the documentation can be found at:
 
 	(load "/PATH/ess-site")
 
-  to your .emacs file (or to default.el, for a site-wide
+  to your .emacs file (or default.el or site-init.el, for a site-wide 
   installation).  Replace `/PATH' above with the value of
   ess-lisp-directory as defined in ess-site.el.
 
