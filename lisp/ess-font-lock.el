@@ -1,14 +1,16 @@
 ;;; ess-font-lock.el -- font-lock color options
 
-;; Copyright (C) 1997--2000 Rodney Sparapani, A.J. Rossini,
-;; Martin Maechler, Kurt Hornik, and Richard M. Heiberger.
+;; Copyright (C) 1997--2001 Rodney Sparapani < >,
+;; A.J. Rossini <rossini@u.washington.edu>,  Martin Maechler
+;; <maechler@stat.math.ethz.ch>, Kurt Hornik < >, 
+;; Richard M. Heiberger <rmh@temple.edu>.
 
 ;; Author: Richard M. Heiberger <rmh@temple.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 06 Feb 2000
-;; Modified: $Date: 2000/09/03 19:23:16 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: ess-font-lock.el,v 1.4 2000/09/03 19:23:16 rossini Exp $
+;; Modified: $Date: 2001/01/08 00:54:02 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: ess-font-lock.el,v 1.5 2001/01/08 00:54:02 rossini Exp $
 
 ;; Keywords: ESS, font-lock
 
@@ -32,9 +34,11 @@
 ;; don't charge money for it, remove this notice, or hold anyone liable
 ;; for its results.
 
+;;; Commentary:
 
+;; provides syntax highlighting support.
 
-;; Code:
+;;; Code:
 
 ; Requires and autoloads
 
@@ -42,17 +46,19 @@
 (require 'paren)
 (if (fboundp 'show-paren-mode) (show-paren-mode 1))
 
-;; font-lock faces are defined in /emacs/emacs-20.5/lisp/font-lock.el
+;;; Emacs 20.x notes:
 
+;; font-lock faces are defined in /emacs/emacs-20.5/lisp/font-lock.el
 ;; The font-lock faces are applied to ESS buffers by
 ;; ess-mode.el ess-inf.el ess-trns.el ess-cust.el
 ;; The keywords for faces are defined in the ess[dl]*.el files.
-
-;;; All faces can be looked at with
+;; All faces can be looked at, under Emacs 20.x, with
 ;;        [menu-bar] [Edit] [Text Properties] [Display Faces}
 
+;;; For XEmacs
 
-;; Richard M. Heiberger <rmh@temple.edu>
+;; ... (tony needs to write something here).
+
 (defun ess-font-lock-rmh ()
   "Set font-lock colors to Richard Heiberger's usual choice."
   (interactive)
@@ -70,11 +76,8 @@
     (set-face-foreground   'font-lock-reference-face "Brown"))
   (set-face-foreground 'font-lock-string-face "VioletRed")
   (set-face-foreground 'font-lock-type-face "Sienna")
-  (set-face-foreground 'font-lock-variable-name-face "Black")
-)
+  (set-face-foreground 'font-lock-variable-name-face "Black"))
 
-
-;; Richard M. Heiberger <rmh@temple.edu>
 (defun ess-font-lock-blue ()
   "Set font-lock colors to Richard Heiberger's blue color scheme."
   (interactive)
@@ -92,11 +95,8 @@
     (set-face-foreground   'font-lock-reference-face "Brown"))
   (set-face-foreground 'font-lock-string-face "VioletRed")
   (set-face-foreground 'font-lock-type-face "Sienna")
-  (set-face-foreground 'font-lock-variable-name-face "Black")
-)
+  (set-face-foreground 'font-lock-variable-name-face "Black"))
 
-
-;; Richard M. Heiberger <rmh@temple.edu>
 (defun ess-font-lock-wheat ()
   "Set font-lock colors to Richard Heiberger's wheat color scheme."
   (interactive)
@@ -114,11 +114,9 @@
     (set-face-foreground 'font-lock-reference-face "Brown"))
   (set-face-foreground 'font-lock-string-face "VioletRed")
   (set-face-foreground 'font-lock-type-face "Sienna")
-  (set-face-foreground 'font-lock-variable-name-face "Black")
-)
+  (set-face-foreground 'font-lock-variable-name-face "Black"))
 
 
-;; Richard M. Heiberger <rmh@temple.edu>
 (defun ess-font-lock-bw ()
   "Set font-lock colors to Richard Heiberger's black and white color scheme."
   (interactive)
@@ -128,7 +126,9 @@
   (set-face-foreground 'modeline "gray10")
   (set-face-background 'modeline "gray90")
 
-  ;;modify-face is an interactive compiled Lisp function in `faces'.
+  ;; modify-face is an interactive compiled Lisp function in `faces'.
+  ;; Sample usage:
+
   ;;(modify-face FACE			     FOREGROUND BACKGROUND STIPPLE BOLD-P ITALIC-P UNDERLINE-P &optional INVERSE-P FRAME)
 
   (modify-face 'modeline		     "gray10"	"gray90"   nil	   nil	  t	   nil	     )
@@ -144,13 +144,11 @@
   (modify-face 'font-lock-builtin-face	     "black"	"white"	   nil	   t	  nil	   nil	     )
   (modify-face 'font-lock-warning-face	     "black"	"white"	   nil	   t	  nil	   nil	     )
   (modify-face 'show-paren-match-face	     "gray20"	"gray80"   nil	   t	  nil	   nil	     )
-  (modify-face 'show-paren-mismatch-face     "white"	"gray40"   nil	   t	  t	   nil	     )
-)
+  (modify-face 'show-paren-mismatch-face     "white"	"gray40"   nil	   t	  t	   nil	     ))
 
-
-;; David Brahm <David.Brahm@fmr.com>
 (defun ess-font-lock-db ()
-  "Set font-lock colors to David Brahm's usual choice (leave [fore/back]ground)."
+  "Set font-lock colors to David Brahm's usual choice (leave
+[fore/back]ground). David Brahm <David.Brahm@fmr.com> " 
   (interactive)
   (set-face-foreground 'font-lock-comment-face	     "Firebrick")  ; #...    %...
   (set-face-foreground 'font-lock-string-face	     "SeaGreen")   ; "..."   "..."
@@ -162,7 +160,6 @@
       (set-face-foreground 'font-lock-constant-face "Magenta")	   ; <-	     {eq1}
     (set-face-foreground 'font-lock-reference-face "Magenta"))
 )
-
 
 (provide 'ess-font-lock)
 
