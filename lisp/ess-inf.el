@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/03 17:03:36 $
-;; Version: $Revision: 1.52 $
-;; RCS: $Id: ess-inf.el,v 1.52 1997/09/03 17:03:36 rossini Exp $
+;; Modified: $Date: 1997/09/08 16:27:31 $
+;; Version: $Revision: 1.53 $
+;; RCS: $Id: ess-inf.el,v 1.53 1997/09/08 16:27:31 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -1576,7 +1576,7 @@ the load-path."
   "Return the current search list as a list of strings
 Elements which are apparently directories are expanded to full dirnames"
   (save-excursion
-    (let (result)
+    (let ((result  ""))
       (set-buffer (get-ess-buffer ess-current-process-name))
       (if (and ess-search-list (not ess-sp-change))
 	  ess-search-list

@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/05 18:20:59 $
-;; Version: $Revision: 1.56 $
-;; RCS: $Id: ess-mode.el,v 1.56 1997/09/05 18:20:59 rossini Exp $
+;; Modified: $Date: 1997/09/08 16:27:44 $
+;; Version: $Revision: 1.57 $
+;; RCS: $Id: ess-mode.el,v 1.57 1997/09/08 16:27:44 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -1114,7 +1114,7 @@ generate the source buffer."
   "Find S source file FILENAME in another window."
 
   (if (file-exists-p filename) nil
-    (ess-write-to-dribble-file
+    (ess-write-to-dribble-buffer
      (format "%s does not exist. Bad dump, starting fresh." filename)))
 
   ;; Generate a buffer with the dumped data

@@ -1,13 +1,13 @@
-;;; ess-vars.el --- Variable definitions for ESS.
+;;;;; ess-vars.el --- Variable definitions for ESS.
 
 ;; Copyright (C) 1997 A.J. Rossini
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/09/08 12:41:29 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: ess-vars.el,v 1.21 1997/09/08 12:41:29 rossini Exp $
+;; Modified: $Date: 1997/09/08 16:24:13 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: ess-vars.el,v 1.22 1997/09/08 16:24:13 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -429,12 +429,6 @@ Useful for R and SAS.")
 (defvar inferior-ess-pager "cat"
   "*Pager to use for reporting help files and similar things.")
 
-(defvar inferior-ess-save-lastvalue-command nil
-  "FIXME")
-
-(defvar inferior-ess-retr-lastvalue-command nil
-  "FIXME")
-
 (defvar inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?"
   "Regular expression used by ess-mode to detect the primary prompt.
 Do not anchor to bol with `^'.")
@@ -477,16 +471,16 @@ of Emacs until the code has been successfully evaluated by S.")
 (defvar ess-save-lastvalue-command nil
   "Default is currently the S+ version.")
 
-(make-variable-buffer-local 'ess-save-lastvalue-command)
-(setq-default ess-save-lastvalue-command
-  "assign(\"smode.lvsave\",.Last.value,frame=0)\n")
+;;(make-variable-buffer-local 'ess-save-lastvalue-command)
+;;(setq-default ess-save-lastvalue-command
+;;  "assign(\"smode.lvsave\",.Last.value,frame=0)\n")
 
 (defvar ess-retr-lastvalue-command nil
   "Default is currently the S+ version.")
 
-(make-variable-buffer-local 'ess-retr-lastvalue-command)
-(setq-default ess-retr-lastvalue-command
-	      ".Last.value <- get(\"smode.lvsave\",frame=0)\n")
+;;(make-variable-buffer-local 'ess-retr-lastvalue-command)
+;;(setq-default ess-retr-lastvalue-command
+;;	      ".Last.value <- get(\"smode.lvsave\",frame=0)\n")
 
 
  ; System variables

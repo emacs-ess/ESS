@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/03 16:30:44 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: ess-help.el,v 1.7 1997/09/03 16:30:44 rossini Exp $
+;; Modified: $Date: 1997/09/08 16:27:24 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: ess-help.el,v 1.8 1997/09/08 16:27:24 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -76,7 +76,11 @@
 If prefix arg is given, forces a query of the S process for the help
 file.  Otherwise just pops to an existing buffer if it exists."
   (interactive (ess-find-help-file "Help on: "))
-  (let* ((hb-name (concat "*help(" object ")*"))
+  (let* ((hb-name (concat "*help["
+			  ess-current-process-name
+			  "]("
+			  object
+			  ")*"))
 	 (old-hb-p (get-buffer hb-name))
 	 (curr-win-mode major-mode)
 	 (tbuffer (get-buffer-create hb-name))
@@ -283,23 +287,33 @@ Keystroke    Section
 	(error nil))))
 
 (defun ess-find-help-file (p-string)
+  "Find help, prompting for p-string.  Note that we can't search SAS
+or XLispStat for additional information."
   (ess-make-buffer-current)
-  (let* ((help-files-list  (or (ess-get-help-files-list)
-                              (mapcar 'list
-                                      (ess-get-object-list
-                                       ess-current-process-name))))
-	 (default (ess-read-helpobj-name-default help-files-list))
-         (prompt-string (if default
-                            (format "%s(default %s) " p-string default)
-                          p-string))
-         (spec (completing-read prompt-string help-files-list)))
-    (list (cond
-           ((string= spec "") default)
-           (t spec)))))
+  (if (not 
+       (or
+	(string-match "XLS" ess-language)
+	(string-match "SAS" ess-language)))
+      (let* ((help-files-list (or (ess-get-help-files-list)
+				  (mapcar 'list
+					  (ess-get-object-list
+					   ess-current-process-name))))
+	     (default (ess-read-helpobj-name-default help-files-list))
+	     (prompt-string (if default
+				(format "%s(default %s) " p-string default)
+			      p-string))
+	     (spec (completing-read prompt-string help-files-list)))
+	(list (cond
+	       ((string= spec "") default)
+	       (t spec))))
+    (let* ((spec (read-string p-string)))
+      (list spec))))
+      
 
 ;;*;; Utility functions
 
-(defun ess-get-help-files-list nil
+(defun ess-get-help-files-list ()
+  "Return a list of files which have available help."
   (mapcar 'list
 	  (apply 'append
 		 (mapcar '(lambda (dirname)
@@ -363,8 +377,7 @@ Keystroke    Section
 	   'ess-keep-dump-files
 	   'ess-source-directory)
      nil
-     (lambda () (goto-char (point-max)) (insert-buffer "*ESS*"))
-	   )))
+     (lambda () (goto-char (point-max)) (insert-buffer "*ESS*")))))
 
 
 ;;; Provide
