@@ -230,66 +230,7 @@ Uses `make-regexp' to make efficient regexps."
       (setq regexps (cdr regexps)))
     (cons regexp (nreverse data))))
 
-;; Crude-rude timing...
-
-(defsubst time-seconds (&optional time)
-  "Return the TIME in seconds, or the current time if not given.
-TIME should be the same format as produced by `current-time'."
-  (let ((time (or time (current-time))))
-    (+ (* (nth 0 time) 65536.0) (nth 1 time) (/ (nth 2 time) 1000000.0))))
-
-(defsubst time-since (time)
-  "Return the time in seconds since TIME.
-TIME should be the value of `current-time' or `time-seconds'."
-  (- (time-seconds) (if (floatp time) time (time-seconds time))))
-
-(defun time-function (func &rest args)
-  "Return the time in seconds taken to execute FUNC with ARGS.
-Returned is actually the cons pair (func-value . time)."
-  (garbage-collect)
-  (let ((start (time-seconds)))
-    (cons (apply func args) (time-since start))))
-
-(defun time-regexps (regexps &optional buffer unfontify)
-  "Return corresponding list of times to fontify using REGEXPS.
-Fontify using BUFFER, if non-nil, and UNFONTIFY first, if non-nil."
-  (save-excursion
-    (and buffer (set-buffer buffer))
-    (let ((beg (point-min)) (end (point-max)))
-      (and unfontify (font-lock-unfontify-region beg end))
-      (mapcar (function (lambda (regexp)
-	       (let ((font-lock-keywords (list regexp)))
-		 (cons (cdr (time-function 'font-lock-hack-keywords beg end))
-		       regexp))))
-	      regexps))))
-
-(defun sort-font-lock-regexps (regexps &optional buffer unfontify)
-  "Return sorted times to fontify syntactically and using REGEXPS.
-UNFONTIFY first, if non-nil."
-  (let ((regexp-time (time-regexps regexps buffer unfontify)))
-    (cons (list (apply '+ (mapcar 'car regexp-time)) 'regexps)
-          (nreverse (sort regexp-time 'car-less-than-car)))))
-
-(defun time-fontification (&optional buffer unfontify)
-  "Return time to fontify syntactically.
-UNFONTIFY first, if non-nil."
-  (save-excursion
-    (and buffer (set-buffer buffer))
-    (let ((beg (point-min)) (end (point-max)))
-      (and unfontify (font-lock-unfontify-region beg end))
-      (cdr (time-function 'font-lock-fontify-region beg end)))))
-
-(defun sort-font-lock-fontification (regexps &optional buffer unfontify)
-  "Return sorted times to fontify syntactically and using REGEXPS.
-UNFONTIFY first, if non-nil."
-  (let ((syntactic-time (time-fontification buffer unfontify))
-	(regexp-time (time-regexps regexps buffer)))
-    (nreverse
-     (sort (append (list (list syntactic-time 'syntactic)
-			 (list (apply '+ (mapcar 'car regexp-time)) 'regexps))
-		   regexp-time)
-	   'car-less-than-car))))
-
+;; timing functions removed due to name collisions with Gnus
 
 (provide 'make-regexp)
 ;;; make-regexp.el ends here
