@@ -35,15 +35,12 @@
 ;;; ess-site.el
 ;;;
 ;;; Windows 95/98/NT
-;;; If your PATH includes the R bin directory, then no changes are needed here.
+;;; If your PATH includes the R bin directory, then changes may not
+;;; be needed here.
 ;;; If not, then something like this is needed:
-;;(setq-default inferior-R-program-name "c:/Progra~1/R/rw0632/bin/Rterm.exe")
-(setq-default inferior-R-program-name "c:/Progra~1/R/rw0632/bin/Rterm.exe")
+;;(setq-default inferior-R-program-name "c:/Progra~1/R/rw0633pre/bin/Rterm.exe")
+(setq-default inferior-R-program-name "c:/Progra~1/R/rw0633pre/bin/Rterm.exe")
 ;;;
-;;; The graphics window is a secondary window and does not
-;;; automatically get focus unless locator is called.  Even then the
-;;; window sometimes cannot be moved or resized.  It is necessary to
-;;; move and resize both the emacs frame and the R Graphics window.
 
 
 ;;; ess-vars.el
@@ -85,11 +82,8 @@
 	  (goto-char (point-max))
 	  (beginning-of-line)
 	  (insert
-"The interaction of ESS 5.1.2 and R 0.63.2 Beta is slightly rough:\n
+"The interaction of ESS 5.1.3 and R 0.63.3 Beta is slightly rough:\n
 To start the graphics window, you must explicitly use the `x11()' command.\n
-To see the graphics window, you must use the `locator()' command and
-then click on the graphics window.\n
-The `system(\"command\")' doesn't work when bash is the emacs shell.\n
 You must quit R with `q()' or you take the risk of not being able
 to shut down the computer cleanly.\n\n")
 	  (goto-char (point-max)))
