@@ -148,7 +148,7 @@ package see @uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickst
 
 @end enumerate
 
-@node Microsoft Windows installation, , Unix installation, Installation
+@node Microsoft Windows installation, Requirements, Unix installation, Installation
 @comment  node-name,  next,  previous,  up
 @section Microsoft Windows installation
 
