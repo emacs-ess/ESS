@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/01 17:23:45 $
-;; Version: $Revision: 1.22 $
-;; RCS: $Id: ess-inf.el,v 1.22 1997/07/01 17:23:45 rossini Exp $
+;; Modified: $Date: 1997/07/02 16:07:55 $
+;; Version: $Revision: 1.23 $
+;; RCS: $Id: ess-inf.el,v 1.23 1997/07/02 16:07:55 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.23  1997/07/02 16:07:55  rossini
+;; rehashed inferior-ess.  Should work better, now, I hope!
+;;
 ;; Revision 1.22  1997/07/01 17:23:45  rossini
 ;; Broken.  Need to go home.
 ;;
@@ -288,108 +291,136 @@ when invoking S.
   ;;   If not, find first N s.t. there is no process SN. Ask as above.
 
   (interactive "P")
+  (run-hooks 'S-pre-run-hook)    
+  (let* ((defdir (directory-file-name (or ess-directory default-directory)))
+;;	(procname
+;;	 (if n (ess-proc-name (prefix-numeric-value n))
+;;	   ;; no prefix arg
+;;	   (or (and (not (comint-check-proc (current-buffer)))
+;;		    ;; Don't start a new process in current buffer if
+;;		    ;; one is already running
+;;		    ess-local-process-name)
+;;	       ;; find a non-existent process
+;;	       (let ((ntry 0) done)
+;;		 (while (not done)
+;;		   (setq ntry (1+ ntry))
+;;		   (setq done (not (get-process (ess-proc-name ntry)))))
+;;		 (ess-proc-name ntry))))
+	 (procname (if n (ess-proc-name (prefix-numeric-value n))
+		     ;; no prefix arg
+		     (or (and (not (comint-check-proc (current-buffer)))
+			      ;; Don't start a new process in current buffer if
+			      ;; one is already running
+			      ess-local-process-name)
+			 ;; find a non-existent process
+			 (let ((ntry 0)
+			       (done nil))
+			   (while (not done)
+			     (setq ntry (1+ ntry)
+				   done (not
+					 (get-process (ess-proc-name ntry)))))
+			   (ess-proc-name ntry)))))
+	 (startdir nil)
+	 (buf nil)
+	 (buf-name-str  (concat "*" procname "*")))
 
-;;;  (make-local-variable 'ess-proc-prefix)
-;;;  (make-local-variable 'ess-version-running)
-;;;  (make-local-variable 'ess-history-file)
-;;;  (make-local-variable 'inferior-ess-help-command)
-;;;  (make-local-variable 'inferior-ess-primary-prompt)
-;;;  (make-local-variable 'inferior-ess-secondary-prompt)
-;;;  (make-local-variable 'inferior-ess-program)
-;;;  (make-local-variable 'inferior-ess-objects-command)
-;;;  (make-local-variable 'ess-help-sec-keys-alist)
-;;;  (make-local-variable 'ess-help-sec-regex)
-;;;  (make-local-variable 'inferior-ess-procname)
-;;;  (make-local-variable 'ess-defdir)
+    (cond (;; If process is running, we use it:
+	   (get-process procname)
+	   (setq buf (process-buffer (get-process procname))))
+	  
+	  (;; Else (it's a new or terminated process) try to use current buffer
+	   (and (not buf) 
+		(not n)
+		(not (comint-check-proc (current-buffer)))
+		(memq major-mode '(inferior-ess-mode ess-transcript-mode)))
+	   (setq startdir
+		 (if ess-ask-for-ess-directory (ess-get-directory defdir)
+		   ess-directory))
+	   ;;(message "debug second way")
+	   (setq buf (current-buffer)))
+	  
+	  
+	  (;;  Not an ESS buffer yet
+	   (and (not buf)
+		(get-buffer buf-name-str))
+	   ;;(message "debug third way")
+	   (setq buf (get-buffer buf-name-str)))
+	  
+	  (;; Ask for transcript file and startdir
+	   ;; FIXME -- this should be in ess-get-transfile
+	   (not buf)
+	   (setq startdir
+		 (if ess-ask-for-ess-directory (ess-get-directory defdir) 
+		   ess-directory))
+	   (if ess-ask-about-transfile
+	       (let ((transfilename (read-file-name
+				    "Use transcript file (default none):"
+				    startdir "")))
+		 ;;(if (string= transfilename "")
+		 ;;    (setq transfilename nil)
+		 ;;  (setq transfilename (expand-file-name transfilename)))
+		 (setq buf (if (string= transfilename "") 
+			       (get-buffer-create buf-name-str)
+			     (find-file-noselect (expand-file-name
+						  transfilename)))))
+	     (setq buf (get-buffer-create buf-name-str)))))
+	   
+    (set-buffer buf)
+    (setq ess-history-file (concat "." ess-proc-prefix "history"))
+    (if startdir (setq default-directory startdir))
+    
+    (ess-multi procname buf)))
 
-  (setq ess-history-file
-	(concat "." ess-proc-prefix "history"))
+;;; Old code:
 
-
-  ;;  (let ((procname
-  ;;	 (if n (ess-proc-name (prefix-numeric-value n))
-  ;;	   ;; no prefix arg
-  ;;	   (or (and (not (comint-check-proc (current-buffer)))
-  ;;		    ;; Don't start a new process in current buffer if
-  ;;		    ;; one is already running
-  ;;		    ess-local-process-name)
-  ;;	       ;; find a non-existent process
-  ;;	       (let ((ntry 0) done)
-  ;;		 (while (not done)
-  ;;		   (setq ntry (1+ ntry))
-  ;;		   (setq done (not (get-process (ess-proc-name ntry)))))
-  ;;		 (ess-proc-name ntry)))))
-  ;;	(defdir (directory-file-name (or ess-directory default-directory))))
-  
-
-  (setq inferior-ess-procname
-	(if n (ess-proc-name (prefix-numeric-value n))
-	  ;; no prefix arg
-	  (or (and (not (comint-check-proc (current-buffer)))
-		   ;; Don't start a new process in current buffer if
-		   ;; one is already running
-		   ess-local-process-name)
-	      ;; find a non-existent process
-	      (let ((ntry 0)
-		    (done 0))
-		(while (not done)
-		  (setq ntry (1+ ntry))
-		  (setq done (not (get-process (ess-proc-name ntry)))))
-		(ess-proc-name ntry)))))
-
-  (setq ess-defdir (directory-file-name (or ess-directory default-directory)))
-
-  (message "(inf-ess), before (ess-multi call): inf-ess-procname= %s" 
-	   inferior-ess-procname)
-
-  ;; If this process is running, switch to it
-  (if (get-process inferior-ess-procname)
-      (let ((my-buff-name (process-buffer
-			  (get-process inferior-ess-procname))))
-	(message "debug first way")
-	(ess-multi inferior-ess-procname my-buff-name))
-    ;; This is a new or terminated process.
-    ;; If no arg, try to use current buffer
-    (if (and (not n)
-	     (not (comint-check-proc (current-buffer)))
-	     (memq major-mode '(inferior-ess-mode ess-transcript-mode)))
-	(progn
-	  (setq default-directory
-		(if ess-ask-for-ess-directory (ess-get-directory ess-defdir)
-		  ess-directory))
-	  (message "debug second way")
-	  (ess-multi inferior-ess-procname (current-buffer)))
-      ;; Not an S buffer
-      (let ((buf-name-str (concat "*" inferior-ess-procname "*")))
-	(if (get-buffer buf-name-str)
-	    (progn
-	      (message "debug third way")
-	      (ess-multi inferior-ess-procname (get-buffer buf-name-str)))
-	  ;; Ask for transcript file and startdir
-	  ;; FIXME -- this should be in ess-get-transfile
-	  (run-hooks 'S-pre-run-hook);;rmh
-	  (let* ((startdir (if ess-ask-for-ess-directory
-			       (ess-get-directory ess-defdir) 
-			     ess-directory))
-		 (transfilename nil)
-		 (buf nil)
-		 (procname inferior-ess-procname))
-	    (if ess-ask-about-transfile
-		(progn
-		  (setq transfilename
-			(read-file-name "Use transcript file (default none):"
-					startdir ""))
-		  (if (string= transfilename "")
-		      (setq transfilename nil)
-		    (setq transfilename (expand-file-name transfilename)))))
-	    (setq buf (if transfilename (find-file-noselect transfilename)
-			(get-buffer-create buf-name-str)))
-	    (set-buffer buf)
-	    (setq inferior-ess-procname procname)
-	    (setq default-directory startdir)
-	    (message "debug fourth way %s" inferior-ess-procname)
-	    (message "debug fourth way %s" procname)
-	    (ess-multi inferior-ess-procname buf))))))) ;)for let.
+;;  ;; If this process is running, switch to it
+;;  (if (get-process inferior-ess-procname)
+;;      (let ((my-buff-name (process-buffer
+;;			  (get-process inferior-ess-procname))))
+;;	(message "debug first way")
+;;	(ess-multi inferior-ess-procname my-buff-name))
+;;    ;; This is a new or terminated process.
+;;    ;; If no arg, try to use current buffer
+;;    (if (and (not n)
+;;	     (not (comint-check-proc (current-buffer)))
+;;	     (memq major-mode '(inferior-ess-mode ess-transcript-mode)))
+;;	(progn
+;;	  (setq default-directory
+;;		(if ess-ask-for-ess-directory (ess-get-directory ess-defdir)
+;;		  ess-directory))
+;;	  (message "debug second way")
+;;	  (ess-multi inferior-ess-procname (current-buffer)))
+;;      ;; Not an S buffer
+;;      (let ((buf-name-str (concat "*" inferior-ess-procname "*")))
+;;	(if (get-buffer buf-name-str)
+;;	    (progn
+;;	      (message "debug third way")
+;;	      (ess-multi inferior-ess-procname (get-buffer buf-name-str)))
+;;	  ;; Ask for transcript file and startdir
+;;	  ;; FIXME -- this should be in ess-get-transfile
+;;	  (run-hooks 'S-pre-run-hook);;rmh
+;;	  (let* ((startdir (if ess-ask-for-ess-directory
+;;			       (ess-get-directory ess-defdir) 
+;;			     ess-directory))
+;;		 (transfilename nil)
+;;		 (buf nil)
+;;		 (procname inferior-ess-procname))
+;;	    (if ess-ask-about-transfile
+;;		(progn
+;;		  (setq transfilename
+;;			(read-file-name "Use transcript file (default none):"
+;;					startdir ""))
+;;		  (if (string= transfilename "")
+;;		      (setq transfilename nil)
+;;		    (setq transfilename (expand-file-name transfilename)))))
+;;	    (setq buf (if transfilename (find-file-noselect transfilename)
+;;			(get-buffer-create buf-name-str)))
+;;	    (set-buffer buf)
+;;	    (setq inferior-ess-procname procname)
+;;	    (setq default-directory startdir)
+;;	    (message "debug fourth way %s" inferior-ess-procname)
+;;	    (message "debug fourth way %s" procname)
+;;	    (ess-multi inferior-ess-procname buf))))))) ;)for let.
 
 ;;; A note on multiple processes: the following variables
 ;;;     ess-local-process-name
@@ -436,7 +467,8 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
 		  (symbol-value switches-symbol)))
 	     (buf-name-str (buffer-name buffer)))
 	(set-buffer buffer)
-	(setq inferior-ess-prompt 	; shouldn't be setq-default!
+	(setq-default inferior-ess-prompt 	; shouldn't be
+						; setq-default!
 		      ;; Do not anchor to bol with `^'
 		      (concat "\\("
 			      inferior-ess-primary-prompt
@@ -528,7 +560,7 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
     (cond ((or (not proc) (not (memq (process-status proc) '(run stop))))
            (save-excursion
              (set-buffer buffer)
-             (setq default-directory ess-directory)
+             (if ess-directory (setq default-directory ess-directory))
 	     (if (eq (buffer-size) 0) nil
 	       (goto-char (point-max))
 	       (insert "\^L\n")))	; page boundaries are S sessions
