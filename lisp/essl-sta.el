@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1998/11/09 23:21:45 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: essl-sta.el,v 5.4 1998/11/09 23:21:45 rossini Exp $
+;; Modified: $Date: 1999/03/04 22:27:49 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: essl-sta.el,v 5.5 1999/03/04 22:27:49 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -467,6 +467,30 @@ With argument, positions cursor at end of buffer."
   "Switch to the end of the inferior stata process buffer."
   (interactive)
   (stata-switch-to-stata t))
+
+
+
+(defvar STA-editing-alist
+  '((paragraph-start              . (concat "^$\\|" page-delimiter))
+    (paragraph-separate           . (concat "^$\\|" page-delimiter))
+    (paragraph-ignore-fill-prefix . t)
+    (require-final-newline        . t)
+    (comment-start                . "#")
+    (comment-start-skip           . "#+ *")
+    (comment-column               . 40)
+    ;;(comment-indent-function  . 'S-comment-indent)
+    ;;(ess-comment-indent           . 'S-comment-indent)
+    ;;(ess-indent-line                      . 'S-indent-line)
+    ;;(ess-calculate-indent           . 'S-calculate-indent)
+    (indent-line-function            . 'S-indent-line)
+    (parse-sexp-ignore-comments   . t)
+    (ess-set-style                . ess-default-style)
+    (ess-local-process-name       . nil)
+    ;;(ess-keep-dump-files          . 'ask)
+    (ess-mode-syntax-table        . S-syntax-table)
+    (font-lock-defaults           . '(ess-mode-font-lock-keywords
+				      nil nil ((?\. . "w")))))
+  "General options for editing S, S+, and R source files.")
 
 
 (provide 'essl-sta)
