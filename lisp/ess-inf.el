@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/07 19:43:28 $
-;; Version: $Revision: 1.59 $
-;; RCS: $Id: ess-inf.el,v 1.59 1997/10/07 19:43:28 rossini Exp $
+;; Modified: $Date: 1997/10/08 13:52:55 $
+;; Version: $Revision: 1.60 $
+;; RCS: $Id: ess-inf.el,v 1.60 1997/10/08 13:52:55 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -533,7 +533,10 @@ ess-local-process-name is set to the name of the process selected."
 	  ;; why is the mode line not updated ??
 	  )))))
 
-
+(defun ess-switch-process ()
+  "Force a switch to a new underlying process."
+  (interactive)
+  (ess-force-buffer-current "Process to use: " t))
 
 ;;*;;; Commands for switching to the process buffer
 
