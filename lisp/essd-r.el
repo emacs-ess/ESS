@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/28 13:05:24 $
-;; Version: $Revision: 1.31 $
-;; RCS: $Id: essd-r.el,v 1.31 1997/08/28 13:05:24 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:12:12 $
+;; Version: $Revision: 1.32 $
+;; RCS: $Id: essd-r.el,v 1.32 1997/09/01 18:12:12 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -30,88 +30,6 @@
 ;;; Commentary:
 ;;; This file defines all the R customizations for ess-mode.
 
-;;;
-;;: $Log: essd-r.el,v $
-;;: Revision 1.31  1997/08/28 13:05:24  rossini
-;;: *** empty log message ***
-;;:
-;;: Revision 1.30  1997/08/26 22:54:23  rossini
-;;: *** empty log message ***
-;;:
-;;: Revision 1.29  1997/08/25 20:43:40  rossini
-;;: added Martin's changes
-;;:
-;;: Revision 1.28  1997/08/25 14:31:04  rossini
-;;: *** empty log message ***
-;;:
-;;: Revision 1.27  1997/07/31 12:51:50  rossini
-;;: changed the save call to reflect R.
-;;:
-;;: Revision 1.26  1997/07/30 13:13:21  rossini
-;;: vars back.
-;;:
-;;: Revision 1.25  1997/07/26 02:12:28  rossini
-;;: need primary prompt...
-;;:
-;;: Revision 1.24  1997/07/26 01:38:56  rossini
-;;: changed objects command, as per R-0.50-a1.
-;;:
-;;: Revision 1.23  1997/07/17 20:41:36  rossini
-;;: cleaned up for release.
-;;:
-;;: Revision 1.22  1997/07/17 18:31:57  rossini
-;;: formatting.
-;;:
-;;: Revision 1.21  1997/07/17 18:20:42  rossini
-;;: replaced message with write to dribble buffer.
-;;:
-;;: Revision 1.20  1997/07/07 21:39:05  rossini
-;;: can't set variables in initial call!
-;;:
-;;: Revision 1.19  1997/07/07 16:51:22  rossini
-;;: R2 -> R in debug-message.
-;;:
-;;: Revision 1.18  1997/07/07 16:45:59  rossini
-;;: R is now the "new-way".
-;;:
-;;: Revision 1.17  1997/07/07 16:25:29  rossini
-;;: set variables in the "call". (i.e. R2).
-;;:
-;;: Revision 1.16  1997/07/03 14:38:57  rossini
-;;: changed alist -- to not use defs in ess.el!
-;;:
-;;: Revision 1.15  1997/07/03 14:28:48  rossini
-;;: need to use EDEBUG!  yowso...
-;;:
-;;: Revision 1.14  1997/07/03 14:17:53  rossini
-;;: added messages for debugging.
-;;:
-;;: Revision 1.13  1997/07/03 13:58:20  rossini
-;;: stuff
-;;:
-;;: Revision 1.12  1997/07/03 13:26:35  rossini
-;;: added alist's for setting up things properly.
-;;:
-;;: Revision 1.11  1997/07/03 12:00:45  rossini
-;;: added alist for customization...
-;;:
-;;: Revision 1.10  1997/07/02 16:16:19  rossini
-;;: moved vars to R defun.
-;;:
-;;: Revision 1.9  1997/06/22 23:49:46  rossini
-;;: -> ESS.
-;;:
-;;: Revision 1.8  1997/06/15 08:42:11  rossini
-;;: setq -> setq-default for initialziation.  I think this is right!
-;;:
-;;: Revision 1.7  1997/06/15 08:17:37  rossini
-;;: added autolaod of inferior-ess
-;;:
-;;: Revision 1.6  1997/06/14 23:13:27  rossini
-;;: finally setup.
-;;:
-;;:
-;;;
 
 ;;; Autoloads:
 
@@ -146,8 +64,8 @@
     (inferior-ess-objects-command  . "objects(pos = %d)\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[][a-zA-Z0-9() ]*> ?")
-    (inferior-ess-start-file       . "~/.ess-R")
-    (inferior-ess-start-args       . nil))
+    (inferior-ess-start-file       . nil) ; "~/.ess-R")
+    (inferior-ess-start-args       . ""))
   "Variables to customize for R")
 
 
