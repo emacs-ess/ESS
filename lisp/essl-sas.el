@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/04/12 21:46:24 $
-;; Version: $Revision: 5.42 $
-;; RCS: $Id: essl-sas.el,v 5.42 2002/04/12 21:46:24 rsparapa Exp $
+;; Modified: $Date: 2002/09/01 21:47:23 $
+;; Version: $Revision: 5.43 $
+;; RCS: $Id: essl-sas.el,v 5.43 2002/09/01 21:47:23 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -499,7 +499,9 @@ number."
 		"[ \t]*(")			    font-lock-function-name-face)
 	 ))
 	"Font Lock regexs for SAS.")
-)); only if window-system
+)
+  (defvar SAS-mode-font-lock-keywords "") ;; empty if not window-system
+); only if window-system
 
 (defvar SAS-editing-alist
   '((sentence-end                 . ";[\t\n */]*")
