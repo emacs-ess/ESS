@@ -1,8 +1,10 @@
 \documentclass{article}
 
-%\usepackage{2up}
-
-\usepackage{doublespace}
+%\renewcommand{\baselinestretch}{1.5}
+\addtolength{\oddsidemargin}{-0.5in}
+%\addtolength{\topmargin}{-0.2in} 
+\addtolength{\textheight}{0.2in}
+\addtolength{\textwidth}{1in}
 
 %%% 
 \usepackage[authoryear,round]{natbib}
@@ -12,44 +14,19 @@
 \usepackage{alltt}
 
 %% Postscript fonts
-%\usepackage{palatcm}
 \usepackage{times}
-%%% \usepackage{amsmath}
-
-%% The following is for creating PDF.
-\newif\ifpdf
-\ifx\pdfoutput\undefined
-  \pdffalse     % not running PDFLaTeX
-\else
-  \pdfoutput=1  % running PDFLaTeX
-  \pdftrue
-\fi
-
-\ifpdf
-  \usepackage{thumbpdf}
-\fi
-%\usepackage{html,heqn,htmllist}
-%\usepackage[latex2html]{hyperref} 
-% \ifpdf
-%   \usepackage[pdftex]{graphicx}
-%   \usepackage[pdftex]{hyperref} 
-% \else
-%   \usepackage[dvips]{graphicx}
-%   \usepackage[dvips]{hyperref} 
-% \fi
-\usepackage{graphicx,hyperref}
+\usepackage{graphicx}%,hyperref}
 
 %%---End of package requiring ---------- Own Definitions ------------- 
 
-\hypersetup{backref,colorlinks=true,pagebackref=true,
-  hyperindex=true}%pdfpagemode=FullScreen,
+%\hypersetup{backref,colorlinks=true,pagebackref=true,
+%  hyperindex=true}%pdfpagemode=FullScreen,
 
 \newcommand*{\Splus}{\textsc{S-Plus}}
 \newcommand*{\XLispStat}{\textsc{XLispStat}}
 \newcommand*{\Stata}{\textsc{Stata}}
 \newcommand*{\Rgui}{\textsc{Rgui}}
 \newcommand*{\Fortran}{\textsc{Fortran}}
-%\newcommand*{\Scmt}[1]{\hfill \#\# \textsl{#1}}
 \newcommand*{\Scmt}[1]{\hbox{\qquad {\footnotesize \#\#} \textsl{#1}}}
 \newtheorem{defn}{Definition}[section]
 \newtheorem{ex}{Example}[section]
@@ -57,12 +34,10 @@
 \newcommand{\stexttt}[1]{{\small\texttt{#1}}}
 \newcommand{\ssf}[1]{{\small\sf{#1}}}
 \newcommand{\elcode}[1]{\\{\stexttt{\hspace*{2em} #1}}\\}
-\newcommand{\tm}{$^{\mbox{\scriptsize\sc tm}}$}
 \newenvironment{Salltt}{\small\begin{alltt}}{\end{alltt}}
 \newcommand{\US}{{\char'137}}        % \tt _
 \newcommand{\marpar}[1]{\marginpar{\raggedright#1}}
 \newcommand{\file}[1]{`\stexttt{#1}'}
-%\parskip 1ex
 
 %%--------------------------------------------------------------- Start Text
 
@@ -88,15 +63,6 @@
 
 \begin{document}
 
-\ifpdf
-  \DeclareGraphicsExtensions{.jpg,.pdf,.png,.mps}
-\fi
-
-%%%% To cite everything
-%%\nocite{*} 
-
-\singlespace
-
 \maketitle
 
 Keywords: Data Analysis, Programming Tools, User Interfaces, SAS,
@@ -112,7 +78,7 @@ Keywords: Data Analysis, Programming Tools, User Interfaces, SAS,
   extensions for increasing statistical programming efficiency.
 \end{abstract}
 
-\doublespace
+\baselineskip=2pc
 
 \section{Introduction}
 \label{sec:intro}
@@ -317,7 +283,8 @@ programming.  This is done by extending the editor to provide
 additional useful features, and in the case of interactive statistical
 programs, sitting ``in front of'' their CLI and intercepting and
 modifying I/O as needed.  We describe the exact features more in this
-section.
+section.  Figure~\ref{fig:1} provides an example of how it looks when
+being used with XEmacs.
 
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
@@ -440,12 +407,6 @@ specified syntactic characteristics.  Emacs is extensible using a
 dialect of Lisp \citep{RChassell1999,PGraham:1996}.  This means that
 new functions, with user interaction, can be written for common and
 repeated text-editing tasks.
-%% AJR: based on below, I commented this out, as well:
-%% Emacs provides full customization of the keyboard and mouse.  
-%% MM:  This appears already above (2nd to previous paragraph)!!
-%%- The mouse-based interface, through menus and
-%%- toolbars facilitates the learning of keystroke-based short-cuts.
-%%- Additional user-defined menus can be constructed.
 
 Most programming and documentation tasks fall under the realm of text
 editing.  This work can be enhanced by common IDE features such as
@@ -502,7 +463,7 @@ provide a uniform codebase for statistical programming.
 
 The extension to a language-independent generic interface was prompted
 by the success of R, and the need for an R-mode.  This led to a merger
-with the SAS-mode \cite{SASMODE}, and the refactoring of the S-mode
+with the SAS-mode \citep{SASMODE}, and the refactoring of the S-mode
 codebase to accommodate multiple languages in a flexible way.
 
 During 1996 and 1997, Richard M. Heiberger further incorporated
@@ -635,7 +596,6 @@ useful 1-letter shortcuts for navigation and more, such as
   for evaluation, also \stexttt{C-c C-r} for sending a whole region.
   This is particularly useful in R which guarantees that all examples
   are directly executable.
-% (possibly after \stexttt{library(*)} for non-base packages).
 \end{list}
 
 \subsection{Philosophies for Combining S with ESS}
@@ -657,24 +617,19 @@ permits external version control for S language source code.
 The second, deprecated view, is that S objects are real.  The text
 version of the objects (source code, although we can't use that term
 with this philosophy) is a temporary realization of the objects.  ESS
-is then used to edit, but not save, the objects.
-%% (AJR sez) The next 2 lines were commented out.  I'm not sure why, I
-%% kind of like them\ldots
-Dumped buffers (a text representation of the underlying S object)
-should not be saved in this philosophy.
-%%
-We strongly discourage this approach.  It is a natural result of
-assuming that one will always use a single S process and that
-transportability is not important, assumptions we are not willing to
-make.  Details for activating this configuration are in the
+is then used to edit, but not save, the objects.  Dumped buffers (a
+text representation of the underlying S object) should not be saved in
+this philosophy.  We strongly discourage this approach.  It is a
+natural result of assuming that one will always use a single S process
+and that transportability is not important, assumptions we are not
+willing to make.  Details for activating this configuration are in the
 documentation distributed with ESS.
-
 
 \section{Using ESS with SAS}
 \label{sec:SAS}
 
 \stexttt{ESS[SAS]} mode is used for editing SAS files, initially based
-on the earlier SAS-mode \cite{SASMODE}.  ESS provides two user
+on the earlier SAS-mode \citep{SASMODE}.  ESS provides two user
 interfaces for executing SAS programs.  Both have similarities to the
 windowing interface that SAS itself provides.  One is similar to batch
 processing of SAS programs and the other to the interactive behavior
@@ -694,8 +649,6 @@ and for simultaneously working with multiple SAS files.  For example,
 while writing a SAS program, a user may need to construct SAS macro
 files, consult other SAS programs/listings/logs (\file{.sas}, \file{.lst},
 \file{.log}) and/or non-SAS files documenting one or more SAS data sets.
-% The code for the SAS macros or the analysis can be compared to similar code
-% developed for other projects.
 
 \stexttt{ESS[SAS]} mode provides the following services: proper
 indenting, generated by both \stexttt{[Tab]} and \stexttt{[Return]};
@@ -712,9 +665,6 @@ keypress navigation of \file{.sas}, \file{.log} and \file{.lst} files
 (in addition, \file{.log} and \file{.lst} files are automatically
 refreshed, and an automated error message search is performed for
 \file{.log}); single keypress viewing of SAS permanent data sets.
-
-% At this writing (ESS release 5.2), the indenting and syntactic
-% highlighting for SAS are usually correct.
 
 \paragraph{Preconceptions and Configuration.}
 
@@ -736,9 +686,8 @@ Manager.
 \label{sec:SAS:proc}
 
 There are three methods for interacting with SAS.  We describe running
-SAS with the Display Manager, batch processing from ESS,
-% running SAS on a remote machine from a local Emacs,
-and running SAS in an inferior ESS buffer.
+SAS with the Display Manager, batch processing from ESS, and running
+SAS in an inferior ESS buffer.
 
 The ESS methods for interacting with SAS are based on the SAS Display
 Manager's procedures.  The two reasons to use ESS rather than the
@@ -797,13 +746,6 @@ the \ssf{SAS: OUTPUT} window in the SAS window environment.  All
 data-related printed output from the \stexttt{PROC}s appear in this
 window.
 
-%The interactive \stexttt{iESS [SAS:1]} buffer exists solely as a
-%communications buffer.  Files are edited in the \file{myfile.sas}
-%buffer.  The \stexttt{C-c C-r} key in \stexttt{ESS[SAS]} mode is the
-%functional equivalent of bringing a file into the \ssf{SAS: PROGRAM
-%  EDITOR} window followed by the \ssf{Local/Submit} menu commands.  The
-%user should never use this buffer directly.
-
 \section{Remarks and Extensions}
 \label{sec:remarks}
 
@@ -840,10 +782,10 @@ analysis and statistical programming.  It is customizable for
 individual desires as well as extensible to other statistical
 languages and analysis packages.
 
-\singlespace
+\baselineskip=1.5pc
 
-\bibliographystyle{plainnat} %alpha}
-\pdfbookmark[1]{References}{section.7}
+\bibliographystyle{plainnat}
+%\pdfbookmark[1]{References}{section.7}
 \bibliography{ess}
 
 \appendix
@@ -862,10 +804,20 @@ ESS package.
 There exist binary packages for various Linux distributions, as well,
 including Debian, RedHat, Mandrake, and SuSE.
 
+\clearpage
+
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[height=8in,width=6in]{ESS.ps}
+    \caption{Using ESS}%Editing SAS and R code and evaluation with R.}
+    \label{fig:1}
+  \end{center}
+\end{figure}
+
+
 \end{document}
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "ess"
 %%% End: 
 
