@@ -1,3 +1,10 @@
+2000-10-04  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-add-MM-keys): define-key "_" to ess-S-assign.
+
+	* ess-cust.el (ess-S-assign): new variable (" <- ") for left assign.
+	* ess-vars.el (ess-S-assign): --ditto--
+
 2000-08-16  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r.el (R): Win32: don't give spurious warning anymore.

@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2000/09/03 19:23:16 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: ess-cust.el,v 1.10 2000/09/03 19:23:16 rossini Exp $
+;; Modified: $Date: 2000/10/04 17:21:29 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: ess-cust.el,v 1.11 2000/10/04 17:21:29 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -48,7 +48,7 @@
       nil)
     (defmacro defface (var values doc &rest args)
        (` (make-face (, var))))
-    (defmacro defcustom (var value doc &rest args) 
+    (defmacro defcustom (var value doc &rest args)
       (` (defvar (, var) (, value) (, doc))))))
 
 ;; Customization Groups
@@ -215,6 +215,12 @@ If this is a relative file name, it is relative to ess-directory."
   "*No fancy process buffname for the first process of each type (novice mode)."
   :group 'ess
   :type 'boolean)
+
+(defcustom ess-S-assign " <- "
+  "*String to be used for left assignment in all S dialects.
+ Currently only activated by \\[ess-add-MM-keys]."
+  :group 'ess-S
+  :type 'string)
 
 ;;*;; Variables concerning editing behaviour
 

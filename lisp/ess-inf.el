@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/09/14 18:02:57 $
-;; Version: $Revision: 5.54 $
-;; RCS: $Id: ess-inf.el,v 5.54 2000/09/14 18:02:57 rossini Exp $
+;; Modified: $Date: 2000/10/04 17:21:29 $
+;; Version: $Revision: 5.55 $
+;; RCS: $Id: ess-inf.el,v 5.55 2000/10/04 17:21:29 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -204,7 +204,7 @@ accompany the call for `inferior-ess-program'.
       (ess-setq-vars-local ess-customize-alist buf)
       (if ess-start-args (setq inferior-ess-start-args ess-start-args)
 	(setq inferior-ess-start-args "")) ;; AJR: Errors with XLS?
-      
+
       ;; Write out debug info
       (ess-write-to-dribble-buffer
        (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
@@ -321,7 +321,7 @@ there is no process NAME)."
       (switch-to-buffer (process-buffer (get-process proc-name))))))
 
 (defun ess-process-sentinel (proc message)
-  "Sentinel for use with ESS processes.  
+  "Sentinel for use with ESS processes.
 This marks the process with a message, at a particular time point."
   (save-excursion
     (setq message (substring message 0 -1)) ; strip newline
@@ -821,7 +821,7 @@ With prefix argument, toggle meaning of `ess-eval-visibly-p'."
   "Send the current buffer to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  ;; already in eval-region: 
+  ;; already in eval-region:
   ;;    (ess-force-buffer-current "Process to load into: ")
   (ess-eval-region (point-min) (point-max) vis "Eval buffer"))
 
@@ -1025,6 +1025,7 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
 	 ;; Code for GNU Emacs
 	 (setq inferior-ess-mode-map (cons 'keymap comint-mode-map))))
 
+  ;; Use syntax valid *both* for GNU emacs and Xemacs :
   (define-key inferior-ess-mode-map "\r"       'inferior-ess-send-input)
   (define-key inferior-ess-mode-map "\M-\r"    'ess-transcript-send-command-and-move)
   (define-key inferior-ess-mode-map "\C-c\C-l" 'ess-load-file)
@@ -1036,8 +1037,8 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
   (define-key inferior-ess-mode-map "\C-c\C-s" 'ess-execute-search)
   (define-key inferior-ess-mode-map "\C-c\C-x" 'ess-execute-objects)
   ;;(define-key inferior-ess-mode-map "\C-c\C-a" 'ess-execute-attach)
-  (define-key inferior-ess-mode-map "\C-c\034" 'ess-abort)	 ; \C-c\C-backslash
-  (define-key inferior-ess-mode-map "\C-c\C-z" 'ess-abort)	 ; mask comint map
+  (define-key inferior-ess-mode-map "\C-c\034" 'ess-abort) ; \C-c\C-backslash
+  (define-key inferior-ess-mode-map "\C-c\C-z" 'ess-abort) ; mask comint map
   (define-key inferior-ess-mode-map "\C-d"     'delete-char)   ; EOF no good in S
   (define-key inferior-ess-mode-map "\t"       'comint-dynamic-complete)
   (define-key inferior-ess-mode-map "\C-c\t"   'ess-complete-object-name)
@@ -1976,7 +1977,7 @@ P-STRING is the prompt string."
 ;;or not this breaks some other feature of ess-mode that I never use.
 ;;Thanks for listening.
 ;;Ed K.
-;;-- 
+;;--
 ;;Ed Kademan              508.651.3700
 ;;PHZ Capital Partners    508.653.1745 (fax)
 ;;321 Commonwealth Road   <kademan@phz.com>

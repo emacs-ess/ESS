@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/07/03 14:38:57 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: essl-s.el,v 5.16 2000/07/03 14:38:57 maechler Exp $
+;; Modified: $Date: 2000/10/04 17:21:29 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: essl-s.el,v 5.17 2000/10/04 17:21:29 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -431,8 +431,17 @@ Uses the file given by the variable `ess-function-outline-file'."
   (ess-num-var-round dont-query verbose))
 
 (defun ess-add-MM-keys ()
+  "Define \"C-c f\" and re-define \"_\", the latter to `ess-S-assign', typically \" <- \"."
+  (interactive)
   (require 'ess-mode)
-  (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline))
+  (require 'ess-inf)
+  (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline)
+;;; FIXME: MM thinkgs the following should be on by default.
+;;; -----  The user can always customize `ess-S-assign' ...
+  ;; Now you must use "C-q _" if you really want "_"
+  (define-key ess-mode-map          "_" ess-S-assign)
+  (define-key inferior-ess-mode-map "_" ess-S-assign)
+)
 
 
 (provide 'essl-s)

@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@biostat.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/03 15:27:36 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: ess-mode.el,v 5.12 2000/04/03 15:27:36 maechler Exp $
+;; Modified: $Date: 2000/10/04 17:21:29 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: ess-mode.el,v 5.13 2000/10/04 17:21:29 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -128,7 +128,7 @@
 	 (setq ess-mode-map (make-sparse-keymap))))
 
   ;; By popular demand:
-  (define-key ess-mode-map "\C-m"	'newline-and-indent)
+  (define-key ess-mode-map "\C-m"	'newline-and-indent); = [RETURN]
 
   (define-key ess-mode-map "\C-c\C-r"	'ess-eval-region)
   (define-key ess-mode-map "\C-c\M-r"	'ess-eval-region-and-go)
