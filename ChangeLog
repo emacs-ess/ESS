@@ -1,3 +1,7 @@
+Sat Nov 22 19:16:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/README-19.28: new version of file (RMH).
+
 Fri Nov 21 17:37:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Doc/TODO: added 2 more from RMH, with comments.
@@ -1545,6 +1549,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 4.4  1997/11/23 00:16:53  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 4.3  1997/11/21 22:40:12  rossini
 	* Removing last todo.  RMH gives seal of approval.
 	* Removing
