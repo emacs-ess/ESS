@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/21 13:38:45 $
-;; Version: $Revision: 1.64 $
-;; RCS: $Id: ess-inf.el,v 1.64 1997/10/21 13:38:45 rossini Exp $
+;; Modified: $Date: 1997/10/21 13:42:10 $
+;; Version: $Revision: 1.65 $
+;; RCS: $Id: ess-inf.el,v 1.65 1997/10/21 13:42:10 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -404,7 +404,7 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
 		   process-environment)))
 	     (ess-write-to-dribble-buffer "Making Process...")
 	     (ess-write-to-dribble-buffer 
-	      (format " Buf %s, Proc %s, Prog %s \n Start File %s, Args %s"
+	      (format "Buf %s, Proc %s, Prog %s \n Start File %s, Args %s \n"
 		      buffer
 		      procname
 		      inferior-ess-program
