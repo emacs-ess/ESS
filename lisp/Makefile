@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.29 1997/06/17 01:42:01 rossini Exp $
+## $Id: Makefile,v 1.30 1997/06/17 01:58:45 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.30  1997/06/17 01:58:45  rossini
+## trans -> trns
+##
 ## Revision 1.29  1997/06/17 01:42:01  rossini
 ## changed preloads, for Emacs (thanks, Martin).
 ##
@@ -96,8 +99,10 @@ CORE = ess.elc
 ## Need both types, UNFORTUNATELY, since we want to BUILD and
 ## MAINTAIN.  Some one ought to fix this to be more GNUish.
 
-SOURCES = ess.el ess-inf.el ess-mode.el ess-trans.el ess-help.el  \
-	ess-extras.el essd-s+3.el essd-r.el essd-xls.el ess-site.el
+SOURCES = ess.el ess-site.el \
+	ess-inf.el ess-mode.el ess-trns.el ess-help.el ess-xtra.el \
+	essd-s+3.el essd-r.el essd-xls.el 
+
 
 OBJECTS=$(SOURCES:.el=.elc)
 
@@ -106,7 +111,7 @@ AUXFILES = COPYING Makefile NEWS README README.XE TODO \
 
 ##S-mode-$(VERSION)/
 SOURCESXE = S-mode-$(VERSION)/ess.el S-mode-$(VERSION)/ess-inf.el \
-	S-mode-$(VERSION)/ess-mode.el S-mode-$(VERSION)/ess-trans.el  \
+	S-mode-$(VERSION)/ess-mode.el S-mode-$(VERSION)/ess-trns.el  \
 	S-mode-$(VERSION)/ess-help.el S-mode-$(VERSION)/ess-site.el \
 	S-mode-$(VERSION)/ess-modeadds.el S-mode-$(VERSION)/ess-extras.el 
 
@@ -179,8 +184,8 @@ ess-inf.elc:  ess-inf.el $(CORE)
 ess-mode.elc:  ess-mode.el $(CORE)
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-mode.el
 
-ess-trans.elc:  ess-trans.el $(CORE)
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-trans.el
+ess-trns.elc:  ess-trns.el $(CORE)
+	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-trns.el
 
 ess-site.elc:  ess-site.el $(CORE)
 	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile ess-site.el
