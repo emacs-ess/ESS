@@ -1,13 +1,14 @@
 ;;; essl-bug.el -- ESS BUGS customization
 
 ;; Copyright (C) 2001 Rodney Sparapani
+;; Copyright (C) 2002 Free Software Foundation, Inc.
 
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2002/01/24 15:00:44 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: essl-bug.el,v 1.20 2002/01/24 15:00:44 rsparapa Exp $/ini
+;; Modified: $Date: 2002/08/19 16:33:22 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: essl-bug.el,v 1.21 2002/08/19 16:33:22 rsparapa Exp $/ini
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -46,6 +47,11 @@
     )
 )
 
+(defgroup ess-bugs nil
+  "ESS: BUGS."
+  :group 'ess
+  :prefix "ess-")
+
 (defcustom ess-bugs-batch-method 
   (if ess-microsoft-p 
     (if (w32-shell-dos-semantics) 'ms-dos 'sh)
@@ -73,16 +79,18 @@ Users whose default is not 'sh, but are accessing a remote machine with
 ;;    (convert-standard-filename 
 ;;	(concat ess-lisp-directory "/../etc/" 
 ;;	    (if (w32-shell-dos-semantics) "backbugs.bat" "backbugs")))
-"*ESS[BUGS]:  Set to the name of the batch BUGS script that comes with ESS.  
-It allows the user to modify settings in a cross-platform manner.  Make sure 
-it is in your PATH."
+  "*ESS[BUGS]: The name of the command to run BUGS in batch mode.
+
+Set to the name of the batch BUGS script that comes with ESS or
+to the name of BUGS command. Make sure it is in your PATH or
+add path to the command name."
     :group 'ess-bugs
     :type  'string
 )
 
 (defcustom ess-bugs-batch-post-command 
     (if (equal ess-bugs-batch-method 'sh) "&" " ") 
-    "*ESS[BUGS]:  Modifiers at the end of the batch BUGS command line."
+    "*ESS[BUGS]: Modifiers at the end of the batch BUGS command line."
     :group 'ess-bugs
     :type  'string
 )
@@ -90,58 +98,58 @@ it is in your PATH."
 (defcustom ess-bugs-batch-pre-command 
     (if (equal ess-bugs-batch-method 'sh) "nohup" 
 	(if ess-microsoft-p "start"))
-    "*ESS[BUGS]:  Modifiers at the beginning of the batch BUGS command line."
+    "*ESS[BUGS]: Modifiers at the beginning of the batch BUGS command line."
     :group 'ess-bugs
     :type  'string
 )
 
 (defcustom ess-bugs-default-bins "32"
-"ESS[BUGS]:  number of bins to use in the Griddy algorithm (Metropolis sampling)."
+"ESS[BUGS]: Number of bins to use in the Griddy algorithm (Metropolis sampling)."
     :group 'ess-bugs
     :type  'string
 )
 
 (defcustom ess-bugs-default-burn-in "500"
-    "ESS[BUGS]:  burn-in iterations to discard."
+    "ESS[BUGS]: Burn-in iterations to discard."
     :group 'ess-bugs
     :type  'string
 )
 
 (defcustom ess-bugs-default-update "1000"
-    "ESS[BUGS]:  iterations to store."
+    "ESS[BUGS]: Iterations to store."
     :group 'ess-bugs
     :type  'string
 )
 
 (defcustom ess-bugs-default-checkpoint "100"
-    "ESS[BUGS]:  make a snapshot every this many iterations."
+    "ESS[BUGS]: Make a snapshot every this many iterations."
     :group 'ess-bugs
     :type  'string
 )
 
 (defvar ess-bugs-file "."
-   "ESS[BUGS]:  BUGS file with PATH.")
+   "ESS[BUGS]: BUGS file with PATH.")
 
 (defvar ess-bugs-file-root "."
-   "ESS[BUGS]:  Root of BUGS file.")
+   "ESS[BUGS]: Root of BUGS file.")
 
 (defvar ess-bugs-file-suffix "."
-   "ESS[BUGS]:  Suffix of BUGS file.")
+   "ESS[BUGS]: Suffix of BUGS file.")
 
 (defvar ess-bugs-file-dir "."
-   "ESS[BUGS]:  Directory of BUGS file.")
+   "ESS[BUGS]: Directory of BUGS file.")
 
 (defvar ess-bugs-file-data "..."
-   "ESS[BUGS]:  BUGS data file.")
+   "ESS[BUGS]: BUGS data file.")
 
 (defcustom ess-bugs-inits-suffix ".in"
-   "ESS[BUGS]:  BUGS init file suffix."
+   "ESS[BUGS]: BUGS init file suffix."
     :group 'ess-bugs
     :type  'string
 )
 
 (defcustom ess-bugs-data-suffix ".dat"
-   "ESS[BUGS]:  BUGS data file suffix."
+   "ESS[BUGS]: BUGS data file suffix."
     :group 'ess-bugs
     :type  'string
 )
@@ -153,23 +161,24 @@ it is in your PATH."
 	(if ess-bugs-data-suffix (concat 
 	    "\\|" (downcase ess-bugs-data-suffix) "\\|" (upcase ess-bugs-data-suffix)))
         "\\)")
-    "*Regular expression for BUGS suffixes."
+    "*ESS[BUGS]: Regular expression for BUGS suffixes."
     :group 'ess-bugs
     :type  'string
 )
 
+(defcustom ess-bugs-mode-hook nil 
+    "*ESS[BUGS]: List of functions to call upon entering mode."
+    :group 'ess-bugs
+    :type 'hook)
+
 (defvar ess-bugs-monitor-vars " "
-    "ESS[BUGS]:  List of BUGS variables to be written out to a file.")
+    "ESS[BUGS]: List of BUGS variables to be written out to a file.")
 
 (defvar ess-bugs-stats-vars " "
-    "ESS[BUGS]:  List of BUGS variables to be summarized with statistics.")
-
-(defvar ess-bugs-mode-hook nil 
-    "ESS[BUGS]:  List of functions to call upon entering mode.")
-
+    "ESS[BUGS]: List of BUGS variables to be summarized with statistics.")
 
 (defvar ess-bugs-mode-map nil
-   "ESS[BUGS]:  Keymap for mode.")
+   "ESS[BUGS]: Keymap for mode.")
 
 (if ess-bugs-mode-map nil
     (setq ess-bugs-mode-map (make-keymap))
@@ -179,7 +188,7 @@ it is in your PATH."
 
 
 (defvar ess-bugs-syntax-table nil
-   "ESS[BUGS]:  Syntax table for mode.")
+   "ESS[BUGS]: Syntax table for mode.")
 
 (if ess-bugs-syntax-table nil
     (setq ess-bugs-syntax-table (make-syntax-table))
@@ -224,15 +233,14 @@ it is in your PATH."
 	;;(cons (concat "\\<\\(c\\|list\\)[ \t\n]*(")
 	;;				font-lock-function-name-face)
     )
-    "ESS[BUGS]:  Font lock keywords."
+    "ESS[BUGS]: Font lock keywords."
 )
 
 
 (defun ess-bugs-file ()
-"ESS[BUGS]:  Set `ess-bugs-file', `ess-bugs-file-root', `ess-bugs-file-suffix'"
-" and `ess-bugs-file-dir'."
-   (interactive)
-
+"ESS[BUGS]: Set internal variables dealing with BUGS files.
+Set `ess-bugs-file', `ess-bugs-file-root', `ess-bugs-file-suffix'
+and `ess-bugs-file-dir'."
    (let ((ess-bugs-temp-string (buffer-name)))
         (setq ess-bugs-file (expand-file-name ess-bugs-temp-string))
         (setq ess-bugs-file-dir 
@@ -254,7 +262,7 @@ it is in your PATH."
 
 
 (defun ess-switch-to-suffix (suffix)
-   "ESS:  Switch to file with suffix."
+   "ESS: Switch to file with suffix."
    (find-file (concat ess-bugs-file-dir ess-bugs-file-root suffix))
 
    (if (equal 0 (buffer-size)) (progn
@@ -295,7 +303,7 @@ it is in your PATH."
     (if beg (message (substring string beg (match-end 0))))))
 
 (defun ess-bugs-next-action ()
-   "ESS[BUGS]:  Perform the appropriate next action."
+   "ESS[BUGS]: Perform the appropriate next action."
    (interactive)
    (ess-bugs-file)
 
@@ -305,7 +313,7 @@ it is in your PATH."
 )
 
 (defun ess-bugs-na-bmd ()
-    "ESS[BUGS]:  Perform the Next-Action for .bmd."
+    "ESS[BUGS]: Perform the Next-Action for .bmd."
 
     (save-buffer)
     (shell)
@@ -331,7 +339,7 @@ it is in your PATH."
 
    
 (defun ess-bugs-na-bug ()
-    "ESS[BUGS]:  Perform Next-Action for .bug"
+    "ESS[BUGS]: Perform Next-Action for .bug"
 
 	(if (equal 0 (buffer-size)) (ess-switch-to-suffix ".bug")
 	    (save-excursion 
@@ -468,7 +476,7 @@ it is in your PATH."
 
 
 (defun ess-bugs-mode ()
-   "ESS[BUGS]:  Major mode for Classic BUGS."
+   "ESS[BUGS]: Major mode for Classic BUGS."
    (interactive)
    (kill-all-local-variables)
    (setq major-mode 'ess-bugs-mode)
@@ -484,5 +492,52 @@ it is in your PATH."
 )
 
 
+
+;;; ESS[BUGS-Shell] for running BUGS interactively
+(defgroup ess-bugs-shell nil
+  "ESS: BUGS-Shell."
+  :group 'ess-bugs
+  :prefix "ess-")
+
+(defcustom ess-bugs-shell-buffer-name "BUGS"
+  "*ESS[BUGS-Shell]: The name of the BUGS-Shell buffer."
+  :group 'ess-bugs-shell
+  :type  'string)
+
+(defcustom ess-bugs-shell-command "bugs"
+  "*ESS[BUGS-Shell]: The name of the command to run BUGS interactively.
+
+Set to the name of the batch BUGS script that comes with ESS or
+to the name of BUGS command. Make sure it is in your PATH or
+add path to the command name."
+  :group 'ess-bugs-shell
+  :type  'string)
+
+(defcustom ess-bugs-shell-default-output-file-root "bugs"
+  "*ESS[BUGS-Shell]: Default value for the root of output files."
+  :group 'ess-bugs-shell
+  :type  'string)
+
+(defcustom ess-bugs-shell-mode-hook nil
+  "*ESS[BUGS-Shell]: List of functions to call upon entering mode."
+  :group 'ess-bugs-shell
+  :type 'hook)
+
+(defun ess-bugs-shell ()
+  "Create a buffer with BUGS running as a subprocess."
+  (interactive)
+  (require 'shell)
+  (switch-to-buffer (concat "*" ess-bugs-shell-buffer-name "*"))
+  (make-comint ess-bugs-shell-buffer-name ess-bugs-shell-command nil
+	       ess-bugs-default-bins ess-bugs-shell-default-output-file-root)
+  (comint-mode)
+  (setq shell-dirtrackp t
+	major-mode 'bugs-shell-mode
+	mode-name "ESS[BUGS-Shell]"
+	comint-prompt-regexp "^Bugs> *")
+   (make-local-variable 'font-lock-defaults)
+   (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
+   (run-hooks 'ess-bugs-shell-mode-hook)
+  )
+
 (provide 'essl-bug)
-    
