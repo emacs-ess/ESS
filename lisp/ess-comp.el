@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/25 15:17:09 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: ess-comp.el,v 1.1 1997/07/25 15:17:09 rossini Exp $
+;; Modified: $Date: 1997/07/25 15:20:36 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: ess-comp.el,v 1.2 1997/07/25 15:20:36 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;: $Log: ess-comp.el,v $
+;;: Revision 1.2  1997/07/25 15:20:36  rossini
+;;: changing ess to ess-vars.
+;;:
 ;;: Revision 1.1  1997/07/25 15:17:09  rossini
 ;;: Initial revision
 ;;:
@@ -45,6 +48,7 @@
 ;;; primarily for Emacs, but also for setting up compile load-path
 ;;; properly (Emacs doesn't include '.' in the emacs lisp load path).
 (add-to-list 'load-path nil)
+(require 'ess-vars)
 
  ; Local variables section
 
