@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2004/06/23 14:58:34 $
-;; Version: $Revision: 5.30 $
-;; RCS: $Id: ess-utils.el,v 5.30 2004/06/23 14:58:34 rsparapa Exp $
+;; Modified: $Date: 2004/06/23 21:46:43 $
+;; Version: $Revision: 5.31 $
+;; RCS: $Id: ess-utils.el,v 5.31 2004/06/23 21:46:43 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -356,58 +356,56 @@ is specified, perform action in that buffer."
 	(ess-sas-create-local-variables-alist from-file-or-buffer) 
 	    to-file-or-buffer))
 
-(defun ess-find-exec (ess-root-arg)
-  "Deprecated.  Use executable-find instead.
-Given the root of an executable file name, find it's full name and path,
-if it exists in PATH.  Note that emacs does not attempt to understand the
-various short-hands for CWD in PATH, but that shouldn't be a hindrance here."
+(defun ess-directory-sep (ess-dir-arg)
+"Given a directory, pad with directory-separator character, if necessary."
+(let ((ess-tmp-dir-last-char (substring ess-dir-arg -1)))
+    (if (or (equal ess-tmp-dir-last-char "/")
+	(and ess-microsoft-p (equal ess-tmp-dir-last-char "\\")))
+    ess-dir-arg
+    (concat ess-dir-arg (if ess-microsoft-p "\\" "/")))))
 
-  (let ((ess-temp-exec nil)
-	(ess-temp-path-count (length exec-path))
-	(ess-temp-suffix-count (length exec-suffix-list))
-	(i 0) (j 0)
-	)
+(defun ess-return-list (ess-arg)
+"Given an item, if it is a list return it, otherwise return item in a list."
+(if (listp ess-arg) ess-arg (list ess-arg)))
 
-    (while (and (<= i ess-temp-path-count) (not ess-temp-exec))
-      (progn
-	(while (and (<= j ess-temp-suffix-count) (not ess-temp-exec))
-	  (progn
-	    (setq ess-temp-exec
-		  (concat (nth i exec-path) ess-root-arg
-			  (nth j exec-suffix-list)))
+(defun ess-find-exec (ess-root-arg ess-root-dir)
+"Given a root directory and the root of an executable file name, find it's full 
+name and path, if it exists, anywhere in the sub-tree."
+  (let* ((ess-tmp-dirs (directory-files ess-root-dir t "^[^.]" nil 'dir-only))
+	 (ess-tmp-return (ess-find-exec-completions ess-root-arg ess-root-dir))
+	 (ess-tmp-dirs-n (length ess-tmp-dirs))
+	 (ess-tmp-dir nil)
+	 (i 0))
 
-	    (message "%s" ess-temp-exec)
+	(while (< i ess-tmp-dirs-n)
+	    (setq ess-tmp-dir (nth i ess-tmp-dirs))
+	    (setq i (+ i 1))
+	    (setq ess-tmp-return (nconc ess-tmp-return 
+		(ess-find-exec ess-root-arg ess-tmp-dir))))
+    ess-tmp-return))
 
-	    (if (not (file-exists-p ess-temp-exec))
-		(setq ess-temp-exec nil))
-	    (setq j (+ j 1))
-	    ))
-	(setq i (+ i 1))
-	(setq j 0))
-      )
-    ess-temp-exec))
-
-(defun ess-find-exec-completions (ess-root-arg)
+(defun ess-find-exec-completions (ess-root-arg &optional ess-exec-dir)
 "Given the root of an executable file name, find all possible completions,
 if any exist, in PATH."
-
-  (let ((ess-tmp-exec nil)
-	(ess-tmp-path-count (length exec-path))
+  (let* ((ess-exec-path 
+	 (if ess-exec-dir (ess-return-list ess-exec-dir) exec-path))
+	(ess-tmp-exec nil)
+	(ess-tmp-path-count (length ess-exec-path))
 	(ess-tmp-dir nil)
 	(ess-tmp-files nil)
 	(ess-tmp-file nil)
 	(i 0) (j 0) (k 0))
 
 	(while (< i ess-tmp-path-count)
-	    (setq ess-tmp-dir (nth i exec-path))
-
+	    (setq ess-tmp-dir (nth i ess-exec-path))	    
 	    (if (file-exists-p ess-tmp-dir) (progn
 		(setq ess-tmp-files (file-name-all-completions ess-root-arg ess-tmp-dir))
 		(setq j 0)
 		(setq k (length ess-tmp-files))
 		(while (< j k)
-		    (setq ess-tmp-file (concat ess-tmp-dir (nth j ess-tmp-files)))
-		    (if (file-executable-p ess-tmp-file)
+		    (setq ess-tmp-file (concat (ess-directory-sep ess-tmp-dir)
+			(nth j ess-tmp-files)))
+		    (if (file-executable-p ess-tmp-file) 
 			(setq ess-tmp-exec (nconc ess-tmp-exec (list ess-tmp-file))))
 		    (setq j (+ j 1)))))
 	(setq i (+ i 1)))
