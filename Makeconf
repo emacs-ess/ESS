@@ -5,12 +5,16 @@ PREFIX=/usr/local
 # no csh please
 SHELL = /bin/sh
 
-## Emacs version that you are installing ESS for.  It might be simpler to do:
-##     make EMACS=xemacs
-## for example, than to edit this file.
+## emacs distribution that you are installing ESS for.  
 ##
-EMACS = emacs
-#EMACS = xemacs
+
+## EMACS 21
+EMACS=emacs
+EMACSBATCH = --batch --no-site-file --no-init-file
+
+## XEMACS 21
+#EMACS=xemacs
+#EMACSBATCH = -batch -no-site-file -no-init-file
 
 ## For strange setups...
 INSTALL = cp
@@ -23,8 +27,13 @@ GZCAT = zcat
 MAKEINFO = makeinfo
 MAKEINFOascii = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 
-# GNU make, exclusively --> see comment below /ESSVERSION/
-## ESSVERSION=$(shell cat ../VERSION)
+## Set ESSVERSION to the contents of VERSION
+## This will only work with GNU make, but you won't
+## need to change this unless you are an ESS developer.
+## If you don't have GNU make, edit this file; for example:
+## ESSVERSION=5.2.0
+ESSVERSION=$(shell cat VERSION)
+
 ESS_REGEXP = [Ee][Ss]{2}
 VER_NR_REGEXP = ([0-9]+\.){2}[-0-9a-zA-Z]+
 ESSVER_NR_REGEXP = ($(ESS_REGEXP))-$(VER_NR_REGEXP)
