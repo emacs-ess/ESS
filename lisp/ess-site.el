@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/11/20 23:21:00 $
-;; Version: $Revision: 4.2 $
-;; RCS: $Id: ess-site.el,v 4.2 1997/11/20 23:21:00 rossini Exp $
+;; Modified: $Date: 1997/11/21 22:31:49 $
+;; Version: $Revision: 4.3 $
+;; RCS: $Id: ess-site.el,v 4.3 1997/11/21 22:31:49 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -29,12 +29,13 @@
 
 ;;; Commentary:
 
-;;; This file defines all the site-specific customizations for ess-mode.
-;;; It should be edited on a per-site basis.  Section 1 *must* be
-;;; edited, and the correct pathname for the directory which contains
-;;; this file must be supplied in ess-lisp-directory.  The editing of
-;;; remaining sections is optional.  It should then be byte-compiled,
-;;; and users who wish to use ess-mode should add the line:
+;;; This file defines all the site-specific customizations for ESS.
+;;; It should be edited on a per-site basis.  Read the comments (1.1
+;;; in Section 1 to see if ess-site.el must be editied.  The final
+;;; directory location of this file must be supplied in
+;;; ess-lisp-directory.  The editing of remaining sections is
+;;; optional.  It should then be byte-compiled, and users who wish to
+;;; use ess-mode should add the line:
 ;;;    (load "/PATH/TO/THIS/FILE/ess-site")
 ;;; (where /PATH/TO/THIS/FILE is the path to ess-site.elc: i.e. the
 ;;; value of ess-lisp-directory, below) to their .emacs file.
