@@ -437,11 +437,11 @@ different machines); the ability to request help from an S process for
 variables and functions, and to have the help results sent into a
 separate buffer; and completion of object names and file names.
 
-\stexttt{ESS[S]} mode is automatically turned on when loading a file
-with the file extensions \file{.R}, \file{.r}, \file{.S}, \file{.s},
-\file{.ssc}, \file{.q}.  An inferior process must be running to take
-advantage of the interactive features such as object- and file-name
-completion and help.
+\stexttt{ESS[S]} mode is automatically turned on when loading a file with the
+file extensions \file{.R}, \file{.r},
+\file{.S}, \file{.s}, \file{.ssc}, \file{.q}.  An inferior
+process must be running to take advantage of the interactive features
+such as object- and file-name completion and help.
 
 \subsection{Inferior ESS processes}
 \label{sec:S:inf}
@@ -791,11 +791,13 @@ is limited to static graphics, for example by printing to a postscript device.
 \paragraph{Batch Processing.}
 Batch Processing works when Emacs is running on a local machine and SAS
 is running on a remote machine.  The local machine must be directly
-connected to the network (possibly by ppp).
+connected to the network (possibly by ppp).\\
 Set the \stexttt{ess-sas-submit-method} with
 \elcode{(setq-default ess-sas-submit-method 'iESS)}
-and behave exactly as if the SAS process were local.
-Edit the remote file \elcode{/other.machine:myfile.sas} in the local Emacs.
+and behave exactly as if the SAS process were local.\\
+Edit the remote file
+\file{/other.machine:myfile.sas}
+in the local Emacs.
 When it is submitted, it will automatically be saved back to the remote
 machine and be exactly where the remote SAS will find it.
 
@@ -981,7 +983,7 @@ different statistical language systems, S and SAS.
 We present some basic suggestions for using ESS to interact with S.
 We illustrate both data analysis and program revision examples under
 the philosophies that source code is real.
-Examples using the philosophy that S objects are available in the documentation
+Examples using the philosophy that S objects are real available in the documentation
 distributed with ESS.
 
 \subsubsection{Data Analysis Example (source code is real)}
@@ -1197,10 +1199,10 @@ the \file{myfile.sas} buffer
 Four buffers will appear on screen:\\
 \begin{tabular}{lll}  \hline
   Buffer name     & Emacs mode         & use\\  \hline
-  \file{myfile.sas}  & \stexttt{ESS[SAS]}       &source file   \\
-  \file{*SAS:1*}     & \stexttt{iESS [SAS:1]}   &ESS communication buffer \\
-  \file{*SAS:1.log*} & \stexttt{Shell [] ESStr} &SAS log information      \\
-  \file{*SAS:1.lst*} & \stexttt{Shell [] ESSlst}&SAS listing information  \\
+  \stexttt{myfile.sas}  & \stexttt{ESS[SAS]}       &source file   \\
+  \stexttt{*SAS:1*}     & \stexttt{iESS [SAS:1]}   &ESS communication buffer \\
+  \stexttt{*SAS:1.log*} & \stexttt{Shell [] ESStr} &SAS log information      \\
+  \stexttt{*SAS:1.lst*} & \stexttt{Shell [] ESSlst}&SAS listing information  \\
   \hline
 \end{tabular}\\[1ex]
 If you would prefer each of the four buffers to appear in its own
