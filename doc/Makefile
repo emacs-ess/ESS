@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.25 $.
+### File: $Revision: 1.26 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -28,9 +28,23 @@ MYFTPDIR = /none/at/this/time
 # Those README.* that are made from *.texi  [well, all should....]
 READMEtargets = README.SPLUS4WIN README.Microsoft
 
-DOCS =	$(READMEtargets) \
-	README README.S README.XLispStat README.SAS README.SPLUS4WIN \
-	ess.texi dir ess.info ess.info-1 ess.info-2 ess.info-3 ess.info-4 ess.dvi \
+## ess.texi and things it @include s (alphabetically but 1st line)
+ManSRC = ess.texi version.texi \
+	 bugrept.texi bugs.texi credits.texi getting.texi \
+	 help-s.texi help-sas.texi inst_tar.texi \
+	 mailing.texi newfeat.texi
+## readme.texi and things it @include s (alphabetically but 1st line):
+ReadmeSRC = readme.texi version.texi \
+	 authors.texi bugrept.texi currfeat.texi getting.texi \
+	 inst_tar.texi license.texi mailing.texi newfeat.texi \
+	 requires.texi stabilty.texi
+## others (should these be better organized?)
+texiSRC = $(ManSRC) $(ReadmeSRC) announc.texi bugs-ms.texi inst_cvs.texi \
+	README.Microsoft.texi
+
+DOCS =	$(READMEtargets) $(texiSRC) \
+	README README.S README.XLispStat README.SAS \
+	dir ess.info ess.info-1 ess.info-2 ess.info-3 ess.info-4 ess.dvi \
 	TODO Why_S-mode_Rocks.DMS \
 	README-19.28 README.additions NEWS \
 	ajr-talk.tex rmh-talk.tex slverb.sty
@@ -55,23 +69,20 @@ txts : $(READMEtargets)
 #
 html :	html/ess_toc.html html/readme_toc.html
 
-ess.dvi : ess.texi; texi2dvi ess.texi
-
+ess.dvi : $(ManSRC); texi2dvi ess.texi
+ess.pdf : $(ManSRC); pdftex $^; pdftex $^
 ess.ps  : ess.dvi; dvips $^ -o $@
-
-ess.pdf : ess.texi; pdftex $^; pdftex $^
 ## If you don't have pdftex, you won't get the bookmarks, hyperlinks, etc..
 # ess.pdf: ess.ps ; rm -f ess.pdf ; ps2pdf ess.ps > ess.pdf
 
-readme.dvi : readme.texi; texi2dvi readme.texi
-
+readme.dvi : $(ReadmeSRC); texi2dvi $^
+readme.pdf : $(ReadmeSRC); pdftex $^; pdftex $^
 readme.ps  : readme.dvi; dvips $^ -o $@
 
-readme.pdf : readme.texi; pdftex $^
-
 install : all
-	mkdir -p $(ESSINFODIR)
-	$(INSTALL) ess.info* $(ESSINFODIR)
+# no longer :  (directly via ../info/..
+# 	mkdir -p $(ESSINFODIR)
+# 	$(INSTALL) ess.info* $(ESSINFODIR)
 
 clean : ; rm -f texput.log \
 	 ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
@@ -114,27 +125,28 @@ ess.texi : ../VERSION
 
 ### File Dependencies
 
-../info/ess.info: ess.texi help-sas.texi inst_tar.texi help-s.texi
+version.texi:
+	test -f $@ && rm -f $@ || true
+	echo "@macro essver{}" > $@
+	echo $(ESSVERSION) >> $@
+	echo "@end macro" >> $@
+
+../info/ess.info: $(ManSRC)
 	@echo "making Info documentation..."
-	test -f version.texi && rm -f version.texi || true
-	echo "@macro essver{}" > version.texi
-	echo $(ESSVERSION) >> version.texi
-	echo "@end macro" >> version.texi
 	$(MAKEINFO) ess.texi
-	cp -p ess.info* ../info
+	mv ess.info* ../info
 
 ##-- HTML:
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 ##  =====
-html/ess_toc.html: *.texi
+html/ess_toc.html: $(ManSRC)
 	@echo "making HTML documentation..."
 	-(mkdir -p html; cd html; $(MAKEHTMLs) ../ess.texi)
 	-@(cd html; rm -f index.html; ln -s ess_toc.html index.html)
 	@echo "Test by pointing your browser to 'file://localhost/$$PWD/html/index.html'"
 
-html/readme_toc.html: *.texi
+html/readme_toc.html: $(ReadmeSRC)
 	-(mkdir -p html; cd html; $(MAKEHTML) ../readme.texi)
-
 
 README.Microsoft : README.Microsoft.texi
 	$(MAKEINFOascii) README.Microsoft.texi \
