@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/03 14:17:43 $
-;; Version: $Revision: 1.29 $
-;; RCS: $Id: ess-inf.el,v 1.29 1997/07/03 14:17:43 rossini Exp $
+;; Modified: $Date: 1997/07/03 14:27:30 $
+;; Version: $Revision: 1.30 $
+;; RCS: $Id: ess-inf.el,v 1.30 1997/07/03 14:27:30 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.30  1997/07/03 14:27:30  rossini
+;; stuff...
+;;
 ;; Revision 1.29  1997/07/03 14:17:43  rossini
 ;; added messages for debuggin.
 ;;
@@ -317,7 +320,8 @@ when invoking S.
   (ess-set-vars ess-customize-alist (current-buffer))
   ;; run hooks now, to overwrite the above!
   (run-hooks 'ess-pre-run-hook)    
-  (message "(inferior-ess 1): ess-proc-prefix=%s" ess-proc-prefix)
+  (message "(inferior-ess 1): ess-proc-prefix=%s, buf=%s"
+	   ess-proc-prefix buf)
   (let* ((defdir (directory-file-name (or ess-directory default-directory)))
 ;;	(procname
 ;;	 (if n (ess-proc-name (prefix-numeric-value n))
@@ -394,7 +398,8 @@ when invoking S.
     (set-buffer buf)
     ;; Now that we have the buffer, set buffer-local variables.
     (ess-set-vars ess-customize-alist buf)
-    (message "(inferior-ess 2): ess-proc-prefix=%s" ess-proc-prefix)
+    (message "(inferior-ess 2): ess-proc-prefix=%s , buf=%s"
+	     ess-proc-prefix buf)
     (if startdir (setq default-directory startdir))
     (setq ess-history-file (concat "." ess-proc-prefix "history"))
     (ess-multi procname buf)))
