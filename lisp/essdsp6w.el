@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2004/07/02 07:45:48 $
-;; Version: $Revision: 5.23 $
-;; RCS: $Id: essdsp6w.el,v 5.23 2004/07/02 07:45:48 rmh Exp $
+;; Modified: $Date: 2004/07/04 11:40:52 $
+;; Version: $Revision: 5.24 $
+;; RCS: $Id: essdsp6w.el,v 5.24 2004/07/04 11:40:52 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -495,11 +495,6 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
     (toggle-read-only t)		; restore ESS buffer to be read-only
     ))
 
-(defvar ess-sqpe-versions-created nil
-  "List of strings of the new defuns created by `ess-sqpe-versions-create'.
-This is used by the easymenu code to add the new defuns to the menubar
-under ESS -> Start Process -> Other.")
-
 (defun ess-sqpe-versions-create ()
   "Generate the `M-x splusxy' functions for starting other versions of
 Sqpe.  See `ess-sqpe-versions' for strings that determine which
@@ -508,10 +503,9 @@ template function `Sqpe+template' is edited by replacing the string
 'Sqpe+template' by the version name.  The list of functions actually
 created appears in the *ESS* buffer.
 
-The result `ess-sqpe-versions-created' will store a
-list of the new Sqpe defuns, if any, that were created.  The result will
-normally be bound to the added to global variable `ess-sqpe-versions-created'.
-The defuns will normally be placed on the menubar upon ESS initialisation."
+The result `ess-sqpe-versions-created' will store a list of the new
+Sqpe defuns, if any, that were created.  The defuns will normally be
+placed on the menubar upon ESS initialisation."
   (let ((beg)
 	(versions)
 	(version)
