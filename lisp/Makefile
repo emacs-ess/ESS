@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.5 $.
+### File: $Revision: 5.6 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -37,10 +37,24 @@ BATCHFLAGS = -batch --no-site-file --no-init-file
 # no csh please
 SHELL = /bin/sh
 
-VERSION = pre5.1
+VERSION = 5.1.1
 VERSIONDIR = ESS-$(VERSION)
 
 LASTVERSION = 5.0
+
+## For noweb extraction of code and documentation.
+
+NOTANGLE=notangle -L
+#NOTANGLE=notangle for no indexing.
+NOWEAVE=noweave
+
+.SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el
+.nw.html: ;     $(NOWEAVE) -filter l2h -index -html $*.nw > $*.html
+.nw.tex: ;      $(NOWEAVE) -index -delay $*.nw | cpif $*.tex
+.nw.el:  ;      $(NOTANGLE) -R$*.el | cpif $*.el
+##.nw.c:  ;       $(NOTANGLE) -R$*.c | cpif $*.c
+##.nw.h:  ;       $(NOTANGLE) -R$*.h | cpif $*.h
+.tex.dvi: ;     latex '\scrollmode \input '"$*"; while grep -s 'Rerun to get cross-references right' $*.log; do latex '\scrollmode \input '"$*"; done
 
 # have to preload the files that contain macro definitions or the
 # byte compiler will compile everything that references them
@@ -61,7 +75,7 @@ SOURCES = ess-vars.el ess.el ess-site.el ess-utils.el \
 	essl-s.el   essd-s3.el  essd-s4.el  essd-s+3.el essd-r.el \
 	essl-lsp.el essd-xls.el essd-vst.el \
 	essl-sas.el essd-sas.el \
-	essl-sta.el \
+	essl-sta.el essd-sta.el \
 	essddr.el
 
 SCRIPTS = ess-sas-sh-command install-sh mkinstalldirs
@@ -94,6 +108,9 @@ clean:
 
 
 ### Targets below here are only for developers.
+
+## This should checkout source into a subdirectory and then package it 
+## back up.  (now that we are using CVS).
 
 dist:
 	@echo "**********************************************************"
@@ -202,6 +219,8 @@ essd-sas.elc : essd-sas.el essl-sas.elc ess.elc
 ## Stata
 
 essl-sta.elc : essl-sta.el ess.elc
+
+essd-sta.elc : essd-sta.el ess.elc
 
 # Ignore this.
 #(defun S-insert-make-rule (file)
