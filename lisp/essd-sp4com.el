@@ -16,6 +16,10 @@
 ;;; 
 ;;; Uses explicit file S-transcript.st in starting directory.
 ;;;
+
+;;; Work in progress.
+
+
 (defun S+4-command ()
   "Run S-Plus 4.x, the GUI, with the commands window in the emacs buffer.\n
 Enter `M-x S+4-command'.  S-Plus 4.x will begin.
@@ -149,5 +153,5 @@ task manager.\n\n")
 ;;  (use-local-map comint-mode-map)     ;a shell buffer after Splus is finished.
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
     (toggle-read-only t)		; force buffer to be read-only
-    (setq mode-name "ddeESSst")
-    ))
+    (setq mode-name "ddeESSst")))
+
