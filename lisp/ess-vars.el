@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1998/12/17 13:56:44 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: ess-vars.el,v 5.12 1998/12/17 13:56:44 hornik Exp $
+;; Modified: $Date: 1999/01/11 16:48:54 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: ess-vars.el,v 5.13 1999/01/11 16:48:54 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -401,9 +401,13 @@ by ess-function-template.")
 
 (defvar inferior-S+4-program-name "Splus"
   "*Program name for invoking an external GUI S+4.")
+(defvar inferior-S+4-print-command "S_PRINT_COMMAND=gnuclientw.exe"
+  "*destination of print icon in S+4 Commands window.")
 
 (defvar inferior-Sqpe+4-program-name "Sqpe"
   "*Program name for invoking an inferior ESS with Sqpe+4().")
+(defvar inferior-Sqpe+4-SHOME-name "c:/Progra~1/spls45se"
+  "*SHOME name for invoking an inferior ESS with Sqpe+4().")
 
 (defvar inferior-S-elsewhere-program-name "sh"
   "*Program name for invoking an inferior ESS with S on a different computer.")
@@ -417,6 +421,17 @@ by ess-function-template.")
 (defvar inferior-SAS-program-name "sas"
   "*Program name for invoking an inferior ESS with SAS().")
 
+
+;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
+(defvar inferior-ess-ddeclient         nil
+"*ddeclient program acting as intermediary between emacs and the ESS program.")
+(make-variable-buffer-local 'inferior-ess-ddeclient)
+(defvar inferior-ess-client-name       nil
+  "*name of ESS program ddeclient talks to.")
+(make-variable-buffer-local 'inferior-ess-client-name)
+(defvar inferior-ess-client-command    nil
+  "*ddeclient command sent to the ESS program")
+(make-variable-buffer-local 'inferior-ess-client-command)
 
 ;;;;; user settable defaults
 (defvar inferior-S-program-name  inferior-S+3-program-name
@@ -610,9 +625,6 @@ ess-load-file command.  Used for determining the default in the next one.")
 
 (defvar ess-mode-map nil
   "Keymap for ess-mode.")
-
-(defvar ess-external-mode-map nil
-  "Keymap for ess-external-mode.")
 
 (defvar ess-eval-map nil
   "Keymap for ess-eval functions.")
@@ -844,11 +856,6 @@ Used to store the values for passing on to newly created buffers.")
 
 (make-variable-buffer-local 'ess-listing-minor-mode)
 
-(defvar ess-external-minor-mode nil
-  "Non-nil if using external mode as a minor mode of some other mode.")
-
-(make-variable-buffer-local 'ess-external-minor-mode)
-
 (provide 'ess-vars)
 
  ; Local variables section
@@ -867,4 +874,4 @@ Used to store the values for passing on to newly created buffers.")
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess.el ends here
+;;; ess-vars.el ends here
