@@ -74,15 +74,15 @@ SOURCES = ess-vars.el ess.el ess-site.el \
 	essl-sta.el \
 	essddr.el
 
-DOCS = Doc/TODO Doc/Why_S-mode_Rocks.DMS \
+DOCS = 	README README.S README.XLispStat README.SAS \
+	ess.texi ess.info ess.info-1 ess.info-2 ess.info-3 ess.dvi \
+	Doc/TODO Doc/Why_S-mode_Rocks.DMS \
 	Doc/README-19.28 Doc/README.additions Doc/NEWS \
-	Doc/ajr-talk.tex Doc/rmh-talk.tex Doc/slverb.sty \
-	README.S README.XLispStat README.SAS 
+	Doc/ajr-talk.tex Doc/rmh-talk.tex Doc/slverb.sty 
 
 SCRIPTS = ess-sas-sh-command install-sh mkinstalldirs
 
-AUXFILES = COPYING Makefile README ess.texi ChangeLog \
-	$(SCRIPTS) $(DOCS)
+AUXFILES = COPYING Makefile ChangeLog $(SCRIPTS) $(DOCS) 
 
 # The following works mainly with GNU Make.
 OBJECTS = $(SOURCES:.el=.elc)
@@ -123,9 +123,12 @@ install: all
 	if [ x$(LISPDIR) != x. ]; then $(INSTALL) *.elc $(LISPDIR) ; fi
 
 clean:
-	rm -f $(OBJECTS) ess.info* ess.aux ess.cp ess.dvi \
-	  ess.ky ess.log ess.pg ess.toc ess.tp ess.vr ess.cps ess.fns ess.vrs \
-	  ess.fn texput.log
+	rm -f $(OBJECTS) ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
+	  ess.tp ess.vr ess.cps ess.fns ess.vrs ess.fn texput.log
+
+
+veryclean: clean
+	rm -f ess.dvi ess.info*
 
 dist:
 	@echo "**********************************************************"
