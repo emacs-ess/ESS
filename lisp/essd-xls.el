@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/17 20:40:50 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: essd-xls.el,v 1.17 1997/07/17 20:40:50 rossini Exp $
+;; Modified: $Date: 1997/07/31 11:32:53 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: essd-xls.el,v 1.18 1997/07/31 11:32:53 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.18  1997/07/31 11:32:53  rossini
+;;: added program name.
+;;:
 ;;: Revision 1.17  1997/07/17 20:40:50  rossini
 ;;: cleaned up for release.
 ;;:
@@ -80,21 +83,20 @@
   '((ess-customize-alist           .  XLS-customize-alist )
     (ess-proc-prefix               .  "XLS"               )
     (ess-version-running           .  "XLS"               )
-    (inferior-ess-program          .  "xlispstat"         )
-    (inferior-ess-help-command     .  "(help '%s)\n"      )
     (inferior-ess-exit-command     .  "(exit)\n"          )
     (ess-loop-timeout              .  100000              )
-    (inferior-ess-primary-prompt   .  "> ?"               ))
-    ;;(inferior-ess-objects-command  .                     )
+    (inferior-ess-primary-prompt   .  "> ?"               )
+    (inferior-ess-program          .  inferior-XLS-program-name)
+    (inferior-ess-help-command     .  "(help '%s)\n"      )
+    (inferior-ess-objects-command  .  "(variables)\n"     ))
     ;;(ess-help-sec-regex            .  
     ;;(ess-help-sec-keys-alist       .  
   "Variables to customize for XLS")
 
 (defun XLS ()
-  "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ).
-New way to do it."
-  (interactive)
+  "Call 'XLispStat', the Lisp statistical system from Luke Tierney."
 
+  (interactive)
   (setq ess-customize-alist XLS-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(XLS): ess-proc-prefix=%s , buf=%s\n"
