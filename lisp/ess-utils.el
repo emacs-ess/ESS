@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2001/02/28 12:58:19 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: ess-utils.el,v 5.6 2001/02/28 12:58:19 maechler Exp $
+;; Modified: $Date: 2001/06/19 16:17:36 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: ess-utils.el,v 5.7 2001/06/19 16:17:36 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -66,7 +66,7 @@
     ;;or  (message "s/%s/%s/ at %s" regexp to-string pl))
     ) )
 
-(defun ess-space-around (word &optional from verbose) 
+(defun ess-space-around (word &optional from verbose)
   "Replace-regexp .. ensuring space around all occurences of WORD,
  starting from FROM {defaults to (point)}."
   (interactive "d\nP"); Defaults: point and prefix (C-u)
@@ -103,22 +103,19 @@
 ;;- public domain.  Its purpose is along similar lines to that of
 ;;- `require-final-newline', which is built in.  I hope the names make it
 ;;- obvious.
-;;-
-;;- Keep in mind, making the default `t' may not be a good idea when you edit
-;;- binary files.
 
-;;-  (add-hook 'write-file-hooks 'nuke-trailing-whitespace)
-;;-or at least
+;;  (add-hook 'write-file-hooks 'nuke-trailing-whitespace)
+;;or at least
 
 ;; (add-hook 'ess-mode-hook
 ;; 	  '(lambda ()
 ;; 	     (add-hook 'local-write-file-hooks 'nuke-trailing-whitespace)))
 
 (defvar nuke-trailing-whitespace-p nil;disabled by default  'ask
-  "[Dis]activates (nuke-trailing-whitespace).
+  "*[Dis]activates (nuke-trailing-whitespace).
  Disabled if `nil'; if `t', it works unconditionally, otherwise,
  the user is queried.
- Note that making the default `t' may not be a good idea when you edit
+ Note that setting the default to `t' may not be a good idea when you edit
  binary files!")
 
 (defun nuke-trailing-whitespace ()

@@ -1,3 +1,7 @@
+2001-06-19  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-utils.el (nuke-trailing-whitespace-p): make interactive; cosmetic
+
 2001-03-02  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-site.el: On Linux, default to S+5, since there's no S+3
