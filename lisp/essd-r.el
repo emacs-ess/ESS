@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/09 12:29:45 $
-;; Version: $Revision: 1.40 $
-;; RCS: $Id: essd-r.el,v 1.40 1997/09/09 12:29:45 rossini Exp $
+;; Modified: $Date: 1997/09/09 13:57:12 $
+;; Version: $Revision: 1.41 $
+;; RCS: $Id: essd-r.el,v 1.41 1997/09/09 13:57:12 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -36,6 +36,8 @@
 (require 'essl-s)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
+
+(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
 
 ;;; Code:
 
