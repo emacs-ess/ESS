@@ -1,0 +1,75 @@
+S-mode version 3.4
+------------------
+
+Please note: the filenames mentioned below may be compressed at this
+site (such files will have an extra extension of `.Z'). Such files
+need to be transferred in ftp BINARY mode and uncompressed (e.g. with
+the Unix "uncompress" utility) at your site. Tar files (ending in
+`.tar') must also be transferred in BINARY mode.
+
+This is version 3.4 of the S-mode distribution. You should get
+S-mode3.4.tar, which contains the following files:
+
+README			This file
+CHANGES			Changes from version 2.1
+S.el (version 3.4)	Emacs-lisp code for S-mode
+S-tek.el (version 1.0)	Graphics engine for Tek terminals
+comint.el		The comint package
+comint-extra.el		Additions to the comint package
+comint-isearch.el       Incremental search for comint command history
+S-mode.texinfo (v 1.20)	Documentation for S-mode
+
+(You can extract these files with the Unix command "tar xvf S-mode3.4.tar")
+
+
+INSTALLING THE DOCUMENTATION
+----------------------------
+
+Within Emacs, type "C-h i m Texinfo RET" for information on
+installing and reading Texinfo files. If you can't do this then you
+can get one of the following files from attunga.stats.adelaide.edu.au
+in directory pub/S-mode by anonymous ftp:
+
+S-mode.info		For installing in your info tree
+S-mode.ps		Postscript version of the documentation
+S-mode.dvi		DVI version of the documentation
+
+INSTALLING S-MODE
+-----------------
+
+Create a directory (say, `~/elisp') to place the Emacs-Lisp files.
+Copy `S.el', `comint.el' and `comint-extra.el' to that directory, and
+add the lines
+
+     (setq load-path (cons (expand-file-name "~/elisp") load-path))
+     (autoload 'S "S" "Run an inferior S process" t)
+     (autoload 's-mode "S" "Mode for editing S source" t)
+
+to your `.emacs' file. You can byte-compile the `.el' files if you
+wish. See the documentation and the `S.el' file for more details ---
+in particular, if you use a non-standard prompt or if the command to
+run S is not `Splus' then you have more to do.
+
+CHANGES FROM VERSION 2.1
+------------------------
+
+See the file CHANGES in the S-mode distribution.
+
+BUG REPORTS, ETC
+----------------
+
+Until the end of August 1992, please report bugs to me at
+dsmith@stats.adelaide.edu.au. After this date, mail to that address
+will not be answered for some time; please contact Frank Ritter
+(Frank_Ritter@SHAMO.SOAR.CS.CMU.EDU) or any of the other authors then
+(please CC: to me as well though -- you never know, I might just
+answer!) Comments, suggestions, words of praise and large cash
+donations are also more than welcome.
+
+
+Enjoy!
+
+--
+Dave Smith <dsmith@stats.adelaide.edu.au>
+Department of Statistics
+University of Adelaide, South Australia
