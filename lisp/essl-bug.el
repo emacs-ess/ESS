@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/07/25 16:28:50 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: essl-bug.el,v 1.7 2001/07/25 16:28:50 ess Exp $
+;; Modified: $Date: 2001/07/25 18:52:26 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: essl-bug.el,v 1.8 2001/07/25 18:52:26 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -197,7 +197,7 @@ Note that the script that comes with ESS is an enhanced version."
 	    (insert (concat "const N = 0;#%N\n"))
 	    (insert "var ;\n")
 	    (insert (concat "data  in \"%DATA\";\n"))
-	    (insert (concat "inits in \"%INIT\";\n"))
+	    (insert (concat "inits in \"%INITS\";\n"))
 	    (insert "{\n")
             (insert "    for (i in 1:N) {\n    \n")
             (insert "    }\n")
