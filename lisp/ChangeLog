@@ -1,5 +1,15 @@
 2004-05-13  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
+	* essl-bug.el: Comment possible use of ess-etc-directory here.
+
+	* essl-s.el (ess-function-outline-file): Use ess-etc-directory.
+
+	* essd-sas.el (ess-SAS-pre-run-hook): Use ess-etc-directory.
+
+	* ess-toolbar.el (ess-icon-directory): Use ess-etc-directory.
+
+	* ess-cust.el (ess-etc-directory): New variable.
+
 	* ess-toolbar.el (ess-make-toolbar-R-emacs,
 	ess-make-toolbar-S-emacs):  Since R and S are now on the menubar,
 	use tool-bar-add-item-from-menu for consistency.
