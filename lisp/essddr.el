@@ -24,8 +24,6 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.25 2003/08/20 10:17:15 hornik Exp $
-
 ;;; Code:
 
 ;; To stave off byte compiler errors
