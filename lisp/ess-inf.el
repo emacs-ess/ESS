@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/18 15:09:06 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: ess-inf.el,v 1.8 1997/06/18 15:09:06 rossini Exp $
+;; Modified: $Date: 1997/06/18 18:40:08 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: ess-inf.el,v 1.9 1997/06/18 18:40:08 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.9  1997/06/18 18:40:08  rossini
+;; ess -> S (thanks, MM).
+;;
 ;; Revision 1.8  1997/06/18 15:09:06  rossini
 ;;  ess-force-buffer-current & ess-request-a-process :
 ;;        current-prefix-arg  ('prefix-arg' is wrong!)
@@ -180,7 +183,7 @@
   (load "comint"))
 
 ;;*;; Autoloads
-(autoload 'S-load-file "ess-mode" "(autoload)." t)
+(autoload 'ess-load-file "ess-mode" "(autoload)." t)
 (autoload 'ess-parse-errors "ess-mode" "(autoload)." t)
 (autoload 'ess-dump-object-into-edit-buffer "ess-mode" "(autoload)." t)
 (autoload 'ess-end-of-function "ess-mode" "(autoload)." t)
