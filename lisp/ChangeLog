@@ -1,3 +1,7 @@
+Tue Sep 14 11:06:38 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-inf.el: white space, documentation, stata hacks.
+
 1999-09-06  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essddr.el (Rd-indent-level): default 2 (back from 4):
