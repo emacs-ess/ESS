@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/07/02 10:12:18 $
-;; Version: $Revision: 5.113 $
-;; RCS: $Id: ess-site.el,v 5.113 2004/07/02 10:12:18 stephen Exp $
+;; Modified: $Date: 2004/07/04 11:39:04 $
+;; Version: $Revision: 5.114 $
+;; RCS: $Id: ess-site.el,v 5.114 2004/07/04 11:39:04 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -549,21 +549,22 @@ sending `inferior-ess-language-start' to S-Plus.")
 (fset 'S-mode 's-mode)
 
 ;;; Create functions for calling older versions of R and Sqpe.
-(if ess-microsoft-p 
-    (progn
-      (setq ess-sqpe-versions-created
-	    (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
-      (setq ess-rterm-versions (ess-find-rterm))
-      (setq ess-rterm-versions-created
-	    (ess-rterm-versions-create))) ;; use ess-rterm-versions
-  (setq ess-r-versions-created
-	(ess-r-versions-create)))         ;; use ess-r-versions
-;; A list of strings, representing the new defuns will be stored in
-;;    ess-sqpe-versions-created,
-;;    ess-rterm-versions-created,
-;;    ess-r-versions-created.
-;; Add the new defuns, if any, to the menu.
-(let ((ess-versions-created))
+(let ( (ess-sqpe-versions-created)
+       (ess-rterm-versions-created)
+       (ess-r-versions-created)
+       (ess-versions-created)
+       )
+  (if ess-microsoft-p 
+      (progn
+	(setq ess-sqpe-versions-created
+	      (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
+	(setq ess-rterm-versions (ess-find-rterm))
+	(setq ess-rterm-versions-created
+	      (ess-rterm-versions-create))) ;; use ess-rterm-versions
+    (setq ess-r-versions-created
+	  (ess-r-versions-create)))         ;; use ess-r-versions
+  
+  ;; Add the new defuns, if any, to the menu.
   ;; Check that each variable exists, before adding.
   ;; e.g. ess-sqpe-versions-created will not be created on Unix.
   (setq ess-versions-created
@@ -573,10 +574,10 @@ sending `inferior-ess-language-start' to S-Plus.")
 		   ess-rterm-versions-created ess-sqpe-versions-created))))
 
   (when ess-versions-created
-  ;; new-menu will be a list of 3-vectors, of the form:
-  ;; ["R-1.8.1" R-1.8.1 t]
-  (let (( new-menu (mapcar '(lambda(x) (vector x (intern x) t)) 
-			   ess-versions-created)))
+    ;; new-menu will be a list of 3-vectors, of the form:
+    ;; ["R-1.8.1" R-1.8.1 t]
+    (let (( new-menu (mapcar '(lambda(x) (vector x (intern x) t)) 
+			     ess-versions-created)))
     (easy-menu-add-item ess-mode-menu '("Start Process")
 			(cons "Other" new-menu)))))
 
