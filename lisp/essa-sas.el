@@ -1,16 +1,16 @@
 ;;; essa-sas.el -- ESS local customizations for SAS, part a.
 
-;; Copyright (C) 1997--2000 Rodney Sparapani, A.J. Rossini, 
+;; Copyright (C) 1997--2001 Rodney Sparapani, A.J. Rossini, 
 ;; Martin Maechler, Kurt Hornik, and Richard M. Heiberger.
 
-;; Author: Rodney Sparapani <rsparapa@mcw.edu>
+;; Author: Rodney Sparapani <rodney.sparapani@duke.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/03/23 15:28:54 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essa-sas.el,v 1.14 2001/03/23 15:28:54 ess Exp $
+;; Modified: $Date: 2001/04/03 21:50:22 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essa-sas.el,v 1.15 2001/04/03 21:50:22 ess Exp $
 
-;; Keywords: ESS, ess, SAS, sas, asynchronous.
+;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
 ;; This file is part of ESS
 
@@ -37,8 +37,14 @@
 (require 'ess-site)
 
 
-;;; Managing submitted SAS jobs
+;;; Table of Contents
+;;; Section 1:  Emacs/XEmacs Variant Issues
+;;; Section 2:  Variable Definitions
+;;; Section 3:  Function Definitions
+;;; Section 4:  Key Definitions
 
+
+;;; Section 1:  Emacs/XEmacs Variant Issues
 
 ;; Function definitions for users of Windows emacs versions < 20.4
 ;; These are taken verbatim from the file emacs-20.6/lisp/w32-fns.el
@@ -49,141 +55,32 @@
 	    (load-file (concat ess-lisp-directory "/essnt204.el")))
 ;; End of Function definitions for users of Windows emacs versions < 20.4
 
+;; Variable/function definitions for XEmacs
+(if (featurep 'xemacs) (progn
+    (defvar explicit-command\.com-args nil
+	"Switches for COMMAND.COM.")
 
-(defvar ess-sas-suffix-1 "txt"
-        "The ess-sas-suffix-1 file to perform operations on.")
+    (defvar explicit-cmd\.exe-args nil
+	"Switches for CMD.EXE.")
 
-(defvar ess-sas-suffix-2 "csv"
-      "The ess-sas-suffix-2 file to perform operations on.")
+  (if (fboundp 'w32-shell-dos-semantics) nil
+    (defun w32-shell-dos-semantics ()
+	"Return t if the interactive shell being used expects MSDOS shell semantics."
+	(or (string-equal "COMMAND.COM" (file-name-nondirectory shell-file-name))
+	    (string-equal "CMD.EXE" (file-name-nondirectory shell-file-name)))))))
 
-(defvar ess-sas-submit-command "sas"
- "Command to invoke SAS.")
+
+;;; Section 2:  Variable Definitions
+
+(defvar ess-sas-data-view-options 
+  "-nosysin -log NUL: -noenhancededitor"
+  "The options necessary for your enviromment and your operating system.")
 
 (defvar ess-sas-file-path "."
 	"Full path-name of the sas file to perform operations on.")
 
-(defvar ess-sleep-for 5
-	"Default for ess-sas-submit-sh is to sleep for 5 seconds.")
-
-(defun ess-sas-file-path ()
- "Define the variable `ess-sas-file-path' to be the file in the current buffer"
-  (interactive)
-  (setq ess-sas-file-path (expand-file-name (buffer-name))))
-
-(defun ess-revert-wisely ()
-  "Revert from disk if file and buffer last modification times are different."
-  (interactive)
-  
-  (if (not(verify-visited-file-modtime (current-buffer)))
-      (cond ((and (fboundp 'vc-backend-deduce)
-		  (vc-backend-deduce (buffer-file-name))) (vc-revert-buffer))
-	    ((and (fboundp 'vc-backend)
-		  (vc-backend (buffer-file-name))) (vc-revert-buffer))
-	    (t (revert-buffer t t)))))
-
-
-(defun ess-sas-file (suffix &optional revert)
-  "Find a file associated with the SAS file and revert if necessary."
-  (let* ((tail (if (fboundp 'file-name-extension)
-		   (file-name-extension (buffer-name))
-		 (substring (buffer-name) -3)))
-	 (tail-in-tail-list
-	  (member tail (list "sas" "log" "lst"
-			     ess-sas-suffix-1 ess-sas-suffix-2)))
-	 (root (if tail-in-tail-list
-		   (expand-file-name (buffer-name))
-		 ess-sas-file-path))
-	 (ess-sas-arg (concat (file-name-sans-extension root) "." suffix))
-	 (ess-sas-buf (get-file-buffer ess-sas-arg)))
-    (if (not ess-sas-buf)
-	(find-file ess-sas-arg)
-      (switch-to-buffer ess-sas-buf)
-      (if revert (ess-revert-wisely)))))
-
-(defun ess-sas-goto-sas ()
-  "Switch to the .sas file."
-  (interactive)
-  (ess-sas-file "sas"))
-
-(defun ess-sas-goto-log ()
-  "Switch to the .log file, revert from disk and search for error messages."
-  (interactive)
-  (ess-sas-file "log" 'revert)
-
-  (let ((ess-sas-error "^ERROR [0-9]+-[0-9]+:\\|^ERROR:\\|_ERROR_=1 _\\|_ERROR_=1[ ]?$\\|NOTE: MERGE statement has more than one data set with repeats of BY values.\\|NOTE: Variable .* is uninitialized.\\|WARNING: Apparent symbolic reference .* not resolved."))
-
-  (if (not (search-forward-regexp ess-sas-error nil t)) 
-        (if (search-backward-regexp ess-sas-error nil t) 
-            (progn
-                (goto-char (point-min))
-                (search-forward-regexp ess-sas-error nil t)
-            )
-        )
-    ))
-)
-
-
-(defun ess-sas-goto-lst ()
-  "Switch to the .lst file and revert from disk."
-  (interactive)
-  (ess-sas-file "lst" 'revert))
-
-;;
-;;(defun ess-sas-goto-shell ()
-;; "Set variable `ess-sas-file-path' to file in current buffer and goto *shell*"
-;;  (interactive)
-;;  (ess-sas-file-path)
-;;  (switch-to-buffer "*shell*")
-;;)
-
-
-(defun ess-sas-goto-file-1 ()
-  "Switch to ess-sas-file-1 and revert from disk."
-  (interactive)
-  (ess-sas-file ess-sas-suffix-1 'revert))
-
-(defun ess-sas-goto-file-2 ()
-  "Switch to ess-sas-file-2 and revert from disk."
-  (interactive)
-  (ess-sas-file ess-sas-suffix-2 'revert))
-
-
-;;;;; Some of R.S.'s additions
-
-
-(if (featurep 'xemacs) (progn
-
-(defvar explicit-command-args nil
-   "Switches for COMMAND.COM.")
-
-(defvar explicit-cmd-args nil
-   "Switches for CMD.EXE.")
-
-
-  (defun w32-shell-dos-semantics ()
-  "Return t if the interactive shell being used expects msdos shell semantics."
-	(or (string-equal "COMMAND.COM" (file-name-nondirectory shell-file-name))
-	    (string-equal "CMD.EXE" (file-name-nondirectory shell-file-name))))))
-		
-
-(defun ess-sas-submit ()
-  "Save the .sas file and submit to shell using a function that
-depends on the value of  `ess-sas-submit-method'"
-  (interactive)
-  (ess-sas-goto-sas)
-  (save-buffer)
-  (ess-sas-file-path)
-  (cond
-   ((eq ess-sas-submit-method 'Apple-Macintosh) 
-	(ess-sas-submit-mac ess-sas-submit-command))
-   ((eq ess-sas-submit-method 'windows-nt) 
-	(ess-sas-submit-windows ess-sas-submit-command))
-   ((eq ess-sas-submit-method 'iESS) 
-	(ess-sas-submit-iESS ess-sas-submit-command))
-   ((eq ess-sas-submit-method 'sh) 
-	(ess-sas-submit-sh ess-sas-submit-command)) ; yes, it's redundant
-   (t (ess-sas-submit-sh ess-sas-submit-command)))
-  (ess-sas-goto-sas))
+(defvar ess-sas-submit-command "sas"
+    "Command to invoke SAS.")
 
 
 (defvar ess-sas-submit-method 
@@ -211,6 +108,229 @@ or `ESS-elsewhere' should use
 in ess-site.el or in .emacs.")
 
 
+(defvar ess-sas-suffix-1 "txt"
+        "The ess-sas-suffix-1 file to perform operations on.")
+
+(defvar ess-sas-suffix-2 "csv"
+      "The ess-sas-suffix-2 file to perform operations on.")
+
+(defvar ess-sleep-for 5
+	"Default for ess-sas-submit-sh is to sleep for 5 seconds.")
+
+(defvar ess-sas-tab-stop-alist
+ '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120)
+  "List of tab stop positions used by `tab-to-tab-stop' in `SAS-mode'.")
+
+
+;;; Section 3:  Function Definitions
+
+(defun ess-add-ess-process ()
+  "Execute this command from within a buffer running a process to add
+the process to `ess-process-name-alist'.  This command will normally
+be run in a telnet buffer connected to another computer or in a shell
+or comint buffer on the local computer."
+  (interactive)
+  (let ((ess-process-name (process-name (get-buffer-process (buffer-name)))))
+    (setq ess-process-name-list
+	  (cons (cons ess-process-name nil) ess-process-name-list))
+    (setq ess-current-process-name ess-process-name)))
+
+(defun ess-exit-notify-sh (string)
+  "Detect completion or failure of submitted job and notify the user."
+  (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*\\.sas")
+	 (beg (string-match exit-done string)))
+    (if beg
+	(message (substring string beg (match-end 0))))))
+
+
+(defun ess-revert-wisely ()
+  "Revert from disk if file and buffer last modification times are different."
+  (interactive)
+  
+  (if (not(verify-visited-file-modtime (current-buffer)))
+      (cond ((and (fboundp 'vc-backend-deduce)
+		  (vc-backend-deduce (buffer-file-name))) (vc-revert-buffer))
+	    ((and (fboundp 'vc-backend)
+		  (vc-backend (buffer-file-name))) (vc-revert-buffer))
+	    (t (revert-buffer t t)))))
+
+(defun ess-sas-append-log ()
+    "Append ess-temp.log to the current .log file."
+    (interactive)
+    (ess-sas-file "log" 'revert)
+    (goto-char (point-max))
+    (insert-file-contents "ess-temp.log")
+    (save-buffer))
+
+(defun ess-sas-append-lst ()
+    "Append ess-temp.lst to the current .lst file."
+    (interactive)
+    (ess-sas-file "lst" 'revert)
+    (goto-char (point-max))
+    (insert-file-contents "ess-temp.lst")
+    (save-buffer))
+
+(defun ess-sas-backward-delete-tab ()
+  "Moves the cursor to the previous tab-stop, deleting any characters
+on the way."
+  (interactive)
+  
+  (let* (;; current-column
+	 (ess-sas-column (current-column))
+	 ;; remainder of current-column and sas-indent-width
+	 (ess-sas-remainder (% ess-sas-column sas-indent-width)))
+
+    (if (not (= ess-sas-column 0)) 
+	(progn
+	  (if (= ess-sas-remainder 0) 
+	      (setq ess-sas-remainder sas-indent-width))
+	  
+	  (backward-delete-char-untabify ess-sas-remainder t)
+	  (move-to-column (- ess-sas-column ess-sas-remainder))))))
+
+(defun ess-sas-data-list ()
+  "Parse .sas file and return a list of permanent datasets."
+  (interactive)
+
+  (save-excursion (let ((search-match nil)
+    (search-match-begin)
+    (search-match-end)
+    (search-match-list (list)))
+
+    (goto-char (point-min))
+
+    (while (search-forward-regexp "\\(^\\|[ \t]\\)\\([a-zA-Z_][a-zA-Z_0-9]*\\.[a-zA-Z_][a-zA-Z_0-9]*\\)" nil t)
+	(setq search-match-end (point))
+	(setq search-match-begin (match-beginning 2))
+	(setq search-match (downcase (buffer-string search-match-begin search-match-end)))
+
+	(if (not (and (equal (substring search-match 0 5) "first.") (equal (substring search-match 0 4) "last."))) (progn
+	    (add-to-list 'search-match-list search-match)
+	;;    (message search-match-list)
+	))
+    )
+    search-match-list))
+)
+
+(defun ess-sas-data-view ()
+  "Open a dataset for viewing with PROC FSVIEW."
+    (interactive)
+    (ess-sas-file-path)
+    (shell)
+    (insert (concat ess-sas-submit-command " -initstmt \"proc fsview data=" 
+	(read-string "SAS Dataset: ")
+	"; run;\" " ess-sas-data-view-options))
+    (comint-send-input)
+    (ess-sas-goto-sas))
+
+(defun ess-sas-file (suffix &optional revert)
+  "Find a file associated with the SAS file and revert if necessary."
+  (let* ((tail (if (fboundp 'file-name-extension) (file-name-extension (buffer-name))
+		 (substring (buffer-name) -3)))
+	 (tail-in-tail-list (member tail (list "sas" "log" "lst"
+			     ess-sas-suffix-1 ess-sas-suffix-2)))
+	 (root (if tail-in-tail-list (expand-file-name (buffer-name))
+		 ess-sas-file-path))
+	 (ess-sas-arg (concat (file-name-sans-extension root) "." suffix))
+	 (ess-sas-buf (get-file-buffer ess-sas-arg)))
+    (if (equal tail suffix) (if revert (ess-revert-wisely))
+	(if (not ess-sas-buf) (find-file ess-sas-arg)
+	    (switch-to-buffer ess-sas-buf)
+	    (if revert (ess-revert-wisely))))))
+
+(defun ess-sas-file-path ()
+ "Define the variable `ess-sas-file-path' to be the file in the current buffer"
+  (interactive)
+  (setq ess-sas-file-path (expand-file-name (buffer-name))))
+
+(defun ess-sas-goto-file-1 ()
+  "Switch to ess-sas-file-1 and revert from disk."
+  (interactive)
+  (ess-sas-file ess-sas-suffix-1 'revert))
+
+(defun ess-sas-goto-file-2 ()
+  "Switch to ess-sas-file-2 and revert from disk."
+  (interactive)
+  (ess-sas-file ess-sas-suffix-2 'revert))
+
+(defun ess-sas-goto-log ()
+  "Switch to the .log file, revert from disk and search for error messages."
+  (interactive)
+  (ess-sas-file "log" 'revert)
+
+  (let ((ess-sas-error (concat "^ERROR [0-9]+-[0-9]+:\\|^ERROR:\\|_ERROR_=1 _\\|_ERROR_=1[ ]?$"
+    "\\|NOTE: MERGE statement has more than one data set with repeats of BY values."
+    "\\|NOTE: Variable .* is uninitialized."
+    "\\|WARNING: Apparent symbolic reference .* not resolved."
+    "\\|Bus Error In Task\\|Segmentation Violation In Task")))
+
+  (if (not (search-forward-regexp ess-sas-error nil t)) 
+        (if (search-backward-regexp ess-sas-error nil t) 
+            (progn
+                (goto-char (point-min))
+                (search-forward-regexp ess-sas-error nil t)
+            )
+        )
+    ))
+)
+
+(defun ess-sas-goto-lst ()
+  "Switch to the .lst file and revert from disk."
+  (interactive)
+  (ess-sas-file "lst" 'revert))
+
+(defun ess-sas-goto-sas ()
+  "Switch to the .sas file."
+  (interactive)
+  (ess-sas-file "sas"))
+
+;;
+;;(defun ess-sas-goto-shell ()
+;; "Set variable `ess-sas-file-path' to file in current buffer and goto *shell*"
+;;  (interactive)
+;;  (ess-sas-file-path)
+;;  (switch-to-buffer "*shell*")
+;;)
+
+
+(defun ess-sas-submit ()
+  "Save the .sas file and submit to shell using a function that
+depends on the value of  `ess-sas-submit-method'"
+  (interactive)
+  (ess-sas-goto-sas)
+  (save-buffer)
+  (ess-sas-file-path)
+  (cond
+   ((eq ess-sas-submit-method 'Apple-Macintosh) 
+	(ess-sas-submit-mac ess-sas-submit-command))
+   ((eq ess-sas-submit-method 'windows-nt) 
+	(ess-sas-submit-windows ess-sas-submit-command))
+   ((eq ess-sas-submit-method 'iESS) 
+	(ess-sas-submit-iESS ess-sas-submit-command))
+   ((eq ess-sas-submit-method 'sh) 
+	(ess-sas-submit-sh ess-sas-submit-command)) 
+   (t (ess-sas-submit-sh ess-sas-submit-command)))
+  (ess-sas-goto-sas))
+
+(defun ess-sas-submit-iESS (ess-sas-arg)
+  "iESS
+Submit a batch job in an inferior-ESS buffer.  The buffer should
+(1) have telnet access and be running a shell on a remote machine
+or
+(2) be running a shell on the local machine.
+
+The user can telnet to the remote computer and then declare the
+*telnet-buffer* to be an inferior ESS buffer with the `ess-add-ess-process'
+command.  When using a remote computer, the .sas file must live on the
+remote computer and be accessed through `ange-ftp'.  When
+`ess-sas-submit' saves a file, it is therefore saved on the remote
+computer.  The various functions such as `ess-sas-goto-lst' retrieve
+their files from the remote computer.  Local copies of the .sas .lst
+.log and others may be made manually with `write-buffer'."
+  (ess-force-buffer-current "Process to load into: ")
+  (ess-eval-linewise (concat "cd " default-directory))
+  (ess-eval-linewise (concat ess-sas-arg " " (buffer-name) " &")))
+
 (defun ess-sas-submit-mac (ess-sas-arg)
   "Mac
 `ess-sas-arg' is assumed to be the AppleScript command
@@ -220,7 +340,45 @@ in ess-site.el or in .emacs.")
 			  (unix-filename-to-mac default-directory)
 			  (buffer-name) "\"")))
 
+(defun ess-sas-submit-region ()
+    "Write region to temporary file, and submit to SAS."
+    (interactive)
+    (save-buffer)
+    (write-region (region-beginning) (region-end) "ess-temp.sas" nil t)
 
+    (save-excursion (let ((ess-prev-buffer (current-buffer))
+	(ess-next-buffer (get-file-buffer "ess-temp.sas")))
+
+	(if (not ess-next-buffer) (find-file "ess-temp.sas")
+	    (switch-to-buffer ess-next-buffer)
+	    (ess-revert-wisely))
+
+	(ess-sas-submit)
+	(switch-to-buffer ess-prev-buffer)))
+
+	(ess-sas-file-path)
+;;	(ess-revert-wisely)
+;;	(ess-sas-file "sas")
+)
+
+(defun ess-sas-submit-sh (ess-sas-arg)
+  "Unix or bash in the *shell* buffer.
+Multiple processing is supported on this platform.
+SAS may not be found in your PATH.  You can alter your PATH to include
+SAS or you can specify the PATHNAME (PATHNAME can NOT contain spaces),
+i.e. let `ess-sas-arg' be your local equivalent of
+\"/usr/local/sas612/sas\"."
+    (shell)
+    (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh) ;; 19.28
+                                          ;; nil t) works for newer emacsen
+    (insert "cd " (file-name-directory ess-sas-file-path))
+    (comint-send-input)
+    (insert ess-sas-arg " " ess-sas-file-path " &")
+    (comint-send-input)
+    (if (featurep 'xemacs) (sleep-for ess-sleep-for)
+       (sleep-for 0 (truncate (* ess-sleep-for 1000)))
+    )
+    (comint-send-input))
 
 
 (defun ess-sas-submit-windows (ess-sas-arg)
@@ -252,52 +410,6 @@ Keep in mind that the maximum command line length in MS-DOS is
     (comint-send-input))
 
 
-;(defun ess-sas-submit-windows (ess-sas-arg)
-;  "Windows using MS-DOS prompt in the *shell* buffer.
-;Multiple processing is supported on this platform.
-;On most Windows installations, SAS will not be found in your
-;PATH.  You can alter your PATH to include SAS or you can specify
-;the PATHNAME (PATHNAME can NOT contain spaces), i.e. let
-;`ess-sas-arg' be your local equivalent of
-;\"c:\\progra~1\\sas\\sas.exe\"."
-;    (shell)
-;    (if (string-equal ":" (substring ess-sas-file-path 1 2)) 
-;	(progn
-;		(insert (substring ess-sas-file-path 0 2))
-;		(comint-send-input)
-;	)
-;    )
-;    (insert "cd " (convert-standard-filename 
-;	(file-name-directory ess-sas-file-path)))
-;    (comint-send-input)
-;    (insert "start " ess-sas-arg " " 
-;	(convert-standard-filename ess-sas-file-path))
-;    (comint-send-input))
-
-
-
-
-
-
-
-(defvar ess-sas-data-view-options 
-  "-nosysin -log NUL: -noenhancededitor"
-  "The options necessary for your enviromment and your 
-operating system.")
-
-
-(defun ess-sas-data-view ()
-  "Open a dataset for viewing with PROC FSVIEW."
-    (interactive)
-    (ess-sas-file-path)
-    (shell)
-    (insert (concat ess-sas-submit-command " -initstmt \"proc fsview data=" 
-	(read-string "SAS Dataset: ")
-	"; run;\" " ess-sas-data-view-options))
-    (comint-send-input)
-    (ess-sas-goto-sas))
-
-
 (defun ess-sas-toggle-sas-mode ()
   "Toggle SAS-mode for .log files."
   (interactive)
@@ -317,217 +429,7 @@ operating system.")
 )
 
 
-(defun ess-sas-submit-sh (ess-sas-arg)
-  "Unix or bash in the *shell* buffer.
-Multiple processing is supported on this platform.
-SAS may not be found in your PATH.  You can alter your PATH to include
-SAS or you can specify the PATHNAME (PATHNAME can NOT contain spaces),
-i.e. let `ess-sas-arg' be your local equivalent of
-\"/usr/local/sas612/sas\"."
-    (shell)
-    (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh) ;; 19.28
-                                          ;; nil t) works for newer emacsen
-    (insert "cd " (file-name-directory ess-sas-file-path))
-    (comint-send-input)
-    (insert ess-sas-arg " " ess-sas-file-path " &")
-    (comint-send-input)
-    (if (featurep 'xemacs) (sleep-for ess-sleep-for)
-       (sleep-for 0 (truncate (* ess-sleep-for 1000)))
-    )
-    (comint-send-input))
-
-(defun ess-exit-notify-sh (string)
-  "Detect completion or failure of submitted job and notify the user."
-  (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*\\.sas")
-	 (beg (string-match exit-done string)))
-    (if beg
-	(message (substring string beg (match-end 0))))))
-
-
-(defun ess-sas-submit-iESS (ess-sas-arg)
-  "iESS
-Submit a batch job in an inferior-ESS buffer.  The buffer should
-(1) have telnet access and be running a shell on a remote machine
-or
-(2) be running a shell on the local machine.
-
-The user can telnet to the remote computer and then declare the
-*telnet-buffer* to be an inferior ESS buffer with the `ess-add-ess-process'
-command.  When using a remote computer, the .sas file must live on the
-remote computer and be accessed through `ange-ftp'.  When
-`ess-sas-submit' saves a file, it is therefore saved on the remote
-computer.  The various functions such as `ess-sas-goto-lst' retrieve
-their files from the remote computer.  Local copies of the .sas .lst
-.log and others may be made manually with `write-buffer'."
-  (ess-force-buffer-current "Process to load into: ")
-  (ess-eval-linewise (concat "cd " default-directory))
-  (ess-eval-linewise (concat ess-sas-arg " " (buffer-name) " &")))
-
-
-(defun ess-add-ess-process ()
-  "Execute this command from within a buffer running a process to add
-the process to `ess-process-name-alist'.  This command will normally
-be run in a telnet buffer connected to another computer or in a shell
-or comint buffer on the local computer."
-  (interactive)
-  (let ((ess-process-name (process-name (get-buffer-process (buffer-name)))))
-    (setq ess-process-name-list
-	  (cons (cons ess-process-name nil) ess-process-name-list))
-    (setq ess-current-process-name ess-process-name)))
-
-
-
-
-(defvar ess-sas-global-unix-keys nil
-  "Non-nil if function keys use Unix-like SAS key definitions in all modes.")
-(defun ess-sas-global-unix-keys ()
-  "Unix/Mainframe-like SAS key definitions"
-  (global-set-key [f2] 'ess-revert-wisely)
-  (global-set-key [f3] 'ess-sas-submit)
-  (global-set-key [f4] 'ess-sas-goto-sas)
-  (global-set-key [f5] 'ess-sas-goto-log)
-  (global-set-key [f6] 'ess-sas-goto-lst)
-  (global-set-key [f7] 'ess-sas-goto-file-1)
-  (global-set-key [f8] 'shell)
-  (global-set-key [f9] 'ess-sas-data-view)
-  (global-set-key [f10] 'ess-sas-toggle-sas-mode)
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
-
-
-(defvar ess-sas-global-pc-keys nil
-  "Non-nil if function keys use PC-like SAS key definitions in all modes.")
-(defun ess-sas-global-pc-keys ()
-  "PC-like SAS key definitions"
-  (global-set-key [f2] 'ess-revert-wisely)
-  (global-set-key [f3] 'shell)
-  (global-set-key [f4] 'ess-sas-goto-file-1)
-  (global-set-key [f5] 'ess-sas-goto-sas)
-  (global-set-key [f6] 'ess-sas-goto-log)
-  (global-set-key [f7] 'ess-sas-goto-lst)
-  (global-set-key [f8] 'ess-sas-submit)
-  (global-set-key [f9] 'ess-sas-data-view)
-  (global-set-key [f10] 'ess-sas-toggle-sas-mode)
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
-
-
-(defvar ess-sas-local-unix-keys nil
-  "Non-nil if function keys use Unix-like SAS key definitions
-in SAS-mode and related modes.")
-(defun ess-sas-local-unix-keys ()
-  "Unix/Mainframe-like SAS key definitions"
-  (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
-  (define-key sas-mode-local-map [f3] 'ess-sas-submit)
-  (define-key sas-mode-local-map [f4] 'ess-sas-goto-sas)
-  (define-key sas-mode-local-map [f5] 'ess-sas-goto-log)
-  (define-key sas-mode-local-map [f6] 'ess-sas-goto-lst)
-  (define-key sas-mode-local-map [f7] 'ess-sas-goto-file-1)
-  (define-key sas-mode-local-map [f8] 'shell)
-  (define-key sas-mode-local-map [f9] 'ess-sas-data-view)
-  (define-key sas-mode-local-map [f10] 'ess-sas-toggle-sas-mode)
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
-
-
-(defvar ess-sas-local-pc-keys nil
-  "Non-nil if function keys use PC-like SAS key definitions
-in SAS-mode and related modes.")
-(defun ess-sas-local-pc-keys ()
-  "PC-like SAS key definitions."
-  (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
-  (define-key sas-mode-local-map [f3] 'shell)
-  (define-key sas-mode-local-map [f4] 'ess-sas-goto-file-1)
-  (define-key sas-mode-local-map [f5] 'ess-sas-goto-sas)
-  (define-key sas-mode-local-map [f6] 'ess-sas-goto-log)
-  (define-key sas-mode-local-map [f7] 'ess-sas-goto-lst)
-  (define-key sas-mode-local-map [f8] 'ess-sas-submit)
-  (define-key sas-mode-local-map [f9] 'ess-sas-data-view)
-  (define-key sas-mode-local-map [f10] 'ess-sas-toggle-sas-mode)
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
-
-
-
-
-;(defvar ess-sas-global-unix-keys nil
-;  "Non-nil if function keys use Unix-like SAS key definitions in all modes.")
-;(defun ess-sas-global-unix-keys ()
-;  "Unix/Mainframe-like SAS key definitions"
-;  (global-set-key [f2] 'ess-revert-wisely)
-;  (global-set-key [f3] 'ess-sas-submit)
-;  (global-set-key [f4] 'ess-sas-goto-sas)
-;  (global-set-key [f5] 'ess-sas-goto-log)
-;  (global-set-key [f6] 'ess-sas-goto-lst)
-;  (global-set-key [f7] 'ess-sas-goto-file-1)
-;  (global-set-key [f8] 'shell)
-;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
-
-;(defvar ess-sas-global-pc-keys nil
-;  "Non-nil if function keys use PC-like SAS key definitions in all modes.")
-;(defun ess-sas-global-pc-keys ()
-;  "PC-like SAS key definitions"
-;  (global-set-key [f2] 'ess-revert-wisely)
-;  (global-set-key [f3] 'shell)
-;  (global-set-key [f4] 'ess-sas-goto-file-1)
-;  (global-set-key [f5] 'ess-sas-goto-sas)
-;  (global-set-key [f6] 'ess-sas-goto-log)
-;  (global-set-key [f7] 'ess-sas-goto-lst)
-;  (global-set-key [f8] 'ess-sas-submit)
-;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
-
-
-;(defvar ess-sas-local-unix-keys nil
-;  "Non-nil if function keys use Unix-like SAS key definitions
-;in SAS-mode and related modes.")
-;(defun ess-sas-local-unix-keys ()
-;  "Unix/Mainframe-like SAS key definitions"
-;  (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
-;  (define-key sas-mode-local-map [f3] 'ess-sas-submit)
-;  (define-key sas-mode-local-map [f4] 'ess-sas-goto-sas)
-;  (define-key sas-mode-local-map [f5] 'ess-sas-goto-log)
-;  (define-key sas-mode-local-map [f6] 'ess-sas-goto-lst)
-;  (define-key sas-mode-local-map [f7] 'ess-sas-goto-file-1)
-;  (define-key sas-mode-local-map [f8] 'shell)
-;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
-
-;(defvar ess-sas-local-pc-keys nil
-;  "Non-nil if function keys use PC-like SAS key definitions
-;in SAS-mode and related modes.")
-;(defun ess-sas-local-pc-keys ()
-;  "PC-like SAS key definitions."
-;  (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
-;  (define-key sas-mode-local-map [f3] 'shell)
-;  (define-key sas-mode-local-map [f4] 'ess-sas-goto-file-1)
-;  (define-key sas-mode-local-map [f5] 'ess-sas-goto-sas)
-;  (define-key sas-mode-local-map [f6] 'ess-sas-goto-log)
-;  (define-key sas-mode-local-map [f7] 'ess-sas-goto-lst)
-;  (define-key sas-mode-local-map [f8] 'ess-sas-submit)
-;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
-
-
-
-;;; Editing SAS-mode files.
-
-;; compute tab stops for use in SAS-mode
-(defvar ess-sas-tab-stop-alist
- '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120)
-  "List of tab stop positions used by `tab-to-tab-stop' in `SAS-mode'.")
-
-
-(defun ess-sas-backward-delete-tab ()
-  "Moves the cursor to the previous tab-stop, deleting any characters
-on the way."
-  (interactive)
-  
-  (let* (;; current-column
-	 (ess-sas-column (current-column))
-	 ;; remainder of current-column and sas-indent-width
-	 (ess-sas-remainder (% ess-sas-column sas-indent-width)))
-
-    (if (not (= ess-sas-column 0)) 
-	(progn
-	  (if (= ess-sas-remainder 0) 
-	      (setq ess-sas-remainder sas-indent-width))
-	  
-	  (backward-delete-char-untabify ess-sas-remainder t)
-	  (move-to-column (- ess-sas-column ess-sas-remainder))))))
+;;; Section 4:  Key Definitions
 
 (defvar ess-sas-edit-keys-toggle 0
   "0 to bind TAB to `sas-indent-line'.
@@ -551,6 +453,81 @@ Without arg, toggle between these options."
 	  (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
 	(define-key sas-mode-local-map "\t" 'tab-to-tab-stop))
     (define-key sas-mode-local-map "\t" 'sas-indent-line)))
+
+(defvar ess-sas-global-pc-keys nil
+  "Non-nil if function keys use PC-like SAS key definitions in all modes.")
+(defun ess-sas-global-pc-keys ()
+  "PC-like SAS key definitions"
+  (global-set-key [f2] 'ess-revert-wisely)
+  (global-set-key [f3] 'shell)
+  (global-set-key [f4] 'ess-sas-goto-file-1)
+  (global-set-key [f5] 'ess-sas-goto-sas)
+  (global-set-key [f6] 'ess-sas-goto-log)
+  (global-set-key [(control f6)] 'ess-sas-append-log)
+  (global-set-key [f7] 'ess-sas-goto-lst)
+  (global-set-key [(control f7)] 'ess-sas-append-lst)
+  (global-set-key [f8] 'ess-sas-submit)
+  (global-set-key [(control f8)] 'ess-sas-submit-region)
+  (global-set-key [f9] 'ess-sas-data-view)
+  (global-set-key [f10] 'ess-sas-toggle-sas-mode)
+  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+
+(defvar ess-sas-global-unix-keys nil
+  "Non-nil if function keys use Unix-like SAS key definitions in all modes.")
+(defun ess-sas-global-unix-keys ()
+  "Unix/Mainframe-like SAS key definitions"
+  (global-set-key [f2] 'ess-revert-wisely)
+  (global-set-key [f3] 'ess-sas-submit)
+  (global-set-key [(control f3)] 'ess-sas-submit-region)
+  (global-set-key [f4] 'ess-sas-goto-sas)
+  (global-set-key [f5] 'ess-sas-goto-log)
+  (global-set-key [(control f5)] 'ess-sas-append-log)
+  (global-set-key [f6] 'ess-sas-goto-lst)
+  (global-set-key [(control f6)] 'ess-sas-append-lst)
+  (global-set-key [f7] 'ess-sas-goto-file-1)
+  (global-set-key [f8] 'shell)
+  (global-set-key [f9] 'ess-sas-data-view)
+  (global-set-key [f10] 'ess-sas-toggle-sas-mode)
+  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+
+(defvar ess-sas-local-pc-keys nil
+  "Non-nil if function keys use PC-like SAS key definitions
+in SAS-mode and related modes.")
+(defun ess-sas-local-pc-keys ()
+  "PC-like SAS key definitions."
+  (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
+  (define-key sas-mode-local-map [f3] 'shell)
+  (define-key sas-mode-local-map [f4] 'ess-sas-goto-file-1)
+  (define-key sas-mode-local-map [f5] 'ess-sas-goto-sas)
+  (define-key sas-mode-local-map [f6] 'ess-sas-goto-log)
+  (define-key sas-mode-local-map [(control f6)] 'ess-sas-append-log)
+  (define-key sas-mode-local-map [f7] 'ess-sas-goto-lst)
+  (define-key sas-mode-local-map [(control f7)] 'ess-sas-append-lst)
+  (define-key sas-mode-local-map [f8] 'ess-sas-submit)
+  (define-key sas-mode-local-map [(control f8)] 'ess-sas-submit-region)
+  (define-key sas-mode-local-map [f9] 'ess-sas-data-view)
+  (define-key sas-mode-local-map [f10] 'ess-sas-toggle-sas-mode)
+  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+
+(defvar ess-sas-local-unix-keys nil
+  "Non-nil if function keys use Unix-like SAS key definitions
+in SAS-mode and related modes.")
+(defun ess-sas-local-unix-keys ()
+  "Unix/Mainframe-like SAS key definitions"
+  (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
+  (define-key sas-mode-local-map [f3] 'ess-sas-submit)
+  (define-key sas-mode-local-map [(control f3)] 'ess-sas-submit-region)
+  (define-key sas-mode-local-map [f4] 'ess-sas-goto-sas)
+  (define-key sas-mode-local-map [f5] 'ess-sas-goto-log)
+  (define-key sas-mode-local-map [(control f5)] 'ess-sas-append-log)
+  (define-key sas-mode-local-map [f6] 'ess-sas-goto-lst)
+  (define-key sas-mode-local-map [(control f6)] 'ess-sas-append-lst)
+  (define-key sas-mode-local-map [f7] 'ess-sas-goto-file-1)
+  (define-key sas-mode-local-map [f8] 'shell)
+  (define-key sas-mode-local-map [f9] 'ess-sas-data-view)
+  (define-key sas-mode-local-map [f10] 'ess-sas-toggle-sas-mode)
+  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+
 
 (provide 'essa-sas)
 
