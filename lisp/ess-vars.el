@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/04/03 15:27:36 $
-;; Version: $Revision: 5.37 $
-;; RCS: $Id: ess-vars.el,v 5.37 2000/04/03 15:27:36 maechler Exp $
+;; Modified: $Date: 2000/04/04 09:51:04 $
+;; Version: $Revision: 5.38 $
+;; RCS: $Id: ess-vars.el,v 5.38 2000/04/04 09:51:04 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -502,11 +502,15 @@ anchor to bol with `^'.")
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
 (setq-default inferior-ess-secondary-prompt "+ ?")
 
-;;*;; Variables controlling interaction with the S process
+;;*;; Variables controlling interaction with the ESS process
 
 (defvar ess-execute-in-process-buffer nil
   "*If non-nil, the ess-execute- commands output to the process buffer.
 Otherwise, they get their own temporary buffer.")
+
+(defvar ess-eval-empty nil
+  "*If non-nil, `ess-eval-line-and-step' and `ess-eval-linewise' will even
+send empty lines to the ESS process.")
 
 (defvar ess-eval-visibly-p t
   "*If non-nil, the ess-eval- commands display the text to be evaluated

@@ -1,3 +1,13 @@
+2000-04-04  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-eval-line-and-step): new even-empty argument,
+	[prefix] allowing to send even empty lines to the ESS process.
+
+	* ess-vars.el: New logical variable ess-eval-empty.
+
+	* ess-inf.el (ess-command): applied the "FIXME": ess-command
+	should have two arguments only. -- Few adjustments in other *.el files.
+
 2000-04-03  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el and other files:

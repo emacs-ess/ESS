@@ -1,14 +1,14 @@
 ;;; ess-inf.el --- Support for running S as an inferior Emacs process
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997--2000, A.J. Rossini, M. Maechler.
+;; Copyright (C) 1997-2000 A.J. Rossini, M. Maechler.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/03 15:27:35 $
-;; Version: $Revision: 5.39 $
-;; RCS: $Id: ess-inf.el,v 5.39 2000/04/03 15:27:35 maechler Exp $
+;; Modified: $Date: 2000/04/04 09:51:04 $
+;; Version: $Revision: 5.40 $
+;; RCS: $Id: ess-inf.el,v 5.40 2000/04/04 09:51:04 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -491,7 +491,7 @@ prompt for a process name with PROMPT.
 
 (defun ess-switch-to-ESS (eob-p)
   "Switch to the current inferior ESS process buffer.
-With argument, positions cursor at end of buffer."
+With (prefix) EOB-P non-nil, positions cursor at end of buffer."
   (interactive "P")
   (ess-make-buffer-current)
   (if (and ess-current-process-name (get-process ess-current-process-name))
@@ -502,7 +502,7 @@ With argument, positions cursor at end of buffer."
     (message "No inferior ESS process")
     (ding)))
 
-(defun ess-switch-to-end-of-ESS nil
+(defun ess-switch-to-end-of-ESS ()
   "Switch to the end of the inferior ESS process buffer."
   (interactive)
   (ess-switch-to-ESS t))
@@ -560,10 +560,7 @@ PROC is the ESS process. Does not change point"
 	  (if moving (goto-char (process-mark proc))))
       (set-buffer old-buffer))))
 
-;;; FIXME: the third arg (visible) of ess-command is used nowhere - get
-;;; rid of it. The process filter should no run for ess-command --
-;;; comint Doesn't Need to Know
-(defun ess-command (com &optional buf obsolete)
+(defun ess-command (com &optional buf)
   "Send the ESS process command COM and delete the output
 from the ESS process buffer.  If an optional second argument BUF exists
 save the output in that buffer. BUF is erased before use.
@@ -577,8 +574,6 @@ Guarantees that the value of .Last.value will be preserved."
 	 oldpb
 	 oldpf
 	 oldpm)
-    ;; FIXME: replace calls to ess-command with 2-arg form
-    (if obsolete (ess-error "Invalid call to ess-command"))
     (if sprocess nil
       (error "Process %s is not running!" ess-current-process-name))
     (setq sbuffer (process-buffer sprocess))
@@ -712,7 +707,7 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 	 (sbuffer (process-buffer sprocess))
 	 (text (ess-replace-in-string text-withtabs "\t" " ")) ; AJR 971022
 	 start-of-output
-	 com pos)
+	 com pos txt-gt-0)
 
     ;;(message "'ess-eval-linewise: sbuffer = %s" sbuffer)
     (set-buffer sbuffer)
@@ -720,15 +715,17 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
     ;; the following is required to make sure things work!
     (if (string= ess-language "STA")
 	(setq invisibly t))
- ;;dbg (ess-write-to-dribble-buffer
- ;;dbg (format "(eval-visibly 1): lang invisibly=%s \n" ess-language invisibly))
+    ;; dbg:
+    (ess-write-to-dribble-buffer
+     (format "(eval-visibly 1): lang %s (invisibly=%s, eob=%s, even-empty=%s)\n"
+	     ess-language invisibly eob even-empty))
 
     (goto-char (marker-position (process-mark sprocess)))
     (if (stringp invisibly)
 	(insert-before-markers (concat "*** " invisibly " ***\n")))
-    ;; dbg
-;;-     (ess-write-to-dribble-buffer
-;;-      (format "(eval-visibly 2): text[%d]= «%s»\n" (length text) text))
+    ;; dbg:
+    (ess-write-to-dribble-buffer
+     (format "(eval-visibly 2): text[%d]= «%s»\n" (length text) text))
     (while (or even-empty
 	       (setq txt-gt-0 (> (length text) 0)))
       (if even-empty (setq even-empty nil))
@@ -736,7 +733,10 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 	  (progn
 	    (setq pos (string-match "\n\\|$" text))
 	    (setq com (concat (substring text 0 pos) "\n"))
-	    (setq text (substring text (min (length text) (1+ pos))))))
+	    (setq text (substring text (min (length text) (1+ pos)))))
+	;; else 0-length text
+	(setq com "\n")
+	)
       (goto-char (marker-position (process-mark sprocess)))
       (if (not invisibly)
 	  ;; Terrible kludge -- need to insert after all markers *except*`
@@ -878,18 +878,18 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
 (defun ess-eval-line-and-step (&optional simple-next even-empty)
   "Evaluate the current line visibly and step to the \"next\" line.
 \"next\" = the next line with non-comment code _unless_ SIMPLE-NEXT is non-nil,
-possibly via prefix arg.  If second arg EVEN-EMPTY is non-nil [prefix],
-also send empty lines."
+possibly via prefix arg.  If 2nd arg EVEN-EMPTY [prefix as well] or the
+variable `ess-eval-empty' is non-nil, also send empty lines."
   ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
-  (interactive "PP")
+  (interactive "P\nP"); prefix sets BOTH !
   (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (end-of-line)
     (let ((end (point)))
       (beginning-of-line)
       ;; go to end of process buffer so user can see result
-      (ess-eval-linewise (buffer-substring (point) end) nil 'eob
-			 even-empty)))
+      (ess-eval-linewise (buffer-substring (point) end)
+			 nil 'eob even-empty)))
   (if simple-next
       (forward-line 1)
     (ess-next-code-line 1)))
@@ -1434,7 +1434,7 @@ to the command if BUFF is not given.)"
       (let ((buff (ess-create-temp-buffer buff-name)))
 	(save-excursion
 	  (set-buffer buff)
-	  (ess-command the-command (get-buffer buff-name) nil)
+	  (ess-command the-command (get-buffer buff-name))
 	  (goto-char (point-min))
 	  (if message (insert message)
 	    (if buff nil
@@ -1514,7 +1514,7 @@ before you quit.  It is run automatically by \\[ess-quit]."
 
 ;;;*;;; The user completion command
 (defun ess-complete-object-name (&optional listcomp)
-  "Perform completion on S object preceding point.
+  "Perform completion on ESS(lang) object preceding point.
 The object is compared against those objects known by
 `ess-get-object-list' and any additional characters up to ambiguity are
 inserted.  Completion only works on globally-known objects (including
@@ -1524,13 +1524,13 @@ since local objects (e.g.  argument names) aren't known.
 
 Use \\[ess-resynch] to re-read the names of the attached directories.
 This is done automatically (and transparently) if a directory is
-modified, so the most up-to-date list of object names is always
+modified (S only!), so the most up-to-date list of object names is always
 available. However attached dataframes are *not* updated, so this
 command may be necessary if you modify an attached dataframe.
 
 If ARG is non-nil, no completion is attempted, but the available
-completions are listed."
-  (interactive "P")
+completions are listed [__UNIMPLEMENTED__]"
+  (interactive "P");; FIXME : the `listcomp' argument is NOT used
   (ess-make-buffer-current)
   (if (memq (char-syntax (preceding-char)) '(?w ?_))
       (let* ((comint-completion-addsuffix nil)
@@ -1641,8 +1641,7 @@ A newline is automatically added to COMMAND."
     (save-excursion
       (set-buffer tbuffer)
       (buffer-disable-undo tbuffer)
-      ;(ess-command (concat command "\n") tbuffer)
-      (ess-command command tbuffer) ; thanks, KH.
+      (ess-command command tbuffer)
       (goto-char (point-min))
       (if (not (looking-at "\\s-*\\[1\\]"))
 	  (setq names nil)
