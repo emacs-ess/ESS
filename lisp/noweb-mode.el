@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.1 1999/04/21 18:03:51 rossini Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.2 1999/09/01 02:41:46 ess Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -93,7 +93,7 @@
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.1 1999/04/21 18:03:51 rossini Exp $")
+  "$Id: noweb-mode.el,v 1.2 1999/09/01 02:41:46 ess Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")
@@ -171,28 +171,32 @@ Assumes mouse-1 is bound to mouse-set-point, so if you have rebound
 mouse-1, this will override your binding.")
 
 ; 
-; (defvar noweb-weave-options "-delay")
-; (defvar noweb-latex-viewer "xdvi")
-; (defvar noweb-html-viewer "netscape")
 
-; (defun noweb-weave (&optional name)
-;   (interactive)
-;   (let ((buffer (get-buffer-create "Weave Buffer")))
-;     (if (not name)
-;       (progn
-;       ;; Assume latex documentation, but set to html if appropriate
-;       (if (eq noweb-doc-mode html-mode)
-;           (setq name (concat (substring (buffer-file-name) 0 
-;                                         (string-match ".nw" name))
-;                              ".html"))
-;         (setq name (concat (substring (buffer-file-name) 0 
-;                                           (string-match ".nw" name))
-;                                ".tex")))))
-;     (setq name (concat "> " name))
-;     (setq noweb-weave-options (concat noweb-weave-options name))
-;     (start-process weave-process buffer "noweave" noweb-weave-options)))
+;; The following is apparently broken -- dangling code that was
+;; commented out.  Need to see if we can get it working?
 
-; (defun noweb-view  ())
+(defvar noweb-weave-options "-delay")
+(defvar noweb-latex-viewer "xdvi")
+(defvar noweb-html-viewer "netscape")
+
+(defun noweb-weave (&optional name)
+  (interactive)
+  (let ((buffer (get-buffer-create "Weave Buffer")))
+    (if (not name)
+	(progn
+	  ;; Assume latex documentation, but set to html if appropriate
+	  (if (eq noweb-doc-mode html-mode)
+	      (setq name (concat (substring (buffer-file-name) 0 
+					    (string-match ".nw" name))
+				 ".html"))
+	    (setq name (concat (substring (buffer-file-name) 0 
+					  (string-match ".nw" name))
+			       ".tex")))))
+    (setq name (concat "> " name))
+    (setq noweb-weave-options (concat noweb-weave-options name))
+    (start-process weave-process buffer "noweave" noweb-weave-options)))
+;;(defun noweb-view  ())
+
 
 ;;; Setup
 (defvar noweb-mode nil

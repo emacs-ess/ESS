@@ -1,13 +1,13 @@
 ;;; essl-sta.el --- Stata customization
 
-;; Copyright (C) 1997 Thomas Lumley and A. J. Rossini
+;; Copyright (C) 1999 Thomas Lumley and A. J. Rossini
 
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/03/05 21:03:46 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: essl-sta.el,v 5.15 1999/03/05 21:03:46 rossini Exp $
+;; Modified: $Date: 1999/09/01 02:41:46 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: essl-sta.el,v 5.16 1999/09/01 02:41:46 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -72,7 +72,6 @@ regexp-search, and so specials should be quoted.
 (defconst ess-help-STA-sec-regex "^[A-Z a-z]+:?\n^[-]+$"
   "Reg(ular) Ex(pression) of section headers in help file")
 
-
 (defvar STA-syntax-table nil "Syntax table for Stata code.")
 (if STA-syntax-table
     nil
@@ -99,8 +98,8 @@ regexp-search, and so specials should be quoted.
     (paragraph-separate           . (concat "^$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
     (require-final-newline        . t)
-    (comment-start                . "#")
-    (comment-start-skip           . "#+ *")
+    (comment-start                . "\\*")
+    (comment-start-skip           . "\\*+ *")
     (comment-column               . 40)
     ;;(comment-indent-function      . 'S-comment-indent)
     ;;(ess-comment-indent           . 'S-comment-indent)

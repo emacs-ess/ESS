@@ -6,10 +6,10 @@
 ;;          A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: April 18, 1999
-;; Version: $Revision: 1.2 $
+;; Version: $Revision: 1.3 $
 ;; Keywords: statistical support
 ;; Summary: Noweb support for ESS
-;; CVS: $Id: ess-noweb.el,v 1.2 1999/04/21 17:12:06 rossini Exp $
+;; CVS: $Id: ess-noweb.el,v 1.3 1999/09/01 02:41:46 ess Exp $
 
 ;; This file is part of ESS
 
@@ -35,9 +35,7 @@
 
 (require 'noweb-mode)
 
-;;;
-;;; should be moved to ess-vars.
-;;;
+ ; Variables
 
 (defvar ess-noweb-use-font-lock t
   "Set to t if you want to use font-locking in ESS noweb buffers")
@@ -45,9 +43,9 @@
 (if ess-noweb-use-font-lock
      (require 'noweb-font-lock-mode))
 
-;;; 
-;;; Code Chunk evaluation.
-;;;
+ ; Functions
+
+;;*;; Code Chunk evaluation.
 
 (defun ess-eval-chunk (vis)
   "Tangle the current chunk and send it to the inferior ESS process.
@@ -65,6 +63,20 @@ Arg has same meaning as for ess-eval-region."
   (interactive "P")
   (ess-eval-chunk vis)
   (ess-switch-to-ESS t))
+
+;;*;; Thread code chunk evaluation
+
+;;;
+;;; Threads are code chunks which fit into the same "buffer" (I'm (AJR) 
+;;; abusing terminology, but what I mean is things like:
+;;; <<thing1>>=
+;;;   code for thing1
+;;; @ 
+;;; Documentation
+;;; <<thing1>>=
+;;;   continuing code for thing1
+;;; @
+;;;
 
 (defun ess-eval-thread (vis)
   "Tangle all chunks in the current chunk-thread and send to the ESS process.
@@ -104,4 +116,4 @@ Arg has same meaning as for ess-eval-region."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-inf.el ends here
+;;; ess-noweb.el ends here

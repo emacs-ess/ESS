@@ -95,6 +95,10 @@
 (require 'noweb-mode)
 (require 'font-lock)
 
+;; Does this help with XEmacs problems (and font-lock evil)?
+(if (not (symbolp 'global-font-lock-mode))
+    (defvar global-font-lock-mode nil))
+
 (defvar noweb-font-lock-mode nil
   "Buffer local variable, t iff this buffer is using noweb-font-lock-mode.")
 
@@ -116,10 +120,13 @@ noweb-font-lock-initial-fontify-buffer is called" )
   "Stores the function used to find the beginning of syntax in the
 current major mode. noweb-font-lock-mode needs a different one." )
 
-(defvar noweb-font-lock-doc-start-face font-lock-warning-face
+;; (AJR) the next two lines were originally font-lock-warning-face
+;; methods; XEmacs 20.4 doesn't define this, sigh...  -- KLUDGE --.
+
+(defvar noweb-font-lock-doc-start-face font-lock-reference-face
   "Face to use to highlight the `@' at the start of each doc chunk")
 
-(defvar noweb-font-lock-brackets-face font-lock-warning-face
+(defvar noweb-font-lock-brackets-face font-lock-reference-face
   "Face to use to highlight `<<', `>>' `[[' and `]]' ")
 
 (defvar noweb-font-lock-chunk-name-face font-lock-keyword-face

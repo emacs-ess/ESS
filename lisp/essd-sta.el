@@ -1,13 +1,13 @@
 ;;; essd-sta.el --- Stata customization
 
-;; Copyright (C) 1997--1998 A. J. Rossini, Thomas Lumley
+;; Copyright (C) 1997--1999 A. J. Rossini, Thomas Lumley
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 1999/06/17 16:46:09 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: essd-sta.el,v 1.18 1999/06/17 16:46:09 maechler Exp $
+;; Modified: $Date: 1999/09/01 02:41:46 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: essd-sta.el,v 1.19 1999/09/01 02:41:46 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -89,7 +89,7 @@
   (let ((sta-start-args
 	 (concat inferior-ess-start-args
 		 (if start-args (read-string
-				 "Starting Args [possibly -q] ? ")
+				 "Starting Args [possibly -k####] ? ")
 		   nil))))
     (inferior-ess sta-start-args)))
 
