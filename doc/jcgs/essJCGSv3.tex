@@ -99,38 +99,38 @@
   development environment for statistical analysis}
 
 %For blinded submission:
-%\author{anonymous}
+\author{anonymous}
 
 %%For regular review:
-\author{A.J. Rossini \and Richard M. Heiberger \and Rodney A. Sparapani
-\and Martin M{\"a}chler \and Kurt Hornik \footnote{%
-%%
-    A.J. Rossini is Research Assistant Professor in the Department of
-    Biostatistics, University of Washington and Joint Assistant Member at
-    the Fred Hutchinson Cancer Research Center, Seattle, WA, USA
-    (E-mail: rossini@u.washington.edu);
-%%
-    Richard M. Heiberger is Professor in the Department of Statistics at
-    Temple University, Philadelphia, PA, USA (E-mail: rmh@temple.edu);
-%%
-    Rodney A. Sparapani is Senior Biostatistician in the Center for Patient
-    Care and Outcomes Research at the Medical College of Wisconsin,
-    Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu);
-%%
-    Martin M{\"a}chler is Senior Scientist and Lecturer in the Seminar for
-    Statistics, ETH Zurich, Zurich, Switzerland
-    (E-mail: maechler@stat.math.ethz.ch);
-%%
-    Kurt Hornik is Professor in the Institut f{\"u}r Statistik,
-    Wirtschaftsuniversit{\"a}t Wien and the Institut f{\"u}r
-    Wahrscheinlichkeitstheorie und Statistik, Technische
-    Universit{\"a}t Wien, Vienna, Austria (E-mail:
-    Kurt.Hornik@r-project.org).  The authors would like to thank the
-    referees and associate editor for suggesting changes which
-    substantially improved the presentation of the paper.}}
+%\author{A.J. Rossini \and Richard M. Heiberger \and Rodney A. Sparapani
+%\and Martin M{\"a}chler \and Kurt Hornik \footnote{%
+%%%
+%    A.J. Rossini is Research Assistant Professor in the Department of
+%    Biostatistics, University of Washington and Joint Assistant Member at
+%    the Fred Hutchinson Cancer Research Center, Seattle, WA, USA
+%    (E-mail: rossini@u.washington.edu);
+%%%
+%    Richard M. Heiberger is Professor in the Department of Statistics at
+%    Temple University, Philadelphia, PA, USA (E-mail: rmh@temple.edu);
+%%%
+%    Rodney A. Sparapani is Senior Biostatistician in the Center for Patient
+%    Care and Outcomes Research at the Medical College of Wisconsin,
+%    Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu);
+%%%
+%    Martin M{\"a}chler is Senior Scientist and Lecturer in the Seminar for
+%    Statistics, ETH Zurich, Zurich, Switzerland
+%    (E-mail: maechler@stat.math.ethz.ch);
+%%%
+%    Kurt Hornik is Professor in the Institut f{\"u}r Statistik,
+%    Wirtschaftsuniversit{\"a}t Wien and the Institut f{\"u}r
+%    Wahrscheinlichkeitstheorie und Statistik, Technische
+%    Universit{\"a}t Wien, Vienna, Austria (E-mail:
+%    Kurt.Hornik@r-project.org).  The authors would like to thank the
+%    referees and associate editor for suggesting changes which
+%    substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/10/07 15:58:48 $ - $Revision: 1.46 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/10/07 16:33:27 $ - $Revision: 1.47 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -298,15 +298,14 @@ identifiable and when lines of code are automatically indented to a
 depth appropriate to their context (e.g., if--then clauses, loops).
 ESS provides both of these to the programmer by including a
 description of the syntax of each supported statistical language in
-the form used by \stexttt{font-lock-mode} (for a brief discussion of 
-Emacs modes and font-lock-mode; see section~\ref{sec:major:minor}).  
-The font selection and the
-indentation depth are automatically set while the user is typing.
-There are several options for mapping of colors or fonts to each of
-the syntactic types.  We selected black-and-white font-mapping for
-display here.  On a color terminal we might use purple for the
-keywords, red for comments, green for matching parens, and
-inverse-video purple for mismatched parens.  Emacs makes default
+the form used by \stexttt{font-lock-mode} (for a brief discussion of
+Emacs modes and font-lock-mode, see Section~\ref{sec:emacs}).  The
+font selection and the indentation depth are automatically set while
+the user is typing.  There are several options for mapping of colors
+or fonts to each of the syntactic types.  We selected black-and-white
+font-mapping for display here.  On a color terminal we might use
+purple for the keywords, red for comments, green for matching parens,
+and inverse-video purple for mismatched parens.  Emacs makes default
 choices of colors and ESS provides several other optional schemes.
 
 %Figure \ref{fig:font} shows an example of font-locking a complicated S
@@ -695,6 +694,7 @@ unique to Emacs, but it was the first extensible editor to have them
 all available.
 
 \paragraph{Keyboard and Mouse Input.}
+
 When Emacs was originally written, character-based terminals were the
 most advanced method of computer access.  Common Emacs commands were
 mapped to key sequences, creating keyboard shortcuts for convenience.
@@ -729,8 +729,7 @@ resulting buffers provide a copy of the entire transcript of the
 interaction, which can be edited and searched while the program
 executes.
 
-\subsection{Major and Minor Modes.}
-\label{sec:major:minor}
+\paragraph{Major and Minor Modes.}
 Emacs capabilities are extended by loading files containing commands
 and functions written in Emacs Lisp (elisp) \citep{RChassell1999},
 which is a dialect of Lisp \citep{PGraham:1996}.  Emacs commands can
