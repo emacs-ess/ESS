@@ -1,7 +1,7 @@
 ;;; ess.el --- Emacs Speaks Statistics: statistical programming within Emacs
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Authors: Doug Bates, Ed Kademan, Frank Ritter, David Smith
@@ -126,8 +126,12 @@
 
 (autoload 'ess-load-file "ess-inf" "Source a file into S.")
 
-(autoload 'inside-string/comment-p "ess-utils"
+(autoload 'ess-inside-string-or-comment-p "ess-utils"
   "Non-nil, if inside string or comment." t)
+(autoload 'ess-inside-string-p "ess-utils" "Non-nil if inside string." t)
+
+(autoload 'ess-do-auto-fill "ess-utils" "substitute for \\[do-auto-fill]." t)
+
 (autoload 'ess-rep-regexp "ess-utils" "Replace, but not in string/comment." t)
 
 (autoload 'ess-time-string "ess-utils" "Return time-stamp string." t)

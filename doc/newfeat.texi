@@ -12,6 +12,7 @@ environment variables LANGUAGE=en@@quot LC_ALL=en_US.UTF-8
 Killing all buffers associated with .sas program no longer bound to
 @kbd{C-F10} since it seems to be a bit overzealous.
 @item S-Plus 7 for Windows is now recognized.
+@item ESS[S] (incl.@: R): in auto-fill mode, strings are not wrapped anymore.
 @end itemize
 
 Changes/New Features in 5.2.5:

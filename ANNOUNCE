@@ -1,7 +1,7 @@
-ANNOUNCING ESS
-**************
+1 ANNOUNCING ESS
+****************
 
-   The ESS Developers proudly announce the release of ESS
+The ESS Developers proudly announce the release of ESS
 
    5.2.6
 
@@ -21,10 +21,10 @@ Please read the file COPYING which comes with the distribution, for
 more information about the license. For more detailed information,
 please read the README files that come with ESS.
 
-Getting the Latest Version
-==========================
+1.1 Getting the Latest Version
+==============================
 
-   The latest released version of ESS is always available on the web at:
+The latest released version of ESS is always available on the web at:
 ESS web page (http://ess.r-project.org) or StatLib
 (http://lib.stat.cmu.edu/general/ESS/)
 
@@ -33,9 +33,8 @@ ESS web page (http://ess.r-project.org) or StatLib
 you have a Subversion client (see `http://subversion.tigris.org/'), you
 can download the sources using:
      % svn checkout https://svn.r-project.org/ESS/trunk PATH
-
-which will put the ESS files into directory PATH.  Later, within that
-directory, `svn update' will bring that directory up to date.
+   which will put the ESS files into directory PATH.  Later, within
+that directory, `svn update' will bring that directory up to date.
 Windows-based tools such as TortoiseSVN are also available for
 downloading the files.  Alternatively, you can browse the sources with a
 web browser at: ESS SVN site (https://svn.r-project.org/ESS/trunk).
@@ -59,8 +58,8 @@ Subversion server of the R project is
 (currently, there is no "trusted certificate").  You can accept this
 certificate permanently and will not be asked about it anymore.
 
-Current Features
-================
+1.2 Current Features
+====================
 
    * Languages Supported:
         * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x, and R)
@@ -114,12 +113,12 @@ Current Features
 
         * Previewing
 
-Requirements
-============
+1.3 Requirements
+================
 
-   ESS has been tested with
+ESS has been tested with
 
-   * S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
+   * S-PLUS 3.3-4, 4.5, 2000, 5.0-1, 6.0-2, 7.0
 
    * R >=0.49
 
@@ -142,43 +141,32 @@ Requirements
    * Microsoft Windows 95/98/NT/2000/XP (SPLUS 4.5/2000/6.*, R, SAS and
      BUGS)
 
-   * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
+   * Apple Mac OS (SAS for OS 9 and R for OS X)
 
    with the following versions of emacs
 
-   * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
+   * GNU Emacs 20.3-7, 21.1, 21.3
 
-   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17(1),
-     21.4.14-15; as of June 2004, ESS does not work with XEmacs Betas
-     such as 21.5.17
-
-   * GNU Emacs <20.3 and XEmacs <21.0(2)
+   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13(1), 21.4.14-15,
+     21.4.17, 21.5.18-19
 
    ---------- Footnotes ----------
 
    (1) requires the files.el patch to revert-buffer for the Local
 Variables updating problem
 
-   (2) These releases of emacs are no longer supported, so an upgrade
-is recommended if you plan to use ESS.  If you have GNU Emacs 19.29,
-see *Note Unix installation::.  Also, note that the `custom' library
-bundled with Emacs 19.34 is too _old_, its API is incompatible with the
-`new custom' bundled with recent Emacsen.  The `new custom' for Emacs
-19.34 is available for download here
-(ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz).
+1.4 Stability
+=============
 
-Stability
-=========
-
-   Versions 5.2.x are meant to be release-quality versions.  While some
+Versions 5.2.x are meant to be release-quality versions.  While some
 new features are being introduced, we are cleaning up and improving the
 interface.  We know about some remaining documentation inconsistencies.
 Patches or suggested fixes with bug reports are much appreciated!
 
-Mailing List
-============
+1.5 Mailing List
+================
 
-   There is a mailing list for discussions and announcements relating to
+There is a mailing list for discussions and announcements relating to
 ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
 "help") in the body to <ess-help-request@stat.math.ethz.ch>;
 contributions to the list may be mailed to
@@ -197,10 +185,10 @@ low-volume mailing list.
 
    *  posting small patches to ESS.
 
-Reporting Bugs
-==============
+1.6 Reporting Bugs
+==================
 
-   Please send bug reports, suggestions etc. to
+Please send bug reports, suggestions etc. to
 
    <ESS-bugs@stat.math.ethz.ch>
 
@@ -219,8 +207,8 @@ containing debug information; send us that buffer.
    Note that comments, suggestions, words of praise and large cash
 donations are also more than welcome.
 
-Authors
-=======
+1.7 Authors
+===========
 
    * A.J. Rossini (mailto:rossini@blindglobe.net)
 
@@ -234,10 +222,10 @@ Authors
 
    * Stephen Eglen (mailto:stephen@gnu.org)
 
-License
-=======
+1.8 License
+===========
 
-   ESS is free software; you can redistribute it and/or modify it under
+ESS is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
@@ -247,10 +235,10 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 in the file COPYING in the same directory as this file for more details.
 
-New Features
-============
+1.9 New Features
+================
 
-   Changes/New Features in 5.2.6:
+Changes/New Features in 5.2.6:
    * Removed non-ASCII characters in a few files.
 
    * ESS[R]: now works better when UTF-8 locale is active; in
@@ -266,6 +254,9 @@ New Features
      `C-F10' since it seems to be a bit overzealous.
 
    * S-Plus 7 for Windows is now recognized.
+
+   * ESS[S] (incl. R): in auto-fill mode, strings are not wrapped
+     anymore.
 
    Changes/New Features in 5.2.5:
    * ESS[R]: `C-c C-q' or `Quit S' from the menu now should work (again

@@ -569,9 +569,9 @@ operator is removed and replaced by the underscore.  `ess-S-assign',
 typically \" <- \", can be customized.	In ESS modes other than R/S,
 an underscore is always inserted. "
   (interactive)
-  ;;(insert (if (inside-string/comment-p (point)) "_" ess-S-assign))
+  ;;(insert (if (ess-inside-string-or-comment-p (point)) "_" ess-S-assign))
   (if (or
-       (inside-string/comment-p (point))
+       (ess-inside-string-or-comment-p (point))
        (not (equal ess-language "S")))
       (insert "_")
     ;; Else one keypress produces ess-S-assign; a second keypress will delete
@@ -642,6 +642,12 @@ and I need to relearn emacs lisp (but I had to, anyway."
     (set-syntax-table ess-mode-syntax-table)
     ))
 
+(add-hook 'ess-mode-hook
+	  (lambda ()
+	    (set (make-local-variable 'fill-nobreak-predicate)
+		 'ess-inside-string-p)
+	    (set (make-local-variable 'auto-fill-function)
+		 'ess-do-auto-fill)))
 
 (provide 'essl-s)
 

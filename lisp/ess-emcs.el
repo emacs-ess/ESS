@@ -1,6 +1,6 @@
 ;;; ess-emcs.el --- simple determination of Emacs/XEmacs and version #.
 
-;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2000--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
@@ -84,6 +84,9 @@ Only a concern with earlier versions of Emacs.")
 ;; XEmacs 20.x needs this
 (if (not (fboundp 'find-buffer-visiting))
     (fset 'find-buffer-visiting 'get-file-buffer))
+;; XEmacs <= 21.4.15 needs this
+(if (not (fboundp 'line-beginning-position))
+    (defalias 'line-beginning-position 'point-at-bol))
 
 (if (and (not (featurep 'xemacs))
 	 (string-match "XEmacs\\|Lucid" emacs-version))

@@ -1,3 +1,15 @@
+2005-03-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+  from	    Kurt Hornik	 <Kurt.Hornik@wu-wien.ac.at>
+
+	* essl-s.el (add-hook 'ess-mode-hook): new ess-do-auto-fill
+
+	* ess-emcs.el (line-beginning-position): if needed by older Xemacsen
+
+	* ess-utils.el (ess-do-auto-fill): new - slight change of GNU
+	emacs' do-auto-fill.
+	* ess-utils.el (ess-inside-string-p): new
+	(ess-inside-string-or-comment-p): renamed from 'inside-string/comment-p'
+
 2005-02-11  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el: do not turn on sas-listing-mode via
@@ -5,7 +17,7 @@
 
 2005-02-09  Martin Maechler  <maechler@stat.math.ethz.ch>
 	really
-2005-02-09  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+2005-02-09  Kurt Hornik	 <Kurt.Hornik@wu-wien.ac.at>
 
 	* essd-r.el (R): do not (let .. default-process-coding-system) !!
 
@@ -95,7 +107,7 @@
 	(ess-create-object-name-db): Comment out for now, maybe delete later?
 
 	* ess-cust.el (ess-object-name-db-file): Change from defcustom to
-	defvar.  Also, add note that probably this variable (and others)
+	defvar.	 Also, add note that probably this variable (and others)
 	can be deleted in future ESS versions.
 
 2004-12-24  Stephen Eglen  <stephen@gnu.org>

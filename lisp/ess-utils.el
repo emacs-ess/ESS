@@ -1,6 +1,6 @@
 ;;; ess-utils.el --- General Emacs utility functions used by ESS
 
-;; Copyright (C) 1998--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1998--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: Martin Maechler <maechler@stat.math.ethz.ch>
@@ -25,8 +25,8 @@
 
 ;;;-- Emacs Utilities --- Generally useful --- used by (but not requiring) ESS
 
-(defun inside-string/comment-p (pos)
-  "Return non-nil if POSition [defaults to (point) is inside string or comment
+(defun ess-inside-string-or-comment-p (pos)
+  "Return non-nil if POSition [defaults to (point)] is inside string or comment
  (according to syntax). NOT OKAY for multi-line comments!!"
   ;;FIXME (defun S-calculate-indent ..) in ./essl-s.el can do that ...
   (interactive "d");point by default
@@ -35,6 +35,12 @@
 		(save-excursion (beginning-of-line) (point))
 		pos))))
     (or (nth 3 pps) (nth 4 pps)))); 3: string,  4: comment
+
+(defsubst ess-inside-string-p ()
+  "Return non-nil if point is inside string (according to syntax)."
+  (interactive)
+  (save-excursion
+    (nth 3 (parse-partial-sexp (line-beginning-position) (point)))))
 
 ;; simple alternative to ess-read-object-name-default of ./ess-inf.el :
 (defun ess-extract-word-name ()
@@ -52,7 +58,7 @@
 			       (not fixedcase))); t  <==> ignore case in search
 	(pl) (p))
     (while (setq p (re-search-forward regexp nil t))
-      (cond ((not (inside-string/comment-p (1- p)))
+      (cond ((not (ess-inside-string-or-comment-p (1- p)))
 	     (if verbose
 		 (let ((beg (match-beginning 0)))
 		   (message "(beg,p)= (%d,%d) = %s"
@@ -474,5 +480,140 @@ This function will work even if LIST is unsorted.  See also `uniq'."
 	    (while (search-forward-regexp "^[ \t]*\n[ \t]*\n" nil t)
               ;;(goto-char (match-beginning 0))
 		    (delete-blank-lines)))))
+
+(defun ess-do-auto-fill ()
+  "This is the same as \\[do-auto-fill] in GNU emacs 21.3, with one major
+difference: if we could not find a suitable place to break the line,
+we simply do not break it (instead of breaking after the first word)."
+  (let (fc justify bol give-up
+	   (fill-prefix fill-prefix))
+    (if (or (not (setq justify (current-justification)))
+	    (null (setq fc (current-fill-column)))
+	    (and (eq justify 'left)
+		 (<= (current-column) fc))
+	    (save-excursion (beginning-of-line)
+			    (setq bol (point))
+			    (and auto-fill-inhibit-regexp
+				 (looking-at auto-fill-inhibit-regexp))))
+	nil ;; Auto-filling not required
+      (if (memq justify '(full center right))
+	  (save-excursion (unjustify-current-line)))
+
+      ;; Choose a fill-prefix automatically.
+      (if (and adaptive-fill-mode
+	       (or (null fill-prefix) (string= fill-prefix "")))
+	  (let ((prefix
+		 (fill-context-prefix
+		  (save-excursion (backward-paragraph 1) (point))
+		  (save-excursion (forward-paragraph 1) (point)))))
+	    (and prefix (not (equal prefix ""))
+		 (setq fill-prefix prefix))))
+
+      (while (and (not give-up) (> (current-column) fc))
+	;; Determine where to split the line.
+	(let* (after-prefix
+	       (fill-point
+		(let ((opoint (point))
+		      bounce
+		      (first t))
+		  (save-excursion
+		    (beginning-of-line)
+		    (setq after-prefix (point))
+		    (and fill-prefix
+			 (looking-at (regexp-quote fill-prefix))
+			 (setq after-prefix (match-end 0)))
+		    (move-to-column (1+ fc))
+		    ;; Move back to the point where we can break the line.
+		    ;; We break the line between word or
+		    ;; after/before the character which has character
+		    ;; category `|'.  We search space, \c| followed by
+		    ;; a character, or \c| following a character.  If
+		    ;; not found, place the point at beginning of line.
+		    (while (or first
+			       ;; If this is after period and a single space,
+			       ;; move back once more--we don't want to break
+			       ;; the line there and make it look like a
+			       ;; sentence end.
+			       (and (not (bobp))
+				    (not bounce)
+				    sentence-end-double-space
+				    (save-excursion (forward-char -1)
+						    (and (looking-at "\\. ")
+							 (not (looking-at "\\.  ")))))
+			       (and (not (bobp))
+				    (not bounce)
+				    fill-nobreak-predicate
+				    (funcall fill-nobreak-predicate)))
+		      (setq first nil)
+		      (re-search-backward "[ \t]\\|\\c|.\\|.\\c|\\|^")
+		      ;; If we find nowhere on the line to break it,
+		      ;; do not break it.  Set bounce to t
+		      ;; so we will not keep going in this while loop.
+		      (if (<= (point) after-prefix)
+			  (setq bounce t)
+			(if (looking-at "[ \t]")
+			    ;; Break the line at word boundary.
+			    (skip-chars-backward " \t")
+			  ;; Break the line after/before \c|.
+			  (forward-char 1))))
+		    (if enable-multibyte-characters
+			;; If we are going to break the line after or
+			;; before a non-ascii character, we may have
+			;; to run a special function for the charset
+			;; of the character to find the correct break
+			;; point.
+			(if (not (and (eq (charset-after (1- (point))) 'ascii)
+				      (eq (charset-after (point)) 'ascii)))
+			    (fill-find-break-point after-prefix)))
+
+		    ;; Let fill-point be set to the place where we end up.
+		    ;; But move back before any whitespace here.
+		    (skip-chars-backward " \t")
+		    (point)))))
+
+	  ;; See whether the place we found is any good.
+	  (if (save-excursion
+		(goto-char fill-point)
+		(and (not (bolp))
+		     ;; There is no use breaking at end of line.
+		     (not (save-excursion (skip-chars-forward " ") (eolp)))
+		     ;; It is futile to split at the end of the prefix
+		     ;; since we would just insert the prefix again.
+		     (not (and after-prefix (<= (point) after-prefix)))
+		     ;; Don't split right after a comment starter
+		     ;; since we would just make another comment starter.
+		     (not (and comment-start-skip
+			       (let ((limit (point)))
+				 (beginning-of-line)
+				 (and (re-search-forward comment-start-skip
+							 limit t)
+				      (eq (point) limit)))))))
+	      ;; Ok, we have a useful place to break the line.  Do it.
+	      (let ((prev-column (current-column)))
+		;; If point is at the fill-point, do not `save-excursion'.
+		;; Otherwise, if a comment prefix or fill-prefix is inserted,
+		;; point will end up before it rather than after it.
+		(if (save-excursion
+		      (skip-chars-backward " \t")
+		      (= (point) fill-point))
+		    (funcall comment-line-break-function t)
+		  (save-excursion
+		    (goto-char fill-point)
+		    (funcall comment-line-break-function t)))
+		;; Now do justification, if required
+		(if (not (eq justify 'left))
+		    (save-excursion
+		      (end-of-line 0)
+		      (justify-current-line justify nil t)))
+		;; If making the new line didn't reduce the hpos of
+		;; the end of the line, then give up now;
+		;; trying again will not help.
+		(if (>= (current-column) prev-column)
+		    (setq give-up t)))
+	    ;; No good place to break => stop trying.
+	    (setq give-up t))))
+      ;; Justify last line.
+      (justify-current-line justify t t)
+      t)))
 
 (provide 'ess-utils)
