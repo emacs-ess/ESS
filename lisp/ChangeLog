@@ -1,3 +1,15 @@
+2004-04-22  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-menu.el (ess-imenu-use-S): Change default value and update
+	doc string.
+	(ess-imenu-regexp-S-function): Delete unused variable.
+
+	* ess-cust.el (ess-use-menus): Delete unused variable.
+	(ess-imenu-use-p): Set default value to (fboundp 'imenu) rather
+	than (featurep 'imenu) since the former is more useful for seeing
+	whether Imenu is available.  (The latter is true only if Imenu has
+	already been loaded.)
+
 2004-04-19  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-help.el (ess-display-help-on-object): If ess-help-own-frame
