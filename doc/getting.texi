@@ -1,13 +1,17 @@
 The latest versions of ESS are always available by WWW from:
 
 	@code{http://ess.stat.wisc.edu/}
-        @code{ftp://ess.stat.wisc.edu/pub/ESS/}
+and     @code{ftp://ess.stat.wisc.edu/pub/ESS/}
 
 The HTML version of the documentation can be found at:
 
         @code{http://stat.ethz.ch/ESS/}
 
 The latest (no more than 24 hours behind the developers) version of
-ESS can also be retrieved using anonymous cvs.
-
+ESS can also be retrieved using anonymous cvs:
 @include inst_cvs.texi
+
+
+Check the @file{README}  file first to see which files you need.
+Look at @file{ANNOUNCE} to learn about new user-visible features;
+also, many changes are listed in the @file{ChangeLog} file.
