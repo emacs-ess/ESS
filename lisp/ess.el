@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/06/30 22:47:42 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: ess.el,v 1.15 1997/06/30 22:47:42 rossini Exp $
+;; Modified: $Date: 1997/07/01 16:13:36 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: ess.el,v 1.16 1997/07/01 16:13:36 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,10 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.16  1997/07/01 16:13:36  rossini
+;; inferior-ess-objects-command: buffer local.
+;; inferior-ess-secondary-prompt: corrected (to be buf-loc).
+;;
 ;; Revision 1.15  1997/06/30 22:47:42  rossini
 ;; changed ess-mode-version (we're at beta-8).
 ;;
@@ -665,7 +669,7 @@ Do not anchor to bol with `^'.")
 (This is issued by S to continue an incomplete expression). Do not
 anchor to bol with `^'.")
 
-(make-variable-buffer-local 'inferior-ess-primary-prompt)
+(make-variable-buffer-local 'inferior-ess-secondary-prompt)
 (setq-default inferior-ess-secondary-prompt "+ ?")
 
 ;;*;; Variables controlling interaction with the S process
@@ -744,6 +748,9 @@ of Emacs until the code has been successfully evaluated by S.")
 (defvar inferior-ess-objects-command "ls()" ;; others: in (S) or (R)
   "Format string for ess command to get a list of objects at position %d")
 ;;; Don't include a newline at the end! Used in ess-execute-objects
+
+(make-variable-buffer-local 'inferior-ess-objects-command)
+(setq-default inferior-ess-objects-command "ls()")
 
 (defvar inferior-ess-get-prompt-command "options()$prompt\n"
   "Command to find the value of the current S prompt.")
