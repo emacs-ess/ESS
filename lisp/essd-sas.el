@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/08 19:39:23 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: essd-sas.el,v 1.11 1997/09/08 19:39:23 rossini Exp $
+;; Modified: $Date: 1997/10/16 18:44:31 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: essd-sas.el,v 1.12 1997/10/16 18:44:31 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -34,7 +34,8 @@
 
 (require 'essl-sas)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
+(autoload 'inferior-ess "ess-inf"  "Run an ESS process")
+(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
 
 (defvar inferior-SAS-args "-stdio -linesize 80 -noovp"
   "*Arguments to use for starting SAS.")
