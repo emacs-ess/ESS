@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2002/02/25 12:40:36 $
-;; Version: $Revision: 1.30 $
-;; RCS: $Id: ess-cust.el,v 1.30 2002/02/25 12:40:36 maechler Exp $
+;; Modified: $Date: 2002/04/26 15:17:14 $
+;; Version: $Revision: 1.31 $
+;; RCS: $Id: ess-cust.el,v 1.31 2002/04/26 15:17:14 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -124,7 +124,7 @@
 
 ;; Variables (not user-changeable)
 
-(defcustom ess-version "5.1.20"
+(defcustom ess-version ""
   "Version of ESS currently loaded."
   :group 'ess
   :type 'string)
@@ -209,6 +209,18 @@ If nil or or if returns nil then you get `ess-directory'."
   :group 'ess
   :type 'directory)
 
+(defcustom ess-directory-function nil
+  "*Function to return the directory that ESS is run from.
+If nil or or if returns nil then you get `ess-directory'."
+  :group 'ess
+  :type 'directory)
+
+(defcustom ess-setup-directory-function nil
+  "*Function to setup the directory that ESS is run from.
+This function can be called to set environment variables or to create a workspace."
+  :group 'ess
+  :type 'directory)
+
 (defcustom ess-directory nil
   "*The directory ESS is run from.  It must end in a slash.
 Provided as a default if `ess-ask-for-ess-directory' is non-nil.
@@ -218,9 +230,15 @@ run from."
   :group 'ess
   :type 'directory)
 
+(defcustom ess-history-directory nil
+  "*Directory to pick up `ess-history-file' from.
+If this is nil, the history file is relative to `ess-directory'."
+  :group 'ess
+  :type 'file)
+
 (defcustom ess-history-file nil
   "*File to pick up history from.
-If this is a relative file name, it is relative to ess-directory."
+If this is a relative file name, it is relative to `ess-history-directory'."
   :group 'ess
   :type 'file)
 
