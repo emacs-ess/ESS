@@ -1,9 +1,9 @@
 ANNOUNCING ESS
 **************
 
-The ESS Developers proudly announce the release of ESS
+   The ESS Developers proudly announce the release of ESS
 
-   5.2.0
+   5.2.1
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -24,7 +24,7 @@ please read the README files that come with ESS.
 Getting the Latest Version
 ==========================
 
-The latest version of ESS is always available on the web at: ESS web
+   The latest version of ESS is always available on the web at: ESS web
 page (http://www.analytics.washington.edu/downloads/ess/) or StatLib
 (http://lib.stat.cmu.edu/general/ESS/)
 
@@ -89,7 +89,7 @@ Current Features
 Requirements
 ============
 
-ESS has been tested with
+   ESS has been tested with
 
    * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
 
@@ -139,7 +139,7 @@ bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 Stability
 =========
 
-Versions 5.1.x are meant to be gamma-level releases.  While some bugs
+   Versions 5.1.x are meant to be gamma-level releases.  While some bugs
 are fixed, others may have been introduced, especially with regards to
 new features.  See the file doc/TODO for details.  Bug reports are
 solicited; see the Bugs Section below.  Patches or suggested coding
@@ -148,7 +148,7 @@ fixes with bug reports are much appreciated!
 Mailing List
 ============
 
-There is a mailing list for discussions and announcements relating to
+   There is a mailing list for discussions and announcements relating to
 ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
 "help") in the body to <ess-help-request@stat.math.ethz.ch>;
 contributions to the list may be mailed to
@@ -170,7 +170,7 @@ low-volume mailing list.
 Reporting Bugs
 ==============
 
-Please send bug reports, suggestions etc. to
+   Please send bug reports, suggestions etc. to
 
    <ESS-bugs@stat.math.ethz.ch>
 
@@ -207,7 +207,7 @@ Authors
 License
 =======
 
-ESS is free software; you can redistribute it and/or modify it under
+   ESS is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
@@ -220,7 +220,13 @@ in the file COPYING in the same directory as this file for more details.
 New Features
 ============
 
-Changes/New Features in 5.2.0:
+   Changes/New Features in 5.2.1:
+   * ESS[S] (R and S-plus): now have tool-bar with entries to evaluate
+     code in the inferior process or to switch there.  This code is
+     experimental and likely to change as XEmacs/Emacs issues get
+     resolved.
+
+   Changes/New Features in 5.2.0:
    * ESS[BUGS]:  new info documentation!  now supports interactive
      processing thanks to Aki Vehtari (mailto:Aki.Vehtari@hut.fi); new
      architecture-independent unix support as well as support for BUGS

@@ -1,9 +1,9 @@
 General Information: README
 ***************************
 
-This is the README file for the distribution of ESS version
+   This is the README file for the distribution of ESS version
 
-   5.2.0
+   5.2.1
 
    The first release of the 5.2 series.  ESS is a GNU Emacs and XEmacs
 mode for interactive statistical programming and data analysis.
@@ -30,7 +30,7 @@ Stata-mode (Thomas Lumley).
 License
 =======
 
-ESS is free software; you can redistribute it and/or modify it under
+   ESS is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
@@ -43,7 +43,13 @@ in the file COPYING in the same directory as this file for more details.
 New Features
 ============
 
-Changes/New Features in 5.2.0:
+   Changes/New Features in 5.2.1:
+   * ESS[S] (R and S-plus): now have tool-bar with entries to evaluate
+     code in the inferior process or to switch there.  This code is
+     experimental and likely to change as XEmacs/Emacs issues get
+     resolved.
+
+   Changes/New Features in 5.2.0:
    * ESS[BUGS]:  new info documentation!  now supports interactive
      processing thanks to Aki Vehtari (mailto:Aki.Vehtari@hut.fi); new
      architecture-independent unix support as well as support for BUGS
@@ -371,7 +377,7 @@ Current Features
 Stability
 =========
 
-Versions 5.1.x are meant to be gamma-level releases.  While some bugs
+   Versions 5.1.x are meant to be gamma-level releases.  While some bugs
 are fixed, others may have been introduced, especially with regards to
 new features.  See the file doc/TODO for details.  Bug reports are
 solicited; see the Bugs Section below.  Patches or suggested coding
@@ -380,7 +386,7 @@ fixes with bug reports are much appreciated!
 Requirements
 ============
 
-ESS has been tested with
+   ESS has been tested with
 
    * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
 
@@ -430,7 +436,7 @@ bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 Getting the Latest Version
 ==========================
 
-The latest version of ESS is always available on the web at: ESS web
+   The latest version of ESS is always available on the web at: ESS web
 page (http://www.analytics.washington.edu/downloads/ess/) or StatLib
 (http://lib.stat.cmu.edu/general/ESS/)
 
@@ -440,8 +446,8 @@ of interest, little demand, and problems with security.
 Installation (from tar file)
 ============================
 
-We now discuss installation, which might happen under Unix or Microsoft
-Windows.  First, we discuss Unix installation.  *Note Unix
+   We now discuss installation, which might happen under Unix or
+Microsoft Windows.  First, we discuss Unix installation.  *Note Unix
 installation::.
 
    For Microsoft Windows Installation please skip to the *Note
@@ -514,45 +520,34 @@ Unix installation
 
   8. (OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     In the ESSDIR/ess-VERSION directory, edit the file `Makeconf' if
-     you want to place the compiled files in other locations; see
-     LISPDIR and INFODIR.
+     If you want to place the compiled files in other locations edit
+     the LISPDIR and INFODIR entries in `Makeconf' in the
+     ESSDIR/ess-VERSION directory (if you are using XEmacs, then you
+     also need to edit the EMACS entry as follows:  EMACS=xemacs).
 
-     Then type:
+     You can compile those files by:
           make all
 
-     If this works, then you might try:
+     When that completes successfully, install the compiled files:
           make install
 
-     This will install the info files (and the lisp files, if they are
-     to go in another directory).  Don't forget to edit the file `dir'
-     in the info directory specified by `INFODIR' in `doc/Makefile'.
-     See the sample `dir' file for an example of the line to add.
+     This will install the info files and the lisp files.  However, you
+     may have to edit the file `dir' that is found in the directory
+     specified by `INFODIR':  see the sample `dir' in
+     ESSDIR/ess-VERSION/doc.  If `dir' does not exist in `INFODIR',
+     then the sample `dir' will be installed.
 
-     If you are using XEmacs, you might do:
-          make EMACS=xemacs all
-
-     and then
-          make EMACS=xemacs install
-     instead of editing the Makefile.
-
-     _Note_ that you might need to use GNU make for everything to work
-     properly
-
-     An alternative, if you are running XEmacs and have access to the
-     XEmacs system directories, would be to place the directory in the
-     site-lisp directory, and simply type `make all' (and copy the
-     documentation as appropriate).
-
-     For GNU Emacs, you would still have to move the files into the top
-     level site-lisp directory.
+     _Note_ that you need to use GNU make for everything to work
+     smoothly; otherwise, edit the ESSVERSION and ESSVERSIONTAG entries
+     in `Makeconf' appropriately, e.g.: ESSVERSION=5.2.0 and
+     ESSVERSIONTAG=ESS-5-2-0
 
 
 Microsoft Windows installation
 ==============================
 
-For Microsoft Windows installation, please follow the next steps: (see
-separate instructions above for UNIX *Note Unix installation::.
+   For Microsoft Windows installation, please follow the next steps:
+(see separate instructions above for UNIX *Note Unix installation::.
 
   1. cd to a directory where you keep emacs lisp files, or create a new
      directory (for example, `c:\emacs\') to hold the distribution.
@@ -683,7 +678,7 @@ separate instructions above for UNIX *Note Unix installation::.
 Requirements
 ============
 
-ESS has been tested with
+   ESS has been tested with
 
    * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
 
@@ -733,7 +728,7 @@ bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 Reporting Bugs
 ==============
 
-Please send bug reports, suggestions etc. to
+   Please send bug reports, suggestions etc. to
 
    <ESS-bugs@stat.math.ethz.ch>
 
@@ -755,7 +750,7 @@ donations are also more than welcome.
 Mailing Lists
 =============
 
-There is a mailing list for discussions and announcements relating to
+   There is a mailing list for discussions and announcements relating to
 ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
 "help") in the body to <ess-help-request@stat.math.ethz.ch>;
 contributions to the list may be mailed to
