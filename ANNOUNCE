@@ -1,0 +1,146 @@
+Annoucing the release of ESS-5.0 (Emacs Speaks Statistics).
+-----------------------------------------------------------
+
+ESS is an Emacs package which provides a standard interface between
+statistical programs and statistical processes.  It is intended to
+provide assistance for interactive statistical programming and data
+analysis, and was is based on and extends the capabilities of S-mode.
+The code is freely available but is not in the public domain.  It is
+distributed under the GNU GPL.  Please read the file COPYING for more
+information about the license.
+
+ESS grew out of the desire to extend S-mode-4.8.  The current set of
+developers desired support for:
+- XEmacs 
+- R
+- S4.  
+
+In addition, with new modes being developed for R, Stata, and SAS, it
+was felt a unifying interface and framework for the user interface,
+would benefit both the user and the developer, by helping both groups
+conform to standard Emacs usage.  The end result is an increase in
+efficiency for statistical programming and data analysis, over the
+usual tools.
+
+We are grateful to David M. Smith , the previous developer (for S-mode
+3.x and 4.x), as well as to the initial developers of S-mode, Doug
+Bates, Ed Kademan and Frank Ritter.
+
+And to help remove any further confusion:
+
+	The name is __ESS__.  Not ESS-mode.
+
+Thank you :-).
+
+
+1. FEATURES
+-----------
+
+Languages Supported (or planned for support)
+
+- S dialects (S 3/4, S-PLUS 3.x/4.x/5.x, and R)
+- LispStat dialects (XLispStat, ViSta)
+- SAS
+- Stata
+- SPSS dialects (SPSS, Fiasco (GNU project))
+	
+Editing source code (S, LispStat, SAS)
+
+- Syntactic indentation and highlighting of source code 
+- Evaluations of subsets of code in different processes (one at a
+  time)  
+- Loading and error-checking of code 
+- Source code revision maintenance 
+- limited interaction with Noweb, for literate statistical
+  programming. 
+
+Interacting with the process (S, LispStat, SAS)
+
+- Command-line editing 
+- Searchable Command history 
+- Command-line completion of S object names and file names 
+- Quick access to object lists and search lists 
+- Transcript recording 
+- Interface to the help system 
+
+Transcript manipulation (S3, S+3, S4, R, XLispStat)
+
+- Recording and saving transcript files 
+- Manipulating and editing saved transcripts 
+- Re-evaluating commands from transcript files 
+
+2. STABILITY
+------------
+
+Version 5.0 is meant as a functional release, and corrects many bugs
+in S-mode 4.8.  We do not consider it beta-software.  However, there
+are some holes as far as its functionality for the newly supported
+languages (SAS, XLispStat); see the file Doc/TODO for details.
+
+3. REQUIREMENTS
+---------------
+
+ESS version 5.0 requires Emacs version 19.29, XEmacs version 19.14, or
+later version.  ESS is supposed to work with any version of S, S-PLUS,
+R, SAS, or XLispStat.
+
+It has been most thoroughly tested with:
+
+	S-PLUS 3.3 and 3.4, S4, R 0.49 and 0.50, XLispStat 3.50, and
+	SAS on (when available) SunOS, Solaris, SGI, and Linux (Unix)
+	systems;
+
+	Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.4.
+
+	Emacs 19.28 with SAS (with additional modifications)
+
+It may need some work with other configurations.  We have included
+configuration suggestions for emacs 19.28 and SAS in Doc/README-19.28.
+
+Suggestions and information about attempts to port to
+Microsoft-developed operating systems are encouraged.  In particular,
+it is an open question whether or not it can be implemented for
+XLispStat, ViSta, R, S-PLUS 4.0, Stata, and SAS under a Microsoft
+environment using NTEmacs (or the version of XEmacs for Microsoft
+Windows NT currently under development).  In particular, the
+developers need information on how to redirect the listener and
+command-line output and input for the above statistical programs.
+
+
+4. GETTING THE LATEST VERSION
+-----------------------------
+
+The latest versions of ESS are always available by WWW from:
+
+	http://franz.stat.wisc.edu/pub/ESS/
+	ftp://franz.stat.wisc.edu/pub/ESS/
+ 
+You can download the current version of the README there, as well. 
+
+The HTML version of the documentation can be found at:
+
+	http://www.stat.math.ethz.ch/ESS/
+
+
+5. THE ESS MAILING LIST
+--------------------------
+
+There is a mailing list for discussions and announcements relating to
+ESS.  Join the list by sending an e-mail with "subscribe ess-help"
+(or "help") in the body to ess-help-request@stat.math.ethz.ch;
+contributions to the list may be mailed to ess-help@stat.math.ethz.ch.
+Rest assured, this is a fairly low-volume mailing list.
+
+The purposes of the mailing list include
+
+- helping users of ESS to get along with it.
+- discussing aspects of using ESS for GNU Emacs and XEmacs.
+- suggestions for improvements.
+- announcements of new [beta] releases of ESS.
+- posting small patches to ESS.
+
+----
+Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+Kurt Hornik <hornik@ci.tuwien.ac.at>
+Martin Maechler <maechler@stat.math.ethz.ch>
+A.J. (Tony) Rossini <rossini@stat.sc.edu> (alt: <rossini@hsph.harvard.edu>) 
