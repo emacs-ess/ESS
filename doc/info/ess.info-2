@@ -146,15 +146,42 @@ argument", by
 
    Then that R process will be started up using `R --vanilla'.
 
-   If you have other versions of R available on the system, ESS is also
-able to start those versions.  For example, if you have "R-1.8.1" on
-your `exec-path', it can be started using `M-x R-1.8.1'.  By default,
-ESS will find versions of R beginning "R-1" or "R-2".  If your versions
-of R are called other names, consider renaming them with a symbolic
-link or change the variable `ess-r-versions'.  To see which defuns have
-been created for starting different versions of R, type `M-x R-' and
+   Menubar access to other versions of R and Sqpe
+
+   If you have other versions of R or S-Plus available on the system,
+ESS is also able to start those versions.
+
+   R on Unix systems: If you have "R-1.8.1" on your `exec-path', it can
+be started using `M-x R-1.8.1'.  By default, ESS will find versions of
+R beginning "R-1" or "R-2".  If your versions of R are called other
+names, consider renaming them with a symbolic link or change the
+variable `ess-r-versions'.  To see which defuns have been created for
+starting different versions of R, type `M-x R-' and then hit [Tab].
+You will then see if any defuns for particular versions of R have been
+created.  These other versions of R can also be started from the "ESS /
+Start Process / Other" menu.
+
+   R on Windows systems: If you have "rw1081" on your `exec-path', it
+can be started using `M-x rw1081'.  By default, ESS will find versions
+of R located in directories parallel to the version of R in your
+`PATH'.  If your versions of R are called other names, you will need to
+change the variable `ess-rterm-versions'.  To see which defuns have
+been created for starting different versions of R, type `M-x rw' and
 then hit [Tab].  You will then see if any defuns for particular
-versions of R have been created.
+versions of R have been created.  These other versions of R can also be
+started from the "ESS / Start Process / Other" menu.
+
+   Sqpe (S-Plus running inside an emacs buffer) on Windows systems: If
+you have an older version of S-Plus (S-Plus 6.1 for example) on your
+system, ir can be started inside an emacs buffer with `M-x splus61'.  By
+default, ESS will find versions of S-Plus located in the installation
+directories that Insightful uses by default.  If your versions of
+S-Plus are anywhere else, you will need to change the variable
+`ess-SHOME-versions'.  To see which defuns have been created for
+starting different versions of S-Plus, type `M-x spl' and then hit
+[Tab].  You will then see if any defuns for particular versions of
+S-Plus have been created.  These other versions of S-Plus can also be
+started from the "ESS / Start Process / Other" menu.
 
    New for ESS 5.1.2 (and later):  "S-elsewhere" command
 
@@ -1091,40 +1118,4 @@ commands are also provided for ease of typing.
 * Statistical Process running in ESS?::
 * Emacsclient::                 Using emacsclient
 * Other::                       Other commands provided by inferior-ESS
-
-
-File: ess.info,  Node: Command-line editing,  Next: Completion,  Prev: Entering commands,  Up: Entering commands
-
-Entering commands and fixing mistakes
-=====================================
-
-   Sending a command to the ESS process is as simple as typing it in
-and pressing the <RETURN> key:
-
-   * `RET' (`inferior-ess-send-input')
-     Send the command on the current line to the ESS process.
-
-   If you make a typing error before pressing `RET' all the usual Emacs
-editing commands are available to correct it (*note Basic:
-(emacs)Basic.).  Once the command has been corrected you can press
-<RETURN> (even if the cursor is not at the end of the line) to send the
-corrected command to the ESS process.
-
-   ESS provides some other commands which are useful for fixing
-mistakes:
-
-   * `C-c C-w' (`backward-kill-word')
-     Deletes the previous word (such as an object name) on the command
-     line.
-
-   * `C-c C-u' (`comint-kill-input')
-     Deletes everything from the prompt to point.  Use this to abandon a
-     command you have not yet sent to the ESS process.
-
-   * `C-c C-a' (`comint-bol')
-     Move to the beginning of the line, and then skip forwards past the
-     prompt, if any.
-
-   *Note Shell Mode: (emacs)Shell Mode, for other commands relevant to
-entering input.
 

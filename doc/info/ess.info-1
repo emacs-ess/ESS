@@ -17,7 +17,7 @@ ESS: Emacs Speaks Statistics
 
    5.2.1
 
-   (Documentation $Revision: 1.4 $ $Date: 2004/06/29 03:07:49 $).
+   (Documentation $Revision: 1.5 $ $Date: 2004/07/02 08:23:49 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -197,6 +197,10 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 
 New features in ESS
 ===================
+
+   Changes/New Features in 5.2.2:
+   * ESS[R]: Other versions of R, such as "R-1.8.1", are added to the
+     "ESS / Start Process / Other " menu.
 
    Changes/New Features in 5.2.1:
    * ESS[R]: If you have other versions of R, such as "R-1.8.1" on your
@@ -927,7 +931,9 @@ Requirements
 
    * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
 
-   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17(1), 21.4.14-15
+   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17(1),
+     21.4.14-15; as of June 2004, ESS does not work with XEmacs Betas
+     such as 21.5.17
 
    * GNU Emacs <20.3 and XEmacs <21.0(2)
 

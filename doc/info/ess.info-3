@@ -8,6 +8,42 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
+File: ess.info,  Node: Command-line editing,  Next: Completion,  Prev: Entering commands,  Up: Entering commands
+
+Entering commands and fixing mistakes
+=====================================
+
+   Sending a command to the ESS process is as simple as typing it in
+and pressing the <RETURN> key:
+
+   * `RET' (`inferior-ess-send-input')
+     Send the command on the current line to the ESS process.
+
+   If you make a typing error before pressing `RET' all the usual Emacs
+editing commands are available to correct it (*note Basic:
+(emacs)Basic.).  Once the command has been corrected you can press
+<RETURN> (even if the cursor is not at the end of the line) to send the
+corrected command to the ESS process.
+
+   ESS provides some other commands which are useful for fixing
+mistakes:
+
+   * `C-c C-w' (`backward-kill-word')
+     Deletes the previous word (such as an object name) on the command
+     line.
+
+   * `C-c C-u' (`comint-kill-input')
+     Deletes everything from the prompt to point.  Use this to abandon a
+     command you have not yet sent to the ESS process.
+
+   * `C-c C-a' (`comint-bol')
+     Move to the beginning of the line, and then skip forwards past the
+     prompt, if any.
+
+   *Note Shell Mode: (emacs)Shell Mode, for other commands relevant to
+entering input.
+
+
 File: ess.info,  Node: Completion,  Next: Completion details,  Prev: Command-line editing,  Up: Entering commands
 
 Completion of object names
