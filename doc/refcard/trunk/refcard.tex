@@ -1,5 +1,8 @@
-%%%- $Header: /scratch/CVS-ARCHIVE/ess-refcard/refcard.tex,v 1.11 2000/02/01 15:10:41 maechler Exp $
-\documentstyle[a4,twocolumn,parskip]{article}
+%%%- $Header: /scratch/CVS-ARCHIVE/ess-refcard/refcard.tex,v 1.12 2003/10/28 09:04:46 maechler Exp $
+%%%\documentstyle[a4,twocolumn,parskip]{article}
+\documentclass[twocolumn]{article}
+\usepackage{a4}
+\usepackage{parskip}
 %-Northamerica: \documentstyle[fullpage,twocolumn,parskip]{article}
 
 \newenvironment{tabI}{\begin{tabular}{p{1.5cm}l}}{\end{tabular}}
@@ -12,18 +15,19 @@
 \begin{document} \twocolumn
 
 \begin{center}
-  {\LARGE Emacs \bf S-mode \\[.5ex]   Reference Card}
+  {\LARGE ESS {\normalsize \textbf{E}macs \textbf{S}peaks \textbf{Statistics}}
+      \\[.5ex]   Reference Card}
 
   \smallskip
-  
-  {\small For version 3.43 
-    \\--- some update for version 4 --- needs {\em more!\/}}
-  \\ (SfS local version) %-SfS-added
-  \\[1ex] {\footnotesize \$Date: 2000/02/01 15:10:41 $ $ --- as of \today}
+
+  {\small For version 5.x
+    \\--- needs \em{more} updating!}
+  %%MM \\ (SfS local version) %-SfS-added
+  \\[1ex] {\footnotesize \$Date: 2003/10/28 09:04:46 $ $ --- as of \today}
 \end{center}
 
 \bigskip
-  
+
 \Sect{Interacting with the S process}
 %%    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -35,7 +39,7 @@ For use in a  process buffer `{\tt *S*}' ({\footnotesize S-inferior-mode}):
   {\tt C-a   }& Beginning of command \\
   {\tt C-c C-w }& Delete last word \\
   {\tt C-c C-u }& Delete this command \\
-  {\tt C-c C-c }& Break  
+  {\tt C-c C-c }& Break
 \end{tabI}
 
 \begin{tabTit}{Command history --- Menu ``{\tt In/Out}''}
@@ -53,22 +57,22 @@ For use in a  process buffer `{\tt *S*}' ({\footnotesize S-inferior-mode}):
   {\tt C-c C-b }& String search and move \\
   {\tt C-c C-v }& Prompt at bottom of screen \\
   {\tt C-c C-r }& Top of last output \\
-  {\tt C-c C-o }& Delete last output 
+  {\tt C-c C-o }& Delete last output
 \end{tabTit}
 
-\begin{tabTit}{Hot keys} 
+\begin{tabTit}{Hot keys}
   {\tt C-c C-v }& Help for S object \\
   {\tt C-c C-e }& Execute a command \\
   {\tt C-c C-x }& List objects \\
   {\tt C-c C-s }& Display search list \\
   {\tt C-c C-a }& Attach a directory \\
   {\tt C-c C-d }& Edit an object \\
-  {\tt C-c C-l }& Load a source file 
+  {\tt C-c C-l }& Load a source file
 \end{tabTit}
 
 \begin{tabTit}{Others}
   {\tt C-x `   }& Jump to last error \\
-  {\tt C-c C-t }& Toggle Tek mode \\
+%  {\tt C-c C-t }& Toggle Tek mode \\
   {\tt C-c C-q }& Quit from S \\
   {\tt C-c C-z }& Kill the S process
 \end{tabTit}\\[0.5cm]
@@ -84,22 +88,22 @@ For use in {\tt S-mode} edit buffers, ({\tt *.S} files):
 
 \begin{tabI}
   {\tt TAB} & Indent this line \\
-  {\tt M-C-q} & Indent this expression \\
-  {\tt M-C-h} & Mark this function \\
   {\tt M-C-a} & Beginning of function \\
-  {\tt M-C-e} & End of function 
+  {\tt M-C-e} & End of function \\
+  {\tt M-C-q} & Indent this expression (use at `\texttt{\{}')\\
+  {\tt M-C-h} & Mark this function
 \end{tabI}
 
 \begin{tabTit}{Evaluation commands}
   {\tt C-c C-l} & Load this buffer -- detect errors !\\
+  {\tt C-c C-n} & \underline{Step through code -- line by line} \\
   {\tt C-c C-e} & Evaluate an expression \\
   {\tt C-c C-j} & Evaluate this line \\
   {\tt C-c M-j} & Evaluate this line and go \\
-  {\tt C-c C-n} & Step through code -- line by line \\
   {\tt M-C-x}   & Evaluate this function \\
-  {\tt C-c C-f} & Evaluate this function \\
+  {\tt C-c C-f} & \underline{Evaluate this function} \\
   {\tt C-c M-f} & Evaluate this function and go \\
-  {\tt C-c C-r} & Evaluate this region \\
+  {\tt C-c C-r} & \underline{Evaluate this region} \\
   {\tt C-c M-r} & Evaluate this region and go \\
   {\tt C-c C-b} & Evaluate this buffer \\
   {\tt C-c M-b} & Evaluate this buffer and go \\
@@ -114,8 +118,8 @@ For use in {\tt S-mode} edit buffers, ({\tt *.S} files):
 \end{tabTit}
 
 \begin{tabTit}{SfS commands}                            %-SfS-added
-  {\tt C-c f} & insert SfS function() header \\         %-SfS-added
-  {\tt M-TAB, [GOLD]-Tab} & Complete UNIX file- / path- name \\     %-SfS-added
+  {\tt C-c f}   & insert function() header \\         %-SfS-added
+  {\tt M-TAB}   & Complete UNIX file- / path- name \\     %-SfS-added
   {\tt C-c TAB} & Complete S object name \\             %-SfS-added
 \end{tabTit}\\[0.5cm]                                   %-SfS-added
 
@@ -133,6 +137,7 @@ For use in `{\tt *help($\ldots$)*}' help buffers:
   {\tt p}   & Previous section \\
   {\tt s}   & Jump to a named section \\
   {\tt s e} & e.g., jump to ``EXAMPLES'' \\
+  {\tt l}   & evaluate EXAMPLE line \\
   {\tt h}   & Help on another object \\
   {\tt ?}   & Help for this mode \\
   {\tt r}   & Evaluate current region \\
