@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/20 19:44:04 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: ess-help.el,v 1.11 1997/10/20 19:44:04 rossini Exp $
+;; Modified: $Date: 1997/10/21 12:59:22 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: ess-help.el,v 1.12 1997/10/21 12:59:22 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -124,6 +124,7 @@ file.  Otherwise just pops to an existing buffer if it exists."
 	  (if (eq curr-win-mode 'ess-help-mode)
 	      (switch-to-buffer tbuffer)
 	    (ess-display-temp-buffer tbuffer))
+	  (set-buffer-modified-p 'nil)
 	  (toggle-read-only t))))))
 
 
