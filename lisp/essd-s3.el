@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/30 13:10:36 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essd-s3.el,v 1.3 1997/07/30 13:10:36 rossini Exp $
+;; Modified: $Date: 1997/07/30 13:14:22 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essd-s3.el,v 1.4 1997/07/30 13:14:22 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s3.el,v $
+;;: Revision 1.4  1997/07/30 13:14:22  rossini
+;;: vars back in for program name.
+;;:
 ;;: Revision 1.3  1997/07/30 13:10:36  rossini
 ;;: header line corrected.
 ;;:
@@ -79,7 +82,7 @@
 (defvar S3-customize-alist
   '((ess-proc-prefix      .         "S")
     (ess-version-running  .         "S3")
-    (inferior-ess-program .         "S")
+    (inferior-ess-program .  inferior-S3-program-name) ;        "S")
     (ess-help-sec-regex   .         "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist .      '((?a . "ARGUMENTS:")
 				      (?b . "BACKGROUND:")
