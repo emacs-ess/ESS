@@ -5,13 +5,13 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/11/11 10:07:15 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essd-s+3.el,v 5.3 1998/11/11 10:07:15 maechler Exp $
+;; Modified: $Date: 1998/11/11 12:41:56 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essd-s+3.el,v 5.4 1998/11/11 12:41:56 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
-;; This file is part of ESS
+;; This file is part of ESS.
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -52,9 +52,9 @@
 					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
-    (ess-mode-edit                 . 'S+3-mode)
-    (ess-help-sec-regex            . ess-help-S+3-sec-regex)
-    (ess-help-sec-keys-alist       . S+3-help-sec-keys-alist)
+    ;;not used ?!(ess-mode-edit                 . 'S+3-mode)
+    (ess-help-sec-regex            . ess-help-S+-sec-regex)
+    (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
     (ess-loop-timeout              . 100000 )
     (ess-object-name-db-file       . "ess-s+3-namedb.el" )
     (ess-retr-lastvalue-command
@@ -77,9 +77,7 @@
   (interactive)
   (setq ess-customize-alist S+3-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(S): ess-dialect=%s , buf=%s \n"
-	   ess-dialect
-	   (current-buffer)))
+   (format "(S): ess-dialect=%s , buf=%s \n" ess-dialect (current-buffer)))
   (inferior-ess))
 
 (defun S+3-mode (&optional proc-name)
