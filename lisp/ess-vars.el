@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/08/25 14:31:04 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: ess-vars.el,v 1.11 1997/08/25 14:31:04 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:51:36 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: ess-vars.el,v 1.12 1997/08/26 22:51:36 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,46 +26,6 @@
 ;; In short: you may use this code any way you like, as long as you
 ;; don't charge money for it, remove this notice, or hold anyone liable
 ;; for its results.
-
-;;
-;; $Log: ess-vars.el,v $
-;; Revision 1.11  1997/08/25 14:31:04  rossini
-;; *** empty log message ***
-;;
-;; Revision 1.10  1997/07/31 12:53:20  rossini
-;; made ess-save-lastvalue-command, ess-retr-lastvalue-command both
-;; buffer local.
-;;
-;; Revision 1.9  1997/07/31 11:51:41  rossini
-;; changed meanings of ess-proc-prefix and ess-version-running to avoid
-;; repetition of intent!
-;;
-;; Revision 1.8  1997/07/30 13:07:00  rossini
-;; set up trans, inf modes to use same set of font-lock keywords.
-;;
-;; Revision 1.7  1997/07/29 11:13:11  rossini
-;; added transcript-mode font-lock stuff.  Moved all font-lock stuff to
-;; same place.
-;;
-;; Revision 1.6  1997/07/28 13:55:42  rossini
-;; added defvars for dialects.
-;;
-;; Revision 1.5  1997/07/28 13:53:15  rossini
-;; title wrong.
-;;
-;; Revision 1.4  1997/07/26 01:30:17  rossini
-;; fixed ess-loop-timeout.
-;; implemented KH's fontlock suggestions.
-;;
-;; Revision 1.3  1997/07/26 01:14:32  rossini
-;; some ess -> ESS in docstrings.
-;;
-;; Revision 1.2  1997/07/26 01:11:00  rossini
-;; removed more to ess.el
-;;
-;; Revision 1.1  1997/07/25 15:25:15  rossini
-;; Initial revision
-;;
 
 ;;; Code:
 
@@ -92,28 +52,28 @@
 (defvar ess-ask-about-transfile nil
   "*If non-nil, asks about a transcript file before running ess")
 
-(defvar ess-proc-prefix "S+"
+(defvar ess-language nil
   "*Prefix of all ESS processes, and defines the dialect in use.
-Currently acceptable values are 'S', 'R', 'XLS', 'S+'.
+Currently acceptable values are 'S',  'XLS', 'SAS'.
 Can be changed, e.g., to `R'.  Use `setq-default' if setting it in
 .emacs (also see ess-site.el).")
 
-(make-variable-buffer-local 'ess-proc-prefix)
-(setq-default ess-proc-prefix "S")
+(make-variable-buffer-local 'ess-language)
+(setq-default ess-language "Initial")
 
-(defvar ess-version-running "3.3"
+(defvar ess-dialect nil
   "String version of the dialect being run for the inferior process.
-This, plus ess-proc-prefix, should be able to determine the exact
+This, plus ess-language, should be able to determine the exact
 version of the statistical package being executed in the particular
 buffer.  
 
 Current values could include: 
-for `ess-proc-prefix' = `S' :  3.0, 4.0
-                                   = `S+' : 3.0, 3.1, 3.2, 3.3, 4.0
-                                   = `R' : 0.49, 0.50
-                                   = `XLS' : 3.48, 3.50
+for `ess-dialect' = S3, S4, S+3, S+4, R, XLS, SAS
 
 Used to adjust for changes in versions of the program")
+
+(make-variable-buffer-local 'ess-dialect)
+(setq-default ess-dialect "Initial-dialect")
 
 ;;Old Docs for the above (unverified if they survived the changes):
 ;;
@@ -139,8 +99,6 @@ Used to adjust for changes in versions of the program")
 ;;   \"2.3\"    Version 2.3 of S/Splus
 ;;   \"old\"    Any older version
 
-(make-variable-buffer-local 'ess-version-running)
-(setq-default ess-version-running "3.3")
 
 
 (defvar ess-directory nil
@@ -153,12 +111,14 @@ run from.")
 (make-variable-buffer-local 'ess-directory)
 (setq-default ess-directory nil)
 
-(defvar ess-history-file (concat "." ess-proc-prefix "history")
+(defvar ess-history-file nil
   "*File to pick up history from. 
 If this is a relative file name, it is relative to ess-directory.")
 
 (make-variable-buffer-local 'ess-history-file)
-(setq-default ess-history-file (concat "." ess-proc-prefix "history"))
+(setq-default ess-history-file ".ESShistory")
+
+;;(concat "." ess-proc-prefix "history"))
 
 
 ;;*;; Variables concerning editing behaviour
@@ -412,7 +372,7 @@ Called after inferior-ess-mode is entered and variables have been initialised.")
 by ess-function-template.")
 
 (defvar ess-dump-error-re
-  (if (string= ess-version-running "3.0") "\nDumped\n\\'" "[Ee]rror")
+  (if (string= ess-language "S") "\nDumped\n\\'" "[Ee]rror")
   "Regexp used to detect an error when loading a file.")
 
 ;;*;; Miscellaneous system variables
@@ -686,41 +646,87 @@ important for R or XLispStat.")
 
 ;;; for programming, transcript, and inferior process modes.
 
-(defvar inferior-ess-font-lock-prompt-p nil
-  "*Set if you want the prompt lines font-locked.")
+(defvar inferior-ess-font-lock-input t
+  "*If non-nil, input is syntactically font-locked.
+If nil, input is in the font-lock-variable-name-face.")
 
 (defvar ess-mode-font-lock-keywords
- '(("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function" 1 font-lock-function-name-face t)
-   ("<<?-\\|_" . font-lock-reference-face)
-   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" . font-lock-type-face)
-   ("\\<\\(library\\|attach\\|detach\\|source\\)\\>" . font-lock-reference-face)
-   "\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>")
- "Font-lock patterns used in ess-mode bufffers.")
+  '(("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function" 1 font-lock-function-name-face t)
+    ("<<?-\\|_\\|->" . font-lock-reference-face)
+    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" . font-lock-type-face)
+    ("\\<\\(library\\|attach\\|detach\\|source\\)\\>" . font-lock-reference-face)
+    "\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>")
+  "Font-lock patterns used in ess-mode buffers.")
 
-(defvar essd-S-inferior-font-lock-keywords
- '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)	; prompt
-   ("^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
-    (1 font-lock-variable-name-face keep t)) ; input
-   ("<-\\|_" . font-lock-reference-face)		; assign
-   ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
-   ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
-   ("^Syntax error:" . font-lock-reference-face) ; error message
-   ("^Error:" . font-lock-reference-face) ; error message
-   ("^Error in" . font-lock-reference-face) ; error message
-   ("^Dumped" . font-lock-reference-face) ; error message
-   ("^Warning:" . font-lock-reference-face) ; warning message
-   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
-    . font-lock-type-face)) ; keywords
- "Font-lock patterns for dialects of S, used in highlighting process
- buffers and transcripts.")
 
 (defvar inferior-ess-font-lock-keywords
-  essd-S-inferior-font-lock-keywords
- "Font-lock patterns used in inferior-ess-mode buffers.")
+  '(("<<-\\|<-\\|_\\|->" . font-lock-reference-face)		; assign
+    ("^\\*\\*\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
+    ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
+    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
+     . font-lock-type-face) ; keywords
+    ("\\<\\(library\\|attach\\|detach\\|source\\)\\>"
+     . font-lock-reference-face) ; modify search list or source new definitions
+    ("^Syntax error:" . font-lock-reference-face);inferior-ess problems or errors
+    ("^Error:" . font-lock-reference-face)
+    ("^Error in" . font-lock-reference-face)
+    ("^Dumped" . font-lock-reference-face)
+    ("^Warning messages:" . font-lock-reference-face)
+    ("#" . font-lock-comment-face) ; comment
+    ("^[^#]*#\\(.*$\\)" (1 font-lock-comment-face keep t)) ; comments
+    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function" 1 font-lock-function-name-face t) ; function name
+    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>" . font-lock-keyword-face) ; keywords
+    )
+  "Font-lock patterns used in inferior-ess-mode buffers.")
+;; add-to-list() places keywords in front of the previous keywords
+;; input and prompt must appear in inferior-ess-font-lock-keywords
+;; in the order  prompt error, hence they appear here in the reverse order.
+(if (not inferior-ess-font-lock-input)
+    (add-to-list 'inferior-ess-font-lock-keywords
+		 '("^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
+		   (1 font-lock-variable-name-face keep t));don't font-lock input
+		 ))
+(add-to-list 'inferior-ess-font-lock-keywords
+	     '("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face))	; prompt
 
 (defvar ess-trans-font-lock-keywords
-  essd-S-inferior-font-lock-keywords
+ inferior-ess-font-lock-keywords
  "Font-lock patterns used in ess-transcript-mode buffers.")
+
+;;
+;;(defvar ess-mode-font-lock-keywords
+;; '(("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function" 1 font-lock-function-name-face t)
+;;   ("<<?-\\|_" . font-lock-reference-face)
+;;   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" . font-lock-type-face)
+;;   ("\\<\\(library\\|attach\\|detach\\|source\\)\\>" . font-lock-reference-face)
+;;   "\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>")
+;; "Font-lock patterns used in ess-mode bufffers.")
+;;
+;;(defvar essd-S-inferior-font-lock-keywords
+;; '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)	; prompt
+;;   ("^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
+;;    (1 font-lock-variable-name-face keep t)) ; input
+;;   ("<-\\|_" . font-lock-reference-face)		; assign
+;;   ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
+;;   ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
+;;   ("^Syntax error:" . font-lock-reference-face) ; error message
+;;   ("^Error:" . font-lock-reference-face) ; error message
+;;   ("^Error in" . font-lock-reference-face) ; error message
+;;   ("^Dumped" . font-lock-reference-face) ; error message
+;;   ("^Warning:" . font-lock-reference-face) ; warning message
+;;   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
+;;    . font-lock-type-face)) ; keywords
+;; "Font-lock patterns for dialects of S, used in highlighting process
+;; buffers and transcripts.")
+;;
+;;(defvar inferior-ess-font-lock-keywords
+;;  essd-S-inferior-font-lock-keywords
+;; "Font-lock patterns used in inferior-ess-mode buffers.")
+;;
+;;(defvar ess-trans-font-lock-keywords
+;;  essd-S-inferior-font-lock-keywords
+;; "Font-lock patterns used in ess-transcript-mode buffers.")
+
 
 ;;;*;;; ess-help variables
 
