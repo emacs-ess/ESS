@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/20 22:02:12 $
-;; Version: $Revision: 2.1 $
-;; RCS: $Id: ess-comp.el,v 2.1 1997/11/20 22:02:12 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:00:55 $
+;; Version: $Revision: 4.1 $
+;; RCS: $Id: ess-comp.el,v 4.1 1997/11/20 23:00:55 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -31,48 +31,6 @@
 
 ;;; This file sets up all compilation needs.
 
-;;;
-;;: $Log: ess-comp.el,v $
-;;: Revision 2.1  1997/11/20 22:02:12  rossini
-;;: incremented to 2.0
-;;:
-;;: Revision 1.12  1997/11/09 19:44:05  rossini
-;;: *** empty log message ***
-;;:
-;;: Revision 1.11  1997/08/26 22:54:23  rossini
-;;: *** empty log message ***
-;;:
-;;: Revision 1.10  1997/07/31 13:06:59  rossini
-;;: add byte compiler stuff again, when we release it.
-;;:
-;;: Revision 1.9  1997/07/31 12:59:50  rossini
-;;: try with unresolved...
-;;:
-;;: Revision 1.8  1997/07/31 11:14:45  rossini
-;;: added comments.
-;;:
-;;: Revision 1.7  1997/07/31 11:13:04  rossini
-;;: reformat.
-;;:
-;;: Revision 1.6  1997/07/31 11:11:54  rossini
-;;: added (require 'cl) to compile-time loads.
-;;:
-;;: Revision 1.5  1997/07/31 10:55:26  rossini
-;;: moved cl, cl-macs requiring here.
-;;:
-;;: Revision 1.4  1997/07/26 01:06:16  rossini
-;;: setup to nuke byte-compiler warnings for Emacs...
-;;:
-;;: Revision 1.3  1997/07/25 21:20:01  rossini
-;;: need (require 'ess), as well (for function defs and autoloads...).
-;;:
-;;: Revision 1.2  1997/07/25 15:20:36  rossini
-;;: changing ess to ess-vars.
-;;:
-;;: Revision 1.1  1997/07/25 15:17:09  rossini
-;;: Initial revision
-;;:
-;;;
 
 (provide 'ess-comp)
 
@@ -89,7 +47,6 @@
 ;;				  unresolved
 ;;				  redefine
 ;;				  obsolete))
-;;
 ;;  (setq byte-optimize t))
 
 (require 'ess-vars)
