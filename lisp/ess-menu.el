@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.19 2004/04/01 18:47:33 rossini Exp $
+;; Version: $Id: ess-menu.el,v 1.20 2004/04/21 21:02:14 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -76,11 +76,11 @@ the two * by + in the above regexp."
 
 (defvar ess-imenu-S-generic-expression
   '(("Functions" "^\\(.+\\)\\s-*<-[ \t\n]*function[ ]*(" 1)
-    ("Other" "^\\(.+\\)\\s-*<-[ \t\n]*[^\\(function\\|read\\|.*data\.frame\\)]" 1)
     ("Classes" "^.*setClass(\\(.*\\)," 1)
     ("Generics" "^.*setGeneric(\\(.*\\)," 1)
     ;;("Methods" "^.*setMethod(\\(.*,\\(signature=\\)?.*\\)," 1)
-    ("Methods" "^.*setMethod(\\(.*,.*\\signature=\\)?(\\(.*,?\\)*\\)," 1)
+    ;;("Other" "^\\(.+\\)\\s-*<-[ \t\n]*[^\\(function\\|read\\|.*data\.frame\\)]" 1)
+    ("Methods" "^.*setMethod(\"\\(.+\\)\","1)   ;;[ ]*\\signature=\\)?(\\(.*,?\\)*\\)," 1)
     ("Package" "^.*\\(library\\|require\\)(\\(.*\\)," 2)
     ("Data" "^\\(.+\\)\\s-*<-[ \t\n]*\\(read\\|.*data\.frame\\).*(" 1)))
 
