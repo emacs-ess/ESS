@@ -1,4 +1,16 @@
 
+Changes/New Features in 5.1.11:
+@itemize @bullet
+@item More fixes to Stata mode, thanks to Brendan Halpin
+      (@email{brendan@@essex.ac.uk}) 
+@item fixed bugs in ESS-elsewhere, thanks to many testers
+@item README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
+      to David Brahm (@email{brahm@@alum.mit.edu}).
+@item Fixes to SAS mode, thanks to Rodney Sparapani
+      (@email{spara002@@duke.edu}) 
+@end itemize
+
+
 Changes/New Features in 5.1.10:
 @itemize @bullet
 @item More fixes to Stata mode
