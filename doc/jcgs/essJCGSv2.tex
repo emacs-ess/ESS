@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/15 17:31:46 $ - $Revision: 1.177 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/15 21:23:29 $ - $Revision: 1.178 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -271,12 +271,14 @@ Emacs buffers are the interface between the user and computer.  They
 can be considered to be a collection of scratch pads that both the
 user and computer can read, write, and respond to.  The user can
 simultaneously edit many files and control numerous programs by
-initializing multiple buffers.  With disk files, the working copy of
+opening multiple buffers.  With disk files, the working copy of
 the opened file is placed in an Emacs buffer where it can be viewed
 and edited either by the user or automatically by Emacs or another
 program under the control of Emacs.  Emacs will save a backup of the
-contents to disk at specified intervals based on some function of time
-and the amount of editing activity.  Emacs can present the buffers'
+contents to disk at specified intervals.
+% too much information -- based on some function of time
+% and the amount of editing activity.  
+Emacs can present the buffers'
 contents in ways which optimize the users reading and navigation
 activities.  One program that is commonly run within Emacs buffers is
 the interactive operating system command line interpreter, called a
@@ -291,12 +293,13 @@ Emacs capabilities are extended by loading text files containing code
 written in Emacs Lisp (elisp) \citep{RChassell1999}, a dialect of Lisp
 \citep{PGraham:1996}.  Emacs commands, which are actually Lisp
 functions, can be called interactively either by name or by pressing
-their mapped key.  Not all functions are interactive in nature, and
-only those that are can have key bindings.  The most important
-extensions to Emacs are called modes, which can be major or minor,
+their key-map.  Not all functions are interactive, and
+only those that are can have key-bindings.  The most important
+extensions to Emacs are called modes.  Modes are of two kinds, 
+either major or minor,
 depending on the extent to which they take over the editing behavior.
 
-Major modes provide a customized environment consisting of mapped keys
+Major modes provide a customized environment consisting of key-maps
 and associated commands for editing a file or performing a task such
 as reading mail or browsing disk directories.  Only one major mode can
 be active for a given buffer at any time.  Major modes for file
@@ -304,7 +307,7 @@ editing are often determined by the file name extension, i.e. the
 characters at the end of the file name that follow a period like
 \stexttt{txt}, \stexttt{R} or \stexttt{sas}.  Examples of this kind of
 major mode are \stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes
-know the syntax of their file type or application and therefore can
+know the syntax of their file type or application and % therefore can
 provide intelligent actions such as automatic indentation; navigation
 in units of characters, words, lines, sentences, paragraphs, function
 definitions, and pages; syntax-based fontification and colorization;
@@ -313,14 +316,15 @@ provide the ability to perform tasks which are not specifically
 text-editing.  They can interface with system programs to provide
 command shells, read mail, and control other programs.
 
-By contrast, minor modes provide services that are useful, perhaps
-with a small amount of customization, for many major modes.  For
+By contrast, minor modes provide services that are useful by
+%, perhaps with a small amount of customization, for 
+themselves or in cooperation with major modes.  For
 example, \stexttt{font-lock-mode} allows Emacs to highlight, with
 fonts or colors, the syntax of a programming language whose
 characteristics are described within a major mode like
 \stexttt{ESS[S]}.  The \stexttt{overwrite-mode} determines whether
 typed characters replace the existing text or are inserted at the
-cursor.  Minor modes can be used to change key bindings to emulate the
+cursor.  Minor modes can be used to change key-bindings to emulate the
 keys used by another editor such as \stexttt{vi}.  In addition, they
 can be used to perform version control operations and many other tasks
 which are nearly identical across file types.
@@ -329,10 +333,10 @@ which are nearly identical across file types.
 Emacs allows transparent access to remote files over a network.
 Transparent access means the user views, edits, and saves files on a
 remote machine exactly as if they were on the local machine.
-Mechanisms for both insecure (\stexttt{ange-ftp} and \stexttt{EFS} use
-ftp) and secure (\stexttt{tramp} uses the secure shell protocol) are
-available. The local Emacs can also monitor and control remote
-processes running in a shell buffer.
+Mechanisms for both unsecure (\stexttt{ange-ftp} and \stexttt{EFS} use
+ftp) and secure (\stexttt{tramp} uses scp or ssh) are
+available. %The local 
+Emacs can also monitor and control remote processes running in a shell buffer.
 
 \paragraph{Editing Extensions.}
 Most programming and documentation tasks consist of editing text.
@@ -341,14 +345,16 @@ of special reserved words appropriate to the programming language in
 use.  In addition, Emacs also supports folding, outlining, and
 bookmarks which can assist with maneuvering around a file.  Emacs
 shares many features with word processing programs and cooperates with
-markup language based document preparation systems such as \LaTeX,
+markup-language document preparation systems such as \LaTeX,
 \textsc{html}, or \textsc{xml}.
 
-One feature which has only recently been incorporated into word
-processors is the notion of flexible source code versioning.  Emacs
-interacts with standard revision control programs such as CVS, RCS,
+%One feature which has only recently been incorporated into word
+%processors is the notion of flexible source code versioning.  
+Tracking changes to a text file made by multiple users, potentially in 
+different locations, is the job of source-code control programs.
+Emacs interacts with standard source-code control programs such as CVS, RCS,
 and SCCS through minor modes such as \stexttt{vc-mode}.  These
-revision control systems facilitate documenting and tracking edits and
+source-code control systems facilitate documenting and tracking edits and
 changes to a file.  More importantly, they allow for branching and
 merging of versions so that material present in an older version of
 the file can be recovered and inserted into a newer version in a
@@ -360,8 +366,8 @@ simplified by \stexttt{ediff}.  An example is shown in Figure
 buffers, one for each file, and the specific words that mismatch are
 highlighted in a contrasting color.  \stexttt{ediff} has many tools
 for working with the differences in files and in entire directories.
-When combined with a source-code repository, it allows reinsertion of
-deleted sections of code files, documentation, or papers.
+%When combined with a source-code repository, it allows reinsertion of
+%deleted sections of code files, documentation, or papers.
 
 \begin{figure}[tbp]
   \centering
@@ -374,24 +380,32 @@ deleted sections of code files, documentation, or papers.
   \label{f.ediff}
 \end{figure}
 
-There are many features which Emacs has which, while innovative when
-introduced, are fairly common now.  Emacs provides file-manager
-capabilities such as \stexttt{dired} (discussed in the Major and Minor
-Modes paragraph above), which interfaces to the computer's directory
-structure.  It also stores command-history records from the beginning
-of an editing session, allowing a near-infinite undo capability.  More
+There are many other important features which Emacs has.
+% which, while innovative when introduced, are fairly common now.  
+Emacs provides file-manager
+capabilities such as \stexttt{dired} (discussed in Major and Minor
+Modes above), which interfaces to the computer's directory
+structure.  Emacs stores the history of commands issued in
+an editing session so they can be undone if necessary.  More
 importantly, for modes which control processes, the process input
-history is stored.  The actual data analysis commands entered can be
-very different from what is observed in the buffer after editing.
-Tools such as \stexttt{etags} combined with \stexttt{speedbar} provide
-a hyperlinked index to text objects, such as S function definitions
-and \SAS\ \stexttt{PROC \dots\ RUN;} sections, across files within a
-directory.  Other extensions to Emacs include web browsers, mail and
-news readers, and spell checking.
+history is stored.  Therefore, the actual commands entered can 
+be edited for printing or re-use.
+% The actual data analysis commands entered can be
+% very different from what is observed in the buffer after editing.
+% Tools such as \stexttt{etags} combined with \stexttt{speedbar} provide
+% a hyperlinked index to text objects, such as S function definitions
+% and \SAS\ \stexttt{PROC \dots\ RUN;} sections, across files within a
+%directory.  
+Other extensions to Emacs include web browsers, mail and news readers, 
+and spell checking.
+% Rodney: You can't just whip out complex functionality like etags and 
+% speedbar.  We would need to introduce these packages.  Since they 
+% aren't critical to ESS at this time, let's ignore them.
 
-Emacs is an extremely powerful editor.  Emacs has been claimed to
-provide most of the capabilities found in an operating system.  This
-provides a strong foundation for constructing an integrated
+Emacs is an extremely powerful editor.  
+%Emacs has been claimed to
+%provide most of the capabilities found in an operating system.  This
+It provides a strong foundation for constructing an integrated
 development environment which is focused on the needs of
 statisticians.  Emacs' power, flexibility, portability, and
 extensibility make it a solid platform on which to construct a
@@ -413,16 +427,17 @@ several data files, multiple statistical software packages, and the
 corresponding source code for each of these packages during a single
 analysis.  ESS helps to remedy these differences by providing a single
 point of contact for all tasks.  Other features, which are less
-commonly employed by statisticians but provide potential for efficient
-computer usage, include the use of version and source code control
+commonly employed by statisticians, but provide potential for efficient
+computer usage, include the use of source-code control
 systems, tools for accessing programs or files on remote machines, and
-interfaces to documentation systems such as \LaTeX, presentation,
+interfaces to documentation systems such as \LaTeX,
 \textsc{html}, and \textsc{xml}.  Emacs can assist with, or be
 programmed to perform, many tasks related to data cleaning,
 management, and editing.  For example, conversion of data files
-between standard input formats such as comma-separated or
-tab-delimited can be automated fairly simply through the use of elisp
-programs or keyboard macros.
+between standard input formats, such as from comma-separated to
+tab-delimited, can be automated through the use of commands written in
+elisp which can be mapped to a key-map.
+% programs or keyboard macros.
 
 % repetitive
 %Below, we describe some of the
@@ -618,13 +633,13 @@ available.
 \end{figure}
 
 \paragraph{Source-level Debugging}
-ESS facilitates the editing of source code files, sets of commands
-written in the package's language by the statistical analyst, by
-providing a means for loading and error-checking small sections of
-code.  This is done through several mechanisms.  First, syntactic
-highlighting of code makes immediately evident the presence of
-unbalanced parentheses and mismatched or unterminated quotes.  Second,
-by providing functions for simple and consistent evaluation of
+ESS facilitates the editing of source code files which are sets of 
+commands written for a statistical analysis package.  This allows the
+user to load and error-check small sections of source
+code.  This is done through several mechanisms.  First, the presence of
+unbalanced parentheses and mismatched/unterminated quotes is immediately 
+evident with syntactic highlighting of the source code.  Second,
+functions are provided for simple and consistent execution of
 user-specified or natural units of the code (function definitions in S
 or \XLispStat, \stexttt{PROC \dots  RUN;} sections in \SAS).
 % for execution.  The relevant lines of the
@@ -634,9 +649,9 @@ or \XLispStat, \stexttt{PROC \dots  RUN;} sections in \SAS).
   %% by mapped key commands (saving the wrists and elbows from
   %% the ergonomic strain of perpetually moving a mouse from one window
   %% to another).
-For this usage, correct execution lets the user evaluate the next
-section of code; if errors arise, the user edits the current section
-and reevaluates.
+An error-free execution lets the user evaluate the next
+section of code; if errors arise, the user edits the current unit
+and re-executes.
 %  Emacs can send individual lines, entire function definitions, marked
 %  regions, and whole buffers to the statistical analysis package for
 %  execution.  Emacs sends the code directly to the statistical package
