@@ -61,6 +61,11 @@ New Features
    * Emacs/XEmacs, Unix/Windows issues collectively handled in
      ess-emcs.el
 
+   * defadvice solves problem of missing *ESS* (thanks to Jeff Mincy)
+
+   * Improved manual a bit by including things that were only in
+     `README'.
+
    Changes/New Features in 5.1.18:
    * New `ess-smart-underscore' function, now assigned to "_" by
      default.        Inserts `ess-S-assign' (customizable " <- "),
@@ -273,7 +278,7 @@ Getting the Latest Version
 
    The latest versions of ESS are always available by WWW from:
 
-   	`http://ess.stat.wisc.edu/'
+   	`http://ess.stat.wisc.edu/' and
 `ftp://ess.stat.wisc.edu/pub/ESS/'
 
    The HTML version of the documentation can be found at:
@@ -281,22 +286,26 @@ Getting the Latest Version
    `http://stat.ethz.ch/ESS/'
 
    The latest (no more than 24 hours behind the developers) version of
-ESS can also be retrieved using anonymous cvs.
+ESS can also be retrieved using anonymous cvs:
 
    You need a cvs client (that works with your firewall, if any)
 
    the repository name is
-:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src
+`:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src'
 
    using a command-line cvs client (i.e. on Unix or DOS), first type:
 
-   cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login
+   `cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login'
 
    password is anoncvs
 
    then type:
 
-   cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess
+   `cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess'
+
+   Check the `README'  file first to see which files you need.  Look at
+`ANNOUNCE' to learn about new user-visible features; also, many changes
+are listed in the `ChangeLog' file.
 
 Reporting Bugs
 ==============
