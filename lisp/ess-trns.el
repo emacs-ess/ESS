@@ -2,16 +2,16 @@
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997,  Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;;                                    Kurt Hornik <hornik@ci.tuwien.ac.at>
-;;                                    Martin Maechler <maechler@stat.math.ethz.ch>
-;;                                    A.J. (Tony) Rossini <rossini@stat.sc.edu>
+;;                              Kurt Hornik <hornik@ci.tuwien.ac.at>
+;;                              Martin Maechler <maechler@stat.math.ethz.ch>
+;;                              A.J. (Tony) Rossini <rossini@stat.sc.edu>
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/12/02 14:09:55 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: ess-trns.el,v 5.1 1997/12/02 14:09:55 rossini Exp $
+;; Modified: $Date: 1999/01/11 16:49:46 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: ess-trns.el,v 5.2 1999/01/11 16:49:46 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -190,6 +190,14 @@ in the region, leaving only the S commands.
   (setq paragraph-start (concat "^" inferior-ess-primary-prompt "\\|^\^L"))
   (make-local-variable 'paragraph-separate)
   (setq paragraph-separate "^\^L")
+  (setq inferior-ess-prompt
+	;; Do not anchor to bol with `^'       ; (copied from ess-inf.el)
+	(concat "\\("
+		inferior-ess-primary-prompt
+		"\\|"
+		inferior-ess-secondary-prompt
+		"\\)"))
+  (make-local-variable 'comint-prompt-regexp)
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
 
   ;; font-lock support
