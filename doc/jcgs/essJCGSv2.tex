@@ -123,8 +123,8 @@
   statistical programming efficiency.
 \end{abstract}
 
-\noindent Keywords: Data Analysis, Programming Tools, User Interfaces, \SAS,
-\Splus, R, \XLispStat, \Stata
+\noindent Keywords: Data Analysis, Programming Tools, User Interfaces, S, \SAS,
+\Splus, R, \XLispStat, \Stata, BUGS
 
 \baselineskip=2pc
 
@@ -135,13 +135,13 @@ Common tasks faced by a statistician are not much different from those
 faced by software developers, since a great deal of statistical
 activity involves some form of computer programming.  Many
 statistical research activities, such as data analysis and
-communication, are enhanced by computers.  Moreover, the user
+communication, are enhanced by computers.  This puts the user
 interface, which acts as a buffer between the statistician and
-computer, plays a critical part in facilitating or hindering this
-interaction.  This paper introduces Emacs Speaks Statistics (ESS),
+computer, in the critical role of facilitating or hindering these
+tasks.  This paper introduces Emacs Speaks Statistics (ESS),
 which is a set of extensions to the Emacs text editor which facilitate
 the use of a number of common statistical programs and languages by
-provides shortcuts and extensions for often-performed tasks.
+providing shortcuts and extensions for often-performed tasks.
 
 %% Does it make sense to add an additional paragraph on "history of
 %% statistical interfaces from programming it yourself to command line
@@ -157,7 +157,7 @@ provides shortcuts and extensions for often-performed tasks.
 ESS provides an interface to statistical packages, and provides,
 through Emacs, additional tools which facilitate both statistical
 software development and data analysis.  Currently supported
-statistical packages are the following: the S family of languages (which include
+statistical packages are the following:  the S family of languages (which include
 S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus{} \citep{Splus}, and R
 \citep{ihak:gent:1996}); \SAS \citep{SAS:8}; \XLispStat\ 
 \citep{Tier90} and its extensions Arc \citep{Cook:Weisberg:1999} and
@@ -178,7 +178,6 @@ It has been passed down by generations of developers and has
 united various Emacs packages which support
 statistical languages and programming.  Finally, we conclude with
 future tasks and extensions.
-%Emacs is a powerful and extensible text editing tool.
 
 \section{Emacs}
 \label{sec:emacs}
@@ -192,32 +191,35 @@ implementations of Emacs (GNU Emacs \citep{GNU Emacs} and XEmacs
 word processors, and some characteristics with operating systems.
 Most importantly, Emacs can interact with and control other programs.
 
-Emacs was originally written when single-screen terminals with only a 
+Emacs was originally written when character-based terminals with only a 
 keyboard for input was the most advanced method of access to computers.  
 Common Emacs commands were assigned to key sequences, which is known as 
 key-mapping or key-binding.  These days, Emacs is rarely used via a 
-terminal or terminal-emulator
-except in special circumstances such as a quick edit or remote
-access to a computer over a slow connection.  Over the last decade,
-Emacs has been extended to use windowing systems such as X11,
+terminal or terminal-emulator, but key-mapping of commands is still
+an important time-saving feature.
+%%except in special circumstances such as a quick edit or remote
+%%access to a computer over a slow connection.  
+Over the last decade,
+Emacs has been extended to use graphics-based windowing systems such as X11,
 Microsoft Windows, and Apple Macintosh.  These windowing systems
 provide a graphical user interface (GUI) which allows the user to
-interact with either a keyboard or a mouse and provides applications
-with the ability to share space on a single display.  Emacs menus and
+interact with either a keyboard or a mouse and for multiple 
+applications to share a single display.  Emacs menus and
 toolbars allow mouse access to frequently used actions; for instance,
-when you don't know or can't remember the appropriate key-mapping.
+when you don't know or can't remember a key-mapping.
 User-defined menus and toolbars can be constructed as needed.
-%% Emacs can complete partially typed file names by referring
-%%to the current working directory.  
 
-Emacs provides facilities which go beyond ordinary text editing.  It
-creates dedicated spaces on the display, called buffers, to perform
-tasks such as editing a text file on disk or controlling other
-programs.  Buffers allow the user to simultaneously edit multiple files
+Emacs provides facilities which go beyond ordinary text editing.  
+When opening a file, Emacs can complete partially typed 
+file names by referring to the typed directory.  This file is placed
+in a space created within the Emacs application called a buffer.
+Buffers can be used for more than just editing text files; for instance,
+they can be used for controlling other programs or viewing the contents of
+a directory.  Buffers allow the user to simultaneously edit multiple files
 and concurrently control multiple programs simply by switching between buffers.
 
 Emacs capabilities are extended by text files containing Emacs Lisp,
-(also known as elisp), a dialect of Lisp
+(shortened as elisp), a dialect of Lisp
 \citep{RChassell1999,PGraham:1996}.  Emacs commands, written
 in elisp, can be called interactively by name or by their associated key-map.  
 Emacs functions are also written in elisp, but they can only be 
@@ -225,37 +227,42 @@ called by Emacs commands or other Emacs functions rather than directly
 by name or key-maps.  The most important extensions to
 Emacs are called modes.  
 
-Major-modes provide two types of support.
-First, a customized environment (key-maps, capabilities) for types
-of files determined by the file name's extension, i.e. the characters
+Major-modes provide two kinds of support.
+First, a customized environment (key-maps, capabilities) for file
+types which are determined from the file name's extension, i.e. the characters
 at the end of the file name that follow a period like ``txt'', ``s''
-or ``sas''.  When dictated by the file name, you can only
-utilize one major-mode at a time. 
-The second type of major-mode is for running other programs.  In this
-case, the buffer provides input and output for the other program.  These
+or ``sas''.  When dictated by the file name, you can only utilize one 
+major-mode at a time.  An example of this kind of major-mode is ESS 
+(technically, the name is actually \stexttt{ess-mode}).  Major-modes of this
+kind provide automatic indentation and navigation in units of characters,
+words, lines, sentences, paragraphs, and pages as well as many other
+features.  The second kind of major-mode is for running other programs.  In this
+case, the buffer provides input and output for other programs.  These
 buffers control other programs and interact with the system to send mail,
-transfer files over networks, play games, or perform many other tasks.
+transfer files over networks, or perform many other tasks.
+An important example of this kind of major-mode is \stexttt{shell-mode}.
 
 Minor-modes, by contrast, provide
 services that are not mutually exclusive.  This includes emulation of
 another editor or cooperating with a version control program.  For
-example, the font-lock minor-mode allows Emacs to highlight, with
+example, the minor-mode \stexttt{font-lock-mode} allows Emacs to highlight, with
 fonts or colors, the syntax of a programming language whose
-characteristics are described by a major-mode like ESS (technically,
-the major-mode is called ess-mode).  Major-modes
-provide automatic indentation and navigation in units of characters,
-words, lines, sentences, paragraphs, and pages as well as many other
-features.
+characteristics are described by a major-mode like ESS. 
+Remote editing of files is provided by minor-modes \stexttt{ange-ftp} and 
+\stexttt{EFS} for ftp access or \stexttt{tramp} for scp/ssh/telnet.
+Interacting with version control programs is provided by the minor-mode
+\stexttt{vc-mode} for packages like CVS, RCS and SCCS. 
 
 Most programming and documentation tasks fall under the realm of text
-editing.  This work can be enhanced by features such as contextual
-highlighting and recognition of special reserved words appropriate to
-the programming language in use.  In addition, editor behaviors such
-as folding, outlining, and bookmarks can assist with maneuvering
+editing.  This work can be enhanced by modes which provide features such 
+as contextual highlighting and recognition of special reserved words 
+appropriate to the programming language in use.  Emacs supports
+folding, outlining, and bookmarks which can assist with maneuvering
 around a file.  Emacs shares many features with word-processing
-programs and cooperates with document preparation and management
-systems such as \LaTeX, HTML, \textsc{xml}, XSLT, and Noweb.
-%Type-setting and word-processing, which
+programs and cooperates with document preparation systems
+that perform type-setting such as \LaTeX or hypertext markup
+like HTML and XML.
+%XSLT, and Noweb.  Type-setting and word-processing, which
 %focus on the presentation of a document, are tasks that are not pure
 %text-editing.
 
@@ -263,10 +270,7 @@ systems such as \LaTeX, HTML, \textsc{xml}, XSLT, and Noweb.
 %visual comparison of two similar files; and navigation 
 %in units of characters, words, lines, sentences, paragraphs, and pages.  
 
-Remote editing of files is provided by Emacs modes \stexttt{ange-ftp} and 
-\stexttt{EFS} for ftp access or \stexttt{tramp} for scp/ssh/telnet.
-Interacting with version control programs is provided by \stexttt{vc} 
-for packages like CVS, RCS and SCCS.  Emacs handles the
+ Emacs handles the
 interface to both source code and transcripts contextually, providing
 syntax highlighting, bookmarking features, interfaces to directory
 structure, and command-history.  Other extensions to Emacs allow it to
