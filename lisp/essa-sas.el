@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/24 18:50:15 $
-;; Version: $Revision: 1.112 $
-;; RCS: $Id: essa-sas.el,v 1.112 2002/07/24 18:50:15 rsparapa Exp $
+;; Modified: $Date: 2002/07/25 03:21:37 $
+;; Version: $Revision: 1.113 $
+;; RCS: $Id: essa-sas.el,v 1.113 2002/07/25 03:21:37 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -606,13 +606,14 @@ i.e. let arg1 be your local equivalent of
       (progn
        (if (ess-save-and-set-local-variables) (ess-kermit-send))
        (let ((ess-temp-directory ess-kermit-remote-directory))
-        (ess-sas-goto-shell)
+        (ess-sas-goto-shell t)
         (insert "cd " ess-temp-directory)
         (comint-send-input)
         (insert ess-sas-submit-pre-command " " arg1 " "  
 	 (substring (file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 1)
 	 " " arg2 " " ess-sas-submit-post-command))
-        (ess-sas-goto-sas))
+        ;(ess-sas-goto-sas)
+       )
     ;;else
       (ess-save-and-set-local-variables)
       (ess-sas-goto-shell t)
@@ -622,7 +623,7 @@ i.e. let arg1 be your local equivalent of
 	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 
 	" " arg2 " " ess-sas-submit-post-command)
       )
-    (comint-send-input)
+    ;(comint-send-input)
     (ess-sleep)
     (comint-send-input))
 
