@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/09 19:33:18 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: essd-sas.el,v 1.24 1997/11/09 19:33:18 rossini Exp $
+;; Modified: $Date: 1997/11/09 20:02:28 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: essd-sas.el,v 1.25 1997/11/09 20:02:28 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -34,8 +34,9 @@
 
 (require 'essl-sas)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
+(autoload 'inferior-ess "ess-inf" no-doc t)
+(autoload 'ess-mode "ess-mode" no-doc t)
+(autoload 'ess-proc-name "ess-inf" no-doc nil)
 
 (defvar inferior-SAS-args "-stdio -linesize 80 -noovp"
   "*Arguments to use for starting SAS.")
@@ -63,6 +64,7 @@
 	 ;;				 ess-dialect  ;;"SAS"
 	 ;;			       ess-current-process-name)
 	 ;;			   ess-local-process-name))  
+	 (n 0)
 	 (tmp-procname (if n (ess-proc-name (prefix-numeric-value n)
 					    temp-ess-dialect)
 			 ;; no prefix arg
@@ -83,7 +85,9 @@
 	 ;; Following was tmp-local-process-name.  Stolen from inferior-ess
 	 (ess-sas-lst-bufname (concat "*" tmp-procname ".lst*"))
 	 (ess-sas-log-bufname (concat "*" tmp-procname ".log*"))
-	 (explicit-shell-file-name "/bin/sh"))
+	 (explicit-shell-file-name "/bin/sh")
+	 ess-sas-lst
+	 ess-sas-log)
     
     ;; If someone is running a *shell* buffer, rename it to avoid
     ;; inadvertent nuking.
