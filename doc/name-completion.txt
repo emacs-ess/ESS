@@ -26,6 +26,7 @@ o) ess-search-path-tracker is added to `comint-input-filter-functions' hook;
 o) Main user functions
 
   ess-complete-object-name	and
+  +
   ess-resynch			{also sets ess-object-list to nil ..}
   |				call the "main work horse"
   |
@@ -39,4 +40,19 @@ o) Main user functions
       |--> [V] ess-sl-modtime-alist
       |
       \-> ess-extract-onames-from-alist
-
+          |
+          |-> ess-dir-modtime
+	  |
+	  \-> ess-object-names
+	      |
+	      |-> <directory-fussing>
+	      |-> [V] ess-object-name-db
+	      |
+	      |-> [V] inferior-ess-object-command
+	      \-> ess-get-words-from-vector
+	          |
+	          \-> ess-command
+		      |
+		      |-> [V] ess-cmd-delay
+		      |
+		      \-> ess-prompt-wait
