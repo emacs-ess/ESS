@@ -339,7 +339,7 @@ there is no process NAME)."
 	;; Get search list when needed
 	(setq ess-sp-change t)
 	(run-hooks 'ess-post-run-hook))
-      (if inferior-ess-same-window
+      (if (and inferior-ess-same-window (not inferior-ess-own-frame))
 	  (switch-to-buffer (process-buffer (get-process proc-name)))
 	(pop-to-buffer (process-buffer (get-process proc-name)))))))
 
