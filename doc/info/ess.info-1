@@ -17,7 +17,7 @@ ESS: Emacs Speaks Statistics
 
    5.2.1
 
-   (Documentation $Revision: 1.5 $ $Date: 2004/07/02 08:23:49 $).
+   (Documentation $Revision: 1.6 $ $Date: 2004/07/04 17:20:36 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -199,16 +199,33 @@ New features in ESS
 ===================
 
    Changes/New Features in 5.2.2:
-   * ESS[R]: Other versions of R, such as "R-1.8.1", are added to the
-     "ESS / Start Process / Other " menu.
+   * ESS[R]: If you have other versions of R on your exec-path, such as
+     "R-1.8.1" with Unix or "rw1081" with Windows, ESS will find them
+     and create appropriate functions, such as M-x R-1.8.1 or M-x
+     rw1081, for calling them.  By default only Unix programs beginning
+     "R-1" and "R-2" and Windows programs parallel to the version of R
+     in your exec-path will be found, but see ess-r-versions and
+     ess-rterm-versions for ways to find other versions of R.
+
+   * ESS[R]: Other versions of R, such as "R-1.8.1" on Unix and
+     "rw1081" on Windows, are added to the "ESS / Start Process /
+     Other" menu.
+
+   * ESS[S]: If you have other versions of S-Plus on your Windows
+     computer, such as S-Plus 6.1 or S-Plus 4.5, ESS will find them and
+     create appropriate functions, such as M-x splus61, for calling the
+     console version (Sqpe) inside an emacs buffer.  By default only
+     programs installed in the default location will be found, but see
+     ess-SHOME-versions for ways to find other versions of S-Plus.
+
+   * ESS[S]: Other versions of Sqpe on Windows, such as "splus61", are
+     added to the "ESS / Start Process / Other" menu.
+
+   * ESS[R]: (bug fix) ess-quit (bound to C-c C-q) should now quit the
+     inferior R process, when issued from either the inferior buffer,
+     or from a .R buffer.
 
    Changes/New Features in 5.2.1:
-   * ESS[R]: If you have other versions of R, such as "R-1.8.1" on your
-     exec-path, ESS will find and create appropriate functions, such as
-     M-x R-1.8.1, for calling them.  By default only programs beginning
-     "R-1" and "R-2" will be found, but see ess-r-versions for ways to
-     find other versions of R.
-
    * ESS[S] (R and S-plus): now have toolbar support with icons to
      evaluate code in the inferior process or to switch there.  This
      code is experimental and likely to change as XEmacs/Emacs issues
@@ -1116,62 +1133,4 @@ with it.
 
    We have two older commands, now deprecated, for accessing ESS
 processes on remote computers.  *Note S+elsewhere and ESS-elsewhere::.
-
-
-File: ess.info,  Node: S+elsewhere and ESS-elsewhere,  Prev: ESS processes on Remote Computers,  Up: ESS processes on Remote Computers
-
-S+elsewhere and ESS-elsewhere
-=============================
-
-   These commands are now deprecated.  We recommend `ess-remote'.
-
-   We have two versions of the elsewhere function.
-
-   `S+elsewhere' is specific for the S-Plus program.  The more general
-function `ESS-elsewhere' is not as stable.
-
-  1. Enter `M-x S+elsewhere'.  You will be prompted for a starting
-     directory.  I usually give it my project directory on the local
-     machine, say  `~myname/myproject/'
-
-     Or enter `M-x ESS-elsewhere'.  You will be prompted for an ESS
-     program and for a starting directory.  I usually give it my project
-     directory on the local machine, say `~myname/myproject/'
-
-  2. The `*S+3*' buffer will appear with a prompt from the local
-     operating system (the unix prompt on a unix workstation or with
-     cygwin bash on a PC, or the msdos prompt on a PC without bash).
-     emacs may freeze because the cursor is at the wrong place.
-     Unfreeze it with `C-g' then move the cursor to the end with `M->'.
-     With `S+elsewhere' the buffer name is based on the name of the ESS
-     program.
-
-  3. Enter `telnet myname@other.machine' (or `ssh
-     myname@other.machine').  You will be prompted for your password on
-     the remote machine.  Use `M-x send-invisible' before typing the
-     password itself.
-
-  4. Before starting the ESS process, type `stty -echo nl' at the unix
-     prompt.  The `-echo' turns off the echo, the `nl' turns off the
-     newline that you see as `^M'.
-
-  5. You are now talking to the unix prompt on the other machine in the
-     `*S+3*' buffer.  cd into the directory for the current project and
-     start the ESS process by entering `Splus' or `R' or `sas -stdio'
-     as appropriate.  If you can login remotely to your Windows 2000,
-     then you should be able to run `Sqpe' on the Windows machine.  I
-     haven't tested this and noone has reported their tests to me.  You
-     will not be able to run the GUI through this text-only connection.
-
-  6. Once you get the S or R or SAS prompt, then you are completely
-     connected.  All the `C-c C-n' and related commands work correctly
-     in sending commands from `myfile.s' or `myfile.r' on the PC to the
-     `*S+3*' buffer running the S or R or SAS program on the remote
-     machine.
-
-  7. Graphics on the remote machine works fine.  If you run the X window
-     sysyem on the remote unix machine you should be able to display
-     them in `xfree86' on your PC.  If you don't run X11, then you can
-     write graphics to the postscript device and copy it to your PC
-     with dired and display it with ghostscript.
 

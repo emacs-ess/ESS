@@ -8,6 +8,48 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
+File: ess.info,  Node: ESS(BUGS)--Log files,  Prev: ESS(BUGS)--Command files,  Up: Help for BUGS
+
+ESS[BUGS]-Log files
+===================
+
+   To avoid extension name collision, .bog is used for BUGS log files.
+The BUGS batch script provided with ESS creates the .bog file from the
+.log file when the batch process completes.  If you need to look at the
+.log file while the batch process is running, it will not appear in
+ESS[BUGS] mode unless you modify the auto-mode-alist variable.  If you
+have done so, then you may find F2 useful to refresh the .log if the
+batch process over-writes or appends it.
+
+
+File: ess.info,  Node: Entering commands,  Next: Editing,  Prev: Help for BUGS,  Up: Top
+
+Interacting with the ESS process
+********************************
+
+   The primary function of the ESS package is to provide an easy-to-use
+front end to the S interpreter.  This is achieved by running the S
+process from within an Emacs buffer, so that the Emacs editing commands
+are available to correct mistakes in commands, etc.  The features of
+Inferior S mode are similar to those provided by the standard Emacs
+shell mode (*note Shell Mode: (emacs)Shell Mode.).  Command-line
+completion of S objects and a number of `hot keys' for commonly-used S
+commands are also provided for ease of typing.
+
+* Menu:
+
+* Command-line editing::        Entering commands and fixing mistakes
+* Completion::                  Completion of object names
+* Completion details::          Advanced completion concepts
+* Transcript::                  Manipulating the transcript
+* Command History::             Command History
+* History expansion::           References to historical commands
+* Hot keys::                    Hot keys for common commands
+* Statistical Process running in ESS?::
+* Emacsclient::                 Using emacsclient
+* Other::                       Other commands provided by inferior-ESS
+
+
 File: ess.info,  Node: Command-line editing,  Next: Completion,  Prev: Entering commands,  Up: Entering commands
 
 Entering commands and fixing mistakes
@@ -1014,72 +1056,4 @@ if you happen to quit Emacs before correcting the error.
 
    Dump buffers are always autosaved, regardless of the value of
 `ess-keep-dump-files'.
-
-
-File: ess.info,  Node: Source Directories,  Prev: Source Files,  Up: Editing
-
-Names and locations of dump files
-=================================
-
-   Every dump file should be given a unique file name, usually the
-dumped object name with some additions.
-
- - User Option: ess-dump-filename-template
-     Template for filenames of dumped objects.  `%s' is replaced by the
-     object name.
-
-By default, dump file names are the user name, followed by `.' and the
-object and ending with `.S'.  Thus if user `joe' dumps the object
-`myfun' the dump file will have name `joe.myfun.S'.  The username part
-is included to avoid clashes when dumping into a publicly-writable
-directory, such as `/tmp'; you may wish to remove this part if you are
-dumping into a directory owned by you.
-
-   You may also specify the directory in which dump files are written:
-
- - User Option: ess-source-directory
-     Directory name (ending in a slash) where S dump files are to be
-     written.
-
-   By default, dump files are always written to `/tmp', which is fine
-when `ess-keep-dump-files' is `nil'.  If you are keeping dump files,
-then you will probably want to keep them somewhere in your home
-directory, say `~/S-source'.  This could be achieved by including the
-following line in your `.emacs' file:
-     (setq ess-source-directory (expand-file-name "~/S-source/"))
-
-   If you would prefer to keep your dump files in separate directories
-depending on the value of some variable, ESS provides a facility for
-this also.  By setting `ess-source-directory' to a lambda expression
-which evaluates to a directory name, you have a great deal of
-flexibility in selecting the directory for a particular source file to
-appear in.  The lambda expression is evaluated with the process buffer
-as the current buffer and so you can use the variables local to that
-buffer to make your choice.  For example, the following expression
-causes source files to be saved in the subdirectory `Src' of the
-directory the ESS process was run in.
-
-     (setq ess-source-directory
-           (lambda ()
-              (concat ess-directory "Src/")))
-
-(`ess-directory' is a buffer-local variable in process buffers which
-records the directory the ESS process was run from.)  This is useful if
-you keep your dump files and you often edit objects with the same name
-in different ESS processes.  Alternatively, if you often change your S
-working directory during an S session, you may like to keep dump files
-in some subdirectory of the directory pointed to by the first element
-of the current search list.  This way you can edit objects of the same
-name in different directories during the one S session:
-     (setq ess-source-directory
-        (lambda ()
-            (file-name-as-directory
-             (expand-file-name (concat
-                                (car ess-search-list)
-                                "/.Src")))))
-
-   If the directory generated by the lambda function does not exist but
-can be created, you will be asked whether you wish to create the
-directory.  If you choose not to, or the directory cannot be created,
-you will not be able to edit functions.
 

@@ -8,6 +8,64 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
+File: ess.info,  Node: S+elsewhere and ESS-elsewhere,  Prev: ESS processes on Remote Computers,  Up: ESS processes on Remote Computers
+
+S+elsewhere and ESS-elsewhere
+=============================
+
+   These commands are now deprecated.  We recommend `ess-remote'.
+
+   We have two versions of the elsewhere function.
+
+   `S+elsewhere' is specific for the S-Plus program.  The more general
+function `ESS-elsewhere' is not as stable.
+
+  1. Enter `M-x S+elsewhere'.  You will be prompted for a starting
+     directory.  I usually give it my project directory on the local
+     machine, say  `~myname/myproject/'
+
+     Or enter `M-x ESS-elsewhere'.  You will be prompted for an ESS
+     program and for a starting directory.  I usually give it my project
+     directory on the local machine, say `~myname/myproject/'
+
+  2. The `*S+3*' buffer will appear with a prompt from the local
+     operating system (the unix prompt on a unix workstation or with
+     cygwin bash on a PC, or the msdos prompt on a PC without bash).
+     emacs may freeze because the cursor is at the wrong place.
+     Unfreeze it with `C-g' then move the cursor to the end with `M->'.
+     With `S+elsewhere' the buffer name is based on the name of the ESS
+     program.
+
+  3. Enter `telnet myname@other.machine' (or `ssh
+     myname@other.machine').  You will be prompted for your password on
+     the remote machine.  Use `M-x send-invisible' before typing the
+     password itself.
+
+  4. Before starting the ESS process, type `stty -echo nl' at the unix
+     prompt.  The `-echo' turns off the echo, the `nl' turns off the
+     newline that you see as `^M'.
+
+  5. You are now talking to the unix prompt on the other machine in the
+     `*S+3*' buffer.  cd into the directory for the current project and
+     start the ESS process by entering `Splus' or `R' or `sas -stdio'
+     as appropriate.  If you can login remotely to your Windows 2000,
+     then you should be able to run `Sqpe' on the Windows machine.  I
+     haven't tested this and noone has reported their tests to me.  You
+     will not be able to run the GUI through this text-only connection.
+
+  6. Once you get the S or R or SAS prompt, then you are completely
+     connected.  All the `C-c C-n' and related commands work correctly
+     in sending commands from `myfile.s' or `myfile.r' on the PC to the
+     `*S+3*' buffer running the S or R or SAS program on the remote
+     machine.
+
+  7. Graphics on the remote machine works fine.  If you run the X window
+     sysyem on the remote unix machine you should be able to display
+     them in `xfree86' on your PC.  If you don't run X11, then you can
+     write graphics to the postscript device and copy it to your PC
+     with dired and display it with ghostscript.
+
+
 File: ess.info,  Node: Customizing startup,  Prev: ESS processes on Remote Computers,  Up: Interactive ESS
 
 Changing the startup actions
@@ -1076,46 +1134,4 @@ distribution.  The DOS script is called "BACKBUGS.BAT" and the Unix
 script is "backbugs".  These scripts allow you to change the number of
 bins to use in the Griddy algorithm (Metropolis sampling).  That is
 handled by the variable ess-bugs-default-bins which defaults to 32.
-
-
-File: ess.info,  Node: ESS(BUGS)--Log files,  Prev: ESS(BUGS)--Command files,  Up: Help for BUGS
-
-ESS[BUGS]-Log files
-===================
-
-   To avoid extension name collision, .bog is used for BUGS log files.
-The BUGS batch script provided with ESS creates the .bog file from the
-.log file when the batch process completes.  If you need to look at the
-.log file while the batch process is running, it will not appear in
-ESS[BUGS] mode unless you modify the auto-mode-alist variable.  If you
-have done so, then you may find F2 useful to refresh the .log if the
-batch process over-writes or appends it.
-
-
-File: ess.info,  Node: Entering commands,  Next: Editing,  Prev: Help for BUGS,  Up: Top
-
-Interacting with the ESS process
-********************************
-
-   The primary function of the ESS package is to provide an easy-to-use
-front end to the S interpreter.  This is achieved by running the S
-process from within an Emacs buffer, so that the Emacs editing commands
-are available to correct mistakes in commands, etc.  The features of
-Inferior S mode are similar to those provided by the standard Emacs
-shell mode (*note Shell Mode: (emacs)Shell Mode.).  Command-line
-completion of S objects and a number of `hot keys' for commonly-used S
-commands are also provided for ease of typing.
-
-* Menu:
-
-* Command-line editing::        Entering commands and fixing mistakes
-* Completion::                  Completion of object names
-* Completion details::          Advanced completion concepts
-* Transcript::                  Manipulating the transcript
-* Command History::             Command History
-* History expansion::           References to historical commands
-* Hot keys::                    Hot keys for common commands
-* Statistical Process running in ESS?::
-* Emacsclient::                 Using emacsclient
-* Other::                       Other commands provided by inferior-ESS
 
