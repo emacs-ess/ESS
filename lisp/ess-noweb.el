@@ -1,15 +1,15 @@
 ;;; ess-noweb.el : support for Literate Data Analysis
 
-;; Copyright (C) 1999--2000, Mark Lunt and A.J. Rossini
+;; Copyright (C) 1999--2004, Mark Lunt and A.J. Rossini
 
 ;; Authors: Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
-;;          A.J. Rossini <rossini@biostat.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;;          A.J. Rossini <rossini@u.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: April 18, 1999
-;; Version: $Revision: 1.10 $
+;; Version: $Revision: 1.11 $
 ;; Keywords: statistical support
 ;; Summary: Noweb support for ESS
-;; CVS: $Id: ess-noweb.el,v 1.10 2003/12/08 11:07:29 stephen Exp $
+;; CVS: $Id: ess-noweb.el,v 1.11 2004/03/30 16:42:45 rossini Exp $
 
 ;; This file is part of ESS
 
