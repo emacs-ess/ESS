@@ -1,9 +1,10 @@
-## $Id: Makefile,v 5.15 1999/03/17 17:42:45 rossini Exp $
+## $Id: Makefile,v 5.16 1999/03/31 22:07:36 rossini Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
-ESSVERSION=5.1.5
-ESSVERSIONMSDOS=5_1_5
+ESSVERSION=5.1.6
+ESSVERSIONMSDOS=5_1_6
+ESSVERSIONTAG=ess-$(ESSVERSIONMSDOS)
 
 ESSVERSIONDIR=ess-$(ESSVERSION)
 
@@ -40,29 +41,34 @@ docs:
 
 dist: 
 	@echo "**********************************************************"
-	@echo "** Making distribution of ESS for release $(VERSION),"
+	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSVERSIONDIR)"
 	@echo "** (must set CVSROOT, etc, prior to checkout for security)"
 	@echo "**********************************************************"
+	@echo "** Exporting Files **"
 	cvs export -D today ess
+	@echo "** Creating and placing tar file **"
 	ln -s ess $(ESSVERSIONDIR)
-	tar hcvof ESS-$(ESSVERSION).tar -X CVS $(ESSVERSIONDIR)
 	chmod a-w $(ESSVERSIONDIR)/lisp/*.el
 	chmod a-w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
 	-chmod a-w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
 	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Makefile
 	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
+	tar hcvof ESS-$(ESSVERSION).tar -X CVS $(ESSVERSIONDIR)
 	gzip ESS-$(ESSVERSION).tar
-	-chmod a+w $(ESSVERSIONDIR)/lisp/*.el
-	-chmod a+w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
-	-chmod a+w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
-	rm $(ESSVERSIONDIR)
-	rm -rf ess
 	scp ESS-$(ESSVERSION).tar.gz ess@franz.stat.wisc.edu:~/public_html
-#	tar zxvf ESS-$(ESSVERSION).tar.gz
-#	mv $(ESSVERSIONDIR ESS-$(ESSVERSIONMSDOS)
-#	zip ESS-$(ESSVERSION).zip ESS-$(ESSVERSIONMSDOS)
-#	scp ESS-$(ESSVERSIONMSDOS).zip ess@franz.stat.wisc.edu:~/public_html
+	@echo "** Creating and placing zip file **"
+	ln -s ess ESS_$(ESSVERSIONMSDOS)
+	zip -r ESS_$(ESSVERSION).zip ESS_$(ESSVERSIONMSDOS)
+	scp ESS_$(ESSVERSIONMSDOS).zip ess@franz.stat.wisc.edu:~/public_html
+	@echo "** Cleaning up **"
+	rm -rf ess $(ESSVERSIONDIR) ESS_$(ESSVERSIONMSDOS)
+
+
+#	-chmod a+w $(ESSVERSIONDIR)/lisp/*.el
+#	-chmod a+w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
+#	-chmod a+w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
+
 
 ## PA's version, infinitely interesting...
 #dist:   
