@@ -1,3 +1,7 @@
+2003-11-24  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-emcs.el (replace-regexp-in-string): also needed for Emacs 20.
+
 2003-11-06  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el (ess-S-loop-timeout): new variable (and same for 	-XLS-)
