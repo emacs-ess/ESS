@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/09/16 05:36:31 $
-;; Version: $Revision: 5.32 $
-;; RCS: $Id: ess-site.el,v 5.32 1999/09/16 05:36:31 rossini Exp $
+;; Modified: $Date: 1999/09/21 16:33:38 $
+;; Version: $Revision: 5.33 $
+;; RCS: $Id: ess-site.el,v 5.33 1999/09/21 16:33:38 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -406,8 +406,8 @@
 
 ;;; 5.0 Noweb and Literate Data Analysis configuration
 
-;; Comment out if not wanted.
-(require 'ess-noweb)
+;;; Comment out if not wanted.
+;(require 'ess-noweb)
 
 
  ; Local variables section
