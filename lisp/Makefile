@@ -114,7 +114,7 @@ dist:
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(VERSION)"
 	@echo "**********************************************************"
-	chmod a-w $(VERSIONDIR)/*.el $(VERSIONDIR)/ChangeLog
+	chmod a-w $(VERSIONDIR)/*.el $(VERSIONDIR)/ChangeLog $(VERSIONDIR)/Doc 
 	chmod u+w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
 	chmod ugo+x $(DISTSCRIPTS)
 	tar hcovf $(VERSIONDIR).tar $(DISTFILES)
