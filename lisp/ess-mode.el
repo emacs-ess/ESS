@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@biostat.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/07/22 10:37:17 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: ess-mode.el,v 5.7 1999/07/22 10:37:17 maechler Exp $
+;; Modified: $Date: 1999/07/22 13:02:04 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: ess-mode.el,v 5.8 1999/07/22 13:02:04 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -58,6 +58,14 @@
 (autoload 'ess-force-buffer-current "ess-inf" "" nil)
 (autoload 'ess-switch-process "ess-inf" "" nil)
 (autoload 'ess-quit           "ess-inf" "" nil)
+
+;; (line-end-position N) exists in Emacs 20.3, but not (eg in 19.34)
+(if (not (fboundp 'line-end-position))
+    (defun line-end-position (&optional N)
+      (save-excursion
+	(end-of-line N)
+	(point)))
+)
 
  ; ESS mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

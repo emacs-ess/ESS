@@ -1,3 +1,8 @@
+1999-07-22  Martin Maechler  <maechler@sophie>
+
+	* ess-mode.el : Define cheap (line-end-position) if not there
+	[e.g. for GNU emacs 19.34]
+
 1999-07-22  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el (ess-beginning-of-function):
