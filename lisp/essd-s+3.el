@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/09 14:39:22 $
-;; Version: $Revision: 1.31 $
-;; RCS: $Id: essd-s+3.el,v 1.31 1997/09/09 14:39:22 rossini Exp $
+;; Modified: $Date: 1997/10/16 18:43:36 $
+;; Version: $Revision: 1.32 $
+;; RCS: $Id: essd-s+3.el,v 1.32 1997/10/16 18:43:36 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -35,7 +35,6 @@
 (require 'essl-s)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
-
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process")
 
 ; Code:
@@ -60,7 +59,7 @@
     (ess-save-lastvalue-command
      . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
     (inferior-ess-program          . inferior-S+3-program-name)
-    (inferior-ess-objects-command  . "objects(%d)")
+    (inferior-ess-objects-command  . "objects(%d)\n")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
