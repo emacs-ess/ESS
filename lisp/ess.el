@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/03 13:46:24 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: ess.el,v 1.24 1997/07/03 13:46:24 rossini Exp $
+;; Modified: $Date: 1997/07/03 13:58:08 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: ess.el,v 1.25 1997/07/03 13:58:08 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.25  1997/07/03 13:58:08  rossini
+;; *** empty log message ***
+;;
 ;; Revision 1.24  1997/07/03 13:46:24  rossini
 ;; ess-loop-timeout -> buffer-local.
 ;;
@@ -1039,6 +1042,7 @@ browse-url to find the location")
 This is SO UGLY.  But it'll work for now... 
 the basic idea: (setq ---  (cdr (assq --- var-alist)))."
 
+  (if buf (set-buffer buf))
   (setq ess-customize-alist var-alist)
   (setq ess-proc-prefix              (cdr (assq ess-proc-prefix              var-alist)))
   (setq ess-version-running          (cdr (assq ess-version-running          var-alist)))
