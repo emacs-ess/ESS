@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/10/21 20:00:23 $
-;; Version: $Revision: 1.51 $
-;; RCS: $Id: ess-site.el,v 1.51 1997/10/21 20:00:23 rossini Exp $
+;; Modified: $Date: 1997/10/21 20:35:36 $
+;; Version: $Revision: 1.52 $
+;; RCS: $Id: ess-site.el,v 1.52 1997/10/21 20:35:36 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -76,6 +76,8 @@
 ;;; want to use assembler, comment the appropriate
 ;;; line below.
 
+(autoload 'Rd-mode "essddr" "Major mode for editing R documentation." t)
+
 ;; This fails in Emacs.  How can it be done simply?  Should it be done?
 ;;    ;; get rid of assembler mode.
 ;;    (set auto-mode-alist (remassoc "\\.[sS]\\'" auto-mode-alist))
@@ -93,17 +95,13 @@
 	   ("\\.sas\\'"                               . SAS-mode)
 	   ("\\.SAS\\'"                               . SAS-mode)
 	   ("\\.lst\\'"                               . SAS-listing-mode);sasl
-	   ("\\.log\\'"                               . SAS-log-mode);sasl
+	   ;; Too many *.log files!
+	   ;;("\\.log\\'"                               . SAS-log-mode);sasl
 	   ("\\.[Ss]\\(ou\\)?t\\'"                    . S-transcript-mode)
 	   ("\\.[Rr]\\(ou\\)?t\\'"                    . R-transcript-mode)
 	   ("\\.Rd\\'"                                . Rd-mode))
 	 auto-mode-alist)))
 
-;;-- if you don't have 'rd-mode.el' yet, use the following as substitute:
-;;--   (fset 'Rd-mode 'R-mode)
-;;-- else :
-(autoload 'Rd-mode "ess-doc" "Major mode for editing R documentation." t)
-;;---> /u/maechler/emacs/rd-mode.el <<<<
 
 
 ;; (1.4) Customize the dialects for your setup.
