@@ -1,19 +1,15 @@
-@node ESS: Using The S family of statistical languages
-@comment  node-name,  next,  previous,  up
 
-
-ESS (originally S-mode) was initially designed for use with S and
+ESS[S] (originally S-mode) was initially designed for use with S and
 S-PLUS(tm); hence, this family of statistical languages currently has
 the most support.  We denote by _S_, any of the currently available
 members of the family, including S 3.x, S 4.x, S-PLUS 3.x, S-PLUS 4.x,
-S-PLUS 5.x, and R.  In addition, we denote by _Emacs_, one of the GNU
-family of editors, either Emacs (as developed and maintained by the
-Free Software Foundation) or XEmacs (which is a derivative work).
+S-PLUS 5.x, and R.  We denote by _emacs_, either GNU Emacs 
+from the Free Software Foundation or XEmacs from the XEmacs Project.
 
 The following is covered in this document:
 
 @itemize @bullet
-@item general Emacs features.
+@item emacs: General features
 @item Editing files.
 @item running an S process as an inferior process to Emacs
 @item using transcripts.
@@ -24,8 +20,9 @@ The following is covered in this document:
 New in 5.1.2 and later: use under Microsoft Windows OS's with NTEmacs.
 See the file README.SPLUS4WIN for more details.
 
-@node Emacs: General features
 @comment  node-name,  next,  previous,  up
+@node emacs: General features
+@section emacs: General features
 
 We assume that you are familiar with Emacs terminology and syntax:
 file, buffer, region, description of keys etc.  If not, please read

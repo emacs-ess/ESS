@@ -3,20 +3,19 @@
 @setfilename announc.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: announc.texi,v 1.25 2002/02/18 21:15:11 rsparapa Exp $
+@comment $Id: announc.texi,v 1.26 2002/04/09 16:38:23 rsparapa Exp $
 
 @comment  node-name,  next,  previous,  up
-@node Announce, Latest Version, Top, Top
+@node Announce, Latest Version, General Information, General Information
 @chapter ANNOUNCING ESS
 @cindex ANNOUNCE
 
 The ESS Developers proudly announce the release of ESS 5.1.20
 --------------------------------------------------------------------
 
-Emacs Speaks Statistics (ESS) provides an intelligent,
-consistent interface between the user and the software.  ESS
-interfaces with SAS, S-PLUS, R, BUGS and other statistics analysis
-packages under
+Emacs Speaks Statistics (ESS) provides an intelligent, consistent 
+interface between the user and the software.  ESS interfaces with 
+SAS, S-PLUS, R, BUGS and other statistical analysis packages under
 the Unix, Microsoft Windows, and Apple Mac operating systems.  ESS
 is itself a package within the Emacs text editor and uses Emacs
 features to streamline the creation and use of statistical software.
@@ -31,10 +30,10 @@ statements written in these statistical analysis languages.
 @comment analysis, and was is based on and extends the capabilities of S-mode.
 @comment 
 ESS is freely available under the GNU General Public License (GPL).  
-Please read the file COPYING which comes
-with the distribution, for more information about the license.
-For more detailed information, please read the README files that come with ESS.
-And to clear up any possible confusion; the name is ESS, NOT ESS-mode.
+Please read the file COPYING which comes with the distribution, for 
+more information about the license. For more detailed information, 
+please read the README files that come with ESS.  And to clear up any 
+possible confusion; the name is ESS, NOT ESS-mode.
 
 Thank you :-).
 

@@ -35,7 +35,7 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.20
 
-   (Documentation $Revision: 1.23 $ $Date: 2002/02/18 21:15:11 $).
+   (Documentation $Revision: 1.24 $ $Date: 2002/04/09 16:38:23 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
      Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and
@@ -56,7 +56,7 @@ ESS: Emacs Speaks Statistics
 * Transcript Mode::             Manipulating saved transcript files
 * Miscellaneous::               Other features of ESS
 * Bugs Etc::
-* Help Statistics::
+* Help for Statistical Packages::
 * Help OS::
 * Installation::                Installing ESS on your system
 * Unix installation::           Installing ESS on your Unix system
@@ -134,14 +134,10 @@ Bugs and Bug Reporting, Mailing Lists
 * Reporting Bugs::
 * Mailing Lists::
 
-Help, arranged by Statistical Package
+Help for Statistical Packages
 
-* Help on Unix Splus ::
-* Help on Microsoft Splus::
-* Help on R::
-* Help on SAS::
-* Help on XLispStat::
-* Help on Stata::
+* Help for the S family::
+* Help for SAS::
 
 Help, arranged by Operating System
 

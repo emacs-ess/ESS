@@ -946,7 +946,7 @@ every session.
 directory, move it there).
 
 
-File: ess.info,  Node: Bugs Etc,  Next: Help Statistics,  Prev: Miscellaneous,  Up: Top
+File: ess.info,  Node: Bugs Etc,  Next: Help for Statistical Packages,  Prev: Miscellaneous,  Up: Top
 
 Bugs and Bug Reporting, Mailing Lists
 *************************************
@@ -1036,242 +1036,192 @@ low-volume mailing list.
    *  posting small patches to ESS.
 
 
-File: ess.info,  Node: Help Statistics,  Next: Help OS,  Prev: Bugs Etc,  Up: Top
+File: ess.info,  Node: Help for Statistical Packages,  Next: Help OS,  Prev: Bugs Etc,  Up: Top
 
-Help, arranged by Statistical Package
-*************************************
+Help for Statistical Packages
+*****************************
 
 * Menu:
 
-* Help on Unix Splus ::
-* Help on Microsoft Splus::
-* Help on R::
-* Help on SAS::
-* Help on XLispStat::
-* Help on Stata::
+* Help for the S family::
+* Help for SAS::
 
 
-File: ess.info,  Node: Help on Unix Splus,  Next: Help on Microsoft Splus,  Prev: Help Statistics,  Up: Help Statistics
+File: ess.info,  Node: Help for the S family,  Next: Help for SAS,  Prev: Help for Statistical Packages,  Up: Help for Statistical Packages
 
-Using S-PLUS 3.x, 5.x
+Help for the S family
 =====================
 
 
-File: ess.info,  Node: Help on Microsoft Splus,  Next: Help on R,  Prev: Help on Unix Splus,  Up: Help Statistics
+File: ess.info,  Node: Help for SAS,  Prev: Help for the S family,  Up: Help for Statistical Packages
 
-Using S-PLUS 4.x
-================
-
-
-File: ess.info,  Node: Help on R,  Next: Help on SAS,  Prev: Help on Microsoft Splus,  Up: Help Statistics
-
-Using R
-=======
-
-
-File: ess.info,  Node: Help on SAS,  Next: Help on XLispStat,  Prev: Help on R,  Up: Help Statistics
-
-Using SAS
-=========
-
-
-File: ess.info,  Node: Help on XLispStat,  Next: Help on Stata,  Prev: Help on SAS,  Up: Help Statistics
-
-Using XLispStat
-===============
-
-
-File: ess.info,  Node: Help on Stata,  Prev: Help on XLispStat,  Up: Help Statistics
-
-Using Stata
-===========
-
-
-File: ess.info,  Node: Help OS,  Next: Installation,  Prev: Help Statistics,  Up: Top
-
-Help, arranged by Operating System
-**********************************
+Help for SAS
+============
 
 * Menu:
 
-* Help Unix::
-* Help Microsoft::
+* ESS[SAS]--Design philosophy::
+* ESS[SAS]--Recommended autoexec.sas::
+* ESS[SAS]--Editing files::
+* iESS--Inferior ESS processes::
+* ESS[SAS]--Batch processes::
+* ESS[SAS]--Function keys for batch processing::
+* ESS[SAS]--TAB key::
+* ESS[SAS]--Usage scenarios::
+* ESS[SAS]--Common problems::
+
+   ESS[SAS] (originally SAS-mode) was designed for use with SAS.
+SAS-mode was developed by Cook
+(ftp://ftp.biostat.wisc.edu/pub/cook/sas-mode/sas.tar.gz).  Those
+editing features and new advanced features are part of ESS[SAS].  The
+user interface of ESS[SAS] has similarities with ESS[S], the ESS
+interface for S, and to the SAS Display Manager.  By _emacs_ we mean
+either GNU Emacs from the Free Software Foundation or XEmacs from the
+XEmacs Project.
 
 
-File: ess.info,  Node: Help Unix,  Next: Help Microsoft,  Prev: Help OS,  Up: Help OS
+File: ess.info,  Node: ESS[SAS]--Design philosophy,  Next: ESS[SAS]--Recommended autoexec.sas,  Prev: Help for SAS,  Up: Help for SAS
 
-Help for Unix
-=============
+ESS[SAS]-Design philosophy
+==========================
+
+   ESS[SAS] mode was designed to aid the user in writing and maintaining
+input command files, such as myfile.sas, for SAS.  These are files
+containing SAS statements.  In a batch environment such files would be
+submitted to SAS by the operating system command:     sas myfile.sas In
+a SAS window environment, these files would be brought into the "SAS:
+PROGRAM EDITOR" window and then submitted with the 'Local' 'Submit'
+menu commands.
+
+   The *SAS:1.log* buffer in ESStr mode corresponds to the file
+myfile.log in SAS batch usage and to the "SAS: LOG" window in the SAS
+window environment.  All commands submitted to SAS, informative
+messages, warnings, and errors appear here.
+
+   The *SAS:1.lst* buffer in ESSlst mode corresponds to the file
+myfile.lst in SAS batch usage and to the "SAS: OUTPUT" window in the
+SAS window environment.  All data related printed output from the PROCs
+appear in this window.
+
+   The iESS [SAS:1] buffer exists solely as a communications buffer.
+Files are edited in the myfile.sas buffer.  The C-c C-r key in ESS[SAS]
+mode is the functional equivalent of bringing a file into the "SAS:
+PROGRAM EDITOR" window followed by the 'Local' 'Submit' menu commands.
+The user should never use this buffer directly.
+
+   The ESS[SAS] mode was written with two primary goals.
+
+   1. Using the emacs environment is desirable for users accessing a
+remote computer via a network or dial-up who can not use the native SAS
+window environment.
+
+   2. Using the emacs environment is desirable for local users as well
+due to the inherent efficiency of using the same superior interface all
+of the time.
 
 
-File: ess.info,  Node: Help Microsoft,  Prev: Help Unix,  Up: Help OS
+File: ess.info,  Node: ESS[SAS]--Recommended autoexec.sas,  Next: ESS[SAS]--Editing files,  Prev: ESS[SAS]--Design philosophy,  Up: Help for SAS
 
-Help for Microsoft
-==================
+ESS[SAS]-Recommended autoexec.sas
+=================================
 
-* Menu:
+   The default settings of the inferior-SAS-args in essd-sas.el are
+"-stdio -linesize 80 -noovp -nosyntaxcheck" with the interpretations:
+-stdio          required to make the redirection of stdio work
+-linesize 80    keeps output lines from folding on standard terminals
+-noovp          prevents error messages from printing 3 times
+-nosyntaxcheck  permits recovery after syntax errors
 
-* Installation::                Installing ESS on your system
+   In addition there are several parameters that can't be set in the
+command line.  For these, we recommend the following line appear in
+your autoexec.sas in your home directory:
+
+   options noovp pagesize=60 linesize=80 formdlim=' ';
+
+   Interpretations
+
+   noovp          prevents error messages from printing 3 time
+pagesize=60    standard printed page length instead of window length
+linesize=80    keeps output lines from folding on standard terminals
+formdlim=' '   blank replaces "C-l" formfeeds to prevent mostly
+        empty pages
+
+   The noovp and linesize=80 appear in both the inferior-SAS-args and in
+the autoexec.sas.  The redundancy means that these options are in
+effect for both SAS interactive and batch jobs.
 
 
-File: ess.info,  Node: Installation,  Next: Customization,  Prev: Help OS,  Up: Top
+File: ess.info,  Node: ESS[SAS]--Editing files,  Next: iESS--Inferior ESS processes,  Prev: ESS[SAS]--Recommended autoexec.sas,  Up: Help for SAS
 
-Installing ESS on your system
-*****************************
+ESS[SAS]-Editing files
+======================
 
-   The following section details those steps necessary to get ESS
-running on your system.
+   ESS[SAS] is the mode for editing SAS language files.  This mode
+handles:
 
-* Menu:
+   - proper indenting, generated by both [Tab] and [Return].  - color
+and font choices based on syntax.  - ability to send the contents of an
+entire buffer, a highlighted region,   or a single line to an inferior
+SAS process, if one is currently running.  - ability to switch between
+processes which would be the target of the   buffer (for the above).  -
+ability to save and submit the file you are working on as a batch SAS
+process with a single keypress and to continue editing while it is
+running - capability of killing the batch SAS process through the shell
+buffer or   allow the SAS process to keep on running after you exit
+emacs - single keypress navigation of .sas, .log and .lst files (.log
+and .lst   files are automatically refreshed with each keypress)
 
-* Unix installation::
-* Microsoft Windows installation::
-* System dependent::            Other variables you may need to change
+   ESS[SAS], the mode for editing SAS language files, is automatically
+turned on when editing a file with a ".sas" suffix (or other, if
+specified in ess-site).  The batch processing keypress commands are
+enabled by default to use the same function keys that the SAS Display
+Manager uses.  The interactive capabilities of ESS require you to start
+an inferior SAS process with M-x SAS (described below).
 
-   We now discuss installation, which might happen under Unix or
-Microsoft Windows.  First, we discuss Unix installation.  *Note Unix
-installation::.
-
-   For Microsoft Windows Installation please skip to the *Note
-Microsoft Windows installation::.
+   At this writing (ESS 5.1.x), the indenting and syntactic
+highlighting are usually correct.
 
 
-File: ess.info,  Node: Unix installation,  Next: Microsoft Windows installation,  Up: Top
+File: ess.info,  Node: iESS--Inferior ESS processes,  Next: ESS[SAS]--Batch processes,  Prev: ESS[SAS]--Editing files,  Up: Help for SAS
 
-Unix installation
-=================
+iESS-Inferior ESS processes
+===========================
 
-  1.   cd to a directory where you keep emacs lisp files, or create a
-     new   directory to hold the distribution.  This directory will be
-     referred   to below as "the ESS distribution directory".  It will
-     contain,   at the end, the tar file `ess-5.1.20.tar.gz', and a
-     directory for   the ESS source, which will be termed "the
-     ESS-5.1.20 source directory".
+   iESS (inferior ESS) is the mode for interfacing with active
+statistical processes (programs).
 
-     Note that the .elc files may be installed elsewhere (as specified
-     in the   Makefile) if desired.
+   To start up iESS[SAS] mode, use:    M-x SAS
 
-  2.   Retrieve the gzipped tar file or zipped file from
-     http://software.biostat.washington.edu/statsoft/ess/essDL
+   We plan to add - The ability to request help from a process for
+variables and   functions, and to have the results sent into a separate
+buffer.  - completion of object names and file names.
 
-  3.   Copy `ess-5.1.20.tar.gz' to the location where you want the
-     ESS-5.1.20 directory, and cd there.  Extract the files from the
-     distribution, which will unpack into a subdirectory, ess-5.1.20.
-          	gunzip ess-5.1.20.tar.gz
-          	tar vxf ess-5.1.20.tar
-     	(or: `gunzip < ess-5.1.20.tar.gz | tar vxf -' ).  	(or using GNU
-     tar:  `tar zvxf ess-5.1.20.tar.gz').
+
+File: ess.info,  Node: ESS[SAS]--Batch processes,  Next: ESS[SAS]--Function keys for batch processing,  Prev: iESS--Inferior ESS processes,  Up: Help for SAS
 
-     The `tar' command will extract files into the current directory.
-     Do not create ess-5.1.20 yourself, or you will get an extra level
-     of   depth to your directory structure.
+ESS[SAS]-Batch processes
+========================
 
-     Note if you have a very ancient version of GNU emacs (_and_  really
-      can not upgrade to Emacs 20 or higher!) you can unpack the
-     `lisp/19.29.tar.gz' file, read the ensuing `lisp/19.29/README'
-     and you may succeed...
+   The default command used by the Submmit funciton key (F3 or F8) to
+submit a batch SAS job is simply "sas".  If necessary, you can
+over-ride this in your .emacs file something like one of the following:
+;;; (setq ess-sas-submit-command "nohup nice sas") ;; Unix ;;; (setq
+ess-sas-submit-command "c:/progra~1/sas/sas.exe") ;; Windows ;;; (setq
+ess-sas-submit-command "invoke SAS using program file") ;; Mac Note
+that when you are specifying a path under Windows, you should avoid
+spaces (that is use "progra~1", not "Program Files") and you should use
+forward slashes "/".  There may be occasions when you want to run a
+particular buffer under a different version of SAS or specify different
+options on the command line.  In that case, you can over-ride
+ess-sas-submit-command in your local buffer with file variables or
+other means.
 
-  4.   Edit the file `lisp/ess-site.el' as explained in the comments
-     section of that file.  Installations that are using ESS only for
-     S-Plus   6.x will probably not need to make any changes.
-     Installations that also   have one or more of (S+5 S4 S+4 S+3 R
-     SAS XLispStat Stata)   may need to uncomment corresponding lines
-     in `ess-site.el'.
-
-  5.   READ THIS ITEM THOROUGHLY BEFORE STARTING:
-
-     In the ess-5.1.20 directory, edit the file `Makeconf' (only if you
-      want to place the executables in other locations; see LISPDIR and
-      INFODIR) and then type:
-          	make
-
-     If this works, then you might try:
-          	make install
-       Note that the latter does the former as well, so if you are
-     feeling   lucky, you might want to skip it.
-
-     This will install the info files (and the lisp files, if they are
-     to go   in another directory).  Don't forget to edit the file
-     `dir' in the   info directory specified by `INFODIR' in
-     `doc/Makefile'.  See   the sample `dir' file for an example of the
-     line to add.
-
-     If you are using XEmacs, you might do:
-          	make EMACS=xemacs
-
-     and then
-          	make EMACS=xemacs install
-       instead of editing the Makefile.
-
-     _Note_ that you might need to use GNU make for everything to
-     work properly
-
-     An alternative, if you are running XEmacs and have access to the
-     XEmacs system directories, would be to place the directory in the
-     site-lisp directory, and simply type `make' (and copy the
-     documentation as appropriate).
-
-     For Emacs, you would still have to move the files into the top
-     level   site-lisp directory.
-
-  6.   Add the line
-            (load "/PATH/ess-site")
-       to your .emacs file (or default.el or site-init.el, for a
-     site-wide   installation).  Replace `/PATH' above with the value of
-      ess-lisp-directory as defined in ess-site.el.
-
-     Alternatively, if ess-site.el is in your current Lisp path, you can
-      do:
-          	(require 'ess-site)
-       to configure Emacs for ESS.
-
-  7.   (OPTIONAL) If you are running S-PLUS or R, you might consider
-     installing the database files.  From within (X)Emacs, `C-x d' to
-     the   directory containing ESS.  Now:
-                 M-x S+6
-       (or `M-x S+5': get running.  once you have reached the SPLUS
-     prompt, do:)
-                 M-x ess-create-object-name-db
-       (this will create the file `ess-s+6-namedb.el'; if it isn't in
-     the    ESS directory, move it there).
-
-     Then, completions will be autoloaded and will not be regenerated
-     for   every session.
-
-     For R, do the same, using
-                M-x R
-       and then `M-x ess-create-object-name-db' creating
-     `ess-r-namedb.el'; if it isn't in the ESS directory, move it
-     there).
-
-  8.   For more information on using ESS in your daily work, see the
-     files   README.S, README.SAS, and README.XLispStat.
-
-     For the impatient, the quick version of usage follows:
-
-  9.   To edit statistical programs, load the files with the requiste
-     extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and
-     ".lsp"   for XLispStat).
-
- 10.   To run statistical processes under (X)Emacs:
-
-     Run S-PLUS 6.x with:
-          	M-x S+6
-       (or M-x S  using backwards compatibility).  You will then be
-     asked   for a pathname ("S starting data directory?"), from which
-     to start   the process.  Similarly for S-PLUS 5.x.
-
-     If you wish to run R, you can start it with:
-          	M-x R
-
-     XLispStat can be run with
-          	M-x XLS
-
-     An interactive SAS can be run in an `iESS[SAS]' buffer with:
-          	M-x SAS
-     This works when SAS is running on a Unix machine, either the local
-     machine or over a network connection.  M-x SAS does not work when
-     SAS is running on a Windows machine.
-
- 11.   That's it!
+   There is a built-in delay before a batch SAS job is submitted when
+using a Unix shell under either Unix or Windows.  This is necessary in
+many cases since the shell might not be ready to receive a command.
+This delay is currently set high enough so as not to be a problem on
+any system.  But, there may be cases when it needs to be set higher, or
+could be set much lower to speed things up.  You can over-ride the
+default in your .emacs file by (the default of 5 seconds is shown):
+(setq ess-sleep-for 5)
 

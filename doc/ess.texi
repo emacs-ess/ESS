@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.20 2002/01/20 06:29:19 rmh Exp $
+@comment $Id: ess.texi,v 5.21 2002/04/09 16:38:23 rsparapa Exp $
 
 @synindex pg vr
 
@@ -39,7 +39,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.19 (Documentation $Revision: 5.20 $ $Date: 2002/01/20 06:29:19 $)
+@subtitle version 5.1.19 (Documentation $Revision: 5.21 $ $Date: 2002/04/09 16:38:23 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -84,7 +84,7 @@ permission notice identical to this one.
 
 ESS version 5.1.20
 
-        (Documentation $Revision: 5.20 $ $Date: 2002/01/20 06:29:19 $).
+        (Documentation $Revision: 5.21 $ $Date: 2002/04/09 16:38:23 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
@@ -107,7 +107,7 @@ development.
 * Transcript Mode::             Manipulating saved transcript files
 * Miscellaneous::               Other features of ESS
 * Bugs Etc::
-* Help Statistics::
+* Help for Statistical Packages::
 * Help OS::
 * Installation::                Installing ESS on your system
 * Unix installation::           Installing ESS on your Unix system
@@ -186,14 +186,10 @@ Bugs and Bug Reporting, Mailing Lists
 * Reporting Bugs::
 * Mailing Lists::
 
-Help, arranged by Statistical Package
+Help for Statistical Packages
 
-* Help on Unix Splus ::
-* Help on Microsoft Splus::
-* Help on R::
-* Help on SAS::
-* Help on XLispStat::
-* Help on Stata::
+* Help for the S family::
+* Help for SAS::
 
 Help, arranged by Operating System
 
@@ -2255,7 +2251,7 @@ For R:
 directory, move it there).
 
 
-@node Bugs Etc, Help Statistics, Miscellaneous, Top
+@node Bugs Etc, Help for Statistical Packages, Miscellaneous, Top
 @comment  node-name,  next,  previous,  up@chapter Using S4
 @chapter Bugs and Bug Reporting, Mailing Lists
 
@@ -2283,48 +2279,41 @@ directory, move it there).
 
 @include mailing.texi
 
-@node Help Statistics, Help OS, Bugs Etc, Top
-@comment  node-name,  next,  previous,  up@chapter Using S4
-@chapter Help, arranged by Statistical Package
+@comment  node-name,  next,  previous,  up
+@comment @chapter Using S4
+@node Help for Statistical Packages, Help OS, Bugs Etc, Top
+@chapter Help for Statistical Packages
 
 @menu
-* Help on Unix Splus ::
-* Help on Microsoft Splus::
-* Help on R::
-* Help on SAS::
-* Help on XLispStat::
-* Help on Stata::
+* Help for the S family::
+* Help for SAS::
 @end menu
 
-@node Help on Unix Splus , Help on Microsoft Splus, Help Statistics, Help Statistics
+
 @comment  node-name,  next,  previous,  up
-@section Using S-PLUS 3.x, 5.x
+@node Help for the S family, Help for SAS, Help for Statistical Packages, Help for Statistical Packages 
+@section Help for the S family
+@comment @include help-s.texi
 
-@node Help on Microsoft Splus, Help on R, Help on Unix Splus , Help Statistics
 @comment  node-name,  next,  previous,  up
-@section Using S-PLUS 4.x
+@node Help for SAS, , Help for the S family, Help for Statistical Packages 
+@section Help for SAS
 
-@node Help on R, Help on SAS, Help on Microsoft Splus, Help Statistics
-@comment  node-name,  next,  previous,  up
-@section Using R
-
-@node Help on SAS, Help on XLispStat, Help on R, Help Statistics
-@comment  node-name,  next,  previous,  up
-@section Using SAS
-
-@node Help on XLispStat, Help on Stata, Help on SAS, Help Statistics
-@comment  node-name,  next,  previous,  up
-@section Using XLispStat
-
-@node Help on Stata,  , Help on XLispStat, Help Statistics
-@comment  node-name,  next,  previous,  up
-@section Using Stata
+@menu
+* ESS[SAS]--Design philosophy::
+* ESS[SAS]--Recommended autoexec.sas::
+* ESS[SAS]--Editing files::
+* iESS--Inferior ESS processes::
+* ESS[SAS]--Batch processes::
+* ESS[SAS]--Function keys for batch processing::
+* ESS[SAS]--TAB key::
+* ESS[SAS]--Usage scenarios::
+* ESS[SAS]--Common problems::
+@end menu
+@include help-sas.texi
 
 
-
-
-
-@node Help OS, Installation, Help Statistics, Top
+@node Help OS, Installation, Help for Statistical Packages, Top
 @comment  node-name,  next,  previous,  up
 @chapter Help, arranged by Operating System
 
