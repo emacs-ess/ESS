@@ -10,9 +10,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1998/09/08 17:27:40 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: ess-mode.el,v 5.2 1998/09/08 17:27:40 maechler Exp $
+;; Modified: $Date: 1998/09/08 21:10:16 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: ess-mode.el,v 5.3 1998/09/08 21:10:16 maechler Exp $
 
 
 ;; This file is part of ESS
@@ -933,7 +933,7 @@ Returns nil if line starts inside a string, t if in a comment."
 
 ;;;*;;; Predefined indentation styles
 
-(defun ess-set-style (&optional style)
+(defun ess-set-style (&optional style quiet)
   "Set up the ess-mode style variables from the ess-style variable or if
   STYLE argument is given, use that.  It makes the ESS indentation style
   variables buffer local."
@@ -963,7 +963,8 @@ Returns nil if line starts inside a string, t if in a comment."
 	(setq ess-style style)
       (error (concat "Bad ESS style: " style))
       )
-    (message "ESS-style: %s" ess-style)
+    (if (not quiet)
+	(message "ESS-style: %s" ess-style))
 
     ; finally, set the indentation style variables making each one local
     (mapcar (function (lambda (ess-style-pair)
