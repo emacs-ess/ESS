@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/01 16:16:44 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: ess.el,v 1.17 1997/07/01 16:16:44 rossini Exp $
+;; Modified: $Date: 1997/07/01 16:24:06 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: ess.el,v 1.18 1997/07/01 16:24:06 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.18  1997/07/01 16:24:06  rossini
+;; moved make-local-... to here, with make-variable-...
+;;
 ;; Revision 1.17  1997/07/01 16:16:44  rossini
 ;; local variables defined here, from ess-inf.el
 ;;
@@ -553,7 +556,7 @@ Called after inferior-ess-mode is entered and variables have been initialised.")
 (defvar ess-local-process-name nil
   "The name of the ess process associated with the current buffer.")
 
-
+(make-variable-buffer-local 'ess-local-process-name)
 
 
 ;;*;; Regular expressions
@@ -780,15 +783,23 @@ of Emacs until the code has been successfully evaluated by S.")
 (defvar ess-search-list nil
   "Cache of list of directories and objects to search for ess objects.")
 
+(make-variable-buffer-local 'ess-search-list)
+
 (defvar ess-sl-modtime-alist nil
   "Alist of modtimes for all ess directories accessed this session.")
+
+(make-variable-buffer-local 'ess-sl-modtime-alist)
 
 (defvar ess-sp-change nil
   "This symbol flags a change in the ess search path.")
 
+(make-variable-buffer-local 'ess-sp-change)
+
 (defvar ess-prev-load-dir/file nil
   "This symbol saves the (directory . file) pair used in the last
 ess-load-file command.  Used for determining the default in the next one.")
+
+(make-variable-buffer-local 'ess-prev-load-dir/file)
 
 (defvar ess-object-list nil
   ;; This is a list of the currently known object names.  It is
@@ -796,6 +807,8 @@ ess-load-file command.  Used for determining the default in the next one.")
   ;; assumption that the list of objects doesn't change while entering
   ;; a command.
   "Cache of object names")
+
+(make-variable-buffer-local 'ess-object-list)
 
 ;;*;; Miscellaneous system variables
 
