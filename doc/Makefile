@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.15 $.
+### File: $Revision: 1.16 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -25,7 +25,11 @@ MAKEHTMLs = $(MAKEHTML) -split_chapter -menu -glossary
 MYWWWDIR = /none/at/this/time
 MYFTPDIR = /none/at/this/time
 
-DOCS =	README README.S README.XLispStat README.SAS README.SPLUS4WIN \
+# Those README.* that are made from *.texi  [well, all should....]
+READMEtargets = README.SPLUS4WIN README.Microsoft
+
+DOCS =	$(READMEtargets) \
+	README README.S README.XLispStat README.SAS README.SPLUS4WIN \
 	ess.texi dir ess.info ess.info-1 ess.info-2 ess.info-3 ess.dvi \
 	TODO Why_S-mode_Rocks.DMS \
 	README-19.28 README.additions NEWS \
@@ -39,16 +43,16 @@ DOCDIST = ess.ps ess.pdf \
 
 ### Targets --
 
-all: info html dvi  README.SPLUS4WIN README.Microsoft
+all: info txts html dvi
 
 # Documentation mentions info, not ess.info -- NOT readme.info <<< FIXME >>
 info : ess.info
 dvi :  ess.dvi readme.dvi
+txts: $(READMEtargets)
 
 #
 # If indexes don't index, run:	"texindex ess.??" to obtain the sorted indices.
 #
-
 html:	html/ess_toc.html html/readme_toc.html
 
 ess.ps: ess.dvi; dvips $^ -o $@
@@ -77,14 +81,10 @@ distclean: clean
 realclean: distclean
 	rm -f ess.info*
 
-### Targets below here are only for developers.
+### Targets below here are only for developers. --------------------
 
 
-
-### The following is to replace version #'s.
-
-## commented above ESSVERSION=$(shell cat ../VERSION)
-##	s/ESSVERSION/shell cat $^/
+### Replace Version numbers (as in ../lisp/Makefile !):
 ## Use $(shell ..) only here, so only these are GNU make dependent :
 README.SPLUS4WIN announc.texi inst_*.texi : ../VERSION
 	perl -pi -e 's/$(ESSVER_NR_REGEXP)/$${1}-$(shell cat $^)/go' $@

@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.46 2001/08/17 12:23:32 maechler Exp $
+## $Id: Makefile,v 5.47 2001/08/17 15:49:08 maechler Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -51,13 +51,11 @@ all install clean distclean realclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@ ; cd .. ; done
 
 ESS:
-	cd lisp; make all
+	cd lisp; $(MAKE) all
 
 docs:
-	cd doc; make info
+	cd doc; $(MAKE) info
 
-## This target is used to create a new version of the tar-file.
-## prefix'ing with "-" implies that errors are non-critical.
 
 README : doc/readme.texi $(INTRO.DEPENDS)
 	cd doc ; $(MAKE) readme.texi; $(MAKEINFOascii) readme.texi \
