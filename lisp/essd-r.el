@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2000/07/03 14:38:57 $
-;; Version: $Revision: 5.19 $
-;; RCS: $Id: essd-r.el,v 5.19 2000/07/03 14:38:57 maechler Exp $
+;; Modified: $Date: 2000/08/17 17:09:52 $
+;; Version: $Revision: 5.20 $
+;; RCS: $Id: essd-r.el,v 5.20 2000/08/17 17:09:52 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -130,13 +130,13 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
 	(add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
 	(comint-strip-ctrl-m)           ; Timing problem in bash.
 					; Can't make startup ^M go away.
-	(goto-char (point-max))
-	(beginning-of-line)
-	(insert
-"The interaction of ESS 5.1.x and R 0.63.3 pre-Beta is rough:\n
-To start the graphics window, you must explicitly use the `x11()' command.\n
-You must quit R with `q()' or you take the risk of not being able
-to shut down the computer cleanly.\n\n")
+;;- 	(goto-char (point-max))
+;;- 	(beginning-of-line)
+;;- 	(insert
+;;- "The interaction of ESS 5.1.x and R 0.63.3 pre-Beta is rough:\n
+;;- To start the graphics window, you must explicitly use the `x11()' command.\n
+;;- You must quit R with `q()' or you take the risk of not being able
+;;- to shut down the computer cleanly.\n\n")
 	(goto-char (point-max))))
 );; (R)
 
