@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/25 14:31:04 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: essd-xls.el,v 1.20 1997/08/25 14:31:04 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:43:50 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: essd-xls.el,v 1.21 1997/08/26 22:43:50 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.21  1997/08/26 22:43:50  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.20  1997/08/25 14:31:04  rossini
 ;;: *** empty log message ***
 ;;:
@@ -87,8 +90,8 @@
 
 (defvar XLS-customize-alist
   '((ess-customize-alist           .  XLS-customize-alist )
-    (ess-proc-prefix               .  "XLS"               )
-    (ess-version-running           .  "3.50"              )
+    (ess-language                  .  "XLS"               )
+    (ess-dialect                   .  "XLS"              )
     (ess-loop-timeout              .  10000               )
     (ess-object-name-db-file       .  "ess-xls-namedb.el" )
     (ess-help-sec-regex            .  " ")
@@ -117,8 +120,8 @@
   (interactive)
   (setq ess-customize-alist XLS-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(XLS): ess-proc-prefix=%s , buf=%s\n"
-  	   ess-proc-prefix (current-buffer)))
+   (format "(XLS): ess-dialect=%s , buf=%s\n"
+  	   ess-dialect (current-buffer)))
   (inferior-ess))
 
  ; Provide package

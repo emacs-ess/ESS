@@ -1,13 +1,13 @@
-;;; ess-xls.el --- XLispStat customization
+;;; essd-vst.el --- ViSta customization
 
 ;; Copyright (C) 1997 A. J. Rossini
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/05/21 20:07:29 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essd-vst.el,v 1.5 1997/05/21 20:07:29 rossini Exp $
+;; Created: 26 Aug 1997
+;; Modified: $Date: 1997/08/26 22:42:55 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essd-vst.el,v 1.6 1997/08/26 22:42:55 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -28,106 +28,54 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the Splus 3.x customizations for ess-mode.
+;;; This file extends the XLispStat configuration for ViSta.
 
-;;;
-;;: $Log: essd-vst.el,v $
-;;: Revision 1.5  1997/05/21 20:07:29  rossini
-;;: conversion to ess complete
-;;:
-;;: Revision 1.4  1997/05/21 18:46:48  rossini
-;;: S -> ess.
-;;:
-;;: Revision 1.3  1997/05/20 15:01:37  rossini
-;;: changed S to ess (emacs speaks statistics).
-;;:
-;;: Revision 1.2  1997/05/20 14:44:06  rossini
-;;: stuff.
-;;:
-;;: Revision 1.30  1997/04/23 03:11:45  rossini
-;;: local buffer mess sorted out.
-;;:
-;;: Revision 1.29  1997/04/23 01:04:32  rossini
-;;: "cat" -> inferior-S-pager (in R()).
-;;:
-;;: Revision 1.28  1997/04/23 00:52:31  rossini
-;;: setq-default -> setq
-;;:
-;;: Revision 1.27  1997/04/23 00:28:12  rossini
-;;: most things are set.
-;;:
-;;: Revision 1.26  1997/04/22 02:07:00  rossini
-;;: fixed XLS help.
-;;:
-;;: Revision 1.25  1997/04/22 02:00:12  rossini
-;;: *** empty log message ***
-;;:
-;;: Revision 1.24  1997/04/20 16:31:08  rossini
-;;: change S-trans autoload to point at S-trans.
-;;:
-;;: Revision 1.23  1997/04/18 21:50:03  rossini
-;;: rearranged.
-;;:
-;;: Revision 1.22  1997/04/14 11:48:15  rossini
-;;: added examples for S-lisp-directory.
-;;:
-;;: Revision 1.21  1997/04/14 00:33:23  rossini
-;;: moved (require 'S) to AFTER setting path.  Needed if not in defaults.
-;;:
-;;: Revision 1.20  1997/04/09 02:11:15  rossini
-;;: changed calling vars.
-;;:
-;;: Revision 1.19  1997/04/08 01:06:19  rossini
-;;: removed (req 'font-lock).
-;;:
-;;: Revision 1.18  1997/04/07 18:54:54  rossini
-;;: moved S,R,XLS here.  Edited comments.
-;;:
-;;: Revision 1.17  1997/04/07 12:43:14  rossini
-;;: redid autoloads.
-;;:
-;;: Revision 1.16  1997/04/07 12:04:47  rossini
-;;: added R-mode autoload.  changed docs to suggest a "require" rather
-;;: than "load", if possible.
-;;:
-;;: Revision 1.15  1997/04/07 11:51:42  rossini
-;;: autoload doc strings fixed.
-;;:
-;;: Revision 1.14  1997/04/07 01:20:14  rossini
-;;: added XLS autoload.
-;;:
-;;: Revision 1.13  1997/04/04 17:20:34  rossini
-;;: added R as an autoload.
-;;:
-;;: Revision 1.12  1997/03/10 15:08:14  rossini
-;;: removed all traces of S-xmacs.
-;;: added example of sys-dep S calls.
-;;:
-;;: Revision 1.11  1997/03/10 14:46:20  rossini
-;;: inlining the log file, for others use...
-;;:
-;;;
+
+;;; Autoloads:
+
+(autoload 'inferior-ess "ess-inf" "Run an ESS process")
 
 ;;; Code:
 
-;;*;; Requires
+(defvar VST-customize-alist
+  '((ess-customize-alist           .  VST-customize-alist )
+    (ess-language                  .  "XLS"               )
+    (ess-dialect                   .  "ViSta"             )
+    (ess-loop-timeout              .  10000               )
+    (ess-object-name-db-file       .  "ess-xls-namedb.el" )
+    (ess-help-sec-regex            .  " ")
+    (ess-help-sec-keys-alist       .  " ")
+    (inferior-ess-primary-prompt   .  "> ?"               )
+    (inferior-ess-program          .  inferior-VST-program-name)
+    (inferior-ess-help-command     .  "(help '%s)\n"      )
+    (inferior-ess-objects-command  .  "(variables)\n"     )
+    (inferior-ess-exit-command     .  "(exit)\n"          )
+    (inferior-ess-start-file       . "~/.ess-VST")
+    (inferior-ess-start-args       . nil)
+    )
+  "Variables to customize for XLS")
 
-(require 'ess-site)
 
-
-;;*;; Autoloads. 
-
-
-;;*;; Short cut: ViSta
-
-(defun ViSta () "Run ViSta in ESS."
+(defun VST-mode (&optional proc-name)
+  "Major mode for editing ViSta source.  NOT EVEN STARTED."
   (interactive)
-  (setq ess-proc-prefix "XLS")
+  (setq ess-customize-alist VST-customize-alist)
+  (lisp-mode))
+
+
+(defun ViSta ()
+  "Call 'ViSta', the extend XLispStat statistical system, from Forrest Young."
+
+  (interactive)
+  (setq ess-customize-alist VST-customize-alist)
+  (ess-write-to-dribble-buffer
+   (format "(ViSta): ess-dialect=%s , buf=%s\n"
+  	   ess-dialect (current-buffer)))
   (inferior-ess))
 
  ; Provide package
 
-(provide 'ess-vista)
+(provide 'essd-vst)
 
  ; Local variables section
 
@@ -141,6 +89,7 @@
 
 ;;; Local variables:
 ;;; mode: emacs-lisp
+;;; outline-minor-mode: nil
 ;;; mode: outline-minor
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
