@@ -1793,10 +1793,25 @@ completions are listed [__UNIMPLEMENTED__]."
 						(match-end 2))))
 			     (substring full-prefix (match-beginning 1)
 					(match-end 1)))))
-	     ;; FIXME: also implement slot name completion
+	     ;; are we trying to get a slot via `@' ?
+	     (classname (if (string-match "\\(.+\\)@\\(\\(\\sw\\|\\s_\\)*\\)$"
+					 full-prefix)
+			   (progn
+			     (setq pattern
+				   (if (not (match-beginning 2)) ""
+				     (substring full-prefix
+						(match-beginning 2)
+						(match-end 2))))
+			     (ess-write-to-dribble-buffer 
+			      (format "(ess-C-O-Name : slots..) : patt=%s" 
+				      pattern))
+			     (substring full-prefix (match-beginning 1)
+					(match-end 1)))))
 	     (components (if listname
 			     (ess-object-names listname)
-			   (ess-get-object-list ess-current-process-name))))
+			   (if classname
+			       (ess-slot-names classname)
+			     (ess-get-object-list ess-current-process-name)))))
 	;; always return a non-nil value to prevent history expansions
 	(or (comint-dynamic-simple-complete  pattern components) 'none))))
 
@@ -1966,6 +1981,11 @@ In all cases, the value is an list of object names."
 					; changes needed to allow for
 					; pattern argument to
 					; .SmodeObs
+
+(defun ess-slot-names (obj)
+  "Return alist of S4 slot names of S4 object OBJ."
+  (ess-get-words-from-vector (format "slotNames(%s)\n" obj)))
+
 
 ;;; SJE: Wed 29 Dec 2004 --- remove this function.
 ;;; rmh: Wed 5 Jan 2005 --- bring it back for use on Windows

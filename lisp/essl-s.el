@@ -57,7 +57,8 @@
   ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
   (modify-syntax-entry ?.  "_"	S-syntax-table) ; see above/below,
 					; plus consider separation.
-  (modify-syntax-entry ?$  "_"	S-syntax-table) ; foo.bar$hack is 1 symbol
+  (modify-syntax-entry ?$  "_"	S-syntax-table); foo$comp = 1 symbol(completion)
+  (modify-syntax-entry ?@  "_"	S-syntax-table); foo@slot = 1 symbol(completion)
   (modify-syntax-entry ?_  "."	S-syntax-table)
   (modify-syntax-entry ?*  "."	S-syntax-table)
   (modify-syntax-entry ?<  "."	S-syntax-table)
