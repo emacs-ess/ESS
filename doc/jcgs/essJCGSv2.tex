@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/05 03:23:02 $ - $Revision: 1.100 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/05 04:12:01 $ - $Revision: 1.101 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -271,6 +271,7 @@ of the interaction is immediately editable and searchable while the
 program is still running.
 
 \paragraph{Major and Minor Modes.}
+\label{sec:modes}
 Emacs capabilities are extended by loading text files containing code
 written in Emacs Lisp (elisp) \citep{RChassell1999}, a dialect of Lisp
 \citep{PGraham:1996}.  Emacs commands, which are actually Lisp
@@ -313,7 +314,7 @@ By contrast, minor-modes provide services that are useful, perhaps
 after a minor amount of customization, across a variety of major
 modes.  For example, the minor-mode \stexttt{font-lock-mode} allows
 Emacs to highlight, with fonts or colors, the syntax of a programming
-language whose characteristics are described by a major-mode like ESS.
+language whose characteristics are described by a major-mode like ESS\@.
 \stexttt{overwrite-mode}, usually mapped to the \ssf{Insert} key,
 determines whether typed characters replace the existing text or push
 it to the right.  Minor modes can be used to change the key bindings,
@@ -400,14 +401,20 @@ files and in entire directories.
 a reference to dired?  If so, let's be specific.  And, also note that 
 dired was introduced in Modes.  I think we should either keep the 
 discussions together or make them complementary by a cross-reference
-like (see Modes).  I feel the same way about the two seperate discussions 
+like (see Modes).  
+
+Rich: done
+
+Rodney: I feel the same way about the two separate discussions 
 of shell-mode and file name completion which is brought up again in 
 Process Interaction.
 \end{Comment}
 
-Emacs interfaces to the computer's directory structure to provide a
-file-manager capability, and stores the command-history of editing
-tasks.  Other extensions to Emacs allow it to act as a web browser, a
+Emacs \stexttt{dired} mode (discussed in section \ref{sec:modes})
+interfaces to the computer's directory structure to provide a
+file-manager capability.   Emacs command-history record goes back
+to the beginning of an editing session, allowing an infinite undo capability.
+Other extensions to Emacs allow it to act as a web browser, a
 mail and news reader, and as an interface to other common text-based
 tools such as spell checking programs. % The Emacs keyboard and mouse
 %interface can be re-mapped to resemble that of other text-editors,
@@ -427,6 +434,15 @@ standards.  Figure \ref{f.hilock} shows how to enforce a standard for
  generated are correct (you have hit one of my pet peeves :o).
  I'd like to drop this controversial subject.  It makes us look like
  a bunch of auditors, rather than statisticians.
+
+Rich: This example was designed in response to an explicit request
+from the program chair of the Philadelphia SAS Users Group.  He felt
+that industrial SAS users were looking for this type of capability.
+The impression I got from him was that enforcement of standards was
+something that was wanted but that no one knew how to do.  The fact
+the Emacs can do it was a selling point.  It was very well received
+when I presented it at the meeting.
+
 \end{Comment}
 
 %\begin{figure}
@@ -522,7 +538,7 @@ cleaning, management, and editing.
 \label{sec:ESS:features}
 
 ESS strongly supports the S family (S, \Splus, and R).  \SAS\ and BUGS
-are also well supported.  \Stata\ , \XLispStat\ (including extensions
+are also well supported.  \Stata, \XLispStat\ (including extensions
 ARC and ViSta) are supported with the basic functionality of syntax
 highlighting and process-interfacing.  ESS and its interface are fully
 discussed in the next section.
@@ -541,7 +557,7 @@ Figure \ref{f.font} shows an example of font-locking a
 complicated S statement.  The top panel shows an \stexttt{if}
 statement with a long expression in the condition and a multi-line
 consequence.  The keyword \stexttt{if} is shown in purple,
-the string \stexttt{"deltat"} in rosy-purple.  The
+the string \stexttt{"deltat"} in RosyBrown.  The
 comments are in red.  Everything else is in the standard
 font.  The consequence is indented and the continuations of the
 consequence are further indented.  The matching parentheses are shown
@@ -569,7 +585,7 @@ and reverse-video, rather than colors, to distinguish the fonts.
 The font selection and the indentation depth are automatically
 supplied by Emacs as the lines are typed.  The user has several
 options for mapping of colors or fonts to each of the syntactic types.
-We selected a 
+We selected
 %black-and-white font-mapping for display here.  On a terminal we might use 
 purple for the keywords, red for comments, green
 for matching parens, and inverse-video purple for mismatched parens.
