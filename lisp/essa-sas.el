@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/09 21:04:44 $
-;; Version: $Revision: 1.61 $
-;; RCS: $Id: essa-sas.el,v 1.61 2002/01/09 21:04:44 rsparapa Exp $
+;; Modified: $Date: 2002/01/10 02:37:42 $
+;; Version: $Revision: 1.62 $
+;; RCS: $Id: essa-sas.el,v 1.62 2002/01/10 02:37:42 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -78,7 +78,7 @@ and, on Windows machines, the function `w32-shell-dos-semantics'.
 'Apple-Macintosh  AppleScript
 'windows-nt       if *shell* follows MS-DOS semantics
 'iESS             inferior ESS, may be local or remote
-'sh and other     if *shell* runs sh, ksh, csh, tcsh or bash
+'sh               if *shell* runs sh, ksh, csh, tcsh or bash
 
 Windows users running an MS-DOS shell will get 'windows-nt by default.
 
@@ -298,7 +298,22 @@ on the way."
 
 (defun ess-kermit-get ()
   "Get a file with Kermit."
-)
+    (interactive)
+
+     (save-match-data 
+	(if (and (not (string-match "[[]" ess-sas-file-path))
+	  (string-match "]" ess-sas-file-path))
+
+	  (let ((ess-sas-temp-file (substring ess-sas-file-path (match-end 0))))
+	     (shell)
+	     (insert ess-kermit-command " -s " ess-sas-temp-file)
+             (comint-send-input)	
+             (insert "\C-\\" "c")
+	     (comint-send-input)
+	     (ess-sleep)
+	     (insert "receive ]" ess-sas-temp-file)                
+	     (comint-send-input)
+))))
 
 (defun ess-kermit-send ()
   "Send a file with Kermit."
@@ -309,10 +324,15 @@ on the way."
 	  (string-match "]" ess-sas-file-path))
 
 	  (let ((ess-sas-temp-file (substring ess-sas-file-path (match-end 0))))
-	    (save-excursion (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
-		(insert ess-kermit-command " -s ]" ess-sas-temp-file " -a " ess-sas-temp-file)
-		(comint-send-input)))))
-)
+	     (shell)
+	     (insert ess-kermit-command " -r")
+             (comint-send-input)	
+             (insert "\C-\\" "c")
+	     (comint-send-input)
+	     (ess-sleep)
+	     (insert "send ]" ess-sas-temp-file " " ess-sas-temp-file)                
+	     (comint-send-input)
+))))
 
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with a SAS file by suffix and revert if necessary."
@@ -507,9 +527,7 @@ i.e. let `ess-sas-arg' be your local equivalent of
 	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 
 	" " ess-sas-submit-post-command)
     (comint-send-input)
-    (if (featurep 'xemacs) (sleep-for ess-sleep-for)
-       (sleep-for 0 (truncate (* ess-sleep-for 1000)))
-    )
+    (ess-sleep)
     (comint-send-input))
 
 (defun ess-sas-submit-windows (ess-sas-arg)
@@ -566,6 +584,13 @@ Keep in mind that the maximum command line length in MS-DOS is
   (ess-sas-goto "log")
 )
 
+(defun ess-sleep ()
+"Put emacs to sleep for `ess-sleep-for' seconds.
+Sometimes its necessary to wait for a shell prompt."
+(if (featurep 'xemacs) (sleep-for ess-sleep-for)
+       (sleep-for 0 (truncate (* ess-sleep-for 1000)))
+    )
+)
 
 ;;; Section 3:  Key Definitions
 
