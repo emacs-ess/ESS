@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/28 13:55:42 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: ess-vars.el,v 1.6 1997/07/28 13:55:42 rossini Exp $
+;; Modified: $Date: 1997/07/29 11:13:11 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: ess-vars.el,v 1.7 1997/07/29 11:13:11 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,6 +29,10 @@
 
 ;;
 ;; $Log: ess-vars.el,v $
+;; Revision 1.7  1997/07/29 11:13:11  rossini
+;; added transcript-mode font-lock stuff.  Moved all font-lock stuff to
+;; same place.
+;;
 ;; Revision 1.6  1997/07/28 13:55:42  rossini
 ;; added defvars for dialects.
 ;;
@@ -56,11 +60,12 @@
 
  ; User changeable variables
 
-;;; User changeable variables
+;;; Common user changeable variable are described and documented in
+;;; ess-site.el.  Please check there first!
 ;;;=====================================================
-;;; Users note: Variables with document strings starting
-;;; with a * are the ones you can generally change safely, and
-;;; may have to upon occasion.
+;;; In general: Variables with document strings starting with a * are
+;;; the ones you can generally change safely, and may have to upon
+;;; occasion.
 
 ;;*;; Options and Initialization
 
@@ -91,7 +96,6 @@ run from.")
 (make-variable-buffer-local 'ess-directory)
 (setq-default ess-directory nil)
 
-;; MM, 13Mar97.  This should be set buffer-local!
 (defvar ess-history-file (concat "." ess-proc-prefix "history")
   "*File to pick up history from. 
 If this is a relative file name, it is relative to ess-directory.")
@@ -384,15 +388,6 @@ by ess-function-template.")
 (defvar ess-error-buffer-name "*ESS-errors*"
   "Name of buffer to keep error messages in.")
 
-;;*;; Font-lock support
-(defvar ess-mode-font-lock-keywords
- '(("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function" 1 font-lock-function-name-face t)
-   ("<<?-\\|_" . font-lock-reference-face)
-   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" . font-lock-type-face)
-   ("\\<\\(library\\|attach\\|detach\\|source\\)\\>" . font-lock-reference-face)
-   "\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>")
- "Font-lock patterns used in ess-mode bufffers.")
-
 
  ; ess-inf: variables for inferior-ess.
 
@@ -622,7 +617,18 @@ important for R or XLispStat.")
 (make-variable-buffer-local 'ess-loop-timeout)
 (setq-default ess-loop-timeout 100000)
 
-;;*;; Font-lock patterns
+;;;*;;; Font-lock support
+
+;;; for programming, transcript, and inferior process modes.
+
+(defvar ess-mode-font-lock-keywords
+ '(("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function" 1 font-lock-function-name-face t)
+   ("<<?-\\|_" . font-lock-reference-face)
+   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" . font-lock-type-face)
+   ("\\<\\(library\\|attach\\|detach\\|source\\)\\>" . font-lock-reference-face)
+   "\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>")
+ "Font-lock patterns used in ess-mode bufffers.")
+
 
 (defvar inferior-ess-font-lock-keywords
  '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)	; prompt
@@ -636,6 +642,17 @@ important for R or XLispStat.")
    )
  "Font-lock patterns used in inferior-ess-mode buffers.")
 
+
+(defvar ess-trans-font-lock-keywords
+ '(("^[>+]" . font-lock-keyword-face)	; prompt
+   ("^[>+]\\(.*$\\)" (1 font-lock-variable-name-face keep t)) ; input
+   ("<-\\|_" . font-lock-reference-face)		; assign
+   ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
+   ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
+   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" 
+    . font-lock-type-face) ; keywords
+   )
+ "Font-lock patterns used in ess-transcript-mode buffers.")
 
 ;;;*;;; ess-help variables
 
