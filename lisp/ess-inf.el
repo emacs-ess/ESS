@@ -5,12 +5,16 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainers: Hornik, Maechler, Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/15 08:50:14 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: ess-inf.el,v 1.6 1997/06/15 08:50:14 rossini Exp $
+;; Modified: $Date: 1997/06/18 15:06:11 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: ess-inf.el,v 1.7 1997/06/18 15:06:11 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.7  1997/06/18 15:06:11  rossini
+;;  force-buffer-current:
+;;     Finally made (prefix) argument  FORCE really do something
+;;
 ;; Revision 1.6  1997/06/15 08:50:14  rossini
 ;; S data dir -> ESS data dir
 ;;
@@ -554,7 +558,7 @@ Returns the name of the process, or nil if the current buffer has none."
 Also switches to the process buffer, if second arg NOSWITCH (prefix) is non-nil.
 Returns the name of the selected process."
   (interactive
-   (list "Switch to which S process? " prefix-arg)) ;prefix sets 'noswitch
+   (list "Switch to which S process? " current-prefix-arg)) ;prefix sets 'noswitch
   (update-ess-process-name-list)
   (if (eq (length ess-process-name-list) 0)
       (error "No S processes running."))
@@ -577,14 +581,16 @@ Returns the name of the selected process."
 
 
 (defun ess-force-buffer-current (prompt &optional force)
-  "Make sure the current buffer is attached to an S process. If not,
-prompt for a process name with PROMPT. ess-local-process-name is set to
-the name of the process selected."
+  "Make sure the current buffer is attached to an S process. 
+If not, or  FORCE (prefix argument) is non-nil,
+prompt for a process name with PROMPT.
+ess-local-process-name is set to the name of the process selected."
   (interactive 
-   (list (concat ess-proc-prefix " process to use: ") prefix-arg))
-  (if (ess-make-buffer-current) nil
+   (list (concat ess-proc-prefix " process to use: ") current-prefix-arg))
+  (if (and (not force) (ess-make-buffer-current))
+      nil ; do nothing
     ;; Make sure the source buffer is attached to a process
-    (if ess-local-process-name
+    (if (and ess-local-process-name (not force))
 	(error "Process %s has died." ess-local-process-name)
       ;; ess-local-process-name is nil -- which process to attach to
       (save-excursion
@@ -805,14 +811,14 @@ Waits for prompt after each line of input, so won't break on large texts."
 ;; 31 Aug 1995 14:11:43		To: ess-mode@stat.math.ethz.ch
 (defun ess-eval-paragraph (vis-toggle)
   "Send the current paragraph to the inferior S process.
-Prefix arg. VIess-TOGGLE  toggle visibility of ess-code  as for ess-eval-region."
+Prefix arg. VIS-TOGGLE  toggle visibility of ess-code  as for ess-eval-region."
   (interactive "P")
   (save-excursion
     (forward-paragraph)
     (let ((end (point)))
       (backward-paragraph)
       (ess-eval-region (point) end
-		     vis-toggle "Eval paragraph"))))
+		       vis-toggle "Eval paragraph"))))
 
 
 
