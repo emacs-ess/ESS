@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.62 2002/07/26 19:26:25 rsparapa Exp $
+## $Id: Makefile,v 5.63 2002/07/26 19:44:38 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -11,7 +11,7 @@ include ./Makeconf
 ## If you don't have GNU make, use the command line; for example:
 ## make tag ESSVERSION=5.2.0 ESSVERSIONTAG=ESS-5-2-0
 ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
-ESSVERSIONDIR=ess-$(ESSVERSION)
+ESSDIR=ess-$(ESSVERSION)
 
 ## Updating ChangeLog via CVS with emacs requires the vc package!
 ## If this setting doesn't suit you, you can use the command line:
@@ -26,7 +26,7 @@ Subdirs = lisp doc
 default:
 	cd lisp; $(MAKE) all
 
-all install clean distclean realclean:
+all install clean distclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd ..; done
 
 dist:   
@@ -37,28 +37,28 @@ dist:
 	cvs commit -m "Updating info for new version" info
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
-	@echo "** from $(ESSVERSIONDIR)"
+	@echo "** from $(ESSDIR)"
 	@echo "** (must set CVSROOT, etc, prior to checkout for security)"
 	@echo "**********************************************************"
 	@echo "** Exporting Files **"
 	cvs export -D today ess 
 	@echo "** Correct Write Permissions and RM Papers **"
-	mv ess $(ESSVERSIONDIR)
-	chmod a-w $(ESSVERSIONDIR)/lisp/*.el
-	chmod a-w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
-	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Make*
-	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
-	for D in jcgs techrep dsc2001-rmh; do DD=$(ESSVERSIONDIR)/doc/$$D; \
+	mv ess $(ESSDIR)
+	chmod a-w $(ESSDIR)/lisp/*.el
+	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
+	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
+	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
+	for D in jcgs techrep dsc2001-rmh; do DD=$(ESSDIR)/doc/$$D; \
 	  chmod -R u+w $$DD ; rm -rf $$DD ; done
-	test -f $(ESSVERSIONDIR).tar.gz && rm -rf $(ESSVERSIONDIR).tar.gz || true
+	test -f $(ESSDIR).tar.gz && rm -rf $(ESSDIR).tar.gz || true
 	@echo "** Creating tar file **"
-	tar hcvof $(ESSVERSIONDIR).tar $(ESSVERSIONDIR)
-	gzip $(ESSVERSIONDIR).tar
-	test -f $(ESSVERSIONDIR).zip && rm -rf $(ESSVERSIONDIR).zip || true
+	tar hcvof $(ESSDIR).tar $(ESSDIR)
+	gzip $(ESSDIR).tar
+	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	@echo "** Creating zip file **"
-	zip -r $(ESSVERSIONDIR).zip $(ESSVERSIONDIR)
+	zip -r $(ESSDIR).zip $(ESSDIR)
 	@echo "** Cleaning up **"
-	chmod -R u+w $(ESSVERSIONDIR); rm -rf $(ESSVERSIONDIR)
+	chmod -R u+w $(ESSDIR); rm -rf $(ESSDIR)
 
 ChangeLog:
 	$(EMACSLOGCVS)
@@ -72,8 +72,8 @@ ChangeLog:
 
 rel: ChangeLog dist
 	@echo "** Placing tar and zip files **"
-	scp $(ESSVERSIONDIR).tar.gz software.biostat.washington.edu:/home/ess/downloads
-	scp $(ESSVERSIONDIR).zip    software.biostat.washington.edu:/home/ess/downloads
+	scp $(ESSDIR).tar.gz software.biostat.washington.edu:/home/ess/downloads
+	scp $(ESSDIR).zip    software.biostat.washington.edu:/home/ess/downloads
 
 tag: 
 	@echo "** Tagging the release **"
