@@ -91,16 +91,16 @@ statements written in these statistical analysis languages.
 * Introduction::                Overview of features provided by this package
 * Installation::                Installing ESS on your system
 * Interactive ESS::             Interacting with statistical programs
-* Help for the S family::
-* Help for SAS::
-* Help for BUGS::
+* ESS for the S family::
+* ESS for SAS::
+* ESS for BUGS::
 * Entering commands::           Interacting with the process buffer
-* Editing::                     How to create or edit S objects or functions
-* Help::                        Reading help files in ESS
+* Editing::                     How to create/edit objects and functions
+* Help::                        Reading help files
 * Transcript Mode::             Manipulating saved transcript files
 * Editing R documentation files::
 * Miscellaneous::               Other features of ESS
-* Bugs Etc::
+* Mailing lists/bug reports::   How to get assistance with ESS
 * Customization::               Customizing ESS
 * Key Index::
 * Concept Index::
@@ -477,7 +477,7 @@ on your system.
 
 
 @comment  node-name,  next,  previous,  up
-@node Interactive ESS, Help for the S family, Installation, Top
+@node Interactive ESS, ESS for the S family, Installation, Top
 @chapter Interacting with statistical programs
 
 As well as using ESS to edit your source files for statistical programs,
@@ -739,8 +739,8 @@ current frame.  If you wish your S process to appear in a separate
 variable, customize the variable @code{inferior-ess-own-frame}.
 
 @comment  node-name,  next,  previous,  up
-@node Help for the S family, Help for SAS, Interactive ESS, Top
-@chapter Help for the S family
+@node ESS for the S family, ESS for SAS, Interactive ESS, Top
+@chapter ESS for the S family
 @menu
 * ESS(S)--Editing files::
 * iESS(S)--Inferior ESS processes::
@@ -752,8 +752,8 @@ variable, customize the variable @code{inferior-ess-own-frame}.
 @include help-s.texi
 
 @comment  node-name,  next,  previous,  up
-@node Help for SAS, Help for BUGS, Help for the S family, Top
-@chapter Help for SAS
+@node ESS for SAS, ESS for BUGS, ESS for the S family, Top
+@chapter ESS for SAS
 
 @menu
 * ESS(SAS)--Design philosophy::
@@ -769,8 +769,8 @@ variable, customize the variable @code{inferior-ess-own-frame}.
 @include help-sas.texi
 
 @comment  node-name,  next,  previous,  up
-@node Help for BUGS, Entering commands, Help for SAS, Top
-@chapter Help for BUGS
+@node ESS for BUGS, Entering commands, ESS for SAS, Top
+@chapter ESS for BUGS
 
 @menu
 * ESS(BUGS)--Model files::
@@ -780,7 +780,7 @@ variable, customize the variable @code{inferior-ess-own-frame}.
 @include help-bugs.texi
 
 @comment  node-name,  next,  previous,  up
-@node Entering commands, Editing, Help for BUGS, Top
+@node Entering commands, Editing, ESS for BUGS, Top
 @chapter Interacting with the ESS process
 @cindex entering commands
 @cindex commands
@@ -2495,7 +2495,7 @@ add the following lines to one of your Emacs startup files:
 @end example
 
 @comment  node-name,  next,  previous,  up
-@node Miscellaneous, Bugs Etc, Editing R documentation files, Top
+@node Miscellaneous, Mailing lists/bug reports, Editing R documentation files, Top
 @chapter Other features of ESS
 
 ESS has a few miscellaneous features, which didn't fit anywhere else.
@@ -2635,7 +2635,7 @@ to change the toolbar.
 
 
 @comment  node-name,  next,  previous,  up@chapter Using S4
-@node Bugs Etc, Customization, Miscellaneous, Top
+@node Mailing lists/bug reports, Customization, Miscellaneous, Top
 @chapter Bugs and Bug Reporting, Mailing Lists
 
 @menu
@@ -2644,20 +2644,20 @@ to change the toolbar.
 * Mailing Lists::
 @end menu
 
-@node Bugs, Reporting Bugs, Bugs Etc, Bugs Etc
+@node Bugs, Reporting Bugs, Mailing lists/bug reports, Mailing lists/bug reports
 @section Bugs
 @cindex bugs
 @include bugs.texi
 
 @comment  node-name,  next,  previous,  up
-@node Reporting Bugs, Mailing Lists, Bugs, Bugs Etc
+@node Reporting Bugs, Mailing Lists, Bugs, Mailing lists/bug reports
 @section Reporting Bugs
 @cindex Bug reports
 @pindex ess-submit-bug-report
 @include bugrept.texi
 
 @comment  node-name,  next,  previous,  up
-@node Mailing Lists,  , Reporting Bugs, Bugs Etc
+@node Mailing Lists,  , Reporting Bugs, Mailing lists/bug reports
 @section Mailing Lists
 
 @include mailing.texi
@@ -2675,7 +2675,7 @@ to change the toolbar.
 
 
 @comment  node-name,  next,  previous,  up
-@node Customization, Key Index, Bugs Etc, Top
+@node Customization, Key Index, Mailing lists/bug reports, Top
 @appendix Customizing ESS
 @cindex customization
 
