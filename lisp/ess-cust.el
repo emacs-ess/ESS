@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/04/01 18:47:33 $
-;; Version: $Revision: 1.58 $
-;; RCS: $Id: ess-cust.el,v 1.58 2004/04/01 18:47:33 rossini Exp $
+;; Modified: $Date: 2004/04/15 10:51:43 $
+;; Version: $Revision: 1.59 $
+;; RCS: $Id: ess-cust.el,v 1.59 2004/04/15 10:51:43 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -851,21 +851,21 @@ order for it to work right.  And Emacs is too smart for it."
     (if (equal system-type 'Apple-Macintosh) nil
       (if (featurep 'xemacs) "gnuclient -q" "emacsclient"))) ;; unix
   "*Editor called by R process with 'edit()' command."
-:group 'ess
-:type 'string)
+  :group 'ess
+  :type 'string)
 
-(defcustom R-pager 'nil ; Usually nil is correct as ESS and page() cooperate.
+(defcustom R-pager 'nil	; Usually nil is correct as ESS and page() cooperate.
   "*Pager called by R process with 'page()' command."
-:group 'ess
-:type 'string)
+  :group 'ess
+  :type '(choice (const nil) string))
 
 (defcustom S-editor
   (if ess-microsoft-p "gnuclient.exe"
     (if (equal system-type 'Apple-Macintosh) nil
       (if (featurep 'xemacs) "gnuclient -q" "emacsclient"))) ;; unix
   "*Editor called by S process with 'edit()' command."
-:group 'ess
-:type 'string)
+  :group 'ess
+  :type 'string)
 
 (defcustom S-pager
   (if ess-microsoft-p "gnuclientw.exe"
@@ -888,7 +888,7 @@ for editing and then to be returned to the process."
 (defcustom ess-pager nil
   "*Pager by which the process sends information to an emacs buffer."
   :group 'ess-proc
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (defcustom inferior-ess-language-start nil
   "*Initialization commands sent to the ESS process."
@@ -918,7 +918,9 @@ for editing and then to be returned to the process."
 (make-variable-buffer-local 'inferior-ess-client-name)
 
 (defcustom inferior-ess-client-command nil
-  "*ddeclient command sent to the ESS program.")
+  "*ddeclient command sent to the ESS program."
+  :group 'ess-proc
+  :type '(choice (const nil) string))
 
 (make-variable-buffer-local 'inferior-ess-client-command)
 

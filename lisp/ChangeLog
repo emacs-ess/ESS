@@ -1,3 +1,9 @@
+2004-04-15  Stephen Eglen  <stephen@bushmills.inf.ed.ac.uk>
+
+	* ess-cust.el (inferior-ess-client-command): Set :group and :type.
+	(R-editor, S-editor): reformat.
+	(R-pager, ess-pager): reformat and allow type to be nil or string.
+
 2004-03-31  A.J. Rossini  <rossini@u.washington.edu>
 
 	* ess-site.el: added a more explicit commented out Windows
