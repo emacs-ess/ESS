@@ -1,5 +1,5 @@
 #!/bin/sh
-# ESS[BUGS]:  01/29/2003
+# ESS[BUGS]:  02/13/2003
 # runs BUGS taking commands from command file
 #
 
@@ -7,17 +7,14 @@ case $# in
      1) bugs603.sparc 32 bugs $1
 	cp -fp bugs.log bugs.bog
 	chmod -w bugs.bog
-	rm bugs.buf
 	;;
      2) bugs603.sparc 32 $1 $2
 	cp -fp $1.log $1.bog
 	chmod -w $1.bog
-	rm $1.buf
 	;;
      3) bugs603.sparc $1 $2 $3
 	cp -fp $2.log $2.bog
 	chmod -w $2.bog
-	rm $2.buf
 	;;
      *) echo "usage: $0 [[number_of_bins] default_output_name] command_file";;
 esac
