@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/03 13:27:57 $
-;; Version: $Revision: 1.22 $
-;; RCS: $Id: ess.el,v 1.22 1997/07/03 13:27:57 rossini Exp $
+;; Modified: $Date: 1997/07/03 13:33:15 $
+;; Version: $Revision: 1.23 $
+;; RCS: $Id: ess.el,v 1.23 1997/07/03 13:33:15 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.23  1997/07/03 13:33:15  rossini
+;; redid doc string.
+;;
 ;; Revision 1.22  1997/07/03 13:27:57  rossini
 ;; made ess-customize-alist buffer-local
 ;;
@@ -1020,7 +1023,7 @@ browse-url to find the location")
  ; Buffer local customization stuff
 
 (defvar ess-customize-alist nil
-  "Variable settings to use for doing the proper  thing.")
+  "Variable settings to use for proper behavior.")
 
 (make-variable-buffer-local 'ess-customize-alist)
 (setq-default ess-customize-alist nil)
