@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/09/05 15:43:58 $
-;; Version: $Revision: 1.118 $
-;; RCS: $Id: essa-sas.el,v 1.118 2002/09/05 15:43:58 rsparapa Exp $
+;; Modified: $Date: 2002/09/06 20:01:40 $
+;; Version: $Revision: 1.119 $
+;; RCS: $Id: essa-sas.el,v 1.119 2002/09/06 20:01:40 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -472,9 +472,14 @@ on the way."
     "\\|NOTE: Variable .* is uninitialized."
     "\\|WARNING: Apparent symbolic reference .* not resolved."
     "\\|NOTE 485-185: Informat .* was not found or could not be loaded."
-    "\\|Bus Error In Task\\|Segmentation Violation In Task")))
+    "\\|Bus Error In Task\\|Segmentation Violation In Task"))
+	(ess-sas-save-point nil))
 
-  (if (ess-sas-goto "log" 'revert) (goto-char (point-min)))
+  (if (ess-sas-goto "log" 'revert) (progn
+	(setq ess-sas-save-point (point))
+	(goto-char (point-min)))
+    (setq ess-sas-save-point (point))
+  )
 
   (if (not (search-forward-regexp ess-sas-error nil t)) 
         (if (search-backward-regexp ess-sas-error nil t) 
@@ -482,6 +487,7 @@ on the way."
                 (goto-char (point-min))
                 (search-forward-regexp ess-sas-error nil t)
             )
+	    (goto-char ess-sas-save-point)
         )
     ))
 )
