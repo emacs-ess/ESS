@@ -1,14 +1,14 @@
 ;;; essl-s.el --- Support for editing S source code
 
-;; Copyright (C) 1989-2000 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
+;; Copyright (C) 1989-2001 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
 ;; R.M. Heiberger, M. Maechler, and A.J. Rossini.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2001/02/17 13:02:41 $
-;; Version: $Revision: 5.24 $
-;; RCS: $Id: essl-s.el,v 5.24 2001/02/17 13:02:41 rossini Exp $
+;; Modified: $Date: 2001/02/28 12:59:04 $
+;; Version: $Revision: 5.25 $
+;; RCS: $Id: essl-s.el,v 5.25 2001/02/28 12:59:04 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -432,35 +432,40 @@ Uses the file given by the variable `ess-function-outline-file'."
 (defun ess-fix-miscellaneous (&optional from verbose)
   "Fix Miscellaneous S/R `ill-formation's from current \\[point].
  Particularly use \"<-\"and put spaces around operators."
-  (interactive "d\nP"); point and prefix (C-u)
+  (interactive "d\nP"); Defaults: point and prefix (C-u)
   (save-excursion
 
-    (and (string= ess-dialect "R")
+    (if (string= ess-dialect "R")
+	(progn
 	 (require 'essd-r)
-	 (R-fix-T-F from (not verbose)))
+	 (R-fix-T-F from (not verbose))))
 
     (goto-char from) (ess-rep-regexp " *_ *" " <- " nil 'literal verbose)
 
-    ;; -- ensure space around  "<-"  ---- but only replace if necessary:
-    (goto-char from)(ess-rep-regexp "\\([^ \t\n]\\)<-" "\\1 <-" nil nil verbose)
+    ;; ensure space around  "<-"  ---- but only replace if necessary:
+    (goto-char from)
+    (ess-rep-regexp "\\([^< \t\n]\\)\\(<<?-\\)" "\\1 \\2" nil nil verbose)
     (goto-char from)(ess-rep-regexp "<-\\([^ \t\n]\\)" "<- \\1" nil nil verbose)
-    ;; -- ensure space around  "<" (but not "<-" / "<=")  and ">" (not ">=") :
+    ;; ensure space around  "<" (not in "<-","<=","<<-")  and ">" (not ">=") :
     (goto-char from);; --> " <", care with "->":
-    (ess-rep-regexp "\\([^- \t\n]\\)\\([<>]\\)" "\\1 \\2" nil nil verbose)
-    ;; ">" -> "> " , for "<", don't split "<-":
+    (ess-rep-regexp "\\([^-< \t\n]\\)\\([<>]\\)" "\\1 \\2" nil nil verbose)
+    ;; ">" -> "> " , for "<", don't split "<-" nor "<<-":
     (goto-char from)
     (ess-rep-regexp "\\(>=?\\)\\([^= \t\n]\\)" "\\1 \\2" nil nil verbose)
     (goto-char from)
-    (ess-rep-regexp "\\(<=?\\)\\([^-= \t\n]\\)" "\\1 \\2" nil nil t);; !
+    (ess-rep-regexp "\\(<=?\\)\\([^-<= \t\n]\\)" "\\1 \\2" nil nil t)
+
     ;; -- ensure space around "=", "==", "!=" :
     (goto-char from) ;; --> " ="
     (ess-rep-regexp "\\([^=!<> ]\\)\\([=!]?\\)=" "\\1 \\2=" nil nil verbose)
     (goto-char from) (ess-rep-regexp "=\\([^= ]\\)" "= \\1" nil nil verbose)
 
-    (goto-char from) ;; add a space between "{" and a subsequent wordchar:
-    (ess-rep-regexp "\\([()]\\){\\([A-Za-z()]\\)" "{ \\1" 'fix nil verbose)
+    (goto-char from) ;; add a space between "{" and surrounding ..char:
+    (ess-rep-regexp "{\\([.A-Za-z()]\\)" "{ \\1" 'fix nil verbose)
+    (ess-rep-regexp "\\([()]\\){" "\\1 {" 'fix nil verbose)
     (goto-char from) ;; add a space between "}" and a preceding wordchar:
     (ess-rep-regexp "\\([A-Za-z0-9()]\\)}" "\\1 }" 'fix nil verbose)
+    (ess-space-around "else" from verbose)
 
     ;; add a newline and indent before a "}"
     ;; --- IFF there's NO "{" or "#" AND some NON-white text on the same line:

@@ -1,13 +1,19 @@
-2000-11-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+2001-02-28  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-utils.el (ess-space-around): new utility
+
+	* essd-r.el (R-fix-T-F): also fix after "_"
 
 	* essl-s.el (ess-fix-miscellaneous): Fix bug which broke "<=" & ">="
-
+	  Further fix bug which broke "<<-" (and "->").
+	  separate e.g., "){" ; space around "else".
+	  
 2000-10-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (ess-smart-underscore): remove extra spaces when
 	ess-S-assign is used.
 
-Wed Oct 11 15:16:21 2000  Martin Maechler  <maechler@stat.math.ethz.ch>
+2000-10-11  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (ess-smart-underscore): new function, assigned to "_" key.
 

@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2001/01/22 02:32:23 $
-;; Version: $Revision: 5.25 $
-;; RCS: $Id: essd-r.el,v 5.25 2001/01/22 02:32:23 ess Exp $
+;; Modified: $Date: 2001/02/28 12:59:04 $
+;; Version: $Revision: 5.26 $
+;; RCS: $Id: essd-r.el,v 5.26 2001/02/28 12:59:04 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -128,10 +128,10 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
   (interactive "d\nP"); point and prefix (C-u)
   (save-excursion
     (goto-char from)
-    (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)T\\>" "\\1TRUE"
+    (ess-rep-regexp "\\(\\([][=,()]\\|<-\\|_\\) *\\)T\\>" "\\1TRUE"
 		    'fixcase nil (not quietly))
     (goto-char from)
-    (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)F\\>" "\\1FALSE"
+    (ess-rep-regexp "\\(\\([][=,()]\\|<-\\|_\\\) *\\)F\\>" "\\1FALSE"
 		    'fixcase nil (not quietly))))
 
 
