@@ -132,39 +132,39 @@
 
 The common tasks faced by a statistician are not much different than
 those faced by software developers, since a great deal of statistical
-activity involves computation.  Research, data analysis, and
-communication usually require some form of computer usage.  The user
+activity involves computing.  Research activities, such as data analysis and
+communication, can be enhanced by computer usage.  The user
 interface, which acts as a buffer between the statistician and the
-computer can help and hinder work.  This paper describes ESS, which
+computer, can help or hinder.  This is an introduction to ESS which
 provides a customizable interface to a number of common statistics
-packages through the Emacs editor.  This interface facilitates a
-common set of tasks for data analysis, code management, and
-programming.
-
-The tasks involved in data analysis are the same, or can be considered
-to be very similar, to those tasks found in computer programming.
-While some are obviously programming, some tasks, such as interactive
-data analysis, are similar to visual programming.  
-
-ESS provides a well designed and documented programming editor,
-an interface to statistical processes, and provides, through Emacs,
+packages through the Emacs editor.  This interface 
+facilitates common interactions found in data analysis with computers, 
+such as programming and communication.
+% The tasks involved in data analysis 
+%with computers are similar to those found in software development. 
+%While some are obviously programming, some tasks, such as interactive
+%data analysis, are similar to visual programming.  
+ 
+%a well designed and documented programming editor,
+ESS provides an interface to statistical packages, and provides, through Emacs,
 additional tools which aid both statistical software development and
-data analysis.  It works with common statistical software, including
+data analysis.  Currently supported statistical packages are the following:
 the S languages (which include S \citep{BecRCW88,ChaJH92,ChaJ98},
-\Splus{} \citep{Splus}, and R \citep{ihak:gent:1996}); \XLispStat\ 
-\citep{Tier90} and its extensions Arc \citep{Cook:Weisberg:1999} and
-ViSta \citep{youn:fald:mcfa:1992}; \SAS \citep{SAS:8.0}; \Stata\ 
+\Splus{} \citep{Splus}, and R \citep{ihak:gent:1996}); \SAS \citep{SAS:8.0}; 
+\XLispStat\ \citep{Tier90} and its extensions Arc \citep{Cook:Weisberg:1999} and
+ViSta \citep{youn:fald:mcfa:1992}; \Stata\ 
 \citep{Stata:6.0}; Omegahat \citep{DTLang:2000}; and BUGS
 \citep{SpieThomBest:1999}.  ESS can be extended to accommodate most
-statistical packages which can be controlled from a command-line.
+statistical packages which provide either an interactive command-line or 
+batch file processing.
 
 The present paper provides historical and non-technical information on
 Emacs and ESS.  A general introduction and usage instructions can be
-found in \cite{heiberger:dsc:2001}.  Details on the programmer API for
-ESS as well as examples of its use are included in package
-documentation that comes with the ESS source.  We first describe the
-basic deployment platform, Emacs.  This is followed by details on ESS
-and how it facilitates statistical activities.  ESS's unique history
+found in \cite{heiberger:dsc:2001}.  Examples of its use are included in the
+documentation that comes with the ESS source code.  Details of the implementation
+of ESS are also provided.  We first describe the Emacs editor, the platform on which ESS
+is built.  This is followed by the details of ESS
+and how it facilitates the statistician's activities.  ESS's unique history
 as an open source project is described, and we conclude with future
 tasks and extensions.
 
@@ -172,30 +172,33 @@ tasks and extensions.
 \label{sec:emacs}
 
 
-Emacs \citep{RMS:2000} is a mature, powerful, and easily extensible
+Emacs \citep{RMS:2000} is a mature, powerful, and extensible
 text editing system which while traditionally used under Unix, is
 freely available under the GNU General Public License for a large
 number of platforms, including Unix, Mac, and Windows.  Emacs shares
 some features with word processors, and more importantly, shares many
 characteristics with operating systems.  Most importantly, Emacs can
-interact with and control other programs either as subprocesses or as
-cooperating processes.
+interact with and control other programs.
+% either as subprocesses or as cooperating processes.
 
-Recent versions of Emacs commands provide both a GUI and terminal
-interface which can respond to both keyboard and mouse usage.  The
-mouse-based interface, through menus and toolbars (toolbars available
-currently with XEmacs), tries to facilitate the learning of
-keystroke-based short-cuts.  User-defined additional menus and
+Emacs can be used in a terminal, keyboard-only, implementation
+on those platforms which support it.  But, most platforms also
+provide a graphical user interface (GUI) allowing the user to interact
+with either the keyboard or a mouse.  Therefore, recent versions of Emacs
+provide GUI support.  Emacs menus and toolbars allow easy access to frequently used actions
+for instances when you don't know or can't remember the keyboard
+equivalent.  User-defined additional menus and
 toolbars can be constructed as needed.
 
 Emacs provides facilities that go beyond simple insertion and
 deletion: viewing two or more files at once; editing formatted text;
 visual comparison of two similar files; and navigation in units of
 characters, words, lines, sentences, paragraphs, and pages.  Emacs
-knows the syntax of each programming language.  It can provide
-automatic indentation of programs and highlight with fonts or colors
-specified syntactic characteristics.  Emacs is extensible using a
-dialect of Lisp \citep{RChassell1999,PGraham:1996}.  This means that
+knows about programming languages with the help of Emacs packages, called modes.
+Modes can provide
+automatic indentation of programs and highlight, with fonts or colors,
+specified syntactic characteristics.  A mode, and much of Emacs, is written in a
+dialect of Lisp, called e-lisp \citep{RChassell1999,PGraham:1996}.  This means that
 new functions, with user interaction, can be written for common and
 repeated text-editing tasks.
 
