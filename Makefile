@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.32 2000/06/30 21:32:50 rossini Exp $
+## $Id: Makefile,v 5.33 2000/06/30 21:34:23 rossini Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -29,9 +29,6 @@ ESS:
 docs:
 	cd doc; make all
 
-doc:
-	cd doc; make all
-
 ## This target is used to create a new version of the tar-file.
 ## prefix'ing with "-" implies that errors are non-critical.
 
@@ -53,7 +50,7 @@ dist: README ANNOUNCE docs
 	@echo "** Committing README and ANNOUNCE **"
 	cvs commit -m "Updating README, ANNOUNCE for new version [make dist]" \
 		README ANNOUNCE
-	cvs commit -m "Updating docs for new version [make dist]" docs
+	cvs commit -m "Updating docs for new version [make dist]" doc
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
 	(echo `date "+%Y-%m-%d "` \
