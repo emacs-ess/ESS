@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.47 1997/07/30 12:35:28 rossini Exp $
+## $Id: Makefile,v 1.48 1997/07/30 13:12:35 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.48  1997/07/30 13:12:35  rossini
+## stuff.
+##
 ## Revision 1.47  1997/07/30 12:35:28  rossini
 ## ESS before all.
 ##
@@ -325,3 +328,25 @@ essd-xls.elc : essd-xls.el ess.el
 #(defun S-insert-make-rule (file)
 #  (interactive "sFile:")
 #  (insert (format "%s.elc:  %s.el $(CORE)\n\t@echo compiling %s.el...\n\t@$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile %s.el" file file file file)))
+
+
+#### RMH suggests:
+
+
+
+* makefile
+ESS:
+	emacs -batch -q  -f batch-byte-compile  ess-vars.el
+	emacs -batch -q  -l ess-vars.elc -l cl -l cl-macs -f batch-byte-compile  ess.el
+	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s3.el
+	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s+3.el
+	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s4.el
+	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-r.el
+	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-xls.el
+	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s3.elc -l essd-s+3.elc  -l essd-s4.elc  -l essd-r.elc  -l essd-xls.elc -f batch-byte-compile  ess-site.el
+	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-comp.el
+	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-inf.el
+	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-mode.el
+	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-trns.el
+	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-help.el
+
