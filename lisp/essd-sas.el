@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/21 23:18:23 $
-;; Version: $Revision: 4.50 $
-;; RCS: $Id: essd-sas.el,v 4.50 1997/11/21 23:18:23 rossini Exp $
+;; Modified: $Date: 1997/11/24 14:48:05 $
+;; Version: $Revision: 4.51 $
+;; RCS: $Id: essd-sas.el,v 4.51 1997/11/24 14:48:05 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -172,7 +172,7 @@
     (ess-object-name-db-file       . "ess-sas-namedb.el")
     (inferior-ess-objects-command  . "objects(%d)")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
-    (inferior-ess-exit-command     . "q()\n")
+    (inferior-ess-exit-command     . "endsas;\n")
     (ess-loop-timeout              .  100000 )
     (inferior-ess-primary-prompt   . "^")
     (inferior-ess-secondary-prompt . "^")
