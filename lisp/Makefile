@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.48 1997/07/30 13:12:35 rossini Exp $
+## $Id: Makefile,v 1.49 1997/07/31 10:54:01 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.49  1997/07/31 10:54:01  rossini
+## added .SUFFIXES (RMH).
+##
 ## Revision 1.48  1997/07/30 13:12:35  rossini
 ## stuff.
 ##
@@ -205,7 +208,9 @@ patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 	-rm -rf ESS-$(LASTVERSION)
 
 
-#### The next stuff are from the AUCTeX Distribution.
+#### The next stuff are from the AUCTeX Distribution.  This is just to
+#### remind me how to package up a distribution from CVS, which is
+#### where the sources are about to go.
 ##
 ##dist : 	@if [ "X$(TAG)" = "X" ]; then echo "*** No tag ***"; exit 1; fi
 ##	if [ "X$(OLD)" = "X" ]; then echo "No patch"; exit 1; fi
@@ -276,6 +281,8 @@ patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 
 ### TARGETS
 
+.SUFFIXES: .el .elc
+
 ESS.info:	ESS.texi
 	@echo "making ESS.info..."
 	$(MAKEINFO) ESS.texi
@@ -333,20 +340,21 @@ essd-xls.elc : essd-xls.el ess.el
 #### RMH suggests:
 
 
-
-* makefile
-ESS:
-	emacs -batch -q  -f batch-byte-compile  ess-vars.el
-	emacs -batch -q  -l ess-vars.elc -l cl -l cl-macs -f batch-byte-compile  ess.el
-	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s3.el
-	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s+3.el
-	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s4.el
-	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-r.el
-	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-xls.el
-	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s3.elc -l essd-s+3.elc  -l essd-s4.elc  -l essd-r.elc  -l essd-xls.elc -f batch-byte-compile  ess-site.el
-	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-comp.el
-	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-inf.el
-	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-mode.el
-	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-trns.el
-	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-help.el
-
+##
+##* makefile
+##ESS:
+##	emacs -batch -q  -f batch-byte-compile  ess-vars.el
+##	emacs -batch -q  -l ess-vars.elc -l cl -l cl-macs -f batch-byte-compile  ess.el
+##	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s3.el
+##	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s+3.el
+##	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s4.el
+##	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-r.el
+##	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-xls.el
+##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s3.elc -l essd-s+3.elc  -l essd-s4.elc  -l essd-r.elc  -l essd-xls.elc -f batch-byte-compile  ess-site.el
+##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-comp.el
+##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-inf.el
+##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-mode.el
+##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-trns.el
+##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-help.el
+##
+##
