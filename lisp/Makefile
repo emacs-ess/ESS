@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 4.8 $.
+### File: $Revision: 4.9 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -110,6 +110,10 @@ ESS-doc: info html dvi
 all:	ESS info html
 
 ess.info: ess.texi
+
+#
+# If indexes don't index, run:  "texindex ess.??" to obtain the sorted indices. 
+#
 
 html:	html/ess_toc.html
 
