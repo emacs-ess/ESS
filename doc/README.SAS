@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 5.2 $)
+($Revision: 5.3 $)
 
 ESS: Using SAS
 ==============
@@ -106,6 +106,12 @@ by "##").
     ## *SAS:1*     in  iESS [SAS:1]    mode # ESS communication buffer
     ## *SAS:1.log* in  Shell [] ESStr  mode # SAS log information
     ## *SAS:1.lst* in  Shell [] ESSlst mode # SAS listing information
+
+    ## If you would prefer each of the four buffers to appear in its
+    ## own individual frame, you can arrange for that.  Place the
+    ## cursor in the buffer displaying myfile.sas.  Enter the
+    ## sequence:
+    C-c C-w
 
     ## The cursor will normally be in buffer myfile.sas.
     ## If not, put it there:
