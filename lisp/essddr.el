@@ -38,7 +38,7 @@
   "Current version of essddr.el.")
 
 (defvar essddr-maintainer-address
-  "Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>"
+  "Kurt Hornik <Kurt.Hornik@R-project.org>"
   "Current maintainer of essddr.el.")
 
 ;; Special support for XEmacs (curtesy of auctex):
