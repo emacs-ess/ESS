@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/06/21 19:39:29 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: ess-mode.el,v 5.16 2001/06/21 19:39:29 rossini Exp $
+;; Modified: $Date: 2001/06/23 12:18:09 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: ess-mode.el,v 5.17 2001/06/23 12:18:09 hornik Exp $
 
 ;; This file is part of ESS
 
@@ -168,7 +168,7 @@
   (define-key ess-mode-map "\C-c\C-q"	'ess-quit)
   (define-key ess-mode-map "\C-c\C-e"	ess-eval-map))
 
-
+(require 'noweb-mode)
 (easy-menu-define
  ess-mode-menu ess-mode-map
  "Menu for use in `ess-mode'."
