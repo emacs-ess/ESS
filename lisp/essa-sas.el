@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/07/20 18:22:03 $
-;; Version: $Revision: 1.30 $
-;; RCS: $Id: essa-sas.el,v 1.30 2001/07/20 18:22:03 ess Exp $
+;; Modified: $Date: 2001/07/20 21:25:42 $
+;; Version: $Revision: 1.31 $
+;; RCS: $Id: essa-sas.el,v 1.31 2001/07/20 21:25:42 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -109,7 +109,7 @@ in ess-site.el or in .emacs.")
     :type  'string
 )
 
-(defcustom ess-sas-suffix-2 "csv"
+(defcustom ess-sas-suffix-2 "dat"
     "*The ess-sas-suffix-2 file to perform operations on."
     :group 'ess-sas
     :type  'string
@@ -536,6 +536,7 @@ Without arg, toggle between these options."
   (global-set-key [f8] 'shell)
   (global-set-key [f9] 'ess-sas-data-view)
   (global-set-key [f10] 'ess-sas-toggle-sas-mode)
+  (global-set-key [f11] 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 (defvar ess-sas-local-pc-keys nil
@@ -556,6 +557,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map [(control f8)] 'ess-sas-submit-region)
   (define-key sas-mode-local-map [f9] 'ess-sas-data-view)
   (define-key sas-mode-local-map [f10] 'ess-sas-toggle-sas-mode)
+  (define-key sas-mode-local-map [f11] 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 (defvar ess-sas-local-unix-keys nil
@@ -576,6 +578,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map [f8] 'shell)
   (define-key sas-mode-local-map [f9] 'ess-sas-data-view)
   (define-key sas-mode-local-map [f10] 'ess-sas-toggle-sas-mode)
+  (define-key sas-mode-local-map [f11] 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 
