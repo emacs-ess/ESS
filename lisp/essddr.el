@@ -1,14 +1,14 @@
 ;; essddr.el --- Support for editing R documentation (Rd) source
 
-;;; Copyright (C) 1998--2000 KH <Kurt.Hornik@ci.tuwien.ac.at>, AJR
-;;; 
+;;; Copyright (C) 1998--2000 KH <Kurt.Hornik@ci.tuwien.ac.at>, AJR, MM
+;;;
 
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/01/12 17:09:30 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: essddr.el,v 5.9 2000/01/12 17:09:30 hornik Exp $
+;; Modified: $Date: 2000/02/10 09:18:26 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: essddr.el,v 5.10 2000/02/10 09:18:26 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.9 2000/01/12 17:09:30 hornik Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.10 2000/02/10 09:18:26 maechler Exp $
 
 ;;; Code:
 
@@ -41,10 +41,10 @@
   "Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>"
   "Current maintainer of essddr.el.")
 
-(autoload 'ess-eval-region             "ess-mode" "[autoload]" t)
+(autoload 'ess-eval-region	       "ess-mode" "[autoload]" t)
 (autoload 'ess-eval-line-and-next-line "ess-mode" "[autoload]" t)
-(autoload 'ess-nuke-help-bs            "ess-help" "[autoload]" t)
-(autoload 'ess-help-mode               "ess-help" "[autoload]" t)
+(autoload 'ess-nuke-help-bs	       "ess-help" "[autoload]" t)
+(autoload 'ess-help-mode	       "ess-help" "[autoload]" t)
 
 (defvar Rd-mode-abbrev-table nil
   "Abbrev table for R documentation keywords.
@@ -178,7 +178,8 @@ All Rd mode abbrevs start with a grave accent (`).")
 	"-"
 	["Eval Line"			ess-eval-line-and-next-line t]
 	["Eval Region"			ess-eval-region t]
-	["Switch to Process"		ess-switch-to-ESS t]
+	["Switch to ESS Process"	ess-switch-to-ESS t]
+	["Switch to end{ESS Pr}"	ess-switch-to-end-of-ESS t]
 	"-"
 	["Toggle Abbrev Mode"		abbrev-mode t]
 	["Toggle Auto-Fill Mode"	auto-fill-mode t]
@@ -223,10 +224,10 @@ To automatically turn on the abbrev and font-lock features, add the
 following lines to your `.emacs' file:
 
   (add-hook 'Rd-mode-hook
-            (lambda ()
-              (abbrev-mode 1)
-              (if (eq window-system 'x)
-                  (font-lock-mode 1))))"
+	    (lambda ()
+	      (abbrev-mode 1)
+	      (if (eq window-system 'x)
+		  (font-lock-mode 1))))"
 
   (interactive)
   (text-mode)
