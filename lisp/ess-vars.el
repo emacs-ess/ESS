@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1998/11/20 20:57:33 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: ess-vars.el,v 5.9 1998/11/20 20:57:33 rossini Exp $
+;; Modified: $Date: 1998/12/11 19:09:34 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: ess-vars.el,v 5.10 1998/12/11 19:09:34 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -78,7 +78,7 @@ version of the statistical package being executed in the particular
 buffer.
 
 Current values could include:
-for `ess-dialect' = S3, S4, S+3, S+4, S+5, R, XLS, SAS
+for `ess-dialect' = S3, S4, S+3, S+4, S+5, R, XLS, SAS, STA
 
 Used to adjust for changes in versions of the program")
 
@@ -399,6 +399,15 @@ by ess-function-template.")
 (defvar inferior-S+3-program-name "Splus"
   "*Program name for invoking an inferior ESS with S+3().")
 
+(defvar inferior-S+4-program-name "Splus"
+  "*Program name for invoking an external GUI S+4.")
+
+(defvar inferior-Sqpe+4-program-name "Sqpe"
+  "*Program name for invoking an inferior ESS with Sqpe+4().")
+
+(defvar inferior-S-elsewhere-program-name "sh"
+  "*Program name for invoking an inferior ESS with S on a different computer.")
+
 (defvar inferior-S4-program-name "S4"
   "*Program name for invoking an inferior ESS with S4().")
 
@@ -428,6 +437,8 @@ corresponding program.")
 ;;- 	    ))
 
 
+
+;; AJR: this is a generic function
 (defvar inferior-ess-start-args ""
   "*String of arguments passed to the ESS process.
 Useful for R and SAS.")
@@ -495,6 +506,8 @@ of Emacs until the code has been successfully evaluated by S.")
 
 (defvar ess-current-process-name nil
   "Name of the current S process.")
+
+;; defconst ess-local-process-name now done in S.el
 
 (defvar ess-process-name-list nil
   "Alist of active ess processes.")
@@ -598,6 +611,9 @@ ess-load-file command.  Used for determining the default in the next one.")
 (defvar ess-mode-map nil
   "Keymap for ess-mode.")
 
+(defvar ess-external-mode-map nil
+  "Keymap for ess-external-mode.")
+
 (defvar ess-eval-map nil
   "Keymap for ess-eval functions.")
 
@@ -670,7 +686,7 @@ If nil, input is in the font-lock-variable-name-face.")
     ("#"
      . font-lock-comment-face) ; comment
     ("^[^#]*#\\(.*$\\)"
-     1 font-lock-comment-face keep t) ; comments
+     (1 font-lock-comment-face keep t)) ; comments
     ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function"
      1 font-lock-function-name-face t) ; function name
     ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>"
@@ -827,6 +843,11 @@ Used to store the values for passing on to newly created buffers.")
   "Non-nil if using ess-listing mode as a minor mode of some other mode.")
 
 (make-variable-buffer-local 'ess-listing-minor-mode)
+
+(defvar ess-external-minor-mode nil
+  "Non-nil if using external mode as a minor mode of some other mode.")
+
+(make-variable-buffer-local 'ess-external-minor-mode)
 
 (provide 'ess-vars)
 
