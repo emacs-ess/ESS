@@ -1,4 +1,4 @@
-This is ess.info, produced by makeinfo version 4.5 from ess.texi.
+This is ess.info, produced by makeinfo version 4.2 from ess.texi.
 
 ESS -- Emacs Speaks Statistics
 ******************************
@@ -6,6 +6,202 @@ ESS -- Emacs Speaks Statistics
 START-INFO-DIR-ENTRY
 * ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
 END-INFO-DIR-ENTRY
+
+
+File: ess.info,  Node: Help,  Next: Transcript Mode,  Prev: Editing,  Up: Top
+
+Reading help files in ESS
+*************************
+
+   ESS provides an easy-to-use facility for reading S help files from
+within Emacs.  From within the ESS process buffer or any ESS edit
+buffer, typing `C-c C-v' (`ess-display-help-on-object') will prompt you
+for the name of an object for which you would like documentation.
+Completion is provided over all objects which have help files.
+
+   If the requested object has documentation, you will be popped into a
+buffer (named `*help(OBJ-NAME)*') containing the help file.  This
+buffer is placed in a special `S Help' mode which disables the usual
+editing commands but which provides a number of keys for paging through
+the help file:
+
+     Help commands:
+
+   * `?' (`ess-describe-help-mode')
+     Pops up a help buffer with a list of the commands available in S
+     help mode.
+
+   * `h' (`ess-display-help-on-object')
+     Pop up a help buffer for a different object
+
+     Paging commands:
+
+   * `b' or `DEL' (`scroll-down')
+     Move one page backwards through the help file.
+
+   * `SPC' (`scroll-up')
+     Move one page forwards through the help file.
+
+   * `>' (`beginning-of-buffer') and `<' (`end-of-buffer')
+     Move to the beginning and end of the help file, respectively.
+
+     Section-based motion commands:
+
+   * `n' (`ess-skip-to-next-section') and `p'
+     (`ess-skip-to-previous-section')
+     Move to the next and previous section header in the help file,
+     respectively.  A section header consists of a number of
+     capitalized words, followed by a colon.
+
+     In addition, the `s' key followed by one of the following letters
+     will jump to a particular section in the help file:
+    `a'
+          ARGUMENTS:
+
+    `b'
+          BACKGROUND:
+
+    `B'
+          BUGS:
+
+    `d'
+          DETAILS:
+
+    `D'
+          DESCRIPTION:
+
+    `e'
+          EXAMPLES:
+
+    `n'
+          NOTE:
+
+    `o'
+          OPTIONAL ARGUMENTS:
+
+    `r'
+          REQUIRED ARGUMENTS:
+
+    `R'
+          REFERENCES:
+
+    `s'
+          SIDE EFFECTS:
+
+    `s'
+          SEE ALSO:
+
+    `u'
+          USAGE:
+
+    `v'
+          VALUE:
+
+    `<'
+          Jumps to beginning of file
+
+    `>'
+          Jumps to end of file
+
+    `?'
+          Pops up a help buffer with a list of the defined section
+          motion keys.
+
+     Miscellaneous:
+
+   * `l' (`ess-eval-line-and-step')
+     Evaluates the current line in the ESS process, and moves to the
+     next line.  Useful for running examples in help files.
+
+   * `r' (`ess-eval-region')
+     Send the contents of the current region to the ESS process.  Useful
+     for running examples in help files.
+
+   * `/' (`isearch-forward')
+     Same as `C-s'.
+
+     Quit commands:
+
+   * `q' (`ess-switch-to-end-of-ESS')
+     Returns to the ESS process buffer in another window, leaving the
+     help window visible.
+
+   * `k' (`kill-buffer')
+     Kills the help buffer.
+
+   * `x' (`ess-kill-buffer-and-go')
+     Return to the ESS process, killing this help buffer.
+
+   In addition, all of the ESS commands available in the edit buffers
+are also available in S help mode (*note Edit buffer::).  Of course, the
+usual (non-editing) Emacs commands are available, and for convenience
+the digits and <-> act as prefix arguments.
+
+   If a help buffer already exists for an object for which help is
+requested, that buffer is popped to immediately; the ESS process is not
+consulted at all.  If the contents of the help file have changed, you
+either need to kill the help buffer first, or pass a prefix argument
+(with `C-u') to `ess-display-help-on-object'.
+
+   Help buffers are marked as temporary buffers in ESS, and are deleted
+when `ess-quit' or `ess-cleanup' are called.
+
+   Help buffers normally appear in another window within the current
+frame.  If you wish help buffers to appear in their own frame (either
+one per help buffer, or one for all help buffers), you can customize the
+variable `ess-help-own-frame'.
+
+
+File: ess.info,  Node: Transcript Mode,  Next: Miscellaneous,  Prev: Help,  Up: Top
+
+Manipulating saved transcript files
+***********************************
+
+   Inferior S mode records the transcript (the list of all commands
+executed, and their output) in the process buffer, which can be saved as
+a "transcript file", which should normally have the suffix `.St'.  The
+most obvious use for a transcript file is as a static record of the
+actions you have performed in a particular S session.  Sometimes,
+however, you may wish to re-execute commands recorded in the transcript
+file by submitting them to a running ESS process.  This is what
+Transcript Mode is for.
+
+   If you load file a with the suffix `.St' into Emacs, it is placed in
+S Transcript Mode.  Transcript Mode is similar to Inferior S mode
+(*note Entering commands::): paragraphs are defined as a command and
+its output, and you can move though commands either with the paragraph
+commands or with `C-c C-p' and `C-c C-n'.
+
+* Menu:
+
+* Resubmit::                    Resubmitting commands from the transcript file
+* Clean::                       Cleaning transcript files
+
+
+File: ess.info,  Node: Resubmit,  Next: Clean,  Prev: Transcript Mode,  Up: Transcript Mode
+
+Resubmitting commands from the transcript file
+==============================================
+
+   Three commands are provided to re-submit command lines from the
+transcript file to a running ESS process.  They are:
+
+   * `RET' (`ess-transcript-send-command')
+     Send the current command line to the ESS process, and execute it.
+
+   * `C-c RET' (`ess-transcript-copy-command')
+     Copy the current command to the ESS process, and switch to the ESS
+     process buffer (ready to edit the copied command).
+
+   * `M-RET' (`ess-transcript-send-command-and-move')
+     Send the current command to the ESS process, and move to the next
+     command line.  This command is useful for submitting a series of
+     commands.
+
+Note that these commands are similar to those on the same keys in
+Inferior S Mode.  In all three cases, the commands should be executed
+when the cursor is on a command line in the transcript; the prompt is
+automatically removed before the command is submitted.
 
 
 File: ess.info,  Node: Clean,  Prev: Resubmit,  Up: Transcript Mode
@@ -38,6 +234,7 @@ Other features of ESS
 
 * Highlighting::                Syntactic highlighting of buffers
 * Graphics::                    Using graphics with ESS
+* Imenu::                       Support for Imenu in ESS
 * Object Completion::
 
 
@@ -75,7 +272,7 @@ modify if desired:
      highlights the same patterns as in Inferior ESS Mode.
 
 
-File: ess.info,  Node: Graphics,  Next: Object Completion,  Prev: Highlighting,  Up: Miscellaneous
+File: ess.info,  Node: Graphics,  Next: Imenu,  Prev: Highlighting,  Up: Miscellaneous
 
 Using graphics with ESS
 =======================
@@ -138,7 +335,20 @@ interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
 this information.)
 
 
-File: ess.info,  Node: Object Completion,  Prev: Graphics,  Up: Miscellaneous
+File: ess.info,  Node: Imenu,  Next: Object Completion,  Prev: Graphics,  Up: Miscellaneous
+
+Imenu
+=====
+
+   Imenu is an Emacs tool for providing mode-specific buffer indexes.
+In some of the ESS editing modes, support for Imenu is provided.  For
+example, in S mode buffers, the menubar should display an item called
+"Imenu-S".  Within this menubar you will then be offered bookmarks to
+particular parts of your source file (such as the starting point of each
+function definition).
+
+
+File: ess.info,  Node: Object Completion,  Prev: Imenu,  Up: Miscellaneous
 
 Object Completion
 =================
@@ -598,10 +808,10 @@ Concept Index
 * Menu:
 
 * .Data directory:                       Variables for starting ESS.
-* .emacs file <1>:                       System dependent.
+* .emacs file <1>:                       Source Directories.
 * .emacs file <2>:                       Variables for starting ESS.
-* .emacs file <3>:                       Source Directories.
-* .emacs file <4>:                       Indenting.
+* .emacs file <3>:                       Indenting.
+* .emacs file <4>:                       System dependent.
 * .emacs file:                           Variables.
 * .First function:                       System dependent.
 * aborting S commands:                   Other.
@@ -641,8 +851,8 @@ Concept Index
 * dump file directories:                 Source Directories.
 * dump file names:                       Source Directories.
 * dump files <1>:                        Source Files.
-* dump files <2>:                        Dump file variables.
-* dump files:                            Edit buffer.
+* dump files <2>:                        Edit buffer.
+* dump files:                            Dump file variables.
 * echoing commands when evaluating:      Evaluating code.
 * edit buffer:                           Edit buffer.
 * editing commands:                      Command History.
@@ -698,8 +908,8 @@ Concept Index
 * reverting function definitions:        Edit buffer.
 * running S:                             Starting up.
 * S program name:                        System dependent.
-* search list <1>:                       Hot keys.
-* search list:                           Source Directories.
+* search list <1>:                       Source Directories.
+* search list:                           Hot keys.
 * sending input:                         Entering commands.
 * Splus:                                 System dependent.
 * starting directory <1>:                Variables for starting ESS.
@@ -718,8 +928,8 @@ Concept Index
 * using S interactively:                 Introduction.
 * variables:                             Variables.
 * winjava:                               winjava.
-* working directory <1>:                 Source Directories.
-* working directory:                     Starting up.
+* working directory <1>:                 Starting up.
+* working directory:                     Source Directories.
 * X windows <1>:                         X11.
 * X windows:                             Variables for starting ESS.
 
@@ -740,18 +950,18 @@ Variable and command index
 * comint-delimiter-argument-list:        History expansion.
 * comint-dynamic-complete:               Completion.
 * comint-forward-matching-input:         Process buffer motion.
-* comint-input-ring-size <1>:            Command History.
-* comint-input-ring-size:                Variables controlling interaction.
+* comint-input-ring-size <1>:            Variables controlling interaction.
+* comint-input-ring-size:                Command History.
 * comint-interrupt-subjob:               Other.
 * comint-kill-input:                     Command-line editing.
 * comint-kill-output:                    Last command.
 * comint-mode-map:                       Keybindings.
-* comint-next-input <1>:                 Command History.
-* comint-next-input:                     Process buffer motion.
+* comint-next-input <1>:                 Process buffer motion.
+* comint-next-input:                     Command History.
 * comint-next-matching-input:            Command History.
 * comint-next-matching-input-from-input: Command History.
-* comint-previous-input <1>:             Command History.
-* comint-previous-input:                 Process buffer motion.
+* comint-previous-input <1>:             Process buffer motion.
+* comint-previous-input:                 Command History.
 * comint-previous-matching-input:        Command History.
 * comint-previous-matching-input-from-input: Command History.
 * comint-show-maximum-output:            Last command.
@@ -761,8 +971,8 @@ Variable and command index
 * dump():                                Edit buffer.
 * ess-abort:                             Other.
 * ess-arg-function-offset:               Indentation variables.
-* ess-ask-about-display <1>:             X11.
-* ess-ask-about-display:                 Variables for starting ESS.
+* ess-ask-about-display <1>:             Variables for starting ESS.
+* ess-ask-about-display:                 X11.
 * ess-ask-about-transfile <1>:           Saving transcripts.
 * ess-ask-about-transfile:               Customizing startup.
 * ess-ask-for-ess-directory <1>:         Customizing startup.
@@ -772,20 +982,20 @@ Variable and command index
 * ess-brace-imaginary-offset:            Indentation variables.
 * ess-brace-offset:                      Indentation variables.
 * ess-change-sp-regexp:                  Completion details.
-* ess-cleanup <1>:                       Help.
-* ess-cleanup:                           Hot keys.
+* ess-cleanup <1>:                       Hot keys.
+* ess-cleanup:                           Help.
 * ess-continued-brace-offset:            Indentation variables.
 * ess-continued-statement-offset:        Indentation variables.
 * ess-default-style:                     Indentation variables.
 * ess-delete-dump-files:                 Source Files.
 * ess-describe-help-mode:                Help.
-* ess-directory <1>:                     Customizing startup.
-* ess-directory:                         Source Directories.
+* ess-directory <1>:                     Source Directories.
+* ess-directory:                         Customizing startup.
 * ess-display-help-on-object:            Help.
 * ess-dump-filename-template <1>:        Dump file variables.
 * ess-dump-filename-template:            Source Directories.
-* ess-dump-object-into-edit-buffer <1>:  Other.
-* ess-dump-object-into-edit-buffer:      Edit buffer.
+* ess-dump-object-into-edit-buffer <1>:  Edit buffer.
+* ess-dump-object-into-edit-buffer:      Other.
 * ess-else-offset:                       Indentation variables.
 * ESS-elsewhere:                         ESS processes on Remote Computers.
 * ess-end-of-function:                   Other edit buffer commands.
@@ -794,17 +1004,18 @@ Variable and command index
 * ess-eval-function-and-go:              Evaluating code.
 * ess-eval-line:                         Evaluating code.
 * ess-eval-line-and-go:                  Evaluating code.
+* ess-eval-line-and-step <1>:            Help.
 * ess-eval-line-and-step:                Evaluating code.
 * ess-eval-map:                          Keybindings.
-* ess-eval-region <1>:                   Evaluating code.
-* ess-eval-region:                       Help.
+* ess-eval-region <1>:                   Help.
+* ess-eval-region:                       Evaluating code.
 * ess-eval-region-and-go:                Evaluating code.
-* ess-eval-visibly-p <1>:                Evaluating code.
-* ess-eval-visibly-p:                    Variables controlling interaction.
+* ess-eval-visibly-p <1>:                Variables controlling interaction.
+* ess-eval-visibly-p:                    Evaluating code.
 * ess-execute:                           Hot keys.
 * ess-execute-attach:                    Hot keys.
-* ess-execute-in-process-buffer <1>:     Variables controlling interaction.
-* ess-execute-in-process-buffer:         Hot keys.
+* ess-execute-in-process-buffer <1>:     Hot keys.
+* ess-execute-in-process-buffer:         Variables controlling interaction.
 * ess-execute-in-tb:                     Evaluating code.
 * ess-execute-objects:                   Hot keys.
 * ess-execute-search:                    Hot keys.
@@ -840,13 +1051,13 @@ Variable and command index
 * ess-skip-to-help-section:              Help.
 * ess-skip-to-next-section:              Help.
 * ess-skip-to-previous-section:          Help.
-* ess-source-directory <1>:              Source Directories.
-* ess-source-directory:                  Dump file variables.
+* ess-source-directory <1>:              Dump file variables.
+* ess-source-directory:                  Source Directories.
 * ess-source-directory-generator:        Dump file variables.
 * ess-style-alist:                       Indentation variables.
 * ess-submit-bug-report:                 Reporting Bugs.
-* ess-switch-to-end-of-ESS <1>:          Help.
-* ess-switch-to-end-of-ESS:              Other edit buffer commands.
+* ess-switch-to-end-of-ESS <1>:          Other edit buffer commands.
+* ess-switch-to-end-of-ESS:              Help.
 * ess-switch-to-ESS:                     Other edit buffer commands.
 * ess-tab-always-indent:                 Indentation variables.
 * ess-trans-font-lock-keywords:          Highlighting.
@@ -865,21 +1076,20 @@ Variable and command index
 * inferior-ess-program <1>:              System dependent.
 * inferior-ess-program:                  Customizing startup.
 * inferior-ess-prompt:                   System dependent.
-* inferior-ess-send-input <1>:           Transcript resubmit.
-* inferior-ess-send-input:               Command-line editing.
+* inferior-ess-send-input <1>:           Command-line editing.
+* inferior-ess-send-input:               Transcript resubmit.
 * inferior-Splus-args:                   System dependent.
 * objects():                             Hot keys.
 * options():                             System dependent.
 * printer():                             printer.
 * q():                                   Hot keys.
-* S <1>:                                 Variables for starting ESS.
-* S <2>:                                 Starting up.
+* S <1>:                                 Starting up.
 * S:                                     Variables for starting ESS.
 * S+elsewhere:                           ESS processes on Remote Computers.
 * S-directory:                           Variables for starting ESS.
 * S-plus:                                System dependent.
-* search() <1>:                          Hot keys.
-* search():                              Completion.
+* search() <1>:                          Completion.
+* search():                              Hot keys.
 * source() <1>:                          Evaluating code.
 * source():                              Loading.
 * STERM:                                 Statistical Process running in ESS?.
