@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.8 2001/05/14 20:39:45 rossini Exp $
+;; Version: $Id: ess-menu.el,v 1.9 2001/05/14 21:29:50 ess Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -200,7 +200,7 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
   "SAS language Imenu support for ESS."
   (interactive)
   (setq imenu-generic-expression 
-	'( (nil "New one needed" 1)))
+	'( (nil "[ \t\n=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ \t\n;]" 1)))
   (imenu-add-to-menubar "SAS-fcts"))
 
 
@@ -284,4 +284,4 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess.el ends here
+;;; ess-menu.el ends here
