@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/11/03 10:00:57 $
-;; Version: $Revision: 5.22 $
-;; RCS: $Id: essl-s.el,v 5.22 2000/11/03 10:00:57 maechler Exp $
+;; Modified: $Date: 2001/02/17 12:55:06 $
+;; Version: $Revision: 5.23 $
+;; RCS: $Id: essl-s.el,v 5.23 2001/02/17 12:55:06 rossini Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -382,7 +382,6 @@ Uses the file given by the variable `ess-function-outline-file'."
 	  (ess-rep-regexp     rgxp to nil nil verbose)
 	(query-replace-regexp rgxp to nil)))))
 
-
 (defun ess-dump-to-src (&optional dont-query verbose)
   "Make the changes in an S - dump() file to improve human readability."
   (interactive "P")
@@ -500,19 +499,33 @@ Uses the file given by the variable `ess-function-outline-file'."
 	 (define-key inferior-ess-mode-map "_" nil))
       ;; else : "force" or uscore is "nil", i.e. default
       (define-key ess-mode-map          "_" 'ess-smart-underscore)
-      (define-key inferior-ess-mode-map "_" 'ess-smart-underscore))
-    ))
+      (define-key inferior-ess-mode-map "_" 'ess-smart-underscore))))
+
+;; NOTA BENE: "_" is smart *by default* :
+;; -----  The user can always customize `ess-S-assign' ...
+(ess-toggle-underscore 'force-to-S-assign)
 
 (defun ess-add-MM-keys ()
   "Define \"C-c f\" and force \\[ess-toggle-underscore]."
   (interactive)
   (require 'ess-mode)
-  (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline)
-)
+  (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline))
 
-;; NOTA BENE: "_" is smart *by default* :
-;; -----  The user can always customize `ess-S-assign' ...
-(ess-toggle-underscore 'force-to-S-assign)
+(defun ess-dump-args-and-go (Sfunc) ; &optional buff)
+  "Dump the function name, with arguments, to a buffer for editing."
+  (interactive "sFunction ? ")
+  (let* ((buffname "ess-complete.R")
+	 (buf (ess-execute (format "args(%s)" Sfunc)
+					  t
+					  buffname)))
+    (pop-to-buffer buf)
+    (message "here yet?")
+    (replace-string "function" Sfunc)
+    (ess-setq-vars-local ess-customize-alist (current-buffer))
+    (setq major-mode 'ess-mode)
+    (use-local-map ess-mode-map)
+    (set-syntax-table ess-mode-syntax-table)
+    ))
 
 
 (provide 'essl-s)
