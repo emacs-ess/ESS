@@ -5,18 +5,25 @@ PREFIX=/usr/local
 # no csh please
 SHELL = /bin/sh
 
-## emacs distribution that you are installing ESS for.  
+## emacs distribution that you are installing ESS for.
 ##
+## EMACS 21:  {MM: Keep this as default -- ``has always been''}
+EMACS=emacs
+## XEMACS 21:
+#EMACS=xemacs
 
-## EMACS 21
-#EMACS=emacs
-#EMACSBATCH = $(EMACS) --batch --no-site-file --no-init-file
-
-## XEMACS 21
-EMACS=xemacs
 EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 
-## Some install commands expect target-directory source-file, 
+## Updating ChangeLog via CVS with emacs requires the vc package!
+## If this setting doesn't suit you, you can use the command line:
+## make ChangeLog EMACSLOGCVS="myemacs -mybatchflags -mychangelogflags"
+
+# if Xemacs:
+#EMACSLOGCVS=$(EMACSBATCH) -f vc-update-changelogs
+# if Emacs:
+#EMACSLOGCVS=$(EMACSBATCH) -f vc-update-change-log
+
+## Some install commands expect target-directory source-file,
 ## but we want source-file target-directory; we also want to
 ## preserve owner, group and time-stamp; lastly, note that we
 ## are assuming that the target-directory exists
