@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@biostat.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/10/04 17:21:29 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: ess-mode.el,v 5.13 2000/10/04 17:21:29 maechler Exp $
+;; Modified: $Date: 2001/05/03 01:31:52 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: ess-mode.el,v 5.14 2001/05/03 01:31:52 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -324,9 +324,9 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 	   ess-language
 	   ess-dialect
 	   (current-buffer)))
-;;  (ess-write-to-dribble-buffer
-;;   (format "(ess-mode-1.2): ess-process= %s \n"
-;;	   (ess-local-process-name ess-local-process-name "none")))
+  ;; (ess-write-to-dribble-buffer
+  ;;  (format "(ess-mode-1.2): ess-process= %s \n"
+  ;;   (ess-local-process-name ess-local-process-name "none")))
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1.5): alist=%s \n"
 	   alist))
@@ -341,38 +341,36 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (use-local-map ess-mode-map)
   (set-syntax-table ess-mode-syntax-table)
 
-  ;;; Keep <tabs> out of the code.
+  ;; Keep <tabs> out of the code.
   (make-local-variable 'indent-tabs-mode)
   (setq indent-tabs-mode nil)
 
-
-;;  (make-local-variable 'paragraph-start)
-;;  (setq paragraph-start (concat "^$\\|" page-delimiter))
-;;  (make-local-variable 'paragraph-separate)
-;;  (setq paragraph-separate paragraph-start)
-;;  (make-local-variable 'paragraph-ignore-fill-prefix)
-;;  (setq paragraph-ignore-fill-prefix t)
-;;  (make-local-variable 'indent-line-function)
-;;  (setq indent-line-function 'ess-indent-line)
-;;  (make-local-variable 'require-final-newline)
-;;  (setq require-final-newline t)
-;;  (make-local-variable 'comment-start)
-;;  (setq comment-start "#")
-;;  (make-local-variable 'comment-start-skip)
-;;  (setq comment-start-skip "#+ *")
-;;  (make-local-variable 'comment-column)
-;;  (setq comment-column 40)
-;;  (make-local-variable 'comment-indent-function)
-;;  (setq comment-indent-function 'ess-comment-indent)
-;;  (make-local-variable 'parse-sexp-ignore-comments)
-;;  (setq parse-sexp-ignore-comments t)
-;;  (ess-set-style ess-default-style)
-;;  (make-local-variable 'ess-local-process-name)
-;;  (make-local-variable 'ess-keep-dump-files)
+  ;;  (make-local-variable 'paragraph-start)
+  ;;  (setq paragraph-start (concat "^$\\|" page-delimiter))
+  ;;  (make-local-variable 'paragraph-separate)
+  ;;  (setq paragraph-separate paragraph-start)
+  ;;  (make-local-variable 'paragraph-ignore-fill-prefix)
+  ;;  (setq paragraph-ignore-fill-prefix t)
+  ;;  (make-local-variable 'indent-line-function)
+  ;;  (setq indent-line-function 'ess-indent-line)
+  ;;  (make-local-variable 'require-final-newline)
+  ;;  (setq require-final-newline t)
+  ;;  (make-local-variable 'comment-start)
+  ;;  (setq comment-start "#")
+  ;;  (make-local-variable 'comment-start-skip)
+  ;;  (setq comment-start-skip "#+ *")
+  ;;  (make-local-variable 'comment-column)
+  ;;  (setq comment-column 40)
+  ;;  (make-local-variable 'comment-indent-function)
+  ;;  (setq comment-indent-function 'ess-comment-indent)
+  ;;  (make-local-variable 'parse-sexp-ignore-comments)
+  ;;  (setq parse-sexp-ignore-comments t)
+  ;;  (ess-set-style ess-default-style)
+  ;;  (make-local-variable 'ess-local-process-name)
+  ;;  (make-local-variable 'ess-keep-dump-files)
   (put 'ess-local-process-name 'permanent-local t) ; protect from RCS
   (setq mode-line-process ;; AJR: in future, XEmacs will use modeline-process.
 	'(" [" (ess-local-process-name ess-local-process-name "none") "]"))
-
 
   (ess-load-object-name-db-file)
   (run-hooks 'ess-mode-hook)
@@ -725,7 +723,9 @@ of the expression are preserved."
 		  (indent-to this-indent)))
 	    ;; Indent any comment following the text.
 	    (or (looking-at comment-start-skip)
-		(if (re-search-forward comment-start-skip (save-excursion (end-of-line) (point)) t)
+		(if (re-search-forward comment-start-skip
+				       (save-excursion (end-of-line)
+						       (point)) t)
 		    (progn (indent-for-comment) (beginning-of-line))))))))))
 ;; (message "Indenting ESS expression...done")
 
@@ -886,7 +886,8 @@ Returns nil if line starts inside a string, t if in a comment."
 		 ;; indent it relative to line brace is on.
 		 ;; For open brace in column zero, don't let statement
 		 ;; start there too.  If ess-indent-level is zero,
-		 ;; use ess-brace-offset + ess-continued-statement-offset instead.
+		 ;; use ess-brace-offset +
+		 ;; ess-continued-statement-offset instead.
 		 ;; For open-braces not the first thing in a line,
 		 ;; add in ess-brace-imaginary-offset.
 		 (+ (if (and (bolp) (zerop ess-indent-level))
@@ -974,33 +975,27 @@ or if STYLE argument is given, use that.  It makes the ESS indentation
 style variables buffer local."
 
   (interactive)
-
   (let ((ess-styles (mapcar 'car ess-style-alist)))
-
     (if (interactive-p)
 	(setq style
 	      (let ((style-string ; get style name with completion
 		     (completing-read
-		      (format "Set ESS mode indentation style to (default %s): "
-			      ess-default-style)
+		      (format
+		       "Set ESS mode indentation style (default %s): "
+		       ess-default-style)
 		      (vconcat ess-styles)
 		      (function (lambda (arg) (memq arg ess-styles)))
 		      )))
 		(if (string-equal "" style-string)
 		    ess-default-style
-		  (intern style-string))
-		)))
-
+		  (intern style-string)))))
     (setq style (or style ess-style)) ; use ess-style if style is nil
-
     (make-local-variable 'ess-style)
     (if (memq style ess-styles)
 	(setq ess-style style)
-      (error (concat "Bad ESS style: " style))
-      )
+      (error (concat "Bad ESS style: " style)))
     (if (not quiet)
 	(message "ESS-style: %s" ess-style))
-
     ; finally, set the indentation style variables making each one local
     (mapcar (function (lambda (ess-style-pair)
 			(make-local-variable (car ess-style-pair))
@@ -1129,14 +1124,9 @@ generate the source buffer."
 		  (down-list 1)
 		(error nil)))))))
 
-
-;; AJR: XEmacs, makes sense to dump into "other frame".
-
 (defun ess-dump-object-into-edit-buffer-other-frame (object)
   "Edit an ESS object in its own frame."
   (switch-to-buffer-other-frame (ess-dump-object-into-edit-buffer object)))
-
-
 
 (provide 'ess-mode)
 
