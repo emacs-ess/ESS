@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.15 $.
+### File: $Revision: 5.16 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -11,9 +11,12 @@
 
 PREFIX=/usr/local
 
-# Emacs version that you are installing ESS for.
-#EMACS = xemacs
+## Emacs version that you are installing ESS for.  It might be simpler to do:
+##     make EMACS=xemacs
+## for example, than to edit this file.
+##
 EMACS = emacs-19.34
+#EMACS = xemacs
 
 ## For strange setups...
 INSTALL = cp
