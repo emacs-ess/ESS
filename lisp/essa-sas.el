@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/05/03 21:21:54 $
-;; Version: $Revision: 1.90 $
-;; RCS: $Id: essa-sas.el,v 1.90 2002/05/03 21:21:54 rsparapa Exp $
+;; Modified: $Date: 2002/05/03 21:58:24 $
+;; Version: $Revision: 1.91 $
+;; RCS: $Id: essa-sas.el,v 1.91 2002/05/03 21:58:24 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -262,30 +262,40 @@ directory that you specify with the same name, but without the
 ))))
 
 (defun ess-kermit-send ()
-  "Send a file with Kermit.  Works so far with ssh, but not telnet."
+"Send a file with Kermit.  WARNING:  Experimental!  From 
+a file that starts with `ess-kermit-prefix',
+execute this command.  It will transfer this file to the remote 
+directory with the same name, but without the `ess-kermit-prefix'."
+
     (interactive)
 
-     (save-match-data (let ((ess-temp-file (expand-file-name (buffer-name))))
-	(if (and (not (string-match "[[]" ess-temp-file))
-	  (string-match "]" ess-temp-file)) (progn
+    (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file to: "
+	  ess-kermit-remote-directory))
 
-	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
-             (save-buffer)
-	     (shell)
-	     (insert "cd $HOME; " ess-kermit-command " -g ]" ess-temp-file " -a " ess-temp-file)
-             (comint-send-input)	
-;;	     (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
-;;	     (comint-send-input)
-;;	     (insert (read-string "Press Return when Kermit is ready to send: " nil nil
-;;		     (concat "send ]" ess-sas-temp-file " " ess-sas-temp-file)))                
-;;	     (comint-send-input)
-;;	     (insert (read-string "Press Return when transfer is complete: " nil nil "c"))              
-;;           (comint-send-input)
-             (insert (read-string "Press Return when shell is ready: "))
-	     (comint-send-input)
-	     (switch-to-buffer (find-buffer-visiting (concat "]" ess-temp-file)))
-)))))
+;;     (save-match-data 
+       (let ((ess-temp-file (expand-file-name (buffer-name)))
+	     (ess-temp-file-remote-directory ess-kermit-remote-directory))
+     
+	(if (string-equal ess-kermit-prefix (substring (file-name-nondirectory ess-temp-file) 0 1)) 
+	  (progn
 
+;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
+	  (shell)
+	  (insert "cd $HOME; " ess-kermit-command " -a " ess-temp-file-remote-directory "/"
+	    (substring (file-name-nondirectory ess-temp-file) 1) " -g "  ess-temp-file)
+          (comint-send-input)	
+;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
+;;	  (comint-send-input)
+;;	  (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil 
+;;		  (concat "receive ]" ess-sas-temp-file)))                
+;;	  (comint-send-input)
+;;	  (insert (read-string "Press Return when transfer is complete: " nil nil "c"))                
+;;	  (comint-send-input)
+          (insert (read-string "Press Return when shell is ready: "))
+	  (comint-send-input)
+	  (switch-to-buffer (find-buffer-visiting ess-temp-file))
+	  (ess-revert-wisely)
+))))
 
 (defun ess-sas-append-log ()
     "Append ess-temp.log to the current .log file."
