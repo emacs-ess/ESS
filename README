@@ -1,19 +1,52 @@
--*- indented-text -*-
+-*- view -*-
 
-($Revision: 1.23 $)
+($Revision: 1.24 $)
 
-ESS VERSION 5.0
----------------
+Emacs Speaks Statistics (ESS), version 5.0
+------------------------------------------
 
-This directory contains the distribution of ESS version 5.0, which
+This is the README file for the distribution of ESS version 5.0, which
 used to be S-mode.  This is an Emacs-Lisp interface to interactive
 statistical programming and data analysis languages, including: S
-dialects (S 3, S 4, S-PLUS 3.x, S-PLUS 4.x and R), LispStat dialects
-(XLispStat, ViSta), and SAS.  Stata, and SPSS dialect (SPSS, Fiasco)
-support is planned for possible future implementation (a preliminary
-Stata mode is distributed).
+dialects (S 3/4, S-PLUS 3.x, and R), LispStat dialects (XLispStat,
+ViSta), and SAS.  Stata, and SPSS dialect (SPSS, Fiasco) support is
+being examined possible future implementation (a preliminary Stata
+mode is distributed).
+
+ESS grew out of the desire for bug fixes and extensions to S-mode-4.8.
+In particular, XEmacs support as well as extensions to incorporate R
+were desired.  In addition, with new modes being developed for R,
+Stata, and SAS, it was felt that providing for a unifying framework
+would eliminate differences in the user interface, as well as to
+provide for faster development of production tools and statistical
+analysis.  5.0 has, for its guts, the basic framework from S-mode.
+However, it has been cleaned, streamlined, brought closer to
+conformance as a standard GNU Emacs package, and redesigned for
+modularity and reuse.
+
+The current development team is led by A.J. (Tony) Rossini
+(rossini@stat.sc.edu and arossini@biostat.washington.edu), who did the
+initial port to XEmacs and has been the primary coder.  Martin
+Maechler (maechler@stat.math.ethz.ch) and Kurt Hornik
+(hornik@ci.tuwein.ac.at) have assisted with S-PLUS, S4, R, and
+XLispStat sub-modes, and Richard M. Heiberger
+(rmh@fisher.stat.temple.edu) has done much of the work for
+implementing the SAS sub-mode, as well as assisted with S-PLUS and S4
+development.  Douglas Bates (bates@stat.wisc.edu) contributed the
+initial S4 mode, as well as provided disk space, ftp and http access
+to the source for development purposes.
+
+We are grateful to David M. Smith , the previous developer (for S-mode
+3.x and 4.x), as well as to the initial developers of S-mode, Doug
+Bates, Ed Kademan and Frank Ritter.
+
+In addition, some of the code has been and will be borrowed from Tom
+Cook (from his excellent SAS mode) and Thomas Lumley (preliminary
+Stata mode), gratefully (from us) and with permission (from them).
 
 The name is ESS.  Not ESS-mode.
+
+
 
 0. LICENSE
 ----------
@@ -39,7 +72,7 @@ Languages Supported (or planned to be supported)
 	LispStat dialects (XLispStat, ViSta)
 	SAS
 	Stata
-	SPSS dialects (SPSS, Fiasco)
+	SPSS dialects (SPSS, Fiasco (GNU project))
 	
 Editing source code (S, LispStat, SAS)
 
@@ -283,5 +316,5 @@ The purposes of the mailing list include
 ----
 Richard M. Heiberger <rmh@fisher.stat.temple.edu>, Stat Dept., Temple U.
 Kurt Hornik <hornik@ci.tuwien.ac.at> Stat. Dept., TU-Wien
-Martin Maechler <maechler@stat.math.ethz.ch> Stat. Dept., ETHZ
-A.J. Rossini <rossini@stat.sc.edu> Stat. Dept., U South Carolina
+Martin Maechler <maechler@stat.math.ethz.ch> Stat. Dept., ETH-Zurich
+A.J. (Tony) Rossini <rossini@stat.sc.edu> Stat. Dept., Univ of South Carolina
