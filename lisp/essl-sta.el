@@ -6,9 +6,9 @@
 ;;         Brendan Halpin <brendan@essex.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/11/16 19:43:52 $
-;; Version: $Revision: 5.18 $
-;; RCS: $Id: essl-sta.el,v 5.18 1999/11/16 19:43:52 ess Exp $
+;; Modified: $Date: 1999/11/16 19:56:04 $
+;; Version: $Revision: 5.19 $
+;; RCS: $Id: essl-sta.el,v 5.19 1999/11/16 19:56:04 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -58,7 +58,8 @@
 ;;
 
 
-(load-library "make-regexp") ;; this is necessary for
+(require 'make-regexp)
+;;(load-library "make-regexp") ;; this is necessary for
 			     ;; ado-set-font-lock-keywords
 
 (defconst STA-help-sec-keys-alist
