@@ -1,13 +1,13 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.34 $, for ESS version 5.1.20)
+   ($Revision: 5.35 $, for ESS version
 
    This is the README file for the distribution of ESS version  the
 gamma series we are using on the way to producing 5.2 (the next stable
 distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported include:
-S dialects (S 3/4, S-PLUS 3.x, and R), LispStat dialects (XLispStat,
+S dialects (S 3/4, S-PLUS 3/4/5/6, and R), LispStat dialects (XLispStat,
 ViSta), and SAS.  Stata and SPSS dialect (SPSS, PSPP) support is being
 examined for possible future implementation (a preliminary Stata mode is
 distributed).
@@ -433,8 +433,9 @@ Unix installation
      ess-5.1.21.
           	gunzip ess-5.1.21.tar.gz
           	tar vxf ess-5.1.21.tar
-     	(or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).  	(or using GNU
-     tar:  `tar zvxf ess-5.1.21.tar.gz').
+
+          	(or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).
+          	(or using GNU tar:  `tar zvxf ess-5.1.21.tar.gz').
 
      The `tar' command will extract files into the current directory.
      Do not create ess-5.1.21   depth to your directory structure.
