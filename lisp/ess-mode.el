@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/20 21:24:52 $
-;; Version: $Revision: 1.73 $
-;; RCS: $Id: ess-mode.el,v 1.73 1997/11/20 21:24:52 rossini Exp $
+;; Modified: $Date: 1997/11/20 21:29:14 $
+;; Version: $Revision: 1.74 $
+;; RCS: $Id: ess-mode.el,v 1.74 1997/11/20 21:29:14 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -149,7 +149,7 @@
     ["Eval region"   ess-eval-region-and-go   t]
     ["Eval function" ess-eval-function-and-go t]
     ["Eval line"     ess-eval-line-and-go     t]
-    ["About" (lambda nil (interactive) (ess-goto-info "Evaluating code")) t]
+    ["About"         (ess-goto-info "Evaluating code") t]
     )
    ("ESS Eval"
     ["Eval buffer"       ess-eval-buffer             t]
@@ -158,16 +158,14 @@
     ["Step through line" ess-eval-line-and-next-line t]
     ["Enter expression"  ess-execute-in-tb           t]
     ["Eval line"         ess-eval-line               t]
-    ["About"             (lambda nil
-			   (interactive)
-			   (ess-goto-info "Evaluating code")) t]
+    ["About"             (ess-goto-info "Evaluating code") t]
     )
    ("Motion..."
     ["Edit new object"       ess-dump-object-into-edit-buffer t]
-    ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS           t]
-    ["Switch to ESS buffer"    ess-switch-to-ESS                  t]
+    ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS      t]
+    ["Switch to ESS buffer"    ess-switch-to-ESS             t]
     ["End of function"	    ess-end-of-function              t]
-    ["Beginning of function" ess-beginning-of-function        t])
+    ["Beginning of function" ess-beginning-of-function       t])
    ("ESS list..."
     ["Backward list"         backward-list                   t]
     ["Forward list"          forward-list                    t]
@@ -179,13 +177,13 @@
     )
    ("ESS Edit"
     ["Complete Filename" comint-replace-by-expanded-filename t]
-    ["Complete Object"   ess-complete-object-name              t]
+    ["Complete Object"   ess-complete-object-name            t]
     ["Kill sexp"         kill-sexp                           t]
-    ["Mark function"     ess-mark-function                     t]
-    ["Indent expression" ess-indent-exp                        t]
-    ["Indent line"       ess-indent-command                    t]
+    ["Mark function"     ess-mark-function                   t]
+    ["Indent expression" ess-indent-exp                      t]
+    ["Indent line"       ess-indent-command                  t]
     ["Undo"              undo                                t]
-    ;;["About"   (lambda nil (interactive) (ess-goto-info "Edit buffer")) t]
+    ["About"             (ess-goto-info "Edit buffer")       t]
     )
    "------"
    ["Describe"  describe-mode t]
