@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/07/23 17:04:45 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essl-bug.el,v 1.5 2001/07/23 17:04:45 ess Exp $
+;; Modified: $Date: 2001/07/24 20:08:19 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essl-bug.el,v 1.6 2001/07/24 20:08:19 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -35,6 +35,9 @@
 
 (require 'font-lock)
 (require 'comint)
+(require 'ess-emcs)
+
+(if (not (w32-shell-dos-semantics)) (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh))
 
 (if (assoc "\\.bug\\'" auto-mode-alist) nil
     (setq auto-mode-alist
@@ -115,67 +118,90 @@
 )
 
 
-(defvar ess-bugs-batch-command "backbugs" 
-   "ESS[BUGS]:  Set to name of backbugs script that comes with ESS[BUGS].")
+(defcustom ess-bugs-batch-command "backbugs" 
+"ESS[BUGS]:  Set to name and location of \"backbugs\" script.
+Note that the script that comes with ESS[BUGS] is an enhanced version."
+    :group 'ess-bugs
+    :type  'string
+)
 
-(defvar ess-bugs-batch-post-command
+(defcustom ess-bugs-batch-pre-command
+    (if (w32-shell-dos-semantics) "start" "nohup")
+    "ESS[BUGS]:  Modifiers at the beginning of the backbugs command line."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-batch-post-command
     (if (w32-shell-dos-semantics) " " "&")
-    "ESS[BUGS]:  Modifiers at the end of the backbugs command line.")
+    "ESS[BUGS]:  Modifiers at the end of the backbugs command line."
+    :group 'ess-bugs
+    :type  'string
+)
 
-(defvar ess-file "."
-   "ESS:  file with PATH.")
+(defvar ess-bugs-file "."
+   "ESS:  BUGS file with PATH.")
 
-(defvar ess-file-root "."
-   "ESS:  Root of file.")
+(defvar ess-bugs-file-root "."
+   "ESS:  Root of BUGS file.")
 
-(defvar ess-file-suffix "."
-   "ESS:  Suffix of file.")
+(defvar ess-bugs-file-suffix "."
+   "ESS:  Suffix of BUGS file.")
 
-(defvar ess-file-dir "."
-   "ESS:  Directory of file.")
+(defvar ess-bugs-file-dir "."
+   "ESS:  Directory of BUGS file.")
 
+(defvar ess-bugs-file-data "."
+   "ESS:  BUGS data file.")
 
-(defun ess-file ()
-   "ESS:  Set `ess-file', `ess-file-root', `ess-file-suffix' and `ess-file-dir'."
+(defcustom ess-bugs-init-suffix ".ini"
+   "ESS:  BUGS init file suffix."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-data-suffix ".dat"
+   "ESS:  BUGS data file suffix."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defun ess-bugs-file ()
+   "ESS:  Set `ess-bugs-file', `ess-bugs-file-root', `ess-bugs-file-suffix' and `ess-bugs-file-dir'."
    (interactive)
 
-   (let ((temp (buffer-name)))
-        (setq ess-file (expand-file-name temp))
-        (setq ess-file-dir (file-name-directory ess-file))
-        (setq ess-file-root (file-name-nondirectory (file-name-sans-extension ess-file)))
+   (let ((ess-bugs-temp-string (buffer-name)))
+        (setq ess-bugs-file (expand-file-name ess-bugs-temp-string))
+        (setq ess-bugs-file-dir (file-name-directory ess-bugs-file))
+        (setq ess-bugs-file-root (file-name-nondirectory (file-name-sans-extension ess-bugs-file)))
 
-        (if (fboundp 'file-name-extension) (setq ess-file-suffix (file-name-extension temp))
-	     (setq temp (split-string temp "[.]"))
-	     (setq ess-file-suffix (nth (- (length temp) 1) temp)))
-	(setq ess-file-suffix (concat "." ess-file-suffix))
+        (if (fboundp 'file-name-extension) (setq ess-bugs-file-suffix (file-name-extension ess-bugs-temp-string))
+	     (setq ess-bugs-temp-string (split-string ess-bugs-temp-string "[.]"))
+	     (setq ess-bugs-file-suffix (nth (- (length ess-bugs-temp-string) 1) ess-bugs-temp-string)))
+	(setq ess-bugs-file-suffix (concat "." ess-bugs-file-suffix))
    )
 )
 
 
 (defun ess-switch-to-suffix (suffix)
    "ESS:  Switch to file with suffix."
-   (find-file (concat ess-file-dir ess-file-root suffix))
+   (find-file (concat ess-bugs-file-dir ess-bugs-file-root suffix))
 
    (if (equal 0 (buffer-size)) (progn
-	(if (equal ".bug" suffix) (let ((temp 0))
-	    (insert (concat "model " ess-file-root ";\n"))
-	    (save-excursion
-		(find-file (concat ess-file-dir ess-file-root ".dat"))
-	        (setq temp (int-to-string (count-lines (point-min) (point-max))))
-		(ess-switch-to-suffix ".bug")
-	    )
-	    (insert (concat "const N = " temp ";\n"))
+	(if (equal ".bug" suffix) (progn
+	    (insert (concat "model %MODEL;\n"))
+	    (insert (concat "const N = 0;#%N\n"))
 	    (insert "var ;\n")
-	    (insert (concat "data  in \"" ess-file-dir ess-file-root ".dat\";\n"))
-	    (insert (concat "inits  in \"" ess-file-dir ess-file-root ".ini\";\n"))
+	    (insert (concat "data  in \"%DATA\";\n"))
+	    (insert (concat "inits in \"%INIT\";\n"))
 	    (insert "{\n")
             (insert "    for (i in 1:N) {\n    \n")
             (insert "    }\n")
             (insert "}\n")
-	))
+	))	
 
 	(if (equal ".cmd" suffix) (progn
-	    (insert (concat "compile(\"" ess-file-dir ess-file-root ".bug\")\n"))
+	    (insert (concat "compile(\"" ess-bugs-file-dir ess-bugs-file-root ".bug\")\n"))
 	    (insert "update( )\n")
 	    (insert "monitor( )\n")
 	    (insert "checkpoint( )\n")
@@ -186,6 +212,12 @@
     ))
 )
 		
+(defun ess-exit-notify-sh (string)
+  "Detect completion or failure of submitted job and notify the user."
+  (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
+	 (beg (string-match exit-done string)))
+    (if beg
+	(message (substring string beg (match-end 0))))))
 
 (defun ess-revert ()
   "ESS: Revert from disk if file and buffer modification times are different."
@@ -198,30 +230,72 @@
 (defun ess-bugs-next-action ()
    "ESS[BUGS]:  Perform the appropriate next action."
    (interactive)
-   (ess-file)
+   (ess-bugs-file)
 
-   (if (equal ".bug" ess-file-suffix) 
+   (if (equal ".bug" ess-bugs-file-suffix) 
 	(if (equal 0 (buffer-size)) (ess-switch-to-suffix ".bug")
-	    (save-buffer)
-	    (ess-switch-to-suffix ".cmd"))
-   )
+	    (save-excursion 
+		(goto-char (point-min))
 
-   (if (equal ".cmd" ess-file-suffix) (progn
+	        (if (search-forward "%MODEL" nil t) 
+		    (replace-match ess-bugs-file-root t t))
+
+	        (if (search-forward "%DATA" nil t) (progn
+		    (setq ess-bugs-file-data (concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-data-suffix))
+		    (replace-match ess-bugs-file-data t t))
+	        ;;else
+	        (if (search-forward-regexp "data.+in[ \t\n]+\"\\(.*\\)\"" nil t)
+		    (setq ess-bugs-file-data (match-string 1))))
+
+	        (if (search-forward "%INIT" nil t) 
+		    (replace-match (concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-init-suffix) t t))
+ 
+		(let ((ess-bugs-temp-string " ")
+		    (ess-bugs-buffer-ptr nil))
+		    (goto-char (point-min))
+		
+		    (if (search-forward-regexp "N[ \t\n]*=[ \t\n]*[0-9]+;#%N" nil t) (progn
+			(save-excursion 
+			    (setq ess-bugs-buffer-ptr (find-buffer-visiting ess-bugs-file-data))
+
+			    (if ess-bugs-buffer-ptr (set-buffer ess-bugs-buffer-ptr)
+				(set-buffer (create-file-buffer ess-bugs-file-data))
+				(insert-file-contents ess-bugs-file-data t))
+
+			    (setq ess-bugs-temp-string (concat "N = " (int-to-string (count-lines (point-min) (point-max))) ";#%N"))
+			)
+
+			(replace-match ess-bugs-temp-string t t)
+		    ))
+
+		)
+	    )
+
+	    (save-buffer)
+	    (ess-switch-to-suffix ".cmd")
+	)
+    )
+
+   (if (equal ".cmd" ess-bugs-file-suffix) (progn
 	(save-buffer)
 	(shell)
 
-	(if (string-equal ":" (substring ess-sas-file-path 1 2)) 
+    (if (w32-shell-dos-semantics)
+	(if (string-equal ":" (substring ess-bugs-file 1 2)) 
 	    (progn
-		(insert (substring ess-sas-file-path 0 2))
+		(insert (substring ess-bugs-file 0 2))
 		(comint-send-input)
 	    )
 	)
+    )
 
-	(insert (concat "cd \"" (convert-standard-filename (file-name-directory ess-file)) "\""))
+	(insert (concat "cd \"" (convert-standard-filename (file-name-directory ess-bugs-file)) "\""))
 	(comint-send-input)
-	(insert (concat ess-bugs-batch-command " " ess-file-root " " ess-file " " ess-bugs-batch-post-command))
+
+	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " " 
+	    ess-bugs-file-root " " ess-bugs-file " " ess-bugs-batch-post-command))
+
 	(comint-send-input)
-;;	(ess-switch-to-suffix ".log")
    ))
 )
 
