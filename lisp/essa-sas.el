@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/09/03 04:36:08 $
-;; Version: $Revision: 1.116 $
-;; RCS: $Id: essa-sas.el,v 1.116 2002/09/03 04:36:08 rmh Exp $
+;; Modified: $Date: 2002/09/04 04:21:25 $
+;; Version: $Revision: 1.117 $
+;; RCS: $Id: essa-sas.el,v 1.117 2002/09/04 04:21:25 rmh Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -619,9 +619,11 @@ i.e. let arg1 be your local equivalent of
     ;;else
       (ess-save-and-set-local-variables)
       (ess-sas-goto-shell t)
-      (if ess-microsoft-p
-	  (insert "cd "  (file-name-directory ess-sas-file-path))
-	(insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)")))))
+;      (if ess-microsoft-p
+;	  (insert "cd "  (file-name-directory ess-sas-file-path))
+;	(insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)")))))
+      (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) 
+"\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
       (comint-send-input)
       (insert ess-sas-submit-pre-command " " arg1 " "  
 	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 
