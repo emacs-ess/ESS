@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/08/15 21:35:41 $
-;; Version: $Revision: 1.143 $
-;; RCS: $Id: essa-sas.el,v 1.143 2003/08/15 21:35:41 rsparapa Exp $
+;; Modified: $Date: 2003/08/18 18:45:34 $
+;; Version: $Revision: 1.144 $
+;; RCS: $Id: essa-sas.el,v 1.144 2003/08/18 18:45:34 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -908,6 +908,7 @@ Without args, toggle between these options."
 
 (defvar ess-sas-global-pc-keys nil
   "Non-nil if function keys use PC-like SAS key definitions in all modes.")
+
 (defun ess-sas-global-pc-keys ()
   "PC-like SAS key definitions"
   (interactive)
@@ -931,10 +932,16 @@ Without args, toggle between these options."
       (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
 					;else
     (global-set-key [(control tab)] 'ess-sas-backward-delete-tab))
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
+  (setq ess-sas-global-pc-keys t)
+  (setq ess-sas-global-unix-keys nil)
+  (setq ess-sas-local-pc-keys nil)
+  (setq ess-sas-local-unix-keys nil)
+)
 
 (defvar ess-sas-global-unix-keys nil
   "Non-nil if function keys use Unix-like SAS key definitions in all modes.")
+
 (defun ess-sas-global-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
@@ -958,11 +965,17 @@ Without args, toggle between these options."
 	    (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
 	    ;else
 	    (global-set-key [(control tab)] 'ess-sas-backward-delete-tab))
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path) 
+  (setq ess-sas-global-pc-keys nil)
+  (setq ess-sas-global-unix-keys t)
+  (setq ess-sas-local-pc-keys nil)
+  (setq ess-sas-local-unix-keys nil)
+)
 
 (defvar ess-sas-local-pc-keys nil
   "Non-nil if function keys use PC-like SAS key definitions
 in SAS-mode and related modes.")
+
 (defun ess-sas-local-pc-keys ()
   "PC-like SAS key definitions."
   (interactive)
@@ -981,11 +994,17 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path) 
+  (setq ess-sas-global-pc-keys nil)
+  (setq ess-sas-global-unix-keys nil)
+  (setq ess-sas-local-pc-keys t)
+  (setq ess-sas-local-unix-keys nil)
+)
 
 (defvar ess-sas-local-unix-keys nil
   "Non-nil if function keys use Unix-like SAS key definitions
 in SAS-mode and related modes.")
+
 (defun ess-sas-local-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
@@ -1004,8 +1023,12 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
-
+  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path) 
+  (setq ess-sas-global-pc-keys nil)
+  (setq ess-sas-global-unix-keys nil)
+  (setq ess-sas-local-pc-keys nil)
+  (setq ess-sas-local-unix-keys t)
+)
 
 (provide 'essa-sas)
 
