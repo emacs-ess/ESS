@@ -1,3 +1,14 @@
+2004-05-04  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* doc/help-s.texi (ESS-help--assistance with viewing help): Refer
+	to Help chapter.
+
+	* doc/ess.texi (Multiple ESS processes): ess-request-a-process not
+	bound to C-c C-k.  Commented out some doc for
+	ess-plain-first-buffername.
+	(System dependent): Change of section name from "Other variables
+	..." to "Variables ...".
+
 2004-04-28  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* doc/ess.texi: Document winjava, inferior-ess-own-frame and
@@ -3811,7 +3822,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 2004/04/28 10:21:40 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 2004/05/04 14:20:46 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -6001,6 +6012,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.34  2004/05/04 14:20:46  stephen
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 5.33  2004/04/28 10:21:40  stephen
 	* Removing *** empty log message ***
 	* Removing
