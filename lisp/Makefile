@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.22 $.
+### File: $Revision: 5.23 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -84,7 +84,10 @@ TOCOMPILE = ess-vars.el ess.el ess-site.el ess-utils.el \
 	essl-lsp.el essd-xls.el essd-vst.el \
 	essl-sas.el essd-sas.el \
 	essl-sta.el essd-sta.el \
+	essl-omg.el essd-omg.el \
+	essa-r.el essa-sas.el \
 	essddr.el
+
 SOURCES = $(TOCOMPILE) ess-debug.el
 
 
