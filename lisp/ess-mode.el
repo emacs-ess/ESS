@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/20 14:18:26 $
-;; Version: $Revision: 1.72 $
-;; RCS: $Id: ess-mode.el,v 1.72 1997/11/20 14:18:26 rossini Exp $
+;; Modified: $Date: 1997/11/20 21:24:52 $
+;; Version: $Revision: 1.73 $
+;; RCS: $Id: ess-mode.el,v 1.73 1997/11/20 21:24:52 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -149,7 +149,7 @@
     ["Eval region"   ess-eval-region-and-go   t]
     ["Eval function" ess-eval-function-and-go t]
     ["Eval line"     ess-eval-line-and-go     t]
-    ;;["About" (lambda nil (interactive) (ess-goto-info "Evaluating code")) t]
+    ["About" (lambda nil (interactive) (ess-goto-info "Evaluating code")) t]
     )
    ("ESS Eval"
     ["Eval buffer"       ess-eval-buffer             t]
@@ -158,9 +158,9 @@
     ["Step through line" ess-eval-line-and-next-line t]
     ["Enter expression"  ess-execute-in-tb           t]
     ["Eval line"         ess-eval-line               t]
-    ;;    ["About"             (lambda nil
-    ;;		   (interactive)
-    ;;	   (ess-goto-info "Evaluating code")) t]
+    ["About"             (lambda nil
+			   (interactive)
+			   (ess-goto-info "Evaluating code")) t]
     )
    ("Motion..."
     ["Edit new object"       ess-dump-object-into-edit-buffer t]
@@ -175,7 +175,7 @@
     ["Enclosing parenthesis" backward-up-list                t]
     ["Backward sexp"         backward-sexp                   t]
     ["Forward sexp"          forward-sexp                    t]
-    ;;["About"                 (Info-goto-node "(Emacs)Lists") t]
+    ["About"                 (Info-goto-node "(Emacs)Lists") t]
     )
    ("ESS Edit"
     ["Complete Filename" comint-replace-by-expanded-filename t]
