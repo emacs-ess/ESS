@@ -112,40 +112,41 @@ Keywords: Data Analysis, Programming Tools, User Interfaces, SAS,
 Integrated Development Environments (IDEs) combine features and tools
 in a single interface in an attempt to increase programmer
 productivity and efficiency.  The increased speed in commercial
-software development time in the last decade, especially in time to
-deployment of complex software systems, can be partially attributed to
-the use of IDEs and similar Rapid Application Development (RAD) tools
-and methodologies.  In the field of statistics, programming is an
-important skill which can be augmented and enhanced by the right tools
-and environment.  This is especially important with the rise of
-computational tools such as resampling (bootstrap and jackknife
-approaches) and Markov Chain Monte Carlo (MCMC) sampling (such as
-Gibbs and Metropolis--Hastings).
+development time of complex software systems in the last decade can be
+partially attributed to the use of IDEs and other Rapid Application
+Development (RAD) tools.  In the field of statistics, programming is
+an important skill which can be augmented and enhanced by the right
+tools and environment.  This is especially important with the
+increased use of simulation-based statistical procedures including
+resampling (bootstrap and jackknife approaches) and Markov Chain Monte
+Carlo (MCMC) sampling (such as Gibbs and Metropolis--Hastings).
 
-In the field of statistics, analytic software tools are intended for
-either general data analysis or target specialized forms of
-statistical analysis, with the specialized tools sometimes being
-orders of magnitude more efficient in producing analyses.  Tightly
-coupled inter-operability between programs is rare.  This suggests
-that there is efficiency can be gained by switching between data
-analysis tools.  For example, general purpose tools such as R
-\citep{ihak:gent:1996} do not perform Bayesian analyses as easily as
-focused tools such as BUGS \citep{SpieThomBest:1999}.  On the other
-hand, these specialized tools lack breadth in the scope of analyses
-and graphics that can be generated.  Indeed, BUGS is distributed with
-procedures that simplify the transfer of BUGS output to R or S for
-display of the results.  More generally, this suggests a potential
-efficiency gain through the use of multiple computational tools for
-complex statistical analyses, but unfortunately, most tools have their
-own idiosyncratic user interfaces which negate this.
+Statistical software tools are intended for either ``general'' data
+analysis or can target specialized statistical analyses, with the
+specialized tools sometimes being orders of magnitude more efficient
+for production of data analyses.  However, this is balanced by the
+inability of the specialized tools to perform a wide range of common
+operations which are available in the general package.  Tightly
+coupled interoperability between programs is rare; the need to switch
+between tools is unfortunately not.  For example, general purpose
+tools such as R \citep{ihak:gent:1996} do not perform Bayesian
+analyses as easily as focused tools such as BUGS
+\citep{SpieThomBest:1999}.  On the other hand, these specialized tools
+lack breadth in the scope of analyses and graphics that can be
+generated.  Indeed, BUGS is distributed with applications which
+simplify the transfer of BUGS output to R or S for processing the
+results using the CODA package.  This suggests a possible gain through
+the use of multiple computational tools for complex statistical
+analyses, but unfortunately, most tools have their own idiosyncratic
+user interfaces which negates this gain in effectiveness.
 
-Emacs Speaks Statistics (ESS) provides a single keyboard interface for
-a family of statistical computing tasks.  The primary user tasks for
-which ESS is optimized are statistical coding and interactive data
-analysis.  Statistical coding is the writing of computer code for data
-analysis.  This code might be in a compilable language, such as C or
-Fortran, or it might be in an interpreted language such as \Splus,
-SAS, R, \XLispStat, Perl or Python.  The task of entering commands for
+Emacs Speaks Statistics (ESS) provides a single point of interface for
+a variety of statistical computing tools.  ESS is optimized for the
+tasks of statistical coding and interactive data analysis.
+Statistical coding is the writing of computer code for data analysis.
+This code might be in a compilable language, such as C or Fortran, or
+it might be in an interpreted language such as \Splus, SAS, R,
+\XLispStat, Perl, or Python.  The task of entering commands for
 interactive data analysis is similar.  In either case, text is written
 in a computer language and sent to a computer program for compilation
 or interpretation.  The primary difference is that the results of a
@@ -153,152 +154,64 @@ small set of commands are of critical interest for review in the
 analysis phase, but the results of all commands are of interest in the
 coding phase.  Both of these tasks can be present at the same time,
 for example in the use of compiled Fortran code for optimization,
-which is being called from an interpreted language, such as \Splus, R,
-or \XLispStat, containing the objective function to optimize.
+which is called from an interpreted language such as R, in which the
+objective function to optimize is written.
 
-Conflicts between interfaces can be simple, such as different
+Simple conflicts between interfaces are exemplified by different
 keystrokes for editing tasks such as copy and paste, beginning of
-line, highlighting regions.  The simple conflicts are sometimes the
-most aggravating because our fingers are primarily trained for one
-interface convention, and there is continually interference with that
-training.  ESS provides a uniform single keyboard interface for
-editing files and interactive data analysis which solves that specific
-problem.
+line, highlighting regions.  These are sometimes the most aggravating
+because our fingers are trained for a primary interface convention
+which is continually interfered with.  ESS solves this problem by
+providing a uniform keyboard interface.
 
-However, some interface conflicts can be complex, such as the
-coordination of several files of data and code in a single analysis.
-ESS, as part of Emacs, incorporates version code control systems, ftp
-and other protocols for transferring files across machines, a smooth
-interface to documentation systems such as \LaTeX\ and \textsc{html},
-and a myriad of housekeeping tasks.  In addition, as a programmable
-editor, Emacs can be programmed to perform editing tasks for data
-cleaning and management.
+Some interface conflicts can be complex, involving the coordination of
+several files of data and source code for a single analysis. ESS, as
+part of Emacs, integrates version code control systems, methods for
+access to programs and files on remote networks, an interface to
+documentation systems such as \LaTeX\ and \textsc{xml}, as well as
+functionality for many common tasks.  In addition, Emacs can be
+programmed to perform many tasks related to data cleaning, management,
+and editing.
 
-Few statistical packages have identical command-line interfaces; this
-is distinct from the differences between the actual macro or
-programming languages.  This means that it might be necessary for a
-statistical analyst to learn 2 or 3 different text-based interfaces
-for editing and executing code.  Furthermore, it might be necessary
-for the analyst to consider dialects of a language, for example under
-the S family of languages, there is R, \Splus, and the original S
-implementation, as well as different versions of each of these.  Code
-design and testing necessitates working in multiple dialects and
-versions; this might mean simultaneously accessing programs which run
-on completely different sets of machines.  For example, one might want
-to be connected to multiple R processes.  Reasons for this include
-verifying behavior on different versions of the same software,
-test-and-run scenarios where one process is doing long-term processing
-while the other is doing short-term testing, simulations, running
-multiple processes on multiple machines from the same place.
+Other complex interface conflicts exist.  For example, few statistical
+packages have identical command-line interfaces; this is a distinct
+problem from that of syntax differences between macro or programming
+languages.  Thus, it might be necessary for a statistical analyst to
+learn 2 or 3 different sets of keystrokes for editing and executing
+code.  At a higher level, it might be necessary for the analyst to
+consider dialects of a language, for example under the S family of
+languages, there is R, \Splus, and the original S implementation, as
+well as different versions of each of these, in order to verify the
+veracity of the statistical package.  Another task, code design and
+testing, necessitates working in multiple dialects and versions; this
+might mean simultaneously accessing programs which run on completely
+different sets of machines.  For example, one might want to be
+connected to multiple R processes, in order to verify behavior on
+different versions of the same software; perform test-and-run
+scenarios where one process is doing long-term processing while the
+other is doing short-term testing; simulations; and run multiple
+processes on different remote machines from the same location.
 
-ESS mitigates some of the problems noted above.  It provides a
-superior editor, an interface to statistical processes, and additional
-tools which aid both statistical software development and data
-analysis.  It works with common statistical software, including the S
-languages (which include S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\ 
-\citep{Splus}, and R \citep{ihak:gent:1996}); \XLispStat\ 
-\citep{Tier90} and its extensions Arc \citep{Cook:Weisberg:1999} and
-ViSta \citep{youn:fald:mcfa:1992}; SAS \citep{SAS:8.0}; \Stata\ 
-\citep{Stata:6.0}; Omegahat \citep{DTLang:2000}; and BUGS
-\citep{SpieThomBest:1999}.  ESS can be extended to accommodate most
-statistical packages which can be controlled from a command-line.
+ESS mitigates some of the problems noted above.  It provides a well
+designed and documented programmer's editor, an interface to
+statistical processes, and additional tools which aid both statistical
+software development and data analysis.  It works with common
+statistical software, including the S languages (which include S
+\citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\ \citep{Splus}, and R
+\citep{ihak:gent:1996}); \XLispStat\ \citep{Tier90} and its extensions
+Arc \citep{Cook:Weisberg:1999} and ViSta \citep{youn:fald:mcfa:1992};
+SAS \citep{SAS:8.0}; \Stata\ \citep{Stata:6.0}; Omegahat
+\citep{DTLang:2000}; and BUGS \citep{SpieThomBest:1999}.  ESS can be
+extended to accommodate most statistical packages which can be
+controlled from a command-line.
 
-The rest of this introduction discusses the ESS development
-environment and how it can be used.  Sections \ref{sec:S} and
+The next section discusses statistical user interfaces.  This is
+followed by a discussion of ESS and Emacs.  Sections \ref{sec:S} and
 \ref{sec:SAS} discuss how this is realized for two different
 statistical languages, the S family (S, \Splus, and R) and SAS.  This
 is followed by the history of Emacs' use in statistical programming
 and data analysis, and concludes with a discussion of related work and
 future extensions.
-
-\subsection{Emacs}
-\label{sec:intro:emacs}
-
-Emacs \citep{RMS:2000} is a mature, powerful, and easily extensible
-text editing system which while traditionally used under Unix, is
-freely available under the GNU General Public License for a large
-number of platforms, including Unix, the Apple Macintosh platform, and
-Microsoft Windows platforms.  Emacs shares some features with word
-processors, and more importantly, shares many characteristics with
-operating systems.  Most importantly, Emacs can interact with and
-control other programs either as subprocesses or as cooperating
-processes.
-
-Emacs commands can be entered by keyboard or mouse.  The keyboard
-interface is available on all platforms.  The mouse and menus are
-available on all systems, including both windowed and non-windowed
-environments, which support mice.  The mouse-based interface, through
-menus and toolbars, also tries to facilitate the learning of
-keystroke-based short-cuts.  Additional menus can be defined by the
-user should they be needed.
-
-%Emacs was one of the first tools available with a programmable
-%extension language, Emacs Lisp, which is a dialect of Lisp
-%\citep{RChassell1999,PGraham:1996}.  There are many examples of
-%specialized extensions for assisting and facilitating common editing
-%tasks.  Fundamentally important editing tasks such as programming
-%Makefiles, scripts, and compiled code in many computer languages are
-%well supported.  Many extensions for handling complex tasks have been
-%developed, such as spreadsheets, interfaces for reading mail, news,
-%and the World-Wide-Web (WWW), database front and back ends, forms
-%entry, and interactive games such as tetris.  Emacs provides an
-%internal help system and a tutorial.
-
-Emacs provides facilities that go beyond simple insertion and
-deletion: viewing two or more files at once; editing formatted text;
-visual comparison of two similar files; and navigation in units of
-characters, words, lines, sentences, paragraphs, and pages.  Emacs
-knows the syntax of each programming language.  It can provide
-automatic indentation of programs and highlight with fonts or colors
-specified syntactic characteristics.  Emacs is extensible using a
-dialect of Lisp \citep{RChassell1999,PGraham:1996}.  This means that
-new functions, with user interaction, can be written for common and
-repeated text-editing tasks.  Emacs provides full customization of the
-keyboard and mouse.  The mouse-based interface, through menus and
-toolbars facilitates the learning of keystroke-based short-cuts.
-Additional user-defined menus can be constructed.
-
-Most programming and documentation tasks fall under the realm of text
-editing.  This work can be enhanced by common IDE features such as
-contextual highlighting and recognition of special reserved words
-appropriate to the programming language in use.  In addition, editor
-behaviors such as folding, outlining, and bookmarks can assist with
-maneuvering around a file.  Type-setting and word-processing, which
-focus on the presentation of a document, are tasks that are not pure
-text-editing.  Emacs shares many features with word-processing
-programs and cooperates with document preparation systems such as
-(\LaTeX; SGML, XML, and XSLT; and Noweb).
-
-The capabilities can be extended in an orthogonal manner to include
-other Emacs packages for assisting with documentation as noted above;
-version control (RCS, CVS, SCCS, PRCS); and remote editing via FTP or
-secure transport mechanisms such as ssh and scp.  Emacs handles the
-interface to both source code and transcripts contextually, providing
-syntax highlighting, bookmarking features, interfaces to directory
-structure, and command-history.
-
-%Emacs provides a sophisticated development environment for programming
-%in traditional compiled languages such as C, C++, and Fortran as well
-%as non-traditional byte-compiled and interpreted languages such as
-%Perl, Java, and \XLispStat.  The development environment is built on
-%Emacs's ability to communicate directly with other processes running
-%simultaneously on the same or connected computers.  Emacs provides
-%interfaces to system-building tools such as \file{make} and to
-%debugging such as the external debuggers \file{JDebug}, \file{gdb},
-%and \file{dbx}.  Finally, Emacs assists with project tasks such as
-%documentation of changes, design, and version control.
-
-Other extensions to Emacs allow it to act as a World-Wide-Web browser,
-a highly sophisticated mail and news reader, a shell/terminal window
-with history, and as an interface to other common text-based tools
-such as spell checking programs.  The Emacs keyboard and mouse
-interface can be re-mapped to resemble that of other text-editors,
-such as ed, vi, wordstar, and brief.
-
-The above reasons suggest that Emacs is a reasonable starting choice
-for providing a universal interface for data analysis and programming.
-ESS extends Emacs to provide a functional, easily extensible and
-uniform interface for multiple statistical packages.
 
 \section{Statistical User Interfaces}
 \label{sec:UI}
@@ -375,8 +288,7 @@ of X11 windowing.
 %% AJR:  yes to the former.  I thought RGui was the former, not the
 %% latter, but I will have to verify.
 
-
-\subsection{ESS}
+\subsection{How ESS extends the CLI}
 \label{sec:UI:ESS}
 
 ESS currently supports a number of interactive statistical programs as
@@ -479,6 +391,95 @@ source code directly from the help file in the same manner as ESS
 normally handles code from a source file.  \stexttt{Rd} mode provides
 syntax highlighting and the ability to submit code to a running ESS
 process, either R or \Splus.
+
+\subsection{Emacs}
+\label{sec:intro:emacs}
+
+Emacs \citep{RMS:2000} is a mature, powerful, and easily extensible
+text editing system which while traditionally used under Unix, is
+freely available under the GNU General Public License for a large
+number of platforms, including Unix, the Apple Macintosh platform, and
+Microsoft Windows platforms.  Emacs shares some features with word
+processors, and more importantly, shares many characteristics with
+operating systems.  Most importantly, Emacs can interact with and
+control other programs either as subprocesses or as cooperating
+processes.
+
+Emacs commands can be entered by keyboard or mouse.  The keyboard
+interface is available on all platforms.  The mouse and menus are
+available on all systems, including both windowed and non-windowed
+environments, which support mice.  The mouse-based interface, through
+menus and toolbars, also tries to facilitate the learning of
+keystroke-based short-cuts.  Additional menus can be defined by the
+user should they be needed.
+
+%Emacs was one of the first tools available with a programmable
+%extension language, Emacs Lisp, which is a dialect of Lisp
+%\citep{RChassell1999,PGraham:1996}.  There are many examples of
+%specialized extensions for assisting and facilitating common editing
+%tasks.  Fundamentally important editing tasks such as programming
+%Makefiles, scripts, and compiled code in many computer languages are
+%well supported.  Many extensions for handling complex tasks have been
+%developed, such as spreadsheets, interfaces for reading mail, news,
+%and the World-Wide-Web (WWW), database front and back ends, forms
+%entry, and interactive games such as tetris.  Emacs provides an
+%internal help system and a tutorial.
+
+Emacs provides facilities that go beyond simple insertion and
+deletion: viewing two or more files at once; editing formatted text;
+visual comparison of two similar files; and navigation in units of
+characters, words, lines, sentences, paragraphs, and pages.  Emacs
+knows the syntax of each programming language.  It can provide
+automatic indentation of programs and highlight with fonts or colors
+specified syntactic characteristics.  Emacs is extensible using a
+dialect of Lisp \citep{RChassell1999,PGraham:1996}.  This means that
+new functions, with user interaction, can be written for common and
+repeated text-editing tasks.  Emacs provides full customization of the
+keyboard and mouse.  The mouse-based interface, through menus and
+toolbars facilitates the learning of keystroke-based short-cuts.
+Additional user-defined menus can be constructed.
+
+Most programming and documentation tasks fall under the realm of text
+editing.  This work can be enhanced by common IDE features such as
+contextual highlighting and recognition of special reserved words
+appropriate to the programming language in use.  In addition, editor
+behaviors such as folding, outlining, and bookmarks can assist with
+maneuvering around a file.  Type-setting and word-processing, which
+focus on the presentation of a document, are tasks that are not pure
+text-editing.  Emacs shares many features with word-processing
+programs and cooperates with document preparation systems such as
+(\LaTeX; SGML, XML, and XSLT; and Noweb).
+
+The capabilities can be extended in an orthogonal manner to include
+other Emacs packages for assisting with documentation as noted above;
+version control (RCS, CVS, SCCS, PRCS); and remote editing via FTP or
+secure transport mechanisms such as ssh and scp.  Emacs handles the
+interface to both source code and transcripts contextually, providing
+syntax highlighting, bookmarking features, interfaces to directory
+structure, and command-history.
+
+%Emacs provides a sophisticated development environment for programming
+%in traditional compiled languages such as C, C++, and Fortran as well
+%as non-traditional byte-compiled and interpreted languages such as
+%Perl, Java, and \XLispStat.  The development environment is built on
+%Emacs's ability to communicate directly with other processes running
+%simultaneously on the same or connected computers.  Emacs provides
+%interfaces to system-building tools such as \file{make} and to
+%debugging such as the external debuggers \file{JDebug}, \file{gdb},
+%and \file{dbx}.  Finally, Emacs assists with project tasks such as
+%documentation of changes, design, and version control.
+
+Other extensions to Emacs allow it to act as a World-Wide-Web browser,
+a highly sophisticated mail and news reader, a shell/terminal window
+with history, and as an interface to other common text-based tools
+such as spell checking programs.  The Emacs keyboard and mouse
+interface can be re-mapped to resemble that of other text-editors,
+such as ed, vi, wordstar, and brief.
+
+The above reasons suggest that Emacs is a reasonable starting choice
+for providing a universal interface for data analysis and programming.
+ESS extends Emacs to provide a functional, easily extensible and
+uniform interface for multiple statistical packages.
 
 \section{Using ESS with the S family of languages}
 \label{sec:S}
