@@ -1,7 +1,7 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.19 $, for ESS 5.1.x)
+   ($Revision: 5.20 $, for ESS 5.1.x)
 
    This is the README file for the distribution of ESS version 5.1.13,
 the alpha/beta series we are using on the way to producing 5.2 (the next
@@ -12,15 +12,17 @@ ViSta), and SAS.  Stata and SPSS dialect (SPSS, PSPP) support is being
 examined for possible future implementation (a preliminary Stata mode is
 distributed).
 
+For INSTALLATION, see way below.
+
    ESS grew out of the desire for bug fixes and extensions to
 S-mode-4.8.  In particular, XEmacs support as well as extensions to
 incorporate R were desired.  In addition, with new modes being
 developed for R, Stata, and SAS, it was felt that providing for a
 unifying framework would eliminate differences in the user interface,
 as well as to provide for faster development of production tools and
-statistical analysis.  5.0 has, for its guts, the basic framework from
-S-mode.  However, it has been cleaned, streamlined, brought closer to
-conformance as a standard GNU Emacs package, and redesigned for
+statistical analysis.  5.1.y has, for its guts, the basic framework
+from S-mode.  However, it has been cleaned, streamlined, brought closer
+to conformance as a standard GNU Emacs package, and redesigned for
 modularity and reuse.
 
    The current development team is led by A.J. (Tony) Rossini
@@ -251,7 +253,7 @@ Installation (from tar file)
    *   cd to a directory where you keep emacs lisp files, or create a
      new   directory to hold the distribution.  This directory will be
      referred   to below as "the ESS distribution directory".  It will
-     contain,   at the end, the tar file ESS-5.1.13.tar.gz, and a
+     contain,   at the end, the tar file `ESS-5.1.13.tar.gz', and a
      directory for   the ESS source, which will be termed "the
      ESS-5.1.13 source directory".    Note that the .elc files may be
      installed elsewhere (as specified in the   Makefile) if desired.
@@ -259,95 +261,91 @@ Installation (from tar file)
    *   Retrieve the compressed tar file from one of the FTP or WWW
      archive   sites via FTP (or HTTP).
 
-   *   Copy ESS-5.1.13.tar.gz to the location where you want the
-     ESS-5.1.13   directory, and cd there.  Extract the files from the
-     distribution,   which will unpack into a subdirectory, ESS-5.1.13.
+   *   Copy `ESS-5.1.13.tar.gz' to the location where you want the
+     ESS-5.1.13 directory, and cd there.  Extract the files from the
+     distribution, which will unpack into a subdirectory, ESS-5.1.13.
+          	gunzip ESS-5.1.13.tar.gz
+          	tar vxf ESS-5.1.13.tar
+     	(or: `gunzip < ESS-5.1.13.tar.gz | tar vxf -' ).  	(or using GNU
+     tar:  `tar zvxf ESS-5.1.13.tar.gz').
 
-     	gunzip ESS-5.1.13.tar.gz 	tar vxf ESS-5.1.13.tar
-
-     	(or: gunzip < ESS-5.1.13.tar.gz | tar vxf - ).  	(or using GNU tar:
-     tar zvxf ESS-5.1.13.tar.gz).
-
-     The tar command will extract files into the current directory.
+     The `tar' command will extract files into the current directory.
 
      Do not create ESS-5.1.13 yourself, or you will get an extra level
      of   depth to your directory structure.
 
-   *   Edit the file ess-site.el as explained in the comments section of
-      that file.  Installations that are using ESS only for S-plus 3.x
-      will probably not need to make any changes.  Installations that
-     also   have one or more of (S4 R SAS XLispStat Stata) will need to
-     uncomment   corresponding lines in ess-site.el.
+   *   Edit the file `lisp/ess-site.el' as explained in the comments
+     section of that file.  Installations that are using ESS only for
+     S-plus   3.x will probably not need to make any changes.
+     Installations that also   have one or more of (S+5 S4 R SAS
+     XLispStat Stata) may need to uncomment   corresponding lines in
+     `ess-site.el'.
 
    *   READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     In the ESS-5.1.13 directory, edit the file Makefile (only if you
-     want   to place the executables in other locations; see LISPDIR and
+     In the ESS-5.1.13 directory, edit the file `Makeconf' (only if you
+      want to place the executables in other locations; see LISPDIR and
       INFODIR) and then type:
-
-     	make
+          	make
 
      If this works, then you might try:
+          	make install
+       Note that the latter does the former as well, so if you are
+     feeling   lucky, you might want to skip it.
 
-     	make install
-
-     Note that the latter does the former as well, so if you are feeling
-      lucky, you might want to skip it.
-
-     This will install the info files (and the lisp files, if they
-     are to go in another directory).  Don't forget to edit the file
-     `dir' in the info directory specified by INFODIR in the Makefile.
-      See the sample `dir' file for an example of the line to add.
+     This will install the info files (and the lisp files, if they are
+     to go   in another directory).  Don't forget to edit the file
+     `dir' in the   info directory specified by `INFODIR' in
+     `doc/Makefile'.  See   the sample `dir' file for an example of the
+     line to add.
 
      If you are using XEmacs, you might do:
-
-     	make EMACS=xemacs
+          	make EMACS=xemacs
 
      and then
+          	make EMACS=xemacs install
+       instead of editing the Makefile.
 
-     	make EMACS=xemacs install
-
-     instead of editing the Makefile.
+     _Note_ that you might need to use GNU make for everything to
+     work properly
 
      An alternative, if you are running XEmacs and have access to the
      XEmacs system directories, would be to place the directory in the
-     site-lisp directory, and simply type "make"  (and copy the
+     site-lisp directory, and simply type `make' (and copy the
      documentation as appropriate).
 
      For Emacs, you would still have to move the files into the top
      level   site-lisp directory.
 
    *   Add the line
-
-     	(load "/PATH/ess-site")
-
-     to your .emacs file (or default.el or site-init.el, for a site-wide
-      installation).  Replace `/PATH' above with the value of
-     ess-lisp-directory as defined in ess-site.el.
+            (load "/PATH/ess-site")
+       to your .emacs file (or default.el or site-init.el, for a
+     site-wide   installation).  Replace `/PATH' above with the value of
+      ess-lisp-directory as defined in ess-site.el.
 
      Alternatively, if ess-site.el is in your current Lisp path, you can
       do:
-
-     	(require 'ess-site)
-
-     to configure Emacs for ESS.
+          	(require 'ess-site)
+       to configure Emacs for ESS.
 
    *   (OPTIONAL) If you are running S-PLUS or R, you might consider
-     installing the database files.  From within (X)Emacs, "C-x d" to
+     installing the database files.  From within (X)Emacs, `C-x d' to
      the   directory containing ESS.  Now:
-
-     M-x S+3   (get running.  once you have reached the SPLUS 3.x
-     prompt, do:)        M-x ess-create-object-name-db   (this will
-     create the file: ess-s+3-namedb.el; if it isn't in the    ESS
-     directory, move it there).
+                 M-x S+3
+       (or M-x S+5: get running.  once you have reached the SPLUS
+     prompt, do:)
+                 M-x ess-create-object-name-db
+       (this will create the file: ess-s+3-namedb.el; if it isn't in the
+       ESS directory, move it there).
 
      Then, completions will be autoloaded and will not be regenerated
      for   every session.
 
-     For R:       M-x R   (get running.  once you have reached the R
-     prompt, do:)       M-x ess-create-object-name-db   (this will
-     create the file: ess-r-namedb.el; if it isn't in the    ESS
-     directory, move it there).
+     For R, do the same, using
+                M-x R
+       and then `M-x ess-create-object-name-db' creating
+     `ess-r-namedb.el'; if it isn't in the ESS directory, move it
+     there).
 
    *   For more information on using ESS in your daily work, see the
      files   README.S, README.SAS, and README.XLispStat.
@@ -361,24 +359,19 @@ Installation (from tar file)
    *   To run statistical processes under (X)Emacs:
 
      Run S-PLUS 3.x with:
-
-     	M-x S+3
-
-     (or M-x S  using backwards compatibility).  You will then be asked
-      for a pathname ("S starting data directory?"), from which to
-     start   the process.
+          	M-x S+3
+       (or M-x S  using backwards compatibility).  You will then be
+     asked   for a pathname ("S starting data directory?"), from which
+     to start   the process.  Similarly for S-PLUS 5.x.
 
      If you wish to run R, you can start it with:
-
-     	M-x R
+          	M-x R
 
      XLispStat can be run with
-
-     	M-x XLS
+          	M-x XLS
 
      SAS can be run with:
-
-     	M-x SAS
+          	M-x SAS
 
    *   That's it!
 
