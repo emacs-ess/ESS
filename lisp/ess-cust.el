@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2003/08/07 16:12:56 $
-;; Version: $Revision: 1.40 $
-;; RCS: $Id: ess-cust.el,v 1.40 2003/08/07 16:12:56 rsparapa Exp $
+;; Modified: $Date: 2003/08/15 21:38:45 $
+;; Version: $Revision: 1.41 $
+;; RCS: $Id: ess-cust.el,v 1.41 2003/08/15 21:38:45 rsparapa Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -828,7 +828,7 @@ order for it to work right.  And Emacs is too smart for it."
 (defcustom R-editor
   (if ess-microsoft-p "gnuclient.exe"
     (if (equal system-type 'Apple-Macintosh) nil
-      "emacsclient")) ;; unix
+      (if (featurep 'xemacs) "gnuclient -q" "emacsclient"))) ;; unix
   "*Editor called by R process with 'edit()' command."
 :group 'ess
 :type 'string)
@@ -841,7 +841,7 @@ order for it to work right.  And Emacs is too smart for it."
 (defcustom S-editor
   (if ess-microsoft-p "gnuclient.exe"
     (if (equal system-type 'Apple-Macintosh) nil
-      "emacsclient")) ;; unix
+      (if (featurep 'xemacs) "gnuclient -q" "emacsclient"))) ;; unix
   "*Editor called by S process with 'edit()' command."
 :group 'ess
 :type 'string)
