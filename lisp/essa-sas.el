@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/16 22:01:22 $
-;; Version: $Revision: 1.76 $
-;; RCS: $Id: essa-sas.el,v 1.76 2002/01/16 22:01:22 rsparapa Exp $
+;; Modified: $Date: 2002/01/18 15:24:34 $
+;; Version: $Revision: 1.77 $
+;; RCS: $Id: essa-sas.el,v 1.77 2002/01/18 15:24:34 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -58,10 +58,10 @@
     :type  'string
 )
 
-(defcustom ess-sas-smart-back-tab nil
-    "*Set to t to make C-TAB insert an end/%end; statement to close a block."
-    :group 'ess-sas
-)
+;;(defcustom ess-sas-smart-back-tab nil
+;;    "*Set to t to make C-TAB insert an end/%end; statement to close a block."
+;;    :group 'ess-sas
+;;)
 
 (defcustom ess-sas-submit-command sas-program
     "*Command to invoke SAS in batch; buffer-local."
@@ -138,7 +138,11 @@ or `ESS-elsewhere' should have one of the following in ~/.emacs
     :type  'string
 )
 
-(defcustom ess-sas-suffix-regexp "[tT][xX][tT]\\|[dD][aA][tT]"
+(defcustom ess-sas-suffix-regexp 
+    (concat (downcase ess-sas-suffix-1) "\\|"
+	(downcase ess-sas-suffix-2) "\\|"
+	(upcase ess-sas-suffix-1) "\\|"
+	(upcase ess-sas-suffix-2))
     "*Regular expression for `ess-sas-suffix-1' and 
 `ess-sas-suffix-2' files."
     :group 'ess-sas
@@ -258,13 +262,13 @@ on the way."
   (interactive)
   
   (let* (;; point of search 
-	 (ess-sas-search-point nil)
+	 ;;(ess-sas-search-point nil)
 	 ;; column of search 
-	 (ess-sas-search-column nil)
+	 ;;(ess-sas-search-column nil)
 	 ;; limit of search 
-	 (ess-sas-search-limit nil)
+	 ;;(ess-sas-search-limit nil)
 	 ;; text to be inserted after a back-tab, if any
-	 (ess-sas-end-text "end;")
+	 ;;(ess-sas-end-text "end;")
 	 ;; current-column
 	 (ess-sas-column (current-column))
 	 ;; remainder of current-column and sas-indent-width
@@ -279,53 +283,54 @@ on the way."
 	  (setq ess-sas-column (- ess-sas-column ess-sas-remainder))
 	  (move-to-column ess-sas-column)
 	  (setq left-margin ess-sas-column)
-
-         (if ess-sas-smart-back-tab (progn
-	  (save-excursion
-	    (setq ess-sas-search-point	    
-		(search-backward-regexp "end" nil t))
-
-	    (if (and ess-sas-search-point
-		(search-backward-regexp "%" (+ ess-sas-search-point -1) t))
-		(setq ess-sas-search-point (+ ess-sas-search-point -1))
-	    )
-		
-	    (if (and ess-sas-search-point
-		(not (equal ess-sas-column (current-column))))
-		(setq ess-sas-search-point nil))
-	    )
-
-	  (save-excursion
-	    (setq ess-sas-search-point	    
-		(search-backward-regexp "do\\|select" 
-		    ess-sas-search-point t))
-
-	    (setq ess-sas-search-column (current-column))
-
-	    (if ess-sas-search-point (progn
-		(save-excursion
-		 (search-backward-regexp "^" nil t)
-		 (setq ess-sas-search-limit (point))
-		)
-
-	        (if (search-backward-regexp "if.*then\\|else" ess-sas-search-limit t)
-		    (setq ess-sas-search-point (point)))
-
-	        (if (search-backward-regexp "%" ess-sas-search-limit t) (progn
-		    (setq ess-sas-end-text "%end;")
-		    (setq ess-sas-search-point (point))
-		))
-
-		(setq ess-sas-search-column (current-column))
-
-	        (if (not (equal ess-sas-column ess-sas-search-column))
-		   (setq ess-sas-search-point nil))
-	  )))
-
-	  (if ess-sas-search-point (insert ess-sas-end-text))
-         ))
     ))
 ))
+
+;; this feature was far too complicated to perfect
+;;      (if ess-sas-smart-back-tab (progn
+;;	  (save-excursion
+;;	    (setq ess-sas-search-point	    
+;;		(search-backward-regexp "end" nil t))
+
+;;	    (if (and ess-sas-search-point
+;;		(search-backward-regexp "%" (+ ess-sas-search-point -1) t))
+;;		(setq ess-sas-search-point (+ ess-sas-search-point -1))
+;;	    )
+		
+;;	    (if (and ess-sas-search-point
+;;		(not (equal ess-sas-column (current-column))))
+;;		(setq ess-sas-search-point nil))
+;;	    )
+
+;;	  (save-excursion
+;;	    (setq ess-sas-search-point	    
+;;		(search-backward-regexp "do\\|select" 
+;;		    ess-sas-search-point t))
+
+;;	    (setq ess-sas-search-column (current-column))
+
+;;	    (if ess-sas-search-point (progn
+;;		(save-excursion
+;;		 (search-backward-regexp "^" nil t)
+;;		 (setq ess-sas-search-limit (point))
+;;		)
+
+;;	        (if (search-backward-regexp "if.*then\\|else" ess-sas-search-limit t)
+;;		    (setq ess-sas-search-point (point)))
+
+;;	        (if (search-backward-regexp "%" ess-sas-search-limit t) (progn
+;;		    (setq ess-sas-end-text "%end;")
+;;		    (setq ess-sas-search-point (point))
+;;		))
+
+;;		(setq ess-sas-search-column (current-column))
+
+;;	        (if (not (equal ess-sas-column ess-sas-search-column))
+;;		   (setq ess-sas-search-point nil))
+;;	  )))
+
+;;	  (if ess-sas-search-point (insert ess-sas-end-text))
+;;         ))
 
 (defun ess-sas-data-view (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
