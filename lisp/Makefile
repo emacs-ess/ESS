@@ -105,11 +105,11 @@ ESS-doc: info html dvi
 
 all:	ESS info html
 
-info:	ess.info
+ess.info: ess.texi
 
 html:	html/ess_toc.html
 
-dvi:	ess.texi
+ess.dvi: ess.texi
 
 ps:	ess.dvi
 	dvips ess.dvi -o ess.ps
@@ -128,7 +128,7 @@ clean:
 	rm -f $(OBJECTS) ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
 	  ess.tp ess.vr ess.cps ess.fns ess.vrs ess.fn texput.log
 
-dist:
+dist: ess.dvi ess.info
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(VERSION)"
 	@echo "**********************************************************"
