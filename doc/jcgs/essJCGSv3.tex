@@ -159,7 +159,7 @@ intelligent environment for statistical analysis}
   substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/26 00:31:57 $ - $Revision: 1.9 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/26 01:02:19 $ - $Revision: 1.10 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -543,30 +543,41 @@ machine exactly as if they were on the local machine.
 
 The increased popularity of exploratory data analysis as well as the
 advent of simple GUIs has made interactive data analysis an important
-component to statistical practices.
-ESS uses three different approaches for communicating with statistical
-packages.
+component to statistical practices.  ESS uses three different
+approaches for communicating with statistical packages: inferior
+process control, which entails redirection of text input and output;
+peer-to-peer style communication, which is currently accomplished
+using DDE; and batch submission of whole or partial text files
+containing analysis scripts.  For packages which do not support any of
+these, the primary use of ESS is as an editing tool, with interaction
+done using windowing cut-and-paste techniques; this still provides
+benefits through the availability of useful editing features.
+Examples of this last situation include the Microsoft versions of SAS,
+Stata, and XLispStat.
 
-\paragraph{Inter-Process Communication.}
-Packages that use the command-line interface are run as an inferior
-process in an Emacs buffer, with the standard input and output of the
-package redirected to the buffer.  Packages that do not use the
-command-line interface must be run as an independent process, possibly
-with limited cooperation.
+%\paragraph{Inter-Process Communication.}
+%Packages that use unix-style command-line interfaces can be run as an
+%inferior process within an Emacs buffer.  The standard input and
+%output of the package redirected to the buffer.
 
-ESS can use the Windows DDE (Dynamic Data Exchange) protocol to
-provide one-way communication directly to packages which function as a
-DDE server.  ESS can control the actions of the package, but it can
-not capture the results directly.  Transcripts must be physically
-copied to an Emacs buffer to get the transcript editing features.
+%Packages that do not use the command-line interface must be run as an
+%independent process, possibly with limited cooperation.  For example,
+%ESS can use the Windows DDE (Dynamic Data Exchange) protocol to
+%provide one-way communication directly to packages which function as a
+%DDE server.  ESS can control the actions of the package, but it can
+%not capture the results directly.  Transcripts must be physically
+%copied to an Emacs buffer to get the transcript editing features.
 
-Statistical packages that use neither the standard input/standard
-output protocol nor DDE can not be directly controlled by Emacs.  But,
-ESS can still provide an editing environment for these statistical
-languages.  The user must either manually cut and paste the edited
-code into the package or save the edited files and run them in a batch
-environment.  The Microsoft Windows versions of \SAS, \Stata, and
-\XLispStat\ are in this category.
+%Statistical packages that use neither the standard input/standard
+%output protocol nor DDE can not be directly controlled by Emacs.  If
+%the package has a batch environment that can operate from a file, ESS
+%can start and monitor its evaluation.  
+
+%ESS can still provide an editing environment for these statistical
+%languages.  The user must either manually cut and paste the edited
+%code into the package or save the edited files and run them in a batch
+%environment.  The Microsoft Windows versions of \SAS, \Stata, and
+%\XLispStat\ are in this category.
 
 One useful extension in ESS is relaxation of the requirement that the
 statistics program be available on the local machine.  ESS provides
