@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.30 1997/06/17 01:58:45 rossini Exp $
+## $Id: Makefile,v 1.31 1997/06/17 02:14:20 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.31  1997/06/17 02:14:20  rossini
+## ess-extras - ess-xtra.el
+##
 ## Revision 1.30  1997/06/17 01:58:45  rossini
 ## trans -> trns
 ##
@@ -113,7 +116,7 @@ AUXFILES = COPYING Makefile NEWS README README.XE TODO \
 SOURCESXE = S-mode-$(VERSION)/ess.el S-mode-$(VERSION)/ess-inf.el \
 	S-mode-$(VERSION)/ess-mode.el S-mode-$(VERSION)/ess-trns.el  \
 	S-mode-$(VERSION)/ess-help.el S-mode-$(VERSION)/ess-site.el \
-	S-mode-$(VERSION)/ess-modeadds.el S-mode-$(VERSION)/ess-extras.el 
+	S-mode-$(VERSION)/ess-modeadds.el S-mode-$(VERSION)/ess-xtra.el 
 
 AUXFILESXE = S-mode-$(VERSION)/COPYING S-mode-$(VERSION)/Makefile \
 	S-mode-$(VERSION)/NEWS S-mode-$(VERSION)/README \
