@@ -3,24 +3,24 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.45 2002/12/01 06:41:32 stephen Exp $
+@comment $Id: ess.texi,v 5.46 2003/06/14 10:08:11 maechler Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
-@title ESS --- Emacs Speaks Statistics 
-@subtitle (Documentation $Revision: 5.45 $ $Date: 2002/12/01 06:41:32 $)
-@author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik, 
+@title ESS --- Emacs Speaks Statistics
+@subtitle (Documentation $Revision: 5.46 $ $Date: 2003/06/14 10:08:11 $)
+@author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @c @author                and David Smith)
 @c @ifhtml
 @c <P><HR></P>
 @c @end ifhtml
-@c 
+@c
 @author Current Documentation by The ESS Developers
-@author Copyright @copyright{} 2002 The ESS Developers
+@author Copyright @copyright{} 2002--2003 The ESS Developers
 @author Copyright @copyright{} 1996--2001 A.J. Rossini
 @c (@email{rossini@@biostat.washington.edu})
 @c @author Department of Biostatistics
@@ -51,32 +51,32 @@
 @node Top, Introduction, (dir), (dir)
 @top ESS: Emacs Speaks Statistics
 
-ESS version 
+ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.45 $ $Date: 2002/12/01 06:41:32 $).
+        (Documentation $Revision: 5.46 $ $Date: 2003/06/14 10:08:11 $).
 
 @display
-by  A.J. Rossini, 
-    R.M. Heiberger, 
-    K. Hornik, 
-    M. Maechler, 
-    R.A. Sparapani 
+by  A.J. Rossini,
+    R.M. Heiberger,
+    K. Hornik,
+    M. Maechler,
+    R.A. Sparapani
 and S.J. Eglen.
 @end display
 
 @c (Formerly: Doug
 @c Bates, Ed Kademan, Frank Ritter and David Smith).
 @quotation
-Emacs Speaks Statistics (ESS) provides an intelligent, consistent 
-interface between the user and the software.  ESS interfaces with 
+Emacs Speaks Statistics (ESS) provides an intelligent, consistent
+interface between the user and the software.  ESS interfaces with
 SAS, S-PLUS, R, BUGS and other statistical analysis packages under
 the Unix, Microsoft Windows, and Apple Mac operating systems.  ESS
 is itself a package within the emacs text editor and uses emacs
 features to streamline the creation and use of statistical software.
 ESS knows the syntax and grammar of statistical analysis packages
-and provides consistent display and editing features based on that 
-knowledge.  ESS assists in interactive and batch execution of 
+and provides consistent display and editing features based on that
+knowledge.  ESS assists in interactive and batch execution of
 statements written in these statistical analysis languages.
 @end quotation
 
@@ -86,45 +86,45 @@ statements written in these statistical analysis languages.
 * Introduction::                Overview of features provided by this package
 * Installation::                Installing ESS on your system
 * Starting up::                 Starting the ESS process
-* Help for the S family::       
-* Help for SAS::                
-* Help for BUGS::                
+* Help for the S family::
+* Help for SAS::
+* Help for BUGS::
 * Entering commands::           Interacting with the process buffer
 * Editing::                     How to create or edit S objects or functions
 * Help::                        Reading help files in ESS
 * Transcript Mode::             Manipulating saved transcript files
 * Miscellaneous::               Other features of ESS
-* Bugs Etc::                    
+* Bugs Etc::
 * Customization::               Customizing ESS
-* Key Index::                   
-* Concept Index::               
-* Variable and command index::  
-@c 
+* Key Index::
+* Concept Index::
+* Variable and command index::
+@c
 @c @detailmenu
 @c  --- The Detailed Node Listing ---
-@c 
+@c
 @c Introduction to ESS
-@c 
+@c
 @c * Features::                    Why should I use ESS?
-@c * New features::                
+@c * New features::
 @c * Credits::                     Authors of and contributors to ESS
 @c * Latest version::              Getting the latest version of ESS
 @c * Manual::                      How to read this manual
-@c 
+@c
 @c Installing ESS on your system
 @c * Unix installation::              Installing ESS on your Unix system
 @c * Microsoft Windows installation:: Installing ESS on your MS Windows system
-@c * Requirements::         emacs, Operating Systems and Statistical Packages 
+@c * Requirements::         emacs, Operating Systems and Statistical Packages
 @c * System dependent::               Other variables you may need to change
-@c 
+@c
 @c Starting the ESS process
-@c 
-@c * Multiple ESS processes::      
+@c
+@c * Multiple ESS processes::
 @c * ESS processes on Remote Computers::
 @c * Customizing startup::         Changing the startup actions
-@c 
+@c
 @c Help for the S family
-@c 
+@c
 @c * ESS(S)--Editing files::
 @c * iESS(S)--Inferior ESS processes::
 @c * Handling and Reusing Transcripts::
@@ -132,9 +132,9 @@ statements written in these statistical analysis languages.
 @c * Philosophies for using ESS(S)::
 @c * Scenarios for use (possibilities--based on actual usage)::
 @c * Customization Examples and Solutions to Problems::
-@c 
+@c
 @c Help for SAS
-@c 
+@c
 @c * ESS(SAS)--Design philosophy::
 @c * ESS(SAS)--Editing files::
 @c * iESS(SAS)--Interactive SAS processes::
@@ -144,9 +144,9 @@ statements written in these statistical analysis languages.
 @c * ESS(SAS)--Usage scenarios::
 @c * iESS(SAS)--Common problems::
 @c * ESS(SAS)--MS Windows::
-@c 
+@c
 @c Interacting with the ESS process
-@c 
+@c
 @c * Command-line editing::        Entering commands and fixing mistakes
 @c * Completion::                  Completion of object names
 @c * Completion details::          Advanced completion concepts
@@ -154,18 +154,18 @@ statements written in these statistical analysis languages.
 @c * Command History::             Command History
 @c * History expansion::           References to historical commands
 @c * Hot keys::                    Hot keys for common commands
-@c * Statistical Process running in ESS?::  
+@c * Statistical Process running in ESS?::
 @c * Other::                       Other commands provided by inferior-ESS
-@c 
+@c
 @c Manipulating the transcript
-@c 
+@c
 @c * Last command::                Manipulating the output from the last command
 @c * Process buffer motion::       Viewing older commands
 @c * Transcript resubmit::         Re-submitting commands from the transcript
 @c * Saving transcripts::          Keeping a record of your S session
-@c 
+@c
 @c Editing S functions
-@c 
+@c
 @c * Edit buffer::                 Edit objects in a specialized buffer
 @c * Loading::                     Loading source files into the ESS process
 @c * Error Checking::              Detecting errors in source files
@@ -174,37 +174,37 @@ statements written in these statistical analysis languages.
 @c * Other edit buffer commands::  Commands for motion, completion and more
 @c * Source Files::                Maintaining @Sl{} source files
 @c * Source Directories::          Names and locations of dump files
-@c 
+@c
 @c Manipulating saved transcript files
-@c 
+@c
 @c * Resubmit::                    Resubmitting commands from the transcript file
 @c * Clean::                       Cleaning transcript files
-@c 
+@c
 @c Other features of ESS
-@c 
+@c
 @c * Highlighting::                Syntactic highlighting of buffers
 @c * Graphics::                    Using graphics with ESS
-@c * Object Completion::           
-@c 
+@c * Object Completion::
+@c
 @c Using graphics with ESS
-@c 
+@c
 @c * printer::                     The printer() graphics driver
 @c * X11::                         The X11() (and other X-windows based) driver
-@c 
+@c
 @c Bugs and Bug Reporting, Mailing Lists
-@c 
-@c * Bugs::                        
-@c * Reporting Bugs::              
-@c * Mailing Lists::               
-@c 
+@c
+@c * Bugs::
+@c * Reporting Bugs::
+@c * Mailing Lists::
+@c
 @c Customizing ESS
-@c 
+@c
 @c * Variables::                   Variables for customization
 @c * Hooks::                       Customizing ESS with hooks
 @c * Keybindings::                 Changing the default ESS keybindings
-@c 
+@c
 @c Variables for customization
-@c 
+@c
 @c * Variables for starting ESS::  Variables for starting ESS
 @c * Dump file variables::         Variables for dump files
 @c * Indentation variables::       Variables controlling indentation
@@ -219,20 +219,20 @@ statements written in these statistical analysis languages.
 @cindex introduction
 
 The S family (@Sl{}, Splus and R) and SAS statistical analysis packages
-provide sophisticated statistical and graphical routines for manipulating 
-data.   @b{E}macs @b{S}peaks @b{S}tatistics (ESS) is based on the merger 
+provide sophisticated statistical and graphical routines for manipulating
+data.   @b{E}macs @b{S}peaks @b{S}tatistics (ESS) is based on the merger
 of two pre-cursors, S-mode and SAS-mode, which provided support for the
 S family and SAS respectively.  Later on, Stata-mode was also incorporated.
 
-ESS provides a common, generic, and useful interface, through emacs, to 
-many statistical packages.  It currently supports the S family, SAS, BUGS, 
+ESS provides a common, generic, and useful interface, through emacs, to
+many statistical packages.  It currently supports the S family, SAS, BUGS,
 Stata and XLisp-Stat with the level of support roughly in that order.
 
 A bit of notation before we begin.  @emph{emacs} refers to both
 @emph{GNU Emacs} by the Free Software Foundation, as well as
 @emph{XEmacs} by the XEmacs Project.  The emacs major
-mode @code{ESS[language]}, where @code{language} can take values such as 
-@code{S}, @code{SAS}, or @code{XLS}.  The inferior process interface 
+mode @code{ESS[language]}, where @code{language} can take values such as
+@code{S}, @code{SAS}, or @code{XLS}.  The inferior process interface
 (the connection between emacs and the running process) referred to as inferior ESS
 (@code{iESS}), is denoted in the modeline by @code{ESS[dialect]}, where
 @code{dialect} can take values such as @code{S3}, @code{S4}, @code{S+3},
@@ -272,7 +272,7 @@ your @Sl{} functions in specified source directories.
 
 @menu
 * Features::                    Why should I use ESS?
-* New features::                
+* New features::
 * Credits::                     Authors of and contributors to ESS
 * Latest version::              Getting the latest version of ESS
 * Manual::                      How to read this manual
@@ -422,7 +422,7 @@ on your system.
 @menu
 * Unix installation::              Installing ESS on your Unix system
 * Microsoft Windows installation:: Installing ESS on your MS Windows system
-* Requirements::         emacs, Operating Systems and Statistical Packages 
+* Requirements::         emacs, Operating Systems and Statistical Packages
 * System dependent::               Other variables you may need to change
 @end menu
 
@@ -532,7 +532,7 @@ with name @samp{*S*} which will be used
 for interacting with the ESS process, and you can start entering commands.
 
 @menu
-* Multiple ESS processes::      
+* Multiple ESS processes::
 * ESS processes on Remote Computers::
 * Customizing startup::         Changing the startup actions
 @end menu
@@ -606,7 +606,7 @@ display the graphs locally by setting the @samp{DISPLAY} environment
 variable appropriately.  Windows users can download @samp{xfree86}
 from cygwin.
 
-@item Graphics (static) on the remote machine. 
+@item Graphics (static) on the remote machine.
 If you don't run the X window system on the local machine, then you can write
 graphics to a file on the remote machine, and display the file in
 a graphics viewer on the local machine.  Most statistical software can
@@ -805,7 +805,7 @@ typing.
 * Command History::             Command History
 * History expansion::           References to historical commands
 * Hot keys::                    Hot keys for common commands
-* Statistical Process running in ESS?::  
+* Statistical Process running in ESS?::
 * Emacsclient::                 Using emacsclient
 * Other::                       Other commands provided by inferior-ESS
 @end menu
@@ -1486,7 +1486,7 @@ details.
 Sends the @code{q()}
 @pindex q()
 command to the ESS process (or @code{(exit)}
-@pindex exit() 
+@pindex exit()
 to the @b{XLS} process), and cleans up any temporary buffers (such as
 help buffers or edit buffers) you may have created along the way.  Use
 this command when you have finished your @Sl{} session instead of simply
@@ -2389,7 +2389,7 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 @menu
 * Highlighting::                Syntactic highlighting of buffers
 * Graphics::                    Using graphics with ESS
-* Object Completion::           
+* Object Completion::
 @end menu
 
 @comment  node-name,  next,  previous,  up
@@ -2517,9 +2517,9 @@ directory, move it there).
 @chapter Bugs and Bug Reporting, Mailing Lists
 
 @menu
-* Bugs::                        
-* Reporting Bugs::              
-* Mailing Lists::               
+* Bugs::
+* Reporting Bugs::
+* Mailing Lists::
 @end menu
 
 @node Bugs, Reporting Bugs, Bugs Etc, Bugs Etc
@@ -2543,10 +2543,10 @@ directory, move it there).
 @c _not_yet_ @node Help OS, Installation, Help for Statistical Packages, Top
 @c _not_yet_ @comment  node-name,  next,  previous,  up
 @c _not_yet_ @chapter Help, arranged by Operating System
-@c _not_yet_ 
+@c _not_yet_
 @c _not_yet_ @menu
 @c _not_yet_ * Unix installation::
-@c _not_yet_ * Microsoft Windows installation:: 
+@c _not_yet_ * Microsoft Windows installation::
 @c _not_yet_ * System dependent::            Other variables you may need to change
 @c _not_yet_ @end menu
 
