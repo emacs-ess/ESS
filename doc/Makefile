@@ -49,7 +49,7 @@ clean :
 
 distclean : clean
 	rm -f ess.dvi ess.ps ess.pdf readme.dvi readme.ps readme.pdf
-	rm -fr html
+	rm -f html/*.html
 
 ../README: $(TEXISRC)
 	$(MAKETXT) readme.texi \
