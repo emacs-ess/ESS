@@ -162,7 +162,7 @@ intelligent environment for statistical analysis}
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/27 14:12:14 $ - $Revision: 1.14 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/27 19:12:57 $ - $Revision: 1.15 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -667,6 +667,10 @@ network connections to a remote computer with \SAS\ installed.  The
 resulting interface is similar to the SAS character terminal
 interface, but with Emacs key sequences.
 
+\paragraph{Interactive BUGS.}
+BUGS software performs Markov Chain Monte Carlo integration.  ESS
+supports interactive processing of BUGS commands. 
+
 % \stexttt{ESS[SAS]} mode can be used in conjunction with the \SAS\ 
 % Display Manager to allow simultaneous access to Emacs for editing
 % \SAS\ language code and to the \SAS\ mouse-based interfaces to the
@@ -733,7 +737,8 @@ running \SAS\ batch on remote computers is nearly transparent to the
 ESS user.
 
 \paragraph{Batch BUGS.}
-BUGS software performs Markov Chain Monte Carlo integration.  There is
+%BUGS software performs Markov Chain Monte Carlo integration.  
+There is
 an interactive capability, but it is not often used since the analyses
 can be very time-consuming.  Most BUGS programs are executed as batch
 processes.  ESS facilitates BUGS batch with \stexttt{ESS[BUGS]}, the
@@ -963,7 +968,8 @@ interactive interfaces for Windows versions of \Splus.  In 1999,
 Rodney A. Sparapani and Heiberger implemented \SAS\ batch for ESS, which
 relies on files rather than standard-input/standard-output, on Unix,
 Windows and Mac.  In 2001, Sparapani added BUGS batch file processing
-to ESS for Unix and Windows.
+to ESS for Unix and Windows.  In 2002, Aki Vehtari contributed BUGS
+interactive processing to ESS for Unix and Windows.
 
 This history is summarized in Table \ref{tab:timeline}.
 
@@ -974,26 +980,25 @@ This history is summarized in Table \ref{tab:timeline}.
 \hline
     Year  \\
 \hline
-         & \multicolumn{2}{c}{S-mode}       && \multicolumn{2}{c}{SAS-mode} \\
+         & \multicolumn{2}{c}{S-mode}               && \multicolumn{2}{c}{SAS-mode} \\
 \cline{2-3} \cline{5-6}
-    1989 & v.1 & (GNU Emacs, Unix, S/S+)        &&  \\
-    1990 &     &                            &&     & (GNU Emacs, Unix, SAS editing) \\
-    1991 & v.2 & (GNU Emacs, Unix, S/S+)        && \\
-    1993 & v.3 & (GNU Emacs, Unix, S/S+)        && \\
-    1994 & v.4 & (GNU Emacs/XEmacs, Unix, S/S+) && v.1  & (GNU Emacs, Unix, SAS batch) \\
-    1995 & v.4.7 & (GNU Emacs/XEmacs, Unix, S/S+/R) && v.2 & (GNU Emacs/XEmacs, Unix, SAS batch) \\
-    \cline{2-6}\\[-3.5ex]
-    \cline{2-6}
+    1989 & v.1   & (GNU Emacs, Unix, S/S+)          &&  \\
+    1990 &       &                                  &&     & (GNU Emacs, Unix, SAS editing) \\
+    1991 & v.2   & (GNU Emacs, Unix, S/S+)          && \\
+    1993 & v.3   & (GNU Emacs, Unix, S/S+)          && \\
+    1994 & v.4   & (GNU Emacs/XEmacs, Unix, S/S+)   && v.1 & (GNU Emacs, Unix, SAS batch) \\
+    1995 & v.4.7 & (GNU Emacs/XEmacs, Unix, S/S+/R) && v.2 & (GNU Emacs/XEmacs, Unix, SAS batch) \\ 
+         &       &                                  &&     & \\ \cline{2-6} 
+%\\ [-3.5ex] \cline{2-6}
          & \multicolumn{5}{c}{Emacs Speaks Statistics (ESS)} \\
     \cline{2-6}
-         &\multicolumn{2}{c}{Emacs, Operating Systems} &&\multicolumn{2}{c}{Additional Functionality}\\
+         &\multicolumn{2}{c}{Emacs, Operating Systems}     &&\multicolumn{2}{c}{Additional Functionality}\\
 \cline{2-3} \cline{5-6}
-    1997 & v.5.0 & (GNU Emacs/XEmacs, Unix)         &&&  Stata, XLispStat, SAS interactive \\
-    1998 & v.5.1.1 & (GNU Emacs/XEmacs, Unix/Windows) &&&  S+elsewhere; Windows: S+/R\\
+    1997 & v.5.0    & (GNU Emacs/XEmacs, Unix)             &&& Stata, XLispStat, SAS interactive \\
+    1998 & v.5.1.1  & (GNU Emacs/XEmacs, Unix/Windows)     &&& S+elsewhere; Windows: S+/R\\
     1999 & v.5.1.10 & (GNU Emacs/XEmacs, Unix/Windows/Mac) &&& SAS batch; Omegahat \\
     2001 & v.5.1.19 & (GNU Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS batch; Mac: R \\
-%%    2002 & v.5.1.20 & (Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS batch, Mac: R \\
-%%    2002 & v.5.2 & (Emacs/XEmacs, Unix/Windows/Mac) &&& ? \\
+    2002 & v.5.2.0  & (GNU Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS interactive \\
     \hline
   \end{tabular}
   }
