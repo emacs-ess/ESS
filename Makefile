@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.40 2001/06/20 19:46:28 ess Exp $
+## $Id: Makefile,v 5.41 2001/07/23 07:58:55 maechler Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -75,21 +75,24 @@ dist: README ANNOUNCE docs
 tar:
 	@echo "** Exporting Files **"
 	cvs export -D today ess
-	@echo "** Creating tar file **"
+	@echo "** Correct Write Permissions and RM Papers **"
 	ln -s ess $(ESSVERSIONDIR)
 	chmod a-w $(ESSVERSIONDIR)/lisp/*.el
 	chmod a-w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
 	chmod u+w $(ESSVERSIONDIR)/doc/ess.info*
 	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Make*
 	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
+	for D in techrep dsc2001-rmh; do DD=$(ESSVERSIONDIR)/doc/$$D; \
+	  chmod -R u+w $$DD ; rm -rf $$DD ; done
+	@echo "** Creating tar file **"
 	tar hcvof ESS-$(ESSVERSION).tar $(ESSVERSIONDIR)
 	gzip ESS-$(ESSVERSION).tar
 	@echo "** Creating zip file **"
 	zip -r ESS-$(ESSVERSION).zip $(ESSVERSIONDIR)
 	@echo "** Cleaning up **"
-	rm -rf ess $(ESSVERSIONDIR)
+	chmod -R u+w ess; rm -rf ess $(ESSVERSIONDIR)
 
-doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3: doc/ess.texi 
+doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3: doc/ess.texi
 	make docs
 
 xemacs-links: doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3
