@@ -2,7 +2,10 @@ Changes/New Features in 5.2.0:
 @itemize @bullet
 @item ESS[BUGS]:  now supports interactive processing; special thanks to
 @uref{mailto:Aki.Vehtari@@hut.fi, Aki Vehtari}; new info documentation!
-@item ESS[SAS]:  convert .log to .sas with ess-sas-transcript; THEN statements now highlighted correctly; info documentation improved; Local Variables bug fixes
+@item ESS[SAS]:  convert .log to .sas with ess-sas-transcript;
+THEN statements now highlighted correctly (however, statement after
+THEN, seems to be having trouble); info documentation improved; 
+Local Variables bug fixes; SAS/IML statements/functions now highlighted
 @end itemize
 
 Changes/New Features in 5.1.24:
