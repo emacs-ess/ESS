@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 1.15 1997/11/14 00:17:56 rossini Exp $
+@comment $Id: ess.texi,v 1.16 1997/11/14 14:58:40 rossini Exp $
 
 @synindex pg vr
 
@@ -2427,7 +2427,7 @@ Copy ESS-5.0.tar.gz to the location where you want the ESS-5.0
 directory, and cd there.  Extract the files from the distribution, which
 will unpack into a subdirectory, ESS-5.0.
 
-        @itemize
+        @itemize @minus
         @item
 	@code{gunzip ESS-5.0.tar.gz}
         @code{tar vxf ESS-5.0.tar}
@@ -2451,7 +2451,7 @@ In the ESS-5.0 directory, edit the file @file{Makefile} (only if you
 want to place the executables in other locations; see LISPDIR and
 INFODIR) and then type:
 
-        @itemize
+        @itemize @minus
         @item
 	@code{make}
         @item
@@ -2464,7 +2464,7 @@ directory specified by INFODIR in the Makefile.
 
 If you are using XEmacs, you might do:
 
-        @itemize
+        @itemize @minus
         @item
         @code{make EMACS=xemacs}
         @item
