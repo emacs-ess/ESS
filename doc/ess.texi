@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.55 2004/05/19 15:09:35 maechler Exp $
+@comment $Id: ess.texi,v 5.56 2004/05/22 17:46:19 stephen Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.55 $ $Date: 2004/05/19 15:09:35 $)
+@subtitle (Documentation $Revision: 5.56 $ $Date: 2004/05/22 17:46:19 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.55 $ $Date: 2004/05/19 15:09:35 $).
+        (Documentation $Revision: 5.56 $ $Date: 2004/05/22 17:46:19 $).
 
 @display
 by  A.J. Rossini,
@@ -401,15 +401,46 @@ unnecessary prompts.
 If you need to install ESS, read @ref{Installation} for details on what
 needs to be done before proceeding to the next chapter.
 
-@ref{Customization} provides details of user variables you can change to
-customize ESS to your taste, but it is recommended that you defer this
-section until you are more familiar with ESS.
+In this manual we use the standard notation for describing the
+keystrokes used to invoke certain commands.  @kbd{C-<chr>} means hold
+the CONTROL key while typing the character <chr>. @kbd{M-<chr>} means
+hold the META or EDIT or ALT key down while typing <chr>. If there is no
+META, EDIT or ALT key, instead press and release the ESC key and then
+type <chr>.
 
-Don't forget that this manual is not the only source of information
-about ESS.  In particular, the mode-based online help (obtained by
-pressing @kbd{C-h m} when in the process buffer, edit buffer or help
-buffer) is quite useful.  However the best source of information is, as
-always, experience --- try it out!
+All ESS commands can be invoked by typing @kbd{M-x command}.  Most of
+the useful commands are bound to keystrokes for ease of use.  Also, the
+most popular commands are also available through the emacs menubar, and
+finally, if available, a small subset are provided on the toolbar.
+Where possible, keybindings are similar to other modes in emacs to
+strive for a consistent user interface within emacs, regardless of the
+details of which programming language is being edited, or process being
+run.
+
+Some commands, such as @kbd{M-x R} can accept an optional `prefix'
+argument.  To specify the prefix argument, you would type @kbd{C-u}
+before giving the command.  e.g. If you type @kbd{C-u M-x R}, you will
+be asked for command line options that you wish to invoke the R process
+with.
+
+Emacs is often referred to as a `self-documenting' text editor.  This
+applies to ESS in two ways.  First, limited documentation about each ESS
+command can be obtained by typing @kbd{C-h f}.  For example, if you type
+@kbd{C-h f ess-eval-region}, documentation for that command will appear
+in a separate *Help* buffer.  Second, a complete list of keybindings
+that are available in each ESS mode and brief description of that mode
+is available by typing @kbd{C-h m} within an ESS buffer.
+
+Emacs is a versatile editor written in both C and lisp; ESS is written
+in the Emacs lisp dialect (termed `elisp') and thus benefits from the
+flexible nature of lisp.  In particular, many aspects of ESS behaviour
+can be changed by suitable customization of lisp variables.  This manual
+mentions some of the most frequent variables.  A full list of them
+however is available by using the Custom facility within emacs.  (Type
+@kbd{M-x customize-group RET ess RET} to get started.)
+@ref{Customization} provides details of common user variables you can
+change to customize ESS to your taste, but it is recommended that you
+defer this section until you are more familiar with ESS.
 
 @comment  node-name,  next,  previous,  up
 @node Installation, Starting up, Introduction, Top
