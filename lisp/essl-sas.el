@@ -1,13 +1,13 @@
-;;; essd-sas.el --- SAS customization
+;;; essl-sas.el --- SAS customization
 
 ;; Copyright (C) 1997 Richard M. Heiberger and A. J. Rossini
 
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/09 19:29:16 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: essl-sas.el,v 1.21 1997/11/09 19:29:16 rossini Exp $
+;; Modified: $Date: 1997/11/09 19:32:53 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: essl-sas.el,v 1.22 1997/11/09 19:32:53 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
