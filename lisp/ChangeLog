@@ -1,3 +1,16 @@
+2004-07-01  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* essd-r.el (ess-r-versions-created): New variable to store the
+	names of the new defuns created.
+	(ess-r-versions-create): Set ess-r-versions-created. Doc string
+	update.
+
+	* ess-site.el: Add the new R defuns, if any, to the "Other" menu
+	under "Start Process".
+
+	* ess-mode.el (ess-mode-menu): Add new submenu "Other" to "Start
+	Process" where the other versions of R will be placed.
+
 2004-06-30  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-mode.el (ess-mode-menu): Add entries to jump to top-level of
