@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/09/03 19:36:02 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: ess-comp.el,v 5.8 2000/09/03 19:36:02 rossini Exp $
+;; Modified: $Date: 2000/09/03 19:37:08 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: ess-comp.el,v 5.9 2000/09/03 19:37:08 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -35,10 +35,7 @@
 
 ;;; Code:
 
-;;; Sets up compile load-path properly and provides minimal debugging
-;;; assistance (Emacs doesn't include '.' in the emacs lisp load
-;;; path).
-
+;; Emacs doesn't include '.' in the emacs lisp load path.
 (add-to-list 'load-path nil)
 
 (setq ess-show-load-messages t); defvar'ed to nil in ./ess-site.el
