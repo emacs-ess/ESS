@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/12/19 04:58:02 $
-;; Version: $Revision: 5.82 $
-;; RCS: $Id: ess-site.el,v 5.82 2001/12/19 04:58:02 ess Exp $
+;; Modified: $Date: 2002/01/03 09:20:49 $
+;; Version: $Revision: 5.83 $
+;; RCS: $Id: ess-site.el,v 5.83 2002/01/03 09:20:49 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -382,9 +382,10 @@ The extension, in a file name, is the part that follows the last `.'."
 	   ess-customize-alist))
 
 
-;; (1.8) Speedbar
+;; (1.8) Speedbar and mouse
 
 (require 'ess-menu)
+(require 'ess-mous)
 
 
 ;;; 2. Site Specific setup
