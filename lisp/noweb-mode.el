@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.8 1999/11/05 09:03:52 maechler Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.9 1999/11/05 09:15:06 maechler Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -90,21 +90,11 @@
 ;;   * ...
 ;;
 
-;;--- emacs 19.34 compatibility:
-(if (not (fboundp 'functionp))
-    ;; take the definition from emacs 20.4  lisp/subr.el:
- (defun functionp (object)
-  "Non-nil if OBJECT is a type of object that can be called as a function."
-  (or (subrp object) (byte-code-function-p object)
-      (eq (car-safe object) 'lambda)
-      (and (symbolp object) (fboundp object))))
-)
-
 
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.8 1999/11/05 09:03:52 maechler Exp $")
+  "$Id: noweb-mode.el,v 1.9 1999/11/05 09:15:06 maechler Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")

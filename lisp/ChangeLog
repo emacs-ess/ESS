@@ -1,3 +1,11 @@
+1999-11-05  Martin Maechler  <maechler@@stat.math.ethz.ch>
+
+	* ess.el: added a definition of (functionp ..) if there isn't any
+
+1999-11-04  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* TONS of things -- see ../ChangeLog
+
 1999-09-27  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* Makefile (SOURCES): use new $(TOCOMPILE) -- don't ess-debug.el !

@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.6 1999/04/05 18:50:12 rossini Exp $
+;; Version: $Id: ess.el,v 5.7 1999/11/05 09:15:06 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -254,6 +254,17 @@
    (format "ess-setq-vars-default 1: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
            ess-language ess-dialect buf comint-process-echoes comint-input-sender))
 )
+
+;;--- emacs 19.34 compatibility [MM]:
+(if (not (fboundp 'functionp))
+    ;; take the definition from emacs 20.4  lisp/subr.el:
+ (defun functionp (object)
+  "Non-nil if OBJECT is a type of object that can be called as a function."
+  (or (subrp object) (byte-code-function-p object)
+      (eq (car-safe object) 'lambda)
+      (and (symbolp object) (fboundp object))))
+)
+
 
 ;;; versions thanks to Barry Margolin <barmar@bbnplanet.com>.
 ;;; unfortunately, requires 'cl.  Whoops.
