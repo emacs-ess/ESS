@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/02 20:42:19 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essd-sas.el,v 1.9 1997/09/02 20:42:19 rossini Exp $
+;; Modified: $Date: 1997/09/08 12:50:59 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essd-sas.el,v 1.10 1997/09/08 12:50:59 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -42,7 +42,8 @@
 ;;; Code:
 
 (defvar SAS-customize-alist
-  '((ess-language                  . "SAS")
+  '((ess-local-customize-alist     . 'SAS-customize-alist)
+    (ess-language                  . "SAS")
     (ess-dialect                   . "SAS")
     (ess-edit-alist                . SAS-edit-alist) ; from essl-sas.el
     (inferior-ess-program          . inferior-SAS-program-name)
@@ -53,7 +54,7 @@
     (inferior-ess-exit-command     . "q()\n")
     (ess-loop-timeout              .  100000 )
     (inferior-ess-primary-prompt   . "^")
-    (inferior-ess-secondary-prompt . "+ ?")
+    (inferior-ess-secondary-prompt . "^")
     (inferior-ess-start-file       . nil) ;"~/.ess-SAS")
     (inferior-ess-start-args       . inferior-SAS-args)
     (ess-local-process-name        . nil))

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/01 19:51:57 $
-;; Version: $Revision: 1.28 $
-;; RCS: $Id: essd-xls.el,v 1.28 1997/09/01 19:51:57 rossini Exp $
+;; Modified: $Date: 1997/09/08 12:51:32 $
+;; Version: $Revision: 1.29 $
+;; RCS: $Id: essd-xls.el,v 1.29 1997/09/08 12:51:32 rossini Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -41,7 +41,8 @@
 (defvar XLS-editing-alist Lisp-editing-alist)
 
 (defvar XLS-customize-alist
-  '((ess-language                  .  "XLS"               )
+  '((ess-local-customize-alist     .  'XLS-customize-alist)
+    (ess-language                  .  "XLS"               )
     (ess-dialect                   .  "XLS"               )
     (ess-mode-editing-alist        .  XLS-editing-alist   )
     (ess-loop-timeout              .  10000               )
@@ -49,6 +50,7 @@
     (ess-help-sec-regex            .  " ")
     (ess-help-sec-keys-alist       .  " ")
     (inferior-ess-primary-prompt   .  "> ?"               )
+    (inferior-ess-secondary-prompt .  "^"                 )
     (inferior-ess-program          .  inferior-XLS-program-name)
     (inferior-ess-help-command     .  "(help '%s)\n"      )
     (inferior-ess-objects-command  .  "(variables)\n"     )
