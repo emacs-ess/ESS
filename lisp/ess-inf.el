@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/01 15:51:23 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: ess-inf.el,v 1.16 1997/07/01 15:51:23 rossini Exp $
+;; Modified: $Date: 1997/07/01 16:11:44 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: ess-inf.el,v 1.17 1997/07/01 16:11:44 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.17  1997/07/01 16:11:44  rossini
+;; removed "make-local-variables" which should've been handled in ess.el.
+;;
 ;; Revision 1.16  1997/07/01 15:51:23  rossini
 ;; removed (make-local-variable 'font-lock-defaults).
 ;;
@@ -271,19 +274,19 @@ when invoking S.
 
   (interactive "P")
 
-  (make-local-variable 'ess-proc-prefix)
-  (make-local-variable 'ess-version-running)
-  (make-local-variable 'ess-history-file)
-  (make-local-variable 'inferior-ess-help-command)
-  (make-local-variable 'inferior-ess-primary-prompt)
-  (make-local-variable 'inferior-ess-secondary-prompt)
-  (make-local-variable 'inferior-ess-program)
-  (make-local-variable 'inferior-ess-objects-command)
-  (make-local-variable 'ess-help-sec-keys-alist)
-  (make-local-variable 'ess-help-sec-regex)
-  
-  ;; (make-local-variable 'inferior-ess-procname)
-  ;; (make-local-variable 'ess-defdir)
+;;;  (make-local-variable 'ess-proc-prefix)
+;;;  (make-local-variable 'ess-version-running)
+;;;  (make-local-variable 'ess-history-file)
+;;;  (make-local-variable 'inferior-ess-help-command)
+;;;  (make-local-variable 'inferior-ess-primary-prompt)
+;;;  (make-local-variable 'inferior-ess-secondary-prompt)
+;;;  (make-local-variable 'inferior-ess-program)
+;;;  (make-local-variable 'inferior-ess-objects-command)
+;;;  (make-local-variable 'ess-help-sec-keys-alist)
+;;;  (make-local-variable 'ess-help-sec-regex)
+
+  (make-local-variable 'inferior-ess-procname)
+  (make-local-variable 'ess-defdir)
 
   (setq ess-history-file
 	(concat "." ess-proc-prefix "history"))
@@ -1182,8 +1185,6 @@ to continue it."
 
 (defun inferior-ess-input-sender (proc string)
   (ess-eval-visibly (concat string "\n")))
-
-
 
 ;;> <PD writes>:
 ;;> Also, invoking help() from the command line may lead to confusing
