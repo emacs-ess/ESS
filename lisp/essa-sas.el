@@ -35,10 +35,6 @@
 ;;; Section 2:  Function Definitions
 ;;; Section 3:  Key Definitions
 
-(if (featurep 'rtf-support)
-     (require 'rtf-support))
-
-
 ;;; Section 1:  Variable Definitions
 
 (defvar ess-sas-file-path "."
@@ -1084,8 +1080,9 @@ accepted for backward compatibility, however, arg is ignored."
 (defun ess-sas-global-pc-keys ()
   "PC-like SAS key definitions"
   (interactive)
-  (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
-  (global-set-key [(control f2)] 'ess-sas-rtf-us-landscape)
+  (when (featurep 'rtf-support)
+    (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
+    (global-set-key [(control f2)] 'ess-sas-rtf-us-landscape))
   (global-set-key (quote [f2]) 'ess-revert-wisely)
   (global-set-key (quote [f3]) 'ess-sas-goto-shell)
   (global-set-key (quote [f4]) 'ess-sas-goto-file-1)
