@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/19 02:12:37 $
-;; Version: $Revision: 1.108 $
-;; RCS: $Id: essa-sas.el,v 1.108 2002/07/19 02:12:37 rsparapa Exp $
+;; Modified: $Date: 2002/07/22 19:26:31 $
+;; Version: $Revision: 1.109 $
+;; RCS: $Id: essa-sas.el,v 1.109 2002/07/22 19:26:31 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -64,9 +64,17 @@
 ;;    :group 'ess-sas
 ;;)
 
+(defcustom ess-sas-shell-buffer "*shell*"
+"*Name that you want to use for the shell buffer; buffer-local."
+    :group 'ess-sas
+    :type  'string
+)
+
+(make-variable-buffer-local 'ess-sas-shell-buffer)
+
 (defcustom ess-sas-submit-mac-virtual-pc nil
 "*Non-nil means that you want to run Windows SAS in a
-Virtual PC emulator on your Mac."
+Virtual PC emulator on your Mac; buffer-local."
     :group 'ess-sas)
 
 (make-variable-buffer-local 'ess-sas-submit-mac-virtual-pc)
@@ -339,7 +347,7 @@ on the way."
 
 	(setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
-       (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
+       (if (get-buffer ess-sas-shell-buffer) (set-buffer ess-sas-shell-buffer) (ess-sas-goto-shell))
 
 	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
 	    " -initstmt \"" ess-sas-data-view-libname "; proc fsview data=" 
@@ -389,7 +397,7 @@ on the way."
 	      (find-file ess-tmp-sas-graph)
           ;;else
          
-            (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
+            (if (get-buffer ess-sas-shell-buffer) (set-buffer ess-sas-shell-buffer) (ess-sas-goto-shell))
 
             (insert ess-sas-submit-pre-command " " ess-sas-image-viewer " " ess-tmp-sas-graph 
 	      (if (equal ess-sas-submit-method 'sh) " &"))
@@ -489,13 +497,22 @@ on the way."
   (interactive)
   (ess-sas-goto "sas" revert))
 
-;;
-;;(defun ess-sas-goto-shell ()
-;; "Set variable `ess-sas-file-path' to file in current buffer and goto *shell*"
-;;  (interactive)
-;;  (ess-sas-file-path)
-;;  (switch-to-buffer "*shell*")
-;;)
+(defun ess-sas-goto-shell ()
+ "Set `ess-sas-file-path' to current buffer and goto `ess-sas-shell-buffer'."
+  (interactive)
+  (ess-sas-file-path)
+
+  (if (get-buffer ess-sas-shell-buffer) (switch-to-buffer ess-sas-shell-buffer)
+    (let ((temp-shell-buffer ess-sas-shell-buffer))
+    (shell)
+    (rename-buffer temp-shell-buffer)
+
+    (if (eq ess-sas-submit-method 'sh)
+	(add-hook 'comint-output-filter-functions 'ess-exit-notify-sh)) ;; 19.28
+                                          ;; nil t) works for newer emacsen
+    )
+  )
+)
 
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that
@@ -562,7 +579,7 @@ should be ..."
 	(concat ess-sas-temp-root ".sas"))
 
     (save-excursion 
-      (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
+      (if (get-buffer ess-sas-shell-buffer) (set-buffer ess-sas-shell-buffer) (ess-sas-goto-shell))
 
     (if (and (w32-shell-dos-semantics)
 	(string-equal ":" (substring ess-sas-file-path 1 2)))
@@ -588,22 +605,22 @@ SAS may not be found in your PATH.  You can alter your PATH to include
 SAS or you can specify the PATHNAME (PATHNAME can NOT contain spaces),
 i.e. let arg1 be your local equivalent of
 \"/usr/local/sas612/sas\"."
-    (shell)
-    (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh) ;; 19.28
+;    (ess-sas-goto-shell)
+;    (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh) ;; 19.28
                                           ;; nil t) works for newer emacsen
     (if (string-equal (substring (file-name-nondirectory ess-sas-file-path) 0 1) ess-kermit-prefix)
       (progn
-       (ess-sas-goto-sas)
+;       (ess-sas-goto-sas)
        (ess-kermit-send)
        (let ((ess-temp-directory ess-kermit-remote-directory))
-        (shell)
+        (ess-sas-goto-shell)
         (insert "cd " ess-temp-directory)
         (comint-send-input)
         (insert ess-sas-submit-pre-command " " arg1 " "  
 	 (substring (file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 1)
 	 " " arg2 " " ess-sas-submit-post-command)))
     ;;else
-      (shell)
+      (ess-sas-goto-shell)
       (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)"))))
       (comint-send-input)
       (insert ess-sas-submit-pre-command " " arg1 " "  
@@ -628,7 +645,7 @@ spaces by enclosing the string in \\\"'s), i.e. let
 `ess-sas-submit-command' be \"\\\"C:\\Program Files\\SAS\\sas.exe\\\"\".
 Keep in mind that the maximum command line length in MS-DOS is
 127 characters so altering your PATH is preferable."
-    (shell)
+    (ess-sas-goto-shell)
     (if (string-equal ":" (substring ess-sas-file-path 1 2)) 
 	(progn
 		(insert (substring ess-sas-file-path 0 2))
@@ -711,7 +728,7 @@ Without args, toggle between these options."
   "PC-like SAS key definitions"
   (interactive)
   (global-set-key (quote [f2]) 'ess-revert-wisely)
-  (global-set-key (quote [f3]) 'shell)
+  (global-set-key (quote [f3]) 'ess-sas-goto-shell)
   (global-set-key (quote [f4]) 'ess-sas-goto-file-1)
   (global-set-key (quote [f5]) 'ess-sas-goto-sas)
   (global-set-key (quote [f6]) 'ess-sas-goto-log)
@@ -745,7 +762,7 @@ Without args, toggle between these options."
   (global-set-key (quote [f6]) 'ess-sas-goto-lst)
   (global-set-key [(control f6)] 'ess-sas-append-lst)
   (global-set-key (quote [f7]) 'ess-sas-goto-file-1)
-  (global-set-key (quote [f8]) 'shell)
+  (global-set-key (quote [f8]) 'ess-sas-goto-shell)
   (global-set-key (quote [f9]) 'ess-sas-data-view)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
@@ -764,7 +781,7 @@ in SAS-mode and related modes.")
   "PC-like SAS key definitions."
   (interactive)
   (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
-  (define-key sas-mode-local-map (quote [f3]) 'shell)
+  (define-key sas-mode-local-map (quote [f3]) 'ess-sas-goto-shell)
   (define-key sas-mode-local-map (quote [f4]) 'ess-sas-goto-file-1)
   (define-key sas-mode-local-map (quote [f5]) 'ess-sas-goto-sas)
   (define-key sas-mode-local-map (quote [f6]) 'ess-sas-goto-log)
@@ -794,7 +811,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f6]) 'ess-sas-goto-lst)
   (define-key sas-mode-local-map [(control f6)] 'ess-sas-append-lst)
   (define-key sas-mode-local-map (quote [f7]) 'ess-sas-goto-file-1)
-  (define-key sas-mode-local-map (quote [f8]) 'shell)
+  (define-key sas-mode-local-map (quote [f8]) 'ess-sas-goto-shell)
   (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
