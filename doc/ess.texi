@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.53 2004/05/07 10:11:12 maechler Exp $
+@comment $Id: ess.texi,v 5.54 2004/05/17 13:56:52 stephen Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.53 $ $Date: 2004/05/07 10:11:12 $)
+@subtitle (Documentation $Revision: 5.54 $ $Date: 2004/05/17 13:56:52 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.53 $ $Date: 2004/05/07 10:11:12 $).
+        (Documentation $Revision: 5.54 $ $Date: 2004/05/17 13:56:52 $).
 
 @display
 by  A.J. Rossini,
@@ -1597,7 +1597,7 @@ you want to quit from S, use @kbd{C-c C-q} (@code{ess-quit}) instead.
 Prompts for an object to be edited in an edit buffer.  @xref{Editing}.
 @end itemize
 
-Other commands available is Inferior @Sl{} mode are discussed in
+Other commands available in Inferior @Sl{} mode are discussed in
 @ref{Shell Mode,,, emacs, The Gnu Emacs Reference Manual}.
 
 @comment  node-name,  next,  previous,  up
@@ -1818,7 +1818,7 @@ obsolete.
 One final command is provided for spot-evaluations of @Sl{} code:
 
 @itemize @bullet
-@kbd{C-c C-e} (@code{ess-execute-in-tb}) @*
+@kbd{C-c C-t} (@code{ess-execute-in-tb}) @*
 @pindex ess-execute-in-tb
 Prompt for an @Sl{} expression and evaluate it.  Displays result in a
 temporary buffer.
@@ -1960,7 +1960,7 @@ buffer.
 @item
 @kbd{C-c C-y} (@code{ess-switch-to-ESS}) @*
 @pindex ess-switch-to-ESS
-Also returns to to the ESS process buffer, but leaves point where it is.
+Also returns to to the ESS process buffer, but leaves point where it was.
 @end itemize
 
 In addition some commands available in the process buffer are also
@@ -2265,6 +2265,12 @@ Pops up a help buffer with a list of the defined section motion keys.
 Miscellaneous:
 
 @item
+@kbd{l} (@code{ess-eval-line-and-step}) @*
+@pindex ess-eval-line-and-step
+Evaluates the current line in the ESS process, and moves to the next
+line.  Useful for running examples in help files.
+
+@item
 @kbd{r} (@code{ess-eval-region}) @*
 @pindex ess-eval-region
 Send the contents of the current region to the ESS process.  Useful
@@ -2403,6 +2409,7 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 @menu
 * Highlighting::                Syntactic highlighting of buffers
 * Graphics::                    Using graphics with ESS
+* Imenu::                       Support for Imenu in ESS
 * Object Completion::
 @end menu
 
@@ -2445,7 +2452,7 @@ highlights the same patterns as in Inferior ESS Mode.
 @end defvar
 
 @comment  node-name,  next,  previous,  up
-@node Graphics, Object Completion, Highlighting, Miscellaneous
+@node Graphics, Imenu, Highlighting, Miscellaneous
 @section Using graphics with ESS
 
 @cindex graphics
@@ -2511,7 +2518,18 @@ interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
 this information.)
 
 @comment  node-name,  next,  previous,  up
-@node Object Completion,  , Graphics, Miscellaneous
+@node Imenu, Object Completion,  Graphics, Miscellaneous
+@section Imenu
+
+Imenu is an Emacs tool for providing mode-specific buffer indexes.  In
+some of the ESS editing modes, support for Imenu is provided.  For
+example, in S mode buffers, the menubar should display an item called
+"Imenu-S".  Within this menubar you will then be offered bookmarks to
+particular parts of your source file (such as the starting point of each
+function definition).
+
+@comment  node-name,  next,  previous,  up
+@node Object Completion,  , Imenu, Miscellaneous
 @section Object Completion
 
 
