@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/15 07:11:10 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: essd-s+3.el,v 1.7 1997/06/15 07:11:10 rossini Exp $
+;; Modified: $Date: 1997/06/15 08:18:10 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: essd-s+3.el,v 1.8 1997/06/15 08:18:10 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s+3.el,v $
+;;: Revision 1.8  1997/06/15 08:18:10  rossini
+;;: added autoload for inferior-ess
+;;:
 ;;: Revision 1.7  1997/06/15 07:11:10  rossini
 ;;: need to provide the actual file name.
 ;;:
@@ -40,8 +43,11 @@
 ;;:
 ;;;
 
-;;; Code:
+;;; Autoloads:
 
+(autoload 'inferior-ess "ess-inf" "Run an ESS process")
+
+;;; Code:
 
 (defun ess-S-shortcut-pre-run-hook ()
   "Initialize variables for S."
