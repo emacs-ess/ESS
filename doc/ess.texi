@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.9 1999/03/05 19:08:58 rossini Exp $
+@comment $Id: ess.texi,v 5.10 1999/03/05 19:18:18 rossini Exp $
 
 @synindex pg vr
 
@@ -38,7 +38,7 @@ Statistics, University of South Carolina, Columbia, SC, 29208, USA.
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.x (Documentation $Revision: 5.9 $ $Date: 1999/03/05 19:08:58 $)
+@subtitle version 5.1.x (Documentation $Revision: 5.10 $ $Date: 1999/03/05 19:18:18 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -83,7 +83,7 @@ permission notice identical to this one.
 
 ESS version 5.1.x
 
-        (Documentation $Revision: 5.9 $ $Date: 1999/03/05 19:08:58 $).
+        (Documentation $Revision: 5.10 $ $Date: 1999/03/05 19:18:18 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
@@ -2213,61 +2213,15 @@ directory, move it there).
 
 
 @node Bugs, Help Statistics, Miscellaneous, Top
+@comment  node-name,  next,  previous,  up@chapter Using S4
 @chapter Known bugs in ESS
+
 @cindex bugs
-
-@itemize @bullet
-@item
-Commands like @code{ess-display-help-on-object} and list completion
-cannot be used while the user is entering a multi-line command.  The
-only real fix in this situation is to use another @b{ESS} process.
-
-@item
-The @code{ess-eval-} commands can leave point in the @b{ESS} process
-buffer in the wrong place when point is at the same position as the last
-process output.  This proves difficult to fix, in general, as we need to
-consider all @emph{windows} with @code{window-point} at the right place.
-
-@item
-It's possible to clear the modification flag (say, by saving the buffer)
-with the edit buffer not having been loaded into S.
-
-@item
-Backup files can sometimes be left behind, even when
-@code{ess-keep-dump-files} is @code{nil}.
-
-@item
-Passing an incomplete @b{S} expression to @code{ess-execute} causes ESS
-to hang.
-
-@item
-The function-based commands don't always work as expected on functions
-whose body is not a parenthesized or compound expression, and don't even
-recognize anonymous functions (i.e. functions not assigned to any
-variable).
-
-@item
-Multi-line commands could be handled better by the command history
-mechanism.
-@end itemize
+@include bugs.texi
 
 @cindex Bug reports
 @pindex ess-submit-bug-report
-You can send a Bug report by typing @kbd{M-x ess-submit-bug-report}, or by
-sending E-mail to
-@ifhtml
-<A HREF="mailto:ESS-bugs@stat.math.ethz.ch">
-@end ifhtml
-@email{ESS-bugs@@stat.math.ethz.ch}
-@ifhtml
-</A>
-@end ifhtml
-.  Comments, suggestions, words of praise and large cash donations are
-also more than welcome.
-
-
-
-
+@include bugrepts.texi
 
 @node Help Statistics, Help OS, Bugs, Top
 @comment  node-name,  next,  previous,  up@chapter Using S4
