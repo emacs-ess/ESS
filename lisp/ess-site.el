@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/02/22 23:01:12 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: ess-site.el,v 5.14 1999/02/22 23:01:12 rossini Exp $
+;; Modified: $Date: 1999/03/16 09:08:35 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: ess-site.el,v 5.15 1999/03/16 09:08:35 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -105,24 +105,23 @@
 (if (assoc "\\.[rR]\\'" auto-mode-alist) nil
   (setq auto-mode-alist
 	(append
-	 '(("\\.sp\\'"    . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
+	 '(("\\.sp\\'"	  . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
 	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S
-	   ("\\.ssc\\'"   . S-mode) ;; Splus 4.x script files.
+	   ("\\.ssc\\'"	  . S-mode) ;; Splus 4.x script files.
 	   ("\\.[rR]\\'"  . R-mode)
-	   ("R.*/src/library/[A-Za-z]+/funs/[A-Za-z]" . R-mode); R <= 0.50
 	   ("R.*/src/library/[A-Za-z]+/R/[A-Za-z]"    . R-mode); R >= 0.60
 	   ("R.*/src/library/[A-Za-z]+/man/[A-Za-z]"  . Rd-mode)
-	   ("\\.lsp\\'"                               . XLS-mode)
-	   ("\\.do\\'"                                . STA-mode)
-	   ("\\.ado\\'"                               . STA-mode)
-	   ("\\.sas\\'"                               . SAS-mode)
-	   ("\\.SAS\\'"                               . SAS-mode)
-	   ("\\.lst\\'"                               . SAS-listing-mode);sasl
+	   ("\\.lsp\\'"				      . XLS-mode)
+	   ("\\.do\\'"				      . STA-mode)
+	   ("\\.ado\\'"				      . STA-mode)
+	   ("\\.sas\\'"				      . SAS-mode)
+	   ("\\.SAS\\'"				      . SAS-mode)
+	   ("\\.lst\\'"				      . SAS-listing-mode);sasl
 	   ;; Too many *.log files!
-	   ;;("\\.log\\'"                               . SAS-log-mode);sasl
-	   ("\\.[Ss]\\(ou\\)?t\\'"                    . S-transcript-mode)
-	   ("\\.[Rr]\\(ou\\)?t\\'"                    . R-transcript-mode)
-	   ("\\.Rd\\'"                                . Rd-mode)) ;all R>=0.60
+	   ;;("\\.log\\'"				. SAS-log-mode);sasl
+	   ("\\.[Ss]\\(ou\\)?t"			      . S-transcript-mode)
+	   ("\\.[Rr]\\(ou\\)?t"			      . R-transcript-mode)
+	   ("\\.Rd\\'"				      . Rd-mode)) ;all R>=0.60
 	 auto-mode-alist)))
 
 
