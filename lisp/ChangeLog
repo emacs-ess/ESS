@@ -1,3 +1,7 @@
+2004-03-23  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-els.el (ess-select-alist-dialect): (let* ..) : thanks to Na Li.
+
 2004-03-04  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-site.el (ess-restore-asm-extns): thanks to Es Cashin
