@@ -1,6 +1,6 @@
 -*- view -*-
 
-($Revision: 1.24 $)
+($Revision: 1.25 $)
 
 Emacs Speaks Statistics (ESS), version 5.0
 ------------------------------------------
@@ -224,8 +224,8 @@ The HTML version of the documentation can be found at:
   to configure Emacs for ESS.
 
 * (OPTIONAL) If you are running S-PLUS or R, you might consider
-  installing the database files.  For this, start up Emacs (or
-  XEmacs) in the directory containing ESS.  Now:
+  installing the database files.  From within (X)Emacs, "C-x d" to the
+  directory containing ESS.  Now:
 
        M-x S+3
   (get running.  once you have reached the SPLUS 3.x prompt, do:)
