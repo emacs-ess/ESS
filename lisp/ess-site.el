@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/05/14 22:02:27 $
-;; Version: $Revision: 5.104 $
-;; RCS: $Id: ess-site.el,v 5.104 2004/05/14 22:02:27 rsparapa Exp $
+;; Modified: $Date: 2004/06/23 12:31:07 $
+;; Version: $Revision: 5.105 $
+;; RCS: $Id: ess-site.el,v 5.105 2004/06/23 12:31:07 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -514,6 +514,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 (fset 'S-transcript-mode 's-transcript-mode)
 (fset 'S-mode 's-mode)
 
+;;; Create functions for calling older versions of R.
+(ess-r-versions-create)
 
 ;;; 3. Customization (and commented out examples) for your site
 ;;;; ===============================================
