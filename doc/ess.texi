@@ -63,7 +63,7 @@ are very welcome!
 @center (@code{rossini@@stat.sc.edu})
 @center Department of Statistics
 @center University of South Carolina, USA.
-@center Documentation version: $Revision: 1.5 $.
+@center Documentation version: $Revision: 1.6 $.
 @sp2
 @center Original Documentation by David Smith
 @center (@code{D.M.Smith@@lancaster.ac.uk})
@@ -2689,5 +2689,5 @@ when ESS is loaded.
 @bye
 
 @comment Local Variables:
-@comment TeX-master: "ESS.texi"
+@comment TeX-master: "ess.texi"
 @comment End:
