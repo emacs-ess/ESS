@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.20 2004/04/21 21:02:14 rossini Exp $
+;; Version: $Id: ess-menu.el,v 1.21 2004/04/22 15:37:07 stephen Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -60,19 +60,10 @@
 
 ;;; S imenu support
 
-(defcustom ess-imenu-use-S t ; ess-imenu-use-p
-  "Use imenu if exists."
+(defcustom ess-imenu-use-S ess-imenu-use-p
+  "*Non-nil means include an Imenu menu item in S buffers."
   :group 'ess
   :type  'boolean)
-
-(defcustom ess-imenu-regexp-S-function
-  '((nil "^\\(.+\\)\\s-*<-[ \t\n]*function[ ]*(" 1))
-  "Imenu: S function regexp.
-See `imenu-generic-expression' for details of this format.
-If you prefer to enforce whitespace around the <- operator, replace
-the two * by + in the above regexp."
-   :group 'ess
-   :type 'sexp)
 
 (defvar ess-imenu-S-generic-expression
   '(("Functions" "^\\(.+\\)\\s-*<-[ \t\n]*function[ ]*(" 1)
