@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/24 12:34:34 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-s3.el,v 1.1 1997/07/24 12:34:34 rossini Exp $
+;; Modified: $Date: 1997/07/28 13:00:09 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-s3.el,v 1.2 1997/07/28 13:00:09 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s3.el,v $
+;;: Revision 1.2  1997/07/28 13:00:09  rossini
+;;: provide the right package!
+;;:
 ;;: Revision 1.1  1997/07/24 12:34:34  rossini
 ;;: Initial revision
 ;;:
@@ -70,10 +73,10 @@
 
 ;;; Code:
 
-(defvar S+3-customize-alist
+(defvar S3-customize-alist
   '((ess-proc-prefix      .         "S")
-    (ess-version-running  .         "S+3")
-    (inferior-ess-program .         "Splus")
+    (ess-version-running  .         "S3")
+    (inferior-ess-program .         "S")
     (ess-help-sec-regex   .         "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist .      '((?a . "ARGUMENTS:")
 				      (?b . "BACKGROUND:")
@@ -93,26 +96,22 @@
                                      ;(if (string= ess-version-running "S3")
 				     ;    "objects(%d)"
 				     ;  "ls()")
-    (inferior-ess-help-command .    "help(\"%s\",pager=\"cat\",window=F)\n")
-	                             ;(if S-plus
-				     ; "help(\"%s\",pager=\"cat\",window=F)\n"
-				     ; "help(\"%s\")\n")
+    (inferior-ess-help-command .    "help(\"%s\")\n")
     (inferior-ess-exit-command .    "q()\n")
-    (ess-loop-timeout              . 100000 )
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt   . "+ ?"))
+    (inferior-ess-secondary-prompt   . "+ ?")
+    (ess-loop-timeout              . 100000 ))
  "Variables to customize for S")
 
 
-(defun S ()
-  "Call 'Splus 3.x', the 'Real Thing'  from StatSci.
-New way to do it."
+(defun S3 ()
+  "Call 'S 3.x', the version from AT&T."
   (interactive)
-  (setq ess-customize-alist S+3-customize-alist)
-  (ess-write-to-dribble-buffer
-   (format "(S): ess-proc-prefix=%s , buf=%s \n"
-	   ess-proc-prefix
-	   (current-buffer)))
+  (setq ess-customize-alist S3-customize-alist)
+  ;;  (ess-write-to-dribble-buffer
+  ;;   (format "(S): ess-proc-prefix=%s , buf=%s \n"
+  ;;	   ess-proc-prefix
+  ;;	   (current-buffer)))
   (inferior-ess))
 
 ;; From RMH:  (for both s+3 and s3) ? 
@@ -128,7 +127,7 @@ New way to do it."
 
  ; Provide package
 
-(provide 'essd-s+3)
+(provide 'essd-s3)
 
  ; Local variables section
 
