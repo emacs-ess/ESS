@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.12 $.
+### File: $Revision: 1.13 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -39,7 +39,9 @@ DOCDIST = ess.ps ess.pdf \
 
 ### Targets --
 
-all: ess.info html ess.dvi readme.dvi README.SPLUS4WIN
+all: ess.info html ess.dvi readme.dvi \
+	README.SPLUS4WIN README.Microsoft
+
 
 # Documentation mentions info, not ess.info
 
@@ -81,6 +83,10 @@ realclean: distclean
 
 ### Targets below here are only for developers.
 
+
+
+### The following is to replace version #'s.
+
 ## commented above ESSVERSION=$(shell cat ../VERSION)
 ##	s/ESSVERSION/shell cat $^/
 ## Use $(shell ..) only here, so only these are GNU make dependent :
@@ -117,3 +123,8 @@ html/ess_toc.html: *.texi
 
 html/readme_toc.html: *.texi
 	-(mkdir -p html; cd html; $(MAKEHTML) ../readme.texi)
+
+
+README.Microsoft : README.Microsoft.texi
+	$(MAKEINFOascii) README.Microsoft.texi \
+	| perl -pe 'last if /^Concept Index/;' > README.Microsoft
