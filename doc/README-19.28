@@ -1,25 +1,21 @@
+-*- text -*-
 
+These are the changes we made in order to use ESS with SAS on a Digital
+Alpha running Emacs 19.28.  After these changes we entered "make ESS".
 
-    Richard> 125 rassoc is new
-    Richard>       (setq temp-ess-dialect (cdr (rassoc ess-dialect
-    Richard>       ess-customize-alist)))) 
-    Richard> rassoc is part of cl.el and is not automatically part of
-    Richard> emacs 19.28.  As an expedient I just (require 'cl).
-    Richard> emacs 19.29 seems to be happy with rassoc
+ 1. ess-site.el line 68-71
+ file-truename isn't in 19.28.
+ Comment out lines 68-69.
+ Uncomment 70-71 and replace the pathname on line 71
+ to the directory in which ESS resides on your system.
 
- 1. ess-site.el line 50
+ 2. ess-site.el add new lines 76--80
 
- ;;; temporary until essd-sas is fully integrated
- (load-file "/home/a023/rmh/ESS-4.9-b16/extras.el")
- (load-file "/home/a023/rmh/ESS-4.9-b16/easymenu.el")
- (require 'cl)  ; emacs 19.28 doesn't automatically have rassoc
- ;;; temporary until essd-sas is fully integrated
-
-
- 2. Makefile
- PRELOADS =  -l extras.el -l ./ess-comp.el
-
- SOURCES = easymenu.el extras.el \
+;;; necessary for emacs 19.28
+(load-file (concat ess-lisp-directory "/extras.el"))
+(load-file (concat ess-lisp-directory "/easymenu.el"))
+(require 'cl)  ; emacs 19.28 doesn't automatically have rassoc
+;;; necessary for emacs 19.28
 
 
  3. where extras.el is the add-to-list function from somewhere in 'cl
@@ -35,10 +31,20 @@
        (set list-var (cons element (symbol-value list-var)))))
 
 
- 4. where easymenu.el is copied from 19.29
+ 4. where easymenu.el is copied from emacs 19.29
 
- 5. ess.el
+
+ 5. Makefile
+line 53
+PRELOADS =  -l extras.el -l ./ess-comp.el
+
+line 68
+SOURCES = easymenu.el extras.el ess-vars.el ess.el ess-site.el \
+
+line 99
+##DOCDISTFILES = $(addprefix $(VERSIONDIR)/,$(DOCDIST)) #comment out for 19.28
+
+
+ 6. ess.el
  comment out line 127
  ;;;(require 'font-lock)   ;;; doesn't work with emacs 19.28
-
-
