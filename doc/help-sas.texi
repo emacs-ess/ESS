@@ -112,7 +112,7 @@ enabled by default to use the same function keys that the SAS Display
 Manager uses.  The interactive capabilities of ESS require you to
 start an inferior SAS process with M-x SAS (described below).
 
-At this writing (@essver), the indenting and syntactic
+At this writing (@essver{}), the indenting and syntactic
 highlighting are usually correct.
 
 @comment  node-name,  next,  previous,  up
