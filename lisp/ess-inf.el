@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/14 12:58:35 $
-;; Version: $Revision: 5.46 $
-;; RCS: $Id: ess-inf.el,v 5.46 2000/04/14 12:58:35 maechler Exp $
+;; Modified: $Date: 2000/06/30 20:59:54 $
+;; Version: $Revision: 5.47 $
+;; RCS: $Id: ess-inf.el,v 5.47 2000/06/30 20:59:54 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -198,7 +198,9 @@ accompany the call for `inferior-ess-program'.
       (set-buffer buf)
       ;; Now that we have the buffer, set buffer-local variables.
       (ess-setq-vars-local ess-customize-alist buf)
-      (if ess-start-args (setq inferior-ess-start-args ess-start-args))
+      (if ess-start-args (setq inferior-ess-start-args ess-start-args)
+	(setq inferior-ess-start-args "")) ;; AJR: Errors with XLS?
+      
       (ess-write-to-dribble-buffer
        (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
 	       ess-language
@@ -351,6 +353,8 @@ This was rewritten by KH in April 1996."
 		      inferior-ess-program
 		      inferior-ess-start-file
 		      inferior-ess-start-args))
+	     (if (not (file-exists-p inferior-ess-start-file))
+		 (setq inferior-ess-start-file 'nil))
 	     (comint-exec buffer
 			  procname
 			  inferior-ess-program
