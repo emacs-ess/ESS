@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.47 2001/08/17 15:49:08 maechler Exp $
+## $Id: Makefile,v 5.48 2001/09/28 15:34:57 ess Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -38,6 +38,21 @@ XEMACSDIR=/usr/local/lib/xemacs
 ## ESSDIR:  parent directory of ESSVERSIONDIR
 ESSDIR=$(XEMACSDIR)/site-packages/ess
 
+## Updating ChangeLog via CVS with emacs
+## If you would like to build ChangeLog directly from CVS
+## with emacs, then you need to re-define EMACSLOGCVS to
+## actually do something, i.e. uncomment one of the 
+## re-definitions or use an environment variable and make -e
+## Note that this requires that the vc package is available!
+
+EMACSLOGCVS=@echo "** ChangeLog was not updated via CVS **" 
+
+## if you are running Emacs
+## EMACSLOGCVS=emacs --batch -f vc-update-changelogs
+
+## if you are running XEmacs
+## EMACSLOGCVS=xemacs -batch -f vc-update-changelogs
+
 Subdirs = lisp doc
 
 INTRO.DEPENDS= VERSION doc/credits.texi doc/inst_cvs.texi \
@@ -46,18 +61,13 @@ INTRO.DEPENDS= VERSION doc/credits.texi doc/inst_cvs.texi \
 	doc/requires.texi doc/bugs.texi     doc/getting.texi  \
 	doc/mailing.texi  doc/stabilty.texi
 
-
 all install clean distclean realclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@ ; cd .. ; done
 
-ESS:
+compile:
 	cd lisp; $(MAKE) all
 
-docs:
-	cd doc; $(MAKE) info
-
-
-README : doc/readme.texi $(INTRO.DEPENDS)
+README: doc/readme.texi $(INTRO.DEPENDS)
 	cd doc ; $(MAKE) readme.texi; $(MAKEINFOascii) readme.texi \
 	| perl -pe 'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' > ../README
 
@@ -65,32 +75,19 @@ ANNOUNCE: doc/announc.texi $(INTRO.DEPENDS)
 	cd doc; $(MAKE) readme.texi; $(MAKEINFOascii) announc.texi \
 	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
 
-pre-dist: README ANNOUNCE docs
+docs: README ANNOUNCE
+	@echo "** Committing README and ANNOUNCE **"
+	cvs commit -m "Updating README, ANNOUNCE for new version" \
+		README ANNOUNCE
+	cd doc; $(MAKE) info; cd ..
+	cvs commit -m "Updating docs for new version" doc
+
+dist: docs
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSVERSIONDIR)"
 	@echo "** (must set CVSROOT, etc, prior to checkout for security)"
 	@echo "**********************************************************"
-	@echo "** Committing README and ANNOUNCE **"
-	cvs commit -m "Updating README, ANNOUNCE for new version [make dist]" \
-		README ANNOUNCE
-	cvs commit -m "Updating docs for new version [make dist]" doc
-	@echo "** Adding log-entry to ChangeLog file"
-	mv ChangeLog ChangeLog.old
-	(echo `date "+%Y-%m-%d "` \
-	     " ESS Maintainers <ess@franz.stat.wisc.edu>" ; \
-	 echo; echo "  * Version $(ESSVERSION) released."; echo; \
-	 cat ChangeLog.old ) > ChangeLog
-	cvs commit -m'Version .. released [make dist]' ChangeLog
-	@echo "** Tagging the release **"
-	cvs tag -R $(ESSVERSIONTAG)
-
-dist: pre-dist tar
-	@echo "** Placing tar and zip files **"
-	scp ESS-$(ESSVERSION).tar.gz ess@franz.stat.wisc.edu:~/public_html
-	scp ESS-$(ESSVERSION).zip    ess@franz.stat.wisc.edu:~/public_html
-
-tar: docs
 	@echo "** Exporting Files **"
 	cvs export -D today ess
 	@echo "** Correct Write Permissions and RM Papers **"
@@ -103,12 +100,29 @@ tar: docs
 	for D in techrep dsc2001-rmh; do DD=$(ESSVERSIONDIR)/doc/$$D; \
 	  chmod -R u+w $$DD ; rm -rf $$DD ; done
 	@echo "** Creating tar file **"
-	tar hcvof ESS-$(ESSVERSION).tar $(ESSVERSIONDIR)
-	gzip ESS-$(ESSVERSION).tar
+	tar hcvof ess-$(ESSVERSION).tar $(ESSVERSIONDIR)
+	gzip ess-$(ESSVERSION).tar
 	@echo "** Creating zip file **"
-	zip -r ESS-$(ESSVERSION).zip $(ESSVERSIONDIR)
+	zip -r ess-$(ESSVERSION).zip $(ESSVERSIONDIR)
 	@echo "** Cleaning up **"
 	chmod -R u+w ess; rm -rf ess $(ESSVERSIONDIR)
+
+ChangeLog:
+	$EMACSLOGCVS
+	@echo "** Adding log-entry to ChangeLog file"
+	mv ChangeLog ChangeLog.old
+	(echo `date "+%Y-%m-%d "` \
+	     " ESS Maintainers <ess@franz.stat.wisc.edu>" ; \
+	 echo; echo "  * Version $(ESSVERSION) released."; echo; \
+	 cat ChangeLog.old ) > ChangeLog
+	cvs commit -m 'Version .. released' ChangeLog
+
+rel: ChangeLog dist
+	@echo "** Tagging the release **"
+	cvs tag -R $(ESSVERSIONTAG)
+	@echo "** Placing tar and zip files **"
+	scp ess-$(ESSVERSION).tar.gz ess@franz.stat.wisc.edu:~/public_html
+	scp ess-$(ESSVERSION).zip    ess@franz.stat.wisc.edu:~/public_html
 
 doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3: doc/ess.texi
 	$(MAKE) docs
