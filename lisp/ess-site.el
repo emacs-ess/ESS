@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/07/03 14:38:57 $
-;; Version: $Revision: 5.59 $
-;; RCS: $Id: ess-site.el,v 5.59 2000/07/03 14:38:57 maechler Exp $
+;; Modified: $Date: 2000/07/03 16:25:07 $
+;; Version: $Revision: 5.60 $
+;; RCS: $Id: ess-site.el,v 5.60 2000/07/03 16:25:07 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -53,7 +53,7 @@
 ;;;      (setq load-path (cons "/path/to/ess/lisp-directory" load-path)
 ;;;
 
-;; provide here; otherwise get infinite requiring loop:
+;; provide here; otherwise we'll get infinite loops of (require ..):
 (provide 'ess-site)
 
 ;;; Code:
