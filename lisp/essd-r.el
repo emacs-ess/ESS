@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/25 14:31:04 $
-;; Version: $Revision: 1.28 $
-;; RCS: $Id: essd-r.el,v 1.28 1997/08/25 14:31:04 rossini Exp $
+;; Modified: $Date: 1997/08/25 20:43:40 $
+;; Version: $Revision: 1.29 $
+;; RCS: $Id: essd-r.el,v 1.29 1997/08/25 20:43:40 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.29  1997/08/25 20:43:40  rossini
+;;: added Martin's changes
+;;:
 ;;: Revision 1.28  1997/08/25 14:31:04  rossini
 ;;: *** empty log message ***
 ;;:
@@ -113,17 +116,17 @@
 (defconst ess-help-R-sec-keys-alist 
   '((?a . "\\s *Arguments:") 
     (?d . "\\s *Description:")
+    (?e . "\\s *Examples:") 
     (?n . "\\s *Note:")
     (?r . "\\s *References:") 
-    (?v . "\\s *Value[s]?")	;
     (?s . "\\s *See Also:") 
-    (?e . "\\s *Examples:") 
+    (?v . "\\s *Value[s]?")	;
     )) ;; "Alist of (key . string) pairs for use in section searching."
 
 (defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$")
 
 (defvar R-customize-alist
-  '((ess-customize-alist           . R-customize-alist)
+  '((ess-customize-alist           . 'R-customize-alist)
     (ess-proc-prefix               . "R")
     (ess-version-running           . "0.50-a1" )
     (ess-help-sec-regex            . ess-help-R-sec-regex)
