@@ -1,12 +1,12 @@
 
 Changes/New Features in 5.1.9:
-@itemize
+@itemize @bullet
 @item Stata mode works
 @item Literate Data Analysis using Noweb works
 @end itemize
 
 Changes/New Features in 5.1.8:
-@itemize
+@itemize @bullet
 @item Bug fixes
 @item R documentation mode defaults changed
 @end itemize
