@@ -1,5 +1,5 @@
 
-## $Id: Makefile,v 5.6 1998/11/09 23:50:04 rossini Exp $
+## $Id: Makefile,v 5.7 1998/11/11 15:54:34 maechler Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
@@ -27,7 +27,7 @@ dist:
 	@echo "**********************************************************"
 	cvs co ess
 	ln -s ess $(ESSVERSIONDIR)
-	tar hcvof ESS-$(ESSVERSION).tar $(ESSVERSIONDIR)
+	tar hcvof ESS-$(ESSVERSION).tar -X CVS $(ESSVERSIONDIR)
 	chmod a-w $(ESSVERSIONDIR)/lisp/*.el
 	chmod a-w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
 	-chmod a-w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
