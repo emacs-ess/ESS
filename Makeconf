@@ -16,8 +16,11 @@ SHELL = /bin/sh
 EMACS=xemacs
 EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 
-## For strange setups...
-INSTALL = cp
+## Some install commands expect target-directory source-file, 
+## but we want source-file target-directory; we also want to
+## preserve owner, group and time-stamp; lastly, note that we
+## are assuming that the target-directory exists
+INSTALL = cp -p
 
 # What GZCAT is called on your system (GNU gzip "cat")
 #GZCAT = gzcat

@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.63 2002/07/26 19:44:38 rsparapa Exp $
+## $Id: Makefile,v 5.64 2002/07/26 20:31:57 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -26,7 +26,7 @@ Subdirs = lisp doc
 default:
 	cd lisp; $(MAKE) all
 
-all install clean distclean:
+all clean distclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd ..; done
 
 dist:   
