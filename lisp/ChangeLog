@@ -1,3 +1,13 @@
+1998-09-09  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* essd-sta.el: new file
+		(STA-customize-alist): edited according to essl-sta.el.
+		(STA-mode): New function
+		(stata): New function
+		(STA-transcript-mode): New function
+
+	* Makefile (BATCHFLAGS): --no-init-file, not --no-init-fil
+
 Tue Sep  8 19:18:07 1998  Martin Maechler  <maechler@..>
 
 	* essl-s.el: added  "&optional dont-ask" argument to
