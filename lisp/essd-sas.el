@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/23 21:24:45 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: essd-sas.el,v 1.16 1997/10/23 21:24:45 rossini Exp $
+;; Modified: $Date: 1997/10/24 11:21:52 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: essd-sas.el,v 1.17 1997/10/24 11:21:52 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,21 +47,22 @@
 ;;; Code:
 
 ;; Are these buffer local?
-(defvar ess-sas-shell-buffer-name nil
-  "buffer to run SAS in.")
-(defvar ess-sas-shell-buffer-name-flag nil
-  "Set if presently exists ess-shell-buffer-name.")
+;;(defvar ess-sas-shell-buffer-name nil
+;;  "buffer to run SAS in.")
+;;(defvar ess-sas-shell-buffer-name-flag nil
+;;  "Set if presently exists ess-shell-buffer-name.")
 
 (defun ess-SAS-pre-run-hook ()
   "Set up log and list files for interactive SAS."
 
   ;(interactive)  ; shouldn't be interactively called, correct?
-  (if (get-buffer "*shell*")
-      (save-excursion       
-	(set-buffer "*shell*")
-	(setq ess-shell-buffer-name (rename-buffer "*ess-shell-regular*"))
-	(setq ess-shell-buffer-name-flag t)))
+;;  (if (get-buffer "*shell*")
+;;      (save-excursion       
+;;	(set-buffer "*shell*")
+;;	(setq ess-shell-buffer-name (rename-buffer "*ess-shell-regular*"))
+;;	(setq ess-shell-buffer-name-flag t)))
   
+  ;; Construct the LST buffer for output
   (if (get-buffer "*myfile.lst*")
       nil
     (shell)
@@ -69,6 +70,7 @@
     (setq ess-sas-lst (ess-insert-accept "tty"))
     (rename-buffer "*myfile.lst*"))
   
+  ;; Construct the LOG buffer for output
   (if (get-buffer "*myfile.log*")
       nil
     (shell)
@@ -80,13 +82,13 @@
 					     " "
 					     ess-sas-log))
   (setq inferior-SAS-args-temp (concat inferior-SAS-args
-				  additional-inferior-SAS-args))
+				       additional-inferior-SAS-args))
   
-  (if ess-shell-buffer-name-flag
-      (save-excursion       
-	(set-buffer ess-shell-buffer-name)
-	(rename-buffer "*shell*")
-	(setq ess-shell-buffer-name-flag nil)))
+;;  (if ess-shell-buffer-name-flag
+;;      (save-excursion       
+;;	(set-buffer ess-shell-buffer-name)
+;;	(rename-buffer "*shell*")
+;;	(setq ess-shell-buffer-name-flag nil)))
 
   (delete-other-windows)
   (split-window-vertically)
