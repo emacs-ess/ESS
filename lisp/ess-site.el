@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2003/01/02 00:30:45 $
-;; Version: $Revision: 5.94 $
-;; RCS: $Id: ess-site.el,v 5.94 2003/01/02 00:30:45 stephen Exp $
+;; Modified: $Date: 2003/01/05 19:51:18 $
+;; Version: $Revision: 5.95 $
+;; RCS: $Id: ess-site.el,v 5.95 2003/01/05 19:51:18 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -180,7 +180,7 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;(defun add-info-path (newpath)
 ;;  (setq Info-default-directory-list
 ;;	(cons (expand-file-name newpath) Info-default-directory-list)))
-;;(add-info-path (concat ess-lisp-directory "/../doc/"))
+;;(add-info-path (concat ess-lisp-directory "/../info/"))
 
 
 ;;; (1.3) Files ending in .q and .S are considered to be S source files
