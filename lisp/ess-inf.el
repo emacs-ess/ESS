@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/10 17:12:12 $
-;; Version: $Revision: 1.56 $
-;; RCS: $Id: ess-inf.el,v 1.56 1997/09/10 17:12:12 rossini Exp $
+;; Modified: $Date: 1997/09/10 19:46:23 $
+;; Version: $Revision: 1.57 $
+;; RCS: $Id: ess-inf.el,v 1.57 1997/09/10 19:46:23 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -950,7 +950,7 @@ process buffer. Arg has same meaning as for ess-eval-region."
 	 ;; Code for Emacs
 	 (setq ess-mode-minibuffer-map (cons 'keymap minibuffer-local-map))))
 
-    (define-key ess-mode-minibuffer-map "\t" 'ess-complete-object-name)
+  (define-key ess-mode-minibuffer-map "\t" 'ess-complete-object-name)
   (define-key ess-mode-minibuffer-map "\C-c\C-s" 'ess-execute-search)
   (define-key ess-mode-minibuffer-map "\C-c\C-x" 'ess-execute-objects))
 
