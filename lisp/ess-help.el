@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/08/26 22:54:46 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: ess-help.el,v 1.5 1997/08/26 22:54:46 rossini Exp $
+;; Modified: $Date: 1997/08/28 13:02:51 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: ess-help.el,v 1.6 1997/08/28 13:02:51 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -30,63 +30,6 @@
 ;; Code for dealing with S help files. See S.el for more
 ;; details.
 
-;;
-;; $Log: ess-help.el,v $
-;; Revision 1.5  1997/08/26 22:54:46  rossini
-;; *** empty log message ***
-;;
-;; Revision 1.4  1997/07/24 11:21:22  rossini
-;; ess-mode-version -> ESS-version
-;;
-;; Revision 1.3  1997/06/15 21:56:38  rossini
-;; *** empty log message ***
-;;
-;; Revision 1.2  1997/05/21 18:45:46  rossini
-;; S -> ess
-;;
-;; Revision 1.1  1997/05/21 18:40:53  rossini
-;; Initial revision
-;;
-;; Revision 1.19  1997/04/24 23:13:47  rossini
-;; added MM's change.
-;;
-;; Revision 1.18  1997/04/24 22:11:42  rossini
-;; change for keymap from Martin M.
-;;
-;; Revision 1.17  1997/04/23 13:33:01  rossini
-;; added Martin's patch.
-;;
-;; Revision 1.16  1997/04/23 03:21:05  rossini
-;; Looks good...?
-;;
-;; Revision 1.15  1997/04/16 19:00:46  rossini
-;; fixed byte compile problem.
-;;
-;; Revision 1.14  1997/04/14 00:50:03  rossini
-;; added prompt for bug reports. (thanks, MM).
-;;
-;; Revision 1.13  1997/04/08 01:07:01  rossini
-;; removed variables (moved to S.el)
-;;
-;; Revision 1.12  1997/04/04 18:38:56  rossini
-;; GNU Emacs didn't like (require 'S-inf).  Why?
-;;
-;; Revision 1.11  1997/04/03 23:59:57  rossini
-;; w3 fetch works, postponed until 5.0
-;;
-;; Revision 1.10  1997/04/03 23:26:53  rossini
-;; added preliminary w3 functions for R help.  Not linked anywhere.
-;;
-;; Revision 1.9  1997/04/03 22:56:08  rossini
-;; changed reporter to send to rossini.
-;;
-;; Revision 1.8  1997/04/02 15:35:45  rossini
-;; no real changes.
-;;
-;; Revision 1.7  1997/03/07 23:36:51  rossini
-;; We did NOT need to (require 'S-mode, 'S-inf...).
-;;
-;;
 
 ;;; Code:
 
@@ -114,6 +57,7 @@
 (autoload 'ess-read-object-name-default "ess-inf" "(autoload)" nil)
 (autoload 'ess-make-buffer-current "ess-inf" "(autoload)" nil)
 (autoload 'ess-search-list "ess-inf" "(autoload)" nil)
+(autoload 'ess-get-object-list "ess-inf" "(autoload)" nil)
 
 
 
