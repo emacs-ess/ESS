@@ -6,9 +6,9 @@
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2001/09/20 10:27:28 $
-;; Version: $Revision: 5.17 $
-;; RCS: $Id: essddr.el,v 5.17 2001/09/20 10:27:28 maechler Exp $
+;; Modified: $Date: 2001/12/17 09:47:07 $
+;; Version: $Revision: 5.18 $
+;; RCS: $Id: essddr.el,v 5.18 2001/12/17 09:47:07 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.17 2001/09/20 10:27:28 maechler Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.18 2001/12/17 09:47:07 maechler Exp $
 
 ;;; Code:
 
@@ -195,6 +195,7 @@ All Rd mode abbrevs start with a grave accent (`).")
 	["Eval Line"			ess-eval-line-and-step t]
 	["Eval Region"			ess-eval-region t]
 	["Switch to ESS Process"	ess-switch-to-ESS t]
+	["Switch the ESS Process"	ess-switch-process t]
 	["Switch to end{ESS Pr}"	ess-switch-to-end-of-ESS t]
 	"-"
 	["Toggle Abbrev Mode"		abbrev-mode t]
