@@ -5,12 +5,16 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainers: Hornik, Maechler, Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/05/21 20:06:24 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: ess-inf.el,v 1.4 1997/05/21 20:06:24 rossini Exp $
+;; Modified: $Date: 1997/06/15 08:29:31 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: ess-inf.el,v 1.5 1997/06/15 08:29:31 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.5  1997/06/15 08:29:31  rossini
+;; changed inferior mode name to just infESS, since process type is
+;; already given.
+;;
 ;; Revision 1.4  1997/05/21 20:06:24  rossini
 ;; conversion to ess complete.
 ;;
@@ -1075,7 +1079,7 @@ to continue it."
   (comint-mode)
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq major-mode 'inferior-ess-mode)
-  (setq mode-name (concat "Inferior " ess-proc-prefix))
+  (setq mode-name "Inf-ESS") ;;(concat "Inferior " ess-proc-prefix))
   (setq mode-line-process
 	'(" [" ess-local-process-name "]: %s"))
   (use-local-map inferior-ess-mode-map)
@@ -1121,7 +1125,7 @@ to continue it."
   (run-hooks 'inferior-ess-mode-hook)
   (message
    (concat (substitute-command-keys
-	    "Type \\[describe-mode] for help on ESS mode version ")
+	    "Type \\[describe-mode] for help on ESS version ")
 	   ess-mode-version)))
 
 ;;*;; Commands used exclusively in inferior-ess-mode
