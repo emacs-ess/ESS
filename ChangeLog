@@ -1,3 +1,7 @@
+Wed Oct 29 14:08:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: rearranged, as suggested by Don Cram. (DC).
+
 Mon Oct 27 14:50:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.texi: readded "New Features" section.
@@ -580,6 +584,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.16  1997/10/29 19:14:35  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.15  1997/10/27 19:50:29  rossini
 	* Removing *** empty log message ***
 	* Removing
