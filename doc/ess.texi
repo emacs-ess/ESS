@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.10 1999/03/05 19:18:18 rossini Exp $
+@comment $Id: ess.texi,v 5.11 1999/03/26 07:35:15 maechler Exp $
 
 @synindex pg vr
 
@@ -38,7 +38,7 @@ Statistics, University of South Carolina, Columbia, SC, 29208, USA.
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.x (Documentation $Revision: 5.10 $ $Date: 1999/03/05 19:18:18 $)
+@subtitle version 5.1.x (Documentation $Revision: 5.11 $ $Date: 1999/03/26 07:35:15 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -83,7 +83,7 @@ permission notice identical to this one.
 
 ESS version 5.1.x
 
-        (Documentation $Revision: 5.10 $ $Date: 1999/03/05 19:18:18 $).
+        (Documentation $Revision: 5.11 $ $Date: 1999/03/26 07:35:15 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
@@ -2221,7 +2221,7 @@ directory, move it there).
 
 @cindex Bug reports
 @pindex ess-submit-bug-report
-@include bugrepts.texi
+@include bugrept.texi
 
 @node Help Statistics, Help OS, Bugs, Top
 @comment  node-name,  next,  previous,  up@chapter Using S4
