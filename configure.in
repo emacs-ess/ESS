@@ -5,7 +5,7 @@ dnl
 dnl Copyright (C) 2000 ESS Developers 
 dnl Author    : A.J. Rossini <rossini@biostat.washington.edu>
 dnl Maintainer: (same)
-dnl Revision  : $Id: configure.in,v 1.1 2000/09/03 02:40:49 rossini Exp $
+dnl Revision  : $Id: configure.in,v 1.2 2000/09/03 02:51:01 rossini Exp $
 ###
 ### This file is part of ESS.
 ###
@@ -67,9 +67,28 @@ ESS_PROG_SPLUS4
 ESS_PROG_SPLUS5
 ESS_PROG_R
 ESS_PROG_XLISPSTAT
+ESS_PROG_VISTA
+ESS_PROG_ARC
 ESS_PROG_SAS
-ESS_PROG_
+ESS_PROG_STATA
 
 ESS_PROG_ECHO_N
 ESS_PROG_INSTALL
 
+
+
+### Output
+
+AC_OUTPUT(Makefile
+	lisp/Makefile
+)
+
+AC_MSG_RESULT([
+
+ESS is now configured for ${host}
+
+  Source directory:         ${srcdir}
+  Installation directory:   ${prefix}
+  Emacs:                    ${EMACS}
+  SAS:		            ${use_SAS}
+])
