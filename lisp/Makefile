@@ -63,8 +63,9 @@ install: $(ELC)
 #	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
 
 dist: ess-cust.el
-	cvs commit -m "'make dist' for new version" ess-cust.el
 	@touch dist
+## svn committing happens in ../Makefile
+
 clean:
 	rm -f $(ELC)
 
