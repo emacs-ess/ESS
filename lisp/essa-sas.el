@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rodney.sparapani@duke.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/03/02 22:23:47 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: essa-sas.el,v 1.11 2001/03/02 22:23:47 ess Exp $
+;; Modified: $Date: 2001/03/06 21:40:13 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: essa-sas.el,v 1.12 2001/03/06 21:40:13 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, asynchronous.
 
@@ -94,8 +94,7 @@
 		   (expand-file-name (buffer-name))
 		 ess-sas-file-path))
 	 (ess-sas-arg (concat (file-name-sans-extension root) "." suffix))
-	 (ess-sas-buf (if (fboundp 'find-buffer-visiting) (find-buffer-visiting ess-sas-arg) 
-		(get-file-buffer ess-sas-arg))))
+	 (ess-sas-buf (get-file-buffer ess-sas-arg)))
     (if (not ess-sas-buf)
 	(find-file ess-sas-arg)
       (switch-to-buffer ess-sas-buf)
@@ -292,10 +291,9 @@ operating system.")
     (interactive)
     (ess-sas-file-path)
     (shell)
-    (insert ess-sas-submit-command " " ess-sas-data-view-options 
-	" -initstmt \"proc fsview data=" 
+    (insert (concat ess-sas-submit-command " -initstmt \"proc fsview data=" 
 	(read-string "SAS Dataset: ")
-	"; run;\"")
+	"; run;\"" ess-sas-data-view-options))
     (comint-send-input)
     (ess-sas-goto-sas))
 
