@@ -101,7 +101,7 @@ install: all
 	mkdir -p $(INFODIR)
 	$(INSTALL) ess.info* $(INFODIR)
 	mkdir -p $(LISPDIR)
-	$(INSTALL) *.elc $(LISPDIR)
+	if [ x$(LISPDIR) -ne x. ]; then $(INSTALL) *.elc $(LISPDIR) ; fi
 
 clean:
 	rm -f $(OBJECTS) ess.info* ess.aux ess.cp ess.dvi \
