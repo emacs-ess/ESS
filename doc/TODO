@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-$Revision: 4.5 $
+$Revision: 4.6 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1165,3 +1165,46 @@ NOTE: Not all of these are clean OR are even consistent.
   
   My discomfort is that we are then modifying the output, not just
   highlighting it.
+
+* (BR) Scripts in S-PLUS 4.x provide quite similar functionality to
+  the ESS front-end, and are worth investigating.
+
+* (Duncan Murdoch, on IDEs): 
+
+  I don't understand the details of what you're saying, but for an
+  example of a very good IDE, you should look at Borland Delphi,
+  version 3.  It has some very nice features:
+ 
+  - at any point, you can ask to see a list of legal identifiers to
+  insert.  These are presented in order from most to least local, so
+  usually the one you want is near the top.  The IDE knows enough
+  about the syntax of the current line to only suggest things that
+  would be legal there.
+  - when you type a dot (more or less equivalent to $ in S), you're
+  presented with a list of fields and methods for the object or record
+  you're working with.
+  - you can point at any identifier and hit a key for the help for that
+  identifier.  Because it's an object oriented system, there are often
+  multiple different methods with the same name; the IDE picks the
+  appropriate one by the context.
+
+  Other unrelated things that Delphi does nicely which Splus would do
+  well to emulate:
+
+  - you can ask for a new object of a specific type, and it will insert
+  appropriate skeleton code for it.
+  - the object browser is quick and convenient to use!  Of course, the
+  objects in Delphi tend to be quite different from the objects in
+  S...
+  - it has lots of nice visual design tools for writing user interface
+  code.
+
+* Bob_Dorazio@usgs.gov (Bob Dorazio) on IDEs:
+
+  I have no experience with emacs, but in response to your question
+  take a look at Watcom's IDE for C++.  This IDE is the best I have
+  ever seen!  The source code editor is fantastic and the level of
+  integration between the source code editor, the compiler, the
+  debugger, and the utility for "building" executables or libraries
+  surpasses that of any other IDE I have used.
+
