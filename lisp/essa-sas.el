@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/06/15 16:34:05 $
-;; Version: $Revision: 1.169 $
-;; RCS: $Id: essa-sas.el,v 1.169 2004/06/15 16:34:05 rsparapa Exp $
+;; Modified: $Date: 2004/06/17 15:49:35 $
+;; Version: $Revision: 1.170 $
+;; RCS: $Id: essa-sas.el,v 1.170 2004/06/17 15:49:35 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -91,8 +91,25 @@ or `ess-sas-data-view-insight'."
   :type  'string)
 
 (defcustom ess-sas-graph-view-viewer-alist
-  '(("[eE]?[pP][sS]" . "gv") ("[pP][dD][fF]" . "acroread"))
-  "*Associate lower-case file name extensions with optional graphics image file viewers."
+;;'(("[pP][dD][fF]" . "acroread") ("[eE]?[pP][sS]" . "gv")))
+    (let ((ess-tmp-alist nil)
+        (ess-tmp-file nil))
+
+    (setq ess-tmp-file (ess-find-exec "acroread"))
+
+    (if ess-tmp-file 
+	(setq ess-tmp-alist (cons "[pP][dD][fF]" ess-tmp-file)))
+    (setq ess-tmp-file (ess-find-exec "gv"))
+
+    (if (not ess-tmp-file) (setq ess-tmp-file (ess-find-exec "ghostview")))
+
+    (if (not ess-tmp-file) (setq ess-tmp-file (ess-find-exec "gsview")))
+
+    (if ess-tmp-file 
+	(if ess-tmp-alist 
+	    (setq ess-tmp-alist (list ess-tmp-alist (cons "[eE]?[pP][sS]" ess-tmp-file)))
+	    (setq ess-tmp-alist (list (cons "[pP][dD][fF]" ess-tmp-file) (cons "[eE]?[pP][sS]" ess-tmp-file))))))
+  "*Associate file name extensions with graphics image file viewers."
   :group 'ess-sas
   :type  'string)
 
