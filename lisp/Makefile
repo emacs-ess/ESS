@@ -92,9 +92,14 @@ DISTFILES = $(addprefix $(VERSIONDIR)/,$(SOURCES)) \
 
 DISTSCRIPTS = $(addprefix $(VERSIONDIR)/,$(SCRIPTS))
 
-### Commands
+
+DOCFILES = dir ess.info ess.dvi ess.ps ess.pdf
+
+### Targets
 
 ESS: $(OBJECTS)
+
+ESS-doc: info html dvi 
 
 all:	ESS info html
 
@@ -103,6 +108,13 @@ info:	ess.info
 html:	html/ess_toc.html
 
 dvi:	ess.dvi
+
+ps:	ess.ps
+	dvips ess.dvi -o ess.ps
+
+pdf: 	ess.pdf
+	rm ess.pdf
+	ps2pdf ess.ps > ess.pdf
 
 install: all
 	mkdir -p $(INFODIR)
@@ -129,6 +141,24 @@ dist:
 	cp $(VERSIONDIR)/README $(MYWWWDIR)/$(VERSIONDIR)-README
 	cp $(VERSIONDIR)/README $(MYFTPDIR)/$(VERSIONDIR)-README
 	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
+	chmod u+w $(VERSIONDIR)/Doc
+
+
+dist-doc: ESS-doc ps pdf
+	@echo "**********************************************************"
+	@echo "** Making distribution of ESS-DOC for release $(VERSION)"
+	@echo "**********************************************************"
+	chmod ugo+x $(DISTSCRIPTS)
+	tar hcovf $(VERSIONDIR)-doc.tar $(DISTFILES)
+	gzip $(VERSIONDIR)-doc.tar
+	cp $(VERSIONDIR).tar.gz $(MYWWWDIR)
+	cp $(VERSIONDIR).tar.gz $(MYFTPDIR)
+	cp $(VERSIONDIR)/README $(MYWWWDIR)/$(VERSIONDIR)-README
+	cp $(VERSIONDIR)/README $(MYFTPDIR)/$(VERSIONDIR)-README
+	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
+	chmod u+w $(VERSIONDIR)/Doc
+
+
 
 patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 	-rm -rf ESS-$(VERSION)
@@ -161,10 +191,10 @@ html/ess_toc.html: ess.texi
 
 
 ess-vars.elc:	ess-vars.el
-	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile ess-vars.el
+	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-vars.el
 
 ess.elc: ess.el ess-vars.elc
-	$(EMACS) $(BATCHFLAGS) -l ess-vars.elc -f batch-byte-compile ess.el
+	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -l ess-vars.elc -f batch-byte-compile ess.el
 
 ess-site.elc: ess-site.el ess.elc
 

@@ -1,3 +1,84 @@
+Thu Nov 13 09:59:05 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (ess.elc): fixed action
+
+	* Makefile (ess-vars.elc): fixed action
+	
+Thu Nov 13 09:58:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: removed ancient comments.
+
+Thu Nov 13 09:58:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S: added means for using second philosophy.
+
+Thu Nov 13 09:51:19 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S: fixed line break.
+
+Thu Nov 13 09:40:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/ajr-talk.tex: added location of talk.
+
+Thu Nov 13 09:39:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/rmh-talk.tex: pointed to FRANZ.  added comment about where
+ 	given.
+
+Thu Nov 13 08:54:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (dist-doc): new target.  Use it
+
+	* Makefile (ESS-doc): new target.  Use it.
+
+Wed Nov 12 17:32:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/ajr-talk.tex: de latex-2-html'd.
+
+Wed Nov 12 17:26:25 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: args passes all the way through.
+
+Wed Nov 12 16:30:34 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-r.el: added prefix to R.
+
+Wed Nov 12 15:15:06 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: added stata comment, site-init.el
+
+Wed Nov 12 15:12:25 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: added installation (from README).  Use @file{} for
+ 	file names.
+
+Wed Nov 12 14:56:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: added warning messages for ignorable errors.
+
+Wed Nov 12 14:43:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: can't seem to remove last byte compiler error.
+
+Wed Nov 12 14:30:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-trns.el: 
+	* ess-help.el: added compile requires to remove byte-compiler
+ 	warnings.
+
+Wed Nov 12 14:21:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essddr.el: paren balance. whoops.
+
+Wed Nov 12 14:20:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essddr.el: added "require 'ess-help" to solve byte compiler
+ 	errors.
+
+Wed Nov 12 14:16:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el: require 'shell to fix byte-compile errors.
+
 Wed Nov 12 02:45:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Release: 5.0-pre4
@@ -948,6 +1029,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.30  1997/11/13 14:59:55  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.29  1997/11/12 07:46:06  rossini
 	* Removing *** empty log message ***
 	* Removing
