@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/04/05 21:15:15 $
-;; Version: $Revision: 5.20 $
-;; RCS: $Id: ess-inf.el,v 5.20 1999/04/05 21:15:15 rossini Exp $
+;; Modified: $Date: 1999/06/17 17:33:50 $
+;; Version: $Revision: 5.21 $
+;; RCS: $Id: ess-inf.el,v 5.21 1999/06/17 17:33:50 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -109,7 +109,7 @@ accompany the call for inferior-ess-program.
      (format "(inferior-ess 0): ess-start-args=%s \n" ess-start-args))
 
   ;; set up for current language (need here, to get ess-language, etc).
-  
+
   ;; Couldn't we rather set all the default values or Local values now ?
   ;;>>> (ess-setq-vars-default ess-customize-alist (current-buffer))
   ;;>>> (ess-setq-vars-local   ess-customize-alist (current-buffer))
@@ -117,19 +117,19 @@ accompany the call for inferior-ess-program.
 				       ess-customize-alist))))
 	(temp-ess-lang (eval (cdr (assoc 'ess-language
 				       ess-customize-alist)))))
-	
+
     (save-excursion
       ;;---- Is this needed ??? --- why should dribble-buffer need these ??
       (set-buffer ess-dribble-buffer)
       (ess-setq-vars-default ess-customize-alist (current-buffer))
-      ;;>> Doesn't set ess-language, 
+      ;;>> Doesn't set ess-language,
       ;;>> => comint-input-sender is not set to 'ess-input-  ==> no input echo!
       ;;>> => that's why things fail:
       ;;>> (ess-setq-vars-local ess-customize-alist (current-buffer))
       ;;		 ======
       (setq temp-ess-dialect
 	    (eval(cdr(assoc 'ess-dialect ess-customize-alist))))
-      (setq temp-ess-lang   
+      (setq temp-ess-lang
 	    (eval(cdr(assoc 'ess-language ess-customize-alist))))
 	    )
 
@@ -236,9 +236,9 @@ accompany the call for inferior-ess-program.
       (setq-default ess-history-file
 		    (concat "." ess-dialect "history"))
       (ess-write-to-dribble-buffer
-       (format "(inf-ess finis [%s(%s), %s(%s,%s)]\n" 
+       (format "(inf-ess finis [%s(%s), %s(%s,%s)]\n"
 	       ess-language		ess-dialect
-	       inferior-ess-program	
+	       inferior-ess-program
 	       ess-current-process-name
 	       ess-local-process-name
 	       ))
@@ -415,9 +415,9 @@ there is no process NAME)."
 	 (expand-file-name
 	  (file-name-as-directory
 	   (read-file-name
-	    (format "ESS [%s(%s): %s] starting data directory? " 
+	    (format "ESS [%s(%s): %s] starting data directory? "
 		    ess-language ess-dialect inferior-ess-program)
-	    (file-name-as-directory default) 
+	    (file-name-as-directory default)
 	    (file-name-as-directory default) t nil)))))
     (if (file-directory-p the-dir) nil
       (error "%s is not a valid directory" the-dir))
@@ -449,7 +449,7 @@ there is no process NAME)."
 		   (ess-error "Timeout waiting for prompt. Check inferior-ess-prompt or ess-loop-timeout."))
 	       (accept-process-output)
 	       (goto-char (point-max))
-	       (beginning-of-line)
+	       (beginning-of-line); bol ==> no need for "^" in *-prompt!
 	       (setq r (looking-at inferior-ess-prompt))
 	       (not (or r (looking-at ".*\\?\\s *"))))))
     (goto-char (point-max))
@@ -1173,7 +1173,7 @@ to continue it."
 
   (ess-write-to-dribble-buffer
    (format "(inf.ess-mode 1): buf=%s, ess-language=%s, comint..echoes=%s, comint..sender=%s,\n"
-	   (current-buffer) ess-language 
+	   (current-buffer) ess-language
 	   comint-process-echoes comint-input-sender))
   ;; We set comint-process-echoes to t because inferior-ess-input-sender
   ;; recopies the input. If comint-process-echoes was *meant* to be t ...
@@ -1220,7 +1220,7 @@ to continue it."
   (ess-setq-vars-local ess-customize-alist (current-buffer))
 
   (ess-write-to-dribble-buffer
-   (format "(inf.ess-mode 3): current-buffer=%s, comint..echoes=%s, comint..sender=%s,\n" 
+   (format "(inf.ess-mode 3): current-buffer=%s, comint..echoes=%s, comint..sender=%s,\n"
 	   (current-buffer) comint-process-echoes comint-input-sender))
 
   ;; Completion support

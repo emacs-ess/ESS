@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/06/17 16:46:09 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: essd-sp3.el,v 1.2 1999/06/17 16:46:09 maechler Exp $
+;; Modified: $Date: 1999/06/17 17:33:50 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: essd-sp3.el,v 1.3 1999/06/17 17:33:50 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,15 +47,14 @@
     (ess-language                  . "S")
     (ess-dialect                   . S+3-dialect-name)
     (ess-suffix                    . "S")
+    (ess-loop-timeout              . 500000 )
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
 					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
-    ;;not used ?!(ess-mode-edit                 . 'S+3-mode)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-    (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-s+3-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
