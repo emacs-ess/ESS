@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.32 2002/06/18 15:17:56 rsparapa Exp $
+@comment $Id: ess.texi,v 5.33 2002/07/02 21:18:09 rsparapa Exp $
 
 @include version.texi
 
@@ -41,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.32 $ $Date: 2002/06/18 15:17:56 $)
+@subtitle version @essver{} (Documentation $Revision: 5.33 $ $Date: 2002/07/02 21:18:09 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -66,7 +66,7 @@ University of Washington, Seattle, WA 98185, USA
 @page
 @vskip 0pt plus 1filll
 Copyright @copyright{} 1992--1995 David M. Smith
-Copyright @copyright{} 1996--1999 A.J. Rossini.
+Copyright @copyright{} 1996--2002 A.J. Rossini.
 @sp 2
 
 Permission is granted to make and distribute verbatim copies of this
@@ -86,7 +86,7 @@ permission notice identical to this one.
 
 ESS version @essver{}
 
-        (Documentation $Revision: 5.32 $ $Date: 2002/06/18 15:17:56 $).
+        (Documentation $Revision: 5.33 $ $Date: 2002/07/02 21:18:09 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
