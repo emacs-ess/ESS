@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/13 14:58:41 $
-;; Version: $Revision: 1.41 $
-;; RCS: $Id: ess-vars.el,v 1.41 1997/11/13 14:58:41 rossini Exp $
+;; Modified: $Date: 1997/11/14 00:54:22 $
+;; Version: $Revision: 1.42 $
+;; RCS: $Id: ess-vars.el,v 1.42 1997/11/14 00:54:22 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -606,7 +606,6 @@ ess-load-file command.  Used for determining the default in the next one.")
 (defvar inferior-ess-mode-map nil
   "Keymap for inferior-ess mode.")
 
-
 (defvar ess-object-name-db-file "ess-namedb"
   "File containing definitions for ess-object-name-db.")
 
@@ -618,14 +617,8 @@ ess-load-file command.  Used for determining the default in the next one.")
 The file ess-namedb.el is loaded (if it exists) to define this variable.
 See also function ess-create-object-name-db.")
 
-;;; This is EVIL.  We don't want this.
-;;(condition-case ()
-;;    (load ess-object-name-db-file)
-;;  (error
-;;   (message "%s does not exist.  Consider running ess-create-object-name-db."
-;;	    ess-object-name-db-file)
-;;   (ding)
-;;   (sit-for 1)))
+(make-variable-buffer-local 'ess-object-name-db)
+(setq-default ess-object-name-db nil)
 
 (defvar ess-loop-timeout 100000
   "Integer specifying how many loops ess-mode will wait for the prompt for
