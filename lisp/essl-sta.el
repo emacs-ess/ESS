@@ -6,9 +6,9 @@
 ;;         Brendan Halpin <brendan@essex.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/11/16 21:10:30 $
-;; Version: $Revision: 5.20 $
-;; RCS: $Id: essl-sta.el,v 5.20 1999/11/16 21:10:30 ess Exp $
+;; Modified: $Date: 1999/11/16 21:11:22 $
+;; Version: $Revision: 5.21 $
+;; RCS: $Id: essl-sta.el,v 5.21 1999/11/16 21:11:22 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -1565,6 +1565,24 @@ PROC is the stata process. Does not change point"
 
 (provide 'essl-sta)
 
+ ; Local variables section
+
+;;; This file is automatically placed in Outline minor mode.
+;;; The file is structured as follows:
+;;; Chapters:     ^L ;
+;;; Sections:    ;;*;;
+;;; Subsections: ;;;*;;;
+;;; Components:  defuns, defvars, defconsts
+;;;              Random code beginning with a ;;;;* comment
+
+;;; Local variables:
+;;; mode: emacs-lisp
+;;; outline-minor-mode: nil
+;;; mode: outline-minor
+;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;;; End:
+
+;;; essl-sta.el ends here
 
 
 
