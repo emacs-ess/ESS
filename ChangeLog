@@ -1,5 +1,33 @@
 1999-04-05  A.J. Rossini  <rossini@biostat.washington.edu>
 
+	* Makefile, doc/Makefile, doc/README.SPLUS4WIN, doc/inst_tar.texi, doc/readme.texi, doc/requires.texi, lisp/ess-site.el, lisp/ess-vars.el:
+	text from 5.1.7 to 5.1.8
+
+	* lisp/ess-site.el: cleaned up misguided comment.
+
+	* lisp/ess-site.el: cleaned up, removed R unix/microsoft hack.
+
+	* lisp/essd-r.el: using a solitary R.
+
+	* lisp/ess-inf.el:
+	conditioned out the slowdown in ess-prompt-wait for Microsoft.
+
+	* ANNOUNCE, README, doc/ajr-talk.tex, doc/ess.texi, lisp/ChangeLog:
+	doc updates
+
+	* ChangeLog: *** empty log message ***
+
+	* lisp/ess.el: franz.stat.wisc.edu -> ess.stat.wisc.edu
+
+	* doc/README.SPLUS4WIN, doc/announc.texi, Makefile, doc/Makefile, doc/inst_tar.texi, doc/readme.texi, doc/requires.texi, lisp/ess-site.el, lisp/ess-vars.el:
+	5.1.6 to 5.1.7 changes for possible release
+
+	* lisp/ess-inf.el: ess-prompt-wait duration changed?
+
+	* ChangeLog: more stuff.
+
+1999-04-05  A.J. Rossini  <rossini@biostat.washington.edu>
+
 	* lisp/ess.el: franz.stat.wisc.edu -> ess.stat.wisc.edu
 
 	* doc/README.SPLUS4WIN, doc/announc.texi, Makefile, doc/Makefile, doc/inst_tar.texi, doc/readme.texi, doc/requires.texi, lisp/ess-site.el, lisp/ess-vars.el:
@@ -452,7 +480,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 1999/04/05 18:52:21 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 1999/04/05 21:36:51 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
@@ -2642,6 +2670,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.14  1999/04/05 21:36:51  rossini
+	* Removing updated from cvs
+	* Removing
 	* Removing Revision 5.13  1999/04/05 18:52:21  rossini
 	* Removing *** empty log message ***
 	* Removing

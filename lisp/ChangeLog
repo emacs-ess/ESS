@@ -1,5 +1,26 @@
 1999-04-05  A.J. Rossini  <rossini@biostat.washington.edu>
 
+	* ess-site.el, ess-vars.el: text from 5.1.7 to 5.1.8
+
+	* ess-site.el: cleaned up misguided comment.
+
+	* ess-site.el: cleaned up, removed R unix/microsoft hack.
+
+	* essd-r.el: using a solitary R.
+
+	* ess-inf.el:
+	conditioned out the slowdown in ess-prompt-wait for Microsoft.
+
+	* ChangeLog: doc updates
+
+	* ess.el: franz.stat.wisc.edu -> ess.stat.wisc.edu
+
+	* ess-site.el, ess-vars.el: 5.1.6 to 5.1.7 changes for possible release
+
+	* ess-inf.el: ess-prompt-wait duration changed?
+
+1999-04-05  A.J. Rossini  <rossini@biostat.washington.edu>
+
 	* ess.el: franz.stat.wisc.edu -> ess.stat.wisc.edu
 
 	* ess-site.el, ess-vars.el: 5.1.6 to 5.1.7 changes for possible release
