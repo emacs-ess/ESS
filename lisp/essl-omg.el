@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 15 Aug 1999
-;; Modified: $Date: 2003/09/25 16:01:42 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: essl-omg.el,v 5.7 2003/09/25 16:01:42 maechler Exp $
+;; Modified: $Date: 2004/02/17 22:26:27 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: essl-omg.el,v 5.8 2004/02/17 22:26:27 rossini Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -238,6 +238,7 @@ Returns nil if line starts inside a string, t if in a comment."
   (modify-syntax-entry ?\' "\"" S-syntax-table)
   ;;FIXME: This fails (warning in compilation):
   ;;F "//" are 2 characters; ?// is invalid
+  ;;F NEXT LINE IS BOGUS IN XEMACS, AJR
   ;;F (modify-syntax-entry ?//  "<"  S-syntax-table) ; open comment
   ;;F (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
   ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
