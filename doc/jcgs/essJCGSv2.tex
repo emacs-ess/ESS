@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/15 01:09:33 $ - $Revision: 1.175 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/15 05:03:54 $ - $Revision: 1.176 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -171,18 +171,23 @@ intelligent environment for statistical analysis}
 \fi
 
 \begin{abstract}
-  Statistical programming is an important component of statistics
-  research and data analysis.  Emacs Speaks Statistics (ESS) provides
-  an intelligent user interface to facilitate this.  ESS runs under
-  the Unix, Microsoft Windows, and Macintosh operating systems and
-  interfaces with SAS, S-PLUS, R, and other statistics packages.  ESS
-  is based on the Emacs text editor and uses its features and
-  extensions to streamline the creation and use of statistical
-  software applications.  In particular, ESS provides features for
-  editing source files and programs for statistical programming and
-  data analysis, as well as assist with interacting with particular
-  statistics packages without leaving Emacs.  We discuss how ESS works
-  and how it can increase statistical programming efficiency.
+  Computer programming, both using statistical packages and writing
+  them, is an important component of statistics research and data
+  analysis.  Emacs Speaks Statistics (ESS) provides an intelligent,
+  consistent interface between the user and the software.  ESS
+  interfaces with SAS, S-PLUS, R, and other statistics packages under
+  the Unix, Microsoft Windows, and Macintosh operating systems.  ESS
+  is itself a package within the Emacs text editor and uses Emacs
+  features to streamline the creation and use of statistical software.
+  ESS knows the syntax and grammar of each data analysis package it
+  works with and provides consistent display and editing features
+  across packages based on that knowledge.  ESS assists in the
+  interactive or batch execution by the statistics packages of
+  statements written in their languages.  Each statistics package is
+  run as a subprocess within the Emacs environment allowing the user
+  to work directly from the editor and therefore retain the
+  consistency of always being in the same environment.  We discuss how
+  ESS works and how it increases statistical programming efficiency.
 \end{abstract}
 
 \noindent Keywords: Data Analysis, Programming, 
@@ -217,11 +222,11 @@ ViSta \citep{youn:fald:mcfa:1992}; \Stata\ \citep{Stata:7.0}; Omegahat
 accommodate most statistical packages which provide either an
 interactive command-line or process batch files for instructions.
 
-We start by describing the Emacs text editor; this is the underlying
-platform for ESS.  Next, we discuss how ESS is involved in enhancing a
-statistician's daily activities, by presenting its features,
-operation, and how it facilitates statistical computing.  The unique
-history of ESS as an open source project follows; it represents a
+We start by describing the Emacs text editor, the underlying
+platform on which ESS is built.  Next, we discuss how ESS enhances a
+statistician's daily activities by presenting its features
+and showing how it facilitates statistical computing.  The unique
+history of ESS as an open source project follows; it is a
 synthesis of several independent projects and has been passed down
 through many generations of developers.  We conclude with future
 extensions and related work.
@@ -1268,8 +1273,8 @@ This history is summarized in Table \ref{tab:timeline}.
 %%generation that provides the capability of specifying all the necessary
 %%parameters for a BUGS batch run in a single file.
 
-\section{Extensions}
-\label{sec:extensions}
+%%\section{Extensions}
+%%\label{sec:extensions}
 
 %%There are two active areas of extensions for user environments.  One
 %%is to enhance the capabilities of the IDE for statistical practice;
@@ -1306,6 +1311,9 @@ groups to provide standardized templates for initiating an analysis.
 
 %ESS is one of the first  Rapid Application Development (RAD)
 %environments intended for statisticians.  It provides
+
+\section{Conclusion}
+
 ESS provides 
 an enhanced, powerful interface for efficient interactive data
 analysis and statistical programming.  
