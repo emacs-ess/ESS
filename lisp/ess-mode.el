@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/20 21:29:14 $
-;; Version: $Revision: 1.74 $
-;; RCS: $Id: ess-mode.el,v 1.74 1997/11/20 21:29:14 rossini Exp $
+;; Modified: $Date: 1997/11/20 21:37:22 $
+;; Version: $Revision: 1.75 $
+;; RCS: $Id: ess-mode.el,v 1.75 1997/11/20 21:37:22 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -186,23 +186,10 @@
     ["About"             (ess-goto-info "Edit buffer")       t]
     )
    "------"
-   ["Describe"  describe-mode t]
-   ;;["About"  (lambda nil (interactive) (ess-goto-info "Editing")) t]
-   ["Send bug report"  ess-submit-bug-report t]
+   ["Describe"         describe-mode                t]
+   ["About"            (ess-goto-info "Editing"))   t]
+   ["Send bug report"  ess-submit-bug-report        t]
    ))
-
-;; NOT NEEDED!
-;;(if (not (string-match "XEmacs" emacs-version))
-;;    (progn
-;;      (if (featurep 'ess-mode)
-;;	   (define-key ess-mode-map
-;;	     [menu-bar ess-mode]
-;;	     (cons "ess-mode" ess-mode-menu))
-;;	 (eval-after-load "ess-mode"
-;;			  '(define-key ess-mode-map
-;;			     [menu-bar ess-mode]
-;;			     (cons "ess-mode"
-;;				   ess-mode-menu))))))
 
 (defun ess-mode-xemacs-menu ()
   "Hook to install ess-mode menu for XEmacs (w/ easymenu)"
