@@ -1,6 +1,6 @@
 ### Makefile - for compiled e-lisp of ESS distribution.
 ###
-### File: $Revision: 5.53 $.
+### File: $Revision: 5.54 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -50,7 +50,7 @@ ELC = ess-cust.elc $(CORE) \
 	essl-bug.elc \
 	ess-noweb.elc noweb-mode.elc noweb-font-lock-mode.elc \
 	ess-font-lock.elc \
-	essa-r.elc \
+	essa-r.elc ess-toolbar.elc\
 	essddr.elc
 
 ### Targets
