@@ -1,3 +1,7 @@
+Wed Dec 16 19:28:57 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* doc/ess.texi: added '$Date: 1998/12/16 18:30:49 $'; 5.0 -> 5.1.x
+
 Mon Dec 14 20:23:55 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* README: added 5.1.x comments, updated to current state of affairs.
@@ -2186,6 +2190,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.6  1998/12/16 18:30:49  maechler
+	* Removing ess.texi
+	* Removing
 	* Removing Revision 5.5  1998/12/14 20:46:07  rossini
 	* Removing updated.
 	* Removing
