@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<!DOCTYPE book PUBLIC "-//Arbortext//DTD DocBk XML V2.0//EN"
+ "file:///home/rossini/sandbox/local/Src/Emacs/xae/doctypes/docbook/docbookx.dtd" [
+<!ENTITY ess "ESS">
+<!ENTITY intro SYSTEM "ess-cha-intro.xml">
+<!ENTITY basic SYSTEM "ess-cha-basic.xml">
+<!ENTITY advanced SYSTEM "ess-cha-advanced.xml">
+<!ENTITY esslS SYSTEM "ess-cha-S.xml">
+<!ENTITY esslSAS SYSTEM "ess-cha-SAS.xml">
+<!ENTITY esslStata SYSTEM "ess-cha-Stata.xml">
+<!ENTITY esslXLispStat SYSTEM "ess-cha-xlispstat.xml">
+<!ENTITY essExS SYSTEM "ess-app-example-S.xml">
+
+]>
+
+<?xml-stylesheet
+  href="file:///home/rossini/sandbox/local/Src/Emacs/xae/doctypes/docbook/styles/docbook/html/docbook.xsl"
+  type="text/xsl"?>
+
+<book>
+  <title>Emacs Speaks Statistics User Manual</title>
+  <titleabbrev>ESS User Manual</titleabbrev>
+  <bookinfo>
+    <legalnotice>
+      <para>
+	This work is copyright A.J. Rossini, 
+	<email>rossini@u.washington.edu</email> 
+      </para>
+    </legalnotice>
+    <author>
+      <firstname>Anthony</firstname>
+      <surname>Rossini</surname>
+      <affiliation>
+	<orgname>
+	  Department of Biostatistics, University of Washington
+	</orgname> 
+	<address format="linespecific">
+	  Box 292731
+	  Seattle, WA 98195
+	</address>
+      </affiliation>
+    </author>
+  </bookinfo>
+  <dedication>
+    <para>
+      This is dedicated to free time.
+    </para>
+  </dedication>
+
+  &intro;
+  
+  <!--  &basic; -->
+  
+  <appendix>
+  <title>Examples for using S</title>
+
+  <para>
+    We present some basic suggestions for using ESS to interact with
+    S.  These are just a subset of approaches, many better approaches
+    are possible.  Contributions of examples of how you work with ESS
+    are appreciated (especially since it helps us determine priorities
+    on future enhancements)! (comments as to what should be happening
+    are prefixed by "##").
+  </para>
+
+    <para>
+      <literallayout format="linespecific" class="normal">
+1:  ##    Data Analysis Example (source code is real)
+    ## Load the file you want to work with
+    C-x C-f myfile.s
+
+    ## Edit as appropriate, and then start up S-PLUS 3.x
+    M-x S+3
+
+    ## A new buffer *S+3:1* will appear.  Splus will have been started
+    ## in this buffer.  The buffer is in iESS [S+3:1] mode.
+
+    ## Split the screen and go back to the file editing buffer.
+    C-x 2 C-x b myfile.s
+
+    ## Send regions, lines, or the entire file contents to S-PLUS. For regions,
+    ## highlight a region with keystrokes or mouse and then send with:
+    C-c C-r
+
+    ## Re-edit myfile.s as necessary to correct any difficulties.  Add
+    ## new commands here.  Send them to S by region with C-c C-r, or
+    ## one line at a time with C-c C-n.
+
+    ## Save the revised myfile.s with C-x C-s.
+
+    ## Save the entire *S+3:1* interaction buffer with C-c C-s.  You
+    ## will be prompted for a file name.  The recommended name is
+    ## myfile.St.  With the *.St suffix, the file will come up in ESS
+    ## Transcript mode the next time it is accessed from Emacs.
+      </literallayout>
+    </para>
+
+    <para>
+      <literallayout>
+2:  ## Program revision example (source code is real)
+
+    ## Start up S-PLUS 3.x in a process buffer (this will be *S+3:1*) 
+    M-x S+3
+
+    ## Load the file you want to work with
+    C-x C-f myfile.s
+    
+    ## edit program, functions, and code in myfile.s, and send revised
+    ## functions to S when ready with
+    C-c C-f
+    ## or highlighted regions with
+    C-c C-r
+    ## or individual lines with
+    C-c C-n
+    ## or load the entire buffer with 
+    C-c C-l
+
+    ## save the revised myfile.s when you have finished
+    C-c C-s
+</literallayout></para>
+
+    <para>
+      <literallayout>
+3:  ## Program revision example (S object is real)
+
+    ## Start up S-PLUS 3.x in a process buffer (this will be *S+3:1*) 
+    M-x S+3
+
+    ## Dump an existing S object my.function into a buffer to work with
+    C-c C-d my.function
+    ## a new buffer named yourloginname.my.function.S will be created with
+    ## an editable copy of the object.  The buffer is associated with the
+    ## pathname /tmp/yourloginname.my.function.S and will amlost certainly not
+    ## exist after you log off.
+
+    ## enter program, functions, and code into work buffer, and send
+    ## entire contents to S-PLUS when ready
+    C-c C-b
+
+    ## Go to *S+3:1* buffer, which is the process buffer, and examine
+    ## the results.
+    C-c C-y
+    ## The sequence C-c C-y is a shortcut for:  C-x b *S+3:1*
+
+    ## Return to the work buffer (may/may not be prefixed)
+    C-x C-b yourloginname.my.function.S
+    ## Fix the function that didn't work, and resubmit by placing the
+    ## cursor somewhere in the function and
+    C-c C-f
+    ## Or you could've selected a region (using the mouse, or keyboard 
+    ## via setting point/mark) and 
+    C-c C-r
+    ## Or you could step through, line by line, using 
+    C-c C-n
+    ## Or just send a single line (without moving to the next) using
+    C-c C-j
+    ## To fix that error in syntax for the "rchisq" command, get help
+    ## by
+    C-c C-v rchisq
+      </literallayout>
+    </para>
+
+    <para>
+      <literallayout format="linespecific" class="normal">
+4:  Data Analysis (S object is real)
+    ## Start up S-PLUS 3.x, in a process buffer (this will be *S+3:1*) 
+    M-x S+3
+
+    ## Work in the process buffer.  When you find an object that needs 
+    ## to be changed (this could be a data frame, or a variable, or a 
+    ## function), dump it to a buffer:
+    C-c C-d my.cool.function
+
+    ## Edit the function as appropriate, and dump back in to the
+    ## process buffer  
+    C-c C-b
+
+    ## Return to the S-PLUS process buffer
+    C-c C-y
+    ## Continue working.
+
+    ## When you need help, use 
+    C-c C-v rchisq
+    ## instead of entering:   help("rchisq")
+      </literallayout>
+    </para>
+  </appendix>
+
+    <appendix>
+      <title>Customization Examples and Solutions to Problems</title>
+      <para>
+	<literallayout format="linespecific" class="normal">
+1. Suppose that you are primarily an SPLUS 3.4 user, occasionally
+   using S version 4, and sick and tired of the buffer-name *S+3*
+   we've stuck you with.  Simply edit the "ess-dialect" alist entry in 
+   the essd-s+3.el and essd-s4.el files to be "S" instead of "S4" and
+   "S+3".  This will insure that all the inferior process buffer names 
+   are "*S*".
+</literallayout>
+
+	<literallayout format="linespecific" class="normal">
+2. Suppose that you WANT to have the first buffer name indexed by
+   ":1", in the same manner as your S-PLUS processes 2,3,4, and 5 (for
+   you heavy simulation people).  Then uncomment the line in ess-site
+   (or add after your (require 'ess-site) or (load "ess-site") command 
+    in your .emacs file, the line:
+       
+       (setq ess-plain-first-buffername nil)
+   )
+</literallayout>
+
+	<literallayout>3. Fontlocking sometimes fails to behave nicely upon errors.  When
+   Splus dumps, a mis-matched "  (double-quote) can result in the
+   wrong font-lock face being used for the remainder of the buffer.  
+
+   Solution: add a " at the end of the "Dumped..." statement, to
+   revert the font-lock face back to normal.
+	</literallayout>
+      </para>
+    </appendix>
+</book>
+
+<!-- 
+Local Variables:
+mode: xae
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-set-face: t
+sgml-insert-missing-element-comment: nil
+sgml-omittag:nil
+sgml-shorttag:nil
+sgml-namecase-general:nil
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+--> 
+

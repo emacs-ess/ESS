@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE book PUBLIC "-//Arbortext//DTD DocBk XML V2.0//EN" "file:////home/rossini/sandbox/local/Src/Emacs/xae/doctypes/docbook/docbookx.dtd" []>
+
+<?xml-stylesheet href="file:////home/rossini/sandbox/local/Src/Emacs/xae/doctypes/docbook/styles/docbook/html/docbook.xsl" type="text/xsl"?>
+
+<book>
+  <title>ESS User FAQ</title>
+  <chapter>
+    <title></title>
+  </chapter>
+</book>
+
+<!-- 
+Local Variables:
+mode: xae
+sgml-indent-step: 2
+sgml-indent-data: t
+sgml-set-face: t
+sgml-insert-missing-element-comment: nil
+End:
+--> 
