@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/12/08 20:57:37 $
-;; Version: $Revision: 1.147 $
-;; RCS: $Id: essa-sas.el,v 1.147 2003/12/08 20:57:37 rsparapa Exp $
+;; Modified: $Date: 2004/01/15 14:57:51 $
+;; Version: $Revision: 1.148 $
+;; RCS: $Id: essa-sas.el,v 1.148 2004/01/15 14:57:51 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -463,8 +463,9 @@ current buffer if nil."
 (let* ((temp-colon-pos (string-match ":" ess-sas-file-path))
        (temp-list 
 	(if (or (not temp-colon-pos) (> temp-colon-pos 2))
-	    (split-string (file-name-directory ess-sas-file-path) 
-		"\\(@\\|:\\|]\\)")
+		(if (equal ess-sas-file-path ".") nil
+		    (split-string (file-name-directory ess-sas-file-path) 
+			"\\(@\\|:\\|]\\)"))
 	(list ess-sas-file-path)))
        (temp-list-length (length temp-list)))	
     (if (= temp-list-length 1) (setq temp-list nil)
@@ -576,10 +577,7 @@ optional argument is non-nil, then set-buffer rather than switch."
   (interactive)
   (ess-sas-file-path)
 
-; Nice idea, but needs to be hardened to deal with remote directories.
-;
-; (let ((ess-temp-directory default-directory))
-
+; The following let* block is an attempt to deal with remote directories.
     (let* ((temp-shell-buffer-remote-host 
 	    (or ess-sas-shell-buffer-remote-host (ess-sas-file-path-remote-host)))
 	(temp-shell-buffer-remote-init ess-sas-shell-buffer-remote-init)
