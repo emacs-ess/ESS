@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.44 2002/12/01 01:00:52 stephen Exp $
+@comment $Id: ess.texi,v 5.45 2002/12/01 06:41:32 stephen Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics 
-@subtitle (Documentation $Revision: 5.44 $ $Date: 2002/12/01 01:00:52 $)
+@subtitle (Documentation $Revision: 5.45 $ $Date: 2002/12/01 06:41:32 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik, 
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version 
 @include ../VERSION
 
-        (Documentation $Revision: 5.44 $ $Date: 2002/12/01 01:00:52 $).
+        (Documentation $Revision: 5.45 $ $Date: 2002/12/01 06:41:32 $).
 
 @display
 by  A.J. Rossini, 
@@ -575,7 +575,7 @@ to @code{t}.  See @file{ess-site} for how to set this for all users.
 @section ESS processes on Remote Computers
 @cindex Remote Computers
 @pindex ess-remote
-@vindex ess-elsewhere
+@pindex ESS-elsewhere
 @pindex S+elsewhere
 
 ESS works with processes on remote computers as easily as with
@@ -628,12 +628,12 @@ commands with it.
 
 We have two older commands, now deprecated, for accessing ESS processes
 on remote computers.
-@xref{S+elsewhere and ess-elsewhere}.
+@xref{S+elsewhere and ESS-elsewhere}.
 
 
 @comment  node-name,  next,  previous,  up
-@node S+elsewhere and ess-elsewhere,  , ESS processes on Remote Computers, ESS processes on Remote Computers
-@section S+elsewhere and ess-elsewhere
+@node S+elsewhere and ESS-elsewhere,  , ESS processes on Remote Computers, ESS processes on Remote Computers
+@section S+elsewhere and ESS-elsewhere
 
 These commands are now deprecated.  We recommend @samp{ess-remote}.
 
@@ -641,14 +641,14 @@ These commands are now deprecated.  We recommend @samp{ess-remote}.
 We have two versions of the elsewhere function.
 
 @samp{S+elsewhere} is specific for the S-Plus program.
-The more general function @samp{ess-elsewhere} is not as stable.
+The more general function @samp{ESS-elsewhere} is not as stable.
 
 @enumerate
 @item Enter @samp{M-x S+elsewhere}.
 You will be prompted for a starting directory.  I usually give it my
 project directory on the local machine, say  @samp{~myname/myproject/}
 
-Or enter @samp{M-x ess-elsewhere}.  You will be prompted for an ESS
+Or enter @samp{M-x ESS-elsewhere}.  You will be prompted for an ESS
 program and for a starting directory.  I usually give it my project
 directory on the local machine, say @samp{~myname/myproject/}
 
