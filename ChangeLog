@@ -1,3 +1,39 @@
+Fri Oct 24 08:07:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (ess-SAS-pre-run-hook): after accepting process
+	input, sleep-for to allow the rest of the input to appear!  Else,
+	we don't read the correct tty.  Alternative: would have to grep
+	for tty, and figure out if we mean BSD or SYSV style unix.
+	Bleach. 
+
+Fri Oct 24 07:21:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (ess-SAS-pre-run-hook): removed
+	ess-sas-shell-buffer-name stuff.  Necessary?
+
+Fri Oct 24 07:21:16 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-sas-sh-command: use /bin/sh
+
+Fri Oct 24 07:20:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (dist): make sure scripts are executable before
+	packaging. 
+	
+Thu Oct 23 17:24:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (ess-sas-shell-buffer-name-flag): use it.
+	* essd-sas.el (ess-sas-shell-buffer-name): use it.
+
+Thu Oct 23 17:20:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (ess-SAS-pre-run-hook): removed 'interactive' call.
+	Should only be run from a run-hooks call?
+
+	* essd-sas.el (ess-SAS-pre-run-hook): ess-shell-buffer-name-p
+	should be ess-shell-buffer-name-flag; -p and p suffices are
+	reserved for functions, -flag reserved for variables.
+
 Thu Oct 23 13:17:28 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (ess-eval-line-and-next-line, ess-eval-line,
@@ -473,6 +509,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.9  1997/10/24 12:08:59  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.8  1997/10/23 17:18:12  rossini
 	* Removing *** empty log message ***
 	* Removing
