@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2003/10/21 14:00:14 $
-;; Version: $Revision: 1.44 $
-;; RCS: $Id: ess-cust.el,v 1.44 2003/10/21 14:00:14 rsparapa Exp $
+;; Modified: $Date: 2003/11/05 13:24:14 $
+;; Version: $Revision: 1.45 $
+;; RCS: $Id: ess-cust.el,v 1.45 2003/11/05 13:24:14 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -1183,7 +1183,7 @@ See also function `ess-create-object-name-db'.")
 (make-variable-buffer-local 'ess-object-name-db)
 (setq-default ess-object-name-db nil)
 
-(defcustom ess-loop-timeout 500000
+(defcustom ess-loop-timeout 1200000
   "Integer specifying how many loops ess-mode will wait for the prompt
 before signaling an error.   This is important for S-PLUS and R, not so
 important for XLispStat.  Increase this, if you have a fast(er) machine."
