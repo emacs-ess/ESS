@@ -1847,7 +1847,8 @@ Returns nil if that file cannot be found, i.e., for R or any non-S language!"
 		(> (car (cdr mod1)) (car (cdr mod2)))))))
 
 (defun ess-get-object-list (name)
-  "Return an alist of current S object names associated with process NAME."
+  "Return a list of current S object names associated with process NAME,
+using `ess-object-list' if that is non-nil."
   (or ess-object-list
       (save-excursion
 	(set-buffer (process-buffer (get-ess-process name)))
