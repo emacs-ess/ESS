@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/03 14:10:59 $
-;; Version: $Revision: 1.27 $
-;; RCS: $Id: ess.el,v 1.27 1997/07/03 14:10:59 rossini Exp $
+;; Modified: $Date: 1997/07/03 14:18:16 $
+;; Version: $Revision: 1.28 $
+;; RCS: $Id: ess.el,v 1.28 1997/07/03 14:18:16 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.28  1997/07/03 14:18:16  rossini
+;; added messages for debugging.
+;;
 ;; Revision 1.27  1997/07/03 14:10:59  rossini
 ;; ess-customize-alist should NOT be buffer-local (only set variables
 ;; once or twice...).
@@ -1060,7 +1063,9 @@ the basic idea: (setq ---  (cdr (assq --- var-alist)))."
   (setq-default inferior-ess-help-command    (cdr (assq inferior-ess-help-command    var-alist)))
   (setq-default inferior-ess-exit-command    (cdr (assq inferior-ess-exit-command    var-alist)))
   (setq-default ess-loop-timeout             (cdr (assq ess-loop-timeout             var-alist)))
-  (setq-default inferior-ess-primary-prompt  (cdr (assq inferior-ess-primary-prompt  var-alist))))
+  (setq-default inferior-ess-primary-prompt  (cdr (assq inferior-ess-primary-prompt  var-alist)))
+  (message "(ess-set-vars): ess-proc-prefix=%s" ess-proc-prefix)
+  )
 
  ; Run load hook and provide package
 
