@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/07 19:29:48 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: essl-sas.el,v 1.18 1997/11/07 19:29:48 rossini Exp $
+;; Modified: $Date: 1997/11/07 19:31:35 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: essl-sas.el,v 1.19 1997/11/07 19:31:35 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -109,7 +109,7 @@ Ess-Listing mode is used solely to place an indicator on the mode line."
 (defvar sas-indent-ignore-comment "*"
   "*Comments with start with this string are ignored in indentation.")
 (defvar sas-require-confirmation t
-  "*Require confirmation when revisiting sas-output which has changed on disk.")
+  "*Require confirmation when revisiting sas-output which changed on disk.")
 ;; added sas-program 4/29/94.  user can specify a different version of sas.
 (defvar sas-program "sas" "*Name of program which runs sas.")
 (defvar sas-pre-run-hook nil
