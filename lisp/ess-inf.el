@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/22 17:47:29 $
-;; Version: $Revision: 1.69 $
-;; RCS: $Id: ess-inf.el,v 1.69 1997/10/22 17:47:29 rossini Exp $
+;; Modified: $Date: 1997/10/22 18:05:52 $
+;; Version: $Revision: 1.70 $
+;; RCS: $Id: ess-inf.el,v 1.70 1997/10/22 18:05:52 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -117,116 +117,118 @@ accompany the call for inferior-ess-program.
   (interactive "P")
   ;; set up for current language (need here, to get ess-language,
   ;; etc).
-  (save-excursion 
-    (set-buffer ess-dribble-buffer)
-    ;; next line isn't necessary now???
-    (ess-setq-vars-default ess-customize-alist (current-buffer))
-    (setq temp-ess-dialect (cdr (rassoc ess-dialect ess-customize-alist))))
-
-  ;;(ess-setq-vars-local ess-customize-alist (current-buffer))
-
-  ;; run hooks now, to overwrite the above!
-  (run-hooks 'ess-pre-run-hook)    
-  (ess-write-to-dribble-buffer 
-   (format "(inferior-ess 1): ess-language=%s, ess-dialect=%s, temp-dialect=%s, buf=%s \n"
-	   ess-language
-	   ess-dialect
-	   temp-ess-dialect
-	   (current-buffer)))
-  (let* ((defdir (directory-file-name (or ess-directory default-directory)))
-	 (temp-dialect temp-ess-dialect)
-;;	(procname
-;;	 (if n (ess-proc-name (prefix-numeric-value n))
-;;	   ;; no prefix arg
-;;	   (or (and (not (comint-check-proc (current-buffer)))
-;;		    ;; Don't start a new process in current buffer if
-;;		    ;; one is already running
-;;		    ess-local-process-name)
-;;	       ;; find a non-existent process
-;;	       (let ((ntry 0) done)
-;;		 (while (not done)
-;;		   (setq ntry (1+ ntry))
-;;		   (setq done (not (get-process (ess-proc-name ntry)))))
-;;		 (ess-proc-name ntry))))
-
-	 (procname (if n (ess-proc-name (prefix-numeric-value n)
-					temp-dialect)
-		     ;; no prefix arg
-		     (or (and (not (comint-check-proc (current-buffer)))
-			      ;; Don't start a new process in current buffer if
-			      ;; one is already running
-			      ess-local-process-name)
-			 ;; find a non-existent process
-			 (let ((ntry 0)
-			       (done nil))
-			   (while (not done)
-			     (setq ntry (1+ ntry)
-				   done (not
-					 (get-process (ess-proc-name
-						       ntry
-						       temp-dialect)))))
-			   (ess-proc-name ntry temp-dialect)))))
-	 (startdir nil)
-	 (buf nil)
-	 (buf-name-str  (concat "*" procname "*")))
-
-    (ess-write-to-dribble-buffer
-     (format "(inferior-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
-	     procname
-	     temp-dialect
-	     buf-name-str))
-    (cond
-     ;; If process is running, we use it:
-     ((get-process procname)
-      (setq buf (process-buffer (get-process procname))))
+  (let (temp-ess-dialect nil)
     
-     ;; Else (it's a new or terminated process) try to use current buffer
-     ((and (not buf) 
-	   (not n)
-	   (not (comint-check-proc (current-buffer)))
-	   (memq major-mode '(inferior-ess-mode))) ; ess-transcript-mode)))
-      (setq startdir
-	    (if ess-ask-for-ess-directory (ess-get-directory defdir)
-	      ess-directory))
-      (setq buf (current-buffer)))
-	  
-     ;;  Not an ESS buffer yet
-     ((and (not buf)
-	   (get-buffer buf-name-str))
-      (setq buf (get-buffer buf-name-str)))
-     
-     ;; Ask for transcript file and startdir
-     ;; FIXME -- this should be in ess-get-transfile
-     ((not buf)
-      (setq startdir
-	    (if ess-ask-for-ess-directory (ess-get-directory defdir) 
-	      ess-directory))
-      (if ess-ask-about-transfile
-	  (let ((transfilename (read-file-name
-				"Use transcript file (default none):"
-				startdir "")))
-	    ;;(if (string= transfilename "")
-	    ;;    (setq transfilename nil)
-	    ;;  (setq transfilename (expand-file-name transfilename)))
-	    (setq buf (if (string= transfilename "") 
-			  (get-buffer-create buf-name-str)
-			(find-file-noselect (expand-file-name
-					     transfilename)))))
-	(setq buf (get-buffer-create buf-name-str)))))
+    (save-excursion 
+      (set-buffer ess-dribble-buffer)
+      ;; next line isn't necessary now???
+      (ess-setq-vars-default ess-customize-alist (current-buffer))
+      (setq temp-ess-dialect (cdr (rassoc ess-dialect ess-customize-alist))))
     
-    (set-buffer buf)
-    ;; Now that we have the buffer, set buffer-local variables.
-    (ess-setq-vars-local ess-customize-alist buf)
-    (ess-write-to-dribble-buffer
-     (format "(inferior-ess 2): ess-language=%s, ess-dialect=%s buf=%s \n"
+    ;;(ess-setq-vars-local ess-customize-alist (current-buffer))
+    
+    ;; run hooks now, to overwrite the above!
+    (run-hooks 'ess-pre-run-hook)    
+    (ess-write-to-dribble-buffer 
+     (format "(inferior-ess 1): ess-language=%s, ess-dialect=%s, temp-dialect=%s, buf=%s \n"
 	     ess-language
 	     ess-dialect
+	     temp-ess-dialect
 	     (current-buffer)))
-    (if startdir (setq default-directory startdir))
-    (setq-default ess-history-file
-		  (concat "." ess-dialect "history"))
-    (ess-multi procname buf)))
-
+    (let* ((defdir (directory-file-name (or ess-directory default-directory)))
+	   (temp-dialect temp-ess-dialect)
+	   ;;	(procname
+	   ;;	 (if n (ess-proc-name (prefix-numeric-value n))
+	   ;;	   ;; no prefix arg
+	   ;;	   (or (and (not (comint-check-proc (current-buffer)))
+	   ;;		    ;; Don't start a new process in current buffer if
+	   ;;		    ;; one is already running
+	   ;;		    ess-local-process-name)
+	   ;;	       ;; find a non-existent process
+	   ;;	       (let ((ntry 0) done)
+	   ;;		 (while (not done)
+	   ;;		   (setq ntry (1+ ntry))
+	   ;;		   (setq done (not (get-process (ess-proc-name ntry)))))
+	   ;;		 (ess-proc-name ntry))))
+	   
+	   (procname (if n (ess-proc-name (prefix-numeric-value n)
+					  temp-dialect)
+		       ;; no prefix arg
+		       (or (and (not (comint-check-proc (current-buffer)))
+				;; Don't start a new process in current buffer if
+				;; one is already running
+				ess-local-process-name)
+			   ;; find a non-existent process
+			   (let ((ntry 0)
+				 (done nil))
+			     (while (not done)
+			       (setq ntry (1+ ntry)
+				     done (not
+					   (get-process (ess-proc-name
+							 ntry
+							 temp-dialect)))))
+			     (ess-proc-name ntry temp-dialect)))))
+	   (startdir nil)
+	   (buf nil)
+	   (buf-name-str  (concat "*" procname "*")))
+      
+      (ess-write-to-dribble-buffer
+       (format "(inferior-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
+	       procname
+	       temp-dialect
+	       buf-name-str))
+      (cond
+       ;; If process is running, we use it:
+       ((get-process procname)
+	(setq buf (process-buffer (get-process procname))))
+       
+       ;; Else (it's a new or terminated process) try to use current buffer
+       ((and (not buf) 
+	     (not n)
+	     (not (comint-check-proc (current-buffer)))
+	     (memq major-mode '(inferior-ess-mode))) ; ess-transcript-mode)))
+	(setq startdir
+	      (if ess-ask-for-ess-directory (ess-get-directory defdir)
+		ess-directory))
+	(setq buf (current-buffer)))
+       
+       ;;  Not an ESS buffer yet
+       ((and (not buf)
+	     (get-buffer buf-name-str))
+	(setq buf (get-buffer buf-name-str)))
+       
+       ;; Ask for transcript file and startdir
+       ;; FIXME -- this should be in ess-get-transfile
+       ((not buf)
+	(setq startdir
+	      (if ess-ask-for-ess-directory (ess-get-directory defdir) 
+		ess-directory))
+	(if ess-ask-about-transfile
+	    (let ((transfilename (read-file-name
+				  "Use transcript file (default none):"
+				  startdir "")))
+	      ;;(if (string= transfilename "")
+	      ;;    (setq transfilename nil)
+	      ;;  (setq transfilename (expand-file-name transfilename)))
+	      (setq buf (if (string= transfilename "") 
+			    (get-buffer-create buf-name-str)
+			  (find-file-noselect (expand-file-name
+					       transfilename)))))
+	  (setq buf (get-buffer-create buf-name-str)))))
+      
+      (set-buffer buf)
+      ;; Now that we have the buffer, set buffer-local variables.
+      (ess-setq-vars-local ess-customize-alist buf)
+      (ess-write-to-dribble-buffer
+       (format "(inferior-ess 2): ess-language=%s, ess-dialect=%s buf=%s \n"
+	       ess-language
+	       ess-dialect
+	       (current-buffer)))
+      (if startdir (setq default-directory startdir))
+      (setq-default ess-history-file
+		    (concat "." ess-dialect "history"))
+      (ess-multi procname buf))))
+  
 ;; Old code:
 
 ;;  ;; If this process is running, switch to it
