@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/04/04 09:51:04 $
-;; Version: $Revision: 5.38 $
-;; RCS: $Id: ess-vars.el,v 5.38 2000/04/04 09:51:04 maechler Exp $
+;; Modified: $Date: 2000/04/06 08:49:08 $
+;; Version: $Revision: 5.39 $
+;; RCS: $Id: ess-vars.el,v 5.39 2000/04/06 08:49:08 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -34,7 +34,7 @@
 
 ;;; Code:
 
-(defconst ess-version "5.1.13"
+(defconst ess-version ""
   "Version of ESS currently loaded.")
 
 (defvar no-doc
@@ -509,8 +509,8 @@ anchor to bol with `^'.")
 Otherwise, they get their own temporary buffer.")
 
 (defvar ess-eval-empty nil
-  "*If non-nil, `ess-eval-line-and-step' and `ess-eval-linewise' will even
-send empty lines to the ESS process.")
+  "*If non-nil, `ess-eval-line-and-step' `ess-eval-linewise', and
+`ess-eval-region' will send empty lines to the ESS process.")
 
 (defvar ess-eval-visibly-p t
   "*If non-nil, the ess-eval- commands display the text to be evaluated
@@ -808,8 +808,8 @@ If nil, input is in the `font-lock-variable-name-face'.")
 ;;; with a * are the ones you can generally change safely, and
 ;;; may have to upon occasion.
 
-(defvar ess-help-kill-bogous-buffers nil
-  "*If non-nil, kill ESS help buffers immediately if they are \"bogous\".")
+(defvar ess-help-kill-bogus-buffers nil
+  "*If non-nil, kill ESS help buffers immediately if they are \"bogus\".")
 
 (defvar ess-help-form 'separate-buffer
   "*Place to show help.   NOT IMPLEMENTED YET.

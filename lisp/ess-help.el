@@ -8,9 +8,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>, MM
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/04 09:49:42 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: ess-help.el,v 5.11 2000/04/04 09:49:42 maechler Exp $
+;; Modified: $Date: 2000/04/06 08:49:08 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: ess-help.el,v 5.12 2000/04/06 08:49:08 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -72,19 +72,19 @@
 ;;;; * The major mode ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun ess-help-bogous-buffer-p (buffer &optional nr-first return-match debug)
-  "Return non-nil if  BUFFER  looks like a bogous ESS help buffer.
+(defun ess-help-bogus-buffer-p (buffer &optional nr-first return-match debug)
+  "Return non-nil if  BUFFER  looks like a bogus ESS help buffer.
  Return pair of (match-beg. match-end) when optional RETURN-MATCH is non-nil.
  Utility used in \\[ess-display-help-on-object]."
   (let* ((searching nil)
 	 (buffer-ok (bufferp buffer))
 	 (res
 	  (or (not buffer-ok)
-	      (save-excursion;; ask for new buffer if old one looks bogous ..
+	      (save-excursion;; ask for new buffer if old one looks bogus ..
 		(set-buffer buffer)
 		(if debug
 		    (ess-write-to-dribble-buffer
-		     (format "(ess-help-bogous-buffer-p %s)" (buffer-name))))
+		     (format "(ess-help-bogus-buffer-p %s)" (buffer-name))))
 
 		(let ((PM (point-min)))
 		  (or  ;; evaluate up to first non-nil (or end):
@@ -139,7 +139,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 
     (if (or (not old-hb-p)
 	    current-prefix-arg
-	    (ess-help-bogous-buffer-p old-hb-p nil nil 'debug)
+	    (ess-help-bogus-buffer-p old-hb-p nil nil 'debug)
 	    )
 
 	;; Ask the corresponding ESS process for the help file:
@@ -159,11 +159,11 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 
     (save-excursion
       (let ((PM (point-min))
-	    (nodocs (ess-help-bogous-buffer-p (current-buffer) nil 'give-match))
+	    (nodocs (ess-help-bogus-buffer-p (current-buffer) nil 'give-match))
 	    )
 	(goto-char PM)
 	(if (and nodocs
-		 ess-help-kill-bogous-buffers)
+		 ess-help-kill-bogus-buffers)
 	    (progn
 	      (if (not (listp nodocs))
 		  (setq nodocs (list PM (point-max))))

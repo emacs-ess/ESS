@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/05 08:25:36 $
-;; Version: $Revision: 5.41 $
-;; RCS: $Id: ess-inf.el,v 5.41 2000/04/05 08:25:36 maechler Exp $
+;; Modified: $Date: 2000/04/06 08:49:08 $
+;; Version: $Revision: 5.42 $
+;; RCS: $Id: ess-inf.el,v 5.42 2000/04/06 08:49:08 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -792,11 +792,11 @@ With prefix argument, toggle meaning of `ess-eval-visibly-p'."
   (message "Starting evaluation...")
   (let ((visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p)))
     (if visibly
-	(ess-eval-linewise (buffer-substring start end))
+	(ess-eval-linewise (buffer-substring start end) nil nil ess-eval-empty)
       ;; else invisibly
       (if ess-synchronize-evals
 	  (ess-eval-linewise (buffer-substring start end)
-			  (or message "Eval region"))
+			  (or message "Eval region") nil ess-eval-empty)
 	;; else [almost always!]
 	(let ((sprocess (get-ess-process ess-current-process-name)))
 	  (process-send-region sprocess start end)
@@ -877,8 +877,9 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
 (defun ess-eval-line-and-step (&optional simple-next even-empty)
   "Evaluate the current line visibly and step to the \"next\" line.
 \"next\" = the next line with non-comment code _unless_ SIMPLE-NEXT is non-nil,
-possibly via prefix arg.  If 2nd arg EVEN-EMPTY [prefix as well] or the
-variable `ess-eval-empty' is non-nil, also send empty lines."
+possibly via prefix arg.  If 2nd arg EVEN-EMPTY [prefix as well],
+also send empty lines.  When the variable `ess-eval-empty' is non-nil
+both SIMPLE-NEXT and EVEN-EMPTY are interpreted as true."
   ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
   (interactive "P\nP"); prefix sets BOTH !
   (ess-force-buffer-current "Process to load into: ")
@@ -888,8 +889,8 @@ variable `ess-eval-empty' is non-nil, also send empty lines."
       (beginning-of-line)
       ;; go to end of process buffer so user can see result
       (ess-eval-linewise (buffer-substring (point) end)
-			 nil 'eob even-empty)))
-  (if simple-next
+			 nil 'eob (or even-empty ess-eval-empty))))
+  (if (or simple-next ess-eval-empty)
       (forward-line 1)
     (ess-next-code-line 1)))
 
@@ -1259,7 +1260,7 @@ to continue it."
 ;;;*;;; Main user commands
 
 (defun inferior-ess-input-sender (proc string)
-  (ess-eval-linewise (concat string "\n")))
+  (ess-eval-linewise (concat string "\n") nil nil ess-eval-empty))
 
 (defun inferior-STA-input-sender (proc string)
   (ess-eval-linewise (concat string "\n") t t))
@@ -1840,7 +1841,7 @@ The result is stored in `ess-sl-modtime-alist'."
   "Check if input STR changed the search path.
 This function monitors user input to the inferior ESS process so that
 Emacs can keep the variable `ess-search-list' up to date.
-Completing-read uses this list indirectly when it prompts for help or
+'completing-read' uses this list indirectly when it prompts for help or
 for an object to dump."
   (if (string-match ess-change-sp-regexp str)
       (setq ess-sp-change t)))

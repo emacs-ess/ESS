@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 2000/04/03 15:27:35 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: ess-iw32.el,v 1.11 2000/04/03 15:27:35 maechler Exp $
+;; Modified: $Date: 2000/04/06 08:49:08 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: ess-iw32.el,v 1.12 2000/04/06 08:49:08 maechler Exp $
 
 
 ;; This file is part of ESS
@@ -41,7 +41,7 @@
 
 
 ;; C-c C-r
-(defun ess-eval-region-ddeclient (start end toggle &optional message)
+(defun ess-eval-region-ddeclient (start end toggle &optional message even-empty)
   "Loop through lines in region and send them to ESS via ddeclient."
   (setq inferior-ess-ddeclient
 	(ess-get-process-variable
@@ -55,15 +55,26 @@
   (narrow-to-region start end)
   (beginning-of-buffer)
   (let ((beg))
-    (while (< (point) (point-max))
+    (while (or (< (point) (point-max))
+	       (and (= 1 (point-max)) even-empty))
       (setq beg (point))
       (end-of-line)
-      ;;(call-process-region start end
-      ;;                     "ddeclient" nil nil nil "S-PLUS" "SCommand")
-      (call-process-region
-       beg (point)
-       inferior-ess-ddeclient nil nil nil
-       inferior-ess-client-name inferior-ess-client-command)
+      (if (and (= beg (point)) ess-eval-empty)  ;; do empty line outside loop
+	  (let (ess-eval-empty)  ;; prevent infinite loop
+	    (ess-eval-linewise-ddeclient " " nil 'eob t))
+	(if (and (= beg (point)) even-empty) ;; only when even-empty is
+	    (insert " "))                    ;; set in ess-eval-linewise
+                                             ;; and we are working in
+                                             ;; buffer *ESS-temporary*.
+                            ;; call-process-region won't send over
+                            ;; a 0-character line.  We insert the " "
+                            ;; only in the temporary buffer, not the real one.
+	;;(call-process-region start end
+	;;                     "ddeclient" nil nil nil "S-PLUS" "SCommand")
+	(call-process-region
+	 beg (point)
+	 inferior-ess-ddeclient nil nil nil
+	 inferior-ess-client-name inferior-ess-client-command))
       (forward-line 1))
     (widen)))
 
@@ -82,22 +93,23 @@
 
 
 ;;; switch between Splus by ddeclient and Splus running in an emacs buffer
-(defun ess-eval-linewise-ddeclient (text-withtabs &optional invisibly eob)
-    (save-excursion
-      (set-buffer (get-buffer-create "*ESS-temporary*"))
-      (ess-setq-vars-local ess-customize-alist (current-buffer))
-      (erase-buffer)
-      (insert text-withtabs)
-      (ess-eval-region-ddeclient (point-min) (point-max) t t)))
+(defun ess-eval-linewise-ddeclient
+  (text-withtabs &optional invisibly eob even-empty)
+  (save-excursion
+    (set-buffer (get-buffer-create "*ESS-temporary*"))
+    (ess-setq-vars-local ess-customize-alist (current-buffer))
+    (erase-buffer)
+    (insert text-withtabs)
+    (ess-eval-region-ddeclient (point-min) (point-max) t t even-empty)))
 
 (fset 'ess-eval-linewise-original (symbol-function  'ess-eval-linewise))
 
-(defun ess-eval-linewise (text-withtabs &optional invisibly eob)
+(defun ess-eval-linewise (text-withtabs &optional invisibly eob even-empty)
   (if (equal (ess-get-process-variable
 	      ess-current-process-name 'inferior-ess-ddeclient)
              (default-value 'inferior-ess-ddeclient))
-      (ess-eval-linewise-original text-withtabs invisibly eob)
-      (ess-eval-linewise-ddeclient text-withtabs invisibly eob)))
+      (ess-eval-linewise-original text-withtabs invisibly eob even-empty)
+      (ess-eval-linewise-ddeclient text-withtabs invisibly eob even-empty)))
 
 
 ;; C-c C-v
