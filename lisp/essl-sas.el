@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/16 20:16:09 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: essl-sas.el,v 1.11 1997/09/16 20:16:09 rossini Exp $
+;; Modified: $Date: 1997/09/16 20:19:00 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: essl-sas.el,v 1.12 1997/09/16 20:19:00 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -153,7 +153,7 @@ popup window when the SAS job is finished.")
     (parse-sexp-ignore-comments   . t)
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
-    (ess-keep-dump-files          . 'ask)
+    ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . SAS-syntax-table)
     (font-lock-defaults           . '(SAS-mode-font-lock-keywords)))
   "General options for editing SAS source files.")

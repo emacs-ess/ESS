@@ -5,11 +5,11 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 1 Sept 1997
-;; Modified: $Date: 1997/09/08 18:19:11 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essl-lsp.el,v 1.4 1997/09/08 18:19:11 rossini Exp $
+;; Modified: $Date: 1997/09/16 20:15:15 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essl-lsp.el,v 1.5 1997/09/16 20:15:15 rossini Exp $
 
-;; This file is part of ess-mode
+;; This file is part of ESS.
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@
     (parse-sexp-ignore-comments   . t)
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
-    (ess-keep-dump-files          . nil)
+    (ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . lisp-mode-syntax-table)
     (font-lock-defaults           . '(lisp-font-lock-keywords)))
   "General options for editing LispStat, XLispStat, and ViSta source files.")
