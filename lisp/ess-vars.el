@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/09/02 20:20:05 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: ess-vars.el,v 1.19 1997/09/02 20:20:05 rossini Exp $
+;; Modified: $Date: 1997/09/05 18:19:42 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: ess-vars.el,v 1.20 1997/09/05 18:19:42 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -600,6 +600,9 @@ ess-load-file command.  Used for determining the default in the next one.")
 
 (defvar ess-mode-map nil
   "Keymap for ess-mode.")
+
+(defvar ess-eval-map nil
+  "Keymap for ess-eval functions.")
 
 (defvar inferior-ess-mode-map nil
   "Keymap for inferior-ess mode.")
