@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/10 19:51:28 $
-;; Version: $Revision: 1.75 $
-;; RCS: $Id: ess-inf.el,v 1.75 1997/11/10 19:51:28 rossini Exp $
+;; Modified: $Date: 1997/11/10 22:02:32 $
+;; Version: $Revision: 1.76 $
+;; RCS: $Id: ess-inf.el,v 1.76 1997/11/10 22:02:32 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -1221,6 +1221,10 @@ to continue it."
   (setq comint-completion-addsuffix (cons "/" ""))
 
   (setq comint-input-autoexpand t) ; Only for completion, not on input.
+
+  ;;; Keep <tabs> out of the code.
+  (make-local-variable 'indent-tabs-mode)
+  (setq indent-tabs-mode nil)
 
   (make-local-variable 'paragraph-start)
   (setq paragraph-start (concat inferior-ess-primary-prompt "\\|\^L"))

@@ -1,3 +1,50 @@
+Mon Nov 10 17:02:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess-mode): keeps tabs out of the code
+
+Mon Nov 10 17:01:05 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-mode): keep tabs out of the code.
+
+Mon Nov 10 16:48:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: @code -> @email when appropriate.
+
+Mon Nov 10 15:58:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: added most, approx 300, of MM's changes.  A very few
+ 	differences, though.
+
+Mon Nov 10 15:05:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: S -> ESS (MM)
+
+Mon Nov 10 15:02:32 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-trns.el: S -> ESS (MM)
+
+Mon Nov 10 14:59:39 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: S -> ESS (MM).
+
+Mon Nov 10 14:51:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: S -> ESS (MM).
+
+Mon Nov 10 14:41:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-help.el: removed comment re: S.el.
+
+	* ess-help.el: updated docs and functions, S -> ESS (MM)
+
+Mon Nov 10 14:34:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (MAKEHTML): change target (MM)
+
+	* Makefile (clean): more to clean (MM)
+
+	* Makefile (dvi): new target.  Use it (MM)
+
 Sun Nov  9 16:30:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Doc/TODO: cleaned out my email of TODO problems, except for
@@ -740,6 +787,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.23  1997/11/10 22:02:42  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.22  1997/11/09 21:31:03  rossini
 	* Removing *** empty log message ***
 	* Removing
