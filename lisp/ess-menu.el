@@ -1,12 +1,13 @@
-;;; ess-menu.el --- Menu support for statistical programming/analysis
+;;; ess-menu.el --- Menu and Speedbar support for statistical
+;;; programming and analysis
 
-;; Copyright (C) Rossini, Heiberger, Hornik, Maechler and
+;; Copyright 2000 (C) Rossini, Heiberger, Hornik, Maechler and
 ;;                          Sparapani.
 
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.2 2000/09/05 13:40:59 rossini Exp $
+;; Version: $Id: ess-menu.el,v 1.3 2000/10/30 13:31:16 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
