@@ -305,6 +305,30 @@ with XEmacs.  This screenshot shows both SAS and R code being examined
 at the same time, with an R interactive process being controlled from
 within XEmacs.
 
+Figure~\ref{fig:2} shows ESS running in NTemacs 21.0 on Windows 2000.
+We are currently displaying 6 buffers.  \stexttt{highlight.s}
+illustrates several uses of syntactic highlighting.
+The most glaring one is the bright purple indicator for the
+unbalanced parentheses.
+We also see color choices for  keywords (\stexttt{if}), comments,
+and quoted strings.  The string on the last line was not properly
+terminated and we are immediately warned by the string color staying
+on through (what we think is) the end of the line.
+
+The two buffers \stexttt{transcript-before.st} and
+\stexttt{transcript-after.st} show transcript editing.  A single ESS
+command converted the before buffer into the after buffer by removing
+all lines that do not begin with a prompt character.
+
+The last three buffers show that a single S language source file can
+be used with two (or more) executing processes.  In this example we
+sent over first a subset of the line in \stexttt{tmps.s} and then the
+entire line to the instance of S+4 running in an inferior
+\stexttt{iESS(Sqpe)} buffer.  The we switched the connection to send
+the same line to the instance of R running in the \stexttt{iESS(R)}
+buffer.  The dialog about the process switch appears in the message line.
+
+
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
 
@@ -830,6 +854,14 @@ including Debian, RedHat, Mandrake, and SuSE.
     \includegraphics[height=7.0in,width=6.0in]{ess-xemacs-fig-1}
     \caption{XEmacs and ESS}%Editing SAS and R code and evaluation with R.}
     \label{fig:1}
+  \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+  \begin{center}
+%    \includegraphics[height=7.0in,width=6.0in]{ess-xemacs-fig-2}
+    \caption{XEmacs and ESS}%Editing and running \Splus\ and R.}
+    \label{fig:2}
   \end{center}
 \end{figure}
 
