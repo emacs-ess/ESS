@@ -138,7 +138,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/15 20:54:40 $ - $Revision: 1.72 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/15 21:10:25 $ - $Revision: 1.73 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -159,11 +159,11 @@
   Emacs Speaks Statistics (ESS) provides a user interface for
   statistical programming and data analysis for a variety of
   statistical analysis packages.  ESS is based on the Emacs text
-  editing environment and is a member of the programming tools
-  category of Rapid Application Development (RAD) environments, which
-  aid in developing computer software applications.  We discuss how it
-  works, the advantages that it provides, and additional extensions
-  for increasing statistical programming efficiency.
+  editor and provides a programming tool known as a Rapid Application
+  Development (RAD) environment, which have features which streamline
+  the development of computer software applications.  We discuss how
+  it works, its advantages, and extensions for increasing statistical
+  programming efficiency.
 \end{abstract}
 
 \noindent Keywords: Data Analysis, Programming, Emacs, S, \SAS,
@@ -175,19 +175,20 @@
 
 Software developers rely on Rapid Application Development (RAD)
 environments to assist them in the complex process of software
-development which includes the varied tasks of computer programming,
-project management and software testing.  Since most contemporary
-statistical practice involves some form of computer use, the daily
-tasks faced by a statistician are not much different from those faced
-by software developers.  In particular, statistical research
-activities, particularly data analysis and communication, are enhanced
-by computers.  This puts the user interface, which acts as a buffer
-between the statistician and computer, in the critical role of
-facilitating or hindering these tasks.  This paper introduces Emacs
-Speaks Statistics (ESS) \citep{ESS} which provides a common interface
-across a variety of statistical analysis packages.  ESS, written as a
-package of extensions to the Emacs text editor, provides consistent
-shortcuts for frequent as well as complex tasks.
+development.  This process includes tasks such as writing computer
+code, project management and software reliability testing.  Most
+contemporary statistical practice involves some form of computer use;
+the daily tasks performed by an applied statistician are not
+operationally different than those performed by software developers.
+Statistical research activities, particularly data analysis and
+communication, are enhanced by computers.  This puts the user
+interface, which acts as a buffer between the statistician and
+computer, in the critical role of facilitating or hindering these
+tasks.  This paper introduces Emacs Speaks Statistics (ESS)
+\citep{ESS} which provides a common interface across a variety of
+statistical analysis packages.  ESS, written as a package of
+extensions to the Emacs text editor, provides consistent shortcuts for
+frequent as well as complex tasks.
 
 ESS is an interface to statistical packages, and provides,
 through Emacs, additional tools which facilitate both statistical
@@ -201,20 +202,14 @@ ViSta \citep{youn:fald:mcfa:1992}; \Stata\ \citep{Stata:6.0}; Omegahat
 extended to accommodate most statistical packages which provide either
 an interactive command-line or batch file processing.
 
-The present paper summarizes historical and non-technical information
-on Emacs and ESS.  A more complete version is in \citep{RMHHS:2001}.
-A general introduction and usage instructions can be found in
-\citep{heiberger:dsc:2001}; in addition, one which is more focused on
-SAS can be found in \citep{heiberger:philasugi:2001}.  The
-documentation that comes with ESS provides details of its
-implementation as well as examples of its use.  The rest of the paper
-is as follows; we first describe the Emacs text editor, the platform
-on which ESS is built.  Next, we discuss the details of ESS and how it
-facilitates common statistical computing activities.  The history ESS
-follows; ESS is unique as an open-source, free-software project that
-has been passed down by multiple generations of developers and has
-united various Emacs extensions which support statistical language
-programming.  Finally, we conclude with future extensions.
+The rest of the paper is as follows; we first describe the Emacs text
+editor, the platform on which ESS is built.  Next, we discuss the
+details of ESS and how it facilitates common statistical computing
+activities.  The history ESS follows; ESS is unique as an open-source,
+free-software project that has been passed down by multiple
+generations of developers and has united various Emacs extensions
+which support statistical language programming.  Finally, we conclude
+with future extensions.
 
 \section{Emacs}
 \label{sec:emacs}
@@ -1042,11 +1037,19 @@ groups to provide standardized templates for initiating an analysis.
 %%languages, the above also can apply to non-object oriented
 %%programming.
 
+Additional documentation for ESS: more complete version is in
+\citep{RMHHS:2001}.  A general introduction and usage instructions can
+be found in \citep{heiberger:dsc:2001}; in addition, one which is more
+focused on SAS can be found in \citep{heiberger:philasugi:2001}.  The
+documentation that comes with ESS provides details of its
+implementation as well as examples of its use.
+
 ESS is one of the first RADs intended for statisticians.  It provides
 an enhanced, powerful interface for efficient interactive data
 analysis and statistical programming.  It is completely customizable
 to satisfy individual desires for interface styles as well as being
 extensible to additional statistical languages and analysis packages.
+
 
 \section*{ESS Resources on the Internet}
 \addcontentsline {toc}{section}{\numberline {}ESS Resources on the Internet}
