@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.12 $)
+($Revision: 1.13 $)
 
 ESS: Using The S family of statistical languages
 ================================================
@@ -79,7 +79,19 @@ To start up iESS mode, use:
 (for S-PLUS 3.x, S4, and R, respectively.  This assumes that you have
 access to each).  Usually the site will have defined one of these programs
 (by default S+3) to the simpler name:
+
    M-x S
+
+Note that R has some extremely useful command line arguments, 
+-v and -n.   To enter these, call R using a "prefix argument", by
+
+   C-u M-x R
+
+and when ESS prompts for "Starting Args ? ", enter (for example):
+
+   -v 10000 -n 5000
+
+Then that R process will be started up using "R -v 10000 -n 5000".
 
 
 
