@@ -1,14 +1,14 @@
 ;;;;; ess-vars.el --- Variable definitions for ESS.
 
-;; Copyright (C) 1997--1999 A.J. Rossini, Martin Maechler, 
-;; Kurt Hornik, and Richard M. Heiberger. 
+;; Copyright (C) 1997--1999 A.J. Rossini, Martin Maechler,
+;; Kurt Hornik, and Richard M. Heiberger.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1999/04/05 21:35:27 $
-;; Version: $Revision: 5.22 $
-;; RCS: $Id: ess-vars.el,v 5.22 1999/04/05 21:35:27 rossini Exp $
+;; Modified: $Date: 1999/06/17 16:42:56 $
+;; Version: $Revision: 5.23 $
+;; RCS: $Id: ess-vars.el,v 5.23 1999/06/17 16:42:56 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -391,7 +391,7 @@ by ess-function-template.")
 ;; If you need to change the *-program-name variables, do so in
 ;; ess-site.el.  Do NOT make the changes here!!
 
-(defvar inferior-R-program-name 
+(defvar inferior-R-program-name
   (if (or (equal window-system 'w32) (equal window-system 'win32))
       "Rterm"  "R")
   "*Program name for invoking an inferior ESS with R().")
@@ -610,7 +610,7 @@ of Emacs until the code has been successfully evaluated by S.")
 
 (defvar ess-sl-modtime-alist nil
   "Alist of modification times for all ess directories accessed this
-session.")  
+session.")
 
 (make-variable-buffer-local 'ess-sl-modtime-alist)
 
@@ -659,13 +659,13 @@ See also function ess-create-object-name-db.")
 (make-variable-buffer-local 'ess-object-name-db)
 (setq-default ess-object-name-db nil)
 
-(defvar ess-loop-timeout 100000
-  "Integer specifying how many loops ess-mode will wait for the prompt for
-before signaling an error.   This is important for S-PLUS 3.x, not so
-important for R or XLispStat.")
+(defvar ess-loop-timeout 500000
+  "Integer specifying how many loops ess-mode will wait for the prompt
+before signaling an error.   This is important for S-PLUS and R, not so
+important for XLispStat.  Increase this, if you have a fast(er) machine.")
 
 (make-variable-buffer-local 'ess-loop-timeout)
-(setq-default ess-loop-timeout 100000)
+;;all dialects set this in their alist: (setq-default ess-loop-timeout 500000)
 
 ;;;*;;; Font-lock support
 
