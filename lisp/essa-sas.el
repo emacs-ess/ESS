@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/18 15:24:34 $
-;; Version: $Revision: 1.77 $
-;; RCS: $Id: essa-sas.el,v 1.77 2002/01/18 15:24:34 rsparapa Exp $
+;; Modified: $Date: 2002/01/23 16:41:26 $
+;; Version: $Revision: 1.78 $
+;; RCS: $Id: essa-sas.el,v 1.78 2002/01/23 16:41:26 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -42,6 +42,8 @@
 
 
 ;;; Section 1:  Variable Definitions
+
+(require 'ess-batch)
 
 (defcustom ess-kermit-command "gkermit -T"
     "*Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
@@ -127,24 +129,25 @@ or `ESS-elsewhere' should have one of the following in ~/.emacs
 )
 
 (defcustom ess-sas-suffix-1 "txt"
-    "*The ess-sas-suffix-1 file to perform operations on."
+    "*The first suffix to associate with SAS."
     :group 'ess-sas
     :type  'string
 )
 
-(defcustom ess-sas-suffix-2 "dat"
-    "*The ess-sas-suffix-2 file to perform operations on."
+(defcustom ess-sas-suffix-2 "csv"
+    "*The second suffix to associate with SAS."
     :group 'ess-sas
     :type  'string
 )
 
 (defcustom ess-sas-suffix-regexp 
-    (concat (downcase ess-sas-suffix-1) "\\|"
-	(downcase ess-sas-suffix-2) "\\|"
-	(upcase ess-sas-suffix-1) "\\|"
-	(upcase ess-sas-suffix-2))
-    "*Regular expression for `ess-sas-suffix-1' and 
-`ess-sas-suffix-2' files."
+    (concat "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]"
+	(if ess-sas-suffix-1 (concat 
+	    "\\|" (downcase ess-sas-suffix-1) "\\|" (upcase ess-sas-suffix-1)))
+	(if ess-sas-suffix-2 (concat 
+	    "\\|" (downcase ess-sas-suffix-2) "\\|" (upcase ess-sas-suffix-2)))
+	"\\)")
+    "*Regular expression for SAS suffixes."
     :group 'ess-sas
     :type  'string
 )
@@ -364,16 +367,14 @@ on the way."
 
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with a SAS file by suffix and revert if necessary."
-    (let ((ess-temp-regexp (concat
-	    "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|" 
-	    ess-sas-suffix-regexp "\\)\\(@.+\\)?")))
+    (let ((ess-temp-regexp (concat ess-sas-suffix-regexp "\\(@.+\\)?")))
 	(save-match-data 
 	(if (or (string-match ess-temp-regexp (expand-file-name (buffer-name)))
 	
 	    (string-match ess-temp-regexp ess-sas-file-path))
 
 	(progn
-	    (ess-sas-file-path)
+	    (ess-set-file-path)
 
 	    (let* (
 		(ess-sas-temp-file (replace-match (concat "." suffix) t t ess-sas-file-path))
@@ -385,32 +386,29 @@ on the way."
 	  (if revert (ess-revert-wisely))
 ))))))
 
-(defun ess-sas-file (suffix &optional revert)
-  "Please use `ess-sas-goto' instead."
-  (let* ((tail (downcase (car (split-string 
-	    (car (last (split-string (buffer-name) "[.]"))) "[<]"))))
+;;(defun ess-sas-file (suffix &optional revert)
+;;  "Please use `ess-sas-goto' instead."
+;;  (let* ((tail (downcase (car (split-string 
+;;	    (car (last (split-string (buffer-name) "[.]"))) "[<]"))))
 	;;(if (fboundp 'file-name-extension) (file-name-extension (buffer-name))
 	;;		 (substring (buffer-name) -3)))
-	 (tail-in-tail-list (member tail (list "sas" "log" "lst"
-			     ess-sas-suffix-1 ess-sas-suffix-2)))
-	 (root (if tail-in-tail-list (expand-file-name (buffer-name))
-		 ess-sas-file-path))
-	 (ess-sas-arg (concat (file-name-sans-extension root) "." suffix))
-	 (ess-sas-buf (find-buffer-visiting ess-sas-arg)))
-    (if (equal tail suffix) (if revert (ess-revert-wisely))
-	(if (not ess-sas-buf) (find-file ess-sas-arg)
-	    (switch-to-buffer ess-sas-buf)
-	    (if revert (ess-revert-wisely))))))
+;;	 (tail-in-tail-list (member tail (list "sas" "log" "lst"
+;;			     ess-sas-suffix-1 ess-sas-suffix-2)))
+;;	 (root (if tail-in-tail-list (expand-file-name (buffer-name))
+;;		 ess-sas-file-path))
+;;	 (ess-sas-arg (concat (file-name-sans-extension root) "." suffix))
+;;	 (ess-sas-buf (find-buffer-visiting ess-sas-arg)))
+;;    (if (equal tail suffix) (if revert (ess-revert-wisely))
+;;	(if (not ess-sas-buf) (find-file ess-sas-arg)
+;;	    (switch-to-buffer ess-sas-buf)
+;;	    (if revert (ess-revert-wisely))))))
 
 (defun ess-sas-file-path ()
  "Define the variable `ess-sas-file-path' to be the file in the current buffer"
   (interactive)
 
-  (save-match-data (let ((ess-sas-temp-file (expand-file-name (buffer-name)))
-    (ess-temp-regexp (concat
-	"[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|"
-	ess-sas-suffix-regexp "\\)"))) 
-    (if (string-match ess-temp-regexp ess-sas-temp-file) 
+  (save-match-data (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
+    (if (string-match ess-sas-suffix-regexp ess-sas-temp-file) 
 	(setq ess-sas-file-path (nth 0 (split-string ess-sas-temp-file "[<]")))))))
 
 (defun ess-sas-goto-file-1 ()
@@ -467,7 +465,7 @@ on the way."
   "Save the .sas file and submit to shell using a function that
 depends on the value of  `ess-sas-submit-method'"
   (interactive)
-  (ess-sas-file-path)
+  (ess-set-file-path)
   (ess-sas-goto-sas)
   (save-buffer)
 
@@ -521,7 +519,7 @@ of the form \"with options { \\\"option-1\\\", \\\"option-2\\\", etc.}\" ."
 (defun ess-sas-submit-region ()
     "Write region to temporary file, and submit to SAS."
     (interactive)
-    (ess-sas-file-path)
+    (ess-set-file-path)
     (write-region (region-beginning) (region-end) 
 	(concat ess-sas-temp-root ".sas"))
 

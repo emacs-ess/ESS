@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2002/01/16 00:42:33 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: essl-bug.el,v 1.17 2002/01/16 00:42:33 rsparapa Exp $
+;; Modified: $Date: 2002/01/23 16:41:26 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: essl-bug.el,v 1.18 2002/01/23 16:41:26 rsparapa Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -36,7 +36,7 @@
 (require 'font-lock)
 (require 'comint)
 (require 'ess-emcs)
-
+(require 'ess-batch)
 
 (if (assoc "\\.bug\\'" auto-mode-alist) nil
     (setq auto-mode-alist
@@ -52,31 +52,59 @@
     )
 )
 
-(defcustom ess-bugs-batch-command 
-    (convert-standard-filename 
-	(concat ess-lisp-directory "/../etc/" 
-	    (if (w32-shell-dos-semantics) "backbugs.bat" "backbugs")))
-    "ESS[BUGS]:  Set to name and location of ESS \"backbugs\" script."
+(defcustom ess-bugs-batch-method 
+  (if ess-microsoft-p 
+    (if (w32-shell-dos-semantics) 'ms-dos 'sh)
+    (if (equal system-type 'Apple-Macintosh) 'AppleScript 'sh))
+  "Method used by `ess-bugs-batch'.
+The default is based on the value of the emacs variable `system-type'
+and, on Windows machines, the function `w32-shell-dos-semantics'.
+'ms-dos           if *shell* follows MS-DOS semantics
+'sh               if *shell* runs sh, ksh, csh, tcsh or bash
+'AppleScript      *shell* unavailable, use AppleScript
+
+Windows users running MS-DOS in *shell* will get 'ms-dos by default.
+
+Windows users running bash in *shell* will get 'sh by default.
+
+Unix users will get 'sh by default.
+
+Users whose default is not 'sh, but are accessing a remote machine with 
+`telnet', `rlogin', or `ssh', should have the following in ~/.emacs
+   (setq-default ess-bugs-batch-method 'sh)"
+    :group 'ess-bugs
+)
+
+(defcustom ess-bugs-batch-command "backbugs"
+;;    (convert-standard-filename 
+;;	(concat ess-lisp-directory "/../etc/" 
+;;	    (if (w32-shell-dos-semantics) "backbugs.bat" "backbugs")))
+"*ESS[BUGS]:  Set to the name of the batch BUGS script that comes with ESS.  
+It allows the user to modify settings in a cross-platform manner.  Make sure 
+it is in your PATH."
     :group 'ess-bugs
     :type  'string
 )
 
-(defcustom ess-bugs-batch-pre-command
-    (if (w32-shell-dos-semantics) "start" "nohup")
-    "ESS[BUGS]:  Modifiers at the beginning of the backbugs command line."
+(make-variable-buffer-local 'ess-bugs-batch-command)
+
+(defcustom ess-bugs-batch-post-command 
+    (if (equal ess-bugs-batch-method 'sh) "&" " ") 
+    "*ESS[BUGS]:  Modifiers at the end of the batch BUGS command line."
     :group 'ess-bugs
     :type  'string
 )
 
-(defcustom ess-bugs-batch-post-command
-    (if (w32-shell-dos-semantics) " " "&")
-    "ESS[BUGS]:  Modifiers at the end of the backbugs command line."
+(defcustom ess-bugs-batch-pre-command 
+    (if (equal ess-bugs-batch-method 'sh) "nohup" 
+	(if ess-microsoft-p "start"))
+    "*ESS[BUGS]:  Modifiers at the beginning of the batch BUGS command line."
     :group 'ess-bugs
     :type  'string
 )
 
 (defcustom ess-bugs-default-bins "32"
-"ESS[BUGS]:  number of bins to use in the Griddy algorithm (Metropolis sampling)."
+"*ESS[BUGS]:  number of bins in the Griddy algorithm (Metropolis sampling)."
     :group 'ess-bugs
     :type  'string
 )
@@ -99,7 +127,7 @@
     :type  'string
 )
 
-(defvar ess-bugs-file "."
+(defvar ess-bugs-file-path "."
    "ESS[BUGS]:  BUGS file with PATH.")
 
 (defvar ess-bugs-file-root "."
@@ -114,14 +142,26 @@
 (defvar ess-bugs-file-data "..."
    "ESS[BUGS]:  BUGS data file.")
 
-(defcustom ess-bugs-inits-suffix ".in"
+(defcustom ess-bugs-inits-suffix "in"
    "ESS[BUGS]:  BUGS init file suffix."
     :group 'ess-bugs
     :type  'string
 )
 
-(defcustom ess-bugs-data-suffix ".dat"
+(defcustom ess-bugs-data-suffix "dat"
    "ESS[BUGS]:  BUGS data file suffix."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-suffix-regexp 
+    (concat "[.]\\([bB][oOuU][gG]\\|[bB][mM][dD]\\|"
+	(if ess-bugs-inits-suffix (concat 
+	    "\\|" (downcase ess-bugs-inits-suffix) "\\|" (upcase ess-bugs-inits-suffix)))
+	(if ess-bugs-data-suffix (concat 
+	    "\\|" (downcase ess-bugs-data-suffix) "\\|" (upcase ess-bugs-data-suffix)))
+        "\\)")
+    "*Regular expression for BUGS suffixes."
     :group 'ess-bugs
     :type  'string
 )
@@ -201,12 +241,13 @@
 " and `ess-bugs-file-dir'."
    (interactive)
 
+   (ess-set-file-path)
    (let ((ess-bugs-temp-string (buffer-name)))
-        (setq ess-bugs-file (expand-file-name ess-bugs-temp-string))
+        (setq ess-bugs-file-path (expand-file-name ess-bugs-temp-string))
         (setq ess-bugs-file-dir 
-	    (convert-standard-filename (file-name-directory ess-bugs-file)))
+	    (convert-standard-filename (file-name-directory ess-bugs-file-path)))
         (setq ess-bugs-file-root 
-	    (file-name-nondirectory (file-name-sans-extension ess-bugs-file)))
+	    (file-name-nondirectory (file-name-sans-extension ess-bugs-file-path)))
 
         (if (fboundp 'file-name-extension) 
 	    (setq ess-bugs-file-suffix (file-name-extension ess-bugs-temp-string))
@@ -216,7 +257,7 @@
 	(setq ess-bugs-file-suffix 
 	    (downcase (car (split-string (concat "." ess-bugs-file-suffix) "[<]"))))
 
-	(setq ess-bugs-file (concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-file-suffix))
+	(setq ess-bugs-file-path (concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-file-suffix))
    )
 )
 
@@ -265,11 +306,12 @@
 (defun ess-bugs-next-action ()
    "ESS[BUGS]:  Perform the appropriate next action."
    (interactive)
-   (ess-bugs-file)
 
-   (if (equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
-   ;;else 
-   (if (equal ".bmd" ess-bugs-file-suffix) (ess-bugs-na-bmd))
+   (save-match-data 
+    (if (string-match "[.][bB][uU][gG]" ess-bugs-file-path) (ess-bugs-na-bug))
+    ;;else 
+    (if (string-match "[.][bB][mM][dD]" ess-bugs-file-path) (ess-bugs-na-bmd))
+    )
 )
 
 (defun ess-bugs-na-bmd ()
@@ -279,9 +321,9 @@
     (shell)
 
     (if (w32-shell-dos-semantics)
-	(if (string-equal ":" (substring ess-bugs-file 1 2)) 
+	(if (string-equal ":" (substring ess-bugs-file-path 1 2)) 
 	    (progn
-		(insert (substring ess-bugs-file 0 2))
+		(insert (substring ess-bugs-file-path 0 2))
 		(comint-send-input)
 	    )
 	)
@@ -291,7 +333,7 @@
 	(comint-send-input)
 
 	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " "
-	    ess-bugs-default-bins " " ess-bugs-file-root " " ess-bugs-file " " 
+	    ess-bugs-default-bins " " ess-bugs-file-root " " ess-bugs-file-path " " 
 	    ess-bugs-batch-post-command))
 
 	(comint-send-input)
