@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.30 $.
+### File: $Revision: 5.31 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -65,9 +65,9 @@ TOCOMPILE = ess-vars.el ess.el ess-site.el ess-utils.el \
 	essl-omg.el essd-omg.el \
 	ess-noweb.el noweb-mode.el noweb-font-lock-mode.el \
 	ess-font-lock.el \
-##?	ess-latex.el \
 	essa-r.el essa-sas.el \
 	essddr.el
+##?	ess-latex.el \
 
 SOURCES = $(TOCOMPILE) ess-debug.el
 
