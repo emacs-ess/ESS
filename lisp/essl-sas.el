@@ -3,12 +3,15 @@
 ;; Copyright (C) 1997--2001 Richard M. Heiberger, A. J. Rossini, 
 ;;  M. Maechler, Rodney Sparapani
 
-;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Authors: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
+;;          A.J. Rossini <rossini@u.washington.edu>,
+;;          Rodney Sparapani <rsparap@mcw.edu>
+;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
+;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/04/26 16:38:46 $
-;; Version: $Revision: 5.18 $
-;; RCS: $Id: essl-sas.el,v 5.18 2001/04/26 16:38:46 ess Exp $
+;; Modified: $Date: 2001/04/26 21:04:32 $
+;; Version: $Revision: 5.19 $
+;; RCS: $Id: essl-sas.el,v 5.19 2001/04/26 21:04:32 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -50,6 +53,7 @@
 (require 'ess)
 (ess-message "[essl-sas:] (require 'ess-mode) ...")
 (require 'ess-mode)
+(require 'ess-cust)
 
 (ess-message "[essl-sas:] (autoload ..) (def** ..) etc ...")
 
@@ -69,8 +73,9 @@
 
 (defun ess-transcript-minor-mode (&optional arg)
   "Toggle Ess-Transcript minor mode.
-With arg, turn Ess-Transcript minor mode on if arg is positive, off otherwise.
-See the command `ess-transcript-mode' for more information on this mode."
+With arg, turn Ess-Transcript minor mode on if arg is positive, off
+otherwise.  See the command `ess-transcript-mode' for more information
+on this mode."
   (interactive "P")
   (setq ess-transcript-minor-mode
 	(if (null arg) (not ess-transcript-minor-mode)
@@ -81,8 +86,9 @@ See the command `ess-transcript-mode' for more information on this mode."
 
 (defun ess-listing-minor-mode (&optional arg)
   "Toggle Ess-Listing minor mode.
-With arg, turn Ess-Listing minor mode on if arg is positive, off otherwise.
-Ess-Listing mode is used solely to place an indicator on the mode line."
+With arg, turn Ess-Listing minor mode on if arg is positive, off
+otherwise.  Ess-Listing mode is used solely to place an indicator on
+the mode line." 
   (interactive "P")
   (setq ess-listing-minor-mode
 	(if (null arg) (not ess-listing-minor-mode)
@@ -112,34 +118,78 @@ Ess-Listing mode is used solely to place an indicator on the mode line."
 (fset 'sas-mode 'SAS-mode)
 (fset 'sas-listing-mode    'SAS-listing-mode)
 
-(defvar sas-indent-width 4
-  "*Amount to indent sas statements.")
-(defvar sas-indent-ignore-comment "*"
-  "*Comments with start with this string are ignored in indentation.")
+(defcustom  sas-indent-width 4
+  "*Amount to indent sas statements."
+  :group 'ess-sas
+  :type  'integer)
 
-(defvar sas-require-confirmation t
-  "*Require confirmation when revisiting sas-output which changed on disk.")
+(defcustom sas-indent-ignore-comment "*"
+  "*Comments with start with this string are ignored in indentation."
+  :group 'ess-sas
+  :type  'string)
+
+(defcustom sas-require-confirmation t
+  "*Require confirmation when revisiting a modified sas-output file."
+  :group 'ess-sas
+  :type  'boolean)
+
 ;; added sas-program 4/29/94.  user can specify a different version of sas.
-(defvar sas-program "sas" "*Name of program which runs sas.")
-(defvar sas-pre-run-hook nil
-  "Hook to execute prior to running SAS vis `submit-sas'.")
-(defvar sas-options-string ""
-  "*Options to be passed to sas as if typed on the command line.")
-(defvar sas-notify t "*Beep and display message when job is done?");;added4/7/94
-(defvar sas-error-notify t
-  "*If `sas-notify' is t, then indicate errors in log file upon completion.")
-;; added 5/2/94
-(defvar sas-get-options nil "Options to be passed to SAS in sas-get-dataset")
-(defvar sas-get-options-history nil
-  "History list of Options passed to SAS in sas-get-dataset")
-(defvar sas-page-number-max-line 3
-  "*Number of lines from the page break in which to search for the page number")
-(defvar sas-notify-popup nil
-  "*If t (and sas-notify is also t), causes emacs to create a
-popup window when the SAS job is finished.")
-(defvar sas-tmp-libname "_tmp_" "*Libname to use for sas-get-dataset.")
+(defcustom sas-program "sas" 
+  "*Name of program which runs sas."
+  :group 'ess-sas
+  :type  'string)
 
-(defvar sas-file-name nil)
+(defcustom sas-pre-run-hook nil
+  "Hook to execute prior to running SAS vis `submit-sas'."
+  :group 'ess-sas
+  :type  'hook)
+
+(defcustom sas-options-string ""
+  "*Options to be passed to sas as if typed on the command line."
+  :group 'ess-sas
+  :type  'string)
+
+(defcustom sas-notify t 
+  "*Beep and display message when job is done."
+  :group 'ess-sas
+  :type  'boolean)
+
+(defcustom sas-error-notify t
+  "*If `sas-notify' t, indicate errors in log file upon completion."
+  :group 'ess-sas
+  :type  'boolean)
+
+(defcustom sas-get-options nil 
+  "Options to be passed to SAS in sas-get-dataset."
+  :group 'ess-sas
+  :type  'string)
+
+(defcustom sas-get-options-history nil
+  "History list of Options passed to SAS in sas-get-dataset."
+  :group 'ess-sas
+  :type  'string)  ;; AJR: Rodney/Rich: is this really a string?
+
+(defcustom sas-page-number-max-line 3
+  "*Number of lines from the page break, to search for the page
+number."
+  :group 'ess-sas
+  :type  'integer)
+
+(defcustom sas-notify-popup nil
+  "*If this and sas-notify are t), popup a window when SAS job ends."
+  :group 'ess-sas
+  :type  'boolean)
+
+(defcustom sas-tmp-libname "_tmp_" 
+  "*Libname to use for sas-get-dataset."
+  :group 'ess-sas
+  :type  'string)
+
+(defcustom sas-file-name nil
+  "*  DOC?."
+  :group 'ess-sas
+  :type  'file)
+
 (defvar sas-buffer-name nil)
 (defvar sas-file-root nil)
 (defvar sas-submitable nil)
@@ -177,14 +227,23 @@ popup window when the SAS job is finished.")
 
 ;; The next two are ``the inside of [...] in a regexp'' to be used in
 ;; (skip-chars-(for|back)ward SAS-..-chars)
-(defvar sas-white-chars " \t\n\f"); NOT escaping the blank (RMH, 2000/03/20)
-(defvar sas-comment-chars (concat sas-white-chars ";"))
-(defvar ess-sas-run-make-regexp t
-"If you do not want to run make-regexp, then set to nil.")
+(defcustom sas-white-chars " \t\n\f"
+  "This does NOT escape blanks (RMH, 2000/03/20)."
+  :group 'ess-sas
+  :type  'string)
+
+(defcustom sas-comment-chars (concat sas-white-chars ";")
+  "Doc?"
+  :group 'ess-sas
+  :type  'string)
+
+(defcustom ess-sas-run-make-regexp t
+  "If you do not want to run make-regexp, then set to nil."
+  :group 'ess-sas
+  :type  'string)
 
 (if (or window-system
-	noninteractive ; compilation!
-	)
+	noninteractive) ; compilation!
     (progn
       (require 'font-lock)
 
@@ -197,8 +256,8 @@ popup window when the SAS job is finished.")
 	 (list "/\\*\\([^*/]\\)*\\*/"      0  font-lock-comment-face t)
 
 	 ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND
-	 (cons "\\<\\(data\\|run\\|%macro\\|%mend\\)\\>"  font-lock-reference-face)
-	 (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"             font-lock-reference-face)
+	 (cons "\\<\\(data\\|run\\|%macro\\|%mend\\)\\>" font-lock-reference-face)
+	 (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"            font-lock-reference-face)
 
 	 ;; SAS statements
 
@@ -634,9 +693,13 @@ opening /* appears.  returns 0 otherwise."
     (save-excursion
       (beginning-of-line)
       (while ok
-        (if (re-search-forward "\\(^[ \t]*run[ ;]\\)\\|\\(^[ \t]*proc \\|^[ \t]*data[ ;]\\)" nil 1)
+        (if (re-search-forward
+	     "\\(^[ \t]*run[ ;]\\)\\|\\(^[ \t]*proc \\|^[ \t]*data[ ;]\\)" 
+	     nil 1)
 	    (if (match-beginning 2)
-		(if (re-search-forward "\\(^[ \t]*run[ ;]\\)\\|\\(^[ \t]*proc \\|^[ \t]*data[ ;]\\)" nil t)
+		(if (re-search-forward
+		     "\\(^[ \t]*run[ ;]\\)\\|\\(^[ \t]*proc \\|^[ \t]*data[ ;]\\)"
+		     nil t)
 		    (progn (setq pos (point))
 			   (setq ok (match-beginning 1)))
 		  (setq eob-ok nil pos (point-max))))
@@ -720,10 +783,7 @@ $" "")
     (if (not (bobp))
         (progn (backward-char 1)
                (if (not (looking-at "\n"))
-                   (progn (forward-char 1) (open-line 1)))))
-    ;;;(basic-save-buffer)
-    )
-  )
+                   (progn (forward-char 1) (open-line 1)))))))
 
 (defun sas-page-number ()
   ;; like what-page except it returns an integer page number
@@ -771,13 +831,13 @@ $" "")
   "Stores the name of the current sas file."
   (let ((name (buffer-file-name)))
     (cond ((not name))
-          ((string-match (substring name -4 nil) "\\.sas\\|\\.lst\\|\\.log")
+          ((string-match (substring name -4 nil)
+			 "\\.sas\\|\\.lst\\|\\.log") 
 
            (setq sas-file-name (substring name 0 (- (length name) 4)))
            (setq sas-buffer-name (buffer-name))
-	   (setq sas-file-root (substring sas-buffer-name 0 (- (length sas-buffer-name) 4)))
-
-           )
+	   (setq sas-file-root (substring sas-buffer-name 0
+					  (- (length sas-buffer-name) 4))))
           (t (message "This file does not have a standard suffix")))))
 
 ;;  created 6/27/94
@@ -786,7 +846,8 @@ $" "")
 When this file is submitted with `submit-sas', the alternate file will
 be submitted instead.  `sas-submitable' is automatically sets to t."
     (interactive "f")
-    (cond ((string-match (substring name -4 nil) "\\.sas\\|\\.lst\\|\\.log")
+    (cond ((string-match (substring name -4 nil)
+			 "\\.sas\\|\\.lst\\|\\.log")
            (setq sas-file-name (substring name 0 (- (length name) 4)))
            (setq sas-submitable t))
           (t (message "This file does not have a standard suffix"))))
@@ -794,32 +855,32 @@ be submitted instead.  `sas-submitable' is automatically sets to t."
 (defun switch-to-sas-source ()
   "Switches to sas source file associated with the current file."
   (interactive)
-    (switch-to-sas-file "sas"))
+  (switch-to-sas-file "sas"))
 
 (defun switch-to-sas-lst ()
   "Switches to sas source file associated with the current file."
   (interactive)
-    (switch-to-sas-file "lst"))
+  (switch-to-sas-file "lst"))
 
 (defun switch-to-sas-log ()
   "Switches to sas source file associated with the current file."
   (interactive)
-    (switch-to-sas-file "log"))
+  (switch-to-sas-file "log"))
 
 (defun switch-to-sas-source-other-window ()
   "Switches to sas source file associated with the current file."
   (interactive)
-    (switch-to-sas-file-other-window "sas"))
+  (switch-to-sas-file-other-window "sas"))
 
 (defun switch-to-sas-lst-other-window ()
   "Switches to sas source file associated with the current file."
   (interactive)
-    (switch-to-sas-file-other-window "lst"))
+  (switch-to-sas-file-other-window "lst"))
 
 (defun switch-to-sas-log-other-window ()
   "Switches to sas source file associated with the current file."
   (interactive)
-     (switch-to-sas-file-other-window "log"))
+  (switch-to-sas-file-other-window "log"))
 
 ;;(defun switch-to-sas-file (suff &optional revert silent)
 ;;  "Switches to sas \"SUFF\" file associated with the current file"
@@ -908,8 +969,7 @@ be submitted instead.  `sas-submitable' is automatically sets to t."
             (beep)
             (y-or-n-p
              (format
-	      "Submission is disabled for this file.  Submit it anyway? "))
-	    ))
+	      "Submission is disabled for this file.  Submit it anyway? "))))
       (progn
 	;; if buffer name has changed, tell user
         (if (or
@@ -917,8 +977,7 @@ be submitted instead.  `sas-submitable' is automatically sets to t."
              (not
               (y-or-n-p
                (format
-		"The name of this buffer has changed.  Submit the new file? "))
-	      ))
+		"The name of this buffer has changed.  Submit the new file? "))))
             (setq sas-buffer-name (buffer-name))
           (set-sas-file-name))
         (let ((sas-file sas-file-name)
@@ -1484,13 +1543,11 @@ whose beginning matches the regexp `page-delimiter'."
 						       (match-end 2)))))
 	 str)))
 
-
 ;;(defun sas-revert-library ()
 ;;  "Update current library."
 ;;  (interactive)
 ;;  (if sas-directory-name
 ;;      (sas-make-library sas-directory-name t)))
-
 
 (provide 'essl-sas)
 
