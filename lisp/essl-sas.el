@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/05/02 19:40:55 $
-;; Version: $Revision: 5.20 $
-;; RCS: $Id: essl-sas.el,v 5.20 2001/05/02 19:40:55 ess Exp $
+;; Modified: $Date: 2001/05/04 20:13:03 $
+;; Version: $Revision: 5.21 $
+;; RCS: $Id: essl-sas.el,v 5.21 2001/05/04 20:13:03 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -381,7 +381,7 @@ number."
 		"\\>")				    font-lock-reference-face)
 
 	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
-		"\\(data\\|run\\)[ \t;]")
+		"\\(data\\|endsas\\|quit\\|run\\)[ \t;]")
 		      				    font-lock-reference-face)
 	 (cons (concat "\\(^[0-9]*\\|;\\|%then\\|%else\\)[ \t]*"
 		"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"
@@ -426,7 +426,7 @@ number."
 	 ;; SAS statements that must be followed by a semi-colon
 	 (cons (concat
 		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
-		"\\(cards4?\\|end\\(\\|sas\\)\\|l\\(ist\\|ostcard\\)\\|page\\|return\\|stop\\)?"
+		"\\(cards4?\\|end\\|l\\(ist\\|ostcard\\)\\|page\\|return\\|stop\\)?"
 		"[ \t]*;")			    font-lock-keyword-face)
 
 	 ;; SAS/GRAPH statements not handled above

@@ -1,6 +1,6 @@
 ;;; ess-font-lock.el -- font-lock color options
 
-;; Copyright (C) 1997--2001 Rodney Sparapani < >,
+;; Copyright (C) 1997--2001 Rodney Sparapani <rsparapa@mcw.edu>,
 ;; A.J. Rossini <rossini@u.washington.edu>,  Martin Maechler
 ;; <maechler@stat.math.ethz.ch>, Kurt Hornik < >, 
 ;; Richard M. Heiberger <rmh@temple.edu>.
@@ -8,9 +8,9 @@
 ;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 06 Feb 2000
-;; Modified: $Date: 2001/01/08 00:54:02 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: ess-font-lock.el,v 1.5 2001/01/08 00:54:02 rossini Exp $
+;; Modified: $Date: 2001/05/04 20:13:03 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: ess-font-lock.el,v 1.6 2001/05/04 20:13:03 ess Exp $
 
 ;; Keywords: ESS, font-lock
 
@@ -147,8 +147,7 @@
   (modify-face 'show-paren-mismatch-face     "white"	"gray40"   nil	   t	  t	   nil	     ))
 
 (defun ess-font-lock-db ()
-  "Set font-lock colors to David Brahm's usual choice (leave
-[fore/back]ground). David Brahm <David.Brahm@fmr.com> " 
+  "Set font-lock colors (leave fore-/back-ground alone) courtesy David Brahm <David.Brahm@fmr.com>" 
   (interactive)
   (set-face-foreground 'font-lock-comment-face	     "Firebrick")  ; #...    %...
   (set-face-foreground 'font-lock-string-face	     "SeaGreen")   ; "..."   "..."
@@ -157,7 +156,7 @@
   (set-face-foreground 'font-lock-variable-name-face "Blue")	   ; xv
   (set-face-foreground 'font-lock-type-face	     "Goldenrod")  ; T,F       ?
   (if (eq font-lock-reference-face 'font-lock-constant-face )
-      (set-face-foreground 'font-lock-constant-face "Magenta")	   ; <-	     {eq1}
+      (set-face-foreground 'font-lock-constant-face "Magenta")     ; <-	     {eq1}
     (set-face-foreground 'font-lock-reference-face "Magenta"))
 )
 
