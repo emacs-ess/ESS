@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/09/01 19:53:52 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: ess-vars.el,v 1.16 1997/09/01 19:53:52 rossini Exp $
+;; Modified: $Date: 1997/09/01 20:22:17 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: ess-vars.el,v 1.17 1997/09/01 20:22:17 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -644,36 +644,55 @@ important for R or XLispStat.")
 If nil, input is in the font-lock-variable-name-face.")
 
 (defvar ess-mode-font-lock-keywords
-  '(("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function" 1 font-lock-function-name-face t)
-    ("<<?-\\|_\\|->" . font-lock-reference-face)
-    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" . font-lock-type-face)
-    ("\\<\\(library\\|attach\\|detach\\|source\\)\\>" . font-lock-reference-face)
-    "\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>")
+  '(("<<-\\|<-\\|_\\|->"
+     . font-lock-reference-face)
+    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
+     . font-lock-type-face)
+    ("\\<\\(library\\|attach\\|detach\\|source\\)\\>"
+     . font-lock-reference-face)
+    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>")
+    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function"
+     1 font-lock-function-name-face t))
   "Font-lock patterns used in ess-mode buffers.")
 
 
 (defvar inferior-ess-font-lock-keywords
-  '(("<<-\\|<-\\|_\\|->" . font-lock-reference-face)		; assign
-    ("^\\*\\*\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
-    ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
+  '(("<<-\\|<-\\|_\\|->"
+     . font-lock-reference-face)		; assign
+    ("^\\*\\*\\*.*\\*\\*\\*\\s *$"
+     . font-lock-comment-face) ; ess-mode msg
+    ("\\[,?[1-9][0-9]*,?\\]"
+     . font-lock-reference-face)	; Vector/matrix labels
     ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
      . font-lock-type-face) ; keywords
     ("\\<\\(library\\|attach\\|detach\\|source\\)\\>"
      . font-lock-reference-face) ; modify search list or source new definitions
-    ("^Syntax error:" . font-lock-reference-face);inferior-ess problems or errors
-    ("^Error:" . font-lock-reference-face)
-    ("^Error in" . font-lock-reference-face)
-    ("^Dumped" . font-lock-reference-face)
-    ("^Warning messages:" . font-lock-reference-face)
-    ("#" . font-lock-comment-face) ; comment
-    ("^[^#]*#\\(.*$\\)" (1 font-lock-comment-face keep t)) ; comments
-    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function" 1 font-lock-function-name-face t) ; function name
-    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>" . font-lock-keyword-face) ; keywords
+    ("^Syntax error:"
+     . font-lock-reference-face);inferior-ess problems or errors
+    ("^Error:"
+     . font-lock-reference-face)
+    ("^Error in"
+     . font-lock-reference-face)
+    ("^Dumped"
+     . font-lock-reference-face)
+    ("^Warning messages:"
+     . font-lock-reference-face)
+    ("#"
+     . font-lock-comment-face) ; comment
+    ("^[^#]*#\\(.*$\\)"
+     (1 font-lock-comment-face keep t)) ; comments
+    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function"
+     1 font-lock-function-name-face t) ; function name
+    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>"
+     . font-lock-keyword-face) ; keywords
     )
   "Font-lock patterns used in inferior-ess-mode buffers.")
+
 ;; add-to-list() places keywords in front of the previous keywords
 ;; input and prompt must appear in inferior-ess-font-lock-keywords
-;; in the order  prompt error, hence they appear here in the reverse order.
+;; in the order  prompt error, hence they appear here in the reverse
+;; order.
+
 (if (not inferior-ess-font-lock-input)
     (add-to-list 'inferior-ess-font-lock-keywords
 		 '("^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
