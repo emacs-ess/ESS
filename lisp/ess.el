@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/01 16:24:06 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: ess.el,v 1.18 1997/07/01 16:24:06 rossini Exp $
+;; Modified: $Date: 1997/07/02 14:59:09 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: ess.el,v 1.19 1997/07/02 14:59:09 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,10 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.19  1997/07/02 14:59:09  rossini
+;; ess-defdir should've been a (let ...) variable.  bad programming
+;; (AJR).
+;;
 ;; Revision 1.18  1997/07/01 16:24:06  rossini
 ;; moved make-local-... to here, with make-variable-...
 ;;
@@ -617,12 +621,6 @@ by ess-function-template.")
 Inferior-ess")
 
 (make-variable-buffer-local 'inferior-ess-procname)
-
-(defvar ess-defdir nil
-  "Dummy Variable for a bad programmer (AJR).
-Inferior-ess")
-
-(make-variable-buffer-local 'ess-defdir)
 
 (defvar inferior-S-program-name "Splus"
   "*Program name for invoking an inferior S with S().")
