@@ -1,6 +1,6 @@
 -*- view -*-
 
-($Revision: 1.16 $)
+($Revision: 1.17 $)
 
 ESS: Using The S family of statistical languages
 ================================================
@@ -263,8 +263,8 @@ prefixed by "##").
 
 
 
-Common Changes to Desire
-========================
+Customization Examples
+======================
 
 1. Suppose that you are primarily an SPLUS 3.4 user, occasionally
    using S version 4, and sick and tired of the buffer-name *S+3*
