@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/03/28 22:35:02 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: essa-r.el,v 1.7 2004/03/28 22:35:02 rossini Exp $
+;; Modified: $Date: 2004/03/29 14:09:18 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: essa-r.el,v 1.8 2004/03/29 14:09:18 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -111,23 +111,38 @@ e.  BEG and END denote the region in the current buffer to be sent."
 (defun pd::set-up-demo ()
   ;; FIX ess-menu!!
 
-  (defun ajr::scroll-to-end-emacs21::peterD ()
-    (interactive)
-    (other-buffer 1)
-    (setq scroll-aggressively )
-    (setq scroll-   )
-    (other-buffer -1))
 
   ;; (if (not xemacs) (set-default-font "*courier-bold-r*--14**"))
   (R)
   (split-window-vertically 6)
   (find-file "demos.R")
+
+  ;; 
+
+
+  ;; Don't need to run this as a function -- ought to be fine if set just once.
+
+  (defun ajr::scroll-to-end::peterD (emacs)
+    "Goal: map prompt to bottom of the screen after every command.
+Alternatively, use the scroll-in-place package, not sure where that
+is)." 
+    (interactive)
+    (other-buffer 1)
+    (if (= emacs "emacs")
+	(setq scroll-up-aggressively t)
+      (setq scroll-conservatively -4)) ;; <- change this 
+    (other-buffer -1))
+
   (defun show-max-other-window ()
     (interactive)
     (other-window 1)
     (comint-show-maximum-output)
     (other-window -1))
-  
+
+  ;; call this once
+  ;; (ajr::scroll-to-end::peterD "xemacs")
+  ;; (ajr::scroll-to-end::peterD "emacs")
+
   (global-set-key [f11] 'show-max-other-window)
   (global-set-key [f12] 'ess-eval-line-and-step))
 
