@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/01/11 16:34:44 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: ess-inf.el,v 5.7 1999/01/11 16:34:44 maechler Exp $
+;; Modified: $Date: 1999/01/12 10:14:45 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: ess-inf.el,v 5.8 1999/01/12 10:14:45 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -121,8 +121,10 @@ accompany the call for inferior-ess-program.
     (save-excursion
       ;;---- Is this needed ??? --- why should dribble-buffer need these ??
       (set-buffer ess-dribble-buffer)
-      ;; next line isn't necessary now???
-      (ess-setq-vars-default ess-customize-alist (current-buffer))
+      ;; next line with "-local" instead of "-default" : 
+      ;; ==> comint-input-sender is not set to 'ess-input-  ==> no input echo!
+      ;; (ess-setq-vars-default ess-customize-alist (current-buffer))
+      (ess-setq-vars-local ess-customize-alist (current-buffer))
       (setq temp-ess-dialect
 	    (eval(cdr(assoc 'ess-dialect ess-customize-alist))))
       (setq temp-ess-lang   
@@ -277,6 +279,9 @@ there is no process NAME)."
 	      (if (and switches-symbol (boundp switches-symbol))
 		  (symbol-value switches-symbol)))
 	     (buf-name-str (buffer-name buffer)))
+	(ess-write-to-dribble-buffer
+	 (format "(ess-multi 0):  inf-ess-start-args=%s, comint-..echoes=%s\n"
+	       inf-ess-start-args comint-process-echoes))
 	(set-buffer buffer)
 	(setq-default inferior-ess-prompt	; shouldn't be
 						; setq-default!
@@ -287,6 +292,9 @@ there is no process NAME)."
 			      inferior-ess-secondary-prompt
 			      "\\)"))
 	(inferior-ess-mode)
+	(ess-write-to-dribble-buffer
+	 (format "(ess-multi after inf.ess-mode: ..start-args=%s, comint-..echoes=%s\n"
+	       inf-ess-start-args comint-process-echoes))
 	(setq ess-local-process-name proc-name)
 	(goto-char (point-max))
 	(setq comint-input-ring-file-name
@@ -1130,6 +1138,7 @@ to continue it."
   ;;(message " at very beg. of (inferior-ess-mode): inf.-ess-prompt= %s"
   ;;	   inferior-ess-prompt)
   (comint-mode)
+  ;;
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq major-mode 'inferior-ess-mode)
   (setq mode-name "iESS") ;(concat "iESS:" ess-dialect))
@@ -1143,11 +1152,15 @@ to continue it."
   (add-hook 'comint-input-filter-functions 'ess-search-path-tracker)
   (setq comint-get-old-input 'inferior-ess-get-old-input)
 
+  (ess-write-to-dribble-buffer
+   (format "(inf.ess-mode 1): buf=%s, ess-language=%s, comint..echoes=%s, comint..sender=%s,\n"
+	   (current-buffer) ess-language comint-process-echoes comint-input-sender))
   ;; We set comint-process-echoes to t because inferior-ess-input-sender
   ;; recopies the input. If comint-process-echoes was *meant* to be t ...
   ;;
   ;; except that XLS doesn't like it.  This is an ugly hack that ought
   ;; to go into the dialect configuration...
+  (make-local-variable 'comint-process-echoes)
   (if (or (string= ess-language "XLS")
 	  (string= ess-language "SAS")
 	  ;; not necessary, when comint-input-sender is set below:
@@ -1156,24 +1169,24 @@ to continue it."
       (setq comint-process-echoes nil)
     (setq comint-process-echoes t))
 
+  (make-local-variable 'comint-input-sender)
   ;; AJR: add KH's fix.	 This is ugly, change to do it right.
   ;; i.e. put it as a buffer local var, in S or R defuns...
   (if (string= ess-language "S")
-      (cond ((string= ess-dialect "S3")
-	     (setq comint-input-sender 'inferior-ess-input-sender))
-	    ((string= ess-dialect "S4")
-	     (setq comint-input-sender 'inferior-ess-input-sender))
-	    ((string= ess-dialect "S+3")
-	     (setq comint-input-sender 'inferior-ess-input-sender))
-	    ((string= ess-dialect "S+4")
-	     (setq comint-input-sender 'inferior-ess-input-sender))
-	    ((string= ess-dialect "S+5")
-	     (setq comint-input-sender 'inferior-ess-input-sender))
-	    ((string= ess-dialect "S")
-	     (setq comint-input-sender 'inferior-ess-input-sender))
-	    ((string= ess-dialect "R")
-	     (setq comint-input-sender 'inferior-R-input-sender))))
+      (cond
+       ((string= ess-dialect "R")
+	(setq comint-input-sender 'inferior-R-input-sender))
+       ((or (string= ess-dialect "S3")
+	    (string= ess-dialect "S4")
+	    (string= ess-dialect "S+3")
+	    (string= ess-dialect "S+4")
+	    (string= ess-dialect "S+5")
+	    (string= ess-dialect "S"))
+	(setq comint-input-sender 'inferior-ess-input-sender))))
 
+  (ess-write-to-dribble-buffer
+   (format "(inf.ess-mode 2): buf=%s, ess-language=%s, comint..echoes=%s, comint..sender=%s,\n"
+	   (current-buffer) ess-language comint-process-echoes comint-input-sender))
   ;; Font-lock support
   ;; AJR: This (the following local-var is already the case!
   ;; KH sez; only in XEmacs :-(.
@@ -1182,6 +1195,10 @@ to continue it."
 	'(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
 
   (ess-setq-vars-local ess-customize-alist (current-buffer))
+
+  (ess-write-to-dribble-buffer
+   (format "(inf.ess-mode 3): current-buffer=%s, comint..echoes=%s, comint..sender=%s,\n" 
+	   (current-buffer) comint-process-echoes comint-input-sender))
 
   ;; Completion support
   (setq comint-dynamic-complete-functions
