@@ -127,11 +127,7 @@ by @code{INFODIR}: see the sample @file{dir} in ESSDIR/ess-VERSION/doc/info.
 If @file{dir} does not exist in @code{INFODIR}, then the sample
 @file{dir} will be installed.
 
-@emph{Note 1:} It is assumed that @b{GNU make} will be used; otherwise,
-edit the ESSVERSION and ESSVERSIONTAG entries in @file{Makeconf}
-appropriately, e.g.: ESSVERSION=5.2.0 and ESSVERSIONTAG=ESS-5-2-0
-
-@emph{Note 2:}  ESS can be installed for XEmacs as an XEmacs package
+@emph{Note:} ESS can be installed for XEmacs as an XEmacs package
 much more easily than what has been described anywhere above.  However,
 the latest ESS version will not be available at the same time as an
 XEmacs package; generally, it can take weeks or months to appear in the
