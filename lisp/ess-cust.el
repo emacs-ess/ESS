@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/04/21 23:37:10 $
-;; Version: $Revision: 1.64 $
-;; RCS: $Id: ess-cust.el,v 1.64 2004/04/21 23:37:10 rossini Exp $
+;; Modified: $Date: 2004/04/22 15:35:29 $
+;; Version: $Revision: 1.65 $
+;; RCS: $Id: ess-cust.el,v 1.65 2004/04/22 15:35:29 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -151,12 +151,6 @@ Full documentation will be available after autoloading the function."
 
 ;; Menus and pulldowns.
 
-(defcustom ess-use-menus (featurep 'imenu)
-  "If t, use the menu system with an extra [Imenu] entry.
- Absolutely requires 'imenu."
-  :group 'ess
-  :type 'boolean)
-
 (defcustom ess-funcmenu-use-p (featurep 'func-menu)
   "If t, funcmenu is present."
   :group 'ess
@@ -167,8 +161,10 @@ Full documentation will be available after autoloading the function."
   :group 'ess
   :type  'boolean)
 
-(defcustom ess-imenu-use-p (featurep 'imenu) 
-  "Use imenu if exists."
+(defcustom ess-imenu-use-p (fboundp 'imenu)
+  "Use imenu facility if it exists.
+This value can be overridden by mode-specific variables, such
+as `ess-imenu-use-S'."
   :group 'ess
   :type  'boolean)
 
