@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.43 2002/12/01 00:40:12 stephen Exp $
+@comment $Id: ess.texi,v 5.44 2002/12/01 01:00:52 stephen Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics 
-@subtitle (Documentation $Revision: 5.43 $ $Date: 2002/12/01 00:40:12 $)
+@subtitle (Documentation $Revision: 5.44 $ $Date: 2002/12/01 01:00:52 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik, 
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version 
 @include ../VERSION
 
-        (Documentation $Revision: 5.43 $ $Date: 2002/12/01 00:40:12 $).
+        (Documentation $Revision: 5.44 $ $Date: 2002/12/01 01:00:52 $).
 
 @display
 by  A.J. Rossini, 
@@ -903,8 +903,8 @@ adding any extra characters, type @kbd{M-?}.
 
 @itemize @bullet
 @item
-@kbd{M-?} (@code{ess-list-object-name-completions}) @*
-@pindex ess-list-object-name-completions
+@kbd{M-?} (@code{ess-list-object-completions}) @*
+@pindex ess-list-object-completions
 List all possible completions of the object name at point.
 @end itemize
 
