@@ -25,8 +25,10 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 
 ## Some install commands expect target-directory source-file,
 ## but we want source-file target-directory; we also want to
-## preserve owner, group and time-stamp; lastly, note that we
-## are assuming that the target-directory exists
+## preserve owner, group and time-stamp; two commands are
+## needed; one to create directories, if necessary, and
+## another to copy the files
+INSTALLDIR = mkdir -p
 INSTALL = cp -p
 
 # What GZCAT is called on your system (GNU gzip "cat")
@@ -44,12 +46,12 @@ MAKETXT = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 ## ESSVERSION=5.2.0
 ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 
-# Destination of your info files relative to the doc directory
-# defaults to the info directory
+# Destination of your info files
+# defaults to the info directory relative to the doc directory
 INFODIR = ../info
 
 # Destination of your byte-compiled elisp (.elc) files
-# relative to the lisp directory (which is the default)
+# defaults to the lisp directory 
 LISPDIR = .
 
 # default xemacs package installation tree

@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.75 2004/05/04 14:03:17 rsparapa Exp $
+## $Id: Makefile,v 5.76 2004/05/05 17:03:16 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -24,15 +24,28 @@ EMACSLOGCVS=$(EMACSBATCH) -f vc-update-changelogs
 
 Subdirs = lisp doc
 
-## This is the default target, i.e. 'make' and 'make default' are the same.
+## This is the default target, i.e. 'make' and 'make all' are the same.
 
-default:
-	cd lisp; $(MAKE) all
-
-all clean distclean:
+all install clean distclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd ..; done
 
+#ESS is now an official XEmacs package, but the xemacs-links target 
+#persists since there is generally a lag between an ESS release and 
+#the corresponding XEmacs ESS package release
+#see http://www.xemacs.org/Documentation/packageGuide.html
+#for package installation instructions 
+xemacs-links: info/ess.info info/ess.info-1 info/ess.info-2 info/ess.info-3 info/ess.info-4
+	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
+	    $(XEMACSDIR)/xemacs-packages/info/ess.info*
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc              $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp             $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info    $(XEMACSDIR)/xemacs-packages/info/ess.info
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-1  $(XEMACSDIR)/xemacs-packages/info/ess.info-1
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-2  $(XEMACSDIR)/xemacs-packages/info/ess.info-2
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-3  $(XEMACSDIR)/xemacs-packages/info/ess.info-3
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-4  $(XEMACSDIR)/xemacs-packages/info/ess.info-4
 
+## the rest of the targets are for ESS developer use
 ## --- PRE-release ---
 
 dist: VERSION cleanup-dist
@@ -100,17 +113,4 @@ rel: dist
 tag:
 	@echo "** Tagging the release **"
 	cvs tag -R $(ESSVERSIONTAG)
-
-#deprecated:  ESS is now an official XEmacs package, but keep for convenience
-#see http://www.xemacs.org/Develop/packages.html#ess
-xemacs-links: info/ess.info info/ess.info-1 info/ess.info-2 info/ess.info-3 info/ess.info-4
-	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
-	    $(XEMACSDIR)/xemacs-packages/info/ess.info*
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc              $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp             $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info    $(XEMACSDIR)/xemacs-packages/info/ess.info
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-1  $(XEMACSDIR)/xemacs-packages/info/ess.info-1
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-2  $(XEMACSDIR)/xemacs-packages/info/ess.info-2
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-3  $(XEMACSDIR)/xemacs-packages/info/ess.info-3
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-4  $(XEMACSDIR)/xemacs-packages/info/ess.info-4
 

@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.40 $.
+### File: $Revision: 1.41 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -26,7 +26,6 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 ### Targets --
 
 all  : info text html dvi pdf
-install : $(INFODIR)/ess.info
 info : ess.info 
 text : ../README ../ANNOUNCE
 docs : install text
@@ -74,7 +73,8 @@ ess.info: $(TEXISRC)
 	@echo "making Info documentation..."
 	$(MAKEINFO) ess.texi
 
-$(INFODIR)/ess.info: ess.info 
+install : ess.info 
+	test -d $(INFODIR) || $(INSTALLDIR) $(INFODIR)
 	$(INSTALL) ess.info* $(INFODIR)
 	test -f $(INFODIR)/dir || $(INSTALL) dir $(INFODIR)
 

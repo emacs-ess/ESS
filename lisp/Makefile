@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.49 $.
+### File: $Revision: 5.50 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -81,6 +81,7 @@ all: ESS
 ESS: $(OBJECTS)
 
 install: all
+	if [ ! -d $(LISPDIR) ]; then $(INSTALLDIR) $(LISPDIR); fi
 	if [ $(LISPDIR) != . ]; then $(INSTALL) *.elc $(LISPDIR); fi
 
 dist: ess-cust.el
