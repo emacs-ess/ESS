@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.15 2000/03/13 13:40:43 maechler Exp $
+@comment $Id: ess.texi,v 5.16 2001/08/10 09:28:04 maechler Exp $
 
 @synindex pg vr
 
@@ -26,7 +26,7 @@ any other interactive `statistical' languages in an `inferior' buffer,
 editing source code in these languages and interacting with the running
 program.
 
-This documentation relates to Version 5.1.x of @code{ESS}.
+This documentation relates to Version 5.1.19 of @code{ESS}.
 
 Original Info Author: David M. Smith (@email{D.M.Smith@@lancaster.ac.uk}),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -39,7 +39,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.x (Documentation $Revision: 5.15 $ $Date: 2000/03/13 13:40:43 $)
+@subtitle version 5.1.19 (Documentation $Revision: 5.16 $ $Date: 2001/08/10 09:28:04 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -82,9 +82,9 @@ permission notice identical to this one.
 @node Top, Introduction, (dir), (dir)
 @top ESS: Emacs Speaks Statistics
 
-ESS version 5.1.x
+ESS version 5.1.19
 
-        (Documentation $Revision: 5.15 $ $Date: 2000/03/13 13:40:43 $).
+        (Documentation $Revision: 5.16 $ $Date: 2001/08/10 09:28:04 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
@@ -2300,9 +2300,9 @@ on your system.
 @item
 cd to a directory where you keep emacs lisp files, or create a new
 directory to hold the distribution.  This directory will be referred to
-below as "the ESS-5.1.x distribution directory".  It will contain, at the
-end, the tar file ESS-5.1.x.tar.gz, and a directory for the ESS source,
-which will be termed "the ESS-5.1.x directory".  Note that the .elc files
+below as "the ESS-5.1.19 distribution directory".  It will contain, at the
+end, the tar file ESS-5.1.19.tar.gz, and a directory for the ESS source,
+which will be termed "the ESS-5.1.19 directory".  Note that the .elc files
 may be installed elsewhere (as specified in the Makefile) if desired.
 
 @item
@@ -2310,23 +2310,23 @@ Retrieve the compressed tar file from one of the FTP or WWW archive
 sites via FTP (or HTTP).
 
 @item
-Copy ESS-5.1.x.tar.gz to the location where you want the ESS-5.1.x
+Copy ESS-5.1.19.tar.gz to the location where you want the ESS-5.1.x
 directory, and cd there.  Extract the files from the distribution, which
-will unpack into a subdirectory, ESS-5.1.x.
+will unpack into a subdirectory, ESS-5.1.19.
 
         @itemize @minus
         @item
-	@code{gunzip ESS-5.1.x.tar.gz}
-        @code{tar vxf ESS-5.1.x.tar}
+	@code{gunzip ESS-5.1.19.tar.gz}
+        @code{tar vxf ESS-5.1.19.tar}
         @item
-	(or: @code{gunzip < ESS-5.1.x.tar.gz | tar vxf -}).
+	(or: @code{gunzip < ESS-5.1.19.tar.gz | tar vxf -}).
         @item
-        (or using GNU tar: @code{tar zvxf ESS-5.1.x.tar.gz}).
+        (or using GNU tar: @code{tar zvxf ESS-5.1.19.tar.gz}).
         @end itemize
 
 The tar command will extract files into the current directory.
 
-Do not create ESS-5.1.x yourself, or you will get an extra level of
+Do not create ESS-5.1.19 yourself, or you will get an extra level of
 depth to your directory structure.
 
 @item
@@ -2334,7 +2334,7 @@ Edit the file @file{ess-site.el} as explained in the comments section of that
 file.  (This is optional, initially).
 
 @item
-In the ESS-5.1.x directory, edit the file @file{Makefile} (only if you
+In the ESS-5.1.19 directory, edit the file @file{Makefile} (only if you
 want to place the executables in other locations; see LISPDIR and
 INFODIR) and then type:
 
