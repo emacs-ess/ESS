@@ -92,6 +92,7 @@ connects it to the '(ddeESS [S+6])' window.")
   "Variables to customize for S+6")
 
 (defvar Sqpe+6-customize-alist
+  (append
   '((ess-local-customize-alist  . 'Sqpe+6-customize-alist)
     (ess-dialect                . S+6-dialect-name)
     (ess-loop-timeout           . 500000 );fixme: dialect specific custom.var
