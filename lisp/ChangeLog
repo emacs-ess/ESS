@@ -1,3 +1,9 @@
+2005-04-06  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-toolbar.el (ess-toolbar-items): Use :set so that when this
+	variable is customized, the toolbar is remade for the current
+	session.
+
 2005-04-06  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (ess-mode-hook): set *normal-*auto-fill-function, not
