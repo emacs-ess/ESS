@@ -1,4 +1,4 @@
-1999-07-22  Martin Maechler  <maechler@sophie>
+1999-07-22  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el : Define cheap (line-end-position) if not there
 	[e.g. for GNU emacs 19.34]
@@ -15,14 +15,20 @@
 	further, use (ess-extract-word-name) only once.
 
 	* ess-mode.el (ess-beginning-of-function): return beginning
-	*             (ess-end-of-function): accept optional `beginning'
+	*	      (ess-end-of-function): accept optional `beginning'
 		argument;  return BOTH beginning & end
-	*             (ess-mark-function): use new beg/end functions.
+	*	      (ess-mark-function): use new beg/end functions.
+
+1999-07-06  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r.el (R-fix-T-F): Fix buglet: should catch more cases
+
 
 1999-06-17  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-*.el (ess-loop-timeout): Default multiplied by 5 to 500000.
 
+	* essd-R.el -- simplified primary-prompt !
 
 1999-04-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
@@ -78,12 +84,12 @@
 
 	* essd-r.el: preliminary changes
 
-Wed Mar 31 15:46:37 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Wed Mar 31 15:46:37 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* essd-r.el (R): reverted.  Martin fixed this right in ess-site.
 	* essd-r.el (R-unix): renamed from R.
 	* ess-inf.el (ess-command): sleep-for only used for Splus 4.5,
- 	i.e. Microsoft "operating systems", sigh.
+	i.e. Microsoft "operating systems", sigh.
 
 1999-03-18  Martin Maechler  <maechler@stat.math.ethz.ch>
 
@@ -190,13 +196,13 @@ Wed Mar 31 15:46:37 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 	that e.g. "help(pt, offline=T)" is treated as normal command;
 	New: "?lm" (e.g.) is also recognized as help command
 
-Mon Dec 14 18:04:45 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Mon Dec 14 18:04:45 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-mode.el: fixed copyright and header information
 
 	* ess-site.el: commented out SHOME definition.
 
-Fri Dec 11 19:51:18 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Fri Dec 11 19:51:18 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-vars.el: fixed copyright, rossini's email address.
 
@@ -223,11 +229,11 @@ Mon Nov 30 17:37:57 1998  hornik  <hornik@pyrite>
 	* Makefile:
 	Add essd-s+5.el to SOURCES (as it gets required in ess-site).
 
-Mon Nov 23 20:03:17 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Mon Nov 23 20:03:17 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ChangeLog: *** empty log message ***
 
-Fri Nov 20 20:57:33 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Fri Nov 20 20:57:33 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-vars.el: ess-help-w3-url-prefix points to pyrite.
 
@@ -240,11 +246,11 @@ Mon Nov 16 17:29:25 1998  Martin Maechler  <maechler@...>
 
 	* ess-inf.el: do not need comint echo anymore..
 
-Sat Nov 14 00:23:19 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Sat Nov 14 00:23:19 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ChangeLog: whitespace editing.
 
-Fri Nov 13 18:25:51 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Fri Nov 13 18:25:51 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-site.el: added sample entry for S+5.
 
@@ -292,7 +298,7 @@ Tue Nov 10 17:45:11 1998  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-s+5.el: provide typo fixed
 
-Mon Nov  9 23:28:14 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Mon Nov	 9 23:28:14 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ChangeLog, Makefile, ess-site.el: New material for Makefiles
 
@@ -311,7 +317,7 @@ Mon Nov  9 23:28:14 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* Makefile: added Stata stuff.
 
-Thu Sep 24 23:32:14 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+Thu Sep 24 23:32:14 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ChangeLog: more stuff.
 
@@ -336,7 +342,7 @@ Fri Sep 11 15:39:57 1998  Martin Maechler  <maechler@...>
 	* ess.el ess-inf.el ess-mode.el Makefile: Adaptions to new ess-utils.
 
 	* ess-utils.el: new file for ``General Utilities''
-	                useful and usable *outside* ESS.
+			useful and usable *outside* ESS.
 
 1998-09-09  A.J. Rossini  <rossini@biostat.washington.edu>
 
@@ -348,12 +354,12 @@ Fri Sep 11 15:39:57 1998  Martin Maechler  <maechler@...>
 
 	* Makefile (BATCHFLAGS): --no-init-file, not --no-init-fil
 
-Tue Sep  8 19:18:07 1998  Martin Maechler  <maechler@..>
+Tue Sep	 8 19:18:07 1998  Martin Maechler  <maechler@..>
 
 	* essl-s.el: added  "&optional dont-ask" argument to
 	ess-dump-to-src, ess-fix-comments,.... ess-MM-fix-src
 
-Mon Sep  7 18:26:47 1998  Martin Maechler  <maechler@...>
+Mon Sep	 7 18:26:47 1998  Martin Maechler  <maechler@...>
 
 	* essl-s.el (ess-time-string): 4 digit year!
 
@@ -382,13 +388,13 @@ Tue Aug 14 18:32:11 1998  Martin Maechler  <maechler@stat.math.ethz.ch>
 	* essl-s.el: renamed "ease:time-string" to "ess-time-string";
 		cleaned up
 
-Mon Apr  6 11:27:52 1998  Tony Rossini  <rossini@matthias>
+Mon Apr	 6 11:27:52 1998  Tony Rossini	<rossini@matthias>
 
 	* ess-inf.el (ess-object-names):
 	* ess-inf.el (ess-execute-objects): add argument to call to
 	inferior-ess-objects-command, for S4 (suggested by Stephen Pope).
 
-Mon Apr  6 11:22:22 1998  Tony Rossini  <rossini@matthias>
+Mon Apr	 6 11:22:22 1998  Tony Rossini	<rossini@matthias>
 
 	* ess-vars.el (inferior-ess-font-lock-keywords): change, as
 	suggested by Stephen Pope (remove parens).
@@ -400,29 +406,29 @@ Mon Dec 15 19:17:27 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Dec 10 10:33:59 1997  Anthony Rossini  <rossini@hsph.harvard.edu>
 
 	* essd-xls.el: make sure that the major-mode is 'XLS-mode (might
- 	need to do this for _all_ modes :-(.  But let's first see if
- 	anything breaks.
+	need to do this for _all_ modes :-(.  But let's first see if
+	anything breaks.
 
-Tue Dec  9 17:54:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Dec	 9 17:54:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-r.el: removed non-necessary autoload for a non-existant
- 	function (was intended for start-args, but never was written or
- 	used).
+	function (was intended for start-args, but never was written or
+	used).
 
-Tue Dec  9 15:45:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Dec	 9 15:45:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essddr.el: one too many parens.
 
-Tue Dec  9 15:44:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Tue Dec	 9 15:44:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* essddr.el: added commented out face.  DB's error doesn't exist
- 	for me, though.
+	* essddr.el: added commented out face.	DB's error doesn't exist
+	for me, though.
 
-Fri Dec  5 10:12:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Dec	 5 10:12:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-site.el: added comments about Emacs 20.2 errors.
 
-Fri Dec  5 10:09:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Dec	 5 10:09:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* CVS (ChangeLog): Starting 5.1 series.
 
