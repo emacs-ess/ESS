@@ -2,6 +2,9 @@
 ;;; Thu 06 May 2004
 ;;; Stephen Eglen
 ;;; GPL.
+;; Modified: $Date: 2004/05/08 13:00:22 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: ess-toolbar.el,v 1.4 2004/05/08 13:00:22 stephen Exp $
 
 ;;; Notes.
 
@@ -13,6 +16,9 @@
 ;; hopefully soon a compatibility toolbar library will be released
 ;; that will make the toolbar code more portable.  So, for now the
 ;; code should be regarded as proof of concept.
+
+;; Also, I think the Mac OS X version of GNU Emacs does not yet have
+;; tool-bar support.
 
 
 ;;; Creating pixmaps:
