@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1998/12/14 20:53:49 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: ess-site.el,v 5.11 1998/12/14 20:53:49 rossini Exp $
+;; Modified: $Date: 1999/01/11 16:51:47 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: ess-site.el,v 5.12 1999/01/11 16:51:47 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -147,6 +147,16 @@
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
 ;;(setq-default inferior-SAS-program-name "sas")
 
+;;; Send Print from S+4 GUI Commands window print icon to emacs.
+;;; StatSci's S+4 default print destination for the commands window is
+;;(setq-default inferior-S+4-print-command "notepad/p")
+;;;
+;;; The line below is the ESS default and sends the commands window
+;;; to emacs, giving the user the opportunity to 
+;;; (1) edit the output into a clean ess-transcript file before printing, or
+;;; (2) print a region of the file.
+;;(setq-default inferior-S+4-print-command "S_PRINT_COMMAND=gnuclientw.exe")
+
 ;;; see essd-els.el
 ;;(setq-default inferior-S-elsewhere-program-name "sh")
 
@@ -156,12 +166,12 @@
 ;;; See essd-sq4.el
 
 ;;(setq-default inferior-Sqpe+4-program-name "Sqpe")
+;;(setq-default inferior-Sqpe+4-SHOME-name "c:/Progra~1/spls45se")
+;;; These ddeclient values will be buffer-local on WS-Windows 9x/NT
+(setq-default inferior-ess-ddeclient         "Initial")
+(setq-default inferior-ess-client-name       "Initial")
+(setq-default inferior-ess-client-command    "Initial")
 
-;; THIS IS NEEDED BY MS-WINDOWS
-;;(if (and (or (equal  window-system 'w32) (equal window-system 'win32))
-;;	 (eq (getenv "SHOME") nil))
-;;    (setenv "SHOME" "c:/Progra~1/spls45se"))
- 
 ;;;; Choice for S().
 ;;(setq-default inferior-S-program-name inferior-S+3-program-name)
 
@@ -177,14 +187,10 @@
 (require 'essd-sta) ; for Stata.
 
 (if (or (equal window-system 'w32) (equal window-system 'win32))
-     (progn ; PC
-       (require 'essd-s+4)
-       (require 'essd-sq4)))
-;;   (require 'essd-s4))  ; unix
-
-;; re: above window-system code...  
-;; RMH chooses S4 in this case, I'm not sure that it is the "right"
-;; thing to do?  We might need a check for XEmacs?
+;     (progn
+       (require 'essd-s+4)  ; PC
+;       (require 'essd-sq4))
+)
 
 ;;TODO, for 5.2 :-), or rare.
 ;;(require 'essd-s3)  ; You might not have this
@@ -208,72 +214,23 @@
 
 ;;; 2.1 Backwards compatibility (roll your own!)
 ;;; What you want S to call...
-(defun S ()
-  "Basic, usual, call..."
-  (interactive)
-  (S+3))
-
-;;; The basic mode.
-(defun s-mode (&optional proc-name)
-  "Major mode for editing S+3 source.  See ess-mode for more help."
-  (interactive)
-  (if proc-name (S+3-mode proc-name)
-    (S+3-mode)))
-
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files" t)
-
-(defun s-transcript-mode ()
-  "Does the right thing."
-  (interactive)
-  (ess-transcript-mode S+3-customize-alist))
-
+ 
 ;;; On a PC, the default is S+4.  Elsewhere (unix) the default is S+3
 (if (or (equal window-system 'w32) (equal window-system 'win32))
-    ;; We are working under MS Windows
-    (progn
-      (defun S ()
-	"Basic, usual, call..."
- 	(interactive)
- 	(S+4))
-      
-      ;; The basic mode.
-      (defun s-mode (&optional proc-name)
- 	"Major mode for editing S+3 source.  See ess-mode for more help."
- 	(interactive)
- 	(if proc-name (S+4-mode proc-name)
- 	  (S+4-mode)))
-      
-      (autoload 'ess-transcript-mode "ess-trns"
- 	"Major mode for editing S transcript files" t)
-      
-      (defun s-transcript-mode ()
- 	"Does the right thing."
- 	(interactive)
- 	(ess-transcript-mode S+4-customize-alist)))
-  ;; Else, we are working under Unix and do what we've always done.
-  (progn
-    (defun S ()
-      "Basic, usual, call..."
-      (interactive)
-      (S+3))
-    
-    ;; The basic mode.
-    (defun s-mode (&optional proc-name)
-      "Major mode for editing S+3 source.  See ess-mode for more help."
-      (interactive)
-      (if proc-name (S+3-mode proc-name)
-	(S+3-mode)))
-
-    (autoload 'ess-transcript-mode "ess-trns"
-      "Major mode for editing S transcript files" t)
-    
-    (defun s-transcript-mode ()
-      "Does the right thing."
-      (interactive)
-      (ess-transcript-mode S+3-customize-alist))))
-
+    (progn				; MS-Windows 9x/NT
+      (fset 'S 'S+4)
+      (fset 's-mode 'S+4-mode)
+      (fset 's-transcript-mode 'S+4-transcript-mode)
+      )
+    (progn				; Unix
+      (fset 'S 'S+3)
+      (fset 's-mode 'S+3-mode)
+      (fset 's-transcript-mode 'S+3-transcript-mode)
+      )
+)
 
 ;;;;* Alias S-mode to s-mode
 ;;; Emacs will set the mode for a file based on the file's header.
@@ -285,12 +242,6 @@
 ;;; not S-mode.
 (fset 'S-transcript-mode 's-transcript-mode)
 (fset 'S-mode 's-mode)
-
-
-;; Alternative method (better?)
-;;(fset 'S 'S+3)
-;;(fset 'S-mode 'S+3-mode)
-
 
 
 
