@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/22 23:13:14 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: essd-s+3.el,v 1.11 1997/06/22 23:13:14 rossini Exp $
+;; Modified: $Date: 1997/07/17 20:49:21 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: essd-s+3.el,v 1.12 1997/07/17 20:49:21 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s+3.el,v $
+;;: Revision 1.12  1997/07/17 20:49:21  rossini
+;;: new version, take 1.
+;;:
 ;;: Revision 1.11  1997/06/22 23:13:14  rossini
 ;;: removed S-inf... variable.  Whoops.
 ;;:
@@ -58,33 +61,46 @@
 
 ;;; Code:
 
-(defun ess-S-shortcut-pre-run-hook ()
-  "Initialize variables for S."
-  (setq-default ess-proc-prefix              "S"
-	ess-version-running          "S+3"
-	inferior-ess-program         inferior-S-program-name
-	ess-help-sec-regex           ess-help-S-sec-regex
-	ess-help-sec-keys-alist      ess-help-S-sec-keys-alist
-	inferior-ess-objects-command "objects(%d)"
-	                             ;;(if (string= ess-version-running "S3")
-				     ;;    "objects(%d)"
-				     ;;  "ls()")
-	inferior-ess-help-command    "help(\"%s\",pager=\"cat\",window=F)\n"
-	                             ;;(if S-plus
-				     ;; "help(\"%s\",pager=\"cat\",window=F)\n"
-				     ;; "help(\"%s\")\n")
-	inferior-ess-exit-command    "q()\n"))
+(defvar S+3-customize-alist
+  '((ess-proc-prefix      .         "S")
+    (ess-version-running  .         "S+3")
+    (inferior-ess-program .         "Splus")
+    (ess-help-sec-regex   .         "^[A-Z. ---]+:$")
+    (ess-help-sec-keys-alist .      '((?a . "ARGUMENTS:")
+				      (?b . "BACKGROUND:")
+				      (?B . "BUGS:")
+				      (?d . "DETAILS:")
+				      (?D . "DESCRIPTION:")
+				      (?e . "EXAMPLES:")
+				      (?n . "NOTE:")
+				      (?o . "OPTIONAL ARGUMENTS:")
+				      (?r . "REQUIRED ARGUMENTS:")
+				      (?R . "REFERENCES:")
+				      (?s . "SIDE EFFECTS:")
+				      (?S . "SEE ALSO:")
+				      (?u . "USAGE:")
+				      (?v . "VALUE:")))
+    (inferior-ess-objects-command . "objects(%d)")
+                                     ;(if (string= ess-version-running "S3")
+				     ;    "objects(%d)"
+				     ;  "ls()")
+    (inferior-ess-help-command .    "help(\"%s\",pager=\"cat\",window=F)\n")
+	                             ;(if S-plus
+				     ; "help(\"%s\",pager=\"cat\",window=F)\n"
+				     ; "help(\"%s\")\n")
+    (inferior-ess-exit-command .    "q()\n"))
+ "Variables to customize for S")
 
 
-(defun ess-S-shortcut-post-run-hook ()
-  "Remove initialization."
-  (remove-hook 'ess-pre-run-hook 'ess-S-shortcut-pre-run-hook))
-
-(defun S () "Call 'S', even after calling R."
+(defun S ()
+  "Call 'Splus 3.x', the 'Real Thing'  from StatSci.
+New way to do it."
   (interactive)
-  (add-hook 'ess-pre-run-hook  'ess-S-shortcut-pre-run-hook)
-  (add-hook 'ess-post-run-hook 'ess-S-shortcut-post-run-hook)
-  (setq ess-proc-prefix "S")
+  (setq ess-customize-alist S+3-customize-alist)
+  (ess-write-to-dribble-buffer
+   (format "(S): ess-proc-prefix=%s , buf=%s \n"
+	   ess-proc-prefix
+	   (current-buffer)))
   (inferior-ess))
 
 ;; From RMH:  (for both s+3 and s3) ? 
