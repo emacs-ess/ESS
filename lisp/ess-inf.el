@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/03 13:26:54 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: ess-inf.el,v 1.24 1997/07/03 13:26:54 rossini Exp $
+;; Modified: $Date: 1997/07/03 13:36:56 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: ess-inf.el,v 1.25 1997/07/03 13:36:56 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.25  1997/07/03 13:36:56  rossini
+;; --alist -> -alist.  typo.
+;;
 ;; Revision 1.24  1997/07/03 13:26:54  rossini
 ;; added customization stuff.
 ;;
@@ -370,7 +373,7 @@ when invoking S.
 	   
     (set-buffer buf)
     ;; Now that we have the buffer, set buffer-local variables.
-    (if ess-customize-alist (ess-set-vars ess-customize--alist))
+    (if ess-customize-alist (ess-set-vars ess-customize-alist))
     (if startdir (setq default-directory startdir))
     (setq ess-history-file (concat "." ess-proc-prefix "history"))
     (ess-multi procname buf)))
