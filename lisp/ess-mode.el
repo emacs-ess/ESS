@@ -6,12 +6,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/30 13:00:31 $
-;; Version: $Revision: 1.44 $
-;; RCS: $Id: ess-mode.el,v 1.44 1997/07/30 13:00:31 rossini Exp $
+;; Modified: $Date: 1997/07/31 13:06:34 $
+;; Version: $Revision: 1.45 $
+;; RCS: $Id: ess-mode.el,v 1.45 1997/07/31 13:06:34 rossini Exp $
 
 ;;
 ;; $Log: ess-mode.el,v $
+;; Revision 1.45  1997/07/31 13:06:34  rossini
+;; nil -> ().  Just looks...
+;;
 ;; Revision 1.44  1997/07/30 13:00:31  rossini
 ;; removed last variable (ess-mode-map) to ess-vars.
 ;;
@@ -421,7 +424,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
 
 ;;;*;;; Handy commands
 
-(defun ess-execute-in-tb nil
+(defun ess-execute-in-tb ()
   "Like ess-execute, but always evaluates in temp buffer."
   (interactive)
   (let ((ess-execute-in-process-buffer nil))
@@ -429,7 +432,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
 
 ;;;*;;; Buffer motion/manipulation commands
 
-(defun ess-beginning-of-function nil
+(defun ess-beginning-of-function ()
   "Leave the point at the beginning of the current S function."
   (interactive)
   (let ((init-point (point))
