@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/05/17 17:09:37 $
-;; Version: $Revision: 5.26 $
-;; RCS: $Id: ess-mode.el,v 5.26 2004/05/17 17:09:37 stephen Exp $
+;; Modified: $Date: 2004/06/20 23:26:40 $
+;; Version: $Revision: 5.27 $
+;; RCS: $Id: ess-mode.el,v 5.27 2004/06/20 23:26:40 rmh Exp $
 
 ;; This file is part of ESS
 
@@ -224,9 +224,11 @@
     ;; SJE - :help not yet recognised in XEmacs.
     ["R"     R   t] ;; :help "Start a new R process" :active t
     ["S"     S   t] ;; :help "Start a new S process" :active t
+;;(if ess-microsoft-p   '["Sqpe" Sqpe t] );; :help "Start a new Sqpe process" :active t
+;;(if ess-microsoft-p   '["S+6-exisiting" S+6-existing t]) ;; :help "Access an existing S process" :active t
     ["SAS"   SAS t] ;;  :help "Start a new SAS process" :active t
     ["About" 
-     (ess-goto-info "Starting the ESS process") t]
+     (ess-goto-info "Starting up") t]
      ;; :help "Read about starting a new ESS process" :active t]
     )
    ["Switch Process"	ess-switch-process		t]
