@@ -1,7 +1,7 @@
 /* XPM */
 static char *spluslogo[]={
 "24 24 10 1",
-"a c None",
+"a c None s backgroundToolBarColor",
 "g c #000000",
 "h c #838383",
 "# c #ce3000",
