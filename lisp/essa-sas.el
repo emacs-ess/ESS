@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rodney.sparapani@duke.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/01/23 00:48:10 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essa-sas.el,v 1.9 2001/01/23 00:48:10 rossini Exp $
+;; Modified: $Date: 2001/02/27 20:14:59 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essa-sas.el,v 1.10 2001/02/27 20:14:59 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, asynchronous.
 
@@ -151,19 +151,19 @@
 ;;;;; Some of R.S.'s additions
 
 
+(if (featurep 'xemacs) (progn
 
 (defvar explicit-command-args nil
    "Switches for COMMAND.COM.")
-		
 
 (defvar explicit-cmd-args nil
    "Switches for CMD.EXE.")
 
-(if (featurep 'xemacs)
+
   (defun w32-shell-dos-semantics ()
   "Return t if the interactive shell being used expects msdos shell semantics."
 	(or (string-equal "COMMAND.COM" (file-name-nondirectory shell-file-name))
-	    (string-equal "CMD.EXE" (file-name-nondirectory shell-file-name)))))
+	    (string-equal "CMD.EXE" (file-name-nondirectory shell-file-name))))))
 		
 
 (defun ess-sas-submit ()
@@ -303,6 +303,9 @@ operating system.")
   "Toggle SAS-mode for .log files."
   (interactive)
 
+  (ess-sas-file "log")
+  (kill-buffer nil)
+
   (if (assoc "\\.log\\'" auto-mode-alist) 
     (setq auto-mode-alist (delete '("\\.log\\'" . SAS-mode) auto-mode-alist))
   (setq auto-mode-alist (append '(("\\.log\\'" . SAS-mode)) auto-mode-alist)))
@@ -310,6 +313,8 @@ operating system.")
   (if (assoc "\\.LOG\\'" auto-mode-alist) 
     (setq auto-mode-alist (delete '("\\.LOG\\'" . SAS-mode) auto-mode-alist))
   (setq auto-mode-alist (append '(("\\.LOG\\'" . SAS-mode)) auto-mode-alist)))
+
+  (ess-sas-file "log")
 )
 
 
@@ -327,7 +332,9 @@ i.e. let `ess-sas-arg' be your local equivalent of
     (comint-send-input)
     (insert ess-sas-arg " " ess-sas-file-path " &")
     (comint-send-input)
-    (sleep-for 0 (truncate (* ess-sleep-for 1000)))
+    (if (featurep 'xemacs) (sleep-for ess-sleep-for)
+       (sleep-for 0 (truncate (* ess-sleep-for 1000)))
+    )
     (comint-send-input))
 
 (defun ess-exit-notify-sh (string)
