@@ -1,5 +1,11 @@
 2004-05-13  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
+	* ess.el: Update copyright; remove old comments; update URL.
+
+	* ess-site.el (ess-etc-directory): Move out of ess-cust.el and
+	into ess-site.el, otherwise various other .el files that are
+	loaded before ess-cust will complain.
+
 	* essl-bug.el: Comment possible use of ess-etc-directory here.
 
 	* essl-s.el (ess-function-outline-file): Use ess-etc-directory.
