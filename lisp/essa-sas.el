@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/01/29 22:15:37 $
-;; Version: $Revision: 1.149 $
-;; RCS: $Id: essa-sas.el,v 1.149 2004/01/29 22:15:37 rsparapa Exp $
+;; Modified: $Date: 2004/02/16 21:17:11 $
+;; Version: $Revision: 1.150 $
+;; RCS: $Id: essa-sas.el,v 1.150 2004/02/16 21:17:11 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -669,6 +669,22 @@ optional argument is non-nil, then set-buffer rather than switch."
 ;;    (ess-sas-goto-sas)
 ;;))
 
+(defun ess-sas-kill-buffers ()
+"Kill all buffers related to a .sas file."
+  (interactive)
+  (ess-sas-file-path)
+  (ess-sas-goto "log" nil)
+  (kill-buffer nil)  
+  (ess-sas-goto "lst" nil)
+  (kill-buffer nil)  
+  (ess-sas-goto ess-sas-suffix-1 nil)
+  (kill-buffer nil)  
+  (ess-sas-goto ess-sas-suffix-2 nil)
+  (kill-buffer nil)  
+  (ess-sas-goto "sas" nil)
+  (kill-buffer nil)  
+)
+
 (defun ess-sas-rtf-export-1 ()
 "Creates an MS RTF file from the current buffer based on its name."
     (interactive)
@@ -941,6 +957,7 @@ Without args, toggle between these options."
   (global-set-key (quote [f8]) 'ess-sas-submit)
   (global-set-key [(control f8)] 'ess-sas-submit-region)
   (global-set-key (quote [f9]) 'ess-sas-data-view)
+  (global-set-key [(control f9)] 'ess-sas-kill-buffers)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
@@ -974,6 +991,7 @@ Without args, toggle between these options."
   (global-set-key (quote [f7]) 'ess-sas-goto-file-1)
   (global-set-key (quote [f8]) 'ess-sas-goto-shell)
   (global-set-key (quote [f9]) 'ess-sas-data-view)
+  (global-set-key [(control f9)] 'ess-sas-kill-buffers)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
@@ -1008,6 +1026,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f8]) 'ess-sas-submit)
   (define-key sas-mode-local-map [(control f8)] 'ess-sas-submit-region)
   (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
+  (define-key sas-mode-local-map [(control f9)] 'ess-sas-kill-buffers)
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
@@ -1037,6 +1056,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f7]) 'ess-sas-goto-file-1)
   (define-key sas-mode-local-map (quote [f8]) 'ess-sas-goto-shell)
   (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
+  (define-key sas-mode-local-map [(control f9)] 'ess-sas-kill-buffers)
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
