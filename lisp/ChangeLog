@@ -1,4 +1,17 @@
+2000-03-21  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-vars.el (ess-temp-point): new for fixing multiline commands
+	in transcript.  Similar fix in
+	* ess-trns.el, and
+	* ess-inf.el. --- really all by RMH!
+
+	* ess.el (cadr): define if not available.
+
 2000-03-20  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-help.el (ess-help-error-buffer-p): new utility, improve
+	detection of help error messages for
+	(ess-display-help-on-object).
 
 	* essl-sas.el: new variables sas-white-chars & sas-comment-comment-chars
 	* essl-sas.el: (beginning-of-sas-statement): don't quote blank

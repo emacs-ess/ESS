@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/03/21 09:21:56 $
-;; Version: $Revision: 5.33 $
-;; RCS: $Id: ess-vars.el,v 5.33 2000/03/21 09:21:56 maechler Exp $
+;; Modified: $Date: 2000/03/21 18:19:24 $
+;; Version: $Revision: 5.34 $
+;; RCS: $Id: ess-vars.el,v 5.34 2000/03/21 18:19:24 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -800,6 +800,9 @@ If nil, input is in the font-lock-variable-name-face.")
 ;;; Users note: Variables with document strings starting
 ;;; with a * are the ones you can generally change safely, and
 ;;; may have to upon occasion.
+
+(defvar ess-help-kill-bogous-buffers nil
+  "*If non-nil, kill ESS help buffers immediately if they are \"bogous\".")
 
 (defvar ess-help-form 'separate-buffer
   "*Place to show help.   NOT IMPLEMENTED YET.

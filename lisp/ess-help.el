@@ -8,9 +8,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>, MM
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/02/10 09:06:38 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: ess-help.el,v 5.6 2000/02/10 09:06:38 maechler Exp $
+;; Modified: $Date: 2000/03/21 18:19:24 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: ess-help.el,v 5.7 2000/03/21 18:19:24 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -72,19 +72,55 @@
 ;;;; * The major mode ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun ess-help-bogous-buffer-p (buffer &optional nr-first return-match debug)
+  "Return non-nil if  BUFFER  looks like a bogous ESS help buffer.
+ Return pair of (match-beg. match-end) when optional RETURN-MATCH is non-nil.
+ Utility used in \\[ess-display-help-on-object]."
+  (let* ((searching nil)
+	 (buffer-ok (bufferp buffer))
+	 (res
+	  (or (not buffer-ok)
+	      (save-excursion;; ask for new buffer if old one looks bogous ..
+		(set-buffer buffer)
+		(if debug
+		    (ess-write-to-dribble-buffer
+		     (format "(ess-help-bogous-buffer-p %s)" (buffer-name))))
+
+		(let ((PM (point-min)))
+		  (or  ;; evaluate up to first non-nil (or end):
+		   (< (- (point-max) PM) 80); buffer less than 80 chars
+		   (not (setq searching t))
+		   (not (setq case-fold-search t))
+		   ;; search in first nr-first (default 120) chars only
+		   (and nil (if (not nr-first) (setq nr-first 120)))
+		   (progn (goto-char PM) ;; R:
+			  (re-search-forward "Error in help"	nr-first t))
+		   (progn (goto-char PM) ;; S-plus 5.1 :
+			  (re-search-forward "^cat: .*--"	nr-first t))
+		   (progn (goto-char PM) ;; S version 3 ; R :
+			  (re-search-forward "no documentation" nr-first t))
+		   )))
+	      )))
+    (if debug
+	(ess-write-to-dribble-buffer
+	 (format " |--> %s [searching %s]\n" res searching)))
+
+    (if (and res return-match searching)
+	(list (match-beginning 0) (match-end 0))
+      ;; else
+      res)))
+
 ;;*;; Access function for displaying help
 
 (defun ess-display-help-on-object (object)
-  "Display the ESS documentation for OBJECT in another window.
-If prefix arg is given, forces a query of the ESS process for the help
+  "Display documentation for OBJECT in another window.
+If prefix arg is given, forces a query of the  ESS process for the help
 file.  Otherwise just pops to an existing buffer if it exists.
 Uses the variable `inferior-ess-help-command' for the actual help command."
   (interactive (ess-find-help-file "Help on: "))
   (let* ((hb-name (concat "*help["
 			  ess-current-process-name
-			  "]("
-			  object
-			  ")*"))
+			  "](" object ")*"))
 	 (old-hb-p (get-buffer hb-name))
 	 (curr-win-mode major-mode)
 	 (tbuffer (get-buffer-create hb-name))
@@ -101,34 +137,51 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
     ;; see above, do same for inferior-ess-help-command... (i.e. remove
     ;; hack, restore old code :-).
 
-    (if (or (not old-hb-p) current-prefix-arg)
-	;; Ask ESS for the help file
+    (if (or (not old-hb-p)
+	    current-prefix-arg
+	    (ess-help-bogous-buffer-p old-hb-p nil nil 'debug)
+	    )
+
+	;; Ask the corresponding ESS process for the help file:
 	(progn
+	  (if buffer-read-only (setq buffer-read-only nil))
 	  (delete-region (point-min) (point-max))
 	  (ess-help-mode)
 	  (setq ess-local-process-name ess-current-process-name)
-	  (ess-command (format curr-help-command object) tbuffer) ;; was
+	  (ess-command (format curr-help-command object) tbuffer);; was
 	  ;; inferior-ess-help-command
 
 	  ;; Stata is clean, so we get a big BARF from this.
 	  (if (not (string= ess-language "STA"))
-	    (ess-nuke-help-bs))
+	      (ess-nuke-help-bs))
 
 	  (goto-char (point-min))))
-    (let (nodocs)
-      (save-excursion
-	(goto-char (point-min))
-	(setq nodocs
-	      (re-search-forward
-	       "\\`No documentation available.*$"
-	       nil t))
-	(if nodocs
+
+    (save-excursion
+      (let ((PM (point-min))
+	    (nodocs (ess-help-bogous-buffer-p (current-buffer) nil 'give-match))
+	    )
+	(goto-char PM)
+	(if (and nodocs
+		 ess-help-kill-bogous-buffers)
 	    (progn
-	      (princ (buffer-substring (match-beginning 0)
-				       (match-end 0)) t)
+	      (if (not (listp nodocs))
+		  (setq nodocs (list PM (point-max))))
+	      (ess-write-to-dribble-buffer
+	       (format "(ess-help: error-buffer «%s» nodocs (%d %d)\n"
+		       (buffer-name) (car nodocs) (cadr nodocs)))
 	      ;; Avoid using 'message here -- may be %'s in string
+	      ;;(princ (buffer-substring (car nodocs) (cadr nodocs)) t)
+	      ;; MM [3/2000]: why avoid?  Yes, I *do* want message:
+	      (message "%s" (buffer-substring (car nodocs) (cadr nodocs)))
+	      ;; ^^^ fixme : remove new lines from the above {and abbrev.}
 	      (ding)
 	      (kill-buffer tbuffer))
+
+	  ;; else : show it
+
+	  ;;dbg (ess-write-to-dribble-buffer
+	  ;;dbg  (format "(ess-help «%s» before switch-to..\n" hb-name)
 	  (if (eq curr-win-mode 'ess-help-mode)
 	      (switch-to-buffer tbuffer)
 	    (ess-display-temp-buffer tbuffer))
