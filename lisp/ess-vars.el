@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/14 15:13:23 $
-;; Version: $Revision: 1.45 $
-;; RCS: $Id: ess-vars.el,v 1.45 1997/11/14 15:13:23 rossini Exp $
+;; Modified: $Date: 1997/11/18 22:19:23 $
+;; Version: $Revision: 1.46 $
+;; RCS: $Id: ess-vars.el,v 1.46 1997/11/18 22:19:23 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -737,19 +737,6 @@ If nil, input is in the font-lock-variable-name-face.")
 ;; modules, but they can all call it so we may as well put it here.
 
 ;;*;; Variables relating to ess-help-mode
-
-(defconst ess-help-S-sec-keys-alist
-  '((?a . "ARGUMENTS:")
-    (?b . "BACKGROUND:") (?B . "BUGS:")
-    (?d . "DETAILS:") (?D . "DESCRIPTION:")
-    (?e . "EXAMPLES:")
-    (?n . "NOTE:") (?o . "OPTIONAL ARGUMENTS:") (?r . "REQUIRED ARGUMENTS:")
-    (?R . "REFERENCES:")
-    (?s . "SIDE EFFECTS:") (?S . "SEE ALSO:") (?u . "USAGE:") (?v . "VALUE:"))
-  "Alist of (key . string) pairs for use in section searching.")
-;;; `key' indicates the keystroke to use to search for the section heading
-;;; `string' in an S help file. `string' is used as part of a
-;;; regexp-search, and so specials should be quoted.
 
 (defconst ess-help-S-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file")
