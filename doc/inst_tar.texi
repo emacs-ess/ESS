@@ -72,9 +72,12 @@ Alternatively, if ess-site.el is in your current Lisp path, you can do:
 to configure emacs for ESS.
 
 @item
-That's it!  To edit statistical programs, load the files with the requiste
-extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and ".lsp"
-for XLispStat).
+That's it!  If you are installing just a local copy of ESS for yourself,
+ESS is now ready to be used.  (The remaining steps below are for
+advanced installation.)  To edit statistical programs, load the files
+with the requiste extensions (".sas" for SAS, ".S" for S-PLUS, ".R" for
+R, and ".lsp" for XLispStat).  To start a statistical process within
+Emacs, such as R, type @code{M-x R}.
 
 @item
 (OPTIONAL) If you are running S-PLUS or R, you might consider
