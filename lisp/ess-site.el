@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/17 02:10:47 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: ess-site.el,v 1.10 1997/06/17 02:10:47 rossini Exp $
+;; Modified: $Date: 1997/06/17 02:24:03 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: ess-site.el,v 1.11 1997/06/17 02:24:03 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.11  1997/06/17 02:24:03  rossini
+;;: added R_mode.  Whoops.
+;;:
 ;;: Revision 1.10  1997/06/17 02:10:47  rossini
 ;;: ess-*-mode -> ess-mode.
 ;;:
@@ -177,7 +180,7 @@
 	 '(("\\.q$" . ess-mode)
 	   ("\\.s$"  . ess-mode) ;; Comment for default asm-mode
 	   ("\\.S$"  . ess-mode)
-	   ("\\.R$"  . ess-mode)
+	   ("\\.R$"  . R-mode)
 	   ("\\.St$" . ess-transcript-mode))
 	 auto-mode-alist)))
 
@@ -187,11 +190,11 @@
 ;; Do we need the lower-case versions, or should we just move the
 ;; (fset) commands here?
 
-(autoload 'ess-S-mode "ess-mode" "Major mode for editing S source code" t)
-(autoload 'ess-R-mode "ess-mode" "Major mode for editing R source code" t)
+(autoload 'ess-mode "ess-mode" "Major mode for editing S source code" t)
+(autoload 'R-mode "ess-mode" "Major mode for editing R source code" t)
 
-(autoload 'ess-s-transcript-mode "ess-trans" "ESS source eval mode" t)
-(autoload 'ess-S-transcript-mode "ess-trans" "ESS source eval mode" t)
+(autoload 'ess-transcript-mode "ess-trans" "ESS source eval mode" t)
+(autoload 'ess-transcript-mode "ess-trans" "ESS source eval mode" t)
 
 (autoload 'inferior-ess "ess-inf"
   "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
