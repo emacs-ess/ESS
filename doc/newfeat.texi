@@ -4,8 +4,13 @@ Changes/New Features in 5.1.21:
 ESS->Help for Statistical Packages->Help for SAS; F12 opens
 GSASFILE nearest point for viewing either within emacs, when
 available, or via an external viewer; more syntax highlighting
-keywords
-@item Makefile: tag now independent of rel
+keywords; more enhancements for remote SAS batch jobs with 
+Kermit; new framework for remote SAS interactive jobs, see
+ess-remote
+@item ESS[S]: info documentation now available!, see
+ESS->Help for Statistical Packages->Help for the S family
+@item Makefile: tag now independent of rel; info files
+made by doc/Makefile and installed in new info sub-directory
 @end itemize
 
 Changes/New Features in 5.1.20:
