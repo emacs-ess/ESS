@@ -549,7 +549,7 @@ system.
 @chapter Interacting with statistical programs
 
 As well as using ESS to edit your source files for statistical programs,
-you can ESS to run these statistical programs.  In this chapter, we
+you can use ESS to run these statistical programs.  In this chapter, we
 mostly will refer by example to running S from within emacs.  The emacs
 convention is to name such proceses running under its control as
 `inferior processes'.  This term can be slightly misleading, in which
@@ -703,13 +703,10 @@ on remote computers.
 @node S+elsewhere and ESS-elsewhere, Customizing startup, ESS processes on Remote Computers, Interactive ESS
 @section S+elsewhere and ESS-elsewhere
 
-These commands are now deprecated.  We recommend @samp{ess-remote}.
-
-
-We have two versions of the elsewhere function.
-
-@samp{S+elsewhere} is specific for the S-Plus program.
-The more general function @samp{ESS-elsewhere} is not as stable.
+These commands are now deprecated.  We recommend @samp{ess-remote}.  We
+have two versions of the elsewhere function.  @samp{S+elsewhere} is
+specific for the S-Plus program.  The more general function
+@samp{ESS-elsewhere} is not as stable.
 
 @enumerate
 @item Enter @samp{M-x S+elsewhere}.
@@ -815,7 +812,6 @@ variable, customize the variable @code{inferior-ess-own-frame}.
 @menu
 * ESS(S)--Editing files::
 * iESS(S)--Inferior ESS processes::
-* Handling and Reusing Transcripts::
 * ESS-help--assistance with viewing help::
 * Philosophies for using ESS(S)::
 * Scenarios for use (possibilities--based on actual usage)::
@@ -1490,7 +1486,7 @@ Sends the @code{objects()}
 @pindex objects()
 command to the ESS process.  A prefix argument specifies the
 position on the search list (use a negative argument to toggle
-@code{es-execute-in-process-buffer} as well).  A quick way to see what
+@code{ess-execute-in-process-buffer} as well).  A quick way to see what
 objects are in your working directory.
 @cindex objects
 @pindex objects()
@@ -1898,7 +1894,6 @@ process buffer scroll automatically when the output reaches the bottom
 of the window, you will need to set the variable
 @code{comint-scroll-to-bottom-on-output} to @code{'others} or @code{t}.
 
-*** Maybe a link to customization section here ***
 
 @comment  node-name,  next,  previous,  up
 @node Indenting, Other edit buffer commands, Evaluating code, Editing
@@ -1915,7 +1910,7 @@ Function definitions, @code{if} statements, calls to @code{expression()}
 and loop constructs are all recognized and indented appropriately.  User
 variables are provided to control the amount if indentation in each
 case, and there are also a number of predefined indentation styles to
-choose from.  @xref{Indentation variables}.
+choose from.
 
 @cindex comments in S
 Comments are also handled specially by ESS, using an idea borrowed from
@@ -1971,8 +1966,7 @@ styles: @code{GNU}, @code{BSD}, @code{K&R}, @code{CLB}, and @code{C++}.
 The @code{DEFAULT} style uses the default values for the indenting
 variables (unless they have been modified in your @file{.emacs} file.)
 @cindex @file{.emacs} file
-This command causes all of the formatting variables
-@pxref{Indentation variables} to be buffer-local.
+This command causes all of the formatting variables to be buffer-local.
 @end itemize
 
 @comment  node-name,  next,  previous,  up
@@ -2579,7 +2573,6 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 * Graphics::                    Using graphics with ESS
 * Imenu::                       Support for Imenu in ESS
 * Toolbar::                     Support for toolbar in ESS
-* Object Completion::
 @end menu
 
 @comment  node-name,  next,  previous,  up
@@ -2596,9 +2589,9 @@ To activate highlighting, you need to turn on Font Lock mode in the
 appropriate buffers.  This can be done on a per-buffer basis with
 @kbd{M-x font-lock-mode}, or may be done by adding
 @code{turn-on-font-lock} to @code{inferior-ess-mode-hook},
-@code{ess-mode-hook} and @code{ess-transcript-mode-hook}
-(@pxref{Hooks}).  Your systems administrator may have done this for you
-in @file{ess-site.el} (@pxref{Customization}).
+@code{ess-mode-hook} and @code{ess-transcript-mode-hook}.  Your systems
+administrator may have done this for you in @file{ess-site.el}
+(@pxref{Customization}).
 
 The font-lock patterns are defined in three variables, which you may
 modify if desired:
@@ -2665,8 +2658,7 @@ your Emacs process.  ESS provides a facility for setting the value of
 DISPLAY before the ESS process is started if the variable
 @code{ess-ask-about-display}
 @pindex ess-ask-about-display
-is non-@code{nil}.  @xref{Variables for starting ESS}, for details of
-this variable.
+is non-@code{nil}.
 
 @comment  node-name,  next,  previous,  up
 @node winjava,  , X11, Graphics
@@ -2698,7 +2690,7 @@ particular parts of your source file (such as the starting point of each
 function definition).
 
 @comment  node-name,  next,  previous,  up
-@node Toolbar, Object Completion, Imenu, Miscellaneous
+@node Toolbar, , Imenu, Miscellaneous
 @section Toolbar
 
 The R and S editing modes have support for a toolbar.  This toolbar
@@ -2708,37 +2700,6 @@ present if your emacs can display images.  @xref{Customization}, for ways
 to change the toolbar.
 
 
-@comment  node-name,  next,  previous,  up
-@node Object Completion,  , Toolbar, Miscellaneous
-@section Object Completion
-
-
-If you are running S-PLUS or R, you might consider installing the
-database files.  From within Emacs, "C-x d" to the directory
-containing ESS.  Now:
-
-@code{M-x S+3}
-
-(get S-PLUS running.  once you have reached the SPLUS 3.x prompt, do:)
-
-@code{M-x ess-create-object-name-db}
-
-(this will create the file: ess-s+3-namedb.el; if it isn't in the ESS
-directory, move it there).
-
-Then, completions will be autoloaded and will not be regenerated for
-every session.
-
-For R:
-
-@code{M-x R}
-
-(get R running.  once you have reached the R prompt, do:)
-
-@code{M-x ess-create-object-name-db}
-
-(this will create the file: ess-r-namedb.el; if it isn't in the ESS
-directory, move it there).
 
 
 @comment  node-name,  next,  previous,  up@chapter Using S4
@@ -2795,370 +2756,10 @@ available.
 
 Most of these variables can be viewed and set using the Custom facility
 within Emacs.  Type @kbd{M-x customize-group RET ess RET} to see all the
-ESS variables that can be customized.
+ESS variables that can be customized.  Variables are grouped by subject
+to make it easy to find related variables.
 
-
-@menu
-* Variables::                   Variables for customization
-* Hooks::                       Customizing ESS with hooks
-* Keybindings::                 Changing the default ESS keybindings
-@end menu
-
-@comment  node-name,  next,  previous,  up
-@node Variables, Hooks, Customization, Customization
-@appendixsec Variables for customization
-@cindex variables
-
-ESS is easily customizable by means of setting variables in your
-@file{.emacs} file.
-@cindex @file{.emacs} file
-In most cases, you can change defaults by including lines of the form
-@cindex defaults
-@example
-(setq @var{variable-name} @var{value})
-@end example
-@noindent
-in your @file{.emacs}.
-
-In what follows, variable names will be listed along with their
-descriptions and default values.  Just substitute the variable name and
-the new value into the template above.
-
-@menu
-* Variables for starting ESS::  Variables for starting ESS
-* Dump file variables::         Variables for dump files
-* Indentation variables::       Variables controlling indentation
-* Variables controlling interaction::  Variables controlling interaction
-					with the ESS process
-* Editing assembly files::      Variables for restoring assembly mode
-                                        associations
-@end menu
-
-@comment  node-name,  next,  previous,  up
-@node Variables for starting ESS, Dump file variables, Variables, Variables
-@appendixsubsec Variables for starting ESS
-
-@defvr {User Option} ess-ask-for-ess-directory
-Default: @code{t} @*
-@cindex starting directory
-@cindex directories
-If this variable has a non-@code{nil} value, then every time ESS is
-run with @kbd{M-x S}
-@pindex S
-you will be prompted for a directory to use as the working directory for
-your @Sl{} session; this directory should have a @file{.Data}
-subdirectory.
-@cindex @file{.Data} directory
-If the value of @code{ess-ask-for-ess-directory} is @code{nil}, the
-value of @code{S-directory}
-@vindex S-directory
-is used as the working directory.
-@end defvr
-
-@defvr {User Option} S-directory
-Default: Your home directory @* The working directory for your @Sl{}
-session if @code{ess-ask-for-ess-directory} is @code{nil}, and the
-default when prompting for a directory if it is not.  For example, you
-may wish to set this to the value of the current buffer's working
-directory before starting @Sl{} by adding the following line to your
-@file{.emacs} file (@pxref{Hooks})
-@cindex @file{.emacs} file
-@example
-(setq ess-pre-run-hook
-   '((lambda () (setq S-directory default-directory))))
-@end example
-@end defvr
-
-@defvr {User Option} ess-ask-about-display
-Default: @code{nil} @*
-If this variable has a non-@code{nil} value, then every time ESS is
-run with @kbd{M-x S}
-@pindex S
-you will be asked for a value for the @code{DISPLAY} environment
-variable
-@cindex DISPLAY environment variable
-@cindex environment variables
-to be used in the current @Sl{} session.  If this variable is not set
-correctly, @Sl{} will not be able to create any windows under the X
-windowing environment.
-@cindex X windows
-Completion is provided over the @code{X-displays-list} variable; the
-default is the current value of @code{DISPLAY}.  This feature is useful
-is you often run @Sl{} on a different display than that of the machine you
-are running @Sl{} from.  If
-@code{ess-ask-about-display} is @code{nil}, the current value of
-@code{DISPLAY} is used.
-@end defvr
-
-@defvr {User Option} X-displays-list
-Default: @code{'(":0.0")} @*
-List of possible values for the @code{DISPLAY} environment variable,
-provided for completion when prompting for such a value.
-@end defvr
-
-@comment  node-name,  next,  previous,  up
-@node Dump file variables, Indentation variables, Variables for starting ESS, Variables
-@appendixsubsec Variables for dump files
-
-@defvr {User Option} ess-insert-function-templates
-Default: @code{t} @* If this variable has a non-@code{nil} value, then
-dumping a non-existent object will result in the edit buffer containing
-a skeleton function definition, ready for editing.
-@end defvr
-
-@defvr {User Option} ess-source-directory
-Default: @code{"/tmp/"} @*
-@cindex dump files
-Directory name (ending in @samp{/}) in which dump files are placed.  This
-should always be a writable directory.
-@end defvr
-
-@defvr {User Option} ess-source-directory-generator
-Default: @code{nil} @*
-Alternative, dynamic method of specifying the directory for dump files.
-@end defvr
-
-@defvr {User Option} ess-dump-filename-template
-Default: @var{user_name}@code{.}@var{object_name}@code{.S} @*
-Naming system to use for dumped object files.  @xref{Source Directories},
-for details of this and the previous two variables.
-@end defvr
-
-@defvr {User Option} ess-keep-dump-files
-Default: @code{nil} @*
-Boolean flag signifying whether to keep dump files or to delete them
-after each use.  @xref{Source Files}, for more details.
-@end defvr
-
-@comment  node-name,  next,  previous,  up
-@node Indentation variables, Variables controlling interaction, Dump file variables, Variables
-@appendixsubsec Variables controlling indentation
-@cindex formatting source code
-@cindex indentation
-
-@defvr {User Option} ess-tab-always-indent
-Default: @code{t} @*
-If non-@code{nil}, then @kbd{TAB} in the edit buffer always indents the
-current line, regardless of the position of point in the line.
-Otherwise, indentation is only performed if point is in the lines
-indentation, and a tab character is inserted is point is after the first
-nonblank character.
-@end defvr
-
-@defvr {User Option} ess-auto-newline
-Default: @code{nil} @*
-Non-@code{nil} means automatically newline before and after braces
-inserted in @Sl{} code.
-@end defvr
-
-The following variables control amounts of indentation.  These variables
-automatically become buffer-local in any ESS buffer, and so setting
-any of these variables has effect in the current buffer only.
-
-
-@defvr {User Option} ess-indent-level
-Default: 2 @*
-Extra indentation of @Sl{} statement sub-block with respect to enclosing
-braces.
-@end defvr
-
-@defvr {User Option} ess-brace-imaginary-offset
-Default: 0 @*
-Extra indentation (over sub-block indentation) for block following an
-open brace which follows on the same line as a statement.
-@end defvr
-
-@defvr {User Option} ess-brace-offset
-Default: 0 @*
-Extra indentation for braces, compared with other text in same context.
-@end defvr
-
-@defvr {User Option} ess-continued-statement-offset
-Default: 0 @*
-Extra indent for lines not starting new statements.
-@end defvr
-
-@defvr {User Option} ess-continued-brace-offset
-Default: 0 @*
-Extra indent for substatements that start with open-braces.
-This is in addition to @code{ess-continued-statement-offset}.
-@end defvr
-
-@defvr {User Option} ess-arg-function-offset
-Default: 2 @*
-Extra indent for arguments of function @code{foo} when it is called as
-the value of an argument to another function in
-@code{arg=foo(...)} form.  If not number, the statements are indented at
-open-parenthesis following @code{foo}.
-@end defvr
-
-@defvr {User Option} ess-expression-offset
-Default: 4 @*
-Extra indent for internal substatements of the call to
-@code{expression()} specified in
-@pindex expression()
-@example
-@code{obj <- expression(...)}
-@end example
-@noindent
-form.  If not a number, the statements are indented at open-parenthesis
-following @samp{expression}.
-@end defvr
-
-@defvr {User Option} ess-else-offset
-Default: 2 @*
-Extra indentation of the @code{else} clause with respect to the
-corresponding @code{if}.
-@end defvr
-
-@noindent
-In addition, a number of default styles are defined for you (in
-@code{ess-style-alist}):
-@vindex ess-style-alist
-
-@defvr {User Option} ess-default-style
-Default: @code{DEFAULT} @*
-The default formatting style to use in edit buffers.  The DEFAULT style
-uses the values of the above indentation variables at load-time, so that
-changing these variables in your @file{.emacs} file will affect your
-buffer defaults.  Other styles are:
-@code{GNU}, @code{BSD}, @code{K&R}, @code{CLB}, and @code{C++}.
-See @file{ess-cust.el} for the complete definitions of the styles.
-@xref{Edit buffer}, for more details.
-@end defvr
-
-@comment  node-name,  next,  previous,  up
-@node Variables controlling interaction, Editing assembly files, Indentation variables, Variables
-@appendixsubsec Variables controlling interaction with the ESS process
-
-@defvr {User Option} comint-input-ring-size
-Default: 50 @*
-Number of commands to store in the command history.
-@end defvr
-
-@defvr {User Option} ess-execute-in-process-buffer
-Default: @code{nil} @*
-If this is @code{nil}, then the @code{ess-execute-} commands (@pxref{Other})
-output to a temporary buffer.  Otherwise, the
-output goes to the ESS process.
-@end defvr
-
-@defvr {User Option} ess-eval-visibly-p
-Default: @code{nil} @*
-If non-@code{nil}, then the @code{ess-eval-} commands (@pxref{Edit
-buffer}) echo the @Sl{} commands in the process buffer by default.  In any
-case, passing a prefix argument to the eval command reverses the meaning
-of this variable.
-@end defvr
-
-@comment  node-name,  next,  previous,  up
-@node Editing assembly files,  , Variables controlling interaction, Variables
-@appendixsubsec Variables for restoring assembly mode associations
-
-@defvr {User Option} auto-mode-alist
-Association list mapping file extensions to emacs modes.
-@end defvr
-
-@cindex Assembler mode
-@vindex auto-mode-alist
-@vindex ess-restore-asm-extns
-If you edit assembler files but not S files, you may want to retain
-the default mode for the .s and .S extensions, namely assembler
-mode.  ESS provides a function, @code{ess-restore-asm-extns} that you
-can use to restore default behavior for these files.
-
-You can add the following lisp to your @file{.emacs}:
-@example
-(add-hook 'ess-mode-hook 'ess-restore-asm-extns)
-(add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
-@end example
-@noindent
-This code removes the association between .s and .S files and S
-mode.
-
-@comment  node-name,  next,  previous,  up
-@node Hooks, Keybindings, Variables, Customization
-@appendixsec Customizing ESS with hooks
-@cindex hooks
-
-ESS provides the following hooks:
-
-@defvr {Hook} ess-mode-hook
-Called every time @code{ESS} is run.
-@end defvr
-
-@defvr {Hook} ess-mode-load-hook
-Called just after the file @file{ess.el} is loaded.  Useful for setting
-up your keybindings, etc.
-@end defvr
-
-@defvr {Hook} ess-pre-run-hook
-Called before the ESS process is started (e.g., with @kbd{M-x S}).
-Good for setting up your directory.
-@c ? @pindex S
-@end defvr
-
-@defvr {Hook} ess-post-run-hook
-Called just after the ESS process starts up.  This can be used to
-evaluate ESS code at the start of a session, with
-@code{ess-eval-visibly}, say.
-@end defvr
-
-
-@defvr {Hook} inferior-ess-mode-hook
-For customizing inferior ESS mode.  Called after inferior-ess-mode is
-entered and variables have been initialized.
-@end defvr
-
-@defvr {Hook} ess-help-mode-hook
-Called every time when entering ess-help-mode (i.e., an ESS help
-buffer is generated).
-@end defvr
-
-@defvr {Hook} ess-send-input-hook
-Called just before line input is sent to the process.
-@end defvr
-
-@defvr {Hook} ess-transcript-mode-hook
-For customizing ESS transcript mode.
-@end defvr
-
-
-@node Keybindings,  , Hooks, Customization
-@appendixsec Changing the default ESS keybindings
-
-ESS provides a separate keymaps (keymap variables) for ESS process
-buffers, edit buffers and for help buffers.  The key bindings in the
-edit buffers further depend on the language and dialect in use.
-
-@defvr {Keymap} inferior-ess-mode-map
-@vindex comint-mode-map
-Keymap used in the ESS process buffer.  The bindings from
-@code{comint-mode-map} are automatically inherited.
-@end defvr
-
-@defvr {Keymap} ess-mode-map
-Keymap used within edit (ess-mode) buffers.
-@end defvr
-
-@defvr {Keymap} ess-eval-map
-Keymap used within edit buffers for sending ESS code to the running
-process.
-@end defvr
-
-@defvr {Keymap} ess-help-mode-map
-Keymap used within help buffers.  In addition, @code{ess-help-sec-map}
-is the keymap for the @samp{s} prefix key.  Keys defined in
-@code{ess-help-sec-keys-alist} are automatically inserted into this
-keymap
-@vindex ess-help-sec-keys-alist
-when ESS is loaded.
-@end defvr
-
-@defvr {Keymap} ess-transcript-mode-map
-Keymap used within ESS transcript buffers.
-@end defvr
-
+@c Stephen deleted incomplete variable list Wed 25 Aug 2004.
 
 @node Key Index, Concept Index, Customization, Top
 @unnumbered Key (Character) Index
