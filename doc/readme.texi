@@ -3,7 +3,6 @@
 @setfilename readme.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: readme.texi,v 1.31 2004/04/22 04:50:18 rmh Exp $
 
 @node General Information, , (dir), (dir)
 @comment  node-name,  next,  previous,  up
@@ -23,7 +22,7 @@ features in one package.
 
 The current development team is led by Martin Maechler since August
 2004. Former project leader A.J. (Tony) Rossini
-(@email{rossini@@biostat.washington.edu}) did the initial port to
+(@email{rossini@@blindglobe.net}) did the initial port to
 XEmacs and has been the primary coder.  Martin Maechler
 (@email{maechler@@stat.math.ethz.ch}) and Kurt Hornik
 (@email{hornik@@ci.tuwien.ac.at}) have assisted with S-PLUS, S4, R, and

@@ -119,7 +119,7 @@ Changes/New Features in 5.1.22:
 @itemize @bullet
 @item Besides info documentation, PDF and HTML
 documentation are also provided (instead of built using "make") and available
-on the web as well; see @uref{http://software.biostat.washington.edu/ess/doc,
+on the web as well; see @uref{http://ess.r-project.org/,
  ESS web page} and @uref{http://lib.stat.cmu.edu/general/ESS/doc, StatLib}
 @item Now that info documentation is available, the
 README.* files are no longer supported.  However, they
