@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.10 1999/11/11 17:34:53 ess Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.11 1999/11/16 21:45:01 ess Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -94,7 +94,7 @@
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.10 1999/11/11 17:34:53 ess Exp $")
+  "$Id: noweb-mode.el,v 1.11 1999/11/16 21:45:01 ess Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")
@@ -263,7 +263,7 @@ mouse-1, this will override your binding.")
           (define-key map "@" 'noweb-electric-@)
           (define-key map "<" 'noweb-electric-<)))
     (define-key map "\M-q" 'noweb-fill-paragraph-chunk)
-    (define-key map "\C-c\C-n" 'noweb-indent-line) ; Override TeX-normal!
+    ;;(define-key map "\C-c\C-n" 'noweb-indent-line) ; Override TeX-normal!
     (define-key map [tab] 'noweb-indent-line)
     (define-key map [return] 'noweb-newline)
     (define-key map [mouse-1] 'noweb-mouse-first-button)

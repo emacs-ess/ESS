@@ -290,4 +290,6 @@ UNFONTIFY first, if non-nil."
 		   regexp-time)
 	   'car-less-than-car))))
 
+
+(provide 'make-regexp)
 ;;; make-regexp.el ends here

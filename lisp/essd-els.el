@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 1999/11/04 17:00:06 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essd-els.el,v 1.8 1999/11/04 17:00:06 ess Exp $
+;; Modified: $Date: 1999/11/16 21:45:01 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essd-els.el,v 1.9 1999/11/16 21:45:01 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -112,7 +112,8 @@ return new alist whose car is the new pair and cdr is ALIST.
 (defun ess-select-alist-dialect ()
   "This is UGLY and NEEDS TO BE FIXED."
   (interactive)
-  (let ((dialect (read-string "Which Dialect (stata, r, sp3, sp5, xls)?")))
+  (let ((dialect (read-string
+		  "Dialect (enter one of: stata, r, sp3, sp5, xls)?")))
     (if (string= dialect "stata")
 	STA-customize-alist
       (if (string= dialect "sp3")

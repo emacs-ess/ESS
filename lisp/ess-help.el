@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/03/09 14:26:31 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: ess-help.el,v 5.4 1999/03/09 14:26:31 maechler Exp $
+;; Modified: $Date: 1999/11/16 21:45:01 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: ess-help.el,v 5.5 1999/11/16 21:45:01 ess Exp $
 
 ;; This file is part of ESS
 
@@ -136,14 +136,15 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 
 ;;; THIS WORKS!
 ;;(require 'w3)
-;;(defun ess-display-w3-help-on-object-other-window (object)
-;;  "Display R-documentation for OBJECT using W3"
-;;  (interactive "s Help on :")
-;;  (let* ((ess-help-url (concat ess-help-w3-url-prefix
-;;			   ess-help-w3-url-funs
-;;			   object
-;;			   ".html")))
-;;    (w3-fetch-other-window ess-help-url)))
+(defun ess-display-w3-help-on-object-other-window (object)
+  "Display R-documentation for OBJECT using W3"
+  (interactive "s Help on :")
+  (let* ((ess-help-url (concat ess-help-w3-url-prefix
+			       ess-help-w3-url-funs
+			       object
+			       ".html")))
+    ;;(w3-fetch-other-window ess-help-url)
+    ))
 
 
 ;;*;; Major mode definition
