@@ -1,3 +1,8 @@
+2004-05-05  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-inf.el (ess-request-a-process): Use ess-show-buffer to
+	display iESS buffer; update doc string.
+
 2004-05-02  A.J. Rossini  <rossini@u.washington.edu>
 
 	* essd-sp6.el (S+6-mode): 
