@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2000/03/02 18:28:14 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: essl-sas.el,v 5.4 2000/03/02 18:28:14 maechler Exp $
+;; Modified: $Date: 2000/03/06 10:34:30 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: essl-sas.el,v 5.5 2000/03/06 10:34:30 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -90,6 +90,7 @@ Ess-Listing mode is used solely to place an indicator on the mode line."
   "ess-transcript-mode for SAS."
   (interactive)
   (ess-transcript-mode SAS-customize-alist)
+  (use-local-map sas-mode-local-map)
   (toggle-read-only t)) ;; to protect the buffer.
 
 (defun SAS-listing-mode()
@@ -97,6 +98,7 @@ Ess-Listing mode is used solely to place an indicator on the mode line."
   (interactive)
   (fundamental-mode)
   (ess-listing-minor-mode t)
+  (use-local-map sas-mode-local-map)
   (toggle-read-only t)) ;; to protect the buffer.
 
 (fset 'sas-log-mode        'SAS-log-mode)
@@ -296,6 +298,7 @@ popup window when the SAS job is finished.")
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
+    (tab-stop-list                . ess-sas-tab-stop-alist)
     (ess-mode-syntax-table        . SAS-syntax-table)
     (font-lock-keywords-case-fold-search . t)
     (font-lock-defaults           . '(SAS-mode-font-lock-keywords)))
