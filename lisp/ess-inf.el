@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/22 18:12:45 $
-;; Version: $Revision: 1.71 $
-;; RCS: $Id: ess-inf.el,v 1.71 1997/10/22 18:12:45 rossini Exp $
+;; Modified: $Date: 1997/10/23 12:53:03 $
+;; Version: $Revision: 1.72 $
+;; RCS: $Id: ess-inf.el,v 1.72 1997/10/23 12:53:03 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -755,7 +755,7 @@ Otherwise treat \\ in NEWTEXT string as special:
 ;;; RDB 28/8/92 added optional arg eob
 ;;; AJR 971022:  text-withtabs was text.
 (defun ess-eval-visibly (text-withtabs &optional invisibly eob)
-  "Evaluate TEXT in the S process buffer as if it had been typed in.
+  "Evaluate TEXT-WITHTABS in the S process buffer as if typed in w/o tabs.
 If optional second arg INVISIBLY is non-nil, don't echo commands. If
 if is a string, just include that string. If optional third arg
 eob is non-nil go to end of S buffer after evaluation.
