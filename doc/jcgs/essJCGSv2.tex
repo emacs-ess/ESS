@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/19 17:57:19 $ - $Revision: 1.195 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/19 18:27:05 $ - $Revision: 1.196 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -279,56 +279,51 @@ interaction, which can be edited and searched while the program
 executes.
 
 \paragraph{Major and Minor Modes.}
-Emacs capabilities are extended by loading text files containing commands,
-functions written in Emacs Lisp (elisp) \citep{RChassell1999}, a dialect of Lisp
-\citep{PGraham:1996}.  Emacs commands
-can be called interactively by pressing a key sequence mapped to the command.
-% (or by typing the command name itself).
-%% rmh: The user presses a key, not a map.
-%%rmh: don't need this:
-% Not all functions are interactive, and
-% only those that are can be bound to a key sequence.
-The most important extensions to Emacs are the major or minor modes,
-the difference being the extent to which they take over the editing behavior.
+Emacs capabilities are extended by loading text or byte-compiled files
+containing commands and functions written in Emacs Lisp (elisp)
+\citep{RChassell1999}, which is a dialect of Lisp
+\citep{PGraham:1996}.  Emacs commands can be called interactively by
+pressing a key sequence mapped to the command.
+%% AJR: this is actually true for M-x long-command-not-bound-to-keys,
+%% but I'm not telling anyone this!
+The most important extensions to Emacs take the form of modes, which
+provide specific enhancements to the editing behavior.
 
-Major modes provide a customized environment consisting of mapped key sequences
-and associated commands for editing a file or performing a task such
-as reading mail or browsing disk directories.  Only one major mode can
-be active for a given buffer at any time.  Major modes for file
-editing are often determined by the file name extension, i.e. the
-characters at the end of the file name that follow a period like
+Major modes provide a customized environment consisting of mapped key
+sequences and associated commands for performing tasks such as file
+editing, reading mail, or browsing disk directories.  Only one major
+mode can be active for a given buffer at any time.  Major modes for
+file editing are often determined by the file name extension, i.e.
+the characters at the end of the file name that follow a period like
 \stexttt{txt}, \stexttt{R} or \stexttt{sas}.  Examples of this kind of
 major mode are \stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes
-know the syntax of their file type or application and % therefore can
-provide intelligent actions such as automatic indentation; navigation
-in units of characters, words, lines, sentences, paragraphs, function
-definitions, and pages; syntax-based fontification and colorization;
-and reformatting based on programmed conventions.  Major modes also
-provide the ability to perform tasks which are not specifically
-text-editing.  They can interface with system programs to provide
-command shells, read mail, and control other programs.
+can know the file type syntax and grammer and thus provide intelligent
+actions such as automatic indentation; navigation in units of
+characters, words, lines, sentences, paragraphs, function definitions,
+and pages; syntax-based fontification and colorization; and
+reformatting based on programmed conventions.  Major modes also can be
+written to intelligently control other programs such as statistics
+packages.
 
-By contrast, minor modes provide services that are useful by
-%, perhaps with a small amount of customization, for 
-themselves or in cooperation with major modes.  For
-example, \stexttt{font-lock-mode} allows Emacs to highlight, with
-fonts or colors, the syntax of a programming language whose
-characteristics are described within a major mode like
-\stexttt{ESS[S]}.  The \stexttt{overwrite-mode} determines whether
-typed characters replace the existing text or are inserted at the
-cursor.  Minor modes can emulate the
-key sequences used by another editor such as \stexttt{vi}.  In addition, they
-can be used to perform version control operations and many other tasks
-which are nearly identical across file types.
+In contrast, many minor modes can be active at once and provide
+services that cooperate across major modes.  For example,
+\stexttt{font-lock-mode} allows Emacs to highlight, with fonts or
+colors, the syntax of a programming language whose characteristics are
+described within a major mode like \stexttt{ESS[S]}.  The
+\stexttt{overwrite-mode} determines whether typed characters replace
+the existing text or are inserted at the cursor.  Minor modes can
+emulate the key sequences used by another editor such as \stexttt{vi}.
+In addition, they can be used to perform version control operations
+and many other operations which are nearly identical across file
+types.
 
 \paragraph{Network Support.}
-Emacs allows transparent access to remote files over a network.
-Transparent access means the user views, edits, and saves files on a
-remote machine exactly as if they were on the local machine.
-Mechanisms for both unsecure (\stexttt{ange-ftp} and \stexttt{EFS} use
-ftp) and secure (\stexttt{tramp} uses scp or ssh) access are
-available. %The local 
-Emacs can also monitor and control remote processes running in a shell buffer.
+Emacs allows transparent access to remote files over a network.  This
+means that the user views, edits, and saves files on a remote machine
+exactly as if they were on the local machine.  Mechanisms for both
+unsecure (\stexttt{ange-ftp} and \stexttt{EFS} use ftp) and secure
+(\stexttt{tramp} uses scp or ssh) access are available.  Emacs can
+also monitor and control remote processes running in a shell buffer.
 
 \paragraph{Editing Extensions.}
 Most programming and documentation tasks consist of editing text.
