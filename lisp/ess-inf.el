@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/09/27 09:09:50 $
-;; Version: $Revision: 5.65 $
-;; RCS: $Id: ess-inf.el,v 5.65 2001/09/27 09:09:50 maechler Exp $
+;; Modified: $Date: 2001/10/16 09:47:34 $
+;; Version: $Revision: 5.66 $
+;; RCS: $Id: ess-inf.el,v 5.66 2001/10/16 09:47:34 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -1387,7 +1387,7 @@ A negative prefix argument gets the objects for that position
 	(invert (< num-arg 0))
 	(the-command (format inferior-ess-objects-command the-posn ".*"))
 	(the-message (concat ">>> Position "
-			     the-posn
+			     (number-to-string the-posn)
 			     " ("
 			     (nth (1- the-posn) (ess-search-list))
 			     ")\n")))
@@ -1435,7 +1435,8 @@ Doesn't work for data frames."
   (ess-execute (concat "attach(\""
 		     (directory-file-name (expand-file-name dir))
 		     "\""
-		     (if posn (concat "," (prefix-numeric-value posn)))
+		     (if posn (concat "," (number-to-string
+					   (prefix-numeric-value posn))))
 		     ")") 'buffer)
   (setq ess-sp-change t))
 

@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/09/20 10:27:41 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: ess-trns.el,v 5.8 2001/09/20 10:27:41 maechler Exp $
+;; Modified: $Date: 2001/10/16 09:47:34 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: ess-trns.el,v 5.9 2001/10/16 09:47:34 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -169,8 +169,8 @@ copies the command but does not execute it, allowing you to edit it in
 the process buffer first.
 
 Type \\[ess-transcript-clean-region] to delete all outputs and prompts
-in the region, leaving only the S commands.
-o
+in the region, leaving only the S commands.  Other keybindings are:
+
 \\{ess-transcript-mode-map}"
   (interactive)
   (require 'ess-inf)

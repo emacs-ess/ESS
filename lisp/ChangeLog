@@ -1,3 +1,9 @@
+2001-10-16  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-execute-objects): use (number-to-string ..) for
+	Emacs 21 (thanks to Stephen Eglen).
+	* ess-trns.el: typo "o" fixed (S.Eglen)
+
 2001-09-27  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-multi): .in.ESS <- TRUE for S dialects
