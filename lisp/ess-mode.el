@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2003/11/06 13:25:18 $
-;; Version: $Revision: 5.22 $
-;; RCS: $Id: ess-mode.el,v 5.22 2003/11/06 13:25:18 maechler Exp $
+;; Modified: $Date: 2004/02/27 19:38:33 $
+;; Version: $Revision: 5.23 $
+;; RCS: $Id: ess-mode.el,v 5.23 2004/02/27 19:38:33 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -999,8 +999,7 @@ style variables buffer local."
 		       "Set ESS mode indentation style (default %s): "
 		       ess-default-style)
 		      (vconcat ess-styles)
-		      (function (lambda (arg) (memq arg ess-styles)))
-		      )))
+		      (function (lambda (arg) (memq arg ess-styles))))))
 		(if (string-equal "" style-string)
 		    ess-default-style
 		  (intern style-string)))))
