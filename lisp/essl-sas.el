@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/07 19:31:35 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: essl-sas.el,v 1.19 1997/11/07 19:31:35 rossini Exp $
+;; Modified: $Date: 1997/11/08 00:00:30 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: essl-sas.el,v 1.20 1997/11/08 00:00:30 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,7 +32,7 @@
 
 
 ;;;    sas-mode:  indent, run etc, SAS programs.
-;;;    Copyright (C) 1994 Tom Cook
+;;;    Copyright (C) 1994--1997 Tom Cook
 ;;;  Author:   Tom Cook
 ;;;            Dept. of Biostatistics
 ;;;            University of Wisconsin - Madison
@@ -219,13 +219,7 @@ popup window when the SAS job is finished.")
           (while (looking-at "/\\*")
             (if (not (search-forward "*/" pos t 1)) ;;(;; (point-max) 1 1)
                 (forward-char 2))
-            (skip-chars-forward "\ \t\n\f")
-            ))
-      ))
-
-
-
-
+            (skip-chars-forward "\ \t\n\f")))))
 
 (defun sas-indent-line ()
   "Indent function for SAS mode."
@@ -234,30 +228,31 @@ popup window when the SAS job is finished.")
                (pos (- (point-max) (point)))
                (case-fold-search t)
                (cur-ind (current-indentation))
-               (comment-col (sas-comment-start-col)) ;; 2/1/95 TDC
-               )
+               (comment-col (sas-comment-start-col))) ;; 2/1/95 TDC
     (save-excursion
       (cond ((progn 
                (back-to-indentation)
                (or (bobp)
                    (looking-at
                     "data[ ;]\\|proc[ ;]\\|run[ ;]\\|endsas[ ;]\\|g?options[ ;]\\|%macro[ ;]\\|%mend[ ;]")))
-;;;  Case where current statement is DATA, PROC, etc...
+	     ;;  Case where current statement is DATA, PROC, etc...
              (setq prev-end (point))
              (goto-char (point-min))
-;;;  Added 6/27/94
-;;;  May get fooled if %MACRO, %DO, etc embedded in comments
-             (setq indent (+ (* (- (sas-how-many "^[ \t]*%macro\\|[ \t]+%do"
-                                              prev-end)
-                                (sas-how-many "^[ \t]*%mend\\|%end" prev-end))
-                             sas-indent-width) comment-col)))  ;; 2/1/95 TDC
-;;;  Case where current line begins with sas-indent-ignore-comment
-            ((progn               ;; added 6/27/94  to leave "* ;" comments alone.
+	     ;;  Added 6/27/94
+	     ;;  May get fooled if %MACRO, %DO, etc embedded in comments
+             (setq indent
+		   (+ (* (- (sas-how-many "^[ \t]*%macro\\|[ \t]+%do"
+					  prev-end)
+			    (sas-how-many "^[ \t]*%mend\\|%end" prev-end))
+			 sas-indent-width) comment-col)))  ;; 2/1/95 TDC
+	    ;;  Case where current line begins with sas-indent-ignore-comment
+            ;; added 6/27/94  to leave "* ;" comments alone.
+            ((progn
                (back-to-indentation)
                (and (not (looking-at "*/"))
                     (looking-at (concat sas-indent-ignore-comment "\\|/\\*"))))
              (setq indent (current-indentation)))
-;;;  Case where current statement not DATA, PROC etc...
+	    ;;  Case where current statement not DATA, PROC etc...
             (t (beginning-of-line 1)
                (skip-chars-backward " \n\f\t")
                (if (bobp) nil
@@ -270,33 +265,39 @@ popup window when the SAS job is finished.")
                    (setq prev-end (point))
                    (looking-at "*/"));;  improved 1/31/95
                  (save-excursion                            
-                   (search-backward "*/" (point-min) 1 1)  ;; comment start is first /*
-                   (search-forward "/*" prev-end 1 1)      ;; after previous */ 
-                   (backward-char 2)                       ;; 2/1/95 TDC
+                   (search-backward "*/"
+				    (point-min) 1 1); comment start is first /*
+                   (search-forward "/*"
+				   prev-end 1 1)    ; after previous */ 
+                   (backward-char 2)                ; 2/1/95 TDC
                    (skip-chars-backward " \n\f\t")
                    (setq indent
                          (if (bobp) 0
-                           (if (looking-at ";") (sas-next-statement-indentation)
+                           (if (looking-at ";")
+			       (sas-next-statement-indentation)
                              (+ (current-indentation) sas-indent-width))))))
-                  
-                  ((save-excursion;; added 6/27/94 to leave "* ;" comments alone
-                     (progn
-                       (beginning-of-sas-statement 1 t)
-                       (and (not (looking-at "*/"))
-                            (looking-at sas-indent-ignore-comment))))
-                   (setq indent cur-ind))
-                  ((progn (beginning-of-sas-statement 1) (bobp));; added 4/13/94
-                   (setq indent sas-indent-width));; so the first line works
-                  (t
-                   (if (progn
-                         (save-excursion
-                           (beginning-of-line 1)
-                           (skip-chars-backward " \n\f\t")
-                           (if (bobp) nil (backward-char 1))
-                           (or (looking-at ";")
-                               (bobp) (backward-char 1) (looking-at "\\*/"))))
-                       (setq indent (+ (current-indentation) sas-indent-width))
-                     (setq indent (current-indentation))))))))
+
+		;; added 6/27/94 to leave "* ;" comments alone                  
+		((save-excursion
+		   (progn
+		     (beginning-of-sas-statement 1 t)
+		     (and (not (looking-at "*/"))
+			  (looking-at sas-indent-ignore-comment))))
+		 (setq indent cur-ind))
+		((progn
+		   (beginning-of-sas-statement 1)
+		   (bobp));; added 4/13/94
+		 (setq indent sas-indent-width));; so the first line works
+		(t
+		 (if (progn
+		       (save-excursion
+			 (beginning-of-line 1)
+			 (skip-chars-backward " \n\f\t")
+			 (if (bobp) nil (backward-char 1))
+			 (or (looking-at ";")
+			     (bobp) (backward-char 1) (looking-at "\\*/"))))
+		     (setq indent (+ (current-indentation) sas-indent-width))
+		   (setq indent (current-indentation))))))))
     (save-excursion 
       (let (beg end)
         (back-to-indentation)
@@ -313,18 +314,18 @@ popup window when the SAS job is finished.")
 line of statement."
   (interactive "p")
   (let (end)
-  (save-excursion
-    (if (> arg 0)
-        (while (and (> arg 0) (search-forward ";" (point-max) 1 1))
-          (setq end (point))
-          (if (bobp) nil (backward-char 1))
-          (beginning-of-sas-statement 1)
-          (forward-char 1)
-          (indent-region (point)
-			 end
-			 (+ (current-column) (1- sas-indent-width)))
-          (search-forward ";" (point-max) 1 1)
-          (setq arg (1- arg)))))))
+    (save-excursion
+      (if (> arg 0)
+	  (while (and (> arg 0) (search-forward ";" (point-max) 1 1))
+	    (setq end (point))
+	    (if (bobp) nil (backward-char 1))
+	    (beginning-of-sas-statement 1)
+	    (forward-char 1)
+	    (indent-region (point)
+			   end
+			   (+ (current-column) (1- sas-indent-width)))
+	    (search-forward ";" (point-max) 1 1)
+	    (setq arg (1- arg)))))))
 
 ;; added 9/31/94 
 (defun sas-next-statement-indentation ()
@@ -349,13 +350,12 @@ This will (hopefully) be fixed in later versions."
              (save-excursion
                (re-search-forward
                 "\\b%?then\\>[ \n\t]*\\b%?do\\>\\|\\b%?else\\>[ \n\t]*\\b%?do\\>"
-                prev-end 1 1)))  ;;; fixed 1/30/95 to avoid being fooled by
-                                            ;;;variable names starting with "do"
+                prev-end 1 1))) ; fixed 1/30/95 to avoid being fooled by
+				; variable names starting with "do"
             (+ (current-indentation) sas-indent-width)
           (if (looking-at "%?end[ ;\n]\\|%mend[ ;\n]\\|\\*/")
               (max (- (current-indentation) sas-indent-width) 0)
-            (current-indentation)))
-        ))))
+            (current-indentation)))))))
 
 ;; added 2/1/95
 (defun sas-comment-start-col ()
@@ -374,22 +374,24 @@ opening /* appears.  returns 0 otherwise."
 (defun sas-check-run-statements ()
   "Check to see that \"run\" statements are matched with proc, data statements."
   (interactive)
-  (let (pos (ok t) (eob-ok t))
+  (let (pos
+	(ok t)
+	(eob-ok t))
     (save-excursion
       (beginning-of-line)
       (while ok
         (if (re-search-forward "\\(^[ \t]*run[ ;]\\)\\|\\(^[ \t]*proc \\|^[ \t]*data[ ;]\\)" nil 1)
-              (if (match-beginning 2)
-                  (if (re-search-forward "\\(^[ \t]*run[ ;]\\)\\|\\(^[ \t]*proc \\|^[ \t]*data[ ;]\\)" nil t)
-                      (progn (setq pos (point))
-                             (setq ok (match-beginning 1)))
-                    (setq eob-ok nil pos (point-max))))
-                (setq ok nil)))
-    (setq ok (eobp)))
-  (if (and ok eob-ok) (message "Run statements match")
-    (goto-char pos)
-    (beep)
-    (message "Missing Run Statement."))))
+	    (if (match-beginning 2)
+		(if (re-search-forward "\\(^[ \t]*run[ ;]\\)\\|\\(^[ \t]*proc \\|^[ \t]*data[ ;]\\)" nil t)
+		    (progn (setq pos (point))
+			   (setq ok (match-beginning 1)))
+		  (setq eob-ok nil pos (point-max))))
+	  (setq ok nil)))
+      (setq ok (eobp)))
+    (if (and ok eob-ok) (message "Run statements match")
+      (goto-char pos)
+      (beep)
+      (message "Missing Run Statement."))))
 
 
 (defun sas-fix-life-tables (start end)
@@ -401,10 +403,10 @@ heavy censoring."
     (shell-command-on-region
      start end
      "sed \"\\?          *\\.          *\\.          *\\.    ?d\"" t)))
-    ;;(vip-goto-line 1)
-    ;;(setq ex-g-flag nil
-          ;;ex-g-variant nil)
-    ;;(vip-ex "1,$g/           \\.           \\.           \\.    /d")))
+;;(vip-goto-line 1)
+;;(setq ex-g-flag nil
+;;ex-g-variant nil)
+;;(vip-ex "1,$g/           \\.           \\.           \\.    /d")))
 
 (defun sas-fix-page-numbers (offset &optional page-num)
   "Fix number of current page in sas output files after editing.  Add
@@ -1068,8 +1070,7 @@ page ;
                         (point)
                         (save-excursion
                           (skip-chars-forward "A-Z0-9_")
-                          (point))) ".ssd01")))
-    ))
+                          (point))) ".ssd01")))))
 
 (defun sas-get-file-number ()
   "Return name of dataset on current line."
@@ -1078,8 +1079,8 @@ page ;
       (progn (forward-word -1)
              (re-search-forward "[0-9]*")
              (string-to-number
-              (buffer-substring (match-beginning 0) (match-end 0))))
-    ))
+              (buffer-substring (match-beginning 0)
+				(match-end 0))))))
 
 (defun sas-contents ()
   "Run proc contents on current file."
@@ -1087,8 +1088,7 @@ page ;
   (let ((buffer-read-only nil) (sas-get-options "linesize=70"))
     (sas-get-dataset (sas-get-filename) 2 t t (buffer-name))
     (end-of-buffer)
-    (backward-page-top-of-window 1)
-    ))
+    (backward-page-top-of-window 1)))
   
 (defun sas-print ()
   "Run proc contents on current file."
@@ -1102,10 +1102,10 @@ page ;
   (goto-char 1)
   (if arg
       (if (> arg 1)
-      (progn 
-        (re-search-forward page-delimiter (point-max) 1 (1- arg)))))
-        (skip-chars-forward " \f\n")
-        (recenter 1))
+	  (progn 
+	    (re-search-forward page-delimiter (point-max) 1 (1- arg)))))
+  (skip-chars-forward " \f\n")
+  (recenter 1))
 
 (defun forward-page-top-of-window (arg)
   "Move forward to page boundary and leave first line at top of window.
@@ -1127,10 +1127,9 @@ whose beginning matches the regexp `page-delimiter'."
   (save-excursion
     (let (min max (omin (point-min)) (omax (point-max)))
       (if (or (bolp) (beginning-of-line)
-			    (looking-at page-delimiter))
+	      (looking-at page-delimiter))
           (forward-char 1)
-        (forward-page -1)
-        )
+        (forward-page -1))
       (setq min (point))
       (forward-page 1)
       (beginning-of-line)
@@ -1179,15 +1178,13 @@ whose beginning matches the regexp `page-delimiter'."
         (set-buffer (window-buffer (posn-window (event-end event))))
         (save-excursion
           (goto-char (posn-point (event-end event)))
-          (setq page (sas-get-file-number))
-          )
+          (setq page (sas-get-file-number)))
         (sas-goto-dataset page)
-        (setq buf (buffer-name)))
-      )
+        (setq buf (buffer-name))))
     (set-buffer buf)
     (goto-char (point-min))
     (display-buffer buf)))
-  
+
 
 (defun sas-dir-goto-page (page)
   (interactive "p")
@@ -1198,12 +1195,12 @@ whose beginning matches the regexp `page-delimiter'."
 (defun sas-mark-item (&optional next)
   (interactive)
   (sas-move-to-filename)
-    (beginning-of-line)
-    (let ((buffer-read-only nil))
-      (if (re-search-forward "^\\( *[0-9]+ *\\) \\([A-Z][A-Z_0-9]*\\) "
-                             (save-excursion (end-of-line) (point)) t)
-          (replace-match "\\1<\\2>")))
-    (or next (sas-next-line 1)))
+  (beginning-of-line)
+  (let ((buffer-read-only nil))
+    (if (re-search-forward "^\\( *[0-9]+ *\\) \\([A-Z][A-Z_0-9]*\\) "
+			   (save-excursion (end-of-line) (point)) t)
+	(replace-match "\\1<\\2>")))
+  (or next (sas-next-line 1)))
 
 (defun sas-unmark-item ()
   (interactive)
@@ -1222,14 +1219,14 @@ whose beginning matches the regexp `page-delimiter'."
 
 (defun sas-create-var-string ()
   (and (string-equal "*SAS-cont" (substring (buffer-name) 0 9))
-      (let (str)
-        (goto-char (point-min))
-        (while
-            (re-search-forward "^\\( *[0-9]+ *\\)<\\([A-Z][A-Z_0-9]*\\)>"
-                               nil t)
-          (setq str (concat str " " (buffer-substring (match-beginning 2)
-                                                      (match-end 2)))))
-        str)))
+       (let (str)
+	 (goto-char (point-min))
+	 (while
+	     (re-search-forward "^\\( *[0-9]+ *\\)<\\([A-Z][A-Z_0-9]*\\)>"
+				nil t)
+	   (setq str (concat str " " (buffer-substring (match-beginning 2)
+						       (match-end 2)))))
+	 str)))
 
 
 (defun sas-revert-library ()
@@ -1238,7 +1235,7 @@ whose beginning matches the regexp `page-delimiter'."
   (if sas-directory-name
       (sas-make-library sas-directory-name t)))
 
-    
+
 (provide 'essl-sas)
 
  ; Local variables section
