@@ -1,3 +1,10 @@
+2005-01-18  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-quit-r): New function to handle killing an *R*
+	process.  (ESS asks whether you wish to save image.)
+	* ess-inf.el (ess-quit): Use ess-quit-R only for *R* processes.
+	Document the dont-cleanup argument.
+
 2005-01-18  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-complete-object-name): add S4 object slot name 
@@ -19,7 +26,7 @@
 	`ess-need-delay': Either 'nil or a number specifying the delay
 	*factor* to be used.
 
-	* ess-inf.el, essl-s.el, essd-r.el: dito
+	* ess-inf.el, essl-s.el, essd-r.el: ditto
 
 
 2005-01-01  Martin Maechler  <maechler@stat.math.ethz.ch>
