@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.9 2001/05/14 21:29:50 ess Exp $
+;; Version: $Id: ess-menu.el,v 1.10 2001/06/11 10:02:54 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -38,7 +38,7 @@
 ;;(require 'ess-site)
 (require 'ess-cust)
 (require 'imenu)
-;;(require 'speedbar)
+;;possibly below, after checking: (require 'speedbar)
 
  ;;; Function Menu (func-menu) for XEmacs:
 
@@ -260,9 +260,10 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
   (speedbar-add-supported-extension ".q"))
 
 (if (featurep 'speedbar)
-    (message "speedbar support enabled")
-    (require 'speedbar)
-    (ess-S-initialize-speedbar))
+    (progn
+      (message "enabling speedbar support")
+      (require 'speedbar)
+      (ess-S-initialize-speedbar)))
 
  ; Run load hook and provide package
 
