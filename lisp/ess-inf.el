@@ -7,12 +7,16 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/17 19:25:39 $
-;; Version: $Revision: 1.39 $
-;; RCS: $Id: ess-inf.el,v 1.39 1997/07/17 19:25:39 rossini Exp $
+;; Modified: $Date: 1997/07/17 20:34:13 $
+;; Version: $Revision: 1.40 $
+;; RCS: $Id: ess-inf.el,v 1.40 1997/07/17 20:34:13 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.40  1997/07/17 20:34:13  rossini
+;; added ess-setq-vars to inferior-ess-mode, where I should've put it,
+;; LONG AGO!
+;;
 ;; Revision 1.39  1997/07/17 19:25:39  rossini
 ;; set -> setq
 ;;
@@ -1256,6 +1260,8 @@ to continue it."
   ;;(make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults
 	'(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
+
+  (ess-setq-vars ess-customize-alist (current-buffer))
 
   ;; Completion support
   (setq comint-dynamic-complete-functions
