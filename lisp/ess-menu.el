@@ -174,19 +174,6 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
 
  ;;; Speedbar stuff.
 
-(defun S-speedbar-buttons (buffer)
-  "attempted hack."
-
-  (speedbar-with-writable)
-  ;;(speedbar-make-tag-line)
-  ;;(speedbar-insert-button)
-  )
-
-(fset 'R-speedbar-buttons 'S-speedbar-buttons)
-
-(defun S-speedbar-menu-items  ( )
-  "Need to write.")
-
 (defun ess-S-initialize-speedbar ()
   "Extend to all extensions; see initialization, and edit."
   (speedbar-add-supported-extension ".R")
@@ -194,11 +181,33 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
   (speedbar-add-supported-extension ".s")
   (speedbar-add-supported-extension ".q"))
 
-(if (featurep 'speedbar)
-    (progn
-      (message "enabling speedbar support")
-      (require 'speedbar)
-      (ess-S-initialize-speedbar)))
+;(if (featurep 'speedbar)
+;    (progn
+;      (message "enabling speedbar support")
+;      (require 'speedbar)
+;      (ess-S-initialize-speedbar)))
+
+(eval-when-compile
+  (condition-case nil
+      (progn
+        (require 'speedbar)
+        (when (featurep 'speedbar)
+          (message "enabling speedbar support")
+
+	    (defun S-speedbar-buttons (buffer)
+		"attempted hack."
+
+		;;(speedbar-make-tag-line)
+		;;(speedbar-insert-button)
+		(speedbar-with-writable))
+
+	    (fset 'R-speedbar-buttons 'S-speedbar-buttons)
+
+	    (defun S-speedbar-menu-items  ( )
+		"Need to write.")
+
+          (ess-S-initialize-speedbar)))
+    (error nil)))
 
  ; Run load hook and provide package
 
