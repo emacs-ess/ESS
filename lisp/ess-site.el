@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2003/07/15 18:11:24 $
-;; Version: $Revision: 5.97 $
-;; RCS: $Id: ess-site.el,v 5.97 2003/07/15 18:11:24 rsparapa Exp $
+;; Modified: $Date: 2003/12/19 16:23:17 $
+;; Version: $Revision: 5.98 $
+;; RCS: $Id: ess-site.el,v 5.98 2003/12/19 16:23:17 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -212,6 +212,7 @@ The extension, in a file name, is the part that follows the last `.'."
 	   ("\\.[rR]\\'"  . R-mode)
 	   ("\\.[rR]nw\\'"  . Rnw-mode)
 	   ("\\.[rR]profile\\'" . R-mode)
+	   ("NAMESPACE\\'" . R-mode)
 	   ("\\.omg\\'"		. omegahat-mode)
 	   ("\\.hat\\'"		. omegahat-mode) ;; Duncan's pref'd...
 	   ("\\.lsp\\'"		. XLS-mode)
