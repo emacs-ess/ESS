@@ -1,3 +1,27 @@
+Changes/New Features in 5.1.19:
+@itemize @bullet
+@item S+6 now supported (Tony Rossini)
+@item New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
+      Templates assist you in writing .bug and .cmd code (.cmd and .log
+      are replaced by .bmd and .bog to avoid emacs extension collisions).
+      "Substitution" parameters facilitate "automagic" generation of
+      "data...in" and "init...in" filenames, "const N=" from your data
+      file and "monitor()/stats()" commands.  Activated by pressing F12.
+@item Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
+@item You can change between PC and Unix, local and global SAS function-key 
+      definitions interactively (Rich Heiberger)
+@item C-Submit a highlighted region to SAS batch (Rodney Sparapani)
+@item New and improved SAS syntax highlighting (Rodney Sparapani)
+      To get the new functionality, set ess-sas-run-make-regexp to nil.
+      Also available in .log files via F10.
+@item Open a permanent SAS dataset for viewing via F9 (Rodney Sparapani)
+      You must have the library defined in autoexec.sas for it to work.
+@item User-friendly defaults for `sas-program', `ess-sas-batch-pre-command'
+      and `ess-sas-batch-post-command' as well Customize support for these
+      and other ESS[SAS] variables (Rodney Sparapani)
+@item `ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
+@item Emacs/XEmacs, Unix/Windows issues collectively handled in ess-emcs.el
+@end itemize
 
 Changes/New Features in 5.1.18:
 @itemize @bullet

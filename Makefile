@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.41 2001/07/23 07:58:55 maechler Exp $
+## $Id: Makefile,v 5.42 2001/08/02 16:56:46 ess Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -82,8 +82,8 @@ tar:
 	chmod u+w $(ESSVERSIONDIR)/doc/ess.info*
 	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Make*
 	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
-	for D in techrep dsc2001-rmh; do DD=$(ESSVERSIONDIR)/doc/$$D; \
-	  chmod -R u+w $$DD ; rm -rf $$DD ; done
+	#for D in techrep dsc2001-rmh; do DD=$(ESSVERSIONDIR)/doc/$$D; \
+	#  chmod -R u+w $$DD ; rm -rf $$DD ; done
 	@echo "** Creating tar file **"
 	tar hcvof ESS-$(ESSVERSION).tar $(ESSVERSIONDIR)
 	gzip ESS-$(ESSVERSION).tar

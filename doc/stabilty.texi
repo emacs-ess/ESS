@@ -1,9 +1,7 @@
 
 Versions 5.1.x are meant as a beta-level releases.  While some bugs
 are fixed from 5.0, others have been introduced, especially with
-regards to new features.  See the file Doc/TODO for details.  Bug
+regards to new features.  See the file doc/TODO for details.  Bug
 reports are solicited; see the BUGS section below.  Patches or
 suggested coding fixes with bug reports are much appreciated!
 
-Some versions tend to be more stable than others, and for new support
-(Microsoft support), 5.1.16 is the current favorite.

@@ -3,12 +3,13 @@ have Emacs 19.29, you @emph{may} get it to work after unpacking @file{19.29.tar.
 XEmacs 19.14 or later.  It has been most thoroughly tested with:
 
 @itemize @bullet
-@item S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1
+@item S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
 @item R versions >=0.49
 @item XLispStat versions >=3.50
 @item S4
 @item SAS
 @item Stata >=6.0
+@item BUGS 0.5 or 0.6
 @end itemize
 
 on the following platforms
@@ -17,20 +18,16 @@ on the following platforms
 @item SunOS (all)
 @item Solaris (all)
 @item SGI (all)
-@item Linux (S-PLUS 5.0, 5.1,  R, XLispStat, S4, Stata 6.0)
+@item Linux (S-PLUS 5.0, 5.1, R, XLispStat, S4, Stata 6.0)
 @item Microsoft Windows 95/98/NT (SPLUS 4.5 and 2000)
 @end itemize
 
-with the following Emacsen:
+with the following versions of emacs
 
 @itemize @bullet
-@item Emacs 19.29, 19.34, 20.3, 20.4, 20.7, XEmacs 19.16, 
-  XEmacs 20.4, XEmacs 21.0 
-@item Emacs 19.28 with SAS (with additional modifications)
+@item Emacs 19.34, 20.3, 20.4, 20.5, 20.6, 20.7
+@item XEmacs 19.16, 20.0, 20.4, 21.0, 21.1.13, 21.4.x 
+@item Emacs 19.28, 19.29 with SAS (with additional modifications)
 @item NTEmacs 20.3.1 with S-PLUS 4.5.
 @end itemize
 
-It may need some work with other configurations.  We include
-configuration suggestions for emacs 19.28 in Doc/README-19.28.
-These are the changes we made in order to use ESS with SAS on a Digital
-Alpha running Emacs 19.28.

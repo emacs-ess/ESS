@@ -1,1 +1,14 @@
-To be added.
+You need a cvs client (that works with your firewall, if any) 
+
+the repository name is  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src
+
+using a command-line cvs client (i.e. on Unix or DOS), first type:
+
+   cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login
+
+password is anoncvs
+
+then type:
+
+   cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess
+

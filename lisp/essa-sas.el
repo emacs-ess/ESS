@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/08/01 20:48:19 $
-;; Version: $Revision: 1.34 $
-;; RCS: $Id: essa-sas.el,v 1.34 2001/08/01 20:48:19 ess Exp $
+;; Modified: $Date: 2001/08/02 16:56:46 $
+;; Version: $Revision: 1.35 $
+;; RCS: $Id: essa-sas.el,v 1.35 2001/08/02 16:56:46 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -77,7 +77,6 @@
     :type  'string
 )
 
-
 (defvar ess-sas-submit-method 
   (if (and (eq system-type 'windows-nt)
 	   (not (w32-shell-dos-semantics)))
@@ -126,6 +125,13 @@ in ess-site.el or in .emacs.")
   "List of tab stop positions used by `tab-to-tab-stop' in `SAS-mode'.")
 
 
+(defcustom ess-sas-temp-root "ess-temp"
+    "*The root of the temporary .sas file for `ess-sas-submit-region'."
+    :group 'ess-sas
+    :type  'string
+)
+
+
 ;;; Section 2:  Function Definitions
 
 (defun ess-add-ess-process ()
@@ -163,7 +169,7 @@ or comint buffer on the local computer."
     (interactive)
     (ess-sas-file "log" 'revert)
     (goto-char (point-max))
-    (insert-file-contents "ess-temp.log")
+    (insert-file-contents (concat ess-sas-temp-root ".log"))
     (save-buffer))
 
 (defun ess-sas-append-lst ()
@@ -171,7 +177,7 @@ or comint buffer on the local computer."
     (interactive)
     (ess-sas-file "lst" 'revert)
     (goto-char (point-max))
-    (insert-file-contents "ess-temp.lst")
+    (insert-file-contents (concat ess-sas-temp-root ".lst"))
     (save-buffer))
 
 (defun ess-sas-backward-delete-tab ()
@@ -389,13 +395,15 @@ their files from the remote computer.  Local copies of the .sas .lst
     "Write region to temporary file, and submit to SAS."
     (interactive)
     (ess-sas-file-path)
-    (write-region (region-beginning) (region-end) "ess-temp.sas")
+    (write-region (region-beginning) (region-end) 
+	(concat ess-sas-temp-root ".sas"))
 
     (save-excursion 
       (if (get-buffer "*shell*") (set-buffer "*shell*")
           (shell))
 
-    (if (and (w32-shell-dos-semantics) (string-equal ":" (substring ess-sas-file-path 1 2)))
+    (if (and (w32-shell-dos-semantics)
+	(string-equal ":" (substring ess-sas-file-path 1 2)))
 	(progn
 		(insert (substring ess-sas-file-path 0 2))
 		(comint-send-input)
@@ -406,7 +414,7 @@ their files from the remote computer.  Local copies of the .sas .lst
     (comint-send-input)
 
     (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
-          " ess-temp " ess-sas-submit-post-command))
+          " " ess-sas-temp-root " " ess-sas-submit-post-command))
     (comint-send-input)
     )
 )
