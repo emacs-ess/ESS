@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1998/08/26 12:18:54 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: essl-s.el,v 5.5 1998/08/26 12:18:54 maechler Exp $
+;; Modified: $Date: 1998/09/07 16:27:06 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: essl-s.el,v 5.6 1998/09/07 16:27:06 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -363,7 +363,7 @@ Returns nil if line starts inside a string, t if in a comment."
 	 (mon (substring time 4 7))
 	 (day (substring time 8 10))
 	 (HM  (if clock (substring time 11 16)))
-	 (year (substring time 22 24)))
+	 (year (substring time 20 24))); 4 digit year!
     (concat day " " mon " " year
 	    (if clock (concat ", " HM)))))
 
