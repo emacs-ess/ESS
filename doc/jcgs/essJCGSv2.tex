@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/04 20:21:32 $ - $Revision: 1.98 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/04 21:48:19 $ - $Revision: 1.99 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -312,7 +312,7 @@ By contrast, minor-modes provide services that are useful, perhaps
 after a minor amount of customization, across a variety of major
 modes.  For example, the minor-mode \stexttt{font-lock-mode} allows
 Emacs to highlight, with fonts or colors, the syntax of a programming
-language whose characteristics are described by a major-mode like ESS.
+language whose characteristics are described by a major-mode like ESS{}.
 \stexttt{overwrite-mode}, usually mapped to the \ssf{Insert} key,
 determines whether typed characters replace the existing text or push
 it to the right.  Minor modes can be used to change the key bindings,
@@ -665,7 +665,8 @@ ESS does this in several ways:%.
 %  are sending over a few lines at a time, we find it very easy to
 %  localize the probable location of the error.  With \SAS\ log files,
   %we 
-  automatically placing the cursor on the first \stexttt{ERROR}, for example in \SAS and S. %in =SAS and 
+  automatically placing the cursor on the first \stexttt{ERROR},
+  for example in \SAS\ and S. %in =SAS and 
 
 % THIS REPEATS #2 above.
 %\item An entire buffer, or file, of code can be sent to the package as
@@ -688,7 +689,7 @@ part or all of the entered commands.  It permits editing and
 re-evaluating the commands directly from the saved transcript.  This
 is useful both for demonstration of techniques and for reconstruction
 and auditing of data analyses.  Special functions within ESS can
-``clean'' S languages transcripts by finding all input lines and
+``clean'' S language transcripts by finding all input lines and
 isolating them into an S language source file.  Transcript cleaning
 simplifies the use of an exploratory interactive analysis session for
 the construction of an idealized source file, perhaps to be used
@@ -803,7 +804,7 @@ single interface for a variety of statistical computing tasks.  ESS is
 optimized for statistical programming and interactive data analysis.
 Statistical programming is the writing of computer programs for data
 analysis and processing.  These programs might be written in a
-computer language that requires as a compiler such as C or \Fortran.
+computer language that requires a compiler, such as C or \Fortran.
 But, more likely, they are written in a computer language that only
 requires an interpreter such as R, \SAS\ or \XLispStat.
 %% An interpreted language is executed by an interpreter, but a
@@ -912,7 +913,7 @@ machine.  If the X11 Windowing system is running on the local machine,
 it is even possible to bring up visual displays and graphics from
 remote Unix systems onto a local Microsoft Windows display.
 
-With \Splus\ on Unix and with R on all platforms the ESS buffer in
+With \Splus\ on Unix, and with R on all platforms, the ESS buffer in
 \stexttt{iESS} mode talks directly to the computing engine, the
 program that does the statistical work.  Printed results appear in the
 \stexttt{iESS} buffer and interactive graphics appear in secondary
@@ -1156,7 +1157,11 @@ of developers, with 5 total projects.  ESS descended from and combined
 
 \begin{figure}[tbp]
   \centering
-  \includegraphics[height=3in,width=5.5in]{timeline.eps}
+\ifdraft
+  \emptyfig
+\else
+  \includegraphics[height=3in,width=5.5in]{timeline} %% please use the eps.gz
+\fi
   \caption{The history and timeline of ESS and its ancestors}
   \label{fig:history}
 \end{figure}
