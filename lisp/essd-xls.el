@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/17 18:30:58 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: essd-xls.el,v 1.15 1997/07/17 18:30:58 rossini Exp $
+;; Modified: $Date: 1997/07/17 18:31:21 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: essd-xls.el,v 1.16 1997/07/17 18:31:21 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.16  1997/07/17 18:31:21  rossini
+;;: stuff
+;;:
 ;;: Revision 1.15  1997/07/17 18:30:58  rossini
 ;;: XLS, not R!
 ;;:
@@ -101,9 +104,11 @@ New way to do it."
   (setq ess-customize-alist XLS-customize-alist) ; setq or setq-default?
   ;;(ess-set-vars-default ess-customize-alist (current-buffer))
   ;; debug, only
-  (ess-write-to-dribble-buffer (format "(XLS): ess-proc-prefix=%s , buf=%s"
-				       ess-proc-prefix
-				       (current-buffer)))
+  (ess-write-to-dribble-buffer
+   (format "(XLS): ess-proc-prefix=%s , buf=%s\n"
+	   ess-proc-prefix
+	   (current-buffer)))
+
   ;; now run...
   (inferior-ess))
 
