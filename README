@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.21 $)
+($Revision: 1.22 $)
 
 ESS VERSION 5.0
 ---------------
@@ -156,6 +156,7 @@ The HTML version of the documentation can be found at:
 
   instead of editing the Makefile.
 
+
 * Add the line
 
 	(load "/PATH/ess-site")
@@ -164,8 +165,37 @@ The HTML version of the documentation can be found at:
   installation).  Replace `/PATH' above with the value of
   ess-lisp-directory as defined in ess-site.el.
 
+  Alternatively, if ess-site.el is in your current Lisp path, you can
+  do:
+
+	(require 'ess-site)
+
+  to configure Emacs for ESS.
+
+* (OPTIONAL) If you are running S-PLUS or R, you might consider
+  installing the database files.  For this, start up Emacs (or
+  XEmacs) in the directory containing ESS.  Now:
+
+       M-x S+3
+  (get running.  once you have reached the SPLUS 3.x prompt, do:)
+       M-x ess-create-object-name-db
+  (this will create the file: ess-s+3-namedb.el; if it isn't in the
+   ESS directory, move it there).
+
+  Then, completions will be autoloaded and will not be regenerated for 
+  every session.
+
+  For R:
+      M-x R
+  (get running.  once you have reached the R prompt, do:)
+      M-x ess-create-object-name-db
+  (this will create the file: ess-s+3-namedb.el; if it isn't in the
+   ESS directory, move it there).
+   
+
 * For more information on using ESS in your daily work, see the files
   README.S, README.SAS, and README.XLispStat.  
+
 
   For the impatient, the quick version of usage follows:
 
