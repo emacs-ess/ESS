@@ -1,4 +1,3 @@
-## $Id: Makefile,v 5.84 2004/07/26 15:58:54 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf

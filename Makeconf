@@ -1,14 +1,13 @@
 ####======= Common Declarations for *all* ESS -*- Makefile -*- s ==========
-###
-### File: $Revision: 5.22 $.
-###
 
-PREFIX=/usr/local
+# Specify either PREFIX or DESTDIR, whatever suits you
+DESTDIR=/usr/local
+PREFIX=$(DESTDIR)
 
-# no csh please
+# Bourne shell or XPG4 compliant shell
 SHELL = /bin/sh
 
-## emacs distribution that you are installing ESS for.
+## emacs variant that you are installing ESS for.
 ##
 ## emacs
 EMACS=emacs
@@ -28,7 +27,6 @@ XEMACSDIR=$(PREFIX)/lib/xemacs
 ## EMACSLOGCVS=-f vc-update-change-log
 
 # Destination of your info files
-# defaults to the info directory relative to the doc directory
 INFODIR =$(PREFIX)/info
 
 # Destination of your byte-compiled elisp (.elc) files
@@ -79,7 +77,6 @@ ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
 
 SVN_URL = https://svn.R-project.org/ESS
 
-#MM UPLOAD_SITE = cvs.analytics.washington.edu
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess
 
 
