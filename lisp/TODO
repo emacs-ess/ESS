@@ -1,0 +1,17 @@
+ -*- mode: text -*-
+
+Solve now:
+
+1. Get ess-menu to "do the right thing" on startup.
+
+
+Solve later:
+
+1. "ess-(new|change)-buffer-this-process" possible to detach processes
+   from buffers.  (for sending output from a single buffer to many.
+   This could be done by running a 2-stage filter (the "real" as the
+   real, and the others as copies with append.
+2. look at semantic for rewriting.
+3. inferior-ess rewrite.
+4. 
+
