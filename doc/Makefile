@@ -1,9 +1,9 @@
 ### Makefile - for DOCUMENTATION (./doc) of ESS distribution.
 ###
-### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+### Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.39 $.
+### File: $Revision: 1.40 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
