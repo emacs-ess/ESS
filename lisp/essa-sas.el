@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/11 14:50:48 $
-;; Version: $Revision: 1.101 $
-;; RCS: $Id: essa-sas.el,v 1.101 2002/07/11 14:50:48 rsparapa Exp $
+;; Modified: $Date: 2002/07/11 17:33:39 $
+;; Version: $Revision: 1.102 $
+;; RCS: $Id: essa-sas.el,v 1.102 2002/07/11 17:33:39 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -420,6 +420,22 @@ on the way."
 	    ess-sas-submit-post-command))
     (comint-send-input)
 )))))
+
+(defun ess-search-except (regexp except &optional backward)
+"Search for a regexp, store as match 1, and ignore strings that match exceptions."
+    (interactive)
+    
+    (let ((continue t))
+
+    (if backward (while continue
+	(if (search-backward-regexp regexp nil t) (setq continue (string-match except (match-string 1)))
+	    (setq continue nil))
+    )
+    (while continue
+	(if (search-forward-regexp regexp nil t) (setq continue (string-match except (match-string 1)))
+	    (setq continue nil))
+    ))
+))
 
 (defun ess-sas-graph-view ()
   "Open a GSASFILE for viewing."
