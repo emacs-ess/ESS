@@ -121,7 +121,7 @@ return new alist whose car is the new pair and cdr is ALIST.
   (interactive)
   (let* ((dialects '("arc" "vst" "omg" "s3"  "s4" "stata" "r" "sp3" "sp4"
 		    "sqpe4" "sp5" "sp6" "sqpe6" "xls" "sas"))
-	 (dialect (completing-read "Dialect (press TAB for choices)"
+	 (dialect (completing-read "Dialect (press TAB for choices): "
 				   (mapcar '(lambda (x) (cons x 1)) dialects)
 				   nil t)))
     (cond
@@ -170,9 +170,12 @@ the process to `ess-process-name-alist' and to make it the
 telnet buffer connected to another computer or in a shell or comint
 buffer on the local computer."
   (interactive)
-  (setq ess-current-process-name
-	(process-name (get-buffer-process (buffer-name))))
-  (add-to-list 'ess-process-name-list (list ess-current-process-name)))
+  (let ((proc (get-buffer-process (buffer-name))))
+    (if (not proc)
+	(error "No process is associated with this buffer.")
+      (setq ess-current-process-name (process-name proc))
+      (add-to-list 'ess-process-name-list
+		   (list ess-current-process-name)))))
 
 
 ;;; ess-remote is constructed by looking at ess-add-process and
