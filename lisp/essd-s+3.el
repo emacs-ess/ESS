@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/01 21:47:52 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: essd-s+3.el,v 1.23 1997/09/01 21:47:52 rossini Exp $
+;; Modified: $Date: 1997/09/02 14:48:22 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: essd-s+3.el,v 1.24 1997/09/02 14:48:22 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -37,7 +37,7 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process")
 
-;;; Definitions for Splus
+;;; Changes from S to Splus 3.x.  (standard S3 should be in essl-s!).
 
 (defconst ess-help-S+3-sec-keys-alist
   '((?a . "ARGUMENTS:")
@@ -74,8 +74,10 @@
     (ess-help-sec-keys-alist       . ess-help-S+3-sec-keys-alist)
     (ess-loop-timeout              . 100000 )
     (ess-object-name-db-file       . "ess-s+3-namedb.el" )
-    (ess-retr-lastvalue-command    . ".Last.value <- get(\"smode.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command    . "assign(\"smode.lvsave\",.Last.value,frame=0)\n")
+    (ess-retr-lastvalue-command
+     . ".Last.value <- get(\"smode.lvsave\",frame=0)\n")
+    (ess-save-lastvalue-command
+     . "assign(\"smode.lvsave\",.Last.value,frame=0)\n")
     (inferior-ess-program          . inferior-S+3-program-name)
     (inferior-ess-objects-command  . "objects(%d)")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
