@@ -1,10 +1,14 @@
+;;;; ATTN:  THESE FUNCTIONS HAVE BEEN INCORPORATED INTO ess-emcs.el
+;;;; PLEASE GET THEM FROM THERE ALONG WITH THE REST OF THE
+;;;; EMACS/XEMACS VARIANT ISSUES
+
 ;;;; essnt204.el -- NTemacs functions introduced in NTemacs 20.4
 ;;;; that are needed for essa-sas.el to automatically select the correct
 ;;;; `ess-sas-submit-method'.  Also, necessary for essl-bug.el.
 
-;; Modified: $Date: 2001/04/26 16:38:46 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essnt204.el,v 5.3 2001/04/26 16:38:46 ess Exp $
+;; Modified: $Date: 2001/06/13 20:00:50 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essnt204.el,v 5.4 2001/06/13 20:00:50 ess Exp $
 
 ;; These definitions are for Emacs versions < 20.4 or XEmacs
 ;; These are taken verbatim from the file emacs-20.6/lisp/w32-fns.el
