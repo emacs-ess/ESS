@@ -1,3 +1,4 @@
+dnl FROM WMPerry, Emacs/W3.
 dnl
 dnl Determine the emacs version we are running.
 dnl Automatically substitutes @EMACS_VERSION@ with this number.

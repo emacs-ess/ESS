@@ -1,4 +1,5 @@
 
+
     Richard> 125 rassoc is new
     Richard>       (setq temp-ess-dialect (cdr (rassoc ess-dialect
     Richard>       ess-customize-alist)))) 

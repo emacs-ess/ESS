@@ -1,5 +1,8 @@
 -*- text -*-
 
+The purpose of this file is to describe how to add new dialects and
+languages to ESS.
+ 
 The code is divided into 4 types of functionality.
 
 ess-*.el   : described the underlying mechansim

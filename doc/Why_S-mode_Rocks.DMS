@@ -1,14 +1,3 @@
-From VM Mon Feb  5 16:45:05 1996
-X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
-	["1653" "Mon" "5" "February" "1996" "10:03:48" "GMT" "David M. Smith" "D.M.Smith@lancs.ac.uk" nil "39" "Emacs S-mode" "^From:" nil nil "2" nil nil nil nil]
-	nil)
-Content-Length: 1653
-Received: from utstat.toronto.edu (utstat.toronto.edu [128.100.73.1]) by milo.math.sc.edu (8.6.12/8.6.12) with SMTP id QAA09859 for <rossini@stat.scarolina.edu>; Mon, 5 Feb 1996 16:49:34 -0500
-Received: by utstat; Mon Feb  5 05:04 EST 1996
-Received: from mathssun5.lancs.ac.uk by milou.comp.lancs.ac.uk; Mon, 5 Feb 1996 10:01:58 GMT
-Message-Id: <4170.9602051003@mathssun5.lancs.ac.uk>
-Received: by mathssun5.lancs.ac.uk; Mon, 5 Feb 96 10:03:48 GMT
-Reply-To: D.M.Smith@lancs.ac.uk
 From: David M Smith <D.M.Smith@lancs.ac.uk>
 To: s-news@utstat.toronto.edu
 Subject: Emacs S-mode
