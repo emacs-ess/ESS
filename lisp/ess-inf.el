@@ -1680,20 +1680,18 @@ to the command if BUFF is not given.)"
 
 ;;;*;;; Quitting
 
-(defun ess-quit (dont-cleanup)
-  "Issue an exiting command to the inferior process.
-By default, you will be asked if you wish to delete all buffers
-associated with the current buffer; if you specify a prefix
-arg (with C-u), this step will be omitted."
+(defun ess-quit ()
+  "Issue an exiting command to the inferior process, additionally
+also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
   (interactive "P")
   (if (string-equal ess-dialect "R")
-      (ess-quit-r dont-cleanup)
+      (ess-quit-r)
     (ess-force-buffer-current "Process to quit: ")
     (ess-make-buffer-current)
     (let ((sprocess (get-ess-process ess-current-process-name)))
       (if (not sprocess) (error "No ESS process running."))
       (when (yes-or-no-p (format "Really quit ESS process %s? " sprocess))
-	(if dont-cleanup nil (ess-cleanup))
+	(ess-cleanup)
 	(goto-char (marker-position (process-mark sprocess)))
 	(insert inferior-ess-exit-command)
 	(process-send-string sprocess inferior-ess-exit-command)
@@ -1701,22 +1699,22 @@ arg (with C-u), this step will be omitted."
 	;;(rename-buffer (concat (buffer-name) "-exited") t)
 	))))
 
-(defun ess-quit-r (dont-cleanup)
+(defun ess-quit-r ()
   "Issue an exiting command to an inferior R process, and optionally clean up.
-This version is for killing *R* processes; it asks the extra question 
+This version is for killing *R* processes; it asks the extra question
 regarding whether the workspace image should be saved."
   (ess-force-buffer-current "Process to quit: ")
   (ess-make-buffer-current)
   (let (response cmd
 		 (sprocess (get-ess-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running."))
-    (setq response (completing-read "Save workspace image? " 
+    (setq response (completing-read "Save workspace image? "
 				    '( ( "yes".1) ("no" . 1) ("cancel" . 1))
 				    nil t))
     (if (string-equal response "")
 	(setq response "no"))		;default = do not save workspace.
     (unless (string-equal response "cancel")
-      (if dont-cleanup nil (ess-cleanup))
+      (ess-cleanup)
       (setq cmd (format "q(\"%s\")\n" response))
       (goto-char (marker-position (process-mark sprocess)))
       (process-send-string sprocess cmd)
@@ -1737,14 +1735,15 @@ If you want to finish your session, use \\[ess-quit] instead."
     (message "Good move.")))
 
 (defun ess-cleanup ()
-  "Kill (or offer to kill) all buffers associated with this ESS process.
+  "Possibly kill or offer to kill, depending on the value of
+`ess-S-quit-kill-buffers-p', all buffers associated with this ESS process.
 Leaves you in the ESS process buffer.  It's a good idea to run this
 before you quit.  It is run automatically by \\[ess-quit]."
   (interactive)
   (let ((the-procname (or (ess-make-buffer-current) ess-local-process-name)))
     (if the-procname nil
       (error "I don't know which ESS process to clean up after!"))
-    (if 
+    (if
 	(or (eq ess-S-quit-kill-buffers-p t)
 	    (and
 	     (eq ess-S-quit-kill-buffers-p 'ask)
