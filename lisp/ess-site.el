@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/15 09:43:38 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: ess-site.el,v 1.9 1997/06/15 09:43:38 rossini Exp $
+;; Modified: $Date: 1997/06/17 02:10:47 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: ess-site.el,v 1.10 1997/06/17 02:10:47 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.10  1997/06/17 02:10:47  rossini
+;;: ess-*-mode -> ess-mode.
+;;:
 ;;: Revision 1.9  1997/06/15 09:43:38  rossini
 ;;: FILES, NOT FILE...
 ;;:
@@ -145,15 +148,19 @@
 ;;; is to contain the file ess-site.elc.  This is probably the current
 ;;; directory, or the value of LISPDIR if it was set in the Makefile.
 
-(defvar ess-lisp-directory
-  (directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
-;; Or replace directly with:
-;(directory-file-name "/usr/local/share/emacs/site-lisp/ess-mode"))
-;; Not needed in XEmacs (if in the site-lisp directory, but might as
-;; well add):
-;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
+(eval-and-compile
 
-(add-to-list 'load-path ess-lisp-directory)
+  (defvar ess-lisp-directory
+    ;;  (directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
+    (directory-file-name "/stat2/faculty/rossini/S-mode"))
+
+  ;; Or replace directly with:
+  ;;(directory-file-name "/usr/local/share/emacs/site-lisp/ess-mode"))
+  ;; Not needed in XEmacs (if in the site-lisp directory, but might as
+  ;; well add):
+  ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
+
+  (add-to-list 'load-path ess-lisp-directory))
 
 ;;*;; Requires : can't require, until path is set.
 (require 'ess)
@@ -167,11 +174,11 @@
 (if (assoc "\\.q$" auto-mode-alist) nil
   (setq auto-mode-alist
 	(append
-	 '(("\\.q$" . ess-S-mode)
-	   ("\\.s$"  . ess-S-mode) ;; Comment for default asm-mode
-	   ("\\.S$"  . ess-S-mode)
-	   ("\\.R$"  . ess-R-mode)
-	   ("\\.St$" . ess-S-transcript-mode))
+	 '(("\\.q$" . ess-mode)
+	   ("\\.s$"  . ess-mode) ;; Comment for default asm-mode
+	   ("\\.S$"  . ess-mode)
+	   ("\\.R$"  . ess-mode)
+	   ("\\.St$" . ess-transcript-mode))
 	 auto-mode-alist)))
 
 
