@@ -1,6 +1,6 @@
 -*- view -*-
 
-$Revision: 1.14 $
+$Revision: 4.0 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1059,7 +1059,7 @@ NOTE: Not all of these are clean OR are even consistent.
 	   (add-info-path "/disk05/local/teTeX/info/")   ; stat dept
 	   (add-info-path "/disk05/local/emacs/S-mode/") ; stat dept
 	   (add-info-path "/disk05/local/info/")         ; stat dept
-	;;
+	;; 
 
 	Here is my 5 line dir file from S-mode 4.8.  It needs to be
 	updated to 5.0.  The first line is blank. I think the blank
