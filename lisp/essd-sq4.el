@@ -1,14 +1,14 @@
 ;;; essd-sq4.el --- S-PLUS 4.x customization for Sqpe in an emacs buffer
 ;;; Richard M. Heiberger, December 1998
 
-;; Copyright (C) 1997 A. J. Rossini
+;; Copyright (C) 1998, Richard M. Heiberger
 
-;; Author: A.J. Rossini <rossini@stat.sc.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/12/11 00:57:59 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-sq4.el,v 1.1 1998/12/11 00:57:59 rossini Exp $
+;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Created: December 1998
+;; Modified: $Date: 1998/12/11 19:45:07 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-sq4.el,v 1.2 1998/12/11 19:45:07 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
