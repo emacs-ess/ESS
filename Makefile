@@ -1,12 +1,10 @@
-## $Id: Makefile,v 5.16 1999/03/31 22:07:36 rossini Exp $
+## $Id: Makefile,v 5.17 1999/04/01 00:09:57 rossini Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
 ESSVERSION=5.1.6
-ESSVERSIONMSDOS=5_1_6
-ESSVERSIONTAG=ess-$(ESSVERSIONMSDOS)
-
 ESSVERSIONDIR=ess-$(ESSVERSION)
+ESSVERSIONTAG=ess-5_1_6
 
 Subdirs = lisp doc
 
@@ -20,16 +18,9 @@ INTRO.DEPENDS=doc/credits.texi doc/inst_cvs.texi \
 all install clean distclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@ ; cd .. ; done
 
-README : doc/readme.texi $(INTRO.DEPENDS)
-	cd doc ; makeinfo --no-validate --no-headers --no-split -o - readme.texi \
-	| perl -pe 'last if /^Concept Index/;' > ../README
-
-ANNOUNCE: doc/announc.texi $(INTRO.DEPENDS) 
-	cd doc; makeinfo --no-validate --no-headers --no-split -o - announc.texi \
-	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
-
 ESS:
 	cd lisp; make all
+
 docs:
 	cd doc; make all
 
@@ -39,12 +30,24 @@ docs:
 ## Instead of doing a checkout and exclude, we could do an export,
 ## which ought to morally be cleaner.
 
-dist: 
+README : doc/readme.texi $(INTRO.DEPENDS)
+	cd doc ; makeinfo --no-validate --no-headers --no-split -o - readme.texi \
+	| perl -pe 'last if /^Concept Index/;' > ../README
+
+ANNOUNCE: doc/announc.texi $(INTRO.DEPENDS) 
+	cd doc; makeinfo --no-validate --no-headers --no-split -o - announc.texi \
+	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
+
+dist: README ANNOUNCE
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSVERSIONDIR)"
 	@echo "** (must set CVSROOT, etc, prior to checkout for security)"
 	@echo "**********************************************************"
+	@echo "** Committing README and ANNOUNCE **"
+	cvs commit -m "Updating README and ANNOUNCE for new version"  README ANNOUNCE
+	@echo "** Tagging the release **"
+	cvs tag -R $(ESSVERSIONTAG)
 	@echo "** Exporting Files **"
 	cvs export -D today ess
 	@echo "** Creating and placing tar file **"
@@ -58,16 +61,10 @@ dist:
 	gzip ESS-$(ESSVERSION).tar
 	scp ESS-$(ESSVERSION).tar.gz ess@franz.stat.wisc.edu:~/public_html
 	@echo "** Creating and placing zip file **"
-	ln -s ess ESS_$(ESSVERSIONMSDOS)
-	zip -r ESS_$(ESSVERSION).zip ESS_$(ESSVERSIONMSDOS)
-	scp ESS_$(ESSVERSIONMSDOS).zip ess@franz.stat.wisc.edu:~/public_html
+	zip -r ESS-$(ESSVERSION).zip $(ESSVERSIONDIR)
+	scp ESS-$(ESSVERSION).zip ess@franz.stat.wisc.edu:~/public_html
 	@echo "** Cleaning up **"
-	rm -rf ess $(ESSVERSIONDIR) ESS_$(ESSVERSIONMSDOS)
-
-
-#	-chmod a+w $(ESSVERSIONDIR)/lisp/*.el
-#	-chmod a+w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
-#	-chmod a+w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
+	rm -rf ess $(ESSVERSIONDIR)
 
 
 ## PA's version, infinitely interesting...
@@ -123,26 +120,3 @@ dist:
 #        cvs rdiff -r release_`echo $(OLD) | sed -e 's/[.]/_/g'` \
 #                  -r release_`echo $(TAG) | sed -e 's/[.]/_/g'` auctex \
 #                > $(FTPDIR)/auctex-$(OLD)-to-$(TAG).patch ;  exit 0
-
-## Version for 5.0.
-
-##dist:
-##	@echo "**********************************************************"
-##	@echo "** Making distribution of ESS for release $(VERSION)"
-##	@echo "**********************************************************"
-##	chmod a-w $(VERSIONDIR)/*.el
-##	chmod a-w $(VERSIONDIR)/ChangeLog $(VERSIONDIR)/Doc/*
-##	chmod a-w $(VERSIONDIR)/ess.info* $(VERSIONDIR)/ess.dvi
-##	chmod u+w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
-##	chmod ugo+rx $(VERSIONDIR)/ess-sas-sh-command
-##	chmod ugo+x $(DISTSCRIPTS)
-##	tar hcovf $(VERSIONDIR).tar $(DISTFILES)
-##	gzip $(VERSIONDIR).tar
-##	cp $(VERSIONDIR).tar.gz $(MYWWWDIR)
-##	cp $(VERSIONDIR).tar.gz $(MYFTPDIR)
-##	chmod u+w $(VERSIONDIR)/README
-##	cp $(VERSIONDIR)/README $(MYWWWDIR)/$(VERSIONDIR)-README
-##	cp $(VERSIONDIR)/README $(MYFTPDIR)/$(VERSIONDIR)-README
-##	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
-##	chmod u-w $(VERSIONDIR)/README
-##	chmod u+w $(VERSIONDIR)/Doc
