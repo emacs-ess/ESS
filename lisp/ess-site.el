@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/15 09:09:30 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: ess-site.el,v 1.7 1997/06/15 09:09:30 rossini Exp $
+;; Modified: $Date: 1997/06/15 09:23:36 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: ess-site.el,v 1.8 1997/06/15 09:23:36 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.8  1997/06/15 09:23:36  rossini
+;;: fixed docs, (assemb vs S mode) ala RH.
+;;:
 ;;: Revision 1.7  1997/06/15 09:09:30  rossini
 ;;: added ess-keep-dump-files example. (thanks RH)
 ;;:
@@ -155,7 +158,7 @@
 ;;; (1.2) Files ending in .q and .S are considered to be S source files
 ;;; Files ending in .St are considered to be S transcript files
 ;;; NB: in standard Emacs, files ending in .s are assembler files.  If you
-;;; want to use such files as S source files, uncomment the appropriate
+;;; want to use assembler, comment the appropriate
 ;;; line below.
 
 (if (assoc "\\.q$" auto-mode-alist) nil
@@ -245,6 +248,14 @@
 ;;       (require 'framepop)))
 
 ;;; (3.3) S-keep-dump-files.
+;;; Documentation:
+;;; *Variable controlling whether to delete dump files after a successful load.
+;;; If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
+;;; to delete, except for files created with S-dump-object-into-edit-buffer.
+;;; Anything else, never delete.  This variable only affects the behaviour
+;;; of S-load-file.  Dump files are never deleted if an error occurs
+;;; during the load. 
+
 ;;; RH sez: which I found imperative.  The default was to throw away
 ;;; files at the wrong time (I think it was something like, if you M-x
 ;;; S-load a file twice, while you are working on it, the file is
@@ -252,7 +263,7 @@
 ;;; The default behavior is for people who believe the object is real
 ;;; and the source file temporary.
 
-;;(setq ess-keep-dump-file "always")
+(setq ess-keep-dump-file "always")
 
  ; Local variables section
 
