@@ -1,6 +1,6 @@
 -*- view -*-
 
-$Revision: 1.11 $
+$Revision: 1.12 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -897,8 +897,9 @@ NOTE: Not all of these are clean OR are even consistent.
      filename gsasfile 'temp.ps';
   and then use ghostview from another *shell* buffer.
 
-  autoexec.sas defines the departmental printers and truns off overprinting.
-  My autoexec.sas file is:
+  autoexec.sas defines the departmental printers and turns off
+  overprinting.  My autoexec.sas file is:
+
   libname gdevice0 '/home/public/stat/gdevice0' ;
   options noovp;
 
