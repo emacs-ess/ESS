@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/11 21:42:28 $
-;; Version: $Revision: 1.27 $
-;; RCS: $Id: essd-sas.el,v 1.27 1997/11/11 21:42:28 rossini Exp $
+;; Modified: $Date: 1997/11/11 21:49:40 $
+;; Version: $Revision: 1.28 $
+;; RCS: $Id: essd-sas.el,v 1.28 1997/11/11 21:49:40 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -59,23 +59,24 @@
 	 ;;  ess-local-process-name is defined after this function.
 	 ;;  it needs to be defined prior to this function.
 	 ;;(n 0)
-	 (tmp-procname ;;(if n (ess-proc-name (prefix-numeric-value n)
-					;;  temp-ess-dialect)
-			 ;; no prefix arg
-			 (or (and (not (comint-check-proc (current-buffer)))
-				  ;; Don't start a new process in current buffer if
-				  ;; one is already running
-				  ess-local-process-name)
-			     ;; find a non-existent process
-			     (let ((ntry 0)
-				   (done nil))
-			       (while (not done)
-				 (setq ntry (1+ ntry)
-				       done (not
-					     (get-process (ess-proc-name
-							   ntry
-							   temp-ess-dialect)))))
-			       (ess-proc-name ntry temp-ess-dialect)))) ;)
+	 (tmp-procname
+	  ;;(if n (ess-proc-name (prefix-numeric-value n)
+	  ;;  temp-ess-dialect)
+	  ;; no prefix arg
+	  (or (and (not (comint-check-proc (current-buffer)))
+		   ;; Don't start a new process in current buffer if
+		   ;; one is already running
+		   ess-local-process-name)
+	      ;; find a non-existent process
+	      (let ((ntry 0)
+		    (done nil))
+		(while (not done)
+		  (setq ntry (1+ ntry)
+			done (not
+			      (get-process (ess-proc-name
+					    ntry
+					    temp-ess-dialect)))))
+		(ess-proc-name ntry temp-ess-dialect)))) ;)
 	 ;; Following was tmp-local-process-name.  Stolen from inferior-ess
 	 (ess-sas-lst-bufname (concat "*" tmp-procname ".lst*"))
 	 (ess-sas-log-bufname (concat "*" tmp-procname ".log*"))
