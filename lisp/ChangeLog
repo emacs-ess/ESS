@@ -1,5 +1,8 @@
 2004-06-24  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
+	* ess-toolbar.el (ess-use-toolbar): Set to nil if images cannot be
+	displayed on the running Emacs.
+
 	* essd-r.el (ess-r-versions-create): Remove full pathname from
 	versions of R executables.  Add note in the *ESS* buffer to say
 	which new defuns have been created.
