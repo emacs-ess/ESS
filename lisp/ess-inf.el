@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/23 17:24:40 $
-;; Version: $Revision: 1.73 $
-;; RCS: $Id: ess-inf.el,v 1.73 1997/10/23 17:24:40 rossini Exp $
+;; Modified: $Date: 1997/11/07 23:28:39 $
+;; Version: $Revision: 1.74 $
+;; RCS: $Id: ess-inf.el,v 1.74 1997/11/07 23:28:39 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -1257,9 +1257,12 @@ to continue it."
   (if (string-match "help *\(\\([^)]*\\)\)" string)
       (progn
 	(insert-before-markers string)
-	(ess-display-help-on-object (match-string 1 string))
+	(let ((string (match-string 1 string)))
+	  (ess-display-help-on-object
+	   (if (string= string "") "help" string)))
 	(ess-eval-visibly "\n"))
     (inferior-ess-input-sender proc string)))
+
 ;;
 ;;(add-hook 'inferior-ess-mode-hook
 ;;	  '(lambda ()
