@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 2000/04/06 08:49:08 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: ess-iw32.el,v 1.12 2000/04/06 08:49:08 maechler Exp $
+;; Modified: $Date: 2000/04/11 12:16:29 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: ess-iw32.el,v 1.13 2000/04/11 12:16:29 maechler Exp $
 
 
 ;; This file is part of ESS
@@ -42,7 +42,8 @@
 
 ;; C-c C-r
 (defun ess-eval-region-ddeclient (start end toggle &optional message even-empty)
-  "Loop through lines in region and send them to ESS via ddeclient."
+  "Loop through lines in region and send them to ESS via ddeclient.
+The prefix argument is ignored when ddeclient is used"
   (setq inferior-ess-ddeclient
 	(ess-get-process-variable
 	 ess-current-process-name 'inferior-ess-ddeclient))
@@ -59,16 +60,11 @@
 	       (and (= 1 (point-max)) even-empty))
       (setq beg (point))
       (end-of-line)
-      (if (and (= beg (point)) ess-eval-empty)  ;; do empty line outside loop
-	  (let (ess-eval-empty)  ;; prevent infinite loop
-	    (ess-eval-linewise-ddeclient " " nil 'eob t))
-	(if (and (= beg (point)) even-empty) ;; only when even-empty is
-	    (insert " "))                    ;; set in ess-eval-linewise
-                                             ;; and we are working in
-                                             ;; buffer *ESS-temporary*.
-                            ;; call-process-region won't send over
-                            ;; a 0-character line.  We insert the " "
-                            ;; only in the temporary buffer, not the real one.
+      ;; call-process-region won't send over a 0-character line.
+      ;; We go outside the loop to create a 1-character line " " in the
+      ;; *ESS-temporary* buffer
+      (if (= beg (point))  ;; do empty line outside loop
+	    (ess-eval-linewise-ddeclient " " nil 'eob t)
 	;;(call-process-region start end
 	;;                     "ddeclient" nil nil nil "S-PLUS" "SCommand")
 	(call-process-region
@@ -81,13 +77,19 @@
 (fset 'ess-eval-region-original (symbol-function  'ess-eval-region))
 
 (defun ess-eval-region (start end toggle &optional message)
+  "Send the current region to the inferior ESS process.  This is the
+MS-Windows version of `ess-eval-region'.  When used with S-Plus 4.x or
+S-Plus 2000 the prefix argument is ignored; see the documentation for
+`ess-eval-region-ddeclient'.  When used with other ESS programs the
+prefix argument will toggle meaning of `ess-eval-visibly-p'; see the
+documentation for `ess-eval-region-original'."
   (interactive "r\nP")
   (if (equal (ess-get-process-variable
 	      ess-current-process-name 'inferior-ess-ddeclient)
 	     (default-value 'inferior-ess-ddeclient))
       (ess-eval-region-original start end toggle message)
     (ess-force-buffer-current "Process to load into: ")
-    (ess-eval-region-ddeclient start end toggle message))
+    (ess-eval-region-ddeclient start end toggle message t))
 )
 
 

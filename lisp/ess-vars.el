@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/04/10 09:27:20 $
-;; Version: $Revision: 5.41 $
-;; RCS: $Id: ess-vars.el,v 5.41 2000/04/10 09:27:20 maechler Exp $
+;; Modified: $Date: 2000/04/11 12:16:29 $
+;; Version: $Revision: 5.42 $
+;; RCS: $Id: ess-vars.el,v 5.42 2000/04/11 12:16:29 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -347,7 +347,7 @@ Good for evaluating ESS code.")
 
 ;; FIXME : This is just for the S dialects;  need to define this for others,
 ;; -----
-;;  {{however  "XLS-mode" should just use standard lisp "beginning of funtion"}}
+;;  {however  "XLS-mode" should just use standard lisp "beginning of function"}
 (defvar ess-function-pattern
   (concat
 ;;-    "\\(" ; EITHER
@@ -515,8 +515,8 @@ anchor to bol with `^'.")
 Otherwise, they get their own temporary buffer.")
 
 (defvar ess-eval-empty nil
-  "*If non-nil, `ess-eval-line-and-step' `ess-eval-linewise', and
-`ess-eval-region' will send empty lines to the ESS process.")
+  "*If non-nil, `ess-eval-line-and-step' and `ess-eval-linewise'
+will send empty lines to the ESS process.")
 
 (defvar ess-eval-visibly-p t
   "*If non-nil, the ess-eval- commands display the text to be evaluated

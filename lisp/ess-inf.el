@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/10 09:27:20 $
-;; Version: $Revision: 5.44 $
-;; RCS: $Id: ess-inf.el,v 5.44 2000/04/10 09:27:20 maechler Exp $
+;; Modified: $Date: 2000/04/11 12:16:29 $
+;; Version: $Revision: 5.45 $
+;; RCS: $Id: ess-inf.el,v 5.45 2000/04/11 12:16:29 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -792,11 +792,11 @@ With prefix argument, toggle meaning of `ess-eval-visibly-p'."
   (message "Starting evaluation...")
   (let ((visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p)))
     (if visibly
-	(ess-eval-linewise (buffer-substring start end) nil nil ess-eval-empty)
+	(ess-eval-linewise (buffer-substring start end))
       ;; else invisibly
       (if ess-synchronize-evals
 	  (ess-eval-linewise (buffer-substring start end)
-			  (or message "Eval region") nil ess-eval-empty)
+			  (or message "Eval region"))
 	;; else [almost always!]
 	(let ((sprocess (get-ess-process ess-current-process-name)))
 	  (process-send-region sprocess start end)
@@ -1530,8 +1530,8 @@ available.  However attached dataframes are *not* updated, so this
 command may be necessary if you modify an attached dataframe.
 
 If ARG is non-nil, no completion is attempted, but the available
-completions are listed."
-  (interactive "P");; how does it work,  `listcomp' argument is NOT used ?
+completions are listed [__UNIMPLEMENTED__]."
+  (interactive "P");; FIXME : the `listcomp' argument is NOT used
   (ess-make-buffer-current)
   (if (memq (char-syntax (preceding-char)) '(?w ?_))
       (let* ((comint-completion-addsuffix nil)
