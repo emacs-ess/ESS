@@ -1,6 +1,6 @@
 ### Makefile - for DOCUMENTATION (./doc) of ESS distribution.
 ###
-### File: $Revision: 1.48 $.
+### File: $Revision: 1.49 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -80,9 +80,9 @@ install : info/ess.info
 html/ess_toc.html: $(TEXISRC)
 	@echo "making HTML documentation..."
 	$(TEXI2HTML) $(SPLITCHAP) ess.texi
-	cp -p ess_toc.html html/index.html
-	mv -f *.html html
+	cp -p ess/ess_toc.html html/index.html
+	mv -f ess/*.html html
 
 html/readme_toc.html: $(TEXISRC)
 	$(TEXI2HTML) readme.texi
-	mv -f readme*.html html
+	mv -f ess/readme*.html html
