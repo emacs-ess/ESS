@@ -4,24 +4,24 @@
 ;;                         and Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
 ;;                         and A.J. Rossini <rossini@biostat.washington.edu>
 
-;; ESS-related Changes for ESS added by Mark Lunt and A.J. Rossini, 
+;; ESS-related Changes for ESS added by Mark Lunt and A.J. Rossini,
 ;; starting March, 1999.
 
-;; 
+;;
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2, or (at your option)
 ;; any later version.
-;; 
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-;; 
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program; if not, write to the Free Software
 ;; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-;; 
+;;
 ;; See bottom of this file for information on language-dependent
 ;; highlighting, and recent changes.
 ;;
@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.7 1999/09/15 06:06:07 ess Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.8 1999/11/05 09:03:52 maechler Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -76,7 +76,7 @@
 ;;     could then use highlighting to jazz up the visual appearance.
 ;;     (Highlighting is sorted: `noweb-chunk-vector' can be
 ;;     ditched. It is simple to determine if we are in a doc or code
-;;     chunk.)  
+;;     chunk.)
 ;;
 ;;   * wrapped `noweb-goto-next' and `noweb-goto-previous'
 ;;
@@ -85,15 +85,26 @@
 ;;   * commands for tangling, weaving, etc.
 ;;
 ;;   * `noweb-hide-code-quotes' should be superfluous now, and could
-;;     be removed 
+;;     be removed
 ;;
 ;;   * ...
 ;;
+
+;;--- emacs 19.34 compatibility:
+(if (not (fboundp 'functionp))
+    ;; take the definition from emacs 20.4  lisp/subr.el:
+ (defun functionp (object)
+  "Non-nil if OBJECT is a type of object that can be called as a function."
+  (or (subrp object) (byte-code-function-p object)
+      (eq (car-safe object) 'lambda)
+      (and (symbolp object) (fboundp object))))
+)
+
 
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.7 1999/09/15 06:06:07 ess Exp $")
+  "$Id: noweb-mode.el,v 1.8 1999/11/05 09:03:52 maechler Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")
@@ -126,27 +137,27 @@ This is the place to overwrite keybindings of the other modes.")
 It will be run whether or not the major-mode changes.")
 
 (defvar noweb-default-code-mode 'fundamental-mode
-  "Default major mode for editing code chunks.  
+  "Default major mode for editing code chunks.
 This is set to FUNDAMENTAL-MODE by default, but you might want to
 change this in the Local Variables section of your file to something
 more appropriate, like C-MODE, FORTRAN-MODE, or even
 INDENTED-TEXT-MODE.")
 
 (defvar noweb-code-mode 'c-mode
-  "Major mode for editing this particular code chunk. 
+  "Major mode for editing this particular code chunk.
 It defaults to noweb-default-code-mode, but can be reset by a comment
-on the first line of the chunk containing the string 
-\"-*- NEWMODE -*-\" or  
-\"-*- NEWMODE-mode -*-\" or  
+on the first line of the chunk containing the string
+\"-*- NEWMODE -*-\" or
+\"-*- NEWMODE-mode -*-\" or
 \"-*- mode: NEWMODE -*- \"  or
-\"-*- mode: NEWMODE-mode -*- \" 
-Option three is recommended, as it is the closest to standard emacs usage.") 
+\"-*- mode: NEWMODE-mode -*- \"
+Option three is recommended, as it is the closest to standard emacs usage.")
 
 (defvar noweb-default-doc-mode 'latex-mode
   "Major mode for editing documentation chunks.")
 
 (defvar noweb-doc-mode-syntax-table nil
-  "A syntax-table syntax table that makes quoted code in doc chunks to behave.") 
+  "A syntax-table syntax table that makes quoted code in doc chunks to behave.")
 
 (defvar noweb-last-chunk-index 0
   "This keeps track of the chunk we have just been in. If this is not the same as the current chunk, we have to check if we need to change major mode.")
@@ -186,10 +197,10 @@ mouse-1, this will override your binding.")
 	(progn
 	  ;; Assume latex documentation, but set to html if appropriate
 	  (if (eq noweb-doc-mode html-mode)
-	      (setq name (concat (substring (buffer-file-name) 0 
+	      (setq name (concat (substring (buffer-file-name) 0
 					    (string-match ".nw" name))
 				 ".html"))
-	    (setq name (concat (substring (buffer-file-name) 0 
+	    (setq name (concat (substring (buffer-file-name) 0
 					  (string-match ".nw" name))
 			       ".tex")))))
     (setq name (concat "> " name))
@@ -210,12 +221,12 @@ mouse-1, this will override your binding.")
 ;; middle of a code quote in a doc chunk to see
 ;; what I mean: its odd.
 
-(defun noweb-newline (&optional arg) 
+(defun noweb-newline (&optional arg)
   "A kludge to get round very odd behaviour of newline in quoted code."
   (interactive "p")
   (if arg (newline arg) (newline 1)))
 
-(defvar noweb-mode-prefix-map 
+(defvar noweb-mode-prefix-map
   (let ((map (if (string-match "XEmacs\\|Lucid" emacs-version)
 		 (make-keymap) ;; XEmacs/Emacs problems...
 	       (make-sparse-keymap))))
@@ -250,7 +261,7 @@ mouse-1, this will override your binding.")
     map)
   "noweb minor-mode prefix keymap")
 
-(defvar noweb-minor-mode-map 
+(defvar noweb-minor-mode-map
   (let ((map (make-sparse-keymap)))
     (if noweb-electric-@-and-<
         (progn
@@ -264,7 +275,7 @@ mouse-1, this will override your binding.")
     map)
   "Noweb minor mode keymap")
 
-(easy-menu-define 
+(easy-menu-define
  noweb-minor-mode-menu noweb-minor-mode-map
  "Menu keymap for noweb."
  '("Noweb"
@@ -309,7 +320,7 @@ mouse-1, this will override your binding.")
    ["Help" noweb-describe-mode t]
    ["Version" noweb-mode-version t]))
 
-;; Add noweb-mode to the list of minor modes  
+;; Add noweb-mode to the list of minor modes
 (if (not (assq 'noweb-mode minor-mode-alist))
     (setq minor-mode-alist (append minor-mode-alist
                                    (list '(noweb-mode " Noweb")))))
@@ -317,22 +328,22 @@ mouse-1, this will override your binding.")
 ;; available. Then, whenever noweb-mode is activated, the keymap is
 ;; automatically activated
 (if (not (assq 'noweb-mode minor-mode-map-alist))
-    (setq minor-mode-map-alist 
+    (setq minor-mode-map-alist
           (cons (cons 'noweb-mode noweb-minor-mode-map)
                 minor-mode-map-alist)))
 
 ;; Old XEmacs hacks.
 (defun noweb-mode-xemacs-menu ()
   "Hook to install noweb-mode menu for XEmacs (w/ easymenu)."
-  (if 'noweb-mode 
+  (if 'noweb-mode
       (easy-menu-add noweb-minor-mode-menu)
     (easy-menu-remove noweb-minor-mode-menu)
     ))
 
 (if (string-match "XEmacs" emacs-version)
-    (progn 
+    (progn
       (add-hook 'noweb-select-mode-hook 'noweb-mode-xemacs-menu)
-      ;; Next line handles some random problems... 
+      ;; Next line handles some random problems...
       (easy-menu-add noweb-minor-mode-menu)))
 
 (defun noweb-minor-mode (&optional arg)
@@ -395,7 +406,7 @@ Misc:
 "  (interactive "P")
 ; This bit is tricky: copied almost verbatim from bib-cite-mode.el
 ; It seems to ensure that the variable noweb-mode is made
-; local to this buffer. It then sets noweb-mode to `t' if 
+; local to this buffer. It then sets noweb-mode to `t' if
 ;     1) It was called with an argument greater than 0
 ; or  2) It was called with no argument, and noweb-mode is
 ;        currently nil
@@ -407,7 +418,7 @@ Misc:
          (not noweb-mode)))
 ; Now, if noweb-mode is true, we want to turn
 ; noweb-mode on
-  (cond 
+  (cond
    (noweb-mode                 ;Setup the minor-mode
     (mapcar 'noweb-make-variable-permanent-local
             '(noweb-mode
@@ -425,7 +436,7 @@ Misc:
     (if (equal 0 (noweb-find-chunk-index-buffer))
         (setq noweb-last-chunk-index 1)
       (setq noweb-last-chunk-index 0))
-    (if font-lock-mode 
+    (if font-lock-mode
         (progn
           (font-lock-mode -1)
           (noweb-font-lock-mode 1)))
@@ -437,7 +448,7 @@ Misc:
     (add-hook 'isearch-mode-end-hook 'noweb-note-isearch-mode-end)
     (setq noweb-doc-mode-syntax-table nil)
     (run-hooks 'noweb-mode-hook)
-    (message 
+    (message
      "noweb mode: use `M-x noweb-describe-mode' for further information"))
    ;; If we didn't do the above, then we want to turn noweb-mode
    ;; off, no matter what (hence the condition `t')
@@ -448,7 +459,7 @@ Misc:
     (remove-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)
     (remove-hook 'isearch-mode-hook 'noweb-note-isearch-mode)
     (remove-hook 'isearch-mode-end-hook 'noweb-note-isearch-mode-end)
-    (if noweb-font-lock-mode 
+    (if noweb-font-lock-mode
         (progn
           (noweb-font-lock-mode -1)
           (message "Noweb and Noweb-Font-Lock Modes Removed"))
@@ -503,7 +514,7 @@ Record them in NOWEB-CHUNK-VECTOR."
                                   ;;buffer-substring-no-properties better
                                   ;;than buffer-substring if highlighting
                                   ;;may be used
-                                  (buffer-substring-no-properties 
+                                  (buffer-substring-no-properties
                                    (match-beginning 4) (match-end 4))
                                 'doc)
                               (point-marker))
@@ -518,7 +529,7 @@ Record them in NOWEB-CHUNK-VECTOR."
                   ;; Now we can tell code vs docs
                   (cons (cons (if (looking-at "<<\\(.*\\)>>=")
                                   (buffer-substring-no-properties
-                                   (match-beginning 1) (match-end 1)) 
+                                   (match-beginning 1) (match-end 1))
                                 'doc)
                               (point-marker))
                         chunk-list))))
@@ -545,44 +556,44 @@ marker of the current chunk."
 
 (defun noweb-in-mode-line ()
   "Return the name of the mode to use if we are in a mode line, nil
-otherwise." 
+otherwise."
   (interactive)
   (let (beg end mode)
-    (save-excursion  
-      (beginning-of-line 1)                                                 
+    (save-excursion
+      (beginning-of-line 1)
       (and (progn
 	     (ess-write-to-dribble-buffer
 	      (format "(n-i-m-l: 1)"))
 	     (search-forward "-*-"
-			     (save-excursion (end-of-line) (point))           
+			     (save-excursion (end-of-line) (point))
 			     t))
-	   (progn                                                           
+	   (progn
 	     (ess-write-to-dribble-buffer
 	      (format "(n-i-m-l: 2)"))
-             (skip-chars-forward " \t")                                     
-             (setq beg (point))                                             
-             (search-forward "-*-"                                          
-                             (save-excursion (end-of-line) (point))         
+             (skip-chars-forward " \t")
+             (setq beg (point))
+             (search-forward "-*-"
+                             (save-excursion (end-of-line) (point))
                              t))
-           (progn               
+           (progn
 	     (ess-write-to-dribble-buffer
 	      (format "(n-i-m-l: 3)"))
-             (forward-char -3)                                              
-             (skip-chars-backward " \t")                                    
-             (setq end (point))                                             
-             (goto-char beg)                                                
-             (setq mode (concat                                            
-                         (downcase (buffer-substring beg end))             
+             (forward-char -3)
+             (skip-chars-backward " \t")
+             (setq end (point))
+             (goto-char beg)
+             (setq mode (concat
+                         (downcase (buffer-substring beg end))
                          "-mode"))
              (if (and (>= (length mode) 11))
                       (progn
                         (if
                             (equal (substring mode -10 -5) "-mode")
                             (setq mode (substring mode 0 -5)))
-                        (if 
+                        (if
                             (equal (substring mode 0 5) "mode:")
                             (setq mode (substring mode 6))))))
-	   (progn 
+	   (progn
 	     (ess-write-to-dribble-buffer
 	      (format "(n-i-m-l: 3) mode=%s" mode))
 	     (intern mode))))))
@@ -622,13 +633,13 @@ This will be particularly useful when interfacing with ESS."
   "Create a new buffer with the same name as the current code chunk,
 and copy all code  from chunks of the same name to it."
   (interactive)
-  (save-excursion 
+  (save-excursion
     (if (noweb-in-code-chunk)
         (progn
-          (let ((chunk-name (car (noweb-find-chunk))) 
+          (let ((chunk-name (car (noweb-find-chunk)))
                 (chunk-counter 0)
                 (copy-counter 0)
-                (this-chunk) (oldbuf (current-buffer))) 
+                (this-chunk) (oldbuf (current-buffer)))
             (if (get-buffer chunk-name)
                 (progn
                   (set-buffer-modified-p nil)
@@ -715,7 +726,7 @@ documentation and code chunks."
   "Replace all non blank characters in [[...]] code quotes
 in the current buffer (you might want to narrow to the interesting
 region first) by `*'.  Return a list of pairs with the position and
-value of the original strings." 
+value of the original strings."
   (save-excursion
     (let ((quote-list nil))
       (goto-char (point-min))
@@ -734,7 +745,7 @@ value of the original strings."
                        (skip-chars-forward "^ \t\n" end)
                        (point))))
               (if (> e b)
-                  ;; Save the string and a marker to the end of the 
+                  ;; Save the string and a marker to the end of the
                   ;; replacement text.  A marker to the beginning is
                   ;; useless.  See NOWEB-RESTORE-CODE-QUOTES.
                   (save-excursion
@@ -1164,14 +1175,14 @@ and and update the chunk vector."
         (setq noweb-code-mode noweb-default-code-mode)
         (let (mode chunk-name)
           (save-restriction
-            (save-excursion  
+            (save-excursion
               (end-of-line)
               (re-search-backward "^[ \t]*<<\\(.*\\)>>=" nil t)
               (setq chunk-name (match-string 1))
               (widen)
               (goto-char (point-min))
               (re-search-forward (concat "^<<" chunk-name ">>=") nil t)
-              (beginning-of-line 2)    
+              (beginning-of-line 2)
               (setq mode (noweb-in-mode-line))
               (if (functionp mode)
                   (setq noweb-code-mode mode))))))
@@ -1186,10 +1197,10 @@ and and update the chunk vector."
           (modify-syntax-entry ?\[ "(]12b" noweb-doc-mode-syntax-table)
           (modify-syntax-entry ?\] ")[34b" noweb-doc-mode-syntax-table))
       (progn
-        (modify-syntax-entry  ?\[ 
+        (modify-syntax-entry  ?\[
                               (concat square-bracket-string " 12b")
                               noweb-doc-mode-syntax-table)
-        (modify-syntax-entry  ?\] 
+        (modify-syntax-entry  ?\]
                               (concat square-bracket-string " 34b")
                               noweb-doc-mode-syntax-table)))))
 
@@ -1219,9 +1230,9 @@ and and update the chunk vector."
                   (progn
                     (funcall noweb-doc-mode)))
               (if (not noweb-doc-mode-syntax-table)
-                  (progn 
+                  (progn
                     (message "Setting up syntax table")
-                    (setq noweb-doc-mode-syntax-table 
+                    (setq noweb-doc-mode-syntax-table
                           (make-syntax-table (syntax-table)))
                     (noweb-set-doc-syntax-table)))
               (set-syntax-table noweb-doc-mode-syntax-table)
@@ -1247,7 +1258,7 @@ to by added to the mode-line")
 (defun noweb-set-code-mode (mode)
   "Change the major mode for editing all code chunks."
   (interactive "CNew major mode for all code chunks: ")
-  (setq noweb-default-code-mode mode)   
+  (setq noweb-default-code-mode mode)
   ;;Pretend we've changed chunk, so the mode will be reset if necessary
   (setq noweb-last-chunk-index (1- noweb-last-chunk-index))
   (noweb-select-mode))
@@ -1260,7 +1271,7 @@ The only sensible way to do this is to add a mode line to the chunk"
       (progn
         (setq noweb-code-mode mode)
         (save-restriction
-          (save-excursion 
+          (save-excursion
             (let (chunk-name)
               (widen)
               (end-of-line)
@@ -1270,7 +1281,7 @@ The only sensible way to do this is to add a mode line to the chunk"
               (re-search-forward (concat "^<<" chunk-name ">>=") nil t)
               (beginning-of-line 2))
             ;; remove mode-line, if there is one
-            (if (noweb-in-mode-line) 
+            (if (noweb-in-mode-line)
                 (progn
                   (kill-line)
                   (kill-line)))
@@ -1280,8 +1291,8 @@ The only sensible way to do this is to add a mode line to the chunk"
                   ;; Need to set major mode so that we can comment out
                   ;; the mode line
                   (funcall noweb-code-mode)
-                  (insert comment-start 
-                          " -*- " mode 
+                  (insert comment-start
+                          " -*- " mode
                           " -*- " comment-end "\n")))
             (setq noweb-last-chunk-index (1- noweb-last-chunk-index)))))
     (message "This only makes sense in a code chunk.")))
@@ -1307,14 +1318,14 @@ noweb-set-doc-mode) before calling this function"
   (interactive)
   (save-excursion
     (goto-char 1)
-    (if (noweb-in-mode-line) 
+    (if (noweb-in-mode-line)
         (progn
           (kill-line)
           (kill-line)))
     (if (not (eq major-mode noweb-doc-mode))
         (noweb-select-mode))
     (insert comment-start " -*- mode: noweb; noweb-default-code-mode: "
-            (symbol-name noweb-default-code-mode) 
+            (symbol-name noweb-default-code-mode)
             (if (not (eq noweb-doc-mode noweb-default-doc-mode))
                 (concat "; noweb-doc-mode: " (symbol-name
                                               noweb-doc-mode) ";")
@@ -1326,20 +1337,20 @@ noweb-set-doc-mode) before calling this function"
   (interactive "e")
   (mouse-set-point event)
   (if (and noweb-use-mouse-navigation
-           (eq (save-excursion 
+           (eq (save-excursion
                  (end-of-line)
                  (re-search-backward "^[\t ]*\\(<<\\)\\(.*\\)\\(>>\\)" nil t))
-               (save-excursion 
+               (save-excursion
                  (beginning-of-line) (point))))
       (progn
 (if (< (point) (match-beginning 2))
-            (let ((chunk-name (buffer-substring-no-properties 
+            (let ((chunk-name (buffer-substring-no-properties
                                (match-beginning 2)
                                (match-end 2))))
               (re-search-backward (concat "<<" chunk-name ">>") nil t))
           (if (and (<= (match-end 2) (point))
                    (>  (+ 2 (match-end 2)) (point)))
-              (let ((chunk-name (buffer-substring-no-properties 
+              (let ((chunk-name (buffer-substring-no-properties
                                  (match-beginning 2)
                                  (match-end 2))))
                 (re-search-forward (concat "<<" chunk-name ">>") nil t)))))))
@@ -1365,7 +1376,7 @@ noweb-set-doc-mode) before calling this function"
 Each entry in the list contains 5 elements:
 1) The name of the threads
 2) The name of the immdiate parent thread in which it is used (nil if
-   it is a \"top-level\" thread which is not used anywhere). 
+   it is a \"top-level\" thread which is not used anywhere).
 3) The name of the top-level parent thread in which it is used (i.e. a
    thread in which it is used but which is not itself used anywhere:
    nil if this thread is not used anywhere.
@@ -1374,7 +1385,7 @@ Each entry in the list contains 5 elements:
    anywhere: if a thread is used as part of another thread, the parent
    thread's format string should be used.
 5) If this is nil, tabs are converted to spaces in the tangled
-   file. If it is a number, tabs are copied to the tangled file 
+   file. If it is a number, tabs are copied to the tangled file
    unchanged, and tabs are also used for indentation, with the number
    of spaces per tab defined by this number. This MUST be set in order
    to tangle makefiles, which depend on tabs.Should only be set if
@@ -1386,7 +1397,7 @@ Each entry in the list contains 5 elements:
 Each entry in the list contains 5 elements:
 1) The name of the thread
 2) The name of the immdiate parent thread in which it is used (nil if
-   it is a \"top-level\" thread which is not used anywhere). 
+   it is a \"top-level\" thread which is not used anywhere).
 3) The name of the top-level parent thread in which it is used (i.e. a
    thread in which it is used but which is not itself used anywhere:
    nil if this thread is not used anywhere.
@@ -1395,7 +1406,7 @@ Each entry in the list contains 5 elements:
    anywhere: if a thread is used as part of another thread, the parent
    thread's format string should be used.
 5) If this is nil, tabs are converted to spaces in the tangled
-   file. If it is a number, tabs are copied to the tangled file 
+   file. If it is a number, tabs are copied to the tangled file
    unchanged, and tabs are also used for indentation, with the number
    of spaces per tab defined by this number. This MUST be set in order
    to tangle makefiles, which depend on tabs.Should only be set if
@@ -1405,7 +1416,7 @@ Each entry in the list contains 5 elements:
     (goto-char (point-min))
     (let ((thread-alist) (thread-list-entry) (chunk-use-name)
           (current-thread) (new-thread-alist))
-      (while (re-search-forward 
+      (while (re-search-forward
               "^[ \t]*<<\\(.*\\)>>\\(=\\)?" nil t)
         (goto-char (match-beginning 0))
         ;; Is this the definition of a chunk ?
@@ -1413,25 +1424,25 @@ Each entry in the list contains 5 elements:
             ;;We have a chunk definition
             (progn
               ;; Get the thread name
-              (setq current-thread 
+              (setq current-thread
                     (buffer-substring-no-properties (match-beginning 1)
                                                     (match-end 1)))
               ;; Is this thread already in our list ?
               (if (assoc current-thread thread-alist)
                   nil
                 (progn
-                  ;; If not, create an entry with 4 nils at the end      
-                  (setq thread-list-entry 
-                        (list (cons current-thread 
+                  ;; If not, create an entry with 4 nils at the end
+                  (setq thread-list-entry
+                        (list (cons current-thread
                                     (make-list 4 nil))))
                   ;; And add it to the list
-                  (setq thread-alist 
+                  (setq thread-alist
                         (append thread-alist thread-list-entry)))))
-     
+
             ;; Not a definition but a use
             (progn
               ;; Get the thread name
-                (setq chunk-use-name 
+                (setq chunk-use-name
                     (buffer-substring-no-properties (match-beginning 1)
                                                     (match-end 1)))
               ;; Has the thread already been defined before being used ?
@@ -1441,13 +1452,13 @@ Each entry in the list contains 5 elements:
                   (setcar (cdr thread-list-entry) current-thread)
                 ;; If not, add it to the list, with its parent name and 3 nils
                 (progn
-                  (setq thread-list-entry 
-                        (list (cons chunk-use-name 
+                  (setq thread-list-entry
+                        (list (cons chunk-use-name
                                     (cons current-thread
                                           (make-list 3 nil)))))
                   (setq thread-alist (append thread-alist thread-list-entry)))))
 )
-        ;;Go to the next line   
+        ;;Go to the next line
         (beginning-of-line 2))
       ;; Now, the second element of each entry points to that thread's
       ;; immediate parent. Need to set it to the thread's ultimate
@@ -1457,11 +1468,11 @@ Each entry in the list contains 5 elements:
             (this-thread-parent))
         (while (<= thread-counter (1- (length thread-alist)))
           (setq this-thread (nth thread-counter thread-alist))
-          (setq this-thread-parent (assoc 
+          (setq this-thread-parent (assoc
                                     (car (cdr this-thread))
                                     thread-alist))
           (while (not (equal nil (car (cdr this-thread-parent))))
-            (setq this-thread-parent (assoc 
+            (setq this-thread-parent (assoc
                                       (car (cdr this-thread-parent))
                                       thread-alist)))
           (setq this-thread (cons (car this-thread)
@@ -1482,10 +1493,10 @@ Each entry in the list contains 5 elements:
 
 
 (defvar noweb-default-line-number-format nil
-  "The format string to use to  define line numbers in this thread. 
+  "The format string to use to  define line numbers in this thread.
 If nil, do  not use line numbers.")
 
-(defvar noweb-default-line-number-skip-lines 0 
+(defvar noweb-default-line-number-skip-lines 0
   "The number of initial lines to output before the line number.
 This may be useful in shell scripts, where the first line (or two) must have a
   specific form.")
@@ -1494,10 +1505,10 @@ This may be useful in shell scripts, where the first line (or two) must have a
   "If a number, convert tabs to  that number of spaces in the output. If nil, let tabs through to the output unaltered.")
 
 (defvar noweb-line-number-format  noweb-default-line-number-format
-  "The format string to use to  define line numbers in this thread. 
+  "The format string to use to  define line numbers in this thread.
 If nil, do  not use line numbers.")
 
-(defvar noweb-line-number-skip-lines noweb-default-line-number-skip-lines 
+(defvar noweb-line-number-skip-lines noweb-default-line-number-skip-lines
   "The number of initial lines to output before the line number.
 This may be useful in shell scripts, where the first line (or two) must have a
   specific form.")
@@ -1509,48 +1520,48 @@ This may be useful in shell scripts, where the first line (or two) must have a
   "Get the values of the variables that are local to a thread."
   (interactive)
   (save-restriction
-    (save-excursion  
+    (save-excursion
       (end-of-line)
       (re-search-backward "^[ \t]*<<\\(.*\\)>>=" nil t)
       (let ((chunk-name (match-string 1)))
         (widen)
         (goto-char (point-min))
         (re-search-forward (concat "^<<" chunk-name ">>=") nil t)
-        (beginning-of-line 2)    
+        (beginning-of-line 2)
         (while (looking-at ".*-\*-.*-\*-")
-          (let ((this-line (buffer-substring-no-properties 
+          (let ((this-line (buffer-substring-no-properties
                             (point)
                             (progn (end-of-line) (point)))))
-            (if (string-match 
+            (if (string-match
                  "mode:[ \t]*\\([^\t ]*\\)" this-line)
-                (setq noweb-code-mode 
+                (setq noweb-code-mode
 		      (if (string-match "XEmacs\\|Lucid" emacs-version)
 			  (match-string 1 this-line)
 			(match-string-no-properties 1 this-line))
 		      ))
-            (if (string-match 
+            (if (string-match
                  "noweb-line-number-format:[ \t]*\"\\([^\"]*\\)\"" this-line)
-                (setq noweb-line-number-format 
+                (setq noweb-line-number-format
 		      (if (string-match "XEmacs\\|Lucid" emacs-version)
 			  (match-string 1 this-line)
 			(match-string-no-properties 1 this-line))
 		      ))
-            (if (string-match 
+            (if (string-match
                  "noweb-line-number-skip-lines:[ \t]*\\([^\t ]*\\)" this-line)
-                (setq noweb-line-number-skip-lines 
+                (setq noweb-line-number-skip-lines
                       (string-to-number
 		      (if (string-match "XEmacs\\|Lucid" emacs-version)
 			  (match-string 1 this-line)
 			(match-string-no-properties 1 this-line)))))
-            (if (string-match 
+            (if (string-match
                  "noweb-tab-width:[ \t]*\\([^\t ]*\\)" this-line)
-                (setq noweb-tab-width    
+                (setq noweb-tab-width
                       (string-to-number
 		      (if (string-match "XEmacs\\|Lucid" emacs-version)
 			  (match-string 1 this-line)
 			(match-string-no-properties 1 this-line)))))
             (beginning-of-line 2)))))))
-  
+
 (defun noweb-reset-thread-local-variables ()
   "Resets the thread-local variables to their default values"
   (setq noweb-tab-width noweb-default-tab-width)
@@ -1567,7 +1578,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
                    (format "%d" this-line) t t line-number-format 1)))
           (while (string-match ".*\\(%F\\).*" line-number-format)
             (setq line-number-format
-                  (replace-match 
+                  (replace-match
                    (format "%s" (buffer-file-name)) t t line-number-format 1)))
           (while (string-match ".*\\(%N\\).*" line-number-format)
             (setq line-number-format
@@ -1584,22 +1595,22 @@ This may be useful in shell scripts, where the first line (or two) must have a
     (noweb-reset-thread-local-variables)
     (noweb-get-thread-local-variables)
     (noweb-update-chunk-vector)
-    (let* 
-        ((chunk-end (progn 
+    (let*
+        ((chunk-end (progn
                       (end-of-line)
                       (re-search-forward "^@" nil t)
                       (beginning-of-line)
                       (point)))
-         ;;get name and start point of this chunk    
+         ;;get name and start point of this chunk
          (chunk-start (progn
                         (re-search-backward "^<<\\([^>]*\\)>>=$" nil t)
                         (beginning-of-line 2)
                         (point)))
-         (chunk-name (buffer-substring-no-properties 
+         (chunk-name (buffer-substring-no-properties
                       (match-end 1)
                       (match-beginning 1)))
-         ;; get end of this chunk        
-         ;; Get information we need about this thread    
+         ;; get end of this chunk
+         ;; Get information we need about this thread
          (thread-info (assoc chunk-name noweb-thread-alist))
          (thread-tabs (nth 4 thread-info))
          (line-number-format (nth 3 thread-info))
@@ -1615,7 +1626,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
           ;; If we want to include line numbers, write one
           (if line-number-format
               (while (> noweb-line-number-skip-lines 0)
-                (append-to-buffer tangle-buffer 
+                (append-to-buffer tangle-buffer
                                   (point)
                                   (save-excursion
 				    (progn
@@ -1656,11 +1667,11 @@ This may be useful in shell scripts, where the first line (or two) must have a
                           (backward-char)
                           (insert post-chunk)
                           (beginning-of-line 2)))))
-                                      
-                ;; Otherwise, just copy this line 
+
+                ;; Otherwise, just copy this line
                 (setq pre-chunk
-                      (buffer-substring 
-                       (point) 
+                      (buffer-substring
+                       (point)
                        (save-excursion
                          (beginning-of-line 2)
                          (point))))
@@ -1674,7 +1685,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
                   (set-buffer tangle-buffer)
                   (insert pre-chunk)))
             ;; If this is the first line of the chunk, we need to change
-            ;; prefix-string to consist solely of spaces 
+            ;; prefix-string to consist solely of spaces
             (if (and first-line
                      prefix-string)
                 (progn
@@ -1690,7 +1701,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
             (while (re-search-forward "\@\<<" nil t)
               (replace-match "<<" nil nil)
               (forward-char 3))
-            (if thread-tabs 
+            (if thread-tabs
               (progn
                   (setq tab-width thread-tabs)
                   (tabify (point-min)(point-max)))
@@ -1704,20 +1715,20 @@ This may be useful in shell scripts, where the first line (or two) must have a
 ))))
 
 (defun noweb-tangle-thread ( name &optional buffer)
-  "Given the name of a thread, tangles the thread to buffer.  
+  "Given the name of a thread, tangles the thread to buffer.
 If no buffer is given, create a new one with the same name as the
 thread."
   (interactive "sWhich thread ? ")
   (if (not buffer)
       (progn
         (setq buffer (get-buffer-create name))
-        (save-excursion 
+        (save-excursion
           (set-buffer buffer)
           (erase-buffer))))
   (save-excursion
     (goto-char (point-min))
     (let ((chunk-counter 0))
-      (while (re-search-forward 
+      (while (re-search-forward
               "^<<\\(.*\\)>>=[\t ]*" nil t)
         (if (string= (match-string 1)
                      name)
@@ -1731,11 +1742,11 @@ thread."
   (save-excursion
     (let* ((chunk-start
 	    (progn
-	      (re-search-backward "^<<\\([^>]*\\)>>=[\t ]*$" 
+	      (re-search-backward "^<<\\([^>]*\\)>>=[\t ]*$"
 				  nil t)
 	      (beginning-of-line 2)
 	      (point)))
-           (chunk-name (buffer-substring-no-properties 
+           (chunk-name (buffer-substring-no-properties
                         (match-end 1)
                         (match-beginning 1))))
       (noweb-tangle-thread chunk-name buffer))))
@@ -1821,7 +1832,7 @@ thread."
 ;; is used.
 
 ;; New functions `noweb-in-code-chunk' & `noweb-chunk-is-code' created
-;; to replace (if (stringp (car (noweb-find-chunk)))) and 
+;; to replace (if (stringp (car (noweb-find-chunk)))) and
 ;; (if (stringp (car (noweb-chunk-vector-aref index)))).
 
 ;; `noweb-insert-mode-line' was renamed
