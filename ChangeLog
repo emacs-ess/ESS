@@ -1,3 +1,7 @@
+2004-06-28  ESS Maintainers <ESS-core@stat.math.ethz.ch>
+
+  * Version 5.2.1 released.
+
 2004-05-22  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* doc/ess.texi (Interactive ESS): At the start of the chapter on
@@ -3841,7 +3845,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 2004/05/22 20:00:27 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 2004/06/28 21:21:35 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -6031,6 +6035,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.38  2004/06/28 21:21:35  rsparapa
+	* Removing Version .. released
+	* Removing
 	* Removing Revision 5.37  2004/05/22 20:00:27  stephen
 	* Removing *** empty log message ***
 	* Removing
