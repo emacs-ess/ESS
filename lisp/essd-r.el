@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/10/22 06:49:27 $
-;; Version: $Revision: 5.41 $
-;; RCS: $Id: essd-r.el,v 5.41 2002/10/22 06:49:27 maechler Exp $
+;; Modified: $Date: 2002/11/11 17:36:08 $
+;; Version: $Revision: 5.42 $
+;; RCS: $Id: essd-r.el,v 5.42 2002/11/11 17:36:08 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -135,6 +135,17 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
   (if ess-S-use-imenu (ess-imenu-R)))
 
 (fset 'r-mode 'R-mode)
+
+
+(defun Sweave-R-mode ()
+  "Major mode for editing Sweave(R) source.
+See `noweb-mode' and `R-mode' for more help."
+  (interactive)
+  (require 'ess-noweb);; << probably someplace else
+  (noweb-mode 1); turn it on
+  (noweb-set-doc-mode 'latex-mode)
+  (noweb-set-code-mode 'R-mode)
+)
 
 
 (autoload 'ess-transcript-mode "ess-trns"

@@ -1,3 +1,7 @@
+2002-11-11  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r.el (Sweave-R-mode): new (experimental) for Sweave{R} editing.
+
 2002-11-01  Stephen Eglen  <eglen@thalamus.wustl.edu>
 
 	* essl-s.el (ess-help-R-sec-regex): Restrict regex so that capital

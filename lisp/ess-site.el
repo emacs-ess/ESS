@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2002/08/22 08:36:54 $
-;; Version: $Revision: 5.91 $
-;; RCS: $Id: ess-site.el,v 5.91 2002/08/22 08:36:54 maechler Exp $
+;; Modified: $Date: 2002/11/11 17:36:08 $
+;; Version: $Revision: 5.92 $
+;; RCS: $Id: ess-site.el,v 5.92 2002/11/11 17:36:08 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -207,6 +207,7 @@ The extension, in a file name, is the part that follows the last `.'."
 	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S
 	   ("\\.ssc\\'"	  . S-mode) ;; Splus 4.x script files.
 	   ("\\.[rR]\\'"  . R-mode)
+	   ("\\.[rR]nw\\'"  . Sweave-R-mode)
 	   ("\\.[rR]profile\\'" . R-mode)
 	   ("\\.omg\\'"         . omegahat-mode)
 	   ("\\.hat\\'"         . omegahat-mode) ;; Duncan's pref'd...
@@ -354,6 +355,7 @@ sending `inferior-ess-language-start' to S-Plus.")
       (require 'essd-sp4)
       (ess-message "[ess-site:] require 'essdsp6w ...")
       (require 'essdsp6w))
+  ;; else: decent OS
   (ess-message "[ess-site:] require 'essd-sp5 ...")
   (require 'essd-sp5)
   (ess-message "[ess-site:] require 'essd-sp6 ...")
@@ -386,7 +388,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 	   ess-customize-alist))
 
 ;;; (1.7) Literate Data Analysis
-;(require 'ess-noweb)
+(require 'ess-noweb)
 ;(setq auto-mode-alist
 ;      (append
 ;       '(("\\.nw\\'"          . noweb-mode)) ;; Literate Data Analysis
