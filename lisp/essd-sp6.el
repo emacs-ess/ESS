@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: ?? ??? 2001
-;; Modified: $Date: 2002/01/20 06:14:36 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: essd-sp6.el,v 1.7 2002/01/20 06:14:36 rmh Exp $
+;; Modified: $Date: 2002/02/25 12:40:36 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: essd-sp6.el,v 1.8 2002/02/25 12:40:36 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -102,16 +102,8 @@
     (ess-STERM  . "iESS")
     (ess-editor . S-editor)
     (ess-pager  . S-pager)
-    (inferior-ess-language-start .
-				 (concat "options("
-					 "STERM='"  ess-STERM  "'"
-					 (if ess-editor 
-					     (concat ", editor='" ess-editor "'"))
-					 (if ess-pager 
-					     (concat ", pager='"  ess-pager  "'"))
-					 ")"))
-)
-
+    (inferior-ess-language-start . (eval inferior-S-language-start))
+    )
   "Variables to customize for S+6.")
 
 

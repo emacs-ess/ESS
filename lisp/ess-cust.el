@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2002/02/19 22:43:55 $
-;; Version: $Revision: 1.29 $
-;; RCS: $Id: ess-cust.el,v 1.29 2002/02/19 22:43:55 rossini Exp $
+;; Modified: $Date: 2002/02/25 12:40:36 $
+;; Version: $Revision: 1.30 $
+;; RCS: $Id: ess-cust.el,v 1.30 2002/02/25 12:40:36 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -630,7 +630,7 @@ in S+4 Commands window and in Sqpe+4 buffer."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-Sqpe+4-SHOME-name 
+(defcustom inferior-Sqpe+4-SHOME-name
   (if ess-microsoft-p "c:/progra~1/spls45se" nil)
   "*SHOME name for invoking an inferior ESS with Sqpe+4().
 The default value is correct for a default installation of
@@ -782,10 +782,10 @@ order for it to work right.  And Emacs is too smart for it."
 ;;; These variables are currently used only with the S language files for
 ;;; S S-Plus R.
 
-(defcustom R-editor 
+(defcustom R-editor
   (if ess-microsoft-p "gnuclient.exe"
     (if (equal system-type 'Apple-Macintosh) nil
-      "emacslient")) ;; unix
+      "emacsclient")) ;; unix
   "*Editor called by R process with 'edit()' command."
 :group 'ess
 :type "string")
@@ -798,7 +798,7 @@ order for it to work right.  And Emacs is too smart for it."
 (defcustom S-editor
   (if ess-microsoft-p "gnuclient.exe"
     (if (equal system-type 'Apple-Macintosh) nil
-      "emacslient")) ;; unix
+      "emacsclient")) ;; unix
   "*Editor called by S process with 'edit()' command."
 :group 'ess
 :type "string")
@@ -806,7 +806,7 @@ order for it to work right.  And Emacs is too smart for it."
 (defcustom S-pager
   (if ess-microsoft-p "gnuclientw.exe"
     (if (equal system-type 'Apple-Macintosh) nil
-      "emacslient")) ;; unix
+      "emacsclient")) ;; unix
   "*Pager called by S process with 'page()' command."
 :group 'ess
 :type "string")

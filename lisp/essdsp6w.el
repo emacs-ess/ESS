@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2002/01/21 03:27:40 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: essdsp6w.el,v 5.9 2002/01/21 03:27:40 rmh Exp $
+;; Modified: $Date: 2002/02/25 12:40:36 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: essdsp6w.el,v 5.10 2002/02/25 12:40:36 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -30,7 +30,7 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; 
+;;;
 ;;; This file defines all the S-PLUS 6.x for Windows customizations
 ;;; for ess-mode with ddeclient.
 
@@ -93,15 +93,8 @@ connects it to the '(ddeESS [S+6])' window.")
     (ess-STERM  . "ddeESS")
     (ess-editor . S-editor)
     (ess-pager  . S-pager)
-    (inferior-ess-language-start .
-				 (concat "options("
-					 "STERM='"  ess-STERM  "'"
-					 (if ess-editor 
-					     (concat ", editor='" ess-editor "'"))
-					 (if ess-pager 
-					     (concat ", pager='"  ess-pager  "'"))
-					 ")"))
-)
+    (inferior-ess-language-start . (eval inferior-S-language-start))
+    )
  "Variables to customize for S+6")
 
 (defvar Sqpe+6-customize-alist
@@ -137,9 +130,9 @@ connects it to the '(ddeESS [S+6])' window.")
     (inferior-ess-language-start .
 				 (concat "options("
 					 "STERM='"  ess-STERM  "'"
-					 (if ess-editor 
+					 (if ess-editor
 					     (concat ", editor='" ess-editor "'"))
-					 (if ess-pager 
+					 (if ess-pager
 					     (concat ", pager='"  ess-pager  "'"))
 					 ")"))
 )

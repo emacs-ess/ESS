@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/01/21 03:26:13 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: essd-sp4.el,v 1.10 2002/01/21 03:26:13 rmh Exp $
+;; Modified: $Date: 2002/02/25 12:40:36 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: essd-sp4.el,v 1.11 2002/02/25 12:40:36 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -90,15 +90,8 @@ connects it to the '(ddeESS [S+4])' window.")
     (ess-STERM  . "ddeESS")
     (ess-editor . S-editor)
     (ess-pager  . S-pager)
-    (inferior-ess-language-start .
-				 (concat "options("
-					 "STERM='"  ess-STERM  "'"
-					 (if ess-editor 
-					     (concat ", editor='" ess-editor "'"))
-					 (if ess-pager 
-					     (concat ", pager='"  ess-pager  "'"))
-					 ")"))
-)
+    (inferior-ess-language-start . (eval inferior-S-language-start))
+    )
  "Variables to customize for S+4")
 
 (defvar Sqpe+4-customize-alist
@@ -134,9 +127,9 @@ connects it to the '(ddeESS [S+4])' window.")
     (inferior-ess-language-start .
 				 (concat "options("
 					 "STERM='"  ess-STERM  "'"
-					 (if ess-editor 
+					 (if ess-editor
 					     (concat ", editor='" ess-editor "'"))
-					 (if ess-pager 
+					 (if ess-pager
 					     (concat ", pager='"  ess-pager  "'"))
 					 ")"))
 )

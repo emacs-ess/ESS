@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2002/01/15 08:47:17 $
-;; Version: $Revision: 5.27 $
-;; RCS: $Id: essl-s.el,v 5.27 2002/01/15 08:47:17 maechler Exp $
+;; Modified: $Date: 2002/02/25 12:40:36 $
+;; Version: $Revision: 5.28 $
+;; RCS: $Id: essl-s.el,v 5.28 2002/02/25 12:40:36 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -85,8 +85,17 @@
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function")
     (font-lock-defaults           . '(ess-mode-font-lock-keywords
-				      nil nil ((?\. . "w")))))
+				      nil nil ((?\. . "w"))))
+    )
   "General options for editing S, S+, and R source files.")
+
+(defvar inferior-S-language-start
+  '(concat "options("
+	     "STERM=\""  ess-STERM  "\""
+	     (if ess-editor (concat ", editor=\"" ess-editor "\""))
+	     (if ess-pager  (concat ", pager=\""  ess-pager  "\""))
+	     ")")
+  "S language expression for startup -- default for all S dialects.")
 
 ;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in essl-s!).
 

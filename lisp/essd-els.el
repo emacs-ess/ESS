@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/01/20 06:14:36 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: essd-els.el,v 1.13 2002/01/20 06:14:36 rmh Exp $
+;; Modified: $Date: 2002/02/25 12:40:36 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: essd-els.el,v 1.14 2002/02/25 12:40:36 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -72,15 +72,8 @@
     (ess-STERM  . "iESS")
     (ess-editor . S-editor)
     (ess-pager  . S-pager)
-    (inferior-ess-language-start .
-				 (concat "options("
-					 "STERM='"  ess-STERM  "'"
-					 (if ess-editor 
-					     (concat ", editor='" ess-editor "'"))
-					 (if ess-pager 
-					     (concat ", pager='"  ess-pager  "'"))
-					 ")"))
-)
+    (inferior-ess-language-start . (eval inferior-S-language-start))
+    )
  "Variables to customize for S+elsewhere")
 
 

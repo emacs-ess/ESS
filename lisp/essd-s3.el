@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/01/20 06:14:36 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: essd-s3.el,v 5.9 2002/01/20 06:14:36 rmh Exp $
+;; Modified: $Date: 2002/02/25 12:40:36 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: essd-s3.el,v 5.10 2002/02/25 12:40:36 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -71,15 +71,8 @@
     (ess-STERM  . "iESS")
     (ess-editor . S-editor)
     (ess-pager  . S-pager)
-    (inferior-ess-language-start .
-				 (concat "options("
-					 "STERM='"  ess-STERM  "'"
-					 (if ess-editor 
-					     (concat ", editor='" ess-editor "'"))
-					 (if ess-pager 
-					     (concat ", pager='"  ess-pager  "'"))
-					 ")"))
-)
+    (inferior-ess-language-start . (eval inferior-S-language-start))
+    )
   "Variables to customize for S3")
 
 

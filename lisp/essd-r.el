@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/01/20 06:14:36 $
-;; Version: $Revision: 5.34 $
-;; RCS: $Id: essd-r.el,v 5.34 2002/01/20 06:14:36 rmh Exp $
+;; Modified: $Date: 2002/02/25 12:40:36 $
+;; Version: $Revision: 5.35 $
+;; RCS: $Id: essd-r.el,v 5.35 2002/02/25 12:40:36 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -78,15 +78,8 @@
     (ess-STERM  . "iESS")
     (ess-editor . R-editor)
     (ess-pager  . R-pager)
-    (inferior-ess-language-start .
-				 (concat "options("
-					 "STERM='"  ess-STERM  "'"
-					 (if ess-editor 
-					     (concat ", editor='" ess-editor "'"))
-					 (if ess-pager 
-					     (concat ", pager='"  ess-pager  "'"))
-					 ")"))
-)
+    (inferior-ess-language-start . (eval inferior-S-language-start))
+    )
   "Variables to customize for R")
 
 ;;; AJR: Need to condition on this...!
@@ -119,6 +112,9 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
     (if ess-microsoft-p
 	(setq default-process-coding-system '(undecided-dos . undecided-dos)))
     (inferior-ess r-start-args) ;; (R)
+    (ess-write-to-dribble-buffer
+     (format "(R): inferior-ess-language-start=%s\n"
+	     inferior-ess-language-start))
     (if inferior-ess-language-start
 	(ess-eval-linewise inferior-ess-language-start))))
 

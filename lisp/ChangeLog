@@ -1,3 +1,15 @@
+2002-02-15  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (S-editing-alist): introduce S "global"
+	  `inferior-S-language-start'
+
+	* essd-r.el (R-customize-alist): use inferior-S-language-start above.
+	* essd-sp[3-6].el, essd-s[34].el, essdsp6w.el, essd-els.elc -- ditto.
+
+2002-02-13  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (S-pager) and others: s/emacslient/emacsclient/
+
 2002-01-26  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essddr.el (Rd-font): new function, put on C-c C-f à la TeX-font
