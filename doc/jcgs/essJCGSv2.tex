@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/05 22:43:47 $ - $Revision: 1.108 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/05 22:48:44 $ - $Revision: 1.109 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -258,29 +258,30 @@ graphics-based windowing systems such as X11\tm, Microsoft Windows,
 and Apple Mac OS.  These windowing systems provide a graphical user
 interface (GUI) which allows the user to interact with either a
 keyboard or a mouse, and encourage multiple applications to share a
-single display.  Presently, Emacs is more often used with a GUI,
-%in a windowing environment within its own window, 
-but binding commands to keystrokes provides an important time and
-memory saving feature.  Emacs menus and toolbars on the display screen
-allow mouse access to frequently used actions and provide a graphical
-alternative when the user does not know or can not recall a keymap.
-User-defined menus and toolbars can be constructed as needed.
+single display.  Presently, Emacs is more often used with a GUI, with
+commands bound to mouse actions, but binding commands to keystrokes
+still provides an important time-saving feature.  Emacs menus and
+toolbars on the display screen allow mouse access to frequently used
+actions and provide a graphical alternative when the user does not
+know or can not recall a keymap.  User-defined menus and toolbars can
+be constructed as needed.
 
-\paragraph{Buffers for Editing and for Program Control.}
+\paragraph{Buffers let Emacs control}%for Editing and for Program Control.}
 Within Emacs, buffers provide the interface between the text editor
 and the rest of the computer.  They can be thought of as a collection
-of scratch pads that both the computer and the user can read and write
-on.  By switching between multiple buffers, the user can
-simultaneously edit multiple files and control multiple programs.  For
-disk files, the working copy of the opened file is placed in an Emacs
-buffer where it can be viewed and edited either by the user or
+of scratch pads that both the computer and the user read and write, as
+well as act upon.  The user can simultaneously edit multiple files and
+control multiple programs through the employment of multiple buffers.
+With disk files, the working copy of the opened file is placed in an
+Emacs buffer where it can be viewed and edited either by the user or
 automatically by Emacs; Emacs will save the contents to disk at
-specified intervals.  One common program that is run within Emacs
-buffers is the interactive operating system command line interpreter,
-called a shell.  Based on this, most programs which take input and
-provide output to the command-line can be run within Emacs.  When a
-command line interpreter is run inside a buffer, the entire transcript
-of the interaction can be edited and searched while the program is
+specified intervals based on some function of time and the amount of
+editing activity.  One common program that is run within Emacs buffers
+is the interactive operating system command line interpreter, called a
+shell.  By using this, most programs which take input and provide
+output to the command-line can be run within and controlled by input
+from Emacs.  The buffer provides a copy of the entire transcript of
+the interaction, which can be edited and searched while the program is
 still running.
 
 \paragraph{Major and Minor Modes.}
