@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/09/23 21:00:44 $
-;; Version: $Revision: 1.121 $
-;; RCS: $Id: essa-sas.el,v 1.121 2002/09/23 21:00:44 rsparapa Exp $
+;; Modified: $Date: 2002/10/18 16:34:57 $
+;; Version: $Revision: 1.122 $
+;; RCS: $Id: essa-sas.el,v 1.122 2002/10/18 16:34:57 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -678,6 +678,17 @@ Keep in mind that the maximum command line length in MS-DOS is
   (setq left-margin (current-column))
 )
   
+(defun ess-sas-transcript ()
+"Convert a .log file to a .sas program."
+(interactive)
+(save-excursion
+    (goto-char (point-min))
+
+    (while (search-forward-regexp 
+"^\\(\\(1[ \t]+The SAS System\\|\\|NOTE\\|WARNING\\|ERROR\\|[ \t]+\\(\\(real\\|cpu\\) time\\|Licensed to\\|Engine:\\|Physical Name:\\)\\).*$\\|[0-9]+\\([ \t]+!\\)?\\|MPRINT([_A-Z]+):\\)" 
+        nil t) (replace-match "/*\\&*/" t))
+))
+
 (defun ess-sas-toggle-sas-log-mode (&optional force)
   "Toggle SAS-log-mode for .log files."
   (interactive)
