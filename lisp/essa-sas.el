@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/03/24 14:45:11 $
-;; Version: $Revision: 1.157 $
-;; RCS: $Id: essa-sas.el,v 1.157 2004/03/24 14:45:11 rsparapa Exp $
+;; Modified: $Date: 2004/03/25 19:50:18 $
+;; Version: $Revision: 1.158 $
+;; RCS: $Id: essa-sas.el,v 1.158 2004/03/25 19:50:18 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -934,6 +934,7 @@ Sometimes its necessary to wait for a shell prompt."
 
 ;;; Section 3:  Key Definitions
 
+
 (defvar ess-sas-edit-keys-toggle nil
   "Toggle TAB key in `SAS-mode'.
 nil to bind TAB to `sas-indent-line'.
@@ -951,6 +952,7 @@ C-TAB is `ess-sas-backward-delete-tab' and
 RET is `newline'.
 Without args, toggle between these options."
   (interactive "P")
+
   (setq ess-sas-edit-keys-toggle
 	(if (null arg) (not ess-sas-edit-keys-toggle) arg))
   (if ess-sas-edit-keys-toggle
@@ -993,7 +995,7 @@ Without args, toggle between these options."
       (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
 					;else
     (global-set-key [(control tab)] 'ess-sas-backward-delete-tab))
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
+  ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
   (setq ess-sas-global-pc-keys t)
   (setq ess-sas-global-unix-keys nil)
   (setq ess-sas-local-pc-keys nil)
@@ -1028,7 +1030,7 @@ Without args, toggle between these options."
 	    (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
 	    ;else
 	    (global-set-key [(control tab)] 'ess-sas-backward-delete-tab))
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path) 
+  ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path) 
   (setq ess-sas-global-pc-keys nil)
   (setq ess-sas-global-unix-keys t)
   (setq ess-sas-local-pc-keys nil)
@@ -1059,7 +1061,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path) 
+  ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path) 
   (setq ess-sas-global-pc-keys nil)
   (setq ess-sas-global-unix-keys nil)
   (setq ess-sas-local-pc-keys t)
@@ -1090,7 +1092,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
-  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path) 
+  ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path) 
   (setq ess-sas-global-pc-keys nil)
   (setq ess-sas-global-unix-keys nil)
   (setq ess-sas-local-pc-keys nil)

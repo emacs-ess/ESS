@@ -264,13 +264,13 @@ some of the nicknames as SAS Display Manager commands (they are in all
 capitals).
 
 @display
-Unix PC  Nickname   Description  
+Unix PC  Nickname   "inferior" Alias (if any) and Description  
 
 F2   F2  refresh
                     revert the current buffer with the file of the same 
                     name if the file is newer than the buffer
 
-F3   F8  SUBMIT     
+F3   F8  SUBMIT     C-c C-b
                     save the current .sas file (which is either the .sas 
                     file in the current buffer or the .sas file associated
                     with the .lst or .log file in the current buffer) and 
@@ -279,11 +279,11 @@ F3   F8  SUBMIT
 F4   F5  PROGRAM       
                     switch buffer to .sas file
 
-F5   F6  LOG        
+F5   F6  LOG        C-c C-x
                     switch buffer to .log file, `refresh' and goto next 
                     error message, if any
 
-F6   F7  OUTPUT     
+F6   F7  OUTPUT     C-c C-y
                     switch buffer to .lst file and `refresh'
 
 F7   F4  filetype-1    
@@ -317,7 +317,7 @@ C-F2 C-F2 rtf-landscape
                     create an MS RTF landscape file from the current buffer 
                     with a file extension of .rtf
 
-C-F3 C-F8 submit-region    
+C-F3 C-F8 submit-region C-c C-r 
                     write region to ess-temp.sas and submit
 
 C-F5 C-F6 append-to-log    

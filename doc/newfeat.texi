@@ -14,7 +14,9 @@ to boolean rather than 0/1; added the function ess-electric-run-semicolon
 which automatically reverse indents lines containing only "run;";
 C-F1 creates MS RTF portrait from the current buffer;
 C-F2 creates MS RTF landscape from the current buffer;
-C-F9 kills all buffers associated with .sas program
+C-F9 kills all buffers associated with .sas program;
+"inferior" aliases for SAS batch:  C-c C-r for submit region,
+C-c C-b for submit buffer, C-c C-x for goto .log; C-c C-y for goto .lst
 @item ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
 pressing underscore twice inserts a literal underscore;
 ess-dump-filename-template-proto (new name!) now can be

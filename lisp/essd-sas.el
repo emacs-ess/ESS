@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2003/07/15 18:11:24 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: essd-sas.el,v 5.14 2003/07/15 18:11:24 rsparapa Exp $
+;; Modified: $Date: 2004/03/25 19:50:18 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: essd-sas.el,v 5.15 2004/03/25 19:50:18 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -210,6 +210,13 @@ Better logic needed!  (see 2 uses, in this file).")
     (if ess-sas-global-pc-keys (ess-sas-global-pc-keys)))
   (define-key sas-mode-local-map "\C-ci" 'ess-eval-line-and-step-invisibly)
   (define-key sas-mode-local-map ";" 'ess-electric-run-semicolon)
+  
+  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
+  (define-key sas-mode-local-map "\C-c\C-b" 'ess-sas-submit)
+  (define-key sas-mode-local-map "\C-c\C-r" 'ess-sas-submit-region)
+  (define-key sas-mode-local-map "\C-c\C-x" 'ess-sas-goto-log)
+  (define-key sas-mode-local-map "\C-c\C-y" 'ess-sas-goto-lst)
+
   (use-local-map sas-mode-local-map))
 
 ;; rmh Jul 10 2003
