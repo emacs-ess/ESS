@@ -130,7 +130,7 @@
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/10/03 16:46:03 $ - $Revision: 1.38 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/10/03 16:56:36 $ - $Revision: 1.39 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -348,8 +348,11 @@ with the paren-mismatch font, bright purple on a color terminal.
 %\end{figure}
 \begin{figure}[tbp]%h
   \ESSfig{%
-    \includegraphics[angle=270,width=\textwidth]{font-cor-s-bw}
-    \includegraphics[angle=270,width=\textwidth]{font-incor-s-bw}
+    %% new files made by
+    %% convert -colorspace gray font-incor-s.gif font-incor-s-bw.eps
+    %% convert -colorspace gray   font-cor-s.gif   font-cor-s-bw.eps
+    \includegraphics[width=\textwidth]{font-cor-s-bw}
+    \includegraphics[width=\textwidth]{font-incor-s-bw}
   }
   \caption{Emacs detects mismatched parentheses.  The top panel
     shows matching parentheses highlighted in the same color.  The
