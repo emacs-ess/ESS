@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/01/19 15:12:52 $
-;; Version: $Revision: 1.53 $
-;; RCS: $Id: ess-cust.el,v 1.53 2004/01/19 15:12:52 stephen Exp $
+;; Modified: $Date: 2004/02/17 22:16:55 $
+;; Version: $Revision: 1.54 $
+;; RCS: $Id: ess-cust.el,v 1.54 2004/02/17 22:16:55 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -412,6 +412,14 @@ If not number, the statements are indented at open-parenthesis following
 	       (ess-continued-statement-offset . 4)
 	       (ess-brace-offset . -4)
 	       (ess-arg-function-offset . 0)
+	       (ess-expression-offset . 4)
+	       (ess-else-offset . 0)
+	       (ess-close-brace-offset . 0))
+	  ;; R added ajr 17Feb04 to match "common R" use
+	  (R   (ess-indent-level . 4)
+	       (ess-continued-statement-offset . 4)
+	       (ess-brace-offset . 0)
+	       (ess-arg-function-offset . 4)
 	       (ess-expression-offset . 4)
 	       (ess-else-offset . 0)
 	       (ess-close-brace-offset . 0))
