@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.0 $.
+### File: $Revision: 5.1 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -36,6 +36,14 @@ LISPDIR = .
 #GZCAT = gzcat
 GZCAT = zcat
 
+
+## compile with noninteractive and relatively clean environment
+## XEMACS 19.xx and before.
+#BATCHFLAGS = -batch -no-site-file -no-init-file
+## EMACS and XEMACS 20.x.
+BATCHFLAGS = -batch --no-site-file --no-init-fil
+
+
 #### no user servicable parts beyond this point ####
 
 # no csh please
@@ -54,11 +62,6 @@ MYFTPDIR = /m2/ftp/rossini
 # incorrectly.  also preload a file that sets byte compiler options.
 PRELOADS = -l ./ess-comp.el
 
-## compile with noninteractive and relatively clean environment
-## XEMACS 19.xx and before.
-#BATCHFLAGS = -batch -no-site-file -no-init-file
-## EMACS and XEMACS 20.x.
-BATCHFLAGS = -batch --no-site-file --no-init-file
 
 ## files that contain key macro definitions.  almost everything
 ## depends on them because the byte-compiler inlines macro expansions.
