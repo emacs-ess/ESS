@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/07 21:24:06 $
-;; Version: $Revision: 1.34 $
-;; RCS: $Id: ess.el,v 1.34 1997/07/07 21:24:06 rossini Exp $
+;; Modified: $Date: 1997/07/07 21:33:25 $
+;; Version: $Revision: 1.35 $
+;; RCS: $Id: ess.el,v 1.35 1997/07/07 21:33:25 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.35  1997/07/07 21:33:25  rossini
+;; added ess-write-to-dribble-buffer.
+;;
 ;; Revision 1.34  1997/07/07 21:24:06  rossini
 ;; added dribble buffer for messages.
 ;;
@@ -1061,6 +1064,14 @@ browse-url to find the location")
 
 (defvar ess-dribble-buffer (generate-new-buffer "ESS")
   "Buffer for temporary use for setting default variable values.")
+
+(defun ess-write-to-dribble-buffer (text)
+  "Write `text' to dribble buffer."
+  (save-excursion
+    (set-buffer ess-dribble-buffer)
+    (goto-char (point-max))
+    (insert-string text)))
+
 
 (defvar ess-customize-alist nil
   "Variable settings to use for proper behavior.")
