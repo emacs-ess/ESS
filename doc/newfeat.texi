@@ -1,8 +1,15 @@
+Changes/New Features in 5.2.1:
+@itemize @bullet
+@item ESS[S] (R and S-plus): now have tool-bar
+with entries to evaluate code in the inferior process or to switch
+there.
+@end itemize
+
 Changes/New Features in 5.2.0:
 @itemize @bullet
-@item ESS[BUGS]:  new info documentation!  now supports interactive 
+@item ESS[BUGS]:  new info documentation!  now supports interactive
 processing thanks to @uref{mailto:Aki.Vehtari@@hut.fi, Aki Vehtari};
-new architecture-independent unix support as well as support for BUGS v. 0.5 
+new architecture-independent unix support as well as support for BUGS v. 0.5
 @item ESS[SAS]:  convert .log to .sas with ess-sas-transcript;
 info documentation improved; Local Variable bug fixes;
 SAS/IML statements/functions now highlighted; files edited
