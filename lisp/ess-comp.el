@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/09/03 19:23:16 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: ess-comp.el,v 5.6 2000/09/03 19:23:16 rossini Exp $
+;; Modified: $Date: 2000/09/03 19:33:45 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: ess-comp.el,v 5.7 2000/09/03 19:33:45 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -35,8 +35,9 @@
 
 ;;; Code:
 
-;;; primarily for setting up compile load-path properly (Emacs doesn't
-;;; include '.' in the emacs lisp load path).
+;;; Sets up compile load-path properly and provides minimal debugging
+;;; assistance (Emacs doesn't include '.' in the emacs lisp load
+;;; path).
 
 (add-to-list 'load-path nil)
 
@@ -54,12 +55,10 @@
     "Shortcut for \\[message] only if `ess-show-load-messages' is non-nil.")
 
 ;; These are required by every other file.
-
-;; needed for subsequent files:
 (ess-message "loading 'ess-emcs ..")    (require 'ess-emcs)
-(ess-message "loading 'ess-cust ..")    (require 'ess-cust) ; set up variables
-(ess-message "loading 'ess ..")		(require 'ess)      ; configure
-(ess-message "loading 'ess-site ..")	(require 'ess-site) ; last, to overload previous settings.
+(ess-message "loading 'ess-cust ..")    (require 'ess-cust) ;set up variables
+(ess-message "loading 'ess ..")		(require 'ess)      ;configure
+(ess-message "loading 'ess-site ..")	(require 'ess-site) ;overload defaults
 
  ; Local variables section
 
