@@ -120,7 +120,7 @@ make install
 This will install the compiled info files and lisp files.  If you are an
 XEmacs user, then you should be done.  If not, then you may have to
 edit/create the file @file{dir} that is found in the directory specified
-by @code{INFODIR}: see the sample @file{dir} in ESSDIR/ess-VERSION/doc.
+by @code{INFODIR}: see the sample @file{dir} in ESSDIR/ess-VERSION/doc/info.
 If @file{dir} does not exist in @code{INFODIR}, then the sample
 @file{dir} will be installed.
 
