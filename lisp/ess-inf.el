@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/11/16 19:20:23 $
-;; Version: $Revision: 5.32 $
-;; RCS: $Id: ess-inf.el,v 5.32 1999/11/16 19:20:23 ess Exp $
+;; Modified: $Date: 2000/01/31 00:17:00 $
+;; Version: $Revision: 5.33 $
+;; RCS: $Id: ess-inf.el,v 5.33 2000/01/31 00:17:00 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -213,11 +213,11 @@ accompany the call for inferior-ess-program.
 		    (concat "." ess-dialect "history"))
       (ess-write-to-dribble-buffer
        (format "(inf-ess finis [%s(%s), %s(%s,%s)]\n"
-	       ess-language		ess-dialect
+	       ess-language
+	       ess-dialect
 	       inferior-ess-program
 	       ess-current-process-name
-	       ess-local-process-name
-	       ))
+	       ess-local-process-name))
       (ess-multi procname buf inferior-ess-start-args))))
 
 
@@ -1539,8 +1539,8 @@ Returns nil if that file cannot be found"
 	result)
     (while (and (not result) path)
       (setq result (file-attributes
-		  (concat (file-name-as-directory (car path))
-			  object)))
+		    (concat (file-name-as-directory (car path))
+			    object)))
       (setq path (cdr path)))
     (nth 5 result)))
 
@@ -1552,7 +1552,7 @@ Returns nil if that file cannot be found"
 		(> (car (cdr mod1)) (car (cdr mod2)))))))
 
 (defun ess-get-object-list (name)
-  "Return the alist of current S object names associated with process NAME"
+  "Return an alist of current S object names associated with process NAME"
   (or ess-object-list
       (save-excursion
 	(set-buffer (process-buffer (get-ess-process name)))
