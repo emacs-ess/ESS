@@ -141,10 +141,10 @@ connects it to the '(ddeESS [S+6])' window.")
 ;;;     then '(ddeESS [S+6])' becomes a shell buffer.
 ;;;
 (defun S+6 (&optional proc-name)
-  "Verify that `inferior-S+6-program-name' points to S-Plus 6.
-Start normally for S-Plus 6.1.  Inform the user to start S-Plus 6.0
+  "Verify that `inferior-S+6-program-name' points to S-Plus 6 or S-Plus 7.
+Start normally for S-Plus 6.1 and later.  Inform the user to start S-Plus 6.0
 from the icon and then connect to it with `S+6-existing'.  Give an error
-message if `inferior-S+6-program-name' doesn't point to S-Plus 6."
+message if `inferior-S+6-program-name' doesn't point to S-Plus 6 or S-Plus 7."
   (interactive)
   (save-excursion
     (set-buffer (find-file-noselect
@@ -152,21 +152,24 @@ message if `inferior-S+6-program-name' doesn't point to S-Plus 6."
 			 "/../../versions") t))
     (toggle-read-only 1)
     (forward-line)
-    (if (not (search-backward-regexp "6.[1-9]" (point-min) t))
-	(if (search-backward "6.0" (point-min) t)
+    (if (not (search-backward-regexp "[67].[0-9]" (point-min) t))
+	(error "The emacs variable `inferior-S+6-program-name' does
+not point to S-Plus 6 or 7.  Please add `splus[67]?/cmd'
+(expand the `[67]?' to match your setup) to your `exec-path' or
+specify the complete path to `Splus.exe' in the variable
+`inferior-S+6-program-name' in your `.emacs' file.")
+      (progn
+    (forward-line)
+      (if (search-backward "6.0" (point-min) t)
 	    (error "S-Plus 6.0 for Microsoft Windows has a bug that
 prevents it from being started by emacs.  Instead, you must start it
 by double-clicking an icon.  Then you can connect to it with
 `S+6-existing'.  You should consider upgrading to S-Plus 6.1 or higher.")
-	  (error "The emacs variable `inferior-S+6-program-name' does
-not point to S-Plus 6.  Please add `splus6?/cmd'
-(expand the `?' to match your setup) to your `exec-path' or
-specify the complete path to `Splus.exe' in the variable
-`inferior-S+6-program-name' in your `.emacs' file."))))
-  (S+6-initiate proc-name)) ;; normal start
+  (S+6-initiate proc-name))) ;; normal start ;
+      )))
 
 (defun S+6-initiate (&optional proc-name)
-  "Call 'S-PLUS 6.x for Windows', the 'GUI Thing' from StatSci.  Put
+  "Call 'S-PLUS [67].x for Windows', the 'GUI Thing' from StatSci.  Put
 S-Plus in an independent MS-Window (Splus persists even if the
 '(ddeESS [S+6])' window is killed in emacs).  Do this by creating a
 comint process that calls sh.  Send a shell command in that sh buffer
