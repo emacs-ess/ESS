@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/07 16:20:48 $
-;; Version: $Revision: 1.32 $
-;; RCS: $Id: ess-inf.el,v 1.32 1997/07/07 16:20:48 rossini Exp $
+;; Modified: $Date: 1997/07/07 19:59:18 $
+;; Version: $Revision: 1.33 $
+;; RCS: $Id: ess-inf.el,v 1.33 1997/07/07 19:59:18 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.33  1997/07/07 19:59:18  rossini
+;; cleaned up doc and doc strings in inferior-ess and ess-multi.
+;;
 ;; Revision 1.32  1997/07/07 16:20:48  rossini
 ;; cleaned up doc-strings.
 ;;
@@ -310,14 +313,20 @@ If that symbol is a variable its value is used as a string of arguments
 when invoking S.
 \(Type \\[describe-mode] in the process buffer for a list of commands.)"
 
-  ;; With prefix arg N: switch to process N if it is running.
-  ;;   If it is not, start a new process N
-  ;;   Use the current buffer if it is in inferior-ess-mode or ess-trans-mode
-  ;;   If not, maybe ask about starting directory and/or transcript file
-  ;;      If no transfile, use buffer *S*
+  ;; With prefix arg N: switch to process N if it is running, if not,
+  ;; start a new process N.
+  ;;
+  ;; Use the current buffer if it is in inferior-ess-mode or ess-trans-mode
+  ;; If not, maybe ask about starting directory and/or transcript file.
+  ;; If no transfile, use buffer *S*
+  ;;
   ;; Without prefix arg: switch to buffer of ess-local-process-name if it
-  ;;   exists, maybe starting a new process
-  ;;   If not, find first N s.t. there is no process SN. Ask as above.
+  ;; exists, maybe starting a new process; If not, find first N
+  ;; s.t. there is no process `ess-proc-prefix'+N.
+  ;; Ask as above. 
+  ;;
+  ;; This function is primarily used to figure out the Process and
+  ;; buffer names to use for inferior-ess.
 
   (interactive "P")
   ;; set up for current language (need here, to get ess-proc-prefix, etc).
@@ -476,18 +485,9 @@ when invoking S.
 BUFFER is only needed if process NAME is not running. BUFFER must exist.
 Default-directory is the S starting directory. BUFFER may be visiting a file."
 
-;; Start or switch to inferior S process number N.
-;; If process N is currently running, just switch to that buffer.
-;; If process N is not running but has a buffer, switch to that buffer
-;; and start a new process. If there is no S process N, create a buffer
-;; called *SN* (N is a number) and start a process in it.
-;; Takes the program name from the variable inferior-ess-program.
-;; The S program name is used to make a symbol name such as
-;; `inferior-ess-args'. 
-;; If that symbol is a variable its value is used as a string of arguments
-;; when invoking S. An S process becomes the \"current\" S process by
-;; being created or when a command is sent to it by typing
-;; \(Type \\[describe-mode] in the process buffer for a list of commands.)
+;; If ess-process NAME is running, switch to it.  If not, use COMINT
+;; to start up a new process, using NAME and BUFFER (which is needed
+;; if there is no process NAME).
 
   ;; (if (< n 1) (error "Argument to ess-multi must be 1 or greater"))
   (let* ((proc-name name)
@@ -517,11 +517,6 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
 	(inferior-ess-mode)
 	;;~~~~~~~~~~~~~~~
 	(goto-char (point-max))
-
-	;;This should be ELSEWHERE!  Like in ess.el, where it is
-	;;now... AJR.
-	;;(make-local-variable 'ess-directory)
-	;;(setq ess-directory default-directory)
 
 	(setq comint-input-ring-file-name
 	      (expand-file-name ess-history-file ess-directory))
