@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/04/26 21:04:32 $
-;; Version: $Revision: 5.19 $
-;; RCS: $Id: essl-sas.el,v 5.19 2001/04/26 21:04:32 rossini Exp $
+;; Modified: $Date: 2001/05/02 19:40:55 $
+;; Version: $Revision: 5.20 $
+;; RCS: $Id: essl-sas.el,v 5.20 2001/05/02 19:40:55 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -124,7 +124,7 @@ the mode line."
   :type  'integer)
 
 (defcustom sas-indent-ignore-comment "*"
-  "*Comments with start with this string are ignored in indentation."
+  "*Comments that start with this string are ignored in indentation."
   :group 'ess-sas
   :type  'string)
 
@@ -135,7 +135,7 @@ the mode line."
 
 ;; added sas-program 4/29/94.  user can specify a different version of sas.
 (defcustom sas-program "sas" 
-  "*Name of program which runs sas."
+  "*Command to invoke SAS interactively."
   :group 'ess-sas
   :type  'string)
 
@@ -190,12 +190,29 @@ number."
   :group 'ess-sas
   :type  'file)
 
+;; The next two are ``the inside of [...] in a regexp'' to be used in
+;; (skip-chars-(for|back)ward SAS-..-chars)
+(defcustom sas-white-chars " \t\n\f"
+  "This does NOT escape blanks (RMH, 2000/03/20)."
+  :group 'ess-sas
+  :type  'string)
+
+(defcustom sas-comment-chars (concat sas-white-chars ";")
+  "Doc?"
+  :group 'ess-sas
+  :type  'string)
+
+(defcustom ess-sas-run-make-regexp t
+  "If you do not want to run make-regexp, then set to nil."
+  :group 'ess-sas
+  :type  'string)
+
+(require 'essa-sas)
+
 (defvar sas-buffer-name nil)
 (defvar sas-file-root nil)
 (defvar sas-submitable nil)
 (defvar sas-dataset nil)
-
-
 (defvar SAS-syntax-table nil "Syntax table for SAS code.")
 
 (if SAS-syntax-table
@@ -224,23 +241,6 @@ number."
 (modify-syntax-entry ?>  "."  SAS-syntax-table)
 (modify-syntax-entry ?/  ". 14"  SAS-syntax-table) ; comment character
 (modify-syntax-entry ?.  "w"  SAS-syntax-table))
-
-;; The next two are ``the inside of [...] in a regexp'' to be used in
-;; (skip-chars-(for|back)ward SAS-..-chars)
-(defcustom sas-white-chars " \t\n\f"
-  "This does NOT escape blanks (RMH, 2000/03/20)."
-  :group 'ess-sas
-  :type  'string)
-
-(defcustom sas-comment-chars (concat sas-white-chars ";")
-  "Doc?"
-  :group 'ess-sas
-  :type  'string)
-
-(defcustom ess-sas-run-make-regexp t
-  "If you do not want to run make-regexp, then set to nil."
-  :group 'ess-sas
-  :type  'string)
 
 (if (or window-system
 	noninteractive) ; compilation!

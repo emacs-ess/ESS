@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/04/26 17:18:38 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essl-bug.el,v 1.3 2001/04/26 17:18:38 ess Exp $
+;; Modified: $Date: 2001/05/02 19:40:55 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essl-bug.el,v 1.4 2001/05/02 19:40:55 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -178,8 +178,8 @@
 	    (insert (concat "compile(\"" ess-file-dir ess-file-root ".bug\")\n"))
 	    (insert "update( )\n")
 	    (insert "monitor( )\n")
-	    (insert "update( )\n")
 	    (insert "checkpoint( )\n")
+	    (insert "update( )\n")
 	    (insert "stats( )\n")
 	    (insert "q( )\n")
 	))

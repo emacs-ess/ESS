@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/04/26 19:18:39 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: essa-sas.el,v 1.18 2001/04/26 19:18:39 ess Exp $
+;; Modified: $Date: 2001/05/02 19:40:55 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: essa-sas.el,v 1.19 2001/05/02 19:40:55 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -34,9 +34,6 @@
 
 ;; Code:
 
-(require 'ess-site)
-
-
 ;;; Table of Contents
 ;;; Section 1:  Variable Definitions
 ;;; Section 2:  Function Definitions
@@ -45,23 +42,33 @@
 
 ;;; Section 1:  Variable Definitions
 
-(defvar ess-sas-data-view-options 
-   (if (eq system-type 'windows-nt) "-noenhancededitor -nosysin -log NUL:"
-     "-nodms -nosysin -log /dev/null")
-  "The options necessary for your enviromment and your operating system.")
-
+(defcustom ess-sas-data-view-options 
+    (if (eq system-type 'windows-nt) "-noenhancededitor -nosysin -log NUL:"
+	"-nodms -nosysin -log /dev/null")
+    "*The options necessary for your enviromment and your operating system."
+    :group 'ess-sas
+    :type  'string
+)
 
 (defvar ess-sas-file-path "."
-	"Full path-name of the sas file to perform operations on.")
+    "Full path-name of the sas file to perform operations on.")
 
-(defvar ess-sas-submit-command "sas"
-    "Command to invoke SAS.")
+(defcustom ess-sas-submit-command sas-program
+    "*Command to invoke SAS in batch; may differ from interactive SAS command."
+    :group 'ess-sas
+)
 
-(defvar ess-sas-submit-post-command (if (w32-shell-dos-semantics) " " "&")
-    "Command-line statement to post-modify SAS invocation, e.g. &")
+(defcustom ess-sas-submit-post-command (if (w32-shell-dos-semantics) " " "&")
+    "*Command-line statement to post-modify SAS invocation, e.g. &"
+    :group 'ess-sas
+    :type  'string
+)
 
-(defvar ess-sas-submit-pre-command (if (w32-shell-dos-semantics) "start" " ")
-    "Command-line statement to pre-modify SAS invocation, e.g. start")
+(defcustom ess-sas-submit-pre-command (if (w32-shell-dos-semantics) "start" " ")
+    "*Command-line statement to pre-modify SAS invocation, e.g. start"
+    :group 'ess-sas
+    :type  'string
+)
 
 
 (defvar ess-sas-submit-method 
@@ -89,14 +96,23 @@ or `ESS-elsewhere' should use
 in ess-site.el or in .emacs.")
 
 
-(defvar ess-sas-suffix-1 "txt"
-        "The ess-sas-suffix-1 file to perform operations on.")
+(defcustom ess-sas-suffix-1 "txt"
+    "*The ess-sas-suffix-1 file to perform operations on."
+    :group 'ess-sas
+    :type  'string
+)
 
-(defvar ess-sas-suffix-2 "csv"
-      "The ess-sas-suffix-2 file to perform operations on.")
+(defcustom ess-sas-suffix-2 "csv"
+    "*The ess-sas-suffix-2 file to perform operations on."
+    :group 'ess-sas
+    :type  'string
+)
 
-(defvar ess-sleep-for 5
-	"Default for ess-sas-submit-sh is to sleep for 5 seconds.")
+(defcustom ess-sleep-for 5
+    "*Default for ess-sas-submit-sh is to sleep for 5 seconds."
+    :group 'ess-sas
+    :type  'number
+)
 
 (defvar ess-sas-tab-stop-alist
  '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120)
