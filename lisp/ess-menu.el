@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.3 2000/10/30 13:31:16 rossini Exp $
+;; Version: $Id: ess-menu.el,v 1.4 2001/02/06 19:08:48 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -37,6 +37,32 @@
 
 (require 'ess-site)
 
+
+ ;;; Speedbar stuff.
+
+(require 'speedbar)
+
+;; S languages
+
+(defun S-speedbar-buttons (buffer)
+  "attempted hack."
+  
+  (speedbar-with-writable)
+  (speedbar-make-tag-line)
+  (speedbar-insert-button))
+
+(defun S-speedbar-menu-items  ( )
+  "Attempted hack.")
+
+
+(defun ess-S-initialize-speedbar ()
+  (speedbar-add-supported-extension ".R")
+  (speedbar-add-supported-extension ".S")
+  (speedbar-add-supported-extension ".s")
+  (speedbar-add-supported-extension ".q"))
+  
+
+
  ;;; Function Menu (func-menu) for XEmacs:
 
 ;;(defvar fume-function-name-regexp-smode
@@ -48,7 +74,7 @@
 ;;   (r-mode  . fume-function-name-regexp-smode))
 ;; fume-function-name-regexp-alist)
 
- ;;; Imenu for Emacs...
+ ;;; Imenu for Emacs/XEmacs...
 
 (require 'imenu)
 
