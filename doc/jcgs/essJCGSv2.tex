@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 16:25:42 $ - $Revision: 1.213 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/20 17:47:39 $ - $Revision: 1.214 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -1097,22 +1097,26 @@ version 5.
 %multiple languages in a flexible way, 
 %%Kurt Hornik was instrumental in enhancing support for R,
 %%in particular, providing \stexttt{Rd-mode}.
-Richard M. Heiberger designed ``inferior'' ESS for \SAS\ and SAS-mode was 
+Richard M. Heiberger designed the inferior mode for interactive \SAS\
+and SAS-mode was 
 further integrated into ESS.  More changes were made to support
 additional statistical languages such as \Stata\ and \XLispStat.
 % which were added to ESS's capabilitities.
 
-But, ESS only worked with Unix statistics packages that
+ESS initially worked only with Unix statistics packages that
 used standard-input and standard-output for both the command-line 
 interface and batch processing.  ESS could not communicate with 
 %Windows versions of 
-statistical packages that did not use this protocol.  This changed in 1998.  
-Brian Ripley demonstrated the Windows Dynamic Data Exchange (DDE) protocol 
-with ESS.  Heiberger used DDE to provide interactive interfaces for Windows 
-versions of \Splus.  In 1999, Rodney Sparapani and Heiberger implemented 
-ESS batch file processing for \SAS\ on Unix, Windows and Mac which relies on 
-files rather than standard-input/standard-output.  In 2001, Sparapani added 
-BUGS batch file processing to ESS for Unix and Windows.
+statistical packages that did not use this protocol.  This changed in 1998 when
+Brian Ripley demonstrated use of the Windows Dynamic Data Exchange (DDE)
+protocol with ESS.
+Heiberger then used DDE to provide interactive interfaces for Windows 
+versions of \Splus.
+In 1999, Rodney Sparapani and Heiberger implemented an ESS batch
+system, which relies on files rather than
+standard-input/standard-output, for \SAS\ on Unix, Windows and Mac.
+In 2001, Sparapani added BUGS batch file processing to ESS for Unix
+and Windows.
 
 \begin{table}[tbp]
   \centering
@@ -1137,7 +1141,7 @@ BUGS batch file processing to ESS for Unix and Windows.
     1997 & v.5.0 & (GNU Emacs/XEmacs, Unix)         &&&  Stata, XLispStat, SAS interactive \\
     1998 & v.5.1.1 & (GNU Emacs/XEmacs, Unix/Windows) &&&  S+elsewhere; Windows: S+/R\\
     1999 & v.5.1.10 & (GNU Emacs/XEmacs, Unix/Windows/Mac) &&& SAS batch; Omegahat \\
-    2001 & v.5.1.19 & (GNU Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS batch, Mac: R \\
+    2001 & v.5.1.19 & (GNU Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS batch; Mac: R \\
 %%    2002 & v.5.1.20 & (Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS batch, Mac: R \\
 %%    2002 & v.5.2 & (Emacs/XEmacs, Unix/Windows/Mac) &&& ? \\
 \hline
