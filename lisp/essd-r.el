@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2003/11/06 13:23:19 $
-;; Version: $Revision: 5.46 $
-;; RCS: $Id: essd-r.el,v 5.46 2003/11/06 13:23:19 maechler Exp $
+;; Modified: $Date: 2004/01/10 22:34:39 $
+;; Version: $Revision: 5.47 $
+;; RCS: $Id: essd-r.el,v 5.47 2004/01/10 22:34:39 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -39,6 +39,14 @@
 (ess-message "[essd-r:] (require 'essl-s)")
 (require 'essl-s)
 
+;; modify S Syntax table:
+(setq R-syntax-table S-syntax-table)
+;; R >= 1.8: back tick `string` -- unfortunately no *pair* checking:
+;; breaks when things like `..' are used:
+;; (modify-syntax-entry ?` "\"" R-syntax-table)
+(modify-syntax-entry ?_  "_"  R-syntax-table) ; foo_bar is symbol in R >=1.9
+
+
 (ess-message "[essd-r:] (autoload ..) & (def** ..)")
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
@@ -55,7 +63,7 @@
 				      "S$" ess-suffix ; in the one from custom:
 				      ess-dump-filename-template-proto))
     (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . S-syntax-table)
+    (ess-mode-syntax-table         . R-syntax-table)
     (ess-help-sec-regex            . ess-help-R-sec-regex)
     (ess-help-sec-keys-alist       . R-help-sec-keys-alist)
     (ess-loop-timeout              . ess-S-loop-timeout)
