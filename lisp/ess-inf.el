@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/09/03 19:23:16 $
-;; Version: $Revision: 5.49 $
-;; RCS: $Id: ess-inf.el,v 5.49 2000/09/03 19:23:16 rossini Exp $
+;; Modified: $Date: 2000/09/03 20:02:01 $
+;; Version: $Revision: 5.50 $
+;; RCS: $Id: ess-inf.el,v 5.50 2000/09/03 20:02:01 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -28,7 +28,7 @@
 
 ;;; Commentary:
 
-;; Code for dealing with running ESS processes.
+;; Code for handling running ESS processes.
 
 ;;; Code:
 
@@ -40,15 +40,14 @@
 ;; Byte-compiler, SHUT-UP!
 (eval-and-compile
   (require 'comint)
-  (require 'ess-utils)
-)
+  (require 'ess-utils))
 
 ;;*;; Autoloads
-(autoload 'ess-parse-errors		"ess-mode" "(autoload)." t)
-(autoload 'ess-dump-object-into-edit-buffer "ess-mode" "(autoload)." t)
-(autoload 'ess-beginning-of-function	"ess-mode" "(autoload)." t)
-(autoload 'ess-end-of-function		"ess-mode" "(autoload)." t)
-(autoload 'ess-extract-word-name	"ess-utils" "(autoload)." t)
+(autoload 'ess-parse-errors		    "ess-mode"  "(autoload)." t)
+(autoload 'ess-dump-object-into-edit-buffer "ess-mode"  "(autoload)." t)
+(autoload 'ess-beginning-of-function	    "ess-mode"  "(autoload)." t)
+(autoload 'ess-end-of-function		    "ess-mode"  "(autoload)." t)
+(autoload 'ess-extract-word-name	    "ess-utils" "(autoload)." t)
 
 (autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload)." t)
 
@@ -57,6 +56,7 @@
 ;; Moved to ess-cust.el
 
  ;;*;; Process handling
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; In this section:
 ;;;;
@@ -117,6 +117,8 @@ accompany the call for `inferior-ess-program'.
   ;; Couldn't we rather set all the default values or Local values now ?
   ;;>>> (ess-setq-vars-default ess-customize-alist (current-buffer))
   ;;>>> (ess-setq-vars-local   ess-customize-alist (current-buffer))
+  ;;; AJR sez: I think we should set them later.  I don't want to nuke if
+  ;;; I don't have to.
   (let ((temp-ess-dialect (eval (cdr (assoc 'ess-dialect
 				       ess-customize-alist))))
 	(temp-ess-lang (eval (cdr (assoc 'ess-language
@@ -165,7 +167,7 @@ accompany the call for `inferior-ess-program'.
        ;; Since it's a new or terminated process, try to use current buffer
        ((and (not buf)
 	     (not (comint-check-proc (current-buffer)))
-	     (memq major-mode '(inferior-ess-mode))) ; ess-transcript-mode)))
+	     (memq major-mode '(inferior-ess-mode)))
 	(setq startdir
 	      (if ess-ask-for-ess-directory (ess-get-directory defdir)
 		ess-directory))
@@ -214,7 +216,7 @@ accompany the call for `inferior-ess-program'.
       (setq-default ess-history-file
 		    (concat "." ess-dialect "history"))
       (ess-write-to-dribble-buffer
-       (format "(inf-ess finis [%s(%s), %s(%s,%s)]\n"
+       (format "(inf-ess finish [%s(%s), %s(%s,%s)]\n"
 	       ess-language
 	       ess-dialect
 	       inferior-ess-program
@@ -311,7 +313,8 @@ there is no process NAME)."
       (switch-to-buffer (process-buffer (get-process proc-name))))))
 
 (defun ess-process-sentinel (proc message)
-  "Sentinel for use with ESS processes."
+  "Sentinel for use with ESS processes.  
+This marks the process with a message, at a particular time point."
   (save-excursion
     (setq message (substring message 0 -1)) ; strip newline
     (set-buffer (process-buffer proc))
@@ -339,7 +342,7 @@ This was rewritten by KH in April 1996."
 	     (if ess-directory (setq default-directory ess-directory))
 	     (if (eq (buffer-size) 0) nil
 	       (goto-char (point-max))
-	       (insert "\^L\n")))	; page boundaries are S sessions
+	       (insert "\^L\n")))    ; page boundaries = Interactive sessions
 	   (let ((process-environment
 		  (nconc
 		   (list
@@ -353,8 +356,6 @@ This was rewritten by KH in April 1996."
 		      inferior-ess-program
 		      inferior-ess-start-file
 		      inferior-ess-start-args))
-;;	     (if (not (stringp inferior-ess-start-file)) ; file-exists-p
-;;		 (setq inferior-ess-start-file ""))
 	     (comint-exec buffer
 			  procname
 			  inferior-ess-program
@@ -428,7 +429,6 @@ This was rewritten by KH in April 1996."
 ;;       2) change the appropriate  inferior-<ESSlang>-program-name
 ;; (how?) in R/S : assign(paste("inferior-",ESSlang,"-p...."),  filename))
 
-
 ;;*;; Multiple process handling code
 
 (defun ess-make-buffer-current nil
@@ -441,21 +441,15 @@ Returns the name of the process, or nil if the current buffer has none."
 
 (defun ess-get-process-variable (name var)
   "Return the variable VAR (symbol) local to ESS process called NAME (string)."
-  ;;(let (proc (get-ess-process name))
-    (save-excursion
-      (set-buffer (process-buffer (get-ess-process name)))
-      (symbol-value var))
-    ;;)
-    )
-
-(defun ess-set-process-variable (name var val)
-  "Set the variable VAR (symbol) local to ESS process called NAME (string) to VAL."
-  ;;(let* (proc (get-ess-process name))
   (save-excursion
     (set-buffer (process-buffer (get-ess-process name)))
-    (set var val))
-  ;)
-  )
+    (symbol-value var)))
+
+(defun ess-set-process-variable (name var val)
+  "Set variable VAR (symbol) local to ESS process called NAME (string) to VAL."
+  (save-excursion
+    (set-buffer (process-buffer (get-ess-process name)))
+    (set var val)))
 
 (defun ess-request-a-process (message &optional noswitch)
   "Ask for a process, and make it the current ESS process.
@@ -524,7 +518,6 @@ With (prefix) EOB-P non-nil, positions cursor at end of buffer."
   (interactive)
   (ess-switch-to-ESS t))
 
-
 (defun get-ess-buffer (name)
   "Return the buffer associated with the ESS process named by NAME."
   (process-buffer (get-ess-process name)))
@@ -561,7 +554,6 @@ PROC is the ESS process. Does not change point"
 	     (beginning-of-line)
 	     (if (< (point) start-of-output) (goto-char start-of-output))
 	     (not (looking-at inferior-ess-primary-prompt))))))
-
 
 (defun ordinary-insertion-filter (proc string)
   (let ((old-buffer (current-buffer)))
@@ -722,7 +714,7 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
   (let* ((cbuffer (current-buffer))
 	 (sprocess (get-ess-process ess-current-process-name))
 	 (sbuffer (process-buffer sprocess))
-	 (text (ess-replace-in-string text-withtabs "\t" " ")) ; AJR 971022
+	 (text (ess-replace-in-string text-withtabs "\t" " "))
 	 start-of-output
 	 com pos txt-gt-0)
 
@@ -779,16 +771,13 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
       ;; line of input
       (if (eq (length text) 0)
 	  nil
-	;; else : text length > 0
 	(while (progn
 		 (accept-process-output nil 0 100)
 		 (goto-char (marker-position (process-mark sprocess)))
 		 (beginning-of-line)
 		 (if (< (point) start-of-output)
 		     (goto-char start-of-output))
-		 (not (looking-at inferior-ess-prompt)))
-	  ))
-    ); end{while}
+		 (not (looking-at inferior-ess-prompt))))))
     (goto-char (marker-position (process-mark sprocess)))
     (if eob
 	(progn
@@ -811,30 +800,29 @@ With prefix argument, toggle meaning of `ess-eval-visibly-p'."
   (let ((visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p)))
     (if visibly
 	(ess-eval-linewise (buffer-substring start end))
-      ;; else invisibly
       (if ess-synchronize-evals
 	  (ess-eval-linewise (buffer-substring start end)
-			  (or message "Eval region"))
+			     (or message "Eval region"))
 	;; else [almost always!]
 	(let ((sprocess (get-ess-process ess-current-process-name)))
 	  (process-send-region sprocess start end)
-	  (process-send-string sprocess "\n")
-	  )
-	)))
+	  (process-send-string sprocess "\n")))))
   (message "Finished evaluation"))
 
 (defun ess-eval-buffer (vis)
   "Send the current buffer to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  ;; already in eval-region: (ess-force-buffer-current "Process to load into: ")
+  ;; already in eval-region: 
+  ;;    (ess-force-buffer-current "Process to load into: ")
   (ess-eval-region (point-min) (point-max) vis "Eval buffer"))
 
 (defun ess-eval-function (vis)
   "Send the current function to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  ;; already in eval-region: (ess-force-buffer-current "Process to load into: ")
+  ;; already in eval-region:
+  ;;     (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (let* ((beg-end (ess-end-of-function))
 	   (beg (nth 0 beg-end))
