@@ -162,7 +162,7 @@ intelligent environment for statistical analysis}
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/27 19:12:57 $ - $Revision: 1.15 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/27 21:59:02 $ - $Revision: 1.16 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -188,8 +188,8 @@ intelligent environment for statistical analysis}
 
 \begin{abstract}
   Computer programming is an important component of statistics
-  research and data analysis, and is a necessary for using
-  sophisticated statistical packages and for writing custom scripts
+  research and data analysis.  It is necessary for using
+  sophisticated statistical packages; for writing custom scripts
   and software to perform data analysis using modern statistical
   methods.  Emacs Speaks Statistics (ESS) provides an intelligent and
   consistent interface between the user and statistics software.  ESS
@@ -199,8 +199,8 @@ intelligent environment for statistical analysis}
   statistical software.  ESS understands the syntax for numerous data
   analysis languages, provides consistent display and editing
   features across packages, and assists in the interactive or batch
-  execution by the statistics packages of statements written in their
-  languages.
+  execution of statements by statistics packages.
+%  written in their languages.
   %% Some statistics packages can be run as a subprocess of Emacs,
   %% allowing the user to work directly from the editor and thereby
   %% retain a consistent and constant look-and-feel.
@@ -225,7 +225,8 @@ role in facilitating these tasks.
 %% graphical information is the most visual component of a user
 %% interface, perhaps a more critical component is how the computer
 %% interprets user input.  
-A familiar, coherent, and probably most importantly, well-understood
+A familiar, coherent, and well-understood
+%probably most importantly, 
 set of input behaviors can increase the efficiency of statistical
 practice.  This paper introduces Emacs Speaks Statistics (ESS)
 \citep{ESS}, a software package which provides a common interface to a
@@ -281,13 +282,13 @@ supports the S family of languages (including S
 \citep{Stata:7.0}; \XLispStat\ \citep{Tier90} and its extensions Arc
 \citep{Cook:Weisberg:1999} and ViSta \citep{youn:fald:mcfa:1992}; BUGS
 \citep{BUGS}; and Omegahat \citep{DTLang:2000}.  ESS can be extended
-to accommodate most statistical packages which provide either a
+to accommodate most statistical packages which provide either an
 interactive command-line prompt for inputing instructions, or process
 batch files for instructions.
 
 We start by discussing how ESS enhances a statistician's daily
 activities by presenting its features and showing how it facilitates
-statistical computing.  Next, we describing the Emacs text editor, the
+statistical computing.  Next, we describe the Emacs text editor, the
 underlying platform on which ESS is built.  We conclude with a short
 history of the development of ESS and goals for the future.
 
