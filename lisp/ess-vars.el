@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1998/11/20 20:45:43 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: ess-vars.el,v 5.8 1998/11/20 20:45:43 rossini Exp $
+;; Modified: $Date: 1998/11/20 20:57:33 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: ess-vars.el,v 5.9 1998/11/20 20:57:33 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -475,8 +475,6 @@ of Emacs until the code has been successfully evaluated by S.")
   "*If non-nil, the ess-eval- commands display the results of evaluation
   at the bottom of the process buffer.")
 
-
-
 (defvar ess-save-lastvalue-command nil
   "Default is currently the S+ version.")
 
@@ -490,7 +488,6 @@ of Emacs until the code has been successfully evaluated by S.")
 ;;(make-variable-buffer-local 'ess-retr-lastvalue-command)
 ;;(setq-default ess-retr-lastvalue-command
 ;;	      ".Last.value <- get(\"smode.lvsave\",frame=0)\n")
-
 
  ; System variables
 
@@ -571,7 +568,8 @@ of Emacs until the code has been successfully evaluated by S.")
 (make-variable-buffer-local 'ess-search-list)
 
 (defvar ess-sl-modtime-alist nil
-  "Alist of modtimes for all ess directories accessed this session.")
+  "Alist of modification times for all ess directories accessed this
+session.")  
 
 (make-variable-buffer-local 'ess-sl-modtime-alist)
 
@@ -757,7 +755,7 @@ Choices are `separate-buffer', `s-process', `www'.  The latter uses
 browse-url to find the location")
 
 ;; WWW Help NOT included yet.  Be patient.
-(defvar ess-help-w3-url-prefix "http://www.stat.sc.edu/~rossini/R/"
+(defvar ess-help-w3-url-prefix "http://pyrite.cfas.washington.edu/ESS/R/"
   "*Head URL for finding function help")
 
 (defvar ess-help-w3-url-funs "funs/"
