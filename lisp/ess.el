@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/02 14:59:54 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: ess.el,v 1.20 1997/07/02 14:59:54 rossini Exp $
+;; Modified: $Date: 1997/07/03 13:21:52 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: ess.el,v 1.21 1997/07/03 13:21:52 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.21  1997/07/03 13:21:52  rossini
+;; added functions, alist var, for configuring variables.
+;;
 ;; Revision 1.20  1997/07/02 14:59:54  rossini
 ;; inferior-ess-procname should also be a (let ...) variable!
 ;;
@@ -1009,6 +1012,29 @@ browse-url to find the location")
 
 ;;; Imenu for Emacs...
 
+
+
+ ; Buffer local customization stuff
+
+(defvar ess-customize-alist nil
+  "Variable settings to use for doing the proper  thing.")
+  
+(defun ess-set-vars (var-alist &optional buf) 
+  "Set language variables from alist, in buffer `buf', if desired.
+This is SO UGLY.  But it'll work for now... 
+the basic idea: (setq ---  (cdr (assq --- var-alist)))."
+
+  (setq ess-customize-alist var-alist)
+  (setq ess-proc-prefix              (cdr (assq ess-proc-prefix              var-alist)))
+  (setq ess-version-running          (cdr (assq ess-version-running          var-alist)))
+  (setq inferior-ess-program         (cdr (assq inferior-ess-program         var-alist)))
+  (setq inferior-ess-objects-command (cdr (assq inferior-ess-objects-command var-alist)))
+  (setq ess-help-sec-regex           (cdr (assq ess-help-sec-regex           var-alist)))
+  (setq ess-help-sec-keys-alist      (cdr (assq ess-help-sec-keys-alist      var-alist)))
+  (setq inferior-ess-help-command    (cdr (assq inferior-ess-help-command    var-alist)))
+  (setq inferior-ess-exit-command    (cdr (assq inferior-ess-exit-command    var-alist)))
+  (setq ess-loop-timeout             (cdr (assq ess-loop-timeout             var-alist)))
+  (setq inferior-ess-primary-prompt  (cdr (assq inferior-ess-primary-prompt  var-alist))))
 
  ; Run load hook and provide package
 
