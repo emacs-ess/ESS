@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/10/26 05:11:50 $
-;; Version: $Revision: 1.146 $
-;; RCS: $Id: essa-sas.el,v 1.146 2003/10/26 05:11:50 rmh Exp $
+;; Modified: $Date: 2003/12/08 20:57:37 $
+;; Version: $Revision: 1.147 $
+;; RCS: $Id: essa-sas.el,v 1.147 2003/12/08 20:57:37 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -669,10 +669,20 @@ optional argument is non-nil, then set-buffer rather than switch."
 (defun ess-sas-rtf-export-1 ()
 "Creates an MS RTF file from the current buffer based on its name."
     (interactive)
-;;    (ess-sas-goto-file-1)
-    (if (fboundp 'rtf-export)
-	(rtf-export (replace-in-string 
-		    (expand-file-name (buffer-name)) "[.][^.]*$" ".rtf"))))
+    (ess-sas-file-path)
+    
+    (if (fboundp 'rtf-export) (let 
+	((ess-temp-rtf-file (replace-in-string ess-sas-file-path "[.][^.]*$" ".rtf")))
+	    ;(expand-file-name (buffer-name)) "[.][^.]*$" ".rtf")))
+	(rtf-export ess-temp-rtf-file)
+	(ess-sas-goto "rtf" t)
+	(goto-char (point-min))
+	(replace-regexp "\\\\fmodern .*;" "\\\\fmodern courier;" )
+        (goto-char (point-min))
+	    
+        (while (replace-regexp "\\\\fs[0-9]+" "\\\\fs18" ) nil)
+	    
+        (save-buffer))))
 
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that
