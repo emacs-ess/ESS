@@ -116,6 +116,11 @@ or `ess-sas-data-view-insight'."
 ;;    :group 'ess-sas
 ;;)
 
+(defcustom ess-sas-log-max 250000
+  "*If a .log file exceeds this many bytes, just \"refresh\" this many bytes."
+  :group 'ess-sas
+  :type  'integer)
+
 (defcustom ess-sas-shell-buffer "*shell*"
   "*Name that you want to use for the shell buffer; buffer-local."
   :group 'ess-sas
@@ -422,7 +427,7 @@ current buffer if nil."
  (save-excursion (let ((ess-tmp-sas-data nil)
     (ess-tmp-sas-data-view-fsview-statement ess-sas-data-view-fsview-statement)
     (ess-search-regexp
-    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[.&,;() \t]")
+    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[. ,()\t;]")
     (ess-search-except
     "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
 
@@ -457,7 +462,7 @@ current buffer if nil."
  (save-excursion (let ((ess-tmp-sas-data nil)
     (ess-tmp-sas-data-view-insight-statement ess-sas-data-view-insight-statement)
     (ess-search-regexp
-    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[.&,;() \t]")
+    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[. ,()\t;]")
     (ess-search-except
     "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
 
@@ -617,10 +622,10 @@ current buffer if nil."
 		    ess-temp-kermit-remote-directory))
 
 	    (if revert 
-		(if (and (string-equal suffix "log")
-			 (> (nth 7 (file-attributes ess-sas-temp-file)) 500000)) 
+		(if (and ess-sas-log-max (string-equal suffix "log")
+			 (> (nth 7 (file-attributes ess-sas-temp-file)) ess-sas-log-max)) 
 		    (progn 
-			(insert-file-contents ess-sas-temp-file nil 0 500000 t) 
+			(insert-file-contents ess-sas-temp-file nil 0 ess-sas-log-max t) 
 		    t)
 
 		    (ess-revert-wisely)) nil)))))))
@@ -666,7 +671,7 @@ current buffer if nil."
     "\\|WARNING: Length of character variable has already been set."
     "\\|Bus Error In Task\\|Segmentation Violation In Task"
     "\\|NOTE: Estimated G matrix is not positive definite."))
-	(ess-sas-save-point nil) (ess-sas-pop-mark nil))
+	(ess-sas-save-point nil))
 
   (if (ess-sas-goto "log" 'revert) (progn
 	(setq ess-sas-save-point (point))
@@ -1034,21 +1039,34 @@ Keep in mind that the maximum command line length in MS-DOS is
            nil t) (replace-match (if strip " " "/*\\&*/") t))
 ))
 
-(defun ess-sas-toggle-sas-log-mode (&optional force)
+(defun ess-sas-toggle-sas-listing-mode (&optional force)
+  "Toggle SAS-listing-mode for .lst files."
+  (interactive)
+  (ess-sas-goto-lst)
+  
+(if (equal (cdr (assoc "\\.[lL][sS][tT]\\'" auto-mode-alist)) 'SAS-listing-mode) (progn
+      (setq auto-mode-alist (delete '("\\.[lL][sS][tT]\\'" . SAS-listing-mode) auto-mode-alist))
+      (setq buffer-read-only nil)
+      (ess-listing-minor-mode 0))
+      (setq auto-mode-alist (append '(("\\.[lL][sS][tT]\\'" . SAS-listing-mode)) auto-mode-alist))
+      (setq buffer-read-only t)
+      (ess-listing-minor-mode 1)))
+
+(defun ess-sas-toggle-sas-log-mode ()
   "Toggle SAS-log-mode for .log files."
   (interactive)
+  (ess-sas-goto-log t)
 
-  (if (and (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode)
-	   (not force))
+  (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode) (progn
       (setq auto-mode-alist (delete '("\\.[lL][oO][gG]\\'" . SAS-log-mode) auto-mode-alist))
-    (setq auto-mode-alist (append '(("\\.[lL][oO][gG]\\'" . SAS-log-mode)) auto-mode-alist)))
-
-  (if (equal (downcase (file-name-extension (buffer-file-name))) "log")
-      (progn (font-lock-mode 0)
-	     (normal-mode)
-	     (if (not (equal (prin1-to-string major-mode) "ess-mode"))
-		 (ess-transcript-minor-mode 0))
-	     (font-lock-mode 1))))
+      (setq buffer-read-only nil)
+      (ess-transcript-minor-mode 0)
+      (font-lock-mode 0))
+      (setq auto-mode-alist (append '(("\\.[lL][oO][gG]\\'" . SAS-log-mode)) auto-mode-alist))
+      (setq buffer-read-only t)
+      (ess-transcript-minor-mode 1)
+      (font-lock-mode 1)
+      (font-lock-fontify-buffer)))
 
 (defun ess-sleep ()
 "Put emacs to sleep for `ess-sleep-for' seconds.
@@ -1120,7 +1138,7 @@ accepted for backward compatibility, however, arg is ignored."
   (global-set-key (quote [f9]) 'ess-sas-data-view-fsview)
   (global-set-key [(control f9)] 'ess-sas-data-view-insight)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
-  (global-set-key [(control f10)] 'ess-sas-kill-buffers)
+  (global-set-key [(control f10)] 'ess-sas-toggle-sas-listing-mode)
   (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
   (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
@@ -1158,7 +1176,7 @@ accepted for backward compatibility, however, arg is ignored."
   (global-set-key (quote [f9]) 'ess-sas-data-view-fsview)
   (global-set-key [(control f9)] 'ess-sas-data-view-insight)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
-  (global-set-key [(control f10)] 'ess-sas-kill-buffers)
+  (global-set-key [(control f10)] 'ess-sas-toggle-sas-listing-mode)
   (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
   (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
@@ -1197,7 +1215,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view-fsview)
   (define-key sas-mode-local-map [(control f9)] 'ess-sas-data-view-insight)
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
-  (define-key sas-mode-local-map [(control f10)] 'ess-sas-kill-buffers)
+  (define-key sas-mode-local-map [(control f10)] 'ess-sas-toggle-sas-listing-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
   (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
@@ -1231,7 +1249,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view-fsview)
   (define-key sas-mode-local-map [(control f9)] 'ess-sas-data-view-insight)
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
-  (define-key sas-mode-local-map [(control f10)] 'ess-sas-kill-buffers)
+  (define-key sas-mode-local-map [(control f10)] 'ess-sas-toggle-sas-listing-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
   (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)

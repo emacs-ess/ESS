@@ -259,32 +259,31 @@ between .s or .S files and assembly mode.
 (if (assoc "\\.[rR]\\'" auto-mode-alist) nil
   (setq auto-mode-alist
 	(append
-	 '(("\\.sp\\'"	  . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
-	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S [see ess-restore-asm-extns above!]
-	   ("\\.ssc\\'"	  . S-mode) ;; Splus 4.x script files.
-	   ("\\.[rR]\\'"  . R-mode)
-	   ("\\.[rR]nw\\'"  . Rnw-mode)
+	 '(("\\.sp\\'"		. S-mode) ;; re: Don MacQueen <macq@llnl.gov>
+	   ("\\.[qsS]\\'"	. S-mode) ;; q,s,S [see ess-restore-asm-extns above!]
+	   ("\\.ssc\\'"		. S-mode) ;; Splus 4.x script files.
+	   ("\\.[rR]\\'"	. R-mode)
+	   ("\\.[rR]nw\\'"	. Rnw-mode)
 	   ("\\.[rR]profile\\'" . R-mode)
-	   ("NAMESPACE\\'" . R-mode)
-	   ("\\.omg\\'"		. omegahat-mode)
-	   ("\\.hat\\'"		. omegahat-mode) ;; Duncan's pref'd...
+	   ("NAMESPACE\\'"	. R-mode)
+	   ("\\.omg\\'"         . omegahat-mode)
+	   ("\\.hat\\'"         . omegahat-mode) ;; Duncan's pref'd...
 	   ("\\.lsp\\'"		. XLS-mode)
 	   ("\\.do\\'"		. STA-mode)
 	   ("\\.ado\\'"		. STA-mode)
-	   ("\\.sas\\'"		. SAS-mode)
-	   ("\\.SAS\\'"		. SAS-mode)
-	   ;;("\\.lst\\'"		. SAS-listing-mode);sasl
-	   ;; Too many *.log files, not only SAS :
-	   ;;("\\.log\\'"	. SAS-log-mode);sasl
+	   ("\\.[Ss][Aa][Ss]\\'"	. SAS-mode)
+	   ;; Many .log/.lst files, not just SAS 
+	   ;;("\\.log\\'"	. SAS-log-mode)
+	   ;;("\\.lst\\'"	. SAS-listing-mode)
 	   ("\\.[Ss]t\\'"	. S-transcript-mode)
 	   ("\\.[Ss]out"	. S-transcript-mode)
 	   ("\\.[Rr]t\\'"	. R-transcript-mode)
 	   ("\\.[Rr]out"	. R-transcript-mode)
 	   ("\\.Rd\\'"		. Rd-mode)
-	   ("\\.[Bb][Uu][Gg]\\'"	 . ess-bugs-mode)
-	   ("\\.[Bb][Oo][Gg]\\'"	 . ess-bugs-mode)
-	   ("\\.[Bb][Mm][Dd]\\'"	 . ess-bugs-mode)
-	  )
+           ("\\.[Bb][Uu][Gg]\\'"         . ess-bugs-mode)
+           ("\\.[Bb][Oo][Gg]\\'"         . ess-bugs-mode)
+           ("\\.[Bb][Mm][Dd]\\'"         . ess-bugs-mode)
+          )
 	 auto-mode-alist)))
 
 ;; (1.4) Customize the dialects for your setup.

@@ -105,14 +105,9 @@ the mode line."
   "Fundamental mode with `ess-listing-minor-mode' and read-only."
   (interactive)
   (fundamental-mode)
-  (ess-listing-minor-mode t)
+  (ess-listing-minor-mode 1)
   (use-local-map sas-mode-local-map)
   (toggle-read-only t)) ;; to protect the buffer.
-
-(if (not (featurep 'xemacs))
-    (setq auto-mode-alist
-	(append '(("\\.[lL][sS][tT]\\'" . sas-listing-mode)) auto-mode-alist)))
-;;;###autoload(add-to-list 'auto-mode-alist '("\\.[lL][sS][tT]\\'" . sas-listing-mode))
 
 (fset 'sas-log-mode        'SAS-log-mode)
 (fset 'SAS-transcript-mode 'SAS-log-mode)
