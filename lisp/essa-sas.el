@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rodney.sparapani@duke.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/02/27 20:14:59 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: essa-sas.el,v 1.10 2001/02/27 20:14:59 ess Exp $
+;; Modified: $Date: 2001/03/02 22:23:47 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: essa-sas.el,v 1.11 2001/03/02 22:23:47 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, asynchronous.
 
@@ -84,7 +84,7 @@
 
 (defun ess-sas-file (suffix &optional revert)
   "Find a file associated with the SAS file and revert if necessary."
-  (let* ((tail (if (> emacs-major-version 19)
+  (let* ((tail (if (fboundp 'file-name-extension)
 		   (file-name-extension (buffer-name))
 		 (substring (buffer-name) -3)))
 	 (tail-in-tail-list
@@ -94,7 +94,8 @@
 		   (expand-file-name (buffer-name))
 		 ess-sas-file-path))
 	 (ess-sas-arg (concat (file-name-sans-extension root) "." suffix))
-	 (ess-sas-buf (find-buffer-visiting ess-sas-arg)))
+	 (ess-sas-buf (if (fboundp 'find-buffer-visiting) (find-buffer-visiting ess-sas-arg) 
+		(get-file-buffer ess-sas-arg))))
     (if (not ess-sas-buf)
 	(find-file ess-sas-arg)
       (switch-to-buffer ess-sas-buf)

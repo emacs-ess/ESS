@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/02/27 20:14:59 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: essl-sas.el,v 5.11 2001/02/27 20:14:59 ess Exp $
+;; Modified: $Date: 2001/03/02 22:23:47 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: essl-sas.el,v 5.12 2001/03/02 22:23:47 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -308,58 +308,78 @@ popup window when the SAS job is finished.")
 	 )
 	(list
 	 ;; SAS comments
-	 (cons "^[ \t]*%?\\*.*;"		font-lock-comment-face)
-	 (cons ";[ \t]*%?\\*.*;"		font-lock-comment-face)
-	 (list "/\\*\\([^*/]\\)*\\*/"      0	font-lock-comment-face t)
+	 (cons "\\(^[0-9]*\\|;\\)[ \t]*%?\\*.*;"    font-lock-comment-face)
+	 (list "/\\*\\([^*/]\\)*\\*/"      0	    font-lock-comment-face t)
 
 	 ;; SAS execution blocks, DATA/RUN, PROC/RUN, SAS Macro Statements
-	 (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"   font-lock-reference-face)
-	 (cons "\\<%do[ \t]*\\(%until\\|%while\\)?\\>"
-						font-lock-reference-face)
-	 (cons (concat "\\<" 
-		"\\(%\\(e\\(lse\\|nd\\)\\|g\\(lobal\\|o[ \t]*to\\)\\|m\\(acro\\|end\\)\\)\\|data\\|run\\)"
-		"\\>")				font-lock-reference-face)
-	 (cons (concat "\\<" 
-		"\\(%\\(i\\(f\\|n\\(clude\\|put\\)\\)\\|l\\(et\\|ocal\\)\\|put\\|sysexec\\|t\\(hen\\|o\\)\\)\\)"
-		"\\>")				font-lock-reference-face)
-	 ;; SAS statements
+	 (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"	    font-lock-reference-face)
 
-	 (cons "\\<do[ \t]*\\(over\\|until\\|while\\)?\\>"
-						font-lock-keyword-face)
+	 (cons "\\<%do[ \t]*\\(%until\\|%while\\)?\\>"
+						    font-lock-reference-face)
+	 (cons (concat "\\(^[0-9]*\\|;\\)[ \t]*"
+		"%\\(end\\|global\\|local\\|m\\(acro\\|end\\)\\)"
+		"\\>")				    font-lock-reference-face)
+
+	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
+		"\\(data\\|run\\)[ \t;]")
+		      				    font-lock-reference-face)
+	 (cons (concat "\\(^[0-9]*\\|;\\|%then\\|%else\\)[ \t]*"
+		"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"
+		"\\>")				    font-lock-reference-face)
+
+	 (cons "\\<%\\(else\\|to\\|then\\)\\>"
+						    font-lock-reference-face)
+
+	 ;; common SAS dataset options and PROC statements followed by an equal sign
 
 	 (cons (concat
-		"\\<"
+		"[ \t(,]"
+		"\\(data\\|out\\|attrib\\|format\\|length\\|\\(sorted\\)?by"
+		"\\|i\\(d\\|f\\|ndex\\)\\|compress\\|drop\\|keep\\|label"
+		"\\|order\\|\\(first\\)?obs\\|rename\\|where\\|var\\|split\\)"
+		"[ \t]*=")
+						    font-lock-keyword-face)
+	 (cons "\\<in[ \t]*[(=]"
+
+						    font-lock-keyword-face)
+	 ;; SAS statements
+
+	 (cons (concat
+		"\\(^[0-9]*\\|):\\|[;,)]\\|then\\|else\\)[ \t]*"
 		"\\(a\\(bort\\|rray\\|ttrib\\)\\|by\\|d\\(elete\\|isplay\\|m\\|rop\\)"
-		"\\|e\\(lse\\|rror\\)\\|f\\(ile\\(\\|name\\)\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\)"
+		"\\|error\\|f\\(ile\\(\\|name\\)\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\)"
 		"\\|go\\([ \t]*to\\|ptions\\)\\|i\\(f\\|n\\(f\\(ile\\|ormat\\)\\|put\\)\\)\\|keep\\|options"
 		"\\|l\\(abel\\|ength\\|i\\(bname\\|nk\\)\\)\\|m\\(erge\\|issing\\|odify\\)\\|note"
-		"\\|o\\(therwise\\|ut\\(\\|put\\)\\)\\|put\\|re\\(name\\|tain\\)\\|s\\(e\\(lect\\|t\\)\\|kip\\)"
-		"\\|t\\(hen\\|itle\\(10?\\|[2-9]\\)?\\|o\\)\\|update\\|w\\(he\\(n\\|re\\)\\|indow\\)"
+		"\\|o\\(therwise\\|utput\\)\\|put\\|re\\(name\\|tain\\)\\|s\\(e\\(lect\\|t\\)\\|kip\\)"
+		"\\|title\\(10?\\|[2-9]\\)?\\|update\\|w\\(he\\(n\\|re\\)\\|indow\\)"
 		"\\|c\\(hange\\|lass\\)\\|exc\\(hange\\|lude\\)\\|freq\\|i\\(d\\|ndex\\)"
 		"\\|plot\\|s\\(ave\\|um\\)\\|tables?\\|w\\(eight\\|ith\\)"
 		"\\|m\\(anova\\|odel\\)\\|r\\(andom\\|epeated\\)\\|va\\(lue\\|r\\)\\)"
 		"\\>")
-						font-lock-keyword-face)
+						    font-lock-keyword-face)
+
+	 (cons "\\<\\(\\(\\(then\\|else\\)[ \t]*\\)?do[ \t]*\\(over\\|until\\|while\\)?\\|else\\)\\>"
+						    font-lock-keyword-face)
 
 	 ;; SAS statements that must be followed by a semi-colon
 	 (cons (concat
-		"\\<"
-		"\\(cards4?\\|end\\(\\|sas\\)\\|l\\(ist\\|ostcard\\)\\|page\\|return\\|stop\\)"
+		"\\(^[0-9]*\\|):\\|[;,)]\\|then\\|else\\)[ \t]*"
+		"\\(cards4?\\|end\\(\\|sas\\)\\|l\\(ist\\|ostcard\\)\\|page\\|return\\|stop\\)?"
 		"[ \t]*;")
-						font-lock-keyword-face)
+						    font-lock-keyword-face)
 
 	 ;; SAS/GRAPH statements not handled above
 	 (cons (concat
-		"\\<"
+		"\\(^[0-9]*\\|):\\|[;,]\\)[ \t]*"
 		"\\(axis\\|legend\\|pattern\\|symbol\\)"
 		"\\([1-9][0-9]?\\)?\\>")
-						font-lock-keyword-face)
+						    font-lock-keyword-face)
 
 	 ;; SAS functions and SAS macro functions
 	 (cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
-						font-lock-function-name-face)
+						    font-lock-function-name-face)
 	 (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
-	       					font-lock-function-name-face)
+						    font-lock-function-name-face)
 
 	 (cons (concat
 		"\\<"
@@ -395,7 +415,7 @@ popup window when the SAS job is finished.")
 		"\\|get\\(option\\|var[cn]\\)\\|lib\\(name\\|ref\\)\\|op\\(en\\|t\\(getn\\|setn\\)\\)"
 		"\\|pathname\\|sysmsg\\|var\\(fmt\\|label\\|num\\|type\\)\\)"
 		"[ \t]*(")
-						font-lock-function-name-face)
+						    font-lock-function-name-face)
 	 ))
 	"Font Lock regexs for SAS.")
 )); only if window-system
