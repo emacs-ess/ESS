@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/09 14:39:33 $
-;; Version: $Revision: 1.42 $
-;; RCS: $Id: essd-r.el,v 1.42 1997/09/09 14:39:33 rossini Exp $
+;; Modified: $Date: 1997/10/23 13:00:11 $
+;; Version: $Revision: 1.43 $
+;; RCS: $Id: essd-r.el,v 1.43 1997/10/23 13:00:11 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -86,6 +86,18 @@
 	   ess-dialect
 	   (current-buffer)))
   (inferior-ess))
+
+
+(autoload 'ess-transcript-mode "ess-trns"
+  "Major mode for editing S transcript files" t)
+
+(defun r-transcript-mode ()
+  "Does the right thing."
+  (ess-transcript-mode R-customize-alist))
+
+(fset 'R-transcript-mode 'r-transcript-mode)
+
+
 
  ; Provide package
 
