@@ -180,7 +180,7 @@ accompany the call for `inferior-ess-program'.
 	(setq startdir
 	      (if ess-ask-for-ess-directory
 		  (ess-get-directory (directory-file-name defdir))
-		  defdir))
+		defdir))
 	(setq buf (current-buffer))
 	(ess-write-to-dribble-buffer
 	 (format "(inferior-ess) Method #1 start=%s buf=%s\n" startdir buf)))
@@ -1778,8 +1778,8 @@ completions are listed [__UNIMPLEMENTED__]."
 			(point))
 		    (set-syntax-table buffer-syntax)))
 	     (full-prefix (buffer-substring beg end))
-	     ;; See if we're indexing a list with `$'
 	     (pattern full-prefix)
+	     ;; See if we're indexing a list with `$'
 	     ;; components  ; WHY IS THIS HERE?
 	     (listname (if (string-match "\\(.+\\)\\$\\(\\(\\sw\\|\\s_\\)*\\)$"
 					 full-prefix)
@@ -1791,9 +1791,9 @@ completions are listed [__UNIMPLEMENTED__]."
 						(match-end 2))))
 			     (substring full-prefix (match-beginning 1)
 					(match-end 1)))))
-	     (components (if listname (ess-object-names listname)
-			   (ess-get-object-list
-			    ess-current-process-name))))
+	     (components (if listname
+			     (ess-object-names listname)
+			   (ess-get-object-list ess-current-process-name))))
 	;; always return a non-nil value to prevent history expansions
 	(or (comint-dynamic-simple-complete  pattern components) 'none))))
 
@@ -1805,7 +1805,7 @@ completions are listed [__UNIMPLEMENTED__]."
 ;;;*;;; Support functions
 (defun ess-extract-onames-from-alist (alist posn &optional force)
   "Return the object names in position POSN of ALIST.
-ALIST is an alist like `ess-sl-modtime alist'. POSN should be 1 .. (length
+ALIST is an alist like `ess-sl-modtime-alist'. POSN should be in 1 .. (length
 ALIST).	 If optional third arg FORCE is t, the corresponding element
 of the search list is re-read. Otherwise it is only re-read if it's a
 directory and has been modified since it was last read."
@@ -1814,23 +1814,20 @@ directory and has been modified since it was last read."
 	 (timestamp (car (cdr entry)))
 	 (new-modtime (ess-dir-modtime dir)))
     ;; Refresh the object listing if necessary
-    (if (and (not force) (equal new-modtime timestamp)) nil
-      (setq timestamp new-modtime)
-      (setcdr (cdr entry) (ess-object-names dir posn)))
+    (if (or force (not (equal new-modtime timestamp)))
+	(setcdr (cdr entry) (ess-object-names dir posn)))
     (cdr (cdr entry))))
 
 (defun ess-dir-modtime (dir)
   "Return the last modtime if DIR is a directory, and nil otherwise."
-  ;; Attached dataframes return a modtime of nil.
   (and ess-filenames-map
-       (file-directory-p dir); was (string-match "^/" dir)
+       (file-directory-p dir)
        (nth 5 (file-attributes dir))))
 
 (defun ess-object-modtime (object)
   "Return the modtime of the S object OBJECT (a string).
 Searches along the search list for a file named OBJECT and returns its modtime
-Returns nil if that file cannot be found.
-Does NOT (yet) work for R or any non-S language!"
+Returns nil if that file cannot be found, i.e., for R or any non-S language!"
   (let ((path (ess-search-list))
 	result)
     (while (and (not result) path)
@@ -1859,8 +1856,8 @@ Does NOT (yet) work for R or any non-S language!"
 	       (i 2)
 	       (n (length alist))
 	       result)
-	  ;; Always force a re-read of position 1 if it's a database
-	  (setq result (ess-extract-onames-from-alist alist 1 t))
+	  ;; Always force a re-read of position 1 :
+	  (setq result (ess-extract-onames-from-alist alist 1 'force))
 	  ;; Re-read remaining directories if necessary.
 	  (while (<= i n)
 	    (setq result
@@ -1893,7 +1890,8 @@ A newline is automatically added to COMMAND."
 (defun ess-compiled-dir (dir)
   "Return non-nil if DIR is an S object directory with special files.
 I.e. if the filenames in DIR are not representative of the objects in DIR."
-  (or (file-exists-p (concat (file-name-as-directory dir) "__BIGIN"))
+  (or (file-exists-p (concat (file-name-as-directory dir) "___nonfile"))
+      (file-exists-p (concat (file-name-as-directory dir) "__BIGIN"))
       (file-exists-p (concat (file-name-as-directory dir) "___NONFI"))))
 
 (defun ess-object-names (obj &optional pos)
@@ -1901,23 +1899,39 @@ I.e. if the filenames in DIR are not representative of the objects in DIR."
 If OBJ is a directory name (begins with `/') returns a listing of that dir.
    This may use the search list position POS if necessary.
 If OBJ is an object name, returns result of S command names(OBJ).
-If OBJ is nil, POS must be supplied, and objects(POS) is returned.
+If OBJ is nil or not a directory, POS must be supplied, and objects(POS) is returned.
 In all cases, the value is an list of object names."
+
+;; FIXME: in both cases, below use same fallback "objects(POS)" -- merge!
   (if (and obj (file-accessible-directory-p obj))
       ;; Check the pre-compiled object list in ess-object-name-db first
       (or (cdr-safe (assoc obj ess-object-name-db))
 	  ;; Take a directory listing
-	  (and ess-filenames-map (not (ess-compiled-dir obj))
-	       (directory-files obj))
+	  (and ess-filenames-map
+	       ;; first try .Data subdirectory:
+	       ;;FIXME: move ".Data" or ``this function'' to essd-sp6.el etc:
+	       (let ((dir (concat (file-name-as-directory obj) ".Data")))
+		 (if (not (file-accessible-directory-p dir))
+		     (setq dir obj))
+		 (and (not (ess-compiled-dir dir))
+		      (directory-files dir))))
 	  ;; Get objects(pos) instead
-	  (ess-get-words-from-vector
-	   (format inferior-ess-objects-command pos ".*")))
-    ;; Want names(obj)
-    (or (and obj (ess-get-words-from-vector
-		  (format inferior-ess-names-command obj)))
+	  (and (or (ess-write-to-dribble-buffer
+		    (format "(ess-object-names ..): %s : no directory\n" obj)) t)
+	       pos
+	       (ess-get-words-from-vector
+		(format inferior-ess-objects-command pos))))
+	  ;; "else" should really give an error!
+	  ;; would need  pos = which(obj = search())
+
+    ;; else
+    (or (and obj  ;; want names(obj)
+	     (ess-get-words-from-vector
+	      (format inferior-ess-names-command obj)))
 	;; get objects(pos)
 	(ess-get-words-from-vector
-	 (format inferior-ess-objects-command pos ".*"))))) ; s4 needs 2
+	 (format inferior-ess-objects-command pos))))) ; had 2nd arg ".*"
+					; s4 needs 2
 					; args, rest only need 1 ?
 					; changes needed to allow for
 					; pattern argument to
@@ -2097,8 +2111,8 @@ The result is stored in `ess-sl-modtime-alist'."
 (defun ess-search-path-tracker (str)
   "Check if input STR changed the search path.
 This function monitors user input to the inferior ESS process so that
-Emacs can keep the variable `ess-search-list' up to date.
-'completing-read' uses this list indirectly when it prompts for help or
+Emacs can keep the variable `ess-search-list' up to date. `completing-read' in
+\\[ess-read-object-name] uses this list indirectly when it prompts for help or
 for an object to dump."
   (if (string-match ess-change-sp-regexp str)
       (setq ess-sp-change t)))
