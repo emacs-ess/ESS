@@ -1,0 +1,34 @@
+@itemize @bullet
+@item
+Commands like @code{ess-display-help-on-object} and list completion
+cannot be used while the user is entering a multi-line command.  The
+only real fix in this situation is to use another @b{ESS} process.
+
+@item
+The @code{ess-eval-} commands can leave point in the @b{ESS} process
+buffer in the wrong place when point is at the same position as the last
+process output.  This proves difficult to fix, in general, as we need to
+consider all @emph{windows} with @code{window-point} at the right place.
+
+@item
+It's possible to clear the modification flag (say, by saving the buffer)
+with the edit buffer not having been loaded into S.
+
+@item
+Backup files can sometimes be left behind, even when
+@code{ess-keep-dump-files} is @code{nil}.
+
+@item
+Passing an incomplete @b{S} expression to @code{ess-execute} causes ESS
+to hang.
+
+@item
+The function-based commands don't always work as expected on functions
+whose body is not a parenthesized or compound expression, and don't even
+recognize anonymous functions (i.e. functions not assigned to any
+variable).
+
+@item
+Multi-line commands could be handled better by the command history
+mechanism.
+@end itemize
