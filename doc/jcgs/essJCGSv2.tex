@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 19:05:17 $ - $Revision: 1.220 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/20 19:08:14 $ - $Revision: 1.221 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -606,13 +606,16 @@ rarely exists, but such a facility is often desired.  For example, a
 general purpose package such as R does not perform Bayesian analyses
 as easily as BUGS does.  On the other hand, BUGS lacks breadth in the
 range of analyses and results it can generate.  For this reason, BUGS
-is often distributed with R packages, like CODA and BOA, for importing
-and analyzing the results in R.  Another point of contention is the
-difference in the interfaces between general packages and specialized
-packages.  For example, the interfaces for BUGS and R are somewhat
-similar, but there are enough differences to create confusion.  ESS
-helps by providing a single point of contact to both tools, though the
-interfaces (interactive for R, batch for BUGS) are slightly different.
+is often distributed with R packages, like the diagnostic packages
+CODA and BOA, which assist with importing and analyzing the results in
+R.  Another point of contention is the difference in the interfaces
+between general packages and specialized packages.  
+% For example, the command-line interfaces for \Stata and R are
+% somewhat similar, but there are enough differences to create
+% confusion.
+ESS helps by providing a single point of contact to both tools, though
+the typical interfaces (interactive for R, batch for BUGS) are
+different.
 
 %\begin{Comment}
 %\begin{description}
