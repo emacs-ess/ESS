@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/07 16:25:29 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: essd-r.el,v 1.17 1997/07/07 16:25:29 rossini Exp $
+;; Modified: $Date: 1997/07/07 16:45:59 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: essd-r.el,v 1.18 1997/07/07 16:45:59 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.18  1997/07/07 16:45:59  rossini
+;;: R is now the "new-way".
+;;:
 ;;: Revision 1.17  1997/07/07 16:25:29  rossini
 ;;: set variables in the "call". (i.e. R2).
 ;;:
@@ -98,15 +101,26 @@
     (inferior-ess-primary-prompt   . "[][a-zA-Z0-9() ]*> ?"))
   "Variables to customize for R")
 
-(defun ess-R-shortcut-post-run-hook ()
-  "Remove initialization."
-  (remove-hook 'ess-pre-run-hook 'ess-R-shortcut-pre-run-hook))
-
-(defun R () "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ.)"
+(defun R ()
+  "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ).
+New way to do it."
   (interactive)
-;;  (add-hook 'ess-pre-run-hook  'ess-R-shortcut-pre-run-hook)
-;;  (add-hook 'ess-post-run-hook 'ess-R-shortcut-post-run-hook)
- 
+  ;; Setup the needed vars
+  (setq ess-customize-alist R-customize-alist) ; setq or setq-default?
+  (ess-set-vars-default ess-customize-alist (current-buffer))
+  ;; debug, only
+  (message "(R2): ess-proc-prefix=%s , buf=%s"
+	   ess-proc-prefix (current-buffer))
+  ;; now run...
+  (inferior-ess))
+
+
+
+(defun R-old ()
+  "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ.)
+Old way to do it."
+  (interactive)
+  ;; OLD WAY
   (setq-default ess-proc-prefix              "R"
 		ess-version-running          "R" ;using 'ls()' instead of objects..
 		inferior-ess-program         inferior-R-program-name
@@ -120,17 +134,6 @@
 					;[] for browser()
   (inferior-ess))
 
-(defun R2 ()
-  "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ)."
-  (interactive)
-  ;; Setup the needed vars
-  (setq ess-customize-alist R-customize-alist) ; setq or setq-default?
-  (ess-set-vars ess-customize-alist (current-buffer))
-  ;; debug, only
-  (message "(R2): ess-proc-prefix=%s , buf=%s"
-	   ess-proc-prefix (current-buffer))
-  ;; now run...
-  (inferior-ess))
 
  ; Provide package
 
