@@ -1,7 +1,7 @@
 ANNOUNCING ESS
 **************
 
-   The ESS Developers proudly announce the release of ESS
+The ESS Developers proudly announce the release of ESS
 
    5.2.0beta3
 
@@ -24,8 +24,8 @@ please read the README files that come with ESS.
 Getting the Latest Version
 ==========================
 
-   The latest stable version of ESS is always available on the web at:
-ESS web page (http://www.analytics.washington.edu/downloads/ess/) or
+The latest stable version of ESS is always available on the web at: ESS
+web page (http://www.analytics.washington.edu/downloads/ess/) or
 StatLib (http://lib.stat.cmu.edu/general/ESS/)
 
    The latest public version of ESS can also be retrieved via cvs
@@ -99,7 +99,7 @@ Current Features
 Requirements
 ============
 
-   ESS has been most thoroughly tested with:
+ESS has been most thoroughly tested with:
 
    * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
 
@@ -150,7 +150,7 @@ bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 Stability
 =========
 
-   Versions 5.1.x are meant to be gamma-level releases.  While some bugs
+Versions 5.1.x are meant to be gamma-level releases.  While some bugs
 are fixed, others may have been introduced, especially with regards to
 new features.  See the file doc/TODO for details.  Bug reports are
 solicited; see the Bugs Section below.  Patches or suggested coding
@@ -159,7 +159,7 @@ fixes with bug reports are much appreciated!
 Mailing List
 ============
 
-   There is a mailing list for discussions and announcements relating to
+There is a mailing list for discussions and announcements relating to
 ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
 "help") in the body to <ess-help-request@stat.math.ethz.ch>;
 contributions to the list may be mailed to
@@ -181,7 +181,7 @@ low-volume mailing list.
 Reporting Bugs
 ==============
 
-   Please send bug reports, suggestions etc. to
+Please send bug reports, suggestions etc. to
 
    <ESS-bugs@stat.math.ethz.ch>
 
@@ -191,6 +191,11 @@ Reporting Bugs
 
    This also gives the maintainers valuable information about your
 installation which may help us to identify or even fix the bug.
+
+   If Emacs reports an error, backtraces can help us debug the problem.
+Type "M-x set-variable RET debug-on-error RET t RET".  Then run the
+command that causes the error and you should see a *Backtrace* buffer
+containing debug information; send us that buffer.
 
    Note that comments, suggestions, words of praise and large cash
 donations are also more than welcome.
@@ -213,7 +218,7 @@ Authors
 License
 =======
 
-   ESS is free software; you can redistribute it and/or modify it under
+ESS is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
@@ -226,9 +231,14 @@ in the file COPYING in the same directory as this file for more details.
 New Features
 ============
 
-   Changes/New Features in 5.2.0beta?:
-   * ESS[BUGS]:  now supports interactive processing thanks to Aki
-     Vehtari (mailto:Aki.Vehtari@hut.fi); also new info documentation!
+Changes/New Features in 5.2.0:
+   * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
+     pressing underscore twice inserts a literal underscore.
+
+   * ESS[BUGS]:  new info documentation!  now supports interactive
+     processing thanks to Aki Vehtari (mailto:Aki.Vehtari@hut.fi); new
+     architecture-independent unix support as well as support for BUGS
+     v. 0.5
 
    * ESS[SAS]:  convert .log to .sas with ess-sas-transcript; info
      documentation improved; Local Variable bug fixes; SAS/IML
@@ -239,8 +249,9 @@ New Features
      the definition of the variable ess-sas-edit-keys-toggle to boolean
      rather than 0/1; added the function ess-electric-run-semicolon
      which automatically reverse indents lines containing only "run;";
-     C-F1 creates an MS RTF file from the current buffer and name it
-     accordingly
+     C-F1 creates MS RTF portrait from the current buffer; C-F2 creates
+     MS RTF landscape from the current buffer; C-F9 kills all buffers
+     associated with .sas program
 
    * ESS[S]:  ess-dump-filename-template-proto (new name!) now can be
      customized successfully (for S language dialects).
