@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/07 21:33:43 $
-;; Version: $Revision: 1.35 $
-;; RCS: $Id: ess-inf.el,v 1.35 1997/07/07 21:33:43 rossini Exp $
+;; Modified: $Date: 1997/07/17 18:35:31 $
+;; Version: $Revision: 1.36 $
+;; RCS: $Id: ess-inf.el,v 1.36 1997/07/17 18:35:31 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.36  1997/07/17 18:35:31  rossini
+;; writing debug info to ESS.
+;;
 ;; Revision 1.35  1997/07/07 21:33:43  rossini
 ;; stuff.
 ;;
@@ -342,8 +345,9 @@ when invoking S.
 
   ;; run hooks now, to overwrite the above!
   (run-hooks 'ess-pre-run-hook)    
-  (message "(inferior-ess 1): ess-proc-prefix=%s, buf=%s"
-	   ess-proc-prefix (current-buffer))
+  (ess-write-to-dribble-buffer 
+   (format "(inferior-ess 1): ess-proc-prefix=%s, buf=%s"
+	   ess-proc-prefix (current-buffer)))
   (let* ((defdir (directory-file-name (or ess-directory default-directory)))
 ;;	(procname
 ;;	 (if n (ess-proc-name (prefix-numeric-value n))
@@ -376,57 +380,56 @@ when invoking S.
 	 (buf nil)
 	 (buf-name-str  (concat "*" procname "*")))
 
-    (cond (;; If process is running, we use it:
-	   (get-process procname)
-	   (setq buf (process-buffer (get-process procname))))
+    (cond
+     ;; If process is running, we use it:
+     ((get-process procname)
+      (setq buf (process-buffer (get-process procname))))
+    
+     ;; Else (it's a new or terminated process) try to use current buffer
+     ((and (not buf) 
+	   (not n)
+	   (not (comint-check-proc (current-buffer)))
+	   (memq major-mode '(inferior-ess-mode ess-transcript-mode)))
+      (setq startdir
+	    (if ess-ask-for-ess-directory (ess-get-directory defdir)
+	      ess-directory))
+      (setq buf (current-buffer)))
 	  
-	  (;; Else (it's a new or terminated process) try to use current buffer
-	   (and (not buf) 
-		(not n)
-		(not (comint-check-proc (current-buffer)))
-		(memq major-mode '(inferior-ess-mode ess-transcript-mode)))
-	   (setq startdir
-		 (if ess-ask-for-ess-directory (ess-get-directory defdir)
-		   ess-directory))
-	   ;;(message "debug second way")
-	   (setq buf (current-buffer)))
-	  
-	  
-	  (;;  Not an ESS buffer yet
-	   (and (not buf)
-		(get-buffer buf-name-str))
-	   ;;(message "debug third way")
-	   (setq buf (get-buffer buf-name-str)))
-	  
-	  (;; Ask for transcript file and startdir
-	   ;; FIXME -- this should be in ess-get-transfile
-	   (not buf)
-	   (setq startdir
-		 (if ess-ask-for-ess-directory (ess-get-directory defdir) 
-		   ess-directory))
-	   (if ess-ask-about-transfile
-	       (let ((transfilename (read-file-name
-				    "Use transcript file (default none):"
-				    startdir "")))
-		 ;;(if (string= transfilename "")
-		 ;;    (setq transfilename nil)
-		 ;;  (setq transfilename (expand-file-name transfilename)))
-		 (setq buf (if (string= transfilename "") 
-			       (get-buffer-create buf-name-str)
-			     (find-file-noselect (expand-file-name
-						  transfilename)))))
-	     (setq buf (get-buffer-create buf-name-str)))))
-	   
+     ;;  Not an ESS buffer yet
+     ((and (not buf)
+	   (get-buffer buf-name-str))
+      (setq buf (get-buffer buf-name-str)))
+     
+     ;; Ask for transcript file and startdir
+     ;; FIXME -- this should be in ess-get-transfile
+     ((not buf)
+      (setq startdir
+	    (if ess-ask-for-ess-directory (ess-get-directory defdir) 
+	      ess-directory))
+      (if ess-ask-about-transfile
+	  (let ((transfilename (read-file-name
+				"Use transcript file (default none):"
+				startdir "")))
+	    ;;(if (string= transfilename "")
+	    ;;    (setq transfilename nil)
+	    ;;  (setq transfilename (expand-file-name transfilename)))
+	    (setq buf (if (string= transfilename "") 
+			  (get-buffer-create buf-name-str)
+			(find-file-noselect (expand-file-name
+					     transfilename)))))
+	(setq buf (get-buffer-create buf-name-str)))))
+    
     (set-buffer buf)
     ;; Now that we have the buffer, set buffer-local variables.
     (ess-set-vars ess-customize-alist buf)
-    (message "(inferior-ess 2): ess-proc-prefix=%s , buf=%s"
-	     ess-proc-prefix (current-buffer))
+    (ess-write-to-dribble-buffer
+     (format "(inferior-ess 2): ess-proc-prefix=%s , buf=%s"
+	     ess-proc-prefix (current-buffer)))
     (if startdir (setq default-directory startdir))
     (setq ess-history-file (concat "." ess-proc-prefix "history"))
     (ess-multi procname buf)))
 
-;;; Old code:
+;; Old code:
 
 ;;  ;; If this process is running, switch to it
 ;;  (if (get-process inferior-ess-procname)
