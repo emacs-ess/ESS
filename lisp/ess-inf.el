@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/11 03:52:54 $
-;; Version: $Revision: 1.78 $
-;; RCS: $Id: ess-inf.el,v 1.78 1997/11/11 03:52:54 rossini Exp $
+;; Modified: $Date: 1997/11/11 15:03:01 $
+;; Version: $Revision: 1.79 $
+;; RCS: $Id: ess-inf.el,v 1.79 1997/11/11 15:03:01 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -1828,21 +1828,18 @@ The result is stored in ess-sl-modtime-alist"
   ;; Return the object name at point, or nil if none
   (condition-case ()
       (save-excursion
-	;; The following line circumvents an 18.57 bug in following-char
-	(if (eobp) (backward-char 1)) ; Hopefully buffer is not empty!
-	;; Get onto a symbol
-	(catch 'nosym ; bail out if there's no symbol at all before point
-	  (while (/= (char-syntax (following-char)) ?w)
-	    (if (bobp) (throw 'nosym nil) (backward-char 1)))
-	  (let*
-	      ((end (progn (forward-sexp 1) (point)))
-	       (beg (progn (backward-sexp 1) (point)))
-	       (object-name (buffer-substring beg end))
-	       (object-returned))
-	    (if (not object-name)
-		(setq object-returned object-name)
-	      (setq object-returned "Temporary"))))
-    (error nil))))
+        ;; The following line circumvents an 18.57 bug in following-char
+        (if (eobp) (backward-char 1)) ; Hopefully buffer is not empty!
+        ;; Get onto a symbol
+        (catch 'nosym ; bail out if there's no symbol at all before point
+          (while (/= (char-syntax (following-char)) ?w)
+            (if (bobp) (throw 'nosym nil) (backward-char 1)))
+          (let*
+              ((end (progn (forward-sexp 1) (point)))
+               (beg (progn (backward-sexp 1) (point)))
+               (object-name (buffer-substring beg end)))
+            (or object-name "Temporary"))))
+    (error nil)))
 
 ;;*;; Temporary buffer handling
 
