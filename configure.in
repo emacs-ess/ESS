@@ -1,0 +1,75 @@
+dnl configure.in
+dnl
+dnl Process this file with autoconf to produce a configure script.
+dnl
+dnl Copyright (C) 2000 ESS Developers 
+dnl Author    : A.J. Rossini <rossini@biostat.washington.edu>
+dnl Maintainer: (same)
+dnl Revision  : $Id: configure.in,v 1.1 2000/09/03 02:40:49 rossini Exp $
+###
+### This file is part of ESS.
+###
+### ESS is free software; you can redistribute it and/or modify it under
+### the terms of the GNU General Public License as published by the Free
+### Software Foundation; either version 2 of the License, or (at your
+### option) any later version.
+###
+### ESS is distributed in the hope that it will be useful, but WITHOUT ANY
+### WARRANTY; without even the implied warranty of MERCHANTABILITY or
+### FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
+### License for more details.
+###
+### You should have received a copy of the GNU General Public License
+### along with ESS; if not, you can obtain it via the World Wide Web at
+### `http://www.gnu.org/copyleft/gpl.html', or by writing to the Free
+### Software Foundation, 59 Temple Place -- Suite 330, Boston, MA
+### 02111-3307, USA.
+
+AC_PREREQ(2.13)
+
+AC_INIT(Makeconf)
+
+### Platform & Version
+
+AC_CANONICAL_HOST
+AC_DEFINE_UNQUOTED(ESS_PLATFORM, "${host}")
+AC_DEFINE_UNQUOTED(ESS_CPU, "${host_cpu}")
+AC_DEFINE_UNQUOTED(ESS_VENDOR, "${host_vendor}")
+AC_DEFINE_UNQUOTED(ESS_OS, "${host_os}")
+
+ESS_PLATFORM="${host}"
+AC_SUBST(ESS_PLATFORM)
+
+PACKAGE="ESS"
+VERSION=`cat VERSION`
+AC_SUBST(PACKAGE)
+AC_SUBST(VERSION)
+
+### Defaults
+
+### Handle arguments to configure
+
+## Type of Emacs to compile for
+AC_ARG_WITH(xemacs,
+  [  --with-xemacs         use xemacs],
+  ESS_ARG_USE(xemacs),
+  use_xemacs=true)
+
+## Byte compile emacs-lisp files?
+AC_ARG_WITH(nocompile,
+  [  --no-compile          don't byte compile],
+  no_bytecompile=true)
+
+### Programs to check for
+
+ESS_PROG_SPLUS3
+ESS_PROG_SPLUS4
+ESS_PROG_SPLUS5
+ESS_PROG_R
+ESS_PROG_XLISPSTAT
+ESS_PROG_SAS
+ESS_PROG_
+
+ESS_PROG_ECHO_N
+ESS_PROG_INSTALL
+
