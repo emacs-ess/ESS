@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/05/07 13:49:37 $
-;; Version: $Revision: 1.166 $
-;; RCS: $Id: essa-sas.el,v 1.166 2004/05/07 13:49:37 stephen Exp $
+;; Modified: $Date: 2004/05/07 13:55:14 $
+;; Version: $Revision: 1.167 $
+;; RCS: $Id: essa-sas.el,v 1.167 2004/05/07 13:55:14 stephen Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -44,57 +44,51 @@
 ;;; Section 1:  Variable Definitions
 
 (defvar ess-sas-file-path "."
-    "Full path-name of the sas file to perform operations on.")
+  "Full path-name of the sas file to perform operations on.")
 
 (defcustom ess-sas-data-view-libname " "
-"*SAS code to define a library for `ess-sas-data-view-fsview'
+  "*SAS code to define a library for `ess-sas-data-view-fsview'
 or `ess-sas-data-view-insight'."
-    :group 'ess-sas  
-    :type  'string
-)
+  :group 'ess-sas  
+  :type  'string)
 
 (defcustom ess-sas-data-view-submit-options 
-    (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
-	"-nodms -nosysin -log /dev/null")
-"*The command-line options necessary for your OS with respect to
+  (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
+    "-nodms -nosysin -log /dev/null")
+  "*The command-line options necessary for your OS with respect to
 `ess-sas-data-view-fsview' and `ess-sas-data-view-insight'."
-    :group 'ess-sas  
-    :type  'string
-)
+  :group 'ess-sas  
+  :type  'string)
 
 (defcustom ess-sas-data-view-fsview-command "; proc fsview data=" 
-    "*SAS code to open a SAS dataset with `ess-sas-data-view-fsview'."
-    :group 'ess-sas  
-    :type  'string
-)
+  "*SAS code to open a SAS dataset with `ess-sas-data-view-fsview'."
+  :group 'ess-sas  
+  :type  'string)
 
 (defcustom ess-sas-data-view-fsview-statement " "
-    "*SAS code to perform a PROC FSVIEW statement with `ess-sas-data-view-fsview'."
-    :group 'ess-sas  
-    :type  'string
-)
+  "*SAS code to perform a PROC FSVIEW statement with `ess-sas-data-view-fsview'."
+  :group 'ess-sas
+  :type  'string)
 
 (make-variable-buffer-local 'ess-sas-data-view-fsview-statement)
 
 (defcustom ess-sas-data-view-insight-command "; proc insight data=" 
-    "*SAS code to open a SAS dataset with `ess-sas-data-view-insight'."
-    :group 'ess-sas  
-    :type  'string
-)
+  "*SAS code to open a SAS dataset with `ess-sas-data-view-insight'."
+  :group 'ess-sas
+  :type  'string)
 
 (defcustom ess-sas-data-view-insight-statement " "
-    "*SAS code to perform a PROC FSVIEW statement with `ess-sas-data-view-insight'."
-    :group 'ess-sas  
-    :type  'string
-)
+  "*SAS code to perform a PROC FSVIEW statement with `ess-sas-data-view-insight'."
+  :group 'ess-sas
+  :type  'string)
 
 (make-variable-buffer-local 'ess-sas-data-view-insight-statement)
 
 (defcustom ess-sas-graph-suffix-regexp 
-    "[.]\\([eE]?[pP][sS]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\)"
-    "*GSASFILE suffix regexp."
-    :group 'ess-sas  
-    :type  'string)
+  "[.]\\([eE]?[pP][sS]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\)"
+  "*GSASFILE suffix regexp."
+  :group 'ess-sas
+  :type  'string)
 
 ;;(defcustom ess-sas-smart-back-tab nil
 ;;    "*Set to t to make C-TAB insert an end/%end; statement to close a block."
@@ -102,10 +96,9 @@ or `ess-sas-data-view-insight'."
 ;;)
 
 (defcustom ess-sas-shell-buffer "*shell*"
-"*Name that you want to use for the shell buffer; buffer-local."
-    :group 'ess-sas
-    :type  'string
-)
+  "*Name that you want to use for the shell buffer; buffer-local."
+  :group 'ess-sas
+  :type  'string)
 
 (make-variable-buffer-local 'ess-sas-shell-buffer)
 
@@ -117,33 +110,31 @@ or `ess-sas-data-view-insight'."
 (make-variable-buffer-local 'ess-sas-shell-buffer-remote-host)
 
 (defcustom ess-sas-shell-buffer-remote-init "ssh" 
-"*Command to open a shell on a remote host."
-    :group 'ess-sas
-    :type  'string
-)
+  "*Command to open a shell on a remote host."
+  :group 'ess-sas
+  :type  'string)
 
 (make-variable-buffer-local 'ess-sas-shell-buffer-remote-init)
 
 (defcustom ess-sas-submit-mac-virtual-pc nil
-"*Non-nil means that you want to run Windows SAS in a
+  "*Non-nil means that you want to run Windows SAS in a
 Virtual PC emulator on your Mac; buffer-local."
-    :group 'ess-sas)
+  :group 'ess-sas
+  :type 'boolean)
 
 (make-variable-buffer-local 'ess-sas-submit-mac-virtual-pc)
 
 (defcustom ess-sas-submit-command sas-program
-    "*Command to invoke SAS in batch; buffer-local."
-    :group 'ess-sas  
-    :type  'string
-)
+  "*Command to invoke SAS in batch; buffer-local."
+  :group 'ess-sas
+  :type  'string)
 
 (make-variable-buffer-local 'ess-sas-submit-command)
 
 (defcustom ess-sas-submit-command-options " "
-    "*Options to pass to SAS in batch; buffer-local."
-    :group 'ess-sas  
-    :type  'string
-)
+  "*Options to pass to SAS in batch; buffer-local."
+  :group 'ess-sas
+  :type  'string)
 
 (make-variable-buffer-local 'ess-sas-submit-command-options)
 
@@ -174,93 +165,85 @@ should set this variable to 'sh regardless of their local shell
 (make-variable-buffer-local 'ess-sas-submit-method)
 
 (defcustom ess-sas-image-viewer
-    (if ess-microsoft-p "kodakimg" 
-	(if (equal ess-sas-submit-method 'sh) "sdtimage"))
-    "*Application to view GSASFILE."
-    :group 'ess-sas  
-    :type  'string)
+  (if ess-microsoft-p "kodakimg" 
+    (if (equal ess-sas-submit-method 'sh) "sdtimage"))
+  "*Application to view GSASFILE."
+  :group 'ess-sas
+  :type  'string)
 
 (defcustom ess-sas-submit-post-command 
-    (if (equal ess-sas-submit-method 'sh) "-rsasuser &" 
-	(if ess-microsoft-p "-rsasuser -icon"))    
-    "*Command-line statement to post-modify SAS invocation, e.g. -rsasuser"
-    :group 'ess-sas  
-    :type  'string
-)
+  (if (equal ess-sas-submit-method 'sh) "-rsasuser &" 
+    (if ess-microsoft-p "-rsasuser -icon"))    
+  "*Command-line statement to post-modify SAS invocation, e.g. -rsasuser"
+  :group 'ess-sas
+  :type  'string)
 
 (defcustom ess-sas-submit-pre-command 
-    (if (equal ess-sas-submit-method 'sh) 
-	;; nice is tricky, higher numbers give you lower priorities
-	;; if you are using csh/tcsh, the default priority is 4
-	;; if you are using most other shells, the default priority is 10,
-	;; and some implementations are higher, i.e. zsh unless you 
-	;; specify "setopt no_bg_nice" in your ~/.zshrc
-	;; therefore, on the same machine, you can run at a higher or
-	;; lower priority by changing shells, although, the command
-	;; line is the same!
-	;; the following code should give you a priority of 10 regardless
-	;; of which shell is in use, but it will default to the old
-	;; behavior if csh or variant is not recognized
-	;; this should avoid the necessity of each user needing to set this
-	;; variable correctly based on the shell that they use and provide
-	;; an environment where all shells are treated equally
-	(let* ((temp-shell (getenv "SHELL"))
-	       (temp-char (string-match "/" temp-shell)))
+  (if (equal ess-sas-submit-method 'sh) 
+      ;; nice is tricky, higher numbers give you lower priorities
+      ;; if you are using csh/tcsh, the default priority is 4
+      ;; if you are using most other shells, the default priority is 10,
+      ;; and some implementations are higher, i.e. zsh unless you 
+      ;; specify "setopt no_bg_nice" in your ~/.zshrc
+      ;; therefore, on the same machine, you can run at a higher or
+      ;; lower priority by changing shells, although, the command
+      ;; line is the same!
+      ;; the following code should give you a priority of 10 regardless
+      ;; of which shell is in use, but it will default to the old
+      ;; behavior if csh or variant is not recognized
+      ;; this should avoid the necessity of each user needing to set this
+      ;; variable correctly based on the shell that they use and provide
+      ;; an environment where all shells are treated equally
+      (let* ((temp-shell (getenv "SHELL"))
+	     (temp-char (string-match "/" temp-shell)))
             
-	    (while temp-char 
-		(setq temp-shell (substring temp-shell (+ 1 temp-char)))
-		(setq temp-char (string-match "/" temp-shell)))
+	(while temp-char 
+	  (setq temp-shell (substring temp-shell (+ 1 temp-char)))
+	  (setq temp-char (string-match "/" temp-shell)))
 
-	    (cond ((or (equal temp-shell "csh") (equal temp-shell "tcsh")) 
-			"nohup nice +6")
-		   (t "nohup nice")))
-	(if ess-microsoft-p "start"))
-    "*Command-line statement to precede SAS invocation, e.g. start or nohup"
-    :group 'ess-sas  
-    :type  'string
-)
+	(cond ((or (equal temp-shell "csh") (equal temp-shell "tcsh")) 
+	       "nohup nice +6")
+	      (t "nohup nice")))
+    (if ess-microsoft-p "start"))
+  "*Command-line statement to precede SAS invocation, e.g. start or nohup"
+  :group 'ess-sas
+  :type  'string)
 
 (defcustom ess-sas-suffix-1 "txt"
-    "*The first suffix to associate with SAS."
-    :group 'ess-sas  
-    :type  'string
-)
+  "*The first suffix to associate with SAS."
+  :group 'ess-sas
+  :type  'string)
 
 (defcustom ess-sas-suffix-2 "dat"
-    "*The second suffix to associate with SAS."
-    :group 'ess-sas  
-    :type  'string
-)
+  "*The second suffix to associate with SAS."
+  :group 'ess-sas
+  :type  'string)
 
 (defcustom ess-sas-suffix-regexp 
-    (concat "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]"
-	(if ess-sas-suffix-1 (concat 
-	    "\\|" (downcase ess-sas-suffix-1) "\\|" (upcase ess-sas-suffix-1)))
-	(if ess-sas-suffix-2 (concat 
-	    "\\|" (downcase ess-sas-suffix-2) "\\|" (upcase ess-sas-suffix-2)))
-	"\\)")
-    "*Regular expression for SAS suffixes."
-    :group 'ess-sas  
-    :type  'string
-)
+  (concat "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]"
+	  (if ess-sas-suffix-1 (concat 
+				"\\|" (downcase ess-sas-suffix-1) "\\|" (upcase ess-sas-suffix-1)))
+	  (if ess-sas-suffix-2 (concat 
+				"\\|" (downcase ess-sas-suffix-2) "\\|" (upcase ess-sas-suffix-2)))
+	  "\\)")
+  "*Regular expression for SAS suffixes."
+  :group 'ess-sas
+  :type  'string)
 
 (defcustom ess-sleep-for (if ess-microsoft-p 5 0)
-"*`ess-sas-submit-sh' may need to pause before sending output 
+  "*`ess-sas-submit-sh' may need to pause before sending output 
 to the shell on Windows when `ess-sas-submit-method' is 'sh."
-    :group 'ess-sas  
-    :type  'number
-)
+  :group 'ess-sas
+  :type  'number)
 
 (defvar ess-sas-tab-stop-alist
- '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120)
+  '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120)
   "List of tab stop positions used by `tab-to-tab-stop' in ESS[SAS].")
 
 (defcustom ess-sas-temp-root "ess-temp"
-    "*The root of the temporary .sas file for `ess-sas-submit-region'."
-    :group 'ess-sas  
-    :type  'string
-)
-
+  "*The root of the temporary .sas file for `ess-sas-submit-region'."
+  :group 'ess-sas  
+  :type  'string)
 
 ;;; Section 2:  Function Definitions
 
