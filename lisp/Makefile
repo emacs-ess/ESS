@@ -84,6 +84,10 @@ SCRIPTS = ess-sas-sh-command install-sh mkinstalldirs
 
 AUXFILES = COPYING Makefile ChangeLog $(SCRIPTS) $(DOCS) 
 
+DOCDIST = ess.ps ess.pdf \
+	Doc/ajr-talk.ps Doc/ajr-talk.pdf \
+	Doc/rmh-talk.ps Doc/rmh-talk.pdf
+
 # The following works mainly with GNU Make.
 OBJECTS = $(SOURCES:.el=.elc)
 
@@ -92,8 +96,7 @@ DISTFILES = $(addprefix $(VERSIONDIR)/,$(SOURCES)) \
 
 DISTSCRIPTS = $(addprefix $(VERSIONDIR)/,$(SCRIPTS))
 
-
-DOCFILES = dir ess.info ess.dvi ess.ps ess.pdf
+DOCDISTFILES = $(addprefix $(VERSIONDIR)/,$(DOCDIST)) 
 
 ### Targets
 
@@ -113,7 +116,7 @@ ps:	ess.dvi
 	dvips ess.dvi -o ess.ps
 
 pdf: 	ess.ps
-	rm ess.pdf
+	rm -f ess.pdf
 	ps2pdf ess.ps > ess.pdf
 
 install: all
@@ -125,10 +128,6 @@ install: all
 clean:
 	rm -f $(OBJECTS) ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
 	  ess.tp ess.vr ess.cps ess.fns ess.vrs ess.fn texput.log
-
-
-veryclean: clean
-	rm -f ess.dvi ess.info*
 
 dist:
 	@echo "**********************************************************"
@@ -147,20 +146,14 @@ dist:
 	chmod u+w $(VERSIONDIR)/Doc
 
 
-dist-doc: ESS-doc ps pdf
+dist-doc: $(DOCDISTFILES)
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS-DOC for release $(VERSION)"
 	@echo "**********************************************************"
-	chmod ugo+x $(DISTSCRIPTS)
-	tar hcovf $(VERSIONDIR)-doc.tar $(DISTFILES)
+	tar hcovf $(VERSIONDIR)-doc.tar $(DOCDISTFILES)
 	gzip $(VERSIONDIR)-doc.tar
-	cp $(VERSIONDIR).tar.gz $(MYWWWDIR)
-	cp $(VERSIONDIR).tar.gz $(MYFTPDIR)
-	cp $(VERSIONDIR)/README $(MYWWWDIR)/$(VERSIONDIR)-README
-	cp $(VERSIONDIR)/README $(MYFTPDIR)/$(VERSIONDIR)-README
-	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
-	chmod u+w $(VERSIONDIR)/Doc
-
+	cp $(VERSIONDIR)-doc.tar.gz $(MYWWWDIR)
+	cp $(VERSIONDIR)-doc.tar.gz $(MYFTPDIR)
 
 
 patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
