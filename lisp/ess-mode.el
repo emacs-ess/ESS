@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/07 23:10:24 $
-;; Version: $Revision: 1.65 $
-;; RCS: $Id: ess-mode.el,v 1.65 1997/11/07 23:10:24 rossini Exp $
+;; Modified: $Date: 1997/11/10 19:59:38 $
+;; Version: $Revision: 1.66 $
+;; RCS: $Id: ess-mode.el,v 1.66 1997/11/10 19:59:38 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -44,7 +44,7 @@
 
 (autoload 'ess-load-file "ess-inf" "" nil)
 (autoload 'get-ess-process "ess-inf" "" nil)
-(autoload 'ess-switch-to-S "ess-inf" "" nil)
+(autoload 'ess-switch-to-ESS "ess-inf" "" nil)
 (autoload 'ess-request-a-process "ess-inf" "" nil)
 (autoload 'ess-modtime-gt "ess-inf" "" nil)
 (autoload 'ess-create-temp-buffer "ess-inf" "" nil)
@@ -89,10 +89,9 @@
   (define-key ess-eval-map "\M-j"    'ess-eval-line-and-go))
 
 
-
 (if ess-mode-map
     nil
- 
+
   (cond ((string-match "XEmacs\\|Lucid" emacs-version)
 	 ;; Code for XEmacs
  	 (setq ess-mode-map (make-keymap))
@@ -116,8 +115,8 @@
   (define-key ess-mode-map "\C-c\M-j"    'ess-eval-line-and-go)
   (define-key ess-mode-map "\M-\C-a"     'ess-beginning-of-function)
   (define-key ess-mode-map "\M-\C-e"     'ess-end-of-function)
-  (define-key ess-mode-map "\C-c\C-y"    'ess-switch-to-S)
-  (define-key ess-mode-map "\C-c\C-z"    'ess-switch-to-end-of-S)
+  (define-key ess-mode-map "\C-c\C-y"    'ess-switch-to-ESS)
+  (define-key ess-mode-map "\C-c\C-z"    'ess-switch-to-end-of-ESS)
   (define-key ess-mode-map "\C-c\C-l"    'ess-load-file)
   (define-key ess-mode-map "\C-c\C-v"    'ess-display-help-on-object)
   (define-key ess-mode-map "\C-c\C-d"    'ess-dump-object-into-edit-buffer)
@@ -161,10 +160,10 @@
     ["Eval line"         ess-eval-line               t]
     ;;["About" (lambda nil (interactive) (ess-goto-info "Evaluating code"))]
     )
-   ("Motion..." 
+   ("Motion..."
     ["Edit new object"       ess-dump-object-into-edit-buffer t]
-    ["Goto end of S buffer"  ess-switch-to-end-of-S           t]
-    ["Switch to S buffer"    ess-switch-to-S                  t]
+    ["Goto end of S buffer"  ess-switch-to-end-of-ESS           t]
+    ["Switch to S buffer"    ess-switch-to-ESS                  t]
     ["End of function"	    ess-end-of-function              t]
     ["Beginning of function" ess-beginning-of-function        t])
    ("S list..."
@@ -189,7 +188,7 @@
    "------"
    ["Describe"  describe-mode t]
    ;;["About"  (lambda nil (interactive) (ess-goto-info "Editing")) t]
-   ["Send bug report"  ess-submit-bug-report t]    
+   ["Send bug report"  ess-submit-bug-report t]
    ))
 
 ;; NOT NEEDED!
@@ -231,8 +230,8 @@ S source.
     ess-eval-line sends the current line to the S process.
     ess-beginning-of-function and ess-end-of-function move the point to
         the beginning and end of the current S function.
-    ess-switch-to-S switches the current buffer to the S process buffer.
-    ess-switch-to-end-of-S switches the current buffer to the S process
+    ess-switch-to-ESS switches the current buffer to the S process buffer.
+    ess-switch-to-end-of-ESS switches the current buffer to the S process
         buffer and puts point at the end of it.
 
     ess-eval-region-and-go, ess-eval-buffer-and-go,
@@ -438,13 +437,14 @@ if this is the case."
 		   nil
 		   t)
 		  (buffer-substring (match-beginning 1)
-				    (match-end 1))))) 
+				    (match-end 1)))))
 	 (and
 	  sourcemod			; the file may have been deleted
 	  objname			; may not have been able to
-					; find name 
+					; find name
 	  (ess-modtime-gt (ess-object-modtime objname) sourcemod)
 	  (not (y-or-n-p
+
 		(format
 		 "The S object %s is newer than this file. Continue?"
 		 objname)))
@@ -456,7 +456,7 @@ Returns t if the buffer existed and was modified, but was not saved"
   (let ((buff (get-file-buffer fname)))
     ;; RMH: Corrections noted below are needed for C-c C-l to work
     ;; correctly when issued from *S* buffer.
-    ;; The following barfs since 
+    ;; The following barfs since
     ;; 1. `if' does not accept a buffer argument, `not' does.
     ;; 2. (buffer-file-name) is not necessarily defined for *S*
     ;;(if buff
@@ -686,7 +686,7 @@ The relative indentation among the lines of the expression are preserved."
 	    ;; Adjust line indentation according to its contents
 	    (if (= (following-char) ?})
 		;;(setq this-indent (- this-indent ess-indent-level)))
- 		(setq this-indent (+ this-indent 
+ 		(setq this-indent (+ this-indent
  				     (- ess-close-brace-offset ess-indent-level))))
 	    (if (= (following-char) ?{)
 		(setq this-indent (+ this-indent ess-brace-offset)))
