@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/26 22:54:23 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: essd-s+3.el,v 1.18 1997/08/26 22:54:23 rossini Exp $
+;; Modified: $Date: 1997/08/28 13:05:18 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: essd-s+3.el,v 1.19 1997/08/28 13:05:18 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -30,48 +30,6 @@
 ;;; Commentary:
 ;;; This file defines all the Splus 3.x customizations for ess-mode.
 
-;;;
-;;: $Log: essd-s+3.el,v $
-;;: Revision 1.18  1997/08/26 22:54:23  rossini
-;;: *** empty log message ***
-;;:
-;;: Revision 1.17  1997/08/25 14:31:04  rossini
-;;: *** empty log message ***
-;;:
-;;: Revision 1.16  1997/07/31 12:45:49  rossini
-;;: comments...
-;;:
-;;: Revision 1.15  1997/07/30 13:13:57  rossini
-;;: vars back..
-;;:
-;;: Revision 1.14  1997/07/17 20:57:15  rossini
-;;: works, now..
-;;:
-;;: Revision 1.13  1997/07/17 20:51:31  rossini
-;;: stuff
-;;:
-;;: Revision 1.12  1997/07/17 20:49:21  rossini
-;;: new version, take 1.
-;;:
-;;: Revision 1.11  1997/06/22 23:13:14  rossini
-;;: removed S-inf... variable.  Whoops.
-;;:
-;;: Revision 1.10  1997/06/19 21:17:02  rossini
-;;: added font-lock-keywords, ala RMH.
-;;:
-;;: Revision 1.9  1997/06/15 08:42:53  rossini
-;;: setq-> setq-default.  I think this is correct!@
-;;:
-;;: Revision 1.8  1997/06/15 08:18:10  rossini
-;;: added autoload for inferior-ess
-;;:
-;;: Revision 1.7  1997/06/15 07:11:10  rossini
-;;: need to provide the actual file name.
-;;:
-;;: Revision 1.6  1997/06/14 23:12:08  rossini
-;;: Finally set up properly.
-;;:
-;;;
 
 ;;; Autoloads:
 
@@ -121,16 +79,13 @@
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?")
     (inferior-ess-start-file       . "~/.ess-S+3")
-    (inferior-ess-start-args       . nil)
-
-    )
+    (inferior-ess-start-args       . nil))
  "Variables to customize for S+3")
 
 (defun S-mode (&optional proc-name)
   "Major mode for editing S+3 source.  See ess-mode for more help."
   (interactive)
-
-  (ess-mode proc-name ess-language))
+  (ess-mode S+3-customize-alist proc-name))
 
 
 (defun S+3 ()

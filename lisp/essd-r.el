@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/26 22:54:23 $
-;; Version: $Revision: 1.30 $
-;; RCS: $Id: essd-r.el,v 1.30 1997/08/26 22:54:23 rossini Exp $
+;; Modified: $Date: 1997/08/28 13:05:24 $
+;; Version: $Revision: 1.31 $
+;; RCS: $Id: essd-r.el,v 1.31 1997/08/28 13:05:24 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.31  1997/08/28 13:05:24  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.30  1997/08/26 22:54:23  rossini
 ;;: *** empty log message ***
 ;;:
@@ -128,9 +131,9 @@
 
 (defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$")
 
+;;(ess-customize-alist           . 'R-customize-alist)
 (defvar R-customize-alist
-  '((ess-customize-alist           . 'R-customize-alist)
-    (ess-language                  . "S")
+  '((ess-language                  . "S")
     (ess-dialect                   . "R")
     (ess-help-sec-regex            . ess-help-R-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-R-sec-keys-alist) 
@@ -138,24 +141,20 @@
     (ess-object-name-db-file       . "ess-r-namedb.el" )
     (ess-retr-lastvalue-command    . ".Last.value <- get(\"smode.lvsave\",envir=1)\n")
     (ess-save-lastvalue-command    . "assign(\"smode.lvsave\",.Last.value,envir=1)\n")
- 
-    (ess-object-name-db-file       . "ess-r-namedb.el" )
     (inferior-ess-program          . inferior-R-program-name)
     (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-objects-command  . "objects(pos = %d)\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[][a-zA-Z0-9() ]*> ?")
     (inferior-ess-start-file       . "~/.ess-R")
-    (inferior-ess-start-args . nil)
-  )
+    (inferior-ess-start-args       . nil))
   "Variables to customize for R")
 
 
 (defun R-mode  (&optional proc-name) 
   "Major mode for editing R source.  See ess-mode for more help."
   (interactive)
-  (setq ess-customize-alist R-customize-alist)
-  (ess-mode proc-name ess-language))
+  (ess-mode R-customize-alist proc-name))
 
 
 (defun R ()

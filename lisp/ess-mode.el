@@ -6,110 +6,10 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/08/25 14:31:04 $
-;; Version: $Revision: 1.46 $
-;; RCS: $Id: ess-mode.el,v 1.46 1997/08/25 14:31:04 rossini Exp $
+;; Modified: $Date: 1997/08/28 13:04:38 $
+;; Version: $Revision: 1.47 $
+;; RCS: $Id: ess-mode.el,v 1.47 1997/08/28 13:04:38 rossini Exp $
 
-;;
-;; $Log: ess-mode.el,v $
-;; Revision 1.46  1997/08/25 14:31:04  rossini
-;; *** empty log message ***
-;;
-;; Revision 1.45  1997/07/31 13:06:34  rossini
-;; nil -> ().  Just looks...
-;;
-;; Revision 1.44  1997/07/30 13:00:31  rossini
-;; removed last variable (ess-mode-map) to ess-vars.
-;;
-;; Revision 1.43  1997/07/29 11:45:45  rossini
-;; version now: ESS["dialect"].
-;;
-;; Revision 1.42  1997/07/29 11:39:22  rossini
-;; stuff.
-;;
-;; Revision 1.41  1997/07/26 01:20:12  rossini
-;; newline -> newline-and-indent.
-;;
-;; Revision 1.40  1997/07/24 13:11:16  rossini
-;; moved menu items.
-;;
-;; Revision 1.39  1997/07/17 18:35:16  rossini
-;; ess -> ESS
-;;
-;; Revision 1.38  1997/07/01 14:44:57  rossini
-;; added RMH's ess-check-source solution.
-;;
-;; Revision 1.37  1997/06/18 16:02:58  rossini
-;; added S-mode, again :-).
-;;
-;; Revision 1.36  1997/06/15 21:56:38  rossini
-;; *** empty log message ***
-;;
-;; Revision 1.35  1997/04/21 00:13:00  rossini
-;; added needed autoload.
-;;
-;; Revision 1.34  1997/04/21 00:11:35  rossini
-;; moved S-force-buffer-current to S-inf.
-;;
-;; Revision 1.33  1997/04/18 16:04:51  rossini
-;; changed header comments to reflect current.
-;;
-;; Revision 1.32  1997/04/18 16:02:23  rossini
-;; moved eval-THING commands to S-inf.
-;;
-;; Revision 1.31  1997/04/17 00:03:36  rossini
-;; uncommented last-sexp.  need to figure out the
-;; save-excursion/byte-compiler stuff...
-;;
-;; Revision 1.30  1997/04/17 00:00:32  rossini
-;; commented out unreferenced vars.
-;;
-;; Revision 1.29  1997/04/08 19:03:33  rossini
-;; Emacs -> GNU Emacs when appropriate.
-;;
-;; Revision 1.28  1997/04/08 10:31:41  rossini
-;; removed FSF GNU.
-;;
-;; Revision 1.27  1997/04/08 01:28:59  rossini
-;; added too many auto-loads
-;;
-;; Revision 1.26  1997/04/08 00:37:54  rossini
-;; moved out all non-local variables (user/system).
-;;
-;; Revision 1.25  1997/04/07 11:54:18  rossini
-;; S-parse-errors now bound to \C-c`
-;;
-;; Revision 1.24  1997/04/04 16:14:20  rossini
-;; S-eval-paragraph moved here.
-;;
-;; Revision 1.23  1997/04/03 19:42:35  rossini
-;; S-inf-filenames-map -> S-filenames-map
-;;
-;; Revision 1.22  1997/04/02 15:07:38  rossini
-;; 2 changes, thanks to Peter Dalgaard <p.dalgaard@biostat.ku.dk>
-;;
-;; Revision 1.21  1997/03/10 16:16:21  rossini
-;; added hooks for XEmacs menu
-;;
-;; Revision 1.20  1997/03/07 23:34:51  rossini
-;; moved relevant S-menu stuff into S-mode.
-;;
-;; Revision 1.19  1997/03/07 20:59:25  rossini
-;; added Kurt H.'s version of S-mark-function.
-;; changed settings for R-mode (ala Kurt H.)
-;;
-;; Revision 1.18  1997/02/10 17:36:14  rossini
-;; removed the additional work, again.
-;; It's not happening, this time.
-;;
-;; Revision 1.17  1997/02/10 16:55:52  rossini
-;; fixed my stupid patching, I hope!
-;;
-;; Revision 1.16  1997/02/09 21:34:05  rossini
-;; menus correct for S-mode (keymaps not inherited from comint, but
-;; rather from text-mode!  Whoops!)
-;;
-;;
 
 ;; This file is part of ess-mode
 
@@ -288,8 +188,9 @@
 (if (string-match "XEmacs" emacs-version)
     (add-hook 'ess-mode-hook 'ess-mode-xemacs-menu))
 
-(defun ess-mode (&optional proc-name type)
+(defun ess-mode (&optional alist proc-name)
   "Major mode for editing S source.
+Optional arg ALIST describes how to customize the editing mode.
 Optional arg PROC-NAME is name of associated inferior process.
 
 \\{ess-mode-map}
@@ -365,9 +266,10 @@ Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
 indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
  (quoted from C language style)."
   (interactive)
-  (kill-all-local-variables)
+  (kill-all-local-variables) ;; NOTICE THIS!
+  (ess-setq-vars alist (current-buffer))
   (setq major-mode 'ess-mode)
-  (setq mode-name (concat "ESS[" type "]")) ;; will be S.  
+  (setq mode-name (concat "ESS[" ess-dialect "]"))
   (use-local-map ess-mode-map)
   (set-syntax-table ess-mode-syntax-table)
   (make-local-variable 'paragraph-start)

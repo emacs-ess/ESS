@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/08/26 22:54:23 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: essd-sas.el,v 1.2 1997/08/26 22:54:23 rossini Exp $
+;; Modified: $Date: 1997/08/28 13:05:39 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: essd-sas.el,v 1.3 1997/08/28 13:05:39 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-sas.el,v $
+;;: Revision 1.3  1997/08/28 13:05:39  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.2  1997/08/26 22:54:23  rossini
 ;;: *** empty log message ***
 ;;:
@@ -78,7 +81,7 @@
   "Major mode for editing SAS source.  See ess-mode for more help."
   (interactive)
 
-  (ess-mode proc-name ess-language))
+  (ess-mode ess-language proc-name))
 
 ;;; Code:
 
