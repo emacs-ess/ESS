@@ -1,3 +1,8 @@
+1999-04-23  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-site.el (auto-mode-alist): Change regexp's in order to work
+	with NTemacs which is has a non-case-sensitive `find-file'.
+
 1999-04-05  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* ess-site.el, ess-vars.el: text from 5.1.7 to 5.1.8
@@ -27,7 +32,7 @@
 
 	* ess-inf.el: ess-prompt-wait duration changed?
 
-1999-04-01  maechler  <maechler@alpha>
+1999-04-01  maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el: typo
 

@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/04/05 21:35:27 $
-;; Version: $Revision: 5.25 $
-;; RCS: $Id: ess-site.el,v 5.25 1999/04/05 21:35:27 rossini Exp $
+;; Modified: $Date: 1999/04/23 17:31:45 $
+;; Version: $Revision: 5.26 $
+;; RCS: $Id: ess-site.el,v 5.26 1999/04/23 17:31:45 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -109,21 +109,19 @@
 	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S
 	   ("\\.ssc\\'"	  . S-mode) ;; Splus 4.x script files.
 	   ("\\.[rR]\\'"  . R-mode)
-	   ("R.*/src/library/[A-Za-z]+/R/[A-Za-z]"    . R-mode); R >= 0.60
-	   ("R.*/src/library/[A-Za-z]+/man/[A-Za-z]"  . Rd-mode)
-	   ("\\.lsp\\'"				      . XLS-mode)
-	   ("\\.do\\'"				      . STA-mode)
-	   ("\\.ado\\'"				      . STA-mode)
-	   ("\\.sas\\'"				      . SAS-mode)
-	   ("\\.SAS\\'"				      . SAS-mode)
-	   ("\\.lst\\'"				      . SAS-listing-mode);sasl
-	   ;; Too many *.log files!
-	   ;;("\\.log\\'"				. SAS-log-mode);sasl
-	   ("\\.s\\(ou\\)?t\\'"			      . S-transcript-mode)
-	   ("\\.S\\(ou\\)?t"			      . S-transcript-mode)
-	   ("\\.r\\(ou\\)?t\\'"			      . R-transcript-mode)
-	   ("\\.R\\(ou\\)?t"			      . R-transcript-mode)
-	   ("\\.Rd\\'"				      . Rd-mode)) ;all R>=0.60
+	   ("\\.lsp\\'"		. XLS-mode)
+	   ("\\.do\\'"		. STA-mode)
+	   ("\\.ado\\'"		. STA-mode)
+	   ("\\.sas\\'"		. SAS-mode)
+	   ("\\.SAS\\'"		. SAS-mode)
+	   ("\\.lst\\'"		. SAS-listing-mode);sasl
+	   ;; Too many *.log files, not only SAS :
+	   ;;("\\.log\\'"	. SAS-log-mode);sasl
+	   ("\\.[Ss]t\\'"	. S-transcript-mode)
+	   ("\\.[Ss]out"	. S-transcript-mode)
+	   ("\\.[Rr]t\\'"	. R-transcript-mode)
+	   ("\\.[Rr]out"	. R-transcript-mode)
+	   ("\\.Rd\\'"		. Rd-mode)) ;all R>=0.60
 	 auto-mode-alist)))
 
 
