@@ -4,27 +4,27 @@
   cd to a directory where you keep emacs lisp files, or create a new
   directory to hold the distribution.  This directory will be referred
   to below as "the ESS distribution directory".  It will contain,
-  at the end, the tar file @file{ESS-5.1.14.tar.gz}, and a directory for
-  the ESS source, which will be termed "the ESS-5.1.14 source directory".
+  at the end, the tar file @file{ESS-5.1.15.tar.gz}, and a directory for
+  the ESS source, which will be termed "the ESS-5.1.15 source directory".
   Note that the .elc files may be installed elsewhere (as specified in the
   Makefile) if desired.
 @item
   Retrieve the compressed tar file from one of the FTP or WWW archive
   sites via FTP (or HTTP).
 @item
-  Copy @file{ESS-5.1.14.tar.gz} to the location where you want the
-  ESS-5.1.14 directory, and cd there.  Extract the files from the
-  distribution, which will unpack into a subdirectory, ESS-5.1.14.
+  Copy @file{ESS-5.1.15.tar.gz} to the location where you want the
+  ESS-5.1.15 directory, and cd there.  Extract the files from the
+  distribution, which will unpack into a subdirectory, ESS-5.1.15.
 @example
-	gunzip ESS-5.1.14.tar.gz
-	tar vxf ESS-5.1.14.tar
+	gunzip ESS-5.1.15.tar.gz
+	tar vxf ESS-5.1.15.tar
 @end example
-	(or: @code{gunzip < ESS-5.1.14.tar.gz | tar vxf -} ).
-	(or using GNU tar:  @code{tar zvxf ESS-5.1.14.tar.gz}).
+	(or: @code{gunzip < ESS-5.1.15.tar.gz | tar vxf -} ).
+	(or using GNU tar:  @code{tar zvxf ESS-5.1.15.tar.gz}).
 
   The @code{tar} command will extract files into the current directory.
 
-  Do not create ESS-5.1.14 yourself, or you will get an extra level of
+  Do not create ESS-5.1.15 yourself, or you will get an extra level of
   depth to your directory structure.
 @item
   Edit the file @file{lisp/ess-site.el} as explained in the comments
@@ -35,7 +35,7 @@
 @item
   @b{READ THIS ITEM THOROUGHLY BEFORE STARTING}:
 
-  In the ESS-5.1.14 directory, edit the file @file{Makeconf} (only if you
+  In the ESS-5.1.15 directory, edit the file @file{Makeconf} (only if you
   want to place the executables in other locations; see LISPDIR and
   INFODIR) and then type:
 @example
