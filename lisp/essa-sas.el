@@ -651,13 +651,15 @@ current buffer if nil."
   "Switch to the .log file, revert from disk and search for error messages."
   (interactive)
 
-  (let ((ess-sas-error (concat "^ERROR [0-9]+-[0-9]+:\\|^ERROR:\\|_ERROR_=1 _\\|_ERROR_=1[ ]?$"
+  (let ((ess-sas-error (concat 
+    "^ERROR [0-9]+-[0-9]+:\\|^ERROR:\\|_ERROR_=1 _N_=\\|_ERROR_=1[ ]?$"
     "\\|NOTE: MERGE statement has more than one data set with repeats of BY values."
     "\\|NOTE: Variable .* is uninitialized."
     "\\|WARNING: Apparent symbolic reference .* not resolved."
     "\\|NOTE 485-185: Informat .* was not found or could not be loaded."
     "\\|WARNING: Length of character variable has already been set."
-    "\\|Bus Error In Task\\|Segmentation Violation In Task"))
+    "\\|Bus Error In Task\\|Segmentation Violation In Task"
+    "\\|NOTE: Estimated G matrix is not positive definite."))
 	(ess-sas-save-point nil))
 
   (if (ess-sas-goto "log" 'revert) (progn
@@ -667,12 +669,15 @@ current buffer if nil."
   )
 
 (if ess-tmp-no-error-check (goto-char ess-sas-save-point)
-  (if (not (search-forward-regexp ess-sas-error nil t))
-        (if (search-backward-regexp ess-sas-error nil t)
+  (if (not (and (search-forward-regexp ess-sas-error nil t)
+	    (or (push-mark (match-beginning 0) t)
+		(zmacs-activate-region) t)))
+        (if (search-backward-regexp ess-sas-error nil t) 
             (progn
                 (goto-char (point-min))
-                (search-forward-regexp ess-sas-error nil t)
-            )
+		(and (search-forward-regexp ess-sas-error nil t)
+		    (or (push-mark (match-beginning 0) t)
+		    (zmacs-activate-region) t)))
 	    (goto-char ess-sas-save-point)
         )
     )
