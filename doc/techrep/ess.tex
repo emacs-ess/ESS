@@ -35,8 +35,8 @@
   \usepackage[dvips]{graphicx}
   \usepackage[dvips]{hyperref} 
 \fi
-%%---End of package requiring ---------- Own Definitions ------------- 
 
+%%---End of package requiring ---------- Own Definitions ------------- 
 
 \hypersetup{backref,colorlinks=true,pagebackref=true,
   hyperindex=true}%pdfpagemode=FullScreen,
@@ -226,7 +226,7 @@ assist with learning keystrokes.
 The above reasons make Emacs a natural choice for providing a
 universal interface for data analysis and programming.
 
-\subsubsection{Finding Help for Using Emacs}
+\subsubsection{Help for Using Emacs}
 
 We assume that you are familiar with Emacs terminology and syntax:
 file, buffer, region, description of keys etc.  If not, please read
@@ -234,7 +234,8 @@ the New Users guide (found in the info pages, "C-h i" (by pressing
 control h, i) or Tutorial, "C-h t").
 
 To find the key-sequences for commands, view the keymap (C-h b) or
-view help for the current mode (C-h m).  
+view help for the current mode (C-h m).   There are also numerous
+books which might help.
 
 \section{Statistical User Interfaces}
 \label{sec:UI}
@@ -721,7 +722,7 @@ and then \Splus~2000.
 
 Most of what has been done recently is debugging and tuning.  New
 features in the plans include robust extensions for Literate Data
-Analysis using Noweb (Ramsey, 199x?), as well as extensions for
+Analysis using Noweb \citep{NRamsey:1994}, as well as extensions for
 XML-based Literate Statistical Analysis.
 
 \section{Remarks and Extensions}
@@ -733,9 +734,9 @@ this includes implementing such common IDE features as object browsers
 as well as clean up the interface.
 
 The other exciting extension is towards quasi-Literate Programming
-methodologies (Knuth, 1987?; Ramsey, 199x?), which we will refer to as
+methodologies \citep{Knuth:1992,NRamsey:1994}, which we will refer to as
 Literate Statistical Analysis \citep{ross:lunt:2001}. The tools include
-the use of Noweb (Ramsey, 199x?) and an additional step towards the
+the use of Noweb \citep{NRamsey:1994} and an additional step towards the
 use of an XML authoring environment for statistical analysis.
 Literate Data Analysis based on Noweb, is a means of documenting a
 statistical analysis plan and procedure.  Literate Statistical
