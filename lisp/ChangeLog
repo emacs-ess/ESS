@@ -1,3 +1,8 @@
+2005-03-21  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-emcs.el (enable-multibyte-characters): define (to nil) if
+	not bound.  Workaround for Xemacs problems with (ess-do-auto-fill).
+
 2005-03-08  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (inferior-ess-output-filter,

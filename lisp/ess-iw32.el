@@ -272,7 +272,7 @@ generate the source buffer."
 	    (message "Popped to edit buffer."))
 	;; No current buffer containing desired file
 	(if (file-exists-p filename)
-	    (progn
+ 	    (progn
 	      (ess-find-dump-file-other-window filename)
 	      (message "Read %s" filename))
 	  ;; No buffer and no file

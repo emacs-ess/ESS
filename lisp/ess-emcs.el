@@ -240,6 +240,13 @@ and replace a sub-expression, e.g.
 	   (w32-system-shell-p (getenv "COMSPEC")))))
 )
 
+;; XEmacs needs this
+(if (not (boundp 'enable-multibyte-characters))
+    (defvar enable-multibyte-characters nil
+      "Non-nil means the buffer contents are regarded as multi-byte characters.
+ This concept is handled completely differently on Xemacs."))
+
+
 ;; XEmacs on Windows needs this
 (if (and ess-microsoft-p
 	 (not (fboundp 'w32-short-file-name)))
