@@ -2,9 +2,9 @@
 ;;; Thu 06 May 2004
 ;;; Stephen Eglen
 ;;; GPL.
-;; Modified: $Date: 2004/05/17 17:19:32 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: ess-toolbar.el,v 1.11 2004/05/17 17:19:32 stephen Exp $
+;; Modified: $Date: 2004/06/17 17:55:15 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: ess-toolbar.el,v 1.12 2004/06/17 17:55:15 stephen Exp $
 
 ;;; Notes.
 
@@ -29,10 +29,8 @@
 ;; that will make the toolbar code more portable.  So, for now the
 ;; code should be regarded as proof of concept.
 
-;; Also, I think the Mac OS X version of GNU Emacs does not yet have
-;; tool-bar support.  This may be present in very new versions of CVS
-;; Emacs.  Will check...
-
+;; Also, I think the CVS GNU Emacs now has tool-bar support for the
+;; Mac OS X.  
 
 
 ;;; Creating pixmaps:
