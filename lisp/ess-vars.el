@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/11 04:03:23 $
-;; Version: $Revision: 1.38 $
-;; RCS: $Id: ess-vars.el,v 1.38 1997/11/11 04:03:23 rossini Exp $
+;; Modified: $Date: 1997/11/11 21:25:58 $
+;; Version: $Revision: 1.39 $
+;; RCS: $Id: ess-vars.el,v 1.39 1997/11/11 21:25:58 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -411,30 +411,30 @@ by ess-function-template.")
 ;; ess-site.el.  Do NOT make the changes here!!
 
 (defvar inferior-R-program-name "R"
-  "*Program name for invoking an inferior S with R().")
+  "*Program name for invoking an inferior ESS with R().")
 
 (defvar inferior-XLS-program-name "xlispstat"
-  "*Program name for invoking an inferior S with XLS().")
+  "*Program name for invoking an inferior ESS with XLS().")
 
 (defvar inferior-S3-program-name "/disk05/s/S"
-  "*Program name for invoking an inferior S with S3().")
+  "*Program name for invoking an inferior ESS with S3().")
 
 (defvar inferior-S+3-program-name "Splus"
-  "*Program name for invoking an inferior S with S+3().")
+  "*Program name for invoking an inferior ESS with S+3().")
 
 (defvar inferior-S4-program-name "S4"
-  "*Program name for invoking an inferior S with S4().")
+  "*Program name for invoking an inferior ESS with S4().")
 
 (defvar inferior-SAS-program-name "sas"
-  "*Program name for invoking an inferior S with SAS().")
+  "*Program name for invoking an inferior ESS with SAS().")
 
 
 ;;;;; user settable defaults
 (defvar inferior-S-program-name  inferior-S+3-program-name
-  "*Program name for invoking an inferior S with S().")
+  "*Program name for invoking an inferior ESS with S().")
 
 (defvar inferior-ess-program nil ;inferior-S-program-name
-  "*Default program name for invoking inferior-S().
+  "*Default program name for invoking inferior-ess().
 The other variables ...-program-name should be changed, for the
 corresponding program.")
 
