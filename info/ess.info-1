@@ -15,9 +15,9 @@ ESS: Emacs Speaks Statistics
 
    ESS version
 
-   5.2.0beta2
+   5.2.0beta3
 
-   (Documentation $Revision: 1.27 $ $Date: 2003/11/21 15:12:09 $).
+   (Documentation $Revision: 1.28 $ $Date: 2003/12/09 17:52:09 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -198,7 +198,7 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 New features in ESS
 ===================
 
-   Changes/New Features in 5.2.0beta1:
+   Changes/New Features in 5.2.0beta?:
    * ESS[BUGS]:  now supports interactive processing thanks to Aki
      Vehtari (mailto:Aki.Vehtari@hut.fi); also new info documentation!
 
