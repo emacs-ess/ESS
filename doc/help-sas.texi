@@ -2,8 +2,7 @@ ESS[SAS] was designed for use with SAS.  It is descended from emacs
 macros developed by John Sall for editing SAS programs and SAS-mode by 
 Tom Cook.  Those editing features and new advanced features are part of 
 ESS[SAS].  The user interface of ESS[SAS] has similarities with ESS[S]
-and the SAS Display Manager.  By emacs, we mean either GNU Emacs from 
-the Free Software Foundation or XEmacs from the XEmacs Project.
+and the SAS Display Manager.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(SAS)--Design philosophy, ESS(SAS)--Editing files, Help for SAS, Help for SAS
