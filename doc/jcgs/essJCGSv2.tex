@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/05 23:03:05 $ - $Revision: 1.114 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/05 23:15:07 $ - $Revision: 1.115 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -416,70 +416,6 @@ tools such as spell checking programs. % The Emacs keyboard and mouse
 %generation and recognition devices \textbf{(Cite: EmacSpeaks, AJR
 %  needs to add the reference)}.
 
-For example, syntax highlighting can help enforce company coding
-standards.  Figure \ref{f.hilock} shows how to enforce a standard for
-\SAS\ programming that says all \stexttt{PROC} statements must use the
-\stexttt{DATA=datasetname} option.
-
-\begin{Comment} Rodney: I agree that this is possible, however, I 
- have never seen a company attempt to enforce such standards.  In fact,
- I don't think it would be a good idea.  It would waste valuable time 
- checking SAS code that would be better spent verifying that the results 
- generated are correct (you have hit one of my pet peeves :o).
- I'd like to drop this controversial subject.  It makes us look like
- a bunch of auditors, rather than statisticians.
-
-Rich: This example was designed in response to an explicit request
-from the program chair of the Philadelphia SAS Users Group.  He felt
-that industrial SAS users were looking for this type of capability.
-The impression I got from him was that enforcement of standards was
-something that was wanted but that no one knew how to do.  The fact
-the Emacs can do it was a selling point.  It was very well received
-when I presented it at the meeting.
-
-Rodney: Having been a pharmaceutical SAS user from '93-'00, I can say
-that this is an improper use of auditing.  An auditors time is very 
-valuable and there are never enough auditors when you need them.  
-I'll give you an example.  We had to audit the CRFs of 2500 patients 
-in Europe and the auditors were embarking.  I wrote an undocumented, 
-not-following-the-standards SAS program to generate the audit sheets.  
-Instead of having them look at the code to see if it was compliant, 
-I sent them 50 audit sheets for patients that they already had the 
-source documents for.  As luck would have it, we had one patient that's 
-CRF did not match the audit sheet.  Further digging showed that the 
-Oracle database was not reporting the actual value that was in
-it's table due to a bug introduced in an upgrade 3 months earlier.
-Several hundred audit sheets that were already printed off were
-recycled and two people responsible for the Oracle database lost 
-their jobs.  This is the proper role of the auditor IMHO.  I think
-ESS should stay out of it, at least as far as the paper goes.
-\end{Comment}
-
-%\begin{figure}
-%\ifdraft
-%  \emptyfig
-%\else
-%  \psfig{file=hilock-sas.ps.gz,angle=270,width=\textwidth}
-%\fi
-%\caption[Enforce company coding standards.]{Enforce company coding
-%standards.  The standard here is that all \stexttt{PROC} statements must use
-%the \stexttt{DATA=datasetname} option.  Lines that satisfy the standard
-%turn green, lines that don't turn red.  Ambiguous ones turn yellow.\\
-%{\it hilock-sas.ps.gz}
-%\label{f.hilock}}
-%\end{figure}
-
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[angle=270,width=\textwidth]{hilock-sas}
-  \caption{Enforce company coding
-    standards.  The standard here is that all \stexttt{PROC}
-    statements must use the \stexttt{DATA=datasetname} option.  Lines
-    that satisfy the standard turn green, lines that don't turn red.
-    Ambiguous ones turn yellow.} %% \it hilock-sas.ps.gz
-  \label{f.hilock}
-\end{figure}
 
 \section{ESS extends Emacs}
 \label{sec:ess-extends-emacs}
@@ -639,6 +575,69 @@ provides several other optional schemes.
     underline, italic, and reverse-video.  On a color terminal we
     would use a selection of colors.}
   \label{f.font}
+\end{figure}
+
+For example, syntax highlighting can help enforce company coding
+standards.  Figure \ref{f.hilock} shows how to enforce a standard for
+\SAS\ programming that says all \stexttt{PROC} statements must use the
+\stexttt{DATA=datasetname} option.
+
+\begin{Comment} Rodney: I agree that this is possible, however, I 
+ have never seen a company attempt to enforce such standards.  In fact,
+ I don't think it would be a good idea.  It would waste valuable time 
+ checking SAS code that would be better spent verifying that the results 
+ generated are correct (you have hit one of my pet peeves :o).
+ I'd like to drop this controversial subject.  It makes us look like
+ a bunch of auditors, rather than statisticians.
+
+Rich: This example was designed in response to an explicit request
+from the program chair of the Philadelphia SAS Users Group.  He felt
+that industrial SAS users were looking for this type of capability.
+The impression I got from him was that enforcement of standards was
+something that was wanted but that no one knew how to do.  The fact
+the Emacs can do it was a selling point.  It was very well received
+when I presented it at the meeting.
+
+Rodney: Having been a pharmaceutical SAS user from '93-'00, I can say
+that this is an improper use of auditing.  An auditors time is very 
+valuable and there are never enough auditors when you need them.  
+I'll give you an example.  We had to audit the CRFs of 2500 patients 
+in Europe and the auditors were embarking.  I wrote an undocumented, 
+not-following-the-standards SAS program to generate the audit sheets.  
+Instead of having them look at the code to see if it was compliant, 
+I sent them 50 audit sheets for patients that they already had the 
+source documents for.  As luck would have it, we had one patient that's 
+CRF did not match the audit sheet.  Further digging showed that the 
+Oracle database was not reporting the actual value that was in
+it's table due to a bug introduced in an upgrade 3 months earlier.
+Several hundred audit sheets that were already printed off were
+recycled and two people responsible for the Oracle database lost 
+their jobs.  This is the proper role of the auditor IMHO.  I think
+ESS should stay out of it, at least as far as the paper goes.
+\end{Comment}
+
+%\begin{figure}
+%\ifdraft
+%  \emptyfig
+%\else
+%  \psfig{file=hilock-sas.ps.gz,angle=270,width=\textwidth}
+%\fi
+%\caption[Enforce company coding standards.]{Enforce company coding
+%standards.  The standard here is that all \stexttt{PROC} statements must use
+%the \stexttt{DATA=datasetname} option.  Lines that satisfy the standard
+%turn green, lines that don't turn red.  Ambiguous ones turn yellow.\\
+%{\it hilock-sas.ps.gz}
+%\label{f.hilock}}
+%\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[angle=270,width=\textwidth]{hilock-sas}
+  \caption{Enforce company coding
+    standards.  The standard here is that all \stexttt{PROC}
+    statements must use the \stexttt{DATA=datasetname} option.  Lines
+    that satisfy the standard turn green, lines that don't turn red.
+    Ambiguous ones turn yellow.} %% \it hilock-sas.ps.gz
+  \label{f.hilock}
 \end{figure}
 
 
