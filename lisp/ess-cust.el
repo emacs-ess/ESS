@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/06/30 16:46:29 $
-;; Version: $Revision: 1.78 $
-;; RCS: $Id: ess-cust.el,v 1.78 2004/06/30 16:46:29 stephen Exp $
+;; Modified: $Date: 2004/07/01 06:50:44 $
+;; Version: $Revision: 1.79 $
+;; RCS: $Id: ess-cust.el,v 1.79 2004/07/01 06:50:44 rmh Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -698,9 +698,36 @@ ignored by calling `ess-uniq-list'."
   :group 'ess-R
   :type '(repeat string))
 
-(defcustom ess-rterm-versions (if ess-microsoft-p
-				  (ess-find-rterm)
-				'(""))
+
+(defcustom ess-rterm-versions 
+  (if ess-microsoft-p
+      (progn
+	(defun ess-find-rterm (&optional ess-R-root-dir)
+	  "Find the full path of all occurences of Rterm.exe under the ESS-R-ROOT-DIR.
+If ESS-R-ROOT-DIR is nil, construct it by looking for an occurence of Rterm.exe
+in the exec-path."
+	  (let* ((Rpath)
+		 (rwxxyy)
+		 (rw)
+		 (Rterm nil))
+	    (if (not ess-R-root-dir)
+		(progn
+		  (setq Rpath (executable-find "Rterm"))
+		  (setq ess-R-root-dir
+			(if Rpath 
+			    (expand-file-name
+			     (concat
+			      (file-name-directory Rpath)
+			      "../../"))
+			  ""))))
+	    (setq rwxxyy (file-name-all-completions "rw" ess-R-root-dir))
+	    (while rwxxyy
+	      (setq rw (car rwxxyy))
+	      (setq rwxxyy (cdr rwxxyy))
+	      (setq Rterm (cons (concat ess-R-root-dir rw "bin/Rterm.exe") Rterm)))
+	    Rterm))
+	(ess-find-rterm))
+    '(""))
 "*Construct ess-rterm-versions.  If you have versions of R in
 locations other than in ../../rw*/bin/Rterm.exe, relative to the
 directory in the `exec-path' variable containing your default location
