@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/03 14:28:48 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: essd-r.el,v 1.15 1997/07/03 14:28:48 rossini Exp $
+;; Modified: $Date: 1997/07/03 14:38:57 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: essd-r.el,v 1.16 1997/07/03 14:38:57 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.16  1997/07/03 14:38:57  rossini
+;;: changed alist -- to not use defs in ess.el!
+;;:
 ;;: Revision 1.15  1997/07/03 14:28:48  rossini
 ;;: need to use EDEBUG!  yowso...
 ;;:
@@ -76,10 +79,16 @@
   '((ess-customize-alist           . R-customize-alist)
     (ess-proc-prefix               . "R")
     (ess-version-running           . "R" )
-    (inferior-ess-program          . inferior-R-program-name)
+    (inferior-ess-program          . "R" ) ; inferior-R-program-name)
     (inferior-ess-objects-command  . "if(%d == 1) ls() else builtins()")
-    (ess-help-sec-regex            . ess-help-R-sec-regex)
-    (ess-help-sec-keys-alist       . ess-help-R-sec-keys-alist)
+    (ess-help-sec-regex            . "^\\s *[A-Z[a-z. ---]+:$") ;ess-help-R-sec-regex)
+    (ess-help-sec-keys-alist       . '((?a . "\\s *Arguments:")
+					(?d . "\\s *Description:")
+					(?n . "\\s *Note:")
+					(?r . "\\s *References:")
+					(?v . "\\s *Value[s]?")
+					(?s . "\\s *See Also:")
+					(?e . "\\s *Examples:")))  ; ess-help-R-sec-keys-alist)
     (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-exit-command     . "q()\n")
     (ess-loop-timeout              . 100000 )
