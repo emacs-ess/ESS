@@ -1,6 +1,6 @@
 
 We now discuss installation, which might happen under Unix or
-Microsoft Windows.  First, we discuss Unix installation.  
+Microsoft Windows.  First, we discuss Unix installation.
 @xref{Unix installation}.
 
 For Microsoft Windows Installation please skip to the
@@ -10,11 +10,11 @@ For Microsoft Windows Installation please skip to the
 @comment  node-name,  next,  previous,  up
 @section Unix installation
 
-@enumerate 
+@enumerate
 
 @item
 cd to a directory where you want to install ESS, creating it if necessary.
-This directory will be referred to below as ESSDIR.  
+This directory will be referred to below as ESSDIR.
 @comment It will contain,
 @comment at the end, the tar file @file{ess-VERSION.tar.gz}, and a directory for
 @comment the ESS source, which will be termed "the ESS-VERSION source directory".
@@ -22,8 +22,8 @@ This directory will be referred to below as ESSDIR.
 @comment Makefile) if desired.
 
 @item
-Retrieve the latest version from 
-@uref{http://ess.r-project.org/downloads, ESS downloads area} 
+Retrieve the latest version from
+@uref{http://ess.r-project.org/downloads, ESS downloads area}
 to ESSDIR.
 
 @item
@@ -41,15 +41,15 @@ The @code{tar} command will create the subdirectory ess-VERSION and unarchive
 the files there.
 
 @comment If you are using GNU Emacs 19.29, decompress/unarchive
-@comment @file{ESSDIR/ess-VERSION/lisp/19.29.tar.gz}, 
+@comment @file{ESSDIR/ess-VERSION/lisp/19.29.tar.gz},
 @comment read @file{ESSDIR/ess-VERSION/lisp/19.29/README}, follow the instructions
-@comment and you might be able to get ESS to work.  
+@comment and you might be able to get ESS to work.
 @comment @emph{Please note that GNU Emacs 19.29 is no longer supported}.
 @comment For a list of supported versions of emacs, see @xref{Requirements}.
 
 @item
-Edit the file @file{ESSDIR/ess-VERSION/lisp/ess-site.el} as explained in the 
-comments section of that file.  
+Edit the file @file{ESSDIR/ess-VERSION/lisp/ess-site.el} as explained in the
+comments section of that file.
 @comment Installations that are using ESS only for S-Plus
 @comment 6.x will probably not need to make any changes.  Installations that also
 @comment have one or more of (S4, S+3/4/5, R, SAS, BUGS, XLispStat, Stata)
@@ -62,8 +62,8 @@ comments section of that file.
 @end example
 to your user or system installation file
 (GNU Emacs uses @file{$HOME/.emacs} and XEmacs uses @file{$HOME/.xemacs/init.el}
-for the user initialization file.  GNU Emacs uses default.el or site-init.el and 
-XEmacs uses site-start.el for the system installation file). 
+for the user initialization file.  GNU Emacs uses default.el or site-init.el and
+XEmacs uses site-start.el for the system installation file).
 
 Alternatively, if ess-site.el is in your current Lisp path, you can do:
 @example
@@ -86,7 +86,7 @@ directory containing ESS.  Now:
 @example
 M-x S+6
 @end example
-to get S running.  Once you see the SPLUS prompt, do: 
+to get S running.  Once you see the SPLUS prompt, do:
 @example
 M-x ess-create-object-name-db
 @end example
@@ -107,7 +107,7 @@ and then @code{M-x ess-create-object-name-db} creating
 @b{(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING}:
 
 If you want to place the compiled files in other locations edit the LISPDIR and INFODIR
-entries in @file{Makeconf} in the ESSDIR/ess-VERSION directory (if you are using XEmacs, 
+entries in @file{Makeconf} in the ESSDIR/ess-VERSION directory (if you are using XEmacs,
 then you also need to edit the EMACS entry as follows:  EMACS=xemacs).
 
 You can compile those files by:
@@ -131,7 +131,7 @@ If @file{dir} does not exist in @code{INFODIR}, then the sample
 edit the ESSVERSION and ESSVERSIONTAG entries in @file{Makeconf}
 appropriately, e.g.: ESSVERSION=5.2.0 and ESSVERSIONTAG=ESS-5-2-0
 
-@emph{Note 2:}  ESS can be installed for XEmacs as an XEmacs package 
+@emph{Note 2:}  ESS can be installed for XEmacs as an XEmacs package
 much more easily than what has been described anywhere above.  However,
 the latest ESS version will not be available at the same time as an
 XEmacs package; generally, it can take weeks or months to appear in the
@@ -142,12 +142,14 @@ package see @uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickst
 @comment XEmacs system directories, would be to place the directory in the
 @comment site-lisp directory, and simply type @code{make all} (and copy the
 @comment documentation as appropriate).
-@comment 
+@comment
 @comment For GNU Emacs, you would still have to move the files into the top level
 @comment site-lisp directory.
 
 @end enumerate
 
+@c >>>> FIXME (see comment in ess.texi): error in ``makeinfo readme.texi''
+@c @node Microsoft Windows installation, , Unix installation, Installation
 @node Microsoft Windows installation, Requirements, Unix installation, Installation
 @comment  node-name,  next,  previous,  up
 @section Microsoft Windows installation
@@ -163,14 +165,14 @@ directory (for example, @file{c:\emacs\}) to hold the distribution.  This
 directory will be referred to below as "the ESS distribution
 directory".  It will contain, at the end, either the tar file
 @file{ess-VERSION.tar.gz} or the zip file @file{ess-VERSION.zip}, and a
-directory 
+directory
 for the ESS source, which will be termed "the ESS-VERSION source
 directory".
 
 @item
 Retrieve the compressed tar file @file{ess-VERSION.tar.gz} or the
 zipped file @file{ess-VERSION.zip} from one of the FTP or WWW
-archive sites 
+archive sites
 via FTP (or HTTP).  Be aware that http browsers on Windows
 frequently change the "." and "-" characters in filenames to other
 punctuation.  Please change the names back to their original form.
@@ -206,7 +208,7 @@ as distributed.  Only rarely will changes be needed.
 Windows users will need to make sure that the directories for the
 software they will be using is in the PATH environment variable.  On
 Windows 9x, add lines similar to the following to your
-@file{c:\autoexec.bat} 
+@file{c:\autoexec.bat}
 file:
 @example
 path=%PATH%;c:\progra~1\spls2000\cmd
@@ -220,8 +222,8 @@ for each software program.  Be sure to use the abbreviation
 backslashes "\".
 
 @item
-Add the line 
-@example        
+Add the line
+@example
 (load "/PATH/ess-site")
 @end example
 to your .emacs (or _emacs) file (or default.el or site-init.el, for
@@ -253,7 +255,7 @@ slight delay during which emacs is temporarily frozen.  ESS will arrange for
 communication with the S-PLUS GUI using the DDE protocol.
 Send lines or regions
 from the emacs buffer containing your S program (for example,
-@file{myfile.s}) to the S-PLUS Commands Window with the 
+@file{myfile.s}) to the S-PLUS Commands Window with the
 @code{C-c C-n} or @code{C-c C-r} keys.
 (If you are still using S-PLUS 4.x or 2000, then use @code{M-x S+4}.)
 
@@ -296,7 +298,7 @@ as the default.  ESS will arrange for
 communication with the already running S-PLUS GUI using the DDE protocol.
 Send lines or regions
 from the emacs buffer containing your S program (for example,
-@file{myfile.s}) to the S-PLUS Commands Window with the 
+@file{myfile.s}) to the S-PLUS Commands Window with the
 @code{C-c C-n} or @code{C-c C-r} keys.
 (If you are still using S-PLUS 4.x or 2000, then use @code{M-x S+4-existing}.)
 
@@ -314,17 +316,17 @@ emacs, and cut and paste the results into the XLispStat
 *Listener* Window under Microsoft Windows.
 
 @comment SAS for Windows uses the batch access with function keys that is
-@comment described in 
+@comment described in
 @comment @file{doc/README.SAS}.
 @comment @xref{ESS(SAS)--MS Windows}.
 @comment The user can also edit SAS files
 @comment in an @code{ESS[SAS]} buffer and than manually copy and paste them into
 @comment an Editor window in the SAS Display Manager.
-@comment 
+@comment
 @comment For Windows, inferior SAS in an @code{iESS[SAS]} buffer does not work
 @comment on the local machine.  It does work over a network connection to
 @comment SAS running on a remote Unix computer.
-@comment 
+@comment
 @comment Reason:  we use ddeclient to interface with programs and SAS doesn't
 @comment provide the corresponding ddeserver capability.
 
