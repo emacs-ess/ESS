@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/14 01:07:40 $
-;; Version: $Revision: 1.87 $
-;; RCS: $Id: ess-inf.el,v 1.87 1997/11/14 01:07:40 rossini Exp $
+;; Modified: $Date: 1997/11/14 01:21:02 $
+;; Version: $Revision: 1.88 $
+;; RCS: $Id: ess-inf.el,v 1.88 1997/11/14 01:21:02 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -118,25 +118,28 @@ accompany the call for inferior-ess-program.
 	     ess-start-args))
 
   (let ((temp-ess-dialect (cdr (rassoc ess-dialect
+				       ess-customize-alist)))
+	(temp-ess-lang (cdr (rassoc ess-language
 				       ess-customize-alist))))
     (save-excursion
       (set-buffer ess-dribble-buffer)
       ;; next line isn't necessary now???
       (ess-setq-vars-default ess-customize-alist (current-buffer))
-      (setq temp-ess-dialect (cdr (rassoc ess-dialect ess-customize-alist))))
+      (setq temp-ess-lang (cdr (rassoc ess-language ess-customize-alist))))
 
     ;;(ess-setq-vars-local ess-customize-alist (current-buffer))
 
     ;; run hooks now, to overwrite the above!
     (run-hooks 'ess-pre-run-hook)
     (ess-write-to-dribble-buffer
-     (format "(inferior-ess 1): ess-language=%s, ess-dialect=%s, temp-dialect=%s, buf=%s \n"
+     (format "(inferior-ess 1): ess-lang=%s, ess-dialect=%s, temp-dialect=%s, buf=%s \n"
 	     ess-language
 	     ess-dialect
 	     temp-ess-dialect
 	     (current-buffer)))
     (let* ((defdir (directory-file-name (or ess-directory default-directory)))
 	   (temp-dialect temp-ess-dialect)
+	   (temp-lang temp-ess-lang)
 	   (procname (or (and (not (comint-check-proc (current-buffer)))
 			      ;; Don't start a new process in current buffer if
 			      ;; one is already running
@@ -147,10 +150,14 @@ accompany the call for inferior-ess-program.
 			   (while (not done)
 			     (setq ntry (1+ ntry)
 				   done (not
+;;;					 (get-process (ess-proc-name
+;;;						       ntry
+;;;						       temp-dialect)))))
+;;;			   (ess-proc-name ntry temp-dialect))))
 					 (get-process (ess-proc-name
 						       ntry
-						       temp-dialect)))))
-			   (ess-proc-name ntry temp-dialect))))
+						       temp-lang)))))
+			   (ess-proc-name ntry temp-lang))))
 	   (startdir nil)
 	   (buf nil)
 	   (buf-name-str  (concat "*" procname "*")))
