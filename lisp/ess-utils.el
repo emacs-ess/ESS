@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2000/01/31 14:20:07 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: ess-utils.el,v 5.4 2000/01/31 14:20:07 rossini Exp $
+;; Modified: $Date: 2000/10/26 09:11:39 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: ess-utils.el,v 5.5 2000/10/26 09:11:39 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -31,6 +31,7 @@
 (defun inside-string/comment-p (pos)
   "Return non-nil if POSition [defaults to (point) is inside string or comment
  (according to syntax). NOT OKAY for multi-line comments!!"
+  ;;FIXME (defun S-calculate-indent ..) in ./essl-s.el can do that ...
   (interactive "d");point by default
   (let ((pps (save-excursion
 	       (parse-partial-sexp
