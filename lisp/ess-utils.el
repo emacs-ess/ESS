@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/10/01 18:28:15 $
-;; Version: $Revision: 5.19 $
-;; RCS: $Id: ess-utils.el,v 5.19 2002/10/01 18:28:15 rsparapa Exp $
+;; Modified: $Date: 2002/10/01 18:31:39 $
+;; Version: $Revision: 5.20 $
+;; RCS: $Id: ess-utils.el,v 5.20 2002/10/01 18:31:39 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -292,10 +292,10 @@ Return t if buffer was modified, nil otherwise."
 
 ;; If Local Variables are defined, update them now
 ;; since they may have changed since the last revert
-  (save-excursion 
+;;  (save-excursion 
     (beginning-of-line -1)
     (save-match-data 
-	(if (search-forward "End:" nil t) (revert-buffer t t))))
+	(if (search-forward "End:" nil t) (revert-buffer t t)))
 ;; save-excursion doesn't save point in the presence of a revert
 ;; so you need to do it yourself
     (goto-char ess-temp-point)
