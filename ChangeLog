@@ -1,3 +1,113 @@
+1999-03-16  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/essd-sp4.el, lisp/ess-iw32.el: RMH changes.
+
+	* doc/README.SPLUS4COMMAND: New file
+
+	* doc/README.SPLUS4WIN: added RMH's mods.
+
+	* lisp/ess-site.el: Merged RMH's work.
+
+	* lisp/ess-vars.el: incremented.
+
+	* lisp/ess-inf.el: RMH's changes.
+
+1999-03-16  maechler  <maechler@alpha>
+
+	* lisp/ChangeLog: mini change "foobar.Sout-45"
+
+	* lisp/ess-site.el:
+	auto-mode-alist:  "foobar.Sout-4.5" also turns on S-transcript-mode
+
+1999-03-15  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ess-vars.el:
+	RMH - 15Mar1999.  Added inferior-S+4-editor-pager-command.
+
+	* lisp/essd-r32.el: 15Mar1999 version.
+
+	* lisp/essd-r.el:
+	added `R-microsoft', which is the "right-thing" to do under Microsoft
+	Windows 32-bit platforms.  Need to merge this with `R'.
+
+1999-03-09  maechler  <maechler@alpha>
+
+	* lisp/ess-help.el: add `inferior-ess-help-command' to doc string
+
+1999-03-08  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ess-inf.el: add stata to deal with input properly.
+
+1999-03-05  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ANNOUNCE, ChangeLog, Makefile, README: top level stuff, sigh!
+
+	* doc/announc.texi, doc/authors.texi, doc/bugs.texi, doc/inst_tar.texi, doc/requires.texi:
+	Cleaned up text.
+
+	* doc/requires.texi: cleaned/formatted up requirements
+
+	* doc/currfeat.texi: pretty-printing.
+
+	* lisp/essd-sta.el: new command for help: turn off more, and continue.
+
+	* lisp/ess-help.el:
+	stata hates ess-nuke-help-bs, since it (stata) is clean.
+
+	* lisp/ess-inf.el:
+	fixed command sender for stata. more like R than like XLS.
+
+	* lisp/essl-sta.el: more help file corrections.
+
+	* lisp/ess-inf.el: STA same as XLS/SAS.
+
+	* lisp/essd-sta.el: ess-*-lastvalue-command needed to be fixed!
+
+	* lisp/essl-sta.el: stat help regex is evil
+
+	* lisp/essl-sta.el: whitespace cleanup.
+
+	* lisp/essl-sta.el: double var defs.  whoops!
+
+	* lisp/essl-sta.el (ess-help-STA-sec-regex):
+	fixed section header grabbing.
+
+	* lisp/essd-sta.el: need to manually turn off paging, I think...
+
+	* lisp/essl-sta.el: help section regex not quite right.
+
+	* lisp/ess-help.el: Stata is like XLS and SAS wrt help.
+
+	* lisp/essd-sta.el: fixed help facility.
+
+	* lisp/essl-sta.el: added help section regexs
+
+	* lisp/essd-sta.el: make descirption "same as" objects.
+
+	* lisp/essd-sta.el: secondary prompt identical to primary prompt.
+
+	* lisp/essd-sta.el: redid help so that no paging is present.
+
+	* doc/ess.texi: cleared up the bug report section.
+
+	* doc/bugrept.texi: combined multiple sources (ess.texi and README).
+
+	* doc/credits.texi:
+	moved content from ess.texi here, for piecemeal editing and reuse.
+
+	* doc/ess.texi:
+	added placeholders for README.OS files and README.StatPackage files,
+	to be migrated here.
+
+	* doc/announc.texi, doc/authors.texi, doc/bugrept.texi, doc/currfeat.texi, doc/getting.texi, doc/inst_cvs.texi, doc/inst_tar.texi, doc/license.texi, doc/mailing.texi, doc/newfeat.texi, doc/readme.texi, doc/requires.texi, doc/stabilty.texi:
+	Migrating all documentation into texinfo format, including ../README and ../ANNOUNCE
+
+	* doc/ess.texi: removed README, cleaning out duplicate texinfo code.
+
+	* doc/ess.texi:
+	moved README text into sub-texinfo files.  (to be called by
+	readme.texi and announc.texi for documentation construction).
+
 1999-03-05  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* doc/announc.texi, doc/authors.texi, doc/bugs.texi, doc/inst_tar.texi, doc/requires.texi:
@@ -277,7 +387,7 @@
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 1999/03/05 22:27:46 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 1999/03/16 18:17:36 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
@@ -2467,6 +2577,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.9  1999/03/16 18:17:36  rossini
+	* Removing Prep for 5.1.4
+	* Removing
 	* Removing Revision 5.8  1999/03/05 22:27:46  rossini
 	* Removing top level stuff, sigh!
 	* Removing
