@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/02/25 12:40:36 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essd-els.el,v 1.14 2002/02/25 12:40:36 maechler Exp $
+;; Modified: $Date: 2002/05/01 20:00:03 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essd-els.el,v 1.15 2002/05/01 20:00:03 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -121,14 +121,23 @@ return new alist whose car is the new pair and cdr is ALIST.
   "Query user for an ESS dialect and return the matching customize-alist."
   (interactive)
   (let ((dialect (read-string
-		  "Dialect (enter one of: stata, r, sp3, sp5, xls, sas)?")))
+		  "Dialect (enter one of: stata, r, sp3, sp5, sp6, xls, sas)?")))
     (cond
+     ((string= dialect "arc")	ARC-customize-alist)
+     ((string= dialect "vst")	VST-customize-alist)
+     ((string= dialect "omg")	OMG-customize-alist)
+     ((string= dialect "s3")	S3-customize-alist)
+     ((string= dialect "s4")	S4-customize-alist)
      ((string= dialect "stata")	STA-customize-alist)
      ((string= dialect "r")     R-customize-alist )
      ((string= dialect "sp3")   S+3-customize-alist)
+     ((string= dialect "sp4")   S+4-customize-alist)
+     ((string= dialect "sqpe4") Sqpe+4-customize-alist)
      ((string= dialect "sp5")   S+5-customize-alist)
+     ((string= dialect "sp6")   S+6-customize-alist)
+     ((string= dialect "sqpe6") Sqpe+6-customize-alist)
      ((string= dialect "xls")   XLS-customize-alist)
-     ((string= dialect "sas")   S+elsewhere-customize-alist)
+     ((string= dialect "sas")   S+elsewhere-customize-alist);SAS-customize-alist?
      (t                         S+elsewhere-customize-alist)
      )))
 
@@ -146,6 +155,40 @@ return new alist whose car is the new pair and cdr is ALIST.
      (format "\n(ESS-elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
 	     (current-buffer)))
     (inferior-ess)
+    (if (equal ess-language "S")
+	(if inferior-ess-language-start
+	    (ess-eval-linewise inferior-ess-language-start)))))
+
+
+
+;;; ess-remote is constructed by looking at ess-add-process and
+;;; ESS-elsewhere and ess-multi and then simplifying.  Start a process
+;;; on a remote computer by manual use of telnet, rlogin, ssh, or some
+;;; other protocol.  Start the ESS process (S or R tested so far) in
+;;; that buffer.  Once you are talking to S or R, then execute
+;;; `ess-remote' to make the current buffer an inferior-ess buffer
+;;; with the right behavior for the language you are currently working
+;;; with.
+
+(defun ess-remote ()
+  "Execute this command from within a buffer running a process.  It runs
+`ess-add-ess-process' to add the process to `ess-process-name-alist'
+and to make it the `ess-current-process-name'.  It then prompts the
+user for an ess language and sets the editing characteristics
+appropriately.  This command will normally be run in a telnet buffer
+connected to another computer or in a shell or comint buffer on the
+local computer."
+  (interactive)
+  (ess-add-ess-process)
+  ;; Need to select a remote-customize-alist
+  (let ((ess-customize-alist (ess-select-alist-dialect)))
+    (ess-write-to-dribble-buffer
+     (format "\n(ESS-remote): ess-dialect=%s, buf=%s\n" ess-dialect
+	     (current-buffer)))
+    (ess-setq-vars-local ess-customize-alist)
+    (inferior-ess-mode)
+    (setq ess-local-process-name proc-name)
+    (goto-char (point-max))
     (if (equal ess-language "S")
 	(if inferior-ess-language-start
 	    (ess-eval-linewise inferior-ess-language-start)))))
