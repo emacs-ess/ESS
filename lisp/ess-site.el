@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/11/11 21:24:38 $
-;; Version: $Revision: 1.61 $
-;; RCS: $Id: ess-site.el,v 1.61 1997/11/11 21:24:38 rossini Exp $
+;; Modified: $Date: 1997/11/14 00:56:57 $
+;; Version: $Revision: 1.62 $
+;; RCS: $Id: ess-site.el,v 1.62 1997/11/14 00:56:57 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -208,6 +208,14 @@
 
 ;;; 3. Customization (and commented out examples) for your site
 ;;;; ===============================================
+
+
+;;; (3.01) SOME PEOPLE (who will remain nameless) worry that novices
+;;; won't like fancy buffer names for their first (and only :-)
+;;; process.  To number all processes, uncomment the next line.
+;;(setq ess-plain-first-buffername nil)
+
+
 
 ;;; (3.1) Font-lock
 ;; The following two expressions automatically enable font-lock-mode
