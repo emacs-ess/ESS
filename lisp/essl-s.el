@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1998/09/07 16:27:06 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: essl-s.el,v 5.6 1998/09/07 16:27:06 maechler Exp $
+;; Modified: $Date: 1998/09/08 17:18:31 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: essl-s.el,v 5.7 1998/09/08 17:18:31 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -392,44 +392,56 @@ Uses the file given by the variable ess-function-outline-file."
 	(replace-match (ess-time-string 'clock) 'not-upcase 'literal))
     (goto-char (1+ oldpos))))
 
-(defun ess-fix-comments ()
- "Fix ess-mode buffer so that single-line comments start with '##'."
- (interactive)
- (save-excursion
-   (goto-char (point-min))
-   (query-replace-regexp "^\\([ \\t]*#\\)\\([^#]\\)" "\\1#\\2" nil)))
-
-(defun ess-dump-to-src ()
-  "Make the changes in an S - dump() file to improve human readability"
-  (interactive)
-  (ess-mode)
-  (query-replace-regexp "^\"\\([a-z.][a-z.0-9]*\\)\"<-\n"  "\n\\1 <- " nil))
-
-(defun ess-num-var-round ()
- "Is VERY useful for dump(.)'ed numeric variables; ROUND some of them by
-  replacing  endings of 000000*.. and 999999*.  Martin Maechler"
- (interactive)
-  (let ((num 0)
-	(str ""))
+(defun ess-fix-comments (&optional dont-ask)
+  "Fix ess-mode buffer so that single-line comments start with '##'."
+  (interactive "P")
+  (save-excursion
     (goto-char (point-min))
-    (query-replace-regexp "000000+[1-9]?[1-9]?\\>" "" nil)
-    (while (< num 9)
-      (setq str (concat (int-to-string num) "999999+[0-8]*"))
-      (princ (format "\nregexp: '%s'" str))
-      (goto-char (point-min))
-      (replace-regexp str (int-to-string (1+ num)))
-      (setq num (1+ num)))))
+    (apply (if dont-ask 'replace-regexp
+	     ;; else
+	     'query-replace-regexp)
+	   "^\\([ \\t]*#\\)\\([^#]\\)" "\\1#\\2" nil)))
 
-(defun ess-MM-fix-src ()
+(defun ess-dump-to-src (&optional dont-ask)
+  "Make the changes in an S - dump() file to improve human readability"
+  (interactive "P")
+  (save-excursion
+    (ess-mode)
+    (goto-char (point-min))
+    (apply (if dont-ask 'replace-regexp
+	     ;; else
+	     'query-replace-regexp)
+	   "^\"\\([a-z.][a-z.0-9]*\\)\"<-\n"  "\n\\1 <- " nil)))
+
+(defun ess-num-var-round (&optional dont-ask)
+  "Is VERY useful for dump(.)'ed numeric variables; ROUND some of them by
+  replacing  endings of 000000*.. and 999999*.  Martin Maechler"
+  (interactive "P")
+  (save-excursion
+    (let ((num 0)
+	  (str ""))
+      (goto-char (point-min))
+      (apply (if dont-ask 'replace-regexp
+	       ;; else
+	       'query-replace-regexp)
+	     "000000+[1-9]?[1-9]?\\>" "" nil)
+      (while (< num 9)
+	(setq str (concat (int-to-string num) "999999+[0-8]*"))
+	(princ (format "\nregexp: '%s'" str))
+	(goto-char (point-min))
+	(replace-regexp str (int-to-string (1+ num)))
+	(setq num (1+ num))))))
+
+(defun ess-MM-fix-src (&optional dont-ask)
   "Clean up ess-source code which has been produced by  dump(..).
  Produces more readable code, and one that is well formatted in emacs
  ess-mode. Martin Maechler, ETH Zurich."
-  (interactive)
+  (interactive "P")
   (let ((pm (point-min)))
     (save-excursion
-      (goto-char pm) (ess-dump-to-src)
-      (goto-char pm) (ess-fix-comments)
-      (goto-char pm) (ess-num-var-round))))
+      (ess-dump-to-src dont-ask)
+      (ess-fix-comments dont-ask)
+      (ess-num-var-round dont-ask))))
 
 (defun ess-add-MM-keys ()
   (require 'ess-mode)
