@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2001/08/24 14:04:29 $
-;; Version: $Revision: 1.25 $
-;; RCS: $Id: ess-cust.el,v 1.25 2001/08/24 14:04:29 maechler Exp $
+;; Modified: $Date: 2001/12/21 11:05:43 $
+;; Version: $Revision: 1.26 $
+;; RCS: $Id: ess-cust.el,v 1.26 2001/12/21 11:05:43 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -117,7 +117,7 @@
   :group 'ess
   :prefix "ess-")
 
-(defgroup ess-mouse nil
+(defgroup ess-mouse nil ;; FIXME: this is not used yet <--> ./ess-mous.el
   "ESS: Mouse."
   :group 'ess
   :prefix "ess-")
@@ -147,7 +147,8 @@ Full documentation will be available after autoloading the function."
 ;;*;; Options and Initialization
 
 (defcustom ess-use-menus (featurep 'imenu)
-  "If t, use the menu system.  Absolutely requires 'imenu."
+  "If t, use the menu system with an extra [Imenu] entry.
+ Absolutely requires 'imenu."
   :group 'ess
   :type 'boolean)
 
@@ -486,8 +487,8 @@ Good for evaluating ESS code."
 ;;; make it possible to save an inferior-ess-mode buffer without losing
 ;;; the connection to the running ESS process.
 (put 'inferior-ess-mode 'mode-class 'special)
-
-;; AJR: Should the above be there?  I don't think so!
+;; FIXME AJR: Should the above be there?  I don't think so!
+;;	 MM : the functionality should be, right? Move statement to ./ess.el ?
 
 (defcustom ess-help-mode-hook nil
   "Functions to call when entering `ess-help-mode'. "
