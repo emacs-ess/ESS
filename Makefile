@@ -65,7 +65,6 @@ cleanup-rel:
 ## --- RELEASE ---
 
 ChangeLog: VERSION
-#	$(EMACSBATCH) $(EMACSLOGCVS)
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
 	(echo `date "+%Y-%m-%d "` \
