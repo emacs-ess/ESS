@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
 <html>
-<!-- Created on June, 30 2004 by texi2html 1.70 -->
+<!-- Created on July, 30 2004 by texi2html 1.70 -->
 <!--
 Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
             Karl Berry  <karl@freefriends.org>
@@ -64,17 +64,17 @@ ul.toc {list-style: none}
 </td></tr>
 <tr><td align="left" valign="top"><a href="#SEC28">D.2 ESS[SAS]-Editing files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top"><a href="#SEC29">D.3 iESS[SAS]-Interactive SAS processes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top"><a href="#SEC29">D.3 ESS[SAS]-TAB key</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 <tr><td align="left" valign="top"><a href="#SEC30">D.4 ESS[SAS]-Batch SAS processes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 <tr><td align="left" valign="top"><a href="#SEC31">D.5 ESS[SAS]-Function keys for batch processing</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top"><a href="#SEC32">D.6 ESS[SAS]-TAB key</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top"><a href="#SEC32">D.6 iESS[SAS]-Interactive SAS processes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top"><a href="#SEC33">D.7 ESS[SAS]-Usage scenarios</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top"><a href="#SEC33">D.7 iESS[SAS]-Common problems</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top"><a href="#SEC34">D.8 iESS[SAS]-Common problems</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top"><a href="#SEC34">D.8 ESS[SAS]-Graphics</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 <tr><td align="left" valign="top"><a href="#SEC35">D.9 ESS[SAS]-MS Windows</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
@@ -165,7 +165,7 @@ suffix (or other extension, if specified via auto-mode-alist).  The function
 keys can be enabled to use the same function keys that
 the SAS Display Manager does.  The interactive capabilities of ESS require you 
 to start an inferior SAS process with M-x SAS
-(See section <a href="#SEC29">iESS[SAS]-Interactive SAS processes</a>.)
+(See section <a href="#SEC32">iESS[SAS]-Interactive SAS processes</a>.)
 
 </p><p>At this writing, the indenting and syntax highlighting are generally
 correct.  Known issues: for multiple line * or %* comments, only the
@@ -194,46 +194,26 @@ BY).
 <td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
 <td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
-<h2 class="section"> D.3 iESS[SAS]-Interactive SAS processes </h2>
+<h2 class="section"> D.3 ESS[SAS]-TAB key </h2>
 
-<p>iESS (inferior ESS) is the method for interfacing with interactive
-statistical processes (programs).  iESS[SAS] is what is needed for
-interactive SAS programming.  iESS[SAS] works best
-with the following settings for SAS command-line options 
-(the default of inferior-SAS-args):
-
-</p><table><tr><td>&nbsp;</td><td><pre class="example">-stdio -linesize 80 -noovp -nosyntaxcheck
+<p>Two options.  The TAB key is bound by default to sas-indent-line.  This
+function is used to syntactically indent SAS code so PROC and RUN are in
+the left margin, other statements are indented 4 spaces from the margin,
+continuation lines are indented 4 spaces in from the beginning column of
+that statement.  This is the type of functionality that emacs provides
+in most programming language modes.  This functionality is equivalent to
+uncommenting the following line in ess-site.el:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">(setq ess-sas-edit-keys-toggle nil)
 </pre></td></tr></table>
-<table><tr><td>&nbsp;</td><td><pre class="display">-stdio          
-            required to make the redirection of stdio work
--linesize 80    
-            keeps output lines from folding on standard terminals
--noovp          
-            prevents error messages from printing 3 times
--nosyntaxcheck  
-            permits recovery after syntax errors
-</pre></td></tr></table>
-<p>To start up iESS[SAS] mode, use:
-</p><table><tr><td>&nbsp;</td><td><pre class="example">   M-x SAS
-</pre></td></tr></table>
-<p>The *SAS:1.log* buffer in ESStr mode corresponds to the file
-myfile.log in SAS batch usage and to the &quot;SAS: LOG&quot; window in the SAS
-Display Manager.  All commands submitted to SAS, informative
-messages, warnings, and errors appear here.
-
-</p><p>The *SAS:1.lst* buffer in ESSlst mode corresponds to the file
-myfile.lst in SAS batch usage and to the &quot;SAS: OUTPUT&quot; window in the
-SAS Display Manager.  All data related printed output from the
-PROCs appear in this window.
-
-</p><p>The iESS [SAS:1] buffer exists solely as a communications buffer.
-Files are edited in the myfile.sas buffer.  The C-c C-r key in
-ESS[SAS] is the functional equivalent of bringing a file into the
-&quot;SAS: PROGRAM EDITOR&quot; window followed by the 'Local' 'Submit' menu
-commands.  The user should never use this buffer directly.
-
-</p>
-<p>Troubleshooting: See section <a href="#SEC34">iESS[SAS]-Common problems</a>.
+<p>ESS provides an alternate behavior for the TAB key that makes it behave
+as it does in SAS Display Manager, i.e. move the cursor to the next tab
+stop.  The alternate behavior also provides a backwards TAB, C-TAB, that
+moves the cursor to the tab stop to the left and deletes any characters
+between them.  This functionality is obtained by uncommenting the
+following line in ess-site.el:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">(setq ess-sas-edit-keys-toggle t)
+</pre></td></tr></table><p>Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
+and the tab stops are set at multiples of sas-indent-width.
 
 </p><hr size="6">
 <a name="NOD30"></a>
@@ -322,6 +302,35 @@ there may be cases when it needs to be set higher, or could be set much
 lower to speed things up.  You can over-ride the default in your .emacs
 file by:
 </p><table><tr><td>&nbsp;</td><td><pre class="example">(setq ess-sleep-for 0.2)
+</pre></td></tr></table>
+<p>For example, open the file you want to work with 
+(ess-sas-global-unix-keys keys shown, ess-sas-global-pc-keys in 
+parentheses; ESS[SAS] function keys are presented in the next section).
+</p><table><tr><td>&nbsp;</td><td><pre class="example">C-x C-f myfile.sas
+</pre></td></tr></table><p>myfile.sas will be in ESS[SAS] mode.  Edit as appropriate, then save and 
+submit the batch SAS job.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">F3 (F8)
+</pre></td></tr></table><p>The job runs in the shell buffer while you continue to edit 
+myfile.sas.  If ess-sas-submit-method is 'sh, then the 
+message buffer will display the shell notification when the 
+job is complete.  The 'sh setting also allows you to 
+terminate the SAS batch job before it is finished.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">F8 (F3)
+</pre></td></tr></table><p>Terminating a SAS batch in the *shell* buffer.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">kill %1
+</pre></td></tr></table><p>You may want to visit the .log (whether the job is still running 
+or it is finished) and check for error messages.  The .log will be
+refreshed and you will be placed in it's buffer.  You will be 
+taken to the 1st error message, if any.  
+</p><table><tr><td>&nbsp;</td><td><pre class="example">F5 (F6)
+</pre></td></tr></table><p>Goto the next error message, if any.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">F5 (F6)
+</pre></td></tr></table><p>Now, refresh the .lst and go to it's buffer.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">F6 (F7)
+</pre></td></tr></table><p>If you wish to make changes, go to the .sas file with.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">F4 (F5)
+</pre></td></tr></table><p>Make your editing changes and submit again.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">F3 (F8)
 </pre></td></tr></table>
 <hr size="6">
 <a name="NOD31"></a>
@@ -546,6 +555,7 @@ landscape (first line for &quot;global&quot; key mapping, second for &quot;local
 </p><table><tr><td>&nbsp;</td><td><pre class="example">(global-set-key [(control f2)] 'ess-sas-rtf-a4-landscape)
 (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-a4-landscape)
 </pre></td></tr></table>
+
 <hr size="6">
 <a name="NOD32"></a>
 <a name="SEC32"></a>
@@ -565,101 +575,45 @@ landscape (first line for &quot;global&quot; key mapping, second for &quot;local
 <td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
 <td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
-<h2 class="section"> D.6 ESS[SAS]-TAB key </h2>
+<h2 class="section"> D.6 iESS[SAS]-Interactive SAS processes </h2>
 
-<p>Two options.  The TAB key is bound by default to sas-indent-line.  This
-function is used to syntactically indent SAS code so PROC and RUN are in
-the left margin, other statements are indented 4 spaces from the margin,
-continuation lines are indented 4 spaces in from the beginning column of
-that statement.  This is the type of functionality that emacs provides
-in most programming language modes.  This functionality is equivalent to
-uncommenting the following line in ess-site.el:
-</p><table><tr><td>&nbsp;</td><td><pre class="example">(setq ess-sas-edit-keys-toggle nil)
+<p>iESS (inferior ESS) is the method for interfacing with interactive
+statistical processes (programs).  iESS[SAS] is what is needed for
+interactive SAS programming.  iESS[SAS] works best
+with the following settings for SAS command-line options 
+(the default of inferior-SAS-args):
+
+</p><table><tr><td>&nbsp;</td><td><pre class="example">-stdio -linesize 80 -noovp -nosyntaxcheck
 </pre></td></tr></table>
-<p>ESS provides an alternate behavior for the TAB key that makes it behave
-as it does in SAS Display Manager, i.e. move the cursor to the next tab
-stop.  The alternate behavior also provides a backwards TAB, C-TAB, that
-moves the cursor to the tab stop to the left and deletes any characters
-between them.  This functionality is obtained by uncommenting the
-following line in ess-site.el:
-</p><table><tr><td>&nbsp;</td><td><pre class="example">(setq ess-sas-edit-keys-toggle t)
-</pre></td></tr></table><p>Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
-and the tab stops are set at multiples of sas-indent-width.
-
-</p><hr size="6">
-<a name="NOD33"></a>
-<a name="SEC33"></a>
-<table cellpadding="1" cellspacing="1" border="0">
-<tr><td valign="middle" align="left">[<a href="#SEC32" title="Previous section in reading order"> &lt; </a>]</td>
-<td valign="middle" align="left">[<a href="#SEC34" title="Next section in reading order"> &gt; </a>]</td>
-<td valign="middle" align="left"> &nbsp; </td>
-<td valign="middle" align="left">[<a href="#SEC26" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
-<td valign="middle" align="left">[<a href="#SEC26" title="Up section"> Up </a>]</td>
-<td valign="middle" align="left">[<a href="ess_6.html#SEC36" title="Next chapter"> &gt;&gt; </a>]</td>
-<td valign="middle" align="left"> &nbsp; </td>
-<td valign="middle" align="left"> &nbsp; </td>
-<td valign="middle" align="left"> &nbsp; </td>
-<td valign="middle" align="left"> &nbsp; </td>
-<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
-<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
-<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
-<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
-</tr></table>
-<h2 class="section"> D.7 ESS[SAS]-Usage scenarios </h2>
-
-<p>We present a batch and an interactive scenario for using ESS with SAS.  
-The remarks with respect to graphics apply to either with exceptions noted.
-
-</p><p>Graphics
-
-</p><p>Output from GPROCs can be displayed in a SAS/Graph window for SAS batch
-on Windows or for both SAS batch and interactive with X11 on Unix.  If
-you need to create graphics files and view them with F12, then include
-the following in myfile.sas (for F12 to work the FILENAME statement must
-be in myfile.sas, but the GOPTIONS statement can be in your
-autoexec.sas):
-</p><table><tr><td>&nbsp;</td><td><pre class="example">filename gsasfile 'graphics.ps'; 
-goptions device=ps gsfname=gsasfile gsfmode=append; 
-</pre></td></tr></table><p>PROC PLOT graphs can be viewed in the listing buffer.  You may
-wish to control the vertical spacing to allow the entire plot
-to be visible on screen, for example:
-</p><table><tr><td>&nbsp;</td><td><pre class="example">proc plot;
-    plot a*b / vpos=25;
-run;
+<table><tr><td>&nbsp;</td><td><pre class="display">-stdio          
+            required to make the redirection of stdio work
+-linesize 80    
+            keeps output lines from folding on standard terminals
+-noovp          
+            prevents error messages from printing 3 times
+-nosyntaxcheck  
+            permits recovery after syntax errors
 </pre></td></tr></table>
-<p>SAS Batch (ess-sas-global-unix-keys keys shown, ess-sas-global-pc-keys in 
-parentheses).
-
-</p><p>Open the file you want to work with.  
-</p><table><tr><td>&nbsp;</td><td><pre class="example">C-x C-f myfile.sas
-</pre></td></tr></table><p>myfile.sas will be in ESS[SAS] mode.  Edit as appropriate, then save and 
-submit the batch SAS job.
-</p><table><tr><td>&nbsp;</td><td><pre class="example">F3 (F8)
-</pre></td></tr></table><p>The job runs in the shell buffer while you continue to edit 
-myfile.sas.  If ess-sas-submit-method is 'sh, then the 
-message buffer will display the shell notification when the 
-job is complete.  The 'sh setting also allows you to 
-terminate the SAS batch job before it is finished.
-</p><table><tr><td>&nbsp;</td><td><pre class="example">F8 (F3)
-</pre></td></tr></table><p>Terminating a SAS batch in the *shell* buffer.
-</p><table><tr><td>&nbsp;</td><td><pre class="example">kill %1
-</pre></td></tr></table><p>You may want to visit the .log (whether the job is still running 
-or it is finished) and check for error messages.  The .log will be
-refreshed and you will be placed in it's buffer.  You will be 
-taken to the 1st error message, if any.  
-</p><table><tr><td>&nbsp;</td><td><pre class="example">F5 (F6)
-</pre></td></tr></table><p>Goto the next error message, if any.
-</p><table><tr><td>&nbsp;</td><td><pre class="example">F5 (F6)
-</pre></td></tr></table><p>Now, refresh the .lst and go to it's buffer.
-</p><table><tr><td>&nbsp;</td><td><pre class="example">F6 (F7)
-</pre></td></tr></table><p>If you wish to make changes, go to the .sas file with.
-</p><table><tr><td>&nbsp;</td><td><pre class="example">F4 (F5)
-</pre></td></tr></table><p>Make your editing changes and submit again.
-</p><table><tr><td>&nbsp;</td><td><pre class="example">F3 (F8)
+<p>To start up iESS[SAS] mode, use:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">   M-x SAS
 </pre></td></tr></table>
-<p>Interactive SAS
+<p>The *SAS:1.log* buffer in ESStr mode corresponds to the file
+myfile.log in SAS batch usage and to the &quot;SAS: LOG&quot; window in the SAS
+Display Manager.  All commands submitted to SAS, informative
+messages, warnings, and errors appear here.
 
-</p><p>Open the file you want to work with.
+</p><p>The *SAS:1.lst* buffer in ESSlst mode corresponds to the file
+myfile.lst in SAS batch usage and to the &quot;SAS: OUTPUT&quot; window in the
+SAS Display Manager.  All data related printed output from the
+PROCs appear in this window.
+
+</p><p>The iESS [SAS:1] buffer exists solely as a communications buffer.
+Files are edited in the myfile.sas buffer.  The C-c C-r key in
+ESS[SAS] is the functional equivalent of bringing a file into the
+&quot;SAS: PROGRAM EDITOR&quot; window followed by the 'Local' 'Submit' menu
+commands.  The user should never use this buffer directly.
+
+</p><p>For example, open the file you want to work with.
 </p><table><tr><td>&nbsp;</td><td><pre class="example">C-x C-f myfile.sas
 </pre></td></tr></table><p>myfile.sas will be in ESS[SAS] mode.  Edit as appropriate, and then start 
 up SAS with the cursor in the myfile.sas buffer.
@@ -704,12 +658,15 @@ also be used as a batch input file to SAS.
 never need to read it or write to it.  Refer to the .lst and
 .log buffers for monitoring output!
 
+</p>
+<p>Troubleshooting: See section <a href="#SEC33">iESS[SAS]-Common problems</a>.
+
 </p><hr size="6">
-<a name="NOD34"></a>
-<a name="SEC34"></a>
+<a name="NOD33"></a>
+<a name="SEC33"></a>
 <table cellpadding="1" cellspacing="1" border="0">
-<tr><td valign="middle" align="left">[<a href="#SEC33" title="Previous section in reading order"> &lt; </a>]</td>
-<td valign="middle" align="left">[<a href="#SEC35" title="Next section in reading order"> &gt; </a>]</td>
+<tr><td valign="middle" align="left">[<a href="#SEC32" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC34" title="Next section in reading order"> &gt; </a>]</td>
 <td valign="middle" align="left"> &nbsp; </td>
 <td valign="middle" align="left">[<a href="#SEC26" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
 <td valign="middle" align="left">[<a href="#SEC26" title="Up section"> Up </a>]</td>
@@ -723,7 +680,7 @@ never need to read it or write to it.  Refer to the .lst and
 <td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
 <td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
-<h2 class="section"> D.8 iESS[SAS]-Common problems </h2>
+<h2 class="section"> D.7 iESS[SAS]-Common problems </h2>
 
 <table><tr><td>&nbsp;</td><td><pre class="display">1. iESS[SAS] does not work on Windows.  In order to run SAS inside
    an emacs buffer, it is necessary to start SAS with the -stdio option.
@@ -743,6 +700,40 @@ never need to read it or write to it.  Refer to the .lst and
 </pre></td></tr></table><pre class="display">   To find the &quot;sas&quot; exectuable, you can execute the unix command:
 </pre><table><tr><td>&nbsp;</td><td><pre class="example">find / -name sas -print
 </pre></td></tr></table></td></tr></table>
+<hr size="6">
+<a name="NOD34"></a>
+<a name="SEC34"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC33" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC35" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC26" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC26" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_6.html#SEC36" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> D.8 ESS[SAS]-Graphics </h2>
+
+<p>Output from GPROCs can be displayed in a SAS/Graph window for SAS batch
+on Windows or for both SAS batch and interactive with X11 on Unix.  If
+you need to create graphics files and view them with F12, then include
+the following (either in myfile.sas or in your autoexec.sas):
+</p><table><tr><td>&nbsp;</td><td><pre class="example">filename gsasfile 'graphics.ps'; 
+goptions device=ps gsfname=gsasfile gsfmode=append; 
+</pre></td></tr></table><p>PROC PLOT graphs can be viewed in the listing buffer.  You may
+wish to control the vertical spacing to allow the entire plot
+to be visible on screen, for example:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">proc plot;
+    plot a*b / vpos=25;
+run;
+</pre></td></tr></table>
 <hr size="6">
 <a name="NOD35"></a>
 <a name="SEC35"></a>
@@ -766,7 +757,7 @@ never need to read it or write to it.  Refer to the .lst and
 
 <ul>
 <li>
-<p>iESS[SAS] does not work on Windows.  See section <a href="#SEC34">iESS[SAS]-Common problems</a>.
+<p>iESS[SAS] does not work on Windows.  See section <a href="#SEC33">iESS[SAS]-Common problems</a>.
 
 </p></li><li>
 <p>ESS[SAS] mode for editing SAS language files works very well.
@@ -798,7 +789,7 @@ You can use batch.  See section <a href="#SEC30">ESS[SAS]-Batch SAS processes</a
 </tr></table>
 <p>
  <font size="-1">
-  This document was generated by <em>Rodney Sparapani</em> on <em>June, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
+  This document was generated by <em>Rodney Sparapani</em> on <em>July, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
  </font>
  <br>
 

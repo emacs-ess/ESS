@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
 <html>
-<!-- Created on June, 30 2004 by texi2html 1.70 -->
+<!-- Created on July, 30 2004 by texi2html 1.70 -->
 <!--
 Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
             Karl Berry  <karl@freefriends.org>
@@ -61,7 +61,7 @@ ul.toc {list-style: none}
 
 <p>This is the README file for the distribution of ESS version 
 
-</p><p>5.2.1
+</p><p>5.2.2
 
 </p><p>The first release of the 5.2 series.  ESS is a GNU Emacs and XEmacs mode
 for interactive statistical programming and data analysis.  Languages
@@ -100,11 +100,11 @@ Lumley).
 </td></tr>
 <tr><td align="left" valign="top"><a href="#SEC8">1.7 Installation (from tar file)</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top"><a href="#SEC12">1.11 Reporting Bugs</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top"><a href="#SEC11">1.10 Reporting Bugs</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top"><a href="#SEC13">1.12 Mailing Lists</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top"><a href="#SEC12">1.11 Mailing Lists</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top"><a href="#SEC14">1.13 Authors</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top"><a href="#SEC13">1.12 Authors</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 </table>
 
@@ -163,14 +163,40 @@ details.
 <h2 class="section"> 1.2 New Features </h2>
 
 
+<p>Changes/New Features in 5.2.2:
+</p><ul>
+<li><p> bug-fixes for 5.2.1 (require 'executable), html docs, etc.
+</p></li><li><p> ess-lisp-directory/../doc/info added to Info-directory-list
+if ess-info not found by info
+</p></li><li><p> ESS[R]: If you have other versions of R on your
+exec-path, such as &quot;R-1.8.1&quot; with Unix or &quot;rw1081&quot; with Windows,
+ESS will find them and create appropriate functions, such as M-x
+R-1.8.1 or M-x rw1081, for calling them.
+By default only Unix programs beginning &quot;R-1&quot; and
+&quot;R-2&quot; and Windows programs parallel to the
+version of R in your exec-path will be found,
+but see ess-r-versions and ess-rterm-versions for ways to find other
+versions of R.  
+</p></li><li><p> ESS[R]: Other versions of R, such as &quot;R-1.8.1&quot; on Unix and &quot;rw1081&quot; on
+Windows, are added to the
+&quot;ESS / Start Process / Other&quot; menu.
+</p></li><li><p> ESS[S]: If you have other versions of S-Plus on your Windows computer,
+such as S-Plus 6.1 or S-Plus 4.5, ESS will find them and create appropriate
+functions, such as M-x splus61, for calling the console version (Sqpe)
+inside an emacs buffer.  By default only
+programs installed in the default location will be found, but see
+ess-SHOME-versions for ways to find other versions of S-Plus.
+</p></li><li><p> ESS[S]: Other versions of Sqpe on Windows, such as &quot;splus61&quot;,
+are added to the
+&quot;ESS / Start Process / Other&quot; menu.
+</p></li><li><p> ESS[R]: (bug fix) ess-quit (bound to C-c C-q) should now quit the
+inferior R process, when issued from either the inferior buffer, or from
+a .R buffer.
+</p></li></ul>
+
 <p>Changes/New Features in 5.2.1:
 </p><ul>
-<li><p> ESS[R]: If you have other versions of R, such as &quot;R-1.8.1&quot; on your
-exec-path, ESS will find and create appropriate functions, such as M-x
-R-1.8.1, for calling them.  By default only programs beginning &quot;R-1&quot; and
-&quot;R-2&quot; will be found, but see ess-r-versions for ways to find other
-versions of R.
-</p></li><li><p> ESS[S] (R and S-plus): now have toolbar support
+<li><p> ESS[S] (R and S-plus): now have toolbar support
 with icons to evaluate code in the inferior process or to switch
 there.  This code is experimental and likely to change as XEmacs/Emacs
 issues get resolved. The toolbar should be enabled if your Emacs
@@ -514,12 +540,10 @@ provide the syntactic highlighting that eases the programming tasks.
 <h2 class="section"> 1.4 Stability </h2>
 
 
-
-<p>Versions 5.1.x are meant to be gamma-level releases.  While some bugs
-are fixed, others may have been introduced, especially with
-regards to new features.  See the file doc/TODO for details.  Bug
-reports are solicited; see the Bugs Section below.  Patches or
-suggested coding fixes with bug reports are much appreciated!
+<p>Versions 5.2.x are meant to be release-quality versions.  While some
+new features are being introduced, we are cleaning up and improving
+the interface.  We know about some remaining documentation inconsistencies.
+Patches or suggested fixes with bug reports are much appreciated!
 
 </p>
 <hr size="6">
@@ -569,7 +593,8 @@ suggested coding fixes with bug reports are much appreciated!
 
 </p><ul>
 <li><p> GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
-</p></li><li><p> XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17<a name="DOCF1" href="#FOOT1">(1)</a>, 21.4.14-15
+</p></li><li><p> XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17<a name="DOCF1" href="#FOOT1">(1)</a>, 21.4.14-15; as of June 2004, ESS does not work with
+XEmacs Betas such as 21.5.17
 </p></li><li><p> GNU Emacs &lt;20.3 and XEmacs &lt;21.0<a name="DOCF2" href="#FOOT2">(2)</a>
 </p></li></ul>
 
@@ -682,13 +707,6 @@ tar xvf ess-VERSION.tar
 <p>The <code>tar</code> command will create the subdirectory ess-VERSION and unarchive
 the files there.
 
-</p><p>If you are using GNU Emacs 19.29, decompress/unarchive
-`<tt>ESSDIR/ess-VERSION/lisp/19.29.tar.gz</tt>', 
-read `<tt>ESSDIR/ess-VERSION/lisp/19.29/README</tt>', follow the instructions
-and you might be able to get ESS to work.  
-<em>Please note that GNU Emacs 19.29 is no longer supported</em>.
-For a list of supported versions of emacs, see See section <a href="#SEC6">Requirements</a>.
-
 </p></li><li>
 <p>Edit the file `<tt>ESSDIR/ess-VERSION/lisp/ess-site.el</tt>' as explained in the 
 comments section of that file.  
@@ -706,9 +724,12 @@ XEmacs uses site-start.el for the system installation file).
 </pre></td></tr></table><p>to configure emacs for ESS.
 
 </p></li><li>
-<p>That's it!  To edit statistical programs, load the files with the requiste
-extensions  (&quot;.sas&quot; for SAS, &quot;.S&quot; for S-PLUS, &quot;.R&quot; for R, and &quot;.lsp&quot;
-for XLispStat).
+<p>That's it!  If you are installing just a local copy of ESS for yourself,
+ESS is now ready to be used.  (The remaining steps below are for
+advanced installation.)  To edit statistical programs, load the files
+with the requiste extensions (&quot;.sas&quot; for SAS, &quot;.S&quot; for S-PLUS, &quot;.R&quot; for
+R, and &quot;.lsp&quot; for XLispStat).  To start a statistical process within
+Emacs, such as R, type <code>M-x R</code>.
 
 </p></li><li>
 <p>(OPTIONAL) If you are running S-PLUS or R, you might consider
@@ -922,19 +943,6 @@ from the emacs buffer containing your S program (for example,
 emacs, and cut and paste the results into the XLispStat
 *Listener* Window under Microsoft Windows.
 
-</p><p>SAS for Windows uses the batch access with function keys that is
-described in @xref{ESS(SAS)--MS Windows}.
-The user can also edit SAS files
-in an <code>ESS[SAS]</code> buffer and than manually copy and paste them into
-an Editor window in the SAS Display Manager.
-
-</p><p>For Windows, inferior SAS in an <code>iESS[SAS]</code> buffer does not work
-on the local machine.  It does work over a network connection to
-SAS running on a remote Unix computer.
-
-</p><p>Reason:  we use ddeclient to interface with programs and SAS doesn't
-provide the corresponding ddeserver capability.
-
 </p></li><li>
 <p>(OPTIONAL) If you are running Sqpe or R, you might consider
 installing the database files.  From within emacs, <code>C-x d</code> to
@@ -959,6 +967,7 @@ there).
 </p></li></ol>
 
 <hr size="6">
+<a name="NOD11"></a>
 <a name="SEC11"></a>
 <table cellpadding="1" cellspacing="1" border="0">
 <tr><td valign="middle" align="left">[<a href="#SEC10" title="Previous section in reading order"> &lt; </a>]</td>
@@ -976,57 +985,7 @@ there).
 <td valign="middle" align="left">[Index]</td>
 <td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
-<h2 class="section"> 1.10 Requirements </h2>
-
-<p>ESS has been tested with
-
-</p><ul>
-<li><p> S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
-</p></li><li><p> R &gt;=0.49
-</p></li><li><p> S4
-</p></li><li><p> SAS &gt;=6.12
-</p></li><li><p> BUGS 0.5, 0.603
-</p></li><li><p> Stata &gt;=6.0
-</p></li><li><p> XLispStat &gt;=3.50
-</p></li></ul>
-
-<p>on the following platforms
-
-</p><ul>
-<li><p> Linux (all)
-</p></li><li><p> Solaris/SunOS (all)
-</p></li><li><p> Microsoft Windows 95/98/NT/2000/XP (SPLUS 4.5/2000/6.*, R, SAS and BUGS)
-</p></li><li><p> Apple Mac OS (SAS for OS 9 and X11 R for OS X)
-</p></li></ul>
-
-<p>with the following versions of emacs
-
-</p><ul>
-<li><p> GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
-</p></li><li><p> XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17<a name="DOCF3" href="#FOOT3">(3)</a>, 21.4.14-15
-</p></li><li><p> GNU Emacs &lt;20.3 and XEmacs &lt;21.0<a name="DOCF4" href="#FOOT4">(4)</a>
-</p></li></ul>
-
-<hr size="6">
-<a name="NOD11"></a>
-<a name="SEC12"></a>
-<table cellpadding="1" cellspacing="1" border="0">
-<tr><td valign="middle" align="left">[<a href="#SEC11" title="Previous section in reading order"> &lt; </a>]</td>
-<td valign="middle" align="left">[<a href="#SEC13" title="Next section in reading order"> &gt; </a>]</td>
-<td valign="middle" align="left"> &nbsp; </td>
-<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
-<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
-<td valign="middle" align="left">[ &gt;&gt; ]</td>
-<td valign="middle" align="left"> &nbsp; </td>
-<td valign="middle" align="left"> &nbsp; </td>
-<td valign="middle" align="left"> &nbsp; </td>
-<td valign="middle" align="left"> &nbsp; </td>
-<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
-<td valign="middle" align="left">[Contents]</td>
-<td valign="middle" align="left">[Index]</td>
-<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
-</tr></table>
-<h2 class="section"> 1.11 Reporting Bugs </h2>
+<h2 class="section"> 1.10 Reporting Bugs </h2>
 
 
 <p>Please send bug reports, suggestions etc. to
@@ -1052,10 +1011,10 @@ donations are also more than welcome.
 
 </p><hr size="6">
 <a name="NOD12"></a>
-<a name="SEC13"></a>
+<a name="SEC12"></a>
 <table cellpadding="1" cellspacing="1" border="0">
-<tr><td valign="middle" align="left">[<a href="#SEC12" title="Previous section in reading order"> &lt; </a>]</td>
-<td valign="middle" align="left">[<a href="#SEC14" title="Next section in reading order"> &gt; </a>]</td>
+<tr><td valign="middle" align="left">[<a href="#SEC11" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC13" title="Next section in reading order"> &gt; </a>]</td>
 <td valign="middle" align="left"> &nbsp; </td>
 <td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
 <td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
@@ -1069,7 +1028,7 @@ donations are also more than welcome.
 <td valign="middle" align="left">[Index]</td>
 <td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
-<h2 class="section"> 1.12 Mailing Lists </h2>
+<h2 class="section"> 1.11 Mailing Lists </h2>
 
 
 
@@ -1097,9 +1056,9 @@ low-volume mailing list.
 
 <hr size="6">
 <a name="NOD13"></a>
-<a name="SEC14"></a>
+<a name="SEC13"></a>
 <table cellpadding="1" cellspacing="1" border="0">
-<tr><td valign="middle" align="left">[<a href="#SEC13" title="Previous section in reading order"> &lt; </a>]</td>
+<tr><td valign="middle" align="left">[<a href="#SEC12" title="Previous section in reading order"> &lt; </a>]</td>
 <td valign="middle" align="left">[ &gt; ]</td>
 <td valign="middle" align="left"> &nbsp; </td>
 <td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
@@ -1114,7 +1073,7 @@ low-volume mailing list.
 <td valign="middle" align="left">[Index]</td>
 <td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
-<h2 class="section"> 1.13 Authors </h2>
+<h2 class="section"> 1.12 Authors </h2>
 
 
 <ul>
@@ -1153,18 +1112,6 @@ that the `custom' library bundled with Emacs 19.34 is too _old_, its API is
 incompatible with the `new custom' bundled with recent Emacsen.
 The `new custom' for Emacs 19.34 is available for download
 <a href="ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz">here</a>.
-</p><h3><a name="FOOT3" href="#DOCF3">(3)</a></h3>
-
-<p>requires the files.el patch to revert-buffer for the Local Variables 
-updating problem
-</p><h3><a name="FOOT4" href="#DOCF4">(4)</a></h3>
-<p>These releases of emacs are no 
-longer supported, so an upgrade is recommended if you plan to use ESS.
-If you have GNU Emacs 19.29, see See section <a href="#SEC9">Unix installation</a>.  Also, note
-that the `custom' library bundled with Emacs 19.34 is too _old_, its API is
-incompatible with the `new custom' bundled with recent Emacsen.
-The `new custom' for Emacs 19.34 is available for download
-<a href="ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz">here</a>.
 </p><hr size="1">
 <a name="SEC_About"></a>
 <table cellpadding="1" cellspacing="1" border="0">
@@ -1175,7 +1122,7 @@ The `new custom' for Emacs 19.34 is available for download
 </tr></table>
 <h1>About This Document</h1>
 <p>
-  This document was generated by <em>Rodney Sparapani</em> on <em>June, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
+  This document was generated by <em>Rodney Sparapani</em> on <em>July, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
 </p>
 <p>
   The buttons in the navigation panels have the following meaning:
@@ -1277,7 +1224,7 @@ The `new custom' for Emacs 19.34 is available for download
 <hr size="1">
 <p>
  <font size="-1">
-  This document was generated by <em>Rodney Sparapani</em> on <em>June, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
+  This document was generated by <em>Rodney Sparapani</em> on <em>July, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
  </font>
  <br>
 

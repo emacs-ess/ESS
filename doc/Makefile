@@ -80,11 +80,8 @@ install : info/ess.info
 html/ess_toc.html: $(TEXISRC)
 	@echo "making HTML documentation..."
 	$(TEXI2HTML) $(SPLITCHAP) ess.texi
-	cp -p ess_toc.html html/index.html
-	mv -f *.html html
-#	texi2html v. 1.70 requires the following
-#	cp -p ess/ess_toc.html html/index.html
-#	mv -f ess/*.html html
+	test -d ess && cp -p ess/ess_toc.html html/index.html || cp -p ess_toc.html html/index.html
+	test -d ess && mv -f ess/*.html html || mv -f *.html html
 
 html/readme_toc.html: $(TEXISRC)
 	$(TEXI2HTML) readme.texi

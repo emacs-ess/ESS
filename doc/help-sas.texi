@@ -25,7 +25,7 @@ and syntax highlighting, are provided transparently; appealing to
 advanced ESS[SAS] users.
 
 @comment  node-name,  next,  previous,  up
-@node ESS(SAS)--Editing files, iESS(SAS)--Interactive SAS processes, ESS(SAS)--Design philosophy, Help for SAS
+@node ESS(SAS)--Editing files, ESS(SAS)--TAB key, ESS(SAS)--Design philosophy, Help for SAS
 @section ESS[SAS]--Editing files
 
 ESS[SAS] is the mode for editing SAS language files.  This mode handles:
@@ -62,63 +62,34 @@ or a DO ... TO ... BY statement, TOs are not highlighted (and neither is
 BY).
 
 @comment  node-name,  next,  previous,  up
-@node  iESS(SAS)--Interactive SAS processes, ESS(SAS)--Batch SAS processes, ESS(SAS)--Editing files, Help for SAS
-@section iESS[SAS]--Interactive SAS processes
+@node  ESS(SAS)--TAB key, ESS(SAS)--Batch SAS processes, ESS(SAS)--Editing files, Help for SAS
+@section ESS[SAS]--TAB key
 
-iESS (inferior ESS) is the method for interfacing with interactive
-statistical processes (programs).  iESS[SAS] is what is needed for
-interactive SAS programming.  iESS[SAS] works best
-with the following settings for SAS command-line options 
-(the default of inferior-SAS-args):
-
+Two options.  The TAB key is bound by default to sas-indent-line.  This
+function is used to syntactically indent SAS code so PROC and RUN are in
+the left margin, other statements are indented 4 spaces from the margin,
+continuation lines are indented 4 spaces in from the beginning column of
+that statement.  This is the type of functionality that emacs provides
+in most programming language modes.  This functionality is equivalent to
+uncommenting the following line in ess-site.el:
 @example
--stdio -linesize 80 -noovp -nosyntaxcheck
+(setq ess-sas-edit-keys-toggle nil)
 @end example
 
-@display
--stdio          
-            required to make the redirection of stdio work
--linesize 80    
-            keeps output lines from folding on standard terminals
--noovp          
-            prevents error messages from printing 3 times
--nosyntaxcheck  
-            permits recovery after syntax errors
-@end display
-
-To start up iESS[SAS] mode, use:
+ESS provides an alternate behavior for the TAB key that makes it behave
+as it does in SAS Display Manager, i.e. move the cursor to the next tab
+stop.  The alternate behavior also provides a backwards TAB, C-TAB, that
+moves the cursor to the tab stop to the left and deletes any characters
+between them.  This functionality is obtained by uncommenting the
+following line in ess-site.el:
 @example
-   M-x SAS
+(setq ess-sas-edit-keys-toggle t)
 @end example
-
-The *SAS:1.log* buffer in ESStr mode corresponds to the file
-myfile.log in SAS batch usage and to the "SAS: LOG" window in the SAS
-Display Manager.  All commands submitted to SAS, informative
-messages, warnings, and errors appear here.
-
-The *SAS:1.lst* buffer in ESSlst mode corresponds to the file
-myfile.lst in SAS batch usage and to the "SAS: OUTPUT" window in the
-SAS Display Manager.  All data related printed output from the
-PROCs appear in this window.
-
-The iESS [SAS:1] buffer exists solely as a communications buffer.
-Files are edited in the myfile.sas buffer.  The C-c C-r key in
-ESS[SAS] is the functional equivalent of bringing a file into the
-"SAS: PROGRAM EDITOR" window followed by the 'Local' 'Submit' menu
-commands.  The user should never use this buffer directly.
-
-@c DANGER Will Robinson!
-@c We plan to add
-@c @display
-@c - The ability to request help from a process for variables and
-@c   functions, and to have the results sent into a separate buffer.
-@c - completion of object names and file names.
-@c @end display
-
-Troubleshooting: @xref{iESS(SAS)--Common problems}.
+Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
+and the tab stops are set at multiples of sas-indent-width.
 
 @comment  node-name,  next,  previous,  up
-@node  ESS(SAS)--Batch SAS processes, ESS(SAS)--Function keys for batch processing, iESS(SAS)--Interactive SAS processes, Help for SAS
+@node  ESS(SAS)--Batch SAS processes, ESS(SAS)--Function keys for batch processing, ESS(SAS)--TAB key, Help for SAS
 @section ESS[SAS]--Batch SAS processes
 
 Submission of a SAS batch job is dependent on your environment.
@@ -194,8 +165,55 @@ file by:
 (setq ess-sleep-for 0.2)
 @end example
 
+For example, open the file you want to work with 
+(ess-sas-global-unix-keys keys shown, ess-sas-global-pc-keys in 
+parentheses; ESS[SAS] function keys are presented in the next section).
+@example
+C-x C-f myfile.sas
+@end example
+myfile.sas will be in ESS[SAS] mode.  Edit as appropriate, then save and 
+submit the batch SAS job.
+@example
+F3 (F8)
+@end example
+The job runs in the shell buffer while you continue to edit 
+myfile.sas.  If ess-sas-submit-method is 'sh, then the 
+message buffer will display the shell notification when the 
+job is complete.  The 'sh setting also allows you to 
+terminate the SAS batch job before it is finished.
+@example
+F8 (F3)
+@end example
+Terminating a SAS batch in the *shell* buffer.
+@example
+kill %1
+@end example
+You may want to visit the .log (whether the job is still running 
+or it is finished) and check for error messages.  The .log will be
+refreshed and you will be placed in it's buffer.  You will be 
+taken to the 1st error message, if any.  
+@example
+F5 (F6)
+@end example
+Goto the next error message, if any.
+@example
+F5 (F6)
+@end example
+Now, refresh the .lst and go to it's buffer.
+@example
+F6 (F7)
+@end example
+If you wish to make changes, go to the .sas file with.
+@example
+F4 (F5)
+@end example
+Make your editing changes and submit again.
+@example
+F3 (F8)
+@end example
+
 @comment  node-name,  next,  previous,  up
-@node  ESS(SAS)--Function keys for batch processing, ESS(SAS)--TAB key, ESS(SAS)--Batch SAS processes, Help for SAS
+@node  ESS(SAS)--Function keys for batch processing, iESS(SAS)--Interactive SAS processes, ESS(SAS)--Batch SAS processes, Help for SAS
 @section ESS[SAS]--Function keys for batch processing
 
 The setup of function keys for SAS batch processing
@@ -412,112 +430,54 @@ landscape (first line for "global" key mapping, second for "local"):
 (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-a4-landscape)
 @end example
 
-@comment  node-name,  next,  previous,  up
-@node  ESS(SAS)--TAB key, ESS(SAS)--Usage scenarios, ESS(SAS)--Function keys for batch processing, Help for SAS
-@section ESS[SAS]--TAB key
-
-Two options.  The TAB key is bound by default to sas-indent-line.  This
-function is used to syntactically indent SAS code so PROC and RUN are in
-the left margin, other statements are indented 4 spaces from the margin,
-continuation lines are indented 4 spaces in from the beginning column of
-that statement.  This is the type of functionality that emacs provides
-in most programming language modes.  This functionality is equivalent to
-uncommenting the following line in ess-site.el:
-@example
-(setq ess-sas-edit-keys-toggle nil)
-@end example
-
-ESS provides an alternate behavior for the TAB key that makes it behave
-as it does in SAS Display Manager, i.e. move the cursor to the next tab
-stop.  The alternate behavior also provides a backwards TAB, C-TAB, that
-moves the cursor to the tab stop to the left and deletes any characters
-between them.  This functionality is obtained by uncommenting the
-following line in ess-site.el:
-@example
-(setq ess-sas-edit-keys-toggle t)
-@end example
-Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
-and the tab stops are set at multiples of sas-indent-width.
 
 @comment  node-name,  next,  previous,  up
-@node   ESS(SAS)--Usage scenarios, iESS(SAS)--Common problems, ESS(SAS)--TAB key, Help for SAS
-@section ESS[SAS]--Usage scenarios
+@node  iESS(SAS)--Interactive SAS processes, iESS(SAS)--Common problems, ESS(SAS)--Function keys for batch processing, Help for SAS
+@section iESS[SAS]--Interactive SAS processes
 
-We present a batch and an interactive scenario for using ESS with SAS.  
-The remarks with respect to graphics apply to either with exceptions noted.
+iESS (inferior ESS) is the method for interfacing with interactive
+statistical processes (programs).  iESS[SAS] is what is needed for
+interactive SAS programming.  iESS[SAS] works best
+with the following settings for SAS command-line options 
+(the default of inferior-SAS-args):
 
-Graphics
-
-Output from GPROCs can be displayed in a SAS/Graph window for SAS batch
-on Windows or for both SAS batch and interactive with X11 on Unix.  If
-you need to create graphics files and view them with F12, then include
-the following in myfile.sas (for F12 to work the FILENAME statement must
-be in myfile.sas, but the GOPTIONS statement can be in your
-autoexec.sas):
 @example
-filename gsasfile 'graphics.ps'; 
-goptions device=ps gsfname=gsasfile gsfmode=append; 
-@end example
-PROC PLOT graphs can be viewed in the listing buffer.  You may
-wish to control the vertical spacing to allow the entire plot
-to be visible on screen, for example:
-@example
-proc plot;
-    plot a*b / vpos=25;
-run;
+-stdio -linesize 80 -noovp -nosyntaxcheck
 @end example
 
-SAS Batch (ess-sas-global-unix-keys keys shown, ess-sas-global-pc-keys in 
-parentheses).
+@display
+-stdio          
+            required to make the redirection of stdio work
+-linesize 80    
+            keeps output lines from folding on standard terminals
+-noovp          
+            prevents error messages from printing 3 times
+-nosyntaxcheck  
+            permits recovery after syntax errors
+@end display
 
-Open the file you want to work with.  
+To start up iESS[SAS] mode, use:
 @example
-C-x C-f myfile.sas
-@end example
-myfile.sas will be in ESS[SAS] mode.  Edit as appropriate, then save and 
-submit the batch SAS job.
-@example
-F3 (F8)
-@end example
-The job runs in the shell buffer while you continue to edit 
-myfile.sas.  If ess-sas-submit-method is 'sh, then the 
-message buffer will display the shell notification when the 
-job is complete.  The 'sh setting also allows you to 
-terminate the SAS batch job before it is finished.
-@example
-F8 (F3)
-@end example
-Terminating a SAS batch in the *shell* buffer.
-@example
-kill %1
-@end example
-You may want to visit the .log (whether the job is still running 
-or it is finished) and check for error messages.  The .log will be
-refreshed and you will be placed in it's buffer.  You will be 
-taken to the 1st error message, if any.  
-@example
-F5 (F6)
-@end example
-Goto the next error message, if any.
-@example
-F5 (F6)
-@end example
-Now, refresh the .lst and go to it's buffer.
-@example
-F6 (F7)
-@end example
-If you wish to make changes, go to the .sas file with.
-@example
-F4 (F5)
-@end example
-Make your editing changes and submit again.
-@example
-F3 (F8)
+   M-x SAS
 @end example
 
-Interactive SAS
+The *SAS:1.log* buffer in ESStr mode corresponds to the file
+myfile.log in SAS batch usage and to the "SAS: LOG" window in the SAS
+Display Manager.  All commands submitted to SAS, informative
+messages, warnings, and errors appear here.
 
-Open the file you want to work with.
+The *SAS:1.lst* buffer in ESSlst mode corresponds to the file
+myfile.lst in SAS batch usage and to the "SAS: OUTPUT" window in the
+SAS Display Manager.  All data related printed output from the
+PROCs appear in this window.
+
+The iESS [SAS:1] buffer exists solely as a communications buffer.
+Files are edited in the myfile.sas buffer.  The C-c C-r key in
+ESS[SAS] is the functional equivalent of bringing a file into the
+"SAS: PROGRAM EDITOR" window followed by the 'Local' 'Submit' menu
+commands.  The user should never use this buffer directly.
+
+For example, open the file you want to work with.
 @example
 C-x C-f myfile.sas
 @end example
@@ -574,8 +534,18 @@ The *SAS:1* buffer is strictly for ESS use.  The user should
 never need to read it or write to it.  Refer to the .lst and
 .log buffers for monitoring output!
 
+@c DANGER Will Robinson!
+@c We plan to add
+@c @display
+@c - The ability to request help from a process for variables and
+@c   functions, and to have the results sent into a separate buffer.
+@c - completion of object names and file names.
+@c @end display
+
+Troubleshooting: @xref{iESS(SAS)--Common problems}.
+
 @comment  node-name,  next,  previous,  up
-@node   iESS(SAS)--Common problems, ESS(SAS)--MS Windows, ESS(SAS)--Usage scenarios, Help for SAS
+@node   iESS(SAS)--Common problems, ESS(SAS)--Graphics, iESS(SAS)--Interactive SAS processes, Help for SAS
 @section iESS[SAS]--Common problems
 
 @display
@@ -603,7 +573,28 @@ find / -name sas -print
 @end display
 
 @comment  node-name,  next,  previous,  up
-@node   ESS(SAS)--MS Windows, , iESS(SAS)--Common problems, Help for SAS
+@node   ESS(SAS)--Graphics, ESS(SAS)--MS Windows, iESS(SAS)--Common problems, Help for SAS
+@section ESS[SAS]--Graphics
+
+Output from GPROCs can be displayed in a SAS/Graph window for SAS batch
+on Windows or for both SAS batch and interactive with X11 on Unix.  If
+you need to create graphics files and view them with F12, then include
+the following (either in myfile.sas or in your autoexec.sas):
+@example
+filename gsasfile 'graphics.ps'; 
+goptions device=ps gsfname=gsasfile gsfmode=append; 
+@end example
+PROC PLOT graphs can be viewed in the listing buffer.  You may
+wish to control the vertical spacing to allow the entire plot
+to be visible on screen, for example:
+@example
+proc plot;
+    plot a*b / vpos=25;
+run;
+@end example
+
+@comment  node-name,  next,  previous,  up
+@node   ESS(SAS)--MS Windows, , ESS(SAS)--Graphics, Help for SAS
 @section ESS[SAS]--MS Windows
 
 @itemize @bullet

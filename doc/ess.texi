@@ -817,12 +817,12 @@ variable, customize the variable @code{inferior-ess-own-frame}.
 @menu
 * ESS(SAS)--Design philosophy::
 * ESS(SAS)--Editing files::
-* iESS(SAS)--Interactive SAS processes::
+* ESS(SAS)--TAB key::
 * ESS(SAS)--Batch SAS processes::
 * ESS(SAS)--Function keys for batch processing::
-* ESS(SAS)--TAB key::
-* ESS(SAS)--Usage scenarios::
+* iESS(SAS)--Interactive SAS processes::
 * iESS(SAS)--Common problems::
+* ESS(SAS)--Graphics::
 * ESS(SAS)--MS Windows::
 @end menu
 @include help-sas.texi

@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created on July, 30 2004 by texi2html 1.70 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>ESS -- Emacs Speaks Statistics: 1. Introduction to ESS</title>
+
+<meta name="description" content="ESS -- Emacs Speaks Statistics: 1. Introduction to ESS">
+<meta name="keywords" content="ESS -- Emacs Speaks Statistics: 1. Introduction to ESS">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.70">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[ &lt; ]</td>
+<td valign="middle" align="left">[<a href="ess_1.html#SEC2" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[ &lt;&lt; ]</td>
+<td valign="middle" align="left">[ Up ]</td>
+<td valign="middle" align="left">[<a href="ess_2.html#SEC7" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC1">1. Introduction to ESS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">                Overview of features provided by this package
+</td></tr>
+<tr><td align="left" valign="top"><a href="ess_2.html#SEC7">A. Installing ESS on your system</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="ess_3.html#SEC12">B. Interacting with statistical programs</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="ess_4.html#SEC18">C. Help for the S family</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="ess_5.html#SEC26">D. Help for SAS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="ess_6.html#SEC36">E. Help for BUGS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="ess_7.html#SEC40">F. Interacting with the ESS process</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">           Interacting with the process buffer
+</td></tr>
+<tr><td align="left" valign="top"><a href="ess_8.html#SEC55">G. Editing S functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">                     How to create or edit S objects or functions
+</td></tr>
+<tr><td align="left" valign="top"><a href="ess_9.html#SEC64">H. Reading help files in ESS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="ess_10.html#SEC65">I. Manipulating saved transcript files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="ess_11.html#SEC68">J. Other features of ESS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="ess_12.html#SEC77">K. Bugs and Bug Reporting, Mailing Lists</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="ess_13.html#SEC81">L. Customizing ESS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="ess_14.html#SEC90">Key (Character) Index</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="ess_15.html#SEC91">Concept Index</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="ess_17.html#SEC92">Variable and command index</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<a name="NOD1"></a>
+<a name="SEC1"></a>
+<h1 class="chapter"> 1. Introduction to ESS </h1>
+
+<p>The S family (S, Splus and R) and SAS statistical analysis packages
+provide sophisticated statistical and graphical routines for manipulating
+data.   <b>E</b>macs <b>S</b>peaks <b>S</b>tatistics (ESS) is based on the merger
+of two pre-cursors, S-mode and SAS-mode, which provided support for the
+S family and SAS respectively.  Later on, Stata-mode was also incorporated.
+
+</p><p>ESS provides a common, generic, and useful interface, through emacs, to
+many statistical packages.  It currently supports the S family, SAS, BUGS,
+Stata and XLisp-Stat with the level of support roughly in that order.
+
+</p><p>A bit of notation before we begin.  <em>emacs</em> refers to both
+<em>GNU Emacs</em> by the Free Software Foundation, as well as
+<em>XEmacs</em> by the XEmacs Project.  The emacs major
+mode <code>ESS[language]</code>, where <code>language</code> can take values such as
+<code>S</code>, <code>SAS</code>, or <code>XLS</code>.  The inferior process interface
+(the connection between emacs and the running process) referred to as inferior ESS
+(<code>iESS</code>), is denoted in the modeline by <code>ESS[dialect]</code>, where
+<code>dialect</code> can take values such as <code>S3</code>, <code>S4</code>, <code>S+3</code>,
+<code>S+4</code>, <code>S+5</code>, <code>S+6</code>, <code>R</code>, <code>XLS</code>, <code>VST</code>, <code>SAS</code>.
+
+</p><p>Currently, the documentation contains many references to <cite>`S'</cite>
+where actually any supported (statistics) language is meant, i.e., `S'
+could also mean `XLisp-Stat' or `SAS'.
+
+</p><a name="IDX1"></a>
+
+<a name="IDX2"></a>
+<p>For exclusively interactive users of S, ESS provides a number of
+features to make life easier.  There is an easy to use command history
+mechanism, including a quick prefix-search history.  To reduce typing,
+command-line completion is provided for all S objects and &quot;hot
+keys&quot; are provided for common S function calls.  Help files are
+easily accessible, and a paging mechanism is provided to view them.
+Finally, an incidental (but very useful) side-effect of ESS is that a
+transcript of your session is kept for later saving or editing.
+
+</p><a name="IDX3"></a>
+<p>No special knowledge of Emacs is necessary when using S
+interactively under ESS.
+
+</p><a name="IDX4"></a>
+<p>For those that use S in the typical edit-test-revise cycle when
+programming S functions, ESS provides for editing of S functions
+in Emacs edit buffers.  Unlike the typical use of S where the editor
+is restarted every time an object is edited, ESS uses the current Emacs
+session for editing.  In practical terms, this means that you can edit
+more than one function at once, and that the ESS process is still
+available for use while editing.  Error checking is performed on
+functions loaded back into S, and a mechanism to jump directly to the
+error is provided.  ESS also provides for maintaining text versions of
+your S functions in specified source directories.
+
+</p><table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="ess_1.html#SEC2">1.1 Why should I use ESS?</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="ess_1.html#SEC3">1.2 New features in ESS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="ess_1.html#SEC4">1.3 Authors of and contributors to ESS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="ess_1.html#SEC5">1.4 Getting the latest version of ESS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="ess_1.html#SEC6">1.5 How to read this manual</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[ &lt;&lt; ]</td>
+<td valign="middle" align="left">[<a href="ess_2.html#SEC7" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Rodney Sparapani</em> on <em>July, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>
