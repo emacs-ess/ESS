@@ -5,7 +5,7 @@ ESS[SAS].  The user interface of ESS[SAS] has similarities with ESS[S]
 and the SAS Display Manager.
 
 @comment  node-name,  next,  previous,  up
-@node ESS(SAS)--Design philosophy, ESS(SAS)--Editing files, Help for SAS, Help for SAS
+@node ESS(SAS)--Design philosophy, ESS(SAS)--Editing files, ESS for SAS, ESS for SAS
 @section ESS[SAS]--Design philosophy
 
 ESS[SAS] was designed to aid the user in writing and maintaining
@@ -25,7 +25,7 @@ and syntax highlighting, are provided transparently; appealing to
 advanced ESS[SAS] users.
 
 @comment  node-name,  next,  previous,  up
-@node ESS(SAS)--Editing files, ESS(SAS)--TAB key, ESS(SAS)--Design philosophy, Help for SAS
+@node ESS(SAS)--Editing files, ESS(SAS)--TAB key, ESS(SAS)--Design philosophy, ESS for SAS
 @section ESS[SAS]--Editing files
 
 ESS[SAS] is the mode for editing SAS language files.  This mode handles:
@@ -62,7 +62,7 @@ or a DO ... TO ... BY statement, TOs are not highlighted (and neither is
 BY).
 
 @comment  node-name,  next,  previous,  up
-@node  ESS(SAS)--TAB key, ESS(SAS)--Batch SAS processes, ESS(SAS)--Editing files, Help for SAS
+@node  ESS(SAS)--TAB key, ESS(SAS)--Batch SAS processes, ESS(SAS)--Editing files, ESS for SAS
 @section ESS[SAS]--TAB key
 
 Two options.  The TAB key is bound by default to sas-indent-line.  This
@@ -89,7 +89,7 @@ Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
 and the tab stops are set at multiples of sas-indent-width.
 
 @comment  node-name,  next,  previous,  up
-@node  ESS(SAS)--Batch SAS processes, ESS(SAS)--Function keys for batch processing, ESS(SAS)--TAB key, Help for SAS
+@node  ESS(SAS)--Batch SAS processes, ESS(SAS)--Function keys for batch processing, ESS(SAS)--TAB key, ESS for SAS
 @section ESS[SAS]--Batch SAS processes
 
 Submission of a SAS batch job is dependent on your environment.
@@ -213,7 +213,7 @@ F3 (F8)
 @end example
 
 @comment  node-name,  next,  previous,  up
-@node  ESS(SAS)--Function keys for batch processing, iESS(SAS)--Interactive SAS processes, ESS(SAS)--Batch SAS processes, Help for SAS
+@node  ESS(SAS)--Function keys for batch processing, iESS(SAS)--Interactive SAS processes, ESS(SAS)--Batch SAS processes, ESS for SAS
 @section ESS[SAS]--Function keys for batch processing
 
 The setup of function keys for SAS batch processing
@@ -432,7 +432,7 @@ landscape (first line for "global" key mapping, second for "local"):
 
 
 @comment  node-name,  next,  previous,  up
-@node  iESS(SAS)--Interactive SAS processes, iESS(SAS)--Common problems, ESS(SAS)--Function keys for batch processing, Help for SAS
+@node  iESS(SAS)--Interactive SAS processes, iESS(SAS)--Common problems, ESS(SAS)--Function keys for batch processing, ESS for SAS
 @section iESS[SAS]--Interactive SAS processes
 
 iESS (inferior ESS) is the method for interfacing with interactive
@@ -545,7 +545,7 @@ never need to read it or write to it.  Refer to the .lst and
 Troubleshooting: @xref{iESS(SAS)--Common problems}.
 
 @comment  node-name,  next,  previous,  up
-@node   iESS(SAS)--Common problems, ESS(SAS)--Graphics, iESS(SAS)--Interactive SAS processes, Help for SAS
+@node   iESS(SAS)--Common problems, ESS(SAS)--Graphics, iESS(SAS)--Interactive SAS processes, ESS for SAS
 @section iESS[SAS]--Common problems
 
 @display
@@ -573,7 +573,7 @@ find / -name sas -print
 @end display
 
 @comment  node-name,  next,  previous,  up
-@node   ESS(SAS)--Graphics, ESS(SAS)--MS Windows, iESS(SAS)--Common problems, Help for SAS
+@node   ESS(SAS)--Graphics, ESS(SAS)--MS Windows, iESS(SAS)--Common problems, ESS for SAS
 @section ESS[SAS]--Graphics
 
 Output from GPROCs can be displayed in a SAS/Graph window for SAS batch
@@ -594,7 +594,7 @@ run;
 @end example
 
 @comment  node-name,  next,  previous,  up
-@node   ESS(SAS)--MS Windows, , ESS(SAS)--Graphics, Help for SAS
+@node   ESS(SAS)--MS Windows, , ESS(SAS)--Graphics, ESS for SAS
 @section ESS[SAS]--MS Windows
 
 @itemize @bullet
