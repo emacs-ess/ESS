@@ -1,3 +1,7 @@
+-*- indented-text -*-
+
+($Revision: 1.2 $)
+
 ESS: Using SAS
 ==============
 
@@ -30,17 +34,6 @@ file, buffer, region, description of keys etc.  If not, please read
 the New Users guide (found in the info pages, "C-h i" (by pressing
 control h, i) or Tutorial, "C-h t").
 
-Emacs: General Features of Interest for Programming
-===================================================
-
-There are other general editing features of Emacs which are worth
-investigating. 
-
-- blinking parentheses and other means of keeping track of (),{}, and
-  [].
-- imenu/func-menu (for indexing bodies of code).  This is on the TODO
-  list for the editing, transcript, and help modes.
-
 
 ESS[SAS]: Editing Files
 =====================
@@ -54,9 +47,6 @@ ESS[SAS] is the mode for editing S language files.  This mode handles:
   functions to an inferior process, if one is currently running.
 - ability to switch between processes which would be the target of the 
   buffer (for the above).
-- The ability to request help from a process for variables and
-  functions, and to have the results sent into a separate buffer.
-- completion of object names and file names.
 
 It should be automatically turned on when loading a file with a ".sas"
 suffix (or other, if specified in ess-site).  However, one will have
@@ -126,13 +116,3 @@ debugging.  Refer to the .lst and .log buffers for monitoring output!
     ## send regions, lines, or the entire file contents to S-PLUS (the 
     ## last one is demonstrated below)
     C-c C-b
-
-    
-
-
-
-$Revision: 1.1 $
-
-Local Variables: ***
-mode:indented-text ***
-End: ***
