@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 1.5 $.
+### File: $Revision: 1.6 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -34,10 +34,10 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 5.1.5
+VERSION = 5.1.6
 VERSIONDIR = ESS-$(VERSION)
 
-LASTVERSION = 5.1.4
+LASTVERSION = 5.1.5
 
 MYWWWDIR = /stat2/faculty/rossini/public_html/projects
 MYFTPDIR = /m2/ftp/rossini

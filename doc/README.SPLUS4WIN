@@ -37,9 +37,9 @@ INSTALLATION
 
 The easiest way to install ESS on Windows machines is to place the
 unzipped directory tree on the machine in, for specificity,
-  c:/emacs/ess-5_1_5/
+  c:/emacs/ess-5.1.6/
 Then add the following line to your ~/_emacs (or ~/.emacs) file:
-  (load-file "c:/emacs/ess-5_1_5/lisp/ess-site.el")
+  (load-file "c:/emacs/ess-5.1.6/lisp/ess-site.el")
 
 For improved startup efficiency (but not execution efficiency) you can
 follow the more elaborate installation procedures described in
