@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/01/19 12:06:48 $
-;; Version: $Revision: 1.52 $
-;; RCS: $Id: ess-cust.el,v 1.52 2004/01/19 12:06:48 stephen Exp $
+;; Modified: $Date: 2004/01/19 15:12:52 $
+;; Version: $Revision: 1.53 $
+;; RCS: $Id: ess-cust.el,v 1.53 2004/01/19 15:12:52 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -174,7 +174,7 @@ Can be changed, e.g., to `R'.  Use `setq-default' if setting it in
 (make-variable-buffer-local 'ess-language)
 (setq-default ess-language "Initial")
 
-(defcustom ess-dialect nil
+(defvar ess-dialect nil
   "String version of the dialect being run for the inferior process.
 This, plus `ess-language', should be able to determine the exact
 version of the statistical package being executed in the particular
@@ -183,19 +183,7 @@ buffer.
 Current values could include:
 for `ess-dialect' = S3, S4, Sp3, Sp4, Sp5, Sp6, R, XLS, SAS, STA
 
-Used to adjust for changes in versions of the program"
-  :group 'ess
-  :type '(choice (const :tag "None"   :value nil)
-		 (const :tag "S3"     :value "S3")
-		 (const :tag "Sp3"    :value "Sp3")
-		 (const :tag "S4"     :value "S4")
-		 (const :tag "Sp4"    :value "Sp4")
-		 (const :tag "Sp5"    :value "Sp5")
-		 (const :tag "Sp6"    :value "Sp6")
-		 (const :tag "XLS"    :value "XLS")
-		 (const :tag "SAS"    :value "SAS")
-		 (const :tag "Runix"  :value "Runix")
-		 (const :tag "Rwin"   :value "Rwin")))
+Used to adjust for changes in versions of the program.")
 
 (make-variable-buffer-local 'ess-dialect)
 ;;(setq-default ess-dialect "Initial-dialect")
