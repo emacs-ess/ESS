@@ -1,6 +1,12 @@
+1998-09-24  Anthony Rossini  <arossini@buffy.biostat.washington.edu>
+
+	* essd-sta.el (STA-customize-alist): ess-object-name-db-file
+	should use sta, not stt.
+
 1998-09-24  Anthony Rossini  <rossini@buffy.biostat.washington.edu>
 
-	* ess-site.el (auto-mode-alist): added stata mode, which is now STA (ref: Thomas Lumley)
+	* ess-site.el (auto-mode-alist): added stata mode, which is now
+	STA (ref: Thomas Lumley).
 
 Fri Sep 11 16:20:14 1998  Martin Maechler  <maechler@sophie>
 
