@@ -104,17 +104,18 @@ important with the rise of computational tools such as resampling
 methods such as the bootstrap and jackknife, as well as simulation
 methods such as Markov Chain Monte Carlo (MCMC).
 
-One issue that arises quickly is that different analytic tools are
-targeted for particular forms of statistical analysis.  This suggests
-that optimal use requires switching between data analysis tools.  For
-example, general purpose tools such as R \citep{ihak:gent:1996} and
-\Splus\ are limited in terms of ease of use for performing Bayesian
-analyses when compared to tools such as BUGS
-\citep{SpieThomBest:1999}.  From another point of view, specialized
-tools such as BUGS are not as easy to construct more general analyses
-and graphics as \Splus\ and R.  This leads to a potential efficiency
-gain through the use of using multiple computational tools for complex
-statistical analyses.
+One issue that quickly arises is that different analytic tools are
+targeted for particular styles of statistical analysis.  This suggests
+that efficiency work habits can require switching between data
+analysis tools.  One example is that general purpose tools such as R
+\citep{ihak:gent:1996} are not as easy to use performing Bayesian
+analyses as special tools such as BUGS \citep{SpieThomBest:1999}.  On
+the other hand, these specialized tools can not be efficiently used to
+handle general analyses and graphical summaries.  This suggests a
+potential efficiency gain through the use of using multiple
+computational tools for complex statistical analyses.  However, most
+of these tools have their own idiosyncratic user interfaces, which can
+undo the efficiency gain.
 
 Emacs Speaks Statistics (ESS) is intended to provide a single point of
 interface for statistical computing tasks using a keyboard.  The
@@ -852,7 +853,6 @@ iESS times include only the calculations by the SAS computing engine.)
 % \begin{verbatim}
 %    -rwxr-xr-x   1 sas      sas  2441216 Sep  9  1997 /usr/local/sas612/sas
 % \end{verbatim}
-
 
 \section{Obtaining ESS}
 \label{sec:getIt}
