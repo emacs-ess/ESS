@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/02 20:42:56 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: essd-s4.el,v 1.10 1997/09/02 20:42:56 rossini Exp $
+;; Modified: $Date: 1997/09/03 16:29:10 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: essd-s4.el,v 1.11 1997/09/03 16:29:10 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,41 +33,6 @@
 ;;; This file defines S4 customizations for ess-mode.  Lots of thanks
 ;;; to RMH and JMC for code and suggestions
 
-;;;
-;;; $Log: essd-s4.el,v $
-;;; Revision 1.10  1997/09/02 20:42:56  rossini
-;;; *** empty log message ***
-;;;
-;;; Revision 1.9  1997/09/02 20:06:30  rossini
-;;; *** empty log message ***
-;;;
-;;; Revision 1.8  1997/09/02 19:43:50  rossini
-;;; *** empty log message ***
-;;;
-;;; Revision 1.7  1997/08/26 22:54:23  rossini
-;;; *** empty log message ***
-;;;
-;;; Revision 1.6  1997/08/25 20:50:16  rossini
-;;; MM's changes.
-;;;
-;;; Revision 1.5  1997/07/30 13:15:11  rossini
-;;; program vars back in.
-;;;
-;;; Revision 1.4  1997/07/25 15:10:13  rossini
-;;; merged old d-s4.el (RMH stuff) and DB's version, so that I remember
-;;; that there is code to include!
-;;;
-;;; Revision 1.3  1997/07/25 14:57:53  rossini
-;;; based on suggestions from Doug Bates.
-;;;
-;;; Revision 1.2  1997/06/22 23:49:28  rossini
-;;; revert.
-;;;
-;;; Revision 1.1  1997/06/19 21:16:24  rossini
-;;; Initial revision
-;;;
-;;;
-
 ;;; Autoloads:
 
 (require 'essl-s)
@@ -85,13 +50,35 @@
 					     ess-suffix))
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . S4-help-sec-keys-alist)
-    (inferior-ess-objects-command  . "objects(%d)")
+    (inferior-ess-objects-command  . ".SmodeObs(%d, pattern=\"%s\")")
+					; ^ was "objects(%d)")
+    (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
     (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-exit-command     . "q()\n")
     (ess-loop-timeout              . 100000 )
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?"))
- "Variables to customize for S")
+    (inferior-ess-secondary-prompt . "+ ?")
+    (inferior-ess-load-command     . ".SmodeLoad(\"%s\")\n")
+    (inferior-ess-dump-command     . ".SmodeDump(\"%s\", \"%s\")\n")
+    (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
+    (inferior-ess-search-list-command . ".SmodePaths()\n")
+    (ess-dumped-missing-re  
+     . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
+    (ess-syntax-error-re
+     . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"))
+  "Variables to customize for S")
+
+;; For loading up the S code required for the above.
+;;(add-hook 'ess-post-run-hook
+;;	  '(lambda ()
+;;	     (ess-command
+;;	      (concat
+;;	       "if(exists(\"Sversion\")) library(emacs) else source(\""
+;;	       ess-mode-run-file
+;;	       "\")\n"))
+;;	     (if ess-mode-run-file2
+;;		 (ess-command
+;;		  (concat "source(\"" ess-mode-run-file2 "\")\n")))))
 
 
 (defun S4 ()

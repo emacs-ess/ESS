@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/09/02 20:42:31 $
-;; Version: $Revision: 1.39 $
-;; RCS: $Id: ess-site.el,v 1.39 1997/09/02 20:42:31 rossini Exp $
+;; Modified: $Date: 1997/09/03 16:28:35 $
+;; Version: $Revision: 1.40 $
+;; RCS: $Id: ess-site.el,v 1.40 1997/09/03 16:28:35 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -81,14 +81,12 @@
 
 (remassoc "\\.[sS]\\'" auto-mode-alist) ; get rid of assembler mode.
 
-(if (assoc "\\.q$" auto-mode-alist) nil
+(if (assoc "\\.q" auto-mode-alist) nil
   (setq auto-mode-alist
 	(append
-	 '(("\\.q$\\'"   . S-mode)
-	   ("\\.s$\\'"   . S-mode) ;; Comment for default asm-mode
-	   ("\\.sp$\\'"  . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
-	   ("\\.S$\\'"   . S-mode)
-	   ("\\.[rR]\\'" . R-mode)
+	 '(("\\.sp\\'"    . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
+	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S
+	   ("\\.[rR]\\'"  . R-mode)
 	   ("R.*/src/library/[A-Za-z]+/funs/[A-Za-z]" . R-mode)
 	   ("\\.lsp\\'"                               . XLS-mode)
 	   ("\\.sas\\'"                               . SAS-mode)
@@ -172,7 +170,7 @@
       (add-hook 'inferior-ess-mode-hook 'turn-on-font-lock t)))
 
 
-;; If nil, then don't font-lock the prompt.
+;; If nil, then don't font-lock the input
 ;; if t, font-lock (default).
 (setq inferior-ess-font-lock-input t) ; from RMH
 

@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/09/02 20:39:57 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essl-s.el,v 1.6 1997/09/02 20:39:57 rossini Exp $
+;; Modified: $Date: 1997/09/03 16:28:17 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essl-s.el,v 1.7 1997/09/03 16:28:17 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -125,6 +125,124 @@
   "Reg(ular) Ex(pression) of section headers in help file")
 
 (defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$")
+
+
+
+
+;;; S4 stuff.
+
+;; Based on files from:
+;;     Copyright (C) 1996, John M. Chambers.
+;; and 
+;;;    S-mode extras of SfS (Seminar für Statistik)
+
+
+(if (not (fboundp 'ease:time-string))
+    (defun ease:time-string (&optional clock)
+      "Returns a string for use as a timestamp. + hr:min if CLOCK is non-nil.
+	Currently returns strings like \"13 Mar 92\".  Redefine to taste."
+      ;; RELIES on (current-time-string) : Must be  exactly
+      ;; of this structure  [0..23], e.g. == "Mon Jan 27 17:30:45 1992"
+      (let* ((time (current-time-string))
+	     (mon (substring time 4 7))
+	     (day (substring time 8 10))
+	     (HM  (if clock (substring time 11 16)))
+	     (year (substring time 22 24)))
+	(concat day " " mon " " year
+		(if clock (concat ", " HM))))))
+
+(defvar ess-function-outline-file "/u/sfs/S/emacs-fun.outline"
+  "The file name of the ess-function outline that is to be inserted at point,
+when \\<ess-mode-map>\\[ess-insert-function-outline] is used.
+Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
+;;---------------------- currently :
+;;- f <- function()
+;;- {
+;;-   ## Purpose:
+;;-   ## ----------------------------------------------------------------------
+;;-   ## Arguments:
+;;-   ## ----------------------------------------------------------------------
+;;-   ## Author: $A$, Date: $D$
+;;- }
+
+
+
+;; Use the user's own ~/S/emacs-fun.outline  is (s)he has one : ---
+(let ((outline-file (concat (getenv "HOME") "/S/emacs-fun.outline")))
+  (if (file-exists-p outline-file)
+      (setq ess-function-outline-file outline-file)))
+
+(defun ess-insert-function-outline ()
+  "Insert an S function definition `outline' at point.
+Uses the file given by the variable ess-function-outline-file;
+M.Maechler,ess-extra" 
+  (interactive)
+  (let ((oldpos (point)))
+    (insert-file-contents ess-function-outline-file)
+    (if (search-forward "$A$" nil t)
+	(replace-match (user-full-name) 'not-upcase 'literal))
+    (goto-char oldpos)
+    (if (search-forward "$D$" nil t)
+	(replace-match (ease:time-string 'clock) 'not-upcase 'literal))
+    (goto-char (1+ oldpos))))
+
+(defun ess-fix-comments ()
+ "Fix ess-mode buffer so that single-line comments start with '##'."
+ (interactive)
+ (let ((curr (point)))
+   (goto-char (point-min))
+   (query-replace-regexp "^\\([ \\t]*#\\)\\([^#]\\)" "\\1#\\2" nil)
+   (goto-char curr)))
+
+(defun ess-dump-to-src ()
+  "Make the changes in an S - dump() file to improve human readability"
+  (interactive)
+  (ess-mode)
+  (query-replace-regexp "^\"\\([a-z.][a-z.0-9]*\\)\"<-\n"  "\n\\1 <- " nil))
+
+(defun ess-num-var-round ()
+ "Is VERY useful for dump(.)'ed numeric variables; ROUND some of them by
+  replacing  endings of 000000*.. and 999999*.  Martin Maechler"
+ (interactive)
+  (let ((num 0)
+	(str ""))
+    (goto-char (point-min))
+    (query-replace-regexp "000000+[1-9]" "" nil)
+    (while (< num 9)
+      (setq str (concat (int-to-string num) "999999+[0-8]*"))
+      (princ (format "\nregexp: '%s'" str))
+      (goto-char (point-min))
+      (replace-regexp str (int-to-string (1+ num)))
+      (setq num (1+ num)))))
+
+(defun ess-MM-fix-src ()
+  "Clean up ess-source code which has been produced by  dump(..).
+ Produces more readable code, and one that is well formatted in emacs
+ ess-mode. Martin Maechler, ETH Zurich."
+  (interactive)
+  ;; Martin's original code
+  ;; (let ((curr (point))
+  ;;   (pm   (point-min)))
+  ;; (goto-char pm)   (ess-dump-to-src)
+  ;; (goto-char pm)   (ess-fix-comments)
+  ;; (goto-char pm)   (ess-num-var-round)
+  ;; (goto-char curr)))
+  ;; Kurt's suggestion
+  (let ((pm (point-min)))
+    (save-excursion
+      (goto-char pm)
+      (S-dump-to-src)
+      (goto-char pm)
+      (S-fix-comments)
+      (goto-char pm)
+      (S-num-var-round))))
+
+;;;--------- see earlier (RCS) versions of this file for older 'hacks..'
+
+(defun ess-add-MM-keys ()
+  (require 'ess-mode)
+  (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline))
+
 
 
 (provide 'essl-s)

@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/01 19:48:59 $
-;; Version: $Revision: 1.50 $
-;; RCS: $Id: ess-inf.el,v 1.50 1997/09/01 19:48:59 rossini Exp $
+;; Modified: $Date: 1997/09/03 16:27:15 $
+;; Version: $Revision: 1.51 $
+;; RCS: $Id: ess-inf.el,v 1.51 1997/09/03 16:27:15 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -1166,6 +1166,35 @@ A negative prefix argument gets the objects for that position
 			     ")\n")))
     (ess-execute the-command invert "S objects" the-message)))
 
+;;;; S4 Version
+;;;; soup-up the interactive usage: allow modifications to a default pattern
+;;(defun ess-execute-objects (posn)
+;;  "Send the `inferior-ess-objects-command' to the S process. 
+;;No prefix argument uses position 1 and pattern inferior-ess-objects-pattern.
+;;A nonnegative prefix gets objects for that position and prompts for 
+;;  the pattern.
+;;A negative prefix also toggles ess-execute-in-process-buffer."
+;;  (interactive "P")
+;;  (ess-make-buffer-current)
+;;  (let* ((num-arg (if (listp posn) 1
+;;		    (prefix-numeric-value posn)))
+;;	 (the-posn (if (< num-arg 0) (- num-arg) num-arg))
+;;	 (invert (< num-arg 0))
+;;	 (pattern (if current-prefix-arg (read-string "Pattern (.*): ")
+;;		    inferior-ess-objects-pattern))
+;;	 (pattern (if (string= pattern "") ".*" pattern))
+;;	 (the-command (format inferior-ess-objects-command the-posn pattern))
+;;	 (the-message (concat ">>> Position "
+;;			      the-posn
+;;			      " ("
+;;			      (nth (1- the-posn) (ess-search-list))
+;;			      ") (pattern = "
+;;			      pattern
+;;			      ")\n")))
+;;    (ess-execute the-command invert "S objects" the-message)))
+
+
+
 (defun ess-execute-search (invert)
   "Send the `inferior-ess-search-list-command' [search()] command to the S
 process."
@@ -1451,11 +1480,19 @@ In all cases, the value is an list of object names."
 	  (and ess-filenames-map (not (ess-compiled-dir obj))
 	       (directory-files obj))
 	  ;; Get objects(pos) instead
-	  (ess-get-words-from-vector (format inferior-ess-objects-command pos)))
+	  (ess-get-words-from-vector
+	   (format inferior-ess-objects-command pos)))
     ;; Want names(obj)
-    (or (and obj (ess-get-words-from-vector (format inferior-ess-names-command obj)))
+    (or (and obj (ess-get-words-from-vector
+		  (format inferior-ess-names-command obj)))
 	;; get objects(pos)
-	(ess-get-words-from-vector (format inferior-ess-objects-command pos)))))
+	(ess-get-words-from-vector
+	 (format inferior-ess-objects-command pos ""))))) ; s4 needs 2 
+					; args, rest only need 1 ?
+					; changes needed to allow for
+					; pattern argument to
+					; .SmodeObs 
+
 
 (defun ess-create-object-name-db ()
   "Create a database of object names in standard S directories.
@@ -1509,6 +1546,8 @@ the load-path."
   ;; Do file completion only within strings, or when the ! call is being used
   (if (comint-within-quotes
        (1- (process-mark (get-buffer-process (current-buffer)))) (point))
+      ;; (- comint-last-input-start 1) (point))  <- from S4 modeadds.
+      ;; changed on 4/12/96 (dxsun)
       ;; This is sensible, but makes it hard to use history refs
       ;; (or
       ;;  (save-excursion
