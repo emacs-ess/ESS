@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/06/24 19:52:13 $
-;; Version: $Revision: 1.136 $
-;; RCS: $Id: essa-sas.el,v 1.136 2003/06/24 19:52:13 rsparapa Exp $
+;; Modified: $Date: 2003/06/26 18:55:50 $
+;; Version: $Revision: 1.137 $
+;; RCS: $Id: essa-sas.el,v 1.137 2003/06/26 18:55:50 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -78,10 +78,7 @@
 ;;    :group 'ess-sas
 ;;)
 
-(defcustom ess-sas-shell-buffer 
-    (if (boundp 'message-make-host-name) 
-	(concat "*" (message-make-host-name) "*")
-	"*shell*")
+(defcustom ess-sas-shell-buffer "*shell*"
 "*Name that you want to use for the shell buffer; buffer-local."
     :group 'ess-sas
     :type  'string
@@ -171,7 +168,7 @@ should set this variable to 'sh regardless of their local shell
 )
 
 (defcustom ess-sas-submit-pre-command 
-    (if (equal ess-sas-submit-method 'sh) "nohup" 
+    (if (equal ess-sas-submit-method 'sh) "nohup nice" 
 	(if ess-microsoft-p "start"))
     "*Command-line statement to pre-modify SAS invocation, e.g. start or nohup"
     :group 'ess-sas  
