@@ -59,7 +59,7 @@ connects it to the '(ddeESS [S+4])' window.")
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
     (ess-loop-timeout              . ess-S-loop-timeout)
-    (ess-dump-filename-template    . (replace-regexp-in-string
+    (ess-dump-filename-template    . (ess-replace-regexp-in-string
 				      "S$" ess-suffix ; in the one from custom:
 				      ess-dump-filename-template-proto))
     (ess-object-name-db-file       . "ess-sp4-namedb.el" )
