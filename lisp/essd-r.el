@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/11/19 15:53:23 $
-;; Version: $Revision: 1.49 $
-;; RCS: $Id: essd-r.el,v 1.49 1997/11/19 15:53:23 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:28:27 $
+;; Version: $Revision: 4.0 $
+;; RCS: $Id: essd-r.el,v 4.0 1997/11/20 23:28:27 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -28,8 +28,8 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the R customizations for ess-mode.
-
+;;; This file defines all the R customizations for ESS.  See essl-s.el 
+;;; for general S language customizations.
 
 ;;; Autoloads: and Requires
 
