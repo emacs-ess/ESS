@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/19 20:22:30 $ - $Revision: 1.205 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/19 21:29:16 $ - $Revision: 1.206 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -406,7 +406,7 @@ interface for a variety of statistical computing tasks including
 interactive data analysis and statistical programming.
 
 ESS supports the S family (S, \Splus, and R) interactively.  \SAS\ and
-BUGS are also well supported for batch processing.  \Stata and
+BUGS are also well supported for batch processing.  \Stata\ and
 \XLispStat\ (including ARC and ViSta) are supported through
 highlighting and process-interfacing.
 
@@ -1098,7 +1098,7 @@ of being a programmer's editor.  Many statisticians got their first taste
 of the power of Emacs with \Fortran\ mode which was introduced in 1986.  
 As statisticians' preferences changed from generalist compiled 
 languages such as \Fortran\ to specialist interactive statistical analysis 
-packages like S and SAS, Emacs modes for them soon followed.
+packages like S and \SAS, Emacs modes for them soon followed.
 
 Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and \Splus\ files 
 in GNU Emacs.  Frank Ritter and Mike Meyer added features, creating version 2.
@@ -1133,17 +1133,17 @@ In 1997, more changes in the internal structure of ESS were made to
 facilitate support for additional statistical languages.  \Stata\
 and \XLispStat\ were added to ESS's capabilitities.
 
-Until 1998, ESS only worked with Unix statistics packages that
+In the beginning, ESS only worked with Unix statistics packages that
 used standard-input and standard-output for both the command-line 
-interface and batch file processing.  ESS could not communicate 
-with Windows versions of statistical packages that did not use this 
-protocol.  This changed in 1998.  Brian Ripley demonstrated how ESS 
-could use the Windows Dynamic Data Exchange (DDE) protocol.  
-Heiberger used DDE to provide interactive interfaces for Windows 
-versions of \Splus.  Rodney Sparapani designed an ESS batch file 
-processing system for \SAS.  The system relies on files, 
-rather than standard-input/standard-output, and works
-on Unix, Windows and Mac.
+interface and batch processing.  ESS could not communicate with Windows 
+versions of statistical packages that did not use this protocol.  This 
+changed in 1998.  Brian Ripley demonstrated ESS using the Windows Dynamic 
+Data Exchange (DDE) protocol.  Heiberger used DDE to provide interactive 
+interfaces for Windows versions of \Splus.  Also, Rodney Sparapani 
+designed ESS batch file processing for \SAS\ on Unix, Windows and Mac 
+which relies on files rather than standard-input/standard-output.  In 
+2001, Sparapani added BUGS batch file processing to ESS for Unix and 
+Windows.
 
 \begin{table}[tbp]
   \centering
@@ -1185,7 +1185,6 @@ on Unix, Windows and Mac.
 %continually enhanced \SAS\ support. 
 %In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.  
 
-%In 2001, Sparapani added BUGS batch file processing for ESS.
 
 This history is summarized in Table \ref{tab:timeline}.
 
@@ -1299,7 +1298,7 @@ Then type:
 An expanded version of the present paper is in \citep{RMHHS:2001}.  A
 general introduction and usage instructions can be found in
 \citep{heiberger:dsc:2001}; in addition, one which is more focused on
-SAS can be found in \citep{heiberger:philasugi:2001}.  The
+\SAS\ can be found in \citep{heiberger:philasugi:2001}.  The
 documentation that comes with ESS provides details of its
 implementation as well as examples of its use.
 
