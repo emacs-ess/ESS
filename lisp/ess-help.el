@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/10 19:41:30 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: ess-help.el,v 1.15 1997/11/10 19:41:30 rossini Exp $
+;; Modified: $Date: 1997/11/10 22:03:31 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: ess-help.el,v 1.16 1997/11/10 22:03:31 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -210,6 +210,11 @@ Other keybindings are as follows:
   (setq mode-name "ESS Help")
   (use-local-map ess-help-mode-map)
   (make-local-variable 'ess-local-process-name)
+
+  ;;; Keep <tabs> out of the code.
+  (make-local-variable 'indent-tabs-mode)
+  (setq indent-tabs-mode nil)
+
   (run-hooks ess-help-mode-hook))
 
 ;;*;; User commands defined in ESS help mode
