@@ -1,6 +1,7 @@
 ;; noweb-font-lock-mode.el - edit noweb files with GNU Emacs
 ;; Copyright (C) 1999 by  Adnan Yaqub (AYaqub@orga.com)
 ;;                    and Mark Lunt (mark.lunt@mrc-bsu.cam.ac.uk
+;; Copyright (C) 2002 by A.J. Rossini <rossini@u.washington.edu>
 ;; 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
