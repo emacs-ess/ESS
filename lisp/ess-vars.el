@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/28 13:53:15 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: ess-vars.el,v 1.5 1997/07/28 13:53:15 rossini Exp $
+;; Modified: $Date: 1997/07/28 13:55:42 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: ess-vars.el,v 1.6 1997/07/28 13:55:42 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,6 +29,9 @@
 
 ;;
 ;; $Log: ess-vars.el,v $
+;; Revision 1.6  1997/07/28 13:55:42  rossini
+;; added defvars for dialects.
+;;
 ;; Revision 1.5  1997/07/28 13:53:15  rossini
 ;; title wrong.
 ;;
@@ -48,7 +51,7 @@
 
 ;;; Code:
 
-(defconst ESS-version "4.9-b9" 
+(defconst ESS-version "4.9-b10" 
   "Version of ESS currently loaded.")
 
  ; User changeable variables
@@ -397,18 +400,24 @@ by ess-function-template.")
 
 ;;*;; System dependent variables
 
-(defvar inferior-S-program-name "Splus"
-  "*Program name for invoking an inferior S with S().")
-
 (defvar inferior-R-program-name "R"
   "*Program name for invoking an inferior S with R().")
 
 (defvar inferior-XLS-program-name "xlispstat"
   "*Program name for invoking an inferior S with XLS().")
 
+(defvar inferior-S3-program-name "/disk05/s/S"
+  "*Program name for invoking an inferior S with S3().")
+
+(defvar inferior-S+3-program-name "Splus"
+  "*Program name for invoking an inferior S with S+3().")
+
 (defvar inferior-S4-program-name "S4"
   "*Program name for invoking an inferior S with S4().")
 
+;;;;; user settable defaults
+(defvar inferior-S-program-name  inferior-S+3-program-name
+  "*Program name for invoking an inferior S with S().")
 
 (defvar inferior-ess-program nil ;inferior-S-program-name
   "*Default program name for invoking inferior-S().
