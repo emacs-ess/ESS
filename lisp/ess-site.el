@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/01/11 16:51:47 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: ess-site.el,v 5.12 1999/01/11 16:51:47 maechler Exp $
+;; Modified: $Date: 1999/01/11 17:11:50 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: ess-site.el,v 5.13 1999/01/11 17:11:50 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -163,7 +163,7 @@
 ;;; These commands are for running the PC version of Sqpe of S+4 in
 ;;; an emacs buffer, using the same technology as ESS uses for Unix
 ;;; S-Plus.  Interactive graphics are unavailable in this mode.
-;;; See essd-sq4.el
+;;; See essd-s+4.el
 
 ;;(setq-default inferior-Sqpe+4-program-name "Sqpe")
 ;;(setq-default inferior-Sqpe+4-SHOME-name "c:/Progra~1/spls45se")
@@ -187,9 +187,9 @@
 (require 'essd-sta) ; for Stata.
 
 (if (or (equal window-system 'w32) (equal window-system 'win32))
-;     (progn
+;;     (progn
        (require 'essd-s+4)  ; PC
-;       (require 'essd-sq4))
+;;       (require 'essd-sq4))
 )
 
 ;;TODO, for 5.2 :-), or rare.
