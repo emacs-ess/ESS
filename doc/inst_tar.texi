@@ -23,7 +23,7 @@ This directory will be referred to below as ESSDIR.
 
 @item
 Retrieve the latest version from 
-@uref{http://software.biostat.washington.edu/ess/ess-VERSION.tar.gz, gzipped tar file } 
+@uref{http://www.analytics.washington.edu/downloads/ess/ess-VERSION.tar.gz, gzipped tar file } 
 to ESSDIR.
 
 @item
