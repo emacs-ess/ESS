@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/04/23 17:31:45 $
-;; Version: $Revision: 5.26 $
-;; RCS: $Id: ess-site.el,v 5.26 1999/04/23 17:31:45 maechler Exp $
+;; Modified: $Date: 1999/04/23 17:39:20 $
+;; Version: $Revision: 5.27 $
+;; RCS: $Id: ess-site.el,v 5.27 1999/04/23 17:39:20 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -22,20 +22,20 @@
 
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; along with GNU Emacs; see the file COPYING.	If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
 
 ;;; This file defines all the site-specific customizations for ESS.
 ;;; It should be edited on a per-site basis.  Read the comments (1.1
-;;; in Section 1 to see if ess-site.el must be edited.  The final
+;;; in Section 1 to see if ess-site.el must be edited.	The final
 ;;; directory location of this file must be supplied in
-;;; ess-lisp-directory.  The editing of remaining sections is
+;;; ess-lisp-directory.	 The editing of remaining sections is
 ;;; optional.  It should then be byte-compiled, and users who wish to
 ;;; use ess-mode should add the line:
 ;;;    (load "/PATH/TO/THIS/FILE/ess-site")
@@ -58,7 +58,7 @@
 ;;; automatically be set correctly.  If you are working with an old
 ;;; emacs, one in which file-truename is not defined, then you might
 ;;; need to change the value of ess-lisp-directory to the directory
-;;; which is to contain the file ess-site.elc.  This is probably the
+;;; which is to contain the file ess-site.elc.	This is probably the
 ;;; current directory, or the value of LISPDIR if it was set in the
 ;;; Makefile.
 
@@ -97,7 +97,7 @@
 
 (autoload 'Rd-mode "essddr" "Major mode for editing R documentation." t)
 
-;; This fails in Emacs.  How can it be done simply?  Should it be done?
+;; This fails in Emacs.	 How can it be done simply?  Should it be done?
 ;;    ;; get rid of assembler mode.
 ;;    (set auto-mode-alist (remassoc "\\.[sS]\\'" auto-mode-alist))
 
@@ -140,7 +140,7 @@
 ;;(setq-default inferior-S+3-program-name "Splus")
 ;;(setq-default inferior-S+4-program-name "Splus")
 ;;(setq-default inferior-S+5-program-name "Splus5")
-;;(setq-default inferior-R-program-name "R")      ; unix systems
+;;(setq-default inferior-R-program-name "R")	  ; unix systems
 ;;(setq-default inferior-R-program-name "Rterm")  ; msdos systems
 ;;(setq-default inferior-XLS-program-name "xlispstat")
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
@@ -165,12 +165,12 @@
 
 ;;; The editor and pager output from S+4 and Sqpe+4 are sent by
 ;;; StatSci default to notepad, effectively using the definition: 
-;;(setq-default  inferior-S+4-editor-pager-command
+;;(setq-default	 inferior-S+4-editor-pager-command
 ;;   "options(editor='notepad', pager='notepad')")
 ;;;
 ;;; ESS sends the output from both commands to an emacs buffer using
 ;;; the definition:
-;;(setq-default  inferior-S+4-editor-pager-command
+;;(setq-default	 inferior-S+4-editor-pager-command
 ;;   "options(editor='gnuclient.exe', pager='gnuclientw.exe')")
 
 
@@ -185,8 +185,8 @@
 ;;(setq-default inferior-Sqpe+4-program-name "Sqpe")
 ;;(setq-default inferior-Sqpe+4-SHOME-name "c:/Progra~1/spls45se")
 ;;; These ddeclient values will be buffer-local on WS-Windows 9x/NT
-(setq-default inferior-ess-ddeclient         "Initial")
-(setq-default inferior-ess-client-name       "Initial")
+(setq-default inferior-ess-ddeclient	     "Initial")
+(setq-default inferior-ess-client-name	     "Initial")
 (setq-default inferior-ess-client-command    "Initial")
 
 ;;;; Choice for S().
@@ -206,7 +206,7 @@
 (if (or (equal window-system 'w32) (equal window-system 'win32))
 ;;     (progn
        (require 'essd-sp4)  ; PC
-;;       (require 'essd-sq4))
+;;	 (require 'essd-sq4))
 )
 
 ;;TODO, for 5.2 :-), or rare.
@@ -300,11 +300,11 @@
 ;;; often unnecessarily large. The framepop package makes such
 ;;; windows appear in a separate, shrink-wrapped frame. This will
 ;;; also affect other "temporary" windows such as those produced by
-;;; C-h k, etc.  To enable, uncomment both lines of code below).
+;;; C-h k, etc.	 To enable, uncomment both lines of code below).
 ;;;
 ;;; Works only with Emacs at this time.
 ;; (cond (window-system
-;;       (require 'framepop)))
+;;	 (require 'framepop)))
 
 ;;; (3.3) ess-keep-dump-files.
 ;;; Documentation:
@@ -316,7 +316,7 @@
 ;;; of ess-load-file.  Dump files are never deleted if an error occurs
 ;;; during the load. 
 ;;;
-;;; RH sez: I find the default `always' keep to be imperative.  The previous
+;;; RH sez: I find the default `always' keep to be imperative.	The previous
 ;;; default was to throw away
 ;;; files at the wrong time (I think it was something like, if you M-x
 ;;; ess-load a file twice, while you are working on it, the file is
@@ -331,11 +331,11 @@
 ;;; default (usually, the users home directory...).
 (setq ess-ask-for-ess-directory t)
 
-;;; (3.5) ess-directory default  (correlated with above)
+;;; (3.5) ess-directory default	 (correlated with above)
 ;;; The default location for running the subprocess is configurable.
 ;;; By default, that is the default-directory (a lisp variable which
 ;;; initially contains the directory from which the inferior ESS
-;;; statistical package/process  is started).
+;;; statistical package/process	 is started).
 ;;; For example, the following function (added to the pre-run-hook, by
 ;;; the line following it) will set the default directory to be your
 ;;; home directory:
@@ -348,7 +348,7 @@
 ;;; If you replace the setq-default line with:
 ;;;
 ;; (setq-default ess-directory (file-name-as-directory 
-;;                                                  (concat (getenv "HOME") "/ess/"))) 
+;;						    (concat (getenv "HOME") "/ess/"))) 
 ;;;
 ;;; then it will always start up in the directory "ess" in your home
 ;;; directory.
@@ -375,7 +375,7 @@
 
 ;(defvar sas-require-confirmation t
 ;  "*Require confirmation when revisiting sas-output which has changed on disk.")
-;;; added sas-program 4/29/94.  user can specify a different version of sas.
+;;; added sas-program 4/29/94.	user can specify a different version of sas.
 ;;;(defvar sas-program "sas" "*Name of program which runs sas.")
 ;;(defvar sas-pre-run-hook nil
 ;;  "Hook to execute prior to running SAS vis submit-sas.")
@@ -403,11 +403,11 @@
 
 ;;; This file is automatically placed in Outline minor mode.
 ;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
+;;; Chapters:	  ^L ;
+;;; Sections:	 ;;*;;
 ;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
+;;; Components:	 defuns, defvars, defconsts
+;;;		 Random code beginning with a ;;;;* comment
 ;;; Local variables:
 ;;; mode: emacs-lisp
 ;;; mode: outline-minor
