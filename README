@@ -1,7 +1,7 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.25 $, for ESS 5.1.x)
+   ($Revision: 5.26 $, for ESS 5.1.x)
 
    This is the README file for the distribution of ESS version 5.1.18,
 the alpha/beta series we are using on the way to producing 5.2 (the next
@@ -101,7 +101,7 @@ New Features
    Changes/New Features in 5.1.14:
    * Yet more fixes to SAS mode, (Rich Heiberger
      (<rmh@surfer.stat.temple.edu>) and Rodney Sparapani
-     <spara002@onyx.dcri.duke.edu>)).
+     <rsparapa@mcw.edu>)).
 
    * Customize support (for most Emacsen which support it) (AJRossini,
          (<rossini@biostat.washington.edu>)
@@ -121,7 +121,7 @@ New Features
        Chuck Taylor, and others.
 
    * More fixes to SAS mode, thanks to Rodney Sparapani
-     (<spara002@duke.edu>) and Rich Heiberger
+     (<rsparapa@mcw.edu>) and Rich Heiberger
      (<rmh@surfer.stat.temple.edu>).
 
    Changes/New Features in 5.1.11:
@@ -134,7 +134,7 @@ New Features
           to David Brahm (<brahm@alum.mit.edu>).
 
    * Fixes to SAS mode, thanks to Rodney Sparapani
-     (<spara002@duke.edu>)
+     (<rsparapa@mcw.edu>)
 
    Changes/New Features in 5.1.10:
    * More fixes to Stata mode
@@ -617,6 +617,5 @@ Authors
    * Martin Maechler (http://stat.ethz.ch/~maechler/)
      <maechler@stat.math.ethz.ch>
 
-   * Rodney Sparapani (http://www.duke.edu/~spara002/)
-     <rodney.sparapani@duke.edu>
+   * Rodney Sparapani <rsparapa@mcw.edu>
 
