@@ -2,7 +2,8 @@
 
 Solve now:
 
-1. Get ess-menu to "do the right thing" on startup.
+1. Get ess-menu to "do the right thing" on startup.  Make sure that it
+   is only started when sensible/available.
 
 
 Solve later:
