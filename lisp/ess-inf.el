@@ -1324,6 +1324,20 @@ to continue it."
   ;;	   inferior-ess-prompt)
   (comint-mode)
   ;;
+
+  ;; SJE: is this the proper place for setting inferior-ess-prompt,
+  ;; rather than within ess-multi?  Tony - have you remembered yet
+
+  ;; about the setq-default, as I changed it back to setq.
+  (setq inferior-ess-prompt
+	;; shouldn't be setq-default!  And I've
+	;; forgotten why!   (AJR)
+	;; Do not anchor to bol with `^'
+	(concat "\\("
+		inferior-ess-primary-prompt
+		"\\|"
+		inferior-ess-secondary-prompt
+		"\\)"))
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq major-mode 'inferior-ess-mode)
   (setq mode-name "iESS") ;(concat "iESS:" ess-dialect))
@@ -1432,20 +1446,6 @@ to continue it."
   (setq paragraph-start (concat inferior-ess-primary-prompt "\\|\^L"))
   (make-local-variable 'paragraph-separate)
   (setq paragraph-separate "\^L")
-
-  ;; SJE: is this the proper place for setting inferior-ess-prompt,
-  ;; rather than within ess-multi?  Tony - have you remembered yet
-
-  ;; about the setq-default, as I changed it back to setq.
-  (setq inferior-ess-prompt
-	;; shouldn't be setq-default!  And I've
-	;; forgotten why!   (AJR)
-	;; Do not anchor to bol with `^'
-	(concat "\\("
-		inferior-ess-primary-prompt
-		"\\|"
-		inferior-ess-secondary-prompt
-		"\\)"))
 
   (ess-load-object-name-db-file)
   (sleep-for 0.5)
