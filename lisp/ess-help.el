@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/12 19:29:36 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: ess-help.el,v 1.17 1997/11/12 19:29:36 rossini Exp $
+;; Modified: $Date: 1997/11/20 21:13:37 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: ess-help.el,v 1.18 1997/11/20 21:13:37 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -367,7 +367,7 @@ or XLispStat for additional information."
   "Display node NODE from ess-mode info."
   (require 'info)
   (other-window 1)
-  (Info-goto-node (concat "(ess-mode)" node)))
+  (Info-goto-node (concat "(ess)" node)))
 
  ; Bug Reporting
 
