@@ -274,7 +274,7 @@ to the shell on Windows when `ess-sas-submit-method' is 'sh."
 ;;; Section 2:  Function Definitions
 
 
-(defun ess-ebcdic-to-ascii-search-and-replace () 
+(defun ess-ebcdic-to-ascii-search-and-replace ()
     "*Search and replace EBCDIC text with ASCII equivalents."
     (interactive)
     (let ((ess-tmp-dd (executable-find "dd")) (ess-tmp-recode (executable-find "recode"))
@@ -287,9 +287,9 @@ to the shell on Windows when `ess-sas-submit-method' is 'sh."
 	(setq ess-tmp-util ess-tmp-recode)
 	(setq ess-tmp-util-args "EBCDIC..ISO-8859-1"))
 
-    (if ess-tmp-util 
+    (if ess-tmp-util
 	(while (search-forward-regexp "[^\f\t\n -~][^\f\t\n -?A-JQ-Yb-jp-y]*[^\f\t\n -~]?" nil t)
-	    (call-process-region (match-beginning 0) (match-end 0) 
+	    (call-process-region (match-beginning 0) (match-end 0)
 		    ess-tmp-util t (list t nil) t ess-tmp-util-args)))))
 
 (defun ess-exit-notify-sh (string)
@@ -598,35 +598,36 @@ current buffer if nil."
 
 (defun ess-sas-goto (suffix &optional revert no-create)
   "Find a file associated with a SAS file by suffix and revert if necessary."
-    (let ((ess-temp-regexp (concat ess-sas-suffix-regexp "\\(@.+\\)?")))
-	(save-match-data
-	(if (or (string-match ess-temp-regexp (expand-file-name (buffer-name)))
-
-	    (string-match ess-temp-regexp ess-sas-file-path))
-
-	(progn
+  (let ((ess-temp-regexp (concat ess-sas-suffix-regexp "\\(@.+\\)?")))
+    (save-match-data
+      (if (or (string-match ess-temp-regexp (expand-file-name (buffer-name)))
+	      (string-match ess-temp-regexp ess-sas-file-path))
+	  (progn
 	    (ess-sas-file-path)
-
 	    (let* (
-		(ess-sas-temp-file (replace-match (concat "." suffix) t t
-		    ess-sas-file-path))
-		(ess-sas-temp-buff (find-buffer-visiting ess-sas-temp-file))
-		(ess-temp-kermit-remote-directory ess-kermit-remote-directory))
+		   (ess-sas-temp-file (replace-match (concat "." suffix) t t
+						     ess-sas-file-path))
+		   (ess-sas-temp-buff (find-buffer-visiting ess-sas-temp-file))
+		   (ess-temp-kermit-remote-directory ess-kermit-remote-directory))
 
-	    (if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
-	        (if no-create (setq revert nil) (find-file ess-sas-temp-file)))
+	      (if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
+	        ;; else
+		(if no-create (setq revert nil) (find-file ess-sas-temp-file)))
 
-	    (if (and (not no-create)
-		(or (string-equal suffix "log") (string-equal suffix "lst")))
-		(ess-kermit-get (file-name-nondirectory ess-sas-temp-file)
-		    ess-temp-kermit-remote-directory))
+	      (if (and (not no-create)
+		       (or (string-equal suffix "log")
+			   (string-equal suffix "lst")))
+		  (ess-kermit-get (file-name-nondirectory ess-sas-temp-file)
+				  ess-temp-kermit-remote-directory))
 
-	    (if revert 
-		(if (and ess-sas-log-max (string-equal suffix "log")
-			 (> (nth 7 (file-attributes ess-sas-temp-file)) ess-sas-log-max)) 
-		    (progn 
-			(insert-file-contents ess-sas-temp-file nil 0 ess-sas-log-max t) 
-		    t)
+	      (if revert
+		  (if (and ess-sas-log-max (string-equal suffix "log")
+			   (> (nth 7 (file-attributes ess-sas-temp-file))
+			      ess-sas-log-max))
+		      (progn
+			(insert-file-contents ess-sas-temp-file nil 0
+					      ess-sas-log-max t)
+			t)
 
 		    (ess-revert-wisely)) nil)))))))
 
@@ -662,7 +663,7 @@ current buffer if nil."
   "Switch to the .log file, revert from disk and search for error messages."
   (interactive)
 
-  (let ((ess-sas-error (concat 
+  (let ((ess-sas-error (concat
     "^ERROR [0-9]+-[0-9]+:\\|^ERROR:\\|_ERROR_=1 _N_=\\|_ERROR_=1[ ]?$"
     "\\|NOTE: MERGE statement has more than one data set with repeats of BY values."
     "\\|NOTE: Variable .* is uninitialized."
@@ -681,9 +682,9 @@ current buffer if nil."
 (if ess-tmp-no-error-check (goto-char ess-sas-save-point)
   (if (or (search-forward-regexp ess-sas-error nil t)
 	(and (goto-char (point-min))
-	    (search-forward-regexp ess-sas-error nil t))) 
+	    (search-forward-regexp ess-sas-error nil t)))
 	(if (and (boundp 'zmacs-regions) zmacs-regions)
-	    (progn 
+	    (progn
 		(if ess-sas-pop-mark (pop-mark)
 		    (setq ess-sas-pop-mark t))
 		(push-mark (match-beginning 0) t)
@@ -1043,7 +1044,7 @@ Keep in mind that the maximum command line length in MS-DOS is
   "Toggle SAS-listing-mode for .lst files."
   (interactive)
   (ess-sas-goto-lst)
-  
+
 (if (equal (cdr (assoc "\\.[lL][sS][tT]\\'" auto-mode-alist)) 'SAS-listing-mode) (progn
       (setq auto-mode-alist (delete '("\\.[lL][sS][tT]\\'" . SAS-listing-mode) auto-mode-alist))
       (setq buffer-read-only nil)
@@ -1069,12 +1070,12 @@ Keep in mind that the maximum command line length in MS-DOS is
       (font-lock-fontify-buffer)))
 
 (defun ess-sleep ()
-"Put emacs to sleep for `ess-sleep-for' seconds.
+  "Put emacs to sleep for `ess-sleep-for' seconds.
 Sometimes its necessary to wait for a shell prompt."
-(if (featurep 'xemacs) (sleep-for ess-sleep-for)
-       (sleep-for 0 (truncate (* ess-sleep-for 1000)))
+  (if (featurep 'xemacs) (sleep-for ess-sleep-for)
+    (sleep-for 0 (truncate (* ess-sleep-for 1000)))
     )
-)
+  )
 
 ;;; Section 3:  Key Definitions
 
@@ -1090,16 +1091,17 @@ Else
     RET is `newline'."
   (interactive)
 
-  (if arg (progn
+  (if arg
+      (progn
 	(if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
-	       (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab)
-	;else
-	       (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
-        (define-key sas-mode-local-map [return] 'newline)
+	    (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab)
+	  ;;else
+	  (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
+	(define-key sas-mode-local-map [return] 'newline)
 	(define-key sas-mode-local-map "\t" 'ess-sas-tab-to-tab-stop))
-  ;else
-      (define-key sas-mode-local-map [return] 'newline-and-indent)
-      (define-key sas-mode-local-map "\t" 'sas-indent-line)))
+    ;;else
+    (define-key sas-mode-local-map [return] 'newline-and-indent)
+    (define-key sas-mode-local-map "\t" 'sas-indent-line)))
 
 (defvar ess-sas-edit-keys-toggle nil
 "Toggle TAB/RET key in `SAS-mode'.
