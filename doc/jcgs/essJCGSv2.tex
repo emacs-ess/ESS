@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/15 22:59:45 $ - $Revision: 1.180 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/15 23:15:38 $ - $Revision: 1.181 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -369,11 +369,12 @@ simplified by \stexttt{ediff}.  An example is shown in Figure
 buffers, one for each file, and the specific words that mismatch are
 highlighted in a contrasting color.  \stexttt{ediff} has many tools
 for working with the differences in files and in entire directories.
-When combined with a source-code control system,
+When combined with the patch utility or a source-code control system, 
+it provides the user with the ability to insert, delete or modify
+only the differing portions of text files.
 % it allows reinsertion of
 %deleted sections of code files, documentation, or papers.
 \stexttt{ediff} provides the user with the ability to insert, delete or modify
-only the differing portions of text files.
 
 \begin{figure}[tbp]
   \centering
@@ -518,6 +519,35 @@ interfaces to documentation systems such as \LaTeX,
 
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
+
+ESS is an extension package for the Emacs editor which provides a
+single interface for a variety of statistical computing tasks.  ESS is
+optimized for statistical programming and interactive data analysis.
+Statistical programming is the writing of computer programs for data
+analysis and processing.  These programs might be written in a
+computer language that requires a compiler, such as C or \Fortran.
+But, more likely, they are written in a computer language that only
+requires an interpreter such as R, \SAS\ or \XLispStat.
+%% An interpreted language is executed by an interpreter, but a
+%% compiled language must be processed by a compiler which creates an
+%% executable form of the program that can be executed.  There is a
+%% trade-off in time between interpreted and compiled programs.  For
+%% interpreted languages you save time by not having to compile the
+%% program, but the program will not run as fast as if it had been
+%% compiled.  Another advantage of interpreted languages is the
+%% support they provide for specialized tasks.  For example, C and
+%% \Fortran don't provide you with the statistical analysis
+%% capabilities that R, \SAS\ or \XLispStat do.  Compiled programs and
+%% interpreted programs can be used in conjunction.  For instance, a
+%% compiled C function could be called from an interpreted language
+%% like R to speed up the calculations. 
+%Entering commands for interactive data analysis is a similar activity.
+%In either case, text is written in a computer language and sent to a
+%computer program for evaluation.
+%% The primary difference is that the results of a small set of
+%% commands are of critical interest for review in the analysis phase,
+%% but the results of all commands are of interest in the coding
+%% phase.
 
 ESS fully supports the S family (S, \Splus, and R)\@.  \SAS\ and BUGS
 are also well supported.  \Stata, \XLispStat\ (including extensions
@@ -844,26 +874,30 @@ interfaces (interactive for R, batch for BUGS) are slightly different.
 Simple conflicts between interfaces are exemplified by different
 keystrokes for editing tasks such as cut, copy, paste, beginning of
 line, end of line, etc.  These may be the most aggravating because our
-fingers are acting without our brains having to specifically think
-about it, but differences in interfaces circumvent this learned
+fingers are typing ``instinctively'', 
+%without our brains having to specifically think about it, 
+but differences in interfaces circumvent this learned
 behavior.  ESS solves this problem by providing a uniform interface to
 keyboard actions despite the variety of statistical packages that
-might be used.  That is, the same keystrokes are used for cursor
-movement, evaluation, and basic tasks such as loading files for
-editing.
+might be used.  That is, the same key-maps are used for cursor movement, 
+evaluation, and basic tasks such as loading files for editing.
 
 
 \paragraph{Concurrent Use of Multiple Machines and Operating Systems.}
 It can be useful to have multiple statistical processes running
 simultaneously, either on a single machine or a variety of machines.
-This capability assists with code design and testing across multiple
-versions of statistical software packages, as well as large scale
-numerical simulations.  For example, one might want to be connected to
-multiple R processes of different versions in order to verify behavior
-on different versions of the same software; multiple processes of the
-same version to perform test-and-run scenarios with a mix of long-term
-computation and short-run testing; simulation studies and extensions
-which distribute the load over a variety of remote machines.
+This capability assists with large-scale numerical simulations 
+as well as code design and testing across multiple
+versions of statistical software packages.  
+%For example, one might want to be connected to
+%multiple R processes of different versions in order to verify behavior
+%on different versions of the same software; multiple processes of the
+%same version to perform test-and-run scenarios with a mix of long-term
+%computation and short-run testing; simulation studies and extensions
+%which distribute the load over a variety of remote machines.
+%
+% Rodney: I find these scenarios to be too obscure to be of much interest.
+% the most relevant were already mentioned in the second sentence.
 
 \subsection{Interactive Processing.}
 \label{sec:interactive}
@@ -992,7 +1026,7 @@ but the \SAS\ process it is controllong must be running  on a Unix machine.
 %display the log and listing results from the commands.
 %Graphics commands can be sent to a file, in PostScript for example,
 %and viewed outside of this interaction. 
-This process is very efficient for slow dial-up network connections to
+This process is very efficient for dial-up network connections to
 a remote computer with \SAS\ installed.
 
 
@@ -1000,16 +1034,19 @@ a remote computer with \SAS\ installed.
 %%%% SLIGHTLY DIFFERENT, BUT SUBSTANTIALLY?
 %%%% rmh: this is a form of interaction, not batch.  I restored the
 %%%% first paragraph with some expansion.
-\paragraph{\SAS---Interactive cooperation with the \SAS\ Display Manager.}
-The \SAS\ Display Manager provides a mouse-based interface to the graphical
-routines, the help system, and other features that are not text-based.
-The authors of ESS prefer the Emacs environment for
-the text-file interaction with \SAS, that is with editing and
-managing input command files and output listing and log files,
-even on computer systems which run
-the \SAS\ Display Manager environment.  In this situation, the user
-designs the command file in \stexttt{ESS[SAS]} mode and highlights
-regions to be forwarded to \SAS\ for processing.
+%\paragraph{\SAS---Interactive cooperation with the \SAS\ Display Manager.}
+%The \SAS\ Display Manager provides a mouse-based interface to the graphical
+%routines, the help system, and other features that are not text-based.
+%The authors of ESS prefer the Emacs environment for
+%the text-file interaction with \SAS, that is with editing and
+%managing input command files and output listing and log files,
+%even on computer systems which run
+%the \SAS\ Display Manager environment.  In this situation, the user
+%designs the command file in \stexttt{ESS[SAS]} mode and highlights
+%regions to be forwarded to \SAS\ for processing.
+%
+% Rodney: I don't see this as a feature of either ESS or emacs.  And,
+% what the authors prefer is certainly not germaine.
 
 %This can be done by either:
 %\begin{enumerate}
@@ -1032,8 +1069,8 @@ ideal. % processing with statistical analysis packages is very
 %for which it is not ideal.
 Batch file processing with statistical analysis packages is a better
 choice when the execution times are longer than the user is willing to
-wait as well as for regularly updated reports based on statistical
-analyses.
+wait as well as for regularly updated reports and graphs based on 
+statistical analyses.
 
 \paragraph{\SAS.}
 \label{sec:sas-batch}
@@ -1044,7 +1081,7 @@ due to the length of time involved.  Instead, a file containing \SAS\
 commands is created and \SAS\ executes these commands in the background, 
 or batch, while the user moves on to other activities.
 
-ESS facilitate \SAS\ batch with \stexttt{ESS[SAS]}, the mode for files
+ESS facilitates \SAS\ batch with \stexttt{ESS[SAS]}, the mode for files
 with the \stexttt{sas} extension.  ESS defines \SAS\ syntax so that
 \stexttt{font-lock-mode} can highlight statements, procedures,
 functions, macros, datasets, comments and character string literals in
@@ -1062,7 +1099,9 @@ respectively).
 Only one function key press is needed to submit a \SAS\ batch process.
 Other function keys open the \SAS\ program, the \SAS\ log and the
 \SAS\ listing buffers.  When accessed in this manner, the \SAS\ log and 
-\SAS\ listing buffers are automatically updated as they are being appended 
+\SAS\ listing buffers are automatically updated since they may have 
+been appended or over-written
+%if they are being appended 
 by the \SAS\ batch process.  In addition, the \SAS\ log is searched for error
 messages and the error messages, if any, are sequentially displayed
 with consecutive key presses.
@@ -1073,7 +1112,7 @@ operate in typewriter fashion like they do in \SAS\ Display Manager.
 This option also defines a key to move the cursor to a previous
 tab-stop and delete any characters between its present position and
 the tab-stop.  This is a \SAS\ Display Manager feature that is not
-typically configured in Emacs.
+typically available in Emacs.
 
 The \SAS\ batch process runs on the computer where the \SAS\ program
 resides.  If the \SAS\ program resides on a remote computer, then the
@@ -1081,8 +1120,8 @@ program, log and output are also accessed remotely.
 %with one of the remote file modes.
 %(\stexttt{ange-ftp}, \stexttt{EFS} and \stexttt{tramp}) or Kermit.
 This is important because any \SAS\ permanent datasets referenced in a
-\SAS\ program must exist on the computer running \SAS.%\ program
-%resides.  The 
+\SAS\ program only exist on the computer running \SAS.
+%\ program resides.  The 
 %\SAS\ batch processes are submitted to the remote computer via ssh or
 %telnet running in a \stexttt{shell-mode} buffer.  
 Running \SAS\ batch on remote computers is nearly transparent to the
@@ -1142,7 +1181,7 @@ ESS user.
 \paragraph{BUGS.}
 \label{sec:bugs-batch}
   
-BUGS software performs Markov Chain Monte Carlo simulations.  There is
+BUGS software performs Markov Chain Monte Carlo integration.  There is
 an interactive capability, but it is not often used since the analyses
 can take a long time.  Most BUGS programs are executed as batch
 processes.
@@ -1150,16 +1189,17 @@ processes.
 %Emacs and 
 ESS facilitates BUGS %by \stexttt{ESS[BUGS]}, the mode in
 %which files with the \stexttt{bug} extension are opened.  There are 
-through 3 features.
+through 4 features.
 % which ESS provides.  
 First, BUGS syntax is described to allow for proper fontification
 % so that \stexttt{font-lock-mode} can highlight 
 of statements, distributions, functions, commands and comments in BUGS
 model files, command files and log files.  Second, ESS creates
 templates for the command file from the model file so that a BUGS
-batch process can be defined by a single file.  Finally, ESS provides
-a BUGS batch script that allows ESS to set BUGS batch parameters as
-well as key-mappings to submit a BUGS batch process.
+batch process can be defined by a single file.  Third, ESS provides
+a BUGS batch script that allows ESS to set BUGS batch parameters.
+Finally, key-mappings are defined to create a command file and submit 
+a BUGS batch process.
 
 \paragraph{S, \Splus, and R.}
 ESS provides 2 facilities for batch processing of S files.  The first
@@ -1181,6 +1221,12 @@ their initial authors planned.  To date, there have been 3 generations
 of developers, with 5 major versions released.  ESS descended from and combined
 2 Emacs modes: S-mode and SAS-mode.
 
+Emacs has a long history of being a programmer's editor.  A mode for FORTRAN 
+was distributed in 1986.  Many statisticians got their first taste of the power 
+of Emacs.  However, statistician's preferences for programming were changing 
+from generalist compiled languages like FORTRAN to specialist interactive 
+statistical analysis packages like S and SAS.  Emacs modes for S and SAS soon 
+followed.
 %\begin{figure}[tbp]
 %  \centering
 %\ifdraft
