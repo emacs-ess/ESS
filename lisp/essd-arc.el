@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 30 Jun 2000
-;; Modified: $Date: 2000/06/30 19:46:30 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-arc.el,v 1.1 2000/06/30 19:46:30 rossini Exp $
+;; Modified: $Date: 2000/06/30 22:21:51 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-arc.el,v 1.2 2000/06/30 22:21:51 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -54,7 +54,7 @@
     (inferior-ess-help-command     .  "(help '%s)\n"      )
     (inferior-ess-objects-command  .  "(variables)\n"     )
     (inferior-ess-exit-command     .  "(exit)\n"          )
-    (inferior-ess-start-file       . "~/.ess-ARC")
+    (inferior-ess-start-file       .  nil) ; "~/.ess-ARC")
     (inferior-ess-start-args       . nil)
     )
   "Variables to customize for ARC, a dialect of XLS.")

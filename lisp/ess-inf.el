@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/06/30 20:59:54 $
-;; Version: $Revision: 5.47 $
-;; RCS: $Id: ess-inf.el,v 5.47 2000/06/30 20:59:54 rossini Exp $
+;; Modified: $Date: 2000/06/30 22:21:51 $
+;; Version: $Revision: 5.48 $
+;; RCS: $Id: ess-inf.el,v 5.48 2000/06/30 22:21:51 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -353,8 +353,8 @@ This was rewritten by KH in April 1996."
 		      inferior-ess-program
 		      inferior-ess-start-file
 		      inferior-ess-start-args))
-	     (if (not (file-exists-p inferior-ess-start-file))
-		 (setq inferior-ess-start-file 'nil))
+;;	     (if (not (stringp inferior-ess-start-file)) ; file-exists-p
+;;		 (setq inferior-ess-start-file ""))
 	     (comint-exec buffer
 			  procname
 			  inferior-ess-program
