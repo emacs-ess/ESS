@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/08/21 16:17:02 $
-;; Version: $Revision: 5.63 $
-;; RCS: $Id: ess-inf.el,v 5.63 2001/08/21 16:17:02 maechler Exp $
+;; Modified: $Date: 2001/09/20 10:27:41 $
+;; Version: $Revision: 5.64 $
+;; RCS: $Id: ess-inf.el,v 5.64 2001/09/20 10:27:41 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -180,7 +180,7 @@ accompany the call for `inferior-ess-program'.
        ((and (not buf)
 	     (get-buffer buf-name-str))
 	(setq buf (get-buffer buf-name-str))
-	(ess-write-to-dribble-buffer 
+	(ess-write-to-dribble-buffer
          (format "(inferior-ess) Method #2 buf=%s\n" buf)))
 
        ;; Ask for transcript file and startdir
@@ -201,7 +201,7 @@ accompany the call for `inferior-ess-program'.
 			  (find-file-noselect (expand-file-name
 					       transfilename)))))
 	  (setq buf (get-buffer-create buf-name-str)))
-	(ess-write-to-dribble-buffer 
+	(ess-write-to-dribble-buffer
          (format "(inferior-ess) Method #3 start=%s buf=%s\n" startdir buf))))
 
       (set-buffer buf)
@@ -398,17 +398,17 @@ This was rewritten by KH in April 1996."
 ;    the-dir))
 
 (defun ess-get-directory (default)
-  (ess-prompt-for-directory 
+  (ess-prompt-for-directory
         default
 	(format "ESS [%s(%s): %s] starting data directory? "
 		ess-language ess-dialect inferior-ess-program)))
-  
+
 (defun ess-prompt-for-directory (default prompt)
   "`prompt' for a directory, using `default' as the usual."
   (let ((the-dir
 	 (expand-file-name
 	  (file-name-as-directory
-	   (read-file-name prompt 
+	   (read-file-name prompt
 			   (file-name-as-directory default)
 			   (file-name-as-directory default) t nil)))))
     (if (file-directory-p the-dir) nil
@@ -1044,11 +1044,11 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
 (if inferior-ess-mode-map
     nil
 
-  (cond ((string-match "XEmacs\\|Lucid" emacs-version)
+  (cond (ess-running-xemacs
 	 ;; Code for XEmacs
 	 (setq inferior-ess-mode-map (make-keymap))
 	 (set-keymap-parent inferior-ess-mode-map comint-mode-map))
-	((not (string-match "XEmacs\\|Lucid" emacs-version))
+	((not ess-running-xemacs)
 	 ;; Code for GNU Emacs
 	 (setq inferior-ess-mode-map (cons 'keymap comint-mode-map))))
 
@@ -1111,12 +1111,12 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
 
 (if ess-mode-minibuffer-map  nil
 
-  (cond ((string-match "XEmacs\\|Lucid" emacs-version)
+  (cond (ess-running-xemacs
 	 ;; Code for XEmacs
 	 (setq ess-mode-minibuffer-map (make-keymap))
 	 (set-keymap-parent ess-mode-minibuffer-map minibuffer-local-map)))
 
-  (cond ((not (string-match "XEmacs\\|Lucid" emacs-version))
+  (cond ((not ess-running-xemacs)
 	 ;; Code for Emacs
 	 (setq ess-mode-minibuffer-map (cons 'keymap minibuffer-local-map))))
 

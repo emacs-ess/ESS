@@ -1,3 +1,13 @@
+2001-09-20  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-mode.el and others: do use ess-running-xemacs from ess-emcs.el!
+
+	* ess-menu.el: fix the (require 'imenu ..) [for E 19.34]
+
+2001-09-05  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essddr.el (Rd-mode-map): add C-c C-v (help)
+
 2001-08-31  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-menu.el (require 'imenu): try to do this only when

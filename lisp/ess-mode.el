@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/08/31 16:33:07 $
-;; Version: $Revision: 5.18 $
-;; RCS: $Id: ess-mode.el,v 5.18 2001/08/31 16:33:07 maechler Exp $
+;; Modified: $Date: 2001/09/20 10:27:41 $
+;; Version: $Revision: 5.19 $
+;; RCS: $Id: ess-mode.el,v 5.19 2001/09/20 10:27:41 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -99,12 +99,11 @@
 
 (if ess-eval-map
     nil
-  (cond ((string-match "XEmacs\\|Lucid" emacs-version)
-	 ;; Code for XEmacs
- 	 (setq ess-eval-map (make-keymap)))
-	((not (string-match "XEmacs\\|Lucid" emacs-version))
-	 ;; Code for GNU Emacs
-	 (setq ess-eval-map (make-sparse-keymap))))
+  (if ess-running-xemacs
+      ;; Code for XEmacs
+      (setq ess-eval-map (make-keymap))
+    ;; else code for GNU Emacs
+    (setq ess-eval-map (make-sparse-keymap)))
 
   (define-key ess-eval-map "\C-r"    'ess-eval-region)
   (define-key ess-eval-map "\M-r"    'ess-eval-region-and-go)
@@ -121,13 +120,12 @@
 (if ess-mode-map
     nil
 
-  (cond ((string-match "XEmacs\\|Lucid" emacs-version)
-	 ;; Code for XEmacs
- 	 (setq ess-mode-map (make-keymap))
-	 (set-keymap-parent ess-mode-map text-mode-map)) ;; was comint?!?
-	((not (string-match "XEmacs\\|Lucid" emacs-version))
-	 ;; Code for GNU Emacs
-	 (setq ess-mode-map (make-sparse-keymap))))
+  (if ess-running-xemacs
+      (progn ;; Code for XEmacs
+	(setq ess-mode-map (make-keymap))
+	(set-keymap-parent ess-mode-map text-mode-map)) ;; was comint?!?
+    ;; else code for GNU Emacs
+    (setq ess-mode-map (make-sparse-keymap)))
 
   ;; By popular demand:
   (define-key ess-mode-map "\C-m"	'newline-and-indent); = [RETURN]
@@ -233,7 +231,7 @@
         (easy-menu-add ess-mode-menu)
     (easy-menu-remove ess-mode-menu)))
 
-(if (string-match "XEmacs" emacs-version)
+(if ess-running-xemacs
     (add-hook 'ess-mode-hook 'ess-mode-xemacs-menu))
 
 (defun ess-mode (&optional alist proc-name)
