@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/29 11:13:11 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: ess-vars.el,v 1.7 1997/07/29 11:13:11 rossini Exp $
+;; Modified: $Date: 1997/07/30 13:07:00 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: ess-vars.el,v 1.8 1997/07/30 13:07:00 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,6 +29,9 @@
 
 ;;
 ;; $Log: ess-vars.el,v $
+;; Revision 1.8  1997/07/30 13:07:00  rossini
+;; set up trans, inf modes to use same set of font-lock keywords.
+;;
 ;; Revision 1.7  1997/07/29 11:13:11  rossini
 ;; added transcript-mode font-lock stuff.  Moved all font-lock stuff to
 ;; same place.
@@ -391,9 +394,10 @@ by ess-function-template.")
 
  ; ess-inf: variables for inferior-ess.
 
-;;; User changeable variables
-
 ;;*;; System dependent variables
+
+;; If you need to change the *-program-name variables, do so in
+;; ess-site.el.  Do NOT make the changes here!!
 
 (defvar inferior-R-program-name "R"
   "*Program name for invoking an inferior S with R().")
@@ -589,6 +593,9 @@ ess-load-file command.  Used for determining the default in the next one.")
 
 ;;*;; Miscellaneous system variables
 
+(defvar ess-mode-map nil
+  "Keymap for ess-mode.")
+
 (defvar inferior-ess-mode-map nil
   "Keymap for inferior-ess mode.")
 
@@ -629,8 +636,7 @@ important for R or XLispStat.")
    "\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>")
  "Font-lock patterns used in ess-mode bufffers.")
 
-
-(defvar inferior-ess-font-lock-keywords
+(defvar essd-S-inferior-font-lock-keywords
  '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)	; prompt
    ("^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
     (1 font-lock-variable-name-face keep t)) ; input
@@ -638,20 +644,16 @@ important for R or XLispStat.")
    ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
    ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
-    . font-lock-type-face) ; keywords
-   )
+    . font-lock-type-face)) ; keywords
+ "Font-lock patterns for dialects of S, used in highlighting process
+ buffers and transcripts.")
+
+(defvar inferior-ess-font-lock-keywords
+  essd-S-inferior-font-lock-keywords
  "Font-lock patterns used in inferior-ess-mode buffers.")
 
-
 (defvar ess-trans-font-lock-keywords
- '(("^[>+]" . font-lock-keyword-face)	; prompt
-   ("^[>+]\\(.*$\\)" (1 font-lock-variable-name-face keep t)) ; input
-   ("<-\\|_" . font-lock-reference-face)		; assign
-   ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
-   ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
-   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" 
-    . font-lock-type-face) ; keywords
-   )
+  essd-S-inferior-font-lock-keywords
  "Font-lock patterns used in ess-transcript-mode buffers.")
 
 ;;;*;;; ess-help variables
