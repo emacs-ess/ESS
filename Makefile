@@ -13,13 +13,16 @@ all install clean distclean:
 #ESS is now an official xemacs-package, but the xemacs-links target
 #persists since there is generally a lag between an ESS release and
 #the corresponding xemacs-package release
-#Unfortunately, this target does not include the info docs since ESS
-#itself no longer contains them.  So, you must install a real
-#xemacs-package to get info docs, although, they will be out of date
 xemacs-links: 
-	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess* $(XEMACSDIR)/xemacs-packages/lisp/ess* 
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc  $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
+	-rm -rf $(XEMACSDIR)/xemacs-packages/etc/ess* $(XEMACSDIR)/xemacs-packages/lisp/ess* \
+	    $(XEMACSDIR)/xemacs-packages/info/ess.info*
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc                  $(XEMACSDIR)/xemacs-packages/etc/ess
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp                 $(XEMACSDIR)/xemacs-packages/lisp/ess
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info    $(XEMACSDIR)/xemacs-packages/info/ess.info
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-1  $(XEMACSDIR)/xemacs-packages/info/ess.info-1
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-2  $(XEMACSDIR)/xemacs-packages/info/ess.info-2
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-3  $(XEMACSDIR)/xemacs-packages/info/ess.info-3
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info-4  $(XEMACSDIR)/xemacs-packages/info/ess.info-4
 
 ## the rest of the targets are for ESS developer's use only :
 
