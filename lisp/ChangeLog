@@ -1,3 +1,12 @@
+Tue Dec  9 15:45:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essddr.el: one too many parens.
+
+Tue Dec  9 15:44:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essddr.el: added commented out face.  DB's error doesn't exist
+ 	for me, though.
+
 Fri Dec  5 10:12:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-site.el: added comments about Emacs 20.2 errors.
