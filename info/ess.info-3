@@ -15,7 +15,7 @@ Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.1.21
+   This documentation relates to Version 5.1.21 of `ESS'.
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -25,7 +25,343 @@ Department of Mathematics and Statistics, Lancaster University, UK.
 University of Washington, Seattle, WA 98185, USA
 
 
-File: ess.info,  Node: ESS[SAS]--Function keys for batch processing,  Next: ESS[SAS]--TAB key,  Prev: ESS[SAS]--Batch processes,  Up: Help for SAS
+File: ess.info,  Node: Scenarios for use (possibilities--based on actual usage),  Next: Customization Examples and Solutions to Problems,  Prev: Philosophies for using ESS(S),  Up: Help for the S family
+
+Scenarios for use (possibilities-based on actual usage)
+=======================================================
+
+   We present some basic suggestions for using ESS to interact with S.
+These are just a subset of approaches, many better approaches are
+possible.  Contributions of examples of how you work with ESS are
+appreciated (especially since it helps us determine priorities on
+future enhancements)! (comments as to what should be happening are
+prefixed by "##").
+     1:  ##    Data Analysis Example (source code is real)
+         ## Load the file you want to work with
+         C-x C-f myfile.s
+     
+         ## Edit as appropriate, and then start up S-PLUS 3.x
+         M-x S+3
+     
+         ## A new buffer *S+3:1* will appear.  Splus will have been started
+         ## in this buffer.  The buffer is in iESS [S+3:1] mode.
+     
+         ## Split the screen and go back to the file editing buffer.
+         C-x 2 C-x b myfile.s
+     
+         ## Send regions, lines, or the entire file contents to S-PLUS.  For regions,
+         ## highlight a region with keystrokes or mouse and then send with:
+         C-c C-r
+     
+         ## Re-edit myfile.s as necessary to correct any difficulties.  Add
+         ## new commands here.  Send them to S by region with C-c C-r, or
+         ## one line at a time with C-c C-n.
+     
+         ## Save the revised myfile.s with C-x C-s.
+     
+         ## Save the entire *S+3:1* interaction buffer with C-c C-s.  You
+         ## will be prompted for a file name.  The recommended name is
+         ## myfile.St.  With the *.St suffix, the file will come up in ESS
+         ## Transcript mode the next time it is accessed from Emacs.
+     
+     
+     
+     2:  ## Program revision example (source code is real)
+     
+         ## Start up S-PLUS 3.x in a process buffer (this will be *S+3:1*)
+         M-x S+3
+     
+         ## Load the file you want to work with
+         C-x C-f myfile.s
+     
+         ## edit program, functions, and code in myfile.s, and send revised
+         ## functions to S when ready with
+         C-c C-f
+         ## or highlighted regions with
+         C-c C-r
+         ## or individual lines with
+         C-c C-n
+         ## or load the entire buffer with
+         C-c C-l
+     
+         ## save the revised myfile.s when you have finished
+         C-c C-s
+     
+     
+     
+     3:  ## Program revision example (S object is real)
+     
+         ## Start up S-PLUS 3.x in a process buffer (this will be *S+3:1*)
+         M-x S+3
+     
+         ## Dump an existing S object my.function into a buffer to work with
+         C-c C-d my.function
+         ## a new buffer named yourloginname.my.function.S will be created with
+         ## an editable copy of the object.  The buffer is associated with the
+         ## pathname /tmp/yourloginname.my.function.S and will amlost certainly not
+         ## exist after you log off.
+     
+         ## enter program, functions, and code into work buffer, and send
+         ## entire contents to S-PLUS when ready
+         C-c C-b
+     
+         ## Go to *S+3:1* buffer, which is the process buffer, and examine
+         ## the results.
+         C-c C-y
+         ## The sequence C-c C-y is a shortcut for:  C-x b *S+3:1*
+     
+         ## Return to the work buffer (may/may not be prefixed)
+         C-x C-b yourloginname.my.function.S
+         ## Fix the function that didn't work, and resubmit by placing the
+         ## cursor somewhere in the function and
+         C-c C-f
+         ## Or you could've selected a region (using the mouse, or keyboard
+         ## via setting point/mark) and
+         C-c C-r
+         ## Or you could step through, line by line, using
+         C-c C-n
+         ## Or just send a single line (without moving to the next) using
+         C-c C-j
+         ## To fix that error in syntax for the "rchisq" command, get help
+         ## by
+         C-c C-v rchisq
+     
+     
+     4:    Data Analysis (S object is real)
+         ## Start up S-PLUS 3.x, in a process buffer (this will be *S+3:1*)
+         M-x S+3
+     
+         ## Work in the process buffer.  When you find an object that needs
+         ## to be changed (this could be a data frame, or a variable, or a
+         ## function), dump it to a buffer:
+         C-c C-d my.cool.function
+     
+         ## Edit the function as appropriate, and dump back in to the
+         ## process buffer
+         C-c C-b
+     
+         ## Return to the S-PLUS process buffer
+         C-c C-y
+         ## Continue working.
+     
+         ## When you need help, use
+         C-c C-v rchisq
+         ## instead of entering:   help("rchisq")
+
+
+File: ess.info,  Node: Customization Examples and Solutions to Problems,  Prev: Scenarios for use (possibilities--based on actual usage),  Up: Help for the S family
+
+Customization Examples and Solutions to Problems
+================================================
+
+   1. Suppose that you are primarily an SPLUS 3.4 user, occasionally
+using S version 4, and sick and tired of the buffer-name *S+3*    we've
+stuck you with.  Simply edit the "ess-dialect" alist entry in    the
+essd-s+3.el and essd-s4.el files to be "S" instead of "S4" and
+"S+3".  This will insure that all the inferior process buffer names
+are "*S*".
+
+   2. Suppose that you WANT to have the first buffer name indexed by
+":1", in the same manner as your S-PLUS processes 2,3,4, and 5 (for
+you heavy simulation people).  Then uncomment the line in ess-site
+(or add after your (require 'ess-site) or (load "ess-site") command
+in your .emacs file, the line:
+     (setq ess-plain-first-buffername nil)
+      )
+
+   3. Fontlocking sometimes fails to behave nicely upon errors.  When
+Splus dumps, a mis-matched "  (double-quote) can result in the
+wrong font-lock face being used for the remainder of the buffer.
+
+   Solution: add a " at the end of the "Dumped..." statement, to
+revert the font-lock face back to normal.
+
+
+File: ess.info,  Node: Help for SAS,  Prev: Help for the S family,  Up: Help for Statistical Packages
+
+Help for SAS
+************
+
+* Menu:
+
+* ESS(SAS)--Design philosophy::
+* ESS(SAS)--Recommended autoexec::
+* ESS(SAS)--Editing files::
+* iESS(SAS)--Inferior ESS processes::
+* ESS(SAS)--Batch processes::
+* ESS(SAS)--Function keys for batch processing::
+* ESS(SAS)--TAB key::
+* ESS(SAS)--Usage scenarios::
+* ESS(SAS)--Common problems::
+
+   ESS[SAS] (originally SAS-mode) was designed for use with SAS.
+SAS-mode was developed by Cook
+<ftp://ftp.biostat.wisc.edu/pub/cook/sas-mode/sas.tar.gz>.  Those
+editing features and new advanced features are part of ESS[SAS].  The
+user interface of ESS[SAS] has similarities with ESS[S], the ESS
+interface for S, and to the SAS Display Manager.  By _emacs_ we mean
+either GNU Emacs from the Free Software Foundation or XEmacs from the
+XEmacs Project.
+
+
+File: ess.info,  Node: ESS(SAS)--Design philosophy,  Next: ESS(SAS)--Recommended autoexec,  Prev: Help for SAS,  Up: Help for SAS
+
+ESS[SAS]-Design philosophy
+==========================
+
+   ESS[SAS] mode was designed to aid the user in writing and maintaining
+input command files, such as myfile.sas, for SAS.  These are files
+containing SAS statements.  In a batch environment such files would be
+submitted to SAS by the operating system command:
+     sas myfile.sas
+   In a SAS window environment, these files would be brought into the
+"SAS: PROGRAM EDITOR" window and then submitted with the 'Local'
+'Submit' menu commands.
+
+   The *SAS:1.log* buffer in ESStr mode corresponds to the file
+myfile.log in SAS batch usage and to the "SAS: LOG" window in the SAS
+window environment.  All commands submitted to SAS, informative
+messages, warnings, and errors appear here.
+
+   The *SAS:1.lst* buffer in ESSlst mode corresponds to the file
+myfile.lst in SAS batch usage and to the "SAS: OUTPUT" window in the
+SAS window environment.  All data related printed output from the PROCs
+appear in this window.
+
+   The iESS [SAS:1] buffer exists solely as a communications buffer.
+Files are edited in the myfile.sas buffer.  The C-c C-r key in ESS[SAS]
+mode is the functional equivalent of bringing a file into the "SAS:
+PROGRAM EDITOR" window followed by the 'Local' 'Submit' menu commands.
+The user should never use this buffer directly.
+
+   The ESS[SAS] mode was written with two primary goals.
+
+   1. Using the emacs environment is desirable for users accessing a
+remote computer via a network or dial-up who can not use the native SAS
+window environment.
+
+   2. Using the emacs environment is desirable for local users as well
+due to the inherent efficiency of using the same superior interface all
+of the time.
+
+
+File: ess.info,  Node: ESS(SAS)--Recommended autoexec,  Next: ESS(SAS)--Editing files,  Prev: ESS(SAS)--Design philosophy,  Up: Help for SAS
+
+ESS[SAS]-Recommended autoexec.sas
+=================================
+
+   The default settings of the inferior-SAS-args in essd-sas.el are
+
+     -stdio -linesize 80 -noovp -nosyntaxcheck
+
+   with the interpretations:
+     -stdio          required to make the redirection of stdio work
+     -linesize 80    keeps output lines from folding on standard terminals
+     -noovp          prevents error messages from printing 3 times
+     -nosyntaxcheck  permits recovery after syntax errors
+
+   In addition there are several parameters that can't be set in the
+command line.  For these, we recommend the following line appear in
+your autoexec.sas in your home directory:
+
+     options noovp pagesize=60 linesize=80 formdlim=' ';
+
+   Interpretations
+     noovp          prevents error messages from printing 3 time
+     pagesize=60    standard printed page length instead of window length
+     linesize=80    keeps output lines from folding on standard terminals
+     formdlim=' '   blank replaces "C-l" formfeeds to prevent mostly
+                    empty pages
+
+   The noovp and linesize=80 appear in both the inferior-SAS-args and in
+the autoexec.sas.  The redundancy means that these options are in
+effect for both SAS interactive and batch jobs.
+
+
+File: ess.info,  Node: ESS(SAS)--Editing files,  Next: iESS(SAS)--Inferior ESS processes,  Prev: ESS(SAS)--Recommended autoexec,  Up: Help for SAS
+
+ESS[SAS]-Editing files
+======================
+
+   ESS[SAS] is the mode for editing SAS language files.  This mode
+handles:
+
+     - proper indenting, generated by both [Tab] and [Return].
+     - color and font choices based on syntax.
+     - ability to send the contents of an entire buffer, a highlighted region,
+       or a single line to an inferior SAS process.
+     - ability to switch between processes which would be the target of the
+       buffer (for the above).
+     - ability to save and submit the file you are working on as a batch SAS
+       process with a single keypress and to continue editing while it is runs
+       in the background.
+     - capability of killing the batch SAS process through the shell buffer or
+       allow the SAS process to keep on running after you exit emacs.
+     - single keypress navigation of .sas, .log and .lst files (.log and .lst
+       files are automatically refreshed with each keypress).
+
+   ESS[SAS], the mode for editing SAS language files, is automatically
+turned on when editing a file with a ".sas" suffix (or other, if
+specified in ess-site).  The batch processing keypress commands are
+enabled by default to use the same function keys that the SAS Display
+Manager uses.  The interactive capabilities of ESS require you to start
+an inferior SAS process with M-x SAS (described below).
+
+   At this writing (5.1.21), the indenting and syntactic highlighting
+are usually correct.
+
+
+File: ess.info,  Node: iESS(SAS)--Inferior ESS processes,  Next: ESS(SAS)--Batch processes,  Prev: ESS(SAS)--Editing files,  Up: Help for SAS
+
+iESS[SAS]-Inferior ESS processes
+================================
+
+   iESS (inferior ESS) is the mode for interfacing with active
+statistical processes (programs).
+
+   To start up iESS[SAS] mode, use:
+        M-x SAS
+
+   We plan to add
+     - The ability to request help from a process for variables and
+       functions, and to have the results sent into a separate buffer.
+     - completion of object names and file names.
+
+
+File: ess.info,  Node: ESS(SAS)--Batch processes,  Next: ESS(SAS)--Function keys for batch processing,  Prev: iESS(SAS)--Inferior ESS processes,  Up: Help for SAS
+
+ESS[SAS]-Batch processes
+========================
+
+   The command used by the SUBMIT function key (F3 or F8) to submit a
+batch SAS job is ess-sas-submit-command which defaults to sas-program.
+sas-program is "invoke SAS using program file" for Mac Classic and
+"sas" otherwise.  However, you may have to alter ess-sas-submit-command
+for a particular program, so it is defined as buffer-local
+(conveniently, you can set it in Local Variables: at the end of your
+program).  The command line is also made of ess-sas-submit-pre-command,
+ess-sas-submit-post-command and ess-sas-submit-command-options (the
+last of which is also buffer-local).  Here are some examples for your
+.emacs file (you may also use custom-ize):
+     (setq ess-sas-submit-pre-command "nohup")                 ;'sh default
+     (setq ess-sas-submit-post-command "-rsasuser &")          ;'sh default
+     (setq ess-sas-submit-command "/usr/local/sas/sas")        ;'sh example
+     (setq ess-sas-submit-pre-command "start")                 ;'ms-dos default
+     (setq ess-sas-submit-post-command "-rsasuser -icon")      ;'ms-dos default
+     (setq ess-sas-submit-command "c:/progra~1/sas/sas.exe")   ;Windows example
+     (setq ess-sas-submit-command "c:\\progra~1\\sas\\sas.exe");Windows example
+
+   There is a built-in delay before a batch SAS job is submitted when
+using a Unix shell under either Unix or Windows.  This is necessary in
+many cases since the shell might not be ready to receive a command.
+This delay is currently set high enough so as not to be a problem on
+any system.  But, there may be cases when it needs to be set higher, or
+could be set much lower to speed things up.  You can over-ride the
+default in your .emacs file by (the default of 5 seconds is shown):
+     (setq ess-sleep-for 5)
+
+
+File: ess.info,  Node: ESS(SAS)--Function keys for batch processing,  Next: ESS(SAS)--TAB key,  Prev: ESS(SAS)--Batch processes,  Up: Help for SAS
 
 ESS[SAS]-Function keys for batch processing
 ===========================================
@@ -45,46 +381,53 @@ make ESS[SAS] mode behave similarly to other emacs modes.
    2,3,4,5.  Users who are primarily familiar with SAS, and who are
 learning emacs as a way to approach SAS, will likely want to duplicate
 the function key capabilities that SAS Institute provides with its
-Display Manager.  There are still options.  SAS provides different
-function key definitions with its PC and Unix products; ESS can use
-either.  The ESS[SAS] function key definitions can be active in all
-buffers (global) or limited (local) only to buffers that have
-SAS-related file extensions: .sas, .log, .lst, and filetype-1 which
-defaults to .txt.  The distinction between local and global appears
-subtle.  If you want the ESS[SAS] definitions to work when you are in
-*shell* or when editing files other than the file extensions that SAS
-recognizes, you will most likely want to use the global definitions.
-If you want your function keys to understand SAS batch commands when you
-are editing SAS files, and to behave normally when editing other files,
-then you will choose the local definitions.
+Display Manager.  There are still options.
+
+  1. SAS provides different function key definitions with its PC and
+     Unix products; ESS can use either.
+
+  2. The ESS[SAS] function key definitions can be active in all buffers
+     (global) or limited (local) only to buffers that have SAS-related
+     file extensions: .sas, .log, .lst, filetype-1 (which defaults to
+     .txt), and filetype-2 which defaults to .dat.
+
+   The distinction between local and global appears subtle.  If you want
+the ESS[SAS] definitions to work when you are in *shell* or when
+editing files other than the file extensions that SAS recognizes, you
+will most likely want to use the global definitions.  If you want your
+function keys to understand SAS batch commands when you are editing SAS
+files, and to behave normally when editing other files, then you will
+choose the local definitions.
 
    The option can be chosen by the person installing ESS for a site or
 by an individual.
 
-   The site manager can uncomment only one of the following lines.
-ESS[SAS] Function keys are available in ESS[SAS] and related modes if
-you uncomment either of the following lines in your ess-site.el:
-     ;;2; (setq ess-sas-local-unix-keys t)
-     ;;3; (setq ess-sas-local-pc-keys t)
-   ESS[SAS] Function keys are available in all emacs modes if you
-uncomment either of the following lines in your ess-site.el:
-     ;;4; (setq ess-sas-global-unix-keys t)
-     ;;5; (setq ess-sas-global-pc-keys t)
-   The names -unix- and -pc- have nothing to do with the operating
-system that you are running.  Rather they mimic the definitions that
-the SAS Display Manager uses by default on those platforms.
+  1. The site manager can uncomment only one of the following lines.
+     ESS[SAS] Function keys are available in ESS[SAS] and related modes
+     if you uncomment either of the following lines in your ess-site.el:
+          ;;2; (setq ess-sas-local-unix-keys t)
+          ;;3; (setq ess-sas-local-pc-keys t)
 
-   The option can be selected by an individual by adding a line to the
-.emacs (or _emacs) file, immediately following the
-      (load "ess-site")
-   line.  If your site manager has chosen an option 2,3,4,5 you don't
-want, you must turn it off before selecting a different option.  To
-turn off an option, add the appropriate line (uncommented) to your
-.emacs (_emacs) file.
-     ;;2; (setq ess-sas-local-unix-keys nil)
-     ;;3; (setq ess-sas-local-pc-keys nil)
-     ;;4; (setq ess-sas-global-unix-keys nil)
-     ;;5; (setq ess-sas-global-pc-keys nil)
+     ESS[SAS] Function keys are available in all emacs modes if you
+     uncomment either of the following lines in your ess-site.el:
+          ;;4; (setq ess-sas-global-unix-keys t)
+          ;;5; (setq ess-sas-global-pc-keys t)
+
+     The names -unix- and -pc- have nothing to do with the operating
+     system that you are running.  Rather they mimic the definitions
+     that the SAS Display Manager uses by default on those platforms.
+
+  2. The option can be selected by an individual by adding a line to the
+     .emacs (or _emacs) file, immediately following the
+           (load "ess-site")
+     line.  If your site manager has chosen an option 2,3,4,5 you don't
+     want, you must turn it off before selecting a different option.  To
+     turn off an option, add the appropriate line (uncommented) to your
+     .emacs (_emacs) file.
+          ;;2; (setq ess-sas-local-unix-keys nil)
+          ;;3; (setq ess-sas-local-pc-keys nil)
+          ;;4; (setq ess-sas-global-unix-keys nil)
+          ;;5; (setq ess-sas-global-pc-keys nil)
 
    Finally, we get to what the function keys actually do.  You may
 recognize some of the Short Names as SAS Display Manager commands (they
@@ -101,12 +444,19 @@ are in all capitals).
                              current buffer) and submit the file as a batch
                              SAS job.
      
+     C-F3 C-F8   SUBMIT-REGION Write region to temporary file,
+                             and submit to SAS.
+     
      F4   F5     PROGRAM     switch buffer to .sas file.
      
      F5   F6     LOG         switch buffer to .log file, `refresh' and goto
                              next error message, if any.
      
+     C-F5 C-F6   APPEND-TO-LOG Append ess-temp.log to the current .log file.
+     
      F6   F7     OUTPUT      switch buffer to .lst file and `refresh'.
+     
+     C-F6 C-F7   APPEND-TO-OUTPUT Append ess-temp.lst to the current .lst file.
      
      F7   F4     filetype-1  switch buffer to filetype-1 (defaults to .txt)
                              file and `refresh'.
@@ -152,7 +502,7 @@ to change the following two variables for your own situation:
      (setq ess-sas-image-viewer "kodakimg") ;; external viewer
 
 
-File: ess.info,  Node: ESS[SAS]--TAB key,  Next: ESS[SAS]--Usage scenarios,  Prev: ESS[SAS]--Function keys for batch processing,  Up: Help for SAS
+File: ess.info,  Node: ESS(SAS)--TAB key,  Next: ESS(SAS)--Usage scenarios,  Prev: ESS(SAS)--Function keys for batch processing,  Up: Help for SAS
 
 ESS[SAS]-TAB key
 ================
@@ -178,7 +528,7 @@ following line in ess-site.el:
 and the tab stops are set by default at multiples of 4.
 
 
-File: ess.info,  Node: ESS[SAS]--Usage scenarios,  Next: ESS[SAS]--Common problems,  Prev: ESS[SAS]--TAB key,  Up: Help for SAS
+File: ess.info,  Node: ESS(SAS)--Usage scenarios,  Next: ESS(SAS)--Common problems,  Prev: ESS(SAS)--TAB key,  Up: Help for SAS
 
 ESS[SAS]-Usage scenarios
 ========================
@@ -304,7 +654,7 @@ enhancements)! (comments as to what should be happening are prefixed by
          run;
 
 
-File: ess.info,  Node: ESS[SAS]--Common problems,  Prev: ESS[SAS]--Usage scenarios,  Up: Help for SAS
+File: ess.info,  Node: ESS(SAS)--Common problems,  Prev: ESS(SAS)--Usage scenarios,  Up: Help for SAS
 
 ESS[SAS]-Common problems
 ========================
@@ -325,45 +675,18 @@ ESS[SAS]-Common problems
         call the sas executable directly.
      
         Change the line in ess-sas-sh command from:
-                sas </dev/tty 1>$stdout 2>$stderr $
+          sas </dev/tty 1>$stdout 2>$stderr $
         to a call to the complete path name of the sas executable on
         your system, for example:
-                /usr/local/sas612/sas </dev/tty 1>$stdout 2>$stderr $
+          /usr/local/sas612/sas </dev/tty 1>$stdout 2>$stderr $
         To find the complete path name on your system, you can
         execute the line (from the unix prompt):
-                find / -name 'sas' -exec ls -ld {} \;
+          find / -name 'sas' -exec ls -ld {} \;
         and expect a response similar to the following
-             -rwxr-xr-x   1 sas      sas  2441216 Sep  9  1997 /usr/local/sas612/sas
+          -rwxr-xr-x   1 sas  sas  2441216 Sep  9  1997 /usr/local/sas612/sas
 
 
-File: ess.info,  Node: Help OS,  Next: Installation,  Prev: Help for Statistical Packages,  Up: Top
-
-Help, arranged by Operating System
-**********************************
-
-* Menu:
-
-* Help Unix::
-* Help Microsoft::
-
-
-File: ess.info,  Node: Help Unix,  Next: Help Microsoft,  Prev: Help OS,  Up: Help OS
-
-Help for Unix
-=============
-
-
-File: ess.info,  Node: Help Microsoft,  Prev: Help Unix,  Up: Help OS
-
-Help for Microsoft
-==================
-
-* Menu:
-
-* Installation::                Installing ESS on your system
-
-
-File: ess.info,  Node: Installation,  Next: Customization,  Prev: Help OS,  Up: Top
+File: ess.info,  Node: Installation,  Next: Customization,  Prev: Help for Statistical Packages,  Up: Top
 
 Installing ESS on your system
 *****************************
@@ -373,8 +696,8 @@ running on your system.
 
 * Menu:
 
-* Unix installation::
-* Microsoft Windows installation::
+* Unix installation::           Installing ESS on your Unix system
+* Microsoft Windows installation::  Installing ESS on your MS Windows system
 * System dependent::            Other variables you may need to change
 
    We now discuss installation, which might happen under Unix or
@@ -385,73 +708,75 @@ installation::.
 Microsoft Windows installation::.
 
 
-File: ess.info,  Node: Unix installation,  Next: Microsoft Windows installation,  Up: Top
+File: ess.info,  Node: Unix installation,  Next: Microsoft Windows installation,  Up: Installation
 
 Unix installation
 =================
 
-  1.   cd to a directory where you keep emacs lisp files, or create a
-     new   directory to hold the distribution.  This directory will be
-     referred   to below as "the ESS distribution directory".  It will
-     contain,   at the end, the tar file `ess-5.1.21.tar.gz', and a
-     directory for   the ESS source, which will be termed "the
-     ESS-5.1.21
+  1. cd to a directory where you keep emacs lisp files, or create a new
+     directory to hold the distribution.  This directory will be
+     referred to below as "the ESS distribution directory".  It will
+     contain, at the end, the tar file `ess-5.1.21.tar.gz', and a
+     directory for the ESS source, which will be termed "the ESS-5.1.21
+     source directory".
 
      Note that the .elc files may be installed elsewhere (as specified
-     in the   Makefile) if desired.
+     in the Makefile) if desired.
 
-  2.   Retrieve the gzipped tar file or zipped file from
+  2. Retrieve the gzipped tar file or zipped file from
      <http://software.biostat.washington.edu/statsoft/ess/essDL>
 
-  3.   Copy `ess-5.1.21.tar.gz' to the location where you want the
-     ESS-5.1.21   distribution, which will unpack into a subdirectory,
-     ess-5.1.21.
-          	gunzip ess-5.1.21.tar.gz
-          	tar vxf ess-5.1.21.tar
-     	(or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).  	(or using GNU
-     tar:  `tar zvxf ess-5.1.21.tar.gz').
+  3. Copy `ess-5.1.21.tar.gz' to the location where you want the
+     ESS-5.1.21 directory, and cd there.  Extract the files from the
+     distribution, which will unpack into a subdirectory, ess-5.1.21.
+          gunzip ess-5.1.21.tar.gz
+          tar vxf ess-5.1.21.tar
+
+          (or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).
+          (or using GNU tar:  `tar zvxf ess-5.1.21.tar.gz').
 
      The `tar' command will extract files into the current directory.
-     Do not create ess-5.1.21   depth to your directory structure.
+     Do not create ess-5.1.21 yourself, or you will get an extra level
+     of depth to your directory structure.
 
      Note if you have a very ancient version of GNU emacs (_and_  really
-      can not upgrade to Emacs 20 or higher!) you can unpack the
-     `lisp/19.29.tar.gz' file, read the ensuing `lisp/19.29/README'
-     and you may succeed...
+     can not upgrade to Emacs 20 or higher!) you can unpack the
+     `lisp/19.29.tar.gz' file, read the ensuing `lisp/19.29/README' and
+     you may succeed...
 
-  4.   Edit the file `lisp/ess-site.el' as explained in the comments
+  4. Edit the file `lisp/ess-site.el' as explained in the comments
      section of that file.  Installations that are using ESS only for
-     S-Plus   6.x will probably not need to make any changes.
-     Installations that also   have one or more of (S+5 S4 S+4 S+3 R
-     SAS XLispStat Stata)   may need to uncomment corresponding lines
-     in `ess-site.el'.
+     S-Plus 6.x will probably not need to make any changes.
+     Installations that also have one or more of (S+5 S4 S+4 S+3 R SAS
+     XLispStat Stata) may need to uncomment corresponding lines in
+     `ess-site.el'.
 
-  5.   READ THIS ITEM THOROUGHLY BEFORE STARTING:
+  5. READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     In the ess-5.1.21   want to place the executables in other
-     locations; see LISPDIR and   INFODIR) and then type:
-          	make
+     In the ess-5.1.21 directory, edit the file `Makeconf' (only if you
+     want to place the executables in other locations; see LISPDIR and
+     INFODIR) and then type:
+          make
 
      If this works, then you might try:
-          	make install
-       Note that the latter does the former as well, so if you are
-     feeling   lucky, you might want to skip it.
+          make install
+     Note that the latter does the former as well, so if you are feeling
+     lucky, you might want to skip it.
 
      This will install the info files (and the lisp files, if they are
-     to go   in another directory).  Don't forget to edit the file
-     `dir' in the   info directory specified by `INFODIR' in
-     `doc/Makefile'.  See   the sample `dir' file for an example of the
-     line to add.
+     to go in another directory).  Don't forget to edit the file `dir'
+     in the info directory specified by `INFODIR' in `doc/Makefile'.
+     See the sample `dir' file for an example of the line to add.
 
      If you are using XEmacs, you might do:
-          	make EMACS=xemacs
+          make EMACS=xemacs
 
      and then
-          	make EMACS=xemacs install
-       instead of editing the Makefile.
+          make EMACS=xemacs install
+     instead of editing the Makefile.
 
-     _Note_ that you might need to use GNU make for everything to
-     work properly
+     _Note_ that you might need to use GNU make for everything to work
+     properly
 
      An alternative, if you are running XEmacs and have access to the
      XEmacs system directories, would be to place the directory in the
@@ -459,71 +784,70 @@ Unix installation
      documentation as appropriate).
 
      For Emacs, you would still have to move the files into the top
-     level   site-lisp directory.
+     level site-lisp directory.
 
-  6.   Add the line
-            (load "/PATH/ess-site")
-       to your .emacs file (or default.el or site-init.el, for a
-     site-wide   installation).  Replace `/PATH' above with the value of
-      ess-lisp-directory as defined in ess-site.el.
+  6.  Add the line
+          (load "/PATH/ess-site")
+     to your .emacs file (or default.el or site-init.el, for a site-wide
+     installation).  Replace `/PATH' above with the value of
+     ess-lisp-directory as defined in ess-site.el.
 
      Alternatively, if ess-site.el is in your current Lisp path, you can
-      do:
-          	(require 'ess-site)
-       to configure Emacs for ESS.
+     do:
+          (require 'ess-site)
+     to configure Emacs for ESS.
 
-  7.   (OPTIONAL) If you are running S-PLUS or R, you might consider
+  7. (OPTIONAL) If you are running S-PLUS or R, you might consider
      installing the database files.  From within (X)Emacs, `C-x d' to
-     the   directory containing ESS.  Now:
-                 M-x S+6
-       (or `M-x S+5': get running.  once you have reached the SPLUS
-     prompt, do:)
-                 M-x ess-create-object-name-db
-       (this will create the file `ess-s+6-namedb.el'; if it isn't in
-     the    ESS directory, move it there).
+     the directory containing ESS.  Now:
+          M-x S+6
+     get running.  once you have reached the SPLUS prompt, do:
+          M-x ess-create-object-name-db
+     (this will create the file `ess-s+6-namedb.el'; if it isn't in the
+     ESS directory, move it there).
 
      Then, completions will be autoloaded and will not be regenerated
-     for   every session.
+     for every session.
 
      For R, do the same, using
-                M-x R
-       and then `M-x ess-create-object-name-db' creating
+          M-x R
+     and then `M-x ess-create-object-name-db' creating
      `ess-r-namedb.el'; if it isn't in the ESS directory, move it
      there).
 
-  8.   For more information on using ESS in your daily work, see the
-     files   README.S, README.SAS, and README.XLispStat.
+  8. For more information on using ESS in your daily work, see the files
+     README.S, README.SAS, and README.XLispStat.
 
      For the impatient, the quick version of usage follows:
 
-  9.   To edit statistical programs, load the files with the requiste
+  9. To edit statistical programs, load the files with the requiste
      extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and
-     ".lsp"   for XLispStat).
+     ".lsp" for XLispStat).
 
- 10.   To run statistical processes under (X)Emacs:
+ 10. To run statistical processes under (X)Emacs:
 
      Run S-PLUS 6.x with:
-          	M-x S+6
-       (or M-x S  using backwards compatibility).  You will then be
-     asked   for a pathname ("S starting data directory?"), from which
-     to start   the process.  Similarly for S-PLUS 5.x.
+          M-x S+6
+     (or M-x S  using backwards compatibility).  You will then be asked
+     for a pathname ("S starting data directory?"), from which to start
+     the process.
 
      If you wish to run R, you can start it with:
-          	M-x R
+          M-x R
 
      XLispStat can be run with
-          	M-x XLS
+          M-x XLS
 
      An interactive SAS can be run in an `iESS[SAS]' buffer with:
-          	M-x SAS
+          M-x SAS
      This works when SAS is running on a Unix machine, either the local
      machine or over a network connection.  M-x SAS does not work when
      SAS is running on a Windows machine.
 
- 11.   That's it!
+ 11. That's it!
 
 
-File: ess.info,  Node: Microsoft Windows installation,  Prev: Unix installation,  Up: Top
+File: ess.info,  Node: Microsoft Windows installation,  Prev: Unix installation,  Up: Installation
 
 Microsoft Windows installation
 ==============================
@@ -531,135 +855,132 @@ Microsoft Windows installation
    For Microsoft Windows installation, please follow the next steps:
 (see separate instructions above for UNIX *Note Unix installation::.
 
-  1.     cd to a directory where you keep emacs lisp files, or create a
-     new    directory (for example, `c:\emacs\') to hold the
-     distribution.  This    directory will be referred to below as "the
-     ESS distribution    directory".  It will contain, at the end,
-     either the tar file    `ess-5.1.21.tar.gz' or the zip file
-     `ess-5.1.21.zip', and a    directory    for the ESS source, which
-     will be termed "the ESS-5.1.21    directory".
+  1.  cd to a directory where you keep emacs lisp files, or create a new
+     directory (for example, `c:\emacs\') to hold the distribution.
+     This directory will be referred to below as "the ESS distribution
+     directory".  It will contain, at the end, either the tar file
+     `ess-5.1.21.tar.gz' or the zip file `ess-5.1.21.zip', and a
+     directory for the ESS source, which will be termed "the ESS-5.1.21
+     source directory".
 
-  2.       Retrieve the compressed tar file `ess-5.1.21.tar.gz' or the
-        zipped file `ess-5.1.21.zip' from one of the FTP or WWW
-     archive sites      via FTP (or HTTP).  Be aware that http browsers
-     on Windows      frequently change the "." and "-" characters in
-     filenames to other      punctuation.  Please change the names back
-     to their original form.
+  2.  Retrieve the compressed tar file `ess-5.1.21.tar.gz' or the
+     zipped file `ess-5.1.21.zip' from one of the FTP or WWW archive
+     sites via FTP (or HTTP).  Be aware that http browsers on Windows
+     frequently change the "." and "-" characters in filenames to other
+     punctuation.  Please change the names back to their original form.
 
-  3.       Copy `ess-5.1.21.tar.gz' to the location where you want the
-        ess-5.1.21      `c:\emacs\ess-5.1.21.tar.gz', and cd there.
-     For example,
+  3.  Copy `ess-5.1.21.tar.gz' to the location where you want the
+     ess-5.1.21 directory, for example to `c:\emacs\ess-5.1.21.tar.gz',
+     and cd there.  For example,
 
-                       cd c:\emacs
+          cd c:\emacs
 
-     Extract the files from the distribution, which will unpack
-     into a subdirectory, `ess-5.1.21'.
-                    	gunzip ess-5.1.21.tar.gz
-                    	tar vxf ess-5.1.21.tar
-          	(or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).
-        (or: from the zip file: `unzip ess-5.1.21.zip')
+     Extract the files from the distribution, which will unpack into a
+     subdirectory, `ess-5.1.21'.
+          gunzip ess-5.1.21.tar.gz
+          tar vxf ess-5.1.21.tar
+          (or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).
+          (or: from the zip file: `unzip ess-5.1.21.zip')
 
      The `tar' command will extract files into the current directory.
 
      Do not create `ess-5.1.21' yourself, or you will get an extra level
-         of   depth to your directory structure.
+     of depth to your directory structure.
 
-  4.      Windows users will usually be able to use the
-     `lisp/ess-site.el'      as distributed.  Only rarely will changes
-     be needed.
+  4. Windows users will usually be able to use the `lisp/ess-site.el'
+     as distributed.  Only rarely will changes be needed.
 
-  5.       Windows users will need to make sure that the directories
-     for the      software they will be using is in the PATH
-     environment variable.  On      Windows 9x, add lines similar to
-     the following to your      `c:\autoexec.bat'      file:
-                   path=%PATH%;c:\progra~1\spls2000\cmd
-          On Windows NT/2000, add the directories to the PATH using the
-         MyComputer menu.  Note that the directory containing the
-     program is      added to the PATH, not the program itself.  One
-     such line is needed      for each software program.  Be sure to
-     use the abbreviation      `progra~1' and not the long version with
-     embedded blanks.  Use      backslashes "\".
+  5.  Windows users will need to make sure that the directories for the
+     software they will be using is in the PATH environment variable.
+     On Windows 9x, add lines similar to the following to your
+     `c:\autoexec.bat' file:
+          path=%PATH%;c:\progra~1\spls2000\cmd
+     On Windows NT/2000, add the directories to the PATH using the
+     MyComputer menu.  Note that the directory containing the program is
+     added to the PATH, not the program itself.  One such line is needed
+     for each software program.  Be sure to use the abbreviation
+     `progra~1' and not the long version with embedded blanks.  Use
+     backslashes "\".
 
-  6.       Add the line
-                      (load "/PATH/ess-site")
-          to your .emacs (or _emacs) file (or default.el or
-     site-init.el, for      a site-wide installation).  Replace `/PATH'
-     above with the      value of ess-lisp-directory as defined in
-     `ess-site.el'.  Use      forwardslashes `/'.
+  6.  Add the line
+          (load "/PATH/ess-site")
+     to your .emacs (or _emacs) file (or default.el or site-init.el, for
+     a site-wide installation).  Replace `/PATH' above with the value
+     of ess-lisp-directory as defined in `ess-site.el'.  Use
+     forwardslashes `/'.
 
-  7.       (OPTIONAL) If you are running Sqpe or R, you might consider
-        installing the database files.  From within (X)Emacs, `C-x d'
-     to      the   directory containing ESS.  Now:
-                           M-x Sqpe+6
-            (get running.  once you have reached the SPLUS prompt, do:)
-                           M-x ess-create-object-name-db
-            (this will create the file `ess-s+6-namedb.el'; if it isn't
-     in the        ESS directory, move it there).
+  7.  (OPTIONAL) If you are running Sqpe or R, you might consider
+     installing the database files.  From within (X)Emacs, `C-x d' to
+     the   directory containing ESS.  Now:
+          M-x Sqpe+6
+     (get running.  once you have reached the SPLUS prompt, do:)
+          M-x ess-create-object-name-db
+     (this will create the file `ess-s+6-namedb.el'; if it isn't in the
+     ESS directory, move it there).
 
      Then, completions will be autoloaded and will not be regenerated
-       for every session.
+     for every session.
 
      For R, do the same, using
-                          M-x R
-          and then `M-x ess-create-object-name-db' creating
+          M-x R
+     and then `M-x ess-create-object-name-db' creating
      `ess-r-namedb.el'; if it isn't in the ESS directory, move it
      there).
 
-  8.       For more information on using ESS in your daily work, see the
-         files doc/README.SPLUS4WIN, doc/README.S, doc/README.SAS, and
-         doc/README.XLispStat.
+  8.  For more information on using ESS in your daily work, see the
+     files doc/README.SPLUS4WIN, doc/README.S, doc/README.SAS, and
+     doc/README.XLispStat.
 
      For the impatient, the quick version of usage follows:
 
-  9.       To edit statistical programs, load the files with the
-     requisite      extensions  (".sas" for SAS, ".S" or "s" or "q" or
-     "Q" for S-PLUS,      ".r" or ".R" for R, and ".lsp"   for
-     XLispStat).
+  9.  To edit statistical programs, load the files with the requisite
+     extensions  (".sas" for SAS, ".S" or "s" or "q" or "Q" for S-PLUS,
+     ".r" or ".R" for R, and ".lsp"   for XLispStat).
 
- 10.       To run statistical processes under (X)Emacs:
+ 10.  To run statistical processes under (X)Emacs:
 
      Run S-PLUS 6.x or 2000 with:
-                    	M-x S+6
-            (or `M-x S').  You will then be      asked for a pathname
-     ("S starting data directory?"), from which to      start the
-     process.  The prompt will propose your current directory      as
-     the default.  Similarly for S-PLUS 6.x.  Send lines or regions
-     from the emacs buffer containing your S program (for example,
-     `myfile.s') to the S-Plus Commands Window with the      `C-c C-n'
-     or `C-c C-r' keys.
+          M-x S+6
+          (or `M-x S').
+     You will then be asked for a pathname ("S starting data
+     directory?"), from which to start the process.  The prompt will
+     propose your current directory as the default.  Similarly for
+     S-PLUS 6.x.  Send lines or regions from the emacs buffer
+     containing your S program (for example, `myfile.s') to the S-Plus
+     Commands Window with the `C-c C-n' or `C-c C-r' keys.
 
      Run S-PLUS 6.x or 2000 inside an emacs buffer
-                    	M-x Sqpe+6
-          You will then be asked for a pathname ("S starting data
+          M-x Sqpe+6
+     You will then be asked for a pathname ("S starting data
      directory?"), from which to start the process.  The prompt will
-      propose your current directory as the default.  Similarly for
-     S-PLUS      6.x.  Send lines or regions from the emacs buffer
-     containing your S      program (for example, `myfile.s') to the
-     *S+6* buffer with the      `C-c C-n' or `C-c C-r' keys.  You do
-     not have access to      interactive graphics in      this mode.
-     You get Unix-like behavior, in particular the entire
-     transcript is available for emacs-style search commands.
+     propose your current directory as the default.  Similarly for
+     S-PLUS 6.x.  Send lines or regions from the emacs buffer
+     containing your S program (for example, `myfile.s') to the *S+6*
+     buffer with the `C-c C-n' or `C-c C-r' keys.  You do not have
+     access to interactive graphics in this mode.  You get Unix-like
+     behavior, in particular the entire transcript is available for
+     emacs-style search commands.
 
      If you wish to run R, you can start it with:
-                    	M-x R
+          M-x R
 
      XLispStat can not currently be run with
-                    	M-x XLS
-          Hopefully, this will change.  However, you can still edit with
-         Emacs, and cut and paste the results into the XLispStat
-     *Listener* Window under Microsoft Windows.
+          M-x XLS
+     Hopefully, this will change.  However, you can still edit with
+     Emacs, and cut and paste the results into the XLispStat *Listener*
+     Window under Microsoft Windows.
 
      SAS for Windows uses the batch access with function keys that is
-       described in `doc/README.SAS'.  The user can also edit SAS files
-         in an `ESS[SAS]' buffer and than manually copy and paste them
-     into      an Editor window in the SAS Display Manager.
+     described in `doc/README.SAS'.  The user can also edit SAS files
+     in an `ESS[SAS]' buffer and than manually copy and paste them into
+     an Editor window in the SAS Display Manager.
 
      For Windows, inferior SAS in an `iESS[SAS]' buffer does not work
-       on the local machine.  It does work over a network connection to
-         SAS running on a remote Unix computer.
+     on the local machine.  It does work over a network connection to
+     SAS running on a remote Unix computer.
 
      Reason:  we use ddeclient to interface with programs and SAS
-     doesn't      provide the corresponding ddeserver capability.
+     doesn't provide the corresponding ddeserver capability.
 
  11. That's it!
 
@@ -830,323 +1151,4 @@ Variables for dump files
      Default: `nil'
      Boolean flag signifying whether to keep dump files or to delete
      them after each use.  *Note Source Files::, for more details.
-
-
-File: ess.info,  Node: Indentation variables,  Next: Variables controlling interaction,  Prev: Dump file variables,  Up: Variables
-
-Variables controlling indentation
----------------------------------
-
- - User Option: ess-tab-always-indent
-     Default: `t'
-     If non-`nil', then `TAB' in the edit buffer always indents the
-     current line, regardless of the position of point in the line.
-     Otherwise, indentation is only performed if point is in the lines
-     indentation, and a tab character is inserted is point is after the
-     first nonblank character.
-
- - User Option: ess-auto-newline
-     Default: `nil'
-     Non-`nil' means automatically newline before and after braces
-     inserted in S code.
-
-   The following variables control amounts of indentation.  These
-variables automatically become buffer-local in any ESS buffer, and so
-setting any of these variables has effect in the current buffer only.
-
- - User Option: ess-indent-level
-     Default: 2
-     Extra indentation of S statement sub-block with respect to
-     enclosing braces.
-
- - User Option: ess-brace-imaginary-offset
-     Default: 0
-     Extra indentation (over sub-block indentation) for block following
-     an open brace which follows on the same line as a statement.
-
- - User Option: ess-brace-offset
-     Default: 0
-     Extra indentation for braces, compared with other text in same
-     context.
-
- - User Option: ess-continued-statement-offset
-     Default: 0
-     Extra indent for lines not starting new statements.
-
- - User Option: ess-continued-brace-offset
-     Default: 0
-     Extra indent for substatements that start with open-braces.  This
-     is in addition to `ess-continued-statement-offset'.
-
- - User Option: ess-arg-function-offset
-     Default: 2
-     Extra indent for arguments of function `foo' when it is called as
-     the value of an argument to another function in `arg=foo(...)'
-     form.  If not number, the statements are indented at
-     open-parenthesis following `foo'.
-
- - User Option: ess-expression-offset
-     Default: 4
-     Extra indent for internal substatements of the call to
-     `expression()' specified in
-          `obj <- expression(...)'
-
-     form.  If not a number, the statements are indented at
-     open-parenthesis following `expression'.
-
- - User Option: ess-else-offset
-     Default: 2
-     Extra indentation of the `else' clause with respect to the
-     corresponding `if'.
-
-In addition, a number of default styles are defined for you (in
-`ess-style-alist'):
-
- - User Option: ess-default-style
-     Default: `DEFAULT'
-     The default formatting style to use in edit buffers.  The DEFAULT
-     style uses the values of the above indentation variables at
-     load-time, so that changing these variables in your `.emacs' file
-     will affect your buffer defaults.  Other styles are: `GNU', `BSD',
-     `K&R', `CLB', and `C++'.  See `ess-cust.el' for the complete
-     definitions of the styles.  *Note Edit buffer::, for more details.
-
-
-File: ess.info,  Node: Variables controlling interaction,  Prev: Indentation variables,  Up: Variables
-
-Variables controlling interaction with the ESS process
-------------------------------------------------------
-
- - User Option: comint-input-ring-size
-     Default: 50
-     Number of commands to store in the command history.
-
- - User Option: ess-execute-in-process-buffer
-     Default: `nil'
-     If this is `nil', then the `ess-execute-' commands (*note Other::)
-     output to a temporary buffer.  Otherwise, the output goes to the
-     ESS process.
-
- - User Option: ess-eval-visibly-p
-     Default: `nil'
-     If non-`nil', then the `ess-eval-' commands (*note Edit buffer::)
-     echo the S commands in the process buffer by default.  In any
-     case, passing a prefix argument to the eval command reverses the
-     meaning of this variable.
-
-
-File: ess.info,  Node: Hooks,  Next: Keybindings,  Prev: Variables,  Up: Customization
-
-Customizing ESS with hooks
-==========================
-
-   ESS provides the following hooks:
-
- - Hook: ess-mode-hook
-     Called every time `ESS' is run.
-
- - Hook: ess-mode-load-hook
-     Called just after the file `ess.el' is loaded.  Useful for setting
-     up your keybindings, etc.
-
- - Hook: ess-pre-run-hook
-     Called before the ESS process is started (e.g., with `M-x S').
-     Good for setting up your directory.
-
- - Hook: ess-post-run-hook
-     Called just after the ESS process starts up.  This can be used to
-     evaluate ESS code at the start of a session, with
-     `ess-eval-visibly', say.
-
- - Hook: inferior-ess-mode-hook
-     For customizing inferior ess mode.  Called after inferior-ess-mode
-     is entered and variables have been initialized.
-
- - Hook: ess-help-mode-hook
-     Called every time when entering ess-help-mode (i.e., an ESS help
-     buffer is generated).
-
- - Hook: ess-send-input-hook
-     Called just before line input is sent to the process.
-
- - Hook: ess-transcript-mode-hook
-     For customizing ESS transcript mode.
-
-
-File: ess.info,  Node: Keybindings,  Prev: Hooks,  Up: Customization
-
-Changing the default ESS keybindings
-====================================
-
-   ESS provides a separate keymaps (keymap variables) for ESS process
-buffers, edit buffers and for help buffers.  The key bindings in the
-edit buffers further depend on the language and dialect in use.
-
- - Keymap: inferior-ess-mode-map
-     Keymap used in the ESS process buffer.  The bindings from
-     `comint-mode-map' are automatically inherited.
-
- - Keymap: ess-mode-map
-     Keymap used within edit (ess-mode) buffers.
-
- - Keymap: ess-eval-map
-     Keymap used within edit buffers for sending ESS code to the running
-     process.
-
- - Keymap: ess-help-mode-map
-     Keymap used within help buffers.  In addition, `ess-help-sec-map'
-     is the keymap for the `s' prefix key.  Keys defined in
-     `ess-help-sec-keys-alist' are automatically inserted into this
-     keymap when ESS is loaded.
-
- - Keymap: ess-transcript-mode-map
-     Keymap used within ESS transcript buffers.
-
-
-File: ess.info,  Node: Key Index,  Next: Command Index,  Prev: Customization,  Up: Top
-
-Key (Character) Index
-*********************
-
-* Menu:
-
-File: ess.info,  Node: Command Index,  Next: Concept Index,  Prev: Key Index,  Up: Top
-
-Command and Function Index
-**************************
-
-* Menu:
-
-* comint-backward-matching-input:        Process buffer motion.
-* comint-forward-matching-input:         Process buffer motion.
-
-
-File: ess.info,  Node: Concept Index,  Next: Variable and command index,  Prev: Command Index,  Up: Top
-
-Concept Index
-*************
-
-* Menu:
-
-* .Data directory:                       Variables for starting ESS.
-* .emacs file <1>:                       Variables for starting ESS.
-* .emacs file <2>:                       System dependent.
-* .emacs file <3>:                       Indenting.
-* .emacs file <4>:                       Source Directories.
-* .emacs file:                           Variables.
-* .First function:                       System dependent.
-* aborting S commands:                   Other.
-* aborting the ESS process:              Other.
-* arguments to S program <1>:            System dependent.
-* arguments to S program:                Customizing startup.
-* authors:                               Credits.
-* autosaving:                            Source Files.
-* Bug reports:                           Reporting Bugs.
-* bugs:                                  Bugs.
-* cleaning up:                           Hot keys.
-* comint:                                Credits.
-* command history:                       Command History.
-* command to run S program:              System dependent.
-* command-line completion:               Completion.
-* command-line editing:                  Command-line editing.
-* commands:                              Entering commands.
-* comments:                              Source Files.
-* comments in S:                         Indenting.
-* completion in edit buffer:             Other edit buffer commands.
-* completion of object names:            Completion.
-* completion on file names:              Completion.
-* completion on lists:                   Completion.
-* completion, when prompted for object names: Edit buffer.
-* continuing prompt:                     System dependent.
-* creating new objects:                  Edit buffer.
-* credits:                               Credits.
-* customization:                         Customization.
-* data frames:                           Completion.
-* debugging S functions:                 Evaluating code.
-* defaults:                              Variables.
-* deleting output:                       Last command.
-* directories <1>:                       Variables for starting ESS.
-* directories:                           Starting Up.
-* DISPLAY environment variable:          Variables for starting ESS.
-* dump file directories:                 Source Directories.
-* dump file names:                       Source Directories.
-* dump files <1>:                        Source Files.
-* dump files <2>:                        Edit buffer.
-* dump files:                            Dump file variables.
-* echoing commands when evaluating:      Evaluating code.
-* edit buffer:                           Edit buffer.
-* editing commands:                      Command History.
-* editing functions:                     Editing.
-* editing transcripts:                   Saving transcripts.
-* entering commands:                     Entering commands.
-* environment variables:                 Variables for starting ESS.
-* errors:                                Error Checking.
-* ESS process buffer:                    Starting Up.
-* ESS process directory:                 Starting Up.
-* evaluating code with echoed commands:  Evaluating code.
-* evaluating S expressions:              Evaluating code.
-* Font-lock mode:                        Highlighting.
-* formatting source code <1>:            Indenting.
-* formatting source code:                Indentation variables.
-* graphics:                              Graphics.
-* help files:                            Help.
-* highlighting:                          Highlighting.
-* historic backups:                      Source Files.
-* hooks:                                 Hooks.
-* hot keys:                              Hot keys.
-* indentation:                           Indentation variables.
-* indenting:                             Indenting.
-* installation:                          Installation.
-* interactive use of S:                  Introduction.
-* interrupting S commands:               Other.
-* introduction:                          Introduction.
-* keyboard short cuts:                   Hot keys.
-* killing temporary buffers:             Hot keys.
-* killing the ESS process:               Hot keys.
-* lists, completion on:                  Completion.
-* motion in transcript mode:             Transcript Mode.
-* multi-line commands, resubmitting:     Transcript resubmit.
-* Multiple ESS processes:                Multiple ESS processes.
-* name of S program:                     System dependent.
-* new objects, creating:                 Edit buffer.
-* objects:                               Hot keys.
-* pages in the process buffer:           Transcript.
-* paging commands in help buffers:       Help.
-* paragraphs in the process buffer:      Transcript.
-* parsing errors:                        Error Checking.
-* primary prompt:                        System dependent.
-* process buffer:                        Starting Up.
-* process names:                         Multiple ESS processes.
-* programming in S:                      Introduction.
-* project work in S:                     Source Files.
-* prompts in S:                          System dependent.
-* quitting from ESS:                     Hot keys.
-* re-executing commands:                 Command History.
-* reading long command outputs:          Last command.
-* reverting function definitions:        Edit buffer.
-* running S:                             Starting Up.
-* S program name:                        System dependent.
-* search list <1>:                       Hot keys.
-* search list:                           Source Directories.
-* sending input:                         Entering commands.
-* Splus:                                 System dependent.
-* starting directory <1>:                Variables for starting ESS.
-* starting directory:                    Starting Up.
-* starting ESS:                          Starting Up.
-* stepping through code:                 Evaluating code.
-* STERM:                                 Is the Statistical Process running under ESS?.
-* tcsh:                                  Completion.
-* temporary buffers:                     Help.
-* temporary buffers, killing:            Hot keys.
-* transcript:                            Transcript.
-* transcript file:                       Customizing startup.
-* transcript file names:                 Saving transcripts.
-* transcript mode motion:                Transcript Mode.
-* transcripts of S sessions:             Introduction.
-* using S interactively:                 Introduction.
-* variables:                             Variables.
-* working directory <1>:                 Starting Up.
-* working directory:                     Source Directories.
-* X windows <1>:                         X11.
-* X windows:                             Variables for starting ESS.
 

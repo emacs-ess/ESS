@@ -15,7 +15,7 @@ Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.1.21
+   This documentation relates to Version 5.1.21 of `ESS'.
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -32,7 +32,7 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.21
 
-   (Documentation $Revision: 1.1 $ $Date: 2002/04/16 02:13:06 $).
+   (Documentation $Revision: 1.2 $ $Date: 2002/05/12 04:46:11 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
      Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and
@@ -54,10 +54,7 @@ ESS: Emacs Speaks Statistics
 * Miscellaneous::               Other features of ESS
 * Bugs Etc::
 * Help for Statistical Packages::
-* Help OS::
 * Installation::                Installing ESS on your system
-* Unix installation::           Installing ESS on your Unix system
-* Microsoft Windows installation::  Installing ESS on your MS Windows system
 * Customization::               Customizing ESS
 * Key Index::
 * Command Index::
@@ -87,8 +84,8 @@ Interacting with the ESS process
 * Transcript::                  Manipulating the transcript
 * Command History::             Command History
 * History expansion::           References to historical commands
-* Is the Statistical Process running under ESS?:: S language options()$STERM
 * Hot keys::                    Hot keys for common commands
+* Statistical Process running in ESS?::
 * Other::                       Other commands provided by inferior-ESS
 
 Manipulating the transcript
@@ -136,10 +133,27 @@ Help for Statistical Packages
 * Help for the S family::
 * Help for SAS::
 
-Help, arranged by Operating System
+Help for the S family
 
-* Help Unix::
-* Help Microsoft::
+* ESS(S)--Editing files::
+* iESS(S)--Inferior ESS processes::
+* Handling and Reusing Transcripts::
+* ESS-help--assistance with viewing help::
+* Philosophies for using ESS(S)::
+* Scenarios for use (possibilities--based on actual usage)::
+* Customization Examples and Solutions to Problems::
+
+Help for SAS
+
+* ESS(SAS)--Design philosophy::
+* ESS(SAS)--Recommended autoexec::
+* ESS(SAS)--Editing files::
+* iESS(SAS)--Inferior ESS processes::
+* ESS(SAS)--Batch processes::
+* ESS(SAS)--Function keys for batch processing::
+* ESS(SAS)--TAB key::
+* ESS(SAS)--Usage scenarios::
+* ESS(SAS)--Common problems::
 
 Installing ESS on your system
 
@@ -185,7 +199,8 @@ which is a second GNU version of Emacs.  The Emacs major mode
 inferior process interface (the connection between Emacs and the
 running process) referred to as interactive ESS (`iESS'), is denoted in
 the modeline by `ESS[dialect]', where `dialect' can take values `S3',
-`S4', `S+3', `R', `XLS', `VST', `SAS', as well as others.
+`S4', `S+3', `S+4', `S+5', `S+6', `R', `XLS', `VST', `SAS', as well as
+others.
 
    Currently, the documentation contains many references to ``S'' where
 actually any supported (statistics) language is meant, i.e., `S' could
@@ -305,9 +320,15 @@ New features in ESS
    * ESS[SAS]: info documentation now available!, see ESS->Help for
      Statistical Packages->Help for SAS; F12 opens GSASFILE nearest
      point for viewing either within emacs, when available, or via an
-     external viewer; more syntax highlighting keywords
+     external viewer; more syntax highlighting keywords; more
+     enhancements for remote SAS batch jobs with Kermit; new framework
+     for remote SAS interactive jobs, see ess-remote
 
-   * Makefile: tag now independent of rel
+   * ESS[S]: info documentation now available!, see ESS->Help for
+     Statistical Packages->Help for the S family
+
+   * Makefile: tag now independent of rel; info files made by
+     doc/Makefile and installed in new info sub-directory
 
    Changes/New Features in 5.1.20:
    * New `options()$STERM' in the S dialects (S, S-Plus, R).  The S
@@ -562,8 +583,8 @@ Getting the latest version of ESS
 =================================
 
    The latest stable version of ESS is always available on the web at:
-ESS web page (http://software.biostat.washington.edu/statsoft/ess/) or
-StatLib (http://lib.stat.cmu.edu/general/ESS/)
+ESS web page (http://software.biostat.washington.edu/ess/) or StatLib
+(http://lib.stat.cmu.edu/general/ESS/)
 
    The latest (no more than 24 hours behind the developers) version of
 ESS can also be retrieved using anonymous cvs:
@@ -718,8 +739,8 @@ commands are also provided for ease of typing.
 * Transcript::                  Manipulating the transcript
 * Command History::             Command History
 * History expansion::           References to historical commands
-* Is the Statistical Process running under ESS?:: S language options()$STERM
 * Hot keys::                    Hot keys for common commands
+* Statistical Process running in ESS?::
 * Other::                       Other commands provided by inferior-ESS
 
 
@@ -1112,90 +1133,4 @@ good idea to bind these commands to some other keys.)
 
    *Note Shell History Ring: (emacs)Shell Ring, for a more detailed
 discussion of the history mechanism.
-
-
-File: ess.info,  Node: History expansion,  Next: Hot keys,  Prev: Command History,  Up: Entering commands
-
-References to historical commands
-=================================
-
-   Instead of searching through the command history using the command
-described in the previous section, you can alternatively refer to a
-historical command directly using a notation very similar to that used
-in `csh'.  History references are introduced by a `!' or `^' character
-and have meanings as follows:
-
-`!!'
-     The immediately previous command
-
-`!-N'
-     The Nth previous command
-
-`!text'
-     The last command beginning with the string `text'
-
-`!?text'
-     The last command containing the string `text'
-
-   In addition, you may follow the reference with a "word designator"
-to select particular "words" of the input.  A word is defined as a
-sequence of characters separated by whitespace.  (You can modify this
-definition by setting the value of `comint-delimiter-argument-list' to
-a list of characters that are allowed to separate words and themselves
-form words.)  Words are numbered beginning with zero.  The word
-designator usually begins with a `:' (colon) character; however it may
-be omitted if the word reference begins with a `^', `$', `*' or `-'.
-If the word is to be selected from the previous command, the second `!'
-character can be omitted from the event specification.  For instance,
-`!!:1' and `!:1' both refer to the first word of the previous command,
-while `!!$' and `!$' both refer to the last word in the previous
-command.  The format of word designators is as follows:
-
-`0'
-     The zeroth word (i.e. the first one on the command line)
-
-`N'
-     The Nth word, where N is a number
-
-`^'
-     The first word (i.e. the second one on the command line)
-
-`$'
-     The last word
-
-`X-Y'
-     A range of words; `-Y' abbreviates `0-Y'
-
-`*'
-     All the words except the zeroth word, or nothing if the command
-     had just one word (the zeroth)
-
-`X*'
-     Abbreviates X-$
-
-`X-'
-     Like `X*', but omitting the last word
-
-   In addition, you may surround the entire reference except for the
-first `!' by braces to allow it to be followed by other (non-whitespace)
-characters (which will be appended to the expanded reference).
-
-   Finally, ESS also provides quick substitution; a reference like
-`^old^new^' means "the last command, but with the first occurrence of
-the string `old' replaced with the string `new'" (the last `^' is
-optional).  Similarly, `^old^' means "the last command, with the first
-occurrence of the string `old' deleted" (again, the last `^' is
-optional).
-
-   To convert a history reference as described above to an input
-suitable for S, you need to "expand" the history reference, using the
-<TAB> key.  For this to work, the cursor must be preceded by a space
-(otherwise it would try to complete an object name) and not be within a
-string (otherwise it would try to complete a filename).  So to expand
-the history reference, type `SPC TAB'.  This will convert the history
-reference into an S command from the history, which you can then edit
-or press <RET> to execute.
-
-   For example, to execute the last command that referenced the variable
-`data', type `!?data SPC TAB RET'.
 

@@ -15,7 +15,7 @@ Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.1.21
+   This documentation relates to Version 5.1.21 of `ESS'.
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -26,91 +26,95 @@ University of Washington, Seattle, WA 98185, USA
 
 
 Indirect:
-ess.info-1: 983
-ess.info-2: 50797
-ess.info-3: 99880
-ess.info-4: 147585
+ess.info-1: 993
+ess.info-2: 48263
+ess.info-3: 98122
+ess.info-4: 146312
 
 Tag Table:
 (Indirect)
-Node: Top983
-Node: Introduction5732
-Node: Features8822
-Node: New features11913
-Node: Credits19893
-Node: Latest version22012
-Node: Manual22906
-Node: Starting Up23794
-Node: Multiple ESS processes24585
-Node: Customizing startup25937
-Node: Entering commands27912
-Node: Command-line editing29185
-Node: Completion30464
-Node: Completion details33231
-Ref: Completion details-Footnote-135141
-Node: Transcript35420
-Node: Last command37200
-Node: Process buffer motion38809
-Node: Transcript resubmit40343
-Node: Saving transcripts42941
-Node: Command History44975
-Node: History expansion47594
-Node: Hot keys50797
-Node: Is the Statistical Process running under ESS?54263
-Node: Other55567
-Node: Editing56638
-Node: Edit buffer57796
-Node: Loading59844
-Node: Error Checking60889
-Node: Evaluating code61930
-Node: Indenting65405
-Node: Other edit buffer commands68421
-Node: Source Files70294
-Node: Source Directories74825
-Node: Help77952
-Node: Transcript Mode81520
-Node: Resubmit82655
-Node: Clean83730
-Node: Miscellaneous84444
-Node: Highlighting84808
-Node: Graphics86219
-Node: printer86693
-Node: X1187455
-Node: Object Completion88123
-Node: Bugs Etc88931
-Node: Bugs89169
-Node: Reporting Bugs90417
-Node: Mailing Lists90948
-Node: Help for Statistical Packages91665
-Node: Help for the S family91878
-Node: Help for SAS92066
-Node: ESS[SAS]--Design philosophy92954
-Node: ESS[SAS]--Recommended autoexec.sas94771
-Node: ESS[SAS]--Editing files96157
-Node: iESS--Inferior ESS processes97745
-Node: ESS[SAS]--Batch processes98301
-Node: ESS[SAS]--Function keys for batch processing99880
-Node: ESS[SAS]--TAB key106449
-Node: ESS[SAS]--Usage scenarios107649
-Node: ESS[SAS]--Common problems112868
-Node: Help OS114384
-Node: Help Unix114601
-Node: Help Microsoft114719
-Node: Installation114903
-Node: Unix installation115529
-Node: Microsoft Windows installation120780
-Node: System dependent127218
-Node: Customization129493
-Node: Variables130164
-Node: Variables for starting ESS130989
-Node: Dump file variables133002
-Node: Indentation variables134173
-Node: Variables controlling interaction137154
-Node: Hooks138007
-Node: Keybindings139153
-Node: Key Index140184
-Node: Command Index140327
-Node: Concept Index140610
-Node: Variable and command index147585
+Node: Top993
+Node: Introduction6102
+Node: Features9213
+Node: New features12304
+Node: Credits20608
+Node: Latest version22727
+Node: Manual23612
+Node: Starting Up24500
+Node: Multiple ESS processes25291
+Node: Customizing startup26643
+Node: Entering commands28618
+Node: Command-line editing29854
+Node: Completion31133
+Node: Completion details33900
+Ref: Completion details-Footnote-135810
+Node: Transcript36089
+Node: Last command37869
+Node: Process buffer motion39478
+Node: Transcript resubmit41012
+Node: Saving transcripts43610
+Node: Command History45644
+Node: History expansion48263
+Node: Hot keys51466
+Node: Statistical Process running in ESS?54922
+Node: Other56216
+Node: Editing57277
+Node: Edit buffer58435
+Node: Loading60483
+Node: Error Checking61528
+Node: Evaluating code62569
+Node: Indenting66044
+Node: Other edit buffer commands69060
+Node: Source Files70933
+Node: Source Directories75464
+Node: Help78591
+Node: Transcript Mode82159
+Node: Resubmit83294
+Node: Clean84369
+Node: Miscellaneous85083
+Node: Highlighting85447
+Node: Graphics86858
+Node: printer87332
+Node: X1188094
+Node: Object Completion88762
+Node: Bugs Etc89570
+Node: Bugs89808
+Node: Reporting Bugs91056
+Node: Mailing Lists91587
+Node: Help for Statistical Packages92304
+Node: Help for the S family92461
+Node: ESS(S)--Editing files92949
+Node: iESS(S)--Inferior ESS processes93997
+Node: Handling and Reusing Transcripts96056
+Node: ESS-help--assistance with viewing help96668
+Node: Philosophies for using ESS(S)96990
+Node: Scenarios for use (possibilities--based on actual usage)98122
+Node: Customization Examples and Solutions to Problems102949
+Node: Help for SAS104231
+Node: ESS(SAS)--Design philosophy105120
+Node: ESS(SAS)--Recommended autoexec106928
+Node: ESS(SAS)--Editing files108316
+Node: iESS(SAS)--Inferior ESS processes109905
+Node: ESS(SAS)--Batch processes110476
+Node: ESS(SAS)--Function keys for batch processing112417
+Node: ESS(SAS)--TAB key119445
+Node: ESS(SAS)--Usage scenarios120645
+Node: ESS(SAS)--Common problems125864
+Node: Installation127355
+Node: Unix installation128090
+Node: Microsoft Windows installation133355
+Node: System dependent139357
+Node: Customization141632
+Node: Variables142303
+Node: Variables for starting ESS143128
+Node: Dump file variables145141
+Node: Indentation variables146312
+Node: Variables controlling interaction149293
+Node: Hooks150146
+Node: Keybindings151292
+Node: Key Index152323
+Node: Command Index152466
+Node: Concept Index152749
+Node: Variable and command index159714
 
 End Tag Table
