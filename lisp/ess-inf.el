@@ -7,12 +7,16 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/24 11:21:06 $
-;; Version: $Revision: 1.41 $
-;; RCS: $Id: ess-inf.el,v 1.41 1997/07/24 11:21:06 rossini Exp $
+;; Modified: $Date: 1997/07/24 12:25:12 $
+;; Version: $Revision: 1.42 $
+;; RCS: $Id: ess-inf.el,v 1.42 1997/07/24 12:25:12 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.42  1997/07/24 12:25:12  rossini
+;; 'font-lock-defaults is ONLY buffer-local by default in XEmacs.  Not
+;; Emacs.   (why?).
+;;
 ;; Revision 1.41  1997/07/24 11:21:06  rossini
 ;; ess-mode-version -> ESS-version
 ;;
@@ -1259,8 +1263,9 @@ to continue it."
 	 (setq comint-input-sender 'inferior-R-input-sender)))
 
   ;; Font-lock support
-  ;; AJR: This is already the case!
-  ;;(make-local-variable 'font-lock-defaults)
+  ;; AJR: This (the following local-var is already the case!   
+  ;; KH sez; only in XEmacs :-(. 
+  (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults
 	'(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
 
