@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/10/20 20:05:08 $
-;; Version: $Revision: 1.49 $
-;; RCS: $Id: ess-site.el,v 1.49 1997/10/20 20:05:08 rossini Exp $
+;; Modified: $Date: 1997/10/21 13:41:08 $
+;; Version: $Revision: 1.50 $
+;; RCS: $Id: ess-site.el,v 1.50 1997/10/21 13:41:08 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -92,7 +92,8 @@
 	   ("\\.lsp\\'"                               . XLS-mode)
 	   ("\\.sas\\'"                               . SAS-mode)
 	   ("\\.SAS\\'"                               . SAS-mode)
-	   ("\\.lst\\'"                               . SASout-mode);sasl
+	   ("\\.lst\\'"                               . SAS-listing-mode);sasl
+	   ("\\.log\\'"                               . SAS-log-mode);sasl
 	   ("\\.[Ss]\\(ou\\)?t\\'"                    . S-transcript-mode)
 	   ("\\.[Rr]\\(ou\\)?t\\'"                    . R-transcript-mode)
 	   ("\\.Rd\\'"                                . Rd-mode))
@@ -132,12 +133,12 @@
 (require 'essd-r)
 (require 'essd-xls)
 (require 'essd-sas)
-(require 'essd-s4)  ;; or this one...
+(require 'essd-s4)
 
 ;;TODO, for 5.0 :-), or rare.
 ;;(require 'essd-s3)  ; You might not have this
 ;;(require 'essd-vst) ; built on essd-xls.
-;;(require 'essd-s+4)
+;;(require 'essd-s+4) ; not for Unix, yet.
 
 
 (require 'ess)
