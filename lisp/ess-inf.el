@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/02 01:47:08 $
-;; Version: $Revision: 1.58 $
-;; RCS: $Id: ess-inf.el,v 1.58 1997/10/02 01:47:08 rossini Exp $
+;; Modified: $Date: 1997/10/07 19:43:28 $
+;; Version: $Revision: 1.59 $
+;; RCS: $Id: ess-inf.el,v 1.59 1997/10/07 19:43:28 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -119,9 +119,11 @@ accompany the call for inferior-ess-program.
   (interactive "P")
   ;; set up for current language (need here, to get ess-language,
   ;; etc).
-  (set-buffer ess-dribble-buffer)
-  (ess-setq-vars-default ess-customize-alist (current-buffer))
+  (save-excursion 
+    (set-buffer ess-dribble-buffer)
+    (ess-setq-vars-default ess-customize-alist (current-buffer)))
 
+  (ess-setq-vars-local ess-customize-alist (current-buffer))
   ;; run hooks now, to overwrite the above!
   (run-hooks 'ess-pre-run-hook)    
   (ess-write-to-dribble-buffer 
@@ -314,7 +316,7 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
 	(setq comint-input-ring-file-name
 	      (expand-file-name ess-history-file ess-directory))
 	(comint-read-input-ring)
-	(run-hooks 'ess-pre-run-hook)
+	;;(run-hooks 'ess-pre-run-hook) ONLY IN 'inferior-ess'
 	(set-buffer
 	 (if switches
 	     (inferior-ess-make-comint buf-name-str proc-name switches)
@@ -751,9 +753,8 @@ Prefix arg. VIS-TOGGLE  toggle visibility of ess-code  as for ess-eval-region."
   "Send the current region to the inferior S process.
 With prefix argument, toggle meaning of ess-eval-visibly-p."
   (interactive "r\nP")
-  ;; next line is STUPID.
-  ;;  (require 'ess-inf)			; for ess-eval-visibly-p
   (ess-force-buffer-current "Process to load into: ")
+  (untabify start end) ;; do we really need to save-excursion?
   (let ((visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p)))
     (if visibly
  	(ess-eval-visibly (buffer-substring start end))
@@ -1453,7 +1454,8 @@ A newline is automatically added to COMMAND."
     (save-excursion
       (set-buffer tbuffer)
       (buffer-disable-undo tbuffer)
-      (ess-command (concat command "\n") tbuffer)
+      ;(ess-command (concat command "\n") tbuffer)
+      (ess-command command tbuffer) ; thanks, KH.
       (goto-char (point-min))
       (if (not (looking-at "\\s-*\\[1\\]"))
 	  (setq names nil)
