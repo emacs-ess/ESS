@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/06/06 20:44:29 $
-;; Version: $Revision: 5.75 $
-;; RCS: $Id: ess-site.el,v 5.75 2001/06/06 20:44:29 ess Exp $
+;; Modified: $Date: 2001/06/13 18:20:44 $
+;; Version: $Revision: 5.76 $
+;; RCS: $Id: ess-site.el,v 5.76 2001/06/13 18:20:44 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -327,7 +327,9 @@ The extension, in a file name, is the part that follows the last `.'."
 (ess-message "[ess-site:] require 'essd-sp3 ...")
 (require 'essd-sp3)  ;; "sp" refers to S-PLUS (MathSoft/StatSci).
 
-(if (or (equal window-system 'w32) (equal window-system 'win32))
+(if (or (equal window-system 'w32)
+	(equal window-system 'win32)
+	(equal window-system 'mswindows))
     (progn
       (ess-message "[ess-site:] require 'essd-sp4 ...")
       (require 'essd-sp4)
