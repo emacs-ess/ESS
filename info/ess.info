@@ -15,9 +15,9 @@ ESS: Emacs Speaks Statistics
 
 ESS version
 
-   5.2.0beta4
+   5.2.0rc1
 
-   (Documentation $Revision: 1.21 $ $Date: 2004/03/04 15:38:58 $).
+   (Documentation $Revision: 1.22 $ $Date: 2004/04/21 15:04:42 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -199,9 +199,6 @@ New features in ESS
 ===================
 
 Changes/New Features in 5.2.0:
-   * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
-     pressing underscore twice inserts a literal underscore.
-
    * ESS[BUGS]:  new info documentation!  now supports interactive
      processing thanks to Aki Vehtari (mailto:Aki.Vehtari@hut.fi); new
      architecture-independent unix support as well as support for BUGS
@@ -217,19 +214,29 @@ Changes/New Features in 5.2.0:
      rather than 0/1; added the function ess-electric-run-semicolon
      which automatically reverse indents lines containing only "run;";
      C-F1 creates MS RTF portrait from the current buffer; C-F2 creates
-     MS RTF landscape from the current buffer; C-F9 kills all buffers
-     associated with .sas program
+     MS RTF landscape from the current buffer; C-F9 opens a SAS DATASET
+     with PROC INSIGHT rather than PROC FSVIEW; C-F10 kills all buffers
+     associated with .sas program; "inferior" aliases for SAS batch:
+     C-c C-r for submit region, C-c C-b for submit buffer, C-c C-x for
+     goto .log; C-c C-y for goto .lst
 
-   * ESS[S]:  ess-dump-filename-template-proto (new name!) now can be
-     customized successfully (for S language dialects).
-
-   * ESS[S]:  ess-help: Now using nice underlines (instead of `nuke-*
-     ^H_')
+   * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
+     pressing underscore twice inserts a literal underscore;
+     ess-dump-filename-template-proto (new name!) now can be customized
+     successfully (for S language dialects); ess-help: Now using nice
+     underlines (instead of `nuke-* ^H_')
 
    * ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
-     numbers from any Emacs buffer into an existing *R* process.
+     numbers from any Emacs buffer into an existing *R* process; M-x
+     ess-rdired gives a "directory editor" of R objects; fixed
+     ess-retr-lastvalue-command, i.e. .Last.value bug (thanks to David
+     Brahm)
 
-   * ESS[R]:  M-x ess-rdired gives a "directory editor" of R objects.
+   * ESS: Support for creating new window frames has been added to ESS.
+     Inferior ESS processes can be created in dedicated frames by
+     setting inferior-ess-own-frame to t.  ESS help buffers can also
+     open in new frames; see the documentation for ess-help-own-frame
+     for details.  (Thanks to Kevin Rodgers for contributing code.)
 
    Changes/New Features in 5.1.24:
    * The version number is now correct even inside ESS/Emacs
@@ -826,7 +833,7 @@ File: ess.info,  Node: Requirements,  Prev: Microsoft Windows installation,  Up:
 Requirements
 ============
 
-ESS has been most thoroughly tested with:
+ESS has been tested with
 
    * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
 
@@ -834,9 +841,9 @@ ESS has been most thoroughly tested with:
 
    * S4
 
-   * SAS >=6.x
+   * SAS >=6.12
 
-   * BUGS 0.603
+   * BUGS 0.5, 0.603
 
    * Stata >=6.0
 
@@ -856,14 +863,14 @@ ESS has been most thoroughly tested with:
 
    * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
 
-   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13(1), 21.4.14
+   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17(1), 21.4.14-15
 
    * GNU Emacs <20.3 and XEmacs <21.0(2)
 
    ---------- Footnotes ----------
 
-   (1) requires the files.el patch for the Local Variables updating
-problem
+   (1) requires the files.el patch to revert-buffer for the Local
+Variables updating problem
 
    (2) These releases of emacs are no longer supported, so an upgrade
 is recommended if you plan to use ESS.  If you have GNU Emacs 19.29,
@@ -871,8 +878,7 @@ see *Note Unix installation::.  Also, note that the `custom' library
 bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 `new custom' bundled with recent Emacsen.  The `new custom' for Emacs
 19.34 is available for download here
-(ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz)
-.
+(ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz).
 
 
 File: ess.info,  Node: System dependent,  Prev: Installation,  Up: Installation
@@ -1698,13 +1704,13 @@ person installing ESS for a site or by an individual.
 recognize some of the nicknames as SAS Display Manager commands (they
 are in all capitals).
 
-     Unix PC  Nickname   Description
+     Unix PC  Nickname   "inferior" Alias (if any) and Description
      
      F2   F2  refresh
                          revert the current buffer with the file of the same
                          name if the file is newer than the buffer
      
-     F3   F8  SUBMIT
+     F3   F8  SUBMIT     C-c C-b
                          save the current .sas file (which is either the .sas
                          file in the current buffer or the .sas file associated
                          with the .lst or .log file in the current buffer) and
@@ -1713,11 +1719,11 @@ are in all capitals).
      F4   F5  PROGRAM
                          switch buffer to .sas file
      
-     F5   F6  LOG
+     F5   F6  LOG        C-c C-x
                          switch buffer to .log file, `refresh' and goto next
                          error message, if any
      
-     F6   F7  OUTPUT
+     F6   F7  OUTPUT     C-c C-y
                          switch buffer to .lst file and `refresh'
      
      F7   F4  filetype-1
@@ -1751,7 +1757,7 @@ are in all capitals).
                          create an MS RTF landscape file from the current buffer
                          with a file extension of .rtf
      
-     C-F3 C-F8 submit-region
+     C-F3 C-F8 submit-region C-c C-r
                          write region to ess-temp.sas and submit
      
      C-F5 C-F6 append-to-log
@@ -1760,7 +1766,11 @@ are in all capitals).
      C-F6 C-F7 append-to-output
                          append ess-temp.lst to the current .lst file
      
-     C-F9 C-F9 kill-em-all
+     C-F9 C-F9 INSIGHT
+                         open an interactive INSIGHT session on the SAS
+                         dataset near point
+     
+     C-F10 C-F10 kill-em-all
                          kill all buffers associated with a .sas program
 
    SUBMIT, PROGRAM, LOG and OUTPUT need no further explanation since
@@ -1812,6 +1822,11 @@ using, emacs may support .gif and .jpg files internally.  You may need
 to change the following two variables for your own situation:
      (setq ess-sas-graph-suffix-regexp "[.]\\(e?ps\\|gif\\|jpe?g\\|tiff?\\)")
      (setq ess-sas-image-viewer "kodakimg") ;; Windows default
+
+   C-F2 produces US landscape by default, however, it can produce A4
+landscape (first line for "global" key mapping, second for "local"):
+     (global-set-key [(control f2)] 'ess-sas-rtf-a4-landscape)
+     (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-a4-landscape)
 
 
 File: ess.info,  Node: ESS(SAS)--TAB key,  Next: ESS(SAS)--Usage scenarios,  Prev: ESS(SAS)--Function keys for batch processing,  Up: Help for SAS
@@ -3647,6 +3662,10 @@ which affect the behavior of ESS in certain situations which can be
 modified to your liking.  Keybindings may be set or changed to your
 preferences, and for per-buffer customizations hooks are also available.
 
+   Most of these variables can be viewed and set using the Custom
+facility within Emacs.  Type `M-x customize-group RET ess RET' to see
+all the ESS variables that can be customized.
+
 * Menu:
 
 * Variables::                   Variables for customization
@@ -3677,6 +3696,8 @@ the new value into the template above.
 * Indentation variables::       Variables controlling indentation
 * Variables controlling interaction::  Variables controlling interaction
 					with the ESS process
+* Editing assembly files::      Variables for restoring assembly mode
+                                        associations
 
 
 File: ess.info,  Node: Variables for starting ESS,  Next: Dump file variables,  Prev: Variables,  Up: Variables
@@ -3835,7 +3856,7 @@ In addition, a number of default styles are defined for you (in
      definitions of the styles.  *Note Edit buffer::, for more details.
 
 
-File: ess.info,  Node: Variables controlling interaction,  Prev: Indentation variables,  Up: Variables
+File: ess.info,  Node: Variables controlling interaction,  Next: Editing assembly files,  Prev: Indentation variables,  Up: Variables
 
 Variables controlling interaction with the ESS process
 ------------------------------------------------------
@@ -3856,6 +3877,26 @@ Variables controlling interaction with the ESS process
      echo the S commands in the process buffer by default.  In any
      case, passing a prefix argument to the eval command reverses the
      meaning of this variable.
+
+
+File: ess.info,  Node: Editing assembly files,  Prev: Variables controlling interaction,  Up: Variables
+
+Variables for restoring assembly mode associations
+--------------------------------------------------
+
+ - User Option: auto-mode-alist
+     Association list mapping file extensions to emacs modes.
+
+   If you edit assembler files but not S files, you may want to retain
+the default mode for the .s and .S extensions, namely assembler mode.
+ESS provides a function, `ess-restore-asm-extns' that you can use to
+restore default behavior for these files.
+
+   You can add the following lisp to your `.emacs':
+     (add-hook 'ess-mode-hook 'ess-restore-asm-extns)
+     (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
+
+This code removes the association between .s and .S files and S mode.
 
 
 File: ess.info,  Node: Hooks,  Next: Keybindings,  Prev: Variables,  Up: Customization
@@ -3951,6 +3992,7 @@ Concept Index
 * aborting the ESS process:              Other.
 * arguments to S program <1>:            Customizing startup.
 * arguments to S program:                System dependent.
+* Assembler mode:                        Editing assembly files.
 * authors:                               Credits.
 * autosaving:                            Source Files.
 * Bug reports:                           Reporting Bugs.
@@ -4073,6 +4115,7 @@ Variable and command index
 * Menu:
 
 * attach():                              Hot keys.
+* auto-mode-alist:                       Editing assembly files.
 * backward-kill-word:                    Command-line editing.
 * comint-backward-matching-input:        Process buffer motion.
 * comint-bol:                            Command-line editing.
@@ -4174,6 +4217,7 @@ Variable and command index
 * ess-quit:                              Other.
 * ess-remote:                            ESS processes on Remote Computers.
 * ess-request-a-process:                 Multiple ESS processes.
+* ess-restore-asm-extns:                 Editing assembly files.
 * ess-resynch:                           Completion details.
 * ess-search-list:                       Source Directories.
 * ess-send-input-hook:                   Hooks.
@@ -4228,95 +4272,96 @@ Variable and command index
 
 Tag Table:
 Node: Top249
-Node: Introduction2045
-Node: Features5011
-Node: New features8099
-Node: Credits18757
-Node: Latest version20952
-Node: Manual21806
-Node: Installation22567
-Node: Unix installation23360
-Node: Microsoft Windows installation27168
-Node: Requirements33096
-Ref: Requirements-Footnote-133853
-Ref: Requirements-Footnote-233930
-Node: System dependent34397
-Node: Starting up36670
-Node: Multiple ESS processes37500
-Node: ESS processes on Remote Computers38800
-Node: S+elsewhere and ESS-elsewhere41683
-Node: Customizing startup44434
-Node: Help for the S family46417
-Node: ESS(S)--Editing files46861
-Node: iESS(S)--Inferior ESS processes47906
-Node: Handling and Reusing Transcripts50043
-Node: ESS-help--assistance with viewing help50654
-Node: Philosophies for using ESS(S)50976
-Node: Scenarios for use (possibilities--based on actual usage)52105
-Node: Customization Examples and Solutions to Problems56929
-Node: Help for SAS58208
-Node: ESS(SAS)--Design philosophy58953
-Node: ESS(SAS)--Editing files59869
-Node: iESS(SAS)--Interactive SAS processes61761
-Node: ESS(SAS)--Batch SAS processes63530
-Node: ESS(SAS)--Function keys for batch processing67206
-Node: ESS(SAS)--TAB key75253
-Node: ESS(SAS)--Usage scenarios76525
-Node: iESS(SAS)--Common problems80693
-Node: ESS(SAS)--MS Windows81841
-Node: Help for BUGS82428
-Node: ESS(BUGS)--Model files83458
-Node: ESS(BUGS)--Command files86363
-Node: ESS(BUGS)--Log files87588
-Node: Entering commands88190
-Node: Command-line editing89475
-Node: Completion90751
-Node: Completion details93510
-Ref: Completion details-Footnote-195417
-Node: Transcript95697
-Node: Last command97466
-Node: Process buffer motion99072
-Node: Transcript resubmit100581
-Node: Saving transcripts103176
-Node: Command History105209
-Node: History expansion107825
-Node: Hot keys111025
-Node: Statistical Process running in ESS?114478
-Node: Emacsclient115775
-Node: Other116574
-Node: Editing117608
-Node: Edit buffer118763
-Node: Loading120791
-Node: Error Checking121832
-Node: Evaluating code122870
-Node: Indenting126337
-Node: Other edit buffer commands129350
-Node: Source Files131220
-Node: Source Directories135739
-Node: Help138863
-Node: Transcript Mode142428
-Node: Resubmit143560
-Node: Clean144632
-Node: Miscellaneous145343
-Node: Highlighting145704
-Node: Graphics147121
-Node: printer147592
-Node: X11148351
-Node: Object Completion148919
-Node: Bugs Etc149721
-Node: Bugs149943
-Node: Reporting Bugs151191
-Node: Mailing Lists151981
-Node: Customization152695
-Node: Variables153359
-Node: Variables for starting ESS154181
-Node: Dump file variables156194
-Node: Indentation variables157365
-Node: Variables controlling interaction160346
-Node: Hooks161199
-Node: Keybindings162342
-Node: Key Index163370
-Node: Concept Index163513
-Node: Variable and command index170604
+Node: Introduction2043
+Node: Features5009
+Node: New features8097
+Node: Credits19373
+Node: Latest version21568
+Node: Manual22422
+Node: Installation23183
+Node: Unix installation23976
+Node: Microsoft Windows installation27784
+Node: Requirements33712
+Ref: Requirements-Footnote-134469
+Ref: Requirements-Footnote-234563
+Node: System dependent35029
+Node: Starting up37302
+Node: Multiple ESS processes38132
+Node: ESS processes on Remote Computers39432
+Node: S+elsewhere and ESS-elsewhere42315
+Node: Customizing startup45066
+Node: Help for the S family47049
+Node: ESS(S)--Editing files47493
+Node: iESS(S)--Inferior ESS processes48538
+Node: Handling and Reusing Transcripts50675
+Node: ESS-help--assistance with viewing help51286
+Node: Philosophies for using ESS(S)51608
+Node: Scenarios for use (possibilities--based on actual usage)52737
+Node: Customization Examples and Solutions to Problems57561
+Node: Help for SAS58840
+Node: ESS(SAS)--Design philosophy59585
+Node: ESS(SAS)--Editing files60501
+Node: iESS(SAS)--Interactive SAS processes62393
+Node: ESS(SAS)--Batch SAS processes64162
+Node: ESS(SAS)--Function keys for batch processing67838
+Node: ESS(SAS)--TAB key76389
+Node: ESS(SAS)--Usage scenarios77661
+Node: iESS(SAS)--Common problems81829
+Node: ESS(SAS)--MS Windows82977
+Node: Help for BUGS83564
+Node: ESS(BUGS)--Model files84594
+Node: ESS(BUGS)--Command files87499
+Node: ESS(BUGS)--Log files88724
+Node: Entering commands89326
+Node: Command-line editing90611
+Node: Completion91887
+Node: Completion details94646
+Ref: Completion details-Footnote-196553
+Node: Transcript96833
+Node: Last command98602
+Node: Process buffer motion100208
+Node: Transcript resubmit101717
+Node: Saving transcripts104312
+Node: Command History106345
+Node: History expansion108961
+Node: Hot keys112161
+Node: Statistical Process running in ESS?115614
+Node: Emacsclient116911
+Node: Other117710
+Node: Editing118744
+Node: Edit buffer119899
+Node: Loading121927
+Node: Error Checking122968
+Node: Evaluating code124006
+Node: Indenting127473
+Node: Other edit buffer commands130486
+Node: Source Files132356
+Node: Source Directories136875
+Node: Help139999
+Node: Transcript Mode143564
+Node: Resubmit144696
+Node: Clean145768
+Node: Miscellaneous146479
+Node: Highlighting146840
+Node: Graphics148257
+Node: printer148728
+Node: X11149487
+Node: Object Completion150055
+Node: Bugs Etc150857
+Node: Bugs151079
+Node: Reporting Bugs152327
+Node: Mailing Lists153117
+Node: Customization153831
+Node: Variables154678
+Node: Variables for starting ESS155623
+Node: Dump file variables157636
+Node: Indentation variables158807
+Node: Variables controlling interaction161788
+Node: Editing assembly files162672
+Node: Hooks163471
+Node: Keybindings164614
+Node: Key Index165642
+Node: Concept Index165785
+Node: Variable and command index172941
 
 End Tag Table
