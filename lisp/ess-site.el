@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/05/11 15:19:03 $
-;; Version: $Revision: 5.102 $
-;; RCS: $Id: ess-site.el,v 5.102 2004/05/11 15:19:03 rsparapa Exp $
+;; Modified: $Date: 2004/05/13 12:10:25 $
+;; Version: $Revision: 5.103 $
+;; RCS: $Id: ess-site.el,v 5.103 2004/05/13 12:10:25 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -179,10 +179,20 @@ The extension, in a file name, is the part that follows the last `.'."
 ;; This will override what Emacs thinks it can detect.
 ;;(setq ess-local-custom-available t); if custom is available, uncomment
 
+;; SJE Thu 13 May 2004
+;; Maybe ess-etc-directory should not be defcustom, since its value
+;; depends on ess-lisp-directory, and is needed by other modes that are
+;; loaded before the custom code.
+(defvar ess-etc-directory
+  (expand-file-name (concat ess-lisp-directory "/../etc/"))
+  "*Location of the ESS etc/ directory.
+The ESS etc directory stores various auxillary files that are useful
+for ESS, such as icons.")
 
 ;;; (1.2) Uncomment the following 4 lines to fix the infopath, if needed.
 ;;(defun add-info-path (newpath)
 ;;  (setq Info-default-directory-list
+
 ;;	(cons (expand-file-name newpath) Info-default-directory-list)))
 ;;(add-info-path (concat ess-lisp-directory "/../info/"))
 

@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/05/13 10:47:03 $
-;; Version: $Revision: 1.71 $
-;; RCS: $Id: ess-cust.el,v 1.71 2004/05/13 10:47:03 stephen Exp $
+;; Modified: $Date: 2004/05/13 12:10:41 $
+;; Version: $Revision: 1.72 $
+;; RCS: $Id: ess-cust.el,v 1.72 2004/05/13 12:10:41 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -212,13 +212,13 @@ Used to adjust for changes in versions of the program.")
 ;;; SJE -- why use "Initial-dialect"?  If we use nil, it matches "None"
 ;;; in the custom choice.
 
-(defcustom ess-etc-directory
-  (expand-file-name (concat ess-lisp-directory "/../etc/"))
-  "*Location of the ESS etc/ directory.
-The ESS etc directory stores various auxillary files that are useful
-for ESS, such as icons."
-  :group 'ess
-  :type 'directory)
+;; (defcustom ess-etc-directory
+;;   (expand-file-name (concat ess-lisp-directory "/../etc/"))
+;;   "*Location of the ESS etc/ directory.
+;; The ESS etc directory stores various auxillary files that are useful
+;; for ESS, such as icons."
+;;   :group 'ess
+;;   :type 'directory)
 
 (defcustom ess-directory-function nil
   "*Function to return the directory that ESS is run from.
