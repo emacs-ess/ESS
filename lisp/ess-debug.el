@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: November 1997
-;; Modified: $Date: 1998/12/15 20:51:46 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: ess-debug.el,v 5.2 1998/12/15 20:51:46 rossini Exp $
+;; Modified: $Date: 1998/12/15 20:54:59 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: ess-debug.el,v 5.3 1998/12/15 20:54:59 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -29,7 +29,7 @@
 
 ;;
 ;; Commentary:  Strictly for debugging and development.  usage is:
-;;           xemacs -q -l ess-debug.el -f S4    
+;;           xemacs -no-site-file -no-init-file -load ess-debug.el -f S4    
 ;; (or similar!)
 ;;
 
