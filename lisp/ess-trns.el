@@ -9,11 +9,11 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/20 23:15:00 $
-;; Version: $Revision: 4.1 $
-;; RCS: $Id: ess-trns.el,v 4.1 1997/11/20 23:15:00 rossini Exp $
+;; Modified: $Date: 1997/11/21 22:05:05 $
+;; Version: $Revision: 4.2 $
+;; RCS: $Id: ess-trns.el,v 4.2 1997/11/21 22:05:05 rossini Exp $
 
-;; This file is part of ess-mode
+;; This file is part of ESS
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -31,8 +31,7 @@
 
 ;;; Commentary:
 
-;; Code for dealing with S transcripts. See S.el for more
-;; details.
+;; Code for dealing with ESS transcripts.
 
 ;;; Code:
 
@@ -85,7 +84,7 @@
 	 ;; Code for GNU Emacs
 	 (setq ess-transcript-mode-map (make-sparse-keymap))))
 
-  (define-key ess-mode-map "\C-c\C-s"    'ess-switch-process)
+  (define-key ess-transcript-mode-map "\C-c\C-s" 'ess-switch-process)
   (define-key ess-transcript-mode-map "\C-c\C-r" 'ess-eval-region)
   (define-key ess-transcript-mode-map "\C-c\M-r" 'ess-eval-region-and-go)
 ;;  (define-key ess-transcript-mode-map "\M-\C-x"  'ess-eval-function)
