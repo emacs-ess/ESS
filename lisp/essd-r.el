@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/03 14:17:53 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essd-r.el,v 1.14 1997/07/03 14:17:53 rossini Exp $
+;; Modified: $Date: 1997/07/03 14:28:48 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essd-r.el,v 1.15 1997/07/03 14:28:48 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.15  1997/07/03 14:28:48  rossini
+;;: need to use EDEBUG!  yowso...
+;;:
 ;;: Revision 1.14  1997/07/03 14:17:53  rossini
 ;;: added messages for debugging.
 ;;:
@@ -109,7 +112,8 @@
   "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ)."
   (interactive)
   (setq ess-customize-alist R-customize-alist) ; setq or setq-default?
-  (message "(R2): ess-proc-prefix=%s" ess-proc-prefix)
+  (message "(R2): ess-proc-prefix=%s , buf=%s"
+	   ess-proc-prefix (current-buffer))
   (inferior-ess))
 
  ; Provide package
