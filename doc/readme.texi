@@ -27,7 +27,8 @@ The current development team is led by Martin Maechler since August
 XEmacs and has been the primary coder.  Martin Maechler
 (@email{maechler@@stat.math.ethz.ch}) and Kurt Hornik
 (@email{hornik@@ci.tuwien.ac.at}) have assisted with S-PLUS, S4, R, and
-XLispStat.  Richard M. Heiberger (@email{rmh@@temple.edu}) has
+XLispStat.  Stephen Eglen (@email{stephen@@gnu.org}) has worked mostly
+on R support.  Richard M. Heiberger (@email{rmh@@temple.edu}) has
 assisted with S-PLUS and S4 development for Windows.  Richard and
 Rodney A. Sparapani (@email{rsparapa@@mcw.edu}) have done much of the work
 implementing interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.
