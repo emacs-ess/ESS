@@ -1,3 +1,7 @@
+2004-07-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* Moved from CVS to Subversion
+
 2004-07-08  ESS Maintainers <ESS-core@stat.math.ethz.ch>
 
   * Version 5.2.2 released.
@@ -62,7 +66,7 @@
 	Correct exit() entry in the variable and command index.
 	Remove multiple references to Emacs/XEmacs differences in
 	.emacs/init.el for init file.
-	
+
 2002-08-07  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* VERSION:
@@ -1222,7 +1226,7 @@
 	This was replaced with options()$STERM yesterday.
 
 2002-01-20  rmh  <rmh@lynne.stat.math.ethz.ch>
-	
+
 	* doc/ess.info, doc/ess.info-2, doc/ess.info-3:
 	matches ess.texi from a few minutes ago.
 
