@@ -19,7 +19,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 4.50 1997/11/21 23:18:23 rossini Exp $
+;;; ESS RCS: $Id: essddr.el,v 4.51 1997/11/26 16:01:35 rossini Exp $
 
 ;;; Code:
 
@@ -138,8 +138,8 @@ All Rd mode abbrevs start with a grave accent (`).")
     (define-key map "\C-c\C-e" 'Rd-mode-insert-skeleton)
     (define-key map "\C-c\C-r" 'ess-eval-region)
     (define-key map "\C-c\C-n" 'ess-eval-line-and-next-line)
-    (define-key map "\C-c\C-y" 'ess-switch-to-S)
-    (define-key map "\C-c\C-z" 'ess-switch-to-end-of-S)
+    (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
+    (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
     (setq Rd-mode-map map)))
 
 (defvar Rd-mode-menu nil
