@@ -452,9 +452,11 @@ Note that R has some extremely useful command line arguments,
 
 and when ESS prompts for "Starting Args ? ", enter (for example):
 
-   -v 10000 -n 5000
+   --max-vsize=10000 --max-nsize=5000
 
-Then that R process will be started up using "R -v 10000 -n 5000".
+Then that R process will be started up using ``R --max-vsize=10000
+--max-nsize=5000''. 
+
 
 %%
 
@@ -525,6 +527,9 @@ retrieved again, by changing emacs variables.
       (setq ess-delete-dump-files t)
       (setq ess-mode-silently-save nil)
    \end{Salltt}
+   This ``old'' view was based the permanent storage of objects
+   approach in the original S implementations, which used a separate
+   disk files for each object.
 
 \end{enumerate}
 The second saves a small amount of disk space.  The first allows for
