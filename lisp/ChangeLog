@@ -1,3 +1,14 @@
+2003-08-19  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-help.el (ess-help-underline): New function to convert ^_H in
+	help buffers to the underline face.
+
+2003-08-05  Stephen Eglen  <stephen@gnu.org>
+
+	* ess.el (ess-setq-vars-local): Prevent e.g.
+	ess-local-process-name getting reset to nil when re-entering a
+	code chunk in mixed mode buffers (like Latex/R).
+
 2003-07-24  Stephen Eglen  <stephen@gnu.org>
 
 	* essa-r.el (ess-r-var): New function for loading numbers from any
