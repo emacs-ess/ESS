@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/17 18:40:30 $
-;; Version: $Revision: 1.38 $
-;; RCS: $Id: ess.el,v 1.38 1997/07/17 18:40:30 rossini Exp $
+;; Modified: $Date: 1997/07/17 19:09:26 $
+;; Version: $Revision: 1.39 $
+;; RCS: $Id: ess.el,v 1.39 1997/07/17 19:09:26 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.39  1997/07/17 19:09:26  rossini
+;; added a "set".  Is this really required for buffer-local?
+;;
 ;; Revision 1.38  1997/07/17 18:40:30  rossini
 ;; whoops.
 ;;
@@ -1083,12 +1086,37 @@ browse-url to find the location")
 
 
 (defvar ess-customize-alist nil
-  "Variable settings to use for proper behavior.")
-
+  "Variable settings to use for proper behavior.
+Not buffer local!")
 ;;(make-variable-buffer-local 'ess-customize-alist)
 ;;(setq-default ess-customize-alist nil)
 
 (defun ess-set-vars (var-alist &optional buf) 
+  "Set language variables from alist, in buffer `buf', if desired.
+This is SO UGLY.  But it'll work for now... 
+the basic idea: (setq ---  (cdr (assq --- var-alist)))."
+
+  (if buf (set-buffer buf))
+  ;;(set-default ess-customize-alist var-alist)
+  (set ess-proc-prefix  (cdr (assq 'ess-proc-prefix var-alist)))
+  (set ess-version-running (cdr (assq 'ess-version-running var-alist)))
+  (set inferior-ess-program (cdr (assq 'inferior-ess-program var-alist)))
+  (set inferior-ess-objects-command (cdr (assq 'inferior-ess-objects-command var-alist)))
+  (set ess-help-sec-regex (cdr (assq 'ess-help-sec-regex var-alist)))
+  (set ess-help-sec-keys-alist (cdr (assq 'ess-help-sec-keys-alist var-alist)))
+  (set inferior-ess-help-command (cdr (assq 'inferior-ess-help-command var-alist)))
+  (set inferior-ess-exit-command (cdr (assq 'inferior-ess-exit-command var-alist)))
+  (set ess-loop-timeout (cdr (assq 'ess-loop-timeout var-alist)))
+  (set inferior-ess-primary-prompt (cdr (assq 'inferior-ess-primary-prompt var-alist)))
+  (set ess-history-file (concat "." ess-proc-prefix "history"))
+
+  (ess-write-to-dribble-buffer 
+    (format "(ess-set-vars): ess-proc-prefix=%s buf=%s \n"
+	    ess-proc-prefix buf)))
+
+
+
+(defun ess-setq-vars (var-alist &optional buf) 
   "Set language variables from alist, in buffer `buf', if desired.
 This is SO UGLY.  But it'll work for now... 
 the basic idea: (setq ---  (cdr (assq --- var-alist)))."
@@ -1112,7 +1140,7 @@ the basic idea: (setq ---  (cdr (assq --- var-alist)))."
 	    ess-proc-prefix buf)))
 
 
-(defun ess-set-vars-default (var-alist &optional buf) 
+(defun ess-setq-vars-default (var-alist &optional buf) 
   "Set language variables from alist, in buffer `buf', if desired.
 This is SO UGLY.  But it'll work for now... 
 the basic idea: (setq ---  (cdr (assq --- var-alist)))."
