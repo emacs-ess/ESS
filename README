@@ -1,6 +1,6 @@
 -*- view -*-
 
-($Revision: 1.31 $)
+($Revision: 4.1 $)
 
 Emacs Speaks Statistics (ESS), version 5.0
 ------------------------------------------
@@ -325,7 +325,7 @@ The purposes of the mailing list include
 - posting small patches to ESS.
 
 ----
-Richard M. Heiberger <rmh@fisher.stat.temple.edu>, Stat Dept., Temple U.
-Kurt Hornik <hornik@ci.tuwien.ac.at> Stat. Dept., TU-Wien
-Martin Maechler <maechler@stat.math.ethz.ch> Stat. Dept., ETH-Zurich
-A.J. (Tony) Rossini <rossini@stat.sc.edu> Stat. Dept., Univ of South Carolina
+Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+Kurt Hornik <hornik@ci.tuwien.ac.at>
+Martin Maechler <maechler@stat.math.ethz.ch>
+A.J. (Tony) Rossini <rossini@stat.sc.edu>
