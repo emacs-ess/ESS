@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/03/01 16:43:04 $
-;; Version: $Revision: 5.69 $
-;; RCS: $Id: ess-site.el,v 5.69 2001/03/01 16:43:04 rossini Exp $
+;; Modified: $Date: 2001/03/02 16:37:20 $
+;; Version: $Revision: 5.70 $
+;; RCS: $Id: ess-site.el,v 5.70 2001/03/02 16:37:20 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -385,16 +385,24 @@ The extension, in a file name, is the part that follows the last `.'."
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files." t)
 
-;;; On a PC, the default is S+4.  Elsewhere (unix) the default is S+3
-(if (or (equal window-system 'w32) (equal window-system 'win32))
-    (progn				; MS-Windows 9x/NT
-      (fset 'S 'S+4)
-      (fset 's-mode 'S+4-mode)
-      (fset 's-transcript-mode 'S+4-transcript-mode))
-    (progn				; Unix
-      (fset 'S 'S+3)
-      (fset 's-mode 'S+3-mode)
-      (fset 's-transcript-mode 'S+3-transcript-mode)))
+;;; On a PC, the default is S+4.  
+;; Elsewhere (unix) the default is S+3 unless on Linux, where there's only S+5
+(cond ((or (equal window-system 'w32) 
+	   (equal window-system 'win32)) ; MS-Windows 9x/NT
+       (fset 'S 'S+4)
+       (fset 's-mode 'S+4-mode)
+       (fset 's-transcript-mode 'S+4-transcript-mode))
+
+      ((eq system-type 'gnu/linux)	; Linux -- no S+3
+       (fset 'S 'S+5)
+       (fset 's-mode 'S+5-mode)
+       (fset 's-transcript-mode 'S+5-transcript-mode))
+
+      (t				; Other Unixen
+       (fset 'S 'S+3)
+       (fset 's-mode 'S+3-mode)
+       (fset 's-transcript-mode 'S+3-transcript-mode))
+)
 
 
 
