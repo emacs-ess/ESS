@@ -1,6 +1,6 @@
 -*- view -*-
 
-($Revision: 1.14 $)
+($Revision: 1.15 $)
 
 ESS: Using The S family of statistical languages
 ================================================
@@ -260,4 +260,27 @@ prefixed by "##").
     ## When you need help, use 
     C-c C-v rchisq
     ## instead of entering:   help("rchisq")
+
+
+
+Common Changes to Desire
+========================
+
+1. Suppose that you are primarily an SPLUS 3.4 user, occasionally
+   using S version 4, and sick and tired of the buffer-name *S+3*
+   we've stuck you with.  Simply edit the "ess-dialect" alist entry in 
+   the essd-s+3.el and essd-s4.el files to be "S" instead of "S4" and
+   "S+3".  This will insure that all the inferior process buffer names 
+   are "*S*".
+
+2. Suppose that you WANT to have the first buffer name indexed by
+   ":1", in the same manner as your S-PLUS processes 2,3,4, and 5 (for
+   you heavy simulation people).  Then uncomment the line in ess-site
+   (or add after your (require 'ess-site) or (load "ess-site") command 
+    in your .emacs file, the line:
+       
+       (setq ess-plain-first-buffername nil)
+   )
+
+
 
