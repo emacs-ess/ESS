@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/11 19:26:43 $
-;; Version: $Revision: 1.104 $
-;; RCS: $Id: essa-sas.el,v 1.104 2002/07/11 19:26:43 rsparapa Exp $
+;; Modified: $Date: 2002/07/11 19:55:01 $
+;; Version: $Revision: 1.105 $
+;; RCS: $Id: essa-sas.el,v 1.105 2002/07/11 19:55:01 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -385,6 +385,25 @@ on the way."
 ;;	  (if ess-sas-search-point (insert ess-sas-end-text))
 ;;         ))
 
+(defun ess-search-except (regexp &optional except backward)
+"Search for a regexp, store as match 1, optionally ignore strings that match exceptions."
+    (interactive)
+    
+    (let ((continue t) (exit nil))
+
+    (while continue
+	(if (or (and backward (search-backward-regexp regexp nil t))
+                (and (not backward) (search-forward-regexp regexp nil t))) (progn
+	    (setq exit (match-string 1))
+            (setq continue (and except (string-match except exit)))
+	    (if continue (setq exit nil)))
+        ;else
+	    (setq continue nil))
+    )
+
+    exit)
+)
+
 (defun ess-sas-data-view (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
@@ -402,9 +421,7 @@ on the way."
         (if (not ess-tmp-sas-data) 
 	    (setq ess-tmp-sas-data (ess-search-except ess-search-regexp ess-search-except t)))
 
-        (if ess-tmp-sas-data 
-	    (setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
-	    (setq ess-sas-data (read-string "Permanent SAS Dataset: ")))
+	(setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
        (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
 
@@ -415,47 +432,26 @@ on the way."
     (comint-send-input)
 )))))
 
-(defun ess-search-except (regexp except &optional backward)
-"Search for a regexp, store as match 1, and ignore strings that match exceptions."
-    (interactive)
-    
-    (let ((continue t) (exit nil))
-
-    (while continue
-	(if (or (and backward (search-backward-regexp regexp nil t))
-                (and (not backward) (search-forward-regexp regexp nil t))) (progn
-	    (setq exit (match-string 1))
-            (setq continue (string-match except exit))
-	    (if continue (setq exit nil)))
-        ;else
-	    (setq continue nil))
-    )
-
-    exit)
-)
-
 (defun ess-sas-graph-view ()
   "Open a GSASFILE for viewing."
   (interactive)
   (ess-sas-file-path)
 
-  (let ((ess-tmp-sas-graph nil)
-        (ess-tmp-sas-glyph nil))
+  (save-excursion (let ((ess-tmp-sas-graph nil)
+        (ess-tmp-sas-glyph nil)
+        (ess-tmp-sas-graph-regexp (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
+
     (save-match-data 
        (search-backward-regexp "[ \t=]" nil t)
 
-       (if (or
-           (search-forward-regexp 
-	     (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")
-	     nil t)
-           (search-backward-regexp 
-	     (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")
-	     nil t)) (setq ess-tmp-sas-graph (match-string 1)))
+       (save-excursion 
+	    (setq ess-tmp-sas-graph (ess-search-except ess-tmp-sas-graph-regexp)))
 
-       (if ess-tmp-sas-graph 
-	    (setq ess-tmp-sas-graph (read-string "GSASFILE: " ess-tmp-sas-graph))
-	    (setq ess-tmp-sas-graph (read-string "GSASFILE: " 
-		(file-name-nondirectory ess-sas-file-path))))
+        (if (not ess-tmp-sas-graph) 
+	    (setq ess-tmp-sas-graph (ess-search-except ess-tmp-sas-graph-regexp nil t)))
+
+	(setq ess-tmp-sas-graph (read-string "GSASFILE: " 
+	    (or ess-tmp-sas-graph (file-name-nondirectory ess-sas-file-path))))
 
 	    (setq ess-tmp-sas-graph    (convert-standard-filename 
 			(concat (file-name-directory ess-sas-file-path) "/" ess-tmp-sas-graph)))
@@ -476,7 +472,7 @@ on the way."
 	      (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-sas-graph))
 	      (find-file ess-tmp-sas-graph)
           ;;else
-          (save-excursion
+         
             (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
 
             (insert ess-sas-submit-pre-command " " ess-sas-image-viewer " " ess-tmp-sas-graph 
