@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/03/04 16:40:48 $
-;; Version: $Revision: 1.153 $
-;; RCS: $Id: essa-sas.el,v 1.153 2004/03/04 16:40:48 rsparapa Exp $
+;; Modified: $Date: 2004/03/04 17:41:37 $
+;; Version: $Revision: 1.154 $
+;; RCS: $Id: essa-sas.el,v 1.154 2004/03/04 17:41:37 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
