@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.12 $.
+### File: $Revision: 5.13 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -37,12 +37,12 @@ BATCHFLAGS = -batch --no-site-file --no-init-file
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 5.1.2
+VERSION = 5.1.3
 #--- Dont forget to set  ess-version  in  ess-vars.el !!!!
 #			 ~~~~~~~~~~~      -----------
 VERSIONDIR = ESS-$(VERSION)
 
-LASTVERSION = 5.1.1
+LASTVERSION = 5.1.2
 
 ## For noweb extraction of code and documentation.
 
@@ -72,9 +72,10 @@ PRELOADS = -l ./ess-comp.el
 CORE = ess.elc ess-site.elc
 
 SOURCES = ess-vars.el ess.el ess-site.el ess-utils.el \
-	ess-inf.el ess-mode.el ess-trns.el ess-help.el \
-	ess-comp.el ess-debug.el ess-iw32.el \
-	essl-s.el essd-s3.el essd-s4.el essd-s+3.el essd-s+4.el essd-s+5.el \
+	ess-inf.el ess-iw32.el \
+	ess-mode.el ess-trns.el ess-help.el \
+	ess-comp.el ess-debug.el \
+	essl-s.el essd-s3.el essd-s4.el essd-sp3.el essd-sp4.el essd-sp5.el \
 	essd-r.el \
 	essd-els.el \
 	essl-lsp.el essd-xls.el essd-vst.el \
@@ -200,7 +201,7 @@ essd-sas.elc : essd-sas.el ess.elc
 
 essd-s3.elc : essd-s3.el essl-s.elc ess.elc
 
-essd-s+3.elc : essd-s+3.el essl-s.elc ess.elc
+essd-sp3.elc : essd-sp3.el essl-s.elc ess.elc
 
 essd-s4.elc : essd-s4.el essl-s.elc ess.elc
 
