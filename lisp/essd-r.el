@@ -113,7 +113,8 @@ to R, put them in the variable `inferior-R-args'."
 			       r-always-arg
 			       "'] ? "))
 		    nil)))
-	 default-process-coding-system)
+	 ;;Micro$ ?: default-process-coding-system ;-breaks UTF locales on Unix:
+	 )
     (if ess-microsoft-p
 	(setq default-process-coding-system '(undecided-dos . undecided-dos)))
     (inferior-ess r-start-args) ;; (R)

@@ -1,9 +1,14 @@
+2005-02-09  Martin Maechler  <maechler@stat.math.ethz.ch>
+	really
+2005-02-09  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+
+	* essd-r.el (R): do not (let .. default-process-coding-system) !!
+
 2005-01-29  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-quit-r): comment out all "questioning":
 	it's wrong to do this when a user had something like "--save" on
 	startup.
-+
 
 2005-01-24  Martin Maechler  <maechler@stat.math.ethz.ch>
 
