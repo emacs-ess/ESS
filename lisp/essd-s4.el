@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/25 15:10:13 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essd-s4.el,v 1.4 1997/07/25 15:10:13 rossini Exp $
+;; Modified: $Date: 1997/07/30 13:15:11 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essd-s4.el,v 1.5 1997/07/30 13:15:11 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -35,6 +35,9 @@
 
 ;;;
 ;;; $Log: essd-s4.el,v $
+;;; Revision 1.5  1997/07/30 13:15:11  rossini
+;;; program vars back in.
+;;;
 ;;; Revision 1.4  1997/07/25 15:10:13  rossini
 ;;; merged old d-s4.el (RMH stuff) and DB's version, so that I remember
 ;;; that there is code to include!
@@ -59,7 +62,7 @@
 (defvar S4-customize-alist
   '((ess-proc-prefix      .         "S")
     (ess-version-running  .         "S4")
-    (inferior-ess-program .         "S")
+    (inferior-ess-program .         inferior-S4-program-name) ;"S")
     (ess-help-sec-regex   .         "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist .      '((?a . "ARGUMENTS:")
 				      (?b . "BACKGROUND:")
