@@ -1,3 +1,12 @@
+2004-05-13  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-toolbar.el (ess-make-toolbar-R-emacs,
+	ess-make-toolbar-S-emacs):  Since R and S are now on the menubar,
+	use tool-bar-add-item-from-menu for consistency.
+
+	* ess-mode.el (ess-mode-menu): Add sub menu to allow S, R, SAS to
+	be started from menu.  Each menu item has a little tooltip help.
+
 2004-05-10  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-toolbar.el
