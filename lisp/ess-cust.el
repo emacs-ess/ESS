@@ -1212,20 +1212,21 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
   :group 'ess-command
   :type 'string)
 
-(defvar ess-need-delay nil
-  "Set to non-nil if ESS will include delays in some places.
-These delays are introduced to prevent timeouts in certain processes, such
-as completion.")
-(make-variable-buffer-local 'ess-need-delay)
+(defvar ess-cmd-delay nil
+  "*Set to a positive number if ESS will include delays proportional to
+`ess-cmd-delay'  in some places. These delays are introduced to
+prevent timeouts in certain processes, such as completion.")
+(make-variable-buffer-local 'ess-cmd-delay)
 
-(defcustom ess-R-need-delay nil
-  "used to initialize `ess-need-delay'."
+(defcustom ess-R-cmd-delay nil
+  "used to initialize `ess-cmd-delay'."
   :group 'ess-command
-  :type 'boolean)
-(defcustom ess-S+-need-delay t
-  "used to initialize `ess-need-delay'."
+  :type '(choice (const nil) number))
+
+(defcustom ess-S+-cmd-delay 1.0
+  "used to initialize `ess-cmd-delay'."
   :group 'ess-command
-  :type 'boolean)
+  :type '(choice (const nil) number))
 
 ;;*;; Regular expressions
 

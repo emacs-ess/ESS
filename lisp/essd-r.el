@@ -61,7 +61,7 @@
      (ess-help-sec-regex		. ess-help-R-sec-regex)
      (ess-help-sec-keys-alist		. ess-help-R-sec-keys-alist)
      (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
-     (ess-need-delay			. ess-R-need-delay)
+     (ess-cmd-delay			. ess-R-cmd-delay)
      (ess-object-name-db-file		. "ess-r-namedb.el" )
      (ess-retr-lastvalue-command	. "assign(\".Last.value\", .ess.lvsave, envir=NULL)\n") ; package:base
      (ess-save-lastvalue-command	. "assign(\".ess.lvsave\",.Last.value,inherits=TRUE)\n") ;envir=1

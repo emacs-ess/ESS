@@ -754,7 +754,7 @@ save the output in that buffer. BUF is erased before use.
 COM should have a terminating newline.
 Guarantees that the value of .Last.value will be preserved.
 When optional third arg SLEEP is present, `(sleep-for (* a SLEEP))'
-will be used in a few places."
+will be used in a few places where `a' is proportional to `ess-cmd-delay'."
   ;; Use this function when you need to evaluate some S code, and the
   ;; result is needed immediately. Waits until the output is ready
   (let* ((sprocess (get-ess-process ess-current-process-name))
@@ -771,7 +771,8 @@ will be used in a few places."
 	    (progn
 	      (if sleep
 		  (if (numberp sleep) nil (setq sleep 1)))
-	      (and ess-need-delay sleep)))
+	      (and ess-cmd-delay sleep)))
+      (if do-sleep (setq sleep (* sleep ess-cmd-delay)))
       (save-excursion
 	(goto-char (marker-position (process-mark sprocess)))
 	(beginning-of-line)

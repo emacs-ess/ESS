@@ -1,3 +1,12 @@
+2005-01-04  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (ess-cmd-delay): use this instead of
+	`ess-need-delay': Either 'nil or a number specifying the delay
+	*factor* to be used.
+
+	* ess-inf.el, essl-s.el, essd-r.el: dito
+
+
 2005-01-01  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-command): 3rd argument sleep; internally using
