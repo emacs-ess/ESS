@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.16 2001/08/10 09:28:04 maechler Exp $
+@comment $Id: ess.texi,v 5.17 2001/08/10 10:07:10 maechler Exp $
 
 @synindex pg vr
 
@@ -39,7 +39,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.19 (Documentation $Revision: 5.16 $ $Date: 2001/08/10 09:28:04 $)
+@subtitle version 5.1.19 (Documentation $Revision: 5.17 $ $Date: 2001/08/10 10:07:10 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -84,7 +84,7 @@ permission notice identical to this one.
 
 ESS version 5.1.19
 
-        (Documentation $Revision: 5.16 $ $Date: 2001/08/10 09:28:04 $).
+        (Documentation $Revision: 5.17 $ $Date: 2001/08/10 10:07:10 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
@@ -394,19 +394,7 @@ unnecessary prompts.
 @comment  node-name,  next,  previous,  up
 @section Getting the latest version of ESS
 
-The latest (beta) versions are always available
-@itemize @bullet
-@item via WWW
-@uref{http://ess.stat.wisc.edu/}
-@item or FTP, from the directory
-@uref{ftp://ess.stat.wisc.edu/pub/ESS/}
-@end itemize
-
-Check the @code{README} file first to see which files you need.
-
-Note that all new user-visible features to versions of ESS are
-documented in the @file{Doc/NEWS} file; all changes are listed in the
-@file{ChangeLog} file.
+@include getting.texi
 
 @node Manual,  , Latest version, Introduction
 @comment  node-name,  next,  previous,  up
@@ -2310,7 +2298,7 @@ Retrieve the compressed tar file from one of the FTP or WWW archive
 sites via FTP (or HTTP).
 
 @item
-Copy ESS-5.1.19.tar.gz to the location where you want the ESS-5.1.x
+Copy ESS-5.1.19.tar.gz to the location where you want the ESS-5.1.19
 directory, and cd there.  Extract the files from the distribution, which
 will unpack into a subdirectory, ESS-5.1.19.
 
