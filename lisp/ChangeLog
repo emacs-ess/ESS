@@ -1,3 +1,10 @@
+2004-08-29  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-multi): Use inferior-ess-same-window to decide
+	whether to replace or split current window.
+
+	* ess-cust.el (inferior-ess-same-window): New variable.
+
 2004-08-25  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-sp6.el (S+6-customize-alist): Use inferior-Splus-args.
