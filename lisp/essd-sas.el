@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/01 18:19:01 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essd-sas.el,v 1.5 1997/09/01 18:19:01 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:20:43 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essd-sas.el,v 1.6 1997/09/01 18:20:43 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-sas.el,v $
+;;: Revision 1.6  1997/09/01 18:20:43  rossini
+;;: silly comment.
+;;:
 ;;: Revision 1.5  1997/09/01 18:19:01  rossini
 ;;: finished first draft.
 ;;:
@@ -92,6 +95,7 @@
     (inferior-ess-start-args       . inferior-SAS-args))
  "Variables to customize for SAS")
 
+;;; The functions of interest (mode, inferior mode)
 
 (defun SAS-mode (&optional proc-name)
   "Major mode for editing SAS source.  See ess-mode for more help."
