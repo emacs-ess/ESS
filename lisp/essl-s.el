@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2002/02/25 12:40:36 $
-;; Version: $Revision: 5.28 $
-;; RCS: $Id: essl-s.el,v 5.28 2002/02/25 12:40:36 maechler Exp $
+;; Modified: $Date: 2002/05/10 19:33:24 $
+;; Version: $Revision: 5.29 $
+;; RCS: $Id: essl-s.el,v 5.29 2002/05/10 19:33:24 rmh Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -91,9 +91,9 @@
 
 (defvar inferior-S-language-start
   '(concat "options("
-	     "STERM=\""  ess-STERM  "\""
-	     (if ess-editor (concat ", editor=\"" ess-editor "\""))
-	     (if ess-pager  (concat ", pager=\""  ess-pager  "\""))
+	     "STERM='"  ess-STERM  "'"
+	     (if ess-editor (concat ", editor='" ess-editor "'"))
+	     (if ess-pager  (concat ", pager='"  ess-pager  "', help.pager='"  ess-pager  "'"))
 	     ")")
   "S language expression for startup -- default for all S dialects.")
 

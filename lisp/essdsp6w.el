@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2002/05/01 05:15:16 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: essdsp6w.el,v 5.12 2002/05/01 05:15:16 rmh Exp $
+;; Modified: $Date: 2002/05/10 19:33:24 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: essdsp6w.el,v 5.13 2002/05/10 19:33:24 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -127,14 +127,7 @@ connects it to the '(ddeESS [S+6])' window.")
     (ess-STERM  . "iESS")
     (ess-editor . S-editor)
     (ess-pager  . S-pager)
-    (inferior-ess-language-start .
-				 (concat "options("
-					 "STERM='"  ess-STERM  "'"
-					 (if ess-editor
-					     (concat ", editor='" ess-editor "'"))
-					 (if ess-pager
-					     (concat ", pager='"  ess-pager  "'"))
-					 ")"))
+    (inferior-ess-language-start . (eval inferior-S-language-start))
 )
  "Variables to customize for Sqpe+6.")
 
