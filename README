@@ -45,7 +45,7 @@ Editing source code (S, LispStat, SAS)
 Interacting with the process (S, LispStat, SAS)
 
         Command-line editing 
-        Command history 
+	Searchable Command history 
         Command-line completion of S object names and file names 
         Quick access to object lists and search lists 
         Transcript recording 
