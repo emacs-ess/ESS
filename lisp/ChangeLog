@@ -1,3 +1,15 @@
+Tue Sep 14 16:53:21 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* noweb-mode.el: Emacs/XEmacs compatibility done.
+
+Tue Sep 14 16:53:07 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-debug.el: This is customized for me (AJR). 
+
+Tue Sep 14 16:52:35 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-site.el: added noweb-mode by default.
+
 Tue Sep 14 16:10:04 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* ess-noweb.el (global-font-lock-mode): set true to prevent XEmacs 
