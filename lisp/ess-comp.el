@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/26 01:06:16 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: ess-comp.el,v 1.4 1997/07/26 01:06:16 rossini Exp $
+;; Modified: $Date: 1997/07/31 10:55:26 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: ess-comp.el,v 1.5 1997/07/31 10:55:26 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;: $Log: ess-comp.el,v $
+;;: Revision 1.5  1997/07/31 10:55:26  rossini
+;;: moved cl, cl-macs requiring here.
+;;:
 ;;: Revision 1.4  1997/07/26 01:06:16  rossini
 ;;: setup to nuke byte-compiler warnings for Emacs...
 ;;:
@@ -63,9 +66,11 @@
 					; `unresolved'.
 
 (setq byte-optimize t))
+(require 'cl)
+(require 'cl-macs)
 (require 'ess-vars)
 (require 'ess)
-
+(require 'ess-site)
 
  ; Local variables section
 
