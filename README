@@ -1,6 +1,6 @@
 -*- view -*-
 
-($Revision: 1.30 $)
+($Revision: 1.31 $)
 
 Emacs Speaks Statistics (ESS), version 5.0
 ------------------------------------------
@@ -95,6 +95,12 @@ Transcript manipulation (S3, S+3, S4, R, XLispStat)
         Recording and saving transcript files 
         Manipulating and editing saved transcripts 
         Re-evaluating commands from transcript files 
+
+Help File Editing (R)
+
+        Syntactic indentation and highlighting of source code.
+        Sending Examples to running ESS process.
+	Previewing
 
 See the accompanying manual ess.texi for details of features of ESS.
 See the file Doc/NEWS for changes in recent versions.
