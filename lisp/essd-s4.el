@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/03 16:29:10 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: essd-s4.el,v 1.11 1997/09/03 16:29:10 rossini Exp $
+;; Modified: $Date: 1997/09/08 12:45:13 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: essd-s4.el,v 1.12 1997/09/08 12:45:13 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -42,7 +42,8 @@
 ;;; Code:
 
 (defvar S4-customize-alist
-  '((ess-language                  . "S")
+  '((ess-local-customize-alist     . 'S4-customize-alist)
+    (ess-language                  . "S")
     (ess-dialect                   . "S4")
     (ess-suffix                    . "S")
     (ess-dump-filename-template    . (concat (user-login-name)

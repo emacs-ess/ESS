@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/02 20:12:01 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essd-s3.el,v 1.8 1997/09/02 20:12:01 rossini Exp $
+;; Modified: $Date: 1997/09/08 12:43:08 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essd-s3.el,v 1.9 1997/09/08 12:43:08 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -37,7 +37,8 @@
 ;;; Code:
 
 (defvar S3-customize-alist
-  '((ess-language                  . "S")
+  '((ess-local-customize-alist     . 'S3-customize-alist)
+    (ess-language                  . "S")
     (ess-dialect                   . "S3")
     (inferior-ess-program          . inferior-S3-program-name) ;        "S")
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")

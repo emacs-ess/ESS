@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/02 20:39:44 $
-;; Version: $Revision: 1.27 $
-;; RCS: $Id: essd-s+3.el,v 1.27 1997/09/02 20:39:44 rossini Exp $
+;; Modified: $Date: 1997/09/08 12:45:57 $
+;; Version: $Revision: 1.28 $
+;; RCS: $Id: essd-s+3.el,v 1.28 1997/09/08 12:45:57 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -40,7 +40,7 @@
 ; Code:
 
 (defvar S+3-customize-alist
-  '((ess-customize-alist-symb      . 'S+3-customize-alist)
+  '((ess-local-customize-alist     . 'S+3-customize-alist)
     (ess-language                  . "S")
     (ess-dialect                   . "S+3")
     (ess-suffix                    . "S")
