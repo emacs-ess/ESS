@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/02/25 12:40:36 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: essd-s3.el,v 5.10 2002/02/25 12:40:36 maechler Exp $
+;; Modified: $Date: 2002/06/24 07:48:01 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: essd-s3.el,v 5.11 2002/06/24 07:48:01 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -91,7 +91,9 @@
   "Major mode for editing S3 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S3-customize-alist)
-  (ess-mode S3-customize-alist proc-name))
+  (ess-mode S3-customize-alist proc-name)
+  (if ess-S-use-imenu (ess-imenu-R)))
+
 
  ; Provide package
 

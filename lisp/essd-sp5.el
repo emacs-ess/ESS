@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 2002/02/25 12:40:36 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essd-sp5.el,v 1.9 2002/02/25 12:40:36 maechler Exp $
+;; Modified: $Date: 2002/06/24 07:48:01 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essd-sp5.el,v 1.10 2002/06/24 07:48:01 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -121,7 +121,8 @@ New way to do it."
   "Major mode for editing S+5 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+5-customize-alist)
-  (ess-mode S+5-customize-alist proc-name))
+  (ess-mode S+5-customize-alist proc-name)
+  (if ess-S-use-imenu (ess-imenu-S)))
 
 (defun S+5-transcript-mode ()
   "S-PLUS 5 transcript mode."

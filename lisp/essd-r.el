@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/06/18 08:42:13 $
-;; Version: $Revision: 5.39 $
-;; RCS: $Id: essd-r.el,v 5.39 2002/06/18 08:42:13 maechler Exp $
+;; Modified: $Date: 2002/06/24 07:48:01 $
+;; Version: $Revision: 5.40 $
+;; RCS: $Id: essd-r.el,v 5.40 2002/06/24 07:48:01 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -130,8 +130,9 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
   ;;  (if (featurep 'semantic)
   ;;      (setq semantic-toplevel-bovine-table r-toplevel-bovine-table))
   ;; AJR: Need to condition on this...!
-  ;; MM: and you probably should really use ess-imenu-mode-function from above!
-  (ess-imenu-R))
+  ;; MM: and you probably should really use ess-imenu-mode-function from the
+  ;;     alist above!
+  (if ess-S-use-imenu (ess-imenu-R)))
 
 (fset 'r-mode 'R-mode)
 

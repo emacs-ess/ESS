@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: ESS Core Team <ESS-core@stat.math.ethz.ch>
 ;; Created: 2001/02/06
-;; Modified: $Date: 2002/04/27 07:16:28 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essd-sp6.el,v 1.9 2002/04/27 07:16:28 maechler Exp $
+;; Modified: $Date: 2002/06/24 07:48:01 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essd-sp6.el,v 1.10 2002/06/24 07:48:01 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -136,7 +136,8 @@ New way to do it."
   "Major mode for editing S+6 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+6-customize-alist)
-  (ess-mode S+6-customize-alist proc-name))
+  (ess-mode S+6-customize-alist proc-name)
+  (if ess-S-use-imenu (ess-imenu-S)))
 
 (defun S+6-transcript-mode ()
   "S-PLUS 6 transcript mode."

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/02/25 12:40:36 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essd-sp3.el,v 1.8 2002/02/25 12:40:36 maechler Exp $
+;; Modified: $Date: 2002/06/24 07:48:01 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essd-sp3.el,v 1.9 2002/06/24 07:48:01 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -92,7 +92,8 @@
   "Major mode for editing S+3 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+3-customize-alist)
-  (ess-mode S+3-customize-alist proc-name))
+  (ess-mode S+3-customize-alist proc-name)
+  (if ess-S-use-imenu (ess-imenu-R)))
 
 (defun S+3-transcript-mode ()
   "S-PLUS 3.x transcript mode."
