@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2001/02/06 18:48:40 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: ess-cust.el,v 1.18 2001/02/06 18:48:40 rossini Exp $
+;; Modified: $Date: 2001/02/06 19:08:06 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: ess-cust.el,v 1.19 2001/02/06 19:08:06 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -662,7 +662,7 @@ different computer."
 (defcustom inferior-STA-program-name "env"
   "*Program name for invoking an inferior ESS with stata().  
 This is NOT Stata, because we need to call stata with TERM=emacs in
-order for it to work right.  And Emacs is too start for it."
+order for it to work right.  And Emacs is too smart for it."
   :group 'ess-Stata
   :type 'string)
 
