@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/14 23:12:08 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-s+3.el,v 1.6 1997/06/14 23:12:08 rossini Exp $
+;; Modified: $Date: 1997/06/15 07:11:10 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essd-s+3.el,v 1.7 1997/06/15 07:11:10 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s+3.el,v $
+;;: Revision 1.7  1997/06/15 07:11:10  rossini
+;;: need to provide the actual file name.
+;;:
 ;;: Revision 1.6  1997/06/14 23:12:08  rossini
 ;;: Finally set up properly.
 ;;:
@@ -72,7 +75,7 @@
 
  ; Provide package
 
-(provide 'ess-s+3)
+(provide 'essd-s+3)
 
  ; Local variables section
 
