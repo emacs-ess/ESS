@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 1998/11/11 10:07:51 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essd-s+5.el,v 1.3 1998/11/11 10:07:51 maechler Exp $
+;; Modified: $Date: 1998/11/11 12:45:15 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essd-s+5.el,v 1.4 1998/11/11 12:45:15 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -56,8 +56,10 @@
 					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
-    (ess-help-sec-regex            . "^[A-Z. ---]+:$")
-    (ess-help-sec-keys-alist       . S4-help-sec-keys-alist)
+    (ess-help-sec-regex            . ess-help-S+-sec-regex) 
+					;or just "^[A-Z. ---]+:$"
+    (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
+
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
     (ess-loop-timeout              . 100000 )
     (ess-object-name-db-file       . "ess-s+5-namedb.el")
@@ -70,16 +72,13 @@
     (ess-save-lastvalue-command
      . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
     (inferior-ess-program          . inferior-S+5-program-name)
-    (inferior-ess-objects-command  . ".SmodeObs(%d, pattern=\"%s\")\n")
-					; ^ was "objects(%d)")
+    (inferior-ess-objects-command  . "objects(%d)\n")
     (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
-    (inferior-ess-help-command     . "help(\"%s\")\n")
+    (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
-    (inferior-ess-load-command     . ".SmodeLoad(\"%s\")\n")
-    (inferior-ess-dump-command     . ".SmodeDump(\"%s\", \"%s\")\n")
-    (inferior-ess-search-list-command . ".SmodePaths()\n"))
+    (inferior-ess-secondary-prompt . "+ ?"))
+
   "Variables to customize for S")
 
 ;; For loading up the S code required for the above.
@@ -95,15 +94,13 @@
 ;;		  (concat "source(\"" ess-mode-run-file2 "\")\n")))))
 
 
-(defun S+5 ()
-  "Call 'Splus5', based on S version 4, from Bell Labs
+(defun S+5 (&optional proc-name)
+  "Call 'Splus5', based on S version 4, from Bell Labs.
 New way to do it."
   (interactive)
   (setq ess-customize-alist S+5-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(S): ess-dialect=%s , buf=%s \n"
-	   ess-dialect
-	   (current-buffer)))
+   (format "(S): ess-dialect=%s , buf=%s \n" ess-dialect (current-buffer)))
   (inferior-ess))
 
 
