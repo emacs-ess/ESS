@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/17 18:31:21 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: essd-xls.el,v 1.16 1997/07/17 18:31:21 rossini Exp $
+;; Modified: $Date: 1997/07/17 20:40:50 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: essd-xls.el,v 1.17 1997/07/17 20:40:50 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.17  1997/07/17 20:40:50  rossini
+;;: cleaned up for release.
+;;:
 ;;: Revision 1.16  1997/07/17 18:31:21  rossini
 ;;: stuff
 ;;:
@@ -73,14 +76,6 @@
 
 ;;; Code:
 
-;;(defun ess-XLS-shortcut-pre-run-hook ()
-;;  "Initialize variables."
-;;)
-;;(defun ess-XLS-shortcut-post-run-hook ()
-;;  "Remove initialization."
-;;  (remove-hook 'ess-pre-run-hook 'ess-XLS-shortcut-pre-run-hook))
-
-
 (defvar XLS-customize-alist
   '((ess-customize-alist           .  XLS-customize-alist )
     (ess-proc-prefix               .  "XLS"               )
@@ -95,37 +90,16 @@
     ;;(ess-help-sec-keys-alist       .  
   "Variables to customize for XLS")
 
-
 (defun XLS ()
   "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ).
 New way to do it."
   (interactive)
-  ;; Setup the needed vars
-  (setq ess-customize-alist XLS-customize-alist) ; setq or setq-default?
-  ;;(ess-set-vars-default ess-customize-alist (current-buffer))
-  ;; debug, only
+
+  (setq ess-customize-alist XLS-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(XLS): ess-proc-prefix=%s , buf=%s\n"
-	   ess-proc-prefix
-	   (current-buffer)))
-
-  ;; now run...
+	   ess-proc-prefix (current-buffer)))
   (inferior-ess))
-
-
-(defun XLS-old () "Call 'XLS', but this is only minimally correct..."
-  (interactive)
-  ;;(add-hook 'ess-pre-run-hook  'ess-XLS-shortcut-pre-run-hook)
-  ;;(add-hook 'ess-post-run-hook 'ess-XLS-shortcut-post-run-hook)
-  (setq-default inferior-ess-program          inferior-XLS-program-name
-		ess-proc-prefix               "XLS"                    
-		ess-version-running           "XLS"                    
-		inferior-ess-primary-prompt   "> ?"                    
-		inferior-ess-help-command     "(help '%s)\n"           
-		inferior-ess-exit-command     "(exit)\n")              
-		 
-  (inferior-ess))
-
 
  ; Provide package
 

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/17 18:31:57 $
-;; Version: $Revision: 1.22 $
-;; RCS: $Id: essd-r.el,v 1.22 1997/07/17 18:31:57 rossini Exp $
+;; Modified: $Date: 1997/07/17 20:41:36 $
+;; Version: $Revision: 1.23 $
+;; RCS: $Id: essd-r.el,v 1.23 1997/07/17 20:41:36 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.23  1997/07/17 20:41:36  rossini
+;;: cleaned up for release.
+;;:
 ;;: Revision 1.22  1997/07/17 18:31:57  rossini
 ;;: formatting.
 ;;:
@@ -92,7 +95,6 @@
 
 ;;; Code:
 
-
 (defvar R-customize-alist
   '((ess-customize-alist           . R-customize-alist)
     (ess-proc-prefix               . "R")
@@ -117,36 +119,12 @@
   "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ).
 New way to do it."
   (interactive)
-  ;; Setup the needed vars
-  (setq ess-customize-alist R-customize-alist) ; setq or setq-default?
+  (setq ess-customize-alist R-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(R): ess-proc-prefix=%s , buf=%s \n"
 	   ess-proc-prefix
 	   (current-buffer)))
-
-  ;; now run...
   (inferior-ess))
-
-
-
-(defun R-old ()
-  "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ.)
-Old way to do it."
-  (interactive)
-  ;; OLD WAY
-  (setq-default ess-proc-prefix              "R"
-		ess-version-running          "R" ;using 'ls()' instead of objects..
-		inferior-ess-program         inferior-R-program-name
-		inferior-ess-objects-command "if(%d == 1) ls() else builtins()"
-		ess-help-sec-regex           ess-help-R-sec-regex
-		ess-help-sec-keys-alist      ess-help-R-sec-keys-alist
-		inferior-ess-help-command    "help(\"%s\")\n"
-		inferior-ess-exit-command    "q()\n"
-		ess-loop-timeout             100000 ; default is 50000
-		inferior-ess-primary-prompt  "[][a-zA-Z0-9() ]*> ?") 
-					;[] for browser()
-  (inferior-ess))
-
 
  ; Provide package
 
