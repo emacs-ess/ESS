@@ -15,9 +15,9 @@ ESS: Emacs Speaks Statistics
 
 ESS version
 
-   5.2.0rc2
+   5.2.0rc3
 
-   (Documentation $Revision: 1.24 $ $Date: 2004/04/22 04:50:18 $).
+   (Documentation $Revision: 1.25 $ $Date: 2004/04/22 16:14:36 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -223,8 +223,10 @@ Changes/New Features in 5.2.0:
    * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
      pressing underscore twice inserts a literal underscore;
      ess-dump-filename-template-proto (new name!) now can be customized
-     successfully (for S language dialects); ess-help: Now using nice
-     underlines (instead of `nuke-* ^H_')
+     successfully (for S language dialects); Support for Imenu has been
+     improved; set ess-imenu-use-S to non-nil to get an "Imenu-S" item
+     on your menubar; ess-help: Now using nice underlines (instead of
+     `nuke-* ^H_')
 
    * ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
      numbers from any Emacs buffer into an existing *R* process; M-x
@@ -471,7 +473,7 @@ Authors of and contributors to ESS
 ==================================
 
 The ESS environment is built on the open-source projects of many
-contributors, dating back over 10 years.  Doug Bates and Ed Kademan
+contributors, dating back nearly 15 years.  Doug Bates and Ed Kademan
 wrote S-mode in 1989 to edit S and Splus files in GNU Emacs.  Frank
 Ritter and Mike Meyer added features, creating version 2.  Meyer and
 David Smith made further contributions, creating version 3.  For
@@ -527,24 +529,12 @@ File: ess.info,  Node: Latest version,  Next: Manual,  Prev: Credits,  Up: Intro
 Getting the latest version of ESS
 =================================
 
-The latest stable version of ESS is always available on the web at: ESS
-web page (http://www.analytics.washington.edu/downloads/ess/) or
-StatLib (http://lib.stat.cmu.edu/general/ESS/)
+The latest version of ESS is always available on the web at: ESS web
+page (http://www.analytics.washington.edu/downloads/ess/) or StatLib
+(http://lib.stat.cmu.edu/general/ESS/)
 
-   The latest public version of ESS can also be retrieved via cvs
-client.  If you have a firewall, then you may need to take appropriate
-action.
-
-   The repository name is
-     :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs
-
-   Using a command-line cvs client (i.e. on Unix or DOS), first type:
-     cvs -d :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs login
-
-   The password is "anoncvs".
-
-   Then type:
-     cvs -d :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs co ess
+   There no longer is an anonymous CVS repository for ESS, due to lack
+of interest, little demand, and problems with security.
 
 
 File: ess.info,  Node: Manual,  Prev: Latest version,  Up: Introduction
@@ -598,8 +588,8 @@ Unix installation
      necessary.  This directory will be referred to below as ESSDIR.
 
   2. Retrieve the latest version from gzipped tar file
-     (http://software.biostat.washington.edu/ess/ess-VERSION.tar.gz) to
-     ESSDIR.
+     (http://www.analytics.washington.edu/downloads/ess/ess-VERSION.tar.gz)
+     to ESSDIR.
 
   3. Decompress/unarchive the files from the disribution.
           gunzip ess-VERSION.tar.gz
@@ -4275,93 +4265,93 @@ Node: Top249
 Node: Introduction2043
 Node: Features5009
 Node: New features8097
-Node: Credits19373
-Node: Latest version21568
-Node: Manual22422
-Node: Installation23183
-Node: Unix installation23976
-Node: Microsoft Windows installation27784
-Node: Requirements33712
-Ref: Requirements-Footnote-134469
-Ref: Requirements-Footnote-234563
-Node: System dependent35029
-Node: Starting up37302
-Node: Multiple ESS processes38132
-Node: ESS processes on Remote Computers39432
-Node: S+elsewhere and ESS-elsewhere42315
-Node: Customizing startup45066
-Node: Help for the S family47049
-Node: ESS(S)--Editing files47493
-Node: iESS(S)--Inferior ESS processes48538
-Node: Handling and Reusing Transcripts50675
-Node: ESS-help--assistance with viewing help51286
-Node: Philosophies for using ESS(S)51608
-Node: Scenarios for use (possibilities--based on actual usage)52737
-Node: Customization Examples and Solutions to Problems57561
-Node: Help for SAS58840
-Node: ESS(SAS)--Design philosophy59585
-Node: ESS(SAS)--Editing files60501
-Node: iESS(SAS)--Interactive SAS processes62393
-Node: ESS(SAS)--Batch SAS processes64162
-Node: ESS(SAS)--Function keys for batch processing67838
-Node: ESS(SAS)--TAB key76389
-Node: ESS(SAS)--Usage scenarios77661
-Node: iESS(SAS)--Common problems81829
-Node: ESS(SAS)--MS Windows82977
-Node: Help for BUGS83564
-Node: ESS(BUGS)--Model files84594
-Node: ESS(BUGS)--Command files87499
-Node: ESS(BUGS)--Log files88724
-Node: Entering commands89326
-Node: Command-line editing90611
-Node: Completion91887
-Node: Completion details94646
-Ref: Completion details-Footnote-196553
-Node: Transcript96833
-Node: Last command98602
-Node: Process buffer motion100208
-Node: Transcript resubmit101717
-Node: Saving transcripts104312
-Node: Command History106345
-Node: History expansion108961
-Node: Hot keys112161
-Node: Statistical Process running in ESS?115614
-Node: Emacsclient116911
-Node: Other117710
-Node: Editing118744
-Node: Edit buffer119899
-Node: Loading121927
-Node: Error Checking122968
-Node: Evaluating code124006
-Node: Indenting127473
-Node: Other edit buffer commands130486
-Node: Source Files132356
-Node: Source Directories136875
-Node: Help139999
-Node: Transcript Mode143564
-Node: Resubmit144696
-Node: Clean145768
-Node: Miscellaneous146479
-Node: Highlighting146840
-Node: Graphics148257
-Node: printer148728
-Node: X11149487
-Node: Object Completion150055
-Node: Bugs Etc150857
-Node: Bugs151079
-Node: Reporting Bugs152327
-Node: Mailing Lists153117
-Node: Customization153831
-Node: Variables154678
-Node: Variables for starting ESS155623
-Node: Dump file variables157636
-Node: Indentation variables158807
-Node: Variables controlling interaction161788
-Node: Editing assembly files162672
-Node: Hooks163471
-Node: Keybindings164614
-Node: Key Index165642
-Node: Concept Index165785
-Node: Variable and command index172941
+Node: Credits19493
+Node: Latest version21679
+Node: Manual22145
+Node: Installation22906
+Node: Unix installation23699
+Node: Microsoft Windows installation27514
+Node: Requirements33442
+Ref: Requirements-Footnote-134199
+Ref: Requirements-Footnote-234293
+Node: System dependent34759
+Node: Starting up37032
+Node: Multiple ESS processes37862
+Node: ESS processes on Remote Computers39162
+Node: S+elsewhere and ESS-elsewhere42045
+Node: Customizing startup44796
+Node: Help for the S family46779
+Node: ESS(S)--Editing files47223
+Node: iESS(S)--Inferior ESS processes48268
+Node: Handling and Reusing Transcripts50405
+Node: ESS-help--assistance with viewing help51016
+Node: Philosophies for using ESS(S)51338
+Node: Scenarios for use (possibilities--based on actual usage)52467
+Node: Customization Examples and Solutions to Problems57291
+Node: Help for SAS58570
+Node: ESS(SAS)--Design philosophy59315
+Node: ESS(SAS)--Editing files60231
+Node: iESS(SAS)--Interactive SAS processes62123
+Node: ESS(SAS)--Batch SAS processes63892
+Node: ESS(SAS)--Function keys for batch processing67568
+Node: ESS(SAS)--TAB key76119
+Node: ESS(SAS)--Usage scenarios77391
+Node: iESS(SAS)--Common problems81559
+Node: ESS(SAS)--MS Windows82707
+Node: Help for BUGS83294
+Node: ESS(BUGS)--Model files84324
+Node: ESS(BUGS)--Command files87229
+Node: ESS(BUGS)--Log files88454
+Node: Entering commands89056
+Node: Command-line editing90341
+Node: Completion91617
+Node: Completion details94376
+Ref: Completion details-Footnote-196283
+Node: Transcript96563
+Node: Last command98332
+Node: Process buffer motion99938
+Node: Transcript resubmit101447
+Node: Saving transcripts104042
+Node: Command History106075
+Node: History expansion108691
+Node: Hot keys111891
+Node: Statistical Process running in ESS?115344
+Node: Emacsclient116641
+Node: Other117440
+Node: Editing118474
+Node: Edit buffer119629
+Node: Loading121657
+Node: Error Checking122698
+Node: Evaluating code123736
+Node: Indenting127203
+Node: Other edit buffer commands130216
+Node: Source Files132086
+Node: Source Directories136605
+Node: Help139729
+Node: Transcript Mode143294
+Node: Resubmit144426
+Node: Clean145498
+Node: Miscellaneous146209
+Node: Highlighting146570
+Node: Graphics147987
+Node: printer148458
+Node: X11149217
+Node: Object Completion149785
+Node: Bugs Etc150587
+Node: Bugs150809
+Node: Reporting Bugs152057
+Node: Mailing Lists152847
+Node: Customization153561
+Node: Variables154408
+Node: Variables for starting ESS155353
+Node: Dump file variables157366
+Node: Indentation variables158537
+Node: Variables controlling interaction161518
+Node: Editing assembly files162402
+Node: Hooks163201
+Node: Keybindings164344
+Node: Key Index165372
+Node: Concept Index165515
+Node: Variable and command index172671
 
 End Tag Table
