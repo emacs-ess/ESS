@@ -1,6 +1,6 @@
 -*- view -*-
 
-$Revision: 1.10 $
+$Revision: 1.11 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1036,3 +1036,5 @@ NOTE: Not all of these are clean OR are even consistent.
    "\C-c\C-l" 'submit-sas)			^C^B or ^C^L
    "\C-cd" 'sas-get-dataset)			use
    "\C-c\C-c" 'switch-to-sas-process-buffer)	^C^Z or ^C^Y
+
+* Fix the links with the info system ("about", from the menu). (AJR/MM). 
