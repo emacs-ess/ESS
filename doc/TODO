@@ -1,6 +1,6 @@
 -*-indented-text-*-
 
-$Id: TODO,v 1.7 1997/11/09 21:24:38 rossini Exp $ 
+$Id: TODO,v 1.8 1997/11/09 21:30:37 rossini Exp $ 
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -878,3 +878,14 @@ NOTE: Not all of these are clean OR are even consistent.
 * (AJR) SAS indenting needs to be fixed.
 
 * (AJR) SAS fontlocking of comments needs to be fixed.
+
+* (KH) explicit statement:
+ 
+  I have only one remark (one of my usual ones).  I'd like to be able to
+  pass command line arguments to the inferior process when it is started.
+  This is currently not supported, and poses some difficulties with an
+  interactive prompt mechanism.  (Also rules out my suggestion of using
+  C-u to force prompting for command line args.)
+
+  Hmm ...  Perhaps we should have a variable (ess-inf-always-prompt-...)
+  to get around this problem?
