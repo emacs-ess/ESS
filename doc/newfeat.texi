@@ -19,7 +19,9 @@ C-F10 kills all buffers associated with .sas program;
 "inferior" aliases for SAS batch:  C-c C-r for submit region,
 C-c C-b for submit buffer, C-c C-x for goto .log; C-c C-y for goto .lst
 @item ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
-pressing underscore twice inserts a literal underscore;
+pressing underscore twice inserts a literal underscore.  To stop this
+smart behaviour, add "(ess-smart-underscore nil)" to your .emacs after
+ess-site has been loaded;
 ess-dump-filename-template-proto (new name!) now can be
 customized successfully (for S language dialects);
 Support for Imenu has been improved; set ess-imenu-use-S to non-nil to
