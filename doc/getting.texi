@@ -1,6 +1,6 @@
 The latest stable version of ESS is always available on the web at:
-http://software.biostat.washington.edu/statsoft/ess/ or
-http://lib.stat.cmu.edu/general/ESS/
+@uref{http://software.biostat.washington.edu/statsoft/ess/, ESS web page} or
+@uref{http://lib.stat.cmu.edu/general/ESS/, StatLib}
 
 @comment The HTML version of the documentation can be found at:
 @comment 

@@ -3,19 +3,19 @@
 @setfilename announc.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: announc.texi,v 1.24 2002/02/18 20:38:07 rsparapa Exp $
+@comment $Id: announc.texi,v 1.25 2002/02/18 21:15:11 rsparapa Exp $
 
 @comment  node-name,  next,  previous,  up
 @node Announce, Latest Version, Top, Top
 @chapter ANNOUNCING ESS
 @cindex ANNOUNCE
 
-The ESS Developers proudly announce the release of ESS-5.1.20
+The ESS Developers proudly announce the release of ESS 5.1.20
 --------------------------------------------------------------------
 
 Emacs Speaks Statistics (ESS) provides an intelligent,
 consistent interface between the user and the software.  ESS
-interfaces with SAS, S-PLUS, R, and other statistics analysis
+interfaces with SAS, S-PLUS, R, BUGS and other statistics analysis
 packages under
 the Unix, Microsoft Windows, and Apple Mac operating systems.  ESS
 is itself a package within the Emacs text editor and uses Emacs
