@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/07/02 08:06:19 $
-;; Version: $Revision: 1.80 $
-;; RCS: $Id: ess-cust.el,v 1.80 2004/07/02 08:06:19 rmh Exp $
+;; Modified: $Date: 2004/07/04 11:36:28 $
+;; Version: $Revision: 1.81 $
+;; RCS: $Id: ess-cust.el,v 1.81 2004/07/04 11:36:28 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -723,13 +723,14 @@ file."
 releases of S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
 correspond to a directory on your machine, running the function
-`ess-sqpe-versions-create' will create a function, for example,
-`M-x splus62', that will start the corresponding version Sqpe inside
-an emacs buffer in iESS[S] mode.  If you have versions of S-Plus
-in locations other than these default values, redefine this variable
-with a `custom-set-variables' statement in your site-start.el or
-.emacs file.  The list of functions actually created appears in the
-*ESS* buffer."
+`ess-sqpe-versions-create' will create a function, for example, `M-x
+splus62', that will start the corresponding version Sqpe inside an
+emacs buffer in iESS[S] mode.  If you have versions of S-Plus in
+locations other than these default values, redefine this variable with
+a `custom-set-variables' statement in your site-start.el or .emacs
+file.  The list of functions actually created appears in the *ESS*
+buffer and should appear in the "ESS / Start Process / Other"
+menu."
   :group 'ess-S
   :type '(repeat string))
 
