@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/07 17:12:40 $
-;; Version: $Revision: 1.46 $
-;; RCS: $Id: essa-sas.el,v 1.46 2002/01/07 17:12:40 ess Exp $
+;; Modified: $Date: 2002/01/07 17:29:30 $
+;; Version: $Revision: 1.47 $
+;; RCS: $Id: essa-sas.el,v 1.47 2002/01/07 17:29:30 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -287,9 +287,13 @@ on the way."
 
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with the SAS file by suffix."
-    (if (string-match 
-	"[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)" 
-	(expand-file-name (buffer-name))) 
+    (if (or (string-match 
+	    "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)" 
+	    (expand-file-name (buffer-name)))
+	
+	    (string-match 
+	    "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)" 
+	    ess-sas-file-path))
 
 	(progn
 	    (ess-sas-file-path)
@@ -325,7 +329,12 @@ on the way."
 (defun ess-sas-file-path ()
  "Define the variable `ess-sas-file-path' to be the file in the current buffer"
   (interactive)
-  (setq ess-sas-file-path (expand-file-name (buffer-name))))
+
+  (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
+    (if (string-match 
+	"[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)" 
+	ess-sas-temp-file) 
+	(setq ess-sas-file-path ess-sas-temp-file))))
 
 ;    (setq ess-sas-file-path (first (split-string ess-sas-file-path "[@]")))
 
