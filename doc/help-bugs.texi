@@ -18,8 +18,8 @@ commands is also supported.
 
 Model files (with the .bug extension) are edited in ESS[BUGS] mode.  Two keys 
 are bound for your use in ESS[BUGS], F2 and F12.  F2 performs the same action 
-as it does in ESS[SAS], so see that discussion at 
-@xref{ESS(SAS)--Function keys for batch processing}.  F12 performs the function
+as it does in ESS[SAS], (@xref{ESS(SAS)--Function keys for batch processing}).
+F12 performs the function
 ess-bugs-next-action which you will use a lot.  Pressing F12 in an empty buffer
 for a model file will produce a template for you.  
 
