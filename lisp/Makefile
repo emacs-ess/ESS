@@ -72,7 +72,7 @@ AUXFILES = COPYING Makefile NEWS README TODO \
 
 ESS: $(OBJECTS)
 
-all:	ess info html
+all:	ESS info html
 
 info:	ess.info
 
