@@ -464,7 +464,9 @@ number."
 		"\\([1-9][0-9]?\\)?\\>")	    font-lock-keyword-face)
 
 	 ;; SAS Datastep functions and SAS macro functions
-	 (cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
+	 ;(cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
+	 ;; SAS macro functions occasionally defined with no arguments
+	 (cons "%[a-z_][a-z_0-9]*[ \t();]"
 						    font-lock-function-name-face)
 	 (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
 						    font-lock-function-name-face)
@@ -484,7 +486,7 @@ number."
 		"\\|prob\\([ft]\\|b\\(eta\\|nml\\)\\|chi\\|gam\\|hypr\\|it\\|n\\(egb\\|orm\\)\\)"
 		"\\|ordinal\\|p\\(oisson\\|ut\\)\\|qtr\\|r\\(e\\(peat\\|verse\\)\\|ight\\|ound\\)"
 		"\\|ran\\(bin\\|cau\\|exp\\|g\\(am\\|e\\)\\|k\\|nor\\|poi\\|t\\(bl\\|ri\\)\\|uni\\)"
-		"\\|s\\(aving\\|can\\|econd\\|i\\(gn\\|nh?\\)\\|qrt\\|t\\(d\\(\\|err\\)\\|fips\\|namel?\\)\\|u\\(bstr\\|m\\)\\|ymget\\)"
+"\\|s\\(aving\\|can\\|econd\\|i\\(gn\\|nh?\\)\\|qrt\\|t\\(d\\(\\|err\\)\\|fips\\|namel?\\)\\|u\\(bstr\\|m\\)\\|ymget\\)"
 		"\\|t\\(anh?\\|i\\(me\\(\\|part\\)\\|nv\\)\\|oday\\|r\\(anslate\\|i\\(gamma\\|m\\)\\|unc\\)\\)"
 		"\\|u\\(niform\\|pcase\\|ss\\)\\|v\\(ar\\|erify\\)"
 		"\\|weekday\\|y\\(ear\\|yq\\)\\|zip\\(fips\\|namel?\\|state\\)"
