@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 18:47:17 $ - $Revision: 1.216 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/20 18:48:50 $ - $Revision: 1.217 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -297,26 +297,25 @@ file editing are often determined by the file name extension, i.e.
 the characters at the end of the file name that follow a period like
 \stexttt{txt}, \stexttt{R} or \stexttt{sas}.  Examples of this kind of
 major mode are \stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes
-can know the file type's syntax and grammer and thus provide intelligent
-actions such as automatic indentation; navigation in units of
-characters, words, lines, sentences, paragraphs, function definitions,
-and pages; syntax-based fontification and colorization; and
-reformatting based on programmed conventions.  Major modes also can be
-written to intelligently control other programs such as statistics
-packages.
+understand filetype's syntax and grammer and therefore provide
+intelligent actions such as automatic indentation; navigation in units
+of characters, words, lines, sentences, paragraphs, function
+definitions, and pages; syntax-based fontification and colorization;
+and reformatting based on programmed conventions.  Major modes also
+can be written to intelligently control other programs such as
+statistics packages.
 
-Minor modes provide complementary 
-services that that are applicable across major modes.   
-Many minor modes can be active at once.  For example,
-\stexttt{font-lock-mode} allows Emacs to highlight, with fonts or
-colors, the syntax of a programming language whose characteristics are
-described within a major mode like \stexttt{ESS[S]}.  The
-\stexttt{overwrite-mode} determines whether typed characters replace
-the existing text or are inserted at the cursor.  Minor modes can
-emulate the key sequences used by another editor such as \stexttt{vi}.
-In addition, they can be used to perform version control operations
-and many other operations which are nearly identical across file
-types.
+Minor modes provide complementary services that that are applicable
+across major modes.  Many minor modes can be active at once.  For
+example, \stexttt{font-lock-mode} allows Emacs to highlight, with
+fonts or colors, the syntax of a programming language whose
+characteristics are described within a major mode like
+\stexttt{ESS[S]}.  The \stexttt{overwrite-mode} determines whether
+typed characters replace the existing text or are inserted at the
+cursor.  Minor modes can emulate the key sequences used by another
+editor such as \stexttt{vi}.  In addition, they can be used to perform
+version control operations and many other operations which are nearly
+identical across file types.
 
 \paragraph{Network Support.}
 Emacs allows transparent access to remote files over a network.  This
