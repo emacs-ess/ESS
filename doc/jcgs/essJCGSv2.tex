@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/18 22:11:39 $ - $Revision: 1.186 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/18 22:35:57 $ - $Revision: 1.187 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -446,6 +446,12 @@ that only requires an interpreter such as R, \SAS\ or \XLispStat.
 %% but the results of all commands are of interest in the coding
 %% phase.
 
+ESS fully supports the S family (S, \Splus, and R)\@.  \SAS\ and BUGS
+are also well supported.  \Stata, \XLispStat\ (including extensions
+ARC and ViSta) are supported with the basic functionality of syntax
+highlighting and process-interfacing.  %ESS and its interface are fully
+%discussed in the next section.
+
 ESS extends Emacs to provide a functional and extensible interface
 which is uniform and consistent across multiple statistical packages.
 This is done first, by adding shortcuts and features for accelerated
@@ -454,13 +460,14 @@ statistical packages through a number of activities: control of
 input/output, assistance with evaluation, and specialized parsing of
 help files.
 
-Emacs can assist with, or be
-programmed to perform, many tasks related to data cleaning,
-management, and editing.  For example, conversion of data files
-between standard input formats, such as from comma-separated to
-tab-delimited, can be automated through the use of commands written in
-elisp which can be mapped to a key sequence.
-% programs or keyboard macros.
+% Rodney:  these are Emacs features.  Why are they in the ESS Extends
+% Emacs section?
+%Emacs can assist with, or be
+%programmed to perform, many tasks related to data cleaning,
+%management, and editing.  For example, conversion of data files
+%between standard input formats, such as from comma-separated to
+%tab-delimited, can be automated through the use of commands written in
+%elisp which can be mapped to a key sequence.
 
 Differences between user interfaces can arise from coordinating
 several data files, multiple statistical software packages, and the
@@ -468,13 +475,13 @@ corresponding source code for each of these packages during a single
 analysis.  ESS helps to remedy these differences by providing a single
 point of contact for all tasks.  
 
-Other features which
-% are less commonly employed by statisticians but 
-provide potential for efficient
-computer usage are the use of source-code control
-systems, tools for accessing programs or files on remote machines, and
-interfaces to documentation systems such as \LaTeX,
-\textsc{html}, and \textsc{xml}.  
+% Rodney:  same comment as above.
+%Other features which provide potential for efficient
+%computer usage are the use of source-code control
+%systems, tools for accessing programs or files on remote machines, and
+%interfaces to documentation systems such as \LaTeX,
+%\textsc{html}, and \textsc{xml}.  
+
 % repetitive
 %Below, we describe some of the
 %problems that one encounters, and how ESS/Emacs can minimize the
@@ -518,12 +525,6 @@ interfaces to documentation systems such as \LaTeX,
 
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
-
-ESS fully supports the S family (S, \Splus, and R)\@.  \SAS\ and BUGS
-are also well supported.  \Stata, \XLispStat\ (including extensions
-ARC and ViSta) are supported with the basic functionality of syntax
-highlighting and process-interfacing.  ESS and its interface are fully
-discussed in the next section.
 
 \paragraph{Syntactic highlighting and indentation of source code.}
 The programmers task is eased when language constructs (such as
@@ -647,7 +648,7 @@ denote the mode for interfacing with the statistical package.  Figure
 \ref{f.ess-demo} shows the S language program \stexttt{ess-demo.s} in
 the top buffer in \stexttt{ESS[S]} mode and the executing R process in
 the bottom buffer \stexttt{*R*}.  The
-(\stexttt{iESS}) major mode of the \stexttt{*R*} buffer is crafted for
+\stexttt{iESS} major mode of the \stexttt{*R*} buffer is crafted for
 command-line editing.  This mode remembers and uses the command
 history, allowing for the recall and searching of previously entered
 commands.  Filename completion for local directories is also
@@ -1203,9 +1204,9 @@ of developers, with 5 major versions released.  ESS descended from and combined
 
 Emacs has a long history of being a programmer's editor.  Many
 statisticians got their first taste of the power of Emacs with the
-FORTRAN mode first distributed in 1986. However, statistician's
+\Fortran mode first distributed in 1986. However, statistician's
 preferences for programming were changing
-from generalist compiled languages like FORTRAN to specialist interactive 
+from generalist compiled languages like \Fortran to specialist interactive 
 statistical analysis packages like S and SAS.  Emacs modes for S and SAS soon 
 followed.
 %\begin{figure}[tbp]
