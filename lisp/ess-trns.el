@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/12 19:30:00 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: ess-trns.el,v 1.13 1997/11/12 19:30:00 rossini Exp $
+;; Modified: $Date: 1997/11/20 14:20:03 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: ess-trns.el,v 1.14 1997/11/20 14:20:03 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -126,7 +126,7 @@
  "Menu for use in S transcript mode."
  '("ess-trans"
    ["Describe"  describe-mode t]
-   ["About"  (lambda nil (interactive) (ess-goto-info "Transcript Mode")) t]
+   ;;["About"  (lambda nil (interactive) (ess-goto-info "Transcript Mode")) t]
    ["Send bug report"  ess-submit-bug-report t]
    "------"
    ["Mark cmd group"  mark-paragraph t]
