@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.28 1997/06/15 09:02:51 rossini Exp $
+## $Id: Makefile,v 1.29 1997/06/17 01:42:01 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.29  1997/06/17 01:42:01  rossini
+## changed preloads, for Emacs (thanks, Martin).
+##
 ## Revision 1.28  1997/06/15 09:02:51  rossini
 ## reordered essd and ess-site files in dependencies, for now.
 ##
@@ -69,13 +72,13 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 4.9-b6
+VERSION = 4.9-b7
 LASTVERSION = 4.8.MM6.XE3
 
 # have to preload the files that contain macro definitions or the
 # byte compiler will compile everything that references them
 # incorrectly.  also preload a file that sets byte compiler options.
-PRELOADS = -l ./ess.el 
+PRELOADS = -l ./ess-site.el
 
 ## compile with noninteractive and relatively clean environment
 ## XEMACS 19.14 and before.
@@ -180,7 +183,7 @@ ess-trans.elc:  ess-trans.el $(CORE)
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-trans.el
 
 ess-site.elc:  ess-site.el $(CORE)
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-site.el
+	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile ess-site.el
 
 #S-xmacs.elc:  S-xmacs.el
 #S-menu.elc:  S-menu.el
