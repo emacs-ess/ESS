@@ -235,18 +235,6 @@ The ESS info directory stores the ESS info files.")
 
 (autoload 'Rd-mode "essddr" "Major mode for editing R documentation." t)
 
-;; remassoc exists as a built-in function in xemacs, but
-;; not in GNU emacs
-;;
-(if (not (functionp 'remassoc))
-    (defun remassoc (key a)
-      "remove an association pair from an alist"
-      (if a
-	  (let ((pair (car a)))
-	    (if (equal (car pair) key)
-		(cdr a)
-		(cons pair (remassoc key (cdr a))))))))
-
 ;; This is thanks to  Ed L Cashin <ecashin@uga.edu>, 03 Mar 2004 :
 (defun ess-restore-asm-extns ()
   "take away the S-Plus mode association for .s and .S files added by ESS
@@ -359,7 +347,7 @@ between .s or .S files and assembly mode.
 ;;; These commands are for running the PC version of Sqpe of S+4 and
 ;;; S+6 in an emacs buffer, using the same technology as ESS uses for
 ;;; Unix S-Plus.  Interactive graphics are unavailable in this mode.
-;;; See essd-sp4.el or essdsp6w.el
+;;; See essd-sp4.el or essd-sp6w.el
 
 ;;; These are the defaults.  Change them here if the defaults don't work.
 ;;; Use the 8.3 version of the pathname because embedded blanks will cause
@@ -385,7 +373,7 @@ between .s or .S files and assembly mode.
 ;;; control to the user.  On a 300 MHz machine with 96MB of RAM the
 ;;; delay is 60 seconds.  On a ???? MHz machine with 523MB the delay is
 ;;; 10 seconds.	 The user may need to adjust this number.
-(defvar ess-S+6-startup-delay 60
+(defvar ess-S+6-startup-delay 15 ;; <- 2005-01-03; MM
 "*Number of seconds to wait for the Commands window to appear before
 sending `inferior-ess-language-start' to S-Plus.")
 
@@ -423,8 +411,8 @@ sending `inferior-ess-language-start' to S-Plus.")
     (progn
       (ess-message "[ess-site:] require 'essd-sp4 ...")
       (require 'essd-sp4)
-      (ess-message "[ess-site:] require 'essdsp6w ...")
-      (require 'essdsp6w))
+      (ess-message "[ess-site:] require 'essd-sp6w ...")
+      (require 'essd-sp6w))
   ;; else: decent OS
   (ess-message "[ess-site:] require 'essd-sp5 ...")
   (require 'essd-sp5)
