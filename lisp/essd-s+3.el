@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/10/22 14:48:55 $
-;; Version: $Revision: 1.35 $
-;; RCS: $Id: essd-s+3.el,v 1.35 1997/10/22 14:48:55 rossini Exp $
+;; Modified: $Date: 1997/11/18 22:21:37 $
+;; Version: $Revision: 1.36 $
+;; RCS: $Id: essd-s+3.el,v 1.36 1997/11/18 22:21:37 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -51,7 +51,7 @@
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-mode-edit                 . 'S+3-mode)
     (ess-help-sec-regex            . ess-help-S+3-sec-regex)
-    (ess-help-sec-keys-alist       . ess-help-S+3-sec-keys-alist)
+    (ess-help-sec-keys-alist       . S+3-help-sec-keys-alist)
     (ess-loop-timeout              . 100000 )
     (ess-object-name-db-file       . "ess-s+3-namedb.el" )
     (ess-retr-lastvalue-command
