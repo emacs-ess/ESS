@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/05/05 17:52:54 $
-;; Version: $Revision: 1.93 $
-;; RCS: $Id: essa-sas.el,v 1.93 2002/05/05 17:52:54 rsparapa Exp $
+;; Modified: $Date: 2002/05/13 20:47:13 $
+;; Version: $Revision: 1.94 $
+;; RCS: $Id: essa-sas.el,v 1.94 2002/05/13 20:47:13 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -109,24 +109,22 @@
   (if ess-microsoft-p 
     (if (w32-shell-dos-semantics) 'ms-dos 'sh)
     (if (equal system-type 'Apple-Macintosh) 'apple-script 'sh))
-  "Method used by `ess-sas-submit'.
+"Method used by `ess-sas-submit'.
 The default is based on the value of the emacs variable `system-type'
-and, on Windows machines, the function `w32-shell-dos-semantics'.
-'ms-dos           if *shell* follows MS-DOS semantics
-'iESS             inferior ESS, may be local or remote
+and, on Windows, the function `w32-shell-dos-semantics'.
 'sh               if *shell* runs sh, ksh, csh, tcsh or bash
-'apple-script     *shell* unavailable, use AppleScript
+'ms-dos           if *shell* follows MS-DOS semantics
+'apple-script     *shell* unavailable in Mac Classic, use AppleScript
 
-Windows users running MS-DOS in *shell* will get 'ms-dos by default.
+Unix users will get 'sh by default.  
 
 Windows users running bash in *shell* will get 'sh by default.
 
-Unix users will get 'sh by default.
+Windows users running MS-DOS in *shell* will get 'ms-dos by default.
 
-Users accessing a remote machine with `telnet', `rlogin', `ssh',
-or `ESS-elsewhere' should have one of the following in ~/.emacs
-   (setq-default ess-sas-submit-method 'iESS)
-   (setq-default ess-sas-submit-method 'sh)")
+Users accessing a remote machine with `telnet', `rlogin', `ssh', etc.,
+should set this variable to 'sh regardless of their local shell 
+(since their remote shell is 'sh).")
 
 (defcustom ess-sas-data-view-options 
     (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
