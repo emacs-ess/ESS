@@ -725,8 +725,8 @@ file."
     "c:/progra~1/Insightful/splus62net/server"
     "c:/progra~1/Insightful/splus61netclient"
     "c:/progra~1/Insightful/splus61net/server"
-    "c:/progra~1/Insightful/splus6se",
-    "c:/progra~1/Insightful/splus61se",
+    "c:/progra~1/Insightful/splus6se"
+    "c:/progra~1/Insightful/splus61se"
     "c:/progra~1/Insightful/splus62se")
   "*List of possible values of the environment variable SHOME for recent
 releases of S-Plus.  These are the default locations for several
