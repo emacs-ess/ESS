@@ -28,6 +28,7 @@
 %                a)GPL, cvs, ssh
 %                 b)ESS 6, the next generation?
 
+
 %\renewcommand{\baselinestretch}{1.5}
 \addtolength{\oddsidemargin}{-0.5in}
 %\addtolength{\topmargin}{-0.2in}
@@ -57,7 +58,7 @@
 
 %%---End of package requiring ---------- Own Definitions -------------
 
-\newcommand*{\SAS}{\textsc{SAS}{\textregistered} }
+\newcommand*{\SAS}{\textsc{SAS}$^{\mbox{\scriptsize\textregistered}}$}
 \newcommand*{\Splus}{\textsc{S-Plus}}
 \newcommand*{\XLispStat}{\textsc{XLispStat}}
 \newcommand*{\Stata}{\textsc{Stata}}
@@ -105,7 +106,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/02 10:04:24 $ - $Revision: 1.30 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/02 16:17:13 $ - $Revision: 1.31 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -126,8 +127,7 @@
 \noindent Keywords: Data Analysis, Programming, Emacs, S, \SAS,
 \Splus, R, \XLispStat, \Stata, BUGS
 
-%% not for MM's reading -- maybe for submission (rather baselinestretch above?)
-%%S \baselineskip=2pc
+\baselineskip=2pc
 
 \section{Introduction}
 \label{sec:introduction}
@@ -137,13 +137,13 @@ environments to assist them in the complex process of software
 development which includes the varied tasks of computer
 programming, project management and software testing.
 Common tasks faced by a statistician are not much different from those
-faced by software developers, since a great deal of statistical
+faced by software developers, since much statistical
 activity involves some form of computer use.  Many
-statistical research activities, such as data analysis and
+statistical research activities, particularly data analysis and
 communication, are enhanced by computers.  This puts the user
 interface, which acts as a buffer between the statistician and
 computer, in the critical role of facilitating or hindering these
-tasks.  This paper introduces Emacs Speaks Statistics (ESS);
+tasks.  This paper introduces Emacs Speaks Statistics (ESS) \citep{ESS};
 a set of extensions to the Emacs text editor that create an interface
 for a variety of statistical analysis packages by
 providing shortcuts and extensions for often-performed tasks.
@@ -162,19 +162,22 @@ that per se.  They will just need to know what works today.
 
 ESS provides an interface to statistical packages, and provides,
 through Emacs, additional tools which facilitate both statistical
-software development and data analysis.  Currently supported
-statistical packages are the following:  the S family of languages (which include
+software development and data analysis.  ESS currently supports
+the S family of languages (which include
 S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus{} \citep{Splus}, and R
-\citep{ihak:gent:1996}); \SAS \citep{SAS:8}; \XLispStat\
+\citep{ihak:gent:1996}); \SAS\ \citep{SAS:8}; \XLispStat\
 \citep{Tier90} and its extensions Arc \citep{Cook:Weisberg:1999} and
 ViSta \citep{youn:fald:mcfa:1992}; \Stata\ \citep{Stata:6.0}; Omegahat
 \citep{DTLang:2000}; and BUGS \citep{BUGS}.  ESS can be
 extended to accommodate most statistical packages which provide either
 an interactive command-line or batch file processing.
 
-The present paper provides historical and non-technical information on
-Emacs and ESS.  A general introduction and usage instructions can be
-found in \cite{heiberger:dsc:2001}.  The documentation that comes with
+The present paper summarizes historical and non-technical information on
+Emacs and ESS.  A more complete version is in \citep{RMHHS:2001}.
+A general introduction and usage instructions can be
+found in \citep{heiberger:dsc:2001}.  
+An introduction for a SAS-oriented audience is in
+\citep{heiberger:philasugi:2001}.  The documentation that comes with
 ESS provides details of its implementation and examples of its use.
 We first describe the Emacs text editor, the platform on which ESS is
 built.  That is followed by the details of ESS and how it facilitates
@@ -192,38 +195,49 @@ Emacs is a mature, powerful, and extensible text editing system which
 is freely available under the GNU General Public License for a large
 number of platforms, including most flavors of Unix, Microsoft Windows
 and Apple Macintosh.  There are two open-source, free-software
-implementations of Emacs (GNU Emacs \citep{GNU-Emacs} and XEmacs
-\citep{XEmacs}).  Emacs shares many features with
+implementations of Emacs:  GNU Emacs \citep{GNU-Emacs} and XEmacs
+\citep{XEmacs}.  Emacs shares many features with
 word processors, and some characteristics with operating systems.
 Most importantly, Emacs can interact with and control other programs.
 
-Emacs was originally written when character-based terminals with only
-a keyboard for input was the most advanced method of access to
-computers.  Common Emacs commands were assigned to key sequences,
-which is known as key-mapping or key-binding.  These days, Emacs is
+\paragraph{Keyboard and Mouse Interaction.}
+When Emacs was originally written, character-based terminals with only
+a keyboard for input were the most advanced method of access to
+computers.  Common Emacs commands were mapped (or bound) to control-key
+sequences for ease of use.  These days, Emacs is
 rarely used within a terminal or terminal-emulator, but key-mapping of
 commands is still an important time-saving feature.  Over the last
 decade, Emacs has been extended to use graphics-based windowing
 systems such as X11, Microsoft Windows, and Apple Macintosh.  These
 windowing systems provide a graphical user interface (GUI) which
-allows the user to interact with either a keyboard or a mouse and for
+allows the user to interact with either a keyboard or a mouse, and encourage
 multiple applications to share a single display.  Emacs menus and
-toolbars allow mouse access to frequently used actions; for instance,
-when you don't know or can't remember a key-mapping.  User-defined
+toolbars on the display screen allow mouse access to frequently used 
+actions and provide a graphical alternative
+when the user doesn't know or can't remember a key-mapping.  User-defined
 menus and toolbars can be constructed as needed.
 
-Emacs provides facilities which go beyond ordinary text editing.
-When opening a file, Emacs can complete partially typed
-file names by referring to the typed directory.  This file is placed
-in a space created within the Emacs application called a buffer.
-Buffers can be used for more than just editing text files; for instance,
-they can be used for controlling other programs or viewing the contents of
-a directory.  Buffers allow the user to simultaneously edit multiple files
-and concurrently control multiple programs simply by switching between buffers.
+\paragraph{Buffers for Editing and for Program Control.}
+Emacs provides facilities which go beyond ordinary text editing.  When
+opening a file, Emacs can complete partially-typed file names by
+referring to the operating system file directory.  The working copy of
+the opened file is placed in an Emacs buffer where it can be viewed
+and/or edited.  Buffers can be used for more than just editing text
+files; for instance, they can be used for controlling other programs
+or viewing the contents of a directory.  Buffers allow the user to simultaneously
+edit multiple files and control multiple
+programs simply by switching between buffers.  Frequently an operating
+system interactive command line interpreter, called a shell,
+is run inside a buffer; hence most programs can be run from a buffer
+since most programs can be run from a command line.  When a command line 
+interpreter is run inside a buffer, the entire
+transcript of the interaction is immediately editable and searchable while the
+program is still running.
 
-Emacs capabilities are extended by text files containing Emacs Lisp,
-(shortened as elisp), a dialect of Lisp
-\citep{RChassell1999,PGraham:1996}.  Emacs commands, written in elisp,
+\paragraph{Major and Minor Modes.}
+Emacs capabilities are extended by loading text files containing code
+written in Emacs Lisp, (shortened as elisp), a dialect of Lisp
+\citep{RChassell1999, PGraham:1996}.  Emacs commands, written in elisp,
 can be called interactively by name or by their associated key-map.
 Emacs functions are also written in elisp, but they can only be called
 by Emacs commands or other Emacs functions rather than by
@@ -231,20 +245,26 @@ name or key-maps.  The most important extensions to Emacs are called
 modes.
 
 Major-modes provide two kinds of support.
-First, a customized environment (key-maps, capabilities) for file
-types which are determined from the file name's extension, i.e. the characters
-at the end of the file name that follow a period like ``txt'', ``R''
-or ``sas''.  When dictated by the file name, you can only utilize one
-major-mode at a time.  An example of this kind of major-mode is ESS
-(technically, the name is \stexttt{ess-mode}).  Major-modes of this
+First, they provide a customized environment (key-maps and associated
+commands) for specific file types.  Only one major-mode can be active
+for a given buffer at any time.  The major-mode is often determined by
+the file name extension, i.e. the characters at the end of the file
+name that follow a period like \stexttt{txt}, \stexttt{R} or
+\stexttt{sas}.
+Examples of this kind of major-mode are \stexttt{ESS[S]} and \stexttt{ESS[SAS]}
+(technically, both are special cases of \stexttt{ess-mode}).
+Major-modes of this
 kind provide automatic indentation and navigation in units of characters,
 words, lines, sentences, paragraphs, and pages as well as many other
-features.  The second kind of major-mode is for running other programs.
-In this case, the programs standard input can be drawn from a buffer
-or a file and its standard output can be directed to a buffer or a file.
-Buffers of this kind can control programs that transfer files over a network,
-perform version control operations or many other tasks.
-An important example of this kind of major-mode is \stexttt{shell-mode}.
+features.
+Second, they provide the ability to run other programs.
+In this case, the other program's standard input can be drawn from a buffer
+or a file and its standard output can be directed to a buffer or a
+file.  Buffers of this kind can control programs that transfer files
+over a network, perform version control operations or many other
+tasks.  An important example of this kind of major-mode is
+\stexttt{shell-mode}.  ESS uses this type of major-mode to run a shell
+inside a buffer to control statistical packages.
 
 Minor-modes, by contrast, provide services that are not mutually
 exclusive.  This includes emulation of another editor or cooperating
@@ -260,16 +280,17 @@ programs is provided by the minor-mode \stexttt{vc-mode} for packages
 like CVS, RCS and SCCS (or the more
 specialized \stexttt{pcl-cvs-mode} for CVS only).
 
+\paragraph{Extensions to Editing.}
 Most programming and documentation tasks fall under the realm of text
 editing.  This work can be enhanced by modes which provide features such
 as contextual highlighting and recognition of special reserved words
 appropriate to the programming language in use.  Emacs supports
 folding, outlining, and bookmarks which can assist with maneuvering
-around a file.  Emacs shares many features with word-processing
+around a file.  Emacs shares many features with word processing
 programs and cooperates with document preparation systems
-that perform type-setting such as \LaTeX\ or hypertext markup
-like \textsc{html} and \textsc{xml}.
-%XSLT, and Noweb.  Type-setting and word-processing, which
+such as \LaTeX\ for typesetting or  \textsc{html} and \textsc{xml}
+for hypertext markup.
+%XSLT, and Noweb.  and Typesetting word processing, which
 %focus on the presentation of a document, are tasks that are not pure
 %text-editing.
 
@@ -277,12 +298,12 @@ like \textsc{html} and \textsc{xml}.
 %visual comparison of two similar files; and navigation
 %in units of characters, words, lines, sentences, paragraphs, and pages.
 
- Emacs handles the
+Emacs handles the
 interface to both source code and transcripts contextually, providing
 syntax highlighting, bookmarking features, interfaces to directory
 structure, and command-history.  Other extensions to Emacs allow it to
-act as a World-Wide-Web browser, a highly sophisticated mail and news
-reader, a shell/terminal window with history, and as an interface to
+act as a World-Wide-Web browser, a mail and news
+reader, and as an interface to
 other common text-based tools such as spell checking programs.  The
 Emacs keyboard and mouse interface can be re-mapped to resemble that
 of other text-editors, such as vi, wordstar, and brief.
@@ -342,7 +363,7 @@ language is split by function; general, obtaining help, programming.
 
 
 ESS strongly supports the S family (S, \Splus, and R).
-\SAS is also well supported.  \Stata\
+\SAS\ is also well supported.  \Stata\
 and \XLispStat\ (and the \XLispStat\ extensions, ARC and ViSta) are
 supported with the basic functionality of syntax highlighting and
 process-interfacing.  ESS and its interface are fully discussed in the
@@ -362,15 +383,13 @@ syntax of each statistical language it supports.
 The process of programming is enhanced as ESS provides the user with
 syntax highlighting of language constructs such as reserved words,
 function calls, strings, and comments.  ESS allows the user to specify
-the increment of indentation and each new line that is created is indented
+the increment of indentation and each new line is indented
 to the same level as the previous line.
 %% ESS has customizable automatic indentation, with the customization based
 %%on the syntactic structure of groups of expressions.
 
 \begin{quote}
  Rodney:  What is source code checking?  Should we lump this with highlighting?
- It says that ESS[SAS] has this feature and I wasn't aware of that.  In
- which ESS file can it be found so I can take a look at it?
 \end{quote}
 
 \paragraph{Source code checking.}
@@ -411,6 +430,10 @@ there exists object-name and function-name completion.
 %%then be saved.  There is a good interface for handling and intercepting
 %%calls to the internal help systems for S, \XLispStat, and \Stata.
 
+\begin{quote}
+ Rodney:  we need a short description transcript-mode
+\end{quote}
+
 \paragraph{Interactive transcripts.}
 ESS can create transcripts, a recording of the commands issued in an
 interactive session with a statistical analysis package.
@@ -429,13 +452,7 @@ analyses.  There currently exist functions within ESS for cleaning
 transcripts from S languages back to source code by finding all input
 lines and isolating them into an input file.
 
-\begin{quote}
- Rodney:  actually, I've not been able to get ess-elsewhere to work with
-ange-ftp, EFS or Tramp.  The situation may have been different
-3 or 4 years ago, but with the security crackdowns due to
-flaws in telnet and ftp; this is not likely to work for most
-people.  I suggest that we move it to future work.
-\end{quote}
+
 
 \paragraph{Interacting with statistical programs on remote computers.}
 ESS provides the facility to edit and run programs on remote machines
@@ -463,7 +480,7 @@ process, either R or \Splus.
 \subsection{ESS Facilitates Common Tasks}
 \label{sec:ess-facil-comm}
 
-\subsubsection{Multiple Tools}
+\paragraph{Multiple Tools.}
 \label{sec:multiple-tools}
 
 Basically, statistical packages are either intended for general
@@ -500,7 +517,7 @@ and interactive data analysis.  Statistical programming is the writing of
 computer programs for data analysis and processing.  These programs might be
 written in a computer language that requires as a compiler such as C or
 \Fortran.  But, more likely, they are written in a  computer
-language that only requires an interpreter such as R, \SAS or \XLispStat.
+language that only requires an interpreter such as R, \SAS\ or \XLispStat.
 %%An interpreted language is executed by an interpreter, but a compiled language
 %%must be processed by a compiler which creates an executable form of the
 %%program that can be executed.  There is a trade-off in time between interpreted and compiled
@@ -508,7 +525,7 @@ language that only requires an interpreter such as R, \SAS or \XLispStat.
 %%the program, but the program will not run as fast as if it had been compiled.
 %%Another advantage of intepreted languages is the support they provide for
 %%specialized tasks.  For example, C and \Fortran don't provide you with
-%%the statistical analysis capabilities that R, \SAS or \XLispStat
+%%the statistical analysis capabilities that R, \SAS\ or \XLispStat
 %%do.  Compiled programs and interpreted programs can be used in conjunction.
 %%For instance, a compiled C function could be called from an interpreted
 %%language like R to speed up the calculations.
@@ -520,7 +537,7 @@ computer program for evaluation.
 %%in the analysis phase, but the results of all commands are of interest
 %%in the coding phase.
 
-\subsubsection{Conflicts in keymappings}
+\paragraph{Conflicts in keymappings.}
 \label{sec:confl-keym}
 
 Simple conflicts between interfaces are exemplified by different
@@ -542,8 +559,7 @@ interfaces to documentation systems including \LaTeX\ and
 perform, many tasks related to data cleaning, management, and editing.
 
 
-\subsubsection{Concurrent Use of Multiple Machines and Operating
-  Systems}
+\paragraph{Concurrent Use of Multiple Machines and Operating Systems.}
 \label{sec:conc-use-mult}
 
 It can be useful to have multiple statistical processes running
@@ -581,6 +597,10 @@ By 1996, S-mode was available for GNU Emacs and XEmacs and supported S, \Splus, 
 to some extent R.  Kurt Hornik was instrumental in enhancing support
 for R, in particular, providing Rd mode.
 
+\begin{quote}
+Rodney:  we need a blurb in the text about what Rd-mode is
+\end{quote}
+
 The other ancestor of ESS is SAS-mode,
 written by Tom Cook, which began in 1994 and was partially based on
 GNU Emacs macros written by John Sall.
@@ -588,43 +608,59 @@ GNU Emacs macros written by John Sall.
 Rossini extended SAS-mode to work with
 XEmacs in 1995, and this provided the
 impetus for a single mode for statistical programming.
-%%The extension to a language-independent, generic interface was further prompted
+%%The extension to a language-independent,
+%%generic interface was further prompted
 %%by the success of R and the desire for more complete R support.
 This led to a merger of SAS-mode and S-mode along with changes
 to accommodate multiple languages in a flexible way.
 
-During 1996 and 1997, Richard M. Heiberger further incorporated
-SAS-mode into ESS and designed ``inferior'' ESS for \SAS.  In
-1997, more changes were made to facilitate
+During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS
+for \SAS, a mode that allows text-based \stexttt{PROC} by
+\stexttt{PROC} interaction with an inferior buffer running an interactive SAS
+session either on the same computer or a remote computer over a network.  
+At the same time, SAS-mode was further incorporated into ESS.
+
+In 1997, more changes were made to facilitate
 %% the grand redesign of the internals occurred, where by a generic
 %% means for
-adding support for new statistical languages like \Stata and \XLispStat.
-Most of the work, until 1998, was for Unix statistics packages
-that provided either a command-line interface or batch file processing as the
-method of inter-process communication.
-However, Windows versions of statistical packages do not always provide
-these same methods of communication.  This hurdle fell in 1998 when
-Brian Ripley provided ESS support for inter-process communication on
-Windows which uses a technology called dynamic data exchange or DDE.
-Based on this work, Heiberger provided
-interfaces for Windows versions of \Splus.
+adding support for additional statistical languages like \Stata\ and
+\XLispStat.
 
-In 1998, Rodney Sparapani designed \SAS batch file processing for ESS
+Most of the work, until 1998, was for Unix statistics
+packages that used either a command-line interface or batch file
+processing for input/output.  ESS could not communicate 
+with Windows versions of statistical packages that did not provide
+the same method of input/output.  This hurdle
+fell in 1998 when Brian Ripley designed input/output based on
+the Windows technology of dynamic data exchange (DDE).  
+Based on this work, Heiberger provided interactive interfaces
+for Windows versions of \Splus.
+
+In 1998, Rodney Sparapani designed \SAS\ batch file processing for ESS
 on Unix, Windows and Macintosh.
-Sparapani and Heiberger developed \SAS batch support including function
-key behavior which mimics Display Manager which is the \SAS editor,
-a more comprehensive and efficient syntax highlighting scheme for \SAS
-programs and logs,
-automated and intelligent error message searching of the log file and extended the
-\stexttt{*ESS-elsewhere*} functionality to include \SAS.  This provides
-a powerful development environment for \SAS.
+Sparapani and Heiberger developed \SAS\ batch support including function
+key behavior which mimics the \SAS\ Display Manager,
+a more comprehensive and efficient syntax highlighting scheme for \SAS\ 
+programs and logs, and automated and intelligent error message searching
+of the log.  This provides a powerful development environment for \SAS.  
+%%The SAS-mode batch file processing
+%%works identically whether the \SAS\ process is running on the same machine
+%%or on a remote machine.
 
 \begin{quote}
- Rodney:  I'm still not comfortable with placing SAS-elsewhere as
-a done deal.  I think this should be a future direction.
-We could say something like:  we are currently working on remote
-file access with respect to ESS and there should be a new
-release by the time you read this.  Comments?
+Rich:  Actually inferior SAS for interactive access to remote SAS, as
+described above, was available before ESS-elsewhere was designed.
+The SAS batch file processing that you and I designed works equally
+well on local or remote SAS systems.   I think the modifications I made to
+the description of inferior SAS and batch SAS are sufficient.
+
+Rodney:  Remote batch file processing usually does not work.
+My original comment stands:
+I've not been able to get batch SAS file processing to work with
+ange-ftp, EFS or Tramp.  The situation may have been different
+3 or 4 years ago, but with the security crackdowns due to
+flaws in telnet and ftp; this is not likely to work for most
+people.  I suggest that we move it to future work.
 \end{quote}
 
 In 2001, Sparapani added BUGS batch file processing for ESS.  This
