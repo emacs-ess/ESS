@@ -1,20 +1,24 @@
-The latest public version of ESS can also be retrieved via cvs client.  
-If you have a firewall, then you may need to take appropriate action.
 
-The repository name is
-@display
-:pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs
-@end display
+There no longer is an anonymous CVS repository for ESS, due to lack of
+interest, little demand, and problems with security.
 
-Using a command-line cvs client (i.e. on Unix or DOS), first type:
-@display
-cvs -d :pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs login
-@end display
+@c The latest public version of ESS can also be retrieved via cvs client.  
+@c If you have a firewall, then you may need to take appropriate action.
 
-The password is "anoncvs".
+@c The repository name is
+@c @display
+@c :pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs
+@c @end display
 
-Then type:
-@display
-cvs -d :pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs co ess
-@end display
+@c Using a command-line cvs client (i.e. on Unix or DOS), first type:
+@c @display
+@c cvs -d :pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs login
+@c @end display
+
+@c The password is "anoncvs".
+
+@c Then type:
+@c @display
+@c cvs -d :pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs co ess
+@c @end display
 
