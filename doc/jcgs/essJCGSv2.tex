@@ -131,11 +131,11 @@
 \section{Introduction}
 \label{sec:introduction}
 
-The common tasks faced by a statistician are not different from those
+Common tasks faced by a statistician are not much different from those
 faced by software developers, since a great deal of statistical
-activity involves some form of computer programming.  Common
+activity involves some form of computer programming.  Many
 statistical research activities, such as data analysis and
-communication, are enhanced by computers.  More importantly, the user
+communication, are enhanced by computers.  Moreover, the user
 interface, which acts as a buffer between the statistician and
 computer, plays a critical part in facilitating or hindering this
 interaction.  This paper introduces Emacs Speaks Statistics (ESS),
@@ -148,6 +148,11 @@ provides shortcuts and extensions for often-performed tasks.
 %% (SPSS/SAS/BDMP in the 80s), to spreadsheet-style interfaces
 %% (spreadsheets, AND minitab, spss now, etc), etc?  This would be the
 %% 2nd paragraph, if so. 
+%% 
+%% I don't think it is necessary, although, I'm not entirely opposed.
+%% AFAIC, anyone who wants to use ESS will not need to know all of
+%% that per se.  They will just need to know what works today IMO.
+%% Rodney
 
 ESS provides an interface to statistical packages, and provides,
 through Emacs, additional tools which facilitate both statistical
@@ -165,15 +170,15 @@ The present paper provides historical and non-technical information on
 Emacs and ESS.  A general introduction and usage instructions can be
 found in \cite{heiberger:dsc:2001}.  The documentation that comes with
 ESS provides details of its implementation and examples of its use.
-We first describe the Emacs editor, the platform on which ESS is
-built.  Emacs is a powerful and extensible text editing tool.  This
-section is followed by the details of ESS and how it facilitates
+We first describe the Emacs text editor, the platform on which ESS is
+built.  That is followed by the details of ESS and how it facilitates
 common statistical computing activities.  We then describe the unique
-history that ESS has had as an open source project, as it has been
-passed down through numerous development groups and has taken into its
-fold and extended a number of external Emacs products which support
+history that ESS has had as an open-source, free-software project.  
+It has been passed down by ``generations'' of developers and has 
+united various Emacs packages which support
 statistical languages and programming.  Finally, we conclude with
 future tasks and extensions.
+%Emacs is a powerful and extensible text editing tool.
 
 \section{Emacs}
 \label{sec:emacs}
@@ -186,13 +191,13 @@ Emacs \citep{RMS:2000} and XEmacs).  Emacs shares many features with
 word processors, and some characteristics with operating systems.
 Most importantly, Emacs can interact with and control other programs.
 
-Emacs was originally written when single-screen terminals were the
-most sophisticated method of access to computers.  Common Emacs
-functions are assigned to key sequences, which is known as key-mapping
-or key-binding, though all functions can be executed by name.  For
-most current users, Emacs is rarely used on in a terminal-emulator
-except in special circumstances such as small, quick edits or remote
-access to the computer over a slow connection.  Over the last decade,
+Emacs was originally written when single-screen terminals with only a 
+keyboard for input was the most advanced method of access to computers.  
+Common Emacs commands were assigned to key sequences, which is known as 
+key-mapping or key-binding.  These days, Emacs is rarely used via a 
+terminal or terminal-emulator
+except in special circumstances such as a quick edit or remote
+access to a computer over a slow connection.  Over the last decade,
 Emacs has been extended to use windowing systems such as X11,
 Microsoft Windows, and Apple Macintosh.  These windowing systems
 provide a graphical user interface (GUI) which allows the user to
@@ -203,25 +208,32 @@ when you don't know or can't remember the appropriate key-mapping.
 User-defined menus and toolbars can be constructed as needed.
 
 Emacs provides facilities which go beyond ordinary text editing.  It
-creates a dedicated space on the display, called a buffer, to perform
+creates dedicated spaces on the display, called buffers, to perform
 tasks such as editing a text file on disk or controlling other
-programs.  One can switch between buffers to observe or progress on
-concurrent tasks.  Buffers allow the user to simultaneously edit or
-control multiple files and programs.
+programs.  Buffers allow the user to simultaneously edit multiple files
+and concurrently control multiple programs simply by switching between buffers.
 
 Emacs capabilities are extended by text files containing Emacs Lisp,
 (also known as E-Lisp), a dialect of Lisp
-\citep{RChassell1999,PGraham:1996}.  Emacs commands can be written
-in E-Lisp to be bound to key-maps or called interactively by the user.
+\citep{RChassell1999,PGraham:1996}.  Emacs commands, written
+in E-Lisp, can be called interactively by name or by their associated key-map.  
 Emacs functions are also written in E-Lisp, but they can only be 
 called by Emacs commands or other Emacs functions rather than directly
-by key-maps or interactively.  The most important extensions to
-Emacs are called modes.  Major-modes provide two types of support.
-First, it customizes the environment (key-maps, capabilities) for types
+by name or key-maps.  The most important extensions to
+Emacs are called modes.  
+
+Major-modes provide two types of support.
+First, a customized environment (key-maps, capabilities) for types
 of files determined by the file name's extension, i.e. the characters
 at the end of the file name that follow a period like ``txt'', ``s''
-or ``sas''.  When they are dictated by the file name, you can only
-utilize one major-mode at a time.  Minor-modes, by contrast, provide
+or ``sas''.  When dictated by the file name, you can only
+utilize one major-mode at a time. 
+The second type of major-mode is for running other programs.  In this
+case, the buffer provides input and output for the other program.  These
+buffers control other programs and interact with the system to send mail,
+transfer files over networks, play games, or perform many other tasks.
+
+Minor-modes, by contrast, provide
 services that are not mutually exclusive.  This includes emulation of
 another editor or cooperating with a version control program.  For
 example, the font-lock minor-mode allows Emacs to highlight, with
@@ -231,20 +243,14 @@ provide automatic indentation and navigation in units of characters,
 words, lines, sentences, paragraphs, and pages as well as many other
 features.
 
-The second type of Major-mode is for running Lisp programs.  In this
-case, the buffer provides input and output to the Lisp program.  These
-can control other processes or interact with the system to send mail
-or transfer files over networks, play games, configure the running
-Emacs session, or perform many other tasks.
-
 Most programming and documentation tasks fall under the realm of text
 editing.  This work can be enhanced by features such as contextual
 highlighting and recognition of special reserved words appropriate to
 the programming language in use.  In addition, editor behaviors such
 as folding, outlining, and bookmarks can assist with maneuvering
 around a file.  Emacs shares many features with word-processing
-programs and cooperates with document preparation systems such as
-\LaTeX, HTML, \textsc{xml}, XSLT, and Noweb.
+programs and cooperates with document preparation and management
+systems such as \LaTeX, HTML, \textsc{xml}, XSLT, and Noweb.
 %Type-setting and word-processing, which
 %focus on the presentation of a document, are tasks that are not pure
 %text-editing.
@@ -273,8 +279,8 @@ Emacs' power and flexibility make it a sensible starting choice to
 build an interface for statistical analysis packages.  ESS extends
 Emacs to provide a functional, easily extensible and uniform interface
 for multiple statistical packages.  This is done in two ways.  First,
-shortcuts and features for accelerating the editing files have been
-written and implemented.  Second, interaction with the statistical
+shortcuts and features for accelerated editing of files have been
+implemented.  Second, interaction with the statistical
 language is split by function; general, obtaining help, programming.
 \textbf{THIS NEEDS WORK}.
 
