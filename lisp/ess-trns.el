@@ -1,4 +1,4 @@
-;;; ess-trans.el --- Support for manipulating S transcript files
+;;; ess-trns.el --- Support for manipulating S transcript files
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997,  Richard M. Heiberger <rmh@fisher.stat.temple.edu>
@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/21 23:18:23 $
-;; Version: $Revision: 4.50 $
-;; RCS: $Id: ess-trns.el,v 4.50 1997/11/21 23:18:23 rossini Exp $
+;; Modified: $Date: 1997/11/26 15:53:25 $
+;; Version: $Revision: 4.51 $
+;; RCS: $Id: ess-trns.el,v 4.51 1997/11/26 15:53:25 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -91,6 +91,10 @@
 ;;  (define-key ess-transcript-mode-map "\C-c\M-f" 'ess-eval-function-and-go)
 ;;  (define-key ess-transcript-mode-map "\C-c\C-j" 'ess-eval-line)
 ;;  (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-eval-line-and-go)
+
+  (define-key ess-transcript-mode-map "\C-c\C-k"    'ess-force-buffer-current)
+  (define-key ess-transcript-mode-map "\C-c\C-q"    'ess-quit)
+
   (define-key ess-transcript-mode-map "\C-c\C-j" 'ess-transcript-send-command)
   (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-transcript-send-command-and-move)
   (define-key ess-transcript-mode-map "\M-\C-a"  'ess-beginning-of-function)
@@ -160,9 +164,10 @@
 (defun ess-transcript-mode (alist &optional proc)
   "Major mode for manipulating S transcript files
 
-Type \\[ess-transcript-send-command] to send a command in the transcript to
-the current S process. \\[ess-transcript-copy-commmand] copies the command but
-does not execute it, allowing you to edit it in the process buffer first.
+Type \\[ess-transcript-send-command] to send a command in the
+transcript to the current S process. \\[ess-transcript-copy-command]
+copies the command but does not execute it, allowing you to edit it in
+the process buffer first.
 
 Type \\[ess-transcript-clean-region] to delete all outputs and prompts
 in the region, leaving only the S commands.
