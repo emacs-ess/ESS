@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essd-vst.el,v 5.3 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/06/30 19:43:59 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essd-vst.el,v 5.4 2000/06/30 19:43:59 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -31,7 +31,9 @@
 ;;; This file extends the XLispStat configuration for ViSta.
 
 
-;;; Autoloads:
+;;; Requires and Autoloads:
+
+(require 'essl-lsp)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 
