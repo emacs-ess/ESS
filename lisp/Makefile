@@ -117,8 +117,7 @@ html/ess_toc.html: ess.texi
 	@echo "making HTML documentation..."
 	-(mkdir -p html; cd html; $(MAKEHTML) ../ess.texi)
 	-@(cd html; ln -s ess_toc.html index.html)
-	@echo "Test by pointing your browser to 'file://localhost/$$PWD/html/'"
-
+	@echo "Test by pointing your browser to 'file://localhost/$$PWD/html/index.html'"
 
 .el.elc:
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
