@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/06/06 20:44:29 $
-;; Version: $Revision: 5.24 $
-;; RCS: $Id: essl-sas.el,v 5.24 2001/06/06 20:44:29 ess Exp $
+;; Modified: $Date: 2001/06/13 15:48:21 $
+;; Version: $Revision: 5.25 $
+;; RCS: $Id: essl-sas.el,v 5.25 2001/06/13 15:48:21 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -388,6 +388,9 @@ number."
 	 (cons "\\<%\\(by\\|else\\|t\\(o\\|hen\\)\\)\\>"
 						    font-lock-reference-face)
 
+	 ;; .log NOTE: messages
+	 (cons "^NOTE: .*$"                         font-lock-reference-face)
+
 	 ;; SAS dataset options/PROC statements followed by an equal sign/left parentheses
 
 	 (cons (concat
@@ -402,6 +405,9 @@ number."
 						    font-lock-keyword-face)
 
 	 ;; SAS statements
+
+	 ;; .log ERROR: messages
+	 (cons "^ERROR: .*$"                        font-lock-keyword-face)
 
 	 (cons (concat
 		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
@@ -474,6 +480,10 @@ number."
 		"\\|get\\(option\\|var[cn]\\)\\|lib\\(name\\|ref\\)\\|op\\(en\\|t\\(getn\\|setn\\)\\)"
 		"\\|pathname\\|sysmsg\\|var\\(fmt\\|label\\|num\\|type\\)\\)"
 		"[ \t]*(")			    font-lock-function-name-face)
+
+	 ;; .log WARNING: messages
+	 (cons "^WARNING: .*$"                      font-lock-function-name-face)
+
 	 ))
 	"Font Lock regexs for SAS.")
 )); only if window-system

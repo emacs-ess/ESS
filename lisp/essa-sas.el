@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/06/07 15:59:49 $
-;; Version: $Revision: 1.25 $
-;; RCS: $Id: essa-sas.el,v 1.25 2001/06/07 15:59:49 ess Exp $
+;; Modified: $Date: 2001/06/13 15:48:21 $
+;; Version: $Revision: 1.26 $
+;; RCS: $Id: essa-sas.el,v 1.26 2001/06/13 15:48:21 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -54,7 +54,7 @@
     "Full path-name of the sas file to perform operations on.")
 
 (defcustom ess-sas-smart-back-tab nil
-    "*Set to t to make C-TAB insert and end/%end; statement to close a block."
+    "*Set to t to make C-TAB insert an end/%end; statement to close a block."
     :group 'ess-sas
 )
 
