@@ -718,16 +718,19 @@ ordinary inferior process.  Alway nil on Unix machines."
 		   ess-local-process-name 'inferior-ess-ddeclient)
 		  (default-value 'inferior-ess-ddeclient)))))
 
-(defun ess-prompt-wait (proc &optional start-of-output)
+(defun ess-prompt-wait (proc &optional start-of-output sleep)
   "Wait for a prompt to appear at BOL of current buffer.
 PROC is the ESS process. Does not change point"
+  (if sleep (sleep-for sleep)); we sleep here, *and* wait below
   (if start-of-output nil (setq start-of-output (point-min)))
   (save-excursion
     (while (progn
 	     ;; get output if there is some ready
-	     (if (and ess-microsoft-p ess-ms-slow)
-		 (accept-process-output proc 0 1500) ; Microsoft is slow
-	       (accept-process-output proc 0 500))
+
+;; 	     (if (and ess-microsoft-p ess-ms-slow)
+;; 		 (accept-process-output proc 0 1500) ; Microsoft is slow
+	       (accept-process-output proc 0 500)
+;; 	       )
 	     (goto-char (marker-position (process-mark proc)))
 	     (beginning-of-line)
 	     (if (< (point) start-of-output) (goto-char start-of-output))
@@ -753,7 +756,7 @@ from the ESS process buffer.  If an optional second argument BUF exists
 save the output in that buffer. BUF is erased before use.
 COM should have a terminating newline.
 Guarantees that the value of .Last.value will be preserved.
-When optional third arg SLEEP is present, `(sleep-for (* a SLEEP))'
+When optional third arg SLEEP is non-nil, `(sleep-for (* a SLEEP))'
 will be used in a few places where `a' is proportional to `ess-cmd-delay'."
   ;; Use this function when you need to evaluate some S code, and the
   ;; result is needed immediately. Waits until the output is ready
@@ -769,8 +772,7 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
       (set-buffer sbuffer)
       (setq do-sleep		    ; only now when in sprocess buffer
 	    (progn
-	      (if sleep
-		  (if (numberp sleep) nil (setq sleep 1)))
+	      (if sleep (if (numberp sleep) nil (setq sleep 1))); t means 1
 	      (and ess-cmd-delay sleep)))
       (if do-sleep (setq sleep (* sleep ess-cmd-delay)))
       (save-excursion
@@ -797,14 +799,12 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 	      (set-marker (process-mark sprocess) (point-min))
 	      (process-send-string sprocess my-save-cmd)
 
-	      (if do-sleep (sleep-for (* 0.05 sleep))); microsoft: 0.5
-	      (ess-prompt-wait sprocess)
+	      (ess-prompt-wait sprocess nil (and do-sleep (* 0.05 sleep)))
 	      (erase-buffer)
 	      (process-send-string sprocess com)
 
-	      (if do-sleep (sleep-for (* 0.4 sleep))); microsoft: 4.0
 	      ;; need time for ess-create-object-name-db on PC
-	      (ess-prompt-wait sprocess)
+	      (ess-prompt-wait sprocess nil (and do-sleep (* 0.4 sleep)));MS: 4
 	      ;;(if do-sleep (sleep-for (* 0.0 sleep))); microsoft: 0.5
 	      (goto-char (point-max))
 	      (save-excursion
@@ -812,13 +812,10 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 		(setq end-of-output (point)))
 	      (process-send-string sprocess my-retr-cmd)
 
-	      (if do-sleep (sleep-for (* 0.05 sleep))); microsoft: 0.5
-	      (ess-prompt-wait sprocess end-of-output)
+	      (ess-prompt-wait sprocess end-of-output
+			       (and do-sleep (* 0.05 sleep))); microsoft: 0.5)
 
-	      ;; Old version.
-	      ;;(ess-prompt-wait sprocess (point))
-
-	      ;; Get rid out output from last assin
+	      ;; Get rid out output from last assign
 	      (delete-region end-of-output (point-max))))
 	;; Restore old values for process filter
 	(set-process-buffer sprocess oldpb)

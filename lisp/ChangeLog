@@ -1,3 +1,9 @@
+2005-01-05  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-prompt-wait): new 3rd argument sleep
+	 (ess-command): move the (sleep-for *) part into to
+	 ess-prompt-wait.
+
 2005-01-04  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el (ess-cmd-delay): use this instead of
