@@ -1,15 +1,7 @@
-X-From-Line: rmh@fisher.stat.temple.edu Sun Oct 12 05:08:56 1997
-Received: from hypatia.math.ethz.ch (hypatia.ethz.ch [129.132.58.23]) by milo.math.sc.edu (8.6.12/8.6.12) with ESMTP id FAA29018 for <rossini@stat.sc.edu>; Sun, 12 Oct 1997 05:08:55 -0400
-Received: from fisher.stat.temple.edu (fisher.stat.temple.edu [155.247.29.6]) by hypatia.math.ethz.ch (8.6.12/Main-STAT-mailer) with ESMTP id LAA03914 for <ess-bugs@stat.math.ethz.ch>; Sun, 12 Oct 1997 11:08:42 +0200
-Received: by fisher.stat.temple.edu (940816.SGI.8.6.9/940406.SGI.AUTO)
-	for ess-bugs@stat.math.ethz.ch id KAA05864; Sun, 12 Oct 1997 10:51:53 -0400
-Date: Sun, 12 Oct 1997 10:51:53 -0400
-From: rmh@fisher.stat.temple.edu (Richard M. Heiberger)
-Message-Id: <199710121451.KAA05864@fisher.stat.temple.edu>
-To: ess-bugs@stat.math.ethz.ch
-Subject: ess-sas-sh-command
-Lines: 3
-Xref: fhat.stat.sc.edu list.ESS:350
+#!/bin/sh
+
+# For executing SAS, and running it in the proper manner for ESS
+# (feeding output back into appropriate ESS buffers).
 
 echo $0 $@
 sas </dev/tty 1>$5 2>$6 $1 $2 $3 $4
