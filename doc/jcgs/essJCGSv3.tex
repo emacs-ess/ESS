@@ -165,7 +165,7 @@
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/30 16:23:30 $ - $Revision: 1.30 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/30 16:27:55 $ - $Revision: 1.31 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -648,7 +648,6 @@ on Unix.  Hence the user can work in a powerful editing environment
 and is protected from the delay and ergonomic challenges of using the
 mouse for copy and paste operations across windows.
 
-%\paragraph{Manipulating and Editing Objects (S family).}
 For languages in the S family, ESS provides object-name completion of
 both user- and system-defined functions and data.  ESS can dump and
 save objects (user- and system-generated) into formatted text files,
@@ -690,14 +689,15 @@ Emacs.
 \label{sec:sas-batch}
 
 \SAS\ is a popular choice for processing and analyzing large amounts
-of data.  However, interactive \SAS\ is rarely used in these situations
-due to the length of time involved.  Instead, a file containing \SAS\
-commands is created and \SAS\ executes these commands in the background,
-or batch, while the user moves on to other activities.
+of data.  However, interactive \SAS\ is rarely used in these
+situations due to the length of time involved.  Instead, a file
+containing \SAS\ commands is created and \SAS\ executes these commands
+in the background, or batch, while the user moves on to other
+activities.
 
-ESS facilitates \SAS\ batch with \stexttt{ESS[SAS]}, the mode for files
-with the \stexttt{sas} extension.  ESS defines \SAS\ syntax so that
-\stexttt{font-lock-mode} can highlight statements, procedures,
+ESS facilitates \SAS\ batch with \stexttt{ESS[SAS]}, the mode for
+files with the \stexttt{sas} extension.  ESS defines \SAS\ syntax so
+that \stexttt{font-lock-mode} can highlight statements, procedures,
 functions, macros, datasets, comments and character string literals in
 \SAS\ programs.  Optionally, the same language features are
 highlighted in the \SAS\ log with the addition of log notes, warnings
@@ -730,18 +730,15 @@ typically available in Emacs.
 The \SAS\ batch process runs on the computer where the \SAS\ program
 resides.  This is important because any \SAS\ permanent datasets
 referenced in a \SAS\ program only exist on the computer running \SAS.
-If the \SAS\ program resides on a remote computer, then the
-log and listing are also accessed remotely.  The net result is that
-running \SAS\ batch on remote computers is nearly transparent to the
-ESS user.
+If the \SAS\ program resides on a remote computer, then the log and
+listing are also accessed remotely.  The net result is that running
+\SAS\ batch on remote computers is nearly transparent to the ESS user.
 
 \paragraph{Batch BUGS.}
-%BUGS software performs Markov Chain Monte Carlo integration.
-There is
-an interactive capability, but it is not often used since the analyses
-can be very time-consuming.  Most BUGS programs are executed as batch
-processes.  ESS facilitates BUGS batch with \stexttt{ESS[BUGS]}, the
-mode for files with the \stexttt{bug} extension.  ESS provides 4
+The BUGS interactive capability is not often used since MCMC analyses
+can be very time-consuming; hence, most BUGS programs are executed as
+batch processes.  ESS facilitates BUGS batch with \stexttt{ESS[BUGS]},
+the mode for files with the \stexttt{bug} extension.  ESS provides 4
 features.  First, BUGS syntax is described to allow for proper
 fontification of statements, distributions, functions, commands and
 comments in BUGS model files, command files and log files.  Second,
@@ -751,33 +748,33 @@ provides a BUGS batch script that allows ESS to set BUGS batch
 parameters.  Finally, key sequences are defined to create a command
 file and submit a BUGS batch process.
 
-\paragraph{Batch S family.}
-ESS provides 2 facilities for batch processing of S family language files.
-The first is to execute the contents of a file using buffer-evaluation.  This
-differs from interactive processing only by the number of commands
-being evaluated; errors can be found by examining the resulting
-transcript.  The second is the load-source mechanism, which provides a
-means of jumping to errors in the source file, but doesn't display the
-evaluated commands in the transcript.  These mechanisms provide
-different tools for debugging the source files.
+\paragraph{Batch S.}
+ESS provides 2 facilities for batch processing of S family language
+files.  The first is to execute the contents of a file using
+buffer-evaluation.  This differs from interactive processing only by
+the number of commands being evaluated; errors can be found by
+examining the resulting transcript.  The second is the load-source
+mechanism, which provides a means of jumping to errors in the source
+file, but doesn't display the evaluated commands in the transcript.
+These mechanisms provide different tools for debugging the source
+files.
 
 \section{Emacs, the Basis for ESS}
 \label{sec:emacs}
 
 Emacs is a mature, powerful, and extensible text editing system which
 is freely available, under the GNU General Public License (GPL), for a
-large number of platforms, including most Unix\regstrd
-distributions, Microsoft Windows\regstrd\ and Apple Mac\tm\ OS.  There
-are two open-source implementations of Emacs: GNU Emacs
-\citep{GNU-Emacs} and XEmacs \citep{XEmacs}.  Emacs shares many
-features with word processors, and some characteristics with operating
-systems, including many facilities which go beyond ordinary text
-editing.  More important to our goals, Emacs can control and interact
-with other programs.
+large number of platforms, including most Unix\regstrd distributions,
+Microsoft Windows\regstrd\ and Apple Mac\tm\ OS.  There are two
+open-source implementations of Emacs: GNU Emacs \citep{GNU-Emacs} and
+XEmacs \citep{XEmacs}.  Emacs shares many features with word
+processors, and some characteristics with operating systems, including
+many facilities which go beyond ordinary text editing.  More important
+to our goals, Emacs can control and interact with other programs.
 
-We quickly describe features which enable ESS; these are not
-necessarily unique to Emacs, but Emacs was among the first to have
-them all available in an extensible editor.
+We quickly describe features which enable ESS.  These are not
+necessarily unique to Emacs, but it was the first extensible editor to
+have them all available.
 
 \paragraph{Keyboard and Mouse Input.}
 When Emacs was originally written, character-based terminals were the
@@ -898,27 +895,26 @@ the differing portions of text files.
 \end{figure}
 
 Emacs has many other important features.  Emacs provides file-manager
-capabilities, such as \stexttt{dired}
-%no longer  (discussed in Major and Minor Modes above)
-and \stexttt{speedbar}, both of which interface to the
-computer's directory structure.  Emacs stores the complete history of
-commands issued in an editing session, allowing a flexible and fairly
-complete undo capability.  More importantly, for modes which control
-processes, the process input history is stored for recall as well as
-for later editing for printing or re-use.  Emacs also includes web
-browsers, mail/newsgroup readers, and spell checking.
+capabilities, such as \stexttt{dired} and \stexttt{speedbar}, both of
+which interface to the computer's directory structure.  Emacs stores
+the complete history of commands issued in an editing session,
+allowing a flexible and fairly complete undo capability.  More
+importantly, for modes which control processes, the process input
+history is stored for recall as well as for later editing for printing
+or re-use.  Emacs also includes web browsers, mail/newsgroup readers,
+and spell checking.
 
 Mechanisms for both open (\stexttt{ange-ftp} and \stexttt{EFS} use
-ftp) and secure (\stexttt{tramp} uses scp or ssh) remote file access are
-available.  Emacs can also monitor and control remote processes
+ftp) and secure (\stexttt{tramp} uses scp or ssh) remote file access
+are available.  Emacs can also monitor and control remote processes
 running in a shell buffer.
 
-In addition to being an extremely powerful editor, Emacs also
-includes capabilities usually found in an operating system.  Thus, it
-provides a strong foundation for constructing an integrated
-development environment focused on the needs of statisticians.  Emacs'
-power, flexibility, portability, and extensibility make it a solid
-platform on which to construct a statistical analysis user interface.
+In addition to being an extremely powerful editor, Emacs also includes
+capabilities usually found in an operating system.  Thus, it provides
+a strong foundation for constructing an integrated development
+environment focused on the needs of statisticians.  Emacs' power,
+flexibility, portability, and extensibility make it a solid platform
+on which to construct a statistical analysis user interface.
 
 \section{History of ESS}
 \label{sec:ESS:history}
@@ -928,9 +924,9 @@ Stallman won a MacArthur Foundation Fellowship in 1990.  Emacs has a
 long history of being a programmer's editor.  Many statisticians got
 their first taste of the power of Emacs with \Fortran\ mode which was
 introduced in 1986.  As statisticians' preferences changed from
-general-purpose languages such as \Fortran\ to specialized
-statistical analysis languages and packages like S and \SAS, Emacs
-modes soon followed.
+general-purpose languages such as \Fortran\ to specialized statistical
+analysis languages and packages like S and \SAS, Emacs modes soon
+followed.
 
 The ESS environment is built on the open-source projects of many
 contributors, dating back over 10 years.  Doug Bates and Ed Kademan
@@ -940,23 +936,23 @@ David Smith made further contributions, creating version 3.  For
 version 4, David Smith provided significant enhancements to allow for
 powerful process interaction.
 
-John Sall wrote GNU Emacs macros for \SAS\ source code in 1990.
-Tom Cook added functions to submit jobs, review listing and log files,
-and produce basic views of a dataset, thus creating a SAS-mode which was
+John Sall wrote GNU Emacs macros for \SAS\ source code in 1990.  Tom
+Cook added functions to submit jobs, review listing and log files, and
+produce basic views of a dataset, thus creating a SAS-mode which was
 distributed in 1994.
 
 In 1994, A.J. Rossini extended S-mode to support XEmacs.  Together
-with extensions written by Martin M{\"a}chler, this became version
-4.7 and supported S, \Splus, and R.
-In 1995, Rossini extended SAS-mode to work with XEmacs.
+with extensions written by Martin M{\"a}chler, this became version 4.7
+and supported S, \Splus, and R.  In 1995, Rossini extended SAS-mode to
+work with XEmacs.
 
 In 1997, Rossini merged S-mode and SAS-mode into a single Emacs
 package for statistical programming; the product of this marriage was
 called ESS version 5.  Richard M. Heiberger designed the inferior mode
 for interactive \SAS\ and SAS-mode was further integrated into ESS.
-Thomas Lumley's Stata mode, written in 1996, was also folded into
-ESS.  More changes were made to support additional statistical
-languages, particularly \XLispStat.
+Thomas Lumley's Stata mode, written in 1996, was also folded into ESS.
+More changes were made to support additional statistical languages,
+particularly \XLispStat.
 
 ESS initially worked only with Unix statistics packages that used
 standard-input and standard-output for both the command-line interface
@@ -965,11 +961,11 @@ packages that did not use this protocol.  This changed in 1998 when
 Brian Ripley demonstrated use of the Windows Dynamic Data Exchange
 (DDE) protocol with ESS.  Heiberger then used DDE to provide
 interactive interfaces for Windows versions of \Splus.  In 1999,
-Rodney A. Sparapani and Heiberger implemented \SAS\ batch for ESS, which
-relies on files rather than standard-input/standard-output, on Unix,
-Windows and Mac.  In 2001, Sparapani added BUGS batch file processing
-to ESS for Unix and Windows.  In 2002, Aki Vehtari contributed BUGS
-interactive processing to ESS for Unix and Windows.
+Rodney A. Sparapani and Heiberger implemented \SAS\ batch for ESS,
+which relies on files rather than standard-input/standard-output, on
+Unix, Windows and Mac.  In 2001, Sparapani added BUGS batch file
+processing to ESS for Unix and Windows.  In 2002, Aki Vehtari
+contributed BUGS interactive processing to ESS for Unix and Windows.
 
 This history is summarized in Table \ref{tab:timeline}.
 
