@@ -20,18 +20,23 @@ These are, BTW, given by  ess-change-sp-regexp in ../lisp/ess-cust.el
 
 How are things working in ../lisp/ess-inf.el currently :
 
-Main user functions
+o) ess-search-path-tracker is added to `comint-input-filter-functions' hook;
+   it just sets	  `ess-sp-change' to true  when the above regexp triggers.
+
+o) Main user functions
 
   ess-complete-object-name	and
-  ess-resynch
+  ess-resynch			{also sets ess-object-list to nil ..}
   |				call the "main work horse"
   |
-  |-> ess-get-object-list
+  |-> ess-get-object-list	either uses
+      |
+      |--> [V] ess-object-list	or all the following
       |
       |-> ess-get-modtime-list	{when one of the following var.s "says so"}:
       |
-      |--> [Var] ess-sp-change
-      |--> [Var] ess-sl-modtime-alist
+      |--> [V] ess-sp-change
+      |--> [V] ess-sl-modtime-alist
       |
       \-> ess-extract-onames-from-alist
 
