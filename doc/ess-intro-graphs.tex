@@ -68,6 +68,10 @@
 %% Postscript fonts
 \usepackage{times}
 \usepackage{graphicx}
+%\DeclareGraphicsExtensions{.jpg,.pdf,.png,.mps,.ps}
+\DeclareGraphicsRule{.ps}{eps}{.ps.bb}{}
+\DeclareGraphicsRule{.ps.Z}{eps}{.ps.bb}{'/bin/zcat -c #1}
+%\graphicspath{{jcgs/}}
 %\usepackage{psfig}
 
 \ifx\pdfoutput\undefined
@@ -108,9 +112,7 @@
 \rule{316pt}{.25pt}
 \rule{.25pt}{10pc}}
 
-\ifMM\newcommand{\ESSfig}[1]{\centering{#1}}
-\else\newcommand{\ESSfig}[1]{\centering\ifdraft\emptyfig\else{#1}\fi}
-\fi
+\newcommand{\ESSfig}[1]{\centering{#1}}
 
 %% Use \begin{Comment} .. \end{Comment} for internal comments
 \ifdraft
@@ -161,10 +163,7 @@ intelligent environment for statistical analysis}
 
 \begin{document}
 
-%%\ifpdf
-%%  \DeclareGraphicsExtensions{.jpg,.pdf,.png,.mps}
-%%\fi
-%%%% To cite everything
+%% To cite everything
 %%\nocite{*}
 
 \ifdraft
@@ -361,22 +360,23 @@ merging of versions so that material present in an older version of
 the file can be recovered and inserted into a newer version in a
 fairly easy manner.
 
-\begin{figure}[tbp]
-%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas}}
-\url{http://www.analytics.washington.edu/downloads/ess/doc/figures/ediff-sas.gif}
-  \caption{Ediff of two versions of a file.}
-  \label{f.ediff}
-\end{figure}
-
 Comparison of files, two or three drafts of a paper for example, is
-simplified by \stexttt{ediff}.  An example is shown in Figure
-\ref{f.ediff}.  The lines that are similar are highlighted in the two
+simplified by \stexttt{ediff}.  
+An example is shown in Figure \ref{f.ediff}.  
+The lines that are similar are highlighted in the two
 buffers, one for each file, and the specific words that mismatch are
 highlighted in a contrasting color.  \stexttt{ediff} has many tools
 for working with the differences in files and in entire directories.
 When combined with the patch utility or a source-code control system,
 it provides the user with the ability to insert, delete or modify only
 the differing portions of text files.
+
+\begin{figure}[tbp]
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas}}
+%\url{http://software.biostat.washington.edu/ess/doc/figures/ediff-sas.gif}
+  \caption{Ediff of two versions of a file.}
+  \label{f.ediff}
+\end{figure}
 
 % Rodney: You can't just mention complex functionality like etags and
 % speedbar.  We would need to introduce these packages.  Since they
@@ -477,12 +477,12 @@ and inverse-video purple for mismatched parens.  Emacs makes default
 choices of colors and ESS provides several other optional schemes.
 
 \begin{figure}[tbp]%h
-%  \ESSfig{%
-%    \includegraphics[angle=270,width=\textwidth]{font-cor-s}
-%    \includegraphics[angle=270,width=\textwidth]{font-incor-s}%
-%    }
-\url{http://www.analytics.washington.edu/downloads/ess/doc/figures/font-cor-s.jpg}
-\url{http://www.analytics.washington.edu/downloads/ess/doc/figures/font-incor-s.jpg}
+  \ESSfig{%
+    \includegraphics[angle=270,width=\textwidth]{font-cor-s}
+    \includegraphics[angle=270,width=\textwidth]{font-incor-s}%
+    }
+%\url{http://software.biostat.washington.edu/ess/doc/figures/font-cor-s.jpg}
+%\url{http://software.biostat.washington.edu/ess/doc/figures/font-incor-s.jpg}
   \caption{We illustrate here with fonts and colors appropriate for a
     color display.  On a black and white terminal we would use bold,
     underline, italic, and reverse-video.  On a color terminal we
@@ -503,8 +503,8 @@ standards.  Figure \ref{f.hilock} illustrates a standard for
 \stexttt{DATA=datasetname} option.
 
 \begin{figure}[tbp]
-%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{hilock-sas}}
-\url{http://www.analytics.washington.edu/downloads/ess/doc/figures/hilock-sas.gif}
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{hilock-sas}}
+%\url{http://software.biostat.washington.edu/ess/doc/figures/hilock-sas.gif}
   \caption{Enforce coding standards.  The standard here is
     that all \stexttt{PROC} statements must use the
     \stexttt{DATA=datasetname} option.  Lines that satisfy the
@@ -526,8 +526,8 @@ searching of previously entered commands.  Filename completion for
 local directories is also available.
 
 \begin{figure}[tb]
-%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo}}
-\url{http://www.analytics.washington.edu/downloads/ess/doc/figures/ess-demo.jpg}
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo}}
+%\url{http://software.biostat.washington.edu/ess/doc/figures/ess-demo.jpg}
   \caption{Line-by-line execution of a command file. The cursor is
     placed on a line in the \stexttt{ESS[S]} buffer and then with a single
     key sequence
@@ -1103,19 +1103,19 @@ statistical languages and data analysis packages.
 ESS is constantly in flux.  New versions of statistical
 packages, Emacs and operating systems require new releases of ESS to
 support them.  The latest stable version of ESS can be found on the web at
-\url{http://www.analytics.washington.edu/downloads/ess/}.  To get help
+\url{http://software.biostat.washington.edu/statsoft/ess/}.  To get help
 with problems, send e-mail to \url{mailto: ess-help@stat.math.ethz.ch}.
 The latest development, hence unstable, version can be obtained by
 anonymous CVS.  First type:
 
 \stexttt{cvs -d
-  :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs login}
+  :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login}
 
 You will be prompted for a password which is ``\stexttt{anoncvs}''.
 Then type:
 
 \stexttt{cvs -d
-  :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs co
+  :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co
   ess}
 
 \paragraph{Additional documentation.}
