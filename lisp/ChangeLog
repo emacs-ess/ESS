@@ -1,5 +1,8 @@
 2004-05-06  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
+	* ess-toolbar.el (ess-make-toolbar-r-emacs): Use ess-load-file
+	rather than ess-eval-buffer in toolbars.
+
 	* ess-help.el (ess-display-help-on-object): Use ess-help-frame-alist.
 
 	* ess-inf.el (ess-multi): Use inferior-ess-frame-alist.
