@@ -1,3 +1,6 @@
+Fri Sep 11 16:20:14 1998  Martin Maechler  <maechler@sophie>
+
+	* essd-r.el: (R-fix-T-F): new function
 
 Fri Sep 11 15:39:57 1998  Martin Maechler  <maechler@...>
 
@@ -5,7 +8,7 @@ Fri Sep 11 15:39:57 1998  Martin Maechler  <maechler@...>
 
 	* ess.el ess-inf.el ess-mode.el Makefile: Adaptions to new ess-utils.
 
-	* ess-utils.el: NEW file for ``General Utilities''
+	* ess-utils.el: new file for ``General Utilities''
 	                useful and usable *outside* ESS.
 
 1998-09-09  A.J. Rossini  <rossini@biostat.washington.edu>

@@ -5,9 +5,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 1998/09/11 14:25:18 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: ess-utils.el,v 5.1 1998/09/11 14:25:18 maechler Exp $
+;; Modified: $Date: 1998/09/17 09:11:51 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: ess-utils.el,v 5.2 1998/09/17 09:11:51 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -50,7 +50,7 @@
  If VERBOSE   is non-nil, (message ..) about replacements."
   (let ((case-fold-search (and case-fold-search
 			       (not fixedcase))); t  <==> ignore case in search
-	(pl))
+	(pl) (p))
     (while (setq p (re-search-forward regexp nil t))
       (cond ((not (inside-string/comment-p (1- p)))
 	     (if verbose
