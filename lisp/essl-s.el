@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1998/09/08 17:18:31 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: essl-s.el,v 5.7 1998/09/08 17:18:31 maechler Exp $
+;; Modified: $Date: 1998/09/08 21:18:33 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: essl-s.el,v 5.8 1998/09/08 21:18:33 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -392,28 +392,36 @@ Uses the file given by the variable ess-function-outline-file."
 	(replace-match (ess-time-string 'clock) 'not-upcase 'literal))
     (goto-char (1+ oldpos))))
 
+(defun ess-repl-regexp (regexp to-string &optional fixedcase literal)
+  "To be used in programs instead of  (replace-regexp..) -- from its help.
+ If FIXEDCASE is t, do *not* alter case of replacement text.
+ If LITERAL   is t, do *not* treat `\\' as special."
+  (while (re-search-forward regexp nil t)
+    (replace-match to-string fixedcase literal)))
+
 (defun ess-fix-comments (&optional dont-ask)
-  "Fix ess-mode buffer so that single-line comments start with '##'."
+  "Fix ess-mode buffer so that single-line comments start with at least `##'."
   (interactive "P")
   (save-excursion
     (goto-char (point-min))
-    (apply (if dont-ask 'replace-regexp
+    (apply (if dont-ask 'ess-repl-regexp
 	     ;; else
 	     'query-replace-regexp)
-	   "^\\([ \\t]*#\\)\\([^#]\\)" "\\1#\\2" nil)))
+	   "^\\([ \t]*#\\)\\([^#]\\)" "\\1#\\2" nil)))
 
 (defun ess-dump-to-src (&optional dont-ask)
   "Make the changes in an S - dump() file to improve human readability"
   (interactive "P")
   (save-excursion
-    (ess-mode)
+    (if (not (equal major-mode 'ess-mode))
+	(ess-mode))
     (goto-char (point-min))
-    (apply (if dont-ask 'replace-regexp
+    (apply (if dont-ask 'ess-repl-regexp
 	     ;; else
 	     'query-replace-regexp)
 	   "^\"\\([a-z.][a-z.0-9]*\\)\"<-\n"  "\n\\1 <- " nil)))
 
-(defun ess-num-var-round (&optional dont-ask)
+(defun ess-num-var-round (&optional dont-ask verbose)
   "Is VERY useful for dump(.)'ed numeric variables; ROUND some of them by
   replacing  endings of 000000*.. and 999999*.  Martin Maechler"
   (interactive "P")
@@ -421,27 +429,29 @@ Uses the file given by the variable ess-function-outline-file."
     (let ((num 0)
 	  (str ""))
       (goto-char (point-min))
-      (apply (if dont-ask 'replace-regexp
+      (apply (if dont-ask 'ess-repl-regexp
 	       ;; else
 	       'query-replace-regexp)
 	     "000000+[1-9]?[1-9]?\\>" "" nil)
       (while (< num 9)
 	(setq str (concat (int-to-string num) "999999+[0-8]*"))
-	(princ (format "\nregexp: '%s'" str))
+	(if (and (numberp verbose)
+		 (> verbose 1))
+	    (message (format "\nregexp: '%s'" str)))
 	(goto-char (point-min))
-	(replace-regexp str (int-to-string (1+ num)))
+	(ess-repl-regexp str (int-to-string (1+ num)) 'fixedcase 'literal)
 	(setq num (1+ num))))))
 
-(defun ess-MM-fix-src (&optional dont-ask)
+(defun ess-MM-fix-src (&optional dont-ask verbose)
   "Clean up ess-source code which has been produced by  dump(..).
  Produces more readable code, and one that is well formatted in emacs
  ess-mode. Martin Maechler, ETH Zurich."
   (interactive "P")
-  (let ((pm (point-min)))
-    (save-excursion
-      (ess-dump-to-src dont-ask)
-      (ess-fix-comments dont-ask)
-      (ess-num-var-round dont-ask))))
+  (save-excursion
+    (ess-dump-to-src dont-ask)
+    (ess-fix-comments dont-ask)
+    (ess-num-var-round dont-ask verbose)))
+
 
 (defun ess-add-MM-keys ()
   (require 'ess-mode)
