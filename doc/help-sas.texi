@@ -136,25 +136,39 @@ for an MS-DOS shell.  On Mac OS X, it will default to 'sh, but under Mac Classic
 AppleScript is used ('apple-script).  You will also set this to 'sh if the SAS batch 
 job needs to run on a remote machine rather than your local machine.  This works
 transparently if you are editing the remote file via ange-ftp/EFS or tramp.  
+Note that ess-sas-shell-buffer-remote-init is a Local Variable that defaults
+to "ssh" which will be used to open the buffer on the remote host and it is
+assumed that no password is necessary, i.e. you are using the equivalent of
+ssh-agent/ssh-add (see the discussion about Local Variables below if you 
+need to change the default).
+
 However, if you are editing the file locally and transferring it back and forth
 with Kermit, you need some additional steps.  First, start Kermit locally
 before remotely logging in.  Open a local copy of the file with the 
 ess-kermit-prefix character prepended (the default is "#").  Execute the command 
 ess-kermit-get which automatically brings the contents of the remote file into 
 your local copy.  If you transfer files with Kermit manually in a shell
-buffer, then note that the Kermit escape sequence is C-Q C-\ c rather than
+buffer, then note that the Kermit escape sequence is C-q C-\ c rather than
 C-\ c which it would be in a ordinary terminal application, i.e. not in an 
 emacs buffer.  Lastly, note that the remote Kermit command is specified by 
 ess-kermit-command. 
 
 The command used by the SUBMIT function key (F3 or F8) to submit a batch SAS 
-job, whether local or remote, is ess-sas-submit-command which defaults to sas-program.  sas-program is 
-"invoke SAS using program file" for Mac Classic and "sas" otherwise.  However, 
-you may have to alter ess-sas-submit-command for a particular program, so it is 
-defined as buffer-local (conveniently, you can set it in Local Variables: at 
-the end of your program).  The command line is also made of 
-ess-sas-submit-pre-command, ess-sas-submit-post-command and 
-ess-sas-submit-command-options (the last of which is also buffer-local).
+job, whether local or remote, is ess-sas-submit-command which defaults to 
+sas-program.  sas-program is "invoke SAS using program file" for Mac Classic 
+and "sas" otherwise.  However, you may have to alter ess-sas-submit-command 
+for a particular program, so it is defined as buffer-local.  Conveniently, you 
+can set at the end of your program, i.e. 
+@example
+endsas;
+Local variables:
+ess-sas-submit-command: "sas8"
+End:
+@end example
+
+The command line is also made of ess-sas-submit-pre-command, 
+ess-sas-submit-post-command and ess-sas-submit-command-options 
+(the last of which is also buffer-local).
 Here are some examples for your .emacs file (you may also use 
 M-x customize-variable):
 @example
@@ -163,15 +177,15 @@ M-x customize-variable):
 ;'sh default
 (setq ess-sas-submit-post-command "-rsasuser &")          
 ;'sh example
-(setq ess-sas-submit-command "/usr/local/sas/sas")        
+(setq-default ess-sas-submit-command "/usr/local/sas/sas")        
 ;'ms-dos default
 (setq ess-sas-submit-pre-command "start")                 
 ;'ms-dos default
 (setq ess-sas-submit-post-command "-rsasuser -icon")      
 ;Windows example
-(setq ess-sas-submit-command "c:/progra~1/sas/sas.exe")   
+(setq-default ess-sas-submit-command "c:/progra~1/sas/sas.exe")   
 ;Windows example
-(setq ess-sas-submit-command "c:\\progra~1\\sas\\sas.exe")
+(setq-default ess-sas-submit-command "c:\\progra~1\\sas\\sas.exe")
 @end example
 
 There is a built-in delay before a batch SAS job is submitted when using
@@ -352,8 +366,8 @@ time to highlight.
 
 F11 is the same as `filetype-1' except it is .dat by default.  
 
-F12 will prompt you for the name of a GSASFILE near point to be opened for viewing either with
-emacs or with an external viewer.  Depending on your version of emacs and
+F12 will prompt you for the name of a GSASFILE near point to be opened for viewing 
+either with emacs or with an external viewer.  Depending on your version of emacs and
 the operating system you are using, emacs may support .gif and .jpg files
 internally.  You may need to change the following two variables for your
 own situation:
