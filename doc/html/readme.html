@@ -19,7 +19,7 @@ Up:<a rel="up" accesskey="u" href="#dir">(dir)</a>
 
    <p>This is the README file for the distribution of ESS version
 
-   <p>5.2.3
+   <p>5.2.4
 
    <p>The first release of the 5.2 series.  ESS is a GNU Emacs and XEmacs mode
 for interactive statistical programming and data analysis.  Languages
@@ -91,14 +91,31 @@ Up:<a rel="up" accesskey="u" href="#General%20Information">General Information</
 
 <h3 class="section">New Features</h3>
 
-   <p>Changes/New Features in 5.2.3:
+   <p>Changes/New Features in 5.2.4:
      <ul>
+<li>The documentation now includes an overview of how to use the emacs
+TAGS facility for S functions.  (The distribution also used to contain a
+directory etc/other/Tags where a ~1990 version of etags.c was
+distributed; this is no longer relevant and so has been deleted.) 
 <li>ESS[SAS] - When you are working with EBCDIC files on an ASCII
 platform, .log NOTEs may display as gibberish since the EBCDIC
 characters are not converted to ASCII prior to their display.  So,
 the function ess-ebcdic-to-ascii-search-and-replace is provided for
 convenience and is bound to C-F11.  This function requires the dd
 command so Windows users will need to have Cygwin or something like it. 
+<li>ESS: Completion of object names is now always done dynamically rather
+than allowing the option of using a pre-computed database (by
+`ess-create-object-name-db') since modern computers seem fast enough for
+dynamic completion.  (We expect few users, if any, have been using the
+pre-computed database method.) 
+<li>ESS: object completion in iESS buffers running on Windows was
+very slow (for GNU Emacs, but not Xemacs) and has now been fixed. 
+Further, it was more or less broken for all versions of S-plus 6.x,
+and has been fixed to work everywhere but with the Windows' GUI of
+S-plus.  The list of objects now shows unique names also when an
+object appears more than once in the search path. 
+<li>ESS[R]: Completion of object names now also includes those
+starting with ".". 
 </ul>
 
    <p>Changes/New Features in 5.2.3:
@@ -527,7 +544,7 @@ Up:<a rel="up" accesskey="u" href="#General%20Information">General Information</
 
 <h3 class="section">Getting the Latest Version</h3>
 
-   <p>The latest version of ESS is always available on the web at:
+   <p>The latest released version of ESS is always available on the web at:
 <a href="http://ess.r-project.org">ESS web page</a> or
 <a href="http://lib.stat.cmu.edu/general/ESS/">StatLib</a>
 
@@ -598,7 +615,7 @@ Up:<a rel="up" accesskey="u" href="#Installation">Installation</a>
 This directory will be referred to below as ESSDIR.
 
      <li>Retrieve the latest version from
-<a href="http://ess.r-project.org/downloads">ESS downloads area</a>
+<a href="http://ess.r-project.org/downloads/ess">ESS downloads area</a>
 to ESSDIR.
 
      <li>Decompress/unarchive the files from the disribution.
@@ -630,33 +647,13 @@ XEmacs uses site-start.el for the system installation file).
      to configure emacs for ESS.
 
      </p><li>That's it!  If you are installing just a local copy of ESS for yourself,
-ESS is now ready to be used.  (The remaining steps below are for
+ESS is now ready to be used.  (The remaining step below is for
 advanced installation.)  To edit statistical programs, load the files
 with the requiste extensions (".sas" for SAS, ".S" for S-PLUS, ".R" for
 R, and ".lsp" for XLispStat).  To start a statistical process within
 Emacs, such as R, type <code>M-x R</code>.
 
-     <li>(OPTIONAL) If you are running S-PLUS or R, you might consider
-installing the database files.  From within emacs, <code>C-x d</code> to the
-directory containing ESS.  Now:
-     <pre class="example">          M-x S+6
-          </pre>
-     to get S running.  Once you see the SPLUS prompt, do:
-     <pre class="example">          M-x ess-create-object-name-db
-          </pre>
-     (this will create the file <code>ess-s+6-namedb.el</code>; if it isn't in the
-ESS directory, move it there).
-
-     <p>Then, completions will be autoloaded and will not be regenerated for
-every session.
-
-     <p>For R, do the same, using
-     <pre class="example">          M-x R
-          </pre>
-     and then <code>M-x ess-create-object-name-db</code> creating
-<code>ess-r-namedb.el</code>; if it isn't in the ESS directory, move it there).
-
-     </p><li><b>(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING</b>:
+     <li><b>(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING</b>:
 
      <p>If you want to place the compiled files in other locations edit the LISPDIR and INFODIR
 entries in <code>Makeconf</code> in the ESSDIR/ess-VERSION directory (if you are using XEmacs,
@@ -677,11 +674,7 @@ by <code>INFODIR</code>: see the sample <code>dir</code> in ESSDIR/ess-VERSION/d
 If <code>dir</code> does not exist in <code>INFODIR</code>, then the sample
 <code>dir</code> will be installed.
 
-     <p><em>Note 1:</em> It is assumed that <b>GNU make</b> will be used; otherwise,
-edit the ESSVERSION and ESSVERSIONTAG entries in <code>Makeconf</code>
-appropriately, e.g.: ESSVERSION=5.2.0 and ESSVERSIONTAG=ESS-5-2-0
-
-     <p><em>Note 2:</em>  ESS can be installed for XEmacs as an XEmacs package
+     <p><em>Note:</em> ESS can be installed for XEmacs as an XEmacs package
 much more easily than what has been described anywhere above.  However,
 the latest ESS version will not be available at the same time as an
 XEmacs package; generally, it can take weeks or months to appear in the
@@ -843,27 +836,6 @@ from the emacs buffer containing your S program (for example,
      Hopefully, this will change.  However, you can still edit with
 emacs, and cut and paste the results into the XLispStat
 *Listener* Window under Microsoft Windows.
-
-     </p><li>(OPTIONAL) If you are running Sqpe or R, you might consider
-installing the database files.  From within emacs, <code>C-x d</code> to
-the   directory containing ESS.  Now:
-     <pre class="example">          M-x Sqpe+6
-          </pre>
-     to get S running.  Once you see the SPLUS prompt, do:
-     <pre class="example">          M-x ess-create-object-name-db
-          </pre>
-     (this will create the file <code>ess-s+6-namedb.el</code>; if it isn't in the
-ESS directory, move it there).
-
-     <p>Then, completions will be autoloaded and will not be regenerated
-for every session.
-
-     <p>For R, do the same, using
-     <pre class="example">          M-x R
-          </pre>
-     and then <code>M-x ess-create-object-name-db</code> creating
-<code>ess-r-namedb.el</code>; if it isn't in the ESS directory, move it
-there).
 
      </p><li>That's it!
 
