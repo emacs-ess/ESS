@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/09 20:24:09 $
-;; Version: $Revision: 1.59 $
-;; RCS: $Id: ess-mode.el,v 1.59 1997/09/09 20:24:09 rossini Exp $
+;; Modified: $Date: 1997/09/09 20:36:55 $
+;; Version: $Revision: 1.60 $
+;; RCS: $Id: ess-mode.el,v 1.60 1997/09/09 20:36:55 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -140,7 +140,7 @@
 (easy-menu-define
  ess-mode-menu ess-mode-map
  "Menu for use in ess-mode"
- '("ESS-mode"
+ '("ESS" ; ESS-mode
    ["Load file"  ess-load-file t]
    ("Eval and Go"
     ["Eval buffer"   ess-eval-buffer-and-go   t]
@@ -189,18 +189,18 @@
    ["Send bug report"  ess-submit-bug-report t]    
    ))
 
-
-(if (not (string-match "XEmacs" emacs-version))
-    (progn
-      (if (featurep 'ess-mode)
-	   (define-key ess-mode-map
-	     [menu-bar ess-mode]
-	     (cons "ess-mode" ess-mode-menu))
-	 (eval-after-load "ess-mode"
-			  '(define-key ess-mode-map
-			     [menu-bar ess-mode]
-			     (cons "ess-mode"
-				   ess-mode-menu))))))
+;; NOT NEEDED!
+;;(if (not (string-match "XEmacs" emacs-version))
+;;    (progn
+;;      (if (featurep 'ess-mode)
+;;	   (define-key ess-mode-map
+;;	     [menu-bar ess-mode]
+;;	     (cons "ess-mode" ess-mode-menu))
+;;	 (eval-after-load "ess-mode"
+;;			  '(define-key ess-mode-map
+;;			     [menu-bar ess-mode]
+;;			     (cons "ess-mode"
+;;				   ess-mode-menu))))))
 
 (defun ess-mode-xemacs-menu ()
   "Hook to install ess-mode menu for XEmacs (w/ easymenu)"
