@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/07 19:38:34 $
-;; Version: $Revision: 1.49 $
-;; RCS: $Id: essa-sas.el,v 1.49 2002/01/07 19:38:34 ess Exp $
+;; Modified: $Date: 2002/01/08 16:18:24 $
+;; Version: $Revision: 1.50 $
+;; RCS: $Id: essa-sas.el,v 1.50 2002/01/08 16:18:24 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -333,7 +333,7 @@ on the way."
     (if (string-match 
 	"[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)" 
 	ess-sas-temp-file) 
-	(setq ess-sas-file-path ess-sas-temp-file)))))
+	(setq ess-sas-file-path (first (split-string ess-sas-temp-file "[<]")))))))
 
 (defun ess-sas-goto-file-1 ()
   "Switch to ess-sas-file-1 and revert from disk."
