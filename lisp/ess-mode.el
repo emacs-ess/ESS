@@ -1,4 +1,4 @@
-;;; ess-mode.el --- Support for editing S source code
+;;; ess-mode.el --- Support for editing ESS source code
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter, Smith, Hornik,
 ;; Maechler, and Rossini.
@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/10 22:01:18 $
-;; Version: $Revision: 1.67 $
-;; RCS: $Id: ess-mode.el,v 1.67 1997/11/10 22:01:18 rossini Exp $
+;; Modified: $Date: 1997/11/11 03:58:38 $
+;; Version: $Revision: 1.68 $
+;; RCS: $Id: ess-mode.el,v 1.68 1997/11/11 03:58:38 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -29,7 +29,7 @@
 
 ;;; Commentary:
 
-;; Code for editing S source code. See S.el for more details.
+;; Code for editing ESS source code.
 
 ;;; Code:
 
@@ -56,7 +56,7 @@
 (autoload 'ess-force-buffer-current "ess-inf" "" nil)
 (autoload 'ess-switch-process "ess-inf" "" nil)
 
- ; S mode
+ ; ESS mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; In this section:
 ;;;;
@@ -151,7 +151,7 @@
     ["Eval line"     ess-eval-line-and-go     t]
     ;;["About" (lambda nil (interactive) (ess-goto-info "Evaluating code")) t]
     )
-   ("S Eval"
+   ("ESS Eval"
     ["Eval buffer"       ess-eval-buffer             t]
     ["Eval region"       ess-eval-region             t]
     ["Eval function"     ess-eval-function           t]
@@ -162,11 +162,11 @@
     )
    ("Motion..."
     ["Edit new object"       ess-dump-object-into-edit-buffer t]
-    ["Goto end of S buffer"  ess-switch-to-end-of-ESS           t]
-    ["Switch to S buffer"    ess-switch-to-ESS                  t]
+    ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS           t]
+    ["Switch to ESS buffer"    ess-switch-to-ESS                  t]
     ["End of function"	    ess-end-of-function              t]
     ["Beginning of function" ess-beginning-of-function        t])
-   ("S list..."
+   ("ESS list..."
     ["Backward list"         backward-list                   t]
     ["Forward list"          forward-list                    t]
     ["Next parenthesis"      down-list                       t]
@@ -175,7 +175,7 @@
     ["Forward sexp"          forward-sexp                    t]
     ;;["About"                 (Info-goto-node "(Emacs)Lists") t]
     )
-   ("S Edit"
+   ("ESS Edit"
     ["Complete Filename" comint-replace-by-expanded-filename t]
     ["Complete Object"   ess-complete-object-name              t]
     ["Kill sexp"         kill-sexp                           t]
@@ -214,7 +214,7 @@
     (add-hook 'ess-mode-hook 'ess-mode-xemacs-menu))
 
 (defun ess-mode (&optional alist proc-name)
-  "Major mode for editing S source.
+  "Major mode for editing ESS source.
 Optional arg ALIST describes how to customize the editing mode.
 Optional arg PROC-NAME is name of associated inferior process.
 
@@ -222,25 +222,25 @@ Optional arg PROC-NAME is name of associated inferior process.
 
 Customization: Entry to this mode runs the hooks in ess-mode-hook.
 
-You can send text to the inferior S process from other buffers containing
-S source.
-    ess-eval-region sends the current region to the S process.
-    ess-eval-buffer sends the current buffer to the S process.
-    ess-eval-function sends the current function to the S process.
-    ess-eval-line sends the current line to the S process.
+You can send text to the inferior ESS process from other buffers containing
+ESS source.
+    ess-eval-region sends the current region to the ESS process.
+    ess-eval-buffer sends the current buffer to the ESS process.
+    ess-eval-function sends the current function to the ESS process.
+    ess-eval-line sends the current line to the ESS process.
     ess-beginning-of-function and ess-end-of-function move the point to
-        the beginning and end of the current S function.
-    ess-switch-to-ESS switches the current buffer to the S process buffer.
-    ess-switch-to-end-of-ESS switches the current buffer to the S process
+        the beginning and end of the current ESS function.
+    ess-switch-to-ESS switches the current buffer to the ESS process buffer.
+    ess-switch-to-end-of-ESS switches the current buffer to the ESS process
         buffer and puts point at the end of it.
 
     ess-eval-region-and-go, ess-eval-buffer-and-go,
         ess-eval-function-and-go, and ess-eval-line-and-go switch to the S
         process buffer after sending their text.
 
-    ess-load-file sources a file of commands to the S process.
+    ess-load-file sources a file of commands to the ESS process.
 
-\\[ess-indent-command] indents for S code.
+\\[ess-indent-command] indents for ESS code.
 \\[backward-delete-char-untabify] converts tabs to spaces as it moves back.
 Comments are indented in a similar way to Emacs-lisp mode:
        `###'     beginning of line
@@ -250,17 +250,17 @@ Comments are indented in a similar way to Emacs-lisp mode:
                  \\[indent-for-comment] command automatically inserts such a
                  `#' in the right place, or aligns such a comment if it is
                  already inserted.
-\\[ess-indent-exp] command indents each line of the S grouping following point.
+\\[ess-indent-exp] command indents each line of the ESS grouping following point.
 
 Variables controlling indentation style:
  ess-tab-always-indent
-    Non-nil means TAB in S mode should always reindent the current line,
+    Non-nil means TAB in ESS mode should always reindent the current line,
     regardless of where in the line point is when the TAB command is used.
  ess-auto-newline
     Non-nil means automatically newline before and after braces inserted in S
     code.
  ess-indent-level
-    Indentation of S statements within surrounding block.
+    Indentation of ESS statements within surrounding block.
     The surrounding block's indentation is the indentation of the line on
     which the open-brace appears.
  ess-continued-statement-offset
@@ -367,7 +367,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 ;;;*;;; Buffer motion/manipulation commands
 
 (defun ess-beginning-of-function ()
-  "Leave the point at the beginning of the current S function."
+  "Leave the point at the beginning of the current ESS function."
   (interactive)
   (let ((init-point (point))
  	beg end done)
@@ -389,7 +389,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
 
 (defun ess-end-of-function nil
-  "Leave the point at the end of the current S function."
+  "Leave the point at the end of the current ESS function."
   (interactive)
   (ess-beginning-of-function)
   (forward-list 1)			; get over arguments
@@ -404,7 +404,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
 ;;; Original ess-mode 4.8.6 version
 ;;(defun ess-mark-function ()
-;;  "Put mark at end of S function, point at beginning."
+;;  "Put mark at end of ESS function, point at beginning."
 ;;  (interactive)
 ;;  (push-mark (point))
 ;;  (ess-end-of-function)
@@ -413,7 +413,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
 ;;; Kurt's version, suggested 970306.
 (defun ess-mark-function ()
-  "Put mark at end of S function, point at beginning."
+  "Put mark at end of ESS function, point at beginning."
   (interactive)
   (ess-beginning-of-function)
   (push-mark (point))
@@ -424,7 +424,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 ;;*;; Loading files
 
 (defun ess-check-modifications nil
-  "Check whether loading this file would overwrite some S objects
+  "Check whether loading this file would overwrite some ESS objects
 which have been modified more recently than this file, and confirm
 if this is the case."
   ;; FIXME: this should really cycle through all top-level assignments in
@@ -451,7 +451,7 @@ if this is the case."
 	  (not (y-or-n-p
 
 		(format
-		 "The S object %s is newer than this file. Continue?"
+		 "The ESS object %s is newer than this file. Continue?"
 		 objname)))
 	  (error "Aborted")))))
 
@@ -486,8 +486,8 @@ Returns t if the buffer existed and was modified, but was not saved"
 	  (buffer-modified-p buff)))))
 
 (defun ess-parse-errors (showerr)
-  "Jump to error in last loaded S source file.
-With prefix argument, only shows the errors S reported."
+  "Jump to error in last loaded ESS source file.
+With prefix argument, only shows the errors ESS reported."
   (interactive "P")
   (ess-make-buffer-current)
   (let ((errbuff (get-buffer ess-error-buffer-name)))
@@ -517,7 +517,7 @@ With prefix argument, only shows the errors S reported."
 	(message "Not a syntax error.")
 	(ess-display-temp-buffer errbuff)))))
 
-;;*;; S code formatting/indentation
+;;*;; ESS code formatting/indentation
 
 ;;;*;;; User commands
 
@@ -550,7 +550,7 @@ With prefix argument, only shows the errors S reported."
       (self-insert-command (prefix-numeric-value arg)))))
 
 (defun ess-indent-command (&optional whole-exp)
-  "Indent current line as S code, or in some cases insert a tab character.
+  "Indent current line as ESS code, or in some cases insert a tab character.
 If ess-tab-always-indent is non-nil (the default), always indent current line.
 Otherwise, indent the current line only if point is at the left margin
 or in the line's indentation; otherwise insert a tab.
@@ -585,7 +585,7 @@ The relative indentation among the lines of the expression are preserved."
       (ess-indent-line))))
 
 (defun ess-indent-exp ()
-  "Indent each line of the S grouping following point."
+  "Indent each line of the ESS grouping following point."
   (interactive)
   (let ((indent-stack (list nil))
 	(contain-stack (list (point)))
@@ -705,7 +705,7 @@ The relative indentation among the lines of the expression are preserved."
 	    (or (looking-at comment-start-skip)
 		(if (re-search-forward comment-start-skip (save-excursion (end-of-line) (point)) t)
 		    (progn (indent-for-comment) (beginning-of-line))))))))))
-;; (message "Indenting S expression...done")
+;; (message "Indenting ESS expression...done")
 
 ;;;*;;; Support functions for indentation
 
@@ -720,7 +720,7 @@ The relative indentation among the lines of the expression are preserved."
 	   comment-column))))
 
 (defun ess-indent-line ()
-  "Indent current line as S code.
+  "Indent current line as ESS code.
 Return the amount the indentation changed by."
   (let ((indent (ess-calculate-indent nil))
 	beg shift-amt
@@ -766,7 +766,7 @@ Return the amount the indentation changed by."
     shift-amt))
 
 (defun ess-calculate-indent (&optional parse-start)
-  "Return appropriate indentation for current line as S code.
+  "Return appropriate indentation for current line as ESS code.
 In usual case returns an integer: the column to indent to.
 Returns nil if line starts inside a string, t if in a comment."
   (save-excursion
@@ -947,7 +947,7 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-set-style (&optional style)
   "Set up the ess-mode style variables from the ess-style variable or if
-  STYLE argument is given, use that.  It makes the S indentation style
+  STYLE argument is given, use that.  It makes the ESS indentation style
   variables buffer local."
 
   (interactive)
@@ -958,7 +958,7 @@ Returns nil if line starts inside a string, t if in a comment."
 	(setq style
 	      (let ((style-string ; get style name with completion
 		     (completing-read
-		      (format "Set S mode indentation style to (default %s): "
+		      (format "Set ESS mode indentation style to (default %s): "
 			      ess-default-style)
 		      (vconcat ess-styles)
 		      (function (lambda (arg) (memq arg ess-styles)))
@@ -973,7 +973,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (make-local-variable 'ess-style)
     (if (memq style ess-styles)
 	(setq ess-style style)
-      (error (concat "Bad S style: " style))
+      (error (concat "Bad ESS style: " style))
       )
     (message "ESS-style: %s" ess-style)
 
@@ -990,11 +990,11 @@ Returns nil if line starts inside a string, t if in a comment."
 ;;;*;;; The user command
 
 (defun ess-dump-object-into-edit-buffer (object)
-  "Edit an S object in its own buffer.
+  "Edit an ESS object in its own buffer.
 
 Without a prefix argument, this simply finds the file pointed to by
 ess-source-directory. If this file does not exist, or if a
-prefix argument is given, a dump() command is sent to the S process to
+prefix argument is given, a dump() command is sent to the ESS process to
 generate the source buffer."
   (interactive
    (progn
@@ -1041,7 +1041,7 @@ generate the source buffer."
 	  (ess-dump-object object filename))))))
 
 (defun ess-dump-object (object filename)
-  "Dump the S object OBJECT into file FILENAME."
+  "Dump the ESS object OBJECT into file FILENAME."
   (let ((complete-dump-command (format inferior-ess-dump-command
 				       object filename)))
     (if (file-writable-p filename) nil
@@ -1065,7 +1065,7 @@ generate the source buffer."
     (indent-region (point-min-marker) (point-max-marker) nil)
 
     ;; Don't make backups for temporary files; it only causes clutter.
-    ;; The S object itself is a kind of backup, anyway.
+    ;; The ESS object itself is a kind of backup, anyway.
     (if ess-keep-dump-files nil
       (make-local-variable 'make-backup-files)
       (setq make-backup-files nil))
@@ -1079,7 +1079,7 @@ generate the source buffer."
 	(delete-file (buffer-file-name)))))
 
 (defun ess-find-dump-file-other-window (filename)
-  "Find S source file FILENAME in another window."
+  "Find ESS source file FILENAME in another window."
 
   (if (file-exists-p filename) nil
     (ess-write-to-dribble-buffer
@@ -1109,7 +1109,7 @@ generate the source buffer."
 ;; AJR: XEmacs, makes sense to dump into "other frame".
 
 (defun ess-dump-object-into-edit-buffer-other-frame (object)
-  "Edit an S object in its own frame."
+  "Edit an ESS object in its own frame."
   (switch-to-buffer-other-frame (ess-dump-object-into-edit-buffer object)))
 
 
