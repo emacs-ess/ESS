@@ -43,8 +43,6 @@ The following things need to be fixed. In a very rough order of priority.
 
 * (DS) Debugging support, through trace() and tprint()
 
-* (DS) Need a menu for S help mode
-
 * (DS) Modify S-beginning-of-function so that, with arg n, will move out
    n layers of nested functions. Wiht C-u arg, move to outermost
    function definition
