@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/11/24 15:50:51 $
-;; Version: $Revision: 4.52 $
-;; RCS: $Id: essl-s.el,v 4.52 1997/11/24 15:50:51 rossini Exp $
+;; Modified: $Date: 1997/11/24 15:58:12 $
+;; Version: $Revision: 4.53 $
+;; RCS: $Id: essl-s.el,v 4.53 1997/11/24 15:58:12 rossini Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -47,7 +47,7 @@
   (if (looking-at "###")
       (current-column)
     (if (looking-at "##")
-	(let ((tem (ess-calculate-indent)))
+	(let ((tem (S-calculate-indent)))
 	  (if (listp tem) (car tem) tem))
       (skip-chars-backward " \t")
       (max (if (bolp) 0 (1+ (current-column)))
@@ -56,7 +56,7 @@
 (defun S-indent-line ()
   "Indent current line as S code.
 Return the amount the indentation changed by."
-  (let ((indent (ess-calculate-indent nil))
+  (let ((indent (S-calculate-indent nil))
 	beg shift-amt
 	(case-fold-search nil)
 	(pos (- (point-max) (point))))
