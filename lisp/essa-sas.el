@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/14 17:21:53 $
-;; Version: $Revision: 1.69 $
-;; RCS: $Id: essa-sas.el,v 1.69 2002/01/14 17:21:53 rsparapa Exp $
+;; Modified: $Date: 2002/01/14 21:47:27 $
+;; Version: $Revision: 1.70 $
+;; RCS: $Id: essa-sas.el,v 1.70 2002/01/14 21:47:27 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -382,8 +382,8 @@ on the way."
 
 	(if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
 	    (find-file ess-sas-temp-file))
-
-	(if revert (ess-revert-wisely))
+	
+	  (if revert (ess-revert-wisely))
 )))))
 
 (defun ess-sas-file (suffix &optional revert)
@@ -453,7 +453,7 @@ on the way."
 (defun ess-sas-goto-sas (&optional revert)
   "Switch to the .sas file."
   (interactive)
-  (ess-sas-goto "sas" 'revert))
+  (ess-sas-goto "sas" revert))
 
 ;;
 ;;(defun ess-sas-goto-shell ()
@@ -470,6 +470,11 @@ depends on the value of  `ess-sas-submit-method'"
   (ess-sas-file-path)
   (ess-sas-goto-sas)
   (save-buffer)
+
+  ; if Local Variables are defined, a revert is necessary to update their values
+  (save-excursion (save-match-data 
+	(if (search-forward "End:" nil t) (revert-buffer t t))))
+
   (cond
    ((eq ess-sas-submit-method 'Apple-Macintosh) 
 	(ess-sas-submit-mac ess-sas-submit-command))
