@@ -2,6 +2,9 @@ Changes/New Features in 5.2.2:
 @itemize @bullet
 @item ESS[R]: Other versions of R, such as "R-1.8.1", are added to the
 "ESS / Start Process / Other " menu.
+@item ESS[R]: (bug fix) ess-quit (bound to C-c C-q) should now quit the
+inferior R process, when issued from either the inferior buffer, or from
+a .R buffer.
 @end itemize
 
 Changes/New Features in 5.2.1:
