@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/07/24 19:25:01 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: ess-utils.el,v 5.14 2002/07/24 19:25:01 rsparapa Exp $
+;; Modified: $Date: 2002/07/31 02:37:23 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: ess-utils.el,v 5.15 2002/07/31 02:37:23 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -195,7 +195,7 @@ directory that you specify with the same name, but without the
 
 	  (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
 ;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
-	  (shell)
+	  (ess-sas-goto-shell)
 	  (insert "cd $HOME; " ess-kermit-command " -s " ess-temp-file-remote-directory "/"
 	    (substring ess-temp-file 1) " -a " ess-temp-file)
           (comint-send-input)	
@@ -232,7 +232,7 @@ directory with the same name, but without the `ess-kermit-prefix'."
 	  (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
 		
 ;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
-	  (shell)
+	  (ess-sas-goto-shell)
 	  (insert "cd $HOME; " ess-kermit-command " -a " ess-temp-file-remote-directory "/"
 	    (substring (file-name-nondirectory ess-temp-file) 1) " -g "  ess-temp-file)
           (comint-send-input)	
