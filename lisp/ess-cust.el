@@ -1385,11 +1385,11 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-R-modifyiers
   '("library" "attach" "detach" "source" "require"))
 
-(defvar ess-S-keywords
-  '("while" "for" "in" "repeat" "if" "else" "switch" "break" "next"
-    "function" "return" "stop" "warning"))
 (defvar ess-R-keywords
-  (append ess-S-keywords '("message")))
+  '("while" "for" "in" "repeat" "if" "else" "switch" "break" "next"
+    "function" "return" "message" "warning" "stop"))
+(defvar ess-S-keywords
+  (append ess-R-keywords '("terminate")))
 
 (defvar ess-R-message-prefixes
   '("Error:" "Error in"
@@ -1408,9 +1408,9 @@ If nil, input is in the `font-lock-variable-name-face'."
 )
 
 (defvar ess-R-function-name-regexp
-  (concat "\\s\"?\\(" (regexp-opt '("\\sw" "\\s_") t) "+"
+  (concat "\\s\"?\\(\\(\\sw\\|\\s_\\)+"
 	  "\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)"
-	  (regexp-opt '("\\s-" "\n") t) "*function")
+	  "\\(\\s-\\|\n\\)*function")
 )
 (defvar ess-S-function-name-regexp
   ess-R-function-name-regexp ; since "_" is deprecated for S-plus as well
