@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2004/05/28 19:18:22 $
-;; Version: $Revision: 5.48 $
-;; RCS: $Id: essl-sas.el,v 5.48 2004/05/28 19:18:22 rsparapa Exp $
+;; Modified: $Date: 2004/06/16 21:45:00 $
+;; Version: $Revision: 5.49 $
+;; RCS: $Id: essl-sas.el,v 5.49 2004/06/16 21:45:00 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -458,7 +458,7 @@ number."
 	 ;; SAS statements that must be followed by a semi-colon
 	 (cons (concat
 		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
-		"\\(cards4?\\|end\\|l\\(ostcard\\)\\|page\\|return\\|stop\\)?"
+		"\\(cards4?\\|datalines\\|end\\|l\\(ostcard\\)\\|page\\|return\\|stop\\)?"
 		"[ \t]*;")			    font-lock-keyword-face)
 
 	 ;; SAS/GRAPH statements not handled above
