@@ -10,9 +10,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/24 14:56:00 $
-;; Version: $Revision: 4.51 $
-;; RCS: $Id: ess-mode.el,v 4.51 1997/11/24 14:56:00 rossini Exp $
+;; Modified: $Date: 1997/11/24 15:17:45 $
+;; Version: $Revision: 4.52 $
+;; RCS: $Id: ess-mode.el,v 4.52 1997/11/24 15:17:45 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -59,6 +59,7 @@
 (autoload 'ess-display-temp-buffer "ess-inf" "" nil)
 (autoload 'ess-force-buffer-current "ess-inf" "" nil)
 (autoload 'ess-switch-process "ess-inf" "" nil)
+(autoload 'ess-quit           "ess-inf" "" nil)
 
  ; ESS mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
