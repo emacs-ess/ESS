@@ -1,6 +1,15 @@
 Changes/New Features in 5.1.17:
 @itemize @bullet
-@item 
+@item Documentation for Windows Installation (Rich Heiberger 
+      (@email{rmh@@surfer.stat.temple.edu}))
+@item removal of ess-vars, finalization of customize support (in the
+      sense that there is no more use of ess-vars, but that we need to
+      fix ess-cust) (AJ Rossini (@email{rossini@@u.washington.edu}))
+@item Many small (and large) fixes/contributions (MMaechler,
+      (@email{maechler@@stat.math.ethz.ch})).
+@item addition of the "S-equal" variable and provide M-x ess-add-MM-keys
+      a way to remap "_" to 'S-equal, typically " <- ", but
+      configurable. (MMaechler, (@email{maechler@@stat.math.ethz.ch})). 
 @end itemize
 
 Changes/New Features in 5.1.16:
@@ -72,8 +81,9 @@ Changes/New Features in 5.1.8:
 @item R documentation mode defaults changed
 @end itemize
 
-
-Beginning with ESS 5.1.2 we are able to use inferior iESS mode to
+Changes/New Features in 5.1.2:
+@itemize @bullet
+@item  able to use inferior iESS mode to
 communicate directly with a running S-Plus 4.x process using the
 Microsoft DDE protocol.  We use the familiar (from Unix ESS) C-c C-n
 and related key sequences to send lines from the S-mode file to the
@@ -81,21 +91,4 @@ inferior S process.  We continue to edit S input files in ESS[S] mode
 and transcripts of previous S sessions in ESS Transcript mode.  All
 three modes know the S language, syntax, and indentation patterns and
 provide the syntactic highlighting that eases the programming tasks.
-
-For Microsoft platforms, the version of Emacs that this has been
-tested with is NTEmacs 20.x, x greater than 2.  More information about
-NTEmacs can be retrieved from:
-
-@itemize @bullet
-@item
-@ifhtml
-  <a href="http://www.cs.washington.edu/homes/voelker/ntemacs.html">
-@end ifhtml
-  @code{http://www.cs.washington.edu/homes/voelker/ntemacs.html}
-@ifhtml
-  </a>
-@end ifhtml
 @end itemize
-
-including information on retrieval and installation.  This has not yet
-been tested with XEmacs for Microsoft Windows 95/98/NT.
