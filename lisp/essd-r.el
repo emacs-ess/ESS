@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/03 12:00:45 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: essd-r.el,v 1.11 1997/07/03 12:00:45 rossini Exp $
+;; Modified: $Date: 1997/07/03 13:26:35 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: essd-r.el,v 1.12 1997/07/03 13:26:35 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.12  1997/07/03 13:26:35  rossini
+;;: added alist's for setting up things properly.
+;;:
 ;;: Revision 1.11  1997/07/03 12:00:45  rossini
 ;;: added alist for customization...
 ;;:
@@ -60,7 +63,7 @@
 ;;; Code:
 
 
-(defvar R-var-alist
+(defvar R-customize-alist
   '((ess-proc-prefix               . "R")
     (ess-version-running           . "R" )
     (inferior-ess-program          . inferior-R-program-name)
@@ -81,7 +84,7 @@
   (interactive)
 ;;  (add-hook 'ess-pre-run-hook  'ess-R-shortcut-pre-run-hook)
 ;;  (add-hook 'ess-post-run-hook 'ess-R-shortcut-post-run-hook)
-  (setq-default ess-customize-alist R-customize-alist)
+ 
   (setq-default ess-proc-prefix              "R"
 		ess-version-running          "R" ;using 'ls()' instead of objects..
 		inferior-ess-program         inferior-R-program-name
@@ -95,6 +98,11 @@
 					;[] for browser()
   (inferior-ess))
 
+(defun R2 ()
+  "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ)."
+  (interactive)
+  (setq-default ess-customize-alist R-customize-alist)
+  (inferior-ess))
 
  ; Provide package
 
