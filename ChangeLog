@@ -1,3 +1,21 @@
+Mon Oct 27 10:25:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: added RMH's SAS suggestions.
+
+Mon Oct 27 10:22:17 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (ess-SAS-pre-run-hook): removed interactive call. 
+	* essd-sas.el (ess-SAS-pre-run-hook): make sure buffer name of any
+	running *shell* buffers is unique for changes.
+
+Mon Oct 27 10:03:34 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (SOURCES): removed ess-debug from distributed sources.
+
+Mon Oct 27 09:01:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (dist): Doc should not be writable, again.
+
 Fri Oct 24 16:31:12 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (install): -ne should be !=, since doing string, not
@@ -548,6 +566,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.14  1997/10/27 15:30:41  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.13  1997/10/24 20:34:42  rossini
 	* Removing *** empty log message ***
 	* Removing
