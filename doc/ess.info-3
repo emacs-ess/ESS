@@ -1,4 +1,4 @@
-This is ess.info, produced by makeinfo version 4.0 from ess.texi.
+Dies ist ess.info, hergestellt von Makeinfo Version 4.0 aus ess.texi.
 
 START-INFO-DIR-ENTRY
 * ESS: (ess).    Emacs Speaks Statistics (S/R, SAS, XLisp-Stat, etc).
@@ -18,7 +18,7 @@ Kurt Hornik, and Martin Maechler.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.1.x of `ESS'.
+   This documentation relates to Version 5.1.19 of `ESS'.
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -26,6 +26,178 @@ Department of Mathematics and Statistics, Lancaster University, UK.
    Current Info Author: A.J. Rossini
 (<rossini@biostat.washington.edu>), Department of Biotatistics,
 University of Washington, Seattle, WA 98185, USA
+
+
+File: ess.info,  Node: Dump file variables,  Next: Indentation variables,  Prev: Variables for starting ESS,  Up: Variables
+
+Variables for dump files
+------------------------
+
+ - User Option: ess-insert-function-templates
+     Default: `t'
+     If this variable has a non-`nil' value, then dumping a
+     non-existent object will result in the edit buffer containing a
+     skeleton function definition, ready for editing.
+
+ - User Option: ess-source-directory
+     Default: `"/tmp/"'
+     Directory name (ending in `/') in which dump files are placed.
+     This should always be a writable directory.
+
+ - User Option: ess-source-directory-generator
+     Default: `nil'
+     Alternative, dynamic method of specifying the directory for dump
+     files.
+
+ - User Option: ess-dump-filename-template
+     Default: USER_NAME`.'OBJECT_NAME`.S'
+     Naming system to use for dumped object files.  *Note Source
+     Directories::, for details of this and the previous two variables.
+
+ - User Option: ess-keep-dump-files
+     Default: `nil'
+     Boolean flag signifying whether to keep dump files or to delete
+     them after each use.  *Note Source Files::, for more details.
+
+
+File: ess.info,  Node: Indentation variables,  Next: Variables controlling interaction,  Prev: Dump file variables,  Up: Variables
+
+Variables controlling indentation
+---------------------------------
+
+ - User Option: ess-tab-always-indent
+     Default: `t'
+     If non-`nil', then `TAB' in the edit buffer always indents the
+     current line, regardless of the position of point in the line.
+     Otherwise, indentation is only performed if point is in the lines
+     indentation, and a tab character is inserted is point is after the
+     first nonblank character.
+
+ - User Option: ess-auto-newline
+     Default: `nil'
+     Non-`nil' means automatically newline before and after braces
+     inserted in S code.
+
+   The following variables control amounts of indentation.  These
+variables automatically become buffer-local in any ESS buffer, and so
+setting any of these variables has effect in the current buffer only.
+
+ - User Option: ess-indent-level
+     Default: 2
+     Extra indentation of S statement sub-block with respect to
+     enclosing braces.
+
+ - User Option: ess-brace-imaginary-offset
+     Default: 0
+     Extra indentation (over sub-block indentation) for block following
+     an open brace which follows on the same line as a statement.
+
+ - User Option: ess-brace-offset
+     Default: 0
+     Extra indentation for braces, compared with other text in same
+     context.
+
+ - User Option: ess-continued-statement-offset
+     Default: 0
+     Extra indent for lines not starting new statements.
+
+ - User Option: ess-continued-brace-offset
+     Default: 0
+     Extra indent for substatements that start with open-braces.  This
+     is in addition to `ess-continued-statement-offset'.
+
+ - User Option: ess-arg-function-offset
+     Default: 2
+     Extra indent for arguments of function `foo' when it is called as
+     the value of an argument to another function in `arg=foo(...)'
+     form.  If not number, the statements are indented at
+     open-parenthesis following `foo'.
+
+ - User Option: ess-expression-offset
+     Default: 4
+     Extra indent for internal substatements of the call to
+     `expression()' specified in
+          `obj <- expression(...)'
+
+     form.  If not a number, the statements are indented at
+     open-parenthesis following `expression'.
+
+ - User Option: ess-else-offset
+     Default: 2
+     Extra indentation of the `else' clause with respect to the
+     corresponding `if'.
+
+In addition, a number of default styles are defined for you (in
+`ess-style-alist'):
+
+ - User Option: ess-default-style
+     Default: `DEFAULT'
+     The default formatting style to use in edit buffers.  The DEFAULT
+     style uses the values of the above indentation variables at
+     load-time, so that changing these variables in your `.emacs' file
+     will affect your buffer defaults.  *Note Edit buffer::, for more
+     details.
+
+
+File: ess.info,  Node: Variables controlling interaction,  Prev: Indentation variables,  Up: Variables
+
+Variables controlling interaction with the ESS process
+------------------------------------------------------
+
+ - User Option: comint-input-ring-size
+     Default: 50
+     Number of commands to store in the command history.
+
+ - User Option: ess-execute-in-process-buffer
+     Default: `nil'
+     If this is `nil', then the `ess-execute-' commands (*note Other::)
+     output to a temporary buffer.  Otherwise, the output goes to the
+     ESS process.
+
+ - User Option: ess-eval-visibly-p
+     Default: `nil'
+     If non-`nil', then the `ess-eval-' commands (*note Edit buffer::)
+     echo the S commands in the process buffer by default.  In any
+     case, passing a prefix argument to the eval command reverses the
+     meaning of this variable.
+
+
+File: ess.info,  Node: Hooks,  Next: Keybindings,  Prev: Variables,  Up: Customization
+
+Customizing ESS with hooks
+==========================
+
+   ESS provides the following hooks:
+
+ - Hook: ess-mode-hook
+     Called every time `ESS' is run.
+
+ - Hook: ess-mode-load-hook
+     Called just after the file `ess.el' is loaded.  Useful for setting
+     up your keybindings, etc.
+
+ - Hook: ess-pre-run-hook
+     Called before the ESS process is started (e.g., with `M-x S').
+     Good for setting up your directory.
+
+ - Hook: ess-post-run-hook
+     Called just after the ESS process starts up.  This can be used to
+     evaluate ESS code at the start of a session, with
+     `ess-eval-visibly', say.
+
+ - Hook: inferior-ess-mode-hook
+     For customizing inferior ess mode.  Called after inferior-ess-mode
+     is entered and variables have been initialized.
+
+ - Hook: ess-help-mode-hook
+     Called every time when entering ess-help-mode (i.e., an ESS help
+     buffer is generated).
+
+ - Hook: ess-send-input-hook
+     Called just before line input is sent to the process.
+
+ - Hook: ess-transcript-mode-hook
+     For customizing ESS transcript mode.
 
 
 File: ess.info,  Node: Keybindings,  Prev: Hooks,  Up: Customization
@@ -96,7 +268,7 @@ Concept Index
 * arguments to S program:                Customizing startup.
 * authors:                               Credits.
 * autosaving:                            Source Files.
-* Bug reports:                           Bugs.
+* Bug reports:                           Reporting Bugs.
 * bugs:                                  Bugs.
 * cleaning up:                           Hot keys.
 * comint:                                Credits.
@@ -323,7 +495,7 @@ Variable and command index
 * ess-source-directory:                  Source Directories.
 * ess-source-directory-generator:        Dump file variables.
 * ess-style-alist:                       Indentation variables.
-* ess-submit-bug-report:                 Bugs.
+* ess-submit-bug-report:                 Reporting Bugs.
 * ess-switch-to-end-of-ESS <1>:          Help.
 * ess-switch-to-end-of-ESS:              Other edit buffer commands.
 * ess-switch-to-ESS:                     Other edit buffer commands.

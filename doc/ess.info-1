@@ -1,4 +1,4 @@
-This is ess.info, produced by makeinfo version 4.0 from ess.texi.
+Dies ist ess.info, hergestellt von Makeinfo Version 4.0 aus ess.texi.
 
 START-INFO-DIR-ENTRY
 * ESS: (ess).    Emacs Speaks Statistics (S/R, SAS, XLisp-Stat, etc).
@@ -18,7 +18,7 @@ Kurt Hornik, and Martin Maechler.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.1.x of `ESS'.
+   This documentation relates to Version 5.1.19 of `ESS'.
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -33,9 +33,9 @@ File: ess.info,  Node: Top,  Next: Introduction,  Prev: (dir),  Up: (dir)
 ESS: Emacs Speaks Statistics
 ****************************
 
-   ESS version 5.1.x
+   ESS version 5.1.19
 
-   (Documentation $Revision: 1.13 $ $Date: 2001/03/23 15:28:54 $).
+   (Documentation $Revision: 1.14 $ $Date: 2001/08/10 13:56:29 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler
      (Formerly: Doug Bates, Ed Kademan, Frank Ritter and David Smith).
@@ -54,7 +54,7 @@ ESS: Emacs Speaks Statistics
 * Help::                        Reading help files in ESS
 * Transcript Mode::             Manipulating saved transcript files
 * Miscellaneous::               Other features of ESS
-* Bugs::                        Known bugs in ESS
+* Bugs Etc::
 * Help Statistics::
 * Help OS::
 * Installation::                Installing ESS on your system
@@ -123,6 +123,12 @@ Using graphics with ESS
 
 * printer::                     The printer() graphics driver
 * X11::                         The X11() (and other X-windows based) driver
+
+Bugs and Bug Reporting, Mailing Lists
+
+* Bugs::
+* Reporting Bugs::
+* Mailing Lists::
 
 Help, arranged by Statistical Package
 
@@ -298,6 +304,47 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 New features in ESS
 ===================
 
+   Changes/New Features in 5.1.19:
+   * S+6 now supported (Tony Rossini)
+
+   * New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
+     Templates assist you in writing .bug and .cmd code (.cmd and .log
+         are replaced by .bmd and .bog to avoid emacs extension
+     collisions).        "Substitution" parameters facilitate
+     "automagic" generation of       "data...in" and "init...in"
+     filenames, "const N=" from your data       file and
+     "monitor()/stats()" commands.  Activated by pressing F12.
+
+   * Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
+
+   * You can change between PC and Unix, local and global SAS
+     function-key       definitions interactively (Rich Heiberger)
+
+   * C-Submit a highlighted region to SAS batch (Rodney Sparapani)
+
+   * New and improved SAS syntax highlighting (Rodney Sparapani)
+     To get the new functionality, set ess-sas-run-make-regexp to nil.
+          Also available in .log files via F10.
+
+   * Open a permanent SAS dataset for viewing via F9 (Rodney Sparapani)
+          You must have the library defined in autoexec.sas for it to
+     work.
+
+   * User-friendly defaults for `sas-program',
+     `ess-sas-batch-pre-command'       and `ess-sas-batch-post-command'
+     as well Customize support for these       and other ESS[SAS]
+     variables (Rodney Sparapani)
+
+   * `ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
+
+   * Emacs/XEmacs, Unix/Windows issues collectively handled in
+     ess-emcs.el
+
+   * defadvice solves problem of missing *ESS* (thanks to Jeff Mincy)
+
+   * Improved manual a bit by including things that were only in
+     `README'.
+
    Changes/New Features in 5.1.18:
    * New `ess-smart-underscore' function, now assigned to "_" by
      default.        Inserts `ess-S-assign' (customizable " <- "),
@@ -330,14 +377,15 @@ New features in ESS
    * BUG FIXES
 
    Changes/New Features in 5.1.14:
-   * Yet more fixes to SAS mode, Rich Heiberger (<rmh@surfer.stat.temple.edu>) 
-     and Rodney Sparapani (<rsparapa@mcw.edu>).
+   * Yet more fixes to SAS mode, (Rich Heiberger
+     (<rmh@surfer.stat.temple.edu>) and Rodney Sparapani
+     <rsparapa@mcw.edu>)).
 
-   * Customize support (for most Emacsen which support it) AJRossini,
+   * Customize support (for most Emacsen which support it) (AJRossini,
          (<rossini@biostat.washington.edu>)
 
    * ARC and ViSta support out of the box, and fixes for XLispStat
-     AJRossini,       (<rossini@biostat.washington.edu>)
+     (AJRossini,       <rossini@biostat.washington.edu>)
 
    Changes/New Features in 5.1.13:
    * Version numbering finally all depending on the ./VERSION file,
@@ -350,18 +398,21 @@ New features in ESS
    * Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
        Chuck Taylor, and others.
 
-   * More fixes to SAS mode, thanks to Rodney Sparapani (<rsparapa@mcw.edu>) 
-     and Rich Heiberger (<rmh@surfer.stat.temple.edu>).
+   * More fixes to SAS mode, thanks to Rodney Sparapani
+     (<rsparapa@mcw.edu>) and Rich Heiberger
+     (<rmh@surfer.stat.temple.edu>).
 
    Changes/New Features in 5.1.11:
-   * More fixes to Stata mode, thanks to Brendan Halpin (<brendan@essex.ac.uk>)
+   * More fixes to Stata mode, thanks to Brendan Halpin
+     (<brendan@essex.ac.uk>)
 
    * fixed bugs in ESS-elsewhere, thanks to many testers
 
    * README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
           to David Brahm (<brahm@alum.mit.edu>).
 
-   * Fixes to SAS mode, thanks to Rodney Sparapani (<rsparapa@mcw.edu>)
+   * Fixes to SAS mode, thanks to Rodney Sparapani
+     (<rsparapa@mcw.edu>)
 
    Changes/New Features in 5.1.10:
    * More fixes to Stata mode
@@ -445,7 +496,7 @@ maintained by
    * Martin Maechler (http://stat.ethz.ch/~maechler/)
      <maechler@stat.math.ethz.ch>
 
-   * Rodney Sparapani 
+   * Rodney Sparapani (http://www.mcw.edu/pcor/rsparapa)
      <rsparapa@mcw.edu>
 
 
@@ -454,16 +505,36 @@ File: ess.info,  Node: Latest version,  Next: Manual,  Prev: Credits,  Up: Intro
 Getting the latest version of ESS
 =================================
 
-   The latest (beta) versions are always available
-   * via WWW `http://ess.stat.wisc.edu/'
+   The latest versions of ESS are always available by WWW from:
 
-   * or FTP, from the directory `ftp://ess.stat.wisc.edu/pub/ESS/'
+   	`http://ess.stat.wisc.edu/' and
+`ftp://ess.stat.wisc.edu/pub/ESS/'
 
-   Check the `README' file first to see which files you need.
+   The HTML version of the documentation can be found at:
 
-   Note that all new user-visible features to versions of ESS are
-documented in the `Doc/NEWS' file; all changes are listed in the
-`ChangeLog' file.
+   `http://stat.ethz.ch/ESS/'
+
+   The latest (no more than 24 hours behind the developers) version of
+ESS can also be retrieved using anonymous cvs:
+
+   You need a cvs client (that works with your firewall, if any)
+
+   the repository name is
+`:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src'
+
+   using a command-line cvs client (i.e. on Unix or DOS), first type:
+
+   `cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login'
+
+   password is anoncvs
+
+   then type:
+
+   `cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess'
+
+   Check the `README'  file first to see which files you need.  Look at
+`ANNOUNCE' to learn about new user-visible features; also, many changes
+are listed in the `ChangeLog' file.
 
 
 File: ess.info,  Node: Manual,  Prev: Latest version,  Up: Introduction
@@ -1080,101 +1151,4 @@ or press <RET> to execute.
 
    For example, to execute the last command that referenced the variable
 `data', type `!?data SPC TAB RET'.
-
-
-File: ess.info,  Node: Hot keys,  Next: Other,  Prev: History expansion,  Up: Entering commands
-
-Hot keys for common commands
-============================
-
-   ESS provides a number of commands for executing the commonly used
-functions.  These commands below are basically information-gaining
-commands (such as `objects()' or `search()') which tend to clutter up
-your transcript and for this reason some of the hot keys display their
-output in a temporary buffer instead of the process buffer by default.
-This behavior is controlled by the variable
-`ess-execute-in-process-buffer' which, if non-`nil', means that these
-commands will produce their output in the process buffer instead.  In
-any case, passing a prefix argument to the commands (with `C-u') will
-reverse the meaning of `ess-execute-in-process-buffer' for that
-command, i.e. the output will be displayed in the process buffer if it
-usually goes to a temporary buffer, and vice-versa.  These are the hot
-keys that behave in this way:
-
-   * `C-c C-x' (`ess-execute-objects')
-     Sends the `objects()' command to the ESS process.  A prefix
-     argument specifies the position on the search list (use a negative
-     argument to toggle `es-execute-in-process-buffer' as well).  A
-     quick way to see what objects are in your working directory.
-
-   * `C-c C-s' (`ess-execute-search')
-     Sends the `search()' command to the ESS process.
-
-   * `C-c C-e' (`ess-execute')
-     Prompt for an ESS expression, and evaluate it.
-
-   `ess-execute' may seem pointless when you could just type the
-command in anyway, but it proves useful for `spot' calculations which
-would otherwise clutter your transcript, or for evaluating an expression
-while partway through entering a command.  You can also use this command
-to generate new hot keys using the Emacs keyboard macro facilities;
-*note Keyboard Macros: (emacs)Keyboard Macros..
-
-   The following hot keys do not use `ess-execute-in-process-buffer' to
-decide where to display the output -- they either always display in the
-process buffer or in a separate buffer, as indicated:
-
-   * `C-c C-a' (`ess-execute-attach')
-     Prompts for a directory to attach to the ESS process with the
-     `attach()' command.  If a numeric prefix argument is given it is
-     used as the position on the search list to attach the directory;
-     otherwise the S default of 2 is used.  The `attach()' command
-     actually executed appears in the process buffer.
-
-   * `C-c C-l' (`ess-load-file')
-     Prompts for a file to load into the ESS process using `source()'.
-     If there is an error during loading, you can jump to the error in
-     the file with `C-x `' (`ess-parse-errors').  *Note Error
-     Checking::, for more details.
-
-   * `C-c C-v' (`ess-display-help-on-object')
-     Pops up a help buffer for an S object or function.  See *Note
-     Help:: for more details.
-
-   * `C-c C-q' (`ess-quit')
-     Sends the `q()' command to the ESS process (or `(exit)' to the XLS
-     process), and cleans up any temporary buffers (such as help
-     buffers or edit buffers) you may have created along the way.  Use
-     this command when you have finished your S session instead of
-     simply typing `q()' yourself, otherwise you will need to issue the
-     command `M-x ess-cleanup' command explicitly to make sure that all
-     the files that need to be saved have been saved, and that all the
-     temporary buffers have been killed.
-
-
-File: ess.info,  Node: Other,  Prev: Hot keys,  Up: Entering commands
-
-Other commands provided by inferior-ESS
-=======================================
-
-   The following commands are also provided in the process buffer:
-
-   * `C-c C-c' (`comint-interrupt-subjob')
-     Sends a Control-C signal to the ESS process.  This has the effect
-     of aborting the current command.
-
-   * `C-c C-z' (`ess-abort')
-     Sends a STOP signal to the ESS process, killing it immediately.
-     It's not a good idea to use this, in general: Neither `q()' nor
-     `.Last' will be executed and device drivers will not finish
-     cleanly.  This command is provided as a safety to
-     `comint-stop-subjob', which is usually bound to `C-c C-z'.  If you
-     want to quit from S, use `C-c C-q' (`ess-quit') instead.
-
-   * `C-c C-d' (`ess-dump-object-into-edit-buffer')
-     Prompts for an object to be edited in an edit buffer.  *Note
-     Editing::.
-
-   Other commands available is Inferior S mode are discussed in *Note
-Shell Mode: (emacs)Shell Mode.
 
