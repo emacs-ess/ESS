@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.5 $)
+($Revision: 1.6 $)
 
 ESS: Using The S family of statistical languages
 ================================================
@@ -8,16 +8,15 @@ ESS: Using The S family of statistical languages
 ESS (originally S-mode) was initially designed for use with S(tm) and
 S-PLUS(tm); hence, this family of statistical languages currently has
 the most support.  We denote by _S_, any of the currently available
-members of the family, including S 3.x, S 4.x, S-PLUS 3.x, and R.  In
-addition, we denote by _Emacs_, one of the GNU family of editors,
-either Emacs (as developed and maintained by the Free Software
-Foundation) or XEmacs (which a derivative work).
+members of the family, including S 3.x, S 4.x, S-PLUS 3.x, S-PLUS 4.x,
+S-PLUS 5.x, and R.  In addition, we denote by _Emacs_, one of the GNU
+family of editors, either Emacs (as developed and maintained by the
+Free Software Foundation) or XEmacs (which is a derivative work).
 
 The following is covered in this document:
 - non ESS general Emacs features.
 - Editing files.
-- running an S process as an inferior process to Emacs (we
-  include 
+- running an S process as an inferior process to Emacs
 - using transcripts.
 - Scenarios for use (possibilities, based on actual usage)
 - Philosophies
@@ -27,20 +26,8 @@ file, buffer, region, description of keys etc.  If not, please read
 the New Users guide (found in the info pages, "C-h i" (by pressing
 control h, i) or Tutorial, "C-h t").
 
-To look for the commands, please the keybindings for how to
-activate/use the features (C-h b).
-
-Emacs: General Features of Interest for Programming
-===================================================
-
-There are other general editing features of Emacs which are worth
-investigating. 
-
-- blinking parentheses and other means of keeping track of (),{}, and
-  [].
-- imenu/func-menu (for indexing bodies of code).  This is on the TODO
-  list for the editing, transcript, and help modes.
-
+To find the key-sequences for commands, please the view the keymap for
+how to activate/use the features (C-h b).
 
 ESS[S]: Editing Files
 =====================
@@ -56,9 +43,11 @@ ESS[S] is the mode for editing S language files.  This mode handles:
 - The ability to request help from a process for variables and
   functions, and to have the results sent into a separate buffer.
 - completion of object names and file names.
+
 It should be automatically turned on when loading a file with the
-suffices found in ess-site.  However, one will have to start up an
-inferior process to take advantage of the interactive 
+suffices found in ess-site (*.R, *.S, *.s, etc).  However, one will
+have to start up an inferior process to take advantage of the
+interactive features.
 
 
 iESS: Inferior ESS processes.
@@ -130,7 +119,17 @@ appreciated (especially since it helps us determine priorities on
 future enhancements)! (comments as to what should be happening are
 prefixed by "##").
 
-1:  ## Start up S-PLUS 3.x, in a process buffer (this will be *S+3:1*) 
+1:  ## Load the file you want to work with
+    C-c C-f file.S
+    ## Edit as appropriate, and then start up S-PLUS 3.x
+    M-x S+3
+    ## Go back to the file editing buffer
+    C-x b file.S
+    ## send regions, lines, or the entire file contents to S-PLUS (the 
+    ## last one is demonstrated below)
+    C-c C-b
+
+2:  ## Start up S-PLUS 3.x, in a process buffer (this will be *S+3:1*) 
     M-x S+3
     ## Dump into a buffer to work with
     C-c C-d 971103work
@@ -157,16 +156,6 @@ prefixed by "##").
     ## To fix that error in syntax for the "rchisq" command, get help
     ## by
     C-c C-v rchisq
-
-2:  ## Load the file you want to work with
-    C-c C-f file.S
-    ## Edit as appropriate, and then start up S-PLUS 3.x
-    M-x S+3
-    ## Go back to the file editing buffer
-    C-x b file.S
-    ## send regions, lines, or the entire file contents to S-PLUS (the 
-    ## last one is demonstrated below)
-    C-c C-b
 
 3:  ## Start up S-PLUS 3.x, in a process buffer (this will be *S+3:1*) 
     M-x S+3
