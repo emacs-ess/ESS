@@ -1683,7 +1683,7 @@ to the command if BUFF is not given.)"
 (defun ess-quit ()
   "Issue an exiting command to the inferior process, additionally
 also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
-  (interactive "P")
+  (interactive)
   (if (string-equal ess-dialect "R")
       (ess-quit-r)
     (ess-force-buffer-current "Process to quit: ")
