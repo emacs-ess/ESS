@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/03/04 22:37:33 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: essl-sta.el,v 5.6 1999/03/04 22:37:33 rossini Exp $
+;; Modified: $Date: 1999/03/04 22:39:17 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: essl-sta.el,v 5.7 1999/03/04 22:39:17 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -79,6 +79,35 @@
     (font-lock-defaults           . '(ess-mode-font-lock-keywords
 				      nil nil ((?\. . "w")))))
   "General options for editing Stata do and ado source files.")
+
+
+(defvar STA-syntax-table nil "Syntax table for S code.")
+(if STA-syntax-table
+    nil
+  (setq STA-syntax-table (make-syntax-table))
+  (modify-syntax-entry ?\\ "\\" STA-syntax-table)
+  (modify-syntax-entry ?+  "."  STA-syntax-table)
+  (modify-syntax-entry ?-  "."  STA-syntax-table)
+  (modify-syntax-entry ?=  "."  STA-syntax-table)
+  (modify-syntax-entry ?%  "."  STA-syntax-table)
+  (modify-syntax-entry ?<  "."  STA-syntax-table)
+  (modify-syntax-entry ?>  "."  STA-syntax-table)
+  (modify-syntax-entry ?&  "."  STA-syntax-table)
+  (modify-syntax-entry ?|  "."  STA-syntax-table)
+  (modify-syntax-entry ?\' "\"" STA-syntax-table)
+  (modify-syntax-entry ?#  "<"  STA-syntax-table) ; open comment
+  (modify-syntax-entry ?\n ">"  STA-syntax-table) ; close comment
+  ;;(modify-syntax-entry ?.  "w"  STA-syntax-table) ; "." used in S obj names
+  (modify-syntax-entry ?.  "_"  STA-syntax-table) ; see above/below,
+					; plus consider separation.
+  (modify-syntax-entry ?$  "_"  STA-syntax-table) ; foo.bar$hack is 1 symbol
+  (modify-syntax-entry ?_  "."  STA-syntax-table)
+  (modify-syntax-entry ?*  "."  STA-syntax-table)
+  (modify-syntax-entry ?<  "."  STA-syntax-table)
+  (modify-syntax-entry ?>  "."  STA-syntax-table)
+  (modify-syntax-entry ?/  "."  STA-syntax-table))
+
+
 
 ;; YOU USED TO HAVE TO (with Thomas's version): 
 ;;;;; Add the following to your .emacs file
