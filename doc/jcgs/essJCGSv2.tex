@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/04 19:58:21 $ - $Revision: 1.97 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/04 20:21:32 $ - $Revision: 1.98 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -182,9 +182,9 @@ intelligent environment for statistical analysis}
   it can increase statistical programming efficiency.
 \end{abstract}
 
-\noindent Keywords: Data Analysis, Programming, ESS, Emacs, S, \SAS,
-\Splus, R, \XLispStat, \Stata, BUGS, free-software, open-source,
-multi-platform, cross-platform
+\noindent Keywords: Data Analysis, Programming, %ESS, Emacs,
+S, \SAS, \Splus, R, \XLispStat, \Stata, BUGS, free-software,
+open-source%, multi-platform, cross-platform
 
 
 \section{Introduction}
@@ -1149,33 +1149,41 @@ Commands Window.
 \section{History of ESS}
 \label{sec:ESS:history}
 
-ESS is an example of how open-source projects can develop beyond what 
-their initial authors planned.  To date, there have been 3 generations 
-of developers.
-%%and hopefully, there will be many more to come.
-%%and the genealogy is more tree-like than linear.
-There were 2 modes from which ESS descended:  S-mode and SAS-mode.
+ESS is an example of how open-source projects can develop beyond what
+their initial authors planned.  To date, there have been 3 generations
+of developers, with 5 total projects.  ESS descended from and combined
+2 Emacs modes: S-mode and SAS-mode.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[height=3in,width=5.5in]{timeline.eps}
+  \caption{The history and timeline of ESS and its ancestors}
+  \label{fig:history}
+\end{figure}
+
 
 %% ESS originated as S-mode, which provided an interface for
 %% programming and process control under GNU Emacs for \Splus\ version 3,
-ESS began in 1989 as S-mode to provide extensions to GNU Emacs for editing 
-S and \Splus\ files.  Version 1 was written by Doug Bates and Ed Kademan.  
-This was extended by Frank Ritter and Mike Meyer to become version 2.  Meyer 
-and David Smith made further contributions which was version 3.
+ESS began in 1989 as S-mode to provide extensions to GNU Emacs for
+editing S and \Splus\ files.  Version 1 was written by Doug Bates and
+Ed Kademan.  This was extended by Frank Ritter and Mike Meyer to
+become version 2.  Meyer and David Smith made further contributions
+which was version 3.
 %%This was written by Doug Bates, Ed Kademan, Frank Ritter, and
 %%Mike Meyer.  David Smith was the next primary maintainer, and his most
 %%important contribution was to enhance the \Splus\
 %%command-line interface and allow for control of multiple processes
 %%simultaneously.  
-In 1995, A.J. Rossini extended S-mode to support XEmacs.  At the same time, 
-extensions written by Martin M{\"a}chler, were incorporated into what became
-version 4.  By 1996, S-mode was available for GNU Emacs and XEmacs and supported S, 
-\Splus, and to some extent R.  Kurt Hornik was instrumental in enhancing support
-for R.
+In 1995, A.J. Rossini extended S-mode to support XEmacs.  At the same
+time, extensions written by Martin M{\"a}chler, were incorporated into
+what became version 4.  By 1996, S-mode was available for GNU Emacs
+and XEmacs and supported S, \Splus, and to some extent R.  Kurt Hornik
+was instrumental in enhancing support for R.
 %%, in particular, providing \stexttt{Rd-mode}.
 
-The other ancestor of ESS is SAS-mode, written by Tom Cook, which began in 1994 
-and was partially based on GNU Emacs macros written by John Sall.
+The other ancestor of ESS is SAS-mode, written by Tom Cook, which
+began in 1994 and was partially based on GNU Emacs macros written by
+John Sall.
 %%\textbf{NEED TO GET DATES FROM AJR's ARCHIVE!?}.
 Rossini extended SAS-mode to work with XEmacs in 1995, and this provided the
 impetus for a single mode for statistical programming.
@@ -1210,6 +1218,8 @@ continually enhanced \SAS\ support.
 In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.  
 
 In 2001, Sparapani added BUGS batch file processing for ESS.
+
+
 
 \begin{Comment}
 Rich: see my discussion of ESS-elsewhere terminology.
@@ -1284,9 +1294,10 @@ extensible to additional statistical languages and analysis packages.
 \addcontentsline {toc}{section}{\numberline {}References}
 \bibliography{essJCGSv2}
 
+\clearpage
 
 \appendix 
-\section{ESS Resources on the Internet}
+\section{Appendix: ESS Resources on the Internet}
 \addcontentsline {toc}{section}{\numberline {}ESS Resources on the Internet}
 \label{sec:access}
 
