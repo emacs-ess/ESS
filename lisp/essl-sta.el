@@ -1,14 +1,14 @@
 ;;; essl-sta.el --- Stata customization
 
-;; Copyright (C) 1999 Thomas Lumley and A. J. Rossini
+;; Copyright (C) 1999--2000, Thomas Lumley, A. J. Rossini, Brendan Halpin.
 
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>,
 ;;         Brendan Halpin <brendan@essex.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/12/08 14:06:00 $
-;; Version: $Revision: 5.24 $
-;; RCS: $Id: essl-sta.el,v 5.24 1999/12/08 14:06:00 maechler Exp $
+;; Modified: $Date: 2000/01/26 20:44:55 $
+;; Version: $Revision: 5.25 $
+;; RCS: $Id: essl-sta.el,v 5.25 2000/01/26 20:44:55 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -58,10 +58,11 @@
 ;;
 
 
-(require 'make-regexp)
+(require 'make-regexp)  ; it's now local to the directory.
 ;;(load-library "make-regexp") ;; this is necessary for
 			     ;; ado-set-font-lock-keywords
 
+;(setq max-lisp-eval-depth 500)
 (eval-when-compile
   (setq max-lisp-eval-depth (max 600 max-lisp-eval-depth)))
 
