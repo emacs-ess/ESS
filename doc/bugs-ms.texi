@@ -1,15 +1,11 @@
-$Id: README.Microsoft,v 1.3 1999/03/17 17:42:45 rossini Exp $
+@node An Initial FAQ List for ESS problems under Microsoft Windows 95/98/NT.
+@comment  node-name,  next,  previous,  up
 
-An Initial FAQ List for ESS problems under Microsoft Windows 95/98/NT.
-======================================================================
+Also see the file @file{README.SPLUS4WIN} for more information and
+details.
 
-Also see the file:
-
-	README.SPLUS4WIN 
-
-for more information and details.
-
-* (RMH) system freeze and ctrl-m, a solution for some cases.
+@itemize @bullet
+@item (RMH) system freeze and ctrl-m, a solution for some cases.
 
 	Frequently, when the *shell* buffer freezes while running
 	either COMMAND.COM or a DOS or Windows program initiated by
@@ -39,7 +35,7 @@ for more information and details.
 	command.com /c date
 	C-q C-m RET
 
-* (RMH) Changes in essd-r.el for Windows
+@item (RMH) Changes in essd-r.el for Windows
 
 	One of the design goals in ESS was to make it almost
 	unnecessary for users to make modifications to the ess-*.el
@@ -51,7 +47,8 @@ for more information and details.
 	appropriate.  No user changes are required.  M-x R
         always works.
 
-* (RMH)	msdos.el
+
+@item (RMH)	msdos.el
 
 	Start an msdos shell inside an NTemacs that normally uses
 	bash as its shell.  It should have been easy, but had many
@@ -60,3 +57,4 @@ for more information and details.
 	should be merged into the Ntemacs distribution, but for the
 	moment I am attributing it to us.
 
+@end itemize
