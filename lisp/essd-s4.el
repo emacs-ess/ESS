@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/10/08 17:57:23 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essd-s4.el,v 1.14 1997/10/08 17:57:23 rossini Exp $
+;; Modified: $Date: 1997/10/21 20:42:27 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essd-s4.el,v 1.15 1997/10/21 20:42:27 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -53,22 +53,23 @@
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . S4-help-sec-keys-alist)
+    (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
+    (ess-loop-timeout              . 100000 )
+    (ess-dumped-missing-re  
+     . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
+    (ess-syntax-error-re
+     . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
+    (inferior-ess-program          . inferior-S4-program-name)
     (inferior-ess-objects-command  . ".SmodeObs(%d, pattern=\"%s\")\n")
 					; ^ was "objects(%d)")
     (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
     (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-exit-command     . "q()\n")
-    (ess-loop-timeout              . 100000 )
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?")
     (inferior-ess-load-command     . ".SmodeLoad(\"%s\")\n")
     (inferior-ess-dump-command     . ".SmodeDump(\"%s\", \"%s\")\n")
-    (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
-    (inferior-ess-search-list-command . ".SmodePaths()\n")
-    (ess-dumped-missing-re  
-     . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
-    (ess-syntax-error-re
-     . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"))
+    (inferior-ess-search-list-command . ".SmodePaths()\n"))
   "Variables to customize for S")
 
 ;; For loading up the S code required for the above.
