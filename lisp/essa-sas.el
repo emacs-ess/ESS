@@ -1,15 +1,15 @@
 ;;; essa-sas.el -- ESS local customizations for SAS, part a.
 
-;; Copyright (C) 1997--2001 Rodney Sparapani, A.J. Rossini, 
+;; Copyright (C) 1997--2002 Rodney A. Sparapani, A.J. Rossini, 
 ;; Martin Maechler, Kurt Hornik, and Richard M. Heiberger.
 
-;; Author: Rodney Sparapani <rsparapa@mcw.edu>
-;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
+;; Author: Rodney A. Sparapani <rsparapa@mcw.edu>
+;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/06/17 14:18:13 $
-;; Version: $Revision: 1.97 $
-;; RCS: $Id: essa-sas.el,v 1.97 2002/06/17 14:18:13 rsparapa Exp $
+;; Modified: $Date: 2002/06/17 17:18:21 $
+;; Version: $Revision: 1.98 $
+;; RCS: $Id: essa-sas.el,v 1.98 2002/06/17 17:18:21 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -43,10 +43,7 @@
 
 ;;; Section 1:  Variable Definitions
 
-;;(require 'ess-batch)
-
-;;;Attention!  When you Customize, type the ess-sas group rather than
-;;;            ess.  Some day you will be able to enter either.
+;;;Attention!  When you custom-ize, for group, use ess-sas rather than ess
 
 (defcustom ess-kermit-command "gkermit -T"
     "*Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
@@ -233,13 +230,14 @@ directory that you specify with the same name, but without the
 
 ;;     (save-match-data 
        (let ((ess-temp-file (if ess-file-arg ess-file-arg (buffer-name)))
-	     (ess-temp-file-remote-directory ess-kermit-remote-directory))
+	     (ess-temp-file-remote-directory nil))
      
 	(if (string-equal ess-kermit-prefix (substring ess-temp-file 0 1)) 
 	  (progn
 	    (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
-	  	    ess-kermit-remote-directory))
+	  	ess-kermit-remote-directory))
 
+	  (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
 ;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
 	  (shell)
 	  (insert "cd $HOME; " ess-kermit-command " -s " ess-temp-file-remote-directory "/"
@@ -266,16 +264,17 @@ directory with the same name, but without the `ess-kermit-prefix'."
 
     (interactive)
 
-    (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file to: "
-	  ess-kermit-remote-directory))
-
 ;;     (save-match-data 
        (let ((ess-temp-file (expand-file-name (buffer-name)))
-	     (ess-temp-file-remote-directory ess-kermit-remote-directory))
+	     (ess-temp-file-remote-directory nil))
      
 	(if (string-equal ess-kermit-prefix (substring (file-name-nondirectory ess-temp-file) 0 1)) 
 	  (progn
-
+		
+	  (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file to: "
+	    ess-kermit-remote-directory))
+	  (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
+		
 ;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
 	  (shell)
 	  (insert "cd $HOME; " ess-kermit-command " -a " ess-temp-file-remote-directory "/"
@@ -495,7 +494,7 @@ on the way."
 	
 	    (if revert (ess-revert-wisely))
 
-	    (if (or (equal suffix "log") (equal suffix "lst"))
+	    (if (or (string-equal suffix "log") (string-equal suffix "lst"))
 		(ess-kermit-get (file-name-nondirectory ess-sas-file-path)))
 ))))))
 
