@@ -130,7 +130,7 @@
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/10/02 20:27:16 $ - $Revision: 1.36 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/10/03 15:04:36 $ - $Revision: 1.37 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -253,14 +253,14 @@ the development of ESS and goals for the future.
 Statistical programming is the writing of data analysis scripts or
 general computer programs for data analysis and processing.  Both
 forms will be referred to as programs and source code (the textual
-result) or programming (the activity).  Although these programs could be written
-in a general computer language such as \Fortran, C/C$++$, or Java,
-it usually makes more sense for the the data analyst to work in
-specialized scripting languages that support common statistical
-procedures.  The statistical languages (for example
-\Splus, R, \SAS, \Stata, and \XLispStat) usually
-do not include the same range of sophisticated programming tools for
-writing and debugging code as the general purpose languages.
+result) or programming (the activity).  Although these programs could
+be written in a general computer language such as \Fortran, C/C$++$,
+or Java, it usually makes more sense for the the data analyst to work
+in specialized scripting languages that support common statistical
+procedures.  The statistical languages (for example \Splus, R, \SAS,
+\Stata, and \XLispStat) usually do not include the same range of
+sophisticated programming tools for writing and debugging code as the
+general purpose languages.
 
 ESS extends the Emacs text editor to provide a development environment
 for statistical programming languages. In particular, ESS provides
@@ -275,8 +275,7 @@ statistical packages.  This is done by adding shortcuts and features
 for accelerated editing of files as well as by interacting with the
 particular statistical packages to provide, for example, control of
 input/output, assistance with evaluation, and specialized display for
-viewing, navigating, and if necessary, editing of  documentation
-files.
+viewing, navigating, and editing of help and documentation files.
 
 Some features do not require direct interaction with a statistics
 package; these include textual script editing features such as
@@ -353,12 +352,11 @@ with the paren-mismatch font, bright purple on a color terminal.
     \includegraphics[angle=270,width=\textwidth]{font-incor-s-bw}
   }
   \caption{Emacs detects mismatched parentheses.  The top panel
-shows matching parentheses highlighted in the same color.
-The bottom panel shows mismatched parentheses, a left parenthesis
-and a right brace, highlighted in an attention grabbing color.
-In this black and white rendition, the mismatch is in reverse video.
-On a color display, the mismatch is in bright purple.
-    }
+    shows matching parentheses highlighted in the same color.  The
+    bottom panel shows mismatched parentheses, a left parenthesis and
+    a right brace, highlighted in an attention grabbing color.  In
+    this black and white rendition, the mismatch is in reverse video.
+    On a color display, the mismatch is in bright purple.  }
   \label{f.font}
 \end{figure}
 
@@ -394,10 +392,9 @@ R or \Splus.
     that all \stexttt{PROC} statements must use the
     \stexttt{DATA=datasetname} option.  Lines that satisfy the
     standard are given a shaded background (green on a color screen),
-    lines that don't are
-    displayed in inverse video (red on a color screen).
-  Ambiguous ones are displayed in a
-    lighter shade of inverse video (yellow on a color screen).}
+    lines that don't are displayed in inverse video (red on a color
+    screen).  Ambiguous ones are displayed in a lighter shade of
+    inverse video (yellow on a color screen).}
   \label{f.hilock}
 \end{figure}
 
@@ -417,17 +414,6 @@ handles code from any S language source file.  It provides syntax
 highlighting and the ability to submit code directly to a running ESS
 process, either R or \Splus, for evaluation and debugging.
 
-%\paragraph{Simplifying Keymap Differences.}
-%Simple conflicts between interfaces are exemplified by different key
-%sequences for editing tasks such as cut, copy, paste, beginning of
-%line, end of line, eptc.  These may be the most aggravating because our
-%fingers are typing ``instinctively'', but differences in interfaces
-%circumvent this learned behavior.  ESS solves this problem by
-%providing a uniform interface to keyboard actions across the variety
-%of statistical packages that might be used.  That is, the same key
-%sequences are used for cursor movement, evaluation, and basic tasks
-%such as loading files for editing.
-
 \subsection{Interactive Processing}
 \label{sec:interactive}
 
@@ -436,14 +422,14 @@ advent of simple GUIs has made interactive data analysis an important
 component of statistical practice.  ESS uses three different
 approaches for communicating with statistical packages: inferior
 process control, which entails redirection of text input and output;
-peer-to-peer style communication, which is currently accomplished on MS Windows
-using DDE; and batch submission of whole or partial text files
-containing analysis scripts.  For packages which do not support any of
-these, the primary use of ESS is as an editing tool, with interaction
-done using windowing cut-and-paste techniques; this still provides
-beneficial editing features, some of which extend beyond native
-editing environments.  Examples of this last situation include Windows
-versions of SAS, Stata, and XLispStat.
+peer-to-peer style communication, which is currently accomplished on
+MS Windows using DDE; and batch submission of whole or partial text
+files containing analysis scripts.  For packages which do not support
+any of these, the primary use of ESS is as an editing tool, with
+interaction done using windowing cut-and-paste techniques; this still
+provides beneficial editing features, some of which extend beyond
+native editing environments.  Examples of this last situation include
+Windows versions of SAS, Stata, and XLispStat.
 
 Emacs has historically referred to processes under its control as
 \textit{inferior}, accounting for the name inferior ESS
@@ -701,11 +687,10 @@ open-source implementations of Emacs: GNU Emacs \citep{GNU-Emacs} and
 XEmacs \citep{XEmacs}.  Emacs shares many features with word
 processors, and some characteristics with operating systems, including
 many facilities which go beyond ordinary text editing.  More important
-to our goals, Emacs can control and interact with other programs.
-
-We quickly describe features which enable ESS.  These are not
-necessarily unique to Emacs, but it was the first extensible editor to
-have them all available.
+to our goals, Emacs can control and interact with other programs.  We
+quickly describe features which enable ESS.  These are not necessarily
+unique to Emacs, but it was the first extensible editor to have them
+all available.
 
 \paragraph{Keyboard and Mouse Input.}
 When Emacs was originally written, character-based terminals were the
