@@ -36,29 +36,44 @@ Otherwise we get standard toolbar as well as ESS entries.
 It might be better for the user if we have standard toolbar entries too,
 e.g. for saving/loading files.")
 
-(defvar ess-icon-directory nil
-  "Location for ESS icons.")
+(defvar ess-icon-directory 
+  (expand-file-name (concat ess-lisp-directory "/../etc/icons"))
+  "*Location for ESS icons.
+Icons should be found in ESS/etc/icons/ directory.")
+
+(if (not (file-exists-p ess-icon-directory))
+    (message "Check that you have set `ess-icon-directory'."))
+
 
 ;; Emacs has the ability to clear the cache.
 ;; (clear-image-cache)
 
 
-(defvar ess-toolbar nil
-  "Emacs toolbar for ESS.")
+(defvar ess-toolbar-R nil
+  "Emacs toolbar for R mode in ESS.")
 
-(defun ess-make-toolbar-r ()
+(defvar ess-toolbar-S nil
+  "Emacs toolbar for S mode in ESS.")
+
+(defun ess-make-toolbar-R ()
   "Make the toolbar for R."
   (if (featurep 'xemacs)
-      (ess-make-toolbar-r-xemacs)
-    (ess-make-toolbar-r-emacs)))
+      (ess-make-toolbar-R-xemacs)
+    (ess-make-toolbar-R-emacs)))
 
-(defun ess-make-toolbar-r-emacs ()
+(defun ess-make-toolbar-S ()
+  "Make the toolbar for S."
+  (if (featurep 'xemacs)
+      (ess-make-toolbar-S-xemacs)
+    (ess-make-toolbar-S-emacs)))
+
+(defun ess-make-toolbar-R-emacs ()
   "Make the toolbar for R under Emacs."
-  (setq ess-toolbar 
+  (setq ess-toolbar-R 
 	(if ess-own-toolbar
 	    (make-sparse-keymap)
 	  (copy-keymap tool-bar-map)))
-  (let ((tool-bar-map ess-toolbar)
+  (let ((tool-bar-map ess-toolbar-R)
 	(load-path (list ess-icon-directory)))
 
     ;; icons are found by examining load-path; hence by temporarily setting
@@ -72,6 +87,29 @@ e.g. for saving/loading files.")
     (tool-bar-add-item-from-menu 'ess-switch-to-ESS "switchr" ess-mode-map)
     ))
 
+(defun ess-make-toolbar-S-emacs ()
+  "Make the toolbar for S under Emacs."
+  (setq ess-toolbar-S
+	(if ess-own-toolbar
+	    (make-sparse-keymap)
+	  (copy-keymap tool-bar-map)))
+  (let ((tool-bar-map ess-toolbar-S)
+	(load-path (list ess-icon-directory)))
+    
+    ;; icons are found by examining load-path; hence by temporarily setting
+    ;; load-path to our icons directory, they will be found.
+    (tool-bar-add-item "spluslogo" 'S 'Start_S_process
+		       :help "Start S process" )
+    (tool-bar-add-item-from-menu 'ess-eval-line-and-step "rline" ess-mode-map)
+    (tool-bar-add-item-from-menu 'ess-eval-region "rregion" ess-mode-map)
+    (tool-bar-add-item-from-menu 'ess-load-file "rbuffer" ess-mode-map)
+    (tool-bar-add-item-from-menu 'ess-eval-function "rfunction" ess-mode-map)
+    (tool-bar-add-item-from-menu 'ess-switch-to-ESS "switchs" ess-mode-map)
+    ))
+
+(defun ess-make-toolbar-S-xemacs ()
+  "Set up the R toolbar for XEmacs."
+  (message "Sorry, S toolbar under XEmacs not ready yet."))
 
 ;; Suggest adding "Start R" from the menu.  "Start process" to be
 ;; generic.
@@ -79,7 +117,7 @@ e.g. for saving/loading files.")
 ;; easy for R, but not sure about other modes.  Could have a completion list.
 
 
-(defun ess-make-toolbar-r-xemacs ()
+(defun ess-make-toolbar-R-xemacs ()
   "Set up the R toolbar for XEmacs."
 
   (defvar toolbar-send-line-icon
@@ -144,13 +182,17 @@ e.g. for saving/loading files.")
 
   )
 
-;; Make the toolbar.  The toolbar is hopefully made only when this file
+;; Make the toolbars.  Each toolbar is hopefully made only when this file
 ;; is loaded; we don't need it to be remade every time.
-(if ess-use-toolbar 
-    (ess-make-toolbar-r))
+(if ess-use-toolbar
+    (progn
+      (ess-make-toolbar-R)
+      (ess-make-toolbar-S)
+      ))
 
 ;; Temporary hack to hook the toolbar creation into R mode.  This should
-;; eventually be deleted.
+;; eventually be deleted/merged into the main source.
+;; Ditto for the S+6-mode defun here.
 (defun R-mode  (&optional proc-name)
   "Major mode for editing R source.  See `ess-mode' for more help."
   (interactive)
@@ -158,8 +200,8 @@ e.g. for saving/loading files.")
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode R-customize-alist proc-name)
   ;; SJE: hook on Emacs for setting up tool-bar.
-  (if (and ess-toolbar (not (featurep 'xemacs)))
-      (set (make-local-variable 'tool-bar-map) ess-toolbar))
+  (if (and ess-toolbar-R (not (featurep 'xemacs)))
+      (set (make-local-variable 'tool-bar-map) ess-toolbar-R))
   ;; ECB needs seminatic stuff.
   ;;  (if (featurep 'semantic)
   ;;      (setq semantic-toplevel-bovine-table r-toplevel-bovine-table))
@@ -167,5 +209,15 @@ e.g. for saving/loading files.")
   ;; MM: and you probably should really use ess-imenu-mode-function from the
   ;;     alist above!
   (if ess-imenu-use-S (ess-imenu-R)))
+
+(defun S+6-mode (&optional proc-name)
+  "Major mode for editing S+6 source.  See `ess-mode' for more help."
+  (interactive)
+  (setq ess-customize-alist S+6-customize-alist)
+  (ess-mode S+6-customize-alist proc-name)
+  ;; SJE: hook on Emacs for setting up tool-bar.
+  (if (and ess-toolbar-S (not (featurep 'xemacs)))
+      (set (make-local-variable 'tool-bar-map) ess-toolbar-S))
+  (if ess-imenu-use-S (ess-imenu-S)))
 
 (provide 'ess-toolbar)
