@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/24 12:25:12 $
-;; Version: $Revision: 1.42 $
-;; RCS: $Id: ess-inf.el,v 1.42 1997/07/24 12:25:12 rossini Exp $
+;; Modified: $Date: 1997/07/24 13:12:00 $
+;; Version: $Revision: 1.43 $
+;; RCS: $Id: ess-inf.el,v 1.43 1997/07/24 13:12:00 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.43  1997/07/24 13:12:00  rossini
+;; moved menu items.
+;;
 ;; Revision 1.42  1997/07/24 12:25:12  rossini
 ;; 'font-lock-defaults is ONLY buffer-local by default in XEmacs.  Not
 ;; Emacs.   (why?).
@@ -1120,10 +1123,6 @@ process buffer. Arg has same meaning as for ess-eval-region."
  inferior-ess-mode-menu inferior-ess-mode-map
  "Menu for use in Inferior S mode"
  '("ess-run"
-   ["Describe"  describe-mode                            t]
-   ;;["About" (lambda nil (interactive)  (ess-goto-info "Entering Commands")) t]
-   ["Send bug report"  ess-submit-bug-report               t]
-   "------"
    ["Resynch S completions"  ess-resynch                   t]
    ["Quit S"                 ess-quit                      t]
    ["Display search list"    ess-execute-search            t]
@@ -1140,6 +1139,10 @@ process buffer. Arg has same meaning as for ess-eval-region."
    ;; need a toggle switch for above, AJR.
    ["Load source file"  ess-load-file                      t]
    ["Edit S Object"     ess-dump-object-into-edit-buffer   t]
+   "------"
+   ["Describe"  describe-mode                            t]
+   ;;["About" (lambda nil (interactive)  (ess-goto-info "Entering Commands")) t]
+   ["Send bug report"  ess-submit-bug-report               t]
    ))
 
 

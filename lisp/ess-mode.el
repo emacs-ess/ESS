@@ -6,12 +6,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/17 18:35:16 $
-;; Version: $Revision: 1.39 $
-;; RCS: $Id: ess-mode.el,v 1.39 1997/07/17 18:35:16 rossini Exp $
+;; Modified: $Date: 1997/07/24 13:11:16 $
+;; Version: $Revision: 1.40 $
+;; RCS: $Id: ess-mode.el,v 1.40 1997/07/24 13:11:16 rossini Exp $
 
 ;;
 ;; $Log: ess-mode.el,v $
+;; Revision 1.40  1997/07/24 13:11:16  rossini
+;; moved menu items.
+;;
 ;; Revision 1.39  1997/07/17 18:35:16  rossini
 ;; ess -> ESS
 ;;
@@ -208,11 +211,7 @@
 (easy-menu-define
  ess-mode-menu ess-mode-map
  "Menu for use in ess-mode"
- '("ess-mode"
-   ["Describe"  describe-mode t]
-   ;;["About"  (lambda nil (interactive) (ess-goto-info "Editing")) t]
-   ["Send bug report"  ess-submit-bug-report t]    
-   "------"
+ '("ESS-mode"
    ["Load file"  ess-load-file t]
    ("Eval and Go"
     ["Eval buffer"   ess-eval-buffer-and-go   t]
@@ -255,6 +254,10 @@
     ["Undo"              undo                                t]
     ;;["About"   (lambda nil (interactive) (ess-goto-info "Edit buffer")) t]
     )
+   "------"
+   ["Describe"  describe-mode t]
+   ;;["About"  (lambda nil (interactive) (ess-goto-info "Editing")) t]
+   ["Send bug report"  ess-submit-bug-report t]    
    ))
 
 
