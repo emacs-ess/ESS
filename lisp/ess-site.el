@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2002/01/21 03:21:26 $
-;; Version: $Revision: 5.86 $
-;; RCS: $Id: ess-site.el,v 5.86 2002/01/21 03:21:26 rmh Exp $
+;; Modified: $Date: 2002/04/26 14:37:52 $
+;; Version: $Revision: 5.87 $
+;; RCS: $Id: ess-site.el,v 5.87 2002/04/26 14:37:52 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -150,7 +150,7 @@ The extension, in a file name, is the part that follows the last `.'."
 	          (substring file 0 (match-beginning 0)))
 	      filename)))))
 
-  (add-to-list 'load-path ess-lisp-directory)
+  (add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
 
   ;; Need these as early as here [also in ./ess-comp.el] :
   (if (not (boundp 'ess-show-load-messages))
@@ -416,7 +416,7 @@ The extension, in a file name, is the part that follows the last `.'."
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files." t)
 
-;;; On a PC, the default is S+6.  
+;;; On a PC, the default is S+6.
 ;; Elsewhere (unix and linux) the default is S+6
 (cond (ess-microsoft-p ; MS-Windows
        (fset 'S 'S+6)
@@ -571,7 +571,7 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;;   1c. You can also define C-TAB in all modes by specifying either
 ;;;(setq ess-sas-global-unix-keys t) ;; optional C-TAB bound in all modes
 ;;;(setq ess-sas-global-pc-keys t)   ;; optional C-TAB bound in all modes
-;;;       See below. 
+;;;       See below.
 ;;;
 ;;;   2. Managing submitted SAS jobs with function keys.
 ;;;   2a. Default: Function keys retain their global bindings.
@@ -585,9 +585,9 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;;      in same-window-buffer-names, then uncomment the following line
 ;;;(ess-same-window-async)
 ;;;
-;;;   4. As of 5.1.19, a new and improved syntax highlighting scheme for .sas and .log 
+;;;   4. As of 5.1.19, a new and improved syntax highlighting scheme for .sas and .log
 ;;;	 files is available (press f10 to toggle between modes in .log).  If you are
-;;;      using XEmacs v. 20.x, then you need this as well, since it works around a 
+;;;      using XEmacs v. 20.x, then you need this as well, since it works around a
 ;;;      problem with make-regexp.el.  Uncomment the next line for this feature:
 ;;;(setq ess-sas-run-make-regexp nil)
 
