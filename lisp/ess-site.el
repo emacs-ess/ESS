@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/28 12:50:29 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: ess-site.el,v 1.23 1997/07/28 12:50:29 rossini Exp $
+;; Modified: $Date: 1997/07/28 13:06:10 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: ess-site.el,v 1.24 1997/07/28 13:06:10 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.24  1997/07/28 13:06:10  rossini
+;;: moved/uncommented ess-site.el
+;;:
 ;;: Revision 1.23  1997/07/28 12:50:29  rossini
 ;;: reformat.
 ;;:
@@ -236,11 +239,11 @@
 (require 'essd-s+3)
 (require 'essd-r)
 (require 'essd-xls)
+(require 'essd-s3)  ;; You might not have this
+(require 'essd-s4)  ;; or this one...
 
-;;TODO:
+;;TODO, for 5.0 :-).
 ;; (require 'essd-vst) ; built on essd-xls.
-;; (require 'essd-s4)
-;; (require 'essd-s3)
 ;; (require 'essd-s+4)
 ;; (require 'essd-sas)
 
