@@ -66,7 +66,9 @@
 \fi
 %%---End of package requiring ---------- Own Definitions -------------
 
-\newcommand*{\SAS}{\textsc{SAS}$^{\mbox{\scriptsize{\textregistered}}}$}
+\newcommand*{\regstrd}{$^{\mbox{\scriptsize\textregistered}}$}
+\newcommand*{\tm}{$^{\mbox{\scriptsize\sc tm}}$}
+\newcommand*{\SAS}{\textsc{SAS}}
 \newcommand*{\Splus}{\textsc{S-Plus}}
 \newcommand*{\XLispStat}{\textsc{XLispStat}}
 \newcommand*{\Stata}{\textsc{Stata}}
@@ -130,7 +132,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/10 22:30:05 $ - $Revision: 1.45 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/11 07:41:19 $ - $Revision: 1.46 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -175,36 +177,14 @@ computer, in the critical role of facilitating or hindering these
 tasks.  This paper introduces Emacs Speaks Statistics (ESS) \citep{ESS},
 an interface to a variety of statistical analysis packages that
 provides consistent shortcuts for frequently performed, possibly complex, tasks.
-ESS is %% constructed as 
-a package of extensions to the Emacs text editing system.
-
-\begin{Comment}
-AJR:
- Does it make sense to add an additional paragraph on "history of
-statistical interfaces from programming it yourself to command line
-(SPSS/SAS/BDMP in the 80s), to spreadsheet-style interfaces
-(spreadsheets, AND minitab, spss now, etc), etc?  This would be the
-2nd paragraph, if so.
-
-Rodney:
-I don't think so.
-AFAIC, anyone who wants to use ESS will not need to know
-that per se.  They will just need to know what works today.
-
-Rich: I think we don't want to get caught in the commandline vs spreadsheet
-vs GUI discussion.  ESS can work with any of them.
-
-Rich: Also the reference to (Rossini et al., 2001b) talks about that.
-
-AJR: Settled, as far as I am concerned.
-\end{Comment}
+ESS is a package of extensions to the Emacs text editing system.
 
 ESS provides an interface to statistical packages, and provides,
 through Emacs, additional tools which facilitate both statistical
 software development and data analysis.  ESS currently supports
 the S family of languages (which include
-S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus{} \citep{Splus}, and R
-\citep{ihak:gent:1996}); \SAS\ \citep{SAS:8}; \XLispStat\
+S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\regstrd\ \citep{Splus}, and R
+\citep{ihak:gent:1996}); \SAS\regstrd\ \citep{SAS:8}; \XLispStat\
 \citep{Tier90} and its extensions Arc \citep{Cook:Weisberg:1999} and
 ViSta \citep{youn:fald:mcfa:1992}; \Stata\ \citep{Stata:6.0}; Omegahat
 \citep{DTLang:2000}; and BUGS \citep{BUGS}.  ESS can be
@@ -219,6 +199,51 @@ entire second line is underlined as a unit.
 AJR: what tools are you using?  I don't see this, currently (I suspect
 it was related in the past to the use of the hyperref package, but I
 still don't recall seeing this in DVI files, just PS/PDF stuff).
+
+Rich: probably something about hyperref.  I get warning messages from
+Miktex about hyperref.  I am using vanilla miktex.  The natbib.sty is
+not part of that distribution.  I got it from you last year.  Here is
+my latex log:
+\begin{verbatim}
+c:/emacs/ess-washington/ess/doc/jcgs$ latex \\input essJCGSv2.tex
+This is TeX, Version 3.14159 (MiKTeX 2.1)
+LaTeX2e <2000/06/01>
+Babel <v3.7h> and hyphenation patterns for english, french, german, ngerman, du
+mylang, nohyphenation, loaded.
+(essJCGSv2.tex (C:\texmf\tex\latex\base\article.cls
+Document Class: article 2000/05/19 v1.4b Standard LaTeX document class
+(C:\texmf\tex\latex\base\size10.clo)) (natbib.sty)
+(C:\texmf\tex\latex\base\alltt.sty) (C:\texmf\tex\latex\graphics\graphicx.sty
+(C:\texmf\tex\latex\graphics\keyval.sty)
+(C:\texmf\tex\latex\graphics\graphics.sty (C:\texmf\tex\latex\graphics\trig.sty
+) (C:\texmf\tex\latex\00miktex\graphics.cfg)
+(C:\texmf\tex\latex\graphics\dvips.def)))
+(C:\texmf\tex\latex\hyperref\hyperref.sty
+(C:\texmf\tex\latex\hyperref\pd1enc.def)
+(C:\texmf\tex\latex\00miktex\hyperref.cfg)
+Implicit mode ON; LaTeX internals redefined
+(C:\texmf\tex\latex\ltxmisc\url.sty))
+*hyperref using driver hypertex*
+(C:\texmf\tex\latex\hyperref\hypertex.def)
+
+Package hyperref Warning: Option `backref' has already been used,
+(hyperref)                setting the option has no effect on input line 65.
+
+
+Package hyperref Warning: Option `pagebackref' has already been used,
+(hyperref)                setting the option has no effect on input line 65.
+
+
+Package hyperref Warning: Option `hyperindex' has already been used,
+(hyperref)                setting the option has no effect on input line 65.
+
+(essJCGSv2.aux) (C:\texmf\tex\latex\hyperref\nameref.sty)
+(C:\texmf\tex\latex\base\omscmr.fd) [1] [2] [3] [4] [5] [6] [7] [8] [9]
+[10] (essJCGSv2.bbl [11]) [12] (essJCGSv2.aux) )
+Output written on essJCGSv2.dvi (12 pages, 51108 bytes).
+Transcript written on essJCGSv2.log.
+\end{verbatim}
+
 \end{Comment}
 
 The present paper summarizes historical and non-technical information on
@@ -242,8 +267,8 @@ future tasks and extensions.
 
 Emacs is a mature, powerful, and extensible text editing system which
 is freely available under the GNU General Public License for a large
-number of platforms, including most flavors of Unix, Microsoft Windows
-and Apple Macintosh.  There are two open-source, free-software
+number of platforms, including most flavors of Unix\regstrd, Microsoft Windows\regstrd\
+and Apple Macintosh\tm.  There are two open-source, free-software
 implementations of Emacs:  GNU Emacs \citep{GNU-Emacs} and XEmacs
 \citep{XEmacs}.  Emacs shares many features with
 word processors, and some characteristics with operating systems.
@@ -257,7 +282,7 @@ sequences for ease of use.  These days, Emacs is
 rarely used within a terminal or terminal-emulator, but key-mapping of
 commands is still an important time-saving feature.  Over the last
 decade, Emacs has been extended to use graphics-based windowing
-systems such as X11, Microsoft Windows, and Apple Macintosh.  These
+systems such as X11\tm, Microsoft Windows, and Apple Macintosh.  These
 windowing systems provide a graphical user interface (GUI) which
 allows the user to interact with either a keyboard or a mouse, and encourage
 multiple applications to share a single display.  Emacs menus and
@@ -582,18 +607,6 @@ completion is available.  In addition (currently only for S languages),
 there exists object-name and function-name completion.
 
 \paragraph{Interactive transcripts.}
-%% AJR: removed since it's ``solved''.
-%%\begin{Comment}
-%% Rodney:  we need a short description of transcript-mode
-%% \begin{trivlist}\item
-%%   \emph{\small outcommented -- made visible (by MM) here}\\
-%%   Transcripts are easily recorded and can be edited into an ideal activity
-%%   log which can then be saved.
-%% \end{trivlist}
-%% Martin: I don't understand what you mean. Is the paragraph below too long
-%% and you want to shorten it?
-%% Rodney: I think it's fine now.  Thanks.
-%%\end{Comment}
 ESS can create transcripts, which record the commands issued during an
 interactive statistical analysis session.  Special features include a
 means for searching the command-line history for previous commands and
@@ -602,8 +615,8 @@ provides syntactic highlighting for them.  Once a transcript file is
 generated, perhaps by saving an \stexttt{iESS} buffer, transcript-mode
 assists with reuse of part or all of the entered commands.  It permits
 editing and re-evaluating the commands directly from the saved
-transcript.  This is useful for both demonstration of techniques as
-well as for reconstruction and auditing of data analyses.  Special
+transcript.  This is useful both for demonstration of techniques
+and for reconstruction and auditing of data analyses.  Special
 functions within ESS can clean transcripts from S languages back to
 source code by finding all input lines and isolating them into an
 input file.
