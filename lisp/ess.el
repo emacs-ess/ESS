@@ -6,10 +6,10 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;;                       Martin Maechler  <maechler@stat.math.ethz.ch>
-;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
+;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 1.70 1997/11/19 15:57:23 rossini Exp $
+;; Version: $Id: ess.el,v 4.0 1997/11/20 23:22:51 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -21,7 +21,7 @@
 ;;                   5.0|
 ;;                   ftp://franz.stat.wisc.edu/pub/ESS/ESS-5.0.tar.gz
 
-;; This file is part of ess-mode
+;; This file is part of ESS
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
