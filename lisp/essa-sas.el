@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/11/01 19:43:21 $
-;; Version: $Revision: 1.128 $
-;; RCS: $Id: essa-sas.el,v 1.128 2002/11/01 19:43:21 rsparapa Exp $
+;; Modified: $Date: 2002/11/02 14:24:07 $
+;; Version: $Revision: 1.129 $
+;; RCS: $Id: essa-sas.el,v 1.129 2002/11/02 14:24:07 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -523,38 +523,55 @@ optional argument is non-nil, then set-buffer rather than switch."
 )
 
 (defun ess-sas-interactive ()
+"And now for something completely different."
     (interactive)
     (ess-sas-file-path)
     (setq ess-sas-submit-method 'iESS)
 
-    (let ((ess-temp-stderr " ") (ess-temp-stdout " ") (ess-temp-stdin " "))
-    (setq ess-sas-shell-buffer "*LOG*")
+    (let ((ess-temp-sas-file 
+(nth 0 (split-string (car (last (split-string ess-sas-file-path "\\([a-zA-Z][a-zA-Z]:\\|]\\)"))) "[.]"))))
+;;    (message "%s" ess-temp-sas-file)
+    (setq ess-sas-shell-buffer "*iESS[SAS]*") 
     (ess-sas-goto-shell)
-    (insert "tty")
-    (comint-send-input)
-    (ess-sleep)
-    (save-excursion (setq ess-temp-stderr (ess-search-except "\\(/dev/[a-z0-9/]+\\)" nil t)))
-    (setq ess-sas-shell-buffer "*OUTPUT*") 
-    (ess-sas-goto-shell) 
-    (insert "tty") 
-    (comint-send-input) 
-    (ess-sleep) 
-    (save-excursion (setq ess-temp-stdout (ess-search-except "\\(/dev/[a-z0-9/]+\\)" nil t)))
-    (setq ess-sas-shell-buffer "*PROGRAM*") 
-    (ess-sas-goto-shell)
-    (insert "tty")
-    (comint-send-input)
-    (ess-sleep)
-    (insert "sh")
-    (comint-send-input)
-    (ess-sleep)
-    (save-excursion (setq ess-temp-stdin (ess-search-except "\\(/dev/[a-z0-9/]+\\)" nil t)))
-    (insert (concat ess-sas-submit-command " " ess-sas-submit-command-options " -stdio <"
-	ess-temp-stdin " >1 " ess-temp-stdout " >2 " ess-temp-stderr))
+    (insert (concat ess-sas-submit-command " " ess-sas-submit-command-options 
+        " -altlog " ess-temp-sas-file ".log -altprint "ess-temp-sas-file ".lst -stdio < /dev/tty"))
     (comint-send-input)
     (ess-add-ess-process)
     (ess-sas-goto-sas)
 ))
+;;(defun ess-sas-interactive ()
+;;    (interactive)
+;;    (ess-sas-file-path)
+;;    (setq ess-sas-submit-method 'iESS)
+;;
+;;    (let ((ess-temp-stderr " ") (ess-temp-stdout " ") (ess-temp-stdin " "))
+;;    (setq ess-sas-shell-buffer "*LOG*")
+;;    (ess-sas-goto-shell)
+;;    (insert "tty")
+;;    (comint-send-input)
+;;    (ess-sleep)
+;;    (save-excursion (setq ess-temp-stderr (ess-search-except "\\(/dev/[a-z0-9/]+\\)" nil t)))
+;;    (setq ess-sas-shell-buffer "*OUTPUT*") 
+;;    (ess-sas-goto-shell) 
+;;    (insert "tty") 
+;;    (comint-send-input) 
+;;    (ess-sleep) 
+;;    (save-excursion (setq ess-temp-stdout (ess-search-except "\\(/dev/[a-z0-9/]+\\)" nil t)))
+;;    (setq ess-sas-shell-buffer "*PROGRAM*") 
+;;    (ess-sas-goto-shell)
+;;;;    (insert "tty")
+;;    (comint-send-input)
+;;    (ess-sleep)
+;;    (insert "sh")
+;;    (comint-send-input)
+;;    (ess-sleep)
+;;    (save-excursion (setq ess-temp-stdin (ess-search-except "\\(/dev/[a-z0-9/]+\\)" nil t)))
+;;    (insert (concat ess-sas-submit-command " " ess-sas-submit-command-options " -stdio <"
+;;	ess-temp-stdin " >1 " ess-temp-stdout " >2 " ess-temp-stderr))
+;;    (comint-send-input)
+;;    (ess-add-ess-process)
+;;    (ess-sas-goto-sas)
+;;))
 
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that
