@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/22 20:04:33 $
-;; Version: $Revision: 1.110 $
-;; RCS: $Id: essa-sas.el,v 1.110 2002/07/22 20:04:33 rsparapa Exp $
+;; Modified: $Date: 2002/07/24 17:26:00 $
+;; Version: $Revision: 1.111 $
+;; RCS: $Id: essa-sas.el,v 1.111 2002/07/24 17:26:00 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -51,6 +51,20 @@
     :group 'ess-sas  
     :type  'string
 )
+
+(defcustom ess-sas-data-view-fsview-command "; proc fsview data=" 
+    "*SAS code to open a SAS dataset with `ess-sas-data-view'."
+    :group 'ess-sas  
+    :type  'string
+)
+
+(defcustom ess-sas-data-view-fsview-statement " "
+    "*SAS code to perform a PROC FSVIEW statement with `ess-sas-data-view'."
+    :group 'ess-sas  
+    :type  'string
+)
+
+(make-variable-buffer-local 'ess-sas-data-view-fsview-statement)
 
 (defcustom ess-sas-graph-suffix-regexp 
     "[.]\\([eE]?[pP][sS]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\)"
@@ -121,7 +135,7 @@ should set this variable to 'sh regardless of their local shell
 
 (make-variable-buffer-local 'ess-sas-submit-method)
 
-(defcustom ess-sas-data-view-options 
+(defcustom ess-sas-data-view-submit-options 
     (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
 	"-nodms -nosysin -log /dev/null")
     "*The options necessary for your enviromment and your operating system."
@@ -332,7 +346,8 @@ on the way."
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
 
- (save-excursion (let ((ess-tmp-sas-data nil)
+ (save-excursion (let ((ess-tmp-sas-data nil) 
+    (ess-tmp-sas-data-view-fsview-statement ess-sas-data-view-fsview-statement)
     (ess-search-regexp "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[ ,()\t;]")
     (ess-search-except "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
 
@@ -350,9 +365,9 @@ on the way."
         (ess-sas-goto-shell t)
 
 	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
-	    " -initstmt \"" ess-sas-data-view-libname "; proc fsview data=" 
-	    ess-sas-data "; run;\" " ess-sas-data-view-options " " 
-	    ess-sas-submit-post-command))
+	    " -initstmt \"" ess-sas-data-view-libname ess-sas-data-view-fsview-command 
+	    ess-sas-data ";" ess-tmp-sas-data-view-fsview-statement "; run;\" " 
+	    ess-sas-data-view-submit-options " " ess-sas-submit-post-command))
     (comint-send-input)
 )))))
 
