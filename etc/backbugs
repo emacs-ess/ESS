@@ -3,6 +3,8 @@
 #
 
 case $# in
+     1) bugs603.sparc 32 bugs $1; rm bugs.buf;;
      2) bugs603.sparc 32 $1 $2; rm $1.buf;;
-     *) echo "usage: $0 default_output_name command_file";;
+     3) bugs603.sparc $1 $2 $3; rm $2.buf;;
+     *) echo "usage: $0 [[number_of_bins] default_output_name] command_file";;
 esac
