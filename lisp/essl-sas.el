@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/10 17:33:45 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essl-sas.el,v 1.9 1997/09/10 17:33:45 rossini Exp $
+;; Modified: $Date: 1997/09/10 17:44:51 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essl-sas.el,v 1.10 1997/09/10 17:44:51 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -903,7 +903,7 @@ page ;
      '("Submit File " . submit-sas))
    )
 
-(require 'sas)
+;(require 'sas)
 
 (defun sas-dir-mode ()
   "Major mode for managing sas files"
