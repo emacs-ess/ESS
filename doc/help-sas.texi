@@ -18,7 +18,7 @@ ESS[SAS] was written with two primary goals.
 environment for programming languages.  These features are a boon to all
 programmers and, with the help of ESS[SAS], to SAS users as well.
 
-2. Although, a departure from SAS Display Manager, ESS[SAS] provides
+2. Although a departure from SAS Display Manager, ESS[SAS] provides
 similar key definitions to give novice ESS[SAS] users a head start.
 Also, inconvenient SAS Display Manager features, like remote submission
 and syntax highlighting, are provided transparently; appealing to
