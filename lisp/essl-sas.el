@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/01 20:45:08 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essl-sas.el,v 1.4 1997/09/01 20:45:08 rossini Exp $
+;; Modified: $Date: 1997/09/02 19:51:29 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essl-sas.el,v 1.5 1997/09/02 19:51:29 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -99,7 +99,7 @@ popup window when the SAS job is finished.")
     ("%[a-z0-9_]*\\>" . font-lock-preprocessor-face))
   "Font Lock regexs for SAS.")
 
-(defvar SAS-editing-alist
+(defvar SAS-edit-alist
   '((sentence-end                 . ";[\t\n */]*")
     (paragraph-start              . "^[ \t]*$")
     (paragraph-separate           . "^[ \t]*$")
