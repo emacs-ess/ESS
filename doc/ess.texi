@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.52 2004/05/05 11:56:48 stephen Exp $
+@comment $Id: ess.texi,v 5.53 2004/05/07 10:11:12 maechler Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.52 $ $Date: 2004/05/05 11:56:48 $)
+@subtitle (Documentation $Revision: 5.53 $ $Date: 2004/05/07 10:11:12 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.52 $ $Date: 2004/05/05 11:56:48 $).
+        (Documentation $Revision: 5.53 $ $Date: 2004/05/07 10:11:12 $).
 
 @display
 by  A.J. Rossini,
@@ -506,7 +506,8 @@ system.
 @cindex starting ESS
 @cindex running S
 
-To start an @Sl{} session, simply type @kbd{M-x S RET}, i.e. press
+To start an @Sl{} session, simply type @kbd{M-x S RET}, i.e., (either use
+the @emph{Meta} key if you have one or) press
 @key{ESC}, then @key{x}, then capital @key{S} and then the @key{RETURN}
 key.
 @pindex S
@@ -558,7 +559,7 @@ argument (for R), @kbd{C-u M-x R} allows for the specification of
 command line options.
 
 @pindex ess-request-a-process
-You can switch to any active ESS process with the command 
+You can switch to any active ESS process with the command
 @samp{M-x ess-request-a-process}.  Just enter the name of the process
 you require; completion is provided over the names of all running S
 processes.  This is a good command to consider binding to a global key.
@@ -1768,7 +1769,7 @@ Send the line containing point to the ESS process.
 As above, but returns you to the ESS process buffer as well.
 
 @item
-@kbd{C-c C-f} or @kbd{ESC C-x} (@code{ess-eval-function}) @*
+@kbd{C-c C-f} or @kbd{ESC C-x} (aka @kbd{M-C-x}) (@code{ess-eval-function}) @*
 @pindex ess-eval-function
 Send the @Sl{} function containing point to the ESS process.
 
@@ -1887,7 +1888,7 @@ does not have a @key{LINEFEED} key, you can use @kbd{C-j} instead.)
 Some people prefer to bind @key{RET} to this command.
 
 @item
-@kbd{ESC C-q} (@code{ess-indent-exp}) @*
+@kbd{ESC C-q} aka @kbd{M-C-q} aka @kbd{C-M-q} (@code{ess-indent-exp}) @*
 Indents each line in the @Sl{} (compound) expression which follows point.
 Very useful for beautifying your @Sl{} code.
 
@@ -1919,17 +1920,17 @@ A number of commands are provided to move across function definitions
 in the edit buffer:
 @itemize @bullet
 @item
-@kbd{ESC C-e} (@code{ess-beginning-of-function}) @*
+@kbd{ESC C-a} aka @kbd{C-M-a} (@code{ess-beginning-of-function}) @*
 @pindex ess-beginning-of-function
 Moves point to the beginning of the function containing point.
 
 @item
-@kbd{ESC C-a} (@code{ess-end-of-function}) @*
+@kbd{ESC C-e} aka @kbd{C-M-e} (@code{ess-end-of-function}) @*
 @pindex ess-end-of-function
 Moves point to the end of the function containing point.
 
 @item
-@kbd{ESC C-h} (@code{ess-mark-function}) @*
+@kbd{ESC C-h} aka @kbd{C-M-h} (@code{ess-mark-function}) @*
 Places point at the beginning of the @Sl{} function containing point, and
 mark at the end.
 @end itemize
@@ -2875,7 +2876,7 @@ You can add the following lisp to your @file{.emacs}:
 @end example
 @noindent
 This code removes the association between .s and .S files and S
-mode. 
+mode.
 
 @comment  node-name,  next,  previous,  up
 @node Hooks, Keybindings, Variables, Customization
