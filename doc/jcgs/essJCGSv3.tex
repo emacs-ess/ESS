@@ -165,7 +165,7 @@
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/30 16:20:02 $ - $Revision: 1.28 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/30 16:21:33 $ - $Revision: 1.29 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -483,7 +483,6 @@ beneficial editing features, some of which extend beyond native
 editing environments.  Examples of this last situation include Windows
 versions of SAS, Stata, and XLispStat.
 
-%%\paragraph{Integration with Statistical Packages}
 Emacs has historically referred to processes under its control as
 \textit{inferior}, accounting for the name inferior ESS
 (\stexttt{iESS}) to denote the mode for interfacing with the
@@ -558,23 +557,22 @@ session to construct functions and batch files for routine analysis of
 similar data sets.
 
 \paragraph{Cooperation across Multiple Tools.}
-Statistical packages are intended for either general
-or % (twice the same phrase) statistical analyses or for
-specialized forms of statistical analyses.  The
-specialized statistical packages can be far more efficient for their
-intended activities, but this is balanced by their inability to
-perform a wide range of general statistical functions.  Tightly
-coupled inter-operability between general and specialized packages
-rarely exists, but such a facility is often desired.  For example, a
-general purpose package such as R does not perform Bayesian analyses
-as easily as BUGS does.  On the other hand, BUGS lacks breadth in the
-range of analyses and results it can generate.  For this reason, BUGS
-is often distributed with R packages, like the diagnostic packages
-CODA and BOA, which assist with importing and analyzing the results in
-R.  Another point of contention is the difference in the interfaces
-between general packages and specialized packages.  ESS helps by
-providing a single point of contact to both tools, though the typical
-interfaces (interactive for R, batch for BUGS) are different.
+Statistical packages are intended for either general or specialized
+forms of statistical analyses.  The specialized statistical packages
+can be far more efficient for their intended activities, but this is
+balanced by their inability to perform a wide range of general
+statistical functions.  Tightly coupled inter-operability between
+general and specialized packages rarely exists, but such a facility is
+often desired.  For example, a general purpose package such as R does
+not perform Bayesian analyses as easily as BUGS does.  On the other
+hand, BUGS lacks breadth in the range of analyses and results it can
+generate.  For this reason, BUGS is often distributed with R packages,
+like the diagnostic packages CODA and BOA, which assist with importing
+and analyzing the results in R.  Another point of contention is the
+difference in the interfaces between general packages and specialized
+packages.  ESS helps by providing a single point of contact to both
+tools, though the typical interfaces (interactive for R, batch for
+BUGS) can be different.
 
 \paragraph{Concurrent Use of Multiple Machines and Operating Systems.}
 It can be useful to have multiple statistical processes running
@@ -583,7 +581,6 @@ This capability assists with large-scale numerical simulations as well
 as code design and testing across multiple versions of statistical
 software packages.
 
-\paragraph{Remote access to statistics packages.}
 ESS provides transparent facilities for editing files and running
 programs which might reside on numerous remote machines during the
 same session.  The remote machine could be a different platform than
