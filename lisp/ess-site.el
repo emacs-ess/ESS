@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/11/16 21:45:01 $
-;; Version: $Revision: 5.38 $
-;; RCS: $Id: ess-site.el,v 5.38 1999/11/16 21:45:01 ess Exp $
+;; Modified: $Date: 2000/01/25 17:57:36 $
+;; Version: $Revision: 5.39 $
+;; RCS: $Id: ess-site.el,v 5.39 2000/01/25 17:57:36 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -51,7 +51,7 @@
 ;;;      (add-path "/path/to/ess/lisp-directory")
 ;;; with Emacs (and in general):
 ;;;      (setq load-path (cons "/path/to/ess/lisp-directory" load-path)
-;;; 
+;;;
 
 (provide 'ess-site)
 
@@ -230,10 +230,18 @@
 ;;(require 'essd-s3)  ; You might not have this
 ;;(require 'essd-vst) ; built on essd-xls.
 
+(ess-write-to-dribble-buffer
+   (format "[ess-site.el]: ess-customize-alist=%s \n"
+	   ess-customize-alist))
+
 
 ;; (1.7) Set up stuff for noweb-mode!
 (require 'ess-noweb)
 (require 'ess)
+
+(ess-write-to-dribble-buffer
+   (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
+	   ess-customize-alist))
 
 ;;; 2. Site Specific setup
 ;;;; ===============================================
