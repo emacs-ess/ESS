@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.56 2004/05/22 17:46:19 stephen Exp $
+@comment $Id: ess.texi,v 5.57 2004/05/22 20:00:07 stephen Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.56 $ $Date: 2004/05/22 17:46:19 $)
+@subtitle (Documentation $Revision: 5.57 $ $Date: 2004/05/22 20:00:07 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.56 $ $Date: 2004/05/22 17:46:19 $).
+        (Documentation $Revision: 5.57 $ $Date: 2004/05/22 20:00:07 $).
 
 @display
 by  A.J. Rossini,
@@ -85,7 +85,7 @@ statements written in these statistical analysis languages.
 @menu
 * Introduction::                Overview of features provided by this package
 * Installation::                Installing ESS on your system
-* Starting up::                 Starting the ESS process
+* Interactive ESS::             Interacting with statistical programs
 * Help for the S family::
 * Help for SAS::
 * Help for BUGS::
@@ -443,7 +443,7 @@ change to customize ESS to your taste, but it is recommended that you
 defer this section until you are more familiar with ESS.
 
 @comment  node-name,  next,  previous,  up
-@node Installation, Starting up, Introduction, Top
+@node Installation, Interactive ESS, Introduction, Top
 @appendix Installing ESS on your system
 @cindex installation
 
@@ -532,15 +532,34 @@ Once these variables are set appropriately, ESS should work on any
 system.
 
 @comment  node-name,  next,  previous,  up
-@node Starting up, Help for the S family, Installation, Top
-@chapter Starting the ESS process
+@node Interactive ESS, Help for the S family, Installation, Top
+@chapter Interacting with statistical programs
+
+As well as using ESS to edit your source files for statistical programs,
+you can ESS to run these statistical programs.  In this chapter, we
+mostly will refer by example to running S from within emacs.  The emacs
+convention is to name such proceses running under its control as
+`inferior processes'.  This term can be slightly misleading, in which
+case these processes can be thought of `interactive processes'.  Either
+way, we use the term `iESS' to refer to the Emacs mode used to interact
+with statistical programs.
+
+
+@comment  node-name,  next,  previous,  up
+@menu
+* Starting up::                 
+* Multiple ESS processes::      
+* ESS processes on Remote Computers::  
+* S+elsewhere and ESS-elsewhere::  
+* Customizing startup::         
+@end menu
+
+@node Starting up,  Multiple ESS processes, , Interactive ESS
+@section Starting an ESS process
 @cindex starting ESS
 @cindex running S
 
-To start an @Sl{} session, simply type @kbd{M-x S RET}, i.e., (either use
-the @emph{Meta} key if you have one or) press
-@key{ESC}, then @key{x}, then capital @key{S} and then the @key{RETURN}
-key.
+To start an @Sl{} session, simply type @kbd{M-x S RET}.
 @pindex S
 
 @cindex ESS process directory
@@ -563,14 +582,9 @@ You will then be popped into a buffer
 with name @samp{*S*} which will be used
 for interacting with the ESS process, and you can start entering commands.
 
-@menu
-* Multiple ESS processes::
-* ESS processes on Remote Computers::
-* Customizing startup::         Changing the startup actions
-@end menu
 
 @comment  node-name,  next,  previous,  up
-@node Multiple ESS processes,  ESS processes on Remote Computers, Starting up, Starting up
+@node Multiple ESS processes,  ESS processes on Remote Computers, Starting up, Interactive ESS
 @section Running more than one ESS process
 @cindex Multiple ESS processes
 
@@ -605,7 +619,7 @@ processes.  This is a good command to consider binding to a global key.
 
 
 @comment  node-name,  next,  previous,  up
-@node ESS processes on Remote Computers, Customizing startup, Multiple ESS processes, Starting up
+@node ESS processes on Remote Computers, Customizing startup, Multiple ESS processes, Interactive ESS
 @section ESS processes on Remote Computers
 @cindex Remote Computers
 @pindex ess-remote
@@ -728,7 +742,7 @@ display it with ghostscript.
 
 
 @comment  node-name,  next,  previous,  up
-@node Customizing startup,  , ESS processes on Remote Computers, Starting up
+@node Customizing startup,  , ESS processes on Remote Computers, Interactive ESS
 @section Changing the startup actions
 
 If you do not wish ESS to prompt for a starting directory when starting
@@ -778,7 +792,7 @@ current frame.  If you wish your S process to appear in a separate
 variable, customize the variable @code{inferior-ess-own-frame}.
 
 @comment  node-name,  next,  previous,  up
-@node Help for the S family, Help for SAS, Starting up, Top
+@node Help for the S family, Help for SAS, Interactive ESS, Top
 @chapter Help for the S family
 @menu
 * ESS(S)--Editing files::
