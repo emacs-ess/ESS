@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/09/01 18:34:21 $
-;; Version: $Revision: 1.36 $
-;; RCS: $Id: ess-site.el,v 1.36 1997/09/01 18:34:21 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:56:13 $
+;; Version: $Revision: 1.37 $
+;; RCS: $Id: ess-site.el,v 1.37 1997/09/01 18:56:13 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -240,35 +240,29 @@
 
 ;;; 4.0 SAS configuration
 
-(defvar sas-require-confirmation t
-  "*Require confirmation when revisiting sas-output which has changed on disk.")
-;; added sas-program 4/29/94.  user can specify a different version of sas.
-(defvar sas-program "sas" "*Name of program which runs sas.")
-(defvar sas-pre-run-hook nil
-  "Hook to execute prior to running SAS vis submit-sas.")
-(defvar sas-custom-file-name "~/.sas"
-  "Customization file. If you plan to change this, this variable must be
-set before loading sas-mode.")
-(defvar sas-options-string ""
-  "*Options to be passed to sas as if typed on the command line.")
-(defvar sas-indent-width 4 "*Amount to indent sas statements")
-(defvar sas-notify t "*Beep and display message when job is done?")  ;; added 4/7/94
-(defvar sas-error-notify t
-  "*If sas-notify is t, then indicate errors in log file upon completion")
-;; added 5/2/94
-(defvar sas-get-options nil "Options to be passed to SAS in sas-get-dataset")
-(defvar sas-get-options-history nil "History list of Options passed to SAS in sas-get-dataset")
-(defvar sas-page-number-max-line 3
-  "*Number of lines from the page break in which to search for the page number")
-(defvar sas-indent-ignore-comment "*"
-  "*Comments with start with this string are ignored in indentation.")
-(defvar sas-notify-popup nil
-  "*If t (and sas-notify is also t), causes emacs to create a
-popup window when the SAS job is finished.")
-(defvar sas-tmp-libname "_tmp_" "*Libname to use for sas-get-dataset.")
-(provide 'sas-site)
-;;; End sas-site.el
-
+;(defvar sas-require-confirmation t
+;  "*Require confirmation when revisiting sas-output which has changed on disk.")
+;;; added sas-program 4/29/94.  user can specify a different version of sas.
+;;;(defvar sas-program "sas" "*Name of program which runs sas.")
+;;(defvar sas-pre-run-hook nil
+;;  "Hook to execute prior to running SAS vis submit-sas.")
+;;(defvar sas-options-string ""
+;;  "*Options to be passed to sas as if typed on the command line.")
+;;(defvar sas-indent-width 4 "*Amount to indent sas statements")
+;;(defvar sas-notify t "*Beep and display message when job is done?")  ;; added 4/7/94
+;;(defvar sas-error-notify t
+;;  "*If sas-notify is t, then indicate errors in log file upon completion")
+;;;; added 5/2/94
+;;(defvar sas-get-options nil "Options to be passed to SAS in sas-get-dataset")
+;;(defvar sas-get-options-history nil "History list of Options passed to SAS in sas-get-dataset")
+;;(defvar sas-page-number-max-line 3
+;;  "*Number of lines from the page break in which to search for the page number")
+;;(defvar sas-indent-ignore-comment "*"
+;;  "*Comments with start with this string are ignored in indentation.")
+;;(defvar sas-notify-popup nil
+;;  "*If t (and sas-notify is also t), causes emacs to create a
+;;popup window when the SAS job is finished.")
+;;(defvar sas-tmp-libname "_tmp_" "*Libname to use for sas-get-dataset.")
 
 
 
