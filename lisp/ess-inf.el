@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/26 15:49:57 $
-;; Version: $Revision: 4.53 $
-;; RCS: $Id: ess-inf.el,v 4.53 1997/11/26 15:49:57 rossini Exp $
+;; Modified: $Date: 1997/11/26 19:01:22 $
+;; Version: $Revision: 4.54 $
+;; RCS: $Id: ess-inf.el,v 4.54 1997/11/26 19:01:22 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -175,7 +175,7 @@ accompany the call for inferior-ess-program.
        ;; If process is running, we use it: 
        ;; AJR- NO!  We no longer use this for switching buffers!
        ;;((get-process procname)
-	;; (setq buf (process-buffer (get-process procname))))
+       ;; (setq buf (process-buffer (get-process procname))))
 
        ;; Else (it's a new or terminated process) try to use current buffer
        ((and (not buf)
@@ -184,12 +184,14 @@ accompany the call for inferior-ess-program.
 	(setq startdir
 	      (if ess-ask-for-ess-directory (ess-get-directory defdir)
 		ess-directory))
-	(setq buf (current-buffer)))
+	(setq buf (current-buffer))
+	(ess-write-to-dribble-buffer "(inferior-ess) Method #1\n"))
 
        ;;  Not an ESS buffer yet
        ((and (not buf)
 	     (get-buffer buf-name-str))
-	(setq buf (get-buffer buf-name-str)))
+	(setq buf (get-buffer buf-name-str))
+	(ess-write-to-dribble-buffer "(inferior-ess) Method #2\n"))
 
        ;; Ask for transcript file and startdir
        ;; FIXME -- this should be in ess-get-transfile
@@ -201,14 +203,12 @@ accompany the call for inferior-ess-program.
 	    (let ((transfilename (read-file-name
 				  "Use transcript file (default none):"
 				  startdir "")))
-	      ;;(if (string= transfilename "")
-	      ;;    (setq transfilename nil)
-	      ;;  (setq transfilename (expand-file-name transfilename)))
 	      (setq buf (if (string= transfilename "")
 			    (get-buffer-create buf-name-str)
 			  (find-file-noselect (expand-file-name
 					       transfilename)))))
-	  (setq buf (get-buffer-create buf-name-str)))))
+	  (setq buf (get-buffer-create buf-name-str)))
+	(ess-write-to-dribble-buffer "(inferior-ess) Method #3\n")))
 
       (set-buffer buf)
       ;; Now that we have the buffer, set buffer-local variables.
@@ -228,56 +228,6 @@ accompany the call for inferior-ess-program.
 		    (concat "." ess-dialect "history"))
       (ess-multi procname buf inferior-ess-start-args))))
 
-;; Old code:
-
-;;  ;; If this process is running, switch to it
-;;  (if (get-process inferior-ess-procname)
-;;      (let ((my-buff-name (process-buffer
-;;			  (get-process inferior-ess-procname))))
-;;	(message "debug first way")
-;;	(ess-multi inferior-ess-procname my-buff-name))
-;;    ;; This is a new or terminated process.
-;;    ;; If no arg, try to use current buffer
-;;    (if (and (not n)
-;;	     (not (comint-check-proc (current-buffer)))
-;;	     (memq major-mode '(inferior-ess-mode ess-transcript-mode)))
-;;	(progn
-;;	  (setq default-directory
-;;		(if ess-ask-for-ess-directory (ess-get-directory ess-defdir)
-;;		  ess-directory))
-;;	  (message "debug second way")
-;;	  (ess-multi inferior-ess-procname (current-buffer)))
-;;      ;; Not an S buffer
-;;      (let ((buf-name-str (concat "*" inferior-ess-procname "*")))
-;;	(if (get-buffer buf-name-str)
-;;	    (progn
-;;	      (message "debug third way")
-;;	      (ess-multi inferior-ess-procname (get-buffer buf-name-str)))
-;;	  ;; Ask for transcript file and startdir
-;;	  ;; FIXME -- this should be in ess-get-transfile
-;;	  (run-hooks 'S-pre-run-hook);;rmh
-;;	  (let* ((startdir (if ess-ask-for-ess-directory
-;;			       (ess-get-directory ess-defdir)
-;;			     ess-directory))
-;;		 (transfilename nil)
-;;		 (buf nil)
-;;		 (procname inferior-ess-procname))
-;;	    (if ess-ask-about-transfile
-;;		(progn
-;;		  (setq transfilename
-;;			(read-file-name "Use transcript file (default none):"
-;;					startdir ""))
-;;		  (if (string= transfilename "")
-;;		      (setq transfilename nil)
-;;		    (setq transfilename (expand-file-name transfilename)))))
-;;	    (setq buf (if transfilename (find-file-noselect transfilename)
-;;			(get-buffer-create buf-name-str)))
-;;	    (set-buffer buf)
-;;	    (setq inferior-ess-procname procname)
-;;	    (setq default-directory startdir)
-;;	    (message "debug fourth way %s" inferior-ess-procname)
-;;	    (message "debug fourth way %s" procname)
-;;	    (ess-multi inferior-ess-procname buf))))))) ;)for let.
 
 ;;; A note on multiple processes: the following variables
 ;;;     ess-local-process-name
@@ -295,11 +245,11 @@ accompany the call for inferior-ess-program.
   "Start or switch to ESS process named NAME in the buffer BUFFER.
 BUFFER is only needed if process NAME is not running. BUFFER must
 exist.  Default-directory is the ESS starting directory. BUFFER may be
-visiting a file."
+visiting a file.
 
-;; If ess-process NAME is running, switch to it.  If not, use COMINT
-;; to start up a new process, using NAME and BUFFER (which is needed
-;; if there is no process NAME).
+If ess-process NAME is running, switch to it.  If not, use COMINT to
+start up a new process, using NAME and BUFFER (which is needed if
+there is no process NAME)."
 
   ;; (if (< n 1) (error "Argument to ess-multi must be 1 or greater"))
   (let* ((proc-name name)
@@ -1440,7 +1390,8 @@ buffer (defaults to the command if BUFF is not given.)"
 	  (ess-switch-to-ESS nil)
 	  (goto-char (marker-position (process-mark sprocess)))
 	  (insert inferior-ess-exit-command)
-	  (process-send-string sprocess inferior-ess-exit-command)))))
+	  (process-send-string sprocess inferior-ess-exit-command)
+	  (rename-buffer (concat (buffer-name) "-exited") t)))))
 
 (defun ess-abort ()
   "Kill the ESS process, without executing .Last or terminating devices.
