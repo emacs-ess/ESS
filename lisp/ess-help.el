@@ -10,9 +10,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>,
 ;;              Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/04/18 14:52:06 $
-;; Version: $Revision: 5.20 $
-;; RCS: $Id: ess-help.el,v 5.20 2004/04/18 14:52:06 stephen Exp $
+;; Modified: $Date: 2004/04/19 11:13:59 $
+;; Version: $Revision: 5.21 $
+;; RCS: $Id: ess-help.el,v 5.21 2004/04/19 11:13:59 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -191,9 +191,12 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	  ;;dbg  (format "(ess-help «%s» before switch-to..\n" hb-name)
 	  (let ((special-display-regexps 
 		 (if ess-help-own-frame '(".") nil))
-		(special-display-function 'ess-help-own-frame))
+		(special-display-function 
+		 (if (eq ess-help-own-frame 'one)
+		     'ess-help-own-frame
+		   special-display-function)))
 	    (if (eq curr-win-mode 'ess-help-mode)
-		(switch-to-buffer tbuffer)
+		(pop-to-buffer tbuffer)
 	      (ess-display-temp-buffer tbuffer)))
 	  (if curr-help-syntax-table
 	      (set-syntax-table curr-help-syntax-table))
