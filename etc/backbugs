@@ -4,16 +4,16 @@
 #
 
 case $# in
-     1) ln -f bugs.log bugs.bog
-	bugs603.sparc 32 bugs $1
+     1) bugs603.sparc 32 bugs $1
+	cp -fp bugs.log bugs.bog
 	rm bugs.buf
 	;;
-     2)	ln -f $1.log $1.bog
-        bugs603.sparc 32 $1 $2
+     2) bugs603.sparc 32 $1 $2
+	cp -fp $1.log $1.bog
 	rm $1.buf
 	;;
-     3)	ln -f $2.log $2.bog
-        bugs603.sparc $1 $2 $3
+     3) bugs603.sparc $1 $2 $3
+	cp -fp $2.log $2.bog
 	rm $2.buf
 	;;
      *) echo "usage: $0 [[number_of_bins] default_output_name] command_file";;

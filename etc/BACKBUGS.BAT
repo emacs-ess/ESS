@@ -1,4 +1,6 @@
 @echo off
+rem ESS[BUGS]:  07/31/2001
+rem runs BUGS taking commands from command file
 
 if not "%3"=="" goto 30
 if not "%2"=="" goto 20
@@ -9,19 +11,19 @@ goto 40
 
 :10
 bugs0603.exe 32 bugs %1
-del bugs.buf
 copy /y bugs.log bugs.bog
+del bugs.buf
 goto 40
 
 :20
 bugs0603.exe 32 %1 %2
-del %1.buf
 copy /y %1.log %1.bog
+del %1.buf
 goto 40
 
 :30
 bugs0603.exe %1 %2 %3
-del %2.buf
 copy /y %2.log %2.bog
+del %2.buf
 
 :40
