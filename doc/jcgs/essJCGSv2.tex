@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 19:21:14 $ - $Revision: 1.225 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/20 19:29:06 $ - $Revision: 1.226 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -710,27 +710,17 @@ If the X11 Windowing system is running on the local machine, it is
 even possible to bring up visual displays and graphics from remote
 Unix systems onto a local Microsoft Windows display.
 
-\paragraph{\SAS---Interactive in Emacs buffers.}
-
+\paragraph{\SAS}
 \stexttt{iESS[SAS]} is a mode that allows text-based \stexttt{PROC} by
 \stexttt{PROC} interaction with an inferior buffer running an
-interactive \SAS\ session on either the local or 
-a remote computer.  \stexttt{iESS[SAS]} mode works by
-redirecting standard input and output from \SAS\ to ESS.
-%sending the \stexttt{-stdio} command-line option to the \stexttt{sas}
-%command.
-As of this writing, the \stexttt{iESS[SAS]} mode can run on any computer,
-but the \SAS\ process it is controlling must be running  on a Unix machine.
-%The user highlights a region (normally a \stexttt{PROC \dots\ RUN;}
-%section) in the command file (\stexttt{myfile.sas} for convenience)
-%and sends it over to \SAS\ with mapped key sequences.  The
-%\stexttt{*SAS:1.log*} and \stexttt{*SAS:1.lst*} buffers immediately
-%display the log and listing results from the commands.
-%Graphics commands can be sent to a file, in PostScript for example,
-%and viewed outside of this interaction. 
-This process is very efficient for dial-up network connections to
-a remote computer with \SAS\ installed.
-
+interactive \SAS\ session on either the local or a remote computer.
+\stexttt{iESS[SAS]} mode works by redirecting standard input and
+output from \SAS\ to ESS.  Currently, the \stexttt{iESS[SAS]} mode can
+run on any computer, but the \SAS\ process it is controlling must be
+running on a Unix machine.  This process is very efficient for dial-up
+network connections to a remote computer with \SAS\ installed.  The
+resulting interface is similar to the SAS character terminal
+interface, with Emacs keybindings.
 
 %%%% AJR: WHY IS THIS SUBSTANTIALLY DIFFERENT THAN BATCH?  I KNOW ITS
 %%%% SLIGHTLY DIFFERENT, BUT SUBSTANTIALLY?
