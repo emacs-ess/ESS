@@ -41,7 +41,7 @@
 \hypersetup{backref,colorlinks=true,pagebackref=true,
   hyperindex=true}%pdfpagemode=FullScreen,
 
-\newcommand*{\Splus}{\textsc{S-PLUS}}
+\newcommand*{\Splus}{\textsc{S-Plus}}
 %\newcommand*{\Scmt}[1]{\hfill \#\# \textsl{#1}}
 \newcommand*{\Scmt}[1]{\hbox{\qquad {\footnotesize \#\#} \textsl{#1}}}
 \newtheorem{defn}{Definition}[section]
@@ -115,20 +115,22 @@ to construct more general analyses and graphics as \Splus\ and R.  This
 leads to an efficiency gain when using multiple tools for both
 theoretical and applied statistical research.
 
-The goal for the Emacs Speaks Statistics (ESS) project is to provide a
-single point of interface for text-based statistical computing.  The
-primary tasks that will be considered are statistical coding and
-interactive data analysis.  Statistical coding is the writing of
-computer code for data analysis.  This code might be compiled into an
-object file using a compiler, or might be run by an interpreter.  The
-task of entering of commands for interactive data analysis is similar.
-The primary difference is that the results of a small set of commands
-are of critical interest for review in the latter, but the results of
-all commands are of interest in the former.  Both of these tasks can
-be present at the same time, for example in the use of compiled
-Fortran code for optimization, which is being called from an
-interpreted language, such as \Splus, R, or XLispStat, containing the
-objective function to optimize.
+The Emacs Speaks Statistics (ESS) project's primary goal is to provide
+a single point of interface for text-based input and output for
+statistical computing.  The primary tasks which are focused on for
+optimization and efficiency are statistical coding and interactive
+data analysis.  Statistical coding is the writing of computer code for
+data analysis.  This code might be compiled into an object file using
+a compiler, for example C or Fortran; or it might be run by an
+interpreter, for example, SAS, \Splus\, R, or Python.  The task of
+entering of commands for interactive data analysis is similar.  The
+primary difference is that the results of a small set of commands are
+of critical interest for review in the latter, but the results of all
+commands are of interest in the former.  Both of these tasks can be
+present at the same time, for example in the use of compiled Fortran
+code for optimization, which is being called from an interpreted
+language, such as \Splus, R, or XLispStat, containing the objective
+function to optimize.
 
 One natural issue that follows is that not all of the languages or
 statistical packages have similar interfaces.  This means that it
