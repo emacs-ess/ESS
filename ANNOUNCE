@@ -51,7 +51,7 @@ Current Features
 ================
 
    * Languages Supported:
-        * S dialects (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
+        * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
 
         * SAS
 
@@ -61,7 +61,7 @@ Current Features
 
         * XLispStat including Arc and ViSta
 
-   * Editing source code (S, XLispStat, SAS, BUGS)
+   * Editing source code (S family, SAS, BUGS, XLispStat)
         * Syntactic indentation and highlighting of source code
 
         * Partial evaluation of code
@@ -72,12 +72,13 @@ Current Features
 
         * Batch execution (SAS, BUGS)
 
-   * Interacting with the process (S, XLispStat, SAS)
+   * Interacting with the process (S family, SAS, XLispStat)
         * Command-line editing
 
         * Searchable Command history
 
-        * Command-line completion of S object names and file names
+        * Command-line completion of S family object names and file
+          names
 
         * Quick access to object lists and search lists
 
@@ -85,7 +86,7 @@ Current Features
 
         * Interface to the help system
 
-   * Transcript manipulation (S3, S+3, S4, R, XLispStat)
+   * Transcript manipulation (S family, XLispStat)
         * Recording and saving transcript files
 
         * Manipulating and editing saved transcripts
@@ -114,7 +115,7 @@ thoroughly tested with:
 
    * SAS 6.x, 7.x, 8.x
 
-   * BUGS 0.5 or 0.603
+   * BUGS 0.5, 0.603
 
    * Stata >=6.0
 
@@ -126,7 +127,7 @@ thoroughly tested with:
 
    * SGI (all)
 
-   * Linux (S-PLUS 5.0, 5.1, R, XLispStat, S4, Stata 6.0)
+   * Linux (S4, S-PLUS 5.x, R, XLispStat, Stata 6.0)
 
    * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
 
@@ -143,12 +144,10 @@ thoroughly tested with:
    ---------- Footnotes ----------
 
    (1) Note  that you must have `custom' support.  It is available at
-Abraham's Custom Pkg (http://www.dina.kvl.dk/~abraham/custom/).   These
+The Custom Library (http://www.dina.kvl.dk/~abraham/custom/).   These
 releases of emacs are no longer supported, so an upgrade is
-recommended if you plan to use ESS.  This is not to say that ESS will
-not  work, but it will be up to the user to set it up on their own.  If
-you  have GNU Emacs 19.29, you _may_ get it to work after unpacking
-`19.29.tar.gz', see the installation instructions.
+recommended if you plan to use ESS.  If you have GNU Emacs 19.29,  see
+*Note Unix installation::.
 
 Stability
 =========
@@ -232,6 +231,23 @@ in the file COPYING in the same directory as this file for more details.
 
 New Features
 ============
+
+   Changes/New Features in 5.2.0:
+   * Stable release.  Final release of the 5.x series (except for
+     necessary bug-fixes).  Next release will be 6.0 which will be a
+     radical departure.
+
+   * Now that info documentation is available, the README.* files are
+     no longer supported.  However, they are still distributed for what
+     it's worth.
+
+   * ESS is now an XEmacs package!  See XEmacs Installation HOWTO
+     (http://www.xemacs.org/Install/index.html) for details
+     (specifically, items 10-15).
+
+   * ESS[SAS]: more user-friendly enhancements for remote SAS batch
+     jobs with Kermit file transfers (LOG and OUTPUT function key
+     features now supported).
 
    Changes/New Features in 5.1.21:
    * ESS[SAS]: info documentation now available!, see ESS->Help for
