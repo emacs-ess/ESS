@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/06/24 07:48:01 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: essd-s3.el,v 5.11 2002/06/24 07:48:01 maechler Exp $
+;; Modified: $Date: 2002/10/24 15:55:51 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: essd-s3.el,v 5.12 2002/10/24 15:55:51 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -62,7 +62,6 @@
     (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-objects-command  . "objects(%d)\n")
-    (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
