@@ -15,7 +15,11 @@ the truncation size is controlled by the variable ess-sas-log-max and
 defaults to 2500000.
 @item S-Plus 7 for Windows is now recognized.
 @item ESS[S] (incl.@: R): in auto-fill mode, strings are not wrapped anymore.
-@item ESS[S] (incl.@: R): font-lock now correctly differs between R and S.
+@item ESS[S] (incl.@: R): font-lock now correctly differs between R and S,
+e.g., for "_"; both now fontify warning(.) and S does terminate() additionally.
+@item Support for `bell' aka `beep' aka `ding' aka `alarm' in all inferior
+modes: When \a is output ``to the the console'' at the beginning of a line,
+the bell is rung.
 @end itemize
 
 Changes/New Features in 5.2.5:
@@ -27,8 +31,8 @@ ess-quit, now depends on the new customizable variable
 @code{ess-S-quit-kill-buffers-p} which defaults to @code{nil}.
 Consequently, the question @emph{``Delete all buffers associated
 with ..?''} will not be asked anymore by default.
-@item ESS[SAS] -- ess-ebcdic-to-ascii-search-and-replace will now work 
-with the @code{recode} application as well which is available on many platforms 
+@item ESS[SAS] -- ess-ebcdic-to-ascii-search-and-replace will now work
+with the @code{recode} application as well which is available on many platforms
 @item ESS[S] (incl.@: R): Name completion for slots of S4 objects now works!
 @end itemize
 
@@ -42,7 +46,7 @@ distributed; this is no longer relevant and so has been deleted.)
 platform, .log NOTEs may display as gibberish since the EBCDIC
 characters are not converted to ASCII prior to their display.  So,
 the function ess-ebcdic-to-ascii-search-and-replace is provided for
-convenience and is bound to @kbd{C-F11}.  This function requires the 
+convenience and is bound to @kbd{C-F11}.  This function requires the
 @code{dd} command (only available on unix or unix-like platforms).
 @item ESS: Completion of object names is now always done dynamically rather
 than allowing the option of using a pre-computed database (by
