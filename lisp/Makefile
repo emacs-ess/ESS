@@ -88,6 +88,7 @@ DOCDIST = ess.ps ess.pdf \
 	Doc/rmh-talk.ps Doc/rmh-talk.pdf
 
 # The following works mainly with GNU Make.
+
 OBJECTS = $(SOURCES:.el=.elc)
 
 DISTFILES = $(addprefix $(VERSIONDIR)/,$(SOURCES)) \
@@ -128,6 +129,9 @@ clean:
 	rm -f $(OBJECTS) ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
 	  ess.tp ess.vr ess.cps ess.fns ess.vrs ess.fn texput.log
 
+
+### Targets below here are only for developers.
+
 dist: ess.dvi ess.info
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(VERSION)"
@@ -145,14 +149,14 @@ dist: ess.dvi ess.info
 	chmod u+w $(VERSIONDIR)/Doc
 
 
-dist-doc: $(DOCDISTFILES)
-	@echo "**********************************************************"
-	@echo "** Making distribution of ESS-DOC for release $(VERSION)"
-	@echo "**********************************************************"
-	tar hcovf $(VERSIONDIR)-doc.tar $(DOCDISTFILES)
-	gzip $(VERSIONDIR)-doc.tar
-	cp $(VERSIONDIR)-doc.tar.gz $(MYWWWDIR)
-	cp $(VERSIONDIR)-doc.tar.gz $(MYFTPDIR)
+##dist-doc: $(DOCDISTFILES)
+##	@echo "**********************************************************"
+##	@echo "** Making distribution of ESS-DOC for release $(VERSION)"
+##	@echo "**********************************************************"
+##	tar hcovf $(VERSIONDIR)-doc.tar $(DOCDISTFILES)
+##	gzip $(VERSIONDIR)-doc.tar
+##	cp $(VERSIONDIR)-doc.tar.gz $(MYWWWDIR)
+##	cp $(VERSIONDIR)-doc.tar.gz $(MYFTPDIR)
 
 
 patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
@@ -167,7 +171,7 @@ patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 	-rm -rf ESS-$(VERSION)
 	-rm -rf ESS-$(LASTVERSION)
 
-### TARGETS
+### File Dependencies
 
 .SUFFIXES: .el .elc
 
