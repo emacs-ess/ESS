@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2001/08/24 14:04:29 $
-;; Version: $Revision: 5.30 $
-;; RCS: $Id: essd-r.el,v 5.30 2001/08/24 14:04:29 maechler Exp $
+;; Modified: $Date: 2002/01/04 14:56:07 $
+;; Version: $Revision: 5.31 $
+;; RCS: $Id: essd-r.el,v 5.31 2002/01/04 14:56:07 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -61,9 +61,9 @@
     (ess-help-sec-keys-alist       . R-help-sec-keys-alist)
     (ess-object-name-db-file       . "ess-r-namedb.el" )
     (ess-retr-lastvalue-command
-     . ".Last.value <- get(\".ess.lvsave\",inherits=T)\n") ; envir=1
+     . ".Last.value <- get(\".ess.lvsave\",inherits=TRUE)\n") ; envir=1
     (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,inherits=T)\n") ;envir=1
+     . "assign(\".ess.lvsave\",.Last.value,inherits=TRUE)\n") ;envir=1
     (ess-imenu-mode-function       . 'ess-imenu-R)
     (inferior-ess-program          . inferior-R-program-name)
     (inferior-ess-objects-command  . "objects(pos = %d)\n")
