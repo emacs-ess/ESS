@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/06/30 22:21:51 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: essd-vst.el,v 5.5 2000/06/30 22:21:51 rossini Exp $
+;; Modified: $Date: 2000/11/02 16:47:48 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: essd-vst.el,v 5.6 2000/11/02 16:47:48 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -53,7 +53,7 @@
     (inferior-ess-objects-command  .  "(variables)\n"     )
     (inferior-ess-exit-command     .  "(exit)\n"          )
     (inferior-ess-start-file       . nil) ;"~/.ess-VST")
-    (inferior-ess-start-args       . nil)
+    ;;(inferior-ess-start-args       . nil)
     )
   "Variables to customize for XLS.")
 
