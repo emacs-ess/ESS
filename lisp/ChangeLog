@@ -1,3 +1,7 @@
+2004-10-28  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-help.el: ess-help-mode-hook is now run correctly.
+
 2004-10-14  Stephen Eglen  <S.J.Eglen@damtp.cam.ac.uk>
 
 	* ess-cust.el (ess-default-style): Customize.

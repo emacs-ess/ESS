@@ -227,15 +227,15 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 
 ;;; THIS WORKS!
 ;;(require 'w3)
-(defun ess-display-w3-help-on-object-other-window (object)
-  "Display R-documentation for OBJECT using W3"
-  (interactive "s Help on :")
-  (let* ((ess-help-url (concat ess-help-w3-url-prefix
-			       ess-help-w3-url-funs
-			       object
-			       ".html")))
+;(defun ess-display-w3-help-on-object-other-window (object)
+;  "Display R-documentation for OBJECT using W3"
+;  (interactive "s Help on :")
+;  (let* ((ess-help-url (concat ess-help-w3-url-prefix
+;			       ess-help-w3-url-funs
+;			       object
+;			       ".html")))
     ;;(w3-fetch-other-window ess-help-url)
-    ))
+;    ))
 
 
 ;;*;; Major mode definition
@@ -344,7 +344,7 @@ Other keybindings are as follows:
 		    "Menu keymap for ess-help mode." ess-help-mode-menu)
   (easy-menu-add ess-help-mode-menu-map ess-help-mode-map)
 
-  (run-hooks ess-help-mode-hook))
+  (run-hooks 'ess-help-mode-hook))
 
 ;;*;; User commands defined in ESS help mode
 
