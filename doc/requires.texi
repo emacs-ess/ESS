@@ -25,7 +25,8 @@ with the following versions of emacs
 
 @itemize @bullet
 @item GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
-@item XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
+@item XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4.0-8, 21.4.9-12@footnote{
+ 21.4.9-12 requires the revert-buffer work-around}
 @item XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34@footnote{Note
  that you must have @file{custom} support.  It is available at 
  @uref{http://www.dina.kvl.dk/~abraham/custom/, The Custom Library}.
