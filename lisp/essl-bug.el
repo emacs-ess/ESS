@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2002/08/19 16:33:22 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: essl-bug.el,v 1.21 2002/08/19 16:33:22 rsparapa Exp $/ini
+;; Modified: $Date: 2004/02/18 18:50:01 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: essl-bug.el,v 1.22 2004/02/18 18:50:01 rsparapa Exp $/ini
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -96,7 +96,7 @@ add path to the command name."
 )
 
 (defcustom ess-bugs-batch-pre-command 
-    (if (equal ess-bugs-batch-method 'sh) "nohup" 
+    (if (equal ess-bugs-batch-method 'sh) "test -f nohup.out && rm -f nohup.out || true; nohup" 
 	(if ess-microsoft-p "start"))
     "*ESS[BUGS]: Modifiers at the beginning of the batch BUGS command line."
     :group 'ess-bugs
