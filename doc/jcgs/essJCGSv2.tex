@@ -117,8 +117,8 @@
   using any of several common statistical programming languages.  ESS
   is based on the Emacs text editing environment and is a member of
   the programming tools category of Integrated Development
-  Environments (IDEs), which are approaches for developing and
-  visualizing computer programs.  We discuss how it works, why one
+  Environments (IDEs), which are tools which aid in developing and
+  visualizing computer applications.  We discuss how it works, why one
   would consider using it, and additional extensions for increasing
   statistical programming efficiency.
 \end{abstract}
@@ -178,43 +178,36 @@ future tasks and extensions.
 \section{Emacs}
 \label{sec:emacs}
 
-Emacs is a mature, powerful, and extensible text
-editing system which is freely available under the GNU General Public
-License for a large number of platforms, including most flavors of
-Unix, Microsoft Windows and Apple Macintosh.  There are two versions,
-or forks, of Emacs (GNU Emacs \citep{RMS:2000} and XEmacs).  Emacs shares many
-features with word processors, and some characteristics with operating
-systems.  Most importantly, Emacs can interact with and control other
-programs.
+Emacs is a mature, powerful, and extensible text editing system which
+is freely available under the GNU General Public License for a large
+number of platforms, including most flavors of Unix, Microsoft Windows
+and Apple Macintosh.  There are two versions, or forks, of Emacs (GNU
+Emacs \citep{RMS:2000} and XEmacs).  Emacs shares many features with
+word processors, and some characteristics with operating systems.
+Most importantly, Emacs can interact with and control other programs.
 
-%as well as a few commercially support versions (UniPress Emacs).  All
-%share extensibility through Lisp programming.  Versions have been
-%written which use Python and PERL as extension languages, but these
-%are in much less common use.
-%Emacs was originally written for the first screen-mapped terminal
-%devices, and this is still manifested in its use of keymappings, which
-%have been stable for many, many years.
-Emacs was originally written when terminals were the only method of access
-to computers.  Emacs commands were assigned to key sequences which is 
-known as key-mapping or key-binding.  Currently, using Emacs as if it
-were running on a terminal, is only done in special circumstances like
-a few quick edits or remote access to a computer via a modem or the 
-Internet.  Over the last decade, Emacs has
-been extended to use windowing systems such as X11, Microsoft Windows,
-and Apple Macintosh.  These windowing systems provide a graphical user
-interface (GUI) which allows the user to interact with either a keyboard or
-a mouse and provides applications with the ability to share space on a
-single display.  Emacs menus and toolbars allow mouse access to
-frequently used actions; for instance, when you don't know or can't
-remember the appropriate key-mapping.  User-defined menus and toolbars can
-be constructed as needed.
+Emacs was originally written when single-screen terminals were the
+most sophisticated method of access to computers.  Common Emacs
+functions are assigned to key sequences, which is known as key-mapping
+or key-binding, though all functions can be executed by name.  For
+most current users, Emacs is rarely used on in a terminal-emulator
+except in special circumstances such as small, quick edits or remote
+access to the computer over a slow connection.  Over the last decade,
+Emacs has been extended to use windowing systems such as X11,
+Microsoft Windows, and Apple Macintosh.  These windowing systems
+provide a graphical user interface (GUI) which allows the user to
+interact with either a keyboard or a mouse and provides applications
+with the ability to share space on a single display.  Emacs menus and
+toolbars allow mouse access to frequently used actions; for instance,
+when you don't know or can't remember the appropriate key-mapping.
+User-defined menus and toolbars can be constructed as needed.
 
-However, Emacs provides facilities which go beyond ordinary text
-editing.  Emacs creates a dedicated space on the display, called a
-buffer, to perform tasks such as editing a text file on disk or
-controlling other programs.  You can switch between buffers to observe
-or make progress on concurrent tasks.  Buffers allow the user to edit
-multiple files and control multiple programs simultaneously.
+Emacs provides facilities which go beyond ordinary text editing.  It
+creates a dedicated space on the display, called a buffer, to perform
+tasks such as editing a text file on disk or controlling other
+programs.  One can switch between buffers to observe or progress on
+concurrent tasks.  Buffers allow the user to simultaneously edit or
+control multiple files and programs.
 
 Emacs capabilities are extended by text files containing Emacs Lisp,
 (also known as E-Lisp), a dialect of Lisp
@@ -276,10 +269,10 @@ of other text-editors, such as vi, wordstar, and brief.
 \section{ESS extends Emacs}
 \label{sec:ess-extends-emacs}
 
-Emacs's power and flexibility make it a reasonable starting choice to
+Emacs' power and flexibility make it a sensible starting choice to
 build an interface for statistical analysis packages.  ESS extends
 Emacs to provide a functional, easily extensible and uniform interface
-for multiple statistical packages.  This is done in two ways.  First, 
+for multiple statistical packages.  This is done in two ways.  First,
 shortcuts and features for accelerating the editing files have been
 written and implemented.  Second, interaction with the statistical
 language is split by function; general, obtaining help, programming.
