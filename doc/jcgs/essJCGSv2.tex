@@ -64,7 +64,8 @@
 
 %% Postscript fonts
 %\usepackage{times}
-\usepackage{graphicx}
+%\usepackage{graphicx}
+\usepackage{psfig}
 
 \ifx\pdfoutput\undefined
   %% Stuff wout hyperref
@@ -145,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/31 20:01:58 $ - $Revision: 1.86 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/31 20:14:28 $ - $Revision: 1.87 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -353,9 +354,13 @@ words that mismatch are highlighted in a contrasting color.
 files and in entire directories.
 
 \begin{figure}
-\emptyfig
-\caption[place holder for a long caption]{Ediff of two versions of a file.\\
-{\it ediff-sas.gif}
+\ifdraft
+  \emptyfig
+\else
+  \psfig{file=ediff-sas.ps.gz,angle=270,width=\textwidth}
+\fi
+\caption[Ediff of two versions of a file.]{Ediff of two versions of a file.\\
+{\it ediff-sas.ps.gz}
 \label{f.ediff}}
 \end{figure}
 
@@ -409,12 +414,16 @@ standard for \SAS\ programming that says all \stexttt{PROC} statements
 must use the \stexttt{DATA=datasetname} option.
 
 \begin{figure}
-\emptyfig
+\ifdraft
+  \emptyfig
+\else
+  \psfig{file=hilock-sas.ps.gz,angle=270,width=\textwidth}
+\fi
 \caption[Enforce company coding standards.]{Enforce company coding
 standards.  The standard here is that all \stexttt{PROC} statements must use
 the \stexttt{DATA=datasetname} option.  Lines that satisfy the standard
 turn green, lines that don't turn red.  Ambiguous ones turn yellow.\\
-{\it hilock-sas.gif}
+{\it hilock-sas.ps.gz}
 \label{f.hilock}}
 \end{figure}
 
@@ -516,17 +525,25 @@ provides several other optional schemes.
 
 \begin{figure}
 a: balanced parentheses\\
-\emptyfig
+\ifdraft
+  \emptyfig
+\else
+  \psfig{file=font-cor-s.ps.gz,angle=270,width=\textwidth}
+\fi
 
 b: unbalanced parentheses\\
-\emptyfig
+\ifdraft
+  \emptyfig
+\else
+  \psfig{file=font-incor-s.ps.gz,angle=270,width=\textwidth}
+\fi
 \caption[Syntactic highlighting and indentation of source code.]
 {We illustrate here with fonts and colors appropriate for a color display.
 On a black and white terminal we would use bold, underline, italic,
 and reverse-video.
 % On a color terminal we would use a selection of colors.
 \\
-{\it a: font-cor-s.jpg; b: font-incor-s.jpg}
+{\it a: font-cor-s.ps.gz; b: font-incor-s.ps.gz}
 \label{f.font}}
 \end{figure}
 
