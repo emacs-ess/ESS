@@ -3,11 +3,11 @@
 ;; Copyright (C) 1997 A.J. Rossini.
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
-;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
+;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 1 Sept 1997
-;; Modified: $Date: 1997/11/21 23:18:23 $
-;; Version: $Revision: 4.50 $
-;; RCS: $Id: essl-lsp.el,v 4.50 1997/11/21 23:18:23 rossini Exp $
+;; Modified: $Date: 1997/11/30 17:15:19 $
+;; Version: $Revision: 4.51 $
+;; RCS: $Id: essl-lsp.el,v 4.51 1997/11/30 17:15:19 rossini Exp $
 
 ;; This file is part of ESS.
 
