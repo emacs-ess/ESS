@@ -5,13 +5,13 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/14 23:13:27 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-r.el,v 1.6 1997/06/14 23:13:27 rossini Exp $
+;; Modified: $Date: 1997/06/15 08:17:37 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essd-r.el,v 1.7 1997/06/15 08:17:37 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
-;; This file is part of ess-mode.
+;; This file is part of ESS.
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -32,16 +32,20 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.7  1997/06/15 08:17:37  rossini
+;;: added autolaod of inferior-ess
+;;:
 ;;: Revision 1.6  1997/06/14 23:13:27  rossini
 ;;: finally setup.
 ;;:
 ;;:
 ;;;
 
+;;; Autoloads:
+
+(autoload 'inferior-ess "ess-inf" "Run an ESS process")
+
 ;;; Code:
-
-
-
 
 (defun ess-R-shortcut-pre-run-hook ()
   "Initialize variables."
