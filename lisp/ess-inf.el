@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/11 21:19:50 $
-;; Version: $Revision: 1.80 $
-;; RCS: $Id: ess-inf.el,v 1.80 1997/11/11 21:19:50 rossini Exp $
+;; Modified: $Date: 1997/11/12 19:43:06 $
+;; Version: $Revision: 1.81 $
+;; RCS: $Id: ess-inf.el,v 1.81 1997/11/12 19:43:06 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -36,11 +36,10 @@
 
 ;;*;; Requires
 (require 'ess-site)
-(require 'comint)
 
 ;; Byte-compiler, SHUT-UP!
-(eval-when-compile
-  (load "comint"))
+(eval-and-compile
+  (require 'comint))
 
 ;;*;; Autoloads
 (autoload 'ess-parse-errors "ess-mode" "(autoload)." t)
@@ -776,8 +775,10 @@ Waits for prompt after each line of input, so won't break on large texts."
       (if invisibly nil
 	;; Terrible kludge -- need to insert after all markers *except*`
 	;; the process mark
-	(let ((dokludge (eq (point) (marker-position (process-mark sprocess)))))
+	(let ((dokludge (eq (point)
+			    (marker-position (process-mark sprocess)))))
 	  (insert com)
+	  ;; Is this next line REALLY NEEDED?   (AJR).
 	  (setq comint-last-input-end (point-marker))
 	  (if dokludge (set-marker (process-mark sprocess) (point)))))
       (setq start-of-output (marker-position (process-mark sprocess)))
