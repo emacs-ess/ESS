@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.4 $)
+($Revision: 1.5 $)
 
 ESS: Using SAS
 ==============
@@ -87,7 +87,7 @@ To start up iESS[SAS] mode, use:
 Scenarios for use
 =================
 
-We present one scenario for using ESS to interact with S.
+We present one scenario for using ESS to interact with SAS.
 Contributions of examples of how you work with ESS are appreciated
 (especially since it helps us determine priorities on future
 enhancements)! (comments as to what should be happening are prefixed
@@ -112,7 +112,7 @@ by "##").
     C-x b myfile.sas
 
     ## Send regions, lines, or the entire file contents to SAS
-    ## (regions are most useful).  A higlighted region will normally
+    ## (regions are most useful).  A highlighted region will normally
     ## begin with the keywords 'DATA' or 'PROC' and end with the
     ## keyword 'RUN;'
     C-c C-r
