@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2004/03/23 09:11:16 $
-;; Version: $Revision: 1.25 $
-;; RCS: $Id: essd-els.el,v 1.25 2004/03/23 09:11:16 maechler Exp $
+;; Modified: $Date: 2004/05/17 15:14:15 $
+;; Version: $Revision: 1.26 $
+;; RCS: $Id: essd-els.el,v 1.26 2004/05/17 15:14:15 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -75,7 +75,8 @@
 
 
 (defun S+elsewhere (&optional proc-name)
-  "Call 'S-PLUS 3.x', the 'Real Thing'  from StatSci."
+  "Call 'S-PLUS 3.x', the 'Real Thing'  from StatSci.
+This command is obsolete; please use `ess-remote' instead."
   (interactive)
   (setq ess-customize-alist S+elsewhere-customize-alist)
   (ess-write-to-dribble-buffer
@@ -143,7 +144,8 @@ return new alist whose car is the new pair and cdr is ALIST.
 
 
 (defun ESS-elsewhere (&optional proc-name)
-  "Call an inferior process from ELSEWHERE."
+  "Call an inferior process from ELSEWHERE.
+This command is obsolete; please use `ess-remote' instead."
   (interactive)
   ;; Need to select a elsewhere-customize-alist
   (let ((elsewhere-customize-alist (ess-select-alist-dialect)))
@@ -175,24 +177,23 @@ buffer on the local computer."
 ;;; ess-remote is constructed by looking at ess-add-process and
 ;;; ESS-elsewhere and ess-multi and then simplifying.
 ;;;
-;;; Start a process on a remote computer by manual use of telnet,
-;;; rlogin, ssh, or some other protocol.  Start the ESS process ("S"
-;;; or "R" or "sas -stdio") in that buffer.  Once you are talking to S
-;;; or R or SAS, then execute `ess-remote' to make the current buffer
-;;; an inferior-ess buffer with the right behavior for the language
-;;; you are currently working with.  With S and R, use C-c C-n to send
-;;; lines over.  With SAS, use C-c i
-;;; `ess-eval-line-and-step-invisibly' to send lines over invisibly.
 
 (defun ess-remote (&optional proc-name)
   "Execute this command from within a buffer running a process.  It
 runs `ess-add-ess-process' to add the process to
 `ess-process-name-alist' and to make it the
-`ess-current-process-name'.  It then prompts the user for an ess
-language and sets the editing characteristics appropriately.  This
-command will normally be run in a telnet buffer connected to another
-computer, or a shell buffer running ssh to another computer, or in a
-shell or comint buffer on the local computer."
+`ess-current-process-name'.  It then prompts the user for an ESS
+language and sets the editing characteristics appropriately.  
+
+To use this command, first start a process on a remote computer by
+manual use of telnet, rlogin, ssh, or some other protocol.  Start the
+relevant program (\"S\" or \"R\" or \"sas -stdio\") in that buffer.  Once
+you are talking to S or R or SAS, then execute `ess-remote' to make
+the current buffer an inferior-ess buffer with the right behavior for
+the language you are currently working with.  With S and R, use C-c
+C-n to send lines over.  With SAS, use C-c i
+`ess-eval-line-and-step-invisibly' to send lines over invisibly."
+
   (interactive)
   (ess-add-ess-process)
   ;; Need to select a remote-customize-alist
