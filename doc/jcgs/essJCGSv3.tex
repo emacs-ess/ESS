@@ -130,7 +130,7 @@
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/10/03 15:04:36 $ - $Revision: 1.37 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/10/03 16:46:03 $ - $Revision: 1.38 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -307,7 +307,7 @@ keywords, red for comments, green for matching parens, and
 inverse-video purple for mismatched parens.  Emacs makes default
 choices of colors and ESS provides several other optional schemes.
 
-%Figure \ref{f.font} shows an example of font-locking a complicated S
+%Figure \ref{fig:font} shows an example of font-locking a complicated S
 %statement.  The top panel shows an \stexttt{if} statement with a long
 %expression in the condition and a multi-line consequence.  The keyword
 %\stexttt{if} is shown in purple, the string \stexttt{"deltat"} in
@@ -321,7 +321,7 @@ choices of colors and ESS provides several other optional schemes.
 %use bold, underline, italic, and reverse-video, rather than colors, to
 %distinguish the fonts.
 
-Figure \ref{f.font} shows a black-and-white example of font-locking a
+Figure \ref{fig:font} shows a black-and-white example of font-locking a
 complicated S statement.  The top panel shows an \stexttt{if}
 statement with a long expression in the condition and a multi-line
 consequence.  The keyword \stexttt{if} is shown in an underlined font,
@@ -344,7 +344,7 @@ with the paren-mismatch font, bright purple on a color terminal.
 %    color display.  On a black and white terminal we would use bold,
 %    underline, italic, and reverse-video.  On a color terminal we
 %    would use a selection of colors.}
-%  \label{f.font}
+%  \label{fig:font}
 %\end{figure}
 \begin{figure}[tbp]%h
   \ESSfig{%
@@ -357,7 +357,7 @@ with the paren-mismatch font, bright purple on a color terminal.
     a right brace, highlighted in an attention grabbing color.  In
     this black and white rendition, the mismatch is in reverse video.
     On a color display, the mismatch is in bright purple.  }
-  \label{f.font}
+  \label{fig:font}
 \end{figure}
 
 ESS uses the Emacs tools for reformatting code to match particular
@@ -370,7 +370,7 @@ the desired style.  Similar functions exist for XLispStat, though good
 Lisp programming style is better defined and hence more restrictive.
 
 Syntax highlighting can be used to enforce coding standards.  Figure
-\ref{f.hilock} illustrates a standard for \SAS\ programming, but
+\ref{fig:hilock} illustrates a standard for \SAS\ programming, but
 coding standards aids could be implemented for other languages such as
 R or \Splus.
 %that says all \stexttt{PROC} statements must use the
@@ -383,7 +383,7 @@ R or \Splus.
 %    \stexttt{DATA=datasetname} option.  Lines that satisfy the
 %    standard turn green, lines that don't turn red.
 %    Ambiguous ones turn yellow.}
-%  \label{f.hilock}
+%  \label{fig:hilock}
 %\end{figure}
 
 \begin{figure}[tbp]
@@ -395,7 +395,7 @@ R or \Splus.
     lines that don't are displayed in inverse video (red on a color
     screen).  Ambiguous ones are displayed in a lighter shade of
     inverse video (yellow on a color screen).}
-  \label{f.hilock}
+  \label{fig:hilock}
 \end{figure}
 
 \paragraph{Help: Display, Navigation and Editing.}
@@ -434,7 +434,7 @@ Windows versions of SAS, Stata, and XLispStat.
 Emacs has historically referred to processes under its control as
 \textit{inferior}, accounting for the name inferior ESS
 (\stexttt{iESS}) to denote the mode for interfacing with the
-statistical package.  Figure~\ref{f.ess-demo} shows the S language
+statistical package.  Figure~\ref{fig:ess-demo} shows the S language
 program \stexttt{ess-demo.s} in the top buffer in \stexttt{ESS[S]}
 mode and the executing R process in the bottom buffer \stexttt{*R*}.
 The \stexttt{iESS} major mode of the \stexttt{*R*} buffer is crafted
@@ -451,7 +451,7 @@ available.
 %    the line is sent to the \stexttt{*R*} buffer for
 %    execution.  The output of the package goes directly to the
 %    editable \stexttt{*R*} buffer.}
-%  \label{f.ess-demo}
+%  \label{fig:ess-demo}
 %\end{figure}
 
 \begin{figure}[tb]
@@ -461,7 +461,7 @@ available.
     single key sequence, the line is sent to the \stexttt{*R*} buffer
     for execution.  The output of the package goes directly to the
     editable \stexttt{*R*} buffer.}
-  \label{f.ess-demo}
+  \label{fig:ess-demo}
 \end{figure}
 
 \paragraph{Source-level Debugging.}
@@ -787,29 +787,33 @@ These source-code control systems facilitate documenting and tracking
 edits and changes to a file.  More importantly, they allow for
 branching and merging of versions so that material present in an older
 version of the file can be recovered and inserted into a newer version
-in a fairly easy manner.
+in a fairly easy manner.  This can be important in tracing down the
+actual source file used to perform a particular prior data analysis.
 
 Comparison of files, two or three drafts of a paper for example, is
 simplified by \stexttt{ediff}.  An example is shown in Figure
-\ref{f.ediff}.  The lines that are similar are highlighted in the two
+\ref{fig:ediff}.  The lines that are similar are highlighted in the two
 buffers, one for each file, and the specific words that mismatch are
 highlighted in a contrasting color.  \stexttt{ediff} has many tools
 for working with the differences in files and in entire directories.
 When combined with the patch utility or a source-code control system,
 it provides the user with the ability to insert, delete or modify only
-the differing portions of text files.
+the differing portions of text files.  This can be critical for the
+data analyst, where 2 different versions of the same data analysis
+each contain sections which are accurate, but need to be appropriately
+merged to document the final correct analysis.
 
 %\begin{figure}[tbp]
 %  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas}}
 %  \caption{Ediff of two versions of a file.}
-%  \label{f.ediff}
+%  \label{fig:ediff}
 %\end{figure}
 \begin{figure}[tbp]
   \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas-bw}}
   \caption{Ediff of two versions of a file.  Similar lines in the two files
 are detected.  The entire line is highlighted in each file and the differences
 are highlighted in a contrasting color.}
-  \label{f.ediff}
+  \label{fig:ediff}
 \end{figure}
 
 Emacs has many other important features.  Emacs provides file-manager
@@ -983,7 +987,6 @@ implementation as well as examples of its use.  Start with the file
 introduction.  Complete documentation is in
 \stexttt{doc/html/ess.html} or by the \stexttt{info} system with\\
 \stexttt{C-h i C-s ESS RET RET}.
-
 
 \end{document}
 
