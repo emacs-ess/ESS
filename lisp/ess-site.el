@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/09/08 12:35:41 $
-;; Version: $Revision: 1.44 $
-;; RCS: $Id: ess-site.el,v 1.44 1997/09/08 12:35:41 rossini Exp $
+;; Modified: $Date: 1997/09/09 14:40:20 $
+;; Version: $Revision: 1.45 $
+;; RCS: $Id: ess-site.el,v 1.45 1997/09/09 14:40:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -130,10 +130,10 @@
 
 ;; (1.5) Require the needed dialects for your setup.
 
-(require 'essd-s+3)
+;;(require 'essd-s+3)
 (require 'essd-r)
 (require 'essd-xls)
-(require 'essd-sas)
+;;(require 'essd-sas)
 ;;(require 'essd-s3)  ;; You might not have this
 ;;(require 'essd-s4)  ;; or this one...
 
