@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/08/28 13:02:51 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: ess-help.el,v 1.6 1997/08/28 13:02:51 rossini Exp $
+;; Modified: $Date: 1997/09/03 16:30:44 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: ess-help.el,v 1.7 1997/09/03 16:30:44 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -352,7 +352,7 @@ Keystroke    Section
   (require 'reporter)
   (let ((reporter-prompt-for-summary-p 't))
     (reporter-submit-bug-report
-     "rossini@stat.sc.edu"
+     "ess-bugs@stat.math.ethz.ch"
      (concat "ess-mode " ess-version)
      (list 'ess-program-name
 	   'ess-language
@@ -361,7 +361,10 @@ Keystroke    Section
 	   'ess-ask-about-transfile
 	   'ess-directory
 	   'ess-keep-dump-files
-	   'ess-source-directory))))
+	   'ess-source-directory)
+     nil
+     (lambda () (goto-char (point-max)) (insert-buffer "*ESS*"))
+	   )))
 
 
 ;;; Provide
