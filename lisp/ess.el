@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/06/18 18:31:44 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: ess.el,v 1.6 1997/06/18 18:31:44 rossini Exp $
+;; Modified: $Date: 1997/06/18 18:49:33 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: ess.el,v 1.7 1997/06/18 18:49:33 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -79,8 +79,8 @@
 ;;; allows you to dump and load S objects into and from external
 ;;; files, and to display help on functions.  It also provides
 ;;; name completion while you do these.  For more detailed
-;;; information see the documentation strings for S,
-;;; inferior-S-mode, S-mode, and comint-mode.  There are also
+;;; information see the documentation strings for inferior-ess,
+;;; inferior-ess-mode, ess-mode, and comint-mode.  There are also
 ;;; many variables and hooks available for customizing (see
 ;;; the variables below that have document strings that start
 ;;; with an "*").
@@ -97,7 +97,7 @@
 ;;;   the indenting code.
 ;;; Thanks also to maechler@stat.math.ethz.ch (Martin Maechler) for
 ;;;   suggestions and bug fixes.
-;;; S-eval-line-and-next-line is based on a function by Rod Ball 
+;;; ess-eval-line-and-next-line is based on a function by Rod Ball 
 ;;;   (rod@marcam.dsir.govt.nz)
 ;;; Also thanks from David Smith to the previous authors for all their
 ;;; help and suggestions.
@@ -111,6 +111,10 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.7  1997/06/18 18:49:33  rossini
+;; edited a bit more
+;; .
+;;
 ;; Revision 1.6  1997/06/18 18:31:44  rossini
 ;; incremented version to b7.
 ;;
@@ -323,7 +327,7 @@ incorrectly, the right things will probably still happen, however.")
 (defvar ess-keep-dump-files 'check
   "*Variable controlling whether to delete dump files after a successful load.
 If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
-to delete, except for files created with S-dump-object-into-edit-buffer.
+to delete, except for files created with ess-dump-object-into-edit-buffer.
 Anything else, never delete.  This variable only affects the behaviour
 of ess-load-file.  Dump files are never deleted if an error occurs
 during the load. ")
@@ -397,7 +401,7 @@ regardless of where in the line point is when the TAB command is used.")
 
 (defvar ess-continued-brace-offset 0
   "*Extra indent for substatements that start with open-braces.
-This is in addition to S-continued-statement-offset.")
+This is in addition to ess-continued-statement-offset.")
 
 (defvar ess-arg-function-offset 2
   "*Extra indent for internal substatements of function `foo' that called
@@ -562,7 +566,7 @@ by ess-function-template.")
 ;;; is considered an ess source file.  The function ess-load-file uses this to
 ;;; determine defaults.
 
-(defvar ess-error-buffer-name "*S-errors*"
+(defvar ess-error-buffer-name "*ESS-errors*"
   "Name of buffer to keep error messages in.")
 
 ;;*;; Font-lock support
@@ -572,7 +576,7 @@ by ess-function-template.")
    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" . font-lock-type-face)
    ("\\<\\(library\\|attach\\|detach\\|source\\)\\>" . font-lock-reference-face)
    "\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>")
- "Font-lock patterns used in S-mode bufffers.")
+ "Font-lock patterns used in ess-mode bufffers.")
 
 
  ; ess-inf: variables for inferior-ess.
@@ -633,7 +637,7 @@ isn't implemented yet.")
 ;;; has no effect after S.el has been loaded.
 
 (defvar inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?"
-  "Regular expression used by S-mode to detect the primary prompt.
+  "Regular expression used by ess-mode to detect the primary prompt.
 Do not anchor to bol with `^'.")
 
 (make-variable-buffer-local 'inferior-ess-primary-prompt)
@@ -894,12 +898,11 @@ browse-url to find the location")
 ;;; (Other commands can go here too, see an Emacs manual.)
 ;;; For a file you also load, you will want a leading # (comment to S)
 ;;; Emacs will downcase the name of the mode, e.g., S, so we must provide
-;;; s-mode in lower case too.  That is, "#-*-ess-*-" invokes s-mode and 
-;;; not ess-mode.
-(fset 's-mode 'ess-mode)
-(fset 'r-mode 'ess-mode)
-(fset 'S-mode 'ess-mode)
-(fset 'r-mode 'ess-mode)
+;;; s-mode in lower case too.  That is, "#-*- S-*-" invokes s-mode and 
+;;; not S-mode.
+(fset 's-mode 'S-mode)
+(fset 'r-mode 'R-mode)
+
 
 ;;; This syntax table is required by ess-mode.el, ess-inf.el and
 ;;; ess-trans.el, so we provide it here.
@@ -931,14 +934,20 @@ browse-url to find the location")
 
 (autoload 'ess-transcript-mode "ess-trans"
   "Major mode for editing S transcript files" t)
-(fset 's-transcript-mode 'ess-transcript-mode)
 
-(autoload 'ess-display-help-on-object "ess-help" "Display help on an S object" t)
+(fset 's-transcript-mode 'ess-transcript-mode)
+(fset 'S-transcript-mode 'ess-transcript-mode)
+
+(autoload 'ess-display-help-on-object "ess-help"
+  "Display help on an S object" t)
+
 (defalias 'ess-help 'ess-display-help-on-object)
 
-(autoload 'ess-goto-info "ess-help" "Jump to the relevant section in the ess-mode manual" t)
+(autoload 'ess-goto-info "ess-help"
+  "Jump to the relevant section in the ess-mode manual" t)
 
-(autoload 'ess-submit-bug-report "ess-help" "Submit a bug report on the ess-mode package" t)
+(autoload 'ess-submit-bug-report "ess-help"
+  "Submit a bug report on the ess-mode package" t)
 
  ; Set up for menus, if necessary
 ;;;
