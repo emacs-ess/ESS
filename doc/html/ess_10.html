@@ -1,0 +1,194 @@
+<HTML>
+<HEAD>
+<!-- Created by texi2html 1.56k from ess.texi on 1 August 2002 -->
+
+<TITLE>ESS -- Emacs Speaks Statistics - Other features of ESS</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_9.html">previous</A>, <A HREF="ess_11.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC62" HREF="ess_toc.html#TOC62">Other features of ESS</A></H1>
+
+<P>
+ESS has a few miscellaneous features, which didn't fit anywhere else.
+
+
+
+<UL>
+<LI><A HREF="ess_10.html#SEC63">Highlighting</A>: Syntactic highlighting of buffers
+<LI><A HREF="ess_10.html#SEC64">Graphics</A>: Using graphics with ESS
+<LI><A HREF="ess_10.html#SEC67">Object Completion</A>
+</UL>
+
+
+
+<H2><A NAME="SEC63" HREF="ess_toc.html#TOC63">Syntactic highlighting of buffers</A></H2>
+
+<P>
+ESS provides Font-Lock (see section `Using Multiple Typefaces' in <CITE>The Gnu Emacs Reference Manual</CITE>) patterns for Inferior <B>S</B> Mode, S
+Mode, and <B>S</B> Transcript Mode buffers.
+<A NAME="IDX211"></A>
+<A NAME="IDX212"></A>
+
+
+<P>
+To activate the highlighting, you need to turn on Font Lock mode in the
+appropriate buffers.  This can be done on a per-buffer basis with
+<KBD>M-x font-lock-mode</KBD>, or may be done by adding
+<CODE>turn-on-font-lock</CODE> to <CODE>inferior-ess-mode-hook</CODE>,
+<CODE>ess-mode-hook</CODE> and <CODE>ess-transcript-mode-hook</CODE>
+(see section <A HREF="ess_12.html#SEC78">Customizing ESS with hooks</A>).  Your systems administrator may have done this for you
+in <TT>`ess-site.el'</TT> (see section <A HREF="ess_12.html#SEC72">Customizing ESS</A>).
+
+
+<P>
+The font-lock patterns are defined in three variables, which you may
+modify if desired:
+
+
+<P>
+<DL>
+<DT><U>Variable:</U> <B>ess-inf-font-lock-keywords</B>
+<DD><A NAME="IDX213"></A>
+Font-lock patterns for Inferior <B>ESS</B> Mode.  The default value
+highlights prompts, inputs, assignments, output messages, vector and
+matrix labels, and literals such as <SAMP>`NA'</SAMP> and <CODE>TRUE</CODE>.
+</DL>
+
+
+<P>
+<DL>
+<DT><U>Variable:</U> <B>ESS-font-lock-keywords</B>
+<DD><A NAME="IDX214"></A>
+Font-lock patterns for <B>ESS</B> programming mode.  The default value
+highlights function names, literals, assignments, source functions and
+reserved words.
+</DL>
+
+
+<P>
+<DL>
+<DT><U>Variable:</U> <B>ess-trans-font-lock-keywords</B>
+<DD><A NAME="IDX215"></A>
+Font-lock patterns for <B>ESS</B> Transcript Mode.  The default value
+highlights the same stuff as in Inferior <B>ESS</B> Mode.
+</DL>
+
+
+
+
+<H2><A NAME="SEC64" HREF="ess_toc.html#TOC64">Using graphics with ESS</A></H2>
+
+<P>
+<A NAME="IDX216"></A>
+One of the main features of the <CODE>S</CODE> package is its ability to
+generate high-resolution graphics plots, and ESS provides a number of
+features for dealing with such plots.
+
+
+
+<UL>
+<LI><A HREF="ess_10.html#SEC65">printer</A>: The printer() graphics driver
+<LI><A HREF="ess_10.html#SEC66">X11</A>: The X11() (and other X-windows based) driver
+</UL>
+
+
+
+<H3><A NAME="SEC65" HREF="ess_toc.html#TOC65">Using ESS with the <CODE>printer()</CODE> driver</A></H3>
+
+<P>
+This is the simplest (and least desirable) method of using graphics
+within ESS.  S's <CODE>printer()</CODE> device driver produces crude character
+based plots which can be contained within the <B>ESS</B> process buffer
+itself.  To start using character graphics, issue the <B>S</B> command
+
+<PRE>
+printer(width=79)
+</PRE>
+
+<P>
+<A NAME="IDX217"></A>
+(the <CODE>width=79</CODE> argument prevents Emacs line-wrapping at column
+80 on an 80-column terminal.  Use a different value for a terminal with
+a different number of columns.) Plotting commands do not generate
+graphics immediately, but are stored until the <CODE>show()</CODE> command
+is issued, which displays the current figure.
+
+
+
+
+<H3><A NAME="SEC66" HREF="ess_toc.html#TOC66">Using ESS with windowing devices</A></H3>
+
+<P>
+<A NAME="IDX218"></A>
+Of course, the ideal way to use graphics with ESS is to use a windowing
+system.  Under X windows, this requires that the DISPLAY environment
+variable be appropriately set, which may not always be the case within
+your Emacs process.  ESS provides a facility for setting the value of
+DISPLAY before the <B>ESS</B> process is started if the variable
+<CODE>ess-ask-about-display</CODE>
+<A NAME="IDX219"></A>
+is non-<CODE>nil</CODE>.  See section <A HREF="ess_12.html#SEC72">Customizing ESS</A>, for details of this variable,
+and see section <A HREF="ess_3.html#SEC12">Starting the <B>ESS</B> process</A> for information on how to set the value of
+DISPLAY when beginning an <B>S</B> session.
+
+
+
+
+<H2><A NAME="SEC67" HREF="ess_toc.html#TOC67">Object Completion</A></H2>
+
+<P>
+If you are running S-PLUS or R, you might consider installing the
+database files.  From within (X)Emacs, "C-x d" to the directory
+containing ESS.  Now:
+
+
+<P>
+<CODE>M-x S+3</CODE>
+
+
+<P>
+(get S-PLUS running.  once you have reached the SPLUS 3.x prompt, do:)
+
+
+<P>
+<CODE>M-x ess-create-object-name-db</CODE>
+
+
+<P>
+(this will create the file: ess-s+3-namedb.el; if it isn't in the ESS
+directory, move it there).
+
+
+<P>
+Then, completions will be autoloaded and will not be regenerated for
+every session.
+
+
+<P>
+For R:
+
+
+<P>
+<CODE>M-x R</CODE>
+
+
+<P>
+(get R running.  once you have reached the R prompt, do:)
+
+
+<P>
+<CODE>M-x ess-create-object-name-db</CODE>
+
+
+<P>
+(this will create the file: ess-r-namedb.el; if it isn't in the ESS
+directory, move it there).
+
+
+<P><HR><P>
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_9.html">previous</A>, <A HREF="ess_11.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+</BODY>
+</HTML>

@@ -1,0 +1,1135 @@
+<HTML>
+<HEAD>
+<!-- Created by texi2html 1.56k from readme.texi on 1 August 2002 -->
+
+<TITLE>ESS -- Emacs Speaks Statistics</TITLE>
+</HEAD>
+<BODY>
+<H1>ESS -- Emacs Speaks Statistics</H1>
+<P>
+<P><HR><P>
+
+
+
+<H1><A NAME="SEC1" HREF="readme_toc.html#TOC1">General Information: README</A></H1>
+<P>
+<A NAME="IDX1"></A>
+
+
+<P>
+($Revision: 1.1 $, for ESS version 
+5.1.22
+
+
+<P>
+)
+
+
+<P>
+This is the README file for the distribution of ESS version 
+5.1.22
+
+
+<P>
+, the gamma series we are using on the way to producing 5.2 (the next
+stable distribution).  ESS is an Emacs-Lisp interface for interactive
+statistical programming and data analysis.  Languages supported include:
+S dialects (S 3/4, S-PLUS 3/4/5/6, and R), LispStat dialects (XLispStat,
+ViSta), and SAS.  Stata and SPSS dialect (SPSS, PSPP) support is being
+examined for possible future implementation (a preliminary Stata mode is
+distributed).
+
+
+<P>
+Installation help can be found in sections for Unix Installation or
+Windows Installion
+
+
+<P>
+ESS grew out of the desire for bug fixes and extensions to S-mode-4.8.
+In particular, XEmacs support as well as extensions to incorporate R
+were desired.  In addition, with new modes being developed for R,
+Stata, and SAS, it was felt that providing for a unifying framework
+would eliminate differences in the user interface, as well as to
+provide for faster development of production tools and statistical
+analysis.  5.1.x has, for its guts, the basic framework from S-mode.
+However, it has been cleaned, streamlined, brought closer to
+conformance as a standard GNU Emacs package, and redesigned for
+modularity and reuse.
+
+
+<P>
+The current development team is led by A.J. (Tony) Rossini
+(<A HREF="mailto:rossini@biostat.washington.edu">rossini@biostat.washington.edu</A>), who did the initial port to
+XEmacs and has been the primary coder.  Martin Maechler
+(<A HREF="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</A>) and Kurt Hornik
+(<A HREF="mailto:hornik@ci.tuwien.ac.at">hornik@ci.tuwien.ac.at</A>) have assisted with S-PLUS, S4, R, and
+XLispStat sub-modes, and Richard M. Heiberger 
+(<A HREF="mailto:rmh@surfer.sbm.temple.edu">rmh@surfer.sbm.temple.edu</A>) has assisted with S-PLUS (under MS
+Windows and remote access) and S4 development.  Richard and Rodney Sparapani 
+(<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>) have done much of the work for implementing the 
+SAS sub-mode.  Douglas Bates (<A HREF="mailto:bates@stat.wisc.edu">bates@stat.wisc.edu</A>) contributed the 
+initial S4 mode.
+
+
+<P>
+We are grateful to David M. Smith, the previous developer (for S-mode
+3.x and 4.x), as well as to the initial developers of S-mode, Doug
+Bates, Ed Kademan and Frank Ritter.
+
+
+<P>
+In addition, some of the code has been and will be borrowed from Tom
+Cook (from his excellent SAS mode) and Thomas Lumley (preliminary
+Stata mode), gratefully (from us) and with permission (from them).
+
+
+<P>
+The name is <B>ESS</B>.  Not ESS-mode.
+
+
+
+
+<H2><A NAME="SEC2" HREF="readme_toc.html#TOC2">License</A></H2>
+
+<P>
+ESS is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2, or (at your option) any later
+version.
+
+
+<P>
+ESS is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+in the file COPYING in the same directory as this file for more
+details.
+
+
+
+
+<H2><A NAME="SEC3" HREF="readme_toc.html#TOC3">New Features</A></H2>
+
+<P>
+Changes/New Features in 5.1.22:
+
+<UL>
+<LI>Now that info documentation is available, the
+
+README.* files are no longer supported.  However, they
+are still distributed for what it's worth.
+<LI>ESS is now an XEmacs package!  See
+
+<A HREF="http://www.xemacs.org/Install/index.html">XEmacs Installation HOWTO</A> 
+for details (specifically, items 10-15).
+<LI>ESS[SAS]: more user-friendly enhancements for remote
+
+SAS batch jobs with Kermit file transfers (LOG and OUTPUT
+function key features now supported).  Multiple shells
+now supported so you can run SAS on different computers
+from different buffers by setting the buffer-local variable
+ess-sas-shell-buffer to unique buffer names.
+<LI>Major re-vamping of Makefile/Makeconf.
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.21:
+
+<UL>
+<LI>ESS[SAS]: info documentation now available!, see
+
+ESS-&#62;Help for Statistical Packages-&#62;Help for SAS; F12 opens
+GSASFILE nearest point for viewing either within emacs, when
+available, or via an external viewer; more syntax highlighting
+keywords; more enhancements for remote SAS batch jobs with 
+Kermit; new framework for remote SAS interactive jobs, see
+ess-remote
+<LI>ESS[S]: info documentation now available!, see
+
+ESS-&#62;Help for Statistical Packages-&#62;Help for the S family
+<LI>Makefile: tag now independent of rel; info files
+
+made by doc/Makefile and installed in new info sub-directory
+</UL>
+
+<P>
+Changes/New Features in 5.1.20:
+
+<UL>
+<LI>New `options()$STERM' in the S dialects (S, S-Plus, R).
+
+The S program can determine the environment in which it is
+currently running.  ESS sets the option to `iESS' or `ddeESS'
+when it starts an S language process.  We recommend other specific
+values for S language processes that ESS does not start.
+<LI>New `ess-mouse-me' function, assigned to S-mouse-3 by default.
+
+User may click on a word or region and then choose from the
+menu to display the item, or a summary, or a plot, etc.
+This feature is still under development.
+<LI>GNU Emacs 21.1 is now supported (fixed for S dialects, SAS &#38; BUGS),
+
+(some from Stephen Eglen).
+<LI>XEmacs 21.x is now supported (fixed w32-using-nt bug)
+
+<LI>XEmacs on Win (NT) is better supported.
+
+<LI>Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
+
+<LI>should now work even when imenu is not available (for old Xemacsen).
+
+<LI>ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your
+
+function-key definitions, if specified; you can specify your SAS
+library definitions outside of autoexec.sas for ess-sas-data-view
+with SAS code placed in the variable ess-sas-data-view-libname, 
+also the dataset name is defaulted to the nearest permanent dataset 
+to point; Speedbar support now works for permanent datasets, please 
+ignore first./last.; new font-locking is now the default with more 
+improvements for font-locking PROCs, macro statements, * ; and %* ; 
+comments; you can toggle sas-log-mode with F10 which will font-lock 
+your .log (if it isn't too big); submit remote .sas files accessed
+with ange-ftp, EFS or Tramp (Kermit is experimental) by setting 
+ess-sas-submit-method to 'sh; ess-sas-submit-command and 
+ess-sas-submit-command-options are buffer-local so you can have
+local file variable sections at the end of your .sas files to 
+request different executables or specify special options and the 
+local file variables are re-read at submit instead of only at file
+open so that if you make a change it is picked up immediately;
+<LI>ESS[BUGS]: font-lock with `in' fixed.
+
+<LI>for STATA: font-lock bug fixed.
+
+<LI>for Rd mode: C-c C-v and `switch-process' in menu.
+
+further, C-c C-f prefix (Rd-font) for inserting or surrounding a word
+by things such as \code{.}, \code{\link{.}}, \emph{.} etc.
+<LI>new functions (ess-directory-function) and (ess-narrow-to-defun)
+
+ess-directory &#60;-&#62; default-directory logic (Jeff Mincy).
+<LI>Re-organized Makefile and fixed a few bugs.
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.19:
+
+<UL>
+<LI>S+6 now supported (Tony Rossini (Unix) and Rich Heiberger (Windows))
+
+<LI>New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
+
+Templates assist you in writing .bug and .cmd code (.cmd and .log
+are replaced by .bmd and .bog to avoid emacs extension collisions).
+Substitution" parameters facilitate "automagic" generation of
+data...in" and "init...in" filenames, "const N=" from your data
+file and "monitor()/stats()" commands.  Activated by pressing F12.
+<LI>Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
+
+<LI>You can change between PC and Unix, local and global SAS function-key
+
+definitions interactively (Rich Heiberger)
+<LI>C-Submit a highlighted region to SAS batch (Rodney Sparapani)
+
+<LI>New and improved SAS syntax highlighting (Rodney Sparapani)
+
+To get the new functionality, set ess-sas-run-make-regexp to nil.
+Also available in .log files via F10.
+<LI>Open a permanent SAS dataset for viewing via F9 (Rodney Sparapani)
+
+You must have the library defined in autoexec.sas for it to work.
+<LI>User-friendly defaults for `sas-program', `ess-sas-batch-pre-command'
+
+and `ess-sas-batch-post-command' as well Customize support for these
+and other ESS[SAS] variables (Rodney Sparapani)
+<LI>`ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
+
+<LI>Emacs/XEmacs, Unix/Windows issues collectively handled in ess-emcs.el
+
+<LI>defadvice solves problem of missing *ESS* (thanks to Jeff Mincy)
+
+<LI>Improved manual a bit by including things that were only in `README'.
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.18:
+
+<UL>
+<LI>New `ess-smart-underscore' function, now assigned to "_" by default.
+
+Inserts `ess-S-assign' (customizable " &#60;- "), unless inside string
+and comments where plain "_" is used instead. (MM)
+<LI>Fixes for longstanding interactive SAS breakage (RMH)
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.17:
+
+<UL>
+<LI>Documentation for Windows Installation (Rich Heiberger
+
+(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>))
+<LI>removal of ess-vars, finalization of customize support (in the
+
+sense that there is no more use of ess-vars, but that we need to
+fix ess-cust) (AJ Rossini (<A HREF="mailto:rossini@u.washington.edu">rossini@u.washington.edu</A>))
+<LI>Many small (and large) fixes/contributions (MMaechler,
+
+(<A HREF="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</A>)).
+<LI>addition of the "S-equal" variable and provide M-x ess-add-MM-keys
+
+a way to remap "_" to `ess-S-assign', typically " &#60;- ", but
+customizable. (MMaechler, (<A HREF="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</A>)).
+</UL>
+
+<P>
+Changes/New Features in 5.1.16:
+
+<UL>
+<LI>BUG FIXES
+
+<LI>Better SAS support
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.15:
+
+<UL>
+<LI>BUG FIXES
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.14:
+
+<UL>
+<LI>Yet more fixes to SAS mode, (Rich Heiberger
+
+(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>) and Rodney Sparapani
+<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>)).
+<LI>Customize support (for most Emacsen which support it) (AJRossini,
+
+(<A HREF="mailto:rossini@biostat.washington.edu">rossini@biostat.washington.edu</A>)
+<LI>ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini,
+
+<A HREF="mailto:rossini@biostat.washington.edu">rossini@biostat.washington.edu</A>)
+</UL>
+
+<P>
+Changes/New Features in 5.1.13:
+
+<UL>
+<LI>Version numbering finally all depending on the ./VERSION file,
+
+thanks to Martin Maechler.
+<LI>Yet more fixes to SAS mode, thanks to Rich Heiberger
+
+(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>).
+</UL>
+
+<P>
+Changes/New Features in 5.1.12:
+
+<UL>
+<LI>Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
+
+Chuck Taylor, and others.
+<LI>More fixes to SAS mode, thanks to Rodney Sparapani
+
+(<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>) and Rich Heiberger
+(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>).
+</UL>
+
+<P>
+Changes/New Features in 5.1.11:
+
+<UL>
+<LI>More fixes to Stata mode, thanks to Brendan Halpin
+
+(<A HREF="mailto:brendan@essex.ac.uk">brendan@essex.ac.uk</A>)
+<LI>fixed bugs in ESS-elsewhere, thanks to many testers
+
+<LI>README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
+
+to David Brahm (<A HREF="mailto:brahm@alum.mit.edu">brahm@alum.mit.edu</A>).
+<LI>Fixes to SAS mode, thanks to Rodney Sparapani
+
+(<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>)
+</UL>
+
+<P>
+Changes/New Features in 5.1.10:
+
+<UL>
+<LI>More fixes to Stata mode
+
+<LI>primitive generic version of ESS-elsewhere
+
+<LI>Small fixes to SAS/Stata.
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.9:
+
+<UL>
+<LI>Stata mode works
+
+<LI>Literate Data Analysis using Noweb works
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.8:
+
+<UL>
+<LI>Bug fixes
+
+<LI>R documentation mode defaults changed
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.2:
+
+<UL>
+<LI>able to use inferior iESS mode to
+
+communicate directly with a running S-Plus 4.x process using the
+Microsoft DDE protocol.  We use the familiar (from Unix ESS) C-c C-n
+and related key sequences to send lines from the S-mode file to the
+inferior S process.  We continue to edit S input files in ESS[S] mode
+and transcripts of previous S sessions in ESS Transcript mode.  All
+three modes know the S language, syntax, and indentation patterns and
+provide the syntactic highlighting that eases the programming tasks.
+</UL>
+
+
+
+<H2><A NAME="SEC4" HREF="readme_toc.html#TOC4">Current Features</A></H2>
+
+
+<UL>
+<LI>Languages Supported:
+
+
+<UL>
+<LI>S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
+
+<LI>SAS
+
+<LI>BUGS
+
+<LI>Stata
+
+<LI>XLispStat including Arc and ViSta
+
+</UL>
+
+<LI>Editing source code (S family, SAS, BUGS, XLispStat)
+
+
+<UL>
+<LI>Syntactic indentation and highlighting of source code
+
+<LI>Partial evaluation of code
+
+<LI>Loading and error-checking of code
+
+<LI>Source code revision maintenance
+
+<LI>Batch execution (SAS, BUGS)
+
+</UL>
+
+<LI>Interacting with the process (S family, SAS, XLispStat)
+
+
+<UL>
+<LI>Command-line editing
+
+<LI>Searchable Command history
+
+<LI>Command-line completion of S family object names and file names
+
+<LI>Quick access to object lists and search lists
+
+<LI>Transcript recording
+
+<LI>Interface to the help system
+
+</UL>
+
+<LI>Transcript manipulation (S family, XLispStat)
+
+
+<UL>
+<LI>Recording and saving transcript files
+
+<LI>Manipulating and editing saved transcripts
+
+<LI>Re-evaluating commands from transcript files
+
+</UL>
+
+<LI>Help File Editing (R)
+
+
+<UL>
+<LI>Syntactic indentation and highlighting of source code.
+
+<LI>Sending Examples to running ESS process.
+
+<LI>Previewing
+
+</UL>
+
+</UL>
+
+
+
+<H2><A NAME="SEC5" HREF="readme_toc.html#TOC5">Stability</A></H2>
+
+<P>
+Versions 5.1.x are meant to be gamma-level releases.  While some bugs
+are fixed, others may have been introduced, especially with
+regards to new features.  See the file doc/TODO for details.  Bug
+reports are solicited; see the Bugs Section below.  Patches or
+suggested coding fixes with bug reports are much appreciated!
+
+
+
+
+<H2><A NAME="SEC6" HREF="readme_toc.html#TOC6">Requirements</A></H2>
+
+<P>
+ESS version 5.1.n (n &#62;= 2) works best with either GNU Emacs version 20.3 or higher, or
+XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
+
+
+
+<UL>
+<LI>S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
+
+<LI>R versions &#62;=0.49
+
+<LI>S4
+
+<LI>SAS 6.x, 7.x, 8.x
+
+<LI>BUGS 0.5, 0.603
+
+<LI>Stata &#62;=6.0
+
+<LI>XLispStat versions &#62;=3.50
+
+</UL>
+
+<P>
+on the following platforms
+
+
+
+<UL>
+<LI>Solaris/SunOS (all)
+
+<LI>SGI (all)
+
+<LI>Linux (S4, S-PLUS 5.x, R, XLispStat, Stata 6.0)
+
+<LI>Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
+
+<LI>Apple Mac OS (SAS for OS 9 and X11 R for OS X)
+
+</UL>
+
+<P>
+with the following versions of emacs
+
+
+
+<UL>
+<LI>GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
+
+<LI>XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
+
+<LI>XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34<A NAME="DOCF1" HREF="readme_foot.html#FOOT1">(1)</A>
+</UL>
+
+
+
+<H2><A NAME="SEC7" HREF="readme_toc.html#TOC7">Getting the Latest Version</A></H2>
+
+<P>
+The latest stable version of ESS is always available on the web at:
+<A HREF="http://software.biostat.washington.edu/ess/">ESS web page</A> or
+<A HREF="http://lib.stat.cmu.edu/general/ESS/">StatLib</A>
+
+
+<P>
+The latest (no more than 24 hours behind the developers) version of
+ESS can also be retrieved using anonymous cvs:
+
+
+<P>
+You need a cvs client (that works with your firewall, if any)
+
+
+<P>
+the repository name is
+   <CODE>:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs</CODE>
+
+
+<P>
+using a command-line cvs client (i.e. on Unix or DOS), first type:
+   <CODE>cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login</CODE>
+
+
+<P>
+password is anoncvs
+
+
+<P>
+then type:
+   <CODE>cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess</CODE>
+
+
+
+
+<H2><A NAME="SEC8" HREF="readme_toc.html#TOC8">Installation (from tar file)</A></H2>
+
+<P>
+We now discuss installation, which might happen under Unix or
+Microsoft Windows.  First, we discuss Unix installation.  
+See section <A HREF="readme.html#SEC9">Unix installation</A>.
+
+
+<P>
+For Microsoft Windows Installation please skip to the
+See section <A HREF="readme.html#SEC10">Microsoft Windows installation</A>.
+
+
+
+
+<H2><A NAME="SEC9" HREF="readme_toc.html#TOC9">Unix installation</A></H2>
+
+
+<OL>
+
+<LI>
+
+cd to a directory where you want to install ESS, creating it if necessary.
+This directory will be referred to below as ESSDIR.  
+
+<LI>
+
+Retrieve the latest version from 
+<A HREF="http://software.biostat.washington.edu/ess/ess-VERSION.tar.gz">gzipped tar file </A> 
+to ESSDIR.
+
+<LI>
+
+Decompress/unarchive the files from the disribution.
+
+<PRE>
+gunzip ess-VERSION.tar.gz
+tar xvf ess-VERSION.tar
+</PRE>
+
+
+<PRE>
+(or: <CODE>gunzip &#60; ess-VERSION.tar.gz | tar xvf -</CODE> ).
+(or using GNU tar:  <CODE>tar zxvf ess-VERSION.tar.gz</CODE>).
+</PRE>
+
+The <CODE>tar</CODE> command will create the subdirectory ess-VERSION and unarchive
+the files there.
+
+If you are using GNU Emacs 19.29, decompress/unarchive
+<TT>`ESSDIR/ess-VERSION/lisp/19.29.tar.gz'</TT>, 
+read <TT>`ESSDIR/ess-VERSION/lisp/19.29/README'</TT>, follow the instructions
+and you might be able to get ESS to work.  
+<EM>Please note that GNU Emacs 19.29 is no longer supported</EM>.
+For a list of supported versions of emacs, see See section <A HREF="readme.html#SEC6">Requirements</A>.
+
+<LI>
+
+Edit the file <TT>`ESSDIR/ess-VERSION/lisp/ess-site.el'</TT> as explained in the 
+comments section of that file.  
+
+<LI>
+
+ Add the line
+
+<PRE>
+(load "ESSDIR/ess-VERSION/lisp/ess-site")
+</PRE>
+
+to your user or system installation file
+(GNU Emacs uses <TT>`$HOME/.emacs'</TT> and XEmacs uses <TT>`$HOME/.xemacs/init.el'</TT>
+for the user initialization file.  GNU Emacs uses default.el or site-init.el and 
+XEmacs uses site-start.el for the system installation file). 
+
+Alternatively, if ess-site.el is in your current Lisp path, you can do:
+
+<PRE>
+(require 'ess-site)
+</PRE>
+
+to configure emacs for ESS.
+
+<LI>
+
+That's it!  To edit statistical programs, load the files with the requiste
+extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and ".lsp"
+for XLispStat).
+
+<LI>
+
+(OPTIONAL) If you are running S-PLUS or R, you might consider
+installing the database files.  From within emacs, <CODE>C-x d</CODE> to the
+directory containing ESS.  Now:
+
+<PRE>
+M-x S+6
+</PRE>
+
+get running.  once you have reached the SPLUS
+prompt, do: 
+
+<PRE>
+M-x ess-create-object-name-db
+</PRE>
+
+(this will create the file <TT>`ess-s+6-namedb.el'</TT>; if it isn't in the
+ESS directory, move it there).
+
+Then, completions will be autoloaded and will not be regenerated for
+every session.
+
+For R, do the same, using
+
+<PRE>
+M-x R
+</PRE>
+
+and then <CODE>M-x ess-create-object-name-db</CODE> creating
+<TT>`ess-r-namedb.el'</TT>; if it isn't in the ESS directory, move it there).
+
+<LI>
+
+<B>(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING</B>:
+
+In the ESSDIR/ess-VERSION directory, edit the file <TT>`Makeconf'</TT> if you
+want to place the compiled files in other locations; see LISPDIR and INFODIR.
+
+Then type:
+
+<PRE>
+make all
+</PRE>
+
+If this works, then you might try:
+
+<PRE>
+make install
+</PRE>
+
+This will install the info files (and the lisp files, if they are to go
+in another directory).  Don't forget to edit the file <TT>`dir'</TT> in the
+info directory specified by <CODE>INFODIR</CODE> in <TT>`doc/Makefile'</TT>.  See
+the sample <TT>`dir'</TT> file for an example of the line to add.
+
+If you are using XEmacs, you might do:
+
+<PRE>
+make EMACS=xemacs all
+</PRE>
+
+and then
+
+<PRE>
+make EMACS=xemacs install
+</PRE>
+
+instead of editing the Makefile.
+
+<EM>Note</EM> that you might need to use <B>GNU make</B> for everything to
+work properly
+
+An alternative, if you are running XEmacs and have access to the
+XEmacs system directories, would be to place the directory in the
+site-lisp directory, and simply type <CODE>make all</CODE> (and copy the
+documentation as appropriate).
+
+For GNU Emacs, you would still have to move the files into the top level
+site-lisp directory.
+
+</OL>
+
+
+
+<H2><A NAME="SEC10" HREF="readme_toc.html#TOC10">Microsoft Windows installation</A></H2>
+
+<P>
+For <B>Microsoft Windows installation</B>, please follow the next steps:
+(see separate instructions above for UNIX See section <A HREF="readme.html#SEC9">Unix installation</A>.
+
+
+
+<OL>
+
+<LI>
+
+cd to a directory where you keep emacs lisp files, or create a new
+directory (for example, <TT>`c:\emacs\'</TT>) to hold the distribution.  This
+directory will be referred to below as "the ESS distribution
+directory".  It will contain, at the end, either the tar file
+<TT>`ess-VERSION.tar.gz'</TT> or the zip file <TT>`ess-VERSION.zip'</TT>, and a
+directory 
+for the ESS source, which will be termed "the ESS-VERSION source
+directory".
+
+<LI>
+
+Retrieve the compressed tar file <TT>`ess-VERSION.tar.gz'</TT> or the
+zipped file <TT>`ess-VERSION.zip'</TT> from one of the FTP or WWW
+archive sites 
+via FTP (or HTTP).  Be aware that http browsers on Windows
+frequently change the "." and "-" characters in filenames to other
+punctuation.  Please change the names back to their original form.
+
+<LI>
+
+Copy <TT>`ess-VERSION.tar.gz'</TT> to the location where you want the
+ess-VERSION directory, for example to
+<TT>`c:\emacs\ess-VERSION.tar.gz'</TT>, and cd there.  For example,
+
+
+<PRE>
+cd c:\emacs
+</PRE>
+
+Extract the files from the distribution, which will unpack
+into a subdirectory, <TT>`ess-VERSION'</TT>.
+
+<PRE>
+gunzip ess-VERSION.tar.gz
+tar xvf ess-VERSION.tar
+(or: <CODE>gunzip &#60; ess-VERSION.tar.gz | tar xvf -</CODE> ).
+(or: from the zip file: <CODE>unzip ess-VERSION.zip</CODE>)
+</PRE>
+
+The <CODE>tar</CODE> command will extract files into the current directory.
+
+Do not create <TT>`ess-VERSION'</TT> yourself, or you will get an extra level
+of depth to your directory structure.
+
+<LI>
+
+Windows users will usually be able to use the `lisp/ess-site.el'
+as distributed.  Only rarely will changes be needed.
+
+<LI>
+
+Windows users will need to make sure that the directories for the
+software they will be using is in the PATH environment variable.  On
+Windows 9x, add lines similar to the following to your
+<TT>`c:\autoexec.bat'</TT> 
+file:
+
+<PRE>
+path=%PATH%;c:\progra~1\spls2000\cmd
+</PRE>
+
+On Windows NT/2000, add the directories to the PATH using the
+MyComputer menu.  Note that the directory containing the program is
+added to the PATH, not the program itself.  One such line is needed
+for each software program.  Be sure to use the abbreviation
+<CODE>progra~1</CODE> and not the long version with embedded blanks.  Use
+backslashes "\".
+
+<LI>
+
+Add the line 
+
+<PRE>
+(load "/PATH/ess-site")
+</PRE>
+
+to your .emacs (or _emacs) file (or default.el or site-init.el, for
+a site-wide installation).  Replace <CODE>/PATH</CODE> above with the
+value of ess-lisp-directory as defined in <TT>`ess-site.el'</TT>.  Use
+forwardslashes <CODE>/</CODE>.
+(GNU Emacs uses the filename <TT>`%HOME%/.emacs'</TT> and
+XEmacs uses the filename <TT>`%HOME%/.xemacs/init.el'</TT>
+for the initialization file.)
+
+<LI>
+
+To edit statistical programs, load the files with the requisite
+extensions  (".sas" for SAS, ".S" or "s" or "q" or "Q" for S-PLUS,
+".r" or ".R" for R, and ".lsp"   for XLispStat).
+
+<LI>
+
+To run statistical processes under emacs:
+
+Run S-PLUS 6.x or 2000 with:
+
+<PRE>
+M-x S+6
+(or <CODE>M-x S</CODE>).
+</PRE>
+
+You will then be
+asked for a pathname ("S starting data directory?"), from which to
+start the process.  The prompt will propose your current directory
+as the default.  Similarly for S-PLUS 6.x.  Send lines or regions
+from the emacs buffer containing your S program (for example,
+<TT>`myfile.s'</TT>) to the S-Plus Commands Window with the 
+<CODE>C-c C-n</CODE> or <CODE>C-c C-r</CODE> keys.
+
+Run S-PLUS 6.x or 2000 inside an emacs buffer
+
+<PRE>
+M-x Sqpe+6
+</PRE>
+
+You will then be asked for a pathname ("S starting data
+directory?"), from which to start the process.  The prompt will
+propose your current directory as the default.  Similarly for S-PLUS
+6.x.  Send lines or regions from the emacs buffer containing your S
+program (for example, <TT>`myfile.s'</TT>) to the *S+6* buffer with the
+<CODE>C-c C-n</CODE> or <CODE>C-c C-r</CODE> keys.  You do not have access to
+interactive graphics in 
+this mode.  You get Unix-like behavior, in particular the entire
+transcript is available for emacs-style search commands.
+
+If you wish to run R, you can start it with:
+
+<PRE>
+M-x R
+</PRE>
+
+XLispStat can not currently be run with
+
+<PRE>
+M-x XLS
+</PRE>
+
+Hopefully, this will change.  However, you can still edit with
+emacs, and cut and paste the results into the XLispStat
+*Listener* Window under Microsoft Windows.
+
+SAS for Windows uses the batch access with function keys that is
+described in <TT>`doc/README.SAS'</TT>.  The user can also edit SAS files
+in an <CODE>ESS[SAS]</CODE> buffer and than manually copy and paste them into
+an Editor window in the SAS Display Manager.
+
+For Windows, inferior SAS in an <CODE>iESS[SAS]</CODE> buffer does not work
+on the local machine.  It does work over a network connection to
+SAS running on a remote Unix computer.
+
+Reason:  we use ddeclient to interface with programs and SAS doesn't
+provide the corresponding ddeserver capability.
+
+<LI>
+
+(OPTIONAL) If you are running Sqpe or R, you might consider
+installing the database files.  From within emacs, <CODE>C-x d</CODE> to
+the   directory containing ESS.  Now:
+
+<PRE>
+M-x Sqpe+6
+</PRE>
+
+(get running.  once you have reached the SPLUS prompt, do:)
+
+<PRE>
+M-x ess-create-object-name-db
+</PRE>
+
+(this will create the file <TT>`ess-s+6-namedb.el'</TT>; if it isn't in the
+ESS directory, move it there).
+
+Then, completions will be autoloaded and will not be regenerated
+for every session.
+
+For R, do the same, using
+
+<PRE>
+M-x R
+</PRE>
+
+and then <CODE>M-x ess-create-object-name-db</CODE> creating
+<TT>`ess-r-namedb.el'</TT>; if it isn't in the ESS directory, move it
+there).
+
+<LI>That's it!
+
+</OL>
+
+
+
+<H2><A NAME="SEC11" HREF="readme_toc.html#TOC11">Requirements</A></H2>
+<P>
+ESS version 5.1.n (n &#62;= 2) works best with either GNU Emacs version 20.3 or higher, or
+XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
+
+
+
+<UL>
+<LI>S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
+
+<LI>R versions &#62;=0.49
+
+<LI>S4
+
+<LI>SAS 6.x, 7.x, 8.x
+
+<LI>BUGS 0.5, 0.603
+
+<LI>Stata &#62;=6.0
+
+<LI>XLispStat versions &#62;=3.50
+
+</UL>
+
+<P>
+on the following platforms
+
+
+
+<UL>
+<LI>Solaris/SunOS (all)
+
+<LI>SGI (all)
+
+<LI>Linux (S4, S-PLUS 5.x, R, XLispStat, Stata 6.0)
+
+<LI>Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
+
+<LI>Apple Mac OS (SAS for OS 9 and X11 R for OS X)
+
+</UL>
+
+<P>
+with the following versions of emacs
+
+
+
+<UL>
+<LI>GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
+
+<LI>XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
+
+<LI>XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34<A NAME="DOCF2" HREF="readme_foot.html#FOOT2">(2)</A>
+</UL>
+
+
+
+<H2><A NAME="SEC12" HREF="readme_toc.html#TOC12">Reporting Bugs</A></H2>
+
+<P>
+Please send bug reports, suggestions etc. to
+
+
+<A HREF="mailto:ESS-bugs@stat.math.ethz.ch">
+<P>
+<A HREF="mailto:ESS-bugs@stat.math.ethz.ch">ESS-bugs@stat.math.ethz.ch</A>
+</A>
+
+
+<P>
+The easiest way to do this is within Emacs by typing
+
+
+<P>
+<KBD>M-x ess-submit-bug-report</KBD>
+
+
+<P>
+This also gives the maintainers valuable information about your
+installation which may help us to identify or even fix the bug.
+
+
+<P>
+Note that comments, suggestions, words of praise and large cash
+donations are also more than welcome.
+
+
+
+
+<H2><A NAME="SEC13" HREF="readme_toc.html#TOC13">Mailing Lists</A></H2>
+
+<P>
+There is a mailing list for discussions and announcements relating to
+ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
+"help") in the body to <A HREF="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</A>;
+contributions to the list may be mailed to
+<A HREF="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</A>.  Rest assured, this is a fairly
+low-volume mailing list.
+
+
+<P>
+The purposes of the mailing list include
+
+
+
+<UL>
+<LI>
+
+ helping users of ESS to get along with it.
+<LI>
+
+ discussing aspects of using ESS on Emacs and XEmacs.
+<LI>
+
+ suggestions for improvements.
+<LI>
+
+ announcements of new releases of ESS.
+<LI>
+
+ posting small patches to ESS.
+</UL>
+
+
+
+<H2><A NAME="SEC14" HREF="readme_toc.html#TOC14">Authors</A></H2>
+
+
+<UL>
+<LI>
+
+<A HREF="http://www.biostat.washington.edu/~rossini/">A.J. Rossini</A>
+<A HREF="mailto:rossini@u.washington.edu">rossini@u.washington.edu</A>
+<LI>
+
+<A HREF="http://www.sbm.temple.edu/departments/statistics/">Richard M. Heiberger</A>
+<A HREF="mailto:rmh@surfer.sbm.temple.edu">rmh@surfer.sbm.temple.edu</A>
+<LI>
+
+<A HREF="http://www.ci.tuwien.ac.at/~hornik">Kurt Hornik</A>
+<A HREF="mailto:hornik@ci.tuwien.ac.at">hornik@ci.tuwien.ac.at</A>
+<LI>
+
+<A HREF="http://stat.ethz.ch/~maechler/">Martin Maechler</A>
+<A HREF="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</A>
+<LI>
+
+<A HREF="http://www.mcw.edu/pcor/rsparapa">Rodney A. Sparapani</A>
+<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>
+</UL>
+
+<P><HR><P>
+This document was generated on 1 August 2002 using
+<A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
+</BODY>
+</HTML>

@@ -1,0 +1,110 @@
+<HTML>
+<HEAD>
+<!-- Created by texi2html 1.56k from ess.texi on 1 August 2002 -->
+
+<TITLE>ESS -- Emacs Speaks Statistics - Manipulating saved transcript files</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_8.html">previous</A>, <A HREF="ess_10.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC59" HREF="ess_toc.html#TOC59">Manipulating saved transcript files</A></H1>
+
+<P>
+Inferior <B>S</B> mode records the transcript (the list of all commands
+executed, and their output) in the process buffer, which can be saved as
+a <EM>transcript file</EM>, which should normally have the suffix
+<TT>`.St'</TT>.  The most obvious use for a transcript file is as a static
+record of the actions you have performed in a particular <B>S</B> session.
+Sometimes, however, you may wish to re-execute commands recorded in the
+transcript file by submitting them to a running <B>ESS</B> process.  This
+is what Transcript Mode is for.
+
+
+<P>
+If you load file a with the suffix <TT>`.St'</TT> into Emacs, it is placed
+in S Transcript Mode.  Transcript Mode is similar to Inferior <B>S</B> mode
+(see section <A HREF="ess_6.html#SEC35">Interacting with the <B>ESS</B> process</A>):
+<A NAME="IDX207"></A>
+<A NAME="IDX208"></A>
+paragraphs are defined as a command and its output, and you can move
+though commands either with the paragraph commands or with <KBD>C-c C-p</KBD>
+and <KBD>C-c C-n</KBD>.
+
+
+
+<UL>
+<LI><A HREF="ess_9.html#SEC60">Resubmit</A>: Resubmitting commands from the transcript file
+<LI><A HREF="ess_9.html#SEC61">Clean</A>: Cleaning transcript files
+</UL>
+
+
+
+<H2><A NAME="SEC60" HREF="ess_toc.html#TOC60">Resubmitting commands from the transcript file</A></H2>
+
+<P>
+Three commands are provided to re-submit command lines from the
+transcript file to a running <B>ESS</B> process.  They are:
+
+
+
+<UL>
+<LI>
+
+<KBD>RET</KBD> (<CODE>ess-transcript-send-command</CODE>) <BR>
+Send the current command line to the <B>ESS</B> process, and execute it.
+<A NAME="IDX209"></A>
+
+<LI>
+
+<KBD>C-c RET</KBD> (<CODE>ess-transcript-copy-command</CODE>) <BR>
+Copy the current command to the <B>ESS</B> process, and switch to the
+<B>ESS</B> process buffer (ready to edit the copied command).
+<A NAME="IDX210"></A>
+
+<LI>
+
+<KBD>M-RET</KBD> (<CODE>ess-transcript-send-command-and-move</CODE>) <BR>
+Send the current command to the <B>ESS</B> process, and move to the next
+command line.  This command is useful for submitting a series of
+commands.
+</UL>
+
+<P>
+Note that these commands are similar to those on the same keys in
+Inferior <B>S</B> Mode.  In all three cases, the commands should be
+executed when the cursor is on a command line in the transcript; the
+prompt is automatically removed before the command is submitted.
+
+
+
+
+<H2><A NAME="SEC61" HREF="ess_toc.html#TOC61">Cleaning transcript files</A></H2>
+
+<P>
+Yet another use for transcript files is to extract the command lines for
+inclusion in an <B>S</B> source file or function.  Transcript mode provides
+one command which does just this:
+
+
+
+<UL>
+<LI>
+
+<KBD>C-c C-w</KBD> (<CODE>ess-transcript-clean-region</CODE>) <BR>
+Deletes all prompts and command output in the region, leaving only the
+commands themselves.
+</UL>
+
+<P>
+The remaining command lines may then be copied to a source file or edit
+buffer for inclusion in a function definition, or may be evaluated
+directly (see section <A HREF="ess_7.html#SEC53">Sending code to the <B>ESS</B> process</A>) using the code evaluation commands
+from <B>S</B> mode, also available in <B>S</B> Transcript Mode.
+
+
+<P><HR><P>
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_8.html">previous</A>, <A HREF="ess_10.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+</BODY>
+</HTML>

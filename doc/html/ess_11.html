@@ -1,0 +1,141 @@
+<HTML>
+<HEAD>
+<!-- Created by texi2html 1.56k from ess.texi on 1 August 2002 -->
+
+<TITLE>ESS -- Emacs Speaks Statistics - Bugs and Bug Reporting, Mailing Lists</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_10.html">previous</A>, <A HREF="ess_12.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC68" HREF="ess_toc.html#TOC68">Bugs and Bug Reporting, Mailing Lists</A></H1>
+
+
+<UL>
+<LI><A HREF="ess_11.html#SEC69">Bugs</A>
+<LI><A HREF="ess_11.html#SEC70">Reporting Bugs</A>
+<LI><A HREF="ess_11.html#SEC71">Mailing Lists</A>
+</UL>
+
+
+
+<H2><A NAME="SEC69" HREF="ess_toc.html#TOC69">Bugs</A></H2>
+<P>
+<A NAME="IDX220"></A>
+
+<UL>
+<LI>
+
+Commands like <CODE>ess-display-help-on-object</CODE> and list completion
+cannot be used while the user is entering a multi-line command.  The
+only real fix in this situation is to use another <B>ESS</B> process.
+
+<LI>
+
+The <CODE>ess-eval-</CODE> commands can leave point in the <B>ESS</B> process
+buffer in the wrong place when point is at the same position as the last
+process output.  This proves difficult to fix, in general, as we need to
+consider all <EM>windows</EM> with <CODE>window-point</CODE> at the right place.
+
+<LI>
+
+It's possible to clear the modification flag (say, by saving the buffer)
+with the edit buffer not having been loaded into S.
+
+<LI>
+
+Backup files can sometimes be left behind, even when
+<CODE>ess-keep-dump-files</CODE> is <CODE>nil</CODE>.
+
+<LI>
+
+Passing an incomplete <B>S</B> expression to <CODE>ess-execute</CODE> causes ESS
+to hang.
+
+<LI>
+
+The function-based commands don't always work as expected on functions
+whose body is not a parenthesized or compound expression, and don't even
+recognize anonymous functions (i.e. functions not assigned to any
+variable).
+
+<LI>
+
+Multi-line commands could be handled better by the command history
+mechanism.
+</UL>
+
+
+
+<H2><A NAME="SEC70" HREF="ess_toc.html#TOC70">Reporting Bugs</A></H2>
+<P>
+<A NAME="IDX221"></A>
+<A NAME="IDX222"></A>
+Please send bug reports, suggestions etc. to
+
+
+<A HREF="mailto:ESS-bugs@stat.math.ethz.ch">
+<P>
+<A HREF="mailto:ESS-bugs@stat.math.ethz.ch">ESS-bugs@stat.math.ethz.ch</A>
+</A>
+
+
+<P>
+The easiest way to do this is within Emacs by typing
+
+
+<P>
+<KBD>M-x ess-submit-bug-report</KBD>
+
+
+<P>
+This also gives the maintainers valuable information about your
+installation which may help us to identify or even fix the bug.
+
+
+<P>
+Note that comments, suggestions, words of praise and large cash
+donations are also more than welcome.
+
+
+
+
+<H2><A NAME="SEC71" HREF="ess_toc.html#TOC71">Mailing Lists</A></H2>
+
+<P>
+There is a mailing list for discussions and announcements relating to
+ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
+"help") in the body to <A HREF="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</A>;
+contributions to the list may be mailed to
+<A HREF="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</A>.  Rest assured, this is a fairly
+low-volume mailing list.
+
+
+<P>
+The purposes of the mailing list include
+
+
+
+<UL>
+<LI>
+
+ helping users of ESS to get along with it.
+<LI>
+
+ discussing aspects of using ESS on Emacs and XEmacs.
+<LI>
+
+ suggestions for improvements.
+<LI>
+
+ announcements of new releases of ESS.
+<LI>
+
+ posting small patches to ESS.
+</UL>
+
+<P><HR><P>
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_10.html">previous</A>, <A HREF="ess_12.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+</BODY>
+</HTML>

@@ -1,0 +1,698 @@
+<HTML>
+<HEAD>
+<!-- Created by texi2html 1.56k from ess.texi on 1 August 2002 -->
+
+<TITLE>ESS -- Emacs Speaks Statistics - Introduction to ESS</TITLE>
+</HEAD>
+<BODY>
+Go to the first, previous, <A HREF="ess_2.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<UL>
+<LI><A HREF="ess_1.html#SEC1">Introduction</A>: Overview of features provided by this package
+<LI><A HREF="ess_2.html#SEC7">Installation</A>: Installing ESS on your system
+<LI><A HREF="ess_3.html#SEC12">Starting up</A>: Starting the <B>ESS</B> process
+<LI><A HREF="ess_4.html#SEC17">Help for the S family</A>
+<LI><A HREF="ess_5.html#SEC25">Help for SAS</A>
+<LI><A HREF="ess_6.html#SEC35">Entering commands</A>: Interacting with the process buffer
+<LI><A HREF="ess_7.html#SEC49">Editing</A>: How to create or edit <B>S</B> objects or functions
+<LI><A HREF="ess_8.html#SEC58">Help</A>: Reading help files in ESS
+<LI><A HREF="ess_9.html#SEC59">Transcript Mode</A>: Manipulating saved transcript files
+<LI><A HREF="ess_10.html#SEC62">Miscellaneous</A>: Other features of ESS
+<LI><A HREF="ess_11.html#SEC68">Bugs Etc</A>
+<LI><A HREF="ess_12.html#SEC72">Customization</A>: Customizing ESS
+<LI><A HREF="ess_13.html#SEC80">Key Index</A>
+<LI><A HREF="ess_14.html#SEC81">Command Index</A>
+<LI><A HREF="ess_15.html#SEC82">Concept Index</A>
+<LI><A HREF="ess_16.html#SEC83">Variable and command index</A>
+</UL>
+
+
+
+<H1><A NAME="SEC1" HREF="ess_toc.html#TOC1">Introduction to <B>ESS</B></A></H1>
+<P>
+<A NAME="IDX1"></A>
+
+
+<P>
+The S family (<B>S</B>, Splus and R) and SAS statistical analysis packages
+provide sophisticated statistical and graphical routines for manipulating 
+data.   <B>E</B>macs <B>S</B>peaks <B>S</B>tatistics (ESS) is based on the merger 
+of two pre-cursors, S-mode and SAS-mode, which provided support for the
+S family and SAS respectively.  Later on, Stata-mode was also incorporated.
+
+
+<P>
+ESS provides a common, generic, and useful interface, through emacs, to 
+many statistical packages.  It currently supports the S family, SAS, BUGS, 
+Stata and XLisp-Stat with the level of support roughly in that order.
+
+
+<P>
+A bit of notation before we begin.  <EM>emacs</EM> refers to both
+<EM>GNU Emacs</EM> by the Free Software Foundation, as well as
+<EM>XEmacs</EM> by the XEmacs Project.  The emacs major
+mode <CODE>ESS[language]</CODE>, where <CODE>language</CODE> can take values such as 
+<CODE>S</CODE>, <CODE>SAS</CODE>, or <CODE>XLS</CODE>.  The inferior process interface 
+(the connection between emacs and the running process) referred to as inferior ESS
+(<CODE>iESS</CODE>), is denoted in the modeline by <CODE>ESS[dialect]</CODE>, where
+<CODE>dialect</CODE> can take values such as <CODE>S3</CODE>, <CODE>S4</CODE>, <CODE>S+3</CODE>,
+<CODE>S+4</CODE>, <CODE>S+5</CODE>, <CODE>S+6</CODE>, <CODE>R</CODE>, <CODE>XLS</CODE>, <CODE>VST</CODE>, <CODE>SAS</CODE>.
+
+
+<P>
+Currently, the documentation contains many references to <CITE>`S'</CITE>
+where actually any supported (statistics) language is meant, i.e., `S'
+could also mean `XLisp-Stat' or `SAS'.
+
+
+<P>
+<A NAME="IDX2"></A>
+
+
+<P>
+<A NAME="IDX3"></A>
+For exclusively interactive users of S, ESS provides a number of
+features to make life easier.  There is an easy to use command history
+mechanism, including a quick prefix-search history.  To reduce typing,
+command-line completion is provided for all <B>S</B> objects and "hot
+keys" are provided for common <B>S</B> function calls.  Help files are
+easily accessible, and a paging mechanism is provided to view them.
+Finally, an incidental (but very useful) side-effect of ESS is that a
+transcript of your session is kept for later saving or editing.
+
+
+<P>
+<A NAME="IDX4"></A>
+No special knowledge of Emacs is necessary when using <B>S</B>
+interactively under ESS.
+
+
+<P>
+<A NAME="IDX5"></A>
+For those that use <B>S</B> in the typical edit--test--revise cycle when
+programming <B>S</B> functions, ESS provides for editing of <B>S</B> functions
+in Emacs edit buffers.  Unlike the typical use of <B>S</B> where the editor
+is restarted every time an object is edited, ESS uses the current Emacs
+session for editing.  In practical terms, this means that you can edit
+more than one function at once, and that the <B>ESS</B> process is still
+available for use while editing.  Error checking is performed on
+functions loaded back into S, and a mechanism to jump directly to the
+error is provided.  ESS also provides for maintaining text versions of
+your <B>S</B> functions in specified source directories.
+
+
+
+<UL>
+<LI><A HREF="ess_1.html#SEC2">Features</A>: Why should I use ESS?
+<LI><A HREF="ess_1.html#SEC3">New features</A>
+<LI><A HREF="ess_1.html#SEC4">Credits</A>: Authors of and contributors to ESS
+<LI><A HREF="ess_1.html#SEC5">Latest version</A>: Getting the latest version of ESS
+<LI><A HREF="ess_1.html#SEC6">Manual</A>: How to read this manual
+</UL>
+
+
+
+<H2><A NAME="SEC2" HREF="ess_toc.html#TOC2">Why should I use ESS?</A></H2>
+
+<P>
+S is a powerful system for manipulating and analyzing data, but its user
+interface -- particularly on Unix platforms -- leaves something to be
+desired.  ESS is a package which is designed to make <B>S</B> easier to
+use.
+
+
+<P>
+ESS provides several features which make it easier to interact with the
+<B>ESS</B> process (i.e. enter commands and view the output).  These
+include:
+
+
+
+<UL>
+<LI>
+
+<B>Command-line editing</B> for fixing mistakes in commands before they are
+entered.  The <SAMP>`-e'</SAMP> flag for S-plus provides something similar to
+this, but here you have the full range of Emacs commands rather than a
+limited subset.  However, other packages such as XLisp-Stat and S3 do not
+necessarily have features like this built-in.
+See section <A HREF="ess_6.html#SEC36">Entering commands and fixing mistakes</A>.
+
+<LI>
+
+<B>Searchable command history</B> for recalling previously-submitted
+commands.  This provides all the features of the <SAMP>`Splus -e'</SAMP> history
+mechanism, plus added features such as history searching.
+See section <A HREF="ess_6.html#SEC44">Command History</A>.
+
+<LI>
+
+<B>Command-line completion</B> of both object and file names for quick
+entry.  This is similar to <CODE>tcsh</CODE>'s facility for filenames; here it
+also applies to object names and list components.
+See section <A HREF="ess_6.html#SEC37">Completion of object names</A>.
+
+<LI>
+
+<B>Hot-keys</B> for quick entry of commonly-used commands in `S' such as
+<CODE>objects()</CODE> and <CODE>search()</CODE>.
+See section <A HREF="ess_6.html#SEC46">Hot keys for common commands</A>.
+
+<LI>
+
+<B>Transcript recording</B> for a complete record of all the actions in an
+S session.
+See section <A HREF="ess_6.html#SEC39">Manipulating the transcript</A>.
+
+<LI>
+
+<B>Interface to the help system</B>, with a specialized mode for viewing S
+help files.
+See section <A HREF="ess_8.html#SEC58">Reading help files in ESS</A>.
+
+</UL>
+
+<P>
+If you commonly create or modify <B>S</B> functions, you will have found
+the standard facilities for this (the <SAMP>`fix()'</SAMP> function, for
+example) severely limiting.  Using S's standard features, one can only
+edit one function at a time, and you can't continue to use <B>S</B> while
+editing.  ESS corrects these problems by introducing the following
+features:
+
+
+
+<UL>
+<LI>
+
+<B>Object editing</B>.  ESS allows you to edit more than one function
+simultaneously in dedicated Emacs buffers.  The <B>ESS</B> process may
+continue to be used while functions are being edited.
+See section <A HREF="ess_7.html#SEC50">Creating or modifying <B>S</B> objects</A>.
+
+<LI>
+
+<B>A specialized editing mode</B> for <B>S</B> code, which provides syntactic
+indentation and highlighting.
+See section <A HREF="ess_7.html#SEC54">Indenting and formatting <B>S</B> code</A>.
+
+<LI>
+
+<B>Facilities for loading and error-checking source files</B>, including a
+keystroke to jump straight to the position of an error in a source file.
+See section <A HREF="ess_7.html#SEC52">Detecting errors in source files</A>.
+
+<LI>
+
+<B>Source code revision maintenance</B>, which allows you to keep historic
+versions of <B>S</B> source files.
+See section <A HREF="ess_7.html#SEC56">Maintaining <B>S</B> source files</A>.
+
+<LI>
+
+<B>Facilities for evaluating <B>S</B> code</B> such as portions of source
+files, or line-by-line evaluation of files (useful for debugging).
+See section <A HREF="ess_7.html#SEC53">Sending code to the <B>ESS</B> process</A>.
+</UL>
+
+<P>
+Finally, ESS provides features for re-submitting commands from saved
+transcript files, including:
+
+
+
+<UL>
+
+<LI>
+
+<B>Evaluation of previously entered commands</B>, stripping away
+unnecessary prompts.
+See section <A HREF="ess_6.html#SEC42">Re-submitting commands from the transcript</A>.
+
+</UL>
+
+
+
+<H2><A NAME="SEC3" HREF="ess_toc.html#TOC3">New features in ESS</A></H2>
+
+<P>
+Changes/New Features in 5.1.22:
+
+<UL>
+<LI>Now that info documentation is available, the
+
+README.* files are no longer supported.  However, they
+are still distributed for what it's worth.
+<LI>ESS is now an XEmacs package!  See
+
+<A HREF="http://www.xemacs.org/Install/index.html">XEmacs Installation HOWTO</A> 
+for details (specifically, items 10-15).
+<LI>ESS[SAS]: more user-friendly enhancements for remote
+
+SAS batch jobs with Kermit file transfers (LOG and OUTPUT
+function key features now supported).  Multiple shells
+now supported so you can run SAS on different computers
+from different buffers by setting the buffer-local variable
+ess-sas-shell-buffer to unique buffer names.
+<LI>Major re-vamping of Makefile/Makeconf.
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.21:
+
+<UL>
+<LI>ESS[SAS]: info documentation now available!, see
+
+ESS-&#62;Help for Statistical Packages-&#62;Help for SAS; F12 opens
+GSASFILE nearest point for viewing either within emacs, when
+available, or via an external viewer; more syntax highlighting
+keywords; more enhancements for remote SAS batch jobs with 
+Kermit; new framework for remote SAS interactive jobs, see
+ess-remote
+<LI>ESS[S]: info documentation now available!, see
+
+ESS-&#62;Help for Statistical Packages-&#62;Help for the S family
+<LI>Makefile: tag now independent of rel; info files
+
+made by doc/Makefile and installed in new info sub-directory
+</UL>
+
+<P>
+Changes/New Features in 5.1.20:
+
+<UL>
+<LI>New `options()$STERM' in the S dialects (S, S-Plus, R).
+
+The S program can determine the environment in which it is
+currently running.  ESS sets the option to `iESS' or `ddeESS'
+when it starts an S language process.  We recommend other specific
+values for S language processes that ESS does not start.
+<LI>New `ess-mouse-me' function, assigned to S-mouse-3 by default.
+
+User may click on a word or region and then choose from the
+menu to display the item, or a summary, or a plot, etc.
+This feature is still under development.
+<LI>GNU Emacs 21.1 is now supported (fixed for S dialects, SAS &#38; BUGS),
+
+(some from Stephen Eglen).
+<LI>XEmacs 21.x is now supported (fixed w32-using-nt bug)
+
+<LI>XEmacs on Win (NT) is better supported.
+
+<LI>Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
+
+<LI>should now work even when imenu is not available (for old Xemacsen).
+
+<LI>ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your
+
+function-key definitions, if specified; you can specify your SAS
+library definitions outside of autoexec.sas for ess-sas-data-view
+with SAS code placed in the variable ess-sas-data-view-libname, 
+also the dataset name is defaulted to the nearest permanent dataset 
+to point; Speedbar support now works for permanent datasets, please 
+ignore first./last.; new font-locking is now the default with more 
+improvements for font-locking PROCs, macro statements, * ; and %* ; 
+comments; you can toggle sas-log-mode with F10 which will font-lock 
+your .log (if it isn't too big); submit remote .sas files accessed
+with ange-ftp, EFS or Tramp (Kermit is experimental) by setting 
+ess-sas-submit-method to 'sh; ess-sas-submit-command and 
+ess-sas-submit-command-options are buffer-local so you can have
+local file variable sections at the end of your .sas files to 
+request different executables or specify special options and the 
+local file variables are re-read at submit instead of only at file
+open so that if you make a change it is picked up immediately;
+<LI>ESS[BUGS]: font-lock with `in' fixed.
+
+<LI>for STATA: font-lock bug fixed.
+
+<LI>for Rd mode: C-c C-v and `switch-process' in menu.
+
+further, C-c C-f prefix (Rd-font) for inserting or surrounding a word
+by things such as \code{.}, \code{\link{.}}, \emph{.} etc.
+<LI>new functions (ess-directory-function) and (ess-narrow-to-defun)
+
+ess-directory &#60;-&#62; default-directory logic (Jeff Mincy).
+<LI>Re-organized Makefile and fixed a few bugs.
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.19:
+
+<UL>
+<LI>S+6 now supported (Tony Rossini (Unix) and Rich Heiberger (Windows))
+
+<LI>New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
+
+Templates assist you in writing .bug and .cmd code (.cmd and .log
+are replaced by .bmd and .bog to avoid emacs extension collisions).
+Substitution" parameters facilitate "automagic" generation of
+data...in" and "init...in" filenames, "const N=" from your data
+file and "monitor()/stats()" commands.  Activated by pressing F12.
+<LI>Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
+
+<LI>You can change between PC and Unix, local and global SAS function-key
+
+definitions interactively (Rich Heiberger)
+<LI>C-Submit a highlighted region to SAS batch (Rodney Sparapani)
+
+<LI>New and improved SAS syntax highlighting (Rodney Sparapani)
+
+To get the new functionality, set ess-sas-run-make-regexp to nil.
+Also available in .log files via F10.
+<LI>Open a permanent SAS dataset for viewing via F9 (Rodney Sparapani)
+
+You must have the library defined in autoexec.sas for it to work.
+<LI>User-friendly defaults for `sas-program', `ess-sas-batch-pre-command'
+
+and `ess-sas-batch-post-command' as well Customize support for these
+and other ESS[SAS] variables (Rodney Sparapani)
+<LI>`ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
+
+<LI>Emacs/XEmacs, Unix/Windows issues collectively handled in ess-emcs.el
+
+<LI>defadvice solves problem of missing *ESS* (thanks to Jeff Mincy)
+
+<LI>Improved manual a bit by including things that were only in `README'.
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.18:
+
+<UL>
+<LI>New `ess-smart-underscore' function, now assigned to "_" by default.
+
+Inserts `ess-S-assign' (customizable " &#60;- "), unless inside string
+and comments where plain "_" is used instead. (MM)
+<LI>Fixes for longstanding interactive SAS breakage (RMH)
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.17:
+
+<UL>
+<LI>Documentation for Windows Installation (Rich Heiberger
+
+(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>))
+<LI>removal of ess-vars, finalization of customize support (in the
+
+sense that there is no more use of ess-vars, but that we need to
+fix ess-cust) (AJ Rossini (<A HREF="mailto:rossini@u.washington.edu">rossini@u.washington.edu</A>))
+<LI>Many small (and large) fixes/contributions (MMaechler,
+
+(<A HREF="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</A>)).
+<LI>addition of the "S-equal" variable and provide M-x ess-add-MM-keys
+
+a way to remap "_" to `ess-S-assign', typically " &#60;- ", but
+customizable. (MMaechler, (<A HREF="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</A>)).
+</UL>
+
+<P>
+Changes/New Features in 5.1.16:
+
+<UL>
+<LI>BUG FIXES
+
+<LI>Better SAS support
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.15:
+
+<UL>
+<LI>BUG FIXES
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.14:
+
+<UL>
+<LI>Yet more fixes to SAS mode, (Rich Heiberger
+
+(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>) and Rodney Sparapani
+<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>)).
+<LI>Customize support (for most Emacsen which support it) (AJRossini,
+
+(<A HREF="mailto:rossini@biostat.washington.edu">rossini@biostat.washington.edu</A>)
+<LI>ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini,
+
+<A HREF="mailto:rossini@biostat.washington.edu">rossini@biostat.washington.edu</A>)
+</UL>
+
+<P>
+Changes/New Features in 5.1.13:
+
+<UL>
+<LI>Version numbering finally all depending on the ./VERSION file,
+
+thanks to Martin Maechler.
+<LI>Yet more fixes to SAS mode, thanks to Rich Heiberger
+
+(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>).
+</UL>
+
+<P>
+Changes/New Features in 5.1.12:
+
+<UL>
+<LI>Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
+
+Chuck Taylor, and others.
+<LI>More fixes to SAS mode, thanks to Rodney Sparapani
+
+(<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>) and Rich Heiberger
+(<A HREF="mailto:rmh@surfer.stat.temple.edu">rmh@surfer.stat.temple.edu</A>).
+</UL>
+
+<P>
+Changes/New Features in 5.1.11:
+
+<UL>
+<LI>More fixes to Stata mode, thanks to Brendan Halpin
+
+(<A HREF="mailto:brendan@essex.ac.uk">brendan@essex.ac.uk</A>)
+<LI>fixed bugs in ESS-elsewhere, thanks to many testers
+
+<LI>README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
+
+to David Brahm (<A HREF="mailto:brahm@alum.mit.edu">brahm@alum.mit.edu</A>).
+<LI>Fixes to SAS mode, thanks to Rodney Sparapani
+
+(<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>)
+</UL>
+
+<P>
+Changes/New Features in 5.1.10:
+
+<UL>
+<LI>More fixes to Stata mode
+
+<LI>primitive generic version of ESS-elsewhere
+
+<LI>Small fixes to SAS/Stata.
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.9:
+
+<UL>
+<LI>Stata mode works
+
+<LI>Literate Data Analysis using Noweb works
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.8:
+
+<UL>
+<LI>Bug fixes
+
+<LI>R documentation mode defaults changed
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.2:
+
+<UL>
+<LI>able to use inferior iESS mode to
+
+communicate directly with a running S-Plus 4.x process using the
+Microsoft DDE protocol.  We use the familiar (from Unix ESS) C-c C-n
+and related key sequences to send lines from the S-mode file to the
+inferior S process.  We continue to edit S input files in ESS[S] mode
+and transcripts of previous S sessions in ESS Transcript mode.  All
+three modes know the S language, syntax, and indentation patterns and
+provide the syntactic highlighting that eases the programming tasks.
+</UL>
+
+
+
+<H2><A NAME="SEC4" HREF="ess_toc.html#TOC4">Authors of and contributors to ESS</A></H2>
+
+<P>
+<A NAME="IDX6"></A>
+<A NAME="IDX7"></A>
+<A NAME="IDX8"></A>
+
+
+<P>
+The ESS environment is built on the open-source projects of
+many contributors, dating back over 10 years.
+Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and Splus
+files in GNU Emacs.  Frank Ritter and Mike Meyer added features,
+creating version 2.  Meyer and David Smith made further contributions,
+creating version 3.  For version 4, David Smith provided process 
+interaction based on Olin Shivers' comint package.
+
+
+<P>
+John Sall wrote GNU Emacs macros for SAS source code around 1990.
+Tom Cook added more functionality creating SAS-mode which was
+distributed in 1994.  Also in 1994, A.J. Rossini extended S-mode 
+to support XEmacs.  Together with extensions written by Martin Maechler, 
+this became version 4.7 and supported S, Splus, and R.
+In 1995, Rossini extended SAS-mode to work with XEmacs.
+
+
+<P>
+In 1997, Rossini merged S-mode and SAS-mode into a single Emacs
+package for statistical programming; the product of this marriage was
+called ESS version 5.
+
+
+
+<UL>
+<LI>
+
+The multiple process code, and the idea for
+<CODE>ess-eval-line-and-next-line</CODE> are by Rod Ball.
+
+<LI>
+
+Thanks to Doug Bates for many useful suggestions.
+
+<LI>
+
+Thanks to Martin Maechler for reporting and fixing bugs, providing many
+useful comments and suggestions, and for maintaining the S-mode mailing
+list.
+
+<LI>
+
+Thanks to Frank Ritter for updates from the previous version, the menu
+code, and invaluable comments on the manual.
+
+<LI>
+
+Thanks to Ken'ichi Shibayama for his excellent indenting code, and many
+comments and suggestions.
+
+<LI>
+
+Last but definitely not least, thanks to the many beta testers of the
+S-mode and ESS mailing lists.
+</UL>
+
+<P>
+<EM>ESS</EM> version 5 is being developed and currently maintained by
+
+
+
+<UL>
+<LI>
+
+<A HREF="http://www.biostat.washington.edu/~rossini/">A.J. Rossini</A>
+<A HREF="mailto:rossini@u.washington.edu">rossini@u.washington.edu</A>
+<LI>
+
+<A HREF="http://www.sbm.temple.edu/departments/statistics/">Richard M. Heiberger</A>
+<A HREF="mailto:rmh@surfer.sbm.temple.edu">rmh@surfer.sbm.temple.edu</A>
+<LI>
+
+<A HREF="http://www.ci.tuwien.ac.at/~hornik">Kurt Hornik</A>
+<A HREF="mailto:hornik@ci.tuwien.ac.at">hornik@ci.tuwien.ac.at</A>
+<LI>
+
+<A HREF="http://stat.ethz.ch/~maechler/">Martin Maechler</A>
+<A HREF="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</A>
+<LI>
+
+<A HREF="http://www.mcw.edu/pcor/rsparapa">Rodney A. Sparapani</A>
+<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>
+</UL>
+
+
+
+<H2><A NAME="SEC5" HREF="ess_toc.html#TOC5">Getting the latest version of ESS</A></H2>
+
+<P>
+The latest stable version of ESS is always available on the web at:
+<A HREF="http://software.biostat.washington.edu/ess/">ESS web page</A> or
+<A HREF="http://lib.stat.cmu.edu/general/ESS/">StatLib</A>
+
+
+<P>
+The latest (no more than 24 hours behind the developers) version of
+ESS can also be retrieved using anonymous cvs:
+
+
+<P>
+You need a cvs client (that works with your firewall, if any)
+
+
+<P>
+the repository name is
+   <CODE>:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs</CODE>
+
+
+<P>
+using a command-line cvs client (i.e. on Unix or DOS), first type:
+   <CODE>cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login</CODE>
+
+
+<P>
+password is anoncvs
+
+
+<P>
+then type:
+   <CODE>cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess</CODE>
+
+
+
+
+<H2><A NAME="SEC6" HREF="ess_toc.html#TOC6">How to read this manual</A></H2>
+
+<P>
+If you need to install ESS, read section <A HREF="ess_2.html#SEC7">Installing ESS on your system</A> for details on what
+needs to be done before proceeding to the next chapter.
+
+
+<P>
+section <A HREF="ess_12.html#SEC72">Customizing ESS</A> provides details of user variables you can change to
+customize ESS to your taste, but it is recommended that you defer this
+section until you are more familiar with ESS.
+
+
+<P>
+Don't forget that this manual is not the only source of information
+about ESS.  In particular, the mode-based online help (obtained by
+pressing <KBD>C-h m</KBD> when in the process buffer, edit buffer or help
+buffer) is quite useful.  However the best source of information is, as
+always, experience -- try it out!
+
+
+<P><HR><P>
+Go to the first, previous, <A HREF="ess_2.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+</BODY>
+</HTML>

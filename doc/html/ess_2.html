@@ -1,0 +1,546 @@
+<HTML>
+<HEAD>
+<!-- Created by texi2html 1.56k from ess.texi on 1 August 2002 -->
+
+<TITLE>ESS -- Emacs Speaks Statistics - Installing ESS on your system</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_1.html">previous</A>, <A HREF="ess_3.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC7" HREF="ess_toc.html#TOC7">Installing ESS on your system</A></H1>
+<P>
+<A NAME="IDX9"></A>
+
+
+<P>
+The following section details those steps necessary to get ESS running
+on your system.
+
+
+
+<UL>
+<LI><A HREF="ess_2.html#SEC8">Unix installation</A>: Installing ESS on your Unix system
+<LI><A HREF="ess_2.html#SEC9">Microsoft Windows installation</A>: Installing ESS on your MS Windows system
+<LI><A HREF="ess_2.html#SEC10">Requirements</A>: emacs, Operating Systems and Statistical Packages 
+<LI><A HREF="ess_2.html#SEC11">System dependent</A>: Other variables you may need to change
+</UL>
+
+<P>
+We now discuss installation, which might happen under Unix or
+Microsoft Windows.  First, we discuss Unix installation.  
+See section <A HREF="ess_2.html#SEC8">Unix installation</A>.
+
+
+<P>
+For Microsoft Windows Installation please skip to the
+See section <A HREF="ess_2.html#SEC9">Microsoft Windows installation</A>.
+
+
+
+
+<H2><A NAME="SEC8" HREF="ess_toc.html#TOC8">Unix installation</A></H2>
+
+
+<OL>
+
+<LI>
+
+cd to a directory where you want to install ESS, creating it if necessary.
+This directory will be referred to below as ESSDIR.  
+
+<LI>
+
+Retrieve the latest version from 
+<A HREF="http://software.biostat.washington.edu/ess/ess-VERSION.tar.gz">gzipped tar file </A> 
+to ESSDIR.
+
+<LI>
+
+Decompress/unarchive the files from the disribution.
+
+<PRE>
+gunzip ess-VERSION.tar.gz
+tar xvf ess-VERSION.tar
+</PRE>
+
+
+<PRE>
+(or: <CODE>gunzip &#60; ess-VERSION.tar.gz | tar xvf -</CODE> ).
+(or using GNU tar:  <CODE>tar zxvf ess-VERSION.tar.gz</CODE>).
+</PRE>
+
+The <CODE>tar</CODE> command will create the subdirectory ess-VERSION and unarchive
+the files there.
+
+If you are using GNU Emacs 19.29, decompress/unarchive
+<TT>`ESSDIR/ess-VERSION/lisp/19.29.tar.gz'</TT>, 
+read <TT>`ESSDIR/ess-VERSION/lisp/19.29/README'</TT>, follow the instructions
+and you might be able to get ESS to work.  
+<EM>Please note that GNU Emacs 19.29 is no longer supported</EM>.
+For a list of supported versions of emacs, see See section <A HREF="ess_2.html#SEC10">Requirements</A>.
+
+<LI>
+
+Edit the file <TT>`ESSDIR/ess-VERSION/lisp/ess-site.el'</TT> as explained in the 
+comments section of that file.  
+
+<LI>
+
+ Add the line
+
+<PRE>
+(load "ESSDIR/ess-VERSION/lisp/ess-site")
+</PRE>
+
+to your user or system installation file
+(GNU Emacs uses <TT>`$HOME/.emacs'</TT> and XEmacs uses <TT>`$HOME/.xemacs/init.el'</TT>
+for the user initialization file.  GNU Emacs uses default.el or site-init.el and 
+XEmacs uses site-start.el for the system installation file). 
+
+Alternatively, if ess-site.el is in your current Lisp path, you can do:
+
+<PRE>
+(require 'ess-site)
+</PRE>
+
+to configure emacs for ESS.
+
+<LI>
+
+That's it!  To edit statistical programs, load the files with the requiste
+extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and ".lsp"
+for XLispStat).
+
+<LI>
+
+(OPTIONAL) If you are running S-PLUS or R, you might consider
+installing the database files.  From within emacs, <CODE>C-x d</CODE> to the
+directory containing ESS.  Now:
+
+<PRE>
+M-x S+6
+</PRE>
+
+get running.  once you have reached the SPLUS
+prompt, do: 
+
+<PRE>
+M-x ess-create-object-name-db
+</PRE>
+
+(this will create the file <TT>`ess-s+6-namedb.el'</TT>; if it isn't in the
+ESS directory, move it there).
+
+Then, completions will be autoloaded and will not be regenerated for
+every session.
+
+For R, do the same, using
+
+<PRE>
+M-x R
+</PRE>
+
+and then <CODE>M-x ess-create-object-name-db</CODE> creating
+<TT>`ess-r-namedb.el'</TT>; if it isn't in the ESS directory, move it there).
+
+<LI>
+
+<B>(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING</B>:
+
+In the ESSDIR/ess-VERSION directory, edit the file <TT>`Makeconf'</TT> if you
+want to place the compiled files in other locations; see LISPDIR and INFODIR.
+
+Then type:
+
+<PRE>
+make all
+</PRE>
+
+If this works, then you might try:
+
+<PRE>
+make install
+</PRE>
+
+This will install the info files (and the lisp files, if they are to go
+in another directory).  Don't forget to edit the file <TT>`dir'</TT> in the
+info directory specified by <CODE>INFODIR</CODE> in <TT>`doc/Makefile'</TT>.  See
+the sample <TT>`dir'</TT> file for an example of the line to add.
+
+If you are using XEmacs, you might do:
+
+<PRE>
+make EMACS=xemacs all
+</PRE>
+
+and then
+
+<PRE>
+make EMACS=xemacs install
+</PRE>
+
+instead of editing the Makefile.
+
+<EM>Note</EM> that you might need to use <B>GNU make</B> for everything to
+work properly
+
+An alternative, if you are running XEmacs and have access to the
+XEmacs system directories, would be to place the directory in the
+site-lisp directory, and simply type <CODE>make all</CODE> (and copy the
+documentation as appropriate).
+
+For GNU Emacs, you would still have to move the files into the top level
+site-lisp directory.
+
+</OL>
+
+
+
+<H2><A NAME="SEC9" HREF="ess_toc.html#TOC9">Microsoft Windows installation</A></H2>
+
+<P>
+For <B>Microsoft Windows installation</B>, please follow the next steps:
+(see separate instructions above for UNIX See section <A HREF="ess_2.html#SEC8">Unix installation</A>.
+
+
+
+<OL>
+
+<LI>
+
+cd to a directory where you keep emacs lisp files, or create a new
+directory (for example, <TT>`c:\emacs\'</TT>) to hold the distribution.  This
+directory will be referred to below as "the ESS distribution
+directory".  It will contain, at the end, either the tar file
+<TT>`ess-VERSION.tar.gz'</TT> or the zip file <TT>`ess-VERSION.zip'</TT>, and a
+directory 
+for the ESS source, which will be termed "the ESS-VERSION source
+directory".
+
+<LI>
+
+Retrieve the compressed tar file <TT>`ess-VERSION.tar.gz'</TT> or the
+zipped file <TT>`ess-VERSION.zip'</TT> from one of the FTP or WWW
+archive sites 
+via FTP (or HTTP).  Be aware that http browsers on Windows
+frequently change the "." and "-" characters in filenames to other
+punctuation.  Please change the names back to their original form.
+
+<LI>
+
+Copy <TT>`ess-VERSION.tar.gz'</TT> to the location where you want the
+ess-VERSION directory, for example to
+<TT>`c:\emacs\ess-VERSION.tar.gz'</TT>, and cd there.  For example,
+
+
+<PRE>
+cd c:\emacs
+</PRE>
+
+Extract the files from the distribution, which will unpack
+into a subdirectory, <TT>`ess-VERSION'</TT>.
+
+<PRE>
+gunzip ess-VERSION.tar.gz
+tar xvf ess-VERSION.tar
+(or: <CODE>gunzip &#60; ess-VERSION.tar.gz | tar xvf -</CODE> ).
+(or: from the zip file: <CODE>unzip ess-VERSION.zip</CODE>)
+</PRE>
+
+The <CODE>tar</CODE> command will extract files into the current directory.
+
+Do not create <TT>`ess-VERSION'</TT> yourself, or you will get an extra level
+of depth to your directory structure.
+
+<LI>
+
+Windows users will usually be able to use the `lisp/ess-site.el'
+as distributed.  Only rarely will changes be needed.
+
+<LI>
+
+Windows users will need to make sure that the directories for the
+software they will be using is in the PATH environment variable.  On
+Windows 9x, add lines similar to the following to your
+<TT>`c:\autoexec.bat'</TT> 
+file:
+
+<PRE>
+path=%PATH%;c:\progra~1\spls2000\cmd
+</PRE>
+
+On Windows NT/2000, add the directories to the PATH using the
+MyComputer menu.  Note that the directory containing the program is
+added to the PATH, not the program itself.  One such line is needed
+for each software program.  Be sure to use the abbreviation
+<CODE>progra~1</CODE> and not the long version with embedded blanks.  Use
+backslashes "\".
+
+<LI>
+
+Add the line 
+
+<PRE>
+(load "/PATH/ess-site")
+</PRE>
+
+to your .emacs (or _emacs) file (or default.el or site-init.el, for
+a site-wide installation).  Replace <CODE>/PATH</CODE> above with the
+value of ess-lisp-directory as defined in <TT>`ess-site.el'</TT>.  Use
+forwardslashes <CODE>/</CODE>.
+(GNU Emacs uses the filename <TT>`%HOME%/.emacs'</TT> and
+XEmacs uses the filename <TT>`%HOME%/.xemacs/init.el'</TT>
+for the initialization file.)
+
+<LI>
+
+To edit statistical programs, load the files with the requisite
+extensions  (".sas" for SAS, ".S" or "s" or "q" or "Q" for S-PLUS,
+".r" or ".R" for R, and ".lsp"   for XLispStat).
+
+<LI>
+
+To run statistical processes under emacs:
+
+Run S-PLUS 6.x or 2000 with:
+
+<PRE>
+M-x S+6
+(or <CODE>M-x S</CODE>).
+</PRE>
+
+You will then be
+asked for a pathname ("S starting data directory?"), from which to
+start the process.  The prompt will propose your current directory
+as the default.  Similarly for S-PLUS 6.x.  Send lines or regions
+from the emacs buffer containing your S program (for example,
+<TT>`myfile.s'</TT>) to the S-Plus Commands Window with the 
+<CODE>C-c C-n</CODE> or <CODE>C-c C-r</CODE> keys.
+
+Run S-PLUS 6.x or 2000 inside an emacs buffer
+
+<PRE>
+M-x Sqpe+6
+</PRE>
+
+You will then be asked for a pathname ("S starting data
+directory?"), from which to start the process.  The prompt will
+propose your current directory as the default.  Similarly for S-PLUS
+6.x.  Send lines or regions from the emacs buffer containing your S
+program (for example, <TT>`myfile.s'</TT>) to the *S+6* buffer with the
+<CODE>C-c C-n</CODE> or <CODE>C-c C-r</CODE> keys.  You do not have access to
+interactive graphics in 
+this mode.  You get Unix-like behavior, in particular the entire
+transcript is available for emacs-style search commands.
+
+If you wish to run R, you can start it with:
+
+<PRE>
+M-x R
+</PRE>
+
+XLispStat can not currently be run with
+
+<PRE>
+M-x XLS
+</PRE>
+
+Hopefully, this will change.  However, you can still edit with
+emacs, and cut and paste the results into the XLispStat
+*Listener* Window under Microsoft Windows.
+
+SAS for Windows uses the batch access with function keys that is
+described in <TT>`doc/README.SAS'</TT>.  The user can also edit SAS files
+in an <CODE>ESS[SAS]</CODE> buffer and than manually copy and paste them into
+an Editor window in the SAS Display Manager.
+
+For Windows, inferior SAS in an <CODE>iESS[SAS]</CODE> buffer does not work
+on the local machine.  It does work over a network connection to
+SAS running on a remote Unix computer.
+
+Reason:  we use ddeclient to interface with programs and SAS doesn't
+provide the corresponding ddeserver capability.
+
+<LI>
+
+(OPTIONAL) If you are running Sqpe or R, you might consider
+installing the database files.  From within emacs, <CODE>C-x d</CODE> to
+the   directory containing ESS.  Now:
+
+<PRE>
+M-x Sqpe+6
+</PRE>
+
+(get running.  once you have reached the SPLUS prompt, do:)
+
+<PRE>
+M-x ess-create-object-name-db
+</PRE>
+
+(this will create the file <TT>`ess-s+6-namedb.el'</TT>; if it isn't in the
+ESS directory, move it there).
+
+Then, completions will be autoloaded and will not be regenerated
+for every session.
+
+For R, do the same, using
+
+<PRE>
+M-x R
+</PRE>
+
+and then <CODE>M-x ess-create-object-name-db</CODE> creating
+<TT>`ess-r-namedb.el'</TT>; if it isn't in the ESS directory, move it
+there).
+
+<LI>That's it!
+
+</OL>
+
+
+
+<H2><A NAME="SEC10" HREF="ess_toc.html#TOC10">Requirements</A></H2>
+<P>
+ESS version 5.1.n (n &#62;= 2) works best with either GNU Emacs version 20.3 or higher, or
+XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
+
+
+
+<UL>
+<LI>S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
+
+<LI>R versions &#62;=0.49
+
+<LI>S4
+
+<LI>SAS 6.x, 7.x, 8.x
+
+<LI>BUGS 0.5, 0.603
+
+<LI>Stata &#62;=6.0
+
+<LI>XLispStat versions &#62;=3.50
+
+</UL>
+
+<P>
+on the following platforms
+
+
+
+<UL>
+<LI>Solaris/SunOS (all)
+
+<LI>SGI (all)
+
+<LI>Linux (S4, S-PLUS 5.x, R, XLispStat, Stata 6.0)
+
+<LI>Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
+
+<LI>Apple Mac OS (SAS for OS 9 and X11 R for OS X)
+
+</UL>
+
+<P>
+with the following versions of emacs
+
+
+
+<UL>
+<LI>GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
+
+<LI>XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
+
+<LI>XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34<A NAME="DOCF1" HREF="ess_foot.html#FOOT1">(1)</A>
+</UL>
+
+
+
+<H2><A NAME="SEC11" HREF="ess_toc.html#TOC11">Other variables you may need to change</A></H2>
+
+<P>
+If you run the <B>S</B> program (from the shell) with a command other than
+<SAMP>`Splus'</SAMP> you will need to set the variable
+<CODE>inferior-ess-program</CODE>
+<A NAME="IDX10"></A>
+to the name of the appropriate program by including a line such as
+<A NAME="IDX11"></A>
+<A NAME="IDX12"></A>
+<A NAME="IDX13"></A>
+
+<PRE>
+(setq inferior-ess-program "S+")
+</PRE>
+
+<P>
+in your <TT>`.emacs'</TT> file
+<A NAME="IDX14"></A>
+(substituting <SAMP>`S+'</SAMP> for the name of your <B>S</B> program.)
+
+
+<P>
+If you need to call this program with any arguments, the variable you
+<A NAME="IDX15"></A>
+need to set is dependent on the value of <CODE>inferior-ess-program</CODE>; for
+example if it is <CODE>"Splus"</CODE>, set the variable
+<CODE>inferior-Splus-args</CODE>
+<A NAME="IDX16"></A>
+to a string of arguments to the <CODE>Splus</CODE> program.  If
+<CODE>inferior-ess-program</CODE> has some other value, substitute the
+<CODE>Splus</CODE> part of <CODE>inferior-Splus-args</CODE> with the appropriate
+program name.  There aren't many instances where you need to call <B>S</B>
+with arguments, however: in particular do not call the <B>S</B> program
+with the <SAMP>`-e'</SAMP> command-line editor argument since ESS provides this
+feature for you.
+
+
+<P>
+<A NAME="IDX17"></A>
+<A NAME="IDX18"></A>
+If you are running Splus (the enhanced version of <B>S</B> from Statsci) you
+may also need to set the variable <CODE>S-plus</CODE> to <CODE>t</CODE>.  If your
+value of <CODE>inferior-ess-program</CODE> is <CODE>"S+"</CODE> or <CODE>Splus</CODE> this
+will not be necessary, however; <CODE>S-plus</CODE> defaults to <CODE>t</CODE> in
+this case.
+
+
+<P>
+Finally, if you use a non-standard prompt within S, you will need to set the
+variable <CODE>inferior-ess-prompt</CODE>
+<A NAME="IDX19"></A>
+<A NAME="IDX20"></A>
+to a regular expression which will match both the primary prompt (<CODE>"&#62; "</CODE>
+<A NAME="IDX21"></A>
+by default) and the continuing prompt (default of <CODE>"+ "</CODE>.) The
+<A NAME="IDX22"></A>
+default value of this variable matches S's default prompts.  For example,
+if you use (<CODE>"$ "</CODE>) as your primary prompt (you have
+<CODE>options(prompt="$ ")</CODE> in your <CODE>.First</CODE> function), add the
+<A NAME="IDX23"></A>
+<A NAME="IDX24"></A>
+following line to your <TT>`.emacs'</TT>:
+
+<PRE>
+(setq inferior-ess-prompt "^\\(\\+\\|[^\\$]*\\$\\) *")
+</PRE>
+
+<P>
+You will also need to set the variable <CODE>inferior-ess-primary-prompt</CODE>
+<A NAME="IDX25"></A>
+to a regular expression which matches the primary prompt only.  Do not
+anchor the regexp to the beginning of the line with <SAMP>`^'</SAMP>.  Once
+again, the default value matches S's default prompt; in the example
+above the appropriate value would be <CODE>"[^\\$]*\\$ *"</CODE>.
+
+
+<P>
+Once these variables are set appropriately, ESS should work on any
+system.
+
+
+<P><HR><P>
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_1.html">previous</A>, <A HREF="ess_3.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+</BODY>
+</HTML>
