@@ -1,5 +1,8 @@
 2004-06-30  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
+	* ess-mode.el (ess-mode-menu): Add entries to jump to top-level of
+	ESS info file.
+
 	* ess-cust.el (ess-rterm-versions): Condition initial value on
 	ess-microsoft-p.
 
