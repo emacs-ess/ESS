@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/03/05 19:53:36 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: ess-help.el,v 5.2 1999/03/05 19:53:36 rossini Exp $
+;; Modified: $Date: 1999/03/05 21:13:48 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: ess-help.el,v 5.3 1999/03/05 21:13:48 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -106,7 +106,11 @@ file.  Otherwise just pops to an existing buffer if it exists."
 	  (setq ess-local-process-name ess-current-process-name)
 	  (ess-command (format curr-help-command object) tbuffer) ;; was
 	  ;; inferior-ess-help-command
-	  (ess-nuke-help-bs)
+
+	  ;; Stata is clean, so we get a big BARF from this.
+	  (if (not (string= ess-language "STA"))
+	    (ess-nuke-help-bs))
+
 	  (goto-char (point-min))))
     (let (nodocs)
       (save-excursion
