@@ -1,11 +1,11 @@
 # This is an RPM spec file that specifies how to package
 # ESS for Fedora Core Linux and, possibly, similar systems.
-# $Id: emacs-ess.spec,v 1.4 2004/08/26 22:40:39 thor Exp $
+# $Id: emacs-ess.spec,v 1.8 2004/08/27 11:59:22 thor Exp $
 
 %define name emacs-ess
 %define version 5.2.3
-%define release 1
-Summary: Internet Relay Chat client for Emacs
+%define release 3.tgm
+Summary: Emacs Speaks Statistics add-on package for Emacs
 Name: %{name}
 Version: %{version}
 Release: %{release}
@@ -39,7 +39,7 @@ statistical analysis languages.
 %prep
 %setup -n ess-%{version}
 ( cd doc && chmod u+w html info ) # fix perms to ensure builddir can be deleted
-%patch0 -p1
+%patch0 -p1 -b .site
 
 %build
 make
@@ -118,7 +118,14 @@ fi
 
 
 %changelog
-* Thu Aug 26 2004 Tom Moertel <thor@bifur.lab01.moertel.com> ess-5.2.2-1.tgm
+* Fri Aug 27 2004 Tom Moertel <thor@bifur.lab01.moertel.com> 5.2.2-3.tgm
+- Updated ESS URL.
+- Fixed Summary.
+
+* Fri Aug 27 2004 Tom Moertel <thor@bifur.lab01.moertel.com> 5.2.2-2.tgm
+- Fixed bug: Forgot to include ESS's etc/ directory.
+
+* Thu Aug 26 2004 Tom Moertel <thor@bifur.lab01.moertel.com> 5.2.2-1.tgm
 - Initial build.
 
 
