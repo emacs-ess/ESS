@@ -222,16 +222,16 @@ Concept Index
 * Menu:
 
 * .Data directory:                       Variables for starting ESS.
-* .emacs file <1>:                       System dependent.
-* .emacs file <2>:                       Variables.
-* .emacs file <3>:                       Source Directories.
-* .emacs file <4>:                       Indenting.
-* .emacs file:                           Variables for starting ESS.
+* .emacs file <1>:                       Source Directories.
+* .emacs file <2>:                       System dependent.
+* .emacs file <3>:                       Indenting.
+* .emacs file <4>:                       Variables for starting ESS.
+* .emacs file:                           Variables.
 * .First function:                       System dependent.
 * aborting S commands:                   Other.
 * aborting the ESS process:              Other.
-* arguments to S program <1>:            Customizing startup.
-* arguments to S program:                System dependent.
+* arguments to S program <1>:            System dependent.
+* arguments to S program:                Customizing startup.
 * authors:                               Credits.
 * autosaving:                            Source Files.
 * Bug reports:                           Reporting Bugs.
@@ -258,8 +258,8 @@ Concept Index
 * debugging S functions:                 Evaluating code.
 * defaults:                              Variables.
 * deleting output:                       Last command.
-* directories <1>:                       Starting Up.
-* directories:                           Variables for starting ESS.
+* directories <1>:                       Variables for starting ESS.
+* directories:                           Starting Up.
 * DISPLAY environment variable:          Variables for starting ESS.
 * dump file directories:                 Source Directories.
 * dump file names:                       Source Directories.
@@ -319,12 +319,12 @@ Concept Index
 * reverting function definitions:        Edit buffer.
 * running S:                             Starting Up.
 * S program name:                        System dependent.
-* search list <1>:                       Hot keys.
-* search list:                           Source Directories.
+* search list <1>:                       Source Directories.
+* search list:                           Hot keys.
 * sending input:                         Entering commands.
 * Splus:                                 System dependent.
-* starting directory <1>:                Variables for starting ESS.
-* starting directory:                    Starting Up.
+* starting directory <1>:                Starting Up.
+* starting directory:                    Variables for starting ESS.
 * starting ESS:                          Starting Up.
 * stepping through code:                 Evaluating code.
 * STERM:                                 Is the Statistical Process running under ESS?.
@@ -340,8 +340,8 @@ Concept Index
 * variables:                             Variables.
 * working directory <1>:                 Source Directories.
 * working directory:                     Starting Up.
-* X windows <1>:                         Variables for starting ESS.
-* X windows:                             X11.
+* X windows <1>:                         X11.
+* X windows:                             Variables for starting ESS.
 
 
 File: ess.info,  Node: Variable and command index,  Prev: Concept Index,  Up: Top
@@ -358,18 +358,18 @@ Variable and command index
 * comint-copy-old-input:                 Transcript resubmit.
 * comint-delimiter-argument-list:        History expansion.
 * comint-dynamic-complete:               Completion.
-* comint-input-ring-size <1>:            Variables controlling interaction.
-* comint-input-ring-size:                Command History.
+* comint-input-ring-size <1>:            Command History.
+* comint-input-ring-size:                Variables controlling interaction.
 * comint-interrupt-subjob:               Other.
 * comint-kill-input:                     Command-line editing.
 * comint-kill-output:                    Last command.
 * comint-mode-map:                       Keybindings.
-* comint-next-input <1>:                 Command History.
-* comint-next-input:                     Process buffer motion.
+* comint-next-input <1>:                 Process buffer motion.
+* comint-next-input:                     Command History.
 * comint-next-matching-input:            Command History.
 * comint-next-matching-input-from-input: Command History.
-* comint-previous-input <1>:             Command History.
-* comint-previous-input:                 Process buffer motion.
+* comint-previous-input <1>:             Process buffer motion.
+* comint-previous-input:                 Command History.
 * comint-previous-matching-input:        Command History.
 * comint-previous-matching-input-from-input: Command History.
 * comint-show-maximum-output:            Last command.
@@ -379,10 +379,10 @@ Variable and command index
 * dump():                                Edit buffer.
 * ess-abort:                             Other.
 * ess-arg-function-offset:               Indentation variables.
-* ess-ask-about-display <1>:             Variables for starting ESS.
-* ess-ask-about-display:                 X11.
-* ess-ask-about-transfile <1>:           Saving transcripts.
-* ess-ask-about-transfile:               Customizing startup.
+* ess-ask-about-display <1>:             X11.
+* ess-ask-about-display:                 Variables for starting ESS.
+* ess-ask-about-transfile <1>:           Customizing startup.
+* ess-ask-about-transfile:               Saving transcripts.
 * ess-ask-for-ess-directory <1>:         Variables for starting ESS.
 * ess-ask-for-ess-directory:             Customizing startup.
 * ess-auto-newline:                      Indentation variables.
@@ -391,18 +391,18 @@ Variable and command index
 * ess-brace-offset:                      Indentation variables.
 * ess-change-sp-regex:                   Completion details.
 * ess-clean-region:                      Saving transcripts.
-* ess-cleanup <1>:                       Hot keys.
-* ess-cleanup:                           Help.
+* ess-cleanup <1>:                       Help.
+* ess-cleanup:                           Hot keys.
 * ess-continued-brace-offset:            Indentation variables.
 * ess-continued-statement-offset:        Indentation variables.
 * ess-default-style:                     Indentation variables.
 * ess-delete-dump-files:                 Source Files.
 * ess-describe-help-mode:                Help.
-* ess-directory <1>:                     Source Directories.
-* ess-directory:                         Customizing startup.
+* ess-directory <1>:                     Customizing startup.
+* ess-directory:                         Source Directories.
 * ess-display-help-on-object:            Help.
-* ess-dump-filename-template <1>:        Dump file variables.
-* ess-dump-filename-template:            Source Directories.
+* ess-dump-filename-template <1>:        Source Directories.
+* ess-dump-filename-template:            Dump file variables.
 * ess-dump-object-into-edit-buffer <1>:  Other.
 * ess-dump-object-into-edit-buffer:      Edit buffer.
 * ess-else-offset:                       Indentation variables.
@@ -421,8 +421,8 @@ Variable and command index
 * ess-eval-visibly-p:                    Evaluating code.
 * ess-execute:                           Hot keys.
 * ess-execute-attach:                    Hot keys.
-* ess-execute-in-process-buffer <1>:     Hot keys.
-* ess-execute-in-process-buffer:         Variables controlling interaction.
+* ess-execute-in-process-buffer <1>:     Variables controlling interaction.
+* ess-execute-in-process-buffer:         Hot keys.
 * ess-execute-in-tb:                     Evaluating code.
 * ess-execute-objects:                   Hot keys.
 * ess-execute-search:                    Hot keys.
@@ -440,8 +440,8 @@ Variable and command index
 * ess-keep-dump-files <1>:               Source Files.
 * ess-keep-dump-files:                   Dump file variables.
 * ess-list-object-name-completions:      Completion.
-* ess-load-file <1>:                     Loading.
-* ess-load-file:                         Hot keys.
+* ess-load-file <1>:                     Hot keys.
+* ess-load-file:                         Loading.
 * ess-mode-hook:                         Hooks.
 * ess-mode-load-hook:                    Hooks.
 * ess-mode-map:                          Keybindings.
@@ -464,8 +464,8 @@ Variable and command index
 * ess-source-directory-generator:        Dump file variables.
 * ess-style-alist:                       Indentation variables.
 * ess-submit-bug-report:                 Reporting Bugs.
-* ess-switch-to-end-of-ESS <1>:          Help.
-* ess-switch-to-end-of-ESS:              Other edit buffer commands.
+* ess-switch-to-end-of-ESS <1>:          Other edit buffer commands.
+* ess-switch-to-end-of-ESS:              Help.
 * ess-switch-to-ESS:                     Other edit buffer commands.
 * ess-tab-always-indent:                 Indentation variables.
 * ess-trans-font-lock-keywords:          Highlighting.
@@ -492,11 +492,10 @@ Variable and command index
 * S:                                     Variables for starting ESS.
 * S-directory:                           Variables for starting ESS.
 * S-plus:                                System dependent.
-* search() <1>:                          Hot keys.
-* search() <2>:                          Completion.
+* search() <1>:                          Completion.
 * search():                              Hot keys.
-* source() <1>:                          Evaluating code.
-* source():                              Loading.
+* source() <1>:                          Loading.
+* source():                              Evaluating code.
 * STERM:                                 Is the Statistical Process running under ESS?.
 * X-displays-list:                       Variables for starting ESS.
 

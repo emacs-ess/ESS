@@ -1188,10 +1188,9 @@ or directories, for later editing and retrieval.
  realization of the objects.  Dumped buffers should not be saved.
 _We_strongly_discourage_this_approach_.  However, if you insist,    add
 the following lines to your .emacs file:
-
-   (setq ess-keep-dump-files 'nil)       (setq ess-delete-dump-files t)
+     (setq ess-keep-dump-files 'nil)
+     (setq ess-delete-dump-files t)
      (setq ess-mode-silently-save nil)
-
    The second saves a small amount of disk space.  The first allows for
 better portability as well as external version control for code.
 

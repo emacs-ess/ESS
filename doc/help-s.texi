@@ -136,11 +136,11 @@ retrieved again, by changing emacs variables.
    realization of the objects.  Dumped buffers should not be saved.
    _We_strongly_discourage_this_approach_.  However, if you insist,
    add the following lines to your .emacs file:
-
-      (setq ess-keep-dump-files 'nil)
-      (setq ess-delete-dump-files t)
-      (setq ess-mode-silently-save nil)
-
+@example
+(setq ess-keep-dump-files 'nil)
+(setq ess-delete-dump-files t)
+(setq ess-mode-silently-save nil)
+@end example
 The second saves a small amount of disk space.  The first allows for
 better portability as well as external version control for code.
 
@@ -153,7 +153,7 @@ possible.  Contributions of examples of how you work with ESS are
 appreciated (especially since it helps us determine priorities on
 future enhancements)! (comments as to what should be happening are
 prefixed by "##").
-
+@display
 1:  ##    Data Analysis Example (source code is real)
     ## Load the file you want to work with
     C-x C-f myfile.s
@@ -265,7 +265,7 @@ prefixed by "##").
     ## When you need help, use 
     C-c C-v rchisq
     ## instead of entering:   help("rchisq")
-
+@end display
 
 
 @node Customization Examples and Solutions to Problems, ,Scenarios for use (possibilities--based on actual usage), Help for the S family
@@ -283,8 +283,9 @@ prefixed by "##").
    you heavy simulation people).  Then uncomment the line in ess-site
    (or add after your (require 'ess-site) or (load "ess-site") command 
     in your .emacs file, the line:
-       
-       (setq ess-plain-first-buffername nil)
+@example
+(setq ess-plain-first-buffername nil)
+@end example
    )
 
 3. Fontlocking sometimes fails to behave nicely upon errors.  When
