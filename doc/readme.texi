@@ -3,14 +3,14 @@
 @setfilename readme.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: readme.texi,v 1.12 2000/03/13 13:40:43 maechler Exp $
+@comment $Id: readme.texi,v 1.13 2000/03/21 18:06:55 maechler Exp $
 
 @node General Information
 @comment  node-name,  next,  previous,  up
 @chapter General Information: README
 @cindex README
 
-($Revision: 1.12 $, for ESS 5.1.x)
+($Revision: 1.13 $, for ESS 5.1.x)
 
 This is the README file for the distribution of ESS version 5.1.13, the
 alpha/beta series we are using on the way to producing 5.2 (the next
@@ -27,7 +27,7 @@ were desired.  In addition, with new modes being developed for R,
 Stata, and SAS, it was felt that providing for a unifying framework
 would eliminate differences in the user interface, as well as to
 provide for faster development of production tools and statistical
-analysis.  5.0 has, for its guts, the basic framework from S-mode.
+analysis.  5.1.y has, for its guts, the basic framework from S-mode.
 However, it has been cleaned, streamlined, brought closer to
 conformance as a standard GNU Emacs package, and redesigned for
 modularity and reuse.
