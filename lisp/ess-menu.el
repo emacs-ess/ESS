@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.14 2001/09/20 10:26:23 maechler Exp $
+;; Version: $Id: ess-menu.el,v 1.15 2001/09/26 14:15:26 ess Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -37,8 +37,8 @@
 
 ;;(require 'ess-site)
 (require 'ess-cust)
-(if (and ess-running-xemacs; need this, since require in E 19.34 has only 2 arg
-	 (not (require 'imenu "imenu.elc" 'no-error)))
+(if (and ess-running-xemacs; need this, since require in XEmacs has only 2 arg
+	 (not (require 'imenu "imenu.elc")))
     (message "** warning: 'imenu not available for this version of XEmacs")
   )
 ;;possibly below, after checking: (require 'speedbar)

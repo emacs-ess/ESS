@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/09/25 20:44:11 $
-;; Version: $Revision: 1.37 $
-;; RCS: $Id: essa-sas.el,v 1.37 2001/09/25 20:44:11 ess Exp $
+;; Modified: $Date: 2001/09/26 14:15:26 $
+;; Version: $Revision: 1.38 $
+;; RCS: $Id: essa-sas.el,v 1.38 2001/09/26 14:15:26 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -510,14 +510,13 @@ Keep in mind that the maximum command line length in MS-DOS is
   C-TAB to `ess-sas-backward-delete-tab', and
   RET to `newline'.")
 
-(defun ess-sas-edit-keys-toggle (&optional arg global)
+(defun ess-sas-edit-keys-toggle (&optional arg)
   "Toggle TAB key in `SAS-mode'.
 If first arg is 0, TAB is `sas-indent-line'.
 If first arg is positive, TAB is `ess-sas-tab-to-tab-stop', 
 C-TAB is `ess-sas-backward-delete-tab' and
 RET is `newline'.
-Without args, toggle between these options.
-If second arg is non-nil, then C-TAB definition is global."
+Without args, toggle between these options."
   (interactive "P")
   (setq ess-sas-edit-keys-toggle
 	(if (null arg) (not ess-sas-edit-keys-toggle)
@@ -525,12 +524,9 @@ If second arg is non-nil, then C-TAB definition is global."
   (if ess-sas-edit-keys-toggle
       (progn
 	(if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
-	    (if global (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
+	       (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab)
 	    ;else
-	       (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab))
-	    (if global (global-set-key [(control tab)] 'ess-sas-backward-delete-tab)
-	    ;else
-	       (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab)))
+	       (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
 	;else
         (define-key sas-mode-local-map [return] 'newline)
 	(define-key sas-mode-local-map "\t" 'ess-sas-tab-to-tab-stop))
@@ -573,6 +569,11 @@ If second arg is non-nil, then C-TAB definition is global."
   (global-set-key [f9] 'ess-sas-data-view)
   (global-set-key [f10] 'ess-sas-toggle-sas-mode)
   (global-set-key [f11] 'ess-sas-goto-file-2)
+	(if (and ess-sas-edit-keys-toggle
+	    (equal emacs-major-version 19) (equal emacs-minor-version 28))
+	    (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
+	    ;else
+	    (global-set-key [(control tab)] 'ess-sas-backward-delete-tab))
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 (defvar ess-sas-local-pc-keys nil
