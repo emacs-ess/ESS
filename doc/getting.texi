@@ -6,10 +6,10 @@ The latest stable version of ESS is always available on the web at:
 @comment 
 @comment         @code{http://stat.ethz.ch/ESS/}
 @comment
-@comment anonymous CVS not set up yet
-@comment The latest (no more than 24 hours behind the developers) version of
-@comment ESS can also be retrieved using anonymous cvs:
-@comment @include inst_cvs.texi
+The latest (no more than 24 hours behind the developers) version of
+ESS can also be retrieved using anonymous cvs:
+
+@include inst_cvs.texi
 @comment
 @comment not sure what we are refering to; this is already in ANNOUNCE
 @comment Check the @file{README}  file first to see which files you need.

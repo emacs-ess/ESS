@@ -35,7 +35,7 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.20
 
-   (Documentation $Revision: 1.25 $ $Date: 2002/04/12 17:50:22 $).
+   (Documentation $Revision: 1.26 $ $Date: 2002/04/15 16:06:38 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
      Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and
@@ -304,6 +304,14 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 New features in ESS
 ===================
 
+   Changes/New Features in 5.1.21:
+   * ESS[SAS]: info documentation now available!, see ESS->Help for
+     Statistical Packages->Help for SAS; F12 opens GSASFILE nearest
+     point for viewing either within emacs, when available, or via an
+     external viewer; more syntax highlighting keywords
+
+   * Makefile: tag now independent of rel
+
    Changes/New Features in 5.1.20:
    * New `options()$STERM' in the S dialects (S, S-Plus, R).  The S
      program can determine the environment in which it is currently
@@ -328,7 +336,7 @@ New features in ESS
    * should now work even when imenu is not available (for old
      Xemacsen).
 
-   * for SAS : XEmacs-Imenu fix; C-TAB is globalized along with your
+   * ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your
      function-key definitions, if specified; you can specify your SAS
      library definitions outside of autoexec.sas for ess-sas-data-view
      with SAS code placed in the variable ess-sas-data-view-libname,
@@ -346,7 +354,7 @@ New features in ESS
      local file variables are re-read at submit instead of only at file
      open so that if you make a change it is picked up immediately;
 
-   * for BUGS: font-lock with `in' fixed.
+   * ESS[BUGS]: font-lock with `in' fixed.
 
    * for STATA: font-lock bug fixed.
 
@@ -559,6 +567,23 @@ Getting the latest version of ESS
    The latest stable version of ESS is always available on the web at:
 ESS web page (http://software.biostat.washington.edu/statsoft/ess/) or
 StatLib (http://lib.stat.cmu.edu/general/ESS/)
+
+   The latest (no more than 24 hours behind the developers) version of
+ESS can also be retrieved using anonymous cvs:
+
+   You need a cvs client (that works with your firewall, if any)
+
+   the repository name is
+`:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs'
+
+   using a command-line cvs client (i.e. on Unix or DOS), first type:
+`cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs
+login'
+
+   password is anoncvs
+
+   then type:    `cvs -d
+:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess'
 
 
 File: ess.info,  Node: Manual,  Prev: Latest version,  Up: Introduction
