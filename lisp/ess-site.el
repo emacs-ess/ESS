@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/06/28 08:29:41 $
-;; Version: $Revision: 5.54 $
-;; RCS: $Id: ess-site.el,v 5.54 2000/06/28 08:29:41 maechler Exp $
+;; Modified: $Date: 2000/06/28 09:24:31 $
+;; Version: $Revision: 5.55 $
+;; RCS: $Id: ess-site.el,v 5.55 2000/06/28 09:24:31 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -53,20 +53,10 @@
 ;;;      (setq load-path (cons "/path/to/ess/lisp-directory" load-path)
 ;;;
 
-;; Shouldn't this be at the *end*, when we are sure no error made this stop?
+;; provide here; otherwise get infinite requiring loop:
 (provide 'ess-site)
 
 ;;; Code:
-
-
-;; load code to figure out what version/strain of Emacs we are running
-
-(require 'ess-emcs)
-
-;; If we have custom available, make this "t")
-
-(setq ess-local-custom-available nil)
-
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
@@ -84,8 +74,8 @@
   ;; Not important in XEmacs, if unpacking from ../xemacs/site-lisp/
   ;; directory.
 
-  ;; WARNING: with Emacs 20.2 (and 20.3 in one case), MUST USE
-  ;; =======  ONE OF THE FOLLOWING NON-DEFAULT SETTINGS
+  ;; WARNING: with Emacs 20.2 (and 20.3 in one case),
+  ;; =======  MUST USE ONE OF THE NON-DEFAULT SETTINGS BELOW
 
   ;; A nice default
   (defvar ess-lisp-directory
@@ -136,13 +126,23 @@
 	(if window-system
 	    (progn
 	      ;; comment and reference faces
-	      (load-file (concat ess-lisp-directory
-				 "/19.29/faces.el"))
+	      (load-file (concat ess-lisp-directory "/19.29/faces.el"))
 	      ;; font-lock features not in 19.28
-	      (load-file (concat ess-lisp-directory
-				 "/19.29/font-lock.el"))))))
+	      (load-file (concat ess-lisp-directory "/19.29/font-lock.el"))
+	      ))))
 
-  (add-to-list 'load-path ess-lisp-directory))
+  (add-to-list 'load-path ess-lisp-directory)
+
+); eval-*-compile
+
+
+;; load code to figure out what version/strain of Emacs we are running
+;; must come *AFTER* load-path is set !
+
+(require 'ess-emcs)
+;; sets the following ..custom-avaiable to nil.  
+;; If we have custom available, make this "t":
+;; (setq ess-local-custom-available 't)
 
 
 ;;; (1.2) Files ending in .q and .S are considered to be S source files
@@ -511,7 +511,6 @@
 ;;; 5.0 Noweb and Literate Data Analysis configuration
 
 ;; already above [1.7]: (require 'ess-noweb)
-
 
  ; Local variables section
 

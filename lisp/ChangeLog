@@ -1,3 +1,7 @@
+2000-06-28  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-site.el : load-path setting *MUST* come first.
+
 2000-04-14  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-dir-modtime): RMH: use file-directory-p instead
