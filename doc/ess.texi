@@ -98,6 +98,7 @@ permission notice identical to this one.
 Introduction to ESS
 
 * Features::                    Why should I use ESS?
+* New features::                
 * Credits::                     Authors of and contributors to ESS
 * Latest version::              Getting the latest version of ESS
 * Manual::                      How to read this manual
@@ -232,12 +233,13 @@ your @b{S} functions in specified source directories.
 
 @menu
 * Features::                    Why should I use ESS?
+* New features::                
 * Credits::                     Authors of and contributors to ESS
 * Latest version::              Getting the latest version of ESS
 * Manual::                      How to read this manual
 @end menu
 
-@node Features, Credits, Introduction, Introduction
+@node Features, New features, Introduction, Introduction
 @comment  node-name,  next,  previous,  up
 @section Why should I use ESS?
 
@@ -317,25 +319,37 @@ or line-by-line evaluation of files (useful for debugging).
 Finally, ESS provides features for re-submitting commands from saved
 transcript files, including:
 
-*** Not yet written ***
+@itemize
 
-@c @node New features
-@c @comment  node-name,  next,  previous,  up
-@c @section New features in ESS
+@item 
+@b{Evaluation of previously entered commands}, stripping away
+unnecessary prompts.
 
-@c New user-visible features to ESS are documented in the @file{NEWS}
-@c file; all changes are listed in the @file{ChangeLog} file.  Selected
-@c features new to recent versions of ESS are listed below; for changes
-@c to older version check the @file{NEWS} file.
+@end itemize
 
-@c @node Version 4.8
-@c @comment  node-name,  next,  previous,  up
+@node New features, Credits, Features, Introduction
+@comment  node-name,  next,  previous,  up
+@section New features in ESS
 
-@c @itemize
+New user-visible features to ESS are documented in the @file{NEWS} file;
+all changes are listed in the @file{ChangeLog} file.  Selected features
+new to recent versions of ESS are listed below; for changes to older
+version check the @file{NEWS} file.  Planned features and bugs to fix
+can be found the @file{TODO} file.
 
-@c @end itemize
+@itemize @bullet
+@item
+@b{Additional Language support} for S language dialects, XLispStat, and
+SAS.
 
-@node Credits, Latest version, Features, Introduction
+@item
+@b{Bug Fixes}
+
+
+@end itemize
+
+
+@node Credits, Latest version, New features, Introduction
 @comment  node-name,  next,  previous,  up
 @section Authors of and contributors to ESS
 
