@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/06/30 16:50:16 $
-;; Version: $Revision: 5.31 $
-;; RCS: $Id: ess-mode.el,v 5.31 2004/06/30 16:50:16 stephen Exp $
+;; Modified: $Date: 2004/07/01 11:30:34 $
+;; Version: $Revision: 5.32 $
+;; RCS: $Id: ess-mode.el,v 5.32 2004/07/01 11:30:34 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -227,6 +227,11 @@
     ["Sqpe" Sqpe ess-microsoft-p] ;; :help "Start a new Sqpe process" :active t
     ["S+6-exisiting" S+6-existing ess-microsoft-p] ;; :help "Access an existing S process" :active t
     ["SAS"   SAS-menu t] ;;  :help "Start a new SAS process" :active t
+    ;; The following menu item "Other" is a place-holder that will
+    ;; be replaced with the other versions of R that can be run.
+    ;; See `ess-r-versions-create' and ess-site.el
+    ("Other"				
+     ["No other R versions" R nil])
     ["About" 
      (ess-goto-info "Starting up") t]
      ;; :help "Read about starting a new ESS process" :active t]
