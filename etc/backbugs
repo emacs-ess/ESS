@@ -3,15 +3,12 @@
 # runs BUGS taking commands from command file
 #
 
-if [ ${BUGS:?} = "BUGS: parameter null or not set" ]
-then 
-    case `config.guess` in
-	i?86-pc-cygwin)     BUGS=bugs0603.exe;;
-	i?86-*-linux*)      BUGS=bugs0600.linux;;
-	sparc-sun-solaris*) BUGS=bugs603.sparc;;
-	mips-sgi-irix*)     BUGS=bugs06.sgi;;
-    esac
-fi
+case `config.guess` in
+    i?86-pc-cygwin)     BUGS=bugs0603.exe;;
+    i?86-*-linux*)      BUGS=bugs0600.linux;;
+    sparc-sun-solaris*) BUGS=bugs603.sparc;;
+    mips-sgi-irix*)     BUGS=bugs06.sgi;;
+esac
 
 case $# in
      1) $BUGS 32 bugs $1

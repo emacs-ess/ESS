@@ -3,19 +3,16 @@
 # runs BUGS taking commands from command file
 #
 
-if [ ${BUGS:?} = "BUGS: parameter null or not set" ]
-then 
-    case `config.guess` in
-	alpha*-dec-*)       BUGS=bugs05.decalpha;;
-        hppa*-hp-hpux*)     BUGS=bugs05.hp;;
-	i?86-pc-cygwin)     BUGS=bugs05.exe;;
-	i?86-*-freebsd*)    BUGS=bugs05.freebsd;;
-	powerpc*-*-*)       BUGS=bugs05.rs6000;;
-	sparc-sun-solaris*) BUGS=bugs05.sparc;;
-	mips-sgi-irix*)     BUGS=bugs05.sgi;;
-	mips-dec-*)         BUGS=bugs05.decmips;;
-    esac
-fi
+case `config.guess` in
+    alpha*-dec-*)       BUGS=bugs05.decalpha;;
+    hppa*-hp-hpux*)     BUGS=bugs05.hp;;
+    i?86-pc-cygwin)     BUGS=bugs05.exe;;
+    i?86-*-freebsd*)    BUGS=bugs05.freebsd;;
+    powerpc*-*-*)       BUGS=bugs05.rs6000;;
+    sparc-sun-solaris*) BUGS=bugs05.sparc;;
+    mips-sgi-irix*)     BUGS=bugs05.sgi;;
+    mips-dec-*)         BUGS=bugs05.decmips;;
+esac
 
 case $# in
      1) $BUGS 32 bugs $1
