@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2002/01/20 06:14:36 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: essdsp6w.el,v 5.8 2002/01/20 06:14:36 rmh Exp $
+;; Modified: $Date: 2002/01/21 03:27:40 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: essdsp6w.el,v 5.9 2002/01/21 03:27:40 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -50,9 +50,9 @@ Easily changeable in a user's `.emacs'.")
 
 (defvar inferior-S+6-multipleinstances "/MULTIPLEINSTANCES"
   "Default \"/MULTIPLEINSTANCES\" opens up a new instance of S+6 in a
-GUI window and connects it to the *S+6 ddeclient* window.  The
+GUI window and connects it to the '(ddeESS [S+6])' window.  The
 alternative nil uses an existing S+6 GUI (if there is one) and
-connects it to the *S+6 ddeclient* window.")
+connects it to the '(ddeESS [S+6])' window.")
 
 (defvar S+6-customize-alist
   '((ess-local-customize-alist     . 'S+6-customize-alist)
@@ -153,7 +153,7 @@ connects it to the *S+6 ddeclient* window.")
 ;;;     buffer.  It works as as a GUI window and we must send commands
 ;;;     to it through ddeclient.  Nonetheless, we need to give it a
 ;;;     process name and be sure that that there is a valid running
-;;;     process in the *S+6 ddeclient* buffer.  Therefore we create an
+;;;     process in the '(ddeESS [S+6])' buffer.  Therefore we create an
 ;;;     ESS process in the buffer as a placeholder and start a shell
 ;;;     in the ESS buffer.  From the shell we start Splus.  Once Splus
 ;;;     finishes initializing and kills the original shell, we start
@@ -161,17 +161,17 @@ connects it to the *S+6 ddeclient* window.")
 ;;;     inferior-ess-ddeclient, initialized to nil.  When there is a
 ;;;     non-nil value of inferior-ess-ddeclient we send lines to
 ;;;     inferior-ess-ddeclient rather than to the Splus process.
-;;; (2) There is no Splus process running in the *S+6 ddeclient*
+;;; (2) There is no Splus process running in the '(ddeESS [S+6])'
 ;;;     buffer.  Therefore inferior-ess will never see a prompt,
 ;;;     unless we first change it to the null prompt "^".  Then once
 ;;;     the process has started, we change it back.
 ;;; (3) When M-x S+6 starts Splus by a shell command, then Splus is an
-;;;     independent process and will be survive if the *S+6 ddeclient*
-;;;     buffer is killed (or emacs is quit).  The *S+6 ddeclient* is
+;;;     independent process and will be survive if the '(ddeESS [S+6])'
+;;;     buffer is killed (or emacs is quit).  The '(ddeESS [S+6])' is
 ;;;     made read-only and a warning is placed in it saying that "You
 ;;;     can't type anything here."  Actually, if thestandalone Splus
-;;;     is killed and the *S+6 ddeclient* is made writable (C-x C-q),
-;;;     then *S+6 ddeclient* becomes a shell buffer.
+;;;     is killed and the '(ddeESS [S+6])' is made writable (C-x C-q),
+;;;     then '(ddeESS [S+6])' becomes a shell buffer.
 ;;;
 (defun S+6 (&optional proc-name)
   "S-Plus 6 for Microsoft Windows (Version 6.0.3 Release 2 and
@@ -186,10 +186,10 @@ connect to it with `S+6-existing'"))
 
 (defun S+6-initiate (&optional proc-name)
   "Call 'S-PLUS 6.x for Windows', the 'GUI Thing' from StatSci.  Put S-Plus
-in an independent MS-Window (Splus persists even if the *S+6 ddeclient*
+in an independent MS-Window (Splus persists even if the '(ddeESS [S+6])'
 window is killed in emacs).  Do this by creating a comint process that
 calls sh.  Send a shell command in that sh buffer to call Splus.  When
-it completes set up a shell as a placeholder in the *S+6 ddeclient*
+it completes set up a shell as a placeholder in the '(ddeESS [S+6])'
 buffer.  The S-Plus options are correctly set.  In particular, the
 S-Plus Commands window is opened if the Options/General
 Settings/Startup menu says it should be.  There is a 30 second delay
@@ -212,7 +212,7 @@ is here to allow slow disks to start the Splus program."
       (setenv "S_PROJ" default-directory)
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
-		    ; command in *S+6 ddeclient* should follow the "$"
+		    ; command in '(ddeESS [S+6])' should follow the "$"
 		    ; prompt.  If not, then increase the sleep-for time!
       (setenv "S_PROJ" s-proj))
     (setq ess-customize-alist S+6-customize-alist)
@@ -228,7 +228,7 @@ is here to allow slow disks to start the Splus program."
     (goto-char (point-max))
     (insert (concat inferior-S+6-program-name " "
 		    inferior-ess-start-args)) ; Note: there is no final "&".
-    ;; Without the "&", the results of  !system.command  come to *S+6 ddeclient*
+    ;; Without the "&", the results of  !system.command  come to '(ddeESS [S+6])'
     ;; With the "&", the results of  !system.command  in S get lost.
     (inferior-ess-send-input)
     (sleep-for 30) ; Need to wait, else working too fast!
@@ -247,7 +247,7 @@ You may need to open the S-Plus Commands window manually (by clicking on
 Splus/Window/Commands Window).\n
 Any results of the   !system.command   typed at the S prompt in the
 Splus Commands window appear in this buffer.\n\n")
-    (goto-char (point-max))		; comint-mode-map makes *S+6 ddeclient*
+    (goto-char (point-max))		; comint-mode-map makes '(ddeESS [S+6])'
 ;;  (use-local-map comint-mode-map)     ;a shell buffer after Splus is finished.
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
     (toggle-read-only t)		; force buffer to be read-only
@@ -263,7 +263,7 @@ Splus Commands window appear in this buffer.\n\n")
 (defun S+6-existing (&optional proc-name)
   "Call 'S-PLUS 6.x for Windows', the 'GUI Thing' from StatSci.  Do so by
 finding an existing S-Plus in an independent MS-Window (if there is one) and
-set up a *S+6 ddeclient* buffer in emacs.  If there is no existing
+set up a '(ddeESS [S+6])' buffer in emacs.  If there is no existing
 S-Plus, then a new one will be opened in the default directory,
 usually something like c:/Program Files/spls45se/users/yourname.
 If you have a HOME environment variable, it will open it there."
@@ -360,10 +360,10 @@ connect to it with `S+6-msdos-existing'"))
 
 (defun S+6-msdos-initiate (&optional proc-name)
   "Call 'S-PLUS 6.x for Windows', the 'GUI Thing' from StatSci.  Put S-Plus
-in an independent MS-Window (Splus persists even if the *S+6 ddeclient*
+in an independent MS-Window (Splus persists even if the '(ddeESS [S+6])'
 window is killed in emacs).  Do this by creating a comint process that
 calls sh.  Send a shell command in that sh buffer to call Splus.  When
-it completes set up a shell as a placeholder in the *S+6 ddeclient*
+it completes set up a shell as a placeholder in the '(ddeESS [S+6])'
 buffer.  The S-Plus options are correctly set.  In particular, the
 S-Plus Commands window is opened if the Options/General
 Settings/Startup menu says it should be.  There is a 30 second delay
@@ -387,7 +387,7 @@ is here to allow slow disks to start the Splus program."
       (setenv "S_PROJ" default-directory)
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
-		    ; command in *S+6 ddeclient* should follow the "$"
+		    ; command in '(ddeESS [S+6])' should follow the "$"
 		    ; prompt.  If not, then increase the sleep-for time!
       (setenv "S_PROJ" s-proj))
     (setq ess-customize-alist S+6-customize-alist)
@@ -404,7 +404,7 @@ is here to allow slow disks to start the Splus program."
     (goto-char (point-max))
     (insert (concat inferior-S+6-program-name " "
 		    inferior-ess-start-args)) ; Note: there is no final "&".
-; Without the "&", the results of  !system.command  come to *S+6 ddeclient*
+; Without the "&", the results of  !system.command  come to '(ddeESS [S+6])'
 ; With the "&", the results of  !system.command  in S get lost.
     (inferior-ess-send-input)
     (sleep-for 30) ; Need to wait, else working too fast!
@@ -427,14 +427,13 @@ You may need to open the S-Plus Commands window manually
 (by clicking on Splus/Window/Commands Window).\n
 There is a 30 second delay when this program starts during which the
 emacs screen will be partially blank.\n
-Remember to
-`q()' from S-Plus and
- then M-x C-q exit from the `*S+6 ddeclient*' buffer,
+Remember to 'q()' from S-Plus and
+then C-x C-q exit from the '(ddeESS [S+6])' buffer,
 or take the risk of not being able to shut down your computer
 and suffering through scandisk.\n
 Any results of the   !system.command   typed at the S prompt in the
 Splus Commands window (are supposed to) appear in this buffer.\n\n")
-    (goto-char (point-max))	       ; comint-mode-map makes *S+6 ddeclient*
+    (goto-char (point-max))	       ; comint-mode-map makes '(ddeESS [S+6])'
     (use-local-map comint-mode-map)    ; a shell buffer after Splus is finished.
     (toggle-read-only t)	       ; force buffer to be read-only
     (setq mode-name "ddeESS")
@@ -446,7 +445,7 @@ Splus Commands window (are supposed to) appear in this buffer.\n\n")
 (defun S+6-msdos-existing (&optional proc-name)
   "Call 'S-PLUS 6.x for Windows', the 'GUI Thing' from StatSci.  Do so by
 finding an existing S-Plus in an independent MS-Window (if there is one) and
-set up a *S+6 ddeclient* buffer in emacs.  If there is no existing
+set up a '(ddeESS [S+6])' buffer in emacs.  If there is no existing
 S-Plus, then a new one will be opened in the default directory,
 usually something like c:/Program Files/spls45se/users/yourname.
 If you have a HOME environment variable, it will open it there."
