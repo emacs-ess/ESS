@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/10/16 09:47:34 $
-;; Version: $Revision: 5.66 $
-;; RCS: $Id: ess-inf.el,v 5.66 2001/10/16 09:47:34 maechler Exp $
+;; Modified: $Date: 2001/12/17 08:56:04 $
+;; Version: $Revision: 5.67 $
+;; RCS: $Id: ess-inf.el,v 5.67 2001/12/17 08:56:04 ess Exp $
 
 ;; This file is part of ESS
 
@@ -790,8 +790,6 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 	  (let ((dokludge (eq (point)
 			      (marker-position (process-mark sprocess)))))
 	    (insert com)
-	    ;; Is this next line REALLY NEEDED?	(AJR).
-	    (setq comint-last-input-end (point-marker))
 	    (if dokludge (set-marker (process-mark sprocess) (point)))))
       (setq start-of-output (marker-position (process-mark sprocess)))
       ;; A kludge to prevent the delay between insert and process output
