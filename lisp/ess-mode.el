@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/08 19:18:18 $
-;; Version: $Revision: 1.58 $
-;; RCS: $Id: ess-mode.el,v 1.58 1997/09/08 19:18:18 rossini Exp $
+;; Modified: $Date: 1997/09/09 20:24:09 $
+;; Version: $Revision: 1.59 $
+;; RCS: $Id: ess-mode.el,v 1.59 1997/09/09 20:24:09 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -303,7 +303,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
    (format "(ess-mode-1.5): alist=%s \n"
 	   alist))
   (setq major-mode 'ess-mode)
-  (setq mode-name (concat "ESS[" ess-dialect "]"))
+  (setq mode-name (concat "ESS[" ess-language "]")) ; was ess-dialect
   ;; The following line does the next 20 or so :-).
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1.6): editing-alist=%s \n"

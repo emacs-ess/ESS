@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/08 19:39:52 $
-;; Version: $Revision: 1.54 $
-;; RCS: $Id: ess-inf.el,v 1.54 1997/09/08 19:39:52 rossini Exp $
+;; Modified: $Date: 1997/09/09 20:23:19 $
+;; Version: $Revision: 1.55 $
+;; RCS: $Id: ess-inf.el,v 1.55 1997/09/09 20:23:19 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -421,7 +421,7 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
 
 ;;;;* define two commands consistent with other comint modes, run-s &
 ;;;;  run-S.
-(fset 'run-s (fset 'run-S (symbol-function 'S)))
+;;(fset 'run-s (fset 'run-S (symbol-function 'S)))
 
 ;;*;; General process handling code
 
@@ -1013,7 +1013,7 @@ to continue it."
   (comint-mode)
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq major-mode 'inferior-ess-mode)
-  (setq mode-name (concat "iESS:" ess-dialect))
+  (setq mode-name "iESS") ;(concat "iESS:" ess-dialect))
   (setq mode-line-process
 	'(" [" ess-local-process-name "]: %s"))
   (use-local-map inferior-ess-mode-map)
