@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/21 21:41:52 $ - $Revision: 1.241 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/21 23:29:03 $ - $Revision: 1.242 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -209,17 +209,17 @@ Statistics (ESS) \citep{ESS}, a software package which provides a
 common interface to a variety of statistical packages on the most
 common computing platforms.
 
-ESS is a statistical package interface which provides, through Emacs,
-tools which facilitate both statistical software development and data
-analysis.  ESS provides assistance with both writing and evaluation of
-analysis code for both interactive and batch statistical packages.
-ESS currently supports the S family of languages (including S
+ESS is an interface to statistical packages which provides tools which
+facilitate both statistical software development and data analysis.
+ESS provides assistance with both writing and evaluation of analysis
+code for both interactive and batch statistical packages.  ESS
+currently supports the S family of languages (including S
 \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\regstrd\ \citep{Splus}, and R
 \citep{ihak:gent:1996,R}; \SAS\regstrd\ \citep{SAS:8}; \Stata\ 
-\citep{Stata:7.0}; \XLispStat\ \citep{Tier90} and its extensions 
-Arc \citep{Cook:Weisberg:1999} and ViSta \citep{youn:fald:mcfa:1992}; 
-BUGS \citep{BUGS}; and Omegahat \citep{DTLang:2000}.  ESS can be extended to
-accommodate most statistical packages which provide either an
+\citep{Stata:7.0}; \XLispStat\ \citep{Tier90} and its extensions Arc
+\citep{Cook:Weisberg:1999} and ViSta \citep{youn:fald:mcfa:1992}; BUGS
+\citep{BUGS}; and Omegahat \citep{DTLang:2000}.  ESS can be extended
+to accommodate most statistical packages which provide either an
 interactive command-line or process batch files for instructions.
 
 We start by describing the Emacs text editor, the underlying platform
@@ -233,15 +233,15 @@ of the development of ESS.
 \label{sec:emacs}
 
 Emacs is a mature, powerful, and extensible text editing system which
-is freely available under the GNU General Public License (GPL) for a
-large number of platforms, including most distributions of
-Unix\regstrd, Microsoft Windows\regstrd\ and Apple Mac\tm\ OS.  There
-are two open-source implementations of Emacs released under the GPL:
-GNU Emacs \citep{GNU-Emacs} and XEmacs \citep{XEmacs}.  Emacs shares
-many features with word processors, and some characteristics with
-operating systems, including many facilities which go beyond ordinary
-text editing.  More important to our goals, Emacs can control and
-interact with other programs.
+is freely available, under the GNU General Public License (GPL), for a
+large number of platforms which include most Unix\regstrd
+distributions, Microsoft Windows\regstrd\ and Apple Mac\tm\ OS.  There
+are two open-source implementations of Emacs: GNU Emacs
+\citep{GNU-Emacs} and XEmacs \citep{XEmacs}.  Emacs shares many
+features with word processors, and some characteristics with operating
+systems, including many facilities which go beyond ordinary text
+editing.  More important to our goals, Emacs can control and interact
+with other programs.
 
 \paragraph{Keyboard and Mouse Input.}
 When Emacs was originally written, character-based terminals were the
@@ -279,8 +279,11 @@ interaction, which can be edited and searched while the program
 executes.
 
 \paragraph{Major and Minor Modes.}
-Emacs capabilities are extended by loading text 
-%or byte-compiled 
+Emacs capabilities are extended by loading 
+%% AJR: If we remove ``or byte-compiled'' we need to remove ``text'',
+%% since it is wrong.
+%% text 
+%% or byte-compiled  
 files containing commands and functions written in Emacs Lisp (elisp)
 \citep{RChassell1999}, which is a dialect of Lisp
 \citep{PGraham:1996}.  Emacs commands can be called interactively by
@@ -294,18 +297,18 @@ provide specific enhancements to the editing behavior.
 Major modes provide a customized environment consisting of mapped key
 sequences and associated commands for performing tasks such as file
 editing, reading mail, or browsing disk directories.  Only one major
-mode can be active for a given buffer at any time.  Major modes for
-file editing are often determined by the file type or extension, i.e.
-the characters at the end of the file name that follow a period like
-\stexttt{txt}, \stexttt{s} or \stexttt{sas}.  Examples of this kind of
-major mode are \stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes
-understand a file type's syntax and grammar and therefore provide
-intelligent actions such as automatic indentation; navigation in units
-of characters, words, lines, sentences, paragraphs, function
-definitions, and pages; syntax-based fontification and colorization;
-and reformatting based on programmed conventions.  Major modes also
+mode can be active for a given buffer at any time.  Major modes also
 can be written to intelligently control other programs such as
-statistics packages.
+statistics packages.  Major modes for file editing are often
+determined by the file type or extension, i.e.  the characters at the
+end of the file name that follow a period like \stexttt{txt},
+\stexttt{s}, or \stexttt{sas}.  Examples of this kind of major mode are
+\stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes understand a
+file's syntax and grammar and therefore provide intelligent
+actions such as automatic indentation; navigation in units of
+characters, words, lines, sentences, paragraphs, function definitions,
+and pages; syntax-based fontification and colorization; and
+reformatting based on programmed conventions.
 
 Minor modes provide complementary services that that are applicable
 across major modes.  Many minor modes can be active at once.  For
@@ -545,7 +548,7 @@ unbalanced parentheses or mismatched/unterminated quotes is
 immediately evident with syntactic highlighting of the source code.
 Second, functions are provided for simple and consistent execution of
 user-specified or natural units of the code (function definitions in S
-or \XLispStat, \stexttt{PROC \dots RUN;} sections in \SAS).  An
+or \XLispStat, \stexttt{PROC \dots \, RUN;} sections in \SAS).  An
 error-free evaluation lets the user execute the next section of code;
 if errors arise, the user edits the current unit and re-evaluates.
 Once the code is verified, an entire buffer, or file, of code can be
@@ -589,13 +592,15 @@ save objects (user- and system-generated) into formatted text files,
 and reload them (possibly after editing).
 
 \paragraph{Help File Editing (R).}
-ESS provides R documentation mode (\stexttt{Rd-mode}), an interface
-for writing help files for R functions, objects, and other topics
-worth documenting.  \stexttt{Rd-mode} provides the ability to view and
-execute S language code embedded in the help file in the same manner
-as ESS handles code from an S language source file.  It provides
-syntax highlighting and the ability to submit code directly to a
-running ESS process, either R or \Splus.
+ESS provides an R documentation mode (\stexttt{Rd-mode}) which assists
+in writing help files for R functions, objects, and other topics worth
+documenting.  \stexttt{Rd-mode} provides the ability to view and
+execute code embedded in the help file in the same manner as ESS
+handles code from any S language source file.  It provides syntax
+highlighting and the ability to submit code directly to a running ESS
+process, either R or \Splus, for evaluation and debugging.  This
+latter feature is useful for ensuring that code developed using R runs
+under \Splus.
 
 \paragraph{Cooperation across Multiple Tools.}
 Statistical packages are intended for either general statistical
@@ -671,10 +676,9 @@ packages.
 \paragraph{Inter-Process Communication.}
 Packages that use the command-line interface are run as an inferior
 process in an Emacs buffer, with the standard input and output of the
-package redirected to the buffer.
-
-Packages that do not use the command-line interface must be run as an
-independent process, possibly with limited cooperation.
+package redirected to the buffer.  Packages that do not use the
+command-line interface must be run as an independent process, possibly
+with limited cooperation.
 
 ESS can use the Windows DDE (Dynamic Data Exchange) protocol to
 provide one-way communication directly to packages which function as a
