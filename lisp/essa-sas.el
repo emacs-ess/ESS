@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/07/27 18:12:14 $
-;; Version: $Revision: 1.32 $
-;; RCS: $Id: essa-sas.el,v 1.32 2001/07/27 18:12:14 ess Exp $
+;; Modified: $Date: 2001/07/30 21:56:03 $
+;; Version: $Revision: 1.33 $
+;; RCS: $Id: essa-sas.el,v 1.33 2001/07/30 21:56:03 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -267,9 +267,11 @@ on the way."
 
 (defun ess-sas-file (suffix &optional revert)
   "Find a file associated with the SAS file and revert if necessary."
-  (let* ((tail (if (fboundp 'file-name-extension) (file-name-extension (buffer-name))
-		 (substring (buffer-name) -3)))
-	 (tail-in-tail-list (member tail (list "sas" "log" "lst" "sas<2>" "log<2>" "lst<2>"
+  (let* ((tail (downcase (car (split-string 
+	    (car (last (split-string (buffer-name) "[.]"))) "[<]"))))
+	;;(if (fboundp 'file-name-extension) (file-name-extension (buffer-name))
+	;;		 (substring (buffer-name) -3)))
+	 (tail-in-tail-list (member tail (list "sas" "log" "lst"
 			     ess-sas-suffix-1 ess-sas-suffix-2)))
 	 (root (if tail-in-tail-list (expand-file-name (buffer-name))
 		 ess-sas-file-path))

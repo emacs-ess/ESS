@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/07/30 14:24:32 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: essl-bug.el,v 1.12 2001/07/30 14:24:32 ess Exp $
+;; Modified: $Date: 2001/07/30 21:56:03 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: essl-bug.el,v 1.13 2001/07/30 21:56:03 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -111,7 +111,7 @@
 (defvar ess-bugs-file-dir "."
    "ESS[BUGS]:  Directory of BUGS file.")
 
-(defvar ess-bugs-file-data "."
+(defvar ess-bugs-file-data "..."
    "ESS[BUGS]:  BUGS data file.")
 
 (defcustom ess-bugs-inits-suffix ".in"
@@ -211,12 +211,12 @@
         (if (fboundp 'file-name-extension) 
 	    (setq ess-bugs-file-suffix (file-name-extension ess-bugs-temp-string))
 	    ;;else
-	    (setq ess-bugs-temp-string (split-string ess-bugs-temp-string "[.]"))
-	    (setq ess-bugs-file-suffix 
-		(nth (- (length ess-bugs-temp-string) 1) ess-bugs-temp-string)))
+	    (setq ess-bugs-file-suffix (car (last (split-string ess-bugs-temp-string "[.]")))))
 
 	(setq ess-bugs-file-suffix 
-	    (downcase (nth 0 (split-string (concat "." ess-bugs-file-suffix) "[<]"))))
+	    (downcase (car (split-string (concat "." ess-bugs-file-suffix) "[<]"))))
+
+	(setq ess-bugs-file (concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-file-suffix))
    )
 )
 
@@ -298,7 +298,7 @@
 	(insert (concat "cd \"" ess-bugs-file-dir "\""))
 	(comint-send-input)
 
-	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " " 
+	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " "
 	    ess-bugs-default-bins " " ess-bugs-file-root " " ess-bugs-file " " 
 	    ess-bugs-batch-post-command))
 
@@ -322,7 +322,10 @@
 		    (replace-match ess-bugs-file-data t t))
 	        ;;else
 	        (if (search-forward-regexp "data.+in[ \t\n]+\"\\(.*\\)\"" nil t)
-		    (setq ess-bugs-file-data (match-string 1))))
+		    (setq ess-bugs-file-data (match-string 1))
+		;;else
+		    (setq ess-bugs-file-data "...")
+		))
 
 	        (if (search-forward "%INITS" nil t) 
 		    (replace-match 
@@ -357,7 +360,6 @@
 		    (ess-bugs-search-max nil)
 		    (ess-bugs-search-vars
 "\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(,\\)?[a-zA-Z0-9]*\\(\\]\\)\\)?[ \t]*[,]?[ \t]*\\(#.*\\)?[\n]?"
-;;"[ \t]+\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(,\\)?[a-zA-Z0-9]*\\(\\]\\)\\)?[ \t]*[,]?[ \t]*\\(#.*\\)?[\n]?"
 		    ))
 
 		    (goto-char (point-min))
