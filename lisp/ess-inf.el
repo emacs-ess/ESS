@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/01/15 01:52:54 $
-;; Version: $Revision: 5.74 $
-;; RCS: $Id: ess-inf.el,v 5.74 2002/01/15 01:52:54 rmh Exp $
+;; Modified: $Date: 2002/01/21 03:19:41 $
+;; Version: $Revision: 5.75 $
+;; RCS: $Id: ess-inf.el,v 5.75 2002/01/21 03:19:41 rmh Exp $
 
 ;; This file is part of ESS
 
@@ -325,14 +325,6 @@ there is no process NAME)."
 	(setq ess-sl-modtime-alist nil)
 	;; Get search list when needed
 	(setq ess-sp-change t)
-	;; if (string= ess-language "S")
-	;;    ;; Tell S that it is running inside ESS
-	;;    ;; This is immediately before ess-post-run-hook since it like the
-	;;    ;; hook but should happen in any case
-	;;    (ess-eval-linewise
-	;;     (if (string= ess-dialect "R") ".in.ESS <- TRUE"
-	;;       ;; else S+ :
-	;;       "assign('.in.ESS', TRUE, frame=0)")))
 	(run-hooks 'ess-post-run-hook))
       (switch-to-buffer (process-buffer (get-process proc-name))))))
 
