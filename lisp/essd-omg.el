@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 August 1999
-;; Modified: $Date: 1999/11/11 01:08:40 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: essd-omg.el,v 5.5 1999/11/11 01:08:40 ess Exp $
+;; Modified: $Date: 1999/11/16 05:08:16 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: essd-omg.el,v 5.6 1999/11/16 05:08:16 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -84,7 +84,7 @@
 		 (if start-args (read-string
 				 "Starting Args [possibly -CORBA] ? ")
 		   nil))))
-    (inferior-ess)))
+    (inferior-ess omg-start-args)))
 
 
 
