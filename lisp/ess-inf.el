@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/12/31 22:39:33 $
-;; Version: $Revision: 5.79 $
-;; RCS: $Id: ess-inf.el,v 5.79 2002/12/31 22:39:33 stephen Exp $
+;; Modified: $Date: 2003/01/01 21:01:32 $
+;; Version: $Revision: 5.80 $
+;; RCS: $Id: ess-inf.el,v 5.80 2003/01/01 21:01:32 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -1075,6 +1075,8 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
   (define-key inferior-ess-mode-map "\r"       'inferior-ess-send-input)
   (define-key inferior-ess-mode-map "\M-\r"    'ess-transcript-send-command-and-move)
   (define-key inferior-ess-mode-map "\C-c\C-l" 'ess-load-file)
+  ;; the above OVERRIDES  comint-dynamic-list-input-ring --> re-assign:
+  (define-key inferior-ess-mode-map "\C-c\M-l" 'comint-dynamic-list-input-ring)
   (define-key inferior-ess-mode-map "\C-c`"    'ess-parse-errors)
   (define-key inferior-ess-mode-map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
   (define-key inferior-ess-mode-map "\C-c\C-v" 'ess-display-help-on-object)
