@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/04 19:38:58 $ - $Revision: 1.95 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/04 19:50:22 $ - $Revision: 1.96 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -449,6 +449,18 @@ shortcuts and features for accelerated editing of files, and second,
 by interacting with the statistical language through a number of
 activities, both general input/output handling as well as specialized
 parsing of help and evaluation assistance.
+
+Complex conflicts between interfaces can be the result of coordinating
+several data files, multiple statistical software packages, and the
+corresponding source code for each of these packages into a single
+analysis.  ESS helps to remediate the problem by including support for
+version and source code control systems, tools for accessing programs
+or files on remote machines, and interfaces to documentation systems
+including \LaTeX\ and \textsc{xml}.  In addition, Emacs can assist
+with, or be programmed to perform, many tasks related to data
+cleaning, management, and editing.  Below, we describe some of the
+problems that one encounters, and how ESS/Emacs help to minimize the
+impact of the problems.
 
 %This is done by extending the editor to provide
 %additional useful features, and in the case of interactive statistical
@@ -823,20 +835,12 @@ keystrokes for editing tasks such as cut, copy, paste, beginning of
 line, end of line, etc.  These may be the most aggravating because our
 fingers are acting without our brains having to specifically think
 about it, but differences in interfaces circumvent this learned
-behavior.  ESS solves this problem by providing a uniform keyboard
-interface despite the variety of statistical packages that might be
-used.  That is, the same keystrokes are used for cursor movement,
-evaluation, and basic tasks such as loading files for editing.
+behavior.  ESS solves this problem by providing a uniform interface to
+keyboard actions despite the variety of statistical packages that
+might be used.  That is, the same keystrokes are used for cursor
+movement, evaluation, and basic tasks such as loading files for
+editing.
 
-Complex conflicts between interfaces can be the result of coordinating
-several data files, multiple statistical software packages, and the
-corresponding source code for each of these packages into a single
-analysis.  ESS helps to remediate the problem by including support for
-version and source code control systems, tools for accessing programs
-or files on remote machines, and interfaces to documentation systems
-including \LaTeX\ and \textsc{xml}.  In addition, Emacs can assist
-with, or be programmed to perform, many tasks related to data
-cleaning, management, and editing.
 
 \paragraph{Concurrent Use of Multiple Machines and Operating Systems.}
 \label{sec:conc-use-mult}
@@ -889,25 +893,24 @@ README.R  When things change, we can change with them.\end{Comment}
 One useful extension in ESS is relaxation of the requirement that the
 statistics program be available on the local machine.  ESS provides
 transparent execution of a statistics package on a remote machine from
-within the local Emacs.  We open a telnet,
-rlogin, or ssh connection to another machine
-and then run S on the other machine in that buffer.  
-We use the command \stexttt{S+elsewhere} to place the buffer into
-\stexttt{iESS} mode.
-\begin{Comment}
-This isn't quite precise.  We currently create the S+elsewhere buffer
-first and then run telnet inside it.
-I want to write a new command \stexttt{ESS-remote} that does what
-I just described.  My timing sense suggests for ESS-5.1.21.
-\end{Comment}
-All the editing and interaction features described for
-the local machine work equally well on the remote machine.
-The interaction,
+within the local Emacs.  We open a remote connection to another
+machine (using telnet, rsh, or ssh) and then run S on the other
+machine with the output appearing in the local buffer.  We use the
+command \stexttt{S+elsewhere} to place the buffer into \stexttt{iESS}
+mode.
+%\begin{Comment}
+%This isn't quite precise.  We currently create the S+elsewhere buffer
+%first and then run telnet inside it.
+%I want to write a new command \stexttt{ESS-remote} that does what
+%I just described.  My timing sense suggests for ESS-5.1.21.
+%\end{Comment}
+All the editing and interaction features described for the local
+machine work equally well on the remote machine.  The interaction,
 including all the unique features of working with ESS, appears to the
 user exactly the same as if the program were running on the local
-machine.  With X-windows running on the local machine, it is even
-possible to bring up visual displays from remote Unix systems on a
-Windows local machine.
+machine.  If the X11 Windowing system is running on the local machine,
+it is even possible to bring up visual displays and graphics from
+remote Unix systems onto a local Microsoft Windows display.
 
 With \Splus\ on Unix and with R on all platforms the ESS buffer in
 \stexttt{iESS} mode talks directly to the computing engine, the
@@ -924,8 +927,6 @@ near future, we anticipate that \Splus\ 6 will overcome the design
 limitations of Windows by using the \stexttt{connections} class of the
 new S4 engine.  We will then have both interactive graphics and transcript
 recording and editing on the Windows platform.
-
-
 
 \paragraph{\Splus\ for Windows.}
 The GUI for \Splus\ 4 and 6 on Windows is independent of Emacs; it is not
@@ -954,7 +955,6 @@ engine indirectly by interacting with the GUI.  ESS uses
 \stexttt{ddeESS} mode to send commands to the GUI but can't receive
 results back.
 
-
 \paragraph{\SAS---Interactive in Emacs buffers.}
 
 \stexttt{iESS[SAS]} is a mode that allows text-based \stexttt{PROC} by
@@ -974,25 +974,24 @@ Graphics commands can be sent to a file, in PostScript for example,
 and viewed outside of this interaction.  This process is very efficient
 for slow text-based telephone connections to a remote \SAS.
 
-
 \paragraph{\SAS---Interactive cooperation with the \SAS\ Display Manager.}
 
 The authors of ESS prefer the Emacs environment for editing and
 managing input and output files, even on computer systems which run
 the \SAS\ Display Manager environment.  In this situation, the user
-designs the command file
-and highlights regions to be forwarded to \SAS\ for processing.
+designs the command file and highlights regions to be forwarded to
+\SAS\ for processing.
 
 This can be done by either:
-
-a. copying and pasting the marked regions to
-the \SAS\ Editor window and then pressing the \stexttt{RUN} key.
-Highlighted sections of the \SAS\ Listing window are brought back
-to Emacs to be read in the \stexttt{ESSlst} mode editing environment.
-
-b. submitting the marked region for Batch File Processing (see the next
-section) but using the mapped command keys to append to the log and listing
-file instead of replacing them.
+\begin{enumerate}
+\item copying and pasting the marked regions to the \SAS\ Editor window
+  and then pressing the \stexttt{RUN} key.  Highlighted sections of
+  the \SAS\ Listing window are brought back to Emacs to be read in the
+  \stexttt{ESSlst} mode editing environment.
+\item submitting the marked region for Batch File Processing (see the
+  next section) but using the mapped command keys to append to the log
+  and listing file instead of replacing them.
+\end{enumerate}
 
 \subsection{Batch File Processing.}
 \label{sec:batch-file}
@@ -1066,47 +1065,47 @@ Running \SAS\ batch on remote computers is nearly transparent to the user.
 %and the batch process is transparently submitted through a telnet or
 %ssh connection.
 
-\begin{Comment}
-Rich: I have some terminology quibbles here with how the term
-``ESS-elsewhere'' is used with SAS BATCH.  I think of S-elsewhere or
-ESS-elsewhere as a trick to make a \stexttt{telnet-mode} buffer think
-it is \stexttt{iESS-mode} buffer.
+%\begin{Comment}
+%Rich: I have some terminology quibbles here with how the term
+%``ESS-elsewhere'' is used with SAS BATCH.  I think of S-elsewhere or
+%ESS-elsewhere as a trick to make a \stexttt{telnet-mode} buffer think
+%it is \stexttt{iESS-mode} buffer.
 
-I don't think of file saving, editing, and retrieval as an example
-of ESS-elsewhere.   Neither is submission of the remote job;
-that is just an ordinary shell command in an ordinary shell buffer.
-M-x SAS probably is an example of ESS-elsewhere, but I
-designed it before I thought of the ESS-elsewhere concept.
+%I don't think of file saving, editing, and retrieval as an example
+%of ESS-elsewhere.   Neither is submission of the remote job;
+%that is just an ordinary shell command in an ordinary shell buffer.
+%M-x SAS probably is an example of ESS-elsewhere, but I
+%designed it before I thought of the ESS-elsewhere concept.
 
-The initial idea behind S-elsewhere was to run an interactive S or S-Plus
-session on a remote computer in telnet (or equivalent) buffer.  The trick
-was to make the \stexttt{telnet-mode} buffer accept C-c C-n and
-related commands from the \stexttt{S-mode} buffers.  Hence I had to
-make the \stexttt{telnet-mode} buffer think it is \stexttt{iESS-mode}
-buffer.  The ``elsewhere'' part of the name is entirely related to a
-different start up procedure.  Once the connection is made, there is
-{\em no} difference visible to the user.  The buffer shows itself to
-be an ordinary \stexttt{iESS} buffer.  Tony generalized S-elsewhere
-to ESS-elsewhere to allow other languages than S to be used
-interactively.
+%The initial idea behind S-elsewhere was to run an interactive S or S-Plus
+%session on a remote computer in telnet (or equivalent) buffer.  The trick
+%was to make the \stexttt{telnet-mode} buffer accept C-c C-n and
+%related commands from the \stexttt{S-mode} buffers.  Hence I had to
+%make the \stexttt{telnet-mode} buffer think it is \stexttt{iESS-mode}
+%buffer.  The ``elsewhere'' part of the name is entirely related to a
+%different start up procedure.  Once the connection is made, there is
+%{\em no} difference visible to the user.  The buffer shows itself to
+%be an ordinary \stexttt{iESS} buffer.  Tony generalized S-elsewhere
+%to ESS-elsewhere to allow other languages than S to be used
+%interactively.
 
-I have been using ESS for SAS remote BATCH for years, ever since you
-and I started working on this together.  We initially defined
-ess-sas-submit-method to encapsulate the location of the sas process.
-Except for a few lines of elisp to get the connection started, the user
-behavior has been identical whether the SAS process is on the same or
-different machine.  Since we are not interactively talking to the SAS
-process in an inferior-ESS buffer I don't see this as ESS-elsewhere.
+%I have been using ESS for SAS remote BATCH for years, ever since you
+%and I started working on this together.  We initially defined
+%ess-sas-submit-method to encapsulate the location of the sas process.
+%Except for a few lines of elisp to get the connection started, the user
+%behavior has been identical whether the SAS process is on the same or
+%different machine.  Since we are not interactively talking to the SAS
+%process in an inferior-ESS buffer I don't see this as ESS-elsewhere.
 
-Rodney: Remote submissions of SAS batch jobs never worked.  I only got
-it to work a couple of weeks ago.  The problem was with the cd command.
-You need to ignore the beginning and end of the expanded buffer name
-that are the ange-ftp/EFS/tramp stubs which tell Emacs what the remote
-username and hostname are.  I find the batch usage of ESS-elsewhere
-entirely consistent with the interactive behavior.  OTOH, I don't find 
-the terminology particularly illuminating.  I think ESS-remote or 
-ESS-net would be more meaningful. 
-\end{Comment}
+%Rodney: Remote submissions of SAS batch jobs never worked.  I only got
+%it to work a couple of weeks ago.  The problem was with the cd command.
+%You need to ignore the beginning and end of the expanded buffer name
+%that are the ange-ftp/EFS/tramp stubs which tell Emacs what the remote
+%username and hostname are.  I find the batch usage of ESS-elsewhere
+%entirely consistent with the interactive behavior.  OTOH, I don't find 
+%the terminology particularly illuminating.  I think ESS-remote or 
+%ESS-net would be more meaningful. 
+%\end{Comment}
  
 \paragraph{BUGS.}
 \label{sec:bugs-batch}
