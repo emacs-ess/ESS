@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/09/06 20:01:40 $
-;; Version: $Revision: 1.119 $
-;; RCS: $Id: essa-sas.el,v 1.119 2002/09/06 20:01:40 rsparapa Exp $
+;; Modified: $Date: 2002/09/09 16:25:30 $
+;; Version: $Revision: 1.120 $
+;; RCS: $Id: essa-sas.el,v 1.120 2002/09/09 16:25:30 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -472,6 +472,7 @@ on the way."
     "\\|NOTE: Variable .* is uninitialized."
     "\\|WARNING: Apparent symbolic reference .* not resolved."
     "\\|NOTE 485-185: Informat .* was not found or could not be loaded."
+    "\\|WARNING: Length of character variable has already been set."
     "\\|Bus Error In Task\\|Segmentation Violation In Task"))
 	(ess-sas-save-point nil))
 
