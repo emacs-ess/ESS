@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/10 04:19:02 $
-;; Version: $Revision: 1.63 $
-;; RCS: $Id: essa-sas.el,v 1.63 2002/01/10 04:19:02 rsparapa Exp $
+;; Modified: $Date: 2002/01/10 15:55:01 $
+;; Version: $Revision: 1.64 $
+;; RCS: $Id: essa-sas.el,v 1.64 2002/01/10 15:55:01 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -43,7 +43,7 @@
 
 ;;; Section 1:  Variable Definitions
 
-(defcustom ess-kermit-command "gkermit"
+(defcustom ess-kermit-command "gkermit -T"
     "*Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
     :group 'ess-sas
     :type  'string
@@ -165,7 +165,7 @@ or comint buffer on the local computer."
 	(message (substring string beg (match-end 0))))))
 
 (defun ess-kermit-get ()
-  "Get a file with Kermit."
+  "Get a file with Kermit.  Works so far with ssh, but not telnet."
     (interactive)
 
      (save-match-data 
@@ -175,18 +175,23 @@ or comint buffer on the local computer."
 	  (string-match "]" ess-sas-temp-file)) (progn
 
 	  (setq ess-sas-temp-file (substring ess-sas-temp-file (match-end 0)))
+	  (ess-sas-file-path)
 	  (shell)
 	  (insert ess-kermit-command " -s " ess-sas-temp-file)
           (comint-send-input)	
           (insert "\C-\\" "c")
 	  (comint-send-input)
-	  (ess-sleep)
+	  (read-string "Press Return when Kermit is ready to recieve.")
 	  (insert "receive ]" ess-sas-temp-file)                
 	  (comint-send-input)
+	  (read-string "Press Return when transfer is complete.")
+	  (insert "c")                
+	  (comint-send-input)
+	  (ess-sas-goto-sas 'revert)
 )))))
 
 (defun ess-kermit-send ()
-  "Send a file with Kermit."
+  "Send a file with Kermit.  Works so far with ssh, but not telnet."
     (interactive)
 
      (save-match-data 
@@ -194,14 +199,20 @@ or comint buffer on the local computer."
 	  (string-match "]" ess-sas-file-path))
 
 	  (let ((ess-sas-temp-file (substring ess-sas-file-path (match-end 0))))
+	     (ess-sas-file-path)
+             (save-buffer)
 	     (shell)
 	     (insert ess-kermit-command " -r")
              (comint-send-input)	
              (insert "\C-\\" "c")
 	     (comint-send-input)
-	     (ess-sleep)
+	     (read-string "Press Return when Kermit is ready to send.")	    
 	     (insert "send ]" ess-sas-temp-file " " ess-sas-temp-file)                
 	     (comint-send-input)
+	     (read-string "Press Return when transfer is complete.")
+	     (insert "c")                
+             (comint-send-input)
+	     (ess-sas-goto-sas)
 ))))
 
 (defun ess-revert-wisely ()
@@ -424,10 +435,10 @@ on the way."
   (interactive)
   (ess-sas-goto "lst" 'revert))
 
-(defun ess-sas-goto-sas ()
+(defun ess-sas-goto-sas (&optional revert)
   "Switch to the .sas file."
   (interactive)
-  (ess-sas-goto "sas"))
+  (ess-sas-goto "sas" 'revert))
 
 ;;
 ;;(defun ess-sas-goto-shell ()
