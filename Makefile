@@ -49,11 +49,14 @@ dist: VERSION RPM.spec
 	$(MAKE) cleanup-dist
 	touch $@
 
-.PHONY: cleanup-dist
+.PHONY: cleanup-dist cleanup-rel
 cleanup-dist:
 	@echo "** Cleaning up **"
 	(if [ -d $(ESSDIR) ] ; then \
 	  chmod -R u+w $(ESSDIR) $(ESSDIR)-svn && rm -rf $(ESSDIR) $(ESSDIR)-svn; fi)
+##  should only be called manually (if at all):
+cleanup-rel:
+	@rm -f dist lisp/dist $(ESSDIR)*
 
 %.spec: %.spec.in VERSION
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
@@ -69,6 +72,7 @@ ChangeLog: VERSION
 	     " ESS Maintainers <ESS-core@stat.math.ethz.ch>" ; \
 	 echo; echo "  * Version $(ESSVERSION) released."; echo; \
 	 cat ChangeLog.old ) > ChangeLog
+	@rm ChangeLog.old
 	svn commit -m 'Version $(ESSVERSION)' ChangeLog
 
 rel: ChangeLog dist tag
@@ -78,6 +82,7 @@ rel: ChangeLog dist tag
 	@echo "** Creating LATEST.IS. file **"
 	rm -f $(UPLOAD_DIR)/LATEST.IS.*
 	touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)
+	@echo "If all is perfect, eventually call   'make cleanup-rel'"
 
 tag:
 	@echo "** Tagging the release **"
