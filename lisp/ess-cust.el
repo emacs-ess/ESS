@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2000/06/19 22:38:57 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: ess-cust.el,v 1.4 2000/06/19 22:38:57 ess Exp $
+;; Modified: $Date: 2000/06/30 21:09:16 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: ess-cust.el,v 1.5 2000/06/30 21:09:16 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -567,10 +567,6 @@ by `ess-function-template'."
       "Rterm"  "R")
   "*Program name for invoking an inferior ESS with \\[R].")
 
-(defcustom inferior-XLS-program-name "xlispstat"
-  "*Program name for invoking an inferior ESS with \\[XLS]."
-  :group 'ess-XLS
-  :type 'string)
 
 (defcustom inferior-S3-program-name "/disk05/s/S"
   "*Program name for invoking an inferior ESS with S3()."
@@ -628,6 +624,21 @@ different computer."
 (defcustom inferior-S+5-program-name "Splus5"
   "*Program name for invoking an inferior ESS with S+5()."
   :group 'ess-S
+  :type 'string)
+
+(defcustom inferior-XLS-program-name "xlispstat"
+  "*Program name for invoking an inferior ESS with \\[XLS]."
+  :group 'ess-XLS
+  :type 'string)
+
+(defcustom inferior-VST-program-name "vista"
+  "*Program name for invoking an inferior ESS with \\[ViSta]."
+  :group 'ess-XLS
+  :type 'string)
+
+(defcustom inferior-ARC-program-name "arc"
+  "*Program name for invoking an inferior ESS with \\[ARC]."
+  :group 'ess-XLS
   :type 'string)
 
 (defcustom inferior-SAS-program-name "sas"
