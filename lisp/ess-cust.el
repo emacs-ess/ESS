@@ -1323,10 +1323,10 @@ session.")
 
 (defvar ess-mode-minibuffer-map nil)
 
-(defcustom ess-object-name-db-file "ess-namedb"
-  "File containing definitions for `ess-object-name-db'."
-  :group 'ess
-  :type 'file)
+;; SJE: Wed 29 Dec 2004 - following 3 ess-object* variables can be removed 
+;; soon if no-one needs the completion code.
+(defvar ess-object-name-db-file "ess-namedb"
+  "File containing definitions for `ess-object-name-db'.")
 
 (defvar ess-object-name-db-file-loaded '()
   "List of programs whose name-db file has been loaded.")
