@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/06/17 17:18:21 $
-;; Version: $Revision: 1.98 $
-;; RCS: $Id: essa-sas.el,v 1.98 2002/06/17 17:18:21 rsparapa Exp $
+;; Modified: $Date: 2002/06/18 00:53:16 $
+;; Version: $Revision: 1.99 $
+;; RCS: $Id: essa-sas.el,v 1.99 2002/06/18 00:53:16 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -495,7 +495,7 @@ on the way."
 	    (if revert (ess-revert-wisely))
 
 	    (if (or (string-equal suffix "log") (string-equal suffix "lst"))
-		(ess-kermit-get (file-name-nondirectory ess-sas-file-path)))
+		(ess-kermit-get (file-name-nondirectory ess-sas-temp-file)))
 ))))))
 
 ;;(defun ess-sas-file (suffix &optional revert)
