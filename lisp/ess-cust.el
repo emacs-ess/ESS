@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2002/01/20 06:14:36 $
-;; Version: $Revision: 1.28 $
-;; RCS: $Id: ess-cust.el,v 1.28 2002/01/20 06:14:36 rmh Exp $
+;; Modified: $Date: 2002/02/19 22:43:55 $
+;; Version: $Revision: 1.29 $
+;; RCS: $Id: ess-cust.el,v 1.29 2002/02/19 22:43:55 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -431,15 +431,18 @@ If not number, the statements are indented at open-parenthesis following
 This can be a string (an absolute directory name ending in a slash) or
 a lambda expression of no arguments which will return a suitable string
 value.  The lambda expression is evaluated with the process buffer as the
-current buffer."
+current buffer.
+
+Possible value:
+
+ '(lambda () (file-name-as-directory
+	      (expand-file-name (concat (car ess-search-list) \"/.Src\"))))
+
+This always dumps to a sub-directory (\".Src\") of the current ess
+working directory (i.e. first elt of search list)."
   :group 'ess-edit
   :type 'directory)
 
-;;; Possible value:
-;;; '(lambda () (file-name-as-directory
-;;;	      (expand-file-name (concat (car ess-search-list) "/.Src"))))
-;;; This always dumps to a sub-directory (".Src") of the current ess
-;;; working directory (i.e. first elt of search list)
 
 (defcustom ess-dump-filename-template (concat (user-login-name) ".%s.S")
   "*Template for filenames of dumped objects.
