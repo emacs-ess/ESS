@@ -1,11 +1,12 @@
-## $Id: Makefile,v 5.27 2000/02/29 17:47:58 ess Exp $
+## $Id: Makefile,v 5.28 2000/03/02 10:13:32 maechler Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
-ESSVERSION=5.1.12
+## Now finally use the "ess/VERSION" file -- for everything !
+ESSVERSION=$(shell cat VERSION)
 ESSVERSIONDIR=ess-$(ESSVERSION)
 ## The following MUST NOT contain "."'s.
-ESSVERSIONTAG=ess-5_1_12
+ESSVERSIONTAG=ess-$(shell sed 's/\./_/g' VERSION)
 
 Subdirs = lisp doc
 

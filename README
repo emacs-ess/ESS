@@ -1,9 +1,9 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.17 $, for ESS 5.1.x)
+   ($Revision: 5.18 $, for ESS 5.1.x)
 
-   This is the README file for the distribution of ESS version 5.1.12,
+   This is the README file for the distribution of ESS version 5.1.13,
 the alpha/beta series we are using on the way to producing 5.2 (the next
 stable distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported include:
@@ -62,6 +62,36 @@ in the file COPYING in the same directory as this file for more details.
 New Features
 ============
 
+   Changes/New Features in 5.1.13:
+   * Really requiring GNU makeVersion numbering finally all depending
+     on the ./VERSION file,       thanks to Martin Maechler.
+
+   * Version numbering finally all depending on the ./VERSION file,
+      thanks to Martin Maechler.
+
+   * Yet more fixes to SAS mode, thanks to Rich Heiberger
+     (<rmh@surfer.stat.temple.edu>).
+
+   Changes/New Features in 5.1.12:
+   * Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
+       Chuck Taylor, and others.
+
+   * More fixes to SAS mode, thanks to Rodney Sparapani
+     (<spara002@duke.edu>) and Rich Heiberger
+     (<rmh@surfer.stat.temple.edu>).
+
+   Changes/New Features in 5.1.11:
+   * More fixes to Stata mode, thanks to Brendan Halpin
+     (<brendan@essex.ac.uk>)
+
+   * fixed bugs in ESS-elsewhere, thanks to many testers
+
+   * README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
+          to David Brahm (<brahm@alum.mit.edu>).
+
+   * Fixes to SAS mode, thanks to Rodney Sparapani
+     (<spara002@duke.edu>)
+
    Changes/New Features in 5.1.10:
    * More fixes to Stata mode
 
@@ -89,8 +119,8 @@ three modes know the S language, syntax, and indentation patterns and
 provide the syntactic highlighting that eases the programming tasks.
 
    For Microsoft platforms, the version of Emacs that this has been
-tested with is NTEmacs 20.2 and 20.3.  More information about NTEmacs
-can be retrieved from:
+tested with is NTEmacs 20.x, x greater than 2.  More information about
+NTEmacs can be retrieved from:
 
    *   `http://www.cs.washington.edu/homes/voelker/ntemacs.html'
 
@@ -224,26 +254,26 @@ Installation (from tar file)
    *   cd to a directory where you keep emacs lisp files, or create a
      new   directory to hold the distribution.  This directory will be
      referred   to below as "the ESS distribution directory".  It will
-     contain,   at the end, the tar file ESS-5.1.12.tar.gz, and a
+     contain,   at the end, the tar file ESS-5.1.13.tar.gz, and a
      directory for   the ESS source, which will be termed "the
-     ESS-5.1.12 source directory".    Note that the .elc files may be
+     ESS-5.1.13 source directory".    Note that the .elc files may be
      installed elsewhere (as specified in the   Makefile) if desired.
 
    *   Retrieve the compressed tar file from one of the FTP or WWW
      archive   sites via FTP (or HTTP).
 
-   *   Copy ESS-5.1.12.tar.gz to the location where you want the
-     ESS-5.1.12   directory, and cd there.  Extract the files from the
-     distribution,   which will unpack into a subdirectory, ESS-5.1.12.
+   *   Copy ESS-5.1.13.tar.gz to the location where you want the
+     ESS-5.1.13   directory, and cd there.  Extract the files from the
+     distribution,   which will unpack into a subdirectory, ESS-5.1.13.
 
-     	gunzip ESS-5.1.12.tar.gz 	tar vxf ESS-5.1.12.tar
+     	gunzip ESS-5.1.13.tar.gz 	tar vxf ESS-5.1.13.tar
 
-     	(or: gunzip < ESS-5.1.12.tar.gz | tar vxf - ).  	(or using GNU tar:
-     tar zvxf ESS-5.1.12.tar.gz).
+     	(or: gunzip < ESS-5.1.13.tar.gz | tar vxf - ).  	(or using GNU tar:
+     tar zvxf ESS-5.1.13.tar.gz).
 
      The tar command will extract files into the current directory.
 
-     Do not create ESS-5.1.12 yourself, or you will get an extra level
+     Do not create ESS-5.1.13 yourself, or you will get an extra level
      of   depth to your directory structure.
 
    *   Edit the file ess-site.el as explained in the comments section of
@@ -254,11 +284,18 @@ Installation (from tar file)
 
    *   READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     In the ESS-5.1.12 directory, edit the file Makefile (only if you
+     In the ESS-5.1.13 directory, edit the file Makefile (only if you
      want   to place the executables in other locations; see LISPDIR and
       INFODIR) and then type:
 
-     	make 	make install
+     	make
+
+     If this works, then you might try:
+
+     	make install
+
+     Note that the latter does the former as well, so if you are feeling
+      lucky, you might want to skip it.
 
      This will install the info files (and the lisp files, if they
      are to go in another directory).  Don't forget to edit the file
@@ -267,7 +304,11 @@ Installation (from tar file)
 
      If you are using XEmacs, you might do:
 
-     	make EMACS=xemacs 	make EMACS=xemacs install
+     	make EMACS=xemacs
+
+     and then
+
+     	make EMACS=xemacs install
 
      instead of editing the Makefile.
 

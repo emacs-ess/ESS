@@ -1,7 +1,7 @@
 ANNOUNCING ESS
 **************
 
-   Annoucing the release of ESS-5.1.12 (Emacs Speaks Statistics).
+   Annoucing the release of ESS-5.1.13 (Emacs Speaks Statistics).
 ------------------------------------------------------------
 
    ESS is an Emacs package which provides a standard interface between
@@ -24,6 +24,16 @@ file README with the distribution.
 
 New Features
 ============
+
+   Changes/New Features in 5.1.13:
+   * Really requiring GNU makeVersion numbering finally all depending
+     on the ./VERSION file,       thanks to Martin Maechler.
+
+   * Version numbering finally all depending on the ./VERSION file,
+      thanks to Martin Maechler.
+
+   * Yet more fixes to SAS mode, thanks to Rich Heiberger
+     (<rmh@surfer.stat.temple.edu>).
 
    Changes/New Features in 5.1.12:
    * Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,

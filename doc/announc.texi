@@ -3,7 +3,7 @@
 @setfilename announc.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: announc.texi,v 1.13 2000/02/29 17:45:35 ess Exp $
+@comment $Id: announc.texi,v 1.14 2000/03/02 10:13:32 maechler Exp $
 
 @node Announce, Introduction, Top, Top
 @comment  node-name,  next,  previous,  up
@@ -11,7 +11,7 @@
 @cindex ANNOUNCE
 
 
-Annoucing the release of ESS-5.1.12 (Emacs Speaks Statistics).
+Annoucing the release of ESS-5.1.13 (Emacs Speaks Statistics).
 -------------------------------------------------------------
 
 ESS is an Emacs package which provides a standard interface between

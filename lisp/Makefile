@@ -1,9 +1,9 @@
 ### Makefile - for ESS distribution.
 ###
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-### For ESS Version: 5.0
+### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.25 $.
+### File: $Revision: 5.26 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -40,12 +40,8 @@ BATCHFLAGS = -batch --no-site-file --no-init-file
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 5.1.12
-LASTVERSION = 5.1.11
-
-#--- Dont forget to set  ess-version  in  ess-vars.el !!!!
-#			 ~~~~~~~~~~~      -----------
-VERSIONDIR = ESS-$(VERSION)
+# GNU make, exclusively --> see comment below /ESSVERSION/
+## ESSVERSION=$(shell cat ../VERSION)
 
 ## For noweb extraction of code and documentation.
 
@@ -99,11 +95,6 @@ AUXFILES = COPYING Makefile ChangeLog $(SCRIPTS)
 
 OBJECTS = $(TOCOMPILE:.el=.elc)
 
-DISTFILES = $(addprefix $(VERSIONDIR)/,$(SOURCES)) \
-	    $(addprefix $(VERSIONDIR)/,$(AUXFILES))
-
-DISTSCRIPTS = $(addprefix $(VERSIONDIR)/,$(SCRIPTS))
-
 
 ### Targets
 
@@ -124,42 +115,13 @@ distclean: clean
 
 ### Targets below here are only for developers.
 
-## This should checkout source into a subdirectory and then package it
-## back up.  (now that we are using CVS).
+## commented above ESSVERSION=$(shell cat ../VERSION)
+## Use $(shell ..) only here, so only these are GNU make dependent :
+ess-vars.el: ../VERSION
+	perl -pi -e 's/".*"/"$(shell cat $^)"/ if /ess-version/' $@
+ess-site.el: ../VERSION
+	perl -pi -e 's/ess-([0-9]+\.){2}[0-9]+/ess-$(shell cat $^)/go' $@
 
-dist:
-	@echo "**********************************************************"
-	@echo "** Making distribution of ESS for release $(VERSION)"
-	@echo "**********************************************************"
-	chmod a-w $(VERSIONDIR)/*.el
-	chmod a-w $(VERSIONDIR)/ChangeLog $(VERSIONDIR)/Doc/*
-	chmod a-w $(VERSIONDIR)/ess.info* $(VERSIONDIR)/ess.dvi
-	chmod u+w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
-	chmod ugo+rx $(VERSIONDIR)/ess-sas-sh-command
-	chmod ugo+x $(DISTSCRIPTS)
-	tar hcovf $(VERSIONDIR).tar $(DISTFILES)
-	gzip $(VERSIONDIR).tar
-	cp $(VERSIONDIR).tar.gz $(MYWWWDIR)
-	cp $(VERSIONDIR).tar.gz $(MYFTPDIR)
-	chmod u+w $(VERSIONDIR)/README
-	cp $(VERSIONDIR)/README $(MYWWWDIR)/$(VERSIONDIR)-README
-	cp $(VERSIONDIR)/README $(MYFTPDIR)/$(VERSIONDIR)-README
-	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
-	chmod u-w $(VERSIONDIR)/README
-	chmod u+w $(VERSIONDIR)/Doc
-
-
-patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
-	-rm -rf ESS-$(VERSION)
-	mkdir ESS-$(VERSION)
-	(cd ESS-$(VERSION); $(GZCAT) ../ESS-$(VERSION).tar.gz | tar xvf -)
-	-rm -rf ESS-$(LASTVERSION)
-	mkdir ESS-$(LASTVERSION)
-	(cd ESS-$(LASTVERSION); tar zxvf ../ESS-$(LASTVERSION).tar.gz -)
-	-diff -bBw -C 2 ESS-$(LASTVERSION) ESS-$(VERSION) \
-		 > diff-$(LASTVERSION)-$(VERSION)
-	-rm -rf ESS-$(VERSION)
-	-rm -rf ESS-$(LASTVERSION)
 
 ### File Dependencies
 

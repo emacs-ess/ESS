@@ -4,27 +4,27 @@
   cd to a directory where you keep emacs lisp files, or create a new
   directory to hold the distribution.  This directory will be referred
   to below as "the ESS distribution directory".  It will contain,
-  at the end, the tar file ESS-5.1.12.tar.gz, and a directory for
-  the ESS source, which will be termed "the ESS-5.1.12 source directory".
+  at the end, the tar file ESS-5.1.13.tar.gz, and a directory for
+  the ESS source, which will be termed "the ESS-5.1.13 source directory".
   Note that the .elc files may be installed elsewhere (as specified in the
   Makefile) if desired.
 @item
   Retrieve the compressed tar file from one of the FTP or WWW archive
   sites via FTP (or HTTP).
 @item
-  Copy ESS-5.1.12.tar.gz to the location where you want the ESS-5.1.12
+  Copy ESS-5.1.13.tar.gz to the location where you want the ESS-5.1.13
   directory, and cd there.  Extract the files from the distribution,
-  which will unpack into a subdirectory, ESS-5.1.12.
+  which will unpack into a subdirectory, ESS-5.1.13.
 
-	gunzip ESS-5.1.12.tar.gz
-	tar vxf ESS-5.1.12.tar
+	gunzip ESS-5.1.13.tar.gz
+	tar vxf ESS-5.1.13.tar
 
-	(or: gunzip < ESS-5.1.12.tar.gz | tar vxf - ).
-	(or using GNU tar:  tar zvxf ESS-5.1.12.tar.gz).
+	(or: gunzip < ESS-5.1.13.tar.gz | tar vxf - ).
+	(or using GNU tar:  tar zvxf ESS-5.1.13.tar.gz).
 
   The tar command will extract files into the current directory.
 
-  Do not create ESS-5.1.12 yourself, or you will get an extra level of
+  Do not create ESS-5.1.13 yourself, or you will get an extra level of
   depth to your directory structure.
 @item
   Edit the file ess-site.el as explained in the comments section of
@@ -35,7 +35,7 @@
 @item
   READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-  In the ESS-5.1.12 directory, edit the file Makefile (only if you want
+  In the ESS-5.1.13 directory, edit the file Makefile (only if you want
   to place the executables in other locations; see LISPDIR and
   INFODIR) and then type:
 

@@ -1,21 +1,29 @@
+Changes/New Features in 5.1.13:
+@itemize @bullet
+@item Version numbering finally all depending on the ./VERSION file,
+      thanks to Martin Maechler.
+@item Yet more fixes to SAS mode, thanks to Rich Heiberger
+      (@email{rmh@@surfer.stat.temple.edu}).
+@end itemize
+
 Changes/New Features in 5.1.12:
 @itemize @bullet
 @item Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
       Chuck Taylor, and others.
 @item More fixes to SAS mode, thanks to Rodney Sparapani
       (@email{spara002@@duke.edu}) and Rich Heiberger
-      (@email{rmh@@surfer.stat.temple.edu}). 
+      (@email{rmh@@surfer.stat.temple.edu}).
 @end itemize
 
 Changes/New Features in 5.1.11:
 @itemize @bullet
 @item More fixes to Stata mode, thanks to Brendan Halpin
-      (@email{brendan@@essex.ac.uk}) 
+      (@email{brendan@@essex.ac.uk})
 @item fixed bugs in ESS-elsewhere, thanks to many testers
 @item README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
       to David Brahm (@email{brahm@@alum.mit.edu}).
 @item Fixes to SAS mode, thanks to Rodney Sparapani
-      (@email{spara002@@duke.edu}) 
+      (@email{spara002@@duke.edu})
 @end itemize
 
 Changes/New Features in 5.1.10:

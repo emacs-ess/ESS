@@ -1,9 +1,9 @@
 ### Makefile - for DOCUMENTATION (./doc) of ESS distribution.
 ###
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-### For ESS Version: 5.0
+### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.9 $.
+### File: $Revision: 1.10 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -35,14 +35,14 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-# Rather use ESSVERSION from ../Makefile  (how)?
-#unused VERSION = 5.1.7
-#unused VERSIONDIR = ESS-$(VERSION)
+# GNU make, exclusively:
+ESSVERSION=$(shell cat ../VERSION)
+#nd VERSIONDIR = ESS-$(ESSVERSION)
 
 MYWWWDIR = /none/at/this/time
 MYFTPDIR = /none/at/this/time
 
-DOCS =	README README.S README.XLispStat README.SAS \
+DOCS =	README README.S README.XLispStat README.SAS README.SPLUS4WIN \
 	ess.texi dir ess.info ess.info-1 ess.info-2 ess.info-3 ess.dvi \
 	TODO Why_S-mode_Rocks.DMS \
 	README-19.28 README.additions NEWS \
@@ -54,11 +54,9 @@ DOCDIST = ess.ps ess.pdf \
 
 # The following works mainly with GNU Make.
 
-# DOCDISTFILES = $(addprefix $(VERSIONDIR)/,$(DOCDIST))
+### Targets --
 
-### Targets -- new 'readme.texi' !?
-
-all: ess.info html ess.dvi readme.dvi
+all: ess.info html ess.dvi readme.dvi README.SPLUS4WIN
 
 # Documentation mentions info, not ess.info
 
@@ -98,9 +96,15 @@ realclean: distclean
 
 ### Targets below here are only for developers.
 
+README.SPLUS4WIN announc.texi inst_*.texi : ../VERSION
+	perl -pi -e 's/([Ee][Ss]{2})-([0-9]+\.){2}[0-9]+/\1-$(ESSVERSION)/go' $@
+readme.texi : ../VERSION
+	perl -pi -e 's/([Ee][Ss]{2} \s*[Vv]ersion)\s+([0-9]+\.){2}[0-9]+/\1 $(ESSVERSION)/go' $@
+
+
 ##dist-doc: $(DOCDISTFILES)
 ##	@echo "**********************************************************"
-##	@echo "** Making distribution of ESS-DOC for release $(VERSION)"
+##	@echo "** Making distribution of ESS-DOC for release $(ESSVERSION)"
 ##	@echo "**********************************************************"
 ##	tar hcovf $(VERSIONDIR)-doc.tar $(DOCDISTFILES)
 ##	gzip $(VERSIONDIR)-doc.tar
