@@ -16,11 +16,23 @@ of SAS programs is supported.
 
 ESS[SAS] was written with two primary goals.
 
-1. Using the emacs environment is desirable for users accessing a remote
-computer via a network or dial-up who can not use the SAS Display Manager.
+1. The emacs text editor provides a powerful and flexible development environment
+for programming languages.  These features are a boon to all programmers and,
+with the help of ESS[SAS], to SAS users in particular.
 
-2. Using the emacs environment is desirable for local users as well due to the
-inherent efficiency of using the same, superior interface all of the time.
+2. Although, a departure from SAS Display Manager, ESS[SAS] provides similar
+key definitions to give novice ESS[SAS] users a head start.  Also, inconvenient
+SAS Display Manager features, like remote submission and syntax highlighting,
+are provided transparently; appealing to advanced ESS[SAS] users.
+
+@c Rodney:  I didn't have these goals in mind exactly.  Above, I try to give
+@c a coherent rationale for getting involved.
+@c
+@c 1. Using the emacs environment is desirable for users accessing a remote
+@c computer via a network or dial-up who can not use the SAS Display Manager.
+@c 
+@c 2. Using the emacs environment is desirable for local users as well due to the
+@c inherent efficiency of using the same, superior interface all of the time.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(SAS)--Editing files, iESS(SAS)--Interactive SAS processes, ESS(SAS)--Design philosophy, Help for SAS
