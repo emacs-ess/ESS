@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/04/26 15:36:37 $
-;; Version: $Revision: 5.85 $
-;; RCS: $Id: ess-inf.el,v 5.85 2004/04/26 15:36:37 stephen Exp $
+;; Modified: $Date: 2004/05/05 13:06:38 $
+;; Version: $Revision: 5.86 $
+;; RCS: $Id: ess-inf.el,v 5.86 2004/05/05 13:06:38 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -502,8 +502,9 @@ Returns the name of the process, or nil if the current buffer has none."
 
 (defun ess-request-a-process (message &optional noswitch)
   "Ask for a process, and make it the current ESS process.
-Also switches to the process buffer, if second arg NOSWITCH (prefix)
-is non-nil.  Returns the name of the selected process."
+Also switches to the process buffer unless NOSWITCH is non-nil.  Interactively,
+NOSWITCH can be set by giving a prefix argument.
+Returns the name of the selected process."
   (interactive
    (list "Switch to which ESS process? " current-prefix-arg)) ;prefix sets 'noswitch
   (update-ess-process-name-list)
@@ -522,7 +523,9 @@ is non-nil.  Returns the name of the selected process."
     (save-excursion
       (set-buffer (process-buffer (get-process proc)))
       (ess-make-buffer-current))
-    (if noswitch nil (switch-to-buffer (process-buffer (get-process proc))))
+    (if noswitch 
+	nil 
+      (ess-show-buffer (buffer-name (process-buffer (get-process proc))) t))
     proc))
 
 (defun ess-force-buffer-current (prompt &optional force)
