@@ -3,7 +3,7 @@ ANNOUNCING ESS
 
 The ESS Developers proudly announce the release of ESS
 
-   5.2.0rc2
+   5.2.0rc3
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -24,24 +24,12 @@ please read the README files that come with ESS.
 Getting the Latest Version
 ==========================
 
-The latest stable version of ESS is always available on the web at: ESS
-web page (http://www.analytics.washington.edu/downloads/ess/) or
-StatLib (http://lib.stat.cmu.edu/general/ESS/)
+The latest version of ESS is always available on the web at: ESS web
+page (http://www.analytics.washington.edu/downloads/ess/) or StatLib
+(http://lib.stat.cmu.edu/general/ESS/)
 
-   The latest public version of ESS can also be retrieved via cvs
-client.  If you have a firewall, then you may need to take appropriate
-action.
-
-   The repository name is
-     :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs
-
-   Using a command-line cvs client (i.e. on Unix or DOS), first type:
-     cvs -d :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs login
-
-   The password is "anoncvs".
-
-   Then type:
-     cvs -d :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs co ess
+   There no longer is an anonymous CVS repository for ESS, due to lack
+of interest, little demand, and problems with security.
 
 Current Features
 ================
@@ -67,6 +55,8 @@ Current Features
         * Source code revision maintenance
 
         * Batch execution (SAS, BUGS)
+
+        * Use of imenu to provide links to appropriate functions
 
    * Interacting with the process (S family, SAS, XLispStat)
         * Command-line editing
@@ -255,8 +245,10 @@ Changes/New Features in 5.2.0:
    * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
      pressing underscore twice inserts a literal underscore;
      ess-dump-filename-template-proto (new name!) now can be customized
-     successfully (for S language dialects); ess-help: Now using nice
-     underlines (instead of `nuke-* ^H_')
+     successfully (for S language dialects); Support for Imenu has been
+     improved; set ess-imenu-use-S to non-nil to get an "Imenu-S" item
+     on your menubar; ess-help: Now using nice underlines (instead of
+     `nuke-* ^H_')
 
    * ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
      numbers from any Emacs buffer into an existing *R* process; M-x

@@ -3,7 +3,7 @@ General Information: README
 
 This is the README file for the distribution of ESS version
 
-   5.2.0rc2
+   5.2.0rc3
 
    The first release of the 5.2 series.  ESS is a GNU Emacs and XEmacs
 mode for interactive statistical programming and data analysis.
@@ -18,11 +18,10 @@ features in one package.
 and has been the primary coder.  Martin Maechler
 (<maechler@stat.math.ethz.ch>) and Kurt Hornik
 (<hornik@ci.tuwien.ac.at>) have assisted with S-PLUS, S4, R, and
-XLispStat.  Richard M. Heiberger (<rmh@temple.edu>) has
-assisted with S-PLUS and S4 development for Windows.  Richard and
-Rodney A. Sparapani (<rsparapa@mcw.edu>) have done much of the work
-implementing interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS])
-support.
+XLispStat.  Richard M. Heiberger (<rmh@temple.edu>) has assisted with
+S-PLUS and S4 development for Windows.  Richard and Rodney A. Sparapani
+(<rsparapa@mcw.edu>) have done much of the work implementing
+interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.
 
    We are grateful to the previous developers of S-mode (Doug Bates, Ed
 Kademan, Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and
@@ -69,8 +68,10 @@ Changes/New Features in 5.2.0:
    * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
      pressing underscore twice inserts a literal underscore;
      ess-dump-filename-template-proto (new name!) now can be customized
-     successfully (for S language dialects); ess-help: Now using nice
-     underlines (instead of `nuke-* ^H_')
+     successfully (for S language dialects); Support for Imenu has been
+     improved; set ess-imenu-use-S to non-nil to get an "Imenu-S" item
+     on your menubar; ess-help: Now using nice underlines (instead of
+     `nuke-* ^H_')
 
    * ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
      numbers from any Emacs buffer into an existing *R* process; M-x
@@ -335,6 +336,8 @@ Current Features
 
         * Batch execution (SAS, BUGS)
 
+        * Use of imenu to provide links to appropriate functions
+
    * Interacting with the process (S family, SAS, XLispStat)
         * Command-line editing
 
@@ -425,24 +428,12 @@ bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 Getting the Latest Version
 ==========================
 
-The latest stable version of ESS is always available on the web at: ESS
-web page (http://www.analytics.washington.edu/downloads/ess/) or
-StatLib (http://lib.stat.cmu.edu/general/ESS/)
+The latest version of ESS is always available on the web at: ESS web
+page (http://www.analytics.washington.edu/downloads/ess/) or StatLib
+(http://lib.stat.cmu.edu/general/ESS/)
 
-   The latest public version of ESS can also be retrieved via cvs
-client.  If you have a firewall, then you may need to take appropriate
-action.
-
-   The repository name is
-     :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs
-
-   Using a command-line cvs client (i.e. on Unix or DOS), first type:
-     cvs -d :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs login
-
-   The password is "anoncvs".
-
-   Then type:
-     cvs -d :pserver:anoncvs@cvs.analytics.washington.edu:/var/anoncvs co ess
+   There no longer is an anonymous CVS repository for ESS, due to lack
+of interest, little demand, and problems with security.
 
 Installation (from tar file)
 ============================
@@ -461,8 +452,8 @@ Unix installation
      necessary.  This directory will be referred to below as ESSDIR.
 
   2. Retrieve the latest version from gzipped tar file
-     (http://software.biostat.washington.edu/ess/ess-VERSION.tar.gz) to
-     ESSDIR.
+     (http://www.analytics.washington.edu/downloads/ess/ess-VERSION.tar.gz)
+     to ESSDIR.
 
   3. Decompress/unarchive the files from the disribution.
           gunzip ess-VERSION.tar.gz
