@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/12 07:27:16 $
-;; Version: $Revision: 1.30 $
-;; RCS: $Id: essd-sas.el,v 1.30 1997/11/12 07:27:16 rossini Exp $
+;; Modified: $Date: 1997/11/12 18:24:08 $
+;; Version: $Revision: 1.31 $
+;; RCS: $Id: essd-sas.el,v 1.31 1997/11/12 18:24:08 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,8 +32,11 @@
 
 ;;; Autoloads:
 
-(require 'comint) ; required since might not have comint loaded.
+(require 'comint)
+(require 'shell)
+
 (require 'essl-sas)
+
 
 (autoload 'inferior-ess "ess-inf" no-doc t)
 (autoload 'ess-mode "ess-mode" no-doc t)
