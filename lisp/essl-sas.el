@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/16 20:19:00 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: essl-sas.el,v 1.12 1997/09/16 20:19:00 rossini Exp $
+;; Modified: $Date: 1997/10/20 20:09:56 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: essl-sas.el,v 1.13 1997/10/20 20:09:56 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -41,6 +41,7 @@
 (autoload 'SAS-transcript-mode
   "ess-trns" "ESS source eval mode" t)
 
+(fset 'sas-mode 'SAS-mode)
 
 
 
@@ -58,6 +59,7 @@
 ;;;
 ;;; Last change: 2/1/95
 
+(require 'ess-mode)
 
 (defvar sas-indent-width 4
   "*Amount to indent sas statements")
@@ -115,14 +117,15 @@ popup window when the SAS job is finished.")
   (modify-syntax-entry ?/  "."  SAS-syntax-table))
 
 (defvar SAS-mode-font-lock-keywords
-  '(("/\\*.\\*/"       . font-lock-comment-face)
+  '(("/\\*[^/]*.\\*/"  . font-lock-comment-face)
     ("^ *\\*[^/]*.;"   . font-lock-comment-face)
     ("; *\\*[^/]*.;"   . font-lock-comment-face)
-    ("%include [^;]*;" . font-lock-preprocessor-face)
+    ("%include [^;]*;" . font-lock-reference-face)
     ("&+[a-z0-9_]*\\>" . font-lock-keyword-face)
     ("^[ \t]*%let[ \t]+\\([a-z0-9_]*\\)" . font-lock-keyword-face)
     ("\\<\\(array\\|length\\|var\\|class\\)\\>" . font-lock-keyword-face)
-    ("^[ \t]*\\(proc\\|data\\|%macro\\|run\\|%mend\\|endsas\\)[ \t;]" . font-lock-function-name-face)
+    ("\\<\\(title[0-9]*\\|filename\\|model\\|output\\|goptions\\)\\>" . font-lock-keyword-face)
+    ("^[ \t]*\\(proc[ \t]+[a-zA-Z0-9_]+\\|data[ \t]+[a-zA-Z0-9_]+\\|%macro[ \t]+[a-zA-Z0-9_]+\\|run\\|%mend\\|endsas\\)[ \t;]" . font-lock-function-name-face)
     ("\\<\\(retain\\|format\\|input\\|infile\\|by\\|set\\|merge\\|label\\|options\\|where\\|%?if\\|%?then\\|%?else\\|%?while\\|%?do\\|%?until\\|%?end\\|%let\\|%str\\)\\>" 
      . font-lock-keyword-face)
     ("^[ \t]*\\(infile\\|proc\\|%macro\\|data\\)\\>[ \t]+\\([a-z0-9_.]*\\)")
@@ -132,7 +135,7 @@ popup window when the SAS job is finished.")
     ("^[ \t]*\\(set\\|merge\\)[ \t]+[a-z0-9_.]*[ \t]*([^)]*)[ \t]*[a-z0-9_.]*[ \t]*([^)]*)[ \t]*\\([^();]*\\)")
     ;;("^[ \t]*\\(set\\|merge\\)\\>\\([^;]*\\);")
     ;;("\\b\\(set\\|merge\\)\\>[^()]*\\((.*)\\)")
-    ("%[a-z0-9_]*\\>" . font-lock-preprocessor-face))
+    ("%[a-z0-9_]*\\>" . font-lock-reference-face))
   "Font Lock regexs for SAS.")
 
 (defvar SAS-editing-alist
@@ -1215,3 +1218,5 @@ whose beginning matches the regexp `page-delimiter'."
 ;;; End:
 
 ;;; essl-sas.el ends here
+
+
