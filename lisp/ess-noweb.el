@@ -6,10 +6,10 @@
 ;;          A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: April 18, 1999
-;; Version: $Revision: 1.9 $
+;; Version: $Revision: 1.10 $
 ;; Keywords: statistical support
 ;; Summary: Noweb support for ESS
-;; CVS: $Id: ess-noweb.el,v 1.9 2000/03/30 14:49:26 maechler Exp $
+;; CVS: $Id: ess-noweb.el,v 1.10 2003/12/08 11:07:29 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -54,11 +54,26 @@
   "Tangle the current chunk and send it to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  (let (( temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
+  (let ( (process-name ess-local-process-name)
+	 new-process-name 
+	 (cbuf (current-buffer))
+	 (temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
     (noweb-tangle-chunk temp-buffer)
     (set-buffer temp-buffer)
+    ;; When the temp buffer is created, it does not inherit any value
+    ;; of ess-local-process-name from the .Rnw buffer, so we have to set it
+    ;; here.  If ess-local-process-name is not set in the .Rnw buffer, 
+    ;; it will inherit the value that is chosen here.
+    (set (make-local-variable 'ess-local-process-name) process-name)
     (ess-eval-region (point-min) (point-max) vis "Eval buffer")
-    (kill-buffer temp-buffer)))
+    (if process-name
+	(kill-buffer temp-buffer)
+      ;; if process-name was nil, source buffer did not have a local process
+      ;; so keep value from temp buffer before killing it.
+      (setq new-process-name ess-local-process-name)
+      (kill-buffer temp-buffer)
+      (set-buffer cbuf)
+      (set (make-local-variable 'ess-local-process-name) new-process-name))))
 
 (defun ess-eval-chunk-and-go (vis)
   "Tangle the current chunk, send to the ESS process, and go there.
