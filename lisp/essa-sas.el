@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/12/21 17:20:53 $
-;; Version: $Revision: 1.132 $
-;; RCS: $Id: essa-sas.el,v 1.132 2002/12/21 17:20:53 rsparapa Exp $
+;; Modified: $Date: 2002/12/26 22:25:07 $
+;; Version: $Revision: 1.133 $
+;; RCS: $Id: essa-sas.el,v 1.133 2002/12/26 22:25:07 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -510,6 +510,9 @@ optional argument is non-nil, then set-buffer rather than switch."
   (interactive)
   (ess-sas-file-path)
 
+; Nice idea, but needs to be hardened to deal with remote directories.
+;
+; (let ((ess-temp-directory default-directory))
   (if (get-buffer ess-sas-shell-buffer) 
     (if set-buffer (set-buffer ess-sas-shell-buffer) (switch-to-buffer ess-sas-shell-buffer))
     (let ((temp-shell-buffer ess-sas-shell-buffer))
@@ -521,6 +524,8 @@ optional argument is non-nil, then set-buffer rather than switch."
                                           ;; nil t) works for newer emacsen
     )
   )
+; (insert "cd " ess-temp-directory)
+; (comint-send-input))
 )
 
 (defun ess-sas-interactive ()

@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/12/20 21:47:20 $
-;; Version: $Revision: 5.21 $
-;; RCS: $Id: ess-utils.el,v 5.21 2002/12/20 21:47:20 rsparapa Exp $
+;; Modified: $Date: 2002/12/26 22:25:07 $
+;; Version: $Revision: 5.22 $
+;; RCS: $Id: ess-utils.el,v 5.22 2002/12/26 22:25:07 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -308,5 +308,14 @@ Return t if buffer was modified, nil otherwise."
     (goto-char ess-temp-point)
 
 ess-temp-return-value))
+
+(defun ess-set-local-variables (alist &optional buffer)
+"Set local variables from ALIST, in BUFFER if specified.
+Used in conjuntion with `buffer-local-variables'."
+  (if buffer (set-buffer buffer))
+  (mapcar (lambda (pair)
+	    (make-local-variable (car pair))
+            (set (car pair) (eval (cdr pair))))
+          alist))
 
 (provide 'ess-utils)
