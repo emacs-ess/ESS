@@ -3,7 +3,7 @@
 @setfilename announc.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: announc.texi,v 1.9 1999/11/04 00:33:32 ess Exp $
+@comment $Id: announc.texi,v 1.10 1999/11/16 20:28:14 ess Exp $
 
 @node Announce, Introduction, Top, Top
 @comment  node-name,  next,  previous,  up
@@ -49,12 +49,6 @@ And to help remove any further confusion:
 	The name is __ESS__.  Not ESS-mode.
 
 Thank you :-).
-
-@node License, New Features, General Information, General Information
-@comment  node-name,  next,  previous,  up
-@section License
-
-@include license.texi
 
 @node New Features, Current Features, License, General Information
 @comment  node-name,  next,  previous,  up
@@ -103,6 +97,13 @@ Thank you :-).
 @section Authors
 
 @include authors.texi
+
+
+@node License, New Features, General Information, General Information
+@comment  node-name,  next,  previous,  up
+@section License
+
+@include license.texi
 
 @bye
 @c Remember to delete these lines before creating the info file.
