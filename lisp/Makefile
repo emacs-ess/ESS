@@ -146,9 +146,11 @@ dist:
 	gzip $(VERSIONDIR).tar
 	cp $(VERSIONDIR).tar.gz $(MYWWWDIR)
 	cp $(VERSIONDIR).tar.gz $(MYFTPDIR)
+	chmod u+w $(VERSIONDIR)/README
 	cp $(VERSIONDIR)/README $(MYWWWDIR)/$(VERSIONDIR)-README
 	cp $(VERSIONDIR)/README $(MYFTPDIR)/$(VERSIONDIR)-README
-	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
+	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile	
+	chmod u-w $(VERSIONDIR)/README
 	chmod u+w $(VERSIONDIR)/Doc
 
 
