@@ -1,11 +1,11 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from ess.texi on 6 August 2002 -->
+<!-- Created by texi2html 1.56k from ess.texi on 21 October 2002 -->
 
 <TITLE>ESS -- Emacs Speaks Statistics - Introduction to ESS</TITLE>
 </HEAD>
 <BODY>
-Go to the first, previous, <A HREF="ess_2.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+Go to the first, previous, <A HREF="ess_2.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
 <P><HR><P>
 
 
@@ -15,17 +15,18 @@ Go to the first, previous, <A HREF="ess_2.html">next</A>, <A HREF="ess_16.html">
 <LI><A HREF="ess_3.html#SEC12">Starting up</A>: Starting the <B>ESS</B> process
 <LI><A HREF="ess_4.html#SEC17">Help for the S family</A>
 <LI><A HREF="ess_5.html#SEC25">Help for SAS</A>
-<LI><A HREF="ess_6.html#SEC35">Entering commands</A>: Interacting with the process buffer
-<LI><A HREF="ess_7.html#SEC49">Editing</A>: How to create or edit <B>S</B> objects or functions
-<LI><A HREF="ess_8.html#SEC58">Help</A>: Reading help files in ESS
-<LI><A HREF="ess_9.html#SEC59">Transcript Mode</A>: Manipulating saved transcript files
-<LI><A HREF="ess_10.html#SEC62">Miscellaneous</A>: Other features of ESS
-<LI><A HREF="ess_11.html#SEC68">Bugs Etc</A>
-<LI><A HREF="ess_12.html#SEC72">Customization</A>: Customizing ESS
-<LI><A HREF="ess_13.html#SEC80">Key Index</A>
-<LI><A HREF="ess_14.html#SEC81">Command Index</A>
-<LI><A HREF="ess_15.html#SEC82">Concept Index</A>
-<LI><A HREF="ess_16.html#SEC83">Variable and command index</A>
+<LI><A HREF="ess_6.html#SEC35">Help for BUGS</A>
+<LI><A HREF="ess_7.html#SEC39">Entering commands</A>: Interacting with the process buffer
+<LI><A HREF="ess_8.html#SEC53">Editing</A>: How to create or edit <B>S</B> objects or functions
+<LI><A HREF="ess_9.html#SEC62">Help</A>: Reading help files in ESS
+<LI><A HREF="ess_10.html#SEC63">Transcript Mode</A>: Manipulating saved transcript files
+<LI><A HREF="ess_11.html#SEC66">Miscellaneous</A>: Other features of ESS
+<LI><A HREF="ess_12.html#SEC72">Bugs Etc</A>
+<LI><A HREF="ess_13.html#SEC76">Customization</A>: Customizing ESS
+<LI><A HREF="ess_14.html#SEC84">Key Index</A>
+<LI><A HREF="ess_15.html#SEC85">Command Index</A>
+<LI><A HREF="ess_16.html#SEC86">Concept Index</A>
+<LI><A HREF="ess_17.html#SEC87">Variable and command index</A>
 </UL>
 
 
@@ -138,39 +139,39 @@ entered.  The <SAMP>`-e'</SAMP> flag for S-plus provides something similar to
 this, but here you have the full range of Emacs commands rather than a
 limited subset.  However, other packages such as XLisp-Stat and S3 do not
 necessarily have features like this built-in.
-See section <A HREF="ess_6.html#SEC36">Entering commands and fixing mistakes</A>.
+See section <A HREF="ess_7.html#SEC40">Entering commands and fixing mistakes</A>.
 
 <LI>
 
 <B>Searchable command history</B> for recalling previously-submitted
 commands.  This provides all the features of the <SAMP>`Splus -e'</SAMP> history
 mechanism, plus added features such as history searching.
-See section <A HREF="ess_6.html#SEC44">Command History</A>.
+See section <A HREF="ess_7.html#SEC48">Command History</A>.
 
 <LI>
 
 <B>Command-line completion</B> of both object and file names for quick
 entry.  This is similar to <CODE>tcsh</CODE>'s facility for filenames; here it
 also applies to object names and list components.
-See section <A HREF="ess_6.html#SEC37">Completion of object names</A>.
+See section <A HREF="ess_7.html#SEC41">Completion of object names</A>.
 
 <LI>
 
 <B>Hot-keys</B> for quick entry of commonly-used commands in `S' such as
 <CODE>objects()</CODE> and <CODE>search()</CODE>.
-See section <A HREF="ess_6.html#SEC46">Hot keys for common commands</A>.
+See section <A HREF="ess_7.html#SEC50">Hot keys for common commands</A>.
 
 <LI>
 
 <B>Transcript recording</B> for a complete record of all the actions in an
 S session.
-See section <A HREF="ess_6.html#SEC39">Manipulating the transcript</A>.
+See section <A HREF="ess_7.html#SEC43">Manipulating the transcript</A>.
 
 <LI>
 
 <B>Interface to the help system</B>, with a specialized mode for viewing S
 help files.
-See section <A HREF="ess_8.html#SEC58">Reading help files in ESS</A>.
+See section <A HREF="ess_9.html#SEC62">Reading help files in ESS</A>.
 
 </UL>
 
@@ -190,31 +191,31 @@ features:
 <B>Object editing</B>.  ESS allows you to edit more than one function
 simultaneously in dedicated Emacs buffers.  The <B>ESS</B> process may
 continue to be used while functions are being edited.
-See section <A HREF="ess_7.html#SEC50">Creating or modifying <B>S</B> objects</A>.
+See section <A HREF="ess_8.html#SEC54">Creating or modifying <B>S</B> objects</A>.
 
 <LI>
 
 <B>A specialized editing mode</B> for <B>S</B> code, which provides syntactic
 indentation and highlighting.
-See section <A HREF="ess_7.html#SEC54">Indenting and formatting <B>S</B> code</A>.
+See section <A HREF="ess_8.html#SEC58">Indenting and formatting <B>S</B> code</A>.
 
 <LI>
 
 <B>Facilities for loading and error-checking source files</B>, including a
 keystroke to jump straight to the position of an error in a source file.
-See section <A HREF="ess_7.html#SEC52">Detecting errors in source files</A>.
+See section <A HREF="ess_8.html#SEC56">Detecting errors in source files</A>.
 
 <LI>
 
 <B>Source code revision maintenance</B>, which allows you to keep historic
 versions of <B>S</B> source files.
-See section <A HREF="ess_7.html#SEC56">Maintaining <B>S</B> source files</A>.
+See section <A HREF="ess_8.html#SEC60">Maintaining <B>S</B> source files</A>.
 
 <LI>
 
 <B>Facilities for evaluating <B>S</B> code</B> such as portions of source
 files, or line-by-line evaluation of files (useful for debugging).
-See section <A HREF="ess_7.html#SEC53">Sending code to the <B>ESS</B> process</A>.
+See section <A HREF="ess_8.html#SEC57">Sending code to the <B>ESS</B> process</A>.
 </UL>
 
 <P>
@@ -229,7 +230,7 @@ transcript files, including:
 
 <B>Evaluation of previously entered commands</B>, stripping away
 unnecessary prompts.
-See section <A HREF="ess_6.html#SEC42">Re-submitting commands from the transcript</A>.
+See section <A HREF="ess_7.html#SEC46">Re-submitting commands from the transcript</A>.
 
 </UL>
 
@@ -238,21 +239,47 @@ See section <A HREF="ess_6.html#SEC42">Re-submitting commands from the transcrip
 <H2><A NAME="SEC3" HREF="ess_toc.html#TOC3">New features in ESS</A></H2>
 
 <P>
+Changes/New Features in 5.2.0:
+
+<UL>
+<LI>ESS[BUGS]:  now supports interactive processing; special thanks to
+
+<A HREF="mailto:Aki.Vehtari@hut.fi">Aki Vehtari</A>; new info documentation!
+<LI>ESS[SAS]:  convert .log to .sas with ess-sas-transcript; THEN statements now highlighted correctly; info documentation improved; Local Variables bug fixes
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.24:
+
+<UL>
+<LI>The version number is now correct even inside ESS/Emacs
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.23:
+
+<UL>
+<LI>Minor more Makefile clean up.
+
+</UL>
+
+<P>
 Changes/New Features in 5.1.22:
 
 <UL>
 <LI>Besides info documentation, PDF and HTML
 
-documentation are also provided and now available
-on the web as well; see <A HREF="http://software.biostat.washington.edu/ess/doc">ESS web page</A>
-and <A HREF="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</A>
+documentation are also provided (instead of built using "make") and available
+on the web as well; see <A HREF="http://software.biostat.washington.edu/ess/doc">ESS web page</A> and <A HREF="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</A>
 <LI>Now that info documentation is available, the
 
 README.* files are no longer supported.  However, they
 are still distributed for what it's worth.
 <LI>ESS is now an XEmacs package!  See
 
-<A HREF="http://www.xemacs.org/Install/index.html">XEmacs Installation HOWTO</A> 
+<A HREF="http://www.xemacs.org/Install/index.html">XEmacs Installation HOWTO</A>
 for details (specifically, items 10-15).
 <LI>ESS[SAS]: more user-friendly enhancements for remote
 
@@ -271,10 +298,10 @@ Changes/New Features in 5.1.21:
 <UL>
 <LI>ESS[SAS]: info documentation now available!, see
 
-ESS-&#62;Help for SAS; F12 opens GSASFILE nearest point for viewing 
-either within emacs, when available, or via an external viewer; 
-more syntax highlighting keywords; more enhancements for remote 
-SAS batch jobs with Kermit; new framework for remote SAS interactive 
+ESS-&#62;Help for SAS; F12 opens GSASFILE nearest point for viewing
+either within emacs, when available, or via an external viewer;
+more syntax highlighting keywords; more enhancements for remote
+SAS batch jobs with Kermit; new framework for remote SAS interactive
 jobs, see ess-remote
 <LI>ESS[S]: info documentation now available!, see
 
@@ -314,18 +341,18 @@ This feature is still under development.
 
 function-key definitions, if specified; you can specify your SAS
 library definitions outside of autoexec.sas for ess-sas-data-view
-with SAS code placed in the variable ess-sas-data-view-libname, 
-also the dataset name is defaulted to the nearest permanent dataset 
-to point; Speedbar support now works for permanent datasets, please 
-ignore first./last.; new font-locking is now the default with more 
-improvements for font-locking PROCs, macro statements, * ; and %* ; 
-comments; you can toggle sas-log-mode with F10 which will font-lock 
+with SAS code placed in the variable ess-sas-data-view-libname,
+also the dataset name is defaulted to the nearest permanent dataset
+to point; Speedbar support now works for permanent datasets, please
+ignore first./last.; new font-locking is now the default with more
+improvements for font-locking PROCs, macro statements, * ; and %* ;
+comments; you can toggle sas-log-mode with F10 which will font-lock
 your .log (if it isn't too big); submit remote .sas files accessed
-with ange-ftp, EFS or Tramp (Kermit is experimental) by setting 
-ess-sas-submit-method to 'sh; ess-sas-submit-command and 
+with ange-ftp, EFS or Tramp (Kermit is experimental) by setting
+ess-sas-submit-method to 'sh; ess-sas-submit-command and
 ess-sas-submit-command-options are buffer-local so you can have
-local file variable sections at the end of your .sas files to 
-request different executables or specify special options and the 
+local file variable sections at the end of your .sas files to
+request different executables or specify special options and the
 local file variables are re-read at submit instead of only at file
 open so that if you make a change it is picked up immediately;
 <LI>ESS[BUGS]: font-lock with `in' fixed.
@@ -671,7 +698,7 @@ needs to be done before proceeding to the next chapter.
 
 
 <P>
-section <A HREF="ess_12.html#SEC72">Customizing ESS</A> provides details of user variables you can change to
+section <A HREF="ess_13.html#SEC76">Customizing ESS</A> provides details of user variables you can change to
 customize ESS to your taste, but it is recommended that you defer this
 section until you are more familiar with ESS.
 
@@ -685,6 +712,6 @@ always, experience -- try it out!
 
 
 <P><HR><P>
-Go to the first, previous, <A HREF="ess_2.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+Go to the first, previous, <A HREF="ess_2.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
 </BODY>
 </HTML>

@@ -3,13 +3,13 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.39 2002/07/31 21:57:13 rsparapa Exp $
+@comment $Id: ess.texi,v 5.40 2002/10/21 18:25:02 rsparapa Exp $
 
 @synindex pg vr
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics 
-@subtitle (Documentation $Revision: 5.39 $ $Date: 2002/07/31 21:57:13 $)
+@subtitle (Documentation $Revision: 5.40 $ $Date: 2002/10/21 18:25:02 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.A. Sparapani.
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @c @author                and David Smith)
@@ -51,7 +51,7 @@
 ESS version 
 @include ../VERSION
 
-        (Documentation $Revision: 5.39 $ $Date: 2002/07/31 21:57:13 $).
+        (Documentation $Revision: 5.40 $ $Date: 2002/10/21 18:25:02 $).
 
 @display
 by  A.J. Rossini, 
@@ -84,6 +84,7 @@ statements written in these statistical analysis languages.
 * Starting up::                 Starting the @b{ESS} process
 * Help for the S family::       
 * Help for SAS::                
+* Help for BUGS::                
 * Entering commands::           Interacting with the process buffer
 * Editing::                     How to create or edit @b{S} objects or functions
 * Help::                        Reading help files in ESS
@@ -749,7 +750,7 @@ provides its own command history mechanism.
 @include help-s.texi
 
 @comment  node-name,  next,  previous,  up
-@node Help for SAS, Entering commands, Help for the S family, Top
+@node Help for SAS, Help for BUGS, Help for the S family, Top
 @chapter Help for SAS
 
 @menu
@@ -765,9 +766,19 @@ provides its own command history mechanism.
 @end menu
 @include help-sas.texi
 
+@comment  node-name,  next,  previous,  up
+@node Help for BUGS, Entering commands, Help for SAS, Top
+@chapter Help for BUGS
+
+@menu
+* ESS(BUGS)--Model files::
+* ESS(BUGS)--Command files::
+* ESS(BUGS)--Log files::
+@end menu
+@include help-bugs.texi
 
 @comment  node-name,  next,  previous,  up
-@node Entering commands, Editing, Help for SAS, Top
+@node Entering commands, Editing, Help for BUGS, Top
 @chapter Interacting with the @b{ESS} process
 @cindex entering commands
 @cindex commands

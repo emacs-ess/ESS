@@ -1,110 +1,216 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from ess.texi on 6 August 2002 -->
+<!-- Created by texi2html 1.56k from ess.texi on 21 October 2002 -->
 
-<TITLE>ESS -- Emacs Speaks Statistics - Manipulating saved transcript files</TITLE>
+<TITLE>ESS -- Emacs Speaks Statistics - Reading help files in ESS</TITLE>
 </HEAD>
 <BODY>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_8.html">previous</A>, <A HREF="ess_10.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_8.html">previous</A>, <A HREF="ess_10.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
 <P><HR><P>
 
 
-<H1><A NAME="SEC59" HREF="ess_toc.html#TOC59">Manipulating saved transcript files</A></H1>
-
+<H1><A NAME="SEC62" HREF="ess_toc.html#TOC62">Reading help files in ESS</A></H1>
 <P>
-Inferior <B>S</B> mode records the transcript (the list of all commands
-executed, and their output) in the process buffer, which can be saved as
-a <EM>transcript file</EM>, which should normally have the suffix
-<TT>`.St'</TT>.  The most obvious use for a transcript file is as a static
-record of the actions you have performed in a particular <B>S</B> session.
-Sometimes, however, you may wish to re-execute commands recorded in the
-transcript file by submitting them to a running <B>ESS</B> process.  This
-is what Transcript Mode is for.
+<A NAME="IDX194"></A>
 
 
 <P>
-If you load file a with the suffix <TT>`.St'</TT> into Emacs, it is placed
-in S Transcript Mode.  Transcript Mode is similar to Inferior <B>S</B> mode
-(see section <A HREF="ess_6.html#SEC35">Interacting with the <B>ESS</B> process</A>):
-<A NAME="IDX207"></A>
-<A NAME="IDX208"></A>
-paragraphs are defined as a command and its output, and you can move
-though commands either with the paragraph commands or with <KBD>C-c C-p</KBD>
-and <KBD>C-c C-n</KBD>.
+ESS provides an easy-to-use facility for reading <B>S</B> help files from
+within Emacs.  From within the <B>ESS</B> process buffer or any ESS edit
+buffer, typing <KBD>C-c C-v</KBD> (<CODE>ess-display-help-on-object</CODE>)
+<A NAME="IDX195"></A>
+will prompt you for the name of an object for which you would like
+documentation.  Completion is provided over all objects which have help
+files.
+
+
+<P>
+If the requested object has documentation, you will be popped into a
+buffer (named <CODE>*help(<VAR>obj-name</VAR>)*</CODE>) containing the help file.
+This buffer is placed in a special `S Help' mode which disables the
+usual editing commands but which provides a number of keys for paging
+through the help file:
 
 
 
 <UL>
-<LI><A HREF="ess_9.html#SEC60">Resubmit</A>: Resubmitting commands from the transcript file
-<LI><A HREF="ess_9.html#SEC61">Clean</A>: Cleaning transcript files
+Help commands:
+
+<LI>
+
+<KBD>?</KBD> (<CODE>ess-describe-help-mode</CODE>) <BR>
+<A NAME="IDX196"></A>
+Pops up a help buffer with a list of the commands available in <B>S</B> help
+mode.
+
+<LI>
+
+<KBD>h</KBD> (<CODE>ess-display-help-on-object</CODE>) <BR>
+<A NAME="IDX197"></A>
+Pop up a help buffer for a different object
+
+Paging commands:
+
+<A NAME="IDX198"></A>
+<LI>
+
+<KBD>b</KBD> or <KBD>DEL</KBD> (<CODE>scroll-down</CODE>) <BR>
+Move one page backwards through the help file.
+
+<LI>
+
+<KBD>SPC</KBD> (<CODE>scroll-up</CODE>) <BR>
+Move one page forwards through the help file.
+
+<LI>
+
+<KBD>&#62;</KBD> (<CODE>beginning-of-buffer</CODE>) and <KBD>&#60;</KBD> (<CODE>end-of-buffer</CODE>)
+<BR>
+Move to the beginning and end of the help file, respectively.
+
+Section-based motion commands:
+
+<LI>
+
+<KBD>n</KBD> (<CODE>ess-skip-to-next-section</CODE>) and <KBD>p</KBD>
+(<CODE>ess-skip-to-previous-section</CODE>) <BR> Move to the next and previous
+<A NAME="IDX199"></A>
+<A NAME="IDX200"></A>
+section header in the help file, respectively.  A section header
+consists of a number of capitalized words, followed by a colon.
+
+In addition, the <KBD>s</KBD> key followed by one of the following letters
+will jump to a particular section in the help file:
+<A NAME="IDX201"></A>
+<DL COMPACT>
+
+<DT><SAMP>`a'</SAMP>
+<DD>
+ARGUMENTS:
+
+<DT><SAMP>`b'</SAMP>
+<DD>
+BACKGROUND:
+
+<DT><SAMP>`B'</SAMP>
+<DD>
+BUGS:
+
+<DT><SAMP>`d'</SAMP>
+<DD>
+DETAILS:
+
+<DT><SAMP>`D'</SAMP>
+<DD>
+DESCRIPTION:
+
+<DT><SAMP>`e'</SAMP>
+<DD>
+EXAMPLES:
+
+<DT><SAMP>`n'</SAMP>
+<DD>
+NOTE:
+
+<DT><SAMP>`o'</SAMP>
+<DD>
+OPTIONAL ARGUMENTS:
+
+<DT><SAMP>`r'</SAMP>
+<DD>
+REQUIRED ARGUMENTS:
+
+<DT><SAMP>`R'</SAMP>
+<DD>
+REFERENCES:
+
+<DT><SAMP>`s'</SAMP>
+<DD>
+SIDE EFFECTS:
+
+<DT><SAMP>`s'</SAMP>
+<DD>
+SEE ALSO:
+
+<DT><SAMP>`u'</SAMP>
+<DD>
+USAGE:
+
+<DT><SAMP>`v'</SAMP>
+<DD>
+VALUE:
+
+<DT><SAMP>`&#60;'</SAMP>
+<DD>
+Jumps to beginning of file
+
+<DT><SAMP>`&#62;'</SAMP>
+<DD>
+Jumps to end of file
+
+<DT><SAMP>`?'</SAMP>
+<DD>
+Pops up a help buffer with a list of the defined section motion keys.
+</DL>
+
+Miscellaneous:
+
+<LI>
+
+<KBD>r</KBD> (<CODE>ess-eval-region</CODE>) <BR>
+<A NAME="IDX202"></A>
+Send the contents of the current region to the <B>ESS</B> process.  Useful
+for running examples in help files.
+
+<LI>
+
+<KBD>/</KBD> (<CODE>isearch-forward</CODE>) <BR>
+Same as <KBD>C-s</KBD>.
+
+Quit commands:
+
+<LI>
+
+<KBD>q</KBD> (<CODE>ess-switch-to-end-of-ESS</CODE>) <BR>
+<A NAME="IDX203"></A>
+Returns to the <B>ESS</B> process buffer in another window, leaving the
+help window visible.
+
+<LI>
+
+<KBD>k</KBD> (<CODE>kill-buffer</CODE>) <BR>
+Kills the help buffer.
+
+<LI>
+
+<KBD>x</KBD> (<CODE>ess-kill-buffer-and-go</CODE>) <BR>
+Return to the <B>ESS</B> process, killing this help buffer.
 </UL>
 
+<P>
+In addition, all of the ESS commands available in the edit buffers are
+also available in <B>S</B> help mode (see section <A HREF="ess_8.html#SEC54">Creating or modifying <B>S</B> objects</A>).  Of course, the
+usual (non-editing) Emacs commands are available, and for convenience
+the digits and <KBD>-</KBD> act as prefix arguments.
 
-
-<H2><A NAME="SEC60" HREF="ess_toc.html#TOC60">Resubmitting commands from the transcript file</A></H2>
 
 <P>
-Three commands are provided to re-submit command lines from the
-transcript file to a running <B>ESS</B> process.  They are:
+If a help buffer already exists for an object for which help is
+requested, that buffer is popped to immediately; the <B>ESS</B> process is
+not consulted at all.  If the contents of the help file have changed,
+you either need to kill the help buffer first, or pass a prefix argument
+(with <KBD>C-u</KBD>) to <CODE>ess-display-help-on-object</CODE>.
 
-
-
-<UL>
-<LI>
-
-<KBD>RET</KBD> (<CODE>ess-transcript-send-command</CODE>) <BR>
-Send the current command line to the <B>ESS</B> process, and execute it.
-<A NAME="IDX209"></A>
-
-<LI>
-
-<KBD>C-c RET</KBD> (<CODE>ess-transcript-copy-command</CODE>) <BR>
-Copy the current command to the <B>ESS</B> process, and switch to the
-<B>ESS</B> process buffer (ready to edit the copied command).
-<A NAME="IDX210"></A>
-
-<LI>
-
-<KBD>M-RET</KBD> (<CODE>ess-transcript-send-command-and-move</CODE>) <BR>
-Send the current command to the <B>ESS</B> process, and move to the next
-command line.  This command is useful for submitting a series of
-commands.
-</UL>
 
 <P>
-Note that these commands are similar to those on the same keys in
-Inferior <B>S</B> Mode.  In all three cases, the commands should be
-executed when the cursor is on a command line in the transcript; the
-prompt is automatically removed before the command is submitted.
-
-
-
-
-<H2><A NAME="SEC61" HREF="ess_toc.html#TOC61">Cleaning transcript files</A></H2>
-
-<P>
-Yet another use for transcript files is to extract the command lines for
-inclusion in an <B>S</B> source file or function.  Transcript mode provides
-one command which does just this:
-
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-w</KBD> (<CODE>ess-transcript-clean-region</CODE>) <BR>
-Deletes all prompts and command output in the region, leaving only the
-commands themselves.
-</UL>
-
-<P>
-The remaining command lines may then be copied to a source file or edit
-buffer for inclusion in a function definition, or may be evaluated
-directly (see section <A HREF="ess_7.html#SEC53">Sending code to the <B>ESS</B> process</A>) using the code evaluation commands
-from <B>S</B> mode, also available in <B>S</B> Transcript Mode.
+Help buffers are marked as temporary buffers in ESS, and are deleted
+when <CODE>ess-quit</CODE> or <CODE>ess-cleanup</CODE> are called.
+<A NAME="IDX204"></A>
+<A NAME="IDX205"></A>
+<A NAME="IDX206"></A>
 
 
 <P><HR><P>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_8.html">previous</A>, <A HREF="ess_10.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_8.html">previous</A>, <A HREF="ess_10.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
 </BODY>
 </HTML>

@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.37 $.
+### File: $Revision: 1.38 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -20,7 +20,8 @@ SPLITCHAP = -split_chapter -menu -glossary
 TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 	credits.texi currfeat.texi ess.texi getting.texi help-s.texi        \
 	help-sas.texi inst_cvs.texi inst_tar.texi license.texi mailing.texi \
-	newfeat.texi readme.texi requires.texi stabilty.texi ../VERSION
+	newfeat.texi readme.texi requires.texi stabilty.texi help-bugs.texi \
+        ../VERSION
 
 ### Targets --
 

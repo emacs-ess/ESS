@@ -13,7 +13,7 @@ file and submit a BUGS batch process.  Lastly, interactive submission of BUGS
 commands is also supported.
 
 @comment  node-name,  next,  previous,  up
-@node ESS(BUGS)--Model files, ESS(SAS)--Command files, ESS for SAS, ESS for other languages
+@node ESS(BUGS)--Model files, ESS(BUGS)--Command files, Help for BUGS, Help for BUGS
 @section ESS[BUGS]--Model files
 
 Model files (with the .bug extension) are edited in ESS[BUGS] mode.  Two keys 
@@ -66,7 +66,7 @@ press of F12, but the actions for %N, %MONITOR and %STATS are performed on
 each press of F12 if you re-visit the model file.
 
 @comment  node-name,  next,  previous,  up
-@node ESS(BUGS)--Command files, ESS(SAS)--Log files, ESS(BUGS)--Model files, ESS for other languages
+@node ESS(BUGS)--Command files, ESS(BUGS)--Log files, ESS(BUGS)--Model files, Help for BUGS
 @section ESS[BUGS]--Command files
 
 To avoid extension name collision, .bmd is used for BUGS command files.  When
@@ -88,7 +88,7 @@ you to change the number of bins to use in the Griddy algorithm
 which defaults to 32.
 
 @comment  node-name,  next,  previous,  up
-@node ESS(BUGS)--Log files, , ESS(BUGS)--Command files, ESS for other languages
+@node ESS(BUGS)--Log files, , ESS(BUGS)--Command files, Help for BUGS
 @section ESS[BUGS]--Log files
 
 To avoid extension name collision, .bog is used for BUGS log files.  The BUGS

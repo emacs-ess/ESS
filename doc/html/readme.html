@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from readme.texi on 6 August 2002 -->
+<!-- Created by texi2html 1.56k from readme.texi on 21 October 2002 -->
 
 <TITLE>ESS -- Emacs Speaks Statistics</TITLE>
 </HEAD>
@@ -18,7 +18,7 @@
 
 <P>
 This is the README file for the distribution of ESS version 
-5.1.22
+5.1.24
 
 
 <P>
@@ -73,21 +73,47 @@ details.
 <H2><A NAME="SEC3" HREF="readme_toc.html#TOC3">New Features</A></H2>
 
 <P>
+Changes/New Features in 5.2.0:
+
+<UL>
+<LI>ESS[BUGS]:  now supports interactive processing; special thanks to
+
+<A HREF="mailto:Aki.Vehtari@hut.fi">Aki Vehtari</A>; new info documentation!
+<LI>ESS[SAS]:  convert .log to .sas with ess-sas-transcript; THEN statements now highlighted correctly; info documentation improved; Local Variables bug fixes
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.24:
+
+<UL>
+<LI>The version number is now correct even inside ESS/Emacs
+
+</UL>
+
+<P>
+Changes/New Features in 5.1.23:
+
+<UL>
+<LI>Minor more Makefile clean up.
+
+</UL>
+
+<P>
 Changes/New Features in 5.1.22:
 
 <UL>
 <LI>Besides info documentation, PDF and HTML
 
-documentation are also provided and now available
-on the web as well; see <A HREF="http://software.biostat.washington.edu/ess/doc">ESS web page</A>
-and <A HREF="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</A>
+documentation are also provided (instead of built using "make") and available
+on the web as well; see <A HREF="http://software.biostat.washington.edu/ess/doc">ESS web page</A> and <A HREF="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</A>
 <LI>Now that info documentation is available, the
 
 README.* files are no longer supported.  However, they
 are still distributed for what it's worth.
 <LI>ESS is now an XEmacs package!  See
 
-<A HREF="http://www.xemacs.org/Install/index.html">XEmacs Installation HOWTO</A> 
+<A HREF="http://www.xemacs.org/Install/index.html">XEmacs Installation HOWTO</A>
 for details (specifically, items 10-15).
 <LI>ESS[SAS]: more user-friendly enhancements for remote
 
@@ -106,10 +132,10 @@ Changes/New Features in 5.1.21:
 <UL>
 <LI>ESS[SAS]: info documentation now available!, see
 
-ESS-&#62;Help for SAS; F12 opens GSASFILE nearest point for viewing 
-either within emacs, when available, or via an external viewer; 
-more syntax highlighting keywords; more enhancements for remote 
-SAS batch jobs with Kermit; new framework for remote SAS interactive 
+ESS-&#62;Help for SAS; F12 opens GSASFILE nearest point for viewing
+either within emacs, when available, or via an external viewer;
+more syntax highlighting keywords; more enhancements for remote
+SAS batch jobs with Kermit; new framework for remote SAS interactive
 jobs, see ess-remote
 <LI>ESS[S]: info documentation now available!, see
 
@@ -149,18 +175,18 @@ This feature is still under development.
 
 function-key definitions, if specified; you can specify your SAS
 library definitions outside of autoexec.sas for ess-sas-data-view
-with SAS code placed in the variable ess-sas-data-view-libname, 
-also the dataset name is defaulted to the nearest permanent dataset 
-to point; Speedbar support now works for permanent datasets, please 
-ignore first./last.; new font-locking is now the default with more 
-improvements for font-locking PROCs, macro statements, * ; and %* ; 
-comments; you can toggle sas-log-mode with F10 which will font-lock 
+with SAS code placed in the variable ess-sas-data-view-libname,
+also the dataset name is defaulted to the nearest permanent dataset
+to point; Speedbar support now works for permanent datasets, please
+ignore first./last.; new font-locking is now the default with more
+improvements for font-locking PROCs, macro statements, * ; and %* ;
+comments; you can toggle sas-log-mode with F10 which will font-lock
 your .log (if it isn't too big); submit remote .sas files accessed
-with ange-ftp, EFS or Tramp (Kermit is experimental) by setting 
-ess-sas-submit-method to 'sh; ess-sas-submit-command and 
+with ange-ftp, EFS or Tramp (Kermit is experimental) by setting
+ess-sas-submit-method to 'sh; ess-sas-submit-command and
 ess-sas-submit-command-options are buffer-local so you can have
-local file variable sections at the end of your .sas files to 
-request different executables or specify special options and the 
+local file variable sections at the end of your .sas files to
+request different executables or specify special options and the
 local file variables are re-read at submit instead of only at file
 open so that if you make a change it is picked up immediately;
 <LI>ESS[BUGS]: font-lock with `in' fixed.
@@ -470,7 +496,7 @@ XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
 
 
 <UL>
-<LI>S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
+<LI>S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1
 
 <LI>R versions &#62;=0.49
 
@@ -510,7 +536,7 @@ with the following versions of emacs
 
 
 <UL>
-<LI>GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
+<LI>GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
 
 <LI>XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
 
@@ -943,7 +969,7 @@ XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
 
 
 <UL>
-<LI>S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
+<LI>S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1
 
 <LI>R versions &#62;=0.49
 
@@ -983,7 +1009,7 @@ with the following versions of emacs
 
 
 <UL>
-<LI>GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
+<LI>GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
 
 <LI>XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
 
@@ -1082,7 +1108,7 @@ The purposes of the mailing list include
 </UL>
 
 <P><HR><P>
-This document was generated on 6 August 2002 using
+This document was generated on 21 October 2002 using
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>

@@ -1,141 +1,194 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from ess.texi on 6 August 2002 -->
+<!-- Created by texi2html 1.56k from ess.texi on 21 October 2002 -->
 
-<TITLE>ESS -- Emacs Speaks Statistics - Bugs and Bug Reporting, Mailing Lists</TITLE>
+<TITLE>ESS -- Emacs Speaks Statistics - Other features of ESS</TITLE>
 </HEAD>
 <BODY>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_10.html">previous</A>, <A HREF="ess_12.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_10.html">previous</A>, <A HREF="ess_12.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
 <P><HR><P>
 
 
-<H1><A NAME="SEC68" HREF="ess_toc.html#TOC68">Bugs and Bug Reporting, Mailing Lists</A></H1>
-
-
-<UL>
-<LI><A HREF="ess_11.html#SEC69">Bugs</A>
-<LI><A HREF="ess_11.html#SEC70">Reporting Bugs</A>
-<LI><A HREF="ess_11.html#SEC71">Mailing Lists</A>
-</UL>
-
-
-
-<H2><A NAME="SEC69" HREF="ess_toc.html#TOC69">Bugs</A></H2>
-<P>
-<A NAME="IDX220"></A>
-
-<UL>
-<LI>
-
-Commands like <CODE>ess-display-help-on-object</CODE> and list completion
-cannot be used while the user is entering a multi-line command.  The
-only real fix in this situation is to use another <B>ESS</B> process.
-
-<LI>
-
-The <CODE>ess-eval-</CODE> commands can leave point in the <B>ESS</B> process
-buffer in the wrong place when point is at the same position as the last
-process output.  This proves difficult to fix, in general, as we need to
-consider all <EM>windows</EM> with <CODE>window-point</CODE> at the right place.
-
-<LI>
-
-It's possible to clear the modification flag (say, by saving the buffer)
-with the edit buffer not having been loaded into S.
-
-<LI>
-
-Backup files can sometimes be left behind, even when
-<CODE>ess-keep-dump-files</CODE> is <CODE>nil</CODE>.
-
-<LI>
-
-Passing an incomplete <B>S</B> expression to <CODE>ess-execute</CODE> causes ESS
-to hang.
-
-<LI>
-
-The function-based commands don't always work as expected on functions
-whose body is not a parenthesized or compound expression, and don't even
-recognize anonymous functions (i.e. functions not assigned to any
-variable).
-
-<LI>
-
-Multi-line commands could be handled better by the command history
-mechanism.
-</UL>
-
-
-
-<H2><A NAME="SEC70" HREF="ess_toc.html#TOC70">Reporting Bugs</A></H2>
-<P>
-<A NAME="IDX221"></A>
-<A NAME="IDX222"></A>
-Please send bug reports, suggestions etc. to
-
-
-<A HREF="mailto:ESS-bugs@stat.math.ethz.ch">
-<P>
-<A HREF="mailto:ESS-bugs@stat.math.ethz.ch">ESS-bugs@stat.math.ethz.ch</A>
-</A>
-
+<H1><A NAME="SEC66" HREF="ess_toc.html#TOC66">Other features of ESS</A></H1>
 
 <P>
-The easiest way to do this is within Emacs by typing
-
-
-<P>
-<KBD>M-x ess-submit-bug-report</KBD>
-
-
-<P>
-This also gives the maintainers valuable information about your
-installation which may help us to identify or even fix the bug.
-
-
-<P>
-Note that comments, suggestions, words of praise and large cash
-donations are also more than welcome.
-
-
-
-
-<H2><A NAME="SEC71" HREF="ess_toc.html#TOC71">Mailing Lists</A></H2>
-
-<P>
-There is a mailing list for discussions and announcements relating to
-ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
-"help") in the body to <A HREF="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</A>;
-contributions to the list may be mailed to
-<A HREF="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</A>.  Rest assured, this is a fairly
-low-volume mailing list.
-
-
-<P>
-The purposes of the mailing list include
+ESS has a few miscellaneous features, which didn't fit anywhere else.
 
 
 
 <UL>
-<LI>
-
- helping users of ESS to get along with it.
-<LI>
-
- discussing aspects of using ESS on Emacs and XEmacs.
-<LI>
-
- suggestions for improvements.
-<LI>
-
- announcements of new releases of ESS.
-<LI>
-
- posting small patches to ESS.
+<LI><A HREF="ess_11.html#SEC67">Highlighting</A>: Syntactic highlighting of buffers
+<LI><A HREF="ess_11.html#SEC68">Graphics</A>: Using graphics with ESS
+<LI><A HREF="ess_11.html#SEC71">Object Completion</A>
 </UL>
+
+
+
+<H2><A NAME="SEC67" HREF="ess_toc.html#TOC67">Syntactic highlighting of buffers</A></H2>
+
+<P>
+ESS provides Font-Lock (see section `Using Multiple Typefaces' in <CITE>The Gnu Emacs Reference Manual</CITE>) patterns for Inferior <B>S</B> Mode, S
+Mode, and <B>S</B> Transcript Mode buffers.
+<A NAME="IDX211"></A>
+<A NAME="IDX212"></A>
+
+
+<P>
+To activate the highlighting, you need to turn on Font Lock mode in the
+appropriate buffers.  This can be done on a per-buffer basis with
+<KBD>M-x font-lock-mode</KBD>, or may be done by adding
+<CODE>turn-on-font-lock</CODE> to <CODE>inferior-ess-mode-hook</CODE>,
+<CODE>ess-mode-hook</CODE> and <CODE>ess-transcript-mode-hook</CODE>
+(see section <A HREF="ess_13.html#SEC82">Customizing ESS with hooks</A>).  Your systems administrator may have done this for you
+in <TT>`ess-site.el'</TT> (see section <A HREF="ess_13.html#SEC76">Customizing ESS</A>).
+
+
+<P>
+The font-lock patterns are defined in three variables, which you may
+modify if desired:
+
+
+<P>
+<DL>
+<DT><U>Variable:</U> <B>ess-inf-font-lock-keywords</B>
+<DD><A NAME="IDX213"></A>
+Font-lock patterns for Inferior <B>ESS</B> Mode.  The default value
+highlights prompts, inputs, assignments, output messages, vector and
+matrix labels, and literals such as <SAMP>`NA'</SAMP> and <CODE>TRUE</CODE>.
+</DL>
+
+
+<P>
+<DL>
+<DT><U>Variable:</U> <B>ESS-font-lock-keywords</B>
+<DD><A NAME="IDX214"></A>
+Font-lock patterns for <B>ESS</B> programming mode.  The default value
+highlights function names, literals, assignments, source functions and
+reserved words.
+</DL>
+
+
+<P>
+<DL>
+<DT><U>Variable:</U> <B>ess-trans-font-lock-keywords</B>
+<DD><A NAME="IDX215"></A>
+Font-lock patterns for <B>ESS</B> Transcript Mode.  The default value
+highlights the same stuff as in Inferior <B>ESS</B> Mode.
+</DL>
+
+
+
+
+<H2><A NAME="SEC68" HREF="ess_toc.html#TOC68">Using graphics with ESS</A></H2>
+
+<P>
+<A NAME="IDX216"></A>
+One of the main features of the <CODE>S</CODE> package is its ability to
+generate high-resolution graphics plots, and ESS provides a number of
+features for dealing with such plots.
+
+
+
+<UL>
+<LI><A HREF="ess_11.html#SEC69">printer</A>: The printer() graphics driver
+<LI><A HREF="ess_11.html#SEC70">X11</A>: The X11() (and other X-windows based) driver
+</UL>
+
+
+
+<H3><A NAME="SEC69" HREF="ess_toc.html#TOC69">Using ESS with the <CODE>printer()</CODE> driver</A></H3>
+
+<P>
+This is the simplest (and least desirable) method of using graphics
+within ESS.  S's <CODE>printer()</CODE> device driver produces crude character
+based plots which can be contained within the <B>ESS</B> process buffer
+itself.  To start using character graphics, issue the <B>S</B> command
+
+<PRE>
+printer(width=79)
+</PRE>
+
+<P>
+<A NAME="IDX217"></A>
+(the <CODE>width=79</CODE> argument prevents Emacs line-wrapping at column
+80 on an 80-column terminal.  Use a different value for a terminal with
+a different number of columns.) Plotting commands do not generate
+graphics immediately, but are stored until the <CODE>show()</CODE> command
+is issued, which displays the current figure.
+
+
+
+
+<H3><A NAME="SEC70" HREF="ess_toc.html#TOC70">Using ESS with windowing devices</A></H3>
+
+<P>
+<A NAME="IDX218"></A>
+Of course, the ideal way to use graphics with ESS is to use a windowing
+system.  Under X windows, this requires that the DISPLAY environment
+variable be appropriately set, which may not always be the case within
+your Emacs process.  ESS provides a facility for setting the value of
+DISPLAY before the <B>ESS</B> process is started if the variable
+<CODE>ess-ask-about-display</CODE>
+<A NAME="IDX219"></A>
+is non-<CODE>nil</CODE>.  See section <A HREF="ess_13.html#SEC76">Customizing ESS</A>, for details of this variable,
+and see section <A HREF="ess_3.html#SEC12">Starting the <B>ESS</B> process</A> for information on how to set the value of
+DISPLAY when beginning an <B>S</B> session.
+
+
+
+
+<H2><A NAME="SEC71" HREF="ess_toc.html#TOC71">Object Completion</A></H2>
+
+<P>
+If you are running S-PLUS or R, you might consider installing the
+database files.  From within (X)Emacs, "C-x d" to the directory
+containing ESS.  Now:
+
+
+<P>
+<CODE>M-x S+3</CODE>
+
+
+<P>
+(get S-PLUS running.  once you have reached the SPLUS 3.x prompt, do:)
+
+
+<P>
+<CODE>M-x ess-create-object-name-db</CODE>
+
+
+<P>
+(this will create the file: ess-s+3-namedb.el; if it isn't in the ESS
+directory, move it there).
+
+
+<P>
+Then, completions will be autoloaded and will not be regenerated for
+every session.
+
+
+<P>
+For R:
+
+
+<P>
+<CODE>M-x R</CODE>
+
+
+<P>
+(get R running.  once you have reached the R prompt, do:)
+
+
+<P>
+<CODE>M-x ess-create-object-name-db</CODE>
+
+
+<P>
+(this will create the file: ess-r-namedb.el; if it isn't in the ESS
+directory, move it there).
+
 
 <P><HR><P>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_10.html">previous</A>, <A HREF="ess_12.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_10.html">previous</A>, <A HREF="ess_12.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
 </BODY>
 </HTML>

@@ -1,216 +1,683 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from ess.texi on 6 August 2002 -->
+<!-- Created by texi2html 1.56k from ess.texi on 21 October 2002 -->
 
-<TITLE>ESS -- Emacs Speaks Statistics - Reading help files in ESS</TITLE>
+<TITLE>ESS -- Emacs Speaks Statistics - Editing S functions</TITLE>
 </HEAD>
 <BODY>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_7.html">previous</A>, <A HREF="ess_9.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_7.html">previous</A>, <A HREF="ess_9.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
 <P><HR><P>
 
 
-<H1><A NAME="SEC58" HREF="ess_toc.html#TOC58">Reading help files in ESS</A></H1>
-<P>
-<A NAME="IDX194"></A>
-
+<H1><A NAME="SEC53" HREF="ess_toc.html#TOC53">Editing <B>S</B> functions</A></H1>
 
 <P>
-ESS provides an easy-to-use facility for reading <B>S</B> help files from
-within Emacs.  From within the <B>ESS</B> process buffer or any ESS edit
-buffer, typing <KBD>C-c C-v</KBD> (<CODE>ess-display-help-on-object</CODE>)
-<A NAME="IDX195"></A>
-will prompt you for the name of an object for which you would like
-documentation.  Completion is provided over all objects which have help
-files.
-
-
-<P>
-If the requested object has documentation, you will be popped into a
-buffer (named <CODE>*help(<VAR>obj-name</VAR>)*</CODE>) containing the help file.
-This buffer is placed in a special `S Help' mode which disables the
-usual editing commands but which provides a number of keys for paging
-through the help file:
+<A NAME="IDX134"></A>
+ESS provides facilities for editing <B>S</B> objects within your Emacs
+session.  Most editing is performed on <B>S</B> functions, although in
+theory you may edit datasets as well.  Edit buffers are always
+associated with files, although you may choose to make these files
+temporary if you wish.  Alternatively, you may make use of a simple yet
+powerful mechanism for maintaining backups of text representations of
+<B>S</B> functions.  Error-checking is performed when <B>S</B> code is loaded
+into the <B>ESS</B> process.
 
 
 
 <UL>
-Help commands:
+<LI><A HREF="ess_8.html#SEC54">Edit buffer</A>: Edit objects in a specialized buffer
+<LI><A HREF="ess_8.html#SEC55">Loading</A>: Loading source files into the <B>ESS</B> process
+<LI><A HREF="ess_8.html#SEC56">Error Checking</A>: Detecting errors in source files
+<LI><A HREF="ess_8.html#SEC57">Evaluating code</A>: Sending code to the <B>ESS</B> process
+<LI><A HREF="ess_8.html#SEC58">Indenting</A>: Indenting and formatting <B>S</B> code
+<LI><A HREF="ess_8.html#SEC59">Other edit buffer commands</A>: Commands for motion, completion and more
+<LI><A HREF="ess_8.html#SEC60">Source Files</A>: Maintaining <B>S</B> source files
+<LI><A HREF="ess_8.html#SEC61">Source Directories</A>: Names and locations of dump files
+</UL>
 
+
+
+<H2><A NAME="SEC54" HREF="ess_toc.html#TOC54">Creating or modifying <B>S</B> objects</A></H2>
+<P>
+<A NAME="IDX135"></A>
+
+
+<P>
+To edit an <B>S</B> object, type
+
+
+
+<UL>
 <LI>
 
-<KBD>?</KBD> (<CODE>ess-describe-help-mode</CODE>) <BR>
-<A NAME="IDX196"></A>
-Pops up a help buffer with a list of the commands available in <B>S</B> help
-mode.
-
-<LI>
-
-<KBD>h</KBD> (<CODE>ess-display-help-on-object</CODE>) <BR>
-<A NAME="IDX197"></A>
-Pop up a help buffer for a different object
-
-Paging commands:
-
-<A NAME="IDX198"></A>
-<LI>
-
-<KBD>b</KBD> or <KBD>DEL</KBD> (<CODE>scroll-down</CODE>) <BR>
-Move one page backwards through the help file.
-
-<LI>
-
-<KBD>SPC</KBD> (<CODE>scroll-up</CODE>) <BR>
-Move one page forwards through the help file.
-
-<LI>
-
-<KBD>&#62;</KBD> (<CODE>beginning-of-buffer</CODE>) and <KBD>&#60;</KBD> (<CODE>end-of-buffer</CODE>)
-<BR>
-Move to the beginning and end of the help file, respectively.
-
-Section-based motion commands:
-
-<LI>
-
-<KBD>n</KBD> (<CODE>ess-skip-to-next-section</CODE>) and <KBD>p</KBD>
-(<CODE>ess-skip-to-previous-section</CODE>) <BR> Move to the next and previous
-<A NAME="IDX199"></A>
-<A NAME="IDX200"></A>
-section header in the help file, respectively.  A section header
-consists of a number of capitalized words, followed by a colon.
-
-In addition, the <KBD>s</KBD> key followed by one of the following letters
-will jump to a particular section in the help file:
-<A NAME="IDX201"></A>
-<DL COMPACT>
-
-<DT><SAMP>`a'</SAMP>
-<DD>
-ARGUMENTS:
-
-<DT><SAMP>`b'</SAMP>
-<DD>
-BACKGROUND:
-
-<DT><SAMP>`B'</SAMP>
-<DD>
-BUGS:
-
-<DT><SAMP>`d'</SAMP>
-<DD>
-DETAILS:
-
-<DT><SAMP>`D'</SAMP>
-<DD>
-DESCRIPTION:
-
-<DT><SAMP>`e'</SAMP>
-<DD>
-EXAMPLES:
-
-<DT><SAMP>`n'</SAMP>
-<DD>
-NOTE:
-
-<DT><SAMP>`o'</SAMP>
-<DD>
-OPTIONAL ARGUMENTS:
-
-<DT><SAMP>`r'</SAMP>
-<DD>
-REQUIRED ARGUMENTS:
-
-<DT><SAMP>`R'</SAMP>
-<DD>
-REFERENCES:
-
-<DT><SAMP>`s'</SAMP>
-<DD>
-SIDE EFFECTS:
-
-<DT><SAMP>`s'</SAMP>
-<DD>
-SEE ALSO:
-
-<DT><SAMP>`u'</SAMP>
-<DD>
-USAGE:
-
-<DT><SAMP>`v'</SAMP>
-<DD>
-VALUE:
-
-<DT><SAMP>`&#60;'</SAMP>
-<DD>
-Jumps to beginning of file
-
-<DT><SAMP>`&#62;'</SAMP>
-<DD>
-Jumps to end of file
-
-<DT><SAMP>`?'</SAMP>
-<DD>
-Pops up a help buffer with a list of the defined section motion keys.
-</DL>
-
-Miscellaneous:
-
-<LI>
-
-<KBD>r</KBD> (<CODE>ess-eval-region</CODE>) <BR>
-<A NAME="IDX202"></A>
-Send the contents of the current region to the <B>ESS</B> process.  Useful
-for running examples in help files.
-
-<LI>
-
-<KBD>/</KBD> (<CODE>isearch-forward</CODE>) <BR>
-Same as <KBD>C-s</KBD>.
-
-Quit commands:
-
-<LI>
-
-<KBD>q</KBD> (<CODE>ess-switch-to-end-of-ESS</CODE>) <BR>
-<A NAME="IDX203"></A>
-Returns to the <B>ESS</B> process buffer in another window, leaving the
-help window visible.
-
-<LI>
-
-<KBD>k</KBD> (<CODE>kill-buffer</CODE>) <BR>
-Kills the help buffer.
-
-<LI>
-
-<KBD>x</KBD> (<CODE>ess-kill-buffer-and-go</CODE>) <BR>
-Return to the <B>ESS</B> process, killing this help buffer.
+<KBD>C-c C-d</KBD> (<CODE>ess-dump-object-into-edit-buffer</CODE>) <BR>
+<A NAME="IDX136"></A>
+Edit an <B>S</B> object in its own edit buffer.
 </UL>
 
 <P>
-In addition, all of the ESS commands available in the edit buffers are
-also available in <B>S</B> help mode (see section <A HREF="ess_7.html#SEC50">Creating or modifying <B>S</B> objects</A>).  Of course, the
-usual (non-editing) Emacs commands are available, and for convenience
-the digits and <KBD>-</KBD> act as prefix arguments.
+from within the <B>ESS</B> process buffer (<CODE>*S*</CODE>).  You will then be
+prompted for an object to edit: you may either type in the name of an
+existing object (for which completion is available using the <KBD>TAB</KBD>
+key),
+<A NAME="IDX137"></A>
+or you may enter the name of a new object.
+<A NAME="IDX138"></A>
+<A NAME="IDX139"></A>
+A buffer will be created containing the text representation of the
+requested object or, if you entered the name of a non-existent object at
+the prompt and the variable <CODE>ess-insert-function-templates</CODE>
+<A NAME="IDX140"></A>
+is non-<CODE>nil</CODE>, you will be presented with a template defined by
+<CODE>ess-function-template</CODE>
+<A NAME="IDX141"></A>
+which defaults to a skeleton function construct.
 
 
 <P>
-If a help buffer already exists for an object for which help is
-requested, that buffer is popped to immediately; the <B>ESS</B> process is
-not consulted at all.  If the contents of the help file have changed,
-you either need to kill the help buffer first, or pass a prefix argument
-(with <KBD>C-u</KBD>) to <CODE>ess-display-help-on-object</CODE>.
+You may then edit the function as required.  The edit buffer generated
+by <CODE>ess-dump-object-into-edit-buffer</CODE> is placed in the <CODE>ESS</CODE>
+major mode which provides a number of commands to facilitate editing
+<B>S</B> source code.  Commands are provided to intelligently indent <B>S</B>
+code, evaluate portions of <B>S</B> code and to move around <B>S</B> code
+constructs.
 
 
 <P>
-Help buffers are marked as temporary buffers in ESS, and are deleted
-when <CODE>ess-quit</CODE> or <CODE>ess-cleanup</CODE> are called.
-<A NAME="IDX204"></A>
-<A NAME="IDX205"></A>
-<A NAME="IDX206"></A>
+<A NAME="IDX142"></A>
+<A NAME="IDX143"></A>
+<STRONG>Note:</STRONG> when you dump a file with <KBD>C-c C-d</KBD>, ESS first checks
+to see whether there already exists an edit buffer containing that
+object and, if so, pops you directly to that buffer.  If not, ESS next
+checks whether there is a file in the appropriate place with the
+appropriate name (see section <A HREF="ess_8.html#SEC60">Maintaining <B>S</B> source files</A>) and if so, reads in that file.
+You can use this facility to return to an object you were editing in a
+previous session (and which possibly was never loaded to the <B>S</B>
+session).  Finally, if both these tests fail, the <B>ESS</B> process is
+consulted and a <CODE>dump()</CODE> command issued.
+<A NAME="IDX144"></A>
+If you want to force ESS to ask the <B>ESS</B> process for the object's
+definition (say, to reformat an unmodified buffer or to revert back to
+S's idea of the object's definition) pass a prefix argument to
+<CODE>ess-dump-object-into-edit-buffer</CODE> by typing <KBD>C-u C-c C-d</KBD>.
+
+
+
+
+<H2><A NAME="SEC55" HREF="ess_toc.html#TOC55">Loading source files into the <B>ESS</B> process</A></H2>
+
+<P>
+The best way to get information -- particularly function definitions
+--- into <B>S</B> is to load them in as source file, using S's
+<CODE>source</CODE> function.  You have already seen how to create source
+files using <KBD>C-c C-d</KBD>; ESS provides a complementary command for
+loading source files (even files not created with ESS!) into the <B>ESS</B>
+process:
+
+
+
+<UL>
+<LI>
+
+<KBD>C-c C-l</KBD> (<CODE>ess-load-file</CODE>) <BR>
+<A NAME="IDX145"></A>
+Loads a file into the <B>ESS</B> process using <CODE>source()</CODE>.
+<A NAME="IDX146"></A>
+</UL>
+
+<P>
+After typing <KBD>C-c C-l</KBD> you will prompted for the name of the file to
+load into S; usually this is the current buffer's file which is the
+default value (selected by simply pressing <KBD>RET</KBD> at the prompt).
+You will be asked to save the buffer first if it has been modified (this
+happens automatically if the buffer was generated with <KBD>C-c C-d</KBD>).
+The file will then be loaded, and if it loads successfully you will be
+returned to the <B>ESS</B> process.
+
+
+
+
+<H2><A NAME="SEC56" HREF="ess_toc.html#TOC56">Detecting errors in source files</A></H2>
+<P>
+<A NAME="IDX147"></A>
+<A NAME="IDX148"></A>
+If any errors occur when loading a file with <CODE>C-c C-l</CODE>, ESS will
+inform you of this fact.  In this case, you can jump directly to the
+line in the source file which caused the error by typing <KBD>C-x `</KBD>
+(<CODE>ess-parse-errors</CODE>).
+<A NAME="IDX149"></A>
+You will be returned to the offending file (loading it into a buffer if
+necessary) with point at the line <B>S</B> reported as containing the
+error.  You may then correct the error, and reload the file.  Note that
+none of the commands in an <B>S</B> source file will take effect if any
+part of the file contains errors.
+
+
+<P>
+Sometimes the error is not caused by a syntax error (loading a
+non-existent file for example). In this case typing <KBD>C-x `</KBD> will
+simply display a buffer containing S's error message.  You can force
+this behavior (and avoid jumping to the file when there <EM>is</EM> a
+syntax error) by passing a prefix argument to <CODE>ess-parse-errors</CODE>
+with <KBD>C-u C-x `</KBD>.
+
+
+
+
+<H2><A NAME="SEC57" HREF="ess_toc.html#TOC57">Sending code to the <B>ESS</B> process</A></H2>
+
+<P>
+Other commands are also available for evaluating portions of code in the
+S process.  These commands cause the selected code to be evaluated
+directly by the <B>ESS</B> process as if you had typed them in at the
+command line; the <CODE>source()</CODE> function is not used.  You may choose
+whether both the commands and their output appear in the process buffer
+(as if you had typed in the commands yourself) or if the output alone is
+echoed.  The behavior is controlled by the variable
+<CODE>ess-eval-visibly-p</CODE> whose default is <CODE>nil</CODE>
+<A NAME="IDX150"></A>
+(display output only).  Passing a prefix argument (<KBD>C-u</KBD>) to any of
+the following commands, however, reverses the meaning of
+<CODE>ess-eval-visibly-p</CODE> for that command only -- for example <KBD>C-u
+C-c C-j</KBD> echoes the current line of S (or other) code in the <B>ESS</B>
+process buffer, followed by its output.  This method of evaluation is an
+alternative to S's <CODE>source()</CODE> function
+<A NAME="IDX151"></A>
+<A NAME="IDX152"></A>
+<A NAME="IDX153"></A>
+when you want the input as well as the output to be displayed.  (You can
+sort of do this with <CODE>source()</CODE> when the option <CODE>echo=T</CODE> is
+set, except that prompts do not get displayed.  ESS puts prompts in the
+right places.) The commands for evaluating code are:
+
+
+
+<UL>
+<LI>
+
+<A NAME="IDX154"></A>
+ 
+<KBD>C-c C-j</KBD> (<CODE>ess-eval-line</CODE>) <BR>
+<A NAME="IDX155"></A>
+Send the line containing point to the <B>ESS</B> process.
+
+<LI>
+
+<KBD>C-c M-j</KBD> (<CODE>ess-eval-line-and-go</CODE>) <BR>
+<A NAME="IDX156"></A>
+As above, but returns you to the <B>ESS</B> process buffer as well.
+
+<LI>
+
+<KBD>C-c C-f</KBD> or <KBD>ESC C-x</KBD> (<CODE>ess-eval-function</CODE>) <BR>
+<A NAME="IDX157"></A>
+Send the <B>S</B> function containing point to the <B>ESS</B> process.
+
+<LI>
+
+<KBD>C-c M-f</KBD> (<CODE>ess-eval-function-and-go</CODE>) <BR>
+<A NAME="IDX158"></A>
+As above, but returns you to the <B>ESS</B> process buffer as well.
+
+<LI>
+
+<KBD>C-c C-r</KBD> (<CODE>ess-eval-region</CODE>) <BR>
+<A NAME="IDX159"></A>
+Send the text between point and mark to the <B>ESS</B> process.
+
+<LI>
+
+<KBD>C-c M-r</KBD> (<CODE>ess-eval-region-and-go</CODE>) <BR>
+<A NAME="IDX160"></A>
+As above, but returns you to the <B>ESS</B> process buffer as well.
+
+<LI>
+
+<KBD>C-c C-b</KBD> (<CODE>ess-eval-buffer</CODE>) <BR>
+<A NAME="IDX161"></A>
+Send the contents of the edit buffer to the <B>ESS</B> process.
+
+<LI>
+
+<KBD>C-c M-b</KBD> (<CODE>ess-eval-buffer-and-go</CODE>) <BR>
+<A NAME="IDX162"></A>
+As above, but returns you to the <B>ESS</B> process buffer as well.
+
+<LI>
+
+<KBD>C-c C-n</KBD> (<CODE>ess-eval-line-and-next-line</CODE>) <BR>
+<A NAME="IDX163"></A>
+<A NAME="IDX164"></A>
+<A NAME="IDX165"></A>
+Sends the current line to the <B>ESS</B> process, echoing it in the process
+buffer, and moves point to the next line.  Useful when debugging for
+stepping through your code.
+</UL>
+
+<P>
+It should be stressed once again that these <CODE>ess-eval-</CODE> commands
+should only be used for evaluating small portions of code for debugging
+purposes, or for generating transcripts from source files.  When editing
+S functions, <KBD>C-c C-l</KBD> is the command to use to update the
+function's value.  In particular, <CODE>ess-eval-buffer</CODE> is now largely
+obsolete.
+
+
+<P>
+One final command is provided for spot-evaluations of <B>S</B> code:
+
+
+
+<UL>
+<KBD>C-c C-e</KBD> (<CODE>ess-execute-in-tb</CODE>) <BR>
+Prompt for an <B>S</B> expression and evaluate it.  Displays result in a
+temporary buffer.
+</UL>
+
+<P>
+This is useful for quick calculations, etc.
+
+
+<P>
+All the above commands are useful for evaluating small amounts of code
+and observing the results in the process buffer.  A useful way to work
+is to divide the frame into two windows; one containing the source code
+and the other containing the process buffer.  If you wish to make the
+process buffer scroll automatically when the output reaches the bottom
+of the window, you will need to set the variable
+<CODE>comint-scroll-to-bottom-on-output</CODE> to <CODE>others</CODE> or <CODE>t</CODE>.
+
+
+<P>
+*** Maybe a link to customization section here ***
+
+
+
+
+<H2><A NAME="SEC58" HREF="ess_toc.html#TOC58">Indenting and formatting <B>S</B> code</A></H2>
+
+<P>
+ESS now provides a sophisticated mechanism for indenting <B>S</B> source
+code (thanks to Ken'ichi Shibayama).  Compound statements (delimited by
+<SAMP>`{'</SAMP> and <SAMP>`}'</SAMP>) are indented relative to their enclosing block.
+In addition, the braces have been electrified to automatically indent to
+the correct position when inserted, and optionally insert a newline at
+the appropriate place as well.  Lines which continue an incomplete
+expression are indented relative to the first line of the expression.
+Function definitions, <CODE>if</CODE> statements, calls to <CODE>expression()</CODE>
+and loop constructs are all recognized and indented appropriately.  User
+variables are provided to control the amount if indentation in each
+case, and there are also a number of predefined indentation styles to
+choose from.  See section <A HREF="ess_13.html#SEC80">Variables controlling indentation</A>.
+
+
+<P>
+<A NAME="IDX167"></A>
+Comments are also handled specially by ESS, using an idea borrowed from
+the Emacs-Lisp indentation style.  By default,
+comments beginning with <SAMP>`###'</SAMP>
+are aligned to the beginning of the line.  Comments beginning with
+<SAMP>`##'</SAMP> are aligned to the current level of indentation for the block
+containing the comment.  Finally, comments beginning with <SAMP>`#'</SAMP> are
+aligned to a column on the right (the 40th column by default, but this
+value is controlled by the variable <CODE>comment-column</CODE>,)
+<A NAME="IDX168"></A>
+or just after the expression on the line containing the comment if it
+extends beyond the indentation column.  You turn off the default
+behavior by adding the line
+<CODE>(setq ess-fancy-comments nil)</CODE> to your <TT>`.emacs'</TT> file.
+<A NAME="IDX169"></A>
+(GNU emacs uses the filename <TT>`~/.emacs'</TT> and
+Xemacs uses the filename <TT>`~/.xemacs/init.el'</TT>
+for the initialization file.)
+
+
+<P>
+The indentation commands provided by ESS are:
+<A NAME="IDX170"></A>
+<A NAME="IDX171"></A>
+
+
+
+<UL>
+<LI>
+
+<A NAME="IDX166"></A>
+ 
+<KBD>TAB</KBD> (<CODE>ess-indent-command</CODE>) <BR>
+Indents the current line as <B>S</B> code.  If a prefix argument is given,
+all following lines which are part of the same (compound) expression are
+indented by the same amount (but relative indents are preserved).
+
+<LI>
+
+<KBD>LFD</KBD> (<CODE>newline-and-indent</CODE>) <BR>
+Insert a newline, and indent the next line.  (Note: if your keyboard
+does not have a <KBD>LINEFEED</KBD> key, you can use <KBD>C-j</KBD> instead.)
+Some people prefer to bind <KBD>RET</KBD> to this command.
+
+<LI>
+
+<KBD>ESC C-q</KBD> (<CODE>ess-indent-exp</CODE>) <BR>
+Indents each line in the <B>S</B> (compound) expression which follows point.
+Very useful for beautifying your <B>S</B> code.
+
+<LI>
+
+<KBD>{</KBD> and <KBD>}</KBD> (<CODE>ess-electric-brace</CODE>) <BR>
+The braces automatically indent to the correct position when typed.
+
+<LI>
+
+<KBD>M-;</KBD> (<CODE>indent-for-comment</CODE>) <BR>
+Indents a comment line appropriately, or inserts an empty
+(single-<SAMP>`#'</SAMP>) comment.
+
+<LI>
+
+<KBD>M-x ess-set-style</KBD> <BR>
+Set the formatting style in this buffer to be one of the predefined
+styles: <CODE>GNU</CODE>, <CODE>BSD</CODE>, <CODE>K&#38;R</CODE>, <CODE>CLB</CODE>, and <CODE>C++</CODE>.
+The <CODE>DEFAULT</CODE> style uses the default values for the indenting
+variables (unless they have been modified in your <TT>`.emacs'</TT> file.)
+<A NAME="IDX172"></A>
+This command causes all of the formatting variables
+see section <A HREF="ess_13.html#SEC80">Variables controlling indentation</A> to be buffer-local.
+</UL>
+
+
+
+<H2><A NAME="SEC59" HREF="ess_toc.html#TOC59">Commands for motion, completion and more</A></H2>
+
+<P>
+A number of commands are provided to move across function definitions
+in the edit buffer:
+
+<UL>
+<LI>
+
+<KBD>ESC C-e</KBD> (<CODE>ess-beginning-of-function</CODE>) <BR>
+<A NAME="IDX173"></A>
+Moves point to the beginning of the function containing point.
+
+<LI>
+
+<KBD>ESC C-a</KBD> (<CODE>ess-end-of-function</CODE>) <BR>
+<A NAME="IDX174"></A>
+Moves point to the end of the function containing point.
+
+<LI>
+
+<KBD>ESC C-h</KBD> (<CODE>ess-mark-function</CODE>) <BR>
+Places point at the beginning of the <B>S</B> function containing point, and
+mark at the end.
+</UL>
+
+<P>
+Don't forget the usual Emacs commands for moving over balanced
+expressions and parentheses: See section `Lists and Sexps' in <CITE>The GNU Emacs Reference Manual</CITE>.
+
+
+<P>
+<A NAME="IDX175"></A>
+Completion is provided in the edit buffer in a similar fashion to the
+process buffer: <KBD>M-TAB</KBD> completes file names and <KBD>M-?</KBD> lists
+file completions.  Since <KBD>TAB</KBD> is used for indentation in the edit
+buffer, object completion is now performed with <KBD>C-c TAB</KBD>.  Note
+however that completion is only provided over globally known S objects
+(such as system functions) -- it will <EM>not</EM> work for arguments to
+functions or other variables local to the function you are editing.
+
+
+<P>
+Finally, two commands are provided for returning to the <B>ESS</B> process buffer:
+
+
+
+<UL>
+<LI>
+
+<KBD>C-c C-z</KBD> (<CODE>ess-switch-to-end-of-ESS</CODE>) <BR>
+<A NAME="IDX176"></A>
+Returns you to the <B>ESS</B> process buffer, placing point at the end of the
+buffer.
+
+<LI>
+
+<KBD>C-c C-y</KBD> (<CODE>ess-switch-to-ESS</CODE>) <BR>
+<A NAME="IDX177"></A>
+Also returns to to the <B>ESS</B> process buffer, but leaves point where it is.
+</UL>
+
+<P>
+In addition some commands available in the process buffer are also
+available in the edit buffer.  You can still read help files with
+<KBD>C-c C-v</KBD>, edit another function with <KBD>C-c C-d</KBD> and of course
+<KBD>C-c C-l</KBD> can be used to load a source file into S.  See section <A HREF="ess_7.html#SEC52">Other commands provided by inferior-ESS</A>,
+for more details on these commands.
+
+
+
+
+<H2><A NAME="SEC60" HREF="ess_toc.html#TOC60">Maintaining <B>S</B> source files</A></H2>
+
+<P>
+Every edit buffer in ESS is associated with a <EM>dump file</EM> on disk.
+Dump files are created whenever you type <KBD>C-c C-d</KBD>
+(<CODE>ess-dump-object-into-edit-buffer</CODE>), and may either be deleted
+after use, or kept as a backup file or as a means of keeping several
+versions of an <B>S</B> function.
+<A NAME="IDX178"></A>
+
+
+<P>
+<DL>
+<DT><U>User Option:</U> <B>ess-delete-dump-files</B>
+<DD><A NAME="IDX179"></A>
+If non-<CODE>nil</CODE>, dump files created with C-c C-d are deleted
+immediately after they are created by the ess-process.
+</DL>
+
+
+<P>
+Since immediately after <B>S</B> dumps an object's definition to a disk
+file the source code on disk corresponds exactly to S's idea of the
+object's definition, the disk file isn't really needed; deleting it now
+has the advantage that if you <EM>don't</EM> modify the file (say, because
+you just wanted to look at the definition of one of the standard S
+functions) the source dump file won't be left around when you kill the
+buffer.  Note that this variable only applies to files generated with
+S's <CODE>dump</CODE> function; it doesn't apply to source files which already
+exist.  The default value is <CODE>t</CODE>.
+
+
+<P>
+<DL>
+<DT><U>User Option:</U> <B>ess-keep-dump-files</B>
+<DD><A NAME="IDX180"></A>
+Option controlling what to do with the dump file after an object has
+been successfully loaded into S.  Valid values are <CODE>nil</CODE> (always
+delete), <CODE>ask</CODE> (always ask whether to delete), <CODE>check</CODE> (delete
+files generated with <KBD>C-c C-d</KBD> in this Emacs session, otherwise ask
+--- this is the default) and <CODE>t</CODE> (never delete).  This variable is
+buffer-local.
+</DL>
+
+
+<P>
+After an object has been successfully (i.e. without error) been loaded
+back into <B>S</B> with <KBD>C-c C-l</KBD>, the disk file again corresponds
+exactly (well, almost -- see below) to S's record of the object's
+definition, and so some people prefer to delete the disk file rather
+than unnecessarily use up space.  This option allows you to do just
+that.
+
+
+<P>
+<A NAME="IDX181"></A>
+<A NAME="IDX182"></A>
+<A NAME="IDX183"></A>
+If the value of <CODE>ess-keep-dump-files</CODE> is <CODE>t</CODE>, dump files are
+never deleted after they are loaded.  Thus you can maintain a complete
+text record of the functions you have edited within ESS.  Backup files
+kept as usual, and so by using the Emacs numbered backup facility ---
+see section `Single or Numbered Backups' in <CITE>The Gnu Emacs Reference Manual</CITE>, you can keep a historic
+record of function definitions.  Another possibility is to maintain the
+files with a version-control system such as RCS See section `Version Control' in <CITE>The Gnu Emacs Reference Manual</CITE>.  As long as a dump file exists in the appropriate place for a
+particular object, editing that object with <KBD>C-c C-d</KBD> finds that
+file for editing (unless a prefix argument is given) -- the <B>ESS</B>
+process is not consulted.  Thus you can keep comments <EM>outside</EM> the
+function definition as a means of documentation that does not clutter
+the <B>S</B> object itself.  Another useful feature is that you may format
+the code in any fashion you please without <B>S</B> re-indenting the code
+every time you edit it.  These features are particularly useful for
+project-based work.
+
+
+<P>
+If the value of <CODE>ess-keep-dump-files</CODE> is nil, the dump file is always
+silently deleted after a successful load with <KBD>C-c C-l</KBD>.  While this
+is useful for files that were created with <KBD>C-c C-d</KBD> it also applies
+to any other file you load (say, a source file of function
+definitions), and so can be dangerous to use unless you are careful.
+Note that since <CODE>ess-keep-dump-files</CODE> is buffer-local, you can make
+sure particular files are not deleted by setting it to <CODE>t</CODE> in the
+Local Variables section of the file See section `Local Variables in Files' in <CITE>The Gnu Emacs Reference Manual</CITE>.
+
+
+<P>
+A safer option is to set <CODE>ess-keep-dump-files</CODE> to <CODE>ask</CODE>; this
+means that ESS will always ask for confirmation before deleting the
+file.  Since this can get annoying if you always want to delete dump
+files created with <CODE>C-c C-d</CODE>, but not any other files, setting
+<CODE>ess-keep-dump-files</CODE> to <CODE>check</CODE> (the default value) will
+silently delete dump files created with <KBD>C-c C-d</KBD> in the current
+Emacs session, but query for any other file.  Note that in any case you
+will only be asked for confirmation once per file, and your answer is
+remembered for the rest of the Emacs session.
+
+
+<P>
+Note that in all cases, if an error (such as a syntax error) is detected
+while loading the file with <KBD>C-c C-l</KBD>, the dump file is <EM>never</EM>
+deleted.  This is so that you can edit the file in a new Emacs session
+if you happen to quit Emacs before correcting the error.
+
+
+<P>
+<A NAME="IDX184"></A>
+Dump buffers are always autosaved, regardless of the value of
+<CODE>ess-keep-dump-files</CODE>.
+
+
+
+
+<H2><A NAME="SEC61" HREF="ess_toc.html#TOC61">Names and locations of dump files</A></H2>
+
+<P>
+<A NAME="IDX185"></A>
+Every dump file should be given a unique file name, usually the dumped
+object name with some additions.
+
+
+<P>
+<DL>
+<DT><U>User Option:</U> <B>ess-dump-filename-template</B>
+<DD><A NAME="IDX186"></A>
+Template for filenames of dumped objects.  <CODE>%s</CODE> is replaced by the
+object name.
+</DL>
+
+
+<P>
+By default, dump file names are the user name, followed by <SAMP>`.'</SAMP> and
+the object and ending with <SAMP>`.S'</SAMP>.  Thus if user <CODE>joe</CODE> dumps the
+object <CODE>myfun</CODE> the dump file will have name <TT>`joe.myfun.S'</TT>.
+The username part is included to avoid clashes when dumping into a
+publicly-writable directory, such as <TT>`/tmp'</TT>; you may wish to remove
+this part if you are dumping into a directory owned by you.
+
+
+<P>
+<A NAME="IDX187"></A>
+You may also specify the directory in which dump files are written:
+
+
+<P>
+<DL>
+<DT><U>User Option:</U> <B>ess-source-directory</B>
+<DD><A NAME="IDX188"></A>
+Directory name (ending in a slash) where <B>S</B> dump files are to be written.
+</DL>
+
+
+<P>
+By default, dump files are always written to <TT>`/tmp'</TT>, which is fine
+when <CODE>ess-keep-dump-files</CODE> is <CODE>nil</CODE>.  If you are keeping dump
+files, then you will probably want to keep them somewhere in your home
+directory, say <TT>`~/S-source'</TT>.  This could be achieved by including
+the following line in your <TT>`.emacs'</TT> file:
+<A NAME="IDX189"></A>
+
+<PRE>
+(setq ess-source-directory (expand-file-name "~/S-source/"))
+</PRE>
+
+<P>
+If you would prefer to keep your dump files in separate directories
+depending on the value of some variable, ESS provides a facility for
+this also.  By setting <CODE>ess-source-directory</CODE> to a lambda
+expression which evaluates to a directory name, you have a great deal of
+flexibility in selecting the directory for a particular source file to
+appear in.  The lambda expression is evaluated with the process buffer
+as the current buffer and so you can use the variables local to that
+buffer to make your choice.  For example, the following expression
+causes source files to be saved in the subdirectory <TT>`Src'</TT> of the
+directory the <B>ESS</B> process was run in.
+
+
+
+<PRE>
+(setq ess-source-directory
+      (lambda ()
+         (concat ess-directory "Src/")))
+</PRE>
+
+<P>
+<A NAME="IDX190"></A>
+(<CODE>ess-directory</CODE> is a buffer-local variable in process buffers
+which records the directory the <B>ESS</B> process was run from.)  This is
+useful if you keep your dump files and you often edit objects with the
+same name in different <B>ESS</B> processes.  Alternatively, if you often
+change your <B>S</B> working directory during an <B>S</B> session, you may
+like to keep dump files in some subdirectory of the directory pointed to
+by the first element of the current search list.  This way you can edit
+objects of the same name in different directories during the one S
+session:
+<A NAME="IDX191"></A>
+<A NAME="IDX192"></A>
+
+<PRE>
+(setq ess-source-directory
+   (lambda ()
+       (file-name-as-directory
+        (expand-file-name (concat
+                           (car ess-search-list)
+                           "/.Src")))))
+</PRE>
+
+<P>
+<A NAME="IDX193"></A>
+
+
+<P>
+If the directory generated by the lambda function does not exist but can
+be created, you will be asked whether you wish to create the directory.
+If you choose not to, or the directory cannot be created, you will not
+be able to edit functions.
 
 
 <P><HR><P>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_7.html">previous</A>, <A HREF="ess_9.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_7.html">previous</A>, <A HREF="ess_9.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
 </BODY>
 </HTML>

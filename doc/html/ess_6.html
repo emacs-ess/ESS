@@ -1,961 +1,150 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from ess.texi on 6 August 2002 -->
+<!-- Created by texi2html 1.56k from ess.texi on 21 October 2002 -->
 
-<TITLE>ESS -- Emacs Speaks Statistics - Interacting with the ESS process</TITLE>
+<TITLE>ESS -- Emacs Speaks Statistics - Help for BUGS</TITLE>
 </HEAD>
 <BODY>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_5.html">previous</A>, <A HREF="ess_7.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_5.html">previous</A>, <A HREF="ess_7.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
 <P><HR><P>
 
 
-<H1><A NAME="SEC35" HREF="ess_toc.html#TOC35">Interacting with the <B>ESS</B> process</A></H1>
-<P>
-<A NAME="IDX49"></A>
-<A NAME="IDX50"></A>
-<A NAME="IDX51"></A>
-
-
-<P>
-The primary function of the ESS package is to provide an easy-to-use
-front end to the <B>S</B> interpreter.  This is achieved by running the S
-process from within an Emacs buffer, so that the Emacs editing commands
-are available to correct mistakes in commands, etc.  The features of
-Inferior <B>S</B> mode are similar to those provided by the standard Emacs
-shell mode (see section `Shell Mode' in <CITE>The Gnu Emacs Reference Manual</CITE>).  Command-line completion of <B>S</B> objects and a number of `hot
-keys' for commonly-used <B>S</B> commands are also provided for ease of
-typing.
-
+<H1><A NAME="SEC35" HREF="ess_toc.html#TOC35">Help for BUGS</A></H1>
 
 
 <UL>
-<LI><A HREF="ess_6.html#SEC36">Command-line editing</A>: Entering commands and fixing mistakes
-<LI><A HREF="ess_6.html#SEC37">Completion</A>: Completion of object names
-<LI><A HREF="ess_6.html#SEC38">Completion details</A>: Advanced completion concepts
-<LI><A HREF="ess_6.html#SEC39">Transcript</A>: Manipulating the transcript
-<LI><A HREF="ess_6.html#SEC44">Command History</A>: Command History
-<LI><A HREF="ess_6.html#SEC45">History expansion</A>: References to historical commands
-<LI><A HREF="ess_6.html#SEC46">Hot keys</A>: Hot keys for common commands
-<LI><A HREF="ess_6.html#SEC47">Statistical Process running in ESS?</A>
-<LI><A HREF="ess_6.html#SEC48">Other</A>: Other commands provided by inferior-ESS
-</UL>
-
-
-
-<H2><A NAME="SEC36" HREF="ess_toc.html#TOC36">Entering commands and fixing mistakes</A></H2>
-<P>
-<A NAME="IDX52"></A>
-
-
-<P>
-Sending a command to the <B>ESS</B> process is as simple as typing it in
-and pressing the <KBD>RETURN</KBD> key:
-
-
-
-<UL>
-<LI>
-
-<KBD>RET</KBD> (<CODE>inferior-ess-send-input</CODE>) <BR>
-<A NAME="IDX53"></A>
-Send the command on the current line to the <B>ESS</B> process.
+<LI><A HREF="ess_6.html#SEC36">ESS(BUGS)--Model files</A>
+<LI><A HREF="ess_6.html#SEC37">ESS(BUGS)--Command files</A>
+<LI><A HREF="ess_6.html#SEC38">ESS(BUGS)--Log files</A>
 </UL>
 
 <P>
-If you make a typing error before pressing <KBD>RET</KBD> all the usual Emacs
-editing commands are available to correct it (see section `Basic editing commands' in <CITE>The GNU Emacs Reference Manual</CITE>).  Once the
-command has been corrected you can press <KBD>RETURN</KBD> (even if the
-cursor is not at the end of the line) to send the corrected command to
-the <B>ESS</B> process.
+ESS[BUGS] was designed for use with BUGS software.  It was developed by
+Rodney A. Sparapani and has some similarities with ESS[SAS].
+ESS facilitates BUGS batch with ESS[BUGS], the mode for files with the .bug 
+extension.  ESS provides 5 features.  First, BUGS syntax is described to allow 
+for proper fontification of statements, distributions, functions, commands and
+comments in BUGS model files, command files and log files.  Second,
+ESS creates templates for the command file from the model file so that
+a BUGS batch process can be defined by a single file.  Third, ESS
+provides a BUGS batch script that allows ESS to set BUGS batch
+parameters.  Fourth, key sequences are defined to create a command
+file and submit a BUGS batch process.  Lastly, interactive submission of BUGS
+commands is also supported.
+
+
+
+
+<H2><A NAME="SEC36" HREF="ess_toc.html#TOC36">ESS[BUGS]--Model files</A></H2>
+
+<P>
+Model files (with the .bug extension) are edited in ESS[BUGS] mode.  Two keys 
+are bound for your use in ESS[BUGS], F2 and F12.  F2 performs the same action 
+as it does in ESS[SAS], so see that discussion at 
+See section <A HREF="ess_5.html#SEC30">ESS[SAS]--Function keys for batch processing</A>.  F12 performs the function
+ess-bugs-next-action which you will use a lot.  Pressing F12 in an empty buffer
+for a model file will produce a template for you.  
 
 
 <P>
-ESS provides some other commands which are useful for fixing mistakes:
-
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-w</KBD> (<CODE>backward-kill-word</CODE>) <BR>
-<A NAME="IDX54"></A>
-Deletes the previous word (such as an object name) on the command line.
-
-<LI>
-
-<KBD>C-c C-u</KBD> (<CODE>comint-kill-input</CODE>) <BR>
-<A NAME="IDX55"></A>
-Deletes everything from the prompt to point.  Use this to abandon a
-command you have not yet sent to the <B>ESS</B> process.
-
-<LI>
-
-<KBD>C-c C-a</KBD> (<CODE>comint-bol</CODE>) <BR>
-<A NAME="IDX56"></A>
-Move to the beginning of the line, and then skip forwards past the
-prompt, if any.
-</UL>
-
-<P>
-See section `Shell Mode' in <CITE>The Gnu Emacs Reference Manual</CITE>, for other
-commands relevant to entering input.
-
-
-
-
-<H2><A NAME="SEC37" HREF="ess_toc.html#TOC37">Completion of object names</A></H2>
-<P>
-<A NAME="IDX57"></A>
-<A NAME="IDX58"></A>
+ESS[BUGS] supports "replacement" variables.  These variables are created as
+part of the template, i.e. with the first press of F12 in an empty buffer.  
+They are named by
+all capitals and start with '%':  %N, %DATA, %INIT, %MONITOR and %STATS.
+When you are finished editing your model file, pressing F12 will perform the
+necessary replacements and build your command file for you.  
 
 
 <P>
-In the process buffer, the <KBD>TAB</KBD> key is for completion, similar to
-that provided by Shell Mode for filenames.  In Inferior <B>S</B> mode,
-pressing the <KBD>TAB</KBD> key when the cursor is following the first few
-characters of an object name <EM>completes</EM> the object name; if the
-cursor is following a file name <KBD>TAB</KBD> completes the file name.
-
-
-
-<UL>
-<LI>
-
-<KBD>TAB</KBD> (<CODE>comint-dynamic-complete</CODE>) <BR>
-<A NAME="IDX59"></A>
-Complete the <B>S</B> object name or filename before point.
-</UL>
-
-<P>
-When the cursor is just after a partially-completed object name,
-pressing <KBD>TAB</KBD> provides completion in a similar fashion to
-<CODE>tcsh</CODE>
-<A NAME="IDX60"></A>
-except that completion is performed over all known <B>S</B> object names
-instead of file names.  ESS maintains a list of all objects known to S
-at any given time, which basically consists of all objects (functions
-and datasets) in every attached directory listed by the <CODE>search()</CODE>
-command
-<A NAME="IDX61"></A>
-along with the component objects of attached data frames
-<A NAME="IDX62"></A>
-(if your version of <B>S</B> supports them).
+The %DATA variable appears in
+the line 'data  in "%DATA";'.  On the second press of F12, %DATA will be 
+replaced by the model file name except it will have the .dat extension.  If
+your data file is named something else, then change %DATA in the template to
+the appropriate file name and no replacement will occur.
 
 
 <P>
-For example, consider the three functions (available in Splus version
-3.0) called <CODE>binomplot()</CODE>, <CODE>binom.test()</CODE> and
-<CODE>binomial()</CODE>.  Typing <KBD>bin TAB</KBD> after the <B>S</B> prompt will
-insert the characters <SAMP>`om'</SAMP>, completing the longest prefix
-(<SAMP>`binom'</SAMP>) which distinguishes these three commands.  Pressing
-<KBD>TAB</KBD> once more provides a list of the three commands which have
-this prefix, allowing you to add more characters (say, <SAMP>`.'</SAMP>) which
-specify the function you desire.  After entering more characters
-pressing <KBD>TAB</KBD> yet again will complete the object name up to
-uniqueness, etc.  If you just wish to see what completions exist without
-adding any extra characters, type <KBD>M-?</KBD>.
-
-
-
-<UL>
-<LI>
-
-<KBD>M-?</KBD> (<CODE>ess-list-object-name-completions</CODE>) <BR>
-<A NAME="IDX63"></A>
-List all possible completions of the object name at point.
-</UL>
-
-<P>
-ESS also provides completion over the components of named lists accessed
-using the <SAMP>`$'</SAMP> notation, to any level of nested lists.  This feature
-is particularly useful for checking what components of a list object
-exist while partway through entering a command: simply type the object
-name and <SAMP>`$'</SAMP> and press <KBD>TAB</KBD> to see the names of existing list
-components for that object.
-<A NAME="IDX64"></A>
-<A NAME="IDX65"></A>
+The %INIT variable appears in 
+the line 'inits in "%INIT";'.  On the second press of F12, %INIT will be 
+replaced by the model file name except it will have the .in extension.  If 
+your model will be generating it's own initial values, place a comment 
+character, #, at the beginning of the line.  Or, if your
+init file is named something else, then change %INIT in the template to the
+appropriate file name.  
 
 
 <P>
-<A NAME="IDX66"></A>
-Completion is also provided over file names, which is particularly
-useful when using <B>S</B> functions such as <CODE>get()</CODE> or <CODE>scan()</CODE>
-which require fully expanded file names.  Whenever the cursor is within
-an <B>S</B> string, pressing <KBD>TAB</KBD> completes the file name before
-point, and also expands any <SAMP>`~'</SAMP> or environment variable references.
+The %N variable appears in the line 'const N = 0;#%N'.  Although it is commented,
+it is still active.  Notice that later on in the template you have the line
+'for (i in 1:N)'.  The BUGS constant N is the number of rows in
+your data file.  When you press F12, the data file is read and the number of
+lines are counted (after %DATA is resolved, if necessary).  The number of
+lines replace the zero in the 'const N = 0' statement.  
 
 
 <P>
-If the cursor is not in a string and does not follow a (partial) object
-name, the <KBD>TAB</KBD> key has a third use: it expands history references.
-See section <A HREF="ess_6.html#SEC45">References to historical commands</A>.
-
-
-
-
-<H2><A NAME="SEC38" HREF="ess_toc.html#TOC38">Completion details</A></H2>
-
-<P>
-ESS automatically keeps track of any objects added or deleted to the
-system (such as new objects created, or directories added to the search
-list) to make completion as accurate as possible.  Whenever ESS notices
-that search list has changed
-<A NAME="IDX67"></A>
-<A NAME="DOCF2" HREF="ess_foot.html#FOOT2">(2)</A>  when you attach a directory or data
-frame, the objects associated with it immediately become available for a
-completion; when it is detached completion is no longer available on
-those objects.
+The %MONITOR variable appears on a line by itself.  Although it is commented,
+it is still active.  This line is a list of variables that you want monitored.
+When you press F12, the appropriate statements are created in
+the command file to monitor the list of variables.  If the line is blank, then
+the list is populated with the variables from the 'var' statement.
 
 
 <P>
-To maintain a list of accessible objects for completion, ESS needs to
-determine which objects are contained in each directory or data frame on
-the search list.  This is done at the start of each <B>S</B> session, by
-running the <CODE>objects()</CODE> command on every element of the search
-list.  On some systems, however, this can be rather slow; it's doubly
-frustrating when you consider that most of the directories on the search
-list are the standard <B>S</B> libraries, which never change anyway!  When
-ESS was installed, a database of the standard object names should have
-been created which should speed up this process at the start of an S
-session; if it has not been created you will get a warning like
-`S-namedb.el does not exist'.  See section <A HREF="ess_2.html#SEC7">Installing ESS on your system</A>, for information on
-how to create this database.
+The %STATS variable is similar to the %MONITOR variable.  It is a list of
+variables for which summary statistics will be calculated.  When you press
+F12, the appropriate statements will be generated in your command file.
 
 
 <P>
-Efficiency in completion is gained by maintaining a cache of objects
-currently known to S; when a new object becomes available or is deleted,
-only one component of the cache corresponding to the associated
-directory needs to be refreshed.  If ESS ever becomes confused about
-what objects are available for completion (such as when if refuses to
-complete an object you <STRONG>know</STRONG> is there), the command <KBD>M-x
-ess-resynch</KBD>
-<A NAME="IDX68"></A>
-forces the <EM>entire</EM> cache to be refreshed, which should fix the
-problem.
+Please note that the %DATA and %INIT variables are only replaced on the second 
+press of F12, but the actions for %N, %MONITOR and %STATS are performed on
+each press of F12 if you re-visit the model file.
 
 
 
 
-<H2><A NAME="SEC39" HREF="ess_toc.html#TOC39">Manipulating the transcript</A></H2>
+<H2><A NAME="SEC37" HREF="ess_toc.html#TOC37">ESS[BUGS]--Command files</A></H2>
 
 <P>
-Most of the time, the cursor spends most of its time at the bottom of
-the <B>ESS</B> process buffer, entering commands.  However all the input
-and output from the current (and previous) <B>ESS</B> sessions is stored in
-the process buffer (we call this the transcript) and often we want to
-<A NAME="IDX69"></A>
-move back up through the buffer, to look at the output from previous
-commands for example.
+To avoid extension name collision, .bmd is used for BUGS command files.  When
+you have finished editing your model file and press F12, a command file is 
+created if one does not already exist.  However, the command file was
+created, it recognizes two "replacement" variables:  %MONITOR and %STATS.  
 
 
 <P>
-Within the process buffer, a paragraph
-<A NAME="IDX70"></A>
-is defined as the prompt, the command after the prompt, and the output
-from the command.  Thus <KBD>M-{</KBD> and <KBD>M-}</KBD> move you backwards and
-forwards, respectively, through commands in the transcript.  A
-particularly useful command is <KBD>M-h</KBD> (<CODE>mark-paragraph</CODE>) which
-will allow you to mark a command and its entire output (for deletion,
-perhaps).  For more information about paragraph commands,
-see section `Paragraphs' in <CITE>The GNU Emacs Reference Manual</CITE>.
+Two %MONITOR variables appears on lines by themselves.  Although they are
+commented, they are still active.  Between them appears the necessary 
+statements to monitor the list of variables specified in the model file.  The
+behavior of the %STATS variable is similar.
 
 
 <P>
-If an ESS process finishes and you restart it in the same process
-buffer, the output from the new ESS process appears after the output
-from the first ESS process separated by a form-feed (<SAMP>`^L'</SAMP>)
-character.  Thus pages in the ESS
-<A NAME="IDX71"></A>
-process buffer correspond to ESS sessions.  Thus, for example, you may
-use <KBD>C-x [</KBD> and <KBD>C-x ]</KBD> to move backward and forwards through
-ESS sessions in a single ESS process buffer.  For more information about
-page commands, see section `Pages' in <CITE>The GNU Emacs Reference Manual</CITE>.
+When you are finished editing your command file, pressing F12 again will submit
+your command file as a batch job.  Batch scripts are provided for both DOS and
+Unix in the etc sub-directory of the ESS distribution.  The DOS script is 
+called "BACKBUGS.BAT" and the Unix script is "backbugs".  These scripts allow
+you to change the number of bins to use in the Griddy algorithm 
+(Metropolis sampling).  That is handled by the variable ess-bugs-default-bins 
+which defaults to 32.
 
 
 
-<UL>
-<LI><A HREF="ess_6.html#SEC40">Last command</A>: Manipulating the output from the last command
-<LI><A HREF="ess_6.html#SEC41">Process buffer motion</A>: Viewing more historic commands
-<LI><A HREF="ess_6.html#SEC42">Transcript resubmit</A>: Re-submitting commands from the transcript
-<LI><A HREF="ess_6.html#SEC43">Saving transcripts</A>: Keeping a record of your <B>S</B> session
-</UL>
 
-
-
-<H3><A NAME="SEC40" HREF="ess_toc.html#TOC40">Manipulating the output from the last command</A></H3>
+<H2><A NAME="SEC38" HREF="ess_toc.html#TOC38">ESS[BUGS]--Log files</A></H2>
 
 <P>
-Viewing the output of the command you have just entered is a common
-occurrence and ESS provides a number of facilities for doing this.
-Whenever a command produces a longish output, it is possible that the
-window will scroll, leaving the next prompt near the middle of the
-window.  The first part of the command output may have scrolled off the
-top of the window, even though the entire output would fit in the window
-if the prompt were near the bottom of the window.  If this happens, you
-can use the command
-
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-e</KBD> (<CODE>comint-show-maximum-output</CODE>) <BR>
-<A NAME="IDX72"></A>
-Move to the end of the buffer, and place cursor on bottom line of
-window.
-</UL>
-
-<P>
-to make more of the last output visible.  (To make this happen
-automatically for all inputs, set the variable
-<CODE>comint-scroll-to-bottom-on-input</CODE> to <CODE>t</CODE>; for information on
-this and other options for handling process input and output
-see section `Shell Mode Options' in <CITE>The GNU Emacs Reference Manual</CITE>.)
-
-
-<P>
-If the first part of the output is still obscured, use
-<A NAME="IDX73"></A>
-
-<UL>
-<LI>
-
-<KBD>C-c C-r</KBD> (<CODE>comint-show-output</CODE>) <BR>
-<A NAME="IDX74"></A>
-Moves cursor to the previous command line and and places it at the top
-of the window.
-</UL>
-
-<P>
-to view it.  Finally, if you want to discard the last command output
-altogether, use
-
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-o</KBD> (<CODE>comint-kill-output</CODE>) <BR>
-<A NAME="IDX75"></A>
-<A NAME="IDX76"></A>
-Deletes everything from the last command to the current prompt.
-</UL>
-
-<P>
-to delete it.  Use this command judiciously to keep your transcript to a
-more manageable size.
-
-
-
-
-<H3><A NAME="SEC41" HREF="ess_toc.html#TOC41">Viewing more historic commands</A></H3>
-
-<P>
-If you want to view the output from more historic commands than the
-previous command, commands are also provided to move backwards and
-forwards through previously entered commands in the process buffer:
-
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-p</KBD> (<CODE>comint-previous-input</CODE>) <BR>
-<A NAME="IDX77"></A>
-Moves point to the preceding command in the process buffer.
-
-<LI>
-
-<KBD>C-c C-n</KBD> (<CODE>comint-next-input</CODE>) <BR>
-<A NAME="IDX78"></A>
-Moves point to the next command in the process buffer.
-</UL>
-
-<P>
-Note that these two commands are analogous to <KBD>C-p</KBD> and <KBD>C-n</KBD>
-but apply to command lines rather than text lines.  And just like
-<KBD>C-p</KBD> and <KBD>C-n</KBD>, passing a prefix argument to these commands
-means to move to the <VAR>ARG</VAR>'th next (or previous) command.  (These
-commands are also discussed in section `Shell History Copying' in <CITE>The GNU Emacs Reference Manual</CITE>.)
-
-
-<P>
-There are also two similar commands (not bound to any keys by default)
-which move to preceding or succeeding commands, but which first prompt
-for a regular expression (see section `Syntax of Regular Expression' in <CITE>The GNU Emacs Reference Manual</CITE>), and then moves to
-the next (previous) command matching the pattern.
-
-
-<P>
-<DL>
-<DT><U>Command:</U> <B>comint-backward-matching-input</B> <I>regexp arg</I>
-<DD><A NAME="IDX79"></A>
-<DT><U>Command:</U> <B>comint-forward-matching-input</B> <I>regexp arg</I>
-<DD><A NAME="IDX80"></A>
-Search backward (forward) through the transcript buffer for the
-<VAR>arg</VAR>'th previous (next) command matching <VAR>regexp</VAR>.  <VAR>arg</VAR>
-is the prefix argument; <VAR>regexp</VAR> is prompted for in the minibuffer.
-</DL>
-
-
-
-
-<H3><A NAME="SEC42" HREF="ess_toc.html#TOC42">Re-submitting commands from the transcript</A></H3>
-
-<P>
-When moving through the transcript, you may wish to re-execute some of
-the commands you find there.  ESS provides three commands to do this;
-these commands may be used whenever the cursor is within a command line
-in the transcript (if the cursor is within some command <EM>output</EM>,
-an error is signaled).  Note all three commands involve the <KBD>RETURN</KBD>
-key.
-
-
-
-<UL>
-<LI>
-
-<KBD>RET</KBD> (<CODE>inferior-ess-send-input</CODE>) <BR>
-<A NAME="IDX81"></A>
-Copy the command under the cursor to the current command line, and
-execute it.
-
-<LI>
-
-<KBD>C-c RET</KBD> (<CODE>comint-copy-old-input</CODE>) <BR>
-<A NAME="IDX82"></A>
-Copy the command under the cursor to the current command line, but don't
-execute it.  Leaves the cursor on the command line so that the copied
-command may be edited.
-
-<LI>
-
-<KBD>M-RET</KBD> (<CODE>ess-transcript-send-command-and-move</CODE>) <BR>
-<A NAME="IDX83"></A>
-Copy the command under the cursor to the current command line, and
-execute it.  Moves the cursor to the following command.
-</UL>
-
-<P>
-When the cursor is not after the current prompt, the <KBD>RETURN</KBD> key
-has a slightly different behavior than usual.  Pressing <KBD>RET</KBD> on any
-line containing a command that you entered (i.e. a line beginning with a
-prompt) sends that command to the <B>ESS</B> process once again.  If you
-wish to edit the command before executing it, use <KBD>C-c RET</KBD> instead;
-it copies the command to the current prompt but does not execute it,
-allowing you to edit it before submitting it.
-
-
-<P>
-These two commands leave the cursor at the new command line, allowing
-you to continue with interactive use of S.  If you wish to resubmit a
-series of commands from the transcript, consider using <KBD>M-RET</KBD>
-instead, which leaves the cursor at the command line following the one
-you re-submitted.  Thus by using <KBD>M-RET</KBD> repeatedly, you can
-re-submit a whole series of commands.
-
-
-<P>
-These commands work even if if the current line is a continuation line
-(i.e. the prompt is <SAMP>`+'</SAMP> instead of <SAMP>`&#62;'</SAMP>) -- in this case all
-the lines that form the multi-line command are concatenated together and
-the resulting command is sent to the <B>ESS</B> process (currently this is
-the only way to resubmit a multi-line command to the <B>ESS</B> process in
-one go).  If the current line does
-<A NAME="IDX84"></A>
-not begin with a prompt, an error is signaled.  This feature, coupled
-with the command-based motion commands described above, could be used as
-a primitive history mechanism.  ESS provides a more sophisticated
-mechanism, however, which is described in section <A HREF="ess_6.html#SEC44">Command History</A>.
-
-
-
-
-<H3><A NAME="SEC43" HREF="ess_toc.html#TOC43">Keeping a record of your <B>S</B> session</A></H3>
-
-<P>
-To keep a record of your <B>S</B> session in a disk file, use the Emacs
-command <KBD>C-x C-w</KBD> (<CODE>write-file</CODE>) to attach a file to the
-<B>ESS</B> process buffer.  The name of the process buffer will (probably)
-change to the name of the file, but this is not a problem.  You can
-still use <B>S</B> as usual; just remember to save the file before you quit
-Emacs with <KBD>C-x C-s</KBD>.  You can make ESS prompt you for a filename in
-which to save the transcript every time you start <B>S</B> by setting the
-variable
-<A NAME="IDX85"></A>
-<CODE>ess-ask-about-transfile</CODE> to <CODE>t</CODE>; see section <A HREF="ess_3.html#SEC16">Changing the startup actions</A>.
-<A NAME="IDX86"></A>
-We recommend you save your transcripts with filenames that end in
-<SAMP>`.St'</SAMP>.  There is a special mode (ESS transcript mode ---
-see section <A HREF="ess_9.html#SEC59">Manipulating saved transcript files</A>) for editing transcript files which is
-automatically selected for files with this suffix.
-
-
-<P>
-<A NAME="IDX87"></A>
-S transcripts can get very large, so some judicious editing is
-appropriate if you are saving it in a file.  Use <KBD>C-c C-o</KBD> whenever
-a command produces excessively long output (printing large arrays, for
-example).  Delete erroneous commands (and the resulting error messages
-or other output) by moving to the command (or its output) and typing
-<KBD>M-h C-w</KBD>.  Also, remember that <KBD>C-c C-e</KBD> (and other hot keys)
-may be used for commands whose output you do not wish to appear in the
-transcript.  These suggestions are appropriate even if you are not
-saving your transcript to disk, since the larger the transcript, the
-more memory your Emacs process will use on the host machine.
-
-
-<P>
-Finally, if it is your intention to produce <B>S</B> source code (suitable
-for using with <CODE>source()</CODE> or inclusion in an <B>S</B> function) from a
-transcript, then the command <KBD>M-x ess-clean-region</KBD> may be of use.
-<A NAME="IDX88"></A>
-This command works in any Emacs buffer, and removes all prompts and
-command output from an ESS transcript within the current region, leaving
-only the commands.  Don't forget to remove any erroneous commands first!
-
-
-
-
-<H2><A NAME="SEC44" HREF="ess_toc.html#TOC44">Command History</A></H2>
-<P>
-<A NAME="IDX89"></A>
-<A NAME="IDX90"></A>
-<A NAME="IDX91"></A>
-
-
-<P>
-ESS provides easy-to-use facilities for re-executing or editing previous
-commands.  An input history of the last few commands is maintained (by
-default the last 50 commands are stored, although this can be changed by
-setting the variable <CODE>comint-input-ring-size</CODE> in
-<A NAME="IDX92"></A>
-<CODE>inferior-ess-mode-hook</CODE>.) The simplest history commands simply
-select the next and previous commands in the input history:
-
-
-
-<UL>
-<LI>
-
-<KBD>M-p</KBD> (<CODE>comint-previous-input</CODE>) <BR>
-<A NAME="IDX93"></A>
-Select the previous command in the input history.
-
-<LI>
-
-<KBD>M-n</KBD>  (<CODE>comint-next-input</CODE>) <BR>
-<A NAME="IDX94"></A>
-Select the next command in the input history.
-</UL>
-
-<P>
-For example, pressing <KBD>M-p</KBD> once will re-enter the last command into
-the process buffer after the prompt but does not send it to the <B>ESS</B>
-process, thus allowing editing or correction of the command before the
-<B>ESS</B> process sees it.  Once corrections have been made, press
-<KBD>RET</KBD> to send the edited command to the <B>ESS</B> process.
-
-
-<P>
-If you want to select a particular command from the history by matching
-it against a regular expression (see section `Syntax of Regular Expression' in <CITE>The GNU Emacs Reference Manual</CITE>), to search for a
-particular variable name for example, these commands are also available:
-
-
-
-<UL>
-<LI>
-
-<KBD>M-r</KBD> (<CODE>comint-previous-matching-input</CODE>) <BR>
-<A NAME="IDX95"></A>
-Prompt for a regular expression, and search backwards through the input
-history for a command matching the expression.
-
-<LI>
-
-<KBD>M-s</KBD> (<CODE>comint-next-matching-input</CODE>) <BR>
-<A NAME="IDX96"></A>
-Prompt for a regular expression, and search backwards through the input
-history for a command matching the expression.
-</UL>
-
-<P>
-A common type of search is to find the last command that began with a
-particular sequence of characters; the following two commands provide an
-easy way to do this:
-
-
-
-<UL>
-<LI>
-
-<KBD>A-M-r</KBD> (<CODE>comint-previous-matching-input-from-input</CODE>) <BR>
-<A NAME="IDX97"></A>
-Select the previous command in the history which matches the string
-typed so far.
-
-<LI>
-
-<KBD>A-M-s</KBD> (<CODE>comint-next-matching-input-from-input</CODE>) <BR>
-<A NAME="IDX98"></A>
-Select the next command in the history which matches the string typed so
-far.
-</UL>
-
-<P>
-Instead of prompting for a regular expression to match against, as they
-instead select commands starting with those characters already entered.
-For instance, if you wanted to re-execute the last <CODE>attach()</CODE>
-command, you may only need to type <KBD>att</KBD> and then <KBD>A-M-r</KBD> and
-<KBD>RET</KBD>.  (Note: you may not have an <KBD>ALT</KBD> key on your keyboard,
-in which case it may be a good idea to bind these commands to some other
-keys.)
-
-
-<P>
-See section `Shell History Ring' in <CITE>The GNU Emacs Reference Manual</CITE>, for a more detailed discussion of the history mechanism.
-
-
-
-
-<H2><A NAME="SEC45" HREF="ess_toc.html#TOC45">References to historical commands</A></H2>
-
-<P>
-Instead of searching through the command history using the command
-described in the previous section, you can alternatively refer to a
-historical command directly using a notation very similar to that used
-in <CODE>csh</CODE>.  History references are introduced by a <SAMP>`!'</SAMP> or
-<SAMP>`^'</SAMP> character and have meanings as follows:
-
-
-<DL COMPACT>
-
-<DT><SAMP>`!!'</SAMP>
-<DD>
-The immediately previous command
-
-<DT><SAMP>`!-<VAR>N</VAR>'</SAMP>
-<DD>
-The <VAR>N</VAR>th previous command
-
-<DT><SAMP>`!text'</SAMP>
-<DD>
-The last command beginning with the string <SAMP>`text'</SAMP>
-
-<DT><SAMP>`!?text'</SAMP>
-<DD>
-The last command containing the string <SAMP>`text'</SAMP>
-</DL>
-
-<P>
-In addition, you may follow the reference with a <EM>word designator</EM>
-to select particular <EM>words</EM> of the input.  A word is defined as a
-sequence of characters separated by whitespace.  (You can modify this
-definition by setting the value of <CODE>comint-delimiter-argument-list</CODE>
-to a list of characters that are allowed to separate words and
-<A NAME="IDX99"></A>
-themselves form words.)  Words are numbered beginning with zero.  The
-word designator usually begins with a <SAMP>`:'</SAMP> (colon) character;
-however it may be omitted if the word reference begins with a <SAMP>`^'</SAMP>,
-<SAMP>`$'</SAMP>, <SAMP>`*'</SAMP> or <SAMP>`-'</SAMP>.  If the word is to be selected from the
-previous command, the second <SAMP>`!'</SAMP>  character can be omitted from the
-event specification.  For instance, <SAMP>`!!:1'</SAMP> and <SAMP>`!:1'</SAMP> both
-refer to the first word of the previous command, while <SAMP>`!!$'</SAMP> and
-<SAMP>`!$'</SAMP> both refer to the last word in the previous command.  The
-format of word designators is as follows:
-
-
-<DL COMPACT>
-
-<DT><SAMP>`0'</SAMP>
-<DD>
-The zeroth word (i.e. the first one on the command line)
-
-<DT><SAMP>`<VAR>n</VAR>'</SAMP>
-<DD>
-The <VAR>n</VAR>th word, where <VAR>n</VAR> is a number
-
-<DT><SAMP>`^'</SAMP>
-<DD>
-The first word (i.e. the second one on the command line)
-
-<DT><SAMP>`$'</SAMP>
-<DD>
-The last word
-
-<DT><SAMP>`<VAR>x</VAR>-<VAR>y</VAR>'</SAMP>
-<DD>
-A range of words; <SAMP>`-<VAR>y</VAR>'</SAMP> abbreviates <SAMP>`0-<VAR>y</VAR>'</SAMP>
-
-<DT><SAMP>`*'</SAMP>
-<DD>
-All the words except the zeroth word, or nothing if the command had just
-one word (the zeroth)
-
-<DT><SAMP>`<VAR>x</VAR>*'</SAMP>
-<DD>
-Abbreviates <VAR>x</VAR>-$
-
-<DT><SAMP>`<VAR>x</VAR>-'</SAMP>
-<DD>
-Like <SAMP>`<VAR>x</VAR>*'</SAMP>, but omitting the last word
-</DL>
-
-<P>
-In addition, you may surround the entire reference except for the first
-<SAMP>`!'</SAMP> by braces to allow it to be followed by other (non-whitespace)
-characters (which will be appended to the expanded reference).
-
-
-<P>
-Finally, ESS also provides quick substitution; a reference like
-<SAMP>`^old^new^'</SAMP> means "the last command, but with the first occurrence
-of the string <SAMP>`old'</SAMP> replaced with the string <SAMP>`new'</SAMP>" (the last
-<SAMP>`^'</SAMP> is optional).  Similarly, <SAMP>`^old^'</SAMP> means "the last
-command, with the first occurrence of the string <SAMP>`old'</SAMP> deleted"
-(again, the last <SAMP>`^'</SAMP> is optional).
-
-
-<P>
-To convert a history reference as described above to an input suitable
-for S, you need to <EM>expand</EM> the history reference, using the
-<KBD>TAB</KBD> key.  For this to work, the cursor must be preceded by a space
-(otherwise it would try to complete an object name) and not be within a
-string (otherwise it would try to complete a filename).  So to expand
-the history reference, type <KBD>SPC TAB</KBD>.  This will convert the
-history reference into an <B>S</B> command from the history, which you can
-then edit or press <KBD>RET</KBD> to execute.
-
-
-<P>
-For example, to execute the last command that referenced the variable
-<CODE>data</CODE>, type <KBD>!?data SPC TAB RET</KBD>.
-
-
-
-
-<H2><A NAME="SEC46" HREF="ess_toc.html#TOC46">Hot keys for common commands</A></H2>
-
-<P>
-ESS provides a number of commands for executing the commonly used
-functions.  These commands below are basically information-gaining
-commands (such as <CODE>objects()</CODE> or <CODE>search()</CODE>) which tend to
-clutter up your transcript and for this reason some of the hot keys
-display their output in a temporary buffer instead of the process buffer
-by default.  This behavior is controlled by the variable
-<CODE>ess-execute-in-process-buffer</CODE> which, if
-<A NAME="IDX100"></A>
-non-<CODE>nil</CODE>, means that these commands will produce their output in
-the process buffer instead.  In any case, passing a prefix argument to
-the commands (with <KBD>C-u</KBD>) will reverse the meaning of
-<CODE>ess-execute-in-process-buffer</CODE> for that command, i.e. the output
-will be displayed in the process buffer if it usually goes to a
-temporary buffer, and vice-versa.  These are the hot keys that behave in
-this way:
-
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-x</KBD> (<CODE>ess-execute-objects</CODE>) <BR>
-<A NAME="IDX101"></A>
-Sends the <CODE>objects()</CODE>
-<A NAME="IDX102"></A>
-command to the <B>ESS</B> process.  A prefix argument specifies the
-position on the search list (use a negative argument to toggle
-<CODE>es-execute-in-process-buffer</CODE> as well).  A quick way to see what
-objects are in your working directory.
-<A NAME="IDX103"></A>
-<A NAME="IDX104"></A>
-
-<LI>
-
-<KBD>C-c C-s</KBD> (<CODE>ess-execute-search</CODE>) <BR>
-<A NAME="IDX105"></A>
-Sends the <CODE>search()</CODE>
-<A NAME="IDX106"></A>
-command to the ESS process.
-<A NAME="IDX107"></A>
-<A NAME="IDX108"></A>
-
-<LI>
-
-<KBD>C-c C-e</KBD> (<CODE>ess-execute</CODE>) <BR>
-<A NAME="IDX109"></A>
-Prompt for an ESS expression, and evaluate it.
-</UL>
-
-<P>
-<CODE>ess-execute</CODE> may seem pointless when you could just type the
-command in anyway, but it proves useful for `spot' calculations which
-would otherwise clutter your transcript, or for evaluating an expression
-while partway through entering a command.  You can also use this command
-to generate new hot keys using the Emacs keyboard macro facilities;
-see section `Keyboard Macros' in <CITE>The GNU Emacs Reference Manual</CITE>.
-<A NAME="IDX110"></A>
-<A NAME="IDX111"></A>
-
-
-<P>
-The following hot keys do not use <CODE>ess-execute-in-process-buffer</CODE>
-to decide where to display the output -- they either always display in
-the process buffer or in a separate buffer, as indicated:
-
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-a</KBD> (<CODE>ess-execute-attach</CODE>) <BR>
-<A NAME="IDX112"></A>
-Prompts for a directory to attach to the ESS process with the
-<CODE>attach()</CODE> command.
-<A NAME="IDX113"></A>
-If a numeric prefix argument is given it is used as the position on the
-search list to attach the directory; otherwise the <B>S</B> default of 2 is
-used.  The <CODE>attach()</CODE> command actually executed appears in the
-process buffer.
-
-<LI>
-
-<KBD>C-c C-l</KBD> (<CODE>ess-load-file</CODE>) <BR>
-<A NAME="IDX114"></A>
-Prompts for a file to load into the <B>ESS</B> process using
-<CODE>source()</CODE>.  If there is an error during loading, you can jump to
-the error in the file with <KBD>C-x `</KBD> (<CODE>ess-parse-errors</CODE>).
-<A NAME="IDX115"></A>
-See section <A HREF="ess_7.html#SEC52">Detecting errors in source files</A>, for more details.
-
-<LI>
-
-<KBD>C-c C-v</KBD> (<CODE>ess-display-help-on-object</CODE>) <BR> Pops up a help
-buffer for an <B>S</B> object or function.  See section <A HREF="ess_8.html#SEC58">Reading help files in ESS</A> for more
-details.
-
-<LI>
-
-<KBD>C-c C-q</KBD> (<CODE>ess-quit</CODE>) <BR>
-<A NAME="IDX116"></A>
-<A NAME="IDX117"></A>
-Sends the <CODE>q()</CODE>
-<A NAME="IDX118"></A>
-command to the <B>ESS</B> process (or <CODE>(exit)</CODE>
-<A NAME="IDX119"></A>
-to the <B>XLS</B> process), and cleans up any temporary buffers (such as
-help buffers or edit buffers) you may have created along the way.  Use
-this command when you have finished your <B>S</B> session instead of simply
-typing <CODE>q()</CODE> yourself, otherwise you will need to issue the command
-<KBD>M-x ess-cleanup</KBD>
-<A NAME="IDX120"></A>
-<A NAME="IDX121"></A>
-<A NAME="IDX122"></A>
-<A NAME="IDX123"></A>
-command explicitly to make sure that all the files that need to be saved
-have been saved, and that all the temporary buffers have been killed.
-</UL>
-
-
-
-<H2><A NAME="SEC47" HREF="ess_toc.html#TOC47">Is the Statistical Process running under ESS?</A></H2>
-
-<P>
-<A NAME="IDX124"></A>
-<A NAME="IDX125"></A>
-For the S languages (S, S-Plus, R) ESS sets an option in the current
-process that programs in the language can check to determine the
-environment in which they are currently running.
-
-
-<P>
-ESS sets
-<CODE>options(STERM="iESS")</CODE> for S language processes running in an
-inferior <CODE>iESS[S]</CODE> or <CODE>iESS[R]</CODE> buffer.
-
-
-<P>
-ESS sets
-<CODE>options(STERM="ddeESS")</CODE> for independent S-Plus for Windows
-processes running in the GUI and communicating with ESS via
-the DDE (Microsoft Dynamic Data Exchange) protocol through a
-<CODE>ddeESS[S]</CODE> buffer.
-
-
-<P>
-Other values of <CODE>options()$STERM</CODE> that we recommend are:
-
-
-
-<UL>
-<LI><CODE>length</CODE>:     Fixed length xterm or telnet window.
-
-<LI><CODE>scrollable</CODE>: Unlimited length xterm or telnet window.
-
-<LI><CODE>server</CODE>:     S-Plus Stat Server.
-
-<LI><CODE>BATCH</CODE>:      BATCH.
-
-<LI><CODE>Rgui</CODE>:       R GUI.
-
-<LI><CODE>Commands</CODE>:   S-Plus GUI without DDE interface to ESS.
-
-</UL>
-
-<P>
-Additional values may be recommended in the future as new interaction
-protocols are created.  Unlike the values <CODE>iESS</CODE> and <CODE>ddeESS</CODE>,
-ESS can't set these other values since the S language program is not
-under the control of ESS.
-
-
-
-
-<H2><A NAME="SEC48" HREF="ess_toc.html#TOC48">Other commands provided by inferior-ESS</A></H2>
-
-<P>
-The following commands are also provided in the process buffer:
-
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-c</KBD> (<CODE>comint-interrupt-subjob</CODE>) <BR>
-<A NAME="IDX126"></A>
-Sends a Control-C signal to the <B>ESS</B> process.  This has the effect of
-<A NAME="IDX127"></A>
-<A NAME="IDX128"></A>
-aborting the current command.
-
-<LI>
-
-<KBD>C-c C-z</KBD> (<CODE>ess-abort</CODE>) <BR>
-<A NAME="IDX129"></A>
-<A NAME="IDX130"></A>
-Sends a STOP signal to the <B>ESS</B> process, killing it immediately.
-It's not a good idea to use this, in general: Neither <CODE>q()</CODE> nor
-<CODE>.Last</CODE> will be executed and device drivers will not finish
-cleanly.  This command is provided as a safety to
-<CODE>comint-stop-subjob</CODE>, which is usually bound to <KBD>C-c C-z</KBD>.  If
-you want to quit from S, use <KBD>C-c C-q</KBD> (<CODE>ess-quit</CODE>) instead.
-<A NAME="IDX131"></A>
-<A NAME="IDX132"></A>
-
-<LI>
-
-<KBD>C-c C-d</KBD> (<CODE>ess-dump-object-into-edit-buffer</CODE>) <BR>
-<A NAME="IDX133"></A>
-Prompts for an object to be edited in an edit buffer.  See section <A HREF="ess_7.html#SEC49">Editing <B>S</B> functions</A>.
-</UL>
-
-<P>
-Other commands available is Inferior <B>S</B> mode are discussed in
-section `Shell Mode' in <CITE>The Gnu Emacs Reference Manual</CITE>.
+To avoid extension name collision, .bog is used for BUGS log files.  The BUGS
+batch script provided with ESS creates the .bog file from the .log file when
+the batch process completes.  If you need to look at the .log file while 
+the batch process is running, it will not appear in ESS[BUGS] mode unless
+you modify the auto-mode-alist variable.  If you have done so, then you
+may find F2 useful to refresh the .log if the batch process over-writes or
+appends it.
 
 
 <P><HR><P>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_5.html">previous</A>, <A HREF="ess_7.html">next</A>, <A HREF="ess_16.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
+Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_5.html">previous</A>, <A HREF="ess_7.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
 </BODY>
 </HTML>
