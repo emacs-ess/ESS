@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/12/02 14:09:55 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: ess-help.el,v 5.1 1997/12/02 14:09:55 rossini Exp $
+;; Modified: $Date: 1999/03/05 19:53:36 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: ess-help.el,v 5.2 1999/03/05 19:53:36 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -305,6 +305,7 @@ or XLispStat for additional information."
   (if (not
        (or
 	(string-match "XLS" ess-language)
+	(string-match "STA" ess-language)
 	(string-match "SAS" ess-language)))
       (let* ((help-files-list (or (ess-get-help-files-list)
 				  (mapcar 'list
