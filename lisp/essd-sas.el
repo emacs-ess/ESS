@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/08/28 13:05:39 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essd-sas.el,v 1.3 1997/08/28 13:05:39 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:12:01 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essd-sas.el,v 1.4 1997/09/01 18:12:01 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-sas.el,v $
+;;: Revision 1.4  1997/09/01 18:12:01  rossini
+;;: need to fix.
+;;:
 ;;: Revision 1.3  1997/08/28 13:05:39  rossini
 ;;: *** empty log message ***
 ;;:
@@ -65,22 +68,18 @@
 ;  "ess-trns" "ESS source eval mode" t)
 
 
-;;; to be moved to ess-site.el (1.4)
-;;(setq-default inferior-SAS-program-name "sas")
-
-;;; to be moved to ess-site.el (1.5)
-;;(require 'essd-sas)  ;; rmh   can't be in essd-sas.el
-
 ;;; to be moved to ess-vars.el
-(defvar inferior-SAS-program-name "mysas"
+(defvar inferior-SAS-program-name "sas"
   "*Program name for invoking an inferior S with SAS().")
-;(setq-default inferior-sas-args  "-stdio -linesize 80")
+;; MySAS, above, if we don't get args included.
+
+(defvar inferior-SAS-args "-stdio -linesize 80 -noovp"
+  "*Arguments to use for starting SAS.")
 
 ;;; to be moved to ess-mode.el
 (defun SAS-mode (&optional proc-name)
   "Major mode for editing SAS source.  See ess-mode for more help."
   (interactive)
-
   (ess-mode ess-language proc-name))
 
 ;;; Code:
@@ -108,8 +107,10 @@
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")
     (ess-loop-timeout              .  100000 )
-    (inferior-ess-primary-prompt   .  "^\'")
-    (inferior-ess-secondary-prompt . "+ ?"))
+    (inferior-ess-primary-prompt   . "^")
+    (inferior-ess-secondary-prompt . "+ ?")
+    (inferior-ess-start-file       . nil) ;"~/.ess-SAS")
+    (inferior-ess-start-args       . inferior-SAS-args))
  "Variables to customize for SAS")
 
 
