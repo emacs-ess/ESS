@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/09/08 17:23:50 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: ess-vars.el,v 1.24 1997/09/08 17:23:50 rossini Exp $
+;; Modified: $Date: 1997/09/08 17:34:47 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: ess-vars.el,v 1.25 1997/09/08 17:34:47 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -802,6 +802,7 @@ browse-url to find the location")
 ;;; This syntax table is required by ess-mode.el, ess-inf.el and
 ;;; ess-trans.el, so we provide it here.
 (defvar ess-mode-syntax-table nil "Syntax table for ess-mode.")
+(make-variable-buffer-local 'ess-mode-syntax-table)
 
  ; Buffer local customization stuff
 
