@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/25 13:49:16 $
-;; Version: $Revision: 4.52 $
-;; RCS: $Id: essd-sas.el,v 4.52 1997/11/25 13:49:16 rossini Exp $
+;; Modified: $Date: 1997/11/26 20:43:10 $
+;; Version: $Revision: 4.53 $
+;; RCS: $Id: essd-sas.el,v 4.53 1997/11/26 20:43:10 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -44,7 +44,10 @@
 (autoload 'ess-mode "ess-mode" no-doc t)
 (autoload 'ess-proc-name "ess-inf" no-doc nil)
 
-(defvar inferior-SAS-args "-stdio -linesize 80 -noovp"
+;;(defvar inferior-SAS-args "-stdio -linesize 80 -noovp "
+;;  "*Arguments to use for starting SAS.")
+
+(defvar inferior-SAS-args "-stdio -linesize 80 -noovp -nosyntaxcheck"
   "*Arguments to use for starting SAS.")
 
 ;; workaround
@@ -75,7 +78,7 @@
 	 (ess-sas-lst-bufname (concat "*" tmp-procname ".lst*"))
 	 (ess-sas-log-bufname (concat "*" tmp-procname ".log*"))
 	 (explicit-shell-file-name "/bin/sh")
-	 additional-inferior-SAS-args
+	 inferior-SAS-redirect-args
 	 ess-sas-lst
 	 ess-sas-log)
     
@@ -117,12 +120,12 @@
       (ess-transcript-minor-mode t)
       (rename-buffer ess-sas-log-bufname t))
     
-    (setq additional-inferior-SAS-args (concat " "
+    (setq inferior-SAS-redirect-args (concat " "
 					       ess-sas-lst
 					       " "
 					       ess-sas-log)
-	  inferior-SAS-args-temp (concat inferior-SAS-args
-					 additional-inferior-SAS-args))
+	  inferior-SAS-args-temp (concat inferior-SAS-redirect-args
+					 inferior-SAS-args))
     
     ;; Restore the *shell* buffer
     (if ess-shell-buffer-name-flag
