@@ -1,6 +1,7 @@
 1998-11-09  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* Makefile (dist): new top-level target.
+	(dist): uses scp to put it where it belongs.
 
 Tue Dec  2 08:49:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1846,6 +1847,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.3  1998/11/09 23:50:26  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 5.2  1998/11/09 22:46:55  rossini
 	* Removing *** empty log message ***
 	* Removing
