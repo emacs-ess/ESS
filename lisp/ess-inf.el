@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/14 01:43:46 $
-;; Version: $Revision: 1.92 $
-;; RCS: $Id: ess-inf.el,v 1.92 1997/11/14 01:43:46 rossini Exp $
+;; Modified: $Date: 1997/11/14 02:10:07 $
+;; Version: $Revision: 1.93 $
+;; RCS: $Id: ess-inf.el,v 1.93 1997/11/14 02:10:07 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -126,8 +126,6 @@ accompany the call for inferior-ess-program.
       (ess-setq-vars-default ess-customize-alist (current-buffer))
       (setq temp-ess-dialect (cdr (rassoc ess-dialect ess-customize-alist)))
       (setq temp-ess-lang (cdr (rassoc ess-language ess-customize-alist))))
-    
-    ;;(ess-setq-vars-local ess-customize-alist (current-buffer))
     
     ;; run hooks now, to overwrite the above!
     (run-hooks 'ess-pre-run-hook)
