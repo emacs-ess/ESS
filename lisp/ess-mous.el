@@ -5,8 +5,8 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: 25 Mar 2001
-;; Modified: $Date: 2002/01/03 09:20:38 $
-;; Version: $Revision: 
+;; Modified: $Date: 2002/01/03 09:37:07 $
+;; Version: $Revision:
 ;; RCS: $Id: ess-mous.el
 
 ;; This file is part of ESS
@@ -49,13 +49,13 @@
   (interactive)
   (ess-mouse-me-helper
    #'(lambda ()
-       (or (x-popup-menu (list '(0 0) 
+       (or (x-popup-menu (list '(0 0)
 			       (get-buffer-window (get-buffer (buffer-name))))
 			 (funcall mouse-me-build-menu-function name))
 	   (error "No command to run")))))
 
-    
-  
+
+
 (defun ess-mouse-me-helper (func)
   "Determine the string to use to process EVENT and call FUNC to get cmd."
   (let (name sp sm mouse beg end cmd mmtype)
@@ -215,21 +215,26 @@ the string one more time by embedding it in a \"page()\" command."
   (if (equal ess-language "S")
       (setq mouse-me-menu-commands ess-S-mouse-me-menu-commands-alist)))
 
+;;K MM: `C-cm' is reserved for private user key mapping
 (defun ess-S-mouse-me-ess-transcript-mode ()
-  (define-key ess-transcript-mode-map "\C-cm" 'ess-mouse-me))
+  (define-key ess-transcript-mode-map "\C-cm" 'ess-mouse-me)
+)
+
+ (define-key ess-mode-map          "\C-cm" 'ess-mouse-me)
+ (define-key inferior-ess-mode-map "\C-cm" 'ess-mouse-me)
+
+;;MM:  1) NOT  global-set-key !!! -- set in the local maps only !
+;;MM:  2) this must be done with add-hook as well!
+;;MM   3) the following doesn't even work for me, since we global-set that key..
+;;- (if (not ess-running-xemacs)
+;;-     (global-set-key [S-mouse-2] 'mouse-me)
+;;-   (global-set-key [(shift button2)] 'mouse-me))
 
 
-(if (not ess-running-xemacs)
-	 (global-set-key [S-mouse-2] 'mouse-me)
-  (global-set-key [(shift button2)] 'mouse-me))
-
-(define-key ess-mode-map "\C-cm" 'ess-mouse-me)
-(define-key inferior-ess-mode-map "\C-cm" 'ess-mouse-me)
-
-(add-hook 'ess-mode-hook 'ess-S-mouse-me-menu-commands)
+(add-hook 'inferior-ess-mode-hook   'ess-S-mouse-me-menu-commands)
+(add-hook 'ess-mode-hook            'ess-S-mouse-me-menu-commands)
 (add-hook 'ess-transcript-mode-hook 'ess-S-mouse-me-menu-commands)
 (add-hook 'ess-transcript-mode-hook 'ess-S-mouse-me-ess-transcript-mode)
-(add-hook 'inferior-ess-mode-hook 'ess-S-mouse-me-menu-commands)
 
 
  ; Local variables section
