@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/11/12 21:30:34 $
-;; Version: $Revision: 1.45 $
-;; RCS: $Id: essd-r.el,v 1.45 1997/11/12 21:30:34 rossini Exp $
+;; Modified: $Date: 1997/11/14 02:44:29 $
+;; Version: $Revision: 1.46 $
+;; RCS: $Id: essd-r.el,v 1.46 1997/11/14 02:44:29 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -81,7 +81,7 @@
 (defun R (&optional start-args)
   "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ)."
   (interactive "P")
-  (setq ess-customize-alist R-customize-alist)
+  (setq-default ess-customize-alist R-customize-alist)
   ;; for debugging only
   (ess-write-to-dribble-buffer
    (format "(R): ess-dialect=%s , buf=%s, start-arg=%s\n"
