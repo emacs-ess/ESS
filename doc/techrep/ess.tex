@@ -281,6 +281,18 @@ split-screen interface, and in general, the Stata CLI is depreciated
 towards use of a newer GUI.  ESS assists command-line interfaces by
 providing a comprehensive interface layer on top of the command-line.
 
+Technically, SAS has not supported CLI after version 6, as the options
+LMODE and FSDEVICE ascii.\$TERM are no longer valid.  The only thing
+left is "sas -stdio" which takes input from the command-line and
+produces output on the terminal.  This is, I believe, the way that
+iESS communicates with SAS interactively.  But, to call it a cli would
+be over-stating it a bit.  There is no prompt and you get both the
+.log and .lst streams which is a mess.  Of course, you could re-direct
+one or the other, but a human being would need feedback from both in a
+convenient format like \Splus\ provides.  In my opinion, this is only
+supported as an interface for applications like iESS; not people.  I
+hope this helps.
+
 \subsection{Graphical User Interfaces}
 \label{sec:UI:GUI}
 
@@ -463,9 +475,9 @@ finding all input lines and isolating them into a standalone input file
 that can be used as input to another S job or as a model for further
 program design.
 
-
 \subsection{Programming Language Help}
 \label{sec:S:help}
+
 When viewing help pages, there's a new menu \textsf{[ESS help]} and
 useful 1-letter shortcuts for navigation and more, such as
 \begin{description}
