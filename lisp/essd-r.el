@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/17 20:41:36 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: essd-r.el,v 1.23 1997/07/17 20:41:36 rossini Exp $
+;; Modified: $Date: 1997/07/26 01:38:56 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: essd-r.el,v 1.24 1997/07/26 01:38:56 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.24  1997/07/26 01:38:56  rossini
+;;: changed objects command, as per R-0.50-a1.
+;;:
 ;;: Revision 1.23  1997/07/17 20:41:36  rossini
 ;;: cleaned up for release.
 ;;:
@@ -100,7 +103,6 @@
     (ess-proc-prefix               . "R")
     (ess-version-running           . "R" )
     (inferior-ess-program          . "R" ) ; inferior-R-program-name)
-    (inferior-ess-objects-command  . "if(%d == 1) ls() else builtins()")
     (ess-help-sec-regex            . "^\\s *[A-Z[a-z. ---]+:$") ;ess-help-R-sec-regex)
     (ess-help-sec-keys-alist       . '((?a . "\\s *Arguments:")
 					(?d . "\\s *Description:")
@@ -110,9 +112,12 @@
 					(?s . "\\s *See Also:")
 					(?e . "\\s *Examples:")))  ; ess-help-R-sec-keys-alist)
     (inferior-ess-help-command     . "help(\"%s\")\n")
+    (inferior-ess-objects-command  . "objects(pos = %d)\n")
     (inferior-ess-exit-command     . "q()\n")
     (ess-loop-timeout              . 100000 )
-    (inferior-ess-primary-prompt   . "[][a-zA-Z0-9() ]*> ?"))
+    ;;(inferior-ess-primary-prompt   . "[][a-zA-Z0-9() ]*> ?") ;;
+    ;;correct in general, now?  see ess-vars.
+    )
   "Variables to customize for R")
 
 (defun R ()
