@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/06/24 07:48:01 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: essd-s4.el,v 5.10 2002/06/24 07:48:01 maechler Exp $
+;; Modified: $Date: 2003/09/25 16:01:42 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: essd-s4.el,v 5.11 2003/09/25 16:01:42 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -49,15 +49,15 @@
     (ess-language                  . "S")
     (ess-dialect                   . "S4")
     (ess-suffix                    . "S")
-    (ess-dump-filename-template    . (concat (user-login-name)
-					     ".%s."
-					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . S4-help-sec-keys-alist)
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
     (ess-loop-timeout              . 500000 )
+    (ess-dump-filename-template    . (replace-regexp-in-string
+				      "S$" ess-suffix ; in the one from custom:
+				      ess-dump-filename-template-proto))
     (ess-object-name-db-file       . "ess-s4-namedb.el")
     (ess-dumped-missing-re
      . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 15 Aug 1999
-;; Modified: $Date: 2001/07/23 14:11:14 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: essl-omg.el,v 5.6 2001/07/23 14:11:14 rossini Exp $
+;; Modified: $Date: 2003/09/25 16:01:42 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: essl-omg.el,v 5.7 2003/09/25 16:01:42 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -236,8 +236,10 @@ Returns nil if line starts inside a string, t if in a comment."
   (modify-syntax-entry ?&  "."  S-syntax-table)
   (modify-syntax-entry ?|  "."  S-syntax-table)
   (modify-syntax-entry ?\' "\"" S-syntax-table)
-  (modify-syntax-entry ?//  "<"  S-syntax-table) ; open comment
-  (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
+  ;;FIXME: This fails (warning in compilation):
+  ;;F "//" are 2 characters; ?// is invalid
+  ;;F (modify-syntax-entry ?//  "<"  S-syntax-table) ; open comment
+  ;;F (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
   ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
   (modify-syntax-entry ?.  "_"  S-syntax-table) ; see above/below,
 					; plus consider separation.

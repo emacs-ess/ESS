@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/06/24 07:48:01 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essd-sp3.el,v 1.9 2002/06/24 07:48:01 maechler Exp $
+;; Modified: $Date: 2003/09/25 16:01:42 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essd-sp3.el,v 1.10 2003/09/25 16:01:42 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -48,9 +48,9 @@
     (ess-dialect                   . S+3-dialect-name)
     (ess-suffix                    . "S")
     (ess-loop-timeout              . 500000 )
-    (ess-dump-filename-template    . (concat (user-login-name)
-					     ".%s."
-					     ess-suffix))
+    (ess-dump-filename-template    . (replace-regexp-in-string
+				      "S$" ess-suffix ; in the one from custom:
+				      ess-dump-filename-template-proto))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)

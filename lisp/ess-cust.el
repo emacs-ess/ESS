@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2003/08/15 21:38:45 $
-;; Version: $Revision: 1.41 $
-;; RCS: $Id: ess-cust.el,v 1.41 2003/08/15 21:38:45 rsparapa Exp $
+;; Modified: $Date: 2003/09/25 16:01:42 $
+;; Version: $Revision: 1.42 $
+;; RCS: $Id: ess-cust.el,v 1.42 2003/09/25 16:01:42 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -183,7 +183,7 @@ version of the statistical package being executed in the particular
 buffer.
 
 Current values could include:
-for `ess-dialect' = S3, S4, S+3, S+4, S+5, S+6, R, XLS, SAS, STA
+for `ess-dialect' = S3, S4, Sp3, Sp4, Sp5, Sp6, R, XLS, SAS, STA
 
 Used to adjust for changes in versions of the program"
   :group 'ess
@@ -465,18 +465,22 @@ working directory (i.e. first elt of search list)."
   :type 'directory)
 
 
-(defcustom ess-dump-filename-template (concat (user-login-name) ".%s.S")
-  "*Template for filenames of dumped objects.
-%s is replaced by the object name.
+(defcustom ess-dump-filename-template-proto (concat (user-login-name) ".%s.S")
+  "*Prototype template for filenames of dumped objects.
+The ending `S' is replaced by the current \\[ess-suffix], to give
+\\[ess-dump-filename-template] when an inferior ESS process starts.
 
-This gives filenames like `user.foofun.S', so as not to clash with
+By default, gives filenames like `user.foofun.S', so as not to clash with
 other users if you are using a shared directory. Other alternatives:
 \"%s.S\" ; Don't bother uniquifying if using your own directory(ies)
-\"dump\" ; Always dump to a specific filename. This makes it impossible
+\"dumpdir\"; Always dump to a specific filename. This makes it impossible
          to edit more than one object at a time, though.
 (make-temp-name \"scr.\") ; Another way to uniquify"
+  ;; MM: The last 3-4 lines above suck (I don't understand them) -- FIXME --
+
   :group 'ess-edit
   :type 'string)
+
 
 ;;*;; Hooks
 

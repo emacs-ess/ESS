@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2003/01/05 19:55:21 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: essd-els.el,v 1.21 2003/01/05 19:55:21 rmh Exp $
+;; Modified: $Date: 2003/09/25 16:01:42 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: essd-els.el,v 1.22 2003/09/25 16:01:42 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,9 +47,6 @@
     (ess-language                  . "S")
     (ess-dialect                   . S+elsewhere-dialect-name)
     (ess-suffix                    . "S")
-    (ess-dump-filename-template    . (concat (user-login-name)
-					     ".%s."
-					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)

@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2003/09/16 04:54:20 $
-;; Version: $Revision: 5.17 $
-;; RCS: $Id: essdsp6w.el,v 5.17 2003/09/16 04:54:20 rmh Exp $
+;; Modified: $Date: 2003/09/25 16:01:42 $
+;; Version: $Revision: 5.18 $
+;; RCS: $Id: essdsp6w.el,v 5.18 2003/09/25 16:01:42 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -54,7 +54,7 @@ Easily changeable in a user's `.emacs'.")
 ;; (setq inferior-S+6-start-args " S_ELMHOST=\\\\@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
 )
 
-(defvar inferior-Sqpe-start-args " " 
+(defvar inferior-Sqpe-start-args " "
   "Default is empty.  Can be used for license manager information, for example
 `(setq inferior-Sqpe-start-args \" S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 \")'."
 ;; (setq inferior-Sqpe-start-args " S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
@@ -71,9 +71,6 @@ connects it to the '(ddeESS [S+6])' window.")
     (ess-language                  . "S")
     (ess-dialect                   . S+6-dialect-name)
     (ess-suffix                    . "S")
-    (ess-dump-filename-template    . (concat (user-login-name)
-					     ".%s."
-					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
@@ -117,9 +114,6 @@ connects it to the '(ddeESS [S+6])' window.")
     (ess-language                  . "S")
     (ess-dialect                   . S+6-dialect-name)
     (ess-suffix                    . "S")
-    (ess-dump-filename-template    . (concat (user-login-name)
-					     ".%s."
-					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)

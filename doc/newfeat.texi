@@ -3,15 +3,21 @@ Changes/New Features in 5.2.0:
 @item ESS[BUGS]:  now supports interactive processing; special thanks to
 @uref{mailto:Aki.Vehtari@@hut.fi, Aki Vehtari}; new info documentation!
 @item ESS[SAS]:  convert .log to .sas with ess-sas-transcript;
-info documentation improved; Local Variable bug fixes; 
+info documentation improved; Local Variable bug fixes;
 SAS/IML statements/functions now highlighted; files edited
-remotely by ange-ftp/EFS/tramp are recognized and pressing 
+remotely by ange-ftp/EFS/tramp are recognized and pressing
 SUBMIT opens a buffer on the remote host via the local variable
 ess-sas-shell-buffer-remote-init which defaults to "ssh";
-changed the definition of the variable ess-sas-edit-keys-toggle 
+changed the definition of the variable ess-sas-edit-keys-toggle
 to boolean rather than 0/1; added the function ess-electric-run-semicolon
 which automatically reverse indents lines containing only "run;";
 C-F1 creates an MS RTF file from the current buffer and name it accordingly
+@item ESS[S]:  ess-dump-filename-template-proto {new name!} now can be
+customized successfully (for S language dialects).
+@item ESS[S]:  ess-help: Now using nice underlines (instead of `nuke-* ^H_')
+@item ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
+numbers from any Emacs buffer into an existing *R* process.
+@item ESS[R]:  M-x ess-rdired gives a ``directory editor'' of R objects.
 @end itemize
 
 Changes/New Features in 5.1.24:

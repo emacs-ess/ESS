@@ -1,3 +1,11 @@
+2003-09-25  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (ess-dump-filename-template-proto): renamed,
+	   new functionality: used as prototype
+
+	* essd-*.el: ess-dump-filename-template now uses and modifies the
+	       above prototype.
+
 2003-08-19  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-help.el (ess-help-underline): New function to convert ^_H in

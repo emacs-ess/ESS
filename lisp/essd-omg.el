@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 August 1999
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: essd-omg.el,v 5.8 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2003/09/25 16:01:42 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: essd-omg.el,v 5.9 2003/09/25 16:01:42 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -48,9 +48,9 @@
     (ess-dialect                   . "omegahat")
     (ess-suffix                    . "omg")
     (ess-loop-timeout              . 5000)
-    (ess-dump-filename-template    . (concat (user-login-name)
-					     ".%s."
-					     ess-suffix))
+    (ess-dump-filename-template    . (replace-regexp-in-string
+				      "S$" ess-suffix ; in the one from custom:
+				      ess-dump-filename-template-proto))
     (ess-mode-editing-alist        . OMG-editing-alist)
     (ess-mode-syntax-table         . OMG-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)

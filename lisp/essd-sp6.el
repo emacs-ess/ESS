@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: ESS Core Team <ESS-core@stat.math.ethz.ch>
 ;; Created: 2001/02/06
-;; Modified: $Date: 2002/06/24 07:48:01 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: essd-sp6.el,v 1.10 2002/06/24 07:48:01 maechler Exp $
+;; Modified: $Date: 2003/09/25 16:01:42 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: essd-sp6.el,v 1.11 2003/09/25 16:01:42 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -81,9 +81,6 @@
     (ess-suffix                    . "S")
     (ess-directory-function        . S+6-directory-function)
     (ess-setup-directory-function  . S+6-setup-directory-function)
-    (ess-dump-filename-template    . (concat (user-login-name)
-					     ".%s."
-					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
@@ -92,6 +89,9 @@
 
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
     (ess-loop-timeout              . 500000 )
+    (ess-dump-filename-template    . (replace-regexp-in-string
+				      "S$" ess-suffix ; in the one from custom:
+				      ess-dump-filename-template-proto))
     (ess-object-name-db-file       . "ess-sp6-namedb.el")
     (ess-dumped-missing-re
      . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")

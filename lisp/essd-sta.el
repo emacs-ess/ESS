@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 1.25 $
-;; RCS: $Id: essd-sta.el,v 1.25 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2003/09/25 16:01:42 $
+;; Version: $Revision: 1.26 $
+;; RCS: $Id: essd-sta.el,v 1.26 2003/09/25 16:01:42 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -48,9 +48,6 @@
     (ess-language                  . "STA")
     (ess-dialect                   . STA-dialect-name)
     (ess-suffix                    . "ado")
-    (ess-dump-filename-template    . (concat (user-login-name)
-					     ".%s."
-					     ess-suffix))
     (ess-mode-editing-alist        . STA-editing-alist)
     (ess-mode-syntax-table         . STA-syntax-table)
     (ess-mode-edit                 . 'STA-mode)
@@ -64,8 +61,8 @@
     (inferior-ess-objects-command  . "description\n")
     (inferior-ess-help-command     . "set more off\n help %s\n")
     (inferior-ess-exit-command     . "exit\n")
-    (inferior-ess-primary-prompt   . "^.") ;; "^. ?") 
-    (inferior-ess-secondary-prompt . "^.") ;; "^. ?") 
+    (inferior-ess-primary-prompt   . "^.") ;; "^. ?")
+    (inferior-ess-secondary-prompt . "^.") ;; "^. ?")
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ;"~/.ess-stata")
     (inferior-ess-start-args       . "")) ; "-q"
@@ -90,7 +87,7 @@
 	   ess-dialect
 	   (current-buffer)))
   (let ((sta-start-args
-	 (concat "TERM=emacs stata " 
+	 (concat "TERM=emacs stata "
 	         inferior-ess-start-args
 		 (if start-args (read-string
 				 "Starting Args [possibly -k####] ? ")

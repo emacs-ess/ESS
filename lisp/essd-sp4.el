@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/06/24 07:48:01 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essd-sp4.el,v 1.14 2002/06/24 07:48:01 maechler Exp $
+;; Modified: $Date: 2003/09/25 16:01:42 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essd-sp4.el,v 1.15 2003/09/25 16:01:42 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -56,14 +56,14 @@ connects it to the '(ddeESS [S+4])' window.")
     (ess-language                  . "S")
     (ess-dialect                   . S+4-dialect-name)
     (ess-suffix                    . "S")
-    (ess-dump-filename-template    . (concat (user-login-name)
-					     ".%s."
-					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
     (ess-loop-timeout              . 500000 )
+    (ess-dump-filename-template    . (replace-regexp-in-string
+				      "S$" ess-suffix ; in the one from custom:
+				      ess-dump-filename-template-proto))
     (ess-object-name-db-file       . "ess-sp4-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
@@ -99,9 +99,6 @@ connects it to the '(ddeESS [S+4])' window.")
     (ess-language                  . "S")
     (ess-dialect                   . S+4-dialect-name)
     (ess-suffix                    . "S")
-    (ess-dump-filename-template    . (concat (user-login-name)
-					     ".%s."
-					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
