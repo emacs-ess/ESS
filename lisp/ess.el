@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/10/20 19:11:44 $
-;; Version: $Revision: 1.63 $
-;; RCS: $Id: ess.el,v 1.63 1997/10/20 19:11:44 rossini Exp $
+;; Modified: $Date: 1997/10/21 21:19:43 $
+;; Version: $Revision: 1.64 $
+;; RCS: $Id: ess.el,v 1.64 1997/10/21 21:19:43 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. M. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   ess-bugs@stat.math.ethz.ch|
@@ -140,7 +140,7 @@
 (autoload 'ess-parse-errors "ess-mode"
   "Jump to the last error generated from a sourced file" t)
 
-(autoload 'ess-load-file "ess-mode"
+(autoload 'ess-load-file "ess-inf"
   "Source a file into S.")
 
  ; ess-transcript-mode

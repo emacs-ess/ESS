@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/20 19:44:27 $
-;; Version: $Revision: 1.61 $
-;; RCS: $Id: ess-mode.el,v 1.61 1997/10/20 19:44:27 rossini Exp $
+;; Modified: $Date: 1997/10/21 21:17:46 $
+;; Version: $Revision: 1.62 $
+;; RCS: $Id: ess-mode.el,v 1.62 1997/10/21 21:17:46 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -474,60 +474,6 @@ Returns t if the buffer existed and was modified, but was not saved"
 		  (set-buffer buff)
 		  (save-buffer))))
 	  (buffer-modified-p buff)))))
-
-(defun ess-load-file (filename)
-  "Load an S source file into an inferior S process."
-  (interactive (list
-		(or
-		 (and (eq major-mode 'ess-mode)
-		      (buffer-file-name))
-		 (expand-file-name
-		  (read-file-name "Load S file: " nil nil t)))))
-  (require 'ess-inf)
-  (ess-make-buffer-current)
-  (let ((source-buffer (get-file-buffer filename)))
-    (if (ess-check-source filename)
-	(error "Buffer %s has not been saved" (buffer-name source-buffer))
-      ;; Find the process to load into
-      (if source-buffer
-	  (save-excursion
-	    (set-buffer source-buffer)
-    (ess-force-buffer-current "Process to load into: ")
-	    (ess-check-modifications))))
-    (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
-	  error-occurred nomessage)
-      (ess-command (format inferior-ess-load-command filename) errbuffer)
-      (save-excursion
-	(set-buffer errbuffer)
-	(goto-char (point-max))
-	(setq error-occurred (re-search-backward ess-dump-error-re nil t))
-	(setq nomessage (= (buffer-size) 0)))
-      (if error-occurred
-	  (message "Errors: Use %s to find error."
-		   (substitute-command-keys
-		    "\\<inferior-ess-mode-map>\\[ess-parse-errors]"))
-	;; Load did not cause an error
-	(if nomessage (message "Load successful.")
-	  ;; There was a warning message from S
-	  (ess-display-temp-buffer errbuffer))
-	;; Consider deleting the file
-	(let ((skdf (if source-buffer
-			(save-excursion
-			  (set-buffer source-buffer)
-			  ess-keep-dump-files)
-		      ess-keep-dump-files))) ;; global value
-	  (cond
-	   ((null skdf)
-	    (delete-file filename))
-	   ((memq skdf '(check ask))
-	    (let ((doit (y-or-n-p (format "Delete %s " filename))))
-	      (if doit (delete-file filename))
-	      (and source-buffer
-		   (local-variable-p 'ess-keep-dump-files source-buffer)
-		   (save-excursion
-		     (set-buffer source-buffer)
-		     (setq ess-keep-dump-files doit)))))))
-	(ess-switch-to-S t)))))
 
 (defun ess-parse-errors (showerr)
   "Jump to error in last loaded S source file.

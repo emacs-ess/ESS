@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/21 20:11:14 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: ess-trns.el,v 1.9 1997/10/21 20:11:14 rossini Exp $
+;; Modified: $Date: 1997/10/21 21:19:48 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: ess-trns.el,v 1.10 1997/10/21 21:19:48 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -47,11 +47,11 @@
 (autoload 'ess-eval-line-and-go "ess-mode" "[autoload]" t)
 (autoload 'ess-beginning-of-function "ess-mode" "[autoload]" t)
 (autoload 'ess-end-of-function "ess-mode" "[autoload]" t)
-(autoload 'ess-load-file "ess-mode" "[autoload]" t)
 
 (autoload 'comint-previous-prompt "comint" "[autoload]" t)
 (autoload 'comint-next-prompt "comint" "[autoload]" t)
 
+(autoload 'ess-load-file "ess-inf" "[autoload]" t)
 (autoload 'ess-request-a-process "ess-inf" "(autoload)" nil)
 (autoload 'get-ess-buffer "ess-inf" "(autoload)" nil)
 (autoload 'ess-switch-to-S "ess-inf" "(autoload)" nil)
