@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/05/07 13:55:14 $
-;; Version: $Revision: 1.167 $
-;; RCS: $Id: essa-sas.el,v 1.167 2004/05/07 13:55:14 stephen Exp $
+;; Modified: $Date: 2004/05/28 19:18:22 $
+;; Version: $Revision: 1.168 $
+;; RCS: $Id: essa-sas.el,v 1.168 2004/05/28 19:18:22 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -214,7 +214,7 @@ should set this variable to 'sh regardless of their local shell
   :group 'ess-sas
   :type  'string)
 
-(defcustom ess-sas-suffix-2 "dat"
+(defcustom ess-sas-suffix-2 "csv"
   "*The second suffix to associate with SAS."
   :group 'ess-sas
   :type  'string)

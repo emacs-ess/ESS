@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2004/05/14 18:04:25 $
-;; Version: $Revision: 5.47 $
-;; RCS: $Id: essl-sas.el,v 5.47 2004/05/14 18:04:25 rsparapa Exp $
+;; Modified: $Date: 2004/05/28 19:18:22 $
+;; Version: $Revision: 5.48 $
+;; RCS: $Id: essl-sas.el,v 5.48 2004/05/28 19:18:22 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -518,7 +518,7 @@ number."
 		"\\|attr[cn]\\|c\\(exist\\|lose\\)\\|d\\(close\\|num\\|open\\|read\\)"
 		"\\|exist\\|f\\(close\\|etchobs\\|i\\(leexist\\|nfo\\)\\|open\\|put\\|write\\)"
 		"\\|get\\(option\\|var[cn]\\)\\|lib\\(name\\|ref\\)\\|op\\(en\\|t\\(getn\\|setn\\)\\)"
-		"\\|pathname\\|sysmsg\\|var\\(fmt\\|label\\|num\\|type\\)\\)"
+		"\\|pathname\\|sysmsg\\|var\\(fmt\\|l\\(abel\\|en\\)\\|n\\(ame\\|um\\)\\|type\\)\\)"
 		"[ \t]*(")			    font-lock-function-name-face)
 	 ))
 	"Font Lock regexs for SAS.")
