@@ -10,9 +10,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>,
 ;;              Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/01/10 17:23:49 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: ess-help.el,v 5.16 2002/01/10 17:23:49 maechler Exp $
+;; Modified: $Date: 2002/01/28 08:36:32 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: ess-help.el,v 5.17 2002/01/28 08:36:32 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -399,8 +399,8 @@ Keystroke    Section
 	(error nil))))
 
 (defun ess-find-help-file (p-string)
-  "Find help, prompting for P-STRING.  Note that we can't search SAS
-or XLispStat for additional information."
+  "Find help, prompting for P-STRING.  Note that we can't search SAS,
+Stata or XLispStat for additional information."
   (ess-make-buffer-current)
   (if (not
        (or
