@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/11/18 21:52:51 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: essl-s.el,v 1.19 1997/11/18 21:52:51 rossini Exp $
+;; Modified: $Date: 1997/11/18 22:15:46 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: essl-s.el,v 1.20 1997/11/18 22:15:46 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -88,7 +88,7 @@
 
 ;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in essl-s!).
 
-(defconst ess-help-S+3-sec-keys-alist
+(defconst S+3-help-sec-keys-alist
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
     (?B . "BUGS:")
@@ -109,7 +109,7 @@
 ;;; regexp-search, and so specials should be quoted.
 
 
-(defvar S3-help-sec-keys-alist
+(defconst S3-help-sec-keys-alist
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
     (?B . "BUGS:")
@@ -127,7 +127,7 @@
   "Help section keys for display.")
 
 
-(defvar S4-help-sec-keys-alist
+(defconst S4-help-sec-keys-alist
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
     (?B . "BUGS:")
@@ -142,7 +142,7 @@
     (?v . "VALUE:"))
   "Help section keys for S4.")
 
-(defconst ess-help-R-sec-keys-alist 
+(defconst R-help-sec-keys-alist 
   '((?a . "\\s *Arguments:") 
     (?d . "\\s *Description:")
     (?e . "\\s *Examples:") 
