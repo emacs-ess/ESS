@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/07 21:39:29 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: essd-xls.el,v 1.13 1997/07/07 21:39:29 rossini Exp $
+;; Modified: $Date: 1997/07/17 18:20:23 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: essd-xls.el,v 1.14 1997/07/17 18:20:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.14  1997/07/17 18:20:23  rossini
+;;: replaced message with a write-to-dribble-buffer.
+;;:
 ;;: Revision 1.13  1997/07/07 21:39:29  rossini
 ;;: can't set variables in initial call!!
 ;;:
@@ -95,8 +98,9 @@ New way to do it."
   (setq ess-customize-alist XLS-customize-alist) ; setq or setq-default?
   ;;(ess-set-vars-default ess-customize-alist (current-buffer))
   ;; debug, only
-  (message "(XLS): ess-proc-prefix=%s , buf=%s"
-	   ess-proc-prefix (current-buffer))
+  (ess-write-to-dribble-buffer (format "(R): ess-proc-prefix=%s , buf=%s"
+				       ess-proc-prefix
+				       (current-buffer)))
   ;; now run...
   (inferior-ess))
 
