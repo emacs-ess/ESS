@@ -1,3 +1,7 @@
+2001-08-10  ESS Maintainers <ess@franz.stat.wisc.edu>
+
+  * Version 5.1.19 released.
+
 2000-10-17  ESS Maintainers <ess@franz.stat.wisc.edu>
 
   * Version 5.1.18 released.
@@ -902,7 +906,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 2001/06/19 16:19:32 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 2001/08/10 18:27:57 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -3092,6 +3096,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.27  2001/08/10 18:27:57  maechler
+	* Removing hmm: This should have been commited much earliert by "make dist" -- Makefile bug
+	* Removing
 	* Removing Revision 5.26  2001/06/19 16:19:32  maechler
 	* Removing remove stupid path prefix
 	* Removing
