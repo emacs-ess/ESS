@@ -1,3 +1,24 @@
+Mon Dec  1 16:55:17 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.el: removed blank lines.
+
+Mon Dec  1 16:51:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: small edit.
+
+Mon Dec  1 16:48:14 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: changed wording around ess-plain-first-buffername
+ 	(RMH).
+
+Mon Dec  1 16:42:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: new branch (5.1.1.1).
+
+Mon Dec  1 16:36:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: Batchflags are user serviceable.
+
 Mon Dec  1 10:59:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* RELEASED: version 5.0.
@@ -1816,6 +1837,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.1  1997/12/01 21:55:30  rossini
+	* Removing new revision.
+	* Removing
 	* Removing Revision 5.0  1997/12/01 16:02:26  rossini
 	* Removing *** empty log message ***
 	* Removing
