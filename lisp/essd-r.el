@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/02 20:42:43 $
-;; Version: $Revision: 1.38 $
-;; RCS: $Id: essd-r.el,v 1.38 1997/09/02 20:42:43 rossini Exp $
+;; Modified: $Date: 1997/09/08 12:46:47 $
+;; Version: $Revision: 1.39 $
+;; RCS: $Id: essd-r.el,v 1.39 1997/09/08 12:46:47 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -38,9 +38,9 @@
 
 ;;; Code:
 
-;;(ess-customize-alist           . 'R-customize-alist)
 (defvar R-customize-alist
-  '((ess-language                  . "S")
+  '((ess-local-customize-alist     . 'R-customize-alist)
+    (ess-language                  . "S")
     (ess-dialect                   . "R")
     (ess-suffix                    . "R")
     (ess-dump-filename-template    . (concat (user-login-name)
