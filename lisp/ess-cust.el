@@ -1,13 +1,14 @@
 ;;; ess-cust.el --- Customize variables for ESS
-;; Copyright (C) 1997--2001 A.J. Rossini, Martin Maechler,
-;; Kurt Hornik, Richard M. Heiberger, and Rodney Sparapani.
+;; Copyright (C) 1997--2004 A.J. Rossini, Martin Maechler,
+;; Kurt Hornik, Richard M. Heiberger, Rodney Sparapani,
+;; and Stephen Eglen. 
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/02/17 22:16:55 $
-;; Version: $Revision: 1.54 $
-;; RCS: $Id: ess-cust.el,v 1.54 2004/02/17 22:16:55 rossini Exp $
+;; Modified: $Date: 2004/02/19 06:04:51 $
+;; Version: $Revision: 1.55 $
+;; RCS: $Id: ess-cust.el,v 1.55 2004/02/19 06:04:51 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
