@@ -6,7 +6,7 @@ as the S language support.  However, it should be functional, if
 slightly buggy.  Please send any suggestions and bug reports to
 ess-bugs@stat.math.ethz.ch.
 
-ESS (originally S-mode) was initially designed for use with S(tm) and
+ESS (originally S-mode) was initially designed for use with S and
 S-PLUS(tm).  However, it has been recently extended to support other
 languages, including XLispStat(tm).  If you are looking for a stable,
 old XLispStat mode, we suggest ILISP and the recent modifications.
@@ -142,7 +142,7 @@ prefixed by "##").
 
 
 
-$Revision: 1.2 $
+$Revision: 1.3 $
 
 Local Variables: ***
 mode:indented-text ***
