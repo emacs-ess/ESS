@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/11/11 15:00:53 $
-;; Version: $Revision: 1.60 $
-;; RCS: $Id: ess-site.el,v 1.60 1997/11/11 15:00:53 rossini Exp $
+;; Modified: $Date: 1997/11/11 21:24:38 $
+;; Version: $Revision: 1.61 $
+;; RCS: $Id: ess-site.el,v 1.61 1997/11/11 21:24:38 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -288,17 +288,15 @@
 ;; (setq-default ess-directory nil) ; this is the default.
 
 
-;;; 3.6 Example of formatting change (suggested by Terry Therneau).
+;;; 3.6 Example of formatting changes
 
-;;;;The defaults in ess-vars.el are identical to current behavior:
-;;; See ess-vars.el for exact definitions of these variable settings.
-;;;;added rmh 2Nov97 at request of Terry Therneau
-;;(setq ess-close-brace-offset 0)
-;;(setq ess-fancy-comments t)
-;;
-;;;;Terry will want to uncomment
+;;; Formatting and indentation patterns are defined in ess-vars.el, please
+;;; see ess-vars.el for exact definitions of these variable settings.
+;;; To change them, uncomment one or both of the following lines:
+;;; (eg, follow changes suggested by Terry Therneau)
 ;;(setq ess-fancy-comments nil)
 ;;(setq ess-default-style 'CLB)
+
 
 
 ;;; 4.0 SAS configuration
