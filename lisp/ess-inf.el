@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/03 13:44:09 $
-;; Version: $Revision: 1.26 $
-;; RCS: $Id: ess-inf.el,v 1.26 1997/07/03 13:44:09 rossini Exp $
+;; Modified: $Date: 1997/07/03 14:01:25 $
+;; Version: $Revision: 1.27 $
+;; RCS: $Id: ess-inf.el,v 1.27 1997/07/03 14:01:25 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.27  1997/07/03 14:01:25  rossini
+;; must use, at this point.
+;;
 ;; Revision 1.26  1997/07/03 13:44:09  rossini
 ;; added variable setup to beginning of inferior-ess (needed here AS
 ;; WELL, before finding buffer (and then setting buffer local)!
@@ -304,7 +307,7 @@ when invoking S.
 
   (interactive "P")
   ;; set up for current language (need here, to get ess-proc-prefix, etc).
-  (if ess-customize-alist (ess-set-vars ess-customize-alist))
+  (if ess-customize-alist (ess-set-vars ess-customize-alist (current-buffer)))
   ;; run hooks now, to overwrite the above!
   (run-hooks 'ess-pre-run-hook)    
   (let* ((defdir (directory-file-name (or ess-directory default-directory)))
@@ -382,7 +385,7 @@ when invoking S.
 	   
     (set-buffer buf)
     ;; Now that we have the buffer, set buffer-local variables.
-    (if ess-customize-alist (ess-set-vars ess-customize-alist))
+    (ess-set-vars ess-customize-alist buf)
     (if startdir (setq default-directory startdir))
     (setq ess-history-file (concat "." ess-proc-prefix "history"))
     (ess-multi procname buf)))
