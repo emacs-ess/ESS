@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/03/29 14:09:18 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essa-r.el,v 1.8 2004/03/29 14:09:18 rossini Exp $
+;; Modified: $Date: 2004/04/01 18:47:33 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essa-r.el,v 1.9 2004/04/01 18:47:33 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -109,23 +109,19 @@ e.  BEG and END denote the region in the current buffer to be sent."
 ;;; This needs to be cleaned and validated!
 
 (defun pd::set-up-demo ()
-  ;; FIX ess-menu!!
-
 
   ;; (if (not xemacs) (set-default-font "*courier-bold-r*--14**"))
   (R)
   (split-window-vertically 6)
   (find-file "demos.R")
 
-  ;; 
-
-
-  ;; Don't need to run this as a function -- ought to be fine if set just once.
+  ;; Don't need to run this as a function -- ought to be fine if set
+  ;; just once.
 
   (defun ajr::scroll-to-end::peterD (emacs)
     "Goal: map prompt to bottom of the screen after every command.
 Alternatively, use the scroll-in-place package, not sure where that
-is)." 
+is)."
     (interactive)
     (other-buffer 1)
     (if (= emacs "emacs")

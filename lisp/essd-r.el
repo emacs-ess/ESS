@@ -1,16 +1,16 @@
 ;;; essd-r.el --- R customization
 
-;; Copyright (C) 1997--2001 A. J. Rossini, Richard M. Heiberger, Kurt
-;; Hornik, Martin Maechler, and Rodney Sparapani.
-
+;; Copyright (C) 1997--2004 A. J. Rossini, Richard M. Heiberger, Kurt
+;; Hornik, Martin Maechler, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
-;;              M. Maechler <maechler@stat.math.ethz.ch>
+;;              M. Maechler <maechler@stat.math.ethz.ch>,
+;;              Stephen Eglen < >
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2004/01/10 22:34:39 $
-;; Version: $Revision: 5.47 $
-;; RCS: $Id: essd-r.el,v 5.47 2004/01/10 22:34:39 maechler Exp $
+;; Modified: $Date: 2004/04/01 18:47:33 $
+;; Version: $Revision: 5.48 $
+;; RCS: $Id: essd-r.el,v 5.48 2004/04/01 18:47:33 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -45,7 +45,6 @@
 ;; breaks when things like `..' are used:
 ;; (modify-syntax-entry ?` "\"" R-syntax-table)
 (modify-syntax-entry ?_  "_"  R-syntax-table) ; foo_bar is symbol in R >=1.9
-
 
 (ess-message "[essd-r:] (autoload ..) & (def** ..)")
 
@@ -97,14 +96,14 @@
 ;;; AJR: Need to condition on this...!
 (require 'ess-menu)
 
-;; R that does the right thing irregardless of OS.
+;;;### autoload
 (defun R (&optional start-args)
   "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ).
-Optional prefix (C-u) allows to set command line arguments, such as --vsize."
+Optional prefix (C-u) allows to set command line arguments, such as
+--vsize.  This should be OS agnostic."
   (interactive "P")
   (setq ess-customize-alist R-customize-alist)
-  ;; for debugging only
-  (ess-write-to-dribble-buffer
+  (ess-write-to-dribble-buffer   ;; for debugging only
    (format
     "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
     ess-dialect (current-buffer) start-args current-prefix-arg))
@@ -130,7 +129,7 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
     (if inferior-ess-language-start
 	(ess-eval-linewise inferior-ess-language-start))))
 
-
+;;;### autoload
 (defun R-mode  (&optional proc-name)
   "Major mode for editing R source.  See `ess-mode' for more help."
   (interactive)
@@ -143,10 +142,11 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
   ;; AJR: Need to condition on this...!
   ;; MM: and you probably should really use ess-imenu-mode-function from the
   ;;     alist above!
-  (if ess-S-use-imenu (ess-imenu-R)))
+  (if ess-imenu-use-S (ess-imenu-R)))
 
 (fset 'r-mode 'R-mode)
 
+;;;### autoload
 (defun Rnw-mode ()
   "Major mode for editing Sweave(R) source.
 See `noweb-mode' and `R-mode' for more help."
@@ -154,8 +154,7 @@ See `noweb-mode' and `R-mode' for more help."
   (require 'ess-noweb);; << probably someplace else
   (noweb-mode 1); turn it on
   (noweb-set-doc-mode 'latex-mode)
-  (noweb-set-code-mode 'R-mode)
-)
+  (noweb-set-code-mode 'R-mode))
 
 
 (autoload 'ess-transcript-mode "ess-trns"
@@ -179,45 +178,6 @@ See `noweb-mode' and `R-mode' for more help."
     (goto-char from)
     (ess-rep-regexp "\\(\\([][=,()]\\|<-\\|_\\\) *\\)F\\>" "\\1FALSE"
 		    'fixcase nil (not quietly))))
-
-;;; R package wizard tools.  See ``R-extensions'' manual for more details as to
-;;; the construction of an R package.
-
-(defun R-package-wizard (&optional packages-directory)
-  "Create an R project skeleton.
-Top-level directory is one below `packages-directory', i.e. package
-contents will be placed in packages-directory/package-name."
-  (interactive "P")
-  (let* ((R-pkg-directory (if packages-directory
-				  (read-string
-				   (concat "Starting Directory (where you keep packages: ?"))))
-	 (R-pkg-name        (read-string (concat "Package Name: ")))
-	 (R-pkg-home-dir        (concat R-pkg-directory R-pkg-name))
-	 (R-pkg-R-srcdir        (concat R-pkg-home-dir "/R"))
-	 (R-pkg-compiled-srcdir (concat R-pkg-home-dir "/src"))
-	 (R-pkg-man-srcdir      (concat R-pkg-home-dir "/man"))
-	 (R-pkg-test-srcdir     (concat R-pkg-home-dir "/tests"))
-	 (R-pkg-exec-srcdir     (concat R-pkg-home-dir "/exec"))
-	 (R-pkg-Description-file  (concat R-pkg-home-dir "/Description"))
-	 (R-pkg-Index-file        (concat R-pkg-home-dir "/INDEX")))
-    ;; Now create and construct everything
-    (make-directory R-pkg-home-dir)
-    (make-directory R-pkg-R-srcdir)
-    (make-directory R-pkg-compiled-srcdir)
-    (make-directory R-pkg-man-srcdir)
-    (make-directory R-pkg-test-srcdir)
-    (make-directory R-pkg-exec-srcdir)
-    (R-create-description-file R-pkg-name R-pkg-Description-file)
-    (R-create-index-file R-pkg-home-dir R-pkg-Index-file)))
-
-(defun R-create-description-file (R-pkg-name R-pkg-Description-file)
-  "Create a proper description file."
-  )
-
-(defun R-create-index-file (R-pkg-home-dir R-pkg-Index-file)
-  "Create a proper description file.
-This should use R CMD to rebuild the index."
-  )
 
  ; provides
 

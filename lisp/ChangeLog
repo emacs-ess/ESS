@@ -1,10 +1,25 @@
+2004-03-31  A.J. Rossini  <rossini@u.washington.edu>
+
+	* ess-site.el: added a more explicit commented out Windows
+	example.  Cleaned up documentation inconsistencies for noweb/Rnw
+	modes.
+
+	* essd-r.el (R): added autoload cookie for XEmacs.  doc edits. 
+	(R-mode): added autoload cookie for XEmacs.
+	Removed R-package generator; a better version is part of R
+	(package.skeleton()). 
+
+	* ess-menu.el (ess-imenu-S-generic-expression): fixed imenu
+	routine -- now provides links to functions, classes, methods, and
+	"other" objects.
+
 2004-03-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-els.el (ess-select-alist-dialect): (let* ..) : thanks to Na Li.
 
 2004-03-04  Martin Maechler  <maechler@stat.math.ethz.ch>
 
-	* ess-site.el (ess-restore-asm-extns): thanks to Es Cashin
+	* ess-site.el (ess-restore-asm-extns): thanks to Ed Cashin
 
 2004-02-19  Stephen Eglen  <stephen@anc.ed.ac.uk>
 

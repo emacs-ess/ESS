@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/03/04 15:29:19 $
-;; Version: $Revision: 1.57 $
-;; RCS: $Id: ess-cust.el,v 1.57 2004/03/04 15:29:19 stephen Exp $
+;; Modified: $Date: 2004/04/01 18:47:33 $
+;; Version: $Revision: 1.58 $
+;; RCS: $Id: ess-cust.el,v 1.58 2004/04/01 18:47:33 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -144,11 +144,30 @@ Full documentation will be available after autoloading the function."
 
 ;;*;; Options and Initialization
 
+;; Menus and pulldowns.
+
 (defcustom ess-use-menus (featurep 'imenu)
   "If t, use the menu system with an extra [Imenu] entry.
  Absolutely requires 'imenu."
   :group 'ess
   :type 'boolean)
+
+(defcustom ess-funcmenu-use-p (featurep 'func-menu)
+  "If t, funcmenu is present."
+  :group 'ess
+  :type  'boolean)
+
+(defcustom ess-speedbar-use-p (featurep 'speedbar)
+  "If t, speedbar is present."
+  :group 'ess
+  :type  'boolean)
+
+(defcustom ess-imenu-use-p (featurep 'imenu) 
+  "Use imenu if exists."
+  :group 'ess
+  :type  'boolean)
+
+;; 
 
 (defcustom ess-ask-for-ess-directory t
   "*If non-nil, the process directory will be requested each time S is run."

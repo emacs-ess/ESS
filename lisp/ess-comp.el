@@ -5,13 +5,13 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2004/02/19 05:42:55 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: ess-comp.el,v 5.11 2004/02/19 05:42:55 rossini Exp $
+;; Modified: $Date: 2004/04/01 18:47:33 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: ess-comp.el,v 5.12 2004/04/01 18:47:33 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
-;; This file is part of ess-mode.
+;; This file is part of ESS
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

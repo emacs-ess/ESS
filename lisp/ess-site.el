@@ -2,14 +2,15 @@
 
 ;; Copyright (C) 1993 David M. Smith
 ;; Copyright (C) 1997--2004 A.J. Rossini, R.M. Heiberger, Martin
-;; Maechler, Kurt Hornik, Rodney Sparapani.
+;; Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
+;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/03/04 08:27:41 $
-;; Version: $Revision: 5.100 $
-;; RCS: $Id: ess-site.el,v 5.100 2004/03/04 08:27:41 maechler Exp $
+;; Modified: $Date: 2004/04/01 18:47:33 $
+;; Version: $Revision: 5.101 $
+;; RCS: $Id: ess-site.el,v 5.101 2004/04/01 18:47:33 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -287,6 +288,7 @@ between .s or .S files and assembly mode.
 ;;(setq-default inferior-S+6-program-name "Splus6")
 ;;(setq-default inferior-R-program-name "R")	  ; unix systems
 ;;(setq-default inferior-R-program-name "Rterm")  ; msdos systems
+;;(setq-default inferior-R-program-name "C:\\Program Files\\R\rw1081\\bin\\Rterm.exe")  ; msdos systems
 ;;(setq-default inferior-XLS-program-name "xlispstat")
 ;;(setq-default inferior-ARC-program-name "arc")
 ;;(setq-default inferior-VST-program-name "vista")
@@ -418,10 +420,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;;; (1.7) Literate Data Analysis
 (require 'ess-noweb)
-;(setq auto-mode-alist
-;      (append
-;	'(("\\.nw\\'"	       . noweb-mode)) ;; Literate Data Analysis
-;	auto-mode-alist))
 
 ;; ALWAYS:
 (require 'ess)
@@ -430,12 +428,10 @@ sending `inferior-ess-language-start' to S-Plus.")
    (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
 	   ess-customize-alist))
 
-
 ;; (1.8) Speedbar and mouse
 
 (require 'ess-menu)
 (require 'ess-mous)
-
 
 ;;; 2. Site Specific setup
 ;;;; ===============================================
@@ -476,9 +472,7 @@ sending `inferior-ess-language-start' to S-Plus.")
       (t				; Other Unixen
        (fset 'S 'S+6)
        (fset 's-mode 'S+6-mode)
-       (fset 's-transcript-mode 'S+6-transcript-mode))
-)
-
+       (fset 's-transcript-mode 'S+6-transcript-mode)))
 
 
 ;;;;* Alias S-mode to s-mode
@@ -493,8 +487,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 (fset 'S-mode 's-mode)
 
 
-
-
 ;;; 3. Customization (and commented out examples) for your site
 ;;;; ===============================================
 
@@ -503,8 +495,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; won't like fancy buffer names for their first (and only :-)
 ;;; process.  To number all processes, uncomment the next line.
 ;;(setq ess-plain-first-buffername nil)
-
-
 
 ;;; (3.1) Font-lock
 ;; The following two expressions automatically enable font-lock-mode
@@ -658,10 +648,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;  "*If t (and sas-notify is also t), causes emacs to create a
 ;;popup window when the SAS job is finished.")
 ;;(defvar sas-tmp-libname "_tmp_" "*Libname to use for sas-get-dataset.")
-
-;;; 5.0 Noweb and Literate Data Analysis configuration
-
-;; already above [1.7]: (require 'ess-noweb)
 
  ; Local variables section
 
