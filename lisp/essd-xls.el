@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/07 16:51:45 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: essd-xls.el,v 1.10 1997/07/07 16:51:45 rossini Exp $
+;; Modified: $Date: 1997/07/07 16:53:46 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: essd-xls.el,v 1.11 1997/07/07 16:53:46 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.11  1997/07/07 16:53:46  rossini
+;;: setup new-style, corrected alist.
+;;:
 ;;: Revision 1.10  1997/07/07 16:51:45  rossini
 ;;: added new-style language variable setup.
 ;;:
@@ -68,13 +71,13 @@
     (ess-proc-prefix               .  inferior-XLS-program-name )
     (ess-version-running           .  "XLS"                     )
     (inferior-ess-program          .  "XLS"                     )
+    (inferior-ess-help-command     .  "(help '%s)\n"            )
+    (inferior-ess-exit-command     .  "(exit)\n"                )
+    (ess-loop-timeout              .  100000                    )
+    (inferior-ess-primary-prompt   .  "> ?"                     ))
     ;;(inferior-ess-objects-command  .                     )
     ;;(ess-help-sec-regex            .  
     ;;(ess-help-sec-keys-alist       .  
-    (inferior-ess-help-command     .  "(help '%s)\n"            )
-    (inferior-ess-exit-command     .  "(exit)\n")               )
-    (ess-loop-timeout              .  100000                    )
-    (inferior-ess-primary-prompt   .  "> ?"                     )
   "Variables to customize for XLS")
 
 
