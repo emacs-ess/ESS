@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.42 2001/08/02 16:56:46 ess Exp $
+## $Id: Makefile,v 5.43 2001/08/02 18:07:57 ess Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -17,7 +17,7 @@ ESSVERSIONTAG=ess-$(shell sed 's/\./_/g' VERSION)
 
 ## XEMACSDIR:  parent directory of the xemacs-packages sub-directory
 XEMACSDIR=/usr/local/lib/xemacs
-## ESSDIR:  parent directory of ESS
+## ESSDIR:  parent directory of ESSVERSIONDIR
 ESSDIR=$(XEMACSDIR)/site-packages/ess
 
 Subdirs = lisp doc
