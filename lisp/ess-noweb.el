@@ -6,12 +6,30 @@
 ;;          A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: April 18, 1999
-;; Version: $Revision: 1.1 $
+;; Version: $Revision: 1.2 $
 ;; Keywords: statistical support
 ;; Summary: Noweb support for ESS
-;; CVS: $Id: ess-noweb.el,v 1.1 1999/04/20 22:22:59 rossini Exp $
+;; CVS: $Id: ess-noweb.el,v 1.2 1999/04/21 17:12:06 rossini Exp $
 
 ;; This file is part of ESS
+
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+
+;;; Commentary:
+
+;; Code for ESS and Literate Data Analysis.
 
  ; Requires and autoloads
 
@@ -31,7 +49,7 @@
 ;;; Code Chunk evaluation.
 ;;;
 
-(defun ess-eval-chunk(vis)
+(defun ess-eval-chunk (vis)
   "Tangle the current chunk and send it to the inferior ESS process.
 Arg has same meaning as for ess-eval-region."
   (interactive "P")
@@ -41,25 +59,25 @@ Arg has same meaning as for ess-eval-region."
     (ess-eval-region (point-min) (point-max) vis "Eval buffer")
     (kill-buffer temp-buffer)))
 
-(defun ess-eval-chunk-and-go( vis )
-"Tangle the current chunk, send to the ESS process and switch to its buffer.
+(defun ess-eval-chunk-and-go (vis)
+  "Tangle the current chunk, send to the ESS process, and go there.
 Arg has same meaning as for ess-eval-region."
   (interactive "P")
   (ess-eval-chunk vis)
   (ess-switch-to-ESS t))
 
-(defun ess-eval-thread(vis)
-  "Tangle all chunks in the current thread and send it to the ESS process.
+(defun ess-eval-thread (vis)
+  "Tangle all chunks in the current chunk-thread and send to the ESS process.
 Arg has same meaning as for ess-eval-region."
   (interactive "P")
-  (let (( temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
+  (let ((temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
     (noweb-tangle-current-thread temp-buffer)
     (set-buffer temp-buffer)
     (ess-eval-region (point-min) (point-max) vis "Eval buffer")
     (kill-buffer temp-buffer)))
 
-(defun ess-eval-thread-and-go( vis )
-"Tangle the all chunks in the current thread, send to ESS process and go there.
+(defun ess-eval-thread-and-go (vis)
+  "Tangle all chunks in the current chunk-thread, send to ESS process, and go there.
 Arg has same meaning as for ess-eval-region."
   (interactive "P")
   (ess-eval-thread vis)
