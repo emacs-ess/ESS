@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.77 2004/05/10 18:22:58 rsparapa Exp $
+## $Id: Makefile,v 5.78 2004/05/10 19:00:21 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -14,8 +14,6 @@ all install clean distclean:
 #ESS is now an official XEmacs package, but the xemacs-links target 
 #persists since there is generally a lag between an ESS release and 
 #the corresponding XEmacs ESS package release
-#see http://www.xemacs.org/Documentation/packageGuide.html
-#for package installation instructions 
 xemacs-links: info/ess.info info/ess.info-1 info/ess.info-2 info/ess.info-3 info/ess.info-4
 	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
 	    $(XEMACSDIR)/xemacs-packages/info/ess.info*
