@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/08 16:42:18 $
-;; Version: $Revision: 1.51 $
-;; RCS: $Id: essa-sas.el,v 1.51 2002/01/08 16:42:18 ess Exp $
+;; Modified: $Date: 2002/01/08 16:48:00 $
+;; Version: $Revision: 1.52 $
+;; RCS: $Id: essa-sas.el,v 1.52 2002/01/08 16:48:00 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -286,7 +286,7 @@ on the way."
 )
 
 (defun ess-sas-goto (suffix &optional revert)
-  "Find a file associated with the SAS file by suffix."
+  "Find a file associated with a SAS file by suffix and revert if necessary."
     (if (or (string-match 
 	    "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)\\(@.+\\)?" 
 	    (expand-file-name (buffer-name)))
@@ -309,7 +309,7 @@ on the way."
 ))))
 
 (defun ess-sas-file (suffix &optional revert)
-  "Find a file associated with the SAS file and revert if necessary."
+  "Please use `ess-sas-goto' instead."
   (let* ((tail (downcase (car (split-string 
 	    (car (last (split-string (buffer-name) "[.]"))) "[<]"))))
 	;;(if (fboundp 'file-name-extension) (file-name-extension (buffer-name))
