@@ -1,0 +1,16 @@
+
+Creating pixmaps:
+
+* spluslogo.xpm was dontated by David Smith at Insightful.
+
+* Other icons were created by SJE, using mostly `kiconedit' and
+  hand-editing.
+
+* Transparency
+Need to add backgrounToolBarColor for XEmacs to show okay.
+e.g. /usr/share/xemacs-21.4.12/etc/toolbar/folder-cap-up.xpm
+has header:
+"X	c Gray75 s backgroundToolBarColor",
+whereas I have set "c None" to indicate the background pixel; this line 
+seems to work for both toolbars:
+". c None s backgroundToolBarColor",
