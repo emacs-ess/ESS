@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/15 08:18:10 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essd-s+3.el,v 1.8 1997/06/15 08:18:10 rossini Exp $
+;; Modified: $Date: 1997/06/15 08:42:53 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essd-s+3.el,v 1.9 1997/06/15 08:42:53 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s+3.el,v $
+;;: Revision 1.9  1997/06/15 08:42:53  rossini
+;;: setq-> setq-default.  I think this is correct!@
+;;:
 ;;: Revision 1.8  1997/06/15 08:18:10  rossini
 ;;: added autoload for inferior-ess
 ;;:
@@ -51,7 +54,7 @@
 
 (defun ess-S-shortcut-pre-run-hook ()
   "Initialize variables for S."
-  (setq ess-proc-prefix              "S"
+  (setq-default ess-proc-prefix              "S"
 	ess-version-running          "S+3"
 	inferior-ess-program         inferior-S-program-name
 	ess-help-sec-regex           ess-help-S-sec-regex
