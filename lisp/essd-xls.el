@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/08 16:27:56 $
-;; Version: $Revision: 1.30 $
-;; RCS: $Id: essd-xls.el,v 1.30 1997/09/08 16:27:56 rossini Exp $
+;; Modified: $Date: 1997/09/08 18:19:20 $
+;; Version: $Revision: 1.31 $
+;; RCS: $Id: essd-xls.el,v 1.31 1997/09/08 18:19:20 rossini Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -45,21 +45,21 @@
 (defvar XLS-editing-alist Lisp-editing-alist)
 
 (defvar XLS-customize-alist
-  '((ess-local-customize-alist     .  'XLS-customize-alist)
-    (ess-language                  .  "XLS"               )
-    (ess-dialect                   .  "XLS"               )
-    (ess-mode-editing-alist        .  XLS-editing-alist   )
-    (ess-loop-timeout              .  10000               )
-    (ess-object-name-db-file       .  "ess-xls-namedb.el" )
-    (ess-help-sec-regex            .  "^[A-Z. ---]+:$")
-    (ess-help-sec-keys-alist       .  XLS-help-sec-keys-alist)
-    (inferior-ess-primary-prompt   .  "> ?"               )
-    (inferior-ess-secondary-prompt .  "^"                 )
-    (inferior-ess-program          .  inferior-XLS-program-name)
-    (inferior-ess-help-command     .  "(help '%s)\n"      )
-    (inferior-ess-objects-command  .  "(variables)\n"     )
-    (inferior-ess-exit-command     .  "(exit)\n"          )
-    (inferior-ess-start-file       . nil)  ; "~/.ess-XLS")
+  '((ess-local-customize-alist     . 'XLS-customize-alist)
+    (ess-language                  . "XLS"               )
+    (ess-dialect                   . "XLS"               )
+    (ess-mode-editing-alist        . XLS-editing-alist   )
+    (ess-loop-timeout              . 10000               )
+    (ess-object-name-db-file       . "ess-xls-namedb.el" )
+    (ess-help-sec-regex            . "^[A-Z. ---]+:$")
+    (ess-help-sec-keys-alist       . XLS-help-sec-keys-alist)
+    (inferior-ess-primary-prompt   . "> ?"               )
+    (inferior-ess-secondary-prompt . "^"                 )
+    (inferior-ess-program          . inferior-XLS-program-name)
+    (inferior-ess-help-command     . "(help '%s)\n"      )
+    (inferior-ess-objects-command  . "(variables)\n"     )
+    (inferior-ess-exit-command     . "(exit)\n"          )
+    (inferior-ess-start-file       . nil)  
     (inferior-ess-start-args       . ""))
   "Variables to customize for XLS")
 
