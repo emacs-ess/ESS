@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/10/23 13:03:51 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: essl-s.el,v 1.18 1997/10/23 13:03:51 rossini Exp $
+;; Modified: $Date: 1997/11/18 21:52:51 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: essl-s.el,v 1.19 1997/11/18 21:52:51 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -92,15 +92,15 @@
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
     (?B . "BUGS:")
-    (?D . "DESCRIPTION:")
-    (?d . "DETAILS:")
+    (?d . "DESCRIPTION:")
+    (?D . "DETAILS:")
     (?e . "EXAMPLES:")
     (?n . "NOTE:")
-    (?o . "OPTIONAL ARGUMENTS:")
-    (?R . "REFERENCES:") 
-    (?r . "REQUIRED ARGUMENTS:")
-    (?S . "SEE ALSO:")
-    (?s . "SIDE EFFECTS:")
+    (?O . "OPTIONAL ARGUMENTS:")
+    (?R . "REQUIRED ARGUMENTS:")
+    (?r . "REFERENCES:")
+    (?s . "SEE ALSO:")
+    (?S . "SIDE EFFECTS:")
     (?u . "USAGE:")
     (?v . "VALUE:"))
   "Alist of (key . string) pairs for use in section searching.")
@@ -113,15 +113,15 @@
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
     (?B . "BUGS:")
-    (?d . "DETAILS:")
-    (?D . "DESCRIPTION:")
+    (?d . "DESCRIPTION:")
+    (?D . "DETAILS:")
     (?e . "EXAMPLES:")
     (?n . "NOTE:")
 ;;    (?o . "OPTIONAL ARGUMENTS:")
 ;;    (?r . "REQUIRED ARGUMENTS:")
-    (?R . "REFERENCES:")
-    (?S . "SEE ALSO:")
-    (?s . "SIDE EFFECTS:")
+    (?r . "REFERENCES:")
+    (?s . "SEE ALSO:")
+    (?S . "SIDE EFFECTS:")
     (?u . "USAGE:")
     (?v . "VALUE:"))
   "Help section keys for display.")
@@ -251,14 +251,6 @@ M.Maechler,ess-extra"
  Produces more readable code, and one that is well formatted in emacs
  ess-mode. Martin Maechler, ETH Zurich."
   (interactive)
-  ;; Martin's original code
-  ;; (let ((curr (point))
-  ;;   (pm   (point-min)))
-  ;; (goto-char pm)   (ess-dump-to-src)
-  ;; (goto-char pm)   (ess-fix-comments)
-  ;; (goto-char pm)   (ess-num-var-round)
-  ;; (goto-char curr)))
-  ;; Kurt's suggestion
   (let ((pm (point-min)))
     (save-excursion
       (goto-char pm)
