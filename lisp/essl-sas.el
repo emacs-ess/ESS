@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/02 19:51:29 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essl-sas.el,v 1.5 1997/09/02 19:51:29 rossini Exp $
+;; Modified: $Date: 1997/09/02 19:52:14 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essl-sas.el,v 1.6 1997/09/02 19:52:14 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -151,10 +151,11 @@ line of statement."
           (if (bobp) nil (backward-char 1))
           (beginning-of-sas-statement 1)
           (forward-char 1)
-          (indent-region (point) end (+ (current-column) (1- sas-indent-width)))
+          (indent-region (point)
+			 end
+			 (+ (current-column) (1- sas-indent-width)))
           (search-forward ";" (point-max) 1 1)
           (setq arg (1- arg)))))))
-
 
 ;; added 9/31/94 
 (defun sas-next-statement-indentation ()
