@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/09/01 19:31:27 $
-;; Version: $Revision: 1.60 $
-;; RCS: $Id: ess.el,v 1.60 1997/09/01 19:31:27 rossini Exp $
+;; Modified: $Date: 1997/09/01 21:27:32 $
+;; Version: $Revision: 1.61 $
+;; RCS: $Id: ess.el,v 1.61 1997/09/01 21:27:32 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -242,7 +242,8 @@
   "Set language variables from ALIST, in buffer `BUF', if desired."
   (if buf (set-buffer buf))
   (mapcar (lambda (pair)
-            (set (make-local-variable (car pair)) (eval (cdr pair))))
+	    (make-local-variable (car pair))
+            (set (car pair) (eval (cdr pair))))
           alist)
   (ess-write-to-dribble-buffer 
    (format "(ess-setq-vars-local): ess-language=%s, buf=%s \n"
