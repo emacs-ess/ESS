@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/08 18:16:56 $
-;; Version: $Revision: 1.54 $
-;; RCS: $Id: essa-sas.el,v 1.54 2002/01/08 18:16:56 ess Exp $
+;; Modified: $Date: 2002/01/08 19:00:19 $
+;; Version: $Revision: 1.55 $
+;; RCS: $Id: essa-sas.el,v 1.55 2002/01/08 19:00:19 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -64,7 +64,7 @@
 )
 
 (defvar ess-sas-submit-method 
-  (if (and (ess-microsoft-p)
+  (if (and ess-microsoft-p
 	   (not (w32-shell-dos-semantics)))
       'sh
     system-type)
@@ -88,7 +88,7 @@ or `ESS-elsewhere' should use
 in ess-site.el or in .emacs.")
 
 (defcustom ess-sas-data-view-options 
-    (if (ess-microsoft-p) "-noenhancededitor -nosysin -log NUL:"
+    (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
 	"-nodms -nosysin -log /dev/null")
     "*The options necessary for your enviromment and your operating system."
     :group 'ess-sas
