@@ -19,6 +19,11 @@
 		argument;  return BOTH beginning & end
 	*             (ess-mark-function): use new beg/end functions.
 
+1999-06-17  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-*.el (ess-loop-timeout): Default multiplied by 5 to 500000.
+
+
 1999-04-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-site.el (auto-mode-alist): Change regexp's in order to work
@@ -38,12 +43,6 @@
 	conditioned out the slowdown in ess-prompt-wait for Microsoft.
 
 	* ChangeLog: doc updates
-
-	* ess.el: franz.stat.wisc.edu -> ess.stat.wisc.edu
-
-	* ess-site.el, ess-vars.el: 5.1.6 to 5.1.7 changes for possible release
-
-	* ess-inf.el: ess-prompt-wait duration changed?
 
 1999-04-05  A.J. Rossini  <rossini@biostat.washington.edu>
 
