@@ -6,7 +6,7 @@ ESS VERSION 5.0
 This directory contains the distribution of ESS version 5.0, which
 used to be S-mode.  This is an Emacs-Lisp interface to interactive
 statistical programming and data analysis languages, including: S
-dialects (S 3, S 4, Splus 3.x, Splus 4.x and R), LispStat dialects
+dialects (S 3, S 4, S-PLUS 3.x, S-PLUS 4.x and R), LispStat dialects
 (XLispStat, ViSta), SAS, and SPSS dialects (SPSS, Fiasco).
 
 Note that not all of these languages are currently supported by ESS,
@@ -34,7 +34,7 @@ details.
 
 Languages Supported (or planned to be supported)
 
-	S dialects (S 3, S 4, Splus 3.x, Splus 4.x and R)
+	S dialects (S 3, S 4, S-PLUS 3.x, S-PLUS 4.x and R)
 	LispStat dialects (XLispStat, ViSta, Common LispStat(?))
 	SAS
 	SPSS dialects (SPSS, Fiasco)
@@ -72,10 +72,10 @@ analysis GUI), as well as links with Literate Programming methodology.
 
 ESS version 5.0 requires Emacs version 19.29 or later, or version
 XEmacs 19.14 or later.  ESS is supposed to work with any version of S,
-Splus, R, or XLispStat.
+S-PLUS, R, or XLispStat.
 
 It has been most thoroughly tested with:
-	Splus 3.3, R 0.49 and 0.50, XLispStat 3.50, S4, and SAS on
+	S-PLUS 3.3, R 0.49 and 0.50, XLispStat 3.50, S4, and SAS on
 	SunOS, Solaris, and Linux (Unix) systems;
 
 	Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.3
