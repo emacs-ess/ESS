@@ -2,6 +2,65 @@
 
   * Version 5.1.14 released.
 
+2000-06-30  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* /home/ess/src/cvsroot/gnu/ess/ChangeLog, /home/ess/src/cvsroot/gnu/ess/VERSION, /home/ess/src/cvsroot/gnu/ess/lisp/ess-inf.el, /home/ess/src/cvsroot/gnu/ess/lisp/essd-arc.el, /home/ess/src/cvsroot/gnu/ess/lisp/essd-vst.el:
+	XLS fixes not quite right.  No startfile if non existant
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1:
+	Updating docs for new version [make dist]
+
+	* /home/ess/src/cvsroot/gnu/ess/Makefile: wrong doc/docs.
+
+	* /home/ess/src/cvsroot/gnu/ess/Makefile: doc or docs?
+
+	* /home/ess/src/cvsroot/gnu/ess/ANNOUNCE, /home/ess/src/cvsroot/gnu/ess/README:
+	Updating README, ANNOUNCE for new version [make dist]
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/essa-sas.el, /home/ess/src/cvsroot/gnu/ess/lisp/essd-els.el, /home/ess/src/cvsroot/gnu/ess/lisp/essl-sas.el, /home/ess/src/cvsroot/gnu/ess/lisp/essnt204.el:
+	RMH/RS changes for SAS, ESS-elsewhere, NT Emacs 20.4
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-site.el:
+	merged RMH/RS's changes for SAS.
+
+	* /home/ess/src/cvsroot/gnu/ess/VERSION: upgrade version
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/README.Microsoft:
+	not ready to generate this on the fly, yet.
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/README.SPLUS4WIN, /home/ess/src/cvsroot/gnu/ess/doc/announc.texi, /home/ess/src/cvsroot/gnu/ess/doc/ess.info, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1, /home/ess/src/cvsroot/gnu/ess/doc/inst_tar.texi, /home/ess/src/cvsroot/gnu/ess/doc/newfeat.texi, /home/ess/src/cvsroot/gnu/ess/doc/readme.texi:
+	docs updated to 5.1.14, cleaned up.
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/newfeat.texi: added 5.1.14 stuff.
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-cust.el:
+	added ViSta/ARC support
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-inf.el:
+	added flags/checks for XLS systems.  Might help for others
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/essd-arc.el:
+	first version of ARC mode
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/Makefile:
+	added essd-arc.el to targets.
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-site.el: documentation.
+	ViSta and ARC added.
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/essd-vst.el:
+	now it actually might work.
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-vars.el: added Arc, Vista.
+	cleaned up code.
+	a bit of documentation.
+
+2000-06-30  maechler  <maechler@alpha>
+
+	* /home/ess/src/cvsroot/gnu/ess/etc/ess-s4.S, /home/ess/src/cvsroot/gnu/ess/etc/ess-sp3.S:
+	comments
+
+
 1999-11-22  ess  <ess@aleph.YP.biostat>
 
 	* VERSION, lisp/ess-vars.el: Updated to 5.1.11
@@ -589,7 +648,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 2000/06/30 22:21:51 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 2000/06/30 22:24:18 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -2779,6 +2838,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.22  2000/06/30 22:24:18  rossini
+	* Removing added changelog entries
+	* Removing
 	* Removing Revision 5.21  2000/06/30 22:21:51  rossini
 	* Removing XLS fixes not quite right.  No startfile if non existant
 	* Removing
