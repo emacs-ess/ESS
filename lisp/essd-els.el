@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 1999/06/17 16:46:08 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-els.el,v 1.6 1999/06/17 16:46:08 maechler Exp $
+;; Modified: $Date: 1999/11/03 22:46:27 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essd-els.el,v 1.7 1999/11/03 22:46:27 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -80,6 +80,7 @@
 	   (current-buffer)))
   (inferior-ess))
 
+
 (defun S+elsewhere-mode (&optional proc-name)
   "Major mode for editing S+3 source.  See ess-mode for more help."
   (interactive)
@@ -91,6 +92,50 @@
   (interactive)
   (ess-transcript-mode S+elsewhere-customize-alist))
 
+;; This REALLY shouldn't need an editing mode.  Just a transcript and
+;; an inferior process handler.
+
+(defun ess-change-alist (item value alist)
+  "Modify ALIST to set VALUE to ITEM.
+If there is a pair whose car is ITEM, replace its cdr by VALUE.
+If there is not such pair, create new pair (ITEM . VALUE) and
+return new alist whose car is the new pair and cdr is ALIST.
+\[tomo's ELIS like function]"
+  (let ((pair (assoc item alist)))
+    (if pair
+	(progn
+	  (setcdr pair value)
+	  alist)
+      (cons (cons item value) alist))))
+
+
+(defun ess-select-alist-dialect ()
+  "This is UGLY and NEEDS TO BE FIXED."
+  (interactive)
+  (let ((dialect (read-string "Which Dialect (stata, r, sp3, sp5, xls)?")))
+    (if (string= dialect "stata")
+	STA-customize-alist
+      (if (string= dialect "sp3")
+	  S+3-customize-alist
+	(if (string= dialect "r")
+	    R-customize-alist
+	  (if (string= dialect "xls")
+	      XLS-customize-alist
+	    S+5-customize-alist)))))))
+
+(defun ESS-elsewhere (&optional proc-name)
+  "Call an inferior process from ELSEWHERE."
+  (interactive)
+  ;; Need to select a elsewhere-customize-alist
+  (let ((elsewhere-customize-alist (ess-select-alist-dialect)))
+    (ess-change-alist 'inferior-ess-program
+		      inferior-ESS-elsewhere-program-name
+		      elsewhere-customize-alist)
+    (setq ess-customize-alist elsewhere-customize-alist)
+    (ess-write-to-dribble-buffer
+     (format "\n(ESS-elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
+	     (current-buffer)))
+    (inferior-ess)))
 
 
  ; Provide package
