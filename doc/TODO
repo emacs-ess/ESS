@@ -1,6 +1,6 @@
--*- indented-text -*-
+	-*- indented-text -*-
 
-$Revision: 4.6 $
+$Revision: 4.7 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1208,3 +1208,119 @@ NOTE: Not all of these are clean OR are even consistent.
   debugger, and the utility for "building" executables or libraries
   surpasses that of any other IDE I have used.
 
+* From: Mary Lindstrom <lindstro@biostat.wisc.edu>  on the *ESS* buffer.
+Subject: *ESS* buffer
+To: rossini@biostat.washington.edu (A.J. Rossini)
+Date: Fri, 9 Jun 2000 10:58:54 -0500 (CDT)
+
+Hi. A while ago, you helped me figure out that deleting the *ESS*
+buffer was a bad idea.  I still do this on occasion due to an over
+zealous delete finger. Is there a way I can recreate the *ESS* buffer?
+I tried saving the buffer as it appears in a new emacs process and
+copying that into a buffer called *ESS* but that doesn't seem to work.
+
+If this isn't a simple question then feel free to just say that. It's
+not worth a great deal of thought.  Thanks, - Mary
+
+* From: Stephen Eglen <stephen@cogsci.ed.ac.uk>
+Subject: Re: Using imenu facility in R mode
+To: rossini@blindglobe.net (A.J. Rossini)
+Date: Mon, 4 Sep 2000 19:07:04 +0100 (BST)
+
+A.J. Rossini writes:
+ > >>>>> "SE" == Stephen Eglen <stephen@cogsci.ed.ac.uk> writes:
+ > 
+ >     >> I can add the code you mentioned to essr-a.el (the ess
+ >     >> additions file for R) until we get it integrated.
+ >     SE> great, thanks.
+ > 
+ > Stephen -- did you ever send the imenu code for R?
+ > 
+ > best,
+ > -tony
+ > 
+hi Tony,
+
+I thought that I sent it in my initial mails, but I may have been
+mistaken.  here is what I have in my .emacs.  Cheers, Stephen
+
+
+(defun my-ess-hook ()
+  "Add my keybindings for ESS."
+  ;;(local-set-key (kbd "<kp-1>") 'ess-eval-line-and-step)
+  (setq imenu-generic-expression 
+	'( (nil "^\\(.+\\)\\s-+<-\\s-+function" 1)))
+  (imenu-add-to-menubar "Imenu")
+  )
+
+
+*  From: Sandy Weisberg <sandy@stat.umn.edu>
+Subject: Re: ESS 5.1.14 supports ARC
+To: rossini@biostat.washington.edu
+Date: Thu, 6 Jul 2000 09:42:19 -0500 (CDT)
+
+The name of the program is Arc, capitalized because it is a proper name, but
+otherwise a normal English language word.
+
+Thanks for asking!
+> 
+> Thanks to Doug Bates' prodding, ESS 5.1.14 (Emacs Stat interface)
+> released an hour ago, works with ARC).  
+> 
+> Should it be referred to by "ARC" or "Arc" (or?) in the ESS
+> documentation (which still needs to be written)? 
+> 
+
+* From: "Sparapani, Rodney" <spara002@onyx.dcri.duke.edu>
+Subject: RE: Delete forward key
+To: ESS Help Is Here <ess-help@stat.math.ethz.ch>,
+        "'Sven Garbade'"
+	 <garbade@psy.uni-muenchen.de>
+Date: Wed, 26 Jul 2000 08:53:38 -0400
+
+Sven:
+
+Put this line in your .emacs file after you have loaded ESS:
+(define-key ess-mode-map [delete] 'delete-char)
+
+Rodney Sparapani, Statistician Sr.
+Duke Clinical Research Institute
+e-mail: rodney.sparapani@duke.edu
+Office: 8025 North Pavilion
+Work #: (919) 668-8043    
+FAX  #: (919) 668-7049
+Mobile: (919) 608-0589
+For addressing and schedule information
+see http://www.duke.edu/~spara002
+
+> ----------
+> From: 	Sven Garbade[SMTP:garbade@psy.uni-muenchen.de]
+> Sent: 	Wednesday, July 26, 2000 8:17 AM
+> To: 	ESS Help Is Here
+> Subject: 	Delete forward key
+> 
+> Hi there,
+> 
+> I don´t like it that the delete-forward key deletes backwards in
+> ESS-mode. My default option is, delete-forward deletes forward, but
+> ess-mode ignore this. Is there a simple way to change this?
+> 
+> Regards,
+>  Sven
+> -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+> -.-.-
+> ess-help mailing list -- To (un)subscribe, send
+> subscribe	or	unsubscribe
+> (in the "body", not the subject !)  To: ess-help-request@stat.math.ethz.ch
+> _._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._.
+> _._._
+> 
+
+* From: rmh@fisher.stat.temple.edu (Richard M. Heiberger)
+Subject: Re: Stata question: delimiter
+To: rossini@biostat.washington.edu (A.J. Rossini)
+Date: Sun, 7 Mar 1999 18:49:46 -0500
+
+i noted that the command lines are duplicated.  You might need
+    (setq comint-process-echoes t)
+in the defun stata
