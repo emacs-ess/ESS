@@ -32,7 +32,7 @@ Indirect:
 ess.info-1: 1080
 ess.info-2: 50008
 ess.info-3: 98941
-ess.info-4: 144054
+ess.info-4: 145993
 
 Tag Table:
 (Indirect)
@@ -93,27 +93,27 @@ Node: ESS[SAS]--Editing files95307
 Node: iESS--Inferior ESS processes96847
 Node: ESS[SAS]--Batch processes97384
 Node: ESS[SAS]--Function keys for batch processing98941
-Node: ESS[SAS]--TAB key103482
-Node: ESS[SAS]--Usage scenarios104669
-Node: ESS[SAS]--Common problems109297
-Node: Help OS110655
-Node: Help Unix110872
-Node: Help Microsoft110990
-Node: Installation111174
-Node: Unix installation111800
-Node: Microsoft Windows installation117220
-Node: System dependent123687
-Node: Customization125962
-Node: Variables126633
-Node: Variables for starting ESS127458
-Node: Dump file variables129471
-Node: Indentation variables130642
-Node: Variables controlling interaction133623
-Node: Hooks134476
-Node: Keybindings135622
-Node: Key Index136653
-Node: Command Index136796
-Node: Concept Index137079
-Node: Variable and command index144054
+Node: ESS[SAS]--TAB key105421
+Node: ESS[SAS]--Usage scenarios106608
+Node: ESS[SAS]--Common problems111236
+Node: Help OS112594
+Node: Help Unix112811
+Node: Help Microsoft112929
+Node: Installation113113
+Node: Unix installation113739
+Node: Microsoft Windows installation119159
+Node: System dependent125626
+Node: Customization127901
+Node: Variables128572
+Node: Variables for starting ESS129397
+Node: Dump file variables131410
+Node: Indentation variables132581
+Node: Variables controlling interaction135562
+Node: Hooks136415
+Node: Keybindings137561
+Node: Key Index138592
+Node: Command Index138735
+Node: Concept Index139018
+Node: Variable and command index145993
 
 End Tag Table
