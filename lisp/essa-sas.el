@@ -269,6 +269,24 @@ to the shell on Windows when `ess-sas-submit-method' is 'sh."
 ;;; Section 2:  Function Definitions
 
 
+(defun ess-ebcdic-to-ascii-search-and-replace () 
+    "*Search and replace EBCDIC text with ASCII equivalents."
+    (interactive)
+    (let ((ess-tmp-dd (executable-find "dd")) (ess-tmp-recode (executable-find "recode"))
+	  (ess-tmp-util nil) (ess-tmp-util-args nil))
+
+    (if ess-tmp-dd (progn
+	(setq ess-tmp-util ess-tmp-dd)
+	(setq ess-tmp-util-args "conv=ascii"))
+
+	(setq ess-tmp-util ess-tmp-recode)
+	(setq ess-tmp-util-args "EBCDIC..ISO-8859-1"))
+
+    (if ess-tmp-util 
+	(while (search-forward-regexp "[^\f\t\n -~][^\f\t\n -?A-JQ-Yb-jp-y]*[^\f\t\n -~]?" nil t)
+	    (call-process-region (match-beginning 0) (match-end 0) 
+		    ess-tmp-util t (list t nil) t ess-tmp-util-args)))))
+
 (defun ess-exit-notify-sh (string)
 "Detect completion or failure of submitted job and notify the user."
   (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
