@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2002/11/01 20:06:05 $
-;; Version: $Revision: 5.30 $
-;; RCS: $Id: essl-s.el,v 5.30 2002/11/01 20:06:05 stephen Exp $
+;; Modified: $Date: 2003/11/05 13:23:11 $
+;; Version: $Revision: 5.31 $
+;; RCS: $Id: essl-s.el,v 5.31 2003/11/05 13:23:11 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -540,13 +540,11 @@ and I need to relearn emacs lisp (but I had to, anyway."
 
   (interactive "sFunction ? ")
   (let* ((buffname "ess-complete.R")
-	 (buf (ess-execute (format "args(%s)" Sfunc)
-					  t
-					  buffname)))
+	 (buf (ess-execute (format "args(%s)" Sfunc) t buffname)))
     (pop-to-buffer buf)
     (message "here yet?")
     (replace-string "function" Sfunc)
-    (ess-setq-vars-local ess-customize-alist (current-buffer))
+    (ess-setq-vars-local ess-customize-alist); (current-buffer))
     (setq major-mode 'ess-mode)
     (use-local-map ess-mode-map)
     (set-syntax-table ess-mode-syntax-table)
