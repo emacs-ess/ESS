@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/07 19:18:34 $ - $Revision: 1.157 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/07 19:21:00 $ - $Revision: 1.158 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -1169,21 +1169,20 @@ Running \SAS\ batch on remote computers is nearly transparent to the user.
   
 BUGS software performs Markov Chain Monte Carlo simulations.  There is
 an interactive capability, but it is not often used since the analyses
-can take a long time. %number
-%of iterations in a typical analysis is large.
-% and can be very time-consuming.
-Most BUGS programs are executed as batch processes.
+can take a long time.  Most BUGS programs are executed as batch
+processes.
 
-Emacs and ESS facilitate BUGS by \stexttt{ESS[BUGS]}, the mode in which 
-files with the \stexttt{bug} extension are opened.  ESS defines BUGS 
-syntax so that
-\stexttt{font-lock-mode} can highlight statements, distributions,
-functions, commands and comments in BUGS model files, command files
-and log files.  ESS creates templates for the command file from the
-model file so that a BUGS batch process can be defined by a single
-file.  ESS provides a BUGS batch script that allows ESS to set BUGS
-batch parameters.  ESS also supplies key-mappings to submit a BUGS
-batch process.
+Emacs and ESS facilitate BUGS by \stexttt{ESS[BUGS]}, the mode in
+which files with the \stexttt{bug} extension are opened.  There are 3
+main features which ESS provides.  First, BUGS syntax is described to
+allow for proper fontifiction
+% so that \stexttt{font-lock-mode} can highlight 
+of statements, distributions, functions, commands and comments in BUGS
+model files, command files and log files.  Second, ESS creates
+templates for the command file from the model file so that a BUGS
+batch process can be defined by a single file.  Finally, ESS provides
+a BUGS batch script that allows ESS to set BUGS batch parameters as
+well as key-mappings to submit a BUGS batch process.
 
 \paragraph{S, \Splus, and R.}
 There are two ways to look at S Batch.  One is the traditional batch
