@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2004/05/13 10:48:34 $
-;; Version: $Revision: 5.17 $
-;; RCS: $Id: essd-sas.el,v 5.17 2004/05/13 10:48:34 stephen Exp $
+;; Modified: $Date: 2004/06/29 15:54:58 $
+;; Version: $Revision: 5.18 $
+;; RCS: $Id: essd-sas.el,v 5.18 2004/06/29 15:54:58 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -37,6 +37,7 @@
 (ess-message "[essd-sas:] require 'comint & 'shell ...")
 (require 'comint)
 (require 'shell)
+(require 'executable)
 
 ;;(ess-message "[essd-sas:] require 'essa-sas ...")
 ;;(require 'essa-sas)

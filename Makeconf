@@ -1,6 +1,6 @@
 ####======= Common Declarations for *all* ESS -*- Makefile -*- s ==========
 ###
-### File: $Revision: 5.21 $.
+### File: $Revision: 5.22 $.
 ###
 
 PREFIX=/usr/local
@@ -19,7 +19,7 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 
 # default xemacs package installation tree
 # necessary for target xemacs-links
-XEMACSDIR=/usr/local/lib/xemacs
+XEMACSDIR=$(PREFIX)/lib/xemacs
 
 ## Updating ChangeLog via CVS with emacs requires the vc package!
 ## If this setting doesn't suit you, you can use the command line:
@@ -28,11 +28,11 @@ EMACSLOGCVS=-f vc-update-change-log
 
 # Destination of your info files
 # defaults to the info directory relative to the doc directory
-INFODIR = /usr/local/info
+INFODIR =$(PREFIX)/info
 
 # Destination of your byte-compiled elisp (.elc) files 
 # Emacs
-LISPDIR = /usr/local/share/emacs/site-lisp
+LISPDIR =$(PREFIX)/share/emacs/site-lisp
 # XEmacs
 #LISPDIR = $(XEMACSDIR)/xemacs-packages/lisp/ess
 
