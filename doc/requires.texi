@@ -23,7 +23,7 @@ on the following platforms
 with the following versions of emacs
 
 @itemize @bullet
-@item GNU Emacs 20.3-7, 21.1, 21.3
+@item GNU Emacs 20.3-7, 21.1, 21.3, 21.4
 @item XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13@footnote{
 requires the files.el patch to revert-buffer for the Local Variables
 updating problem}, 21.4.14-15, 21.4.17, 21.5.18-19
