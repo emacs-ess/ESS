@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/04/16 11:07:16 $
-;; Version: $Revision: 5.83 $
-;; RCS: $Id: ess-inf.el,v 5.83 2004/04/16 11:07:16 stephen Exp $
+;; Modified: $Date: 2004/04/18 11:07:46 $
+;; Version: $Revision: 5.84 $
+;; RCS: $Id: ess-inf.el,v 5.84 2004/04/18 11:07:46 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -274,10 +274,13 @@ start up a new process, using NAME and BUFFER (which is needed if
 there is no process NAME)."
 
   (let* ((proc-name name)
+	 (special-display-regexps nil)
 	 (proc (get-process proc-name)))
+    (if inferior-ess-own-frame
+	(setq special-display-regexps '(".")))
     ;; If ESS process NAME is running, switch to it
     (if (and proc (comint-check-proc (process-buffer proc)))
-	(switch-to-buffer (process-buffer proc))
+	(pop-to-buffer (process-buffer proc))
       ;; Otherwise, crank up a new process
       (let* ((symbol-string
 	      (concat "inferior-" inferior-ess-program "-args"))
@@ -558,7 +561,8 @@ With (prefix) EOB-P non-nil, positions cursor at end of buffer."
   (interactive "P")
   (ess-make-buffer-current)
   (if (and ess-current-process-name (get-process ess-current-process-name))
-      (progn
+      (let ((special-display-regexps 
+	     (if inferior-ess-own-frame '(".") nil)))
 	(pop-to-buffer
 	 (process-buffer (get-process ess-current-process-name)))
 	(if eob-p (goto-char (point-max))))
