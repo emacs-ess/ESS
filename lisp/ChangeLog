@@ -1,3 +1,9 @@
+2005-01-22  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-quit-r): Default response (if RET pressed on its
+	own) is that workspace image will not be saved.
+	Do not append "-exited" to iESS buffers (likewise for ess-quit).
+
 2005-01-18  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-quit-r): New function to handle killing an *R*
