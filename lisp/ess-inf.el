@@ -1968,51 +1968,52 @@ In all cases, the value is an list of object names."
 					; .SmodeObs
 
 ;;; SJE: Wed 29 Dec 2004 --- remove this function.
-;; (defun ess-create-object-name-db ()
-;;   "Create a database of object names in standard S directories.  This
-;; database is saved in the file specified by `ess-object-name-db-file',
-;; and is loaded when `ess-mode' is loaded. It defines the variable
-;; `ess-object-name-db', which is used for completions.
+;;; rmh: Wed 5 Jan 2005 --- bring it back for use on Windows
+(defun ess-create-object-name-db ()
+  "Create a database of object names in standard S directories.  This
+database is saved in the file specified by `ess-object-name-db-file',
+and is loaded when `ess-mode' is loaded. It defines the variable
+`ess-object-name-db', which is used for completions.
 
-;; Before you call this function, modify the S search list so that it contains
-;; all the non-changing (i.e. system) S directories.  All positions of the search
-;; list except for position 1 are searched and stored in the database.
+Before you call this function, modify the S search list so that it contains
+all the non-changing (i.e. system) S directories.  All positions of the search
+list except for position 1 are searched and stored in the database.
 
-;; After running this command, you should move ess-namedb.el to a directory in
-;; the `load-path'."
-;;   (interactive)
-;;   (setq ess-object-name-db nil)
-;;   (let ((search-list (cdr (ess-search-list)))
-;; 	(pos 2)
-;; 	name
-;; 	(buffer (get-buffer-create " *ess-db*"))
-;; 	(temp-object-name-db nil)
-;; 	(temp-object-name-db-file ess-object-name-db-file))
+After running this command, you should move ess-namedb.el to a directory in
+the `load-path'."
+  (interactive)
+  (setq ess-object-name-db nil)
+  (let ((search-list (cdr (ess-search-list)))
+	(pos 2)
+	name
+	(buffer (get-buffer-create " *ess-db*"))
+	(temp-object-name-db nil)
+	(temp-object-name-db-file ess-object-name-db-file))
 
-;;     (ess-write-to-dribble-buffer
-;;      (format "(object db): search-list=%s \n " search-list))
-;;     (while search-list
-;;       (message "Searching %s" (car search-list))
-;;       (setq temp-object-name-db (cons (cons (car search-list)
-;; 					    (ess-object-names nil pos))
-;; 				      temp-object-name-db))
-;;       (setq search-list (cdr search-list))
-;;       (ess-write-to-dribble-buffer
-;;        (format "(object db): temp-obj-name-db=%s \n pos=%s"
-;; 	       temp-object-name-db pos))
-;;       (setq pos (1+ pos)))
+    (ess-write-to-dribble-buffer
+     (format "(object db): search-list=%s \n " search-list))
+    (while search-list
+      (message "Searching %s" (car search-list))
+      (setq temp-object-name-db (cons (cons (car search-list)
+					    (ess-object-names nil pos))
+				      temp-object-name-db))
+      (setq search-list (cdr search-list))
+      (ess-write-to-dribble-buffer
+       (format "(object db): temp-obj-name-db=%s \n pos=%s"
+	       temp-object-name-db pos))
+      (setq pos (1+ pos)))
 
-;;     (save-excursion
-;;       (set-buffer buffer)
-;;       (erase-buffer)
-;;       (insert "(setq ess-object-name-db '")
-;;       (prin1 temp-object-name-db (current-buffer))
-;;       (insert ")\n")
-;;       (setq name (expand-file-name ess-object-name-db-file))
-;;       (write-region (point-min) (point-max) name)
-;;       (message "Wrote %s" name))
-;;     (kill-buffer buffer)
-;;     (setq ess-object-name-db temp-object-name-db)))
+    (save-excursion
+      (set-buffer buffer)
+      (erase-buffer)
+      (insert "(setq ess-object-name-db '")
+      (prin1 temp-object-name-db (current-buffer))
+      (insert ")\n")
+      (setq name (expand-file-name ess-object-name-db-file))
+      (write-region (point-min) (point-max) name)
+      (message "Wrote %s" name))
+    (kill-buffer buffer)
+    (setq ess-object-name-db temp-object-name-db)))
 
 (defun ess-resynch nil
   "Reread all directories/objects in variable `ess-search-list' to
