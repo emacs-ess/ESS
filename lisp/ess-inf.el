@@ -7,12 +7,18 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/03 13:36:56 $
-;; Version: $Revision: 1.25 $
-;; RCS: $Id: ess-inf.el,v 1.25 1997/07/03 13:36:56 rossini Exp $
+;; Modified: $Date: 1997/07/03 13:44:09 $
+;; Version: $Revision: 1.26 $
+;; RCS: $Id: ess-inf.el,v 1.26 1997/07/03 13:44:09 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.26  1997/07/03 13:44:09  rossini
+;; added variable setup to beginning of inferior-ess (needed here AS
+;; WELL, before finding buffer (and then setting buffer local)!
+;;
+;; S-pre-run -> ess-pre-run.
+;;
 ;; Revision 1.25  1997/07/03 13:36:56  rossini
 ;; --alist -> -alist.  typo.
 ;;
@@ -297,7 +303,10 @@ when invoking S.
   ;;   If not, find first N s.t. there is no process SN. Ask as above.
 
   (interactive "P")
-  (run-hooks 'S-pre-run-hook)    
+  ;; set up for current language (need here, to get ess-proc-prefix, etc).
+  (if ess-customize-alist (ess-set-vars ess-customize-alist))
+  ;; run hooks now, to overwrite the above!
+  (run-hooks 'ess-pre-run-hook)    
   (let* ((defdir (directory-file-name (or ess-directory default-directory)))
 ;;	(procname
 ;;	 (if n (ess-proc-name (prefix-numeric-value n))
