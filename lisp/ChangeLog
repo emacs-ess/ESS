@@ -1,3 +1,9 @@
+2004-06-24  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* essd-r.el (ess-r-versions-create): Remove full pathname from
+	versions of R executables.  Add note in the *ESS* buffer to say
+	which new defuns have been created.
+
 2004-06-23  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-toolbar.el (ess-use-toolbar): Default value should check if
