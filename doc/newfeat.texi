@@ -1,5 +1,9 @@
 Changes/New Features in 5.2.3:
 @itemize @bullet
+@item ESS: When new inferior ESS processes are created, by default they
+will replace the current buffer (this restores behvavior from pre
+5.2.0). If you wish new ESS processes to start in another window of the
+current frame, set inferior-ess-same-window to nil.
 @item New variables inferior-Splus-args and inferior-R-args provide a
 way to pass command line arguments to starting S and R processes.
 @end itemize
