@@ -616,8 +616,14 @@ current buffer if nil."
 		(ess-kermit-get (file-name-nondirectory ess-sas-temp-file)
 		    ess-temp-kermit-remote-directory))
 
-	    (if revert (ess-revert-wisely) nil)
-))))))
+	    (if revert 
+		(if (and (string-equal suffix "log")
+			 (> (nth 7 (file-attributes ess-sas-temp-file)) 500000)) 
+		    (progn 
+			(insert-file-contents ess-sas-temp-file nil 0 500000 t) 
+		    t)
+
+		    (ess-revert-wisely)) nil)))))))
 
 ;;(defun ess-sas-file (suffix &optional revert)
 ;;  "Please use `ess-sas-goto' instead."
