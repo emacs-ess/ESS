@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/14 00:27:53 $
-;; Version: $Revision: 1.84 $
-;; RCS: $Id: ess-inf.el,v 1.84 1997/11/14 00:27:53 rossini Exp $
+;; Modified: $Date: 1997/11/14 00:35:26 $
+;; Version: $Revision: 1.85 $
+;; RCS: $Id: ess-inf.el,v 1.85 1997/11/14 00:35:26 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -1029,6 +1029,7 @@ process buffer. Arg has same meaning as for ess-eval-region."
   (define-key inferior-ess-mode-map "\C-c\C-z" 'ess-abort)       ; mask comint map
   (define-key inferior-ess-mode-map "\C-d"     'delete-char)   ; EOF no good in S
   (define-key inferior-ess-mode-map "\t"       'comint-dynamic-complete)
+  (define-key inferior-ess-mode-map "\C-c\t"   'ess-complete-object-name)
   (define-key inferior-ess-mode-map "\M-\t"    'comint-replace-by-expanded-filename)
   (define-key inferior-ess-mode-map "\M-?"     'ess-list-object-completions)
   (define-key inferior-ess-mode-map "\C-c\C-k" 'ess-request-a-process))
