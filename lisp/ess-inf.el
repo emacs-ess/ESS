@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/30 22:43:03 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: ess-inf.el,v 1.14 1997/06/30 22:43:03 rossini Exp $
+;; Modified: $Date: 1997/07/01 14:51:39 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: ess-inf.el,v 1.15 1997/07/01 14:51:39 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.15  1997/07/01 14:51:39  rossini
+;; doc-string change, ess-quit.
+;;
 ;; Revision 1.14  1997/06/30 22:43:03  rossini
 ;; ess-trans -> ess-trns
 ;;
@@ -1324,12 +1327,12 @@ buffer (defaults to the command if BUFF is not given.)"
 ;;;*;;; Quitting
 
 (defun ess-quit ()
-  "Issue the q() command to S, and clean up."
+  "Issue the q() command to S/R, or (exit) to XLS, and clean up."
   (interactive)
   (ess-make-buffer-current)
   (let ((sprocess (get-ess-process ess-current-process-name)))
-    (if (not sprocess) (error "No S process running."))
-    (if (yes-or-no-p "Really quit from S? ")
+    (if (not sprocess) (error "No ESS process running."))
+    (if (yes-or-no-p "Really quit from ESS? ")
 	(save-excursion
 	  (ess-cleanup)
 	  (ess-switch-to-S nil)
