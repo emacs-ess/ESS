@@ -24,18 +24,13 @@ default-load-path."
 	       (while rest
 		 (setq p (expand-file-name path (car rest)))
 		 (if (file-directory-p p)
-		     (throw 'tag p)
-		   )
-		 (setq rest (cdr rest))
-		 ))
-	     (not (member p load-path))
-	     )
+		     (throw 'tag p))
+		 (setq rest (cdr rest))))
+	     (not (member p load-path)))
 	(setq load-path
 	      (if (memq 'append options)
 		  (append load-path (list p))
-		(cons p load-path)
-		))
-      )))
+		(cons p load-path))))))
 
 (setq-default debug-on-error t)
 (ess-add-path "/p1/apps/X11R6.3/lib/xemacs/site-lisp/ESS/")
