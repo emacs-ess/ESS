@@ -14,6 +14,7 @@
   @item Loading and error-checking of code
   @item Source code revision maintenance
   @item Batch execution (SAS, BUGS)
+  @item Use of imenu to provide links to appropriate functions
   @end itemize
 @item Interacting with the process (S family, SAS, XLispStat)
   @itemize @bullet
