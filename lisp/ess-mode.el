@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/02/27 19:38:33 $
-;; Version: $Revision: 5.23 $
-;; RCS: $Id: ess-mode.el,v 5.23 2004/02/27 19:38:33 rossini Exp $
+;; Modified: $Date: 2004/05/13 10:00:52 $
+;; Version: $Revision: 5.24 $
+;; RCS: $Id: ess-mode.el,v 5.24 2004/05/13 10:00:52 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -218,6 +218,15 @@
     ["Indent line"	 ess-indent-command			t]
     ["Undo"		 undo					t]
     ["About"		 (ess-goto-info "Edit buffer")		t]
+    )
+   ("Start Process"
+    ["R"     R  :help "Start a new R process" :active t]
+    ["S"     S  :help "Start a new S process" :active t]
+    ["SAS"   SAS  :help "Start a new SAS process" :active t]
+    ["About" 
+     (ess-goto-info "Starting the ESS process") 
+     :help "Read about starting a new ESS process"
+     :active t]
     )
    ["Switch Process"	ess-switch-process		t]
    "------"
