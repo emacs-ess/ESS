@@ -199,7 +199,7 @@ ess-inf.elc: ess-inf.el $(CORE)
 	@echo "For the next compile, please disregard the messages"
 	@echo " ** the function set-keymap-parent is not known to be defined."
 	@echo " ** assignment to free variable comint-last-input-end"
-	@echo "from the byte compiler if it occurs. It is completely normal."
+	@echo "from the byte compiler if they occur. It is completely normal."
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-inf.el
 
 
@@ -208,7 +208,7 @@ ess-mode.elc: ess-mode.el $(CORE)
 	@echo "For the next compile, please disregard the message"
 	@echo " ** the function set-keymap-parent is not known to be defined."
 	@echo " ** variable last-sexp bound but not referenced"
-	@echo "from the byte compiler if it occurs. It is completely normal."
+	@echo "from the byte compiler if they occur. It is completely normal."
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-mode.el
 
 ess-trns.elc: ess-trns.el $(CORE)
