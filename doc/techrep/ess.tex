@@ -169,10 +169,10 @@ However, some interface conflicts can be complex, such as the
 coordination of several files of data and code in a single analysis.
 ESS, as part of Emacs, incorporates version code control systems, ftp
 and other protocols for transferring files across machines, a smooth
-interface to documentation systems such as \LaTeX\ and html, and a
-myriad of housekeeping tasks.  In addition, as a programmable editor,
-Emacs can be programmed to perform editing tasks for data cleaning and
-management.
+interface to documentation systems such as \LaTeX\ and \textsc{html},
+and a myriad of housekeeping tasks.  In addition, as a programmable
+editor, Emacs can be programmed to perform editing tasks for data
+cleaning and management.
 
 Few statistical packages have identical command-line interfaces; this
 is distinct from the differences between the actual macro or
@@ -476,9 +476,9 @@ lines and isolating them into an input file.
 ESS also provides an interface for writing help files for R functions
 and packages.  It provides the ability to view and execute embedded R
 source code directly from the help file in the same manner as ESS
-normally handles code from a source file.  R \stexttt{Help mode}
-provides syntax highlighting and the ability to submit code to a
-running ESS process, either R or \Splus.
+normally handles code from a source file.  \stexttt{Rd} mode provides
+syntax highlighting and the ability to submit code to a running ESS
+process, either R or \Splus.
 
 \section{Using ESS with the S family of languages}
 \label{sec:S}
@@ -563,16 +563,16 @@ machine.
 \subsection{Editing and Reusing Transcripts}
 \label{sec:S:trans}
 
-\stexttt{ESS Transcript mode} is designed for editing transcripts,
-constructed for example by saving an \file{iESS} buffer.  This mode
-understands the form of S transcripts; it does color and font
-highlighting based on syntax; permits resubmitting multi-line commands
-to an active process buffer; has the ability to request help from an S
-process for variables and functions; and the ability to switch between
-processes which would be the target of the resubmissions.  The S
-language transcripts can be ``cleaned'' by finding all input lines and
-isolating them into a stand-alone input file that can be used as input
-to another S job or as a model for further program design.
+ESS Transcript mode is designed for editing transcripts, constructed for
+example by saving an \file{iESS} buffer.  This mode understands the form
+of S transcripts; it does color and font highlighting based on syntax;
+permits resubmitting multi-line commands to an active process buffer;
+has the ability to request help from an S process for variables and
+functions; and the ability to switch between processes which would be
+the target of the resubmissions.  The S language transcripts can be
+``cleaned'' by finding all input lines and isolating them into a
+stand-alone input file that can be used as input to another S job or as
+a model for further program design.
 
 \subsection{Programming Language Help}
 \label{sec:S:help}
@@ -580,35 +580,34 @@ to another S job or as a model for further program design.
 When viewing help pages, there's a new menu \textsf{[ESS help]} and
 useful 1-letter shortcuts for navigation and more, such as
 \begin{list}{}{\renewcommand{\makelabel}[1]{\bf#1\hfill}}
-\item[n,\,p] move to \textbf{n}ext or \textbf{p}revious help section
-\item[{s \textit{x}}] move to help section code ``\textit{x}'' where
+ \item[n,\,p] move to \textbf{n}ext or \textbf{p}revious help section
+ \item[{s \textit{x}}] move to help section code ``\textit{x}'' where
   \textit{x} is e.g. \stexttt{u} for ``Usage'', or \stexttt{e} for
-  ``Examples''.  You can see a full list by entering \stexttt{s ?} from within
-an \stexttt{ESS Help} buffer.
-\item[h] fast `hyperlink' to other help pages
-\item[l] (after \stexttt{"s e"}) send examples \textbf{l}inewise to S for
-  evaluation, also \stexttt{C-c C-r} for sending a whole region.  This 
-  is particularly useful in R which guarantees that all examples are
-  directly executable.
+  ``Examples''.  You can see a full list by entering \stexttt{s ?} from
+  within an ESS Help buffer.
+ \item[h] fast `hyperlink' to other help pages
+ \item[l] (after `\stexttt{s e}') send examples \textbf{l}inewise to S
+  for evaluation, also \stexttt{C-c C-r} for sending a whole region.
+  This is particularly useful in R which guarantees that all examples
+  are directly executable.
 % (possibly after \stexttt{library(*)} for non-base packages).
 \end{list}
 
 \subsection{Philosophies for Combining S with ESS}
 \label{sec:S:philosophy}
 
-There are two primary philosophies for using ESS.  The first is that
-the source code (the file \file{myfile.s}, for example) is real, and
-objects in S are temporary realizations of the source.  This is the
-approach preferred by the current group of developers and the default
-when ESS is initially installed.  A project is constructed by writing
-S language source code for \textbf{every} user defined function or
-data object.  The code is stored in one or more text files stored in a
-project directory or directories.  The code is read into S for a
-temporary realization as an object.  This approach allows for better
-portability, where the user might want to use the written code and
-perform the same or related analyses on different versions of the S
-language.  This approach also permits external version control for S
-language source code.
+There are two primary philosophies for using ESS.  The first is that the
+source code (the file \file{myfile.s}, for example) is real, and objects
+in S are temporary realizations of the source.  This is the approach
+preferred by the current group of developers and the default when ESS is
+initially installed.  A project is constructed by writing S language
+source code for \emph{every} user defined function or data object.  The
+code is stored in one or more text files stored in a project directory
+or directories.  The code is read into S for a temporary realization as
+an object.  This approach allows for better portability, where the user
+might want to use the written code and perform the same or related
+analyses on different versions of the S language.  This approach also
+permits external version control for S language source code.
 
 The second, deprecated view, is that S objects are real.  The text
 version of the objects (source code, although we can't use that term
@@ -689,16 +688,16 @@ Manager uses.
 \paragraph{The \texttt{[TAB]} Key.}
 \label{sec:SAS:tab}
 
-There are two options for how ESS will interpret the \stexttt{[TAB]}
-key with respect to SAS code.  The \stexttt{TAB} key is bound by
-default to \stexttt{sas-indent-line}.  This function is used to
-syntactically indent SAS code so \stexttt{PROC} and \stexttt{RUN;} are
-in the left margin, other statements are indented 4 spaces from the
-margin, continuation lines are indented 4 spaces in from the beginning
-column of that statement.  This is the type of functionality that
-Emacs provides in most programming language modes.  This functionality
-is equivalent to uncommenting the following line in
-\file{ess-site.el}: \stexttt{;;; (setq ess-sas-edit-keys-toggle 0)}
+There are two options for how ESS will interpret the \stexttt{[TAB]} key
+with respect to SAS code.  The \stexttt{TAB} key is bound by default to
+\stexttt{sas-indent-line}.  This function is used to syntactically
+indent SAS code so `\stexttt{PROC}' and `\stexttt{RUN;}' are in the left
+margin, other statements are indented 4 spaces from the margin,
+continuation lines are indented 4 spaces in from the beginning column of
+that statement.  This is the type of functionality that Emacs provides
+in most programming language modes.  This functionality is equivalent to
+uncommenting the following line in \file{ess-site.el}: \elcode{;;; (setq
+  ess-sas-edit-keys-toggle 0)}
 
 ESS provides an alternate behavior for the \stexttt{TAB} key that
 makes it behave as it does on non-Emacs terminals, i.e. move the
@@ -770,19 +769,18 @@ Windows style function key definitions for use in the
 %% \stexttt{F8} &\stexttt{F3}& Shell   &switch buffer to shell.\\
 %% \end{tabular}
 %%
-Keys \stexttt{[f3]}--\stexttt{[f8]} mimic SAS Display Manager keys.
-One other key has been provided for convenience.  \stexttt{F2}
-performs the ``refresh" operation on the current buffer.  ``refresh"
-compares the buffer date stamp with the file date stamp and replaces
-the buffer with the file if the file is newer.  This is the same
-operation that is automatically performed when Log, Listing, or
-\stexttt{Type-1} are pressed.  \stexttt{Type-1} takes you to a file
-with a user-specified extension; \file{.txt} by default.
-\stexttt{Type-1} files are not a standard from the SAS Institute, but
-are included here because many companies have developed internal
-standards that use them.  You can over-ride the default, by specifying
-a different extension in your \file{.emacs} file:\\
-\stexttt{(setq ess-sas-suffix-1 '.txt')}
+Keys \stexttt{[f3]}--\stexttt{[f8]} mimic SAS Display Manager keys.  One
+other key has been provided for convenience.  \stexttt{F2} performs the
+``refresh'' operation on the current buffer.  ``refresh'' compares the
+buffer date stamp with the file date stamp and replaces the buffer with
+the file if the file is newer.  This is the same operation that is
+automatically performed when Log, Listing, or \stexttt{Type-1} are
+pressed.  \stexttt{Type-1} takes you to a file with a user-specified
+extension; \file{.txt} by default.  \stexttt{Type-1} files are not a
+standard from the SAS Institute, but are included here because many
+companies have developed internal standards that use them.  You can
+over-ride the default, by specifying a different extension in your
+\file{.emacs} file: \elcode{(setq ess-sas-suffix-1 '.txt')}
 
 \paragraph{SAS Interface.}
 \label{sec:SAS:interface}
@@ -833,33 +831,34 @@ SAS on a remote machine.
 \label{sec:SAS:proc:inf}
 
 \stexttt{iESS} (inferior ESS) is the mode for interfacing with active
-statistical processes (programs).  To start up \stexttt{iESS[SAS]} mode, use:
-\elcode{M-x SAS}
+statistical processes (programs).  To start up \stexttt{iESS[SAS]} mode,
+use: \elcode{M-x SAS}
 % We plan to add the ability to request help from a process for
 % variables and functions, and to have the results sent into a separate
 % buffer, as well as the completion of object names and file names.
-A single instance of SAS is started in an \file{iESS[SAS]} buffer.  Individual
-\stexttt{DATA} and \stexttt{PROC} steps are sent to this instance of SAS and the results
-are appended to the \file{*log*} and \file{*lst*} buffers.
+A single instance of SAS is started in an \file{iESS[SAS]} buffer.
+Individual \stexttt{DATA} and \stexttt{PROC} steps are sent to this
+instance of SAS and the results are appended to the \file{*log*} and
+\file{*lst*} buffers.
 
 The \stexttt{iESS[SAS]} mode was written with two primary goals.
 \begin{itemize}
-\item Using Emacs, a window environment becomes available for dial-up
+ \item Using Emacs, a window environment becomes available for dial-up
   users who do not have access to the SAS window environment.
-\item The authors prefer the Emacs environment for editing and
-  managing input and output files, even on computer systems which run
-  the SAS window environment.
+ \item The authors prefer the Emacs environment for editing and managing
+  input and output files, even on computer systems which run the SAS
+  window environment.
 \end{itemize}
-A secondary goal was also realized.  With an X-windows
-terminal connected by ppp at (the now slow speed of)
-14400 baud to a Unix system running SAS,
-\stexttt{iESS[SAS]} interaction with SAS was hundreds of times faster than the
-SAS window system.  The savings come because the ESS windows are
-subunits of a text-based xterm window, rather than the remotely
-managed graphical windows provided by SAS.  (The timings are SAS
-timings from the log files.  The SAS windows times include window
+A secondary goal was also realized.  With an X-windows terminal
+connected by ppp at (the now slow speed of) 14400 baud to a Unix system
+running SAS, \stexttt{iESS[SAS]} interaction with SAS was hundreds of
+times faster than the SAS window system.  The savings come because the
+ESS windows are subunits of a text-based xterm window, rather than the
+remotely managed graphical windows provided by SAS.  (The timings are
+SAS timings from the log files.  The SAS windows times include window
 management and communications times as well as calculation times.  The
-\stexttt{iESS} times include only the calculations by the SAS computing engine.)
+\stexttt{iESS} times include only the calculations by the SAS computing
+engine.)
 
 \subsubsection{ESS and Display Manager}
 It is possible to use ESS for editing SAS files with \stexttt{ESS[SAS]} mode
@@ -874,15 +873,13 @@ Display Manager \ssf{Program Editor} window.
 \paragraph{Batch Processing.}
 Batch Processing works when Emacs is running on a local machine and SAS
 is running on a remote machine.  The local machine must be directly
-connected to the network (possibly by ppp).\\
-Set the \stexttt{ess-sas-submit-method} with
-\elcode{(setq-default ess-sas-submit-method 'iESS)}
-and behave exactly as if the SAS process were local.\\
-Edit the remote file
-\file{/other.machine:myfile.sas}
-in the local Emacs.
-When it is submitted, it will automatically be saved back to the remote
-machine and be exactly where the remote SAS will find it.
+connected to the network (possibly by ppp).  Set the
+\stexttt{ess-sas-submit-method} with \elcode{(setq-default
+  ess-sas-submit-method 'iESS)} and behave exactly as if the SAS process
+were local.  Use the local Emacs to edit the remote file
+\file{/other.machine:myfile.sas}.  When it is submitted, it will
+automatically be saved back to the remote machine and be exactly where
+the remote SAS will find it.
 
 \paragraph{\stexttt{iESS} Processing on remote Emacs.}
 Telnet to a remote computer using a telnet client other than an Emacs buffer.
@@ -909,22 +906,24 @@ In a SAS window environment, these files would be brought into the
 \ssf{Local/Submit}
 menu commands.
 
-The \file{*SAS:1.log*} or \file{myfile.log} buffer in \stexttt{ESStr} mode
-corresponds to the file \file{myfile.log} in SAS batch usage and to the
-\ssf{SAS: LOG} window in the SAS window environment.  All commands
+The \file{*SAS:1.log*} or \file{myfile.log} buffer in \stexttt{ESStr}
+mode corresponds to the file \file{myfile.log} in SAS batch usage and to
+the \ssf{SAS: LOG} window in the SAS window environment.  All commands
 submitted to SAS, informative messages, warnings, and errors appear
 here.
 
-The \file{*SAS:1.lst*} or \file{myfile.lst} buffer in \stexttt{ESSlst} mode
-corresponds to the file \file{myfile.lst} in SAS batch usage and to the
-\ssf{SAS: OUTPUT} window in the SAS window environment.  All data-related
-printed output from the \stexttt{PROC}s appear in this window.
+The \file{*SAS:1.lst*} or \file{myfile.lst} buffer in \stexttt{ESSlst}
+mode corresponds to the file \file{myfile.lst} in SAS batch usage and to
+the \ssf{SAS: OUTPUT} window in the SAS window environment.  All
+data-related printed output from the \stexttt{PROC}s appear in this
+window.
 
-The interactive \stexttt{iESS [SAS:1]} buffer exists solely as a communications buffer.
-Files are edited in the \file{myfile.sas} buffer.  The \stexttt{C-c C-r} key in
-\stexttt{ESS[SAS]} mode is the functional equivalent of bringing a file into the
-\ssf{SAS: PROGRAM EDITOR} window followed by the \ssf{Local/Submit} menu
-commands.  The user should never use this buffer directly.
+The interactive \stexttt{iESS [SAS:1]} buffer exists solely as a
+communications buffer.  Files are edited in the \file{myfile.sas}
+buffer.  The \stexttt{C-c C-r} key in \stexttt{ESS[SAS]} mode is the
+functional equivalent of bringing a file into the \ssf{SAS: PROGRAM
+  EDITOR} window followed by the \ssf{Local/Submit} menu commands.  The
+user should never use this buffer directly.
 
 \section{Obtaining ESS}
 \label{sec:getIt}
