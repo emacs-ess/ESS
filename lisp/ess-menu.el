@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.12 2001/08/31 16:32:39 maechler Exp $
+;; Version: $Id: ess-menu.el,v 1.13 2001/08/31 16:33:26 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -37,7 +37,8 @@
 
 ;;(require 'ess-site)
 (require 'ess-cust)
-(if (not (require 'imenu "imenu.elc" 'no-error))
+(if (not (require 'imenu "imenu.elc" ; how can I have 'no-error without f.name?
+		  'no-error))
     (message "** warning: 'imenu not available")
 )
 ;;possibly below, after checking: (require 'speedbar)
