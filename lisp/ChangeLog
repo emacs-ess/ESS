@@ -1,5 +1,9 @@
 2004-12-03  Stephen Eglen  <stephen@gnu.org>
 
+	* ess-cust.el (inferior-ess-prompt): Make this a defvar as the
+	value is constructed from other values, rather than being set by
+	the user.
+
 	* essd-els.el (ess-add-ess-process): Check first that the current
 	buffer has a process.
 	(ess-select-alist-dialect): Add colon to prompt string.
