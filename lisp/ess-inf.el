@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/01 16:25:18 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: ess-inf.el,v 1.20 1997/07/01 16:25:18 rossini Exp $
+;; Modified: $Date: 1997/07/01 16:37:53 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: ess-inf.el,v 1.21 1997/07/01 16:37:53 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.21  1997/07/01 16:37:53  rossini
+;; let (done 0).
+;;
 ;; Revision 1.20  1997/07/01 16:25:18  rossini
 ;; last one taken care off.
 ;;
@@ -324,7 +327,8 @@ when invoking S.
 		   ;; one is already running
 		   ess-local-process-name)
 	      ;; find a non-existent process
-	      (let ((ntry 0) done)
+	      (let ((ntry 0)
+		    (done 0))
 		(while (not done)
 		  (setq ntry (1+ ntry))
 		  (setq done (not (get-process (ess-proc-name ntry)))))
