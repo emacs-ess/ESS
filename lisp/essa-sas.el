@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/15 21:07:38 $
-;; Version: $Revision: 1.73 $
-;; RCS: $Id: essa-sas.el,v 1.73 2002/01/15 21:07:38 rsparapa Exp $
+;; Modified: $Date: 2002/01/16 00:41:51 $
+;; Version: $Revision: 1.74 $
+;; RCS: $Id: essa-sas.el,v 1.74 2002/01/16 00:41:51 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -227,19 +227,6 @@ or comint buffer on the local computer."
 	     (switch-to-buffer (find-buffer-visiting (concat "]" ess-temp-file)))
 )))))
 
-(defun ess-revert-wisely ()
-  "Revert from disk if file and buffer last modification times are different."
-  (interactive)
-; vc-revert-buffer acting strangely in Emacs 21.1
-; commented out until a solution can be found
-  (if (not (verify-visited-file-modtime (current-buffer)))
-      (revert-buffer t t)))
-
-;;      (cond ((and (fboundp 'vc-backend-deduce)
-;;		  (vc-backend-deduce (buffer-file-name))) (vc-revert-buffer))
-;;	    ((and (fboundp 'vc-backend)
-;;		  (vc-backend (buffer-file-name))) (vc-revert-buffer))
-;;	    (t (revert-buffer t t)))))
 
 (defun ess-sas-append-log ()
     "Append ess-temp.log to the current .log file."
@@ -479,7 +466,7 @@ depends on the value of  `ess-sas-submit-method'"
 
   (cond
    ((eq ess-sas-submit-method 'Apple-Macintosh) 
-	(ess-sas-submit-mac ess-sas-submit-command))
+	(ess-sas-submit-mac ess-sas-submit-command ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'windows-nt) 
 	(ess-sas-submit-windows ess-sas-submit-command ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'iESS) 
@@ -509,14 +496,14 @@ their files from the remote computer.  Local copies of the .sas .lst
   (ess-eval-linewise (concat "cd " default-directory))
   (ess-eval-linewise (concat arg1 " " arg2 " " (buffer-name) " &")))
 
-(defun ess-sas-submit-mac (arg1)
+(defun ess-sas-submit-mac (arg1 arg2)
   "Mac
 arg1 is assumed to be the AppleScript command
-\"invoke SAS using program file\".  There is no arg2."
+\"invoke SAS using program file\".  If so, then arg2, if any, is a complex string
+of the form \"with options { \\\"option-1\\\", \\\"option-2\\\", etc.}\" ."
   (do-applescript (concat arg1
-			  " \""
-			  (unix-filename-to-mac default-directory)
-			  (buffer-name) "\"")))
+			  " \"" (unix-filename-to-mac default-directory)
+			  (buffer-name) "\"" arg2)))
 
 (defun ess-sas-submit-region ()
     "Write region to temporary file, and submit to SAS."
