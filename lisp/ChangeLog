@@ -1,3 +1,12 @@
+2004-08-03  Stephen Eglen  <stephen@bushmills.inf.ed.ac.uk>
+
+	* ess-mode.el (ess-mode-menu): Change function name for the
+	default entry in "Start Process -> Other" submemnu from R to nil.
+	When it was set to R, this caused the R toolbar icon to not work
+	since this menu entry was being found rather than the real menu
+	entry for R.
+	
+
 2004-07-09  Stephen Eglen  <stephen@bushmills.inf.ed.ac.uk>
 
 	* ess-utils.el (ess-find-exec-completions): After checking that
