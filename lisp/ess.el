@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/30 12:36:53 $
-;; Version: $Revision: 1.52 $
-;; RCS: $Id: ess.el,v 1.52 1997/07/30 12:36:53 rossini Exp $
+;; Modified: $Date: 1997/07/31 10:56:11 $
+;; Version: $Revision: 1.53 $
+;; RCS: $Id: ess.el,v 1.53 1997/07/31 10:56:11 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -63,7 +63,7 @@
 ;;; languages) functions that are integrated with a running process in
 ;;; a buffer.
 
-;;; THE ess-MODE MAILING LIST 
+;;; THE ESS-MODE MAILING LIST 
 ;;;
 ;;; There is an informal mailing list for discussions of ess-mode. Alpha
 ;;; and beta releases of ess-mode are also announced here. Send mail to
@@ -114,6 +114,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.53  1997/07/31 10:56:11  rossini
+;; removed the require cl, cl-macs from here (to do-comp).
+;;
 ;; Revision 1.52  1997/07/30 12:36:53  rossini
 ;; added M.
 ;;
@@ -374,8 +377,6 @@
 ;;;=====================================================
 ;;;
 
-(require 'cl)
-(require 'cl-macs)
 (require 'easymenu)
 (require 'font-lock)
 (require 'ess-vars)
