@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/23 13:07:38 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: essl-sas.el,v 1.16 1997/10/23 13:07:38 rossini Exp $
+;; Modified: $Date: 1997/10/24 12:15:19 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: essl-sas.el,v 1.17 1997/10/24 12:15:19 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -50,11 +50,17 @@
 (autoload 'ess-transcript-mode "ess-trns" "ESS source eval mode" t)
 
 (defun SAS-log-mode ()
-   "Does the right thing."
-   (ess-transcript-mode SAS-customize-alist))
+   "Fundamental mode with read-only."
+  (fundamental-mode)
+  (toggle-read-only t)) ;; to protect the buffer.
+
+;; Using this for the above, doesn't make sense wrt to SAS:
+;;    (ess-transcript-mode SAS-customize-alist)
+;; in particular, there are not any real prompts to use.
+
 
 (defun SAS-listing-mode()
-  "fundamental mode with read-only."
+  "Fundamental mode with read-only."
   (fundamental-mode)
   (toggle-read-only t)) ;; to protect the buffer.
 
@@ -590,9 +596,7 @@ is automatically sets to t."
     (setq sas-file-name sfile))
   ;;(if (string-equal suff "sas")
   ;; (if (not (string-equal major-mode "sas-mode")) (sas-mode))
-  (if (not (string-equal major-mode "sasl-mode"))
-      ;;(sasl-mode)
-      )
+  ;; (if (not (string-equal major-mode "sasl-mode"))(sasl-mode))
   (current-buffer))
 
 (defun switch-to-sas-process-buffer ()
