@@ -191,7 +191,7 @@ editing.  This work can be enhanced by common IDE features such as
 contextual highlighting and recognition of special reserved words for
 the programming language being used.  In addition, editor behaviors
 such as folding, outlining, and bookmarking can assist with
-manuevering around a file.  One task which is not in this realm is
+maneuvering around a file.  One task which is not in this realm is
 word processing, which focuses on producing a presentation of a
 document, in addition to text editing.  While Emacs is not a word
 processor, it does share some features.
@@ -417,13 +417,13 @@ start up the package with a particular set of command-line arguments
 which are tailored for ESS.  However, some packages such as R have
 some extremely useful command line arguments, -v and -n.  To enter
 these, call R using a "prefix argument", by
-\begin{verbatim}
+\begin{Salltt}
    C-u M-x R
-\end{verbatim}
+\end{Salltt}
 and when ESS prompts for "Starting Args ? ", enter (for example):
-\begin{verbatim}
+\begin{Salltt}
    --max-vsize=10000 --max-nsize=5000
-\end{verbatim}
+\end{Salltt}
 Then that R process will be started up with those particular arguments.
 
 One critically useful command family is that of the \verb|S+elsewhere|
@@ -547,18 +547,18 @@ spaces in from the beginning column of that statement.  This is the
 type of functionality that Emacs provides in most programming language
 modes.  This functionality is equivalent to uncommenting the following
 line in ess-site.el:
-\begin{verbatim}
+\begin{Salltt}
 ;;; (setq ess-sas-edit-keys-toggle 0)
-\end{verbatim}
+\end{Salltt}
 
 ESS provides an alternate behavior for the TAB key that makes it
 behave as it does on non-emacs terminals, i.e. move the cursor to the
 next tab stop.  The alternate behavior also provides a backwards TAB
 key: C-TAB.  This functionality is obtained by uncommenting the
 following line in ess-site.el:
-\begin{verbatim}
+\begin{Salltt}
 ;;; (setq ess-sas-edit-keys-toggle 1)
-\end{verbatim}
+\end{Salltt}
 Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
 and the tab stops are set by default at multiples of 4.
 
@@ -672,18 +672,18 @@ newer.  This is the same operation that is automatically performed
 when Log, Listing, or Type-1 are pressed.  Type-1 takes you to a file
 with a user-specified extension; .txt by default.  You can over-ride
 the default, by specifying a different extension in your .emacs file:
-\begin{verbatim}
+\begin{Salltt}
 (setq ess-sas-suffix-1 '.txt')
-\end{verbatim}
+\end{Salltt}
 
 \subsubsection{Inferior SAS processes}
 \label{sec:SAS:proc}
 
 iESS (inferior ESS) is the mode for interfacing with active
 statistical processes (programs).  To start up iESS[SAS] mode, use:
-\begin{verbatim}
+\begin{Salltt}
    M-x SAS
-\end{verbatim}   
+\end{Salltt}   
 We plan to add the ability to request help from a process for
 variables and functions, and to have the results sent into a separate
 buffer, as well as the completion of object names and file names.
@@ -695,18 +695,17 @@ The default command used by the Submit function key (F3 or F8) to
 submit a batch SAS job is simply "sas".  If necessary, you can
 over-ride this in your \verb+.emacs+ file something like one of the
 following:
-\begin{verbatim}
-;;; (setq ess-sas-submit-command "nohup nice sas") ;; Unix
-;;; (setq ess-sas-submit-command "c:/progra~1/sas/sas.exe") ;; Windows
-;;; (setq ess-sas-submit-command "invoke SAS using program file") ;; Mac
-\end{verbatim}
-Note that when you are specifying a path under Windows, you should
-avoid spaces (that is use "progra~1", not "Program Files") and you
-should use forward slashes "/".  There may be occasions when you want
-to run a particular buffer under a different version of SAS or specify
-different options on the command line.  In that case, you can
-over-ride ess-sas-submit-command in your local buffer with file
-variables or other means.
+\begin{Salltt}
+;; (setq ess-sas-submit-command "nohup nice sas") ;; Unix
+;; (setq ess-sas-submit-command "c:/progra~1/sas/sas.exe") ;; Windows
+;; (setq ess-sas-submit-command "invoke SAS using program file") ;; Mac
+\end{Salltt}
+Note that when specifying a path on Windows, avoid spaces (that is use
+"progra~1", not "Program Files") and use forward slashes "/".  There
+may be occasions when you want to run a particular buffer under a
+different version of SAS or specify different options on the command
+line.  In that case, you can override \verb+ess-sas-submit-command+ in
+your local buffer with file variables or other means.
 
 There is a built-in delay before a batch SAS job is submitted when using
 a Unix shell under either Unix or Windows.  This is necessary in many cases 
@@ -715,21 +714,19 @@ currently set high enough so as not to be a problem on any system.  But,
 there may be cases when it needs to be set higher, or could be set much
 lower to speed things up.  You can over-ride the default in your .emacs
 file by (the default of 5 seconds is shown):
-\begin{verbatim}
+\begin{Salltt}
 (setq ess-sleep-for 5)
-\end{verbatim}
-
+\end{Salltt}
 
 \subsection{Using Transcripts}
 \label{sec:SAS:trans}
 
-Not yet available.  The intent is that a marked section of a log file
-from a previous SAS run can be resubmitted to SAS.  The user would
-highlight a region from 'PROC' to 'RUN;' and then send it to the
-inferior SAS process with the [RET] key.  ESS would automatically
-clean the region (remove line numbers) and send the entire region over
-as a single request to SAS.
-
+Transcripts for SAS are not yet available.  However, the basic intent
+is that a marked section of a log file from a previous SAS run can be
+resubmitted to SAS.  The user would highlight a region from 'PROC' to
+'RUN;' and then send it to the inferior SAS process with the [RET]
+key.  ESS would automatically clean the region (remove line numbers)
+and send the entire region over as a single request to SAS.
 
 \subsection{ESS interface with SAS Design Philosophy}
 \label{sec:SAS:phil}
@@ -738,9 +735,9 @@ ESS[SAS] mode was designed to aid the user in writing and maintaining
 input command files, such as myfile.sas, for SAS.  These are files
 containing SAS statements.  In a batch environment such files would be
 submitted to SAS by the operating system command:
-\begin{verbatim}
-    sas myfile.sas
-\end{verbatim}
+\begin{Salltt}
+  sas myfile.sas
+\end{Salltt}
 In a SAS window environment, these files would be brought into the
 "SAS: PROGRAM EDITOR" window and then submitted with the 'Local' 'Submit'
 menu commands.
@@ -769,52 +766,16 @@ The ESS[SAS] mode was written with two primary goals.
   managing input and output files, even on computer systems which run
   the SAS window environment.
 \end{itemize}
-A secondary goal was also realized.  That is, with an X-windows
-terminal connected by ppp at 14400 baud to a Unix system running SAS,
-iESS[SAS] interaction with SAS was hundreds of times faster than the
-SAS window system.  The savings come because the ESS windows are
-subunits of a text-based xterm window, rather than the remotely
-managed graphical windows provided by SAS.  (The timings are SAS
-timings from the log files.  The SAS windows times include window
-management and communications times as well as calculation times.  The
-iESS times include only the calculations by the SAS computing engine.)
-
-
-% Some Frequently Seen Problems
-% =============================
-
-% 1. If M-x SAS gives weird errors upon startup, check the following:
-%    - ess-sas-sh-command (in the ESS source directory) needs to be
-%      executable (solution: "chmod ugo+rx ess-sas-sh-command").
-%    - sas isn't in your executable path (verify using "which sas" from
-%      a shell command-line)
-%    - you need a copy of SAS (we can't solve this)
-
-% 2. M-x SAS starts up SAS in the window system (motif, for example),
-%    instead of starting it up in the emacs buffers.
-
-%    Probably the unix command "sas" on your system calls a local
-%    script which in turn calls the sas executable.  The fix is to
-%    call the sas executable directly.
-
-%    Change the line in ess-sas-sh command from:
-% \begin{verbatim}
-%       sas </dev/tty 1>$stdout 2>$stderr $@
-% \end{verbatim}
-%    to a call to the complete path name of the sas executable on
-%    your system, for example:
-% \begin{verbatim}
-%       /usr/local/sas612/sas </dev/tty 1>$stdout 2>$stderr $@
-% \end{verbatim}
-%    To find the complete path name on your system, you can
-%    execute the line (from the unix prompt):
-% \begin{verbatim}
-%       find / -name 'sas' -exec ls -ld {} \;
-% \end{verbatim}
-%    and expect a response similar to the following
-% \begin{verbatim}
-%    -rwxr-xr-x   1 sas      sas  2441216 Sep  9  1997 /usr/local/sas612/sas
-% \end{verbatim}
+A secondary goal, to allow for a reasonable interface under slow
+connections, was also realized.  That is, with an X-windows terminal
+connected by ppp at 14400 baud to a Unix system running SAS, iESS[SAS]
+interaction with SAS was hundreds of times faster than the SAS window
+system.  The savings come because the ESS windows are subunits of a
+text-based terminal window, rather than the remotely managed graphical
+windows provided by SAS.  The speedup is based on SAS timings from the
+log files.  The SAS windows times include window management and
+communications times as well as calculation times, while the iESS
+times include only the calculations by the SAS computing engine.
 
 \section{Obtaining ESS}
 \label{sec:getIt}
@@ -1139,7 +1100,7 @@ Interactive SAS
     \Scmt{.log buffers for monitoring output!}
 \end{Salltt}
 Here is a typical myfile.sas:
-\begin{verbatim}
+\begin{Salltt}
     title 'Analysis of Case 0502';
 
     data case0502;
@@ -1152,40 +1113,7 @@ Here is a typical myfile.sas:
       class code;
       model percent=code /ss1;
     run;
-\end{verbatim}
-
-\begin{verbatim}
-Recommended autoexec.sas
-========================
-
-The default settings of the inferior-SAS-args in essd-sas.el
-are "-stdio -linesize 80 -noovp -nosyntaxcheck"
-with the interpretations:
-  -stdio          required to make the redirection of stdio work
-  -linesize 80    keeps output lines from folding on standard terminals
-  -noovp          prevents error messages from printing 3 times
-  -nosyntaxcheck  permits recovery after syntax errors
-
-In addition there are several parameters that can't be set in the
-command line.  For these, we recommend the following line appear in
-your autoexec.sas in your home directory:
-
-  options noovp pagesize=60 linesize=80 formdlim=' ';
-
-Interpretations
-
-  noovp          prevents error messages from printing 3 time
-  pagesize=60    standard printed page length instead of window length
-  linesize=80    keeps output lines from folding on standard terminals
-  formdlim=' '   blank replaces "C-l" formfeeds to prevent mostly
-                 empty pages
-
-The noovp and linesize=80 appear in both the inferior-SAS-args and in
-the autoexec.sas.  The redundancy means that these options are in
-effect for SAS batch usage and SAS window manager usage as well as for
-ESS[SAS] usage.
-\end{verbatim}
-
+\end{Salltt}
 
 \end{document}
 
