@@ -6,9 +6,9 @@
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/11/29 12:16:00 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: essddr.el,v 5.14 2000/11/29 12:16:00 hornik Exp $
+;; Modified: $Date: 2001/02/13 12:37:13 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: essddr.el,v 5.15 2001/02/13 12:37:13 hornik Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.14 2000/11/29 12:16:00 hornik Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.15 2001/02/13 12:37:13 hornik Exp $
 
 ;;; Code:
 
@@ -72,6 +72,7 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev Rd-mode-abbrev-table "`iz" "\\itemize")
   (define-abbrev Rd-mode-abbrev-table "`kw" "\\keyword")
   (define-abbrev Rd-mode-abbrev-table "`li" "\\link")
+  (define-abbrev Rd-mode-abbrev-table "`me" "\\method")
   (define-abbrev Rd-mode-abbrev-table "`na" "\\name")
   (define-abbrev Rd-mode-abbrev-table "`re" "\\references")
   (define-abbrev Rd-mode-abbrev-table "`sa" "\\seealso")
@@ -127,7 +128,7 @@ All Rd mode abbrevs start with a grave accent (`).")
 (defvar Rd-keywords
   '("Alpha" "Gamma" "R" "alpha" "beta" "bold" "cr" "code" "deqn" "dots"
     "email" "emph" "epsilon" "eqn" "file" "ge" "item" "lambda" "ldots"
-    "le" "left" "link" "mu" "pi" "right" "tab" "sigma" "url"))
+    "le" "left" "link" "method" "mu" "pi" "right" "tab" "sigma" "url"))
 
 ;; Need to fix Rd-bold-face problem.
 ;;
