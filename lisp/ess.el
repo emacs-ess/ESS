@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/08/27 18:24:00 $
-;; Version: $Revision: 1.56 $
-;; RCS: $Id: ess.el,v 1.56 1997/08/27 18:24:00 rossini Exp $
+;; Modified: $Date: 1997/08/28 13:03:48 $
+;; Version: $Revision: 1.57 $
+;; RCS: $Id: ess.el,v 1.57 1997/08/28 13:03:48 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -122,6 +122,27 @@
 (require 'font-lock)
 (require 'ess-vars)
 
+
+
+
+;;; autoloads originally in ess-site.  
+
+(autoload 'S-mode "ess-mode"
+  "Major mode for editing S source code." t)
+(autoload 'R-mode "ess-mode"
+  "Major mode for editing R source code." t)
+(autoload 'XLS-mode "ess-mode"
+  "major mode for editing XLispStat code." t)
+(autoload 'S-transcript-mode
+  "ess-trns" "ESS source eval mode" t)
+(autoload 'R-transcript-mode
+  "ess-trns" "ESS source eval mode" t)
+(autoload 'inferior-ess "ess-inf"
+  "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
+
+
+
+
  ; ess-mode: editing S source
 
 (autoload 'ess-dump-object-into-edit-buffer "ess-mode"
@@ -218,6 +239,7 @@
            ess-language buf)))
 
 ;;; versions thanks to Barry Margolin <barmar@bbnplanet.com>.
+;;; unfortunately, requires 'cl.  Whoops.
 ;;(defun ess-setq-vars (var-alist &optional buf) 
 ;;  "Set language variables from alist, in buffer `buf', if desired."
 ;;  (if buf (set-buffer buf))
