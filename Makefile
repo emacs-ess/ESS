@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.80 2004/05/11 16:33:34 rsparapa Exp $
+## $Id: Makefile,v 5.81 2004/06/28 21:17:14 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -66,7 +66,7 @@ cleanup-dist:
 	  chmod -R u+w $(ESSDIR) && rm -rf $(ESSDIR) ; fi)
 
 ChangeLog: VERSION
-	$(EMACSLOGCVS)
+	$(EMACSBATCH) $(EMACSLOGCVS)
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
 	(echo `date "+%Y-%m-%d "` \
