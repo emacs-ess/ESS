@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/25 21:20:01 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: ess-comp.el,v 1.3 1997/07/25 21:20:01 rossini Exp $
+;; Modified: $Date: 1997/07/26 01:06:16 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: ess-comp.el,v 1.4 1997/07/26 01:06:16 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;: $Log: ess-comp.el,v $
+;;: Revision 1.4  1997/07/26 01:06:16  rossini
+;;: setup to nuke byte-compiler warnings for Emacs...
+;;:
 ;;: Revision 1.3  1997/07/25 21:20:01  rossini
 ;;: need (require 'ess), as well (for function defs and autoloads...).
 ;;:
@@ -50,9 +53,19 @@
 
 ;;; primarily for Emacs, but also for setting up compile load-path
 ;;; properly (Emacs doesn't include '.' in the emacs lisp load path).
+
+;;(setq load-path (cons "." load-path))
 (add-to-list 'load-path nil)
+
+(if (not (string-match "XEmacs\\|Lucid" emacs-version))
+    (setq byte-compile-warnings '(free-vars callargs 
+				  redefine obsolete)) ; removed
+					; `unresolved'.
+
+(setq byte-optimize t))
 (require 'ess-vars)
 (require 'ess)
+
 
  ; Local variables section
 
