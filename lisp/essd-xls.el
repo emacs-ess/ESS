@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/02 16:15:41 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: essd-xls.el,v 1.7 1997/07/02 16:15:41 rossini Exp $
+;; Modified: $Date: 1997/07/02 16:21:10 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: essd-xls.el,v 1.8 1997/07/02 16:21:10 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.8  1997/07/02 16:21:10  rossini
+;;: removed hooks.
+;;:
 ;;: Revision 1.7  1997/07/02 16:15:41  rossini
 ;;: moved variables to XLS defun.
 ;;:
@@ -42,14 +45,12 @@
 
 ;;; Code:
 
-
-(defun ess-XLS-shortcut-pre-run-hook ()
-  "Initialize variables."
-)
-
-(defun ess-XLS-shortcut-post-run-hook ()
-  "Remove initialization."
-  (remove-hook 'ess-pre-run-hook 'ess-XLS-shortcut-pre-run-hook))
+;;(defun ess-XLS-shortcut-pre-run-hook ()
+;;  "Initialize variables."
+;;)
+;;(defun ess-XLS-shortcut-post-run-hook ()
+;;  "Remove initialization."
+;;  (remove-hook 'ess-pre-run-hook 'ess-XLS-shortcut-pre-run-hook))
 
 
 (defun XLS () "Call 'XLS', but this is only minimally correct..."
