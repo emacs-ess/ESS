@@ -3,63 +3,38 @@
 @setfilename readme.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: readme.texi,v 1.27 2002/07/31 20:48:29 rsparapa Exp $
+@comment $Id: readme.texi,v 1.28 2002/08/05 17:48:37 rsparapa Exp $
 
 @node General Information
 @comment  node-name,  next,  previous,  up
 @chapter General Information: README
 @cindex README
 
-($Revision: 1.27 $, for ESS version 
-@include ../VERSION
-)
-
 This is the README file for the distribution of ESS version 
 @include ../VERSION
-, the gamma series we are using on the way to producing 5.2 (the next
-stable distribution).  ESS is an Emacs-Lisp interface for interactive
-statistical programming and data analysis.  Languages supported include:
-S dialects (S 3/4, S-PLUS 3/4/5/6, and R), LispStat dialects (XLispStat,
-ViSta), and SAS.  Stata and SPSS dialect (SPSS, PSPP) support is being
-examined for possible future implementation (a preliminary Stata mode is
-distributed).
 
-Installation help can be found in sections for Unix Installation or
-Windows Installion
-
-
-ESS grew out of the desire for bug fixes and extensions to S-mode-4.8.
-In particular, XEmacs support as well as extensions to incorporate R
-were desired.  In addition, with new modes being developed for R,
-Stata, and SAS, it was felt that providing for a unifying framework
-would eliminate differences in the user interface, as well as to
-provide for faster development of production tools and statistical
-analysis.  5.1.x has, for its guts, the basic framework from S-mode.
-However, it has been cleaned, streamlined, brought closer to
-conformance as a standard GNU Emacs package, and redesigned for
-modularity and reuse.
+The final release of the 5.1.x series on the way to 5.2 (the next stable 
+distribution).  ESS is a GNU Emacs and XEmacs mode for interactive
+statistical programming and data analysis.  Languages supported:  the
+S family (S 3/4, S-PLUS 3/4/5/6, and R), SAS, XLispStat, Stata and BUGS.
+Installation help can be found in sections for both Unix and Windows.
+ESS grew out of the desire for bug fixes and extensions to S-mode and 
+SAS-mode as well as a consistent union of their features in one package.
 
 The current development team is led by A.J. (Tony) Rossini
 (@email{rossini@@biostat.washington.edu}), who did the initial port to
 XEmacs and has been the primary coder.  Martin Maechler
 (@email{maechler@@stat.math.ethz.ch}) and Kurt Hornik
 (@email{hornik@@ci.tuwien.ac.at}) have assisted with S-PLUS, S4, R, and
-XLispStat sub-modes, and Richard M. Heiberger 
-(@email{rmh@@surfer.sbm.temple.edu}) has assisted with S-PLUS (under MS
-Windows and remote access) and S4 development.  Richard and Rodney Sparapani 
-(@email{rsparapa@@mcw.edu}) have done much of the work for implementing the 
-SAS sub-mode.  Douglas Bates (@email{bates@@stat.wisc.edu}) contributed the 
-initial S4 mode.
+XLispStat.  Richard M. Heiberger (@email{rmh@@surfer.sbm.temple.edu}) has 
+assisted with S-PLUS and S4 development for Windows.  Richard and 
+Rodney A. Sparapani (@email{rsparapa@@mcw.edu}) have done much of the work 
+implementing interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.  
 
-We are grateful to David M. Smith, the previous developer (for S-mode
-3.x and 4.x), as well as to the initial developers of S-mode, Doug
-Bates, Ed Kademan and Frank Ritter.
-
-In addition, some of the code has been and will be borrowed from Tom
-Cook (from his excellent SAS mode) and Thomas Lumley (preliminary
-Stata mode), gratefully (from us) and with permission (from them).
-
-The name is @b{ESS}.  Not ESS-mode.
+We are grateful to the previous developers of S-mode (Doug Bates, Ed Kademan,
+Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and Stata-mode (Thomas 
+Lumley).
+@c The name is @b{ESS}.  Not ESS-mode.
 
 @menu
 * License::
