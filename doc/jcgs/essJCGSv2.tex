@@ -7,32 +7,35 @@
 %\draftfalse
 
 %1.  a statistician's dream environment
-%2.  what emacs has to offer
+%2.  what emacs has to offer statisticians
 %        a) buffers
 %        b) key-binding
 %        c) other packages
 %                1) font-lock
 %                2) shell/comint
 %                3) ange-ftp/EFS/Tramp
-%3. what ESS has to offer
-%        1) font-lock/key-binding/other packages revisited
-%        2) statistical process interaction
-%                a) interactive
-%                        1) R/S
-%                        2) SAS
-%                b) batch
-%                        1) SAS
-%                        2) BUGS
+%3. what ESS has to offer statisticians
+%        0) font-lock/key-binding/other packages revisited
+%        -- incorporated in new 3.1 and 3.2 below
+%        1) interactive
+%           a) R/S
+%           b) SAS
+%        2) batch
+%           a) SAS
+%           b) BUGS
 %4. ESS as an open source project
-%        1) early days
+%        1) beginnings
 %                a)S-mode
 %                b)SAS-mode
-%        2) transition
+%        2) unification
 %                a)ESS-mode
 %                b)Emacs/XEmacs
-%        3) modern era
-%                a)GPL, cvs, ssh
-%                 b)ESS 6, the next generation?
+%        3) what's next
+%5. Discussion
+%        1) internet resources
+%                a) home page
+%                b) ess-help
+%                c) anonymous cvs
 
 \ifdraft
  \addtolength{\topmargin}{-1cm}
@@ -132,7 +135,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/11 07:41:19 $ - $Revision: 1.46 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/11 20:27:48 $ - $Revision: 1.47 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -204,45 +207,8 @@ Rich: probably something about hyperref.  I get warning messages from
 Miktex about hyperref.  I am using vanilla miktex.  The natbib.sty is
 not part of that distribution.  I got it from you last year.  Here is
 my latex log:
-\begin{verbatim}
-c:/emacs/ess-washington/ess/doc/jcgs$ latex \\input essJCGSv2.tex
-This is TeX, Version 3.14159 (MiKTeX 2.1)
-LaTeX2e <2000/06/01>
-Babel <v3.7h> and hyphenation patterns for english, french, german, ngerman, du
-mylang, nohyphenation, loaded.
-(essJCGSv2.tex (C:\texmf\tex\latex\base\article.cls
-Document Class: article 2000/05/19 v1.4b Standard LaTeX document class
-(C:\texmf\tex\latex\base\size10.clo)) (natbib.sty)
-(C:\texmf\tex\latex\base\alltt.sty) (C:\texmf\tex\latex\graphics\graphicx.sty
-(C:\texmf\tex\latex\graphics\keyval.sty)
-(C:\texmf\tex\latex\graphics\graphics.sty (C:\texmf\tex\latex\graphics\trig.sty
-) (C:\texmf\tex\latex\00miktex\graphics.cfg)
-(C:\texmf\tex\latex\graphics\dvips.def)))
-(C:\texmf\tex\latex\hyperref\hyperref.sty
-(C:\texmf\tex\latex\hyperref\pd1enc.def)
-(C:\texmf\tex\latex\00miktex\hyperref.cfg)
-Implicit mode ON; LaTeX internals redefined
-(C:\texmf\tex\latex\ltxmisc\url.sty))
-*hyperref using driver hypertex*
-(C:\texmf\tex\latex\hyperref\hypertex.def)
 
-Package hyperref Warning: Option `backref' has already been used,
-(hyperref)                setting the option has no effect on input line 65.
-
-
-Package hyperref Warning: Option `pagebackref' has already been used,
-(hyperref)                setting the option has no effect on input line 65.
-
-
-Package hyperref Warning: Option `hyperindex' has already been used,
-(hyperref)                setting the option has no effect on input line 65.
-
-(essJCGSv2.aux) (C:\texmf\tex\latex\hyperref\nameref.sty)
-(C:\texmf\tex\latex\base\omscmr.fd) [1] [2] [3] [4] [5] [6] [7] [8] [9]
-[10] (essJCGSv2.bbl [11]) [12] (essJCGSv2.aux) )
-Output written on essJCGSv2.dvi (12 pages, 51108 bytes).
-Transcript written on essJCGSv2.log.
-\end{verbatim}
+Rodney: that excerpt was giving teTeX fits so I'm removing it.  Sorry.
 
 \end{Comment}
 
@@ -360,14 +326,14 @@ emacs key mappings.
 
 
 \paragraph{System Support.}
-Emacs allows transparent access to remote files and
-shells over a network.  \stexttt{ange-ftp} or \stexttt{EFS} are used
-for non-secure file transfers between machines using ftp.
-\stexttt{tramp} is used for secure file transfers using scp.
-Transparent access means the user views, edits, and saves any file on
-a remote machine exactly as if it were on the local machine.
-\stexttt{tramp} is also used for logging in to a remote shell, both
-for secure connections via ssh and non-secure connections via telnet.
+Emacs allows transparent access to remote files over a network.  
+Transparent access means the user views, edits, and saves files on
+a remote machine exactly as if they were on the local machine.
+\stexttt{ange-ftp} and \stexttt{EFS} are used
+for file transfers using the non-secure ftp protocol.
+\stexttt{tramp} is used for file transfers using the secure scp protocol.
+\stexttt{tramp} can also be used to transfer files without ftp or scp
+via ssh secure connections and telnet non-secure connections.
 
 Interacting with revision control
 programs is provided by the minor-mode \stexttt{vc-mode} for packages
