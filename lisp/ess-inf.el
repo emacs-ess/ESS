@@ -3,14 +3,23 @@
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainers: Hornik, Maechler, Rossini <rossinI@stat.sc.edu>
+;; Maintainers: Hornik,
+;;                       Maechler <maechler@stat.math.ethz.ch>,
+;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/18 15:06:11 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: ess-inf.el,v 1.7 1997/06/18 15:06:11 rossini Exp $
+;; Modified: $Date: 1997/06/18 15:09:06 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: ess-inf.el,v 1.8 1997/06/18 15:09:06 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.8  1997/06/18 15:09:06  rossini
+;;  ess-force-buffer-current & ess-request-a-process :
+;;        current-prefix-arg  ('prefix-arg' is wrong!)
+;;  ess-force-buffer-current  : need another   (and (not force) ...)
+;;
+;; (this and the last, were due to Martin M.)
+;;
 ;; Revision 1.7  1997/06/18 15:06:11  rossini
 ;;  force-buffer-current:
 ;;     Finally made (prefix) argument  FORCE really do something
