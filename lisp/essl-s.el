@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2001/02/28 12:59:04 $
-;; Version: $Revision: 5.25 $
-;; RCS: $Id: essl-s.el,v 5.25 2001/02/28 12:59:04 maechler Exp $
+;; Modified: $Date: 2001/12/17 09:47:36 $
+;; Version: $Revision: 5.26 $
+;; RCS: $Id: essl-s.el,v 5.26 2001/12/17 09:47:36 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -480,7 +480,7 @@ Uses the file given by the variable `ess-function-outline-file'."
  in string/comment.  `ess-S-assign', typically \" <- \", can be customized."
   (interactive)
   ;;(insert (if (inside-string/comment-p (point)) "_" ess-S-assign))
-  (if (inside-string/comment-p (point)) 
+  (if (inside-string/comment-p (point))
       (insert "_")
     ;; else
     (delete-horizontal-space)
@@ -511,7 +511,7 @@ Uses the file given by the variable `ess-function-outline-file'."
 (ess-toggle-underscore 'force-to-S-assign)
 
 (defun ess-add-MM-keys ()
-  "Define \"C-c f\" and force \\[ess-toggle-underscore]."
+  "Define MM's user keys, currently only \\<ess-mode-map>\\[ess-insert-function-outline]."
   (interactive)
   (require 'ess-mode)
   (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline))
@@ -521,7 +521,7 @@ Uses the file given by the variable `ess-function-outline-file'."
 
 Currently, this needs to:
    1. set the buffer to the right mode, with the right settings
-   2. format the statement, 
+   2. format the statement,
    3. c/function/Sfunc/
 and I need to relearn emacs lisp (but I had to, anyway."
 
