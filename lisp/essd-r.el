@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/04/25 08:27:19 $
-;; Version: $Revision: 5.37 $
-;; RCS: $Id: essd-r.el,v 5.37 2002/04/25 08:27:19 rossini Exp $
+;; Modified: $Date: 2002/04/25 08:28:57 $
+;; Version: $Revision: 5.38 $
+;; RCS: $Id: essd-r.el,v 5.38 2002/04/25 08:28:57 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -127,8 +127,8 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode R-customize-alist proc-name)
   ;; ECB needs seminatic stuff.
-  (if (featurep 'semantic)
-      (setq semantic-toplevel-bovine-table r-toplevel-bovine-table))
+  ;;  (if (featurep 'semantic)
+  ;;      (setq semantic-toplevel-bovine-table r-toplevel-bovine-table))
   ;; AJR: Need to condition on this...!
   ;; MM: and you probably should really use ess-imenu-mode-function from above!
   (ess-imenu-R))
