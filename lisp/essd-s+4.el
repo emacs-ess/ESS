@@ -4,11 +4,11 @@
 ;; Copyright (C) 1997 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 1998/12/11 19:41:37 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: essd-s+4.el,v 1.2 1998/12/11 19:41:37 rossini Exp $
+;; Modified: $Date: 1998/12/11 19:48:23 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: essd-s+4.el,v 1.3 1998/12/11 19:48:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
