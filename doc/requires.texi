@@ -1,14 +1,13 @@
-ESS works best with either GNU Emacs version 20.3 or higher, or
-XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
+ESS has been most thoroughly tested with:
 
 @itemize @bullet
-@item S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1
-@item R versions >=0.49
+@item S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1
+@item R >=0.49
 @item S4
 @item SAS 6.x, 7.x, 8.x
-@item BUGS 0.5, 0.603
+@item BUGS 0.603
 @item Stata >=6.0
-@item XLispStat versions >=3.50
+@item XLispStat >=3.50
 @end itemize
 
 on the following platforms
@@ -25,10 +24,10 @@ with the following versions of emacs
 
 @itemize @bullet
 @item GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
-@item XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4.0-8, 21.4.9-12@footnote{
-21.4.9-12 requires the files.el patch to fix the Local Variables/revert-buffer
+@item XEmacs 21.0, 21.1.13, 21.1.14, 21.4.0-8, 21.4.9-13@footnote{
+21.4.9-13 requires the files.el patch to fix the Local Variables/revert-buffer
 problem}
-@item XEmacs 19.x and GNU Emacs 19.x@footnote{These releases of emacs are no 
+@item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no 
 longer supported, so an upgrade is recommended if you plan to use ESS.
 If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note
 that you must have @file{custom} support.  It is available at 

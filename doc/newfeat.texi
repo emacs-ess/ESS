@@ -3,9 +3,13 @@ Changes/New Features in 5.2.0:
 @item ESS[BUGS]:  now supports interactive processing; special thanks to
 @uref{mailto:Aki.Vehtari@@hut.fi, Aki Vehtari}; new info documentation!
 @item ESS[SAS]:  convert .log to .sas with ess-sas-transcript;
-THEN statements now highlighted correctly (however, statement after
-THEN, seems to be having trouble); info documentation improved; 
-Local Variables bug fixes; SAS/IML statements/functions now highlighted
+info documentation improved; Local Variables bug fixes; 
+SAS/IML statements/functions now highlighted; new Local Variable,
+ess-sas-shell-buffer-init, for opening a buffer on a remote
+machine, i.e. "ssh remote-host"; experimental function
+ess-sas-interactive for interactive SAS; changed the definition of the
+variable ess-sas-edit-keys-toggle to boolean rather than 0/1; added the
+function ess-electric-run-semicolon as requested
 @end itemize
 
 Changes/New Features in 5.1.24:
