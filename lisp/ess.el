@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/03 13:58:08 $
-;; Version: $Revision: 1.25 $
-;; RCS: $Id: ess.el,v 1.25 1997/07/03 13:58:08 rossini Exp $
+;; Modified: $Date: 1997/07/03 14:03:45 $
+;; Version: $Revision: 1.26 $
+;; RCS: $Id: ess.el,v 1.26 1997/07/03 14:03:45 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.26  1997/07/03 14:03:45  rossini
+;; ess-set-vars: setq -> setq-default
+;;
 ;; Revision 1.25  1997/07/03 13:58:08  rossini
 ;; *** empty log message ***
 ;;
@@ -1043,17 +1046,17 @@ This is SO UGLY.  But it'll work for now...
 the basic idea: (setq ---  (cdr (assq --- var-alist)))."
 
   (if buf (set-buffer buf))
-  (setq ess-customize-alist var-alist)
-  (setq ess-proc-prefix              (cdr (assq ess-proc-prefix              var-alist)))
-  (setq ess-version-running          (cdr (assq ess-version-running          var-alist)))
-  (setq inferior-ess-program         (cdr (assq inferior-ess-program         var-alist)))
-  (setq inferior-ess-objects-command (cdr (assq inferior-ess-objects-command var-alist)))
-  (setq ess-help-sec-regex           (cdr (assq ess-help-sec-regex           var-alist)))
-  (setq ess-help-sec-keys-alist      (cdr (assq ess-help-sec-keys-alist      var-alist)))
-  (setq inferior-ess-help-command    (cdr (assq inferior-ess-help-command    var-alist)))
-  (setq inferior-ess-exit-command    (cdr (assq inferior-ess-exit-command    var-alist)))
-  (setq ess-loop-timeout             (cdr (assq ess-loop-timeout             var-alist)))
-  (setq inferior-ess-primary-prompt  (cdr (assq inferior-ess-primary-prompt  var-alist))))
+  (setq-default ess-customize-alist var-alist)
+  (setq-default ess-proc-prefix              (cdr (assq ess-proc-prefix              var-alist)))
+  (setq-default ess-version-running          (cdr (assq ess-version-running          var-alist)))
+  (setq-default inferior-ess-program         (cdr (assq inferior-ess-program         var-alist)))
+  (setq-default inferior-ess-objects-command (cdr (assq inferior-ess-objects-command var-alist)))
+  (setq-default ess-help-sec-regex           (cdr (assq ess-help-sec-regex           var-alist)))
+  (setq-default ess-help-sec-keys-alist      (cdr (assq ess-help-sec-keys-alist      var-alist)))
+  (setq-default inferior-ess-help-command    (cdr (assq inferior-ess-help-command    var-alist)))
+  (setq-default inferior-ess-exit-command    (cdr (assq inferior-ess-exit-command    var-alist)))
+  (setq-default ess-loop-timeout             (cdr (assq ess-loop-timeout             var-alist)))
+  (setq-default inferior-ess-primary-prompt  (cdr (assq inferior-ess-primary-prompt  var-alist))))
 
  ; Run load hook and provide package
 
