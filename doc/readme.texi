@@ -3,20 +3,20 @@
 @setfilename readme.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: readme.texi,v 1.23 2002/04/15 21:40:21 rsparapa Exp $
+@comment $Id: readme.texi,v 1.24 2002/04/16 20:21:08 rmh Exp $
 
 @node General Information
 @comment  node-name,  next,  previous,  up
 @chapter General Information: README
 @cindex README
 
-($Revision: 1.23 $, for ESS version 5.1.20)
+($Revision: 1.24 $, for ESS version @essver)
 
 This is the README file for the distribution of ESS version @essver, the
 gamma series we are using on the way to producing 5.2 (the next
 stable distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported include:
-S dialects (S 3/4, S-PLUS 3.x, and R), LispStat dialects (XLispStat,
+S dialects (S 3/4, S-PLUS 3/4/5/6, and R), LispStat dialects (XLispStat,
 ViSta), and SAS.  Stata and SPSS dialect (SPSS, PSPP) support is being
 examined for possible future implementation (a preliminary Stata mode is
 distributed).
