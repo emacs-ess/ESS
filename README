@@ -1,11 +1,11 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.32 $, for ESS version 5.1.20)
+   ($Revision: 5.33 $, for ESS version 5.1.20)
 
-   This is the README file for the distribution of ESS version 5.1.20,
-the gamma series we are using on the way to producing 5.2 (the next
-stable distribution).  ESS is an Emacs-Lisp interface for interactive
+   This is the README file for the distribution of ESS version  the
+gamma series we are using on the way to producing 5.2 (the next stable
+distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported include:
 S dialects (S 3/4, S-PLUS 3.x, and R), LispStat dialects (XLispStat,
 ViSta), and SAS.  Stata and SPSS dialect (SPSS, PSPP) support is being
@@ -66,6 +66,14 @@ in the file COPYING in the same directory as this file for more details.
 New Features
 ============
 
+   Changes/New Features in 5.1.21:
+   * ESS[SAS]: info documentation now available!, see ESS->Help for
+     Statistical Packages->Help for SAS; F12 opens GSASFILE nearest
+     point for viewing either within emacs, when available, or via an
+     external viewer; more syntax highlighting keywords
+
+   * Makefile: tag now independent of rel
+
    Changes/New Features in 5.1.20:
    * New `options()$STERM' in the S dialects (S, S-Plus, R).  The S
      program can determine the environment in which it is currently
@@ -90,7 +98,7 @@ New Features
    * should now work even when imenu is not available (for old
      Xemacsen).
 
-   * for SAS : XEmacs-Imenu fix; C-TAB is globalized along with your
+   * ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your
      function-key definitions, if specified; you can specify your SAS
      library definitions outside of autoexec.sas for ess-sas-data-view
      with SAS code placed in the variable ess-sas-data-view-libname,
@@ -108,7 +116,7 @@ New Features
      local file variables are re-read at submit instead of only at file
      open so that if you make a change it is picked up immediately;
 
-   * for BUGS: font-lock with `in' fixed.
+   * ESS[BUGS]: font-lock with `in' fixed.
 
    * for STATA: font-lock bug fixed.
 
@@ -261,15 +269,13 @@ Current Features
    * Languages Supported:
         * S dialects (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
 
-        * XLispStat including Arc and ViSta
-
         * SAS
 
         * BUGS
 
         * Stata
 
-        * SPSS dialects (SPSS, Fiasco (GNU project)) (under development)
+        * XLispStat including Arc and ViSta
 
    * Editing source code (S, XLispStat, SAS, BUGS)
         * Syntactic indentation and highlighting of source code
@@ -321,9 +327,9 @@ fixes with bug reports are much appreciated!
 Requirements
 ============
 
-   ESS version 5.1.n (n >= 2) requires Emacs version 19.34(1) or later,
-or version XEmacs 19.14 or later.  It has been most thoroughly tested
-with:
+   ESS version 5.1.n (n >= 2) works best with either GNU Emacs version
+20.3 or higher, or XEmacs version 20.0 or higher.  It has been most
+thoroughly tested with:
 
    * S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
 
@@ -333,7 +339,7 @@ with:
 
    * SAS 6.x, 7.x, 8.x
 
-   * BUGS 0.5 or 0.6
+   * BUGS 0.5 or 0.603
 
    * Stata >=6.0
 
@@ -349,20 +355,28 @@ with:
 
    * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
 
-   * Apple Mac OS: 9 (SAS), X.1 (X11 R)
+   * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
 
    with the following versions of emacs
 
-   * Emacs 19.34, 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
+   * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
 
-   * XEmacs 19.14, 19.16, 20.0, 20.4, 21.0, 21.1.13, 21.4.x
+   * XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
 
-   * Emacs 19.28, 19.29 (see footnote)
+   * XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34 (see
+     footnote)
+
+   (1)
 
    ---------- Footnotes ----------
 
-   (1) if you have Emacs 19.29, you _may_ get it to work after
-unpacking `19.29.tar.gz', see the installation instructions
+   (1) Note that you must have "custom" support.  It is available
+`http://www.dina.kvl.dk/~abraham/custom/'  These releases of emacs are
+no longer supported, so an upgrade is recommended if you plan to use
+ESS.  This is not to say that ESS will not work, but it will be up to
+the user to set it up on their own.  If you have GNU Emacs 19.29, you
+_may_ get it to work after unpacking `19.29.tar.gz', see the
+installation instructions.
 
 Getting the Latest Version
 ==========================
@@ -370,6 +384,23 @@ Getting the Latest Version
    The latest stable version of ESS is always available on the web at:
 ESS web page (http://software.biostat.washington.edu/statsoft/ess/) or
 StatLib (http://lib.stat.cmu.edu/general/ESS/)
+
+   The latest (no more than 24 hours behind the developers) version of
+ESS can also be retrieved using anonymous cvs:
+
+   You need a cvs client (that works with your firewall, if any)
+
+   the repository name is
+`:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs'
+
+   using a command-line cvs client (i.e. on Unix or DOS), first type:
+`cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs
+login'
+
+   password is anoncvs
+
+   then type:    `cvs -d
+:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess'
 
 Installation (from tar file)
 ============================
@@ -387,9 +418,8 @@ Unix installation
   1.   cd to a directory where you keep emacs lisp files, or create a
      new   directory to hold the distribution.  This directory will be
      referred   to below as "the ESS distribution directory".  It will
-     contain,   at the end, the tar file `ess-5.1.20.tar.gz', and a
-     directory for   the ESS source, which will be termed "the
-     ESS-5.1.20 source directory".
+     contain,   at the end, the tar file `ess-', and a directory for
+     the ESS source, which will be termed "the ESS- source directory".
 
      Note that the .elc files may be installed elsewhere (as specified
      in the   Makefile) if desired.
@@ -397,17 +427,17 @@ Unix installation
   2.   Retrieve the gzipped tar file or zipped file from
      http://software.biostat.washington.edu/statsoft/ess/essDL
 
-  3.   Copy `ess-5.1.20.tar.gz' to the location where you want the
-     ESS-5.1.20 directory, and cd there.  Extract the files from the
-     distribution, which will unpack into a subdirectory, ess-5.1.20.
-          	gunzip ess-5.1.20.tar.gz
-          	tar vxf ess-5.1.20.tar
-     	(or: `gunzip < ess-5.1.20.tar.gz | tar vxf -' ).  	(or using GNU
-     tar:  `tar zvxf ess-5.1.20.tar.gz').
+  3.   Copy `ess-' to the location where you want the   ESS- directory,
+     and cd there.  Extract the files from the   distribution, which
+     will unpack into a subdirectory, ess-
+          	gunzip ess-
+          	tar vxf ess-
+     	(or: `gunzip < ess- | tar vxf -' ).  	(or using GNU tar:
+     `tar zvxf ess-').
 
      The `tar' command will extract files into the current directory.
-     Do not create ess-5.1.20 yourself, or you will get an extra level
-     of   depth to your directory structure.
+     Do not create ess- yourself, or you will get an extra level of
+     depth to your directory structure.
 
      Note if you have a very ancient version of GNU emacs (_and_  really
       can not upgrade to Emacs 20 or higher!) you can unpack the
@@ -423,9 +453,9 @@ Unix installation
 
   5.   READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     In the ess-5.1.20 directory, edit the file `Makeconf' (only if you
-      want to place the executables in other locations; see LISPDIR and
-      INFODIR) and then type:
+     In the ess- directory, edit the file `Makeconf' (only if you
+     want to place the executables in other locations; see LISPDIR and
+     INFODIR) and then type:
           	make
 
      If this works, then you might try:
@@ -528,34 +558,34 @@ Microsoft Windows installation
      new    directory (for example, `c:\emacs\') to hold the
      distribution.  This    directory will be referred to below as "the
      ESS distribution    directory".  It will contain, at the end,
-     either the tar file    `ess-5.1.20.tar.gz' or the zip file
-     `ess-5.1.20.zip', and a    directory    for the ESS source, which
-     will be termed "the ESS-5.1.20 source    directory".
+     either the tar file    `ess-' or the zip file `ess-', and a
+     directory    for the ESS source, which will be termed "the ESS-
+     source    directory".
 
-  2.       Retrieve the compressed tar file `ess-5.1.20.tar.gz' or the
-        zipped file `ess-5.1.20.zip' from one of the FTP or WWW
-     archive sites      via FTP (or HTTP).  Be aware that http browsers
-     on Windows      frequently change the "." and "-" characters in
-     filenames to other      punctuation.  Please change the names back
-     to their original form.
+  2.       Retrieve the compressed tar file `ess-' or the      zipped
+     file `ess-' from one of the FTP or WWW      archive sites      via
+     FTP (or HTTP).  Be aware that http browsers on Windows
+     frequently change the "." and "-" characters in filenames to other
+         punctuation.  Please change the names back to their original
+     form.
 
-  3.       Copy `ess-5.1.20.tar.gz' to the location where you want the
-        ess-5.1.20 directory, for example to
-     `c:\emacs\ess-5.1.20.tar.gz', and cd there.  For example,
+  3.       Copy `ess-' to the location where you want the      ess-
+     directory, for example to      `c:\emacs\ess-', and cd there.  For
+     example,
 
                        cd c:\emacs
 
      Extract the files from the distribution, which will unpack
-     into a subdirectory, `ess-5.1.20'.
-                    	gunzip ess-5.1.20.tar.gz
-                    	tar vxf ess-5.1.20.tar
-          	(or: `gunzip < ess-5.1.20.tar.gz | tar vxf -' ).
-        (or: from the zip file: `unzip ess-5.1.20.zip')
+     into a subdirectory, `ess-'.
+                    	gunzip ess-
+                    	tar vxf ess-
+          	(or: `gunzip < ess- | tar vxf -' ).          (or:
+     from the zip file: `unzip ess-')
 
      The `tar' command will extract files into the current directory.
 
-     Do not create `ess-5.1.20' yourself, or you will get an extra level
-         of   depth to your directory structure.
+     Do not create `ess-' yourself, or you will get an extra level
+     of   depth to your directory structure.
 
   4.      Windows users will usually be able to use the
      `lisp/ess-site.el'      as distributed.  Only rarely will changes
