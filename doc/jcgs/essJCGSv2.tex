@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/05 20:13:01 $ - $Revision: 1.105 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/05 22:27:09 $ - $Revision: 1.106 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -190,11 +190,18 @@ open-source, cross-platform
 
 Most statistical research activities, particularly data analysis and
 communication, involve some form of computing.  This places the
-computer and its user interface in the central role of facilitating
-statistical tasks.  This paper introduces Emacs Speaks Statistics
-(ESS) \citep{ESS}, a software package designed to provide a
-multi-platform, multi-package intelligent environment for statistical
-analysis.
+computer user interface in the central role of facilitating
+statistical tasks.  While presentation of components, information, and
+similar output is the most visual component of a user interface,
+perhaps a more critical component is how the user provides input to
+the computer.  A common, well-understood set of input behaviors can
+provide large gains in efficiency.  This paper introduces Emacs Speaks
+Statistics (ESS) \citep{ESS}, which is a software package which
+provides a common interface to a variety of statistical packages on
+the most common computing platforms.
+%designed to provide a
+%multi-platform, multi-package intelligent environment for statistical
+%analysis.
 
 ESS is an interface to statistical packages, and provides, through
 Emacs, additional tools which facilitate both statistical software
@@ -245,12 +252,11 @@ interface (GUI) which allows the user to interact with either a
 keyboard or a mouse, and encourage multiple applications to share a
 single display.  Presently, Emacs is more often used with a GUI,
 %in a windowing environment within its own window, 
-but command keymapping is still an
-important time-saving feature.  Emacs menus and toolbars on the
-display screen allow mouse access to frequently used actions and
-provide a graphical alternative when the user does not know or can not
-recall a keymap.  User-defined menus and toolbars can be constructed
-as needed.
+but binding commands to keymaps provides an important time-saving
+feature.  Emacs menus and toolbars on the display screen allow mouse
+access to frequently used actions and provide a graphical alternative
+when the user does not know or can not recall a keymap.  User-defined
+menus and toolbars can be constructed as needed.
 
 \paragraph{Buffers for Editing and for Program Control.}
 Within Emacs, buffers provide the interface between the text editor
@@ -261,13 +267,13 @@ simultaneously edit multiple files and control multiple programs.  For
 disk files, the working copy of the opened file is placed in an Emacs
 buffer where it can be viewed and edited either by the user or
 automatically by Emacs; Emacs will save the contents to disk at
-pre-specified intervals.  One common program that is run within Emacs
+specified intervals.  One common program that is run within Emacs
 buffers is the interactive operating system command line interpreter,
 called a shell.  Based on this, most programs which take input and
 provide output to the command-line can be run within Emacs.  When a
 command line interpreter is run inside a buffer, the entire transcript
-of the interaction is immediately editable and searchable while the
-program is still running.
+of the interaction can be edited and searched while the program is
+still running.
 
 \paragraph{Major and Minor Modes.}
 \label{sec:modes}
