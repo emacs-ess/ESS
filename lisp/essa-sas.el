@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/15 06:26:15 $
-;; Version: $Revision: 1.71 $
-;; RCS: $Id: essa-sas.el,v 1.71 2002/01/15 06:26:15 rmh Exp $
+;; Modified: $Date: 2002/01/15 17:18:42 $
+;; Version: $Revision: 1.72 $
+;; RCS: $Id: essa-sas.el,v 1.72 2002/01/15 17:18:42 rmh Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -599,32 +599,28 @@ Keep in mind that the maximum command line length in MS-DOS is
   (setq left-margin (current-column))
 )
   
-(defun ess-sas-toggle-log-sas-mode (&optional force)
-  "Toggle SAS-mode for .log files."
+(defun ess-sas-toggle-sas-log-mode (&optional force)
+  "Toggle SAS-log-mode for .log files."
   (interactive)
 
   (if force (progn
-	      (setq auto-mode-alist (append '(("\\.log\\'" . SAS-mode)) auto-mode-alist))
-	      (setq auto-mode-alist (append '(("\\.LOG\\'" . SAS-mode)) auto-mode-alist)))
+	      (setq auto-mode-alist (append '(("\\.log\\'" . SAS-log-mode)) auto-mode-alist))
+	      (setq auto-mode-alist (append '(("\\.LOG\\'" . SAS-log-mode)) auto-mode-alist)))
     
-    (if (equal (prin1-to-string (cdr (assoc "\\.log\\'" auto-mode-alist))) "SAS-mode")
-	(setq auto-mode-alist (delete '("\\.log\\'" . SAS-mode) auto-mode-alist))
-      (setq auto-mode-alist (append '(("\\.log\\'" . SAS-mode)) auto-mode-alist)))
-    
-    (if (equal (prin1-to-string (cdr (assoc "\\.LOG\\'" auto-mode-alist))) "SAS-mode")
-	(setq auto-mode-alist (delete '("\\.LOG\\'" . SAS-mode) auto-mode-alist))
-      (setq auto-mode-alist (append '(("\\.LOG\\'" . SAS-mode)) auto-mode-alist)))
-    )
+    (if (or (equal (prin1-to-string (cdr (assoc "\\.log\\'" auto-mode-alist))) "SAS-log-mode")
+	    (equal (prin1-to-string (cdr (assoc "\\.LOG\\'" auto-mode-alist))) "SAS-log-mode"))
+	(progn (setq auto-mode-alist (delete '("\\.log\\'" . SAS-log-mode) auto-mode-alist))
+	       (setq auto-mode-alist (delete '("\\.LOG\\'" . SAS-log-mode) auto-mode-alist)))
+      (setq auto-mode-alist (append '(("\\.log\\'" . SAS-log-mode)) auto-mode-alist))
+      (setq auto-mode-alist (append '(("\\.LOG\\'" . SAS-log-mode)) auto-mode-alist))))
   
   (if (or (equal (file-name-extension (buffer-file-name)) "log")
 	  (equal (file-name-extension (buffer-file-name)) "LOG"))
-      (if (or (equal (prin1-to-string (cdr (assoc "\\.log\\'" auto-mode-alist))) "SAS-mode")
-	      (equal (prin1-to-string (cdr (assoc "\\.LOG\\'" auto-mode-alist))) "SAS-mode"))
-	  (SAS-mode)
-	(font-lock-mode 0)
-	(funcall default-major-mode)))
-	(font-lock-mode 1)
-  )
+    (progn (font-lock-mode 0)
+	   (normal-mode)
+	   (if (not (equal (prin1-to-string major-mode) "ess-mode"))
+	       (ess-transcript-minor-mode 0))
+	   (font-lock-mode 1))))
 
 (defun ess-sleep ()
 "Put emacs to sleep for `ess-sleep-for' seconds.
@@ -680,7 +676,7 @@ Without args, toggle between these options."
   (global-set-key (quote [f8]) 'ess-sas-submit)
   (global-set-key [(control f8)] 'ess-sas-submit-region)
   (global-set-key (quote [f9]) 'ess-sas-data-view)
-  (global-set-key (quote [f10]) 'ess-sas-toggle-log-sas-mode)
+  (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 (defvar ess-sas-global-unix-keys nil
@@ -699,7 +695,7 @@ Without args, toggle between these options."
   (global-set-key (quote [f7]) 'ess-sas-goto-file-1)
   (global-set-key (quote [f8]) 'shell)
   (global-set-key (quote [f9]) 'ess-sas-data-view)
-  (global-set-key (quote [f10]) 'ess-sas-toggle-log-sas-mode)
+  (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
 	(if (and ess-sas-edit-keys-toggle
 	    (equal emacs-major-version 19) (equal emacs-minor-version 28))
@@ -725,7 +721,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f8]) 'ess-sas-submit)
   (define-key sas-mode-local-map [(control f8)] 'ess-sas-submit-region)
   (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
-  (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-log-sas-mode)
+  (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
@@ -746,7 +742,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f7]) 'ess-sas-goto-file-1)
   (define-key sas-mode-local-map (quote [f8]) 'shell)
   (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
-  (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-log-sas-mode)
+  (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
