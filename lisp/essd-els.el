@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/05/10 04:58:54 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: essd-els.el,v 1.19 2002/05/10 04:58:54 rmh Exp $
+;; Modified: $Date: 2002/05/10 20:24:31 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: essd-els.el,v 1.20 2002/05/10 20:24:31 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -195,7 +195,12 @@ shell or comint buffer on the local computer."
     (goto-char (point-max))
     (if (equal ess-language "S")
 	(if inferior-ess-language-start
-	    (ess-eval-linewise inferior-ess-language-start)))
+	    (progn
+	      (setq ess-editor nil)
+	      (setq ess-pager nil)
+	      (setq inferior-ess-language-start
+		    (eval inferior-S-language-start))
+	      (ess-eval-linewise inferior-ess-language-start))))
     (if (equal ess-language "SAS")
 	(progn (font-lock-mode 0)
 	       (SAS-log-mode)
