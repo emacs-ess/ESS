@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.34 2000/07/03 15:59:37 maechler Exp $
+## $Id: Makefile,v 5.35 2000/10/30 01:29:32 rossini Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -79,58 +79,3 @@ tar:
 	zip -r ESS-$(ESSVERSION).zip $(ESSVERSIONDIR)
 	@echo "** Cleaning up **"
 	rm -rf ess $(ESSVERSIONDIR)
-
-
-## PA's version, infinitely interesting...
-#dist:
-#        @if [ "X$(TAG)" = "X" ]; then echo "*** No tag ***"; exit 1; fi
-#        if [ "X$(OLD)" = "X" ]; then echo "No patch"; exit 1; fi
-#        @echo "**********************************************************"
-#        @echo "** Making distribution of auctex for release $(TAG)"
-#        @echo "**********************************************************"
-#        if [ -d auctex-$(TAG) ]; then rm -r auctex-$(TAG) ; fi
-#        rm -f $(WWWDIR)/version
-#        echo $(TAG) > $(WWWDIR)/version
-#        perl -pi.bak -e "s/Version: $(OLD)/Version: $(TAG)/" \
-#            $(AUCSRC) $(EXTRAFILES)
-#        mv ChangeLog ChangeLog.old
-#        echo `date "+%Y-%m-%d "` \
-#             " Per Abrahamsen  <abraham@dina.kvl.dk>" > ChangeLog
-#        echo >> ChangeLog
-#        echo "  * Version" $(TAG) released. >> ChangeLog
-#        echo >> ChangeLog
-#        cat ChangeLog.old >> ChangeLog
-#        cvs commit -m "Release $(OLD)++" tex.el
-#        rm -f tex.el.orig
-#        mv tex.el tex.el.orig
-#        sed -e '/defconst AUC-TeX-date/s/"[^"]*"/"'"`date`"'"/' \
-#            -e '/defconst AUC-TeX-version/s/"[^"]*"/"'$(TAG)'"/' \
-#            < tex.el.orig > tex.el
-#        rm -f $(REMOVE)
-#        -cvs remove $(REMOVE)
-#        -cvs add $(AUCSRC) $(EXTRAFILES)
-#        -(cd doc; cvs add `echo $(DOCFILES) | sed -e s@doc/@@g` )
-#        -(cd style; cvs add `echo $(STYLESRC) | sed -e s@style/@@g` )
-#        cvs commit -m "Release $(TAG)"
-#        cvs tag release_`echo $(TAG) | sed -e 's/[.]/_/g'`
-#        mkdir auctex-$(TAG)
-#        mkdir auctex-$(TAG)/style
-#        mkdir auctex-$(TAG)/doc
-#        cp $(AUCSRC) $(EXTRAFILES) auctex-$(TAG)
-#        cp $(STYLESRC) auctex-$(TAG)/style
-#        cp $(DOCFILES)  auctex-$(TAG)/doc
-#        (cd doc; $(MAKE) dist; cp auctex auctex-* ../auctex-$(TAG)/doc )
-#        (cd doc; cp INSTALLATION README CHANGES ../auctex-$(TAG)/ )
-#        cp doc/CHANGES $(FTPDIR)/CHANGES-$(TAG)
-#        cp doc/auc-tex.ps $(FTPDIR)
-#        cp ChangeLog $(FTPDIR)
-#        cp doc/*.html $(WWWDIR)/doc
-#        rm -f $(FTPDIR)/auctex-$(TAG).tar.gz $(FTPDIR)/auctex.tar.gz
-#        rm -f $(FTPDIR)/auctex.tar.Z $(FTPDIR)/auctex.zip
-#        tar -cf - auctex-$(TAG) | gzip --best > $(FTPDIR)/auctex-$(TAG).tar.gz
-#        tar -cf - auctex-$(TAG) | compress > $(FTPDIR)/auctex.tar.Z
-#        zip -r $(FTPDIR)/auctex auctex-$(TAG)
-#        (cd $(FTPDIR); ln -s auctex-$(TAG).tar.gz auctex.tar.gz)
-#        cvs rdiff -r release_`echo $(OLD) | sed -e 's/[.]/_/g'` \
-#                  -r release_`echo $(TAG) | sed -e 's/[.]/_/g'` auctex \
-#                > $(FTPDIR)/auctex-$(OLD)-to-$(TAG).patch ;  exit 0
