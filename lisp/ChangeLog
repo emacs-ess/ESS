@@ -1,3 +1,7 @@
+Tue Sep 14 22:55:55 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* essd-xls.el (xlispstat-mode): added as a synonym.
+
 Tue Sep 14 16:53:21 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* noweb-mode.el: Emacs/XEmacs compatibility done.
