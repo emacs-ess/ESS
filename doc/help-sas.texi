@@ -18,7 +18,7 @@ ESS[SAS] was written with two primary goals.
 
 1. The emacs text editor provides a powerful and flexible development environment
 for programming languages.  These features are a boon to all programmers and,
-with the help of ESS[SAS], to SAS users in particular.
+with the help of ESS[SAS], to SAS users as well.
 
 2. Although, a departure from SAS Display Manager, ESS[SAS] provides similar
 key definitions to give novice ESS[SAS] users a head start.  Also, inconvenient
@@ -56,9 +56,9 @@ ESS[SAS] is the mode for editing SAS language files.  This mode handles:
   files are automatically refreshed with each keypress).
 @end display
 
-ESS[SAS] is automatically turned on when editing a file with a ".sas" 
-suffix (or other, if specified in ess-site via auto-mode-alist).  The batch 
-processing keypress commands can be enabled to use the same function keys that
+ESS[SAS] is automatically turned on when editing a file with a .sas 
+suffix (or other extension, if specified via auto-mode-alist).  The function
+keys can be enabled to use the same function keys that
 the SAS Display Manager does.  The interactive capabilities of ESS require you 
 to start an inferior SAS process with M-x SAS
 (@xref{iESS(SAS)--Interactive SAS processes}.)
@@ -129,17 +129,17 @@ Troubleshooting: @xref{iESS(SAS)--Common problems}.
 Submission of a SAS batch job is dependent on your environment.  
 ess-sas-submit-method is determined by your operating system and your shell.
 It defaults to 'sh unless you are running Windows or Mac Classic.  Under Windows,
-it will default to 'sh if you are using bash for your shell rather than
-MS-DOS ('ms-dos).  On Mac OS X, it will default to 'sh, but under Mac Classic 
+it will default to 'sh if you are using a Unix-imitating shell; otherwise 'ms-dos
+for an MS-DOS shell.  On Mac OS X, it will default to 'sh, but under Mac Classic 
 AppleScript is used ('apple-script).  You will also set this to 'sh if the SAS batch 
 job needs to run on a remote machine rather than your local machine.  This works
 transparently if you are editing the remote file via ange-ftp/EFS or tramp.  
 However, if you are editing the file locally and transferring it back and forth
-with Kermit, you need some additional steps.  First of all, start Kermit locally
+with Kermit, you need some additional steps.  First, start Kermit locally
 before remotely logging in.  Open a local copy of the file with the 
 ess-kermit-prefix character prepended (the default is "#").  Execute the command 
 ess-kermit-get which brings the contents of the remote file into your local copy.  
-Also, note that the remote Kermit command is defined by ess-kermit-command.  
+Also, note that the remote Kermit command is specified by ess-kermit-command.  
 
 The command used by the SUBMIT function key (F3 or F8) to submit a batch SAS 
 job, whether local or remote, is ess-sas-submit-command which defaults to sas-program.  sas-program is 
@@ -162,7 +162,7 @@ M-x customize-variable):
 @end example
 
 There is a built-in delay before a batch SAS job is submitted when using
-a Unix shell under Windows.  This is necessary in many cases 
+a Unix-imitating shell under Windows.  This is necessary in many cases 
 since the shell might not be ready to receive a command.  This delay is 
 currently set high enough so as not to be a problem.  But,
 there may be cases when it needs to be set higher, or could be set much
@@ -198,7 +198,7 @@ Unix (2, 4) and Windows (3, 5); ESS can use either.
 @item
 The ESS[SAS] function key definitions can be active in all buffers
 (global: 4, 5) or limited (local: 2, 3) only to buffers with files that are
-associated with ESS[SAS] as defined in your auto-mode-alist.
+associated with ESS[SAS] as specified in your auto-mode-alist.
 @end enumerate
 
 The distinction between local and global is subtle.  If you want
@@ -302,7 +302,7 @@ F2 performs the `refresh' operation on the current buffer.  `refresh'
 compares the buffer's last modified date/time with the file's last
 modified date/time and replaces the buffer with the file if the file is newer.  
 This is the same operation that is automatically performed when LOG, OUTPUT, 
-`filetype-1' or `filetype-2' are pressed.
+`filetype-1' or F11 are pressed.
 
 `filetype-1' switches you to a file with the same file name as your .sas file, 
 but with a different extension (.txt by default) and performs `refresh'.  
@@ -367,7 +367,28 @@ and the tab stops are set at multiples of sas-indent-width.
 @node   ESS(SAS)--Usage scenarios, iESS(SAS)--Common problems, ESS(SAS)--TAB key, Help for SAS
 @section ESS[SAS]--Usage scenarios
 
-We present a batch and an interactive scenario for using ESS with SAS.
+We present a batch and an interactive scenario for using ESS with SAS.  
+The remarks with respect to graphics apply to either with exceptions noted.
+
+Graphics
+
+Output from GPROCs can be displayed in a SAS/Graph window for SAS batch on 
+Windows or for both SAS batch and interactive with X11 on Unix.  
+If you need to create graphics files and view them with F12, then include 
+the following in myfile.sas (for F12 to work the FILENAME statement
+must be in myfile.sas, but the GOPTIONS statement can be in your autoexec.sas):
+@example
+filename gsasfile 'graphics.ps'; 
+goptions device=ps gsfname=gsasfile gsfmode=append; 
+@end example
+PROC PLOT graphs can be viewed in the listing buffer.  You may
+wish to control the vertical spacing to allow the entire plot
+to be visible on screen, for example:
+@example
+proc plot;
+    plot a*b / vpos=25;
+run;
+@end example
 
 SAS Batch (ess-sas-global-unix-keys keys shown, ess-sas-global-pc-keys in 
 parentheses).
@@ -396,7 +417,7 @@ kill %1
 You may want to visit the .log (whether the job is still running 
 or it is finished) and check for error messages.  The .log will be
 refreshed and you will be placed in it's buffer.  You will be 
-taken to the 1st error message after the cursor, if any.  
+taken to the 1st error message, if any.  
 @example
 F5 (F6)
 @end example
@@ -458,30 +479,10 @@ Information appears in the log buffer, analysis results in the
 listing buffer.  In case of errors, make the corrections in the
 myfile.sas buffer and resubmit with another C-c C-r
 
-PROC GPLOT graphs can be displayed in a SAS/Graph window if you
-are running X11.  If so, then place the following in your autoexec.sas:
-@example
-goptions device=xcolor;
-@end example
-If you are not running X11, you will want to 
-create graphics files and view them with F12 (or if you are running X11 and
-you need to create a graphics file anyway); then include
-the following lines in myfile.sas:
-@example
-filename gsasfile 'grafout.ps';
-goptions device=ps gsfname=gsasfile gsfmode=append;
-@end example
-PROC PLOT graphs can be viewed in the listing buffer.  You may
-wish to control the vertical spacing to allow the entire plot
-to be visible on screen, for example:
-@example
-proc plot;
-    plot a*b / vpos=25;
-run;
-@end example
+
 At the end of the session you may save the log and listing
 buffers with the usual C-x C-s commands.  You will be prompted
-for a file name.  Typically, the names myfile.log and mfile.lst
+for a file name.  Typically, the names myfile.log and myfile.lst
 will be used.  You will almost certainly want to edit the saved
 files before including them in a report.  The files are
 read-only by default.  You can make them writable by the emacs
