@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/08 19:00:19 $
-;; Version: $Revision: 1.55 $
-;; RCS: $Id: essa-sas.el,v 1.55 2002/01/08 19:00:19 rsparapa Exp $
+;; Modified: $Date: 2002/01/08 19:10:21 $
+;; Version: $Revision: 1.56 $
+;; RCS: $Id: essa-sas.el,v 1.56 2002/01/08 19:10:21 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -89,20 +89,23 @@ in ess-site.el or in .emacs.")
 
 (defcustom ess-sas-data-view-options 
     (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
-	"-nodms -nosysin -log /dev/null")
+	(if (equal ess-sas-submit-method 'sh) "-nodms -nosysin -log /dev/null"))
     "*The options necessary for your enviromment and your operating system."
     :group 'ess-sas
     :type  'string
 )
 
 (defcustom ess-sas-submit-post-command 
-    (if (equal ess-sas-submit-method 'sh) "-rsasuser &" "-rsasuser -icon")
+    (if (equal ess-sas-submit-method 'sh) "-rsasuser &" 
+	(if ess-microsoft-p "-rsasuser -icon"))
     "*Command-line statement to post-modify SAS invocation, e.g. -rsasuser"
     :group 'ess-sas
     :type  'string
 )
 
-(defcustom ess-sas-submit-pre-command (if (equal ess-sas-submit-method 'sh) "nohup" "start")
+(defcustom ess-sas-submit-pre-command 
+    (if (equal ess-sas-submit-method 'sh) "nohup" 
+	(if ess-microsoft-p "start"))
     "*Command-line statement to pre-modify SAS invocation, e.g. start or nohup"
     :group 'ess-sas
     :type  'string
