@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 2002/01/03 08:46:10 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: ess-iw32.el,v 1.15 2002/01/03 08:46:10 maechler Exp $
+;; Modified: $Date: 2002/02/26 01:46:14 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: ess-iw32.el,v 1.16 2002/02/26 01:46:14 rmh Exp $
 
 
 ;; This file is part of ESS
@@ -292,6 +292,9 @@ save the output in that buffer. BUF is erased before use.
 COM should have a terminating newline.
 Guarantees that the value of .Last.value will be preserved."
   (interactive)
+  (save-excursion
+    (set-buffer buf)
+    (setq ess-local-process-name ess-current-process-name)) ;;Feb 25 2002 rmh
   (if (not (ess-ddeclient-p))
       (ess-command-original com buf)
     (ess-force-buffer-current "Process to load into: ")
