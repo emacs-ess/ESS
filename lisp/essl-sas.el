@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2003/05/02 16:57:37 $
-;; Version: $Revision: 5.45 $
-;; RCS: $Id: essl-sas.el,v 5.45 2003/05/02 16:57:37 rsparapa Exp $
+;; Modified: $Date: 2004/05/07 13:48:02 $
+;; Version: $Revision: 5.46 $
+;; RCS: $Id: essl-sas.el,v 5.46 2004/05/07 13:48:02 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -168,7 +168,7 @@ the mode line."
 (defcustom sas-get-options nil 
   "Options to be passed to SAS in sas-get-dataset."
   :group 'ess-sas
-  :type  'string)
+  :type '(choice (const nil) string))
 
 (defcustom sas-get-options-history nil
   "History list of Options passed to SAS in sas-get-dataset."
@@ -193,7 +193,7 @@ number."
 (defcustom sas-file-name nil
   "*The name of the current sas file."
   :group 'ess-sas
-  :type  'file)
+  :type '(choice (const nil) file))
 
 ;; The next two are ``the inside of [...] in a regexp'' to be used in
 ;; (skip-chars-(for|back)ward SAS-..-chars)
@@ -210,7 +210,7 @@ number."
 (defcustom ess-sas-run-make-regexp nil
   "If you do not want to run make-regexp, then set to nil."
   :group 'ess-sas
-  :type  'string)
+  :type '(choice (const nil) string))
 
 (require 'essa-sas)
 
