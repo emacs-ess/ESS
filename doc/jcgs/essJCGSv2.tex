@@ -60,7 +60,7 @@
 
 \ifx\pdfoutput\undefined
   %% Stuff wout hyperref
-  \def\url#1{\textsf{#1}} % To help fit in lines
+  \def\url#1{\stextsf{#1}} % To help fit in lines
 \else
   %% Stuff with hyperref
   \usepackage{hyperref}
@@ -135,7 +135,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/12 22:14:35 $ - $Revision: 1.51 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/13 07:13:08 $ - $Revision: 1.52 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -205,48 +205,48 @@ still don't recall seeing this in DVI files, just PS/PDF stuff).
 
 Rich: probably something about hyperref.  I get warning messages from
 Miktex about hyperref.  I am using vanilla miktex.  The natbib.sty is
-not part of that distribution.  I got it from you last year.  Here is
-my latex log:
+not part of that distribution.  I got it from you last year.
+%Here is my latex log:
 
-\begin{verbatim}
-c:/emacs/ess-washington/ess/doc/jcgs\$ latex \\input essJCGSv2.tex
-This is TeX, Version 3.14159 (MiKTeX 2.1)
-LaTeX2e <2000/06/01>
-Babel <v3.7h> and hyphenation patterns for english, french, german, ngerman, du
-mylang, nohyphenation, loaded.
-(essJCGSv2.tex (C:\texmf\tex\latex\base\article.cls
-Document Class: article 2000/05/19 v1.4b Standard LaTeX document class
-(C:\texmf\tex\latex\base\size10.clo)) (natbib.sty)
-(C:\texmf\tex\latex\base\alltt.sty) (C:\texmf\tex\latex\graphics\graphicx.sty
-(C:\texmf\tex\latex\graphics\keyval.sty)
-(C:\texmf\tex\latex\graphics\graphics.sty (C:\texmf\tex\latex\graphics\trig.sty
-) (C:\texmf\tex\latex\00miktex\graphics.cfg)
-(C:\texmf\tex\latex\graphics\dvips.def)))
-(C:\texmf\tex\latex\hyperref\hyperref.sty
-(C:\texmf\tex\latex\hyperref\pd1enc.def)
-(C:\texmf\tex\latex\00miktex\hyperref.cfg)
-Implicit mode ON; LaTeX internals redefined
-(C:\texmf\tex\latex\ltxmisc\url.sty))
-*hyperref using driver hypertex*
-(C:\texmf\tex\latex\hyperref\hypertex.def)
-
-Package hyperref Warning: Option `backref' has already been used,
-(hyperref)                setting the option has no effect on input line 65.
-
-
-Package hyperref Warning: Option `pagebackref' has already been used,
-(hyperref)                setting the option has no effect on input line 65.
-
-
-Package hyperref Warning: Option `hyperindex' has already been used,
-(hyperref)                setting the option has no effect on input line 65.
-
-(essJCGSv2.aux) (C:\texmf\tex\latex\hyperref\nameref.sty)
-(C:\texmf\tex\latex\base\omscmr.fd) [1] [2] [3] [4] [5] [6] [7] [8] [9]
-[10] (essJCGSv2.bbl [11]) [12] (essJCGSv2.aux) )
-Output written on essJCGSv2.dvi (12 pages, 51108 bytes).
-Transcript written on essJCGSv2.log.
-\end{verbatim}
+%\begin{verbatim}
+%c:/emacs/ess-washington/ess/doc/jcgs\$ latex \\input essJCGSv2.tex
+%This is TeX, Version 3.14159 (MiKTeX 2.1)
+%LaTeX2e <2000/06/01>
+%Babel <v3.7h> and hyphenation patterns for english, french, german, ngerman, du
+%mylang, nohyphenation, loaded.
+%(essJCGSv2.tex (C:\texmf\tex\latex\base\article.cls
+%Document Class: article 2000/05/19 v1.4b Standard LaTeX document class
+%(C:\texmf\tex\latex\base\size10.clo)) (natbib.sty)
+%(C:\texmf\tex\latex\base\alltt.sty) (C:\texmf\tex\latex\graphics\graphicx.sty
+%(C:\texmf\tex\latex\graphics\keyval.sty)
+%(C:\texmf\tex\latex\graphics\graphics.sty (C:\texmf\tex\latex\graphics\trig.sty
+%) (C:\texmf\tex\latex\00miktex\graphics.cfg)
+%(C:\texmf\tex\latex\graphics\dvips.def)))
+%(C:\texmf\tex\latex\hyperref\hyperref.sty
+%(C:\texmf\tex\latex\hyperref\pd1enc.def)
+%(C:\texmf\tex\latex\00miktex\hyperref.cfg)
+%Implicit mode ON; LaTeX internals redefined
+%(C:\texmf\tex\latex\ltxmisc\url.sty))
+%*hyperref using driver hypertex*
+%(C:\texmf\tex\latex\hyperref\hypertex.def)
+%
+%Package hyperref Warning: Option `backref' has already been used,
+%(hyperref)                setting the option has no effect on input line 65.
+%
+%
+%Package hyperref Warning: Option `pagebackref' has already been used,
+%(hyperref)                setting the option has no effect on input line 65.
+%
+%
+%Package hyperref Warning: Option `hyperindex' has already been used,
+%(hyperref)                setting the option has no effect on input line 65.
+%
+%(essJCGSv2.aux) (C:\texmf\tex\latex\hyperref\nameref.sty)
+%(C:\texmf\tex\latex\base\omscmr.fd) [1] [2] [3] [4] [5] [6] [7] [8] [9]
+%[10] (essJCGSv2.bbl [11]) [12] (essJCGSv2.aux) )
+%Output written on essJCGSv2.dvi (12 pages, 51108 bytes).
+%Transcript written on essJCGSv2.log.
+%\end{verbatim}
 
 \end{Comment}
 
@@ -407,7 +407,7 @@ words appropriate to the programming language in use.  Emacs supports
 folding, outlining, and bookmarks which can assist with maneuvering
 around a file.  Emacs shares many features with word processing
 programs and cooperates with document preparation systems which use
-markup languages such as \LaTeX\ , \textsc{html}, or \textsc{xml}.
+markup languages such as \LaTeX, \textsc{html}, or \textsc{xml}.
 %for hypertext markup.
 %XSLT, and Noweb.  and Typesetting word processing, which
 %focus on the presentation of a document, are tasks that are not pure
@@ -611,19 +611,22 @@ completion is available.  In addition (currently only for S languages),
 there exists object-name and function-name completion.
 
 \paragraph{Interactive transcripts.}
-ESS can create transcripts, which record the commands issued during an
-interactive statistical analysis session.  Special features include a
-means for searching the command-line history for previous commands and
-editing them for reuse.  ESS knows the structure of transcripts and
-provides syntactic highlighting for them.  Once a transcript file is
-generated, perhaps by saving an \stexttt{iESS} buffer, transcript-mode
-assists with reuse of part or all of the entered commands.  It permits
-editing and re-evaluating the commands directly from the saved
-transcript.  This is useful both for demonstration of techniques
-and for reconstruction and auditing of data analyses.  Special
-functions within ESS can clean transcripts from S languages back to
-source code by finding all input lines and isolating them into an
-input file.
+A transcript is a complete record of all commands entered by the
+analyst and all textual responses (tables and comments) produced by
+the statistical program during an interactive statistical analysis
+session.  ESS knows the structure of transcripts and therefore
+provides tools, including syntactic highlighting, for interacting with
+them.  Once a transcript file is generated, perhaps by saving an
+\stexttt{iESS} buffer, \stexttt{transcript-mode} assists with reuse of
+part or all of the entered commands.  It permits editing and
+re-evaluating the commands directly from the saved transcript.  This
+is useful both for demonstration of techniques and for reconstruction
+and auditing of data analyses.  Special functions within ESS can
+``clean'' transcripts from S languages by finding all input lines and
+isolating them into an S language source file.  Transcript cleaning
+simplifies the construction of an idealized source file, perhaps to be
+used routinely in batch analyses of similar data sets, from an
+exploratory interactive analysis session.
 
 \paragraph{Interacting with statistical programs on remote computers.}
 ESS provides the facility to edit and run programs on remote machines
@@ -640,12 +643,13 @@ editing, and reload them (possibly after editing).
 %% back into the statistical language/program.
 
 \paragraph{Help File Editing (R).}
-ESS provides an interface for writing help files for R functions
-and packages.  It provides the ability to view and execute embedded R
-source code directly from the help file in the same manner as ESS
-normally handles code from a source file.  \stexttt{Rd} mode provides
-syntax highlighting and the ability to submit code to a running ESS
-process, either R or \Splus.
+ESS provides R documentation mode (\stexttt{Rd-mode}), an interface
+for writing help files for R functions and packages.
+\stexttt{Rd-mode} provides the ability to view and execute S language
+code embedded in the help file in the same manner as ESS handles code
+from an S language source file.  It provides syntax highlighting and
+the ability to submit code directly to a running ESS process, either R or
+\Splus.
 
 
 \subsection{ESS Facilitates Common Tasks}
@@ -790,7 +794,7 @@ large amount of data.
 
 For processing and analyzing large amounts of data, \SAS\ is a popular
 choice.  However, interactive \SAS\ is rarely used in these situations.
-Instead, a file containing \SAS\ commands is created and \SAS executes
+Instead, a file containing \SAS\ commands is created and \SAS\ executes
 these commands in the background, or batch, while the user moves on to 
 other activities.  Emacs and ESS facilitate \SAS\ batch with ESS[SAS].  
 This RAD environment starts when you open a file with the \stexttt{sas}
@@ -873,11 +877,11 @@ and David Smith made further contributions which was version 3.
 %%command-line interface and allow for control of multiple processes
 %%simultaneously.  
 In 1995, A.J. Rossini extended S-mode to support XEmacs.  At the same time, 
-extensions written by Martin M{\"a}chler, were incorporated to what became
+extensions written by Martin M{\"a}chler, were incorporated into what became
 version 4.  By 1996, S-mode was available for GNU Emacs and XEmacs and supported S, 
 \Splus, and to some extent R.  Kurt Hornik was instrumental in enhancing support
 for R.
-%%, in particular, providing Rd mode.
+%%, in particular, providing \stexttt{Rd-mode}.
 
 The other ancestor of ESS is SAS-mode, written by Tom Cook, which began in 1994 
 and was partially based on GNU Emacs macros written by John Sall.
@@ -891,10 +895,12 @@ to accommodate multiple languages in a flexible way.  The product of this
 merger was called ESS version 5.
 
 During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
-%need to move this discussion to interactive SAS above.
-%, a mode that allows text-based \stexttt{PROC} by
-%\stexttt{PROC} interaction with an inferior buffer running an interactive SAS
-%session either on the same computer or a remote computer over a network.
+\begin{Comment}
+need to move this discussion to interactive SAS above.
+, a mode that allows text-based \stexttt{PROC} by
+\stexttt{PROC} interaction with an inferior buffer running an interactive SAS
+session either on the same computer or a remote computer over a network.
+\end{Comment}
 At the same time, SAS-mode was further incorporated into ESS.
 
 In 1997, more changes were made to facilitate
@@ -902,27 +908,34 @@ In 1997, more changes were made to facilitate
 %% means for
 support for additional statistical languages like \Stata\ and \XLispStat.
 
-Most of the work, until 1998, was for Unix statistics packages that used 
-either standard-input/standard-output or batch file processing for 
-inter-process communication.
-% for both the command-line interface and batch file
-%%processing.  
-ESS could not communicate with Windows versions of statistical packages 
-that did not offer these methods.
-%use the standard-input/standard-output model.  
-This hurdle fell in 1998 when Brian Ripley designed a way for ESS to use
-the Windows technology of dynamic data exchange (DDE).  Based on this work, 
-Heiberger provided interactive interfaces for Windows versions of \Splus.
+Most of the work, until 1998, was for Unix statistics
+packages that used the standard-input/standard-output model of inter-process
+communication for both the command-line interface and batch file
+processing.  ESS could not communicate
+with Windows versions of statistical packages that did not
+use the standard-input/standard-output model.  This hurdle
+fell in 1998 when Brian Ripley designed a way for ESS to use
+the Windows technology of dynamic data exchange (DDE).
+Based on this work, Heiberger provided interactive interfaces
+for Windows versions of \Splus.
+\begin{Comment}
+Rich: Rodney, the standard input/standard output model is a single model.
+It is used for interaction when stdin/stdout refer to the terminal.
+It is used for batch when they refer to the card reader and the line printer.
+There is no difference in the program.  I restored my wording.
+\end{Comment}
 
 In 1998, Rodney Sparapani designed \SAS\ batch file processing for ESS
 on Unix, Windows and Macintosh.  In 1999 and 2000, Sparapani and Heiberger
 continually enhanced \SAS\ support. 
-%moved this discussion to a new section above
+\begin{Comment}
+moved this discussion to a new section above
 %Sparapani and Heiberger developed \SAS\ batch support including function
 %key behavior which mimics the \SAS\ Display Manager,
 %a more comprehensive and efficient syntax highlighting scheme for \SAS\
 %programs and logs, and automated and intelligent error message searching
 %of the log.  
+\end{Comment}
 In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.  
 %ESS-elsewhere provides interactive and batch processing
 %with \SAS\ running on a remote machine that is accessed over a
@@ -983,6 +996,25 @@ an enhanced, powerful interface for efficient interactive data
 analysis and statistical programming.  It is completely customizable
 to satisfy individual desires for interface styles as well as being
 extensible to additional statistical languages and analysis packages.
+
+
+\section*{Software Access}
+\label{sec:access}
+The ESS software is constantly in flux.  New versions of statistical
+packages, Emacs and operating systems require new releases of ESS to
+support them.  The latest stable version of ESS can be found on the web at
+\url{http://software.biostat.washington.edu/statsoft/ess/}.  To get help
+with problems you can send e-mail to \url{ess-help@stat.math.ethz.ch}.
+The latest development, hence unstable, version can be obtained by
+anonymous CVS.  First type:
+
+\stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository login}
+
+You will be prompted for a password which is ``\stexttt{anoncvs}''.  Then type: 
+
+\stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository co ess}
+
+
 
 
 \bibliographystyle{plainnat}
