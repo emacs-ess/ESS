@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/09/03 02:33:39 $
-;; Version: $Revision: 1.115 $
-;; RCS: $Id: essa-sas.el,v 1.115 2002/09/03 02:33:39 rmh Exp $
+;; Modified: $Date: 2002/09/03 04:36:08 $
+;; Version: $Revision: 1.116 $
+;; RCS: $Id: essa-sas.el,v 1.116 2002/09/03 04:36:08 rmh Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -550,7 +550,8 @@ computer.  The various functions such as `ess-sas-goto-lst' retrieve
 their files from the remote computer.  Local copies of the .sas .lst
 .log and others may be made manually with `write-buffer'."
   (ess-force-buffer-current "Process to load into: ")
-  (ess-eval-linewise (concat "cd " default-directory))
+  ;;  (ess-eval-linewise (concat "cd " default-directory))
+  (ess-eval-linewise (concat "cd " (car (last (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)")))))
   (ess-eval-linewise (concat arg1 " " arg2 " " (buffer-name) " &")))
 
 (defun ess-sas-submit-mac (arg1 arg2)
