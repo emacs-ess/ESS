@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2002/01/23 22:16:42 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: essl-bug.el,v 1.19 2002/01/23 22:16:42 rsparapa Exp $
+;; Modified: $Date: 2002/01/24 15:00:44 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: essl-bug.el,v 1.20 2002/01/24 15:00:44 rsparapa Exp $/ini
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -95,18 +95,6 @@ it is in your PATH."
     :type  'string
 )
 
-(defcustom ess-bugs-suffix-regexp 
-    (concat "[.]\\([bB][oOuU][gG]\\|[bB][mM][dD]\\|"
-	(if ess-bugs-inits-suffix (concat 
-	    "\\|" (downcase ess-bugs-inits-suffix) "\\|" (upcase ess-bugs-inits-suffix)))
-	(if ess-bugs-data-suffix (concat 
-	    "\\|" (downcase ess-bugs-data-suffix) "\\|" (upcase ess-bugs-data-suffix)))
-        "\\)")
-    "*Regular expression for BUGS suffixes."
-    :group 'ess-bugs
-    :type  'string
-)
-
 (defcustom ess-bugs-default-bins "32"
 "ESS[BUGS]:  number of bins to use in the Griddy algorithm (Metropolis sampling)."
     :group 'ess-bugs
@@ -154,6 +142,18 @@ it is in your PATH."
 
 (defcustom ess-bugs-data-suffix ".dat"
    "ESS[BUGS]:  BUGS data file suffix."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-suffix-regexp 
+    (concat "[.]\\([bB][oOuU][gG]\\|[bB][mM][dD]\\|"
+	(if ess-bugs-inits-suffix (concat 
+	    "\\|" (downcase ess-bugs-inits-suffix) "\\|" (upcase ess-bugs-inits-suffix)))
+	(if ess-bugs-data-suffix (concat 
+	    "\\|" (downcase ess-bugs-data-suffix) "\\|" (upcase ess-bugs-data-suffix)))
+        "\\)")
+    "*Regular expression for BUGS suffixes."
     :group 'ess-bugs
     :type  'string
 )
