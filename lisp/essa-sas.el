@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/24 17:26:00 $
-;; Version: $Revision: 1.111 $
-;; RCS: $Id: essa-sas.el,v 1.111 2002/07/24 17:26:00 rsparapa Exp $
+;; Modified: $Date: 2002/07/24 18:50:15 $
+;; Version: $Revision: 1.112 $
+;; RCS: $Id: essa-sas.el,v 1.112 2002/07/24 18:50:15 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -323,28 +323,10 @@ on the way."
 ;;	  (if ess-sas-search-point (insert ess-sas-end-text))
 ;;         ))
 
-(defun ess-search-except (regexp &optional except backward)
-"Search for a regexp, store as match 1, optionally ignore strings that match exceptions."
-    (interactive)
-    
-    (let ((continue t) (exit nil))
-
-    (while continue
-	(if (or (and backward (search-backward-regexp regexp nil t))
-                (and (not backward) (search-forward-regexp regexp nil t))) (progn
-	    (setq exit (match-string 1))
-            (setq continue (and except (string-match except exit)))
-	    (if continue (setq exit nil)))
-        ;else
-	    (setq continue nil))
-    )
-
-    exit)
-)
-
 (defun ess-sas-data-view (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
+    (ess-save-and-set-local-variables)
 
  (save-excursion (let ((ess-tmp-sas-data nil) 
     (ess-tmp-sas-data-view-fsview-statement ess-sas-data-view-fsview-statement)
@@ -537,13 +519,6 @@ depends on the value of  `ess-sas-submit-method'"
   (interactive)
   (ess-sas-file-path)
   (ess-sas-goto-sas)
-  (save-buffer)
-
-  ; if Local Variables are defined, a revert is necessary to update their values
-  (save-excursion 
-    (beginning-of-line -1)
-    (save-match-data 
-	(if (search-forward "End:" nil t) (revert-buffer t t))))
 
   (cond
    ((eq ess-sas-submit-method 'apple-script) 
@@ -584,6 +559,8 @@ arg2, `ess-sas-submit-command-options', is a string of the form
 \"with options { \\\"option-1\\\", \\\"option-2\\\", etc.}\".  If you are
 using Windows SAS with the PC emulator Virtual PC, then `ess-sas-submit-command'
 should be ..."
+  (ess-save-and-set-local-variables)
+
   (do-applescript (concat arg1 " \""
      (if (not ess-sas-submit-mac-virtual-pc) (unix-filename-to-mac default-directory))
 	(buffer-name) "\"" arg2)))
@@ -627,7 +604,7 @@ i.e. let arg1 be your local equivalent of
                                           ;; nil t) works for newer emacsen
     (if (string-equal (substring (file-name-nondirectory ess-sas-file-path) 0 1) ess-kermit-prefix)
       (progn
-       (ess-kermit-send)
+       (if (ess-save-and-set-local-variables) (ess-kermit-send))
        (let ((ess-temp-directory ess-kermit-remote-directory))
         (ess-sas-goto-shell)
         (insert "cd " ess-temp-directory)
@@ -637,6 +614,7 @@ i.e. let arg1 be your local equivalent of
 	 " " arg2 " " ess-sas-submit-post-command))
         (ess-sas-goto-sas))
     ;;else
+      (ess-save-and-set-local-variables)
       (ess-sas-goto-shell t)
       (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)"))))
       (comint-send-input)
@@ -662,6 +640,7 @@ spaces by enclosing the string in \\\"'s), i.e. let
 `ess-sas-submit-command' be \"\\\"C:\\Program Files\\SAS\\sas.exe\\\"\".
 Keep in mind that the maximum command line length in MS-DOS is
 127 characters so altering your PATH is preferable."
+    (ess-save-and-set-local-variables)
     (ess-sas-goto-shell t)
     (if (string-equal ":" (substring ess-sas-file-path 1 2)) 
 	(progn
@@ -676,7 +655,6 @@ Keep in mind that the maximum command line length in MS-DOS is
 	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) "\" "
 	arg2 " " ess-sas-submit-post-command)
     (comint-send-input))
-
 
 (defun ess-sas-tab-to-tab-stop ()
   "Tab to next tab-stop and set left margin."
