@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/04/22 15:35:29 $
-;; Version: $Revision: 1.65 $
-;; RCS: $Id: ess-cust.el,v 1.65 2004/04/22 15:35:29 stephen Exp $
+;; Modified: $Date: 2004/04/22 16:12:22 $
+;; Version: $Revision: 1.66 $
+;; RCS: $Id: ess-cust.el,v 1.66 2004/04/22 16:12:22 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -151,12 +151,12 @@ Full documentation will be available after autoloading the function."
 
 ;; Menus and pulldowns.
 
-(defcustom ess-funcmenu-use-p (featurep 'func-menu)
+(defcustom ess-funcmenu-use-p (fboundp 'func-menu)
   "If t, funcmenu is present."
   :group 'ess
   :type  'boolean)
 
-(defcustom ess-speedbar-use-p (featurep 'speedbar)
+(defcustom ess-speedbar-use-p (fboundp 'speedbar)
   "If t, speedbar is present."
   :group 'ess
   :type  'boolean)
