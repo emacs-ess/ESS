@@ -3,7 +3,7 @@ ANNOUNCING ESS
 
 The ESS Developers proudly announce the release of ESS
 
-   5.2.0rc3
+   5.2.0
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -243,7 +243,9 @@ Changes/New Features in 5.2.0:
      goto .log; C-c C-y for goto .lst
 
    * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
-     pressing underscore twice inserts a literal underscore;
+     pressing underscore twice inserts a literal underscore.  To stop
+     this smart behaviour, add "(ess-smart-underscore nil)" to your
+     .emacs after ess-site has been loaded;
      ess-dump-filename-template-proto (new name!) now can be customized
      successfully (for S language dialects); Support for Imenu has been
      improved; set ess-imenu-use-S to non-nil to get an "Imenu-S" item
