@@ -1,3 +1,8 @@
+1999-03-18  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-site.el (auto-mode-alist): OOps for last change *.sty became
+	ESS S-transcript; now fixed
+
 1999-03-17  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* essd-r.el, ess-site.el, ess-vars.el: RMH's changes
@@ -16,7 +21,7 @@
 
 	* ess-inf.el: RMH's changes.
 
-1999-03-16  maechler  <maechler@alpha>
+1999-03-16  Martin Maechler <maechler@stat.math.ethz.ch>
 
 	* ChangeLog: mini change "foobar.Sout-45"
 
@@ -33,7 +38,7 @@
 
 	* ess-inf.el: RMH's changes.
 
-1999-03-16  maechler  <maechler@alpha>
+1999-03-16  maechler  <maechler@stat.math.ethz.ch>
 
 	* ChangeLog: mini change "foobar.Sout-45"
 

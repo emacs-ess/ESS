@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/03/18 07:57:55 $
-;; Version: $Revision: 5.18 $
-;; RCS: $Id: ess-site.el,v 5.18 1999/03/18 07:57:55 maechler Exp $
+;; Modified: $Date: 1999/03/24 15:21:13 $
+;; Version: $Revision: 5.19 $
+;; RCS: $Id: ess-site.el,v 5.19 1999/03/24 15:21:13 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -119,8 +119,10 @@
 	   ("\\.lst\\'"				      . SAS-listing-mode);sasl
 	   ;; Too many *.log files!
 	   ;;("\\.log\\'"				. SAS-log-mode);sasl
-	   ("\\.[Ss]\\(ou\\)?t"			      . S-transcript-mode)
-	   ("\\.[Rr]\\(ou\\)?t"			      . R-transcript-mode)
+	   ("\\.s\\(ou\\)?t\\'"			      . S-transcript-mode)
+	   ("\\.S\\(ou\\)?t"			      . S-transcript-mode)
+	   ("\\.r\\(ou\\)?t\\'"			      . R-transcript-mode)
+	   ("\\.R\\(ou\\)?t"			      . R-transcript-mode)
 	   ("\\.Rd\\'"				      . Rd-mode)) ;all R>=0.60
 	 auto-mode-alist)))
 
