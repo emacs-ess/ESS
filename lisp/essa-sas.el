@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/08/18 18:45:34 $
-;; Version: $Revision: 1.144 $
-;; RCS: $Id: essa-sas.el,v 1.144 2003/08/18 18:45:34 rsparapa Exp $
+;; Modified: $Date: 2003/08/19 20:56:57 $
+;; Version: $Revision: 1.145 $
+;; RCS: $Id: essa-sas.el,v 1.145 2003/08/19 20:56:57 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -606,6 +606,8 @@ optional argument is non-nil, then set-buffer rather than switch."
                                           ;; nil t) works for newer emacsen
     )
   )
+
+  (goto-char (point-max))
 ; (insert "cd " ess-temp-directory)
 ; (comint-send-input))
 )
