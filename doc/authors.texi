@@ -1,6 +1,6 @@
 @itemize @bullet
 @item
-@c @uref{http://www.biostat.washington.edu/~rossini/,A.J. Rossini}
+@c @uref{http://www.analytics.washington.edu/,A.J. Rossini}
 @uref{mailto:rossini@@u.washington.edu, A.J. Rossini}
 @c --------
 @item
