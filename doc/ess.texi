@@ -3,99 +3,55 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.38 2002/07/31 21:18:32 rsparapa Exp $
+@comment $Id: ess.texi,v 5.39 2002/07/31 21:57:13 rsparapa Exp $
 
 @synindex pg vr
+
+@titlepage
+@title ESS --- Emacs Speaks Statistics 
+@subtitle (Documentation $Revision: 5.39 $ $Date: 2002/07/31 21:57:13 $)
+@author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.A. Sparapani.
+@c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
+@c @author                and David Smith)
+@c @ifhtml
+@c <P><HR></P>
+@c @end ifhtml
+@c 
+@author Current Documentation by A.J. Rossini
+@author Copyright @copyright{} 1996--2002 A.J. Rossini.
+@c (@email{rossini@@biostat.washington.edu})
+@c @author Department of Biostatistics
+@c @author University of Washington, USA.
+@author Original Documentation by David Smith
+@author Copyright @copyright{} 1992--1995 David M. Smith
+@c (@email{D.M.Smith@@lancaster.ac.uk})
+@c @author Department of Mathematics and Statistics
+@c @author Lancaster University, UK
+@c @page
+@c @vskip 0pt plus 1filll
+@c @sp 2
+@author Permission is granted to make and distribute verbatim copies of this
+@author manual provided the copyright notice and this permission notice are
+@author preserved on all copies.
+@author Permission is granted to copy and distribute modified versions of this
+@author manual under the conditions for verbatim copying, provided that the
+@author entire resulting derived work is distributed under the terms of a
+@author permission notice identical to this one.
+
+@end titlepage
 
 @ifinfo
 @majorheading ESS --- Emacs Speaks Statistics
 @direntry
 * ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
 @end direntry
-
-@comment Originally known as S-mode, written by Doug Bates, Ed Kademan, Frank
-@comment Ritter, and David Smith.
-
-Currently maintained by A.J. (Tony) Rossini, Richard M. Heiberger, Kurt
-Hornik, Martin Maechler, and Rodney A. Sparapani.
-
-This file documents @code{ESS}, a GNU Emacs package for running
-@code{S(plus)}, @code{R}, @code{XLisp-Stat}, @code{SAS} and potentially
-any other interactive `statistical' languages in an `inferior' buffer,
-editing source code in these languages and interacting with the running
-program.
-
-This documentation relates to version 
-@include ../VERSION
-of @code{ESS}.
-
-Current Info Author: A.J. Rossini
-(@email{rossini@@biostat.washington.edu}), Department of Biostatistics,
-University of Washington, Seattle, WA 98185, USA
-
-Original Info Author: David M. Smith (@email{D.M.Smith@@lancaster.ac.uk}),
-Department of Mathematics and Statistics, Lancaster University, UK.
-
-@end ifinfo
-
-@titlepage
-@title ESS --- Emacs Speaks Statistics 
-@subtitle (Documentation $Revision: 5.38 $ $Date: 2002/07/31 21:18:32 $)
-@author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.A. Sparapani.
-@c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
-@c @author                and David Smith)
-@ifhtml
-<P><HR></P>
-@end ifhtml
-@sp 2
-ESS --- Emacs Speaks Statistics --- version
-@include ../VERSION
-
-ESS provides an intelligent, consistent 
-interface between the user and the software.  ESS interfaces with 
-SAS, S-PLUS, R, BUGS and other statistical analysis packages under
-the Unix, Microsoft Windows, and Apple Mac operating systems.  ESS
-is itself a package within the emacs text editor and uses emacs
-features to streamline the creation and use of statistical software.
-ESS knows the syntax and grammar of statistical analysis packages
-and provides consistent display and editing features based on that 
-knowledge.  ESS assists in interactive and batch execution of 
-statements written in these statistical analysis languages.
-@sp 5
-@center Current Documentation by A.J. Rossini
-@center (@email{rossini@@biostat.washington.edu})
-@center Department of Biostatistics
-@center University of Washington, USA.
-@sp 2
-@center Original Documentation by David Smith
-@center (@email{D.M.Smith@@lancaster.ac.uk})
-@center Department of Mathematic and Statistics
-@center Lancaster University, UK
-@page
-@vskip 0pt plus 1filll
-Copyright @copyright{} 1992--1995 David M. Smith
-Copyright @copyright{} 1996--2002 A.J. Rossini.
-@sp 2
-
-Permission is granted to make and distribute verbatim copies of this
-manual provided the copyright notice and this permission notice are
-preserved on all copies.
-
-Permission is granted to copy and distribute modified versions of this
-manual under the conditions for verbatim copying, provided that the
-entire resulting derived work is distributed under the terms of a
-permission notice identical to this one.
-
-@end titlepage
-
-@ifinfo
 @node Top, Introduction, (dir), (dir)
 @top ESS: Emacs Speaks Statistics
 
 ESS version 
 @include ../VERSION
 
-        (Documentation $Revision: 5.38 $ $Date: 2002/07/31 21:18:32 $).
+        (Documentation $Revision: 5.39 $ $Date: 2002/07/31 21:57:13 $).
 
 @display
 by  A.J. Rossini, 
