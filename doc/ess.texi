@@ -462,13 +462,13 @@ on your system.
 
 @include inst_tar.texi
 
-@node Requirements, , Microsoft Windows installation, Installation
+@node Requirements, System dependent, Installation, Installation
 @comment node-name,  next,  previous,  up
 @section Requirements
 @include requires.texi
 
 @comment  node-name,  next,  previous,  up
-@node System dependent,  , Installation, Installation
+@node System dependent,  , Requirements, Installation
 @appendixsec Variables you may need to change
 
 If you run the @Sl{} program (from the shell) with a command other than
@@ -562,7 +562,7 @@ with statistical programs.
 * Customizing startup::         
 @end menu
 
-@node Starting up,  Multiple ESS processes, , Interactive ESS
+@node Starting up, Multiple ESS processes, Interactive ESS, Interactive ESS
 @section Starting an ESS process
 @cindex starting ESS
 @cindex running S
@@ -592,7 +592,7 @@ for interacting with the ESS process, and you can start entering commands.
 
 
 @comment  node-name,  next,  previous,  up
-@node Multiple ESS processes,  ESS processes on Remote Computers, Starting up, Interactive ESS
+@node Multiple ESS processes, ESS processes on Remote Computers, Starting up, Interactive ESS
 @section Running more than one ESS process
 @cindex Multiple ESS processes
 
@@ -627,7 +627,7 @@ processes.  This is a good command to consider binding to a global key.
 
 
 @comment  node-name,  next,  previous,  up
-@node ESS processes on Remote Computers, Customizing startup, Multiple ESS processes, Interactive ESS
+@node ESS processes on Remote Computers, S+elsewhere and ESS-elsewhere, Multiple ESS processes, Interactive ESS
 @section ESS processes on Remote Computers
 @cindex Remote Computers
 @pindex ess-remote
@@ -695,7 +695,7 @@ on remote computers.
 
 
 @comment  node-name,  next,  previous,  up
-@node S+elsewhere and ESS-elsewhere,  , ESS processes on Remote Computers, ESS processes on Remote Computers
+@node S+elsewhere and ESS-elsewhere, Customizing startup, ESS processes on Remote Computers, Interactive ESS
 @section S+elsewhere and ESS-elsewhere
 
 These commands are now deprecated.  We recommend @samp{ess-remote}.
@@ -755,7 +755,7 @@ display it with ghostscript.
 
 
 @comment  node-name,  next,  previous,  up
-@node Customizing startup,  , ESS processes on Remote Computers, Interactive ESS
+@node Customizing startup,  , S+elsewhere and ESS-elsewhere, Interactive ESS
 @section Changing the startup actions
 
 If you do not wish ESS to prompt for a starting directory when starting
@@ -2379,7 +2379,7 @@ variable @code{ess-help-own-frame}.
 @cindex temporary buffers
 
 @comment  node-name,  next,  previous,  up
-@node Transcript Mode, Miscellaneous, Help, Top
+@node Transcript Mode, Editing R documentation files, Help, Top
 @chapter Manipulating saved transcript files
 
 Inferior @Sl{} mode records the transcript (the list of all commands
@@ -2458,8 +2458,113 @@ buffer for inclusion in a function definition, or may be evaluated
 directly (@pxref{Evaluating code}) using the code evaluation commands
 from @Sl{} mode, also available in @Sl{} Transcript Mode.
 
+@node Editing R documentation files, Miscellaneous, Transcript Mode, Top
+@chapter Editing R documentation files
+
+ESS also provides support for editing @dfn{R documentation} (``Rd'')
+files.  @R{} objects are documented in files written in Rd format, a
+simple markup language closely resembling (La)@TeX{}, which can be
+processed into a variety of formats, including La@TeX{}, @acronym{HTML},
+and plain text.  Rd format is described in section ``Rd format'' of the
+``Writing R Extensions'' manual in the R distribution.
+
+Visiting an Rd file as characterized by its extension @file{Rd} will
+activate Rd Mode, which provides several facilities for making editing R
+documentation files more convenient, by helping with indentation,
+insertions, even doing some of the typing for you (with Abbrev Mode),
+and by showing Rd keywords, strings, etc.@: in different faces (with
+Font Lock Mode).
+
+Note that R also accepts Rd files with extension @file{rd}; to activate
+ESS[Rd] support for this extension, you may need to add
+
+@example
+(add-to-list 'auto-mode-alist '("\\.rd\\'" . Rd-mode))
+@end example
+
+@noindent
+to one of your Emacs startup files.
+
+In Rd mode, the following special Emacs commands can be used in addition
+to the standard Emacs commands.
+
+@table @kbd
+@item C-h m
+Describe the features of Rd mode.
+
+@item LFD
+@itemx RET
+Reindent the current line, insert a newline and indent the new line
+(@code{reindent-then-newline-and-indent}).  An abbrev before point is
+expanded if @code{abbrev-mode} is non-@code{nil}.
+
+@item TAB
+Indent current line based on its contents and on previous lines
+(@code{indent-according-to-mode}).
+
+@item C-c C-e
+Insert a ``skeleton'' with Rd markup for at least all mandatory entries
+in Rd files (@code{Rd-mode-insert-skeleton}).  Note that many users
+might prefer to use the R function @code{prompt} on an existing R object
+to generate a non-empty Rd ``shell'' documenting the object (which
+already has all information filled in which can be obtained from the
+object).
+
+@item C-c C-f
+Insert ``font'' specifiers for some of the Rd markup commands markup
+available for emphasizing or quoting text, including markup for URLs and
+email addresses (@code{Rd-font}).  @kbd{C-c C-f} is only a prefix; see
+e.g.@: @kbd{C-c C-f TAB} for the available bindings.  Note that
+currently, not all of the Rd text markup as described in section
+``Marking text'' of ``Writing R Extensions'' can be accessed via
+@kbd{C-c C-f}.
+
+@item C-c C-j
+Insert a suitably indented  @samp{\item@{} on the next line
+(@code{Rd-mode-insert-item}).
+
+@item C-c C-p
+Preview a plain text version (``help file'', @pxref{Help}) generated
+from the Rd file (@code{Rd-preview-help}).
+@end table
+
+In addition, when editing Rd files one can interact with a running R
+process in a similar way as when editing R language files.  E.g.,
+@kbd{C-c C-v} provides access to on-line help, and @kbd{C-c C-n} sends
+the current line to the R process for evaluation.  This interaction is
+particularly useful when editing the examples in the Rd file.  See
+@kbd{C-h m} for all available commands.
+
+Rd mode also provides access to abbreviations for most of the Rd markup
+commands.  Type @kbd{M-x list-abbrevs} with Abbrev mode turned on to
+list all available abbrevs.  Note that all Rd abbrevs start with a grave
+accent.
+
+Rd mode can be customized via the following variables.
+
+@table @code
+@item Rd-mode-hook
+Hook to be run when Rd mode is entered.
+@item Rd-indent-level
+The indentation of Rd code with respect to containing blocks.  Default
+is 2.
+@item Rd-to-help-command
+The shell command used for converting Rd source to help text.  Default
+is @samp{R CMD Rd2txt}.
+@end table
+
+To automatically turn on the abbrev and font-lock features of Rd mode,
+add the following lines to one of your Emacs startup files:
+
+@example
+(add-hook 'Rd-mode-hook
+          (lambda ()
+           (abbrev-mode 1)
+           (font-lock-mode 1)))
+@end example
+
 @comment  node-name,  next,  previous,  up
-@node Miscellaneous, Bugs Etc, Transcript Mode, Top
+@node Miscellaneous, Bugs Etc, Editing R documentation files, Top
 @chapter Other features of ESS
 
 ESS has a few miscellaneous features, which didn't fit anywhere else.
@@ -2577,7 +2682,7 @@ interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
 this information.)
 
 @comment  node-name,  next,  previous,  up
-@node Imenu, Toolbar,  Graphics, Miscellaneous
+@node Imenu, Toolbar, Graphics, Miscellaneous
 @section Imenu
 
 Imenu is an Emacs tool for providing mode-specific buffer indexes.  In
@@ -2588,7 +2693,7 @@ particular parts of your source file (such as the starting point of each
 function definition).
 
 @comment  node-name,  next,  previous,  up
-@node Toolbar, Object Completion,  Imenu, Miscellaneous
+@node Toolbar, Object Completion, Imenu, Miscellaneous
 @section Toolbar
 
 The R and S editing modes have support for a toolbar.  This toolbar
@@ -2942,7 +3047,7 @@ of this variable.
 @end defvr
 
 @comment  node-name,  next,  previous,  up
-@node Editing assembly files, , Variables controlling interaction, Variables
+@node Editing assembly files,  , Variables controlling interaction, Variables
 @appendixsubsec Variables for restoring assembly mode associations
 
 @defvr {User Option} auto-mode-alist
