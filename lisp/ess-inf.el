@@ -788,11 +788,13 @@ Guarantees that the value of .Last.value will be preserved."
 	      (erase-buffer)
 	      (set-marker (process-mark sprocess) (point-min))
 	      (process-send-string sprocess my-save-cmd)
+	      (if (equal ess-dialect "S+6") (sleep-for 0.1));; sleep-S+
 	      (if (and ess-microsoft-p ess-ms-slow)
 		  (sleep-for 0.5))
 	      (ess-prompt-wait sprocess)
 	      (erase-buffer)
 	      (process-send-string sprocess com)
+	      (if (equal ess-dialect "S+6") (sleep-for 1.0));; sleep-S+
 	      (if (and ess-microsoft-p ess-ms-slow)
 		  (sleep-for 4))	;this much time is needed for
 					;ess-create-object-name-db on PC
@@ -804,7 +806,7 @@ Guarantees that the value of .Last.value will be preserved."
 		(beginning-of-line)	; so prompt will be deleted
 		(setq end-of-output (point)))
 	      (process-send-string sprocess my-retr-cmd)
-
+	      (if (equal ess-dialect "S+6") (sleep-for 0.4));; sleep-S+
 	      ;; For S+4
 	      (if (and ess-microsoft-p ess-ms-slow)
 		  (sleep-for 0.5))
@@ -1850,8 +1852,13 @@ Returns nil if that file cannot be found, i.e., for R or any non-S language!"
       (save-excursion
 	(set-buffer (process-buffer (get-ess-process name)))
 	(ess-make-buffer-current)
+	(ess-write-to-dribble-buffer (format "(get-object-list %s) .." name))
 	(if (or (not ess-sl-modtime-alist) ess-sp-change)
-	    (ess-get-modtime-list))
+	    (progn (ess-write-to-dribble-buffer "--> (ess-get-modtime-list)\n")
+		   (ess-get-modtime-list))
+	  ;;else
+	  (ess-write-to-dribble-buffer " using existing ess-*-alist\n")
+	  )
 	(let* ((alist ess-sl-modtime-alist)
 	       (i 2)
 	       (n (length alist))
@@ -1870,21 +1877,27 @@ Returns nil if that file cannot be found, i.e., for R or any non-S language!"
   "Evaluate the S command COMMAND, which returns a character vector.
 Return the elements of the result of COMMAND as an alist of strings.
 A newline is automatically added to COMMAND."
-  (let ((tbuffer (get-buffer-create " *ess-names-list*"))
+  (let ((tbuffer (get-buffer-create
+		  " *ess-names-list*")); initial space: disable-undo
 	names)
     (save-excursion
       (set-buffer tbuffer)
-      ;; guaranteed by the initial space:(buffer-disable-undo)
       (ess-command command tbuffer)
       (goto-char (point-min))
       (if (not (looking-at "\\s-*\\[1\\]"))
-	  (setq names nil)
+	  ;;DBG:
+	  (progn (ess-write-to-dribble-buffer
+		  "ess-get-words-.. : not seeing \"[1]\"..\n")
+		 (setq names nil)
+	  )
 	(goto-char (point-max))
 	(while (re-search-backward "\"\\([^\"]*\\)\"" nil t)
 	  (setq names (cons (buffer-substring (match-beginning 1)
 					      (match-end 1)) names))))
-      (kill-buffer tbuffer))
-    ;;DBG: (ess-write-to-dribble-buffer (format " --> names «%s»\n" names))
+      ;DBG: do *not* (kill-buffer tbuffer)
+      )
+    ;;DBG:
+    (ess-write-to-dribble-buffer (format "ess-get-words-.. |-> names «%s»\n" names))
     names))
 
 (defun ess-compiled-dir (dir)
@@ -1917,7 +1930,8 @@ In all cases, the value is an list of object names."
 		      (directory-files dir))))
 	  ;; Get objects(pos) instead
 	  (and (or (ess-write-to-dribble-buffer
-		    (format "(ess-object-names ..): %s : no directory\n" obj)) t)
+		    (format "(ess-object-names ..): directory %s not used\n" obj))
+		   t)
 	       pos
 	       (ess-get-words-from-vector
 		(format inferior-ess-objects-command pos))))
@@ -1926,8 +1940,15 @@ In all cases, the value is an list of object names."
 
     ;; else
     (or (and obj  ;; want names(obj)
+	     (or (ess-write-to-dribble-buffer
+		  (format "(ess-object-names obj=%s): no directory - trying names\n"
+			  obj))
+		 t)
 	     (ess-get-words-from-vector
 	      (format inferior-ess-names-command obj)))
+	(and nil; must return nil
+	     (ess-write-to-dribble-buffer
+	      (format "(ess-object-names obj=%s): no dir.; -> objects()\n" obj)))
 	;; get objects(pos)
 	(ess-get-words-from-vector
 	 (format inferior-ess-objects-command pos))))) ; had 2nd arg ".*"
@@ -2036,7 +2057,7 @@ but by \\[ess-resynch], \\[ess-get-object-list], \\[ess-get-modtime-list],
 and (indirectly) by \\[ess-get-help-files-list]."
   (save-excursion
     (let ((result nil))
-      (set-buffer (get-ess-buffer ess-current-process-name))
+      (set-buffer (get-ess-buffer ess-current-process-name));to get *its* local vars
       (if (and ess-search-list (not ess-sp-change))
 	  ;; use cache:
 	  ess-search-list
@@ -2047,14 +2068,8 @@ and (indirectly) by \\[ess-get-help-files-list]."
 	      elt)
 	  (save-excursion
 	    (set-buffer tbuffer)
-	    ;; guaranteed by the initial space:(buffer-disable-undo)
-	    ;; dbg:
-;;-	    (ess-write-to-dribble-buffer
-;;-	     (format "(ess-search-list ..): tbuffer %s\n"
-;;-		     (buffer-name tbuffer)))
-
-	    ;;ess-command does (erase-buffer)
-	    (ess-command my-search-cmd tbuffer)
+	    ;; guaranteed by the initial space in its name: (buffer-disable-undo)
+	    (ess-command my-search-cmd tbuffer) ; does (erase-buffer)
 	    (goto-char (point-min))
 	    (while (re-search-forward "\"\\([^\"]*\\)\"" nil t)
 	      (setq elt (buffer-substring (match-beginning 1) (match-end 1)))
@@ -2066,7 +2081,7 @@ and (indirectly) by \\[ess-get-help-files-list]."
 		    (setq elt (concat homedir elt)))
 		;;else
 		;;dbg
-;;-		(ess-write-to-dribble-buffer "not dir.\n")
+		;;-		(ess-write-to-dribble-buffer "not dir.\n")
 		)
 	      (setq result (append result (list elt))))
 	    (kill-buffer tbuffer)))
@@ -2078,7 +2093,8 @@ and (indirectly) by \\[ess-get-help-files-list]."
 ;;;  * key	       (directory or object name)
 ;;;  * modtime	       (list of 2 integers)
 ;;;  * name, name ...  (accessible objects in search list posn labeled by key)
-;;; It has the same number of elements and is in the same order as the
+;;; It is a buffer-local variable (belonging to e.g. *R*, *S+6*, .. etc)
+;;; and has the same number of elements and is in the same order as the
 ;;; S search list
 
 (defun ess-get-modtime-list ()
@@ -2105,6 +2121,11 @@ The result is stored in `ess-sl-modtime-alist'."
 			  ))))))
       (setq index (1+ index))
       (setq searchlist (cdr searchlist)))
+    ;;DBG:
+    (ess-write-to-dribble-buffer
+     (format "ess-get-modtime-list: new alist of length %d\n"
+	     (length newalist)));; todo : also give length of components!
+
     (setq ess-sl-modtime-alist newalist)))
 
 
@@ -2128,9 +2149,8 @@ P-STRING is the prompt string."
 	 (prompt-string (if default
 			    (format "%s(default %s) " p-string default)
 			  p-string))
-	 (ess-object-list (mapcar 'list (ess-get-object-list
-					 ess-local-process-name)))
-	 (spec (completing-read prompt-string ess-object-list)))
+	 (object-list (mapcar 'list (ess-get-object-list ess-local-process-name)))
+	 (spec (completing-read prompt-string object-list)))
     (list (cond
 	   ((string= spec "") default)
 	   (t spec)))))
