@@ -9,6 +9,8 @@ ess-quit, now depends on the new customizable variable
 `ess-S-quit-kill-buffers-p' which defaults to nil. Consequently,
 the question ``Delete all buffers associated with ..?'' will not be
 asked anymore by default.
+
+@item ESS[S] (incl. R): Name completion for slots of S4 objects now works!
 @end itemize
 
 Changes/New Features in 5.2.4:
