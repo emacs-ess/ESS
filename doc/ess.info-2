@@ -1031,7 +1031,7 @@ low-volume mailing list.
 
    *  suggestions for improvements.
 
-   *  announcements of new [beta] releases of ESS.
+   *  announcements of new releases of ESS.
 
    *  posting small patches to ESS.
 
@@ -1144,26 +1144,26 @@ Unix installation
   1.   cd to a directory where you keep emacs lisp files, or create a
      new   directory to hold the distribution.  This directory will be
      referred   to below as "the ESS distribution directory".  It will
-     contain,   at the end, the tar file `ESS-5.1.20.tar.gz', and a
+     contain,   at the end, the tar file `ess-5.1.20.tar.gz', and a
      directory for   the ESS source, which will be termed "the
      ESS-5.1.20 source directory".
 
      Note that the .elc files may be installed elsewhere (as specified
      in the   Makefile) if desired.
 
-  2.   Retrieve the compressed tar file from one of the FTP or WWW
-     archive   sites via FTP (or HTTP).
+  2.   Retrieve the gzipped tar file or zipped file from
+     http://software.biostat.washington.edu/statsoft/ess/essDL
 
-  3.   Copy `ESS-5.1.20.tar.gz' to the location where you want the
+  3.   Copy `ess-5.1.20.tar.gz' to the location where you want the
      ESS-5.1.20 directory, and cd there.  Extract the files from the
-     distribution, which will unpack into a subdirectory, ESS-5.1.20.
-          	gunzip ESS-5.1.20.tar.gz
-          	tar vxf ESS-5.1.20.tar
-     	(or: `gunzip < ESS-5.1.20.tar.gz | tar vxf -' ).  	(or using GNU
-     tar:  `tar zvxf ESS-5.1.20.tar.gz').
+     distribution, which will unpack into a subdirectory, ess-5.1.20.
+          	gunzip ess-5.1.20.tar.gz
+          	tar vxf ess-5.1.20.tar
+     	(or: `gunzip < ess-5.1.20.tar.gz | tar vxf -' ).  	(or using GNU
+     tar:  `tar zvxf ess-5.1.20.tar.gz').
 
      The `tar' command will extract files into the current directory.
-     Do not create ESS-5.1.20 yourself, or you will get an extra level
+     Do not create ess-5.1.20 yourself, or you will get an extra level
      of   depth to your directory structure.
 
      Note if you have a very ancient version of GNU emacs (_and_  really
@@ -1180,7 +1180,7 @@ Unix installation
 
   5.   READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     In the ESS-5.1.20 directory, edit the file `Makeconf' (only if you
+     In the ess-5.1.20 directory, edit the file `Makeconf' (only if you
       want to place the executables in other locations; see LISPDIR and
       INFODIR) and then type:
           	make
