@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/10/04 15:12:06 $
-;; Version: $Revision: 5.35 $
-;; RCS: $Id: ess-site.el,v 5.35 1999/10/04 15:12:06 ess Exp $
+;; Modified: $Date: 1999/11/03 22:54:17 $
+;; Version: $Revision: 5.36 $
+;; RCS: $Id: ess-site.el,v 5.36 1999/11/03 22:54:17 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -156,7 +156,8 @@
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
 ;;(setq-default inferior-SAS-program-name "sas")
-(setq-default inferior-OMG-program-name "/home/rossini/src/anoncvs/Omegahat/org/omegahat/bin/omegahat")
+;;(setq-default inferior-OMG-program-name "/home/rossini/src/anoncvs/Omegahat/org/omegahat/bin/omegahat")
+(setq-default inferior-OMG-program-name "omegahat")
 
 ;;; ESS on the Windows NT/95/98 assumes you have installed gnuclient
 ;;; with your NTemacs.
@@ -231,7 +232,7 @@
 
 
 ;; (1.7) Set up stuff for noweb-mode!
-;;(require 'ess-noweb)
+(require 'ess-noweb)
 (require 'ess)
 
 ;;; 2. Site Specific setup

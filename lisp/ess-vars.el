@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1999/09/16 05:17:54 $
-;; Version: $Revision: 5.26 $
-;; RCS: $Id: ess-vars.el,v 5.26 1999/09/16 05:17:54 rossini Exp $
+;; Modified: $Date: 1999/11/03 22:54:17 $
+;; Version: $Revision: 5.27 $
+;; RCS: $Id: ess-vars.el,v 5.27 1999/11/03 22:54:17 ess Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -422,6 +422,10 @@ in S+4 Commands window and in Sqpe+4 buffer.")
 
 (defvar inferior-S-elsewhere-program-name "sh"
   "*Program name for invoking an inferior ESS with S on a different computer.")
+
+(defvar inferior-ESS-elsewhere-program-name "sh"
+  "*Program name for invoking an inferior ESS with program on a
+different computer.")
 
 (defvar inferior-S4-program-name "S4"
   "*Program name for invoking an inferior ESS with S4().")

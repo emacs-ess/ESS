@@ -1,14 +1,14 @@
 ;;; ess-inf.el --- Support for running S as an inferior Emacs process
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997, A.J. Rossini
+;; Copyright (C) 1997--1999, A.J. Rossini, M. Maechler.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/10/06 00:30:09 $
-;; Version: $Revision: 5.30 $
-;; RCS: $Id: ess-inf.el,v 5.30 1999/10/06 00:30:09 rossini Exp $
+;; Modified: $Date: 1999/11/03 22:54:17 $
+;; Version: $Revision: 5.31 $
+;; RCS: $Id: ess-inf.el,v 5.31 1999/11/03 22:54:17 ess Exp $
 
 ;; This file is part of ESS
 
