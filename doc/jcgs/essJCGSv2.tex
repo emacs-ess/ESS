@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/16 16:01:58 $ - $Revision: 1.182 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/18 18:04:18 $ - $Revision: 1.183 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -250,7 +250,8 @@ Emacs can control and interact with other programs.
 \paragraph{Keyboard and Mouse Input.}
 When Emacs was originally written, character-based terminals were the
 most advanced method of computer access.  Common Emacs commands were
-mapped (or bound) to key sequences for convenience.
+mapped (or bound) to key sequences (thus creating keyboard shortcuts)
+for convenience.
 % which are called key-maps (or key-bindings).  
 Over the
 last decade, Emacs has been extended to use graphical windowing
@@ -258,7 +259,7 @@ systems, such as X11\tm, Microsoft Windows, and Apple Mac OS, which
 allow additional forms of input, for example using a mouse, and which
 encourage multiple applications to share a single display.  Presently,
 Emacs is more often used with a GUI, with commands bound to mouse
-actions, but having commands also associated with key-maps
+actions, but having commands also associated with key sequences
 is an important time-saving feature so your hands don't have to leave 
 the keyboard.
 %for fast typists.
@@ -293,16 +294,16 @@ execution.
 Emacs capabilities are extended by loading text files containing commands,
 functions written in Emacs Lisp (elisp) \citep{RChassell1999}, a dialect of Lisp
 \citep{PGraham:1996}.  Emacs commands
-can be called interactively by pressing a key mapped to the command.
+can be called interactively by pressing a key sequence mapped to the command.
 % (or by typing the command name itself).
 %% rmh: The user presses a key, not a map.
 %%rmh: don't need this:
 % Not all functions are interactive, and
-% only those that are can have key-bindings.
+% only those that are can be bound to a key sequence.
 The most important extensions to Emacs are the major or minor modes,
 the difference being the extent to which they take over the editing behavior.
 
-Major modes provide a customized environment consisting of mapped keys
+Major modes provide a customized environment consisting of mapped key sequences
 and associated commands for editing a file or performing a task such
 as reading mail or browsing disk directories.  Only one major mode can
 be active for a given buffer at any time.  Major modes for file
@@ -327,8 +328,8 @@ fonts or colors, the syntax of a programming language whose
 characteristics are described within a major mode like
 \stexttt{ESS[S]}.  The \stexttt{overwrite-mode} determines whether
 typed characters replace the existing text or are inserted at the
-cursor.  Minor modes can be used to change key-bindings to emulate the
-keys used by another editor such as \stexttt{vi}.  In addition, they
+cursor.  Minor modes can be used to change key bindings to emulate the
+key sequences used by another editor such as \stexttt{vi}.  In addition, they
 can be used to perform version control operations and many other tasks
 which are nearly identical across file types.
 
@@ -460,7 +461,7 @@ programmed to perform, many tasks related to data cleaning,
 management, and editing.  For example, conversion of data files
 between standard input formats, such as from comma-separated to
 tab-delimited, can be automated through the use of commands written in
-elisp which can be mapped to a key.
+elisp which can be mapped to a key sequence.
 % programs or keyboard macros.
 
 Differences between user interfaces can arise from coordinating
@@ -662,8 +663,9 @@ available.
      \includegraphics[angle=270,width=\textwidth]{ess-demo}
   \fi
   \caption{Line-by-line execution of a command file. The cursor is
-    placed on a line in the \stexttt{ESS[S]} buffer and with a single
-    keypress the line is sent to the \stexttt{*R*} buffer for
+    placed on a line in the \stexttt{ESS[S]} buffer and then with a single
+    press of the \stexttt{RETURN} key
+    the line is sent to the \stexttt{*R*} buffer for
     execution.  The output of the package goes directly to the
     editable \stexttt{*R*} buffer.}
   \label{f.ess-demo}
@@ -843,14 +845,14 @@ interfaces (interactive for R, batch for BUGS) are slightly different.
 
 \paragraph{Simplifying Keymap Differences.}
 Simple conflicts between interfaces are exemplified by different
-keystrokes for editing tasks such as cut, copy, paste, beginning of
+key sequences for editing tasks such as cut, copy, paste, beginning of
 line, end of line, etc.  These may be the most aggravating because our
 fingers are typing ``instinctively'', 
 %without our brains having to specifically think about it, 
 but differences in interfaces circumvent this learned
 behavior.  ESS solves this problem by providing a uniform interface to
-keyboard actions despite the variety of statistical packages that
-might be used.  That is, the same key-maps are used for cursor movement, 
+keyboard actions across the variety of statistical packages that
+might be used.  That is, the same key sequences are used for cursor movement, 
 evaluation, and basic tasks such as loading files for editing.
 
 
@@ -930,7 +932,7 @@ advantages to using even this limited communication with the \Splus\
 GUI through ESS.  First, the user gets the full editing capabilities
 of Emacs.  Second, S language commands are sent from the Emacs buffer
 directly to the GUI Commands window with the familiar Emacs
-keystrokes.  Hence the user can work in a powerful editing environment
+key sequences.  Hence the user can work in a powerful editing environment
 and is protected from the delay and ergonomic challenges of using the
 mouse for copy and paste operations across windows.
 
@@ -992,7 +994,7 @@ As of this writing, the \stexttt{iESS[SAS]} mode can run on any computer,
 but the \SAS\ process it is controllong must be running  on a Unix machine.
 %The user highlights a region (normally a \stexttt{PROC \dots\ RUN;}
 %section) in the command file (\stexttt{myfile.sas} for convenience)
-%and sends it over to \SAS\ with mapped key commands.  The
+%and sends it over to \SAS\ with mapped key sequences.  The
 %\stexttt{*SAS:1.log*} and \stexttt{*SAS:1.lst*} buffers immediately
 %display the log and listing results from the commands.
 %Graphics commands can be sent to a file, in PostScript for example,
@@ -1005,29 +1007,38 @@ a remote computer with \SAS\ installed.
 %%%% SLIGHTLY DIFFERENT, BUT SUBSTANTIALLY?
 %%%% rmh: this is a form of interaction, not batch.  I restored the
 %%%% first paragraph with some expansion.
-%\paragraph{\SAS---Interactive cooperation with the \SAS\ Display Manager.}
-%The \SAS\ Display Manager provides a mouse-based interface to the graphical
-%routines, the help system, and other features that are not text-based.
+\paragraph{\SAS---Interactive cooperation with the \SAS\ Display Manager.}
+ESS users who write data analysis code in \stexttt{ESS[SAS]} mode in Emacs
+often need to work with the \SAS\ Display Manager's
+mouse-based interface to the graphical
+routines, the help system, and other non-text-based features.
 %The authors of ESS prefer the Emacs environment for
 %the text-file interaction with \SAS, that is with editing and
 %managing input command files and output listing and log files,
 %even on computer systems which run
-%the \SAS\ Display Manager environment.  In this situation, the user
-%designs the command file in \stexttt{ESS[SAS]} mode and highlights
-%regions to be forwarded to \SAS\ for processing.
+%the \SAS\ Display Manager environment.
+In this situation, the user
+designs the command file in \stexttt{ESS[SAS]} mode and highlights
+regions to be forwarded to \SAS\ for processing.
 %
 % Rodney: I don't see this as a feature of either ESS or emacs.  And,
 % what the authors prefer is certainly not germaine.
+%
+%
+% rmh: This is my preferred mode for interacting with SAS.  I tried another
+% rephrasing.  It {\it is} a feature of ESS.  ESS is able to provide ESS[SAS]
+% mode for the text processing (.sas .lst. log files) and simultaneously
+% let the user have interactive graphical access.
 
 %This can be done by either:
 %\begin{enumerate}
 %\item copying and pasting the marked regions to the \SAS\ Editor window
-%  and then pressing the \stexttt{RUN} key.  Highlighted sections of
+%  and then pressing the \stexttt{RUN} button.  Highlighted sections of
 %  the \SAS\ Listing window are brought back to Emacs to be read in the
 %  \stexttt{ESSlst} mode editing environment.
 %\item submitting the marked region for Batch File Processing (see the
-%  next section) but using the mapped command keys to append to the log
-%  and listing file instead of replacing them.
+%  next section) but using the mapped key sequences to append to the log
+%  and listing files instead of replacing them.
 %\end{enumerate}
 
 \subsection{Batch File Processing.}
@@ -1169,7 +1180,7 @@ model files, command files and log files.  Second, ESS creates
 templates for the command file from the model file so that a BUGS
 batch process can be defined by a single file.  Third, ESS provides
 a BUGS batch script that allows ESS to set BUGS batch parameters.
-Finally, key-mappings are defined to create a command file and submit 
+Finally, key sequences are defined to create a command file and submit 
 a BUGS batch process.
 
 \paragraph{S, \Splus, and R.}
@@ -1366,7 +1377,8 @@ It allows the user complete control over the communications among the
 files in which the analysis is specified, the statistical process doing
 the computation, and the output.  Because all are within the same programming
 environment, and therefore are accessed with the same
-editing and searching concepts and keystrokes, user efficiency is increased.
+editing and searching concepts and the same key sequences,
+user efficiency is increased.
 It is completely customizable
 to satisfy individual desires for interface styles as well as being
 extensible to additional statistical languages and analysis packages.
