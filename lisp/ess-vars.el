@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/07 19:30:33 $
-;; Version: $Revision: 1.34 $
-;; RCS: $Id: ess-vars.el,v 1.34 1997/11/07 19:30:33 rossini Exp $
+;; Modified: $Date: 1997/11/09 19:00:55 $
+;; Version: $Revision: 1.35 $
+;; RCS: $Id: ess-vars.el,v 1.35 1997/11/09 19:00:55 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 
 ;;; Code:
 
-(defconst ess-version "5.0-pre2" 
+(defconst ess-version "5.0" 
   "Version of ESS currently loaded.")
 
  ; User changeable variables
