@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/11 21:25:58 $
-;; Version: $Revision: 1.39 $
-;; RCS: $Id: ess-vars.el,v 1.39 1997/11/11 21:25:58 rossini Exp $
+;; Modified: $Date: 1997/11/12 07:45:33 $
+;; Version: $Revision: 1.40 $
+;; RCS: $Id: ess-vars.el,v 1.40 1997/11/12 07:45:33 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 
 ;;; Code:
 
-(defconst ess-version "5.0-pre3" 
+(defconst ess-version "5.0-pre4" 
   "Version of ESS currently loaded.")
 
 
