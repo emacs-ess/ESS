@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/03/22 21:30:39 $
-;; Version: $Revision: 1.87 $
-;; RCS: $Id: essa-sas.el,v 1.87 2002/03/22 21:30:39 rsparapa Exp $
+;; Modified: $Date: 2002/04/12 17:46:19 $
+;; Version: $Revision: 1.88 $
+;; RCS: $Id: essa-sas.el,v 1.88 2002/04/12 17:46:19 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -745,6 +745,7 @@ Without args, toggle between these options."
   (global-set-key (quote [f9]) 'ess-sas-data-view)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
+  (global-set-key (quote [f12]) 'ess-sas-graph-view)
 	(if (and ess-sas-edit-keys-toggle
 	    (equal emacs-major-version 19) (equal emacs-minor-version 28))
 	    (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
@@ -797,6 +798,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
+  (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 (defvar ess-sas-local-unix-keys nil
@@ -818,6 +820,7 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
   (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
+  (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 
