@@ -116,8 +116,8 @@ theoretical and applied statistical research.
 
 The Emacs Speaks Statistics (ESS) project's primary goal is to provide
 a single point of interface for text-based input and output for
-statistical computing.  The primary tasks which are focused on for
-optimization and efficiency are statistical coding and interactive
+statistical computing.  The primary user tasks which ESS focuses on
+for optimization and efficiency are statistical coding and interactive
 data analysis.  Statistical coding is the writing of computer code for
 data analysis.  This code might be compiled into an object file using
 a compiler, for example C or Fortran; or it might be run by an
@@ -173,34 +173,37 @@ Analysis as well as enhanced programming features.
 \subsection{Emacs}
 \label{sec:intro:emacs}
 
-Emacs \citep{RMS:2000,RChassell1999} is a mature, powerful, and
-extensible text editor which has been freely available for over 15
-years and is available for a large number of platforms, including
-those currently most frequently in use for statistical computing,
-including Unix, Apple Corporation's Macintosh platform, and
-Microsoft-based platforms.  While it does not fall into the category
-of word processors, it does have similar features.
+Emacs \citep{RMS:2000} is a mature, powerful, and easily extensible
+text editor which has been freely available for over 15 years and is
+available for a large number of platforms, including those currently
+most frequently in use for statistical computing, including Unix,
+Apple Corporation's Macintosh platform, and Microsoft-based platforms.
+While it does not fall into the category of word processors, it does
+have similar features.
 
-Most programming and documentation falls under the realm of text
+Most programming and documentation tasks fall under the realm of text
 processing.  This is natural given that it is being worked on from the
 perspective of the developer and not the end user.  This work can be
 enhanced by common IDE features such as contextual highlighting and
 recognition of special reserved words for the programming language or
 statistical program/package of interest.
 
-With the ESS extensions, Emacs acts as a uniform interface to the
-statistical programming code, the statistical program/process,
-documentation tools (\LaTeX, SGML, XML, Noweb), and revision control
-tools (RCS,CVS,SCCS, PRCS), on both local and remote machines.  It
-handles the interface to both source code and transcripts using
-context (syntax highlighting, bookmarking features, command-history).
+The ESS extensions provide Emacs with a uniform interface to the
+statistical programming code.  This can be extended with other Emacs
+packages to assist with usage of documentation tools (\LaTeX, SGML,
+XML, Noweb), and revision control tools (RCS,CVS,SCCS, PRCS), on both
+local and remote machines.  It handles the interface to both source
+code and transcripts using context (syntax highlighting, bookmarking
+features, command-history).
 
 Emacs is also a sophisticated development environment for programming
-in traditional compiled languages such as C and Fortran as well as
-non-traditional byte-compiled and interpreted languages such as Perl,
-Java, and Python.  It provides interfaces to build tools such as make
-as well as debugging tools through the use of external debuggers such
-as JDebug, GDB, and DBX.
+in traditional compiled languages such as C, C++, and Fortran as well
+as non-traditional byte-compiled and interpreted languages such as
+Perl, Java, and Python.  It provides interfaces to build tools such as
+make as well as debugging tools through the use of external debuggers
+such as JDebug, gdb, and dbx. Along with this, Emacs provides an
+interface to revision control systems for maintaining version history
+and a change-log for files.
 
 Extensions to Emacs allow it to act as a World-Wide-Web browser, a
 highly sophisticated mail and news reader, a shell/terminal window
@@ -211,32 +214,22 @@ other processes makes it an ideal platform for providing a universal
 interface to statistical packages.  The use of emacs-lisp as an
 extension language has also facilitated the programming.
 
-Emacs is equipped to assist with programming in Fortran, C, C++, Java,
-and many more languages.  It has an interface to build and debugging
-tools including make and many common debuggers such as dbx, gdb, and
-jdb.   Along with this, Emacs provides an interface to revision control
-systems for maintaining version history and a change-log for files.
-
 One of the strengths of Emacs is that every activity can be
 facilitated by keystrokes.  This has the advantage of eliminating the
 slowness and potential danger of mouse usages, but also has the
-disadvantage of requiring user to memorization.  There is some
-ability to use pull-down menus, and the menus can be configured to
-assist with learning keystrokes.
+disadvantage of requiring user memorization.  There is the ability to
+use pull-down menus to run commands, and these menus can be configured
+to present the associated keystrokes.
 
-Another strength of Emacs is its extension language.  It was one of
-the first tools with a programmable extension language, which is a
-dialect of Lisp
-%% \citep "ANSI Common Lisp" Paul Graham: ANSI
-%% Common Lisp; Prentice Hall, 1996. 
-, and has many examples of specialized extensions for tasks, including
-strange ones such as spreadsheets, database front and backends, forms
-entry, and even interactive games such as tetris.
-
-The above reasons make Emacs a natural choice as a basis for providing
-a universal interface for data analysis and programming.
-
-\subsubsection{Help for Using Emacs}
+Emacs was one of the first tools available with a programmable
+extension language, which is a dialect of Lisp
+\citep{RChassell1999,PGraham:1996}.  There are many examples of
+specialized extensions for assisting and facilitating common editing
+tasks.  This includes strange ones such as connections with
+spreadsheets, database front and backends, forms entry, and even
+interactive games such as tetris.  However, important tasks such as
+programming Makefiles, scripts, and compiled code are definitely not
+neglected.
 
 We assume that you are familiar with Emacs terminology and syntax:
 file, buffer, region, description of keys etc.  If not, please read
@@ -246,6 +239,9 @@ control h, i) or Tutorial, "C-h t").
 To find the key-sequences for commands, view the keymap (C-h b) or
 view help for the current mode (C-h m).   There are also numerous
 books which might help.
+
+The above reasons make Emacs a natural choice as a basis for providing
+a universal interface for data analysis and programming.
 
 \section{Statistical User Interfaces}
 \label{sec:UI}
@@ -260,18 +256,49 @@ well as most Apple and Microsoft-based statistical packages.  In
 addition, there have been other one-time implementation interfaces,
 which include graph-based interfaces as implemented in ViSta
 \citep{youn:lubi:1995}, the SAS terminal interface, which divides the
-terminal window into 3 screens, and possibly others.
+terminal window into 3 screens, and possibly others.  Another approach
+is taken by DataDesk, which \textbf{NEED HELP HERE!}
+
+\subsection{Command line interfaces}
+\label{sec:UI:command}
+
+The classic command-line interface is still available for statistical
+packages on most Unix and mainframe computers.  This generally
+consists of typing a single line at a time, with some form of
+wrap-around for those lines which are extremely long in terms of
+character counts.  For example, \Splus, R, Stata, XLispStat, and SAS
+still have command-line interfaces, though they are slowly
+disappearing.  For example, it is difficult to determine how to use
+it under SAS, and the Stata interface is depreciated towards use of a
+newer GUI.
+
+ESS assists command-line interfaces by providing a comprehensive
+interface layer on top of the command-line.
+
+\subsection{Graphical User Interfaces}
+\label{sec:UI:GUI}
+
+The advent of Microsoft Windows has lead to an interface
+standardization of sorts for statistical packages.  Many packages
+written for both IBM-based and Apple-based personal computers have
+descended from the spreadsheet data-table approach.  Generally, these
+feature a cases-by-variables spreadsheet representation of the data,
+along with pull-down menus for performing actions on the data set.
+Depending upon their nature, numerical results can be saved on the
+spreadsheet.  Software that takes this approach includes SPSS,
+Minitab, \Splus for Windows, and ViSta, as well as many others.  
 
 \subsection{ESS}
 \label{sec:UI:ESS}
 
 ESS originated from the extension for programming and process
-interface in Emacs supplied by S-mode (D. Bates, et. al.; M Meyer; D.
-Smith).  The extension to a language-independent generic interface was
-prompted by the success of R, and the need for an R-mode.  This led to
-a merger with the SAS-mode (T. Cook), and the refactoring of the
-S-mode codebase to accommodate multiple languages in a flexible way.
-A detailed history can be found in section~\ref{sec:history}.
+interface in Emacs supplied by S-mode (D. Bates, F. Ritter, et.al.; M
+Meyer; D.  Smith).  The extension to a language-independent generic
+interface was prompted by the success of R, and the need for an
+R-mode.  This led to a merger with the SAS-mode (T. Cook), and the
+refactoring of the S-mode codebase to accommodate multiple languages
+in a flexible way.  A detailed history can be found in
+section~\ref{sec:history}.
 
 ESS currently supports a number of interactive statistical programs as
 well as a few interpreted statistical languages.  There are various
@@ -291,14 +318,6 @@ differentiate from typical package-provided interfaces.
 \label{sec:basic}
 
 
-%%% MAKE THIS INTO A PARAGRAPH
-%%ESS provides a number of features, including:
-%%\begin{itemize}
-%%\item syntax highlighting 
-%%\item standard formating and customizable automatic indentation
-%%\item ability to send text regions and buffers to statistical programs
-%%\item command-line history searching 
-%%\end{itemize}
 ESS provides a number of features for statistical programming, beyond
 those generally provided by Emacs, which were listed in
 section~\ref{sec:intro:emacs}.
@@ -320,13 +339,6 @@ to the statistical program/package for execution.  In addition, it is
 possible to have Emacs complete file names from the current underlying
 working directory.
 
-%%% MAKE THIS INTO A PARAGRAPH
-%%In addition, for S, \Splus, and R, ESS provides
-%%\begin{itemize}
-%%\item object-name completion
-%%\item ability dump, edit, save, and reload functions and similar
-%%  programming code.
-%%\end{itemize}
 In addition to the above, for languages in the S family, including S
 (versions 3 and 4, developed at Bell Labs), \Splus (all versions), and
 R (all versions), there is object-name completion of both user and
@@ -336,29 +348,43 @@ formatted manner for editing, as well as to reload after possible
 editing back into the statistical package/process.
 
 %%% MAKE THIS INTO A PARAGRAPH
-Editing source code (S, LispStat, SAS)
-\begin{itemize}
-\item Loading and error-checking of code
-\end{itemize}
+ESS also facilitates the editing of source code by providing a means
+for loading and error-checking of code for S, LispStat, and SAS.  This
+allows for one form of crude source-level debugging.
 
 %%% MAKE THIS INTO A PARAGRAPH
-Interacting with the process
-\begin{itemize}
-\item Command-line editing
-\item Searchable Command history
-\item Command-line completion of object names (currently S only) and file names
-\item Quick access to object lists and search lists (currently S only)
-\item Transcript recording
-\item Interface to the help system (currently S, LispStat, and Stata)
-\end{itemize}
+%Interacting with the process
+%\begin{itemize}
+%\item Command-line editing
+%\item Searchable Command history
+%\item Command-line completion of object names (currently S only) and file names
+%\item Quick access to object lists and search lists (currently S only)
+%\item Transcript recording
+%\item Interface to the help system (currently S, LispStat, and Stata)
+%\end{itemize}
+iESS, the mode for controlling interactive processes, allows for
+command-line editing and saving history, as well as recalling and
+searching for previously entered commands.  File completion exists,
+and for for S languages, there exists object and function completion.
+Transcripts are easily recorded and editable into a coherent activity
+log, and there is a good interface to the help systems for S,
+LispStat, and Stata.
 
 %%% MAKE THIS INTO A PARAGRAPH
-Transcript manipulation (S3, S+3, S4, R, XLispStat)
-\begin{itemize}
-\item Recording and saving transcript files
-\item Manipulating and editing saved transcripts
-\item Re-evaluating commands from transcript files
-\end{itemize}
+%Transcript manipulation (S3, S+3, S4, R, XLispStat)
+%\begin{itemize}
+%\item Recording and saving transcript files
+%\item Manipulating and editing saved transcripts
+%\item Re-evaluating commands from transcript files
+%\end{itemize}
+Transcript manipulation is another important task that ESS
+facilitates.  Once a transcript log is generated, perhaps saving an
+iESS buffer, transcript-mode allows for a quick means of reproducing
+results, which is useful for demonstration of techniques as well as
+for reconstruction of data analyses.  In particular this allows for
+the recording and saving of transcripts, manipulating and editing
+saved transcripts, as well as re-evaluating commands from transcript
+lines. 
 
 %%%% MAKE THIS INTO A PARAGRAPH
 %%Help File Editing (R)
@@ -374,18 +400,14 @@ handles source code, including syntax highlighting as well as the
 ability to submit code to a running ESS process, for example R or
 \Splus. 
 
-For small projects, it can be useful to have a single repository (file
-or directory with a few files) for documenting code which produces
-datasets and analysis results.  This is facilitated by being able to
-edit files (different or the same) and being able to specify different
-modes for handling programming code for the different statistical
-languages.
-
 \section{Using ESS with the S family of languages}
 \label{sec:S}
 
-ESS's history as originating from S-mode results in its strength for
-programming in S languages.
+We give, as one application, how ESS can be used with the S language,
+and its implementations via \Splus and R.  Since ESS originated as
+S-mode, this indicates why it is so strong for programming S.  We give
+examples for editing files, communicating with the interactive S
+process, handling transcripts, and getting help.
 
 \subsection{Editing Files}
 \label{sec:S:edit}
@@ -743,15 +765,15 @@ is to enhance the capabilities of the IDE for statistical practice;
 this includes implementing such common IDE features as object browsers
 as well as clean up the interface.
 
-The other exciting extension is towards quasi-Literate Programming
-methodologies \citep{Knuth:1992,NRamsey:1994}, which we will refer to as
-Literate Statistical Analysis \citep{ross:lunt:2001}. The tools include
-the use of Noweb \citep{NRamsey:1994} and an additional step towards the
-use of an XML authoring environment for statistical analysis.
-Literate Data Analysis based on Noweb, is a means of documenting a
-statistical analysis plan and procedure.  Literate Statistical
-Analysis is intended to be a round-trip environment for both design
-and analysis.
+The other exciting extension is towards the use of Literate
+Programming methodologies \citep{Knuth:1992,NRamsey:1994}, which we
+will refer to as Literate Statistical Analysis \citep{ross:lunt:2001}.
+The tools include the use of Noweb \citep{NRamsey:1994} and an
+additional step towards the use of an XML authoring environment for
+statistical analysis.  Literate Data Analysis based on Noweb, is a
+means of documenting a statistical analysis plan and procedure.
+Literate Statistical Analysis is intended to be a round-trip
+environment for both design and analysis.
 
 The future use of XML is to accommodate the growing use of WWW-based
 services for document publishing as well as information conversion.
@@ -762,7 +784,6 @@ code and analysis plan, Literate Statistical Analysis is a round-trip
 cycle, using document modification through the Document Object Model
 interface (W3 Consortium).  This is described more in
 \citep{ross:lunt:2001}. 
-
 
 \bibliographystyle{plainnat} %alpha}
 \bibliography{ess}
