@@ -1,0 +1,1730 @@
+Wed Sep 10 09:42:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (html/ess_toc.html): Use explicit file "index.html",
+	since some servers/browsers have different defaults. (MM).
+
+Wed Sep 10 09:40:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el ((assoc "\\.[rR]\\'" auto-mode-alist)): change check 
+	for setting auto-mode-alist (MM).
+
+Tue Sep  9 16:35:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: removed code which generated a second "ess-mode"
+ 	menu.
+
+Tue Sep  9 16:23:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-mode): mode name:  ess-language, not
+	ess-dialect. 
+
+Tue Sep  9 16:22:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess-mode): mode name: 
+	iESS [ess-dialect:proc]
+
+Tue Sep  9 10:39:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-[r][s+3].el (*-customize-alist): lastvalue command renamed
+	as ".ess.lvsave".
+
+Tue Sep  9 09:59:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: what is (fset 'run-s (fset 'run-S (symbol-function
+	'S))) for??
+
+Tue Sep  9 09:15:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-version): incremented
+
+	* Makefile (VERSION): incremented
+
+Tue Sep  9 09:01:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* RELEASING beta 13
+
+Tue Sep  9 09:01:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (all): ess -> ESS
+
+Tue Sep  9 08:29:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-r.el (R-customize-alist): needs syntax table for inferior
+	processes.
+
+Mon Sep  8 15:22:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess-mode): need to fix syntax table.
+
+Mon Sep  8 14:28:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el (sas-indent-line): renamed from
+	indent-sas-statement.
+
+Mon Sep  8 14:08:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-mode): add one more debugging statement.
+
+Mon Sep  8 13:23:20 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: moved syntax table code to essl-s.el.
+
+Mon Sep  8 13:07:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-version): updated.
+	
+	* Makefile: Updated version number
+
+Mon Sep  8 12:25:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-help.el (ess-find-help-file): doesn't search for
+	completions, with SAS or XLS.  Fine, since there isn't a really
+	good way to build the list [SAS] or it isn't coded yet [XLS].
+
+Mon Sep  8 12:24:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-help.el (ess-display-help-on-object): uses process name as
+	part of the buffer.
+
+Mon Sep  8 12:23:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: removed inferior-ess-save-lastvalue-command and
+	inferior-ess-retr-lastvalue-command, not needed.
+
+Mon Sep  8 09:01:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el: moved SAS language related autoloads and fsets from 
+	ess.el to here.
+
+Mon Sep  8 08:59:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el: moved S language related autoloads and fsets from
+ 	ess.el to here.
+
+Mon Sep  8 08:51:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (SAS-customize-alist): use ess-local-customize-alist. 
+
+Mon Sep  8 08:46:32 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-r.el (R-customize-alist): use ess-local-customize-alist. 
+
+Mon Sep  8 08:45:43 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s+3.el (S+3-customize-alist): use ess-local-customize-alist. 
+
+Mon Sep  8 08:45:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s4.el (S4-customize-alist): use ess-local-customize-alist. 
+
+Mon Sep  8 08:42:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s3.el (S3-customize-alist): use ess-local-customize-alist. 
+
+Mon Sep  8 08:41:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-local-customize-alist): new variable.  use it.
+
+Mon Sep  8 08:35:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el: code to remove .[sS] from auto-mode-alist commented 
+	out.  Need a version which works with Emacs.
+
+Fri Sep  5 14:20:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-eval-map): define it.  New keysequence:
+	C-c C-e ...  for evaluation of code.
+
+Fri Sep  5 14:19:43 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-eval-map): new variable.  use it.
+
+Wed Sep  3 12:54:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-trns.el: removed log section.
+
+Wed Sep  3 12:30:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-find-dump-file-other-window): changed
+	error to message, so that dumping non-existant R objects would
+	work.
+
+Wed Sep  3 12:29:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-help.el (ess-submit-bug-report): fixed to use ess-bugs, and
+ 	to include *ESS* buffer contents.
+
+Wed Sep  3 12:27:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s4.el: rolled in John Chamber's s4-modeadds.el
+
+Wed Sep  3 11:48:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s4.el (S4-customize-alist): added
+	inferior-ess-search-list-command from the ess-xtras.
+
+Wed Sep  3 11:11:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el ((assoc "\\.q" auto-mode-alist)): removed '$'.
+	(RMH). 
+
+Wed Sep  3 10:42:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi : applied Martin's updates.
+
+Wed Sep  3 10:37:39 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: applied Martin's patch, ESS -> ess, for texinfo
+	stuff.
+
+Tue Sep  2 16:36:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-*.el (ess-dump-filename-template): use it, with
+	ess-suffix.
+
+Tue Sep  2 16:19:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-delete-dump-files): changed default value to
+	nil.  Better safe than sorry.
+
+Tue Sep  2 16:05:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-*.el (*-customize-alist): ess-suffix.  Use it.
+
+Tue Sep  2 15:44:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el: moved "general" variables from essd-s?.el,
+	essd-r.el.  There, should only be modifications to the standard S
+	customizations.  Avoids conflict with not loading certain
+	customization variables.
+
+Tue Sep  2 13:23:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (LASTVERSION): version set to 12.
+
+Tue Sep  2 10:22:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-version): Version 11 released; set to 12.
+
+Mon Sep  1 17:16:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-r.el (R-mode): setq-default the customize alist.
+
+Mon Sep  1 16:59:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s+3.el (S+3-mode): need to set ess-customize-alist.
+
+Mon Sep  1 16:15:10 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-mode-font-lock-keywords): redid the assign
+	fontlocking. 
+
+Mon Sep  1 15:53:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-mode-editing-alist): renamed.  Use it.
+
+Mon Sep  1 15:48:43 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess): corrected doc string.
+
+Mon Sep  1 14:54:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el: added sas config variables here.
+
+Mon Sep  1 14:21:08 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (SAS): works.
+
+Mon Sep  1 14:20:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (SAS-mode): fixed and "modernized".
+
+Mon Sep  1 14:16:16 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.el (SAS-transcript-mode): load it.
+
+Mon Sep  1 14:16:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.el (SAS-mode): load it.
+
+Mon Sep  1 14:12:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el (auto-mode-alist): XLS is recognized.  SAS is
+	recognized.
+
+Fri Aug 29 13:41:22 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess-make-comint): use
+	inferior-ess-start-file, inferior-ess-start-args.
+
+Fri Aug 29 13:24:12 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (inferior-SAS-args): new variable.  Use it.
+
+Fri Aug 29 13:11:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-dribble-buffer): now defaults to
+	*ESS*. (RMH/MM). 
+
+Fri Aug 29 13:09:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (SAS-customize-alist): fixed primary prompt (RMH). 
+
+Thu Aug 28 10:21:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-check-modifications): reformat.
+
+Thu Aug 28 09:03:53 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.el: moved ess-site autoloads here.
+
+Thu Aug 28 09:02:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-help.el (ess-find-help-file): autoloaded
+	ess-get-object-list at the beginning of ess-help; byte-compiler
+	error.
+
+Wed Aug 27 14:33:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-mode): needed to set buffer local variables
+	AFTER they are killed.  Whoops.
+
+Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-mode): type changed to dialect.
+
+Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.1  1997/09/10 17:21:00  rossini
+	* Removing Initial revision
+	* Removing
+	* Removing Revision 1.11  1997/09/10 17:11:25  rossini
+	* Removing *** empty log message ***
+	* Removing
+	* Removing Revision 1.10  1997/09/09 13:16:09  rossini
+	* Removing *** empty log message ***
+	* Removing
+	* Removing Revision 1.9  1997/09/09 13:02:26  rossini
+	* Removing *** empty log message ***
+	* Removing
+	* Removing Revision 1.8  1997/09/09 13:01:13  rossini
+	* Removing *** empty log message ***
+	* Removing
+	* Removing Revision 1.7  1997/09/09 12:59:09  rossini
+	* Removing *** empty log message ***
+	* Removing
+	* Removing Revision 1.6  1997/09/08 16:27:18  rossini
+	* Removing *** empty log message ***
+	* Removing
+	* Removing Revision 1.5  1997/09/08 16:24:19  rossini
+	* Removing *** empty log message ***
+	* Removing
+	* Removing Revision 1.4  1997/09/05 18:20:47  rossini
+	* Removing *** empty log message ***
+	* Removing
+	* Removing Revision 1.3  1997/09/01 18:21:40  rossini
+	* Removing *** empty log message ***
+	* Removing from all files.  All comments now in ChangeLog
+ 	file).
+
+Wed Aug 27 11:55:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (ess-proc-name): changed the process name to be
+	returned.  Now is the form:  ess-dialect : ess-process-number.
+
+Tue Aug 26 18:49:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-version-running -> ess-dialect
+
+Tue Aug 26 18:49:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-proc-prefix -> ess-language
+
+Tue Aug 26 17:58:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el: added SAS site init (from Cook's mode) (TC)
+
+Tue Aug 26 17:50:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el:  new file.  SAS language editing mode (Cook's
+	mode).  Use it. (TC)
+
+Tue Aug 26 17:48:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el : new file.  S language editing mode.  Use it.
+  	S specific stuff from ess-mode.
+
+Mon Aug 25 16:53:10 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-help.el (ess-find-help-file): added hack to complete non-S
+ 	stuff. (KH)
+
+Mon Aug 25 16:42:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-r.el (R-customize-alist): made the name quoted.
+
+Mon Aug 18 15:27:41 1997  Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r.el (R-customize-alist): sorted
+
+	* essd-s4.el: 
+	* essd-s3.el (S3-customize-alist): not Splus; no
+	'Optional/Required Arg' 
+
+	* essd-s+3.el (S+3-customize-alist): switched some lower/upper
+	case: more important things on lower case; now compatible to R
+	
+
+Mon Aug 25 16:35:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el auto-mode-alist: Use \\' instead of $ [faster (?)],
+ 	standard; Add ...src/library/[A-z]*/funs/.. for R source editing.
+  	(MM).
+
+Mon Aug 25 11:02:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el (inferior-ess-font-lock-input): added setq of this
+	variable as a customization example (RMH).
+
+Mon Aug 25 10:35:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-comp.el: removed (require 'cl).  This is semi-evil, if we
+	can only avoid it.
+
+Fri Aug 22 17:01:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (inferior-ess-font-lock-prompt-p): New
+	variable. Need to use it.  Customize in ess-site.
+
+Fri Aug 22 16:56:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess-mode): mode name is now "iESS", as per
+	discussion. 
+
+Fri Aug 22 16:54:19 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-object-name-db-file-loaded): use it to
+	determine which languages/versions have been loaded.
+
+Fri Aug 22 16:48:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-r.el (R-customize-alist): added ess-object-name-db to
+	alist. 
+
+Fri Aug 22 16:47:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s+3.el (S+3-customize-alist): added ess-object-name-db to
+	alist. 
+
+Fri Aug 22 16:41:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-xls.el (XLS-customize-alist): added ess-object-name-db to
+	alist. 
+
+Fri Aug 22 16:40:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-xls.el (XLS-mode): moved from ess-mode.el
+
+Fri Aug 22 15:58:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s+3.el (S-mode): moved from ess-mode.el
+
+Fri Aug 22 15:58:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-r.el (R-mode): moved from ess-mode.el
+
+Fri Aug 22 15:50:25 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s+3.el: removed commented out font-lock patterns. (RMH)
+
+Fri Aug 22 15:49:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s3.el: removed commented out font-lock patterns. (RMH)
+
+Fri Aug 22 15:48:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (essd-S-inferior-font-lock-keywords): added RMH's
+ 	error patterns.
+
+Fri Aug 22 12:28:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el: new file (RMH).
+
+Fri Aug 22 12:18:30 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-function-pattern): New pattern, thanks to 
+ 	Stephen C. Pope <scp@predict.com>.
+
+Fri Aug 22 11:59:32 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (ESS.info): fixed text output (KH)
+
+Fri Aug 22 11:59:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (html/ESS_toc.html): fixed text output (KH)
+
+Fri Aug 22 11:55:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (inferior-ess-save-lastvalue-command): new
+	defvar for variable. (KH)
+
+Fri Aug 22 11:55:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (inferior-ess-retr-lastvalue-command): new
+	defvar for variable. (KH) 
+	
+
+Fri Aug 22 11:54:27 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (S-plus): removed variable
+
+Fri Aug 22 11:51:22 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-xls.el (XLS-customize-alist):  inferior-ess-start-file
+	("~/.ess-R").  inferior-ess-start-args.  Use it. 
+
+
+Fri Aug 22 11:43:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s+3.el (S+3-customize-alist): inferior-ess-start-file
+	("~/.ess-R").  inferior-ess-start-args. Use it.
+
+Fri Aug 22 11:42:34 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-r.el (R-customize-alist): inferior-ess-start-file
+	("~/.ess-R").  inferior-ess-start-args. Use it.
+
+Fri Aug 22 11:06:34 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: renamed, from ESS.texi.  Changed header.  Added
+	info-directory stuff (KH).
+
+Fri Aug 22 11:04:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.el: installed new, non CL versions of ess-setq-vars,
+	ess-setq-vars-default. (KH)
+
+Fri Aug 22 10:58:05 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-xtra.el: ESS-version -> ess-version (KH)
+
+Fri Aug 22 10:57:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-version): incremented.  ESS-version ->
+	ess-version.  (AJR)
+
+Fri Aug 22 10:56:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess-mode): ESS-version -> ess-version (KH)
+
+Fri Aug 22 10:56:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* STARTED : ESS-4.9-b11.  All DOCUMENTATION NOW IN `ChangeLog'.
+
+Tue Jul 29 07:14:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: transcript fontlock vars now here.
+
+Mon Jul 28 09:57:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el: explanatory comments for dialect customization.
+
+Mon Jul 28 09:55:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: added defvars for ess-site things below.  Still
+	need to add to essd-*.el's!
+
+	* ess-site.el: more customizations for the executable names.  Need 
+	to move defvars to ess-vars.
+
+	* README: edited authors again.
+
+	* Makefile: S-mode -> ESS.
+
+	* Makefile: updated version number.
+
+	* ess-site.el: moved/uncommented essd-s?.el
+
+	* essd-s3.el: provide the right package!
+
+	* Makefile: S-mode -> ESS.
+
+	* ess-site.el: reformat.
+
+	* ess-site.el: fixed typo.
+
+	* ess.el: made ess-setq-vars* clean.  No ugly hacks!
+	cleaned up authorship.
+
+	* Makefile: updated version number.
+
+	* ess.el (ess-setq-vars-default): made nice.
+
+	* ess.el (ess-setq-vars): made nice.
+
+1997-07-25  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-mode-map): newline/return mapped to
+	'newline-and-indent, by popular demand.
+
+	* General : variable definitions in ess now moved to ess-vars.
+	ess now only contains useful code for distinguishing between
+	processes. 
+
+1997-07-01  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess): removed make-local-variables which
+ 	should've been handled in ess.el
+	(ess-multi): same as above.
+	(ess.el): fixed same.
+	(ess-execute): removed make-local-variable 'ess-local-process-name
+	(ess-force-buffer-current): removed make-local-variable
+ 	'ess-local-process-name
+	(inferior-ess): let (done 0), for constructing
+ 	inferior-ess-procname.
+
+	* ess-site.el: added RMH's new docs, `ess-keep-dump-files'.
+
+	* ess-inf.el (ess-quit): doc string edited.
+
+	* ess-mode.el (ess-check-source): RMH's solution.
+
+1997-06-16  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: trans->trns.  Idea is to keep file names at the 8+3
+	length  for archaic OSs...
+
+Sun Jun 15 04:39:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* NOTE:  SEE RCS Log files for program updates.  All
+	language/dialect specific code attempted to be moved to essd files 
+	(d=dialect :-)..  need more movement, though... 
+
+	* ess.el: Documentation update.
+
+Wed May 21 14:47:17 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S-mode has now become ess-mode. (Emacs Speaks Statistics).
+
+Thu Apr 24 18:10:32 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* TODO: (MM) word wrap mistake.
+
+	* S-help.el (S-help-mode-map): (MM) Patch to bind ^M to
+	next-line. Whoops.  (AJR) changed to \C-m.
+
+Wed Apr 23 09:29:53 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S.el (S-mode-version): incremented.
+	
+	* S-help.el (S-display-help-on-object): (MM) S-help-sec-regex, 
+ 	S-help-sec-keys-alist take correct values (see yesterday's log for 
+ 	inferior-S-help-command).  Need to do similar with
+ 	inferior-S-help-command hack!
+
+	* S.el : (MM) S-help-sec-regex, S-help-sec-keys-alist
+	buffer-local. 
+
+Tue Apr 22 19:19:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S-mode-4.9-b5 : released.
+
+	* S-help.el (S-display-help-on-object): Added curr-help-command
+	(since inferior-S-help-command is buffer-local, need to get BEFORE 
+	switching buffers).
+
+	* S-site.el (S,R,XLS): setq-default to setq.
+	(R): "cat" -> inferior-S-pager. Buffer local?
+	(XLS): cleaned up.
+	(S-XLS-shortcut-post-run-hook): new function.
+	(S-XLS-shortcut-pre-run-hook): new function.
+	(R): cleaned up.
+	(S-R-shortcut-post-run-hook): new function.
+	(S-R-shortcut-pre-run-hook): new function.
+	(S): cleaned up.
+	(S-S-shortcut-post-run-hook): new function.
+	(S-S-shortcut-pre-run-hook): new function.
+
+	* S-inf.el (inferior-S): removed useless make-local-variables
+
+	* S.el : declared many variables via make-variable-buffer-local.
+
+	* S-site.el : removed useless make-local-variables...
+
+	* S-inf.el (S-multi): setq -> setq-default, for
+	inferior-S-prompt.
+
+	* buffer-local stuff moved to S.el.  
+	
+Mon Apr 21 21:35:22 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S-mode-4.9-b4 : released.
+
+	* S-site.el (XLS): wrong help; syntax confusion :-).
+
+	* S-inf.el (inferior-S): moved the setting of the history file.
+
+	* S.el: inferior-S-program should be global?
+
+Sun Apr 20 12:30:36 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S-inf.el: moved S-force-buffer-current here, from S-mode.
+
+	* S.el: (S-version-running): buffer-local.
+	(inferior-S-program): buffer-local.
+	(inferior-S-secondary-prompt): buffer-local.
+	(inferior-S-primary-prompt): buffer-local.
+
+	* S-site.el (S-transcript-mode): change autoload to point at
+	S-trans.
+
+Fri Apr 18 12:01:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S-site.el: removed stupid comments, rearranged autoloads
+	sensibly.
+
+	* S-inf.el:  Moved `eval-*' commands here from S-mode.
+	Edited autoloads appropriately (must be a better way to deal with
+	the bytecompiler and file/function synchronization!)
+	
+	* S-mode.el: Moved `eval-*' commands to S-inf.
+
+	
+Thu Apr 17 12:58:34 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S.el (S-mode-font-lock-keywords): changed
+	("<-" . font-lock-reference-face) to
+	("<<?-"	. font-lock-reference-face), suggestion from Kurt.
+
+Wed Apr 16 14:36:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S-trans.el: removed byte-compiler errors.
+
+	* S-mode.el (S-indent-exp): commented out, in "let", restart and
+	last-sexp. 
+
+	* S-inf.el
+	(S-eval-visibly): See: "Terrible Kludge".  This code needs to be
+	"done right (tm)".  Last byte-compile problem... :-(.
+	(S-get-process-variable):  removed let (not needed?)
+	(S-set-process-variable):  removed let (not needed?)
+
+	* S.el: run-hooks 'S-mode-load-hook before provide 'S.
+	(S-mode-version): update the version.
+
+	* S-help.el: added autoloads for bytecompile (need to find a
+	cleaner way).
+
+
+Tue Apr  8 06:32:20 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S-mode-4.9-b3 RELEASED.
+
+	* S-site.el (R): use the previously defined variable.
+	(S): use the previously defined variable.
+	(XLS): use the previously defined variable.
+
+	* S.el (inferior-S-program): changed definition.
+	(inferior-S-program-name): new.
+	(inferior-R-program-name): new.
+	(inferior-XLS-program-name): new.
+	(inferior-S4-program-name): new.
+
+	* General: put back GNU.  But need to check this!
+
+	* General: removed "FSF GNU" from all files.  It's not kosher.
+
+Mon Apr  7 07:52:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S-inf.el (get-S-process): moved to prevent byte-compiler
+	warnings.
+
+	* S.el: moved user/sys vars from S-mode.el/S-inf/S-help
+	(font-lock): added require.
+
+	* S-help.el: moved user/sys vars to S.el.
+
+	* S-site.el: removed (require 'font-lock).
+
+	* S-mode.el: moved user/sys vars to S.el.
+
+	* S-inf.el: moved requires and eval-when-compile requires.
+
+	* S-site.el: moved XLS, R, S here from S-inf.  Added local vars at
+ 	end.  Edited commented-out documentation.
+
+	* S-inf.el: moved XLS, R, S to S-site
+	(XLS, R, S): S0 -> inferior-S
+	(inferior-S): Renamed from S0.
+	
+
+	* S.el: Documentation cleaned, modified.  Old news moved to NEWS
+ 	files.
+	(S-mode-version): variable updated (wasn't, before.  Whoops!)
+
+	* S-mode-4.9-b2 RELEASED
+
+	* S.el : removed autoloads (and duplicates) for the modes and
+	inferior processes (which were and are in S-site).
+
+	* S.el : Commentary:  deferred installation instructions to README
+	and S-site. Removed comint stuff, since present in 19.x emacsen.
+
+	* S.el (S-local-process-name): variable, not a constant.
+
+	* S-site.el: Added R-mode autoload.
+
+	* README: query-rep'd "4.8" to "4.9". 
+
+	* S-mode.el (S-mode-map): S-parse-errors binding changed to C-c`
+
+Sun Apr  6 14:23:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S-inf.el (inferior-S-make-comint): S-inf-pager ->
+	inferior-S-pager. 
+
+	* S-site.el (XLS): added XLS autoload.
+
+	* S-inf.el (inferior-S-make-comint): replaced with Kurt's version
+	(I need to verify this).
+	(inferior-S-pager): New variable.
+
+Fri Apr  4 10:38:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S-mode-4.9-b1 RELEASED
+
+	* S-site.el: added R as an autoload.
+
+	* S-inf.el (inferior-S-mode): Added a switch (based on
+	S-proc-prefix) for using inferior-S-input-sender or
+	inferior-R-input-sender. 
+
+	* S-inf.el (inferior-R-input-sender): added (thanks to KH).
+	
+	* S-mode.el (S-eval-paragraph): added. (from S-extras).
+
+	* S-extras.el: removed S-eval-paragraph
+
+	* Makefile: More in line with GNU standards.  Still WRONG,
+	though.
+
+Thu Apr  3 14:38:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* S-help.el: Support for W3 viewing of R files is included.  It
+	works (but could be better).  Removed until 5.0 :-).
+
+	* S.el (S-proc-prefix): Moved before S-history-file definition,
+ 	which now depends on it.
+
+	* S-help.el (S-submit-bug-report): send to rossini@stat.sc.edu
+
+	* S-inf.el (inferior-S-mode-map): C-x` should be C-c`
+	(S-parse-errors).  Major modes NEVER use C-x prefixes!
+	(inferior-S-mode-map): C-c C-a masks a useful function in comint.
+	Need to find a second prefix for "hotkeys".
+
+	* S-inf.el (S-object-name-db-file): added variable.
+	(S-create-object-name-db): Use S-object-name-db.
+
+	* S-inf.el (inferior-S-mode): Changed comint-completion-addsuffix
+	definition, and made buffer-local (thanks: Kurt Hornik).
+
+	* All_files : S-filenames-map is final name. (-p for functions.
+	Bozo...).
+
+	* S-inf.el (inferior-S-font-lock-keywords): changed variable name
+ 	from S-inf-font-lock-keywords.
+	(inferior-S-mode): changed variable name to
+ 	inferior-S-font-lock-keywords from S-inf-font-lock-keywords.
+
+	* S-modeadds.el (S-mode-load-hook): changed name of
+ 	S-inf-filenames-map to S-filenames-map-p
+
+	* S-inf.el (S-dir-modtime): changed name of S-inf-filenames-map to
+ 	S-filenames-map-p
+	(S-object-names): changed name of S-inf-filenames-map to
+ 	S-filenames-map-p
+
+	* S-mode.el (S-check-modifications): changed name of
+ 	S-inf-filenames-map to S-filenames-map-p
+
+	* S-inf.el: removed S-inf-filenames-map defvar.
+
+	* S.el: Moved S-inf-filenames-map defvar here, renamed as
+ 	S-filenames-map-p.
+
+Wed Apr  2 09:38:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* TODO: updated ALL conversations and reasonings.
+
+	* Makefile: removed extraneous commented-out parts.  Changed
+	Prefloads, default Emacs, compilation flags, and infodir
+	location. 
+
+	* S-mode.el (S-dump-object): added indent-region (thanks: Peter
+	Dalgaard, <p.dalgaard@biostat.ku.dk>).
+
+	* S-mode.el : changed default for S-else-offset to 0 (thanks:
+ 	Peter Dalgaard, <p.dalgaard@biostat.ku.dk>).
+
+Mon Mar 10 11:30:23 1997  Anthony Rossini  <rossini@fhat.stat.sc.edu>
+
+	* General : moved the rest of the easymenu startup code here
+	* General : edited Makefile for easier XEmacs distribution
+	* S-site.el : added example Splus call (thanks: Claudia Yastremiz
+    	<claudia@ms.com>) 
+
+Fri Mar  7 17:42:36 1997  Anthony Rossini  <rossini@fhat.stat.sc.edu>
+
+	* S-trans.el : For easymenu menus, moved code from S-menu here.
+	* S-mode.el : For easymenu menus, moved code from S-menu here.
+	* S-inf.el : For easymenu menus, moved code from S-menu here.
+	* Added  code from Kurt H.
+	
+Mon Feb 10 11:14:42 1997  Anthony Rossini  <rossini@fhat.stat.sc.edu>
+
+	* S-help.el : added/checked some of Martin's older patches (most
+	in the 4.8.6 series).
+
+	* Makefile (patch): added $(GZCAT) (normally zcat, but sometimes
+	it's gzcat, if sys admins are GNU-suspicious). 
+
+	* S-mode.el: XEmacs compatibility, maintaining Emacs
+	compatibility. 
+
+	* S-inf.el: See above.
+
+	* S-trans.el: See above.
+
+	* S-menu.el: added easymenu support, XEmacs menu hooks.
+
+Mon Oct 14 16:24:14 1996  Local  <local@florence>
+
+	* S-inf.el: inferior-S-program -- only new if  S <--> R
+
+Tue Jun 25 08:53:12 1996  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* S-inf.el: (defun R ...); renamed 'S to 'S0;  S, R both call S0
+	after setting variables.
+
+	* S.el: added autoloads for 'R and 'R-mode.
+	defconst  for S-help-S... and S-help-R  used in S-inf.
+	* S-site.el: same autoloads
+
+	* S-help.el : S-help-sec-regex,etc: defconst for S- and R-
+	versions moved to S.el, since used in S-inf
+
+	* S-mode.el (R-mode): added
+	S-force-buffer-current: optional 2nd arg. 'force'
+
+Mon Dec  4 1995 -- Wed May 29 1996  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* S.el: Fixed the syntax-table entry which broke 'beg.-of-function'.
+	New variable  S-proc-prefix  (for using "R" and "S" simultaneously).
+
+	* S-inf.el: S-synchronize-evals -> NIL (finally!).
+	S-proc-name : Use new variable S-proc-prefix instead of hardwired
+	"S"; the same for other places.
+	S-execute-search: Use new variable inferior-S-search-list-command
+	Switched binding of C-c C-k to S-force-buffer-current.
+
+	Fixed LONG-STANDING bug in S-eval-region (when >= 2 S-processes)
+	now using (get-S-process ...) instead of hardwired "S".
+
+	* S-help.el: added S-eval-line-and-next-line to key bindings.
+	Changed binding of request-a-process to C-c C-k as in other S-modes.
+	New configurable variable  S-help-sec-regex  (for R help)
+
+	* Makefile: texi, not texinfo; support for non-GNU tar; minor..
+
+Mon Dec  4 1995 -- Wed May 29 1996  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* S.el: Fixed the syntax-table entry which broke 'beg.-of-function'.
+	New variable  S-proc-prefix  (for using "R" and "S" simultaneously).
+
+	* S-inf.el: S-synchronize-evals -> NIL (finally!).
+	S-proc-name : Use new variable S-proc-prefix instead of hardwired
+	"S"; the same for other places.
+	S-execute-search: Use new variable inferior-S-search-list-command
+	Switched binding of C-c C-k to S-force-buffer-current.
+
+	Fixed LONG-STANDING bug in S-eval-region (when >= 2 S-processes)
+	now using (get-S-process ...) instead of hardwired "S".
+
+	* S-help.el: added S-eval-line-and-next-line to key bindings.
+	Changed binding of request-a-process to C-c C-k as in other S-modes.
+	New configurable variable  S-help-sec-regex  (for R help)
+
+	* Makefile: texi, not texinfo; support for non-GNU tar; minor..
+
+
+Wed Dec 13 17:27:53 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-inf.el (S-search-list): Would return nil if S-search-list was
+ 	  nil and the search path had not changed (which could happen,
+ 	  apparently)
+
+Mon Dec  4 10:21:52 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S.el: New syntax table.
+
+	* S-trans.el: New bindings.
+
+	* S-mode.texi: Updates for 4.8
+
+	* S-mode.el:
+	Autoload and bind S-list-object-completions.  S-request-a-process
+	moved to C-c C-k.
+
+	S-force-buffer-current: new function
+
+	* S-menu.el: Many updates.
+
+	* S-inf.el: S-object-list: docstring update
+
+	S-directory is now used as the default S directory.  The current
+	buffers default directory is used if it is nil.
+
+	get-S-process: better error message.
+
+	inferior-S-mode: Use comint-input-filter-functions instead of the
+	deprecated comint-input-sentinel.
+	Don't anchor paragraph regexps.
+
+	S-list-object-completions: new function
+
+	S-modtime-gt: bugfix
+
+	S-complete-filename: don't use comint-last-inout-start
+
+	* S-help.el: Make autoloads from S-inf.el.
+
+	* Makefile: Deleted useless SCRATCH vbl.
+	Use S-mode.texi, not S-mode.texinfo.
+
+Thu Nov 30 13:10:17 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* Makefile: Version update
+
+Mon Nov 13 14:46:13 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S.el (S-mode-syntax-table): Made syntax table independent of
+	  c-mode-syntax-table
+
+	* S-mode.el (S-check-modifications): Changed regexp to allow `w'
+	  and `_' class syntax in object names
+
+Wed Aug 23 16:37:10 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-inf.el (S-complete-filename): Checked form the beginning of
+	  the *last* command to determine if we should complete a
+	  filename.  History expansions work now.
+
+Mon Aug 21 15:35:29 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-menu.el (S-transcript-mode-menu): New menu
+	(S-inferior-S-mode-menu): Lotsa updates.
+
+	* S-trans.el (S-transcript-copy-command): Renamed from
+ 	S-transcript-copy-commmand (mmm).  Also switches to the S process.
+
+	(S-trans-font-lock-keywords): strings keep other highlighting
+
+	Lots of autoloads for S-mode.el stuff
+
+	* S-help.el: Autoloads for stuff in S-mode.el
+
+Tue Aug  8 11:06:43 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-mode.el (S-dump-object-into-edit-buffer): Run a lambda
+	S-source-directory in the process buffer
+
+	(S-dump-object-into-edit-buffer): As for process if none attached
+
+	* S-inf.el (S): Use default-directory only if S-directory is nil.
+	* S.el (S-directory): Doc update
+
+	* S-inf.el (S-modtime-gt): Fixed to give correct results
+
+	(inferior-S-mode): Add S-search-path-tracker to
+	comint-input-filter-functions, not comint-input-sentinel.
+
+Tue Aug  1 16:13:14 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-inf.el (inferior-S-mode): Don't anchor paragraph-start and
+	paragraph-separate with "^" (for 19.29).
+
+Tue Aug  1 14:44:32 1995  David M Smith  <maa036@mathssun5>
+
+	* S-mode.el (S-eval-region): Make sure S-local-process-name is set.
+
+	* S-inf.el (get-S-process): Better error message when no processes
+	are running.
+
+	* S-mode.el (S-eval-region): Make sure S-inf is loaded
+
+Thu Jul 27 16:43:01 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-inf.el (S-list-object-completions): New function
+	(inferior-S-mode-map): Bind it to M-?
+
+Tue Jul 25 16:07:10 1995  David Smith  <D.M.Smith@lancaster.ac.uk>
+
+        * Version 4.7 released.
+
+	* Makefile (info): New target
+	(install): Ignore errors in second cp in case LISPDIR==.
+	(clean): Junk all the tex crap, too
+	(VERSION): New variable
+	(distrib): Use it
+	(AUXFILES): Include ChangeLog
+	(distrib): Make sure Makefile is writeable
+
+	* S-inf.el (S-execute-screen-options): Added documentation.
+
+	(S-multi): Use S-post-run-hook
+
+	* S.el (S-keep-dump-files): Expanded documentation.
+	(S-delete-dump-files): Expanded documentation.
+
+	(S-post-run-hook): New variable.
+
+Mon Jul 24 11:58:22 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S.el: Default for S-keep-dump-files is 'check
+
+	* S-mode.el (S-mode): Make S-keep-dump-files buffer-local.
+	(S-load-file): Meaningful values of S-keep-dump-files are nil,
+	check, ask and anything else.
+	(S-dump-object): If S-keep-dump-files is 'check, don't ask for
+	confirmation when loading.
+
+	* S-mode.el (S-dump-object-into-edit-buffer): Bug-fix; you can now
+	create the Src directory if it doesn't exist.
+
+	* S-site.el (window-system): Only add turn-on-font-lock to mode
+	hooks if window-system is non-nil.  Also add to
+	S-transcript-mode-hook.
+
+Thu Jul 20 12:21:43 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-inf.el (S-inf-font-lock-keywords): Strings in input don't
+	de-fontify anymore.
+
+Wed Jun 28 12:15:57 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-mode.texinfo: Updated e-mail addresses, and used @@ instead of
+	@.
+
+	* S-mode.el (S-mode): Use S-mode-font-lock-keywords, not
+	S-inf-font-lock-keywords
+
+Mon Jun 26 12:14:10 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+        * Version 4.6 released
+	* TODO, S-mode.texinfo, NEWS, Makefile: Update for 4.6
+
+Mon Jun 26 12:09:55 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-trans.el: Font-lock support.
+
+	* README: Update for 4.6
+
+	* S.el: Version update: 4.6
+
+	S-local-process-name added.
+
+	* S-site.el:
+	Deleted hilit19 patterns (font-lock patterns are now in the individual
+	source files).  S-site should now be much more lightweight to load.
+
+	Used add-to-list for the load-path.
+
+	.s for S-mode files in auto-mode-alist by default.
+
+	* S-mode.el: Font-lock support.
+
+Fri Jun 23 13:56:54 1995  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-inf.el:
+	Doesn't call comint-output-filter-functions in S-eval-visibly any more
+	(and so works in 19.29).
+
+	Font-lock support.
+
+	Bound M-RET to S-transcript-send-command-and-move.
+
+Wed Oct 26 12:37:15 1994  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-mode.el (S-check-modifications):
+	Fixed a bug which occurred when the object
+	name could not be found.
+
+Tue Oct 25 16:28:54 1994  David M Smith  <D.M.Smith@lancaster.ac.uk>
+
+	* S-inf.el: Moved S-local-process name to S.el.
+	(S-eval-visibly): Bugfix involving comint-last-output-end
+
+Wed Jun  1 11:03:34 1994  David M. Smith  (maa036@mathssun5)
+
+        * Version 4.5 released.
+
+	* Makefile: Update to distrib target
+
+	* Makefile: Bugfix with info install
+
+	* README: Update for 4.5
+
+	* NEWS: *** empty log message ***
+
+Wed Jun  1 10:29:30 1994  David M. Smith  (maa036@mathssun5)
+
+	* S-menu.el: Bugfix
+
+Mon May 30 16:34:53 1994  David M. Smith  (maa036@mathssun5)
+
+	* S-site.el: Major revision.
+
+	* README: More detail in INSTALL section.
+
+	* TODO: Initial revision
+
+	* S.el: Version number update: 4.5
+
+	* Makefile: Bugfix in SOURCES
+
+	* Makefile: added S-mode.texinfo to AUXFILES
+
+	* Makefile, NEWS, README: Initial revision
+
+Fri May 27 17:18:50 1994  David M. Smith  (maa036@mathssun5)
+
+	* S-mode.el, S-trans.el: Binding changes
+
+	* S-help.el: Binding change
+
+	* S.el: Define S-help as an alias for S-display-help-on-object.
+
+	* S-inf.el: S-view-at-bottom: deleted function and keybinding
+	Changed bindings of S-display-help-on-object and S-execute.
+
+	* S-menu.el:
+	Many modifications to S-inferior-S-mode-menu, including incorporation
+	of the old hotkey menu.
+
+	* S.el: Autoload for S-load-file.
+
+	* S-help.el: S-submit-bug-report: new function
+
+	* S.el:
+	Added autoloads for S-dump-object-into-edit-buffer and S-parse-errors.
+
+	* S.el: Added an autoload for S-submit-bug-report
+
+	* S-mode.el:
+	Added a provide call.  Can't imagine why it wasn't there before.
+
+	* S-mode.texinfo: Initial revision
+
+Fri May 13 09:57:00 1994  David M. Smith  (maa036@mathssun5)
+
+	* S.el: Version number update: 4.4
+
+	* S-inf.el: bugfix
+
+	* S-inf.el: S-compiled-dir: new function
+	S-object-names: support it
+
+	* S-inf.el: Support for S-object-name-db.
+	S-object-names: modified
+	S-get-words-from-vector: new function
+	S-create-object-name-db: new command
+
+Wed May 11 14:18:27 1994  David M. Smith  (maa036@mathssun5)
+
+	* S-trans.el: Defined S-transcript-send-command-and-move
+
+	* S-menu.el: Dunno.
+
+Fri Apr 29 14:30:55 1994  David M. Smith  (maa036@mathssun5)
+
+	* S-mode.el:
+	S-continued-statement-p: minor bugfix. Removed the (bolp) test; I
+	don't know why it was there but it caused top-level statements to be
+	indented.
+
+	S-insert-local-variables: removed (obsolete)
+
+	* S-mode.el: S-dump-object-into-edit-buffer: rewrite.  Implemented
+	S-delete-dump-files.
+
+	S-dump-object: new function
+
+	S-find-dump-file-other-window: new function
+
+	* S.el: New option S-delete-dump-files
+
+	* S.el: Version number change (4.3)
+
+Thu Apr 28 12:58:41 1994  David M. Smith  (maa036@mathssun5)
+
+	* S-mode.el: Definition and implementation of S-mode-silently-save.
+
+Fri Apr 22 14:40:56 1994  David M. Smith  (maa036@mathssun5)
+
+	* splitup2/S-inf.el (S-get-directory): Cause an error if an
+	  invalid directory is specified.
+
+Wed Mar 16 14:19:31 1994  David M. Smith  (maa036@mathssun5.lancs.ac.uk)
+
+	* splitup2/S-inf.el (inferior-S-primary-prompt): prompts are
+	  optionally followed by one space.
+	  (S-complete-object-name): No longer runs indent-for-tab-command
+	  (S-after-pathname-p): deleted
+	  (S-complete-filename): New function
+	  (inferior-S-mode): Better completion support, thanks to the new
+	  comint.
+
+Wed Feb 23 15:50:28 1994  David M. Smith  (maa036@mathssun5.lancs.ac.uk)
+
+	* splitup2/S-inf.el (S-search-list): Bugfix where relative
+	  pathnames in search list were expanded in wrong directory
+
+Fri Feb 18 19:27:10 1994  David M. Smith  (maa036@mathssun5.lancs.ac.uk)
+
+	* splitup2/S-mode.el (S-check-modifications): Don't cause an error
+	  if the source file has been deleted.
+
+Tue Feb 15 12:11:42 1994  David M. Smith  (maa036@mathssun5.lancs.ac.uk)
+
+	* splitup2/S-inf.el (S-temp-buffer-p): Deleted. There is no longer
+	  any dependence on this variable: S-local-process-name suffices.
+	(S-local-variables-string): Deleted. File extensions should be
+	good enough for setting the mode.
+	(S-cleanup): Simplified. Doesn't delete files.
+
+	* splitup2/S-help.el (S-help-mode): Make S-local-process-name
+	  local.
+
+	* splitup2/S-mode.el (S-mode): make S-local-process-name
+	  permanent-local.
+	  (S-insert-function-templates): deleted, S-function-template has
+	  this functionality now.
+	  (S-function-template): May be nil or a string. Point is placed
+	  after first open.
+
+	  (S-dump-object-into-edit-buffer): If S-keep-dump-files is nil,
+	  don't delete files, but don't make backups either.
+
+Mon Feb 14 14:53:17 1994  David M. Smith  (maa036@mathssun5.lancs.ac.uk)
+
+	* splitup2/S-mode.el (S-check-modifications): New function
+	(S-load-file): Rewrite. Only ask for a filename if the current
+	buffer is not in S-mode. Always offer to save.
+
+	* splitup2/S-inf.el (S-inf-filenames-map): New variable
+	(S-object-names): Use it
+	(S-extract-onames-from-alist): Supply directory name
+	(S-get-modtime-list): Supply directory name for quicker completions
+
+	(S-object-modtime): New function
+	(S-modtime-gt): New function
+
+Fri Feb 11 14:49:29 1994  David M. Smith  (maa036@mathssun5.lancs.ac.uk)
+
+	* splitup2/S-mode.el (S-mode): Set parse-sexp-ignore-comments to
+	  t; there are no longer any limitations with this in elisp.
+
+Wed Feb  9 13:25:12 1994  David M. Smith  (maa036@mathssun5.lancs.ac.uk)
+
+	* splitup2/S-trans.el (S-transcript-send-command-and-move): New
+	  function
+
+	  (S-transcript-send-command): Doesn't move any more.
+
+	* splitup2/S-inf.el (S-eval-visibly): Call
+	  comint-output-filter-functions
+
+Wed Jan 26 11:15:46 1994  David Smith  (maa507@mathssun5.lancs.ac.uk)
+
+	* S.el 	(S-search-list): Caches result in S-search-list <v>
+	(S-execute-objects): Use it
+	(S-search-list <v>): Now just a cache. Don't access directly
+	Completions are now calculated on demand; as a result the first
+	completion in a session will take a long time. The results are
+	cached, however, so remaining completions should be fast.
+
+Sun Jan 23 17:56:46 1994  David Smith  (maa507@mathssun5.lancs.ac.uk)
+
+	* S.el (S): If S-ask-for-S-directory is unset, set
+	  default-directory to S-directory.
+
+Wed Jan 19 16:16:10 1994  David Smith  (maa507@mathssun5.lancs.ac.uk)
+
+	* S-site.el: Added (cond (window-system ...)) calls so that all
+	  users (even those without window systems) can safely require
+	  this file.
+
+Thu Jan  6 15:15:53 1994  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+        Version 4.1alpha released to wingra
+	* S.el: deleted S-set-display and associated variables.
+
+Fri Dec 24 11:56:00 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-command): Rewrite. Now uses a new filter to redirect
+	  output to the buffer; comint never sees the output. This filter
+	  could feasibly be accomodated to detect the prompt itself;
+	  allowing for an "in the background" implementation of S-command.
+
+	  (S-process-sentinel): Reports date; useful if you have run many
+	  S sessions in one transcript file.
+
+Thu Dec 16 12:47:38 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-multi): Ask for transcript file, maybe
+	(S-ask-about-transfile): new variable
+	(S-get-directory): replaces S-set-directory
+
+Wed Dec 15 12:10:11 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-loop-timeout): Increased
+
+Mon Dec 13 10:11:25 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-command): Avoids calling comint-output-filter-functions
+	  until the last minute.
+	  (S-complete-object-name): Complete rewrite of completion
+	  routines. Completion should now be accurate in every situation:
+	  the only way to make it wrong is to use assign() to assign into
+	  a dataframe not at position 1. Uses objects() to make listings,
+	  so you don't get .Data, .Help etc. Should now be able to make
+	  this work for DOS users.
+	(S-object-list): New buffer-local vbl; cache of completions
+
+Thu Dec  9 12:08:09 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-process-sentinel): Can now see message after q()
+
+Tue Nov 16 09:25:41 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-mode): kill-all-local-variables
+	(S-insert-local-variables): Use ### instead of # in local
+	variables section.
+
+Mon Nov 15 10:31:02 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (inferior-S-mode): Changed
+	  comint-after-partial-pathname-command to
+	  comint-after-partial-filename-command (new comint)
+
+Sun Nov 14 17:18:55 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el: Version 4.00alpha. Made available for FTP, and
+	  announced on the S-mode mailing list
+
+Fri Nov 12 12:36:06 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-transcript-mode): Created.
+	(S-execute-screen-options): Added.
+
+Thu Nov 11 12:30:06 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-find-help-file): More intuitive defaults when requesting
+	  help generated by S-read-helpobj-name-default.
+
+	  (S-eval-visibly): Doesn't wait for prompt after the last line of
+	  text has been sent.
+
+	  (inferior-S-send-input): Big improvement in the handling of
+	  multi-line inputs. Users should use LFD (not RET) to continue
+	  incomplete commands. Should automate this.
+
+Thu Oct  7 14:45:00 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (inferior-S-mode): Few mods to make it work with the new
+	  comint.
+
+Mon Sep 27 11:21:56 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (inferior-S-get-old-input): Now separates multi-line
+	  commands by newlines instead of spaces. This produces messier
+	  output, but avoids S's 255 char line limit for commands.
+
+Sun Sep 26 17:38:59 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-kill-buffer-function): Added to kill-buffer-hook in the
+	  process buffer.
+
+Fri Sep 17 11:23:36 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-display-temp-buffer): Uses temp-buffer-show-function
+	  instead of popper.
+
+	  (inferior-S-mode): Fixed a typo of paragraph-separate appearing
+	  as paragraph-start.
+
+Wed Sep 15 11:47:51 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el: Converted old E18 variables (buffer-flush-undo,
+	  comment-indent-hook) to E19 versions. Removed the require for
+	  comint-extra -- now contained in the new comint.el. Removed
+	  autoload for comint-isearch -- that's the user's decision.
+	(inferior-S-prompt): Now generated from inferior-S-primary-prompt
+	  and (new variable) inferior-S-secondary-prompt
+
+Tue Sep 14 09:33:03 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-multi): Makes use of Simon Marshall's new comint.el. New
+  	  variable S-history-file for saving histories. Calls
+  	  comint-read-input-ring. Sets the sentinel.
+	(S-process-sentinel): Created. Automatically saves the history
+	  ring if the S process dies.
+
+Sun Sep 12 18:53:40 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el: (S-multi). Now always switches to the buffer associated
+	  with process N, if available.
+
+	(inferior-S-make-comint): New calling procedure; bufname is the
+	  literal buffer name (no *'s are added); procname is the process
+	  name to use.
+
+Tue Sep  7 16:20:11 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (inferior-S-mode-map): Unbound comint-[mp]search input, and
+	comint-isearch, as I haven't tested them yet.
+	(inferior-S-mode): replaced input-ring-size with
+	comint-input-ring-size (Vivek Khera <khera@cs.duke.edu>).
+
+	* comint-extra.el: Added comint-msearch* and comint-psearch*,
+	commented out in the E19 distribution of comint.el
+
+	* comint-isearch.el: Back in the distribution
+
+Fri Sep  3 16:20:28 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (S-mode): Replaced the documentation string, and removed
+	the code which set it explicitly. Doing this was breaking the byte
+	compiler. Version 3.63
+
+Wed Aug 25 17:36:57 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
+
+	* S.el (inferior-S-send-input): Added a hook: S-send-input-hook,
+	so that I could do nice things with highlighting. This will
+	probably disappear or change.
+
+Sat Aug 14 14:48:11 1993  David Smith  (dsmith@spam)
+
+	* S.el (S-extract-onames-from-alist): Modified so that
+  	S-complete-object-name will work in the minibuffer (e.g. through
+	command S-execute.)
+
+	* S.el: Restructured the entire S.el file into meaningful
+	sections. The file now uses Outline mode.
+
+	* S.el: Tek mode is no longer supported. Moved all Tek-related
+	variables and functions to S-tek.el, and commented out any code
+	references to them.
+
+	* S-tek.el: This file is no longer supported. Moved all
+	Tek-related functions and variables in S.el to the end of this
+	file.
+
+Wed Aug  4 16:35:24 1993  David Smith  (dsmith@spam)
+
+	* S.el (S-complete-object-name): Fixed regexp so that completion
+	over lists works properly.
+
+Thu Jul 22 12:25:46 1993  David Smith  (maa507@mathssun4)
+
+	* S.el: Uses s-menu instead of s-simple-menus.
+
+	* s-menu.el: Totally rehacked from s-simple-menus.el to use
+	easymenu.el, to take advantage of Emacs 19 menus.
+
+	* S.el: Rehacked the multiple process code so that local variables
+	are used to store process-specific variables. I really don't know
+	why I didn't do this in the first place. As a result multiple
+	processes actually seem to work, now.
+	(S-request-a-process): Now enters initial input
+
+Sun Jul 18 12:15:27 1993  David Smith  (maa507@mathssun4)
+
+	* S.el: Created this change log file, and moved the change log
+	from S.el here.
+
+The following is from the original Changelog section of S.el
+
+  Release 2.1 on October 14, 1991 to statlib@stat.cmu.edu,
+     and to the elisp archives at OSU (brennan@dg-rtp.dg.com (Dave Brennan))
+  and announced on internet.s-news, netnews.gnu.emacs.sources, &
+    andrew.programs.S
+ -------------------------------------------------------
+     Jul 26          1991  Frank Ritter
+   * added S-mode-load-hook & S-pre-run-hook
+     and testing by neilc@research.att.com
+     Jul 9           1991  Frank Ritter
+   * Changed S-command to use a register rather than
+       the kill ring.
+   * Better file header, comments now at 60 col so
+       mailers wont' eat them.
+   * Better S-extract-word-name.
+   * Added S-mode-version variable
+   * Changed syntax table to read |#; appropriately
+
+ Wed Nov 28 11:03:50 1990  Ed Kademan  (kademan at hermes)
+   * Make the S-mode-syntax-table a slightly modified
+       version of the c-mode-syntax-table instead of a
+       version of the one for lisp.
+
+ Sat Nov 10 12:41:52 1990  Ed Kademan  (kademan at hermes)
+   * Made run-S and run-s commands synonymous with the
+       function S.
+
+ Fri Oct 19 12:41:52 1990  Ed Kademan  (kademan at hermes)
+   * Made S-directory a user modifiable variable.  S will
+       run from that directory.
+
+ Thu Oct 18 12:41:52 1990  Ed Kademan  (kademan at hermes)
+   * Added function S-nuke-help-bs to clean up nroff
+       style text in the S help buffer.  This function is
+       a modification of nuke-nroff-bs from man.el.
+ -------------------------------------------------------
+ Unnumbered version released dated Thu Jun 14 09:56:56 CDT 1990
+
+ Fri Jan 17 1992 Dave Smith (dsmith@stats.adelaide.edu.au)
+   * Help mode for reading files. When asking for an object to
+     run help on, completion is over those help files that exist.
+   * Added object name completion, and made S-get-object-list
+     efficient enough to make it worthwile.
+   * Error parsing for loaded files
+   * Better customization of file-names, with sensible defaults
+   * Sensible buffer names for object buffers
+   * Corrected definition for `.' in syntax table
+   * Improved (and simplified) S-read-object-name-default
+   * Included pager='cat' to default help-command specification
+   * Added a call to run-hook for S-pre-run-hook
+   * Changed keymaps to conform with GNU guidelines
+     (i.e. no \C-letter bindings)
+   * S-command has a new third argument, visible
+
+ Tue May 27 1992 Dave Smith (dsmith@stats.adelaide.edu.au)
+   * now copes with dynamically changing prompts (reported by Doug Bates)
+
+ Thu May 29 1992 Dave Smith (dsmith@stats.adelaide.edu.au)
+   * Added S-execute, modified S-execute-* to use it.
+
+ Mon Jun 22 1992 dsmith
+   * Added S-mode editing commands written by Ken'ichi Shibayama
+     (shiba@isac.co.jp). A big win.
+   * Removed the redundant argument to S-switch-to-end-of-S
+   * S-function-pattern improved
+   * added S-eval-visibly, S-eval-visibly-p and modified S-eval-*
+     to use them
+   * added S-eval-line-and-next-line
+   * eval commands can now echo in the process buffer
+   * added S-kill-output and S-view-at-bottom
+   * added a binding for comint-isearch and autoloaded it
+   * added S-execute-in-tb. S-parse-errors now takes prefix arg.
+
+ Thu Jun 25 1992 dsmith
+   * Moved some doctrings to comments (Frank Ritter)
+   * The Tek stuff now lives in a separate file (Frank Ritter)
+   * Fiddly C-c ESC M-. bindings in S mode and Help mode moved
+       to C-c M-. bindings (Martin Maechler)
+   * S-execute-objects now uses variable inferior-S-objects-command
+       whose value depends on S version. (Ken'ichi Shibayama)
+   * Symbols given uniform prefixes: S- or inferior-S- (Frank Ritter)
+
+ -- Version 3.41 released to Statlib and Emacs Archive --
+
+ Tue Jul  7 11:56:59 CST 1992 dsmith
+   * S-execute-attach now updates the internal search list. This
+     is a manifestation of a general bug: S-command doesn't call
+     S-search-path-tracker
+
+ Wed Jul 29 09:38:54 CST 1992 kenichi
+   * Several fixes to indenting code. New variable S-else-offset.
+     Indentation of code not within braces. expression() indentation.
+     Correct handling of in-line comments.
+
+ Fri Aug  7 10:52:06 CST 1992 dsmith
+   * S-execute now uses S-mode-minibuffer-map.
+   * Setting indentation variables in .emacs now has some effect.
+   * Files retrieved by S-dump-object-into-scratch are now automatically
+     placed in S-mode.
+
+ Fri Jul 28 1992 R.D.Ball
+   added multi-S to allow multiple S sessions
+   run by ESC-x S or with numeric prefix arg e.g. ESC-2 ESC-x S
+   The current S process is determined by S-process-name,
+   this is modified by typing a return into a non-current S process
+   buffer.
+   Variables S-process-name-list, S-current-process-name
+   and functions update-S-process-name-list, get-S-process to
+   replace (get-process "*S*"), and checks for existence of process,
+   buffer in inferior-S-mode
+
+   made function S-eval-line-and-next-line keep to the bottom of
+   the S process buffer so user can see results when working interactiveley
+   To do this an optional arg eob was added to S-eval-visibly
+   To go to bottom of window it was necessary to use
+   switch-to-buffer-other-window, but this only when eob is t.
+   Additionally, if S-eval-visibly-at-end is t the functions
+   S-eval-region etc. also display results at the end of the
+   current process buffer.
+
+   Default directory for starting S is now the current directory
+   for the current buffer. (Set S-use-current-directory to nil to
+   avoid this).
+
+
+ Sat Sep 19 18:35:10 CST 1992 dmsith
+
+   * Modified Rod's multi-S code so that it works properly.
+     S-process-name-list is now an alist whose CARs are the process
+     names and whose CDRs is an alist of variable . value pairs
+     specific to particular processes (so e.g. completion works
+     properly for each buffer.) The function
+     S-get-process-specific-vbls does the work, and any
+     process-specific variables should be mentioned here.
+     S-mode buffers know which process they should evaluate into.
+
+   * New command S-request-a-process which should be bound to a key.
+
+ Wed Nov  4 dsmith
+   * S-load-file now informs you if S gave a warning during load.
+     Also, the S-errors buffer is displayed using popper, if available
+   * C-x ` is now also bound in S-mode.
+   * Installed Frank's menus
+
+ Wed Nov 18 dsmith
+   * Bound M-TAB and M-? to comint completion functions in inf-S-mode
+     and S-mode
+   * In the process buffer, a paragraph is a promwpt, a command and its
+     output, to make the paragraph functions useful
+   * Multiple S sessions in a process buffer are delimited by ^L, to
+     make the page functions useful
+   * In process buffer mode line, name of process is shown in [..]
+     (in case buffer name is changed.) In edit buffers, the name
+     if the process the buffer belongs to is shown in []'s
+
+ Wed Nov 21 dsmith
+   * Nuked S-make-function, since it is now obsolete
+   * Added S-clean-region
+   * M-TAB in S-mode now completes *files*, not objects. Object
+     completion has moved to C-c TAB.
+   * Bound k in the help buffer to 'kill-buffer.
+   * Local variables are added to files accessed with C-c C-d, if needed.
+   * Fixed incorrect use of 'save-buffer in several places.
+   * Bound C-c C-p to 'S-request-a-process
+   * Replaced S-beginning-of-function and S-end-of-function to DMS's
+     versions, since Frank's don't work with the new function regexp.
+   * New variable S-synchronize-evals (Martin Maechler)
+   * Changed default of S-eval-visibly-p to t.
+
+ Wed May 12 dmith
+   * Change definition of S-dumped-missing-re to cope with 3.1
+
