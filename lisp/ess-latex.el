@@ -31,10 +31,10 @@
 ;;; Variables
 
 (defconst ess-latex-minor-mode-RCS-Id
-  "$Id: ess-latex.el,v 1.1 1999/09/11 04:06:14 ess Exp $")
+  "Imported to ESS Subversion repository and RCS ids not maintained.")
 
 (defconst ess-latex-minor-mode-RCS-Name
-  "$Name:  $")
+  " ")
 
 (defvar ess-latex-minor-mode-prefix "\M-n"
   "*Prefix key to use for noweb mode commands.
