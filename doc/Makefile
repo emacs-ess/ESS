@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.14 $.
+### File: $Revision: 1.15 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -35,17 +35,15 @@ DOCDIST = ess.ps ess.pdf \
 	ajr-talk.ps ajr-talk.pdf \
 	rmh-talk.ps rmh-talk.pdf
 
-# The following works mainly with GNU Make.
+# The following works only with GNU Make for most parts.
 
 ### Targets --
 
-all: ess.info html ess.dvi readme.dvi \
-	README.SPLUS4WIN README.Microsoft
+all: info html dvi  README.SPLUS4WIN README.Microsoft
 
-
-# Documentation mentions info, not ess.info
-
+# Documentation mentions info, not ess.info -- NOT readme.info <<< FIXME >>
 info : ess.info
+dvi :  ess.dvi readme.dvi
 
 #
 # If indexes don't index, run:	"texindex ess.??" to obtain the sorted indices.
@@ -53,15 +51,13 @@ info : ess.info
 
 html:	html/ess_toc.html html/readme_toc.html
 
-ess.dvi: ess.texi
+ess.ps: ess.dvi; dvips $^ -o $@
 
-ess.ps: ess.dvi
-	dvips ess.dvi -o ess.ps
+ess.pdf: ess.texi ; pdftex $^
+## If you don't have pdftex, you won't get the bookmarks, hyperlinks, etc..
+# ess.pdf: ess.ps ; rm -f ess.pdf ; ps2pdf ess.ps > ess.pdf
 
-## or use pdftex ?
-ess.pdf: ess.ps
-	rm -f ess.pdf
-	ps2pdf ess.ps > ess.pdf
+
 
 install: all
 	mkdir -p $(INFODIR)
@@ -91,10 +87,14 @@ realclean: distclean
 ##	s/ESSVERSION/shell cat $^/
 ## Use $(shell ..) only here, so only these are GNU make dependent :
 README.SPLUS4WIN announc.texi inst_*.texi : ../VERSION
-	perl -pi -e 's/$(ESSVER_NR_REGEXP)/\1-$(shell cat $^)/go' $@
+	perl -pi -e 's/$(ESSVER_NR_REGEXP)/$${1}-$(shell cat $^)/go' $@
 
 readme.texi : ../VERSION
-	perl -pi -e 's/($(ESS_REGEXP) \s*[Vv]ersion)\s+$(VER_NR_REGEXP)/\1 $(shell cat $^)/go' $@
+	perl -pi -e 's/($(ESS_REGEXP) \s*[Vv]ersion)\s+$(VER_NR_REGEXP)/$${1} $(shell cat $^)/go' $@
+
+## ess.texi: use the perl for the above two combined:
+ess.texi : ../VERSION
+	perl -pi -e 's/$(ESSVER_NR_REGEXP)/$${1}-$(shell cat $^)/go;s/($(ESS_REGEXP) \s*[Vv]ersion\s+)$(VER_NR_REGEXP)/$${1}$(shell cat $^)/go' $@
 
 
 ##dist-doc: $(DOCDISTFILES)
