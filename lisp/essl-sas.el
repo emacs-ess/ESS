@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/01/31 21:57:51 $
-;; Version: $Revision: 5.39 $
-;; RCS: $Id: essl-sas.el,v 5.39 2002/01/31 21:57:51 rsparapa Exp $
+;; Modified: $Date: 2002/03/22 21:30:39 $
+;; Version: $Revision: 5.40 $
+;; RCS: $Id: essl-sas.el,v 5.40 2002/03/22 21:30:39 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -383,7 +383,7 @@ number."
 	 ;; SAS comments
 ;; /* */ handled by grammar above
 ;;	 (list "/\\*.*\\*/"                      0  font-lock-comment-face t)
-	 (cons "\\(^[0-9]*\\|;\\)[ \t]*%?\\*.*\\(;\\|$\\)" font-lock-comment-face)
+	 (cons "\\(^[0-9]*\\|;\\)[ \t]*\\(%?\\*\\|comment\\).*\\(;\\|$\\)" font-lock-comment-face)
 
 	 ;; SAS execution blocks, DATA/RUN, PROC/RUN, SAS Macro Statements
 	 (cons "\\<%do[ \t]*\\(%until\\|%while\\)?\\>"

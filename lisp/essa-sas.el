@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/03/19 20:33:23 $
-;; Version: $Revision: 1.86 $
-;; RCS: $Id: essa-sas.el,v 1.86 2002/03/19 20:33:23 rsparapa Exp $
+;; Modified: $Date: 2002/03/22 21:30:39 $
+;; Version: $Revision: 1.87 $
+;; RCS: $Id: essa-sas.el,v 1.87 2002/03/22 21:30:39 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -435,8 +435,9 @@ on the way."
   (interactive)
 
   (save-match-data (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
-    (if (string-match ess-sas-suffix-regexp ess-sas-temp-file) 
+    (if (string-match ess-sas-suffix-regexp ess-sas-temp-file) ;;(progn
 	(setq ess-sas-file-path (nth 0 (split-string ess-sas-temp-file "[<]")))))))
+	;; (setq ess-directory (file-name-directory ess-sas-file-path)))))))
 
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with a SAS file by suffix and revert if necessary."
