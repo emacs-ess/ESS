@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/02/26 19:35:25 $
-;; Version: $Revision: 1.84 $
-;; RCS: $Id: essa-sas.el,v 1.84 2002/02/26 19:35:25 rsparapa Exp $
+;; Modified: $Date: 2002/02/27 16:32:37 $
+;; Version: $Revision: 1.85 $
+;; RCS: $Id: essa-sas.el,v 1.85 2002/02/27 16:32:37 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -416,15 +416,19 @@ on the way."
 	  (if ess-tmp-sas-glyph (progn
 		(switch-to-buffer (file-name-nondirectory ess-tmp-sas-graph))
 		(ess-xemacs-insert-glyph (make-glyph (vector ess-tmp-sas-glyph :file ess-tmp-sas-graph)))
-	  )
+	     )
 	  ;;else
+	  (if (and (boundp 'auto-image-file-mode) auto-image-file-mode
+	      (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-sas-graph))
+	      (find-file ess-tmp-sas-graph)
+          ;;else
           (save-excursion
             (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
 
             (insert ess-sas-submit-pre-command " " ess-sas-image-viewer " " ess-tmp-sas-graph 
 	      (if (equal ess-sas-submit-method 'sh) " &"))
             (comint-send-input))
-))))
+)))))
 
 (defun ess-sas-file-path ()
  "*Set `ess-sas-file-path' depending on suffix."
