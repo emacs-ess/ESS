@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2004/06/17 20:11:12 $
-;; Version: $Revision: 5.27 $
-;; RCS: $Id: ess-utils.el,v 5.27 2004/06/17 20:11:12 rsparapa Exp $
+;; Modified: $Date: 2004/06/21 20:51:31 $
+;; Version: $Revision: 5.28 $
+;; RCS: $Id: ess-utils.el,v 5.28 2004/06/21 20:51:31 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -386,5 +386,24 @@ various short-hands for CWD in PATH, but that shouldn't be a hindrance here."
 	(setq j 0))
       )
     ess-temp-exec))
+
+(defun ess-find-exec-completions (ess-root-arg)
+"Given the root of an executable file name, find all possible completions,
+if any exist, in PATH.  Note that emacs does not attempt to understand the
+various short-hands for CWD in PATH, but that shouldn't be a hindrance here."
+
+  (let ((ess-tmp-exec nil)
+	(ess-tmp-path-count (length exec-path))
+	(ess-tmp-dir nil)
+	(i 0))
+
+	(while (< i ess-tmp-path-count)
+	    (setq ess-tmp-dir (nth i exec-path))
+
+	    (if (file-exists-p ess-tmp-dir)
+		(setq ess-tmp-exec (append ess-tmp-exec
+		    (file-name-all-completions ess-root-arg ess-tmp-dir))))
+	(setq i (+ i 1)))
+    ess-tmp-exec))
 
 (provide 'ess-utils)
