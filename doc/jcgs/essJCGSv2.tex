@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/19 17:51:56 $ - $Revision: 1.194 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/19 17:57:19 $ - $Revision: 1.195 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -264,22 +264,19 @@ Emacs buffers are the interface between the user and computer.  They
 can be considered to be a collection of scratch pads that both the
 user and computer can read, write, and respond to.  The user can
 simultaneously edit many files and control numerous programs by
-opening multiple buffers.  With disk files, the working copy of
-the opened file is placed in an Emacs buffer where it can be viewed
-and edited either by the user or automatically by Emacs or another
-program under the control of Emacs.  Emacs will save a backup of the
-contents to disk at specified intervals.
-% too much information -- based on some function of time
-% and the amount of editing activity.  
-Emacs can present the buffers'
-contents in ways which optimize the users reading and navigation
-activities.  One program that is commonly run within Emacs buffers is
-the interactive operating system command line interpreter, called a
-shell.  By using this, most programs which take input from and provide
-output to the command-line can run within and be controlled by Emacs.
-The resulting buffer provides a copy of the entire transcript of the
-interaction, which can be edited and searched during the program's
-execution.
+opening multiple buffers.  With disk files, the working copy of the
+opened file is placed in an Emacs buffer where it can be viewed and
+edited either by the user or automatically by Emacs or another program
+under the control of Emacs.  Emacs can save a backup of the contents
+to disk at specified intervals.  Emacs presents buffer contents in
+ways which optimize reading and navigation activities.  One example of
+program control is the embedding of the interactive operating system
+command line interpreter, called a shell, within Emacs.  Variations on
+this theme are used to control programs such as statistical packages
+which take input from and provide output to the command-line.  The
+resulting buffers provide a copy of the entire transcript of the
+interaction, which can be edited and searched while the program
+executes.
 
 \paragraph{Major and Minor Modes.}
 Emacs capabilities are extended by loading text files containing commands,
