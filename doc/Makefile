@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.13 $.
+### File: $Revision: 1.14 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -94,7 +94,7 @@ README.SPLUS4WIN announc.texi inst_*.texi : ../VERSION
 	perl -pi -e 's/$(ESSVER_NR_REGEXP)/\1-$(shell cat $^)/go' $@
 
 readme.texi : ../VERSION
-	perl -pi -e 's/($(ESS_REGEXP) \s*[Vv]ersion)\s+$(ESSVER_NR_REGEXP)/\1 $(shell cat $^)/go' $@
+	perl -pi -e 's/($(ESS_REGEXP) \s*[Vv]ersion)\s+$(VER_NR_REGEXP)/\1 $(shell cat $^)/go' $@
 
 
 ##dist-doc: $(DOCDISTFILES)
