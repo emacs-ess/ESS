@@ -1,5 +1,8 @@
 2004-06-23  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
+	* ess-toolbar.el (ess-use-toolbar): Default value should check if
+	we are running XEmacs.  Other small doc updates to file made.
+
 	* ess-utils.el (ess-uniq-list): New defun for removing duplicate
 	strings from a list.
 
