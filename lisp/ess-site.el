@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/09/09 14:40:20 $
-;; Version: $Revision: 1.45 $
-;; RCS: $Id: ess-site.el,v 1.45 1997/09/09 14:40:20 rossini Exp $
+;; Modified: $Date: 1997/09/10 13:40:33 $
+;; Version: $Revision: 1.46 $
+;; RCS: $Id: ess-site.el,v 1.46 1997/09/10 13:40:33 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -69,9 +69,6 @@
 
   (add-to-list 'load-path ess-lisp-directory))
 
-;;*;; Requires : can't require, until path is set.
-
-(require 'ess)
 
 ;;; (1.2) Files ending in .q and .S are considered to be S source files
 ;;; Files ending in .St are considered to be S transcript files
@@ -84,7 +81,7 @@
 ;;    (set auto-mode-alist (remassoc "\\.[sS]\\'" auto-mode-alist))
 
 
-(if (assoc "\\.q" auto-mode-alist) nil
+(if (assoc "\\.[rR]\\'" auto-mode-alist) nil
   (setq auto-mode-alist
 	(append
 	 '(("\\.sp\\'"    . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
@@ -130,16 +127,19 @@
 
 ;; (1.5) Require the needed dialects for your setup.
 
-;;(require 'essd-s+3)
+(require 'essd-s+3)
 (require 'essd-r)
 (require 'essd-xls)
-;;(require 'essd-sas)
-;;(require 'essd-s3)  ;; You might not have this
-;;(require 'essd-s4)  ;; or this one...
+(require 'essd-sas)
+(require 'essd-s4)  ;; or this one...
 
-;;TODO, for 5.0 :-).
-;; (require 'essd-vst) ; built on essd-xls.
-;; (require 'essd-s+4)
+;;TODO, for 5.0 :-), or rare.
+;;(require 'essd-s3)  ; You might not have this
+;;(require 'essd-vst) ; built on essd-xls.
+;;(require 'essd-s+4)
+
+
+(require 'ess)
 
 ;;; 2. Site Specific setup
 ;;;; ===============================================
