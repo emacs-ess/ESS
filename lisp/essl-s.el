@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1998/09/11 14:24:38 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: essl-s.el,v 5.10 1998/09/11 14:24:38 maechler Exp $
+;; Modified: $Date: 1998/11/11 12:44:49 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: essl-s.el,v 5.11 1998/11/11 12:44:49 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -271,7 +271,7 @@ Returns nil if line starts inside a string, t if in a comment."
 
 ;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in essl-s!).
 
-(defconst S+3-help-sec-keys-alist
+(defconst S+-help-sec-keys-alist
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
     (?B . "BUGS:")
@@ -292,6 +292,7 @@ Returns nil if line starts inside a string, t if in a comment."
 ;;; regexp-search, and so specials should be quoted.
 
 
+;; S ver.3 (NOT S-Plus)
 (defconst S3-help-sec-keys-alist
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
@@ -300,14 +301,12 @@ Returns nil if line starts inside a string, t if in a comment."
     (?D . "DETAILS:")
     (?e . "EXAMPLES:")
     (?n . "NOTE:")
-;;    (?o . "OPTIONAL ARGUMENTS:")
-;;    (?r . "REQUIRED ARGUMENTS:")
     (?r . "REFERENCES:")
     (?s . "SEE ALSO:")
     (?S . "SIDE EFFECTS:")
     (?u . "USAGE:")
     (?v . "VALUE:"))
-  "Help section keys for display.")
+  "Help section keys for S ver.3.")
 
 
 (defconst S4-help-sec-keys-alist
@@ -335,7 +334,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (?v . "\\s *Value[s]?")	;
     )) ;; "Alist of (key . string) pairs for use in section searching."
 
-(defconst ess-help-S+3-sec-regex "^[A-Z. ---]+:$"
+(defconst ess-help-S+-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file")
 
 (defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$")
