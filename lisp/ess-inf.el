@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/17 18:35:31 $
-;; Version: $Revision: 1.36 $
-;; RCS: $Id: ess-inf.el,v 1.36 1997/07/17 18:35:31 rossini Exp $
+;; Modified: $Date: 1997/07/17 18:38:43 $
+;; Version: $Revision: 1.37 $
+;; RCS: $Id: ess-inf.el,v 1.37 1997/07/17 18:38:43 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.37  1997/07/17 18:38:43  rossini
+;; formatting output.
+;;
 ;; Revision 1.36  1997/07/17 18:35:31  rossini
 ;; writing debug info to ESS.
 ;;
@@ -346,7 +349,7 @@ when invoking S.
   ;; run hooks now, to overwrite the above!
   (run-hooks 'ess-pre-run-hook)    
   (ess-write-to-dribble-buffer 
-   (format "(inferior-ess 1): ess-proc-prefix=%s, buf=%s"
+   (format "(inferior-ess 1): ess-proc-prefix=%s, buf=%s \n"
 	   ess-proc-prefix (current-buffer)))
   (let* ((defdir (directory-file-name (or ess-directory default-directory)))
 ;;	(procname
@@ -423,7 +426,7 @@ when invoking S.
     ;; Now that we have the buffer, set buffer-local variables.
     (ess-set-vars ess-customize-alist buf)
     (ess-write-to-dribble-buffer
-     (format "(inferior-ess 2): ess-proc-prefix=%s , buf=%s"
+     (format "(inferior-ess 2): ess-proc-prefix=%s , buf=%s \n"
 	     ess-proc-prefix (current-buffer)))
     (if startdir (setq default-directory startdir))
     (setq ess-history-file (concat "." ess-proc-prefix "history"))
