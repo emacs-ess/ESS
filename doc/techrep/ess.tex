@@ -2,10 +2,12 @@
 
 %\usepackage{2up}
 
-%%% \usepackage[authoryear,round]{natbib}
+%%% 
+\usepackage[authoryear,round]{natbib}
+%or (if you have an unshiny latex installation)
+%\newcommand{\citep}[1]{{\{\sf#1\}}}
 %%%
-\newcommand{\citep}[1]{{\{\sf#1\}}}
-%%%
+\usepackage{alltt}
 
 %% Postscript fonts
 %\usepackage{palatcm}
@@ -13,7 +15,6 @@
 %%% \usepackage{amsmath}
 
 %% The folowing is for creating PDF.
-
 \newif\ifpdf
 \ifx\pdfoutput\undefined
   \pdffalse     % not running PDFLaTeX
@@ -25,10 +26,8 @@
 \ifpdf
   \usepackage{thumbpdf}
 \fi
-
 %\usepackage{html,heqn,htmllist}
 %\usepackage[latex2html]{hyperref} 
-
 \ifpdf
   \usepackage[pdftex]{graphicx}
   \usepackage[pdftex]{hyperref} 
@@ -36,13 +35,21 @@
   \usepackage[dvips]{graphicx}
   \usepackage[dvips]{hyperref} 
 \fi
+%%---End of package requiring ---------- Own Definitions ------------- 
+
 
 \hypersetup{backref,colorlinks=true,pagebackref=true,
   hyperindex=true}%pdfpagemode=FullScreen,
 
+\newcommand*{\Splus}{\textsc{S-plus}}
+%\newcommand*{\Scmt}[1]{\hfill \#\# \textsl{#1}}
+\newcommand*{\Scmt}[1]{\hbox{\qquad {\footnotesize \#\#} \textsl{#1}}}
 \newtheorem{defn}{Definition}[section]
-
 \newtheorem{ex}{Example}[section]
+
+\newenvironment{Salltt}{\small\begin{alltt}}{\end{alltt}}
+
+%%--------------------------------------------------------------- Start Text
 
 \title{Emacs Speaks Statistics: A Universal Interface for
   Statistical Analysis}  
@@ -50,7 +57,7 @@
 \author{A.J. Rossini\footnote{Department of Biostatistics, University
     of Washington and Department of Biostatistics, Fred Hutchinson
     Cancer Research Center, Seattle, WA, USA} \and Martin
-  Maechler\footnote{Group  in Statistics; ETH Zurich; Zurich,
+  M\"achler\footnote{Seminar for Statistics; ETH Zurich; Zurich,
     Switzerland} \and Kurt 
   Hornik\footnote{Technical University of Vienna; Vienna, Austria} \and
   Richard M. Heiberger\footnote{Temple University; Philadelphia, PA,
@@ -99,10 +106,10 @@ monte carlo (MCMC).
 One issue that quickly arises is that different tools have different
 strengths, and optimal use can require switching back and forth
 between tools for data analysis.  For example, general purpose tools
-such as R \citep{ihak:gent:1996} and S-PLUS are limited in scope for
+such as R \citep{ihak:gent:1996} and \Splus\ are limited in scope for
 Bayesian analyses, which tools such as BUGS are useful for.  From
 another point of view, specialized tools such as BUGS are not as easy
-to construct more general analyses and graphics as S-PLUS and R.  This
+to construct more general analyses and graphics as \Splus\ and R.  This
 leads to an efficiency gain when using multiple tools for both
 theoretical and applied statistical research.
 
@@ -118,7 +125,7 @@ are of critical interest for review in the latter, but the results of
 all commands are of interest in the former.  Both of these tasks can
 be present at the same time, for example in the use of compiled
 Fortran code for optimization, which is being called from an
-interpreted language, such as S-PLUS, R, or XLispStat, containing the
+interpreted language, such as \Splus, R, or XLispStat, containing the
 objective function to optimize.
 
 One natural issue that follows is that not all of the languages or
@@ -126,7 +133,7 @@ statistical packages have similar interfaces.  This means that it
 might be necessary for a statistical analyst to learn 2 or 3 different
 text-interfaces for editing and executing code.  Furthermore, it might
 be necessary for the analyst to consider dialects of a language, for
-example under the S family of languages, there is R, S-PLUS, the
+example under the S family of languages, there is R, \Splus, the
 original S implementation, as well as different versions of all three.
 Testing code meant for use by others necessitates having it work in
 multiple versions, so being able to quickly test means having quick
@@ -144,9 +151,9 @@ above.  It provides an editing interface, an interface to statistical
 processes, and additional tools which can be useful for both
 statistical software development and data analysis.  It works with
 common statistical software including the S family of languages
-including S \textbf{CITE Chambers, et al}, S-PLUS \textbf{CITE
-  MathSoft}, and R \citep{ihak:gent:1996}; XLispStat \textbf{CITE
-  TIERNEY} including the Arc \textbf{CITE Cook and Weisberg} and
+including S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\ \textbf{CITE
+  MathSoft}, and R \citep{ihak:gent:1996}; XLispStat \citep{Tier90}
+including the Arc \textbf{CITE Cook and Weisberg} and 
 ViSta \citep{youn:fald:mcfa:1992} extensions; SAS \textbf{CITE
   SAS Institute}; Stata \textbf{CITE: Stata Corporation}; Omegahat
 \textbf{CITE: Omega Project}; and can be extended in at least a
@@ -272,7 +279,7 @@ found in section~\ref{sec:history}.
 ESS currently supports a number of statistical languages, with various
 levels of support depending on their capabilities and needs.  Because
 of it's history, ESS supports the S family of languages extremely
-well; these include recent versions of S, S-PLUS, and R.  SAS is also
+well; these include recent versions of S, \Splus, and R.  SAS is also
 well supported, but to a lesser extent.  The lack of objects in SAS
 has prevented the use of object completion facilities.  Stata and
 XLispStat (and the XLispStat extensions, ARC and ViSta) are marginally
@@ -315,14 +322,14 @@ possible to have Emacs complete file names from the current underlying
 working directory.
 
 %%% MAKE THIS INTO A PARAGRAPH
-%%In addition, for S, S-PLUS, and R, ESS provides
+%%In addition, for S, \Splus, and R, ESS provides
 %%\begin{itemize}
 %%\item object-name completion
 %%\item ability dump, edit, save, and reload functions and similar
 %%  programming code.
 %%\end{itemize}
 In addition to the above, for languages in the S family, including S
-(versions 3 and 4, developed at Bell Labs), S-PLUS (all versions), and
+(versions 3 and 4, developed at Bell Labs), \Splus (all versions), and
 R (all versions), there is object-name completion of both user and
 system based functions and data.  There is also the ability to dump
 and save objects (user and system generated) into text files in a
@@ -366,7 +373,7 @@ and packages.    It provides the ability to preview, as well as
 handling embedded R source code in the same manner as ESS normally
 handles source code, including syntax highlighting as well as the
 ability to submit code to a running ESS process, for example R or
-S-PLUS. 
+\Splus. 
 
 
 \section{Using ESS with the S family of languages}
@@ -379,14 +386,19 @@ S-PLUS.
 ESS[S] is the mode for editing S language files.  This mode handles:
 
 - proper indenting, generated by both [Tab] and [Return].
+
 - color and font choices based on syntax.
+
 - ability to send the contents of an entire buffer, a highlighted
   region, an S function, or a single line to an inferior S process, if
   one is currently running.
+
 - ability to switch between processes which would be the target of the 
   buffer (for the above).
+
 - The ability to request help from an S process for variables and
   functions, and to have the results sent into a separate buffer.
+
 - completion of object names and file names.
 
 ESS[S] mode should be automatically turned on when loading a file with
@@ -402,25 +414,38 @@ iESS (inferior ESS) is the mode for interfacing with active
 statistical processes (programs).  This mode handles:
 
 - proper indenting, generated by both [Tab] and [Return].
+
 - color and font highlighting based on syntax.
+
 - ability to resubmit the contents of a multi-line command
   to the executing process with a single keystroke [RET].
+
 - The ability to request help from the current process for variables
   and functions, and to have the results sent into a separate buffer.
+
 - completion of object names and file names.
+
 - interactive history mechanism
+
 - transcript recording and editing
 
-To start up iESS mode, use:
+To start up iESS mode, use one of
+\begin{Salltt}
    M-x S+3 
    M-x S4
    M-x R
-
-(for S-PLUS 3.x, S4, and R, respectively.  This assumes that you have
+\end{Salltt}
+(for \Splus~3.x, S4, and R, respectively.  This assumes that you have
 access to each).  Usually the site will have defined one of these programs
 (by default S+3) to the simpler name:
 
    M-x S
+
+%%------- The following is *REALLY* outdated ----
+%%-- since 1.2.0  vsize and nsize are not needed anymore
+%%---.... have other command line arguments, eg  --verbose
+
+%%--- Martin will fix this up :
 
 Note that R has some extremely useful command line arguments, 
 -v and -n.   To enter these, call R using a "prefix argument", by
@@ -433,7 +458,9 @@ and when ESS prompts for "Starting Args ? ", enter (for example):
 
 Then that R process will be started up using "R -v 10000 -n 5000".
 
-New for ESS 5.1.2 (and later):  "S-elsewhere" command
+%%
+
+New for ESS 5.1.2 (and later):  "\texttt{S-elsewhere}" command
 
   The idea of "M-x S-elsewhere" is that we open a telnet (or rlogin)
   to another machine, call the buffer "*S-elsewhere*", and then run S
@@ -449,46 +476,61 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
 \subsection{Handling and Reusing Transcripts}
 \label{sec:S:trans}
 
-- edit transcript
-- color and font highlighting based on syntax.
-- resubmit multi-line commands to an active process buffer
-- The ability to request help from an S process for variables and
-  functions, and to have the results sent into a separate buffer.
-- ability to switch between processes which would be the target of the 
-  buffer (for the above).
-
+\begin{itemize}
+\item  edit transcript 
+\item  color and font highlighting based on syntax. 
+\item  resubmit multi-line commands to an active process buffer 
+\item  The ability to request help from an S process for variables and 
+        functions, and to have the results sent into a separate buffer. 
+\item  ability to switch between processes which would be the target of the  
+  buffer (for the above). 
+\end{itemize}
 
 \subsection{Programming Language Help}
 \label{sec:S:help}
+When viewing help pages, there's a new menu \textsf{[ESS help]} and
+useful 1-letter shortcuts for navigation and more, such as
+\begin{description}
+\item[n,p] move to \textbf{n}ext or \textbf{p}revious help section
+\item[s \textit{x}] move to help section code ``\textit{x}'' where
+  \textit{x} is e.g. \texttt{u} for ``Usage'', or \texttt{e} for
+  ``Examples''.  You can see a full list ..............
 
-- move between help sections
-- send examples to S for evaluation
+\item[h] fast `hyperlink' to other help pages
 
+\item[l] (after \texttt{"s e"}) send examples \textbf{l}inewise to S for
+  evaluation, also \texttt{C-c C-r} for sending a whole region.  This 
+  is particularly useful in R which garantuees that all examples are
+  directly executable (possibly after \texttt{library(*)} for non-base
+  packages).
+\end{description}
 
 \subsection{Philosophies for using ESS}
 \label{sec:S:philosophy}
 
-
 The first is preferred, and configured for.  The second one can be
 retrieved again, by changing emacs variables.
 
-1: (preferred by the current group of developers):  The source code is 
+\begin{enumerate}
+\item 
+  (preferred by the current group of developers):  The source code is 
    real.  The objects are realizations of the source code.  Source
-   for EVERY user modified object is placed in a particular directory
+   for \textbf{every} user modified object is placed in a particular directory
    or directories, for later editing and retrieval.
 
-2: (older version): S objects are real.  Source code is a temporary
+\item (older version): S objects are real.  Source code is a temporary
    realization of the objects.  Dumped buffers should not be saved.
    We strongly discourage this approach.  However, if you insist,
-   add the following lines to your .emacs file:
-
+   add the following lines to your \texttt{.emacs} file:\\[-1ex]
+   \begin{Salltt}
       (setq ess-keep-dump-files 'nil)
       (setq ess-delete-dump-files t)
       (setq ess-mode-silently-save nil)
+   \end{Salltt}
 
+\end{enumerate}
 The second saves a small amount of disk space.  The first allows for
 better portability as well as external version control for code.
-
 
 \subsection{Scenarios for use}
 \label{sec:S:scenarios}
@@ -502,115 +544,122 @@ prefixed by "\verb+##+").
 
 \begin{itemize}
 \item Data Analysis Example (source code is real)
-\begin{verbatim}
-    ## Load the file you want to work with
-    C-x C-f myfile.s
+\begin{Salltt}
+  \Scmt{Load the file you want to work with}
+  C-x C-f myfile.s
 
-    ## Edit as appropriate, and then start up S-PLUS 3.x
-    M-x S+3
+  \Scmt{Edit as appropriate, and then start up \Splus~3.x}
+  M-x S+3
 
-    ## A new buffer *S+3:1* will appear.  Splus will have been started
-    ## in this buffer.  The buffer is in iESS [S+3:1] mode.
+  \Scmt{A new buffer *S+3:1* will appear.  Splus will have been started}
+  \Scmt{in this buffer.  The buffer is in iESS [S+3:1] mode.}
 
-    ## Split the screen and go back to the file editing buffer.
-    C-x 2 C-x b myfile.s
+  \Scmt{Split the screen and go back to the file editing buffer.}
+  C-x 2 C-x b myfile.s
 
-    ## Send regions, lines, or the entire file contents to S-PLUS.  For regions,
-    ## highlight a region with keystrokes or mouse and then send with:
-    C-c C-r
+  \Scmt{Send regions, lines, or the entire file contents to \Splus.}
+  \Scmt{For regions, highlight a region with keystrokes or mouse}
+  \Scmt{and then send with:}
+  C-c C-r
 
-    ## Re-edit myfile.s as necessary to correct any difficulties.  Add
-    ## new commands here.  Send them to S by region with C-c C-r, or
-    ## one line at a time with C-c C-n.
+  \Scmt{Re-edit myfile.s as necessary to correct any difficulties.  Add}
+  \Scmt{new commands here.  Send them to S by region with}
+  C-c C-r
+  \Scmt{or one line at a time with}
+  C-c C-n
 
-    ## Save the revised myfile.s with C-x C-s.
+  \Scmt{Save the revised myfile.s with C-x C-s.}
 
-    ## Save the entire *S+3:1* interaction buffer with C-c C-s.  You
-    ## will be prompted for a file name.  The recommended name is
-    ## myfile.St.  With the *.St suffix, the file will come up in ESS
-    ## Transcript mode the next time it is accessed from Emacs.
-\end{verbatim}
+  \Scmt{Save the entire *S+3:1* interaction buffer with C-c C-s.  You}
+  \Scmt{will be prompted for a file name.  The recommended name is}
+  \Scmt{myfile.St.  With the *.St suffix, the file will come up in ESS}
+  \Scmt{Transcript mode the next time it is accessed from Emacs.}
+  \end{Salltt}
+
 \item Program revision example (source code is real)
-\begin{verbatim}
-    ## Start up S-PLUS 3.x in a process buffer (this will be *S+3:1*) 
-    M-x S+3
+  \begin{Salltt}
+  \Scmt{Start up \Splus~3.x in a process buffer (this will be *S+3:1*)}
+  M-x S+3
 
-    ## Load the file you want to work with
-    C-x C-f myfile.s
-    
-    ## edit program, functions, and code in myfile.s, and send revised
-    ## functions to S when ready with
-    C-c C-f
-    ## or highlighted regions with
-    C-c C-r
-    ## or individual lines with
-    C-c C-n
-    ## or load the entire buffer with 
-    C-c C-l
+  \Scmt{Load the file you want to work with}
+  C-x C-f myfile.s
+  
+  \Scmt{edit program, functions, and code in myfile.s, and}
+  \Scmt{send revised functions to S when ready with}
+  C-c C-f
+  \Scmt{or highlighted regions with}
+  C-c C-r
+  \Scmt{or individual lines with}
+  C-c C-n
+  \Scmt{or load the entire buffer with} 
+  C-c C-l
 
-    ## save the revised myfile.s when you have finished
-    C-c C-s
-\end{verbatim}
+  \Scmt{save the revised myfile.s when you have finished}
+  C-c C-s
+  \end{Salltt}
+
 \item Program revision example (S object is real)
-\begin{verbatim}
-    ## Start up S-PLUS 3.x in a process buffer (this will be *S+3:1*) 
-    M-x S+3
+  \begin{Salltt}
+  \Scmt{Start up \Splus~3.x, in a process buffer (this will be \textbf{*S+3:1*})} 
+  M-x S+3
 
-    ## Dump an existing S object my.function into a buffer to work with
-    C-c C-d my.function
-    ## a new buffer named yourloginname.my.function.S will be created with
-    ## an editable copy of the object.  The buffer is associated with the
-    ## pathname /tmp/yourloginname.my.function.S and will amlost certainly not
-    ## exist after you log off.
+  \Scmt{Dump an existing S object my.function into a buffer to work with}
+  C-c C-d my.function
+  \Scmt{a new buffer named \textit{yourloginname}.my.function.S will be created with}
+  \Scmt{an editable copy of the object.  The buffer is associated with the}
+  \Scmt{pathname {\footnotesize /tmp/\textit{yourloginname}.my.function.S} and will}
+  \Scmt{almost certainly not exist after you log off.}
 
-    ## enter program, functions, and code into work buffer, and send
-    ## entire contents to S-PLUS when ready
-    C-c C-b
+  \Scmt{Enter program, functions, and code into work buffer,}
+  \Scmt{and send entire contents to \Splus\ when ready:}
+  C-c C-b
 
-    ## Go to *S+3:1* buffer, which is the process buffer, and examine
-    ## the results.
-    C-c C-y
-    ## The sequence C-c C-y is a shortcut for:  C-x b *S+3:1*
+  \Scmt{Go to *S+3:1* buffer, which is the process buffer, and examine}
+  \Scmt{the results.}
+  C-c C-y
+  \Scmt{The sequence C-c C-y is a shortcut for:  C-x b *S+3:1*}
 
-    ## Return to the work buffer (may/may not be prefixed)
-    C-x C-b yourloginname.my.function.S
-    ## Fix the function that didn't work, and resubmit by placing the
-    ## cursor somewhere in the function and
-    C-c C-f
-    ## Or you could've selected a region (using the mouse, or keyboard 
-    ## via setting point/mark) and 
-    C-c C-r
-    ## Or you could step through, line by line, using 
-    C-c C-n
-    ## Or just send a single line (without moving to the next) using
-    C-c C-j
-    ## To fix that error in syntax for the "rchisq" command, get help
-    ## by
-    C-c C-v rchisq
-\end{verbatim}
+  \Scmt{Return to the work buffer (may/may not be prefixed)}
+  C-x C-b \textit{yourloginname}.my.function.S
+  \Scmt{Fix the function that didn't work, and resubmit by}
+  \Scmt{placing the cursor somewhere in the function and}
+  C-c C-f
+  \Scmt{Or you could've selected a region (using the mouse, or keyboard}
+  \Scmt{via setting point/mark) and}
+  C-c C-r
+  \Scmt{Or you could step through, line by line, using}
+  C-c C-n
+  \Scmt{Or just send a single line (without moving to the next) using}
+  C-c C-j
+  \Scmt{To fix that error in syntax for the "rchisq" command, get help}
+  \Scmt{by}
+  C-c C-v rchisq
+\end{Salltt}
 \item Data Analysis (S object is real)
-\begin{verbatim}
-    ## Start up S-PLUS 3.x, in a process buffer (this will be *S+3:1*) 
-    M-x S+3
+\begin{Salltt}
+  \Scmt{Start up R in a process buffer (this will be \textbf{*R*})} 
+  M-x R
 
-    ## Work in the process buffer.  When you find an object that needs 
-    ## to be changed (this could be a data frame, or a variable, or a 
-    ## function), dump it to a buffer:
-    C-c C-d my.cool.function
+  \Scmt{Work in the process buffer.  When you find an object that needs}
+  \Scmt{to be changed (this could be a data frame, or a variable,}
+  \Scmt{or a function), dump it to a buffer:}
+  C-c C-d my.cool.function
 
-    ## Edit the function as appropriate, and dump back in to the
-    ## process buffer  
-    C-c C-b
+  \Scmt{Edit the function as appropriate, and dump back in to the}
+  \Scmt{process buffer}
+  C-c C-b
 
-    ## Return to the S-PLUS process buffer
-    C-c C-y
-    ## Continue working.
+  \Scmt{Return to the R process buffer}
+  C-c C-y
+  \Scmt{Continue working.}
 
-    ## When you need help, use 
-    C-c C-v rchisq
-    ## but entering:   help("rchisq") or  ?rchisq   will bring up the
-    ## help file in a separate buffer.
-\end{verbatim}
+  \Scmt{When you need help, use}
+  C-c C-v rchisq
+  \Scmt{(which you can do using command name completion)}
+  \Scmt{but entering:   \underline{help("rchisq")} or  \underline{?rchisq}}
+  \Scmt{will bring up the help file in a separate buffer}
+  \Scmt{\emph{--- currently only for \textbf{*R*}}.}
+\end{Salltt}
 \end{itemize}
 
 
@@ -619,10 +668,14 @@ prefixed by "\verb+##+").
 
 
 
-
-
 \section{Advanced Usage}
 \label{sec:advanced}
+
+\begin{itemize}
+\item Switching the engine
+\item \texttt{S+elsewhere}
+
+\end{itemize}
 
 \section{Obtaining ESS}
 \label{sec:getIt}
@@ -637,29 +690,30 @@ to the lisp subdirectory of the unpacked archive.
 \label{sec:history}
 
 ESS (originally S-mode) was initially designed for use with S and
-S-PLUS(tm); hence, this family of statistical languages currently has
+\Splus(tm); hence, this family of statistical languages currently has
 the most support.  We denote by S, any of the currently available
-members of the family, including S 3.x, S 4.x, S-PLUS 3.x, S-PLUS 4.x,
-S-PLUS 5.x, and R.  In addition, we denote by Emacs, one of the GNU
-family of editors, either Emacs (as developed and maintained by the
-Free Software Foundation) or XEmacs (which is a derivative work).
+members (or ``dialects'') of the family, including S 3.x, S 4.x, \Splus
+3.x, \Splus~4.x (incl.\ \Splus~2000), \Splus~5.x, and R.  In addition, we
+denote by Emacs, one of the GNU family of editors, either Emacs (as
+developed and maintained by the Free Software Foundation) or XEmacs (which
+is a derivative work).
 
 ESS is a remarkable example of how open-source products can continue
 to develop beyond what their initial authors planned.  ESS started as
 S-mode, an Emacs extension which was developed in 1991 as a simple
-tool for editing program files for S and S-PLUS.  In 1994, Rossini
+tool for editing program files for S and \Splus.  In 1994, Rossini
 extended S-mode to support XEmacs, which was a forked version of
 Emacs.  At the same time, Rossini extended a successful SAS-mode
 written by Tom Cook to work with XEmacs.  In 1995, S-mode was merged
-into a uniform S-mode for Emacs, XEmacs, and supported S, S-PLUS, and
-R.  During 1996 and 1997, this was extended to incorporate the
+into a uniform S-mode for Emacs, XEmacs, and supported S, \Splus, and
+R. During 1996 and 1997, this was extended to incorporate the
 SAS-mode as well as to provide a generic means for configuring ESS to
 accommodate changed as well as new statistical languages.
 
 Most of this was primarily done under Unix.  However, in 1998, thanks
 to an example of interprocess communication using Microsoft's DDE by
-Brian Ripley, Richard M. Heiberger provided interfaces for S-PLUS 4.x
-and S-PLUS 2000.
+Brian Ripley, Richard M. Heiberger provided interfaces for \Splus~4.x
+and then \Splus~2000.
 
 Most of what has been done recently is debugging and tuning.  New
 features in the plans include robust extensions for Literate Data
