@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1999/01/11 16:48:54 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: ess-vars.el,v 5.13 1999/01/11 16:48:54 maechler Exp $
+;; Modified: $Date: 1999/03/03 23:25:30 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: ess-vars.el,v 5.14 1999/03/03 23:25:30 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -34,7 +34,7 @@
 
 ;;; Code:
 
-(defconst ess-version "5.1.2"
+(defconst ess-version "5.1.3"
   "Version of ESS currently loaded.")
 
 (defvar no-doc
