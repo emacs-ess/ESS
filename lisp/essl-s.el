@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2004/01/20 11:24:40 $
-;; Version: $Revision: 5.33 $
-;; RCS: $Id: essl-s.el,v 5.33 2004/01/20 11:24:40 stephen Exp $
+;; Modified: $Date: 2004/02/12 15:03:02 $
+;; Version: $Revision: 5.34 $
+;; RCS: $Id: essl-s.el,v 5.34 2004/02/12 15:03:02 stephen Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -495,12 +495,15 @@ Uses the file given by the variable `ess-function-outline-file'."
   "Smart \"_\" key: insert `ess-S-assign', unless in string/comment.
 If the underscore key is pressed a second time, the assignment
 operator is removed and replaced by the underscore.  `ess-S-assign',
-typically \" <- \", can be customized."
+typically \" <- \", can be customized.  In ESS modes other than R/S, 
+an underscore is always inserted. "
   (interactive)
   ;;(insert (if (inside-string/comment-p (point)) "_" ess-S-assign))
-  (if (inside-string/comment-p (point))
+  (if (or 
+       (inside-string/comment-p (point))
+       (not (equal ess-language "S"))) 
       (insert "_")
-    ;; Else one keypress produces ess-S-assgin; a second keypress will delete
+    ;; Else one keypress produces ess-S-assign; a second keypress will delete
     ;; ess-S-assign and instead insert _
     ;; Rather than trying to count a second _ keypress, just check whether
     ;; the current point is preceded by ess-S-assign.
