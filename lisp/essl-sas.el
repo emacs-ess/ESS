@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/03/22 21:30:39 $
-;; Version: $Revision: 5.40 $
-;; RCS: $Id: essl-sas.el,v 5.40 2002/03/22 21:30:39 rsparapa Exp $
+;; Modified: $Date: 2002/04/10 15:47:25 $
+;; Version: $Revision: 5.41 $
+;; RCS: $Id: essl-sas.el,v 5.41 2002/04/10 15:47:25 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -426,8 +426,10 @@ number."
 
 	 (cons (concat
 		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
-		"\\(a\\(bort\\|rray\\|ttrib\\)\\|by\\|c\\(hange\\|lass\\)"
-		"\\|d\\(elete\\|isplay\\|m\\|rop\\)\\|e\\(rror\\|xc\\(hange\\|lude\\)\\)"
+		"\\(a\\(bort\\|rray\\|ttrib\\)\\|by"
+		"\\|c\\(hange\\|lass\\|ontrast\\)"
+		"\\|d\\(elete\\|isplay\\|m\\|rop\\)"
+		"\\|e\\(rror\\|stimate\\|xc\\(hange\\|lude\\)\\)"
 		"\\|f\\(ile\\(name\\)?\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\|req\\)"
 		"\\|go\\([ \t]*to\\|ptions\\)"
 		"\\|i\\(d\\|f\\|n\\(dex\\|f\\(ile\\|ormat\\)\\|put\\|value\\)\\)"
