@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 1999/01/11 16:46:48 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: ess-iw32.el,v 1.3 1999/01/11 16:46:48 maechler Exp $
+;; Modified: $Date: 1999/01/13 07:25:25 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: ess-iw32.el,v 1.4 1999/01/13 07:25:25 maechler Exp $
 
 
 ;; This file is part of ESS
@@ -63,23 +63,14 @@
   (interactive "r\nP")
   (if (equal (ess-get-process-variable
 	      ess-current-process-name 'inferior-ess-ddeclient)
-	     (default-value 'inferior-ess-ddeclient))
+	     nil)  ;;; temporary value.  Next line is what it should be.
+          ;;;(default-value 'inferior-ess-ddeclient))
       (ess-eval-region-original start end toggle message)
     (ess-force-buffer-current "Process to load into: ")
     (ess-eval-region-ddeclient start end toggle message))
 )
 
 
-;; (defun ess-eval-visibly-ddeclient (start end toggle &optional message)
-;; defun ess-eval-region-visibly-ddeclient (start end toggle &optional message)
-;;  "Send the current region to the inferior ESS process."
-;;  (interactive "r\nP")
-;; ;(call-process-region start end
-;; ;                     "ddeclient" nil nil nil "S-PLUS" "SCommand")
-;;  (call-process-region start end
-;; 			 inferior-ess-ddeclient nil nil nil
-;; 			  inferior-ess-client-name inferior-ess-client-command)
-;; 
 
 ;;; switch between Splus by ddeclient and Splus running in an emacs buffer
 (defun ess-eval-visibly-ddeclient (text-withtabs &optional invisibly eob)
@@ -95,7 +86,8 @@
 (defun ess-eval-visibly (text-withtabs &optional invisibly eob)
   (if (equal (ess-get-process-variable
 	      ess-current-process-name 'inferior-ess-ddeclient)
-	     (default-value 'inferior-ess-ddeclient))
+	     nil)  ;;; temporary value.  Next line is what it should be.
+          ;;;(default-value 'inferior-ess-ddeclient))
       (ess-eval-visibly-original text-withtabs invisibly eob)
       (ess-eval-visibly-ddeclient text-withtabs invisibly eob)))
 
@@ -117,7 +109,8 @@ file.  Otherwise just pops to an existing buffer if it exists."
   (interactive "sHelp on: ")
   (if (equal (ess-get-process-variable
 	      ess-current-process-name 'inferior-ess-ddeclient)
-	     (default-value 'inferior-ess-ddeclient))
+	     nil)  ;;; temporary value.  Next line is what it should be.
+          ;;;(default-value 'inferior-ess-ddeclient))
       (ess-display-help-on-object-original object)
     (ess-display-help-on-object-ddeclient object))
   (widen))
