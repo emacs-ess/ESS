@@ -10,9 +10,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/25 13:24:35 $
-;; Version: $Revision: 4.55 $
-;; RCS: $Id: ess-mode.el,v 4.55 1997/11/25 13:24:35 rossini Exp $
+;; Modified: $Date: 1997/11/26 16:00:06 $
+;; Version: $Revision: 4.56 $
+;; RCS: $Id: ess-mode.el,v 4.56 1997/11/26 16:00:06 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -212,6 +212,9 @@ Optional arg ALIST describes how to customize the editing mode.
 Optional arg PROC-NAME is name of associated inferior process.
 
 \\{ess-mode-map}
+
+
+Extra binding to note:  'ESC C-\" indent-region.
 
 Customization: Entry to this mode runs the hooks in ess-mode-hook.
 
