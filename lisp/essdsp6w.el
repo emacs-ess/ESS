@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2001/05/02 22:03:08 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essdsp6w.el,v 5.2 2001/05/02 22:03:08 rossini Exp $
+;; Modified: $Date: 2001/06/12 05:43:14 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essdsp6w.el,v 5.3 2001/06/12 05:43:14 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -409,7 +409,7 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
 
  ; Provide package
 
-(provide 'essdsp4w)
+(provide 'essdsp6w)
 
  ; Local variables section
 
