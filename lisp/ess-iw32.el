@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 2000/04/11 12:16:29 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: ess-iw32.el,v 1.13 2000/04/11 12:16:29 maechler Exp $
+;; Modified: $Date: 2001/04/17 03:29:28 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: ess-iw32.el,v 1.14 2001/04/17 03:29:28 ess Exp $
 
 
 ;; This file is part of ESS
@@ -129,10 +129,9 @@ file.  Otherwise just pops to an existing buffer if it exists."
 
 (defun ess-display-help-on-object (object)
   (interactive "sHelp on: ")
-  (if (and (equal (ess-get-process-variable
-		   ess-current-process-name 'inferior-ess-ddeclient)
-		  (default-value 'inferior-ess-ddeclient))
-	   (not (equal ess-dialect "S+4")))
+  (if (equal (ess-get-process-variable
+	      ess-current-process-name 'inferior-ess-ddeclient)
+	     (default-value 'inferior-ess-ddeclient))
       (ess-display-help-on-object-original object)
     (ess-display-help-on-object-ddeclient object))
   (widen))
