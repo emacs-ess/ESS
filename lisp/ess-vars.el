@@ -5,9 +5,13 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/18 22:19:23 $
-;; Version: $Revision: 1.46 $
-;; RCS: $Id: ess-vars.el,v 1.46 1997/11/18 22:19:23 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:22:02 $
+;; Version: $Revision: 4.0 $
+;; RCS: $Id: ess-vars.el,v 4.0 1997/11/20 23:22:02 rossini Exp $
+
+;; Keywords: editing and process modes.
+
+;; This file is part of ESS
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
