@@ -1,12 +1,13 @@
 -*- mode: text; mode: view-minor -*-
 
-($Revision: 5.2 $)
+($Revision: 5.3 $)
 
-Emacs Speaks Statistics (ESS), version 5.0
+Emacs Speaks Statistics (ESS), version 5.1.x
 ------------------------------------------
 
-This is the README file for the distribution of ESS version 5.0, which
-used to be S-mode.  ESS is an Emacs-Lisp interface for interactive
+This is the README file for the distribution of ESS version 5.1.x, the
+alpha/beta series we are using on the way to producing 5.2 (the next
+stable distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported
 include: S dialects (S 3/4, S-PLUS 3.x, and R), LispStat dialects
 (XLispStat, ViSta), and SAS.  Stata and SPSS dialect (SPSS, Fiasco)
@@ -25,16 +26,16 @@ conformance as a standard GNU Emacs package, and redesigned for
 modularity and reuse.
 
 The current development team is led by A.J. (Tony) Rossini
-(rossini@stat.sc.edu and arossini@biostat.washington.edu), who did the
-initial port to XEmacs and has been the primary coder.  Martin
-Maechler (maechler@stat.math.ethz.ch) and Kurt Hornik
-(hornik@ci.tuwien.ac.at) have assisted with S-PLUS, S4, R, and
-XLispStat sub-modes, and Richard M. Heiberger
-(rmh@fisher.stat.temple.edu) has done much of the work for
-implementing the SAS sub-mode, as well as assisted with S-PLUS and S4
-development.  Douglas Bates (bates@stat.wisc.edu) contributed the
-initial S4 mode, as well as provided disk space, ftp and http access
-to the source for development purposes.
+(rossini@biostat.washington.edu), who did the initial port to XEmacs
+and has been the primary coder.  Martin Maechler
+(maechler@stat.math.ethz.ch) and Kurt Hornik (hornik@ci.tuwien.ac.at)
+have assisted with S-PLUS, S4, R, and XLispStat sub-modes, and Richard
+M. Heiberger (rmh@fisher.stat.temple.edu) has done much of the work
+for implementing the SAS sub-mode, as well as assisted with S-PLUS
+(under MS Windows and remote access) and S4 development.  Douglas
+Bates (bates@stat.wisc.edu) contributed the initial S4 mode, as well
+as provided disk space, ftp and http access to the source for
+development purposes.
 
 We are grateful to David M. Smith , the previous developer (for S-mode
 3.x and 4.x), as well as to the initial developers of S-mode, Doug
@@ -45,8 +46,6 @@ Cook (from his excellent SAS mode) and Thomas Lumley (preliminary
 Stata mode), gratefully (from us) and with permission (from them).
 
 The name is ESS.  Not ESS-mode.
-
-
 
 0. LICENSE
 ----------
@@ -66,13 +65,14 @@ details.
 1. FEATURES
 -----------
 
-Languages Supported (or planned to be supported)
+Languages Supported:
 
 	S dialects (S 3/4, S-PLUS 3.x/4.x/5.x, and R)
 	LispStat dialects (XLispStat, ViSta)
 	SAS
-	Stata
-	SPSS dialects (SPSS, Fiasco (GNU project))
+	Stata (under development)
+	SPSS dialects (SPSS, Fiasco (GNU project)) (under development)
+	SCA (under development)
 
 Editing source code (S, LispStat, SAS)
 
@@ -108,11 +108,11 @@ See the file Doc/NEWS for changes in recent versions.
 2. STABILITY
 ------------
 
-Version 5.0 is meant as a functional release.  However, there are a
-few known bugs (and countless other undiscovered ones); see the file
-Doc/TODO for details.  Bug reports are solicited; see the BUGS section
-below.  Patches or suggested coding fixes with bug reports are much
-appreciated!
+Versions 5.1.x are meant as a beta-level releases.  While some bugs
+are fixed from 5.0, others have been introduced, especially with
+regards to new features.  See the file Doc/TODO for details.  Bug
+reports are solicited; see the BUGS section below.  Patches or
+suggested coding fixes with bug reports are much appreciated!
 
 3. REQUIREMENTS
 ---------------
@@ -134,12 +134,11 @@ configuration suggestions for emacs 19.28 in Doc/README-19.28.
 These are the changes we made in order to use ESS with SAS on a Digital
 Alpha running Emacs 19.28.
 
-Suggestions and information about attempts to port to
-Microsoft-developed operating systems are encouraged.  In particular,
-it is an open question whether or not it can be implemented for
-XLispStat, ViSta, R, S-PLUS 4.0, Stata, and SAS under a Microsoft
-environment using NTEmacs (or the version of XEmacs currently under
-development).
+Preliminary work for porting to Microsoft-developed operating systems
+is on going, especially with Splus 4.x and NT Emacs.  Other possibly
+connections include XLispStat (under the Splus DDE interface), R, SAS,
+SPSS, and Stata.  In addition, XEmacs support (for native NT and
+Cygwin versions) needs to be evaluated.
 
 
 4. GETTING THE LATEST VERSION
@@ -154,9 +153,12 @@ The HTML version of the documentation can be found at:
 
 	http://stat.ethz.ch/ESS/
 
+The latest (no more than 24 hours behind the developers) version of
+ESS can also be retrieved using anonymous CVS.  Details on this are
+forthcoming.
 
-5. INSTALLATION
----------------
+5. INSTALLATION  (from tar file)
+---------------------------
 
 * cd to a directory where you keep emacs lisp files, or create a new
   directory to hold the distribution.  This directory will be referred
@@ -289,6 +291,12 @@ The HTML version of the documentation can be found at:
 
 * That's it!
 
+5.1 Installation (using anonymous-CVS)
+--------------------------------
+
+To be added.
+
+
 
 6. BUGS
 -------
@@ -303,9 +311,6 @@ The easiest way to do this is within Emacs by typing
 
 This also gives the maintainers valuable information about your
 installation which may help us to identify or even fix the bug.
-
-
-
 
 7. THE ESS MAILING LIST
 --------------------------
@@ -328,4 +333,4 @@ The purposes of the mailing list include
 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 Kurt Hornik <hornik@ci.tuwien.ac.at>
 Martin Maechler <maechler@stat.math.ethz.ch>
-A.J. (Tony) Rossini <rossini@stat.sc.edu>
+A.J. (Tony) Rossini <rossini@biostat.washington.edu>
