@@ -174,11 +174,16 @@ The HTML version of the documentation can be found at:
   installation).  Replace `/PATH' above with the value of
   ess-lisp-directory as defined in ess-site.el.
 
+* For more information on using ESS in your daily work, see the files
+  README.S, README.SAS, and README.XLispStat.  
+
+  For the impatient, the quick version of usage follows:
+
 * To edit statistical programs, load the files with the requiste
   extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and ".lsp" 
   for XLispStat).
 
-* To run statistical processes under Emacs/XEmacs:
+* To run statistical processes under (X)Emacs:
 
   Run S-PLUS 3.x with:
 
