@@ -1,3 +1,11 @@
+2000-02-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-help.el: Add menu; fix ess-display-sec-map
+
+	* essddr.el (Rd-mode): one menu entry.
+
+	* essd-sp5.el (S+5-customize-alist): search-list-command=search("paths")
+
 1999-12-21  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-sp5.el: S+5-customize-alist was there *TWICE*
@@ -7,16 +15,16 @@
 
 	* essl-sta.el (setq max-lisp-eval-depth): increase necessary
 
-1999-11-22  ess  <ess@aleph.YP.biostat>
+1999-11-22  ess	 <ess@aleph.YP.biostat>
 
 	* ess-vars.el: Updated to 5.1.11
 
-1999-11-17  ess  <ess@aleph.YP.biostat>
+1999-11-17  ess	 <ess@aleph.YP.biostat>
 
 	* essddr.el:
-	'bold isn't defined in XEmacs.  Using reference-face instead of Rd-bold-face.
+	'bold isn't defined in XEmacs.	Using reference-face instead of Rd-bold-face.
 
-1999-11-16  ess  <ess@aleph.YP.biostat>
+1999-11-16  ess	 <ess@aleph.YP.biostat>
 
 	* ess-vars.el: Fixed small version update errors
 
@@ -39,7 +47,7 @@
 
 	* essd-omg.el: Omegahat fixes (for commandline flags)
 
-1999-11-11  ess  <ess@aleph.YP.biostat>
+1999-11-11  ess	 <ess@aleph.YP.biostat>
 
 	* noweb-mode.el:
 	C-c C-n shouldn't be TeX-normalmode, since it is too close to
@@ -65,7 +73,7 @@
 
 	* ChangeLog, ess.el, noweb-mode.el: functionp definition if necessary
 
-	* noweb-mode.el: functionp for  emacs-19.34
+	* noweb-mode.el: functionp for	emacs-19.34
 
 1999-11-04  A.J. Rossini  <rossini@biostat.washington.edu>
 
@@ -111,58 +119,58 @@
 
 	* essd-r.el (R-customize-alist): help( .. htmlhelp = FALSE)
 
-Wed Sep 15 22:34:37 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Wed Sep 15 22:34:37 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-inf.el (inferior-ess-mode): preliminary support for Omegahat.
 
-Wed Sep 15 22:21:42 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Wed Sep 15 22:21:42 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* essd-omg.el (omegahat-mode): fset for OMG-mode. use it.
 		(omegahat): fset for OMG.  use it.
 		Documentation fixes.
 
-Wed Sep 15 22:20:37 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Wed Sep 15 22:20:37 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-site.el (essd-omg): require this, now.
 
-Wed Sep 15 22:19:08 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Wed Sep 15 22:19:08 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-site.el: added omegahat, comment about ssh (for ess-elsewhere)
 
-Wed Sep 15 22:17:04 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Wed Sep 15 22:17:04 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-vars.el (inferior-STA-program-name): documentation fixes
 
-Wed Sep 15 22:16:55 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Wed Sep 15 22:16:55 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-vars.el (inferior-OMG-program-name): new variable
 
-Tue Sep 14 22:55:55 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Tue Sep 14 22:55:55 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* essd-xls.el (xlispstat-mode): added as a synonym.
 
-Tue Sep 14 16:53:21 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Tue Sep 14 16:53:21 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* noweb-mode.el: Emacs/XEmacs compatibility done.
 
-Tue Sep 14 16:53:07 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Tue Sep 14 16:53:07 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-debug.el: This is customized for me (AJR).
 
-Tue Sep 14 16:52:35 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Tue Sep 14 16:52:35 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-site.el: added noweb-mode by default.
 
-Tue Sep 14 16:10:04 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Tue Sep 14 16:10:04 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-noweb.el (global-font-lock-mode): set true to prevent XEmacs
 	from barfing.
 
-Tue Sep 14 13:26:36 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Tue Sep 14 13:26:36 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess?-sta.el: cleaned up stata mode to work.
 
-Tue Sep 14 11:06:38 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+Tue Sep 14 11:06:38 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* ess-inf.el: white space, documentation, stata hacks.
 
