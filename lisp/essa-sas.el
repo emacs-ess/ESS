@@ -3,12 +3,12 @@
 ;; Copyright (C) 1997--2000 Rodney Sparapani, A.J. Rossini, 
 ;; Martin Maechler, Kurt Hornik, and Richard M. Heiberger.
 
-;; Author: Rodney Sparapani <rodney.sparapani@duke.edu>
+;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/03/06 21:59:43 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: essa-sas.el,v 1.13 2001/03/06 21:59:43 ess Exp $
+;; Modified: $Date: 2001/03/23 15:28:54 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: essa-sas.el,v 1.14 2001/03/23 15:28:54 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, asynchronous.
 

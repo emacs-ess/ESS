@@ -10,7 +10,7 @@
 ;;                Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.22 2000/09/03 19:23:16 rossini Exp $
+;; Version: $Id: ess.el,v 5.23 2001/03/23 15:28:54 ess Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -52,7 +52,7 @@
 ;;           1996--2000    A.J. Rossini <rossini@stat.sc.edu>,
 ;;           1998--2000                 <rossini@biostat.washington.edu>
 ;;           1996--2000    Richard M. Heiberger <rmh@astro.ocis.temple.edu>
-;;           1999--2000    Rodney Sparapani <rodney.sparapani@duke.edu>
+;;           1999--2000    Rodney Sparapani <rsparapa@mcw.edu>
 ;;
 
 ;;; Commentary:

@@ -15,6 +15,5 @@
 @uref{http://stat.ethz.ch/~maechler/,Martin Maechler}
 @email{maechler@@stat.math.ethz.ch}
 @item
-@uref{http://www.duke.edu/~spara002/,Rodney Sparapani}
-@email{rodney.sparapani@@duke.edu}
+@email{rsparapa@@mcw.edu}
 @end itemize

@@ -37,7 +37,7 @@ Changes/New Features in 5.1.14:
 @itemize @bullet
 @item Yet more fixes to SAS mode, (Rich Heiberger
       (@email{rmh@@surfer.stat.temple.edu}) and Rodney Sparapani
-       @email{spara002@@onyx.dcri.duke.edu})).
+       @email{rsparapa@@mcw.edu})).
 @item Customize support (for most Emacsen which support it) (AJRossini,
       (@email{rossini@@biostat.washington.edu})
 @item ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini,
@@ -57,7 +57,7 @@ Changes/New Features in 5.1.12:
 @item Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
       Chuck Taylor, and others.
 @item More fixes to SAS mode, thanks to Rodney Sparapani
-      (@email{spara002@@duke.edu}) and Rich Heiberger
+      (@email{rsparapa@@mcw.edu}) and Rich Heiberger
       (@email{rmh@@surfer.stat.temple.edu}).
 @end itemize
 
@@ -69,7 +69,7 @@ Changes/New Features in 5.1.11:
 @item README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
       to David Brahm (@email{brahm@@alum.mit.edu}).
 @item Fixes to SAS mode, thanks to Rodney Sparapani
-      (@email{spara002@@duke.edu})
+      (@email{rsparapa@@mcw.edu})
 @end itemize
 
 Changes/New Features in 5.1.10:
