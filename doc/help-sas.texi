@@ -273,28 +273,28 @@ capitals).
 Unix PC  Nickname   Description  
 
 F2   F2  refresh
-                    revert the current buffer with the file of the same name 
-                    if the file is newer than the buffer
+                    revert the current buffer with the file of the same 
+                    name if the file is newer than the buffer
 
 F3   F8  SUBMIT     
-                    save the current .sas file (which is either the .sas file 
-                    in the current buffer or the .sas file associated with the 
-                    .lst or .log file in the current buffer) and submit the 
-                    file as a batch SAS job
+                    save the current .sas file (which is either the .sas 
+                    file in the current buffer or the .sas file associated
+                    with the .lst or .log file in the current buffer) and 
+                    submit the file as a batch SAS job
 
 F4   F5  PROGRAM       
                     switch buffer to .sas file
 
 F5   F6  LOG        
-                    switch buffer to .log file, `refresh' and goto next error 
-                    message, if any
+                    switch buffer to .log file, `refresh' and goto next 
+                    error message, if any
 
 F6   F7  OUTPUT     
                     switch buffer to .lst file and `refresh'
 
 F7   F4  filetype-1    
-                    switch buffer to filetype-1 (defaults to .txt) file and 
-                    `refresh'
+                    switch buffer to filetype-1 (defaults to .txt) file 
+                    and `refresh'
 
 F8   F3  shell      
                     switch buffer to shell
@@ -304,21 +304,21 @@ F9   F9  VIEWTABLE
                     dataset near point
 
 F10  F10  toggle-log    
-                    toggle ESS[SAS] for .log files; may be useful for certain 
-                    debugging situations
+                    toggle ESS[SAS] for .log files; may be useful for 
+                    certain debugging situations
 
 F11  F11  filetype-2
-                    switch buffer to filetype-2 (defaults to .dat) file and 
-                    `refresh'
+                    switch buffer to filetype-2 (defaults to .dat) file 
+                    and `refresh'
 
 F12  F12  viewgraph
-                    open a GSASFILE near point for viewing either in emacs or 
-                    with an external viewer
+                    open a GSASFILE near point for viewing either in emacs
+                    or with an external viewer
 
 C-F1 C-F1 create-rtf
-                    create an MS RTF file from the current buffer and base
-                    the new file name on it by replacing the file extension
-                    with .rtf
+                    create an MS RTF file from the current buffer with a
+                    file name that replaces the file extension with .rtf
+
 C-F3 C-F8 submit-region    
                     write region to ess-temp.sas and submit
 
@@ -558,8 +558,8 @@ never need to read it or write to it.  Refer to the .lst and
      a shell command-line)
 
 3. M-x SAS starts SAS Display Manager.  Probably, the command "sas" 
-   on your system calls a shell script.  Specify the path to the real "sas"
-   executable in the file ess-sas-sh-command, i.e.:
+   on your system calls a shell script.  Specify the path to the real 
+   "sas" executable in the file ess-sas-sh-command, i.e.:
 @example
 /usr/local/sas612/sas </dev/tty 1>$stdout 2>$stderr $@@
 @end example
