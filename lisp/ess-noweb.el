@@ -6,10 +6,10 @@
 ;;          A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: April 18, 1999
-;; Version: $Revision: 1.4 $
+;; Version: $Revision: 1.5 $
 ;; Keywords: statistical support
 ;; Summary: Noweb support for ESS
-;; CVS: $Id: ess-noweb.el,v 1.4 1999/09/14 23:09:21 rossini Exp $
+;; CVS: $Id: ess-noweb.el,v 1.5 1999/09/14 23:10:30 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -43,7 +43,6 @@
 
 ;; Does this help with XEmacs problems (and font-lock evil)?
 (setq global-font-lock-mode t)
-
 
 (if ess-noweb-use-font-lock
      (require 'noweb-font-lock-mode))
