@@ -28,6 +28,11 @@ numbers from any Emacs buffer into an existing *R* process;
 M-x ess-rdired gives a ``directory editor'' of R objects;
 fixed ess-retr-lastvalue-command, i.e. .Last.value bug
 (thanks to David Brahm)
+@item ESS: Support for creating new window frames has been added to
+ESS.  Inferior ESS processes can be created in dedicated frames by
+setting inferior-ess-own-frame to t.  ESS help buffers can also open in
+new frames; see the documentation for ess-help-own-frame for details.
+(Thanks to Kevin Rodgers for contributing code.)
 @end itemize
 
 Changes/New Features in 5.1.24:
