@@ -1,7 +1,7 @@
 Please send bug reports, suggestions etc. to
 
 @ifhtml
-<A HREF="mailto:ESS-bugs@stat.math.ethz.ch">
+<A HREF="mailto:ESS-bugs@@stat.math.ethz.ch">
 @end ifhtml
 @email{ESS-bugs@@stat.math.ethz.ch}
 @ifhtml
