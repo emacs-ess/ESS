@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.64 2002/07/26 20:31:57 rsparapa Exp $
+## $Id: Makefile,v 5.65 2002/07/27 00:34:07 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -31,7 +31,7 @@ all clean distclean:
 
 dist:   
 	@echo "** Committing README, ANNOUNCE and info **"
-	cd doc; $(MAKE) info; cd ..
+	cd doc; $(MAKE) docs; cd ..
 	cvs commit -m "Updating README, ANNOUNCE for new version" \
 		README ANNOUNCE
 	cvs commit -m "Updating info for new version" info

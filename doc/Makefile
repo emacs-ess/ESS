@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.32 $.
+### File: $Revision: 1.33 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -26,7 +26,7 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 
 all  : info html dvi pdf
 
-info : $(INFODIR)/ess.info ../README ../ANNOUNCE
+docs : $(INFODIR)/ess.info ../README ../ANNOUNCE
 html : html/ess_toc.html html/readme_toc.html
 dvi  : ess.dvi readme.dvi
 pdf  : ess.pdf readme.pdf
