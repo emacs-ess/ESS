@@ -1,0 +1,72 @@
+spread	We have designed and constructed an interactive spreadsheet
+	interface to S/Splus that maintains the complete power and
+	generality of the S language.  At user level, the interface
+	behaves like the popular spreadsheet programs available for
+	personal computers: one or more S data objects (matrices or
+	three-way arrays) are displayed on the screen.  The user
+	graphically (with mouse or cursor motion) identifies a cell
+	for review, and possible updating, of its contents.  Macros
+	containing arbitrary S expressions can be associated with
+	the entire spread.frame or one of its cells.  The
+	spreadsheet is designed in a modular fashion with
+	device-specific methods for the display and updating of
+	spreadsheet objects.  We include methods for two devices:
+	the generic S graphics device and a character based device
+	using the emacs 19 environment.
+	Richard M. Heiberger (rmh@astro.ocis.temple.edu)
+	Magnus Mengelbier (magnus@astro.ocis.temple.edu)
+
+	The interface is described in
+	\item Heiberger, Richard M., and Magnus Mengelbier (1995, to appear)
+	``Design of a Spreadsheet Interface for S,''
+	{\it Proceedings of the American Statistical Association},
+	Section on Statistical Graphics.
+
+	This is placeholder announcement. The files will be
+	available on statlib after one more level of testing.
+
+
+Files in this distribution:
+README		Abstract, file listing, and setup instructions.
+sprd3d.how	Instructions for spread.frame users.
+
+
+sprd-emc.s	S for emacs driver
+sprd-grd.s	S for class="grade"
+sprd-spr.s	S for class="spread"	This is the primary set of functions.
+sprd-txt.s	S for graphics device driver based on text() command.
+
+sprd-int.el	emacs lisp file
+		Load this file into emacs 19 each time you start a
+		spread.frame session.
+
+gradexmp.s	S example
+
+
+
+			Setup Instructions
+			
+
+The emacs spreadsheet interface for S consists of four S files
+"sprd-*.s" and one emacs lisp file "sprd-int.el".
+
+1. Create a new directory to store the four S files "sprd-*.s" and one
+emacs lisp file "sprd-int.el".  I use "/disk5/rmh/sprd3d/".  You might
+wish to place it under the directory where you store other S/Splus
+libraries.
+
+2. Make a new .Data, "/disk5/rmh/sprd3d/.Data", start S/Splus, and
+source the four sprd-*.s files:
+
+	> source("sprd-emc.s")
+	> source("sprd-grd.s")
+	> source("sprd-spr.s")
+	> source("sprd-txt.s")
+	> q()
+
+3.  The directory /disk5/rmh/sprd3d/ should now be treated as a
+library directory and should not be further touched.  All further work
+using the spread.frames should be done in a different directory.
+
+4.  See the file sprd3d.how for user instructions.  You may look at
+the file "gradexmp.s" for an example.
