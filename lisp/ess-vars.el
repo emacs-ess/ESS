@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/10/02 04:46:30 $
-;; Version: $Revision: 1.27 $
-;; RCS: $Id: ess-vars.el,v 1.27 1997/10/02 04:46:30 rossini Exp $
+;; Modified: $Date: 1997/10/08 13:26:38 $
+;; Version: $Revision: 1.28 $
+;; RCS: $Id: ess-vars.el,v 1.28 1997/10/08 13:26:38 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -532,7 +532,7 @@ of Emacs until the code has been successfully evaluated by S.")
 ;;; i.e. The list of directories and (recursive) objects that ess uses when
 ;;; it searches for objects.
 
-(defvar inferior-ess-names-command "names(%s)"
+(defvar inferior-ess-names-command "names(%s)\n"
   "Format string for ess command to extract names from an object.")
 ;;; %s is replaced by the object name -- usually a list or data frame
 
