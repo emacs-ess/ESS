@@ -1,6 +1,6 @@
 ;;; ess-cust.el --- Customize variables for ESS
 
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: A.J. Rossini <rossini@u.washington.edu>
@@ -1009,28 +1009,22 @@ order for it to work right.  And Emacs is too smart for it."
     (if (equal system-type 'Apple-Macintosh) nil
       (if (featurep 'xemacs) "gnuclient -q" "emacsclient")))
   "*Pager called by S process with 'page()' command."
-;; Change made to provide a better help(function) experience with
-;; S+6 and xemacs
-;; gnuclient -q will open a buffer with an HTML help file
-;; you can view it with M-x browse-url-of-buffer
-:group 'ess
-:type 'string)
+  ;; Change made to provide a better help(function) experience with
+  ;; S+6 and xemacs
+  ;; gnuclient -q will open a buffer with an HTML help file
+  ;; you can view it with M-x browse-url-of-buffer
+  :group 'ess
+  :type 'string)
 
-(defcustom ess-editor nil
+(defvar ess-editor nil
   "*Editor by which the process sends information to an emacs buffer
-for editing and then to be returned to the process."
-  :group 'ess-proc
-  :type 'string)
+for editing and then to be returned to the process.")
 
-(defcustom ess-pager nil
-  "*Pager by which the process sends information to an emacs buffer."
-  :group 'ess-proc
-  :type '(choice (const nil) string))
+(defvar ess-pager nil
+  "*Pager by which the process sends information to an emacs buffer.")
 
-(defcustom inferior-ess-language-start nil
-  "*Initialization commands sent to the ESS process."
-  :group 'ess-proc
-  :type 'string)
+(defvar inferior-ess-language-start nil
+  "*Initialization commands sent to the ESS process.")
 
 (make-variable-buffer-local 'ess-editor)
 (make-variable-buffer-local 'ess-pager)
@@ -1218,12 +1212,18 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
   :group 'ess-command
   :type 'string)
 
-(defcustom ess-ms-slow nil
-  "Set to non-nil if your computer is slow so that ESS will include delays.
+(defvar ess-need-delay nil
+  "Set to non-nil if ESS will include delays in some places.
 These delays are introduced to prevent timeouts in certain processes, such
-as completion.  The value of this variable is only considered when
-`ess-microsoft-p' is non-nil.
-This variable may need to become mode-specific."
+as completion.")
+(make-variable-buffer-local 'ess-need-delay)
+
+(defcustom ess-R-need-delay nil
+  "used to initialize `ess-need-delay'."
+  :group 'ess-command
+  :type 'boolean)
+(defcustom ess-S+-need-delay t
+  "used to initialize `ess-need-delay'."
   :group 'ess-command
   :type 'boolean)
 
@@ -1324,7 +1324,7 @@ See also function `ess-create-object-name-db'.")
 (make-variable-buffer-local 'ess-object-name-db)
 (setq-default ess-object-name-db nil)
 
-(defcustom ess-S-loop-timeout 1200000
+(defcustom ess-S-loop-timeout 2000000
   "Integer specifying how many loops ess-mode will wait for the prompt
 before signaling an error. Will be set to `ess-loop-timeout' in the S dialects'
 alists.  Increase this, if you have a fast(er) machine."
@@ -1541,6 +1541,11 @@ Choices are `separate-buffer', `s-process', `www'.  The latter uses
 Created for each process."
   :group 'ess-proc
   :type 'string)
+
+(defcustom ess-verbose nil
+  "if non-nil, write more information to `ess-dribble-buffer' than usual."
+  :group 'ess-proc
+  :type 'boolean)
 
 (defvar ess-dribble-buffer (generate-new-buffer "*ESS*")
   "Buffer for temporary use for setting default variable values.

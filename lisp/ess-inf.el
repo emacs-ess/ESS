@@ -3,7 +3,7 @@
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997-1999 A.J. Rossini <rossini@u.washington.edu>,
 ;;	Martin Maechler <maechler@stat.math.ethz.ch>.
-;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2000--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
@@ -747,15 +747,21 @@ PROC is the ESS process. Does not change point"
 	  (if moving (goto-char (process-mark proc))))
       (set-buffer old-buffer))))
 
-(defun ess-command (com &optional buf)
+(defun ess-command (com &optional buf sleep)
   "Send the ESS process command COM and delete the output
 from the ESS process buffer.  If an optional second argument BUF exists
 save the output in that buffer. BUF is erased before use.
 COM should have a terminating newline.
-Guarantees that the value of .Last.value will be preserved."
+Guarantees that the value of .Last.value will be preserved.
+When optional third arg SLEEP is present, `(sleep-for (* a SLEEP))'
+will be used in a few places."
   ;; Use this function when you need to evaluate some S code, and the
   ;; result is needed immediately. Waits until the output is ready
   (let* ((sprocess (get-ess-process ess-current-process-name))
+	 (do-sleep (progn
+		     (if sleep
+			 (if (numberp sleep) nil (setq sleep 1)))
+		     (and ess-need-delay sleep)))
 	 sbuffer
 	 end-of-output
 	 oldpb oldpf oldpm
@@ -788,28 +794,23 @@ Guarantees that the value of .Last.value will be preserved."
 	      (erase-buffer)
 	      (set-marker (process-mark sprocess) (point-min))
 	      (process-send-string sprocess my-save-cmd)
-	      (if (equal ess-dialect "S+6") (sleep-for 0.1));; sleep-S+
-	      (if (and ess-microsoft-p ess-ms-slow)
-		  (sleep-for 0.5))
+
+	      (if do-sleep (sleep-for (* 0.05 sleep))); microsoft: 0.5
 	      (ess-prompt-wait sprocess)
 	      (erase-buffer)
 	      (process-send-string sprocess com)
-	      (if (equal ess-dialect "S+6") (sleep-for 1.0));; sleep-S+
-	      (if (and ess-microsoft-p ess-ms-slow)
-		  (sleep-for 4))	;this much time is needed for
-					;ess-create-object-name-db on PC
+
+	      (if do-sleep (sleep-for (* 0.4 sleep))); microsoft: 4.0
+	      ;; need time for ess-create-object-name-db on PC
 	      (ess-prompt-wait sprocess)
-	      (if (and ess-microsoft-p ess-ms-slow)
-		  (sleep-for 0.5))
+	      ;;(if do-sleep (sleep-for (* 0.0 sleep))); microsoft: 0.5
 	      (goto-char (point-max))
 	      (save-excursion
 		(beginning-of-line)	; so prompt will be deleted
 		(setq end-of-output (point)))
 	      (process-send-string sprocess my-retr-cmd)
-	      (if (equal ess-dialect "S+6") (sleep-for 0.4));; sleep-S+
-	      ;; For S+4
-	      (if (and ess-microsoft-p ess-ms-slow)
-		  (sleep-for 0.5))
+
+	      (if do-sleep (sleep-for (* 0.05 sleep))); microsoft: 0.5
 	      (ess-prompt-wait sprocess end-of-output)
 
 	      ;; Old version.
@@ -1148,7 +1149,7 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
 	    (ess-check-modifications))))
     (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
 	  error-occurred nomessage)
-      (ess-command (format inferior-ess-load-command filename) errbuffer)
+      (ess-command (format inferior-ess-load-command filename) errbuffer);sleep ?
       (save-excursion
 	(set-buffer errbuffer)
 	(goto-char (point-max))
@@ -1666,7 +1667,7 @@ to the command if BUFF is not given.)"
       (let ((buff (ess-create-temp-buffer buff-name)))
 	(save-excursion
 	  (set-buffer buff)
-	  (ess-command the-command (get-buffer buff-name))
+	  (ess-command the-command (get-buffer buff-name));; sleep?
 	  (goto-char (point-min))
 	  (if message (insert message)
 	    (if buff nil
@@ -1882,22 +1883,26 @@ A newline is automatically added to COMMAND."
 	names)
     (save-excursion
       (set-buffer tbuffer)
-      (ess-command command tbuffer)
+      (ess-command command tbuffer 'sleep)
       (goto-char (point-min))
+      (if ess-verbose (ess-write-to-dribble-buffer "ess-get-words-.. "))
       (if (not (looking-at "\\s-*\\[1\\]"))
-	  ;;DBG:
-	  (progn (ess-write-to-dribble-buffer
-		  "ess-get-words-.. : not seeing \"[1]\"..\n")
+	  (progn (if ess-verbose
+		     (ess-write-to-dribble-buffer "not seeing \"[1]\".. "))
 		 (setq names nil)
 	  )
 	(goto-char (point-max))
 	(while (re-search-backward "\"\\([^\"]*\\)\"" nil t)
 	  (setq names (cons (buffer-substring (match-beginning 1)
 					      (match-end 1)) names))))
-      ;DBG: do *not* (kill-buffer tbuffer)
+      ;DBG: do *not*
+      (kill-buffer tbuffer)
       )
-    ;;DBG:
-    (ess-write-to-dribble-buffer (format "ess-get-words-.. |-> names «%s»\n" names))
+    (if ess-verbose
+	(ess-write-to-dribble-buffer
+	 (if (> (length names) 5)
+	     (format " |-> (length names)= %d\n" (length names))
+	   (format " |-> names= «%s»\n" names))))
     names))
 
 (defun ess-compiled-dir (dir)
@@ -2069,7 +2074,7 @@ and (indirectly) by \\[ess-get-help-files-list]."
 	  (save-excursion
 	    (set-buffer tbuffer)
 	    ;; guaranteed by the initial space in its name: (buffer-disable-undo)
-	    (ess-command my-search-cmd tbuffer) ; does (erase-buffer)
+	    (ess-command my-search-cmd tbuffer 0.2); <- sleep; does (erase-buffer)
 	    (goto-char (point-min))
 	    (while (re-search-forward "\"\\([^\"]*\\)\"" nil t)
 	      (setq elt (buffer-substring (match-beginning 1) (match-end 1)))

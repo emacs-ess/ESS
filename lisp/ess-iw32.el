@@ -284,19 +284,16 @@ generate the source buffer."
 
 (fset 'ess-command-original (symbol-function 'ess-command))
 
-(defun ess-command (com &optional buf)
-  "Send the ESS process command COM and delete the output
-from the ESS process buffer.  If an optional second argument BUF exists
-save the output in that buffer. BUF is erased before use.
-COM should have a terminating newline.
-Guarantees that the value of .Last.value will be preserved."
+(defun ess-command (com &optional buf sleep)
+  "This is the 'w32' version. Either calls the original `ess-command-original'
+(see its doc) or `ess-command-ddeclient'."
   (interactive)
   (if buf                ;;Mar 01 2002 rmh
       (save-excursion
 	(set-buffer buf)
 	(setq ess-local-process-name ess-current-process-name)))
   (if (not (ess-ddeclient-p))
-      (ess-command-original com buf)
+      (ess-command-original com buf sleep)
     (ess-force-buffer-current "Process to load into: ")
     (ess-command-ddeclient com buf)))
 
