@@ -1,3 +1,37 @@
+Thu Nov 13 21:45:27 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Release: 5.0-pre5
+
+	* Makefile (VERSION): incremented.
+
+	* ess-vars.el (ess-version): incremented.
+
+Thu Nov 13 21:40:12 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el: works again.  shooze...
+
+Thu Nov 13 20:51:36 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.el (ess-load-object-name-db-file): don't bomb if file
+ 	doesn't exist..
+
+Thu Nov 13 20:31:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: back to initial, except for new unused, commented
+ 	out, variable)
+
+Thu Nov 13 20:28:06 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: New temp variables for when we rewrite the
+	initialization routines; NEED TO DO THIS FOR 5.2!!!  LOGIC HAS
+	CHANGED, FOR THE "SIMPLER"!
+
+	* ess-inf.el: doesn't work.  This is a mess.
+
+	* ess-inf.el (inferior-ess): use language instead of dialect for
+	"*language*" and "*language:1*" buffer names; old version
+	commented out.
+
 Thu Nov 13 20:11:10 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-plain-first-buffername): use it.
@@ -1092,6 +1126,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.33  1997/11/14 02:46:16  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.32  1997/11/14 01:15:08  rossini
 	* Removing *** empty log message ***
 	* Removing
