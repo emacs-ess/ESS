@@ -1,0 +1,48 @@
+ESS is based on Olin Shivers' excellent comint package (which is supplied
+@cindex comint
+@cindex authors
+@cindex credits
+with version 19 of GNU Emacs).  The original version of ESS (then known
+as `S-mode') was written by Doug Bates (@email{bates@@stat.wisc.edu}) and
+Ed Kademan (@email{kademan@@stat.wisc.edu}).  Frank Ritter
+(@email{ritter@@psy.cmu.edu}) then merged this version with his own
+S-mode mode to form @file{S.el} version 2.1.
+
+Version 2.1 of @file{S.el} was then updated and expanded by David Smith
+to form version 3.4.  This was then updated for Emacs 19 to create
+version 4.  Most bugs have now been fixed (and several new ones
+introduced) and many new features have been added.  Thanks must go to
+the many people who have helped with the development of the present
+version of ESS:
+
+@itemize @bullet
+@item
+The multiple process code, and the idea for
+@code{ess-eval-line-and-next-line} are by Rod Ball.
+
+@item
+Thanks to Doug Bates for many useful suggestions, and an FTP home for
+the code.
+
+@item
+Thanks to Martin Maechler for reporting and fixing bugs, providing many
+useful comments and suggestions, and for maintaining the S-mode mailing
+list.
+
+@item
+Thanks to Frank Ritter for updates from the previous version, the menu
+code, and invaluable comments on the manual.
+
+@item
+Thanks to Ken'ichi Shibayama for his excellent indenting code, and many
+comments and suggestions.
+
+@item
+Last but definitely not least, thanks to the many beta testers of the
+S-mode and ESS mailing lists.
+@end itemize
+
+The new version, @emph{ESS} version 5, is being developed and currently
+maintained by
+
+@include authors.texi
