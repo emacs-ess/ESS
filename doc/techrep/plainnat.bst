@@ -1345,8 +1345,8 @@ FUNCTION {begin.bib}
   write$ newline$
   "\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi"
   write$ newline$
-  "\expandafter\ifx\csname url\endcsname\relax" write$ newline$
-  "  \def\url#1{{\tt #1}}\fi" write$ newline$
+%%  "\expandafter\ifx\csname url\endcsname\relax" write$ newline$
+%%  "  \def\url#1{{\tt #1}}\fi" write$ newline$
 }
 
 EXECUTE {begin.bib}
