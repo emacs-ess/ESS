@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/07 08:35:56 $
-;; Version: $Revision: 5.43 $
-;; RCS: $Id: ess-inf.el,v 5.43 2000/04/07 08:35:56 maechler Exp $
+;; Modified: $Date: 2000/04/10 09:27:20 $
+;; Version: $Revision: 5.44 $
+;; RCS: $Id: ess-inf.el,v 5.44 2000/04/10 09:27:20 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -1383,13 +1383,13 @@ A negative prefix argument gets the objects for that position
 ;;    (ess-execute the-command invert "S objects" the-message)))
 
 (defun ess-execute-search (invert)
-  "Send the `inferior-ess-search-list-command' [search()] command to the S
-process."
+  "Send the `inferior-ess-search-list-command' command to the `ess-language' process.
+[search(..) in S]"
   (interactive "P")
   (ess-execute inferior-ess-search-list-command	 invert "S search list"))
 
 (defun ess-execute-attach (dir &optional posn)
-  "Attach a directory in the ESS process with the attach() command.
+  "Attach a directory in the `ess-language' process with the attach() command.
 When used interactively, user is prompted for DIR to attach and
 prefix argument is used for POSN (or 2, if absent.)
 Doesn't work for data frames."
@@ -1402,12 +1402,13 @@ Doesn't work for data frames."
   (setq ess-sp-change t))
 
 (defun ess-execute-screen-options ()
-  "Cause S to set the `width' option to 1 less than the frame width.
-Also sets the `length' option to 99999.
-This is a good thing to put in `ess-post-run-hook'."
+  "Cause S to set the \"width\" option to 1 less than the frame width.
+Also sets the \"length\" option to 99999.
+This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
   (interactive)
-  (ess-eval-linewise (format "options(width=%d,length=99999)"
-			     (1- (frame-width)))))
+  (if (string= ess-language "S")
+      (ess-eval-linewise (format "options(width=%d,length=99999)"
+				 (1- (frame-width))))))
 
 (defun ess-execute (command &optional invert buff message)
   "Send a command to the ESS process.
@@ -1514,23 +1515,23 @@ before you quit.  It is run automatically by \\[ess-quit]."
 
 ;;;*;;; The user completion command
 (defun ess-complete-object-name (&optional listcomp)
-  "Perform completion on ESS(lang) object preceding point.
+  "Perform completion on `ess-language' object preceding point.
 The object is compared against those objects known by
 `ess-get-object-list' and any additional characters up to ambiguity are
 inserted.  Completion only works on globally-known objects (including
 elements of attached data frames), and thus is most suitable for
 interactive command-line entry, and not so much for function editing
-since local objects (e.g.  argument names) aren't known.
+since local objects (e.g. argument names) aren't known.
 
 Use \\[ess-resynch] to re-read the names of the attached directories.
 This is done automatically (and transparently) if a directory is
 modified (S only!), so the most up-to-date list of object names is always
-available. However attached dataframes are *not* updated, so this
+available.  However attached dataframes are *not* updated, so this
 command may be necessary if you modify an attached dataframe.
 
 If ARG is non-nil, no completion is attempted, but the available
-completions are listed [__UNIMPLEMENTED__]"
-  (interactive "P");; FIXME : the `listcomp' argument is NOT used
+completions are listed."
+  (interactive "P");; how does it work,  `listcomp' argument is NOT used ?
   (ess-make-buffer-current)
   (if (memq (char-syntax (preceding-char)) '(?w ?_))
       (let* ((comint-completion-addsuffix nil)
@@ -1565,7 +1566,7 @@ completions are listed [__UNIMPLEMENTED__]"
 (defun ess-list-object-completions nil
   "List all possible completions of the object name at point."
   (interactive)
-  (ess-complete-object-name t))
+  (ess-complete-object-name t));; FIXME: NOT WORKING since argument is unused!
 
 ;;;*;;; Support functions
 (defun ess-extract-onames-from-alist (alist posn &optional force)
@@ -1591,9 +1592,10 @@ directory and has been modified since it was last read."
        (nth 5 (file-attributes dir))))
 
 (defun ess-object-modtime (object)
-  "Return the modtime of the S object OBJECT (a string)
+  "Return the modtime of the S object OBJECT (a string).
 Searches along the search list for a file named OBJECT and returns its modtime
-Returns nil if that file cannot be found"
+Returns nil if that file cannot be found.
+Does NOT (yet) work for R or any non-S language!"
   (let ((path (ess-search-list))
 	result)
     (while (and (not result) path)
@@ -1637,10 +1639,10 @@ Returns nil if that file cannot be found"
 Return the elements of the result of COMMAND as an alist of strings.
 A newline is automatically added to COMMAND."
   (let ((tbuffer (get-buffer-create " *ess-names-list*"))
-	(names))
+	names)
     (save-excursion
       (set-buffer tbuffer)
-      (buffer-disable-undo tbuffer)
+      ;; guaranteed by the initial space:(buffer-disable-undo)
       (ess-command command tbuffer)
       (goto-char (point-min))
       (if (not (looking-at "\\s-*\\[1\\]"))
@@ -1650,6 +1652,7 @@ A newline is automatically added to COMMAND."
 	  (setq names (cons (buffer-substring (match-beginning 1)
 					      (match-end 1)) names))))
       (kill-buffer tbuffer))
+    ;;DBG: (ess-write-to-dribble-buffer (format " --> names «%s»\n" names))
     names))
 
 (defun ess-compiled-dir (dir)
@@ -1701,19 +1704,19 @@ the `load-path'."
   (interactive)
   (setq ess-object-name-db nil)
   (let ((search-list (cdr (ess-search-list)))
-	(pos 2) ; was 2
+	(pos 2)
 	name
 	(buffer (get-buffer-create " *ess-db*"))
 	(temp-object-name-db nil)
 	(temp-object-name-db-file ess-object-name-db-file))
 
     (ess-write-to-dribble-buffer
-       (format "(object db): search-list=%s \n " search-list))
+     (format "(object db): search-list=%s \n " search-list))
     (while search-list
       (message "Searching %s" (car search-list))
       (setq temp-object-name-db (cons (cons (car search-list)
-					   (ess-object-names nil pos))
-				     temp-object-name-db))
+					    (ess-object-names nil pos))
+				      temp-object-name-db))
       (setq search-list (cdr search-list))
       (ess-write-to-dribble-buffer
        (format "(object db): temp-obj-name-db=%s \n pos=%s"
@@ -1777,26 +1780,42 @@ form completions."
 
 (defun ess-search-list ()
   "Return the current search list as a list of strings.
-Elements which are apparently directories are expanded to full dirnames."
+Elements which are apparently directories are expanded to full dirnames.
+Is *NOT* used by \\[ess-execute-search],
+but by \\[ess-resynch], \\[ess-get-object-list], \\[ess-get-modtime-list],
+\\[ess-execute-objects], \\[ess-object-modtime], \\[ess-create-object-name-db],
+and (indirectly) by \\[ess-get-help-files-list]."
   (save-excursion
-    (let ((result  nil)) ;; "" or nil?
+    (let ((result nil))
       (set-buffer (get-ess-buffer ess-current-process-name))
-      (if (and ess-search-list (not ess-sp-change))
+      (if (and ess-search-list (not ess-sp-change)); use cache
 	  ess-search-list
-	(let ((tbuffer (get-buffer-create "search-list"))
+	(let ((tbuffer (get-buffer-create " *search-list*"))
 	      (homedir ess-directory)
 	      elt)
 	  (save-excursion
-	    (buffer-disable-undo tbuffer)
 	    (set-buffer tbuffer)
-	    (erase-buffer)
+	    ;; guaranteed by the initial space:(buffer-disable-undo)
+	    ;; dbg:
+;;- 	    (ess-write-to-dribble-buffer
+;;- 	     (format "(ess-search-list ..): tbuffer %s\n"
+;;- 		     (buffer-name tbuffer)))
+
+	    ;;unnecessary; ess-command does (erase-buffer)
 	    (ess-command inferior-ess-search-list-command tbuffer)
 	    (goto-char (point-min))
 	    (while (re-search-forward "\"\\([^\"]*\\)\"" nil t)
 	      (setq elt (buffer-substring (match-beginning 1) (match-end 1)))
+	      ;;Dbg: (ess-write-to-dribble-buffer (format "  .. elt= %s \t" elt))
 	      (if (and (string-match "^[^/]" elt)
 		       (file-directory-p (concat ess-directory elt)))
-		  (setq elt (concat homedir elt)))
+		  (progn
+		    ;;Dbg: (ess-write-to-dribble-buffer "*IS* directory\n")
+		    (setq elt (concat homedir elt)))
+		;;else
+		;;dbg
+;;- 		(ess-write-to-dribble-buffer "not dir.\n")
+		)
 	      (setq result (append result (list elt))))
 	    (kill-buffer tbuffer)))
 	(setq ess-search-list result)

@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/04/07 08:35:56 $
-;; Version: $Revision: 5.40 $
-;; RCS: $Id: ess-vars.el,v 5.40 2000/04/07 08:35:56 maechler Exp $
+;; Modified: $Date: 2000/04/10 09:27:20 $
+;; Version: $Revision: 5.41 $
+;; RCS: $Id: ess-vars.el,v 5.41 2000/04/10 09:27:20 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -34,7 +34,7 @@
 
 ;;; Code:
 
-(defconst ess-version ""
+(defconst ess-version "5.1.13"
   "Version of ESS currently loaded.")
 
 (defvar no-doc
@@ -590,10 +590,12 @@ of Emacs until the code has been successfully evaluated.")
 
 
 (defvar inferior-ess-search-list-command "search()\n"
-  "ess command that prints out the search list.")
-;;; i.e. The list of directories and (recursive) objects that ess uses when
-;;; it searches for objects.
+  ;;  Really set in <ess-lang>-customize-alist in ess[dl]-*.el
+  "`ess-language' command that prints out the search list;
+i.e. the list of directories and (recursive) objects that `ess-language' uses
+when it searches for objects.")
 
+;; Fixme: This is S only
 (defvar inferior-ess-names-command "names(%s)\n"
   "Format string for ess command to extract names from an object.")
 ;;; %s is replaced by the object name -- usually a list or data frame
