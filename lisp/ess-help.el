@@ -10,9 +10,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>,
 ;;              Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/04/19 11:13:59 $
-;; Version: $Revision: 5.21 $
-;; RCS: $Id: ess-help.el,v 5.21 2004/04/19 11:13:59 stephen Exp $
+;; Modified: $Date: 2004/05/06 13:24:29 $
+;; Version: $Revision: 5.22 $
+;; RCS: $Id: ess-help.el,v 5.22 2004/05/06 13:24:29 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -196,7 +196,9 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 		     'ess-help-own-frame
 		   special-display-function)))
 	    (if (eq curr-win-mode 'ess-help-mode)
-		(pop-to-buffer tbuffer)
+		(if ess-help-own-frame
+		    (pop-to-buffer tbuffer)
+		  (switch-to-buffer tbuffer))
 	      (ess-display-temp-buffer tbuffer)))
 	  (if curr-help-syntax-table
 	      (set-syntax-table curr-help-syntax-table))
