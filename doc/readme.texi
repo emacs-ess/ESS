@@ -84,7 +84,7 @@ Lumley).
 @section Getting the Latest Version
 
 @include getting.texi
-@c NOTE: The above INCLUDES inst_cvs.texi (CVS Installation)
+@c NOTE: The above INCLUDES inst_svn.texi (Subversion/SVN Installation)
 
 @node Installation (from tar file), Reporting Bugs, Latest Version, General Information
 @comment  node-name,  next,  previous,  up
