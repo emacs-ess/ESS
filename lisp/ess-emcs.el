@@ -172,15 +172,16 @@ and replace a sub-expression, e.g.
   "Return non-nil if literally running on Windows NT (i.e., not Windows 9X)."
   (and (eq system-type 'windows-nt) (getenv "SystemRoot"))))
 
-(if (and (featurep 'xemacs) (fboundp 'extent-at)
-	(fboundp 'make-extent) (fboundp 'set-extent-property))
+(if (and (featurep 'xemacs)
+	 (fboundp 'extent-at)
+	 (fboundp 'make-extent)
+	 (fboundp 'set-extent-property))
   (defun ess-xemacs-insert-glyph (gl)
      "Insert a glyph at the left edge of point."
-     (let ( (prop 'myimage)        ;; myimage is an arbitrary name, chosen
-                                   ;; to (hopefully) not conflict with any
-                                   ;; other properties.  Change it if
-                                   ;; necessary.
-            extent )
+     (let ((prop 'myimage) ;; myimage is an arbitrary name, chosen to
+	   ;;                 (hopefully) not conflict with any other
+	   ;;                 properties. Change it if necessary.
+            extent)
        ;; First, check to see if one of our extents already exists at
        ;; point.  For ease-of-programming, we are creating and using our
        ;; own extents (multiple extents are allowed to exist/overlap at the
