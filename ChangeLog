@@ -1,6 +1,145 @@
-Wed Dec 16 19:28:57 1998  Martin Maechler <maechler@stat.math.ethz.ch>
+1999-03-03  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* doc/ess.texi: added '$Date: 1998/12/16 18:30:49 $'; 5.0 -> 5.1.x
+	* lisp/Makefile: updated version information
+
+	converted s+3 to sp3.
+
+	* lisp/ess-vars.el: updated version information.
+
+	* doc/README.Microsoft: Added ess-bugs.cmts to this file.
+
+	* lisp/ess-iw32-load-file.el, lisp/essd-s+3.el, lisp/essd-s+4.el, lisp/essd-s+5.el, lisp/essd-s_2b4-msdos-existing.el, lisp/essd-s_2b4-msdos.el:
+	Tidied up ess-iw32*.el files.
+
+	* lisp/ess-iw32.el: copied all changes from ess-iw32-load-file.el here.
+
+	* lisp/ess-iw32-load-file.el: fixed.
+
+	* doc/README.Microsoft: Combination of 2 of RMH's text/help files.
+
+	* lisp/essd-s_2b4.el:
+	essd-s_2b4-msdos*.el were not needed.  Contents moved into base file.
+
+	* doc/README.SPLUS4WIN:
+	Changed history of Splus 4.5 stuff; added new information for using
+	Splus 4.5 and R under Windows NT.
+
+	* doc/TODO: moved from mailbox to TODO list.
+
+	* lisp/ess-iw32-load-file.el, lisp/ess-iw32.el, lisp/essd-r32.el, lisp/essd-s_2b4-msdos-existing.el, lisp/essd-s_2b4-msdos.el, lisp/essd-s_2b4.el, lisp/msdos.el:
+	RMH's changes, up to March 2nd
+
+1999-02-24  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/ess-iw32.el: temp val left in distribution.  whoops (RMH).
+
+1999-02-22  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* lisp/essd-els.el, lisp/essd-s3.el, lisp/essd-s4.el, lisp/essd-sta.el, lisp/ess-site.el, lisp/essd-sp4.el, lisp/essd-sp5.el, lisp/essd-sp3.el:
+	Removed s+# to sp# for S-PLUS commands
+
+1999-02-12  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/Makefile: emacs, not "19.34"
+
+1999-02-11  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* doc/README.SPLUS4WIN: added pointer to NTEmacs.
+
+	* README, ANNOUNCE:
+	corrected documentation for R, added pointer to NTEmacs
+
+1999-02-10  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* etc/other/Tags/Lubinsky-S-tags/desc: reformated material.
+
+	* README: set up for 5.1.2 release
+
+	* Makefile: Set up for 5.1.2 release
+
+	* ANNOUNCE: set up for 5.1.2 release
+
+	* doc/rmh-essi121098-msw32.tex: rmh-essi121098-msw32.tex is obsolete.
+
+	* lisp/essd-sas.el: added RMH's new fixes for the 5.1.2 version.
+
+	* doc/README.S: RMH's documentation additions for Splus 4.5
+
+	* doc/README.SAS: RMH's doc additions for 5.1.2
+
+	* doc/README.SPLUS4WIN:
+	Includes RMH's changes for Splus 4.5 documentation
+
+	* etc/other/Tags/README: cleaned text.
+
+	* ANNOUNCE, README: updating for 5.1.2
+
+1999-02-02  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/ess-inf.el: (last commit was with unsaved file)
+
+	* lisp/ChangeLog, lisp/ess-inf.el:
+	fix regex for "help(..);" also work for "?" with R-input-sender
+
+1999-01-13  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/Makefile: added ess-debug essd-s+4 ess-iw32
+
+	* lisp/ess-iw32.el:
+	RMH`s workaround for ess-inf.el ess-setq-values-default (instead of ..-local)
+
+1999-01-12  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/ess-inf.el: still "-default", not "local"
+
+	* lisp/ess-inf.el, lisp/ess.el: more dribble output
+
+	* lisp/ess.el: add dribble-info about comint-process-echoes
+
+1999-01-11  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/ess-site.el: minor comments only
+
+	* lisp/essd-sq4.el: removed [RMH]
+
+	* lisp/ess-site.el: RMH changes (Dec 28)
+
+	* lisp/ess-trns.el: RMH added some ess-inf..-prompt..
+
+	* lisp/ess-vars.el: RMH added S+4 & dde (& removed some "ess-external")
+
+	* lisp/essd-els.el: RMH added S+elsewhere-mode
+
+	* lisp/ess-iw32.el, lisp/essd-s+4.el: new from Rich Dec 28
+
+	* lisp/ess-inf.el: 2 lines for S+4
+
+1999-01-04  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* lisp/essddr.el: R CMD Rd2txt
+
+1998-12-18  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ANNOUNCE, README:
+	Updating Announce/Readme.  Need to merge announce to readme, and just subset out the relevant section for Announce.
+
+1998-12-17  Kurt Hornik <hornik@ci.tuwien.ac.at>
+
+	* lisp/ess-vars.el: Match R `require(' in ess-change-sp-regexp.
+
+	* lisp/Makefile: Add `essd-els.el' to SOURCES.
+
+1998-12-16  Martin Maechler <maechler@stat.math.ethz.ch>
+
+	* ChangeLog: ess.texi
+
+	* doc/ess.texi: 5.0 -> 5.1.x
+
+	* doc/ess.texi: MM: (CVS) Date also for info
+
+	* doc/ess.texi: MM: (CVS) Date added
+
+	* doc/ess.texi: added '$Date: 1999/03/03 23:34:05 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
@@ -2190,6 +2329,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.7  1999/03/03 23:34:05  rossini
+	* Removing updated changelog file.
+	* Removing
 	* Removing Revision 5.6  1998/12/16 18:30:49  maechler
 	* Removing ess.texi
 	* Removing
