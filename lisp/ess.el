@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 4.90 1997/11/30 19:03:20 rossini Exp $
+;; Version: $Id: ess.el,v 5.0 1997/12/01 16:01:45 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 

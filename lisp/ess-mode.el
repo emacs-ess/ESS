@@ -10,9 +10,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/30 19:03:20 $
-;; Version: $Revision: 4.90 $
-;; RCS: $Id: ess-mode.el,v 4.90 1997/11/30 19:03:20 rossini Exp $
+;; Modified: $Date: 1997/12/01 16:01:45 $
+;; Version: $Revision: 5.0 $
+;; RCS: $Id: ess-mode.el,v 5.0 1997/12/01 16:01:45 rossini Exp $
 
 
 ;; This file is part of ESS
