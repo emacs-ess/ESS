@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/09/21 16:33:38 $
-;; Version: $Revision: 5.33 $
-;; RCS: $Id: ess-site.el,v 5.33 1999/09/21 16:33:38 rossini Exp $
+;; Modified: $Date: 1999/09/27 00:35:42 $
+;; Version: $Revision: 5.34 $
+;; RCS: $Id: ess-site.el,v 5.34 1999/09/27 00:35:42 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -112,6 +112,7 @@
 	   ("\\.[rR]profile\\'" . R-mode)
 	   ("\\.nw\\'"          . noweb-mode) ;; Literate Data Analysis
 	   ("\\.omg\\'"         . omegahat-mode)
+	   ("\\.hat\\'"         . omegahat-mode) ;; Duncan's pref'd...
 	   ("\\.lsp\\'"		. XLS-mode)
 	   ("\\.do\\'"		. STA-mode)
 	   ("\\.ado\\'"		. STA-mode)
