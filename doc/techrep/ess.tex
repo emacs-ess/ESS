@@ -426,17 +426,16 @@ transcripts, and getting help.
 \subsection{Editing Files}
 \label{sec:S:edit}
 
-ESS[S] is the mode for editing S language files.  This mode handles
-proper indenting of multi-line code and functions (automatically
-generated when the code is entered and also under user control while editing);
-color and font choices based on syntax; the
+\stexttt{ESS[S]} is the mode for editing S language files.  This mode
+handles proper indenting of multi-line code and functions
+(automatically generated when the code is entered and also under user
+control while editing); color and font choices based on syntax; the
 ability to send the contents of an entire buffer, a highlighted
-region, an S function, or a single line to an inferior S process;
-the ability to switch between several inferior S processes
-(possibly on different machines); the ability to
-request help from an S process for variables and functions, and to
-have the help results sent into a separate buffer; and completion of object
-names and file names.
+region, an S function, or a single line to an inferior S process; the
+ability to switch between several inferior S processes (possibly on
+different machines); the ability to request help from an S process for
+variables and functions, and to have the help results sent into a
+separate buffer; and completion of object names and file names.
 
 \stexttt{ESS[S]} mode is automatically turned on when loading a file with the
 file extensions \file{.R}, \file{.r},
@@ -455,9 +454,9 @@ editing; the ability to resubmit the contents of a multi-line command
 to the executing process with a single keystroke.  It also provides
 the same editing features as the editing mode \stexttt{iESS[S]}.
 
-The statistical processes S and R are started by using the Emacs function call
-\stexttt{M-x~S} or \stexttt{M-x~R}.  This call opens up a buffer and starts the
-S or R process inside that buffer.
+The statistical processes S and R are started by using the Emacs
+function call \stexttt{M-x~S} or \stexttt{M-x~R}.  This call opens up
+a buffer and starts the S or R process inside that buffer.
 %% This assumes that you have access to the desired statistical
 %% package, which doesn't come with ESS.
 %% Generally, these start up the package with a particular set of
