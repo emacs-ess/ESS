@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1999/06/17 16:42:56 $
-;; Version: $Revision: 5.23 $
-;; RCS: $Id: ess-vars.el,v 5.23 1999/06/17 16:42:56 maechler Exp $
+;; Modified: $Date: 1999/07/20 13:59:01 $
+;; Version: $Revision: 5.24 $
+;; RCS: $Id: ess-vars.el,v 5.24 1999/07/20 13:59:01 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -598,7 +598,7 @@ of Emacs until the code has been successfully evaluated by S.")
 (make-variable-buffer-local 'inferior-ess-prompt)
 
 (defvar ess-change-sp-regexp
-  "\\(attach(\\([^)]\\|$\\)\\|detach(\\|collection(\\|library(\\|require(\\)"
+  "\\(attach(\\([^)]\\|$\\)\\|detach(\\|collection(\\|library(\\|require(\\|source(\\)"
   "The regexp for matching the ess commands that change the search path.")
 
 ;;*;; Process-dependent variables
