@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 August 1999
-;; Modified: $Date: 1999/09/01 02:41:46 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: essd-omg.el,v 5.1 1999/09/01 02:41:46 ess Exp $
+;; Modified: $Date: 1999/09/16 05:21:24 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: essd-omg.el,v 5.2 1999/09/16 05:21:24 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -44,8 +44,8 @@
 
 (defvar OMG-customize-alist
   '((ess-local-customize-alist     . 'OMG-customize-alist)
-    (ess-language                  . "Omega")
-    (ess-dialect                   . S+3-dialect-name)
+    (ess-language                  . "OMG")
+    (ess-dialect                   . "omegahat")
     (ess-suffix                    . "omg")
     (ess-loop-timeout              . 500)
     (ess-dump-filename-template    . (concat (user-login-name)
@@ -60,35 +60,39 @@
      . ".Last.value = get(\".ess.lvsave\",frame=0)\n")
     (ess-save-lastvalue-command
      . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-    (inferior-ess-program          . inferior-S+3-program-name)
+    (inferior-ess-program          . inferior-OMG-program-name)
     (inferior-ess-objects-command  . "objects(%d)\n")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")
-    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
+    (inferior-ess-primary-prompt   . "\\[[0-9]*\\]")
+    (inferior-ess-secondary-prompt . ".. ?")
     (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
     (inferior-ess-start-args       . ""))
  "Variables to customize for S+3")
 
 
 (defun OMG (&optional proc-name)
-  "Call Omega, from the Omega Group."
+  "Call Omegahat, from the Omega Group for Statistical Computing."
   (interactive)
   (setq ess-customize-alist S+3-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S+3): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
   (inferior-ess))
 
+(fset 'omegahat 'OMG)
+
 (defun OMG-mode (&optional proc-name)
-  "Major mode for editing Omega source.  See ess-mode for more help."
+  "Major mode for editing Omegahat source.  See ess-mode for more help."
   (interactive)
   (setq ess-customize-alist S+3-customize-alist)
   (ess-mode S+3-customize-alist proc-name)
   (java-mode)
   (setq major-mode 'OMG-mode))
 
+(fset 'omegahat-mode 'OMG-mode)
+
 (defun OMG-transcript-mode ()
-  "Omega transcript mode."
+  "Omegahat transcript mode."
   (interactive)
   (ess-transcript-mode S+3-customize-alist))
 
@@ -96,7 +100,7 @@
 
  ; Provide package
 
-(provide 'essd-sp3)
+(provide 'essd-omg)
 
  ; Local variables section
 
@@ -115,4 +119,4 @@
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; essd-sp3.el ends here
+;;; essd-omg.el ends here
