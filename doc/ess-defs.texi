@@ -1,0 +1,14 @@
+@c Currently only @Sl is used in the documentation; other macros were
+@c created to mirror the definitions in R-defs.texi.
+
+@macro R{}
+R
+@end macro
+
+@macro Sl{}
+S
+@end macro
+
+@macro SPLUS{}
+@sc{S-Plus}
+@end macro
