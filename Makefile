@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.31 2000/03/30 07:18:48 maechler Exp $
+## $Id: Makefile,v 5.32 2000/06/30 21:32:50 rossini Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -27,6 +27,9 @@ ESS:
 	cd lisp; make all
 
 docs:
+	cd doc; make all
+
+doc:
 	cd doc; make all
 
 ## This target is used to create a new version of the tar-file.
