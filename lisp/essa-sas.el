@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/04/21 22:14:47 $
-;; Version: $Revision: 1.89 $
-;; RCS: $Id: essa-sas.el,v 1.89 2002/04/21 22:14:47 rmh Exp $
+;; Modified: $Date: 2002/05/03 21:21:54 $
+;; Version: $Revision: 1.90 $
+;; RCS: $Id: essa-sas.el,v 1.90 2002/05/03 21:21:54 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -45,11 +45,28 @@
 
 ;;(require 'ess-batch)
 
+;;;Attention!  When you Customize, type the ess-sas group rather than
+;;;            ess.  Some day you will be able to enter either.
+
 (defcustom ess-kermit-command "gkermit -T"
     "*Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
     :group 'ess-sas
     :type  'string
 )
+
+(defcustom ess-kermit-prefix ":"
+    "*Character which files must begin with to use kermit; must be : or ]."
+    :group 'ess-sas
+    :type  'string
+)
+
+(defcustom ess-kermit-remote-directory "$HOME"
+    "*Buffer local variable that designates remote directory of file."
+    :group 'ess-sas
+    :type  'string
+)
+
+(make-variable-buffer-local 'ess-kermit-remote-directory)
 
 (defvar ess-sas-file-path "."
     "Full path-name of the sas file to perform operations on.")
@@ -199,25 +216,37 @@ buffer on the local computer."
 
 
 (defun ess-exit-notify-sh (string)
-  "Detect completion or failure of submitted job and notify the user."
+"Detect completion or failure of submitted job and notify the user."
   (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
 	 (beg (string-match exit-done string)))
     (if beg
 	(message (substring string beg (match-end 0))))))
 
+
 (defun ess-kermit-get ()
-  "Get a file with Kermit.  Works so far with ssh, but not telnet."
+"Get a file with Kermit.  WARNING:  Experimental!  From your *shell*
+buffer, start kermit and then log in to the remote machine.  Open 
+a file that starts with `ess-kermit-prefix'.  From that buffer, 
+execute this command.  It will retrieve a file from the remote 
+directory that you specify with the same name, but without the
+`ess-kermit-prefix'."
+
     (interactive)
 
-     (save-match-data 
-       (let ((ess-temp-file (expand-file-name (buffer-name))))
-     
-	(if (and (not (string-match "[[]" ess-temp-file))
-	  (string-match "]" ess-temp-file)) (progn
+    (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
+	  ess-kermit-remote-directory))
 
-	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
+;;     (save-match-data 
+       (let ((ess-temp-file (buffer-name))
+	     (ess-temp-file-remote-directory ess-kermit-remote-directory))
+     
+	(if (string-equal ess-kermit-prefix (substring ess-temp-file 0 1)) 
+	  (progn
+
+;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
 	  (shell)
-	  (insert "cd $HOME; " ess-kermit-command " -s " ess-temp-file " -a ]" ess-temp-file)
+	  (insert "cd $HOME; " ess-kermit-command " -s " ess-temp-file-remote-directory "/"
+	    (substring ess-temp-file 1) " -a " ess-temp-file)
           (comint-send-input)	
 ;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
 ;;	  (comint-send-input)
@@ -228,9 +257,9 @@ buffer on the local computer."
 ;;	  (comint-send-input)
           (insert (read-string "Press Return when shell is ready: "))
 	  (comint-send-input)
-	  (switch-to-buffer (find-buffer-visiting (concat "]" ess-temp-file)))
+	  (switch-to-buffer (find-buffer-visiting ess-temp-file))
 	  (ess-revert-wisely)
-)))))
+))))
 
 (defun ess-kermit-send ()
   "Send a file with Kermit.  Works so far with ssh, but not telnet."
