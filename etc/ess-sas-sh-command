@@ -21,7 +21,7 @@
 # (feeding output back into appropriate ESS buffers).
 
 echo $0 $@
-sas </dev/tty 1>$6 2>$7 $1 $2 $3 $4 $5
+sas </dev/tty 1>$1 2>$2 $3
 
 
 ## From the SAS online tech support:
@@ -59,3 +59,11 @@ sas </dev/tty 1>$6 2>$7 $1 $2 $3 $4 $5
 ## following command:   
 ## 
 ## (sas -stdio < doit.sas > doit.lst) >& doit.log
+
+## From WWW.SAS.COM:
+## How can I make SAS in batch mode behave like interactive SAS,
+## continue running my SAS job, and not enter syntax check mode when
+## it encounters an error?
+##
+## You can specify the NOSYNTAXCHECK option when you invoke your SAS
+## program.
