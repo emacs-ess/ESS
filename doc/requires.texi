@@ -25,14 +25,14 @@ with the following versions of emacs
 
 @itemize @bullet
 @item GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
-@item XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4 
+@item XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
 @item XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34 (see footnote)
 @end itemize
 
-@footnote{Note that you must have "custom" support.  It is available @
-@uref{http://www.dina.kvl.dk/~abraham/custom/}  These releases of emacs are no
-longer supported, so an upgrade is recommended if you plan to use ESS.  
-This is not to say that ESS will not work, but it will be up to the user 
-to set it up on their own.  If you have GNU Emacs 19.29, you @emph{may} 
-get it to work after unpacking @file{19.29.tar.gz}, see the installation 
-instructions.}
+@footnote{Note that you must have `custom' support.  It is available at
+ @uref{http://www.dina.kvl.dk/~abraham/custom/}.
+ These releases of emacs are no longer supported, so an upgrade is
+ recommended if you plan to use ESS.  This is not to say that ESS will not
+ work, but it will be up to the user to set it up on their own.  If you
+ have GNU Emacs 19.29, you @emph{may} get it to work after unpacking
+ @file{19.29.tar.gz}, see the installation instructions.}
