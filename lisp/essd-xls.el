@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/10/20 18:59:10 $
-;; Version: $Revision: 1.32 $
-;; RCS: $Id: essd-xls.el,v 1.32 1997/10/20 18:59:10 rossini Exp $
+;; Modified: $Date: 1997/11/19 16:56:08 $
+;; Version: $Revision: 1.33 $
+;; RCS: $Id: essd-xls.el,v 1.33 1997/11/19 16:56:08 rossini Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -83,6 +83,13 @@
    (format "(XLS): ess-dialect=%s , buf=%s\n"
   	   ess-dialect (current-buffer)))
   (inferior-ess))
+
+(defun xls-transcript-mode ()
+  "Does the right thing."
+  (interactive)
+  (ess-transcript-mode XLS-customize-alist))
+
+(fset 'XLS-transcript-mode 'xls-transcript-mode)
 
  ; Provide package
 
