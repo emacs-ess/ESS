@@ -1,6 +1,6 @@
 ### Makefile - for DOCUMENTATION (./doc) of ESS distribution.
 ###
-### File: $Revision: 1.47 $.
+### File: $Revision: 1.48 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -23,7 +23,7 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 ### Targets --
 
 all  : info text html dvi pdf
-info : info/ess.info 
+info : info/ess.info
 text : ../README ../ANNOUNCE
 html : html/ess_toc.html html/readme_toc.html
 docs : info text html
@@ -41,7 +41,7 @@ readme.dvi : $(TEXISRC); texi2dvi $<
 readme.pdf : $(TEXISRC); pdftex $<; pdftex $<
 readme.ps  : readme.dvi; dvips $< -o $@
 
-clean : 
+clean :
 	rm -f texput.log ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
 	 ess.tp ess.vr ess.cps ess.fns ess.vrs ess.fn \
 	 readme.aux readme.cp readme.ky readme.log readme.pg readme.toc \
@@ -71,7 +71,7 @@ info/ess.info: $(TEXISRC)
 	$(MAKEINFO) ess.texi
 	mv -f ess.info* info
 
-install : info/ess.info 
+install : info/ess.info
 	-$(INSTALLDIR) $(INFODIR)
 	$(INSTALL) info/ess.info* $(INFODIR)
 	test -f $(INFODIR)/dir || $(INSTALL) info/dir $(INFODIR)
@@ -80,8 +80,8 @@ install : info/ess.info
 html/ess_toc.html: $(TEXISRC)
 	@echo "making HTML documentation..."
 	$(TEXI2HTML) $(SPLITCHAP) ess.texi
-	cp -p ess/ess_toc.html ess/index.html
-	mv -f ess/*.html html
+	cp -p ess_toc.html html/index.html
+	mv -f *.html html
 
 html/readme_toc.html: $(TEXISRC)
 	$(TEXI2HTML) readme.texi
