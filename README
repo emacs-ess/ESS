@@ -1,6 +1,6 @@
 -*- mode: text; mode: view-minor -*-
 
-($Revision: 5.3 $)
+($Revision: 5.4 $)
 
 Emacs Speaks Statistics (ESS), version 5.1.x
 ------------------------------------------
@@ -117,7 +117,7 @@ suggested coding fixes with bug reports are much appreciated!
 3. REQUIREMENTS
 ---------------
 
-ESS version 5.0 requires Emacs version 19.29 or later, or version
+ESS version 5.2 requires Emacs version 19.29 or later, or version
 XEmacs 19.14 or later.  ESS is supposed to work with any version of S,
 S-PLUS, R, SAS, or XLispStat.
 
@@ -128,6 +128,10 @@ It has been most thoroughly tested with:
 	systems;
 
 	Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.4.
+
+	Emacs 19.28 with SAS (with additional modifications)
+
+	NTEmacs 20.2.1 with S-PLUS 4.5.
 
 It may need some work with other configurations.  We include
 configuration suggestions for emacs 19.28 in Doc/README-19.28.
@@ -151,7 +155,7 @@ The latest versions of ESS are always available by WWW from:
 
 The HTML version of the documentation can be found at:
 
-	http://stat.ethz.ch/ESS/
+	http://stat.ethz.ch/ESS/   (BROKEN!)
 
 The latest (no more than 24 hours behind the developers) version of
 ESS can also be retrieved using anonymous CVS.  Details on this are

@@ -1,4 +1,4 @@
-Annoucing the release of ESS-5.0 (Emacs Speaks Statistics).
+Annoucing the release of ESS-5.2 (5.1.x) (Emacs Speaks Statistics).
 -----------------------------------------------------------
 
 ESS is an Emacs package which provides a standard interface between
@@ -13,7 +13,8 @@ ESS grew out of the desire to extend S-mode-4.8.  The current set of
 developers desired support for:
 - XEmacs
 - R
-- S4.
+- S4
+- Microsoft Windows
 
 In addition, with new modes being developed for R, Stata, and SAS, it
 was felt a unifying interface and framework for the user interface,
@@ -72,15 +73,16 @@ Transcript manipulation (S3, S+3, S4, R, XLispStat)
 2. STABILITY
 ------------
 
-Version 5.0 is meant as a functional release, and corrects many bugs
+Version 5.2 is meant as a functional release, and corrects many bugs
 in S-mode 4.8.  We do not consider it beta-software.  However, there
 are some holes as far as its functionality for the newly supported
-languages (SAS, XLispStat); see the file Doc/TODO for details.
+languages and operating systems (XLispStat, Splus on MS Windows); see
+the file Doc/TODO for details.
 
 3. REQUIREMENTS
 ---------------
 
-ESS version 5.0 requires Emacs version 19.29, XEmacs version 19.14, or
+ESS version 5.2 requires Emacs version 19.29, XEmacs version 19.14, or
 later version.  ESS is supposed to work with any version of S, S-PLUS,
 R, SAS, or XLispStat.
 
@@ -93,6 +95,8 @@ It has been most thoroughly tested with:
 	Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.4.
 
 	Emacs 19.28 with SAS (with additional modifications)
+
+	NTEmacs 20.2.1 with S-PLUS 4.5.
 
 It may need some work with other configurations.  We have included
 configuration suggestions for emacs 19.28 and SAS in Doc/README-19.28.
@@ -119,8 +123,10 @@ You can download the current version of the README there, as well.
 
 The HTML version of the documentation can be found at:
 
-	http://stat.ethz.ch/ESS/
+	http://stat.ethz.ch/ESS/ (BROKEN!)
 
+The most recent developers release of ESS can be obtained via anonymous CVS by...
+(NEED TO ADD INFORMATION!)
 
 5. THE ESS MAILING LIST
 --------------------------
@@ -143,4 +149,4 @@ The purposes of the mailing list include
 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 Kurt Hornik <hornik@ci.tuwien.ac.at>
 Martin Maechler <maechler@stat.math.ethz.ch>
-A.J. (Tony) Rossini <rossini@stat.sc.edu> (alt: <rossini@hsph.harvard.edu>)
+A.J. (Tony) Rossini <rossini@biostat.washington.edu>
