@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/07/03 16:25:07 $
-;; Version: $Revision: 5.60 $
-;; RCS: $Id: ess-site.el,v 5.60 2000/07/03 16:25:07 maechler Exp $
+;; Modified: $Date: 2000/07/06 23:00:48 $
+;; Version: $Revision: 5.61 $
+;; RCS: $Id: ess-site.el,v 5.61 2000/07/06 23:00:48 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -178,7 +178,15 @@ The extension, in a file name, is the part that follows the last `.'."
 ;; (setq ess-local-custom-available t)
 
 
-;;; (1.2) Files ending in .q and .S are considered to be S source files
+;;; (1.2) Uncomment the following 4 lines to fix the infopath, if needed.
+;;(defun add-info-path (newpath)
+;;  (setq Info-default-directory-list
+;;	(cons (expand-file-name newpath) Info-default-directory-list)))
+;;(add-info-path (concat ess-lisp-directory "/../doc/"))
+
+
+
+;;; (1.3) Files ending in .q and .S are considered to be S source files
 ;;; Files ending in .St are considered to be S transcript files
 ;;; NB: in standard Emacs, files ending in .s are assembler files.  If you
 ;;; want to use assembler, comment the appropriate
