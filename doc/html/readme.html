@@ -109,7 +109,16 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">Genera
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">1.2 New Features</h3>
 
-<p>Changes/New Features in 5.2.5:
+<p>Changes/New Features in 5.2.6:
+     <ul>
+<li>Removed non-ASCII characters in a few files. 
+<li>ESS[R]: now works better when UTF-8 locale is active; in
+ particular, you get correct directional quotes in R's startup message
+ for R-devel (unstable development version of R 2.1.0) when using
+ environment variables LANGUAGE=en@quot LC_ALL=en_US.UTF-8
+</ul>
+
+   <p>Changes/New Features in 5.2.5:
      <ul>
 <li>ESS[R]: C-c C-q or &ldquo;Quit S&rdquo; from the menu now should work
 (again and less klunkily) and do not append "-exited" to the

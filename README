@@ -44,7 +44,16 @@ in the file COPYING in the same directory as this file for more details.
 1.2 New Features
 ================
 
-Changes/New Features in 5.2.5:
+Changes/New Features in 5.2.6:
+   * Removed non-ASCII characters in a few files.
+
+   * ESS[R]: now works better when UTF-8 locale is active; in
+     particular, you get correct directional quotes in R's startup
+     message  for R-devel (unstable development version of R 2.1.0)
+     when using  environment variables LANGUAGE=en@quot
+     LC_ALL=en_US.UTF-8
+
+   Changes/New Features in 5.2.5:
    * ESS[R]: C-c C-q or "Quit S" from the menu now should work (again
      and less klunkily) and do not append "-exited" to the buffer name.
 
