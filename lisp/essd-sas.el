@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/08 00:18:56 $
-;; Version: $Revision: 1.22 $
-;; RCS: $Id: essd-sas.el,v 1.22 1997/11/08 00:18:56 rossini Exp $
+;; Modified: $Date: 1997/11/08 00:41:01 $
+;; Version: $Revision: 1.23 $
+;; RCS: $Id: essd-sas.el,v 1.23 1997/11/08 00:41:01 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -59,9 +59,27 @@
 				     (if (not ess-current-process-name)
 					 ess-dialect  ;;"SAS"
 				       ess-current-process-name)
-				   ess-local-process-name))
-	 (ess-sas-lst-bufname (concat "*" tmp-local-process-name ".lst*"))
-	 (ess-sas-log-bufname (concat "*" tmp-local-process-name ".log*"))
+				   ess-local-process-name))  
+	 (tmp-procname (if n (ess-proc-name (prefix-numeric-value n)
+					    temp-ess-dialect)
+			 ;; no prefix arg
+			 (or (and (not (comint-check-proc (current-buffer)))
+				  ;; Don't start a new process in current buffer if
+				  ;; one is already running
+				  ess-local-process-name)
+			     ;; find a non-existent process
+			     (let ((ntry 0)
+				   (done nil))
+			       (while (not done)
+				 (setq ntry (1+ ntry)
+				       done (not
+					     (get-process (ess-proc-name
+							   ntry
+							   temp-ess-dialect)))))
+			       (ess-proc-name ntry temp-ess-dialect)))))
+	 ;; Following was tmp-local-process-name.  Stolen from inferior-ess
+	 (ess-sas-lst-bufname (concat "*" tmp-procname ".lst*"))
+	 (ess-sas-log-bufname (concat "*" tmp-procname ".log*"))
 	 (explicit-shell-file-name "/bin/sh"))
     
     ;; If someone is running a *shell* buffer, rename it to avoid
@@ -80,9 +98,9 @@
       (sleep-for 2) ; need to wait, else working too fast!
       (setq ess-sas-lst (ess-insert-accept "tty"))
       (SAS-listing-mode)
-       (shell-mode)
-       (ess-listing-minor-mode t)
-       (rename-buffer ess-sas-lst-bufname t))
+      (shell-mode)
+      (ess-listing-minor-mode t)
+      (rename-buffer ess-sas-lst-bufname t))
     
     ;; Construct the LOG buffer for output
     (if (get-buffer  ess-sas-log-bufname)
