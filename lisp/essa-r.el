@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2000/10/17 18:19:32 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essa-r.el,v 1.4 2000/10/17 18:19:32 rossini Exp $
+;; Modified: $Date: 2001/12/27 23:31:19 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essa-r.el,v 1.5 2001/12/27 23:31:19 ess Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -42,6 +42,41 @@
      "C-u M-x R RET - - vsize SPC 40M SPC - - nsize SPC 600000 2*RET"))
 ;; "SPC" must be "=" in future versions of R (works from 0.99 on)
 
+(defun ess-r-do-region (start end &optional message)
+  "Send the current region to R via AppleScript."
+  (interactive "r\nP")
+  (message "Starting evaluation...")
+  (do-applescript (concat 
+    "try\n"
+	"tell application \"R\"\n"
+		"activate\n"
+		"with timeout of 0 seconds\n"
+			"cmd \"" (buffer-substring start end)
+			"\"\n"
+		"end timeout\n"
+	"end tell\n"
+    "end try\n"))
+  (message "Finished evaluation"))
+
+(defun ess-r-do-line ()
+  "Send the current line to R via AppleScript."
+  (interactive) ;; "r\nP")
+  (message "Starting evaluation...")
+  (save-excursion
+  (let ((end (point)))
+  (move-to-column 0)
+  (do-applescript (concat 
+    "try\n"
+	"tell application \"R\"\n"
+		"activate\n"
+		"with timeout of 0 seconds\n"
+			"cmd \"" (buffer-substring (point) end)
+			"\"\n"
+		"end timeout\n"
+	"end tell\n"
+    "end try\n"))
+  ))
+  (message "Finished evaluation"))
 
  ; Provide package
 
