@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2002/12/20 21:47:20 $
-;; Version: $Revision: 1.39 $
-;; RCS: $Id: ess-cust.el,v 1.39 2002/12/20 21:47:20 rsparapa Exp $
+;; Modified: $Date: 2003/08/07 16:12:56 $
+;; Version: $Revision: 1.40 $
+;; RCS: $Id: ess-cust.el,v 1.40 2003/08/07 16:12:56 rsparapa Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -849,8 +849,12 @@ order for it to work right.  And Emacs is too smart for it."
 (defcustom S-pager
   (if ess-microsoft-p "gnuclientw.exe"
     (if (equal system-type 'Apple-Macintosh) nil
-      "emacsclient")) ;; unix
+      (if (featurep 'xemacs) "gnuclient -q" "emacsclient")))
   "*Pager called by S process with 'page()' command."
+;; Change made to provide a better help(function) experience with
+;; S+6 and xemacs
+;; gnuclient -q will open a buffer with an HTML help file
+;; you can view it with M-x browse-url-of-buffer
 :group 'ess
 :type 'string)
 
