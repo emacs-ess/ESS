@@ -1,12 +1,15 @@
-A version of the gnuemacs tags program which has been modified to find S funct
-ion
-definitions.  You can use this to find a function defintions or arbitrary
-strings in multiple related files.
+-*- mode: text -*-
 
-If you are not familiar with the gnuemacs tags facility, read the Info node on
+A version of the gnuemacs tags program which has been modified to find
+S function definitions.  You can use this to find a function
+defintions or arbitrary strings in multiple related files.
+
+If you are not familiar with the gnuemacs tags facility, read the Info
+node on
  tags.
 
-The etags program will now look for S function defintions in files with suffix
+The etags program will now look for S function defintions in files
+with suffix
  '.s'.
 
 It only handles functions of the form:
