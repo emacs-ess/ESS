@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/05 22:48:44 $ - $Revision: 1.109 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/05 22:53:17 $ - $Revision: 1.110 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -266,7 +266,7 @@ actions and provide a graphical alternative when the user does not
 know or can not recall a keymap.  User-defined menus and toolbars can
 be constructed as needed.
 
-\paragraph{Buffers let Emacs control}%for Editing and for Program Control.}
+\paragraph{Buffers give Emacs control}%for Editing and for Program Control.}
 Within Emacs, buffers provide the interface between the text editor
 and the rest of the computer.  They can be thought of as a collection
 of scratch pads that both the computer and the user read and write, as
@@ -276,12 +276,14 @@ With disk files, the working copy of the opened file is placed in an
 Emacs buffer where it can be viewed and edited either by the user or
 automatically by Emacs; Emacs will save the contents to disk at
 specified intervals based on some function of time and the amount of
-editing activity.  One common program that is run within Emacs buffers
-is the interactive operating system command line interpreter, called a
-shell.  By using this, most programs which take input and provide
-output to the command-line can be run within and controlled by input
-from Emacs.  The buffer provides a copy of the entire transcript of
-the interaction, which can be edited and searched while the program is
+editing activity.  Emacs can present the buffers' contents in ways
+which optimize the users reading and navigation activities.  One
+common program that is run within Emacs buffers is the interactive
+operating system command line interpreter, called a shell.  By using
+this, most programs which take input and provide output to the
+command-line can be run within and controlled by input from Emacs.
+The resulting buffer provides a copy of the entire transcript of the
+interaction, which can be edited and searched while the program is
 still running.
 
 \paragraph{Major and Minor Modes.}
