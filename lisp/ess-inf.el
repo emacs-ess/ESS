@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/08/28 13:05:32 $
-;; Version: $Revision: 1.48 $
-;; RCS: $Id: ess-inf.el,v 1.48 1997/08/28 13:05:32 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:11:09 $
+;; Version: $Revision: 1.49 $
+;; RCS: $Id: ess-inf.el,v 1.49 1997/09/01 18:11:09 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -201,7 +201,7 @@ when invoking S.
     
     (set-buffer buf)
     ;; Now that we have the buffer, set buffer-local variables.
-    (ess-setq-vars ess-customize-alist buf)
+    (ess-setq-vars-local ess-customize-alist buf)
     (ess-write-to-dribble-buffer
      (format "(inferior-ess 2): ess-language=%s, ess-dialect=%s buf=%s \n"
 	     ess-language
@@ -386,8 +386,19 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
                    (list
                     (format "PAGER=%s" inferior-ess-pager))
 		   process-environment)))
-	     (comint-exec buffer procname inferior-ess-program nil
-			  switches))))
+	     (ess-write-to-dribble-buffer "Making Process...")
+	     (ess-write-to-dribble-buffer 
+	      (format " Buf %s, Proc %s, Prog %s \n Start File %s, Args %s"
+		      buffer
+		      procname
+		      inferior-ess-program
+		      inferior-ess-start-file 
+		      inferior-ess-start-args))
+	     (comint-exec buffer
+			  procname
+			  inferior-ess-program
+			  inferior-ess-start-file 
+			  (ess-line-to-list-of-words inferior-ess-start-args)))))
     buffer))
 
 
@@ -1001,7 +1012,7 @@ to continue it."
   (comint-mode)
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq major-mode 'inferior-ess-mode)
-  (setq mode-name "iESS") ;;(concat "Inferior " ess-language))
+  (setq mode-name (concat "iESS:" ess-dialect)) ;;(concat "Inferior " ess-language))
   (setq mode-line-process
 	'(" [" ess-local-process-name "]: %s"))
   (use-local-map inferior-ess-mode-map)
@@ -1014,7 +1025,8 @@ to continue it."
   ;;
   ;; except that XLS doesn't like it.  This is an ugly hack that ought 
   ;; to go into the dialect configuration...
-  (if (string= ess-language "XLS")
+  (if (or (string= ess-language "XLS")
+	  (string= ess-language "SAS"))
       (setq comint-process-echoes nil)
     (setq comint-process-echoes t))
 
@@ -1037,7 +1049,7 @@ to continue it."
   (setq font-lock-defaults
 	'(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
 
-  (ess-setq-vars ess-customize-alist (current-buffer))
+  (ess-setq-vars-local ess-customize-alist (current-buffer))
 
   ;; Completion support
   (setq comint-dynamic-complete-functions

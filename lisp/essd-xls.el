@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/01 17:51:11 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: essd-xls.el,v 1.24 1997/09/01 17:51:11 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:10:11 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: essd-xls.el,v 1.25 1997/09/01 18:10:11 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -38,12 +38,12 @@
 
 ;;; Code:
 
-(defvar XLS-editing-alist 'Lisp-editing-alist)
+(defvar XLS-editing-alist Lisp-editing-alist)
 
 (defvar XLS-customize-alist
   '((ess-language                  .  "XLS"               )
     (ess-dialect                   .  "XLS"               )
-    (ess-editing-alist             .  'XLS-editing-alist  )
+    (ess-editing-alist             .  XLS-editing-alist   )
     (ess-loop-timeout              .  10000               )
     (ess-object-name-db-file       .  "ess-xls-namedb.el" )
     (ess-help-sec-regex            .  " ")
@@ -62,7 +62,7 @@
   "Major mode for editing XLispStat source.  NOT EVEN STARTED."
   (interactive)
   (setq ess-customize-alist XLS-customize-alist)
-  (lisp-mode))
+  (ess-mode XLS-customize-alist proc-name))
 
 
 (defun XLS ()

@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/08/28 13:03:48 $
-;; Version: $Revision: 1.57 $
-;; RCS: $Id: ess.el,v 1.57 1997/08/28 13:03:48 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:10:50 $
+;; Version: $Revision: 1.58 $
+;; RCS: $Id: ess.el,v 1.58 1997/09/01 18:10:50 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -211,6 +211,20 @@
 
  ; Buffer local customization stuff
 
+;; Parse a line into its constituent parts (words separated by
+;; whitespace).    Return a list of the words.
+;; Taken from rlogin.el, from the comint package, from XEmacs 20.3.
+(defun ess-line-to-list-of-words (line)
+  (let ((list nil)
+	(posn 0)
+        (match-data (match-data)))
+    (while (string-match "[^ \t\n]+" line posn)
+      (setq list (cons (substring line (match-beginning 0) (match-end 0))
+                       list))
+      (setq posn (match-end 0)))
+    (store-match-data (match-data))
+    (nreverse list)))
+
 (defun ess-write-to-dribble-buffer (text)
   "Write `text' to dribble buffer."
   (save-excursion
@@ -218,14 +232,14 @@
     (goto-char (point-max))
     (insert-string text)))
 
-(defun ess-setq-vars (alist &optional buf) 
+(defun ess-setq-vars-local (alist &optional buf) 
   "Set language variables from ALIST, in buffer `BUF', if desired."
   (if buf (set-buffer buf))
   (mapcar (lambda (pair)
-            (set (car pair) (eval (cdr pair))))
+            (set (make-local-variable (car pair)) (eval (cdr pair))))
           alist)
   (ess-write-to-dribble-buffer 
-   (format "(ess-setq-vars): ess-language=%s, buf=%s \n"
+   (format "(ess-setq-vars-local): ess-language=%s, buf=%s \n"
            ess-language buf)))
 
 (defun ess-setq-vars-default (alist &optional buf) 

@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/08/28 14:21:53 $
-;; Version: $Revision: 1.48 $
-;; RCS: $Id: ess-mode.el,v 1.48 1997/08/28 14:21:53 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:10:39 $
+;; Version: $Revision: 1.49 $
+;; RCS: $Id: ess-mode.el,v 1.49 1997/09/01 18:10:39 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -267,40 +267,42 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
  (quoted from C language style)."
   (interactive)
   (kill-all-local-variables) ;; NOTICE THIS!
-  (ess-setq-vars alist (current-buffer))
+  (ess-setq-vars-local alist (current-buffer))
   (setq major-mode 'ess-mode)
   (setq mode-name (concat "ESS[" ess-dialect "]"))
   (use-local-map ess-mode-map)
   (set-syntax-table ess-mode-syntax-table)
-  (make-local-variable 'paragraph-start)
-  (setq paragraph-start (concat "^$\\|" page-delimiter))
-  (make-local-variable 'paragraph-separate)
-  (setq paragraph-separate paragraph-start)
-  (make-local-variable 'paragraph-ignore-fill-prefix)
-  (setq paragraph-ignore-fill-prefix t)
-  (make-local-variable 'indent-line-function)
-  (setq indent-line-function 'ess-indent-line)
-  (make-local-variable 'require-final-newline)
-  (setq require-final-newline t)
-  (make-local-variable 'comment-start)
-  (setq comment-start "#")
-  (make-local-variable 'comment-start-skip)
-  (setq comment-start-skip "#+ *")
-  (make-local-variable 'comment-column)
-  (setq comment-column 40)
-  (make-local-variable 'comment-indent-function)
-  (setq comment-indent-function 'ess-comment-indent)
-  (make-local-variable 'parse-sexp-ignore-comments)
-  (setq parse-sexp-ignore-comments t)
-  (ess-set-style ess-default-style)
-  (make-local-variable 'ess-local-process-name)
-  (make-local-variable 'ess-keep-dump-files)
+  (ess-setq-vars-local ess-editing-alist)
+
+;;  (make-local-variable 'paragraph-start)
+;;  (setq paragraph-start (concat "^$\\|" page-delimiter))
+;;  (make-local-variable 'paragraph-separate)
+;;  (setq paragraph-separate paragraph-start)
+;;  (make-local-variable 'paragraph-ignore-fill-prefix)
+;;  (setq paragraph-ignore-fill-prefix t)
+;;  (make-local-variable 'indent-line-function)
+;;  (setq indent-line-function 'ess-indent-line)
+;;  (make-local-variable 'require-final-newline)
+;;  (setq require-final-newline t)
+;;  (make-local-variable 'comment-start)
+;;  (setq comment-start "#")
+;;  (make-local-variable 'comment-start-skip)
+;;  (setq comment-start-skip "#+ *")
+;;  (make-local-variable 'comment-column)
+;;  (setq comment-column 40)
+;;  (make-local-variable 'comment-indent-function)
+;;  (setq comment-indent-function 'ess-comment-indent)
+;;  (make-local-variable 'parse-sexp-ignore-comments)
+;;  (setq parse-sexp-ignore-comments t)
+;;  (ess-set-style ess-default-style)
+;;  (make-local-variable 'ess-local-process-name)
+;;  (make-local-variable 'ess-keep-dump-files)
   (put 'ess-local-process-name 'permanent-local t) ; protect from RCS
   (setq mode-line-process ;; AJR: in future, XEmacs will use modeline-process.
 	'(" [" (ess-local-process-name ess-local-process-name "none") "]"))
   ;; font-lock support
-  (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults '(ess-mode-font-lock-keywords))
+;;  (make-local-variable 'font-lock-defaults)
+;;  (setq font-lock-defaults '(ess-mode-font-lock-keywords))
   (run-hooks 'ess-mode-hook))
 
 ;;*;; User commands in ess-mode

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/28 13:05:18 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: essd-s+3.el,v 1.19 1997/08/28 13:05:18 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:10:17 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: essd-s+3.el,v 1.20 1997/09/01 18:10:17 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -30,8 +30,9 @@
 ;;; Commentary:
 ;;; This file defines all the Splus 3.x customizations for ess-mode.
 
+;;; Requires and Autoloads:
 
-;;; Autoloads:
+(require 'essl-s)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process")
@@ -63,9 +64,13 @@
 
 ; Code:
 
+(defvar S+3-editing-alist  'S-editing-alist
+  "Local variables for editing mode.")
+
 (defvar S+3-customize-alist
   '((ess-language                  . "S")
     (ess-dialect                   . "S+3")
+    (ess-editing-alist             . 'S+3-editing-alist)
     (ess-help-sec-regex            . ess-help-S+3-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-S+3-sec-keys-alist)
     (ess-loop-timeout              . 100000 )
@@ -78,8 +83,8 @@
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?")
-    (inferior-ess-start-file       . "~/.ess-S+3")
-    (inferior-ess-start-args       . nil))
+    (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
+    (inferior-ess-start-args       . ""))
  "Variables to customize for S+3")
 
 (defun S-mode (&optional proc-name)
