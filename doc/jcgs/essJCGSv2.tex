@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/07 15:12:55 $ - $Revision: 1.145 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/07 16:34:42 $ - $Revision: 1.146 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -445,22 +445,29 @@ statistical analysis interface.
 \section{ESS extends Emacs}
 \label{sec:ess-extends-emacs}
 
-ESS extends Emacs to provide a functional, uniform, and easily
-extensible interface for multiple statistical packages.  This is done
-by first, adding shortcuts and features for accelerated editing of
-files, and second, by interacting with the statistical language
-through a number of activities: general input/output handling,
-specialized parsing of help files, and evaluation assistance.
+ESS extends Emacs to provide a functional and extensible interface
+which is uniform and consistent across multiple statistical packages.
+This is done by first, adding shortcuts and features for accelerated
+editing of files, and second, by interacting with the particular
+statistical packages through a number of activities: control of
+input/output, assistance with evaluation, and specialized parsing of
+help files.
 
-Complex conflicts between interfaces can be the result of coordinating
+Differences between user interfaces can arise from coordinating
 several data files, multiple statistical software packages, and the
-corresponding source code for each of these packages into a single
-analysis.  ESS helps solve these problems by including support for
-version and source code control systems, tools for accessing programs
-or files on remote machines, and interfaces to documentation systems
-including \LaTeX\ and \textsc{xml}.  In addition, Emacs can assist
-with, or be programmed to perform, many tasks related to data
-cleaning, management, and editing.
+corresponding source code for each of these packages during a single
+analysis.  ESS helps to remedy these differences by providing a single
+point of contact for all tasks.  Other features, which are less
+commonly employed by statisticians but provide potential for efficient
+computer usage, include the use of version and source code control
+systems, tools for accessing programs or files on remote machines, and
+interfaces to documentation systems such as \LaTeX\, RichText Format
+presentation, \textsc{html}, and \textsc{xml}.  Emacs can assist with,
+or be programmed to perform, many tasks related to data cleaning,
+management, and editing.  For example, conversion of data files
+between standard input formats such as comma-separated or
+tab-delimited can be automated fairly simply through the use of elisp
+programs or keyboard macros.
 
 % repetitive
 %Below, we describe some of the
@@ -1259,7 +1266,7 @@ of developers, with 5 major versions released.  ESS descended from and combined
          &\multicolumn{2}{c}{Operating System} &&\multicolumn{2}{c}{Additional Functionality}\\
 \cline{2-3} \cline{5-6}
     1997 & v.5.0 & (Emacs/XEmacs, Unix)         &&&  Stata, XLispStat, SAS interactive \\
-    1998 & v.5.1 & (Emacs/XEmacs, Unix/Windows) &&&  Windows:  S+/R, ESS-elsewhere\\
+    1998 & v.5.1 & (Emacs/XEmacs, Unix/Windows) &&&  Windows: S+/R, S-elsewhere\\
     1999 & v.5.1 & (Emacs/XEmacs, Unix/Windows/Mac) &&& SAS batch, Omegahat \\
     2001 & v.5.1 & (Emacs/XEmacs, Unix/Windows/Mac) &&& Unix/DOS: BUGS batch, Mac: R \\
     2002 & v.5.2 & (Emacs/XEmacs, Unix/Windows/Mac) &&& ? \\
