@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 2001/04/17 03:29:28 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: ess-iw32.el,v 1.14 2001/04/17 03:29:28 ess Exp $
+;; Modified: $Date: 2002/01/03 08:46:10 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: ess-iw32.el,v 1.15 2002/01/03 08:46:10 maechler Exp $
 
 
 ;; This file is part of ESS
@@ -279,6 +279,23 @@ generate the source buffer."
 	  ;; No buffer and no file
 	  (ess-dump-object object filename))))))
 
+(defun ess-command-ddeclient (com &optional buf)
+  "ddeclient bypass of real ess-command"
+  (ess-eval-linewise com))
+
+(fset 'ess-command-original (symbol-function 'ess-command))
+
+(defun ess-command (com &optional buf)
+  "Send the ESS process command COM and delete the output
+from the ESS process buffer.  If an optional second argument BUF exists
+save the output in that buffer. BUF is erased before use.
+COM should have a terminating newline.
+Guarantees that the value of .Last.value will be preserved."
+  (interactive)
+  (if (not (ess-ddeclient-p))
+      (ess-command-original com buf)
+    (ess-force-buffer-current "Process to load into: ")
+    (ess-command-ddeclient com buf)))
 
 (provide 'ess-iw32)
 
