@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/05/01 20:00:03 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: essd-els.el,v 1.15 2002/05/01 20:00:03 rmh Exp $
+;; Modified: $Date: 2002/05/02 18:13:52 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: essd-els.el,v 1.16 2002/05/02 18:13:52 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -170,7 +170,7 @@ return new alist whose car is the new pair and cdr is ALIST.
 ;;; with the right behavior for the language you are currently working
 ;;; with.
 
-(defun ess-remote ()
+(defun ess-remote (&optional proc-name)
   "Execute this command from within a buffer running a process.  It runs
 `ess-add-ess-process' to add the process to `ess-process-name-alist'
 and to make it the `ess-current-process-name'.  It then prompts the
