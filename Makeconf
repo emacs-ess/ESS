@@ -1,4 +1,7 @@
 ####======= Common Declarations for *all* ESS -*- Makefile -*- s ==========
+###
+### File: $Revision: 5.19 $.
+###
 
 PREFIX=/usr/local
 
@@ -14,17 +17,19 @@ EMACS=emacs
 
 EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 
-# Destination of your info files
-# defaults to the info directory relative to the doc directory
-INFODIR = ../info
-
-# Destination of your byte-compiled elisp (.elc) files
-# defaults to the lisp directory 
-LISPDIR = .
-
 # default xemacs package installation tree
 # necessary for target xemacs-links
 XEMACSDIR=/usr/local/lib/xemacs
+
+# Destination of your info files
+# defaults to the info directory relative to the doc directory
+INFODIR = /usr/local/info
+
+# Destination of your byte-compiled elisp (.elc) files 
+# Emacs
+LISPDIR = /usr/local/share/emacs/site-lisp
+# XEmacs
+#LISPDIR = $(XEMACSDIR)/xemacs-packages/lisp/ess
 
 ## two install commands are needed; one to create directories, 
 ## if necessary, and another to copy the files

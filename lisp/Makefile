@@ -1,17 +1,10 @@
-### Makefile - for ESS distribution.
+### Makefile - for compiled e-lisp of ESS distribution.
 ###
-### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-### For ESS Version: 5.x.y
+### File: $Revision: 5.53 $.
 ###
-### File: $Revision: 5.52 $.
-###
-### Edit the makefile, type `make', and follow the instructions.  Based
-### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
-### Kyle and Per!
 
+## Before making changes here, please take a look at Makeconf
 include ../Makeconf
-
-#### no user servicable parts beyond this point ####
 
 ## For noweb extraction of code and documentation.
 
@@ -19,7 +12,6 @@ NOTANGLE=notangle -L
 #NOTANGLE=notangle for no indexing.
 NOWEAVE=noweave
 
-## GNU make only (?) (Sun make can't make readme.dvi) .. :
 ## SUFFIXES are in ../Makeconf :
 .nw.html: ;     $(NOWEAVE) -filter l2h -index -html $*.nw > $*.html
 .nw.tex: ;      $(NOWEAVE) -index -delay $*.nw | cpif $*.tex
@@ -41,54 +33,40 @@ PRELOADS = -l ./ess-comp.el
 ## optimizations.  When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
 
-TOCOMPILE = ess-cust.el $(CORE) \
-	ess-emcs.el ess-sysdp.el ess-utils.el \
-	ess-inf.el ess-iw32.el essnt204.el \
-	ess-mode.el ess-trns.el ess-help.el \
-	ess-comp.el \
-	ess-menu.el ess-mous.el mouseme.el \
-	essl-s.el essd-s3.el essd-s4.el \
-	essd-sp3.el essd-sp4.el essd-sp5.el essd-sp6.el \
-	essd-r.el \
-	essd-els.el \
-	essl-lsp.el essd-xls.el essd-vst.el essd-arc.el \
-	essl-sas.el essd-sas.el essa-sas.el \
-	essl-sta.el essd-sta.el make-regexp.el \
-	essl-omg.el essd-omg.el \
-	essl-bug.el \
-	ess-noweb.el noweb-mode.el noweb-font-lock-mode.el \
-	ess-font-lock.el \
-	essa-r.el \
-	essddr.el
-##?	ess-latex.el \
-
-SOURCES = $(TOCOMPILE) ess-debug.el
-
-
-SCRIPTS = ess-sas-sh-command install-sh mkinstalldirs
-
-AUXFILES = COPYING Makefile ChangeLog $(SCRIPTS)
-
-# The following works mainly with GNU Make.
-
-OBJECTS = $(TOCOMPILE:.el=.elc)
-
+ELC = ess-cust.elc $(CORE) \
+	ess-emcs.elc ess-sysdp.elc ess-utils.elc \
+	ess-inf.elc ess-iw32.elc essnt204.elc \
+	ess-mode.elc ess-trns.elc ess-help.elc \
+	ess-comp.elc \
+	ess-menu.elc ess-mous.elc mouseme.elc \
+	essl-s.elc essd-s3.elc essd-s4.elc \
+	essd-sp3.elc essd-sp4.elc essd-sp5.elc essd-sp6.elc \
+	essd-r.elc \
+	essd-els.elc \
+	essl-lsp.elc essd-xls.elc essd-vst.elc essd-arc.elc \
+	essl-sas.elc essd-sas.elc essa-sas.elc \
+	essl-sta.elc essd-sta.elc make-regexp.elc \
+	essl-omg.elc essd-omg.elc \
+	essl-bug.elc \
+	ess-noweb.elc noweb-mode.elc noweb-font-lock-mode.elc \
+	ess-font-lock.elc \
+	essa-r.elc \
+	essddr.elc
 
 ### Targets
 
-all: ESS
+all: $(ELC)
 
-ESS: $(OBJECTS)
-
-install: all
+install: $(ELC)
 	-$(INSTALLDIR) $(LISPDIR)
-	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
+	$(INSTALL) *.elc $(LISPDIR)
+#	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
 
 dist: ess-cust.el
 	cvs commit -m "'make dist' for new version" ess-cust.el
 	@touch dist
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(ELC)
 
 distclean: clean
 # and potentially more
@@ -100,7 +78,7 @@ distclean: clean
 ess-cust.el: ../VERSION
 #	perl -pi -e 's/".*"/"$(shell cat $^)"/ if /ess-version/' $@
 	cp -p ess-cust.el ess-temp.el
-	$(SED) -e "s/(defvar ess-version \"5.2.0\"/(defvar ess-version \"$(ESSVERSION)\"/" ess-temp.el > ess-cust.el
+	$(SED) -e "s/(defvar ess-version \".*\"/(defvar ess-version \"$(ESSVERSION)\"/" ess-temp.el > ess-cust.el
 	rm ess-temp.el
 
 ### File Dependencies
