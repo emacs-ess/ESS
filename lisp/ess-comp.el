@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/25 15:20:36 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: ess-comp.el,v 1.2 1997/07/25 15:20:36 rossini Exp $
+;; Modified: $Date: 1997/07/25 21:20:01 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: ess-comp.el,v 1.3 1997/07/25 21:20:01 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;: $Log: ess-comp.el,v $
+;;: Revision 1.3  1997/07/25 21:20:01  rossini
+;;: need (require 'ess), as well (for function defs and autoloads...).
+;;:
 ;;: Revision 1.2  1997/07/25 15:20:36  rossini
 ;;: changing ess to ess-vars.
 ;;:
@@ -49,6 +52,7 @@
 ;;; properly (Emacs doesn't include '.' in the emacs lisp load path).
 (add-to-list 'load-path nil)
 (require 'ess-vars)
+(require 'ess)
 
  ; Local variables section
 
