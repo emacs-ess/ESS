@@ -30,13 +30,14 @@
 \fi
 %\usepackage{html,heqn,htmllist}
 %\usepackage[latex2html]{hyperref} 
-\ifpdf
-  \usepackage[pdftex]{graphicx}
-  \usepackage[pdftex]{hyperref} 
-\else
-  \usepackage[dvips]{graphicx}
-  \usepackage[dvips]{hyperref} 
-\fi
+% \ifpdf
+%   \usepackage[pdftex]{graphicx}
+%   \usepackage[pdftex]{hyperref} 
+% \else
+%   \usepackage[dvips]{graphicx}
+%   \usepackage[dvips]{hyperref} 
+% \fi
+\usepackage{graphicx,hyperref}
 
 %%---End of package requiring ---------- Own Definitions ------------- 
 
@@ -136,7 +137,7 @@ tools such as WinBUGS can \citep{SpieThomBest:1999}.  On the other
 hand, these specialized tools lack breadth in the range of analyses
 and graphics that can be generated.  For this reason, BUGS is
 distributed with applications providing loose interoperability for
-simplifying the transfer of output to R or \Splus\ for processing the
+simplifying the transfer of output to R or \Splus{} for processing the
 results.  Although the interfaces for WinBUGS and R are similar,
 they are distinct enough to create tension on the part of the
 analyst.
@@ -192,7 +193,7 @@ designed and documented programming editor, an interface to
 statistical processes, and provides, through Emacs, additional tools
 which aid both statistical software development and data analysis.  It
 works with common statistical software, including the S languages
-(which include S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\ 
+(which include S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus{} 
 \citep{Splus}, and R \citep{ihak:gent:1996}); \XLispStat\ 
 \citep{Tier90} and its extensions Arc \citep{Cook:Weisberg:1999} and
 ViSta \citep{youn:fald:mcfa:1992}; SAS \citep{SAS:8.0}; \Stata\ 
@@ -287,7 +288,7 @@ possibly a spreadsheet displaying, for example, a cases-by-variables
 view of the data set or a drill-down contingency table interface.
 This approach is employed by both spreadsheet packages such as
 Microsoft Excel as well as most Mac and Windows statistical packages
-including \Splus\ and SPSS.
+including \Splus{} and SPSS.
 
 The Single Document Interface (SDI) provides a single frame for each
 document, view, or figure created.  Unix-based interfaces tend to be
@@ -472,18 +473,20 @@ uniform interface for multiple statistical packages.
 \label{sec:ESS:history}
 
 ESS is an example of how open-source products can continue to develop
-beyond what their initial authors planned.  The ESS codebase was
-brought to life in 1989 initially as S-mode, to provide extensions to
-Emacs for editing S and \Splus\ files.  This was originally written by
-Doug Bates, Ed Kademan, Frank Ritter, and Mike Meyer.  David Smith was
-the next primary maintainer, and his most important contribution was
-to enhance the interface to the \Splus\ command-line interface and to
+beyond what their initial authors planned.  The ESS codebase was brought
+to life in 1989 initially as S-mode, to provide extensions to Emacs for
+editing S and \Splus{} files.  This was originally written by Doug
+Bates, Ed Kademan, Frank Ritter, and Mike Meyer.  David Smith was the
+next primary maintainer, and his most important contribution was to
+enhance the interface to the \Splus{} command-line interface and to
 allow for control of multiple processes simultaneously.  In 1995, A.J.
 Rossini extended S-mode to support XEmacs, an open-source editor which
-was derived from Emacs.  At the same time, extensions from ETH,
-written by Martin M{\"a}chler, were folded into what was to become the
-primary codebase.  By 1996 a uniform S-mode, available
-for both Emacs and XEmacs, supported S, \Splus, and to some extent R.
+was derived from Emacs.  At the same time, extensions from ETH, written
+by Martin M{\"a}chler, were folded into what was to become the primary
+codebase.  By 1996 a uniform S-mode, available for both Emacs and
+XEmacs, supported S, \Splus, and to some extent R.  Kurt Hornik was
+instrumental in enhancing support for R, in particular providing Rd
+mode.
 
 The other ancestor of the ESS codebase was a successful SAS-mode
 written by Tom Cook.  The initial extension was done by A.J. Rossini
@@ -547,17 +550,17 @@ help.
 \subsection{Inferior ESS processes}
 \label{sec:S:inf}
 
-\stexttt{iESS[S]} is the mode for interfacing with active S
-statistical processes.  In effect, this mode replaces the \Splus\ or R
-Commands window with an active buffer running inside Emacs.  This mode
-provides an interactive history mechanism; transcript recording and
-editing; the ability to resubmit the contents of a multi-line command
-to the executing process with a single keystroke.  It also provides
-the same editing features as the editing mode \stexttt{ESS[S]}.
+\stexttt{iESS[S]} is the mode for interfacing with active S statistical
+processes.  In effect, this mode replaces the \Splus{} or R Commands
+window with an active buffer running inside Emacs.  This mode provides
+an interactive history mechanism; transcript recording and editing; the
+ability to resubmit the contents of a multi-line command to the
+executing process with a single keystroke.  It also provides the same
+editing features as the editing mode \stexttt{ESS[S]}.
 
 The statistical processes S and R are started by using the Emacs
-function call \stexttt{M-x~S} or \stexttt{M-x~R}.  This call opens up
-a buffer and starts the S process inside that buffer.
+function call \stexttt{M-x~S} or \stexttt{M-x~R}.  This call opens up a
+buffer and starts the S process inside that buffer.
 
 \stexttt{iESS[S]} uses standard input/output to communicate with the S
 program, except with the GUI interface for \Splus{} 4 and 6 for Windows
@@ -834,6 +837,7 @@ languages and analysis packages.
 \singlespace
 
 \bibliographystyle{plainnat} %alpha}
+\pdfbookmark[1]{References}{section.7}
 \bibliography{ess}
 
 \appendix
