@@ -1,3 +1,13 @@
+2004-07-02  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-site.el (ess-versions-created): Tidy up the code for calling
+	older versions of R and Sqpe.  Old version did not work on Unix,
+	since ess-sqpe-versions-created was not bound.  New version checks
+	that variable is bound before using it.
+
+	* ess-utils.el (ess-flatten-list): Standard defun needed for
+	flattening a list.  Copied from lpr.el.
+
 2004-07-01  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-inf.el (ess-quit): Delete call to ess-switch-to-ESS;
