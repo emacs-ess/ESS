@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/12 22:26:24 $
-;; Version: $Revision: 1.83 $
-;; RCS: $Id: ess-inf.el,v 1.83 1997/11/12 22:26:24 rossini Exp $
+;; Modified: $Date: 1997/11/14 00:27:53 $
+;; Version: $Revision: 1.84 $
+;; RCS: $Id: ess-inf.el,v 1.84 1997/11/14 00:27:53 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -1226,6 +1226,9 @@ to continue it."
   (make-local-variable 'paragraph-separate)
   (setq paragraph-separate "\^L")
 
+
+  (ess-load-object-name-db-file)
+  (sleep-for 0.5)
   (make-local-variable 'kill-buffer-hook)
   (add-hook 'kill-buffer-hook 'ess-kill-buffer-function)
   (run-hooks 'inferior-ess-mode-hook)
