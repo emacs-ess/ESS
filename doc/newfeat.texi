@@ -1,7 +1,5 @@
 Changes/New Features in 5.2.0:
 @itemize @bullet
-@item ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
-pressing underscore twice inserts a literal underscore.
 @item ESS[BUGS]:  new info documentation!  now supports interactive 
 processing thanks to @uref{mailto:Aki.Vehtari@@hut.fi, Aki Vehtari};
 new architecture-independent unix support as well as support for BUGS v. 0.5 
@@ -17,12 +15,16 @@ which automatically reverse indents lines containing only "run;";
 C-F1 creates MS RTF portrait from the current buffer;
 C-F2 creates MS RTF landscape from the current buffer;
 C-F9 kills all buffers associated with .sas program
-@item ESS[S]:  ess-dump-filename-template-proto (new name!) now can be
-customized successfully (for S language dialects).
-@item ESS[S]:  ess-help: Now using nice underlines (instead of `nuke-* ^H_')
+@item ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
+pressing underscore twice inserts a literal underscore;
+ess-dump-filename-template-proto (new name!) now can be
+customized successfully (for S language dialects);
+ess-help: Now using nice underlines (instead of `nuke-* ^H_')
 @item ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
-numbers from any Emacs buffer into an existing *R* process.
-@item ESS[R]:  M-x ess-rdired gives a ``directory editor'' of R objects.
+numbers from any Emacs buffer into an existing *R* process;
+M-x ess-rdired gives a ``directory editor'' of R objects;
+fixed ess-retr-lastvalue-command, i.e. .Last.value bug
+(thanks to David Brahm)
 @end itemize
 
 Changes/New Features in 5.1.24:
