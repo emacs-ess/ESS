@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/10/22 19:39:34 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: ess-debug.el,v 1.3 1997/10/22 19:39:34 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:03:08 $
+;; Version: $Revision: 4.1 $
+;; RCS: $Id: ess-debug.el,v 4.1 1997/11/20 23:03:08 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -27,9 +27,8 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;;;
-;;; Commentary:  Strictly for debugging and development.
-;;;
+;; Commentary:  Strictly for debugging and development.
+;;
 
 (defun ess-add-path (path &rest options)
   "Add PATH to `load-path' if it exists under `default-load-path'
@@ -66,3 +65,21 @@ default-load-path."
 (setq-default debug-on-error t)
 (ess-add-path "/p1/apps/X11R6.3/lib/xemacs/site-lisp/ESS/")
 (require 'ess-site)
+
+; Local variables section
+
+;;; This file is automatically placed in Outline minor mode.
+;;; The file is structured as follows:
+;;; Chapters:     ^L ;
+;;; Sections:    ;;*;;
+;;; Subsections: ;;;*;;;
+;;; Components:  defuns, defvars, defconsts
+;;;              Random code beginning with a ;;;;* comment
+;;; Local variables:
+;;; mode: emacs-lisp
+;;; mode: outline-minor
+;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;;; End:
+
+;;; ess-debug.el ends here
+
