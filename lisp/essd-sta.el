@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 1999/03/04 23:13:53 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essd-sta.el,v 1.8 1999/03/04 23:13:53 rossini Exp $
+;; Modified: $Date: 1999/03/04 23:25:28 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essd-sta.el,v 1.9 1999/03/04 23:25:28 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,7 +47,7 @@
   '((ess-local-customize-alist     . 'STA-customize-alist)
     (ess-language                  . "Stata")
     (ess-dialect                   . STA-dialect-name)
-    (ess-suffix                    . "stata")
+    (ess-suffix                    . "ado") 
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
 					     ess-suffix))
@@ -67,7 +67,7 @@
     (inferior-ess-primary-prompt   . ". ?")
     (inferior-ess-secondary-prompt . "+ ?")
     (inferior-ess-start-file       . nil) ;"~/.ess-stata")
-    (inferior-ess-start-args       . "-q"))
+    (inferior-ess-start-args       . "")) ; "-q"
  "Variables to customize for Stata")
 
 
