@@ -15,7 +15,7 @@ Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.1.21
+   This documentation relates to Version
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -1177,8 +1177,8 @@ enabled by default to use the same function keys that the SAS Display
 Manager uses.  The interactive capabilities of ESS require you to start
 an inferior SAS process with M-x SAS (described below).
 
-   At this writing (5.1.21), the indenting and syntactic highlighting
-are usually correct.
+   At this writing (), the indenting and syntactic highlighting are
+usually correct.
 
 
 File: ess.info,  Node: iESS--Inferior ESS processes,  Next: ESS[SAS]--Batch processes,  Prev: ESS[SAS]--Editing files,  Up: Help for SAS
@@ -1203,7 +1203,7 @@ File: ess.info,  Node: ESS[SAS]--Batch processes,  Next: ESS[SAS]--Function keys
 ESS[SAS]-Batch processes
 ========================
 
-   The default command used by the Submit funciton key (F3 or F8) to
+   The default command used by the Submit function key (F3 or F8) to
 submit a batch SAS job is simply "sas".  If necessary, you can
 over-ride this in your .emacs file something like one of the following:
      ;;; (setq ess-sas-submit-command "nohup nice sas") ;; Unix

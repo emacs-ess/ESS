@@ -15,7 +15,7 @@ Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.1.21
+   This documentation relates to Version
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -49,14 +49,15 @@ Display Manager.  There are still options.  SAS provides different
 function key definitions with its PC and Unix products; ESS can use
 either.  The ESS[SAS] function key definitions can be active in all
 buffers (global) or limited (local) only to buffers that have
-SAS-related file extensions: .sas, .log, .lst, and filetype-1 which
-defaults to .txt.  The distinction between local and global appears
-subtle.  If you want the ESS[SAS] definitions to work when you are in
-*shell* or when editing files other than the file extensions that SAS
-recognizes, you will most likely want to use the global definitions.
-If you want your function keys to understand SAS batch commands when you
-are editing SAS files, and to behave normally when editing other files,
-then you will choose the local definitions.
+SAS-related file extensions: .sas, .log, .lst, filetype-1 (which
+defaults to .txt), and filetype-2 which defaults to .dat.  The
+distinction between local and global appears subtle.  If you want the
+ESS[SAS] definitions to work when you are in *shell* or when editing
+files other than the file extensions that SAS recognizes, you will most
+likely want to use the global definitions.  If you want your function
+keys to understand SAS batch commands when you are editing SAS files,
+and to behave normally when editing other files, then you will choose
+the local definitions.
 
    The option can be chosen by the person installing ESS for a site or
 by an individual.
@@ -333,7 +334,7 @@ ESS[SAS]-Common problems
         execute the line (from the unix prompt):
                 find / -name 'sas' -exec ls -ld {} \;
         and expect a response similar to the following
-             -rwxr-xr-x   1 sas      sas  2441216 Sep  9  1997 /usr/local/sas612/sas
+          -rwxr-xr-x   1 sas  sas  2441216 Sep  9  1997 /usr/local/sas612/sas
 
 
 File: ess.info,  Node: Help OS,  Next: Installation,  Prev: Help for Statistical Packages,  Up: Top
@@ -393,9 +394,8 @@ Unix installation
   1.   cd to a directory where you keep emacs lisp files, or create a
      new   directory to hold the distribution.  This directory will be
      referred   to below as "the ESS distribution directory".  It will
-     contain,   at the end, the tar file `ess-5.1.21.tar.gz', and a
-     directory for   the ESS source, which will be termed "the
-     ESS-5.1.21
+     contain,   at the end, the tar file `ess-.tar.gz', and a directory
+     for   the ESS source, which will be termed "the ESS-
 
      Note that the .elc files may be installed elsewhere (as specified
      in the   Makefile) if desired.
@@ -403,16 +403,16 @@ Unix installation
   2.   Retrieve the gzipped tar file or zipped file from
      <http://software.biostat.washington.edu/statsoft/ess/essDL>
 
-  3.   Copy `ess-5.1.21.tar.gz' to the location where you want the
-     ESS-5.1.21   distribution, which will unpack into a subdirectory,
-     ess-5.1.21.
-          	gunzip ess-5.1.21.tar.gz
-          	tar vxf ess-5.1.21.tar
-     	(or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).  	(or using GNU
-     tar:  `tar zvxf ess-5.1.21.tar.gz').
+  3.   Copy `ess-.tar.gz' to the location where you want the   ESS-
+     distribution, which will unpack into a subdirectory, ess-.
+          	gunzip ess-.tar.gz
+          	tar vxf ess-.tar
+
+          	(or: `gunzip < ess-.tar.gz | tar vxf -' ).
+          	(or using GNU tar:  `tar zvxf ess-.tar.gz').
 
      The `tar' command will extract files into the current directory.
-     Do not create ess-5.1.21   depth to your directory structure.
+     Do not create ess-   depth to your directory structure.
 
      Note if you have a very ancient version of GNU emacs (_and_  really
       can not upgrade to Emacs 20 or higher!) you can unpack the
@@ -428,8 +428,8 @@ Unix installation
 
   5.   READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     In the ess-5.1.21   want to place the executables in other
-     locations; see LISPDIR and   INFODIR) and then type:
+     In the ess-   want to place the executables in other locations;
+     see LISPDIR and   INFODIR) and then type:
           	make
 
      If this works, then you might try:
@@ -535,34 +535,33 @@ Microsoft Windows installation
      new    directory (for example, `c:\emacs\') to hold the
      distribution.  This    directory will be referred to below as "the
      ESS distribution    directory".  It will contain, at the end,
-     either the tar file    `ess-5.1.21.tar.gz' or the zip file
-     `ess-5.1.21.zip', and a    directory    for the ESS source, which
-     will be termed "the ESS-5.1.21    directory".
+     either the tar file    `ess-.tar.gz' or the zip file `ess-.zip',
+     and a    directory    for the ESS source, which will be termed
+     "the ESS-    directory".
 
-  2.       Retrieve the compressed tar file `ess-5.1.21.tar.gz' or the
-        zipped file `ess-5.1.21.zip' from one of the FTP or WWW
-     archive sites      via FTP (or HTTP).  Be aware that http browsers
-     on Windows      frequently change the "." and "-" characters in
+  2.       Retrieve the compressed tar file `ess-.tar.gz' or the
+     zipped file `ess-.zip' from one of the FTP or WWW      archive
+     sites      via FTP (or HTTP).  Be aware that http browsers on
+     Windows      frequently change the "." and "-" characters in
      filenames to other      punctuation.  Please change the names back
      to their original form.
 
-  3.       Copy `ess-5.1.21.tar.gz' to the location where you want the
-        ess-5.1.21      `c:\emacs\ess-5.1.21.tar.gz', and cd there.
-     For example,
+  3.       Copy `ess-.tar.gz' to the location where you want the
+     ess-      `c:\emacs\ess-.tar.gz', and cd there.  For example,
 
                        cd c:\emacs
 
      Extract the files from the distribution, which will unpack
-     into a subdirectory, `ess-5.1.21'.
-                    	gunzip ess-5.1.21.tar.gz
-                    	tar vxf ess-5.1.21.tar
-          	(or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).
-        (or: from the zip file: `unzip ess-5.1.21.zip')
+     into a subdirectory, `ess-'.
+                    	gunzip ess-.tar.gz
+                    	tar vxf ess-.tar
+          	(or: `gunzip < ess-.tar.gz | tar vxf -' ).
+     (or: from the zip file: `unzip ess-.zip')
 
      The `tar' command will extract files into the current directory.
 
-     Do not create `ess-5.1.21' yourself, or you will get an extra level
-         of   depth to your directory structure.
+     Do not create `ess-' yourself, or you will get an extra level
+     of   depth to your directory structure.
 
   4.      Windows users will usually be able to use the
      `lisp/ess-site.el'      as distributed.  Only rarely will changes

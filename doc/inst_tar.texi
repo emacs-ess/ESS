@@ -1,4 +1,3 @@
-@include version.texi
 
 We now discuss installation, which might happen under Unix or
 Microsoft Windows.  First, we discuss Unix installation.  
