@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/07/27 18:12:14 $
-;; Version: $Revision: 5.78 $
-;; RCS: $Id: ess-site.el,v 5.78 2001/07/27 18:12:14 ess Exp $
+;; Modified: $Date: 2001/07/27 23:28:25 $
+;; Version: $Revision: 5.79 $
+;; RCS: $Id: ess-site.el,v 5.79 2001/07/27 23:28:25 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -249,6 +249,7 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S+4-program-name "Splus")
 ;;(setq-default inferior-S+5-program-name "Splus5")
+;;(setq-default inferior-S+6-program-name "Splus6")
 ;;(setq-default inferior-R-program-name "R")	  ; unix systems
 ;;(setq-default inferior-R-program-name "Rterm")  ; msdos systems
 ;;(setq-default inferior-XLS-program-name "xlispstat")
@@ -379,6 +380,12 @@ The extension, in a file name, is the part that follows the last `.'."
 (ess-write-to-dribble-buffer
    (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
 	   ess-customize-alist))
+
+
+;; (1.8) Speedbar
+
+(require 'ess-menu)
+
 
 ;;; 2. Site Specific setup
 ;;;; ===============================================
