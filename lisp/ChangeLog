@@ -1,3 +1,9 @@
+2004-05-17  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-fix-EQ-assign): new S source cleaners;
+	            (ess-fix-dot-more) : ditto
+          added to ess-MM-fix-src's actions
+
 2004-05-17  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-toolbar.el (ess-icon-directory): Need / after etc directory.
@@ -87,11 +93,11 @@
 
 2004-05-02  A.J. Rossini  <rossini@u.washington.edu>
 
-	* essd-sp6.el (S+6-mode): 
-	* essd-sp5.el (S+5-mode): 
-	* essd-sp4.el (S+4-mode): 
-	* essd-s4.el (S4-mode): 
-	* essd-sp3.el (S+3-mode): 
+	* essd-sp6.el (S+6-mode):
+	* essd-sp5.el (S+5-mode):
+	* essd-sp4.el (S+4-mode):
+	* essd-s4.el (S4-mode):
+	* essd-sp3.el (S+3-mode):
 	* essd-s3.el (S3-mode): fixed imenu variable name, extended
 	copyrights from 1997 to 2004.
 
@@ -154,7 +160,7 @@
 	* ess-cust.el (inferior-ess-own-frame): New variable.
 
 	* ess-inf.el (ess-switch-to-ESS): Respect inferior-ess-own-frame.
-	(ess-multi): Use pop-to-buffer if process already running, and 
+	(ess-multi): Use pop-to-buffer if process already running, and
 	respect inferior-ess-own-frame.
 
 2004-04-16  Stephen Eglen  <stephen@anc.ed.ac.uk>
@@ -174,10 +180,10 @@
 	example.  Cleaned up documentation inconsistencies for noweb/Rnw
 	modes.
 
-	* essd-r.el (R): added autoload cookie for XEmacs.  doc edits. 
+	* essd-r.el (R): added autoload cookie for XEmacs.  doc edits.
 	(R-mode): added autoload cookie for XEmacs.
 	Removed R-package generator; a better version is part of R
-	(package.skeleton()). 
+	(package.skeleton()).
 
 	* ess-menu.el (ess-imenu-S-generic-expression): fixed imenu
 	routine -- now provides links to functions, classes, methods, and
