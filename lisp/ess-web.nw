@@ -36,5 +36,5 @@ Consider binding the above to [[C-c C-C]] (for [[dump-chunk]]).
 
 
 %%% Local Variables: ***
-%%% noweb-code-mode: lisp ***
+%%% noweb-code-mode: emacs-lisp-mode ***
 %%% End: ***
