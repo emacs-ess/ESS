@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/09/15 22:09:20 $
-;; Version: $Revision: 5.26 $
-;; RCS: $Id: ess-inf.el,v 5.26 1999/09/15 22:09:20 rossini Exp $
+;; Modified: $Date: 1999/09/16 05:34:32 $
+;; Version: $Revision: 5.27 $
+;; RCS: $Id: ess-inf.el,v 5.27 1999/09/16 05:34:32 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -1147,6 +1147,12 @@ to continue it."
       (progn 
 	;(setq comint-input-sender 'inferior-STA-input-sender)
 	(setq comint-process-echoes t)))
+
+  ;; Configuration for Omegahat input handling
+  (if (string= ess-language "OMG")
+      (progn 
+	;(setq comint-input-sender 'inferior-STA-input-sender)
+	(setq comint-process-echoes nil)))
 
   (ess-write-to-dribble-buffer
    (format "(i-ess 2): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
