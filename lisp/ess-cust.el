@@ -1250,12 +1250,10 @@ Don't include a newline at the end! Used in ess-execute-objects."
 
 ;;*;; Regular expressions
 
-(defcustom inferior-ess-prompt nil
+(defvar inferior-ess-prompt nil
   "The regular expression inferior ess mode uses for recognizing prompts.
  Constructed at run time from `inferior-ess-primary-prompt' and
-`inferior-ess-secondary-prompt'."
-  :group 'ess-proc
-  :type '(choice (const nil) string))
+`inferior-ess-secondary-prompt' within `inferior-ess-mode'.")
 
 (make-variable-buffer-local 'inferior-ess-prompt)
 
