@@ -1,12 +1,12 @@
 ;;; essd-iw32.el --- ESS customization for ddeclients under Windows 9x/NT
-;; Copyright (C) 1998,  Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Copyright (C) 1998--1999,  Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 1999/03/03 23:11:50 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: ess-iw32.el,v 1.7 1999/03/03 23:11:50 rossini Exp $
+;; Modified: $Date: 1999/03/16 18:01:45 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: ess-iw32.el,v 1.8 1999/03/16 18:01:45 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -115,9 +115,10 @@ file.  Otherwise just pops to an existing buffer if it exists."
 
 (defun ess-display-help-on-object (object)
   (interactive "sHelp on: ")
-  (if (equal (ess-get-process-variable
-	      ess-current-process-name 'inferior-ess-ddeclient)
-	     (default-value 'inferior-ess-ddeclient))
+  (if (and (equal (ess-get-process-variable
+		   ess-current-process-name 'inferior-ess-ddeclient)
+		  (default-value 'inferior-ess-ddeclient))
+	   (not (equal ess-dialect "S+4")))
       (ess-display-help-on-object-original object)
     (ess-display-help-on-object-ddeclient object))
   (widen))
@@ -134,7 +135,7 @@ file.  Otherwise just pops to an existing buffer if it exists."
 ;;; this works for Sqpe+4 and S+4
 (defun ess-load-file-ddeclient (filename)
   "Load an S source file into an inferior ESS process."
-  (require 'ess-inf) ; what does this fix?
+  ;; (require 'ess-inf) ; (rmh) not needed in function.  require is on the file.
   (ess-make-buffer-current)
   (let ((source-buffer (get-file-buffer filename)))
     (if (ess-check-source filename)
@@ -144,7 +145,10 @@ file.  Otherwise just pops to an existing buffer if it exists."
 	  (save-excursion
 	    (set-buffer source-buffer)
 	    (ess-force-buffer-current "Process to load into: ")
-	    (ess-check-modifications))))
+	    ;; (ess-check-modifications) ;;; not possible with ddeclient
+	    ;; it calls ess-command which requires two-way communication
+	    ;; with the S-Plus process
+	    )))
     (ess-eval-visibly (format inferior-ess-load-command filename))))
 
 (fset 'ess-load-file-original
