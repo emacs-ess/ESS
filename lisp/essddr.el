@@ -20,13 +20,13 @@
 ;; Ave, Cambridge, MA 02139, USA.
 
 
-;;; ESS RCS: $Id: essddr.el,v 1.4 1997/11/12 19:20:41 rossini Exp $
+;;; ESS RCS: $Id: essddr.el,v 1.5 1997/11/12 19:21:33 rossini Exp $
 ;;;
 
 ;;; Code:
 
 ;; To stave off byte compiler errors
-(eval-when-compile (require 'ess-help)
+(eval-when-compile (require 'ess-help))
 
 (defvar ess-doc-version "0.1.5"
   "Current version of ess-doc.el.")
