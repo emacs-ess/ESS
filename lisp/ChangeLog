@@ -1,3 +1,8 @@
+2004-08-23  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (inferior-R-page): only match "page()", not
+	"grid.newpage()" !!
+
 2004-08-09  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-inf.el (ess-prompt-for-directory): use the XEmacs
@@ -11,7 +16,7 @@
 	When it was set to R, this caused the R toolbar icon to not work
 	since this menu entry was being found rather than the real menu
 	entry for R.
-	
+
 
 2004-07-09  Stephen Eglen  <stephen@bushmills.inf.ed.ac.uk>
 
@@ -30,10 +35,10 @@
 	variables deleted.
 
 2004-07-02  Richard Heiberger  <rmh@temple.edu>
-	
+
 	* essdsp6w.el (ess-sqpe-versions-create): New function to
 	auto-generate defuns to allow other versions of Sqpe to be called.
-	
+
 	* essd-r.el (ess-rterm-versions-create): New function to auto-generate
 	defuns to allow other Windows versions of R to be called.
 
@@ -44,7 +49,7 @@
 
 	* ess-site.el (ess-versions-created): Tidy up the code for calling
 	older versions of R and Sqpe.  Old version did not work on Unix,
-	since ess-sqpe-versions-created was not bound.  New version checks
+	since ess-sqpe-versions-created was not bound.	New version checks
 	that variable is bound before using it.
 
 	* ess-utils.el (ess-flatten-list): Standard defun needed for
@@ -91,7 +96,7 @@
 2004-06-23  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-toolbar.el (ess-use-toolbar): Default value should check if
-	we are running XEmacs.  Other small doc updates to file made.
+	we are running XEmacs.	Other small doc updates to file made.
 
 	* ess-utils.el (ess-uniq-list): New defun for removing duplicate
 	strings from a list.
@@ -142,8 +147,8 @@
 2004-05-17  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (ess-fix-EQ-assign): new S source cleaners;
-	            (ess-fix-dot-more) : ditto
-          added to ess-MM-fix-src's actions
+		    (ess-fix-dot-more) : ditto
+	  added to ess-MM-fix-src's actions
 
 2004-05-17  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
@@ -361,7 +366,7 @@
 	* ess-cust.el (inferior-R-program-name): Customize.
 	Add description of file to line 1.
 	(ess-version): Change from defcustom to defvar;
-	presumably no-one will want to customize this variable!  Comment
+	presumably no-one will want to customize this variable!	 Comment
 	line prior to definiton already says that this variable is not
 	user-changeable.
 	(ess-dialect): Change from defcustom to defvar.
@@ -380,7 +385,7 @@
 
 2003-11-06  Martin Maechler  <maechler@stat.math.ethz.ch>
 
-	* ess-cust.el (ess-S-loop-timeout): new variable (and same for 	-XLS-)
+	* ess-cust.el (ess-S-loop-timeout): new variable (and same for	-XLS-)
 	* essd-*.el  use these new customizable variables.
 
 2003-11-05  Martin Maechler  <maechler@stat.math.ethz.ch>
@@ -650,7 +655,7 @@
 2000-03-21  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-vars.el (ess-temp-point): new for fixing multiline commands
-	in transcript.  Similar fix in
+	in transcript.	Similar fix in
 	* ess-trns.el, and
 	* ess-inf.el. --- really all by RMH!
 

@@ -9,7 +9,6 @@
 ;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
-;; Version: $Id: ess-inf.el,v 5.93 2004/07/08 07:48:58 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -1464,7 +1463,7 @@ to continue it."
 ;; rmh: catch page() just like we catch help()
 (defconst inferior-R-1-input-help (format "help *(%s)" ess-help-arg-regexp))
 (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
-(defconst inferior-R-page         (format "page *(%s)" ess-help-arg-regexp))
+(defconst inferior-R-page         (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defun inferior-R-input-sender (proc string)
   ;; REALLY only for debugging: this S_L_O_W_S D_O_W_N   [here AND below]
