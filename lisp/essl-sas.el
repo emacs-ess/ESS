@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/21 14:00:24 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essl-sas.el,v 1.14 1997/10/21 14:00:24 rossini Exp $
+;; Modified: $Date: 1997/10/21 14:01:30 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essl-sas.el,v 1.15 1997/10/21 14:01:30 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -919,8 +919,7 @@ page ;
   (setq major-mode 'sas-dir-mode)
   (setq mode-name "SAS")
   (setq sas-directory-name (expand-file-name default-directory))
-  (toggle-read-only 1)
-  )
+  (toggle-read-only 1))
   
 
 (defun sas-make-library (directory &optional update)
