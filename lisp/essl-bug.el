@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/05/02 19:40:55 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essl-bug.el,v 1.4 2001/05/02 19:40:55 ess Exp $
+;; Modified: $Date: 2001/07/23 17:04:45 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essl-bug.el,v 1.5 2001/07/23 17:04:45 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -167,7 +167,7 @@
 	    (insert (concat "const N = " temp ";\n"))
 	    (insert "var ;\n")
 	    (insert (concat "data  in \"" ess-file-dir ess-file-root ".dat\";\n"))
-	    (insert (concat "inits  in \"" ess-file-dir ess-file-root ".in\";\n"))
+	    (insert (concat "inits  in \"" ess-file-dir ess-file-root ".ini\";\n"))
 	    (insert "{\n")
             (insert "    for (i in 1:N) {\n    \n")
             (insert "    }\n")
@@ -209,6 +209,16 @@
    (if (equal ".cmd" ess-file-suffix) (progn
 	(save-buffer)
 	(shell)
+
+	(if (string-equal ":" (substring ess-sas-file-path 1 2)) 
+	    (progn
+		(insert (substring ess-sas-file-path 0 2))
+		(comint-send-input)
+	    )
+	)
+
+	(insert (concat "cd \"" (convert-standard-filename (file-name-directory ess-file)) "\""))
+	(comint-send-input)
 	(insert (concat ess-bugs-batch-command " " ess-file-root " " ess-file " " ess-bugs-batch-post-command))
 	(comint-send-input)
 ;;	(ess-switch-to-suffix ".log")
