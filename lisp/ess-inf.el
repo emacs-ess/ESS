@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2003/01/01 21:01:32 $
-;; Version: $Revision: 5.80 $
-;; RCS: $Id: ess-inf.el,v 5.80 2003/01/01 21:01:32 maechler Exp $
+;; Modified: $Date: 2003/11/05 13:20:04 $
+;; Version: $Revision: 5.81 $
+;; RCS: $Id: ess-inf.el,v 5.81 2003/11/05 13:20:04 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -115,8 +115,10 @@ accompany the call for `inferior-ess-program'.
   ;; Couldn't we rather set all the default values or Local values now ?
   ;;>>> (ess-setq-vars-default ess-customize-alist (current-buffer))
   ;;>>> (ess-setq-vars-local   ess-customize-alist (current-buffer))
-  ;;; AJR sez: I think we should set them later.  I don't want to nuke if
+  ;;; AJR sez: I think we should set them later; don't want to nuke if
   ;;; I don't have to.
+  ;;- MM: We shouldn't have to use  ess-setq-vars-default _at all_ ;
+  ;;      only do the buffer local ...-vars-local ones
   (let ((temp-ess-dialect (eval (cdr (assoc 'ess-dialect
 				       ess-customize-alist))))
 	(temp-ess-lang (eval (cdr (assoc 'ess-language
@@ -124,16 +126,25 @@ accompany the call for `inferior-ess-program'.
     (save-excursion
       ;;- Is this needed? (no, but it's useful to see them there [MM])
       (set-buffer ess-dribble-buffer)
-      (ess-setq-vars-default ess-customize-alist (current-buffer))
+      ;; Hack to work around the following "default" (global) setting of vars:
+      ;; make sure our comint-... hack doesn't affect anything else
+      (make-variable-buffer-local 'comint-use-prompt-regexp-instead-of-fields)
+      ;; now the abomination:
+      (ess-setq-vars-default ess-customize-alist)
+
+      (setq-default comint-use-prompt-regexp-instead-of-fields nil); re set HACK!
       ;;>> Doesn't set ess-language,
       ;;>> => comint-input-sender is not set to 'ess-input-  ==> no input echo!
       ;;>> => that's why things fail:
       ;;>> (ess-setq-vars-local ess-customize-alist (current-buffer))
       ;;		 ======
-      (setq temp-ess-dialect
-	    (eval(cdr(assoc 'ess-dialect ess-customize-alist))))
-      (setq temp-ess-lang
-	    (eval(cdr(assoc 'ess-language ess-customize-alist)))))
+      ;;MM --- why set them here again when already "(let ..)" above ?
+      ;;   --> trying without (comment the following 4 lines):
+      ;; (setq temp-ess-dialect
+      ;;    (eval(cdr(assoc 'ess-dialect ess-customize-alist))))
+      ;; (setq temp-ess-lang
+      ;;    (eval(cdr(assoc 'ess-language ess-customize-alist))))
+      )
 
     ;; run hooks now, to overwrite the above!
     (run-hooks 'ess-pre-run-hook)
@@ -206,7 +217,7 @@ accompany the call for `inferior-ess-program'.
 
       (set-buffer buf)
       ;; Now that we have the buffer, set buffer-local variables.
-      (ess-setq-vars-local ess-customize-alist buf)
+      (ess-setq-vars-local ess-customize-alist); buf)
       (if ess-start-args (setq inferior-ess-start-args ess-start-args))
       ;; Was:  if not, set to null.
       ;;(setq inferior-ess-start-args "")) ;; AJR: Errors with XLS?
@@ -1073,6 +1084,7 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
 
   ;; Use syntax valid *both* for GNU emacs and Xemacs :
   (define-key inferior-ess-mode-map "\r"       'inferior-ess-send-input)
+  (define-key inferior-ess-mode-map "\C-a"     'comint-bol)
   (define-key inferior-ess-mode-map "\M-\r"    'ess-transcript-send-command-and-move)
   (define-key inferior-ess-mode-map "\C-c\C-l" 'ess-load-file)
   ;; the above OVERRIDES  comint-dynamic-list-input-ring --> re-assign:
@@ -1277,7 +1289,7 @@ to continue it."
   (setq font-lock-defaults
 	'(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
 
-  (ess-setq-vars-local ess-customize-alist (current-buffer))
+  (ess-setq-vars-local ess-customize-alist); (current-buffer))
 
   (ess-write-to-dribble-buffer
    (format "(i-ess 3): curr-buf=%s, comint..echo=%s, comint..sender=%s,\n"
