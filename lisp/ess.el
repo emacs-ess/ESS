@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/09/01 18:16:30 $
-;; Version: $Revision: 1.59 $
-;; RCS: $Id: ess.el,v 1.59 1997/09/01 18:16:30 rossini Exp $
+;; Modified: $Date: 1997/09/01 19:31:27 $
+;; Version: $Revision: 1.60 $
+;; RCS: $Id: ess.el,v 1.60 1997/09/01 19:31:27 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -222,8 +222,8 @@
 ;; Taken from rlogin.el, from the comint package, from XEmacs 20.3.
 (defun ess-line-to-list-of-words (line)
   (let ((list nil)
-	(posn 0)
-        (match-data (match-data)))
+	(posn 0))
+        ;; (match-data (match-data)))
     (while (string-match "[^ \t\n]+" line posn)
       (setq list (cons (substring line (match-beginning 0) (match-end 0))
                        list))
