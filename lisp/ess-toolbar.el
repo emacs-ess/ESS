@@ -31,7 +31,8 @@
 ;;; The toolbar can be customized in several ways.  To see options, do:
 ;;; M-x customize-group RET ess-toolbar RET
 ;;; If you change any of the variables, you may need to restart Emacs
-;;; to see any effect.
+;;; to see any effect.  See also the documentation for ess-toolbar-items
+;;; if you wish to change its value.
 ;;;
 ;;; Technical issues.
 ;; Emacs vs XEmacs.
@@ -92,8 +93,18 @@ Each list element has three items:
 3. the tooltip doc string (XEmacs only; Emacs gets doc string from menu items.
 
 General toolbar items are also added to the ESS toolbar
-iff `ess-toolbar-own-icons' is nil."
+iff `ess-toolbar-own-icons' is nil.
+
+Setting this variable with setq doesn't take effect once you have
+loaded ess-site, unless you follow it by a call to
+`ess-make-toolbar' afterwards.  Instead, change its value using
+Custom, and then on all new ESS buffers you should see the
+toolbar has changed."
   :group 'ess-toolbar
+  :set (lambda (symbol value)
+	 (set-default symbol value)
+	 (if (fboundp 'ess-make-toolbar)
+	     (ess-make-toolbar)))
   :type '(repeat (list (function :tag "Function to run")
 		       (string  :tag "Icon")
 		       (string  :tag "Tooltip"))))
