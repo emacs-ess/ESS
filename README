@@ -1,6 +1,6 @@
--*- view -*-
+-*- mode: text;'minor-mode: view -*-
 
-($Revision: 4.90 $)
+($Revision: 4.91 $)
 
 Emacs Speaks Statistics (ESS), version 5.0
 ------------------------------------------
