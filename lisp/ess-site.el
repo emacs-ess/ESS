@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/12/02 14:09:55 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: ess-site.el,v 5.1 1997/12/02 14:09:55 rossini Exp $
+;; Modified: $Date: 1997/12/05 15:09:57 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: ess-site.el,v 5.2 1997/12/05 15:09:57 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -65,14 +65,22 @@
   ;; Not important in XEmacs, if unpacking from ../xemacs/site-lisp/
   ;; directory.
 
-  ;; Suggested by RMH
+  ;; WARNING- WITH EMACS 20.2, NEED TO USE ONE OF THE FOLLOWING
+  ;; NON-DEFAULT SETTINGS
+
+  ;; A nice default
   (defvar ess-lisp-directory
     (directory-file-name (file-name-directory (file-truename load-file-name))))
+
   ;;(defvar ess-lisp-directory
-  ;;(directory-file-name "/p1/apps/X11R6.3/lib/xemacs/site-lisp/ESS"))
+  ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ESS"))
+
+  ;;(defvar ess-lisp-directory
   ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
-  ;;(directory-file-name "/usr/local/share/emacs/site-lisp/ess-mode"))
-  ;;(directory-file-name "/stat2/faculty/rossini/S-mode"))
+
+  ;; example of "local" or personal use 
+  ;;(defvar ess-lisp-directory
+  ;;(directory-file-name "/stat2/faculty/rossini/ESS"))
   
   (add-to-list 'load-path ess-lisp-directory))
 
