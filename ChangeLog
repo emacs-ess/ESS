@@ -1,3 +1,41 @@
+Fri Nov 21 17:37:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: added 2 more from RMH, with comments.
+
+Fri Nov 21 17:31:50 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el: fixed comments to reflect reality (RMH).
+
+Fri Nov 21 17:05:05 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-trns.el: ess-mode -> ESS.   (RMH)
+	ess-mode-map ->	ess-transcript-mode-map
+
+Fri Nov 21 17:02:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (DISTSCRIPTS): commented out. (RMH)
+
+	* Makefile (dist-doc): commented out.  Will do by hand for
+ 	5.0. (RMH)
+ 	
+	* Makefile: Added comments for structure of Makefile. (RMH)
+
+Fri Nov 21 10:26:53 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: incr version.
+
+Fri Nov 21 10:26:25 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: added dir directions for info.
+
+Fri Nov 21 10:22:17 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/rmh-talk.tex: removed trailing \\.
+
+Fri Nov 21 10:19:50 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (dist): ess.dvi and ess.info need to be up to date.
+
 Thu Nov 20 18:38:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sta.el: 
@@ -66,6 +104,8 @@ Thu Nov 20 18:00:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Thu Nov 20 16:41:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
+	* RELEASED: verylastpre.
+	
 	* ess-inf.el: fixed menus.
 
 Thu Nov 20 16:40:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
@@ -1505,6 +1545,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 4.3  1997/11/21 22:40:12  rossini
+	* Removing last todo.  RMH gives seal of approval.
+	* Removing
 	* Removing Revision 4.2  1997/11/20 23:39:23  rossini
 	* Removing *** empty log message ***
 	* Removing
