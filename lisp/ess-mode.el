@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/08 16:27:44 $
-;; Version: $Revision: 1.57 $
-;; RCS: $Id: ess-mode.el,v 1.57 1997/09/08 16:27:44 rossini Exp $
+;; Modified: $Date: 1997/09/08 19:18:18 $
+;; Version: $Revision: 1.58 $
+;; RCS: $Id: ess-mode.el,v 1.58 1997/09/08 19:18:18 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -304,10 +304,14 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
 	   alist))
   (setq major-mode 'ess-mode)
   (setq mode-name (concat "ESS[" ess-dialect "]"))
+  ;; The following line does the next 20 or so :-).
+  (ess-write-to-dribble-buffer
+   (format "(ess-mode-1.6): editing-alist=%s \n"
+	   ess-mode-editing-alist))
+  (ess-setq-vars-local ess-mode-editing-alist (current-buffer))
+
   (use-local-map ess-mode-map)
   (set-syntax-table ess-mode-syntax-table)
-  ;; The following line does the next 20 or so :-).
-  (ess-setq-vars-local ess-mode-editing-alist (current-buffer))
 
 ;;  (make-local-variable 'paragraph-start)
 ;;  (setq paragraph-start (concat "^$\\|" page-delimiter))
@@ -336,7 +340,8 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
   (setq mode-line-process ;; AJR: in future, XEmacs will use modeline-process.
 	'(" [" (ess-local-process-name ess-local-process-name "none") "]"))
 
-  (run-hooks 'ess-mode-hook))
+  (run-hooks 'ess-mode-hook)
+  (ess-write-to-dribble-buffer "\nFinished setting up ESS-mode.\n"))
 
 ;;*;; User commands in ess-mode
 
