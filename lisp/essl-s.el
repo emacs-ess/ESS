@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2004/01/10 17:40:31 $
-;; Version: $Revision: 5.32 $
-;; RCS: $Id: essl-s.el,v 5.32 2004/01/10 17:40:31 maechler Exp $
+;; Modified: $Date: 2004/01/20 11:24:40 $
+;; Version: $Revision: 5.33 $
+;; RCS: $Id: essl-s.el,v 5.33 2004/01/20 11:24:40 stephen Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -492,15 +492,30 @@ Uses the file given by the variable `ess-function-outline-file'."
     ))
 
 (defun ess-smart-underscore ()
-  "Electrical \"_\" key: insert `ess-S-assign' after removing spaces, unless
- in string/comment.  `ess-S-assign', typically \" <- \", can be customized."
+  "Smart \"_\" key: insert `ess-S-assign', unless in string/comment.
+If the underscore key is pressed a second time, the assignment
+operator is removed and replaced by the underscore.  `ess-S-assign',
+typically \" <- \", can be customized."
   (interactive)
   ;;(insert (if (inside-string/comment-p (point)) "_" ess-S-assign))
   (if (inside-string/comment-p (point))
       (insert "_")
-    ;; else
-    (delete-horizontal-space)
-    (insert ess-S-assign)))
+    ;; Else one keypress produces ess-S-assgin; a second keypress will delete
+    ;; ess-S-assign and instead insert _
+    ;; Rather than trying to count a second _ keypress, just check whether
+    ;; the current point is preceded by ess-S-assign.
+    (let ((assign-len (length ess-S-assign)))
+      (if (and
+	   (>= (point) (+ assign-len (point-min))) ;check that we can move back
+	   (save-excursion
+	     (backward-char assign-len)
+	     (looking-at ess-S-assign)))
+	  ;; If we are currently looking at ess-S-assign, replace it with _
+	  (progn
+	    (delete-backward-char assign-len)
+	    (insert "_"))
+	(delete-horizontal-space)
+	(insert ess-S-assign)))))
 
 (defun ess-toggle-underscore (force)
   "Set the \"_\" (underscore) key to \\[ess-smart-underscore] or back to \"_\".
