@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/19 20:49:29 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: ess-site.el,v 1.14 1997/06/19 20:49:29 rossini Exp $
+;; Modified: $Date: 1997/06/19 20:51:46 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: ess-site.el,v 1.15 1997/06/19 20:51:46 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.15  1997/06/19 20:51:46  rossini
+;;: added comments for ess-directory setup.
+;;:
 ;;: Revision 1.14  1997/06/19 20:49:29  rossini
 ;;: added ess-ask-for-ess-directory.
 ;;:
@@ -287,6 +290,19 @@
 ;;; If t, will ask for the directory to use.  If nil, assumes the
 ;;; default (usually, the users home directory...).
 (setq ess-ask-for-ess-directory t)
+
+;;; (3.5) ess-directory
+;; You can put something like:
+;; (setq ess-directory (file-name-as-directory (concat (getenv "HOME") "/ess/")))
+;; in your ~/.emacs file and ess will always start up in your ~/ess directory.
+;; Alternatively, you can get ess to start up in the current buffer's directory 
+;; by putting this in your .emacs
+;; (setq ess-pre-run-hook '((lambda () (setq ess-directory default-directory))))
+;; Better (more correct) version:
+;;    (defun ajr:ess-set-directory () 
+;;	 "Set ess-directory to current directory."
+;;	 (setq ess-directory default-directory))
+;;    (add-hook 'ess-pre-run-hook 'ajr:ess-set-directory)
 
  ; Local variables section
 
