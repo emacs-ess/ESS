@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/03/05 20:17:19 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: essl-sta.el,v 5.13 1999/03/05 20:17:19 rossini Exp $
+;; Modified: $Date: 1999/03/05 20:32:28 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: essl-sta.el,v 5.14 1999/03/05 20:32:28 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -69,7 +69,7 @@
 regexp-search, and so specials should be quoted.
 ")
 
-(defconst ess-help-STA-sec-regex "^[A-Z. ---]+:$"
+(defconst ess-help-STA-sec-regex "^[A-Z a-z]+:?\n[-]+$"
   "Reg(ular) Ex(pression) of section headers in help file")
 
 
