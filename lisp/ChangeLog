@@ -1,3 +1,10 @@
+2002-01-15  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (S-editing-alist): new add-log-...regep from Stephen
+	Eglen. Allows `C-x 4 a' (adding to Changelog) find the S function name.
+
+	(R-help-sec-keys-alist): "Usage" and "Details" as the S lists.
+
 2002-01-14  Richard Heiberger <rmh@surfer.stat.temple.edu>
 
 	* ess-mous.el: ess-mous is now on submenu of C-mouse-3 in

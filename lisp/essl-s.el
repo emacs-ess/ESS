@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2001/12/17 09:47:36 $
-;; Version: $Revision: 5.26 $
-;; RCS: $Id: essl-s.el,v 5.26 2001/12/17 09:47:36 maechler Exp $
+;; Modified: $Date: 2002/01/15 08:47:17 $
+;; Version: $Revision: 5.27 $
+;; RCS: $Id: essl-s.el,v 5.27 2002/01/15 08:47:17 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -82,6 +82,8 @@
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . S-syntax-table)
+    ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
+    (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function")
     (font-lock-defaults           . '(ess-mode-font-lock-keywords
 				      nil nil ((?\. . "w")))))
   "General options for editing S, S+, and R source files.")
@@ -144,10 +146,12 @@
 (defconst R-help-sec-keys-alist
   '((?a . "\\s *Arguments:")
     (?d . "\\s *Description:")
+    (?D . "\\s *Details:")
     (?e . "\\s *Examples:")
     (?n . "\\s *Note:")
     (?r . "\\s *References:")
     (?s . "\\s *See Also:")
+    (?u . "\\s *Usage:")
     (?v . "\\s *Value[s]?")	;
     )
   "Alist of (key . string) pairs for use in help section searching.")
