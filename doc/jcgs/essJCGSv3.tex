@@ -165,7 +165,7 @@
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/30 16:21:33 $ - $Revision: 1.29 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/30 16:23:30 $ - $Revision: 1.30 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -438,7 +438,7 @@ R or \Splus.
 %%% ----  MORE IMPORTANT (because for a much wider audience)
 %%% and for all the S family !!!
 \paragraph{Getting Help.}
-ESS provides display and navigation tools for S (R and \SPlus\) and
+ESS provides display and navigation tools for S (R and \Splus) and
 \Stata\ help displays.  Displays of help files are done in a separate
 buffer.  These buffers include single key bookmarks of the main
 sections of the help file, such as to jump to the examples sections or
@@ -589,6 +589,17 @@ capabilities for transparent access to remote files over a network.
 This means that the user views, edits, and saves files on a remote
 machine exactly as if they were on the local machine.
 
+This relaxs the requirement that statistics programs be available on
+the local machine.  ESS provides both transparent editing of files and
+execution of statistics packages on a remote machine with
+\stexttt{iESS[S]} or \stexttt{iESS[SAS]}.  All the editing and
+interaction features described for the local machine work equally well
+on the remote machine.  The interaction, including all the unique
+features of working with ESS, appears to the user as if the program
+were running on the local machine.  If the X11 Windowing system is
+running on the local machine, it is even possible to bring up visual
+displays and graphics from remote Unix systems onto a local display.
+
 %\paragraph{Inter-Process Communication.}
 %Packages that use unix-style command-line interfaces can be run as an
 %inferior process within an Emacs buffer.  The standard input and
@@ -613,17 +624,6 @@ machine exactly as if they were on the local machine.
 %environment.  The Microsoft Windows versions of \SAS, \Stata, and
 %\XLispStat\ are in this category.
 
-One useful feature of ESS is relaxation of the requirement that the
-statistics program be available on the local machine.  ESS provides
-both transparent editing of files and execution of statistics packages
-on a remote machine with \stexttt{iESS[S]} or \stexttt{iESS[SAS]}.
-All the editing and interaction features described for the local
-machine work equally well on the remote machine.  The interaction,
-including all the unique features of working with ESS, appears to the
-user as if the program were running on the local machine.  If the X11
-Windowing system is running on the local machine, it is even possible
-to bring up visual displays and graphics from remote Unix systems onto
-a local display.
 %Microsoft Windows or Apple Mac display.
 
 \paragraph{Interactive S family}
