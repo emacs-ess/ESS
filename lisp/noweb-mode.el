@@ -96,10 +96,10 @@
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.14 2002/06/20 21:52:06 rsparapa Exp $")
+  "Imported to ESS Subversion repository and RCS ids not maintained.")
 
 (defconst noweb-mode-RCS-Name
-  "$Name:  $")
+  " ")
 
 (defvar noweb-mode-prefix "\M-n"
   "*Prefix key to use for noweb mode commands.
