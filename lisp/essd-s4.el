@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/19 21:16:24 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-s4.el,v 1.1 1997/06/19 21:16:24 rossini Exp $
+;; Modified: $Date: 1997/06/22 23:49:28 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-s4.el,v 1.2 1997/06/22 23:49:28 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;; $Log: essd-s4.el,v $
+;;; Revision 1.2  1997/06/22 23:49:28  rossini
+;;; revert.
+;;;
 ;;; Revision 1.1  1997/06/19 21:16:24  rossini
 ;;; Initial revision
 ;;;
@@ -106,12 +109,12 @@
 ;;; additional font-lock-keywords for S4
 
 ;;*;; based on S-inf.el line 107
-(add-to-list 'S-inf-font-lock-keywords
-	     '("\\<\\(^Problem\\|^Warning\\|^Error\\|Debug ?\\|Browsing in frame of\\|Local Variables\\)\\>" . font-lock-reference-face) ; S-inf problems
-)
-(add-to-list 'S-inf-font-lock-keywords
- '("^R>" . font-lock-keyword-face)	; debug prompt
-)
+;;(add-to-list 'S-inf-font-lock-keywords
+;;	     '("\\<\\(^Problem\\|^Warning\\|^Error\\|Debug ?\\|Browsing in frame of\\|Local Variables\\)\\>" . font-lock-reference-face) ; S-inf problems
+;;)
+;;(add-to-list 'S-inf-font-lock-keywords
+;; '("^R>" . font-lock-keyword-face)	; debug prompt
+;;)
 (inferior-S-mode)
 
 ; S-inf.el line 150
@@ -119,7 +122,7 @@
 
 ;; fontify S-transcript-mode
 ;; overwrites S-trans.el lines 60-69
-(setq S-trans-font-lock-keywords S-inf-font-lock-keywords)
+;;(setq S-trans-font-lock-keywords S-inf-font-lock-keywords)
 
 (load "S-mode")
                                              ;; Must follow S-mode
