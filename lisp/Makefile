@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.32 1997/06/18 18:30:07 rossini Exp $
+## $Id: Makefile,v 1.33 1997/06/19 20:36:11 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.33  1997/06/19 20:36:11  rossini
+## redid dependencies.
+##
 ## Revision 1.32  1997/06/18 18:30:07  rossini
 ## added $(INSTALL)  (thanks, MM).
 ##
@@ -103,7 +106,7 @@ BATCHFLAGS = -batch --no-site-file --no-init-file
 ## expansions.  everything also depends on the byte compiler
 ## options file since this might do odd things like turn off
 ## certain compiler optimizations.
-CORE = ess.elc
+CORE = ess.elc ess-site.elc
 
 ## Need both types, UNFORTUNATELY, since we want to BUILD and
 ## MAINTAIN.  Some one ought to fix this to be more GNUish.
@@ -181,8 +184,11 @@ html/S-mode_toc.html: S-mode.texi
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
 
 ess.elc:	ess.el
-	@echo compiling ess.el...
+#	@echo compiling ess.el...
 	$(EMACS) $(BATCHFLAGS)  -f batch-byte-compile ess.el
+
+ess-site.elc:  ess-site.el ess.elc
+	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile ess-site.el
 
 ess-help.elc:  ess-help.el $(CORE)
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-help.el
@@ -196,8 +202,6 @@ ess-mode.elc:  ess-mode.el $(CORE)
 ess-trns.elc:  ess-trns.el $(CORE)
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-trns.el
 
-ess-site.elc:  ess-site.el $(CORE)
-	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile ess-site.el
 
 #S-xmacs.elc:  S-xmacs.el
 #S-menu.elc:  S-menu.el
