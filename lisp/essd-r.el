@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/03/31 23:44:54 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: essd-r.el,v 5.9 1999/03/31 23:44:54 rossini Exp $
+;; Modified: $Date: 1999/03/31 23:46:33 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: essd-r.el,v 5.10 1999/03/31 23:46:33 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -82,7 +82,7 @@
 ;; Note that R is set to be R-unix or R-microsoft in ess-site.el.
 ;;
 
-(defun R-unix (&optional start-args)
+(defun R (&optional start-args)
   "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ)."
   (interactive "P")
   (setq ess-customize-alist R-customize-alist)
