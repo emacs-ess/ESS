@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.73 2003/12/09 20:14:36 rsparapa Exp $
+## $Id: Makefile,v 5.74 2004/05/03 20:26:12 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -92,6 +92,10 @@ ChangeLog: VERSION
 rel: dist
 	@echo "** Placing tar and zip files **"
 	scp -p $(ESSDIR).tar.gz $(ESSDIR).zip $(UPLOAD_SITE)
+	@echo "** and the new LATEST.IS. file **"
+	touch LATEST.IS.$(ESSDIR)
+	scp -p LATEST.IS.$(ESSDIR) $(UPLOAD_SITE)
+	@echo "** WARNING:  you must delete the old LATEST.IS. file manually **"
 
 tag:
 	@echo "** Tagging the release **"
