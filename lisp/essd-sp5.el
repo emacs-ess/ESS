@@ -1,13 +1,13 @@
 ;;; essd-sp5.el --- S-plus 5  customization
 
-;; Copyright (C) 1998 A.J. Rossini
+;; Copyright (C) 1998--2004 A.J. Rossini
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 2004/05/03 02:17:19 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: essd-sp5.el,v 1.13 2004/05/03 02:17:19 rossini Exp $
+;; Modified: $Date: 2004/05/03 02:24:58 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: essd-sp5.el,v 1.14 2004/05/03 02:24:58 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 

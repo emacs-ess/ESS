@@ -1,14 +1,14 @@
 ;;; essd-sp4.el --- S-PLUS 4.x customization
 ;;; Richard M. Heiberger, December 1998
 
-;; Copyright (C) 1998--1999 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Copyright (C) 1998--2004 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2004/05/03 02:17:19 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: essd-sp4.el,v 1.17 2004/05/03 02:17:19 rossini Exp $
+;; Modified: $Date: 2004/05/03 02:24:58 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: essd-sp4.el,v 1.18 2004/05/03 02:24:58 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 

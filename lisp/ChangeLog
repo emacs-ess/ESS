@@ -1,5 +1,13 @@
 2004-05-02  A.J. Rossini  <rossini@u.washington.edu>
 
+	* essd-sp6.el (S+6-mode): 
+	* essd-sp5.el (S+5-mode): 
+	* essd-sp4.el (S+4-mode): 
+	* essd-s4.el (S4-mode): 
+	* essd-sp3.el (S+3-mode): 
+	* essd-s3.el (S3-mode): fixed imenu variable name, extended
+	copyrights from 1997 to 2004.
+
 	* essa-sas.el (ess-sas-image-viewer): Moved function after
 	ess-sas-submit-method defvar, since we need that value to set this
 	function.

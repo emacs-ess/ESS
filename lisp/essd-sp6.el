@@ -1,13 +1,13 @@
 ;;; essd-sp6.el --- S-Plus 6  customization
 
-;; Copyright (C) 2001 A.J. Rossini <rossini@u.washington.edu>
+;; Copyright (C) 2001--2004 A.J. Rossini <rossini@u.washington.edu>
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: ESS Core Team <ESS-core@stat.math.ethz.ch>
 ;; Created: 2001/02/06
-;; Modified: $Date: 2004/05/03 02:17:19 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: essd-sp6.el,v 1.13 2004/05/03 02:17:19 rossini Exp $
+;; Modified: $Date: 2004/05/03 02:24:58 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: essd-sp6.el,v 1.14 2004/05/03 02:24:58 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
