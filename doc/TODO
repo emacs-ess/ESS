@@ -1,6 +1,6 @@
 -*- view -*-
 
-$Revision: 1.12 $
+$Revision: 1.13 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1039,3 +1039,5 @@ NOTE: Not all of these are clean OR are even consistent.
    "\C-c\C-c" 'switch-to-sas-process-buffer)	^C^Z or ^C^Y
 
 * Fix the links with the info system ("about", from the menu). (AJR/MM). 
+
+* REWRITE INFERIOR-ESS (AJR, for 5.1 series).
