@@ -1,3 +1,19 @@
+2004-12-29  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-mode.el (ess-mode): Remove call to
+	ess-load-object-name-db-file.
+	
+
+	* ess-menu.el (ess-imenu-S): Shorten doc string.
+
+	* ess-inf.el (inferior-ess-mode): Remove vall to
+	ess-load-object-name-db-file.
+	(ess-create-object-name-db): Comment out for now, maybe delete later?
+
+	* ess-cust.el (ess-object-name-db-file): Change from defcustom to
+	defvar.  Also, add note that probably this variable (and others)
+	can be deleted in future ESS versions.
+
 2004-12-24  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-emcs.el (ess-replace-regexp-in-string): New function,
