@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/01/08 18:05:40 $
-;; Version: $Revision: 5.31 $
-;; RCS: $Id: essl-sas.el,v 5.31 2002/01/08 18:05:40 ess Exp $
+;; Modified: $Date: 2002/01/14 17:23:40 $
+;; Version: $Revision: 5.32 $
+;; RCS: $Id: essl-sas.el,v 5.32 2002/01/14 17:23:40 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -144,10 +144,11 @@ the mode line."
   :group 'ess-sas
   :type  'hook)
 
-(defcustom sas-options-string ""
-  "*Options to be passed to sas as if typed on the command line."
-  :group 'ess-sas
-  :type  'string)
+;never used--see ess-sas-submit-command-options in essa-sas.el
+;(defcustom sas-options-string ""
+;  "*Options to be passed to sas as if typed on the command line."
+;  :group 'ess-sas
+;  :type  'string)
 
 (defcustom sas-notify t 
   "*Beep and display message when job is done."
@@ -166,8 +167,7 @@ the mode line."
 
 (defcustom sas-get-options-history nil
   "History list of Options passed to SAS in sas-get-dataset."
-  :group 'ess-sas
-  :type  'string)  ;; AJR: Rodney/Rich: is this really a string?
+  :group 'ess-sas)
 
 (defcustom sas-page-number-max-line 3
   "*Number of lines from the page break, to search for the page
@@ -186,7 +186,7 @@ number."
   :type  'string)
 
 (defcustom sas-file-name nil
-  "*  DOC?."
+  "*The name of the current sas file."
   :group 'ess-sas
   :type  'file)
 
@@ -202,7 +202,7 @@ number."
   :group 'ess-sas
   :type  'string)
 
-(defcustom ess-sas-run-make-regexp t
+(defcustom ess-sas-run-make-regexp nil
   "If you do not want to run make-regexp, then set to nil."
   :group 'ess-sas
   :type  'string)
@@ -215,8 +215,7 @@ number."
 (defvar sas-dataset nil)
 (defvar SAS-syntax-table nil "Syntax table for SAS code.")
 
-(if SAS-syntax-table
-    nil
+(if SAS-syntax-table nil
   (setq SAS-syntax-table (make-syntax-table))
 
 ;; (if (equal system-type 'windows-nt)
