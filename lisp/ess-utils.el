@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2004/07/02 10:09:16 $
-;; Version: $Revision: 5.34 $
-;; RCS: $Id: ess-utils.el,v 5.34 2004/07/02 10:09:16 stephen Exp $
+;; Modified: $Date: 2004/07/09 15:05:44 $
+;; Version: $Revision: 5.35 $
+;; RCS: $Id: ess-utils.el,v 5.35 2004/07/09 15:05:44 stephen Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -407,7 +407,8 @@ if any exist, in PATH."
 		(while (< j k)
 		    (setq ess-tmp-file (concat (file-name-as-directory ess-tmp-dir)
 			(nth j ess-tmp-files)))
-		    (if (file-executable-p ess-tmp-file) 
+		    (if (and (file-executable-p ess-tmp-file) 
+			     (not (file-directory-p ess-tmp-file)))
 			(setq ess-tmp-exec (nconc ess-tmp-exec (list ess-tmp-file))))
 		    (setq j (+ j 1)))))
 	(setq i (+ i 1)))
