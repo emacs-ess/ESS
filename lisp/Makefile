@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.35 $.
+### File: $Revision: 5.36 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -56,8 +56,9 @@ TOCOMPILE = ess-cust.el $(CORE) \
 	ess-inf.el ess-iw32.el essnt204.el \
 	ess-mode.el ess-trns.el ess-help.el \
 	ess-comp.el \
+	ess-menu.el \
 	essl-s.el essd-s3.el essd-s4.el \
-	essd-sp3.el essd-sp4.el essd-sp4com.el essd-sp5.el \
+	essd-sp3.el essd-sp4.el essd-sp4com.el essd-sp5.el essd-sp6.el \
 	essd-r.el \
 	essd-els.el \
 	essl-lsp.el essd-xls.el essd-vst.el essd-arc.el \
