@@ -8,8 +8,15 @@ low-volume mailing list.
 
 The purposes of the mailing list include
 
-- helping users of ESS to get along with it.
-- discussing aspects of using ESS for GNU Emacs and XEmacs.
-- suggestions for improvements.
-- announcements of new [beta] releases of ESS.
-- posting small patches to ESS.
+@itemize
+@item
+ helping users of ESS to get along with it.
+@item
+ discussing aspects of using ESS for GNU Emacs and XEmacs.
+@item
+ suggestions for improvements.
+@item
+ announcements of new [beta] releases of ESS.
+@item
+ posting small patches to ESS.
+@end itemize
