@@ -1,9 +1,9 @@
-1 General Information: README
-*****************************
+General Information: README
+***************************
 
-This is the README file for the distribution of ESS version
+   This is the README file for the distribution of ESS version
 
-   5.2.2
+   5.2.3
 
    The first release of the 5.2 series.  ESS is a GNU Emacs and XEmacs
 mode for interactive statistical programming and data analysis.
@@ -13,12 +13,14 @@ for both Unix and Windows.  ESS grew out of the desire for bug fixes and
 extensions to S-mode and SAS-mode as well as a consistent union of their
 features in one package.
 
-   The current development team is led by A.J. (Tony) Rossini
-(<rossini@biostat.washington.edu>), who did the initial port to XEmacs
-and has been the primary coder.  Martin Maechler
+   The current development team is led by Martin Maechler since August
+2004. Former project leader A.J. (Tony) Rossini
+(<rossini@biostat.washington.edu>) did the initial port to XEmacs and
+has been the primary coder.  Martin Maechler
 (<maechler@stat.math.ethz.ch>) and Kurt Hornik
 (<hornik@ci.tuwien.ac.at>) have assisted with S-PLUS, S4, R, and
-XLispStat.  Richard M. Heiberger (<rmh@temple.edu>) has assisted with
+XLispStat.  Stephen Eglen (<stephen@gnu.org>) has worked mostly on R
+support.  Richard M. Heiberger (<rmh@temple.edu>) has assisted with
 S-PLUS and S4 development for Windows.  Richard and Rodney A. Sparapani
 (<rsparapa@mcw.edu>) have done much of the work implementing
 interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.
@@ -27,10 +29,10 @@ interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.
 Kademan, Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and
 Stata-mode (Thomas Lumley).
 
-1.1 License
-===========
+License
+=======
 
-ESS is free software; you can redistribute it and/or modify it under
+   ESS is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
@@ -40,10 +42,19 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 in the file COPYING in the same directory as this file for more details.
 
-1.2 New Features
-================
+New Features
+============
 
-Changes/New Features in 5.2.2:
+   Changes/New Features in 5.2.3:
+   * ESS: When new inferior ESS processes are created, by default they
+     will replace the current buffer (this restores behavior from pre
+     5.2.0). If you wish new ESS processes to start in another window
+     of the current frame, set inferior-ess-same-window to nil.
+
+   * New variables inferior-Splus-args and inferior-R-args provide a
+     way to pass command line arguments to starting S and R processes.
+
+   Changes/New Features in 5.2.2:
    * bug-fixes for 5.2.1 (require 'executable), html docs, etc.
 
    * ess-lisp-directory/../doc/info added to Info-directory-list if
@@ -359,8 +370,8 @@ Changes/New Features in 5.2.2:
      the S language, syntax, and indentation patterns and provide the
      syntactic highlighting that eases the programming tasks.
 
-1.3 Current Features
-====================
+Current Features
+================
 
    * Languages Supported:
         * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
@@ -414,19 +425,18 @@ Changes/New Features in 5.2.2:
 
         * Previewing
 
-1.4 Stability
-=============
+Stability
+=========
 
-Versions 5.1.x are meant to be gamma-level releases.  While some bugs
-are fixed, others may have been introduced, especially with regards to
-new features.  See the file doc/TODO for details.  Bug reports are
-solicited; see the Bugs Section below.  Patches or suggested coding
-fixes with bug reports are much appreciated!
+   Versions 5.2.x are meant to be release-quality versions.  While some
+new features are being introduced, we are cleaning up and improving the
+interface.  We know about some remaining documentation inconsistencies.
+Patches or suggested fixes with bug reports are much appreciated!
 
-1.5 Requirements
-================
+Requirements
+============
 
-ESS has been tested with
+   ESS has been tested with
 
    * S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
 
@@ -476,35 +486,62 @@ bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 19.34 is available for download here
 (ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz).
 
-1.6 Getting the Latest Version
-==============================
+Getting the Latest Version
+==========================
 
-The latest version of ESS is always available on the web at: ESS web
-page (http://www.analytics.washington.edu/downloads/ess/) or StatLib
+   The latest version of ESS is always available on the web at: ESS web
+page (http://ess.r-project.org) or StatLib
 (http://lib.stat.cmu.edu/general/ESS/)
 
-   There no longer is an anonymous CVS repository for ESS, due to lack
-of interest, little demand, and problems with security.
+   The latest development version of ESS is available via
+`https://svn.R-project.org/ESS/', the ESS Subversion repository.  If
+you have a Subversion client (see `http://subversion.tigris.org/'), you
+can download the sources using:
+     % svn checkout https://svn.r-project.org/ESS/trunk PATH
 
-1.7 Installation (from tar file)
-================================
+which will put the ESS files into directory PATH.  Later, within that
+directory, `svn update' will bring that directory up to date.
+Windows-based tools such as TortoiseSVN are also available for
+downloading the files.  Alternatively, you can browse the sources with a
+web browser at: ESS SVN site (https://svn.r-project.org/ESS/trunk).
+However, please use a subversion client instead to minimize the load
+when retrieving.
 
-We now discuss installation, which might happen under Unix or Microsoft
-Windows.  First, we discuss Unix installation.  *Note Unix
+   If you remove other versions of ESS from your emacs load-path, you
+can then use the development version by adding the following to .emacs:
+
+     (load "/path/to/ess-svn/lisp/ess-site.el")
+
+   Note that https is required, and that the SSL certificate for the
+Subversion server of the R project is
+
+     Certificate information:
+      - Hostname: svn.r-project.org
+      - Valid: from Jul 16 08:10:01 2004 GMT until Jul 14 08:10:01 2014 GMT
+      - Issuer: Department of Mathematics, ETH Zurich, Zurich, Switzerland, CH
+      - Fingerprint: c9:5d:eb:f9:f2:56:d1:04:ba:44:61:f8:64:6b:d9:33:3f:93:6e:ad
+
+(currently, there is no "trusted certificate").  You can accept this
+certificate permanently and will not be asked about it anymore.
+
+Installation (from tar file)
+============================
+
+   We now discuss installation, which might happen under Unix or
+Microsoft Windows.  First, we discuss Unix installation.  *Note Unix
 installation::.
 
    For Microsoft Windows Installation please skip to the *Note
 Microsoft Windows installation::.
 
-1.8 Unix installation
-=====================
+Unix installation
+=================
 
   1. cd to a directory where you want to install ESS, creating it if
      necessary.  This directory will be referred to below as ESSDIR.
 
-  2. Retrieve the latest version from gzipped tar file
-     (http://www.analytics.washington.edu/downloads/ess/ess-VERSION.tar.gz)
-     to ESSDIR.
+  2. Retrieve the latest version from ESS downloads area
+     (http://ess.r-project.org/downloads) to ESSDIR.
 
   3. Decompress/unarchive the files from the disribution.
           gunzip ess-VERSION.tar.gz
@@ -515,13 +552,6 @@ Microsoft Windows installation::.
 
      The `tar' command will create the subdirectory ess-VERSION and
      unarchive the files there.
-
-     If you are using GNU Emacs 19.29, decompress/unarchive
-     `ESSDIR/ess-VERSION/lisp/19.29.tar.gz', read
-     `ESSDIR/ess-VERSION/lisp/19.29/README', follow the instructions
-     and you might be able to get ESS to work.  _Please note that GNU
-     Emacs 19.29 is no longer supported_.  For a list of supported
-     versions of emacs, see *Note Requirements::.
 
   4. Edit the file `ESSDIR/ess-VERSION/lisp/ess-site.el' as explained
      in the comments section of that file.
@@ -539,9 +569,12 @@ Microsoft Windows installation::.
           (require 'ess-site)
      to configure emacs for ESS.
 
-  6. That's it!  To edit statistical programs, load the files with the
-     requiste extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R,
-     and ".lsp" for XLispStat).
+  6. That's it!  If you are installing just a local copy of ESS for
+     yourself, ESS is now ready to be used.  (The remaining steps below
+     are for advanced installation.)  To edit statistical programs,
+     load the files with the requiste extensions (".sas" for SAS, ".S"
+     for S-PLUS, ".R" for R, and ".lsp" for XLispStat).  To start a
+     statistical process within Emacs, such as R, type `M-x R'.
 
   7. (OPTIONAL) If you are running S-PLUS or R, you might consider
      installing the database files.  From within emacs, `C-x d' to the
@@ -594,11 +627,11 @@ Microsoft Windows installation::.
      (http://www.xemacs.org/Documentation/packageGuide.html).
 
 
-1.9 Microsoft Windows installation
-==================================
+Microsoft Windows installation
+==============================
 
-For Microsoft Windows installation, please follow the next steps: (see
-separate instructions above for UNIX *Note Unix installation::.
+   For Microsoft Windows installation, please follow the next steps:
+(see separate instructions above for UNIX *Note Unix installation::.
 
   1. cd to a directory where you keep emacs lisp files, or create a new
      directory (for example, `c:\emacs\') to hold the distribution.
@@ -717,18 +750,6 @@ separate instructions above for UNIX *Note Unix installation::.
      emacs, and cut and paste the results into the XLispStat *Listener*
      Window under Microsoft Windows.
 
-     SAS for Windows uses the batch access with function keys that is
-     described in *Note ESS(SAS)--MS Windows::.  The user can also edit
-     SAS files in an `ESS[SAS]' buffer and than manually copy and paste
-     them into an Editor window in the SAS Display Manager.
-
-     For Windows, inferior SAS in an `iESS[SAS]' buffer does not work
-     on the local machine.  It does work over a network connection to
-     SAS running on a remote Unix computer.
-
-     Reason:  we use ddeclient to interface with programs and SAS
-     doesn't provide the corresponding ddeserver capability.
-
   9. (OPTIONAL) If you are running Sqpe or R, you might consider
      installing the database files.  From within emacs, `C-x d' to the
      directory containing ESS.  Now:
@@ -750,63 +771,10 @@ separate instructions above for UNIX *Note Unix installation::.
  10. That's it!
 
 
-1.10 Requirements
-=================
+Reporting Bugs
+==============
 
-ESS has been tested with
-
-   * S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
-
-   * R >=0.49
-
-   * S4
-
-   * SAS >=6.12
-
-   * BUGS 0.5, 0.603
-
-   * Stata >=6.0
-
-   * XLispStat >=3.50
-
-   on the following platforms
-
-   * Linux (all)
-
-   * Solaris/SunOS (all)
-
-   * Microsoft Windows 95/98/NT/2000/XP (SPLUS 4.5/2000/6.*, R, SAS and
-     BUGS)
-
-   * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
-
-   with the following versions of emacs
-
-   * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
-
-   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17(1),
-     21.4.14-15; as of June 2004, ESS does not work with XEmacs Betas
-     such as 21.5.17
-
-   * GNU Emacs <20.3 and XEmacs <21.0(2)
-
-   ---------- Footnotes ----------
-
-   (1) requires the files.el patch to revert-buffer for the Local
-Variables updating problem
-
-   (2) These releases of emacs are no longer supported, so an upgrade
-is recommended if you plan to use ESS.  If you have GNU Emacs 19.29,
-see *Note Unix installation::.  Also, note that the `custom' library
-bundled with Emacs 19.34 is too _old_, its API is incompatible with the
-`new custom' bundled with recent Emacsen.  The `new custom' for Emacs
-19.34 is available for download here
-(ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz).
-
-1.11 Reporting Bugs
-===================
-
-Please send bug reports, suggestions etc. to
+   Please send bug reports, suggestions etc. to
 
    <ESS-bugs@stat.math.ethz.ch>
 
@@ -825,10 +793,10 @@ containing debug information; send us that buffer.
    Note that comments, suggestions, words of praise and large cash
 donations are also more than welcome.
 
-1.12 Mailing Lists
-==================
+Mailing Lists
+=============
 
-There is a mailing list for discussions and announcements relating to
+   There is a mailing list for discussions and announcements relating to
 ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
 "help") in the body to <ess-help-request@stat.math.ethz.ch>;
 contributions to the list may be mailed to
@@ -847,8 +815,8 @@ low-volume mailing list.
 
    *  posting small patches to ESS.
 
-1.13 Authors
-============
+Authors
+=======
 
    * A.J. Rossini (mailto:rossini@u.washington.edu)
 

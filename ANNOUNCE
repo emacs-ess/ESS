@@ -1,9 +1,9 @@
-1 ANNOUNCING ESS
-****************
+ANNOUNCING ESS
+**************
 
-The ESS Developers proudly announce the release of ESS
+   The ESS Developers proudly announce the release of ESS
 
-   5.2.2
+   5.2.3
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -21,18 +21,46 @@ Please read the file COPYING which comes with the distribution, for
 more information about the license. For more detailed information,
 please read the README files that come with ESS.
 
-1.1 Getting the Latest Version
-==============================
+Getting the Latest Version
+==========================
 
-The latest version of ESS is always available on the web at: ESS web
-page (http://www.analytics.washington.edu/downloads/ess/) or StatLib
+   The latest version of ESS is always available on the web at: ESS web
+page (http://ess.r-project.org) or StatLib
 (http://lib.stat.cmu.edu/general/ESS/)
 
-   There no longer is an anonymous CVS repository for ESS, due to lack
-of interest, little demand, and problems with security.
+   The latest development version of ESS is available via
+`https://svn.R-project.org/ESS/', the ESS Subversion repository.  If
+you have a Subversion client (see `http://subversion.tigris.org/'), you
+can download the sources using:
+     % svn checkout https://svn.r-project.org/ESS/trunk PATH
 
-1.2 Current Features
-====================
+which will put the ESS files into directory PATH.  Later, within that
+directory, `svn update' will bring that directory up to date.
+Windows-based tools such as TortoiseSVN are also available for
+downloading the files.  Alternatively, you can browse the sources with a
+web browser at: ESS SVN site (https://svn.r-project.org/ESS/trunk).
+However, please use a subversion client instead to minimize the load
+when retrieving.
+
+   If you remove other versions of ESS from your emacs load-path, you
+can then use the development version by adding the following to .emacs:
+
+     (load "/path/to/ess-svn/lisp/ess-site.el")
+
+   Note that https is required, and that the SSL certificate for the
+Subversion server of the R project is
+
+     Certificate information:
+      - Hostname: svn.r-project.org
+      - Valid: from Jul 16 08:10:01 2004 GMT until Jul 14 08:10:01 2014 GMT
+      - Issuer: Department of Mathematics, ETH Zurich, Zurich, Switzerland, CH
+      - Fingerprint: c9:5d:eb:f9:f2:56:d1:04:ba:44:61:f8:64:6b:d9:33:3f:93:6e:ad
+
+(currently, there is no "trusted certificate").  You can accept this
+certificate permanently and will not be asked about it anymore.
+
+Current Features
+================
 
    * Languages Supported:
         * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
@@ -86,10 +114,10 @@ of interest, little demand, and problems with security.
 
         * Previewing
 
-1.3 Requirements
-================
+Requirements
+============
 
-ESS has been tested with
+   ESS has been tested with
 
    * S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
 
@@ -139,19 +167,18 @@ bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 19.34 is available for download here
 (ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz).
 
-1.4 Stability
-=============
+Stability
+=========
 
-Versions 5.1.x are meant to be gamma-level releases.  While some bugs
-are fixed, others may have been introduced, especially with regards to
-new features.  See the file doc/TODO for details.  Bug reports are
-solicited; see the Bugs Section below.  Patches or suggested coding
-fixes with bug reports are much appreciated!
+   Versions 5.2.x are meant to be release-quality versions.  While some
+new features are being introduced, we are cleaning up and improving the
+interface.  We know about some remaining documentation inconsistencies.
+Patches or suggested fixes with bug reports are much appreciated!
 
-1.5 Mailing List
-================
+Mailing List
+============
 
-There is a mailing list for discussions and announcements relating to
+   There is a mailing list for discussions and announcements relating to
 ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
 "help") in the body to <ess-help-request@stat.math.ethz.ch>;
 contributions to the list may be mailed to
@@ -170,10 +197,10 @@ low-volume mailing list.
 
    *  posting small patches to ESS.
 
-1.6 Reporting Bugs
-==================
+Reporting Bugs
+==============
 
-Please send bug reports, suggestions etc. to
+   Please send bug reports, suggestions etc. to
 
    <ESS-bugs@stat.math.ethz.ch>
 
@@ -192,8 +219,8 @@ containing debug information; send us that buffer.
    Note that comments, suggestions, words of praise and large cash
 donations are also more than welcome.
 
-1.7 Authors
-===========
+Authors
+=======
 
    * A.J. Rossini (mailto:rossini@u.washington.edu)
 
@@ -207,10 +234,10 @@ donations are also more than welcome.
 
    * Stephen Eglen (mailto:stephen@gnu.org)
 
-1.8 License
-===========
+License
+=======
 
-ESS is free software; you can redistribute it and/or modify it under
+   ESS is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
@@ -220,10 +247,19 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 in the file COPYING in the same directory as this file for more details.
 
-1.9 New Features
-================
+New Features
+============
 
-Changes/New Features in 5.2.2:
+   Changes/New Features in 5.2.3:
+   * ESS: When new inferior ESS processes are created, by default they
+     will replace the current buffer (this restores behavior from pre
+     5.2.0). If you wish new ESS processes to start in another window
+     of the current frame, set inferior-ess-same-window to nil.
+
+   * New variables inferior-Splus-args and inferior-R-args provide a
+     way to pass command line arguments to starting S and R processes.
+
+   Changes/New Features in 5.2.2:
    * bug-fixes for 5.2.1 (require 'executable), html docs, etc.
 
    * ess-lisp-directory/../doc/info added to Info-directory-list if
