@@ -15,7 +15,7 @@ on the following platforms
 @itemize @bullet
 @item Linux (all)
 @item Solaris/SunOS (all)
-@item SGI (all)
+@c cannot confirm this right now @item SGI (all)
 @item Microsoft Windows 95/98/NT/2000 (SPLUS 4.5/2000, R, SAS and BUGS)
 @item Apple Mac OS (SAS for OS 9 and X11 R for OS X)
 @end itemize
@@ -30,6 +30,9 @@ problem}, 21.4.14
 @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no 
 longer supported, so an upgrade is recommended if you plan to use ESS.
 If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note
-that you must have @file{custom} support.  It is available at 
-@uref{http://www.dina.kvl.dk/~abraham/custom/, The Custom Library}.}
+that the `custom' library bundled with Emacs 19.34 is too _old_, its API is
+incompatible with the `new custom' bundled with recent Emacsen.
+The `new custom' for Emacs 19.34 is available for download
+@uref{ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz, here}
+.}
 @end itemize
