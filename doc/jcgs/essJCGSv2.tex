@@ -135,7 +135,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/11 22:43:44 $ - $Revision: 1.49 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/12 19:39:20 $ - $Revision: 1.50 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -771,6 +771,84 @@ doing long-term processing while the other is doing short-term
 testing; simulations; and to distribute the load over a variety of
 remote machines.
 
+\subsection{Interactive Processing.}
+\label{sec:interactive}
+
+\subsection{Batch File Processing.}
+\label{sec:batch-file}
+
+Interactive processing with statistical analysis packages is very
+useful for data analysis with descriptive statistics and graphics.
+However, there are statistical programming situations for which it
+is not ideal.  Batch file processing with statistical analysis
+packages is a better choice when the time necessary for execution
+is more than a few seconds such as processing and analyzing a
+large amount of data.
+
+\paragraph{\SAS\ Batch}
+\label{sec:sas-batch}
+
+For processing and analyzing large amounts of data, \SAS\ is a popular
+choice.  However, interactive \SAS\ is rarely used in these situations.
+Instead, a file containing \SAS\ commands is created and \SAS executes
+these commands in the background, or batch, while the user moves on to 
+other activities.  Emacs and ESS facilitate \SAS\ batch with ESS[SAS].  
+This RAD environment starts when you open a file with the \stexttt{sas}
+extension.
+
+Emacs provides the editing environment which is enhanced by ESS.
+ESS defines \SAS\ syntax so that \stexttt{font-lock-mode} can highlight
+statements, procedures, functions, macros, datasets, comments and character 
+string literals in \SAS\ programs.  Optionally, the same language features 
+are highlighted in the \SAS\ log with the addition of log notes, warnings 
+and error messages.
+
+ESS supplies function key-mappings as defined by \SAS\ Display Manager.
+These keys are defined by default only in \stexttt{ess-mode}, but an option
+is provided so that they are available in all modes which can be helfpul
+when you are editing files with extensions like \stexttt{txt} or \stexttt{dat}.
+With one key-map, you can submit a \SAS\ batch process.  With others, you 
+can move between the \SAS\ program, the \SAS\ log and the \SAS\ output.  When 
+accessed in this manner, the \SAS\ log and \SAS\ output are automatically 
+updated to the latest as they are being appended to by the \SAS\ batch process.  
+In addition, the \SAS\ log is searched for error messages and the error messages, 
+if any, are sequenced through with consecutive key presses.  
+
+Another function key opens a \SAS\ permanent dataset for editing or viewing.  
+An option is provided so that the tab and return keys operate in typewriter 
+fashion like they do in \SAS\ Display Manager (this option also defines a 
+destructive previous tab or back-tab). 
+
+Lastly, ESS cooperates with remote file access modes \stexttt{ange-ftp},
+\stexttt{EFS} and \stexttt{tramp} by remotely submitting \SAS\ batch processes
+to the same remote computers that the files reside on.  This is important since
+the \SAS\ permanent datasets referenced in those files are only likely to exist
+on the same remote computers.  Kermit file transfers are also supported.  The
+remote editing and statistical processing of files is called ESS-elsewhere and 
+is nearly transparent to the user. 
+ 
+\paragraph{BUGS Batch}
+\label{sec:bugs-batch}
+  
+BUGS software performs Markov Chain Monte Carlo simulations.  There is an 
+interactive capability, but it is not often used since the number of iterations
+in a typical analysis is quite large and can be very time-consuming.  Most BUGS 
+programs are executed as batch processes.  Emacs and ESS facilitate BUGS batch 
+with ESS[BUGS].  This RAD environment starts when you open a file with the 
+\stexttt{bug} extension.
+
+Emacs provides the editing environment which is enhanced by ESS.
+ESS defines BUGS syntax so that \stexttt{font-lock-mode} can highlight
+statements, distributions, functions, commands and comments in BUGS
+model files, command files and log files.  ESS creates templates
+for the command file from the model file so that a BUGS batch process
+can be defined by a single file.
+
+ESS provides a BUGS batch script that allows ESS to set BUGS batch 
+parameters.  ESS also supplies key-mappings to submit a BUGS batch
+process.  ESS provides the same ESS-elsewhere support for BUGS batch
+that it does for \SAS\ batch (see above).
+
 \section{History of ESS}
 \label{sec:ESS:history}
 
@@ -831,16 +909,18 @@ Based on this work, Heiberger provided interactive interfaces
 for Windows versions of \Splus.
 
 In 1998, Rodney Sparapani designed \SAS\ batch file processing for ESS
-on Unix, Windows and Macintosh.
-Sparapani and Heiberger developed \SAS\ batch support including function
-key behavior which mimics the \SAS\ Display Manager,
-a more comprehensive and efficient syntax highlighting scheme for \SAS\
-programs and logs, and automated and intelligent error message searching
-of the log.  In 2001 and 2002, they designed and implemented ESS-elsewhere
-for \SAS.  ESS-elsewhere provides interactive and batch processing
-with \SAS\ running on a remote machine that is accessed over a
-network.
-% This provides a powerful development environment for \SAS.
+on Unix, Windows and Macintosh.  In 1999 and 2000, Sparapani and Heiberger
+continually enhanced \SAS\ support. 
+%moved this discussion to a new section above
+%Sparapani and Heiberger developed \SAS\ batch support including function
+%key behavior which mimics the \SAS\ Display Manager,
+%a more comprehensive and efficient syntax highlighting scheme for \SAS\
+%programs and logs, and automated and intelligent error message searching
+%of the log.  
+In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.  
+%ESS-elsewhere provides interactive and batch processing
+%with \SAS\ running on a remote machine that is accessed over a
+%network.  This provides a powerful development environment for \SAS.
 
 In 2001, Sparapani added BUGS batch file processing for ESS.  This
 includes support for syntax highlighting and template-based source file
