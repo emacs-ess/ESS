@@ -1,7 +1,9 @@
 -*- indented-text -*-
 
+($Revision: 1.18 $)
+
 ESS VERSION 5.0
-------------------
+---------------
 
 This directory contains the distribution of ESS version 5.0, which
 used to be S-mode.  This is an Emacs-Lisp interface to interactive
@@ -244,6 +246,3 @@ Richard M. Heiberger <rmh@fisher.stat.temple.edu>, Stat Dept., Temple U.
 Kurt Hornik <hornik@ci.tuwien.ac.at> Stat. Dept., TU-Wien
 Martin Maechler <maechler@stat.math.ethz.ch> Stat. Dept., ETHZ
 A.J. Rossini <rossini@stat.sc.edu> Stat. Dept., U South Carolina
-
-
-
