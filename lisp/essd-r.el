@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2001/06/21 22:34:14 $
-;; Version: $Revision: 5.29 $
-;; RCS: $Id: essd-r.el,v 5.29 2001/06/21 22:34:14 rossini Exp $
+;; Modified: $Date: 2001/08/24 14:04:29 $
+;; Version: $Revision: 5.30 $
+;; RCS: $Id: essd-r.el,v 5.30 2001/08/24 14:04:29 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -77,7 +77,7 @@
     (inferior-ess-start-args       . ""))
   "Variables to customize for R")
 
-;;; AJR: Need to condition on this...! 
+;;; AJR: Need to condition on this...!
 (require 'ess-menu)
 
 (defun R-mode  (&optional proc-name)
@@ -87,7 +87,8 @@
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode R-customize-alist proc-name)
   ;;; AJR: Need to condition on this...!
-  (ess-imenu-S))
+  ;; MM: and you probably should really use ess-imenu-mode-function from above!
+  (ess-imenu-R))
 
 (fset 'r-mode 'R-mode)
 
@@ -165,7 +166,7 @@ contents will be placed in packages-directory/package-name."
 	 (R-pkg-Index-file        (concat R-pkg-home-dir "/INDEX")))
     ;; Now create and construct everything
     (make-directory R-pkg-home-dir)
-    (make-directory R-pkg-R-srcdir)       
+    (make-directory R-pkg-R-srcdir)
     (make-directory R-pkg-compiled-srcdir)
     (make-directory R-pkg-man-srcdir)
     (make-directory R-pkg-test-srcdir)

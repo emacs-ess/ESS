@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2001/08/21 16:17:02 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: ess-cust.el,v 1.24 2001/08/21 16:17:02 maechler Exp $
+;; Modified: $Date: 2001/08/24 14:04:29 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: ess-cust.el,v 1.25 2001/08/24 14:04:29 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -146,8 +146,8 @@ Full documentation will be available after autoloading the function."
 
 ;;*;; Options and Initialization
 
-(defcustom ess-use-menus t
-  "If t, use the menu system."
+(defcustom ess-use-menus (featurep 'imenu)
+  "If t, use the menu system.  Absolutely requires 'imenu."
   :group 'ess
   :type 'boolean)
 
@@ -730,7 +730,7 @@ in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
   :type 'string)
 
 (defcustom inferior-STA-program-name "env"
-  "*Program name for invoking an inferior ESS with stata().  
+  "*Program name for invoking an inferior ESS with stata().
 This is NOT Stata, because we need to call stata with TERM=emacs in
 order for it to work right.  And Emacs is too smart for it."
   :group 'ess-Stata
