@@ -31,7 +31,7 @@ features in one package.
 
    <p>The current development team is led by Martin Maechler since August
 2004. Former project leader A.J. (Tony) Rossini
-(<a href="mailto:rossini@biostat.washington.edu">rossini@biostat.washington.edu</a>) did the initial port to
+(<a href="mailto:rossini@blindglobe.net">rossini@blindglobe.net</a>) did the initial port to
 XEmacs and has been the primary coder.  Martin Maechler
 (<a href="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</a>) and Kurt Hornik
 (<a href="mailto:hornik@ci.tuwien.ac.at">hornik@ci.tuwien.ac.at</a>) have assisted with S-PLUS, S4, R, and
@@ -90,6 +90,16 @@ Up:<a rel="up" accesskey="u" href="#General%20Information">General Information</
 </div>
 
 <h3 class="section">New Features</h3>
+
+   <p>Changes/New Features in 5.2.3:
+     <ul>
+<li>ESS[SAS] - When you are working with EBCDIC files on an ASCII
+platform, .log NOTEs may display as gibberish since the EBCDIC
+characters are not converted to ASCII prior to their display.  So,
+the function ess-ebcdic-to-ascii-search-and-replace is provided for
+convenience and is bound to C-F11.  This function requires the dd
+command so Windows users will need to have Cygwin or something like it. 
+</ul>
 
    <p>Changes/New Features in 5.2.3:
      <ul>
@@ -202,7 +212,7 @@ new frames; see the documentation for ess-help-own-frame for details.
      <ul>
 <li>Besides info documentation, PDF and HTML
 documentation are also provided (instead of built using "make") and available
-on the web as well; see <a href="http://software.biostat.washington.edu/ess/doc">ESS web page</a> and <a href="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</a>
+on the web as well; see <a href="http://ess.r-project.org/">ESS web page</a> and <a href="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</a>
 <li>Now that info documentation is available, the
 README.* files are no longer supported.  However, they
 are still distributed for what it's worth. 
@@ -930,7 +940,7 @@ Up:<a rel="up" accesskey="u" href="#General%20Information">General Information</
 <h3 class="section">Authors</h3>
 
      <ul>
-<li><a href="mailto:rossini@u.washington.edu">A.J. Rossini</a>
+<li><a href="mailto:rossini@blindglobe.net">A.J. Rossini</a>
 <li><a href="mailto:rmh@temple.edu">Richard M. Heiberger</a>
 <li><a href="mailto:hornik@ci.tuwien.ac.at">Kurt Hornik</a>
 <li><a href="mailto:maechler@stat.math.ethz.ch">Martin Maechler</a>

@@ -15,14 +15,13 @@ features in one package.
 
    The current development team is led by Martin Maechler since August
 2004. Former project leader A.J. (Tony) Rossini
-(<rossini@biostat.washington.edu>) did the initial port to XEmacs and
-has been the primary coder.  Martin Maechler
-(<maechler@stat.math.ethz.ch>) and Kurt Hornik
-(<hornik@ci.tuwien.ac.at>) have assisted with S-PLUS, S4, R, and
-XLispStat.  Stephen Eglen (<stephen@gnu.org>) has worked mostly on R
-support.  Richard M. Heiberger (<rmh@temple.edu>) has assisted with
-S-PLUS and S4 development for Windows.  Richard and Rodney A. Sparapani
-(<rsparapa@mcw.edu>) have done much of the work implementing
+(<rossini@blindglobe.net>) did the initial port to XEmacs and has been
+the primary coder.  Martin Maechler (<maechler@stat.math.ethz.ch>) and
+Kurt Hornik (<hornik@ci.tuwien.ac.at>) have assisted with S-PLUS, S4,
+R, and XLispStat.  Stephen Eglen (<stephen@gnu.org>) has worked mostly
+on R support.  Richard M. Heiberger (<rmh@temple.edu>) has assisted
+with S-PLUS and S4 development for Windows.  Richard and Rodney A.
+Sparapani (<rsparapa@mcw.edu>) have done much of the work implementing
 interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.
 
    We are grateful to the previous developers of S-mode (Doug Bates, Ed
@@ -44,6 +43,15 @@ in the file COPYING in the same directory as this file for more details.
 
 New Features
 ============
+
+   Changes/New Features in 5.2.3:
+   * ESS[SAS] - When you are working with EBCDIC files on an ASCII
+     platform, .log NOTEs may display as gibberish since the EBCDIC
+     characters are not converted to ASCII prior to their display.  So,
+     the function ess-ebcdic-to-ascii-search-and-replace is provided for
+     convenience and is bound to C-F11.  This function requires the dd
+     command so Windows users will need to have Cygwin or something
+     like it.
 
    Changes/New Features in 5.2.3:
    * ESS: When new inferior ESS processes are created, by default they
@@ -153,8 +161,7 @@ New Features
    Changes/New Features in 5.1.22:
    * Besides info documentation, PDF and HTML documentation are also
      provided (instead of built using "make") and available on the web
-     as well; see ESS web page
-     (http://software.biostat.washington.edu/ess/doc) and StatLib
+     as well; see ESS web page (http://ess.r-project.org/) and StatLib
      (http://lib.stat.cmu.edu/general/ESS/doc)
 
    * Now that info documentation is available, the README.* files are
@@ -818,7 +825,7 @@ low-volume mailing list.
 Authors
 =======
 
-   * A.J. Rossini (mailto:rossini@u.washington.edu)
+   * A.J. Rossini (mailto:rossini@blindglobe.net)
 
    * Richard M. Heiberger (mailto:rmh@temple.edu)
 

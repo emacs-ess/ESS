@@ -251,6 +251,16 @@ Up:<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
    <p>Changes/New Features in 5.2.3:
      <ul>
+<li>ESS[SAS] - When you are working with EBCDIC files on an ASCII
+platform, .log NOTEs may display as gibberish since the EBCDIC
+characters are not converted to ASCII prior to their display.  So,
+the function ess-ebcdic-to-ascii-search-and-replace is provided for
+convenience and is bound to C-F11.  This function requires the dd
+command so Windows users will need to have Cygwin or something like it. 
+</ul>
+
+   <p>Changes/New Features in 5.2.3:
+     <ul>
 <li>ESS: When new inferior ESS processes are created, by default they
 will replace the current buffer (this restores behavior from pre
 5.2.0). If you wish new ESS processes to start in another window of the
@@ -360,7 +370,7 @@ new frames; see the documentation for ess-help-own-frame for details.
      <ul>
 <li>Besides info documentation, PDF and HTML
 documentation are also provided (instead of built using "make") and available
-on the web as well; see <a href="http://software.biostat.washington.edu/ess/doc">ESS web page</a> and <a href="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</a>
+on the web as well; see <a href="http://ess.r-project.org/">ESS web page</a> and <a href="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</a>
 <li>Now that info documentation is available, the
 README.* files are no longer supported.  However, they
 are still distributed for what it's worth. 
@@ -608,7 +618,7 @@ S-mode and ESS mailing lists.
    <p><em>ESS</em> version 5 is being developed and currently maintained by
 
      <ul>
-<li><a href="mailto:rossini@u.washington.edu">A.J. Rossini</a>
+<li><a href="mailto:rossini@blindglobe.net">A.J. Rossini</a>
 <li><a href="mailto:rmh@temple.edu">Richard M. Heiberger</a>
 <li><a href="mailto:hornik@ci.tuwien.ac.at">Kurt Hornik</a>
 <li><a href="mailto:maechler@stat.math.ethz.ch">Martin Maechler</a>

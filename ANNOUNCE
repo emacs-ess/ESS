@@ -222,7 +222,7 @@ donations are also more than welcome.
 Authors
 =======
 
-   * A.J. Rossini (mailto:rossini@u.washington.edu)
+   * A.J. Rossini (mailto:rossini@blindglobe.net)
 
    * Richard M. Heiberger (mailto:rmh@temple.edu)
 
@@ -249,6 +249,15 @@ in the file COPYING in the same directory as this file for more details.
 
 New Features
 ============
+
+   Changes/New Features in 5.2.3:
+   * ESS[SAS] - When you are working with EBCDIC files on an ASCII
+     platform, .log NOTEs may display as gibberish since the EBCDIC
+     characters are not converted to ASCII prior to their display.  So,
+     the function ess-ebcdic-to-ascii-search-and-replace is provided for
+     convenience and is bound to C-F11.  This function requires the dd
+     command so Windows users will need to have Cygwin or something
+     like it.
 
    Changes/New Features in 5.2.3:
    * ESS: When new inferior ESS processes are created, by default they
@@ -358,8 +367,7 @@ New Features
    Changes/New Features in 5.1.22:
    * Besides info documentation, PDF and HTML documentation are also
      provided (instead of built using "make") and available on the web
-     as well; see ESS web page
-     (http://software.biostat.washington.edu/ess/doc) and StatLib
+     as well; see ESS web page (http://ess.r-project.org/) and StatLib
      (http://lib.stat.cmu.edu/general/ESS/doc)
 
    * Now that info documentation is available, the README.* files are
