@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/19 15:51:25 $
-;; Version: $Revision: 1.98 $
-;; RCS: $Id: ess-inf.el,v 1.98 1997/11/19 15:51:25 rossini Exp $
+;; Modified: $Date: 1997/11/19 16:14:09 $
+;; Version: $Revision: 1.99 $
+;; RCS: $Id: ess-inf.el,v 1.99 1997/11/19 16:14:09 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -1693,13 +1693,21 @@ the load-path."
 	(pos 2) ; was 2
 	name
 	(buffer (get-buffer-create " *ess-db*")))
+    
+    (ess-write-to-dribble-buffer
+       (format "(object db): search-list=%s \n "
+	       search-list))
     (while search-list
       (message "Searching %s" (car search-list))
       (setq ess-object-name-db (cons (cons (car search-list)
 					   (ess-object-names nil pos))
 				     ess-object-name-db))
-      (setq pos (1+ pos))
-      (setq search-list (cdr search-list)))
+      (setq search-list (cdr search-list))
+      (ess-write-to-dribble-buffer
+       (format "(object db): ess-obj-name-db=%s \n pos=%s"
+	       ess-object-name-db pos))
+      (setq pos (1+ pos)))
+
     (save-excursion
       (set-buffer buffer)
       (erase-buffer)
