@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/08 16:49:50 $
-;; Version: $Revision: 1.53 $
-;; RCS: $Id: essa-sas.el,v 1.53 2002/01/08 16:49:50 ess Exp $
+;; Modified: $Date: 2002/01/08 18:16:56 $
+;; Version: $Revision: 1.54 $
+;; RCS: $Id: essa-sas.el,v 1.54 2002/01/08 18:16:56 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -43,13 +43,6 @@
 
 ;;; Section 1:  Variable Definitions
 
-(defcustom ess-sas-data-view-options 
-    (if (eq system-type 'windows-nt) "-noenhancededitor -nosysin -log NUL:"
-	"-nodms -nosysin -log /dev/null")
-    "*The options necessary for your enviromment and your operating system."
-    :group 'ess-sas
-    :type  'string
-)
 
 (defvar ess-sas-file-path "."
     "Full path-name of the sas file to perform operations on.")
@@ -70,21 +63,8 @@
     :group 'ess-sas
 )
 
-(defcustom ess-sas-submit-post-command 
-    (if (w32-shell-dos-semantics) "-rsasuser -icon" "-rsasuser &")
-    "*Command-line statement to post-modify SAS invocation, e.g. -rsasuser"
-    :group 'ess-sas
-    :type  'string
-)
-
-(defcustom ess-sas-submit-pre-command (if (w32-shell-dos-semantics) "start" "nohup")
-    "*Command-line statement to pre-modify SAS invocation, e.g. start or nohup"
-    :group 'ess-sas
-    :type  'string
-)
-
 (defvar ess-sas-submit-method 
-  (if (and (eq system-type 'windows-nt)
+  (if (and (ess-microsoft-p)
 	   (not (w32-shell-dos-semantics)))
       'sh
     system-type)
@@ -107,6 +87,26 @@ or `ESS-elsewhere' should use
    (setq-default ess-sas-submit-method 'iESS)
 in ess-site.el or in .emacs.")
 
+(defcustom ess-sas-data-view-options 
+    (if (ess-microsoft-p) "-noenhancededitor -nosysin -log NUL:"
+	"-nodms -nosysin -log /dev/null")
+    "*The options necessary for your enviromment and your operating system."
+    :group 'ess-sas
+    :type  'string
+)
+
+(defcustom ess-sas-submit-post-command 
+    (if (equal ess-sas-submit-method 'sh) "-rsasuser &" "-rsasuser -icon")
+    "*Command-line statement to post-modify SAS invocation, e.g. -rsasuser"
+    :group 'ess-sas
+    :type  'string
+)
+
+(defcustom ess-sas-submit-pre-command (if (equal ess-sas-submit-method 'sh) "nohup" "start")
+    "*Command-line statement to pre-modify SAS invocation, e.g. start or nohup"
+    :group 'ess-sas
+    :type  'string
+)
 
 (defcustom ess-sas-suffix-1 "txt"
     "*The ess-sas-suffix-1 file to perform operations on."
