@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.9 1999/11/05 09:15:06 maechler Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.10 1999/11/11 17:34:53 ess Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -94,7 +94,7 @@
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.9 1999/11/05 09:15:06 maechler Exp $")
+  "$Id: noweb-mode.el,v 1.10 1999/11/11 17:34:53 ess Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")
@@ -144,13 +144,18 @@ on the first line of the chunk containing the string
 Option three is recommended, as it is the closest to standard emacs usage.")
 
 (defvar noweb-default-doc-mode 'latex-mode
-  "Major mode for editing documentation chunks.")
+  "Major mode for editing documentation chunks.
+Sensible choices would be tex-mode, latex-mode, sgml-mode, or
+html-mode.  Maybe others will exist someday.")
 
 (defvar noweb-doc-mode-syntax-table nil
-  "A syntax-table syntax table that makes quoted code in doc chunks to behave.")
+  "A syntax-table syntax table that makes quoted code in doc chunks to
+behave.")  
 
 (defvar noweb-last-chunk-index 0
-  "This keeps track of the chunk we have just been in. If this is not the same as the current chunk, we have to check if we need to change major mode.")
+  "This keeps track of the chunk we have just been in. If this is not
+the same as the current chunk, we have to check if we need to change
+major mode.") 
 
 (defvar noweb-chunk-vector nil
   "Vector of the chunks in this buffer.")
@@ -258,6 +263,7 @@ mouse-1, this will override your binding.")
           (define-key map "@" 'noweb-electric-@)
           (define-key map "<" 'noweb-electric-<)))
     (define-key map "\M-q" 'noweb-fill-paragraph-chunk)
+    (define-key map "\C-c\C-n" 'noweb-indent-line) ; Override TeX-normal!
     (define-key map [tab] 'noweb-indent-line)
     (define-key map [return] 'noweb-newline)
     (define-key map [mouse-1] 'noweb-mouse-first-button)
