@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/06/26 18:55:50 $
-;; Version: $Revision: 1.137 $
-;; RCS: $Id: essa-sas.el,v 1.137 2003/06/26 18:55:50 rsparapa Exp $
+;; Modified: $Date: 2003/07/02 18:49:07 $
+;; Version: $Revision: 1.138 $
+;; RCS: $Id: essa-sas.el,v 1.138 2003/07/02 18:49:07 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -168,9 +168,35 @@ should set this variable to 'sh regardless of their local shell
 )
 
 (defcustom ess-sas-submit-pre-command 
-    (if (equal ess-sas-submit-method 'sh) "nohup nice" 
+    (if (equal ess-sas-submit-method 'sh) 
+	;; nice is tricky, higher numbers give you lower priorities
+	;; if you are using csh/tcsh, the default priority is 4
+	;; if you are using most other shells, the default priority is 10,
+	;; but some implementations give you 19 unless you specify -0
+	;; therefore, on the same machine, you can run at a higher or
+	;; lower priority by changing shells, although, the command
+	;; line is the same!
+	;; the following code should give you a priority of 10 regardless
+	;; of which shell is in use, but it will default to the old
+	;; behavior if the shell is not recognized
+	;; this should avoid the necessity of each user needing to set this
+	;; variable correctly based on the shell that they use and provide
+	;; an environment where all users are treated equally
+	(let* ((temp-shell (getenv "SHELL"))
+	       (temp-char (string-match "/" temp-shell)))
+            
+	    (while temp-char 
+		(setq temp-shell (substring temp-shell (+ 1 temp-char)))
+		(setq temp-char (string-match "/" temp-shell)))
+
+	    (cond ((or (equal temp-shell "csh") (equal temp-shell "tcsh")) 
+			"nohup nice +6")
+                   ((or (string= temp-shell "sh") (string= temp-shell "ksh") 
+			(string= temp-shell "zsh") (string= temp-shell "bash")) 
+			"nohup nice -0")
+		   (t "nohup nice")))
 	(if ess-microsoft-p "start"))
-    "*Command-line statement to pre-modify SAS invocation, e.g. start or nohup"
+    "*Command-line statement to precede SAS invocation, e.g. start or nohup"
     :group 'ess-sas  
     :type  'string
 )
