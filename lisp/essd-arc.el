@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 30 Jun 2000
-;; Modified: $Date: 2000/11/02 16:47:48 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essd-arc.el,v 1.3 2000/11/02 16:47:48 rossini Exp $
+;; Modified: $Date: 2001/02/06 19:37:00 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essd-arc.el,v 1.4 2001/02/06 19:37:00 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -31,7 +31,6 @@
 ;;; This file extends the XLispStat configuration for ARC, the
 ;;; extension of the R-Code.
 ;;;
-
 
 ;;; Requires and Autoloads:
 
