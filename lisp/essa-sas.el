@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/03/17 19:46:53 $
-;; Version: $Revision: 1.156 $
-;; RCS: $Id: essa-sas.el,v 1.156 2004/03/17 19:46:53 rsparapa Exp $
+;; Modified: $Date: 2004/03/24 14:45:11 $
+;; Version: $Revision: 1.157 $
+;; RCS: $Id: essa-sas.el,v 1.157 2004/03/24 14:45:11 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -300,10 +300,11 @@ on the way."
 	  (if (= ess-sas-remainder 0) 
 	      (setq ess-sas-remainder sas-indent-width))
 	  
-	  (backward-delete-char-untabify ess-sas-remainder t)
-	  (setq ess-sas-column (- ess-sas-column ess-sas-remainder))
-	  (move-to-column ess-sas-column)
-	  (setq left-margin ess-sas-column)
+         (let ((backward-delete-char-untabify-method 'nil))
+              (backward-delete-char-untabify ess-sas-remainder t)
+              (setq ess-sas-column (- ess-sas-column ess-sas-remainder))
+              (move-to-column ess-sas-column)
+             (setq left-margin ess-sas-column))
     ))
 ))
 
