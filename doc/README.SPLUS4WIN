@@ -1,6 +1,6 @@
 -*- text -*-
 
-$Revision: 1.1 $ 
+$Revision: 1.2 $ 
 
 ESS: Using S-Plus 4.x for Windows
 =================================
@@ -21,6 +21,14 @@ designed for the Microsoft Windows 95/98/NT and uses DDE as the
 interprocess communications protocol.  The protocols are very
 different.
 
+The version of Emacs that this has been tested with is NTEmacs 20.2.1
+(and 20.3?).  More information about NTEmacs can be retrieved from
+
+    http://www.cs.washington.edu/homes/voelker/ntemacs.html 
+
+including information on retrieval and installation.  This has not yet
+been tested with XEmacs for Microsoft Windows 95/98/NT.
+
 See the document README.S for detailed information on:
 - general Emacs features.
 - Editing files.
@@ -32,7 +40,6 @@ The following are not identical in MS Windows to the similarly named
 sections in README.S and are covered in this document:
 - running an S process as an inferior process to Emacs
 - ESS-help: assistance with viewing help
-
 
 iESS: Inferior ESS processes
 ============================
