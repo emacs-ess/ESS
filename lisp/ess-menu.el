@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.10 2001/06/11 10:02:54 maechler Exp $
+;; Version: $Id: ess-menu.el,v 1.11 2001/06/21 22:32:42 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -52,8 +52,6 @@
 ;; fume-function-name-regexp-alist)
 
  ;;; Imenu for Emacs/XEmacs...
-
-(require 'imenu)
 
 ;;; S imenu support
 
