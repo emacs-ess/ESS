@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/20 19:45:53 $
-;; Version: $Revision: 1.63 $
-;; RCS: $Id: ess-inf.el,v 1.63 1997/10/20 19:45:53 rossini Exp $
+;; Modified: $Date: 1997/10/21 13:38:45 $
+;; Version: $Revision: 1.64 $
+;; RCS: $Id: ess-inf.el,v 1.64 1997/10/21 13:38:45 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -72,7 +72,7 @@
 ;;*;; Starting a process
 
 (defun ess-proc-name (n name)
-  "Return process name of process N, as a string."
+  "Return process name of process N, as a string, with NAME prepended."
   ;;(concat ess-dialect (if (> n 1) n)))
   ;;(concat (cdr (rassoc ess-dialect ess-customize-alist)) ":" n))
   (concat name ":" n))
