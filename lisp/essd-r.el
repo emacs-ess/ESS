@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/01/11 07:43:17 $
-;; Version: $Revision: 5.32 $
-;; RCS: $Id: essd-r.el,v 5.32 2002/01/11 07:43:17 rmh Exp $
+;; Modified: $Date: 2002/01/11 19:51:57 $
+;; Version: $Revision: 5.33 $
+;; RCS: $Id: essd-r.el,v 5.33 2002/01/11 19:51:57 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,17 +46,19 @@
 
 ;;; Code:
 
-;;; this applies in principle to the 15 files essd[p-]*.el
-;;; several of them have more than one *-customize-alist
-;;; I am currently adding this only to the S language files S S-Plus R,
-;;; and specifically starting with a test of essd-r.el
+;;; S-editor and S-pager, ess-editor and ess-pager,
+;;; and inferior-ess-language-start
+;;; apply in principle to the 15 files essd[p-]*.el
+;;; Several of the files have more than one *-customize-alist.
+;;; I am currently planning to add this only to the S language files for
+;;; S S-Plus R, and specifically starting with a test of essd-r.el
 
-(defcustom S-editor (if ess-microsoft-p "gnuclient.exe" "emacslient")
+(defcustom S-editor nil ;(if ess-microsoft-p "gnuclient.exe" "emacslient")
   "*Editor called by S process with 'edit()' command."
 :group 'ess
 :type "string")
 
-(defcustom S-pager  (if ess-microsoft-p "gnuclientw.exe" "emacsclient")
+(defcustom S-pager  nil ;(if ess-microsoft-p "gnuclientw.exe" "emacsclient")
   "*Pager called by S process with 'page()' command."
 :group 'ess
 :type "string")
@@ -146,9 +148,9 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
 	 default-process-coding-system)
     (if ess-microsoft-p
 	(setq default-process-coding-system '(undecided-dos . undecided-dos)))
-    (inferior-ess r-start-args)
-    (if inferior-ess-language-start
-	(ess-eval-linewise inferior-ess-language-start))));; (R)
+    (inferior-ess r-start-args) ;; (R)
+    (if inferior-ess-language-start  ;; new for this test
+	(ess-eval-linewise inferior-ess-language-start))))
 
 
 (autoload 'ess-transcript-mode "ess-trns"
