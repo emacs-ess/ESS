@@ -4,67 +4,67 @@
 
 2000-10-17  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/ess.info, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-2, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-3:
+	* doc/ess.info, doc/ess.info-1, doc/ess.info-2, doc/ess.info-3:
 	upgrade to 5.1.18 and rebuild doc
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/readme.texi, /home/ess/src/cvsroot/gnu/ess/doc/announc.texi:
+	* doc/readme.texi, doc/announc.texi:
 	upgrade to 5.1.18
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/README.SPLUS4WIN, /home/ess/src/cvsroot/gnu/ess/lisp/ess-cust.el:
+	* doc/README.SPLUS4WIN, lisp/ess-cust.el:
 	upgraded to 5.1.18
 
 2000-10-11  maechler  <maechler@rossini.YP.biostat>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ChangeLog, /home/ess/src/cvsroot/gnu/ess/lisp/essl-s.el, /home/ess/src/cvsroot/gnu/ess/doc/newfeat.texi:
+	* lisp/ChangeLog, lisp/essl-s.el, doc/newfeat.texi:
 	ess-smart-underscore
 
 2000-10-10  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/inst_tar.texi:
+	* doc/inst_tar.texi:
 	fixed documentation for XLispStat under windows.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/authors.texi:
+	* doc/authors.texi:
 	fixed Rodney's homepage pointer.
 
-	* /home/ess/src/cvsroot/gnu/ess/VERSION: upgrade version to 5.1.18
+	* VERSION: upgrade version to 5.1.18
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1:
+	* doc/ess.info-1:
 	Updating docs for new version [make dist]
 
-	* /home/ess/src/cvsroot/gnu/ess/ANNOUNCE, /home/ess/src/cvsroot/gnu/ess/README:
+	* ANNOUNCE, README:
 	Updating README, ANNOUNCE for new version [make dist]
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ChangeLog:
+	* lisp/ChangeLog:
 	small changes.  This log is incomplete.
 
-	* /home/ess/src/cvsroot/gnu/ess/ChangeLog: updated change log.
+	* ChangeLog: updated change log.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/README.SPLUS4WIN, /home/ess/src/cvsroot/gnu/ess/doc/ess.info, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1:
+	* doc/README.SPLUS4WIN, doc/ess.info, doc/ess.info-1:
 	Misc changes
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/inst_tar.texi:
+	* doc/inst_tar.texi:
 	@enumerate can't have a @bullet.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/newfeat.texi:
+	* doc/newfeat.texi:
 	added 5.1.17 new features
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/announc.texi: update for 5.1.17
+	* doc/announc.texi: update for 5.1.17
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/README.SAS:
+	* doc/README.SAS:
 	Merged Rich's comments/changes.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/inst_tar.texi:
+	* doc/inst_tar.texi:
 	added Rich H's README changes.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/mailing.texi:
+	* doc/mailing.texi:
 	itemize the "flat text list".
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/readme.texi: Small changes.
+	* doc/readme.texi: Small changes.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/authors.texi:
+	* doc/authors.texi:
 	added Rodney to authors list.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/stabilty.texi:
+	* doc/stabilty.texi:
 	comment re: some versions better than others.
 
 2000-10-10  ESS Maintainers <ess@franz.stat.wisc.edu>
@@ -85,141 +85,141 @@
 
 2000-10-10  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/README.SPLUS4WIN, /home/ess/src/cvsroot/gnu/ess/doc/ess.info, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1:
+	* doc/README.SPLUS4WIN, doc/ess.info, doc/ess.info-1:
 	Misc changes
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/inst_tar.texi:
+	* doc/inst_tar.texi:
 	@enumerate can't have a @bullet.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/newfeat.texi:
+	* doc/newfeat.texi:
 	added 5.1.17 new features
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/announc.texi: update for 5.1.17
+	* doc/announc.texi: update for 5.1.17
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/README.SAS:
+	* doc/README.SAS:
 	Merged Rich's comments/changes.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/inst_tar.texi:
+	* doc/inst_tar.texi:
 	added Rich H's README changes.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/mailing.texi:
+	* doc/mailing.texi:
 	itemize the "flat text list".
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/readme.texi: Small changes.
+	* doc/readme.texi: Small changes.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/authors.texi:
+	* doc/authors.texi:
 	added Rodney to authors list.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/stabilty.texi:
+	* doc/stabilty.texi:
 	comment re: some versions better than others.
 
 2000-10-09  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-vars.el:
+	* lisp/ess-vars.el:
 	Merged with changes in another location.
 
 2000-10-09  maechler  <maechler@rossini.YP.biostat>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ChangeLog, /home/ess/src/cvsroot/gnu/ess/lisp/essl-s.el:
+	* lisp/ChangeLog, lisp/essl-s.el:
 	new (ess-fix-miscellaneous) & (ess-toggle-underscore)
 
 2000-10-08  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/Makefile.in:
+	* Makefile.in:
 	autoconf precursor to Makefile
 
 2000-10-07  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-vars.el:
+	* lisp/ess-vars.el:
 	ess-vars is obsoleted.
 
 2000-10-06  maechler  <maechler@rossini.YP.biostat>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/essl-s.el: 2 comments
+	* lisp/essl-s.el: 2 comments
 
 2000-10-04  maechler  <maechler@rossini.YP.biostat>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ChangeLog, /home/ess/src/cvsroot/gnu/ess/lisp/ess-cust.el, /home/ess/src/cvsroot/gnu/ess/lisp/ess-inf.el, /home/ess/src/cvsroot/gnu/ess/lisp/ess-mode.el, /home/ess/src/cvsroot/gnu/ess/lisp/ess-vars.el, /home/ess/src/cvsroot/gnu/ess/lisp/essl-s.el:
+	* lisp/ChangeLog, lisp/ess-cust.el, lisp/ess-inf.el, lisp/ess-mode.el, lisp/ess-vars.el, lisp/essl-s.el:
 	ess-S-assign and redefine "_" in ..MM-keys
 
 2000-09-14  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-inf.el:
+	* lisp/ess-inf.el:
 	ess-proc-name:  need to ensure ALL concat args are strings (or at
 	least, are not numbers).  Thanks to WDMcCoy for reporting this.
 
 2000-09-10  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/DEBIAN/control, /home/ess/src/cvsroot/gnu/ess/DEBIAN/md5sums, /home/ess/src/cvsroot/gnu/ess/DEBIAN/postinst, /home/ess/src/cvsroot/gnu/ess/DEBIAN/prerm:
+	* DEBIAN/control, DEBIAN/md5sums, DEBIAN/postinst, DEBIAN/prerm:
 	Copied from ESS 5.1.13 debian package
 
-	* /home/ess/src/cvsroot/gnu/ess/LDA/ex1.nw: Newer example
+	* LDA/ex1.nw: Newer example
 
-	* /home/ess/src/cvsroot/gnu/ess/LDA/README: Initial Documentation
+	* LDA/README: Initial Documentation
 
 2000-09-05  ess  <ess@rossini.YP.biostat>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/essa-sas.el:
+	* lisp/essa-sas.el:
 	A few enhancements (ess-sleep-for/re-defining ess-sas-submit-command:  see
 	documentation) and bug-fixes for Win 95/NT.
 
 2000-09-05  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-site.el:
+	* lisp/ess-site.el:
 	rearranged for coherency.
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-menu.el: added C example.
+	* lisp/ess-menu.el: added C example.
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-menu.el:
+	* lisp/ess-menu.el:
 	1st pass at S and XLS menus.  Not integrated yet
 
 2000-09-04  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-inf.el, /home/ess/src/cvsroot/gnu/ess/lisp/essd-r.el, /home/ess/src/cvsroot/gnu/ess/lisp/essd-sp3.el:
+	* lisp/ess-inf.el, lisp/essd-r.el, lisp/essd-sp3.el:
 	Changes suggested by Ed Kademan
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-inf.el:
+	* lisp/ess-inf.el:
 	cleaning up docs and reunderstanding inferior-ess/ess-multi
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-inf.el:
+	* lisp/ess-inf.el:
 	comment on R handling for exit.
 
 2000-09-03  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-inf.el:
+	* lisp/ess-inf.el:
 	cleaning and correcting comments.  Some ancient comments removed.
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-comp.el:
+	* lisp/ess-comp.el:
 	removed extraneous comments
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-comp.el:
+	* lisp/ess-comp.el:
 	now, the byte-compile fun is really removed.
 	ess-message now has doc-string in "right" place.
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-comp.el:
+	* lisp/ess-comp.el:
 	cleaned up code.  Removed extraneous comments, and the byte-compiler
 	fun.
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/Makefile, /home/ess/src/cvsroot/gnu/ess/lisp/ess-comp.el, /home/ess/src/cvsroot/gnu/ess/lisp/ess-cust.el, /home/ess/src/cvsroot/gnu/ess/lisp/ess-dump.el, /home/ess/src/cvsroot/gnu/ess/lisp/ess-font-lock.el, /home/ess/src/cvsroot/gnu/ess/lisp/ess-inf.el, /home/ess/src/cvsroot/gnu/ess/lisp/ess-site.el, /home/ess/src/cvsroot/gnu/ess/lisp/ess-vars.el, /home/ess/src/cvsroot/gnu/ess/lisp/ess.el:
+	* lisp/Makefile, lisp/ess-comp.el, lisp/ess-cust.el, lisp/ess-dump.el, lisp/ess-font-lock.el, lisp/ess-inf.el, lisp/ess-site.el, lisp/ess-vars.el, lisp/ess.el:
 	refactoring code for cleaning, in process of debugging
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/19.29/README:
+	* lisp/19.29/README:
 	backwards compatibility.
 
-	* /home/ess/src/cvsroot/gnu/ess/configure.in:
+	* configure.in:
 	merged with W3, added languages.  Need to set languages.
 
-	* /home/ess/src/cvsroot/gnu/ess/aclocal.m4: new version from 4.0pre.46
+	* aclocal.m4: new version from 4.0pre.46
 
-	* /home/ess/src/cvsroot/gnu/ess/configure.in:
+	* configure.in:
 	somewhat complete.  Needs redundant work later.
 
-	* /home/ess/src/cvsroot/gnu/ess/configure.in:
+	* configure.in:
 	Starting to do autoconf.  Looking at W3 and R for examples.
 
 2000-08-27  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-site.el:
+	* lisp/ess-site.el:
 	Documentation and cleaning.
 
 2000-08-17  maechler  <maechler@rossini.YP.biostat>
@@ -902,7 +902,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 2000/10/17 19:47:26 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 2001/06/19 16:19:32 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -3092,6 +3092,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.26  2001/06/19 16:19:32  maechler
+	* Removing remove stupid path prefix
+	* Removing
 	* Removing Revision 5.25  2000/10/17 19:47:26  rossini
 	* Removing 5.1.18 release
 	* Removing
