@@ -1,7 +1,26 @@
 Changes/New Features in 5.2.2:
 @itemize @bullet
-@item ESS[R]: Other versions of R, such as "R-1.8.1", are added to the
-"ESS / Start Process / Other " menu.
+@item ESS[R]: If you have other versions of R on your
+exec-path, such as "R-1.8.1" with Unix or "rw1081" with Windows,
+ESS will find them and create appropriate functions, such as M-x
+R-1.8.1 or M-x rw1081, for calling them.
+By default only Unix programs beginning "R-1" and
+"R-2" and Windows programs parallel to the
+version of R in your exec-path will be found,
+but see ess-r-versions and ess-rterm-versions for ways to find other
+versions of R.  
+@item ESS[R]: Other versions of R, such as "R-1.8.1" on Unix and "rw1081" on
+Windows, are added to the
+"ESS / Start Process / Other" menu.
+@item ESS[S]: If you have other versions of S-Plus on your Windows computer,
+such as S-Plus 6.1 or S-Plus 4.5, ESS will find them and create appropriate
+functions, such as M-x splus61, for calling the console version (Sqpe)
+inside an emacs buffer.  By default only
+programs installed in the default location will be found, but see
+ess-SHOME-versions for ways to find other versions of S-Plus.
+@item ESS[S]: Other versions of Sqpe on Windows, such as "splus61",
+are added to the
+"ESS / Start Process / Other" menu.
 @item ESS[R]: (bug fix) ess-quit (bound to C-c C-q) should now quit the
 inferior R process, when issued from either the inferior buffer, or from
 a .R buffer.
@@ -9,11 +28,6 @@ a .R buffer.
 
 Changes/New Features in 5.2.1:
 @itemize @bullet
-@item ESS[R]: If you have other versions of R, such as "R-1.8.1" on your
-exec-path, ESS will find and create appropriate functions, such as M-x
-R-1.8.1, for calling them.  By default only programs beginning "R-1" and
-"R-2" will be found, but see ess-r-versions for ways to find other
-versions of R.  
 @item ESS[S] (R and S-plus): now have toolbar support
 with icons to evaluate code in the inferior process or to switch
 there.  This code is experimental and likely to change as XEmacs/Emacs
