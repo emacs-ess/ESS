@@ -1,3 +1,12 @@
+2004-05-08  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-toolbar.el (ess-icon-directory): Guess default value based
+	upon ess-lisp-directory.
+	(ess-toolbar-R, ess-toolbar-S): Store toolbars here.
+	(ess-make-toolbar-S): Make toolbar for S mode too, similar to R
+	mode, but using new S-plus icons from David Smith.
+	(ess-make-toolbar-S-emacs,ess-make-toolbar-S-xemacs): New defuns.
+
 2004-05-07  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* essa-sas.el (ess-sas-submit-mac-virtual-pc): Assign :type to be
