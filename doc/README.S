@@ -1,6 +1,6 @@
 -*- view -*-
 
-($Revision: 1.15 $)
+($Revision: 1.16 $)
 
 ESS: Using The S family of statistical languages
 ================================================
@@ -31,7 +31,7 @@ the New Users guide (found in the info pages, "C-h i" (by pressing
 control h, i) or Tutorial, "C-h t").
 
 To find the key-sequences for commands, view the keymap (C-h b) or
-view help for the current mode (C-h m), for example for ESS[S+3].
+view help for the current mode (C-h m).
 
 ESS[S]: Editing Files
 =====================
