@@ -6,6 +6,9 @@
 % FINAL:
 %\draftfalse
 
+\ifdraft  %% generate tableofcontents down to the \paragraph
+\setcounter{tocdepth}{5}
+\fi
 %1.  a statistician's dream environment
 %2.  what emacs has to offer statisticians
 %        a) buffers
@@ -135,7 +138,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/13 07:13:08 $ - $Revision: 1.52 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/14 00:33:35 $ - $Revision: 1.53 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -428,14 +431,14 @@ such as vi, wordstar, and brief.
 
 We can use syntax highlighting to help enforce company coding
 standards.  Figure \ref{f.hilock} shows how to enforce a standard for
-\SAS\ programming that says all \stexttt{PROC} statements must have a
-\stexttt{DATA=datasetname} statement attached.
+\SAS\ programming that says all \stexttt{PROC} statements must use the
+\stexttt{DATA=datasetname} option.
 
 \begin{figure}
 \emptyfig
 \caption[place holder for a long caption]{Enforce company coding
-standards.  The standard here is that all \stexttt{PROC} statements must have
-a \stexttt{DATA=datasetname} statement attached.  Lines that satisfy the standard
+standards.  The standard here is that all \stexttt{PROC} statements must use
+the \stexttt{DATA=datasetname} option.  Lines that satisfy the standard
 turn green, lines that don't turn red.  Ambiguous ones turn yellow.\\
 {\it hilock-sas.gif}
 \label{f.hilock}}
@@ -581,16 +584,20 @@ This is a major improvement over cut-and-paste as it does
 not require switching between buffers or windows.
 
 \item
-Output from the package normally sent directly to an Emacs buffer.
-There are several advantages to this destination.  We can look for the
-small section of output that is of immediate interest by using the
-string-search key commands; there is no need to page through the
-output until we see something we recognize.  If there are errors we
-can use the search and edit facilities to investigate the cause of the
-error.  When we are sending over a few lines at a time, we find
-it very easy to localize the probably location of the error.
+Output from the package is normally sent directly to an Emacs buffer.
+There are several advantages to this destination.
 There is no need to copy output from a static window into an
 editable buffer; it is already there.
+We can look for the
+small section of output that is of immediate interest by using the
+string-search key commands; there is no need to page through the
+output until we see something we recognize.
+If there are errors we
+can use the search and edit facilities to investigate the cause of the
+error.  When we are sending over a few lines at a time, we find
+it very easy to localize the probable location of the error.
+With \SAS\ log files, we automatically place the cursor
+on the first \stexttt{ERROR}.
 
 \item
 An entire buffer, or file, of code can be sent to the package as a unit
@@ -622,11 +629,11 @@ part or all of the entered commands.  It permits editing and
 re-evaluating the commands directly from the saved transcript.  This
 is useful both for demonstration of techniques and for reconstruction
 and auditing of data analyses.  Special functions within ESS can
-``clean'' transcripts from S languages by finding all input lines and
+``clean'' S languages transcripts by finding all input lines and
 isolating them into an S language source file.  Transcript cleaning
-simplifies the construction of an idealized source file, perhaps to be
-used routinely in batch analyses of similar data sets, from an
-exploratory interactive analysis session.
+simplifies the use of an exploratory interactive analysis session for
+the construction of an idealized source file, perhaps to be used
+routinely in batch analyses of similar data sets.
 
 \paragraph{Interacting with statistical programs on remote computers.}
 ESS provides the facility to edit and run programs on remote machines
@@ -638,8 +645,8 @@ different platform than the local machine.
 For languages in the S family,
 ESS provides object-name completion of both user- and
 system-defined functions and data.  ESS can dump and save objects
-(user- and system-generated) into text files in a formatted manner for
-editing, and reload them (possibly after editing).
+(user- and system-generated) into formatted text files,
+and reload them (possibly after editing).
 %% back into the statistical language/program.
 
 \paragraph{Help File Editing (R).}
@@ -687,7 +694,7 @@ should talk about SAS and BUGS?  Comments welcome.
 
 \item[Martin:] I see. Actually, I think this is \textbf{really bad} to hear.
   I thought people using BUGS would rather come from an S background
-  (R or S-plus) rather than SAS, and I -- as Tony seemed -- naturally
+  (R or S-Plus) rather than SAS, and I---as Tony seemed---naturally
   assumed the BUGS interface would be close to the S one.
 
   Wouldn't this even be something we should change?  Maybe we should find
@@ -708,6 +715,17 @@ option to make the key-binding be SAS-like or R/S-like (what would that be
 by the way?).  That way everyone should be happy and the above illustration
 will make sense.  Besides, the most pressing need for me is to get 
 ESS-elsewhere to work with ESS[BUGS] rather than creating inferior-BUGS.
+
+\item[Rich:] How does making ``ESS-elsewhere work with ESS[BUGS]'' differ
+from ``creating inferior-BUGS''?  My question is predicated on the assumption
+that ESS-elsewhere is a (generalized) minor-mode that makes the location
+of the program irrelevant.
+See my ESS-elsewhere quibble below.
+
+\item[Rich:]
+\stexttt{iESS[SAS]} was designed to mimic as well as possible \stexttt{iESS[S]}.
+I need to read doc/README.SAS to make sure all of its options are represented
+here. --- Not yet done.
 \end{description}
 \end{Comment}
 
@@ -777,6 +795,18 @@ remote machines.
 
 \subsection{Interactive Processing.}
 \label{sec:interactive}
+\paragraph{S.}
+\begin{Comment}
+Not yet written.
+\end{Comment}
+
+\paragraph{SAS.}
+
+\begin{Comment} work from doc/README.SAS \end{Comment}
+\stexttt{iESS[SAS]} is a mode that allows text-based \stexttt{PROC} by
+\stexttt{PROC} interaction with an inferior buffer running an interactive SAS
+session either on the same computer or a remote computer over a network.
+
 
 \subsection{Batch File Processing.}
 \label{sec:batch-file}
@@ -789,7 +819,13 @@ packages is a better choice when the time necessary for execution
 is more than a few seconds such as processing and analyzing a
 large amount of data.
 
-\paragraph{\SAS\ Batch}
+\paragraph{S Batch.}
+\begin{Comment}
+Not yet written.
+\end{Comment}
+
+
+\paragraph{\SAS\ Batch.}
 \label{sec:sas-batch}
 
 For processing and analyzing large amounts of data, \SAS\ is a popular
@@ -806,35 +842,83 @@ string literals in \SAS\ programs.  Optionally, the same language features
 are highlighted in the \SAS\ log with the addition of log notes, warnings 
 and error messages.
 
-ESS supplies function key-mappings as defined by \SAS\ Display Manager.
-These keys are defined, by default, only when editing files with the 
-\stexttt{sas} extension.  Optionally, they are available in all modes which
-is very useful when you are editing \SAS\ log and \SAS\ output with 
-extensions of \stexttt{log} and \stexttt{lst} respectively.
+ESS maps the function keys in \stexttt{SAS-mode} (files with the
+\stexttt{sas} extension) to match the definitions used by \SAS\
+Display Manager.  These definitions are optionally
+available in all modes, which is particulary useful
+while viewing \SAS\ log and \SAS\ listing files (with extensions of
+\stexttt{log} and \stexttt{lst} respectively).
 
-With one key-map, you submit a \SAS\ batch process.  With others, you 
-move between the \SAS\ program, the \SAS\ log and the \SAS\ output.  When 
-accessed in this manner, the \SAS\ log and \SAS\ output are automatically 
-updated to the latest as they are being appended by the \SAS\ batch process.  
-In addition, the \SAS\ log is searched for error messages and the error 
-messages, if any, are sequentially displayed with consecutive key presses.  
+With one function key, you submit a \SAS\ batch process.  With others,
+you move between the \SAS\ program, the \SAS\ log and the \SAS\
+listing.  When accessed in this manner, the \SAS\ log and \SAS\
+listing in the emacs buffer are automatically updated to match the
+files concurrently being appended by the \SAS\ batch process.  In
+addition, the \SAS\ log is searched for error messages and the error
+messages, if any, are sequentially displayed with consecutive key
+presses.
 
 Another function key opens a \SAS\ permanent dataset for editing or viewing.  
 An option is provided so that the tab and return keys operate in typewriter 
 fashion like they do in \SAS\ Display Manager.  This option also defines a 
-key-map to move the cursor to the left to a previous tab-stop deleting any 
+key to move the cursor to a previous tab-stop and delete any 
 characters between its present position and the tab-stop.  This is a \SAS\
 Display Manager feature that is not available in Emacs otherwise. 
 
-Lastly, ESS cooperates with remote file access modes \stexttt{ange-ftp},
-\stexttt{EFS} and \stexttt{tramp} by remotely submitting \SAS\ batch processes
-to the remote computers that the files reside on.  This is important since
-any \SAS\ permanent datasets referenced in the \SAS\ programs only exist
-on those remote computers.  Kermit file transfers are also supported.  The
-remote editing and statistical processing of files is called ESS-elsewhere and 
-is nearly transparent to the user. 
+%\begin{Comment}
+%Rodney's version:
+%\end{Comment}
+%Lastly, ESS cooperates with remote file access modes \stexttt{ange-ftp},
+%\stexttt{EFS} and \stexttt{tramp} by remotely submitting \SAS\ batch processes
+%to the remote computers that the files reside on.  This is important since
+%any \SAS\ permanent datasets referenced in the \SAS\ programs only exist
+%on those remote computers.  Kermit file transfers are also supported.  The
+%remote editing and statistical processing of files is called ESS-elsewhere and 
+%is nearly transparent to the user. 
+%
+%\begin{Comment}
+%Rich's version:
+%\end{Comment}
+The \SAS\ batch process can run on the same computer on which the
+emacs session is running or it can run on a remote computer.  For
+remote jobs, files are transparently saved (with ftp or scp or kermit)
+and the batch process is transparently submitted through a telnet or
+ssh connection.
+
+\begin{Comment}
+Rich: I have some terminology quibbles here with how the term
+``ESS-elsewhere'' is used with SAS BATCH.  I think of S-elsewhere or
+ESS-elsewhere as a trick to make a \stexttt{telnet-mode} buffer think
+it is \stexttt{iESS-mode} buffer.
+
+I don't think of file saving, editing, and retrieval as an example
+of ESS-elsewhere.   Neither is submission of the remote job;
+that is just an ordinary shell command in an ordinary shell buffer.
+M-x SAS probably is an example of ESS-elsewhere, but I
+designed it before I thought of the ESS-elsewhere concept.
+
+The initial idea behind S-elsewhere was to run an interactive S or S-Plus
+session on a remote computer in telnet (or equivalent) buffer.  The trick
+was to make the \stexttt{telnet-mode} buffer accept C-c C-n and
+related commands from the \stexttt{S-mode} buffers.  Hence I had to
+make the \stexttt{telnet-mode} buffer think it is \stexttt{iESS-mode}
+buffer.  The ``elsewhere'' part of the name is entirely related to a
+different start up procedure.  Once the connection is made, there is
+{\em no} difference visible to the user.  The buffer shows itself to
+be an ordinary \stexttt{iESS} buffer.  Tony generalized S-elsewhere
+to ESS-elsewhere to allow other languages than S to be used
+interactively.
+
+I have been using ESS for SAS remote BATCH for years, ever since you
+and started working on this together.  We initially defined
+ess-sas-submit-method to encapsulate the location of the sas process.
+Except for a few lines of elisp to get the connection started, the user
+behavior has been identical whether the SAS process is on the same or
+different machine.  Since we are not interactively talking to the SAS
+process in an inferior-ESS buffer I don't see this as ESS-elsewhere.
+\end{Comment}
  
-\paragraph{BUGS Batch}
+\paragraph{BUGS Batch.}
 \label{sec:bugs-batch}
   
 BUGS software performs Markov Chain Monte Carlo simulations.  There is an 
@@ -854,6 +938,7 @@ ESS provides a BUGS batch script that allows ESS to set BUGS batch
 parameters.  ESS also supplies key-mappings to submit a BUGS batch
 process.  ESS provides the same ESS-elsewhere support for BUGS batch
 that it does for \SAS\ batch (see above).
+\begin{Comment}Rich: ESS-elsewhere quibble\end{Comment}
 
 \section{History of ESS}
 \label{sec:ESS:history}
@@ -895,12 +980,6 @@ to accommodate multiple languages in a flexible way.  The product of this
 merger was called ESS version 5.
 
 During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
-\begin{Comment}
-need to move this discussion to interactive SAS above.
-, a mode that allows text-based \stexttt{PROC} by
-\stexttt{PROC} interaction with an inferior buffer running an interactive SAS
-session either on the same computer or a remote computer over a network.
-\end{Comment}
 At the same time, SAS-mode was further incorporated into ESS.
 
 In 1997, more changes were made to facilitate
@@ -928,15 +1007,12 @@ There is no difference in the program.  I restored my wording.
 In 1998, Rodney Sparapani designed \SAS\ batch file processing for ESS
 on Unix, Windows and Macintosh.  In 1999 and 2000, Sparapani and Heiberger
 continually enhanced \SAS\ support. 
-\begin{Comment}
-moved this discussion to a new section above
-%Sparapani and Heiberger developed \SAS\ batch support including function
-%key behavior which mimics the \SAS\ Display Manager,
-%a more comprehensive and efficient syntax highlighting scheme for \SAS\
-%programs and logs, and automated and intelligent error message searching
-%of the log.  
-\end{Comment}
 In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.  
+\begin{Comment}
+Rich: see my discussion of ESS-elsewhere terminology.
+
+What is the behavior for remote SAS that is new for 2002?
+\end{Comment}
 %ESS-elsewhere provides interactive and batch processing
 %with \SAS\ running on a remote machine that is accessed over a
 %network.  This provides a powerful development environment for \SAS.
@@ -999,6 +1075,7 @@ extensible to additional statistical languages and analysis packages.
 
 
 \section*{Software Access}
+\addcontentsline {toc}{section}{\numberline {}Software Access}
 \label{sec:access}
 The ESS software is constantly in flux.  New versions of statistical
 packages, Emacs and operating systems require new releases of ESS to
@@ -1019,8 +1096,15 @@ You will be prompted for a password which is ``\stexttt{anoncvs}''.  Then type:
 
 \bibliographystyle{plainnat}
 %\pdfbookmark[1]{References}{section.7}
+\addcontentsline {toc}{section}{\numberline {}References}
 \bibliography{essJCGSv2}
 
+
+
+\ifdraft
+\newpage
+\tableofcontents
+\fi
 
 \end{document}
 
