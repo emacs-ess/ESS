@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/11/20 23:35:58 $
-;; Version: $Revision: 4.0 $
-;; RCS: $Id: essl-s.el,v 4.0 1997/11/20 23:35:58 rossini Exp $
+;; Modified: $Date: 1997/11/21 23:18:23 $
+;; Version: $Revision: 4.50 $
+;; RCS: $Id: essl-s.el,v 4.50 1997/11/21 23:18:23 rossini Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 

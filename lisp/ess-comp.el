@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/20 23:00:55 $
-;; Version: $Revision: 4.1 $
-;; RCS: $Id: ess-comp.el,v 4.1 1997/11/20 23:00:55 rossini Exp $
+;; Modified: $Date: 1997/11/21 23:18:23 $
+;; Version: $Revision: 4.50 $
+;; RCS: $Id: ess-comp.el,v 4.50 1997/11/21 23:18:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
