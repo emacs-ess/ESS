@@ -1,5 +1,11 @@
 \documentclass{article}
 
+\newif\ifdraft
+% During writing: a draft:
+\drafttrue
+% FINAL:
+\draftfalse
+
 %1.  a statistician's dream environment
 %2.  what emacs has to offer
 %        a) buffers
@@ -28,10 +34,13 @@
 %                a)GPL, cvs, ssh
 %                 b)ESS 6, the next generation?
 
-
-%\renewcommand{\baselinestretch}{1.5}
+\ifdraft
+ \addtolength{\topmargin}{-1cm}
+ \addtolength{\textheight}{+1cm}
+\else%FINAL:
+ \renewcommand{\baselinestretch}{1.5}
+\fi
 \addtolength{\oddsidemargin}{-0.5in}
-%\addtolength{\topmargin}{-0.2in}
 \addtolength{\textheight}{0.2in}
 \addtolength{\textwidth}{1in}
 
@@ -55,7 +64,6 @@
   %%\hypersetup{backref,colorlinks=true,pagebackref=true,hyperindex=true}
   \hypersetup{backref,colorlinks=false,pagebackref=true,hyperindex=true}
 \fi
-
 %%---End of package requiring ---------- Own Definitions -------------
 
 \newcommand*{\SAS}{\textsc{SAS}$^{\mbox{\scriptsize\textregistered}}$}
@@ -72,10 +80,29 @@
 \newcommand{\stexttt}[1]{{\small\texttt{#1}}}
 \newcommand{\ssf}[1]{{\small\sf{#1}}}
 \newcommand{\elcode}[1]{\\{\stexttt{\hspace*{2em} #1}}\\}
-\newenvironment{Salltt}{\small\begin{alltt}}{\end{alltt}}
+\newcommand{\file}[1]{`\stexttt{#1}'}
 \newcommand{\US}{{\char'137}}        % \tt _
 \newcommand{\marpar}[1]{\marginpar{\raggedright#1}}
-\newcommand{\file}[1]{`\stexttt{#1}'}
+\newenvironment{Salltt}{\small\begin{alltt}}{\end{alltt}}
+
+%% Use \begin{Comment} .. \end{Comment} for internal comments
+\ifdraft
+\newenvironment{Comment}{\begin{quote}\small\itshape }{\end{quote}}
+%
+\else%% Make all the comments invisible by using the following instead
+%% >>>>>>>>> NOT YET --- WHO can do this? {MM: I'll find out sooner or later}<<
+\newenvironment{Comment}{\renewcommand{\baselinestretch}{}%
+  \begin{quote}\tiny\itshape }{\end{quote}\renewcommand{\baselinestretch}{1.5}}
+%%--- how does one do this?
+%% 1) only eats one item :
+%% \newcommand{\Comment}[1]{}
+%%
+%% 2) alsoonly eats one item :
+%%- \newcommand{\eatMYarg}[1]{}
+%%- \newenvironment{Comment}{\tiny\begin{EatALL}}{\end{EatALL}}
+%%- \def\EatALL{\par\eatMYarg}
+%%- \def\endEatALL{}
+\fi
 
 %%--------------------------------------------------------------- Start Text
 
@@ -106,11 +133,17 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/04 13:55:23 $ - $Revision: 1.36 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/04 15:29:35 $ - $Revision: 1.37 $ $\tiny printed \today}
 
 \begin{document}
 
 \maketitle
+
+\ifdraft{}%% large line skip -- please not yet (MM)
+\else%FINAL:
+ \renewcommand{\baselinestretch}{1.5}
+ %%- \baselineskip=2pc
+\fi
 
 \begin{abstract}
   Emacs Speaks Statistics (ESS) provides a user interface for
@@ -127,8 +160,6 @@
 \noindent Keywords: Data Analysis, Programming, Emacs, S, \SAS,
 \Splus, R, \XLispStat, \Stata, BUGS
 
-%% not for MM's reading -- maybe for submission (rather baselinestretch above?)
-%%S \baselineskip=2pc
 
 \section{Introduction}
 \label{sec:introduction}
@@ -149,17 +180,19 @@ a set of extensions to the Emacs text editor that create an interface
 for a variety of statistical analysis packages by
 providing shortcuts and extensions for often-performed tasks.
 
-\begin{quote}
+\begin{Comment}
+??:
  Does it make sense to add an additional paragraph on "history of
 statistical interfaces from programming it yourself to command line
 (SPSS/SAS/BDMP in the 80s), to spreadsheet-style interfaces
 (spreadsheets, AND minitab, spss now, etc), etc?  This would be the
 2nd paragraph, if so.
 
-Rodney:  I don't think so.
+Rodney:
+I don't think so.
 AFAIC, anyone who wants to use ESS will not need to know
 that per se.  They will just need to know what works today.
-\end{quote}
+\end{Comment}
 
 ESS provides an interface to statistical packages, and provides,
 through Emacs, additional tools which facilitate both statistical
@@ -370,11 +403,11 @@ supported with the basic functionality of syntax highlighting and
 process-interfacing.  ESS and its interface are fully discussed in the
 next section.
 
-\begin{quote}
+\begin{Comment}
  Rodney:  I've tried to rearrange these in a more coherent fashion
 but, I'm hindered by the fact that I don't use some of these
 features.  Can someone help?
-\end{quote}
+\end{Comment}
 
 \paragraph{Syntactic indentation and color/font-based source code
   highlighting.}  The ESS interface includes a description of the
@@ -389,9 +422,28 @@ to the same level as the previous line.
 %% ESS has customizable automatic indentation, with the customization based
 %%on the syntactic structure of groups of expressions.
 
-\begin{quote}
- Rodney:  What is source code checking?  Should we lump this with highlighting?
-\end{quote}
+\begin{Comment}
+ Rodney:  What is ``source code checking''?
+          Should we lump this with highlighting?
+
+ Martin: There are two parts:  1) small parts, 2) entire files (C-c C-l).
+ \begin{enumerate}
+ \item small parts:\\
+   This is for S and LispStat at least; not available to SAS
+   --- so, no, don't lump it, but proably the ``\emph{and \SAS}'' part
+   should be deleted below! \\
+   It not only means sending small sections of code (to see if they parse or
+   what they do); it's also the matching of string quotes and
+   \verb| ( ) [ ] { }|
+   which is very useful and part of basic source code checking.
+   I would like to add this (paren-checking) below.
+ \item entire files:\\
+   This is ``C-c C-l''.
+   Here \SAS goes along as well.
+   and if there are syntax errors, you get exact line numbers where there
+   syntax error happened
+ \end{enumerate}
+\end{Comment}
 
 \paragraph{Source code checking.}
 ESS facilitates the editing of source code by providing a means for
@@ -399,9 +451,11 @@ loading and error-checking of small sections of code for S,
 \XLispStat, and \SAS.  This allows for source-level debugging of batch
 files.
 
-\begin{quote}
+\begin{Comment}
  Rodney:  What does ``entire function definitions'' mean?
-\end{quote}
+
+ Martin:What it says: The natural thing for S or Lisp programmers.
+\end{Comment}
 
 \paragraph{Partial code evaluation.}
 Emacs can send individual lines, entire function definitions, marked
@@ -412,10 +466,15 @@ the result.  This is a major improvement over cut-and-paste as it does
 not require switching between buffers or windows.  The response is received
 immediately in an editable Emacs buffer.
 
-\begin{quote}
+\begin{Comment}
  Rodney:  inferior is about as opaque as it gets.  Let's say
 ``interactive'' instead.  Ok?
-\end{quote}
+
+ Martin: Don't think so; \emph{inferior} is well explained below,
+ and we use it every in the ESS code itself. I think it would be
+ unfortunate for documentation to use a different term than what the source
+ code uses.
+\end{Comment}
 
 \paragraph{Process interaction.}
 Emacs has historically referred to processes under its control as
@@ -426,14 +485,19 @@ This mode allows for command-line editing and saving history, as well as
 recalling and searching for previously entered commands.  Filename
 completion is available.  In addition (currently only for S languages),
 there exists object-name and function-name completion.
-%%Transcripts are
-%%easily recorded and can be edited into an ideal activity log which can
-%%then be saved.  There is a good interface for handling and intercepting
-%%calls to the internal help systems for S, \XLispStat, and \Stata.
 
-\begin{quote}
+\begin{Comment}
  Rodney:  we need a short description transcript-mode
-\end{quote}
+
+ \begin{trivlist}\item
+   \emph{\small outcommented -- made visible (by MM) here}\\
+   Transcripts are easily recorded and can be edited into an ideal activity
+   log which can then be saved.
+ \end{trivlist}
+
+ Martin: I don't understand what you mean. Is the paragraph below too long
+ and you want to shorten it?
+\end{Comment}
 
 \paragraph{Interactive transcripts.}
 ESS can create transcripts, a recording of the commands issued in an
@@ -499,8 +563,9 @@ point of contention is the difference in the interfaces between general
 packages and specialized packages.  For example, the interfaces for BUGS
 and R are somewhat similar, but there are enough differences to create confusion.
 
-\begin{quote}
- Rodney:  I think I see where we were going with this.  We would go on to
+\begin{Comment}
+\begin{description}
+ \item[Rodney:]  I think I see where we were going with this.  We would go on to
 say that ESS is here to help people solve this problem.  However,
 we can't say that ESS provides a uniform interface to BUGS and R because
 it doesn't.  I didn't know what the R interface was supposed to look like
@@ -509,7 +574,18 @@ ESS[SAS] and ESS[R] are very different by design, i.e. ESS[SAS] was not
 designed like emacs, but rather Display Manager.  I'm not sure how we can tell
 people that this is such a big advantage.  Maybe the above paragraph
 should talk about SAS and BUGS?  Comments welcome.
-\end{quote}
+
+
+\item[Martin:] I see. Actually, I think this is \textbf{really bad} to hear.
+  I thought people using BUGS would rather come from an S background
+  (R or S-plus) rather than SAS, and I -- as Tony seemed -- naturally
+  assumed the BUGS interface would be close to the S one.
+
+  Wouldn't this even be something we should change?  Maybe we should find
+  out who is currently using ESS[BUGS] at all. It could be only very
+  people; since I know that most BUGS users use WinBUGS...
+\end{description}
+\end{Comment}
 
 ESS is an extension package for
 the Emacs editor which provides a single interface for a variety of
