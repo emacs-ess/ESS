@@ -137,7 +137,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/14 01:02:26 $ - $Revision: 1.55 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/14 15:59:50 $ - $Revision: 1.56 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -721,6 +721,14 @@ that ESS-elsewhere is a (generalized) minor-mode that makes the location
 of the program irrelevant.
 See my ESS-elsewhere quibble below.
 
+\item[Rodney:] It's the whole batch BUGS vs. interactive BUGS thing.  Batch 
+BUGS with ESS-elsewhere; interactive BUGS with inferior-BUGS which does not 
+and will never exist.  If you want to call ``inferior-ESS'' ``ESS-elsewhere'' 
+why do you need two different names?  ``inferior-ESS'' is a terrible name
+so the change would be fine with me, but you can't have it both ways?  Is
+this why you keep saying that ESS-elsewhere works for SAS?  See
+response to quibble below.
+
 \item[Rich:]
 \stexttt{iESS[SAS]} was designed to mimic as well as possible \stexttt{iESS[S]}.
 I need to read doc/README.SAS to make sure all of its options are represented
@@ -864,25 +872,24 @@ key to move the cursor to a previous tab-stop and delete any
 characters between its present position and the tab-stop.  This is a \SAS\
 Display Manager feature that is not available in Emacs otherwise. 
 
-%\begin{Comment}
-%Rodney's version:
-%\end{Comment}
-%Lastly, ESS cooperates with remote file access modes \stexttt{ange-ftp},
-%\stexttt{EFS} and \stexttt{tramp} by remotely submitting \SAS\ batch processes
-%to the remote computers that the files reside on.  This is important since
-%any \SAS\ permanent datasets referenced in the \SAS\ programs only exist
-%on those remote computers.  Kermit file transfers are also supported.  The
-%remote editing and statistical processing of files is called ESS-elsewhere and 
-%is nearly transparent to the user. 
-%
+The \SAS\ batch process runs on the computer where the \SAS\ program resides.  
+If the \SAS\ program resides on a remote computer, then the program, log and 
+output are accessed with one of the remote file modes (\stexttt{ange-ftp},
+\stexttt{EFS} and \stexttt{tramp}) or Kermit.  And, the \SAS\ batch processes 
+are remotely submitted via ssh or telnet running in \stexttt{shell-mode} to 
+the remote computer.  This is important since any \SAS\ permanent datasets 
+referenced in a \SAS\ program will only exist on the computer where the \SAS\ 
+program resides.  The statistical processing of batch files on remote computers 
+is also called ESS-elsewhere and is nearly transparent to the user. 
+
 %\begin{Comment}
 %Rich's version:
 %\end{Comment}
-The \SAS\ batch process can run on the same computer on which the
-emacs session is running or it can run on a remote computer.  For
-remote jobs, files are transparently saved (with ftp or scp or kermit)
-and the batch process is transparently submitted through a telnet or
-ssh connection.
+%The \SAS\ batch process can run on the same computer on which the
+%emacs session is running or it can run on a remote computer.  For
+%remote jobs, files are transparently saved (with ftp or scp or kermit)
+%and the batch process is transparently submitted through a telnet or
+%ssh connection.
 
 \begin{Comment}
 Rich: I have some terminology quibbles here with how the term
@@ -946,7 +953,6 @@ ESS provides a BUGS batch script that allows ESS to set BUGS batch
 parameters.  ESS also supplies key-mappings to submit a BUGS batch
 process.  ESS provides the same ESS-elsewhere support for BUGS batch
 that it does for \SAS\ batch (see above).
-\begin{Comment}Rich: ESS-elsewhere quibble\end{Comment}
 
 \section{History of ESS}
 \label{sec:ESS:history}
@@ -1016,6 +1022,8 @@ In 1998, Rodney Sparapani designed \SAS\ batch file processing for ESS
 on Unix, Windows and Macintosh.  In 1999 and 2000, Sparapani and Heiberger
 continually enhanced \SAS\ support. 
 In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.  
+In 2001, Sparapani added BUGS batch file processing for ESS.  
+
 \begin{Comment}
 Rodney: moved this discussion to a new section above
 %Sparapani and Heiberger developed \SAS\ batch support including function
@@ -1033,7 +1041,7 @@ Rodney: SAS batch now works and Kermit was added as a method of transfer.
 %ESS-elsewhere provides interactive and batch processing
 %with \SAS\ running on a remote machine that is accessed over a
 %network.  This provides a powerful development environment for \SAS.
-In 2001, Sparapani added BUGS batch file processing for ESS.  
+
 %%This
 %%includes support for syntax highlighting and template-based source file
 %%generation that provides the capability of specifying all the necessary
