@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1998/11/11 10:32:59 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: ess-vars.el,v 5.6 1998/11/11 10:32:59 maechler Exp $
+;; Modified: $Date: 1998/11/12 10:50:58 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: ess-vars.el,v 5.7 1998/11/12 10:50:58 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -500,8 +500,6 @@ of Emacs until the code has been successfully evaluated by S.")
 
 (defvar ess-current-process-name nil
   "Name of the current S process.")
-
-;; defconst ess-local-process-name now done in S.el
 
 (defvar ess-process-name-list nil
   "Alist of active ess processes.")
