@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/07/18 20:50:29 $
-;; Version: $Revision: 1.29 $
-;; RCS: $Id: essa-sas.el,v 1.29 2001/07/18 20:50:29 ess Exp $
+;; Modified: $Date: 2001/07/20 18:22:03 $
+;; Version: $Revision: 1.30 $
+;; RCS: $Id: essa-sas.el,v 1.30 2001/07/20 18:22:03 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -141,7 +141,7 @@ or comint buffer on the local computer."
 
 (defun ess-exit-notify-sh (string)
   "Detect completion or failure of submitted job and notify the user."
-  (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*\\.sas")
+  (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
 	 (beg (string-match exit-done string)))
     (if beg
 	(message (substring string beg (match-end 0))))))
@@ -391,7 +391,7 @@ their files from the remote computer.  Local copies of the .sas .lst
       (if (get-buffer "*shell*") (set-buffer "*shell*")
           (shell))
       (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
-          " ess-temp.sas " ess-sas-submit-post-command))
+          " ess-temp " ess-sas-submit-post-command))
       (comint-send-input)
     )
 )
