@@ -1,15 +1,3 @@
-;;; essd-sas.el --- SAS customization
-
-;; Copyright (C) 1997 Richard M. Heiberger and A. J. Rossini
-
-;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/09 20:32:34 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essl-sta.el,v 1.3 1997/11/09 20:32:34 rossini Exp $
-;;
-;; Keywords: start up, configuration.
 ;;; essl-sta.el --- Stata customization
 
 ;; Copyright (C) 1997 Thomas Lumley and A. J. Rossini
@@ -17,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1997/11/09 20:32:34 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essl-sta.el,v 1.3 1997/11/09 20:32:34 rossini Exp $
+;; Modified: $Date: 1997/11/11 21:34:37 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essl-sta.el,v 1.4 1997/11/11 21:34:37 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
