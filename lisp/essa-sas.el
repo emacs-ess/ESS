@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/11 19:55:01 $
-;; Version: $Revision: 1.105 $
-;; RCS: $Id: essa-sas.el,v 1.105 2002/07/11 19:55:01 rsparapa Exp $
+;; Modified: $Date: 2002/07/16 14:14:58 $
+;; Version: $Revision: 1.106 $
+;; RCS: $Id: essa-sas.el,v 1.106 2002/07/16 14:14:58 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -43,41 +43,19 @@
 
 ;;; Section 1:  Variable Definitions
 
-;;;Attention!  When you custom-ize, for group, use ess-sas rather than ess
-
-(defcustom ess-kermit-command "gkermit -T"
-    "*Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
-    :group 'ess-sas
-    :type  'string
-)
-
-(defcustom ess-kermit-prefix "#"
-    "*String files must begin with to use kermit file transfer."
-    :group 'ess-sas
-    :type  'string
-)
-
-(defcustom ess-kermit-remote-directory "$HOME"
-    "*Buffer local variable that designates remote directory of file."
-    :group 'ess-sas
-    :type  'string
-)
-
-(make-variable-buffer-local 'ess-kermit-remote-directory)
-
 (defvar ess-sas-file-path "."
     "Full path-name of the sas file to perform operations on.")
 
 (defcustom ess-sas-data-view-libname " "
     "*SAS code to define a library for `ess-sas-data-view'."
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
 (defcustom ess-sas-graph-suffix-regexp 
     "[.]\\([eE]?[pP][sS]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\)"
     "*GSASFILE suffix regexp."
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
@@ -88,7 +66,7 @@
 
 (defcustom ess-sas-submit-command sas-program
     "*Command to invoke SAS in batch; buffer-local."
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
@@ -96,7 +74,7 @@
 
 (defcustom ess-sas-submit-command-options " "
     "*Options to pass to SAS in batch; buffer-local."
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
@@ -127,7 +105,7 @@ should set this variable to 'sh regardless of their local shell
     (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
 	"-nodms -nosysin -log /dev/null")
     "*The options necessary for your enviromment and your operating system."
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
@@ -135,7 +113,7 @@ should set this variable to 'sh regardless of their local shell
     (if ess-microsoft-p "kodakimg" 
 	(if (equal ess-sas-submit-method 'sh) "sdtimage"))
     "*Application to view GSASFILE."
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
@@ -143,7 +121,7 @@ should set this variable to 'sh regardless of their local shell
     (if (equal ess-sas-submit-method 'sh) "-rsasuser &" 
 	(if ess-microsoft-p "-rsasuser -icon"))    
     "*Command-line statement to post-modify SAS invocation, e.g. -rsasuser"
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
@@ -151,19 +129,19 @@ should set this variable to 'sh regardless of their local shell
     (if (equal ess-sas-submit-method 'sh) "nohup" 
 	(if ess-microsoft-p "start"))
     "*Command-line statement to pre-modify SAS invocation, e.g. start or nohup"
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
 (defcustom ess-sas-suffix-1 "txt"
     "*The first suffix to associate with SAS."
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
 (defcustom ess-sas-suffix-2 "dat"
     "*The second suffix to associate with SAS."
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
@@ -175,13 +153,13 @@ should set this variable to 'sh regardless of their local shell
 	    "\\|" (downcase ess-sas-suffix-2) "\\|" (upcase ess-sas-suffix-2)))
 	"\\)")
     "*Regular expression for SAS suffixes."
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
 (defcustom ess-sleep-for 5
     "*Default for ess-sas-submit-sh is to sleep for 5 seconds."
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'number
 )
 
@@ -191,7 +169,7 @@ should set this variable to 'sh regardless of their local shell
 
 (defcustom ess-sas-temp-root "ess-temp"
     "*The root of the temporary .sas file for `ess-sas-submit-region'."
-    :group 'ess-sas
+    :group 'ess-sas  
     :type  'string
 )
 
@@ -218,80 +196,6 @@ buffer on the local computer."
 	(message (substring string beg (match-end 0))))))
 
 
-(defun ess-kermit-get (&optional ess-file-arg)
-"Get a file with Kermit.  WARNING:  Experimental!  From your *shell*
-buffer, start kermit and then log in to the remote machine.  Open 
-a file that starts with `ess-kermit-prefix'.  From that buffer, 
-execute this command.  It will retrieve a file from the remote 
-directory that you specify with the same name, but without the
-`ess-kermit-prefix'."
-
-    (interactive)
-
-;;     (save-match-data 
-       (let ((ess-temp-file (if ess-file-arg ess-file-arg (buffer-name)))
-	     (ess-temp-file-remote-directory nil))
-     
-	(if (string-equal ess-kermit-prefix (substring ess-temp-file 0 1)) 
-	  (progn
-	    (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
-	  	ess-kermit-remote-directory))
-
-	  (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
-;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
-	  (shell)
-	  (insert "cd $HOME; " ess-kermit-command " -s " ess-temp-file-remote-directory "/"
-	    (substring ess-temp-file 1) " -a " ess-temp-file)
-          (comint-send-input)	
-;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
-;;	  (comint-send-input)
-;;	  (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil 
-;;		  (concat "receive ]" ess-sas-temp-file)))                
-;;	  (comint-send-input)
-;;	  (insert (read-string "Press Return when transfer is complete: " nil nil "c"))                
-;;	  (comint-send-input)
-          (insert (read-string "Press Return when shell is ready: "))
-	  (comint-send-input)
-	  (switch-to-buffer (find-buffer-visiting ess-temp-file))
-	  (ess-revert-wisely)
-))))
-
-(defun ess-kermit-send ()
-"Send a file with Kermit.  WARNING:  Experimental!  From 
-a file that starts with `ess-kermit-prefix',
-execute this command.  It will transfer this file to the remote 
-directory with the same name, but without the `ess-kermit-prefix'."
-
-    (interactive)
-
-;;     (save-match-data 
-       (let ((ess-temp-file (expand-file-name (buffer-name)))
-	     (ess-temp-file-remote-directory nil))
-     
-	(if (string-equal ess-kermit-prefix (substring (file-name-nondirectory ess-temp-file) 0 1)) 
-	  (progn
-		
-	  (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file to: "
-	    ess-kermit-remote-directory))
-	  (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
-		
-;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
-	  (shell)
-	  (insert "cd $HOME; " ess-kermit-command " -a " ess-temp-file-remote-directory "/"
-	    (substring (file-name-nondirectory ess-temp-file) 1) " -g "  ess-temp-file)
-          (comint-send-input)	
-;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
-;;	  (comint-send-input)
-;;	  (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil 
-;;		  (concat "receive ]" ess-sas-temp-file)))                
-;;	  (comint-send-input)
-;;	  (insert (read-string "Press Return when transfer is complete: " nil nil "c"))                
-;;	  (comint-send-input)
-          (insert (read-string "Press Return when shell is ready: "))
-	  (comint-send-input)
-	  (switch-to-buffer (find-buffer-visiting ess-temp-file))
-	  (ess-revert-wisely)
-))))
 
 (defun ess-sas-append-log ()
     "Append ess-temp.log to the current .log file."
