@@ -6,9 +6,9 @@
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2002/09/09 06:56:16 $
-;; Version: $Revision: 5.21 $
-;; RCS: $Id: essddr.el,v 5.21 2002/09/09 06:56:16 maechler Exp $
+;; Modified: $Date: 2003/07/08 06:53:06 $
+;; Version: $Revision: 5.22 $
+;; RCS: $Id: essddr.el,v 5.22 2003/07/08 06:53:06 hornik Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.21 2002/09/09 06:56:16 maechler Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.22 2003/07/08 06:53:06 hornik Exp $
 
 ;;; Code:
 
@@ -101,8 +101,7 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev Rd-mode-abbrev-table "`ta" "\\tabular")
   (define-abbrev Rd-mode-abbrev-table "`ti" "\\title")
   (define-abbrev Rd-mode-abbrev-table "`us" "\\usage")
-  (define-abbrev Rd-mode-abbrev-table "`va" "\\value")
-  (define-abbrev Rd-mode-abbrev-table "`ve" "\\verbatim"))
+  (define-abbrev Rd-mode-abbrev-table "`va" "\\value"))
 
 (defvar Rd-mode-syntax-table nil
   "Syntax table for Rd mode.")
@@ -143,11 +142,13 @@ All Rd mode abbrevs start with a grave accent (`).")
   '("arguments" "alias" "author" "describe" "description" "details"
     "docType" "enumerate" "examples" "format" "itemize" "keyword" "name"
     "note" "references" "seealso" "section" "source" "synopsis"
-    "tabular" "title" "usage" "value" "verbatim"))
+    "tabular" "title" "usage" "value"))
 (defvar Rd-keywords
-  '("Alpha" "Gamma" "R" "alpha" "beta" "bold" "cr" "code" "deqn" "dots"
-    "email" "emph" "epsilon" "eqn" "file" "ge" "item" "lambda" "ldots"
-    "le" "left" "link" "method" "mu" "pi" "right" "tab" "sigma" "url"))
+  '("Alpha" "Gamma" "R" "acronym" "alpha" "beta" "bold" "cite" "code"
+    "command" "cr" "dQuote" "deqn" "dfn" "dots" "email" "emph" "env"
+    "epsilon" "eqn" "file" "ge" "item" "kbd" "lambda" "ldots" "le"
+    "left" "link" "method" "mu" "option" "pi" "pkg" "right" "sQuote"
+    "samp" "sigma" "strong" "tab" "url"))
 
 ;; Need to fix Rd-bold-face problem.
 ;;
