@@ -6,12 +6,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/29 11:45:45 $
-;; Version: $Revision: 1.43 $
-;; RCS: $Id: ess-mode.el,v 1.43 1997/07/29 11:45:45 rossini Exp $
+;; Modified: $Date: 1997/07/30 13:00:31 $
+;; Version: $Revision: 1.44 $
+;; RCS: $Id: ess-mode.el,v 1.44 1997/07/30 13:00:31 rossini Exp $
 
 ;;
 ;; $Log: ess-mode.el,v $
+;; Revision 1.44  1997/07/30 13:00:31  rossini
+;; removed last variable (ess-mode-map) to ess-vars.
+;;
 ;; Revision 1.43  1997/07/29 11:45:45  rossini
 ;; version now: ESS["dialect"].
 ;;
@@ -145,21 +148,6 @@
 (autoload 'ess-display-temp-buffer "ess-inf" "" nil)
 (autoload 'ess-force-buffer-current "ess-inf" "" nil)
 
-
-
- ; User changeable variables
-;;;=====================================================
-;;; Users note: Variables with document strings starting
-;;; with a * are the ones you can generally change safely, and
-;;; may have to upon occasion.
-
- ; System variables
-;;;=====================================================
-;;; Users note: You will rarely have to change these
-;;; variables.
-
-(defvar ess-mode-map nil
-  "Keymap for ess-mode.")
 
  ; S mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
