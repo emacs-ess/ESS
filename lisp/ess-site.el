@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/08/26 21:58:09 $
-;; Version: $Revision: 1.32 $
-;; RCS: $Id: ess-site.el,v 1.32 1997/08/26 21:58:09 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:46:55 $
+;; Version: $Revision: 1.33 $
+;; RCS: $Id: ess-site.el,v 1.33 1997/08/26 22:46:55 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.33  1997/08/26 22:46:55  rossini
+;;: removed ess-proc-prefix, ess-version-running
+;;:
 ;;: Revision 1.32  1997/08/26 21:58:09  rossini
 ;;: added SAS stuff.
 ;;:
@@ -313,14 +316,6 @@
 ;; (setq inferior-ess-secondary-prompt "+ ?")
 
 
-;;; --------- OLD STUFF -----------
-;;; Set this to nil if you are running vanilla (AT&T) S instead of S-plus
-;;(setq S-plus t)
-
-;;; Set this to "2.3" if you are running a pre-3.0 version of S or S-plus
-;;; Otherwise do not change it (still use "3.0" for any version after 3.0)
-;; (setq ess-version-running "3.0")
-;;; -------------------------------
 
 
 ;;; 3. Customization (and commented out examples) for your site
