@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/09 19:16:42 $
-;; Version: $Revision: 1.60 $
-;; RCS: $Id: essa-sas.el,v 1.60 2002/01/09 19:16:42 rsparapa Exp $
+;; Modified: $Date: 2002/01/09 21:04:44 $
+;; Version: $Revision: 1.61 $
+;; RCS: $Id: essa-sas.el,v 1.61 2002/01/09 21:04:44 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -304,17 +304,14 @@ on the way."
   "Send a file with Kermit."
     (interactive)
 
-    (save-excursion (save-match-data
-      (if (get-buffer "*shell*") (set-buffer "*shell*")
-          (shell))
-
-      (if (and (not (string-match "[" ess-sas-file-path)
-	  (string-match "]" ess-sas-file-path)))
+     (save-match-data 
+	(if (and (not (string-match "[[]" ess-sas-file-path))
+	  (string-match "]" ess-sas-file-path))
 
 	  (let ((ess-sas-temp-file (substring ess-sas-file-path (match-end 0))))
-
-          (insert ess-kermit-command " -s ]" ess-sas-temp-file " -a " ess-sas-temp-file)
-         (comint-send-input)))))
+	    (save-excursion (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
+		(insert ess-kermit-command " -s ]" ess-sas-temp-file " -a " ess-sas-temp-file)
+		(comint-send-input)))))
 )
 
 (defun ess-sas-goto (suffix &optional revert)
