@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/11 04:08:02 $
-;; Version: $Revision: 1.26 $
-;; RCS: $Id: essd-sas.el,v 1.26 1997/11/11 04:08:02 rossini Exp $
+;; Modified: $Date: 1997/11/11 21:42:28 $
+;; Version: $Revision: 1.27 $
+;; RCS: $Id: essd-sas.el,v 1.27 1997/11/11 21:42:28 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -58,9 +58,9 @@
 	 ;; isn't pretty yet.
 	 ;;  ess-local-process-name is defined after this function.
 	 ;;  it needs to be defined prior to this function.
-	 (n 0)
-	 (tmp-procname (if n (ess-proc-name (prefix-numeric-value n)
-					    temp-ess-dialect)
+	 ;;(n 0)
+	 (tmp-procname ;;(if n (ess-proc-name (prefix-numeric-value n)
+					;;  temp-ess-dialect)
 			 ;; no prefix arg
 			 (or (and (not (comint-check-proc (current-buffer)))
 				  ;; Don't start a new process in current buffer if
@@ -75,7 +75,7 @@
 					     (get-process (ess-proc-name
 							   ntry
 							   temp-ess-dialect)))))
-			       (ess-proc-name ntry temp-ess-dialect)))))
+			       (ess-proc-name ntry temp-ess-dialect)))) ;)
 	 ;; Following was tmp-local-process-name.  Stolen from inferior-ess
 	 (ess-sas-lst-bufname (concat "*" tmp-procname ".lst*"))
 	 (ess-sas-log-bufname (concat "*" tmp-procname ".log*"))
@@ -175,7 +175,7 @@
     (inferior-ess-secondary-prompt . "^")
     (inferior-ess-start-file       . nil) ;"~/.ess-SAS")
     (inferior-ess-start-args       . inferior-SAS-args-temp) 
-    (ess-pre-run-hook              . 'ess-SAS-pre-run-hook)
+    ;; (ess-pre-run-hook              . 'ess-SAS-pre-run-hook)
     (ess-local-process-name        . nil))
   "Variables to customize for SAS")
 
@@ -195,6 +195,7 @@
    (format "(SAS): ess-dialect=%s , buf=%s \n"
 	   ess-dialect
 	   (current-buffer)))
+  (ess-SAS-pre-run-hook)
   (inferior-ess))
 
 
