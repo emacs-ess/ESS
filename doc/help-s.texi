@@ -91,6 +91,13 @@ and when ESS prompts for "Starting Args ? ", enter (for example):
 
 Then that R process will be started up using @code{R --vanilla}.
 
+If you have other versions of R available on the system, ESS is also
+able to start those versions.  For example, if you have "R-1.8.1" on
+your `exec-path', it can be started using @kbd{M-x R-1.8.1}.  By
+default, ESS will find versions of R beginning "R-1" or "R-2".  If your
+versions of R are called other names, consider renaming them with a
+symbolic link or change the variable @code{ess-r-versions}.
+
 New for ESS 5.1.2 (and later):  "S-elsewhere" command
 
   The idea of "M-x S-elsewhere" is that we open a telnet (or rlogin)
