@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/06/23 12:29:21 $
-;; Version: $Revision: 1.74 $
-;; RCS: $Id: ess-cust.el,v 1.74 2004/06/23 12:29:21 stephen Exp $
+;; Modified: $Date: 2004/06/24 11:40:46 $
+;; Version: $Revision: 1.75 $
+;; RCS: $Id: ess-cust.el,v 1.75 2004/06/24 11:40:46 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -686,7 +686,7 @@ file \"R-1.8.1\" is found and this variable includes the string
 \"R-1\", a function called `M-x R-1.8.1' will be available to run that
 version of R.
 If duplicate versions of the same program are found (which happens if
-the same path is listed on `exec-path' more than once, they are
+the same path is listed on `exec-path' more than once), they are
 ignored by calling `ess-uniq-list'."
   :group 'ess-R
   :type '(repeat string))
