@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/06/21 19:26:50 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: ess-mode.el,v 5.15 2001/06/21 19:26:50 rossini Exp $
+;; Modified: $Date: 2001/06/21 19:39:29 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: ess-mode.el,v 5.16 2001/06/21 19:39:29 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -44,6 +44,10 @@
 ;;; >>> why not just do the obvious instead of all these ? Namely,
 ;;; (require 'ess-inf)
 ;;; ------------------ ?
+;;; AJR: The reason is that we ONLY need to load ess-inf for the
+;;; functions which are interactive in nature.   We don't want to load
+;;; it when we are only editing.
+
 (autoload 'ess-mode-minibuffer-map	"ess-inf" "" nil 'keymap)
 (autoload 'ess-read-object-name		"ess-inf" "" nil)
 (autoload 'ess-list-object-completions	"ess-inf" "" nil)
