@@ -1,9 +1,13 @@
 We now discuss installation, which might happen under Unix or
 Microsoft Windows.  First, we discuss Unix installation.  
+@xref{Unix installation}.
 
-Please skip to the next 
+For Microsoft Windows Installation please skip to the
+@xref{Microsoft Windows installation}.
 
-
+@node Unix installation, Microsoft Windows installation, , Top
+@comment  node-name,  next,  previous,  up
+@section Unix installation
 @enumerate 
 @item
   cd to a directory where you keep emacs lisp files, or create a new
@@ -40,10 +44,10 @@ Please skip to the next
 
 @item
   Edit the file @file{lisp/ess-site.el} as explained in the comments
-  section of that file.  Installations that are using ESS only for S-plus
-  3.x will probably not need to make any changes.  Installations that also
-  have one or more of (S+5 S4 R SAS XLispStat Stata) may need to uncomment
-  corresponding lines in @file{ess-site.el}.
+  section of that file.  Installations that are using ESS only for S-Plus
+  6.x will probably not need to make any changes.  Installations that also
+  have one or more of (S+5 S4 S+4 S+3 R SAS XLispStat Stata)
+  may need to uncomment corresponding lines in @file{ess-site.el}.
 @item
   @b{READ THIS ITEM THOROUGHLY BEFORE STARTING}:
 
@@ -107,14 +111,14 @@ Please skip to the next
   installing the database files.  From within (X)Emacs, @code{C-x d} to the
   directory containing ESS.  Now:
 @example
-       M-x S+3
+       M-x S+6
 @end example
   (or @code{M-x S+5}: get running.  once you have reached the SPLUS
   prompt, do:) 
 @example
        M-x ess-create-object-name-db
 @end example
-  (this will create the file @file{ess-s+3-namedb.el}; if it isn't in the
+  (this will create the file @file{ess-s+6-namedb.el}; if it isn't in the
    ESS directory, move it there).
 
   Then, completions will be autoloaded and will not be regenerated for
@@ -138,9 +142,9 @@ Please skip to the next
 @item
   To run statistical processes under (X)Emacs:
 
-  Run S-PLUS 3.x with:
+  Run S-PLUS 6.x with:
 @example
-	M-x S+3
+	M-x S+6
 @end example
   (or M-x S  using backwards compatibility).  You will then be asked
   for a pathname ("S starting data directory?"), from which to start
@@ -156,19 +160,24 @@ Please skip to the next
 	M-x XLS
 @end example
 
-  SAS can be run with:
+  An interactive SAS can be run in an @code{iESS[SAS]} buffer with:
 @example
 	M-x SAS
 @end example
-
+This works when SAS is running on a Unix machine, either the local
+machine or over a network connection.  M-x SAS does not work when
+SAS is running on a Windows machine.
 
 @item
   That's it!
 @end enumerate
 
+@node Microsoft Windows installation, , Unix installation, Top
+@comment  node-name,  next,  previous,  up
+@section Microsoft Windows installation
 
 For @b{Microsoft Windows installation}, please follow the next steps:
-(see separate instructions above for UNIX)
+(see separate instructions above for UNIX @xref{Unix installation}.
 
 @enumerate
 
@@ -253,13 +262,13 @@ For @b{Microsoft Windows installation}, please follow the next steps:
      installing the database files.  From within (X)Emacs, @code{C-x d} to
      the   directory containing ESS.  Now:
         @example
-                 M-x Sqpe+4
+                 M-x Sqpe+6
         @end example
        (get running.  once you have reached the SPLUS prompt, do:)
         @example
                  M-x ess-create-object-name-db
         @end example
-       (this will create the file @file{ess-s+4-namedb.el}; if it isn't in the
+       (this will create the file @file{ess-s+6-namedb.el}; if it isn't in the
        ESS directory, move it there).
 
      Then, completions will be autoloaded and will not be regenerated
@@ -289,9 +298,9 @@ For @b{Microsoft Windows installation}, please follow the next steps:
 
      To run statistical processes under (X)Emacs:
 
-     Run S-PLUS 4.x or 2000 with:
+     Run S-PLUS 6.x or 2000 with:
         @example
-          	M-x S+4
+          	M-x S+6
         @end example
        (or @code{M-x S}).  You will then be
      asked for a pathname ("S starting data directory?"), from which to
@@ -301,15 +310,15 @@ For @b{Microsoft Windows installation}, please follow the next steps:
      @file{myfile.s}) to the S-Plus Commands Window with the 
      @code{C-c C-n} or @code{C-c C-r} keys.
 
-     Run S-PLUS 4.x or 2000 inside an emacs buffer
+     Run S-PLUS 6.x or 2000 inside an emacs buffer
         @example
-          	M-x Sqpe+4
+          	M-x Sqpe+6
         @end example
      You will then be asked for a pathname ("S starting data
      directory?"), from which to start the process.  The prompt will
      propose your current directory as the default.  Similarly for S-PLUS
      6.x.  Send lines or regions from the emacs buffer containing your S
-     program (for example, @file{myfile.s}) to the *S+4* buffer with the
+     program (for example, @file{myfile.s}) to the *S+6* buffer with the
      @code{C-c C-n} or @code{C-c C-r} keys.  You do not have access to
      interactive graphics in 
      this mode.  You get Unix-like behavior, in particular the entire
@@ -329,9 +338,13 @@ For @b{Microsoft Windows installation}, please follow the next steps:
      *Listener* Window under Microsoft Windows.
 
      SAS for Windows uses the batch access with function keys that is
-     described in @file{doc/README.SAS}.
+     described in @file{doc/README.SAS}.  The user can also edit SAS files
+     in an @code{ESS[SAS]} buffer and than manually copy and paste them into
+     an Editor window in the SAS Display Manager.
 
-     For Windows, only SAS batch functionality is available.
+     For Windows, inferior SAS in an @code{iESS[SAS]} buffer does not work
+     on the local machine.  It does work over a network connection to
+     SAS running on a remote Unix computer.
 
      Reason:  we use ddeclient to interface with programs and SAS doesn't
      provide the corresponding ddeserver capability.

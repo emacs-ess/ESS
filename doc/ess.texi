@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.19 2001/08/21 16:17:02 maechler Exp $
+@comment $Id: ess.texi,v 5.20 2002/01/20 06:29:19 rmh Exp $
 
 @synindex pg vr
 
@@ -18,7 +18,7 @@ Originally known as S-mode, written by Doug Bates, Ed Kademan, Frank
 Ritter, and David Smith.
 
 Currently maintained by A.J. (Tony) Rossini, Richard M. Heiberger, Kurt
-Hornik, and Martin Maechler.
+Hornik, Martin Maechler, and Rodney Sparapani.
 
 This file documents @code{ESS}, a GNU Emacs package for running
 @code{S(plus)}, @code{R}, @code{XLisp-Stat}, @code{SAS} and potentially
@@ -32,15 +32,15 @@ Original Info Author: David M. Smith (@email{D.M.Smith@@lancaster.ac.uk}),
 Department of Mathematics and Statistics, Lancaster University, UK.
 
 Current Info Author: A.J. Rossini
-(@email{rossini@@biostat.washington.edu}), Department of Biotatistics,
+(@email{rossini@@biostat.washington.edu}), Department of Biostatistics,
 University of Washington, Seattle, WA 98185, USA
 
 @end ifinfo
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.19 (Documentation $Revision: 5.19 $ $Date: 2001/08/21 16:17:02 $)
-@author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
+@subtitle version 5.1.19 (Documentation $Revision: 5.20 $ $Date: 2002/01/20 06:29:19 $)
+@author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
 @ifhtml
@@ -84,10 +84,10 @@ permission notice identical to this one.
 
 ESS version 5.1.20
 
-        (Documentation $Revision: 5.19 $ $Date: 2001/08/21 16:17:02 $).
+        (Documentation $Revision: 5.20 $ $Date: 2002/01/20 06:29:19 $).
 
 @quotation
-A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
+A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
 Bates, Ed Kademan, Frank Ritter and David Smith).
 
 A programming and inferior mode package for (X)Emacs intended for
@@ -110,6 +110,8 @@ development.
 * Help Statistics::
 * Help OS::
 * Installation::                Installing ESS on your system
+* Unix installation::           Installing ESS on your Unix system
+* Microsoft Windows installation::  Installing ESS on your MS Windows system
 * Customization::               Customizing ESS
 * Key Index::
 * Command Index::
@@ -140,6 +142,7 @@ Interacting with the @b{ESS} process
 * Transcript::                  Manipulating the transcript
 * Command History::             Command History
 * History expansion::           References to historical commands
+* Is the Statistical Process running under ESS?:: S language options()$STERM
 * Hot keys::                    Hot keys for common commands
 * Other::                       Other commands provided by inferior-ESS
 
@@ -381,6 +384,7 @@ transcript files, including:
 @item
 @b{Evaluation of previously entered commands}, stripping away
 unnecessary prompts.
+@xref{Transcript resubmit}.
 
 @end itemize
 
@@ -564,6 +568,7 @@ typing.
 * Transcript::                  Manipulating the transcript
 * Command History::             Command History
 * History expansion::           References to historical commands
+* Is the Statistical Process running under ESS?:: S language options()$STERM
 * Hot keys::                    Hot keys for common commands
 * Other::                       Other commands provided by inferior-ESS
 @end menu
@@ -1144,7 +1149,7 @@ then edit or press @key{RET} to execute.
 For example, to execute the last command that referenced the variable
 @code{data}, type @kbd{!?data SPC TAB RET}.
 
-@node Hot keys, Other, History expansion, Entering commands
+@node Hot keys, Is the Statistical Process running under ESS?, History expansion, Entering commands
 @comment  node-name,  next,  previous,  up
 @section Hot keys for common commands
 
@@ -1253,7 +1258,44 @@ command explicitly to make sure that all the files that need to be saved
 have been saved, and that all the temporary buffers have been killed.
 @end itemize
 
-@node Other,  , Hot keys, Entering commands
+@node Is the Statistical Process running under ESS?, Other, Hot keys, Entering commands
+@comment  node-name,  next,  previous,  up
+@section Is the Statistical Process running under ESS?
+
+@cindex STERM
+@pindex STERM
+For the S languages (S, S-Plus, R) ESS sets an option in the current
+process that programs in the language can check to determine the
+environment in which they are currently running.
+
+ESS sets
+@code{options(STERM="iESS")} for S language processes running in an
+inferior @code{iESS[S]} or @code{iESS[R]} buffer.
+
+ESS sets
+@code{options(STERM="ddeESS")} for independent S-Plus for Windows
+processes running in the GUI and communicating with ESS via
+the DDE (Microsoft Dynamic Data Exchange) protocol through a
+@code{ddeESS[S]} buffer.
+
+Other values of @code{options()$STERM} that we recommend are:
+
+@itemize @bullet
+@item @code{length}:     Fixed length xterm or telnet window.
+@item @code{scrollable}: Unlimited length xterm or telnet window.
+@item @code{server}:     S-Plus Stat Server.
+@item @code{BATCH}:      BATCH.
+@item @code{Rgui}:       R GUI.
+@item @code{Commands}:   S-Plus GUI without DDE interface to ESS.
+@end itemize
+
+Additional values may be recommended in the future as new interaction
+protocols are created.  Unlike the values @code{iESS} and @code{ddeESS},
+ESS can't set these other values since the S language program is not
+under the control of ESS.
+
+
+@node Other,  , Is the Statistical Process running under ESS?, Entering commands
 @comment  node-name,  next,  previous,  up
 @section Other commands provided by inferior-ESS
 
@@ -1548,7 +1590,8 @@ choose from.  @xref{Indentation variables}.
 
 @cindex comments in S
 Comments are also handled specially by ESS, using an idea borrowed from
-the Emacs-Lisp indentation style.  Comments beginning with @samp{###}
+the Emacs-Lisp indentation style.  By default,
+comments beginning with @samp{###}
 are aligned to the beginning of the line.  Comments beginning with
 @samp{##} are aligned to the current level of indentation for the block
 containing the comment.  Finally, comments beginning with @samp{#} are
@@ -1556,7 +1599,10 @@ aligned to a column on the right (the 40th column by default, but this
 value is controlled by the variable @code{comment-column},)
 @vindex comment-column
 or just after the expression on the line containing the comment if it
-extends beyond the indentation column.
+extends beyond the indentation column.  You turn off the default
+behavior by adding the line
+@code{(setq ess-fancy-comments nil)} to your @file{.emacs} file.
+@vindex ess-fancy-comments
 
 The indentation commands provided by ESS are:
 @cindex indenting
@@ -1596,7 +1642,8 @@ styles: @code{GNU}, @code{BSD}, @code{K&R}, @code{CLB}, and @code{C++}.
 The @code{DEFAULT} style uses the default values for the indenting
 variables (unless they have been modified in your @file{.emacs} file.)
 @cindex @file{.emacs} file
-This command causes all of the formatting variables to be buffer-local.
+This command causes all of the formatting variables
+@pxref{Indentation variables} to be buffer-local.
 @end itemize
 
 @node Other edit buffer commands, Source Files, Indenting, Editing
@@ -2296,6 +2343,10 @@ directory, move it there).
 
 
 
+@menu
+* Installation::                Installing ESS on your system
+@end menu
+
 
 
 @node Installation, Customization, Help OS, Top
@@ -2306,92 +2357,13 @@ directory, move it there).
 The following section details those steps necessary to get ESS running
 on your system.
 
-@itemize @bullet
-
-@item
-cd to a directory where you keep emacs lisp files, or create a new
-directory to hold the distribution.  This directory will be referred to
-below as "the ESS-5.1.20 distribution directory".  It will contain, at the
-end, the tar file ESS-5.1.20.tar.gz, and a directory for the ESS source,
-which will be termed "the ESS-5.1.20 directory".  Note that the .elc files
-may be installed elsewhere (as specified in the Makefile) if desired.
-
-@item
-Retrieve the compressed tar file from one of the FTP or WWW archive
-sites via FTP (or HTTP).
-
-@item
-Copy ESS-5.1.20.tar.gz to the location where you want the ESS-5.1.20
-directory, and cd there.  Extract the files from the distribution, which
-will unpack into a subdirectory, ESS-5.1.20.
-
-        @itemize @minus
-        @item
-	@code{gunzip ESS-5.1.20.tar.gz}
-        @code{tar vxf ESS-5.1.20.tar}
-        @item
-	(or: @code{gunzip < ESS-5.1.20.tar.gz | tar vxf -}).
-        @item
-        (or using GNU tar: @code{tar zvxf ESS-5.1.20.tar.gz}).
-        @end itemize
-
-The tar command will extract files into the current directory.
-
-Do not create ESS-5.1.20 yourself, or you will get an extra level of
-depth to your directory structure.
-
-@item
-Edit the file @file{ess-site.el} as explained in the comments section of that
-file.  (This is optional, initially).
-
-@item
-In the ESS-5.1.20 directory, edit the file @file{Makefile} (only if you
-want to place the executables in other locations; see LISPDIR and
-INFODIR) and then type:
-
-        @itemize @minus
-        @item
-	@code{make}
-        @item
-        @code{make install}
-        @end itemize
-
-This will install the info files (and the lisp files, if they are to go
-in another directory).  Don't forget to edit the file `dir' in the info
-directory specified by INFODIR in the Makefile.
-
-If you are using XEmacs, you might do:
-
-        @itemize @minus
-        @item
-        @code{make EMACS=xemacs}
-        @item
-        @code{make EMACS=xemacs install}
-        @end itemize
-
-instead of editing the @file{Makefile}.
-
-@item
-Add the line
-
-        @code{(load "/PATH/ess-site")}
-
-to your @file{.emacs} file (or to @file{default.e}l or
-@file{site-init.el}, for a site-wide installation).  Replace `/PATH'
-above with the value of ess-lisp-directory as defined in
-@file{ess-site.el}.
-
-@item
-For more information on using ESS in your daily work, see the files
-README.S, README.SAS, and README.XLispStat.
-
-@end itemize
-
-
-
 @menu
+* Unix installation::
+* Microsoft Windows installation:: 
 * System dependent::            Other variables you may need to change
 @end menu
+
+@include inst_tar.texi
 
 @node System dependent,  , Installation, Installation
 @comment  node-name,  next,  previous,  up
@@ -2697,7 +2669,10 @@ Default: @code{DEFAULT} @*
 The default formatting style to use in edit buffers.  The DEFAULT style
 uses the values of the above indentation variables at load-time, so that
 changing these variables in your @file{.emacs} file will affect your
-buffer defaults.  @xref{Edit buffer}, for more details.
+buffer defaults.  Other styles are:
+@code{GNU}, @code{BSD}, @code{K&R}, @code{CLB}, and @code{C++}.
+See @file{ess-cust.el} for the complete definitions of the styles.
+@xref{Edit buffer}, for more details.
 @end defvr
 
 @node Variables controlling interaction,  , Indentation variables, Variables

@@ -11,7 +11,7 @@ ESS -- Emacs Speaks Statistics
 Ritter, and David Smith.
 
    Currently maintained by A.J. (Tony) Rossini, Richard M. Heiberger,
-Kurt Hornik, and Martin Maechler.
+Kurt Hornik, Martin Maechler, and Rodney Sparapani.
 
    This file documents `ESS', a GNU Emacs package for running
 `S(plus)', `R', `XLisp-Stat', `SAS' and potentially any other
@@ -24,7 +24,7 @@ source code in these languages and interacting with the running program.
 Department of Mathematics and Statistics, Lancaster University, UK.
 
    Current Info Author: A.J. Rossini
-(<rossini@biostat.washington.edu>), Department of Biotatistics,
+(<rossini@biostat.washington.edu>), Department of Biostatistics,
 University of Washington, Seattle, WA 98185, USA
 
 
@@ -35,10 +35,11 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.20
 
-   (Documentation $Revision: 1.16 $ $Date: 2001/09/28 15:30:14 $).
+   (Documentation $Revision: 1.17 $ $Date: 2002/01/20 06:29:19 $).
 
-     A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler
-     (Formerly: Doug Bates, Ed Kademan, Frank Ritter and David Smith).
+     A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
+     Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and
+     David Smith).
 
      A programming and inferior mode package for (X)Emacs intended for
      interacting with statistical software packages (primarily S(plus),
@@ -58,6 +59,8 @@ ESS: Emacs Speaks Statistics
 * Help Statistics::
 * Help OS::
 * Installation::                Installing ESS on your system
+* Unix installation::           Installing ESS on your Unix system
+* Microsoft Windows installation::  Installing ESS on your MS Windows system
 * Customization::               Customizing ESS
 * Key Index::
 * Command Index::
@@ -87,6 +90,7 @@ Interacting with the ESS process
 * Transcript::                  Manipulating the transcript
 * Command History::             Command History
 * History expansion::           References to historical commands
+* Is the Statistical Process running under ESS?:: S language options()$STERM
 * Hot keys::                    Hot keys for common commands
 * Other::                       Other commands provided by inferior-ESS
 
@@ -295,7 +299,7 @@ corrects these problems by introducing the following features:
 transcript files, including:
 
    * Evaluation of previously entered commands, stripping away
-     unnecessary prompts.
+     unnecessary prompts.  *Note Transcript resubmit::.
 
 
 
@@ -304,8 +308,50 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 New features in ESS
 ===================
 
+   Changes/New Features in 5.1.20:
+   * New `options()$STERM' in the S languages (S, S-Plus, R).
+     The S program can determine the environment in which it is
+     currently running.  ESS sets the option to `iESS' or `ddeESS'
+     when it starts an S language process.  We recommend other specific
+          values for S language processes that ESS does not start.
+
+   * New `ess-mouse-me' function, assigned to S-mouse-3 by default.
+       User may click on a word or region and then choose from the
+      menu to display the item, or a summary, or a plot, etc.
+     This feature is still under development.
+
+   * GNU Emacs 21.1 is now supported (fixed for S dialects, SAS & BUGS),
+          (some from Stephen Eglen).
+
+   * XEmacs on Win (NT) is better supported.
+
+   * Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
+
+   * should now work even when imenu is not available (for old
+     Xemacsen).
+
+   * For S dialects, .in.ESS <- TRUE  is set initially such that
+     programmers can test if running in ESS by  if(.in.ESS) ...
+
+   * for SAS : XEmacs-Imenu fix; C-TAB.. ; you can specify your SAS
+      library definitions outside of autoexec.sas for ess-sas-data-view
+          with SAS code placed in the variable
+     ess-sas-data-view-libname.
+
+   * for BUGS: font-lock with `in' fixed.
+
+   * for STATA: font-lock bug fixed.
+
+   * for Rd mode: C-c C-v and `switch-process' in menu.
+
+   * new functions (ess-directory-function) and (ess-narrow-to-defun)
+        ess-directory <-> default-directory logic (Jeff Mincy).
+
+   * Better Makefile logic structure
+
    Changes/New Features in 5.1.19:
-   * S+6 now supported (Tony Rossini)
+   * S+6 now supported (Tony Rossini (Unix) and Rich Heiberger
+     (Windows))
 
    * New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
      Templates assist you in writing .bug and .cmd code (.cmd and .log
@@ -670,6 +716,7 @@ commands are also provided for ease of typing.
 * Transcript::                  Manipulating the transcript
 * Command History::             Command History
 * History expansion::           References to historical commands
+* Is the Statistical Process running under ESS?:: S language options()$STERM
 * Hot keys::                    Hot keys for common commands
 * Other::                       Other commands provided by inferior-ESS
 

@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2002/01/09 13:53:54 $
-;; Version: $Revision: 5.84 $
-;; RCS: $Id: ess-site.el,v 5.84 2002/01/09 13:53:54 rmh Exp $
+;; Modified: $Date: 2002/01/20 06:29:19 $
+;; Version: $Revision: 5.85 $
+;; RCS: $Id: ess-site.el,v 5.85 2002/01/20 06:29:19 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -338,9 +338,7 @@ The extension, in a file name, is the part that follows the last `.'."
 (ess-message "[ess-site:] require 'essd-sp3 ...")
 (require 'essd-sp3)  ;; "sp" refers to S-PLUS (MathSoft/StatSci).
 
-(if (or (equal window-system 'w32)
-	(equal window-system 'win32)
-	(equal window-system 'mswindows))
+(if ess-microsoft-p
     (progn
       (ess-message "[ess-site:] require 'essd-sp4 ...")
       (require 'essd-sp4)
@@ -418,11 +416,11 @@ The extension, in a file name, is the part that follows the last `.'."
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files." t)
 
-;;; On a PC, the default is S+4.  
-;; Elsewhere (unix) the default is S+3 unless on Linux, where there's only S+5
-(cond ((or (equal window-system 'w32) 
-	   (equal window-system 'win32)) ; MS-Windows 9x/NT
+;;; On a PC, the default is S+6.  
+;; Elsewhere (unix and linux) the default is S+6
+(cond (ess-microsoft-p ; MS-Windows
        (fset 'S 'S+4)
+       (fset 'Sqpe 'Sqpe+4)
        (fset 's-mode 'S+4-mode)
        (fset 's-transcript-mode 'S+4-transcript-mode))
 
@@ -437,14 +435,6 @@ The extension, in a file name, is the part that follows the last `.'."
        (fset 's-transcript-mode 'S+3-transcript-mode))
 )
 
-
-
-;;;
-;;; AS OF 5.1.5, NO MORE CONDITIONALS ARE NEEDED!
-;;;
-;;(if (or (equal window-system 'w32) (equal window-system 'win32))
-;;    (fset 'R 'R-microsoft)		; MS-Windows 9x/NT
-;;   nil) ;(fset 'R 'R-unix))		; Unix
 
 
 ;;;;* Alias S-mode to s-mode

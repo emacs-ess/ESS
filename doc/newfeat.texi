@@ -1,5 +1,10 @@
 Changes/New Features in 5.1.20:
 @itemize @bullet
+@item New `options()$STERM' in the S languages (S, S-Plus, R).
+      The S program can determine the environment in which it is
+      currently running.  ESS sets the option to `iESS' or `ddeESS'
+      when it starts an S language process.  We recommend other specific
+      values for S language processes that ESS does not start.
 @item New `ess-mouse-me' function, assigned to S-mouse-3 by default.
       User may click on a word or region and then choose from the
       menu to display the item, or a summary, or a plot, etc.
