@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2004/04/12 18:38:41 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: essd-sas.el,v 5.16 2004/04/12 18:38:41 rsparapa Exp $
+;; Modified: $Date: 2004/05/13 10:48:34 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: essd-sas.el,v 5.17 2004/05/13 10:48:34 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -149,7 +149,7 @@ Better logic needed!  (see 2 uses, in this file).")
 
     ;;workaround
     (setq inferior-SAS-program-name
-	  (concat ess-lisp-directory "/../etc/" "ess-sas-sh-command"))
+	  (concat ess-etc-directory "ess-sas-sh-command"))
     (setq inferior-ess-program inferior-SAS-program-name)))
 
 (defun ess-insert-accept (command)
