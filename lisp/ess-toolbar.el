@@ -2,9 +2,9 @@
 ;;; Thu 06 May 2004
 ;;; Stephen Eglen
 ;;; GPL.
-;; Modified: $Date: 2004/05/12 10:06:24 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: ess-toolbar.el,v 1.6 2004/05/12 10:06:24 stephen Exp $
+;; Modified: $Date: 2004/05/13 10:02:47 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: ess-toolbar.el,v 1.7 2004/05/13 10:02:47 stephen Exp $
 
 ;;; Notes.
 
@@ -96,8 +96,7 @@ Icons should be found in ESS/etc/icons/ directory.")
 
     ;; icons are found by examining load-path; hence by temporarily setting
     ;; load-path to our icons directory, they will be found.
-    (tool-bar-add-item "startr" 'R 'Start_R_process
-		       :help "Start R process" )
+    (tool-bar-add-item-from-menu 'R "startr" ess-mode-map)
     (tool-bar-add-item-from-menu 'ess-eval-line-and-step "rline" ess-mode-map)
     (tool-bar-add-item-from-menu 'ess-eval-region "rregion" ess-mode-map)
     (tool-bar-add-item-from-menu 'ess-load-file "rbuffer" ess-mode-map)
@@ -116,8 +115,7 @@ Icons should be found in ESS/etc/icons/ directory.")
     
     ;; icons are found by examining load-path; hence by temporarily setting
     ;; load-path to our icons directory, they will be found.
-    (tool-bar-add-item "spluslogo" 'S 'Start_S_process
-		       :help "Start S process" )
+    (tool-bar-add-item-from-menu 'S "spluslogo" ess-mode-map)
     (tool-bar-add-item-from-menu 'ess-eval-line-and-step "rline" ess-mode-map)
     (tool-bar-add-item-from-menu 'ess-eval-region "rregion" ess-mode-map)
     (tool-bar-add-item-from-menu 'ess-load-file "rbuffer" ess-mode-map)
