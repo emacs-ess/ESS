@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/09/04 16:57:02 $
-;; Version: $Revision: 5.52 $
-;; RCS: $Id: ess-inf.el,v 5.52 2000/09/04 16:57:02 rossini Exp $
+;; Modified: $Date: 2000/09/04 17:40:42 $
+;; Version: $Revision: 5.53 $
+;; RCS: $Id: ess-inf.el,v 5.53 2000/09/04 17:40:42 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -287,9 +287,11 @@ there is no process NAME)."
 	       inf-ess-start-args comint-process-echoes))
 	(setq ess-local-process-name proc-name)
 	(goto-char (point-max))
+	;; load past history
 	(setq comint-input-ring-file-name
 	      (expand-file-name ess-history-file ess-directory))
 	(comint-read-input-ring)
+	;; create and run process.
 	(ess-write-to-dribble-buffer
 	 (format "(ess-multi 1):  start-args=%s \n"
 	       inf-ess-start-args))
@@ -1930,13 +1932,57 @@ P-STRING is the prompt string."
 
 ;;*;; Temporary buffer handling
 
+;(defun ess-create-temp-buffer (name)
+;  "Create an empty buffer called NAME, but doesn't display it."
+;  (let ((buff (get-buffer-create name)))
+;    (save-excursion
+;      (set-buffer buff)
+;      (erase-buffer))
+;    buff))
+
+
+;; Ed Kademan's version:
+;From: Ed Kademan <kademan@phz.com>
+;Subject: Re: ess-mode 5.1.16; search list
+;To: rossini@biostat.washington.edu (A.J. Rossini)
+;Cc: Martin Maechler <maechler@stat.math.ethz.ch>, ess-bugs@stat.math.ethz.ch
+;Date: 26 Jul 2000 16:12:12 -0400
+;
+;Dear Tony Rossini,
+;
+;I was having trouble looking at the search list under ess.  When I
+;started up multiple inferior processes---each for a different
+;dialect---ess-mode would issue the wrong variant of the "search"
+;command when I typed C-c C-s.  In case it is useful let me tell you
+;what I did to get it to work for me.
+;
+;I added the component:
+;  (inferior-ess-search-list-command . "search()\n")
+;to S+3-customize-alist and R-customize-alist, and then I redefined the
+;ess-create-temp-buffer function as follows:
 (defun ess-create-temp-buffer (name)
-  "Create an empty buffer called NAME, but doesn't display it."
-  (let ((buff (get-buffer-create name)))
+  "Create an empty buffer called NAME."
+  (let ((buff (get-buffer-create name))
+	(elca (eval ess-local-customize-alist)))
     (save-excursion
       (set-buffer buff)
-      (erase-buffer))
+      (erase-buffer)
+      (ess-setq-vars-local elca buff))
     buff))
+;;These two steps seem to insure that the temporary buffer in which the
+;;search results appear has the correct version of the local variables.
+;;I am not that well acquainted with the ess code and don't know whether
+;;this is a good fundamental way of fixing the problem, or even whether
+;;or not this breaks some other feature of ess-mode that I never use.
+;;Thanks for listening.
+;;Ed K.
+;;-- 
+;;Ed Kademan              508.651.3700
+;;PHZ Capital Partners    508.653.1745 (fax)
+;;321 Commonwealth Road   <kademan@phz.com>
+;;Wayland, MA 01778
+
+
 
 (defun ess-display-temp-buffer (buff)
   "Display the buffer BUFF using `temp-buffer-show-function'."

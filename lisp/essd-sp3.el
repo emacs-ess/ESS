@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essd-sp3.el,v 1.4 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/09/04 17:40:42 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essd-sp3.el,v 1.5 2000/09/04 17:40:42 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -62,6 +62,7 @@
      . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
     (inferior-ess-program          . inferior-S+3-program-name)
     (inferior-ess-objects-command  . "objects(%d)\n")
+    (inferior-ess-search-list-command   . "search()\n")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
