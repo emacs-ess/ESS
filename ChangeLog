@@ -1,3 +1,12 @@
+1998-11-09  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* Makefile (dist): new top-level target.
+
+Tue Dec  2 08:49:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: info isn't a valid target, and cleaned up doc
+ 	targets. (KH).
+
 Mon Dec  1 16:55:17 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess.el: removed blank lines.
@@ -1837,6 +1846,15 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.2  1998/11/09 22:46:55  rossini
+	* Removing *** empty log message ***
+	* Removing
+	* Removing Revision 5.1.1.2  1997/12/02 14:06:08  rossini
+	* Removing *** empty log message ***
+	* Removing
+	* Removing Revision 5.1.1.1  1997/12/01 21:57:03  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 5.1  1997/12/01 21:55:30  rossini
 	* Removing new revision.
 	* Removing
