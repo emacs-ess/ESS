@@ -88,15 +88,14 @@ Only a concern with earlier versions of Emacs.")
     (provide 'xemacs))
 
 ;; XEmacs 21.x and Emacs 20.x need this
-(cond ((fboundp 'replace-regexp-in-string)
-       (defalias 'ess-replace-regexp-in-string 'replace-regexp-in-string))
-      ((featurep 'xemacs)
-	(defun ess-replace-regexp-in-string(regexp replace string)
+(if (not (fboundp 'replace-regexp-in-string))
+    (if (featurep 'xemacs)
+	(defun replace-regexp-in-string(regexp replace string)
 	  "Mimic GNU Emacs function replace-regexp-in-string with XEmacs' replace-in-string"
-	  (replace-in-string string regexp replace)))
+	  (replace-in-string string regexp replace))
 
       ;; GNU emacs <= 20 -- take Emacs' 21(.3)'s definition:
-      (t (defun ess-replace-regexp-in-string (regexp rep string &optional
+      (defun replace-regexp-in-string (regexp rep string &optional
 					      fixedcase literal subexp start)
 	"Replace all matches for REGEXP with REP in STRING.
 
