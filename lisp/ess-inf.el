@@ -292,16 +292,6 @@ there is no process NAME)."
 	 (format "(ess-multi 0):  inf-ess-start-args=%s, comint-..echoes=%s\n"
 	       inf-ess-start-args comint-process-echoes))
 	(set-buffer buffer)
-	(setq-default inferior-ess-prompt
-		      ;; shouldn't be setq-default!  And I've
-		      ;; forgotten why!   (AJR)
-
-		      ;; Do not anchor to bol with `^'
-		      (concat "\\("
-			      inferior-ess-primary-prompt
-			      "\\|"
-			      inferior-ess-secondary-prompt
-			      "\\)"))
 	(inferior-ess-mode)
 	(ess-write-to-dribble-buffer
 	 (format "(ess-multi post inf-ess: start-args=%s, comint-echoes=%s\n"
@@ -1436,6 +1426,19 @@ to continue it."
   (make-local-variable 'paragraph-separate)
   (setq paragraph-separate "\^L")
 
+  ;; SJE: is this the proper place for setting inferior-ess-prompt,
+  ;; rather than within ess-multi?  Tony - have you remembered yet
+  
+  ;; about the setq-default, as I changed it back to setq.
+  (setq inferior-ess-prompt
+	;; shouldn't be setq-default!  And I've
+	;; forgotten why!   (AJR)
+	;; Do not anchor to bol with `^'
+	(concat "\\("
+		inferior-ess-primary-prompt
+		"\\|"
+		inferior-ess-secondary-prompt
+		"\\)"))
 
   (ess-load-object-name-db-file)
   (sleep-for 0.5)
