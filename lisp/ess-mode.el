@@ -6,12 +6,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/29 11:39:22 $
-;; Version: $Revision: 1.42 $
-;; RCS: $Id: ess-mode.el,v 1.42 1997/07/29 11:39:22 rossini Exp $
+;; Modified: $Date: 1997/07/29 11:45:45 $
+;; Version: $Revision: 1.43 $
+;; RCS: $Id: ess-mode.el,v 1.43 1997/07/29 11:45:45 rossini Exp $
 
 ;;
 ;; $Log: ess-mode.el,v $
+;; Revision 1.43  1997/07/29 11:45:45  rossini
+;; version now: ESS["dialect"].
+;;
 ;; Revision 1.42  1997/07/29 11:39:22  rossini
 ;; stuff.
 ;;
@@ -297,17 +300,23 @@
   (interactive)
   (setq ess-proc-prefix "R"
 	ess-default-style 'GNU)
-  (ess-mode proc-name))
+  (ess-mode proc-name ess-proc-prefix))
 
 (defun S-mode (&optional proc-name)
   "Major mode for editing S+3 source.  See ess-mode for more help."
   (interactive)
   (setq ess-proc-prefix "S"
 	ess-default-style 'GNU)
-  (ess-mode proc-name))
+  (ess-mode proc-name ess-proc-prefix))
 
+(defun XLS-mode (&optional proc-name)
+  "Major mode for editing XLispStat source.  NOT EVEN STARTED."
+  (interactive)
+  ;; (setq ess-proc-prefix "XLS"
+  ;;          ess-default-style 'LISP)
+  (lisp-mode))
 
-(defun ess-mode (&optional proc-name)
+(defun ess-mode (&optional proc-name type)
   "Major mode for editing S source.
 Optional arg PROC-NAME is name of associated inferior process.
 
@@ -386,7 +395,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
   (interactive)
   (kill-all-local-variables)
   (setq major-mode 'ess-mode)
-  (setq mode-name "ESS [S]") ;; will be S.  
+  (setq mode-name (concat "ESS[" type "]")) ;; will be S.  
   (use-local-map ess-mode-map)
   (set-syntax-table ess-mode-syntax-table)
   (make-local-variable 'paragraph-start)
