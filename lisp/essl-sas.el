@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/01/08 18:01:41 $
-;; Version: $Revision: 5.29 $
-;; RCS: $Id: essl-sas.el,v 5.29 2002/01/08 18:01:41 ess Exp $
+;; Modified: $Date: 2002/01/08 18:04:52 $
+;; Version: $Revision: 5.30 $
+;; RCS: $Id: essl-sas.el,v 5.30 2002/01/08 18:04:52 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -135,7 +135,7 @@ the mode line."
 
 ;; added sas-program 4/29/94.  user can specify a different version of sas.
 (defcustom sas-program "sas"
-  "*Command to invoke SAS interactively."
+  "*Command to invoke SAS."
   :group 'ess-sas
   :type  'string)
 
