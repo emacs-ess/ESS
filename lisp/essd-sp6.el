@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: ?? ??? 2001
-;; Modified: $Date: 2001/07/27 23:06:21 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essd-sp6.el,v 1.3 2001/07/27 23:06:21 rossini Exp $
+;; Modified: $Date: 2001/07/27 23:29:08 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essd-sp6.el,v 1.4 2001/07/27 23:29:08 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -81,7 +81,8 @@
     (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
     (inferior-ess-help-command     . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
     ;; "paths": get the "/" needed by  (ess-dir-modtime dir)  in ./ess-inf.el:
-    (inferior-ess-search-list-command . "search(\"paths\")\n")
+    ;; (inferior-ess-search-list-command . "search(\"paths\")\n")
+    (inferior-ess-search-list-command . "search()\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?"))
@@ -131,4 +132,4 @@ New way to do it."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; essd-sp5.el ends here
+;;; essd-sp6.el ends here
