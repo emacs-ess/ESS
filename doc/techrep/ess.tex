@@ -139,7 +139,7 @@ transfer of output to R or \Splus\ for processing the results.
 However, while the interfaces for WinBUGS and R are similar, they are
 still distinct enough to create tension on the part of the analyst.
 
-Emacs Speaks Statistics (ESS) provides a single point of interface for
+Emacs Speaks Statistics (ESS) \citep{ESS} provides a single point of interface for
 a variety of statistical computing tools.  ESS is optimized for the
 tasks of statistical coding and interactive data analysis.
 Statistical coding is the writing of computer code for data analysis.
@@ -524,6 +524,11 @@ highlighting mechanism using the Emacs \stexttt{font-lock-mode},
 extended the \stexttt{*ESS-elsewhere*} functionality to include SAS
 processes, and provided automated error message lookup in the log
 file.  This provides a strong development environment for SAS.
+
+An earlier description of ESS appears in \citep{heiberger:dsc:2001}.
+The present paper is intended as the primary non-technical description of ESS.
+Details on the functions within ESS and examples of its use are included in
+the online documentation that comes as part of the downloadable package.
 
 \section{Using ESS with the S family of languages}
 \label{sec:S}
@@ -1013,7 +1018,7 @@ approach for solving data management auditing.
 \section{Obtaining ESS}
 \label{sec:getIt}
 
-ESS is primarily located at \stexttt{ess.stat.wisc.edu}, and is
+ESS \citep{ESS} is primarily located at \stexttt{ess.stat.wisc.edu}, and is
 available by FTP or through the World-Wide-Web (WWW).  A basic
 installation consists of downloading the package, unpacking, and then
 adding a line to the Emacs initialization file (\file{.emacs} or
