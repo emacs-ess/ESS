@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/10/02 01:52:36 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: essl-s.el,v 1.13 1997/10/02 01:52:36 rossini Exp $
+;; Modified: $Date: 1997/10/02 05:12:52 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: essl-s.el,v 1.14 1997/10/02 05:12:52 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -57,10 +57,18 @@
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files" t)
 
-(fset 's-transcript-mode 'ess-transcript-mode)
-(fset 'S-transcript-mode 'ess-transcript-mode)
-(fset 'r-transcript-mode 'ess-transcript-mode)
-(fset 'R-transcript-mode 'ess-transcript-mode)
+(defun s-transcript-mode ()
+  "Does the right thing."
+  (ess-transcript-mode S+3-customize-alist))
+
+
+(fset 'S-transcript-mode 's-transcript-mode)
+
+(defun r-transcript-mode ()
+  "Does the right thing."
+  (ess-transcript-mode R-customize-alist))
+
+(fset 'R-transcript-mode 'r-transcript-mode)
 
 
  ; Configuration variables
