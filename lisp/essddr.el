@@ -1,14 +1,14 @@
 ;; essddr.el --- Support for editing R documentation (Rd) source
 
-;;; Copyright (C) 1998--2000 KH <Kurt.Hornik@ci.tuwien.ac.at>, AJR, MM
+;;; Copyright (C) 1998--2001 KH <Kurt.Hornik@ci.tuwien.ac.at>, AJR, MM
 ;;;
 
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2001/02/13 12:37:13 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: essddr.el,v 5.15 2001/02/13 12:37:13 hornik Exp $
+;; Modified: $Date: 2001/04/11 22:34:52 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: essddr.el,v 5.16 2001/04/11 22:34:52 hornik Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,14 +27,14 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.15 2001/02/13 12:37:13 hornik Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.16 2001/04/11 22:34:52 hornik Exp $
 
 ;;; Code:
 
 ;; To stave off byte compiler errors
 (eval-when-compile (require 'ess-help))
 
-(defvar essddr-version "0.1.8"
+(defvar essddr-version "0.1.9"
   "Current version of essddr.el.")
 
 (defvar essddr-maintainer-address
@@ -58,14 +58,15 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev-table 'Rd-mode-abbrev-table ())
   (define-abbrev Rd-mode-abbrev-table "`ag" "\\arguments")
   (define-abbrev Rd-mode-abbrev-table "`al" "\\alias")
+  (define-abbrev Rd-mode-abbrev-table "`au" "\\author")  
   (define-abbrev Rd-mode-abbrev-table "`bf" "\\bold")
   (define-abbrev Rd-mode-abbrev-table "`co" "\\code")
   (define-abbrev Rd-mode-abbrev-table "`de" "\\describe")
   (define-abbrev Rd-mode-abbrev-table "`dn" "\\description")
   (define-abbrev Rd-mode-abbrev-table "`dt" "\\details")
-  (define-abbrev Rd-mode-abbrev-table "`ex" "\\examples")
   (define-abbrev Rd-mode-abbrev-table "`em" "\\emph")
-  (define-abbrev Rd-mode-abbrev-table "`em" "\\enumerate")
+  (define-abbrev Rd-mode-abbrev-table "`en" "\\enumerate")
+  (define-abbrev Rd-mode-abbrev-table "`ex" "\\examples")
   (define-abbrev Rd-mode-abbrev-table "`fi" "\\file")
   (define-abbrev Rd-mode-abbrev-table "`fi" "\\format")
   (define-abbrev Rd-mode-abbrev-table "`it" "\\item")
@@ -74,6 +75,7 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev Rd-mode-abbrev-table "`li" "\\link")
   (define-abbrev Rd-mode-abbrev-table "`me" "\\method")
   (define-abbrev Rd-mode-abbrev-table "`na" "\\name")
+  (define-abbrev Rd-mode-abbrev-table "`no" "\\note")
   (define-abbrev Rd-mode-abbrev-table "`re" "\\references")
   (define-abbrev Rd-mode-abbrev-table "`sa" "\\seealso")
   (define-abbrev Rd-mode-abbrev-table "`se" "\\section")
@@ -148,7 +150,11 @@ All Rd mode abbrevs start with a grave accent (`).")
     (concat "\\\\\\("
 	    (mapconcat 'identity Rd-keywords "\\|")
 	    "\\>\\)")
-    'font-lock-keyword-face))
+    'font-lock-keyword-face)
+   '("^#\\(ifn?def\\)\\s-+\\(\\sw+\\)"
+    (1 font-lock-builtin-face)
+    (2 font-lock-variable-name-face nil t))
+   '("^#\\(endif\\)" 1 font-lock-builtin-face))
   "Additional Rd expressions to highlight.")
 
 (defvar Rd-indent-level 2
