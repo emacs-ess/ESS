@@ -1,3 +1,9 @@
+Tue Sep 14 17:00:19 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* Release 5.1.9
+
+	* added stata mode fixes, noweb/literate data analysis fixes.
+
 1999-09-01  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* Finally upgraded version number to 5.1.9 (for pre-release)
@@ -474,7 +480,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 1999/09/01 19:19:34 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 1999/09/15 00:01:25 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -2664,6 +2670,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.18  1999/09/15 00:01:25  rossini
+	* Removing Release 5.1.9
+	* Removing
 	* Removing Revision 5.17  1999/09/01 19:19:34  maechler
 	* Removing version numbers finally at 5.1.9
 	* Removing
