@@ -2,7 +2,8 @@ Changes/New Features in 5.2.1:
 @itemize @bullet
 @item ESS[S] (R and S-plus): now have tool-bar
 with entries to evaluate code in the inferior process or to switch
-there.
+there.  This code is experimental and likely to change as XEmacs/Emacs
+issues get resolved.
 @end itemize
 
 Changes/New Features in 5.2.0:
