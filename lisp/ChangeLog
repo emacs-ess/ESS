@@ -2,6 +2,10 @@
 
 	* ess-cust.el (inferior-R-program-name): Customize.
 	Add description of file to line 1.
+	(ess-version): Change from defcustom to defvar;
+	presumably no-one will want to customize this variable!  Comment
+	line prior to definiton already says that this variable is not
+	user-changeable.
 
 2003-12-08  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
