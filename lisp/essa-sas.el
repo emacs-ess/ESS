@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/23 21:56:14 $
-;; Version: $Revision: 1.80 $
-;; RCS: $Id: essa-sas.el,v 1.80 2002/01/23 21:56:14 rsparapa Exp $
+;; Modified: $Date: 2002/01/23 22:05:35 $
+;; Version: $Revision: 1.81 $
+;; RCS: $Id: essa-sas.el,v 1.81 2002/01/23 22:05:35 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -43,7 +43,7 @@
 
 ;;; Section 1:  Variable Definitions
 
-(require 'ess-batch)
+;;(require 'ess-batch)
 
 (defcustom ess-kermit-command "gkermit -T"
     "*Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
@@ -134,7 +134,7 @@ or `ESS-elsewhere' should have one of the following in ~/.emacs
     :type  'string
 )
 
-(defcustom ess-sas-suffix-2 "csv"
+(defcustom ess-sas-suffix-2 "dat"
     "*The second suffix to associate with SAS."
     :group 'ess-sas
     :type  'string
