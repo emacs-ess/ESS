@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/08 19:39:18 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essl-sas.el,v 1.8 1997/09/08 19:39:18 rossini Exp $
+;; Modified: $Date: 1997/09/10 17:33:45 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essl-sas.el,v 1.9 1997/09/10 17:33:45 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -832,6 +832,371 @@ page ;
 
 
 
+;;-*-emacs-lisp-*-
+;;;  file name: sas-data.el
+;;;
+;;;  Version 1.0
+;;; 
+;;;    sas-data-mode:  manage sas datasets
+;;;    Copyright (C) 1994 Tom Cook
+;;;
+;;;    This program is free software; you can redistribute it and/or modify
+;;;    it under the terms of the GNU General Public License as published by
+;;;    the Free Software Foundation; either version 2 of the License, or
+;;;    (at your option) any later version.
+;;;
+;;;    This program is distributed in the hope that it will be useful,
+;;;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;;    GNU General Public License for more details.
+;;;
+;;;    You should have received a copy of the GNU General Public License
+;;;    along with this program; if not, write to the Free Software
+;;;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+;;;
+;;;  Author:   Tom Cook
+;;;            Dept. of Biostatistics
+;;;            University of Wisconsin - Madison
+;;;            Madison, WI 53706
+;;;            cook@biostat.wisc.edu
+;;   Created: 8/11/94          
+
+;;  variables section
+(defvar sas-dir-mode-map nil)
+(defvar sas-directory-name nil "Name of directory associated with this buffer")
+(make-variable-buffer-local 'sas-directory-name)
+(defvar sas-dir-buf-end nil)
+(make-variable-buffer-local 'sas-dir-buf-end)
+(defvar sas-sorted-by-num nil)
+(make-variable-buffer-local 'sas-sorted-by-num)
+;; user variables 
+
+;; keymaps etc...
+
+(if sas-dir-mode-map ()
+   (setq sas-dir-mode-map (make-sparse-keymap))
+   ;;(define-key sas-dir-mode-map "c" 'sas-contents)
+   (define-key sas-dir-mode-map "p" 'sas-print)
+   (define-key sas-dir-mode-map "m" 'sas-mark-item)
+   (define-key sas-dir-mode-map "u" 'sas-unmark-item)
+   (define-key sas-dir-mode-map " " 'sas-next-line)
+   (define-key sas-dir-mode-map "\C-n" 'sas-next-line)
+   (define-key sas-dir-mode-map "\C-p" 'sas-prev-line)
+   (define-key sas-dir-mode-map "\177" 'sas-prev-line-undo)
+   (define-key sas-dir-mode-map "\C-b" 'sas-backward-page-narrow)
+   (define-key sas-dir-mode-map "\C-v" 'sas-forward-page-narrow)
+   (define-key sas-dir-mode-map "\C-m" 'sas-goto-dataset)
+   (define-key sas-dir-mode-map [mouse-2] 'sas-mouse-goto-dataset)
+   (define-key sas-dir-mode-map "t" 'sas-dir-goto-page)
+   (define-key sas-dir-mode-map "q" 'bury-buffer)
+   (define-key sas-dir-mode-map "g" 'sas-revert-library)
+   (define-key sas-dir-mode-map "1" 'digit-argument)
+   (define-key sas-dir-mode-map "2" 'digit-argument)
+   (define-key sas-dir-mode-map "3" 'digit-argument)
+   (define-key sas-dir-mode-map "4" 'digit-argument)
+   (define-key sas-dir-mode-map "5" 'digit-argument)
+   (define-key sas-dir-mode-map "6" 'digit-argument)
+   (define-key sas-dir-mode-map "7" 'digit-argument)
+   (define-key sas-dir-mode-map "8" 'digit-argument)
+   (define-key sas-dir-mode-map "9" 'digit-argument)
+   (define-key sas-dir-mode-map [menu-bar sas run]
+     '("Submit File " . submit-sas))
+   )
+
+(require 'sas)
+
+(defun sas-dir-mode ()
+  "Major mode for managing sas files"
+  (interactive)
+  (kill-all-local-variables)
+  (use-local-map sas-dir-mode-map)
+  (setq major-mode 'sas-dir-mode)
+  (setq mode-name "SAS")
+  (setq sas-directory-name (expand-file-name default-directory))
+  (toggle-read-only 1)
+  )
+  
+
+(defun sas-make-library (directory &optional update)
+  "Create a buffer with the names of all sas datasets from DIRECTORY."
+  (interactive "DDirectory Name: ")
+  (let ((dir (expand-file-name directory)) buf out cont pos)
+    (setq buf (format " *sas-tmp-%s*" dir))
+    (setq out (concat "*SAS-dir-" dir))
+    (setq cont (concat "*SAS-cont-" dir))
+    (get-buffer-create buf)
+    (if (get-buffer out)
+        (if update
+            (progn
+              (set-buffer out)
+              (setq buffer-read-only nil)))
+      (setq update t))
+    (pop-to-buffer out)
+    (setq default-directory dir)
+    (setq pos (point))
+    (if update
+        (progn 
+          (save-window-excursion
+            (set-buffer buf)
+            (erase-buffer)
+            (setq default-directory dir)
+            (insert "options linesize=70 pagesize=1000 ;\n")
+            (insert (format "title \"Contents of SAS directory `%s'\" ;\n"
+                            dir))
+            (insert (format "libname %s '%s' ;\n" sas-tmp-libname dir))
+            (insert (format "proc contents data = %s._all_ directory details memtype=data ;\n" sas-tmp-libname))
+            (run-sas-on-region (point-min) (point-max) nil
+                               out)
+            (set-buffer out)
+            (goto-char (point-min))
+            (if (= (sas-how-many page-delimiter (point-max)) 0)
+                (let ((buffer-read-only nil))
+                  (erase-buffer)
+                  (insert "There are no SAS datasets in this directory")
+                  (pop-to-buffer out))
+              (save-excursion 
+                (set-buffer (get-buffer-create cont))
+                (setq buffer-read-only t)
+                (let ((buffer-read-only nil))
+                  (erase-buffer)
+                  (insert-buffer out)
+                  (delete-region (point-min)
+                                 (or (re-search-forward page-delimiter nil t)
+                                     (point-min)))
+                  (sas-page-fix 1)
+                  (goto-char (point-min))
+                  (sas-dir-mode)
+                  (sas-narrow-to-page)))
+              (if (re-search-forward page-delimiter nil t)
+                  (delete-region (progn (beginning-of-line) (point))
+                                 (point-max)))
+              (sas-insert-set-properties (point-min) (point-max))
+              )
+            (switch-to-buffer out t)
+            (goto-char (point-min))
+            (sas-dir-mode)
+            (setq sas-dir-buf-end (point-max)))
+          (goto-char pos)
+          (sas-move-to-filename (point-max))))))
+
+
+(defun sas-move-to-filename (&optional eol)
+  (or eol (setq eol (progn (end-of-line) (point))))
+  (beginning-of-line)
+  (if (re-search-forward "\\(^ *[0-9]+ *<*\\)[^:0-9\n]" eol t)
+        (goto-char (match-end 1))))
+
+(defun sas-next-line (arg)
+  "Move down one line"
+  (interactive "p")
+  (forward-line arg)
+  (sas-move-to-filename (point-max)))
+;;(and (< (point) sas-dir-buf-end)
+  ;;(forward-line arg)
+  ;;(sas-move-to-filename sas-dir-buf-end)))
+
+(defun sas-prev-line (arg)
+  "Move up one line"
+  (interactive "p")
+  (beginning-of-line)
+  (re-search-backward "^ *[0-9]+ *<*[^:0-9\n]" (point-min) t)
+  (sas-move-to-filename sas-dir-buf-end))
+
+(defun sas-insert-set-properties (beg end)
+  (save-excursion
+    (goto-char beg)
+    (while (< (point) end)
+      (if (sas-move-to-filename)
+	  (put-text-property (point)
+			     (+ 8 (point))
+			     'mouse-face 'highlight))
+      (forward-line 1))))
+
+(defun sas-get-filename ()
+  "Return name of dataset on current line."
+  (interactive)
+  (save-excursion 
+    (if (string-equal "*SAS-dir" (substring (buffer-name) 0 8))
+        (sas-move-to-filename)
+      (goto-char (point-min))
+      (re-search-forward "Data Set Name: [^.]*\\."))
+    (expand-file-name
+     (downcase (concat sas-directory-name
+                       (buffer-substring
+                        (point)
+                        (save-excursion
+                          (skip-chars-forward "A-Z0-9_")
+                          (point))) ".ssd01")))
+    ))
+
+(defun sas-get-file-number ()
+  "Return name of dataset on current line."
+  (interactive)
+  (if (sas-move-to-filename)
+      (progn (forward-word -1)
+             (re-search-forward "[0-9]*")
+             (string-to-number
+              (buffer-substring (match-beginning 0) (match-end 0))))
+    ))
+
+(defun sas-contents ()
+  "Run proc contents on current file."
+  (interactive)
+  (let ((buffer-read-only nil) (sas-get-options "linesize=70"))
+    (sas-get-dataset (sas-get-filename) 2 t t (buffer-name))
+    (end-of-buffer)
+    (backward-page-top-of-window 1)
+    ))
+  
+(defun sas-print ()
+  "Run proc contents on current file."
+  (interactive)
+  (sas-get-dataset (sas-get-filename) 1 nil nil nil
+                   (sas-create-var-string)))
+  
+(defun sas-goto-page (arg)
+  "Goto top of page ARG.  If no ARG, then goto top of file."
+  (interactive "P")
+  (goto-char 1)
+  (if arg
+      (if (> arg 1)
+      (progn 
+        (re-search-forward page-delimiter (point-max) 1 (1- arg)))))
+        (skip-chars-forward " \f\n")
+        (recenter 1))
+
+(defun forward-page-top-of-window (arg)
+  "Move forward to page boundary and leave first line at top of window.
+With arg, repeat, or go back if negative. A page boundary is any line
+whose beginning matches the regexp `page-delimiter'."
+  (interactive "p")
+  (forward-page arg)
+  (recenter 0))
+
+(defun backward-page-top-of-window (arg)
+  "Move backward to page boundary and leave first line at top of window.
+With arg, repeat, or go back if negative. A page boundary is any line
+whose beginning matches the regexp `page-delimiter'."
+  (interactive "p")
+  (forward-page (- arg))
+  (recenter 0))
+
+(defun sas-narrow-to-page ()
+  (save-excursion
+    (let (min max (omin (point-min)) (omax (point-max)))
+      (if (or (bolp) (beginning-of-line)
+			    (looking-at page-delimiter))
+          (forward-char 1)
+        (forward-page -1)
+        )
+      (setq min (point))
+      (forward-page 1)
+      (beginning-of-line)
+      (setq max (point))
+      (narrow-to-region min max))))
+
+(defun sas-forward-page-narrow (arg)
+  "Move forward to page boundary and narrow to page.
+With arg, repeat, or go back if negative. A page boundary is any line
+whose beginning matches the regexp `page-delimiter'."
+  (interactive "p")
+  (widen)
+  (forward-page arg)
+  (sas-narrow-to-page)
+  (goto-char (point-min)))
+
+(defun sas-backward-page-narrow (arg)
+  "Move backward to page boundary and narrow to page.
+With arg, repeat, or go back if negative. A page boundary is any line
+whose beginning matches the regexp `page-delimiter'."
+  (interactive "p")
+  (goto-char (point-min))
+  (widen)
+  (forward-page (- arg))
+  (sas-narrow-to-page))
+
+(defun sas-goto-dataset (&optional page)
+  (interactive)
+  (and sas-directory-name
+       (let ((page (or page (sas-get-file-number)))
+             (dir sas-directory-name))
+         (if page
+             (progn
+               (switch-to-buffer-other-window
+                (concat "*SAS-cont-" sas-directory-name))
+               (widen)
+               (sas-goto-page page)
+               (sas-narrow-to-page)
+               (goto-char (point-min)))))))
+
+(defun sas-mouse-goto-dataset (event)
+  (interactive "e")
+  (let (page buf)
+    (save-window-excursion
+      (save-excursion
+        (set-buffer (window-buffer (posn-window (event-end event))))
+        (save-excursion
+          (goto-char (posn-point (event-end event)))
+          (setq page (sas-get-file-number))
+          )
+        (sas-goto-dataset page)
+        (setq buf (buffer-name)))
+      )
+    (set-buffer buf)
+    (goto-char (point-min))
+    (display-buffer buf)))
+  
+
+(defun sas-dir-goto-page (page)
+  (interactive "p")
+  (widen)
+  (sas-goto-page page)
+  (sas-narrow-to-page))
+
+(defun sas-mark-item (&optional next)
+  (interactive)
+  (sas-move-to-filename)
+    (beginning-of-line)
+    (let ((buffer-read-only nil))
+      (if (re-search-forward "^\\( *[0-9]+ *\\) \\([A-Z][A-Z_0-9]*\\) "
+                             (save-excursion (end-of-line) (point)) t)
+          (replace-match "\\1<\\2>")))
+    (or next (sas-next-line 1)))
+
+(defun sas-unmark-item ()
+  (interactive)
+  (save-excursion
+    (beginning-of-line)
+    (let ((buffer-read-only nil))
+      (if (re-search-forward "^\\( *[0-9]+ *\\)<\\([A-Z][A-Z_0-9]*\\)>"
+                             (save-excursion (end-of-line) (point)) t)
+          (replace-match "\\1 \\2 ")))))
+
+(defun sas-prev-line-undo (arg)
+  (interactive "p")
+  (sas-prev-line arg)
+  (sas-unmark-item)
+  (sas-move-to-filename))
+
+(defun sas-create-var-string ()
+  (and (string-equal "*SAS-cont" (substring (buffer-name) 0 9))
+      (let (str)
+        (goto-char (point-min))
+        (while
+            (re-search-forward "^\\( *[0-9]+ *\\)<\\([A-Z][A-Z_0-9]*\\)>"
+                               nil t)
+          (setq str (concat str " " (buffer-substring (match-beginning 2)
+                                                      (match-end 2)))))
+        str)))
+
+
+(defun sas-revert-library ()
+  "Update current library."
+  (interactive)
+  (if sas-directory-name
+      (sas-make-library sas-directory-name t)))
+
+    
 (provide 'essl-sas)
 
  ; Local variables section
