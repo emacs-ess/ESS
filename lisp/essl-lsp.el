@@ -1,13 +1,13 @@
-;; essl-lsp.el --- Support for editing Lisp source code
+;;; essl-lsp.el --- Support for editing Lisp source code
 
 ;; Copyright (C) 1997 A.J. Rossini.
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 1 Sept 1997
-;; Modified: $Date: 1997/09/16 20:15:15 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essl-lsp.el,v 1.5 1997/09/16 20:15:15 rossini Exp $
+;; Modified: $Date: 1997/09/16 20:19:36 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essl-lsp.el,v 1.6 1997/09/16 20:19:36 rossini Exp $
 
 ;; This file is part of ESS.
 
@@ -55,7 +55,7 @@
     (parse-sexp-ignore-comments   . t)
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
-    (ess-keep-dump-files          . 'ask)
+    ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . lisp-mode-syntax-table)
     (font-lock-defaults           . '(lisp-font-lock-keywords)))
   "General options for editing LispStat, XLispStat, and ViSta source files.")
