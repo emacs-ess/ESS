@@ -445,4 +445,19 @@ if any exist, in PATH."
 	    (ess-flatten-list-1 (cdr list))))
    (t (list list))))
 
+(defun ess-delete-blank-lines ()
+"Convert 2 or more lines of white space into one.  This function
+works as you might expect, except that it must be terminated by C-g
+for some reason."
+    (interactive)
+
+    (save-excursion
+	(goto-char (point-min))
+
+	(save-match-data
+	    (let ((ess-tmp-point-max (point-max)))
+	    (while (and (re-search-forward "^[ \t]*$" nil t)
+		(re-search-forward "^[ \t]*$" ess-tmp-point-max t))
+		    (delete-blank-lines))))))
+
 (provide 'ess-utils)
