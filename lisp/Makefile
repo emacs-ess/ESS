@@ -76,6 +76,7 @@ SOURCES = ess-vars.el ess.el ess-site.el \
 
 DOCS = Doc/TODO Doc/Why_S-mode_Rocks.DMS \
 	Doc/README-19.28 Doc/README.additions Doc/NEWS \
+	Doc/ajr-talk.tex Doc/rmh-talk.tex Doc/slverb.sty \
 	README.S README.XLispStat README.SAS 
 
 SCRIPTS = ess-sas-sh-command install-sh mkinstalldirs
