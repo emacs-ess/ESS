@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/19 21:37:15 $ - $Revision: 1.208 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/19 21:40:53 $ - $Revision: 1.209 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -563,55 +563,26 @@ available.
 \end{figure}
 
 \paragraph{Source-level Debugging}
-ESS facilitates the editing of source code files, sets of 
-commands written for a statistical analysis package, and allows the
-user to load and error-check small sections of source
-code into the package.  This is done through several mechanisms.
-First, the presence of
-unbalanced parentheses or mismatched/unterminated quotes is immediately 
-evident with syntactic highlighting of the source code.  Second,
-functions are provided for simple and consistent execution of
+ESS facilitates the editing of source code files, sets of commands
+written for a statistical analysis package, and allows the user to
+load and error-check small sections of source code into the package.
+This is done through several mechanisms.  First, the presence of
+unbalanced parentheses or mismatched/unterminated quotes is
+immediately evident with syntactic highlighting of the source code.
+Second, functions are provided for simple and consistent execution of
 user-specified or natural units of the code (function definitions in S
-or \XLispStat, \stexttt{PROC \dots  RUN;} sections in \SAS).
-% for execution.  The relevant lines of the
-%code are highlighted and sent over to the executing statistical
-%program using functions which have both associated menus and
-%keybindings.
-  %% by mapped key commands (saving the wrists and elbows from
-  %% the ergonomic strain of perpetually moving a mouse from one window
-  %% to another).
-An error-free execution lets the user evaluate the next
-section of code; if errors arise, the user edits the current unit
-and re-executes.
-%  Emacs can send individual lines, entire function definitions, marked
-%  regions, and whole buffers to the statistical analysis package for
-%  execution.  Emacs sends the code directly to the statistical package
-%  and receives the resulting output, if any, immediately in an
-%  editable Emacs buffer.  This is a major improvement over
-%  cut-and-paste as it does not require switching between buffers or
-%  windows.
+or \XLispStat, \stexttt{PROC \dots RUN;} sections in \SAS).  An
+error-free evaluation lets the user execute the next section of code;
+if errors arise, the user edits the current unit and re-evaluates.
 Once the code is verified, an entire buffer, or file, of code can be
 sent to the package as a unit.  This file can also be used as a batch
 file for routine analysis at a later time.  Finally, output from the
-statistics package is normally captured directly by Emacs and placed into a buffer from where
-it can be edited and searched.  Particular forms of output such as
-requests for help pages and log-file output can be diverted into
-special buffers with modes crafted to facilitate reading.  These modes
-include tools for
-  %, such as help output..  There are
-%  several advantages to this destination.
-%  There is no need to copy output %%from a static window
-%  into an editing %%able 
-%  buffer; it is already there.  We can look for the small section of
-%  output that is of immediate interest by using the string-search key
-%  commands; there is no need to page through the output until we see
-%  something we recognize.  If there are errors we can use the search
-%  and edit facilities to investigate the cause of the error.  When we
-%  are sending over a few lines at a time, we find it very easy to
-%  localize the probable location of the error.  With \SAS\ log files,
-  %we 
-automatically placing the cursor on the first \stexttt{ERROR},
-for example in \SAS\ and S.
+statistics package is normally captured directly by Emacs and placed
+into a buffer from where it can be edited and searched.  Particular
+forms of output such as requests for help pages and log-file output
+can be diverted into special buffers with modes crafted to facilitate
+reading.  These modes include tools for automatically placing the
+cursor on the first \stexttt{ERROR}, for example in \SAS\ and S.
 
 \paragraph{Interactive transcripts.}
 A transcript is a record of all commands entered by the analyst and
