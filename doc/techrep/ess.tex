@@ -46,6 +46,8 @@
 \newcommand*{\Splus}{\textsc{S-Plus}}
 \newcommand*{\XLispStat}{\textsc{XLispStat}}
 \newcommand*{\Stata}{\textsc{Stata}}
+\newcommand*{\Rgui}{\textsc{Rgui}}
+\newcommand*{\Fortran}{\textsc{Fortran}}
 %\newcommand*{\Scmt}[1]{\hfill \#\# \textsl{#1}}
 \newcommand*{\Scmt}[1]{\hbox{\qquad {\footnotesize \#\#} \textsl{#1}}}
 \newtheorem{defn}{Definition}[section]
@@ -143,7 +145,7 @@ interface for a variety of statistical computing tools.  ESS is
 optimized for the tasks of statistical coding and interactive data
 analysis.  Statistical coding is the writing of computer code for data
 analysis.  This code might be in a compilable language, such as C or
-Fortran, or it might be in an interpreted language such as \Splus,
+\Fortran, or it might be in an interpreted language such as \Splus,
 SAS, R, \XLispStat, Perl, or Python.  The task of entering commands
 for interactive data analysis is similar.  In either case, text is
 written in a computer language and sent to a computer program for
@@ -241,11 +243,12 @@ initial investment in time.
 \subsection{Command line interfaces}
 \label{sec:UI:command}
 
-The CLI is available for some statistical packages on most Unix and
-mainframe computers.  This was the successor to the IBM punch-card
-based batch interface.  The CLI consists of entering memorized
-commands one line at a time.  Current examples can mostly be found
-under Unix, including \Splus, R, \Stata, and \XLispStat.  Note that
+The CLI is available for many statistical packages, particularly those
+that were originally developed under Unix, MS-DOS, and
+mainframe computers.  The CLI is the successor to the IBM punch-card
+based batch interface.  The CLI consists of entering
+commands one line at a time.  Current examples
+are \Splus, R, \Stata, and \XLispStat.  Note that
 the \Stata\ CLI is deprecated in favor of a new GUI, and this
 direction seems to be a general trend.  We note that SAS does not have
 a true CLI.  The two possible options for SAS are a prompt-less input
@@ -295,12 +298,13 @@ The Single Document Interface (SDI) provides a single frame for each
 document, view, or figure created.  Unix-based interfaces tend to be
 SDI-based, due in part to the nature of the X11 windowing system its
 flexibility in allowing a single application to place frames and
-windows across multiple displays on potentially multiple computers.
-Another factor has been the lack, until recently, of available GUI
-toolkits which worked across different Unix platforms.  The closest
-example of a statistics package using the SDI would be the Unix
-command-line packages for \Stata\ , \Splus\ , \XLispStat or R with the
-terminal window to be one document and graphics displays to be the
+windows across multiple displays on potentially multiple computers and in part
+to the lack, until recently, of available GUI
+toolkits which worked across different Unix platforms.
+Examples of statistics packages using the SDI are the
+command-line interfaces for \Stata, \Splus, \XLispStat, or R under Unix 
+and the \Rgui\ interface for R under Windows.  In each of these the
+terminal window is considered to be one document and the graphics displays to be the
 other parts of an overall GUI.
 
 
@@ -771,10 +775,10 @@ Manager.
 \subsection{SAS process interaction}
 \label{sec:SAS:proc}
 
-There are three methods for interacting with SAS.  We describe batch
-processing from ESS, running SAS in an inferior ESS buffer, running
-SAS with the Display Manager, and running SAS on a remote machine from
-a local Emacs.
+There are four methods for interacting with SAS.  We describe running
+SAS with the Display Manager, batch
+processing from ESS,  running SAS on a remote machine from
+a local Emacs, and running SAS in an inferior ESS buffer.
 
 The ESS methods for interacting with SAS are based on the SAS Display
 Manager's procedures.  The two reasons to use ESS rather than the
@@ -902,7 +906,7 @@ commands, to the output in the listing file.
 %\stexttt{iESS} times include only the calculations by the SAS computing
 %engine.)
 
-\subsubsection{ESS and Display Manager}
+\paragraph{ESS and Display Manager}
 It is possible to use ESS for editing SAS files with \stexttt{ESS[SAS]} mode
 and then pick up the file or a region and drop it directly into the SAS
 Display Manager \ssf{Program Editor} window.
@@ -927,9 +931,10 @@ the remote SAS will find it.
 Telnet to a remote computer using a telnet client other than an Emacs buffer.
 Run an Emacs on the remote machine in the telnet window.
 Run \stexttt{M-x SAS} on the remote machine in that remote instance of Emacs.
+On a Unix machine, this technique also works for a local Emacs and local SAS.
 
 \paragraph{\stexttt{iESS} Processing on local Emacs.}
-In principle, this can be done, but none of us has found the need
+In principle, we can run remote SAS on a local Emacs, but none of us has found the need
 compelling.  Essentially what is needed is for three independent shell
 processes to be connected to the remote machine.  The SAS process on
 the remote machine runs in one of the shell windows, and redirects its
