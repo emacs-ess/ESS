@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/03/20 23:03:20 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: essl-sas.el,v 5.16 2001/03/20 23:03:20 ess Exp $
+;; Modified: $Date: 2001/03/26 22:28:02 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: essl-sas.el,v 5.17 2001/03/26 22:28:02 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -360,7 +360,7 @@ popup window when the SAS job is finished.")
 		"\\|va\\(lue\\|r\\)\\|w\\(eight\\|here\\|i\\(ndow\\|th\\)\\)\\)"
 		"\\>")				    font-lock-keyword-face)
 ;;	 (cons "\\<\\(\\(\\(then\\|else\\)[ \t]*\\)?do\\([ \t]*over\\)?\\|else\\)\\>"
-	 (cons "\\<\\(\\(then\\|else\\)[ \t]*\\)?do\\([ \t]*over\\)?\\>"
+	 (cons "\\<\\(\\(then\\|else\\)[ \t]*\\)?\\(do\\([ \t]*over\\)?\\|else\\)\\>"
 						    font-lock-keyword-face)
 
 	 ;; SAS statements that must be followed by a semi-colon
