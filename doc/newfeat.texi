@@ -41,8 +41,8 @@ three modes know the S language, syntax, and indentation patterns and
 provide the syntactic highlighting that eases the programming tasks.
 
 For Microsoft platforms, the version of Emacs that this has been
-tested with is NTEmacs 20.2 and 20.3.  More information about NTEmacs
-can be retrieved from:
+tested with is NTEmacs 20.x, x greater than 2.  More information about
+NTEmacs can be retrieved from:
 
 @itemize @bullet
 @item
