@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/04/27 07:17:10 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: ess-trns.el,v 5.11 2002/04/27 07:17:10 maechler Exp $
+;; Modified: $Date: 2002/05/05 14:37:21 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: ess-trns.el,v 5.12 2002/05/05 14:37:21 rmh Exp $
 
 ;; This file is part of ESS
 
@@ -265,6 +265,7 @@ prompt from those lines that remain.  Prefix argument means to use
     (if do-toggle (toggle-read-only 0))
     (save-excursion
       (save-restriction
+	(deactivate-mark)
 	(narrow-to-region beg end)
 	(goto-char (point-min))
 	(delete-non-matching-lines (concat "^" inferior-ess-prompt))
