@@ -138,7 +138,7 @@ We plan to add
 @node  ESS[SAS]--Batch processes, ESS[SAS]--Function keys for batch processing, iESS--Inferior ESS processes, Help for SAS
 @section ESS[SAS]--Batch processes
 
-The default command used by the Submit funciton key (F3 or F8) to submit
+The default command used by the Submit function key (F3 or F8) to submit
 a batch SAS job is simply "sas".  If necessary, you can over-ride this in
 your .emacs file something like one of the following:
 @example
@@ -188,7 +188,8 @@ There are still options.  SAS provides different function key
 definitions with its PC and Unix products; ESS can use either.  The
 ESS[SAS] function key definitions can be active in all buffers
 (global) or limited (local) only to buffers that have SAS-related file
-extensions: .sas, .log, .lst, and filetype-1 which defaults to .txt.
+extensions: .sas, .log, .lst, filetype-1 (which defaults to .txt),
+and filetype-2 which defaults to .dat.
 The distinction between local and global appears subtle.  If you want
 the ESS[SAS] definitions to work when you are in *shell* or when
 editing files other than the file extensions that SAS recognizes, you
