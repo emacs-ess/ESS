@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1998/11/11 09:49:24 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: ess-vars.el,v 5.5 1998/11/11 09:49:24 maechler Exp $
+;; Modified: $Date: 1998/11/11 10:32:59 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: ess-vars.el,v 5.6 1998/11/11 10:32:59 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -33,7 +33,7 @@
 
 ;;; Code:
 
-(defconst ess-version "pre5.1"
+(defconst ess-version "5.1.2"
   "Version of ESS currently loaded.")
 
 
