@@ -5,7 +5,7 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: 25 Mar 2001
-;; Modified: $Date: 2002/01/15 01:52:54 $
+;; Modified: $Date: 2002/01/16 20:04:53 $
 ;; Version: $Revision:
 ;; RCS: $Id: ess-mous.el
 
@@ -197,13 +197,12 @@ the string one more time by embedding it in a \"page()\" command."
       (if (not value-returned) (switch-to-buffer (nth 1 (buffer-list)))))
     (if (not value-returned)
 	nil
+      (if ess-microsoft-p                      ;; there ought to be a filter
+	  (while (search-forward "\r" nil t)   ;; function to keep the ^M
+	    (replace-match "" nil t)))         ;; from showing up at all
       (ess-transcript-mode (eval ess-mouse-customize-alist))
       (setq ess-local-process-name ess-current-process-name)
       (rename-buffer scommand))))
-
-;; (setq mode-line-format (concat scommand " from " ess-local-process-name))
-
-
 
 
  ; Provide package

@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/16 00:41:51 $
-;; Version: $Revision: 1.74 $
-;; RCS: $Id: essa-sas.el,v 1.74 2002/01/16 00:41:51 rsparapa Exp $
+;; Modified: $Date: 2002/01/16 20:04:53 $
+;; Version: $Revision: 1.75 $
+;; RCS: $Id: essa-sas.el,v 1.75 2002/01/16 20:04:53 rmh Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -159,14 +159,15 @@ or `ESS-elsewhere' should have one of the following in ~/.emacs
 
 (defun ess-add-ess-process ()
   "Execute this command from within a buffer running a process to add
-the process to `ess-process-name-alist'.  This command will normally
-be run in a telnet buffer connected to another computer or in a shell
-or comint buffer on the local computer."
+the process to `ess-process-name-alist' and to make it the
+`ess-current-process-name'.  This command will normally be run in a
+telnet buffer connected to another computer or in a shell or comint
+buffer on the local computer."
   (interactive)
-  (let ((ess-process-name (process-name (get-buffer-process (buffer-name)))))
-    (setq ess-process-name-list
-	  (cons (cons ess-process-name nil) ess-process-name-list))
-    (setq ess-current-process-name ess-process-name)))
+  (setq ess-current-process-name
+	(process-name (get-buffer-process (buffer-name))))
+  (add-to-list 'ess-process-name-list (list ess-current-process-name)))
+
 
 (defun ess-exit-notify-sh (string)
   "Detect completion or failure of submitted job and notify the user."
