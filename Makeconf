@@ -21,10 +21,11 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 # necessary for target xemacs-links
 XEMACSDIR=$(PREFIX)/lib/xemacs
 
+#  Note CVS was replaced by Subversion 07/2004
 ## Updating ChangeLog via CVS with emacs requires the vc package!
 ## If this setting doesn't suit you, you can use the command line:
 ## make ChangeLog EMACSLOGCVS="-f mychangelogfunc"
-EMACSLOGCVS=-f vc-update-change-log
+#EMACSLOGCVS=-f vc-update-change-log
 
 # Destination of your info files
 # defaults to the info directory relative to the doc directory
