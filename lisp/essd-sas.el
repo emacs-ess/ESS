@@ -1,17 +1,17 @@
-;;; essd-sas.el --- sas xustomization
+;;; essd-sas.el --- SAS customization
 
-;; Copyright (C) 1997 A. J. Rossini
+;; Copyright (C) 1997 Richard M. Heiberger and A. J. Rossini
 
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/01 18:20:43 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-sas.el,v 1.6 1997/09/01 18:20:43 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:33:17 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essd-sas.el,v 1.7 1997/09/01 18:33:17 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
-;; This file is part of ess-mode.
+;; This file is part of ESS.
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,63 +28,26 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the SAS customizations for ess-mode.
-
-;;;
-;;: $Log: essd-sas.el,v $
-;;: Revision 1.6  1997/09/01 18:20:43  rossini
-;;: silly comment.
-;;:
-;;: Revision 1.5  1997/09/01 18:19:01  rossini
-;;: finished first draft.
-;;:
-;;: Revision 1.4  1997/09/01 18:12:01  rossini
-;;: need to fix.
-;;:
-;;: Revision 1.3  1997/08/28 13:05:39  rossini
-;;: *** empty log message ***
-;;:
-;;: Revision 1.2  1997/08/26 22:54:23  rossini
-;;: *** empty log message ***
-;;:
-;;: Revision 1.1  1997/08/25 14:30:49  rossini
-;;: Initial revision
-;;:
-;;: Revision 1.1  1997/08/20 23:12:08  heiberger
-;;: Initial set up.
-;;:
-;;;
+;;; This file defines all the SAS customizations for  ESS.
 
 ;;; Autoloads:
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process")
+(require 'essl-sas)
 
+(autoload 'inferior-ess "ess-inf" "Run an ESS process")
 
 (defvar inferior-SAS-args "-stdio -linesize 80 -noovp"
   "*Arguments to use for starting SAS.")
 
-
 ;;; Code:
 
 (defvar SAS-customize-alist
-  '((ess-language                 . "SAS")
-    (ess-dialect                  . "SAS")
-    (inferior-ess-program         . inferior-SAS-program-name)
-    (ess-help-sec-regex           . "^[A-Z. ---]+:$")
-    (ess-help-sec-keys-alist      . '((?a . "ARGUMENTS:")
-				      (?b . "BACKGROUND:")
-				      (?B . "BUGS:")
-				      (?d . "DETAILS:")
-				      (?D . "DESCRIPTION:")
-				      (?e . "EXAMPLES:")
-				      (?n . "NOTE:")
-				      (?o . "OPTIONAL ARGUMENTS:")
-				      (?r . "REQUIRED ARGUMENTS:")
-				      (?R . "REFERENCES:")
-				      (?s . "SIDE EFFECTS:")
-				      (?S . "SEE ALSO:")
-				      (?u . "USAGE:")
-				      (?v . "VALUE:")))
+  '((ess-language                  . "SAS")
+    (ess-dialect                   . "SAS")
+    (ess-edit-alist                . SAS-edit-alist) ; from essl-sas.el
+    (inferior-ess-program          . inferior-SAS-program-name)
+    (ess-help-sec-regex            . "^[A-Z. ---]+:$")
+    (ess-help-sec-keys-alist       . " "
     (inferior-ess-objects-command  . "objects(%d)")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")
