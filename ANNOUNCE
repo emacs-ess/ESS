@@ -3,7 +3,7 @@ ANNOUNCING ESS
 
 The ESS Developers proudly announce the release of ESS
 
-   5.2.0beta4
+   5.2.0rc1
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -99,7 +99,7 @@ Current Features
 Requirements
 ============
 
-ESS has been most thoroughly tested with:
+ESS has been tested with
 
    * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
 
@@ -107,9 +107,9 @@ ESS has been most thoroughly tested with:
 
    * S4
 
-   * SAS >=6.x
+   * SAS >=6.12
 
-   * BUGS 0.603
+   * BUGS 0.5, 0.603
 
    * Stata >=6.0
 
@@ -129,14 +129,14 @@ ESS has been most thoroughly tested with:
 
    * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
 
-   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13(1), 21.4.14
+   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17(1), 21.4.14-15
 
    * GNU Emacs <20.3 and XEmacs <21.0(2)
 
    ---------- Footnotes ----------
 
-   (1) requires the files.el patch for the Local Variables updating
-problem
+   (1) requires the files.el patch to revert-buffer for the Local
+Variables updating problem
 
    (2) These releases of emacs are no longer supported, so an upgrade
 is recommended if you plan to use ESS.  If you have GNU Emacs 19.29,
@@ -144,8 +144,7 @@ see *Note Unix installation::.  Also, note that the `custom' library
 bundled with Emacs 19.34 is too _old_, its API is incompatible with the
 `new custom' bundled with recent Emacsen.  The `new custom' for Emacs
 19.34 is available for download here
-(ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz)
-.
+(ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz).
 
 Stability
 =========
@@ -232,9 +231,6 @@ New Features
 ============
 
 Changes/New Features in 5.2.0:
-   * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
-     pressing underscore twice inserts a literal underscore.
-
    * ESS[BUGS]:  new info documentation!  now supports interactive
      processing thanks to Aki Vehtari (mailto:Aki.Vehtari@hut.fi); new
      architecture-independent unix support as well as support for BUGS
@@ -250,19 +246,29 @@ Changes/New Features in 5.2.0:
      rather than 0/1; added the function ess-electric-run-semicolon
      which automatically reverse indents lines containing only "run;";
      C-F1 creates MS RTF portrait from the current buffer; C-F2 creates
-     MS RTF landscape from the current buffer; C-F9 kills all buffers
-     associated with .sas program
+     MS RTF landscape from the current buffer; C-F9 opens a SAS DATASET
+     with PROC INSIGHT rather than PROC FSVIEW; C-F10 kills all buffers
+     associated with .sas program; "inferior" aliases for SAS batch:
+     C-c C-r for submit region, C-c C-b for submit buffer, C-c C-x for
+     goto .log; C-c C-y for goto .lst
 
-   * ESS[S]:  ess-dump-filename-template-proto (new name!) now can be
-     customized successfully (for S language dialects).
-
-   * ESS[S]:  ess-help: Now using nice underlines (instead of `nuke-*
-     ^H_')
+   * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
+     pressing underscore twice inserts a literal underscore;
+     ess-dump-filename-template-proto (new name!) now can be customized
+     successfully (for S language dialects); ess-help: Now using nice
+     underlines (instead of `nuke-* ^H_')
 
    * ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
-     numbers from any Emacs buffer into an existing *R* process.
+     numbers from any Emacs buffer into an existing *R* process; M-x
+     ess-rdired gives a "directory editor" of R objects; fixed
+     ess-retr-lastvalue-command, i.e. .Last.value bug (thanks to David
+     Brahm)
 
-   * ESS[R]:  M-x ess-rdired gives a "directory editor" of R objects.
+   * ESS: Support for creating new window frames has been added to ESS.
+     Inferior ESS processes can be created in dedicated frames by
+     setting inferior-ess-own-frame to t.  ESS help buffers can also
+     open in new frames; see the documentation for ess-help-own-frame
+     for details.  (Thanks to Kevin Rodgers for contributing code.)
 
    Changes/New Features in 5.1.24:
    * The version number is now correct even inside ESS/Emacs
