@@ -1,14 +1,20 @@
+Changes/New Features in 5.1.23:
+@itemize @bullet
+@item The version number is now correct even inside ESS/Emacs
+@item Minor more Makefile clean up.
+@end itemize
+
 Changes/New Features in 5.1.22:
 @itemize @bullet
-@item Besides info documentation, PDF and HTML 
-documentation are also provided and now available
-on the web as well; see @uref{http://software.biostat.washington.edu/ess/doc, ESS web page}
-and @uref{http://lib.stat.cmu.edu/general/ESS/doc, StatLib}
-@item Now that info documentation is available, the 
+@item Besides info documentation, PDF and HTML
+documentation are also provided (instead of built using "make") and available
+on the web as well; see @uref{http://software.biostat.washington.edu/ess/doc,
+ ESS web page} and @uref{http://lib.stat.cmu.edu/general/ESS/doc, StatLib}
+@item Now that info documentation is available, the
 README.* files are no longer supported.  However, they
 are still distributed for what it's worth.
-@item ESS is now an XEmacs package!  See 
-@uref{http://www.xemacs.org/Install/index.html, XEmacs Installation HOWTO} 
+@item ESS is now an XEmacs package!  See
+@uref{http://www.xemacs.org/Install/index.html, XEmacs Installation HOWTO}
 for details (specifically, items 10-15).
 @item ESS[SAS]: more user-friendly enhancements for remote
 SAS batch jobs with Kermit file transfers (LOG and OUTPUT
@@ -22,10 +28,10 @@ ess-sas-shell-buffer to unique buffer names.
 Changes/New Features in 5.1.21:
 @itemize @bullet
 @item ESS[SAS]: info documentation now available!, see
-ESS->Help for SAS; F12 opens GSASFILE nearest point for viewing 
-either within emacs, when available, or via an external viewer; 
-more syntax highlighting keywords; more enhancements for remote 
-SAS batch jobs with Kermit; new framework for remote SAS interactive 
+ESS->Help for SAS; F12 opens GSASFILE nearest point for viewing
+either within emacs, when available, or via an external viewer;
+more syntax highlighting keywords; more enhancements for remote
+SAS batch jobs with Kermit; new framework for remote SAS interactive
 jobs, see ess-remote
 @item ESS[S]: info documentation now available!, see
 ESS->Help for the S family
@@ -50,21 +56,21 @@ This feature is still under development.
 @item XEmacs on Win (NT) is better supported.
 @item Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
 @item should now work even when imenu is not available (for old Xemacsen).
-@item ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your 
+@item ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your
 function-key definitions, if specified; you can specify your SAS
 library definitions outside of autoexec.sas for ess-sas-data-view
-with SAS code placed in the variable ess-sas-data-view-libname, 
-also the dataset name is defaulted to the nearest permanent dataset 
-to point; Speedbar support now works for permanent datasets, please 
-ignore first./last.; new font-locking is now the default with more 
-improvements for font-locking PROCs, macro statements, * ; and %* ; 
-comments; you can toggle sas-log-mode with F10 which will font-lock 
+with SAS code placed in the variable ess-sas-data-view-libname,
+also the dataset name is defaulted to the nearest permanent dataset
+to point; Speedbar support now works for permanent datasets, please
+ignore first./last.; new font-locking is now the default with more
+improvements for font-locking PROCs, macro statements, * ; and %* ;
+comments; you can toggle sas-log-mode with F10 which will font-lock
 your .log (if it isn't too big); submit remote .sas files accessed
-with ange-ftp, EFS or Tramp (Kermit is experimental) by setting 
-ess-sas-submit-method to 'sh; ess-sas-submit-command and 
+with ange-ftp, EFS or Tramp (Kermit is experimental) by setting
+ess-sas-submit-method to 'sh; ess-sas-submit-command and
 ess-sas-submit-command-options are buffer-local so you can have
-local file variable sections at the end of your .sas files to 
-request different executables or specify special options and the 
+local file variable sections at the end of your .sas files to
+request different executables or specify special options and the
 local file variables are re-read at submit instead of only at file
 open so that if you make a change it is picked up immediately;
 @item ESS[BUGS]: font-lock with `in' fixed.
