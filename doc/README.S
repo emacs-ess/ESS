@@ -22,6 +22,9 @@ file, buffer, region, description of keys etc.  If not, please read
 the New Users guide (found in the info pages, "C-h i" (by pressing
 control h, i) or Tutorial, "C-h t").
 
+To look for the commands, please the keybindings for how to
+activate/use the features (C-h b).
+
 Emacs: General Features of Interest for Programming
 ===================================================
 
@@ -182,7 +185,7 @@ prefixed by "##").
 
 
 
-$Id: README.S,v 1.1 1997/11/07 14:12:28 rossini Exp $
+$Id: README.S,v 1.2 1997/11/07 14:23:54 rossini Exp $
 
 Local Variables: ***
 mode:indented-text ***
