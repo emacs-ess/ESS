@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/07/31 01:20:06 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essl-bug.el,v 1.14 2001/07/31 01:20:06 ess Exp $
+;; Modified: $Date: 2001/11/26 16:34:17 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essl-bug.el,v 1.15 2001/11/26 16:34:17 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -168,7 +168,7 @@
 	(cons "^[ \t]*\\(model\\|const\\|data\\|inits\\|var\\)\\>"
 					font-lock-keyword-face)
 
-	(cons "\\<in\\>"		font-lock-keyword-face)
+	(cons "\\<in[ \t]+[1-9]\\>"	font-lock-keyword-face)
 
 	(cons (concat "\\<d\\(bern\\|beta\\|bin\\|cat\\|chisq\\|"
 		"dexp\\|dirch\\|exp\\|gamma\\|lnorm\\|logis\\|"
