@@ -133,8 +133,7 @@ much more easily than what has been described anywhere above.  However,
 the latest ESS version will not be available at the same time as an
 XEmacs package; generally, it can take weeks or months to appear in the
 latter format.  For more information on installing ESS as an XEmacs
-package see 
-@uref{http://www.xemacs.org/Documentation/packageGuide.html, QuickStart}.
+package see @uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickstart Package Guide}.
 
 @comment An alternative, if you are running XEmacs and have access to the
 @comment XEmacs system directories, would be to place the directory in the
