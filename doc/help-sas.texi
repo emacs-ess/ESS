@@ -143,23 +143,24 @@ We plan to add
 @node  ESS[SAS]--Batch processes, ESS[SAS]--Function keys for batch processing, iESS[SAS]--Inferior ESS processes, Help for SAS
 @section ESS[SAS]--Batch processes
 
-The default command used by the Submit function key (F3 or F8) to submit
-a batch SAS job is simply "sas".  If necessary, you can over-ride this in
-your .emacs file something like one of the following:
-
+The command used by the SUBMIT function key (F3 or F8) to submit a batch SAS 
+job is ess-sas-submit-command which defaults to sas-program.  sas-program is 
+"invoke SAS using program file" for Mac Classic and "sas" otherwise.  However, 
+you may have to alter ess-sas-submit-command for a particular program, so it is 
+defined as buffer-local (conveniently, you can set it in Local Variables: at 
+the end of your program).  The command line is also made of 
+ess-sas-submit-pre-command, ess-sas-submit-post-command and 
+ess-sas-submit-command-options (the last of which is also buffer-local).
+Here are some examples for your .emacs file (you may also use custom-ize):
 @example
-;;; (setq ess-sas-submit-command "nohup nice sas") ;; Unix
-;;; (setq ess-sas-submit-command "c:/progra~1/sas/sas.exe") ;; Windows
-;;; (setq ess-sas-submit-command "invoke SAS using program file") ;; Mac
+(setq ess-sas-submit-pre-command "nohup")                 ;'sh default
+(setq ess-sas-submit-post-command "-rsasuser &")          ;'sh default
+(setq ess-sas-submit-command "/usr/local/sas/sas")        ;'sh example
+(setq ess-sas-submit-pre-command "start")                 ;'ms-dos default
+(setq ess-sas-submit-post-command "-rsasuser -icon")      ;'ms-dos default
+(setq ess-sas-submit-command "c:/progra~1/sas/sas.exe")   ;Windows example
+(setq ess-sas-submit-command "c:\\progra~1\\sas\\sas.exe");Windows example
 @end example
-
-Note that when you are specifying a path under Windows, you should
-avoid spaces (that is use "progra~1", not "Program Files") and you
-should use forward slashes "/".  There may be occasions when you want
-to run a particular buffer under a different version of SAS or specify
-different options on the command line.  In that case, you can
-over-ride ess-sas-submit-command in your local buffer with file
-variables or other means.
 
 There is a built-in delay before a batch SAS job is submitted when using
 a Unix shell under either Unix or Windows.  This is necessary in many cases 
