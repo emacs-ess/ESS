@@ -25,7 +25,7 @@ XEMACSDIR=$(PREFIX)/lib/xemacs
 ## Updating ChangeLog via CVS with emacs requires the vc package!
 ## If this setting doesn't suit you, you can use the command line:
 ## make ChangeLog EMACSLOGCVS="-f mychangelogfunc"
-#EMACSLOGCVS=-f vc-update-change-log
+## EMACSLOGCVS=-f vc-update-change-log
 
 # Destination of your info files
 # defaults to the info directory relative to the doc directory
@@ -75,7 +75,10 @@ ESSDIR=ess-$(ESSVERSION)
 ## make tag ESSVERSION=5.2.0 ESSVERSIONTAG=ESS-5-2-0
 ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
 
-UPLOAD_SITE = cvs.analytics.washington.edu
-UPLOAD_DIR = /home/ess/downloads
+SVN_URL = https://svn.R-project.org/ESS
+
+#MM UPLOAD_SITE = cvs.analytics.washington.edu
+UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads
+
 
 .SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el .elc

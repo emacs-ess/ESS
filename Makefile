@@ -11,8 +11,8 @@ Subdirs = lisp doc
 all install clean distclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd ..; done
 
-#ESS is now an official XEmacs package, but the xemacs-links target 
-#persists since there is generally a lag between an ESS release and 
+#ESS is now an official XEmacs package, but the xemacs-links target
+#persists since there is generally a lag between an ESS release and
 #the corresponding XEmacs ESS package release
 xemacs-links: doc/info/ess.info doc/info/ess.info-1 doc/info/ess.info-2 doc/info/ess.info-3 doc/info/ess.info-4
 	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
@@ -31,19 +31,21 @@ xemacs-links: doc/info/ess.info doc/info/ess.info-1 doc/info/ess.info-2 doc/info
 dist: VERSION cleanup-dist
 	cd doc;  $(MAKE) docs; cd ..
 	cd lisp; $(MAKE) dist; grep 'ess-version' ess-cust.el; cd ..
+	svn cleanup
 	@echo "** Committing VERSION, README, ANNOUNCE and info **"
-	cvs commit -m "Updating toplevel files for new version" \
+	svn commit -m "Updating toplevel files for new version" \
 		VERSION README ANNOUNCE
-	cvs commit -m "Updating info for new version" doc/info
+	svn commit -m "Updating info for new version" doc/info
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSDIR)"
-	@echo "** (must set CVSROOT, etc, prior to checkout for security)"
+	@echo "** (must have setup subversion with cached authentication, prior for security)"
 	@echo "**********************************************************"
 	@echo "** Exporting Files **"
-	-cvs export -D today ess
+	svn checkout --quiet $(SVN_URL)/trunk $(ESSDIR)-svn
+	mkdir -p $(ESSDIR)
+	tar cvf - --exclude=.svn --no-wildcards $(ESSDIR)-svn | (cd $(ESSDIR); tar xf - )
 	@echo "** Correct Write Permissions and Clean-up docs **"
-	mv ess $(ESSDIR)
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
@@ -52,8 +54,7 @@ dist: VERSION cleanup-dist
 	cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; cd ../..
 	test -f $(ESSDIR).tar.gz && rm -rf $(ESSDIR).tar.gz || true
 	@echo "** Creating tar file **"
-	tar hcvof $(ESSDIR).tar $(ESSDIR)
-	gzip $(ESSDIR).tar
+	tar hcvofz $(ESSDIR).tar.gz $(ESSDIR)
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	@echo "** Creating zip file **"
 	zip -r $(ESSDIR).zip $(ESSDIR)
@@ -63,7 +64,7 @@ dist: VERSION cleanup-dist
 cleanup-dist:
 	@echo "** Cleaning up **"
 	(if [ -d $(ESSDIR) ] ; then \
-	  chmod -R u+w $(ESSDIR) && rm -rf $(ESSDIR) ; fi)
+	  chmod -R u+w $(ESSDIR) && rm -rf $(ESSDIR) $(ESSDIR)-svn; fi)
 
 ChangeLog: VERSION
 #	$(EMACSBATCH) $(EMACSLOGCVS)
@@ -73,18 +74,19 @@ ChangeLog: VERSION
 	     " ESS Maintainers <ESS-core@stat.math.ethz.ch>" ; \
 	 echo; echo "  * Version $(ESSVERSION) released."; echo; \
 	 cat ChangeLog.old ) > ChangeLog
-	cvs commit -m 'Version .. released' ChangeLog
+	svn commit -m 'Version .. released' ChangeLog
 
 ## --- RELEASE ---
 
 rel: ChangeLog dist tag
+	[ x$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
 	@echo "** Placing tar and zip files **"
-	scp -p $(ESSDIR).tar.gz $(ESSDIR).zip $(UPLOAD_SITE):$(UPLOAD_DIR)
+	cp -p $(ESSDIR).tar.gz $(ESSDIR).zip   $(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
-	-ssh $(UPLOAD_SITE) rm "$(UPLOAD_DIR)/LATEST.IS.*"
-	ssh $(UPLOAD_SITE) touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)
+	rm $(UPLOAD_DIR)/LATEST.IS.*
+	touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)
 
 tag:
 	@echo "** Tagging the release **"
-	cvs tag -R $(ESSVERSIONTAG)
+	svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSIONTAG)
 
