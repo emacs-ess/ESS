@@ -1,3 +1,9 @@
+2004-08-09  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-inf.el (ess-prompt-for-directory): use the XEmacs
+	read-directory-name routine (dialog box when using mouse differs
+	from read-file-name).  Thanks to John Fox for reporting this.
+
 2004-08-03  Stephen Eglen  <stephen@bushmills.inf.ed.ac.uk>
 
 	* ess-mode.el (ess-mode-menu): Change function name for the
