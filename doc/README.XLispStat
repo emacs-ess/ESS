@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-$Revision: 1.6 $
+$Revision: 1.7 $
 
 
 ESS: Using the XLispStat family of statistical languages
@@ -123,10 +123,10 @@ prefixed by "##").
 
 2:  ## Load the file you want to work with
     C-x C-f file.lsp
-    ## Edit as appropriate, and then start up S-PLUS 3.x
+    ## Edit as appropriate, and then start up XLispStat
     M-x XLS
     ## Go back to the file editing buffer
     C-x b file.lsp
-    ## send regions, lines, or the entire file contents to S-PLUS (the 
-    ## last one is demonstrated below)
+    ## send regions, lines, or the entire file contents to XLispStat
+    ## (the last one is demonstrated below)
     C-c C-b
