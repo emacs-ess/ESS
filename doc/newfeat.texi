@@ -1,3 +1,8 @@
+Changes/New Features in 5.2.3:
+@itemize @bullet
+@item New variables inferior-Splus-args and inferior-R-args provide a
+way to pass command line arguments to starting S and R processes.
+
 Changes/New Features in 5.2.2:
 @itemize @bullet
 @item bug-fixes for 5.2.1 (require 'executable), html docs, etc.
