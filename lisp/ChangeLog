@@ -1,3 +1,14 @@
+2000-10-09  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-vars.el:
+	Merged with changes in another location.
+
+2000-10-09  maechler  <maechler@rossini.YP.biostat>
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/ChangeLog,
+	 /home/ess/src/cvsroot/gnu/ess/lisp/essl-s.el:
+	new (ess-fix-miscellaneous) & (ess-toggle-underscore)
+
 2000-10-09  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (ess-fix-miscellaneous): new function for prettifying
