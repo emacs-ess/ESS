@@ -6,9 +6,9 @@
 ;;         Brendan Halpin <brendan@essex.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/11/16 19:56:04 $
-;; Version: $Revision: 5.19 $
-;; RCS: $Id: essl-sta.el,v 5.19 1999/11/16 19:56:04 ess Exp $
+;; Modified: $Date: 1999/11/16 21:10:30 $
+;; Version: $Revision: 5.20 $
+;; RCS: $Id: essl-sta.el,v 5.20 1999/11/16 21:10:30 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -1545,6 +1545,22 @@ PROC is the stata process. Does not change point"
 ;;  (interactive)
 ;;  (stata-switch-to-stata t))
 
+;;; Suggested function from Brendan Halpin:
+(defvar ess-STA-delimit-do-file "delimit-do.do")
+
+(defun ess-STA-delimit-do ()
+  (save-excursion
+    (let ((commands (buffer-substring-no-properties (region-beginning)
+                                                    (region-end))))
+      (set-buffer (get-buffer-create ess-STA-delimit-do-file))
+      (delete-region (point-min) (point-max))
+      (insert "#delimit ;\n" 
+              commands
+              "\n#delimit cr\n")
+      (write-file ess-STA-delimit-do-file nil)
+      (comint-send-string "Stata"
+			  (format "do %s \n" ess-STA-delimit-do-file)))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 (provide 'essl-sta)
