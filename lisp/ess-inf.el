@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/11 03:44:30 $
-;; Version: $Revision: 1.77 $
-;; RCS: $Id: ess-inf.el,v 1.77 1997/11/11 03:44:30 rossini Exp $
+;; Modified: $Date: 1997/11/11 03:52:54 $
+;; Version: $Revision: 1.78 $
+;; RCS: $Id: ess-inf.el,v 1.78 1997/11/11 03:52:54 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -54,7 +54,7 @@
 
  ;;*;; Variables
 
-;; Moved to S.el
+;; Moved to ess-vars.el
 
  ;;*;; Process handling
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -293,8 +293,9 @@ accompany the call for inferior-ess-program.
 
 (defun ess-multi (name &optional buffer)
   "Start or switch to ESS process named NAME in the buffer BUFFER.
-BUFFER is only needed if process NAME is not running. BUFFER must exist.
-Default-directory is the S starting directory. BUFFER may be visiting a file."
+BUFFER is only needed if process NAME is not running. BUFFER must
+exist.  Default-directory is the ESS starting directory. BUFFER may be
+visiting a file."
 
 ;; If ess-process NAME is running, switch to it.  If not, use COMINT
 ;; to start up a new process, using NAME and BUFFER (which is needed
@@ -436,7 +437,7 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
 
 ;;;;* define two commands consistent with other comint modes, run-ESS &
 ;;;;  run-ESS.
-;;(fset 'run-ESS (fset 'run-ESS (symbol-function 'S)))
+;;(fset 'run-ESS (fset 'run-ESS (symbol-function 'ESS)))
 
 ;;*;; General process handling code
 
