@@ -372,14 +372,15 @@ message if `inferior-S+6-program-name' doesn't point to S-Plus 6."
 			 "/../../versions") t))
     (toggle-read-only 1)
     (forward-line)
-    (if (not (search-backward "6.1" (point-min) t))
+    (if (not (search-backward-regexp "6.[1-9]" (point-min) t))
 	(if (search-backward "6.0" (point-min) t)
 	    (error "S-Plus 6.0 for Microsoft Windows has a bug that
 prevents it from being started by emacs.  Instead, you must start it
 by double-clicking an icon.  Then you can connect to it with
-`S+6-msdos-existing'.  You should consider upgrading to S-Plus 6.1.")
+`S+6-msdos-existing'.  You should consider upgrading to S-Plus 6.1 or higher.")
 	  (error "The emacs variable `inferior-S+6-program-name' does
-not point to S-Plus 6.  Please add `splus61/cmd' to your `exec-path' or
+not point to S-Plus 6.  Please add `splus6?/cmd'
+(expand the `?' to match your setup) to your `exec-path' or
 specify the complete path to `Splus.exe' in the variable
 `inferior-S+6-program-name' in your `.emacs' file."))))
   (S+6-msdos-initiate proc-name)) ;; normal start
