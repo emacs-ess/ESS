@@ -1,3 +1,12 @@
+2004-04-19  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-help.el (ess-display-help-on-object): If ess-help-own-frame
+	is 'one, use the dedicated frame.  Use pop-to-buffer rather than
+	switch-to-buffer if currently in a help buffer,
+
+	* ess-cust.el (ess-help-own-frame): Add new value 'one to specify
+	that all help buffers should be displayed in one frame.
+
 2004-04-18  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-help.el (ess-display-help-on-object): If ess-help-own-frame
