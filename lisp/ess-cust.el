@@ -670,6 +670,13 @@ the variable `inferior-ess-own-frame' is non-nil."
   :group 'ess-proc
   :type 'alist)
 
+(defcustom inferior-ess-same-window t
+  "*Non-nil indicates new inferior ESS process appears in current window.
+Otherwise, the new inferior ESS buffer is shown in another window in the 
+current frame.  This variable is ignored if `inferior-ess-own-frame' is
+non-nil."
+  :group 'ess-proc
+  :type 'boolean)
 
 (defcustom inferior-R-program-name
   (if ess-microsoft-p "Rterm"  "R")
