@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/10/18 20:20:29 $
-;; Version: $Revision: 1.124 $
-;; RCS: $Id: essa-sas.el,v 1.124 2002/10/18 20:20:29 rsparapa Exp $
+;; Modified: $Date: 2002/10/18 20:54:37 $
+;; Version: $Revision: 1.125 $
+;; RCS: $Id: essa-sas.el,v 1.125 2002/10/18 20:54:37 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -678,20 +678,21 @@ Keep in mind that the maximum command line length in MS-DOS is
   (setq left-margin (current-column))
 )
   
-(defun ess-sas-transcript ()
-"Convert a .log file to a .sas program."
-(interactive)
+(defun ess-sas-transcript (&optional strip)
+"Comment .log messages to create a .sas program; use C-u to strip."
+(interactive "P")
 (save-excursion
     (goto-char (point-min))
 
     (while (search-forward-regexp (concat
            "^\\(\\(1[ \t]+The SAS System\\|\\|NOTE\\|WARNING\\|ERROR\\|"
-           "[ \t]+\\(\\(real\\|cpu\\) time\\|Licensed to\\|Engine:\\|Physical Name:\\|"
-	   "[0-9]+:[0-9]+[ /t]+[0-9]+:[0-9]+\\)\\).*$"
+           "[ \t]+\\(\\(real\\|cpu\\) time\\|Licensed to\\|Engine:\\|"
+	   "Physical Name:\\|[0-9]+:[0-9]+[ /t]+[0-9]+:[0-9]+\\)\\).*$"
            "\\|[0-9]+\\([ \t]+!\\)?\\|MPRINT([_A-Z]+):\\|"
 	   "[ \t]+\\(values at the places given by: (Line):(Column).\\|"
-           "[0-9][0-9]:[0-9][0-9] [MTWFS][a-z]+day, [JFMASOND][a-z]+ [0-9]+, 20[0-9][0-9]\\)\\)") 
-           nil t) (replace-match "/*\\&*/" t))
+           "[0-9][0-9]:[0-9][0-9] [MTWFS][aeioudhnrst]+day, [JFMASOND]"
+           "[aeiouybcghlmnprstv]+ [1-9][0-9]?, 20[0-9][0-9]\\)\\)") 
+           nil t) (replace-match (if strip " " "/*\\&*/") t))
 ))
 
 (defun ess-sas-toggle-sas-log-mode (&optional force)
