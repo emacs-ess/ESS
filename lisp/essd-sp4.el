@@ -1,14 +1,14 @@
 ;;; essd-sp4.el --- S-PLUS 4.x customization
 ;;; Richard M. Heiberger, December 1998
 
-;; Copyright (C) 1998 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Copyright (C) 1998--1999 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 1999/03/04 18:11:51 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: essd-sp4.el,v 1.2 1999/03/04 18:11:51 rossini Exp $
+;; Modified: $Date: 1999/03/16 18:07:36 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: essd-sp4.el,v 1.3 1999/03/16 18:07:36 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -42,7 +42,7 @@
 
 ; Code:
 
-(defvar S+4-dialect-name "S+4 ddeclient"
+(defvar S+4-dialect-name "S+4"
   "Name of 'dialect' for S-PLUS 4.x.");easily changeable in a user's .emacs
 
 (defvar inferior-S+4-multipleinstances "/MULTIPLEINSTANCES"
@@ -50,9 +50,6 @@
 GUI window and connects it to the *S+4 ddeclient* window.  The
 alternative nil uses an existing S+4 GUI (if there is one) and
 connects it to the *S+4 ddeclient* window.")
-
-(defvar Sqpe+4-dialect-name "S+4 Sqpe"
-  "Name of 'dialect' for S-PLUS 4.x.");easily changeable in a user's .emacs
 
 (defvar S+4-customize-alist
   '((ess-local-customize-alist     . 'S+4-customize-alist)
@@ -94,7 +91,7 @@ connects it to the *S+4 ddeclient* window.")
 (defvar Sqpe+4-customize-alist
   '((ess-local-customize-alist     . 'Sqpe+4-customize-alist)
     (ess-language                  . "S")
-    (ess-dialect                   . Sqpe+4-dialect-name)
+    (ess-dialect                   . S+4-dialect-name)
     (ess-suffix                    . "S")
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
@@ -186,11 +183,12 @@ is here to allow slow disks to start the Splus program."
     (setq inferior-ess-client-command    "SCommand")
 ;;; end of what belongs in customize-alist
     (setq comint-process-echoes nil)
+    (setq comint-input-sender 'comint-simple-send)
     (goto-char (point-max))
     (insert (concat inferior-S+4-program-name " "
 		    inferior-ess-start-args)) ; Note: there is no final "&".
-; Without the "&", the results of  !system.command  come to *S+4 ddeclient*
-; With the "&", the results of  !system.command  in S get lost.
+    ;; Without the "&", the results of  !system.command  come to *S+4 ddeclient*
+    ;; With the "&", the results of  !system.command  in S get lost.
     (inferior-ess-send-input)
     (sleep-for 30) ; Need to wait, else working too fast!
                    ; If the ess-current-process-name doesn't appear in the
@@ -211,92 +209,12 @@ Splus Commands window appear in this buffer.\n\n")
     (goto-char (point-max))		; comint-mode-map makes *S+4 ddeclient*
 ;;  (use-local-map comint-mode-map)     ;a shell buffer after Splus is finished.
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
-    (vc-toggle-read-only)		; force buffer to be read-only
+    (toggle-read-only t)		; force buffer to be read-only
+    (setq mode-name "ddeESS")
+    (ess-eval-visibly inferior-S+4-editor-pager-command)
     ))
 
 
-
-;;; There are extra complications in S+4-comint (compared to S+3) because
-;;;
-;;; (1) The StatSci supplied Splus.exe doesn't work in an emacs
-;;;     buffer.  It works as as a GUI window and we must send commands
-;;;     to it through ddeclient.  Nonetheless, we need to give it a
-;;;     process name and be sure that that there is a valid running
-;;;     process in the *S+4 ddeclient* buffer.  Therefore we create a
-;;;     shell process in the buffer as a placeholder.  We have a
-;;;     buffer-local variable inferior-ess-ddeclient, initialized to
-;;;     nil.  When there is a non-nil value of inferior-ess-ddeclient
-;;;     we send lines to inferior-ess-ddeclient rather than to the
-;;;     Splus process.
-;;; (2) There is no Splus process running in the *S+4 ddeclient*
-;;;     buffer.  Therefore inferior-ess will never see a prompt,
-;;;     unless we first change it to the null prompt "^".  Then once
-;;;     the process has started, we change it back.
-;;; (3) If M-x S+4 (or M-x S) starts Splus, then Splus is an inferior
-;;;      process and will be killed if the *S+4 ddeclient* buffer is
-;;;      killed (or emacs is quit).  If SPlus is already running, then
-;;;      M-x S+4 will use that existing external process.  In either
-;;;      case, the *S+4 ddeclient* is made read-only and a warning is
-;;;      placed in it saying that "You can't type anything here."
-;;;
-(defun S+4-comint (&optional proc-name)
-  "Call 'S-PLUS 4.x', the 'GUI Thing' from StatSci.  Put S-Plus in a
-subsidiary MS-Window.  Do this by creating a comint process that calls
-Splus.  When it completes set up a shell as a placeholder in the *S+4
-ddeclient* buffer.  The S-Plus Commands window does not get opened.
-The S-Plus options are not correctly set."
-  (interactive)
-  (save-excursion
-    (setq ess-customize-alist S+4-customize-alist)
-    (ess-write-to-dribble-buffer
-     (format "\n(S+4): ess-dialect=%s, buf=%s\n" ess-dialect
-	     (current-buffer)))
-    (setq ess-customize-alist		; change inferior-ess-primary-prompt
-	  (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
-    (inferior-ess)
-    (sleep-for 2) ; need to wait, else working too fast!
-		   ; if the mode-line says no process,
-		   ; increase the sleep-for time!
-    (make-comint ess-current-process-name "sh")
-    (setq ess-customize-alist S+4-customize-alist) ; restore i-e-p-p in alist
-    (ess-setq-vars-local ess-customize-alist)    ; restore i-e-p-p in buffer
-    (setq inferior-ess-prompt                    ; define with correct i-e-p-p
-	  ;; Do not anchor to bol with `^'       ; (copied from ess-inf.el)
-	  (concat "\\("
-		  inferior-ess-primary-prompt
-		  "\\|"
-		  inferior-ess-secondary-prompt
-		  "\\)"))
-    (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
-					         ; define with correct i-e-p-p
-;;; the next three lines belong in customize-alist, but can't be there
-;;; because of the broken ess-setq-vars-default usage in ess-inf.el
-    (setq inferior-ess-ddeclient         "ddeclient")
-    (setq inferior-ess-client-name       "S-PLUS")
-    (setq inferior-ess-client-command    "SCommand")
-;;; end of what belongs in customize-alist
-    (goto-char (point-min))
-    (insert
-   ; "You can safely ignore the error message about 'S+4 exited abnormally'.
-     "This is a placeholder buffer.  You can't type anything here.
-Use 'C-x b RET' to return to your file.\n
-You have used the command M-x S+4-comint.  We recommend that you use
-the command M-x S+4.\n
-Although Splus will be opened in the directory you specified, the
-_Prefs seems not to be read, therefore the options may not be set the
-way you expect.\n
-The S-Plus Commands window must be visible.  You may need to reveal
-the S-Plus window on your machine (by alt-tab or mouse to the Taskbar).
-You may need to open the S-Plus Commands window manually (by clicking
-on Splus/Window/Commands Window).\n
-The Splus window is a subprocess of this *S+4 ddeclient* window.  If you kill
-this window in emacs, the Splus window will also be killed.\n
-Any results of the   !system.command   typed at the S prompt in the
-Splus Commands window appear in this buffer.\n
-You may ignore any messages about S+4 kill.\n\n")
-    (comint-set-process-mark)
-    (vc-toggle-read-only)		; force buffer to be read-only
-    ))
 
 
 (defun S+4-existing (&optional proc-name)
@@ -307,8 +225,24 @@ S-Plus, then a new one will be opened in the default directory,
 usually something like c:/Program Files/spls45se/users/yourname.
 If you have a HOME environment variable, it will open it there."
   (interactive)
-  (let* ((inferior-S+4-multipleinstances " & # "))
-    (S+4 proc-name)))
+  (let* ((inferior-S+4-multipleinstances " & # ")) ; Note: there is a final "&".
+    ;; Without the "&", there is a core dump.
+    ;; With the "&", the results of  !system.command  in S get lost.
+    ;; We are picking up an existing S-Plus process for sending to.
+    ;; It doesn't know about us, so nothing comes back.
+    (S+4 proc-name))
+  (save-excursion
+    (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
+    (toggle-read-only nil)		; permit writing in ESS buffer
+    (goto-char (point-max))
+    (beginning-of-line)
+    (forward-line -1)
+    (insert
+     "This is S+4-existing.
+Results of the   !system.command   typed at the S prompt in the
+Splus Commands window blink a DOS window and you won't see them.\n\n")
+    (toggle-read-only t)		; restore ESS buffer to be read-only
+    ))
 
 
 ;;; There are extra complications in Sqpe+4 (compared to S+3) because
@@ -347,6 +281,8 @@ If you have a HOME environment variable, it will open it there."
     (goto-char (point-max))
     (insert "options(interactive=T)")
     (inferior-ess-send-input)
+    (setq mode-name "iESS(Sqpe)")
+    (ess-eval-visibly inferior-S+4-editor-pager-command)
     (if shome-nil-p (setenv "SHOME" nil))))
 
 
@@ -404,6 +340,7 @@ is here to allow slow disks to start the Splus program."
     (setq inferior-ess-client-name       "S-PLUS")
     (setq inferior-ess-client-command    "SCommand")
 ;;; end of what belongs in customize-alist
+    (setq comint-input-sender 'comint-simple-send)
     (setq comint-process-echoes nil)
     (goto-char (point-max))
     (insert (concat inferior-S+4-program-name " "
@@ -440,7 +377,9 @@ Any results of the   !system.command   typed at the S prompt in the
 Splus Commands window (are supposed to) appear in this buffer.\n\n")
     (goto-char (point-max))	       ; comint-mode-map makes *S+4 ddeclient*
     (use-local-map comint-mode-map)    ; a shell buffer after Splus is finished.
-    (vc-toggle-read-only)	       ; force buffer to be read-only
+    (toggle-read-only t)	       ; force buffer to be read-only
+    (setq mode-name "ddeESS")
+    (ess-eval-visibly inferior-S+4-editor-pager-command)
     ))
 
 (defun S+4-msdos-existing (&optional proc-name)
@@ -452,7 +391,19 @@ usually something like c:/Program Files/spls45se/users/yourname.
 If you have a HOME environment variable, it will open it there."
   (interactive)
   (let* ((inferior-S+4-multipleinstances ""))
-    (S+4-msdos proc-name)))
+    (S+4-msdos proc-name))
+  (save-excursion
+    (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
+    (toggle-read-only nil)		; permit writing in ESS buffer
+    (goto-char (point-max))
+    (beginning-of-line)
+    (forward-line -1)
+    (insert
+     "This is S+4-msdos-existing.
+Results of the   !system.command   typed at the S prompt in the
+Splus Commands window blink a DOS window and you won't see them.\n\n")
+    (toggle-read-only t)		; restore ESS buffer to be read-only
+    ))
 
  ; Provide package
 
