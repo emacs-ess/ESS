@@ -1,3 +1,43 @@
+1999-11-22  ess  <ess@aleph.YP.biostat>
+
+	* ess-vars.el: Updated to 5.1.11
+
+1999-11-17  ess  <ess@aleph.YP.biostat>
+
+	* essddr.el:
+	'bold isn't defined in XEmacs.  Using reference-face instead of Rd-bold-face.
+
+1999-11-16  ess  <ess@aleph.YP.biostat>
+
+	* ess-vars.el: Fixed small version update errors
+
+	* Makefile, ess-help.el, ess-site.el, essd-els.el, make-regexp.el, noweb-mode.el:
+	updated version numbers
+
+	* essl-sta.el: added local variables for editing and indexing.
+
+	* essl-sta.el: added Brendan's suggested function.
+
+	* essl-sta.el:
+	added make-regexp to ESS, and finished integrating Brendan's code.
+	Need to test it now!
+
+	* make-regexp.el: needed for Stata-mode extensions
+
+	* essl-sta.el: added Brendan Halpin's corrections.
+
+	* ess-inf.el: concat needs number-to-string conversion.
+
+	* essd-omg.el: Omegahat fixes (for commandline flags)
+
+1999-11-11  ess  <ess@aleph.YP.biostat>
+
+	* noweb-mode.el:
+	C-c C-n shouldn't be TeX-normalmode, since it is too close to
+	submit-line with ESS!  (overwrite).
+
+	* essd-omg.el: Use prefix for setting Omegahat arguments.
+
 1999-11-10  rossini  <rossini@biostat.washington.edu>
 
 	* essl-omg.el: S- becomes OMG-

@@ -1,3 +1,102 @@
+1999-11-22  ess  <ess@aleph.YP.biostat>
+
+	* VERSION, lisp/ess-vars.el: Updated to 5.1.11
+
+1999-11-17  ess  <ess@aleph.YP.biostat>
+
+	* lisp/essddr.el:
+	'bold isn't defined in XEmacs.  Using reference-face instead of Rd-bold-face.
+
+1999-11-16  ess  <ess@aleph.YP.biostat>
+
+	* Makefile, etc/replace-version-numbers, lisp/ess-vars.el:
+	Fixed small version update errors
+
+	* ANNOUNCE, Makefile, README, doc/README.SPLUS4WIN, doc/announc.texi, doc/inst_tar.texi, doc/readme.texi, lisp/Makefile, lisp/ess-help.el, lisp/ess-site.el, lisp/essd-els.el, lisp/make-regexp.el, lisp/noweb-mode.el:
+	updated version numbers
+
+	* doc/newfeat.texi: cleaned up NTEmacs requirements.
+
+	* lisp/essl-sta.el: added local variables for editing and indexing.
+
+	* lisp/essl-sta.el: added Brendan's suggested function.
+
+	* doc/inst_tar.texi:
+	added change to doc, that "make" is done by "make install"
+
+	* doc/ESS_intro.tex: Martin suggested a small fix.
+
+	* doc/ESS_intro.tex: Another bit of documentation
+
+	* doc/announc.texi: shortened header -- this is for announc, after all!
+
+	* doc/announc.texi:
+	moved license to the end, New Features to the beginning.
+
+	* doc/newfeat.texi: added new features for 5.1.11.
+
+	* doc/README.SPLUS4WIN:
+	comment at the beginning about new reading material.
+
+	* doc/README.SPLUS4WIN:
+	added David Brahm's HELP INSTRUCTIONS for the license manager.
+
+	* lisp/essl-sta.el:
+	added make-regexp to ESS, and finished integrating Brendan's code.
+	Need to test it now!
+
+	* lisp/make-regexp.el: needed for Stata-mode extensions
+
+	* lisp/essl-sta.el: added Brendan Halpin's corrections.
+
+	* lisp/ess-inf.el: concat needs number-to-string conversion.
+
+	* lisp/essd-omg.el: Omegahat fixes (for commandline flags)
+
+1999-11-11  ess  <ess@aleph.YP.biostat>
+
+	* lisp/noweb-mode.el:
+	C-c C-n shouldn't be TeX-normalmode, since it is too close to
+	submit-line with ESS!  (overwrite).
+
+	* lisp/essd-omg.el: Use prefix for setting Omegahat arguments.
+
+1999-11-10  ess  <ess@aleph.YP.biostat>
+
+	* lisp/ChangeLog: fixed up to now.
+
+	* lisp/essl-omg.el: S- becomes OMG-
+	Comments redone (to use //, ///, and //// for levels of indentation)
+	OMG-syntax started, variable defined, needs to be fixed.
+
+	* lisp/essd-omg.el:
+	further Omegahat dialect changes (use OMG syntax, which needs fixing!)
+
+1999-11-05  maechler  <maechler@aleph.YP.biostat>
+
+	* lisp/ChangeLog, lisp/ess.el, lisp/noweb-mode.el:
+	functionp definition if necessary
+
+	* lisp/noweb-mode.el: functionp for  emacs-19.34
+
+1999-11-04  ess  <ess@aleph.YP.biostat>
+
+	* lisp/essd-els.el: fixed paren error.
+
+	* ANNOUNCE, Makefile, README, VERSION, doc/README.SPLUS4WIN, doc/announc.texi, doc/ess.texi, doc/inst_tar.texi, doc/readme.texi, etc/replace-version-numbers, lisp/Makefile, lisp/ess-site.el, lisp/ess-vars.el, lisp/essd-sas.el:
+	Changed version numbers
+
+	* ChangeLog: 5.1.10 released.
+
+	* doc/newfeat.texi: added 5.1.10 stuff.
+
+1999-11-03  ess  <ess@aleph.YP.biostat>
+
+	* doc/README.elsewhere, lisp/Makefile, lisp/ess-inf.el, lisp/ess-site.el, lisp/ess-vars.el, lisp/essd-sp5.el:
+	Changes for ESS-elsewhere.
+
+	* lisp/essd-els.el: added a generic ESS-elsewhere function.
+
 1999-11-03  Anthony Rossini  <rossini@biostat.washington.edu>
 
 	* fixed Stata again, added ESS-elsewhere.
@@ -486,7 +585,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 1999/11/04 00:33:06 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 1999/11/22 21:53:30 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -2676,6 +2775,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.20  1999/11/22 21:53:30  ess
+	* Removing updated changelogs -- but w/o fixing attributes.
+	* Removing
 	* Removing Revision 5.19  1999/11/04 00:33:06  ess
 	* Removing 5.1.10 released.
 	* Removing
