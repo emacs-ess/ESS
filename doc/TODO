@@ -1,6 +1,6 @@
 -*- view -*-
 
-$Revision: 1.13 $
+$Revision: 1.14 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1038,6 +1038,43 @@ NOTE: Not all of these are clean OR are even consistent.
    "\C-cd" 'sas-get-dataset)			use
    "\C-c\C-c" 'switch-to-sas-process-buffer)	^C^Z or ^C^Y
 
-* Fix the links with the info system ("about", from the menu). (AJR/MM). 
+* (AJR) REWRITE INFERIOR-ESS (AJR, for 5.1 series).
 
-* REWRITE INFERIOR-ESS (AJR, for 5.1 series).
+* (RMH) Add explicit directions on installing or using dir for info.
+	 Makefile  ; for 5.0
+	line 96 of pre5/Makefile included dir.
+	dir does not appear in lastpre/Makefile.
+	dir does not appear at all in the directory.
+	You did include instructions on line 194 on editing dir.
+	dir is needed for the info system to get ess into its menu.
+	Please include the sample dir (below) and instructions on
+	editing site-start.el.  
+	I have the following in my site-start.el
+	;;
+	   (defun add-info-path (newpath)
+	     (setq Info-default-directory-list
+	           (cons (expand-file-name newpath)
+			 Info-default-directory-list)))
+	
+	   (add-info-path "/disk05/local/teTeX/info/")   ; stat dept
+	   (add-info-path "/disk05/local/emacs/S-mode/") ; stat dept
+	   (add-info-path "/disk05/local/info/")         ; stat dept
+	;;
+
+	Here is my 5 line dir file from S-mode 4.8.  It needs to be
+	updated to 5.0.  The first line is blank. I think the blank
+	line is required, although it might be there only for
+	appearance when the info menu comes up.
+
+	
+	File: dir	Node: Top	This is the top of the INFO tree
+	* Menu: The list of major topics begins on the next line.
+	* S-mode: (S-mode).		S-mode Version 4.8
+
+
+	This works correctly in Emacs 19.29.  My memory says that when
+	I was playing with XEmacs a few months ago, the add-info-path
+	didn't work correctly in XEmacs.  Only the first and last
+	items on the Info-default-directory-list actually got
+	displayed.
+
