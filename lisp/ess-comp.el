@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/31 10:55:26 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: ess-comp.el,v 1.5 1997/07/31 10:55:26 rossini Exp $
+;; Modified: $Date: 1997/07/31 11:11:54 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: ess-comp.el,v 1.6 1997/07/31 11:11:54 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;: $Log: ess-comp.el,v $
+;;: Revision 1.6  1997/07/31 11:11:54  rossini
+;;: added (require 'cl) to compile-time loads.
+;;:
 ;;: Revision 1.5  1997/07/31 10:55:26  rossini
 ;;: moved cl, cl-macs requiring here.
 ;;:
@@ -67,7 +70,7 @@
 
 (setq byte-optimize t))
 (require 'cl)
-(require 'cl-macs)
+;;(require 'cl-macs)  SHOULD NOT NEED THIS!
 (require 'ess-vars)
 (require 'ess)
 (require 'ess-site)
