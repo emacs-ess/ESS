@@ -122,7 +122,10 @@ dist:
 	gzip $(VERSIONDIR).tar
 	cp $(VERSIONDIR).tar.gz $(MYWWWDIR)
 	cp $(VERSIONDIR).tar.gz $(MYFTPDIR)
+	cp $(VERSIONDIR)/README $(MYWWWDIR)/$(VERSIONDIR)-README
+	cp $(VERSIONDIR)/README $(MYFTPDIR)/$(VERSIONDIR)-README
 	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
+
 
 
 patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
