@@ -99,7 +99,8 @@ versions of R are called other names, consider renaming them with a
 symbolic link or change the variable @code{ess-r-versions}.  To see
 which defuns have been created for starting different versions of R,
 type @kbd{M-x R-} and then hit [Tab].  You will then see if any defuns
-for particular versions of R have been created.
+for particular versions of R have been created.  These other versions of
+R can also be started from the "ESS / Start Process / Other" menu.
 
 New for ESS 5.1.2 (and later):  "S-elsewhere" command
 
