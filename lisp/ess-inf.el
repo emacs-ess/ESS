@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/01 16:23:43 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: ess-inf.el,v 1.19 1997/07/01 16:23:43 rossini Exp $
+;; Modified: $Date: 1997/07/01 16:25:18 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: ess-inf.el,v 1.20 1997/07/01 16:25:18 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.20  1997/07/01 16:25:18  rossini
+;; last one taken care off.
+;;
 ;; Revision 1.19  1997/07/01 16:23:43  rossini
 ;; make-local-variables moved to make-variable-... in ess.el
 ;;
@@ -641,7 +644,7 @@ ess-local-process-name is set to the name of the process selected."
       ;; ess-local-process-name is nil -- which process to attach to
       (save-excursion
 	(let ((proc (ess-request-a-process prompt 'no-switch)))
-	  (make-local-variable 'ess-local-process-name)
+	  ;;(make-local-variable 'ess-local-process-name)
 	  (setq ess-local-process-name proc)
 	  ;; why is the mode line not updated ??
 	  )))))
@@ -1330,7 +1333,7 @@ buffer (defaults to the command if BUFF is not given.)"
 	      ;; Print the command in the buffer if it has not been
 	      ;; given a special name
 	      (insert "> " the-command)))
-	  (make-local-variable 'ess-local-process-name)
+	  ;;(make-local-variable 'ess-local-process-name)
 	  (setq ess-local-process-name ess-current-process-name))
 	(ess-display-temp-buffer buff)))))
 
