@@ -14,7 +14,7 @@
 	* essdsp6w.el (ess-sqpe-versions-create): New function to
 	auto-generate defuns to allow other versions of Sqpe to be called.
 	
-	* essd-r.el (ess-r-versions-create): New function to auto-generate
+	* essd-r.el (ess-rterm-versions-create): New function to auto-generate
 	defuns to allow other Windows versions of R to be called.
 
 2004-07-02  Stephen Eglen  <stephen@anc.ed.ac.uk>
