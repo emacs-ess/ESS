@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.16 2000/06/07 22:35:06 rossini Exp $
+;; Version: $Id: ess.el,v 5.17 2000/06/08 13:11:12 ess Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -145,7 +145,7 @@
 ;;      (` (defvar (, var) (, value) (, doc))))))
 
 ;; Remove after we debug...
-(if (or (running-emacs-version-or-newer 20 2) ess-local-custom-available)
+(if (or (ess-running-emacs-version-or-newer 20 2) ess-local-custom-available)
     (progn 
       (require 'ess-cust)
       (message "--++ LOADING CUSTOM ++--"))

@@ -6,9 +6,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2000/06/07 22:20:20 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: ess-emcs.el,v 5.1 2000/06/07 22:20:20 rossini Exp $
+;; Modified: $Date: 2000/06/08 13:11:12 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: ess-emcs.el,v 5.2 2000/06/08 13:11:12 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -54,12 +54,16 @@
 ;;; Define a function to make it easier to check which version we're
 ;;; running.
 
-(defun running-emacs-version-or-newer (major minor)
+(defun ess-running-emacs-version-or-newer (major minor)
   (or (> emacs-major-version major)
       (and (= emacs-major-version major)
 	   (>= emacs-minor-version minor))))
 
-(defvar running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
+(defvar ess-running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
+
+(defvar ess-local-custom-available nil
+  "Value is nil if custom.el not available, t if available.  Only a
+concern with earlier versions of Emacs.")
 
 (provide 'ess-emcs)
 

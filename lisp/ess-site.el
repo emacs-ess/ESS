@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/06/07 22:37:49 $
-;; Version: $Revision: 5.52 $
-;; RCS: $Id: ess-site.el,v 5.52 2000/06/07 22:37:49 rossini Exp $
+;; Modified: $Date: 2000/06/08 13:11:12 $
+;; Version: $Revision: 5.53 $
+;; RCS: $Id: ess-site.el,v 5.53 2000/06/08 13:11:12 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -64,9 +64,7 @@
 
 ;; If we have custom available, make this "t")
 
-(defvar ess-local-custom-available nil
-  "Value is nil if custom.el not available, t if available.  Only a
-concern with earlier versions of Emacs.")
+(setq ess-local-custom-available nil)
 
 
 ;;;; 1. Load path, autoloads, and major modes
