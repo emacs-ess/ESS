@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/11/18 22:21:37 $
-;; Version: $Revision: 1.36 $
-;; RCS: $Id: essd-s+3.el,v 1.36 1997/11/18 22:21:37 rossini Exp $
+;; Modified: $Date: 1997/11/19 15:33:47 $
+;; Version: $Revision: 1.37 $
+;; RCS: $Id: essd-s+3.el,v 1.37 1997/11/19 15:33:47 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -89,6 +89,7 @@
 
 (defun S+3-transcript-mode ()
   "S-PLUS 3.x transcript mode."
+  (interactive)
   (ess-transcript-mode S+3-customize-alist))
 
 
