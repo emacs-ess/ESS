@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-$Revision: 4.1 $
+$Revision: 4.2 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1111,5 +1111,16 @@ NOTE: Not all of these are clean OR are even consistent.
    iESS or ESS-trans, and doesn't have an active process, use it,
    instead of creating a new buffer. (AJR).
 
+* (RMH) 
+     * iESS [S+3]   5.0? 5.1?
+     'single quotes' are in regular font
+     "double quotes" are in quote font
+     This differs from ESS[S] mode in which both kinds of
+     quotes are in quote font. 
+    
+     Should be fixed in 5.0 if easy.  Not obvious to me where
+     the problem is.  The identical S-syntax-table is in use
+     in both iESS [S+3] and ESS[S].  The font-lock-keywords
+     don't seem to me to be the problem.
 
 
