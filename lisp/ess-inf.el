@@ -1,14 +1,15 @@
 ;;; ess-inf.el --- Support for running S as an inferior Emacs process
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997-2000 A.J. Rossini, M. Maechler.
+;; Copyright (C) 1997-2001 A.J. Rossini <rossini@u.washington.edu>,
+;; Martin Maechler <maechler@stat.math.ethz.ch>.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/10/17 18:34:58 $
-;; Version: $Revision: 5.57 $
-;; RCS: $Id: ess-inf.el,v 5.57 2000/10/17 18:34:58 rossini Exp $
+;; Modified: $Date: 2001/01/08 01:13:11 $
+;; Version: $Revision: 5.58 $
+;; RCS: $Id: ess-inf.el,v 5.58 2001/01/08 01:13:11 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -50,10 +51,6 @@
 (autoload 'ess-extract-word-name	    "ess-utils" "(autoload)." t)
 
 (autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload)." t)
-
- ;;*;; Variables
-
-;; Moved to ess-cust.el
 
  ;;*;; Process handling
 
