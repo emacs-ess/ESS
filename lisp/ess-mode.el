@@ -227,7 +227,7 @@
     ;; be replaced with the other versions of R and Sqpe that can be run.
     ;; See `ess-r-versions-create' and ess-site.el
     ("Other"
-     ["No other R or Sqpe versions" R nil])
+     ["No other R or Sqpe versions" nil nil])
     ["About"
      (ess-goto-info "Starting up") t]
      ;; :help "Read about starting a new ESS process" :active t]
