@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/10/24 16:11:30 $
-;; Version: $Revision: 1.56 $
-;; RCS: $Id: ess-site.el,v 1.56 1997/10/24 16:11:30 rossini Exp $
+;; Modified: $Date: 1997/11/07 23:17:54 $
+;; Version: $Revision: 1.57 $
+;; RCS: $Id: ess-site.el,v 1.57 1997/11/07 23:17:54 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -61,12 +61,16 @@
 
   ;; Not important in XEmacs, if unpacking from ../xemacs/site-lisp/
   ;; directory.
-  (defvar ess-lisp-directory
-    (directory-file-name "/p1/apps/X11R6.3/lib/xemacs/site-lisp/ESS"))
-    ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
-    ;;(directory-file-name "/usr/local/share/emacs/site-lisp/ess-mode"))
-    ;;(directory-file-name "/stat2/faculty/rossini/S-mode"))
 
+  ;; Suggested by RMH
+  (defvar ess-lisp-directory
+    (directory-file-name (file-name-directory (file-truename load-file-name))))
+  ;;(defvar ess-lisp-directory
+  ;;(directory-file-name "/p1/apps/X11R6.3/lib/xemacs/site-lisp/ESS"))
+  ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
+  ;;(directory-file-name "/usr/local/share/emacs/site-lisp/ess-mode"))
+  ;;(directory-file-name "/stat2/faculty/rossini/S-mode"))
+  
   (add-to-list 'load-path ess-lisp-directory))
 
 
@@ -282,6 +286,21 @@
 ;;; by setting ess-directory to nil, i.e. 
 ;; (setq-default ess-directory nil) ; this is the default.
 
+
+;;; 3.6 Example of formatting change (suggested by Terry Therneau).
+
+;;;;The defaults in ess-vars.el are identical to current behavior:
+;;;;added rmh 2Nov97 at request of Terry Therneau
+;;(setq ess-close-brace-offset 0
+;;  "*Extra indentation for closing braces")
+;;(setq ess-fancy-comments t
+;;  "*Non-nil means distiguish between #, ##, and ### for indentation")
+;;
+;;;;Terry will want to add the definitions:
+;;(setq ess-fancy-comments nil
+;;  "*Non-nil means distiguish between #, ##, and ### for indentation")
+;;(setq ess-default-style 'CLB
+;;  "*The default value of ess-style")
 
 
 ;;; 4.0 SAS configuration
