@@ -66,15 +66,22 @@ BATCHFLAGS = -batch --no-site-file --no-init-file
 CORE = ess.elc ess-site.elc
 
 SOURCES = ess-vars.el ess.el ess-site.el \
-	essl-s.el essl-lsp.el essl-sas.el essl-sta.el \
-	essd-s3.el essd-s4.el essd-s+3.el essd-r.el essd-xls.el essd-sas.el \
 	ess-inf.el ess-mode.el ess-trns.el ess-help.el \
-	essddr.el
+	ess-comp.el ess-debug.el \
+	essl-s.el essl-lsp.el essl-sas.el essl-sta.el \
+	essd-s3.el essd-s4.el essd-s+3.el essd-r.el \
+	essd-xls.el essd-vst.el \
+	essd-sas.el \
+	essddr.el 
+
+DOCS = Doc/TODO Doc/Why_S-mode_Rocks.DMS \
+	Doc/README-19.28 Doc/README.additions Doc/NEWS 
+
 
 
 OBJECTS = $(SOURCES:.el=.elc)
 
-AUXFILES = COPYING Makefile README Doc ess.texi ChangeLog
+AUXFILES = COPYING Makefile README ess.texi ChangeLog $(DOCS)
 
 DISTFILES = $(addprefix $(VERSIONDIR)/,$(SOURCES)) \
 	    $(addprefix $(VERSIONDIR)/,$(AUXFILES)) 
@@ -100,12 +107,11 @@ clean:
 	  ess.ky ess.log ess.pg ess.toc ess.tp ess.vr \
 	  ess.fn texput.log
 
-# $(SOURCES) $(AUXFILES)
 dist:
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(VERSION)"
 	@echo "**********************************************************"
-	chmod a-w $(VERSIONDIR)/*.el
+	chmod a-w $(VERSIONDIR)/*.el $(VERSIONDIR)/ChangeLog
 	chmod u+w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
 	tar hcovf $(VERSIONDIR).tar $(DISTFILES)
 	gzip $(VERSIONDIR).tar
