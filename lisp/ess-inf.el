@@ -1697,12 +1697,14 @@ arg (with C-u), this step will be omitted."
 	(goto-char (marker-position (process-mark sprocess)))
 	(insert inferior-ess-exit-command)
 	(process-send-string sprocess inferior-ess-exit-command)
-	(rename-buffer (concat (buffer-name) "-exited") t)))))
+	;;SJE - suggest no need to rename buffer upon exit.
+	;;(rename-buffer (concat (buffer-name) "-exited") t)
+	))))
 
 (defun ess-quit-r (dont-cleanup)
   "Issue an exiting command to an inferior R process, and optionally clean up.
 This version is for killing *R* processes; it asks the extra question 
-regarding whether the workspace image should be save."
+regarding whether the workspace image should be saved."
   (ess-force-buffer-current "Process to quit: ")
   (ess-make-buffer-current)
   (let (response cmd
@@ -1711,12 +1713,14 @@ regarding whether the workspace image should be save."
     (setq response (completing-read "Save workspace image? " 
 				    '( ( "yes".1) ("no" . 1) ("cancel" . 1))
 				    nil t))
+    (if (string-equal response "")
+	(setq response "no"))		;default = do not save workspace.
     (unless (string-equal response "cancel")
       (if dont-cleanup nil (ess-cleanup))
       (setq cmd (format "q(\"%s\")\n" response))
       (goto-char (marker-position (process-mark sprocess)))
       (process-send-string sprocess cmd)
-      (rename-buffer (concat (buffer-name) "-exited") t)
+      ;;(rename-buffer (concat (buffer-name) "-exited") t)
       )))
 
 (defun ess-abort ()
