@@ -32,7 +32,7 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.22
 
-   (Documentation $Revision: 1.9 $ $Date: 2002/07/26 19:23:19 $).
+   (Documentation $Revision: 1.10 $ $Date: 2002/07/29 17:05:36 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
      Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and
@@ -147,14 +147,13 @@ Help for the S family
 Help for SAS
 
 * ESS(SAS)--Design philosophy::
-* ESS(SAS)--Recommended autoexec::
 * ESS(SAS)--Editing files::
-* iESS(SAS)--Inferior ESS processes::
-* ESS(SAS)--Batch processes::
+* iESS(SAS)--Interactive SAS processes::
+* ESS(SAS)--Batch SAS processes::
 * ESS(SAS)--Function keys for batch processing::
 * ESS(SAS)--TAB key::
 * ESS(SAS)--Usage scenarios::
-* ESS(SAS)--Common problems::
+* iESS(SAS)--Common problems::
 * ESS(SAS)--MS Windows::
 
 Installing ESS on your system

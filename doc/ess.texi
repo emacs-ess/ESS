@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.34 2002/07/26 22:01:20 rsparapa Exp $
+@comment $Id: ess.texi,v 5.35 2002/07/29 17:05:36 rsparapa Exp $
 
 @include version.texi
 
@@ -41,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.34 $ $Date: 2002/07/26 22:01:20 $)
+@subtitle version @essver{} (Documentation $Revision: 5.35 $ $Date: 2002/07/29 17:05:36 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -86,7 +86,7 @@ permission notice identical to this one.
 
 ESS version @essver{}
 
-        (Documentation $Revision: 5.34 $ $Date: 2002/07/26 22:01:20 $).
+        (Documentation $Revision: 5.35 $ $Date: 2002/07/29 17:05:36 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
@@ -210,7 +210,7 @@ Help for SAS
 * ESS(SAS)--Function keys for batch processing::
 * ESS(SAS)--TAB key::
 * ESS(SAS)--Usage scenarios::
-* ESS(SAS)--Common problems::
+* iESS(SAS)--Common problems::
 * ESS(SAS)--MS Windows::
 
 Installing ESS on your system
@@ -2459,7 +2459,7 @@ directory, move it there).
 * ESS(SAS)--Function keys for batch processing::
 * ESS(SAS)--TAB key::
 * ESS(SAS)--Usage scenarios::
-* ESS(SAS)--Common problems::
+* iESS(SAS)--Common problems::
 * ESS(SAS)--MS Windows::
 @end menu
 @include help-sas.texi
