@@ -66,7 +66,7 @@
 \usepackage{alltt}
 
 %% Postscript fonts
-\usepackage{times}
+%\usepackage{times}
 \usepackage{graphicx}
 %\usepackage{psfig}
 
@@ -125,7 +125,7 @@
 
 %%--------------------------------------------------------------- Start Text
 
-\title{Emacs Speaks Statistics (ESS): A multi-platform, multi-package
+\title{Emacs Speaks Statistics: A multi-platform, multi-package
 intelligent environment for statistical analysis}
 
 %%For blinded submission:
@@ -154,10 +154,12 @@ intelligent environment for statistical analysis}
     Kurt Hornik is Professor in the Institut f{\"u}r Statistik,
     Wirtschaftsuniversit{\"a}t Wien and the Institut f{\"u}r
     Wahrscheinlichkeitstheorie und Statistik, Technische Universit{\"a}t
-    Wien, Vienna, Austria (E-mail: Kurt.Hornik@r-project.org)}}
+    Wien, Vienna, Austria (E-mail: Kurt.Hornik@r-project.org).
+  Thanks go to the referrees and AE for suggesting changes which
+  substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/25 17:57:41 $ - $Revision: 1.6 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/25 22:05:45 $ - $Revision: 1.7 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -183,22 +185,24 @@ intelligent environment for statistical analysis}
 
 \begin{abstract}
   Computer programming is an important component of statistics
-  research and data analysis.  This skill is necessary for using
-  sophisticated statistical packages as well as for writing custom
-  software for data analysis.  Emacs Speaks Statistics (ESS) provides
-  an intelligent and consistent interface between the user and
-  software.  ESS interfaces with SAS, S-PLUS, R, and other statistics
-  packages under the Unix, Microsoft Windows, and Apple Mac operating
-  systems.  ESS extends the Emacs text editor and uses its many
-  features to streamline the creation and use of statistical software.
-  ESS understands the syntax for each data analysis language it works
-  with and provides consistent display and editing features across
-  packages.  ESS assists in the interactive or batch execution by the
-  statistics packages of statements written in their languages.  Some
-  statistics packages can be run as a subprocess of Emacs, allowing
-  the user to work directly from the editor and thereby retain a
-  consistent and constant look-and-feel.  We discuss how ESS works and
-  how it increases statistical programming efficiency.
+  research and data analysis, and is necessary to use sophisticated
+  statistical packages and to write custom scripts and software to
+  perform data analysis using modern statistical methods.  Emacs
+  Speaks Statistics (ESS) provides an intelligent and consistent
+  interface between the user and software.  ESS interfaces with SAS,
+  S-PLUS, R, and other statistics packages under the Unix, Microsoft
+  Windows, and Apple Mac operating systems.  ESS extends the Emacs
+  text editor and uses its many features to streamline the use and
+  creation of statistical software.  ESS understands the syntax for
+  numerous data analysis languages and provides consistent display and
+  editing features across packages.  ESS assists in the interactive or
+  batch execution by the statistics packages of statements written in
+  their languages.
+  %% Some statistics packages can be run as a subprocess of Emacs,
+  %% allowing the user to work directly from the editor and thereby
+  %% retain a consistent and constant look-and-feel.
+  We discuss how ESS works to increase statistical programming
+  efficiency.
 \end{abstract}
 
 \noindent Keywords: Data Analysis, Programming,
@@ -221,6 +225,22 @@ efficiency of statistical practice.  This paper introduces Emacs
 Speaks Statistics (ESS) \citep{ESS}, a software package which provides
 a common interface to a variety of statistical packages on the most
 common computing platforms.
+
+        many statistical systems can only be used or are best used
+        through a textual interface.
+
+        textual interfaces can be hard to use; ESS is a tool for
+        making them easier to use.
+
+        preparing textual input for submission to a system is a form
+        of programming.
+
+        repeating analyses with minor variations and designing new
+        forms of analyses, perhaps using statistical languages, are
+        more advanced forms of programming
+
+        ESS can help the user be more effective with all forms of data
+        analysis programming.
 
 Statistical package interfaces can generally be placed into 2
 categories.  The first and older approach is to provide a command-line
@@ -296,55 +316,55 @@ ESS provides both of these to the programmer by including a
 description of the syntax of each supported statistical language in
 the form used by \stexttt{font-lock-mode}.
 
-Figure \ref{f.font} shows an example of font-locking a complicated S
-statement.  The top panel shows an \stexttt{if} statement with a long
-expression in the condition and a multi-line consequence.  The keyword
-\stexttt{if} is shown in purple, the string \stexttt{"deltat"} in
-RosyBrown.  The comments are in red.  Everything else is in the
-standard font.  The consequence is indented and the continuations of
-the consequence are further indented.  The matching parentheses are
-shown in green.  The cursor is indicated by a solid box.  In the
-bottom panel, we replaced the matching parenthesis with an unbalanced
-bracket.  Emacs immediately marks that with the paren-mismatch font,
-bright purple in this example.  On a black and white terminal we would
-use bold, underline, italic, and reverse-video, rather than colors, to
-distinguish the fonts.
+%Figure \ref{f.font} shows an example of font-locking a complicated S
+%statement.  The top panel shows an \stexttt{if} statement with a long
+%expression in the condition and a multi-line consequence.  The keyword
+%\stexttt{if} is shown in purple, the string \stexttt{"deltat"} in
+%RosyBrown.  The comments are in red.  Everything else is in the
+%standard font.  The consequence is indented and the continuations of
+%the consequence are further indented.  The matching parentheses are
+%shown in green.  The cursor is indicated by a solid box.  In the
+%bottom panel, we replaced the matching parenthesis with an unbalanced
+%bracket.  Emacs immediately marks that with the paren-mismatch font,
+%bright purple in this example.  On a black and white terminal we would
+%use bold, underline, italic, and reverse-video, rather than colors, to
+%distinguish the fonts.
 
-% Figure \ref{f.font} shows a black-and-white example of font-locking a
-% complicated S statement.  The top panel shows an \stexttt{if}
-% statement with a long expression in the condition and a multi-line
-% consequence.  The keyword \stexttt{if} is shown in an underlined font,
-% the string \stexttt{"deltat"} in an italic underlined font.  The
-% comments are in an italic font.  Everything else is in the standard
-% font.  The consequence is indented and the continuations of the
-% consequence are further indented.  The matching parentheses are marked
-% by a bold foreground and a shaded background.  The cursor is indicated
-% by a solid box.  In the bottom panel we replaced the matching
-% parenthesis with an unbalanced bracket.  Emacs immediately marks that
-% with the paren-mismatch font, bright purple on
-% a color terminal.
+Figure \ref{f.font} shows a black-and-white example of font-locking a
+complicated S statement.  The top panel shows an \stexttt{if}
+statement with a long expression in the condition and a multi-line
+consequence.  The keyword \stexttt{if} is shown in an underlined font,
+the string \stexttt{"deltat"} in an italic underlined font.  The
+comments are in an italic font.  Everything else is in the standard
+font.  The consequence is indented and the continuations of the
+consequence are further indented.  The matching parentheses are marked
+by a bold foreground and a shaded background.  The cursor is indicated
+by a solid box.  In the bottom panel we replaced the matching
+parenthesis with an unbalanced bracket.  Emacs immediately marks that
+with the paren-mismatch font, bright purple on
+a color terminal.
 
 The font selection and the indentation depth are automatically
 supplied by Emacs as the lines are typed.  The user has several
 options for mapping of colors or fonts to each of the syntactic types.
 We selected
-% black-and-white font-mapping for display here.  On a color terminal
-% we might use
+black-and-white font-mapping for display here.  On a color terminal
+we might use
 purple for the keywords, red for comments, green for matching parens,
 and inverse-video purple for mismatched parens.  Emacs makes default
 choices of colors and ESS provides several other optional schemes.
 
-\begin{figure}[tbp]%h
-  \ESSfig{%
-    \includegraphics[angle=270,width=\textwidth]{font-cor-s}
-    \includegraphics[angle=270,width=\textwidth]{font-incor-s}%
-    }
-  \caption{We illustrate here with fonts and colors appropriate for a
-    color display.  On a black and white terminal we would use bold,
-    underline, italic, and reverse-video.  On a color terminal we
-    would use a selection of colors.}
-  \label{f.font}
-\end{figure}
+%\begin{figure}[tbp]%h
+%  \ESSfig{%
+%    \includegraphics[angle=270,width=\textwidth]{font-cor-s}
+%    \includegraphics[angle=270,width=\textwidth]{font-incor-s}%
+%    }
+%  \caption{We illustrate here with fonts and colors appropriate for a
+%    color display.  On a black and white terminal we would use bold,
+%    underline, italic, and reverse-video.  On a color terminal we
+%    would use a selection of colors.}
+%  \label{f.font}
+%\end{figure}
 
 Since S syntax is similar to that of C, ESS uses the Emacs tools for
 reformatting S code to match particular styles.  Common C format styles,
@@ -358,15 +378,15 @@ standards.  Figure \ref{f.hilock} illustrates a standard for
 \SAS\ programming that says all \stexttt{PROC} statements must use the
 \stexttt{DATA=datasetname} option.
 
-\begin{figure}[tbp]
-  \ESSfig{\includegraphics[angle=270,width=\textwidth]{hilock-sas}}
-  \caption{Enforce coding standards.  The standard here is
-    that all \stexttt{PROC} statements must use the
-    \stexttt{DATA=datasetname} option.  Lines that satisfy the
-    standard turn green, lines that don't turn red.
-    Ambiguous ones turn yellow.}
-  \label{f.hilock}
-\end{figure}
+%\begin{figure}[tbp]
+%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{hilock-sas}}
+%  \caption{Enforce coding standards.  The standard here is
+%    that all \stexttt{PROC} statements must use the
+%    \stexttt{DATA=datasetname} option.  Lines that satisfy the
+%    standard turn green, lines that don't turn red.
+%    Ambiguous ones turn yellow.}
+%  \label{f.hilock}
+%\end{figure}
 
 \paragraph{Process interaction.}
 Emacs has historically referred to processes under its control as
@@ -380,16 +400,16 @@ remembers and uses the command history, allowing for the recall and
 searching of previously entered commands.  Filename completion for
 local directories is also available.
 
-\begin{figure}[tb]
-  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo}}
-  \caption{Line-by-line execution of a command file. The cursor is
-    placed on a line in the \stexttt{ESS[S]} buffer and then with a single
-    key sequence
-    the line is sent to the \stexttt{*R*} buffer for
-    execution.  The output of the package goes directly to the
-    editable \stexttt{*R*} buffer.}
-  \label{f.ess-demo}
-\end{figure}
+%\begin{figure}[tb]
+%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo}}
+%  \caption{Line-by-line execution of a command file. The cursor is
+%    placed on a line in the \stexttt{ESS[S]} buffer and then with a single
+%    key sequence
+%    the line is sent to the \stexttt{*R*} buffer for
+%    execution.  The output of the package goes directly to the
+%    editable \stexttt{*R*} buffer.}
+%  \label{f.ess-demo}
+%\end{figure}
 
 \paragraph{Source-level Debugging.}
 ESS facilitates the editing of source code files, sets of commands
@@ -528,7 +548,6 @@ below).  All the editing and interaction features described for the
 local machine work equally well on the remote machine.  The
 interaction, including all the unique features of working with ESS,
 appears to the user as if the program were running on the local
-%rmh: The interaction ... appears ....
 machine.  If the X11 Windowing system is running on the local machine,
 it is even possible to bring up visual displays and graphics from
 remote Unix systems onto a local Microsoft Windows or Apple Mac
@@ -782,15 +801,12 @@ When combined with the patch utility or a source-code control system,
 it provides the user with the ability to insert, delete or modify only
 the differing portions of text files.
 
-\begin{figure}[tbp]
-  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas}}
-  \caption{Ediff of two versions of a file.}
-  \label{f.ediff}
-\end{figure}
+%\begin{figure}[tbp]
+%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas}}
+%  \caption{Ediff of two versions of a file.}
+%  \label{f.ediff}
+%\end{figure}
 
-% Rodney: You can't just mention complex functionality like etags and
-% speedbar.  We would need to introduce these packages.  Since they
-% aren't critical to ESS at this time, let's ignore them.
 Emacs has many other important features.  Emacs provides file-manager
 capabilities, such as \stexttt{dired} (discussed in Major and Minor
 Modes above) and \stexttt{speedbar}, both of which interface to the
@@ -811,14 +827,14 @@ platform on which to construct a statistical analysis user interface.
 \section{History of ESS}
 \label{sec:ESS:history}
 
-ESS is built on Emacs, the editing system for which Richard Stallman
-won a MacArthur Foundation Fellowship in 1990.  Emacs has a long
-history of being a programmer's editor.  Many statisticians got their
-first taste of the power of Emacs with \Fortran\ mode which was
+ESS is built on GNU Emacs, the editing system for which Richard
+Stallman won a MacArthur Foundation Fellowship in 1990.  Emacs has a
+long history of being a programmer's editor.  Many statisticians got
+their first taste of the power of Emacs with \Fortran\ mode which was
 introduced in 1986.  As statisticians' preferences changed from
-generalist compiled languages such as \Fortran\ to specialist
-statistical analysis packages like S and \SAS, Emacs modes soon
-followed.
+general-purpose compiled languages such as \Fortran\ to specialized
+statistical analysis languages and packages like S and \SAS, Emacs
+modes soon followed.
 
 The ESS environment is built on the open-source projects of many
 contributors, dating back over 10 years.  Doug Bates and Ed Kademan
@@ -995,18 +1011,23 @@ implementation as well as examples of its use.
 
 
 \newpage
-\section*{Note to Editor and Referees}
-We included color figures in the body of the paper because we believe
-they better represent the screen as most users will see it.  We also
-understand the cost issues associated with the production of a
-journal.  We therefore also include black and white versions of the
-figures.
+%\section*{Note to Editor and Referees}
+%We included color figures in the body of the paper because we believe
+%they better represent the screen as most users will see it.  We also
+%understand the cost issues associated with the production of a
+%journal.  We therefore also include black and white versions of the
+%figures.
+
+
+\section*{Figures}
+\label{sec:figures}
+
 
 \setcounter{figure}{0}
 \begin{figure}[tbp]
   \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas-bw}}
   \caption{Ediff of two versions of a file.}
-%  \label{f.ediff}
+  \label{f.ediff}
 \end{figure}
 
 
@@ -1016,9 +1037,9 @@ figures.
     \includegraphics[angle=270,width=\textwidth]{font-incor-s-bw}
   }
   \caption{We illustrate here with fonts and colors appropriate for a
-    black and white display.   On a color terminal we
-    would use a selection of colors.}
-%  \label{f.font}
+    black and white display.  On a color terminal we would use a
+    selection of colors.}
+  \label{f.font}
 \end{figure}
 
 \begin{figure}[tbp]
@@ -1026,21 +1047,20 @@ figures.
   \caption{Enforce coding standards.  The standard here is
     that all \stexttt{PROC} statements must use the
     \stexttt{DATA=datasetname} option.  Lines that satisfy the
-    standard are given a shaded background, lines that don't are displayed
-    in inverse video.
-    Ambiguous ones are displayed in a lighter shade of inverse video.}
-%  \label{f.hilock}
+    standard are given a shaded background, lines that don't are
+    displayed in inverse video.  Ambiguous ones are displayed in a
+    lighter shade of inverse video.}
+  \label{f.hilock}
 \end{figure}
 
 \begin{figure}[tb]
   \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo-bw}}
   \caption{Line-by-line execution of a command file. The cursor is
-    placed on a line in the \stexttt{ESS[S]} buffer and then with a single
-    key sequence
-    the line is sent to the \stexttt{*R*} buffer for
-    execution.  The output of the package goes directly to the
+    placed on a line in the \stexttt{ESS[S]} buffer and then with a
+    single key sequence, the line is sent to the \stexttt{*R*} buffer
+    for execution.  The output of the package goes directly to the
     editable \stexttt{*R*} buffer.}
-%  \label{f.ess-demo}
+  \label{f.ess-demo}
 \end{figure}
 
 \end{document}
