@@ -5,7 +5,7 @@ Microsoft Windows.  First, we discuss Unix installation.
 Please skip to the next 
 
 
-@enumerate @bullet
+@enumerate 
 @item
   cd to a directory where you keep emacs lisp files, or create a new
   directory to hold the distribution.  This directory will be referred
