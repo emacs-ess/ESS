@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: ESS Core Team <ESS-core@stat.math.ethz.ch>
 ;; Created: 2001/02/06
-;; Modified: $Date: 2004/05/03 02:24:58 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essd-sp6.el,v 1.14 2004/05/03 02:24:58 rossini Exp $
+;; Modified: $Date: 2004/06/20 17:08:12 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essd-sp6.el,v 1.15 2004/06/20 17:08:12 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -137,6 +137,7 @@ New way to do it."
   (interactive)
   (setq ess-customize-alist S+6-customize-alist)
   (ess-mode S+6-customize-alist proc-name)
+  (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (if ess-imenu-use-S (ess-imenu-S)))
 
 (defun S+6-transcript-mode ()
