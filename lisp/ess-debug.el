@@ -1,13 +1,13 @@
 ;;; ess-debug.el --- debugging start up for ESS
 
-;; Copyright (C) 1993 David M. Smith
+;; Copyright (C) 1997--1999 A.J. Rossini
 
-;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/12/02 14:09:55 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: ess-debug.el,v 5.1 1997/12/02 14:09:55 rossini Exp $
+;; Author: A.J. Rossini <rossini@biostat.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Created: November 1997
+;; Modified: $Date: 1998/12/15 20:51:46 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: ess-debug.el,v 5.2 1998/12/15 20:51:46 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -27,7 +27,10 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;; Commentary:  Strictly for debugging and development.
+;;
+;; Commentary:  Strictly for debugging and development.  usage is:
+;;           xemacs -q -l ess-debug.el -f S4    
+;; (or similar!)
 ;;
 
 (defun ess-add-path (path &rest options)
@@ -63,7 +66,7 @@ default-load-path."
 		(cons p load-path))))))
 
 (setq-default debug-on-error t)
-(ess-add-path "/p1/apps/X11R6.3/lib/xemacs/site-lisp/ESS/")
+(ess-add-path "/biostat/student2/rossini/src/ess/lisp")
 (require 'ess-site)
 
 ; Local variables section
