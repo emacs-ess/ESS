@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/07/04 11:39:04 $
-;; Version: $Revision: 5.114 $
-;; RCS: $Id: ess-site.el,v 5.114 2004/07/04 11:39:04 stephen Exp $
+;; Modified: $Date: 2004/07/06 14:39:04 $
+;; Version: $Revision: 5.115 $
+;; RCS: $Id: ess-site.el,v 5.115 2004/07/06 14:39:04 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -210,10 +210,26 @@ for ESS, such as icons.")
   "*Location of the ESS info/ directory.
 The ESS info directory stores the ESS info files.")
 
-(defvar ess-info-directory-list '("/../doc/info" "/../../info/ess")
+;;(1.2) If you installed the ESS info files somewhere besides 
+;; ess-lisp-directory/../doc/info or xemacs-packages/info, then
+;; add those directories here to be searched; the first found is used.
+(defvar ess-info-directory-list '("/../doc/info")
   "*List of directories, relative to `ess-lisp-directory', to search for info.")
 
-;; commenting out Emacs-only version
+(while (and (listp ess-info-directory-list) (consp ess-info-directory-list))
+    (setq ess-info-directory 
+	(expand-file-name (concat ess-lisp-directory 
+	    (car ess-info-directory-list))))
+    (if (file-directory-p ess-info-directory) (progn 
+	(setq ess-info-directory-list nil)
+	(add-to-list 
+	    (if (featurep 'xemacs) 
+		'Info-directory-list 'Info-default-directory-list)
+		ess-info-directory))
+	(setq ess-info-directory nil)
+	(setq ess-info-directory-list (cdr ess-info-directory-list))))
+
+;; commenting out Emacs-only version; emacs/xemacs is above
 ;;(unless (member t 
 ;;		(mapcar 'file-exists-p
 ;;			(mapcar '(lambda (x) (concat x "ess.info"))
@@ -221,26 +237,6 @@ The ESS info directory stores the ESS info files.")
 ;; (add-to-list 'Info-default-directory-list 
 ;;	       (expand-file-name 
 ;;		(concat ess-lisp-directory "/../doc/info/")) 'append) )
-
-(while (and (listp ess-info-directory-list) (consp ess-info-directory-list))
-    (setq ess-info-directory 
-	(expand-file-name (concat ess-lisp-directory 
-	    (car ess-info-directory-list))))
-    (if (file-directory-p ess-info-directory) 
-	(setq ess-info-directory-list nil)
-	(setq ess-info-directory nil)
-	(setq ess-info-directory-list (cdr ess-info-directory-list))
-	(if (null ess-info-directory-list) (progn
-	    (beep 0) (beep 0) (message (concat
-	    "ERROR:ess-site.el:ess-info-directory\n"
-	    "Relative to ess-lisp-directory\n"
-	    "Neither ../doc/info nor ../../info/ess exist!"))
-	    (sit-for 4)))))
-
-;;; (1.2) Re-comment the following lines, if unneeded.
-(add-to-list 
-    (if (featurep 'xemacs) 'Info-directory-list 'Info-default-directory-list)
-     ess-info-directory 'append)
 
 ;;; (1.3) Files ending in .q and .S are considered to be S source files
 ;;; Files ending in .St are considered to be S transcript files
