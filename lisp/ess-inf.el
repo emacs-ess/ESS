@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/21 13:42:10 $
-;; Version: $Revision: 1.65 $
-;; RCS: $Id: ess-inf.el,v 1.65 1997/10/21 13:42:10 rossini Exp $
+;; Modified: $Date: 1997/10/21 19:53:22 $
+;; Version: $Revision: 1.66 $
+;; RCS: $Id: ess-inf.el,v 1.66 1997/10/21 19:53:22 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -185,7 +185,7 @@ accompany the call for inferior-ess-program.
      ((and (not buf) 
 	   (not n)
 	   (not (comint-check-proc (current-buffer)))
-	   (memq major-mode '(inferior-ess-mode ess-transcript-mode)))
+	   (memq major-mode '(inferior-ess-mode))) ; ess-transcript-mode)))
       (setq startdir
 	    (if ess-ask-for-ess-directory (ess-get-directory defdir)
 	      ess-directory))
