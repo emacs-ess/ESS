@@ -185,7 +185,7 @@ The extension, in a file name, is the part that follows the last `.'."
 The ESS etc directory stores various auxillary files that are useful
 for ESS, such as icons.")
 
-(defvar ess-etc-directory-list '("/../etc" "/../etc/ess" "/../../etc/ess")
+(defvar ess-etc-directory-list '("/../etc/" "/../etc/ess/" "/../../etc/ess/")
   "*List of directories, relative to `ess-lisp-directory', to search for etc.")
 
 (while (and (listp ess-etc-directory-list) (consp ess-etc-directory-list))
