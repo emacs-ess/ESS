@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.2 $.
+### File: $Revision: 5.3 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -37,10 +37,10 @@ BATCHFLAGS = -batch --no-site-file --no-init-fil
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 5.0
+VERSION = pre5.1
 VERSIONDIR = ESS-$(VERSION)
 
-LASTVERSION = 4.8.MM6.XE2
+LASTVERSION = 5.0
 
 # have to preload the files that contain macro definitions or the
 # byte compiler will compile everything that references them
