@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/07 20:01:39 $
-;; Version: $Revision: 1.34 $
-;; RCS: $Id: ess-inf.el,v 1.34 1997/07/07 20:01:39 rossini Exp $
+;; Modified: $Date: 1997/07/07 21:33:43 $
+;; Version: $Revision: 1.35 $
+;; RCS: $Id: ess-inf.el,v 1.35 1997/07/07 21:33:43 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.35  1997/07/07 21:33:43  rossini
+;; stuff.
+;;
 ;; Revision 1.34  1997/07/07 20:01:39  rossini
 ;; removed useless comments.
 ;;
@@ -332,8 +335,11 @@ when invoking S.
   ;; buffer names to use for inferior-ess.
 
   (interactive "P")
-  ;; set up for current language (need here, to get ess-proc-prefix, etc).
-  (ess-set-vars ess-customize-alist (current-buffer))
+  ;; set up for current language (need here, to get ess-proc-prefix,
+  ;; etc).
+  (set-buffer ess-dribble-buffer)
+  (ess-set-vars-default ess-customize-alist (current-buffer))
+
   ;; run hooks now, to overwrite the above!
   (run-hooks 'ess-pre-run-hook)    
   (message "(inferior-ess 1): ess-proc-prefix=%s, buf=%s"
