@@ -1,0 +1,103 @@
+			      Handout 25
+			   STAT 503 / BA610
+			  November 21, 2000
+				   
+		      SAS on compute.temple.edu
+
+SAS runs on the unix machine compute.temple.edu.  You can get a compute
+account by going to the ground floor of the computer center and filling
+out a form at the help desk.  You need to have an astro account.
+The help desk is open until 7:30 weekdays.
+
+
+SAS can be run as a batch program on compute.temple.edu from any computer.
+
+SETUP
+
+The first time you use compute enter the command
+    /home/public/stat/stat.setup
+at the shell prompt.  This sets up compute to look the way I want it to
+look.  It tells us where SAS is, and sets up some sas defaults.
+
+
+SIMPLEST INSTRUCTIONS
+
+  Telnet to compute and login.
+
+  Create a file myfile.sas on compute, either by editing it there or
+by ftping it from your pc.
+
+  From the shell prompt, enter
+     sas myfile
+
+  On completion, you will have two new files, myfile.log and
+myfile.lst.  Look at them and correct if necessary.
+
+  For graphs, you will need to use postscript.  There is no
+interactive graphics through telnet.  Include the following 4 lines in
+your sas file:
+
+/* required goptions for batch files */
+/* comment out these lines for interactive use on X-terminals*/
+filename grafout 'myfile.ps';
+goptions device=ps gsfname=grafout gsfmode=replace gaccess=sasgastd;
+ 
+On completion, ftp the myfile.ps back to your pc and look at it with gsview.
+You can print it from the gsview window.
+
+
+
+BETTER INSTRUCTIONS
+
+Work from within NTemacs on you PC.
+
+1. Edit the file and save it on compute with C-x C-w as
+  /name@compute:myfile.sas
+for example, to construct a recent homework I used
+  /rmh@compute:ex2017.sas
+
+
+2. From within NTemacs (with my setup)
+
+   M-x S+elsewhere
+This opens a buffer named *S+3* running a bash shell.  Type
+
+   d:/Apps/emacs/telnet/telnet.exe compute
+This connects you to compute (compute.temple.edu) and is ready for login.
+
+Login to compute from the *S+3* shell.
+
+
+3. load the file ess-compute-sas.el into emacs with the command
+   M-x load-file RET ess-compute-sas.el
+(The file ess-compute-sas.el is on blackboard.)
+
+This gives you the following function keys
+  "PC-like SAS key definitions"
+[f2] 'ess-revert-wisely
+[f3] 'shell
+[f4] 'ess-sas-goto-file-1
+[f5] 'ess-sas-goto-sas
+[f6] 'ess-sas-goto-log
+[f7] 'ess-sas-goto-lst
+[f8] 'ess-sas-submit
+
+
+4. Edit myfile.sas in an emacs buffer.  When you are ready press f8 to
+save and submit it.  Press f6 for the log file and f7 for the lst
+file.  Cycle through these keys until the output is right.
+
+
+5.  The files are all saved on the remote machine.  To save a copy to
+your PC, open a dired buffer on the remote machine
+  C-x C-d /name@compute:
+and another on the local machine
+  C-x C-d ~/503.f00
+
+Put the cursor on the file name in the remote file, type C (Uppercase C).
+You will be prompted for a destination with the remote machine as default.
+Change it to
+   ~/503.f00
+and press enter.
+
+A copy of the file is now on the local machine.
