@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/30 22:22:05 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: ess-inf.el,v 1.11 1997/06/30 22:22:05 rossini Exp $
+;; Modified: $Date: 1997/06/30 22:25:49 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: ess-inf.el,v 1.12 1997/06/30 22:25:49 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.12  1997/06/30 22:25:49  rossini
+;; ess-directory always should be defined, now!
+;;
 ;; Revision 1.11  1997/06/30 22:22:05  rossini
 ;; removed localized ess-directory, moved to proper place.
 ;;
@@ -303,7 +306,9 @@ when invoking S.
 		  (setq ntry (1+ ntry))
 		  (setq done (not (get-process (ess-proc-name ntry)))))
 		(ess-proc-name ntry)))))
-  (setq ess-defdir (directory-file-name (or ess-directory default-directory)))
+
+  ;; (setq ess-defdir (directory-file-name (or ess-directory default-directory)))
+  (setq ess-defdir (directory-file-name ess-directory))
 
 
     ;; If this process is running, switch to it
