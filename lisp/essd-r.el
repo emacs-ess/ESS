@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/15 08:17:37 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: essd-r.el,v 1.7 1997/06/15 08:17:37 rossini Exp $
+;; Modified: $Date: 1997/06/15 08:42:11 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: essd-r.el,v 1.8 1997/06/15 08:42:11 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.8  1997/06/15 08:42:11  rossini
+;;: setq -> setq-default for initialziation.  I think this is right!
+;;:
 ;;: Revision 1.7  1997/06/15 08:17:37  rossini
 ;;: added autolaod of inferior-ess
 ;;:
@@ -49,7 +52,7 @@
 
 (defun ess-R-shortcut-pre-run-hook ()
   "Initialize variables."
-  (setq ess-proc-prefix              "R"
+  (setq-default ess-proc-prefix              "R"
 	ess-version-running          "R" ;-> using 'ls()' instead of objects..
 	inferior-ess-program         inferior-R-program-name
 	inferior-ess-objects-command "if(%d == 1) ls() else builtins()"
