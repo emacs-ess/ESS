@@ -9,9 +9,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2002/02/26 19:38:15 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: ess-emcs.el,v 5.15 2002/02/26 19:38:15 rsparapa Exp $
+;; Modified: $Date: 2002/04/15 21:40:21 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: ess-emcs.el,v 5.16 2002/04/15 21:40:21 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -95,7 +95,8 @@ Only a concern with earlier versions of Emacs.")
   "Return non-nil if literally running on Windows NT (i.e., not Windows 9X)."
   (and (eq system-type 'windows-nt) (getenv "SystemRoot"))))
 
-(if (and ess-running-xemacs (>= emacs-major-version 21) (>= emacs-minor-version 4))
+(if (and ess-running-xemacs (or (> emacs-major-version 21)
+    (and (= emacs-major-version 21) (>= emacs-minor-version 4))))
   (defun ess-xemacs-insert-glyph (gl)
      "Insert a glyph at the left edge of point."
      (let ( (prop 'myimage)        ;; myimage is an arbitrary name, chosen 

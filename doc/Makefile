@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.19 $.
+### File: $Revision: 1.20 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -11,10 +11,10 @@
 
 include ../Makeconf
 
-# where the Info file should go -- THIS MIGHT BE WRONG!
-INFODIR = $(PREFIX)/info
+# where the Info file should go 
+ESSINFODIR = $(PREFIX)/info
 ## XEmacs
-#INFODIR = $(PREFIX)/lib/$(EMACS)/info
+#ESSINFODIR = $(PREFIX)/lib/$(EMACS)/info
 
 # program to convert .texi{nfo} to .html
 MAKEHTML = texi2html -verbose -iso
@@ -46,7 +46,7 @@ DOCDIST = ess.ps ess.pdf \
 all  : info txts html dvi
 
 # Documentation mentions info, not ess.info -- NOT readme.info <<< FIXME >>
-info : ess.info
+info : $(ESSINFODIR)/ess.info 
 dvi  :  ess.dvi readme.dvi
 txts : $(READMEtargets)
 
@@ -70,8 +70,8 @@ readme.ps  : readme.dvi; dvips $^ -o $@
 readme.pdf : readme.texi; pdftex $^
 
 install : all
-	mkdir -p $(INFODIR)
-	$(INSTALL) ess.info* $(INFODIR)
+	mkdir -p $(ESSINFODIR)
+	$(INSTALL) ess.info* $(ESSINFODIR)
 
 clean : ; rm -f texput.log \
 	 ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
@@ -114,9 +114,14 @@ ess.texi : ../VERSION
 
 ### File Dependencies
 
-ess.info: *.texi
+$(ESSINFODIR)/ess.info: ess.texi help-sas.texi
 	@echo "making Info documentation..."
+	test -f version.texi && rm -f version.texi || true
+	echo "@macro essver{}" > version.texi
+	echo $(ESSVERSION) >> version.texi
+	echo "@end macro" >> version.texi
 	$(MAKEINFO) ess.texi
+	cp ess.info* $(ESSINFODIR) 
 
 ##-- HTML:
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html

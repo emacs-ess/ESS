@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.54 2002/02/20 17:18:57 rsparapa Exp $
+## $Id: Makefile,v 5.55 2002/04/15 21:40:21 rsparapa Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -81,7 +81,9 @@ docs: README ANNOUNCE
 	@echo "** Committing README and ANNOUNCE **"
 	cvs commit -m "Updating README, ANNOUNCE for new version" \
 		README ANNOUNCE
-	cd doc; $(MAKE) info; cd ..
+	cd doc
+	$(MAKE) info ESSVERSION=$(ESSVERSION) ESSINFODIR=$(ESSVERSIONDIR)/info
+	cd ..
 	cvs commit -m "Updating docs for new version" doc
 
 dist: docs

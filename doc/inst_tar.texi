@@ -13,8 +13,8 @@ For Microsoft Windows Installation please skip to the
   cd to a directory where you keep emacs lisp files, or create a new
   directory to hold the distribution.  This directory will be referred
   to below as "the ESS distribution directory".  It will contain,
-  at the end, the tar file @file{ess-5.1.20.tar.gz}, and a directory for
-  the ESS source, which will be termed "the ESS-5.1.20 source directory".
+  at the end, the tar file @file{ess-@essver.tar.gz}, and a directory for
+  the ESS source, which will be termed "the ESS-@essver source directory".
 
   Note that the .elc files may be installed elsewhere (as specified in the
   Makefile) if desired.
@@ -22,19 +22,19 @@ For Microsoft Windows Installation please skip to the
   Retrieve the gzipped tar file or zipped file from
   http://software.biostat.washington.edu/statsoft/ess/essDL
 @item
-  Copy @file{ess-5.1.20.tar.gz} to the location where you want the
-  ESS-5.1.20 directory, and cd there.  Extract the files from the
-  distribution, which will unpack into a subdirectory, ess-5.1.20.
+  Copy @file{ess-@essver.tar.gz} to the location where you want the
+  ESS-@essver directory, and cd there.  Extract the files from the
+  distribution, which will unpack into a subdirectory, ess-@essver.
 @example
-	gunzip ess-5.1.20.tar.gz
-	tar vxf ess-5.1.20.tar
+	gunzip ess-@essver.tar.gz
+	tar vxf ess-@essver.tar
 @end example
-	(or: @code{gunzip < ess-5.1.20.tar.gz | tar vxf -} ).
-	(or using GNU tar:  @code{tar zvxf ess-5.1.20.tar.gz}).
+	(or: @code{gunzip < ess-@essver.tar.gz | tar vxf -} ).
+	(or using GNU tar:  @code{tar zvxf ess-@essver.tar.gz}).
 
 
   The @code{tar} command will extract files into the current directory.
-  Do not create ess-5.1.20 yourself, or you will get an extra level of
+  Do not create ess-@essver yourself, or you will get an extra level of
   depth to your directory structure.
 
   Note if you have a very ancient version of GNU emacs (@emph{and}  really
@@ -51,7 +51,7 @@ For Microsoft Windows Installation please skip to the
 @item
   @b{READ THIS ITEM THOROUGHLY BEFORE STARTING}:
 
-  In the ess-5.1.20 directory, edit the file @file{Makeconf} (only if you
+  In the ess-@essver directory, edit the file @file{Makeconf} (only if you
   want to place the executables in other locations; see LISPDIR and
   INFODIR) and then type:
 @example
@@ -187,15 +187,15 @@ For @b{Microsoft Windows installation}, please follow the next steps:
    directory (for example, @file{c:\emacs\}) to hold the distribution.  This
    directory will be referred to below as "the ESS distribution
    directory".  It will contain, at the end, either the tar file
-   @file{ess-5.1.20.tar.gz} or the zip file @file{ess-5.1.20.zip}, and a
+   @file{ess-@essver.tar.gz} or the zip file @file{ess-@essver.zip}, and a
    directory 
-   for the ESS source, which will be termed "the ESS-5.1.20 source
+   for the ESS source, which will be termed "the ESS-@essver source
    directory".
 
 @item
 
-     Retrieve the compressed tar file @file{ess-5.1.20.tar.gz} or the
-     zipped file @file{ess-5.1.20.zip} from one of the FTP or WWW
+     Retrieve the compressed tar file @file{ess-@essver.tar.gz} or the
+     zipped file @file{ess-@essver.zip} from one of the FTP or WWW
      archive sites 
      via FTP (or HTTP).  Be aware that http browsers on Windows
      frequently change the "." and "-" characters in filenames to other
@@ -203,26 +203,26 @@ For @b{Microsoft Windows installation}, please follow the next steps:
 
 @item
 
-     Copy @file{ess-5.1.20.tar.gz} to the location where you want the
-     ess-5.1.20 directory, for example to
-     @file{c:\emacs\ess-5.1.20.tar.gz}, and cd there.  For example,
+     Copy @file{ess-@essver.tar.gz} to the location where you want the
+     ess-@essver directory, for example to
+     @file{c:\emacs\ess-@essver.tar.gz}, and cd there.  For example,
 
         @example
              cd c:\emacs
         @end example
 
      Extract the files from the distribution, which will unpack
-     into a subdirectory, @file{ess-5.1.20}.
+     into a subdirectory, @file{ess-@essver}.
         @example
-          	gunzip ess-5.1.20.tar.gz
-          	tar vxf ess-5.1.20.tar
+          	gunzip ess-@essver.tar.gz
+          	tar vxf ess-@essver.tar
         @end example
-     	(or: @code{gunzip < ess-5.1.20.tar.gz | tar vxf -} ).
-        (or: from the zip file: @code{unzip ess-5.1.20.zip})
+     	(or: @code{gunzip < ess-@essver.tar.gz | tar vxf -} ).
+        (or: from the zip file: @code{unzip ess-@essver.zip})
 
      The @code{tar} command will extract files into the current directory.
 
-     Do not create @file{ess-5.1.20} yourself, or you will get an extra level
+     Do not create @file{ess-@essver} yourself, or you will get an extra level
      of   depth to your directory structure.
 
 @item

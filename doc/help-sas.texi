@@ -1,7 +1,7 @@
 
 ESS[SAS] (originally SAS-mode) was designed for use with SAS.  
 SAS-mode was developed by Cook
-@uref{ftp://ftp.biostat.wisc.edu/pub/cook/sas-mode/sas.tar.gz}.  Those
+@url{ftp://ftp.biostat.wisc.edu/pub/cook/sas-mode/sas.tar.gz}.  Those
 editing features and new advanced features are part of ESS[SAS].  
 The user interface of ESS[SAS] has similarities with ESS[S], the ESS
 interface for S, and to the SAS Display Manager.  By _emacs_ we mean 
@@ -112,7 +112,7 @@ enabled by default to use the same function keys that the SAS Display
 Manager uses.  The interactive capabilities of ESS require you to
 start an inferior SAS process with M-x SAS (described below).
 
-At this writing (ESS 5.1.x), the indenting and syntactic
+At this writing (@essver), the indenting and syntactic
 highlighting are usually correct.
 
 @comment  node-name,  next,  previous,  up

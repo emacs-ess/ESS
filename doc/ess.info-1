@@ -1,24 +1,21 @@
 This is ess.info, produced by makeinfo version 4.0 from ess.texi.
 
 START-INFO-DIR-ENTRY
-* ESS: (ess).    Emacs Speaks Statistics (S/R, SAS, XLisp-Stat, etc).
+* ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
 END-INFO-DIR-ENTRY
 
 ESS -- Emacs Speaks Statistics
 ******************************
 
-   Originally known as S-mode, written by Doug Bates, Ed Kademan, Frank
-Ritter, and David Smith.
-
    Currently maintained by A.J. (Tony) Rossini, Richard M. Heiberger,
-Kurt Hornik, Martin Maechler, and Rodney Sparapani.
+Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 
    This file documents `ESS', a GNU Emacs package for running
 `S(plus)', `R', `XLisp-Stat', `SAS' and potentially any other
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version 5.1.19 of `ESS'.
+   This documentation relates to Version 5.1.21
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -33,9 +30,9 @@ File: ess.info,  Node: Top,  Next: Introduction,  Prev: (dir),  Up: (dir)
 ESS: Emacs Speaks Statistics
 ****************************
 
-   ESS version 5.1.20
+   ESS version 5.1.21
 
-   (Documentation $Revision: 1.26 $ $Date: 2002/04/15 16:06:38 $).
+   (Documentation $Revision: 1.27 $ $Date: 2002/04/15 21:40:21 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
      Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and

@@ -3,22 +3,24 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.21 2002/04/09 16:38:23 rsparapa Exp $
+@comment $Id: ess.texi,v 5.22 2002/04/15 21:40:21 rsparapa Exp $
 
 @synindex pg vr
 
 @ifinfo
 @direntry
-* ESS: (ess).    Emacs Speaks Statistics (S/R, SAS, XLisp-Stat, etc).
+* ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
 @end direntry
 
 @majorheading ESS --- Emacs Speaks Statistics
 
-Originally known as S-mode, written by Doug Bates, Ed Kademan, Frank
-Ritter, and David Smith.
+@include version.texi
+
+@comment Originally known as S-mode, written by Doug Bates, Ed Kademan, Frank
+@comment Ritter, and David Smith.
 
 Currently maintained by A.J. (Tony) Rossini, Richard M. Heiberger, Kurt
-Hornik, Martin Maechler, and Rodney Sparapani.
+Hornik, Martin Maechler, and Rodney A. Sparapani.
 
 This file documents @code{ESS}, a GNU Emacs package for running
 @code{S(plus)}, @code{R}, @code{XLisp-Stat}, @code{SAS} and potentially
@@ -26,7 +28,7 @@ any other interactive `statistical' languages in an `inferior' buffer,
 editing source code in these languages and interacting with the running
 program.
 
-This documentation relates to Version 5.1.19 of @code{ESS}.
+This documentation relates to Version @essver of @code{ESS}.
 
 Original Info Author: David M. Smith (@email{D.M.Smith@@lancaster.ac.uk}),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -39,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.19 (Documentation $Revision: 5.21 $ $Date: 2002/04/09 16:38:23 $)
+@subtitle version @essver (Documentation $Revision: 5.22 $ $Date: 2002/04/15 21:40:21 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -82,9 +84,9 @@ permission notice identical to this one.
 @node Top, Introduction, (dir), (dir)
 @top ESS: Emacs Speaks Statistics
 
-ESS version 5.1.20
+ESS version @essver
 
-        (Documentation $Revision: 5.21 $ $Date: 2002/04/09 16:38:23 $).
+        (Documentation $Revision: 5.22 $ $Date: 2002/04/15 21:40:21 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
