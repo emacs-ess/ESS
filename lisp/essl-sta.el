@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/03/04 22:43:42 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: essl-sta.el,v 5.8 1999/03/04 22:43:42 rossini Exp $
+;; Modified: $Date: 1999/03/05 19:47:55 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: essl-sta.el,v 5.9 1999/03/05 19:47:55 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -56,6 +56,29 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 ;;
 
+
+;; `key' indicates the keystroke to use to search for the section heading
+;; `string' in an Stata help file. `string' is used as part of a
+;; regexp-search, and so specials should be quoted.
+(defconst STA-help-sec-keys-alist
+  '((?d . "Description")
+    (?e . "Examples")
+    (?o . "Options")
+    (?s . "Also see:"))
+  "Help section keys for S4.")
+
+(defconst STA-help-sec-keys-alist
+  '((?a . "\\s *Arguments:")
+    (?d . "\\s *Description:")
+    (?e . "\\s *Examples:")
+    (?n . "\\s *Note:")
+    (?r . "\\s *References:")
+    (?s . "\\s *See Also:")
+    (?v . "\\s *Value[s]?")	;
+    )) ;; "Alist of (key . string) pairs for use in section searching."
+
+(defconst ess-help-STA-sec-regex "^[A-Z. ---]+:$"
+  "Reg(ular) Ex(pression) of section headers in help file")
 
 
 (defvar STA-syntax-table nil "Syntax table for S code.")
