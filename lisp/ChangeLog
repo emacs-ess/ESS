@@ -1,3 +1,9 @@
+2004-04-27  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess.el (ess-write-to-dribble-buffer): Check if
+	ess-dribble-buffer has been deleted.  Remove the defadvice code
+	that used to do this.
+
 2004-04-26  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-inf.el (ess-switch-to-ESS): Use `ess-show-buffer' to show
@@ -8,7 +14,6 @@
 	(ess-get-bufname,ess-get-buffers-in-frames,
 	ess-buffer-visible-this-frame,ess-buffer-visible-other-frame): New
 	helper functions for ess-show-buffer, adapted from iswitchb.el.
-	
 
 2004-04-22  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
