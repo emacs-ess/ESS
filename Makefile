@@ -1,16 +1,16 @@
-## $Id: Makefile,v 5.58 2002/05/20 14:13:41 rsparapa Exp $
+## $Id: Makefile,v 5.59 2002/05/28 14:23:28 rsparapa Exp $
 ## Top Level Makefile
 
 include ./Makeconf
-##      ========== {edit that one if any !}
+##      ========== {edit that one if any!}
 
-## Set EMACS to either emacs or xemacs depending on your situation.
-EMACS=emacs
-
-## compile with non-interactive, clean environment:
+## Set EMACS to either emacs or xemacs depending on your situation,
+## and batch compile with a clean environment:
 ## EMACS 21
+EMACS=emacs
 BATCHFLAGS = --batch --no-site-file --no-init-file
 ## XEMACS 21
+#EMACS=xemacs
 #BATCHFLAGS = -batch -no-site-file -no-init-file
 
 ## Set ESSVERSION to the contents of VERSION
@@ -63,11 +63,15 @@ INTRO.DEPENDS= VERSION doc/credits.texi doc/inst_cvs.texi \
 	doc/requires.texi doc/bugs.texi     doc/getting.texi  \
 	doc/mailing.texi  doc/stabilty.texi
 
-all install clean distclean realclean:
-	@for D in $(Subdirs); do cd $$D; $(MAKE) $@ ; cd .. ; done
+## This is the default target, i.e. 'make' and 'make compile' are the same.
+## However, you may still need to specify EMACS and BATCHFLAGS.
+## See the discussion of EMACS and BATCHFLAGS above. 
 
 compile:
 	cd lisp; $(MAKE) all EMACS=$(EMACS) BATCHFLAGS="$(BATCHFLAGS)"
+
+all install clean distclean realclean:
+	@for D in $(Subdirs); do cd $$D; $(MAKE) $@ EMACS=$(EMACS) BATCHFLAGS="$(BATCHFLAGS)"; cd .. ; done
 
 README: doc/readme.texi $(INTRO.DEPENDS)
 	cd doc; $(MAKE) readme.texi; $(MAKEINFOascii) readme.texi \
