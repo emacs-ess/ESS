@@ -4,13 +4,13 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 1998/12/11 19:48:50 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essd-els.el,v 1.3 1998/12/11 19:48:50 rossini Exp $
+;; Modified: $Date: 1999/01/11 16:47:37 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essd-els.el,v 1.4 1999/01/11 16:47:37 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
-;; This file is part of ESS
+;; This file is part of ESS.
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -38,19 +38,22 @@
 
 ; Code:
 
+(defvar S+elsewhere-dialect-name "S+3"
+  "Name of 'dialect' for S-PLUS 3.x at another location.")
+					;easily changeable in a user's .emacs
+
 (defvar S+elsewhere-customize-alist
   '((ess-local-customize-alist     . 'S+elsewhere-customize-alist)
     (ess-language                  . "S")
-    (ess-dialect                   . "S+3")
+    (ess-dialect                   . S+elsewhere-dialect-name)
     (ess-suffix                    . "S")
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
 					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
-    (ess-mode-edit                 . 'S+elsewhere-mode)
-    (ess-help-sec-regex            . ess-help-S+3-sec-regex)
-    (ess-help-sec-keys-alist       . S+3-help-sec-keys-alist)
+    (ess-help-sec-regex            . ess-help-S+-sec-regex)
+    (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
     (ess-loop-timeout              . 100000 )
     (ess-object-name-db-file       . "ess-s+elsewhere-namedb.el" )
     (ess-retr-lastvalue-command
@@ -68,23 +71,20 @@
  "Variables to customize for S+elsewhere")
 
 
-(defun S+elsewhere-mode (&optional proc-name)
-  "Major mode for editing S+3 source.  See ess-mode for more help."
-  (interactive)
-  (setq ess-customize-alist S+elsewhere-customize-alist)
-  (ess-mode S+elsewhere-customize-alist proc-name))
-
-
 (defun S+elsewhere (&optional proc-name)
   "Call 'S-PLUS 3.x', the 'Real Thing'  from StatSci."
   (interactive)
   (setq ess-customize-alist S+elsewhere-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(S): ess-dialect=%s , buf=%s \n"
-	   ess-dialect
+   (format "\n(S+elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
 	   (current-buffer)))
   (inferior-ess))
 
+(defun S+elsewhere-mode (&optional proc-name)
+  "Major mode for editing S+3 source.  See ess-mode for more help."
+  (interactive)
+  (setq ess-customize-alist S+elsewhere-customize-alist)
+  (ess-mode S+elsewhere-customize-alist proc-name))
 
 (defun S+elsewhere-transcript-mode ()
   "S-PLUS 3.x transcript mode."
