@@ -1,3 +1,7 @@
+1998-11-13  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-site.el: added .ssc suffix for S-mode.
+
 1998-11-09  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* essl-sta.el (stata-eval-region): removed/modified possible
