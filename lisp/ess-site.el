@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/10/22 15:53:50 $
-;; Version: $Revision: 1.54 $
-;; RCS: $Id: ess-site.el,v 1.54 1997/10/22 15:53:50 rossini Exp $
+;; Modified: $Date: 1997/10/23 13:02:04 $
+;; Version: $Revision: 1.55 $
+;; RCS: $Id: ess-site.el,v 1.55 1997/10/23 13:02:04 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -169,9 +169,35 @@
   (if proc-name (S+3-mode proc-name)
     (S+3-mode)))
 
+
+(autoload 'ess-transcript-mode "ess-trns"
+  "Major mode for editing S transcript files" t)
+
+(defun s-transcript-mode ()
+  "Does the right thing."
+  (ess-transcript-mode S+3-customize-alist))
+
+
+
+;;;;* Alias S-mode to s-mode
+;;; Emacs will set the mode for a file based on the file's header.
+;;; The mode name is indicated by putting it between -*- on the top line. 
+;;; (Other commands can go here too, see an Emacs manual.)
+;;; For a file you also load, you will want a leading # (comment to S)
+;;; Emacs will downcase the name of the mode, e.g., S, so we must provide
+;;; s-mode in lower case too.  That is, "#-*- S-*-" invokes s-mode and 
+;;; not S-mode.
+(fset 'S-transcript-mode 's-transcript-mode)
+(fset 's-mode 'S-mode)
+
+
 ;; Alternative method (better?)
 ;;(fset 'S 'S+3)
 ;;(fset 'S-mode 'S+3-mode)
+
+
+
+
 
 ;;; 3. Customization (and commented out examples) for your site
 ;;;; ===============================================
