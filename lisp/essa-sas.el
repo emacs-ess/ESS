@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/04/26 17:18:38 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: essa-sas.el,v 1.17 2001/04/26 17:18:38 ess Exp $
+;; Modified: $Date: 2001/04/26 19:18:39 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: essa-sas.el,v 1.18 2001/04/26 19:18:39 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -38,22 +38,12 @@
 
 
 ;;; Table of Contents
-;;; Section 1:  Emacs/XEmacs Version Issues
-;;; Section 2:  Variable Definitions
-;;; Section 3:  Function Definitions
-;;; Section 4:  Key Definitions
+;;; Section 1:  Variable Definitions
+;;; Section 2:  Function Definitions
+;;; Section 3:  Key Definitions
 
 
-;;; Section 1:  Emacs/XEmacs Version Issues
-
-;; Begin Function definitions for Emacs versions < 20.4 or XEmacs
-;; These are taken verbatim from the file emacs-20.6/lisp/w32-fns.el
-;;(if (not (fboundp 'w32-shell-dos-semantics))
-;;	    (load-file (concat ess-lisp-directory "/essnt204.el")))
-;; End Function definitions for Emacs versions < 20.4 or XEmacs
-
-
-;;; Section 2:  Variable Definitions
+;;; Section 1:  Variable Definitions
 
 (defvar ess-sas-data-view-options 
    (if (eq system-type 'windows-nt) "-noenhancededitor -nosysin -log NUL:"
@@ -113,7 +103,7 @@ in ess-site.el or in .emacs.")
   "List of tab stop positions used by `tab-to-tab-stop' in `SAS-mode'.")
 
 
-;;; Section 3:  Function Definitions
+;;; Section 2:  Function Definitions
 
 (defun ess-add-ess-process ()
   "Execute this command from within a buffer running a process to add
@@ -414,7 +404,7 @@ Keep in mind that the maximum command line length in MS-DOS is
 )
 
 
-;;; Section 4:  Key Definitions
+;;; Section 3:  Key Definitions
 
 (defvar ess-sas-edit-keys-toggle 0
   "0 to bind TAB to `sas-indent-line'.
