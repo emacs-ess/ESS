@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1998/11/12 10:50:58 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: ess-vars.el,v 5.7 1998/11/12 10:50:58 maechler Exp $
+;; Modified: $Date: 1998/11/20 20:45:43 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: ess-vars.el,v 5.8 1998/11/20 20:45:43 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -428,8 +428,6 @@ corresponding program.")
 ;;- 	    ))
 
 
-
-;; AJR: this is a generic function
 (defvar inferior-ess-start-args ""
   "*String of arguments passed to the ESS process.
 Useful for R and SAS.")
