@@ -9,9 +9,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2002/06/20 21:52:06 $
-;; Version: $Revision: 5.19 $
-;; RCS: $Id: ess-emcs.el,v 5.19 2002/06/20 21:52:06 rsparapa Exp $
+;; Modified: $Date: 2003/10/28 22:28:27 $
+;; Version: $Revision: 5.20 $
+;; RCS: $Id: ess-emcs.el,v 5.20 2003/10/28 22:28:27 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -94,6 +94,11 @@ Only a concern with earlier versions of Emacs.")
     (provide 'xemacs))
 
 ;; XEmacs 21.x need this
+(if (not (fboundp 'replace-regexp-in-string))
+(defun replace-regexp-in-string(regexp replace string)
+"Mimic GNU Emacs function replace-regexp-in-string with XEmacs' replace-in-string"
+(replace-in-string string regexp replace)))
+
 (if (not (fboundp 'w32-using-nt))
 (defun w32-using-nt ()
   "Return non-nil if literally running on Windows NT (i.e., not Windows 9X)."
