@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2000/02/10 08:03:01 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essa-r.el,v 1.3 2000/02/10 08:03:01 maechler Exp $
+;; Modified: $Date: 2000/10/17 18:19:32 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essa-r.el,v 1.4 2000/10/17 18:19:32 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -34,17 +34,13 @@
 
 ;;; Code:
 
-
-;; With a pair of lines in your .emacs file such as
-
+;; you can invoke ESS/R from emacs by typing
+;;      C-u M-x essr
+;; with vsize set to (for example) 40M, and nsize set to 600000.
 (defalias 'essr
   (read-kbd-macro
      "C-u M-x R RET - - vsize SPC 40M SPC - - nsize SPC 600000 2*RET"))
 ;; "SPC" must be "=" in future versions of R (works from 0.99 on)
-
-;; you can invoke ESS/R from emacs by typing
-;;      C-u M-x essr
-;; with vsize set to (for example) 40M, and nsize set to 600000.
 
 
  ; Provide package
