@@ -14,7 +14,7 @@
 %        b) statistical analysis packages supported by ESS
 %2. emacs 
 %        a) buffers
-%        b) key sequence
+%        b) key sequences
 %        c) modes
 %                1) font-lock
 %                2) shell/comint
@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/19 04:44:58 $ - $Revision: 1.188 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/19 15:02:38 $ - $Revision: 1.189 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -1199,40 +1199,40 @@ evaluation independent of ESS, \stexttt{S BATCH}.
 \section{History of ESS}
 \label{sec:ESS:history}
 
-ESS (Emacs Speaks Statistics) is built on Emacs, the editing system for
-which Richard Stallman won a MacArthur Foundation Fellowship in 1990.
-Emacs has a long history of being a programmer's editor.  Many
-statisticians got their first taste of the power of Emacs with the
-\Fortran\ mode made available in 1986.  As statisticians' preferences changed
-from generalist compiled languages such as \Fortran\ to specialist interactive 
-statistical analysis packages like S and SAS, Emacs modes for S and SAS soon 
-followed.
+%(Emacs Speaks Statistics)
+ESS is built on Emacs, the editing system for which Richard Stallman 
+won a MacArthur Foundation Fellowship in 1990.  Emacs has a long history 
+of being a programmer's editor.  Many statisticians got their first taste 
+of the power of Emacs with \Fortran\ mode which was introduced in 1986.  
+However, statistician preferences changed from generalist compiled 
+languages such as \Fortran\ to specialist interactive statistical analysis 
+packages like S and SAS and Emacs modes for them soon followed.
 
-Doug Bates and Ed Kademan wrote S-mode in 1989
-to edit S and \Splus\ files in GNU Emacs.
-Frank Ritter and Mike Meyer added features, creating  version 2.
-Meyer and David
-Smith made further contributions, creating version 3. David Smith
-provided process interaction changes for version 4.
+Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and \Splus\ files 
+in GNU Emacs.  Frank Ritter and Mike Meyer added features, creating version 2.
+Meyer and David Smith made further contributions, creating version 3.  David 
+Smith provided process interaction changes for version 4.
 %%David Smith was the next primary maintainer, and his most
 %%important contribution was to enhance the \Splus\
 %%command-line interface and allow for control of multiple processes
 %%simultaneously.  
-In 1995, A.J. Rossini extended S-mode to support XEmacs.  Together
-with extensions written by Martin M{\"a}chler, this
+
+In 1990, John Sall authored GNU Emacs macros for SAS source code 
+editing.  Tom Cook wrote SAS-mode in 1994, partially basing it on 
+Sall's earlier work.  
+
+In 1994, A.J. Rossini extended S-mode to support XEmacs.  
+Together with extensions written by Martin M{\"a}chler, this
 became version 4.5.  By 1996, S-mode was available for GNU Emacs and
 XEmacs and supported S, \Splus, and R.
+
 %%Kurt Hornik was instrumental in enhancing support for R,
 %%in particular, providing \stexttt{Rd-mode}.
 
-Tom Cook wrote SAS-mode in 1994, partially basing it on GNU Emacs
-macros written by John Sall.  Rossini extended SAS-mode to work with
-XEmacs in 1995.
-
-In 1995 Rossini merged S-mode and SAS-mode into a single Emacs package
-for statistical programming.  The product of this marriage, along with
-additional changes to accommodate multiple languages in a flexible
-way, was called ESS version 5.
+In 1995, Rossini extended SAS-mode to work with XEmacs and merged S-mode 
+and SAS-mode into a single Emacs package for statistical programming.  
+The product of this marriage, along with additional changes to accommodate 
+multiple languages in a flexible way, was called ESS version 5.
 
 During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
 At the same time, SAS-mode was further integrated into ESS.
