@@ -126,11 +126,11 @@
     Wahrscheinlichkeitstheorie und Statistik, Technische
     Universit{\"a}t Wien, Vienna, Austria (E-mail:
     Kurt.Hornik@r-project.org).  The authors would like to thank the
-    referrees and associate editor for suggesting changes which
+    referees and associate editor for suggesting changes which
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/10/01 21:48:54 $ - $Revision: 1.33 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/10/02 06:55:21 $ - $Revision: 1.34 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -183,7 +183,7 @@ Statistical research activities, particularly data analysis and
 communication, involve computing.  This is exemplified by the idea
 that many daily statistical activities can be considered to be
 \textit{programming with data} \citep{ChaJ98}.  The user interface,
-which maps behaviors between the computer and user, plays a central
+which maps user behaviors into instructions to the computer, plays a central
 role in facilitating these tasks.  A familiar, coherent, and
 well-understood set of input behaviors can increase the efficiency of
 statistical practice.  This paper introduces Emacs Speaks Statistics
@@ -220,7 +220,7 @@ user interface (GUI); this approach either partially or completely
 replaces the command-line with the use of toolbars and menus along
 with dialog boxes for performing statistical procedures.  Data display
 is provided through the use of a spreadsheet for entry and
-modification.  However, some GUI-based packages can also accept
+modification.  Some GUI-based packages can also accept
 scripts as input for regenerating statistical analyses.  ESS provides
 a middle ground, with a focus on writing data analysis scripts and
 programming code for statistical computing, while providing tools,
@@ -238,14 +238,14 @@ supports the S family of languages (including S
 \citep{Cook:Weisberg:1999} and ViSta \citep{youn:fald:mcfa:1992}; BUGS
 \citep{BUGS}; and Omegahat \citep{DTLang:2000}.  ESS can be extended
 to accommodate most statistical packages which provide either an
-interactive command-line prompt for inputing instructions, or process
+interactive command-line prompt for inputting instructions, or process
 batch files for instructions.
 
-We start by discussing how ESS enhances a statistician's daily
-activities by presenting its features and showing how it facilitates
-statistical computing.  Next, we describe the Emacs text editor, the
-underlying platform on which ESS is built.  We conclude with a short
-history of the development of ESS and goals for the future.
+We discuss how ESS enhances a statistician's daily activities
+by presenting its features and showing how it facilitates statistical
+computing.  We describe the Emacs text editor, the underlying
+platform on which ESS is built.  We conclude with a short history of
+the development of ESS and goals for the future.
 
 \section{ESS and Statistical Practice}
 \label{sec:ess-extends-emacs}
@@ -253,13 +253,14 @@ history of the development of ESS and goals for the future.
 Statistical programming is the writing of data analysis scripts or
 general computer programs for data analysis and processing.  Both
 forms will be referred to as programs and source code (the textual
-result) or programming (the activity).  These programs can be written
-in a general computer language such as \Fortran\, C/C$++$, or Java.
-However, specialized scripting languages supporting common statistical
-procedures are a popular option among statisticians.  These include
-\Splus, R, \SAS, \Stata, or \XLispStat\ .  However, they do not have
-available the same range of sophisticated programming tools for
-writing and debugging code.
+result) or programming (the activity).  Although these programs could be written
+in a general computer language such as \Fortran\, C/C$++$, or Java,
+it usually makes more sense for the the data analyst to work in
+specialized scripting languages that support common statistical
+procedures.  The statistical languages (for example
+\Splus, R, \SAS, \Stata, and \XLispStat) usually
+do not include the same range of sophisticated programming tools for
+writing and debugging code as the general purpose languages.
 
 ESS extends the Emacs text editor to provide a development environment
 for statistical programming languages. In particular, ESS provides
@@ -282,11 +283,11 @@ package; these include textual script editing features such as
 syntactic fontification and colorization of scripts, detection of
 balanced and unbalanced parentheses and braces through highlighting,
 code indentation for readability, commenting out regions, and indexing
-of files by function.  However, the more novel features, such as help
+of files by function.   The more novel features, such as help
 file parsing and viewing, object and function name completion,
 evaluation of scripts, and interactive editing of data and objects,
-require some interaction with the target statistical package through
-interactive or batch processing.
+require some interaction with the target statistical package
+either by controlling interactive behavior or by batch processing.
 
 \subsection{Editing}
 \label{sec:ESS:features}
@@ -352,11 +353,12 @@ optional schemes.
     \includegraphics[angle=270,width=\textwidth]{font-cor-s-bw}
     \includegraphics[angle=270,width=\textwidth]{font-incor-s-bw}
   }
-  \caption{We illustrate here with fonts and colors appropriate for a
-    black and white display.  On
-    % a color terminal we would use a selection of colors.
-    today's color terminals,        a selection of colors make the effect
-    much more prominent.
+  \caption{Emacs detects mismatched parentheses.  The top panel
+shows matching parentheses highlighted in the same color.
+The bottom panel shows mismatched parentheses, a left parenthesis
+and a right brace, highlighted in an attention grabbing color.
+In this black and white rendition, the mismatch is in reverse video.
+On a color display, the mismatch is in bright purple.
     }
   \label{f.font}
 \end{figure}
@@ -392,16 +394,18 @@ R or \Splus.
   \caption{Enforce coding standards.  The standard here is
     that all \stexttt{PROC} statements must use the
     \stexttt{DATA=datasetname} option.  Lines that satisfy the
-    standard are given a shaded background, lines that don't are
-    displayed in inverse video.  Ambiguous ones are displayed in a
-    lighter shade of inverse video.}
+    standard are given a shaded background (green on a color screen),
+    lines that don't are
+    displayed in inverse video (red on a color screen).
+  Ambiguous ones are displayed in a
+    lighter shade of inverse video (yellow on a color screen).}
   \label{f.hilock}
 \end{figure}
 
 \paragraph{Help: Display, Navigation and Editing.}
 ESS provides display and navigation tools for S (R and \Splus) and
 \Stata\ help displays.  Displays of help files are done in a separate
-buffer.  These buffers include single key bookmarks of the main
+buffer.  These buffers include single-key bookmarks of the main
 sections of the help file, such as to jump to the function arguments or
 examples sections.  Code in the latter is sent to a running S process
 easily. % also with single key ``l''
@@ -433,7 +437,7 @@ advent of simple GUIs has made interactive data analysis an important
 component of statistical practice.  ESS uses three different
 approaches for communicating with statistical packages: inferior
 process control, which entails redirection of text input and output;
-peer-to-peer style communication, which is currently accomplished
+peer-to-peer style communication, which is currently accomplished on MS Windows
 using DDE; and batch submission of whole or partial text files
 containing analysis scripts.  For packages which do not support any of
 these, the primary use of ESS is as an editing tool, with interaction
@@ -570,7 +574,7 @@ and the ability to re-submit the contents of a multi-line command to
 the executing process with a single keystroke.  \stexttt{iESS[S]} is
 used with S, \Splus, and R on Unix and with Sqpe and R on Windows.
 
-The \Splus\ GUI on Windows can be a DDE server.  There are two
+The \Splus\ GUI on Windows can be used as a DDE server.  There are two
 advantages to using even this limited communication with the \Splus\
 GUI through ESS.  First, through \stexttt{ESS[S]} mode the user gets
 the full editing capabilities of Emacs.  Second, S language commands
@@ -617,7 +621,7 @@ Emacs.
 \label{sec:sas-batch}
 
 \SAS\ is a popular choice for processing and analyzing large amounts
-of data.  However, interactive \SAS\ is rarely used in these
+of data.  Interactive \SAS\ is rarely used in these
 situations due to the length of time involved.  Instead, a file
 containing \SAS\ commands is created and \SAS\ executes these commands
 in the background, or batch, while the user moves on to other
@@ -818,12 +822,15 @@ the differing portions of text files.
 %\end{figure}
 \begin{figure}[tbp]
   \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas-bw}}
-  \caption{Ediff of two versions of a file.}
+  \caption{Ediff of two versions of a file.  Similar lines in the two files
+are detected.  The entire line is highlighted in each file and the differences
+are highlighted in a contrasting color.}
   \label{f.ediff}
 \end{figure}
 
 Emacs has many other important features.  Emacs provides file-manager
-capabilities, such as \stexttt{dired} and \stexttt{speedbar}, both of
+capabilities, such as \stexttt{dired} (\textit{directory editor}) and
+\stexttt{speedbar} (an index into the structure of a file), both of
 which interface to the computer's directory structure.  Emacs stores
 the complete history of commands issued in an editing session,
 allowing a flexible and fairly complete undo capability.  More
@@ -982,9 +989,15 @@ Then type:
 An expanded version of the present paper is in \citep{RMHHS:2001}.  A
 general introduction and usage instructions can be found in
 \citep{heiberger:dsc:2001}; in addition, one which is more focused on
-\SAS\ can be found in \citep{heiberger:philasugi:2001}.  The
-documentation that comes with ESS provides details of its
-implementation as well as examples of its use.
+\SAS\ can be found in \citep{heiberger:philasugi:2001}.
+
+The documentation that comes with ESS provides details of its
+implementation as well as examples of its use.  Start with the file
+\stexttt{doc/ESS{\US}intro.tex} for an overview and elementary
+introduction.  Complete documentation is in
+\stexttt{doc/html/ess.html} or by the \stexttt{info} system with\\
+\stexttt{C-h i C-s ESS RET RET}.
+
 
 \end{document}
 
