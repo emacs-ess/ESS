@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/17 20:49:21 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: essd-s+3.el,v 1.12 1997/07/17 20:49:21 rossini Exp $
+;; Modified: $Date: 1997/07/17 20:51:31 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: essd-s+3.el,v 1.13 1997/07/17 20:51:31 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s+3.el,v $
+;;: Revision 1.13  1997/07/17 20:51:31  rossini
+;;: stuff
+;;:
 ;;: Revision 1.12  1997/07/17 20:49:21  rossini
 ;;: new version, take 1.
 ;;:
@@ -88,7 +91,8 @@
 	                             ;(if S-plus
 				     ; "help(\"%s\",pager=\"cat\",window=F)\n"
 				     ; "help(\"%s\")\n")
-    (inferior-ess-exit-command .    "q()\n"))
+    (inferior-ess-exit-command .    "q()\n")
+    (ess-loop-timeout              . 100000 )
  "Variables to customize for S")
 
 
