@@ -1,15 +1,16 @@
 ;;; ess.el --- Emacs Speaks Statistics: statistical programming within Emacs
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1996--2000 Rossini, Heiberger, Hornik, and Maechler.
+;; Copyright (C) 1996--2000 Rossini, Heiberger, Hornik, Maechler and
+;;                          Sparapani.
 
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-;;                       Martin Maechler  <maechler@stat.math.ethz.ch>
-;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
-;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Maintainer(s): A.J. Rossini <rossini@biostat.washington.edu>
+;;                Martin Maechler  <maechler@stat.math.ethz.ch>
+;;                Kurt Hornik <hornik@ci.tuwien.ac.at>
+;;                Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.19 2000/07/03 14:40:00 maechler Exp $
+;; Version: $Id: ess.el,v 5.20 2000/07/06 18:08:53 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -46,10 +47,12 @@
 ;;                         Frank Ritter  ritter@psychology.nottingham.ac.uk
 ;;           1994--1997    David Smith <maa036@lancaster.ac.uk>
 ;;
-;;           1996--1997    Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>
-;;           1996--1997    Martin Maechler <maechler@stat.math.ethz.ch>
-;;           1996--1997    A.J. Rossini <rossini@stat.sc.edu>
-;;           1996--1997    Richard M. Heiberger <rmh@astro.ocis.temple.edu>
+;;           1996--2000    Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>
+;;           1996--2000    Martin Maechler <maechler@stat.math.ethz.ch>
+;;           1996--2000    A.J. Rossini <rossini@stat.sc.edu>,
+;;           1998--2000                 <rossini@biostat.washington.edu>
+;;           1996--2000    Richard M. Heiberger <rmh@astro.ocis.temple.edu>
+;;           1999--2000    Rodney Sparapani <rodney.sparapani@duke.edu>
 ;;
 
 ;;; Commentary:
@@ -133,15 +136,15 @@
 
 ;; Remove messages after we debug...
 
-(if (or (ess-running-emacs-version-or-newer 20 2) ess-local-custom-available)
+;(if (or (ess-running-emacs-version-or-newer 20 2) ess-local-custom-available)
     (eval-and-compile  ; was progn
       (ess-message "--++ LOADING CUSTOM ++--")
       (require 'ess-cust)
       )
-  (eval-and-compile  ; was progn
-    (ess-message "--++ NOT NOT NOT loading custom ++--")
-    (require 'ess-vars)
-    ))
+;  (eval-and-compile  ; was progn
+;    (ess-message "--++ NOT NOT NOT loading custom ++--")
+;    (require 'ess-vars)
+;    ))
 
  ; ess-mode: editing S/R/XLS/SAS source
 
