@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/12/30 19:08:14 $
-;; Version: $Revision: 5.23 $
-;; RCS: $Id: ess-utils.el,v 5.23 2002/12/30 19:08:14 rsparapa Exp $
+;; Modified: $Date: 2003/09/25 21:22:04 $
+;; Version: $Revision: 5.24 $
+;; RCS: $Id: ess-utils.el,v 5.24 2003/09/25 21:22:04 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -337,4 +337,30 @@ is specified, perform action in that buffer."
 
     (ess-set-local-variables (ess-sas-create-local-variables-alist from-file-or-buffer) to-file-or-buffer))
 
+(defun ess-find-exec (ess-root-arg)
+"Given the root of an executable file name, find it's full name and path,
+if it exists in PATH.  Note that emacs does not attempt to understand the various
+short-hands for CWD in PATH, but that shouldn't be a hindrance here."
+
+(let ((ess-temp-exec nil)
+	(ess-temp-path-count (length exec-path))
+	(ess-temp-suffix-count (length exec-suffix-list))
+	(i 0) (j 0)
+    )
+
+    (while (and (<= i ess-temp-path-count) (not ess-temp-exec)) (progn
+	(while (and (<= j ess-temp-suffix-count) (not ess-temp-exec)) (progn
+	    (setq ess-temp-exec 
+		(concat (nth i exec-path) ess-root-arg (nth j exec-suffix-list)))
+
+	    (message "%s" ess-temp-exec)
+
+	    (if (not (file-exists-p ess-temp-exec)) (setq ess-temp-exec nil))
+	    (setq j (+ j 1))
+	))
+	(setq i (+ i 1))
+	(setq j 0))
+)
+ess-temp-exec))
+	
 (provide 'ess-utils)
