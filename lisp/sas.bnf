@@ -1,0 +1,109 @@
+# Skeleton for creating BNF files.
+#
+# Copyright (C) 2001 Eric M. Ludlam
+#
+# Author: 
+# X-RCS: $Id: sas.bnf,v 5.1 2002/04/25 08:27:19 rossini Exp $
+#
+# sas.bnf is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# This software is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GNU Emacs; see the file COPYING.  If not, write to the
+# Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+#
+
+
+# Replace occurance of "skeleton" with the name of your language.
+
+# Replace start, and scopestart names with something apropriate for
+# your language.
+
+%start         sourceFile
+%scopestart    procStatement
+%outputfile    semantic-sas.el
+%parsetable    semantic-toplevel-sas-bovine-table
+%keywordtable  semantic-sas-keyword-table
+%languagemode  sas-mode
+%setupfunction semantic-default-sas-setup
+
+# Commented out lines below are generally considered optional
+# See the Emacs Doc for the symbols used below
+%(setq semantic-symbol->name-assoc-list '( (variable . "Variables")
+					   (type     . "Types")
+					   (function . "Functions")
+					   (include  . "Includes")
+					   (proc     . "Procs"))
+       #semantic-expand-nonterminal 'semantic-expand-skeleton-nonterminal
+       #semantic-flex-extensions semantic-flex-skeleton-extensions
+       #semantic-dependency-include-path semantic-default-skeleton-path
+       imenu-create-index-function 'semantic-create-imenu-index
+       semantic-type-relation-separator-character '(".")
+       semantic-command-separation-character ";"
+       document-comment-start "/*"
+       document-comment-line-prefix " *"
+       document-comment-end " */"
+       ;; Semantic navigation inside 'type children
+       senator-step-at-token-ids '(function variable)
+       )%
+
+# Make common keywords into tokens returned by the lexer.
+# This improves accuracy, makes this file more readable.
+# Use SOMETHING in your rules as a terminal
+%token SOMETHING "something"
+# Adding a summary help's `eldoc' mode display useful information
+# in your language.
+%put SOMETHING summary "Describe something"
+
+# Turn common punctuation elements into tokens.
+# This does not effect lexical analysis or accuracy,
+# but does make your file more readable.
+%token PERIOD punctuation "."
+
+sourceFile : procStatments
+	   | macros
+	   ;
+
+procStatements : PROC symbol expression
+		 ( $1 )
+	       ;
+
+macros : expression
+       ;
+
+# Examples from c.bnf:
+
+opt-expression : expression
+	       | EMPTY ( nil )
+	       ;
+
+# This expression parses over expressions, but doesn't return
+# anything
+expression : number
+	     ( )
+	   | symbol
+	     ( )
+	   | string
+	     ( )
+           | semantic-list
+	     ( )
+	   | punctuation "[-+*/%^|&]" expression
+	   # ( nil )
+	   ;
+
+(defun semantic-default-sas-setup () 
+  "Set up an SAS source file buffer for parsing with semantic."
+  ;; Code generated from sas.bnf
+  (setq semantic-toplevel-bovine-table semantic-toplevel-sas-bovine-table
+        semantic-toplevel-bovine-table-source "sas.bnf")
+  (setq semantic-flex-keywords-obarray semantic-sas-keyword-table)
+  ;; End code generated from sas.bnf
+)

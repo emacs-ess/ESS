@@ -1,0 +1,216 @@
+ 
+#The format of a BOVINE-TABLE is:
+
+# ( ( NONTERMINAL-SYMBOL1 MATCH-LIST1 )
+#   ( NONTERMINAL-SYMBOL2 MATCH-LIST2 )
+#   ...
+#   ( NONTERMINAL-SYMBOLn MATCH-LISTn )
+
+#Where each NONTERMINAL-SYMBOL is an artificial symbol which can appear
+#in any child state.  As a starting place, one of the NONTERMINAL-SYMBOLS
+#must be `bovine-toplevel'.
+
+#A MATCH-LIST is a list of possible matches of the form:
+
+# ( STATE-LIST1
+#   STATE-LIST2
+#   ...
+#   STATE-LISTN )
+
+#where STATE-LIST is of the form:
+
+#  ( TYPE1 [ "VALUE1" ] TYPE2 [ "VALUE2" ] ... LAMBDA )
+
+#where TYPE is one of the returned types of the token stream.
+#VALUE is a value, or range of values to match against.  For
+#example, a SYMBOL might need to match "foo".  Some TYPES will not
+#have matching criteria.
+
+#LAMBDA is a lambda expression which is evaled with the text of the
+#type when it is found.  It is passed the list of all buffer text
+#elements found since the last lambda expression.  It should return asemantic element (see below.)
+
+#You can easily avoid learning the format of this variable by
+#writing a BNF file.  See notes in `semantic-bnf.el' or the
+#"BNF conversion" section in the semantic texinfo manual.
+
+#For consistency between languages, try to use common return values
+#from your parser.  Please reference the "Semantic Token Style Guide"
+#section in the semantic texinfo manual.
+#############################
+# Skeleton for creating BNF files.
+#
+# Copyright (C) 2001 Eric M. Ludlam
+#
+# Author: 
+# X-RCS: $Id: r.bnf,v 5.1 2002/04/25 08:27:19 rossini Exp $
+#
+# r.bnf is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# This software is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GNU Emacs; see the file COPYING.  If not, write to the
+# Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+#
+
+%start         sourceFile
+%scopestart    environment
+%outputfile    semantic-r.el
+%parsetable    semantic-toplevel-r-bovine-table
+%keywordtable  semantic-r-keyword-table
+%languagemode  r-mode
+%setupfunction semantic-default-r-setup
+
+# Commented out lines below are generally considered optional
+# See the Emacs Doc for the symbols used below
+%(setq semantic-symbol->name-assoc-list '( (variable . "Variables")
+					   (type     . "Types")
+					   (function . "Functions")
+					   (library  . "Libraries")
+					   #(package  . "PExports")
+					   )
+       #semantic-expand-nonterminal 'semantic-expand-r-nonterminal
+       #semantic-flex-extensions semantic-flex-r-extensions
+       #semantic-dependency-include-path semantic-default-r-path
+       imenu-create-index-function 'semantic-create-imenu-indexa
+       semantic-type-relation-separator-character '(".")
+       semantic-command-separation-character ";"
+       document-comment-line-prefix "#"
+       #document-comment-start "#"
+       #document-comment-end " \n"
+       # Semantic navigation inside 'type children
+       senator-step-at-token-ids '(function variable)
+       )%
+
+# Make common keywords into tokens returned by the lexer.
+
+# Turn common punctuation elements into tokens.
+# This does not effect lexical analysis or accuracy,
+# but does make your file more readable.
+# %token PERIOD punctuation "." NOT IN R!
+%token COMMA punctuation ","
+%token VARARGS "..."
+%token ASSIGNMENT  "<-"
+%put ASSIGNMENT summary "assignment of closure"
+%token ASSIGNMENT2 "_"
+%put ASSIGNMENT2 summary "assignment of closure"
+%token DOLLAR  "$"
+%token ENVASSIGNMENT "<<-"
+
+
+%token TRY          "try"
+%put TRY summary "try {<stmts>} [catch(<parm>) {<stmts>} ...] [finally {<stmts>}]"
+
+%token WHILE        "while"
+%put WHILE summary "while (<expr>) <closure>;"
+  
+%token LIBRARY  "library"
+%put LIBRARY summary "library(packagename)"
+
+%token SOURCE  "source"
+%put SOURCE summary "source()"
+
+%token REQUIRE "require"
+%put REQUIRE summary "require(packagename)"
+
+### Begin parse graph.
+
+sourceFile : functionDefinition
+           | variable
+	   | assignment 
+           ;
+
+environment : functionDefinition
+            | variable
+            ;
+
+functionDefinition : symbol
+                     opt-whitespace assignment opt-whitespace
+                     symbol "function"
+		     whitespace
+		     open-paren "("
+                     func-decl
+                     close-paren ")"
+                     closure 
+		     ( $1 )
+     		   ;	#
+
+assignment: ASSIGNMENT ()
+ | ASSIGNMENT2 () 
+ | ENVASSIGNMENT ()
+           ;			#
+
+func-decl : var
+          | var-assign
+	  | VARARGS
+	  | EMPTY
+	     ;			#
+
+ var : symbol ()
+    ;
+
+var-assign : symbol opt-whitespace string "=" opt-whitespace expression
+
+closure : open-paren "{"
+          opt-expression 
+          close-paren "}" ()
+	  ;			#
+
+# Examples from c.bnf:
+
+opt-expression : expression
+	       | EMPTY ( nil )
+	       ;
+
+opt-whitespace : whitespace ( nil )
+	       | EMPTY
+	       ;
+
+# This expression parses over expressions, but doesn't return
+# anything
+expression : number
+	     ( )
+	   | symbol
+	     ( )
+	   | string
+	     ( )
+           | semantic-list
+	     ( )
+	   | punctuation "[-+*/%^|&]" expression
+	   # ( nil )
+	   ;
+
+try : TRY
+ ;			#
+
+while : WHILE
+;
+
+library : LIBRARY open-paren "(" expression close-paren ")"
+ ;				#
+
+source : SOURCE open-paren "(" expression close-paren ")"
+ ;				#
+
+require : REQUIRE open-paren "(" expression close-paren ")"
+;				#
+
+
+
+(defun semantic-default-r-setup () 
+    "Set up an R source file buffer for parsing with semantic."
+    ;; Code generated from r.bnf
+    (setq semantic-toplevel-bovine-table semantic-toplevel-r-bovine-table
+	   semantic-toplevel-bovine-table-source "r.bnf")
+    (setq semantic-flex-keywords-obarray semantic-r-keyword-table)
+     
+    ;; End code generated from r.bnf
+    )
