@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/31 12:57:02 $
-;; Version: $Revision: 1.45 $
-;; RCS: $Id: ess-inf.el,v 1.45 1997/07/31 12:57:02 rossini Exp $
+;; Modified: $Date: 1997/08/25 14:31:04 $
+;; Version: $Revision: 1.46 $
+;; RCS: $Id: ess-inf.el,v 1.46 1997/08/25 14:31:04 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.46  1997/08/25 14:31:04  rossini
+;; *** empty log message ***
+;;
 ;; Revision 1.45  1997/07/31 12:57:02  rossini
 ;; removed store/remove defvars to ess-var, made buffer local, and added
 ;; customizations in essd-r, essd-s+3 (thanks, DB).
@@ -456,7 +459,8 @@ when invoking S.
      (format "(inferior-ess 2): ess-proc-prefix=%s , buf=%s \n"
 	     ess-proc-prefix (current-buffer)))
     (if startdir (setq default-directory startdir))
-    (setq ess-history-file (concat "." ess-proc-prefix "history"))
+    (setq-default ess-history-file
+		  (concat "." ess-proc-prefix "history"))
     (ess-multi procname buf)))
 
 ;; Old code:
@@ -1248,7 +1252,7 @@ to continue it."
   (comint-mode)
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq major-mode 'inferior-ess-mode)
-  (setq mode-name "Inf-ESS") ;;(concat "Inferior " ess-proc-prefix))
+  (setq mode-name "iESS") ;;(concat "Inferior " ess-proc-prefix))
   (setq mode-line-process
 	'(" [" ess-local-process-name "]: %s"))
   (use-local-map inferior-ess-mode-map)
@@ -1305,7 +1309,7 @@ to continue it."
   (message
    (concat (substitute-command-keys
 	    "Type \\[describe-mode] for help on ESS version ")
-	   ESS-version)))
+	   ess-version)))
 
 ;;*;; Commands used exclusively in inferior-ess-mode
 

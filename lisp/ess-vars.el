@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/31 12:53:20 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: ess-vars.el,v 1.10 1997/07/31 12:53:20 rossini Exp $
+;; Modified: $Date: 1997/08/25 14:31:04 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: ess-vars.el,v 1.11 1997/08/25 14:31:04 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,6 +29,9 @@
 
 ;;
 ;; $Log: ess-vars.el,v $
+;; Revision 1.11  1997/08/25 14:31:04  rossini
+;; *** empty log message ***
+;;
 ;; Revision 1.10  1997/07/31 12:53:20  rossini
 ;; made ess-save-lastvalue-command, ess-retr-lastvalue-command both
 ;; buffer local.
@@ -66,7 +69,7 @@
 
 ;;; Code:
 
-(defconst ESS-version "4.9-b10" 
+(defconst ess-version "4.9-b11" 
   "Version of ESS currently loaded.")
 
  ; User changeable variables
@@ -378,17 +381,29 @@ Called after inferior-ess-mode is entered and variables have been initialised.")
 
 (defvar ess-function-pattern
   (concat
-   "\\(" ; EITHER
+;;-    "\\(" ; EITHER
+;;-    "\\s\"" ; quote
+;;-    "\\(\\sw\\|\\s_\\)+" ; symbol
+;;-    "\\s\"" ; quote
+;;-    "\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*" ; whitespace, assign, whitespace/nl
+;;-    "function\\s-*(" ; function keyword, parenthesis
+;;-    "\\)\\|\\(" ; OR
+;;-    "\\<\\(\\sw\\|\\s_\\)+" ; symbol
+;;-    "\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*" ; whitespace, assign, whitespace/nl
+;;-    "function\\s-*(" ; function keyword, parenthesis
+;;-    "\\)")
+   ;;----- new version by  "Stephen C. Pope" <scp@predict.com> :
+   "\\(\\(" ; EITHER
    "\\s\"" ; quote
-   "\\(\\sw\\|\\s_\\)+" ; symbol
+   "\\(\\sw\\|\\s_\\)+\\(<-\\)?" ; symbol (replacement?)
    "\\s\"" ; quote
-   "\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*" ; whitespace, assign, whitespace/nl
-   "function\\s-*(" ; function keyword, parenthesis
    "\\)\\|\\(" ; OR
    "\\<\\(\\sw\\|\\s_\\)+" ; symbol
-   "\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*" ; whitespace, assign, whitespace/nl
-   "function\\s-*(" ; function keyword, parenthesis
-   "\\)")
+   "\\)\\)" ; END EITHER OR
+   "\\s-*\\(<-\\|_\\|=\\)" ; whitespace, assign, whitespace/nl
+   "\\(\\(\\s-\\|\n\\)*\\s<.*\\s>\\)*" ; whitespace, comment
+   "\\(\\s-\\|\n\\)*function\\s-*(" ; whitespace, function keyword, parenthesis
+   )
   "The regular expression for matching the beginning of an S function.")
 
 (defvar ess-dumped-missing-re
@@ -463,10 +478,13 @@ isn't implemented yet.")
 (defvar inferior-ess-pager "cat"
   "*Pager to use for reporting help files and similar things.")
 
-(defvar S-plus (assoc inferior-ess-program '(("Splus") ("S+")))
-  "Set to t if Splus is being used instead of vanilla S")
-;;; Used for setting default values of other variables, and hence
-;;; has no effect after S.el has been loaded.
+(defvar inferior-ess-save-lastvalue-command nil
+  "FIXME")
+(make-variable-buffer-local 'inferior-ess-save-lastvalue-command)
+
+(defvar inferior-ess-retr-lastvalue-command nil
+  "FIXME")
+(make-variable-buffer-local 'inferior-ess-retr-lastvalue-command)
 
 (defvar inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?"
   "Regular expression used by ess-mode to detect the primary prompt.
@@ -635,8 +653,12 @@ ess-load-file command.  Used for determining the default in the next one.")
 (defvar inferior-ess-mode-map nil
   "Keymap for inferior-ess mode.")
 
+
 (defvar ess-object-name-db-file "ess-namedb"
   "File containing definitions for ess-object-name-db.")
+
+(defvar ess-object-name-db-file-loaded '() 
+  "List of programs whose name-db file has been loaded.")
 
 (defvar ess-object-name-db nil
   "Alist of lists of object names, with directory names as keys.
@@ -664,6 +686,9 @@ important for R or XLispStat.")
 
 ;;; for programming, transcript, and inferior process modes.
 
+(defvar inferior-ess-font-lock-prompt-p nil
+  "*Set if you want the prompt lines font-locked.")
+
 (defvar ess-mode-font-lock-keywords
  '(("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function" 1 font-lock-function-name-face t)
    ("<<?-\\|_" . font-lock-reference-face)
@@ -679,6 +704,11 @@ important for R or XLispStat.")
    ("<-\\|_" . font-lock-reference-face)		; assign
    ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
    ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
+   ("^Syntax error:" . font-lock-reference-face) ; error message
+   ("^Error:" . font-lock-reference-face) ; error message
+   ("^Error in" . font-lock-reference-face) ; error message
+   ("^Dumped" . font-lock-reference-face) ; error message
+   ("^Warning:" . font-lock-reference-face) ; warning message
    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
     . font-lock-type-face)) ; keywords
  "Font-lock patterns for dialects of S, used in highlighting process

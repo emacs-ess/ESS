@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/30 13:14:22 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essd-s3.el,v 1.4 1997/07/30 13:14:22 rossini Exp $
+;; Modified: $Date: 1997/08/25 14:31:04 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essd-s3.el,v 1.5 1997/08/25 14:31:04 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s3.el,v $
+;;: Revision 1.5  1997/08/25 14:31:04  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.4  1997/07/30 13:14:22  rossini
 ;;: vars back in for program name.
 ;;:
@@ -119,16 +122,6 @@
   ;;	   ess-proc-prefix
   ;;	   (current-buffer)))
   (inferior-ess))
-
-;; From RMH:  (for both s+3 and s3) ? 
-;;(add-to-list 'S-inf-font-lock-keywords
-;;	     '("^Syntax error" . font-lock-reference-face)) ; S-inf problems
-;;(add-to-list 'S-inf-font-lock-keywords
-;;	     '("^Error:" . font-lock-reference-face)) ; S-inf error
-;;(add-to-list 'S-inf-font-lock-keywords
-;;	     '("^Error in" . font-lock-reference-face)) ; S-inf error
-;;(add-to-list 'S-inf-font-lock-keywords
-;;	     '("^Dumped" . font-lock-reference-face)) ; S-inf error
 
 
  ; Provide package

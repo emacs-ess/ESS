@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/31 12:51:50 $
-;; Version: $Revision: 1.27 $
-;; RCS: $Id: essd-r.el,v 1.27 1997/07/31 12:51:50 rossini Exp $
+;; Modified: $Date: 1997/08/25 14:31:04 $
+;; Version: $Revision: 1.28 $
+;; RCS: $Id: essd-r.el,v 1.28 1997/08/25 14:31:04 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.28  1997/08/25 14:31:04  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.27  1997/07/31 12:51:50  rossini
 ;;: changed the save call to reflect R.
 ;;:
@@ -123,19 +126,31 @@
   '((ess-customize-alist           . R-customize-alist)
     (ess-proc-prefix               . "R")
     (ess-version-running           . "0.50-a1" )
-    (inferior-ess-program          . inferior-R-program-name)
     (ess-help-sec-regex            . ess-help-R-sec-regex)
-    (ess-help-sec-keys-alist       . ess-help-R-sec-keys-alist)
+    (ess-help-sec-keys-alist       . ess-help-R-sec-keys-alist) 
+    (ess-loop-timeout              . 100000 )
+    (ess-object-name-db-file       . "ess-r-namedb.el" )
+    (ess-retr-lastvalue-command    . ".Last.value <- get(\"smode.lvsave\",envir=1)\n")
+    (ess-save-lastvalue-command    . "assign(\"smode.lvsave\",.Last.value,envir=1)\n")
+ 
+    (ess-object-name-db-file       . "ess-r-namedb.el" )
+    (inferior-ess-program          . inferior-R-program-name)
     (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-objects-command  . "objects(pos = %d)\n")
     (inferior-ess-exit-command     . "q()\n")
-    (ess-loop-timeout              . 100000 )
-    (ess-retr-lastvalue-command .
-     ".Last.value <- get(\"smode.lvsave\",envir=1)\n")
-    (ess-save-lastvalue-command .
-     "assign(\"smode.lvsave\",.Last.value,envir=1)\n")
-    (inferior-ess-primary-prompt   . "[][a-zA-Z0-9() ]*> ?"))
+    (inferior-ess-primary-prompt   . "[][a-zA-Z0-9() ]*> ?")
+    (inferior-ess-start-file       . "~/.ess-R")
+    (inferior-ess-start-args . nil)
+  )
   "Variables to customize for R")
+
+
+(defun R-mode  (&optional proc-name) 
+  "Major mode for editing R source.  See ess-mode for more help."
+  (interactive)
+  (setq ess-customize-alist R-customize-alist)
+  (ess-mode proc-name ess-proc-prefix))
+
 
 (defun R ()
   "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ).

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/31 12:45:49 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: essd-s+3.el,v 1.16 1997/07/31 12:45:49 rossini Exp $
+;; Modified: $Date: 1997/08/25 14:31:04 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: essd-s+3.el,v 1.17 1997/08/25 14:31:04 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s+3.el,v $
+;;: Revision 1.17  1997/08/25 14:31:04  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.16  1997/07/31 12:45:49  rossini
 ;;: comments...
 ;;:
@@ -97,22 +100,31 @@
 ; Code:
 
 (defvar S+3-customize-alist
-  '((ess-proc-prefix      .         "S+")
-    (ess-version-running  .         "3.3")
-    (inferior-ess-program .         inferior-S+3-program-name)
-    (ess-help-sec-regex   .         ess-help-S+3-sec-regex)
-    (ess-help-sec-keys-alist .      ess-help-S+3-sec-keys-alist)
-    (inferior-ess-objects-command . "objects(%d)")
-    (inferior-ess-help-command .    "help(\"%s\",pager=\"cat\",window=F)\n")
-    (inferior-ess-exit-command .    "q()\n")
+  '((ess-proc-prefix               . "S+")
+    (ess-version-running           . "3.3")
+    (ess-help-sec-regex            . ess-help-S+3-sec-regex)
+    (ess-help-sec-keys-alist       . ess-help-S+3-sec-keys-alist)
     (ess-loop-timeout              . 100000 )
-    (ess-retr-lastvalue-command .
-     ".Last.value <- get(\"smode.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command .
-     "assign(\"smode.lvsave\",.Last.value,frame=0)\n")
+    (ess-object-name-db-file       . "ess-s+3-namedb.el" )
+    (ess-retr-lastvalue-command    . ".Last.value <- get(\"smode.lvsave\",frame=0)\n")
+    (ess-save-lastvalue-command    . "assign(\"smode.lvsave\",.Last.value,frame=0)\n")
+    (inferior-ess-program          . inferior-S+3-program-name)
+    (inferior-ess-objects-command  . "objects(%d)")
+    (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
+    (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt   . "+ ?"))
- "Variables to customize for S")
+    (inferior-ess-secondary-prompt . "+ ?")
+    (inferior-ess-start-file       . "~/.ess-S+3")
+    (inferior-ess-start-args       . nil)
+
+    )
+ "Variables to customize for S+3")
+
+(defun S-mode (&optional proc-name)
+  "Major mode for editing S+3 source.  See ess-mode for more help."
+  (interactive)
+
+  (ess-mode proc-name ess-proc-prefix))
 
 
 (defun S+3 ()
@@ -130,16 +142,6 @@ New way to do it."
   "Basic, usual, call..."
   (interactive)
   (S+3))
-
-;; From RMH:  (for both s+3 and s3) ? 
-;;(add-to-list 'S-inf-font-lock-keywords
-;;	     '("^Syntax error" . font-lock-reference-face)) ; S-inf problems
-;;(add-to-list 'S-inf-font-lock-keywords
-;;	     '("^Error:" . font-lock-reference-face)) ; S-inf error
-;;(add-to-list 'S-inf-font-lock-keywords
-;;	     '("^Error in" . font-lock-reference-face)) ; S-inf error
-;;(add-to-list 'S-inf-font-lock-keywords
-;;	     '("^Dumped" . font-lock-reference-face)) ; S-inf error
 
 
  ; Provide package

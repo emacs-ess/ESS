@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/31 10:56:11 $
-;; Version: $Revision: 1.53 $
-;; RCS: $Id: ess.el,v 1.53 1997/07/31 10:56:11 rossini Exp $
+;; Modified: $Date: 1997/08/25 14:31:04 $
+;; Version: $Revision: 1.54 $
+;; RCS: $Id: ess.el,v 1.54 1997/08/25 14:31:04 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -114,6 +114,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.54  1997/08/25 14:31:04  rossini
+;; *** empty log message ***
+;;
 ;; Revision 1.53  1997/07/31 10:56:11  rossini
 ;; removed the require cl, cl-macs from here (to do-comp).
 ;;
@@ -456,26 +459,43 @@
     (goto-char (point-max))
     (insert-string text)))
 
-;;; version thanks to Barry Margolin <barmar@bbnplanet.com>.
-(defun ess-setq-vars (var-alist &optional buf) 
-  "Set language variables from alist, in buffer `buf', if desired."
-
+(defun ess-setq-vars (alist &optional buf) 
+  "Set language variables from ALIST, in buffer `BUF', if desired."
   (if buf (set-buffer buf))
-  (dolist (pair var-alist)
-    (set (car pair) (eval (cdr pair))))
+  (mapcar (lambda (pair)
+            (set (car pair) (eval (cdr pair))))
+          alist)
   (ess-write-to-dribble-buffer 
-    (format "(ess-setq-vars): ess-proc-prefix=%s, buf=%s \n"
-	   ess-proc-prefix buf)))
+   (format "(ess-setq-vars): ess-proc-prefix=%s, buf=%s \n"
+           ess-proc-prefix buf)))
 
-(defun ess-setq-vars-default (var-alist &optional buf) 
-  "Set language variables from alist, in buffer `buf', if desired."
-
+(defun ess-setq-vars-default (alist &optional buf) 
+  "Set language variables from ALIST, in buffer `BUF', if desired."
   (if buf (set-buffer buf))
-  (dolist (pair var-alist)
-    (set-default (car pair) (eval (cdr pair))))
+  (mapcar (lambda (pair)
+            (set-default (car pair) (eval (cdr pair))))
+          alist)
   (ess-write-to-dribble-buffer 
-    (format "(ess-setq-vars-default): ess-proc-prefix=%s, buf=%s \n"
-	   ess-proc-prefix buf)))
+   (format "(ess-setq-vars-default): ess-proc-prefix=%s, buf=%s \n"
+           ess-proc-prefix buf)))
+
+;;; versions thanks to Barry Margolin <barmar@bbnplanet.com>.
+;;(defun ess-setq-vars (var-alist &optional buf) 
+;;  "Set language variables from alist, in buffer `buf', if desired."
+;;  (if buf (set-buffer buf))
+;;  (dolist (pair var-alist)
+;;    (set (car pair) (eval (cdr pair))))
+;;  (ess-write-to-dribble-buffer 
+;;    (format "(ess-setq-vars): ess-proc-prefix=%s, buf=%s \n"
+;;	   ess-proc-prefix buf)))
+;;(defun ess-setq-vars-default (var-alist &optional buf) 
+;;  "Set language variables from alist, in buffer `buf', if desired."
+;;  (if buf (set-buffer buf))
+;;  (dolist (pair var-alist)
+;;    (set-default (car pair) (eval (cdr pair))))
+;;  (ess-write-to-dribble-buffer 
+;;    (format "(ess-setq-vars-default): ess-proc-prefix=%s, buf=%s \n"
+;;	   ess-proc-prefix buf)))
 
 ;; Toby Speight <Toby.Speight@ansa.co.uk>
 ;;> ;; untested
@@ -508,70 +528,7 @@
 ;;	    (set-variable (car x) (cdr x)))
 ;;	R-customize-alist)
 
-;;; Original Version.  So much of a kludge that it is evil, and proof
-;;; of how little I (AJR) know!
-;;;
-;;(defun ess-setq-vars (var-alist &optional buf) 
-;;  "Set language variables from alist, in buffer `buf', if desired.
-;;This is SO UGLY.  But it'll work for now... 
-;;the basic idea: (setq ---  (cdr (assq --- var-alist)))."
-;;
-;;  (if buf (set-buffer buf))
-;;  ;;(setq-default ess-customize-alist var-alist)
-;;
-;;  ;; Need to replace with a function which: (ess-set-var varsym value)
-;;  ;; which sets varsym from alist only if value is non-nil.
-;;
-;;  (make-local-variable 'ess-proc-prefix)
-;;  (setq ess-proc-prefix  (cdr (assq 'ess-proc-prefix var-alist)))
-;;
-;;  (make-local-variable 'ess-version-running)
-;;  (setq ess-version-running (cdr (assq 'ess-version-running var-alist)))
-;;
-;;  (make-local-variable 'inferior-ess-program)
-;;  (setq inferior-ess-program (cdr (assq 'inferior-ess-program var-alist)))
-;;
-;;  (make-local-variable 'inferior-ess-objects-command)
-;;  (setq inferior-ess-objects-command
-;;	(cdr (assq 'inferior-ess-objects-command var-alist)))
-;;
-;;  (make-local-variable 'ess-help-sec-regex)
-;;  (setq ess-help-sec-regex
-;;	(cdr (assq 'ess-help-sec-regex var-alist)))
-;;
-;;  (make-local-variable 'ess-help-sec-keys-alist)
-;;  (setq ess-help-sec-keys-alist
-;;	(cdr (assq 'ess-help-sec-keys-alist var-alist)))
-;;
-;;  (make-local-variable 'inferior-ess-help-command)
-;;  (setq inferior-ess-help-command
-;;	(cdr (assq 'inferior-ess-help-command var-alist)))
-;;
-;;  (make-local-variable 'inferior-ess-exit-command)
-;;  (setq inferior-ess-exit-command
-;;	(cdr (assq 'inferior-ess-exit-command var-alist)))
-;;
-;;  (make-local-variable 'ess-loop-timeout)
-;;  (setq ess-loop-timeout
-;;	(cdr (assq 'ess-loop-timeout var-alist)))
-;;
-;;  (make-local-variable 'inferior-ess-primary-prompt)
-;;  (setq inferior-ess-primary-prompt
-;;	(cdr (assq 'inferior-ess-primary-prompt var-alist)))
-;;
-;;  (make-local-variable 'ess-history-file)
-;;  (setq ess-history-file
-;;	(concat "." ess-proc-prefix "history"))
-;;
-;;
-;;  (ess-write-to-dribble-buffer 
-;;    (format "(ess-setq-vars): ess-proc-prefix=%s buf=%s \n"
-;;	    ess-proc-prefix buf))
-;;  ;;  (ess-write-to-dribble-buffer
-;;  ;;   (format "(ess-setq-vars): %s"
-;;  ;;	   (buffer-local-variables)))
-;;  )
-;;
+
 
 
 

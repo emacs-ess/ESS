@@ -6,12 +6,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/31 13:06:34 $
-;; Version: $Revision: 1.45 $
-;; RCS: $Id: ess-mode.el,v 1.45 1997/07/31 13:06:34 rossini Exp $
+;; Modified: $Date: 1997/08/25 14:31:04 $
+;; Version: $Revision: 1.46 $
+;; RCS: $Id: ess-mode.el,v 1.46 1997/08/25 14:31:04 rossini Exp $
 
 ;;
 ;; $Log: ess-mode.el,v $
+;; Revision 1.46  1997/08/25 14:31:04  rossini
+;; *** empty log message ***
+;;
 ;; Revision 1.45  1997/07/31 13:06:34  rossini
 ;; nil -> ().  Just looks...
 ;;
@@ -284,28 +287,6 @@
 
 (if (string-match "XEmacs" emacs-version)
     (add-hook 'ess-mode-hook 'ess-mode-xemacs-menu))
-
-
-(defun R-mode  (&optional proc-name) 
-  "Major mode for editing R source.  See ess-mode for more help."
-  (interactive)
-  (setq ess-proc-prefix "R"
-	ess-default-style 'GNU)
-  (ess-mode proc-name ess-proc-prefix))
-
-(defun S-mode (&optional proc-name)
-  "Major mode for editing S+3 source.  See ess-mode for more help."
-  (interactive)
-  (setq ess-proc-prefix "S"
-	ess-default-style 'GNU)
-  (ess-mode proc-name ess-proc-prefix))
-
-(defun XLS-mode (&optional proc-name)
-  "Major mode for editing XLispStat source.  NOT EVEN STARTED."
-  (interactive)
-  ;; (setq ess-proc-prefix "XLS"
-  ;;          ess-default-style 'LISP)
-  (lisp-mode))
 
 (defun ess-mode (&optional proc-name type)
   "Major mode for editing S source.

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/31 11:52:39 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: essd-xls.el,v 1.19 1997/07/31 11:52:39 rossini Exp $
+;; Modified: $Date: 1997/08/25 14:31:04 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: essd-xls.el,v 1.20 1997/08/25 14:31:04 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.20  1997/08/25 14:31:04  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.19  1997/07/31 11:52:39  rossini
 ;;: changed to reflect current.
 ;;:
@@ -86,24 +89,36 @@
   '((ess-customize-alist           .  XLS-customize-alist )
     (ess-proc-prefix               .  "XLS"               )
     (ess-version-running           .  "3.50"              )
-    (inferior-ess-exit-command     .  "(exit)\n"          )
     (ess-loop-timeout              .  10000               )
+    (ess-object-name-db-file       .  "ess-xls-namedb.el" )
+    (ess-help-sec-regex            .  " ")
+    (ess-help-sec-keys-alist       .  " ")
     (inferior-ess-primary-prompt   .  "> ?"               )
     (inferior-ess-program          .  inferior-XLS-program-name)
     (inferior-ess-help-command     .  "(help '%s)\n"      )
-    (inferior-ess-objects-command  .  "(variables)\n"     ))
-    ;;(ess-help-sec-regex            .  
-    ;;(ess-help-sec-keys-alist       .  
+    (inferior-ess-objects-command  .  "(variables)\n"     )
+    (inferior-ess-exit-command     .  "(exit)\n"          )
+    (inferior-ess-start-file       . "~/.ess-XLS")
+    (inferior-ess-start-args       . nil)
+    )
   "Variables to customize for XLS")
+
+
+(defun XLS-mode (&optional proc-name)
+  "Major mode for editing XLispStat source.  NOT EVEN STARTED."
+  (interactive)
+  (setq ess-customize-alist XLS-customize-alist)
+  (lisp-mode))
+
 
 (defun XLS ()
   "Call 'XLispStat', the Lisp statistical system from Luke Tierney."
 
   (interactive)
   (setq ess-customize-alist XLS-customize-alist)
-  ;;(ess-write-to-dribble-buffer
-  ;;(format "(XLS): ess-proc-prefix=%s , buf=%s\n"
-  ;;	   ess-proc-prefix (current-buffer)))
+  (ess-write-to-dribble-buffer
+   (format "(XLS): ess-proc-prefix=%s , buf=%s\n"
+  	   ess-proc-prefix (current-buffer)))
   (inferior-ess))
 
  ; Provide package
