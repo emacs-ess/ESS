@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/06/17 20:09:04 $
-;; Version: $Revision: 1.173 $
-;; RCS: $Id: essa-sas.el,v 1.173 2004/06/17 20:09:04 rsparapa Exp $
+;; Modified: $Date: 2004/06/21 21:57:58 $
+;; Version: $Revision: 1.174 $
+;; RCS: $Id: essa-sas.el,v 1.174 2004/06/21 21:57:58 rsparapa Exp $
 
 ;; Keywords: SAS 
 
@@ -465,7 +465,7 @@ current buffer if nil."
 	(ess-tmp-graph-alist nil)
         (ess-tmp-glyph nil)
         (ess-tmp-graph-regexp 
-	    (concat " RECORDS WRITTEN TO \\(.*" ess-sas-graph-view-suffix-regexp "\\)")))
+	    (concat "[ ]+RECORDS[ ]+WRITTEN[ ]+TO[ ]+\\(.*" ess-sas-graph-view-suffix-regexp "\\)")))
 ;	    (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
 
     (save-match-data 
