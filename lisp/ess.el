@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.12 2000/04/03 15:27:36 maechler Exp $
+;; Version: $Id: ess.el,v 5.13 2000/06/05 21:59:02 ess Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -126,7 +126,17 @@
 (require 'easymenu)
 (if window-system
     (require 'font-lock))
-(require 'ess-vars)
+
+
+(if (running-emacs-version-or-newer 20 1)
+    (progn 
+      (require 'ess-cust)
+      (message "--++ LOADING CUSTOM ++--"))
+  (progn
+    (require 'ess-vars)
+    (message "--++ NOT NOT NOT LOADING CUSTOM ++--")))
+
+;(sleep-for 5)
 
  ; ess-mode: editing S/R/XLS/SAS source
 
