@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/09 19:56:31 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: essl-sas.el,v 1.23 1997/11/09 19:56:31 rossini Exp $
+;; Modified: $Date: 1997/11/09 20:26:32 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: essl-sas.el,v 1.24 1997/11/09 20:26:32 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -1083,19 +1083,19 @@ page ;
               (buffer-substring (match-beginning 0)
 				(match-end 0))))))
 
-(defun sas-contents ()
-  "Run proc contents on current file."
-  (interactive)
-  (let ((buffer-read-only nil) (sas-get-options "linesize=70"))
-    (sas-get-dataset (sas-get-filename) 2 t t (buffer-name))
-    (end-of-buffer)
-    (backward-page-top-of-window 1)))
-  
-(defun sas-print ()
-  "Run proc contents on current file."
-  (interactive)
-  (sas-get-dataset (sas-get-filename) 1 nil nil nil
-                   (sas-create-var-string)))
+;;(defun sas-contents ()
+;;  "Run proc contents on current file."
+;;  (interactive)
+;;  (let ((buffer-read-only nil) (sas-get-options "linesize=70"))
+;;    (sas-get-dataset (sas-get-filename) 2 t t (buffer-name))
+;;    (end-of-buffer)
+;;    (backward-page-top-of-window 1)))
+;;  
+;;(defun sas-print ()
+;;  "Run proc contents on current file."
+;;  (interactive)
+;;  (sas-get-dataset (sas-get-filename) 1 nil nil nil
+;;                   (sas-create-var-string)))
   
 (defun sas-goto-page (arg)
   "Goto top of page ARG.  If no ARG, then goto top of file."
@@ -1126,9 +1126,10 @@ whose beginning matches the regexp `page-delimiter'."
 
 (defun sas-narrow-to-page ()
   (save-excursion
-    (let* (min max))
-          ;;(omin (point-min))
-	  ;;(omax (point-max)))
+    (let* ((min (point-min))
+	   (max (point-max)))
+      ;;(omin (point-min))
+      ;;(omax (point-max)))
       (if (or (bolp) (beginning-of-line)
 	      (looking-at page-delimiter))
           (forward-char 1)
@@ -1137,7 +1138,7 @@ whose beginning matches the regexp `page-delimiter'."
       (forward-page 1)
       (beginning-of-line)
       (setq max (point))
-      (narrow-to-region min max)))
+      (narrow-to-region min max))))
 
 (defun sas-forward-page-narrow (arg)
   "Move forward to page boundary and narrow to page.
