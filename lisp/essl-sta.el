@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 ;;; essd-sas.el --- SAS customization
 
 ;; Copyright (C) 1997 Richard M. Heiberger and A. J. Rossini
@@ -18,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/09 19:38:29 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: essl-sta.el,v 1.2 1997/11/09 19:38:29 rossini Exp $
+;; Modified: $Date: 1997/11/09 20:32:34 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: essl-sta.el,v 1.3 1997/11/09 20:32:34 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 ;;; essl-sta.el --- Stata customization
@@ -30,9 +17,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1997/11/09 19:38:29 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: essl-sta.el,v 1.2 1997/11/09 19:38:29 rossini Exp $
+;; Modified: $Date: 1997/11/09 20:32:34 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: essl-sta.el,v 1.3 1997/11/09 20:32:34 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -102,12 +89,13 @@
 
 ;;;;;;;;;;;;;;; 
 
-(load "comint")
+(require 'comint)
 
 (defun stata-help (the-subject) "Stata help in other buffer"
   (interactive "sHelp on: ")
   (let* ((stata-process (get-process "stata"))
-	 (stata-buffer (process-buffer stata-process)))
+	 (stata-buffer (process-buffer stata-process))
+	 oldpf oldpb oldpm)
     (set-buffer stata-buffer)
     (setq oldpf (process-filter stata-process))
     (setq oldpb (process-buffer stata-process))
@@ -136,7 +124,8 @@
 (defun stata-lookup (the-subject) "Stata lookup in other buffer"
   (interactive "sLook up: ")
   (let* ((stata-process (get-process "stata"))
-	 (stata-buffer (process-buffer stata-process)))
+	 (stata-buffer (process-buffer stata-process))
+	 oldpf oldpb oldpm)
     (set-buffer stata-buffer)
     (setq oldpf (process-filter stata-process))
     (setq oldpb (process-buffer stata-process))
@@ -167,7 +156,8 @@
   (let* ((stata-process (get-process "stata"))
 	 (stata-buffer (if stata-process
 			   (process-buffer stata-process)
-			 (error "Stata is not running."))))
+			 (error "Stata is not running.")))
+	 oldpf oldpb oldpm)
     (set-buffer stata-buffer)
     (setq oldpf (process-filter stata-process))
     (setq oldpb (process-buffer stata-process))
@@ -262,7 +252,9 @@ PROC is the stata process. Does not change point"
 	     (if (< (point) start-of-output) (goto-char start-of-output))
 	     (not (looking-at "^. "))))))
 
-(defvar inferior-stata-mode-map nil)
+(defvar inferior-stata-mode-map nil
+  "Keymap for Stata mode")
+
 (setq inferior-stata-mode-map (cons 'keymap comint-mode-map))
 (define-key inferior-stata-mode-map "\M-\t" 'comint-replace-by-expanded-filename)
 (define-key inferior-stata-mode-map "\C-c\C-v" 'stata-variables)
@@ -281,7 +273,9 @@ PROC is the stata process. Does not change point"
   '("Review" . stata-review-window))
 
 
-
+(defvar stata-mode-map nil
+  "Keymap for Stata mode")
+  
 (setq stata-mode-map (make-sparse-keymap))
 (define-key stata-mode-map "\C-c\C-r"    'stata-eval-region)
 (define-key stata-mode-map "\C-c\M-r" 'stata-eval-region-and-go)
@@ -455,14 +449,14 @@ process buffer."
   "Switch to the current inferior stata process buffer.
 With argument, positions cursor at end of buffer."
   (interactive "P")
-  (setq stata-process (get-process "stata"))
-  (if stata-process 
-      (progn
-	(switch-to-buffer (process-buffer stata-process))
-	(if eob-p (goto-char (point-max))))
-    (progn 
-      (message "No inferior stata process")
-      (ding))))
+  (let (stata-process (get-process "stata"))
+    (if stata-process 
+	(progn
+	  (switch-to-buffer (process-buffer stata-process))
+	  (if eob-p (goto-char (point-max))))
+      (progn 
+	(message "No inferior stata process")
+	(ding)))))
 
 (defun stata-switch-to-end-of-stata nil
   "Switch to the end of the inferior stata process buffer."
