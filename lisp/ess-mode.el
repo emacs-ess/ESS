@@ -6,12 +6,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/24 13:11:16 $
-;; Version: $Revision: 1.40 $
-;; RCS: $Id: ess-mode.el,v 1.40 1997/07/24 13:11:16 rossini Exp $
+;; Modified: $Date: 1997/07/26 01:20:12 $
+;; Version: $Revision: 1.41 $
+;; RCS: $Id: ess-mode.el,v 1.41 1997/07/26 01:20:12 rossini Exp $
 
 ;;
 ;; $Log: ess-mode.el,v $
+;; Revision 1.41  1997/07/26 01:20:12  rossini
+;; newline -> newline-and-indent.
+;;
 ;; Revision 1.40  1997/07/24 13:11:16  rossini
 ;; moved menu items.
 ;;
@@ -174,6 +177,9 @@
 	((not (string-match "XEmacs\\|Lucid" emacs-version))
 	 ;; Code for GNU Emacs
 	 (setq ess-mode-map (make-sparse-keymap))))
+
+  ;; By popular demand:
+  (define-key ess-mode-map "\C-m"        'newline-and-indent)
 
   (define-key ess-mode-map "\C-c\C-r"    'ess-eval-region)
   (define-key ess-mode-map "\C-c\M-r"    'ess-eval-region-and-go)
