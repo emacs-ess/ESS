@@ -1,9 +1,9 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.21 $, for ESS 5.1.x)
+   ($Revision: 5.22 $, for ESS 5.1.x)
 
-   This is the README file for the distribution of ESS version 5.1.14,
+   This is the README file for the distribution of ESS version 5.1.16,
 the alpha/beta series we are using on the way to producing 5.2 (the next
 stable distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported include:
@@ -264,25 +264,25 @@ Installation (from tar file)
    *   cd to a directory where you keep emacs lisp files, or create a
      new   directory to hold the distribution.  This directory will be
      referred   to below as "the ESS distribution directory".  It will
-     contain,   at the end, the tar file `ESS-5.1.14.tar.gz', and a
+     contain,   at the end, the tar file `ESS-5.1.16.tar.gz', and a
      directory for   the ESS source, which will be termed "the
-     ESS-5.1.14 source directory".    Note that the .elc files may be
+     ESS-5.1.16 source directory".    Note that the .elc files may be
      installed elsewhere (as specified in the   Makefile) if desired.
 
    *   Retrieve the compressed tar file from one of the FTP or WWW
      archive   sites via FTP (or HTTP).
 
-   *   Copy `ESS-5.1.14.tar.gz' to the location where you want the
-     ESS-5.1.14 directory, and cd there.  Extract the files from the
-     distribution, which will unpack into a subdirectory, ESS-5.1.14.
-          	gunzip ESS-5.1.14.tar.gz
-          	tar vxf ESS-5.1.14.tar
-     	(or: `gunzip < ESS-5.1.14.tar.gz | tar vxf -' ).  	(or using GNU
-     tar:  `tar zvxf ESS-5.1.14.tar.gz').
+   *   Copy `ESS-5.1.16.tar.gz' to the location where you want the
+     ESS-5.1.16 directory, and cd there.  Extract the files from the
+     distribution, which will unpack into a subdirectory, ESS-5.1.16.
+          	gunzip ESS-5.1.16.tar.gz
+          	tar vxf ESS-5.1.16.tar
+     	(or: `gunzip < ESS-5.1.16.tar.gz | tar vxf -' ).  	(or using GNU
+     tar:  `tar zvxf ESS-5.1.16.tar.gz').
 
      The `tar' command will extract files into the current directory.
 
-     Do not create ESS-5.1.14 yourself, or you will get an extra level
+     Do not create ESS-5.1.16 yourself, or you will get an extra level
      of   depth to your directory structure.
 
    *   Edit the file `lisp/ess-site.el' as explained in the comments
@@ -294,7 +294,7 @@ Installation (from tar file)
 
    *   READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     In the ESS-5.1.14 directory, edit the file `Makeconf' (only if you
+     In the ESS-5.1.16 directory, edit the file `Makeconf' (only if you
       want to place the executables in other locations; see LISPDIR and
       INFODIR) and then type:
           	make
