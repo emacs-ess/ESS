@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 4.0 1997/11/20 23:25:26 rossini Exp $
+@comment $Id: ess.texi,v 4.1 1997/11/30 18:40:59 rossini Exp $
 
 @synindex pg vr
 
@@ -40,7 +40,7 @@ Statistics, University of South Carolina, Columbia, SC, 29208, USA.
 @title ESS --- Emacs Speaks Statistics
 @subtitle version 5.0
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
-@author (Doug Bates, Ed Kademan, Frank Ritter and David Smith)
+@author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter and David Smith)
 @ifhtml
 <P><HR></P>
 @end ifhtml
@@ -83,8 +83,8 @@ permission notice identical to this one.
 ESS version 5.0.
 
 @quotation
-A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Doug Bates, Ed
-Kademan, Frank Ritter and David Smith).
+A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
+Bates, Ed Kademan, Frank Ritter and David Smith).
 
 A programming and inferior mode package for (X)Emacs intended for
 interacting with statistical software packages (primarily S(plus), R,
@@ -105,6 +105,8 @@ development.
 * Bugs::                        Known bugs in ESS
 * Installation::                Installing ESS on your system
 * Customization::               Customizing ESS
+* Key Index::                   
+* Command Index::               
 * Concept Index::               
 * Variable and command index::  
 
@@ -584,20 +586,31 @@ for interacting with the @b{ESS} process, and you can start entering commands.
 ESS allows you to run more than one @b{ESS} process simultaneously in the
 same session.  Each process has a name and a number; the initial process
 @cindex process names
-(process 1) is simply named @samp{S}.  You may start a new process by
-passing a numeric argument to @kbd{M-x S}.  For example, typing @kbd{ESC
-2 M-x S} starts up an @b{ESS} process with name @samp{S2}, in a buffer
-whose name is initially @samp{*S2*}.  The name of the process is shown
-in the mode line in square brackets (for example, @samp{[S2]}); this is
-useful if the process buffer is renamed.  Without a prefix argument,
-@kbd{M-x S} starts a new @b{ESS} process, using the first available
-process number.
+(process 1) is simply named (using S-PLUS as an example) @samp{S+3:1}.
+@comment You may start a new process by passing a numeric argument to
+@comment @kbd{M-x S}.  For example, typing @kbd{ESC 2 M-x S} starts up
+@comment an @b{ESS} process with name @samp{S2}, in a buffer whose name
+@comment is initially @samp{*S2*}. 
+The name of the process is shown in the mode line in square brackets
+(for example, @samp{[S+3:2]}); this is useful if the process buffer is
+renamed.  Without a prefix argument, @kbd{M-x S} starts a new @b{ESS}
+process, using the first available process number.  With a prefix
+argument (for R), @kbd{C-u M-x R} allows for the specification of
+command line options for the size of memory allocated to the R process,
+for example.
 
 @pindex ess-request-a-process
 You can switch to any active @b{ESS} process with the command @kbd{C-c
 C-k} (@code{ess-request-a-process}).  Just enter the name of the process
 you require; completion is provided over the names of all running S
-processes.  This is a good command to bind to a global key.
+processes.  This is a good command to consider binding to a global key.
+
+@pindex ess-plain-first-buffername
+With the old version of S-mode, there initial process was not marked,
+i.e. S instead of S1 was used.  To obtain this behavior, set the
+variable @code{ess-plain-first-buffername} to @code{t}.  See
+@file{ess-site} for how to set this for all users.
+
 
 @node Customizing startup,  , Multiple ESS processes, Starting Up
 @comment  node-name,  next,  previous,  up
@@ -2532,7 +2545,7 @@ above the appropriate value would be @code{"[^\\$]*\\$ *"}.
 Once these variables are set appropriately, ESS should work on any
 system.
 
-@node Customization, Concept Index, Installation, Top
+@node Customization, Key Index, Installation, Top
 @comment  node-name,  next,  previous,  up
 @appendix Customizing ESS
 @cindex customization
@@ -2876,20 +2889,35 @@ Keymap used within ESS transcript buffers.
 @end defvr
 
 
-@node Concept Index, Variable and command index, Customization, Top
+@node Key Index, Command Index, Customization, Top
+@unnumbered Key (Character) Index
+@printindex ky
+
+
+
+@node Command Index, Concept Index, Key Index, Top
+@unnumbered Command and Function Index
+@printindex fn
+
+
+@node Concept Index, Variable and command index, Command Index, Top
 @comment  node-name,  next,  previous,  up
 @unnumbered Concept Index
-
 @printindex cp
 
 @node Variable and command index,  , Concept Index, Top
 @unnumbered Variable and command index
-
 @printindex vr
 
 @contents
 
 @bye
+@c Remember to delete these lines before creating the info file.
+@iftex
+@lucidbook
+@bindingoffset = 0.5in
+@parindent = 0pt
+@end iftex
 
 @comment Local Variables:
 @comment TeX-master: "ess.texi"
