@@ -1,3 +1,8 @@
+2004-08-24  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-cust.el (inferior-R-args): New variable.
+	* essd-r.el (R): pass inferior-R-args to R when starting up.
+
 2004-08-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (inferior-R-page): only match "page()", not
