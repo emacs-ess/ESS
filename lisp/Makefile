@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.32 $.
+### File: $Revision: 5.33 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -51,7 +51,7 @@ PRELOADS = -l ./ess-comp.el
 ## optimizations.  When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
 
-TOCOMPILE = ess-vars.el ess.el ess-site.el ess-utils.el \
+TOCOMPILE = ess-vars.el ess-cust.el ess.el ess-site.el ess-utils.el \
 	ess-inf.el ess-iw32.el \
 	ess-mode.el ess-trns.el ess-help.el \
 	ess-comp.el \
@@ -102,7 +102,7 @@ distclean: clean
 
 ## commented above ESSVERSION=$(shell cat ../VERSION)
 ## Use $(shell ..) only here, so only these are GNU make dependent :
-ess-vars.el: ../VERSION
+ess-cust.el ess-vars.el: ../VERSION
 	perl -pi -e 's/".*"/"$(shell cat $^)"/ if /ess-version/' $@
 ess-site.el: ../VERSION
 	perl -pi -e 's/$(ESSVER_NR_REGEXP)/\1-$(shell cat $^)/go' $@
