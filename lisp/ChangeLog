@@ -1,3 +1,9 @@
+2004-08-25  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-sp6.el (S+6-customize-alist): Use inferior-Splus-args.
+
+	* ess-cust.el (inferior-Splus-args): New variable.
+
 2004-08-24  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-cust.el (inferior-R-args): New variable.
