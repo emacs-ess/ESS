@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.41 1997/07/25 21:13:37 rossini Exp $
+## $Id: Makefile,v 1.42 1997/07/26 01:23:26 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.42  1997/07/26 01:23:26  rossini
+## redid again.
+##
 ## Revision 1.41  1997/07/25 21:13:37  rossini
 ## don't need ess-xtra yet!
 ##
@@ -145,20 +148,8 @@ SOURCES = ess-vars.el ess.el \
 
 OBJECTS=$(SOURCES:.el=.elc)
 
-AUXFILES = COPYING Makefile NEWS README README.XE TODO \
+AUXFILES = COPYING Makefile NEWS README TODO \
 	S-mode.texi ChangeLog
-
-##S-mode-$(VERSION)/
-SOURCESXE = S-mode-$(VERSION)/ess.el S-mode-$(VERSION)/ess-inf.el \
-	S-mode-$(VERSION)/ess-mode.el S-mode-$(VERSION)/ess-trns.el  \
-	S-mode-$(VERSION)/ess-help.el S-mode-$(VERSION)/ess-site.el \
-	S-mode-$(VERSION)/ess-modeadds.el S-mode-$(VERSION)/ess-xtra.el 
-
-AUXFILESXE = S-mode-$(VERSION)/COPYING S-mode-$(VERSION)/Makefile \
-	S-mode-$(VERSION)/NEWS S-mode-$(VERSION)/README \
-	S-mode-$(VERSION)/README.XE S-mode-$(VERSION)/TODO \
-	S-mode-$(VERSION)/S-mode.texi S-mode-$(VERSION)/ChangeLog
-
 
 S-mode: $(OBJECTS)
 
@@ -185,10 +176,6 @@ clean:
 
 ## In previous set of commands:  chmod u-w S-site.el Makefile
 
-distrib.XE : $(SOURCESXE) $(AUXFILESXE)
-	tar covf S-mode-$(VERSION).tar $(SOURCESXE) $(AUXFILESXE)
-	gzip S-mode-$(VERSION).tar
-
 patch: S-mode-$(VERSION).tar.gz S-mode-$(LASTVERSION).tar.gz
 	-rm -rf S-mode-$(VERSION)
 	mkdir S-mode-$(VERSION)
@@ -214,35 +201,34 @@ html/S-mode_toc.html: S-mode.texi
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
 
 ess.elc:	ess.el
-	$(EMACS) $(BATCHFLAGS)  -f batch-byte-compile ess.el
+#	$(EMACS) $(BATCHFLAGS)  -f batch-byte-compile ess.el
 
 ess-site.elc:  ess-site.el ess.elc
-	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile ess-site.el
+#	$(EMACS) $(BATCHFLAGS) -f batch-byte-compile ess-site.el
 
 ess-help.elc:  ess-help.el $(CORE)
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-help.el
+#	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-help.el
 
 ess-inf.elc:  ess-inf.el $(CORE)
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-inf.el
+#	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-inf.el
 
 ess-mode.elc:  ess-mode.el $(CORE)
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-mode.el
+#	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-mode.el
 
 ess-trns.elc:  ess-trns.el $(CORE)
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-trns.el
-
+#	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-trns.el
 
 essd-r.elc : essd-r.el ess.el
-	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-r.el
+#	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-r.el
 
 essd-s+3.elc : essd-s+3.el ess.el
-	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-s+3.el
+#	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-s+3.el
 
 essd-s4.elc : essd-s4.el ess.el
-	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-s4.el
+#	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-s4.el
 
 essd-xls.elc : essd-xls.el ess.el
-	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-xls.el
+#	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-xls.el
 
 #essd-vst.elc : essd-vst.el ess.el
 #	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-r.el
