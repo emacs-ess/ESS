@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/06/07 14:59:47 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: essa-sas.el,v 1.24 2001/06/07 14:59:47 ess Exp $
+;; Modified: $Date: 2001/06/07 15:59:49 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: essa-sas.el,v 1.25 2001/06/07 15:59:49 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -238,7 +238,6 @@ on the way."
 		))
 
 		(setq ess-sas-search-column (current-column))
-		(message "%d" ess-sas-search-column)
 
 	        (if (not (equal ess-sas-column ess-sas-search-column))
 		   (setq ess-sas-search-point nil))
