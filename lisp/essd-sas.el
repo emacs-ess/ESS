@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/05/10 05:00:11 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: essd-sas.el,v 5.12 2002/05/10 05:00:11 rmh Exp $
+;; Modified: $Date: 2003/07/11 01:23:07 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: essd-sas.el,v 5.13 2003/07/11 01:23:07 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -209,7 +209,34 @@ Better logic needed!  (see 2 uses, in this file).")
     (if ess-sas-global-unix-keys (ess-sas-global-unix-keys))
     (if ess-sas-global-pc-keys (ess-sas-global-pc-keys)))
   (define-key sas-mode-local-map "\C-ci" 'ess-eval-line-and-step-invisibly)
+  (define-key sas-mode-local-map ";" 'ess-electric-run-semicolon)
   (use-local-map sas-mode-local-map))
+
+;; rmh Jul 10 2003
+(defun ess-electric-run-semicolon (arg)
+  "Insert character.  If the line contains \"run;\" and nothing else then indent line."
+  (interactive "P")
+  (let (insertpos)
+    (if (and (not arg)
+	     (eolp)
+	     (save-excursion
+		   (skip-chars-backward " \t")
+		   (backward-word 1)
+		   (and (looking-at "run")
+			(progn
+			  (skip-chars-backward " \t")
+			  (bolp)))))
+	(progn
+	  (insert last-command-char)
+	  (ess-indent-line)
+	  (save-excursion
+	    (if insertpos (goto-char (1+ insertpos)))
+	    (delete-char -1))))
+    (if insertpos
+	(save-excursion
+	  (goto-char insertpos)
+	  (self-insert-command (prefix-numeric-value arg)))
+      (self-insert-command (prefix-numeric-value arg)))))
 
 (defun SAS ()
   "Call 'SAS', from SAS Institute."
