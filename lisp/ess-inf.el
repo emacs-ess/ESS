@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/10 22:02:32 $
-;; Version: $Revision: 1.76 $
-;; RCS: $Id: ess-inf.el,v 1.76 1997/11/10 22:02:32 rossini Exp $
+;; Modified: $Date: 1997/11/11 03:44:30 $
+;; Version: $Revision: 1.77 $
+;; RCS: $Id: ess-inf.el,v 1.77 1997/11/11 03:44:30 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -1835,9 +1835,13 @@ The result is stored in ess-sl-modtime-alist"
 	    (if (bobp) (throw 'nosym nil) (backward-char 1)))
 	  (let*
 	      ((end (progn (forward-sexp 1) (point)))
-	       (beg (progn (backward-sexp 1) (point))))
-	    (buffer-substring beg end))))
-    (error nil)))
+	       (beg (progn (backward-sexp 1) (point)))
+	       (object-name (buffer-substring beg end))
+	       (object-returned))
+	    (if (not object-name)
+		(setq object-returned object-name)
+	      (setq object-returned "Temporary"))))
+    (error nil))))
 
 ;;*;; Temporary buffer handling
 
