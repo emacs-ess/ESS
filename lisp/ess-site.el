@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1998/12/11 00:37:07 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: ess-site.el,v 5.9 1998/12/11 00:37:07 rossini Exp $
+;; Modified: $Date: 1998/12/14 18:02:10 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: ess-site.el,v 5.10 1998/12/14 18:02:10 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -154,9 +154,12 @@
 ;;; an emacs buffer, using the same technology as ESS uses for Unix
 ;;; S-Plus.  Interactive graphics are unavailable in this mode.
 ;;; See essd-sq4.el
+
 ;;(setq-default inferior-Sqpe+4-program-name "Sqpe")
-(if (eq (getenv "SHOME") nil)
-    (setenv "SHOME" "c:/Progra~1/spls45se"))
+
+;; THIS IS NEEDED BY MS-WINDOWS
+;;(if (eq (getenv "SHOME") nil)
+;;    (setenv "SHOME" "c:/Progra~1/spls45se"))
  
 ;;;; Choice for S().
 ;;(setq-default inferior-S-program-name inferior-S+3-program-name)
