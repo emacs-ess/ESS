@@ -182,49 +182,50 @@ text editor which is freely available, under the terms of the Free
 Software Foundation's Copy-left agreement, for a large number of
 environments.  These include frequently used statistical computing
 platforms such as Apple Corporation's Macintosh platform, and
-Microsoft-based operating system.  
+Microsoft-based operating system.  Emacs has been around for many
+years, and in the past was considered as one of the primary options
+for text editing on many Unix systems.
 
 Most programming and documentation tasks fall under the realm of text
-processing.  This is natural given that it is being worked on from the
-perspective of the developer and not the end user.  This work can be
-enhanced by common IDE features such as contextual highlighting and
-recognition of special reserved words for the programming language or
-statistical program/package of interest.  While Emacs is not a word
-processor, it does share some similar features and can behave to a
-limited extent as one.
+editing.  This work can be enhanced by common IDE features such as
+contextual highlighting and recognition of special reserved words for
+the programming language being used.  In addition, editor behaviors
+such as folding, outlining, and bookmarking can assist with
+manuevering around a file.  One task which is not in this realm is
+word processing, which focuses on producing a presentation of a
+document, in addition to text editing.  While Emacs is not a word
+processor, it does share some features.
 
-The ESS extensions provide Emacs with a uniform interface to the
-statistical programming code.  This can be extended with other Emacs
-packages to assist with usage of documentation tools (\LaTeX, SGML,
-XML, Noweb), and revision control tools (RCS,CVS,SCCS, PRCS), on both
-local and remote machines.  It handles the interface to both source
-code and transcripts using context (syntax highlighting, bookmarking
-features, command-history).
+ESS provides Emacs with an easily extensible and uniform interface to
+text handling for statistical packages.  The capabilities can be
+extended in an orthogonal manner to include other Emacs packages for
+assisting with documentation (\LaTeX; SGML, XML, and XSLT; Noweb);
+version control (RCS,CVS,SCCS, PRCS); and remote editing via FTP or
+secure mechanisms such as SSH/SCP.  It handles the interface to both
+source code and transcripts contextually, providing syntax
+highlighting, bookmarking features, interfaces to directory structure,
+and command-history.
 
-Emacs is also a sophisticated development environment for programming
+Emacs provides a sophisticated development environment for programming
 in traditional compiled languages such as C, C++, and Fortran as well
 as non-traditional byte-compiled and interpreted languages such as
 Perl, Java, and Python.  It provides interfaces to build tools such as
 make as well as debugging tools through the use of external debuggers
-such as JDebug, gdb, and dbx. Along with this, Emacs provides an
-interface to revision control systems for maintaining version history
-and a change-log for files.
+such as JDebug, gdb, and dbx.  Finally, it assists with project tasks
+such as documentation of changes, design, and version control.
 
-Extensions to Emacs allow it to act as a World-Wide-Web browser, a
-highly sophisticated mail and news reader, a shell/terminal window
-with history, and as many other common text-based tools.  It can be
-re-mapped to act as many other text-editors, such as ed, vi, wordstar,
-and brief.  In addition, the above plus its ability to interface with
-other processes makes it an ideal platform for providing a universal
-interface to statistical packages.  The use of emacs-lisp as an
-extension language has also facilitated the programming.
+Other extensions to Emacs allow it to act as a World-Wide-Web browser,
+a highly sophisticated mail and news reader, a shell/terminal window
+with history, and as an interface to other common text-based tools
+such as spell checking programs.  It can have its interface re-mapped
+to resemble that of other text-editors, such as ed, vi, wordstar, and
+brief.  
 
-One of the strengths of Emacs is that every activity can be
-facilitated by keystrokes.  This has the advantage of eliminating the
-slowness and potential danger of mouse usages, but also has the
-disadvantage of requiring user memorization.  There is the ability to
-use pull-down menus to run commands, and these menus can be configured
-to present the associated keystrokes.
+The interface to Emacs is by keystrokes on all systems, as well as by
+mouse input on systems which support it, including both windowing and
+non-windowing environments.  The mouse-based interface, through menus
+and toolbars, also tries to facilitate the learning of keystroke-based
+short-cuts.  
 
 Emacs was one of the first tools available with a programmable
 extension language, which is a dialect of Lisp
@@ -236,17 +237,12 @@ interactive games such as tetris.  However, important tasks such as
 programming Makefiles, scripts, and compiled code are definitely not
 neglected.
 
-We assume that you are familiar with Emacs terminology and syntax:
-file, buffer, region, description of keys etc.  If not, please read
-the New Users guide (found in the info pages, "C-h i" (by pressing
-control h, i) or Tutorial, "C-h t").
+Emacs also has an internal help system and tutorial for its use.
+Appendix~\ref{app:scenarios} provides sample sessions to help
+familiarize one with approaches for using Emacs with ESS.
 
-To find the key-sequences for commands, view the keymap (C-h b) or
-view help for the current mode (C-h m).   There are also numerous
-books which might help.
-
-The above reasons make Emacs a natural choice as a basis for providing
-a universal interface for data analysis and programming.
+The above reasons make Emacs a reasonable choice as a starting point
+for providing a universal interface for data analysis and programming.
 
 \section{Statistical User Interfaces}
 \label{sec:UI}
@@ -943,9 +939,8 @@ interface (W3 Consortium).  This is described more in
 
 \appendix
 
-
 \section{Scenarios for Use}
-\label{app:Scenarios}
+\label{app:scenarios}
 
 The next 2 sections discuss specific use patterns for ESS under 2 very
 different statistical language systems, S and SAS.
