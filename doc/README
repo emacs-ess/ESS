@@ -1,6 +1,9 @@
+How do we organize the  ess/doc/ directory ?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Source: *.texi  [texinfo]
 
-Targets:
+Targets (see also ./Makefile):
 
 	  ess.dvi	[DVI -> PostScript]
 	  readme.dvi
