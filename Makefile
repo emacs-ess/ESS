@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.49 2002/01/04 02:30:23 ess Exp $
+## $Id: Makefile,v 5.50 2002/01/04 02:34:54 ess Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -67,7 +67,7 @@ all install clean distclean realclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@ ; cd .. ; done
 
 compile:
-	cd lisp; $(MAKE) all EMACS=$(EMACS) BATCHFLAGS=$(BATCHFLAGS)
+	cd lisp; $(MAKE) all EMACS=$(EMACS) BATCHFLAGS="$(BATCHFLAGS)"
 
 README: doc/readme.texi $(INTRO.DEPENDS)
 	cd doc ; $(MAKE) readme.texi; $(MAKEINFOascii) readme.texi \
