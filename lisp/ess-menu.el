@@ -1,13 +1,13 @@
 ;;; ess-menu.el --- Menu and Speedbar support for statistical
 ;;; programming and analysis
 
-;; Copyright 2000--2001 (C) A.J. Rossini, Richard M. Heiberger, 
+;; Copyright 2000--2001 (C) A.J. Rossini, Richard M. Heiberger,
 ;; Kurt Hornik, Martin Maechler and Rodney Sparapani.
 
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.11 2001/06/21 22:32:42 rossini Exp $
+;; Version: $Id: ess-menu.el,v 1.12 2001/08/31 16:32:39 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -37,7 +37,9 @@
 
 ;;(require 'ess-site)
 (require 'ess-cust)
-(require 'imenu)
+(if (not (require 'imenu "imenu.elc" 'no-error))
+    (message "** warning: 'imenu not available")
+)
 ;;possibly below, after checking: (require 'speedbar)
 
  ;;; Function Menu (func-menu) for XEmacs:
@@ -89,24 +91,24 @@ Thanks to Stephen Eglen <stephen@cogsci.ed.ac.uk> for first version."
   :group 'ess
   :type  'regex)
 
-(defcustom ess-S-imenu-generic-expression 
+(defcustom ess-S-imenu-generic-expression
   (concat ess-S-imenu-variable-regexp
 	  ;; "\\|"
 	  ;; ess-S-imenu-function-regexp
 	  )
   "Imenu Regexp for S."
-  :group 'ess 
+  :group 'ess
   :type  'regex)
 
 (setq R-imenu-generic-expression 'ess-S-imenu-generic-expression)
 (setq S-imenu-generic-expression 'ess-S-imenu-generic-expression)
 
 (defun ess-imenu-S (&optional arg)
-  "S Language Imenu support for ESS.  
+  "S Language Imenu support for ESS.
 Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
   (interactive)
-  (setq imenu-generic-expression 
-	'( (nil ;;ess-S-imenu-generic-expression 
+  (setq imenu-generic-expression
+	'( (nil ;;ess-S-imenu-generic-expression
 	        "^\\(.+\\)\\s-+<-\\s-+function"
 		1)))
   (imenu-add-to-menubar "Imenu-S"))
@@ -118,7 +120,7 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
 (defun ess-imenu-XLS (&optional arg)
   "XLispStat Language Imenu support for ESS."
   (interactive)
-  (setq imenu-generic-expression 
+  (setq imenu-generic-expression
 	'( (nil "New one needed" 1)))
   (imenu-add-to-menubar "XLS-fcts"))
 
@@ -190,14 +192,14 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
 (defun ess-imenu-STA (&optional arg)
   "Stata Language Imenu support for ESS."
   (interactive)
-  (setq imenu-generic-expression 
+  (setq imenu-generic-expression
 	'( (nil "New one needed" 1)))
   (imenu-add-to-menubar "Stata-fcts"))
 
 (defun ess-imenu-SAS (&optional arg)
   "SAS language Imenu support for ESS."
   (interactive)
-  (setq imenu-generic-expression 
+  (setq imenu-generic-expression
 	'( (nil "[ \t\n=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ \t\n;]" 1)))
   (imenu-add-to-menubar "SAS-fcts"))
 
@@ -239,7 +241,7 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
 
 (defun S-speedbar-buttons (buffer)
   "attempted hack."
-  
+
   (speedbar-with-writable)
   ;;(speedbar-make-tag-line)
   ;;(speedbar-insert-button)
