@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/03/17 17:42:46 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: essd-r.el,v 5.7 1999/03/17 17:42:46 rossini Exp $
+;; Modified: $Date: 1999/03/31 23:20:09 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: essd-r.el,v 5.8 1999/03/31 23:20:09 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,7 +33,7 @@
 ;;; This file defines all the R customizations for ESS.  See essl-s.el
 ;;; for general S language customizations.
 
-;;; Autoloads: and Requires
+;;; Autoloads and Requires
 
 (require 'essl-s)
 
@@ -124,12 +124,8 @@
 	(goto-char (point-max))
 	(beginning-of-line)
 	(insert
-"The interaction of ESS 5.1.2 and R 0.63.2 Beta is slightly rough:\n
-To start the graphics window, you must explicitly use the `x11()'
-command.\n
-To see the graphics window, you must use the `locator()' command and
-then click on the graphics window.\n
-The `system(\"command\")' doesn't work when bash is the emacs shell.\n
+"The interaction of ESS 5.1.4 and R 0.63.3 pre-Beta is slightly rough:\n
+To start the graphics window, you must explicitly use the `x11()' command.\n
 You must quit R with `q()' or you take the risk of not being able
 to shut down the computer cleanly.\n\n")
 	(goto-char (point-max)))))
