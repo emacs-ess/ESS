@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2003/11/05 13:23:11 $
-;; Version: $Revision: 5.31 $
-;; RCS: $Id: essl-s.el,v 5.31 2003/11/05 13:23:11 maechler Exp $
+;; Modified: $Date: 2004/01/10 17:40:31 $
+;; Version: $Revision: 5.32 $
+;; RCS: $Id: essl-s.el,v 5.32 2004/01/10 17:40:31 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -52,6 +52,7 @@
   (modify-syntax-entry ?&  "."  S-syntax-table)
   (modify-syntax-entry ?|  "."  S-syntax-table)
   (modify-syntax-entry ?\' "\"" S-syntax-table)
+  (modify-syntax-entry ?\" "\"" S-syntax-table)
   (modify-syntax-entry ?#  "<"  S-syntax-table) ; open comment
   (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
   ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
@@ -453,7 +454,9 @@ Uses the file given by the variable `ess-function-outline-file'."
 	 (require 'essd-r)
 	 (R-fix-T-F from (not verbose))))
 
-    (goto-char from) (ess-rep-regexp " *_ *" " <- " nil 'literal verbose)
+    ;; from R 1.9; "_" is valid in names -- here assume no initial / trailing:
+    (goto-char from) (ess-rep-regexp " +_ *" " <- " nil 'literal verbose)
+    (goto-char from) (ess-rep-regexp   "_ +" " <- " nil 'literal verbose)
 
     ;; ensure space around  "<-"  ---- but only replace if necessary:
     (goto-char from)
