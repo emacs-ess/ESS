@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.69 2002/08/08 09:04:35 maechler Exp $
+## $Id: Makefile,v 5.70 2002/08/08 09:56:56 maechler Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -31,7 +31,10 @@ default:
 all clean distclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd ..; done
 
-dist: VERSION
+
+## --- PRE-release ---
+
+dist: VERSION cleanup-dist
 	cd doc;  $(MAKE) docs; cd ..
 	cd lisp; $(MAKE) dist; grep 'ess-version' ess-cust.el; cd ..
 	@echo "** Committing VERSION, README, ANNOUNCE and info **"
@@ -60,23 +63,33 @@ dist: VERSION
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	@echo "** Creating zip file **"
 	zip -r $(ESSDIR).zip $(ESSDIR)
-	@echo "** Cleaning up **"
-	chmod -R u+w $(ESSDIR); rm -rf $(ESSDIR)
+	$(MAKE) cleanup-dist
 	touch $@
+
+cleanup-dist:
+	@echo "** Cleaning up **"
+	(if [ -d $(ESSDIR) ] ; then \
+	  chmod -R u+w $(ESSDIR) && rm -rf $(ESSDIR) ; fi)
 
 ChangeLog: VERSION
 	$(EMACSLOGCVS)
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
 	(echo `date "+%Y-%m-%d "` \
-	     " ESS Maintainers <ess@franz.stat.wisc.edu>" ; \
+	     " ESS Maintainers <ESS-core@stat.math.ethz.ch>" ; \
 	 echo; echo "  * Version $(ESSVERSION) released."; echo; \
 	 cat ChangeLog.old ) > ChangeLog
 	cvs commit -m 'Version .. released' ChangeLog
 
-# FIXME: "ChangeLog" does not work (for MM)
-#rel: ChangeLog dist tag
-rel: dist tag
+## --- RELEASE ---
+
+# Note: we do not want to tag every minor release
+#       ==> "tag" manually after `important' releases
+
+# FIXME: "ChangeLog" does not work (for MM);
+#	if it would it still needed cleanup of full-path names
+#rel: ChangeLog dist
+rel: dist
 	@echo "** Placing tar and zip files **"
 	scp -p $(ESSDIR).tar.gz $(ESSDIR).zip $(UPLOAD_SITE)
 
