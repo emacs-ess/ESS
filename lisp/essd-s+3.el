@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/17 20:57:15 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essd-s+3.el,v 1.14 1997/07/17 20:57:15 rossini Exp $
+;; Modified: $Date: 1997/07/30 13:13:57 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essd-s+3.el,v 1.15 1997/07/30 13:13:57 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s+3.el,v $
+;;: Revision 1.15  1997/07/30 13:13:57  rossini
+;;: vars back..
+;;:
 ;;: Revision 1.14  1997/07/17 20:57:15  rossini
 ;;: works, now..
 ;;:
@@ -69,7 +72,7 @@
 
 (defvar S+3-customize-alist
   '((ess-proc-prefix      .         "S")
-    (ess-version-running  .         "S+3")
+    (ess-version-running  .         inferior-S+3-program-name) ;"S+3")
     (inferior-ess-program .         "Splus")
     (ess-help-sec-regex   .         "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist .      '((?a . "ARGUMENTS:")
