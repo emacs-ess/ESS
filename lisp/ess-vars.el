@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/04/06 08:49:08 $
-;; Version: $Revision: 5.39 $
-;; RCS: $Id: ess-vars.el,v 5.39 2000/04/06 08:49:08 maechler Exp $
+;; Modified: $Date: 2000/04/07 08:35:56 $
+;; Version: $Revision: 5.40 $
+;; RCS: $Id: ess-vars.el,v 5.40 2000/04/07 08:35:56 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -345,6 +345,9 @@ Good for evaluating ESS code.")
 
 ;;*;; Regular expressions
 
+;; FIXME : This is just for the S dialects;  need to define this for others,
+;; -----
+;;  {{however  "XLS-mode" should just use standard lisp "beginning of funtion"}}
 (defvar ess-function-pattern
   (concat
 ;;-    "\\(" ; EITHER
@@ -375,15 +378,18 @@ Good for evaluating ESS code.")
    )
   "The regular expression for matching the beginning of an S function.")
 
+;; Fixme: the following is just for S dialects :
 (defvar ess-dumped-missing-re
   "\\(<-\nDumped\n\\'\\)\\|\\(<-\\(\\s \\|\n\\)*\\'\\)"
   "If a dumped object's buffer matches this re, then it is replaced
 by `ess-function-template'.")
 
 (defvar ess-dump-error-re
-  (if (string= ess-language "S") "\nDumped\n\\'" "[Ee]rror")
+  (if (string= ess-language "S") "\nDumped\n\\'"
+    "[Ee]rror")
   "Regexp used to detect an error when loading a file.")
 
+;; This is tested for S dialects (actually only for R) -- be careful with it!
 (defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
   "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg.")
 
@@ -397,10 +403,10 @@ by `ess-function-template'.")
 (defvar inferior-R-program-name
   (if (or (equal window-system 'w32) (equal window-system 'win32))
       "Rterm"  "R")
-  "*Program name for invoking an inferior ESS with R().")
+  "*Program name for invoking an inferior ESS with \\[R].")
 
 (defvar inferior-XLS-program-name "xlispstat"
-  "*Program name for invoking an inferior ESS with XLS().")
+  "*Program name for invoking an inferior ESS with \\[XLS].")
 
 (defvar inferior-S3-program-name "/disk05/s/S"
   "*Program name for invoking an inferior ESS with S3().")

@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/06 08:49:08 $
-;; Version: $Revision: 5.42 $
-;; RCS: $Id: ess-inf.el,v 5.42 2000/04/06 08:49:08 maechler Exp $
+;; Modified: $Date: 2000/04/07 08:35:56 $
+;; Version: $Revision: 5.43 $
+;; RCS: $Id: ess-inf.el,v 5.43 2000/04/07 08:35:56 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -867,7 +867,7 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
   (let ((n 0)
 	(inc (if (> arg 0) 1 -1)))
     (while (and (/= arg 0) (= n 0))
-      (setq n (forward-line inc))
+      (setq n (forward-line inc)); n=0 is success
       (while (and (= n 0)
 		  (looking-at "\\s-*\\($\\|\\s<\\)"))
 	(setq n (forward-line inc)))

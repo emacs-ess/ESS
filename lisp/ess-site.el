@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/04/06 08:49:08 $
-;; Version: $Revision: 5.48 $
-;; RCS: $Id: ess-site.el,v 5.48 2000/04/06 08:49:08 maechler Exp $
+;; Modified: $Date: 2000/04/07 08:35:56 $
+;; Version: $Revision: 5.49 $
+;; RCS: $Id: ess-site.el,v 5.49 2000/04/07 08:35:56 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -172,7 +172,7 @@
 	   ("\\.[Ss]out"	. S-transcript-mode)
 	   ("\\.[Rr]t\\'"	. R-transcript-mode)
 	   ("\\.[Rr]out"	. R-transcript-mode)
-	   ("\\.Rd\\'"		. Rd-mode))  ;all R>=0.60
+	   ("\\.Rd\\'"		. Rd-mode))
 	 auto-mode-alist)))
 
 ;; (1.4) Customize the dialects for your setup.
