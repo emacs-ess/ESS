@@ -2,10 +2,10 @@
 @item
 Commands like @code{ess-display-help-on-object} and list completion
 cannot be used while the user is entering a multi-line command.  The
-only real fix in this situation is to use another @b{ESS} process.
+only real fix in this situation is to use another ESS process.
 
 @item
-The @code{ess-eval-} commands can leave point in the @b{ESS} process
+The @code{ess-eval-} commands can leave point in the ESS process
 buffer in the wrong place when point is at the same position as the last
 process output.  This proves difficult to fix, in general, as we need to
 consider all @emph{windows} with @code{window-point} at the right place.
@@ -19,7 +19,7 @@ Backup files can sometimes be left behind, even when
 @code{ess-keep-dump-files} is @code{nil}.
 
 @item
-Passing an incomplete @b{S} expression to @code{ess-execute} causes ESS
+Passing an incomplete @Sl{} expression to @code{ess-execute} causes ESS
 to hang.
 
 @item
