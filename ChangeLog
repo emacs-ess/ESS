@@ -1,3 +1,9 @@
+2004-02-19  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* doc/ess.texi (ESS processes on Remote Computers): add brief
+	notes on how to get a ssh buffer. Note that URL currently spills
+	into right margin in ess.pdf; anyway to prevent that?
+
 2002-11-29  Stephen Eglen  <stephen@gnu.org>
 
 	* doc/ess-defs.texi: New file to provide macros for formatting R,
@@ -3796,7 +3802,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 2002/11/30 03:33:50 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 2004/02/19 13:10:18 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -5986,6 +5992,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.31  2004/02/19 13:10:18  stephen
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 5.30  2002/11/30 03:33:50  stephen
 	* Removing Changes to doc.
 	* Removing
