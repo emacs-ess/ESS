@@ -18,15 +18,74 @@ file README with the distribution.
 
    And to help remove any further confusion:
 
-   	The name is __ESS__.  Not ESS-mode.
+   	The name is ESS, NOT ESS-mode.
 
    Thank you :-).
 
 New Features
 ============
 
+   Changes/New Features in 5.1.20:
+   * New `options()$STERM' in the S dialects (S, S-Plus, R).        The
+     S program can determine the environment in which it is
+     currently running.  ESS sets the option to `iESS' or `ddeESS'
+     when it starts an S language process.  We recommend other specific
+          values for S language processes that ESS does not start.
+
+   * New `ess-mouse-me' function, assigned to S-mouse-3 by default.
+       User may click on a word or region and then choose from the
+      menu to display the item, or a summary, or a plot, etc.
+     This feature is still under development.
+
+   * GNU Emacs 21.1 is now supported (fixed for S dialects, SAS & BUGS),
+          (some from Stephen Eglen).
+
+   * XEmacs 21.x is now supported (fixed w32-using-nt bug)
+
+   * XEmacs on Win (NT) is better supported.
+
+   * Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
+
+   * should now work even when imenu is not available (for old
+     Xemacsen).
+
+   * for SAS : XEmacs-Imenu fix; C-TAB is globalized along with your
+       function-key definitions, if specified; you can specify your SAS
+          library definitions outside of autoexec.sas for
+     ess-sas-data-view       with SAS code placed in the variable
+     ess-sas-data-view-libname,       also the dataset name is
+     defaulted to the nearest permanent dataset       to point;
+     Speedbar support now works for permanent datasets, please
+     ignore first./last.; new font-locking is now the default with more
+          improvements for font-locking PROCs, macro statements, * ;
+     and %* ;       comments; you can toggle sas-log-mode with F10
+     which will font-lock       your .log (if it isn't too big); submit
+     remote .sas files accessed       with ange-ftp, EFS or Tramp
+     (Kermit is experimental) by setting       ess-sas-submit-method to
+     'sh; ess-sas-submit-command and
+     ess-sas-submit-command-options are buffer-local so you can have
+       local file variable sections at the end of your .sas files to
+        request different executables or specify special options and
+     the       local file variables are re-read at submit instead of
+     only at file       open so that if you make a change it is picked
+     up immediately;
+
+   * for BUGS: font-lock with `in' fixed.
+
+   * for STATA: font-lock bug fixed.
+
+   * for Rd mode: C-c C-v and `switch-process' in menu.        further,
+     C-c C-f prefix (Rd-font) for inserting or surrounding a word
+     by things such as \code{.}, \code{\link{.}}, \emph{.} etc.
+
+   * new functions (ess-directory-function) and (ess-narrow-to-defun)
+        ess-directory <-> default-directory logic (Jeff Mincy).
+
+   * Re-organized Makefile and fixed a few bugs.
+
    Changes/New Features in 5.1.19:
-   * S+6 now supported (Tony Rossini)
+   * S+6 now supported (Tony Rossini (Unix) and Rich Heiberger
+     (Windows))
 
    * New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
      Templates assist you in writing .bug and .cmd code (.cmd and .log
@@ -219,11 +278,11 @@ Current Features
 Stability
 =========
 
-   Versions 5.1.x are meant as a beta-level releases.  While some bugs
-are fixed from 5.0, others have been introduced, especially with
-regards to new features.  See the file doc/TODO for details.  Bug
-reports are solicited; see the BUGS section below.  Patches or
-suggested coding fixes with bug reports are much appreciated!
+   Versions 5.1.x are meant to be gamma-level releases.  While some bugs
+are fixed, others may have been introduced, especially with regards to
+new features.  See the file doc/TODO for details.  Bug reports are
+solicited; see the Bugs Section below.  Patches or suggested coding
+fixes with bug reports are much appreciated!
 
 Requirements
 ============
@@ -291,15 +350,16 @@ ESS can also be retrieved using anonymous cvs:
    You need a cvs client (that works with your firewall, if any)
 
    the repository name is
-`:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src'
+`:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs'
 
    using a command-line cvs client (i.e. on Unix or DOS), first type:
-`cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login'
+`cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs
+login'
 
    password is anoncvs
 
    then type:    `cvs -d
-:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess'
+:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess'
 
    Check the `README'  file first to see which files you need.  Look at
 `ANNOUNCE' to learn about new user-visible features; also, many changes
@@ -340,7 +400,7 @@ low-volume mailing list.
 
    *  suggestions for improvements.
 
-   *  announcements of new [beta] releases of ESS.
+   *  announcements of new releases of ESS.
 
    *  posting small patches to ESS.
 
