@@ -9,35 +9,40 @@
 \ifdraft  %% generate tableofcontents down to the \paragraph
 \setcounter{tocdepth}{5}
 \fi
-%1.  a statistician's dream environment
-%2.  what emacs has to offer statisticians
+%1. introduction
+%        a) a statistician's needs
+%        b) statistical analysis packages supported by ESS
+%2. emacs -- a software developer's RAD
 %        a) buffers
 %        b) key-binding
-%        c) other packages
+%        c) modes
 %                1) font-lock
 %                2) shell/comint
-%                3) ange-ftp/EFS/Tramp
-%3. what ESS has to offer statisticians
-%        0) font-lock/key-binding/other packages revisited
-%        -- incorporated in new 3.1 and 3.2 below
-%        1) interactive
-%           a) R/S
-%           b) SAS
-%        2) batch
-%           a) SAS
-%           b) BUGS
+%                3) ange-ftp/EFS/tramp
+%                4) vc/pcl-cvs
+%3. ESS -- a statistician's RAD 
+%        a) interactive
+%           1) S family
+%           2) SAS
+%        b) batch
+%           1) SAS
+%           2) BUGS
+%           3) S family
 %4. ESS as an open source project
-%        1) beginnings
-%                a)S-mode
-%                b)SAS-mode
-%        2) unification
-%                a)ESS-mode
-%                b)Emacs/XEmacs
-%        3) what's next
-%5. internet resources
-%        1) home page
-%        2) ess-help
-%        3) anonymous cvs
+%        a) origins
+%                1)S-mode
+%                2)SAS-mode
+%        b) unification
+%                1)ESS-mode
+%                2)Emacs/XEmacs
+%                3)Unix/Windows/Macintosh
+%5. ESS internet resources
+%        a) home page
+%        b) ess-help
+%        c) anonymous cvs
+%6. conclusion
+%        a) summary
+%        b) what's next for ESS
 
 \ifdraft
  \addtolength{\topmargin}{-1cm}
@@ -139,7 +144,7 @@
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/16 03:05:49 $ - $Revision: 1.75 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/17 01:42:14 $ - $Revision: 1.76 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -785,11 +790,6 @@ packages is a better choice when the time necessary for execution
 is more than a few seconds such as processing and analyzing a
 large amount of data.
 
-\paragraph{S Batch.}
-\begin{Comment}
-Not yet written.
-\end{Comment}
-
 
 \paragraph{\SAS\ Batch.}
 \label{sec:sas-batch}
@@ -913,6 +913,12 @@ parameters.  ESS also supplies key-mappings to submit a BUGS batch
 process.  ESS provides the same ESS-elsewhere support for BUGS batch
 that it does for \SAS\ batch (see above).
 
+\paragraph{S Batch.}
+\begin{Comment}
+Not yet written.
+\end{Comment}
+
+
 \section{History of ESS}
 \label{sec:ESS:history}
 
@@ -994,6 +1000,23 @@ Rodney: SAS batch now works and Kermit was added as a method of transfer.
 %%generation that provides the capability of specifying all the necessary
 %%parameters for a BUGS batch run in a single file.
 
+\section*{ESS Resources on the Internet}
+\addcontentsline {toc}{section}{\numberline {}ESS Resources on the Internet}
+\label{sec:access}
+The ESS software is constantly in flux.  New versions of statistical
+packages, Emacs and operating systems require new releases of ESS to
+support them.  The latest stable version of ESS can be found on the web at
+\url{http://software.biostat.washington.edu/statsoft/ess/}.  To get help
+with problems you can send e-mail to \url{ess-help@stat.math.ethz.ch}.
+The latest development, hence unstable, version can be obtained by
+anonymous CVS.  First type:
+
+  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login}
+
+  You will be prompted for a password which is ``\stexttt{anoncvs}''.  Then type: 
+
+  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess}
+  
 \section{Discussion}
 \label{sec:discussion}
 
@@ -1041,29 +1064,10 @@ to satisfy individual desires for interface styles as well as being
 extensible to additional statistical languages and analysis packages.
 
 
-\section*{ESS Resources on the Internet}
-\addcontentsline {toc}{section}{\numberline {}ESS Resources on the Internet}
-\label{sec:access}
-The ESS software is constantly in flux.  New versions of statistical
-packages, Emacs and operating systems require new releases of ESS to
-support them.  The latest stable version of ESS can be found on the web at
-\url{http://software.biostat.washington.edu/statsoft/ess/}.  To get help
-with problems you can send e-mail to \url{ess-help@stat.math.ethz.ch}.
-The latest development, hence unstable, version can be obtained by
-anonymous CVS.  First type:
-
-  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login}
-
-  You will be prompted for a password which is ``\stexttt{anoncvs}''.  Then type: 
-
-  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess}
-  
-
 \bibliographystyle{plainnat}
 %\pdfbookmark[1]{References}{section.7}
 \addcontentsline {toc}{section}{\numberline {}References}
 \bibliography{essJCGSv2}
-
 
 
 \end{document}
