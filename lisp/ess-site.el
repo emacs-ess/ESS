@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/07/02 07:45:48 $
-;; Version: $Revision: 5.111 $
-;; RCS: $Id: ess-site.el,v 5.111 2004/07/02 07:45:48 rmh Exp $
+;; Modified: $Date: 2004/07/02 08:06:19 $
+;; Version: $Revision: 5.112 $
+;; RCS: $Id: ess-site.el,v 5.112 2004/07/02 08:06:19 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -553,6 +553,7 @@ sending `inferior-ess-language-start' to S-Plus.")
     (progn
       (setq ess-sqpe-versions-created
 	    (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
+      (setq ess-rterm-versions (ess-find-rterm))
       (setq ess-rterm-versions-created
 	    (ess-rterm-versions-create))) ;; use ess-rterm-versions
   (setq ess-r-versions-created
