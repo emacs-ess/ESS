@@ -52,4 +52,8 @@ INFODIR = ../info
 # relative to the lisp directory (which is the default)
 LISPDIR = .
 
+# default xemacs package installation tree
+# necessary for target xemacs-links
+XEMACSDIR=/usr/local/lib/xemacs
+
 .SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el .elc
