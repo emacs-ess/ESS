@@ -424,7 +424,7 @@ cooperating processes.
 Recent versions of Emacs commands provide both a GUI and terminal
 interface which can respond to both keyboard and mouse usage.  The
 mouse-based interface, through menus and toolbars (toolbars available
-currently with XEmacs), try to facilitate the learning of
+currently with XEmacs), tries to facilitate the learning of
 keystroke-based short-cuts.  User-defined additional menus and
 toolbars can be constructed as needed.
 
@@ -438,9 +438,11 @@ specified syntactic characteristics.  Emacs is extensible using a
 dialect of Lisp \citep{RChassell1999,PGraham:1996}.  This means that
 new functions, with user interaction, can be written for common and
 repeated text-editing tasks.  Emacs provides full customization of the
-keyboard and mouse.  The mouse-based interface, through menus and
-toolbars facilitates the learning of keystroke-based short-cuts.
-Additional user-defined menus can be constructed.
+keyboard and mouse.  
+%% MM:  This appears already above (2nd to previous paragraph)!!
+%%- The mouse-based interface, through menus and
+%%- toolbars facilitates the learning of keystroke-based short-cuts.
+%%- Additional user-defined menus can be constructed.
 
 Most programming and documentation tasks fall under the realm of text
 editing.  This work can be enhanced by common IDE features such as
@@ -484,9 +486,9 @@ to enhance the interface to the \Splus\ command-line interface and to
 allow for control of multiple processes simultaneously.  In 1995, A.J.
 Rossini extended S-mode to support XEmacs, an open-source editor which
 was derived from Emacs.  At the same time, extensions from ETH,
-written of Martin Maechler, were folded into what was to become the
+written by Martin M{\"a}chler, were folded into what was to become the
 primary codebase.  By 1996, S-mode was merged into a uniform S-mode
-for Emacs, XEmacs, and supported S and \Splus.
+for Emacs, XEmacs, and supported S, \Splus and to some extent, R.
 
 The other ancestor of the ESS codebase was a successful SAS-mode
 written by Tom Cook.  The initial extension was done by A.J. Rossini
@@ -556,7 +558,7 @@ Commands window with an active buffer running inside Emacs.  This mode
 provides an interactive history mechanism; transcript recording and
 editing; the ability to resubmit the contents of a multi-line command
 to the executing process with a single keystroke.  It also provides
-the same editing features as the editing mode \stexttt{iESS[S]}.
+the same editing features as the editing mode \stexttt{ESS[S]}.
 
 The statistical processes S and R are started by using the Emacs
 function call \stexttt{M-x~S} or \stexttt{M-x~R}.  This call opens up
