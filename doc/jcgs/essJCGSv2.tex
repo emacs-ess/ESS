@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/15 21:23:29 $ - $Revision: 1.178 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/15 22:51:47 $ - $Revision: 1.179 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -250,8 +250,9 @@ Emacs can control and interact with other programs.
 \paragraph{Keyboard and Mouse Input.}
 When Emacs was originally written, character-based terminals were the
 most advanced method of computer access.  Common Emacs commands were
-mapped (or bound) to key sequences for convenience which are called
-key-maps (or key-bindings).  Over the
+mapped (or bound) to key sequences for convenience.
+% which are called key-maps (or key-bindings).  
+Over the
 last decade, Emacs has been extended to use graphical windowing
 systems, such as X11\tm, Microsoft Windows, and Apple Mac OS, which
 allow additional forms of input, for example using a mouse, and which
@@ -289,17 +290,19 @@ interaction, which can be edited and searched during the program's
 execution.
 
 \paragraph{Major and Minor Modes.}
-Emacs capabilities are extended by loading text files containing code
-written in Emacs Lisp (elisp) \citep{RChassell1999}, a dialect of Lisp
-\citep{PGraham:1996}.  Emacs commands, which are actually Lisp
-functions, can be called interactively either by name or by pressing
-their key-map.  Not all functions are interactive, and
-only those that are can have key-bindings.  The most important
-extensions to Emacs are called modes.  Modes are of two kinds, 
-either major or minor,
-depending on the extent to which they take over the editing behavior.
+Emacs capabilities are extended by loading text files containing commands,
+functions written in Emacs Lisp (elisp) \citep{RChassell1999}, a dialect of Lisp
+\citep{PGraham:1996}.  Emacs commands
+can be called interactively by pressing a key mapped to the command.
+% (or by typing the command name itself).
+%% rmh: The user presses a key, not a map.
+%%rmh: don't need this:
+% Not all functions are interactive, and
+% only those that are can have key-bindings.
+The most important extensions to Emacs are the major or minor modes,
+the difference being the extent to which they take over the editing behavior.
 
-Major modes provide a customized environment consisting of key-maps
+Major modes provide a customized environment consisting of mapped keys
 and associated commands for editing a file or performing a task such
 as reading mail or browsing disk directories.  Only one major mode can
 be active for a given buffer at any time.  Major modes for file
@@ -334,7 +337,7 @@ Emacs allows transparent access to remote files over a network.
 Transparent access means the user views, edits, and saves files on a
 remote machine exactly as if they were on the local machine.
 Mechanisms for both unsecure (\stexttt{ange-ftp} and \stexttt{EFS} use
-ftp) and secure (\stexttt{tramp} uses scp or ssh) are
+ftp) and secure (\stexttt{tramp} uses scp or ssh) access are
 available. %The local 
 Emacs can also monitor and control remote processes running in a shell buffer.
 
@@ -380,33 +383,30 @@ for working with the differences in files and in entire directories.
   \label{f.ediff}
 \end{figure}
 
-There are many other important features which Emacs has.
-% which, while innovative when introduced, are fairly common now.  
-Emacs provides file-manager
-capabilities such as \stexttt{dired} (discussed in Major and Minor
-Modes above), which interfaces to the computer's directory
-structure.  Emacs stores the history of commands issued in
-an editing session so they can be undone if necessary.  More
-importantly, for modes which control processes, the process input
-history is stored.  Therefore, the actual commands entered can 
-be edited for printing or re-use.
+Emacs has many other important features.  Emacs provides file-manager
+capabilities, such as \stexttt{dired} (discussed in Major and Minor
+Modes above), which interface to the computer's directory structure.
+Emacs stores the complete history of commands issued in an editing
+session, allowing undo capability all the way back to the beginning of an
+editing session.  More importantly, for modes which control processes,
+the process input history is stored.  Therefore, the actual commands
+entered can be edited for printing or re-use.
 % The actual data analysis commands entered can be
 % very different from what is observed in the buffer after editing.
 % Tools such as \stexttt{etags} combined with \stexttt{speedbar} provide
 % a hyperlinked index to text objects, such as S function definitions
 % and \SAS\ \stexttt{PROC \dots\ RUN;} sections, across files within a
 %directory.  
-Other extensions to Emacs include web browsers, mail and news readers, 
+Emacs also includes web browsers, mail and news readers, 
 and spell checking.
 % Rodney: You can't just whip out complex functionality like etags and 
 % speedbar.  We would need to introduce these packages.  Since they 
 % aren't critical to ESS at this time, let's ignore them.
 
-Emacs is an extremely powerful editor.  
-%Emacs has been claimed to
-%provide most of the capabilities found in an operating system.  This
-It provides a strong foundation for constructing an integrated
-development environment which is focused on the needs of
+In addition to being an an extremely powerful editor, Emacs also
+includes capabilities usually found in an operating system.  Thus
+it provides a strong foundation for constructing an integrated
+development environment focused on the needs of
 statisticians.  Emacs' power, flexibility, portability, and
 extensibility make it a solid platform on which to construct a
 statistical analysis user interface.
@@ -414,31 +414,64 @@ statistical analysis user interface.
 \section{ESS extends Emacs}
 \label{sec:ess-extends-emacs}
 
+ESS is an extension package for the Emacs editor which provides a
+single interface for a variety of statistical computing tasks.  ESS is
+optimized for statistical programming and interactive data analysis.
+Statistical programming is the writing of computer programs for data
+analysis and processing.  These programs might be written in a
+computer language that requires a compiler, such as C or \Fortran.
+But, more likely, they are written in a computer language that only
+requires an interpreter such as R, \SAS\ or \XLispStat.
+%% An interpreted language is executed by an interpreter, but a
+%% compiled language must be processed by a compiler which creates an
+%% executable form of the program that can be executed.  There is a
+%% trade-off in time between interpreted and compiled programs.  For
+%% interpreted languages you save time by not having to compile the
+%% program, but the program will not run as fast as if it had been
+%% compiled.  Another advantage of interpreted languages is the
+%% support they provide for specialized tasks.  For example, C and
+%% \Fortran don't provide you with the statistical analysis
+%% capabilities that R, \SAS\ or \XLispStat do.  Compiled programs and
+%% interpreted programs can be used in conjunction.  For instance, a
+%% compiled C function could be called from an interpreted language
+%% like R to speed up the calculations. 
+Entering commands for interactive data analysis is a similar activity.
+In either case, text is written in a computer language and sent to a
+computer program for evaluation.
+%% The primary difference is that the results of a small set of
+%% commands are of critical interest for review in the analysis phase,
+%% but the results of all commands are of interest in the coding
+%% phase.
+
 ESS extends Emacs to provide a functional and extensible interface
 which is uniform and consistent across multiple statistical packages.
-This is done by first, adding shortcuts and features for accelerated
+This is done first, by adding shortcuts and features for accelerated
 editing of files, and second, by interacting with the particular
 statistical packages through a number of activities: control of
 input/output, assistance with evaluation, and specialized parsing of
 help files.
 
-Differences between user interfaces can arise from coordinating
-several data files, multiple statistical software packages, and the
-corresponding source code for each of these packages during a single
-analysis.  ESS helps to remedy these differences by providing a single
-point of contact for all tasks.  Other features, which are less
-commonly employed by statisticians, but provide potential for efficient
-computer usage, include the use of source-code control
-systems, tools for accessing programs or files on remote machines, and
-interfaces to documentation systems such as \LaTeX,
-\textsc{html}, and \textsc{xml}.  Emacs can assist with, or be
+Emacs can assist with, or be
 programmed to perform, many tasks related to data cleaning,
 management, and editing.  For example, conversion of data files
 between standard input formats, such as from comma-separated to
 tab-delimited, can be automated through the use of commands written in
-elisp which can be mapped to a key-map.
+elisp which can be mapped to a key.
 % programs or keyboard macros.
 
+Differences between user interfaces can arise from coordinating
+several data files, multiple statistical software packages, and the
+corresponding source code for each of these packages during a single
+analysis.  ESS helps to remedy these differences by providing a single
+point of contact for all tasks.  
+
+Other features which
+% are less commonly employed by statisticians but 
+provide potential for efficient
+computer usage are the use of source-code control
+systems, tools for accessing programs or files on remote machines, and
+interfaces to documentation systems such as \LaTeX,
+\textsc{html}, and \textsc{xml}.  
 % repetitive
 %Below, we describe some of the
 %problems that one encounters, and how ESS/Emacs can minimize the
@@ -475,8 +508,8 @@ elisp which can be mapped to a key-map.
 %be used with two (or more) executing processes.  In this example we
 %sent over first a subset of the line in \stexttt{tmps.s} and then the
 %entire line to the instance of S+4 running in an inferior
-%\stexttt{iESS(Sqpe)} buffer.  Then we switched the connection to send
-%the same line to the instance of R running in the \stexttt{iESS(R)}
+%\stexttt{iESS[Sqpe]} buffer.  Then we switched the connection to send
+%the same line to the instance of R running in the \stexttt{iESS[R]}
 %buffer.  The dialog about the process switch appears in the message
 %line.
 
@@ -633,11 +666,12 @@ available.
 \end{figure}
 
 \paragraph{Source-level Debugging}
-ESS facilitates the editing of source code files which are sets of 
-commands written for a statistical analysis package.  This allows the
+ESS facilitates the editing of source code files, sets of 
+commands written for a statistical analysis package, and allows the
 user to load and error-check small sections of source
-code.  This is done through several mechanisms.  First, the presence of
-unbalanced parentheses and mismatched/unterminated quotes is immediately 
+code into the package.  This is done through several mechanisms.
+First, the presence of
+unbalanced parentheses or mismatched/unterminated quotes is immediately 
 evident with syntactic highlighting of the source code.  Second,
 functions are provided for simple and consistent execution of
 user-specified or natural units of the code (function definitions in S
@@ -802,35 +836,6 @@ interfaces (interactive for R, batch for BUGS) are slightly different.
 %here. --- Not yet done.
 %\end{description}
 %\end{Comment}
-
-ESS is an extension package for the Emacs editor which provides a
-single interface for a variety of statistical computing tasks.  ESS is
-optimized for statistical programming and interactive data analysis.
-Statistical programming is the writing of computer programs for data
-analysis and processing.  These programs might be written in a
-computer language that requires a compiler, such as C or \Fortran.
-But, more likely, they are written in a computer language that only
-requires an interpreter such as R, \SAS\ or \XLispStat.
-%% An interpreted language is executed by an interpreter, but a
-%% compiled language must be processed by a compiler which creates an
-%% executable form of the program that can be executed.  There is a
-%% trade-off in time between interpreted and compiled programs.  For
-%% interpreted languages you save time by not having to compile the
-%% program, but the program will not run as fast as if it had been
-%% compiled.  Another advantage of interpreted languages is the
-%% support they provide for specialized tasks.  For example, C and
-%% \Fortran don't provide you with the statistical analysis
-%% capabilities that R, \SAS\ or \XLispStat do.  Compiled programs and
-%% interpreted programs can be used in conjunction.  For instance, a
-%% compiled C function could be called from an interpreted language
-%% like R to speed up the calculations. 
-Entering commands for interactive data analysis is a similar activity.
-In either case, text is written in a computer language and sent to a
-computer program for evaluation.
-%% The primary difference is that the results of a small set of
-%% commands are of critical interest for review in the analysis phase,
-%% but the results of all commands are of interest in the coding
-%% phase.
 
 \paragraph{Simplifying Keymap Differences.}
 Simple conflicts between interfaces are exemplified by different
