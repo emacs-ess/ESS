@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.44 1997/07/28 12:58:34 rossini Exp $
+## $Id: Makefile,v 1.45 1997/07/29 11:25:41 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.45  1997/07/29 11:25:41  rossini
+## stuff.
+##
 ## Revision 1.44  1997/07/28 12:58:34  rossini
 ## S-mode -> ESS.
 ##
@@ -105,6 +108,7 @@ INSTALL = cp
 
 # program to convert .texi{nfo} to .info
 MAKEINFO = makeinfo
+
 # program to convert .texi{nfo} to .html
 MAKEHTML = texi2html -split_chapter -menu -glossary
 
@@ -123,6 +127,9 @@ SHELL = /bin/sh
 VERSION = 4.9-b10
 
 LASTVERSION = 4.8.MM6.XE3
+
+MYWWWDIR = /stat2/faculty/rossini/public_html/projects
+MYFTPDIR = /m2/ftp/rossini
 
 # have to preload the files that contain macro definitions or the
 # byte compiler will compile everything that references them
@@ -158,6 +165,8 @@ AUXFILES = COPYING Makefile NEWS README TODO \
 	ESS.texi ChangeLog
 
 
+### Commands
+
 all:	ESS info html
 
 ESS: $(OBJECTS)
@@ -166,7 +175,7 @@ info:   ESS.info
 
 html:	html/ESS_toc.html
 
-install:	all
+install: all
 	$(INSTALL) ESS.info* $(INFODIR)
 	$(INSTALL) *.elc $(LISPDIR)
 
@@ -175,13 +184,11 @@ clean:
 	  ESS.ky ESS.log ESS.pg ESS.toc ESS.tp ESS.vr \
 	  ESS.fn texput.log
 
-##distrib: $(SOURCES) $(AUXFILES)
-##	chmod a-w *.el
-##	chmod u+w S-site.el Makefile
-##	tar cvf ESS-$(VERSION).tar $(SOURCES) $(AUXFILES)
-##	gzip ESS-$(VERSION).tar
-
-## In previous set of commands:  chmod u-w S-site.el Makefile
+distrib: $(SOURCES) $(AUXFILES)
+	chmod a-w *.el
+	chmod u+w S-site.el Makefile
+	tar cvf ESS-$(VERSION).tar $(SOURCES) $(AUXFILES)
+	gzip ESS-$(VERSION).tar
 
 patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 	-rm -rf ESS-$(VERSION)
@@ -194,6 +201,78 @@ patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 	-rm -rf ESS-$(VERSION)
 	-rm -rf ESS-$(LASTVERSION)
 
+
+#### The next stuff are from the AUCTeX Distribution.
+##
+##dist : 	@if [ "X$(TAG)" = "X" ]; then echo "*** No tag ***"; exit 1; fi
+##	if [ "X$(OLD)" = "X" ]; then echo "No patch"; exit 1; fi
+##	@echo "**********************************************************"
+##	@echo "** Making distribution of auctex for release $(TAG)"
+##	@echo "**********************************************************"
+##	if [ -d auctex-$(TAG) ]; then rm -r auctex-$(TAG) ; fi
+##	rm -f $(WWWDIR)/version
+##	echo $(TAG) > $(WWWDIR)/version
+##	perl -pi.bak -e "s/Version: $(OLD)/Version: $(TAG)/" \
+##	    $(AUCSRC) $(EXTRAFILES)
+##	mv ChangeLog ChangeLog.old
+##	echo `date "+%a %b %d %T %Y "` \
+##	     " Per Abrahamsen  <abraham@dina.kvl.dk>" > ChangeLog
+##	echo >> ChangeLog
+##	echo "	* Version" $(TAG) released. >> ChangeLog
+##	echo >> ChangeLog
+##	cat ChangeLog.old >> ChangeLog
+##	cvs commit -m "Release $(OLD)++" tex.el
+##	rm -f tex.el.orig
+##	mv tex.el tex.el.orig
+##	sed -e '/defconst AUC-TeX-date/s/"[^"]*"/"'"`date`"'"/' \
+##	    -e '/defconst AUC-TeX-version/s/"[^"]*"/"'$(TAG)'"/' \
+##	    < tex.el.orig > tex.el
+##	rm -f $(REMOVE) 
+##	-cvs remove $(REMOVE) 
+##	-cvs add $(AUCSRC) $(EXTRAFILES)
+##	-(cd doc; cvs add `echo $(DOCFILES) | sed -e s@doc/@@g` )
+##	-(cd style; cvs add `echo $(STYLESRC) | sed -e s@style/@@g` )
+##	cvs commit -m "Release $(TAG)"
+##	cvs tag release_`echo $(TAG) | sed -e 's/[.]/_/g'`
+##	mkdir auctex-$(TAG) 
+##	mkdir auctex-$(TAG)/style
+##	mkdir auctex-$(TAG)/doc 
+##	cp $(AUCSRC) $(EXTRAFILES) auctex-$(TAG)
+##	cp $(STYLESRC) auctex-$(TAG)/style
+##	cp $(DOCFILES)  auctex-$(TAG)/doc
+##	(cd doc; $(MAKE) dist; cp auctex auctex-* ../auctex-$(TAG)/doc )
+##	(cd doc; cp INSTALLATION README CHANGES ../auctex-$(TAG)/ )
+##	cp doc/CHANGES $(FTPDIR)/CHANGES-$(TAG)
+##	cp doc/auc-tex.ps $(FTPDIR)
+##	cp ChangeLog $(FTPDIR)
+##	cp doc/*.html $(WWWDIR)/doc
+##	rm -f $(FTPDIR)/auctex-$(TAG).tar.gz $(FTPDIR)/auctex.tar.gz
+##	rm -f $(FTPDIR)/auctex.tar.Z $(FTPDIR)/auctex.zip
+##	tar -cf - auctex-$(TAG) | gzip --best > $(FTPDIR)/auctex-$(TAG).tar.gz
+##	tar -cf - auctex-$(TAG) | compress > $(FTPDIR)/auctex.tar.Z
+##	zip -r $(FTPDIR)/auctex auctex-$(TAG)
+##	(cd $(FTPDIR); ln -s auctex-$(TAG).tar.gz auctex.tar.gz)
+##	cvs rdiff -r release_`echo $(OLD) | sed -e 's/[.]/_/g'` \
+##	          -r release_`echo $(TAG) | sed -e 's/[.]/_/g'` auctex \
+##		> $(FTPDIR)/auctex-$(OLD)-to-$(TAG).patch ;  exit 0
+##
+##
+##patch:
+##	cvs rdiff -r release_`echo $(OLD) | sed -e 's/[.]/_/g'` \
+##	          -r release_`echo $(TAG) | sed -e 's/[.]/_/g'` auctex
+##
+##
+##autoloads: auto-autoloads.el
+##
+##auto-autoloads.el: $(AUCSRC) $(CONTRIB)
+##	$(EMACS) -batch -q -no-site-file \
+##		-eval '(setq autoload-target-directory "'`pwd`'/")' \
+##		-l autoload \
+##		-f batch-update-autoloads $?
+
+
+### TARGETS
+
 ESS.info:	ESS.texi
 	@echo "making ESS.info..."
 	$(MAKEINFO) ESS.texi
@@ -203,6 +282,7 @@ html/ESS_toc.html: ESS.texi
 	-(mkdir -p html; cd html; $(MAKEHTML) ../ESS.texi)
 	-@(cd html; ln -s ESS_toc.html index.html)
 	@echo "Test by pointing your browser to 'file://localhost/$$PWD/html/'"
+
 
 .el.elc:
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
