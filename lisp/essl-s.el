@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1998/09/09 08:45:26 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: essl-s.el,v 5.9 1998/09/09 08:45:26 maechler Exp $
+;; Modified: $Date: 1998/09/11 14:24:38 $
+;; Version: $Revision: 5.10 $
+;; RCS: $Id: essl-s.el,v 5.10 1998/09/11 14:24:38 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -35,9 +35,7 @@
  ; Requires and autoloads
 
 
-
  ; Configuration variables
-
 
 
 
@@ -344,28 +342,12 @@ Returns nil if line starts inside a string, t if in a comment."
 
 
 ;;; S4 stuff.
-
-;; Based on files from:
-;;     Copyright (C) 1996, John M. Chambers.
-
-;; --> moved to essd-s4.el
-
+;;            --> moved to essd-s4.el
 
 
 ;;;    S-mode extras of Martin Maechler, Statistik, ETH Zurich.
 
-(defun ess-time-string (&optional clock)
-  "Returns a string for use as a timestamp. + hr:min if CLOCK is non-nil.
- Currently returns strings like \"13 Mar 1992\".  Redefine to taste."
-  ;; RELIES on (current-time-string) : Must be  exactly
-  ;; of this structure  [0..23], e.g. == "Mon Jan 27 17:30:45 1992"
-  (let* ((time (current-time-string))
-	 (mon (substring time 4 7))
-	 (day (substring time 8 10))
-	 (HM  (if clock (substring time 11 16)))
-	 (year (substring time 20 24))); 4 digit year!
-    (concat day " " mon " " year
-	    (if clock (concat ", " HM)))))
+;;>> Moved things into --> ./ess-utils.el
 
 (defvar ess-function-outline-file
   (concat ess-lisp-directory "/../etc/" "function-outline.S")
@@ -392,64 +374,66 @@ Uses the file given by the variable ess-function-outline-file."
 	  (replace-match (ess-time-string 'clock) 'not-upcase 'literal)))
     (goto-char (1+ oldpos))))
 
-(defun ess-repl-regexp (regexp to-string &optional fixedcase literal)
-  "To be used in programs instead of  (replace-regexp..) -- from its help.
- If FIXEDCASE is t, do *not* alter case of replacement text.
- If LITERAL   is t, do *not* treat `\\' as special."
-  (while (re-search-forward regexp nil t)
-    (replace-match to-string fixedcase literal)))
+;;*;; S/R  Pretty-Editing
 
-(defun ess-fix-comments (&optional dont-ask)
+(defun ess-fix-comments (&optional dont-query verbose)
   "Fix ess-mode buffer so that single-line comments start with at least `##'."
   (interactive "P")
   (save-excursion
     (goto-char (point-min))
-    (apply (if dont-ask 'ess-repl-regexp
-	     ;; else
-	     'query-replace-regexp)
-	   "^\\([ \t]*#\\)\\([^#]\\)" "\\1#\\2" nil)))
+    (let ((rgxp "^\\([ \t]*#\\)\\([^#]\\)")
+	  (to   "\\1#\\2"))
+      (if dont-query
+	  (ess-rep-regexp     rgxp to nil nil verbose)
+	(query-replace-regexp rgxp to nil)))))
 
-(defun ess-dump-to-src (&optional dont-ask)
+
+(defun ess-dump-to-src (&optional dont-query verbose)
   "Make the changes in an S - dump() file to improve human readability"
   (interactive "P")
   (save-excursion
     (if (not (equal major-mode 'ess-mode))
 	(ess-mode))
     (goto-char (point-min))
-    (apply (if dont-ask 'ess-repl-regexp
-	     ;; else
-	     'query-replace-regexp)
-	   "^\"\\([a-z.][a-z.0-9]*\\)\"<-\n"  "\n\\1 <- " nil)))
+    (let ((rgxp "^\"\\([a-z.][a-z.0-9]*\\)\"<-\n")
+	  (to   "\n\\1 <- "))
+      (if dont-query
+	  (ess-rep-regexp     rgxp to nil nil verbose)
+	(query-replace-regexp rgxp to nil)))))
 
-(defun ess-num-var-round (&optional dont-ask verbose)
+(defun ess-num-var-round (&optional dont-query verbose)
   "Is VERY useful for dump(.)'ed numeric variables; ROUND some of them by
   replacing  endings of 000000*.. and 999999*.  Martin Maechler"
   (interactive "P")
   (save-excursion
+    (goto-char (point-min))
+
     (let ((num 0)
-	  (str ""))
-      (goto-char (point-min))
-      (apply (if dont-ask 'ess-repl-regexp
-	       ;; else
-	       'query-replace-regexp)
-	     "000000+[1-9]?[1-9]?\\>" "" nil)
+	  (str "")
+	  (rgxp "000000+[1-9]?[1-9]?\\>")
+	  (to   ""))
+      (if dont-query
+	  (ess-rep-regexp     rgxp to nil nil verbose)
+	(query-replace-regexp rgxp to nil))
+
       (while (< num 9)
 	(setq str (concat (int-to-string num) "999999+[0-8]*"))
 	(if (and (numberp verbose) (> verbose 1))
 	    (message (format "\nregexp: '%s'" str)))
 	(goto-char (point-min))
-	(ess-repl-regexp str (int-to-string (1+ num)) 'fixedcase 'literal)
+	(ess-rep-regexp str (int-to-string (1+ num))
+			'fixedcase 'literal verbose)
 	(setq num (1+ num))))))
 
-(defun ess-MM-fix-src (&optional dont-ask verbose)
+(defun ess-MM-fix-src (&optional dont-query verbose)
   "Clean up ess-source code which has been produced by  dump(..).
  Produces more readable code, and one that is well formatted in emacs
  ess-mode. Martin Maechler, ETH Zurich."
   (interactive "P")
   ;; the 3 following functions each do a save-excursion:
-  (ess-dump-to-src dont-ask)
-  (ess-fix-comments dont-ask)
-  (ess-num-var-round dont-ask verbose))
+  (ess-dump-to-src dont-query)
+  (ess-fix-comments dont-query)
+  (ess-num-var-round dont-query verbose))
 
 (defun ess-add-MM-keys ()
   (require 'ess-mode)
