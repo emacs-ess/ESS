@@ -1,3 +1,10 @@
+Changes/New Features in 5.2.5:
+@itemize @bullet
+@item ESS[R]: C-c C-q or ``Quit S'' from the menu now ask questions in
+the emacs buffer (instead of *R*) and do not append "-exited" to the
+buffer name.
+@end itemize
+
 Changes/New Features in 5.2.4:
 @itemize @bullet
 @item The documentation now includes an overview of how to use the emacs
