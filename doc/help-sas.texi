@@ -498,7 +498,7 @@ Here is a typical myfile.sas:
    @end example
    and expect a response similar to the following
    @example
-   -rwxr-xr-x   1 sas      sas  2441216 Sep  9  1997 /usr/local/sas612/sas
+-rwxr-xr-x   1 sas  sas  2441216 Sep  9  1997 /usr/local/sas612/sas
    @end example
 @end display
 
