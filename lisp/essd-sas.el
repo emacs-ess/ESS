@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/07 18:53:16 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: essd-sas.el,v 1.21 1997/11/07 18:53:16 rossini Exp $
+;; Modified: $Date: 1997/11/08 00:18:56 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: essd-sas.el,v 1.22 1997/11/08 00:18:56 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -61,7 +61,8 @@
 				       ess-current-process-name)
 				   ess-local-process-name))
 	 (ess-sas-lst-bufname (concat "*" tmp-local-process-name ".lst*"))
-	 (ess-sas-log-bufname (concat "*" tmp-local-process-name ".log*")))
+	 (ess-sas-log-bufname (concat "*" tmp-local-process-name ".log*"))
+	 (explicit-shell-file-name "/bin/sh"))
     
     ;; If someone is running a *shell* buffer, rename it to avoid
     ;; inadvertent nuking.
@@ -76,7 +77,7 @@
 	nil
       (shell)
       (accept-process-output (get-buffer-process (current-buffer)))
-      (sleep-for 0.5) ; need to wait, else working too fast!
+      (sleep-for 2) ; need to wait, else working too fast!
       (setq ess-sas-lst (ess-insert-accept "tty"))
       (SAS-listing-mode)
        (shell-mode)
@@ -88,7 +89,7 @@
 	nil
       (shell)
       (accept-process-output (get-buffer-process (current-buffer)))
-      (sleep-for 0.5) ; need to wait, else working too fast!
+      (sleep-for 2) ; need to wait, else working too fast!
       (setq ess-sas-log (ess-insert-accept "tty"))
       (SAS-log-mode)
       (shell-mode)
@@ -98,8 +99,8 @@
     (setq additional-inferior-SAS-args (concat " "
 					       ess-sas-lst
 					       " "
-					       ess-sas-log))
-    (setq inferior-SAS-args-temp (concat inferior-SAS-args
+					       ess-sas-log)
+	  inferior-SAS-args-temp (concat inferior-SAS-args
 					 additional-inferior-SAS-args))
 
     ;; Restore the *shell* buffer
