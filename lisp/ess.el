@@ -11,7 +11,7 @@
 ;;                Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;;                Rodney Sparapani <rsparapa@mcw.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.26 2001/08/10 13:46:43 maechler Exp $
+;; Version: $Id: ess.el,v 5.27 2003/08/05 17:11:12 stephen Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -258,7 +258,8 @@
   (if buf (set-buffer buf))
   (mapcar (lambda (pair)
 	    (make-local-variable (car pair))
-            (set (car pair) (eval (cdr pair))))
+	    (if (cdr pair)
+		(set (car pair) (eval (cdr pair)))))
           alist)
   (ess-write-to-dribble-buffer
    (format "(ess-setq-vars-LOCAL): language=%s, dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
