@@ -453,7 +453,7 @@ defer this section until you are more familiar with ESS.
 
 @comment  node-name,  next,  previous,  up
 @node Installation, Interactive ESS, Introduction, Top
-@appendix Installing ESS on your system
+@chapter Installing ESS on your system
 @cindex installation
 
 The following section details those steps necessary to get ESS running
@@ -465,6 +465,9 @@ on your system.
 * Requirements::         emacs, Operating Systems and Statistical Packages
 @end menu
 
+@c FIXME: the following contains @node s  *and* is also included by readme.texi
+@c -----  which does *not* include 'requires.texi'
+@c         ==> *must* give node pointer problems!
 @include inst_tar.texi
 
 @node Requirements, , Microsoft Windows installation, Installation
