@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.52 2002/02/13 23:02:47 rsparapa Exp $
+## $Id: Makefile,v 5.53 2002/02/19 19:01:24 rsparapa Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -122,11 +122,13 @@ ChangeLog:
 	cvs commit -m 'Version .. released' ChangeLog
 
 rel: ChangeLog dist
-	@echo "** Tagging the release **"
-	cvs tag -R $(ESSVERSIONTAG)
 	@echo "** Placing tar and zip files **"
 	scp $(ESSVERSIONDIR).tar.gz software.biostat.washington.edu:/home/ess/downloads
 	scp $(ESSVERSIONDIR).zip    software.biostat.washington.edu:/home/ess/downloads
+
+tag: rel
+	@echo "** Tagging the release **"
+	cvs tag -R $(ESSVERSIONTAG)
 
 doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3: doc/ess.texi
 	$(MAKE) docs
