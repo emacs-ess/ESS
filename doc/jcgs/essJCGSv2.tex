@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 22:23:54 $ - $Revision: 1.236 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/21 07:33:30 $ - $Revision: 1.237 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -297,7 +297,7 @@ file editing are often determined by the file name extension, i.e.
 the characters at the end of the file name that follow a period like
 \stexttt{txt}, \stexttt{R} or \stexttt{sas}.  Examples of this kind of
 major mode are \stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes
-understand filetype's syntax and grammar and therefore provide
+understand their filetype's syntax and grammar and therefore provide
 intelligent actions such as automatic indentation; navigation in units
 of characters, words, lines, sentences, paragraphs, function
 definitions, and pages; syntax-based fontification and colorization;
@@ -479,18 +479,17 @@ choices of colors and ESS provides several other optional schemes.
   \label{f.font}
 \end{figure}
 
-For example, syntax highlighting can help enforce company coding
-standards.  Figure \ref{f.hilock} shows how to enforce a standard for
+Since S syntax is similar to that of C, ESS uses the Emacs tools for
+reformatting S code to match particular styles.  Common C format styles,
+as well as locally customized styles, are defined by specifying the indentation
+level for nested statements, location of open-braces (at the end or at the
+beginning of a line), indentation offsets for if-then-else constructs,
+and similar characteristics.
+
+Syntax highlighting can be used to help enforce company coding
+standards.  Figure \ref{f.hilock} illustrates a standard for
 \SAS\ programming that says all \stexttt{PROC} statements must use the
 \stexttt{DATA=datasetname} option.
-
-ESS has a similar capability for formatting code when programming for
-S.  S syntax is similar to that of C, and ESS provides tools for
-reformatting code to match particular styles.  Common C format styles
-as well as locally customized versions can be specified by indentation
-level for nesting statements, braces placed at the end or beginning of
-a line, offsets for if-then-else constructs, and similar
-characteristics.
 
 \begin{figure}[tbp]
   \centering
@@ -535,7 +534,7 @@ local directories is also available.
   \label{f.ess-demo}
 \end{figure}
 
-\paragraph{Source-level Debugging}
+\paragraph{Source-level Debugging.}
 ESS facilitates the editing of source code files, sets of commands
 written for a statistical analysis package, and allows the user to
 load and error-check small sections of source code into the package.
@@ -575,7 +574,7 @@ cleaning facilitates the use of an exploratory interactive analysis
 session to construct functions and batch files for routine analysis of
 similar data sets.
 
-\paragraph{Remote access to statistics packages}
+\paragraph{Remote access to statistics packages.}
 ESS provides transparent facilities for editing files and running
 programs which might reside on numerous remote machines during the
 same session.  The remote machine could be a different platform than
@@ -664,36 +663,31 @@ software packages.
 The increased popularity of exploratory data analysis as well as the
 advent of simple GUIs has made interactive data analysis an important
 component to statistical practices.  
+ESS uses three different approaches for communicating with statistical
+packages.
 
-\paragraph{S, \Splus, and R.}
-The ESS mode for S language statistical processes, \stexttt{iESS[S]},
-replaces the \Splus\ Commands window or the R GUI window.  In addition
-to running the S language process, \stexttt{iESS[S]} mode provides the
-same editing features, including syntactic highlighting and
-string-search, as the editing mode \stexttt{ESS[S]}.  It also provides
-an interactive history mechanism; transcript recording and editing;
-and the ability to resubmit the contents of a multi-line command to
-the executing process with a single keystroke.
+\paragraph{Inter-Process Communication.}
+Packages that use the command-line interface are run as an inferior
+process in an Emacs buffer, with the standard input and output of the
+package redirected to the buffer.
 
-ESS uses two different approaches for communicating with the S
-language program.  ESS runs packages that use the command-line
-interface as an inferior process in an Emacs buffer, redirecting and
-controlling the standard input and output of the package to the
-buffer.  However, the GUI for \Splus\ 4 and 6 on Windows only runs
-independently of Emacs and can not be cast in the role of an inferior
-process with redirected input and output.  ESS uses the Windows DDE
-(Dynamic Data Exchange) protocol to provide one-way communication
-directly to the \Splus\ GUI process, but can not capture the results
-directly.  Transcripts must be physically copied to an Emacs buffer to
-get the transcript editing features.
+Packages that do not use the command-line interface must be run as an
+independent process, possibly with limited cooperation.
 
-There are two advantages to using even this limited communication with
-the \Splus\ GUI through ESS.  First, the user gets the full editing
-capabilities of Emacs.  Second, S language commands are sent from the
-Emacs buffer directly to the GUI Commands window with the familiar
-Emacs key sequences.  Hence the user can work in a powerful editing
-environment and is protected from the delay and ergonomic challenges
-of using the mouse for copy and paste operations across windows.
+ESS can use the Windows DDE (Dynamic Data Exchange) protocol to
+provide one-way communication directly to packages which function as a
+DDE server.  ESS can control the actions of the package can not capture
+the results directly.  Transcripts must be physically copied to an
+Emacs buffer to get the transcript editing features.
+
+Statistical packages that use neither the standard input/standard
+output protocol nor DDE can not be directly controlled by Emacs.  ESS
+provides an editing environment for their statistical languages.  The
+user must either manually cut and paste the edited code into the
+package or save the edited files and run them in a batch environment.
+The Microsoft Windows versions of \SAS, \Stata, and \XLispStat\ are
+in this category.
+
 
 One useful extension in ESS is relaxation of the requirement that the
 statistics program be available on the local machine.  ESS provides
@@ -707,7 +701,33 @@ If the X11 Windowing system is running on the local machine, it is
 even possible to bring up visual displays and graphics from remote
 Unix systems onto a local Microsoft Windows display.
 
-\paragraph{\SAS}
+
+
+
+
+\paragraph{S, \Splus, and R.}
+The ESS mode for S language statistical processes, \stexttt{iESS[S]},
+replaces the \Splus\ Commands window or the R GUI window.  In addition
+to running the S language process, \stexttt{iESS[S]} mode provides the
+same editing features, including syntactic highlighting and
+string-search, as the editing mode \stexttt{ESS[S]}.  It also provides
+an interactive history mechanism; transcript recording and editing;
+and the ability to resubmit the contents of a multi-line command to
+the executing process with a single keystroke.  \stexttt{iESS[S]} is
+used with S, \Splus, and R on Unix and with Sqpe and R on Windows.
+
+The \Splus\ GUI on Windows can be a DDE server.  There are two
+advantages to using even this limited communication with the \Splus\
+GUI through ESS.  First, through \stexttt{ESS[S]} mode the user gets
+the full editing capabilities of Emacs.  Second, S language commands
+are sent from the editing mode \stexttt{ESS[S]} buffer and from
+transcript buffers from previous S sessions directly to the GUI
+Commands window with the same Emacs key sequences as are used with ESS
+on Unix.  Hence the user can work in a powerful editing environment
+and is protected from the delay and ergonomic challenges of using the
+mouse for copy and paste operations across windows.
+
+\paragraph{\SAS.}
 \stexttt{iESS[SAS]} is a mode that allows text-based \stexttt{PROC} by
 \stexttt{PROC} interaction with an inferior buffer running an
 interactive \SAS\ session on either the local or a remote computer.
@@ -718,6 +738,12 @@ running on a Unix machine.  This process is very efficient for dial-up
 network connections to a remote computer with \SAS\ installed.  The
 resulting interface is similar to the SAS character terminal
 interface, with Emacs keybindings.
+
+The \SAS\ Display Manager provides a form of interaction between the
+user and the \SAS\ program, particularly with the mouse-based
+interface to the graphical routines, the help system.  Data analysis
+code can be edited in \stexttt{ESS[SAS]} mode in Emacs and then
+forwarded to \SAS\ for processing.
 
 %%%%% AJR: WHY IS THIS SUBSTANTIALLY DIFFERENT THAN BATCH?  I KNOW ITS
 %%%%% SLIGHTLY DIFFERENT, BUT SUBSTANTIALLY?
@@ -755,14 +781,6 @@ interface, with Emacs keybindings.
 %%  next section) but using the mapped key sequences to append to the log
 %%  and listing files instead of replacing them.
 %%\end{enumerate}
-
-\paragraph{Editing without Process Interaction}
-Some statistical packages have been written in such a way that they
-can not be controlled easily by other processes.  \SAS\, \Stata, and
-\XLispStat\, under the Microsoft Windows operating system, can not be
-directly controlled by Emacs.  For these statistical languages, ESS
-provides an editing environment but is unable to provide any
-automated control over the statistics package.
 
 \subsection{Batch File Processing.}
 \label{sec:batch-file}
@@ -818,7 +836,7 @@ The \SAS\ batch process runs on the computer where the \SAS\ program
 resides.  If the \SAS\ program resides on a remote computer, then the
 program, log and output are also accessed remotely.  This is important
 because any \SAS\ permanent datasets referenced in a \SAS\ program
-only exist on the computer running \SAS.  The end result is that
+only exist on the computer running \SAS.  The net result is that
 running \SAS\ batch on remote computers is nearly transparent to the
 ESS user.
 
@@ -912,22 +930,18 @@ generalist compiled languages such as \Fortran\ to special interactive
 statistical analysis packages like S and \SAS, Emacs modes soon
 followed.  
 
-One of the most interesting features of this open source project have
-been the many contributors and projects that have merged over the
-years to form ESS, dating back over 10 years.
-
+The ESS environment is built on the open-source projects of
+many contributors, dating back over 10 years.
 Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and \Splus\ 
 files in GNU Emacs.  Frank Ritter and Mike Meyer added features,
 creating version 2.  Meyer and David Smith made further contributions,
 creating version 3.  For version 4, David Smith provided significant
 enhancements to allow for powerful process interaction.
 
-Along the same lines, for SAS, John Sall authored GNU Emacs macros for
-\SAS\ source code editing around 1990.  Tom Cook wrote an enhanced
-SAS-mode which was distributed in 1994, partially basing it on Sall's
-earlier work.  Cook's version provided a means to submit jobs, review
-listing and log files, as well as functions for producing basic views
-for a dataset.
+John Sall wrote GNU Emacs macros for \SAS\ source code around 1990.
+Tom Cook added functions to submit jobs, review listing and log files,
+and produce basic views of a dataset, thus creating a SAS-mode which was
+distributed in 1994.
 
 In 1994, A.J. Rossini extended S-mode to support XEmacs.  Together
 with extensions written by Martin M{\"a}chler, this became version
@@ -941,7 +955,7 @@ called ESS version 5.  Richard M. Heiberger designed the inferior mode
 for interactive \SAS\ and SAS-mode was further integrated into ESS.
 Thomas Lumley's Stata mode, written around 1996, was also folded into
 ESS.  More changes were made to support additional statistical
-languages such as \XLispStat.
+languages, particularly \XLispStat.
 
 ESS initially worked only with Unix statistics packages that used
 standard-input and standard-output for both the command-line interface
@@ -959,7 +973,7 @@ This history is summarized in Table \ref{tab:timeline}.
 
 \begin{table}[tbp]
   \centering
-  {\tiny
+  {\scriptsize
   \begin{tabular}{c ll c ll}
 \hline
     Year  \\ 
