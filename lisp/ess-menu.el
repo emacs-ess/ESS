@@ -1,13 +1,13 @@
 ;;; ess-menu.el --- Menu and Speedbar support for statistical
 ;;; programming and analysis
 
-;; Copyright 2000 (C) Rossini, Heiberger, Hornik, Maechler and
-;;                          Sparapani.
+;; Copyright 2000--2001 (C) A.J. Rossini, Heiberger, Hornik, Maechler
+;; and Sparapani.
 
-;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
-;; Maintainer(s): A.J. Rossini <rossini@biostat.washington.edu>
+;; Author:  A.J. Rossini <rossini@u.washington.edu>
+;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.4 2001/02/06 19:08:48 rossini Exp $
+;; Version: $Id: ess-menu.el,v 1.5 2001/04/26 21:06:03 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -35,32 +35,10 @@
 ;;*;; Requires and autoloads
 ;;;=====================================================
 
-(require 'ess-site)
-
-
- ;;; Speedbar stuff.
-
+;;(require 'ess-site)
+(require 'ess-cust)
+(require 'imenu)
 (require 'speedbar)
-
-;; S languages
-
-(defun S-speedbar-buttons (buffer)
-  "attempted hack."
-  
-  (speedbar-with-writable)
-  (speedbar-make-tag-line)
-  (speedbar-insert-button))
-
-(defun S-speedbar-menu-items  ( )
-  "Attempted hack.")
-
-
-(defun ess-S-initialize-speedbar ()
-  (speedbar-add-supported-extension ".R")
-  (speedbar-add-supported-extension ".S")
-  (speedbar-add-supported-extension ".s")
-  (speedbar-add-supported-extension ".q"))
-  
 
 
  ;;; Function Menu (func-menu) for XEmacs:
@@ -78,13 +56,67 @@
 
 (require 'imenu)
 
+;;; S imenu support
+
+(defcustom ess-use-imenu t
+  "Use imenu if exists."
+  :group 'ess
+  :type  'boolean)
+
+(defcustom ess-S-use-imenu ess-use-imenu
+  "Use imenu if exists."
+  :group 'ess
+  :type  'boolean)
+
+(defcustom ess-S-imenu-variable-regexp
+  (concat "\\("
+	  "[a-zA-Z0-9\\.]*"  ;; legal chars in name
+	  "\\)"
+	  "[ \t]*<-[ \t]*"   ;; whitespace, assignment, whitespace
+	  "function")        ;; NOT this.
+  "Regexp for R assignments."
+  :group 'ess
+  :type  'regex)
+
+(defcustom ess-S-imenu-function-regexp
+  "^\\(.+\\)\\s-+<-\\s-+function"
+  ;; (concat "\\("
+  ;;  	     "[a-zA-Z0-9\\.]*"  ;; legal chars in name
+  ;;	     "\\)"
+  ;;	     "[ \t]*<-[ \t]*"   ;; whitespace, assignment, whitespace
+  ;;	     "function"         ;; it's a fcn...
+  ;;	     "[ \t]*"           ;; whitespace
+  ;;	     "(")               ;; start of arguments
+  "Regexp for R functions.
+Thanks to Stephen Eglen <stephen@cogsci.ed.ac.uk> for first version."
+  :group 'ess
+  :type  'regex)
+
+(defcustom ess-S-imenu-generic-expression 
+  (concat ess-S-imenu-variable-regexp
+	  ;; "\\|"
+	  ;; ess-S-imenu-function-regexp
+	  )
+  "Imenu Regexp for S."
+  :group 'ess 
+  :type  'regex)
+
+(setq R-imenu-generic-expression 'ess-S-imenu-generic-expression)
+(setq S-imenu-generic-expression 'ess-S-imenu-generic-expression)
+
 (defun ess-imenu-S (&optional arg)
   "S Language Imenu support for ESS.  
 Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
   (interactive)
   (setq imenu-generic-expression 
-	'( (nil "^\\(.+\\)\\s-+<-\\s-+function" 1)))
-  (imenu-add-to-menubar "Imenu-R"))
+	'( (nil ;;ess-S-imenu-generic-expression 
+	        "^\\(.+\\)\\s-+<-\\s-+function"
+		1)))
+  (imenu-add-to-menubar "Imenu-S"))
+
+(fset 'ess-imenu-R 'ess-imenu-S)
+
+;;; XLS imenu support
 
 (defun ess-imenu-XLS (&optional arg)
   "XLispStat Language Imenu support for ESS."
@@ -92,7 +124,6 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
   (setq imenu-generic-expression 
 	'( (nil "New one needed" 1)))
   (imenu-add-to-menubar "XLS-fcts"))
-
 
 (defun imenu-example--XLS-extract-index-name ()
   ;; Example of a candidate for `imenu-extract-index-name-function'.
@@ -159,14 +190,12 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
 	       index-alist))
     index-alist))
 
-
 (defun ess-imenu-STA (&optional arg)
   "Stata Language Imenu support for ESS."
   (interactive)
   (setq imenu-generic-expression 
 	'( (nil "New one needed" 1)))
   (imenu-add-to-menubar "Stata-fcts"))
-
 
 (defun ess-imenu-SAS (&optional arg)
   "SAS language Imenu support for ESS."
@@ -207,6 +236,29 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
 ;    (imenu-progress-message prev-pos 100)
 ;    (nreverse index-alist)))
 
+
+ ;;; Speedbar stuff.
+
+(defun S-speedbar-buttons (buffer)
+  "attempted hack."
+  
+  (speedbar-with-writable)
+  (speedbar-make-tag-line)
+  (speedbar-insert-button))
+
+(fset 'R-speedbar-buttons 'S-speedbar-buttons)
+
+(defun S-speedbar-menu-items  ( )
+  "Attempted hack.")
+
+(defun ess-S-initialize-speedbar ()
+  "Extend to all extensions; see initialization, and edit."
+  (speedbar-add-supported-extension ".R")
+  (speedbar-add-supported-extension ".S")
+  (speedbar-add-supported-extension ".s")
+  (speedbar-add-supported-extension ".q"))
+  
+(ess-S-initialize-speedbar)
 
 
  ; Run load hook and provide package
