@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.12 1999/03/16 18:17:36 rossini Exp $
+## $Id: Makefile,v 5.13 1999/03/16 18:34:57 rossini Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
@@ -42,7 +42,7 @@ dist:
 	@echo "** from $(ESSVERSIONDIR)"
 	@echo "** (must set CVSROOT, etc, prior to checkout for security)"
 	@echo "**********************************************************"
-	cvs co ess
+	cvs export ess
 	ln -s ess $(ESSVERSIONDIR)
 	tar hcvof ESS-$(ESSVERSION).tar -X CVS $(ESSVERSIONDIR)
 	chmod a-w $(ESSVERSIONDIR)/lisp/*.el
