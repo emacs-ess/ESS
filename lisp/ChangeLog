@@ -1,5 +1,9 @@
 2004-07-01  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
+	* ess-inf.el (ess-quit): Delete call to ess-switch-to-ESS;
+	ess-cleanup will have already done that.
+	(ess-cleanup): Add save-excursion to preserve current buffer.
+
 	* essd-r.el (ess-r-versions-created): New variable to store the
 	names of the new defuns created.
 	(ess-r-versions-create): Set ess-r-versions-created. Doc string
