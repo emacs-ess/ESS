@@ -1,7 +1,7 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.45 $, for ESS version 5.1.22)
+   ($Revision: 5.46 $, for ESS version 5.1.22)
 
    This is the README file for the distribution of ESS version 5.1.22,
 the gamma series we are using on the way to producing 5.2 (the next
@@ -66,11 +66,7 @@ in the file COPYING in the same directory as this file for more details.
 New Features
 ============
 
-   Changes/New Features in 5.2.0:
-   * Stable release.  Final release of the 5.x series (except for
-     necessary bug-fixes).  Next release will be 6.0 which will be a
-     radical departure.
-
+   Changes/New Features in 5.1.22:
    * Now that info documentation is available, the README.* files are
      no longer supported.  However, they are still distributed for what
      it's worth.
@@ -81,7 +77,12 @@ New Features
 
    * ESS[SAS]: more user-friendly enhancements for remote SAS batch
      jobs with Kermit file transfers (LOG and OUTPUT function key
-     features now supported).
+     features now supported).  Multiple shells now supported so you can
+     run SAS on different computers from different buffers by setting
+     the buffer-local variable ess-sas-shell-buffer to unique buffer
+     names.
+
+   * Major re-vamping of Makefile/Makeconf.
 
    Changes/New Features in 5.1.21:
    * ESS[SAS]: info documentation now available!, see ESS->Help for
