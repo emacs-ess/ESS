@@ -32,7 +32,7 @@ MAKEINFOascii = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 ## need to change this unless you are an ESS developer.
 ## If you don't have GNU make, edit this file; for example:
 ## ESSVERSION=5.2.0
-ESSVERSION=$(shell cat VERSION)
+ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION 2> /dev/null )
 
 # Destination of your byte-compiled elisp (.elc) files,
 # defaults to the same directory as source (.el) files

@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.60 2002/07/24 14:49:35 rsparapa Exp $
+## $Id: Makefile,v 5.61 2002/07/24 22:19:32 rsparapa Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -35,26 +35,16 @@ default:
 	cd lisp; $(MAKE) all
 
 all install clean distclean realclean:
-	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd .. ; done
+	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd ..; done
 
-README: doc/readme.texi $(INTRO.DEPENDS)
-	cd doc; $(MAKE) readme.texi; $(MAKEINFOascii) readme.texi \
-	| perl -pe 'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' > ../README
-
-ANNOUNCE: doc/announc.texi $(INTRO.DEPENDS)
-	cd doc; $(MAKE) readme.texi; $(MAKEINFOascii) announc.texi \
-	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
-
-docs: README ANNOUNCE
-	@echo "** Committing README and ANNOUNCE **"
+info:   VERSION
+	@echo "** Committing README, ANNOUNCE and info **"
+	cd doc; $(MAKE) $@; cd ..
 	cvs commit -m "Updating README, ANNOUNCE for new version" \
 		README ANNOUNCE
-	cd doc
-	$(MAKE) info ESSVERSION=$(ESSVERSION) ESSINFODIR=$(ESSVERSIONDIR)/info
-	cd ..
-	cvs commit -m "Updating docs for new version" doc
+	cvs commit -m "Updating info for new version" doc
 
-dist: docs
+dist: info
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSVERSIONDIR)"
@@ -100,7 +90,7 @@ tag:
 	@echo "** Tagging the release **"
 	cvs tag -R $(ESSVERSIONTAG)
 
-doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3 doc/ess.info-4: doc/ess.texi
-	$(MAKE) docs
+#doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3 doc/ess.info-4: doc/ess.texi
+#	$(MAKE) docs
 
 

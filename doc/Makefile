@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.28 $.
+### File: $Revision: 1.29 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -55,7 +55,7 @@ DOCDIST = ess.ps ess.pdf \
 all  : info txts html dvi pdf
 
 # Documentation mentions info, not ess.info -- NOT readme.info <<< FIXME >>
-info : ../info/ess.info
+info : ../info/ess.info ../README ../ANNOUNCE
 dvi  :  ess.dvi readme.dvi
 pdf  :  ess.pdf readme.pdf
 txts : $(READMEtargets)
@@ -102,8 +102,17 @@ realclean : distclean
 README.SPLUS4WIN announc.texi inst_*.texi : ../VERSION
 	perl -pi -e 's/$(ESSVER_NR_REGEXP)/$${1}-$(shell cat $^)/go' $@
 
-readme.texi : ../VERSION
-	perl -pi -e 's/($(ESS_REGEXP) \s*[Vv]ersion)\s+$(VER_NR_REGEXP)/$${1} $(shell cat $^)/go' $@
+#readme.texi : ../VERSION $(ReadmeSRC)
+#	perl -pi -e 's/($(ESS_REGEXP) \s*[Vv]ersion)\s+$(VER_NR_REGEXP)/$${1} $(shell cat $^)/go' $@
+
+../README: $(ReadmeSRC)
+	$(MAKEINFOascii) readme.texi \
+	| perl -pe 'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' \
+	> ../README
+
+../ANNOUNCE: $(ReadmSRC)
+	$(MAKEINFOascii) announc.texi \
+	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
 
 ## ess.texi: use the perl for the above two combined:
 ess.texi : ../VERSION
@@ -121,7 +130,7 @@ ess.texi : ../VERSION
 
 ### File Dependencies
 
-version.texi:
+version.texi: ../VERSION
 	test -f $@ && rm -f $@ || true
 	echo "@macro essver{}" > $@
 	echo $(ESSVERSION) >> $@
