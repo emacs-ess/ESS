@@ -1,22 +1,23 @@
 ;;; -*- Mode: Emacs-Lisp -*- 
-;;; ess.el --- A package for running S within Emacs
+;;; ess.el --- A package for running Statistical Software within Emacs 
+;;; (Emacs Speaks Statistics).
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1996--1997 Rossini
+;; Copyright (C) 1996--1997 Rossini, Maechler, and Hornik.
 
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/05/21 20:07:00 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: ess.el,v 1.4 1997/05/21 20:07:00 rossini Exp $
+;; Modified: $Date: 1997/06/15 08:38:19 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: ess.el,v 1.5 1997/06/15 08:38:19 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
 ;;                   General Interface to statistical software packages|
 ;;                   92-06-29|
 ;;                   4.9|
-;;                   /ftp.math.sc.edu:rossini/S-mode-4.9.tar.gz
+;;                   /ftp.math.sc.edu:rossini/ESS-4.9.tar.gz
 ;; This file is part of ess-mode
 
 ;; This file is free software; you can redistribute it and/or modify
@@ -50,12 +51,13 @@
 ;;; Commentary:
 
 ;;; PURPOSE
-;;; Interface to the S dialects of statistical programming languages
+;;; Interface to the S and XLisp dialects of statistical programming
+;;; languages 
 
 ;;; BRIEF OVERVIEW
 ;;;
-;;; Supports stuctured editing of S (a statistics programming
-;;; language) functions that is integrated with a running S process in
+;;; Supports structured editing of S and XLisp (statistics programming
+;;; languages) functions that are integrated with a running process in
 ;;; a buffer.
 
 ;;; THE ess-MODE MAILING LIST 
@@ -109,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.5  1997/06/15 08:38:19  rossini
+;; documentation cleanup
+;;
 ;; Revision 1.4  1997/05/21 20:07:00  rossini
 ;; conversion to ess complete
 ;;
