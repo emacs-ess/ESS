@@ -26,9 +26,6 @@ New Features
 ============
 
    Changes/New Features in 5.1.13:
-   * Really requiring GNU makeVersion numbering finally all depending
-     on the ./VERSION file,       thanks to Martin Maechler.
-
    * Version numbering finally all depending on the ./VERSION file,
       thanks to Martin Maechler.
 
