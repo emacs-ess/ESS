@@ -3,7 +3,7 @@ General Information: README
 
    This is the README file for the distribution of ESS version
 
-   5.1.24
+   5.2.0
 
    The final release of the 5.1.x series on the way to 5.2 (the next
 stable distribution).  ESS is a GNU Emacs and XEmacs mode for
@@ -45,9 +45,37 @@ in the file COPYING in the same directory as this file for more details.
 New Features
 ============
 
-   Changes/New Features in 5.1.23:
+   Changes/New Features in 5.2.0:
+   * ESS[BUGS]:  now supports interactive processing; special thanks to
+     Aki Vehtari (mailto:Aki.Vehtari@hut.fi); new info documentation!
+
+   * ESS[SAS]:  convert .log to .sas with ess-sas-transcript; info
+     documentation improved; Local Variable bug fixes; SAS/IML
+     statements/functions now highlighted; files edited remotely by
+     ange-ftp/EFS/tramp are recognized and pressing SUBMIT opens a
+     buffer on the remote host via the local variable
+     ess-sas-shell-buffer-remote-init which defaults to "ssh"; changed
+     the definition of the variable ess-sas-edit-keys-toggle to boolean
+     rather than 0/1; added the function ess-electric-run-semicolon
+     which automatically reverse indents lines containing only "run;";
+     C-F1 creates an MS RTF file from the current buffer and name it
+     accordingly
+
+   * ESS[S]:  ess-dump-filename-template-proto (new name!) now can be
+     customized successfully (for S language dialects).
+
+   * ESS[S]:  ess-help: Now using nice underlines (instead of `nuke-*
+     ^H_')
+
+   * ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
+     numbers from any Emacs buffer into an existing *R* process.
+
+   * ESS[R]:  M-x ess-rdired gives a "directory editor" of R objects.
+
+   Changes/New Features in 5.1.24:
    * The version number is now correct even inside ESS/Emacs
 
+   Changes/New Features in 5.1.23:
    * Minor more Makefile clean up.
 
    Changes/New Features in 5.1.22:
@@ -335,50 +363,53 @@ fixes with bug reports are much appreciated!
 Requirements
 ============
 
-   ESS works best with either GNU Emacs version 20.3 or higher, or
-XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
+   ESS has been most thoroughly tested with:
 
-   * S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
+   * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
 
-   * R versions >=0.49
+   * R >=0.49
 
    * S4
 
-   * SAS 6.x, 7.x, 8.x
+   * SAS >=6.x
 
-   * BUGS 0.5, 0.603
+   * BUGS 0.603
 
    * Stata >=6.0
 
-   * XLispStat versions >=3.50
+   * XLispStat >=3.50
 
    on the following platforms
 
+   * Linux (all)
+
    * Solaris/SunOS (all)
 
-   * SGI (all)
-
-   * Linux (S4, S-PLUS 5.x, R, XLispStat, Stata 6.0)
-
-   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
+   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5/2000, R, SAS and BUGS)
 
    * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
 
    with the following versions of emacs
 
-   * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
+   * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
 
-   * XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
+   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13(1), 21.4.14
 
-   * XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34(1)
+   * GNU Emacs <20.3 and XEmacs <21.0(2)
 
    ---------- Footnotes ----------
 
-   (1) Note  that you must have `custom' support.  It is available at
-The Custom Library (http://www.dina.kvl.dk/~abraham/custom/).   These
-releases of emacs are no longer supported, so an upgrade is
-recommended if you plan to use ESS.  If you have GNU Emacs 19.29,  see
-*Note Unix installation::.
+   (1) requires the files.el patch for the Local Variables updating
+problem
+
+   (2) These releases of emacs are no longer supported, so an upgrade
+is recommended if you plan to use ESS.  If you have GNU Emacs 19.29,
+see *Note Unix installation::.  Also, note that the `custom' library
+bundled with Emacs 19.34 is too _old_, its API is incompatible with the
+`new custom' bundled with recent Emacsen.  The `new custom' for Emacs
+19.34 is available for download here
+(ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz)
+.
 
 Getting the Latest Version
 ==========================
@@ -463,7 +494,7 @@ Unix installation
      installing the database files.  From within emacs, `C-x d' to the
      directory containing ESS.  Now:
           M-x S+6
-     get running.  once you have reached the SPLUS prompt, do:
+     to get S running.  Once you see the SPLUS prompt, do:
           M-x ess-create-object-name-db
      (this will create the file `ess-s+6-namedb.el'; if it isn't in the
      ESS directory, move it there).
@@ -628,7 +659,7 @@ Microsoft Windows installation
      installing the database files.  From within emacs, `C-x d' to the
      directory containing ESS.  Now:
           M-x Sqpe+6
-     (get running.  once you have reached the SPLUS prompt, do:)
+     to get S running.  Once you see the SPLUS prompt, do:
           M-x ess-create-object-name-db
      (this will create the file `ess-s+6-namedb.el'; if it isn't in the
      ESS directory, move it there).
@@ -648,50 +679,53 @@ Microsoft Windows installation
 Requirements
 ============
 
-   ESS works best with either GNU Emacs version 20.3 or higher, or
-XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
+   ESS has been most thoroughly tested with:
 
-   * S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
+   * S-PLUS 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1, 2000
 
-   * R versions >=0.49
+   * R >=0.49
 
    * S4
 
-   * SAS 6.x, 7.x, 8.x
+   * SAS >=6.x
 
-   * BUGS 0.5, 0.603
+   * BUGS 0.603
 
    * Stata >=6.0
 
-   * XLispStat versions >=3.50
+   * XLispStat >=3.50
 
    on the following platforms
 
+   * Linux (all)
+
    * Solaris/SunOS (all)
 
-   * SGI (all)
-
-   * Linux (S4, S-PLUS 5.x, R, XLispStat, Stata 6.0)
-
-   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
+   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5/2000, R, SAS and BUGS)
 
    * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
 
    with the following versions of emacs
 
-   * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
+   * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
 
-   * XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
+   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13(1), 21.4.14
 
-   * XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34(1)
+   * GNU Emacs <20.3 and XEmacs <21.0(2)
 
    ---------- Footnotes ----------
 
-   (1) Note  that you must have `custom' support.  It is available at
-The Custom Library (http://www.dina.kvl.dk/~abraham/custom/).   These
-releases of emacs are no longer supported, so an upgrade is
-recommended if you plan to use ESS.  If you have GNU Emacs 19.29,  see
-*Note Unix installation::.
+   (1) requires the files.el patch for the Local Variables updating
+problem
+
+   (2) These releases of emacs are no longer supported, so an upgrade
+is recommended if you plan to use ESS.  If you have GNU Emacs 19.29,
+see *Note Unix installation::.  Also, note that the `custom' library
+bundled with Emacs 19.34 is too _old_, its API is incompatible with the
+`new custom' bundled with recent Emacsen.  The `new custom' for Emacs
+19.34 is available for download here
+(ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz)
+.
 
 Reporting Bugs
 ==============
@@ -744,4 +778,6 @@ Authors
    * Martin Maechler (mailto:maechler@stat.math.ethz.ch)
 
    * Rodney A. Sparapani (mailto:rsparapa@mcw.edu)
+
+   * Stephen Eglen (mailto:stephen@gnu.org)
 
