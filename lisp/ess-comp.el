@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/31 12:59:50 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: ess-comp.el,v 1.9 1997/07/31 12:59:50 rossini Exp $
+;; Modified: $Date: 1997/07/31 13:06:59 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: ess-comp.el,v 1.10 1997/07/31 13:06:59 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;: $Log: ess-comp.el,v $
+;;: Revision 1.10  1997/07/31 13:06:59  rossini
+;;: add byte compiler stuff again, when we release it.
+;;:
 ;;: Revision 1.9  1997/07/31 12:59:50  rossini
 ;;: try with unresolved...
 ;;:
@@ -72,14 +75,15 @@
 ;;(setq load-path (cons "." load-path))
 (add-to-list 'load-path nil)
 
-(if (not (string-match "XEmacs\\|Lucid" emacs-version))
-    (setq byte-compile-warnings '(free-vars
-				  callargs 
-				  unresolved
-				  redefine
-				  obsolete))
+;;(if (not (string-match "XEmacs\\|Lucid" emacs-version))
+;;    (setq byte-compile-warnings '(free-vars
+;;				  callargs 
+;;				  unresolved
+;;				  redefine
+;;				  obsolete))
+;;
+;;  (setq byte-optimize t))
 
-(setq byte-optimize t))
 (require 'cl)
 ;;(require 'cl-macs)  SHOULD NOT NEED THIS!
 (require 'ess-vars)
