@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/09/10 13:40:33 $
-;; Version: $Revision: 1.46 $
-;; RCS: $Id: ess-site.el,v 1.46 1997/09/10 13:40:33 rossini Exp $
+;; Modified: $Date: 1997/09/10 13:42:04 $
+;; Version: $Revision: 1.47 $
+;; RCS: $Id: ess-site.el,v 1.47 1997/09/10 13:42:04 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -88,6 +88,7 @@
 	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S
 	   ("\\.[rR]\\'"  . R-mode)
 	   ("R.*/src/library/[A-Za-z]+/funs/[A-Za-z]" . R-mode)
+	   ("R.*/src/library/[A-Za-z]+/man/[A-Za-z]"  . Rd-mode)
 	   ("\\.lsp\\'"                               . XLS-mode)
 	   ("\\.sas\\'"                               . SAS-mode)
 	   ("\\.SAS\\'"                               . SAS-mode)
