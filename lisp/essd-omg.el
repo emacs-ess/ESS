@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 August 1999
-;; Modified: $Date: 1999/09/16 05:21:24 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essd-omg.el,v 5.2 1999/09/16 05:21:24 rossini Exp $
+;; Modified: $Date: 1999/09/16 05:35:59 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essd-omg.el,v 5.3 1999/09/16 05:35:59 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -40,7 +40,7 @@
 ; Code:
 
 (defvar OMG-dialect-name "OMG"
-  "Name of 'dialect' for Omega.");easily changeable in a user's .emacs
+  "Name of 'dialect' for Omega.") ;easily changeable in a user's .emacs
 
 (defvar OMG-customize-alist
   '((ess-local-customize-alist     . 'OMG-customize-alist)
@@ -68,13 +68,13 @@
     (inferior-ess-secondary-prompt . ".. ?")
     (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
     (inferior-ess-start-args       . ""))
- "Variables to customize for S+3")
+ "Variables to customize for OMG")
 
 
 (defun OMG (&optional proc-name)
   "Call Omegahat, from the Omega Group for Statistical Computing."
   (interactive)
-  (setq ess-customize-alist S+3-customize-alist)
+  (setq ess-customize-alist OMG-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S+3): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
   (inferior-ess))
@@ -82,11 +82,11 @@
 (fset 'omegahat 'OMG)
 
 (defun OMG-mode (&optional proc-name)
-  "Major mode for editing Omegahat source.  See ess-mode for more help."
+  "Major mode for editing Omegahat source.  NOT EVEN STARTED."
   (interactive)
-  (setq ess-customize-alist S+3-customize-alist)
-  (ess-mode S+3-customize-alist proc-name)
-  (java-mode)
+  (setq ess-customize-alist OMG-customize-alist)
+  (ess-mode OMG-customize-alist proc-name)
+  ;;(java-mode)
   (setq major-mode 'OMG-mode))
 
 (fset 'omegahat-mode 'OMG-mode)
@@ -94,7 +94,7 @@
 (defun OMG-transcript-mode ()
   "Omegahat transcript mode."
   (interactive)
-  (ess-transcript-mode S+3-customize-alist))
+  (ess-transcript-mode OMG-customize-alist))
 
 
 
