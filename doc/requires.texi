@@ -26,7 +26,8 @@ with the following versions of emacs
 @itemize @bullet
 @item GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
 @item XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4.0-8, 21.4.9-12@footnote{
-21.4.9-12 requires the revert-buffer work-around}
+21.4.9-12 requires the files.el patch to fix the Local Variables/revert-buffer
+problem}
 @item XEmacs 19.x and GNU Emacs 19.x@footnote{These releases of emacs are no 
 longer supported, so an upgrade is recommended if you plan to use ESS.
 If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note
