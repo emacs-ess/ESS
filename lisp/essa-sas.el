@@ -116,7 +116,7 @@ or `ess-sas-data-view-insight'."
 ;;    :group 'ess-sas
 ;;)
 
-(defcustom ess-sas-log-max 250000
+(defcustom ess-sas-log-max 2500000
   "*If a .log file exceeds this many bytes, just \"refresh\" this many bytes."
   :group 'ess-sas
   :type  'integer)
