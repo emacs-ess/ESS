@@ -12,7 +12,7 @@
 @uref{mailto:hornik@@ci.tuwien.ac.at, Kurt Hornik}
 @c --------
 @item
-@c @uref{http://stat.ethz.ch/~maechler/,Martin Maechler}
+@c @uref{http://stat.ethz.ch/people/maechler/,Martin Maechler}
 @uref{mailto:maechler@@stat.math.ethz.ch, Martin Maechler}
 @c --------
 @item
