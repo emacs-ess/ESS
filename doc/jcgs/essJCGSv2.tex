@@ -89,19 +89,10 @@
 \ifdraft
 \newenvironment{Comment}{\begin{quote}\small\itshape }{\end{quote}}
 %
-\else%% Make all the comments invisible by using the following instead
-%% >>>>>>>>> NOT YET --- WHO can do this? {MM: I'll find out sooner or later}<<
-\newenvironment{Comment}{\renewcommand{\baselinestretch}{}%
-  \begin{quote}\tiny\itshape }{\end{quote}\renewcommand{\baselinestretch}{1.5}}
-%%--- how does one do this?
-%% 1) only eats one item :
-%% \newcommand{\Comment}[1]{}
-%%
-%% 2) alsoonly eats one item :
-%%- \newcommand{\eatMYarg}[1]{}
-%%- \newenvironment{Comment}{\tiny\begin{EatALL}}{\end{EatALL}}
-%%- \def\EatALL{\par\eatMYarg}
-%%- \def\endEatALL{}
+\else  %% this requires
+  \usepackage{verbatim}
+  \let\Comment=\comment
+  \let\endComment=\endcomment
 \fi
 
 %%--------------------------------------------------------------- Start Text
@@ -133,7 +124,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/07 23:01:36 $ - $Revision: 1.39 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/09 13:44:28 $ - $Revision: 1.40 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -175,10 +166,10 @@ statistical research activities, particularly data analysis and
 communication, are enhanced by computers.  This puts the user
 interface, which acts as a buffer between the statistician and
 computer, in the critical role of facilitating or hindering these
-tasks.  This paper introduces Emacs Speaks Statistics (ESS) \citep{ESS};
-a set of extensions to the Emacs text editor that create an interface
-for a variety of statistical analysis packages by
-providing shortcuts and extensions for often-performed tasks.
+tasks.  This paper introduces Emacs Speaks Statistics (ESS) \citep{ESS},
+an interface to a variety of statistical analysis packages that
+provides consistent shortcuts for frequently performed, possibly complex, tasks.
+ESS is constructed as a package of extensions to the Emacs text editing system.
 
 \begin{Comment}
 ??:
@@ -192,6 +183,11 @@ Rodney:
 I don't think so.
 AFAIC, anyone who wants to use ESS will not need to know
 that per se.  They will just need to know what works today.
+
+Rich: I think we don't want to get caught in the commandline vs spreadsheet
+vs GUI discussion.  ESS can work with any of them.
+
+Rich: Also the reference to (Rossini et al., 2001b) talks about that.
 \end{Comment}
 
 ESS provides an interface to statistical packages, and provides,
@@ -205,6 +201,11 @@ ViSta \citep{youn:fald:mcfa:1992}; \Stata\ \citep{Stata:6.0}; Omegahat
 \citep{DTLang:2000}; and BUGS \citep{BUGS}.  ESS can be
 extended to accommodate most statistical packages which provide either
 an interactive command-line or batch file processing.
+\begin{Comment}
+  Rich: What is going on with the underlining?  Any reference that spans
+two lines in the dvi file has no underlining in the first line, and then the
+entire second line is underlined as a unit.
+\end{Comment}
 
 The present paper summarizes historical and non-technical information on
 Emacs and ESS.  A more complete version is in \citep{RMHHS:2001}.
@@ -272,14 +273,14 @@ program is still running.
 Emacs capabilities are extended by loading text files containing code
 written in Emacs Lisp (elisp) \citep{RChassell1999}, a dialect of Lisp
 \citep{PGraham:1996}.  Emacs commands, written in elisp,
-can be called interactively by name or by their associated key-map.
+can be called interactively either by name or by pressing their mapped key.
 Emacs functions are also written in elisp, but they can only be called
 by Emacs commands or other Emacs functions rather than by
-name or key-maps.  The most important extensions to Emacs are called
+name or mapped keys.  The most important extensions to Emacs are called
 modes.
 
 Major-modes provide two kinds of support.
-First, they provide a customized environment (key-maps and associated
+First, they provide a customized environment (mapped keys and associated
 commands) for specific file types.  Only one major-mode can be active
 for a given buffer at any time.  The major-mode is often determined by
 the file name extension, i.e. the characters at the end of the file
@@ -291,24 +292,42 @@ Major-modes of this
 kind provide automatic indentation and navigation in units of characters,
 words, lines, sentences, paragraphs, and pages as well as many other
 features.
-Second, they provide the ability to run other programs.
-In this case, the other program's standard input can be drawn from a buffer
-or a file and its standard output can be directed to a buffer or a
-file.  Buffers of this kind can control programs that transfer files
-over a network, perform version control operations or many other
+
+Second, major modes provide the ability to run other programs.  In
+this case, the other program's standard input can be drawn from a
+buffer or a file and its standard output can be directed to a buffer
+or a file.  Buffers of this kind can control programs that transfer
+files over a network, perform version control operations or many other
 tasks.  An important example of this kind of major-mode is
-\stexttt{shell-mode}.  ESS uses this type of major-mode to run a shell
-inside a buffer to control statistical packages.
+\stexttt{shell-mode} in which an ordinary command shell is run inside
+a buffer.  ESS uses this type of major-mode to control statistical
+packages.  Other major modes are \stexttt{telnet} mode for logging in
+to a remote machine, either securely by running \stexttt{ssh} or
+non-securely by running \texttt{telnet}, and a directory editor mode
+\stexttt{dired} that permits access to files (for viewing, editing,
+and saving back) on the local or remote machine with equal ease.
 
 Minor-modes, by contrast, provide services that are not mutually
-exclusive.  This includes emulation of another editor or cooperating
-with a version control program.  For example, the minor-mode
+exclusive.
+For example, the minor-mode
 \stexttt{font-lock-mode} allows Emacs to highlight, with fonts or
 colors, the syntax of a programming language whose characteristics are
-described by a major-mode like ESS.  Remote editing of files is
-provided by minor-modes \stexttt{ange-ftp} and \stexttt{EFS} for
-non-secure access via ftp or \stexttt{tramp} for secure connections
-with scp or ssh, and telnet for non-secure connections.
+described by a major-mode like ESS.  \stexttt{overwrite-mode}, usually
+mapped to the \ssf{Insert} key, determines whether typed characters replace
+the existing text or push it to the right.
+Minor modes can be used to change the key mapping, for example to
+emulate the keys used by another editor.  This is often used
+by people who want the power of emacs without having to retrain their
+fingers to use the standard emacs key mappings.
+\begin{Comment}
+Rich: I can't make sense of the previous wording of the ftp etc sentence.
+Also it wasn't true.  both telnet-mode and internal-ange-ftp-mode are
+major modes.
+\end{Comment}
+% Remote editing of files is
+% provided by minor-modes \stexttt{ange-ftp} and \stexttt{EFS} for
+% non-secure access via ftp or \stexttt{tramp} for secure connections
+% with scp or ssh, and telnet for non-secure connections.
 Interacting with revision control
 programs is provided by the minor-mode \stexttt{vc-mode} for packages
 like CVS, RCS and SCCS (or the more
@@ -724,7 +743,7 @@ key behavior which mimics the \SAS\ Display Manager,
 a more comprehensive and efficient syntax highlighting scheme for \SAS\
 programs and logs, and automated and intelligent error message searching
 of the log.  In 2001 and 2002, they designed and implemented ESS-elsewhere
-for \SAS\.  ESS-elsewhere provides interactive and batch processing
+for \SAS.  ESS-elsewhere provides interactive and batch processing
 with \SAS\ running on a remote machine that is accessed over a
 network.
 % This provides a powerful development environment for \SAS.
