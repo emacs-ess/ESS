@@ -5,13 +5,13 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1997/11/11 21:34:37 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essl-sta.el,v 1.4 1997/11/11 21:34:37 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:38:50 $
+;; Version: $Revision: 4.0 $
+;; RCS: $Id: essl-sta.el,v 4.0 1997/11/20 23:38:50 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
-;; This file is part of ESS.
+;; This file is part of ESS (Emacs Speaks Statistics).
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
