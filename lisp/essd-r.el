@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2000/11/02 22:52:22 $
-;; Version: $Revision: 5.24 $
-;; RCS: $Id: essd-r.el,v 5.24 2000/11/02 22:52:22 rossini Exp $
+;; Modified: $Date: 2001/01/22 02:32:23 $
+;; Version: $Revision: 5.25 $
+;; RCS: $Id: essd-r.el,v 5.25 2001/01/22 02:32:23 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -70,6 +70,7 @@
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[A-Za-z0-9.]*> ")
     (inferior-ess-secondary-prompt . "+ ?")
+    (comint-use-prompt-regexp-instead-of-fields . t)  ;; emacs 21 and up
     (inferior-ess-start-file       . nil) ; "~/.ess-R")
     (inferior-ess-start-args       . ""))
   "Variables to customize for R")
@@ -105,14 +106,11 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
 		       (concat "Starting Args [other than `"
 			       r-always-arg
 			       "'] ? "))
-		    nil))))
-    (inferior-ess r-start-args))
-  (if (or (equal window-system 'w32) (equal window-system 'win32))
-      (progn
-	(add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
-	(comint-strip-ctrl-m)           ; Timing problem in bash.
-					; Can't make startup ^M go away.
-	(goto-char (point-max)))));; (R)
+		    nil)))
+	 default-process-coding-system)
+    (if (or (equal window-system 'w32) (equal window-system 'win32))
+	(setq default-process-coding-system '(undecided-dos . undecided-dos)))
+    (inferior-ess r-start-args)));; (R)
 
 
 (autoload 'ess-transcript-mode "ess-trns"
