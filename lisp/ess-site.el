@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/28 13:06:10 $
-;; Version: $Revision: 1.24 $
-;; RCS: $Id: ess-site.el,v 1.24 1997/07/28 13:06:10 rossini Exp $
+;; Modified: $Date: 1997/07/28 13:51:48 $
+;; Version: $Revision: 1.25 $
+;; RCS: $Id: ess-site.el,v 1.25 1997/07/28 13:51:48 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.25  1997/07/28 13:51:48  rossini
+;;: added new customizations.  Need to move the def-vars to ess-vars.
+;;:
 ;;: Revision 1.24  1997/07/28 13:06:10  rossini
 ;;: moved/uncommented ess-site.el
 ;;:
@@ -234,13 +237,38 @@
 (autoload 'inferior-ess "ess-inf"
   "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
 
-;; (1.4) Require the needed dialects for your setup.
+
+;; (1.4) Customize the dialects for your setup.
+
+
+;;(setq-default inferior-S+3-program-name "Splus")
+;;(setq-default inferior-R-program-name "/disk05/rmh/xemacs/R/R-0.49/bin/R"
+;;(setq-default inferior-XLS-program-name "xlispstat")
+;;(setq-default inferior-S4-program-name "/disk05/s4/S")
+;;(setq-default inferior-S3-program-name "/disk05/s/S")
+;;(setq-default inferior-S-program-name inferior-S+3-program-name)
+
+;;(defvar inferior-S+3-program-name "Splus"
+;;  "*Program name for invoking an inferior S with S+3().")
+;;(defvar inferior-R-program-name "R"
+;;  "*Program name for invoking an inferior S with R().")
+;;(defvar inferior-XLS-program-name "xlispstat"
+;;  "*Program name for invoking an inferior S with XLS().")
+;;(defvar inferior-S4-program-name "/disk05/s4/S"
+;;  "*Program name for invoking an inferior S with S4().")
+;;(defvar inferior-S3-program-name "/disk05/s/S"
+;;  "*Program name for invoking an inferior S with S3().")
+;;;;; user settable default
+;;(defvar inferior-S-program-name inferior-S+3-program-name
+;;  "*Program name for invoking an inferior S with S().")
+
+;; (1.5) Require the needed dialects for your setup.
 
 (require 'essd-s+3)
 (require 'essd-r)
 (require 'essd-xls)
-(require 'essd-s3)  ;; You might not have this
-(require 'essd-s4)  ;; or this one...
+;;(require 'essd-s3)  ;; You might not have this
+;;(require 'essd-s4)  ;; or this one...
 
 ;;TODO, for 5.0 :-).
 ;; (require 'essd-vst) ; built on essd-xls.
