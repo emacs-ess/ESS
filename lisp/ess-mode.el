@@ -6,12 +6,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/01 14:44:57 $
-;; Version: $Revision: 1.38 $
-;; RCS: $Id: ess-mode.el,v 1.38 1997/07/01 14:44:57 rossini Exp $
+;; Modified: $Date: 1997/07/17 18:35:16 $
+;; Version: $Revision: 1.39 $
+;; RCS: $Id: ess-mode.el,v 1.39 1997/07/17 18:35:16 rossini Exp $
 
 ;;
 ;; $Log: ess-mode.el,v $
+;; Revision 1.39  1997/07/17 18:35:16  rossini
+;; ess -> ESS
+;;
 ;; Revision 1.38  1997/07/01 14:44:57  rossini
 ;; added RMH's ess-check-source solution.
 ;;
@@ -1068,7 +1071,7 @@ Returns nil if line starts inside a string, t if in a comment."
 	(setq ess-style style)
       (error (concat "Bad S style: " style))
       )
-    (message "ess-style: %s" ess-style)
+    (message "ESS-style: %s" ess-style)
 
     ; finally, set the indentation style variables making each one local
     (mapcar (function (lambda (ess-style-pair)
