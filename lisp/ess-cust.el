@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/04/18 14:50:38 $
-;; Version: $Revision: 1.61 $
-;; RCS: $Id: ess-cust.el,v 1.61 2004/04/18 14:50:38 stephen Exp $
+;; Modified: $Date: 2004/04/19 11:12:03 $
+;; Version: $Revision: 1.62 $
+;; RCS: $Id: ess-cust.el,v 1.62 2004/04/19 11:12:03 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -1346,11 +1346,17 @@ If nil, input is in the `font-lock-variable-name-face'."
 ;;*;; Variables relating to ess-help-mode
 
 (defcustom ess-help-own-frame nil
-  "*Non-nil means that ESS help buffers should start in a dedidated frame.
+  "*Controls whether ESS help buffers should start in a different frame.
+
+Possible values are:
+   nil: Display help in current frame.
+  'one: All help buffers are shown in one dedicated frame.
+     t: Each help buffer gets its own frame.
+
 The parameters of this frame are stored in `pop-up-frame-alist'.
 See also `inferior-ess-own-frame'."
   :group 'ess-help
-  :type 'boolean)
+  :type '(choice (const nil) (const one) (const t)))
 
 (defconst ess-help-S-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file")
