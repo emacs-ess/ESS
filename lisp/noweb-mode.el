@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.4 1999/09/14 23:09:21 rossini Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.5 1999/09/14 23:52:20 rossini Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -93,7 +93,7 @@
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.4 1999/09/14 23:09:21 rossini Exp $")
+  "$Id: noweb-mode.el,v 1.5 1999/09/14 23:52:20 rossini Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")
@@ -1523,21 +1523,32 @@ This may be useful in shell scripts, where the first line (or two) must have a
                             (progn (end-of-line) (point)))))
             (if (string-match 
                  "mode:[ \t]*\\([^\t ]*\\)" this-line)
-                (setq noweb-code-mode (match-string-no-properties 1 this-line)))
+                (setq noweb-code-mode 
+		      (if (string-match "XEmacs\\|Lucid" emacs-version)
+			  (match-string 1 this-line)
+			(match-string-no-properties 1 this-line))
+		      ))
             (if (string-match 
                  "noweb-line-number-format:[ \t]*\"\\([^\"]*\\)\"" this-line)
                 (setq noweb-line-number-format 
-                      (match-string-no-properties 1 this-line)))
+		      (if (string-match "XEmacs\\|Lucid" emacs-version)
+			  (match-string 1 this-line)
+			(match-string-no-properties 1 this-line))
+		      ))
             (if (string-match 
                  "noweb-line-number-skip-lines:[ \t]*\\([^\t ]*\\)" this-line)
                 (setq noweb-line-number-skip-lines 
                       (string-to-number
-                       (match-string-no-properties 1 this-line))))
+		      (if (string-match "XEmacs\\|Lucid" emacs-version)
+			  (match-string 1 this-line)
+			(match-string-no-properties 1 this-line)))))
             (if (string-match 
                  "noweb-tab-width:[ \t]*\\([^\t ]*\\)" this-line)
                 (setq noweb-tab-width    
                       (string-to-number
-                       (match-string-no-properties 1 this-line))))
+		      (if (string-match "XEmacs\\|Lucid" emacs-version)
+			  (match-string 1 this-line)
+			(match-string-no-properties 1 this-line)))))
             (beginning-of-line 2)))))))
   
 (defun noweb-reset-thread-local-variables ()

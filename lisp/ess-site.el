@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/09/14 23:09:21 $
-;; Version: $Revision: 5.30 $
-;; RCS: $Id: ess-site.el,v 5.30 1999/09/14 23:09:21 rossini Exp $
+;; Modified: $Date: 1999/09/14 23:52:20 $
+;; Version: $Revision: 5.31 $
+;; RCS: $Id: ess-site.el,v 5.31 1999/09/14 23:52:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -110,6 +110,7 @@
 	   ("\\.ssc\\'"	  . S-mode) ;; Splus 4.x script files.
 	   ("\\.[rR]\\'"  . R-mode)
 	   ("\\.[rR]profile\\'" . R-mode)
+	   ("\\.nw\\'"          . noweb-mode) ;; Literate Data Analysis
 	   ("\\.lsp\\'"		. XLS-mode)
 	   ("\\.do\\'"		. STA-mode)
 	   ("\\.ado\\'"		. STA-mode)
@@ -124,9 +125,6 @@
 	   ("\\.[Rr]out"	. R-transcript-mode)
 	   ("\\.Rd\\'"		. Rd-mode))  ;all R>=0.60
 	 auto-mode-alist)))
-
-
-
 
 ;; (1.4) Customize the dialects for your setup.
 

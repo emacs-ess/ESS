@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: November 1997
-;; Modified: $Date: 1998/12/15 20:54:59 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: ess-debug.el,v 5.3 1998/12/15 20:54:59 rossini Exp $
+;; Modified: $Date: 1999/09/14 23:52:20 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: ess-debug.el,v 5.4 1999/09/14 23:52:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,15 @@
 ;;           xemacs -no-site-file -no-init-file -load ess-debug.el -f S4    
 ;; (or similar!)
 ;;
+
+
+;; For Tony's environment
+(require 'tex-site)
+;(require 'x-symbol-hooks)
+;(x-symbol-initialize)
+
+
+
 
 (defun ess-add-path (path &rest options)
   "Add PATH to `load-path' if it exists under `default-load-path'
@@ -66,7 +75,7 @@ default-load-path."
 		(cons p load-path))))))
 
 (setq-default debug-on-error t)
-(ess-add-path "/biostat/student2/rossini/src/ess/lisp")
+(ess-add-path "~rossini/src/cvs/ess/lisp")
 (require 'ess-site)
 
 ; Local variables section

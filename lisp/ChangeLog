@@ -1,3 +1,8 @@
+Tue Sep 14 16:10:04 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-noweb.el (global-font-lock-mode): set true to prevent XEmacs 
+	from barfing.
+
 Tue Sep 14 13:26:36 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* ess?-sta.el: cleaned up stata mode to work.
