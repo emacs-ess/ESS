@@ -1,9 +1,9 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.26 $, for ESS 5.1.x)
+   ($Revision: 5.27 $, for ESS 5.1.x)
 
-   This is the README file for the distribution of ESS version 5.1.18,
+   This is the README file for the distribution of ESS version 5.1.19,
 the alpha/beta series we are using on the way to producing 5.2 (the next
 stable distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported include:
@@ -66,6 +66,42 @@ in the file COPYING in the same directory as this file for more details.
 
 New Features
 ============
+
+   Changes/New Features in 5.1.19:
+   * S+6 now supported (Tony Rossini)
+
+   * New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
+     Templates assist you in writing .bug and .cmd code (.cmd and .log
+         are replaced by .bmd and .bog to avoid emacs extension
+     collisions).        "Substitution" parameters facilitate
+     "automagic" generation of       "data...in" and "init...in"
+     filenames, "const N=" from your data       file and
+     "monitor()/stats()" commands.  Activated by pressing F12.
+
+   * Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
+
+   * You can change between PC and Unix, local and global SAS
+     function-key       definitions interactively (Rich Heiberger)
+
+   * C-Submit a highlighted region to SAS batch (Rodney Sparapani)
+
+   * New and improved SAS syntax highlighting (Rodney Sparapani)
+     To get the new functionality, set ess-sas-run-make-regexp to nil.
+          Also available in .log files via F10.
+
+   * Open a permanent SAS dataset for viewing via F9 (Rodney Sparapani)
+          You must have the library defined in autoexec.sas for it to
+     work.
+
+   * User-friendly defaults for `sas-program',
+     `ess-sas-batch-pre-command'       and `ess-sas-batch-post-command'
+     as well Customize support for these       and other ESS[SAS]
+     variables (Rodney Sparapani)
+
+   * `ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
+
+   * Emacs/XEmacs, Unix/Windows issues collectively handled in
+     ess-emcs.el
 
    Changes/New Features in 5.1.18:
    * New `ess-smart-underscore' function, now assigned to "_" by
@@ -167,11 +203,13 @@ Current Features
 ================
 
    * Languages Supported:
-        * S dialects (S 3/4, S-PLUS 3.x/4.x/5.x, and R)
+        * S dialects (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
 
         * LispStat dialects (XLispStat, ViSta under development)
 
         * SAS
+
+        * BUGS
 
         * Stata
 
@@ -179,7 +217,7 @@ Current Features
 
         * SCA (under development)
 
-   * Editing source code (S, LispStat, SAS)
+   * Editing source code (S, LispStat, SAS, BUGS)
         * Syntactic indentation and highlighting of source code
 
         * Partial evaluations of code
@@ -220,20 +258,18 @@ Stability
 
    Versions 5.1.x are meant as a beta-level releases.  While some bugs
 are fixed from 5.0, others have been introduced, especially with
-regards to new features.  See the file Doc/TODO for details.  Bug
+regards to new features.  See the file doc/TODO for details.  Bug
 reports are solicited; see the BUGS section below.  Patches or
 suggested coding fixes with bug reports are much appreciated!
-
-   Some versions tend to be more stable than others, and for new support
-(Microsoft support), 5.1.16 is the current favorite.
 
 Requirements
 ============
 
-   ESS version 5.1.n (n >= 2) requires Emacs version 19.29 or later, or
-version XEmacs 19.14 or later.  It has been most thoroughly tested with:
+   ESS version 5.1.n (n >= 2) requires Emacs version 19.34(1) or later,
+or version XEmacs 19.14 or later.  It has been most thoroughly tested
+with:
 
-   * S-PLUS versions 3.3, 3.4, 4.5, 5.0
+   * S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
 
    * R versions >=0.49
 
@@ -245,6 +281,8 @@ version XEmacs 19.14 or later.  It has been most thoroughly tested with:
 
    * Stata >=6.0
 
+   * BUGS 0.5 or 0.6
+
    on the following platforms
 
    * SunOS (all)
@@ -253,23 +291,24 @@ version XEmacs 19.14 or later.  It has been most thoroughly tested with:
 
    * SGI (all)
 
-   * Linux (S-PLUS 5.0, R, XLispStat, S4, Stata 6.0)
+   * Linux (S-PLUS 5.0, 5.1, R, XLispStat, S4, Stata 6.0)
 
-   * Microsoft Windows 95/98/NT (SPLUS 4.5)
+   * Microsoft Windows 95/98/NT (SPLUS 4.5 and 2000)
 
-   with the following Emacsen:
+   with the following versions of emacs
 
-   * Emacs 19.29, 19.34, 20.3, 20.4, XEmacs 19.16, XEmacs 20.4, XEmacs
-     21.0
+   * Emacs 19.34, 20.3, 20.4, 20.5, 20.6, 20.7
 
-   * Emacs 19.28 with SAS (with additional modifications)
+   * XEmacs 19.16, 20.0, 20.4, 21.0, 21.1.13, 21.4.x
+
+   * Emacs 19.28, 19.29 with SAS (with additional modifications)
 
    * NTEmacs 20.3.1 with S-PLUS 4.5.
 
-   It may need some work with other configurations.  We include
-configuration suggestions for emacs 19.28 in Doc/README-19.28.  These
-are the changes we made in order to use ESS with SAS on a Digital Alpha
-running Emacs 19.28.
+   ---------- Footnotes ----------
+
+   (1) if you have Emacs 19.29, you _may_ get it to work after
+unpacking `19.29.tar.gz', see the installation instructions
 
 Getting the Latest Version
 ==========================
@@ -284,8 +323,22 @@ Getting the Latest Version
    `http://stat.ethz.ch/ESS/'
 
    The latest (no more than 24 hours behind the developers) version of
-ESS can also be retrieved using anonymous CVS.  Details on this are
-forthcoming.
+ESS can also be retrieved using anonymous cvs.
+
+   You need a cvs client (that works with your firewall, if any)
+
+   the repository name is
+:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src
+
+   using a command-line cvs client (i.e. on Unix or DOS), first type:
+
+   cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login
+
+   password is anoncvs
+
+   then type:
+
+   cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess
 
 Installation (from tar file)
 ============================
@@ -298,26 +351,32 @@ Microsoft Windows.  First, we discuss Unix installation.
   1.   cd to a directory where you keep emacs lisp files, or create a
      new   directory to hold the distribution.  This directory will be
      referred   to below as "the ESS distribution directory".  It will
-     contain,   at the end, the tar file `ESS-5.1.18.tar.gz', and a
+     contain,   at the end, the tar file `ESS-5.1.19.tar.gz', and a
      directory for   the ESS source, which will be termed "the
-     ESS-5.1.18 source directory".    Note that the .elc files may be
-     installed elsewhere (as specified in the   Makefile) if desired.
+     ESS-5.1.19 source directory".
+
+     Note that the .elc files may be installed elsewhere (as specified
+     in the   Makefile) if desired.
 
   2.   Retrieve the compressed tar file from one of the FTP or WWW
      archive   sites via FTP (or HTTP).
 
-  3.   Copy `ESS-5.1.18.tar.gz' to the location where you want the
-     ESS-5.1.18 directory, and cd there.  Extract the files from the
-     distribution, which will unpack into a subdirectory, ESS-5.1.18.
-          	gunzip ESS-5.1.18.tar.gz
-          	tar vxf ESS-5.1.18.tar
-     	(or: `gunzip < ESS-5.1.18.tar.gz | tar vxf -' ).  	(or using GNU
-     tar:  `tar zvxf ESS-5.1.18.tar.gz').
+  3.   Copy `ESS-5.1.19.tar.gz' to the location where you want the
+     ESS-5.1.19 directory, and cd there.  Extract the files from the
+     distribution, which will unpack into a subdirectory, ESS-5.1.19.
+          	gunzip ESS-5.1.19.tar.gz
+          	tar vxf ESS-5.1.19.tar
+     	(or: `gunzip < ESS-5.1.19.tar.gz | tar vxf -' ).  	(or using GNU
+     tar:  `tar zvxf ESS-5.1.19.tar.gz').
 
      The `tar' command will extract files into the current directory.
-
-     Do not create ESS-5.1.18 yourself, or you will get an extra level
+     Do not create ESS-5.1.19 yourself, or you will get an extra level
      of   depth to your directory structure.
+
+     Note if you have a very ancient version of GNU emacs (_and_  really
+      can not upgrade to Emacs 20 or higher!) you can unpack the
+     `lisp/19.29.tar.gz' file, read the ensuing `lisp/19.29/README'
+     and you may succeed...
 
   4.   Edit the file `lisp/ess-site.el' as explained in the comments
      section of that file.  Installations that are using ESS only for
@@ -328,12 +387,7 @@ Microsoft Windows.  First, we discuss Unix installation.
 
   5.   READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     YOU DO NOT NEED TO RUN THROUGH THESE STEPS IN ORDER TO USE ESS.
-     YOU   ONLY NEED TO EDIT AND LOAD (into Emacs) `lisp/ess-site' TO
-     START USING ESS.  THESE STEPS COMPILE (for a small gain in speed)
-     AND CREATE THE DOCUMENTATION.
-
-     In the ESS-5.1.18 directory, edit the file `Makeconf' (only if you
+     In the ESS-5.1.19 directory, edit the file `Makeconf' (only if you
       want to place the executables in other locations; see LISPDIR and
       INFODIR) and then type:
           	make
@@ -432,33 +486,33 @@ Microsoft Windows.  First, we discuss Unix installation.
      new    directory (for example, `c:\emacs\') to hold the
      distribution.  This    directory will be referred to below as "the
      ESS distribution    directory".  It will contain, at the end,
-     either the tar file    `ESS-5.1.18.tar.gz' or the zip file
-     `ESS-5.1.18.zip', and a    directory    for the ESS source, which
-     will be termed "the ESS-5.1.18 source    directory".
+     either the tar file    `ESS-5.1.19.tar.gz' or the zip file
+     `ESS-5.1.19.zip', and a    directory    for the ESS source, which
+     will be termed "the ESS-5.1.19 source    directory".
 
-  2.       Retrieve the compressed tar file `ESS-5.1.18.tar.gz' or the
-        zipped file `ESS-5.1.18.zip' from one of the FTP or WWW
+  2.       Retrieve the compressed tar file `ESS-5.1.19.tar.gz' or the
+        zipped file `ESS-5.1.19.zip' from one of the FTP or WWW
      archive sites      via FTP (or HTTP).  Be aware that http browsers
      on Windows      frequently change the "." and "-" characters in
      filenames to other      punctuation.  Please change the names back
      to their original form.
 
-  3.       Copy `ESS-5.1.18.tar.gz' to the location where you want the
-        ESS-5.1.18 directory, for example to
-     `c:\emacs\ESS-5.1.18.tar.gz', and cd there.  For example,
+  3.       Copy `ESS-5.1.19.tar.gz' to the location where you want the
+        ESS-5.1.19 directory, for example to
+     `c:\emacs\ESS-5.1.19.tar.gz', and cd there.  For example,
 
                        cd c:\emacs
 
      Extract the files from the distribution, which will unpack
-     into a subdirectory, `ess-5.1.18'.
-                    	gunzip ESS-5.1.18.tar.gz
-                    	tar vxf ESS-5.1.18.tar
-          	(or: `gunzip < ESS-5.1.18.tar.gz | tar vxf -' ).
-        (or: from the zip file: `unzip ESS-5.1.18.zip')
+     into a subdirectory, `ess-5.1.19'.
+                    	gunzip ESS-5.1.19.tar.gz
+                    	tar vxf ESS-5.1.19.tar
+          	(or: `gunzip < ESS-5.1.19.tar.gz | tar vxf -' ).
+        (or: from the zip file: `unzip ESS-5.1.19.zip')
 
      The `tar' command will extract files into the current directory.
 
-     Do not create `ess-5.1.18' yourself, or you will get an extra level
+     Do not create `ess-5.1.19' yourself, or you will get an extra level
          of   depth to your directory structure.
 
   4.      Windows users will usually be able to use the
@@ -549,9 +603,9 @@ Microsoft Windows.  First, we discuss Unix installation.
      SAS for Windows uses the batch access with function keys that is
        described in `doc/README.SAS'.
 
-     SAS for Windows cannot be run with:
-                    	M-x SAS
-          Reason:  we use ddeclient to interface with programs and SAS
+     For Windows, only SAS batch functionality is available.
+
+     Reason:  we use ddeclient to interface with programs and SAS
      doesn't      provide the corresponding ddeserver capability.
 
  11. That's it!
@@ -560,7 +614,20 @@ Microsoft Windows.  First, we discuss Unix installation.
 Installation (from anonymous CVS)
 =================================
 
-   To be added.
+   You need a cvs client (that works with your firewall, if any)
+
+   the repository name is
+:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src
+
+   using a command-line cvs client (i.e. on Unix or DOS), first type:
+
+   cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login
+
+   password is anoncvs
+
+   then type:
+
+   cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess
 
 Reporting Bugs
 ==============
@@ -593,7 +660,7 @@ low-volume mailing list.
 
    *  helping users of ESS to get along with it.
 
-   *  discussing aspects of using ESS for GNU Emacs and XEmacs.
+   *  discussing aspects of using ESS on Emacs and XEmacs.
 
    *  suggestions for improvements.
 
@@ -617,5 +684,6 @@ Authors
    * Martin Maechler (http://stat.ethz.ch/~maechler/)
      <maechler@stat.math.ethz.ch>
 
-   * Rodney Sparapani <rsparapa@mcw.edu>
+   * Rodney Sparapani (http://www.mcw.edu/pcor/rsparapa)
+     <rsparapa@mcw.edu>
 

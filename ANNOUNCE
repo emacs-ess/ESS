@@ -1,7 +1,7 @@
 ANNOUNCING ESS
 **************
 
-   Annoucing the release of ESS-5.1.18 (Emacs Speaks Statistics).
+   Annoucing the release of ESS-5.1.19 (Emacs Speaks Statistics).
 ------------------------------------------------------------
 
    ESS is an Emacs package which provides a standard interface between
@@ -24,6 +24,42 @@ file README with the distribution.
 
 New Features
 ============
+
+   Changes/New Features in 5.1.19:
+   * S+6 now supported (Tony Rossini)
+
+   * New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
+     Templates assist you in writing .bug and .cmd code (.cmd and .log
+         are replaced by .bmd and .bog to avoid emacs extension
+     collisions).        "Substitution" parameters facilitate
+     "automagic" generation of       "data...in" and "init...in"
+     filenames, "const N=" from your data       file and
+     "monitor()/stats()" commands.  Activated by pressing F12.
+
+   * Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
+
+   * You can change between PC and Unix, local and global SAS
+     function-key       definitions interactively (Rich Heiberger)
+
+   * C-Submit a highlighted region to SAS batch (Rodney Sparapani)
+
+   * New and improved SAS syntax highlighting (Rodney Sparapani)
+     To get the new functionality, set ess-sas-run-make-regexp to nil.
+          Also available in .log files via F10.
+
+   * Open a permanent SAS dataset for viewing via F9 (Rodney Sparapani)
+          You must have the library defined in autoexec.sas for it to
+     work.
+
+   * User-friendly defaults for `sas-program',
+     `ess-sas-batch-pre-command'       and `ess-sas-batch-post-command'
+     as well Customize support for these       and other ESS[SAS]
+     variables (Rodney Sparapani)
+
+   * `ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
+
+   * Emacs/XEmacs, Unix/Windows issues collectively handled in
+     ess-emcs.el
 
    Changes/New Features in 5.1.18:
    * New `ess-smart-underscore' function, now assigned to "_" by
@@ -125,11 +161,13 @@ Current Features
 ================
 
    * Languages Supported:
-        * S dialects (S 3/4, S-PLUS 3.x/4.x/5.x, and R)
+        * S dialects (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
 
         * LispStat dialects (XLispStat, ViSta under development)
 
         * SAS
+
+        * BUGS
 
         * Stata
 
@@ -137,7 +175,7 @@ Current Features
 
         * SCA (under development)
 
-   * Editing source code (S, LispStat, SAS)
+   * Editing source code (S, LispStat, SAS, BUGS)
         * Syntactic indentation and highlighting of source code
 
         * Partial evaluations of code
@@ -178,20 +216,18 @@ Stability
 
    Versions 5.1.x are meant as a beta-level releases.  While some bugs
 are fixed from 5.0, others have been introduced, especially with
-regards to new features.  See the file Doc/TODO for details.  Bug
+regards to new features.  See the file doc/TODO for details.  Bug
 reports are solicited; see the BUGS section below.  Patches or
 suggested coding fixes with bug reports are much appreciated!
-
-   Some versions tend to be more stable than others, and for new support
-(Microsoft support), 5.1.16 is the current favorite.
 
 Requirements
 ============
 
-   ESS version 5.1.n (n >= 2) requires Emacs version 19.29 or later, or
-version XEmacs 19.14 or later.  It has been most thoroughly tested with:
+   ESS version 5.1.n (n >= 2) requires Emacs version 19.34(1) or later,
+or version XEmacs 19.14 or later.  It has been most thoroughly tested
+with:
 
-   * S-PLUS versions 3.3, 3.4, 4.5, 5.0
+   * S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
 
    * R versions >=0.49
 
@@ -203,6 +239,8 @@ version XEmacs 19.14 or later.  It has been most thoroughly tested with:
 
    * Stata >=6.0
 
+   * BUGS 0.5 or 0.6
+
    on the following platforms
 
    * SunOS (all)
@@ -211,23 +249,24 @@ version XEmacs 19.14 or later.  It has been most thoroughly tested with:
 
    * SGI (all)
 
-   * Linux (S-PLUS 5.0, R, XLispStat, S4, Stata 6.0)
+   * Linux (S-PLUS 5.0, 5.1, R, XLispStat, S4, Stata 6.0)
 
-   * Microsoft Windows 95/98/NT (SPLUS 4.5)
+   * Microsoft Windows 95/98/NT (SPLUS 4.5 and 2000)
 
-   with the following Emacsen:
+   with the following versions of emacs
 
-   * Emacs 19.29, 19.34, 20.3, 20.4, XEmacs 19.16, XEmacs 20.4, XEmacs
-     21.0
+   * Emacs 19.34, 20.3, 20.4, 20.5, 20.6, 20.7
 
-   * Emacs 19.28 with SAS (with additional modifications)
+   * XEmacs 19.16, 20.0, 20.4, 21.0, 21.1.13, 21.4.x
+
+   * Emacs 19.28, 19.29 with SAS (with additional modifications)
 
    * NTEmacs 20.3.1 with S-PLUS 4.5.
 
-   It may need some work with other configurations.  We include
-configuration suggestions for emacs 19.28 in Doc/README-19.28.  These
-are the changes we made in order to use ESS with SAS on a Digital Alpha
-running Emacs 19.28.
+   ---------- Footnotes ----------
+
+   (1) if you have Emacs 19.29, you _may_ get it to work after
+unpacking `19.29.tar.gz', see the installation instructions
 
 Getting the Latest Version
 ==========================
@@ -242,8 +281,22 @@ Getting the Latest Version
    `http://stat.ethz.ch/ESS/'
 
    The latest (no more than 24 hours behind the developers) version of
-ESS can also be retrieved using anonymous CVS.  Details on this are
-forthcoming.
+ESS can also be retrieved using anonymous cvs.
+
+   You need a cvs client (that works with your firewall, if any)
+
+   the repository name is
+:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src
+
+   using a command-line cvs client (i.e. on Unix or DOS), first type:
+
+   cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login
+
+   password is anoncvs
+
+   then type:
+
+   cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess
 
 Reporting Bugs
 ==============
@@ -276,7 +329,7 @@ low-volume mailing list.
 
    *  helping users of ESS to get along with it.
 
-   *  discussing aspects of using ESS for GNU Emacs and XEmacs.
+   *  discussing aspects of using ESS on Emacs and XEmacs.
 
    *  suggestions for improvements.
 
@@ -300,7 +353,8 @@ Authors
    * Martin Maechler (http://stat.ethz.ch/~maechler/)
      <maechler@stat.math.ethz.ch>
 
-   * Rodney Sparapani <rsparapa@mcw.edu>
+   * Rodney Sparapani (http://www.mcw.edu/pcor/rsparapa)
+     <rsparapa@mcw.edu>
 
 License
 =======
