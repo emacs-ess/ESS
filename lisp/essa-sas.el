@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/10 02:37:42 $
-;; Version: $Revision: 1.62 $
-;; RCS: $Id: essa-sas.el,v 1.62 2002/01/10 02:37:42 rsparapa Exp $
+;; Modified: $Date: 2002/01/10 04:19:02 $
+;; Version: $Revision: 1.63 $
+;; RCS: $Id: essa-sas.el,v 1.63 2002/01/10 04:19:02 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -164,6 +164,46 @@ or comint buffer on the local computer."
     (if beg
 	(message (substring string beg (match-end 0))))))
 
+(defun ess-kermit-get ()
+  "Get a file with Kermit."
+    (interactive)
+
+     (save-match-data 
+       (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
+     
+	(if (and (not (string-match "[[]" ess-sas-temp-file))
+	  (string-match "]" ess-sas-temp-file)) (progn
+
+	  (setq ess-sas-temp-file (substring ess-sas-temp-file (match-end 0)))
+	  (shell)
+	  (insert ess-kermit-command " -s " ess-sas-temp-file)
+          (comint-send-input)	
+          (insert "\C-\\" "c")
+	  (comint-send-input)
+	  (ess-sleep)
+	  (insert "receive ]" ess-sas-temp-file)                
+	  (comint-send-input)
+)))))
+
+(defun ess-kermit-send ()
+  "Send a file with Kermit."
+    (interactive)
+
+     (save-match-data 
+	(if (and (not (string-match "[[]" ess-sas-file-path))
+	  (string-match "]" ess-sas-file-path))
+
+	  (let ((ess-sas-temp-file (substring ess-sas-file-path (match-end 0))))
+	     (shell)
+	     (insert ess-kermit-command " -r")
+             (comint-send-input)	
+             (insert "\C-\\" "c")
+	     (comint-send-input)
+	     (ess-sleep)
+	     (insert "send ]" ess-sas-temp-file " " ess-sas-temp-file)                
+	     (comint-send-input)
+))))
+
 (defun ess-revert-wisely ()
   "Revert from disk if file and buffer last modification times are different."
   (interactive)
@@ -296,44 +336,6 @@ on the way."
     (comint-send-input)
 )))))
 
-(defun ess-kermit-get ()
-  "Get a file with Kermit."
-    (interactive)
-
-     (save-match-data 
-	(if (and (not (string-match "[[]" ess-sas-file-path))
-	  (string-match "]" ess-sas-file-path))
-
-	  (let ((ess-sas-temp-file (substring ess-sas-file-path (match-end 0))))
-	     (shell)
-	     (insert ess-kermit-command " -s " ess-sas-temp-file)
-             (comint-send-input)	
-             (insert "\C-\\" "c")
-	     (comint-send-input)
-	     (ess-sleep)
-	     (insert "receive ]" ess-sas-temp-file)                
-	     (comint-send-input)
-))))
-
-(defun ess-kermit-send ()
-  "Send a file with Kermit."
-    (interactive)
-
-     (save-match-data 
-	(if (and (not (string-match "[[]" ess-sas-file-path))
-	  (string-match "]" ess-sas-file-path))
-
-	  (let ((ess-sas-temp-file (substring ess-sas-file-path (match-end 0))))
-	     (shell)
-	     (insert ess-kermit-command " -r")
-             (comint-send-input)	
-             (insert "\C-\\" "c")
-	     (comint-send-input)
-	     (ess-sleep)
-	     (insert "send ]" ess-sas-temp-file " " ess-sas-temp-file)                
-	     (comint-send-input)
-))))
-
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with a SAS file by suffix and revert if necessary."
     (save-match-data 
@@ -383,7 +385,7 @@ on the way."
     (if (string-match 
 	"[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)" 
 	ess-sas-temp-file) 
-	(setq ess-sas-file-path (first (split-string ess-sas-temp-file "[<]")))))))
+	(setq ess-sas-file-path (nth 0 (split-string ess-sas-temp-file "[<]")))))))
 
 (defun ess-sas-goto-file-1 ()
   "Switch to ess-sas-file-1 and revert from disk."
@@ -518,6 +520,7 @@ SAS may not be found in your PATH.  You can alter your PATH to include
 SAS or you can specify the PATHNAME (PATHNAME can NOT contain spaces),
 i.e. let `ess-sas-arg' be your local equivalent of
 \"/usr/local/sas612/sas\"."
+    (ess-kermit-send)
     (shell)
     (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh) ;; 19.28
                                           ;; nil t) works for newer emacsen
