@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/04/13 21:14:06 $
-;; Version: $Revision: 1.161 $
-;; RCS: $Id: essa-sas.el,v 1.161 2004/04/13 21:14:06 rsparapa Exp $
+;; Modified: $Date: 2004/04/30 16:59:01 $
+;; Version: $Revision: 1.162 $
+;; RCS: $Id: essa-sas.el,v 1.162 2004/04/30 16:59:01 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -945,7 +945,8 @@ Keep in mind that the maximum command line length in MS-DOS is
     (while (search-forward-regexp (concat
            "^\\(\\(1[ \t]+The SAS System\\|\\|NOTE\\|WARNING\\|ERROR\\|"
            "[ \t]+\\(\\(real\\|cpu\\) time\\|Licensed to\\|Engine:\\|"
-	   "Physical Name:\\|File Name=\\|Pipe command=\\|"
+	   "Physical Name:\\|File Name=\\|Owner Name=\\|Group Name=\\|"
+	   "Access Permission=\\|File Size (bytes)=\\|Pipe command=\\|"
 	   "RECFM=[DFNPV],LRECL=\\|[0-9]+:[0-9]+[ /t]+[0-9]+:[0-9]+\\|"
 	   "[1-9][0-9]* at [0-9]+:[0-9]+[ /t]+[1-9][0-9]* at [0-9]+:[0-9]+\\)\\).*$"
            "\\|[0-9]+\\([ \t]+!\\)?\\|MPRINT([_A-Z]+):\\|"
