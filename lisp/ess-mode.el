@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/10 19:59:38 $
-;; Version: $Revision: 1.66 $
-;; RCS: $Id: ess-mode.el,v 1.66 1997/11/10 19:59:38 rossini Exp $
+;; Modified: $Date: 1997/11/10 22:01:18 $
+;; Version: $Revision: 1.67 $
+;; RCS: $Id: ess-mode.el,v 1.67 1997/11/10 22:01:18 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -318,6 +318,11 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
   (use-local-map ess-mode-map)
   (set-syntax-table ess-mode-syntax-table)
+
+  ;;; Keep <tabs> out of the code.
+  (make-local-variable 'indent-tabs-mode)
+  (setq indent-tabs-mode nil)
+
 
 ;;  (make-local-variable 'paragraph-start)
 ;;  (setq paragraph-start (concat "^$\\|" page-delimiter))
