@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/11/03 22:54:17 $
-;; Version: $Revision: 5.31 $
-;; RCS: $Id: ess-inf.el,v 5.31 1999/11/03 22:54:17 ess Exp $
+;; Modified: $Date: 1999/11/16 19:20:23 $
+;; Version: $Revision: 5.32 $
+;; RCS: $Id: ess-inf.el,v 5.32 1999/11/16 19:20:23 ess Exp $
 
 ;; This file is part of ESS
 
@@ -72,7 +72,7 @@
   prepended."
   (if ess-plain-first-buffername
       (if (> n 1)
-	  (concat name ":" n)
+	  (concat name ":" (number-to-string n))
 	(concat name))
     (concat name ":" n)))
 
