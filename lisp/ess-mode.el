@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/03 16:31:49 $
-;; Version: $Revision: 1.55 $
-;; RCS: $Id: ess-mode.el,v 1.55 1997/09/03 16:31:49 rossini Exp $
+;; Modified: $Date: 1997/09/05 18:20:59 $
+;; Version: $Revision: 1.56 $
+;; RCS: $Id: ess-mode.el,v 1.56 1997/09/05 18:20:59 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -67,6 +67,28 @@
 
 ;;*;; Major mode definition
 
+(if ess-eval-map
+    nil
+  (cond ((string-match "XEmacs\\|Lucid" emacs-version)
+	 ;; Code for XEmacs
+ 	 (setq ess-eval-map (make-keymap)))
+	((not (string-match "XEmacs\\|Lucid" emacs-version))
+	 ;; Code for GNU Emacs
+	 (setq ess-eval-map (make-sparse-keymap))))
+
+  (define-key ess-eval-map "\C-r"    'ess-eval-region)
+  (define-key ess-eval-map "\M-r"    'ess-eval-region-and-go)
+  (define-key ess-eval-map "\C-b"    'ess-eval-buffer)
+  (define-key ess-eval-map "\M-b"    'ess-eval-buffer-and-go)
+  (define-key ess-eval-map "\C-f"    'ess-eval-function)
+  (define-key ess-eval-map "\M-f"    'ess-eval-function-and-go)
+  (define-key ess-eval-map "\C-x"    'ess-eval-function)
+  (define-key ess-eval-map "\C-n"    'ess-eval-line-and-next-line)
+  (define-key ess-eval-map "\C-j"    'ess-eval-line)
+  (define-key ess-eval-map "\M-j"    'ess-eval-line-and-go))
+
+
+
 (if ess-mode-map
     nil
  
@@ -111,7 +133,8 @@
   (define-key ess-mode-map "\e\C-h"      'ess-mark-function)
   (define-key ess-mode-map "\e\C-q"      'ess-indent-exp)
   (define-key ess-mode-map "\177"        'backward-delete-char-untabify)
-  (define-key ess-mode-map "\t"          'ess-indent-command))
+  (define-key ess-mode-map "\t"          'ess-indent-command)
+  (define-key ess-mode-map "\C-c\C-e"    ess-eval-map))
 
 
 (easy-menu-define

@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/09/03 16:28:35 $
-;; Version: $Revision: 1.40 $
-;; RCS: $Id: ess-site.el,v 1.40 1997/09/03 16:28:35 rossini Exp $
+;; Modified: $Date: 1997/09/05 18:20:00 $
+;; Version: $Revision: 1.41 $
+;; RCS: $Id: ess-site.el,v 1.41 1997/09/05 18:20:00 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -62,9 +62,10 @@
   ;; Not important in XEmacs, if unpacking from ../xemacs/site-lisp/
   ;; directory.
   (defvar ess-lisp-directory
-    (directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
-  ;;(directory-file-name "/usr/local/share/emacs/site-lisp/ess-mode"))
-  ;;(directory-file-name "/stat2/faculty/rossini/S-mode"))
+    (directory-file-name "/p1/apps/X11R6.3/lib/xemacs/site-lisp/ESS"))
+    ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-mode"))
+    ;;(directory-file-name "/usr/local/share/emacs/site-lisp/ess-mode"))
+    ;;(directory-file-name "/stat2/faculty/rossini/S-mode"))
 
   (add-to-list 'load-path ess-lisp-directory))
 
