@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2002/01/20 06:29:19 $
-;; Version: $Revision: 5.85 $
-;; RCS: $Id: ess-site.el,v 5.85 2002/01/20 06:29:19 rmh Exp $
+;; Modified: $Date: 2002/01/21 03:21:26 $
+;; Version: $Revision: 5.86 $
+;; RCS: $Id: ess-site.el,v 5.86 2002/01/21 03:21:26 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -419,20 +419,20 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;; On a PC, the default is S+6.  
 ;; Elsewhere (unix and linux) the default is S+6
 (cond (ess-microsoft-p ; MS-Windows
-       (fset 'S 'S+4)
-       (fset 'Sqpe 'Sqpe+4)
-       (fset 's-mode 'S+4-mode)
-       (fset 's-transcript-mode 'S+4-transcript-mode))
+       (fset 'S 'S+6)
+       (fset 'Sqpe 'Sqpe+6)
+       (fset 's-mode 'S+6-mode)
+       (fset 's-transcript-mode 'S+6-transcript-mode))
 
       ((eq system-type 'gnu/linux)	; Linux -- no S+3
-       (fset 'S 'S+5)
-       (fset 's-mode 'S+5-mode)
-       (fset 's-transcript-mode 'S+5-transcript-mode))
+       (fset 'S 'S+6)
+       (fset 's-mode 'S+6-mode)
+       (fset 's-transcript-mode 'S+6-transcript-mode))
 
       (t				; Other Unixen
-       (fset 'S 'S+3)
-       (fset 's-mode 'S+3-mode)
-       (fset 's-transcript-mode 'S+3-transcript-mode))
+       (fset 'S 'S+6)
+       (fset 's-mode 'S+6-mode)
+       (fset 's-transcript-mode 'S+6-transcript-mode))
 )
 
 
