@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.3 $.
+### File: $Revision: 5.4 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -29,7 +29,7 @@ GZCAT = zcat
 ## XEMACS 19.xx and before.
 #BATCHFLAGS = -batch -no-site-file -no-init-file
 ## EMACS and XEMACS 20.x.
-BATCHFLAGS = -batch --no-site-file --no-init-fil
+BATCHFLAGS = -batch --no-site-file --no-init-file
 
 
 #### no user servicable parts beyond this point ####
