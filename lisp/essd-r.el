@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/11/18 22:20:36 $
-;; Version: $Revision: 1.47 $
-;; RCS: $Id: essd-r.el,v 1.47 1997/11/18 22:20:36 rossini Exp $
+;; Modified: $Date: 1997/11/19 15:32:20 $
+;; Version: $Revision: 1.48 $
+;; RCS: $Id: essd-r.el,v 1.48 1997/11/19 15:32:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -102,6 +102,7 @@
 
 (defun r-transcript-mode ()
   "Does the right thing."
+  (interactive)
   (ess-transcript-mode R-customize-alist))
 
 (fset 'R-transcript-mode 'r-transcript-mode)
