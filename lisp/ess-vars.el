@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 5.35 $
-;; RCS: $Id: ess-vars.el,v 5.35 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/03/31 15:07:21 $
+;; Version: $Revision: 5.36 $
+;; RCS: $Id: ess-vars.el,v 5.36 2000/03/31 15:07:21 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -384,6 +384,8 @@ by `ess-function-template'.")
   (if (string= ess-language "S") "\nDumped\n\\'" "[Ee]rror")
   "Regexp used to detect an error when loading a file.")
 
+(defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
+  "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg.")
 
  ; ess-inf: variables for inferior-ess.
 

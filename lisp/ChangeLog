@@ -1,3 +1,9 @@
+2000-03-31  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (inferior-R-input-sender): Fixed the regexps for
+	help() and {even more} for ?<...>, using new variable
+	ess-help-arg-regexp {in ess-vars.el}.
+
 2000-03-30  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* almost ALL lisp files :  Docstring fixes, thanks to

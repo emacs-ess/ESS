@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 5.36 $
-;; RCS: $Id: ess-inf.el,v 5.36 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/03/31 15:07:21 $
+;; Version: $Revision: 5.37 $
+;; RCS: $Id: ess-inf.el,v 5.37 2000/03/31 15:07:21 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -39,7 +39,9 @@
 
 ;; Byte-compiler, SHUT-UP!
 (eval-and-compile
-  (require 'comint))
+  (require 'comint)
+  (require 'ess-utils)
+)
 
 ;;*;; Autoloads
 (autoload 'ess-parse-errors		"ess-mode" "(autoload)." t)
@@ -1220,27 +1222,34 @@ to continue it."
 ;;> Also, invoking help() from the command line may lead to confusing
 ;;> output, somewhat worse with R than with S. You're not really supposed
 ;;> to do that (use C-c C-v to invoke ess-display-help-on-object), but it's
-;;> an obvious newcomer's mistake. (I wonder: could the elisp-code not
-;;> quite easily recognize help calls (at least in the ?xxx form) and do
-;;> the right thing automagically?)
-;;
-;;As promised, here is a quick hack:
-;;
+;;> an obvious newcomer's mistake.
+;;>
+;;> (I wonder: could the elisp-code not quite easily recognize help
+;;> calls (at least in the ?xxx form) and do the right thing automagically?)
+;;>
+;;> As promised, here is a quick hack:
+;;  ___hack much improved by MM___ , both help(.) and ?... now work
+(defconst inferior-R-1-input-help (format "help *(%s)" ess-help-arg-regexp))
+(defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
+
 (defun inferior-R-input-sender (proc string)
-  (if (or (string-match	  "help *\(\\([^,=)]*\\)\)" string)
-	  (string-match "\? *['\"]?\\([^,=)]*\\)['\"]?" string))
+  ;; REALLY only for debugging: this S_L_O_W_S D_O_W_N   [here AND below]
+  (ess-write-to-dribble-buffer (format "(inf..-R-..): string=«%s»; " string))
+
+  (if (or (string-match inferior-R-1-input-help string)
+	  (string-match inferior-R-2-input-help string)
+	;;(string-match "\? *['\"]?\\([^,=)]*\\)['\"]?" string)
+	  )
       (progn
 	(insert-before-markers string)
-	(let ((string (match-string 1 string)))
+	(let ((string (match-string 2 string)))
+	  (ess-write-to-dribble-buffer (format " new string=«%s»\n" string))
 	  (ess-display-help-on-object
 	   (if (string= string "") "help" string)))
 	(ess-eval-visibly "\n"))
     ;; else:  normal command
     (inferior-ess-input-sender proc string)
     )
-  ;; Of course, this (currently) only works for the `help(name)' form, and
-  ;; not for `?name'.  And of course, it breaks for `help(data = name)',
-  ;; because ess-display-help-on-object does not support this.
   )
 
 (defun inferior-ess-send-input ()
