@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 1999/03/04 23:31:19 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: essd-sta.el,v 1.10 1999/03/04 23:31:19 rossini Exp $
+;; Modified: $Date: 1999/03/05 19:34:59 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: essd-sta.el,v 1.11 1999/03/05 19:34:59 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -62,9 +62,9 @@
     (ess-save-lastvalue-command    . 'nil)
     (inferior-ess-program          . inferior-STA-program-name)
     (inferior-ess-objects-command  . "desc\n")
-    (inferior-ess-help-command     . "help %s\n")
+    (inferior-ess-help-command     . "set more off\n help %s\n set more on\n")
     (inferior-ess-exit-command     . "exit\n")
-    (inferior-ess-primary-prompt   . ". ?")
+    (inferior-ess-primary-prompt   . "^. ?")
     (inferior-ess-secondary-prompt . "+ ?")
     (inferior-ess-start-file       . nil) ;"~/.ess-stata")
     (inferior-ess-start-args       . "")) ; "-q"
