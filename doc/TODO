@@ -1,6 +1,6 @@
--*- view -*-
+-*- indented-text -*-
 
-$Revision: 4.0 $
+$Revision: 4.1 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1077,4 +1077,39 @@ NOTE: Not all of these are clean OR are even consistent.
 	didn't work correctly in XEmacs.  Only the first and last
 	items on the Info-default-directory-list actually got
 	displayed.
+
+* (RMH) >From here on is NOT for 5.0
+
+	 ess-create-object-name-db and ess-load-object-name-db-file
+	1. e-load-* doesn't ding if not there.  good
+	2. I entered e-create-* manually and it did its job, creating
+		   ess-s+3-namedb.el 
+	   in my home directory.  Then I did a name completion and ESS
+	   redid the entire set of searching the directories.
+	3. mv ess-s+3-namedb.el to ESS-5.0/
+	4. Quit emacs and start over
+	5. Then I did a name completion and ESS redid the
+	   entire set of searching the directories.
+	6. Quit emacs and start over
+	7. Manually M-: (ess-load-object-name-db-file)
+	8. Then I did a name completion and ESS redid the
+	   entire set of searching the directories.
+
+* (RMH)  buffer choice (questions for 5.1)
+	I opened lots of simultaneous processes.
+	The q() from *R*.
+	Then M-x XLS
+	XLS came up in the *R* buffer
+
+	Tried it again.  This time I C-c q() from *S4*.
+	Then M-x S
+	S+3:3 came up in *S4* buffer.
+
+	This is obscure stuff.  What really should happen?
+
+   Problem in inferior-ess: logic states that if the current buffer is
+   iESS or ESS-trans, and doesn't have an active process, use it,
+   instead of creating a new buffer. (AJR).
+
+
 
