@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1997/12/02 14:13:51 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: essl-sta.el,v 5.1 1997/12/02 14:13:51 rossini Exp $
+;; Modified: $Date: 1997/12/09 21:49:35 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: essl-sta.el,v 5.2 1997/12/09 21:49:35 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -57,9 +57,9 @@
 ;;
 ;;;;; Add the following to your .emacs file
 ;;
-;;(autoload 'stata "~/stata.el" "inferior stata mode" t )
+;;(autoload 'stata "~/essl-sta.el" "inferior stata mode" t )
 ;;(autoload 'stata-help "stata" "stata help mode" t)
-;;(autoload 'stata-mode "~/stata.el" "stata mode" t)
+;;(autoload 'stata-mode "~/essl-sta.el" "stata mode" t)
 ;;
 ;;(if (assoc "\\.do$" auto-mode-alist) nil
 ;;  (setq auto-mode-alist
