@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/09/01 18:56:13 $
-;; Version: $Revision: 1.37 $
-;; RCS: $Id: ess-site.el,v 1.37 1997/09/01 18:56:13 rossini Exp $
+;; Modified: $Date: 1997/09/02 17:46:33 $
+;; Version: $Revision: 1.38 $
+;; RCS: $Id: ess-site.el,v 1.38 1997/09/02 17:46:33 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -48,7 +48,7 @@
 
 ;;; Code:
 
-(setq debug-on-error t)
+(setq-default debug-on-error t)
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
