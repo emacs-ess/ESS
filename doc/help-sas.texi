@@ -386,8 +386,8 @@ following two variables for your own situation:
 C-F2 produces US landscape by default, however, it can produce A4
 landscape (first line for "global" key mapping, second for "local"):
 @example
-(global-set-key [(control f2)] 'ess-sas-rtf-a4-landscape-1)
-(define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-a4-landscape-1)
+(global-set-key [(control f2)] 'ess-sas-rtf-a4-landscape)
+(define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-a4-landscape)
 @end example
 
 @comment  node-name,  next,  previous,  up
