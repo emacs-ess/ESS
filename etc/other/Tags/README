@@ -1,0 +1,20 @@
+To generate tags  for ESS:
+
+XLispStat:
+	From: Frederic Udina <udina@upf.es>
+	Date: Sun, 13 Dec 1998 21:34:36 +0000 (WET)
+
+	If you give etags the following option
+	--regex="/[ \t]*(defmeth[ \t]+\([^-]+\)-proto[ \t]+\(:[^ (]+\)/\1\2/"
+	it will create tags for methods.
+	I assume that the object is always named xxx-proto
+	and the name for the tag will be simply
+	xxx:methodname
+
+	I've tried it only in MS-DOS right nomw, but it should work also in unix.
+
+	On Sun, 13 Dec 1998, Johannes Huesing wrote:
+
+Splus:  gnutags modifications.
+
+
