@@ -1,7 +1,7 @@
 ANNOUNCING ESS
 **************
 
-   Annoucing the release of ESS-5.1.13 (Emacs Speaks Statistics).
+   Annoucing the release of ESS-5.1.14 (Emacs Speaks Statistics).
 ------------------------------------------------------------
 
    ESS is an Emacs package which provides a standard interface between
@@ -24,6 +24,17 @@ file README with the distribution.
 
 New Features
 ============
+
+   Changes/New Features in 5.1.14:
+   * Yet more fixes to SAS mode, (Rich Heiberger
+     (<rmh@surfer.stat.temple.edu>) and Rodney Sparapani
+     <spara002@onyx.dcri.duke.edu>)).
+
+   * Customize support (for most Emacsen which support it) (AJRossini,
+         (<rossini@biostat.washington.edu>)
+
+   * ARC and ViSta support out of the box, and fixes for XLispStat
+     (AJRossini,       <rossini@biostat.washington.edu>)
 
    Changes/New Features in 5.1.13:
    * Version numbering finally all depending on the ./VERSION file,
