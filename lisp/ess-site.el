@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/19 20:51:46 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: ess-site.el,v 1.15 1997/06/19 20:51:46 rossini Exp $
+;; Modified: $Date: 1997/06/30 22:34:36 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: ess-site.el,v 1.16 1997/06/30 22:34:36 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.16  1997/06/30 22:34:36  rossini
+;;: removed custom stuff to ess-directory.
+;;:
 ;;: Revision 1.15  1997/06/19 20:51:46  rossini
 ;;: added comments for ess-directory setup.
 ;;:
@@ -212,14 +215,13 @@
 (require 'essd-s+3)
 (require 'essd-r)
 (require 'essd-xls)
-;; (require 'essd-vst) ; built on essd-xls.
 
 ;;TODO:
-;;  (require 'essd-s4)
-;;  (require 'essd-s3)
-;;  (require 'essd-s+4)
-;;  (require 'essd-sas)
-
+;; (require 'essd-vst) ; built on essd-xls.
+;; (require 'essd-s4)
+;; (require 'essd-s3)
+;; (require 'essd-s+4)
+;; (require 'essd-sas)
 
 ;;; 2. Site Specific setup
 ;;;; ===============================================
@@ -299,10 +301,14 @@
 ;; by putting this in your .emacs
 ;; (setq ess-pre-run-hook '((lambda () (setq ess-directory default-directory))))
 ;; Better (more correct) version:
-;;    (defun ajr:ess-set-directory () 
-;;	 "Set ess-directory to current directory."
-;;	 (setq ess-directory default-directory))
-;;    (add-hook 'ess-pre-run-hook 'ajr:ess-set-directory)
+;;(defun ajr:ess-set-directory () 
+;;  "Set ess-directory to current directory."
+  ;; CHOICES: pick only one.
+  ;;(setq-default ess-directory default-directory)
+  ;;(setq-default ess-directory (file-name-as-directory (getenv "HOME"))
+;;)
+
+;;(add-hook 'ess-pre-run-hook 'ajr:ess-set-directory)
 
  ; Local variables section
 
