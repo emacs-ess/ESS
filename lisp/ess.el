@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/17 19:24:22 $
-;; Version: $Revision: 1.41 $
-;; RCS: $Id: ess.el,v 1.41 1997/07/17 19:24:22 rossini Exp $
+;; Modified: $Date: 1997/07/17 20:12:29 $
+;; Version: $Revision: 1.42 $
+;; RCS: $Id: ess.el,v 1.42 1997/07/17 20:12:29 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.42  1997/07/17 20:12:29  rossini
+;; ess-set -> make sure we are setting up localvars!
+;;
 ;; Revision 1.41  1997/07/17 19:24:22  rossini
 ;; stuff.
 ;;
@@ -1130,20 +1133,53 @@ the basic idea: (setq ---  (cdr (assq --- var-alist)))."
 
   (if buf (set-buffer buf))
   ;;(setq-default ess-customize-alist var-alist)
+
+  ;; Need to replace with a function which: (ess-set-var varsym value)
+  ;; which sets varsym from alist only if value is non-nil.
+
+  (make-local-variable 'ess-proc-prefix)
   (setq ess-proc-prefix  (cdr (assq 'ess-proc-prefix var-alist)))
+
+  (make-local-variable 'ess-version-running)
   (setq ess-version-running (cdr (assq 'ess-version-running var-alist)))
+
+  (make-local-variable 'inferior-ess-program)
   (setq inferior-ess-program (cdr (assq 'inferior-ess-program var-alist)))
-  (setq inferior-ess-objects-command (cdr (assq 'inferior-ess-objects-command var-alist)))
-  (setq ess-help-sec-regex (cdr (assq 'ess-help-sec-regex var-alist)))
-  (setq ess-help-sec-keys-alist (cdr (assq 'ess-help-sec-keys-alist var-alist)))
-  (setq inferior-ess-help-command (cdr (assq 'inferior-ess-help-command var-alist)))
-  (setq inferior-ess-exit-command (cdr (assq 'inferior-ess-exit-command var-alist)))
-  (setq ess-loop-timeout (cdr (assq 'ess-loop-timeout var-alist)))
-  (setq inferior-ess-primary-prompt (cdr (assq 'inferior-ess-primary-prompt var-alist)))
-  (setq ess-history-file (concat "." ess-proc-prefix "history"))
+
+  (make-local-variable 'inferior-ess-objects-command)
+  (setq inferior-ess-objects-command
+	(cdr (assq 'inferior-ess-objects-command var-alist)))
+
+  (make-local-variable 'ess-help-sec-regex)
+  (setq ess-help-sec-regex
+	(cdr (assq 'ess-help-sec-regex var-alist)))
+
+  (make-local-variable 'ess-help-sec-keys-alist)
+  (setq ess-help-sec-keys-alist
+	(cdr (assq 'ess-help-sec-keys-alist var-alist)))
+
+  (make-local-variable 'inferior-ess-help-command)
+  (setq inferior-ess-help-command
+	(cdr (assq 'inferior-ess-help-command var-alist)))
+
+  (make-local-variable 'inferior-ess-exit-command)
+  (setq inferior-ess-exit-command
+	(cdr (assq 'inferior-ess-exit-command var-alist)))
+
+  (make-local-variable 'ess-loop-timeout)
+  (setq ess-loop-timeout
+	(cdr (assq 'ess-loop-timeout var-alist)))
+
+  (make-local-variable 'inferior-ess-primary-prompt)
+  (setq inferior-ess-primary-prompt
+	(cdr (assq 'inferior-ess-primary-prompt var-alist)))
+
+  (make-local-variable 'ess-history-file)
+  (setq ess-history-file
+	(concat "." ess-proc-prefix "history"))
 
   (ess-write-to-dribble-buffer 
-    (format "(ess-set-vars): ess-proc-prefix=%s buf=%s \n"
+    (format "(ess-setq-vars): ess-proc-prefix=%s buf=%s \n"
 	    ess-proc-prefix buf)))
 
 
