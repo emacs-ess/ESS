@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2001/02/06 17:43:01 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: ess-cust.el,v 1.16 2001/02/06 17:43:01 rossini Exp $
+;; Modified: $Date: 2001/02/06 18:08:51 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: ess-cust.el,v 1.17 2001/02/06 18:08:51 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -631,6 +631,11 @@ different computer."
 
 (defcustom inferior-S+5-program-name "Splus5"
   "*Program name for invoking an inferior ESS with S+5()."
+  :group 'ess-S
+  :type 'string)
+
+(defcustom inferior-S+6-program-name "Splus6"
+  "*Program name for invoking an inferior ESS with S+6()."
   :group 'ess-S
   :type 'string)
 
