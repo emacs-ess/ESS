@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/08/02 16:56:46 $
-;; Version: $Revision: 1.35 $
-;; RCS: $Id: essa-sas.el,v 1.35 2001/08/02 16:56:46 ess Exp $
+;; Modified: $Date: 2001/08/22 17:00:47 $
+;; Version: $Revision: 1.36 $
+;; RCS: $Id: essa-sas.el,v 1.36 2001/08/22 17:00:47 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -53,6 +53,12 @@
 
 (defvar ess-sas-file-path "."
     "Full path-name of the sas file to perform operations on.")
+
+(defcustom ess-sas-data-view-libname " "
+    "*SAS code to define a library for `ess-sas-data-view'."
+    :group 'ess-sas
+    :type  'string
+)
 
 (defcustom ess-sas-smart-back-tab nil
     "*Set to t to make C-TAB insert an end/%end; statement to close a block."
@@ -265,8 +271,9 @@ on the way."
       (if ess-sas-data nil
 	  (setq ess-sas-data (read-string "SAS Dataset: ")))
 	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
-	    " -initstmt \"proc fsview data=" ess-sas-data
-	    "; run;\" " ess-sas-data-view-options " " ess-sas-submit-post-command))
+	    " -initstmt \"" ess-sas-data-view-libname "; proc fsview data=" 
+	    ess-sas-data "; run;\" " ess-sas-data-view-options " " 
+	    ess-sas-submit-post-command))
     (comint-send-input)
     )
 )
