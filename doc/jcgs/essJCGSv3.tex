@@ -66,9 +66,11 @@
 \usepackage{alltt}
 
 %% Postscript fonts
-%\usepackage{times}
+\usepackage{times}
+\usepackage{mathptm}
 \usepackage{graphicx}
-%\usepackage{psfig}
+
+\usepackage{endfloat}
 
 \ifx\pdfoutput\undefined
   %% Stuff wout hyperref
@@ -159,7 +161,7 @@ intelligent environment for statistical analysis}
   substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/26 01:02:19 $ - $Revision: 1.10 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/26 22:02:39 $ - $Revision: 1.11 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -390,6 +392,16 @@ optional schemes.
 %    would use a selection of colors.}
 %  \label{f.font}
 %\end{figure}
+\begin{figure}[tbp]%h
+  \ESSfig{%
+    \includegraphics[angle=270,width=\textwidth]{font-cor-s-bw}
+    \includegraphics[angle=270,width=\textwidth]{font-incor-s-bw}
+  }
+  \caption{We illustrate here with fonts and colors appropriate for a
+    black and white display.  On a color terminal we would use a
+    selection of colors.}
+  \label{f.font}
+\end{figure}
 
 Since S syntax is similar to that of C, ESS uses the Emacs tools for
 reformatting S code to match particular styles.  Common C format styles,
@@ -413,6 +425,17 @@ standards.  Figure \ref{f.hilock} illustrates a standard for
 %  \label{f.hilock}
 %\end{figure}
 
+\begin{figure}[tbp]
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{hilock-sas-bw}}
+  \caption{Enforce coding standards.  The standard here is
+    that all \stexttt{PROC} statements must use the
+    \stexttt{DATA=datasetname} option.  Lines that satisfy the
+    standard are given a shaded background, lines that don't are
+    displayed in inverse video.  Ambiguous ones are displayed in a
+    lighter shade of inverse video.}
+  \label{f.hilock}
+\end{figure}
+
 \paragraph{Process interaction.}
 Emacs has historically referred to processes under its control as
 ``inferior'', accounting for the name inferior ESS (\stexttt{iESS}) to
@@ -435,6 +458,16 @@ local directories is also available.
 %    editable \stexttt{*R*} buffer.}
 %  \label{f.ess-demo}
 %\end{figure}
+
+\begin{figure}[tb]
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo-bw}}
+  \caption{Line-by-line execution of a command file. The cursor is
+    placed on a line in the \stexttt{ESS[S]} buffer and then with a
+    single key sequence, the line is sent to the \stexttt{*R*} buffer
+    for execution.  The output of the package goes directly to the
+    editable \stexttt{*R*} buffer.}
+  \label{f.ess-demo}
+\end{figure}
 
 \paragraph{Source-level Debugging.}
 ESS facilitates the editing of source code files, sets of commands
@@ -475,23 +508,6 @@ lines and placing them in a new S language source file.  Transcript
 cleaning facilitates the use of an exploratory interactive analysis
 session to construct functions and batch files for routine analysis of
 similar data sets.
-
-\paragraph{Manipulating and Editing Objects (S family).}
-For languages in the S family, ESS provides object-name completion of
-both user- and system-defined functions and data.  ESS can dump and
-save objects (user- and system-generated) into formatted text files,
-and reload them (possibly after editing).
-
-\paragraph{Help File Editing (R).}
-ESS provides an R documentation mode (\stexttt{Rd-mode}) which assists
-in writing help files for R functions, objects, and other topics worth
-documenting.  \stexttt{Rd-mode} provides the ability to view and
-execute code embedded in the help file in the same manner as ESS
-handles code from any S language source file.  It provides syntax
-highlighting and the ability to submit code directly to a running ESS
-process, either R or \Splus, for evaluation and debugging.  This
-latter feature is useful for ensuring that code developed using R runs
-under \Splus.
 
 \paragraph{Cooperation across Multiple Tools.}
 Statistical packages are intended for either general statistical
@@ -538,6 +554,17 @@ capabilities for transparent access to remote files over a network.
 This means that the user views, edits, and saves files on a remote
 machine exactly as if they were on the local machine.  
 
+\paragraph{Help File Editing (R).}
+ESS provides an R documentation mode (\stexttt{Rd-mode}) which assists
+in writing help files for R functions, objects, and other topics worth
+documenting.  \stexttt{Rd-mode} provides the ability to view and
+execute code embedded in the help file in the same manner as ESS
+handles code from any S language source file.  It provides syntax
+highlighting and the ability to submit code directly to a running ESS
+process, either R or \Splus, for evaluation and debugging.  This
+latter feature is useful for ensuring that code developed using R runs
+under \Splus.
+
 \subsection{Interactive Processing.}
 \label{sec:interactive}
 
@@ -551,9 +578,10 @@ using DDE; and batch submission of whole or partial text files
 containing analysis scripts.  For packages which do not support any of
 these, the primary use of ESS is as an editing tool, with interaction
 done using windowing cut-and-paste techniques; this still provides
-benefits through the availability of useful editing features.
-Examples of this last situation include the Microsoft versions of SAS,
-Stata, and XLispStat.
+benefits through the availability of useful editing features.  In this
+case, the package's GUI tools are available for use.  Examples of this
+last situation include the Microsoft versions of SAS, Stata, and
+XLispStat.
 
 %\paragraph{Inter-Process Communication.}
 %Packages that use unix-style command-line interfaces can be run as an
@@ -579,18 +607,17 @@ Stata, and XLispStat.
 %environment.  The Microsoft Windows versions of \SAS, \Stata, and
 %\XLispStat\ are in this category.
 
-One useful extension in ESS is relaxation of the requirement that the
+One useful feature of ESS is relaxation of the requirement that the
 statistics program be available on the local machine.  ESS provides
 both transparent editing of files and execution of statistics packages
-on a remote machine with \stexttt{iESS[S]} or \stexttt{iESS[SAS]} (see
-below).  All the editing and interaction features described for the
-local machine work equally well on the remote machine.  The
-interaction, including all the unique features of working with ESS,
-appears to the user as if the program were running on the local
-machine.  If the X11 Windowing system is running on the local machine,
-it is even possible to bring up visual displays and graphics from
-remote Unix systems onto a local Microsoft Windows or Apple Mac
-display.
+on a remote machine with \stexttt{iESS[S]} or \stexttt{iESS[SAS]}.
+All the editing and interaction features described for the local
+machine work equally well on the remote machine.  The interaction,
+including all the unique features of working with ESS, appears to the
+user as if the program were running on the local machine.  If the X11
+Windowing system is running on the local machine, it is even possible
+to bring up visual displays and graphics from remote Unix systems onto
+a local Microsoft Windows or Apple Mac display.
 
 \paragraph{Interactive S family}
 ESS for S family statistical languages, \stexttt{iESS[S]}, replaces
@@ -614,6 +641,12 @@ on Unix.  Hence the user can work in a powerful editing environment
 and is protected from the delay and ergonomic challenges of using the
 mouse for copy and paste operations across windows.
 
+%\paragraph{Manipulating and Editing Objects (S family).}
+For languages in the S family, ESS provides object-name completion of
+both user- and system-defined functions and data.  ESS can dump and
+save objects (user- and system-generated) into formatted text files,
+and reload them (possibly after editing).
+
 \paragraph{Interactive \SAS.}
 \stexttt{iESS[SAS]} is a mode that allows text-based \stexttt{PROC} by
 \stexttt{PROC} interaction with an inferior buffer running an
@@ -626,10 +659,10 @@ network connections to a remote computer with \SAS\ installed.  The
 resulting interface is similar to the SAS character terminal
 interface, but with Emacs key sequences.
 
-\stexttt{ESS[SAS]} mode can be used in conjunction with the \SAS\ 
-Display Manager to allow simultaneous access to Emacs for editing
-\SAS\ language code and to the \SAS\ mouse-based interfaces to the
-graphical routines and help system.
+% \stexttt{ESS[SAS]} mode can be used in conjunction with the \SAS\ 
+% Display Manager to allow simultaneous access to Emacs for editing
+% \SAS\ language code and to the \SAS\ mouse-based interfaces to the
+% graphical routines and help system.
 
 \subsection{Batch File Processing.}
 \label{sec:batch-file}
@@ -846,6 +879,11 @@ the differing portions of text files.
 %  \caption{Ediff of two versions of a file.}
 %  \label{f.ediff}
 %\end{figure}
+\begin{figure}[tbp]
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas-bw}}
+  \caption{Ediff of two versions of a file.}
+  \label{f.ediff}
+\end{figure}
 
 Emacs has many other important features.  Emacs provides file-manager
 capabilities, such as \stexttt{dired} (discussed in Major and Minor
@@ -1064,49 +1102,49 @@ implementation as well as examples of its use.
 %figures.
 
 
-\section*{Figures}
-\label{sec:figures}
+%\section*{Figures}
+%\label{sec:figures}
 
 
-\setcounter{figure}{0}
-\begin{figure}[tbp]
-  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas-bw}}
-  \caption{Ediff of two versions of a file.}
-  \label{f.ediff}
-\end{figure}
+%\setcounter{figure}{0}
+%\begin{figure}[tbp]
+%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas-bw}}
+%  \caption{Ediff of two versions of a file.}
+%  \label{f.ediff}
+%\end{figure}
 
 
-\begin{figure}[tbp]%h
-  \ESSfig{%
-    \includegraphics[angle=270,width=\textwidth]{font-cor-s-bw}
-    \includegraphics[angle=270,width=\textwidth]{font-incor-s-bw}
-  }
-  \caption{We illustrate here with fonts and colors appropriate for a
-    black and white display.  On a color terminal we would use a
-    selection of colors.}
-  \label{f.font}
-\end{figure}
+%\begin{figure}[tbp]%h
+%  \ESSfig{%
+%    \includegraphics[angle=270,width=\textwidth]{font-cor-s-bw}
+%    \includegraphics[angle=270,width=\textwidth]{font-incor-s-bw}
+%  }
+%  \caption{We illustrate here with fonts and colors appropriate for a
+%    black and white display.  On a color terminal we would use a
+%    selection of colors.}
+%  \label{f.font}
+%\end{figure}
 
-\begin{figure}[tbp]
-  \ESSfig{\includegraphics[angle=270,width=\textwidth]{hilock-sas-bw}}
-  \caption{Enforce coding standards.  The standard here is
-    that all \stexttt{PROC} statements must use the
-    \stexttt{DATA=datasetname} option.  Lines that satisfy the
-    standard are given a shaded background, lines that don't are
-    displayed in inverse video.  Ambiguous ones are displayed in a
-    lighter shade of inverse video.}
-  \label{f.hilock}
-\end{figure}
+%\begin{figure}[tbp]
+%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{hilock-sas-bw}}
+%  \caption{Enforce coding standards.  The standard here is
+%    that all \stexttt{PROC} statements must use the
+%    \stexttt{DATA=datasetname} option.  Lines that satisfy the
+%    standard are given a shaded background, lines that don't are
+%    displayed in inverse video.  Ambiguous ones are displayed in a
+%    lighter shade of inverse video.}
+%  \label{f.hilock}
+%\end{figure}
 
-\begin{figure}[tb]
-  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo-bw}}
-  \caption{Line-by-line execution of a command file. The cursor is
-    placed on a line in the \stexttt{ESS[S]} buffer and then with a
-    single key sequence, the line is sent to the \stexttt{*R*} buffer
-    for execution.  The output of the package goes directly to the
-    editable \stexttt{*R*} buffer.}
-  \label{f.ess-demo}
-\end{figure}
+%\begin{figure}[tb]
+%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo-bw}}
+%  \caption{Line-by-line execution of a command file. The cursor is
+%    placed on a line in the \stexttt{ESS[S]} buffer and then with a
+%    single key sequence, the line is sent to the \stexttt{*R*} buffer
+%    for execution.  The output of the package goes directly to the
+%    editable \stexttt{*R*} buffer.}
+%  \label{f.ess-demo}
+%\end{figure}
 
 \end{document}
 
