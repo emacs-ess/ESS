@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/22 19:26:31 $
-;; Version: $Revision: 1.109 $
-;; RCS: $Id: essa-sas.el,v 1.109 2002/07/22 19:26:31 rsparapa Exp $
+;; Modified: $Date: 2002/07/22 20:04:33 $
+;; Version: $Revision: 1.110 $
+;; RCS: $Id: essa-sas.el,v 1.110 2002/07/22 20:04:33 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -347,7 +347,7 @@ on the way."
 
 	(setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
-       (if (get-buffer ess-sas-shell-buffer) (set-buffer ess-sas-shell-buffer) (ess-sas-goto-shell))
+        (ess-sas-goto-shell t)
 
 	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
 	    " -initstmt \"" ess-sas-data-view-libname "; proc fsview data=" 
@@ -397,7 +397,7 @@ on the way."
 	      (find-file ess-tmp-sas-graph)
           ;;else
          
-            (if (get-buffer ess-sas-shell-buffer) (set-buffer ess-sas-shell-buffer) (ess-sas-goto-shell))
+            (ess-sas-goto-shell t)
 
             (insert ess-sas-submit-pre-command " " ess-sas-image-viewer " " ess-tmp-sas-graph 
 	      (if (equal ess-sas-submit-method 'sh) " &"))
@@ -497,12 +497,14 @@ on the way."
   (interactive)
   (ess-sas-goto "sas" revert))
 
-(defun ess-sas-goto-shell ()
- "Set `ess-sas-file-path' to current buffer and goto `ess-sas-shell-buffer'."
+(defun ess-sas-goto-shell (&optional set-buffer)
+"Set `ess-sas-file-path' and goto `ess-sas-shell-buffer'.  If
+optional argument is non-nil, then set-buffer rather than switch."
   (interactive)
   (ess-sas-file-path)
 
-  (if (get-buffer ess-sas-shell-buffer) (switch-to-buffer ess-sas-shell-buffer)
+  (if (get-buffer ess-sas-shell-buffer) 
+    (if set-buffer (set-buffer ess-sas-shell-buffer) (switch-to-buffer ess-sas-shell-buffer))
     (let ((temp-shell-buffer ess-sas-shell-buffer))
     (shell)
     (rename-buffer temp-shell-buffer)
@@ -538,7 +540,7 @@ depends on the value of  `ess-sas-submit-method'"
    ((eq ess-sas-submit-method 'sh) 
 	(ess-sas-submit-sh ess-sas-submit-command ess-sas-submit-command-options)) 
    (t (ess-sas-submit-sh ess-sas-submit-command ess-sas-submit-command-options)))
-  (ess-sas-goto-sas)
+;  (ess-sas-goto-sas)
 )
 
 (defun ess-sas-submit-iESS (arg1 arg2)
@@ -579,7 +581,7 @@ should be ..."
 	(concat ess-sas-temp-root ".sas"))
 
     (save-excursion 
-      (if (get-buffer ess-sas-shell-buffer) (set-buffer ess-sas-shell-buffer) (ess-sas-goto-shell))
+      (ess-sas-goto-shell t)
 
     (if (and (w32-shell-dos-semantics)
 	(string-equal ":" (substring ess-sas-file-path 1 2)))
@@ -610,7 +612,6 @@ i.e. let arg1 be your local equivalent of
                                           ;; nil t) works for newer emacsen
     (if (string-equal (substring (file-name-nondirectory ess-sas-file-path) 0 1) ess-kermit-prefix)
       (progn
-;       (ess-sas-goto-sas)
        (ess-kermit-send)
        (let ((ess-temp-directory ess-kermit-remote-directory))
         (ess-sas-goto-shell)
@@ -618,9 +619,10 @@ i.e. let arg1 be your local equivalent of
         (comint-send-input)
         (insert ess-sas-submit-pre-command " " arg1 " "  
 	 (substring (file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 1)
-	 " " arg2 " " ess-sas-submit-post-command)))
+	 " " arg2 " " ess-sas-submit-post-command))
+        (ess-sas-goto-sas))
     ;;else
-      (ess-sas-goto-shell)
+      (ess-sas-goto-shell t)
       (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)"))))
       (comint-send-input)
       (insert ess-sas-submit-pre-command " " arg1 " "  
@@ -645,7 +647,7 @@ spaces by enclosing the string in \\\"'s), i.e. let
 `ess-sas-submit-command' be \"\\\"C:\\Program Files\\SAS\\sas.exe\\\"\".
 Keep in mind that the maximum command line length in MS-DOS is
 127 characters so altering your PATH is preferable."
-    (ess-sas-goto-shell)
+    (ess-sas-goto-shell t)
     (if (string-equal ":" (substring ess-sas-file-path 1 2)) 
 	(progn
 		(insert (substring ess-sas-file-path 0 2))
