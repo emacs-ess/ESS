@@ -1,4 +1,19 @@
+2004-04-26  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-inf.el (ess-switch-to-ESS): Use `ess-show-buffer' to show
+	the iESS buffer.
+	(ess-show-buffer): New function to be used when an iESS buffer is
+	to be displayed.  See its doc string for the rules it follows as
+	to how to display the iESS buffer.
+	(ess-get-bufname,ess-get-buffers-in-frames,
+	ess-buffer-visible-this-frame,ess-buffer-visible-other-frame): New
+	helper functions for ess-show-buffer, adapted from iswitchb.el.
+	
+
 2004-04-22  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-cust.el (ess-speedbar-use-p, ess-funcmenu-use-p): Use
+	fboundp.
 
 	* ess-menu.el (ess-imenu-use-S): Change default value and update
 	doc string.
