@@ -437,11 +437,11 @@ different machines); the ability to request help from an S process for
 variables and functions, and to have the help results sent into a
 separate buffer; and completion of object names and file names.
 
-\stexttt{ESS[S]} mode is automatically turned on when loading a file with the
-file extensions \file{.R}, \file{.r},
-\file{.S}, \file{.s}, \file{.ssc}, \file{.q}.  An inferior
-process must be running to take advantage of the interactive features
-such as object- and file-name completion and help.
+\stexttt{ESS[S]} mode is automatically turned on when loading a file
+with the file extensions \file{.R}, \file{.r}, \file{.S}, \file{.s},
+\file{.ssc}, \file{.q}.  An inferior process must be running to take
+advantage of the interactive features such as object- and file-name
+completion and help.
 
 \subsection{Inferior ESS processes}
 \label{sec:S:inf}
@@ -456,7 +456,7 @@ the same editing features as the editing mode \stexttt{iESS[S]}.
 
 The statistical processes S and R are started by using the Emacs
 function call \stexttt{M-x~S} or \stexttt{M-x~R}.  This call opens up
-a buffer and starts the S or R process inside that buffer.
+a buffer and starts the S process inside that buffer.
 %% This assumes that you have access to the desired statistical
 %% package, which doesn't come with ESS.
 %% Generally, these start up the package with a particular set of
@@ -468,22 +468,24 @@ a buffer and starts the S or R process inside that buffer.
 %% particular arguments.
 
 One useful extension in ESS is relaxation of the requirement that the
-S or R program be available on the local machine.  The
-\stexttt{S+elsewhere} commands assist with
-transparent execution of a statistics package on a remote machine.
-The idea of \stexttt{S+elsewhere} is that we open a telnet, rlogin, or
-ssh connection to another machine from within a buffer called
-\file{*S+elsewhere*}, and then run S or R on the other machine in
-that buffer.  All the editing and interaction features described in sections
-\ref{sec:S:edit} and \ref{sec:S:inf} for the local machine
-work equally well on the remote machine.  The relevant commands
-get sent through the buffer
-\file{*S+elsewhere*} to be executed by the program on the other
-machine.  The interaction, including all the unique
-features of working with ESS, appears to the user exactly the same as if the
-program were running on the local machine.  With X-windows running on the
-local machine, it is even possible to
-bring up visual displays from remote Unix systems on a Windows local machine.
+S program %% we don't need to talk about R or S-PLUS when discussing
+%% ``S'' in general.
+be available on the local machine.  The
+\stexttt{S+elsewhere} commands assist with transparent execution of a
+statistics package on a remote machine.  The idea of
+\stexttt{S+elsewhere} is that we open a telnet, rlogin, or ssh
+connection to another machine from within a buffer called
+\file{*S+elsewhere*}, and then run S on the other machine in that
+buffer.  All the editing and interaction features described in
+sections \ref{sec:S:edit} and \ref{sec:S:inf} for the local machine
+work equally well on the remote machine.  The relevant commands get
+sent through the buffer \file{*S+elsewhere*} to be executed by the
+program on the other machine.  The interaction, including all the
+unique features of working with ESS, appears to the user exactly the
+same as if the program were running on the local machine.  With
+X-windows running on the local machine, it is even possible to bring
+up visual displays from remote Unix systems on a Windows local
+machine.
 
 \subsection{Handling and Reusing Transcripts}
 \label{sec:S:trans}
@@ -530,7 +532,7 @@ the approach preferred by the current group of developers and how ESS
 is initially configured.  A project is constructed by writing S
 language source code for \textbf{every} user defined function or data
 object.  The code is stored in one or more text files stored in a
-project directory or directories.  The code is read into S or R for a
+project directory or directories.  The code is read into S for a
 temporary realization as an object.  This approach allows for better
 portability, where the user might want to use the written code and
 perform the same or related analyses on different versions of the S
@@ -988,7 +990,7 @@ The current ESS developers recommend this procedure.
 \noindent
 Load the file you want to work with
   \elcode{C-x C-f myfile.s}
-Edit as appropriate, and then start up \Splus\ or S or R
+Edit as appropriate, and then start up \Splus\ or R,
   \elcode{M-x S}
 or 
   \elcode{M-x R}
