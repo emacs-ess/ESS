@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/19 20:14:53 $ - $Revision: 1.204 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/19 20:22:30 $ - $Revision: 1.205 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -185,7 +185,7 @@ intelligent environment for statistical analysis}
   assists in the interactive or batch execution by the statistics
   packages of statements written in their languages.  Some statistics
   packages can be run as a subprocess of Emacs, allowing the user to
-  work directly from the editor and therefore retain a consistent and
+  work directly from the editor and thereby retain a consistent and
   constant look-and-feel.  We discuss how ESS works and how it
   increases statistical programming efficiency.
 \end{abstract}
@@ -297,7 +297,7 @@ file editing are often determined by the file name extension, i.e.
 the characters at the end of the file name that follow a period like
 \stexttt{txt}, \stexttt{R} or \stexttt{sas}.  Examples of this kind of
 major mode are \stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes
-can know the file type syntax and grammar and thus provide intelligent
+can know the file type's syntax and grammer and thus provide intelligent
 actions such as automatic indentation; navigation in units of
 characters, words, lines, sentences, paragraphs, function definitions,
 and pages; syntax-based fontification and colorization; and
@@ -305,8 +305,9 @@ reformatting based on programmed conventions.  Major modes also can be
 written to intelligently control other programs such as statistics
 packages.
 
-In contrast, many minor modes can be active at once and provide
-services that cooperate across major modes.  For example,
+Minor modes provide complementary 
+services that that are applicable across major modes.   
+Many minor modes can be active at once.  For example,
 \stexttt{font-lock-mode} allows Emacs to highlight, with fonts or
 colors, the syntax of a programming language whose characteristics are
 described within a major mode like \stexttt{ESS[S]}.  The
@@ -322,10 +323,10 @@ Emacs allows transparent access to remote files over a network.  This
 means that the user views, edits, and saves files on a remote machine
 exactly as if they were on the local machine.  Mechanisms for both
 open (\stexttt{ange-ftp} and \stexttt{EFS} use ftp) and secure
-(\stexttt{tramp} uses scp or ssh) transfer are available.  Emacs can
-also monitor and control remote processes running in a shell buffer,
-and also has the ability to initial secure socket connections using
-SSL.
+(\stexttt{tramp} uses scp or ssh) access are available.  Emacs can
+also monitor and control remote processes running in a shell buffer.
+%and also has the ability to initial secure socket connections using SSL.
+%rmh: something wrong with the ssl sentence.  also I don't think we need it.
 
 \paragraph{Editing Extensions.}
 Most programming and documentation tasks consist of editing text.
@@ -1095,9 +1096,9 @@ ESS is built on Emacs, the editing system for which Richard Stallman
 won a MacArthur Foundation Fellowship in 1990.  Emacs has a long history 
 of being a programmer's editor.  Many statisticians got their first taste 
 of the power of Emacs with \Fortran\ mode which was introduced in 1986.  
-However, statistician preferences changed from generalist compiled 
+As statisticians' preferences changed from generalist compiled 
 languages such as \Fortran\ to specialist interactive statistical analysis 
-packages like S and SAS and Emacs modes for them soon followed.
+packages like S and SAS, Emacs modes for them soon followed.
 
 Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and \Splus\ files 
 in GNU Emacs.  Frank Ritter and Mike Meyer added features, creating version 2.
@@ -1108,7 +1109,7 @@ Smith provided process interaction changes for version 4.
 %%command-line interface and allow for control of multiple processes
 %%simultaneously.  
 
-In 1990, John Sall authored GNU Emacs macros for SAS source code 
+In 1990, John Sall authored GNU Emacs macros for \SAS\ source code 
 editing.  Tom Cook wrote SAS-mode in 1994, partially basing it on 
 Sall's earlier work.  
 
@@ -1129,19 +1130,20 @@ During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
 At the same time, SAS-mode was further integrated into ESS.
 
 In 1997, more changes in the internal structure of ESS were made to
-facilitate support for additional statistical languages.   \Stata\
-and \XLispStat\ were added to ESS's capabilities.
+facilitate support for additional statistical languages.  \Stata\
+and \XLispStat\ were added to ESS's capabilitities.
 
 Until 1998, ESS only worked with Unix statistics packages that
 used standard-input and standard-output for both the command-line 
 interface and batch file processing.  ESS could not communicate 
 with Windows versions of statistical packages that did not use this 
-method.  This changed in 1998.  Brian Ripley demonstrated how ESS 
+protocol.  This changed in 1998.  Brian Ripley demonstrated how ESS 
 could use the Windows Dynamic Data Exchange (DDE) protocol.  
 Heiberger used DDE to provide interactive interfaces for Windows 
-versions of \Splus.  And, Rodney Sparapani designed \SAS\ batch file 
-processing for ESS on Unix, Windows and Mac which relied on files 
-rather than standard-input/standard-output.
+versions of \Splus.  Rodney Sparapani designed an ESS batch file 
+processing system for \SAS.  The system relies on files, 
+rather than standard-input/standard-output, and works
+on Unix, Windows and Mac.
 
 \begin{table}[tbp]
   \centering
@@ -1188,38 +1190,7 @@ rather than standard-input/standard-output.
 This history is summarized in Table \ref{tab:timeline}.
 
 
-\section{Conclusion}
-\label{sec:concl}
-
-
-%%\section{Extensions}
-
-ESS provides an enhanced, powerful interface for efficient interactive
-data analysis and statistical programming.  It allows the user
-complete control over the communications among the files in which the
-analysis is specified, the statistical process doing the computation,
-and the output.  Because all are within the same programming
-environment, and therefore are accessed with the same editing and
-searching concepts and the same key sequences, user efficiency is
-increased.  It is completely customizable to satisfy individual
-desires for interface styles as well as being extensible to additional
-statistical languages and analysis packages.
-
-%\begin{Comment}
-%Rich: see my discussion of ESS-elsewhere terminology.
-
-%What is the behavior for remote SAS that is new for 2002?
-
-%Rodney: SAS batch now works and Kermit was added as a method of transfer.
-%\end{Comment}
-%ESS-elsewhere provides interactive and batch processing
-%with \SAS\ running on a remote machine that is accessed over a
-%network.  This provides a powerful development environment for \SAS.
-
-%%This
-%%includes support for syntax highlighting and template-based source file
-%%generation that provides the capability of specifying all the necessary
-%%parameters for a BUGS batch run in a single file.
+\section{Future Work}
 
 %%There are two active areas of extensions for user environments.  One
 %%is to enhance the capabilities of the IDE for statistical practice;
@@ -1250,6 +1221,9 @@ outline for presenting datasets, variables and functions in the
 context of what they represent; this allows for rapid and appropriate
 inspection.  Analysis templates would allow statistics centers and
 groups to provide standardized templates for initiating an analysis.
+
+Additional statistical packages can easily be added to ESS.
+
 %%While most IDE features have been developed for object-oriented
 %%languages, the above also can apply to non-object oriented
 %%programming.
@@ -1257,6 +1231,36 @@ groups to provide standardized templates for initiating an analysis.
 %ESS is one of the first  Rapid Application Development (RAD)
 %environments intended for statisticians.  It provides
 
+
+\section{Conclusion}
+\label{sec:concl}
+
+ESS provides an enhanced, powerful interface for efficient interactive
+data analysis and statistical programming.  It allows the user
+complete control over the communications among the files in which the
+analysis is specified, the statistical process doing the computation,
+and the output.  Because all are within the same programming
+environment, and therefore are accessed with the same editing and
+searching concepts and the same key sequences, user efficiency is
+increased.  It is completely customizable to satisfy individual
+desires for interface styles as well as being extensible to additional
+statistical languages and analysis packages.
+
+%\begin{Comment}
+%Rich: see my discussion of ESS-elsewhere terminology.
+
+%What is the behavior for remote SAS that is new for 2002?
+
+%Rodney: SAS batch now works and Kermit was added as a method of transfer.
+%\end{Comment}
+%ESS-elsewhere provides interactive and batch processing
+%with \SAS\ running on a remote machine that is accessed over a
+%network.  This provides a powerful development environment for \SAS.
+
+%%This
+%%includes support for syntax highlighting and template-based source file
+%%generation that provides the capability of specifying all the necessary
+%%parameters for a BUGS batch run in a single file.
 
 \bibliographystyle{plainnat}
 %\pdfbookmark[1]{References}{section.7}
