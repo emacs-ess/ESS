@@ -1,5 +1,47 @@
+Sun Nov  9 15:02:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el: changed documentation for autoloads.
+
+Sun Nov  9 14:56:32 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el: one too many ")" (in editing sas-narrow-to-page).
+
+Sun Nov  9 14:48:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el: cleaned up.
+
+Sun Nov  9 14:44:06 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-comp.el: cleaned up.
+
+Sun Nov  9 14:38:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sta.el: cleaned up format.
+
+Sun Nov  9 14:33:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el: cleaned up byte-compiler warnings and lisp.
+
+Sun Nov  9 14:32:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el: need the right name at top.
+
+	* essl-sas.el: cleaned up byte-compiler warnings.
+
+Sun Nov  9 14:17:36 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: cleaned dependencies for essd-*.el
+
+Sun Nov  9 14:00:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-version): upgrade to 5.0
+
+	* Makefile: upgrade version to 5.0
+
 Fri Nov  7 19:43:11 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
+	* Released 5.0-pre2.
+	
 	* Makefile (dist): copy makefile into the appropriate place.
 
 Fri Nov  7 19:41:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
@@ -671,6 +713,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.21  1997/11/09 20:07:12  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.20  1997/11/08 00:43:15  rossini
 	* Removing *** empty log message ***
 	* Removing
