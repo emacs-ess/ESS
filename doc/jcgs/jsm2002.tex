@@ -217,14 +217,14 @@ the increment of indentation and each new line is indented
 to the same level as the previous line.
 
 \paragraph{Code execution.}
-ESS can send individual lines, marked regions, or whole buffers to the 
+ESS can send individual lines, marked regions, or whole buffers to a 
 statistical analysis package for execution.  ESS sends the code to
-the statistical package and receives the output that results.   The results
-are received in an Emacs buffer. 
+the statistical package and receives the results in an Emacs buffer.  
+ESS allows the code to be executed on a remote computer over the network 
+with the same simplicity.  
+%The remote machine can be a different platform than the local machine.
 
 \paragraph{Conflicts in key-maps.}
-\label{sec:confl-keym}
-
 Simple conflicts between interfaces are exemplified by different
 key-maps for editing tasks such as cut, copy, paste, beginning of
 line, end of line, etc.  These may be the most aggravating
@@ -236,18 +236,11 @@ solves this problem by providing a single key-map interface.
 \section{Discussion}
 \label{sec:discussion}
 
-
-
 ESS is one of the first RADs intended for statisticians.  It provides
 an enhanced, powerful interface for efficient interactive data
 analysis and statistical programming.  It is completely customizable
 to satisfy individual desires for interface styles as well as being
 extensible to additional statistical languages and analysis packages.
-
-Important extensions which should be implemented in the near future 
-include source code look-up of function definitions, data browsing, 
-remote access to files over secure network protocols and secure remote 
-execution of statistical code.
 
 \end{document}
 
