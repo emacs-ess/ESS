@@ -1,6 +1,6 @@
 -*- text -*-
 
-($Revision: 5.1 $)
+($Revision: 5.2 $)
 
 ESS: Using The S family of statistical languages
 ================================================
@@ -21,6 +21,8 @@ The following is covered in this document:
 - Scenarios for use (possibilities, based on actual usage)
 - Philosophies
 
+New in 5.1.2 and later: use under Microsoft Windows OS's with NTEmacs.
+See the file README.SPLUS4WIN for more details.
 
 Emacs: General features
 =======================
@@ -93,7 +95,18 @@ and when ESS prompts for "Starting Args ? ", enter (for example):
 
 Then that R process will be started up using "R -v 10000 -n 5000".
 
+New for ESS 5.1.2 (and later):  "S-elsewhere" command
 
+  The idea of "M-x S-elsewhere" is that we open a telnet (or rlogin)
+  to another machine, call the buffer "*S-elsewhere*", and then run S
+  on the other machine in that buffer.  We do that by defining "sh" as
+  the inferior-S-elsewhere-program-name.  Emacs sets it up in a
+  "*S-elsewhere*" iESS buffer.  The user does a telnet or login from
+  that buffer to the other machine and then starts S on the other
+  machine.  The usual C-c C-n commands from myfile.s on the local
+  machine get sent through the buffer "*S-elsewhere*" to be executed
+  by S on the other machine.
+                           
 
 ESS-trans: Handling and Reusing Transcripts
 ===========================================
