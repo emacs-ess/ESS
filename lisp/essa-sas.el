@@ -1,14 +1,14 @@
 ;;; essa-sas.el -- ESS local customizations for SAS, part a.
 
-;; Copyright (C) 1997--2000 Rodney Sparapani, A.J. Rossini,
+;; Copyright (C) 1997--2000 Rodney Sparapani, A.J. Rossini, 
 ;; Martin Maechler, Kurt Hornik, and Richard M. Heiberger.
 
 ;; Author: Rodney Sparapani <rodney.sparapani@duke.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2000/02/11 14:01:58 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: essa-sas.el,v 1.2 2000/02/11 14:01:58 maechler Exp $
+;; Modified: $Date: 2000/02/14 14:15:02 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: essa-sas.el,v 1.3 2000/02/14 14:15:02 rossini Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, asynchronous.
 
@@ -21,11 +21,11 @@
 ;;
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 ;;
 ;; In short: you may use this code any way you like, as long as you
@@ -42,33 +42,35 @@
 ;	(list "*Async Shell Command*" "*ESS*"))
 ;)
 
-;;;== FIXME : If this is okay, it should go into  ---> ./essl-sas.el
-;; assign characters to punctuation, words or comments for syntax highlighting
+
+; assign characters to punctuation, words or comments for syntax highlighting
+
 (setq SAS-syntax-table (make-syntax-table))
 
-  (modify-syntax-entry ?\\ "\\" SAS-syntax-table)
-  (modify-syntax-entry ?+  "."	SAS-syntax-table)
-  (modify-syntax-entry ?-  "."	SAS-syntax-table)
-  (modify-syntax-entry ?=  "."	SAS-syntax-table)
-  (modify-syntax-entry ?%  "w"	SAS-syntax-table)
-  (modify-syntax-entry ?<  "."	SAS-syntax-table)
-  (modify-syntax-entry ?>  "."	SAS-syntax-table)
-  (modify-syntax-entry ?&  "w"	SAS-syntax-table)
-  (modify-syntax-entry ?|  "."	SAS-syntax-table)
+  (if (equal system-type 'windows-nt)
+      (modify-syntax-entry ?\\ "."  SAS-syntax-table)  ;; backslash is punctuation (used in MS file names)
+    (modify-syntax-entry ?\\ "\\" SAS-syntax-table)  ;; backslash is an escape character
+    )
+  (modify-syntax-entry ?+  "."  SAS-syntax-table)
+  (modify-syntax-entry ?-  "."  SAS-syntax-table)
+  (modify-syntax-entry ?=  "."  SAS-syntax-table)
+  (modify-syntax-entry ?%  "w"  SAS-syntax-table)
+  (modify-syntax-entry ?<  "."  SAS-syntax-table)
+  (modify-syntax-entry ?>  "."  SAS-syntax-table)
+  (modify-syntax-entry ?&  "w"  SAS-syntax-table)
+  (modify-syntax-entry ?|  "."  SAS-syntax-table)
   (modify-syntax-entry ?\' "\"" SAS-syntax-table)
   (modify-syntax-entry ?*  ". 23"  SAS-syntax-table) ; comment character
-  ; (modify-syntax-entry ?*  "."  SAS-syntax-table)
-  (modify-syntax-entry ?\; "."	SAS-syntax-table)
-  (modify-syntax-entry ?_  "w"	SAS-syntax-table)
-  (modify-syntax-entry ?<  "."	SAS-syntax-table)
-  (modify-syntax-entry ?>  "."	SAS-syntax-table)
+  (modify-syntax-entry ?\; "."  SAS-syntax-table) 
+  (modify-syntax-entry ?_  "w"  SAS-syntax-table)  
+  (modify-syntax-entry ?<  "."  SAS-syntax-table)
+  (modify-syntax-entry ?>  "."  SAS-syntax-table)
   (modify-syntax-entry ?/  ". 14"  SAS-syntax-table) ; comment character
-  ; (modify-syntax-entry ?/  "."  SAS-syntax-table)
-  (modify-syntax-entry ?.  "w"	SAS-syntax-table)
+  (modify-syntax-entry ?.  "w"  SAS-syntax-table)
 
 
-;;;== FIXME : If this is okay, it should go into  ---> ./essl-sas.el
-;; assign each SAS keyword to a syntax highlighting type
+; assign each SAS keyword to a syntax highlighting type
+
 (setq SAS-mode-font-lock-keywords
   '(
 
@@ -76,13 +78,12 @@
 
     ("^[ \t]*%?\\*.*;"		    . font-lock-comment-face)
     (";[ \t]*%?\\*.*;"		    . font-lock-comment-face)
-  ;  ("/\\*\\([^*][^/]\\)*\\*/"	 . font-lock-comment-face)
-    ("/\\*\\([^*][^/]\\)*\\*/"	0 font-lock-comment-face t)
+    ("/\\*\\([^*/]\\)*\\*/"  0 font-lock-comment-face t)
 
 
     ; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND
 
-    ("\\<\\(data\\|run\\|%macro\\|%mend\\)\\>"
+    ("\\<\\(data\\|run\\|%macro\\|%mend\\)\\>" 
 	. font-lock-reference-face)
 
     ("\\<proc[ \t]+[a-z][a-z_0-9]+"
@@ -239,25 +240,24 @@
 	. font-lock-function-name-face)
 
 
-	; SAS PROC statements not handled above
+	; SAS PROC statements not handled above 
 
     ("\\<\\(change\\|class\\|exchange\\|exclude\\|freq\\|id\\|index\\)\\>"
 	. font-lock-keyword-face)
-
+	
     ("\\<\\(model\\|plot\\|save\\|sum\\|tables?\\|var\\|weight\\|with\\)\\>"
 	. font-lock-keyword-face)
-
+	
   )
 )
 
 
-;; FIXME: This should only happen in SAS - ESS-mode, not in every ESS mode:
-;; re-compute tab stops and assign appropriate functions to tab and return keys
-(add-hook 'ess-mode-hook
+; re-compute tab stops and assign appropriate functions to tab and return keys
+
+(add-hook 'ess-mode-hook 
 	(lambda ()
 		(ess-sas-tab-stop)
 		(define-key ess-mode-map [tab] 'tab-to-tab-stop)
-		(define-key ess-mode-map [return] 'newline-and-indent)
 	)
 )
 
@@ -318,11 +318,11 @@
 
 (defun ess-sas-set ()
 	"Set ess-sas-root, ess-sas-dir, ess-sas-sas, ess-sas-log, ess-sas-lst and ess-sas-txt"
-	(if (or (string= ".sas" (substring (buffer-name) -4))
+	(if (or (string= ".sas" (substring (buffer-name) -4)) 
 		(string= ".log" (substring (buffer-name) -4))
 		(string= ".lst" (substring (buffer-name) -4))
 		(string= ".txt" (substring (buffer-name) -4))
-		)
+		) 
 
 		(progn
 			(setq ess-sas-root (substring (buffer-name) 0 -4))
@@ -438,9 +438,9 @@
 		(ess-sas-remainder (% ess-sas-column sas-indent-width))
 		)
 
-		(if (not (= ess-sas-column 0))
+		(if (not (= ess-sas-column 0)) 
 			(progn
-				(if (= ess-sas-remainder 0)
+				(if (= ess-sas-remainder 0) 
 					(setq ess-sas-remainder sas-indent-width)
 				)
 
@@ -452,10 +452,9 @@
 )
 
 
-;;-- FIXME: MM thinks these shouldn't be global keys, but keys in the
-;;--	    in the ESS-SAS *local* maps
 (global-set-key [C-tab] 'ess-sas-backwards-tab)
 (global-set-key [f2] 'ess-sas-revert)
+
 
 ;Unix/Mainframe-like SAS key definitions
 
