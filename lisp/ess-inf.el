@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/17 19:12:06 $
-;; Version: $Revision: 1.38 $
-;; RCS: $Id: ess-inf.el,v 1.38 1997/07/17 19:12:06 rossini Exp $
+;; Modified: $Date: 1997/07/17 19:25:39 $
+;; Version: $Revision: 1.39 $
+;; RCS: $Id: ess-inf.el,v 1.39 1997/07/17 19:25:39 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.39  1997/07/17 19:25:39  rossini
+;; set -> setq
+;;
 ;; Revision 1.38  1997/07/17 19:12:06  rossini
 ;; renamed the setq-vars (and set-vars) stuff in ess.el
 ;;
@@ -427,7 +430,7 @@ when invoking S.
     
     (set-buffer buf)
     ;; Now that we have the buffer, set buffer-local variables.
-    (ess-set-vars ess-customize-alist buf)
+    (ess-setq-vars ess-customize-alist buf)
     (ess-write-to-dribble-buffer
      (format "(inferior-ess 2): ess-proc-prefix=%s , buf=%s \n"
 	     ess-proc-prefix (current-buffer)))
