@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 1999/03/04 23:25:28 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essd-sta.el,v 1.9 1999/03/04 23:25:28 rossini Exp $
+;; Modified: $Date: 1999/03/04 23:31:19 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essd-sta.el,v 1.10 1999/03/04 23:31:19 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -78,15 +78,20 @@
   (ess-mode STA-customize-alist proc-name))
 
 
-(defun stata (&optional proc-name)
+(defun stata (&optional start-args)
   "Call Stata."
-  (interactive)
+  (interactive "P")
   (setq ess-customize-alist STA-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(STA): ess-dialect=%s , buf=%s \n"
 	   ess-dialect
 	   (current-buffer)))
-  (inferior-ess))
+  (let ((sta-start-args
+	 (concat inferior-ess-start-args
+		 (if start-args (read-string
+				 "Starting Args [possibly -q] ? ")
+		   nil))))
+    (inferior-ess sta-start-args)))
 
 
 (defun STA-transcript-mode ()
