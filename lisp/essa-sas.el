@@ -35,7 +35,6 @@
 
 ;; Code:
 
-(require 'rtf-support)
 
 ;;; Table of Contents
 ;;; Section 1:  Variable Definitions
@@ -788,12 +787,18 @@ optional argument is non-nil, then set-buffer rather than switch."
   (kill-buffer nil)  
 )
 
+(eval-when-compile
+  (condition-case nil
+      (progn
+        (require 'rtf-support)
+        (when (featurep 'rtf-support)
+
 (defun ess-sas-rtf-portrait ()
 "Creates an MS RTF portrait file from the current buffer."
     (interactive)
     (ess-sas-file-path)
     
-    (if (fboundp 'rtf-export) (let 
+    (let 
 	((ess-temp-rtf-file (replace-in-string ess-sas-file-path "[.][^.]*$" ".rtf")))
 	    ;(expand-file-name (buffer-name)) "[.][^.]*$" ".rtf")))
 	(rtf-export ess-temp-rtf-file)
@@ -804,7 +809,7 @@ optional argument is non-nil, then set-buffer rather than switch."
 	    
         (while (replace-regexp "\\\\fs[0-9]+" "\\\\fs18" ) nil)
 	    
-        (save-buffer))))
+        (save-buffer)))
 
 (defun ess-sas-rtf-us-landscape ()
 "Creates an MS RTF US landscape file from the current buffer."
@@ -829,6 +834,8 @@ optional argument is non-nil, then set-buffer rather than switch."
 "{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
 "\\landscape\\paperh11905\\paperw16837\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
     (save-buffer))
+))
+    (error nil)))
 
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that
@@ -1116,8 +1123,9 @@ accepted for backward compatibility, however, arg is ignored."
 (defun ess-sas-global-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
-  (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
-  (global-set-key [(control f2)] 'ess-sas-rtf-us-landscape)
+  (when (featurep 'rtf-support)
+    (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
+    (global-set-key [(control f2)] 'ess-sas-rtf-us-landscape))
   (global-set-key (quote [f2]) 'ess-revert-wisely)
   (global-set-key (quote [f3]) 'ess-sas-submit)
   (global-set-key [(control f3)] 'ess-sas-submit-region)
@@ -1153,8 +1161,9 @@ in SAS-mode and related modes.")
 (defun ess-sas-local-pc-keys ()
   "PC-like SAS key definitions."
   (interactive)
-  (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
-  (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-us-landscape)
+  (when (featurep 'rtf-support)  
+    (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
+    (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-us-landscape))
   (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
   (define-key sas-mode-local-map (quote [f3]) 'ess-sas-goto-shell)
   (define-key sas-mode-local-map (quote [f4]) 'ess-sas-goto-file-1)
@@ -1185,8 +1194,9 @@ in SAS-mode and related modes.")
 (defun ess-sas-local-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
-  (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
-  (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-us-landscape)
+  (when (featurep 'rtf-support)  
+    (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
+    (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-us-landscape))
   (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
   (define-key sas-mode-local-map (quote [f3]) 'ess-sas-submit)
   (define-key sas-mode-local-map [(control f3)] 'ess-sas-submit-region)
