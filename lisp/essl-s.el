@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1998/04/17 12:28:34 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essl-s.el,v 5.2 1998/04/17 12:28:34 maechler Exp $
+;; Modified: $Date: 1998/04/27 07:53:02 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essl-s.el,v 5.3 1998/04/27 07:53:02 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -413,7 +413,7 @@ M.Maechler,ess-extra"
   (let ((num 0)
 	(str ""))
     (goto-char (point-min))
-    (query-replace-regexp "000000+[1-9]" "" nil)
+    (query-replace-regexp "000000+[1-9]?[1-9]?\\>" "" nil)
     (while (< num 9)
       (setq str (concat (int-to-string num) "999999+[0-8]*"))
       (princ (format "\nregexp: '%s'" str))
