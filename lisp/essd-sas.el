@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/09 20:02:28 $
-;; Version: $Revision: 1.25 $
-;; RCS: $Id: essd-sas.el,v 1.25 1997/11/09 20:02:28 rossini Exp $
+;; Modified: $Date: 1997/11/11 04:08:02 $
+;; Version: $Revision: 1.26 $
+;; RCS: $Id: essd-sas.el,v 1.26 1997/11/11 04:08:02 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -55,15 +55,9 @@
 
   (let* ((ess-shell-buffer-name-flag (get-buffer "*shell*"))
 	 ess-shell-buffer-name
-	 ;; doesn't work completely yet.
+	 ;; isn't pretty yet.
 	 ;;  ess-local-process-name is defined after this function.
 	 ;;  it needs to be defined prior to this function.
-	 ;;  therefore the log and lst buffernames are out of phase
-	 ;;(tmp-local-process-name (if (not ess-local-process-name)
-	 ;;			     (if (not ess-current-process-name)
-	 ;;				 ess-dialect  ;;"SAS"
-	 ;;			       ess-current-process-name)
-	 ;;			   ess-local-process-name))  
 	 (n 0)
 	 (tmp-procname (if n (ess-proc-name (prefix-numeric-value n)
 					    temp-ess-dialect)
