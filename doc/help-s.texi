@@ -89,13 +89,16 @@ and when ESS prompts for "Starting Args ? ", enter (for example):
 
    @code{--vanilla}
 
-Then that R process will be started up using @code{R --vanilla}.
+Then that R process will be started up using @code{R --vanilla}.  If you
+wish to always call R with certain arguments, set the variable
+@code{inferior-R-args} accordingly.
 
+@comment Menubar access to other versions of R and Sqpe
 
-Menubar access to other versions of R and Sqpe
+If you have other versions of R or S-Plus available on the system, ESS
+is also able to start those versions.  How this works depend on which OS
+you are using:
 
-If you have other versions of R or S-Plus available on the system, ESS is also
-able to start those versions.  
 
 R on Unix systems:
 If you have "R-1.8.1" on
