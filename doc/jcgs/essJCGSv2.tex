@@ -14,7 +14,7 @@
 %        b) statistical analysis packages supported by ESS
 %2. emacs 
 %        a) buffers
-%        b) key-binding
+%        b) key sequence
 %        c) modes
 %                1) font-lock
 %                2) shell/comint
@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/18 20:38:07 $ - $Revision: 1.185 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/18 22:11:39 $ - $Revision: 1.186 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -251,9 +251,7 @@ Emacs can control and interact with other programs.
 When Emacs was originally written, character-based terminals were the
 most advanced method of computer access.  Common Emacs commands were
 mapped (or bound) to key sequences (thus creating keyboard shortcuts)
-for convenience.
-% which are called key-maps (or key-bindings).  
-Over the
+for convenience.  Over the
 last decade, Emacs has been extended to use graphical windowing
 systems, such as X11\tm, Microsoft Windows, and Apple Mac OS, which
 allow additional forms of input, for example using a mouse, and which
@@ -265,7 +263,7 @@ the keyboard.
 %for fast typists.
 Emacs menus and toolbars on the display screen allow mouse access to
 frequently used actions and provide a graphical alternative when the
-user does not know or can not recall a key-binding; these are also
+user does not know or can not recall a key sequence; these are also
 subject to user-customization.
 
 \paragraph{Buffers give Emacs control.}
@@ -328,7 +326,7 @@ fonts or colors, the syntax of a programming language whose
 characteristics are described within a major mode like
 \stexttt{ESS[S]}.  The \stexttt{overwrite-mode} determines whether
 typed characters replace the existing text or are inserted at the
-cursor.  Minor modes can be used to change key bindings to emulate the
+cursor.  Minor modes can emulate the
 key sequences used by another editor such as \stexttt{vi}.  In addition, they
 can be used to perform version control operations and many other tasks
 which are nearly identical across file types.
@@ -817,7 +815,7 @@ interfaces (interactive for R, batch for BUGS) are slightly different.
 %In other words, BUGS and SAS probably have more in common operationally
 %than BUGS and R/S do.  Of course, BUGS has an interactive mode, but that
 %would only be of use in rare circumstances.  Maybe we should just have an 
-%option to make the key-binding be SAS-like or R/S-like (what would that be 
+%option to make the key sequence be SAS-like or R/S-like (what would that be 
 %by the way?).  That way everyone should be happy and the above illustration
 %will make sense.  Besides, the most pressing need for me is to get 
 %ESS-elsewhere to work with ESS[BUGS] rather than creating inferior-BUGS.
