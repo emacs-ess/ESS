@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/03/03 15:56:17 $
-;; Version: $Revision: 1.152 $
-;; RCS: $Id: essa-sas.el,v 1.152 2004/03/03 15:56:17 rsparapa Exp $
+;; Modified: $Date: 2004/03/04 16:40:48 $
+;; Version: $Revision: 1.153 $
+;; RCS: $Id: essa-sas.el,v 1.153 2004/03/04 16:40:48 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -704,8 +704,8 @@ optional argument is non-nil, then set-buffer rather than switch."
 	    
         (save-buffer))))
 
-(defun ess-sas-rtf-landscape-1 ()
-"Creates an MS RTF landscape file from the current buffer."
+(defun ess-sas-rtf-us-landscape-1 ()
+"Creates an MS RTF US landscape file from the current buffer."
     (interactive)
     (ess-sas-rtf-portrait-1)
     (ess-sas-goto "rtf" t)
@@ -714,6 +714,18 @@ optional argument is non-nil, then set-buffer rather than switch."
     (insert (concat "{\\*\\pgdsctbl\n"
 "{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
 "\\landscape\\paperh12240\\paperw15840\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n")) 
+    (save-buffer))
+
+(defun ess-sas-rtf-a4-landscape-1 ()
+"Creates an MS RTF A4 landscape file from the current buffer."
+    (interactive)
+    (ess-sas-rtf-portrait-1)
+    (ess-sas-goto "rtf" t)
+    (goto-char (point-min))
+    (forward-line 3)
+    (insert (concat "{\\*\\pgdsctbl\n"
+"{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
+"\\landscape\\paperh11905\\paperw16837\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
     (save-buffer))
 
 (defun ess-sas-submit ()
@@ -959,7 +971,7 @@ Without args, toggle between these options."
   "PC-like SAS key definitions"
   (interactive)
   (global-set-key [(control f1)] 'ess-sas-rtf-portrait-1)
-  (global-set-key [(control f2)] 'ess-sas-rtf-landscape-1)
+  (global-set-key [(control f2)] 'ess-sas-rtf-us-landscape-1)
   (global-set-key (quote [f2]) 'ess-revert-wisely)
   (global-set-key (quote [f3]) 'ess-sas-goto-shell)
   (global-set-key (quote [f4]) 'ess-sas-goto-file-1)
@@ -994,7 +1006,7 @@ Without args, toggle between these options."
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
   (global-set-key [(control f1)] 'ess-sas-rtf-portrait-1)
-  (global-set-key [(control f2)] 'ess-sas-rtf-landscape-1)
+  (global-set-key [(control f2)] 'ess-sas-rtf-us-landscape-1)
   (global-set-key (quote [f2]) 'ess-revert-wisely)
   (global-set-key (quote [f3]) 'ess-sas-submit)
   (global-set-key [(control f3)] 'ess-sas-submit-region)
@@ -1030,7 +1042,7 @@ in SAS-mode and related modes.")
   "PC-like SAS key definitions."
   (interactive)
   (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait-1)
-  (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-landscape-1)
+  (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-us-landscape-1)
   (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
   (define-key sas-mode-local-map (quote [f3]) 'ess-sas-goto-shell)
   (define-key sas-mode-local-map (quote [f4]) 'ess-sas-goto-file-1)
@@ -1061,7 +1073,7 @@ in SAS-mode and related modes.")
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
   (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait-1)
-  (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-landscape-1)
+  (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-us-landscape-1)
   (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
   (define-key sas-mode-local-map (quote [f3]) 'ess-sas-submit)
   (define-key sas-mode-local-map [(control f3)] 'ess-sas-submit-region)
