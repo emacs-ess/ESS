@@ -1,4 +1,4 @@
-@node ESS(S)--Editing files, iESS(S)--Inferior ESS processes, , Help for the S family
+@node ESS(S)--Editing files, iESS(S)--Inferior ESS processes, , ESS for the S family
 @comment  node-name,  next,  previous,  up
 @section ESS[S]--Editing files
 
@@ -28,7 +28,7 @@ the suffices found in ess-site (*.R, *.S, *.s, etc).  However, one
 will have to start up an inferior process to take advantage of the
 interactive features.
 
-@node iESS(S)--Inferior ESS processes, ESS-help--assistance with viewing help, ESS(S)--Editing files, Help for the S family
+@node iESS(S)--Inferior ESS processes, ESS-help--assistance with viewing help, ESS(S)--Editing files, ESS for the S family
 @comment  node-name,  next,  previous,  up
 @section iESS[S]--Inferior ESS processes
 iESS (inferior ESS) is the mode for interfacing with active
@@ -129,14 +129,14 @@ for particular versions of S-Plus have been created.  These other versions of
 S-Plus can also be started from the "ESS->Start Process->Other" menu.
 
 
-@node ESS-help--assistance with viewing help, Philosophies for using ESS(S),iESS(S)--Inferior ESS processes,Help for the S family
+@node ESS-help--assistance with viewing help, Philosophies for using ESS(S),iESS(S)--Inferior ESS processes,ESS for the S family
 @comment  node-name,  next,  previous,  up
 @section ESS-help--assistance with viewing help
 
 ESS has built-in facilities for viewing help files from S.  @xref{Help}.
 
 
-@node Philosophies for using ESS(S), Scenarios for use (possibilities--based on actual usage), ESS-help--assistance with viewing help, Help for the S family
+@node Philosophies for using ESS(S), Scenarios for use (possibilities--based on actual usage), ESS-help--assistance with viewing help, ESS for the S family
 @section Philosophies for using ESS[S]
 
 The first is preferred, and configured for.  The second one can be
@@ -159,7 +159,7 @@ retrieved again, by changing emacs variables.
 The second saves a small amount of disk space.  The first allows for
 better portability as well as external version control for code.
 
-@node Scenarios for use (possibilities--based on actual usage), Customization Examples and Solutions to Problems, Philosophies for using ESS(S),Help for the S family
+@node Scenarios for use (possibilities--based on actual usage), Customization Examples and Solutions to Problems, Philosophies for using ESS(S),ESS for the S family
 @section Scenarios for use (possibilities--based on actual usage)
 
 We present some basic suggestions for using ESS to interact with S.
@@ -283,7 +283,7 @@ prefixed by "##").
 @end display
 
 
-@node Customization Examples and Solutions to Problems,  , Scenarios for use (possibilities--based on actual usage),Help for the S family
+@node Customization Examples and Solutions to Problems,  , Scenarios for use (possibilities--based on actual usage),ESS for the S family
 @section Customization Examples and Solutions to Problems
 
 1. Suppose that you are primarily an SPLUS 3.4 user, occasionally
