@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1998/09/10 06:13:36 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: ess-vars.el,v 5.4 1998/09/10 06:13:36 hornik Exp $
+;; Modified: $Date: 1998/11/11 09:49:24 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: ess-vars.el,v 5.5 1998/11/11 09:49:24 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -78,7 +78,7 @@ version of the statistical package being executed in the particular
 buffer.
 
 Current values could include:
-for `ess-dialect' = S3, S4, S+3, S+4, R, XLS, SAS
+for `ess-dialect' = S3, S4, S+3, S+4, S+5, R, XLS, SAS
 
 Used to adjust for changes in versions of the program")
 
@@ -401,6 +401,9 @@ by ess-function-template.")
 
 (defvar inferior-S4-program-name "S4"
   "*Program name for invoking an inferior ESS with S4().")
+
+(defvar inferior-S+5-program-name "Splus5"
+  "*Program name for invoking an inferior ESS with S+5().")
 
 (defvar inferior-SAS-program-name "sas"
   "*Program name for invoking an inferior ESS with SAS().")
