@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/10 15:55:01 $
-;; Version: $Revision: 1.64 $
-;; RCS: $Id: essa-sas.el,v 1.64 2002/01/10 15:55:01 rsparapa Exp $
+;; Modified: $Date: 2002/01/10 19:36:13 $
+;; Version: $Revision: 1.65 $
+;; RCS: $Id: essa-sas.el,v 1.65 2002/01/10 19:36:13 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -202,16 +202,18 @@ or comint buffer on the local computer."
 	     (ess-sas-file-path)
              (save-buffer)
 	     (shell)
-	     (insert ess-kermit-command " -r")
+	     (insert "cd $HOME; " ess-kermit-command " -T -r "); ess-sas-temp-file)
              (comint-send-input)	
-             (insert "\C-\\" "c")
+	     (insert (read-string "Press Return to connect to Kermit: " "\C-\\c"))
 	     (comint-send-input)
-	     (read-string "Press Return when Kermit is ready to send.")	    
-	     (insert "send ]" ess-sas-temp-file " " ess-sas-temp-file)                
+	     (insert (read-string "Press Return when Kermit is ready to send: "
+		     (concat "send ]" ess-sas-temp-file " " ess-sas-temp-file) nil "\C-\\c"))                
 	     (comint-send-input)
-	     (read-string "Press Return when transfer is complete.")
-	     (insert "c")                
+	     (insert (read-string "Press Return when transfer is complete: " "c" nil 
+		     (concat "send ]" ess-sas-temp-file " " ess-sas-temp-file)))                
              (comint-send-input)
+             (insert (read-string "Press Return when shell is ready: "))
+	     (comint-send-input)
 	     (ess-sas-goto-sas)
 ))))
 
