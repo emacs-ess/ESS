@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.8 1998/11/13 23:47:27 rossini Exp $
+## $Id: Makefile,v 5.9 1998/11/14 00:23:19 rossini Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
@@ -20,6 +20,7 @@ docs:
 
 ## Instead of doing a checkout and exclude, we could do an export,
 ## which ought to morally be cleaner.
+
 dist: 
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(VERSION),"

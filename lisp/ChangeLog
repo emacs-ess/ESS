@@ -1,6 +1,7 @@
 1998-11-13  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* ess-site.el: added .ssc suffix for S-mode.
+	* ess-site.el: added .ssc suffix for S-mode.  Added sample entry
+ 	for S+5.
 
 1998-11-09  A.J. Rossini  <rossini@biostat.washington.edu>
 

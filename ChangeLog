@@ -1,3 +1,8 @@
+1998-11-13  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* doc/Makefile: added "info" target.  Removed spurrious
+	ess.info/ess.texi dependency, i.e. the first.
+
 1998-11-09  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* Makefile (dist): new top-level target.
@@ -1847,6 +1852,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.4  1998/11/14 00:23:18  rossini
+	* Removing whitespace editing.
+	* Removing
 	* Removing Revision 5.3  1998/11/09 23:50:26  rossini
 	* Removing *** empty log message ***
 	* Removing
