@@ -1,6 +1,6 @@
 -*- view -*-
 
-$Revision: 1.9 $
+$Revision: 1.10 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1006,3 +1006,33 @@ NOTE: Not all of these are clean OR are even consistent.
   string in case it does not contain a `,', so that C-c C-v +
   continues to work ...
 
+* (RMH) His (Tom Cook's) sas-get-dataset is a very good idea and was
+  not in my proposal.  I would do it using the same mechanism that
+  S-help uses to put the results of ?function into *help(function)*
+  buffer.  It is a relative of ess-dump-object-into-edit-buffer.  The
+  major difference is that there is no sense of editing the object and
+  sending it back to S.  It is also a relative of the display of a
+  spred.frame, with the difference again that there is no sense of
+  editing the object.
+
+  I like the switch-to-sas* functions.  I would like to generalize
+  them back to S.  I think switch-to-S-source when entered from the
+  *S* buffer should go to the filename.s that was the most recent
+  sender of ^C^N or ^C^R.
+
+  Here is cook's sas-mode-map and how it fits with my essd-sas.el
+ 
+   "\C-c\C-i" 'indent-sas-statement)		\t  use recommended conventions
+   "\C-c\C-a" 'beginning-of-sas-statement)	use
+   "\e\C-a" 'beginning-of-sas-proc)		\M-\C-a
+   "\e\C-e" 'next-sas-proc)			\M-\C-e
+   "\C-cs" 'switch-to-sas-source)		use
+   "\C-cS" 'switch-to-sas-source-other-window)	use
+   "\C-cg" 'switch-to-sas-log)			use
+   "\C-cG" 'switch-to-sas-log-other-window)	use
+   "\C-cl" 'switch-to-sas-lst)			use
+   "\C-cL" 'switch-to-sas-lst-other-window)	use
+   "\C-cr" 'run-sas-on-region)			^C^R
+   "\C-c\C-l" 'submit-sas)			^C^B or ^C^L
+   "\C-cd" 'sas-get-dataset)			use
+   "\C-c\C-c" 'switch-to-sas-process-buffer)	^C^Z or ^C^Y

@@ -2,6 +2,8 @@ Fri Nov 14 17:44:14 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README.S: added a small "FAQ" at the end.
 
+	* Doc/TODO: Added last of the SAS things to do for 5.2 or 5.4.
+
 Fri Nov 14 17:27:27 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README: more comments.
@@ -1183,6 +1185,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.36  1997/11/14 22:51:03  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.35  1997/11/14 22:44:18  rossini
 	* Removing *** empty log message ***
 	* Removing
