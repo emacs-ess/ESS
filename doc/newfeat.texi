@@ -11,6 +11,8 @@ the question ``Delete all buffers associated with ..?'' will not be
 asked anymore by default.
 
 @item ESS[S] (incl. R): Name completion for slots of S4 objects now works!
+@item ESS[SAS] -- ess-ebcdic-to-ascii-search-and-replace will now work if
+have the recode application rather than dd (see below)
 @end itemize
 
 Changes/New Features in 5.2.4:
@@ -24,14 +26,14 @@ platform, .log NOTEs may display as gibberish since the EBCDIC
 characters are not converted to ASCII prior to their display.  So,
 the function ess-ebcdic-to-ascii-search-and-replace is provided for
 convenience and is bound to C-F11.  This function requires the dd
-command so Windows users will need to have Cygwin or something like it.
+command.
 @item ESS: Completion of object names is now always done dynamically rather
 than allowing the option of using a pre-computed database (by
 `ess-create-object-name-db') since modern computers seem fast enough for
 dynamic completion.  (We expect few users, if any, have been using the
 pre-computed database method.)
 @item ESS: object completion in iESS buffers running on Windows was
-very slow (for GNU Emacs, but not Xemacs) and has now been fixed.
+very slow (for GNU Emacs, but not XEmacs) and has now been fixed.
 Further, it was more or less broken for all versions of S-plus 6.x,
 and has been fixed to work everywhere but with the Windows' GUI of
 S-plus.  The list of objects now shows unique names also when an
@@ -198,7 +200,7 @@ This feature is still under development.
 @item XEmacs 21.x is now supported (fixed w32-using-nt bug)
 @item XEmacs on Win (NT) is better supported.
 @item Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
-@item should now work even when imenu is not available (for old Xemacsen).
+@item should now work even when imenu is not available (for old XEmacsen).
 @item ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your
 function-key definitions, if specified; you can specify your SAS
 library definitions outside of autoexec.sas for ess-sas-data-view
