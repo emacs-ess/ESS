@@ -1,7 +1,7 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.33 $, for ESS version 5.1.20)
+   ($Revision: 5.34 $, for ESS version 5.1.20)
 
    This is the README file for the distribution of ESS version  the
 gamma series we are using on the way to producing 5.2 (the next stable
@@ -418,26 +418,26 @@ Unix installation
   1.   cd to a directory where you keep emacs lisp files, or create a
      new   directory to hold the distribution.  This directory will be
      referred   to below as "the ESS distribution directory".  It will
-     contain,   at the end, the tar file `ess-', and a directory for
-     the ESS source, which will be termed "the ESS- source directory".
+     contain,   at the end, the tar file `ess-5.1.21.tar.gz', and a
+     directory for   the ESS source, which will be termed "the
+     ESS-5.1.21
 
      Note that the .elc files may be installed elsewhere (as specified
      in the   Makefile) if desired.
 
   2.   Retrieve the gzipped tar file or zipped file from
-     http://software.biostat.washington.edu/statsoft/ess/essDL
+     <http://software.biostat.washington.edu/statsoft/ess/essDL>
 
-  3.   Copy `ess-' to the location where you want the   ESS- directory,
-     and cd there.  Extract the files from the   distribution, which
-     will unpack into a subdirectory, ess-
-          	gunzip ess-
-          	tar vxf ess-
-     	(or: `gunzip < ess- | tar vxf -' ).  	(or using GNU tar:
-     `tar zvxf ess-').
+  3.   Copy `ess-5.1.21.tar.gz' to the location where you want the
+     ESS-5.1.21   distribution, which will unpack into a subdirectory,
+     ess-5.1.21.
+          	gunzip ess-5.1.21.tar.gz
+          	tar vxf ess-5.1.21.tar
+     	(or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).  	(or using GNU
+     tar:  `tar zvxf ess-5.1.21.tar.gz').
 
      The `tar' command will extract files into the current directory.
-     Do not create ess- yourself, or you will get an extra level of
-     depth to your directory structure.
+     Do not create ess-5.1.21   depth to your directory structure.
 
      Note if you have a very ancient version of GNU emacs (_and_  really
       can not upgrade to Emacs 20 or higher!) you can unpack the
@@ -453,9 +453,8 @@ Unix installation
 
   5.   READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-     In the ess- directory, edit the file `Makeconf' (only if you
-     want to place the executables in other locations; see LISPDIR and
-     INFODIR) and then type:
+     In the ess-5.1.21   want to place the executables in other
+     locations; see LISPDIR and   INFODIR) and then type:
           	make
 
      If this works, then you might try:
@@ -558,34 +557,34 @@ Microsoft Windows installation
      new    directory (for example, `c:\emacs\') to hold the
      distribution.  This    directory will be referred to below as "the
      ESS distribution    directory".  It will contain, at the end,
-     either the tar file    `ess-' or the zip file `ess-', and a
-     directory    for the ESS source, which will be termed "the ESS-
-     source    directory".
+     either the tar file    `ess-5.1.21.tar.gz' or the zip file
+     `ess-5.1.21.zip', and a    directory    for the ESS source, which
+     will be termed "the ESS-5.1.21    directory".
 
-  2.       Retrieve the compressed tar file `ess-' or the      zipped
-     file `ess-' from one of the FTP or WWW      archive sites      via
-     FTP (or HTTP).  Be aware that http browsers on Windows
-     frequently change the "." and "-" characters in filenames to other
-         punctuation.  Please change the names back to their original
-     form.
+  2.       Retrieve the compressed tar file `ess-5.1.21.tar.gz' or the
+        zipped file `ess-5.1.21.zip' from one of the FTP or WWW
+     archive sites      via FTP (or HTTP).  Be aware that http browsers
+     on Windows      frequently change the "." and "-" characters in
+     filenames to other      punctuation.  Please change the names back
+     to their original form.
 
-  3.       Copy `ess-' to the location where you want the      ess-
-     directory, for example to      `c:\emacs\ess-', and cd there.  For
-     example,
+  3.       Copy `ess-5.1.21.tar.gz' to the location where you want the
+        ess-5.1.21      `c:\emacs\ess-5.1.21.tar.gz', and cd there.
+     For example,
 
                        cd c:\emacs
 
      Extract the files from the distribution, which will unpack
-     into a subdirectory, `ess-'.
-                    	gunzip ess-
-                    	tar vxf ess-
-          	(or: `gunzip < ess- | tar vxf -' ).          (or:
-     from the zip file: `unzip ess-')
+     into a subdirectory, `ess-5.1.21'.
+                    	gunzip ess-5.1.21.tar.gz
+                    	tar vxf ess-5.1.21.tar
+          	(or: `gunzip < ess-5.1.21.tar.gz | tar vxf -' ).
+        (or: from the zip file: `unzip ess-5.1.21.zip')
 
      The `tar' command will extract files into the current directory.
 
-     Do not create `ess-' yourself, or you will get an extra level
-     of   depth to your directory structure.
+     Do not create `ess-5.1.21' yourself, or you will get an extra level
+         of   depth to your directory structure.
 
   4.      Windows users will usually be able to use the
      `lisp/ess-site.el'      as distributed.  Only rarely will changes
