@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.19 $)
+($Revision: 1.20 $)
 
 ESS VERSION 5.0
 ---------------
@@ -95,16 +95,10 @@ are included in Doc/README-19.28.
 4. GETTING THE LATEST VERSION
 -----------------------------
 
-The latest stable version of ESS is always available by WWW from:
+The latest versions of ESS are always available by WWW from:
 
-	http://www.stat.sc.edu/~rossini/projects/
-	ftp://ftp.math.sc.edu/rossini/
-
-The latest alpha version of ESS is available via WWW or FTP, and can be
-found in the directory specified by:
-
-	http://www.stat.sc.edu/~rossini/projects/
-	ftp://ftp.math.sc.edu/rossini/
+	http://franz.stat.wisc.edu/pub/ess/
+	ftp://franz.stat.wisc.edu/pub/ess/
 
 The HTML version of the documentation can be found at:
 
