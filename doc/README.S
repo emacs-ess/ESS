@@ -1,6 +1,6 @@
 -*- indented-text -*-
 
-($Revision: 1.6 $)
+($Revision: 1.7 $)
 
 ESS: Using The S family of statistical languages
 ================================================
@@ -44,9 +44,9 @@ ESS[S] is the mode for editing S language files.  This mode handles:
   functions, and to have the results sent into a separate buffer.
 - completion of object names and file names.
 
-It should be automatically turned on when loading a file with the
-suffices found in ess-site (*.R, *.S, *.s, etc).  However, one will
-have to start up an inferior process to take advantage of the
+ESS[S] mode should be automatically turned on when loading a file with
+the suffices found in ess-site (*.R, *.S, *.s, etc).  However, one
+will have to start up an inferior process to take advantage of the
 interactive features.
 
 
