@@ -1,24 +1,100 @@
-1998-11-13  A.J. Rossini  <rossini@biostat.washington.edu>
+Fri Nov 20 20:57:33 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* ess-site.el: added .ssc suffix for S-mode.  Added sample entry
- 	for S+5.
+	* ess-vars.el: ess-help-w3-url-prefix points to pyrite.
 
-1998-11-09  A.J. Rossini  <rossini@biostat.washington.edu>
+	* ess-vars.el:
+	removed spurrious comment about generic function, in front of a variable.
 
-	* essl-sta.el (stata-eval-region): removed/modified possible
-	  problems; might decrease effectiveness.
+	* essd-s+5.el: trimmed out old S4 stuff.
+
+Mon Nov 16 17:29:25 1998  maechler  <maechler@pyrite>
+
+	* ess-inf.el: do not need comint echo anymore..
+
+Sat Nov 14 00:23:19 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ChangeLog: whitespace editing.
+
+Fri Nov 13 18:25:51 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-site.el: added sample entry for S+5.
+
+	* ChangeLog: *** empty log message ***
+
+	* ess-site.el: added suffix for StatSci's script files.
+
+Thu Nov 12 17:27:30 1998  maechler  <maechler@pyrite>
+
+	* essd-r.el, essd-s+3.el, essd-s+5.el, essd-s3.el:
+	newline in dribble buff
+
+	* ess-inf.el:
+	more details in prompt for ess-get-dir; more dribble; WHITE SPACE
+
+	* ess.el: slightly better dribble output
+
+	* essd-s4.el: drop doubled comments
+
+	* ess-vars.el: .
+
+Wed Nov 11 12:45:15 1998  maechler  <maechler@pyrite>
+
+	* essd-s+5.el: omit .Smode() extras; new "S+" instead of "S+3"
+
+	* essl-s.el: new "S+" instead of "S+3"
+
+	* ess-inf.el: comint-echo : OFF for S+5
+
+	* essd-s3.el: comments only
+
+	* essd-s+3.el: comment out ess-mode-edit
+
+	* Makefile, ess-vars.el: new version numbers
+
+	* essd-s+5.el: several more s4 -> s+5 changes; still not ok
+
+	* essd-s+3.el: transpose to defs
+
+	* ess-vars.el: require s+5
+
+Tue Nov 10 17:45:11 1998  maechler  <maechler@pyrite>
+
+	* ess-site.el: s+5 is now distributed
+
+	* essd-s+5.el: provide typo fixed
+
+Mon Nov  9 23:28:14 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ChangeLog, Makefile, ess-site.el: New material for Makefiles
+
+	* essl-sta.el: removed possible problems from stata mode.
 	-- provide 'essl-sta
-	
 
-	* Makefile (essd-sta.elc): added new target.
+	* essd-s+5.el: This is for Splus5, based on S4.
 
-1998-09-24  Anthony Rossini  <arossini@buffy.biostat.washington.edu>
+	* ess-web.nw: last change, sigh.
 
-	* essd-sta.el (STA-customize-alist): ess-object-name-db-file
-	should use sta, not stt.
+	* ess-web.nw: emacs lisp mode is wrong, sigh.
 
-	* ess-site.el (auto-mode-alist): added stata mode, which is now
-	STA (ref: Thomas Lumley).
+	* ess-web.nw: Contains interface code between Noweb and ESS
+
+	* ChangeLog: added stata-dialect/lang to makefile
+
+	* Makefile: added Stata stuff.
+
+Thu Sep 24 23:32:14 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ChangeLog: more stuff.
+
+	* essd-sta.el: should be sta, not stt
+
+	* ChangeLog: update for ess-site.
+
+	* ess-site.el: added stata mode, which is now STA (ref: Thomas Lumley)
+
+Thu Sep 17 09:11:51 1998  maechler  <maechler@pyrite>
+
+	* ChangeLog, ess-utils.el: several  small things
 
 Fri Sep 11 16:20:14 1998  Martin Maechler  <maechler@sophie>
 
