@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/06/23 12:31:07 $
-;; Version: $Revision: 5.105 $
-;; RCS: $Id: ess-site.el,v 5.105 2004/06/23 12:31:07 stephen Exp $
+;; Modified: $Date: 2004/06/24 12:04:39 $
+;; Version: $Revision: 5.106 $
+;; RCS: $Id: ess-site.el,v 5.106 2004/06/24 12:04:39 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -460,6 +460,13 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (require 'ess-menu)
 (require 'ess-mous)
+
+;; (1.9) Toolbar support
+
+;; To remove toolbar support under ESS, either comment-out 
+;; (require 'ess-toolbar) below, or add "(setq ess-use-toolbar nil)"
+;; to your .emacs before (require 'ess-site).
+(require 'ess-toolbar)
 
 ;;; 2. Site Specific setup
 ;;;; ===============================================
