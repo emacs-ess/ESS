@@ -1,13 +1,13 @@
-
+;;; ess-cust.el --- Customize variables for ESS
 ;; Copyright (C) 1997--2001 A.J. Rossini, Martin Maechler,
 ;; Kurt Hornik, Richard M. Heiberger, and Rodney Sparapani.
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/01/10 16:03:12 $
-;; Version: $Revision: 1.50 $
-;; RCS: $Id: ess-cust.el,v 1.50 2004/01/10 16:03:12 maechler Exp $
+;; Modified: $Date: 2004/01/19 12:03:54 $
+;; Version: $Revision: 1.51 $
+;; RCS: $Id: ess-cust.el,v 1.51 2004/01/19 12:03:54 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -633,9 +633,11 @@ by `ess-function-template'."
 ;; Keep a copy of your revised ess-site.el to use as a starting point
 ;; for upgrades of ESS.
 
-(defvar inferior-R-program-name
+(defcustom inferior-R-program-name
   (if ess-microsoft-p "Rterm"  "R")
-  "*Program name for invoking an inferior ESS with \\[R].")
+  "*Program name for invoking an inferior ESS with \\[R]."
+  :group 'ess-R
+  :type 'string)
 
 
 (defcustom inferior-S3-program-name "/disk05/s/S"
