@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/06/18 06:48:33 $
-;; Version: $Revision: 5.91 $
-;; RCS: $Id: ess-inf.el,v 5.91 2004/06/18 06:48:33 maechler Exp $
+;; Modified: $Date: 2004/07/01 13:18:02 $
+;; Version: $Revision: 5.92 $
+;; RCS: $Id: ess-inf.el,v 5.92 2004/07/01 13:18:02 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -1654,7 +1654,6 @@ to the command if BUFF is not given.)"
     (if (yes-or-no-p (format "Really quit ESS process %s? " sprocess))
 	(progn   ;;;;previouslyl (save-excursion
 	  (ess-cleanup)
-	  (ess-switch-to-ESS nil)
 	  (goto-char (marker-position (process-mark sprocess)))
 	  (insert inferior-ess-exit-command)
 	  (if (string-equal ess-dialect "R")
@@ -1691,18 +1690,19 @@ before you quit.  It is run automatically by \\[ess-quit]."
 	  "Delete all buffers associated with process %s? "
 	  the-procname))
 	(progn
-	  (mapcar '(lambda (buf)
-		     (set-buffer buf)
-		     ;; Consider buffers for which
-		     ;; ess-local-process-name is the same as
-		     ;; the-procname
-		     (if (and (not (get-buffer-process buf))
-			      ess-local-process-name
-			      (equal ess-local-process-name
-				     the-procname))
-			 (kill-buffer buf)))
-		  (buffer-list))
-	  (ess-switch-to-ESS nil)))))
+	  (save-excursion
+	    (mapcar '(lambda (buf)
+		       (set-buffer buf)
+		       ;; Consider buffers for which
+		       ;; ess-local-process-name is the same as
+		       ;; the-procname
+		       (if (and (not (get-buffer-process buf))
+				ess-local-process-name
+				(equal ess-local-process-name
+				       the-procname))
+			   (kill-buffer buf)))
+		    (buffer-list)))))
+    (ess-switch-to-ESS nil)))
 
 (defun ess-kill-buffer-function nil
   "Function run just before an ESS process buffer is killed."
