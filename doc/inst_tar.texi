@@ -9,28 +9,25 @@ For Microsoft Windows Installation please skip to the
 @node Unix installation, Microsoft Windows installation, , Installation
 @comment  node-name,  next,  previous,  up
 @section Unix installation
+
 @enumerate 
 
 @item
-cd to a directory where you keep emacs lisp files, or create a new
-directory to hold the distribution.  This directory will be referred
-to below as "the ESS distribution directory".  It will contain,
-at the end, the tar file @file{ess-@essver{}.tar.gz}, and a directory for
-the ESS source, which will be termed "the ESS-@essver{} source directory".
-
-Note that the .elc files may be installed elsewhere (as specified in the
-Makefile) if desired.
+cd to a directory where you want to install ESS, creating it if necessary.
+This directory will be referred to below as ESSDIR.  
+@comment It will contain,
+@comment at the end, the tar file @file{ess-@essver{}.tar.gz}, and a directory for
+@comment the ESS source, which will be termed "the ESS-@essver{} source directory".
+@comment Note that the .elc files may be installed elsewhere (as specified in the
+@comment Makefile) if desired.
 
 @item
 Retrieve the  
-@uref{http://software.biostat.washington.edu/ess/ess-@essver{}.tar.gz, gzipped tar file }
-or the
-@uref{http://software.biostat.washington.edu/ess/ess-@essver{}.zip, zipped file }.
+@uref{http://software.biostat.washington.edu/ess/ess-@essver{}.tar.gz, gzipped tar file } 
+to ESSDIR.
 
 @item
-Copy @file{ess-@essver{}.tar.gz} to the location where you want the
-ESS-@essver{} directory, and cd there.  Extract the files from the
-distribution, which will unpack into a subdirectory, ess-@essver{}.
+Decompress/unarchive the files from the disribution.
 @example
 gunzip ess-@essver{}.tar.gz
 tar xvf ess-@essver{}.tar
@@ -40,73 +37,44 @@ tar xvf ess-@essver{}.tar
 (or using GNU tar:  @code{tar zxvf ess-@essver{}.tar.gz}).
 @end display
 
-The @code{tar} command will extract files into the current directory.
-Do not create ess-@essver{} yourself, or you will get an extra level of
-depth to your directory structure.
+The @code{tar} command will create the subdirectory ess-@essver{} and unarchive
+the files there.
 
-Note if you have GNU Emacs 19.29 (@emph{and} you can not upgrade), unpack
-@file{lisp/19.29.tar.gz}, read @file{lisp/19.29/README}, follow the instructions
-and you @emph{might} be able to get ESS to work.
+If you are using GNU Emacs 19.29, decompress/unarchive
+@file{ESSDIR/ess-@essver{}/lisp/19.29.tar.gz}, 
+read @file{ESSDIR/ess-@essver{}/lisp/19.29/README}, follow the instructions
+and you might be able to get ESS to work.  
+@emph{Please note that GNU Emacs 19.29 is no longer supported}.
+For a list of supported versions of emacs, see @xref{Requirements}.
 
 @item
-Edit the file @file{lisp/ess-site.el} as explained in the comments
-section of that file.  Installations that are using ESS only for S-Plus
-6.x will probably not need to make any changes.  Installations that also
-have one or more of (S4, S+3/4/5, R, SAS, BUGS, XLispStat, Stata)
-may need to uncomment corresponding lines in @file{ess-site.el}.
+Edit the file @file{ESSDIR/ess-@essver{}/lisp/ess-site.el} as explained in the 
+comments section of that file.  
+@comment Installations that are using ESS only for S-Plus
+@comment 6.x will probably not need to make any changes.  Installations that also
+@comment have one or more of (S4, S+3/4/5, R, SAS, BUGS, XLispStat, Stata)
+@comment may need to uncomment corresponding lines in @file{ESSDIR/ess-@essver{}/lisp/ess-site.el}.
 
 @item
  Add the line
 @example
-(load "/PATH/ess-site")
+(load "ESSDIR/ess-@essver{}/lisp/ess-site")
 @end example
-to your .emacs file (or default.el or site-init.el, for a site-wide
-installation).  Replace `/PATH' above with the value of
-ess-lisp-directory as defined in ess-site.el.
-(GNU emacs uses the filename @file{$HOME/.emacs} and
-XEmacs uses the filename @file{$HOME/.xemacs/init.el}
-for the initialization file.)
+to your user or system installation file
+(GNU Emacs uses @file{$HOME/.emacs} and XEmacs uses @file{$HOME/.xemacs/init.el}
+for the user initialization file.  GNU Emacs uses default.el or site-init.el and 
+XEmacs uses site-start.el for the system installation file). 
 
-Alternatively, if ess-site.el is in your current Lisp path, you can
-do:
+Alternatively, if ess-site.el is in your current Lisp path, you can do:
 @example
 (require 'ess-site)
 @end example
-to configure Emacs for ESS.
+to configure emacs for ESS.
 
 @item
-To edit statistical programs, load the files with the requiste
+That's it!  To edit statistical programs, load the files with the requiste
 extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and ".lsp"
 for XLispStat).
-
-@item
-To run statistical processes under emacs:
-
-Run S-PLUS 6.x with:
-@example
-M-x S+6
-@end example
-(or M-x S  using backwards compatibility).  You will then be asked
-for a pathname ("S starting data directory?"), from which to start
-the process.
-
-If you wish to run R, you can start it with:
-@example
-M-x R
-@end example
-
-XLispStat can be run with
-@example
-M-x XLS
-@end example
-
-An interactive SAS can be run in an @code{iESS[SAS]} buffer with:
-@example
-M-x SAS
-@end example
-This works when SAS is running on a Unix machine, either the local
-machine or over a network connection.  M-x SAS does not work when
-SAS is running on a Windows machine.
 
 @item
 (OPTIONAL) If you are running S-PLUS or R, you might consider
@@ -136,19 +104,18 @@ and then @code{M-x ess-create-object-name-db} creating
 @item
 @b{(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING}:
 
-In the ess-@essver{} directory, edit the file @file{Makeconf} (only if you
-want to place the executables in other locations; see LISPDIR and
-INFODIR) and then type:
+In the ESSDIR/ess-@essver{} directory, edit the file @file{Makeconf} if you
+want to place the compiled files in other locations; see LISPDIR and INFODIR.
+
+Then type:
 @example
-make
+make all
 @end example
 
 If this works, then you might try:
 @example
 make install
 @end example
-Note that the latter does the former as well, so if you are feeling
-lucky, you might want to skip it.
 
 This will install the info files (and the lisp files, if they are to go
 in another directory).  Don't forget to edit the file @file{dir} in the
@@ -157,7 +124,7 @@ the sample @file{dir} file for an example of the line to add.
 
 If you are using XEmacs, you might do:
 @example
-make EMACS=xemacs
+make EMACS=xemacs all
 @end example
 
 and then
@@ -171,17 +138,15 @@ work properly
 
 An alternative, if you are running XEmacs and have access to the
 XEmacs system directories, would be to place the directory in the
-site-lisp directory, and simply type @code{make} (and copy the
+site-lisp directory, and simply type @code{make all} (and copy the
 documentation as appropriate).
 
-For Emacs, you would still have to move the files into the top level
+For GNU Emacs, you would still have to move the files into the top level
 site-lisp directory.
 
-@item
-That's it!
 @end enumerate
 
-@node Microsoft Windows installation, , Unix installation, Installation
+@node Microsoft Windows installation, Requirements, Unix installation, Installation
 @comment  node-name,  next,  previous,  up
 @section Microsoft Windows installation
 
@@ -260,7 +225,7 @@ to your .emacs (or _emacs) file (or default.el or site-init.el, for
 a site-wide installation).  Replace @code{/PATH} above with the
 value of ess-lisp-directory as defined in @file{ess-site.el}.  Use
 forwardslashes @code{/}.
-(GNU emacs uses the filename @file{%HOME%/.emacs} and
+(GNU Emacs uses the filename @file{%HOME%/.emacs} and
 XEmacs uses the filename @file{%HOME%/.xemacs/init.el}
 for the initialization file.)
 
@@ -309,7 +274,7 @@ XLispStat can not currently be run with
 M-x XLS
 @end example
 Hopefully, this will change.  However, you can still edit with
-Emacs, and cut and paste the results into the XLispStat
+emacs, and cut and paste the results into the XLispStat
 *Listener* Window under Microsoft Windows.
 
 SAS for Windows uses the batch access with function keys that is
@@ -352,3 +317,8 @@ there).
 @item That's it!
 
 @end enumerate
+
+@node Requirements, , Microsoft Windows installation, Installation
+@comment  node-name,  next,  previous,  up
+@section Requirements
+@include requires.texi

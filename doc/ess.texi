@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.31 2002/05/28 18:53:23 rmh Exp $
+@comment $Id: ess.texi,v 5.32 2002/06/18 15:17:56 rsparapa Exp $
 
 @include version.texi
 
@@ -41,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.31 $ $Date: 2002/05/28 18:53:23 $)
+@subtitle version @essver{} (Documentation $Revision: 5.32 $ $Date: 2002/06/18 15:17:56 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -86,7 +86,7 @@ permission notice identical to this one.
 
 ESS version @essver{}
 
-        (Documentation $Revision: 5.31 $ $Date: 2002/05/28 18:53:23 $).
+        (Documentation $Revision: 5.32 $ $Date: 2002/06/18 15:17:56 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
@@ -2486,9 +2486,10 @@ The following section details those steps necessary to get ESS running
 on your system.
 
 @menu
-* Unix installation::           Installing ESS on your Unix system
-* Microsoft Windows installation::  Installing ESS on your MS Windows system
-* System dependent::            Other variables you may need to change
+* Unix installation::              Installing ESS on your Unix system
+* Microsoft Windows installation:: Installing ESS on your MS Windows system
+* Requirements::         emacs, Operating Systems and Statistical Packages 
+* System dependent::               Other variables you may need to change
 @end menu
 
 @include inst_tar.texi
