@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/20 14:20:03 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: ess-trns.el,v 1.14 1997/11/20 14:20:03 rossini Exp $
+;; Modified: $Date: 1997/11/20 21:40:28 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: ess-trns.el,v 1.15 1997/11/20 21:40:28 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -117,26 +117,21 @@
   (define-key ess-transcript-mode-map "\C-c\r"   'ess-transcript-copy-command)
   (define-key ess-transcript-mode-map "\C-c\C-w" 'ess-transcript-clean-region))
 
-
-
-
-
 (easy-menu-define
  ess-transcript-mode-menu ess-transcript-mode-map
  "Menu for use in S transcript mode."
  '("ess-trans"
-   ["Describe"  describe-mode t]
-   ;;["About"  (lambda nil (interactive) (ess-goto-info "Transcript Mode")) t]
-   ["Send bug report"  ess-submit-bug-report t]
+   ["Describe"         describe-mode                     t]
+   ["About"            (ess-goto-info "Transcript Mode") t]
+   ["Send bug report"  ess-submit-bug-report             t]
    "------"
-   ["Mark cmd group"  mark-paragraph t]
+   ["Mark cmd group"   mark-paragraph         t]
    ["Previous prompt"  comint-previous-prompt t]
-   ["Next prompt"  comint-next-prompt t]
+   ["Next prompt"      comint-next-prompt     t]
    "------"
    ["Send and move"  ess-transcript-send-command-and-move t]
-   ["Copy command"   ess-transcript-copy-command t]
-   ["Send command"   ess-transcript-send-command t]
-   ))
+   ["Copy command"   ess-transcript-copy-command          t]
+   ["Send command"   ess-transcript-send-command          t]))
 
 
 (if (not (string-match "XEmacs" emacs-version))
@@ -150,7 +145,6 @@
 			     (cons "ess-trans"
 				   ess-transcript-mode-menu))))))
 
-
 (defun ess-transcript-mode-xemacs-menu ()
   "Hook to install ess-transcript-mode menu for XEmacs (w/ easymenu)"
   (if 'ess-transcript-mode
@@ -159,8 +153,6 @@
 
 (if (string-match "XEmacs" emacs-version)
     (add-hook 'ess-transcript-mode-hook 'ess-transcript-mode-xemacs-menu))
-
-
 
 (defun ess-transcript-mode (alist &optional proc)
   "Major mode for manipulating S transcript files
