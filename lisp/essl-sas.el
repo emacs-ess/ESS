@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/01/16 15:39:31 $
-;; Version: $Revision: 5.37 $
-;; RCS: $Id: essl-sas.el,v 5.37 2002/01/16 15:39:31 rsparapa Exp $
+;; Modified: $Date: 2002/01/31 21:04:03 $
+;; Version: $Revision: 5.38 $
+;; RCS: $Id: essl-sas.el,v 5.38 2002/01/31 21:04:03 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -381,24 +381,29 @@ number."
 	 (cons "^WARNING: .*$"                      font-lock-function-name-face)	
 
 	 ;; SAS comments
+	 (list "/\\*.*\\*/"                      0  font-lock-comment-face t)
 	 (list "\\(^[0-9]*\\|;\\)[ \t]*%?\\*.*;" 0  font-lock-comment-face t)
-	 (list "/\\*.*\\*/"			 0  font-lock-comment-face t)
 
 	 ;; SAS execution blocks, DATA/RUN, PROC/RUN, SAS Macro Statements
 	 (cons "\\<%do[ \t]*\\(%until\\|%while\\)?\\>"
 						    font-lock-reference-face)
-	 (cons (concat "\\(^[0-9]*\\|;\\)[ \t]*"
-		"%\\(end\\|global\\|local\\|m\\(acro\\|end\\)\\)"
-		"\\>")				    font-lock-reference-face)
+	 ;;(cons (concat "\\(^[0-9]*\\|;\\)[ \t]*"
+		;;"%\\(end\\|global\\|local\\|m\\(acro\\|end\\)\\)"
+		;;"\\>")				    font-lock-reference-face)
+	 (cons "\\<%\\(end\\|global\\|local\\|m\\(acro\\|end\\)\\)\\>"
+						    font-lock-reference-face)
 
 	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
 		"\\(data\\|endsas\\|quit\\|run\\)[ \t\n;]")
 		      				    font-lock-reference-face)
 	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
 		"proc[ \t]+[a-z][a-z_0-9]+")        font-lock-reference-face)
-	 (cons (concat "\\(^[0-9]*\\|;\\|%then\\|%else\\)[ \t]*"
-		"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"
-		"\\>")				    font-lock-reference-face)
+
+	 ;;(cons (concat "\\(^[0-9]*\\|;\\|%then\\|%else\\)[ \t]*"
+		;;"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"
+		;;"\\>")				    font-lock-reference-face)
+	 (cons "\\<%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\>"
+						    font-lock-reference-face)
 
 	 (cons "\\<%\\(by\\|else\\|t\\(o\\|hen\\)\\)\\>"
 						    font-lock-reference-face)
