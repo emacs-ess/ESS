@@ -1,3 +1,7 @@
+1999-12-08  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-sta.el (setq max-lisp-eval-depth): increase necessary
+
 1999-11-22  ess  <ess@aleph.YP.biostat>
 
 	* ess-vars.el: Updated to 5.1.11
@@ -47,7 +51,7 @@
 	* essd-omg.el:
 	further Omegahat dialect changes (use OMG syntax, which needs fixing!)
 
-1999-11-05  Martin Maechler  <maechler@@stat.math.ethz.ch>
+1999-11-05  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess.el: added a definition of (functionp ..) if there isn't any
 
