@@ -1369,7 +1369,7 @@ If nil, input is in the `font-lock-variable-name-face'."
      . font-lock-type-face)
     ("\\<\\(library\\|require\\|attach\\|detach\\|source\\)\\>"
      . font-lock-reference-face)
-    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>"
+    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|message\\|function\\)\\>"
      . font-lock-keyword-face) ; TODO : drop "_" (here and below)
     ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\|_\\|=\\)\\(\\s-\\|\n\\)*function"
      1 font-lock-function-name-face t))
@@ -1402,7 +1402,7 @@ If nil, input is in the `font-lock-variable-name-face'."
      (1 font-lock-comment-face keep t)) ; comments
     ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function"
      1 font-lock-function-name-face t) ; function name
-    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>"
+    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|message\\|function\\)\\>"
      . font-lock-keyword-face) ; keywords
     )
   "Font-lock patterns used in inferior-ess-mode buffers.")
