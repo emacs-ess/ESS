@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/03/05 20:14:04 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: essl-sta.el,v 5.12 1999/03/05 20:14:04 rossini Exp $
+;; Modified: $Date: 1999/03/05 20:17:19 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: essl-sta.el,v 5.13 1999/03/05 20:17:19 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -87,12 +87,6 @@ regexp-search, and so specials should be quoted.
   (modify-syntax-entry ?&  "."  STA-syntax-table)
   (modify-syntax-entry ?|  "."  STA-syntax-table)
   (modify-syntax-entry ?\' "\"" STA-syntax-table)
-  (modify-syntax-entry ?#  "<"  STA-syntax-table) ; open comment
-  (modify-syntax-entry ?\n ">"  STA-syntax-table) ; close comment
-  ;;(modify-syntax-entry ?.  "w"  STA-syntax-table) ; "." used in S obj names
-  (modify-syntax-entry ?.  "_"  STA-syntax-table) ; see above/below,
-					; plus consider separation.
-  (modify-syntax-entry ?$  "_"  STA-syntax-table) ; foo.bar$hack is 1 symbol
   (modify-syntax-entry ?_  "."  STA-syntax-table)
   (modify-syntax-entry ?*  "."  STA-syntax-table)
   (modify-syntax-entry ?<  "."  STA-syntax-table)
@@ -108,11 +102,11 @@ regexp-search, and so specials should be quoted.
     (comment-start                . "#")
     (comment-start-skip           . "#+ *")
     (comment-column               . 40)
-    ;;(comment-indent-function  . 'S-comment-indent)
+    ;;(comment-indent-function      . 'S-comment-indent)
     ;;(ess-comment-indent           . 'S-comment-indent)
-    ;;(ess-indent-line                      . 'S-indent-line)
-    ;;(ess-calculate-indent           . 'S-calculate-indent)
-    (indent-line-function            . 'S-indent-line)
+    ;;(ess-indent-line              . 'S-indent-line)
+    ;;(ess-calculate-indent         . 'S-calculate-indent)
+    (indent-line-function         . 'S-indent-line)
     (parse-sexp-ignore-comments   . t)
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
