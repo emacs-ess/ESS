@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/07/16 14:14:58 $
-;; Version: $Revision: 1.106 $
-;; RCS: $Id: essa-sas.el,v 1.106 2002/07/16 14:14:58 rsparapa Exp $
+;; Modified: $Date: 2002/07/19 00:48:21 $
+;; Version: $Revision: 1.107 $
+;; RCS: $Id: essa-sas.el,v 1.107 2002/07/19 00:48:21 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -100,6 +100,8 @@ Windows users running MS-DOS in *shell* will get 'ms-dos by default.
 Users accessing a remote machine with `telnet', `rlogin', `ssh', etc.,
 should set this variable to 'sh regardless of their local shell 
 (since their remote shell is 'sh).")
+
+(make-variable-buffer-local 'ess-sas-submit-method)
 
 (defcustom ess-sas-data-view-options 
     (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
@@ -537,7 +539,7 @@ arg1 is assumed to be the AppleScript command
 \"invoke SAS using program file\".  If so, then arg2, if any, is a complex string
 of the form \"with options { \\\"option-1\\\", \\\"option-2\\\", etc.}\" ."
   (do-applescript (concat arg1
-			  " \"" (unix-filename-to-mac default-directory)
+			  " \"" ;(convert-standard-filename default-directory)
 			  (buffer-name) "\"" arg2)))
 
 (defun ess-sas-submit-region ()
