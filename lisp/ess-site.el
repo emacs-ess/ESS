@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/29 11:30:43 $
-;; Version: $Revision: 1.29 $
-;; RCS: $Id: ess-site.el,v 1.29 1997/07/29 11:30:43 rossini Exp $
+;; Modified: $Date: 1997/07/30 12:17:37 $
+;; Version: $Revision: 1.30 $
+;; RCS: $Id: ess-site.el,v 1.30 1997/07/30 12:17:37 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.30  1997/07/30 12:17:37  rossini
+;;: needed ")" (in comments).
+;;:
 ;;: Revision 1.29  1997/07/29 11:30:43  rossini
 ;;: too many parens.
 ;;:
@@ -260,7 +263,7 @@
 
 ;;;; Choices for *(), where * is from inferior-*-program....
 ;;(setq-default inferior-S+3-program-name "Splus")
-;;(setq-default inferior-R-program-name "/disk05/rmh/xemacs/R/R-0.49/bin/R"
+;;(setq-default inferior-R-program-name "/disk05/rmh/xemacs/R/R-0.49/bin/R")
 ;;(setq-default inferior-XLS-program-name "xlispstat")
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
