@@ -6,12 +6,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/15 21:56:38 $
-;; Version: $Revision: 1.36 $
-;; RCS: $Id: ess-mode.el,v 1.36 1997/06/15 21:56:38 rossini Exp $
+;; Modified: $Date: 1997/06/18 16:02:58 $
+;; Version: $Revision: 1.37 $
+;; RCS: $Id: ess-mode.el,v 1.37 1997/06/18 16:02:58 rossini Exp $
 
 ;;
 ;; $Log: ess-mode.el,v $
+;; Revision 1.37  1997/06/18 16:02:58  rossini
+;; added S-mode, again :-).
+;;
 ;; Revision 1.36  1997/06/15 21:56:38  rossini
 ;; *** empty log message ***
 ;;
@@ -279,6 +282,14 @@
 	ess-default-style 'GNU
 	)
   (ess-mode proc-name))
+
+(defun S-mode (&optional proc-name)
+  "Major mode for editing S+3 source.  See ess-mode for more help."
+  (interactive)
+  (setq ess-proc-prefix "S"
+	ess-default-style 'GNU)
+  (ess-mode proc-name))
+
 
 (defun ess-mode (&optional proc-name)
   "Major mode for editing S source.
