@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2004/05/17 21:21:26 $
-;; Version: $Revision: 5.37 $
-;; RCS: $Id: essl-s.el,v 5.37 2004/05/17 21:21:26 maechler Exp $
+;; Modified: $Date: 2004/05/19 13:10:44 $
+;; Version: $Revision: 5.38 $
+;; RCS: $Id: essl-s.el,v 5.38 2004/05/19 13:10:44 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -444,11 +444,14 @@ in cases where it's ugly and nonsense.  DO-QUERY(prefix) asks before replacing."
   (ess-fix-dot ",)" dont-query verbose))
 
 (defun ess-fix-EQ-assign (&optional dont-query verbose)
-  "Replace \"=\" by \"<-\" at least for function assignments."
+  "Replace \"=\" by \"<-\" at least for function assignments.
+CAREFUL if have list()s of functions!"
   ;;TODO: "in the few places we can be very sure.."
+  ;;---- is hard in general: local functions: ok; but functions in
+  ;;  list(a = function(x) abs(x), b= function(y) bound(y))  *NOT* ok!
   (interactive "P")
   (ess-replace-regexp-dump-to-src
-   "^\\([a-z.][_a-z.0-9]*\\) *= *\\(function *(\\)"
+   "^\\( *[a-z.][_a-z.0-9]*\\) *= *\\(function *(\\)"
    "\\1 <- \\2" dont-query verbose))
 
 ;;; All of the above three :
