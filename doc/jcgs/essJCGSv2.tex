@@ -36,14 +36,15 @@
 %                1)ESS-mode
 %                2)Emacs/XEmacs
 %                3)Unix/Windows/Macintosh
-%5. ESS internet resources
+%5. conclusion
+%        a) summary
+%        b) what's next for ESS
+%   ESS internet resources
 %        a) home page
 %        b) ess-help
 %        c) anonymous cvs
-%6. conclusion
-%        a) summary
-%        b) what's next for ESS
-
+%   References
+%
 \ifdraft
  \addtolength{\topmargin}{-1cm}
  \addtolength{\textheight}{+1cm}
@@ -144,7 +145,7 @@
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/17 01:42:14 $ - $Revision: 1.76 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/20 06:37:34 $ - $Revision: 1.77 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -290,8 +291,8 @@ words, lines, sentences, paragraphs, and pages as well as many other
 features.
 
 Second, major modes provide the ability to run other programs.  In
-this case, the other program's standard input can be drawn from a
-buffer or a file and its standard output can be directed to a buffer
+this case, the other program's standard-input can be drawn from a
+buffer or a file and its standard-output can be directed to a buffer
 or a file.  Buffers of this kind can control programs that transfer
 files over a network, perform version control operations or many other
 tasks.  An important example of this kind of major-mode is
@@ -767,9 +768,77 @@ remote machines.
 \subsection{Interactive Processing.}
 \label{sec:interactive}
 \paragraph{S.}
-\begin{Comment}
-Not yet written.
-\end{Comment}
+\label{sec:S:inf}
+
+\stexttt{iESS[S]}, the mode for interfacing with active S statistical
+processes, is based on the Emacs shell-mode.
+In effect, this mode replaces the \Splus\ Commands
+window or R GUI window with an active buffer.
+\stexttt{iESS[S]} mode provides
+an interactive history mechanism; transcript recording and editing; the
+ability to resubmit the contents of a multi-line command to the
+executing process with a single keystroke.  \stexttt{iESS[S]} mode
+provides the same
+editing features, including string-search, as the editing mode \stexttt{ESS[S]}.
+
+The statistical processes S and R are started by using the Emacs
+function call \stexttt{M-x~S} or \stexttt{M-x~R} on Unix or Windows and
+the call \stexttt{Sqpe} on Windows.
+ESS uses two different protocols for communicating with
+the S program.  For S, \Splus, and R on Unix and \stexttt{Sqpe} on Windows
+(see below for more on \stexttt{Sqpe}), ESS uses standard-input/standard-output
+in the \stexttt{iESS[S]} buffer.
+In these cases the ESS command \stexttt{M-x~S} or \stexttt{M-x~R} on Unix
+and \stexttt{M-x~Sqpe} on Windows creates a new
+\stexttt{iESS[S]} buffer and starts the S process inside that buffer.
+\begin{Comment} Rich: Martin, what do we do with R on Macintosh?\end{Comment}
+
+The GUI for \Splus\ 4 and 6 on Windows is independent of Emacs; it is not
+an inferior process.
+ESS uses the DDE (Dynamic Data Exchange) protocol,
+through a buffer in \stexttt{ddeESS} mode, to communicate with
+the \Splus\ GUI.
+The communication is one-way.
+ESS can send commands to the GUI, but the printed
+output does not come back to an Emacs buffer.  Instead the output appears in
+the \Splus\ Commands Window.  Transcripts must be physically copied to
+an Emacs buffer to get the transcript editing features.  Full GUI
+capability is available by switching to the \Splus\ window.
+
+With \stexttt{Sqpe} on Windows,
+interactive graphics and other GUI features are not available.  In the
+near future, we anticipate merging these approaches for \Splus\ 6 by
+using the \stexttt{connections} class of the new S4 engine.  We will
+then have both interactive GUI and transcript recording and editing on
+the Windows platform.
+
+Sqpe is the \Splus\ computing engine, the program that does the
+statistical work.  In \stexttt{iESS} mode the ESS buffer is talking
+directly to the computing engine.  In \Splus\ for Windows, the GUI is
+talking to the computing engine and the user accesses the computing
+engine indirectly by interacting with the GUI.  ESS uses
+\stexttt{ddeESS} mode to send commands to the GUI but can't receive
+results back.
+
+One useful extension in ESS is relaxation of the requirement that the
+statistics program be available on the local machine.  ESS provides
+transparent execution of a statistics package on a remote machine from
+within the local Emacs.  We open a telnet,
+rlogin, or ssh connection to another machine
+%% from within a buffer called \file{*S+elsewhere*},
+and then run S on the other machine in that buffer.  
+We use the command \stexttt{S+elsewhere} to make that buffer accessible to ESS.
+All the editing and interaction features described on
+the local machine work equally well on the remote machine.
+%%The relevant commands get sent through the buffer \file{*S+elsewhere*} to
+%%be executed by the program on the other machine.
+The interaction,
+including all the unique features of working with ESS, appears to the
+user exactly the same as if the program were running on the local
+machine.  With X-windows running on the local machine, it is even
+possible to bring up visual displays from remote Unix systems on a
+Windows local machine.
+
 
 \paragraph{SAS.}
 
@@ -831,15 +900,15 @@ key to move the cursor to a previous tab-stop and delete any
 characters between its present position and the tab-stop.  This is a \SAS\
 Display Manager feature that is not available in Emacs otherwise. 
 
-The \SAS\ batch process runs on the computer where the \SAS\ program resides.  
-If the \SAS\ program resides on a remote computer, then the program, log and 
-output are accessed with one of the remote file modes (\stexttt{ange-ftp},
-\stexttt{EFS} and \stexttt{tramp}) or Kermit.  And, the \SAS\ batch processes 
-are remotely submitted via ssh or telnet running in \stexttt{shell-mode} to 
-the remote computer.  This is important since any \SAS\ permanent datasets 
-referenced in a \SAS\ program will only exist on the computer where the \SAS\ 
-program resides.  The statistical processing of batch files on remote computers 
-is also called ESS-elsewhere and is nearly transparent to the user. 
+The \SAS\ batch process runs on the computer where the \SAS\ program
+resides.  If the \SAS\ program resides on a remote computer, then the
+program, log and output are accessed with one of the remote file modes
+(\stexttt{ange-ftp}, \stexttt{EFS} and \stexttt{tramp}) or Kermit.
+This is important because any \SAS\ permanent datasets referenced in a
+\SAS\ program must exist on the computer where the \SAS\ program
+resides.  The \SAS\ batch processes are submitted to the remote
+computer via ssh or telnet running in a \stexttt{shell-mode} buffer.
+Access to SAS on remote computers is nearly transparent to the user.
 
 %\begin{Comment}
 %Rich's version:
@@ -914,9 +983,18 @@ process.  ESS provides the same ESS-elsewhere support for BUGS batch
 that it does for \SAS\ batch (see above).
 
 \paragraph{S Batch.}
-\begin{Comment}
-Not yet written.
-\end{Comment}
+There are two ways to look at S Batch.  One is the traditional batch
+approach in which a file of commands is submitted to \Splus\ or R from
+the command line and the results are sent directly to a file.  For
+this usage, the commands file is edited as usual in an \stexttt{ESS[S]}
+buffer.  When it is ready, the batch job is submitted by switching to a
+shell buffer and issuing a command.
+
+The other approach is to use the ESS keys to send the entire buffer
+(or the corresponding saved file) over to the interactive S process
+running in either \stexttt{iESS[S]} or \stexttt{ddeESS[S]} mode and
+letting the results appear in the \stexttt{ESS[S]} buffer or the
+Commands Window.
 
 
 \section{History of ESS}
@@ -932,12 +1010,12 @@ There were 2 modes from which ESS descended:  S-mode and SAS-mode.
 %% ESS originated as S-mode, which provided an interface for
 %% programming and process control under GNU Emacs for \Splus\ version 3,
 ESS began in 1989 as S-mode to provide extensions to GNU Emacs for editing 
-S and \Splus{} files.  Version 1 was written by Doug Bates and Ed Kademan.  
+S and \Splus\ files.  Version 1 was written by Doug Bates and Ed Kademan.  
 This was extended by Frank Ritter and Mike Meyer to become version 2.  Meyer 
 and David Smith made further contributions which was version 3.
 %%This was written by Doug Bates, Ed Kademan, Frank Ritter, and
 %%Mike Meyer.  David Smith was the next primary maintainer, and his most
-%%important contribution was to enhance the \Splus{}
+%%important contribution was to enhance the \Splus\
 %%command-line interface and allow for control of multiple processes
 %%simultaneously.  
 In 1995, A.J. Rossini extended S-mode to support XEmacs.  At the same time, 
@@ -1000,23 +1078,6 @@ Rodney: SAS batch now works and Kermit was added as a method of transfer.
 %%generation that provides the capability of specifying all the necessary
 %%parameters for a BUGS batch run in a single file.
 
-\section*{ESS Resources on the Internet}
-\addcontentsline {toc}{section}{\numberline {}ESS Resources on the Internet}
-\label{sec:access}
-The ESS software is constantly in flux.  New versions of statistical
-packages, Emacs and operating systems require new releases of ESS to
-support them.  The latest stable version of ESS can be found on the web at
-\url{http://software.biostat.washington.edu/statsoft/ess/}.  To get help
-with problems you can send e-mail to \url{ess-help@stat.math.ethz.ch}.
-The latest development, hence unstable, version can be obtained by
-anonymous CVS.  First type:
-
-  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login}
-
-  You will be prompted for a password which is ``\stexttt{anoncvs}''.  Then type: 
-
-  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess}
-  
 \section{Discussion}
 \label{sec:discussion}
 
@@ -1062,6 +1123,25 @@ an enhanced, powerful interface for efficient interactive data
 analysis and statistical programming.  It is completely customizable
 to satisfy individual desires for interface styles as well as being
 extensible to additional statistical languages and analysis packages.
+
+
+\section*{ESS Resources on the Internet}
+\addcontentsline {toc}{section}{\numberline {}ESS Resources on the Internet}
+\label{sec:access}
+The ESS software is constantly in flux.  New versions of statistical
+packages, Emacs and operating systems require new releases of ESS to
+support them.  The latest stable version of ESS can be found on the web at
+\url{http://software.biostat.washington.edu/statsoft/ess/}.  To get help
+with problems you can send e-mail to \url{ess-help@stat.math.ethz.ch}.
+The latest development, hence unstable, version can be obtained by
+anonymous CVS.  First type:
+
+  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login}
+
+  You will be prompted for a password which is ``\stexttt{anoncvs}''.  Then type: 
+
+  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess}
+  
 
 
 \bibliographystyle{plainnat}
