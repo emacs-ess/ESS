@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/05/21 18:45:46 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: ess-help.el,v 1.2 1997/05/21 18:45:46 rossini Exp $
+;; Modified: $Date: 1997/06/15 21:56:38 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: ess-help.el,v 1.3 1997/06/15 21:56:38 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -32,6 +32,9 @@
 
 ;;
 ;; $Log: ess-help.el,v $
+;; Revision 1.3  1997/06/15 21:56:38  rossini
+;; *** empty log message ***
+;;
 ;; Revision 1.2  1997/05/21 18:45:46  rossini
 ;; S -> ess
 ;;
@@ -245,7 +248,7 @@ Other keybindings are as follows:
 \\{ess-help-mode-map}"
   (interactive)
   (setq major-mode 'ess-help-mode)
-  (setq mode-name "S Help")
+  (setq mode-name "ESS Help")
   (use-local-map ess-help-mode-map)
   (make-local-variable 'ess-local-process-name)
   (run-hooks ess-help-mode-hook))

@@ -6,12 +6,15 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/04/21 00:13:00 $
-;; Version: $Revision: 1.35 $
-;; RCS: $Id: ess-mode.el,v 1.35 1997/04/21 00:13:00 rossini Exp $
+;; Modified: $Date: 1997/06/15 21:56:38 $
+;; Version: $Revision: 1.36 $
+;; RCS: $Id: ess-mode.el,v 1.36 1997/06/15 21:56:38 rossini Exp $
 
 ;;
 ;; $Log: ess-mode.el,v $
+;; Revision 1.36  1997/06/15 21:56:38  rossini
+;; *** empty log message ***
+;;
 ;; Revision 1.35  1997/04/21 00:13:00  rossini
 ;; added needed autoload.
 ;;
@@ -356,7 +359,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
   (interactive)
   (kill-all-local-variables)
   (setq major-mode 'ess-mode)
-  (setq mode-name "S")
+  (setq mode-name "ESS")
   (use-local-map ess-mode-map)
   (set-syntax-table ess-mode-syntax-table)
   (make-local-variable 'paragraph-start)
