@@ -144,7 +144,7 @@ the use of a number of common statistical programs and languages by
 provides shortcuts and extensions for often-performed tasks.
 
 %% Does it make sense to add an additional paragraph on "history of
-%% stat interfaces from programming it yourself to command line
+%% statistical interfaces from programming it yourself to command line
 %% (SPSS/SAS/BDMP in the 80s), to spreadsheet-style interfaces
 %% (spreadsheets, AND minitab, spss now, etc), etc?  This would be the
 %% 2nd paragraph, if so. 
@@ -185,43 +185,57 @@ Unix, Microsoft Windows and Apple Macintosh.  Emacs shares many
 features with word processors, and some characteristics with operating
 systems.  Most importantly, Emacs can interact with and control other
 programs.
-% either as subprocesses or as cooperating processes.
 
-Emacs can be used when the keyboard is the only input device.  But,
-this is mainly for special purposes like remote access via a modem or
-the Internet.  In most instances, Emacs relies on a graphical user
-interface (GUI) which allows the user to interact with either a
-keyboard or a mouse and provides applications with the ability to
-share space on a single display.  Emacs menus and toolbars allow mouse
-access to frequently used actions; for instance, when you don't know
-or can't remember the keyboard equivalent.  User-defined menus and
-toolbars can be constructed as needed.
+%There are 2 primary open-source versions of Emacs (Emacs and XEmacs),
+%as well as a few commercially support versions (UniPress Emacs).  All
+%share extensibility through Lisp programming.  Versions have been
+%written which use Python and PERL as extension languages, but these
+%are in much less common use.
 
-Emacs provides facilities that go beyond just text editing.  Emacs
-creates a dedicated space on the display, called a buffer, to perform
-a task like editing a text file or controlling another program.  You
-can switch between buffers to switch between concurrent tasks.
-Buffers allow the user to edit one or more files and control one or
-more programs at the same time.
-%insertion and deletion: viewing two or more files at once; editing formatted text;
-%visual comparison of two similar files; and navigation 
-%in units of characters, words, lines, sentences, paragraphs, and pages.  
+Emacs was originally written for the first screen-mapped terminal
+devices, and this is still manifested in its use of keymappings, which
+have been stable for many, many years.  Currently, though, this is
+mainly used for fast editing jobs or for special purposes like remote
+access via a modem or the Internet.  In the last 10 years, Emacs has
+been extended to use windowing systems such as X11, Microsoft Windows,
+and the Apple Macintosh, and in most instances, this graphical user
+interface (GUI) allows the user to interact with either a keyboard or
+a mouse and provides applications with the ability to share space on a
+single display.  Emacs menus and toolbars allow mouse access to
+frequently used actions; for instance, when you don't know or can't
+remember the keyboard equivalent.  User-defined menus and toolbars can
+be constructed as needed.
+
+However, Emacs provides facilities which go beyond ordinary text
+editing.  Emacs creates a dedicated space on the display, called a
+buffer, to perform tasks such as editing a text file on disk or
+controlling other programs.  You can switch between buffers to observe
+or make progress on concurrent tasks.  Buffers allow the user to edit
+multiple files and control multiple programs simultaneously.
 
 Emacs capabilities are extended by text files containing Emacs Lisp,
-also known as E-Lisp, a dialect of Lisp
+(also known as E-Lisp), a dialect of Lisp
 \citep{RChassell1999,PGraham:1996}.  The most important extensions to
-Emacs are called modes.  Major-modes provide support for types of
-files determined by the file name's extension, i.e. the characters at
-the end of the file name that follow a period like ``txt'', ``s'' or
-``sas''.  Since they are dictated by the file name, you can only
+Emacs are called modes.  Major-modes provide 2 types of support.
+First, it customizes the environment (keymaps, capabilities) for types
+of files determined by the file name's extension, i.e. the characters
+at the end of the file name that follow a period like ``txt'', ``s''
+or ``sas''.  When they are dictated by the file name, you can only
 utilize one major-mode at a time.  Minor-modes, by contrast, provide
-services that are not mutually exclusive like the emulation of another
-editor or cooperating with a version control program.  For example,
-the font-lock minor-mode allows Emacs to highlight, with fonts or
-colors, the syntax of a programming language whose characteristics are
-described by a major-mode like ESS.  Major-modes provide automatic
-indentation and navigation in units of characters, words, lines,
-sentences, paragraphs, and pages as well as many other features.
+services that are not mutually exclusive.  This includes emulation of
+another editor or cooperating with a version control program.  For
+example, the font-lock minor-mode allows Emacs to highlight, with
+fonts or colors, the syntax of a programming language whose
+characteristics are described by a major-mode like ESS.  Major-modes
+provide automatic indentation and navigation in units of characters,
+words, lines, sentences, paragraphs, and pages as well as many other
+features.
+
+The second type of Major-mode is for running Lisp programs.  In this
+case, the buffer provides input and output to the Lisp program.  These
+can control other processes or interact with the system to send mail
+or transfer files over networks, play games, configure the running
+Emacs session, or perform many other tasks.
 
 Most programming and documentation tasks fall under the realm of text
 editing.  This work can be enhanced by features such as contextual
@@ -234,6 +248,10 @@ programs and cooperates with document preparation systems such as
 %Type-setting and word-processing, which
 %focus on the presentation of a document, are tasks that are not pure
 %text-editing.
+
+%insertion and deletion: viewing two or more files at once; editing formatted text;
+%visual comparison of two similar files; and navigation 
+%in units of characters, words, lines, sentences, paragraphs, and pages.  
 
 The capabilities can be extended to include other Emacs modes for
 interacting with version control packages like RCS, CVS, SCCS, or
