@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/10/11 13:29:43 $
-;; Version: $Revision: 5.20 $
-;; RCS: $Id: essl-s.el,v 5.20 2000/10/11 13:29:43 maechler Exp $
+;; Modified: $Date: 2000/10/23 17:07:47 $
+;; Version: $Revision: 5.21 $
+;; RCS: $Id: essl-s.el,v 5.21 2000/10/23 17:07:47 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -472,10 +472,15 @@ Uses the file given by the variable `ess-function-outline-file'."
     ))
 
 (defun ess-smart-underscore ()
-  "Electrical \"_\" key: insert `ess-S-assign' unless in string/comment.
-  `ess-S-assign', typically \" <- \", can be customized."
+  "Electrical \"_\" key: insert `ess-S-assign' after removing spaces, unless
+ in string/comment.  `ess-S-assign', typically \" <- \", can be customized."
   (interactive)
-  (insert (if (inside-string/comment-p (point)) "_" ess-S-assign)))
+  ;;(insert (if (inside-string/comment-p (point)) "_" ess-S-assign))
+  (if (inside-string/comment-p (point)) 
+      (insert "_")
+    ;; else
+    (delete-horizontal-space)
+    (insert ess-S-assign)))
 
 (defun ess-toggle-underscore (force)
   "Set the \"_\" (underscore) key to \\[ess-smart-underscore] or back to \"_\".
