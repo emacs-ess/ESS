@@ -1,14 +1,14 @@
 ;;; ess-emcs.el --- simple determination of Emacs/XEmacs and version #.
 
-;; Copyright (C) 2000 A.J. Rossini, R.M. Heiberger, 
+;; Copyright (C) 2000 A.J. Rossini, R.M. Heiberger,
 ;;		      Martin Maechler, Kurt Hornik.
 
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2000/06/28 08:45:25 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: ess-emcs.el,v 5.3 2000/06/28 08:45:25 maechler Exp $
+;; Modified: $Date: 2000/07/03 16:25:51 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: ess-emcs.el,v 5.4 2000/07/03 16:25:51 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -61,7 +61,7 @@
 
 (defvar ess-running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
 
-(defvar ess-local-custom-available nil
+(defvar ess-local-custom-available (featurep 'custom)
   "Value is nil if custom.el not available, t if available.  Only a
 concern with earlier versions of Emacs.")
 
