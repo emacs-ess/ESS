@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/07 16:41:43 $
-;; Version: $Revision: 1.33 $
-;; RCS: $Id: ess.el,v 1.33 1997/07/07 16:41:43 rossini Exp $
+;; Modified: $Date: 1997/07/07 21:24:06 $
+;; Version: $Revision: 1.34 $
+;; RCS: $Id: ess.el,v 1.34 1997/07/07 21:24:06 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.34  1997/07/07 21:24:06  rossini
+;; added dribble buffer for messages.
+;;
 ;; Revision 1.33  1997/07/07 16:41:43  rossini
 ;; ess-set-vars split into a setq-default, setq version.
 ;;
@@ -1055,6 +1058,9 @@ browse-url to find the location")
 
 
  ; Buffer local customization stuff
+
+(defvar ess-dribble-buffer (generate-new-buffer "ESS")
+  "Buffer for temporary use for setting default variable values.")
 
 (defvar ess-customize-alist nil
   "Variable settings to use for proper behavior.")
