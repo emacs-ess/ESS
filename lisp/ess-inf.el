@@ -365,7 +365,7 @@ Taken from octave-mod.el."
 (defun inferior-ess-strip-ctrl-g (string)
   "Strip leading `^G' character.
 If STRING starts with a `^G', ring the Emacs bell and strip it.
-Depending on the value of `visual-bell', either the frame will
+Depending on the value of `visible-bell', either the frame will
 flash or you'll hear a beep.  Taken from octave-mod.el."
   (if (string-match "^\a" string)
       (progn
