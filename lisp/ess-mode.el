@@ -4,11 +4,11 @@
 ;; Maechler, and Rossini.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
+;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/09 20:36:55 $
-;; Version: $Revision: 1.60 $
-;; RCS: $Id: ess-mode.el,v 1.60 1997/09/09 20:36:55 rossini Exp $
+;; Modified: $Date: 1997/10/20 19:44:27 $
+;; Version: $Revision: 1.61 $
+;; RCS: $Id: ess-mode.el,v 1.61 1997/10/20 19:44:27 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -53,7 +53,7 @@
 (autoload 'ess-object-modtime "ess-inf" "" nil)
 (autoload 'ess-display-temp-buffer "ess-inf" "" nil)
 (autoload 'ess-force-buffer-current "ess-inf" "" nil)
-
+(autoload 'ess-switch-process "ess-inf" "" nil)
 
  ; S mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -121,6 +121,8 @@
   (define-key ess-mode-map "\C-c\C-v"    'ess-display-help-on-object)
   (define-key ess-mode-map "\C-c\C-d"    'ess-dump-object-into-edit-buffer)
 ;(define-key ess-mode-map "\C-c5\C-d"'ess-dump-object-into-edit-buffer-other-frame)
+  (define-key ess-mode-map "\C-c\C-s"    'ess-switch-process) ; use a
+					; different process for the buffer.
   (define-key ess-mode-map "\C-c\C-t"    'ess-execute-in-tb)
   (define-key ess-mode-map "\C-c\t"      'ess-complete-object-name)
   (define-key ess-mode-map "\M-\t"       'comint-replace-by-expanded-filename)

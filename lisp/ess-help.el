@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/20 19:03:23 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: ess-help.el,v 1.10 1997/10/20 19:03:23 rossini Exp $
+;; Modified: $Date: 1997/10/20 19:44:04 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: ess-help.el,v 1.11 1997/10/20 19:44:04 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -178,6 +178,7 @@ file.  Otherwise just pops to an existing buffer if it exists."
   (define-key ess-help-mode-map "k" 'kill-buffer)
   (define-key ess-help-mode-map "?" 'ess-describe-help-mode)
   ;;-- those should be "inherited" from ess-mode-map :
+  (define-key ess-help-mode-map "\C-c\C-s" 'ess-switch-process)
   (define-key ess-help-mode-map "\C-c\C-r" 'ess-eval-region)
   (define-key ess-help-mode-map "\C-c\M-r" 'ess-eval-region-and-go)
   (define-key ess-help-mode-map "\C-c\C-f" 'ess-eval-function)
