@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/02/27 19:38:15 $
-;; Version: $Revision: 1.56 $
-;; RCS: $Id: ess-cust.el,v 1.56 2004/02/27 19:38:15 rossini Exp $
+;; Modified: $Date: 2004/03/04 15:29:19 $
+;; Version: $Revision: 1.57 $
+;; RCS: $Id: ess-cust.el,v 1.57 2004/03/04 15:29:19 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -124,7 +124,7 @@
 
 ;; Variables (not user-changeable)
 
-(defvar ess-version "5.2.0beta3"
+(defvar ess-version "5.2.0beta4"
   "Version of ESS currently loaded.")
 
 (defvar no-doc
