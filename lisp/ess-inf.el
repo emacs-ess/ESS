@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/03/12 07:14:18 $
-;; Version: $Revision: 5.76 $
-;; RCS: $Id: ess-inf.el,v 5.76 2002/03/12 07:14:18 rmh Exp $
+;; Modified: $Date: 2002/05/10 04:57:40 $
+;; Version: $Revision: 5.77 $
+;; RCS: $Id: ess-inf.el,v 5.77 2002/05/10 04:57:40 rmh Exp $
 
 ;; This file is part of ESS
 
@@ -929,7 +929,7 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
       (setq arg (- arg inc)))
     n))
 
-(defun ess-eval-line-and-step (&optional simple-next even-empty)
+(defun ess-eval-line-and-step (&optional simple-next even-empty invisibly)
   "Evaluate the current line visibly and step to the \"next\" line.
 \"next\" = the next line with non-comment code _unless_ SIMPLE-NEXT is non-nil,
 possibly via prefix arg.  If 2nd arg EVEN-EMPTY [prefix as well],
@@ -944,11 +944,16 @@ both SIMPLE-NEXT and EVEN-EMPTY are interpreted as true."
       (beginning-of-line)
       ;; go to end of process buffer so user can see result
       (ess-eval-linewise (buffer-substring (point) end)
-			 nil 'eob (or even-empty ess-eval-empty))))
+			 invisibly 'eob (or even-empty ess-eval-empty))))
   (if (or simple-next ess-eval-empty)
       (forward-line 1)
     (ess-next-code-line 1)))
 
+(defun ess-eval-line-and-step-invisibly (&optional simple-next even-empty)
+   "Evaluate the current line invisibly and step to the next line.
+Evaluate all comments and empty lines."
+  (interactive)
+  (ess-eval-line-and-step t t t))
 
 ;; goes to the real front, in case you do double function definition
 ;; 29-Jul-92 -FER
