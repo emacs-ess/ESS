@@ -8,9 +8,9 @@
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>, 
 ;;             Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2004/04/01 18:47:33 $
-;; Version: $Revision: 5.101 $
-;; RCS: $Id: ess-site.el,v 5.101 2004/04/01 18:47:33 rossini Exp $
+;; Modified: $Date: 2004/05/11 15:19:03 $
+;; Version: $Revision: 5.102 $
+;; RCS: $Id: ess-site.el,v 5.102 2004/05/11 15:19:03 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -618,36 +618,9 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;;	 in same-window-buffer-names, then uncomment the following line
 ;;;(ess-same-window-async)
 ;;;
-;;;   4. As of 5.1.19, a new and improved syntax highlighting scheme for .sas and .log
-;;;	 files is available (press f10 to toggle between modes in .log).  If you are
-;;;	 using XEmacs v. 20.x, then you need this as well, since it works around a
-;;;	 problem with make-regexp.el.  Uncomment the next line for this feature:
-;;;(setq ess-sas-run-make-regexp nil)
-
-
-;(defvar sas-require-confirmation t
-;  "*Require confirmation when revisiting sas-output which has changed on disk.")
-;;; added sas-program 4/29/94.	user can specify a different version of sas.
 ;;;(defvar sas-program "sas" "*Name of program which runs sas.")
-;;(defvar sas-pre-run-hook nil
-;;  "Hook to execute prior to running SAS vis submit-sas.")
-;;(defvar sas-options-string ""
-;;  "*Options to be passed to sas as if typed on the command line.")
-;;(defvar sas-indent-width 4 "*Amount to indent sas statements")
-;;(defvar sas-notify t "*Beep and display message when job is done?")  ;; added 4/7/94
-;;(defvar sas-error-notify t
-;;  "*If sas-notify is t, then indicate errors in log file upon completion")
-;;;; added 5/2/94
-;;(defvar sas-get-options nil "Options to be passed to SAS in sas-get-dataset")
-;;(defvar sas-get-options-history nil "History list of Options passed to SAS in sas-get-dataset")
-;;(defvar sas-page-number-max-line 3
-;;  "*Number of lines from the page break in which to search for the page number")
-;;(defvar sas-indent-ignore-comment "*"
-;;  "*Comments with start with this string are ignored in indentation.")
-;;(defvar sas-notify-popup nil
-;;  "*If t (and sas-notify is also t), causes emacs to create a
-;;popup window when the SAS job is finished.")
-;;(defvar sas-tmp-libname "_tmp_" "*Libname to use for sas-get-dataset.")
+;;;
+;;;(defvar sas-indent-width 4 "*Amount to indent sas statements")
 
  ; Local variables section
 
