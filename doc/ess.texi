@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.8 1999/03/05 18:52:31 rossini Exp $
+@comment $Id: ess.texi,v 5.9 1999/03/05 19:08:58 rossini Exp $
 
 @synindex pg vr
 
@@ -38,7 +38,7 @@ Statistics, University of South Carolina, Columbia, SC, 29208, USA.
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.1.x (Documentation $Revision: 5.8 $ $Date: 1999/03/05 18:52:31 $)
+@subtitle version 5.1.x (Documentation $Revision: 5.9 $ $Date: 1999/03/05 19:08:58 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -78,12 +78,12 @@ permission notice identical to this one.
 @end titlepage
 
 @ifinfo
-@node Top, General Information, (dir), (dir)
+@node Top, Introduction, (dir), (dir)
 @top ESS: Emacs Speaks Statistics
 
 ESS version 5.1.x
 
-        (Documentation $Revision: 5.8 $ $Date: 1999/03/05 18:52:31 $).
+        (Documentation $Revision: 5.9 $ $Date: 1999/03/05 19:08:58 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler (Formerly: Doug
@@ -98,7 +98,6 @@ development.
 @end ifinfo
 
 @menu
-* General Information::         
 * Introduction::                Overview of features provided by this package
 * Starting Up::                 Starting the @b{ESS} process
 * Entering commands::           Interacting with the process buffer
@@ -107,6 +106,8 @@ development.
 * Transcript Mode::             Manipulating saved transcript files
 * Miscellaneous::               Other features of ESS
 * Bugs::                        Known bugs in ESS
+* Help Statistics::             
+* Help OS::                     
 * Installation::                Installing ESS on your system
 * Customization::               Customizing ESS
 * Key Index::                   
@@ -115,20 +116,6 @@ development.
 * Variable and command index::  
 
 @detailmenu --- The Detailed Node Listing ---
-
-General Information: README
-
-* License::                     
-* New Features::                
-* Current Features::            
-* Stability::                   
-* Requirements::                
-* Latest Version::              
-* Installation (from tar file)::  
-* Installation (from anonymous CVS)::  
-* Reporting Bugs::              
-* Mailing Lists::               
-* Authors::                     
 
 Introduction to @b{ESS}
 
@@ -188,6 +175,20 @@ Using graphics with ESS
 * printer::                     The printer() graphics driver
 * X11::                         The X11() (and other X-windows based) driver
 
+Help, arranged by Statistical Package
+
+* Help on Unix Splus ::         
+* Help on Microsoft Splus::     
+* Help on R::                   
+* Help on SAS::                 
+* Help on XLispStat::           
+* Help on Stata::               
+
+Help, arranged by Operating System
+
+* Help Unix::                   
+* Help Microsoft::              
+
 Installing ESS on your system
 
 * System dependent::            Other variables you may need to change
@@ -209,7 +210,7 @@ Variables for customization
 @end detailmenu
 @end menu
 
-@node Introduction, Starting Up, General Information, Top
+@node Introduction, Starting Up, Top, Top
 @comment  node-name,  next,  previous,  up
 @chapter Introduction to @b{ESS}
 @cindex introduction
@@ -379,77 +380,13 @@ unnecessary prompts.
 @comment  node-name,  next,  previous,  up
 @section New features in ESS
 
-New user-visible features to ESS are documented in the @file{Doc/NEWS}
-file; all changes are listed in the @file{ChangeLog} file.  Selected
-features new to recent versions of ESS are listed below; for changes to
-older version check the @file{Doc/NEWS} file.  Planned features and bugs
-to fix can be found in the @file{Doc/TODO} file.
-
-@itemize @bullet
-@item
-@b{Additional Language support} for S language dialects, XLisp-Stat, and
-SAS.  See README.S, README.XLispStat, and README.SAS for current status
-and future changes.
-
-@item
-@b{Bug Fixes}
-
-
-@end itemize
-
+@include newfeat.texi
 
 @node Credits, Latest version, New features, Introduction
 @comment  node-name,  next,  previous,  up
 @section Authors of and contributors to ESS
 
-ESS is based on Olin Shivers' excellent comint package (which is supplied
-@cindex comint
-@cindex authors
-@cindex credits
-with version 19 of GNU Emacs).  The original version of ESS (then known
-as `S-mode') was written by Doug Bates (@email{bates@@stat.wisc.edu}) and
-Ed Kademan (@email{kademan@@stat.wisc.edu}).  Frank Ritter
-(@email{ritter@@psy.cmu.edu}) then merged this version with his own
-S-mode mode to form @file{S.el} version 2.1.
-
-Version 2.1 of @file{S.el} was then updated and expanded by David Smith
-to form version 3.4.  This was then updated for Emacs 19 to create
-version 4.  Most bugs have now been fixed (and several new ones
-introduced) and many new features have been added.  Thanks must go to
-the many people who have helped with the development of the present
-version of ESS:
-
-@itemize @bullet
-@item
-The multiple process code, and the idea for
-@code{ess-eval-line-and-next-line} are by Rod Ball.
-
-@item
-Thanks to Doug Bates for many useful suggestions, and an FTP home for
-the code.
-
-@item
-Thanks to Martin Maechler for reporting and fixing bugs, providing many
-useful comments and suggestions, and for maintaining the S-mode mailing
-list.
-
-@item
-Thanks to Frank Ritter for updates from the previous version, the menu
-code, and invaluable comments on the manual.
-
-@item
-Thanks to Ken'ichi Shibayama for his excellent indenting code, and many
-comments and suggestions.
-
-@item
-Last but definitely not least, thanks to the many beta testers of the
-S-mode and ESS mailing lists.
-@end itemize
-
-The new version, @emph{ESS} version 5, is being developed and currently
-maintained by
-
-@include authors.texi
+@include credits.texi
 
 @node Latest version, Manual, Credits, Introduction
 @comment  node-name,  next,  previous,  up
@@ -2275,7 +2212,7 @@ For R:
 directory, move it there).
 
 
-@node Bugs, Installation, Miscellaneous, Top
+@node Bugs, Help Statistics, Miscellaneous, Top
 @chapter Known bugs in ESS
 @cindex bugs
 
@@ -2328,7 +2265,73 @@ sending E-mail to
 .  Comments, suggestions, words of praise and large cash donations are
 also more than welcome.
 
-@node Installation, Customization, Bugs, Top
+
+
+
+
+@node Help Statistics, Help OS, Bugs, Top
+@comment  node-name,  next,  previous,  up@chapter Using S4
+@chapter Help, arranged by Statistical Package
+
+@menu
+* Help on Unix Splus ::         
+* Help on Microsoft Splus::     
+* Help on R::                   
+* Help on SAS::                 
+* Help on XLispStat::           
+* Help on Stata::               
+@end menu
+
+@node Help on Unix Splus , Help on Microsoft Splus, Help Statistics, Help Statistics
+@comment  node-name,  next,  previous,  up
+@section Using S-PLUS 3.x, 5.x
+
+@node Help on Microsoft Splus, Help on R, Help on Unix Splus , Help Statistics
+@comment  node-name,  next,  previous,  up
+@section Using S-PLUS 4.x
+
+@node Help on R, Help on SAS, Help on Microsoft Splus, Help Statistics
+@comment  node-name,  next,  previous,  up
+@section Using R
+
+@node Help on SAS, Help on XLispStat, Help on R, Help Statistics
+@comment  node-name,  next,  previous,  up
+@section Using SAS
+
+@node Help on XLispStat, Help on Stata, Help on SAS, Help Statistics
+@comment  node-name,  next,  previous,  up
+@section Using XLispStat
+
+@node Help on Stata,  , Help on XLispStat, Help Statistics
+@comment  node-name,  next,  previous,  up
+@section Using Stata
+
+
+
+
+
+@node Help OS, Installation, Help Statistics, Top
+@comment  node-name,  next,  previous,  up
+@chapter Help, arranged by Operating System
+
+@menu
+* Help Unix::                   
+* Help Microsoft::              
+@end menu
+
+@node Help Unix, Help Microsoft, Help OS, Help OS
+@comment  node-name,  next,  previous,  up
+@section Help for Unix
+
+@node Help Microsoft,  , Help Unix, Help OS
+@comment  node-name,  next,  previous,  up
+@section Help for Microsoft
+
+
+
+
+
+@node Installation, Customization, Help OS, Top
 @comment  node-name,  next,  previous,  up
 @appendix Installing ESS on your system
 @cindex installation
