@@ -1,6 +1,6 @@
 -*- text -*-
 
-($Revision: 1.19 $)
+($Revision: 1.20 $)
 
 ESS: Using The S family of statistical languages
 ================================================
@@ -287,21 +287,4 @@ Customization Examples and Solutions to Problems
    wrong font-lock face being used for the remainder of the buffer.  
 
    Solution: add a " at the end of the "Dumped..." statement, to
-   revert the font-lock face back to normal.  In particular:
-
-  * On the Dumped ".. font problem
-  I have an answer that I am uncomfortable with.
-  The problem:
-    Error in "trellis.settings" + "x + z + abcdefghij ..: Non-numeric
-		first operand 
-    Dumped
-  
-  Potential Solution:
-  a. Look for the pair "Error in"  and "Dumped"
-  b. Verify the number of uses of '"'.
-  c. Insert an extra '"' if needed after the ".." and before the ":", thus
-    Error in "trellis.settings" + "x + z + abcdefghij ..": Non-numeric
-		first operand 
-  
-  My discomfort is that we are then modifying the output, not just
-  highlighting it.
+   revert the font-lock face back to normal.
