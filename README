@@ -92,7 +92,7 @@ file for details.  Bug reports are solicited; see the BUGS section
 below.  Fixes and patches with bug reports are appreciated!
 
 
-4. INSTALLATION  (AJR: NEEDS TO BE CHANGED!).
+4. INSTALLATION
 ---------------
 
 * cd to a directory where you keep emacs lisp files, or create a new
@@ -101,7 +101,7 @@ below.  Fixes and patches with bug reports are appreciated!
   at the end, the tar file ESS-5.0.tar.gz, and a directory for
   the ESS source, which will be termed "the ESS-5.0 directory".  Note
   that the .elc files may be installed elsewhere (as specified in the
-  Makefile) if desired. 
+  Makefile) if desired.
 
 * Copy ESS-5.0.tar.gz to the location where you want the ESS-5.0
   directory, and cd there.  Extract the files from the distribution,
@@ -121,7 +121,9 @@ below.  Fixes and patches with bug reports are appreciated!
 * Edit the file ess-site.el as explained in the comments section of
   that file.
 
-* In the ESS-5.0 directory, edit the file Makefile and then type:
+* In the ESS-5.0 directory, edit the file Makefile (only if you want
+  to place the executables in other locations; see LISPDIR and
+  INFODIR) and then type:
 
 	make
 	make install
@@ -129,6 +131,13 @@ below.  Fixes and patches with bug reports are appreciated!
   This will install the info files (and the lisp files, if they
   are to go in another directory).  Don't forget to edit the file
   `dir' in the info directory specified by INFODIR in the Makefile.
+
+  If you are using XEmacs, you might do:
+
+	make EMACS=xemacs
+	make EMACS=xemacs install
+
+  instead of editing the Makefile.
 
 * Add the line
 
@@ -138,24 +147,31 @@ below.  Fixes and patches with bug reports are appreciated!
   installation).  Replace `/PATH' above with the value of
   S-lisp-directory as defined in S-site.el.
 
-* Start Emacs, and run S with:
+* To edit statistical programs, load the files with the requiste
+  extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and ".lsp" 
+  for XLispStat).
 
-	M-x S
+* To run statistical processes under Emacs/XEmacs:
 
-  You should be asked for a pathname ("S starting data directory?");
-  enter /PATH as defined above.
+  Run S-PLUS 3.x with:
 
-  After the S prompt appears, type M-x S-create-object-name-db.  This
-  creates a database of object names (for completion purposes) in the
-  file S-namedb.el in the current S directory (i.e. /PATH).  Check
-  that /PATH now contains a file called S-namedb.el.  
+	M-x S+3
+
+  (or M-x S  using backwards compatibility).  You will then be asked
+  for a pathname ("S starting data directory?"), from which to start
+  the process. 
 
   If you wish to run R, you can start it with:
 
 	M-x R
 
   XLispStat can be run with 
+
 	M-x XLS
+
+  SAS can be run with:
+
+	M-x SAS
 
 * That's it!
 
