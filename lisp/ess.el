@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.2 1998/09/11 14:25:18 maechler Exp $
+;; Version: $Id: ess.el,v 5.3 1998/11/12 17:09:38 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -238,18 +238,22 @@
             (set (car pair) (eval (cdr pair))))
           alist)
   (ess-write-to-dribble-buffer
-   (format "(ess-setq-vars-local): ess-language=%s, buf=%s \n"
-           ess-language buf)))
+   (format "(ess-setq-vars-LOCAL): ess-language=%s, ess-dialect=%s, buf=%s \n"
+           ess-language ess-dialect buf)))
 
 (defun ess-setq-vars-default (alist &optional buf)
   "Set language variables from ALIST, in buffer `BUF', if desired."
+  (ess-write-to-dribble-buffer
+   (format "ess-setq-vars-default 0: ess-language=%s, ess-dialect=%s, buf=%s \n"
+           ess-language ess-dialect buf))
   (if buf (set-buffer buf))
   (mapcar (lambda (pair)
             (set-default (car pair) (eval (cdr pair))))
           alist)
   (ess-write-to-dribble-buffer
-   (format "(ess-setq-vars-default): ess-language=%s, buf=%s \n"
-           ess-language buf)))
+   (format "ess-setq-vars-default 1: ess-language=%s, ess-dialect=%s, buf=%s \n"
+           ess-language ess-dialect buf))
+)
 
 ;;; versions thanks to Barry Margolin <barmar@bbnplanet.com>.
 ;;; unfortunately, requires 'cl.  Whoops.
