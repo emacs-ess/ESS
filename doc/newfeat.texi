@@ -77,7 +77,6 @@ and comments where plain "_" is used instead. (MM)
 @item Fixes for longstanding interactive SAS breakage (RMH)
 @end itemize
 
-
 Changes/New Features in 5.1.17:
 @itemize @bullet
 @item Documentation for Windows Installation (Rich Heiberger

@@ -2,10 +2,10 @@
 @item Languages Supported:
   @itemize @bullet
   @item S dialects (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
-  @item XLispStat including Arc and ViSta
   @item SAS
   @item BUGS
   @item Stata 
+  @item XLispStat including Arc and ViSta
   @end itemize
 @item Editing source code (S, XLispStat, SAS, BUGS)
   @itemize @bullet
