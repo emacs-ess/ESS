@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2001/08/24 21:36:18 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: essdsp6w.el,v 5.5 2001/08/24 21:36:18 ess Exp $
+;; Modified: $Date: 2002/01/09 13:53:54 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: essdsp6w.el,v 5.6 2002/01/09 13:53:54 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -149,6 +149,17 @@ connects it to the *S+6 ddeclient* window.")
 ;;;     then *S+6 ddeclient* becomes a shell buffer.
 ;;;
 (defun S+6 (&optional proc-name)
+  "S-Plus 6 for Microsoft Windows (Version 6.0.3 Release 2 and
+earlier) has a bug that prevents it from being started by emacs.
+Instead, you must start it by double-clicking an icon.  Then you can
+connect to it with `S+6-existing'"
+  (interactive)
+(error "S-Plus 6 for Microsoft Windows (Version 6.0.3 Release 2 and
+earlier) has a bug that prevents it from being started by emacs.
+Instead, you must start it by double-clicking an icon.  Then you can
+connect to it with `S+6-existing'"))
+
+(defun S+6-initiate (&optional proc-name)
   "Call 'S-PLUS 6.x for Windows', the 'GUI Thing' from StatSci.  Put S-Plus
 in an independent MS-Window (Splus persists even if the *S+6 ddeclient*
 window is killed in emacs).  Do this by creating a comint process that
@@ -172,7 +183,8 @@ is here to allow slow disks to start the Splus program."
     (setq ess-customize-alist		; change inferior-ess-start-args
 	  (append ess-customize-alist '((inferior-ess-start-args   . "-i"))))
     (let ((s-proj (getenv "S_PROJ")))
-      (setenv "S_PROJ" (directory-file-name default-directory))
+      (cd (w32-short-file-name (directory-file-name default-directory)))
+      (setenv "S_PROJ" default-directory)
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
 		    ; command in *S+6 ddeclient* should follow the "$"
@@ -234,7 +246,7 @@ If you have a HOME environment variable, it will open it there."
     ;; With the "&", the results of  !system.command  in S get lost.
     ;; We are picking up an existing S-Plus process for sending to.
     ;; It doesn't know about us, so nothing comes back.
-    (S+6 proc-name))
+    (S+6-initiate proc-name))
   (save-excursion
     (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
     (toggle-read-only nil)		; permit writing in ESS buffer
@@ -306,6 +318,18 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
 
 
 (defun S+6-msdos (&optional proc-name)
+  "S-Plus 6 for Microsoft Windows (Version 6.0.3 Release 2 and
+earlier) has a bug that prevents it from being started by emacs.
+Instead, you must start it by double-clicking an icon.  Then you can
+connect to it with `S+6-msdos-existing'"
+  (interactive)
+(error "S-Plus 6 for Microsoft Windows (Version 6.0.3 Release 2 and
+earlier) has a bug that prevents it from being started by emacs.
+Instead, you must start it by double-clicking an icon.  Then you can
+connect to it with `S+6-msdos-existing'"))
+
+
+(defun S+6-msdos-initiate (&optional proc-name)
   "Call 'S-PLUS 6.x for Windows', the 'GUI Thing' from StatSci.  Put S-Plus
 in an independent MS-Window (Splus persists even if the *S+6 ddeclient*
 window is killed in emacs).  Do this by creating a comint process that
@@ -330,7 +354,8 @@ is here to allow slow disks to start the Splus program."
     (setq ess-customize-alist		; change inferior-ess-start-args
 	  (append ess-customize-alist '((inferior-ess-start-args   . ""))))
     (let ((s-proj (getenv "S_PROJ")))
-      (setenv "S_PROJ" (directory-file-name default-directory))
+      (cd (w32-short-file-name (directory-file-name default-directory)))
+      (setenv "S_PROJ" default-directory)
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
 		    ; command in *S+6 ddeclient* should follow the "$"
@@ -346,6 +371,7 @@ is here to allow slow disks to start the Splus program."
 ;;; end of what belongs in customize-alist
     (setq comint-input-sender 'comint-simple-send)
     (setq comint-process-echoes nil)
+    (set-buffer-process-coding-system 'raw-text-dos 'raw-text-dos)
     (goto-char (point-max))
     (insert (concat inferior-S+6-program-name " "
 		    inferior-ess-start-args)) ; Note: there is no final "&".
@@ -374,7 +400,7 @@ There is a 30 second delay when this program starts during which the
 emacs screen will be partially blank.\n
 Remember to
 `q()' from S-Plus and
- then M-x C-q exit from the `*S+6 ddeclient* buffer,
+ then M-x C-q exit from the `*S+6 ddeclient*' buffer,
 or take the risk of not being able to shut down your computer
 and suffering through scandisk.\n
 Any results of the   !system.command   typed at the S prompt in the
@@ -395,7 +421,7 @@ usually something like c:/Program Files/spls45se/users/yourname.
 If you have a HOME environment variable, it will open it there."
   (interactive)
   (let* ((inferior-S+6-multipleinstances ""))
-    (S+6-msdos proc-name))
+    (S+6-msdos-initiate proc-name))
   (save-excursion
     (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
     (toggle-read-only nil)		; permit writing in ESS buffer

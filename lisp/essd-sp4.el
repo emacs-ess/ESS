@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: essd-sp4.el,v 1.7 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2002/01/09 13:53:54 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: essd-sp4.el,v 1.8 2002/01/09 13:53:54 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -40,7 +40,7 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-; Code:
+;;; Code:
 
 (defvar S+4-dialect-name "S+4"
   "Name of 'dialect' for S-PLUS 4.x.");easily changeable in a user's .emacs
@@ -170,7 +170,8 @@ is here to allow slow disks to start the Splus program."
     (setq ess-customize-alist		; change inferior-ess-start-args
 	  (append ess-customize-alist '((inferior-ess-start-args   . "-i"))))
     (let ((s-proj (getenv "S_PROJ")))
-      (setenv "S_PROJ" (directory-file-name default-directory))
+      (cd (w32-short-file-name (directory-file-name default-directory)))
+      (setenv "S_PROJ" default-directory)
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
 		    ; command in *S+4 ddeclient* should follow the "$"
@@ -328,7 +329,8 @@ is here to allow slow disks to start the Splus program."
     (setq ess-customize-alist		; change inferior-ess-start-args
 	  (append ess-customize-alist '((inferior-ess-start-args   . ""))))
     (let ((s-proj (getenv "S_PROJ")))
-      (setenv "S_PROJ" (directory-file-name default-directory))
+      (cd (w32-short-file-name (directory-file-name default-directory)))
+      (setenv "S_PROJ" default-directory)
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
 		    ; command in *S+4 ddeclient* should follow the "$"
@@ -344,6 +346,7 @@ is here to allow slow disks to start the Splus program."
 ;;; end of what belongs in customize-alist
     (setq comint-input-sender 'comint-simple-send)
     (setq comint-process-echoes nil)
+    (set-buffer-process-coding-system 'raw-text-dos 'raw-text-dos)
     (goto-char (point-max))
     (insert (concat inferior-S+4-program-name " "
 		    inferior-ess-start-args)) ; Note: there is no final "&".

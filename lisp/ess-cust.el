@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2001/12/21 11:05:43 $
-;; Version: $Revision: 1.26 $
-;; RCS: $Id: ess-cust.el,v 1.26 2001/12/21 11:05:43 maechler Exp $
+;; Modified: $Date: 2002/01/09 13:53:54 $
+;; Version: $Revision: 1.27 $
+;; RCS: $Id: ess-cust.el,v 1.27 2002/01/09 13:53:54 rmh Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -599,8 +599,13 @@ by `ess-function-template'."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-S+4-program-name "Splus"
-  "*Program name for invoking an external GUI S+4."
+(defcustom inferior-S+4-program-name "c:/progra~1/spls45se/cmd/Splus.exe"
+  "*Program name for invoking an external GUI S+4.
+The default value is correct for a default installation of
+S-Plus 4.5 Student Edition and with bash as the shell.
+For any other version or location, change this value in ess-site.el or
+site-start.el.  Use the 8.3 version of the pathname.
+Use double backslashes if you use the msdos shell."
   :group 'ess-S
   :type 'string)
 
@@ -616,30 +621,35 @@ in S+4 Commands window and in Sqpe+4 buffer."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-Sqpe+4-program-name "Sqpe"
+(defcustom inferior-Sqpe+4-program-name "c:/progra~1/spls45se/cmd/Sqpe.exe"
   "*Program name for invoking an inferior ESS with Sqpe+4()."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-Sqpe+4-SHOME-name nil
-  "*SHOME name for invoking an inferior ESS with Sqpe+4()."
+(defcustom inferior-Sqpe+4-SHOME-name 
+  (if ess-microsoft-p "c:/progra~1/spls45se" nil)
+  "*SHOME name for invoking an inferior ESS with Sqpe+4().
+The default value is correct for a default installation of
+S-Plus 4.5 Student Edition.  For any other version or location,
+change this value in ess-site.el or site-start.el.  Use the 8.3
+version of the pathname."
   :group 'ess-S
   :type 'string)
-(if (or (equal window-system 'w32) (equal window-system 'win32))
-    (let* ((SHOME (getenv "SHOME"))
-	   (PATH (getenv "PATH"))
-	   (split-PATH (split-string PATH ";")) ;; Unix uses ":"
-	   (num 0)
-	   pathname)
-      (if (not SHOME)
-	  (while (< num (length split-PATH))
-	    (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
-	    (if (not (file-exists-p pathname))
-		(setq num (1+ num))
-	      (progn
-		(setq num (length split-PATH))
-		(setq SHOME (expand-file-name (concat pathname "/../..")))))))
-      (setq-default inferior-Sqpe+4-SHOME-name SHOME)))
+;;(if (or (equal window-system 'w32) (equal window-system 'win32))
+;;    (let* ((SHOME (getenv "SHOME"))
+;;	   (PATH (getenv "PATH"))
+;;	   (split-PATH (split-string PATH ";")) ;; Unix uses ":"
+;;	   (num 0)
+;;	   pathname)
+;;      (if (not SHOME)
+;;	  (while (< num (length split-PATH))
+;;	    (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
+;;	    (if (not (file-exists-p pathname))
+;;		(setq num (1+ num))
+;;	      (progn
+;;		(setq num (length split-PATH))
+;;		(setq SHOME (expand-file-name (concat pathname "/../..")))))))
+;;      (setq-default inferior-Sqpe+4-SHOME-name SHOME)))
 
 
 (defcustom inferior-S-elsewhere-program-name "sh"
@@ -664,8 +674,14 @@ different computer."
   :type 'string)
 
 (if (or (equal window-system 'w32) (equal window-system 'win32))
-    (defcustom inferior-S+6-program-name "Splus"
-      "*Program name for invoking an external GUI S+6 for Windows."
+    (defcustom inferior-S+6-program-name
+      "c:/progra~1/insigh~1/splus6/cmd/Splus.exe"
+      "*Program name for invoking an external GUI S+6 for Windows.
+The default value is correct for a default installation of
+S-Plus 6.0.3 Release 2 and with bash as the shell.
+For any other version or location, change this value in ess-site.el or
+site-start.el.  Use the 8.3 version of the pathname.
+Use double backslashes if you use the msdos shell."
       :group 'ess-S
       :type 'string)
   (defcustom inferior-S+6-program-name "Splus6"
@@ -685,30 +701,36 @@ in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-Sqpe+6-program-name "Sqpe"
+(defcustom inferior-Sqpe+6-program-name
+  "c:/progra~1/insigh~1/splus6/cmd/Sqpe.exe"
   "*Program name for invoking an inferior ESS with Sqpe+6() for Windows."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-Sqpe+6-SHOME-name nil
-  "*SHOME name for invoking an inferior ESS with Sqpe+6() for Windows."
+(defcustom inferior-Sqpe+6-SHOME-name
+  (if ess-microsoft-p "c:/progra~1/insigh~1/splus6" nil)
+  "*SHOME name for invoking an inferior ESS with Sqpe+6() for Windows.
+The default value is correct for a default installation of
+S-Plus 6.0.3 Release 2.  For any other version or location,
+change this value in ess-site.el or site-start.el.  Use the 8.3
+version of the pathname."
   :group 'ess-S
   :type 'string)
-(if (or (equal window-system 'w32) (equal window-system 'win32))
-    (let* ((SHOME (getenv "SHOME"))
-	   (PATH (getenv "PATH"))
-	   (split-PATH (split-string PATH ";")) ;; Unix uses ":"
-	   (num 0)
-	   pathname)
-      (if (not SHOME)
-	  (while (< num (length split-PATH))
-	    (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
-	    (if (not (file-exists-p pathname))
-		(setq num (1+ num))
-	      (progn
-		(setq num (length split-PATH))
-		(setq SHOME (expand-file-name (concat pathname "/../..")))))))
-      (setq-default inferior-Sqpe+6-SHOME-name SHOME)))
+;;(if (or (equal window-system 'w32) (equal window-system 'win32))
+;;    (let* ((SHOME (getenv "SHOME"))
+;;	   (PATH (getenv "PATH"))
+;;	   (split-PATH (split-string PATH ";")) ;; Unix uses ":"
+;;	   (num 0)
+;;	   pathname)
+;;      (if (not SHOME)
+;;	  (while (< num (length split-PATH))
+;;	    (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
+;;	    (if (not (file-exists-p pathname))
+;;		(setq num (1+ num))
+;;	      (progn
+;;		(setq num (length split-PATH))
+;;		(setq SHOME (expand-file-name (concat pathname "/../..")))))))
+;;      (setq-default inferior-Sqpe+6-SHOME-name SHOME)))
 
 (defcustom inferior-XLS-program-name "xlispstat"
   "*Program name for invoking an inferior ESS with \\[XLS]."

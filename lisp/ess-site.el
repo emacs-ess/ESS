@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2002/01/03 09:20:49 $
-;; Version: $Revision: 5.83 $
-;; RCS: $Id: ess-site.el,v 5.83 2002/01/03 09:20:49 maechler Exp $
+;; Modified: $Date: 2002/01/09 13:53:54 $
+;; Version: $Revision: 5.84 $
+;; RCS: $Id: ess-site.el,v 5.84 2002/01/09 13:53:54 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -285,13 +285,23 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;(setq-default	 inferior-S+4-editor-pager-command
 ;;   "options(editor='gnuclient.exe', pager='gnuclientw.exe')")
 
-;;; These commands are for running the PC version of Sqpe of S+4 in
-;;; an emacs buffer, using the same technology as ESS uses for Unix
-;;; S-Plus.  Interactive graphics are unavailable in this mode.
-;;; See essd-sp4.el
+;;; These commands are for running the PC version of Sqpe of S+4 and
+;;; S+6 in an emacs buffer, using the same technology as ESS uses for
+;;; Unix S-Plus.  Interactive graphics are unavailable in this mode.
+;;; See essd-sp4.el or essdsp6w.el
 
-;;(setq-default inferior-Sqpe+4-program-name "Sqpe")
-;;(setq-default inferior-Sqpe+4-SHOME-name "c:/Progra~1/spls45se")
+;;; These are the defaults.  Change them here if the defaults don't work.
+;;; Use the 8.3 version of the pathname because embedded blanks will cause
+;;; trouble.
+;;; The emacs command `w32-short-file-name' will help you find the 8.3 name.
+;;(setq-default inferior-S+4-program-name "c:/progra~1/SPLS45SE/cmd/Splus")
+;;(setq-default inferior-Sqpe+4-SHOME-name "c:/progra~1/SPLS45SE")
+;;(setq-default inferior-Sqpe+4-program-name "c:/progra~1/SPLS45SE/cmd/Sqpe.exe")
+;;
+;;(setq-default inferior-S+6-program-name "c:/progra~1/Insightful/SPLUS6/cmd/Splus")
+;;(setq-default inferior-Sqpe+6-SHOME-name "c:/progra~1/Insightful/SPLUS6")
+;;(setq-default inferior-Sqpe+6-program-name "c:/progra~1/Insightful/SPLUS6/cmd/Sqpe.exe")
+
 ;;; These ddeclient values will be buffer-local on WS-Windows 9x/NT
 (setq-default inferior-ess-ddeclient	     "Initial")
 (setq-default inferior-ess-client-name	     "Initial")
