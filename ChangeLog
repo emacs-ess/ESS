@@ -1,3 +1,17 @@
+Mon Oct 27 14:50:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: readded "New Features" section.
+
+Mon Oct 27 13:05:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: started editing section 1.  In particular, @b{S}
+ 	refers to a generic statistical process, at this point.
+
+Mon Oct 27 10:44:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi (Local Variables): TeX-master ought to be ess.texi.
+  	Whoops.
+
 Mon Oct 27 10:25:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Doc/TODO: added RMH's SAS suggestions.
@@ -566,6 +580,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.15  1997/10/27 19:50:29  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.14  1997/10/27 15:30:41  rossini
 	* Removing *** empty log message ***
 	* Removing
