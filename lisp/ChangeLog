@@ -1,3 +1,8 @@
+Wed Aug 26 14:16:35 1998  Martin Maechler  <maechler@...>
+
+	* essl-s.el (S-editing-alist): font-lock-defaults: treat "." as
+	word constituent (from Kurt).
+
 Thu Aug 20 08:45:11 1998  Martin Maechler  <maechler@...>
 
 	* essddr.el (Rd-section-names): and (Rd-keywords): expanded

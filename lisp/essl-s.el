@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1998/08/14 14:30:29 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: essl-s.el,v 5.4 1998/08/14 14:30:29 maechler Exp $
+;; Modified: $Date: 1998/08/26 12:18:54 $
+;; Version: $Revision: 5.5 $
+;; RCS: $Id: essl-s.el,v 5.5 1998/08/26 12:18:54 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -266,7 +266,8 @@ Returns nil if line starts inside a string, t if in a comment."
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . S-syntax-table)
-    (font-lock-defaults           . '(ess-mode-font-lock-keywords)))
+    (font-lock-defaults           . '(ess-mode-font-lock-keywords
+				      nil nil ((?\. . "w")))))
   "General options for editing S, S+, and R source files.")
 
 
