@@ -144,19 +144,40 @@ above.  It provides an editing interface, an interface to statistical
 processes, and additional tools which can be useful for both
 statistical software development and data analysis.  It works with
 common statistical software including the S family of languages
-including S, S-PLUS, and R; XLispStat including the Arc and ViSta
-extensions; SAS; Stata; Omegahat; and can be extended in at least a
+including S \textbf{CITE Chambers, et al}, S-PLUS \textbf{CITE
+  MathSoft}, and R \citep{ihak:gent:1996}; XLispStat \textbf{CITE
+  TIERNEY} including the Arc \textbf{CITE Cook and Weisberg} and
+ViSta \citep{youn:fald:mcfa:1992} extensions; SAS \textbf{CITE
+  SAS Institute}; Stata \textbf{CITE: Stata Corporation}; Omegahat
+\textbf{CITE: Omega Project}; and can be extended in at least a
 limited way to most statistical packages which can be controlled from
 a command-line.
+
+In the rest of this introduction, we will discuss the environment of
+interest and how it can be used.  Sections \ref{sec:S} and
+\ref{sec:SAS} will discuss the implementation, features, and use with
+S family of languages and SAS, respectively.  The history and advanced
+features will be then discussed, and this paper will conclude with a
+discussion of future work in this area, including Literate Statistical
+Analysis as well as important features.
 
 \subsection{Emacs}
 \label{sec:intro:emacs}
 
-Emacs is powerful and extensible text editor which is
-available for a large number of platforms.  In addition, most
-programming and documentation falls under the realm of text
-processing, with additional features for IDEs and word processing
-needs such as contextual highlighting and recognition of data points.
+Emacs is a mature, powerful, and extensible text editor which has been
+freely available for over 15 years and is available for a large number
+of platforms, including those currently most frequently in use for
+statistical computing, including Unix, Apple Corporation's Macintosh,
+and Microsoft OS platforms.  While it does not fall into the realm of
+word processors, relying on external programs for that, it does have
+similar features.
+
+Most programming and documentation falls under the realm of text
+processing.  This is natural given that it is being worked on from the
+perspective of the developer and not the end user.  This work can be
+enhanced by common IDE features such as contextual highlighting and
+recognition of special reserved words for the programming language or
+statistical program/package of interest.
 
 The main point is that with the ESS extensions, Emacs acts as a
 uniform interface to the statistical programming code, the statistical
@@ -260,14 +281,6 @@ process-interfacing.  Note that even though we refer to it as marginal
 support, it is still the basic functionality that the majority of ESS
 users take advantage of.  This appears to be sufficient to
 differentiate from typical package-provided interfaces.
-
-\textbf{AJR: Roadmap for the paper.}
-
-We follow this up by describing how ESS can be used at first; then
-describe advanced usage.  The next sections explain where it can be
-obtained as well as some history of the project.  Finally, we close
-with a discussion of current and future extensions as well as how IDEs
-might be realized in the future.
 
 \section{Features and Usage}
 \label{sec:basic}
