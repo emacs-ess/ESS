@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/08 12:43:08 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essd-s3.el,v 1.9 1997/09/08 12:43:08 rossini Exp $
+;; Modified: $Date: 1997/10/21 21:45:43 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essd-s3.el,v 1.10 1997/10/21 21:45:43 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -40,16 +40,40 @@
   '((ess-local-customize-alist     . 'S3-customize-alist)
     (ess-language                  . "S")
     (ess-dialect                   . "S3")
-    (inferior-ess-program          . inferior-S3-program-name) ;        "S")
+    (ess-suffix                    . "S")
+
+    (ess-loop-timeout              . 100000 )
+    
+    (ess-dump-filename-template    . (concat (user-login-name)
+					     ".%s."
+					     ess-suffix))
+
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . S3-help-sec-keys-alist)
-    (inferior-ess-objects-command  . "objects(%d)")
+    (ess-help-sec-regex            . ess-help-S+3-sec-regex)
+    (ess-help-sec-keys-alist       . ess-help-S+3-sec-keys-alist)
+
+    (ess-mode-editing-alist        . S-editing-alist)
+    (ess-mode-syntax-table         . S-syntax-table)
+    (ess-mode-edit                 . 'S3-mode)
+    (ess-object-name-db-file       . "ess-s+3-namedb.el" )
+    (ess-retr-lastvalue-command
+     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
+    (ess-save-lastvalue-command
+     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
+
+    (inferior-ess-program          . inferior-S3-program-name) ;        "S")
     (inferior-ess-help-command     . "help(\"%s\")\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?")
-    (ess-loop-timeout              . 100000 ))
- "Variables to customize for S")
+    (inferior-ess-objects-command  . "objects(%d)\n")
+    (inferior-ess-exit-command     . "q()\n")
+    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
+    (inferior-ess-secondary-prompt . "+ ?")
+    (inferior-ess-start-file       . nil) ;"~/.ess-S3")
+    (inferior-ess-start-args       . ""))
+  "Variables to customize for S")
 
 
 (defun S3 ()

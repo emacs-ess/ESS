@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/10/21 20:08:39 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: essl-s.el,v 1.16 1997/10/21 20:08:39 rossini Exp $
+;; Modified: $Date: 1997/10/21 21:45:21 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: essl-s.el,v 1.17 1997/10/21 21:45:21 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -35,7 +35,7 @@
  ; Requires and autoloads
 
 
-;;;;* Alias ess-mode to s-mode
+;;;;* Alias S-mode to s-mode
 ;;; Emacs will set the mode for a file based on the file's header.
 ;;; The mode name is indicated by putting it between -*- on the top line. 
 ;;; (Other commands can go here too, see an Emacs manual.)
@@ -293,11 +293,11 @@ M.Maechler,ess-extra"
   (let ((pm (point-min)))
     (save-excursion
       (goto-char pm)
-      (S-dump-to-src)
+      (ess-dump-to-src)
       (goto-char pm)
-      (S-fix-comments)
+      (ess-fix-comments)
       (goto-char pm)
-      (S-num-var-round))))
+      (ess-num-var-round))))
 
 ;;;--------- see earlier (RCS) versions of this file for older 'hacks..'
 
