@@ -4,14 +4,14 @@
 ;; Copyright (C) 1997-1999 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;;			Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;			Martin Maechler <maechler@stat.math.ethz.ch>
-;;			A.J. (Tony) Rossini <rossini@stat.sc.edu>
+;;			A.J. (Tony) Rossini <rossini@u.washington.edu>
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainer: A.J. Rossini <rossinI@biostat.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/05/03 01:31:52 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: ess-mode.el,v 5.14 2001/05/03 01:31:52 rossini Exp $
+;; Modified: $Date: 2001/06/21 19:26:50 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: ess-mode.el,v 5.15 2001/06/21 19:26:50 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -75,13 +75,11 @@
 (autoload 'ess-quit			"ess-inf" "" nil)
 
 
-;; (line-end-position N) exists in Emacs 20.3, but not (eg in 19.34)
-(if (not (fboundp 'line-end-position))
-    (defun line-end-position (&optional N)
-      (save-excursion
-	(end-of-line N)
-	(point)))
-)
+(defun ess-line-end-position (&optional N)
+  (save-excursion
+    (end-of-line N)
+    (point)))
+
 
  ; ESS mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -395,7 +393,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
  	beg end done)
     ;;DBG (ess-write-to-dribble-buffer "ess-BEG-of-fun:")
     ;; in case we're sitting in a function header:
-    (if (search-forward "(" (line-end-position 2) t); at most end of next line
+    (if (search-forward "(" (ess-line-end-position 2) t); at most end of next line
 	(forward-char 1))
     (while (not done)
       (if (re-search-backward ess-function-pattern (point-min) t)
