@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/01/30 23:44:48 $
-;; Version: $Revision: 5.40 $
-;; RCS: $Id: ess-site.el,v 5.40 2000/01/30 23:44:48 rossini Exp $
+;; Modified: $Date: 2000/02/29 16:52:28 $
+;; Version: $Revision: 5.41 $
+;; RCS: $Id: ess-site.el,v 5.41 2000/02/29 16:52:28 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -78,8 +78,27 @@
 
   ;; A nice default
   (defvar ess-lisp-directory
-    (directory-file-name (file-name-directory
-			  (file-truename load-file-name))))
+    (if (and (boundp 'load-file-name) load-file-name)
+	;; A nice default
+	(directory-file-name (file-name-directory
+			      (file-truename load-file-name)))
+      (defun find-load-file-directory nil 
+	"Locate directory in which load-file sits."
+	(interactive)
+	(let (load-file-directory)
+	  (list-command-history)
+	  (set-buffer "*Command History*")
+	  (goto-char (point-min))
+	  (search-forward "(load-file ")
+	  (goto-char (1+ (match-end 0)))(setq beg (point))
+	  (end-of-line)(search-backward "/")
+	  (goto-char (match-end 0))
+	  (setq load-file-directory
+		(expand-file-name (buffer-substring beg (point))))
+	  (kill-buffer "*Command History*")
+	  load-file-directory))
+      (directory-file-name (find-load-file-directory)))
+    "Directory containing ess-site.el and other ESS files.")
 
   ;; NON DEFAULTS:
   ;;(defvar ess-lisp-directory
@@ -92,6 +111,19 @@
   ;;(defvar ess-lisp-directory
   ;;(directory-file-name "/stat2/faculty/rossini/ESS/lisp"))
 
+  ;; emacs 19.28 doesn't have functions we need, therefore we provide them
+  ;; by using files from emacs 19.29
+  (if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
+      (progn
+	(require 'cl)			; rassoc
+	(load-file (concat ess-lisp-directory "/19.29/extras.el"))	; add-to-list taken from subr.el
+	(load-file (concat ess-lisp-directory "/19.29/easymenu.el"))	; we use functions not in 19.28
+	(if window-system
+	    (progn
+	      (load-file (concat ess-lisp-directory "/19.29/faces.el"))	; comment and reference faces
+	      (load-file (concat ess-lisp-directory "/19.29/font-lock.el")) ; font-lock features not in 19.28
+	      ))))
+  
   (add-to-list 'load-path ess-lisp-directory))
 
 
