@@ -1,6 +1,6 @@
--*- view -*-
+-*- text -*-
 
-($Revision: 1.17 $)
+($Revision: 1.18 $)
 
 ESS: Using The S family of statistical languages
 ================================================
@@ -263,8 +263,8 @@ prefixed by "##").
 
 
 
-Customization Examples
-======================
+Customization Examples and Solutions to Problems
+================================================
 
 1. Suppose that you are primarily an SPLUS 3.4 user, occasionally
    using S version 4, and sick and tired of the buffer-name *S+3*
@@ -281,6 +281,13 @@ Customization Examples
        
        (setq ess-plain-first-buffername nil)
    )
+
+3. Fontlocking sometimes fails to behave nicely upon errors.  When
+   Splus dumps, a mis-matched "  (double-quote) can result in the
+   wrong font-lock face being used for the remainder of the buffer.  
+
+   Solution: add a " at the end of the "Dumped..." statement, to
+   revert the font-lock face back to normal.
 
 
 
