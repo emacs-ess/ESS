@@ -8,9 +8,9 @@
 ;;              M. Maechler <maechler@stat.math.ethz.ch>,
 ;;              Stephen Eglen < >
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2004/07/02 14:25:13 $
-;; Version: $Revision: 5.57 $
-;; RCS: $Id: essd-r.el,v 5.57 2004/07/02 14:25:13 rmh Exp $
+;; Modified: $Date: 2004/07/04 11:40:03 $
+;; Version: $Revision: 5.58 $
+;; RCS: $Id: essd-r.el,v 5.58 2004/07/04 11:40:03 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -147,19 +147,13 @@ Optional prefix (C-u) allows to set command line arguments, such as
 
 (fset 'r-mode 'R-mode)
 
-(defvar ess-r-versions-created nil
-  "List of strings of the new defuns created by `ess-r-versions-create'.
-This is used by the easymenu code to add the new defuns to the menubar
-under ESS -> Start Process -> Other.")
-
 (defun ess-r-versions-create ()
   "Generate the `M-x R-X.Y' functions for starting other versions of R.
 See `ess-r-versions' for strings that determine which functions are created.
 
-The local variable `ess-r-versions-created' is used to return
-list of the new R defuns, if any, that were created.  The result will
-normally be bound to the global variable `ess-r-versions-created'.
-The defuns will normally be placed on the menubar upon ESS initialisation."
+The local variable `ess-r-versions-created' is used to return list of
+the new R defuns, if any, that were created.  The defuns will normally
+be placed on the menubar upon ESS initialisation."
 
   ;; This works by creating a temp buffer where the template function is
   ;; edited so that X.Y is replaced by the version name
@@ -240,21 +234,14 @@ in the exec-path."
       (setq Rterm (cons (concat ess-R-root-dir rw "bin/Rterm.exe") Rterm)))
     Rterm))
 
-
-(defvar ess-rterm-versions-created nil
-  "List of strings of the new defuns created by `ess-rterm-versions-create'.
-This is used by the easymenu code to add the new defuns to the menubar
-under ESS -> Start Process -> Other.")
-
 (defun ess-rterm-versions-create ()
   "Generate the `M-x rwxxyy' functions for starting other versions of R.
 See `ess-rterm-versions' for strings that determine which functions
 are created.
 
-The result `ess-rterm-versions-created' will store a
-list of the new Rterm defuns, if any, that were created.  The result will
-normally be bound to the added to global variable `ess-rterm-versions-created'.
-The defuns will normally be placed on the menubar upon ESS initialisation."
+The result `ess-rterm-versions-created' will store a list of the new
+Rterm defuns, if any, that were created.  The defuns will normally be
+placed on the menubar upon ESS initialisation."
 
   ;; This works by creating a temp buffer where the template function is
   ;; edited so that R-X.Y is replaced by the version name
