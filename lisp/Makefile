@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.33 $.
+### File: $Revision: 5.34 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -51,8 +51,9 @@ PRELOADS = -l ./ess-comp.el
 ## optimizations.  When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
 
-TOCOMPILE = ess-vars.el ess-cust.el ess.el ess-site.el ess-utils.el \
-	ess-inf.el ess-iw32.el \
+TOCOMPILE = ess-vars.el ess-cust.el $(CORE) \
+	ess-emcs.el ess-sysdp.el ess-utils.el \
+	ess-inf.el ess-iw32.el essnt204.el \
 	ess-mode.el ess-trns.el ess-help.el \
 	ess-comp.el \
 	essl-s.el essd-s3.el essd-s4.el \
