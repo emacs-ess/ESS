@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/08 00:00:30 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: essl-sas.el,v 1.20 1997/11/08 00:00:30 rossini Exp $
+;; Modified: $Date: 1997/11/09 19:29:16 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: essl-sas.el,v 1.21 1997/11/09 19:29:16 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -45,6 +45,7 @@
 ;;;
 ;;; Last change: 2/1/95
 
+(require 'ess)
 (require 'ess-mode)
 
 (autoload 'ess-transcript-mode "ess-trns" "ESS source eval mode" t)
@@ -961,67 +962,67 @@ page ;
   (toggle-read-only 1))
   
 
-(defun sas-make-library (directory &optional update)
-  "Create a buffer with the names of all sas datasets from DIRECTORY."
-  (interactive "DDirectory Name: ")
-  (let ((dir (expand-file-name directory)) buf out cont pos)
-    (setq buf (format " *sas-tmp-%s*" dir))
-    (setq out (concat "*SAS-dir-" dir))
-    (setq cont (concat "*SAS-cont-" dir))
-    (get-buffer-create buf)
-    (if (get-buffer out)
-        (if update
-            (progn
-              (set-buffer out)
-              (setq buffer-read-only nil)))
-      (setq update t))
-    (pop-to-buffer out)
-    (setq default-directory dir)
-    (setq pos (point))
-    (if update
-        (progn 
-          (save-window-excursion
-            (set-buffer buf)
-            (erase-buffer)
-            (setq default-directory dir)
-            (insert "options linesize=70 pagesize=1000 ;\n")
-            (insert (format "title \"Contents of SAS directory `%s'\" ;\n"
-                            dir))
-            (insert (format "libname %s '%s' ;\n" sas-tmp-libname dir))
-            (insert (format "proc contents data = %s._all_ directory details memtype=data ;\n" sas-tmp-libname))
-            (run-sas-on-region (point-min) (point-max) nil
-                               out)
-            (set-buffer out)
-            (goto-char (point-min))
-            (if (= (sas-how-many page-delimiter (point-max)) 0)
-                (let ((buffer-read-only nil))
-                  (erase-buffer)
-                  (insert "There are no SAS datasets in this directory")
-                  (pop-to-buffer out))
-              (save-excursion 
-                (set-buffer (get-buffer-create cont))
-                (setq buffer-read-only t)
-                (let ((buffer-read-only nil))
-                  (erase-buffer)
-                  (insert-buffer out)
-                  (delete-region (point-min)
-                                 (or (re-search-forward page-delimiter nil t)
-                                     (point-min)))
-                  (sas-page-fix 1)
-                  (goto-char (point-min))
-                  (sas-dir-mode)
-                  (sas-narrow-to-page)))
-              (if (re-search-forward page-delimiter nil t)
-                  (delete-region (progn (beginning-of-line) (point))
-                                 (point-max)))
-              (sas-insert-set-properties (point-min) (point-max))
-              )
-            (switch-to-buffer out t)
-            (goto-char (point-min))
-            (sas-dir-mode)
-            (setq sas-dir-buf-end (point-max)))
-          (goto-char pos)
-          (sas-move-to-filename (point-max))))))
+;;(defun sas-make-library (directory &optional update)
+;;  "Create a buffer with the names of all sas datasets from DIRECTORY."
+;;  (interactive "DDirectory Name: ")
+;;  (let ((dir (expand-file-name directory)) buf out cont pos)
+;;    (setq buf (format " *sas-tmp-%s*" dir))
+;;    (setq out (concat "*SAS-dir-" dir))
+;;    (setq cont (concat "*SAS-cont-" dir))
+;;    (get-buffer-create buf)
+;;    (if (get-buffer out)
+;;        (if update
+;;            (progn
+;;              (set-buffer out)
+;;              (setq buffer-read-only nil)))
+;;      (setq update t))
+;;    (pop-to-buffer out)
+;;    (setq default-directory dir)
+;;    (setq pos (point))
+;;    (if update
+;;        (progn 
+;;          (save-window-excursion
+;;            (set-buffer buf)
+;;            (erase-buffer)
+;;            (setq default-directory dir)
+;;            (insert "options linesize=70 pagesize=1000 ;\n")
+;;            (insert (format "title \"Contents of SAS directory `%s'\" ;\n"
+;;                            dir))
+;;            (insert (format "libname %s '%s' ;\n" sas-tmp-libname dir))
+;;            (insert (format "proc contents data = %s._all_ directory details memtype=data ;\n" sas-tmp-libname))
+;;            (run-sas-on-region (point-min) (point-max) nil
+;;                               out)
+;;            (set-buffer out)
+;;            (goto-char (point-min))
+;;            (if (= (sas-how-many page-delimiter (point-max)) 0)
+;;                (let ((buffer-read-only nil))
+;;                  (erase-buffer)
+;;                  (insert "There are no SAS datasets in this directory")
+;;                  (pop-to-buffer out))
+;;              (save-excursion 
+;;                (set-buffer (get-buffer-create cont))
+;;                (setq buffer-read-only t)
+;;                (let ((buffer-read-only nil))
+;;                  (erase-buffer)
+;;                  (insert-buffer out)
+;;                  (delete-region (point-min)
+;;                                 (or (re-search-forward page-delimiter nil t)
+;;                                     (point-min)))
+;;                  (sas-page-fix 1)
+;;                  (goto-char (point-min))
+;;                  (sas-dir-mode)
+;;                  (sas-narrow-to-page)))
+;;              (if (re-search-forward page-delimiter nil t)
+;;                  (delete-region (progn (beginning-of-line) (point))
+;;                                 (point-max)))
+;;              (sas-insert-set-properties (point-min) (point-max))
+;;              )
+;;            (switch-to-buffer out t)
+;;            (goto-char (point-min))
+;;            (sas-dir-mode)
+;;            (setq sas-dir-buf-end (point-max)))
+;;          (goto-char pos)
+;;          (sas-move-to-filename (point-max))))))
 
 
 (defun sas-move-to-filename (&optional eol)
@@ -1125,7 +1126,10 @@ whose beginning matches the regexp `page-delimiter'."
 
 (defun sas-narrow-to-page ()
   (save-excursion
-    (let (min max (omin (point-min)) (omax (point-max)))
+    (let* (min
+	   max))
+          ;;(omin (point-min))
+	  ;;(omax (point-max)))
       (if (or (bolp) (beginning-of-line)
 	      (looking-at page-delimiter))
           (forward-char 1)
@@ -1159,8 +1163,8 @@ whose beginning matches the regexp `page-delimiter'."
 (defun sas-goto-dataset (&optional page)
   (interactive)
   (and sas-directory-name
-       (let ((page (or page (sas-get-file-number)))
-             (dir sas-directory-name))
+       (let ((page (or page (sas-get-file-number))))
+	     ;;(dir sas-directory-name))
          (if page
              (progn
                (switch-to-buffer-other-window
@@ -1170,20 +1174,20 @@ whose beginning matches the regexp `page-delimiter'."
                (sas-narrow-to-page)
                (goto-char (point-min)))))))
 
-(defun sas-mouse-goto-dataset (event)
-  (interactive "e")
-  (let (page buf)
-    (save-window-excursion
-      (save-excursion
-        (set-buffer (window-buffer (posn-window (event-end event))))
-        (save-excursion
-          (goto-char (posn-point (event-end event)))
-          (setq page (sas-get-file-number)))
-        (sas-goto-dataset page)
-        (setq buf (buffer-name))))
-    (set-buffer buf)
-    (goto-char (point-min))
-    (display-buffer buf)))
+;;(defun sas-mouse-goto-dataset (event)
+;;  (interactive "e")
+;;  (let (page buf)
+;;    (save-window-excursion
+;;      (save-excursion
+;;        (set-buffer (window-buffer (posn-window (event-end event))))
+;;        (save-excursion
+;;          (goto-char (posn-point (event-end event)))
+;;          (setq page (sas-get-file-number)))
+;;        (sas-goto-dataset page)
+;;        (setq buf (buffer-name))))
+;;    (set-buffer buf)
+;;    (goto-char (point-min))
+;;    (display-buffer buf)))
 
 
 (defun sas-dir-goto-page (page)
@@ -1229,11 +1233,11 @@ whose beginning matches the regexp `page-delimiter'."
 	 str)))
 
 
-(defun sas-revert-library ()
-  "Update current library."
-  (interactive)
-  (if sas-directory-name
-      (sas-make-library sas-directory-name t)))
+;;(defun sas-revert-library ()
+;;  "Update current library."
+;;  (interactive)
+;;  (if sas-directory-name
+;;      (sas-make-library sas-directory-name t)))
 
 
 (provide 'essl-sas)
