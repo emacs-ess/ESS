@@ -15,6 +15,15 @@ XLispStat:
 
 	On Sun, 13 Dec 1998, Johannes Huesing wrote:
 
-Splus:  gnutags modifications.
+Splus:
+	gnutags modifications, see Lubinsky tags.  Need to figure out
+	tag commands, as given above!
 
+
+
+---
+
+Local Variables:
+mode: text
+end:
 
