@@ -1,13 +1,13 @@
-;;; ess-help.el --- Support for viewing S help files
+;;; ess-help.el --- Support for viewing ESS help files
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/21 21:19:57 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: ess-help.el,v 1.13 1997/10/21 21:19:57 rossini Exp $
+;; Modified: $Date: 1997/11/10 19:39:49 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: ess-help.el,v 1.14 1997/11/10 19:39:49 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -27,7 +27,7 @@
 
 ;;; Commentary:
 
-;; Code for dealing with S help files. See S.el for more
+;; Code for dealing with ESS help files. See S.el for more
 ;; details.
 
 
@@ -53,7 +53,7 @@
 (autoload 'ess-load-file "ess-inf" "[autoload]" t)
 (autoload 'ess-command "ess-inf" "(autoload)" nil)
 (autoload 'ess-display-temp-buffer "ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-S "ess-inf" "(autoload)" nil)
+(autoload 'ess-switch-to-ESS "ess-inf" "(autoload)" nil)
 (autoload 'ess-read-object-name-default "ess-inf" "(autoload)" nil)
 (autoload 'ess-make-buffer-current "ess-inf" "(autoload)" nil)
 (autoload 'ess-search-list "ess-inf" "(autoload)" nil)
@@ -72,8 +72,8 @@
 ;;*;; Access function for displaying help
 
 (defun ess-display-help-on-object (object)
-  "Display the S documentation for OBJECT in another window.
-If prefix arg is given, forces a query of the S process for the help
+  "Display the ESS documentation for OBJECT in another window.
+If prefix arg is given, forces a query of the ESS process for the help
 file.  Otherwise just pops to an existing buffer if it exists."
   (interactive (ess-find-help-file "Help on: "))
   (let* ((hb-name (concat "*help["
@@ -98,12 +98,12 @@ file.  Otherwise just pops to an existing buffer if it exists."
     ;; hack, restore old code :-).
 
     (if (or (not old-hb-p) current-prefix-arg)
-	;; Ask S for the help file
+	;; Ask ESS for the help file
 	(progn
 	  (delete-region (point-min) (point-max))
 	  (ess-help-mode)
 	  (setq ess-local-process-name ess-current-process-name)
-	  (ess-command (format curr-help-command object) tbuffer) ;; was 
+	  (ess-command (format curr-help-command object) tbuffer) ;; was
 	  ;; inferior-ess-help-command
 	  (ess-nuke-help-bs)
 	  (goto-char (point-min))))
@@ -143,7 +143,7 @@ file.  Otherwise just pops to an existing buffer if it exists."
 ;;*;; Major mode definition
 
 
-(defvar ess-help-sec-map nil "Sub-keymap for S help mode.")
+(defvar ess-help-sec-map nil "Sub-keymap for ESS help mode.")
 (if ess-help-sec-map
     nil
   (setq ess-help-sec-map (make-sparse-keymap))
@@ -156,14 +156,14 @@ file.  Otherwise just pops to an existing buffer if it exists."
   (define-key ess-help-sec-map "<" 'beginning-of-buffer)
 )
 
-(defvar ess-help-mode-map nil "Keymap for S help mode.")
+(defvar ess-help-mode-map nil "Keymap for ESS help mode.")
 (if ess-help-mode-map
     nil
   (setq ess-help-mode-map (make-keymap)); Full keymap, in order to
   (suppress-keymap ess-help-mode-map)   ; suppress all usual "printing" characters
   (define-key ess-help-mode-map " " 'scroll-up)
   (define-key ess-help-mode-map "b" 'scroll-down)
-  (define-key ess-help-mode-map "q" 'ess-switch-to-end-of-S)
+  (define-key ess-help-mode-map "q" 'ess-switch-to-end-of-ESS)
   (define-key ess-help-mode-map "\C-m" 'next-line)
   (define-key ess-help-mode-map "\177" 'scroll-down) ; DEL
   (define-key ess-help-mode-map "s" ess-help-sec-map)
@@ -189,8 +189,8 @@ file.  Otherwise just pops to an existing buffer if it exists."
   (define-key ess-help-mode-map "\C-c\M-j" 'ess-eval-line-and-go)
   (define-key ess-help-mode-map "\M-\C-a"  'ess-beginning-of-function)
   (define-key ess-help-mode-map "\M-\C-e"  'ess-end-of-function)
-  (define-key ess-help-mode-map "\C-c\C-y" 'ess-switch-to-S)
-  (define-key ess-help-mode-map "\C-c\C-z" 'ess-switch-to-end-of-S)
+  (define-key ess-help-mode-map "\C-c\C-y" 'ess-switch-to-ESS)
+  (define-key ess-help-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
   (define-key ess-help-mode-map "\C-c\C-l" 'ess-load-file)
   (define-key ess-help-mode-map "\C-c\C-v" 'ess-display-help-on-object)
   (define-key ess-help-mode-map "\C-c\C-k" 'ess-request-a-process))
@@ -198,12 +198,12 @@ file.  Otherwise just pops to an existing buffer if it exists."
 (defun ess-help-mode ()
 ;;; Largely ripped from more-mode.el,
 ;;; originally by Wolfgang Rupprecht wolfgang@mgm.mit.edu
-  "Mode for viewing S help files.
+  "Mode for viewing ESS help files.
 Use SPC and DEL to page back and forth through the file.
 Use `n'  and `p' to move to next and previous section,
     `s' to jump to a particular section;   `s ?' for help.
-Use `q' to return to your S session; `x' to kill this buffer first.
-The usual commands for evaluating S source are available.
+Use `q' to return to your ESS session; `x' to kill this buffer first.
+The usual commands for evaluating ESS source are available.
 Other keybindings are as follows:
 \\{ess-help-mode-map}"
   (interactive)
@@ -213,7 +213,7 @@ Other keybindings are as follows:
   (make-local-variable 'ess-local-process-name)
   (run-hooks ess-help-mode-hook))
 
-;;*;; User commands defined in S help mode
+;;*;; User commands defined in ESS help mode
 
 (defun ess-skip-to-help-section nil
   "Jump to a section heading of a help buffer. The section selected is
@@ -233,14 +233,14 @@ which keystrokes find which sections."
 	    (goto-char old-point))))))
 
 (defun ess-skip-to-next-section nil
-  "Jump to next section in S help buffer."
+  "Jump to next section in ESS help buffer."
   (interactive)
   (let ((case-fold-search nil))
     (if (re-search-forward ess-help-sec-regex nil 'no-error) nil
       (message "No more sections."))))
 
 (defun ess-skip-to-previous-section nil
-  "Jump to previous section in S help buffer."
+  "Jump to previous section in ESS help buffer."
   (interactive)
   (let ((case-fold-search nil))
     (if (re-search-backward ess-help-sec-regex nil 'no-error) nil
@@ -252,10 +252,10 @@ which keystrokes find which sections."
  (describe-function 'ess-help-mode))
 
 (defun ess-kill-buffer-and-go nil
-  "Kill the current buffer and switch back to S"
+  "Kill the current buffer and switch back to the ESS process."
   (interactive)
   (kill-buffer (current-buffer))
-  (ess-switch-to-S nil))
+  (ess-switch-to-ESS nil))
 
 (defun ess-describe-sec-map nil
   "Display help for the `s' key."
@@ -296,7 +296,7 @@ Keystroke    Section
   "Find help, prompting for p-string.  Note that we can't search SAS
 or XLispStat for additional information."
   (ess-make-buffer-current)
-  (if (not 
+  (if (not
        (or
 	(string-match "XLS" ess-language)
 	(string-match "SAS" ess-language)))
@@ -314,7 +314,7 @@ or XLispStat for additional information."
 	       (t spec))))
     (let* ((spec (read-string p-string)))
       (list spec))))
-      
+
 
 ;;*;; Utility functions
 
