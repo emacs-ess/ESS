@@ -34,7 +34,7 @@ LISPDIR = .
 #GZCAT = gzcat
 GZCAT = zcat
 
-############## no user servicable parts beyond this point ###################
+#### no user servicable parts beyond this point ####
 
 # no csh please
 SHELL = /bin/sh
@@ -68,11 +68,11 @@ CORE = ess.elc ess-site.elc
 SOURCES = ess-vars.el ess.el ess-site.el \
 	ess-inf.el ess-mode.el ess-trns.el ess-help.el \
 	ess-comp.el \
-	essl-s.el essl-lsp.el essl-sas.el essl-sta.el \
-	essd-s3.el essd-s4.el essd-s+3.el essd-r.el \
-	essd-xls.el essd-vst.el \
-	essd-sas.el \
-	essddr.el 
+	essl-s.el   essd-s3.el  essd-s4.el  essd-s+3.el essd-r.el \
+	essl-lsp.el essd-xls.el essd-vst.el \
+	essl-sas.el essd-sas.el \
+	essl-sta.el \
+	essddr.el
 
 DOCS = Doc/TODO Doc/Why_S-mode_Rocks.DMS \
 	Doc/README-19.28 Doc/README.additions Doc/NEWS \
@@ -80,10 +80,11 @@ DOCS = Doc/TODO Doc/Why_S-mode_Rocks.DMS \
 
 SCRIPTS = ess-sas-sh-command install-sh mkinstalldirs
 
-OBJECTS = $(SOURCES:.el=.elc)
-
 AUXFILES = COPYING Makefile README ess.texi ChangeLog \
 	$(SCRIPTS) $(DOCS)
+
+# The following works mainly with GNU Make.
+OBJECTS = $(SOURCES:.el=.elc)
 
 DISTFILES = $(addprefix $(VERSIONDIR)/,$(SOURCES)) \
 	    $(addprefix $(VERSIONDIR)/,$(AUXFILES)) 
@@ -133,7 +134,8 @@ patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 	-rm -rf ESS-$(LASTVERSION)
 	mkdir ESS-$(LASTVERSION)
 	(cd ESS-$(LASTVERSION); tar zxvf../ESS-$(LASTVERSION).tar.gz -)
-	-diff -bBw -C 2 ESS-$(LASTVERSION) ESS-$(VERSION) > diff-$(LASTVERSION)-$(VERSION)
+	-diff -bBw -C 2 ESS-$(LASTVERSION) ESS-$(VERSION) \
+		 > diff-$(LASTVERSION)-$(VERSION)
 	-rm -rf ESS-$(VERSION)
 	-rm -rf ESS-$(LASTVERSION)
 
@@ -169,15 +171,15 @@ ess-trns.elc: ess-trns.el $(CORE)
 
 ess-help.elc: ess-help.el $(CORE)
 
-essd-sas.elc : essd-sas.el ess.el
+essd-sas.elc : essd-sas.el ess.elc
 
-essd-s3.elc : essd-s+3.el ess.el
+essd-s3.elc : essd-s+3.el essl-s.elc ess.elc
 
-essd-s+3.elc : essd-s+3.el ess.el
+essd-s+3.elc : essd-s+3.el essl-s.elc ess.elc
 
-essd-s4.elc : essd-s4.el ess.el
+essd-s4.elc : essd-s4.el essl-s.elc ess.elc
 
-essd-r.elc : essd-r.el ess.el
+essd-r.elc : essd-r.el essl-s.elc ess.elc
 
 essd-xls.elc : essd-xls.el ess.el
 
