@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/09/01 18:10:50 $
-;; Version: $Revision: 1.58 $
-;; RCS: $Id: ess.el,v 1.58 1997/09/01 18:10:50 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:16:30 $
+;; Version: $Revision: 1.59 $
+;; RCS: $Id: ess.el,v 1.59 1997/09/01 18:16:30 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -133,10 +133,16 @@
   "Major mode for editing R source code." t)
 (autoload 'XLS-mode "ess-mode"
   "major mode for editing XLispStat code." t)
+(autoload 'SAS-mode "ess-mode"
+  "Major mode for editing SAS source code." t)
+
 (autoload 'S-transcript-mode
   "ess-trns" "ESS source eval mode" t)
 (autoload 'R-transcript-mode
   "ess-trns" "ESS source eval mode" t)
+(autoload 'SAS-transcript-mode
+  "ess-trns" "ESS source eval mode" t)
+
 (autoload 'inferior-ess "ess-inf"
   "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
 
