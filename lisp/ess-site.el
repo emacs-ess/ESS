@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/18 17:19:14 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: ess-site.el,v 1.12 1997/06/18 17:19:14 rossini Exp $
+;; Modified: $Date: 1997/06/18 18:41:51 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: ess-site.el,v 1.13 1997/06/18 18:41:51 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.13  1997/06/18 18:41:51  rossini
+;;: ess -> S.
+;;:
 ;;: Revision 1.12  1997/06/18 17:19:14  rossini
 ;;: misc formatting and editing.  Added S-mode to autoloads.
 ;;:
@@ -222,8 +225,8 @@
 
 ;;; You will need to change the following two variables if you use a
 ;;; non-standard S prompt.
-;; (setq inferior-S-primary-prompt "[a-zA-Z0-9() ]*> ?")
-;; (setq inferior-S-secondary-prompt "+ ?")
+;; (setq inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?")
+;; (setq inferior-ess-secondary-prompt "+ ?")
 
 
 ;;; --------- OLD STUFF -----------
@@ -242,16 +245,16 @@
 
 ;;; (3.1) Font-lock
 ;; The following two expressions automatically enable font-lock-mode
-;; for S-mode and inferior-S-mode buffers.
+;; for ess-mode and inferior-ess-mode buffers.
 
 ;; XEmacs has font-lock for ttys, as well.
 (if window-system
     (progn
-      (add-hook 'S-mode-hook 'turn-on-font-lock t)
-      (add-hook 'S-transcript-mode-hook 'turn-on-font-lock t)
+      (add-hook 'ess-mode-hook 'turn-on-font-lock t)
+      (add-hook 'ess-transcript-mode-hook 'turn-on-font-lock t)
       (add-hook 'inferior-ess-mode-hook 'turn-on-font-lock t)))
 
-;;; (3.2) Framepop.  Windows produced by S-execute-objects etc. are
+;;; (3.2) Framepop.  Windows produced by ess-execute-objects etc. are
 ;;; often unneccessarily large. The framepop package makes such
 ;;; windows appear in a separate, shrink-wrapped frame. This will
 ;;; also affect other "temporary" windows such as those produced by
@@ -261,18 +264,18 @@
 ;; (cond (window-system
 ;;       (require 'framepop)))
 
-;;; (3.3) S-keep-dump-files.
+;;; (3.3) ess-keep-dump-files.
 ;;; Documentation:
 ;;; *Variable controlling whether to delete dump files after a successful load.
 ;;; If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
-;;; to delete, except for files created with S-dump-object-into-edit-buffer.
+;;; to delete, except for files created with ess-dump-object-into-edit-buffer.
 ;;; Anything else, never delete.  This variable only affects the behaviour
-;;; of S-load-file.  Dump files are never deleted if an error occurs
+;;; of ess-load-file.  Dump files are never deleted if an error occurs
 ;;; during the load. 
 ;;; RH sez: which I found imperative.  The default was to throw away
 ;;; files at the wrong time (I think it was something like, if you M-x
-;;; S-load a file twice, while you are working on it, the file is
-;;; deleted).  I believe source is real and the S object is temporary.
+;;; ess-load a file twice, while you are working on it, the file is
+;;; deleted).  I believe source is real and the ESS object is temporary.
 ;;; The default behavior is for people who believe the object is real
 ;;; and the source file temporary.
 (setq ess-keep-dump-files "always")
