@@ -253,11 +253,12 @@ Display Manager uses by default on those platforms.
 @item
 If your site installation has configured the keys contrary to your 
 liking, say 2, you must turn it off before selecting a different 
-option, say 3.  
+option, say 3, then you must call the appropriate function.  
 @example 
  (load "ess-site")
  (setq ess-sas-local-unix-keys nil) ;;2
  (setq ess-sas-local-pc-keys t)     ;;3
+ (ess-sas-local-pc-keys)
 @end example
 @end enumerate
 
