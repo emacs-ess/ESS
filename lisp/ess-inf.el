@@ -345,10 +345,32 @@ there is no process NAME)."
 	(setq ess-sl-modtime-alist nil)
 	;; Get search list when needed
 	(setq ess-sp-change t)
+
+	;; Add the process filter to catch certain output.
+	(set-process-filter (get-process proc-name)
+			    'inferior-ess-output-filter)
+	
 	(run-hooks 'ess-post-run-hook))
       (if (and inferior-ess-same-window (not inferior-ess-own-frame))
 	  (switch-to-buffer (process-buffer (get-process proc-name)))
 	(pop-to-buffer (process-buffer (get-process proc-name)))))))
+
+(defun inferior-ess-output-filter (proc string)
+  "Standard output filter for the inferior ESS process.
+Ring Emacs bell if process output starts with an ASCII bell, and pass
+the rest to `comint-output-filter'.
+Taken from octave-mod.el."
+  (comint-output-filter proc (inferior-ess-strip-ctrl-g string)))
+
+(defun inferior-ess-strip-ctrl-g (string)
+  "Strip leading `^G' character.
+If STRING starts with a `^G', ring the bell and strip it.
+Taken from octave-mod.el."
+  (if (string-match "^\a" string)
+      (progn
+        (ding)
+        (setq string (substring string 1))))
+  string)
 
 
 (defun ess-process-sentinel (proc message)
