@@ -11,41 +11,6 @@
 \ifdraft  %% generate tableofcontents down to the \paragraph
 \setcounter{tocdepth}{5}
 \fi
-%1. introduction
-%        a) a statistician's needs
-%        b) statistical analysis packages supported by ESS
-%3. ESS
-%        a) interactive
-%           1) S family
-%           2) SAS
-%        b) batch
-%           1) SAS
-%           2) BUGS
-%           3) S family
-%2. emacs
-%        a) buffers
-%        b) key sequences
-%        c) modes
-%                1) font-lock
-%                2) shell/comint
-%                3) ange-ftp/EFS/tramp
-%                4) vc/pcl-cvs
-%4. ESS as an open-source project
-%        a) origins
-%                1)S-mode
-%                2)SAS-mode
-%        b) unification
-%                1)ESS-mode
-%                2)Emacs/XEmacs
-%                3)Unix/Windows/Mac
-%5. conclusion
-%        a) summary
-%        b) what's next for ESS
-%   ESS internet resources
-%        a) home page
-%        b) ess-help
-%        c) anonymous cvs
-%   References
 
 \ifdraft
  \addtolength{\topmargin}{-1cm}
@@ -165,7 +130,7 @@
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/10/01 13:53:06 $ - $Revision: 1.32 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/10/01 21:48:54 $ - $Revision: 1.33 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -433,8 +398,7 @@ R or \Splus.
   \label{f.hilock}
 \end{figure}
 
-
-\paragraph{Getting Help, Navigation and Editing.}
+\paragraph{Help: Display, Navigation and Editing.}
 ESS provides display and navigation tools for S (R and \Splus) and
 \Stata\ help displays.  Displays of help files are done in a separate
 buffer.  These buffers include single key bookmarks of the main
@@ -449,9 +413,6 @@ execute code embedded in the help file in the same manner as ESS
 handles code from any S language source file.  It provides syntax
 highlighting and the ability to submit code directly to a running ESS
 process, either R or \Splus, for evaluation and debugging.
-%% AJR: Is this really an issue, separate from the editing one? MM:agree
-%% This latter feature is useful for ensuring that code developed
-%% using R runs under \Splus.
 
 %\paragraph{Simplifying Keymap Differences.}
 %Simple conflicts between interfaces are exemplified by different key
@@ -598,32 +559,6 @@ were running on the local machine.  If the X11 Windowing system is
 running on the local machine, it is even possible to bring up visual
 displays and graphics from remote Unix systems onto a local display.
 
-%\paragraph{Inter-Process Communication.}
-%Packages that use unix-style command-line interfaces can be run as an
-%inferior process within an Emacs buffer.  The standard input and
-%output of the package redirected to the buffer.
-
-%Packages that do not use the command-line interface must be run as an
-%independent process, possibly with limited cooperation.  For example,
-%ESS can use the Windows DDE (Dynamic Data Exchange) protocol to
-%provide one-way communication directly to packages which function as a
-%DDE server.  ESS can control the actions of the package, but it can
-%not capture the results directly.  Transcripts must be physically
-%copied to an Emacs buffer to get the transcript editing features.
-
-%Statistical packages that use neither the standard input/standard
-%output protocol nor DDE can not be directly controlled by Emacs.  If
-%the package has a batch environment that can operate from a file, ESS
-%can start and monitor its evaluation.
-
-%ESS can still provide an editing environment for these statistical
-%languages.  The user must either manually cut and paste the edited
-%code into the package or save the edited files and run them in a batch
-%environment.  The Microsoft Windows versions of \SAS, \Stata, and
-%\XLispStat\ are in this category.
-
-%Microsoft Windows or Apple Mac display.
-
 \paragraph{Interactive S family}
 ESS for S family statistical languages, \stexttt{iESS[S]}, replaces
 the \Splus\ Commands window or the R GUI window.  In addition to
@@ -666,11 +601,6 @@ interface, but with Emacs key sequences.
 \paragraph{Interactive BUGS.}
 BUGS software performs Markov Chain Monte Carlo integration.  ESS
 supports interactive processing of BUGS commands.
-
-% \stexttt{ESS[SAS]} mode can be used in conjunction with the \SAS\
-% Display Manager to allow simultaneous access to Emacs for editing
-% \SAS\ language code and to the \SAS\ mouse-based interfaces to the
-% graphical routines and help system.
 
 \subsection{Batch File Processing.}
 \label{sec:batch-file}
@@ -1015,47 +945,6 @@ desires for interface styles and code formats, and can be easily
 extended to support other statistical languages and data analysis
 packages.
 
-%\section{Future Work}
-
-%%%There are two active areas of extensions for user environments.  One
-%%%is to enhance the capabilities of the IDE for statistical practice;
-%%%this includes implementing such common IDE features as object
-%%%browsers, tool-tips, and interfacing cleaning.  The other is to target
-%%%appropriate potentially useful programming methodologies for transfer
-%%%to statistical practice.
-%%%
-%%%Literate Programming methodologies \citep{Knuth:1992,NRamsey:1994} are
-%%%a natural fit for statistical practice.  We refer to the application
-%%%to statistical analysis as Literate Statistical Practice
-%%%\citep{rossini:dsc:2001}.  The tools used are Noweb
-%%%\citep{NRamsey:1994} and either \LaTeX, \textsc{html}, or \textsc{xml}
-%%%for documenting and explaining the analysis.  This approach to
-%%%programming encourages the use of a literary documentation style to
-%%%explain the programming code for the data analysis.  The program can
-%%%then be extracted from the documentation text for realizing the
-%%%statistical analysis.
-
-%%future enhancement perhaps
-%%ESS provides the same ESS-elsewhere support for BUGS batch
-%%that it does for \SAS\ batch (see above).
-
-%Important extensions which should be implemented in future
-%versions include class browsers, analysis templates, tool-tips, and
-%similar features.  Class browsers can be thought of as a tree or
-%outline for presenting datasets, variables and functions in the
-%context of what they represent; this allows for rapid and appropriate
-%inspection.  Analysis templates would allow statistics centers and
-%groups to provide standardized templates for initiating an analysis.
-
-%Additional statistical packages can easily be added to ESS.
-
-%%While most IDE features have been developed for object-oriented
-%%languages, the above also can apply to non-object oriented
-%%programming.
-
-%ESS is one of the first  Rapid Application Development (RAD)
-%environments intended for statisticians.  It provides
-
 \bibliographystyle{plainnat}
 %\pdfbookmark[1]{References}{section.7}
 \addcontentsline {toc}{section}{\numberline {}References}
@@ -1096,60 +985,6 @@ general introduction and usage instructions can be found in
 \SAS\ can be found in \citep{heiberger:philasugi:2001}.  The
 documentation that comes with ESS provides details of its
 implementation as well as examples of its use.
-
-
-\newpage
-%\section*{Note to Editor and Referees}
-%We included color figures in the body of the paper because we believe
-%they better represent the screen as most users will see it.  We also
-%understand the cost issues associated with the production of a
-%journal.  We therefore also include black and white versions of the
-%figures.
-
-
-%\section*{Figures}
-%\label{sec:figures}
-
-
-%\setcounter{figure}{0}
-%\begin{figure}[tbp]
-%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas-bw}}
-%  \caption{Ediff of two versions of a file.}
-%  \label{f.ediff}
-%\end{figure}
-
-
-%\begin{figure}[tbp]%h
-%  \ESSfig{%
-%    \includegraphics[angle=270,width=\textwidth]{font-cor-s-bw}
-%    \includegraphics[angle=270,width=\textwidth]{font-incor-s-bw}
-%  }
-%  \caption{We illustrate here with fonts and colors appropriate for a
-%    black and white display.  On a color terminal we would use a
-%    selection of colors.}
-%  \label{f.font}
-%\end{figure}
-
-%\begin{figure}[tbp]
-%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{hilock-sas-bw}}
-%  \caption{Enforce coding standards.  The standard here is
-%    that all \stexttt{PROC} statements must use the
-%    \stexttt{DATA=datasetname} option.  Lines that satisfy the
-%    standard are given a shaded background, lines that don't are
-%    displayed in inverse video.  Ambiguous ones are displayed in a
-%    lighter shade of inverse video.}
-%  \label{f.hilock}
-%\end{figure}
-
-%\begin{figure}[tb]
-%  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo-bw}}
-%  \caption{Line-by-line execution of a command file. The cursor is
-%    placed on a line in the \stexttt{ESS[S]} buffer and then with a
-%    single key sequence, the line is sent to the \stexttt{*R*} buffer
-%    for execution.  The output of the package goes directly to the
-%    editable \stexttt{*R*} buffer.}
-%  \label{f.ess-demo}
-%\end{figure}
 
 \end{document}
 
