@@ -24,3 +24,38 @@ echo $0 $@
 sas </dev/tty 1>$5 2>$6 $1 $2 $3 $4
 
 
+## From the SAS online tech support:
+##
+## Redirecting the SAS Log and Output under UNIX. 
+## 
+## There are several ways of redirecting the SAS Log and Output under
+## UNIX.  
+## 
+## To redirect the SAS Log, follow one of these steps: 
+## 
+##    1.
+##          In the source code, place the following line: 
+## 
+##          proc printto log=stdout;
+## 
+##          to make a duplicate copy of the log in a file in addition
+##          to redirecting it to stdout, use this command to invoke
+##          SAS:  
+## 
+##          sas -altlog doit.log doit.sas
+## 
+##    2.Execute SAS in the background and use the UNIX 'tail' command
+##      to copy lines to stdout as they are added to the log. Use the 
+##      command: 
+## 
+##      sas doit.sas &; tail -f doit.log
+## 
+## To redirect the SAS Log and Output under the Korn shell, use the
+## following command:  
+## 
+## sas -stdio < doit.sas > doit.lst 2> doit.log
+## 
+## To redirect the SAS Log and Output under the C-Shell, use the
+## following command:   
+## 
+## (sas -stdio < doit.sas > doit.lst) >& doit.log
