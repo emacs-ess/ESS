@@ -448,16 +448,15 @@ if any exist, in PATH."
 (defun ess-delete-blank-lines ()
 "Convert 2 or more lines of white space into one.  This function
 works as you might expect, except that it must be terminated by C-g
-for some reason."
+for some reason.  On XEmacs, isolated blank lines are not removed,
+but on GNU Emacs they are removed?!?"
     (interactive)
 
     (save-excursion
 	(goto-char (point-min))
 
 	(save-match-data
-	    (let ((ess-tmp-point-max (point-max)))
-	    (while (and (re-search-forward "^[ \t]*$" nil t)
-		(re-search-forward "^[ \t]*$" ess-tmp-point-max t))
-		    (delete-blank-lines))))))
+	    (while (re-search-forward "^[ \t]*$" nil 'eof 2)
+		    (delete-blank-lines)))))
 
 (provide 'ess-utils)
