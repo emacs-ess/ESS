@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2003/07/11 01:23:07 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: essd-sas.el,v 5.13 2003/07/11 01:23:07 rmh Exp $
+;; Modified: $Date: 2003/07/15 18:11:24 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: essd-sas.el,v 5.14 2003/07/15 18:11:24 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -224,7 +224,11 @@ Better logic needed!  (see 2 uses, in this file).")
 		   (backward-word 1)
 		   (and (looking-at "run")
 			(progn
-			  (skip-chars-backward " \t")
+			;; if ess-sas-edit-keys-toggle, then
+			;; call ess-sas-backward-delete-tab
+			;; rather than skip-chars-backward
+			  (if ess-sas-edit-keys-toggle (ess-sas-backward-delete-tab)
+			      (skip-chars-backward " \t"))
 			  (bolp)))))
 	(progn
 	  (insert last-command-char)

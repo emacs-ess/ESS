@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2003/06/14 10:01:20 $
-;; Version: $Revision: 5.96 $
-;; RCS: $Id: ess-site.el,v 5.96 2003/06/14 10:01:20 maechler Exp $
+;; Modified: $Date: 2003/07/15 18:11:24 $
+;; Version: $Revision: 5.97 $
+;; RCS: $Id: ess-site.el,v 5.97 2003/07/15 18:11:24 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -577,14 +577,13 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;;   1. Editing SAS-mode files.
 ;;;   1a. Default: TAB is bound to sas-indent-line.
 ;;;	  Current line is correctly indented as SAS code.  Equivalent to
-;;;(setq ess-sas-edit-keys-toggle 0) ;; default TAB in sas-mode
+;;;(setq ess-sas-edit-keys-toggle nil) ;; default TAB in sas-mode
 ;;;   1b. Optional: TAB is bound to tab-to-tab-stop and inserts up to 4
 ;;;	  columns at a time.  C-TAB moves backwards and deletes characters
 ;;;	  up to 4 columns at a time.
 ;;;	  Uncomment the following line for the optional behavior.
-;;;(setq ess-sas-edit-keys-toggle 1)   ;; optional TAB and C-TAB in sas-mode
-;;;   Use the function call (ess-sas-edit-keys-toggle 0)
-;;;   or		    (ess-sas-edit-keys-toggle 1)
+;;;(setq ess-sas-edit-keys-toggle t)   ;; optional TAB and C-TAB in sas-mode
+;;;   Use the function call (ess-sas-edit-keys-toggle)
 ;;;   to change the setting after the first SAS-mode buffer has been created.
 ;;;   1c. You can also define C-TAB in all modes by specifying either
 ;;;(setq ess-sas-global-unix-keys t) ;; optional C-TAB bound in all modes

@@ -374,7 +374,7 @@ of that statement.  This is the type of functionality that emacs
 provides in most programming language modes.  This functionality is
 equivalent to uncommenting the following line in ess-site.el:
 @example
-(setq ess-sas-edit-keys-toggle 0)
+(setq ess-sas-edit-keys-toggle nil)
 @end example
 
 ESS provides an alternate behavior for the TAB key that makes it
@@ -384,7 +384,7 @@ C-TAB, that moves the cursor to the tab stop to the left and deletes
 any characters between them.  This functionality is obtained by uncommenting 
 the following line in ess-site.el:
 @example
-(setq ess-sas-edit-keys-toggle 1)
+(setq ess-sas-edit-keys-toggle t)
 @end example
 Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
 and the tab stops are set at multiples of sas-indent-width.
