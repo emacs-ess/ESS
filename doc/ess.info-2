@@ -15,7 +15,7 @@ Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version
+   This documentation relates to Version 5.1.21
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -1177,8 +1177,8 @@ enabled by default to use the same function keys that the SAS Display
 Manager uses.  The interactive capabilities of ESS require you to start
 an inferior SAS process with M-x SAS (described below).
 
-   At this writing (), the indenting and syntactic highlighting are
-usually correct.
+   At this writing (5.1.21), the indenting and syntactic highlighting
+are usually correct.
 
 
 File: ess.info,  Node: iESS--Inferior ESS processes,  Next: ESS[SAS]--Batch processes,  Prev: ESS[SAS]--Editing files,  Up: Help for SAS

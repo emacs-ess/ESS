@@ -15,7 +15,7 @@ Kurt Hornik, Martin Maechler, and Rodney A. Sparapani.
 interactive `statistical' languages in an `inferior' buffer, editing
 source code in these languages and interacting with the running program.
 
-   This documentation relates to Version
+   This documentation relates to Version 5.1.21
 
    Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -30,9 +30,9 @@ File: ess.info,  Node: Top,  Next: Introduction,  Prev: (dir),  Up: (dir)
 ESS: Emacs Speaks Statistics
 ****************************
 
-   ESS version
+   ESS version 5.1.21
 
-   (Documentation $Revision: 1.29 $ $Date: 2002/04/16 21:52:45 $).
+   (Documentation $Revision: 1.30 $ $Date: 2002/04/16 22:11:37 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
      Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and
