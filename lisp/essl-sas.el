@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/21 23:18:23 $
-;; Version: $Revision: 4.50 $
-;; RCS: $Id: essl-sas.el,v 4.50 1997/11/21 23:18:23 rossini Exp $
+;; Modified: $Date: 1997/11/24 15:39:40 $
+;; Version: $Revision: 4.51 $
+;; RCS: $Id: essl-sas.el,v 4.51 1997/11/24 15:39:40 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -187,16 +187,16 @@ popup window when the SAS job is finished.")
     (paragraph-start              . "^[ \t]*$")
     (paragraph-separate           . "^[ \t]*$")
     (paragraph-ignore-fill-prefix . t)
-    (fill-paragraph-function      . 'lisp-fill-paragraph)
+    ;;(fill-paragraph-function      . 'lisp-fill-paragraph)
     (adaptive-fill-mode           . nil)
     (indent-line-function         . 'sas-indent-line)
-    (indent-region-function       . 'lisp-indent-region)
+    (indent-region-function       . 'sas-indent-region)
     (require-final-newline        . t)
     (comment-start                . "\\*\\|/\\*")
     (comment-start-skip           . "\\*+")
     (comment-end                  . ";\\|\\*/")
     (comment-column               . 40)
-    (comment-indent-function      . 'lisp-comment-indent)
+    ;;(comment-indent-function      . 'lisp-comment-indent)
     (parse-sexp-ignore-comments   . t)
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
@@ -309,6 +309,18 @@ popup window when the SAS job is finished.")
         (indent-to indent)))
     (if (> (- (point-max) pos) (point))
         (goto-char (- (point-max) pos)))))
+
+
+(defun sas-indent-region (start end)
+  "Indent a region of SAS code."
+  (save-excursion
+    (let ((endmark (copy-marker end)))
+      (goto-char start)
+      (and (bolp) (not (eolp))
+	   (sas-indent-line))
+      (indent-sexp endmark)
+      (set-marker endmark nil))))
+
 
 (defun indent-sas-statement (arg)
   "Indent all continuation lines sas-indent-width spaces from first
