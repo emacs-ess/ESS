@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/19 21:17:02 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: essd-s+3.el,v 1.10 1997/06/19 21:17:02 rossini Exp $
+;; Modified: $Date: 1997/06/22 23:13:14 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: essd-s+3.el,v 1.11 1997/06/22 23:13:14 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s+3.el,v $
+;;: Revision 1.11  1997/06/22 23:13:14  rossini
+;;: removed S-inf... variable.  Whoops.
+;;:
 ;;: Revision 1.10  1997/06/19 21:17:02  rossini
 ;;: added font-lock-keywords, ala RMH.
 ;;:
@@ -85,14 +88,14 @@
   (inferior-ess))
 
 ;; From RMH:  (for both s+3 and s3) ? 
-(add-to-list 'S-inf-font-lock-keywords
-	     '("^Syntax error" . font-lock-reference-face)) ; S-inf problems
-(add-to-list 'S-inf-font-lock-keywords
-	     '("^Error:" . font-lock-reference-face)) ; S-inf error
-(add-to-list 'S-inf-font-lock-keywords
-	     '("^Error in" . font-lock-reference-face)) ; S-inf error
-(add-to-list 'S-inf-font-lock-keywords
-	     '("^Dumped" . font-lock-reference-face)) ; S-inf error
+;;(add-to-list 'S-inf-font-lock-keywords
+;;	     '("^Syntax error" . font-lock-reference-face)) ; S-inf problems
+;;(add-to-list 'S-inf-font-lock-keywords
+;;	     '("^Error:" . font-lock-reference-face)) ; S-inf error
+;;(add-to-list 'S-inf-font-lock-keywords
+;;	     '("^Error in" . font-lock-reference-face)) ; S-inf error
+;;(add-to-list 'S-inf-font-lock-keywords
+;;	     '("^Dumped" . font-lock-reference-face)) ; S-inf error
 
 
  ; Provide package
