@@ -1,4 +1,4 @@
-ESS version 5.1.8 requires Emacs version 19.29 or later, or version
+ESS version 5.1.n (n >= 2) requires Emacs version 19.29 or later, or version
 XEmacs 19.14 or later.  It has been most thoroughly tested with:
 
 @itemize @bullet
@@ -23,7 +23,7 @@ on the following platforms
 with the following Emacsen:
 
 @itemize @bullet
-@item Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.4, XEmacs 21.0
+@item Emacs 19.29, 19.34, 20.3, 20.4, XEmacs 19.16, XEmacs 20.4, XEmacs 21.0
 @item Emacs 19.28 with SAS (with additional modifications)
 @item NTEmacs 20.3.1 with S-PLUS 4.5.
 @end itemize

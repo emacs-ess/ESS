@@ -1,10 +1,10 @@
-## $Id: Makefile,v 5.19 1999/04/05 21:35:42 rossini Exp $
+## $Id: Makefile,v 5.20 1999/09/01 19:19:34 maechler Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
-ESSVERSION=5.1.8
+ESSVERSION=5.1.9
 ESSVERSIONDIR=ess-$(ESSVERSION)
-ESSVERSIONTAG=ess-5_1_8
+ESSVERSIONTAG=ess-5_1_9
 
 Subdirs = lisp doc
 
@@ -12,7 +12,7 @@ INTRO.DEPENDS=doc/credits.texi doc/inst_cvs.texi \
 	doc/newfeat.texi  doc/authors.texi  doc/currfeat.texi \
 	doc/inst_tar.texi doc/bugrept.texi  doc/license.texi  \
 	doc/requires.texi doc/bugs.texi     doc/getting.texi  \
-	doc/mailing.texi  doc/stabilty.texi 
+	doc/mailing.texi  doc/stabilty.texi
 
 
 all install clean distclean:
@@ -34,7 +34,7 @@ README : doc/readme.texi $(INTRO.DEPENDS)
 	cd doc ; makeinfo --no-validate --no-headers --no-split -o - readme.texi \
 	| perl -pe 'last if /^Concept Index/;' > ../README
 
-ANNOUNCE: doc/announc.texi $(INTRO.DEPENDS) 
+ANNOUNCE: doc/announc.texi $(INTRO.DEPENDS)
 	cd doc; makeinfo --no-validate --no-headers --no-split -o - announc.texi \
 	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
 
@@ -68,7 +68,7 @@ dist: README ANNOUNCE
 
 
 ## PA's version, infinitely interesting...
-#dist:   
+#dist:
 #        @if [ "X$(TAG)" = "X" ]; then echo "*** No tag ***"; exit 1; fi
 #        if [ "X$(OLD)" = "X" ]; then echo "No patch"; exit 1; fi
 #        @echo "**********************************************************"
@@ -92,16 +92,16 @@ dist: README ANNOUNCE
 #        sed -e '/defconst AUC-TeX-date/s/"[^"]*"/"'"`date`"'"/' \
 #            -e '/defconst AUC-TeX-version/s/"[^"]*"/"'$(TAG)'"/' \
 #            < tex.el.orig > tex.el
-#        rm -f $(REMOVE) 
-#        -cvs remove $(REMOVE) 
+#        rm -f $(REMOVE)
+#        -cvs remove $(REMOVE)
 #        -cvs add $(AUCSRC) $(EXTRAFILES)
 #        -(cd doc; cvs add `echo $(DOCFILES) | sed -e s@doc/@@g` )
 #        -(cd style; cvs add `echo $(STYLESRC) | sed -e s@style/@@g` )
 #        cvs commit -m "Release $(TAG)"
 #        cvs tag release_`echo $(TAG) | sed -e 's/[.]/_/g'`
-#        mkdir auctex-$(TAG) 
+#        mkdir auctex-$(TAG)
 #        mkdir auctex-$(TAG)/style
-#        mkdir auctex-$(TAG)/doc 
+#        mkdir auctex-$(TAG)/doc
 #        cp $(AUCSRC) $(EXTRAFILES) auctex-$(TAG)
 #        cp $(STYLESRC) auctex-$(TAG)/style
 #        cp $(DOCFILES)  auctex-$(TAG)/doc

@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/04/23 17:39:20 $
-;; Version: $Revision: 5.27 $
-;; RCS: $Id: ess-site.el,v 5.27 1999/04/23 17:39:20 maechler Exp $
+;; Modified: $Date: 1999/09/01 19:19:34 $
+;; Version: $Revision: 5.28 $
+;; RCS: $Id: ess-site.el,v 5.28 1999/09/01 19:19:34 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -77,15 +77,15 @@
 
   ;; NON DEFAULTS:
   ;;(defvar ess-lisp-directory
-  ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-5.1.8/lisp"))
-  ;;  >> or replace "ess-5.1.8" above by "ESS" which would be a symbolic link..
+  ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ess-5.1.9/lisp"))
+  ;;  >> or replace "ess-5.1.9" above by "ESS" which would be a symbolic link..
   ;;  >> This way, your .emacs (or default.el or site-start.el)
   ;;  >> won't have to change with each version of ESS
 
-  ;; example of "local" or personal use 
+  ;; example of "local" or personal use
   ;;(defvar ess-lisp-directory
   ;;(directory-file-name "/stat2/faculty/rossini/ESS/lisp"))
-  
+
   (add-to-list 'load-path ess-lisp-directory))
 
 
@@ -158,13 +158,13 @@
 ;;(setq-default inferior-S+4-print-command "notepad/p")
 ;;;
 ;;; The line below is the ESS default and sends the commands window
-;;; to emacs, giving the user the opportunity to 
+;;; to emacs, giving the user the opportunity to
 ;;; (1) edit the output into a clean ess-transcript file before printing, or
 ;;; (2) print a region of the file.
 ;;(setq-default inferior-S+4-print-command "S_PRINT_COMMAND=gnuclientw.exe")
 
 ;;; The editor and pager output from S+4 and Sqpe+4 are sent by
-;;; StatSci default to notepad, effectively using the definition: 
+;;; StatSci default to notepad, effectively using the definition:
 ;;(setq-default	 inferior-S+4-editor-pager-command
 ;;   "options(editor='notepad', pager='notepad')")
 ;;;
@@ -234,7 +234,7 @@
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files" t)
- 
+
 ;;; On a PC, the default is S+4.  Elsewhere (unix) the default is S+3
 (if (or (equal window-system 'w32) (equal window-system 'win32))
     (progn				; MS-Windows 9x/NT
@@ -249,7 +249,7 @@
 
 
 ;;;
-;;; AS OF 5.1.8, NO MORE CONDITIONALS ARE NEEDED!
+;;; AS OF 5.1.5, NO MORE CONDITIONALS ARE NEEDED!
 ;;;
 ;;(if (or (equal window-system 'w32) (equal window-system 'win32))
 ;;    (fset 'R 'R-microsoft)		; MS-Windows 9x/NT
@@ -258,11 +258,11 @@
 
 ;;;;* Alias S-mode to s-mode
 ;;; Emacs will set the mode for a file based on the file's header.
-;;; The mode name is indicated by putting it between -*- on the top line. 
+;;; The mode name is indicated by putting it between -*- on the top line.
 ;;; (Other commands can go here too, see an Emacs manual.)
 ;;; For a file you also load, you will want a leading # (comment to S)
 ;;; Emacs will downcase the name of the mode, e.g., S, so we must provide
-;;; s-mode in lower case too.  That is, "#-*- S-*-" invokes s-mode and 
+;;; s-mode in lower case too.  That is, "#-*- S-*-" invokes s-mode and
 ;;; not S-mode.
 (fset 'S-transcript-mode 's-transcript-mode)
 (fset 'S-mode 's-mode)
@@ -314,7 +314,7 @@
 ;;; Anything else (for example `always'): always keep and never delete.
 ;;; This variable only affects the behavior
 ;;; of ess-load-file.  Dump files are never deleted if an error occurs
-;;; during the load. 
+;;; during the load.
 ;;;
 ;;; RH sez: I find the default `always' keep to be imperative.	The previous
 ;;; default was to throw away
@@ -326,7 +326,7 @@
 ;;; and the source file temporary.
 (setq ess-keep-dump-files "always")
 
-;;; (3.4) ess-ask-for-ess-directory 
+;;; (3.4) ess-ask-for-ess-directory
 ;;; If t, will ask for the directory to use.  If nil, assumes the
 ;;; default (usually, the users home directory...).
 (setq ess-ask-for-ess-directory t)
@@ -340,15 +340,15 @@
 ;;; the line following it) will set the default directory to be your
 ;;; home directory:
 ;;;
-;;(defun ajr:ess-set-directory () 
+;;(defun ajr:ess-set-directory ()
 ;;  "Set ess-directory to home."
 ;;  (setq-default ess-directory (file-name-as-directory (getenv "HOME"))))
 ;;(add-hook 'ess-pre-run-hook 'ajr:ess-set-directory)
 ;;;
 ;;; If you replace the setq-default line with:
 ;;;
-;; (setq-default ess-directory (file-name-as-directory 
-;;						    (concat (getenv "HOME") "/ess/"))) 
+;; (setq-default ess-directory (file-name-as-directory
+;;						    (concat (getenv "HOME") "/ess/")))
 ;;;
 ;;; then it will always start up in the directory "ess" in your home
 ;;; directory.
@@ -356,7 +356,7 @@
 ;;; The default is to have ess to start up in the current buffer's
 ;;; directory (the one in which you started the inferior ESS
 ;;; statistical package/process).  This is obtained
-;;; by setting ess-directory to nil, i.e. 
+;;; by setting ess-directory to nil, i.e.
 ;; (setq-default ess-directory nil) ; this is the default.
 
 

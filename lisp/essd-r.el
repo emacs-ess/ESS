@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/07/06 10:21:05 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: essd-r.el,v 5.15 1999/07/06 10:21:05 maechler Exp $
+;; Modified: $Date: 1999/09/01 19:19:34 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: essd-r.el,v 5.16 1999/09/01 19:19:34 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -130,7 +130,7 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
 	(goto-char (point-max))
 	(beginning-of-line)
 	(insert
-"The interaction of ESS 5.1.8 and R 0.63.3 pre-Beta is rough:\n
+"The interaction of ESS 5.1.x and R 0.63.3 pre-Beta is rough:\n
 To start the graphics window, you must explicitly use the `x11()' command.\n
 You must quit R with `q()' or you take the risk of not being able
 to shut down the computer cleanly.\n\n")
