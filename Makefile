@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.21 1999/09/01 19:50:49 maechler Exp $
+## $Id: Makefile,v 5.22 1999/09/15 00:04:33 rossini Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
@@ -57,7 +57,7 @@ dist: README ANNOUNCE docs
 	-chmod a-w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
 	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Makefile
 	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
-	tar hcvof ESS-$(ESSVERSION).tar -X CVS $(ESSVERSIONDIR)
+	tar hcvof ESS-$(ESSVERSION).tar $(ESSVERSIONDIR)
 	gzip ESS-$(ESSVERSION).tar
 	scp ESS-$(ESSVERSION).tar.gz ess@franz.stat.wisc.edu:~/public_html
 	@echo "** Creating and placing zip file **"
