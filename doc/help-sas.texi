@@ -52,10 +52,11 @@ to start an inferior SAS process with M-x SAS
 (@xref{iESS(SAS)--Interactive SAS processes}.)
 
 At this writing, the indenting and syntax highlighting are generally 
-correct.  Known issues:  for multiple line * or %*
-comments, only the first line is highlighted; for .log files, only the first
-line of a NOTE:, WARNING: or ERROR: message is highlighted; unmatched 
-single/double quotes in CARDS data lines are NOT ignored.
+correct.  Known issues:  for multiple line * or %* comments, only the first 
+line is highlighted; for .log files, only the first line of a NOTE:, WARNING: 
+or ERROR: message is highlighted; unmatched single/double quotes in CARDS 
+data lines are NOT ignored; in a DO ... TO or a DO ... TO ... BY statement,
+TOs are not highlighted (and neither is BY).
 
 @comment  node-name,  next,  previous,  up
 @node  iESS(SAS)--Interactive SAS processes, ESS(SAS)--Batch SAS processes, ESS(SAS)--Editing files, Help for SAS
