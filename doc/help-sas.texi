@@ -143,8 +143,23 @@ We plan to add
 @node  ESS(SAS)--Batch processes, ESS(SAS)--Function keys for batch processing, iESS(SAS)--Inferior ESS processes, Help for SAS
 @section ESS[SAS]--Batch processes
 
+Submission of a SAS batch job is dependent on your environment.  
+ess-sas-submit-method is determined by your operating system and your shell.
+It defaults to 'sh unless you are running Windows or Mac Classic.  Under Windows,
+it will default to 'sh if you are using bash for your shell rather than
+MS-DOS ('ms-dos).  On Mac OS X, it will default to 'sh, but under Mac Classic 
+AppleScript is used ('apple-script).  You will also set this to 'sh if the SAS batch 
+job needs to run on a remote machine rather than your local machine.  This works
+transparently if you are editing the remote file via ange-ftp/EFS or tramp.  
+However, if you are editing the file locally and transferring it back and forth
+with Kermit, you need some additional steps.  First of all, start Kermit locally
+before remotely logging in.  Execute the command ess-kermit-get.  A local copy
+of the file will be created with the ess-kermit-prefix character prepended (the
+default is ":").  Also, note that the remote Kermit command is defined by
+ess-kermit-command.  
+
 The command used by the SUBMIT function key (F3 or F8) to submit a batch SAS 
-job is ess-sas-submit-command which defaults to sas-program.  sas-program is 
+job, whether local or remote, is ess-sas-submit-command which defaults to sas-program.  sas-program is 
 "invoke SAS using program file" for Mac Classic and "sas" otherwise.  However, 
 you may have to alter ess-sas-submit-command for a particular program, so it is 
 defined as buffer-local (conveniently, you can set it in Local Variables: at 
