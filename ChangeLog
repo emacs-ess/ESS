@@ -1,3 +1,48 @@
+Fri Nov  7 18:33:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: SAS problems.
+
+Fri Nov  7 18:28:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-R-input-sender): patch to avoid problems
+ 	with R, for "help()" (MM).
+
+Fri Nov  7 18:17:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el: added comments re: TT commenting/editing styles.
+
+Fri Nov  7 18:10:25 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: indentation.
+
+Fri Nov  7 14:42:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: changes for TT (RMH).
+
+Fri Nov  7 14:31:35 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el (sas-require-confirmation): doc string edit.
+
+Fri Nov  7 14:30:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-transcript-minor-mode): 
+
+	* ess-vars.el (ess-listing-minor-mode): new variables.  Use. (RMH)
+	
+
+Fri Nov  7 14:29:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el:  fixes for multiple SAS processes. (RMH)
+
+Fri Nov  7 13:53:16 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el: changes for SAS mode (RMH-2Nov).
+
+Fri Nov  7 13:47:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: patches for Terry Thernau's suggested indentation
+ 	(RMH)
+
 Fri Nov  7 13:37:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README.XLispStat: new file.  read it.
@@ -612,6 +657,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.19  1997/11/07 23:49:05  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.18  1997/11/07 18:37:51  rossini
 	* Removing *** empty log message ***
 	* Removing
