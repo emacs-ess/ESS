@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.57 2004/05/22 20:00:07 stephen Exp $
+@comment $Id: ess.texi,v 5.58 2004/06/24 12:22:03 stephen Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.57 $ $Date: 2004/05/22 20:00:07 $)
+@subtitle (Documentation $Revision: 5.58 $ $Date: 2004/06/24 12:22:03 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.57 $ $Date: 2004/05/22 20:00:07 $).
+        (Documentation $Revision: 5.58 $ $Date: 2004/06/24 12:22:03 $).
 
 @display
 by  A.J. Rossini,
@@ -2455,6 +2455,7 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 * Highlighting::                Syntactic highlighting of buffers
 * Graphics::                    Using graphics with ESS
 * Imenu::                       Support for Imenu in ESS
+* Toolbar::                     Support for toolbar in ESS
 * Object Completion::
 @end menu
 
@@ -2563,7 +2564,7 @@ interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
 this information.)
 
 @comment  node-name,  next,  previous,  up
-@node Imenu, Object Completion,  Graphics, Miscellaneous
+@node Imenu, Toolbar,  Graphics, Miscellaneous
 @section Imenu
 
 Imenu is an Emacs tool for providing mode-specific buffer indexes.  In
@@ -2574,7 +2575,18 @@ particular parts of your source file (such as the starting point of each
 function definition).
 
 @comment  node-name,  next,  previous,  up
-@node Object Completion,  , Imenu, Miscellaneous
+@node Toolbar, Object Completion,  Imenu, Miscellaneous
+@section Toolbar
+
+The R and S editing modes have support for a toolbar.  This toolbar
+provides icons to act as shortcuts for starting new S/R processes, or
+for evaluating regions of your source buffers.  The toolbar should be
+present if your emacs can display images.  @xref{Customization}, for ways
+to change the toolbar.
+
+
+@comment  node-name,  next,  previous,  up
+@node Object Completion,  , Toolbar, Miscellaneous
 @section Object Completion
 
 
