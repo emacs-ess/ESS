@@ -1,15 +1,15 @@
 ;;; ess-site.el --- user customization of ess-mode
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--2001 A.J. Rossini, R.M. Heiberger, Martin
+;; Copyright (C) 1997--2003 A.J. Rossini, R.M. Heiberger, Martin
 ;; Maechler, Kurt Hornik, Rodney Sparapani.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2003/01/05 19:51:18 $
-;; Version: $Revision: 5.95 $
-;; RCS: $Id: ess-site.el,v 5.95 2003/01/05 19:51:18 rmh Exp $
+;; Modified: $Date: 2003/06/14 10:01:20 $
+;; Version: $Revision: 5.96 $
+;; RCS: $Id: ess-site.el,v 5.96 2003/06/14 10:01:20 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -48,9 +48,9 @@
 ;;; will work.
 ;;;
 ;;; with XEmacs, this is simply:
-;;;      (add-path "/path/to/ess/lisp-directory")
+;;;	 (add-path "/path/to/ess/lisp-directory")
 ;;; with Emacs (and in general):
-;;;      (setq load-path (cons "/path/to/ess/lisp-directory" load-path)
+;;;	 (setq load-path (cons "/path/to/ess/lisp-directory" load-path)
 ;;;
 
 ;; provide here; otherwise we'll get infinite loops of (require ..):
@@ -76,6 +76,9 @@
 
   ;; WARNING: with Emacs 20.2 (and 20.3 in one case),
   ;; =======  MUST USE ONE OF THE NON-DEFAULT SETTINGS BELOW
+
+  ;; NOTE again: MOST people should NOT change anything here !!!
+  ;; ====	 ====	     ================
 
   ;; A nice default
   (defvar ess-lisp-directory
@@ -123,7 +126,7 @@
 	;; we use functions not in 19.28, so include them
 	(load-file (concat ess-lisp-directory "/19.29/extras.el"))
 	(load-file (concat ess-lisp-directory "/19.29/easymenu.el"))
-;;      (if window-system  ;;  essl-sas wants these even without window-system
+;;	(if window-system  ;;  essl-sas wants these even without window-system
 	    (progn
 	      ;; comment and reference faces
 	      (load-file (concat ess-lisp-directory
@@ -147,7 +150,7 @@ The extension, in a file name, is the part that follows the last `.'."
 		(if (setq directory (file-name-directory filename))
 		    (expand-file-name (substring file 0 (match-beginning 0))
 				      directory)
-	          (substring file 0 (match-beginning 0)))
+		  (substring file 0 (match-beginning 0)))
 	      filename)))))
 
   (add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
@@ -170,7 +173,7 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;; The following require sets the following ess-local-custom-available to
 ;;; true if custom is provided at this point.  If we think it will be,
 ;;; then we can use the following (uncommented out) to make sure that
-;;; it will be.  (AJR).
+;;; it will be.	 (AJR).
 (require 'ess-emcs)
 ;; This will override what Emacs thinks it can detect.
 ;;(setq ess-local-custom-available t); if custom is available, uncomment
@@ -191,7 +194,7 @@ The extension, in a file name, is the part that follows the last `.'."
 
 (autoload 'Rd-mode "essddr" "Major mode for editing R documentation." t)
 
-;; This fails in Emacs.  How can it be done simply?  Should it be
+;; This fails in Emacs.	 How can it be done simply?  Should it be
 ;; done?  It works in XEmacs.
 ;;    ;; get rid of assembler mode.
 ;;    (set auto-mode-alist (remassoc "\\.[sS]\\'" auto-mode-alist))
@@ -209,8 +212,8 @@ The extension, in a file name, is the part that follows the last `.'."
 	   ("\\.[rR]\\'"  . R-mode)
 	   ("\\.[rR]nw\\'"  . Rnw-mode)
 	   ("\\.[rR]profile\\'" . R-mode)
-	   ("\\.omg\\'"         . omegahat-mode)
-	   ("\\.hat\\'"         . omegahat-mode) ;; Duncan's pref'd...
+	   ("\\.omg\\'"		. omegahat-mode)
+	   ("\\.hat\\'"		. omegahat-mode) ;; Duncan's pref'd...
 	   ("\\.lsp\\'"		. XLS-mode)
 	   ("\\.do\\'"		. STA-mode)
 	   ("\\.ado\\'"		. STA-mode)
@@ -224,10 +227,10 @@ The extension, in a file name, is the part that follows the last `.'."
 	   ("\\.[Rr]t\\'"	. R-transcript-mode)
 	   ("\\.[Rr]out"	. R-transcript-mode)
 	   ("\\.Rd\\'"		. Rd-mode)
-           ("\\.[Bb][Uu][Gg]\\'"         . ess-bugs-mode)
-           ("\\.[Bb][Oo][Gg]\\'"         . ess-bugs-mode)
-           ("\\.[Bb][Mm][Dd]\\'"         . ess-bugs-mode)
-          )
+	   ("\\.[Bb][Uu][Gg]\\'"	 . ess-bugs-mode)
+	   ("\\.[Bb][Oo][Gg]\\'"	 . ess-bugs-mode)
+	   ("\\.[Bb][Mm][Dd]\\'"	 . ess-bugs-mode)
+	  )
 	 auto-mode-alist)))
 
 ;; (1.4) Customize the dialects for your setup.
@@ -314,7 +317,7 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;; We then send several lines to the Commands window before returning
 ;;; control to the user.  On a 300 MHz machine with 96MB of RAM the
 ;;; delay is 60 seconds.  On a ???? MHz machine with 523MB the delay is
-;;; 10 seconds.  The user may need to adjust this number.
+;;; 10 seconds.	 The user may need to adjust this number.
 (defvar ess-S+6-startup-delay 60
 "*Number of seconds to wait for the Commands window to appear before
 sending `inferior-ess-language-start' to S-Plus.")
@@ -336,7 +339,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 
 ;; (1.5) Require the needed dialects for your setup.
-(if (< max-specpdl-size 700)     ;;; ESS won't load at the default of 600
+(if (< max-specpdl-size 700)	 ;;; ESS won't load at the default of 600
     (setq max-specpdl-size 700))
 
 (ess-message "[ess-site:] Before requiring dialect 'essd-** ....")
@@ -371,11 +374,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 (require 'essd-arc)  ;; Arc
 (ess-message "[ess-site:] require 'essd-sas ...")
 (require 'essd-sas)
-(save-excursion                           ;;workaround for ess-smart-underscore
+(save-excursion				  ;;workaround for ess-smart-underscore
   (switch-to-buffer "unlikely-name.sas")  ;;workaround for ess-smart-underscore
-  (sas-mode)                              ;;workaround for ess-smart-underscore
+  (sas-mode)				  ;;workaround for ess-smart-underscore
   (define-key sas-mode-local-map "_" nil) ;;workaround for ess-smart-underscore
-  (kill-buffer "unlikely-name.sas"))      ;;workaround for ess-smart-underscore
+  (kill-buffer "unlikely-name.sas"))	  ;;workaround for ess-smart-underscore
 (ess-message "[ess-site:] require 'essd-els ...")
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 (ess-message "[ess-site:] require 'essd-omg ...")
@@ -391,8 +394,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 (require 'ess-noweb)
 ;(setq auto-mode-alist
 ;      (append
-;       '(("\\.nw\\'"          . noweb-mode)) ;; Literate Data Analysis
-;       auto-mode-alist))
+;	'(("\\.nw\\'"	       . noweb-mode)) ;; Literate Data Analysis
+;	auto-mode-alist))
 
 ;; ALWAYS:
 (require 'ess)
@@ -428,7 +431,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files." t)
 
-(autoload 'ess-rdired "ess-rdired" 
+(autoload 'ess-rdired "ess-rdired"
   "View *R* objects in a dired-like buffer." t)
 
 ;;; On a PC, the default is S+6.
@@ -573,20 +576,20 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; There are two sets of alternatives.
 ;;;   1. Editing SAS-mode files.
 ;;;   1a. Default: TAB is bound to sas-indent-line.
-;;;       Current line is correctly indented as SAS code.  Equivalent to
+;;;	  Current line is correctly indented as SAS code.  Equivalent to
 ;;;(setq ess-sas-edit-keys-toggle 0) ;; default TAB in sas-mode
 ;;;   1b. Optional: TAB is bound to tab-to-tab-stop and inserts up to 4
-;;;       columns at a time.  C-TAB moves backwards and deletes characters
-;;;       up to 4 columns at a time.
-;;;       Uncomment the following line for the optional behavior.
+;;;	  columns at a time.  C-TAB moves backwards and deletes characters
+;;;	  up to 4 columns at a time.
+;;;	  Uncomment the following line for the optional behavior.
 ;;;(setq ess-sas-edit-keys-toggle 1)   ;; optional TAB and C-TAB in sas-mode
 ;;;   Use the function call (ess-sas-edit-keys-toggle 0)
-;;;   or                    (ess-sas-edit-keys-toggle 1)
+;;;   or		    (ess-sas-edit-keys-toggle 1)
 ;;;   to change the setting after the first SAS-mode buffer has been created.
 ;;;   1c. You can also define C-TAB in all modes by specifying either
 ;;;(setq ess-sas-global-unix-keys t) ;; optional C-TAB bound in all modes
 ;;;(setq ess-sas-global-pc-keys t)   ;; optional C-TAB bound in all modes
-;;;       See below.
+;;;	  See below.
 ;;;
 ;;;   2. Managing submitted SAS jobs with function keys.
 ;;;   2a. Default: Function keys retain their global bindings.
@@ -597,13 +600,13 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;;(setq ess-sas-global-pc-keys t)   ;; [f2]--[f8] bound in all modes
 ;;;
 ;;;   3. If it is more convenient to have "*Async Shell Command*"
-;;;      in same-window-buffer-names, then uncomment the following line
+;;;	 in same-window-buffer-names, then uncomment the following line
 ;;;(ess-same-window-async)
 ;;;
 ;;;   4. As of 5.1.19, a new and improved syntax highlighting scheme for .sas and .log
 ;;;	 files is available (press f10 to toggle between modes in .log).  If you are
-;;;      using XEmacs v. 20.x, then you need this as well, since it works around a
-;;;      problem with make-regexp.el.  Uncomment the next line for this feature:
+;;;	 using XEmacs v. 20.x, then you need this as well, since it works around a
+;;;	 problem with make-regexp.el.  Uncomment the next line for this feature:
 ;;;(setq ess-sas-run-make-regexp nil)
 
 
