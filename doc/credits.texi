@@ -3,7 +3,7 @@
 @cindex credits
 
 The ESS environment is built on the open-source projects of
-many contributors, dating back over 10 years.
+many contributors, dating back nearly 15 years.
 Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and Splus
 files in GNU Emacs.  Frank Ritter and Mike Meyer added features,
 creating version 2.  Meyer and David Smith made further contributions,
