@@ -240,16 +240,17 @@ These buffers can control programs that transfer files over a network,
 perform version control operations or many other tasks.
 An important example of this kind of major-mode is \stexttt{shell-mode}.
 
-Minor-modes, by contrast, provide
-services that are not mutually exclusive.  This includes emulation of
-another editor or cooperating with a version control program.  For
-example, the minor-mode \stexttt{font-lock-mode} allows Emacs to highlight, with
-fonts or colors, the syntax of a programming language whose
-characteristics are described by a major-mode like ESS. 
-Remote editing of files is provided by minor-modes \stexttt{ange-ftp} and 
-\stexttt{EFS} for ftp access or \stexttt{tramp} for scp/ssh/telnet.
-Interacting with version control programs is provided by the minor-mode
-\stexttt{vc-mode} for packages like CVS, RCS and SCCS. 
+Minor-modes, by contrast, provide services that are not mutually
+exclusive.  This includes emulation of another editor or cooperating
+with a version control program.  For example, the minor-mode
+\stexttt{font-lock-mode} allows Emacs to highlight, with fonts or
+colors, the syntax of a programming language whose characteristics are
+described by a major-mode like ESS.  Remote editing of files is
+provided by minor-modes \stexttt{ange-ftp} and \stexttt{EFS} for ftp
+access or \stexttt{tramp} for scp or ssh connections, as well as the
+other insecure transfer protocols.  Interacting with revision control
+programs is provided by the minor-mode \stexttt{vc-mode} (or the more
+specialized \stexttt{pcl-cvs}) for packages like CVS, RCS and SCCS.
 
 Most programming and documentation tasks fall under the realm of text
 editing.  This work can be enhanced by modes which provide features such 
