@@ -1,6 +1,6 @@
 ;; essddr.el --- Support for editing R documentation (Rd) source
 
-;; Copyright (C) 1997--2002  A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2005  A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
@@ -29,7 +29,7 @@
 ;; To stave off byte compiler errors
 (eval-when-compile (require 'ess-help))
 
-(defvar essddr-version "0.9"
+(defvar essddr-version "0.9-1"
   "Current version of essddr.el.")
 
 (defvar essddr-maintainer-address
@@ -135,15 +135,18 @@ All Rd mode abbrevs start with a grave accent (`).")
 
 (defvar Rd-section-names
   '("arguments" "alias" "author" "concept" "describe" "description"
-    "details" "docType" "enumerate" "examples" "format" "itemize"
-    "keyword" "name" "note" "preformatted" "references" "seealso"
-    "section" "source" "synopsis" "tabular" "title" "usage" "value"))
+    "details" "docType" "encoding" "enumerate" "examples" "format"
+    "itemize" "keyword" "name" "note" "preformatted" "references"
+    "seealso" "section" "source" "synopsis" "tabular" "title" "usage"
+    "value"))
+
 (defvar Rd-keywords
   '("Alpha" "Gamma" "R" "S3method" "S4method" "acronym" "alpha" "beta"
-    "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dots"
-    "email" "emph" "env" "epsilon" "eqn" "file" "ge" "item" "kbd"
-    "lambda" "ldots" "le" "left" "link" "method" "mu" "option" "pi"
-    "pkg" "right" "sQuote" "samp" "sigma" "strong" "tab" "url" "var"))
+    "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dontrun"
+    "dontshow" "dots" "email" "emph" "env" "epsilon" "eqn" "file" "ge"
+    "item" "kbd" "lambda" "ldots" "le" "left" "link" "method" "mu"
+    "option" "pi" "pkg" "right" "sQuote" "samp" "sigma" "strong" "tab"
+    "url" "var"))
 
 ;; Need to fix Rd-bold-face problem.
 ;;
