@@ -1,6 +1,6 @@
 -*- mode: text; mode: view-minor -*-
 
-($Revision: 5.6 $)
+($Revision: 5.7 $)
 
 Emacs Speaks Statistics (ESS), version 5.1.2
 --------------------------------------------
@@ -73,6 +73,16 @@ and transcripts of previous S sessions in ESS Transcript mode.  All
 three modes know the S language, syntax, and indentation patterns and
 provide the syntactic highlighting that eases the programming tasks.
 
+For Microsoft platforms, the version of Emacs that this has been
+tested with is NTEmacs 20.2 and 20.3.  More information about NTEmacs
+can be retrieved from:
+
+    http://www.cs.washington.edu/homes/voelker/ntemacs.html 
+
+including information on retrieval and installation.  This has not yet
+been tested with XEmacs for Microsoft Windows 95/98/NT.
+
+
 1. FEATURES
 -----------
 
@@ -134,11 +144,17 @@ S-PLUS, R, SAS, or XLispStat.
 
 It has been most thoroughly tested with:
 
-	S-PLUS 3.3 and 3.4, R 0.49 and 0.50, XLispStat 3.50, S4, and
-	SAS on (when available) SunOS, Solaris, SGI, and Linux (Unix)
-	systems;
+	S-PLUS versions 3.3, 3.4, 4.5, 5.0; R versions >=0.49;
+	XLispStat versions >=3.50; S4; and SAS;
+	
+	on the following systems:
+	   SunOS (all)
+	   Solaris (all)
+	   SGI (all)
+	   Linux (S-PLUS 5.0, R, XLispStat, S4)
+	   Microsoft Windows 95/98/NT (SPLUS 4.5)
 
-	Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.4.
+	Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.4, XEmacs 21.0
 
 	Emacs 19.28 with SAS (with additional modifications)
 
@@ -149,8 +165,8 @@ configuration suggestions for emacs 19.28 in Doc/README-19.28.
 These are the changes we made in order to use ESS with SAS on a Digital
 Alpha running Emacs 19.28.
 
-Preliminary work for porting to Microsoft-developed operating systems
-is on going, especially with Splus 4.x and NT Emacs.  Other possibly
+Work for porting to Microsoft-developed operating systems is
+continuing, especially with Splus 4.x and NT Emacs.  Other possible
 connections include XLispStat (under the Splus DDE interface), R, SAS,
 SPSS, and Stata.  In addition, XEmacs support (for native NT and
 Cygwin versions) needs to be evaluated.
