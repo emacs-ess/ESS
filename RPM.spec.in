@@ -1,10 +1,10 @@
 # This is an RPM spec file that specifies how to package
 # ESS for Fedora Core Linux and, possibly, similar systems.
-# $Id: emacs-ess.spec,v 1.8 2004/08/27 11:59:22 thor Exp $
+# $Id: emacs-ess.spec,v 1.9 2004/10/15 16:44:43 thor Exp $
 
 %define name emacs-ess
 %define version @@VERSION@@
-%define release 3.tgm
+%define release 1.tgm
 Summary: Emacs Speaks Statistics add-on package for Emacs
 Name: %{name}
 Version: %{version}
@@ -12,7 +12,6 @@ Release: %{release}
 Copyright: GPL
 Group: Applications/Editors
 Source: http://ESS.R-project.org/downloads/ess/ess-%{version}.tar.gz
-Patch0: ess-%{version}-site.patch
 URL: http://ESS.R-project.org/
 Packager: Tom Moertel <tom-rpms@moertel.com>
 BuildRoot: %{_tmppath}/%{name}-root
@@ -39,7 +38,6 @@ statistical analysis languages.
 %prep
 %setup -n ess-%{version}
 ( cd doc && chmod u+w html info ) # fix perms to ensure builddir can be deleted
-%patch0 -p1 -b .site
 
 %build
 make
@@ -118,6 +116,9 @@ fi
 
 
 %changelog
+* Fri Oct 15 2004 Tom Moertel <thor@bifur.lab01.moertel.com> 5.2.3-1.tgm
+- Updated to ESS 5.2.3.
+
 * Fri Aug 27 2004 Tom Moertel <thor@bifur.lab01.moertel.com> 5.2.2-3.tgm
 - Updated ESS URL.
 - Fixed Summary.
