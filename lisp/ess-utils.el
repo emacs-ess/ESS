@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/12/26 22:25:07 $
-;; Version: $Revision: 5.22 $
-;; RCS: $Id: ess-utils.el,v 5.22 2002/12/26 22:25:07 rsparapa Exp $
+;; Modified: $Date: 2002/12/30 19:08:14 $
+;; Version: $Revision: 5.23 $
+;; RCS: $Id: ess-utils.el,v 5.23 2002/12/30 19:08:14 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -309,13 +309,32 @@ Return t if buffer was modified, nil otherwise."
 
 ess-temp-return-value))
 
-(defun ess-set-local-variables (alist &optional buffer)
-"Set local variables from ALIST, in BUFFER if specified.
-Used in conjuntion with `buffer-local-variables'."
-  (if buffer (set-buffer buffer))
+(defun ess-get-file-or-buffer (file-or-buffer)
+"Return file-or-buffer if it is a buffer; otherwise return the buffer 
+associated with the file which must be qualified by it's path; if the
+buffer does not exist, return nil."
+(interactive)
+
+(if file-or-buffer
+    (if (bufferp file-or-buffer) file-or-buffer
+	(find-buffer-visiting file-or-buffer))))
+
+(defun ess-set-local-variables (alist &optional file-or-buffer)
+"Set local variables from ALIST in current buffer; if file-or-buffer
+is specified, perform action in that buffer."
+(interactive)
+
+  (if file-or-buffer (set-buffer (ess-get-file-or-buffer file-or-buffer)))
+
   (mapcar (lambda (pair)
 	    (make-local-variable (car pair))
             (set (car pair) (eval (cdr pair))))
           alist))
+
+(defun ess-clone-local-variables (from-file-or-buffer &optional to-file-or-buffer)
+"Clone local variables from one buffer to another buffer, current buffer if nil."
+    (interactive)
+
+    (ess-set-local-variables (ess-sas-create-local-variables-alist from-file-or-buffer) to-file-or-buffer))
 
 (provide 'ess-utils)

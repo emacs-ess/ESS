@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/12/26 22:25:07 $
-;; Version: $Revision: 1.133 $
-;; RCS: $Id: essa-sas.el,v 1.133 2002/12/26 22:25:07 rsparapa Exp $
+;; Modified: $Date: 2002/12/30 19:08:14 $
+;; Version: $Revision: 1.134 $
+;; RCS: $Id: essa-sas.el,v 1.134 2002/12/30 19:08:14 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -323,6 +323,14 @@ on the way."
 
 ;;	  (if ess-sas-search-point (insert ess-sas-end-text))
 ;;         ))
+
+(defun ess-sas-create-local-variables-alist (&optional file-or-buffer)
+"Create an alist of local variables from file-or-buffer, use the 
+current buffer if nil."
+
+(if file-or-buffer (set-buffer (ess-get-file-or-buffer file-or-buffer)))
+
+(ess-change-alist 'ess-kermit-remote-directory ess-kermit-remote-directory nil))
 
 (defun ess-sas-data-view (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
