@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.25 2002/05/10 20:35:29 maechler Exp $
+@comment $Id: ess.texi,v 5.26 2002/05/10 22:04:12 rmh Exp $
 
 @include version.texi
 
@@ -41,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.25 $ $Date: 2002/05/10 20:35:29 $)
+@subtitle version @essver{} (Documentation $Revision: 5.26 $ $Date: 2002/05/10 22:04:12 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -86,7 +86,7 @@ permission notice identical to this one.
 
 ESS version @essver{}
 
-        (Documentation $Revision: 5.25 $ $Date: 2002/05/10 20:35:29 $).
+        (Documentation $Revision: 5.26 $ $Date: 2002/05/10 22:04:12 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
@@ -2299,7 +2299,7 @@ directory, move it there).
 @comment  node-name,  next,  previous,  up
 @comment @chapter Using S4
 @node Help for Statistical Packages, Installation, Bugs Etc, Top
-@chapter Help for Statistical Packages
+@comment @chapter Help for Statistical Packages
 
 @menu
 * Help for the S family::       
@@ -2309,7 +2309,7 @@ directory, move it there).
 
 @comment  node-name,  next,  previous,  up
 @node Help for the S family, Help for SAS, Help for Statistical Packages, Help for Statistical Packages
-@section Help for the S family
+@chapter Help for the S family
 @menu
 * ESS[S]--Editing files::
 * iESS[S]--Inferior ESS processes::
@@ -2321,9 +2321,8 @@ directory, move it there).
 @end menu
 @include help-s.texi
 
-@comment  node-name,  next,  previous,  up
 @node Help for SAS,  , Help for the S family, Help for Statistical Packages
-@section Help for SAS
+@chapter Help for SAS
 
 @menu
 * ESS[SAS]--Design philosophy::
