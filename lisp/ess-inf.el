@@ -1680,23 +1680,26 @@ to the command if BUFF is not given.)"
 
 ;;;*;;; Quitting
 
-(defun ess-quit ()
+(defun ess-quit (dont-cleanup)
   "Issue an exiting command to the inferior process, and clean up."
-  (interactive)
+  (interactive "P")
   (ess-force-buffer-current "Process to quit: ")
   (ess-make-buffer-current)
   ;;  Modified to handle R (rmh 2002 Mar 12)
   (let ((sprocess (get-ess-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running."))
     (if (yes-or-no-p (format "Really quit ESS process %s? " sprocess))
-	(progn   ;;;;previouslyl (save-excursion
-	  (ess-cleanup)
+	(progn ;; previously (save-excursion
+	  (if dont-cleanup nil (ess-cleanup))
 	  (goto-char (marker-position (process-mark sprocess)))
 	  (insert inferior-ess-exit-command)
 	  (if (string-equal ess-dialect "R")
 	      (progn
 		(inferior-ess-send-input)
 		(setq inferior-ess-prompt inferior-ess-exit-prompt)
+		(if ess-verbose
+		    (ess-write-to-dribble-buffer
+		     (format "(ess-quit): prompt '%s'\n" inferior-ess-prompt)))
 		(inferior-ess-wait-for-prompt))
 	    (process-send-string sprocess inferior-ess-exit-command))
 	  (rename-buffer (concat (buffer-name) "-exited") t)))))
@@ -1724,21 +1727,18 @@ before you quit.  It is run automatically by \\[ess-quit]."
       (error "I don't know which ESS process to clean up after!"))
     (if (y-or-n-p
 	 (format
-	  "Delete all buffers associated with process %s? "
-	  the-procname))
-	(progn
-	  (save-excursion
-	    (mapcar '(lambda (buf)
-		       (set-buffer buf)
-		       ;; Consider buffers for which
-		       ;; ess-local-process-name is the same as
-		       ;; the-procname
-		       (if (and (not (get-buffer-process buf))
-				ess-local-process-name
-				(equal ess-local-process-name
-				       the-procname))
-			   (kill-buffer buf)))
-		    (buffer-list)))))
+	  "Delete all buffers associated with process %s? " the-procname))
+	(save-excursion
+	  (mapcar '(lambda (buf)
+		     (set-buffer buf)
+		     ;; Consider buffers for which
+		     ;; ess-local-process-name is the same as
+		     ;; the-procname
+		     (if (and (not (get-buffer-process buf))
+			      ess-local-process-name
+			      (equal ess-local-process-name the-procname))
+			 (kill-buffer buf)))
+		  (buffer-list))))
     (ess-switch-to-ESS nil)))
 
 (defun ess-kill-buffer-function nil
@@ -1802,8 +1802,8 @@ completions are listed [__UNIMPLEMENTED__]."
 				     (substring full-prefix
 						(match-beginning 2)
 						(match-end 2))))
-			     (ess-write-to-dribble-buffer 
-			      (format "(ess-C-O-Name : slots..) : patt=%s" 
+			     (ess-write-to-dribble-buffer
+			      (format "(ess-C-O-Name : slots..) : patt=%s"
 				      pattern))
 			     (substring full-prefix (match-beginning 1)
 					(match-end 1)))))
