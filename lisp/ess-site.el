@@ -1,15 +1,15 @@
 ;;; ess-site.el --- user customization of ess-mode
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--1998 A.J. Rossini, R.M. Heiberger, Martin
+;; Copyright (C) 1997--1999 A.J. Rossini, R.M. Heiberger, Martin
 ;; Maechler, Kurt Hornik.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/09/27 00:35:42 $
-;; Version: $Revision: 5.34 $
-;; RCS: $Id: ess-site.el,v 5.34 1999/09/27 00:35:42 rossini Exp $
+;; Modified: $Date: 1999/10/04 15:12:06 $
+;; Version: $Revision: 5.35 $
+;; RCS: $Id: ess-site.el,v 5.35 1999/10/04 15:12:06 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,12 @@
 ;;; the load-path variable:
 ;;;    (require 'ess-site)
 ;;; will work.
+;;;
+;;; with XEmacs, this is simply:
+;;;      (add-path "/path/to/ess/lisp-directory")
+;;; with Emacs (and in general):
+;;;      (setq load-path (cons "/path/to/ess/lisp-directory" load-path)
+;;; 
 
 (provide 'ess-site)
 
@@ -101,6 +107,8 @@
 ;;    ;; get rid of assembler mode.
 ;;    (set auto-mode-alist (remassoc "\\.[sS]\\'" auto-mode-alist))
 
+;; be careful of editing the following to get *.sty in a non-LaTeX
+;; mode!
 
 (if (assoc "\\.[rR]\\'" auto-mode-alist) nil
   (setq auto-mode-alist
@@ -221,6 +229,9 @@
 ;;(require 'essd-s3)  ; You might not have this
 ;;(require 'essd-vst) ; built on essd-xls.
 
+
+;; (1.7) Set up stuff for noweb-mode!
+;;(require 'ess-noweb)
 (require 'ess)
 
 ;;; 2. Site Specific setup
@@ -376,8 +387,6 @@
 ;;; (eg, follow changes suggested by Terry Therneau)
 ;;(setq ess-fancy-comments nil)
 ;;(setq ess-default-style 'CLB)
-
-
 
 ;;; 4.0 SAS configuration
 
