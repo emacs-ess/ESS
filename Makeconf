@@ -29,4 +29,6 @@ ESS_REGEXP = [Ee][Ss]{2}
 VER_NR_REGEXP = ([0-9]+\.){2}[-.0-9a-zA-Z]+
 ESSVER_NR_REGEXP = ($(ESS_REGEXP))-$(VER_NR_REGEXP)
 
-.SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el
+.SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el .elc
+
+

@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.27 $.
+### File: $Revision: 5.28 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -105,8 +105,6 @@ ess-site.el: ../VERSION
 
 
 ### File Dependencies
-
-.SUFFIXES: .el .elc
 
 .el.elc:
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
