@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/01/28 08:36:05 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: ess-utils.el,v 5.10 2002/01/28 08:36:05 maechler Exp $
+;; Modified: $Date: 2002/06/04 18:22:05 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: ess-utils.el,v 5.11 2002/06/04 18:22:05 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -70,8 +70,25 @@
 (defun ess-revert-wisely ()
   "Revert from disk if file and buffer last modification times are different."
   (interactive)
-; vc-revert-buffer acting strangely in Emacs 21.1
-; commented out until a solution can be found
+
+; vc-revert-buffer acting strangely in Emacs 21.1; no longer used
+
+; Long-winded Explanation
+
+; Maybe I am being a little hard on 21.1, but it behaves differently.
+; Basically, revert means roll-back.  But, for SAS purposes, you never
+; really want to roll-back.  You want to refresh the buffer with the 
+; disk file which is being modified in the background.  So, we only 
+; roll-back when the date/time stamp of the file is newer than the buffer
+; (technically, this is roll-ahead).
+
+; However, I was supporting a version control system (RCS) when I originally 
+; wrote this function.  I added functionality so that the roll-back was 
+; performed by vc.  This worked fine until 21.1.  In 21.1 when you call this 
+; function with vc/CVS, it actually rolls-back to the prior version of the 
+; file rather than refreshing.  Apparently, it ignores the file on disk.  
+; This change actually makes some sense, but it isn't what we want. 
+
   (if (not (verify-visited-file-modtime (current-buffer)))
       (revert-buffer t t)))
 
