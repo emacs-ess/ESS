@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/07/24 20:08:19 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essl-bug.el,v 1.6 2001/07/24 20:08:19 ess Exp $
+;; Modified: $Date: 2001/07/25 16:28:50 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essl-bug.el,v 1.7 2001/07/25 16:28:50 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -37,7 +37,6 @@
 (require 'comint)
 (require 'ess-emcs)
 
-(if (not (w32-shell-dos-semantics)) (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh))
 
 (if (assoc "\\.bug\\'" auto-mode-alist) nil
     (setq auto-mode-alist
@@ -53,9 +52,62 @@
     )
 )
 
+(defcustom ess-bugs-batch-command "backbugs" 
+"ESS[BUGS]:  Set to name and location of \"backbugs\" script.
+Note that the script that comes with ESS is an enhanced version."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-batch-pre-command
+    (if (w32-shell-dos-semantics) "start" "nohup")
+    "ESS[BUGS]:  Modifiers at the beginning of the backbugs command line."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-batch-post-command
+    (if (w32-shell-dos-semantics) " " "&")
+    "ESS[BUGS]:  Modifiers at the end of the backbugs command line."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defvar ess-bugs-file "."
+   "ESS[BUGS]:  BUGS file with PATH.")
+
+(defvar ess-bugs-file-root "."
+   "ESS[BUGS]:  Root of BUGS file.")
+
+(defvar ess-bugs-file-suffix "."
+   "ESS[BUGS]:  Suffix of BUGS file.")
+
+(defvar ess-bugs-file-dir "."
+   "ESS[BUGS]:  Directory of BUGS file.")
+
+(defvar ess-bugs-file-data "."
+   "ESS[BUGS]:  BUGS data file.")
+
+(defcustom ess-bugs-init-suffix ".ini"
+   "ESS[BUGS]:  BUGS init file suffix."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defcustom ess-bugs-data-suffix ".dat"
+   "ESS[BUGS]:  BUGS data file suffix."
+    :group 'ess-bugs
+    :type  'string
+)
+
+(defvar ess-bugs-monitor-vars "monitor( )\n"
+    "ESS[BUGS]:  List of BUGS variables to be written out to a file.")
+
+(defvar ess-bugs-stats-vars "stats( )\n"
+    "ESS[BUGS]:  List of BUGS variables to be summarized with statistics.")
 
 (defvar ess-bugs-mode-hook nil 
-   "ESS[BUGS]:  List of functions to call upon entering mode.")
+    "ESS[BUGS]:  List of functions to call upon entering mode.")
 
 
 (defvar ess-bugs-mode-map nil
@@ -118,54 +170,6 @@
 )
 
 
-(defcustom ess-bugs-batch-command "backbugs" 
-"ESS[BUGS]:  Set to name and location of \"backbugs\" script.
-Note that the script that comes with ESS[BUGS] is an enhanced version."
-    :group 'ess-bugs
-    :type  'string
-)
-
-(defcustom ess-bugs-batch-pre-command
-    (if (w32-shell-dos-semantics) "start" "nohup")
-    "ESS[BUGS]:  Modifiers at the beginning of the backbugs command line."
-    :group 'ess-bugs
-    :type  'string
-)
-
-(defcustom ess-bugs-batch-post-command
-    (if (w32-shell-dos-semantics) " " "&")
-    "ESS[BUGS]:  Modifiers at the end of the backbugs command line."
-    :group 'ess-bugs
-    :type  'string
-)
-
-(defvar ess-bugs-file "."
-   "ESS:  BUGS file with PATH.")
-
-(defvar ess-bugs-file-root "."
-   "ESS:  Root of BUGS file.")
-
-(defvar ess-bugs-file-suffix "."
-   "ESS:  Suffix of BUGS file.")
-
-(defvar ess-bugs-file-dir "."
-   "ESS:  Directory of BUGS file.")
-
-(defvar ess-bugs-file-data "."
-   "ESS:  BUGS data file.")
-
-(defcustom ess-bugs-init-suffix ".ini"
-   "ESS:  BUGS init file suffix."
-    :group 'ess-bugs
-    :type  'string
-)
-
-(defcustom ess-bugs-data-suffix ".dat"
-   "ESS:  BUGS data file suffix."
-    :group 'ess-bugs
-    :type  'string
-)
-
 (defun ess-bugs-file ()
    "ESS:  Set `ess-bugs-file', `ess-bugs-file-root', `ess-bugs-file-suffix' and `ess-bugs-file-dir'."
    (interactive)
@@ -202,11 +206,14 @@ Note that the script that comes with ESS[BUGS] is an enhanced version."
 
 	(if (equal ".cmd" suffix) (progn
 	    (insert (concat "compile(\"" ess-bugs-file-dir ess-bugs-file-root ".bug\")\n"))
+	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in0\")\n"))
 	    (insert "update( )\n")
-	    (insert "monitor( )\n")
+	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in1\")\n"))
+	    (insert ess-bugs-monitor-vars)
 	    (insert "checkpoint( )\n")
 	    (insert "update( )\n")
-	    (insert "stats( )\n")
+	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in2\")\n"))
+	    (insert ess-bugs-stats-vars)
 	    (insert "q( )\n")
 	))
     ))
@@ -232,7 +239,38 @@ Note that the script that comes with ESS[BUGS] is an enhanced version."
    (interactive)
    (ess-bugs-file)
 
-   (if (equal ".bug" ess-bugs-file-suffix) 
+   (if (equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
+   ;;else 
+   (if (equal ".cmd" ess-bugs-file-suffix) (ess-bugs-na-cmd))
+)
+
+(defun ess-bugs-na-cmd ()
+    "ESS[BUGS]:  Perform the Next-Action for .cmd."
+	(save-buffer)
+	(shell)
+
+    (if (w32-shell-dos-semantics)
+	(if (string-equal ":" (substring ess-bugs-file 1 2)) 
+	    (progn
+		(insert (substring ess-bugs-file 0 2))
+		(comint-send-input)
+	    )
+	)
+    )
+
+	(insert (concat "cd \"" (convert-standard-filename (file-name-directory ess-bugs-file)) "\""))
+	(comint-send-input)
+
+	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " " 
+	    ess-bugs-file-root " " ess-bugs-file " " ess-bugs-batch-post-command))
+
+	(comint-send-input)
+)
+
+   
+(defun ess-bugs-na-bug ()
+    "ESS[BUGS]:  Perform Next-Action for .bug"
+
 	(if (equal 0 (buffer-size)) (ess-switch-to-suffix ".bug")
 	    (save-excursion 
 		(goto-char (point-min))
@@ -247,7 +285,7 @@ Note that the script that comes with ESS[BUGS] is an enhanced version."
 	        (if (search-forward-regexp "data.+in[ \t\n]+\"\\(.*\\)\"" nil t)
 		    (setq ess-bugs-file-data (match-string 1))))
 
-	        (if (search-forward "%INIT" nil t) 
+	        (if (search-forward "%INITS" nil t) 
 		    (replace-match (concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-init-suffix) t t))
  
 		(let ((ess-bugs-temp-string " ")
@@ -269,37 +307,58 @@ Note that the script that comes with ESS[BUGS] is an enhanced version."
 		    ))
 
 		)
+
+		(let (
+		    (ess-bugs-search-min nil)
+		    (ess-bugs-search-max nil))
+
+		    (goto-char (point-min))
+
+		    (if (search-forward "%MONITOR" nil t) (setq ess-bugs-search-min (point))
+		    ;;else
+			(setq ess-bugs-search-min (search-forward "var"))
+		    )
+
+		    (setq ess-bugs-search-max (search-forward-regexp ";"))
+		    
+		    (goto-char ess-bugs-search-min)
+		    (setq ess-bugs-monitor-vars "")
+		    
+		    (while (search-forward-regexp 
+			"[, \t\n#]+\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(\\]\\)\\)?" ess-bugs-search-max t)
+
+			(setq ess-bugs-monitor-vars 
+			    (concat ess-bugs-monitor-vars "monitor(" (match-string 1) (match-string 3) (match-string 4) ")\n"))
+		    )
+
+		    (goto-char (point-min))
+
+		    (if (search-forward "%STATS" nil t) (progn
+			(setq ess-bugs-search-min (point))
+			(setq ess-bugs-search-max (search-forward-regexp ";"))
+		    
+			(goto-char ess-bugs-search-min)
+			(setq ess-bugs-stats-vars "")
+		    
+			(while (search-forward-regexp 
+			    "[, \t\n#]+\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(\\]\\)\\)?" ess-bugs-search-max t)
+
+			    (setq ess-bugs-stats-vars 
+				(concat ess-bugs-stats-vars "stats(" (match-string 1) (match-string 3) (match-string 4) ")\n"))
+			)
+		    )
+		    ;;else
+			(setq ess-bugs-stats-vars (replace-in-string ess-bugs-monitor-vars "monitor" "stats"))
+		    )
+		)
+		    
 	    )
 
 	    (save-buffer)
 	    (ess-switch-to-suffix ".cmd")
-	)
-    )
-
-   (if (equal ".cmd" ess-bugs-file-suffix) (progn
-	(save-buffer)
-	(shell)
-
-    (if (w32-shell-dos-semantics)
-	(if (string-equal ":" (substring ess-bugs-file 1 2)) 
-	    (progn
-		(insert (substring ess-bugs-file 0 2))
-		(comint-send-input)
-	    )
-	)
-    )
-
-	(insert (concat "cd \"" (convert-standard-filename (file-name-directory ess-bugs-file)) "\""))
-	(comint-send-input)
-
-	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " " 
-	    ess-bugs-file-root " " ess-bugs-file " " ess-bugs-batch-post-command))
-
-	(comint-send-input)
-   ))
+	)	
 )
 
-   
 ;;(defun ess-log-toggle ()
 ;;  "Toggle ESS sub-mode for .log files."
 ;;  (interactive)
@@ -326,6 +385,7 @@ Note that the script that comes with ESS[BUGS] is an enhanced version."
    (make-local-variable 'font-lock-defaults)
    (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
    (run-hooks 'ess-bugs-mode-hook)
+   (if (not (w32-shell-dos-semantics)) (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh))
 )
 
 
