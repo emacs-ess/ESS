@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/06/30 19:44:24 $
-;; Version: $Revision: 5.56 $
-;; RCS: $Id: ess-site.el,v 5.56 2000/06/30 19:44:24 rossini Exp $
+;; Modified: $Date: 2000/06/30 21:24:35 $
+;; Version: $Revision: 5.57 $
+;; RCS: $Id: ess-site.el,v 5.57 2000/06/30 21:24:35 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -123,13 +123,34 @@
 	;; we use functions not in 19.28, so include them
 	(load-file (concat ess-lisp-directory "/19.29/extras.el"))
 	(load-file (concat ess-lisp-directory "/19.29/easymenu.el"))
-	(if window-system
+;;      (if window-system  ;;  essl-sas wants these even without window-system
 	    (progn
 	      ;; comment and reference faces
-	      (load-file (concat ess-lisp-directory "/19.29/faces.el"))
+	      (load-file (concat ess-lisp-directory
+				 "/19.29/faces.el"))
 	      ;; font-lock features not in 19.28
-	      (load-file (concat ess-lisp-directory "/19.29/font-lock.el"))
-	      ))))
+	      (load-file (concat ess-lisp-directory
+				 "/19.29/font-lock.el")))))
+;;)
+
+  ;; emacs 19.28 and 19.29 don't have functions we need.
+  (if (not (fboundp 'file-name-sans-extension))
+      ;; take the definition from emacs-20.6/lisp/files.el:
+      (defun file-name-sans-extension (filename)
+	"Return FILENAME sans final \"extension\".
+The extension, in a file name, is the part that follows the last `.'."
+	(save-match-data
+	  (let ((file (file-name-sans-versions
+		       (file-name-nondirectory filename)))
+		directory)
+	    (if (string-match "\\.[^.]*\\'" file)
+		(if (setq directory (file-name-directory filename))
+		    (expand-file-name (substring file 0 (match-beginning 0))
+				      directory)
+	          (substring file 0 (match-beginning 0)))
+	      filename))))
+    )
+ 
 
   (add-to-list 'load-path ess-lisp-directory)
 
@@ -266,6 +287,8 @@
 ;;(setq-default inferior-S-program-name inferior-S+3-program-name)
 
 ;; (1.5) Require the needed dialects for your setup.
+(if (< max-specpdl-size 700)     ;;; ESS won't load at the default of 600
+    (setq max-specpdl-size 700))
 
 (require 'essd-r)    ;; S and common variants
 (require 'essd-s4)
