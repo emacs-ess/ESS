@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/02/02 14:02:01 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: ess-inf.el,v 5.11 1999/02/02 14:02:01 maechler Exp $
+;; Modified: $Date: 1999/03/05 20:42:35 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: ess-inf.el,v 5.12 1999/03/05 20:42:35 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -1166,6 +1166,7 @@ to continue it."
   (make-local-variable 'comint-process-echoes)
   (if (or (string= ess-language "XLS")
 	  (string= ess-language "SAS")
+	  (string= ess-language "STA")
 	  ;; not necessary, when comint-input-sender is set below:
 	  ;;	(string= ess-dialect "S+5")
 	  )
