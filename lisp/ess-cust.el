@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/06/30 16:40:54 $
-;; Version: $Revision: 1.77 $
-;; RCS: $Id: ess-cust.el,v 1.77 2004/06/30 16:40:54 stephen Exp $
+;; Modified: $Date: 2004/06/30 16:46:29 $
+;; Version: $Revision: 1.78 $
+;; RCS: $Id: ess-cust.el,v 1.78 2004/06/30 16:46:29 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -700,7 +700,7 @@ ignored by calling `ess-uniq-list'."
 
 (defcustom ess-rterm-versions (if ess-microsoft-p
 				  (ess-find-rterm)
-				"")
+				'(""))
 "*Construct ess-rterm-versions.  If you have versions of R in
 locations other than in ../../rw*/bin/Rterm.exe, relative to the
 directory in the `exec-path' variable containing your default location
