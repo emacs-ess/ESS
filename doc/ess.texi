@@ -910,14 +910,16 @@ To maintain a list of accessible objects for completion, ESS needs to
 determine which objects are contained in each directory or data frame on
 the search list.  This is done at the start of each @Sl{} session, by
 running the @code{objects()} command on every element of the search
-list.  On some systems, however, this can be rather slow; it's doubly
-frustrating when you consider that most of the directories on the search
-list are the standard @Sl{} libraries, which never change anyway!  When
-ESS was installed, a database of the standard object names should have
-been created which should speed up this process at the start of an S
-session; if it has not been created you will get a warning like
-`S-namedb.el does not exist'.  @xref{Installation}, for information on
-how to create this database.
+list.  
+
+@c On some systems, however, this can be rather slow; it's doubly
+@c frustrating when you consider that most of the directories on the search
+@c list are the standard @Sl{} libraries, which never change anyway!  When
+@c ESS was installed, a database of the standard object names should have
+@c been created which should speed up this process at the start of an S
+@c session; if it has not been created you will get a warning like
+@c `S-namedb.el does not exist'.  @xref{Installation}, for information on
+@c how to create this database.
 
 Efficiency in completion is gained by maintaining a cache of objects
 currently known to S; when a new object becomes available or is deleted,
@@ -2617,11 +2619,17 @@ this information.)
 @section Imenu
 
 Imenu is an Emacs tool for providing mode-specific buffer indexes.  In
-some of the ESS editing modes, support for Imenu is provided.  For
-example, in S mode buffers, the menubar should display an item called
-"Imenu-S".  Within this menubar you will then be offered bookmarks to
-particular parts of your source file (such as the starting point of each
-function definition).
+some of the ESS editing modes (currently SAS and S), support for Imenu
+is provided.  For example, in S mode buffers, the menubar should display
+an item called "Imenu-S".  Within this menubar you will then be offered
+bookmarks to particular parts of your source file (such as the starting
+point of each function definition).
+
+Imenu works by searching your buffer for lines that match what ESS
+thinks is the beginning of a suitable entry, e.g. the beginning of a
+function definition.  To examine the regular expression that ESS uses,
+check the value of @code{imenu-generic-expression}.  This value is set
+by various ESS variables such as @code{ess-imenu-S-generic-expression}.
 
 @comment  node-name,  next,  previous,  up
 @node Toolbar, TAGS, Imenu, Miscellaneous
