@@ -1,3 +1,87 @@
+Mon Nov 24 12:14:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: SAS indent fixes.
+
+Mon Nov 24 11:33:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: fixed Kurt's address.
+
+Mon Nov 24 11:32:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: put back functions; see 10:48 change.
+
+Mon Nov 24 10:58:12 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el: ess to S.
+
+Mon Nov 24 10:50:51 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el: inadvertent placement of ess-indent-line function.
+
+Mon Nov 24 10:50:19 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el (S-editing-alist): inadvertent placement of
+	indent-line-function.
+
+Mon Nov 24 10:48:19 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: commented out some language specific functions.
+  	Moved to essl-s.el
+
+Mon Nov 24 10:45:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el: new functions; S for ESS.  Use them.
+
+Mon Nov 24 10:43:36 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-s.el (S-comment-indent): 
+	* essl-s.el (S-indent-line): 
+	* essl-s.el (S-calculate-indent): new functions; used to be
+ 	ess-*. 
+
+Mon Nov 24 10:39:41 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el: removed some lisp-isms.
+
+Mon Nov 24 10:36:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el (sas-indent-region): New function.  Use it.
+
+Mon Nov 24 10:25:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s4.el (S4-customize-alist): ess-object-name-db-file is
+	"ess-s4-namedb.el". (RMH)
+
+Mon Nov 24 10:18:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.SAS: 2 typos (RMH).
+
+Mon Nov 24 10:17:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el: added ess-quit autoload.
+
+Mon Nov 24 10:16:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (ess-quit): since now possible to call from ess-mode,
+ 	make sure that we are connected to a process.
+
+Mon Nov 24 10:01:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-mode-font-lock-keywords): finish off line.
+
+Mon Nov 24 09:59:39 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: quotes need fixing (RMH).
+
+Mon Nov 24 09:55:43 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-mode-map): added ess-quit. (RMH).
+
+Mon Nov 24 09:48:15 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (SAS-customize-alist): inferior-ess-exit-command
+	should be `endsas;\n'. (RMH).
+
 Sat Nov 22 19:16:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Doc/README-19.28: new version of file (RMH).
@@ -1549,6 +1633,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 4.5  1997/11/24 17:17:07  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 4.4  1997/11/23 00:16:53  rossini
 	* Removing *** empty log message ***
 	* Removing
