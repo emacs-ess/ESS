@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/04/15 10:51:43 $
-;; Version: $Revision: 1.59 $
-;; RCS: $Id: ess-cust.el,v 1.59 2004/04/15 10:51:43 stephen Exp $
+;; Modified: $Date: 2004/04/18 11:07:23 $
+;; Version: $Revision: 1.60 $
+;; RCS: $Id: ess-cust.el,v 1.60 2004/04/18 11:07:23 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -647,6 +647,12 @@ by `ess-function-template'."
 ;; ess-site.el.  Do NOT make the changes here!!
 ;; Keep a copy of your revised ess-site.el to use as a starting point
 ;; for upgrades of ESS.
+
+(defcustom inferior-ess-own-frame nil
+  "*Non-nil means that inferior ESS buffers should start in their own frame.
+The parameters of this frame are stored in `pop-up-frame-alist'."
+  :group 'ess-proc
+  :type 'boolean)
 
 (defcustom inferior-R-program-name
   (if ess-microsoft-p "Rterm"  "R")
