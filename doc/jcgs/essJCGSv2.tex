@@ -138,12 +138,13 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/15 21:10:25 $ - $Revision: 1.73 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/16 02:34:02 $ - $Revision: 1.74 $ $\tiny printed \today}
 
 \begin{document}
 
 \ifdraft
-\newpage
+\setcounter{page}{0}
+%%\newpage
 \tableofcontents
 \fi
 
@@ -233,7 +234,7 @@ graphics-based windowing systems such as X11\tm, Microsoft Windows,
 and Apple Macintosh.  These windowing systems provide a graphical user
 interface (GUI) which allows the user to interact with either a
 keyboard or a mouse, and encourage multiple applications to share a
-single display.  Presently, Emacs more often used in a windowing
+single display.  Presently, Emacs is more often used in a windowing
 environment within its own window, but command keymapping is still an
 important time-saving feature.  Emacs menus and toolbars on the
 display screen allow mouse access to frequently used actions and
@@ -504,7 +505,7 @@ b: unbalanced parentheses\\
 indentation of source code.  We illustrate here with fonts and colors
 appropriate for black and white display.  On a color terminal we would
 use a selection of colors.\\
-{\it a: font-cor-s.gif; b: font-incor-s.gif}
+{\it a: font-cor-s.jpg; b: font-incor-s.jpg}
 \label{f.font}}
 \end{figure}
 
@@ -951,12 +952,6 @@ to accommodate multiple languages in a flexible way.  The product of this
 marriage was called ESS version 5.
 
 During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
-%\begin{Comment}
-%Rodney: need to move this discussion to interactive SAS above.
-%a mode that allows text-based \stexttt{PROC} by
-%\stexttt{PROC} interaction with an inferior buffer running an interactive SAS
-%session either on the same computer or a remote computer over a network.
-%\end{Comment}
 At the same time, SAS-mode was further incorporated into ESS.
 
 In 1997, more changes were made to facilitate
@@ -983,13 +978,6 @@ In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.
 In 2001, Sparapani added BUGS batch file processing for ESS.  
 
 \begin{Comment}
-Rodney: moved this discussion to a new section above
-%Sparapani and Heiberger developed \SAS\ batch support including function
-%key behavior which mimics the \SAS\ Display Manager,
-%a more comprehensive and efficient syntax highlighting scheme for \SAS\
-%programs and logs, and automated and intelligent error message searching
-%of the log.  
-
 Rich: see my discussion of ESS-elsewhere terminology.
 
 What is the behavior for remote SAS that is new for 2002?
@@ -1037,7 +1025,8 @@ groups to provide standardized templates for initiating an analysis.
 %%languages, the above also can apply to non-object oriented
 %%programming.
 
-Additional documentation for ESS: more complete version is in
+Additional documentation for ESS: An expanded version of
+the present paper is in
 \citep{RMHHS:2001}.  A general introduction and usage instructions can
 be found in \citep{heiberger:dsc:2001}; in addition, one which is more
 focused on SAS can be found in \citep{heiberger:philasugi:2001}.  The
