@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/29 10:50:57 $
-;; Version: $Revision: 1.28 $
-;; RCS: $Id: ess-site.el,v 1.28 1997/07/29 10:50:57 rossini Exp $
+;; Modified: $Date: 1997/07/29 11:30:43 $
+;; Version: $Revision: 1.29 $
+;; RCS: $Id: ess-site.el,v 1.29 1997/07/29 11:30:43 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.29  1997/07/29 11:30:43  rossini
+;;: too many parens.
+;;:
 ;;: Revision 1.28  1997/07/29 10:50:57  rossini
 ;;: modes adjusted.
 ;;:
@@ -233,7 +236,7 @@
 	   ("\\.St$" . S-transcript-mode)
 	   ("\\.r$"  . R-mode)
 	   ("\\.R$"  . R-mode)
-	   ("\\.rt$" . R-transcript-mode))
+	   ("\\.rt$" . R-transcript-mode)
 	   ("\\.Rt$" . R-transcript-mode))
 	 auto-mode-alist)))
 
