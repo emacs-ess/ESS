@@ -117,8 +117,8 @@
 
 %%--------------------------------------------------------------- Start Text
 
-\title{Emacs Speaks Statistics:  A Rapid Application Development (RAD)
-  Environment for Statistical Analysis Packages}
+\title{Emacs Speaks Statistics:  A Rapid Application Development
+  Environment for Statistical Analysis}
 
 \author{A.J. Rossini \and Martin M{\"a}chler \and Kurt Hornik \and Richard
   M. Heiberger \and Rodney Sparapani \footnote{%
@@ -145,7 +145,7 @@
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/21 03:15:16 $ - $Revision: 1.79 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/30 04:34:41 $ - $Revision: 1.80 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -174,8 +174,9 @@
   programming efficiency.
 \end{abstract}
 
-\noindent Keywords: Data Analysis, Programming, Emacs, S, \SAS,
-\Splus, R, \XLispStat, \Stata, BUGS
+\noindent Keywords: Data Analysis, Programming, ESS, Emacs, S, \SAS,
+\Splus, R, \XLispStat, \Stata, BUGS, free-software, open-source,
+multi-platform, cross-platform
 
 
 \section{Introduction}
@@ -224,8 +225,8 @@ with future extensions.
 
 Emacs is a mature, powerful, and extensible text editing system which
 is freely available under the GNU General Public License for a large
-number of platforms, including most flavors of Unix\regstrd, Microsoft
-Windows\regstrd\ and Apple Macintosh\tm.  There are two open-source
+number of platforms, including most distributions of Unix\regstrd, Microsoft
+Windows\regstrd\ and Apple Mac\tm\ OS.  There are two open-source
 implementations of Emacs which are released for use under the GNU
 General Public License: GNU Emacs \citep{GNU-Emacs} and XEmacs
 \citep{XEmacs}.  Emacs shares many features with word processors, and
@@ -325,7 +326,7 @@ a remote machine exactly as if they were on the local machine.
 for file transfers using the non-secure ftp protocol.
 \stexttt{tramp} is used for file transfers using the secure scp protocol.
 \stexttt{tramp} can also be used to transfer files without ftp or scp
-via ssh secure connections and telnet non-secure connections.
+via ssh for secure connections and telnet for non-secure connections.
 
 Interacting with revision control programs is provided by the
 minor-mode \stexttt{vc-mode} for packages like CVS, RCS, and SCCS (or
@@ -990,11 +991,12 @@ statements, distributions, functions, commands and comments in BUGS
 model files, command files and log files.  ESS creates templates
 for the command file from the model file so that a BUGS batch process
 can be defined by a single file.
-
 ESS provides a BUGS batch script that allows ESS to set BUGS batch 
 parameters.  ESS also supplies key-mappings to submit a BUGS batch
-process.  ESS provides the same ESS-elsewhere support for BUGS batch
-that it does for \SAS\ batch (see above).
+process.  
+%future enhancement perhaps
+%ESS provides the same ESS-elsewhere support for BUGS batch
+%that it does for \SAS\ batch (see above).
 
 \paragraph{S Batch.}
 There are two ways to look at S Batch.  One is the traditional batch
@@ -1142,11 +1144,11 @@ extensible to additional statistical languages and analysis packages.
 \section*{ESS Resources on the Internet}
 \addcontentsline {toc}{section}{\numberline {}ESS Resources on the Internet}
 \label{sec:access}
-The ESS software is constantly in flux.  New versions of statistical
+ESS is constantly in flux.  New versions of statistical
 packages, Emacs and operating systems require new releases of ESS to
 support them.  The latest stable version of ESS can be found on the web at
 \url{http://software.biostat.washington.edu/statsoft/ess/}.  To get help
-with problems you can send e-mail to \url{ess-help@stat.math.ethz.ch}.
+with problems, send e-mail to \url{ess-help@stat.math.ethz.ch}.
 The latest development, hence unstable, version can be obtained by
 anonymous CVS.  First type:
 
