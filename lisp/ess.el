@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/06/19 21:15:53 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: ess.el,v 1.9 1997/06/19 21:15:53 rossini Exp $
+;; Modified: $Date: 1997/06/30 22:19:34 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: ess.el,v 1.10 1997/06/30 22:19:34 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.10  1997/06/30 22:19:34  rossini
+;; made ess-directory buffer-local in the RIGHT place.
+;;
 ;; Revision 1.9  1997/06/19 21:15:53  rossini
 ;; matrix -> matriux.
 ;;
@@ -270,6 +273,9 @@ Provided as a default if ess-ask-for-ess-directory is non-nil.
 A nil value means use the current buffer's default directory.
 Buffer-local: in process buffers, this contains the directory ess was
 run from.")
+
+(make-variable-buffer-local 'ess-directory)
+(setq-default ess-directory (file-name-as-directory (getenv "HOME"))
 
 ;; MM, 13Mar97.  This should be set buffer-local!
 (defvar ess-history-file (concat "." ess-proc-prefix "history")
