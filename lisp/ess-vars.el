@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1999/03/03 23:25:30 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: ess-vars.el,v 5.14 1999/03/03 23:25:30 rossini Exp $
+;; Modified: $Date: 1999/03/04 23:10:43 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: ess-vars.el,v 5.15 1999/03/04 23:10:43 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -406,6 +406,7 @@ by ess-function-template.")
 
 (defvar inferior-Sqpe+4-program-name "Sqpe"
   "*Program name for invoking an inferior ESS with Sqpe+4().")
+
 (defvar inferior-Sqpe+4-SHOME-name "c:/Progra~1/spls45se"
   "*SHOME name for invoking an inferior ESS with Sqpe+4().")
 
@@ -421,6 +422,8 @@ by ess-function-template.")
 (defvar inferior-SAS-program-name "sas"
   "*Program name for invoking an inferior ESS with SAS().")
 
+(defvar inferior-STA-program-name "stata"
+  "*Program name for invoking an infereior ESS with stata().")
 
 ;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
 (defvar inferior-ess-ddeclient         nil
