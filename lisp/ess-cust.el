@@ -1,4 +1,3 @@
-;;;;; ess-cust.el --- Customization for ESS.
 
 ;; Copyright (C) 1997--2001 A.J. Rossini, Martin Maechler,
 ;; Kurt Hornik, Richard M. Heiberger, and Rodney Sparapani.
@@ -6,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2002/04/26 15:42:41 $
-;; Version: $Revision: 1.32 $
-;; RCS: $Id: ess-cust.el,v 1.32 2002/04/26 15:42:41 maechler Exp $
+;; Modified: $Date: 2002/07/16 13:50:21 $
+;; Version: $Revision: 1.33 $
+;; RCS: $Id: ess-cust.el,v 1.33 2002/07/16 13:50:21 rsparapa Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -97,7 +96,7 @@
   :group 'ess-S
   :prefix "ess-")
 
-(defgroup ess-SAS nil
+(defgroup ess-sas nil
   "ESS: SAS."
   :group 'ess
   :prefix "ess-")
@@ -201,25 +200,23 @@ Used to adjust for changes in versions of the program"
 		 (const :tag "Rwin"   :value "Rwin")))
 
 (make-variable-buffer-local 'ess-dialect)
-(setq-default ess-dialect "Initial-dialect")
+;;(setq-default ess-dialect "Initial-dialect")
+(setq-default ess-dialect nil)		
+;;; SJE -- why use "Initial-dialect"?  If we use nil, it matches "None"
+;;; in the custom choice.
 
 (defcustom ess-directory-function nil
   "*Function to return the directory that ESS is run from.
-If nil or or if returns nil then you get `ess-directory'."
+If nil or if the function returns nil then you get `ess-directory'."
   :group 'ess
-  :type 'directory)
-
-(defcustom ess-directory-function nil
-  "*Function to return the directory that ESS is run from.
-If nil or or if returns nil then you get `ess-directory'."
-  :group 'ess
-  :type 'directory)
+  :type '(choice (const nil) function))
 
 (defcustom ess-setup-directory-function nil
   "*Function to setup the directory that ESS is run from.
-This function can be called to set environment variables or to create a workspace."
+This function can be called to set environment variables or to create
+a workspace."
   :group 'ess
-  :type 'directory)
+  :type '(choice (const nil) function))
 
 (defcustom ess-directory nil
   "*The directory ESS is run from.  It must end in a slash.
@@ -228,19 +225,19 @@ A nil value means use the current buffer's default directory.
 Buffer-local: in process buffers, this contains the directory ESS was
 run from."
   :group 'ess
-  :type 'directory)
+  :type '(choice (const nil) directory))
 
 (defcustom ess-history-directory nil
   "*Directory to pick up `ess-history-file' from.
 If this is nil, the history file is relative to `ess-directory'."
   :group 'ess
-  :type 'file)
+  :type '(choice (const nil) directory))
 
 (defcustom ess-history-file nil
   "*File to pick up history from.
 If this is a relative file name, it is relative to `ess-history-directory'."
   :group 'ess
-  :type 'file)
+  :type '(choice (const nil) file))
 
 (defcustom ess-plain-first-buffername t
   "*No fancy process buffname for the first process of each type (novice mode)."
@@ -263,17 +260,23 @@ incorrectly, the right things will probably still happen, however."
   :group 'ess-edit
   :type 'boolean)
 
+;;; SJE -- this is set in ess-site.el to be "always", so I changed 
+;;; value t to be "always", so that ess-site.el does not need editing.
+;;; However, this is a bit messy, and would be nicer if ess-site.el
+;;; value was t rather than "always".
 (defcustom ess-keep-dump-files 'ask
   "*Variable controlling whether to delete dump files after a successful load.
 If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
 to delete, except for files created with ess-dump-object-into-edit-buffer.
 Anything else, never delete.  This variable only affects the behaviour
-of ess-load-file.  Dump files are never deleted if an error occurs
+of `ess-load-file'.  Dump files are never deleted if an error occurs
 during the load. "
   :group 'ess-edit
   :type '(choice (const :tag "Check" :value  'check)
 		 (const :tag "Ask"   :value  'ask)
-		 (const :tag "Keep"   :value 't)))
+		 (const :tag "Always keep"   :value "always")
+		 (const :tag "Always delete"   :value nil)
+		 ))
 
 
 (defcustom ess-delete-dump-files nil
@@ -531,7 +534,7 @@ Good for evaluating ESS code."
 (defcustom ess-local-process-name nil
   "The name of the ess process associated with the current buffer."
   :group 'ess
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (make-variable-buffer-local 'ess-local-process-name)
 
@@ -648,8 +651,9 @@ in S+4 Commands window and in Sqpe+4 buffer."
   :group 'ess-S
   :type 'string)
 
+;;; SJE - avoid mismatch by changing default nil to ""
 (defcustom inferior-Sqpe+4-SHOME-name
-  (if ess-microsoft-p "c:/progra~1/spls45se" nil)
+  (if ess-microsoft-p "c:/progra~1/spls45se" "")
   "*SHOME name for invoking an inferior ESS with Sqpe+4().
 The default value is correct for a default installation of
 S-Plus 4.5 Student Edition.  For any other version or location,
@@ -729,8 +733,9 @@ in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
   :group 'ess-S
   :type 'string)
 
+;;; SJE - avoid mismatch by changing default nil to ""
 (defcustom inferior-Sqpe+6-SHOME-name
-  (if ess-microsoft-p "c:/progra~1/insigh~1/splus6" nil)
+  (if ess-microsoft-p "c:/progra~1/insigh~1/splus6" "")
   "*SHOME name for invoking an inferior ESS with Sqpe+6() for Windows.
 The default value is correct for a default installation of
 S-Plus 6.0.3 Release 2.  For any other version or location,
@@ -771,7 +776,7 @@ version of the pathname."
 
 (defcustom inferior-SAS-program-name "sas"
   "*Program name for invoking an inferior ESS with SAS()."
-  :group 'ess-SAS
+  :group 'ess-sas
   :type 'string)
 
 (defcustom inferior-STA-program-name "env"
@@ -806,12 +811,12 @@ order for it to work right.  And Emacs is too smart for it."
       "emacsclient")) ;; unix
   "*Editor called by R process with 'edit()' command."
 :group 'ess
-:type "string")
+:type 'string)
 
-(defcustom R-pager  nil ; Usually nil is correct as ESS and page() cooperate.
+(defcustom R-pager 'nil ; Usually nil is correct as ESS and page() cooperate.
   "*Pager called by R process with 'page()' command."
 :group 'ess
-:type "string")
+:type 'string)
 
 (defcustom S-editor
   (if ess-microsoft-p "gnuclient.exe"
@@ -819,7 +824,7 @@ order for it to work right.  And Emacs is too smart for it."
       "emacsclient")) ;; unix
   "*Editor called by S process with 'edit()' command."
 :group 'ess
-:type "string")
+:type 'string)
 
 (defcustom S-pager
   (if ess-microsoft-p "gnuclientw.exe"
@@ -827,7 +832,7 @@ order for it to work right.  And Emacs is too smart for it."
       "emacsclient")) ;; unix
   "*Pager called by S process with 'page()' command."
 :group 'ess
-:type "string")
+:type 'string)
 
 (defcustom ess-editor nil
   "*Editor by which the process sends information to an emacs buffer
@@ -900,7 +905,7 @@ Useful for R and SAS.  This is generic."
 (defcustom inferior-ess-start-file nil
   "*File dumped into process, if non-nil."
   :group 'ess-proc
-  :type 'file)
+  :type '(choice (const nil) file))
 
 (defcustom inferior-ess-pager "cat"
   "*Pager to use for reporting help files and similar things."
@@ -958,6 +963,8 @@ of Emacs until the code has been successfully evaluated."
   :group 'ess-proc
   :type 'boolean)
 
+;;; SJE - suggest this is not defcustom, looks like each mode sets this.
+;;; SJE - this still produces mismatch.
 (defcustom ess-save-lastvalue-command nil
   "Default depends on the ESS language/dialect.
 
@@ -970,6 +977,8 @@ Might have to:"
   :group 'ess-command
   :type 'string)
 
+;;; SJE - suggest this is not defcustom, looks like each mode sets this.
+;;; SJE - this still produces mismatch.
 (defcustom ess-retr-lastvalue-command nil
   "Default is currently the S+ version."
   :group 'ess-command
@@ -986,7 +995,7 @@ Might have to:"
 (defcustom ess-current-process-name nil
   "Name of the current S process."
   :group 'ess-proc
-  :type 'string)
+  :type '(choice (const nil) string))
 
 ;; defconst ess-local-process-name now done in S.el
 
@@ -1071,7 +1080,7 @@ Don't include a newline at the end! Used in ess-execute-objects."
  Constructed at run time from `inferior-ess-primary-prompt' and
 `inferior-ess-secondary-prompt'."
   :group 'ess-proc
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (make-variable-buffer-local 'inferior-ess-prompt)
 
