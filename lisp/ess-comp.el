@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/31 11:13:04 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: ess-comp.el,v 1.7 1997/07/31 11:13:04 rossini Exp $
+;; Modified: $Date: 1997/07/31 11:14:45 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: ess-comp.el,v 1.8 1997/07/31 11:14:45 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;: $Log: ess-comp.el,v $
+;;: Revision 1.8  1997/07/31 11:14:45  rossini
+;;: added comments.
+;;:
 ;;: Revision 1.7  1997/07/31 11:13:04  rossini
 ;;: reformat.
 ;;:
@@ -78,7 +81,8 @@
 ;;(require 'cl-macs)  SHOULD NOT NEED THIS!
 (require 'ess-vars)
 (require 'ess)
-(require 'ess-site)
+(require 'ess-site)       ; order: so that any changes in ess-site
+					; take place last
 
  ; Local variables section
 
