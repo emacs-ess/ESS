@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/01 19:52:45 $
-;; Version: $Revision: 1.33 $
-;; RCS: $Id: essd-r.el,v 1.33 1997/09/01 19:52:45 rossini Exp $
+;; Modified: $Date: 1997/09/01 21:16:41 $
+;; Version: $Revision: 1.34 $
+;; RCS: $Id: essd-r.el,v 1.34 1997/09/01 21:16:41 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -73,6 +73,7 @@
 (defun R-mode  (&optional proc-name) 
   "Major mode for editing R source.  See ess-mode for more help."
   (interactive)
+  (setq-default ess-customize-alist R-customize-alist)
   (ess-mode R-customize-alist proc-name))
 
 
