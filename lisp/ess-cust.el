@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2000/06/30 22:26:31 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: ess-cust.el,v 1.6 2000/06/30 22:26:31 rossini Exp $
+;; Modified: $Date: 2000/07/03 14:34:07 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: ess-cust.el,v 1.7 2000/07/03 14:34:07 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -35,8 +35,8 @@
 ;;; Code:
 
 
-;; Stolen from w3-cus.el, 
-;; Author: wmperry 
+;; Stolen from w3-cus.el,
+;; Author: wmperry
 ;; Created: 1999/11/14 01:37:15
 ;; Version: 1.4
 (eval-and-compile
@@ -45,10 +45,11 @@
     (error nil))
   (if (and (featurep 'custom) (fboundp 'custom-declare-variable))
       nil ;; We've got what we needed
-    ;; We have the old custom-library, hack around it!
+
+    ;; Else: have the old custom-library, hack around it!
     (defmacro defgroup (&rest args)
       nil)
-    (defmacro defcustom (var value doc &rest args) 
+    (defmacro defcustom (var value doc &rest args)
       (` (defvar (, var) (, value) (, doc))))))
 
 ;; Customization Groups
@@ -763,7 +764,7 @@ of Emacs until the code has been successfully evaluated."
   :type 'boolean)
 
 (defcustom ess-save-lastvalue-command nil
-  "Default depends on the ESS language/dialect.  
+  "Default depends on the ESS language/dialect.
 
 This is the command to save the last value.  See S section for more details.
 
