@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/29 10:48:59 $
-;; Version: $Revision: 1.27 $
-;; RCS: $Id: ess-site.el,v 1.27 1997/07/29 10:48:59 rossini Exp $
+;; Modified: $Date: 1997/07/29 10:50:57 $
+;; Version: $Revision: 1.28 $
+;; RCS: $Id: ess-site.el,v 1.28 1997/07/29 10:50:57 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.28  1997/07/29 10:50:57  rossini
+;;: modes adjusted.
+;;:
 ;;: Revision 1.27  1997/07/29 10:48:59  rossini
 ;;: changed back to [SR]-mode/[SR]-transcript-mode
 ;;:
@@ -226,8 +229,11 @@
 	 '(("\\.q$" . S-mode)
 	   ("\\.s$"  . S-mode) ;; Comment for default asm-mode
 	   ("\\.S$"  . S-mode)
-	   ("\\.St$" . S-transcript-mode))
+	   ("\\.st$" . S-transcript-mode)
+	   ("\\.St$" . S-transcript-mode)
+	   ("\\.r$"  . R-mode)
 	   ("\\.R$"  . R-mode)
+	   ("\\.rt$" . R-transcript-mode))
 	   ("\\.Rt$" . R-transcript-mode))
 	 auto-mode-alist)))
 
