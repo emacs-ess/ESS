@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/09/01 18:53:19 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: ess-vars.el,v 1.15 1997/09/01 18:53:19 rossini Exp $
+;; Modified: $Date: 1997/09/01 19:53:52 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: ess-vars.el,v 1.16 1997/09/01 19:53:52 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -98,8 +98,6 @@ Used to adjust for changes in versions of the program")
 ;;   \"3.0\"    Version 3.0 (August '91) of S/Splus
 ;;   \"2.3\"    Version 2.3 of S/Splus
 ;;   \"old\"    Any older version
-
-
 
 (defvar ess-directory nil
   "*The directory ESS is run from.  It must end in a slash.
@@ -423,10 +421,12 @@ corresponding program.")
 
 
 ;; AJR: this is a generic function
-(defvar inferior-ess-args nil
-  "*String of arguments passed to the S process on startup if the name
-of the S program is `Splus'; also called if one uses `R', but this
-isn't implemented yet.")
+(defvar inferior-ess-start-args ""
+  "*String of arguments passed to the ESS process.  
+Useful for R and SAS.")
+
+(defvar inferior-ess-start-file nil
+  "*File dumped into process, if non-nil.")
 
 (defvar inferior-ess-pager "cat"
   "*Pager to use for reporting help files and similar things.")
@@ -836,6 +836,8 @@ Not buffer local!")
 ;;(make-variable-buffer-local 'ess-customize-alist)
 ;;(setq-default ess-customize-alist nil)
 
+(defvar ess-mode-editing-alist nil
+  "Variable settins for ess-mode.")
 
 (provide 'ess-vars)
 

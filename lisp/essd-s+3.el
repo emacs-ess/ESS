@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/01 18:10:17 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: essd-s+3.el,v 1.20 1997/09/01 18:10:17 rossini Exp $
+;; Modified: $Date: 1997/09/01 19:53:35 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: essd-s+3.el,v 1.21 1997/09/01 19:53:35 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -64,13 +64,10 @@
 
 ; Code:
 
-(defvar S+3-editing-alist  'S-editing-alist
-  "Local variables for editing mode.")
-
 (defvar S+3-customize-alist
   '((ess-language                  . "S")
     (ess-dialect                   . "S+3")
-    (ess-editing-alist             . 'S+3-editing-alist)
+    (ess-mode-editing-alist        . S-editing-alist)
     (ess-help-sec-regex            . ess-help-S+3-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-S+3-sec-keys-alist)
     (ess-loop-timeout              . 100000 )

@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/01 18:10:39 $
-;; Version: $Revision: 1.49 $
-;; RCS: $Id: ess-mode.el,v 1.49 1997/09/01 18:10:39 rossini Exp $
+;; Modified: $Date: 1997/09/01 19:53:39 $
+;; Version: $Revision: 1.50 $
+;; RCS: $Id: ess-mode.el,v 1.50 1997/09/01 19:53:39 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -272,7 +272,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
   (setq mode-name (concat "ESS[" ess-dialect "]"))
   (use-local-map ess-mode-map)
   (set-syntax-table ess-mode-syntax-table)
-  (ess-setq-vars-local ess-editing-alist)
+  (ess-setq-vars-local ess-mode-editing-alist (current-buffer))
 
 ;;  (make-local-variable 'paragraph-start)
 ;;  (setq paragraph-start (concat "^$\\|" page-delimiter))
