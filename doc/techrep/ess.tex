@@ -134,18 +134,19 @@ optimization, which is being called from an interpreted language, such
 as \Splus, R, or XLispStat, containing the objective function to
 optimize.
 
-One natural issue that follows is that not all of the languages or
-statistical packages have similar interfaces.  This means that it
-might be necessary for a statistical analyst to learn 2 or 3 different
-text-interfaces for editing and executing code.  Furthermore, it might
-be necessary for the analyst to consider dialects of a language, for
-example under the S family of languages, there is R, \Splus, the
-original S implementation, as well as different versions of all three.
-Testing code meant for use by others necessitates having it work in
-multiple versions, so being able to quickly test means having quick
-access to all versions; this might mean having to be able to access
-programs which can only run on completely different sets of machines.
-For example, one might want to be connected to multiple R processes.
+Very few statistical packages have identical command-line interfaces;
+this is in addition to the differences between the actual macro or
+programming languages.  This means that it might be necessary for a
+statistical analyst to learn 2 or 3 different text-based interfaces
+for editing and executing code.  Furthermore, it might be necessary
+for the analyst to consider dialects of a language, for example under
+the S family of languages, there is R, \Splus, the original S
+implementation, as well as different versions of all three.  Testing
+code meant for use by others necessitates having it work in multiple
+versions, so being able to quickly test means having quick access to
+all versions; this might mean having to be able to access programs
+which can only run on completely different sets of machines.  For
+example, one might want to be connected to multiple R processes.
 Reasons for this include verifying behavior on different versions of
 the same software, test and run scenarios where one process is doing
 long-term processing while the other is doing short-term testing,
@@ -167,30 +168,30 @@ controlled from a command-line.
 
 The rest of this introduction will discuss the proposed development
 environment and how it can be used.  Sections \ref{sec:S} and
-\ref{sec:SAS} will discuss how this is realized for two completely
-distinct statistical languages, the S family of languages and SAS,
-respectively.  Advanced features and history will then be discussed,
-and this paper will conclude with a discussion of future work in this
-area, including both Literate Statistical Analysis and other planned
-enhancements.
+\ref{sec:SAS} will discuss how this is realized for two very distinct
+statistical languages, the S family and SAS.  The history of this
+project will then be discussed, and this paper will conclude with a
+discussion of future work in this area, including Literate Statistical
+Analysis and other planned enhancements.
 
 \subsection{Emacs}
 \label{sec:intro:emacs}
 
 Emacs \citep{RMS:2000} is a mature, powerful, and easily extensible
-text editor which is freely available for a large number of platforms,
-including those most frequently used for statistical computing.  These
-include Unix, Apple Corporation's Macintosh platform, and
-Microsoft-based platforms.  While Emacs is not a word processor, it
-does share some similar features and can behave to a limited extent as
-one.
+text editor which is freely available, under the terms of the Free
+Software Foundation's Copy-left agreement, for a large number of
+environments.  These include frequently used statistical computing
+platforms such as Apple Corporation's Macintosh platform, and
+Microsoft-based operating system.  
 
 Most programming and documentation tasks fall under the realm of text
 processing.  This is natural given that it is being worked on from the
 perspective of the developer and not the end user.  This work can be
 enhanced by common IDE features such as contextual highlighting and
 recognition of special reserved words for the programming language or
-statistical program/package of interest.
+statistical program/package of interest.  While Emacs is not a word
+processor, it does share some similar features and can behave to a
+limited extent as one.
 
 The ESS extensions provide Emacs with a uniform interface to the
 statistical programming code.  This can be extended with other Emacs
