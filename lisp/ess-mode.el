@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/08/28 13:04:38 $
-;; Version: $Revision: 1.47 $
-;; RCS: $Id: ess-mode.el,v 1.47 1997/08/28 13:04:38 rossini Exp $
+;; Modified: $Date: 1997/08/28 14:21:53 $
+;; Version: $Revision: 1.48 $
+;; RCS: $Id: ess-mode.el,v 1.48 1997/08/28 14:21:53 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -386,13 +386,21 @@ if this is the case."
 	   ;; Get name of assigned object, if we can find it
 	   (setq objname
 		 (and
-		  (re-search-forward "^\\s *\"?\\(\\(\\sw\\|\\s_\\)+\\)\"?\\s *[<_]" nil t)
-		  (buffer-substring (match-beginning 1) (match-end 1)))))
+		  (re-search-forward
+		   "^\\s *\"?\\(\\(\\sw\\|\\s_\\)+\\)\"?\\s *[<_]"
+		   nil
+		   t)
+		  (buffer-substring (match-beginning 1)
+				    (match-end 1))))) 
 	 (and
 	  sourcemod			; the file may have been deleted
-	  objname			; may not have been able to find name
+	  objname			; may not have been able to
+					; find name 
 	  (ess-modtime-gt (ess-object-modtime objname) sourcemod)
-	  (not (y-or-n-p (format "The S object %s is newer than this file. Continue? " objname)))
+	  (not (y-or-n-p
+		(format
+		 "The S object %s is newer than this file. Continue?"
+		 objname)))
 	  (error "Aborted")))))
 
 (defun ess-check-source (fname)
