@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/17 18:20:23 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essd-xls.el,v 1.14 1997/07/17 18:20:23 rossini Exp $
+;; Modified: $Date: 1997/07/17 18:30:58 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essd-xls.el,v 1.15 1997/07/17 18:30:58 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.15  1997/07/17 18:30:58  rossini
+;;: XLS, not R!
+;;:
 ;;: Revision 1.14  1997/07/17 18:20:23  rossini
 ;;: replaced message with a write-to-dribble-buffer.
 ;;:
@@ -98,7 +101,7 @@ New way to do it."
   (setq ess-customize-alist XLS-customize-alist) ; setq or setq-default?
   ;;(ess-set-vars-default ess-customize-alist (current-buffer))
   ;; debug, only
-  (ess-write-to-dribble-buffer (format "(R): ess-proc-prefix=%s , buf=%s"
+  (ess-write-to-dribble-buffer (format "(XLS): ess-proc-prefix=%s , buf=%s"
 				       ess-proc-prefix
 				       (current-buffer)))
   ;; now run...
