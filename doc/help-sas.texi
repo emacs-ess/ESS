@@ -141,8 +141,12 @@ However, if you are editing the file locally and transferring it back and forth
 with Kermit, you need some additional steps.  First, start Kermit locally
 before remotely logging in.  Open a local copy of the file with the 
 ess-kermit-prefix character prepended (the default is "#").  Execute the command 
-ess-kermit-get which brings the contents of the remote file into your local copy.  
-Also, note that the remote Kermit command is specified by ess-kermit-command.  
+ess-kermit-get which automatically brings the contents of the remote file into 
+your local copy.  If you transfer files with Kermit manually in a shell
+buffer, then note that the Kermit escape sequence is C-Q C-\ c rather than
+C-\ c which it would be in a ordinary terminal application, i.e. not in an 
+emacs buffer.  Lastly, note that the remote Kermit command is specified by 
+ess-kermit-command. 
 
 The command used by the SUBMIT function key (F3 or F8) to submit a batch SAS 
 job, whether local or remote, is ess-sas-submit-command which defaults to sas-program.  sas-program is 
