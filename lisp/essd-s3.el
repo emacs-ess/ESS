@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/25 14:31:04 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essd-s3.el,v 1.5 1997/08/25 14:31:04 rossini Exp $
+;; Modified: $Date: 1997/08/25 20:50:43 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essd-s3.el,v 1.6 1997/08/25 20:50:43 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s3.el,v $
+;;: Revision 1.6  1997/08/25 20:50:43  rossini
+;;: MM's changes.
+;;:
 ;;: Revision 1.5  1997/08/25 14:31:04  rossini
 ;;: *** empty log message ***
 ;;:
@@ -82,33 +85,34 @@
 
 ;;; Code:
 
+(defvar S3-help-sec-keys-alist
+  '((?a . "ARGUMENTS:")
+    (?b . "BACKGROUND:")
+    (?B . "BUGS:")
+    (?d . "DETAILS:")
+    (?D . "DESCRIPTION:")
+    (?e . "EXAMPLES:")
+    (?n . "NOTE:")
+;;    (?o . "OPTIONAL ARGUMENTS:")
+;;    (?r . "REQUIRED ARGUMENTS:")
+    (?R . "REFERENCES:")
+    (?S . "SEE ALSO:")
+    (?s . "SIDE EFFECTS:")
+    (?u . "USAGE:")
+    (?v . "VALUE:"))
+  "Help section keys for display.")
+
 (defvar S3-customize-alist
-  '((ess-proc-prefix      .         "S")
-    (ess-version-running  .         "S3")
-    (inferior-ess-program .  inferior-S3-program-name) ;        "S")
-    (ess-help-sec-regex   .         "^[A-Z. ---]+:$")
-    (ess-help-sec-keys-alist .      '((?a . "ARGUMENTS:")
-				      (?b . "BACKGROUND:")
-				      (?B . "BUGS:")
-				      (?d . "DETAILS:")
-				      (?D . "DESCRIPTION:")
-				      (?e . "EXAMPLES:")
-				      (?n . "NOTE:")
-				      (?o . "OPTIONAL ARGUMENTS:")
-				      (?r . "REQUIRED ARGUMENTS:")
-				      (?R . "REFERENCES:")
-				      (?s . "SIDE EFFECTS:")
-				      (?S . "SEE ALSO:")
-				      (?u . "USAGE:")
-				      (?v . "VALUE:")))
-    (inferior-ess-objects-command . "objects(%d)")
-                                     ;(if (string= ess-version-running "S3")
-				     ;    "objects(%d)"
-				     ;  "ls()")
-    (inferior-ess-help-command .    "help(\"%s\")\n")
-    (inferior-ess-exit-command .    "q()\n")
+  '((ess-proc-prefix               . "S")
+    (ess-version-running           . "S3")
+    (inferior-ess-program          . inferior-S3-program-name) ;        "S")
+    (ess-help-sec-regex            . "^[A-Z. ---]+:$")
+    (ess-help-sec-keys-alist       . S3-help-sec-keys-alist)
+    (inferior-ess-objects-command  . "objects(%d)")
+    (inferior-ess-help-command     . "help(\"%s\")\n")
+    (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt   . "+ ?")
+    (inferior-ess-secondary-prompt . "+ ?")
     (ess-loop-timeout              . 100000 ))
  "Variables to customize for S")
 

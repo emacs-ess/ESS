@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/30 13:15:11 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essd-s4.el,v 1.5 1997/07/30 13:15:11 rossini Exp $
+;; Modified: $Date: 1997/08/25 20:50:16 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essd-s4.el,v 1.6 1997/08/25 20:50:16 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -35,6 +35,9 @@
 
 ;;;
 ;;; $Log: essd-s4.el,v $
+;;; Revision 1.6  1997/08/25 20:50:16  rossini
+;;; MM's changes.
+;;;
 ;;; Revision 1.5  1997/07/30 13:15:11  rossini
 ;;; program vars back in.
 ;;;
@@ -58,26 +61,27 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
 
 ;;; Code:
+(defvar S4-help-sec-keys-alist
+  '((?a . "ARGUMENTS:")
+    (?b . "BACKGROUND:")
+    (?B . "BUGS:")
+    (?d . "DESCRIPTION:")
+    (?D . "DETAILS:")
+    (?e . "EXAMPLES:")
+    (?n . "NOTE:")
+    (?r . "REFERENCES:")
+    (?s . "SEE ALSO:")
+    (?S . "SIDE EFFECTS:")
+    (?u . "USAGE:")
+    (?v . "VALUE:"))
+  "Help section keys for S4.")
 
 (defvar S4-customize-alist
   '((ess-proc-prefix      .         "S")
     (ess-version-running  .         "S4")
     (inferior-ess-program .         inferior-S4-program-name) ;"S")
     (ess-help-sec-regex   .         "^[A-Z. ---]+:$")
-    (ess-help-sec-keys-alist .      '((?a . "ARGUMENTS:")
-				      (?b . "BACKGROUND:")
-				      (?B . "BUGS:")
-				      (?d . "DETAILS:")
-				      (?D . "DESCRIPTION:")
-				      (?e . "EXAMPLES:")
-				      (?n . "NOTE:")
-				      (?o . "OPTIONAL ARGUMENTS:")
-				      (?r . "REQUIRED ARGUMENTS:")
-				      (?R . "REFERENCES:")
-				      (?s . "SIDE EFFECTS:")
-				      (?S . "SEE ALSO:")
-				      (?u . "USAGE:")
-				      (?v . "VALUE:")))
+    (ess-help-sec-keys-alist .      S4-help-sec-keys-alist)
     (inferior-ess-objects-command . "objects(%d)")
     (inferior-ess-help-command .    "help(\"%s\")\n")
     (inferior-ess-exit-command .    "q()\n")
