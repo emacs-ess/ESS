@@ -1,6 +1,6 @@
 -*- view -*-
 
-($Revision: 4.1 $)
+($Revision: 4.2 $)
 
 Emacs Speaks Statistics (ESS), version 5.0
 ------------------------------------------
@@ -28,7 +28,7 @@ The current development team is led by A.J. (Tony) Rossini
 (rossini@stat.sc.edu and arossini@biostat.washington.edu), who did the
 initial port to XEmacs and has been the primary coder.  Martin
 Maechler (maechler@stat.math.ethz.ch) and Kurt Hornik
-(hornik@ci.tuwein.ac.at) have assisted with S-PLUS, S4, R, and
+(hornik@ci.tuwien.ac.at) have assisted with S-PLUS, S4, R, and
 XLispStat sub-modes, and Richard M. Heiberger
 (rmh@fisher.stat.temple.edu) has done much of the work for
 implementing the SAS sub-mode, as well as assisted with S-PLUS and S4
