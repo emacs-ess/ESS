@@ -1,11 +1,19 @@
-
 Please send bug reports, suggestions etc. to
 
-	@email{ess-bugs@@stat.math.ethz.ch}
+@ifhtml
+<A HREF="mailto:ESS-bugs@stat.math.ethz.ch">
+@end ifhtml
+@email{ESS-bugs@@stat.math.ethz.ch}
+@ifhtml
+</A>
+@end ifhtml
 
 The easiest way to do this is within Emacs by typing
 
-	M-x ess-submit-bug-report
+@kbd{M-x ess-submit-bug-report}
 
 This also gives the maintainers valuable information about your
 installation which may help us to identify or even fix the bug.
+
+Note that comments, suggestions, words of praise and large cash
+donations are also more than welcome.
