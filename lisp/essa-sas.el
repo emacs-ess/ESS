@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/07/24 18:42:56 $
-;; Version: $Revision: 1.141 $
-;; RCS: $Id: essa-sas.el,v 1.141 2003/07/24 18:42:56 rsparapa Exp $
+;; Modified: $Date: 2003/07/24 19:52:17 $
+;; Version: $Revision: 1.142 $
+;; RCS: $Id: essa-sas.el,v 1.142 2003/07/24 19:52:17 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -667,11 +667,12 @@ optional argument is non-nil, then set-buffer rather than switch."
 ;;))
 
 (defun ess-sas-rtf-export-1 ()
-"Creates an MS RTF file from file-1; assuming one dot in `ess-sas-file-path'"
+"Creates an MS RTF file from the current buffer based on its name."
     (interactive)
-    (ess-sas-goto-file-1)
+;;    (ess-sas-goto-file-1)
     (if (fboundp 'rtf-export)
-	(rtf-export (replace-in-string ess-sas-file-path "[.][^.]*$" ".rtf"))))
+	(rtf-export (replace-in-string 
+		    (expand-file-name (buffer-name)) "[.][^.]*$" ".rtf"))))
 
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that
@@ -912,10 +913,10 @@ Without args, toggle between these options."
 (defun ess-sas-global-pc-keys ()
   "PC-like SAS key definitions"
   (interactive)
+  (global-set-key [(control f1)] 'ess-sas-rtf-export-1)
   (global-set-key (quote [f2]) 'ess-revert-wisely)
   (global-set-key (quote [f3]) 'ess-sas-goto-shell)
   (global-set-key (quote [f4]) 'ess-sas-goto-file-1)
-  (global-set-key [(control f4)] 'ess-sas-rtf-export-1)
   (global-set-key (quote [f5]) 'ess-sas-goto-sas)
   (global-set-key (quote [f6]) 'ess-sas-goto-log)
   (global-set-key [(control f6)] 'ess-sas-append-log)
@@ -939,6 +940,7 @@ Without args, toggle between these options."
 (defun ess-sas-global-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
+  (global-set-key [(control f1)] 'ess-sas-rtf-export-1)
   (global-set-key (quote [f2]) 'ess-revert-wisely)
   (global-set-key (quote [f3]) 'ess-sas-submit)
   (global-set-key [(control f3)] 'ess-sas-submit-region)
@@ -948,7 +950,6 @@ Without args, toggle between these options."
   (global-set-key (quote [f6]) 'ess-sas-goto-lst)
   (global-set-key [(control f6)] 'ess-sas-append-lst)
   (global-set-key (quote [f7]) 'ess-sas-goto-file-1)
-  (global-set-key [(control f7)] 'ess-sas-rtf-export-1)
   (global-set-key (quote [f8]) 'ess-sas-goto-shell)
   (global-set-key (quote [f9]) 'ess-sas-data-view)
   (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
@@ -967,10 +968,10 @@ in SAS-mode and related modes.")
 (defun ess-sas-local-pc-keys ()
   "PC-like SAS key definitions."
   (interactive)
+  (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-export-1)
   (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
   (define-key sas-mode-local-map (quote [f3]) 'ess-sas-goto-shell)
   (define-key sas-mode-local-map (quote [f4]) 'ess-sas-goto-file-1)
-  (define-key sas-mode-local-map [(control f4)] 'ess-sas-rtf-export-1)
   (define-key sas-mode-local-map (quote [f5]) 'ess-sas-goto-sas)
   (define-key sas-mode-local-map (quote [f6]) 'ess-sas-goto-log)
   (define-key sas-mode-local-map [(control f6)] 'ess-sas-append-log)
@@ -990,6 +991,7 @@ in SAS-mode and related modes.")
 (defun ess-sas-local-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
+  (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-export-1)
   (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
   (define-key sas-mode-local-map (quote [f3]) 'ess-sas-submit)
   (define-key sas-mode-local-map [(control f3)] 'ess-sas-submit-region)
@@ -999,7 +1001,6 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map (quote [f6]) 'ess-sas-goto-lst)
   (define-key sas-mode-local-map [(control f6)] 'ess-sas-append-lst)
   (define-key sas-mode-local-map (quote [f7]) 'ess-sas-goto-file-1)
-  (define-key sas-mode-local-map [(control f7)] 'ess-sas-rtf-export-1)
   (define-key sas-mode-local-map (quote [f8]) 'ess-sas-goto-shell)
   (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view)
   (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
