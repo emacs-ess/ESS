@@ -1,3 +1,29 @@
+Wed Sep 15 22:34:37 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-inf.el (inferior-ess-mode): preliminary support for Omegahat.
+
+Wed Sep 15 22:21:42 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* essd-omg.el (omegahat-mode): fset for OMG-mode. use it.
+		(omegahat): fset for OMG.  use it.
+		Documentation fixes.
+
+Wed Sep 15 22:20:37 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-site.el (essd-omg): require this, now.
+
+Wed Sep 15 22:19:08 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-site.el: added omegahat, comment about ssh (for ess-elsewhere)
+
+Wed Sep 15 22:17:04 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-vars.el (inferior-STA-program-name): documentation fixes
+
+Wed Sep 15 22:16:55 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-vars.el (inferior-OMG-program-name): new variable
+
 Tue Sep 14 22:55:55 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* essd-xls.el (xlispstat-mode): added as a synonym.
