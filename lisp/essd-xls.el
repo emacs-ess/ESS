@@ -1,17 +1,17 @@
-;;; essd-xls.el --- XLispStat customization
+;;; essd-xls.el --- XLispStat customization for ESS.
 
 ;; Copyright (C) 1997 A. J. Rossini
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/01 18:10:11 $
-;; Version: $Revision: 1.25 $
-;; RCS: $Id: essd-xls.el,v 1.25 1997/09/01 18:10:11 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:22:43 $
+;; Version: $Revision: 1.26 $
+;; RCS: $Id: essd-xls.el,v 1.26 1997/09/01 18:22:43 rossini Exp $
 ;;
-;; Keywords: start up, configuration.
+;; Keywords: Statistics
 
-;; This file is part of ess-mode.
+;; This file is part of ESS
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the Splus 3.x customizations for ess-mode.
+;;; This file defines all the XLispStat customizations for ESS.
 
 ;;; Requires and Autoloads:
 
@@ -57,6 +57,7 @@
     (inferior-ess-start-args       . ""))
   "Variables to customize for XLS")
 
+;;; The functions of interest (mode, inferior mode)
 
 (defun XLS-mode (&optional proc-name)
   "Major mode for editing XLispStat source.  NOT EVEN STARTED."
