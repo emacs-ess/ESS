@@ -23,6 +23,9 @@ Structure:  TWO main files
 
  ess.texi
   |
+  |-- ../VERSION
+  |-- ess-defs.texi
+  |
   |-- newfeat.texi
   |
   |-- credits.texi
@@ -30,12 +33,21 @@ Structure:  TWO main files
   |
   |-- getting.texi
   |      \-- inst_svn.texi
+  |-- inst_tar.texi
+  |
+  |-- requires.texi
+  |
+  |-- help-s.texi
+  |-- help-sas.texi
+  |-- help-bugs.texi
   |
   |-- bugs.texi
   |
   |-- bugrept.texi
   |
   \-- mailing.texi
+
+
 
 
  readme.texi
@@ -52,7 +64,6 @@ Structure:  TWO main files
   |
   |-- getting.texi
   |      \-- inst_svn.texi
-  |
   |-- inst_tar.texi
   |
   |-- bugrept.texi
