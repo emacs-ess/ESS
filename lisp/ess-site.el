@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/09/01 19:19:34 $
-;; Version: $Revision: 5.28 $
-;; RCS: $Id: ess-site.el,v 5.28 1999/09/01 19:19:34 maechler Exp $
+;; Modified: $Date: 1999/09/03 19:41:45 $
+;; Version: $Revision: 5.29 $
+;; RCS: $Id: ess-site.el,v 5.29 1999/09/03 19:41:45 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -109,6 +109,7 @@
 	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S
 	   ("\\.ssc\\'"	  . S-mode) ;; Splus 4.x script files.
 	   ("\\.[rR]\\'"  . R-mode)
+	   ("\\.[rR]profile\\'" . R-mode)
 	   ("\\.lsp\\'"		. XLS-mode)
 	   ("\\.do\\'"		. STA-mode)
 	   ("\\.ado\\'"		. STA-mode)
