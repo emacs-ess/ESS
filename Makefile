@@ -1,5 +1,5 @@
 
-## $Id: Makefile,v 5.5 1998/11/09 23:28:14 rossini Exp $
+## $Id: Makefile,v 5.6 1998/11/09 23:50:04 rossini Exp $
 ## Top Level Makefile
 SHELL = /bin/sh
 
@@ -39,7 +39,7 @@ dist:
 	-chmod a+w $(ESSVERSIONDIR)/doc/ess.info* $(ESSVERSIONDIR)/doc/ess.dvi
 	rm $(ESSVERSIONDIR)
 	cvs release -d ess
-
+	scp ESS-$(ESSVERSION).tar.gz ess@franz.stat.wisc.edu:~/public_html
 
 ## PA's version, infinitely interesting...
 #dist:   
