@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/03/02 22:23:47 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: essl-sas.el,v 5.12 2001/03/02 22:23:47 ess Exp $
+;; Modified: $Date: 2001/03/05 16:27:10 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: essl-sas.el,v 5.13 2001/03/05 16:27:10 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -308,8 +308,8 @@ popup window when the SAS job is finished.")
 	 )
 	(list
 	 ;; SAS comments
-	 (cons "\\(^[0-9]*\\|;\\)[ \t]*%?\\*.*;"    font-lock-comment-face)
-	 (list "/\\*\\([^*/]\\)*\\*/"      0	    font-lock-comment-face t)
+	 (list "\\(^[0-9]*\\|;\\)[ \t]*%?\\*.*;" 0  font-lock-comment-face t)
+	 (list "/\\*.*\\*/"			 0  font-lock-comment-face t)
 
 	 ;; SAS execution blocks, DATA/RUN, PROC/RUN, SAS Macro Statements
 	 (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"	    font-lock-reference-face)
@@ -345,7 +345,7 @@ popup window when the SAS job is finished.")
 	 ;; SAS statements
 
 	 (cons (concat
-		"\\(^[0-9]*\\|):\\|[;,)]\\|then\\|else\\)[ \t]*"
+		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
 		"\\(a\\(bort\\|rray\\|ttrib\\)\\|by\\|d\\(elete\\|isplay\\|m\\|rop\\)"
 		"\\|error\\|f\\(ile\\(\\|name\\)\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\)"
 		"\\|go\\([ \t]*to\\|ptions\\)\\|i\\(f\\|n\\(f\\(ile\\|ormat\\)\\|put\\)\\)\\|keep\\|options"
@@ -363,10 +363,9 @@ popup window when the SAS job is finished.")
 
 	 ;; SAS statements that must be followed by a semi-colon
 	 (cons (concat
-		"\\(^[0-9]*\\|):\\|[;,)]\\|then\\|else\\)[ \t]*"
+		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
 		"\\(cards4?\\|end\\(\\|sas\\)\\|l\\(ist\\|ostcard\\)\\|page\\|return\\|stop\\)?"
-		"[ \t]*;")
-						    font-lock-keyword-face)
+		"[ \t]*;")			    font-lock-keyword-face)
 
 	 ;; SAS/GRAPH statements not handled above
 	 (cons (concat
