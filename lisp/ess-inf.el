@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/02/02 13:59:17 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: ess-inf.el,v 5.10 1999/02/02 13:59:17 maechler Exp $
+;; Modified: $Date: 1999/02/02 14:02:01 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: ess-inf.el,v 5.11 1999/02/02 14:02:01 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -126,7 +126,7 @@ accompany the call for inferior-ess-program.
       ;;>> => comint-input-sender is not set to 'ess-input-  ==> no input echo!
       ;;>> => that's why things fail:
       ;;>> (ess-setq-vars-local ess-customize-alist (current-buffer))
-      ;;                 ======
+      ;;		 ======
       (setq temp-ess-dialect
 	    (eval(cdr(assoc 'ess-dialect ess-customize-alist))))
       (setq temp-ess-lang   
@@ -1254,21 +1254,16 @@ to continue it."
 ;;As promised, here is a quick hack:
 ;;
 (defun inferior-R-input-sender (proc string)
-  (ess-write-to-dribble-buffer (format "(inf-R-input): string='%s'" string))
-  (if (or (string-match "help *\(\\([^,=)]*\\)\)" string)
-	  (string-match "? *['\"]*\([^,=)]*\)['\"]" string))
+  (if (or (string-match	  "help *\(\\([^,=)]*\\)\)" string)
+	  (string-match "\? *['\"]?\\([^,=)]*\\)['\"]?" string))
       (progn
-	(ess-write-to-dribble-buffer " --> _help_\n")
 	(insert-before-markers string)
 	(let ((string (match-string 1 string)))
 	  (ess-display-help-on-object
-	   (if (string= string "") "help" string))
-	  (ess-write-to-dribble-buffer (format "\t\t\t(%s)\n" string))
-	  )
+	   (if (string= string "") "help" string)))
 	(ess-eval-visibly "\n"))
     ;; else:  normal command
     (inferior-ess-input-sender proc string)
-    (ess-write-to-dribble-buffer "-- normal\n")
     )
   ;; Of course, this (currently) only works for the `help(name)' form, and
   ;; not for `?name'.  And of course, it breaks for `help(data = name)',
