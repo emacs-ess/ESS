@@ -1,7 +1,7 @@
 @itemize @bullet
 @item
 @uref{http://www.biostat.washington.edu/~rossini/,A.J. Rossini}
-@email{rossini@@stat.sc.edu}
+@email{rossini@@u.washington.edu}
 @c --------
 @item
 @uref{http://www.sbm.temple.edu/departments/statistics/,Richard M. Heiberger}
@@ -14,4 +14,7 @@
 @item
 @uref{http://stat.ethz.ch/~maechler/,Martin Maechler}
 @email{maechler@@stat.math.ethz.ch}
+@item
+@uref{see http://www.duke.edu/~spara002/,Rodney Sparapani}
+@email{rodney.sparapani@@duke.edu}
 @end itemize
