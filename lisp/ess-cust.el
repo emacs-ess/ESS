@@ -55,7 +55,7 @@
   :group 'local)
 
 (defgroup ess-edit nil
-  "ESS: editing behavior."
+  "ESS: editing behavior, including coments/indentation."
   :group 'ess
   :prefix "ess-")
 
@@ -343,61 +343,86 @@ bracket."
 
 ;;;*;;; Indentation parameters
 
-(defvar ess-auto-newline nil
+(defcustom ess-auto-newline nil
   "*Non-nil means automatically newline before and after braces
-inserted in S code.")
+inserted in S code."
+  :type 'boolean
+  :group 'ess-edit)
 
-(defvar ess-tab-always-indent t
+(defcustom ess-tab-always-indent t
   "*Non-nil means TAB in S mode should always reindent the current line,
-regardless of where in the line point is when the TAB command is used.")
+regardless of where in the line point is when the TAB command is used."
+  :type 'boolean
+  :group 'ess-edit)
 
-(defvar ess-indent-level 2
-  "*Indentation of S statements with respect to containing block.")
+(defcustom ess-indent-level 2
+  "*Indentation of S statements with respect to containing block."
+  :type 'integer
+  :group 'ess-edit)
 
-(defvar ess-brace-imaginary-offset 0
-  "*Imagined indentation of an open brace following a statement.")
+(defcustom ess-brace-imaginary-offset 0
+  "*Imagined indentation of an open brace following a statement."
+  :type 'integer
+  :group 'ess-edit)
 
-(defvar ess-brace-offset 0
+(defcustom ess-brace-offset 0
   "*Extra indentation for open braces.
-Compares with other text in same context.")
+Compares with other text in same context."
+  :type 'integer
+  :group 'ess-edit)
 
-(defvar ess-continued-statement-offset 2
-  "*Extra indent for lines not starting new statements.")
+(defcustom ess-continued-statement-offset 2
+  "*Extra indent for lines not starting new statements."
+  :type 'integer
+  :group 'ess-edit)
 
-(defvar ess-continued-brace-offset 0
+(defcustom ess-continued-brace-offset 0
   "*Extra indent for substatements that start with open-braces.
-This is in addition to ess-continued-statement-offset.")
+This is in addition to ess-continued-statement-offset."
+  :type 'integer
+  :group 'ess-edit)
 
-(defvar ess-arg-function-offset 2
+(defcustom ess-arg-function-offset 2
   "*Extra indent for internal substatements of function `foo' that called
 in `arg=foo(...)' form.
-If not number, the statements are indented at open-parenthesis following foo.")
+If not number, the statements are indented at open-parenthesis following foo."
+  :type 'integer
+  :group 'ess-edit)
 
 ;;added rmh 2Nov97 at request of Terry Therneau
-(defvar ess-close-brace-offset 0
-  "*Extra indentation for closing braces.")
+(defcustom ess-close-brace-offset 0
+  "*Extra indentation for closing braces."
+  :type 'integer
+  :group 'ess-edit)
 
 ;;added rmh 2Nov97 at request of Terry Therneau
-(defvar ess-fancy-comments t
-  "*Non-nil means distiguish between #, ##, and ### for indentation.")
+(defcustom ess-fancy-comments t
+  "*Non-nil means distiguish between #, ##, and ### for indentation."
+  :type 'boolean
+  :group 'ess-edit)
 
 
 ;; PeterDalgaard, 1Apr97 :
 ;;The default ess-else-offset should be 0, not 2 IMHO (try looking at
 ;;the ls() function, for instance).  Was 2.
-(defvar ess-else-offset 0
-  "*Extra indent for `else' lines.")
+(defcustom ess-else-offset 0
+  "*Extra indent for `else' lines."
+  :type 'integer
+  :group 'ess-edit)
 
-(defvar ess-expression-offset 4
+(defcustom ess-expression-offset 4
   "*Extra indent for internal substatements of `expression' that specified
 in `obj <- expression(...)' form.
 If not number, the statements are indented at open-parenthesis following
-`expression'.")
+`expression'."
+  :type 'integer
+  :group 'ess-edit)
 
 ;;;*;;; Editing styles
 
 ;;; **FIXME**  The following NEEDS to be customized.
-
+;; SJE: I disagree; this variable should not be customized; individual vars, 
+;; such as ess-indent-level are already customizable.
 (defvar ess-default-style-list
   (list 'DEFAULT
 	(cons 'ess-indent-level ess-indent-level)
@@ -457,7 +482,11 @@ If not number, the statements are indented at open-parenthesis following
 	       (ess-expression-offset . 4)
 	       (ess-else-offset . 0)
 	       (ess-close-brace-offset . 2))))
-  "Predefined formatting styles for ess code")
+  "Predefined formatting styles for ESS code.
+Values for all groups, except DEFAULT, are fixed.
+To change the value of variables in the DEFAULT group, change
+the corresponding variables, e.g. `ess-indent-level'.
+The default style in use is controlled by `ess-default-style'.")
 
 (defvar ess-default-style 'DEFAULT
   "*The default value of `ess-style'.")
