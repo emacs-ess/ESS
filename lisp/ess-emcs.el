@@ -9,9 +9,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2001/11/01 19:33:24 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: ess-emcs.el,v 5.14 2001/11/01 19:33:24 ess Exp $
+;; Modified: $Date: 2002/02/26 19:38:15 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: ess-emcs.el,v 5.15 2002/02/26 19:38:15 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -94,6 +94,33 @@ Only a concern with earlier versions of Emacs.")
 (defun w32-using-nt ()
   "Return non-nil if literally running on Windows NT (i.e., not Windows 9X)."
   (and (eq system-type 'windows-nt) (getenv "SystemRoot"))))
+
+(if (and ess-running-xemacs (>= emacs-major-version 21) (>= emacs-minor-version 4))
+  (defun ess-xemacs-insert-glyph (gl)
+     "Insert a glyph at the left edge of point."
+     (let ( (prop 'myimage)        ;; myimage is an arbitrary name, chosen 
+                                   ;; to (hopefully) not conflict with any
+                                   ;; other properties.  Change it if
+                                   ;; necessary.
+            extent )
+       ;; First, check to see if one of our extents already exists at
+       ;; point.  For ease-of-programming, we are creating and using our
+       ;; own extents (multiple extents are allowed to exist/overlap at the
+       ;; same point, and it's quite possible for other applications to
+       ;; embed extents in the current buffer without your knowledge).
+       ;; Basically, if an extent, with the property stored in "prop",
+       ;; exists at point, we assume that it is one of ours, and we re-use
+       ;; it (this is why it is important for the property stored in "prop"
+       ;; to be unique, and only used by us).
+       (if (not (setq extent (extent-at (point) (current-buffer) prop)))
+         (progn
+           ;; If an extent does not already exist, create a zero-length
+           ;; extent, and give it our special property.
+           (setq extent (make-extent (point) (point) (current-buffer)))
+           (set-extent-property extent prop t)
+           ))
+       ;; Display the glyph by storing it as the extent's "begin-glyph".
+       (set-extent-property extent 'begin-glyph gl))))
 
 ;; XEmacs and NTemacs 19.x need these
 (if (not (boundp 'w32-system-shells))
