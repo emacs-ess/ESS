@@ -9,8 +9,9 @@
 ;;                Martin Maechler  <maechler@stat.math.ethz.ch>
 ;;                Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;;                Rodney Sparapani <rsparapa@mcw.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.24 2001/04/26 16:38:46 ess Exp $
+;; Version: $Id: ess.el,v 5.25 2001/04/26 19:12:53 ess Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
