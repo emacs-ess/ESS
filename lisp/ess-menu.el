@@ -6,7 +6,7 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.1 2000/09/05 13:39:26 rossini Exp $
+;; Version: $Id: ess-menu.el,v 1.2 2000/09/05 13:40:59 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -147,6 +147,39 @@ Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
   (setq imenu-generic-expression 
 	'( (nil "New one needed" 1)))
   (imenu-add-to-menubar "SAS-fcts"))
+
+
+;;;; Example for C menus:
+;;; Regular expression to find C functions
+;(defvar imenu-example--function-name-regexp-c
+;  (concat
+;   "^[a-zA-Z0-9]+[ \t]?"		; type specs; there can be no
+;   "\\([a-zA-Z0-9_*]+[ \t]+\\)?"	; more than 3 tokens, right?
+;   "\\([a-zA-Z0-9_*]+[ \t]+\\)?"
+;   "\\([*&]+[ \t]*\\)?"			; pointer
+;   "\\([a-zA-Z0-9_*]+\\)[ \t]*("	; name
+;   ))
+;(defun imenu-example--create-c-index (&optional regexp)
+;  (let ((index-alist '())
+;	prev-pos char)
+;    (goto-char (point-min))
+;    (imenu-progress-message prev-pos 0)
+;    ;; Search for the function
+;    (save-match-data
+;      (while (re-search-forward
+;	      (or regexp imenu-example--function-name-regexp-c)
+;	      nil t)
+;	(imenu-progress-message prev-pos)
+;	(backward-up-list 1)
+;	(save-excursion
+;	  (goto-char (scan-sexps (point) 1))
+;	  (setq char (following-char)))
+;	;; Skip this function name if it is a prototype declaration.
+;	(if (not (eq char ?\;))
+;	    (push (imenu-example--name-and-position) index-alist))))
+;    (imenu-progress-message prev-pos 100)
+;    (nreverse index-alist)))
+
 
 
  ; Run load hook and provide package
