@@ -1,9 +1,10 @@
 Changes/New Features in 5.1.21:
 @itemize @bullet
-@item ESS[SAS]: info documentation now available!; see
+@item ESS[SAS]: info documentation now available!, see
 ESS->Help for Statistical Packages->Help for SAS; F12 opens
 GSASFILE nearest point for viewing either within emacs, when
-available, or via an external viewer
+available, or via an external viewer; more syntax highlighting
+keywords
 @item Makefile: tag now independent of rel
 @end itemize
 

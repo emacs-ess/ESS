@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/04/10 15:47:25 $
-;; Version: $Revision: 5.41 $
-;; RCS: $Id: essl-sas.el,v 5.41 2002/04/10 15:47:25 rsparapa Exp $
+;; Modified: $Date: 2002/04/12 21:46:24 $
+;; Version: $Revision: 5.42 $
+;; RCS: $Id: essl-sas.el,v 5.42 2002/04/12 21:46:24 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -419,7 +419,7 @@ number."
 		"\\|var\\|where\\)"
 		"[ \t]*=")
 						    font-lock-keyword-face)
-	 (cons "\\<\\(in\\(dex[ \t]*=\\)?\\|until\\|wh\\(en\\|ile\\)\\)[ \t]*("
+	 (cons "\\<\\(in\\(:\\|dex[ \t]*=\\)?\\|until\\|wh\\(en\\|ile\\)\\)[ \t]*("
 						    font-lock-keyword-face)
 
 	 ;; SAS statements
