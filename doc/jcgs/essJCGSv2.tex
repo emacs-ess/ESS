@@ -124,7 +124,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/09 13:44:28 $ - $Revision: 1.40 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/09 16:09:35 $ - $Revision: 1.41 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -319,19 +319,28 @@ Minor modes can be used to change the key mapping, for example to
 emulate the keys used by another editor.  This is often used
 by people who want the power of emacs without having to retrain their
 fingers to use the standard emacs key mappings.
-\begin{Comment}
-Rich: I can't make sense of the previous wording of the ftp etc sentence.
-Also it wasn't true.  both telnet-mode and internal-ange-ftp-mode are
-major modes.
-\end{Comment}
-% Remote editing of files is
-% provided by minor-modes \stexttt{ange-ftp} and \stexttt{EFS} for
-% non-secure access via ftp or \stexttt{tramp} for secure connections
-% with scp or ssh, and telnet for non-secure connections.
+Remote editing of files is
+provided by minor-modes \stexttt{ange-ftp} and \stexttt{EFS} for
+non-secure access via ftp or \stexttt{tramp} for secure connections
+with scp or ssh, and telnet for non-secure connections.
 Interacting with revision control
 programs is provided by the minor-mode \stexttt{vc-mode} for packages
 like CVS, RCS and SCCS (or the more
 specialized \stexttt{pcl-cvs-mode} for CVS only).
+
+\begin{Comment}
+Rich: I can't make sense of the previous wording of the ftp etc sentence.
+Also it wasn't true.  both telnet-mode and internal-ange-ftp-mode are
+major modes.
+
+Rodney: Ok, maybe technically they are not minor-modes.  They are just 
+hooks, but the idea is the same.  When I'm remotely editing a .sas file 
+with ange-ftp, the major mode is ESS[SAS], not ange-ftp.  I'm restoring it.  
+People will want to know if emacs is up to the job.  Of course, the 
+alternative is to have a paragraph on hooks and I don't like that idea.
+Also, note that pcl-cvs-mode cooperates with vc-mode, but I think that
+is too much detail as well.
+\end{Comment}
 
 \paragraph{Extensions to Editing.}
 Most programming and documentation tasks fall under the realm of text
@@ -606,11 +615,16 @@ should talk about SAS and BUGS?  Comments welcome.
 pretty evenly divided between SAS and S.  OTOH, they are almost 
 unanimously opposed to WinBUGS and use batch BUGS nearly exclusively.
 I think it's because of their aversion to Windows since nearly all of
-them are hard core Unix fanatics.  However, I see no problem with changing, 
-since it is only loosely based on ESS[SAS].  Luckily, I only have to change 
-one key-binding since there aren't any others.  What is the R/S key-binding 
-for batch submit?  I'll remove this comment after I change ESS[BUGS] (and 
-somebody tells me what to change it to :0)  Thanks.
+them are Unix fanatics.  
+Having thought some more about this...  The reason that BUGS batch file
+processing is based on SAS batch file processing is \textbf{batch file processing}.
+In other words, BUGS and SAS probably have more in common operationally
+than BUGS and R/S do.  Of course, BUGS has an interactive mode, but that
+would only be of use in rare circumstances.  Maybe we should just have an 
+option to make the key-binding be SAS-like or R/S-like (what would that be 
+by the way?).  That way everyone should be happy and the above illustration
+will make sense.  Besides, the most pressing need for me is to get 
+ESS-elsewhere to work with ESS[BUGS] rather than creating inferior-BUGS.
 \end{description}
 \end{Comment}
 
