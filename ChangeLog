@@ -1,3 +1,25 @@
+Tue Nov 25 15:37:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: Real dump suggested programming fix.
+	* README.S: Real dump user correction.
+
+Tue Nov 25 15:37:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S : Real Dump user correction
+
+Tue Nov 25 13:06:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess-mode): Make sure that silly moves like
+ 	"ess-dialect=S" are not cause for a bailout. (AJR).
+
+Tue Nov 25 12:38:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S: changes for font-lock "Dump" problem. (RMH)
+
+Tue Nov 25 12:36:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: chmod 444 ess.info* ess.dvi on release (RMH)
+
 Tue Nov 25 08:53:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* RELEASED: 5.0-honestlylastpre.
@@ -1651,6 +1673,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 4.7  1997/11/25 21:24:13  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 4.6  1997/11/25 13:58:36  rossini
 	* Removing *** empty log message ***
 	* Removing
