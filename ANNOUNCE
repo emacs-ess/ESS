@@ -3,7 +3,7 @@ ANNOUNCING ESS
 
    The ESS Developers proudly announce the release of ESS
 
-   5.1.22
+   5.1.23
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -221,9 +221,15 @@ in the file COPYING in the same directory as this file for more details.
 New Features
 ============
 
+   Changes/New Features in 5.1.23:
+   * The version number is now correct even inside ESS/Emacs
+
+   * Minor more Makefile clean up.
+
    Changes/New Features in 5.1.22:
    * Besides info documentation, PDF and HTML documentation are also
-     provided and now available on the web as well; see ESS web page
+     provided (instead of built using "make") and available on the web
+     as well; see ESS web page
      (http://software.biostat.washington.edu/ess/doc) and StatLib
      (http://lib.stat.cmu.edu/general/ESS/doc)
 
