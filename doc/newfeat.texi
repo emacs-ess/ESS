@@ -1,8 +1,10 @@
+
 Changes/New Features in 5.1.18:
 @itemize @bullet
 @item New `ess-smart-underscore' function, now assigned to "_" by default.
       Inserts `ess-S-assign' (customizable " <- "), unless inside string
-      and comments where plain "_" is used instead.
+      and comments where plain "_" is used instead. (MM)
+@item Fixes for longstanding interactive SAS breakage (RMH)
 @end itemize
 
 
