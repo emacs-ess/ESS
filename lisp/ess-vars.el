@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/06/05 23:15:09 $
-;; Version: $Revision: 5.43 $
-;; RCS: $Id: ess-vars.el,v 5.43 2000/06/05 23:15:09 ess Exp $
+;; Modified: $Date: 2000/06/30 19:40:18 $
+;; Version: $Revision: 5.44 $
+;; RCS: $Id: ess-vars.el,v 5.44 2000/06/30 19:40:18 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -400,13 +400,13 @@ by `ess-function-template'.")
 ;; If you need to change the *-program-name variables, do so in
 ;; ess-site.el.  Do NOT make the changes here!!
 
+
+;;; S and dialects.
+
 (defvar inferior-R-program-name
   (if (or (equal window-system 'w32) (equal window-system 'win32))
       "Rterm"  "R")
   "*Program name for invoking an inferior ESS with \\[R].")
-
-(defvar inferior-XLS-program-name "xlispstat"
-  "*Program name for invoking an inferior ESS with \\[XLS].")
 
 (defvar inferior-S3-program-name "/disk05/s/S"
   "*Program name for invoking an inferior ESS with S3().")
@@ -432,9 +432,6 @@ in S+4 Commands window and in Sqpe+4 buffer.")
 (defvar inferior-S-elsewhere-program-name "sh"
   "*Program name for invoking an inferior ESS with S on a different computer.")
 
-(defvar inferior-ESS-elsewhere-program-name "sh"
-  "*Program name for invoking an inferior ESS with program on a
-different computer.")
 
 (defvar inferior-S4-program-name "S4"
   "*Program name for invoking an inferior ESS with S4().")
@@ -442,27 +439,58 @@ different computer.")
 (defvar inferior-S+5-program-name "Splus5"
   "*Program name for invoking an inferior ESS with S+5().")
 
+;;; XLispStat and Dialects
+
+(defvar inferior-XLS-program-name "xlispstat"
+  "*Program name for invoking an inferior ESS with \\[XLS].")
+
+(defvar inferior-VST-program-name "vista"
+  "*Program name for invoking an inferior ESS with \\[ViSta].")
+
+(defvar inferior-ARC-program-name "arc"
+  "*Program name for invoking an inferior ESS with \\[ARC].")
+
+;;; SAS
+
 (defvar inferior-SAS-program-name "sas"
   "*Program name for invoking an inferior ESS with SAS().")
+
+;;; Stata
 
 (defvar inferior-STA-program-name "stata"
   "*Program name for invoking an inferior ESS with stata().")
 
+;;; Omegahat
+
 (defvar inferior-OMG-program-name "omegahat"
   "*Program name for invoking an inferior ESS with omegahat().")
 
-;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
+;;; Elsewhere
+
+(defvar inferior-ESS-elsewhere-program-name "sh"
+  "*Program name for invoking an inferior ESS with program on a
+different computer.")
+
+;;; DDEclient for MS Windows 9x/NT/2k
+
 (defvar inferior-ess-ddeclient         nil
-"*ddeclient program acting as intermediary between emacs and the ESS program.")
+  "*ddeclient program acts as intermediary between emacs and ESS-program.")
+
 (make-variable-buffer-local 'inferior-ess-ddeclient)
+
 (defvar inferior-ess-client-name       nil
   "*Name of ESS program ddeclient talks to.")
+
 (make-variable-buffer-local 'inferior-ess-client-name)
+
 (defvar inferior-ess-client-command    nil
   "*ddeclient command sent to the ESS program")
+
 (make-variable-buffer-local 'inferior-ess-client-command)
 
-;;;;; user settable defaults
+
+;;;;; user configurable defaults
+
 (defvar inferior-S-program-name  inferior-S+3-program-name
   "*Program name for invoking an inferior ESS with S().")
 
