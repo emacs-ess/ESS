@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/07 16:45:59 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: essd-r.el,v 1.18 1997/07/07 16:45:59 rossini Exp $
+;; Modified: $Date: 1997/07/07 16:51:22 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: essd-r.el,v 1.19 1997/07/07 16:51:22 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.19  1997/07/07 16:51:22  rossini
+;;: R2 -> R in debug-message.
+;;:
 ;;: Revision 1.18  1997/07/07 16:45:59  rossini
 ;;: R is now the "new-way".
 ;;:
@@ -109,7 +112,7 @@ New way to do it."
   (setq ess-customize-alist R-customize-alist) ; setq or setq-default?
   (ess-set-vars-default ess-customize-alist (current-buffer))
   ;; debug, only
-  (message "(R2): ess-proc-prefix=%s , buf=%s"
+  (message "(R): ess-proc-prefix=%s , buf=%s"
 	   ess-proc-prefix (current-buffer))
   ;; now run...
   (inferior-ess))
