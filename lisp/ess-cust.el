@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/04/28 10:16:57 $
-;; Version: $Revision: 1.68 $
-;; RCS: $Id: ess-cust.el,v 1.68 2004/04/28 10:16:57 stephen Exp $
+;; Modified: $Date: 2004/05/06 13:54:00 $
+;; Version: $Revision: 1.69 $
+;; RCS: $Id: ess-cust.el,v 1.69 2004/05/06 13:54:00 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -651,9 +651,17 @@ by `ess-function-template'."
 
 (defcustom inferior-ess-own-frame nil
   "*Non-nil means that inferior ESS buffers should start in their own frame.
-The parameters of this frame are stored in `pop-up-frame-alist'."
+The parameters of this frame are stored in `inferior-ess-frame-alist'."
   :group 'ess-proc
   :type 'boolean)
+
+(defcustom inferior-ess-frame-alist default-frame-alist
+  "*Alist of frame parameters used to create new frames for iESS buffers.
+This defaults to `default-frame-alist' and is used only when
+the variable `inferior-ess-own-frame' is non-nil."
+  :group 'ess-proc
+  :type 'alist)
+
 
 (defcustom inferior-R-program-name
   (if ess-microsoft-p "Rterm"  "R")
@@ -1349,10 +1357,17 @@ Possible values are:
   'one: All help buffers are shown in one dedicated frame.
      t: Each help buffer gets its own frame.
 
-The parameters of this frame are stored in `pop-up-frame-alist'.
+The parameters of this frame are stored in `ess-help-frame-alist'.
 See also `inferior-ess-own-frame'."
   :group 'ess-help
   :type '(choice (const nil) (const one) (const t)))
+
+(defcustom ess-help-frame-alist special-display-frame-alist
+  "*Alist of frame parameters used to create help frames.
+This defaults to `special-display-frame-alist' and is used only when
+the variable `ess-help-own-frame' is non-nil."
+  :group 'ess-help
+  :type 'alist)
 
 (defconst ess-help-S-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file")
