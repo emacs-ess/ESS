@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/04/11 12:16:29 $
-;; Version: $Revision: 5.45 $
-;; RCS: $Id: ess-inf.el,v 5.45 2000/04/11 12:16:29 maechler Exp $
+;; Modified: $Date: 2000/04/14 12:58:35 $
+;; Version: $Revision: 5.46 $
+;; RCS: $Id: ess-inf.el,v 5.46 2000/04/14 12:58:35 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -410,6 +410,20 @@ This was rewritten by KH in April 1996."
     (goto-char (point-max))
     (set-buffer cbuffer)
     (symbol-value r)))
+
+;;--- Unfinished idea (ESS-help / R-help ) -- probably not worth it...
+;;- (defun ess-set-inferior-program-name (filename)
+;;-   "Allows to set or change `inferior-ess-program', the program (file)name."
+;;-   (interactive "fR executable (script) file: ")
+;;-   ;; "f" : existing file {file name completion} !
+;;-   (setq inferior-ess-program filename))
+;; the inferior-ess-program is initialized in the customize..alist,
+;; e.g. from  inferior-R-program-name ... --> should change rather these.
+;; However these really depend on the current ess-language!
+;; Plan: 1) must know and use ess-language
+;;       2) change the appropriate  inferior-<ESSlang>-program-name
+;; (how?) in R/S : assign(paste("inferior-",ESSlang,"-p...."),  filename))
+
 
 ;;*;; Multiple process handling code
 
@@ -1588,7 +1602,8 @@ directory and has been modified since it was last read."
 (defun ess-dir-modtime (dir)
   "Return the last modtime if DIR is a directory, and nil otherwise."
   ;; Attached dataframes return a modtime of nil.
-  (and ess-filenames-map (string-match "^/" dir)
+  (and ess-filenames-map
+       (file-directory-p dir); was (string-match "^/" dir)
        (nth 5 (file-attributes dir))))
 
 (defun ess-object-modtime (object)
