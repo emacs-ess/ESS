@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.34 1997/06/19 20:36:43 rossini Exp $
+## $Id: Makefile,v 1.35 1997/06/19 20:39:23 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.35  1997/06/19 20:39:23  rossini
+## edited comments.
+##
 ## Revision 1.34  1997/06/19 20:36:43  rossini
 ## removed spurrious comments.
 ##
@@ -99,7 +102,7 @@ LASTVERSION = 4.8.MM6.XE3
 PRELOADS = -l ./ess-site.el
 
 ## compile with noninteractive and relatively clean environment
-## XEMACS 19.14 and before.
+## XEMACS 19.xx and before.
 #BATCHFLAGS = -batch -no-site-file -no-init-file
 ## EMACS and XEMACS 20.x.
 BATCHFLAGS = -batch --no-site-file --no-init-file
@@ -117,7 +120,6 @@ CORE = ess.elc ess-site.elc
 SOURCES = ess.el ess-site.el \
 	ess-inf.el ess-mode.el ess-trns.el ess-help.el ess-xtra.el \
 	essd-s+3.el essd-r.el essd-xls.el 
-
 
 OBJECTS=$(SOURCES:.el=.elc)
 
@@ -141,7 +143,9 @@ S-mode: $(OBJECTS)
 all:	S-mode info html
 
 info:   S-mode.info
+
 html:	html/S-mode_toc.html
+
 install:	all
 	$(INSTALL) S-mode.info* $(INFODIR)
 	$(INSTALL) *.elc $(LISPDIR)
@@ -177,6 +181,7 @@ patch: S-mode-$(VERSION).tar.gz S-mode-$(LASTVERSION).tar.gz
 S-mode.info:	S-mode.texi
 	@echo "making S-mode.info..."
 	$(MAKEINFO) S-mode.texi
+
 html/S-mode_toc.html: S-mode.texi
 	@echo "making  HTML Info documentation"
 	-(mkdir -p html; cd html; $(MAKEHTML) ../S-mode.texi)
@@ -187,7 +192,6 @@ html/S-mode_toc.html: S-mode.texi
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
 
 ess.elc:	ess.el
-#	@echo compiling ess.el...
 	$(EMACS) $(BATCHFLAGS)  -f batch-byte-compile ess.el
 
 ess-site.elc:  ess-site.el ess.elc
