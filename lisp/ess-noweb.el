@@ -6,10 +6,10 @@
 ;;          A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: April 18, 1999
-;; Version: $Revision: 1.6 $
+;; Version: $Revision: 1.7 $
 ;; Keywords: statistical support
 ;; Summary: Noweb support for ESS
-;; CVS: $Id: ess-noweb.el,v 1.6 1999/09/14 23:10:55 rossini Exp $
+;; CVS: $Id: ess-noweb.el,v 1.7 2000/02/29 17:20:44 ess Exp $
 
 ;; This file is part of ESS
 
@@ -37,7 +37,7 @@
 
  ; Variables
 
-(defvar ess-noweb-use-font-lock t
+(defvar ess-noweb-use-font-lock window-system
   "Set to t if you want to use font-locking in ESS noweb buffers")
 
 ;; this helps with XEmacs barfing, sigh...
