@@ -1,6 +1,6 @@
 	-*- indented-text -*-
 
-$Revision: 4.7 $
+$Revision: 4.8 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1271,7 +1271,7 @@ Thanks for asking!
 > documentation (which still needs to be written)? 
 > 
 
-* From: "Sparapani, Rodney" <spara002@onyx.dcri.duke.edu>
+* From: "Sparapani, Rodney" <rsparapa@mcw.edu>
 Subject: RE: Delete forward key
 To: ESS Help Is Here <ess-help@stat.math.ethz.ch>,
         "'Sven Garbade'"
@@ -1283,15 +1283,10 @@ Sven:
 Put this line in your .emacs file after you have loaded ESS:
 (define-key ess-mode-map [delete] 'delete-char)
 
-Rodney Sparapani, Statistician Sr.
-Duke Clinical Research Institute
-e-mail: rodney.sparapani@duke.edu
-Office: 8025 North Pavilion
-Work #: (919) 668-8043    
-FAX  #: (919) 668-7049
-Mobile: (919) 608-0589
-For addressing and schedule information
-see http://www.duke.edu/~spara002
+Rodney Sparapani              Medical College of Wisconsin
+Sr. Biostatistician           Patient Care & Outcomes Research (PCOR)
+rsparapa@mcw.edu              8701 Watertown Plank Rd., Rm. H2775
+(414) 456-8786 (FAX: 6689)    PO Box 26509, Milwaukee, WI  53226-0509
 
 > ----------
 > From: 	Sven Garbade[SMTP:garbade@psy.uni-muenchen.de]
