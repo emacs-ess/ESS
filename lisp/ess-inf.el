@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1998/11/16 17:29:25 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: ess-inf.el,v 5.6 1998/11/16 17:29:25 maechler Exp $
+;; Modified: $Date: 1999/01/11 16:34:44 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: ess-inf.el,v 5.7 1999/01/11 16:34:44 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -1164,6 +1164,8 @@ to continue it."
 	    ((string= ess-dialect "S4")
 	     (setq comint-input-sender 'inferior-ess-input-sender))
 	    ((string= ess-dialect "S+3")
+	     (setq comint-input-sender 'inferior-ess-input-sender))
+	    ((string= ess-dialect "S+4")
 	     (setq comint-input-sender 'inferior-ess-input-sender))
 	    ((string= ess-dialect "S+5")
 	     (setq comint-input-sender 'inferior-ess-input-sender))
