@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.37 2001/04/30 16:07:12 ess Exp $
+## $Id: Makefile,v 5.38 2001/04/30 17:43:12 ess Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -90,7 +90,7 @@ tar:
 	rm -rf ess $(ESSVERSIONDIR)
 
 doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3: doc/ess.texi 
-	cd doc; make info
+	make docs
 
 xemacs-links: doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3
 	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
