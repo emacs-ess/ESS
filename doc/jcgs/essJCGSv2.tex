@@ -28,7 +28,6 @@
 %                a)GPL, cvs, ssh
 %                 b)ESS 6, the next generation?
 
-
 %\renewcommand{\baselinestretch}{1.5}
 \addtolength{\oddsidemargin}{-0.5in}
 %\addtolength{\topmargin}{-0.2in}
@@ -105,7 +104,8 @@
     and Rodney Sparapani is Senior Biostatistician at the Medical College
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
-\date{\today}
+%%S\date{\today}
+\date{$ $Date: 2002/01/02 10:04:24 $ - $Revision: 1.30 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -117,7 +117,7 @@
   of statistical analysis packages.  ESS
   is based on the Emacs text editing environment and is a member of
   the programming tools category of Rapid Application
-  Development (RAD) environments, which aid in developing 
+  Development (RAD) environments, which aid in developing
   computer applications.  We discuss how it works, why one
   would use it, and additional extensions for increasing
   statistical programming efficiency.
@@ -126,7 +126,8 @@
 \noindent Keywords: Data Analysis, Programming, Emacs, S, \SAS,
 \Splus, R, \XLispStat, \Stata, BUGS
 
-\baselineskip=2pc
+%% not for MM's reading -- maybe for submission (rather baselinestretch above?)
+%%S \baselineskip=2pc
 
 \section{Introduction}
 \label{sec:introduction}
@@ -155,7 +156,7 @@ statistical interfaces from programming it yourself to command line
 2nd paragraph, if so.
 
 Rodney:  I don't think so.
-AFAIC, anyone who wants to use ESS will not need to know 
+AFAIC, anyone who wants to use ESS will not need to know
 that per se.  They will just need to know what works today.
 \end{quote}
 
@@ -251,11 +252,11 @@ with a version control program.  For example, the minor-mode
 \stexttt{font-lock-mode} allows Emacs to highlight, with fonts or
 colors, the syntax of a programming language whose characteristics are
 described by a major-mode like ESS.  Remote editing of files is
-provided by minor-modes \stexttt{ange-ftp} and \stexttt{EFS} for 
-non-secure access via ftp or \stexttt{tramp} for secure connections 
+provided by minor-modes \stexttt{ange-ftp} and \stexttt{EFS} for
+non-secure access via ftp or \stexttt{tramp} for secure connections
 with scp or ssh, and telnet for non-secure connections.
 Interacting with revision control
-programs is provided by the minor-mode \stexttt{vc-mode} for packages 
+programs is provided by the minor-mode \stexttt{vc-mode} for packages
 like CVS, RCS and SCCS (or the more
 specialized \stexttt{pcl-cvs-mode} for CVS only).
 
@@ -359,16 +360,16 @@ syntax of each statistical language it supports.
 %%  This gives ESS the ability to edit the programming language code,
 %% often more smoothly than with editors distributed with the languages.
 The process of programming is enhanced as ESS provides the user with
-syntax highlighting of language constructs such as reserved words, 
+syntax highlighting of language constructs such as reserved words,
 function calls, strings, and comments.  ESS allows the user to specify
 the increment of indentation and each new line that is created is indented
 to the same level as the previous line.
 %% ESS has customizable automatic indentation, with the customization based
-%%on the syntactic structure of groups of expressions. 
+%%on the syntactic structure of groups of expressions.
 
 \begin{quote}
  Rodney:  What is source code checking?  Should we lump this with highlighting?
- It says that ESS[SAS] has this feature and I wasn't aware of that.  In 
+ It says that ESS[SAS] has this feature and I wasn't aware of that.  In
  which ESS file can it be found so I can take a look at it?
 \end{quote}
 
@@ -393,7 +394,7 @@ immediately in an editable Emacs buffer.
 
 \begin{quote}
  Rodney:  inferior is about as opaque as it gets.  Let's say
-``interactive'' instead.  Ok?  
+``interactive'' instead.  Ok?
 \end{quote}
 
 \paragraph{Process interaction.}
@@ -404,7 +405,7 @@ output of the package goes directly to an editable text buffer in Emacs.
 This mode allows for command-line editing and saving history, as well as
 recalling and searching for previously entered commands.  Filename
 completion is available.  In addition (currently only for S languages),
-there exists object-name and function-name completion.  
+there exists object-name and function-name completion.
 %%Transcripts are
 %%easily recorded and can be edited into an ideal activity log which can
 %%then be saved.  There is a good interface for handling and intercepting
@@ -414,7 +415,7 @@ there exists object-name and function-name completion.
 ESS can create transcripts, a recording of the commands issued in an
 interactive session with a statistical analysis package.
 %%ESS interacts well with the
-%%executing statistics language/program and 
+%%executing statistics language/program and
 ESS provides means for searching
 the command-line history for previous commands and editing them for
 reuse.  ESS knows the structure of transcripts and provides
@@ -481,7 +482,7 @@ packages and specialized packages.  For example, the interfaces for BUGS
 and R are somewhat similar, but there are enough differences to create confusion.
 
 \begin{quote}
- Rodney:  I think I see where we were going with this.  We would go on to 
+ Rodney:  I think I see where we were going with this.  We would go on to
 say that ESS is here to help people solve this problem.  However,
 we can't say that ESS provides a uniform interface to BUGS and R because
 it doesn't.  I didn't know what the R interface was supposed to look like
@@ -582,13 +583,13 @@ for R, in particular, providing Rd mode.
 
 The other ancestor of ESS is SAS-mode,
 written by Tom Cook, which began in 1994 and was partially based on
-GNU Emacs macros written by John Sall. 
-%%\textbf{NEED TO GET DATES FROM AJR's ARCHIVE!?}.  
+GNU Emacs macros written by John Sall.
+%%\textbf{NEED TO GET DATES FROM AJR's ARCHIVE!?}.
 Rossini extended SAS-mode to work with
-XEmacs in 1995, and this provided the 
+XEmacs in 1995, and this provided the
 impetus for a single mode for statistical programming.
 %%The extension to a language-independent, generic interface was further prompted
-%%by the success of R and the desire for more complete R support.  
+%%by the success of R and the desire for more complete R support.
 This led to a merger of SAS-mode and S-mode along with changes
 to accommodate multiple languages in a flexible way.
 
@@ -598,13 +599,13 @@ SAS-mode into ESS and designed ``inferior'' ESS for \SAS.  In
 %% the grand redesign of the internals occurred, where by a generic
 %% means for
 adding support for new statistical languages like \Stata and \XLispStat.
-Most of the work, until 1998, was for Unix statistics packages 
+Most of the work, until 1998, was for Unix statistics packages
 that provided either a command-line interface or batch file processing as the
 method of inter-process communication.
 However, Windows versions of statistical packages do not always provide
 these same methods of communication.  This hurdle fell in 1998 when
 Brian Ripley provided ESS support for inter-process communication on
-Windows which uses a technology called dynamic data exchange or DDE.  
+Windows which uses a technology called dynamic data exchange or DDE.
 Based on this work, Heiberger provided
 interfaces for Windows versions of \Splus.
 
@@ -612,7 +613,7 @@ In 1998, Rodney Sparapani designed \SAS batch file processing for ESS
 on Unix, Windows and Macintosh.
 Sparapani and Heiberger developed \SAS batch support including function
 key behavior which mimics Display Manager which is the \SAS editor,
-a more comprehensive and efficient syntax highlighting scheme for \SAS 
+a more comprehensive and efficient syntax highlighting scheme for \SAS
 programs and logs,
 automated and intelligent error message searching of the log file and extended the
 \stexttt{*ESS-elsewhere*} functionality to include \SAS.  This provides
