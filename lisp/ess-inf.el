@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/09/20 10:27:41 $
-;; Version: $Revision: 5.64 $
-;; RCS: $Id: ess-inf.el,v 5.64 2001/09/20 10:27:41 maechler Exp $
+;; Modified: $Date: 2001/09/27 09:09:50 $
+;; Version: $Revision: 5.65 $
+;; RCS: $Id: ess-inf.el,v 5.65 2001/09/27 09:09:50 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -325,6 +325,8 @@ there is no process NAME)."
 	(setq ess-sl-modtime-alist nil)
 	;; Get search list when needed
 	(setq ess-sp-change t)
+	(if (string= ess-language "S")
+	    (ess-eval-linewise ".in.ESS <- TRUE"))
 	(run-hooks 'ess-post-run-hook))
       (switch-to-buffer (process-buffer (get-process proc-name))))))
 
