@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/12/02 14:13:51 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: essd-xls.el,v 5.1 1997/12/02 14:13:51 rossini Exp $
+;; Modified: $Date: 1997/12/10 15:36:29 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: essd-xls.el,v 5.2 1997/12/10 15:36:29 rossini Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -72,7 +72,8 @@
   "Major mode for editing XLispStat source.  NOT EVEN STARTED."
   (interactive)
   (setq ess-customize-alist XLS-customize-alist)
-  (ess-mode XLS-customize-alist proc-name))
+  (ess-mode XLS-customize-alist proc-name)
+  (setq major-mode 'XLS-mode))
 
 
 (defun XLS ()

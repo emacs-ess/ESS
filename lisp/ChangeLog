@@ -1,3 +1,9 @@
+Wed Dec 10 10:33:59 1997  Anthony Rossini  <rossini@hsph.harvard.edu>
+
+	* essd-xls.el: make sure that the major-mode is 'XLS-mode (might
+ 	need to do this for _all_ modes :-(.  But let's first see if
+ 	anything breaks.
+
 Tue Dec  9 17:54:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-r.el: removed non-necessary autoload for a non-existant
