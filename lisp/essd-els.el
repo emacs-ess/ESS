@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/05/02 18:13:52 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: essd-els.el,v 1.16 2002/05/02 18:13:52 rmh Exp $
+;; Modified: $Date: 2002/05/02 18:32:30 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: essd-els.el,v 1.17 2002/05/02 18:32:30 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -137,7 +137,7 @@ return new alist whose car is the new pair and cdr is ALIST.
      ((string= dialect "sp6")   S+6-customize-alist)
      ((string= dialect "sqpe6") Sqpe+6-customize-alist)
      ((string= dialect "xls")   XLS-customize-alist)
-     ((string= dialect "sas")   S+elsewhere-customize-alist);SAS-customize-alist?
+     ((string= dialect "sas")   SAS-customize-alist);was S+elsewhere-customize-alist?
      (t                         S+elsewhere-customize-alist)
      )))
 
