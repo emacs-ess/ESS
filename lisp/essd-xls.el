@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/07 16:57:50 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: essd-xls.el,v 1.12 1997/07/07 16:57:50 rossini Exp $
+;; Modified: $Date: 1997/07/07 21:39:29 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: essd-xls.el,v 1.13 1997/07/07 21:39:29 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.13  1997/07/07 21:39:29  rossini
+;;: can't set variables in initial call!!
+;;:
 ;;: Revision 1.12  1997/07/07 16:57:50  rossini
 ;;: need to use program name, not external variables...
 ;;:
@@ -90,7 +93,7 @@ New way to do it."
   (interactive)
   ;; Setup the needed vars
   (setq ess-customize-alist XLS-customize-alist) ; setq or setq-default?
-  (ess-set-vars-default ess-customize-alist (current-buffer))
+  ;;(ess-set-vars-default ess-customize-alist (current-buffer))
   ;; debug, only
   (message "(XLS): ess-proc-prefix=%s , buf=%s"
 	   ess-proc-prefix (current-buffer))
