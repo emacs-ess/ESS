@@ -178,32 +178,35 @@ future tasks and extensions.
 \section{Emacs}
 \label{sec:emacs}
 
-Emacs \citep{RMS:2000} is a mature, powerful, and extensible text
+Emacs is a mature, powerful, and extensible text
 editing system which is freely available under the GNU General Public
 License for a large number of platforms, including most flavors of
-Unix, Microsoft Windows and Apple Macintosh.  Emacs shares many
+Unix, Microsoft Windows and Apple Macintosh.  There are two versions,
+or forks, of Emacs (GNU Emacs \citep{RMS:2000} and XEmacs).  Emacs shares many
 features with word processors, and some characteristics with operating
 systems.  Most importantly, Emacs can interact with and control other
 programs.
 
-%There are 2 primary open-source versions of Emacs (Emacs and XEmacs),
 %as well as a few commercially support versions (UniPress Emacs).  All
 %share extensibility through Lisp programming.  Versions have been
 %written which use Python and PERL as extension languages, but these
 %are in much less common use.
-
-Emacs was originally written for the first screen-mapped terminal
-devices, and this is still manifested in its use of keymappings, which
-have been stable for many, many years.  Currently, though, this is
-mainly used for fast editing jobs or for special purposes like remote
-access via a modem or the Internet.  In the last 10 years, Emacs has
+%Emacs was originally written for the first screen-mapped terminal
+%devices, and this is still manifested in its use of keymappings, which
+%have been stable for many, many years.
+Emacs was originally written when terminals were the only method of access
+to computers.  Emacs commands were assigned to key sequences which is 
+known as key-mapping or key-binding.  Currently, using Emacs as if it
+were running on a terminal, is only done in special circumstances like
+a few quick edits or remote access to a computer via a modem or the 
+Internet.  Over the last decade, Emacs has
 been extended to use windowing systems such as X11, Microsoft Windows,
-and the Apple Macintosh, and in most instances, this graphical user
-interface (GUI) allows the user to interact with either a keyboard or
+and Apple Macintosh.  These windowing systems provide a graphical user
+interface (GUI) which allows the user to interact with either a keyboard or
 a mouse and provides applications with the ability to share space on a
 single display.  Emacs menus and toolbars allow mouse access to
 frequently used actions; for instance, when you don't know or can't
-remember the keyboard equivalent.  User-defined menus and toolbars can
+remember the appropriate key-mapping.  User-defined menus and toolbars can
 be constructed as needed.
 
 However, Emacs provides facilities which go beyond ordinary text
@@ -215,9 +218,13 @@ multiple files and control multiple programs simultaneously.
 
 Emacs capabilities are extended by text files containing Emacs Lisp,
 (also known as E-Lisp), a dialect of Lisp
-\citep{RChassell1999,PGraham:1996}.  The most important extensions to
-Emacs are called modes.  Major-modes provide 2 types of support.
-First, it customizes the environment (keymaps, capabilities) for types
+\citep{RChassell1999,PGraham:1996}.  Emacs commands can be written
+in E-Lisp to be bound to key-maps or called interactively by the user.
+Emacs functions are also written in E-Lisp, but they can only be 
+called by Emacs commands or other Emacs functions rather than directly
+by key-maps or interactively.  The most important extensions to
+Emacs are called modes.  Major-modes provide two types of support.
+First, it customizes the environment (key-maps, capabilities) for types
 of files determined by the file name's extension, i.e. the characters
 at the end of the file name that follow a period like ``txt'', ``s''
 or ``sas''.  When they are dictated by the file name, you can only
@@ -263,7 +270,7 @@ act as a World-Wide-Web browser, a highly sophisticated mail and news
 reader, a shell/terminal window with history, and as an interface to
 other common text-based tools such as spell checking programs.  The
 Emacs keyboard and mouse interface can be re-mapped to resemble that
-of other text-editors, such as ed, vi, wordstar, and brief.
+of other text-editors, such as vi, wordstar, and brief.
 
 
 \section{ESS extends Emacs}
