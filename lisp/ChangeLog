@@ -1,3 +1,14 @@
+2004-07-04  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* essdsp6w.el (ess-sqpe-versions-created): Variable deleted.
+
+	* essd-r.el (ess-r-versions-created): Variable deleted.
+	(ess-rterm-versions-created): Variable deleted.
+
+	* ess-site.el: Use let binding for storing local values of
+	ess-r-versions-created etc, rather than global variables.  Global
+	variables deleted.
+
 2004-07-02  Richard Heiberger  <rmh@temple.edu>
 	
 	* essdsp6w.el (ess-sqpe-versions-create): New function to
