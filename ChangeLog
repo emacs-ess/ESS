@@ -934,7 +934,7 @@
 	5.1.21:  lots of changes for 5.1.21 release
 
 	* doc/ess.info-1, doc/ess.info, doc/ess.info-2, doc/ess.info-3, doc/getting.texi, doc/help-sas.texi, doc/requires.texi:
-	doc: many changes addressing Rich's concerns (please see ess-core
+	doc: many changes addressing Rich's concerns (please see rsparapa
 	discussion if you are interested).  Before 5.1.21 can be released,
 	we need to figure out how to get texinfo to generate the proper
 	version number in all documents.
@@ -1025,17 +1025,6 @@
 	* lisp/ess-iw32.el:
 	ess-command on windows.  fix last week only needed if buf is t.
 
-2002-03-01  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	back to "normal".
-
-	* doc/jcgs/essJCGSv2.tex:
-	version to create the "blinded review copies".
-
-	* doc/jcgs/essJCGSv2.tex:
-	version used for unblinded PS/PDF files.
-
 2002-02-27  rmh  <rmh@lynne.stat.math.ethz.ch>
 
 	* lisp/Makefile:
@@ -1061,12 +1050,6 @@
 	ESS[SAS]: viewing GSASFILEs; XEmacs supports .gif and .jpg natively.
 	So, on XEmacs, those formats are displayed in an empty buffer.  Otherwise,
 	graphics are handled as before (with an image viewer program).
-
-	* doc/jcgs/essJCGSv2.bib:
-	XEmacs ref:  I know that we don't want to mess with the references, but
-	I found out that the reference for XEmacs should be "The XEmacs Project"
-	rather than the "XEmacs Development Team".  I figured if we fixed it now,
-	then we wouldn't have to try to remember it later.
 
 2002-02-26  rmh  <rmh@lynne.stat.math.ethz.ch>
 
@@ -1098,164 +1081,6 @@
 	* lisp/Makefile:
 	lisp Makefile:  added ess-mous.el, but have not tested it
 
-2002-02-25  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed some of Rodney's amusing comments re: starting batch to see if I've fixed Rich's request that ESS-CVS list use ESS-CORE as a reply-to.  I might have to try again.
-
-	* doc/jcgs/essJCGSv2.tex: small  typos
-
-	* doc/jcgs/essJCGSv2.tex:
-	fixed grammar in abstract
-
-	* doc/jcgs/essJCGSv2.tex:
-	preparing for resub; for that, we need to remove the authorlist on 1 copy.
-
-2002-02-25  Martin Maechler  <maechler@stat.math.ethz.ch>
-
-	* lisp/ChangeLog, lisp/ess-cust.el, lisp/essd-els.el, lisp/essd-r.el, lisp/essd-s3.el, lisp/essd-s4.el, lisp/essd-sp3.el, lisp/essd-sp4.el, lisp/essd-sp5.el, lisp/essd-sp6.el, lisp/essdsp6w.el, lisp/essl-s.el:
-	see ChangeLog
-
-	* doc/jcgs/essJCGSv2.tex:
-	nuke-trailing-whitespace, \ESSfig and \ifMM -- NO content changed
-
-2002-02-22  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/ediff-sas-bw.ps.bb, doc/jcgs/ediff-sas-bw.ps.gz, doc/jcgs/ess-demo-bw.ps.bb, doc/jcgs/ess-demo-bw.ps.gz, doc/jcgs/ess-demo.s, doc/jcgs/hilock-bw.sas, doc/jcgs/hilock-sas-bw.ps.bb, doc/jcgs/hilock-sas-bw.ps.gz, doc/jcgs/other.sas, doc/jcgs/philasug.sas:
-	black and white figures plus supporting files
-
-	* doc/jcgs/essJCGSv2.tex:
-	1. added black and white figures as a supplement.
-
-	2. revised the \section{ESS extends Emacs}
-
-	3. fixed sentences that used "which" twice within a few words of
-	   each other.
-
-	4. The recognition that \stexttt{iESS[S]} is what the user sees when
-	running M-x S+elsewhere is very slick.  It is correct.  The command
-	sequence to start it differs from the sequence on the local machine
-	(and correctly is too much detail for this paper), but once it is
-	functioning it is identical.
-
-	5. SAS Display Manager. one more attempt.
-
-	6. tweaked other little stuff.
-
-	7. merged 4.6 and 4.7 in the history and deleted reference to 4.6.
-
-	Files part of the paper to be sent to jcgs
-	  essJCGSv2.tex
-	  hilock-sas-bw.ps.bb
-	  ediff-sas-bw.ps.bb
-	  ess-demo-bw.ps.bb
-	  ess-demo-bw.ps.gz
-	  ediff-sas-bw.ps.gz
-	  hilock-sas-bw.ps.gz
-
-	Files for use by authors
-	  other.sas
-	  hilock-bw.sas
-	  ess-demo.s
-	  philasug.sas
-
-2002-02-22  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS Paper:  hopefully the
-	last \SAS w/o a trailing \.  Am I dyslexic or did somebody reverse the
-	order of the Batch package headings?  I like the new Help File Editing (R)essJCGSv2.tex
-
-2002-02-22  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	reordered authors.  Kurt is Kurt :-).
-
-2002-02-21  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed simple comment.
-
-	* doc/jcgs/essJCGSv2.tex:
-	Made the "BUGS Batch" one paragraph (it _DOES_ flow well).
-
-	Added a sentence for "BATCH" section at the beginning re: how ESS
-	shortens the batch processing debugging/development cycle, so it
-	reads:
-
-	Batch file processing with statistical analysis packages is a better
-	choice than interactive processing when the execution times are longer
-	than the user is willing to wait as well as for regularly updated
-	statistical reports and figures.  ESS provides a means to shorten the
-	debugging cycle for writing code intended for batch evaluation by
-	containing the whole process, both writing and evaluation, from within
-	Emacs.
-
-	* doc/jcgs/essJCGSv2.tex: points:
-	to remove "or byte-compiled", we have to remove "text" (with respect
-	to file types for loading Emacs Lisp).
-
-	Moved "major modes can control other programs" to the beginning of the
-	paragraph, since it dangled.
-
-	in Emacs intro, removed the second "released under the GPL" since it
-	is now redundant.
-
-	Comma after "s" in "file suffices examples". (grammar adjustment).
-
-	spacing for "PROC ... RUN;" before "RUN;".
-
-	Rewrote the "Help File Editing Paragraph".  In particular, note the
-	last sentence, which hopefully will clarify matters.  Comments?
-
-	ESS provides an R documentation mode (\stexttt{Rd-mode}) which assists
-	in writing help files for R functions, objects, and other topics worth
-	documenting.  \stexttt{Rd-mode} provides the ability to view and
-	execute code embedded in the help file in the same manner as ESS
-	handles code from any S language source file.  It provides syntax
-	highlighting and the ability to submit code directly to a running ESS
-	process, either R or \Splus, for evaluation and debugging.  This
-	latter feature is useful for ensuring that code developed using R runs
-	under \Splus.
-
-2002-02-21  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS Paper:  I read it from start to finish and made changes as I went
-	along.  I think it is done.  I found one last chronology problem in
-	ESS History and fixed it.  Of course, we will have to activate
-	anonymous CVS at some point because the reviewers might try it.
-
-	* doc/jcgs/essJCGSv2.bib:
-	JCGS Paper:  refs; there is another R Sparapani, so now I'm RA
-
-2002-02-21  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex: another typo
-
-	* doc/jcgs/essJCGSv2.tex: typo
-
-2002-02-21  hornik  <hornik@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.bib, doc/jcgs/essJCGSv2.tex:
-	Add citation/ref for current version of R.
-
-2002-02-21  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	completely restructured section 3.2 interactive processing.
-
-	tweak format styles
-
-	more history smoothing
-
-	made table \scriptsize for legibility for the referees.
-	The editor can set it smaller or landscape later.
-
-
-	If you accept the 3.2 rewrite, then all that is left is 3 black and
-	white figures.
-
 2002-02-20  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
 	* lisp/essa-sas.el:
@@ -1265,186 +1090,17 @@
 	application available on that OS (defaults to the CDE sdtimage for Unix
 	and kodakimg for MS)
 
-2002-02-20  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	Final version, spell checked
-
-	* doc/jcgs/essJCGSv2.tex:
-	made the history table TINY so that it would fit on a page.  It may need to be tilted.
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed future work (it didn't read nicely)
-	tightened conclusions
-
-	* doc/jcgs/essJCGSv2.tex:
-	edited rationale for batch processing.  I think it is cleaner now.
-
-	* doc/jcgs/essJCGSv2.tex:
-	Commented out Rich's SAS Interactive Coop paragraph.  Replaced with a
-	more general remark re: editing ability without process control for
-	interactive data analysis.
-
-	Please direct comments on this to ess-core for further discussion.  I
-	think that just as Rodney didn't want SAS picked out for formatting,
-	I'm not sure I want it picked out for "edit-only" use; plenty of other
-	packages have this problem.
-
-2002-02-20  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS Paper:  ESS History; re-commiting not sure what
-	happened to my last commit; I'm ready to submit.
-
-2002-02-20  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	small cleanup to coop paragraph.  removed my comment.
-
-	* doc/jcgs/essJCGSv2.tex:
-	cleaned S batch.  removed last silly sentence.  It was "wrong".
-
-	* doc/jcgs/essJCGSv2.tex:
-	small SAS batch edits.
-
-	* doc/jcgs/essJCGSv2.tex:
-	batch file processing -- removed comments.
-
-	* doc/jcgs/essJCGSv2.tex:
-	edited the interactive SAS part a bit.  Added a comment that it looks
-	like the old SAS terminal interface, which it did long ago.  I've not
-	tried it recently.
-
-	* doc/jcgs/essJCGSv2.tex:
-	Section: Interactice Processing
-	paragraph: S...
-
-	removed comments, not necessary.  Cleaned up a bit.   I think it's acceptable.
-
-	* doc/jcgs/essJCGSv2.tex: whitespace.
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed commentary for concurrent use of mult machines; rodney's right.
-
-	* doc/jcgs/essJCGSv2.tex:
-	simplification of keymap diff's : removed commented out sillyness.
-
-	* doc/jcgs/essJCGSv2.tex:
-	tool cooperation -- removed silly statements; rodney's were correct.
-	removed commentary from rodney/martin/tony.
-
-	* doc/jcgs/essJCGSv2.tex:
-	remote access to stat packages:  "very different" to "different".  I'm not sure I really want to go there!
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed the Rich/Rodney spat, since I added a paragraph on formatting standards for S.
-
-	* doc/jcgs/essJCGSv2.tex:
-	small edit to comment, in case we go to B&W pics.
-
-	* doc/jcgs/essJCGSv2.tex:
-	small cleanup to major/minor modes.  I like the fixes someone committed yesterday.
-
-	* doc/jcgs/essJCGSv2.tex:
-	keyboard input: removed parentheticals.  While I don't like "mapping",
-	when referring to keys, I'll leave it for sanity.
-
-	* doc/jcgs/essJCGSv2.tex:
-	fixed a few rough spots in the abstract.  I'm working through the paper again today.
-
-2002-02-20  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	tweaks to history section and punctuation in history table
-
 2002-02-20  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
 	* Makefile:
 	Makefile:  Oops.  We don't want tag to depend on rel.  For tagging
 	we have to rely on the user to do the appropriate thing.
 
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS Paper:  ESS History; the text was not internally consistent
-	with respect to chronology and vis-a-vis the table.  Also, it was
-	in more of a logical order, rather than chronological.  I tried
-	to fix all of these problems.  I think it's nearly done.
-
-2002-02-20  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	added stab at S-plus standard formatting
-
 2002-02-19  rossini  <rossini@lynne.stat.math.ethz.ch>
 
 	* lisp/ess-cust.el:
 	edited ess-source-directory doc string to include my favorite setting.
 	It's amazing what you find when you start looking...
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed commented out "ESS solves common tasks".
-
-	added Kurt's suggestions to RD-mode.
-
-	* doc/jcgs/essJCGSv2.tex:
-	Section: ESS extends..
-	Paragraph: Transcripts
-
-	cleaned and tightened.  I think it's good.?
-
-	* doc/jcgs/essJCGSv2.tex:
-	Section: ESS extends
-	Paragraph: Source-level Debugging
-
-	cleaned.  tightened.  I like R&R's changes to this one (don't know the
-	right R to attribute!)
-
-2002-02-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS Paper: Changes to ESS History Table
-
-2002-02-19  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed SSL comments.  Rich is right, we don't need it.
-
-2002-02-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS Paper:  ESS History changes.  Also, found a few \Keywords
-	where they weren't followed by a \ or punctuation.  This doesn't
-	look right with xdvi so I fixed as many as I could find.
-
-2002-02-19  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	I took out the SSL sentence.  It is too detailed for this paper.
-	Also, there is something wrong with the phrasing of "initial" and I can't
-	fix it since I don't know what it does.
-
-	smoothing, history and elsewhere
-
-	I split off the extensions paragraph and placed it in its own
-	Future Work section.  Extensions just aren't part of Conclusions.
-
-2002-02-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/currfeat.texi, doc/jcgs/essJCGSv2.tex, doc/newfeat.texi:
-	doc:  a few cosmetic changes to docs and some trivial changes
-	to ESS Extends Emacs that were irking me; I guess I'm getting
-	curmudgeony.  By the way, thanks to whoever has been correcting
-	my many mis-spellings in the JCGS comments :o)
-
-2002-02-19  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	small edits.  This and the last refer to the intro to "ESS extends Emacs".
-
-	* doc/jcgs/essJCGSv2.tex:
-	spelling: controllong -> controlling
-
-	* doc/jcgs/essJCGSv2.tex:
-	small edits for network support paragraph: open vs. "unsecure" (which is more slang/tech),
 
 2002-02-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
@@ -1453,189 +1109,10 @@
 	want to wait a few days just to be sure since the tag must be
 	unique and we don't want micro number escalation
 
-2002-02-19  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	whitespace cleanup.
-
-	* doc/jcgs/essJCGSv2.tex:
-	Section: Conclusions
-
-	I like the renaming of Extensions to conclusions.  However, future
-	extensions do not go in the history section.  I've rearranged the text
-	a bit, and need to do some more editing.
-
-	* doc/jcgs/essJCGSv2.tex: Section: Emacs
-	Paragraph: Editing extensions.
-
-	slid speedbar back in with dired (though we COULD take it out again).
-	tightened the text.
-
-	* doc/jcgs/essJCGSv2.tex: Section: Emacs
-	Paragraph: network support
-
-	small cleanup.
-	added Emacs's ability to initiate SSL connections (which it can!)
-
-	* doc/jcgs/essJCGSv2.tex: Section: Emacs
-	Paragraph: Major/Minor Modes
-
-	cleaned and tightened.  Rich, could you verify that I'm not leading us astray on this?
-
-	* doc/jcgs/essJCGSv2.tex: Section: Emacs
-	Paragraph: Buffers give Emacs control
-
-	Edited last part to make the "interactive process" comments flow.
-	removed the comments which consisted of my annoying text.
-	looks good, I think.
-
-	* doc/jcgs/essJCGSv2.tex: Section: Emacs
-	Paragraph: Input
-
-	small edits, removed spurious comments.  Looks good.
-
-	* doc/jcgs/essJCGSv2.tex:
-	first section looks "good", I think.
-
-	* doc/jcgs/essJCGSv2.tex:
-	edited keywords.  "free-software" didn't make as much sense, but "open
-	source software" does.
-
-	* doc/jcgs/essJCGSv2.tex:
-	Cleaned and tightened up abstract, but in general, Rich's changes were
-	extremely positive.
-
 2002-02-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
 	* doc/currfeat.texi:
 	Current Features: deleted SPSS
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper:  History; more changes and some minor attempts to
-	make the text reflect the true chronology, but no attempts to
-	change the table
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS Paper:  History; re-arranged some sentences and paragraphs in
-	pseudo-chronological order; also attempted to jive the text with the
-	table, but some years still do not match for 94-97
-
-2002-02-19  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	rewrote history section.
-	please look it over.
-
-2002-02-18  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper:  Removed the parentheses around iESS.  Moved the first paragraph
-	in 3.1 to be the second paragraph in 3.  Commented out two paragraphs in 3
-	which were about emacs rather than ESS Extends Emacs.  Changed two references
-	from FORTRAN to \Fortran.  Other than ESS History, I'm pretty happy with it
-	now.
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: changed the rest of "key-binding" to "key sequence"
-
-	* doc/announc.texi, doc/authors.texi, doc/ess.info-1, doc/ess.info, doc/getting.texi, doc/readme.texi:
-	Updating docs for new version
-
-	* ANNOUNCE, README:
-	Updating README, ANNOUNCE for new version
-
-	* doc/ess.info-1, doc/ess.info:
-	Updating docs for new version
-
-	* ANNOUNCE, README:
-	Updating README, ANNOUNCE for new version
-
-	* doc/announc.texi, doc/currfeat.texi, doc/getting.texi, doc/jcgs/essJCGSv2.tex, doc/newfeat.texi, doc/requires.texi:
-	doc:  last changes for 5.1.20
-
-2002-02-18  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	revised fortran sentence
-
-	* doc/jcgs/essJCGSv2.tex:
-	1. defined "key sequence" to be the same as "keyboard shortcuts" and
-	then rigorously made all usage of the word "key" conform to standard
-	emacs usage.
-
-	2. restored a modified \SAS\ Display Manager section.
-
-2002-02-18  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/announc.texi, doc/currfeat.texi, doc/getting.texi, doc/requires.texi:
-	ANNOUNCE:  first batch of ANNOUNCE changes
-
-2002-02-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: somehow that
-	paragraph got copied to both ESS Extends Emacs and Features & Capabilities
-	so now it is only found in the first of the two
-
-2002-02-15  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS Paper:  I finished my review.  I believe the paper is practically
-	ready to go out.  I still don't like the history section.  I added my
-	one paragraph, but I don't think it really helps that much.  I'd say
-	that it probably can be ironed out quickly and sent out Monday.
-
-2002-02-15  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	modified Rodney's proposal on ediff and source-code control
-
-	* doc/jcgs/essJCGSv2.tex:
-	more little changes and simplifications.
-
-	I can't find the (iESS) you are asking about.
-	But I did find iESS(R) that should be iESS[R] and fixed it.
-
-	I agree on moving that paragraph from "multiple tools" to the
-	beginning of 3.1, so I moved it.
-
-2002-02-15  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS Paper:  I have to go to a meeting, but I have finished editing
-	through Cooperation across Multiple Tools on pg 10.  However, the second
-	paragraph of that sub-section seems out of place.  I think it should
-	be the second paragraph at the beginning of section 3.1.  Anybody?
-	Also, why is iESS in parentheses?  I'm hoping to make it back in time
-	to finish this by the end of the day, but I'm running out of time.
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper:  a few minor changes on pp 2-3
-
-2002-02-15  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	good start on the revised abstract.
-
-	I revised it more.
-	I changed the last paragraph of the introdution.
-	I commented out the Extensions paragraph and labeled the
-	last section to Conclusion.
-
-2002-02-15  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	figures should be top or bottom, not "here".
-
-	* doc/jcgs/essJCGSv2.tex:
-	Stata should reference version 7.0.
-
-	* doc/jcgs/essJCGSv2.tex:
-	one more sentence needed in the abstract.
-
-	* doc/jcgs/essJCGSv2.tex:
-	took a stab at modifying the abstract.  Rich, it's not good, but is it
-	in the right vein?
 
 2002-02-13  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
@@ -1650,128 +1127,10 @@
 	* doc/ess.info-1:
 	Updating docs for new version
 
-2002-02-13  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	put expanded first paragraph of sas display manager back.
-	lots of small changes
-
-2002-02-12  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	cleaned up even more.
-
-	* doc/jcgs/essJCGSv2.tex:
-	figures should not be "on a page of floats".
-
-	* doc/jcgs/essJCGSv2.tex:
-	fixed conclusion to "Emacs" section.  Finally, I think it isn't bad
-	(I'm not saying it is good, yet...).
-
-	* doc/jcgs/essJCGSv2.tex:
-	whitespace (bad keypress)
-
-	* doc/jcgs/essJCGSv2.tex:
-	cleaned up more up to section 3.1
-
-	* doc/jcgs/essJCGSv2.tex:
-	redid SAS batch, first pass
-
-	redid BUGS batch, first pass.
-
-	I'm still editing, but you can see where I'm headed with this.
-
-	* doc/jcgs/essJCGSv2.tex:
-	Major slash-and-hack of batch/interactive sections, and a question:
-
-	%%%% AJR: WHY IS THIS SUBSTANTIALLY DIFFERENT THAN BATCH?  I KNOW ITS
-	%%%% SLIGHTLY DIFFERENT, BUT SUBSTANTIALLY?
-	%\paragraph{\SAS---Interactive cooperation with the \SAS\ Display Manager.}
-
-	* doc/jcgs/essJCGSv2.tex:
-	first stab at redoing the S interactive section -- checking in, in
-	case I want to back out!
-
-	* doc/jcgs/essJCGSv2.tex:
-	retitled "remote interaction" to "remote access" paragraph.
-
-	* doc/jcgs/essJCGSv2.tex:
-	first cut at "source-level debugging".  I'm going to surgically remove
-	the "user-manual-ish" sections of the paper next.  It's going to be
-	ugly.
-
-2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	rich, I'm going to disagree only on what we define as 2002.  Mac R and
-	BUGS Batch happened in January?  Sort of.  I'd like to keep 2002
-	clear, unless we can figure out what we are doing this year.
-
-	Also, ESS originating as S-mode doesn't sound quite right.  I'd rather
-	talk about S-mode mutating to ESS, rather than the other way around.
-
-2002-02-07  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	S+elsewhere is the 1998 name, and belongs in the table.
-
-	ESS-elsewhere is the newer name, and the one that is still under
-	discussion.  When it settles down, I now think the name ess-remote is
-	a better name.
-
-	I switched the last history item to 2002 5.1.20.  Do we have any new content
-	over 19?  If so then we should have both listed.  The new items I think of
-	are S+6 and Emacs 21, both of which don't need to be mentioned.
-
-	SAS interactive was designed for remote usage.  I think that for local
-	usage it makes more sense to use emacs for editing and then cut and
-	paste to the SAS Edit window.
-
-	On names of ESS core members, something on the order of:
-	   In 1997 we renamed the project to ESS with Heiberger, Hornik,
-	   Maechler, and Rossini.  In 1998 Sparapani joined the core.
-	While I agree that assignment of specific topics to specific people is
-	not needed, it feels ok to me to have it there.  If we keep assignment
-	then Rossini should be identified as coordinator.
-
-2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	streamlined the BUGS subsection.
-
-	* doc/jcgs/essJCGSv2.tex:
-	batch file processing -- comments were irrelevant, removed them.
-
-	* doc/jcgs/essJCGSv2.tex:
-	small edits to streamline "buffer and control" paragraph.
-
-2002-02-07  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper:  commiting again, I think something failed on my last commit.
-	Too bad, I had alot of great comments for you guys :o)
-
-2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	rewrite Keyboard/IO paragraph again.  I think (?Rich's?) changes were
-	extremely positive, and just need a small bit of tidying.
-
-	* doc/jcgs/essJCGSv2.tex:
-	"keyboard entry" for character-based terminals is redundant.
-
 2002-02-07  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
 	* Makefile:
 	Makefile: updated for new repository
-
-2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	small edits and cleaning to "interactive transcripts" paragraph.
-
-	Moved "ESS understands transcripts" sentence to third, "example of
-	making trans" sentence 2nd.  Lots of changes.
 
 2002-02-07  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
@@ -1787,330 +1146,6 @@
 
 	* doc/announc.texi, doc/credits.texi, doc/inst_cvs.texi, doc/inst_tar.texi, doc/mailing.texi, doc/newfeat.texi, doc/readme.texi, doc/stabilty.texi:
 	Doc changes for pending ESS-5.1.20 release.
-
-2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed spurrious indexing.
-
-	* doc/jcgs/essJCGSv2.tex:
-	Rodney's comments re: double mention of dired and filename completion
-	are now satisfied.
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed commentary and agreed with Rich on use of paragraphs, not
-	subsub blah sections.  We just have to be careful with referencing.
-
-	changed "aren't" to "are not".
-
-	* doc/jcgs/essJCGSv2.tex:
-	corrected history re: version 4 (David Smith responsible,
-	fixes/extensions by Maechler/Rossini...).
-
-	* doc/jcgs/essJCGSv2.tex:
-	commented out 2002 since this is "history".  removed request re: prev
-	generations.
-
-	I would like to remove ESS Core names from the history as it pertains
-	to ESS (i.e. early 1997 was when we renamed the project), but leave in
-	external contributors at that point.  This is a style issue, and I'd
-	like comments on it.  I've not done this yet, but will today unless
-	people object.
-
-	* doc/jcgs/essJCGSv2.tex:
-	changed ESS-elsewhere to S-elsewhere (SAS interactive COULD be
-	elsewhere, but only with a bit more hand-holding than S or R
-	elsewhere).
-
-2002-02-07  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: History Table; a few small changes.  Which platforms does ESS
-	support Omegahat on?  The SAS batch comment applies to all 3; Omegahat also?
-	Also, why do we have ESS-elsewhere in this table?  If we can't even agree
-	on what it means; how's a reader supposed to know what it is?
-
-2002-02-07  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/ess-demo.ps.bb, doc/jcgs/ess-demo.ps.gz, doc/jcgs/essJCGSv2.tex:
-	process interaction figure
-
-	* doc/jcgs/essJCGSv2.tex:
-	I added content and reformatted the history table.
-	please check.
-
-	I still have questions about formatting the history table.  The
-	previous table had initials for the early SAS-mode authors, but not
-	for the early S-mode authors.  I removed all initials.  The full names
-	are in the text.  Since the history is here, I see no need for an
-	acknowledgments section.
-
-
-	Why is Mac listed for 1999, but not 2001?
-
-	many small changes.
-
-	question: why did someone add \centering to the figures?
-	I think it is redundant when the figures are forced to
-	\textwidth.  Am I missing something?
-
-
-	%%% Rich: section 3 has subsections, the other sections don't.
-	%%% We could promote the section 2 paragraphs to subsections, and
-	%%% the section 3 paragraphs to subsubsections.  My preference
-	%%% is to leave them as they are as I think all the units that are
-	%%% currently called paragraphs should have the same weight.
-	%%% I changed the phrasing of the cross-reference below.
-
-2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	small whitespace changes.
-
-	* doc/jcgs/essJCGSv2.tex:
-	small edit to transition.
-
-	* doc/jcgs/essJCGSv2.tex:
-	finished a crappy transistion paragraph at the end of the Emacs
-	section.  Someone take a look and edit.
-
-	* doc/jcgs/essJCGSv2.tex:
-	Commented out "comments" on dired/shell-mode/redundancy.  Can we remove
-	the section which now starts:
-
-	%%% AJR: have you two settled this on dired/redundancy?
-
-	* doc/jcgs/essJCGSv2.tex:
-	moved ediff/version control back into 2 separate paragraphs.  I was an
-	idiot to combine.
-
-	* doc/jcgs/essJCGSv2.tex:
-	ediff figure moved into ediff section.
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed old figure, small whitespace edits.
-
-	MORE IMPORTANTLY:  edited the paragraph on "Network Support", but I'm
-	TRULY unhappy with it.  It isn't clear it's an improvement, just a
-	side-step.
-
-2002-02-06  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	minor mode paragraph cleaned.  Removed foreshadowing/duplicating
-	ideas.
-
-	* doc/jcgs/essJCGSv2.tex:
-	working on modes paragraph.  Cleaned up first paragraph, but still
-	need to re-insert ideas from the second commented out paragraph.
-
-	* doc/jcgs/essJCGSv2.tex:
-	cleaned up comments to make "pretty.".
-
-	* doc/jcgs/essJCGSv2.tex:
-	cleaned up and de-referenced "Buffers" paragraph.  Please note
-	comments re: foreshadowing and "obvious".  I'm uncertain about these.
-
-	* doc/jcgs/essJCGSv2.tex:
-	edits up to keyboard/mouse input paragraph.
-
-	* doc/jcgs/essJCGSv2.tex:
-	sas-mode history mods, small.
-
-	* doc/jcgs/essJCGSv2.tex:
-	fixed history a bit.  Need a better way of presenting it.
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed timeline figure as per Rich and added timeline table as per
-	Rodney.
-
-	* doc/jcgs/essJCGSv2.tex:
-	cleaned up the introductory section.  I think the intro and abstract
-	are "finished".  Please disagree soon-ish if at all.
-
-	* doc/jcgs/essJCGSv2.tex:
-	more abstract edits.
-
-2002-02-06  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	merge my changes with Tony's
-
-	Lots of little changes for smoothness.
-
-	SAS mode is currently defined in 3.3.SAS but is implicitly used in the
-	previous section {\SAS---Interactive in Emacs buffers.}
-	I didn't fix this.
-
-	Rodney, does sas-log-mode highlight warnings, lognotes, etc even when
-	the syntax of the sas language is turned off?  I think it would be
-	efficient.
-
-	Tony, I can live with the present organization or the revised ones you
-	proposed.
-
-2002-02-06  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex: whitespace.
-
-	* doc/jcgs/essJCGSv2.tex:
-	small changes to editing extensions subsection.
-
-	* doc/jcgs/essJCGSv2.tex: small changes.
-
-	* doc/jcgs/essJCGSv2.tex:
-	more editing on Major Modes.  I think it's coming along...
-
-	* doc/jcgs/essJCGSv2.tex:
-	hyperlink or hyper-link?
-
-	* doc/jcgs/essJCGSv2.tex:
-	I can't spell, and should always LaTeX prior to commiting
-	(c/stextss/stexttt/)
-
-	* doc/jcgs/essJCGSv2.tex:
-	edits to Emacs extensions paragraph, end of "emacs" section.
-
-	* doc/jcgs/essJCGSv2.tex:
-	combined ediff and version control; they are "somewhat" similar and
-	intertwined.
-
-2002-02-05  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	small clean up.  no need for remapping to resemble other editors, or
-	emacspeaks.
-
-	* doc/jcgs/essJCGSv2.tex:
-	moved Rich's example and Rodney/Rich's comments to "ESS extends
-	Emacs".
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed a AJR/RS commentary that was resolved.
-
-	* doc/jcgs/essJCGSv2.tex: small changes.
-
-	* doc/jcgs/essJCGSv2.tex:
-	major modes: only one "type", since the other issues either fall into
-	the current "what emacs can do to buffers" or to minor modes
-	(tramp/vc/etc are technically minor modes, not major).
-
-	* doc/jcgs/essJCGSv2.tex:
-	version control and file tranfer (ala efs or ange-ftp or tramp) are
-	minor modes!
-
-	* doc/jcgs/essJCGSv2.tex:
-	more mods.  I think I'm understanding Rodney's points.
-
-	* doc/jcgs/essJCGSv2.tex:
-	rewrote buffer paragraph.  I think it focuses on that aspect a bit
-	better.  Comments if not, please.
-
-	* doc/jcgs/essJCGSv2.tex:
-	first Emacs paragraph mod'd.  I'd like to drop the commented out
-	section, and will if no one screams.
-
-	* doc/jcgs/essJCGSv2.tex:
-	redid the introduction yet again.  I think it presents what we want to
-	present, maybe?
-
-	* doc/jcgs/essJCGSv2.tex:
-	keymapping isn't really a good verb.  How about "binding to keys",
-	or keybindings, or similar?  A keymap is a map that describes
-	keybindings?
-
-	(I'm confused about the right direction, and I'm trying to suss out a
-	solution).
-
-	* doc/jcgs/essJCGSv2.tex: whitespace.
-
-	* doc/jcgs/essJCGSv2.tex:
-	more abstract edits.
-
-	* doc/jcgs/essJCGSv2.tex: abstract change:
-	  "for a variety (stat packages) on most (computer systems)"?
-
-2002-02-05  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: fixed keywords; didn't know about the title exclusion, sorry!
-	added another comment to the enforcement debate; enjoy :o)
-
-2002-02-05  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	respond to Rodney. typos.
-
-2002-02-05  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper:  Many small
-	word choice changes and a few comments added.  Although, the goal was a
-	final version by Feb. 1, I do not believe that we are there yet.  The
-	beginning, middle and end are not cohesively tied together.  And, I don't
-	think the History section is what the reviewer's had in mind.
-
-2002-02-04  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex: typos.
-
-	I changed the timeline reference to assume eps.gz compressed format.
-	please gzip it before posting it to cvs.
-
-	* doc/jcgs/essJCGSv2.bib:
-	added url to Chassel elisp reference
-
-2002-02-04  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/timeline.eps, doc/jcgs/timeline.fig:
-	graphical version of history
-
-	* doc/jcgs/essJCGSv2.tex:
-	Regarding selection of keywords: you CAN NOT use words in the title.
-	Honest.  It's an indexing thing.  Should we put back "cross-platform"?
-
-	* doc/jcgs/essJCGSv2.tex:
-	moved Internet Resources to "appendix".
-
-	* doc/jcgs/essJCGSv2.tex:
-	changes up to "batch file processing".  Mostly tightening English,
-	small rephrasing.  I'm commenting out old "comments" that don't appear
-	to be relevant.  (but that's my personal opinion).
-
-	* doc/jcgs/essJCGSv2.tex:
-	more edits to ESS extends Emacs section.  This part really needs cleaning!
-	(I'm still working on it).
-
-	* doc/jcgs/essJCGSv2.tex:
-	abstract, intro, and Emacs sections changed.  In the middle of the sect 3
-	(ESS extends Emacs).
-
-2002-02-01  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex: typos
-
-	* doc/jcgs/essJCGSv2.tex:
-	no more figure 3a and 3b. now it is the top and bottom panels.
-
-2002-01-31  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	small silly additions, all commented out, for ease in producing PDF
-	versions for resubmission.  More additions after seminar.
-
-	* doc/jcgs/essJCGSv2.tex:
-	graphics extensions.  Commented out.
-
-	* doc/jcgs/ediff-sas.ps.bb, doc/jcgs/font-cor-s-bw.ps.bb, doc/jcgs/font-cor-s.ps.bb, doc/jcgs/font-incor-s-bw.ps.bb, doc/jcgs/font-incor-s.ps.bb, doc/jcgs/hilock-sas.ps.bb:
-	PS Bounding Boxes, needed for compressed files
-
-	* doc/jcgs/essJCGSv2.tex:
-	changed back to using \includegraphics.  No more draft mode at this
-	point.  I can put it back if you want.
-
-	Timetable:  resubmit at the end of the day tommorow.  This may mean
-	Monday, since I'll be taking a final look at end of the day pacific
-	time (i.e. east coast will be midnight-ish :-).
 
 2002-01-31  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
@@ -2130,87 +1165,6 @@
 	ESS[SAS]: improved macro statements syntax highlighting, i.e.
 	you have more freedom of placement than you do for SAS
 	statements in general
-
-2002-01-31  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	text now refers to color figures, no the previous
-	black and white.
-
-	* doc/jcgs/ediff-sas.ps.gz, doc/jcgs/font-cor-s-bw.ps.gz, doc/jcgs/font-cor-s.ps.gz, doc/jcgs/font-incor-s-bw.ps.gz, doc/jcgs/font-incor-s.ps.gz, doc/jcgs/hilock-sas.ps.gz:
-	postscript figures skipped in previous commit
-
-	* doc/jcgs/essJCGSv2.tex:
-	Graphics are now in postscript.
-	They look bad on my screen but print ok.
-	keep them in the .ps.gz format to keep size under
-	control.  ghostview can read the compressed format.
-
-	\ifdraft\emptyfig\else\psfig\fi
-
-2002-01-31  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper:  a few minor changes; removed last RAD reference;
-	updated outline
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper:  Intro; the software development angle was hanging in the
-	first 2 sentences w/o a tie-in to the rest of the paragraph.  So
-	I deleted them and re-structured the rest of the paragraph as follows:
-
-	Most statistical research activities, particularly data analysis and
-	communication, involves some form of computer use.
-	This puts the computer and its user interface
-	in the central role of facilitating statistical tasks.
-	This paper introduces Emacs Speaks Statistics (ESS)
-	\citep{ESS}, a software package designed to provide a
-	multi-platform, multi-package intelligent environment for statistical analysis.
-
-	How's that?
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper:  made some wording changes to the abstract; but, 1st paragraph
-	of Intro doesn't flow; software development is now just a thrown-away thought
-	that is only involved in the first 2 sentences; let's just start with an
-	enhanced 3rd sentence and go on from there
-
-2002-01-31  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	I am now ready to send the paper back to the journal.
-
-	I wrote the SAS Batch sections.
-
-	I rearranged (and split) the interactive {S, \Splus, and R} and {\Splus
-	for Windows} sections.
-
-	I removed almost all references to RAD.
-
-	I rewrote the abstract, the first paragraph of the introduction,
-	and the last paragraph of Extensions
-
-	I renamed the {Discussion} to {Extensions}
-
-	I moved additional documentation from {Extensions} to {ESS Resources on the
-	Internet}
-
-	I deleted the subsection name {ESS Facilitates Common Tasks}
-	and let its paragraphs join those of the {Features and Capabilities}
-
-	other small changes
-
-2002-01-30  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS Paper:  committed new title
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper:  minor changes; Macintosh to Mac OS;
-	added a comment to the R Mac discussion; turned off comments
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper:  my 'final' changes; when are the comments going to be removed so I can print a clean version for my colleagues to proof?
 
 2002-01-28  Martin Maechler  <maechler@stat.math.ethz.ch>
 
@@ -2267,48 +1221,10 @@
 	remove commented out .in.ESS.
 	This was replaced with options()$STERM yesterday.
 
-	* doc/jcgs/essJCGSv2.tex:
-	smooth section Interactive Processing/S
-
-2002-01-20  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: minor changes in wording to SAS batch section; note you can't say must because SAS/Connect allows you to specify SAS datasets on remote computers, but it is clumsy to set up and maintain; ESS-elsewhere is much cleaner
-
 2002-01-20  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	1. what is going on?  I write
-	   \newcommand*{\regstrd}{$^{\mbox{\scriptsize\textregistered}}$}
-	someone else changes it to
-	   \newcommand*{\regstrd}{$^{\mbox{\scriptsize{\textregistered}}}$}
-
-	Since \scriptsize is a declaration, not a function, what is the
-	intent of the extra braces?  TeX sees the keyword \textregistered
-	as a single token, it does not see it as a string of characters.
-
-
-	2. I wrote Interactive Processing/S by taking a few paragraphs from
-	the previous version in doc/techrep/ess.tex and editing them.
-
-
-	3. I wrote a new S Batch section.
-
-
-	4. I think of the unnumbered section {ESS Resources on the Internet}
-	as structurally similar to the References, so I put it after the
-	Discussion.
-
-
-	5. I reduced the explicit mention of the term "ESS-elsewhere".
-	After our discussion last week I realized that transparency to the user
-	is much more important for this paper than the technical detail.
-
+	
 	* doc/ess.info, doc/ess.info-2, doc/ess.info-3:
 	matches ess.texi from a few minutes ago.
-
-	* doc/dsc2001-rmh/dsc-rmh.dvi:
-	server had scrambled version.  this one is correct.
 
 	* doc/ess.info-1, doc/ess.texi, doc/inst_tar.texi, doc/newfeat.texi, lisp/ess-site.el:
 	1. In ess-site.el section 2.1 I made two changes.
@@ -2413,44 +1329,6 @@
 
 	* lisp/tmpfile: test commit with PCL-CVS
 
-2002-01-17  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: polished outline
-
-2002-01-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* lisp/essa-sas.el: PCL-CVS release v2_9_9
-
-	Repository       : software.biostat.washington.edu:/home/ess/repository
-	Working directory: /export/home/rsparapa/ess/
-
-
-
-	In directory .:
-	Message: cvs server: New directory `add-ons' -- ignored
-	In directory doc:
-	In directory doc/jcgs:
-	              Unknown                 doc/jcgs/essJCGSv2.aux
-	              Unknown                 doc/jcgs/essJCGSv2.bbl
-	              Unknown                 doc/jcgs/essJCGSv2.blg
-	              Unknown                 doc/jcgs/essJCGSv2.dvi
-	              Unknown                 doc/jcgs/essJCGSv2.log
-	              Unknown                 doc/jcgs/essJCGSv2.tex.flc
-	              Unknown                 doc/jcgs/essJCGSv2.toc
-	              Unknown                 doc/jcgs/jsm2002.aux
-	              Unknown                 doc/jcgs/jsm2002.dvi
-	              Unknown                 doc/jcgs/jsm2002.log
-	In directory lisp:
-	              Unknown                 lisp/ess-site.el.flc
-	              Modified                lisp/essa-sas.el
-	              Unknown                 lisp/essa-sas.el.flc
-	Message: cvs server: New directory `lisp/19.29' -- ignored
-	Message: cvs server: New directory `lit-data-examples' -- ignored
-
-	--------------------- End ---------------------
-	-- last cmd: cvs -f -n update -d -P --
-
 2002-01-16  rmh  <rmh@lynne.stat.math.ethz.ch>
 
 	* lisp/essa-sas.el, lisp/ess-mous.el:
@@ -2489,16 +1367,6 @@
 
 2002-01-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: in a fit of envy, I added my center to my author information
-
-2002-01-16  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex, doc/jcgs/font-cor-s.jpg, doc/jcgs/font-incor-s.jpg:
-	color jpg picture, small text changes
-
-2002-01-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
 	* lisp/essl-bug.el:
 	ess-revert definition removed, call to ess-revert replaced by ess-revert-wisely
 
@@ -2511,37 +1379,10 @@
 	* lisp/ess-utils.el:
 	added ess-revert-wisely
 
-2002-01-15  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	moved "list of other documentation" to discussion, so that we don't
-	steal our own thunder.
-
-	edited the abstract, more smoothing.
-
-	edited intro paragraph.
-
 2002-01-15  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
 	* lisp/essa-sas.el:
 	ESS[SAS]: tweak to local variable recognition in ess-sas-submit
-
-2002-01-15  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	removed comment re: underlining.
-
-2002-01-15  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.bib, doc/jcgs/essJCGSv2.tex:
-	JCGS paper:  correct capilalization in bib and moved TOC to beginning
-
-2002-01-15  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.bib:
-	added Stata 7 citation.  We might want to replace v6.0 with this BUT
-	there are side issues (i.e. more difficult with 7.0 to use ESS than
-	with 6.0).
 
 2002-01-15  rmh  <rmh@lynne.stat.math.ethz.ch>
 
@@ -2647,37 +1488,6 @@
 	* lisp/essa-sas.el:
 	ESS[SAS]: if Local Variables are defined, a revert is necessary to update them if changed; anybody know a better way?
 
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: comments on comments
-
-2002-01-14  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	added one more sentence to editing extensions; we might remove it
-	(emacspeaks).
-
-	stab at cleaning first paragraph of "ESS extends Emacs".  Cleaner, but "worse" in a way.
-
-	* doc/jcgs/essJCGSv2.tex:
-	cleaned up "editing extensions" section.  Added a comment regarding
-	other features to describe, if others feel that they are reasonable.
-
-	* doc/jcgs/essJCGSv2.tex:
-	white space removal.
-
-	* doc/jcgs/essJCGSv2.tex:
-	clean up of "editing extensions" paragraph.  Removed the "modes which"
-	subsentence, because it was too technical, and left what will do the
-	enhancement.  Should we change it back?
-
-	* doc/jcgs/essJCGSv2.tex: added comma.
-
-	* doc/jcgs/essJCGSv2.tex:
-	smoothed keyboard/mouse interactions paragraph
-
-	* doc/jcgs/essJCGSv2.tex:
-	2 small spelling errors fixed.
-
 2002-01-14  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
 	* lisp/essl-sas.el:
@@ -2685,104 +1495,6 @@
 
 	* lisp/essa-sas.el:
 	ESS[SAS]: ess-sas-submit-command and ess-sas-submit-command-options are buffer-local with appropriate adjustments in the ess-sas-submit- methods
-
-2002-01-14  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	modified last paragraph of the intro.  I think it's slightly better,
-	but it is still bad.
-
-	* doc/jcgs/essJCGSv2.tex:
-	commented out Rich's query re: underlining.  I'm not seeing it, it
-	looks like a generation problem, but it's an output issue when we need
-	to focus on content; i.e. someone else can generate the right output.
-
-	* doc/jcgs/essJCGSv2.tex:
-	cleaned up the first paragraph of the introduction.  Please take a
-	look at the current phrasing, and change if desired (esp the last 2
-	sentences, which used to be 3)
-
-	* doc/jcgs/essJCGSv2.tex:
-	abstract tweaked.
-
-	* doc/jcgs/essJCGSv2.tex:
-	whoops, I shouldn't have "times" set up by default!
-
-	* doc/jcgs/essJCGSv2.tex:
-	Anon CVS stuff was completely wrong and bogus.  Small example of what
-	it will be, but it won't be ready until Friday.
-
-2002-01-14  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: more comments on the ESS-elsewhere-yes-it-is-no-it-isn't-debate
-
-2002-01-14  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/test: end of test.  the file is
-	now removed from the
-	directory.
-
-	* doc/jcgs/test:
-	this is a revised test
-
-	* doc/jcgs/test: this is a test
-
-	* doc/jcgs/ess-compute-sas.el, doc/jcgs/sas-on-compute25:
-	It looks like we are working with very different historical perspectives.
-
-	I just posted a copy of my class handouts from November 2000 into the
-	jcgs directory.  These are not for the paper.  If I follow you
-	correctly, the instructions in sas-on-compute25 in the section"BETTER
-	INSTRUCTIONS" would not have worked for you 14 months ago.
-	  3076 Nov 20  2000 sas-on-compute25
-	   220 Nov 20  2000 ess-compute-sas.el
-
-2002-01-14  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: a comment
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: a few minor changes
-
-2002-01-14  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	table of contents, ES-elsewhere, smoothing
-
-2002-01-13  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	transcripts acces typos question, see email
-
-	* lisp/ess-inf.el:
-	intercept page() in inferior-R
-
-2002-01-12  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.bib:
-	JCGS paper: software @Book citations need a publisher; now fixed
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: more edits to batch, history and discussion
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: 1st draft of Batch File Processing sub-section
-
-2002-01-11  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: internet discussion
-
-	* lisp/essa-sas.el:
-	ESS-elsewhere:  ess-kermit-send works and it is no longer ESS[SAS] specific other than the location of the defun
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: fixed comment; make sure you escape dollar signes otherwise tex thinks you want to go into math
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: updated outline and made some changes to file transfers.
 
 2002-01-11  rmh  <rmh@lynne.stat.math.ethz.ch>
 
@@ -2802,24 +1514,9 @@
 	* lisp/ChangeLog, lisp/essd-r.el, lisp/ess-inf.el:
 	STERM pager editor
 
-	* doc/jcgs/essJCGSv2.bib, doc/jcgs/essJCGSv2.tex:
-	RMHHS:2001, trademarks, smoothing
-
 2002-01-10  rmh  <rmh@lynne.stat.math.ethz.ch>
 
 	* doc/newfeat.texi: add mouse-me
-
-2002-01-10  rossini  <rossini@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	cleanup and tightening of "transcripts" paragraph.
-
-	* doc/jcgs/essJCGSv2.tex:
-	small changes.  I've removed some of the comments which seem to have
-	been resolved (transcript-mode).  Put'em back in if not.
-
-	* doc/jcgs/essJCGSv2.bib:
-	edits to ESS (URL changed).
 
 2002-01-10  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
@@ -2836,11 +1533,6 @@
 	* lisp/essa-sas.el:
 	ESS-elsewhere: kermit transfer really works with ssh, but not telnet; YMMV
 
-2002-01-10  rmh  <rmh@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/ediff-sas.gif, doc/jcgs/font-cor-s.gif, doc/jcgs/font-incor-s.gif, doc/jcgs/hilock.sas, doc/jcgs/hilock-sas.gif, doc/jcgs/essJCGSv2.tex:
-	expansion, smoothin, figures -- see email
-
 2002-01-10  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
 	* lisp/essa-sas.el:
@@ -2848,11 +1540,6 @@
 
 	* lisp/essa-sas.el:
 	ESS-elsewhere: first working version that uses kermit as the transfer protocol
-
-2002-01-09  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: more comments on remote file access
 
 2002-01-09  rmh  <rmh@lynne.stat.math.ethz.ch>
 
@@ -2873,18 +1560,12 @@
 	* lisp/essa-sas.el:
 	ESS[SAS]: removed some debugging
 
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: more comments
-
 2002-01-09  rmh  <rmh@lynne.stat.math.ethz.ch>
 
 	* lisp/ess-mous.el: ess-mous keys
 
 	* lisp/ess-cust.el, lisp/essd-sp4.el, lisp/essdsp6w.el, lisp/ess-site.el:
 	splus6 for windows bug and embedded blanks in splus[46]
-
-	* doc/jcgs/essJCGSv2.bib, doc/jcgs/essJCGSv2.tex:
-	smooth sections 1 and 2 and bibliography
 
 2002-01-08  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
 
@@ -2927,11 +1608,6 @@
 
 	* lisp/essa-sas.el:
 	ESS[SAS]: 1 fix to ess-sas-file-path
-
-2002-01-07  ess  <ess@lynne.stat.math.ethz.ch>
-
-	* doc/jcgs/essJCGSv2.tex:
-	JCGS paper: response to Martin's comments
 
 2002-01-08  A.J. Rossini <rossini@u.washington.edu>
 
@@ -3845,7 +2521,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 2004/06/28 21:21:35 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 2004/06/28 21:47:36 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -6035,6 +4711,11 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.39  2004/06/28 21:47:36  rsparapa
+	* Removing ChangeLog required a little editing; lots of references to the
+	* Removing JCGS paper that aren't needed; the penalty for writing the
+	* Removing paper in the same project
+	* Removing
 	* Removing Revision 5.38  2004/06/28 21:21:35  rsparapa
 	* Removing Version .. released
 	* Removing
