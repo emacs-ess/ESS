@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/11/09 19:48:55 $
-;; Version: $Revision: 1.58 $
-;; RCS: $Id: ess-site.el,v 1.58 1997/11/09 19:48:55 rossini Exp $
+;; Modified: $Date: 1997/11/10 22:32:15 $
+;; Version: $Revision: 1.59 $
+;; RCS: $Id: ess-site.el,v 1.59 1997/11/10 22:32:15 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -51,9 +51,13 @@
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
 ;;;
-;;; (1.1) Change the value of ess-lisp-directory to the directory which
-;;; is to contain the file ess-site.elc.  This is probably the current
-;;; directory, or the value of LISPDIR if it was set in the Makefile.
+;;; (1.1) For most users the variable ess-lisp-directory will
+;;; automatically be set correctly.  If you are working with an old
+;;; emacs, one in which file-truename is not defined, then you might
+;;; need to change the value of ess-lisp-directory to the directory
+;;; which is to contain the file ess-site.elc.  This is probably the
+;;; current directory, or the value of LISPDIR if it was set in the
+;;; Makefile.
 
 (eval-and-compile
 
@@ -93,7 +97,6 @@
 	   ("\\.[rR]\\'"  . R-mode)
 	   ("R.*/src/library/[A-Za-z]+/funs/[A-Za-z]" . R-mode); R <= 0.50
 	   ("R.*/src/library/[A-Za-z]+/R/[A-Za-z]"    . R-mode); R >= 0.60
-	   ("R.*/src/library/[A-Za-z]+/man/[A-Za-z]"  . Rman-mode);R <= 0.50
 	   ("\\.lsp\\'"                               . XLS-mode)
 	   ("\\.sas\\'"                               . SAS-mode)
 	   ("\\.SAS\\'"                               . SAS-mode)
@@ -287,17 +290,14 @@
 ;;; 3.6 Example of formatting change (suggested by Terry Therneau).
 
 ;;;;The defaults in ess-vars.el are identical to current behavior:
+;;; See ess-vars.el for exact definitions of these variable settings.
 ;;;;added rmh 2Nov97 at request of Terry Therneau
-;;(setq ess-close-brace-offset 0
-;;  "*Extra indentation for closing braces")
-;;(setq ess-fancy-comments t
-;;  "*Non-nil means distiguish between #, ##, and ### for indentation")
+;;(setq ess-close-brace-offset 0)
+;;(setq ess-fancy-comments t)
 ;;
-;;;;Terry will want to add the definitions:
-;;(setq ess-fancy-comments nil
-;;  "*Non-nil means distiguish between #, ##, and ### for indentation")
-;;(setq ess-default-style 'CLB
-;;  "*The default value of ess-style")
+;;;;Terry will want to uncomment
+;;(setq ess-fancy-comments nil)
+;;(setq ess-default-style 'CLB)
 
 
 ;;; 4.0 SAS configuration
