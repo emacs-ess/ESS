@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2000/06/05 20:53:23 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: ess-cust.el,v 1.3 2000/06/05 20:53:23 ess Exp $
+;; Modified: $Date: 2000/06/19 22:38:57 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: ess-cust.el,v 1.4 2000/06/19 22:38:57 ess Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -546,11 +546,14 @@ by `ess-function-template'."
   :group 'ess
   :type 'regexp)
 
-;; This is tested for S dialects (actually only for R) -- be careful with it!
-(defcustom ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
-  "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg."
-  :group 'ess
-  :type 'regexp)
+;;;; This is tested for S dialects (actually only for R) -- be careful with it!
+;;(defcustom ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
+;;  "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg."
+;;  :group 'ess
+;;  :type  'regexp)
+
+(defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
+  "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg.")
 
  ; ess-inf: variables for inferior-ess.
 
