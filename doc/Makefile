@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 1.7 $.
+### File: $Revision: 1.8 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -34,10 +34,10 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 5.1.7
+VERSION = 5.1.8
 VERSIONDIR = ESS-$(VERSION)
 
-LASTVERSION = 5.1.6
+LASTVERSION = 5.1.7
 
 MYWWWDIR = /none/at/this/time
 MYFTPDIR = /none/at/this/time
