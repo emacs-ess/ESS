@@ -1,0 +1,7 @@
+
+    Richard> 125 rassoc is new
+    Richard>       (setq temp-ess-dialect (cdr (rassoc ess-dialect
+    Richard>       ess-customize-alist)))) 
+    Richard> rassoc is part of cl.el and is not automatically part of
+    Richard> emacs 19.28.  As an expedient I just (require 'cl).
+    Richard> emacs 19.29 seems to be happy with rassoc

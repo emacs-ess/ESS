@@ -1,0 +1,1268 @@
+-*-indented-text-*-
+
+$Id: TODO,v 1.1 1997/10/22 19:31:20 rossini Exp $ 
+
+Here was the original TODO list (nothing fixed there yet):
+===========================================================
+
+The following things need to be fixed. In a very rough order of priority.
+
+* (DS) M-RET in *S* doesn't work properly with multi-line inputs.
+
+* (DS) Typing C-c C-d in an S-mode buffer can read the wrong file
+  (apparently the wrong value of S-directory is used.)
+
+* (DS) Maybe S-eval-region should do S-view-at-bottom, too
+
+* (DS) It would be nice to interpret a nil value of S-directory as the
+  default directory.
+
+* (DS) Add a predicate to control when S-object-list is dumped. It would
+  be nice to dump this only if an assignment has taken place or the
+  search list has changed.
+
+* (DS) C-u -1 C-c C-x C-c C-o produces odd results
+
+* (DS) Automate inferior-S-send-input to delay sending to the S process
+  until a complete command has been typed. (I.e. when presented with
+  an incomplete command, RET behaves like LFD). If this is done,
+  multi-line commands will always get into the history as one entry.
+
+* (DS) The menus need finetuning, and a binding to a keyboard key.
+
+* (DS) Need to decide on a sensible policy on csh-like history references.
+  At the moment, expanding such references is only possible from the
+  menu.
+
+* (DS) Need a keystroke to kill an edit buffer *and* the associated file.
+
+* (DS) Need a function to copy an object to a new object *and* copy
+   it's source file to a new source file, modifying the target of
+   the assignment.
+
+* (DS) Info docs need updating.
+
+* (DS) Debugging support, through trace() and tprint()
+
+* (DS) Need a menu for S help mode
+
+* (DS) Modify S-beginning-of-function so that, with arg n, will move out
+   n layers of nested functions. Wiht C-u arg, move to outermost
+   function definition
+
+* (DS) Rewrite the S-command and S-eval-visibly functions to use
+  transaction queues (so that we can really have S running in the
+  background) This is a big job.
+
+=============================================================
+Here is the new set (a start for S-mode 5.0). 
+NOTE: Not all of these are clean OR are even consistent.
+--------------------------------------------
+
+* (KH) Fix indentation for "{" in the GNU style...
+
+  Kurt> * What I also find frustrating is that the GNU style does
+  Kurt> not get the indentation of `{' in:
+  Kurt>       fun <- function(x, y, z) {
+  Kurt> right (in fact, the results of hitting TAB on the second
+  Kurt> line seem to vary).  But it is not important.
+
+* (RMS/KH) RMS will not allow us to require S-inf for S-mode.  In
+  fact, when he first saw a version of my `octave-mode' package, he
+  asked me to split it into an edit mode, an interaction mode (and the
+  interface to the info system), because the edit mode could live by
+  itself, whereas interaction needs to require comint at least, (and
+  the help part requires info).  He is trying to keep the Emacs as
+  small as possible at run time, and feels that there is no point
+  loading comint when just entering one line in a source
+  file.
+
+  The problem of course is what happens with the code for interacting
+  with the inferior processes from within a source file?  If it is
+  with the code for the inferior process, then setting up the keymaps
+  for the edit mode is a pain.  If it is with the edit mode, how can
+  you get along without requiring the inferior mode?
+
+  My solution was the following.  The function inferior-octave() takes
+  an an optional arg, and unless this arg is non-nil, the interaction
+  buffer is switched to.  So this function can be autoloaded, and
+  functions for sending pieces of code can start by calling
+  (inferior-octave t) which will then load the inferior code etc.
+
+* (KH) It may be worth while replacing
+	("^[>+]" . font-lock-keyword-face)
+  in R-inf-font-lock-keywords by
+	("^[RS]?[>+]" . font-lock-keyword-face)
+  (or perhaps something even better assuming the coexistence of processes
+  called R, S, S<something> on a system with the corresponding prompts.
+
+  (MM) Yes, add "S4"  to this list to get something like
+
+  ("^[RS]?[1-9.]?[>+]" . font-lock-keyword-face)
+
+  is not quite correct, since it includes  ".3>" buth should rather
+  "R0.50>".
+
+* (KH) There should be an inferior-R-mode-hook.
+
+* (KH) In R at least, asking for deletion of a file after loading it with C-c
+  C-l does not make sense.
+
+  (MM) Yes! -- this has been a real pain, especially when the file was
+  version-controlled, it sometimes has just been deleted w/o asking !
+
+* (KH) It would be nice if C-c C-v could also use completion against the list
+  of objects.  The name of the help buffer should perhaps be constant
+  across invocations ...
+
+  (MM) Yes! -- As a matter of fact, in S-mode using S-plus, this
+  works. 
+
+  (KH) also, why C-c C-v and not C-c C-h?
+
+  (MM) NO!  Kurt, you forgot that {key-sequence} C-h should provide
+  help on all the key-bindings that begin with {key-sequence}!
+
+* (KH) S-inf.el contains a definition for inferior-Splus-args, which I don't
+  see used anywhere.  A key point is that we need to add support for
+  startup arguments very soon (so that users can increase the vector heap
+  etc.).  My idea is to have
+
+	C-u M-x R
+
+  (i.e. if R() is called with a non-nil prefix) ask for a string of
+  command line args, then convert that into a list of startup args.
+
+* (KH) Also, there is no support for an Emacs-specific startup file.  This is
+  not really important right now, I think, but anything based on comint
+  and term should support that.
+
+  (Tony, if you look at my R-inf.el, you'll notice that some effort goes
+  into doing the right thing with output from startup args and files.)
+
+* (AJR) Add func-menu (imenu for Emacs 19.3x?) support, for traversing
+  files with lots of functions...
+
+* (KH) (A minor remark: I am not too happy about all the autoloading
+  of functions in the code.  Perhaps we can get rid of that.)
+
+  (MM) if the initial loading stays 'small' & 'fast'.  I think that
+  currently, the load time of 'emacs -f S' is already too high (ok, I
+  load quite a few other things,...)
+
+* (KH) Can we decide on a good naming convention for the multiple
+  dialects?  Ala cc-mode there could be something like
+
+    S-mode-common-hook
+
+  for the general thing ... but for the special ones, which do you prefer:
+    S-mode-S-hook	OR  S-mode-hook
+    S-mode-R-hook       OR  R-mode-hook
+  Or perhaps there is something better?
+
+  (MM) I'd prefer if __everything__ started with the same prefix.  At
+  the moment, we have 2 prefixes (I think), namely
+	S-..
+  and
+	inferior-S-..
+  So, I'd clearly go for S-mode-[SR]-hook.  If you have a completely
+  different view, I'd be interested to learn the reasons.
+
+* (KH) Finally, the problem that the output of help(something) in the
+  io buffer looks terrible is because the standard comint output
+  filter is not very powerful ... the one that term.el uses is much
+  better.  I am not saying that we should switch from comint.el to
+  term.el because the former one seems to be in more widespread use
+  ... but then perhaps we could hack our own filter which gets rid of
+  the ^H characters ...
+
+  (MM) Hmm,.., are you NOT using C-c C-v ? It's so many hundred times
+  more useful, that I don't think there's a real problem.
+
+  The best and easiest filter would be: Whenever a command starts with
+  "?" or "help(", Emacs would tell the user to use S-help instead.
+  [[this unfortunately currently fails for R: 'help(data=index)',
+  e.g., does not work with S-help.
+
+  That would be one solution.  I hacked up some code for that last week
+  when Peter (?) mentioned that problem.  It may however be worth the
+  effort to have the output filter do something about control chars.
+  E.g., following
+	cat("\007")
+  Emacs should really ring the bell (under R, this is treated literally,
+  btw.) 
+
+  (AJR) (Aside): Problem is that not everyone does "C-c C-v".  Need to
+  follow "Principle of Least Surprise".
+
+  (PD, 1Apr97) BTW2: For help command output, 'colcrt' is somewhat
+  better than 'cat', (removes the overtyping blabble in headlines),
+  but not all systems have it (Linux does, Solaris not). Kurt
+  suggested how to intercept the help commands into
+  S-display-help-on-object, but this breaks on things like
+  help(data=...), so maybe it would be better to recognize the help/?
+  commands and set a flag in an input-hook and if the flag is set,
+  massage the output ad modum S-nuke-help-bs? Not being much of an
+  Elisp programmer (see above), I'm not entirely sure how to do that,
+  but it sounds as if it might be easy (?)
+
+* (KH) The function S-complete-object-name() in S-inf.el currently
+  returns 
+	
+	(or (comint-dynamic-simple-complete  pattern components) 'none)
+
+  with the comment `always return a non-nil value to prevent history
+  expansions'.  Do you have an idea what that means?
+
+  Is there any good reason to break the Emacs/Comint convention that a
+  completer should return a non-nil value only if it did successfully
+  complete?
+
+  The specific reason why I ask is the following:
+
+  S-inf does
+
+	(setq comint-dynamic-complete-functions
+	      '(S-complete-filename
+		S-complete-object-name
+		comint-replace-by-expanded-history))
+
+  I don't care about the last and prefer
+
+	(setq comint-dynamic-complete-functions
+	      '(S-complete-object-name
+		comint-dynamic-complete-filename))
+
+  Note the reversed order of filename and object name completions.  I
+  think it makes more sense that way, because if I have the file
+  `anthony.dat' in my current dir and do
+
+	anthony <- read.table("anthony.dat")
+
+  then typing `ant TAB' at the R prompt should complete to `anthony'
+  as an object name, as I can always force the filename in the current
+  dir by `./ant TAB'.
+
+  However, as S-complete-object-name() always returns a non-nil value,
+  the comint file name completion simply does not happen (well
+  ... that's at least what I think is the case ... but then also, what
+  is the point to have comint-replace-by-expanded-history() in the
+  list of completers, when it definitely will never be called
+  ... hmmm.)
+
+  Please let me know what you think.  My suggestion would be to simply
+  change the last 2 lines of the code for S-complete-object-name() to
+
+	(comint-dynamic-simple-complete pattern components))))
+
+  and set comint-dynamic-complete-functions as I do :-)
+
+  Well ... what I said was not quite right, as S-complete-object-name
+  also tries to do something about `./ant RET'.  In any case, please
+  let me know what you think.
+
+* (KH/MM)
+  Kurt> Yes, I think so.  Also, Martin wrote that he wants to have a
+  Kurt> joint thing, and the ability to send code from .R/.S files to
+  Kurt> inferior R, S and S-PLUS processes (perhaps even different ones
+  Kurt> assuming coexistence of S version 3 and 4 on a system).
+
+  Yes, indeed!  BTW, a few months ago, Doug Bates sent me a bug report
+  about S-mode-4.8.6 where in one place "Splus" was hardcoded, but he
+  wanted "S" which was S version 4 (beta).
+
+  Therefore, yes keep in mind that there might be different versions
+  of S around simultaneously.  And the same as for S/R is true here:
+  >From the SAME foo.S file, I want to send (eval-....)
+  S-statements/functions to one S process and then to another.
+
+    Kurt> ((If we go for the all in one approach, it will be very important
+    Kurt> to specify the buffer-local things.)
+
+  YES, exactly.  Here is where there are still bugs, currently!!
+
+* (AJR) Need an AUTOCONF for configuring Makefile, etc...
+
+* (AJR) start converting to CUSTOM (Per Abraham's package), which
+  works with both Emacsen.  God bless Per.
+
+* (AJR) Move S-extras into the mainstream distribution files and as an 
+  S-site example.
+
+* (AJR) Move S4 code into the mainstream distribution files.
+
+* (AJR) Look at RH's S3, Splus, S4 split.  (See S-DEVEL).
+
+* (KH) Makefile needs to make sure LISPDIR exists (else, make it!)
+
+* (MM) 
+    MM>  ###>>>  ALWAYS REMEMBER:  R-mode has to work for editing of R
+    MM>  ###>>>  code
+    MM>  ###>>>			   even if I have NOT started an
+    MM>  ###>>>			   (inferior) R-process
+
+    MM>   (this has bitten me SEVERAL times when working on the code.
+
+    MM>    For testing, please always test both ways:
+
+    MM> 	emacs -f R		(loading inferior R)
+    MM> 	emacs foo.R		(loading R-mode for file foo.R)
+    MM>   )
+
+
+* (KH) Re S-site:  Possible names seem to be S-site.el and S-init.el.
+  The latter perhaps is confusingly close to S-inf ... the former
+  would correspond to e.g. AUCTeX's tex-site.  I don't really have a
+  preference, because on Debian the `right' thing to do is to have
+  something like 50S-mode.el in the site-start.d directory.
+
+  So, need a "create-debian" entry in the Makefile.
+
+* (AJR)
+  Kurt> Right.  Perhaps it's enough to have one generic inferior-S
+  Kurt> function which tries to run
+  Kurt> 	inferior-S-<name>-mode-hook
+  Kurt> (yes we have not decided on how to pollute the name space)
+  Kurt> if that hook exists in order to get the right settings
+  Kurt> ... (or should that be a load-hook instead?)
+
+  I'm looking into the hook problem.  One solution is:
+	(cond ((string= S-dialect "R") ...)
+	      ((string= S-dialect "S") ...))
+
+* (AJR)
+    Kurt> Which reminds me of the following.  We once talked about
+    Kurt> having an inferior-R-mode-hook.  Perhaps this is not the
+    Kurt> right thing anyway, because there won't be an inferior R
+    Kurt> mode ... but then, which hook is the right one for
+    Kurt> customizing an inferior S running R?  Will there be
+    Kurt> inferior-S-<name>-mode-hook or should the
+    Kurt> inferior-S-mode-hook do
+    Kurt> 	(cond ((string= inferior-S-program "R")
+    Kurt> 	        ...))
+
+    Hmm... I think the latter might be good.  I have to think about
+    it, though.  I'm a bit less interested in name-space
+    pollution/confusion.
+
+* (KH) MINOR REMARK:  Currently, we have American and English spelling
+  together.  If we want to change this, please add it to the TODO list.
+
+* (KH) MINOR REMARK: Some of the doc strings are not o.k. (first
+   sentence longer than one line ).  We eventually need to fix this,
+   but perhaps not for 4.9.
+
+* (KH) MINOR REMARK:  I am not sure whether S-dump-filename-template should
+  automatically append ".S".
+
+* (KH) I think that in general, S-mode-map should bind RET to
+      reindent-then-newline-and-indent
+
+  (AJR) Hmm... I like this.  Would this hurt anyone?  (I thought that C-j was
+  newline-and-indent, with RET just newline.  What mode does it in the
+  way you suggest? 
+
+* (KH) In future versions, could you please ensure that Makefile and *.el
+  files have permission 644?
+
+* (KH) In S-R-shortcut-pre-run-hook () of S-site.el, we have
+
+  (remove-hook  'S-post-run-hook 'S-execute-screen-options); length fails
+  (add-hook 'S-mode-load-hook
+            '(lambda () (setq-default S-proc-prefix "R")))
+  ;;(setq inferior-S-search-list-command "search()\n");- is failing in R
+  (setenv "PAGER" inferior-S-pager)     ;-- a MUST for the old-style
+                                        ;(nroff) help  above ! 
+
+   I am not sure about the first one.  When I removed the second one,
+   I could still happily play with R and Xlisp-STAT (I don't have S),
+   so it is perhaps not necessary.
+
+   The third one (setenv ...) MUST be deleted, because it provides a
+   global Emacs setting, which is no longer needed now that we have
+   inferior-S-pager and pass it to the process-environment at startup.
+
+* (KH) Btw, why not have `M-x vista' too?
+
+* (KH) MAJOR REMARK I:
+
+  The code for getting the `right' history file does not work.  E.g.,
+  when I start R and XLS in the same directory, they both use
+  .Rhistory.
+
+  For a possible solution, see the novel below.
+
+* (KH) MAJOR REMARK II:
+
+  The code
+
+(condition-case ()
+    (load S-object-name-db-file)
+  (error
+   (message "%s does not exist.  Consider running S-create-object-name-db."
+            S-object-name-db-file)
+   (ding)
+   (sit-for 1)))
+
+   in S.el causes several problems.
+
+   First, it produces an error in the byte-compilation process.  I
+   noticed that you put an empty S-namedb.el in the distribution, but
+   that does not help if `nil' is not in the default load path
+   (because then the current directory is not searched), which I think
+   is the default.
+   
+   Second, there should obviously be different namedb for R and S.
+   (What I really mean is that the setting of S-object-name-db must be
+   a function of the implementation [have we officially decided on
+   using `dialect'?]  used.  Hence, the right thing most likely is to
+   execute the code not when loading S.el, but when it is clear which
+   process is started (assuming we have different namedb's for each
+   dialect).
+
+   This could probably be as late as before inferior-S-mode-hook, but I am
+   not sure.
+
+   (Note:  currently  this is not a problem for me, because I only have R,
+   but what does Martin do?)
+
+* (KH) NOVEL:
+
+  So I spent several hours yesterday trying to figure out the right way of
+  solving our problems with local variables, in particular because Martin
+  explicitly asked me to do (only to find that the next morning Tony had
+  already done something about it ...).
+
+  I think it is important to distinguish two kinds of variables that need
+  to be taken care of.
+
+  ** One group is those variables which need to be known when the inferior
+  process is started (i.e., before the process and hence also its buffer
+  exist).
+
+  Such variables are
+	*) dialect (currently transmitted through S-proc-prefix)
+	*) program name (`R' might be on the load path)
+	*) program args (such as for `-v 10' for R)
+	*) program startup file (currently unused)
+	*) program history file (???)
+
+  ** The other group consists of those which are not needed for startup,
+  but need to have the right buffer-local values in the interaction
+  buffer, such as
+
+	inferior-S-help-command
+	inferior-S-objects-command
+
+  etc.
+
+  The problem we have is that there is NO WAY of passing non-global
+  values to buffer-local variables in Emacs.  Something like
+
+	(defun R ()
+           (let ((inferior-S-var value))
+             (inferior-S)))
+
+  does not set inferior-S-var to value in the interaction buffer if it is
+  local there.  (Sort of static scoping.)
+
+  There are several possible solutions:
+
+  ** Keep manipulating the global name space using setq-default, as b4
+  did.  Of course, this is terrible, because it overrides defaults.
+
+  ** Have one function which does something like
+
+	(cond
+         ((eq S-dialect "R")
+          (setq ...))
+         ((eq S-dialect "S4")
+          (setq ...))
+         (t
+          (ERROR)))
+
+  after calling make-local-variable() on the relevant variables, and wrap
+  the code into a function.
+
+  To add a dialect, users would need to to this in there inferior-S-mode
+  hook, or to advise/change this function.
+
+  ** Have a list similar to S-style-alist with settings for the variables,
+  and a function which sets them.  This is similar to the above, but keeps
+  the code for the function and the variables separate.
+
+  ** Have a dialect specific hook, e.g.
+
+	inferior-S-<dialect>-mode-hook
+
+  ** Keep manupulating a non-dialect-specific hook in the global name
+  space.  This is what we currently do, and not `optimal' for the same
+  reason that using setq-default was not:  If we think of inferior-S as
+  user function and S and R as simple wrappers, then calling these should
+  not modify the behavior of the generic function.
+
+  I think the KEY to a clean solution lies in the observation that there
+  is really only ONE variable needed in both steps (i.e., cranking up the
+  process and setting local variables in the interaction buffer), and that
+  is the information about the CURRENT DIALECT (which I think is currently
+  kept in `S-proc-prefix'.  We need to ensure that this variable has the
+  right local value to be able to run a specific hook (or a simpler hook
+  as explained above), and that it starts the right process in the right
+  buffer etc.
+
+  To get that, we could either create a global variable, KEEP IT GLOBAL,
+  use let() in the wrappers, and assign to a local variable afterwards, or
+  (and I think this is the right thing to do) PASS THE DIALECT INFORMATION
+  AS AN ARGUMENT.  I.e., we would have
+
+	(defun inferior-S (&optional dialect n)
+           ...
+
+  [NOTE:  I am not sure about the optional `n', and whether this is used.
+  I think that users might want to have
+
+	(defun R (&optional n) ...)
+	(defun S (&optional n) ...)
+
+  and we are safe to give inferior-S the interface we want because it is a
+  NEW function anyway.  We could also have it prompt for all relevant
+  variables if given a prefix ...]
+
+  and have
+
+	(defun R (&optional n)
+           (interactive)
+           (inferior-S "R" n))
+
+  Now the function inferior-S has the information it needs.  It can figure
+  out the `right' startup settings (history file, program name and args)
+  based on the dialect information in the generic pre-run hook and perhaps
+  a dialect-specific pre-run-hook, and PASS THE DIALECT INFORMATION ON to
+  the function S-multi() [or whatever it will be called].  I.e., it could
+  be
+
+	(defun S-multi (name &optional buffer dialect) ...)
+
+  S-multi can now do
+
+	(make-local-variable 'S-dialect)
+	(setq S-dialect (or dialect S-default-dialect))
+
+  and go on with the buffer-specific settings, again using the dialect
+  information as described above.
+
+  [Yes, there should be a default dialect which is used when inferior-S is
+  used directly.  Perhaps naming would be better with global S-dialect and
+  inferior-S-dialect as the local one ...]
+
+* (MM) My WISH:
+  I'm using  ess-eval-region  and friends very often.
+
+  If the region has leading TAB, I think the readline feature of R,
+  does a huge 'completion ...'
+  which can completely destray the whole evaluation.
+
+  ((Try  C-c C-f  from within a function that has a bit of indentation,
+    and therefore leading TABS (unless you 'untabified' it).
+  ))
+
+  Yes, I'll have to 'untabify' things before I send it to *R*, but it's a
+  pain, anyway.
+  One could do 'untabify'  in  ess-eval-region & ess-eval-visibly 
+  in ess-inf.el.
+  But actually this is not quite correct,
+  since I may have real TABs in a string  
+
+  nchar("	") #-> 1 because it has one TAB
+
+  which should not be converted to spaces.
+
+  Hence my wish:
+	Write a function 'untabify-leading-white-space'
+	and apply it to the regions  in ess-eval-region  and  ..-visibly.
+
+* (RMH)
+
+  
+  5. essd-s+3.el
+  63	                             ;;(if (string= ess-version-running "S3")
+  This comment seems inconsistent with ess-version-running.  I think it should be
+  	                             ;;(if (string= ess-version-running "S+3")
+  
+  
+  7. ess-object-name-db-file
+  ess.el line 775.  Why is this EVIL?  A nuisance I understand, but EVIL?
+  Does the database get built automatically when ess-mode is installed?
+  That would be the right thing to do.  Then individual users wouldn't need
+  to know about it all.
+  
+
+  10 ess.el lines  254-270
+  This is one of the things I put in my site-start.el.  I think this is
+  too complicated.  I think that when item 2 of this note is corrected (that is
+  run the ess-pre-run-hook before the things that depend on it) then the nil
+  value will work as advertised and the comment beginning with the word
+  " Alternatively," will become completely unnecessary.
+  
+  (defvar ess-directory (file-name-as-directory (getenv "HOME"))
+    "*The directory ess is run from.  It must end in a slash.
+  Provided as a default if ess-ask-for-ess-directory is non-nil.
+  A nil value means use the current buffer's default directory.
+  Buffer-local: in process buffers, this contains the directory ess was
+  run from.")
+  ;; You can put something like:
+  ;; (setq ess-directory (file-name-as-directory (concat (getenv "HOME") "/ess/")))
+  ;; in your ~/.emacs file and ess will always start up in your ~/ess directory.
+  
+  ;; Or you can say:
+  ;; (setq ess-directory nil)
+  ;; in your ~/.emacs file and ess will always start up in your current buffer's
+  ;; default directory.
+  
+  
+  [[[[ delete
+  ;; Alternatively, you can get ess to start up in the current buffer's directory 
+  ;; by putting this in your .emacs
+  ;; (setq ess-pre-run-hook '((lambda () (setq ess-directory default-directory))))
+  ;; Better (more correct) version:
+  ;;    (defun ajr:ess-set-directory () 
+  ;;	 "Set ess-directory to current directory."
+  ;;	 (setq ess-directory default-directory))
+  ;;    (add-hook 'ess-pre-run-hook 'ajr:ess-set-directory)
+  ]]]]
+  
+* (RMH) From smode.cmt (from the S4 package):
+
+  <-- AJR: some of these HAVE been done. -->
+
+  
+  e. Problem
+  Working data will be in /usr/people/rmh/.Data 
+  > !pwd
+  /disk5/rmh/smode
+  > 
+  
+  Reason:
+  .Data has not yet been created in /disk5/rmh/smode
+  
+  Solution:
+  quit S, mkdir .Data, start again
+  Recommendation 1.  Tell users in README to create .Data first.
+  Recommendation 2.  Tell users in README about Info item
+   - User Option: S-directory
+  I for one always want the current buffer's working directory.
+  
+  
+  f. Problem:
+  S-eval-function can't find the correct beginning of a function with
+  multiple part names.  Instead it sends the function with only the last
+  part of the name to S.
+  
+  col.spacing <- function(x)
+  {
+    stuff
+  }
+  
+  Reason:
+  S-beginning-of-function stops at the beginning of "spacing", not
+  "col.spacing".
+  
+  My guess is that something is not right with S-function-pattern.
+  
+  Solution:
+  Send email to D.M.Smith@lancaster.ac.uk S-mode@stat.math.ethz.ch
+  
+  Workaround, use quotes:
+  "col.spacing" <- function(x)
+  
+  
+  g. Question:
+  S-help does the following:
+  	  (S-command (format inferior-S-help-command object) tbuffer)
+  which seems to going through more work than is often necessary.  When the
+  .Cat.Help subdirectory exists, why not just M-x find-file the help file?
+  
+  
+  
+  
+  2. S3, Splus 3.3, S4
+  
+  
+  
+  c. framepop
+  S-site.el suggests using the frame-pop package.
+  Where is it?  I tried emacs/19.29/lisp/*.el and smode/*.el
+  
+  e. S-inf-font-lock-keywords
+  In inferior-S-mode the expressions below are in the indicated faces:
+  > tmp <- 1:3  # >     is in  font-lock-keyword-face
+                # rest  is     font-lock-variable-name-face
+  
+    tmp <- 1:3  # <-    is in  font-lock-reference-face
+                # rest  is in  default
+  
+  I don't understand why.
+  >From the definitions in S-inf.el, I expected that there would be
+  no dependence on the presence or absence of the leading prompt ">".
+  In particular, I anticipated that <- would be in font-lock-reference-face
+  with or without the prompt.
+  
+  
+  f. S-inf-font-lock-keywords
+  I recommend adding several keywords to S-inf-font-lock-keywords
+  for S3 and Splus 3.3 as noted in the attached s3.el and splus.el.
+  
+  
+  g. Interesting glitch
+  While fixing C-c C-l for S4, I found the following:
+  >From the *scratch* buffer, both the commands
+    (S-command "source(\"junk.s\")\n" (get-buffer "*S-errors*"))
+    (S-command "source(\"junk.s\")\n")
+  work correctly when junk.s is ok.  
+  
+  The first one puts an error message in "*S-errors*" when junk.s has a
+  problem.  But the second one loses the error message.  I chose not to
+  investigate this further, since S-load-file uses the first form, and I
+  doubt any person would consider using the second.
+  
+  
+  3. S4 changes
+  
+  a. S-mode.el  [C-c C-l   S-load-file]
+  
+  ;;; The S4 requires the fixes to
+  ; S-dump-error-re
+  ; S-parse-errors
+  ; S-prompt-wait
+  ;;; in my s4.el in order to respond correctly to syntax errors
+  ;;; during S-load-file.  
+  ;;; Without these changes the system will freeze.
+  ;;; (^G will clear the freeze, and ^XB *S-errors* will
+  ;;; display the error message).
+  
+  
+  b. S.el and S-site.el
+  The variable S-version-running, defined in S.el, with the option to
+  revise in S-site.el, needs to be redefined to identify version 4.
+  Some of the items coded by S-version-running differ in Version 4.
+  
+  b1. S-inf.el
+  (setq inferior-S-search-list-command "searchPaths()\n")
+  ;;; This variable needs to depend on S-version-running.
+  ;;; the function inferior-S-search-list-command should probably use
+  ;;; inferior-S-search-list-command, but it actually has "search()\n"
+  ;;; hard-wired in.
+  
+  ;;; inferior-S-objects-command is the same for version 4 as for version 3
+  
+  
+  b2. S.el
+  ;;;	 inferior-S-help-command
+  ;;;	 inferior-S-search-list-command
+  ;;;	 S-dump-error-re
+  Add a new line
+  ;;;      inferior-S-objects-command
+  
+  
+  b3. S-help.el
+  ;;;  S-submit-bug-report needs to know about version 4 for a bug report
+  ;;;  to be useful.
+  
+  
+  c. Other changes in s4.el respond to changes in S4:
+     .Help is now __Help
+     Errors are now Problems
+     "Dumped" messages now become offers to Debug
+     Additional keywords should be fontified
+  
+  
+  d. I have placed S-namedb.el in $SHOME in my s4.el file.  On further
+  reflection it should probably be in the $SHOME/library/emacs/
+  directory.  Question, does it make sense for S-namedb.el to be
+  distributed in $SHOME/library/emacs as part of binary.*.tar.gz ?
+    
+* (RMH)
+
+  Rather than have the site installer change the name of the directory,
+  it should be possible to find it out automatically.  Here is the
+  relevant code from my spread.frame package.  It assumes the user
+  started up spread.frames by typing
+     M-x load-file "/path/name"
+  It then finds the directory associated with that path and goes from
+  there.  Some similar trick should be doable when the user does a
+     M-x load-library "name"
+  
+  
+  (defun find-spread-frame-directory nil 
+  "Locate directory in which spread.frame functions are stored."
+    (list-command-history)
+    (set-buffer "*Command History*")
+    (goto-char (point-min))
+    (search-forward "(load-file ") )
+    (goto-char (1+ (match-end 0)))
+    (setq beg (point))
+    (end-of-line)
+    (search-backward "/")
+    (goto-char (match-end 0))
+    (setq spread-frame-directory
+  	(expand-file-name (buffer-substring beg (point))))
+    (kill-buffer "*Command History*"))
+
+* (MM) Tony,
+
+  AR>     Martin> 3) a. Help C-c C-v 'lm' from an S buffer -> lm help of
+  AR>     Martin>       Splus
+  AR>     Martin> b. kill the *help(lm)* buffer
+  AR>     Martin> c. Again C-c C-v 'lm'
+  AR> 
+  AR>     Martin> --> Error because S-plus's help command (..., pager =...)
+  AR>     Martin> 	    was used.
+  AR> 
+  AR> I don't see this.  You are using S twice, correct?  (or do you mean to 
+  AR> jump to R for the second?).
+  
+  I was not clear enough.
+  I can consistently produce these errors, and similar ones:
+  
+  An even simpler (however related) example:
+  0) I have S-plus and R running, one in *S* other in *R*.
+  
+  1) I do  C-c C-v lm	from *S* and get the *help(lm)* buffer from S-plus.
+  	
+     All is well with this buffer.
+  
+  2) I go to  *R*  and type  C-c C-v lm
+     Emacs just changes to the existing  *help(lm)* buffer which however was
+     for S-plus, not for R !
+  
+  3) To get around this, I kill the  *help(lm)* buffer,
+     go to *R* and again   C-c C-v lm
+  
+     A new  *help(lm)* buffer `pops up'  containing the single line
+  
+  ---------------------------------------------------------------------------
+  Error in help("lm", pager = "cat", window = F) : unused argument to function
+  ---------------------------------------------------------------------------
+
+* (daven@stille.llnl.gov (David Nelson))
+  
+  Transcript mode is delightful, with one possible improvement. Quite
+  often, when I'm in the middle of a session, I'd like to insert a
+  comment in the transcript, preferably with a distinctive type face
+  like those provided by "font lock".  Is there an easy way to do this
+  that I'm just missing?
+
+  (RMH's thought): 
+
+  I'm writing to you rather than directly to daven@stille.llnl.gov
+  (David Nelson) because I'm not sure how to tell him to do the
+  following fix in .emacs or S-site.el because of the local variable
+  issue or if it even is the right fix.
+
+  I think the permanent answer should be for you to add the lines
+
+  (make-local-variable 'comment-start)
+  (setq comment-start "#")
+  (make-local-variable 'comment-start-skip)
+  (setq comment-start-skip "#+ *")
+
+  copied from S-mode.el to the files S-trans.el and S-inf.el (4.8
+  notation).  But when I tried it out with M-x eval-expression in the
+  *S* buffer it didn't have the effect I anticipated.
+
+  I can't figure out the intent or meaning of the line
+   ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; S-mode msg
+  from S-inf.el and S-trans.el
+
+* (MM) ESS  (4.9-b7):  .Rhistory  seems not to be written anymore
+  And it's pretty weird.  Need to fix (AJR).
+
+
+* (KH) 
+  Kurt> * Re LISPDIR and INFODIR.  It might be something nice to
+  Kurt> check for the
+  Kurt> existence of these directories before trying to install into
+  Kurt> them.
+
+
+* (KH, 010897) Can we combine the inferior-ess font-lock-patterns for prompt
+  and input into one regexp?  I.e., use
+
+	("^\\([a-zA-Z0-9 ]*[>+]\\)\\(.*$\\)"
+         (1 font-lock-keyword-face)                ; prompt
+         (2 font-lock-variable-name-face keep t))  ; input
+
+
+* (KH, 010897) Permissions of ESS.texi and Makefile should be 644.
+
+* (KH, 010897) ess-dump-filename-template should have a
+  process-specific extension.
+
+* (KH, 010897) Perhaps one could have an option to install the Info
+  files gzipped (as is default for e.g. Debian GNU/Linux).
+
+
+* (RMH bad behavior)
+  I loaded ess-site from *shell* in directory ~/
+  Then I M-x S from that buffer.  It asked me about starting S in ~/
+  The with in *shell* I  cd /disk05/rmh and M-x S from *shell* again.
+  I think it should have attempted to start S from /disk05/rmh, but instead it
+  again  asked me about starting S in ~/
+
+* (AJR) Need to make ess-mode a derived mode, on top of a standard
+  editing mode.  i.e. have an s-mode, so 
+
+       (ess-mode 's-mode)
+
+  will set it up correctly, and
+
+       (ess-mode 'lisp-mode)
+
+  will do the same for XLS.
+
+* (AJR/RMH) make sure that font-lock stuff is properly set. (look into 
+  file order, for example).
+
+* (AJR/RMH/KH):  rename ess-proc-prefix and ess-version-running to:
+  ess-language
+  ess-dialect
+  (ess-dialect-version?)
+
+    Kurt>>> PS.  We should decide on a scheme for languages (S, XLS, ...)
+    Kurt>>> and what we call ``dialects'' (for S: S3, S4, S+, ..., R).
+    Kurt>>> This would allow us to have a general mechanism for dealing
+    Kurt>>> with the above, such as
+    Kurt>>> 
+
+* (AJR) Kurt> * When first starting R and then XLS, we have
+
+  Kurt> ess-history-file's value is ".Rhistory" Local in
+  Kurt> buffer *R*; global value is ".XLShistory"
+
+  Kurt> Why is there a non-nil global value?
+
+  > Because of the nature of buffer-local variables.  It doesn't really
+  > matter, since I'm ALWAYS ignoring the global value (at least that is
+  > my intent).
+
+* Kurt> * For R(), there should be a way to specify command line
+  Kurt> options (in
+  Kurt> particular "-v <something>").  I know this can be done by
+  Kurt> setting inferior-R-args (should perhaps be
+  Kurt> inferior-R-startup-args?, in analogy to
+  Kurt> inferior-R-startup-file), but this is not easily
+  Kurt> user-settable (essd-r.el should contain
+      
+  Kurt> (defvar inferior-R-args nil
+  Kurt> "*Arguments to be passed to R on startup.")
+      
+      Kurt> so that users can do with M-x set-variable), but I still
+      Kurt> like the idea of having C-u M-x R ask for the args.  The
+      Kurt> problem is then that the fun inferior-ess() needs a second
+      Kurt> argument (in addition to the process number) to be passed on
+      Kurt> ...
+
+* In general, make-comint allows for two things.  A process-specific
+  startup file (e.g., ~/.emacs-R) with commands to be sent to the
+  inferior process on startup, and the passing of command line
+  options.  In general, both are needed.  Nothing language specific
+  here.  The essd* files could set these two variables as wanted.
+
+  On the other hand ... perhaps we cannot make these buffer-local
+  because the may be needed when the process is cranked up, and the
+  buffer does not exist yet.  Hmm ... need to check.
+
+* (MM) Date: Fri, 22 Aug 1997 09:11:25 +0200
+
+  >>>>> "Kurt" == Kurt Hornik <hornik@ci.tuwien.ac.at> writes:
+
+    >> * Questions: 1. I don't understand why ess-customize-alist is not
+    >> buffer-local (This definition is from ess-vars.el.): (defvar
+    >> ess-customize-alist nil "Variable settings to use for proper
+    >> behavior.  Not buffer local!")  ;;(make-variable-buffer-local
+    >> 'ess-customize-alist) ;;(setq-default ess-customize-alist nil)
+
+    Kurt> Personally, I think that most of the (make-variable-buffer-local
+    Kurt> ...)  and (setq-default ...) will have to be replaced eventually
+    Kurt> by making the variables local when needed and passing them not in
+    Kurt> the global environment but rather as explicit arguments to the
+    Kurt> caller functions.
+
+    Kurt> E.g.,
+
+    Kurt> 	(ess-start-process NAME BUF FILE ARGS ALIST)
+
+    This is cleaner from a programming point of view,
+    however is n't  this much less CPU efficient ??
+
+    >> 3. Should ess-proc-prefix be renamed to ess-language?  I glanced at
+    >> the result of 'grep ess-proc-prefix *.el' and don't immediately see
+    >> a problem.
+
+    Kurt> Yes, good idea.  Could we then have
+
+    Kurt> 	ess-language ess-dialect
+
+    Yes, this looks like the thing to aim at !!
+    Together with what Kurt wrote in the last e-mail's PS:
+
+    Kurt>>> PS.  We should decide on a scheme for languages (S, XLS, ...)
+    Kurt>>> and what we call ``dialects'' (for S: S3, S4, S+, ..., R).
+    Kurt>>> This would allow us to have a general mechanism for dealing
+    Kurt>>> with the above, such as
+    Kurt>>> 
+    Kurt>>> * In the caller function (M-x S, M-x R, ...) set language and
+    Kurt>>> dialect.
+    Kurt>>> 
+    Kurt>>> * Then, we don't explicitly have to assign all variables which
+    Kurt>>> should be local (such as font-lock-keywords) anyway, but could
+    Kurt>>> figure them out by
+    Kurt>>> 
+    Kurt>>> looking for <language>-font-lock-keywords looking for
+    Kurt>>> <language>-<dialect>-font-lock-keywords
+    Kurt>>> 
+    Kurt>>> Hooks could be organized similarly
+    Kurt>>> ... (ess-inf-S-S4-mode-hook?)
+
+
+* (RMH) 
+  > The "@afourpaper" option in the Ess.texi preamble is also, in my mind,
+  > a site-specific option that should be set in the Makefile.  It does
+  > not belong in the *.texi file itself.  I assume there must be some
+  > simple way to either get it from the unix environment (or by explicit
+  > mention in the Makefile) and then send it on to makinfo by doing
+  > something to the lines:
+  > # program to convert .texi{nfo} to .info
+  > MAKEINFO = makeinfo
+
+* (KH, Thu, 21 Aug 1997 23:02:08 +0200) 
+
+  >>>>> Richard M Heiberger writes:
+
+  > * is there a (good) reason inferior-ess mode is not called ess-inf
+  > mode?
+  
+  Historical, maybe.  Also, e.g. lisp stuff has a `lisp-mode' for editing
+  and an `inferior-lisp-mode' for interacting with an inferior process.
+  
+  > * why are user variables set in ess-vars?  Shouldn't they be set in
+  > ess-site?
+  
+  I think that all vars should be defined in ess-vars, using defvar.
+  
+  > * I have made several proposals about font-lock.
+  
+  > ...
+
+  Re font-lock, let's just be careful about one thing.  `ess-mode',
+  `ess-inf-mode' and `ess-trans-mode' should be GENERIC modes, meant
+  to also work with non-{R,S} packages.  Hence, the naming should
+  reflect this.  It might be a good idea to have (in ess-vars.el, for
+  example)
+
+	(defvar S-font-lock-keywords
+	 '(( ... )))
+
+  for the keywords specific to the S language, and then maybe even
+  dialect add-ons ...
+
+  The distinction is not yet worked out for `ess-mode', but should be
+  more or less clear for ess-inf.
+
+	(defvar inferior-ess-font-lock-input ...)
+
+  is fine because this is a generic variable.
+
+	(defvar inferior-ess-font-lock-keywords ...)
+
+  is really only for S ...
+
+  PS.  We should decide on a scheme for languages (S, XLS, ...) and
+  what we call ``dialects'' (for S: S3, S4, S+, ..., R).  This would
+  allow us to have a general mechanism for dealing with the above,
+  such as
+
+  * In the caller function (M-x S, M-x R, ...) set language and dialect.
+
+  * Then, we don't explicitly have to assign all variables which should be
+    local (such as font-lock-keywords) anyway, but could figure them out by
+
+	looking for <language>-font-lock-keywords
+	looking for <language>-<dialect>-font-lock-keywords
+
+    Hooks could be organized similarly ... (ess-inf-S-S4-mode-hook?)
+
+* (MM Thu, 7 Aug 1997 15:13:01 +0200)
+  Start Emacs  
+
+  M-x R
+
+  M-x S
+
+  C-c C-v ls	[Help on 'ls']
+  C-x o		[go to *help(ls)* buffer]
+  sS		[move to the SEE ALSO section]
+  C-n C-n		[move down 2 lines;  point is now on the word 'attach']
+  h <RET>		[Call help from within help - mode;
+		 Default is 'attach' since we are pointing at it !!]
+	
+	[now in  *help(attach)*  buffer]
+
+  C-x b *R*	[change to  *R* buffer]
+  C-c C-v	ls	[call help('ls') in R (not S)
+
+		 -- you wrongly get the already existing
+		 *help(ls)* buffer with help on S-plus		[[ buglet ]]
+		]
+
+  C-v C-v lm	[now get  R - help on 'lm']
+  C-x o		[go to *help(ls)* buffer]
+  ss		[move to the SEE ALSO section]
+  C-n C-n		[move down 2 lines;  point is now on the word 'anova']
+  h		[Call help from within help - mode;
+		 No Default is given !!]
+  anova		[type the name of the object; no NAME completion !!!]
+
+  --> Buffer *help(anova)* created with content			[[ bug ]]
+
+  ------------------------------------------------------------------------
+  Error in help("anova", pager = "cat", window = F) : unused argument
+  to function
+  ------------------------------------------------------------------------
+
+  I.e., what happens is that 'h' in a *help(..)* buffer does NOT 'know'
+      to which ESS process it belongs...
+
+      ((which is funny, since 'l' (DOES know))
+
+* (RMH 31 Jul 1997 07:22:10 -0400 or earlier)
+
+
+
+  * what it doesn't do 1. The effect of the second line is to prevent
+  * font-lock information from happening on input lines.  The prompt
+  * is highlighted, the rest of the line is not.  The effect is to
+  * cancel the usefulness of syntax highlighting on user-typed
+  * commands.  Syntax marking is only in effect when the system types
+  * a function back to us.
+
+  2. I can't figure out what the ess-mode msg line is doing.
+     ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
+
+  3. comments (beginning with #) are syntactically ignored by
+  highlighting.  In ess-mode, comments are not picked up with this
+  table (actually ess-mode-font-lock-keywords).  They are picked up by
+  ess-mode-syntax-table on line 733 of ess-vars.el.
+
+  4. what are the < > characters doing in this line:
+   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
+    . font-lock-type-face) ; keywords
+
+
+  * open questions 
+
+  1. I think I want ess-mode-font-lock-keywords to be effective in
+  inferior-ess and in ess-transcript.  That means to the user, the <-
+  and function and T and F will be highlighted as commands are typed
+  in.
+
+  2. That means to the ess-mode designer that the line
+   ("^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
+    (1 font-lock-variable-name-face keep t)) ; input
+  is deleted from inferior-ess-font-lock-keywords.
+
+  3. Further it means that inferior-ess-font-lock-keywords should be
+  defined by adding additional definitions to
+  ess-mode-font-lock-keywords.
+
+
+  * harder questions
+
+  1. these keywords are hardwired.  They should probably be put into
+  the *-customize-alist.  In particular, S4 uses different keywords
+  for errors (problems) and so forth.  It also uses different keywords
+  for the Help file (__Help instead of .Help).  These are functional
+  differences, not just cosmetic differences where the font would be
+  wrong.  See the comments in essd-s4.el (based on my original s4.el).
+  (just noticed, the current essd-s4.el has two ending pages.)  It is
+  easy to make ess-mode work for S4 by overriding all the differences
+  (which is how s4.el works).  It is harder to do it cleanly so the
+  same emacs session can be used for S4 and S3.  Lots of currently
+  hardwired variables need to be moved to the *-customize-alist first.
+  xlispstat is quite differently structured, so I am sure that the
+  keywords and highlighting here will be either irrelevant or harmful
+  if applied directly.  customization is needed for that generality as
+  well.
+
+  * comments
+
+  I'm confused?  I've always gotten comment highlighting in
+  inferior-ess/S-mode.  Or do you mean that it's not done in the right
+  place?
+
+  correct, it is not done where you think it is done (right place or
+  not).  It is done by ess-mode-syntax-table for inferior and
+  transcript mode.  It is not done at all for ess-mode.  The font-lock
+  settings seems to be irrelevant.
+
+  * logic
+    Richard> 4. what are the < > characters doing in this line:
+    Richard>    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
+    Richard>     . font-lock-type-face) ; keywords
+
+  using the typeface for the inequalities, for boolean statements/tests.
+
+  Not so.  The < > do not appear in font-lock-type-face.
+
+  * Hmm... I think that was the font that was to be used for the prompt. 
+
+  Not so.  The previous line is used for the prompt.  This line seems
+  to be used to suppress font-lock control for all characters
+  following the prompt.  Note that the (1 ...) is in the position
+  normally taken by the "." .  I assume the keep makes it stay that
+  way for the rest of the line.  I haven't bothered to read font.el to
+  figure this out.
+
+
+  * *Buffer List*
+  .   text.st	        0  ESS Transcript /disk05/rmh/text.st
+      test.r	        0  ESS[R]	/disk05/rmh/test.r
+      test.s	        0  ESS[S]	/disk05/rmh/test.s
+   *  *S4*	      236  Inf-ESS	
+
+   Note that the *.r and *.s files include the [R] and [S].  The
+   inferior processes do not include the ess-version-running, I wish
+   they would.  The corresponding modelines are
+
+   (ESS Transcript [] Font)
+   (ESS[R] [none] Font)
+   (ESS[S] [none] Font)
+   (Inf-ESS [S4]:  run Font)
+
+   I don't know the original intent of the [] and [none], but I would
+   love to see the name of the buffer to which ^C^N is sending stuff.
+
+
+   * ^C^N goes to the wrong inferior process.
+
+   I opened test.r in the same directory as *R* and sent a line.  It
+   went to the *S* buffer in a different directory and running the
+   wrong program.  There needs to be a way for the system to ask me
+   which process to use.  Also, it's default guessing system should
+   have guessed *R* based on the file name test.r.
+
+
+
+   * hooks
+
+   in ess-vars.el, line 317 and following, some of the hooks are
+   initialized to '() and others to nil.  Is there a difference?
+
+
+   * ess-source-modes in ess-vars.el line 382
+   Is this obsolete now that auto-mode-alist has the suffix information?
+
+
+* (AJR, via MM, RMH, DB): distinguish between files of dumped objects
+  and files of loading objects.
+
