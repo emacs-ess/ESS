@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/03 14:03:45 $
-;; Version: $Revision: 1.26 $
-;; RCS: $Id: ess.el,v 1.26 1997/07/03 14:03:45 rossini Exp $
+;; Modified: $Date: 1997/07/03 14:10:59 $
+;; Version: $Revision: 1.27 $
+;; RCS: $Id: ess.el,v 1.27 1997/07/03 14:10:59 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,10 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.27  1997/07/03 14:10:59  rossini
+;; ess-customize-alist should NOT be buffer-local (only set variables
+;; once or twice...).
+;;
 ;; Revision 1.26  1997/07/03 14:03:45  rossini
 ;; ess-set-vars: setq -> setq-default
 ;;
@@ -1037,8 +1041,8 @@ browse-url to find the location")
 (defvar ess-customize-alist nil
   "Variable settings to use for proper behavior.")
 
-(make-variable-buffer-local 'ess-customize-alist)
-(setq-default ess-customize-alist nil)
+;;(make-variable-buffer-local 'ess-customize-alist)
+;;(setq-default ess-customize-alist nil)
 
 (defun ess-set-vars (var-alist &optional buf) 
   "Set language variables from alist, in buffer `buf', if desired.
@@ -1046,7 +1050,7 @@ This is SO UGLY.  But it'll work for now...
 the basic idea: (setq ---  (cdr (assq --- var-alist)))."
 
   (if buf (set-buffer buf))
-  (setq-default ess-customize-alist var-alist)
+  ;;(setq-default ess-customize-alist var-alist)
   (setq-default ess-proc-prefix              (cdr (assq ess-proc-prefix              var-alist)))
   (setq-default ess-version-running          (cdr (assq ess-version-running          var-alist)))
   (setq-default inferior-ess-program         (cdr (assq inferior-ess-program         var-alist)))
