@@ -1,5 +1,7 @@
-Annoucing the release of ESS-5.2 (5.1.x) (Emacs Speaks Statistics).
------------------------------------------------------------
+-*- mode: text; mode: view-minor -*-
+
+Annoucing the release of ESS-5.1.2 (Emacs Speaks Statistics).
+-------------------------------------------------------------
 
 ESS is an Emacs package which provides a standard interface between
 statistical programs and statistical processes.  It is intended to
@@ -120,10 +122,10 @@ You can download the current version of the README there, as well.
 
 The HTML version of the documentation can be found at:
 
-	http://stat.ethz.ch/ESS/ (BROKEN!)
+	http://stat.ethz.ch/ESS/
 
-The most recent developers release of ESS can be obtained via anonymous CVS by...
-(NEED TO ADD INFORMATION!)
+The most recent developers release of ESS can be obtained via
+anonymous CVS by...  (NEED TO ADD INFORMATION!)
 
 5. THE ESS MAILING LIST
 --------------------------

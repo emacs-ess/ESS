@@ -1,16 +1,16 @@
 -*- mode: text; mode: view-minor -*-
 
-($Revision: 5.4 $)
+($Revision: 5.5 $)
 
-Emacs Speaks Statistics (ESS), version 5.1.x
-------------------------------------------
+Emacs Speaks Statistics (ESS), version 5.1.2
+--------------------------------------------
 
-This is the README file for the distribution of ESS version 5.1.x, the
+This is the README file for the distribution of ESS version 5.1.2, the
 alpha/beta series we are using on the way to producing 5.2 (the next
 stable distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported
 include: S dialects (S 3/4, S-PLUS 3.x, and R), LispStat dialects
-(XLispStat, ViSta), and SAS.  Stata and SPSS dialect (SPSS, Fiasco)
+(XLispStat, ViSta), and SAS.  Stata and SPSS dialect (SPSS, PSPP)
 support is being examined for possible future implementation (a
 preliminary Stata mode is distributed).
 
