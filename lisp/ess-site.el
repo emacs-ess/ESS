@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1998/11/10 17:45:11 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: ess-site.el,v 5.6 1998/11/10 17:45:11 maechler Exp $
+;; Modified: $Date: 1998/11/13 17:47:12 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: ess-site.el,v 5.7 1998/11/13 17:47:12 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -106,6 +106,7 @@
 	(append
 	 '(("\\.sp\\'"    . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
 	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S
+	   ("\\.ssc\\'"   . S-mode) ;; Splus 4.x script files.
 	   ("\\.[rR]\\'"  . R-mode)
 	   ("R.*/src/library/[A-Za-z]+/funs/[A-Za-z]" . R-mode); R <= 0.50
 	   ("R.*/src/library/[A-Za-z]+/R/[A-Za-z]"    . R-mode); R >= 0.60
