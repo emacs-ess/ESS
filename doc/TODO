@@ -1,6 +1,6 @@
 	-*- indented-text -*-
 
-$Revision: 4.9 $
+$Revision: 4.10 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -871,7 +871,7 @@ NOTE: Not all of these are clean OR are even consistent.
     and not even that, since that should be the result of C-c C-q, so
     that we get a nice, uniform means of exiting.
 
-  (RS)  I don't believe the sas-log-mode suggestions were ever implemented.
+  (RS1) I don't believe the sas-log-mode suggestions were ever implemented.
 	In fact, sas-log-mode is not a default option anymore since there
 	are so many different applications that create .log files.  
 	Instead, a few changes were made to sas-mode based on requests for syntax
@@ -887,14 +887,27 @@ NOTE: Not all of these are clean OR are even consistent.
 	Also, the font-lock code was re-written to properly highlight either 
 	a .sas or a .log file.  See ess-sas-run-make-regexp below.
 
+  (RS2) Rich re-did sas-log-mode to use the font-locking from ESS[SAS] and
+        it seems to be working.  The only caveat is that I found that
+        fast-lock is very slow for big .logs and I switched to lazy-lock
+        and it is much faster, however, I have problems toggling; usually,
+        after I turn it on, I can't turn it off; but, that's not so bad
+        with lazy-lock.  Also, a new function creates transcript from 
+        your .log, ess-sas-transcript
 
 * (KH)  Font-lock needs to be more intelligent about recognizing
   reserved words in non-reserved contexts (such as in "strings").
-  (RS)  If this was a SAS problem, then problem has been fixed.
+  (RS1) If this was a SAS problem, then problem has been fixed.
 	To turn on the new functionality,
 	(setq ess-sas-run-make-regexp nil)
 
+  (RS2) This is now the default and most known issues have been addressed;
+	even hanging then statements!
+
 * (AJR) SAS indenting needs to be fixed.
+
+  (RS)  I don't know if this was fixed, but I haven't had any problems
+        with indenting recently.
 
 * (AJR) SAS fontlocking of comments needs to be fixed.
   (RS)  I believe this is done.  We made a few changes, but the biggest
@@ -959,10 +972,9 @@ NOTE: Not all of these are clean OR are even consistent.
      whole line as normal code instead of comment. 
   3) Typing a '* in a comment-area fontifies the rest of the line as
      string. 
-  (RS) Fixed.  Although, you may still have troubling editing comments
-       due to the way that font-lock works.  But, the next time you
-       edit the file, it will be correct.
-       See ess-sas-run-make-regexp above.
+  (RS) Fixed for /* */ style comments which are now handled by grammar
+       only.  * ; and %* ; are still broken since they can't be
+       specified by grammar.
 
 * (AJR) 
     Richard> I think of S-transcript-mode as identical to
@@ -1068,7 +1080,7 @@ NOTE: Not all of these are clean OR are even consistent.
    "\C-cd" 'sas-get-dataset)			use
    "\C-c\C-c" 'switch-to-sas-process-buffer)	^C^Z or ^C^Y
 
-  (RS) Can't comment on the S aspects, bug you can now browse/edit a permanent
+  (RS) Can't comment on the S aspects, but you can now browse/edit a permanent
        SAS dataset (provided the library definition appears in autoexec.sas)
        with F9.
 
