@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: essd-xls.el,v 5.5 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/10/17 18:35:55 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: essd-xls.el,v 5.6 2000/10/17 18:35:55 rossini Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -62,8 +62,8 @@
     (inferior-ess-help-command     . "(help '%s)\n"      )
     (inferior-ess-objects-command  . "(variables)\n"     )
     (inferior-ess-exit-command     . "(exit)\n"          )
-    (inferior-ess-start-file       . nil)
-    (inferior-ess-start-args       . ""))
+    ;;(inferior-ess-start-args       . ""))
+    (inferior-ess-start-file       . nil))
   "Variables to customize for XLS.")
 
 ;;; The functions of interest (mode, inferior mode)
