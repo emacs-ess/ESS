@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/04/05 21:27:18 $
-;; Version: $Revision: 5.23 $
-;; RCS: $Id: ess-site.el,v 5.23 1999/04/05 21:27:18 rossini Exp $
+;; Modified: $Date: 1999/04/05 21:28:33 $
+;; Version: $Revision: 5.24 $
+;; RCS: $Id: ess-site.el,v 5.24 1999/04/05 21:28:33 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -253,7 +253,6 @@
 ;;;
 ;;; AS OF 5.1.8, NO MORE CONDITIONALS ARE NEEDED!
 ;;;
-;;; On a PC, the default is R-microsoft.  Elsewhere the default is R-unix.
 ;;(if (or (equal window-system 'w32) (equal window-system 'win32))
 ;;    (fset 'R 'R-microsoft)		; MS-Windows 9x/NT
 ;;   nil) ;(fset 'R 'R-unix))		; Unix
