@@ -258,7 +258,7 @@ If this is a relative file name, it is relative to `ess-history-directory'."
 
 (defcustom ess-S-assign " <- "
   "*String to be used for left assignment in all S dialects.
- Currently only activated by \\[ess-add-MM-keys]."
+ Used by \\[ess-smart-underscore]."
   :group 'ess-S
   :type 'string)
 
