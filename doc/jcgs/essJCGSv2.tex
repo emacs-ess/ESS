@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/12 17:05:32 $ - $Revision: 1.163 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/12 17:21:04 $ - $Revision: 1.164 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -1009,39 +1009,43 @@ mouse for copy and paste operations across windows.
 
 \stexttt{iESS[SAS]} is a mode that allows text-based \stexttt{PROC} by
 \stexttt{PROC} interaction with an inferior buffer running an
-interactive \SAS\ session.  The \SAS\ session can be on either the
-same computer or a remote computer.  \stexttt{iESS[SAS]} mode works by
-sending the \stexttt{-stdio} command-line option to the \stexttt{sas}
-command.  As of this writing, \SAS\ supports the \stexttt{-stdio} option
-only on Unix machines.
+interactive \SAS\ session on either the local or 
+%.  The \SAS\ session can be on either the same computer or 
+a remote computer.  \stexttt{iESS[SAS]} mode works by
+redirecting standard input and output from \SAS\ to ESS.
+%sending the \stexttt{-stdio} command-line option to the \stexttt{sas}
+%command.  As of this writing, \SAS\ supports the \stexttt{-stdio} option
+%only on Unix machines.
+%The user highlights a region (normally a \stexttt{PROC \dots\ RUN;}
+%section) in the command file (\stexttt{myfile.sas} for convenience)
+%and sends it over to \SAS\ with mapped key commands.  The
+%\stexttt{*SAS:1.log*} and \stexttt{*SAS:1.lst*} buffers immediately
+%display the log and listing results from the commands.
+%Graphics commands can be sent to a file, in PostScript for example,
+%and viewed outside of this interaction. 
+This process is very efficient for slow dial-up network connections to
+a remote computer with \SAS\ installed.
 
-The user highlights a region (normally a \stexttt{PROC \dots\ RUN;}
-section) in the command file (\stexttt{myfile.sas} for convenience)
-and sends it over to \SAS\ with mapped key commands.  The
-\stexttt{*SAS:1.log*} and \stexttt{*SAS:1.lst*} buffers immediately
-display the log and listing results from the commands.
-Graphics commands can be sent to a file, in PostScript for example,
-and viewed outside of this interaction.  This process is very efficient
-for slow text-based telephone connections to a remote \SAS.
 
-\paragraph{\SAS---Interactive cooperation with the \SAS\ Display Manager.}
+%%%% AJR: WHY IS THIS SUBSTANTIALLY DIFFERENT THAN BATCH?  I KNOW ITS
+%%%% SLIGHTLY DIFFERENT, BUT SUBSTANTIALLY?
+%\paragraph{\SAS---Interactive cooperation with the \SAS\ Display Manager.}
+%The authors of ESS prefer the Emacs environment for editing and
+%managing input and output files, even on computer systems which run
+%the \SAS\ Display Manager environment.  In this situation, the user
+%designs the command file and highlights regions to be forwarded to
+%\SAS\ for processing.
 
-The authors of ESS prefer the Emacs environment for editing and
-managing input and output files, even on computer systems which run
-the \SAS\ Display Manager environment.  In this situation, the user
-designs the command file and highlights regions to be forwarded to
-\SAS\ for processing.
-
-This can be done by either:
-\begin{enumerate}
-\item copying and pasting the marked regions to the \SAS\ Editor window
-  and then pressing the \stexttt{RUN} key.  Highlighted sections of
-  the \SAS\ Listing window are brought back to Emacs to be read in the
-  \stexttt{ESSlst} mode editing environment.
-\item submitting the marked region for Batch File Processing (see the
-  next section) but using the mapped command keys to append to the log
-  and listing file instead of replacing them.
-\end{enumerate}
+%This can be done by either:
+%\begin{enumerate}
+%\item copying and pasting the marked regions to the \SAS\ Editor window
+%  and then pressing the \stexttt{RUN} key.  Highlighted sections of
+%  the \SAS\ Listing window are brought back to Emacs to be read in the
+%  \stexttt{ESSlst} mode editing environment.
+%\item submitting the marked region for Batch File Processing (see the
+%  next section) but using the mapped command keys to append to the log
+%  and listing file instead of replacing them.
+%\end{enumerate}
 
 \subsection{Batch File Processing.}
 \label{sec:batch-file}
