@@ -1,3 +1,8 @@
+2004-01-20  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* essl-s.el (ess-smart-underscore): Pressing _ twice inserts _
+	rather than the assignment operator.
+
 2004-01-19  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-cust.el (inferior-R-program-name): Customize.
