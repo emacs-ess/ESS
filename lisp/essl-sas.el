@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2000/02/14 14:15:02 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essl-sas.el,v 5.2 2000/02/14 14:15:02 rossini Exp $
+;; Modified: $Date: 2000/02/29 17:08:41 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essl-sas.el,v 5.3 2000/02/29 17:08:41 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -141,208 +141,140 @@ popup window when the SAS job is finished.")
 
 (if SAS-syntax-table
     nil
-(setq SAS-syntax-table (make-syntax-table))
+  (setq SAS-syntax-table (make-syntax-table))
 
-  (if (equal system-type 'windows-nt)
-      (modify-syntax-entry ?\\ "."  SAS-syntax-table)  ;; backslash is punctuation (used in MS file names)
-    (modify-syntax-entry ?\\ "\\" SAS-syntax-table)  ;; backslash is an escape character
-    )
-  (modify-syntax-entry ?+  "."  SAS-syntax-table)
-  (modify-syntax-entry ?-  "."  SAS-syntax-table)
-  (modify-syntax-entry ?=  "."  SAS-syntax-table)
-  (modify-syntax-entry ?%  "w"  SAS-syntax-table)
-  (modify-syntax-entry ?<  "."  SAS-syntax-table)
-  (modify-syntax-entry ?>  "."  SAS-syntax-table)
-  (modify-syntax-entry ?&  "w"  SAS-syntax-table)
-  (modify-syntax-entry ?|  "."  SAS-syntax-table)
-  (modify-syntax-entry ?\' "\"" SAS-syntax-table)
-  (modify-syntax-entry ?*  ". 23"  SAS-syntax-table) ; comment character
-  (modify-syntax-entry ?\; "."  SAS-syntax-table) 
-  (modify-syntax-entry ?_  "w"  SAS-syntax-table)  
-  (modify-syntax-entry ?<  "."  SAS-syntax-table)
-  (modify-syntax-entry ?>  "."  SAS-syntax-table)
-  (modify-syntax-entry ?/  ". 14"  SAS-syntax-table) ; comment character
-  (modify-syntax-entry ?.  "w"  SAS-syntax-table)
-)
+;; (if (equal system-type 'windows-nt)
+;;     ;; backslash is punctuation (used in MS file names)
+;;     (modify-syntax-entry ?\\ "."  SAS-syntax-table) 
+;;    ;; backslash is an escape character
+;;    (modify-syntax-entry ?\\ "\\" SAS-syntax-table))
+(modify-syntax-entry ?\\ "."  SAS-syntax-table)  ;; backslash is punctuation
+(modify-syntax-entry ?+  "."  SAS-syntax-table)
+(modify-syntax-entry ?-  "."  SAS-syntax-table)
+(modify-syntax-entry ?=  "."  SAS-syntax-table)
+(modify-syntax-entry ?%  "w"  SAS-syntax-table)
+(modify-syntax-entry ?<  "."  SAS-syntax-table)
+(modify-syntax-entry ?>  "."  SAS-syntax-table)
+(modify-syntax-entry ?&  "w"  SAS-syntax-table)
+(modify-syntax-entry ?|  "."  SAS-syntax-table)
+(modify-syntax-entry ?\' "\"" SAS-syntax-table)
+(modify-syntax-entry ?*  ". 23"  SAS-syntax-table) ; comment character
+(modify-syntax-entry ?\; "."  SAS-syntax-table) 
+(modify-syntax-entry ?_  "w"  SAS-syntax-table)  
+(modify-syntax-entry ?<  "."  SAS-syntax-table)
+(modify-syntax-entry ?>  "."  SAS-syntax-table)
+(modify-syntax-entry ?/  ". 14"  SAS-syntax-table) ; comment character
+(modify-syntax-entry ?.  "w"  SAS-syntax-table))
 
 (defvar SAS-mode-font-lock-keywords
   '(
-
-    ; SAS comments
-
+    ;; SAS comments
     ("^[ \t]*%?\\*.*;"		    . font-lock-comment-face)
     (";[ \t]*%?\\*.*;"		    . font-lock-comment-face)
     ("/\\*\\([^*/]\\)*\\*/"  0 font-lock-comment-face t)
-
-
-    ; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND
-
+    ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND
     ("\\<\\(data\\|run\\|%macro\\|%mend\\)\\>" 
-	. font-lock-reference-face)
-
+     . font-lock-reference-face)
     ("\\<proc[ \t]+[a-z][a-z_0-9]+"
-	. font-lock-reference-face)
-
-
-    ; SAS statements
-
+     . font-lock-reference-face)
+    ;; SAS statements
     ("\\<\\(abort\\|array\\|attrib\\|by\\|delete\\|display\\|dm\\)\\>"
-	. font-lock-keyword-face)
-
+     . font-lock-keyword-face)
     ("\\<%?do\\([ \t]+\\(over\\|%?until\\|%?while\\)\\)?\\>"
-	. font-lock-keyword-face)
-
+     . font-lock-keyword-face)
     ("\\<\\(drop\\|error\\|file\\|filename\\|footnote\\(10?\\|[2-9]\\)?\\)\\>"
-	. font-lock-keyword-face)
-
-	("\\<\\(format\\|%?go[ \t]*to\\|%?if\\|%?then\\|%?else\\)\\>"
-	. font-lock-keyword-face)
-
+     . font-lock-keyword-face)
+    ("\\<\\(format\\|%?go[ \t]*to\\|%?if\\|%?then\\|%?else\\)\\>"
+     . font-lock-keyword-face)
     ("\\<\\(infile\\|informat\\|%?input\\|keep\\|label\\)\\>"
-	. font-lock-keyword-face)
-
+     . font-lock-keyword-face)
     ("\\<\\(length\\|libname\\|link\\)\\>"
-	. font-lock-keyword-face)
-
+     . font-lock-keyword-face)
     ("\\<\\(merge\\|missing\\|modify\\|note\\|g?options\\|output\\)\\>"
-	. font-lock-keyword-face)
-
+     . font-lock-keyword-face)
     ("\\<\\(otherwise\\|%?put\\|rename\\|retain\\|select\\|when\\|set\\)\\>"
-	. font-lock-keyword-face)
-
+     . font-lock-keyword-face)
     ("\\<\\(skip\\|title\\(10?\\|[2-9]\\)?\\|where\\|window\\|update\\)\\>"
-	. font-lock-keyword-face)
-
-
-    ; SAS statements that must be followed by a semi-colon
-
+     . font-lock-keyword-face)
+    ;; SAS statements that must be followed by a semi-colon
     ("\\<\\(cards4?\\|%?end\\|endsas\\|list\\|lostcard\\|page\\|return\\|stop\\)[ \t]*;"
-	. font-lock-keyword-face)
-
-
-    ; SAS macro statements not handled above
-
+     . font-lock-keyword-face)
+    ;; SAS macro statements not handled above
     ("\\<\\(%global\\|%include\\|%local\\|%let\\|%sysexec\\)\\>"
-	. font-lock-keyword-face)
-
-
-	; SAS/GRAPH statements not handled above
-
+     . font-lock-keyword-face)
+    ;; SAS/GRAPH statements not handled above
     ("\\<\\(axis\\|legend\\|pattern\\|symbol\\)\\([1-9][0-9]?\\)?\\>"
-	. font-lock-keyword-face)
-
-
-	; SAS functions and SAS macro functions
-
+     . font-lock-keyword-face)
+    ;; SAS functions and SAS macro functions
     ("%[a-z_][a-z_0-9]*[ \t]*[(;]"
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(abs\\|arcos\\|arsin\\|atan\\|betainv\\|byte\\|ceil\\|cinv\\)[ \t]*("
-	. font-lock-function-name-face)
-
-	("\\<\\(collate\\|compress\\|cosh?\\|css\\|cv\\)[ \t]*("
-	. font-lock-function-name-face)
-
-	("\\<\\(\\(dacc\\|dep\\)\\(db\\|dbsl\\|sl\\|syd\\|tab\\)\\)[ \t]*("
-	. font-lock-function-name-face)
-
-	("\\<\\(date\\(jul\\|part\\|time\\)?\\|day\\|d?hms\\|dif\\)[ \t]*("
-	. font-lock-function-name-face)
-
-	("\\<\\(digamma\\|dim\\|erfc?\\|exp\\|finv\\)[ \t]*("
-	. font-lock-function-name-face)
-
-	("\\<\\(fip\\(namel?\\|state\\)\\|floor\\|fuzz\\|gaminv\\|gamma\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
+    ("\\<\\(collate\\|compress\\|cosh?\\|css\\|cv\\)[ \t]*("
+     . font-lock-function-name-face)
+    ("\\<\\(\\(dacc\\|dep\\)\\(db\\|dbsl\\|sl\\|syd\\|tab\\)\\)[ \t]*("
+     . font-lock-function-name-face)
+    ("\\<\\(date\\(jul\\|part\\|time\\)?\\|day\\|d?hms\\|dif\\)[ \t]*("
+     . font-lock-function-name-face)
+    ("\\<\\(digamma\\|dim\\|erfc?\\|exp\\|finv\\)[ \t]*("
+     . font-lock-function-name-face)
+    ("\\<\\(fip\\(namel?\\|state\\)\\|floor\\|fuzz\\|gaminv\\|gamma\\)[ \t]*("
+     . font-lock-function-name-face)
     ("\\<\\(hbound\\|hour\\|indexc?\\|input\\|int\\(ck\\|nx\\|rr\\)?\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(irr\\|juldate\\|kurtosis\\|lag\\|lbound\\|left\\|length\\)[ \t]*("
-	. font-lock-function-name-face)
-
-	("\\<\\(lgamma\\|log\\(10\\|2\\)?\\|max\\|mdy\\|mean\\|min\\|minute\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
+    ("\\<\\(lgamma\\|log\\(10\\|2\\)?\\|max\\|mdy\\|mean\\|min\\|minute\\)[ \t]*("
+     . font-lock-function-name-face)
     ("\\<\\(mod\\|month\\|mort\\|n\\|netpv\\|nmiss\\|normal\\|npv\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(prob\\(beta\\|bnml\\|chi\\|f\\|gam\\|hypr\\|it\\|negb\\|norm\\|t\\)\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(ordinal\\|poisson\\|put\\|qtr\\|range\\|rank\\|repeat\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(ran\\(bin\\|cau\\|exp\\|gam\\|nor\\|poi\\|tbl\\|tri\\|uni\\)\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(reverse\\|right\\|round\\|saving\\|scan\\|second\\|sign\\|sinh?\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(sqrt\\|std\\|stderr\\|st\\(fips\\|namel?\\)\\|substr\\|sum\\)[ \t]*("
-	. font-lock-function-name-face)
-
-	("\\<\\(symget\\|tanh?\\|time\\(part\\)?\\|tinv\\|today\\|translate\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
+    ("\\<\\(symget\\|tanh?\\|time\\(part\\)?\\|tinv\\|today\\|translate\\)[ \t]*("
+     . font-lock-function-name-face)
     ("\\<\\(trigamma\\|trim\\|trunc\\|uniform\\|upcase\\|uss\\|var\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(verify\\|weekday\\|year\\|yyq\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(zip\\(fips\\|namel?\\|state\\)\\)[ \t]*("
-	. font-lock-function-name-face)
-
-
-    ; SAS functions introduced in Technical Report P-222
-
+     . font-lock-function-name-face)
+    ;; SAS functions introduced in Technical Report P-222
     ("\\<\\(airy\\|band\\|b[lr]shift\\|bnot\\|bor\\|bxor\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\([cft]nonct\\|compbl\\|dairy\\|dequote\\|[ij]bessel\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(indexw\\|input[cn]\\|int\\(ck\\|nx\\)\\|lowcase\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(put[cn]\\|quote\\|resolve\\|soundex\\|sysprod\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(tranwrd\\|trimn\\)[ \t]*("
-	. font-lock-function-name-face)
-
-
-	; SCL functions that are known to work with SAS macro function %sysfunc
-
+     . font-lock-function-name-face)
+    ;; SCL functions that are known to work with SAS macro function %sysfunc
     ("\\<\\(%sysfunc\\|attr[cn]\\|cexist\\|close\\|dclose\\|dnum\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(dopen\\|dread\\|exist\\|fclose\\|fetchobs\\|fileexist\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(filename\\|finfo\\|fopen\\|fput\\|fwrite\\|getoption\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(getvar[cn]\\|libname\\|libref\\|open\\|optgetn\\|optsetn\\)[ \t]*("
-	. font-lock-function-name-face)
-
+     . font-lock-function-name-face)
     ("\\<\\(pathname\\|sysmsg\\|varfmt\\|varlabel\\|varnum\\|vartype\\)[ \t]*("
-	. font-lock-function-name-face)
-
-
-	; SAS PROC statements not handled above 
-
+     . font-lock-function-name-face)
+    ;; SAS PROC statements not handled above 
     ("\\<\\(change\\|class\\|exchange\\|exclude\\|freq\\|id\\|index\\)\\>"
-	. font-lock-keyword-face)
-	
+     . font-lock-keyword-face)
     ("\\<\\(model\\|plot\\|save\\|sum\\|tables?\\|var\\|weight\\|with\\)\\>"
-	. font-lock-keyword-face)
-	
-  )
+     . font-lock-keyword-face))
   "Font Lock regexs for SAS.")
 
 (defvar SAS-editing-alist
@@ -895,34 +827,31 @@ is automatically sets to t."
                     (if sas-error-notify 
                         ;;(save-window-excursion
                         (progn
-                        (set-buffer sbuf)
-                        (setq buf (set-sas-file-buffer "log" t t))
-                        (goto-char (point-min))
-                        (setq win (get-buffer-window buf))
-                        (save-window-excursion
-                          (if win
-                              (progn 
-                                (select-window win)
-                                (if (re-search-forward "^ERROR" nil t)
-                                    " (See .log file for errors)"
-                                  ""))
-                            (switch-to-buffer buf)
-                            (if (re-search-forward "^ERROR" nil t)
-                                " (See .log file for errors)"
-                              ""))))
-                    "")))
-    (set-buffer sbuf)
-    (goto-char (point-max))
-    (insert msg)
-    (bury-buffer (get-buffer sbuf))
-    ;;(if (and sas-notify-popup window-system)
-    ;;    (x-popup-dialog t
-    ;;		(list "SAS Menu" (cons msg  nil) )))
-    ;;(if (not (minibuffer-window-active-p)) (princ msg))
-    (princ msg)
-    )))
-
-
+			  (set-buffer sbuf)
+			  (setq buf (set-sas-file-buffer "log" t t))
+			  (goto-char (point-min))
+			  (setq win (get-buffer-window buf))
+			  (save-window-excursion
+			    (if win
+				(progn 
+				  (select-window win)
+				  (if (re-search-forward "^ERROR" nil t)
+				      " (See .log file for errors)"
+				    ""))
+			      (switch-to-buffer buf)
+			      (if (re-search-forward "^ERROR" nil t)
+				  " (See .log file for errors)"
+				""))))
+		      "")))
+      (set-buffer sbuf)
+      (goto-char (point-max))
+      (insert msg)
+      (bury-buffer (get-buffer sbuf))
+      ;;(if (and sas-notify-popup window-system)
+      ;;    (x-popup-dialog t
+      ;;		(list "SAS Menu" (cons msg  nil) )))
+      ;;(if (not (minibuffer-window-active-p)) (princ msg))
+      (princ msg))))
 
 ;; 5/2/94 Modified run-sas-on-region to separate log and output buffers.
 ;; 
