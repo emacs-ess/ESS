@@ -30,7 +30,7 @@
 2004-08-03  Stephen Eglen  <stephen@bushmills.inf.ed.ac.uk>
 
 	* ess-mode.el (ess-mode-menu): Change function name for the
-	default entry in "Start Process -> Other" submemnu from R to nil.
+	default entry in "Start Process -> Other" submenu from R to nil.
 	When it was set to R, this caused the R toolbar icon to not work
 	since this menu entry was being found rather than the real menu
 	entry for R.
@@ -131,7 +131,7 @@
 
 	* ess-toolbar.el: Add test at end to check for toolbar support.
 
-	* ess-mode.el (ess-mode-menu): Add Sqpe and S+6-exisiting to
+	* ess-mode.el (ess-mode-menu): Add Sqpe and S+6-existing to
 	"Start Process" menu but their active state is determined by
 	ess-microsoft-p and so will be greyed out unless on microsoft.
 	(SAS-menu): Simple wrapper to report error if SAS invoked on
