@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/15 17:18:42 $
-;; Version: $Revision: 1.72 $
-;; RCS: $Id: essa-sas.el,v 1.72 2002/01/15 17:18:42 rmh Exp $
+;; Modified: $Date: 2002/01/15 21:07:38 $
+;; Version: $Revision: 1.73 $
+;; RCS: $Id: essa-sas.el,v 1.73 2002/01/15 21:07:38 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -472,7 +472,9 @@ depends on the value of  `ess-sas-submit-method'"
   (save-buffer)
 
   ; if Local Variables are defined, a revert is necessary to update their values
-  (save-excursion (save-match-data 
+  (save-excursion 
+    (beginning-of-line -1)
+    (save-match-data 
 	(if (search-forward "End:" nil t) (revert-buffer t t))))
 
   (cond
