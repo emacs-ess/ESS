@@ -1,3 +1,56 @@
+Fri Nov 14 17:27:27 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: more comments.
+
+Fri Nov 14 16:59:05 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: added SAS fontlock, graphics.  R Help
+
+Fri Nov 14 13:49:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.XLispStat: fixed small typos.
+
+Fri Nov 14 11:24:05 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (DOCS): reordered variable.  Added info/dvi files. 
+
+Fri Nov 14 11:22:03 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.el: more comment work.
+
+	* ess.el: verified using lisp-mnt.el; standard package formatting.
+
+Fri Nov 14 11:06:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (clean): don't remove .dvi or .info* 
+
+	* Makefile (veryclean): new target, for removing what clean used
+	to remove
+
+Fri Nov 14 10:13:49 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: version to 5.0
+
+Fri Nov 14 10:13:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (VERSION): version to 5.0
+
+Fri Nov 14 10:13:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: version to 5.0
+
+Fri Nov 14 10:13:04 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-version): version to 5.0.
+
+Fri Nov 14 10:12:34 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.S: added notes for starting R with prefix arguments.
+
+Fri Nov 14 09:59:25 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: added @itemize markers.
+
 Thu Nov 13 21:45:27 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Release: 5.0-pre5
@@ -1126,6 +1179,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.34  1997/11/14 22:27:35  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.33  1997/11/14 02:46:16  rossini
 	* Removing *** empty log message ***
 	* Removing
