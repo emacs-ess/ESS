@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/02/12 23:48:08 $
-;; Version: $Revision: 5.82 $
-;; RCS: $Id: ess-inf.el,v 5.82 2004/02/12 23:48:08 rsparapa Exp $
+;; Modified: $Date: 2004/04/16 11:07:16 $
+;; Version: $Revision: 5.83 $
+;; RCS: $Id: ess-inf.el,v 5.83 2004/04/16 11:07:16 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -337,7 +337,7 @@ there is no process NAME)."
 	;; Get search list when needed
 	(setq ess-sp-change t)
 	(run-hooks 'ess-post-run-hook))
-      (switch-to-buffer (process-buffer (get-process proc-name))))))
+      (pop-to-buffer (process-buffer (get-process proc-name))))))
 
 (defun ess-process-sentinel (proc message)
   "Sentinel for use with ESS processes.
