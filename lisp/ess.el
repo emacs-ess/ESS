@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/17 18:37:14 $
-;; Version: $Revision: 1.37 $
-;; RCS: $Id: ess.el,v 1.37 1997/07/17 18:37:14 rossini Exp $
+;; Modified: $Date: 1997/07/17 18:40:30 $
+;; Version: $Revision: 1.38 $
+;; RCS: $Id: ess.el,v 1.38 1997/07/17 18:40:30 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.38  1997/07/17 18:40:30  rossini
+;; whoops.
+;;
 ;; Revision 1.37  1997/07/17 18:37:14  rossini
 ;; write to dribble.
 ;;
@@ -1104,9 +1107,9 @@ the basic idea: (setq ---  (cdr (assq --- var-alist)))."
   (setq inferior-ess-primary-prompt (cdr (assq 'inferior-ess-primary-prompt var-alist)))
   (setq ess-history-file (concat "." ess-proc-prefix "history"))
 
-  ( ess-write-to-dribble-buffer 
+  (ess-write-to-dribble-buffer 
     (format "(ess-set-vars): ess-proc-prefix=%s buf=%s \n"
-	    ess-proc-prefix buf))
+	    ess-proc-prefix buf)))
 
 
 (defun ess-set-vars-default (var-alist &optional buf) 
@@ -1128,9 +1131,9 @@ the basic idea: (setq ---  (cdr (assq --- var-alist)))."
   (setq-default	 inferior-ess-primary-prompt  (cdr (assq 'inferior-ess-primary-prompt  var-alist)))
   (setq-default  ess-history-file (concat "." ess-proc-prefix "history"))
 
-  ( ess-write-to-dribble-buffer 
+  (ess-write-to-dribble-buffer 
     (format "(ess-set-vars-default): ess-proc-prefix=%s, buf=%s \n"
-	   ess-proc-prefix buf))
+	   ess-proc-prefix buf)))
 
  ; Run load hook and provide package
 
