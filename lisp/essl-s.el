@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/03/31 15:12:19 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: essl-s.el,v 5.15 2000/03/31 15:12:19 maechler Exp $
+;; Modified: $Date: 2000/07/03 14:38:57 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: essl-s.el,v 5.16 2000/07/03 14:38:57 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -34,6 +34,7 @@
 
  ; Requires and autoloads
 
+(ess-message "[essl-s:] (def** ) only ...")
 
  ; Configuration variables
 

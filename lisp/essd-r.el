@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 5.18 $
-;; RCS: $Id: essd-r.el,v 5.18 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/07/03 14:38:57 $
+;; Version: $Revision: 5.19 $
+;; RCS: $Id: essd-r.el,v 5.19 2000/07/03 14:38:57 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -35,7 +35,10 @@
 
 ;;; Autoloads and Requires
 
+(ess-message "[essd-r:] (require 'essl-s)")
 (require 'essl-s)
+
+(ess-message "[essd-r:] (autoload ..) & (def** ..)")
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
@@ -134,10 +137,8 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
 To start the graphics window, you must explicitly use the `x11()' command.\n
 You must quit R with `q()' or you take the risk of not being able
 to shut down the computer cleanly.\n\n")
-	(goto-char (point-max)))))
-
-
-
+	(goto-char (point-max))))
+);; (R)
 
 
 (autoload 'ess-transcript-mode "ess-trns"

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/06/07 22:20:20 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: ess-comp.el,v 5.3 2000/06/07 22:20:20 rossini Exp $
+;; Modified: $Date: 2000/07/03 14:38:57 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: ess-comp.el,v 5.4 2000/07/03 14:38:57 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -42,18 +42,27 @@
 
 ;;(if (not (string-match "XEmacs\\|Lucid" emacs-version))
 ;;    (setq byte-compile-warnings '(free-vars
-;;				  callargs 
+;;				  callargs
 ;;				  unresolved
 ;;				  redefine
 ;;				  obsolete))
 ;;  (setq byte-optimize t))
 
+(setq ess-show-load-messages t); defvar'ed to nil in ./ess-site.el
+(defun ess-message (msg)
+  (if ess-show-load-messages (message msg))
+    "Shortcut for \\[message] only if `ess-show-load-messages' is non-nil.")
+
 ;; These are required by every other file.
 
-(require 'ess-emcs)  ; needed for following files.
-(require 'ess-vars)    ; set up the variables
-(require 'ess)         ; configure
-(require 'ess-site)    ; last, to overload previous settings.
+;; needed for subsequent files:
+(ess-message "loading 'ess-emcs ..")    (require 'ess-emcs)
+
+;;-- FIXME : why ess-vars and not ess-cust ???
+(ess-message "loading 'ess-vars ..")    (require 'ess-vars) ; set up variables
+
+(ess-message "loading 'ess ..")		(require 'ess)      ; configure
+(ess-message "loading 'ess-site ..")	(require 'ess-site) ; last, to overload previous settings.
 
  ; Local variables section
 

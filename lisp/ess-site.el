@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/07/03 10:27:41 $
-;; Version: $Revision: 5.58 $
-;; RCS: $Id: ess-site.el,v 5.58 2000/07/03 10:27:41 maechler Exp $
+;; Modified: $Date: 2000/07/03 14:38:57 $
+;; Version: $Revision: 5.59 $
+;; RCS: $Id: ess-site.el,v 5.59 2000/07/03 14:38:57 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -154,9 +154,21 @@ The extension, in a file name, is the part that follows the last `.'."
 
   (add-to-list 'load-path ess-lisp-directory)
 
+  ;; Need these as early as here [also in ./ess-comp.el] :
+  (if (not (boundp 'ess-show-load-messages))
+      (defvar ess-show-load-messages nil
+	"If t, show many more \"loading ..\" messages."))
+  (if (not (fboundp 'ess-message))
+      (defun ess-message (msg)
+	(if ess-show-load-messages (message msg))
+	"Shortcut for \\[message] only if `ess-show-load-messages' is non-nil.")
+    )
 ); eval-*-compile
 
+;; DEBUG:
+(setq ess-show-load-messages t); instead of nil above
 
+(ess-message "[ess-site:] after (eval-and-compile ..)")
 ;; load code to figure out what version/strain of Emacs we are running
 ;; must come *AFTER* load-path is set !
 
@@ -290,16 +302,29 @@ The extension, in a file name, is the part that follows the last `.'."
 (if (< max-specpdl-size 700)     ;;; ESS won't load at the default of 600
     (setq max-specpdl-size 700))
 
+(ess-message "[ess-site:] Before requiring dialect 'essd-** ....")
+
+(ess-message "[ess-site:] require 'essd-r ...")
 (require 'essd-r)    ;; S and common variants
+(ess-message "[ess-site:] require 'essd-s4 ...")
 (require 'essd-s4)
+(ess-message "[ess-site:] require 'essd-sp3 ...")
 (require 'essd-sp3)
+(ess-message "[ess-site:] require 'essd-sp5 ...")
 (require 'essd-sp5)
+(ess-message "[ess-site:] require 'essd-sta ...")
 (require 'essd-sta)  ;; for Stata.
+(ess-message "[ess-site:] require 'essd-xls ...")
 (require 'essd-xls)  ;; XLispStat and variants
+(ess-message "[ess-site:] require 'essd-vst ...")
 (require 'essd-vst)
+(ess-message "[ess-site:] require 'essd-arc ...")
 (require 'essd-arc)
+(ess-message "[ess-site:] require 'essd-sas ...")
 (require 'essd-sas)
+(ess-message "[ess-site:] require 'essd-els ...")
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
+(ess-message "[ess-site:] require 'essd-omg ...")
 (require 'essd-omg)  ;; for omegahat
 
 (if (or (equal window-system 'w32) (equal window-system 'win32))
