@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/01 18:11:09 $
-;; Version: $Revision: 1.49 $
-;; RCS: $Id: ess-inf.el,v 1.49 1997/09/01 18:11:09 rossini Exp $
+;; Modified: $Date: 1997/09/01 19:48:59 $
+;; Version: $Revision: 1.50 $
+;; RCS: $Id: ess-inf.el,v 1.50 1997/09/01 19:48:59 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -95,9 +95,10 @@ transcript file to use. If there is no transcript file, the buffer
 name will be like *S* or *S2*.
 
 Takes the program name from the variable inferior-ess-program.
-The S program name is used to make a symbol name such as `inferior-ess-args'.
-If that symbol is a variable its value is used as a string of arguments
-when invoking S.
+An initialization file (dumped into the process) is specified by
+`inferior-ess-start-file', and `inferior-ess-start-args' is used to
+accompany the call for inferior-ess-program.
+
 \(Type \\[describe-mode] in the process buffer for a list of commands.)"
 
   ;; With prefix arg N: switch to process N if it is running, if not,
