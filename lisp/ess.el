@@ -1,19 +1,17 @@
-;;; -*- Mode: Emacs-Lisp -*- 
-;;; ess.el --- A package for running Statistical Software within Emacs 
-;;; (Emacs Speaks Statistics).
+;;; ess.el --- Emacs Speaks Statistics: statistical programming within Emacs 
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1996--1997 Rossini, Heiberger, Hornik, and Maechler.
 
-;;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
-;;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-;;;                       Martin Maechler  <maechler@stat.math.ethz.ch>
-;;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
-;;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;;; Created: October 14, 1991
-;;; Version: $Id: ess.el,v 1.67 1997/11/14 16:19:06 rossini Exp $
-;;; Keywords: statistical support
-;;; Summary: general functions for ESS
+;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
+;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;;                       Martin Maechler  <maechler@stat.math.ethz.ch>
+;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
+;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Created: October 14, 1991
+;; Version: $Id: ess.el,v 1.68 1997/11/14 16:22:03 rossini Exp $
+;; Keywords: statistical support
+;; Summary: general functions for ESS
 
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. M. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
