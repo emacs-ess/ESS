@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/21 21:20:44 $
-;; Version: $Revision: 1.68 $
-;; RCS: $Id: ess-inf.el,v 1.68 1997/10/21 21:20:44 rossini Exp $
+;; Modified: $Date: 1997/10/22 17:47:29 $
+;; Version: $Revision: 1.69 $
+;; RCS: $Id: ess-inf.el,v 1.69 1997/10/22 17:47:29 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -698,9 +698,61 @@ Guarantees that the value of .Last.value will be preserved."
 	(set-process-filter sprocess oldpf)
 	(set-marker (process-mark sprocess) oldpm)))))
 
-;;; RDB 28/8/92 added optional arg eob
+(defun ess-replace-in-string (str regexp newtext &optional literal)
+  "Replaces all matches in STR for REGEXP with NEWTEXT string.
+Optional LITERAL non-nil means do a literal replacement.
+Otherwise treat \\ in NEWTEXT string as special:
+  \\& means substitute original matched text,
+  \\N means substitute match for \(...\) number N,
+  \\\\ means insert one \\."
+  (if (not (stringp str))
+      (error "(replace-in-string): First argument must be a string: %s" str))
+  (if (stringp newtext)
+      nil
+    (error "(replace-in-string): 3rd arg must be a string: %s"
+	   newtext))
+  (let ((rtn-str "")
+	(start 0)
+	(special)
+	match prev-start)
+    (while (setq match (string-match regexp str start))
+      (setq prev-start start
+	    start (match-end 0)
+	    rtn-str
+	    (concat
+	      rtn-str
+	      (substring str prev-start match)
+	      (cond (literal newtext)
+		    (t (mapconcat
+			 (function
+			   (lambda (c)
+			     (if special
+				 (progn
+				   (setq special nil)
+				   (cond ((eq c ?\\) "\\")
+					 ((eq c ?&)
+					  (substring str
+						     (match-beginning 0)
+						     (match-end 0)))
+					 ((and (>= c ?0) (<= c ?9))
+					  (if (> c (+ ?0 (length
+							   (match-data))))
+					      ;; Invalid match num
+					      (error "(replace-in-string) Invalid match num: %c" c)
+					    (setq c (- c ?0))
+					    (substring str
+						       (match-beginning c)
+						       (match-end c))))
+					 (t (char-to-string c))))
+			       (if (eq c ?\\) (progn (setq special t) nil)
+				 (char-to-string c)))))
+			 newtext ""))))))
+    (concat rtn-str (substring str start))))
 
-(defun ess-eval-visibly (text &optional invisibly eob)
+
+;;; RDB 28/8/92 added optional arg eob
+;;; AJR 971022:  text-withtabs was text.
+(defun ess-eval-visibly (text-withtabs &optional invisibly eob)
   "Evaluate TEXT in the S process buffer as if it had been typed in.
 If optional second arg INVISIBLY is non-nil, don't echo commands. If
 if is a string, just include that string. If optional third arg
@@ -710,6 +762,7 @@ Waits for prompt after each line of input, so won't break on large texts."
   (let* ((cbuffer (current-buffer))
          (sprocess (get-ess-process ess-current-process-name))
          (sbuffer (process-buffer sprocess))
+	 (text (ess-replace-in-string text-withtabs "\t" " ")) ; AJR 971022
 	 start-of-output
 	 com pos)
     ;;(message "'ess-eval-visibly: sbuffer = %s" sbuffer)
@@ -784,8 +837,10 @@ Prefix arg. VIS-TOGGLE  toggle visibility of ess-code  as for ess-eval-region."
   "Send the current region to the inferior S process.
 With prefix argument, toggle meaning of ess-eval-visibly-p."
   (interactive "r\nP")
+  ;;(untabify (point-min) (point-max))
+  ;;(untabify start end); do we really need to save-excursion?
   (ess-force-buffer-current "Process to load into: ")
-  (untabify start end) ;; do we really need to save-excursion?
+  (message "Starting evaluation...")
   (let ((visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p)))
     (if visibly
  	(ess-eval-visibly (buffer-substring start end))
@@ -795,7 +850,8 @@ With prefix argument, toggle meaning of ess-eval-visibly-p."
 	(process-send-region (get-ess-process ess-current-process-name)
 			     start end)
 	(process-send-string (get-ess-process ess-current-process-name)
-			     "\n")))))
+			     "\n"))))
+  (message "Finished evaluation"))
 
 (defun ess-eval-buffer (vis)
   "Send the current buffer to the inferior S process.
