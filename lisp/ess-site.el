@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/01 14:56:49 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: ess-site.el,v 1.19 1997/07/01 14:56:49 rossini Exp $
+;; Modified: $Date: 1997/07/01 14:57:30 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: ess-site.el,v 1.20 1997/07/01 14:57:30 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.20  1997/07/01 14:57:30  rossini
+;;: S -> ESS
+;;:
 ;;: Revision 1.19  1997/07/01 14:56:49  rossini
 ;;: documentation for `ess-keep-dump-files' changed.
 ;;:
@@ -295,7 +298,7 @@
 ;;; default was to throw away
 ;;; files at the wrong time (I think it was something like, if you M-x
 ;;; ess-load a file twice, while you are working on it, the file is
-;;; deleted).  I believe source is real and the S object is temporary.
+;;; deleted).  I believe source is real and the ESS object is temporary.
 ;;; The previous default behavior is dangerous for people who believe this way.
 ;;; It made sense only for people who believe the object is real
 ;;; and the source file temporary.
