@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/09/09 16:25:30 $
-;; Version: $Revision: 1.120 $
-;; RCS: $Id: essa-sas.el,v 1.120 2002/09/09 16:25:30 rsparapa Exp $
+;; Modified: $Date: 2002/09/23 21:00:44 $
+;; Version: $Revision: 1.121 $
+;; RCS: $Id: essa-sas.el,v 1.121 2002/09/23 21:00:44 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -528,6 +528,7 @@ depends on the value of  `ess-sas-submit-method'"
   (interactive)
   (ess-sas-file-path)
   (ess-sas-goto-sas)
+  (ess-save-and-set-local-variables)
 
   (cond
    ((eq ess-sas-submit-method 'apple-script) 
@@ -569,7 +570,7 @@ arg2, `ess-sas-submit-command-options', is a string of the form
 \"with options { \\\"option-1\\\", \\\"option-2\\\", etc.}\".  If you are
 using Windows SAS with the PC emulator Virtual PC, then `ess-sas-submit-command'
 should be ..."
-  (ess-save-and-set-local-variables)
+  ;(ess-save-and-set-local-variables)
 
   (do-applescript (concat arg1 " \""
      (if (not ess-sas-submit-mac-virtual-pc) (unix-filename-to-mac default-directory))
@@ -614,7 +615,7 @@ i.e. let arg1 be your local equivalent of
                                           ;; nil t) works for newer emacsen
     (if (string-equal (substring (file-name-nondirectory ess-sas-file-path) 0 1) ess-kermit-prefix)
       (progn
-       (if (ess-save-and-set-local-variables) (ess-kermit-send))
+       (ess-kermit-send)
        (let ((ess-temp-directory ess-kermit-remote-directory))
         (ess-sas-goto-shell t)
         (insert "cd " ess-temp-directory)
@@ -625,7 +626,6 @@ i.e. let arg1 be your local equivalent of
         ;(ess-sas-goto-sas)
        )
     ;;else
-      (ess-save-and-set-local-variables)
       (ess-sas-goto-shell t)
 ;      (if ess-microsoft-p
 ;	  (insert "cd "  (file-name-directory ess-sas-file-path))
@@ -655,7 +655,7 @@ spaces by enclosing the string in \\\"'s), i.e. let
 `ess-sas-submit-command' be \"\\\"C:\\Program Files\\SAS\\sas.exe\\\"\".
 Keep in mind that the maximum command line length in MS-DOS is
 127 characters so altering your PATH is preferable."
-    (ess-save-and-set-local-variables)
+    ;(ess-save-and-set-local-variables)
     (ess-sas-goto-shell t)
     (if (string-equal ":" (substring ess-sas-file-path 1 2)) 
 	(progn

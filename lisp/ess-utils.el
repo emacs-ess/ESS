@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/09/05 15:43:58 $
-;; Version: $Revision: 5.17 $
-;; RCS: $Id: ess-utils.el,v 5.17 2002/09/05 15:43:58 rsparapa Exp $
+;; Modified: $Date: 2002/09/23 21:00:44 $
+;; Version: $Revision: 5.18 $
+;; RCS: $Id: ess-utils.el,v 5.18 2002/09/23 21:00:44 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -285,16 +285,17 @@ directory with the same name, but without the `ess-kermit-prefix'."
 Return t if buffer was modified, nil otherwise."
   (interactive)
 
-  (if (buffer-modified-p) (save-excursion 
- ;; buffer has changed, save buffer now (before potential revert)
-    (save-buffer)
- ;; buffer has changed and Local Variables are defined, so update them with revert
+  (let ((ess-temp-return-value (buffer-modified-p)))
+;; if buffer has changed, save buffer now (before potential revert)
+  (if ess-temp-return-value (save-buffer))
+
+;; If Local Variables are defined, update them now
+;; since they may have changed since the last revert
+  (save-excursion 
     (beginning-of-line -1)
     (save-match-data 
-	(if (search-forward "End:" nil t) (revert-buffer t t)))
-    t)
- ;;else
- nil)
-)
+	(if (search-forward "End:" nil t) (revert-buffer t t))))
+
+ess-temp-return-value))
 
 (provide 'ess-utils)
