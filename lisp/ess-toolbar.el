@@ -100,8 +100,9 @@ This variable should be set automatically by the ESS install process.
 Icons should be found in ESS/etc/icons/ directory.
 If `ess-icon-directory' is invalid, please report a bug.")
 
-(if (not (file-exists-p ess-icon-directory))
-    (message "Check that you have set `ess-icon-directory'."))
+(if (not (file-directory-p ess-icon-directory)) (progn
+    (message "`ess-icon-directory' does not exist; using `ess-etc-directory'.")
+    (setq ess-icon-directory ess-etc-directory)))
 
 (defvar ess-toolbar nil
   "Toolbar items to be added to ESS editing buffers.")
