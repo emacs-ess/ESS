@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/03/31 15:07:21 $
-;; Version: $Revision: 5.37 $
-;; RCS: $Id: ess-inf.el,v 5.37 2000/03/31 15:07:21 maechler Exp $
+;; Modified: $Date: 2000/03/31 17:00:05 $
+;; Version: $Revision: 5.38 $
+;; RCS: $Id: ess-inf.el,v 5.38 2000/03/31 17:00:05 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -46,8 +46,8 @@
 ;;*;; Autoloads
 (autoload 'ess-parse-errors		"ess-mode" "(autoload)." t)
 (autoload 'ess-dump-object-into-edit-buffer "ess-mode" "(autoload)." t)
-(autoload 'ess-end-of-function		"ess-mode" "(autoload)." t)
 (autoload 'ess-beginning-of-function	"ess-mode" "(autoload)." t)
+(autoload 'ess-end-of-function		"ess-mode" "(autoload)." t)
 (autoload 'ess-extract-word-name	"ess-utils" "(autoload)." t)
 
 (autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload)." t)
@@ -708,30 +708,33 @@ Waits for prompt after each line of input, so won't break on large texts."
     (set-buffer sbuffer)
 
     ;; the following is required to make sure things work!
-;    (ess-write-to-dribble-buffer
-;     (format "(eval-visibly 0): lang invisibly=%s \n" ess-language invisibly))
+ ;;dbg (ess-write-to-dribble-buffer
+ ;;dbg (format "(eval-visibly 0): lang invisibly=%s \n" ess-language invisibly))
     (if (string= ess-language "STA")
 	(setq invisibly t))
-;    (ess-write-to-dribble-buffer
-;     (format "(eval-visibly 1): lang invisibly=%s \n" ess-language invisibly))
+ ;;dbg (ess-write-to-dribble-buffer
+ ;;dbg (format "(eval-visibly 1): lang invisibly=%s \n" ess-language invisibly))
 
     (goto-char (marker-position (process-mark sprocess)))
     (if (stringp invisibly)
 	(insert-before-markers (concat "*** " invisibly " ***\n")))
+    ;; dbg
+;;-     (ess-write-to-dribble-buffer
+;;-      (format "(eval-visibly 2): text[%d]= «%s»\n" (length text) text))
     (while (> (length text) 0)
       (setq pos (string-match "\n\\|$" text))
       (setq com (concat (substring text 0 pos) "\n"))
       (setq text (substring text (min (length text) (1+ pos))))
       (goto-char (marker-position (process-mark sprocess)))
-      (if invisibly nil
-	;; Terrible kludge -- need to insert after all markers *except*`
-	;; the process mark
-	(let ((dokludge (eq (point)
-			    (marker-position (process-mark sprocess)))))
-	  (insert com)
-	  ;; Is this next line REALLY NEEDED?	(AJR).
-	  (setq comint-last-input-end (point-marker))
-	  (if dokludge (set-marker (process-mark sprocess) (point)))))
+      (if (not invisibly)
+	  ;; Terrible kludge -- need to insert after all markers *except*`
+	  ;; the process mark
+	  (let ((dokludge (eq (point)
+			      (marker-position (process-mark sprocess)))))
+	    (insert com)
+	    ;; Is this next line REALLY NEEDED?	(AJR).
+	    (setq comint-last-input-end (point-marker))
+	    (if dokludge (set-marker (process-mark sprocess) (point)))))
       (setq start-of-output (marker-position (process-mark sprocess)))
       ;; A kludge to prevent the delay between insert and process output
       ;; affecting the display.	 A case for a comint-send-input-hook?
@@ -835,10 +838,33 @@ Arg has same meaning as for `ess-eval-region'."
       (princ (concat "Loading line: " (ess-extract-word-name) " ...") t)
       (ess-eval-region (point) end vis "Eval line"))))
 
-(defun ess-eval-line-and-next-line ()
-  "Evaluate the current line visibly and move to the next line."
+
+
+;; Contributed by  Stephen Eglen <stephen@anc.ed.ac.uk> {idea from octave int.}
+(defun ess-next-code-line (&optional arg)
+  "Move ARG lines of code forward (backward if ARG is negative).
+Skips past all empty and comment lines.  Default for ARG is 1.
+
+On success, return 0.  Otherwise, go as far as possible and return -1."
+  (interactive "p")
+  (or arg (setq arg 1))
+  (beginning-of-line)
+  (let ((n 0)
+	(inc (if (> arg 0) 1 -1)))
+    (while (and (/= arg 0) (= n 0))
+      (setq n (forward-line inc))
+      (while (and (= n 0)
+		  (looking-at "\\s-*\\($\\|\\s<\\)"))
+	(setq n (forward-line inc)))
+      (setq arg (- arg inc)))
+    n))
+
+(defun ess-eval-line-and-next-line (&optional simple-next)
+  "Evaluate the current line visibly and move to the \"next\" line.
+\"next\" = the next line with non-comment code _unless_ a prefix arg
+ (SIMPLE-NEXT) is set (non-nil)."
   ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
-  (interactive)
+  (interactive "P")
   (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (end-of-line)
@@ -846,7 +872,10 @@ Arg has same meaning as for `ess-eval-region'."
       (beginning-of-line)
       ;; RDB modified to go to end of S buffer so user can see result
       (ess-eval-visibly (buffer-substring (point) end) nil t)))
-  (next-line 1))
+  (if simple-next
+      (forward-line 1)
+    (ess-next-code-line 1)))
+
 
 ;; goes to the real front, in case you do double function definition
 ;; 29-Jul-92 -FER

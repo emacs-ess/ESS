@@ -1,5 +1,15 @@
 2000-03-31  Martin Maechler  <maechler@stat.math.ethz.ch>
 
+	* ess-inf.el (ess-next-code-line): new function from Stephen Eglen
+	  (ess-eval-line-and-next-line): new prefix arg for turning off
+	  the use of new ess-next-code-line.
+
+	  Further : Use (forward-line 1) instead of (next-line 1).
+
+	* ess-mode.el: added a few autoloads (and a comment for AJR !?).
+	  s/"Step through line"/"Eval line & step"/
+	  white space [n*8 column starts]
+
 	* ess-inf.el (inferior-R-input-sender): Fixed the regexps for
 	help() and {even more} for ?<...>, using new variable
 	ess-help-arg-regexp {in ess-vars.el}.
