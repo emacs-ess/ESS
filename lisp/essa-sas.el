@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/04 21:03:25 $
-;; Version: $Revision: 1.45 $
-;; RCS: $Id: essa-sas.el,v 1.45 2002/01/04 21:03:25 ess Exp $
+;; Modified: $Date: 2002/01/07 17:12:40 $
+;; Version: $Revision: 1.46 $
+;; RCS: $Id: essa-sas.el,v 1.46 2002/01/07 17:12:40 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -288,16 +288,21 @@ on the way."
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with the SAS file by suffix."
     (if (string-match 
-	    "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)" 
-	    ess-sas-file-path) (let* (
-	(ess-sas-temp-file (replace-match (concat "." suffix) t t ess-sas-file-path))
-	(ess-sas-temp-buff (find-buffer-visiting ess-sas-temp-file)))
+	"[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)" 
+	(expand-file-name (buffer-name))) 
+
+	(progn
+	    (ess-sas-file-path)
+
+	    (let* (
+		(ess-sas-temp-file (replace-match (concat "." suffix) t t ess-sas-file-path))
+		(ess-sas-temp-buff (find-buffer-visiting ess-sas-temp-file)))
 
 	(if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
 	    (find-file ess-sas-temp-file))
 
 	(if revert (ess-revert-wisely))
-    ))
+    )))
 )
 
 (defun ess-sas-file (suffix &optional revert)
