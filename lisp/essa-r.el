@@ -31,6 +31,14 @@
 
 ;;; Code:
 
+;;; The purpose of this file is to demonstrate some of the extras that
+;;; have been constructed for the ESS R mode; if they prove
+;;; interesting, then they might be migrated to essd-r, the primary
+;;; ESS R mode tools.
+
+
+
+
 ;; you can invoke ESS/R from emacs by typing
 ;;      C-u M-x essr
 ;; with vsize set to (for example) 40M, and nsize set to 600000.
