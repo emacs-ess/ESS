@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2001/05/03 01:52:58 $
-;; Version: $Revision: 5.27 $
-;; RCS: $Id: essd-r.el,v 5.27 2001/05/03 01:52:58 rossini Exp $
+;; Modified: $Date: 2001/06/13 18:19:01 $
+;; Version: $Revision: 5.28 $
+;; RCS: $Id: essd-r.el,v 5.28 2001/06/13 18:19:01 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -101,7 +101,9 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
     "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
     ess-dialect (current-buffer) start-args current-prefix-arg))
   (let* ((r-always-arg
-	  (if (or (equal window-system 'w32) (equal window-system 'win32))
+	  (if (or (equal window-system 'w32)
+		  (equal window-system 'win32)
+		  (equal window-system 'mswindows))
 	      "--ess "
 	    "--no-readline "))
 	 (r-start-args
