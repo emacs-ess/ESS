@@ -1,7 +1,2876 @@
+2002-08-07  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* VERSION:
+	new version -- Makefile did not commit (aarggh)..
+
+	* lisp/Makefile, Makefile:
+	more Makefile tweaks: lisp/ess-cust.el with proper version number must be committed (in time before tagging etc)
+
+	* lisp/ess-cust.el:
+	new version -- Makefile did not commit (aarggh)..
+
+	* info/ess.info-3, info/ess.info-4, info/ess.info-1, info/ess.info, info/ess.info-2:
+	Updating info for new version
+
+	* ANNOUNCE, README:
+	Updating README, ANNOUNCE for new version
+
+	* doc/newfeat.texi:
+	prepare for release of 5.1.23 (with *correct* version number)!
+
+	* Makefile:
+	dist: also update lisp/ess-cust.el
+	rel : also `tag'
+
+2002-08-06  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* info/ess.info-1:
+	Updating info for new version
+
+	* ANNOUNCE, doc/authors.texi, doc/getting.texi, doc/inst_cvs.texi, doc/newfeat.texi, doc/requires.texi, info/ess.info-1, info/ess.info, info/ess.info-2, info/ess.info-3, info/ess.info-4, README:
+	docs:  I was trying to create a PDF version of ANNOUNCE with
+	texi2dvi and dvipdf (is there a better way?).  And, certain
+	functions like @email and @code betray unsightly behavior.
+	I replaced @email with @uref:mailto and @code with @display.
+	You may note that a better translation of @code would be
+	@example, but @example misbehaves as well.  @display doesn't
+	make a difference for info or HTML, but it does for PDF.
+	However, there doesn't appear to be an alternative for the
+	moment.  Another bug, is texi2html ignores the @enumerate
+	argument (besides mishandling @macro statements).  Oh joy!
+
+2002-08-05  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* ANNOUNCE, doc/announc.texi, doc/Makefile, doc/readme.texi, README, info/ess.info-1:
+	docs:  some final minor changes to docs before release.  Also,
+	attempted to address Martin's concern in doc/Makefile with
+	respect to install.  Now, you can differentiate between
+	making in the doc directory and installing elsewhere as the
+	documentation indicates.  The target install has returned for
+	info files only.
+
+2002-08-02  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/dir, doc/help-sas.texi, doc/Makefile, info/ess.info-1, info/ess.info, README, info/ess.info-2:
+	info:  Rich's comment made me realize that we may also need
+	to "install" the dir file.  So, I changed the Makefile to:
+	$(INFODIR)/ess.info: $(TEXISRC)
+		@echo "making Info documentation..."
+		$(MAKEINFO) ess.texi
+		$(INSTALL) ess.info* $(INFODIR)
+		test -f $(INFODIR)/dir || $(INSTALL) dir $(INFODIR)
+	I suppose that a more sophisticated approach could be taken,
+	but this is probably good enough for now.  I believe that
+	all issues that I was working on are now complete.  I'm going
+	on vacation on 8/7 and then to JSM the following week, but I
+	should have e-mail and internet access the whole time.  Did
+	someone once say "Release early and release often"?
+
+2002-08-01  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* info/dir:
+	dir:  I discovered what the problem is with @direntry and
+	GNU Emacs 21.  Apparently, the functionality differs
+	between XEmacs and Emacs.  Under XEmacs, the @direntry
+	has precedence over the dir file.  Emacs appears to be
+	just the opposite.  So, I edited the dir file by hand.
+	Not sure where this file comes from.  info/emacs does
+	not create this file in a directory that doesn't
+	already have one.  The file doesn't seem to be
+	created by makeinfo and thats where the problem lies.
+	There is no synchronization between @direntry and dir
+	once dir has been created (however that happens).  The
+	best solution at present is to keep the two in synch
+	by hand.  Which really isn't that big of a deal since
+	we are only talking about one line being identical in
+	dir and ess.texi
+
+	* doc/ediff-sas.gif, doc/ess-demo.jpg, doc/ess-intro.pdf, doc/ess-intro.tex, doc/font-cor-s.gif, doc/font-cor-s.jpg, doc/font-incor-s.gif, doc/font-incor-s.jpg, doc/hilock-sas.gif, doc/Makefile, README, fontlock-test/baseball.sas, info/ess.info, info/ess.info-1, info/ess.info-2, info/ess.info-3, info/ess.info-4:
+	docs:  committing files based on recent discussion
+
+2002-07-31  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/ess.texi, README:
+	HTML docs:  a few tweaks to the texinfo to create a
+	reasonable HTML table of contents
+
+	* doc/ess.texi, README:
+	doc bug:  I was testing out the info docs and I realized that
+	the "Detailed Node List" and the actual nodes for Installation
+	were different.  In this case, it would lead you to believe
+	that there weren't any relevant topics in the Installation
+	section because you see the "Detailed" list first, but there's
+	nothing on it.  I suppose you could carefully check each "Detailed"
+	vs. actual node combination, but that would be time-consuming and
+	prone to failure.  And, I also realized that nobody would want a
+	100 item list when they can drill-down from a 10 item list anyways.
+	So, I was lazy and just commented out the entire "Detailed Node List".
+
+	* ANNOUNCE, doc/Makefile, README, doc/announc.texi, doc/authors.texi, doc/credits.texi, doc/ess.texi, doc/help-sas.texi, doc/inst_tar.texi, doc/readme.texi, info/ess.info-1, info/ess.info, info/ess.info-2, info/ess.info-3, info/ess.info-4:
+	more doc changes:  Where should I begin?  I realized that having info files might
+	not be helpful if you didn't already have ESS installed.  So, I decided to
+	create HTML docs and put them @ software.biostat.washington.edu:/ess/doc/html
+	But, texi2html doesn't work with version.texi.  After pulling my hair out, I
+	decided to read the documentation.  Guess what?  texi2html doesn't support
+	@macro commands.  So, instead of @essver{}, I replaced those references by
+	@include ../VERSION which seems to work.  Of course, this was after I re-did the
+	doc/Makefile thinking there was something wrong in there.  The HTML docs are now
+	on the net.  And, lots of other "improvements" to the docs.
+
+	* doc/ess.texi, info/ess.info, README, info/ess.info-1, info/ess.info-2, info/ess.info-3, info/ess.info-4:
+	info:  running some long SAS jobs, ZZZZZzzzzZZZZZ...
+	Meanwhile, re-wrote parts of the intro and re-arranged some of the
+	documentation categories; boy is that fun.  NOT!  Promoted "Help for
+	the S family" and "Help for SAS" to main categories so you
+	don't have to poke around so long.  One bugaboo that remains
+	with GNU Emacs 21.1-21.3 is the @direntry which is set to:
+	* ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
+	but, Emacs sadly reports:  ESS Version 5.x.y (was: S-mode).
+	This works fine on XEmacs 21.4.8 and I'm using texinfo 4.2
+
+	* lisp/ess-utils.el:
+	ess-kermit-get, ess-kermit-send
+	I had to replace (shell) with ess-sas-goto-shell; maybe we should
+	generalize ess-sas-goto-shell and ess-sas-shell-buffer in ess-utils.el too
+
+2002-07-30  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/Makefile:
+	lisp/Makefile:  essa-sas.el should not be compiled since it is required
+	by essl-sas.el and therefore, already compiled
+
+	* lisp/Makefile:
+	lisp/Makefile:  fixed a bug testing whether a directory is .
+
+2002-07-29  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/ess.texi, doc/help-sas.texi, info/ess.info, info/ess.info-1, info/ess.info-3, README, info/ess.info-4:
+	Help for SAS:  more updates and fixes; now ready for release
+
+2002-07-27  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/Makefile, Makefile:
+	Makefile:  changed target info to
+	the more descriptive and appropriate docs
+
+2002-07-26  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/ess.texi, doc/help-sas.texi:
+	ESS[SAS] info documentation:  lots of minor changes that
+	should make it a better intro as well as a more complete and
+	correct manual
+
+	* doc/Makefile, lisp/Makefile, Makeconf, Makefile:
+	more Makefile mods:  made INSTALL comments more explicit
+	and removed install as the target from main Makefile, it
+	was only present in the lisp Makefile in any case
+
+	* Makefile:
+	main Makefile:  realclean target deleted; doc and lisp
+	Makefile's don't have it anyway; ESSVERSIONDIR changed
+	to ESSDIR
+
+	* Makeconf:
+	Makeconf:  made 2 comments more explanatory
+
+	* doc/Makefile, Makeconf, Makefile, doc/newfeat.texi:
+	more Makefile/Makeconf improvements:  I think this should do it
+	for the next release.  Enjoy!
+
+	* info/ess.info-1, info/ess.info:
+	Updating info for new version
+
+	* ANNOUNCE, README:
+	Updating README, ANNOUNCE for new version
+
+	* Makeconf, README, doc/Makefile, info/ess.info-1, info/ess.info, info/ess.info-2, info/ess.info-3, info/ess.info-4, lisp/Makefile:
+	more Makefile changes:  Apparently, we had two different methods for
+	replacing old version numbers with new ones.  For some reason, the
+	old method based on perl stopped working.  So, we created a new
+	method based on @essver{}.  However, the old version targets and
+	dependencies remained.  I have no idea what kind of weirdness
+	resulted from that.  Just in case, I'm removing the old method.
+
+2002-07-25  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  ess-sleep-for now defaults to 5 seconds on Windows
+	only (which was where the problem was initially)
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  fixed bug in
+	ess-sas-submit-sh for Kermit file transfers; noticed that ess-kermit-
+	functions call (shell) when it probably should be ess-sas-goto-shell
+
+2002-07-24  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/Makefile, fontlock-test/baseball.sas, Makeconf, Makefile, VERSION:
+	Makefile happy-land:  I think I finally figured this maze out.
+	We'll see when we try to release 5.1.21
+
+	* lisp/ess-utils.el:
+	ess-utils.el:  fixed a bug in ess-save-and-set-local-variables;
+	more exhaustive testing later tonight
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  ess-save-and-set-local-variables is now called
+	from ess-sas-submit-sh, ess-sas-submit-windows and
+	ess-sas-submit-mac rather than save-buffer which formerly
+	appeared in ess-sas-submit.  Not, sure what to do with
+	ess-sas-submit-iESS, but it should not be called in
+	ess-sas-submit-region.  Also, now called in
+	ess-sas-data-view so you can take advantage of the
+	recently added ess-sas-data-view-fsview-statement
+	buffer-local variable.
+
+	* lisp/ess-utils.el:
+	ess-utils.el:  added 2 new functions
+
+	ess-search-except:  searches forward for a regexp, stores as match 1
+	and optionally, ignores results that also match a second regexp parameter,
+	and optionally, searches backward for a third non-nil parameter
+
+	ess-save-and-set-local-variables:  if a buffer is modified, save the
+	buffer and if Local Variables are defined, update them with revert
+	returning t if buffer was modified and nil otherwise
+
+	* lisp/essa-sas.el:
+	ESS[SAS], ess-sas-data-view:  Now, I'm adding features just for myself.
+	I've always wanted the capability to add a PROC FSVIEW statement to an
+	ess-sas-data-view call, but I just never got around to it.  You can
+	configure it with the string ess-sas-data-view-fsview-statement.  Also,
+	you can now change the PROC FSVIEW command itself with
+	ess-sas-data-view-fsview-command and I renamed ess-sas-data-view-options
+	to ess-sas-data-view-submit-options to make it more clear what it does
+	(i.e. so you don't confuse -options with -fsview-command).
+
+	* Makeconf, doc/Makefile, info/ess.info-1, info/ess.info, info/ess.info-2, info/ess.info-3, Makefile, info/ess.info-4, lisp/Makefile:
+	Makeconf/Makefile tweaking:  still need to re-organize doc
+	Makefile which is currently in the main Makefile and the
+	doc Makefile
+
+2002-07-23  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* Makeconf:
+	Makeconf:  minor improvements in anticipation of a more
+	important role for this method of installing ESS
+
+	* lisp/make-regexp.el:
+	make-regexp.el:  timing functions removed due to name collisions with Gnus
+
+2002-07-22  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  extended ess-sas-goto-shell to take an optional
+	argument if non-nil, then set-buffer rather than switch.  This
+	new call replaces code chunks in ess-sas-submit-region,
+	ess-sas-data-view and ess-sas-graph-view.  Furthermore, this
+	behavior is what was intended in nearly all
+	(ess-sas-goto-shell) calls and I have replaced them all with
+	(ess-sas-goto-shell t); except for the key-bindings for F8/F3
+	and the code that deals with kermit file transfers which require
+	the old behavior.  Have only tested on XEmacs and 'sh, so YMMV.
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  ess-sas-goto-shell resurrected!  Our recent discussion
+	with respect to each SAS program, perhaps, needing it's own
+	ess-sas-submit-method brought me back to ancient discussions
+	of asynchronous shell buffer names.  Emacs and XEmacs named them
+	differently.  Our solution was to use & for 'sh and start for 'ms-dos
+	to make synchronous processes asynchronous.  However, this made
+	ess-sas-goto-shell unnecessary since the buffer was always *shell*.
+
+	Now, I added the variable ess-sas-shell-buffer which is buffer-local
+	and defaults to *shell*.  If you set this to something else, then you
+	will get another shell buffer.  And, ess-sas-goto-shell will take you
+	to whichever one you need.  So, we are back to the original function.
+	I also moved the add-hook call to the shell creation step since it
+	seemed like over-kill to call it every time you did ess-sas-submit-sh.
+	Is this enough explanation or am I boring you?
+
+2002-07-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el: ESS[SAS]:  tweaks to
+	 -> ess-sas-submit-mac for JSM presentation
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: ess-sas-submit-method
+	needs to be buffer-local so that ess-sas-submit can submit different
+	buffers in different ways with the Local Variables trick
+
+2002-07-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/ess-utils.el:
+	ess-utils.el:  added ess-kermit- functions; now, it's really
+	ready for testing
+
+	* lisp/ess-cust.el:
+	ess-cust.el:  added ess-kermit- variables
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: moved ess-kermit- variables to ess-cust.el and
+	ess-kermit- functions to ess-utils.el
+
+	* lisp/ess-cust.el:
+	ess-cust.el:  applied Stephen's patch; also changed more :types
+	from "string" to 'string; finally, fixed custom-ize for SAS; it
+	always worked if you specified 'ess-sas for the
+	group, but never worked if you specified 'ess; this was because
+	defgroup defined 'ess-SAS rather than 'ess-sas; and, now I understand
+	what :prefix does; we discussed this previously and nobody knew
+	(the documentation doesn't say either); :prefix is the beginning of
+	the variable name that the custom-ize buffer doesn't show you;
+	therefore, it seems that :prefix should be "ess-" for 'ess-sas;
+	I think this is what it always was, but now I know this is right;
+	only tested this on XEmacs 21.4.8 which is nearly bullet-proof;
+	please test on buggier versions of (x)emacs
+
+2002-07-11  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ess-search-except, ess-sas-data-view, ess-sas-graph-view:
+	improvements to all; simplification of the latter -view's
+	with ess-search-except and other minor changes
+
+	* lisp/essa-sas.el:
+	ess-search-except:  I forgot to include the bloody example of it's
+	use; now see ess-sas-data-view.
+
+	* lisp/essa-sas.el:
+	ess-search-except:  I believe it does what we want now.  Sorry, to make this
+	a multi-stage commit, but I can think in SAS, not elisp yet :o)
+
+	* lisp/essa-sas.el:
+	ess-search-except:  I had some free time and I decided to
+	write a function to perform the complex searches
+	that are necessary for ess-sas-data-view.  I suppose a function
+	like this would be valuable for ess-sas-graph-view and for
+	other packages as well.  After a bit more testing, I'll put
+	it some place more appropriate.  I suppose we don't
+	have alot of time left before 5.2.0
+
+	* lisp/essa-sas.el:
+	ess-sas-data-view:  the code will make your head hurt, but
+	the search for a permanent SAS data just got a little smarter.
+	After it finds a tentative candidate in a forward search,
+	it checks if it is a work./first./last.  If so, then it
+	backward searches.  I suppose a better approach would be
+	to write an ess-search function that takes arguments
+	for regexp, direction, and exceptions to ignore.  I
+	don't have time right now, but let's add it to the TODO.
+
+2002-07-02  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/ess.texi:
+	updated copyright to 2002.  Deep thought:  does everything
+	need a person to copyright it?  Wouldn't it be better to
+	have something like:  Copyright (C) 2002 ESS Developers?
+
+2002-06-24  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ess-sas-data-view:  Now ignoring WORK datasets since there is no
+	way to open them anyway.  It would be nice if this function (as well as
+	ess-sas-graph-view) could also be accessable via the mouse.
+	Any hints as to how to do it would be appreciated.  Currently, you have
+	to move the point manually or re-type the dataset/graph that you want
+	to view.  Just clicking on a dataset/graph would be easier.
+
+2002-06-24  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* lisp/essdsp6w.el, lisp/essd-r.el, lisp/essd-s3.el, lisp/essd-s4.el, lisp/essd-sp3.el, lisp/essd-sp4.el, lisp/essd-sp5.el, lisp/essd-sp6.el:
+	activate imenu for S+modes, using the ess-[SR]-use-imenu variable (in R and S+)
+
+2002-06-20  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/ess-emcs.el, lisp/ess-inf.el, lisp/ess-menu.el, lisp/ess-mode.el, lisp/ess-mous.el, lisp/ess-trns.el, lisp/noweb-mode.el:
+	all ess-running-xemacs have now been replaced with (featurep 'xemacs)
+
+	* VERSION: VERSION:  5.2.0
+
+2002-06-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/ess-emcs.el:
+	ess-emcs.el:  (featurep 'xemacs) has been implemented
+	according to Rich's suggestion; however, ess-running-xemacs
+	is rather pervasive among numerous other ESS lisp files;
+	I don't have time to go into every file and change them all;
+	but, this will certainly be the recommended route to take with ESS 6
+
+2002-06-19  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essdsp6w.el, lisp/ess-emcs.el, lisp/essd-sp4.el, lisp/ess-site.el:
+	w32-short-file-name win32-short-file-name
+
+2002-06-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* README, ANNOUNCE:
+	Updating README, ANNOUNCE for new version
+
+2002-06-18  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/ess.texi, doc/inst_tar.texi:
+	Unix Installation:  massive changes; I really don't understand
+	points 7 and 8, but I assume the XEmacs parts of 8 will change
+	once 5.2.0 is an "official" XEmacs package; I suggest similar
+	changes be made to Microsoft Windows Installation, but I made
+	none.  Enjoy!
+
+2002-06-18  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* lisp/essd-r.el:
+	allow prompt "Browse[1]> "
+	-- i.e. add "[]" to valid prompt chars (but not as first one!)
+
+2002-06-18  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ess-kermit-get:  last bug-fix
+	; it's about as user-friendly as I can imagine at the moment
+
+2002-06-17  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/help-sas.texi, doc/inst_tar.texi, doc/newfeat.texi, doc/requires.texi:
+	doc:  minor improvements
+
+	* doc/currfeat.texi, doc/newfeat.texi:
+	doc:  a few minor changes in preparation for the 5.2.0 release
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  fixed a newly introduced bug in ess-kermit-get;
+	synchronized ess-kermit-send with ess-kermit-get; replaced
+	equal with string-equal (do we need to do this globally?);
+	I'd like to do a little bit more testing before 5.2.0; I'll
+	try to get it done tonight
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: changes for more user friendly kermit file transfers;
+	ess-kermit-prefix default is now # which should be os-independent;
+	former defaults, : or ], could be problematic and were
+	based on ange-ftp/efs/tramp (an unnecessary restriction it turns out);
+	when ess-sas-goto is passed the suffix "log" or "lst" ess-kermit-get
+	is called if the file starts with ess-kermit-prefix; other extensions
+	could be dangerous since you might have altered the local copy whereas
+	.log and .lst files are only being modified by the SAS batch job; as
+	long as the integrity of the .sas program is maintained .log and .lst
+	can always be retrieved if an unwanted transfer overwrites them
+
+2002-06-04  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/ess-utils.el:
+	ess-utils:  explanatory comment on the recent change in ess-revert-wisely
+
+2002-05-28  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/ess.texi, doc/help-sas.texi, info/ess.info-1, info/ess.info, info/ess.info-2, info/ess.info-3, info/ess.info-4:
+	M-x SAS does not work with MS Windows
+
+2002-05-28  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* Makefile:
+	Makefile:  made compile the default; also fixed problem with make all
+
+2002-05-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* doc/README.SPLUS4WIN:
+	5.1.21, not *.20 (is this not yet integrated in *.texi ?)
+
+2002-05-21  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/dir, info/dir:
+	dir file needed in same directory as *.info* files
+
+	* doc/ess.texi, doc/help-sas.texi, info/ess.info-1, info/ess.info, info/ess.info-2, info/ess.info-3, info/ess.info-4, README:
+	improve documentation for ess-remote
+
+2002-05-20  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* Makefile:
+	Makefile:  commented out a stray reference to info in the doc directory
+
+	* ANNOUNCE, README:
+	Updating README, ANNOUNCE for new version
+
+2002-05-17  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/ess.texi, info/ess.info-1, info/ess.info, info/ess.info-2, info/ess.info-3, info/ess.info-4:
+	document ess-remote, S+elsewhere, ess-elsewhere
+
+	* doc/ess.texi, doc/help-s.texi, doc/inst_tar.texi, info/ess.info-1, info/ess.info, info/ess.info-2, info/ess.info-3, info/ess.info-4, README:
+	add reference to ~/.xemacs/init.el as the Xemacs alternate for
+	the Gnu emacs file .emacs
+
+2002-05-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  ess-sas-data-view; oops that was not right.  now fixed.
+	dataset names may end in macro variables, but libraries must not
+
+2002-05-14  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  ess-sas-data-view will now recognize a permanent SAS
+	dataset name that ends in a macro variable.  You will be
+	prompted with the portion of the name up to, but not including
+	the macro variable, since it wouldn't be valid otherwise.  You
+	will need to complete the dataset name.  You cannot use a macro
+	variable for the library since &libname.dataname is macro concatenation.
+
+2002-05-13  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS] doc-strings:  updated doc-strings for ess-sas-submit-method
+
+	* doc/help-sas.texi:
+	ESS[SAS] help:  ess-sas-submit-method discussed, with respect to
+	both local and remote SAS batch jobs including Kermit
+
+2002-05-12  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* info/ess.info-1, info/ess.info, info/ess.info-2, info/ess.info-3, info/ess.info-4:
+	repair trailing garbage by removing [] from node names
+
+	* doc/ess.texi, doc/help-sas.texi, doc/help-s.texi:
+	@node lines cannot contain [].
+	I replaced them with () in the node lines and left
+	them at [] in the section heads and in the body of the text.
+
+2002-05-10  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/help-sas.texi:
+	ESS[SAS] help: discussion of ess-sas-submit-command etc.
+	But, still need to discuss ess-sas-submit-method and kermit too.
+
+2002-05-10  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/ess.texi:
+	Thank you Martin, I was starting do essentially the same thing
+	to ess.texi.  Now I don't have to.
+
+	I did one extra step.  We had an empty chapter in the dvi that I commented out.
+	  @comment @chapter Help for Statistical Packages
+	Then I promoted both S and SAS to chapter status.
+	  @chapter Help for the S family
+	  @chapter Help for SAS
+
+
+	There is a fundamental problem in both help-s.texi and help-sas.texi.
+	Make the ess.dvi and then look at the S and SAS chapters.
+	Both chapters have a trailing piece of the node-name as the last line
+	in each section.  I tried several ways to make that go away with no
+	success.  Can you figure out what is going on and fix it?  Thanks
+
+2002-05-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* doc/ess.texi, doc/inst_tar.texi:
+	comment empty chapter; update nodes and menus (in Emacs) and hand fix
+
+2002-05-10  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essd-els.el:
+	gnuclient doesn't work across tcpip (or at least I don't
+	yet know how), so I removed it from inferior-ess-language-start
+	for ess-remote.
+
+	* lisp/essdsp6w.el, lisp/essl-s.el:
+	S-Plus 6 help() function uses pager=options()$help.pager
+
+	I modified inferior-S-language-start in essl-s.el to always define
+	options()$help.pager to have the same value as options()$pager.
+	Only S-Plus 6 uses this new value.  The way the statement is constructed,
+	it does not get used for R and it generates a harmless extra component to
+	the options() in earlier versions of S-Plus.
+
+2002-05-10  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/getting.texi, doc/newfeat.texi:
+	doc:  updates for next release
+
+2002-05-10  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essd-sas.el:
+	put ess-eval-line-and-step-invisibly on C-c i on sas-mode-local-map
+
+	* lisp/essd-els.el:
+	ess-remote for SAS needs shell-mode
+
+	* lisp/ess-inf.el:
+	ess-eval-line-and-step-invisibly is needed for ess-remote to work with sas
+
+	* lisp/essd-els.el:
+	ess-remote now works for "sas -stdio"
+
+2002-05-09  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/announc.texi:
+	ANNOUNCE: missed a reference to @essver{}
+
+2002-05-08  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* lisp/ChangeLog, lisp/ess-trns.el:
+	clean-region fix for new menu function
+
+2002-05-07  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* doc/Makefile:
+	better Makefile fixes; add "pdf" target
+
+	* doc/ess.info-1, doc/ess.info, doc/ess.info-2, doc/ess.info-3, doc/ess.info-4, doc/Makefile:
+	Makefile fixes; ess.info* only in ../info
+
+	* doc/requires.texi: @footnote properly
+
+	* doc/help-s.texi:
+	some @item s fixed --- do NOT use manual "-" for items!
+
+	* doc/requires.texi:
+	minor typo in footnote
+
+	* doc/Makefile: run pdftex twice
+
+2002-05-07  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* README:
+	Updating README, ANNOUNCE for new version
+
+2002-05-06  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/ess.info-1, doc/ess.info, doc/ess.info-2, doc/ess.info-3, doc/ess.info-4, doc/help-s.texi:
+	@display
+
+	* Makefile: add ess.info-4
+
+2002-05-05  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: ess-kermit-send
+	incorporated into ess-sas-submit-sh  kermit is almost as transparent as
+	tramp and ange-ftp/EFS  just execute ess-sas-submit like any other file
+
+2002-05-05  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/ess-trns.el:
+	install Thomas Baumann repair to ess-transcript-clean-region
+
+2002-05-04  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  ess-sas-submit-sh now works with local copies of kermit transfer files.  just need some documentation.
+
+2002-05-03  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: ess-kermit-send now works although I haven't tested
+	it completely.  still need to fix ess-sas-submit-sh
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  updated ess-kermit-get per the latest proposal;
+	created a variable ess-kermit-prefix which is
+	customize-able that can be used to specify the files that
+	are recognized as local kermit copies of remote files.
+	: is the default and the only other value that is
+	recommended is ]  also, created ess-kermit-remote-directory
+	which is buffer local and the default is customize-able;
+	currently $HOME  when you run ess-kermit-get you can
+	reset this variable and ess-kermit-get is now documented
+	haven't fixed ess-kermit-send, but it should be trivial
+	also note, that if you have just done an ess-kermit-send
+	then ess-sas-submit-sh should work as long as we handle the
+	cd command appropriately, i.e. "cd ."
+
+2002-05-02  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essd-els.el:
+	change SAS to SAS-customize-alist
+
+	* lisp/essd-els.el:
+	add &optional proc-name to ess-remote
+
+2002-05-01  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essd-els.el: ess-remote
+
+	First draft of what I consider the right way to do what we
+	have previously called S+elsewhere and ESS-elsewhere.
+
+	Please test this.  Start a telnet or other protocol to a remote computer,
+	start S or R (or maybe something else), M-x ess-remote, and tell it which
+	dialect.  You are now talking to an inferior-ess process.
+
+	I added all the *-customize-alist to ess-select-alist-dialect.  I added
+	only sp6 to the dialects we prompt for, but all will be recognized.
+
+	Rodney, dialect "sas" points to S+elsewhere-customize-alist rather than
+	to SAS-customize-alist.
+
+	If this works then ess-add-ess-process should be moved from essa-sas.el to
+	ess-inf.el
+
+	* lisp/essdsp6w.el, lisp/ess-site.el:
+	tweaks to S+6 for S-Plus 6.1 for Windows beta 1
+
+	Delay time is now a user variable ess-S+6-startup-delay.
+	No delay time for S+6-existing.
+	We verify the version of S-Plus 6 and hide and make read-only the file we check.
+	ESS now prompts for the correct directory.
+
+2002-04-29  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essdsp6w.el:
+	S-Plus 6.1 beta for Windows works correctly with ESS.
+	6.0 didn't work correctly.
+
+	I modified M-x S+6 to
+	  "Verify that `inferior-S+6-program-name' points to S-Plus 6.
+	Start normally for S-Plus 6.1.  Inform the user to start S-Plus 6.0
+	from the icon and than connect to it with `S+6-existing'.  Give an error
+	message if `inferior-S+6-program-name' doesn't point to S-Plus 6."
+
+
+	S-Plus 6.1 starts up exceedingly slowly.  I changed the delay time in
+	M-x S+6-initiate to 60 seconds (double what we needed for M-x S+4).
+	The is the delay needed for my 300MHz machine.  I will make this a
+	variable so the users can customize it for their speed.
+
+2002-04-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* lisp/ess-trns.el:
+	..-DO-clean-region; added to Menu; see ChangeLog
+
+	* lisp/essd-sp6.el:
+	ess-setup-directory-fun etc from Jeff Mincy
+
+2002-04-26  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* lisp/ess-cust.el:
+	version number was lost -- bug in perl in Makefile ???
+
+	* doc/Makefile: ess.info -> ../info
+
+	* lisp/ess-cust.el:
+	new ess-directory-function and ess-history-directory stuff from Jeff Mincy
+
+	* lisp/ess-site.el:
+	wrap file-name-as-directory around ess-lisp-dir... [from Jeff Mincy]
+
+2002-04-25  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* lisp/essd-r.el:
+	we don't want the semantic stuff "live" yet!
+
+	* lisp/essd-r.el, lisp/r.bnf, lisp/sas.bnf, lisp/semantic-r.el, lisp/semantic-sas.el:
+	These files are the start of semantic.el support.  Useful for using the CEDET tools (cedet.sourceforge.net), including ECB.  Definitely worth a bit of time, but they get awfully confusing.
+
+2002-04-21  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	simplify ess-sas-toggle-sas-log-mode for legibility, no change in what it does, see email for details.
+
+2002-04-17  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/ess.info-4, doc/Makefile:
+	we now have ess.info-4
+
+	* doc/ess.info-1, doc/ess.info, doc/ess.info-2, doc/ess.info-3, doc/ess.texi, doc/help-sas.texi, doc/help-s.texi, doc/inst_tar.texi, doc/Makefile:
+	I fixed up help-sas, installed help-s, fixed up some style issues, cleaned up
+	cross references to empty pages.
+
+	All occurences of @essver MUST have braces @essver{} or else the remainder
+	of the source line is treated as a comment.
+
+	The doc/Makefile doesn't depend on the *.texi files.
+	I attempted to change it to
+	$(ESSINFODIR)/ess.info: *.texi
+	but that doesn't work.  So I used
+	$(ESSINFODIR)/ess.info: ess.texi help-sas.texi inst_tar.texi
+
+	The @display requires everything to be left justified.  Otherwise the
+	indentations are interpreted as hard spaces.
+
+	Why are some lines in @display and others in @example?  They look the same.
+	This is inst_tar.texi, lines 29-36
+	@example
+		gunzip ess-@essver{}.tar.gz
+		tar vxf ess-@essver{}.tar
+	@end example
+	@display
+		(or: @code{gunzip < ess-@essver{}.tar.gz | tar vxf -} ).
+		(or using GNU tar:  @code{tar zvxf ess-@essver{}.tar.gz}).
+	@end display
+
+	I added the control-function keys to help-sas.texi
+
+	I fixed the help menu pointers to the empty operating system nodes.
+
+	As long as I am doing info, I fixed up help-s.texi and installed it.
+	It compiles correctly.  It still needs to be read carefully to make sure
+	it is coherent.
+
+
+	I think the various doc/README* files now need to be regenerated
+	from the appropriate *.texi files.
+
+2002-04-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/ess.info-1, doc/ess.info, doc/ess.info-2, doc/ess.info-3, doc/Makefile:
+	Updating docs for new version
+
+	* README:
+	Updating README, ANNOUNCE for new version
+
+	* doc/readme.texi:
+	Updating docs for new version
+
+	* README:
+	Updating README, ANNOUNCE for new version
+
+	* doc/ess.info-1, doc/ess.info, doc/ess.info-2, doc/ess.info-3, doc/ess.texi, doc/inst_tar.texi, doc/readme.texi:
+	Updating docs for new version
+
+	* README:
+	Updating README, ANNOUNCE for new version
+
+	* doc/inst_tar.texi:
+	doc:  added one @display that I forgot earlier
+
+2002-04-16  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/help-sas.texi:
+	make last line less than 80 columns
+
+	* doc/help-sas.texi:
+	typos and introduce filetype-2 earlier
+
+	* doc/help-s.texi, doc/readme.texi:
+	@essver and s-plus 6 references
+
+2002-04-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* Makefile:
+	Makefile(xemacs-links): updated to reflect the new location of info files
+	which makes a very logical connection in this case as well.
+
+	* info/ess.info-1, info/ess.info, info/ess.info-2, info/ess.info-3, info/ess.info-4:
+	info: need a directory with nothing
+	else in it for a concise display and this seemed like a logical choice
+
+2002-04-15  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* README:
+	Updating README, ANNOUNCE for new version
+
+	* doc/ess.info-1, doc/ess.info, doc/ess.info-2, doc/ess.info-3, doc/help-sas.texi, doc/inst_tar.texi, VERSION:
+	5.1.21:  more doc changes for release
+
+	* ANNOUNCE, README:
+	Updating README, ANNOUNCE for new version
+
+	* doc/ess.info-1, doc/ess.info, doc/ess.info-2, doc/ess.info-3, doc/ess.texi, doc/help-sas.texi, doc/inst_tar.texi, doc/Makefile, doc/readme.texi, lisp/ess-emcs.el, Makefile:
+	5.1.21:  lots of changes for 5.1.21 release
+
+	* doc/ess.info-1, doc/ess.info, doc/ess.info-2, doc/ess.info-3, doc/getting.texi, doc/help-sas.texi, doc/requires.texi:
+	doc: many changes addressing Rich's concerns (please see ess-core
+	discussion if you are interested).  Before 5.1.21 can be released,
+	we need to figure out how to get texinfo to generate the proper
+	version number in all documents.
+
+2002-04-12  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/newfeat.texi, lisp/essl-sas.el:
+	ESS[SAS]: corrected font-locking for in: operator
+
+	* doc/announc.texi, doc/help-sas.texi, doc/newfeat.texi:
+	doc: changes for 5.1.21 release
+
+	* doc/ess.info, doc/ess.info-1, doc/ess.info-3, doc/help-sas.texi:
+	doc:  First attempt at creating info documentation for SAS.  It is
+	basically README.SAS with a few additions/corrections.  Fine for this
+	release, but could use alot of work.
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: F12 (graph view) now defined for all locales
+
+2002-04-10  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essl-sas.el:
+	ESS[SAS]: estimate and contrast keywords are now highlighted
+
+2002-04-09  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/announc.texi, doc/ess.info-1, doc/ess.info, doc/ess.info-2, doc/ess.info-3, doc/ess.texi, doc/help-s.texi:
+	doc: first attempt at creating user manual with texinfo.  I thought that I could
+	just mimic help-s.texi.  However, help-s.texi appears to be a basket case.
+	It has no @menu statements.  This made it impossible for me to makeinfo.  So,
+	instead I created help-sas.texi from scratch based on README.SAS.  Note that
+	the @menu commands will cause problems if they contain : so I've been using --.
+	Also note that makeinfo appears to create working info pages, but texi2dvi
+	does not create documents correctly.  It's a shame since they are very nice,
+	except for garbage which appears to be mangled next, previous, and up.  This will
+	cause us alot of problems if we want to maintain
+	one source and produce .info, .html and .pdf (I actually only tried viewing
+	with xdvi, but I suspect the problem exists with other formats, but I pray not).
+
+2002-04-04  hornik  <hornik@lynne.stat.math.ethz.ch>
+
+	* lisp/essddr.el: Add '\docType'.
+
+2002-03-27  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* xemacs/README:
+	files and build/export for xemacs package
+
+2002-03-22  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el, lisp/essl-sas.el:
+	ESS[SAS]:  added font-lock support for legacy COMMENT...; style comments
+
+2002-03-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  Somehow managed to have to two functionally identical versions
+	of ess-sas-file-path; now only one.
+
+2002-03-18  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/requires.texi:
+	doc:  added "custom" link
+
+2002-03-17  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/requires.texi:
+	doc:  noted that certain geriatric
+	versions of emacs are no longer supported
+
+2002-03-12  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essd-r.el, lisp/ess-inf.el:
+	make C-c C-q work with R
+
+	I checked it on windows with rw1041.  Please verify the repair for unix.
+
+	essd-inf.el
+	I modified ess-quit to treat R as a special case because R asks
+	the question "Save workspace image? [y/n/c]: ".
+
+	essd-r.el
+	I modified inferior-ess-exit-command and added inferior-ess-exit-prompt
+
+2002-03-03  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/ess-iw32.el:
+	ess-command on windows.  fix last week only needed if buf is t.
+
+2002-03-01  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	back to "normal".
+
+	* doc/jcgs/essJCGSv2.tex:
+	version to create the "blinded review copies".
+
+	* doc/jcgs/essJCGSv2.tex:
+	version used for unblinded PS/PDF files.
+
+2002-02-27  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/Makefile:
+	add mouseme.el to lisp/Makefile
+
+2002-02-27  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: GSASFILE viewing for Emacs 21.1; I figured out how to view
+	image files in Emacs 21.1.  But, apparently it only works for Unix at
+	the moment.  You have to turn on the minor mode auto-image-file-mode.
+	Then opening a .jpg or .jpeg file will display it in a buffer.  It is
+	supposed to work with .gif files, but it doesn't for me; so I'm only
+	activating this feature for JPEG.
+
+2002-02-26  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/ess-emcs.el:
+	lisp(ess-emcs.el):  added a function to display graphical images
+	per the XEmacs documentation (for 21.4 and higher)
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: viewing GSASFILEs; XEmacs supports .gif and .jpg natively.
+	So, on XEmacs, those formats are displayed in an empty buffer.  Otherwise,
+	graphics are handled as before (with an image viewer program).
+
+	* doc/jcgs/essJCGSv2.bib:
+	XEmacs ref:  I know that we don't want to mess with the references, but
+	I found out that the reference for XEmacs should be "The XEmacs Project"
+	rather than the "XEmacs Development Team".  I figured if we fixed it now,
+	then we wouldn't have to try to remember it later.
+
+2002-02-26  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/ess-iw32.el:
+	The repair of the C-c C-l problem reported by S.McClatchie
+	<s.mcclatchie@niwa.cri.nz> and BjÅ¯rn-Helge Mevik <bhm@math.uio.no>
+	required a change to ess-command in ess-iw32.el.  I believe the problem
+	was limited to Windows machines and first appeared in 5.1.19 when I added
+	ess-command to ess-iw32.el.
+
+	The temporary buffer buf was not associated with an ESS process.  Now it is.
+
+	This is a consequence of how I created a windows version of
+	ess-command.  Part of loading a file is checking whether the new file
+	would overwrite any old S language objects.  This in turn requires
+	running search() which uses ess-command.  The temporary buffer created
+	to hold the results of the search was not associated with an ESS
+	process.  Therefore when ess-command checks whether it is running
+	under Windows, it finds instead that it is in the tbuffer which is not
+	connected with an ESS process so it can't decide and quits.  Since the
+	original buffer that the user was trying to load was correctly
+	connected to an ESS process, the user is justifiably confused.
+
+	The repair is done at the most central point, at the ess-command for
+	windows.
+
+2002-02-25  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/Makefile:
+	lisp Makefile:  added ess-mous.el, but have not tested it
+
+2002-02-25  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed some of Rodney's amusing comments re: starting batch to see if I've fixed Rich's request that ESS-CVS list use ESS-CORE as a reply-to.  I might have to try again.
+
+	* doc/jcgs/essJCGSv2.tex: small  typos
+
+	* doc/jcgs/essJCGSv2.tex:
+	fixed grammar in abstract
+
+	* doc/jcgs/essJCGSv2.tex:
+	preparing for resub; for that, we need to remove the authorlist on 1 copy.
+
+2002-02-25  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* lisp/ChangeLog, lisp/ess-cust.el, lisp/essd-els.el, lisp/essd-r.el, lisp/essd-s3.el, lisp/essd-s4.el, lisp/essd-sp3.el, lisp/essd-sp4.el, lisp/essd-sp5.el, lisp/essd-sp6.el, lisp/essdsp6w.el, lisp/essl-s.el:
+	see ChangeLog
+
+	* doc/jcgs/essJCGSv2.tex:
+	nuke-trailing-whitespace, \ESSfig and \ifMM -- NO content changed
+
+2002-02-22  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/ediff-sas-bw.ps.bb, doc/jcgs/ediff-sas-bw.ps.gz, doc/jcgs/ess-demo-bw.ps.bb, doc/jcgs/ess-demo-bw.ps.gz, doc/jcgs/ess-demo.s, doc/jcgs/hilock-bw.sas, doc/jcgs/hilock-sas-bw.ps.bb, doc/jcgs/hilock-sas-bw.ps.gz, doc/jcgs/other.sas, doc/jcgs/philasug.sas:
+	black and white figures plus supporting files
+
+	* doc/jcgs/essJCGSv2.tex:
+	1. added black and white figures as a supplement.
+
+	2. revised the \section{ESS extends Emacs}
+
+	3. fixed sentences that used "which" twice within a few words of
+	   each other.
+
+	4. The recognition that \stexttt{iESS[S]} is what the user sees when
+	running M-x S+elsewhere is very slick.  It is correct.  The command
+	sequence to start it differs from the sequence on the local machine
+	(and correctly is too much detail for this paper), but once it is
+	functioning it is identical.
+
+	5. SAS Display Manager. one more attempt.
+
+	6. tweaked other little stuff.
+
+	7. merged 4.6 and 4.7 in the history and deleted reference to 4.6.
+
+	Files part of the paper to be sent to jcgs
+	  essJCGSv2.tex
+	  hilock-sas-bw.ps.bb
+	  ediff-sas-bw.ps.bb
+	  ess-demo-bw.ps.bb
+	  ess-demo-bw.ps.gz
+	  ediff-sas-bw.ps.gz
+	  hilock-sas-bw.ps.gz
+
+	Files for use by authors
+	  other.sas
+	  hilock-bw.sas
+	  ess-demo.s
+	  philasug.sas
+
+2002-02-22  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS Paper:  hopefully the
+	last \SAS w/o a trailing \.  Am I dyslexic or did somebody reverse the
+	order of the Batch package headings?  I like the new Help File Editing (R)essJCGSv2.tex
+
+2002-02-22  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	reordered authors.  Kurt is Kurt :-).
+
+2002-02-21  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed simple comment.
+
+	* doc/jcgs/essJCGSv2.tex:
+	Made the "BUGS Batch" one paragraph (it _DOES_ flow well).
+
+	Added a sentence for "BATCH" section at the beginning re: how ESS
+	shortens the batch processing debugging/development cycle, so it
+	reads:
+
+	Batch file processing with statistical analysis packages is a better
+	choice than interactive processing when the execution times are longer
+	than the user is willing to wait as well as for regularly updated
+	statistical reports and figures.  ESS provides a means to shorten the
+	debugging cycle for writing code intended for batch evaluation by
+	containing the whole process, both writing and evaluation, from within
+	Emacs.
+
+	* doc/jcgs/essJCGSv2.tex: points:
+	to remove "or byte-compiled", we have to remove "text" (with respect
+	to file types for loading Emacs Lisp).
+
+	Moved "major modes can control other programs" to the beginning of the
+	paragraph, since it dangled.
+
+	in Emacs intro, removed the second "released under the GPL" since it
+	is now redundant.
+
+	Comma after "s" in "file suffices examples". (grammar adjustment).
+
+	spacing for "PROC ... RUN;" before "RUN;".
+
+	Rewrote the "Help File Editing Paragraph".  In particular, note the
+	last sentence, which hopefully will clarify matters.  Comments?
+
+	ESS provides an R documentation mode (\stexttt{Rd-mode}) which assists
+	in writing help files for R functions, objects, and other topics worth
+	documenting.  \stexttt{Rd-mode} provides the ability to view and
+	execute code embedded in the help file in the same manner as ESS
+	handles code from any S language source file.  It provides syntax
+	highlighting and the ability to submit code directly to a running ESS
+	process, either R or \Splus, for evaluation and debugging.  This
+	latter feature is useful for ensuring that code developed using R runs
+	under \Splus.
+
+2002-02-21  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS Paper:  I read it from start to finish and made changes as I went
+	along.  I think it is done.  I found one last chronology problem in
+	ESS History and fixed it.  Of course, we will have to activate
+	anonymous CVS at some point because the reviewers might try it.
+
+	* doc/jcgs/essJCGSv2.bib:
+	JCGS Paper:  refs; there is another R Sparapani, so now I'm RA
+
+2002-02-21  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex: another typo
+
+	* doc/jcgs/essJCGSv2.tex: typo
+
+2002-02-21  hornik  <hornik@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.bib, doc/jcgs/essJCGSv2.tex:
+	Add citation/ref for current version of R.
+
+2002-02-21  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	completely restructured section 3.2 interactive processing.
+
+	tweak format styles
+
+	more history smoothing
+
+	made table \scriptsize for legibility for the referees.
+	The editor can set it smaller or landscape later.
+
+
+	If you accept the 3.2 rewrite, then all that is left is 3 black and
+	white figures.
+
+2002-02-20  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: added a missing F11 key definition and new functionality
+	for F12; pressing F12 searches for a GSASFILE definition, otherwise
+	defaults to SAS program name and opens the image file in an image viewer
+	application available on that OS (defaults to the CDE sdtimage for Unix
+	and kodakimg for MS)
+
+2002-02-20  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	Final version, spell checked
+
+	* doc/jcgs/essJCGSv2.tex:
+	made the history table TINY so that it would fit on a page.  It may need to be tilted.
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed future work (it didn't read nicely)
+	tightened conclusions
+
+	* doc/jcgs/essJCGSv2.tex:
+	edited rationale for batch processing.  I think it is cleaner now.
+
+	* doc/jcgs/essJCGSv2.tex:
+	Commented out Rich's SAS Interactive Coop paragraph.  Replaced with a
+	more general remark re: editing ability without process control for
+	interactive data analysis.
+
+	Please direct comments on this to ess-core for further discussion.  I
+	think that just as Rodney didn't want SAS picked out for formatting,
+	I'm not sure I want it picked out for "edit-only" use; plenty of other
+	packages have this problem.
+
+2002-02-20  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS Paper:  ESS History; re-commiting not sure what
+	happened to my last commit; I'm ready to submit.
+
+2002-02-20  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	small cleanup to coop paragraph.  removed my comment.
+
+	* doc/jcgs/essJCGSv2.tex:
+	cleaned S batch.  removed last silly sentence.  It was "wrong".
+
+	* doc/jcgs/essJCGSv2.tex:
+	small SAS batch edits.
+
+	* doc/jcgs/essJCGSv2.tex:
+	batch file processing -- removed comments.
+
+	* doc/jcgs/essJCGSv2.tex:
+	edited the interactive SAS part a bit.  Added a comment that it looks
+	like the old SAS terminal interface, which it did long ago.  I've not
+	tried it recently.
+
+	* doc/jcgs/essJCGSv2.tex:
+	Section: Interactice Processing
+	paragraph: S...
+
+	removed comments, not necessary.  Cleaned up a bit.   I think it's acceptable.
+
+	* doc/jcgs/essJCGSv2.tex: whitespace.
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed commentary for concurrent use of mult machines; rodney's right.
+
+	* doc/jcgs/essJCGSv2.tex:
+	simplification of keymap diff's : removed commented out sillyness.
+
+	* doc/jcgs/essJCGSv2.tex:
+	tool cooperation -- removed silly statements; rodney's were correct.
+	removed commentary from rodney/martin/tony.
+
+	* doc/jcgs/essJCGSv2.tex:
+	remote access to stat packages:  "very different" to "different".  I'm not sure I really want to go there!
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed the Rich/Rodney spat, since I added a paragraph on formatting standards for S.
+
+	* doc/jcgs/essJCGSv2.tex:
+	small edit to comment, in case we go to B&W pics.
+
+	* doc/jcgs/essJCGSv2.tex:
+	small cleanup to major/minor modes.  I like the fixes someone committed yesterday.
+
+	* doc/jcgs/essJCGSv2.tex:
+	keyboard input: removed parentheticals.  While I don't like "mapping",
+	when referring to keys, I'll leave it for sanity.
+
+	* doc/jcgs/essJCGSv2.tex:
+	fixed a few rough spots in the abstract.  I'm working through the paper again today.
+
+2002-02-20  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	tweaks to history section and punctuation in history table
+
+2002-02-20  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* Makefile:
+	Makefile:  Oops.  We don't want tag to depend on rel.  For tagging
+	we have to rely on the user to do the appropriate thing.
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS Paper:  ESS History; the text was not internally consistent
+	with respect to chronology and vis-a-vis the table.  Also, it was
+	in more of a logical order, rather than chronological.  I tried
+	to fix all of these problems.  I think it's nearly done.
+
+2002-02-20  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	added stab at S-plus standard formatting
+
+2002-02-19  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* lisp/ess-cust.el:
+	edited ess-source-directory doc string to include my favorite setting.
+	It's amazing what you find when you start looking...
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed commented out "ESS solves common tasks".
+
+	added Kurt's suggestions to RD-mode.
+
+	* doc/jcgs/essJCGSv2.tex:
+	Section: ESS extends..
+	Paragraph: Transcripts
+
+	cleaned and tightened.  I think it's good.?
+
+	* doc/jcgs/essJCGSv2.tex:
+	Section: ESS extends
+	Paragraph: Source-level Debugging
+
+	cleaned.  tightened.  I like R&R's changes to this one (don't know the
+	right R to attribute!)
+
+2002-02-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS Paper: Changes to ESS History Table
+
+2002-02-19  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed SSL comments.  Rich is right, we don't need it.
+
+2002-02-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS Paper:  ESS History changes.  Also, found a few \Keywords
+	where they weren't followed by a \ or punctuation.  This doesn't
+	look right with xdvi so I fixed as many as I could find.
+
+2002-02-19  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	I took out the SSL sentence.  It is too detailed for this paper.
+	Also, there is something wrong with the phrasing of "initial" and I can't
+	fix it since I don't know what it does.
+
+	smoothing, history and elsewhere
+
+	I split off the extensions paragraph and placed it in its own
+	Future Work section.  Extensions just aren't part of Conclusions.
+
+2002-02-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/currfeat.texi, doc/jcgs/essJCGSv2.tex, doc/newfeat.texi:
+	doc:  a few cosmetic changes to docs and some trivial changes
+	to ESS Extends Emacs that were irking me; I guess I'm getting
+	curmudgeony.  By the way, thanks to whoever has been correcting
+	my many mis-spellings in the JCGS comments :o)
+
+2002-02-19  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	small edits.  This and the last refer to the intro to "ESS extends Emacs".
+
+	* doc/jcgs/essJCGSv2.tex:
+	spelling: controllong -> controlling
+
+	* doc/jcgs/essJCGSv2.tex:
+	small edits for network support paragraph: open vs. "unsecure" (which is more slang/tech),
+
+2002-02-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* Makefile:
+	Makefile: after make rel goes flawlessly; do a make tag; you might
+	want to wait a few days just to be sure since the tag must be
+	unique and we don't want micro number escalation
+
+2002-02-19  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	whitespace cleanup.
+
+	* doc/jcgs/essJCGSv2.tex:
+	Section: Conclusions
+
+	I like the renaming of Extensions to conclusions.  However, future
+	extensions do not go in the history section.  I've rearranged the text
+	a bit, and need to do some more editing.
+
+	* doc/jcgs/essJCGSv2.tex: Section: Emacs
+	Paragraph: Editing extensions.
+
+	slid speedbar back in with dired (though we COULD take it out again).
+	tightened the text.
+
+	* doc/jcgs/essJCGSv2.tex: Section: Emacs
+	Paragraph: network support
+
+	small cleanup.
+	added Emacs's ability to initiate SSL connections (which it can!)
+
+	* doc/jcgs/essJCGSv2.tex: Section: Emacs
+	Paragraph: Major/Minor Modes
+
+	cleaned and tightened.  Rich, could you verify that I'm not leading us astray on this?
+
+	* doc/jcgs/essJCGSv2.tex: Section: Emacs
+	Paragraph: Buffers give Emacs control
+
+	Edited last part to make the "interactive process" comments flow.
+	removed the comments which consisted of my annoying text.
+	looks good, I think.
+
+	* doc/jcgs/essJCGSv2.tex: Section: Emacs
+	Paragraph: Input
+
+	small edits, removed spurious comments.  Looks good.
+
+	* doc/jcgs/essJCGSv2.tex:
+	first section looks "good", I think.
+
+	* doc/jcgs/essJCGSv2.tex:
+	edited keywords.  "free-software" didn't make as much sense, but "open
+	source software" does.
+
+	* doc/jcgs/essJCGSv2.tex:
+	Cleaned and tightened up abstract, but in general, Rich's changes were
+	extremely positive.
+
+2002-02-19  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/currfeat.texi:
+	Current Features: deleted SPSS
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper:  History; more changes and some minor attempts to
+	make the text reflect the true chronology, but no attempts to
+	change the table
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS Paper:  History; re-arranged some sentences and paragraphs in
+	pseudo-chronological order; also attempted to jive the text with the
+	table, but some years still do not match for 94-97
+
+2002-02-19  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	rewrote history section.
+	please look it over.
+
+2002-02-18  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper:  Removed the parentheses around iESS.  Moved the first paragraph
+	in 3.1 to be the second paragraph in 3.  Commented out two paragraphs in 3
+	which were about emacs rather than ESS Extends Emacs.  Changed two references
+	from FORTRAN to \Fortran.  Other than ESS History, I'm pretty happy with it
+	now.
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: changed the rest of "key-binding" to "key sequence"
+
+	* doc/announc.texi, doc/authors.texi, doc/ess.info-1, doc/ess.info, doc/getting.texi, doc/readme.texi:
+	Updating docs for new version
+
+	* ANNOUNCE, README:
+	Updating README, ANNOUNCE for new version
+
+	* doc/ess.info-1, doc/ess.info:
+	Updating docs for new version
+
+	* ANNOUNCE, README:
+	Updating README, ANNOUNCE for new version
+
+	* doc/announc.texi, doc/currfeat.texi, doc/getting.texi, doc/jcgs/essJCGSv2.tex, doc/newfeat.texi, doc/requires.texi:
+	doc:  last changes for 5.1.20
+
+2002-02-18  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	revised fortran sentence
+
+	* doc/jcgs/essJCGSv2.tex:
+	1. defined "key sequence" to be the same as "keyboard shortcuts" and
+	then rigorously made all usage of the word "key" conform to standard
+	emacs usage.
+
+	2. restored a modified \SAS\ Display Manager section.
+
+2002-02-18  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/announc.texi, doc/currfeat.texi, doc/getting.texi, doc/requires.texi:
+	ANNOUNCE:  first batch of ANNOUNCE changes
+
+2002-02-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: somehow that
+	paragraph got copied to both ESS Extends Emacs and Features & Capabilities
+	so now it is only found in the first of the two
+
+2002-02-15  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS Paper:  I finished my review.  I believe the paper is practically
+	ready to go out.  I still don't like the history section.  I added my
+	one paragraph, but I don't think it really helps that much.  I'd say
+	that it probably can be ironed out quickly and sent out Monday.
+
+2002-02-15  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	modified Rodney's proposal on ediff and source-code control
+
+	* doc/jcgs/essJCGSv2.tex:
+	more little changes and simplifications.
+
+	I can't find the (iESS) you are asking about.
+	But I did find iESS(R) that should be iESS[R] and fixed it.
+
+	I agree on moving that paragraph from "multiple tools" to the
+	beginning of 3.1, so I moved it.
+
+2002-02-15  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS Paper:  I have to go to a meeting, but I have finished editing
+	through Cooperation across Multiple Tools on pg 10.  However, the second
+	paragraph of that sub-section seems out of place.  I think it should
+	be the second paragraph at the beginning of section 3.1.  Anybody?
+	Also, why is iESS in parentheses?  I'm hoping to make it back in time
+	to finish this by the end of the day, but I'm running out of time.
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper:  a few minor changes on pp 2-3
+
+2002-02-15  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	good start on the revised abstract.
+
+	I revised it more.
+	I changed the last paragraph of the introdution.
+	I commented out the Extensions paragraph and labeled the
+	last section to Conclusion.
+
+2002-02-15  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	figures should be top or bottom, not "here".
+
+	* doc/jcgs/essJCGSv2.tex:
+	Stata should reference version 7.0.
+
+	* doc/jcgs/essJCGSv2.tex:
+	one more sentence needed in the abstract.
+
+	* doc/jcgs/essJCGSv2.tex:
+	took a stab at modifying the abstract.  Rich, it's not good, but is it
+	in the right vein?
+
+2002-02-13  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* Makefile:
+	Makefile: Removed the JCGS paper from the distributions and fixed some problems.
+	First of all, zip will update a .zip if it already
+	exists.  I found no way to change this behavior.  Also, gzip will prompt you
+	before overwriting a .gz.  So, I just delete the files if they already exist
+	with a test && rm || true.  Also, tar would occasionally give me an error about
+	symbolic links.  So, I did a mv instead of an ln -s.
+
+	* doc/ess.info-1:
+	Updating docs for new version
+
+2002-02-13  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	put expanded first paragraph of sas display manager back.
+	lots of small changes
+
+2002-02-12  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	cleaned up even more.
+
+	* doc/jcgs/essJCGSv2.tex:
+	figures should not be "on a page of floats".
+
+	* doc/jcgs/essJCGSv2.tex:
+	fixed conclusion to "Emacs" section.  Finally, I think it isn't bad
+	(I'm not saying it is good, yet...).
+
+	* doc/jcgs/essJCGSv2.tex:
+	whitespace (bad keypress)
+
+	* doc/jcgs/essJCGSv2.tex:
+	cleaned up more up to section 3.1
+
+	* doc/jcgs/essJCGSv2.tex:
+	redid SAS batch, first pass
+
+	redid BUGS batch, first pass.
+
+	I'm still editing, but you can see where I'm headed with this.
+
+	* doc/jcgs/essJCGSv2.tex:
+	Major slash-and-hack of batch/interactive sections, and a question:
+
+	%%%% AJR: WHY IS THIS SUBSTANTIALLY DIFFERENT THAN BATCH?  I KNOW ITS
+	%%%% SLIGHTLY DIFFERENT, BUT SUBSTANTIALLY?
+	%\paragraph{\SAS---Interactive cooperation with the \SAS\ Display Manager.}
+
+	* doc/jcgs/essJCGSv2.tex:
+	first stab at redoing the S interactive section -- checking in, in
+	case I want to back out!
+
+	* doc/jcgs/essJCGSv2.tex:
+	retitled "remote interaction" to "remote access" paragraph.
+
+	* doc/jcgs/essJCGSv2.tex:
+	first cut at "source-level debugging".  I'm going to surgically remove
+	the "user-manual-ish" sections of the paper next.  It's going to be
+	ugly.
+
+2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	rich, I'm going to disagree only on what we define as 2002.  Mac R and
+	BUGS Batch happened in January?  Sort of.  I'd like to keep 2002
+	clear, unless we can figure out what we are doing this year.
+
+	Also, ESS originating as S-mode doesn't sound quite right.  I'd rather
+	talk about S-mode mutating to ESS, rather than the other way around.
+
+2002-02-07  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	S+elsewhere is the 1998 name, and belongs in the table.
+
+	ESS-elsewhere is the newer name, and the one that is still under
+	discussion.  When it settles down, I now think the name ess-remote is
+	a better name.
+
+	I switched the last history item to 2002 5.1.20.  Do we have any new content
+	over 19?  If so then we should have both listed.  The new items I think of
+	are S+6 and Emacs 21, both of which don't need to be mentioned.
+
+	SAS interactive was designed for remote usage.  I think that for local
+	usage it makes more sense to use emacs for editing and then cut and
+	paste to the SAS Edit window.
+
+	On names of ESS core members, something on the order of:
+	   In 1997 we renamed the project to ESS with Heiberger, Hornik,
+	   Maechler, and Rossini.  In 1998 Sparapani joined the core.
+	While I agree that assignment of specific topics to specific people is
+	not needed, it feels ok to me to have it there.  If we keep assignment
+	then Rossini should be identified as coordinator.
+
+2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	streamlined the BUGS subsection.
+
+	* doc/jcgs/essJCGSv2.tex:
+	batch file processing -- comments were irrelevant, removed them.
+
+	* doc/jcgs/essJCGSv2.tex:
+	small edits to streamline "buffer and control" paragraph.
+
+2002-02-07  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper:  commiting again, I think something failed on my last commit.
+	Too bad, I had alot of great comments for you guys :o)
+
+2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	rewrite Keyboard/IO paragraph again.  I think (?Rich's?) changes were
+	extremely positive, and just need a small bit of tidying.
+
+	* doc/jcgs/essJCGSv2.tex:
+	"keyboard entry" for character-based terminals is redundant.
+
+2002-02-07  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* Makefile:
+	Makefile: updated for new repository
+
+2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	small edits and cleaning to "interactive transcripts" paragraph.
+
+	Moved "ESS understands transcripts" sentence to third, "example of
+	making trans" sentence 2nd.  Lots of changes.
+
+2002-02-07  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/ess.info-1, doc/ess.info, doc/ess.info-2, doc/ess.info-3:
+	Updating docs for new version
+
+	* ANNOUNCE, README:
+	Updating README, ANNOUNCE for new version
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  last change before 5.1.20; forgot to add C-TAB to the
+	globalization for PC keys
+
+	* doc/announc.texi, doc/credits.texi, doc/inst_cvs.texi, doc/inst_tar.texi, doc/mailing.texi, doc/newfeat.texi, doc/readme.texi, doc/stabilty.texi:
+	Doc changes for pending ESS-5.1.20 release.
+
+2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed spurrious indexing.
+
+	* doc/jcgs/essJCGSv2.tex:
+	Rodney's comments re: double mention of dired and filename completion
+	are now satisfied.
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed commentary and agreed with Rich on use of paragraphs, not
+	subsub blah sections.  We just have to be careful with referencing.
+
+	changed "aren't" to "are not".
+
+	* doc/jcgs/essJCGSv2.tex:
+	corrected history re: version 4 (David Smith responsible,
+	fixes/extensions by Maechler/Rossini...).
+
+	* doc/jcgs/essJCGSv2.tex:
+	commented out 2002 since this is "history".  removed request re: prev
+	generations.
+
+	I would like to remove ESS Core names from the history as it pertains
+	to ESS (i.e. early 1997 was when we renamed the project), but leave in
+	external contributors at that point.  This is a style issue, and I'd
+	like comments on it.  I've not done this yet, but will today unless
+	people object.
+
+	* doc/jcgs/essJCGSv2.tex:
+	changed ESS-elsewhere to S-elsewhere (SAS interactive COULD be
+	elsewhere, but only with a bit more hand-holding than S or R
+	elsewhere).
+
+2002-02-07  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: History Table; a few small changes.  Which platforms does ESS
+	support Omegahat on?  The SAS batch comment applies to all 3; Omegahat also?
+	Also, why do we have ESS-elsewhere in this table?  If we can't even agree
+	on what it means; how's a reader supposed to know what it is?
+
+2002-02-07  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/ess-demo.ps.bb, doc/jcgs/ess-demo.ps.gz, doc/jcgs/essJCGSv2.tex:
+	process interaction figure
+
+	* doc/jcgs/essJCGSv2.tex:
+	I added content and reformatted the history table.
+	please check.
+
+	I still have questions about formatting the history table.  The
+	previous table had initials for the early SAS-mode authors, but not
+	for the early S-mode authors.  I removed all initials.  The full names
+	are in the text.  Since the history is here, I see no need for an
+	acknowledgments section.
+
+
+	Why is Mac listed for 1999, but not 2001?
+
+	many small changes.
+
+	question: why did someone add \centering to the figures?
+	I think it is redundant when the figures are forced to
+	\textwidth.  Am I missing something?
+
+
+	%%% Rich: section 3 has subsections, the other sections don't.
+	%%% We could promote the section 2 paragraphs to subsections, and
+	%%% the section 3 paragraphs to subsubsections.  My preference
+	%%% is to leave them as they are as I think all the units that are
+	%%% currently called paragraphs should have the same weight.
+	%%% I changed the phrasing of the cross-reference below.
+
+2002-02-07  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	small whitespace changes.
+
+	* doc/jcgs/essJCGSv2.tex:
+	small edit to transition.
+
+	* doc/jcgs/essJCGSv2.tex:
+	finished a crappy transistion paragraph at the end of the Emacs
+	section.  Someone take a look and edit.
+
+	* doc/jcgs/essJCGSv2.tex:
+	Commented out "comments" on dired/shell-mode/redundancy.  Can we remove
+	the section which now starts:
+
+	%%% AJR: have you two settled this on dired/redundancy?
+
+	* doc/jcgs/essJCGSv2.tex:
+	moved ediff/version control back into 2 separate paragraphs.  I was an
+	idiot to combine.
+
+	* doc/jcgs/essJCGSv2.tex:
+	ediff figure moved into ediff section.
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed old figure, small whitespace edits.
+
+	MORE IMPORTANTLY:  edited the paragraph on "Network Support", but I'm
+	TRULY unhappy with it.  It isn't clear it's an improvement, just a
+	side-step.
+
+2002-02-06  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	minor mode paragraph cleaned.  Removed foreshadowing/duplicating
+	ideas.
+
+	* doc/jcgs/essJCGSv2.tex:
+	working on modes paragraph.  Cleaned up first paragraph, but still
+	need to re-insert ideas from the second commented out paragraph.
+
+	* doc/jcgs/essJCGSv2.tex:
+	cleaned up comments to make "pretty.".
+
+	* doc/jcgs/essJCGSv2.tex:
+	cleaned up and de-referenced "Buffers" paragraph.  Please note
+	comments re: foreshadowing and "obvious".  I'm uncertain about these.
+
+	* doc/jcgs/essJCGSv2.tex:
+	edits up to keyboard/mouse input paragraph.
+
+	* doc/jcgs/essJCGSv2.tex:
+	sas-mode history mods, small.
+
+	* doc/jcgs/essJCGSv2.tex:
+	fixed history a bit.  Need a better way of presenting it.
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed timeline figure as per Rich and added timeline table as per
+	Rodney.
+
+	* doc/jcgs/essJCGSv2.tex:
+	cleaned up the introductory section.  I think the intro and abstract
+	are "finished".  Please disagree soon-ish if at all.
+
+	* doc/jcgs/essJCGSv2.tex:
+	more abstract edits.
+
+2002-02-06  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	merge my changes with Tony's
+
+	Lots of little changes for smoothness.
+
+	SAS mode is currently defined in 3.3.SAS but is implicitly used in the
+	previous section {\SAS---Interactive in Emacs buffers.}
+	I didn't fix this.
+
+	Rodney, does sas-log-mode highlight warnings, lognotes, etc even when
+	the syntax of the sas language is turned off?  I think it would be
+	efficient.
+
+	Tony, I can live with the present organization or the revised ones you
+	proposed.
+
+2002-02-06  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex: whitespace.
+
+	* doc/jcgs/essJCGSv2.tex:
+	small changes to editing extensions subsection.
+
+	* doc/jcgs/essJCGSv2.tex: small changes.
+
+	* doc/jcgs/essJCGSv2.tex:
+	more editing on Major Modes.  I think it's coming along...
+
+	* doc/jcgs/essJCGSv2.tex:
+	hyperlink or hyper-link?
+
+	* doc/jcgs/essJCGSv2.tex:
+	I can't spell, and should always LaTeX prior to commiting
+	(c/stextss/stexttt/)
+
+	* doc/jcgs/essJCGSv2.tex:
+	edits to Emacs extensions paragraph, end of "emacs" section.
+
+	* doc/jcgs/essJCGSv2.tex:
+	combined ediff and version control; they are "somewhat" similar and
+	intertwined.
+
+2002-02-05  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	small clean up.  no need for remapping to resemble other editors, or
+	emacspeaks.
+
+	* doc/jcgs/essJCGSv2.tex:
+	moved Rich's example and Rodney/Rich's comments to "ESS extends
+	Emacs".
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed a AJR/RS commentary that was resolved.
+
+	* doc/jcgs/essJCGSv2.tex: small changes.
+
+	* doc/jcgs/essJCGSv2.tex:
+	major modes: only one "type", since the other issues either fall into
+	the current "what emacs can do to buffers" or to minor modes
+	(tramp/vc/etc are technically minor modes, not major).
+
+	* doc/jcgs/essJCGSv2.tex:
+	version control and file tranfer (ala efs or ange-ftp or tramp) are
+	minor modes!
+
+	* doc/jcgs/essJCGSv2.tex:
+	more mods.  I think I'm understanding Rodney's points.
+
+	* doc/jcgs/essJCGSv2.tex:
+	rewrote buffer paragraph.  I think it focuses on that aspect a bit
+	better.  Comments if not, please.
+
+	* doc/jcgs/essJCGSv2.tex:
+	first Emacs paragraph mod'd.  I'd like to drop the commented out
+	section, and will if no one screams.
+
+	* doc/jcgs/essJCGSv2.tex:
+	redid the introduction yet again.  I think it presents what we want to
+	present, maybe?
+
+	* doc/jcgs/essJCGSv2.tex:
+	keymapping isn't really a good verb.  How about "binding to keys",
+	or keybindings, or similar?  A keymap is a map that describes
+	keybindings?
+
+	(I'm confused about the right direction, and I'm trying to suss out a
+	solution).
+
+	* doc/jcgs/essJCGSv2.tex: whitespace.
+
+	* doc/jcgs/essJCGSv2.tex:
+	more abstract edits.
+
+	* doc/jcgs/essJCGSv2.tex: abstract change:
+	  "for a variety (stat packages) on most (computer systems)"?
+
+2002-02-05  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: fixed keywords; didn't know about the title exclusion, sorry!
+	added another comment to the enforcement debate; enjoy :o)
+
+2002-02-05  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	respond to Rodney. typos.
+
+2002-02-05  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper:  Many small
+	word choice changes and a few comments added.  Although, the goal was a
+	final version by Feb. 1, I do not believe that we are there yet.  The
+	beginning, middle and end are not cohesively tied together.  And, I don't
+	think the History section is what the reviewer's had in mind.
+
+2002-02-04  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex: typos.
+
+	I changed the timeline reference to assume eps.gz compressed format.
+	please gzip it before posting it to cvs.
+
+	* doc/jcgs/essJCGSv2.bib:
+	added url to Chassel elisp reference
+
+2002-02-04  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/timeline.eps, doc/jcgs/timeline.fig:
+	graphical version of history
+
+	* doc/jcgs/essJCGSv2.tex:
+	Regarding selection of keywords: you CAN NOT use words in the title.
+	Honest.  It's an indexing thing.  Should we put back "cross-platform"?
+
+	* doc/jcgs/essJCGSv2.tex:
+	moved Internet Resources to "appendix".
+
+	* doc/jcgs/essJCGSv2.tex:
+	changes up to "batch file processing".  Mostly tightening English,
+	small rephrasing.  I'm commenting out old "comments" that don't appear
+	to be relevant.  (but that's my personal opinion).
+
+	* doc/jcgs/essJCGSv2.tex:
+	more edits to ESS extends Emacs section.  This part really needs cleaning!
+	(I'm still working on it).
+
+	* doc/jcgs/essJCGSv2.tex:
+	abstract, intro, and Emacs sections changed.  In the middle of the sect 3
+	(ESS extends Emacs).
+
+2002-02-01  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex: typos
+
+	* doc/jcgs/essJCGSv2.tex:
+	no more figure 3a and 3b. now it is the top and bottom panels.
+
+2002-01-31  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	small silly additions, all commented out, for ease in producing PDF
+	versions for resubmission.  More additions after seminar.
+
+	* doc/jcgs/essJCGSv2.tex:
+	graphics extensions.  Commented out.
+
+	* doc/jcgs/ediff-sas.ps.bb, doc/jcgs/font-cor-s-bw.ps.bb, doc/jcgs/font-cor-s.ps.bb, doc/jcgs/font-incor-s-bw.ps.bb, doc/jcgs/font-incor-s.ps.bb, doc/jcgs/hilock-sas.ps.bb:
+	PS Bounding Boxes, needed for compressed files
+
+	* doc/jcgs/essJCGSv2.tex:
+	changed back to using \includegraphics.  No more draft mode at this
+	point.  I can put it back if you want.
+
+	Timetable:  resubmit at the end of the day tommorow.  This may mean
+	Monday, since I'll be taking a final look at end of the day pacific
+	time (i.e. east coast will be midnight-ish :-).
+
+2002-01-31  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essl-sas.el:
+	ESS[SAS]:  mult-line comments of the /* */ variety are always
+	fontified correctly because they are handled by grammar rather
+	than regular expressions.  OTOH, * ; and %* ; comments have only
+	worked in the past on single line comments.  This is particularly
+	annoying in SAS-log-mode since a single-line comment will often
+	be flowed and not fontified correctly.  There is no solution TIKO
+	for the multiple line problem so I changed the regular expression
+	to just fontify the first line which will at least allow you to
+	recognize that a comment is beginning which is better than the
+	way it was before.
+
+	* lisp/essl-sas.el:
+	ESS[SAS]: improved macro statements syntax highlighting, i.e.
+	you have more freedom of placement than you do for SAS
+	statements in general
+
+2002-01-31  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	text now refers to color figures, no the previous
+	black and white.
+
+	* doc/jcgs/ediff-sas.ps.gz, doc/jcgs/font-cor-s-bw.ps.gz, doc/jcgs/font-cor-s.ps.gz, doc/jcgs/font-incor-s-bw.ps.gz, doc/jcgs/font-incor-s.ps.gz, doc/jcgs/hilock-sas.ps.gz:
+	postscript figures skipped in previous commit
+
+	* doc/jcgs/essJCGSv2.tex:
+	Graphics are now in postscript.
+	They look bad on my screen but print ok.
+	keep them in the .ps.gz format to keep size under
+	control.  ghostview can read the compressed format.
+
+	\ifdraft\emptyfig\else\psfig\fi
+
+2002-01-31  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper:  a few minor changes; removed last RAD reference;
+	updated outline
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper:  Intro; the software development angle was hanging in the
+	first 2 sentences w/o a tie-in to the rest of the paragraph.  So
+	I deleted them and re-structured the rest of the paragraph as follows:
+
+	Most statistical research activities, particularly data analysis and
+	communication, involves some form of computer use.
+	This puts the computer and its user interface
+	in the central role of facilitating statistical tasks.
+	This paper introduces Emacs Speaks Statistics (ESS)
+	\citep{ESS}, a software package designed to provide a
+	multi-platform, multi-package intelligent environment for statistical analysis.
+
+	How's that?
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper:  made some wording changes to the abstract; but, 1st paragraph
+	of Intro doesn't flow; software development is now just a thrown-away thought
+	that is only involved in the first 2 sentences; let's just start with an
+	enhanced 3rd sentence and go on from there
+
+2002-01-31  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	I am now ready to send the paper back to the journal.
+
+	I wrote the SAS Batch sections.
+
+	I rearranged (and split) the interactive {S, \Splus, and R} and {\Splus
+	for Windows} sections.
+
+	I removed almost all references to RAD.
+
+	I rewrote the abstract, the first paragraph of the introduction,
+	and the last paragraph of Extensions
+
+	I renamed the {Discussion} to {Extensions}
+
+	I moved additional documentation from {Extensions} to {ESS Resources on the
+	Internet}
+
+	I deleted the subsection name {ESS Facilitates Common Tasks}
+	and let its paragraphs join those of the {Features and Capabilities}
+
+	other small changes
+
+2002-01-30  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS Paper:  committed new title
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper:  minor changes; Macintosh to Mac OS;
+	added a comment to the R Mac discussion; turned off comments
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper:  my 'final' changes; when are the comments going to be removed so I can print a clean version for my colleagues to proof?
+
+2002-01-28  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* lisp/ess-help.el: doc string
+
+	* lisp/ess-utils.el: comment
+
+	* doc/newfeat.texi, lisp/ChangeLog, lisp/essddr.el:
+	C-c C-f (finally!)
+
+2002-01-24  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essl-bug.el:
+	ESS[BUGS]: working, but no elsewhere yet
+
+2002-01-23  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essl-bug.el:
+	ESS[BUGS]: let's schedule elsewhere for the next release
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: should be good to go for the next release; will test tomorrow
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: a uniform interface for batch elsewhere may be a bit too ambitious at this time
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: a few adjustments
+
+	* lisp/essa-sas.el, lisp/ess-batch.el, lisp/essl-bug.el:
+	ESS-elsewhere: moving towards a common codebase for batch ESS-elsewhere
+
+2002-01-21  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essdsp6w.el:
+	change *ddeclient ESS* to '(ddeESS [S+6])'
+
+	* lisp/essd-sp4.el:
+	1. change strings from *ddeclient ESS* to '(ddeESS [S+4])'
+
+	2. There is a weird error in this version that I don't understand.
+	The environment variable PATH gets the value of MANPATH.
+	I cannot figure out why.  It is MANPATH for me on two machines so far,
+	I don't know if that is related to my personal list of environment
+	variables or something else.  The fix I installed here works
+	on my machine, I hope it works on others.  I did attempt a generalization,
+	but that didn't work for me.
+
+	* lisp/ess-site.el: change default to
+	(fset 'S 'S+6)
+	etc.
+
+	* lisp/ess-inf.el:
+	remove commented out .in.ESS.
+	This was replaced with options()$STERM yesterday.
+
+	* doc/jcgs/essJCGSv2.tex:
+	smooth section Interactive Processing/S
+
+2002-01-20  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: minor changes in wording to SAS batch section; note you can't say must because SAS/Connect allows you to specify SAS datasets on remote computers, but it is clumsy to set up and maintain; ESS-elsewhere is much cleaner
+
+2002-01-20  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	1. what is going on?  I write
+	   \newcommand*{\regstrd}{$^{\mbox{\scriptsize\textregistered}}$}
+	someone else changes it to
+	   \newcommand*{\regstrd}{$^{\mbox{\scriptsize{\textregistered}}}$}
+
+	Since \scriptsize is a declaration, not a function, what is the
+	intent of the extra braces?  TeX sees the keyword \textregistered
+	as a single token, it does not see it as a string of characters.
+
+
+	2. I wrote Interactive Processing/S by taking a few paragraphs from
+	the previous version in doc/techrep/ess.tex and editing them.
+
+
+	3. I wrote a new S Batch section.
+
+
+	4. I think of the unnumbered section {ESS Resources on the Internet}
+	as structurally similar to the References, so I put it after the
+	Discussion.
+
+
+	5. I reduced the explicit mention of the term "ESS-elsewhere".
+	After our discussion last week I realized that transparency to the user
+	is much more important for this paper than the technical detail.
+
+	* doc/ess.info, doc/ess.info-2, doc/ess.info-3:
+	matches ess.texi from a few minutes ago.
+
+	* doc/dsc2001-rmh/dsc-rmh.dvi:
+	server had scrambled version.  this one is correct.
+
+	* doc/ess.info-1, doc/ess.texi, doc/inst_tar.texi, doc/newfeat.texi, lisp/ess-site.el:
+	1. In ess-site.el section 2.1 I made two changes.
+	For the	item a I want an opinion.
+
+	a. I changed the default in this section from S-Plus 4,5,3
+	   to S-Plus 6 for all three of those operating systems?
+	   Is there still a need to distinguish linux from other unixen?
+
+	b. I added (fset 'Sqpe 'Sqpe+6) for Windows
+
+
+	2. I edited inst_tar.texi to match.
+
+
+	3. While in inst_tar.texi I added to the SAS discussion and
+	   fixed up the installation section to xref the Unix and MS sections
+	   to each other.
+
+
+	4. The current ess.texi and ess.info-2 have only the
+	   unix information. I deleted the whole installation section
+	   from ess.texi and replaced it with @include inst_cvs.texi
+
+
+	5. Tony, please fix up inst_cvs.texi once the anonymous cvs server in
+	   washington is working.
+
+
+	6. Rodney, please put Macintosh instructions into inst_cvs.texi.
+
+
+	7. I promised Terry Therneau that I would comment on indentation and
+	   fancy comments in the *info*.  I did so in ess.texi.  While there I
+	   added Rodney to the author list.
+
+
+	8.  I added the STERM discussion to ess.texi.
+
+
+	9.  I started to add the pager and editor discussion to ess.texi
+	    and realized that I can't until the "@node Edit buffer" section is
+	    completely rewritten.  I may do this, but not tonight.
+
+	    This entire section describes the behavior pattern that we do not
+	    encourage.  It describes the "S objects are real" philosophy deprecated
+	    in the README.S file.
+
+	    The revision can leave that in, but must have a section based on
+	    the "Source code is real" philosophy.
+
+	* lisp/ess-cust.el, lisp/essd-els.el, lisp/essd-r.el, lisp/essd-s3.el, lisp/essd-s4.el, lisp/essd-sp3.el, lisp/essd-sp4.el, lisp/essd-sp5.el, lisp/essd-sp6.el, lisp/essdsp6w.el:
+	I installed options("STERM") in the rest of the S language essd*.el files.
+	I documented it in ess.texi and in newfeat.texi.
+	STERM has the value "iESS" for all except S+4 and S+6 for Windows.
+	In those two situations it has value "ddeESS".  Suggestions for non-ESS
+	values are in the ess.texi.
+
+
+	I also installed options("editor") and options("pager").
+	Default definitions are in ess-cust.el
+	           Windows      Unix           Macintosh
+	R-pager    nil          nil            nil
+	R-editor   gnuclient    emacsclient    nil
+	S-pager    gnuclientw   emacsclient    nil
+	S-editor   gnuclient    emacsclient    nil
+	When the ESS value is nil, then nothing gets sent to the S language process.
+
+
+	ess-cust   defcustomed all new variables
+	essd-r     revised from last week
+	           a. R-editor and R-pager
+	           b. defun R-transcript and fset r-transcript
+	           c. moved R-mode to follow R
+	essd-s3    a. I changed two
+	                 (setq-default ess-customize-alist S3-customize-alist)
+	              to use setq.
+	           b. moved S3-mode to follow S3
+	essd-s4
+	essd-sp3
+	essd-sp5
+	essd-sp6
+	essd-sp4
+	essdsp6w
+	essd-els  I made it match, but it needs rethinking.
+	          The right plan is something along the lines of
+	          a. telnet to the remote,
+	          b. start remote ess process,
+	          c. `ess-add-ess-process'
+
+2002-01-18  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: automated ess-sas-suffix-regexp and commented out ess-sas-smart-backtab
+
+2002-01-17  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/tmpfile:
+	I got a newer version of cygwin.
+	Now PCL-CVS works from the office.  I will check from
+	home later.
+
+	* lisp/tmpfile: test commit with PCL-CVS
+
+2002-01-17  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: polished outline
+
+2002-01-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el: PCL-CVS release v2_9_9
+
+	Repository       : software.biostat.washington.edu:/home/ess/repository
+	Working directory: /export/home/rsparapa/ess/
+
+
+
+	In directory .:
+	Message: cvs server: New directory `add-ons' -- ignored
+	In directory doc:
+	In directory doc/jcgs:
+	              Unknown                 doc/jcgs/essJCGSv2.aux
+	              Unknown                 doc/jcgs/essJCGSv2.bbl
+	              Unknown                 doc/jcgs/essJCGSv2.blg
+	              Unknown                 doc/jcgs/essJCGSv2.dvi
+	              Unknown                 doc/jcgs/essJCGSv2.log
+	              Unknown                 doc/jcgs/essJCGSv2.tex.flc
+	              Unknown                 doc/jcgs/essJCGSv2.toc
+	              Unknown                 doc/jcgs/jsm2002.aux
+	              Unknown                 doc/jcgs/jsm2002.dvi
+	              Unknown                 doc/jcgs/jsm2002.log
+	In directory lisp:
+	              Unknown                 lisp/ess-site.el.flc
+	              Modified                lisp/essa-sas.el
+	              Unknown                 lisp/essa-sas.el.flc
+	Message: cvs server: New directory `lisp/19.29' -- ignored
+	Message: cvs server: New directory `lit-data-examples' -- ignored
+
+	--------------------- End ---------------------
+	-- last cmd: cvs -f -n update -d -P --
+
+2002-01-16  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el, lisp/ess-mous.el:
+	Tony, what is
+	  `ordinary-insertion-filter' in `essl-sta.el'.
+	doing in the middle of `ess-command' in ess-inf.el?
+
+	Rodney, please look at the
+	    cvs log ess-mous.el
+	There are several questions and comments about ess-processes
+	in the Jan 14 log that overlap what you are doing in essa-sas.el
+
+
+	essa-sas.el:
+
+	I finally understand why we have been having trouble communicating
+	about S+elsewhere.  `ess-add-ess-process' is a much simpler functional
+	equivalent to the kludge in `S+elsewhere' and `ESS-elsewhere'.
+
+	I revised the doc-string to make it more accurate and also simplified
+	the function while I was there.
+
+
+	ess-mous.el:
+	I got rid of the end-of-line-problem I was having.
+
+2002-01-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essl-sas.el:
+	ESS[SAS]: fixed bug in PROC syntax highlighting; updated doc-string for sas-program
+
+2002-01-16  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* lisp/ChangeLog, lisp/ess-menu.el:
+	improved imenu-expression from Stephen E
+
+2002-01-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: in a fit of envy, I added my center to my author information
+
+2002-01-16  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex, doc/jcgs/font-cor-s.jpg, doc/jcgs/font-incor-s.jpg:
+	color jpg picture, small text changes
+
+2002-01-16  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essl-bug.el:
+	ess-revert definition removed, call to ess-revert replaced by ess-revert-wisely
+
+	* lisp/essa-sas.el:
+	SAS on Mac now accepts ess-sas-submit-command-options like the others
+
+	* lisp/essl-sas.el:
+	sas-program defaults to sas except on Mac where it is the AppleScript equivalent
+
+	* lisp/ess-utils.el:
+	added ess-revert-wisely
+
+2002-01-15  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	moved "list of other documentation" to discussion, so that we don't
+	steal our own thunder.
+
+	edited the abstract, more smoothing.
+
+	edited intro paragraph.
+
+2002-01-15  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: tweak to local variable recognition in ess-sas-submit
+
+2002-01-15  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	removed comment re: underlining.
+
+2002-01-15  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.bib, doc/jcgs/essJCGSv2.tex:
+	JCGS paper:  correct capilalization in bib and moved TOC to beginning
+
+2002-01-15  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.bib:
+	added Stata 7 citation.  We might want to replace v6.0 with this BUT
+	there are side issues (i.e. more difficult with 7.0 to use ESS than
+	with 6.0).
+
+2002-01-15  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essl-sas.el: force SAS-listing-mode
+
+	* lisp/essl-sas.el: force minor-mode
+
+	* lisp/essa-sas.el, lisp/essl-sas.el:
+	The ess-sas-toggle-log-sas-mode I posted yesterday didn't quite work.
+	It go hung because the log and LOG options stepped on each other's
+	toes.  So I put it all into a single if statement, renamed it to
+	ess-sas-toggle-sas-log-mode, made it refer to SAS-log-mode, and
+	redefined SAS-log-mode to agree with current usage.
+
+2002-01-15  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* lisp/ChangeLog, lisp/essl-s.el:
+	add-log (Changelog)
+
+2002-01-15  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	I finally read the latest essa-sas.el
+
+	1. I found ess-sas-toggle-sas-mode several months ago and started to use it.
+	I like it.  Now that I have read it closely I revised it and renamed it.
+	;;; this version of ess-sas-toggle-log-sas-mode
+	;;; 1. can be included in .emacs as
+	;;;           (ess-sas-toggle-log-sas-mode t)
+	;;;    because it doesn't need to find a .log file.
+	;;; 2. works if there is already an association for .log files.
+	;;; 3. restores the old association when SAS-mode is deleted.
+	;;; 4. works with the file it has, doesn't kill it and get a fresh copy.
+	;;;    This matters for large log files and slow telephone connections.
+	;;; 5. I changed its name to be more descriptive.
+
+
+	2. How is kermit used by ESS?
+
+	I see definititions for ess-kermit-command ess-kermit-get ess-kermit-send,
+	but do not see any places they are used.
+
+	I think these three items should be separated into a new ess-kermit.el
+	rather than buried in essa-sas.el.  Are they restricted to ess in any way?
+	Might they be better as a new kermit.el?
+
+
+	3. You hardwired the `txt' extension into ess-sas-file-path.  That should
+	be sensitive to the value of ess-sas-suffix-1 and ess-sas-suffix-2.
+
+
+	4. ess-sas-submit-mac is the only ess-sas-submit* that does not have
+	ess-sas-submit-command-options.  I don't understand
+	ess-sas-submit-command-options.  Why is it buffer-local?  I think it
+	should depend on the host and the version of sas, not on the
+	myfile.sas command file.  Am I misunderstanding what is going on?
+
+
+	5. ess-revert-wisely in essa-sas.el and ess-revert in essl-bug.el are identical.
+	This suggests that the ess-revert name should be used and moved to ess-utils.el
+
+	* lisp/ChangeLog, lisp/ess-inf.el, lisp/ess-mode.el, lisp/ess-mous.el, lisp/ess-trns.el:
+	ess-mous is ready for testing.
+
+	ess-mous.el: put ess-mous on submenu of C-mouse-3 for
+	             ess-transript-mode, inferior-ess-mode, ess-mode
+	             This feature is still beta.
+
+	ess-inf.el:
+	  ess-ddeclient-p. now depends on ess-local-process-name
+	  get-ess-process. I changed error message to say buffer is not
+	                   associated with an ESS process (instead of
+	                   saying that no ESS process is running)
+	  inferior-ess-mode-menu.  Added "What is this? (beta)"
+
+	ess-trns.el:
+	  ess-transcript-mode-menu.  Added "What is this? (beta)"
+
+	ess-mode.el:
+	  ess-mode-menu.  Added "What is this? (beta)"
+
+	ChangeLog: ess-mous changes.
+
+	I tested it on windows for R, S+4, and Sqpe+4.
+	I am having line-ending problems with Sqpe+4 but otherwise it looks ok.
+	Please look at it.
+
+
+	I found a problem which I am unsure how to solve.  The variable
+	`ess-current-process-name' in the `*R*' buffer can have the value
+	"S+4".  All I have to do is open an S+4 process and an R process, then
+	C-c C-s the file.s buffer to S+4 and then switch to the R process.
+
+	I think, but am willing to hear arguments against it, that anytime an
+	inferior-ess-mode buffer is made current, then it should automatically
+	reset `ess-current-process-name' to refer to itself.  I'm not sure how
+	to do that.  This is explicitly not a buffer-local variable.  Is there
+	a hook that gets called when we change into a buffer, either by C-x b
+	or by clicking?
+
+2002-01-14  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: if Local Variables are defined, a revert is necessary to update them if changed; anybody know a better way?
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: comments on comments
+
+2002-01-14  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	added one more sentence to editing extensions; we might remove it
+	(emacspeaks).
+
+	stab at cleaning first paragraph of "ESS extends Emacs".  Cleaner, but "worse" in a way.
+
+	* doc/jcgs/essJCGSv2.tex:
+	cleaned up "editing extensions" section.  Added a comment regarding
+	other features to describe, if others feel that they are reasonable.
+
+	* doc/jcgs/essJCGSv2.tex:
+	white space removal.
+
+	* doc/jcgs/essJCGSv2.tex:
+	clean up of "editing extensions" paragraph.  Removed the "modes which"
+	subsentence, because it was too technical, and left what will do the
+	enhancement.  Should we change it back?
+
+	* doc/jcgs/essJCGSv2.tex: added comma.
+
+	* doc/jcgs/essJCGSv2.tex:
+	smoothed keyboard/mouse interactions paragraph
+
+	* doc/jcgs/essJCGSv2.tex:
+	2 small spelling errors fixed.
+
+2002-01-14  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essl-sas.el:
+	ESS[SAS]: some minor changes/corrections to customize variables
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: ess-sas-submit-command and ess-sas-submit-command-options are buffer-local with appropriate adjustments in the ess-sas-submit- methods
+
+2002-01-14  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	modified last paragraph of the intro.  I think it's slightly better,
+	but it is still bad.
+
+	* doc/jcgs/essJCGSv2.tex:
+	commented out Rich's query re: underlining.  I'm not seeing it, it
+	looks like a generation problem, but it's an output issue when we need
+	to focus on content; i.e. someone else can generate the right output.
+
+	* doc/jcgs/essJCGSv2.tex:
+	cleaned up the first paragraph of the introduction.  Please take a
+	look at the current phrasing, and change if desired (esp the last 2
+	sentences, which used to be 3)
+
+	* doc/jcgs/essJCGSv2.tex:
+	abstract tweaked.
+
+	* doc/jcgs/essJCGSv2.tex:
+	whoops, I shouldn't have "times" set up by default!
+
+	* doc/jcgs/essJCGSv2.tex:
+	Anon CVS stuff was completely wrong and bogus.  Small example of what
+	it will be, but it won't be ready until Friday.
+
+2002-01-14  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: more comments on the ESS-elsewhere-yes-it-is-no-it-isn't-debate
+
+2002-01-14  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/test: end of test.  the file is
+	now removed from the
+	directory.
+
+	* doc/jcgs/test:
+	this is a revised test
+
+	* doc/jcgs/test: this is a test
+
+	* doc/jcgs/ess-compute-sas.el, doc/jcgs/sas-on-compute25:
+	It looks like we are working with very different historical perspectives.
+
+	I just posted a copy of my class handouts from November 2000 into the
+	jcgs directory.  These are not for the paper.  If I follow you
+	correctly, the instructions in sas-on-compute25 in the section"BETTER
+	INSTRUCTIONS" would not have worked for you 14 months ago.
+	  3076 Nov 20  2000 sas-on-compute25
+	   220 Nov 20  2000 ess-compute-sas.el
+
+2002-01-14  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: a comment
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: a few minor changes
+
+2002-01-14  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	table of contents, ES-elsewhere, smoothing
+
+2002-01-13  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	transcripts acces typos question, see email
+
+	* lisp/ess-inf.el:
+	intercept page() in inferior-R
+
+2002-01-12  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.bib:
+	JCGS paper: software @Book citations need a publisher; now fixed
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: more edits to batch, history and discussion
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: 1st draft of Batch File Processing sub-section
+
+2002-01-11  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: internet discussion
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere:  ess-kermit-send works and it is no longer ESS[SAS] specific other than the location of the defun
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: fixed comment; make sure you escape dollar signes otherwise tex thinks you want to go into math
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: updated outline and made some changes to file transfers.
+
+2002-01-11  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essd-r.el:
+	STERM only. Keep S-pager S-editor variables, but initialized to nil
+
+2002-01-11  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ess-revert-wisely: vc-revert-buffer acting strangely in Emacs 21.1; commented out until workaround is found
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere:  ess-kermit-get works and it is no longer ESS[SAS] specific other than the location of the defun
+
+2002-01-11  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/ChangeLog, lisp/essd-r.el, lisp/ess-inf.el:
+	STERM pager editor
+
+	* doc/jcgs/essJCGSv2.bib, doc/jcgs/essJCGSv2.tex:
+	RMHHS:2001, trademarks, smoothing
+
+2002-01-10  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/newfeat.texi: add mouse-me
+
+2002-01-10  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	cleanup and tightening of "transcripts" paragraph.
+
+	* doc/jcgs/essJCGSv2.tex:
+	small changes.  I've removed some of the comments which seem to have
+	been resolved (transcript-mode).  Put'em back in if not.
+
+	* doc/jcgs/essJCGSv2.bib:
+	edits to ESS (URL changed).
+
+2002-01-10  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere: ess-sas-submit really, really works now with ess-kermit-send
+
+2002-01-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* lisp/ChangeLog, lisp/ess-help.el:
+	ess-help-bogous-..buffer  fix
+
+2002-01-10  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere: kermit transfer really works with ssh, but not telnet; YMMV
+
+2002-01-10  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/ediff-sas.gif, doc/jcgs/font-cor-s.gif, doc/jcgs/font-incor-s.gif, doc/jcgs/hilock.sas, doc/jcgs/hilock-sas.gif, doc/jcgs/essJCGSv2.tex:
+	expansion, smoothin, figures -- see email
+
+2002-01-10  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere: ok, nearly working; more debugging of ess-kermit-get and ess-kermit-send
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere: first working version that uses kermit as the transfer protocol
+
+2002-01-09  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: more comments on remote file access
+
+2002-01-09  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/essdsp6w.el:
+	changed a stray sp4 to sp6
+
+2002-01-09  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere: debugging kermit method
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere:  re-defined ess-sas-submit-method to make it more useful; also re-defuned ess-sas-data-view
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere:  first attempt to get it to work with kermit when tramp is unavailable
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: removed some debugging
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: more comments
+
+2002-01-09  rmh  <rmh@lynne.stat.math.ethz.ch>
+
+	* lisp/ess-mous.el: ess-mous keys
+
+	* lisp/ess-cust.el, lisp/essd-sp4.el, lisp/essdsp6w.el, lisp/ess-site.el:
+	splus6 for windows bug and embedded blanks in splus[46]
+
+	* doc/jcgs/essJCGSv2.bib, doc/jcgs/essJCGSv2.tex:
+	smooth sections 1 and 2 and bibliography
+
+2002-01-08  rsparapa  <rsparapa@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS[SAS]:  put (save-match-data) around searches in ess-sas-goto and ess-sas-data-view
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere: tweaked dependencies of
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere: changed dependencies from w32-dos-shell-semantics to ess-sas-submit-method; a convenient way to set ess-sas-submit-pre-command and ess-sas-submit-post-command; now using ess-microsoft-p rather than system-type as well
+
+2002-01-08  rossini  <rossini@lynne.stat.math.ethz.ch>
+
+	* ChangeLog:
+	moved repository, checking CVS commit stuff.
+
+2002-01-08  ess  <ess@lynne.stat.math.ethz.ch>
+
+	* lisp/essa-sas.el:
+	ESS-elsewhere: adjusted ess-sas-submit-method, ess-sas-data-view-options, ess-sas-submit-post-command, ess-sas-submit-pre-command
+
+	* lisp/essl-sas.el:
+	ESS[SAS]: changed doc-string of sas-pre-run-hook
+
+	* lisp/essl-sas.el:
+	ESS[SAS]: changed doc-string of sas-program
+
+	* lisp/essl-sas.el:
+	ESS[SAS]: reverted default of sas-program to sas
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: changed doc-string for ess-sas-tab-stop-alist
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: changed doc-strings for ess-sas-goto and ess-sas-file
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: 1 fix to ess-sas-file-goto; ESS-elsewhere for SAS batch is fully functional!; at least for me; YMMV
+
+	* lisp/essa-sas.el:
+	ESS[SAS]: 1 fix to ess-sas-file-path
+
+2002-01-07  ess  <ess@lynne.stat.math.ethz.ch>
+
+	* doc/jcgs/essJCGSv2.tex:
+	JCGS paper: response to Martin's comments
+
 2002-01-08  A.J. Rossini <rossini@u.washington.edu>
 
 	* moved repository to U Washington.
-	
 
 2001-08-10  ESS Maintainers <ess@franz.stat.wisc.edu>
 
@@ -233,29 +3102,29 @@
 
 2000-08-17  maechler  <maechler@rossini.YP.biostat>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ChangeLog, /home/ess/src/cvsroot/gnu/ess/lisp/essd-r.el:
+	* lisp/ChangeLog, lisp/essd-r.el:
 	no spurious windows warning anymore
 
 2000-08-09  maechler  <maechler@rossini.YP.biostat>
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ChangeLog, /home/ess/src/cvsroot/gnu/ess/lisp/ess-help.el:
+	* lisp/ChangeLog, lisp/ess-help.el:
 	help: inherit syntax-table ==> "h" in help : "default prompt"!
 
 2000-07-13  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/newfeat.texi: set up for 5.1.15--17
+	* doc/newfeat.texi: set up for 5.1.15--17
 
-	* /home/ess/src/cvsroot/gnu/ess/VERSION: upgraded version.
+	* VERSION: upgraded version.
 
-	* /home/ess/src/cvsroot/gnu/ess/README:
+	* README:
 	Updating README, ANNOUNCE for new version [make dist]
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1: slightly new doc
+	* doc/ess.info-1: slightly new doc
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-comp.el, /home/ess/src/cvsroot/gnu/ess/lisp/ess-site.el:
+	* lisp/ess-comp.el, lisp/ess-site.el:
 	documentation and code cleanup
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/19.29/README: backwards compat doc
+	* lisp/19.29/README: backwards compat doc
 
 2000-07-13  ESS Maintainers <ess@franz.stat.wisc.edu>
 
@@ -267,60 +3136,60 @@
 
 2000-06-30  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* /home/ess/src/cvsroot/gnu/ess/ChangeLog, /home/ess/src/cvsroot/gnu/ess/VERSION, /home/ess/src/cvsroot/gnu/ess/lisp/ess-inf.el, /home/ess/src/cvsroot/gnu/ess/lisp/essd-arc.el, /home/ess/src/cvsroot/gnu/ess/lisp/essd-vst.el:
+	* ChangeLog, VERSION, lisp/ess-inf.el, lisp/essd-arc.el, lisp/essd-vst.el:
 	XLS fixes not quite right.  No startfile if non existant
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1:
+	* doc/ess.info-1:
 	Updating docs for new version [make dist]
 
-	* /home/ess/src/cvsroot/gnu/ess/Makefile: wrong doc/docs.
+	* Makefile: wrong doc/docs.
 
-	* /home/ess/src/cvsroot/gnu/ess/Makefile: doc or docs?
+	* Makefile: doc or docs?
 
-	* /home/ess/src/cvsroot/gnu/ess/ANNOUNCE, /home/ess/src/cvsroot/gnu/ess/README:
+	* ANNOUNCE, README:
 	Updating README, ANNOUNCE for new version [make dist]
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/essa-sas.el, /home/ess/src/cvsroot/gnu/ess/lisp/essd-els.el, /home/ess/src/cvsroot/gnu/ess/lisp/essl-sas.el, /home/ess/src/cvsroot/gnu/ess/lisp/essnt204.el:
+	* lisp/essa-sas.el, lisp/essd-els.el, lisp/essl-sas.el, lisp/essnt204.el:
 	RMH/RS changes for SAS, ESS-elsewhere, NT Emacs 20.4
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-site.el:
+	* lisp/ess-site.el:
 	merged RMH/RS's changes for SAS.
 
-	* /home/ess/src/cvsroot/gnu/ess/VERSION: upgrade version
+	* VERSION: upgrade version
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/README.Microsoft:
+	* doc/README.Microsoft:
 	not ready to generate this on the fly, yet.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/README.SPLUS4WIN, /home/ess/src/cvsroot/gnu/ess/doc/announc.texi, /home/ess/src/cvsroot/gnu/ess/doc/ess.info, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1, /home/ess/src/cvsroot/gnu/ess/doc/inst_tar.texi, /home/ess/src/cvsroot/gnu/ess/doc/newfeat.texi, /home/ess/src/cvsroot/gnu/ess/doc/readme.texi:
+	* doc/README.SPLUS4WIN, doc/announc.texi, doc/ess.info, doc/ess.info-1, doc/inst_tar.texi, doc/newfeat.texi, doc/readme.texi:
 	docs updated to 5.1.14, cleaned up.
 
-	* /home/ess/src/cvsroot/gnu/ess/doc/newfeat.texi: added 5.1.14 stuff.
+	* doc/newfeat.texi: added 5.1.14 stuff.
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-cust.el:
+	* lisp/ess-cust.el:
 	added ViSta/ARC support
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-inf.el:
+	* lisp/ess-inf.el:
 	added flags/checks for XLS systems.  Might help for others
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/essd-arc.el:
+	* lisp/essd-arc.el:
 	first version of ARC mode
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/Makefile:
+	* lisp/Makefile:
 	added essd-arc.el to targets.
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-site.el: documentation.
+	* lisp/ess-site.el: documentation.
 	ViSta and ARC added.
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/essd-vst.el:
+	* lisp/essd-vst.el:
 	now it actually might work.
 
-	* /home/ess/src/cvsroot/gnu/ess/lisp/ess-vars.el: added Arc, Vista.
+	* lisp/ess-vars.el: added Arc, Vista.
 	cleaned up code.
 	a bit of documentation.
 
 2000-06-30  maechler  <maechler@alpha>
 
-	* /home/ess/src/cvsroot/gnu/ess/etc/ess-s4.S, /home/ess/src/cvsroot/gnu/ess/etc/ess-sp3.S:
+	* etc/ess-s4.S, etc/ess-sp3.S:
 	comments
 
 
@@ -911,7 +3780,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 2002/01/08 18:48:49 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 2002/08/07 13:43:29 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -3101,6 +5970,11 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.29  2002/08/07 13:43:29  maechler
+	* Removing Did (vc-update-change-log) manually, then query-replaced the
+	* Removing     "/home/ess/repository/gnu/ess/" {newly made by "update-change-log"}
+	* Removing and "/home/ess/src/cvsroot/gnu/ess/" by ""
+	* Removing
 	* Removing Revision 5.28  2002/01/08 18:48:49  rossini
 	* Removing moved repository, checking CVS commit stuff.
 	* Removing
