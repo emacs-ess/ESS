@@ -1,5 +1,8 @@
 2004-05-17  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
+	* ess-mode.el (ess-mode-menu): Remove :help elements from menus,
+	since XEmacs does not yet recognise it.
+
 	* essd-els.el (ess-remote): Update doc string.
 	(S+elsewhere, ESS-elsewhere): Add note in doc string to say these
 	commands are obsolete and ess-remote should be used instead.
