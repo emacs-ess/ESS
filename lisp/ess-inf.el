@@ -1783,7 +1783,6 @@ completions are listed [__UNIMPLEMENTED__]."
 	     (full-prefix (buffer-substring beg end))
 	     (pattern full-prefix)
 	     ;; See if we're indexing a list with `$'
-	     ;; components  ; WHY IS THIS HERE?
 	     (listname (if (string-match "\\(.+\\)\\$\\(\\(\\sw\\|\\s_\\)*\\)$"
 					 full-prefix)
 			   (progn
@@ -1794,6 +1793,7 @@ completions are listed [__UNIMPLEMENTED__]."
 						(match-end 2))))
 			     (substring full-prefix (match-beginning 1)
 					(match-end 1)))))
+	     ;; FIXME: also implement slot name completion
 	     (components (if listname
 			     (ess-object-names listname)
 			   (ess-get-object-list ess-current-process-name))))
