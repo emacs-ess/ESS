@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rodney.sparapani@duke.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2000/02/29 17:17:29 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: essa-sas.el,v 1.4 2000/02/29 17:17:29 ess Exp $
+;; Modified: $Date: 2000/03/06 16:57:57 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: essa-sas.el,v 1.5 2000/03/06 16:57:57 maechler Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, asynchronous.
 
@@ -36,10 +36,13 @@
 
 (require 'ess-site)
 
-; logical window setting for ESS
 
-(if (boundp 'same-window-buffer-names)
-    (add-to-list 'same-window-buffer-names "*Async Shell Command*"))
+;;; Managing submitted SAS jobs
+
+; logical window setting for ESS
+(defun ess-same-window-async ()
+  (if (boundp 'same-window-buffer-names)
+      (add-to-list 'same-window-buffer-names "*Async Shell Command*")))
 
 
 (defvar ess-sas-root "."
@@ -161,25 +164,69 @@ ess-sas-lst and ess-sas-txt"
   (interactive)
   (switch-to-buffer "*Async Shell Command*"))
 
-(defun ess-sas-tab-stop ()
-  "Initializes the the tab-stop-list."
-  (interactive)
-  
-  (let ((ess-sas-tab sas-indent-width))
-    (setq tab-stop-list (list sas-indent-width))
-    
-    (while (and (> sas-indent-width 0) (< ess-sas-tab 120))
-      (setq ess-sas-tab (+ ess-sas-tab sas-indent-width))
-      (setq tab-stop-list (append tab-stop-list (list ess-sas-tab))))))
+(defvar ess-sas-global-unix-keys nil
+  "Non-nil if function keys use Unix-like SAS key definitions in all modes.")
+(defun ess-sas-global-unix-keys ()
+  "Unix/Mainframe-like SAS key definitions"
+  (global-set-key [f2] 'ess-sas-revert)
+  (global-set-key [f3] 'ess-sas-submit)
+  (global-set-key [f4] 'ess-sas-goto-sas)
+  (global-set-key [f5] 'ess-sas-goto-log)
+  (global-set-key [f6] 'ess-sas-goto-lst)
+  (global-set-key [f7] 'ess-sas-goto-txt)
+  (global-set-key [f8] 'ess-sas-goto-shell))
 
-;; re-compute tab stops 
-(ess-sas-tab-stop)
+(defvar ess-sas-global-pc-keys nil
+  "Non-nil if function keys use PC-like SAS key definitions in all modes.")
+(defun ess-sas-global-pc-keys ()
+  "PC-like SAS key definitions"
+  (global-set-key [f2] 'ess-sas-revert)
+  (global-set-key [f3] 'ess-sas-goto-shell)
+  (global-set-key [f4] 'ess-sas-goto-txt)
+  (global-set-key [f5] 'ess-sas-goto-sas)
+  (global-set-key [f6] 'ess-sas-goto-log)
+  (global-set-key [f7] 'ess-sas-goto-lst)
+  (global-set-key [f8] 'ess-sas-submit))
 
-;; AJR: What the ??? is the above doing in the open code?  It only
-;; gets run upon load of essa-sas.el?
 
-(defun ess-sas-backwards-tab ()
-  "Moves the cursor to the previous tab-stop."
+(defvar ess-sas-local-unix-keys nil
+  "Non-nil if function keys use Unix-like SAS key definitions
+in SAS-mode and related modes.")
+(defun ess-sas-local-unix-keys ()
+  "Unix/Mainframe-like SAS key definitions"
+  (define-key sas-mode-local-map [f2] 'ess-sas-revert)
+  (define-key sas-mode-local-map [f3] 'ess-sas-submit)
+  (define-key sas-mode-local-map [f4] 'ess-sas-goto-sas)
+  (define-key sas-mode-local-map [f5] 'ess-sas-goto-log)
+  (define-key sas-mode-local-map [f6] 'ess-sas-goto-lst)
+  (define-key sas-mode-local-map [f7] 'ess-sas-goto-txt)
+  (define-key sas-mode-local-map [f8] 'ess-sas-goto-shell))
+
+(defvar ess-sas-local-pc-keys nil
+  "Non-nil if function keys use PC-like SAS key definitions
+in SAS-mode and related modes.")
+(defun ess-sas-local-pc-keys ()
+  "PC-like SAS key definitions"
+  (define-key sas-mode-local-map [f2] 'ess-sas-revert)
+  (define-key sas-mode-local-map [f3] 'ess-sas-goto-shell)
+  (define-key sas-mode-local-map [f4] 'ess-sas-goto-txt)
+  (define-key sas-mode-local-map [f5] 'ess-sas-goto-sas)
+  (define-key sas-mode-local-map [f6] 'ess-sas-goto-log)
+  (define-key sas-mode-local-map [f7] 'ess-sas-goto-lst)
+  (define-key sas-mode-local-map [f8] 'ess-sas-submit))
+
+
+
+;;; Editing SAS-mode files.
+
+;; compute tab stops for use in SAS-mode
+(defvar ess-sas-tab-stop-alist
+ '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120)
+  "List of tab stop positions used by `tab-to-tab-stop' in SAS-mode")
+
+
+(defun ess-sas-backward-delete-tab ()
+  "Moves the cursor to the previous tab-stop, deleting any characters on the way."
   (interactive)
   
   (let* (;; current-column
@@ -195,30 +242,43 @@ ess-sas-lst and ess-sas-txt"
 	  (backward-delete-char-untabify ess-sas-remainder t)
 	  (move-to-column (- ess-sas-column ess-sas-remainder))))))
 
-(defun ess-sas-global-unix-keys ()
-  "Unix/Mainframe-like SAS key definitions"
-  (if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
-      (global-set-key [C-tab] 'ess-sas-backwards-tab)
-    (global-set-key [(control tab)] 'ess-sas-backwards-tab))
-  (global-set-key [f2] 'ess-sas-revert)
-  (global-set-key [f3] 'ess-sas-submit)
-  (global-set-key [f4] 'ess-sas-goto-sas)
-  (global-set-key [f5] 'ess-sas-goto-log)
-  (global-set-key [f6] 'ess-sas-goto-lst)
-  (global-set-key [f7] 'ess-sas-goto-txt)
-  (global-set-key [f8] 'ess-sas-goto-shell))
+(defvar ess-sas-edit-keys-toggle 0
+  "0 to bind TAB to 'sas-indent-line.
+Positive to bind TAB and C-TAB to 'tab-to-tab-stop and 'ess-sas-backward-delete-tab")
+(defun ess-sas-edit-keys-toggle (&optional arg)
+  "Toggle TAB key in SAS-mode.
+If arg is 0, TAB is 'sas-indent-line.
+if arg is positive, TAB is 'tab-to-tab-stop and C-tab is ess-sas-backward-delete-tab.
+Without arg, toggle between these options."
+  (interactive "P")
+  (setq ess-sas-edit-keys-toggle
+	(if (null arg) (not ess-sas-edit-keys-toggle)
+	  (> (prefix-numeric-value arg) 0)))
+  (if ess-sas-edit-keys-toggle
+      (progn
+	(if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
+	    (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab)
+	  (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
+	(define-key sas-mode-local-map "\t" 'tab-to-tab-stop))
+    (define-key sas-mode-local-map "\t" 'sas-indent-line)))
 
-(defun ess-sas-global-pc-keys ()
-  "PC-like SAS key definitions"
-  (if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
-      (global-set-key [C-tab] 'ess-sas-backwards-tab)
-    (global-set-key [C-tab] 'ess-sas-backwards-tab))
-  (global-set-key [f2] 'ess-sas-revert)
-  (global-set-key [f3] 'ess-sas-goto-shell)
-  (global-set-key [f4] 'ess-sas-goto-txt)
-  (global-set-key [f5] 'ess-sas-goto-sas)
-  (global-set-key [f6] 'ess-sas-goto-log)
-  (global-set-key [f7] 'ess-sas-goto-lst)
-  (global-set-key [f8] 'ess-sas-submit))
+(provide 'essa-sas)
 
+ ; Local variables section
 
+;;; This file is automatically placed in Outline minor mode.
+;;; The file is structured as follows:
+;;; Chapters:     ^L ;
+;;; Sections:    ;;*;;
+;;; Subsections: ;;;*;;;
+;;; Components:  defuns, defvars, defconsts
+;;;              Random code beginning with a ;;;;* comment
+
+;;; Local variables:
+;;; mode: emacs-lisp
+;;; outline-minor-mode: nil
+;;; mode: outline-minor
+;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;;; End:
+
+;;; essa-sas.el ends here
