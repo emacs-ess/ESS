@@ -135,7 +135,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/12 19:39:20 $ - $Revision: 1.50 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/12 22:14:35 $ - $Revision: 1.51 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -796,7 +796,6 @@ other activities.  Emacs and ESS facilitate \SAS\ batch with ESS[SAS].
 This RAD environment starts when you open a file with the \stexttt{sas}
 extension.
 
-Emacs provides the editing environment which is enhanced by ESS.
 ESS defines \SAS\ syntax so that \stexttt{font-lock-mode} can highlight
 statements, procedures, functions, macros, datasets, comments and character 
 string literals in \SAS\ programs.  Optionally, the same language features 
@@ -804,26 +803,30 @@ are highlighted in the \SAS\ log with the addition of log notes, warnings
 and error messages.
 
 ESS supplies function key-mappings as defined by \SAS\ Display Manager.
-These keys are defined by default only in \stexttt{ess-mode}, but an option
-is provided so that they are available in all modes which can be helfpul
-when you are editing files with extensions like \stexttt{txt} or \stexttt{dat}.
-With one key-map, you can submit a \SAS\ batch process.  With others, you 
-can move between the \SAS\ program, the \SAS\ log and the \SAS\ output.  When 
+These keys are defined, by default, only when editing files with the 
+\stexttt{sas} extension.  Optionally, they are available in all modes which
+is very useful when you are editing \SAS\ log and \SAS\ output with 
+extensions of \stexttt{log} and \stexttt{lst} respectively.
+
+With one key-map, you submit a \SAS\ batch process.  With others, you 
+move between the \SAS\ program, the \SAS\ log and the \SAS\ output.  When 
 accessed in this manner, the \SAS\ log and \SAS\ output are automatically 
-updated to the latest as they are being appended to by the \SAS\ batch process.  
-In addition, the \SAS\ log is searched for error messages and the error messages, 
-if any, are sequenced through with consecutive key presses.  
+updated to the latest as they are being appended by the \SAS\ batch process.  
+In addition, the \SAS\ log is searched for error messages and the error 
+messages, if any, are sequentially displayed with consecutive key presses.  
 
 Another function key opens a \SAS\ permanent dataset for editing or viewing.  
 An option is provided so that the tab and return keys operate in typewriter 
-fashion like they do in \SAS\ Display Manager (this option also defines a 
-destructive previous tab or back-tab). 
+fashion like they do in \SAS\ Display Manager.  This option also defines a 
+key-map to move the cursor to the left to a previous tab-stop deleting any 
+characters between its present position and the tab-stop.  This is a \SAS\
+Display Manager feature that is not available in Emacs otherwise. 
 
 Lastly, ESS cooperates with remote file access modes \stexttt{ange-ftp},
 \stexttt{EFS} and \stexttt{tramp} by remotely submitting \SAS\ batch processes
-to the same remote computers that the files reside on.  This is important since
-the \SAS\ permanent datasets referenced in those files are only likely to exist
-on the same remote computers.  Kermit file transfers are also supported.  The
+to the remote computers that the files reside on.  This is important since
+any \SAS\ permanent datasets referenced in the \SAS\ programs only exist
+on those remote computers.  Kermit file transfers are also supported.  The
 remote editing and statistical processing of files is called ESS-elsewhere and 
 is nearly transparent to the user. 
  
@@ -832,12 +835,11 @@ is nearly transparent to the user.
   
 BUGS software performs Markov Chain Monte Carlo simulations.  There is an 
 interactive capability, but it is not often used since the number of iterations
-in a typical analysis is quite large and can be very time-consuming.  Most BUGS 
+in a typical analysis is large and can be very time-consuming.  Most BUGS 
 programs are executed as batch processes.  Emacs and ESS facilitate BUGS batch 
 with ESS[BUGS].  This RAD environment starts when you open a file with the 
 \stexttt{bug} extension.
 
-Emacs provides the editing environment which is enhanced by ESS.
 ESS defines BUGS syntax so that \stexttt{font-lock-mode} can highlight
 statements, distributions, functions, commands and comments in BUGS
 model files, command files and log files.  ESS creates templates
@@ -852,61 +854,65 @@ that it does for \SAS\ batch (see above).
 \section{History of ESS}
 \label{sec:ESS:history}
 
-ESS is an example of how open-source products can continue to
-develop beyond what their initial authors planned.  To date, there have been 3
-generations of developers and hopefully, there will be many more to come.
+ESS is an example of how open-source projects can develop beyond what 
+their initial authors planned.  To date, there have been 3 generations 
+of developers.
+%%and hopefully, there will be many more to come.
 %%and the genealogy is more tree-like than linear.
 There were 2 modes from which ESS descended:  S-mode and SAS-mode.
 
 %% ESS originated as S-mode, which provided an interface for
 %% programming and process control under GNU Emacs for \Splus\ version 3,
-ESS began in 1989 as S-mode to
-provide extensions to GNU Emacs for editing S and \Splus{} files.  This
-was written by Doug Bates, Ed Kademan, Frank Ritter, and
-Mike Meyer.  David Smith was the next primary maintainer, and his most
-important contribution was to enhance the \Splus{}
-command-line interface and allow for control of multiple processes
-simultaneously.  In 1995, A.J. Rossini extended S-mode to support
-XEmacs.  At the same time, extensions written by Martin M{\"a}chler, were incorporated.
-By 1996, S-mode was available for GNU Emacs and XEmacs and supported S, \Splus, and
-to some extent R.  Kurt Hornik was instrumental in enhancing support
-for R, in particular, providing Rd mode.
+ESS began in 1989 as S-mode to provide extensions to GNU Emacs for editing 
+S and \Splus{} files.  Version 1 was written by Doug Bates and Ed Kademan.  
+This was extended by Frank Ritter and Mike Meyer to become version 2.  Meyer 
+and David Smith made further contributions which was version 3.
+%%This was written by Doug Bates, Ed Kademan, Frank Ritter, and
+%%Mike Meyer.  David Smith was the next primary maintainer, and his most
+%%important contribution was to enhance the \Splus{}
+%%command-line interface and allow for control of multiple processes
+%%simultaneously.  
+In 1995, A.J. Rossini extended S-mode to support XEmacs.  At the same time, 
+extensions written by Martin M{\"a}chler, were incorporated to what became
+version 4.  By 1996, S-mode was available for GNU Emacs and XEmacs and supported S, 
+\Splus, and to some extent R.  Kurt Hornik was instrumental in enhancing support
+for R.
+%%, in particular, providing Rd mode.
 
-The other ancestor of ESS is SAS-mode,
-written by Tom Cook, which began in 1994 and was partially based on
-GNU Emacs macros written by John Sall.
+The other ancestor of ESS is SAS-mode, written by Tom Cook, which began in 1994 
+and was partially based on GNU Emacs macros written by John Sall.
 %%\textbf{NEED TO GET DATES FROM AJR's ARCHIVE!?}.
-Rossini extended SAS-mode to work with
-XEmacs in 1995, and this provided the
+Rossini extended SAS-mode to work with XEmacs in 1995, and this provided the
 impetus for a single mode for statistical programming.
-%%The extension to a language-independent,
-%%generic interface was further prompted
+%%The extension to a language-independent, generic interface was further prompted
 %%by the success of R and the desire for more complete R support.
 This led to a merger of SAS-mode and S-mode along with changes
-to accommodate multiple languages in a flexible way.
+to accommodate multiple languages in a flexible way.  The product of this
+merger was called ESS version 5.
 
-During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS
-for \SAS, a mode that allows text-based \stexttt{PROC} by
-\stexttt{PROC} interaction with an inferior buffer running an interactive SAS
-session either on the same computer or a remote computer over a network.
+During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
+%need to move this discussion to interactive SAS above.
+%, a mode that allows text-based \stexttt{PROC} by
+%\stexttt{PROC} interaction with an inferior buffer running an interactive SAS
+%session either on the same computer or a remote computer over a network.
 At the same time, SAS-mode was further incorporated into ESS.
 
 In 1997, more changes were made to facilitate
 %% the grand redesign of the internals occurred, where by a generic
 %% means for
-adding support for additional statistical languages like \Stata\ and
-\XLispStat.
+support for additional statistical languages like \Stata\ and \XLispStat.
 
-Most of the work, until 1998, was for Unix statistics
-packages that used the standard-input/standard-output model of inter-process
-communication for both the command-line interface and batch file
-processing.  ESS could not communicate
-with Windows versions of statistical packages that did not
-use the standard-input/standard-output model.  This hurdle
-fell in 1998 when Brian Ripley designed a way for ESS to use
-the Windows technology of dynamic data exchange (DDE).
-Based on this work, Heiberger provided interactive interfaces
-for Windows versions of \Splus.
+Most of the work, until 1998, was for Unix statistics packages that used 
+either standard-input/standard-output or batch file processing for 
+inter-process communication.
+% for both the command-line interface and batch file
+%%processing.  
+ESS could not communicate with Windows versions of statistical packages 
+that did not offer these methods.
+%use the standard-input/standard-output model.  
+This hurdle fell in 1998 when Brian Ripley designed a way for ESS to use
+the Windows technology of dynamic data exchange (DDE).  Based on this work, 
+Heiberger provided interactive interfaces for Windows versions of \Splus.
 
 In 1998, Rodney Sparapani designed \SAS\ batch file processing for ESS
 on Unix, Windows and Macintosh.  In 1999 and 2000, Sparapani and Heiberger
@@ -921,11 +927,11 @@ In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.
 %ESS-elsewhere provides interactive and batch processing
 %with \SAS\ running on a remote machine that is accessed over a
 %network.  This provides a powerful development environment for \SAS.
-
-In 2001, Sparapani added BUGS batch file processing for ESS.  This
-includes support for syntax highlighting and template-based source file
-generation that provides the capability of specifying all the necessary
-parameters for a BUGS batch run in a single file.
+In 2001, Sparapani added BUGS batch file processing for ESS.  
+%%This
+%%includes support for syntax highlighting and template-based source file
+%%generation that provides the capability of specifying all the necessary
+%%parameters for a BUGS batch run in a single file.
 
 \section{Discussion}
 \label{sec:discussion}
@@ -939,7 +945,7 @@ unstable version can be obtained from anonymous CVS.  First type:
 
 \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository login}
 
-You will be prompted for a password which is ``anoncvs''.  Then type: 
+Enter the password ``anoncvs''.  Then type: 
 
 \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository co ess}
 
