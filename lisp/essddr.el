@@ -20,7 +20,7 @@
 ;; Ave, Cambridge, MA 02139, USA.
 
 
-;;; ESS RCS: $Id: essddr.el,v 1.5 1997/11/12 19:21:33 rossini Exp $
+;;; ESS RCS: $Id: essddr.el,v 1.6 1997/11/18 22:38:55 rossini Exp $
 ;;;
 
 ;;; Code:
@@ -28,7 +28,7 @@
 ;; To stave off byte compiler errors
 (eval-when-compile (require 'ess-help))
 
-(defvar ess-doc-version "0.1.5"
+(defvar ess-doc-version "0.1.7"
   "Current version of ess-doc.el.")
 
 (defvar ess-doc-maintainer-address
@@ -53,6 +53,7 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev Rd-mode-abbrev-table "`de" "\\description")
   (define-abbrev Rd-mode-abbrev-table "`ex" "\\examples")
   (define-abbrev Rd-mode-abbrev-table "`em" "\\emph")
+  (define-abbrev Rd-mode-abbrev-table "`fi" "\\file")  
   (define-abbrev Rd-mode-abbrev-table "`it" "\\item")  
   (define-abbrev Rd-mode-abbrev-table "`kw" "\\keyword")
   (define-abbrev Rd-mode-abbrev-table "`li" "\\link")
@@ -104,8 +105,8 @@ All Rd mode abbrevs start with a grave accent (`).")
     "name" "note" "references" "seealso" "section" "title" "usage"
     "value"))
 (defvar Rd-keywords
-  '("bold" "code" "deqn" "dots" "email" "emph" "eqn" "item" "ldots"
-    "link"))
+  '("bold" "cr" "code" "deqn" "dots" "email" "emph" "eqn" "file" "item"
+    "ldots" "link" "url"))
 
 (defvar Rd-bold-face 'bold)
 (defvar Rd-font-lock-keywords
@@ -223,7 +224,7 @@ following lines to your `.emacs' file:
 (defun Rd-mode-in-verbatim-p ()
   (let ((pos (point)))
     (save-excursion
-      (if (and (re-search-backward "\\<\\\\\\(usage\\|examples\\)" nil t)
+      (if (and (re-search-backward "\\\\\\(usage\\|examples\\)" nil t)
 	       (re-search-forward "\\s(" nil t))
 	  (condition-case ()
 	      (progn
