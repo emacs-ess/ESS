@@ -1,14 +1,14 @@
 ;;; essa-r.el -- Possible local customizations for R with ESS.
 
-;; Copyright (C) 1997--2000	A.J. Rossini, Martin Maechler,
-;;				Kurt Hornik, and Richard M. Heiberger.
+;; Copyright (C) 1997--2004 A.J. Rossini, Martin Maechler,
+;; Kurt Hornik, Richard M. Heiberger, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@biostat.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Author: A.J. Rossini <rossini@u.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/07/24 10:37:39 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essa-r.el,v 1.6 2003/07/24 10:37:39 stephen Exp $
+;; Modified: $Date: 2004/03/28 22:35:02 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essa-r.el,v 1.7 2004/03/28 22:35:02 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -103,6 +103,36 @@ e.  BEG and END denote the region in the current buffer to be sent."
       ;; Put the output from the scan command into the process buffer so
       ;; the user has a record of it.
       (ess-execute cmd 'buffer))))
+
+
+;;; Peter Dalgaard's code.
+;;; This needs to be cleaned and validated!
+
+(defun pd::set-up-demo ()
+  ;; FIX ess-menu!!
+
+  (defun ajr::scroll-to-end-emacs21::peterD ()
+    (interactive)
+    (other-buffer 1)
+    (setq scroll-aggressively )
+    (setq scroll-   )
+    (other-buffer -1))
+
+  ;; (if (not xemacs) (set-default-font "*courier-bold-r*--14**"))
+  (R)
+  (split-window-vertically 6)
+  (find-file "demos.R")
+  (defun show-max-other-window ()
+    (interactive)
+    (other-window 1)
+    (comint-show-maximum-output)
+    (other-window -1))
+  
+  (global-set-key [f11] 'show-max-other-window)
+  (global-set-key [f12] 'ess-eval-line-and-step))
+
+
+
 
  ; Provide package
 
