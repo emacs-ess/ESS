@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/01 16:13:36 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: ess.el,v 1.16 1997/07/01 16:13:36 rossini Exp $
+;; Modified: $Date: 1997/07/01 16:16:44 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: ess.el,v 1.17 1997/07/01 16:16:44 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.17  1997/07/01 16:16:44  rossini
+;; local variables defined here, from ess-inf.el
+;;
 ;; Revision 1.16  1997/07/01 16:13:36  rossini
 ;; inferior-ess-objects-command: buffer local.
 ;; inferior-ess-secondary-prompt: corrected (to be buf-loc).
@@ -610,9 +613,13 @@ by ess-function-template.")
   "Dummy Variable for a bad programmer (AJR).
 Inferior-ess")
 
+(make-variable-buffer-local 'inferior-ess-procname)
+
 (defvar ess-defdir nil
   "Dummy Variable for a bad programmer (AJR).
 Inferior-ess")
+
+(make-variable-buffer-local 'ess-defdir)
 
 (defvar inferior-S-program-name "Splus"
   "*Program name for invoking an inferior S with S().")
