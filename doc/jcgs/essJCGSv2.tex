@@ -6,7 +6,7 @@
 %        b) key-binding
 %        c) other packages
 %                1) font-lock
-%                2) comint
+%                2) shell/comint
 %                3) ange-ftp/EFS/Tramp
 %3. what ESS has to offer
 %        1) font-lock/key-binding/other packages revisited
@@ -236,10 +236,11 @@ major-mode at a time.  An example of this kind of major-mode is ESS
 (technically, the name is actually \stexttt{ess-mode}).  Major-modes of this
 kind provide automatic indentation and navigation in units of characters,
 words, lines, sentences, paragraphs, and pages as well as many other
-features.  The second kind of major-mode is for running other programs.  In this
-case, the buffer provides input and output for other programs.  These
-buffers control other programs and interact with the system to send mail,
-transfer files over networks, or perform many other tasks.
+features.  The second kind of major-mode is for running other programs.  
+In this case, the programs standard input can be drawn from a buffer
+or a file and its standard output can be directed to a buffer or a file.  
+These buffers can control programs that transfer files over a network,
+perform version control operations or many other tasks.
 An important example of this kind of major-mode is \stexttt{shell-mode}.
 
 Minor-modes, by contrast, provide
