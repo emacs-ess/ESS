@@ -1,14 +1,14 @@
 ;; essddr.el --- Support for editing R documentation (Rd) source
 
-;;; Copyright (C) 1998--2001 KH <Kurt.Hornik@ci.tuwien.ac.at>, AJR, MM
+;;; Copyright (C) 1998--2002 KH <Kurt.Hornik@ci.tuwien.ac.at>, AJR, MM
 ;;;
 
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2002/01/28 08:35:20 $
-;; Version: $Revision: 5.19 $
-;; RCS: $Id: essddr.el,v 5.19 2002/01/28 08:35:20 maechler Exp $
+;; Modified: $Date: 2002/04/04 00:05:58 $
+;; Version: $Revision: 5.20 $
+;; RCS: $Id: essddr.el,v 5.20 2002/04/04 00:05:58 hornik Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.19 2002/01/28 08:35:20 maechler Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.20 2002/04/04 00:05:58 hornik Exp $
 
 ;;; Code:
 
@@ -85,7 +85,7 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev Rd-mode-abbrev-table "`en" "\\enumerate")
   (define-abbrev Rd-mode-abbrev-table "`ex" "\\examples")
   (define-abbrev Rd-mode-abbrev-table "`fi" "\\file")
-  (define-abbrev Rd-mode-abbrev-table "`fi" "\\format")
+  (define-abbrev Rd-mode-abbrev-table "`fo" "\\format")
   (define-abbrev Rd-mode-abbrev-table "`it" "\\item")
   (define-abbrev Rd-mode-abbrev-table "`iz" "\\itemize")
   (define-abbrev Rd-mode-abbrev-table "`kw" "\\keyword")
@@ -141,9 +141,9 @@ All Rd mode abbrevs start with a grave accent (`).")
 
 (defvar Rd-section-names
   '("arguments" "alias" "author" "describe" "description" "details"
-    "enumerate" "examples" "format" "itemize" "keyword" "name" "note"
-    "references" "seealso" "section" "source" "synopsis" "tabular"
-    "title" "usage" "value" "verbatim"))
+    "docType" "enumerate" "examples" "format" "itemize" "keyword" "name"
+    "note" "references" "seealso" "section" "source" "synopsis"
+    "tabular" "title" "usage" "value" "verbatim"))
 (defvar Rd-keywords
   '("Alpha" "Gamma" "R" "alpha" "beta" "bold" "cr" "code" "deqn" "dots"
     "email" "emph" "epsilon" "eqn" "file" "ge" "item" "lambda" "ldots"
