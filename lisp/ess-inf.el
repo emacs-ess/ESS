@@ -48,6 +48,7 @@
 (autoload 'ess-beginning-of-function	    "ess-mode"  "(autoload)." t)
 (autoload 'ess-end-of-function		    "ess-mode"  "(autoload)." t)
 (autoload 'ess-extract-word-name	    "ess-utils" "(autoload)." t)
+(autoload 'ess-uniq-list		    "ess-utils" "(autoload)." t)
 
 (autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload)." t)
 
@@ -1872,7 +1873,7 @@ using `ess-object-list' if that is non-nil."
 		  (append result
 			  (ess-extract-onames-from-alist alist i)))
 	    (setq i (1+ i)))
-	  (setq ess-object-list result)))))
+	  (setq ess-object-list (ess-uniq-list result))))))
 
 (defun ess-get-words-from-vector (command)
   "Evaluate the S command COMMAND, which returns a character vector.

@@ -4,6 +4,9 @@
 	 (ess-command): move the (sleep-for *) part into to
 	 ess-prompt-wait.
 
+	* ess-inf.el (ess-get-object-list): use ess-uniq-list to get
+	  completion list of unique entries.
+
 2005-01-04  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el (ess-cmd-delay): use this instead of

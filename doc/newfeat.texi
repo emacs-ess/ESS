@@ -19,6 +19,10 @@ dynamic completion.  (We expect few users, if any, have been using the
 pre-computed database method.)
 @item ESS: object completion in iESS buffers running on Windows was
 very slow (for GNU Emacs, but not Xemacs) and has now been fixed.
+Further, it was more or less broken for all versions of S-plus 6.x,
+and has been fixed to work everywhere but with the Windows' GUI.
+The list of objects now shows unique names also when an object appears
+more than once in the search path.
 @end itemize
 
 Changes/New Features in 5.2.3:

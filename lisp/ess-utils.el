@@ -411,17 +411,40 @@ if any exist, in PATH."
 	(setq i (+ i 1)))
     ess-tmp-exec))
 
+;; (defun ess-uniq-list (items)
+;;   "Remove all duplicate strings from the list ITEMS."
+;;   ;; build up a new-list, only adding an item from ITEMS if it is not
+;;   ;; already present in new-list.
+;;   (let (new-list)
+;;     (while items
+;;       (if (not (member (car items) new-list))
+;; 	  (setq new-list (cons (car items) new-list)))
+;;       (setq items (cdr items)))
+;;     new-list
+;;     ))
+
+;; Copyright (C) 1994 Simon Marshall.
+;; Author: Simon Marshall <Simon.Marshall@mail.esrin.esa.it>
+;; LCD Archive Entry:
+;; unique|Simon Marshall|Simon.Marshall@mail.esrin.esa.it|
+;; Functions and commands to uniquify lists or buffer text (cf. sort).
+;; 23-Apr-1994|1.00|~/packages/unique.el.Z|
+;;
+;; MM: renamed from 'unique' to
+(defun ess-unique (list predicate)
+  "Uniquify LIST, stably, deleting elements using PREDICATE.
+Return the list with subsequent duplicate items removed by side effects.
+PREDICATE is called with an element of LIST and a list of elements from LIST,
+and should return the list of elements with occurrences of the element removed.
+This function will work even if LIST is unsorted.  See also `uniq'."
+  (let ((list list))
+    (while list
+      (setq list (setcdr list (funcall predicate (car list) (cdr list))))))
+  list)
 (defun ess-uniq-list (items)
-  "Remove all duplicate strings from the list ITEMS."
-  ;; build up a new-list, only adding an item from ITEMS if it is not
-  ;; already present in new-list.
-  (let (new-list)
-    (while items
-      (if (not (member (car items) new-list))
-	  (setq new-list (cons (car items) new-list)))
-      (setq items (cdr items)))
-    new-list
-    ))
+  "Delete all duplicate entries in ITEMS list, calling `ess-unique'."
+  (ess-unique items 'delete))
+
 
 (defun ess-flatten-list (&rest list)
   "Take the arguments and flatten them into one long list."
