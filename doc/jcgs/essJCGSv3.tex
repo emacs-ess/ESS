@@ -165,7 +165,7 @@
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/30 16:27:55 $ - $Revision: 1.31 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/10/01 13:53:06 $ - $Revision: 1.32 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -268,7 +268,7 @@ ESS provides assistance with both the writing and evaluation of
 analysis code for many types of statistical packages.  ESS currently
 supports the S family of languages (including S
 \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\regstrd\ \citep{Splus}, and R
-\citep{ihak:gent:1996,R}; \SAS\regstrd\ \citep{SAS:8}; \Stata\ 
+\citep{ihak:gent:1996,R}; \SAS\regstrd\ \citep{SAS:8}; \Stata\
 \citep{Stata:7.0}; \XLispStat\ \citep{Tier90} and its extensions Arc
 \citep{Cook:Weisberg:1999} and ViSta \citep{youn:fald:mcfa:1992}; BUGS
 \citep{BUGS}; and Omegahat \citep{DTLang:2000}.  ESS can be extended
@@ -434,15 +434,13 @@ R or \Splus.
 \end{figure}
 
 
-%%% NOTE: Help file reading, navigating and example execution is
-%%% ----  MORE IMPORTANT (because for a much wider audience)
-%%% and for all the S family !!!
-\paragraph{Getting Help.}
+\paragraph{Getting Help, Navigation and Editing.}
 ESS provides display and navigation tools for S (R and \Splus) and
 \Stata\ help displays.  Displays of help files are done in a separate
 buffer.  These buffers include single key bookmarks of the main
-sections of the help file, such as to jump to the examples sections or
-function arguments sections.  
+sections of the help file, such as to jump to the function arguments or
+examples sections.  Code in the latter is sent to a running S process
+easily. % also with single key ``l''
 
 In addition, ESS provides an R documentation mode (\stexttt{Rd-mode})
 which assists in writing help files for R functions, objects, and
@@ -450,8 +448,8 @@ other topics.  \stexttt{Rd-mode} provides the ability to view and
 execute code embedded in the help file in the same manner as ESS
 handles code from any S language source file.  It provides syntax
 highlighting and the ability to submit code directly to a running ESS
-process, either R or \Splus, for evaluation and debugging.  
-%% AJR: Is this really an issue, separate from the editing one?
+process, either R or \Splus, for evaluation and debugging.
+%% AJR: Is this really an issue, separate from the editing one? MM:agree
 %% This latter feature is useful for ensuring that code developed
 %% using R runs under \Splus.
 
