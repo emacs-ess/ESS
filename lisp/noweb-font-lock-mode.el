@@ -182,7 +182,7 @@ Each chunk is fontified in accordance with its own mode"
     (cond 
      (noweb-font-lock-mode                 ;Setup the minor-mode
       (progn
-	(if global-font-lock-mode 
+	(if (and (boundp 'global-font-lock-mode) global-font-lock-mode)
 	    (progn
 	      (mapcar 'noweb-make-variable-permanent-local
 		      '(font-lock-fontify-buffer-function
@@ -207,7 +207,7 @@ Each chunk is fontified in accordance with its own mode"
      ;; off, no matter what (hence the condition `t')
     (t
      (progn
-       (if global-font-lock-mode
+       (if (and (boundp 'global-font-lock-mode) global-font-lock-mode)
 	   (progn
 	     ;; (setq font-lock-fontify-buffer-function
 	     ;;	      'font-lock-default-fontify-buffer) 
