@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2002/07/16 13:50:21 $
-;; Version: $Revision: 1.33 $
-;; RCS: $Id: ess-cust.el,v 1.33 2002/07/16 13:50:21 rsparapa Exp $
+;; Modified: $Date: 2002/07/16 14:15:55 $
+;; Version: $Revision: 1.34 $
+;; RCS: $Id: ess-cust.el,v 1.34 2002/07/16 14:15:55 rsparapa Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -538,6 +538,26 @@ Good for evaluating ESS code."
 
 (make-variable-buffer-local 'ess-local-process-name)
 
+
+(defcustom ess-kermit-command "gkermit -T"
+    "*Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
+    :group 'ess  
+    :type  'string
+)
+
+(defcustom ess-kermit-prefix "#"
+    "*String files must begin with to use kermit file transfer."
+    :group 'ess  
+    :type  'string
+)
+
+(defcustom ess-kermit-remote-directory "$HOME"
+    "*Buffer local variable that designates remote directory of file."
+    :group 'ess  
+    :type  'string
+)
+
+(make-variable-buffer-local 'ess-kermit-remote-directory)
 
 ;;*;; Regular expressions
 
