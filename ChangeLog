@@ -1,3 +1,30 @@
+Sun Nov  9 16:30:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: cleaned out my email of TODO problems, except for
+ 	SAS).
+
+Sun Nov  9 16:24:39 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/TODO: updated for what has been accomplished by this stage,
+ 	for 5.0.
+
+Sun Nov  9 15:32:34 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sta.el: cleaned up errors via lets.
+
+Sun Nov  9 15:26:33 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essl-sas.el: removing unusable commands.
+
+Sun Nov  9 15:08:56 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (no-doc): new variable.  use it for autoload
+ 	documentation.
+
+Sun Nov  9 15:08:13 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: ess-vars/ess/ess-site dependencies cleared up.
+
 Sun Nov  9 15:02:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-sas.el: changed documentation for autoloads.
@@ -713,6 +740,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.22  1997/11/09 21:31:03  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.21  1997/11/09 20:07:12  rossini
 	* Removing *** empty log message ***
 	* Removing
