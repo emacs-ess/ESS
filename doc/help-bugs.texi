@@ -10,7 +10,7 @@ a BUGS batch process can be defined by a single file.  Third, ESS
 provides a BUGS batch script that allows ESS to set BUGS batch
 parameters.  Fourth, key sequences are defined to create a command
 file and submit a BUGS batch process.  Lastly, interactive submission of BUGS
-command is also supported.
+commands is also supported.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(BUGS)--Model files, ESS(SAS)--Command files, ESS for SAS, ESS for other languages
@@ -26,7 +26,7 @@ for a model file will produce a template for you.
 ESS[BUGS] supports "replacement" variables.  These variables are created as
 part of the template, i.e. with the first press of F12 in an empty buffer.  
 They are named by
-all capitals and start with '%':  %DATA, %INIT, %MONITOR and %STATS.
+all capitals and start with '%':  %N, %DATA, %INIT, %MONITOR and %STATS.
 When you are finished editing your model file, pressing F12 will perform the
 necessary replacements and build your command file for you.  
 
@@ -44,6 +44,13 @@ character, #, at the beginning of the line.  Or, if your
 init file is named something else, then change %INIT in the template to the
 appropriate file name.  
 
+The %N variable appears in the line 'const N = 0;#%N'.  Although it is commented,
+it is still active.  Notice that later on in the template you have the line
+'for (i in 1:N)'.  The BUGS constant N is the number of rows in
+your data file.  When you press F12, the data file is read and the number of
+lines are counted (after %DATA is resolved, if necessary).  The number of
+lines replace the zero in the 'const N = 0' statement.  
+
 The %MONITOR variable appears on a line by itself.  Although it is commented,
 it is still active.  This line is a list of variables that you want monitored.
 When you press F12, the appropriate statements are created in
@@ -54,9 +61,9 @@ The %STATS variable is similar to the %MONITOR variable.  It is a list of
 variables for which summary statistics will be calculated.  When you press
 F12, the appropriate statements will be generated in your command file.
 
-Note that the %DATA and %INIT variables are only replaced on the second press
-of F12, but the %MONITOR and %STATS variables re-build the command file for
-each press of F12.
+Please note that the %DATA and %INIT variables are only replaced on the second 
+press of F12, but the actions for %N, %MONITOR and %STATS are performed on
+each press of F12 if you re-visit the model file.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(BUGS)--Command files, ESS(SAS)--Log files, ESS(BUGS)--Model files, ESS for other languages
@@ -64,7 +71,7 @@ each press of F12.
 
 To avoid extension name collision, .bmd is used for BUGS command files.  When
 you have finished editing your model file and press F12, a command file is 
-created for you if one does not already exist.  However, the command file was
+created if one does not already exist.  However, the command file was
 created, it recognizes two "replacement" variables:  %MONITOR and %STATS.  
 
 Two %MONITOR variables appears on lines by themselves.  Although they are
