@@ -2,13 +2,15 @@
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997, A.J. Rossini <rossini@stat.sc.edu>
+;; Copyright (C) 1998--2000	A.J. Rossini, Martin Maechler,
+;;				Kurt Hornik, and Richard M. Heiberger.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>, MM
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/11/16 21:45:01 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: ess-help.el,v 5.5 1999/11/16 21:45:01 ess Exp $
+;; Modified: $Date: 2000/02/10 09:06:38 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: ess-help.el,v 5.6 2000/02/10 09:06:38 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -19,11 +21,11 @@
 
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; along with GNU Emacs; see the file COPYING.	If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -88,13 +90,13 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	 (tbuffer (get-buffer-create hb-name))
 	 (curr-help-command inferior-ess-help-command)
 	 ;;-- pass the buffer-local 'ess-help-sec-..'  to the ess-help buffer:
-	 (curr-help-sec-regex      ess-help-sec-regex)
+	 (curr-help-sec-regex	   ess-help-sec-regex)
 	 (curr-help-sec-keys-alist ess-help-sec-keys-alist)
 	 (alist ess-local-customize-alist))
 
     (set-buffer tbuffer)
     (ess-setq-vars-local (eval alist) (current-buffer))
-    (setq ess-help-sec-regex      curr-help-sec-regex)
+    (setq ess-help-sec-regex	  curr-help-sec-regex)
     (setq ess-help-sec-keys-alist curr-help-sec-keys-alist)
     ;; see above, do same for inferior-ess-help-command... (i.e. remove
     ;; hack, restore old code :-).
@@ -167,7 +169,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 (if ess-help-mode-map
     nil
   (setq ess-help-mode-map (make-keymap)); Full keymap, in order to
-  (suppress-keymap ess-help-mode-map)   ; suppress all usual "printing" characters
+  (suppress-keymap ess-help-mode-map)	; suppress all usual "printing" characters
   (define-key ess-help-mode-map " " 'scroll-up)
   (define-key ess-help-mode-map "b" 'scroll-down)
   (define-key ess-help-mode-map "q" 'ess-switch-to-end-of-ESS)
@@ -202,12 +204,37 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
   (define-key ess-help-mode-map "\C-c\C-v" 'ess-display-help-on-object)
   (define-key ess-help-mode-map "\C-c\C-k" 'ess-request-a-process))
 
+;; One reason for the following menu is to <TEACH> the user about key strokes
+(defvar ess-help-mode-menu
+  (list "ESS-help"
+	["Next Section"			ess-skip-to-next-section t]
+	["Previous Section"		ess-skip-to-previous-section t]
+	["Search Forwards"		isearch-forward t]
+	["Help on Section Skipping"	ess-describe-sec-map t]
+	["Beginning of Buffer"		beginning-of-buffer t]
+	["End of Buffer"		end-of-buffer t]
+	"-"
+	["Help on ..."			ess-display-help-on-object t]
+	"-"
+	["Eval Line"			ess-eval-line-and-next-line t]
+	["Eval Region & Go"		ess-eval-region-and-go t]
+	["Switch to ESS Process"	ess-switch-to-ESS t]
+	"-"
+	["Describe ESS-help Mode"	ess-describe-help-mode t]
+	"-"
+	["Kill Buffer"			kill-buffer t]
+	["Kill Buffer & Go"		ess-kill-buffer-and-go t]
+	["Back to end of ESS Pr."	ess-switch-to-end-of-ESS t]
+	)
+  "Menu used in ess-help mode.")
+
+
 (defun ess-help-mode ()
 ;;; Largely ripped from more-mode.el,
 ;;; originally by Wolfgang Rupprecht wolfgang@mgm.mit.edu
   "Mode for viewing ESS help files.
 Use SPC and DEL to page back and forth through the file.
-Use `n'  and `p' to move to next and previous section,
+Use `n'	 and `p' to move to next and previous section,
     `s' to jump to a particular section;   `s ?' for help.
 Use `q' to return to your ESS session; `x' to kill this buffer first.
 The usual commands for evaluating ESS source are available.
@@ -222,6 +249,11 @@ Other keybindings are as follows:
   ;;; Keep <tabs> out of the code.
   (make-local-variable 'indent-tabs-mode)
   (setq indent-tabs-mode nil)
+
+  (require 'easymenu)
+  (easy-menu-define ess-help-mode-menu-map ess-help-mode-map
+		    "Menu keymap for ess-help mode." ess-help-mode-menu)
+  (easy-menu-add ess-help-mode-menu-map ess-help-mode-map)
 
   (run-hooks ess-help-mode-hook))
 
@@ -275,6 +307,7 @@ which keystrokes find which sections."
   (describe-function 'ess-skip-to-help-section)
   (save-excursion
     (set-buffer "*Help*")
+    (toggle-read-only nil)
     (goto-char (point-max))
     (insert "\n\nCurrently defined keys are:
 
@@ -282,7 +315,7 @@ Keystroke    Section
 ---------    -------\n")
     (mapcar '(lambda (cs) (insert "    "
 				  (car cs)
-				  "        "
+				  "	   "
 				  (cdr cs) "\n"))
 	    ess-help-sec-keys-alist)
     (insert "\nFull list of key definitions:\n"
@@ -349,16 +382,16 @@ or XLispStat for additional information."
   (goto-char (point-min))
   (while (search-forward "\b" nil t)
     (let* ((preceding (char-after (- (point) 2)))
-           (following (following-char)))
+	   (following (following-char)))
       (cond ((= preceding following)
-             ;; x\bx
-             (delete-char -2))
-            ((= preceding ?\_)
-             ;; _\b
-             (delete-char -2))
-            ((= following ?\_)
-             ;; \b_
-             (delete-region (1- (point)) (1+ (point)))))))
+	     ;; x\bx
+	     (delete-char -2))
+	    ((= preceding ?\_)
+	     ;; _\b
+	     (delete-char -2))
+	    ((= following ?\_)
+	     ;; \b_
+	     (delete-region (1- (point)) (1+ (point)))))))
   ;; Crunch blank lines
   (goto-char (point-min))
   (while (re-search-forward "\n\n\n\n*" nil t)
@@ -407,11 +440,11 @@ or XLispStat for additional information."
 
 ;;; This file is automatically placed in Outline minor mode.
 ;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
+;;; Chapters:	  ^L ;
+;;; Sections:	 ;;*;;
 ;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
+;;; Components:	 defuns, defvars, defconsts
+;;;		 Random code beginning with a ;;;;* comment
 
 ;;; Local variables:
 ;;; mode: emacs-lisp
