@@ -660,7 +660,7 @@ current buffer if nil."
     "\\|WARNING: Length of character variable has already been set."
     "\\|Bus Error In Task\\|Segmentation Violation In Task"
     "\\|NOTE: Estimated G matrix is not positive definite."))
-	(ess-sas-save-point nil))
+	(ess-sas-save-point nil) (ess-sas-pop-mark nil))
 
   (if (ess-sas-goto "log" 'revert) (progn
 	(setq ess-sas-save-point (point))
@@ -671,8 +671,12 @@ current buffer if nil."
   (if (or (search-forward-regexp ess-sas-error nil t)
 	(and (goto-char (point-min))
 	    (search-forward-regexp ess-sas-error nil t))) 
-	(progn (push-mark (match-beginning 0) t)
-	    (zmacs-activate-region))
+	(if (and (boundp 'zmacs-regions) zmacs-regions)
+	    (progn 
+		(if ess-sas-pop-mark (pop-mark)
+		    (setq ess-sas-pop-mark t))
+		(push-mark (match-beginning 0) t)
+		(zmacs-activate-region)))
 	(goto-char ess-sas-save-point)))))
 
 (defun ess-sas-goto-lst ()
