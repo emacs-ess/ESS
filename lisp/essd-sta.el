@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 1998/09/09 23:30:17 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-sta.el,v 1.1 1998/09/09 23:30:17 rossini Exp $
+;; Modified: $Date: 1998/09/09 23:48:45 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-sta.el,v 1.2 1998/09/09 23:48:45 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -60,13 +60,13 @@
     (ess-retr-lastvalue-command    . 'nil)
     (ess-save-lastvalue-command    . 'nil)
     (inferior-ess-program          . inferior-STA-program-name)
-    (inferior-ess-objects-command  . "objects(%d)\n")
-    (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
+    (inferior-ess-objects-command  . "desc\n")
+    (inferior-ess-help-command     . "help %s\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?")
     (inferior-ess-start-file       . nil) ;"~/.ess-stata")
-    (inferior-ess-start-args       . ""))
+    (inferior-ess-start-args       . "-q"))
  "Variables to customize for Stata")
 
 
