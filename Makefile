@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.56 2002/04/16 19:45:43 rsparapa Exp $
+## $Id: Makefile,v 5.57 2002/05/06 05:27:54 rmh Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -132,15 +132,16 @@ tag:
 	@echo "** Tagging the release **"
 	cvs tag -R $(ESSVERSIONTAG)
 
-info/ess.info info/ess.info-1 info/ess.info-2 info/ess.info-3: doc/ess.texi
+doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3 doc/ess.info-4: doc/ess.texi
 	$(MAKE) docs
 
-xemacs-links: doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3
+xemacs-links: doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3 doc/ess.info-4
 	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
 	    $(XEMACSDIR)/xemacs-packages/info/ess.info*
 	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc             $(XEMACSDIR)/xemacs-packages/etc/$(ESSVERSIONDIR)
 	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp            $(XEMACSDIR)/xemacs-packages/lisp/$(ESSVERSIONDIR)
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info   $(XEMACSDIR)/xemacs-packages/info/ess.info
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-1 $(XEMACSDIR)/xemacs-packages/info/ess.info-1
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-2 $(XEMACSDIR)/xemacs-packages/info/ess.info-2
-	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/info/ess.info-3 $(XEMACSDIR)/xemacs-packages/info/ess.info-3
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info    $(XEMACSDIR)/xemacs-packages/info/ess.info
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info-1  $(XEMACSDIR)/xemacs-packages/info/ess.info-1
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info-2  $(XEMACSDIR)/xemacs-packages/info/ess.info-2
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info-3  $(XEMACSDIR)/xemacs-packages/info/ess.info-3
+	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/ess.info-4  $(XEMACSDIR)/xemacs-packages/info/ess.info-4
