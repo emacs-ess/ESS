@@ -1,14 +1,11 @@
 ANNOUNCING ESS
 **************
 
-Annoucing the release of ESS-5.1.9 (Emacs Speaks Statistics).
+   Annoucing the release of ESS-5.1.9 (Emacs Speaks Statistics).
 ------------------------------------------------------------
 
-New in ESS-5.1.9:
-
-    ....
-
------------------
+   (New: improvements to SAS support,       Splus 5 support,
+Splus 4.5 under Microsoft Windows support)
 
    ESS is an Emacs package which provides a standard interface between
 statistical programs and statistical processes.  It is intended to
@@ -53,6 +50,16 @@ in the file COPYING in the same directory as this file for more details.
 
 New Features
 ============
+
+   Changes/New Features in 5.1.9:
+   * Stata mode works
+
+   * Literate Data Analysis using Noweb works
+
+   Changes/New Features in 5.1.8:
+   * Bug fixes
+
+   * R documentation mode defaults changed
 
    Beginning with ESS 5.1.2 we are able to use inferior iESS mode to
 communicate directly with a running S-Plus 4.x process using the
@@ -136,8 +143,8 @@ suggested coding fixes with bug reports are much appreciated!
 Requirements
 ============
 
-   ESS version 5.1.9 requires Emacs version 19.29 or later, or version
-XEmacs 19.14 or later.  It has been most thoroughly tested with:
+   ESS version 5.1.n (n >= 2) requires Emacs version 19.29 or later, or
+version XEmacs 19.14 or later.  It has been most thoroughly tested with:
 
    * S-PLUS versions 3.3, 3.4, 4.5, 5.0
 
@@ -165,7 +172,8 @@ XEmacs 19.14 or later.  It has been most thoroughly tested with:
 
    with the following Emacsen:
 
-   * Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.4, XEmacs 21.0
+   * Emacs 19.29, 19.34, 20.3, 20.4, XEmacs 19.16, XEmacs 20.4, XEmacs
+     21.0
 
    * Emacs 19.28 with SAS (with additional modifications)
 
@@ -232,7 +240,9 @@ Authors
    * A.J. Rossini (http://www.biostat.washington.edu/~rossini/)
      <rossini@stat.sc.edu>
 
-   * Richard M.       Heiberger (http://www.sbm.temple.edu/departments/statistics/) <rmh@fisher.stat.temple.edu>
+   * Richard M. Heiberger
+     (http://www.sbm.temple.edu/departments/statistics/)
+     <rmh@fisher.stat.temple.edu>
 
    * Kurt Hornik (http://www.ci.tuwien.ac.at/~hornik)
      <hornik@ci.tuwien.ac.at>
