@@ -40,7 +40,13 @@
   INFODIR) and then type:
 
 	make
+  
+  If this works, then you might try:
+
 	make install
+
+  Note that the latter does the former as well, so if you are feeling
+  lucky, you might want to skip it.  
 
   This will install the info files (and the lisp files, if they
   are to go in another directory).  Don't forget to edit the file
@@ -50,6 +56,9 @@
   If you are using XEmacs, you might do:
 
 	make EMACS=xemacs
+
+  and then
+
 	make EMACS=xemacs install
 
   instead of editing the Makefile.
