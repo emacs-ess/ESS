@@ -83,12 +83,12 @@ S-PLUS, R, XLispStat, Stata
 
 \begin{abstract}
   We discuss Emacs Speaks Statistics (ESS), a user interface for
-  statistical programming based on Emacs, intended for many
-  statistical programming languages.  It falls in the programming
-  tools category of Integrated Development Environments (IDEs).  We
-  discuss how it works, why one would consider using it, and
-  extensions which increase the programming efficiency for statistical
-  programming.
+  statistical programming based on Emacs, intended for developing
+  statistical applications and performing data analysis.  It falls in
+  the programming tools category of Integrated Development
+  Environments (IDEs).  We discuss how it works, why one should use
+  it, and extensions which increase the programming efficiency for
+  statistical programming.
 \end{abstract}
 
 \section{Introduction}
@@ -106,10 +106,10 @@ important with the rise of computational tools such as resampling
 methods such as the bootstrap and jackknife, as well as simulation
 methods such as Markov Chain Monte Carlo (MCMC).
 
-One issue that quickly arises is that different analytic tools are
-targeted for particular styles of statistical analysis.  This suggests
-that efficiency work habits can require switching between data
-analysis tools.  One example is that general purpose tools such as R
+In the field of statistics, different analytic tools are targeted for
+particular styles of statistical analysis.  This suggests that
+efficiency work habits can require switching between data analysis
+tools.  One example is that general purpose tools such as R
 \citep{ihak:gent:1996} are not as easy to use performing Bayesian
 analyses as special tools such as BUGS \citep{SpieThomBest:1999}.  On
 the other hand, these specialized tools can not be efficiently used to
@@ -117,24 +117,23 @@ handle general analyses and graphical summaries.  This suggests a
 potential efficiency gain through the use of using multiple
 computational tools for complex statistical analyses.  However, most
 of these tools have their own idiosyncratic user interfaces, which can
-undo the efficiency gain.
+negate any possible efficiency gain.
 
-Emacs Speaks Statistics (ESS) is intended to provide a single point of
-interface for statistical computing tasks using a keyboard.  The
-primary user tasks which ESS focuses on for optimization and
-efficiency are statistical coding and interactive data analysis.
-Statistical coding is the writing of computer code for data analysis.
-This code might be compiled into an object file using a compiler, for
-example C or Fortran; or it might be run by an interpreter, for
-example, SAS, \Splus\, R, or Python.  The task of entering of commands
-for interactive data analysis is similar.  The primary difference is
-that the results of a small set of commands are of critical interest
-for review in the latter, but the results of all commands are of
-interest in the former.  Both of these tasks can be present at the
-same time, for example in the use of compiled Fortran code for
-optimization, which is being called from an interpreted language, such
-as \Splus, R, or XLispStat, containing the objective function to
-optimize.
+Emacs Speaks Statistics (ESS) provides a single interface for a family
+of statistical computing tasks using a keyboard.  The primary user
+tasks which ESS focuses on for optimization and efficiency are
+statistical coding and interactive data analysis.  Statistical coding
+is the writing of computer code for data analysis.  This code might be
+C or Fortran, with the intent to compile into an object file using a
+compiler, or it might be run by an interpreter, for example, \Splus\,
+SAS, R, or Python.  The task of entering of commands for interactive
+data analysis is similar.  The primary difference is that the results
+of a small set of commands are of critical interest for review in the
+latter, but the results of all commands are of interest in the former.
+Both of these tasks can be present at the same time, for example in
+the use of compiled Fortran code for optimization, which is being
+called from an interpreted language, such as \Splus, R, or XLispStat,
+containing the objective function to optimize.
 
 Very few statistical packages have identical command-line interfaces;
 this is in addition to the differences between the actual macro or
@@ -161,8 +160,8 @@ processes, and additional tools which can be useful for both
 statistical software development and data analysis.  It works with
 common statistical software including the S family of languages
 including S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\ \citep{Splus},
-and R \citep{ihak:gent:1996}; XLispStat \citep{Tier90} including the
-extension of Arc \citep{Cook:Weisberg:1999} and ViSta
+and R \citep{ihak:gent:1996}; XLispStat \citep{Tier90} including its
+extensions Arc \citep{Cook:Weisberg:1999} and ViSta
 \citep{youn:fald:mcfa:1992}; SAS \citep{SAS:8.0}; Stata
 \citep{Stata:6.0}; Omegahat \citep{DTLang:2000}; and can be extended
 in at least a limited way to most statistical packages which can be
@@ -170,11 +169,10 @@ controlled from a command-line.
 
 The rest of this introduction will discuss the proposed development
 environment and how it can be used.  Sections \ref{sec:S} and
-\ref{sec:SAS} will discuss how this is realized for two very distinct
-statistical languages, the S family and SAS.  The history of this
-project will then be discussed, and this paper will conclude with a
-discussion of future work in this area, including Literate Statistical
-Analysis and other planned enhancements.
+\ref{sec:SAS} will discuss how this is realized for two different
+statistical languages, the S family and SAS.  This will be followed by
+the project's history, concluding with a discussion of future
+extensions and related work.
 
 \subsection{Emacs}
 \label{sec:intro:emacs}
@@ -379,7 +377,7 @@ results, which is useful for demonstration of techniques as well as
 for reconstruction of data analyses.  In particular this allows for
 the recording and saving of transcripts, manipulating and editing
 saved transcripts, as well as re-evaluating commands from transcript
-lines.  For the S languages, the transcipt can be ``cleaned'' by
+lines.  For the S languages, the transcript can be ``cleaned'' by
 finding all input lines and isolating them into an input file.
 
 \paragraph{Help File Editing (R)}
@@ -474,7 +472,7 @@ multi-line commands to an active process buffer; the ability to
 request help from an S process for variables and functions, and to
 have the results sent into a separate buffer; and the ability to
 switch between processes which would be the target of the buffer (for
-the above).  The S language transcipts can be ``cleaned'' by
+the above).  The S language transcripts can be ``cleaned'' by
 finding all input lines and isolating them into a standalone input file
 that can be used as input to another S job or as a model for further
 program design.
@@ -673,14 +671,14 @@ The function keys act as follows:\\
 \begin{tabular}{llll}
 Unix& PC&\\
 \tt F2  &\tt  F2& Refresh:&revert the buffer with the file if the file on disk is newer\\
-\tt 	&\tt 	&	  &	  than the file currently in the buffer.\\
+\tt     &\tt    &         &       than the file currently in the buffer.\\
 \tt F3  &\tt  F8& Submit: &save   the current {\tt .sas} buffer (which may be the {\tt .sas}\\
-\tt 	&\tt 	&	  &	  file associated with the {\tt .lst} or {\tt .log} file you\\
-\tt 	&\tt 	&	  &	  are actually looking at) to a file and submit\\
-\tt 	&\tt 	&	  &	  the file to a background SAS job.\\
+\tt     &\tt    &         &       file associated with the {\tt .lst} or {\tt .log} file you\\
+\tt     &\tt    &         &       are actually looking at) to a file and submit\\
+\tt     &\tt    &         &       the file to a background SAS job.\\
 \tt F4  &\tt  F5& Program:&switch buffer to {\tt .sas} file.\\
 \tt F5  &\tt  F6& Log:    &switch buffer to {\tt .log} file, ``refresh" and \\
-\tt 	&\tt 	&	  &	   goto next error message, if any.\\
+\tt     &\tt    &         &        goto next error message, if any.\\
 \tt F6  &\tt  F7& Listing:&switch buffer to {\tt .lst} file and ``refresh".\\
 \tt F7  &\tt  F4& Type-1: &switch buffer to {\tt Type-1} (defaults to {\tt .txt}) file and ``refresh".\\
 \tt F8  &\tt  F3& Shell:  &switch buffer to shell.\\
@@ -1051,7 +1049,7 @@ Interpretations\\
 \tt   pagesize=60   & standard printed page length instead of window length \\
 \tt   linesize=80   & keeps output lines from folding on standard terminals \\
 \tt   formdlim=' '  & blank replaces {\tt C-l} formfeeds to prevent mostly  \\
-\tt 		    & empty printed pages                                   \\
+\tt                 & empty printed pages                                   \\
 \end{tabular}\\
 
 \subsubsection{Batch SAS (-unix-keys illustrated, pc-keys in the comments)}
@@ -1167,14 +1165,14 @@ in {\tt myfile.sas}.
 %%     title 'Analysis of Case 0502';
 %% 
 %%     data case0502;
-%% 	   infile '/home/public/stat/Data/case0502.asc'
-%% 		  firstobs=2;
-%% 	   input percent code;
+%%         infile '/home/public/stat/Data/case0502.asc'
+%%                firstobs=2;
+%%         input percent code;
 %%     run;
 %% 
 %%     proc glm;
-%% 	 class code;
-%% 	 model percent=code /ss1;
+%%       class code;
+%%       model percent=code /ss1;
 %%     run;
 %% \end{verbatim}
 
