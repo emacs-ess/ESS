@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/06 22:40:02 $ - $Revision: 1.127 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/06 23:08:52 $ - $Revision: 1.128 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -237,9 +237,6 @@ use under the GPL: GNU Emacs \citep{GNU-Emacs} and XEmacs
 some characteristics with operating systems, including many facilities
 which go beyond ordinary text editing.  Most importantly in this
 context, Emacs can interact with and control other programs.
-%, including intelligent completion as well as content presentation.
-%% When opening a file, Emacs can complete partially-typed file names by
-%% referring to the operating system file directory.  
 
 \paragraph{Keyboard and Mouse Interaction.}
 When Emacs was originally written, character-based terminals with
@@ -1203,17 +1200,43 @@ their initial authors planned.  To date, there have been 3 generations
 of developers, with 5 major versions released.  ESS descended from and combined
 2 Emacs modes: S-mode and SAS-mode.
 
-\begin{figure}[tbp]
-  \centering
-\ifdraft
-  \emptyfig
-\else
-  \includegraphics[height=3in,width=5.5in]{timeline} %% please use the eps.gz
-\fi
-  \caption{The history and timeline of ESS and its ancestors}
-  \label{fig:history}
-\end{figure}
+%\begin{figure}[tbp]
+%  \centering
+%\ifdraft
+%  \emptyfig
+%\else
+%  \includegraphics[height=3in,width=5.5in]{timeline} %% please use the eps.gz
+%\fi
+%  \caption{The history and timeline of ESS and its ancestors}
+%  \label{fig:history}
+%\end{figure}
 
+\begin{table}[tbp]
+  \centering
+  \begin{tabular}{cccccc}
+    Year & S-mode & SAS-mode \\ 
+    1989 & v.1 (Emacs, Unix, S/S+) &  \\
+    1990 &                         & v.0 (Emacs, Unix) \\
+    1991 & v.2 (Emacs, Unix, S/S+) & \\
+    1993 & v.3 (Emacs, Unix, S/S+) & \\
+    1994 & v.4 (Emacs/XEmacs, Unix, S/S+)   & v.1 (Emacs, Unix) \\
+    1995 & v.5 (Emacs/XEmacs, Unix, S/S+/R) & v.2 (Emacs/XEmacs, Unix) \\
+                                %                               ESS
+    \hline & \multicolumn{2}{c}{ESS} \\ \hline 
+    1996 & v.5.0 (Emacs/XEmacs, Unix)         &  Stata, XLispStat    \\
+    1998 & v.5.1 (Emacs/XEmacs, Unix/Windows) &  Windows:  S+/R\\
+    1999 & v.5.1 (Emacs/XEmacs, Unix/Windows/Mac) & SAS batch, Omegahat \\
+    2001 & v.5.1 (Emacs/XEmacs, Unix/Windows)     & BUGS batch \\
+    2002 & v.5.2 & \\
+    %% Should we send this table around to the previous generations?
+    %% Anything else  
+    %% they should see?  Of course, we should have an Acknowledgement
+    %% section at the  
+    %% end.
+  \end{tabular}
+  \caption{History and Ancestors of ESS}
+  \label{tab:timeline}
+\end{table}
 
 %% ESS originated as S-mode, which provided an interface for
 %% programming and process control under GNU Emacs for \Splus\ version 3,
