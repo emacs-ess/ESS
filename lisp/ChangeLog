@@ -1,3 +1,11 @@
+2004-12-20  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-cust.el (ess-ms-slow): New variable.
+
+	* ess-inf.el (ess-command): Condition use of sleep-for (to add
+	delays) upon ess-microsoft-p [not 'window-system] and a new
+	variable ess-ms-slow.
+
 2004-12-04  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (inferior-ess-mode): setq inferior-ess-prompt at the
