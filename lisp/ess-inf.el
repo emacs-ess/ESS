@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/03 14:28:34 $
-;; Version: $Revision: 1.31 $
-;; RCS: $Id: ess-inf.el,v 1.31 1997/07/03 14:28:34 rossini Exp $
+;; Modified: $Date: 1997/07/07 16:20:48 $
+;; Version: $Revision: 1.32 $
+;; RCS: $Id: ess-inf.el,v 1.32 1997/07/07 16:20:48 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.32  1997/07/07 16:20:48  rossini
+;; cleaned up doc-strings.
+;;
 ;; Revision 1.31  1997/07/03 14:28:34  rossini
 ;; messages better.
 ;;
@@ -283,11 +286,9 @@
 
 (defun ess-proc-name (n)
   "Return process name of process N, as a string."
-  ;; ess-proc-prefix is from  "S.el"
   (concat ess-proc-prefix (if (> n 1) n)))
 
 ;; AJR: Moved S,R,XLS to ess-site.
-
 
 ;; AJR: was S0().
 (defun inferior-ess (&optional n)
