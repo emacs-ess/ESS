@@ -1,44 +1,44 @@
 Changes/New Features in 5.1.20:
 @itemize @bullet
 @item New `options()$STERM' in the S dialects (S, S-Plus, R).
-      The S program can determine the environment in which it is
-      currently running.  ESS sets the option to `iESS' or `ddeESS'
-      when it starts an S language process.  We recommend other specific
-      values for S language processes that ESS does not start.
+The S program can determine the environment in which it is
+currently running.  ESS sets the option to `iESS' or `ddeESS'
+when it starts an S language process.  We recommend other specific
+values for S language processes that ESS does not start.
 @item New `ess-mouse-me' function, assigned to S-mouse-3 by default.
-      User may click on a word or region and then choose from the
-      menu to display the item, or a summary, or a plot, etc.
-      This feature is still under development.
+User may click on a word or region and then choose from the
+menu to display the item, or a summary, or a plot, etc.
+This feature is still under development.
 @item GNU Emacs 21.1 is now supported (fixed for S dialects, SAS & BUGS),
-      (some from Stephen Eglen).
+(some from Stephen Eglen).
 @item XEmacs 21.x is now supported (fixed w32-using-nt bug)
 @item XEmacs on Win (NT) is better supported.
 @item Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
 @item should now work even when imenu is not available (for old Xemacsen).
 @item for SAS : XEmacs-Imenu fix; C-TAB is globalized along with your 
-      function-key definitions, if specified; you can specify your SAS
-      library definitions outside of autoexec.sas for ess-sas-data-view
-      with SAS code placed in the variable ess-sas-data-view-libname, 
-      also the dataset name is defaulted to the nearest permanent dataset 
-      to point; Speedbar support now works for permanent datasets, please 
-      ignore first./last.; new font-locking is now the default with more 
-      improvements for font-locking PROCs, macro statements, * ; and %* ; 
-      comments; you can toggle sas-log-mode with F10 which will font-lock 
-      your .log (if it isn't too big); submit remote .sas files accessed
-      with ange-ftp, EFS or Tramp (Kermit is experimental) by setting 
-      ess-sas-submit-method to 'sh; ess-sas-submit-command and 
-      ess-sas-submit-command-options are buffer-local so you can have
-      local file variable sections at the end of your .sas files to 
-      request different executables or specify special options and the 
-      local file variables are re-read at submit instead of only at file
-      open so that if you make a change it is picked up immediately;
+function-key definitions, if specified; you can specify your SAS
+library definitions outside of autoexec.sas for ess-sas-data-view
+with SAS code placed in the variable ess-sas-data-view-libname, 
+also the dataset name is defaulted to the nearest permanent dataset 
+to point; Speedbar support now works for permanent datasets, please 
+ignore first./last.; new font-locking is now the default with more 
+improvements for font-locking PROCs, macro statements, * ; and %* ; 
+comments; you can toggle sas-log-mode with F10 which will font-lock 
+your .log (if it isn't too big); submit remote .sas files accessed
+with ange-ftp, EFS or Tramp (Kermit is experimental) by setting 
+ess-sas-submit-method to 'sh; ess-sas-submit-command and 
+ess-sas-submit-command-options are buffer-local so you can have
+local file variable sections at the end of your .sas files to 
+request different executables or specify special options and the 
+local file variables are re-read at submit instead of only at file
+open so that if you make a change it is picked up immediately;
 @item for BUGS: font-lock with `in' fixed.
 @item for STATA: font-lock bug fixed.
 @item for Rd mode: C-c C-v and `switch-process' in menu.
-      further, C-c C-f prefix (Rd-font) for inserting or surrounding a word
-      by things such as \code@{.@}, \code@{\link@{.@}@}, \emph@{.@} etc.
+further, C-c C-f prefix (Rd-font) for inserting or surrounding a word
+by things such as \code@{.@}, \code@{\link@{.@}@}, \emph@{.@} etc.
 @item new functions (ess-directory-function) and (ess-narrow-to-defun)
-      ess-directory <-> default-directory logic (Jeff Mincy).
+ess-directory <-> default-directory logic (Jeff Mincy).
 @item Re-organized Makefile and fixed a few bugs.
 @end itemize
 
@@ -46,23 +46,23 @@ Changes/New Features in 5.1.19:
 @itemize @bullet
 @item S+6 now supported (Tony Rossini (Unix) and Rich Heiberger (Windows))
 @item New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
-      Templates assist you in writing .bug and .cmd code (.cmd and .log
-      are replaced by .bmd and .bog to avoid emacs extension collisions).
-      "Substitution" parameters facilitate "automagic" generation of
-      "data...in" and "init...in" filenames, "const N=" from your data
-      file and "monitor()/stats()" commands.  Activated by pressing F12.
+Templates assist you in writing .bug and .cmd code (.cmd and .log
+are replaced by .bmd and .bog to avoid emacs extension collisions).
+Substitution" parameters facilitate "automagic" generation of
+data...in" and "init...in" filenames, "const N=" from your data
+file and "monitor()/stats()" commands.  Activated by pressing F12.
 @item Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
 @item You can change between PC and Unix, local and global SAS function-key
-      definitions interactively (Rich Heiberger)
+definitions interactively (Rich Heiberger)
 @item C-Submit a highlighted region to SAS batch (Rodney Sparapani)
 @item New and improved SAS syntax highlighting (Rodney Sparapani)
-      To get the new functionality, set ess-sas-run-make-regexp to nil.
-      Also available in .log files via F10.
+To get the new functionality, set ess-sas-run-make-regexp to nil.
+Also available in .log files via F10.
 @item Open a permanent SAS dataset for viewing via F9 (Rodney Sparapani)
-      You must have the library defined in autoexec.sas for it to work.
+You must have the library defined in autoexec.sas for it to work.
 @item User-friendly defaults for `sas-program', `ess-sas-batch-pre-command'
-      and `ess-sas-batch-post-command' as well Customize support for these
-      and other ESS[SAS] variables (Rodney Sparapani)
+and `ess-sas-batch-post-command' as well Customize support for these
+and other ESS[SAS] variables (Rodney Sparapani)
 @item `ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
 @item Emacs/XEmacs, Unix/Windows issues collectively handled in ess-emcs.el
 @item defadvice solves problem of missing *ESS* (thanks to Jeff Mincy)
@@ -72,8 +72,8 @@ Changes/New Features in 5.1.19:
 Changes/New Features in 5.1.18:
 @itemize @bullet
 @item New `ess-smart-underscore' function, now assigned to "_" by default.
-      Inserts `ess-S-assign' (customizable " <- "), unless inside string
-      and comments where plain "_" is used instead. (MM)
+Inserts `ess-S-assign' (customizable " <- "), unless inside string
+and comments where plain "_" is used instead. (MM)
 @item Fixes for longstanding interactive SAS breakage (RMH)
 @end itemize
 
@@ -81,15 +81,15 @@ Changes/New Features in 5.1.18:
 Changes/New Features in 5.1.17:
 @itemize @bullet
 @item Documentation for Windows Installation (Rich Heiberger
-      (@email{rmh@@surfer.stat.temple.edu}))
+(@email{rmh@@surfer.stat.temple.edu}))
 @item removal of ess-vars, finalization of customize support (in the
-      sense that there is no more use of ess-vars, but that we need to
-      fix ess-cust) (AJ Rossini (@email{rossini@@u.washington.edu}))
+sense that there is no more use of ess-vars, but that we need to
+fix ess-cust) (AJ Rossini (@email{rossini@@u.washington.edu}))
 @item Many small (and large) fixes/contributions (MMaechler,
-      (@email{maechler@@stat.math.ethz.ch})).
+(@email{maechler@@stat.math.ethz.ch})).
 @item addition of the "S-equal" variable and provide M-x ess-add-MM-keys
-      a way to remap "_" to `ess-S-assign', typically " <- ", but
-      customizable. (MMaechler, (@email{maechler@@stat.math.ethz.ch})).
+a way to remap "_" to `ess-S-assign', typically " <- ", but
+customizable. (MMaechler, (@email{maechler@@stat.math.ethz.ch})).
 @end itemize
 
 Changes/New Features in 5.1.16:
@@ -106,40 +106,40 @@ Changes/New Features in 5.1.15:
 Changes/New Features in 5.1.14:
 @itemize @bullet
 @item Yet more fixes to SAS mode, (Rich Heiberger
-      (@email{rmh@@surfer.stat.temple.edu}) and Rodney Sparapani
-       @email{rsparapa@@mcw.edu})).
+(@email{rmh@@surfer.stat.temple.edu}) and Rodney Sparapani
+@email{rsparapa@@mcw.edu})).
 @item Customize support (for most Emacsen which support it) (AJRossini,
-      (@email{rossini@@biostat.washington.edu})
+(@email{rossini@@biostat.washington.edu})
 @item ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini,
-      @email{rossini@@biostat.washington.edu})
+@email{rossini@@biostat.washington.edu})
 @end itemize
 
 Changes/New Features in 5.1.13:
 @itemize @bullet
 @item Version numbering finally all depending on the ./VERSION file,
-      thanks to Martin Maechler.
+thanks to Martin Maechler.
 @item Yet more fixes to SAS mode, thanks to Rich Heiberger
-      (@email{rmh@@surfer.stat.temple.edu}).
+(@email{rmh@@surfer.stat.temple.edu}).
 @end itemize
 
 Changes/New Features in 5.1.12:
 @itemize @bullet
 @item Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
-      Chuck Taylor, and others.
+Chuck Taylor, and others.
 @item More fixes to SAS mode, thanks to Rodney Sparapani
-      (@email{rsparapa@@mcw.edu}) and Rich Heiberger
-      (@email{rmh@@surfer.stat.temple.edu}).
+(@email{rsparapa@@mcw.edu}) and Rich Heiberger
+(@email{rmh@@surfer.stat.temple.edu}).
 @end itemize
 
 Changes/New Features in 5.1.11:
 @itemize @bullet
 @item More fixes to Stata mode, thanks to Brendan Halpin
-      (@email{brendan@@essex.ac.uk})
+(@email{brendan@@essex.ac.uk})
 @item fixed bugs in ESS-elsewhere, thanks to many testers
 @item README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
-      to David Brahm (@email{brahm@@alum.mit.edu}).
+to David Brahm (@email{brahm@@alum.mit.edu}).
 @item Fixes to SAS mode, thanks to Rodney Sparapani
-      (@email{rsparapa@@mcw.edu})
+(@email{rsparapa@@mcw.edu})
 @end itemize
 
 Changes/New Features in 5.1.10:

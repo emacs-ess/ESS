@@ -5,11 +5,11 @@ XEmacs 19.14 or later.  It has been most thoroughly tested with:
 @itemize @bullet
 @item S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
 @item R versions >=0.49
-@item XLispStat versions >=3.50
 @item S4
 @item SAS 6.x, 7.x, 8.x
-@item Stata >=6.0
 @item BUGS 0.5 or 0.6
+@item Stata >=6.0
+@item XLispStat versions >=3.50
 @end itemize
 
 on the following platforms

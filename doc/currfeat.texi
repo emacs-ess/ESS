@@ -2,14 +2,13 @@
 @item Languages Supported:
   @itemize @bullet
   @item S dialects (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
-  @item LispStat dialects (XLispStat, Arc and ViSta)
+  @item XLispStat including Arc and ViSta
   @item SAS
   @item BUGS
   @item Stata 
   @item SPSS dialects (SPSS, Fiasco (GNU project)) (under development)
-  @comment still? @item SCA (under development)
   @end itemize
-@item Editing source code (S, LispStat, SAS, BUGS)
+@item Editing source code (S, XLispStat, SAS, BUGS)
   @itemize @bullet
   @item Syntactic indentation and highlighting of source code
   @item Partial evaluation of code
@@ -17,7 +16,7 @@
   @item Source code revision maintenance
   @item Batch execution (SAS, BUGS)
   @end itemize
-@item Interacting with the process (S, LispStat, SAS)
+@item Interacting with the process (S, XLispStat, SAS)
   @itemize @bullet
   @item Command-line editing
   @item Searchable Command history
