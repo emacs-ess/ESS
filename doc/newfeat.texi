@@ -12,7 +12,7 @@ changed the definition of the variable ess-sas-edit-keys-toggle
 to boolean rather than 0/1; added the function ess-electric-run-semicolon
 which automatically reverse indents lines containing only "run;";
 C-F1 creates an MS RTF file from the current buffer and name it accordingly
-@item ESS[S]:  ess-dump-filename-template-proto {new name!} now can be
+@item ESS[S]:  ess-dump-filename-template-proto (new name!) now can be
 customized successfully (for S language dialects).
 @item ESS[S]:  ess-help: Now using nice underlines (instead of `nuke-* ^H_')
 @item ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load

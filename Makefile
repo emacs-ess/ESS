@@ -1,10 +1,10 @@
-## $Id: Makefile,v 5.70 2002/08/08 09:56:56 maechler Exp $
+## $Id: Makefile,v 5.71 2003/10/20 14:46:45 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
-UPLOAD_SITE = software.biostat.washington.edu:/home/ess/downloads
+UPLOAD_SITE = cvs.analytics.washington.edu:/home/ess/downloads
 
 ## Set ESSVERSIONTAG to ESS-$(ESSVERSION) with .'s replaced by -s.
 ## CVS tags can NOT contain .'s.
