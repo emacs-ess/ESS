@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/06/19 16:28:05 $
-;; Version: $Revision: 5.26 $
-;; RCS: $Id: essl-sas.el,v 5.26 2001/06/19 16:28:05 ess Exp $
+;; Modified: $Date: 2001/06/21 17:22:58 $
+;; Version: $Revision: 5.27 $
+;; RCS: $Id: essl-sas.el,v 5.27 2001/06/21 17:22:58 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -423,8 +423,8 @@ number."
 		"\\|m\\(anova\\|e\\(ans\\|rge\\)\\|issing\\|od\\(el\\|ify\\)\\)\\|note"
 		"\\|o\\(ptions\\|therwise\\|utput\\)\\|p\\(lot\\|ut\\)"
 		"\\|r\\(andom\\|e\\(name\\|peated\\|tain\\)\\)"
-		"\\|s\\(ave\\|e\\(lect\\|t\\)\\|kip\\|umby\\)"
-		"\\|t\\(ables?\\|itle\\(10?\\|[2-9]\\)?\\)\\|update"
+		"\\|s\\(ave\\|e\\(lect\\|t\\)\\|kip\\|trata\\|umby\\)"
+		"\\|t\\(ables?\\|i\\(me\\|tle\\(10?\\|[2-9]\\)?\\)\\)\\|update"
 		"\\|va\\(lue\\|r\\)\\|w\\(eight\\|here\\|i\\(ndow\\|th\\)\\)\\)"
 		"\\>")				    font-lock-keyword-face)
 ;;	 (cons "\\<\\(\\(\\(then\\|else\\)[ \t]*\\)?do\\([ \t]*over\\)?\\|else\\)\\>"
