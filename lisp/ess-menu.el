@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.16 2001/12/20 16:25:46 ess Exp $
+;; Version: $Id: ess-menu.el,v 1.17 2002/01/16 08:34:27 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -68,50 +68,21 @@
   :group 'ess
   :type  'boolean)
 
-(defcustom ess-S-imenu-variable-regexp
-  (concat "\\("
-	  "[a-zA-Z0-9\\.]*"  ;; legal chars in name
-	  "\\)"
-	  "[ \t]*<-[ \t]*"   ;; whitespace, assignment, whitespace
-	  "function")        ;; NOT this.
-  "Regexp for R assignments."
-  :group 'ess
-  :type  'regex)
-
-(defcustom ess-S-imenu-function-regexp
-  "^\\(.+\\)\\s-+<-\\s-+function"
-  ;; (concat "\\("
-  ;;  	     "[a-zA-Z0-9\\.]*"  ;; legal chars in name
-  ;;	     "\\)"
-  ;;	     "[ \t]*<-[ \t]*"   ;; whitespace, assignment, whitespace
-  ;;	     "function"         ;; it's a fcn...
-  ;;	     "[ \t]*"           ;; whitespace
-  ;;	     "(")               ;; start of arguments
-  "Regexp for R functions.
-Thanks to Stephen Eglen <stephen@cogsci.ed.ac.uk> for first version."
-  :group 'ess
-  :type  'regex)
-
 (defcustom ess-S-imenu-generic-expression
-  (concat ess-S-imenu-variable-regexp
-	  ;; "\\|"
-	  ;; ess-S-imenu-function-regexp
-	  )
-  "Imenu Regexp for S."
-  :group 'ess
-  :type  'regex)
+  '((nil "^\\(.+\\)\\s-*<-[ \t\n]*function" 1))
+  "Imenu generic expression for S.
+See `imenu-generic-expression' for details of this format.
+If you prefer to enforce whitespace around the <- operator, replace
+the two * by + in the above regexp."
+   :group 'ess
+   :type 'sexp)
 
-(setq R-imenu-generic-expression 'ess-S-imenu-generic-expression)
-(setq S-imenu-generic-expression 'ess-S-imenu-generic-expression)
 
 (defun ess-imenu-S (&optional arg)
   "S Language Imenu support for ESS.
 Initial version from Stephen Eglen <stephen@cogsci.ed.ac.uk>."
   (interactive)
-  (setq imenu-generic-expression
-	'( (nil ;;ess-S-imenu-generic-expression
-	        "^\\(.+\\)\\s-+<-\\s-+function"
-		1)))
+  (setq imenu-generic-expression ess-S-imenu-generic-expression)
   (imenu-add-to-menubar "Imenu-S"))
 
 (fset 'ess-imenu-R 'ess-imenu-S)

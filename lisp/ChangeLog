@@ -1,3 +1,8 @@
+2002-01-16  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-menu.el (ess-imenu-S): use improved
+	  ess-S-imenu-generic-expression (and clean up), by Stephen Eglen.
+
 2002-01-15  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (S-editing-alist): new add-log-...regep from Stephen
