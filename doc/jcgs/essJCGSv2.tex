@@ -137,7 +137,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/14 17:54:44 $ - $Revision: 1.67 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/14 18:00:37 $ - $Revision: 1.68 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -404,27 +404,33 @@ contextual highlighting and recognition of special reserved words
 appropriate to the programming language in use.  In addition, Emacs
 also supports folding, outlining, and bookmarks which can assist with
 maneuvering around a file.  Emacs shares many features with word
-processing programs and cooperates with document preparation systems
-which use markup languages such as \LaTeX, \textsc{html}, or
-\textsc{xml}.
+processing programs and cooperates with markup language based document
+preparation systems such as \LaTeX, \textsc{html}, or \textsc{xml}.
 
-%insertion and deletion: viewing two or more files at once; editing formatted text;
-%visual comparison of two similar files; and navigation
-%in units of characters, words, lines, sentences, paragraphs, and pages.
+\begin{Comment}
+  AJR: Should we put these back in? i.e.   
+  \begin{itemize}
+  \item insertion and deletion;
+  \item viewing two or more files at once;
+  \item editing formatted text;
+  \item visual comparison of two similar files;
+  \item navigation in units of characters, words, lines, sentences,
+    paragraphs, and pages.
+  \end{itemize}
+\end{Comment}
 
-Emacs handles the interface to both source code and transcripts
-contextually, providing syntax highlighting, bookmarking features,
-interfaces to directory structure, and command-history.  Other
-extensions to Emacs allow it to act as a web browser, a
+Emacs interfaces to the computer's directory structure to provide a
+file-manager capability, and stores the command-history of editing
+tasks.  Other extensions to Emacs allow it to act as a web browser, a
 mail and news reader, and as an interface to other common text-based
 tools such as spell checking programs.  The Emacs keyboard and mouse
 interface can be re-mapped to resemble that of other text-editors,
 such as vi, wordstar, and brief.
 
-We can use syntax highlighting to help enforce company coding
-standards.  Figure \ref{f.hilock} shows how to enforce a standard for
-\SAS\ programming that says all \stexttt{PROC} statements must use the
-\stexttt{DATA=datasetname} option.
+For example, we can use syntax highlighting to help enforce company
+coding standards.  Figure \ref{f.hilock} shows how to enforce a
+standard for \SAS\ programming that says all \stexttt{PROC} statements
+must use the \stexttt{DATA=datasetname} option.
 
 \begin{figure}
 \emptyfig
