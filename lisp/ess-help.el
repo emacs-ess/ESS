@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/10 19:39:49 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: ess-help.el,v 1.14 1997/11/10 19:39:49 rossini Exp $
+;; Modified: $Date: 1997/11/10 19:41:30 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: ess-help.el,v 1.15 1997/11/10 19:41:30 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -27,9 +27,8 @@
 
 ;;; Commentary:
 
-;; Code for dealing with ESS help files. See S.el for more
-;; details.
-
+;; Code for dealing with ESS help files.  See README.<LANGUAGE> where
+;; <LANGUAGE> is one of `S', `SAS', or `XLispStat'.
 
 ;;; Code:
 
