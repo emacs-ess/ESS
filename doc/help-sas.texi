@@ -14,23 +14,15 @@ of SAS programs is supported.
 
 ESS[SAS] was written with two primary goals.
 
-1. The emacs text editor provides a powerful and flexible development environment
-for programming languages.  These features are a boon to all programmers and,
-with the help of ESS[SAS], to SAS users as well.
+1. The emacs text editor provides a powerful and flexible development
+environment for programming languages.  These features are a boon to all
+programmers and, with the help of ESS[SAS], to SAS users as well.
 
-2. Although, a departure from SAS Display Manager, ESS[SAS] provides similar
-key definitions to give novice ESS[SAS] users a head start.  Also, inconvenient
-SAS Display Manager features, like remote submission and syntax highlighting,
-are provided transparently; appealing to advanced ESS[SAS] users.
-
-@c Rodney:  I didn't have these goals in mind exactly.  Above, I try to give
-@c a coherent rationale for getting involved.
-@c
-@c 1. Using the emacs environment is desirable for users accessing a remote
-@c computer via a network or dial-up who can not use the SAS Display Manager.
-@c 
-@c 2. Using the emacs environment is desirable for local users as well due to the
-@c inherent efficiency of using the same, superior interface all of the time.
+2. Although, a departure from SAS Display Manager, ESS[SAS] provides
+similar key definitions to give novice ESS[SAS] users a head start.
+Also, inconvenient SAS Display Manager features, like remote submission
+and syntax highlighting, are provided transparently; appealing to
+advanced ESS[SAS] users.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(SAS)--Editing files, iESS(SAS)--Interactive SAS processes, ESS(SAS)--Design philosophy, Help for SAS
@@ -61,12 +53,13 @@ the SAS Display Manager does.  The interactive capabilities of ESS require you
 to start an inferior SAS process with M-x SAS
 (@xref{iESS(SAS)--Interactive SAS processes}.)
 
-At this writing, the indenting and syntax highlighting are generally 
-correct.  Known issues:  for multiple line * or %* comments, only the first 
-line is highlighted; for .log files, only the first line of a NOTE:, WARNING: 
-or ERROR: message is highlighted; unmatched single/double quotes in CARDS 
-data lines are NOT ignored; in a DO ... TO or a DO ... TO ... BY statement,
-TOs are not highlighted (and neither is BY).
+At this writing, the indenting and syntax highlighting are generally
+correct.  Known issues: for multiple line * or %* comments, only the
+first line is highlighted; for .log files, only the first line of a
+NOTE:, WARNING: or ERROR: message is highlighted; unmatched
+single/double quotes in CARDS data lines are NOT ignored; in a DO ... TO
+or a DO ... TO ... BY statement, TOs are not highlighted (and neither is
+BY).
 
 @comment  node-name,  next,  previous,  up
 @node  iESS(SAS)--Interactive SAS processes, ESS(SAS)--Batch SAS processes, ESS(SAS)--Editing files, Help for SAS
@@ -128,37 +121,39 @@ Troubleshooting: @xref{iESS(SAS)--Common problems}.
 @node  ESS(SAS)--Batch SAS processes, ESS(SAS)--Function keys for batch processing, iESS(SAS)--Interactive SAS processes, Help for SAS
 @section ESS[SAS]--Batch SAS processes
 
-Submission of a SAS batch job is dependent on your environment.  
-ess-sas-submit-method is determined by your operating system and your shell.
-It defaults to 'sh unless you are running Windows or Mac Classic.  Under Windows,
-it will default to 'sh if you are using a Unix-imitating shell; otherwise 'ms-dos
-for an MS-DOS shell.  On Mac OS X, it will default to 'sh, but under Mac Classic 
-AppleScript is used ('apple-script).  You will also set this to 'sh if the SAS batch 
-job needs to run on a remote machine rather than your local machine.  This works
-transparently if you are editing the remote file via ange-ftp/EFS or tramp.  
-Note that ess-sas-shell-buffer-remote-init is a Local Variable that defaults
-to "ssh" which will be used to open the buffer on the remote host and it is
-assumed that no password is necessary, i.e. you are using the equivalent of
-ssh-agent/ssh-add (see the discussion about Local Variables below if you 
-need to change the default).
+Submission of a SAS batch job is dependent on your environment.
+ess-sas-submit-method is determined by your operating system and your
+shell.  It defaults to 'sh unless you are running Windows or Mac
+Classic.  Under Windows, it will default to 'sh if you are using a
+Unix-imitating shell; otherwise 'ms-dos for an MS-DOS shell.  On Mac OS
+X, it will default to 'sh, but under Mac Classic AppleScript is used
+('apple-script).  You will also set this to 'sh if the SAS batch job
+needs to run on a remote machine rather than your local machine.  This
+works transparently if you are editing the remote file via ange-ftp/EFS
+or tramp.  Note that ess-sas-shell-buffer-remote-init is a Local
+Variable that defaults to "ssh" which will be used to open the buffer on
+the remote host and it is assumed that no password is necessary,
+i.e. you are using the equivalent of ssh-agent/ssh-add (see the
+discussion about Local Variables below if you need to change the
+default).
 
-However, if you are editing the file locally and transferring it back and forth
-with Kermit, you need some additional steps.  First, start Kermit locally
-before remotely logging in.  Open a local copy of the file with the 
-ess-kermit-prefix character prepended (the default is "#").  Execute the command 
-ess-kermit-get which automatically brings the contents of the remote file into 
-your local copy.  If you transfer files with Kermit manually in a shell
-buffer, then note that the Kermit escape sequence is C-q C-\ c rather than
-C-\ c which it would be in a ordinary terminal application, i.e. not in an 
-emacs buffer.  Lastly, note that the remote Kermit command is specified by 
-ess-kermit-command. 
+However, if you are editing the file locally and transferring it back
+and forth with Kermit, you need some additional steps.  First, start
+Kermit locally before remotely logging in.  Open a local copy of the
+file with the ess-kermit-prefix character prepended (the default is
+"#").  Execute the command ess-kermit-get which automatically brings the
+contents of the remote file into your local copy.  If you transfer files
+with Kermit manually in a shell buffer, then note that the Kermit escape
+sequence is C-q C-\ c rather than C-\ c which it would be in an ordinary
+terminal application, i.e. not in an emacs buffer.  Lastly, note that
+the remote Kermit command is specified by ess-kermit-command.
 
-The command used by the SUBMIT function key (F3 or F8) to submit a batch SAS 
-job, whether local or remote, is ess-sas-submit-command which defaults to 
-sas-program.  sas-program is "invoke SAS using program file" for Mac Classic 
-and "sas" otherwise.  However, you may have to alter ess-sas-submit-command 
-for a particular program, so it is defined as buffer-local.  Conveniently, you 
-can set at the end of your program, i.e. 
+The command used by the SUBMIT function key (F3 or F8) to submit a batch
+SAS job, whether local or remote, is ess-sas-submit-command which
+defaults to sas-program.  sas-program is "invoke SAS using program file"
+for Mac Classic and "sas" otherwise.  However, you may have to alter
+ess-sas-submit-command for a particular program, so it is defined as
+buffer-local.  Conveniently, it can be set at the end of the program:
 @example
 endsas;
 Local variables:
@@ -207,15 +202,16 @@ The setup of function keys for SAS batch processing
 is unavoidably complex, but the usage of function keys is simple.  
 There are five distinct options:
 
-Option 1 (default).  Function keys in ESS[SAS] are not bound to elisp commands.
-This is in accordance with the GNU Elisp Coding Standards (GECS) which do 
-not allow function keys to be bound so that they are available to the user.
+Option 1 (default).  Function keys in ESS[SAS] are not bound to elisp
+commands.  This is in accordance with the GNU Elisp Coding Standards
+(GECS) which do not allow function keys to be bound so that they are
+available to the user.
 
-Options 2-5.  Since GECS does not allow function keys to be bound by modes,
-these keys are often unused.  So, ESS[SAS] provides
-users with the option of binding elisp commands to these keys.  Users 
-who are familiar with SAS will, most likely, want to duplicate the function
-key capabilities of the SAS Display Manager.  There are four options (noted
+Options 2-5.  Since GECS does not allow function keys to be bound by
+modes, these keys are often unused.  So, ESS[SAS] provides users with
+the option of binding elisp commands to these keys.  Users who are
+familiar with SAS will, most likely, want to duplicate the function key
+capabilities of the SAS Display Manager.  There are four options (noted
 in parentheses).
 
 @enumerate a
@@ -224,25 +220,25 @@ SAS Display Manager has different function key definitions for
 Unix (2, 4) and Windows (3, 5); ESS can use either.
 @item
 The ESS[SAS] function key definitions can be active in all buffers
-(global: 4, 5) or limited (local: 2, 3) only to buffers with files that are
-associated with ESS[SAS] as specified in your auto-mode-alist.
+(global: 4, 5) or limited (local: 2, 3) only to buffers with files that
+are associated with ESS[SAS] as specified in your auto-mode-alist.
 @end enumerate
 
-The distinction between local and global is subtle.  If you want
-the ESS[SAS] definitions to work when you are in the *shell* buffer or when
-editing files other than the file extensions that ESS[SAS] recognizes, you
-will most likely want to use the global definitions.
-If you want your function keys to understand SAS batch commands when you
-are editing SAS files, and to behave normally when editing other files,
-then you will choose the local definitions.  The option can be chosen by 
-the person installing ESS for a site or by an individual.
+The distinction between local and global is subtle.  If you want the
+ESS[SAS] definitions to work when you are in the *shell* buffer or when
+editing files other than the file extensions that ESS[SAS] recognizes,
+you will most likely want to use the global definitions.  If you want
+your function keys to understand SAS batch commands when you are editing
+SAS files, and to behave normally when editing other files, then you
+will choose the local definitions.  The option can be chosen by the
+person installing ESS for a site or by an individual.
 
 @enumerate a
 @item
-For a site installation or an individual, uncomment ONLY ONE of the 
-following lines in your ess-site.el.  ESS[SAS] Function keys are available 
-in ESS[SAS] if you uncomment either 2 or 3 and in all modes if you uncomment 
-4 or 5:
+For a site installation or an individual, uncomment ONLY ONE of the
+following lines in your ess-site.el.  ESS[SAS] Function keys are
+available in ESS[SAS] if you uncomment either 2 or 3 and in all modes if
+you uncomment 4 or 5:
 @example
 ;;2; (setq ess-sas-local-unix-keys t)
 ;;3; (setq ess-sas-local-pc-keys t)
@@ -342,39 +338,41 @@ buffers running SAS batch jobs on multiple local/remote computers
 that may rely on different methods specified by the buffer-local variable
 ess-sas-submit-method.
 
-F2 performs the `refresh' operation on the current buffer.  `refresh' 
+F2 performs the `refresh' operation on the current buffer.  `refresh'
 compares the buffer's last modified date/time with the file's last
-modified date/time and replaces the buffer with the file if the file is newer.  
-This is the same operation that is automatically performed when LOG, OUTPUT, 
-`filetype-1' or F11 are pressed.
+modified date/time and replaces the buffer with the file if the file is
+newer.  This is the same operation that is automatically performed when
+LOG, OUTPUT, `filetype-1' or F11 are pressed.
 
-`filetype-1' switches you to a file with the same file name as your .sas file, 
-but with a different extension (.txt by default) and performs `refresh'.  
-You can over-ride the default extension; for example in your .emacs file:  
+`filetype-1' switches you to a file with the same file name as your .sas
+file, but with a different extension (.txt by default) and performs
+`refresh'.  You can over-ride the default extension; for example in your
+.emacs file:
 @example
 (setq ess-sas-suffix-1 "csv") ; for example
 @end example
 
-F9 will prompt you for the name of a permanent SAS dataset near point to be opened
-for viewing by PROC FSEDIT.  You can control the SAS batch command-line with
-ess-sas-data-view-submit-options.  For controlling the SAS batch commands, you have 
-the global variables ess-sas-data-view-libname and ess-sas-data-view-fsview-command 
-as well as the buffer-local variable ess-sas-data-view-fsview-statement.  If
-you have your SAS LIBNAMEs defined in autoexec.sas, then the defaults for
+F9 will prompt you for the name of a permanent SAS dataset near point to
+be opened for viewing by PROC FSEDIT.  You can control the SAS batch
+command-line with ess-sas-data-view-submit-options.  For controlling the
+SAS batch commands, you have the global variables
+ess-sas-data-view-libname and ess-sas-data-view-fsview-command as well
+as the buffer-local variable ess-sas-data-view-fsview-statement.  If you
+have your SAS LIBNAMEs defined in autoexec.sas, then the defaults for
 these variables should be sufficient.
 
-F10 toggles ESS[SAS] mode for .log files which is off by default (technically, 
-it is SAS-log-mode, but it looks the same).  The syntax highlighting can be 
-helpful in certain debugging situations, but large .log files may take a long 
-time to highlight.  
+F10 toggles ESS[SAS] mode for .log files which is off by default
+(technically, it is SAS-log-mode, but it looks the same).  The syntax
+highlighting can be helpful in certain debugging situations, but large
+.log files may take a long time to highlight.
 
 F11 is the same as `filetype-1' except it is .dat by default.  
 
-F12 will prompt you for the name of a GSASFILE near point to be opened for viewing 
-either with emacs or with an external viewer.  Depending on your version of emacs and
-the operating system you are using, emacs may support .gif and .jpg files
-internally.  You may need to change the following two variables for your
-own situation:
+F12 will prompt you for the name of a GSASFILE near point to be opened
+for viewing either with emacs or with an external viewer.  Depending on
+your version of emacs and the operating system you are using, emacs may
+support .gif and .jpg files internally.  You may need to change the
+following two variables for your own situation:
 @example
 (setq ess-sas-graph-suffix-regexp "[.]\\(e?ps\\|gif\\|jpe?g\\|tiff?\\)")
 (setq ess-sas-image-viewer "kodakimg") ;; Windows default
@@ -384,23 +382,23 @@ own situation:
 @node  ESS(SAS)--TAB key, ESS(SAS)--Usage scenarios, ESS(SAS)--Function keys for batch processing, Help for SAS
 @section ESS[SAS]--TAB key
 
-Two options.  The TAB key is bound by default to sas-indent-line.  This function is
-used to syntactically indent SAS code so PROC and RUN are in the left
-margin, other statements are indented 4 spaces from the margin,
-continuation lines are indented 4 spaces in from the beginning column
-of that statement.  This is the type of functionality that emacs
-provides in most programming language modes.  This functionality is
-equivalent to uncommenting the following line in ess-site.el:
+Two options.  The TAB key is bound by default to sas-indent-line.  This
+function is used to syntactically indent SAS code so PROC and RUN are in
+the left margin, other statements are indented 4 spaces from the margin,
+continuation lines are indented 4 spaces in from the beginning column of
+that statement.  This is the type of functionality that emacs provides
+in most programming language modes.  This functionality is equivalent to
+uncommenting the following line in ess-site.el:
 @example
 (setq ess-sas-edit-keys-toggle nil)
 @end example
 
-ESS provides an alternate behavior for the TAB key that makes it
-behave as it does in SAS Display Manager, i.e. move the cursor to the
-next tab stop.  The alternate behavior also provides a backwards TAB,  
-C-TAB, that moves the cursor to the tab stop to the left and deletes
-any characters between them.  This functionality is obtained by uncommenting 
-the following line in ess-site.el:
+ESS provides an alternate behavior for the TAB key that makes it behave
+as it does in SAS Display Manager, i.e. move the cursor to the next tab
+stop.  The alternate behavior also provides a backwards TAB, C-TAB, that
+moves the cursor to the tab stop to the left and deletes any characters
+between them.  This functionality is obtained by uncommenting the
+following line in ess-site.el:
 @example
 (setq ess-sas-edit-keys-toggle t)
 @end example
@@ -416,11 +414,12 @@ The remarks with respect to graphics apply to either with exceptions noted.
 
 Graphics
 
-Output from GPROCs can be displayed in a SAS/Graph window for SAS batch on 
-Windows or for both SAS batch and interactive with X11 on Unix.  
-If you need to create graphics files and view them with F12, then include 
-the following in myfile.sas (for F12 to work the FILENAME statement
-must be in myfile.sas, but the GOPTIONS statement can be in your autoexec.sas):
+Output from GPROCs can be displayed in a SAS/Graph window for SAS batch
+on Windows or for both SAS batch and interactive with X11 on Unix.  If
+you need to create graphics files and view them with F12, then include
+the following in myfile.sas (for F12 to work the FILENAME statement must
+be in myfile.sas, but the GOPTIONS statement can be in your
+autoexec.sas):
 @example
 filename gsasfile 'graphics.ps'; 
 goptions device=ps gsfname=gsasfile gsfmode=append; 
@@ -488,8 +487,8 @@ Open the file you want to work with.
 @example
 C-x C-f myfile.sas
 @end example
-myfile.sas will be in ESS[SAS] mode.  Edit as appropriate, and then start up 
-SAS with the cursor in the myfile.sas buffer.
+myfile.sas will be in ESS[SAS] mode.  Edit as appropriate, and then start 
+up SAS with the cursor in the myfile.sas buffer.
 @example
 M-x SAS
 @end example
