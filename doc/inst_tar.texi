@@ -73,35 +73,35 @@ to configure emacs for ESS.
 
 @item
 That's it!  If you are installing just a local copy of ESS for yourself,
-ESS is now ready to be used.  (The remaining steps below are for
+ESS is now ready to be used.  (The remaining step below is for
 advanced installation.)  To edit statistical programs, load the files
 with the requiste extensions (".sas" for SAS, ".S" for S-PLUS, ".R" for
 R, and ".lsp" for XLispStat).  To start a statistical process within
 Emacs, such as R, type @code{M-x R}.
 
-@item
-(OPTIONAL) If you are running S-PLUS or R, you might consider
-installing the database files.  From within emacs, @code{C-x d} to the
-directory containing ESS.  Now:
-@example
-M-x S+6
-@end example
-to get S running.  Once you see the SPLUS prompt, do:
-@example
-M-x ess-create-object-name-db
-@end example
-(this will create the file @file{ess-s+6-namedb.el}; if it isn't in the
-ESS directory, move it there).
+@c @item
+@c (OPTIONAL) If you are running S-PLUS or R, you might consider
+@c installing the database files.  From within emacs, @code{C-x d} to the
+@c directory containing ESS.  Now:
+@c @example
+@c M-x S+6
+@c @end example
+@c to get S running.  Once you see the SPLUS prompt, do:
+@c @example
+@c M-x ess-create-object-name-db
+@c @end example
+@c (this will create the file @file{ess-s+6-namedb.el}; if it isn't in the
+@c ESS directory, move it there).
 
-Then, completions will be autoloaded and will not be regenerated for
-every session.
+@c Then, completions will be autoloaded and will not be regenerated for
+@c every session.
 
-For R, do the same, using
-@example
-M-x R
-@end example
-and then @code{M-x ess-create-object-name-db} creating
-@file{ess-r-namedb.el}; if it isn't in the ESS directory, move it there).
+@c For R, do the same, using
+@c @example
+@c M-x R
+@c @end example
+@c and then @code{M-x ess-create-object-name-db} creating
+@c @file{ess-r-namedb.el}; if it isn't in the ESS directory, move it there).
 
 @item
 @b{(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING}:
@@ -330,30 +330,30 @@ emacs, and cut and paste the results into the XLispStat
 @comment Reason:  we use ddeclient to interface with programs and SAS doesn't
 @comment provide the corresponding ddeserver capability.
 
-@item
-(OPTIONAL) If you are running Sqpe or R, you might consider
-installing the database files.  From within emacs, @code{C-x d} to
-the   directory containing ESS.  Now:
-@example
-M-x Sqpe+6
-@end example
-to get S running.  Once you see the SPLUS prompt, do:
-@example
-M-x ess-create-object-name-db
-@end example
-(this will create the file @file{ess-s+6-namedb.el}; if it isn't in the
-ESS directory, move it there).
+@c @item
+@c (OPTIONAL) If you are running Sqpe or R, you might consider
+@c installing the database files.  From within emacs, @code{C-x d} to
+@c the   directory containing ESS.  Now:
+@c @example
+@c M-x Sqpe+6
+@c @end example
+@c to get S running.  Once you see the SPLUS prompt, do:
+@c @example
+@c M-x ess-create-object-name-db
+@c @end example
+@c (this will create the file @file{ess-s+6-namedb.el}; if it isn't in the
+@c ESS directory, move it there).
 
-Then, completions will be autoloaded and will not be regenerated
-for every session.
+@c Then, completions will be autoloaded and will not be regenerated
+@c for every session.
 
-For R, do the same, using
-@example
-M-x R
-@end example
-and then @code{M-x ess-create-object-name-db} creating
-@file{ess-r-namedb.el}; if it isn't in the ESS directory, move it
-there).
+@c For R, do the same, using
+@c @example
+@c M-x R
+@c @end example
+@c and then @code{M-x ess-create-object-name-db} creating
+@c @file{ess-r-namedb.el}; if it isn't in the ESS directory, move it
+@c there).
 
 @item That's it!
 
