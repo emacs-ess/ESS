@@ -27,6 +27,7 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 
 ### Targets --
 PDFs = ess.pdf readme.pdf
+DVIs = ess.dvi readme.dvi
 TXTs = ../README ../ANNOUNCE
 
 all  : info text html dvi pdf
@@ -34,7 +35,7 @@ docs : info text html
 info : info/ess.info
 text : $(TXTs)
 html : html/ess.html html/readme.html
-dvi  : ess.dvi readme.dvi
+dvi  : $(DVIs)
 pdf  : $(PDFs)
 ps   : ess.ps  readme.ps
 
@@ -46,14 +47,16 @@ readme.dvi : $(TEXISRC); $(TEXI2DVI) readme.texi
 readme.pdf : $(TEXISRC); $(TEXI2PDF) readme.texi
 readme.ps  : readme.dvi; dvips $^ -o $@
 
+cleanaux:
+	-@rm -f *.aux *.cp *.cps *.fn *.fns *.ky *.kys *.log *.out \
+	        *.pg *.pgs *.ps *.ps-2 *.tmp *.toc *.tp *.vr *.vrs
 ## this shall remove *exactly* those things that are *not* in version control:
-clean :
-	-@rm -f $(PDFs) *.aux *.cp *.cps *.dvi *.fn *.fns *.ky *.kys \
-	  *.log *.out *.pg *.pgs *.ps *.ps-2 *.tmp *.toc *.tp *.vr *.vrs
+clean: cleanaux
+	-@rm -f $(PDFs) $(DVIs) info/*.info*
 
 ## this removes also things in VC (when they are remade by "make"):
 distclean : clean
-	-@rm -f $(TXTs) html/* info/*.info*
+	-@rm -f $(TXTs) html/*
 
 ../README: $(TEXISRC)
 	$(MAKETXT) readme.texi \

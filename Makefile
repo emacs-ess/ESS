@@ -46,13 +46,14 @@ dist: VERSION cleanup-dist RPM.spec
 	svn checkout --quiet $(SVN_URL)/trunk $(ESSDIR)-svn
 	mkdir -p $(ESSDIR)
 	(cd $(ESSDIR)-svn; tar cvf - --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); tar xf - )
-	@echo "** Correct Write Permissions and Clean-up docs **"
+	@echo "** Correct Write Permissions, Clean-up docs and Make docs **"
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
 	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
 	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* Why_* README.*"; \
-	cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; cd ../..
+	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
+	 make all cleanaux ; cd ../..
 	test -f $(ESSDIR).tar.gz && rm -rf $(ESSDIR).tar.gz || true
 	@echo "** Creating tar file **"
 	tar hcvofz $(ESSDIR).tar.gz $(ESSDIR)
