@@ -66,7 +66,7 @@
 \fi
 %%---End of package requiring ---------- Own Definitions -------------
 
-\newcommand*{\SAS}{\textsc{SAS}$^{\mbox{\scriptsize\textregistered}}$}
+\newcommand*{\SAS}{\textsc{SAS}$^{\mbox{\scriptsize{\textregistered}}}$}
 \newcommand*{\Splus}{\textsc{S-Plus}}
 \newcommand*{\XLispStat}{\textsc{XLispStat}}
 \newcommand*{\Stata}{\textsc{Stata}}
@@ -130,7 +130,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/10 15:24:03 $ - $Revision: 1.43 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/10 22:22:22 $ - $Revision: 1.44 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -175,10 +175,11 @@ computer, in the critical role of facilitating or hindering these
 tasks.  This paper introduces Emacs Speaks Statistics (ESS) \citep{ESS},
 an interface to a variety of statistical analysis packages that
 provides consistent shortcuts for frequently performed, possibly complex, tasks.
-ESS is constructed as a package of extensions to the Emacs text editing system.
+ESS is %% constructed as 
+a package of extensions to the Emacs text editing system.
 
 \begin{Comment}
-??:
+AJR:
  Does it make sense to add an additional paragraph on "history of
 statistical interfaces from programming it yourself to command line
 (SPSS/SAS/BDMP in the 80s), to spreadsheet-style interfaces
@@ -194,6 +195,8 @@ Rich: I think we don't want to get caught in the commandline vs spreadsheet
 vs GUI discussion.  ESS can work with any of them.
 
 Rich: Also the reference to (Rossini et al., 2001b) talks about that.
+
+AJR: Settled, as far as I am concerned.
 \end{Comment}
 
 ESS provides an interface to statistical packages, and provides,
@@ -207,10 +210,15 @@ ViSta \citep{youn:fald:mcfa:1992}; \Stata\ \citep{Stata:6.0}; Omegahat
 \citep{DTLang:2000}; and BUGS \citep{BUGS}.  ESS can be
 extended to accommodate most statistical packages which provide either
 an interactive command-line or batch file processing.
+
 \begin{Comment}
   Rich: What is going on with the underlining?  Any reference that spans
 two lines in the dvi file has no underlining in the first line, and then the
 entire second line is underlined as a unit.
+
+AJR: what tools are you using?  I don't see this, currently (I suspect
+it was related in the past to the use of the hyperref package, but I
+still don't recall seeing this in DVI files, just PS/PDF stuff).
 \end{Comment}
 
 The present paper summarizes historical and non-technical information on
@@ -364,14 +372,14 @@ files and in entire directories.
 
 \paragraph{Extensions to Editing.}
 Most programming and documentation tasks fall under the realm of text
-editing.  This work can be enhanced by modes which provide features such
-as contextual highlighting and recognition of special reserved words
-appropriate to the programming language in use.  Emacs supports
+editing.  This work can be enhanced by modes which provide features
+such as contextual highlighting and recognition of special reserved
+words appropriate to the programming language in use.  Emacs supports
 folding, outlining, and bookmarks which can assist with maneuvering
 around a file.  Emacs shares many features with word processing
-programs and cooperates with document preparation systems
-such as \LaTeX\ for typesetting or  \textsc{html} and \textsc{xml}
-for hypertext markup.
+programs and cooperates with document preparation systems which use
+markup languages such as \LaTeX\ , \textsc{html}, or \textsc{xml}.
+%for hypertext markup.
 %XSLT, and Noweb.  and Typesetting word processing, which
 %focus on the presentation of a document, are tasks that are not pure
 %text-editing.
@@ -380,20 +388,19 @@ for hypertext markup.
 %visual comparison of two similar files; and navigation
 %in units of characters, words, lines, sentences, paragraphs, and pages.
 
-Emacs handles the
-interface to both source code and transcripts contextually, providing
-syntax highlighting, bookmarking features, interfaces to directory
-structure, and command-history.  Other extensions to Emacs allow it to
-act as a World-Wide-Web browser, a mail and news
-reader, and as an interface to
-other common text-based tools such as spell checking programs.  The
-Emacs keyboard and mouse interface can be re-mapped to resemble that
-of other text-editors, such as vi, wordstar, and brief.
+Emacs handles the interface to both source code and transcripts
+contextually, providing syntax highlighting, bookmarking features,
+interfaces to directory structure, and command-history.  Other
+extensions to Emacs allow it to act as a World-Wide-Web browser, a
+mail and news reader, and as an interface to other common text-based
+tools such as spell checking programs.  The Emacs keyboard and mouse
+interface can be re-mapped to resemble that of other text-editors,
+such as vi, wordstar, and brief.
 
 We can use syntax highlighting to help enforce company coding
-standards.  Figure \ref{f.hilock} shows how to enfor a standard
-for \SAS\ programming that says all \stexttt{PROC} statements must
-have a \stexttt{DATA=datasetname} statement attached.
+standards.  Figure \ref{f.hilock} shows how to enforce a standard for
+\SAS\ programming that says all \stexttt{PROC} statements must have a
+\stexttt{DATA=datasetname} statement attached.
 
 \begin{figure}
 \emptyfig
@@ -416,7 +423,10 @@ for multiple statistical packages.  This is done in two ways.  First,
 shortcuts and features for accelerated editing of files have been
 implemented.  Second, interaction with the statistical
 language is split by function; general, obtaining help, programming.
-\textbf{THIS NEEDS WORK}.
+
+\begin{Comment}
+AJR: THIS NEEDS WORK.
+\end{Comment}
 
 %This is done by extending the editor to provide
 %additional useful features, and in the case of interactive statistical
@@ -454,10 +464,8 @@ language is split by function; general, obtaining help, programming.
 %buffer.  The dialog about the process switch appears in the message
 %line.
 
-
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
-
 
 ESS strongly supports the S family (S, \Splus, and R).
 \SAS\ is also well supported.  \Stata\
@@ -511,8 +519,6 @@ use a selection of colors.\\
 {\it a: font-cor-s.gif; b: font-incor-s.gif}
 \label{f.font}}
 \end{figure}
-
-
 
 \paragraph{Source Code Checking and Partial Code Evaluation.}
 
@@ -577,20 +583,22 @@ there exists object-name and function-name completion.
 
 
 \paragraph{Interactive transcripts.}
-\begin{Comment}
- Rodney:  we need a short description transcript-mode
 
- \begin{trivlist}\item
-   \emph{\small outcommented -- made visible (by MM) here}\\
-   Transcripts are easily recorded and can be edited into an ideal activity
-   log which can then be saved.
- \end{trivlist}
+%% AJR: removed since it's ``solved''.
+%%\begin{Comment}
+%% Rodney:  we need a short description of transcript-mode
 
- Martin: I don't understand what you mean. Is the paragraph below too long
- and you want to shorten it?
+%% \begin{trivlist}\item
+%%   \emph{\small outcommented -- made visible (by MM) here}\\
+%%   Transcripts are easily recorded and can be edited into an ideal activity
+%%   log which can then be saved.
+%% \end{trivlist}
 
- Rodney: I think it's fine now.  Thanks.
-\end{Comment}
+%% Martin: I don't understand what you mean. Is the paragraph below too long
+%% and you want to shorten it?
+
+%% Rodney: I think it's fine now.  Thanks.
+%%\end{Comment}
 
 ESS can create transcripts, a recording of the commands issued in an
 interactive session with a statistical analysis package.
@@ -661,7 +669,7 @@ and R are somewhat similar, but there are enough differences to create confusion
 say that ESS is here to help people solve this problem.  However,
 we can't say that ESS provides a uniform interface to BUGS and R because
 it doesn't.  I didn't know what the R interface was supposed to look like
-when I created ESS[BUGS] so I modelled it on ESS[SAS].  Furthermore,
+when I created ESS[BUGS] so I modeled it on ESS[SAS].  Furthermore,
 ESS[SAS] and ESS[R] are very different by design, i.e. ESS[SAS] was not
 designed like emacs, but rather Display Manager.  I'm not sure how we can tell
 people that this is such a big advantage.  Maybe the above paragraph
@@ -706,7 +714,7 @@ language that only requires an interpreter such as R, \SAS\ or \XLispStat.
 %%program that can be executed.  There is a trade-off in time between interpreted and compiled
 %%programs.  For interpreted languages you save time by not having to compile
 %%the program, but the program will not run as fast as if it had been compiled.
-%%Another advantage of intepreted languages is the support they provide for
+%%Another advantage of interpreted languages is the support they provide for
 %%specialized tasks.  For example, C and \Fortran don't provide you with
 %%the statistical analysis capabilities that R, \SAS\ or \XLispStat
 %%do.  Compiled programs and interpreted programs can be used in conjunction.
