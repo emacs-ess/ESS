@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/05/04 00:24:05 $
-;; Version: $Revision: 1.92 $
-;; RCS: $Id: essa-sas.el,v 1.92 2002/05/04 00:24:05 rsparapa Exp $
+;; Modified: $Date: 2002/05/05 17:52:54 $
+;; Version: $Revision: 1.93 $
+;; RCS: $Id: essa-sas.el,v 1.93 2002/05/05 17:52:54 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -656,18 +656,22 @@ SAS may not be found in your PATH.  You can alter your PATH to include
 SAS or you can specify the PATHNAME (PATHNAME can NOT contain spaces),
 i.e. let arg1 be your local equivalent of
 \"/usr/local/sas612/sas\"."
-    (let ((ess-temp-directory ess-kermit-remote-directory))
     (shell)
     (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh) ;; 19.28
                                           ;; nil t) works for newer emacsen
     (if (string-equal (substring (file-name-nondirectory ess-sas-file-path) 0 1) ess-kermit-prefix)
       (progn
-       (insert "cd " ess-temp-directory)
-       (comint-send-input)
-       (insert ess-sas-submit-pre-command " " arg1 " "  
-	(substring (file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 1)
-	" " arg2 " " ess-sas-submit-post-command))
+       (ess-sas-goto-sas)
+       (ess-kermit-send)
+       (let ((ess-temp-directory ess-kermit-remote-directory))
+        (shell)
+        (insert "cd " ess-temp-directory)
+        (comint-send-input)
+        (insert ess-sas-submit-pre-command " " arg1 " "  
+	 (substring (file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 1)
+	 " " arg2 " " ess-sas-submit-post-command)))
     ;;else
+      (shell)
       (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)"))))
       (comint-send-input)
       (insert ess-sas-submit-pre-command " " arg1 " "  
@@ -676,7 +680,7 @@ i.e. let arg1 be your local equivalent of
       )
     (comint-send-input)
     (ess-sleep)
-    (comint-send-input)))
+    (comint-send-input))
 
 (defun ess-sas-submit-windows (arg1 arg2)
   "Windows using MS-DOS prompt in the *shell* buffer.
