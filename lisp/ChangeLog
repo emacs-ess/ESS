@@ -1,3 +1,40 @@
+Mon Dec 14 18:04:45 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-mode.el: fixed copyright and header information
+
+	* ess-site.el: commented out SHOME definition.
+
+Fri Dec 11 19:51:18 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ess-vars.el: fixed copyright, rossini's email address.
+
+	* ess-iw32.el: fixed rossini's email address, headers, copyright.
+
+	* essd-els.el, essd-s+4.el: fixed rossini's email address.
+
+	* essd-sq4.el: fixed copyright and header attributions.
+
+	* essd-els.el: fixed header files and copyright.
+
+	* essd-s+4.el: added changes to copyright and header docs.
+
+	* ess-vars.el: Merged RMH's changes.
+
+	* ess-iw32.el, essd-els.el, essd-s+4.el, essd-sq4.el:
+	New files for ESS for Splus/MSW/NT/98/95
+	New files for remote-ESS on Unix.
+
+	* ess-site.el: Added RMH's changes for Microsoft Windows and Splus.
+
+Mon Nov 30 17:37:57 1998  hornik  <hornik@pyrite>
+
+	* Makefile:
+	Add essd-s+5.el to SOURCES (as it gets required in ess-site).
+
+Mon Nov 23 20:03:17 1998  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* ChangeLog: *** empty log message ***
+
 Fri Nov 20 20:57:33 1998  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* ess-vars.el: ess-help-w3-url-prefix points to pyrite.
