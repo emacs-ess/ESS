@@ -339,7 +339,10 @@ there is no process NAME)."
 	;; Get search list when needed
 	(setq ess-sp-change t)
 	(run-hooks 'ess-post-run-hook))
-      (pop-to-buffer (process-buffer (get-process proc-name))))))
+      (if inferior-ess-same-window
+	  (switch-to-buffer (process-buffer (get-process proc-name)))
+	(pop-to-buffer (process-buffer (get-process proc-name)))))))
+
 
 (defun ess-process-sentinel (proc message)
   "Sentinel for use with ESS processes.
