@@ -10,9 +10,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>,
 ;;              Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/01/28 08:36:32 $
-;; Version: $Revision: 5.17 $
-;; RCS: $Id: ess-help.el,v 5.17 2002/01/28 08:36:32 maechler Exp $
+;; Modified: $Date: 2003/08/19 15:22:09 $
+;; Version: $Revision: 5.18 $
+;; RCS: $Id: ess-help.el,v 5.18 2003/08/19 15:22:09 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -157,6 +157,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	  (ess-command (format curr-help-command object) tbuffer)
 	  ;; was inferior-ess-help-command
 
+	  (ess-help-underline)
 	  ;; Stata is clean, so we get a big BARF from this.
 	  (if (not (string= ess-language "STA"))
 	      (ess-nuke-help-bs))
@@ -461,6 +462,14 @@ Stata or XLispStat for additional information."
   (goto-char (point-min))
   (skip-chars-forward "\n")
   (delete-region (point-min) (point)))
+
+(defun ess-help-underline ()
+  "Replace ^_H codes with underline face."
+  (save-excursion
+    (goto-char (point-min))
+    (while (search-forward "_" nil t)
+    (backward-delete-char 2)
+    (put-text-property (point) (1+ (point)) 'face 'underline))))
 
 ;;*;; Link to Info
 
