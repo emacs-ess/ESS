@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1998/11/13 18:25:51 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: ess-site.el,v 5.8 1998/11/13 18:25:51 rossini Exp $
+;; Modified: $Date: 1998/12/11 00:37:07 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: ess-site.el,v 5.9 1998/12/11 00:37:07 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -72,7 +72,8 @@
 
   ;; A nice default
   (defvar ess-lisp-directory
-    (directory-file-name (file-name-directory (file-truename load-file-name))))
+    (directory-file-name (file-name-directory
+			  (file-truename load-file-name))))
 
   ;; NON DEFAULTS:
   ;;(defvar ess-lisp-directory
@@ -138,6 +139,7 @@
 ;; redefine inferior-S-program-name.
 ;;
 ;;(setq-default inferior-S+3-program-name "Splus")
+;;(setq-default inferior-S+4-program-name "Splus")
 ;;(setq-default inferior-S+5-program-name "Splus5")
 ;;(setq-default inferior-R-program-name "/disk05/rmh/xemacs/R/R-0.49/bin/R")
 ;;(setq-default inferior-XLS-program-name "xlispstat")
@@ -145,23 +147,44 @@
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
 ;;(setq-default inferior-SAS-program-name "sas")
 
+;;; see essd-els.el
+;;(setq-default inferior-S-elsewhere-program-name "sh")
+
+;;; These commands are for running the PC version of Sqpe of S+4 in
+;;; an emacs buffer, using the same technology as ESS uses for Unix
+;;; S-Plus.  Interactive graphics are unavailable in this mode.
+;;; See essd-sq4.el
+;;(setq-default inferior-Sqpe+4-program-name "Sqpe")
+(if (eq (getenv "SHOME") nil)
+    (setenv "SHOME" "c:/Progra~1/spls45se"))
+ 
 ;;;; Choice for S().
 ;;(setq-default inferior-S-program-name inferior-S+3-program-name)
 
 ;; (1.5) Require the needed dialects for your setup.
 
 (require 'essd-s+3)
+(require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 (require 'essd-r)
 (require 'essd-xls)
 (require 'essd-sas)
 (require 'essd-s4)
 (require 'essd-s+5)
+(require 'essd-sta) ; for Stata.
+
+(if (or (equal window-system 'w32) (equal window-system 'win32))
+     (progn ; PC
+       (require 'essd-s+4)
+       (require 'essd-sq4)))
+;;   (require 'essd-s4))  ; unix
+
+;; re: above window-system code...  
+;; RMH chooses S4 in this case, I'm not sure that it is the "right"
+;; thing to do?  We might need a check for XEmacs?
 
 ;;TODO, for 5.2 :-), or rare.
 ;;(require 'essd-s3)  ; You might not have this
 ;;(require 'essd-vst) ; built on essd-xls.
-;;(require 'essd-s+4) ; for MS Windows NT/95.
-;;(require 'essd-sta) ; for Stata.
 
 (require 'ess)
 
@@ -202,6 +225,50 @@
   (interactive)
   (ess-transcript-mode S+3-customize-alist))
 
+;;; On a PC, the default is S+4.  Elsewhere (unix) the default is S+3
+(if (or (equal window-system 'w32) (equal window-system 'win32))
+    ;; We are working under MS Windows
+    (progn
+      (defun S ()
+	"Basic, usual, call..."
+ 	(interactive)
+ 	(S+4))
+      
+      ;; The basic mode.
+      (defun s-mode (&optional proc-name)
+ 	"Major mode for editing S+3 source.  See ess-mode for more help."
+ 	(interactive)
+ 	(if proc-name (S+4-mode proc-name)
+ 	  (S+4-mode)))
+      
+      (autoload 'ess-transcript-mode "ess-trns"
+ 	"Major mode for editing S transcript files" t)
+      
+      (defun s-transcript-mode ()
+ 	"Does the right thing."
+ 	(interactive)
+ 	(ess-transcript-mode S+4-customize-alist)))
+  ;; Else, we are working under Unix and do what we've always done.
+  (progn
+    (defun S ()
+      "Basic, usual, call..."
+      (interactive)
+      (S+3))
+    
+    ;; The basic mode.
+    (defun s-mode (&optional proc-name)
+      "Major mode for editing S+3 source.  See ess-mode for more help."
+      (interactive)
+      (if proc-name (S+3-mode proc-name)
+	(S+3-mode)))
+
+    (autoload 'ess-transcript-mode "ess-trns"
+      "Major mode for editing S transcript files" t)
+    
+    (defun s-transcript-mode ()
+      "Does the right thing."
+      (interactive)
+      (ess-transcript-mode S+3-customize-alist))))
 
 
 ;;;;* Alias S-mode to s-mode
@@ -239,7 +306,7 @@
 ;; The following two expressions automatically enable font-lock-mode
 ;; for ess-mode and inferior-ess-mode buffers.
 
-;; XEmacs has font-lock for ttys, as well.
+;; XEmacs has font-lock for ttys, as well.  So we need a better check!
 (if window-system
     (progn
       (add-hook 'ess-mode-hook 'turn-on-font-lock t)
