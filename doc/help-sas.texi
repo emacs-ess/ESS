@@ -383,6 +383,13 @@ following two variables for your own situation:
 (setq ess-sas-image-viewer "kodakimg") ;; Windows default
 @end example
 
+C-F2 produces US landscape by default, however, it can produce A4
+landscape (first line for "global" key mapping, second for "local"):
+@example
+(global-set-key [(control f2)] 'ess-sas-rtf-a4-landscape-1)
+(define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-a4-landscape-1)
+@end example
+
 @comment  node-name,  next,  previous,  up
 @node  ESS(SAS)--TAB key, ESS(SAS)--Usage scenarios, ESS(SAS)--Function keys for batch processing, Help for SAS
 @section ESS[SAS]--TAB key
