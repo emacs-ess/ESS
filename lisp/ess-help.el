@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/08 16:27:24 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: ess-help.el,v 1.8 1997/09/08 16:27:24 rossini Exp $
+;; Modified: $Date: 1997/09/10 17:48:55 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: ess-help.el,v 1.9 1997/09/10 17:48:55 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -368,8 +368,7 @@ or XLispStat for additional information."
     (reporter-submit-bug-report
      "ess-bugs@stat.math.ethz.ch"
      (concat "ess-mode " ess-version)
-     (list 'ess-program-name
-	   'ess-language
+     (list 'ess-language
 	   'ess-dialect
 	   'ess-ask-for-ess-directory
 	   'ess-ask-about-transfile
