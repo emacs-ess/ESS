@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/15 08:42:11 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essd-r.el,v 1.8 1997/06/15 08:42:11 rossini Exp $
+;; Modified: $Date: 1997/06/22 23:49:46 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essd-r.el,v 1.9 1997/06/22 23:49:46 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.9  1997/06/22 23:49:46  rossini
+;;: -> ESS.
+;;:
 ;;: Revision 1.8  1997/06/15 08:42:11  rossini
 ;;: setq -> setq-default for initialziation.  I think this is right!
 ;;:
@@ -63,8 +66,8 @@
 	ess-loop-timeout             100000 ;- default is 50000
 	inferior-ess-primary-prompt  "[][a-zA-Z0-9() ]*> ?") ;; [] for browser()
   (remove-hook  'ess-post-run-hook 'ess-execute-screen-options); length fails
-  (add-hook 'S-mode-load-hook
-	    '(lambda () (setq-default S-proc-prefix "R")))
+  (add-hook 'ess-mode-load-hook
+	    '(lambda () (setq-default ess-proc-prefix "R")))
   ;;(setq inferior-S-search-list-command "search()\n");- is failing in R
   (setenv "PAGER" inferior-ess-pager)   ;-- a MUST for the old-style
 					;(nroff) help  above ! 
