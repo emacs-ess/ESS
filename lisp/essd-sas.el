@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/22 18:39:38 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: essd-sas.el,v 1.14 1997/10/22 18:39:38 rossini Exp $
+;; Modified: $Date: 1997/10/23 21:21:45 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: essd-sas.el,v 1.15 1997/10/23 21:21:45 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,15 +46,16 @@
 
 ;;; Code:
 
-(defun ess-SAS-pre-run-hook () "Set up log and list files for interactive SAS."
-  (interactive)
+(defun ess-SAS-pre-run-hook ()
+  "Set up log and list files for interactive SAS."
+
+  ;(interactive)  ; shouldn't be interactively called, correct?
   (if (get-buffer "*shell*")
       (save-excursion       
 	(set-buffer "*shell*")
 	(setq ess-shell-buffer-name (rename-buffer "*ess-shell-regular*"))
-	(setq ess-shell-buffer-name-p t)
-	))
-
+	(setq ess-shell-buffer-name-flag t)))
+  
   (if (get-buffer "*myfile.lst*")
       nil
     (shell)
@@ -75,12 +76,11 @@
   (setq inferior-SAS-args-temp (concat inferior-SAS-args
 				  additional-inferior-SAS-args))
   
-  (if ess-shell-buffer-name-p
+  (if ess-shell-buffer-name-flag
       (save-excursion       
 	(set-buffer ess-shell-buffer-name)
 	(rename-buffer "*shell*")
-	(setq ess-shell-buffer-name-p nil)
-	))
+	(setq ess-shell-buffer-name-flag nil)))
 
   (delete-other-windows)
   (split-window-vertically)
@@ -94,7 +94,8 @@
   (other-window 2)
 
   ;;workaround
-  (setq inferior-SAS-program-name (concat ess-lisp-directory "/" "ess-sas-sh-command"))
+  (setq inferior-SAS-program-name
+	(concat ess-lisp-directory "/" "ess-sas-sh-command"))
   (setq inferior-ess-program inferior-SAS-program-name)
   ;; workaround
 
@@ -109,9 +110,7 @@
   (let* ((beg (point))
 	 (ess-tty-name (progn (end-of-line) (buffer-substring beg (point)))))
     (goto-char (point-max))
-    ess-tty-name
-    )
-  )
+    ess-tty-name))
 
 
 (defvar SAS-customize-alist
