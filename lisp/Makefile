@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.16 $.
+### File: $Revision: 5.17 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -15,7 +15,7 @@ PREFIX=/usr/local
 ##     make EMACS=xemacs
 ## for example, than to edit this file.
 ##
-EMACS = emacs-19.34
+EMACS = emacs
 #EMACS = xemacs
 
 ## For strange setups...
@@ -120,7 +120,7 @@ distclean: clean
 
 ### Targets below here are only for developers.
 
-## This should checkout source into a subdirectory and then package it 
+## This should checkout source into a subdirectory and then package it
 ## back up.  (now that we are using CVS).
 
 dist:
