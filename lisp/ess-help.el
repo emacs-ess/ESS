@@ -1,15 +1,16 @@
 ;;; ess-help.el --- Support for viewing ESS help files
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
+;; Copyright (C) 1997, A.J. Rossini <rossini@stat.sc.edu>
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
+;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/20 21:36:18 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: ess-help.el,v 1.20 1997/11/20 21:36:18 rossini Exp $
+;; Modified: $Date: 1997/11/20 23:07:22 $
+;; Version: $Revision: 4.1 $
+;; RCS: $Id: ess-help.el,v 4.1 1997/11/20 23:07:22 rossini Exp $
 
-;; This file is part of ess-mode
+;; This file is part of ESS
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,7 +27,6 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-
 ;; Code for dealing with ESS help files.  See README.<LANGUAGE> where
 ;; <LANGUAGE> is one of `S', `SAS', or `XLispStat'.
 
