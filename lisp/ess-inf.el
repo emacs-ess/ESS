@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/01 16:11:44 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: ess-inf.el,v 1.17 1997/07/01 16:11:44 rossini Exp $
+;; Modified: $Date: 1997/07/01 16:16:30 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: ess-inf.el,v 1.18 1997/07/01 16:16:30 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.18  1997/07/01 16:16:30  rossini
+;; more local-variable def's moved to ess.el
+;;
 ;; Revision 1.17  1997/07/01 16:11:44  rossini
 ;; removed "make-local-variables" which should've been handled in ess.el.
 ;;
@@ -284,9 +287,8 @@ when invoking S.
 ;;;  (make-local-variable 'inferior-ess-objects-command)
 ;;;  (make-local-variable 'ess-help-sec-keys-alist)
 ;;;  (make-local-variable 'ess-help-sec-regex)
-
-  (make-local-variable 'inferior-ess-procname)
-  (make-local-variable 'ess-defdir)
+;;;  (make-local-variable 'inferior-ess-procname)
+;;;  (make-local-variable 'ess-defdir)
 
   (setq ess-history-file
 	(concat "." ess-proc-prefix "history"))
