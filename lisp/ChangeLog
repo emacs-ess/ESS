@@ -1,3 +1,12 @@
+2004-06-30  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-cust.el (ess-rterm-versions): Condition initial value on
+	ess-microsoft-p.
+
+2004-06-29  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* Makefile (ELC): Add ess-toolbar.elc to list of .elc files.
+
 2004-06-24  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-toolbar.el (ess-use-toolbar): Set to nil if images cannot be
