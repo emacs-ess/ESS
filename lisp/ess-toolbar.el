@@ -2,9 +2,9 @@
 ;;; Thu 06 May 2004
 ;;; Stephen Eglen
 ;;; GPL.
-;; Modified: $Date: 2004/05/13 10:47:49 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: ess-toolbar.el,v 1.8 2004/05/13 10:47:49 stephen Exp $
+;; Modified: $Date: 2004/05/14 18:04:25 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: ess-toolbar.el,v 1.9 2004/05/14 18:04:25 rsparapa Exp $
 
 ;;; Notes.
 
@@ -36,7 +36,7 @@
 
 
 ;;; Creating pixmaps:
-;; Need to add backgrounToolBarColor for Xemacs to show okay.
+;; Need to add backgrounToolBarColor for XEmacs to show okay.
 ;;/usr/share/xemacs-21.4.12/etc/toolbar/folder-cap-up.xpm
 ;; has header:
 ;;"X	c Gray75 s backgroundToolBarColor",

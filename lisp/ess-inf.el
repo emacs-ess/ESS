@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/05/06 13:54:51 $
-;; Version: $Revision: 5.87 $
-;; RCS: $Id: ess-inf.el,v 5.87 2004/05/06 13:54:51 stephen Exp $
+;; Modified: $Date: 2004/05/14 18:04:25 $
+;; Version: $Revision: 5.88 $
+;; RCS: $Id: ess-inf.el,v 5.88 2004/05/14 18:04:25 rsparapa Exp $
 
 ;; This file is part of ESS
 
@@ -1184,7 +1184,7 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
 	 ;; Code for GNU Emacs
 	 (setq inferior-ess-mode-map (cons 'keymap comint-mode-map))))
 
-  ;; Use syntax valid *both* for GNU emacs and Xemacs :
+  ;; Use syntax valid *both* for GNU emacs and XEmacs :
   (define-key inferior-ess-mode-map "\r"       'inferior-ess-send-input)
   (define-key inferior-ess-mode-map "\C-a"     'comint-bol)
   (define-key inferior-ess-mode-map "\M-\r"    'ess-transcript-send-command-and-move)

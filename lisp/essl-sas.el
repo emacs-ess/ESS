@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2004/05/07 13:48:02 $
-;; Version: $Revision: 5.46 $
-;; RCS: $Id: essl-sas.el,v 5.46 2004/05/07 13:48:02 stephen Exp $
+;; Modified: $Date: 2004/05/14 18:04:25 $
+;; Version: $Revision: 5.47 $
+;; RCS: $Id: essl-sas.el,v 5.47 2004/05/14 18:04:25 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -113,8 +113,10 @@ the mode line."
   (use-local-map sas-mode-local-map)
   (toggle-read-only t)) ;; to protect the buffer.
 
-(setq auto-mode-alist (append '(("\\.lst\\'" . sas-listing-mode)) auto-mode-alist))
-(setq auto-mode-alist (append '(("\\.LST\\'" . sas-listing-mode)) auto-mode-alist))
+(if (not (featurep 'xemacs)) 
+    (setq auto-mode-alist 
+	(append '(("\\.[lL][sS][tT]\\'" . sas-listing-mode)) auto-mode-alist)))
+;;;###autoload(add-to-list 'auto-mode-alist '("\\.[lL][sS][tT]\\'" . sas-listing-mode))
 
 (fset 'sas-log-mode        'SAS-log-mode)
 (fset 'SAS-transcript-mode 'SAS-log-mode)
