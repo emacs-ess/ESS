@@ -1,5 +1,14 @@
 2004-04-18  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
+	* ess-help.el (ess-display-help-on-object): If ess-help-own-frame
+	is true, use ess-help-own-frame function to display help buffer.
+	(ess-help-own-frame): New function and variable to display all
+	ESS help buffers into one frame.
+
+	* ess-cust.el (ess-help-own-frame): New variable.
+	(ess-help-kill-bogus-buffers): Change to ess-help group.
+	(ess-help): New customize group.
+
 	* ess-cust.el (inferior-ess-own-frame): New variable.
 
 	* ess-inf.el (ess-switch-to-ESS): Respect inferior-ess-own-frame.
