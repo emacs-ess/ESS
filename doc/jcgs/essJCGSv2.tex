@@ -133,7 +133,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/04 15:30:08 $ - $Revision: 1.38 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/07 23:01:36 $ - $Revision: 1.39 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -404,9 +404,9 @@ process-interfacing.  ESS and its interface are fully discussed in the
 next section.
 
 \begin{Comment}
- Rodney:  I've tried to rearrange these in a more coherent fashion
-but, I'm hindered by the fact that I don't use some of these
-features.  Can someone help?
+ Rodney:  I've tried to rearrange these in a more coherent fashion,
+but I'm hindered because I don't use some of these
+features.  Please remove this comment when done.  Thanks.
 \end{Comment}
 
 \paragraph{Syntactic indentation and color/font-based source code
@@ -442,6 +442,8 @@ to the same level as the previous line.
    Here \SAS goes along as well.
    and if there are syntax errors, you get exact line numbers where there
    syntax error happened
+
+ Rodney:  That's nice!  Can you write something like that?  Thanks.
  \end{enumerate}
 \end{Comment}
 
@@ -455,6 +457,11 @@ files.
  Rodney:  What does ``entire function definitions'' mean?
 
  Martin:What it says: The natural thing for S or Lisp programmers.
+
+ Rodney:  I see.  I think that we should be careful to point out what is
+ R/S-only functionality and what is universal.  I realize that this is a
+ pain, but most of it is probably stuff that is only available for R/S
+ and we could have a section that is R/S only like we do with R Help Files. 
 \end{Comment}
 
 \paragraph{Partial code evaluation.}
@@ -465,16 +472,6 @@ the statistical package and receives the output, if any, which is
 the result.  This is a major improvement over cut-and-paste as it does
 not require switching between buffers or windows.  The response is received
 immediately in an editable Emacs buffer.
-
-\begin{Comment}
- Rodney:  inferior is about as opaque as it gets.  Let's say
-``interactive'' instead.  Ok?
-
- Martin: Don't think so; \emph{inferior} is well explained below,
- and we use it every in the ESS code itself. I think it would be
- unfortunate for documentation to use a different term than what the source
- code uses.
-\end{Comment}
 
 \paragraph{Process interaction.}
 Emacs has historically referred to processes under its control as
@@ -497,6 +494,8 @@ there exists object-name and function-name completion.
 
  Martin: I don't understand what you mean. Is the paragraph below too long
  and you want to shorten it?
+
+ Rodney: I think it's fine now.  Thanks.
 \end{Comment}
 
 \paragraph{Interactive transcripts.}
@@ -508,7 +507,7 @@ ESS provides means for searching
 the command-line history for previous commands and editing them for
 reuse.  ESS knows the structure of transcripts and provides
 syntactic highlighting for them.
-Once a transcript file is generated, perhaps by saving an \file{iESS}
+Once a transcript file is generated, perhaps by saving an \stexttt{iESS}
 buffer, transcript-mode assists with reuse of part or all of the
 entered commands.  It permits editing and re-evaluating the commands
 directly from the saved transcript.  This is useful for
@@ -575,7 +574,6 @@ designed like emacs, but rather Display Manager.  I'm not sure how we can tell
 people that this is such a big advantage.  Maybe the above paragraph
 should talk about SAS and BUGS?  Comments welcome.
 
-
 \item[Martin:] I see. Actually, I think this is \textbf{really bad} to hear.
   I thought people using BUGS would rather come from an S background
   (R or S-plus) rather than SAS, and I -- as Tony seemed -- naturally
@@ -584,6 +582,16 @@ should talk about SAS and BUGS?  Comments welcome.
   Wouldn't this even be something we should change?  Maybe we should find
   out who is currently using ESS[BUGS] at all. It could be only very
   people; since I know that most BUGS users use WinBUGS...
+
+\item[Rodney:]  I can't speak for everyone, but the BUGS users I know are
+pretty evenly divided between SAS and S.  OTOH, they are almost 
+unanimously opposed to WinBUGS and use batch BUGS nearly exclusively.
+I think it's because of their aversion to Windows since nearly all of
+them are hard core Unix fanatics.  However, I see no problem with changing, 
+since it is only loosely based on ESS[SAS].  Luckily, I only have to change 
+one key-binding since there aren't any others.  What is the R/S key-binding 
+for batch submit?  I'll remove this comment after I change ESS[BUGS] (and 
+somebody tells me what to change it to :0)  Thanks.
 \end{description}
 \end{Comment}
 
