@@ -55,9 +55,11 @@ SED = sed
 #GZCAT = gzcat
 GZCAT = zcat
 
-# program to convert .texi{nfo} to .info
+# program to convert .texi{nfo} to .info, .txt, and .html
 MAKEINFO = LANG=C makeinfo
 MAKETXT = $(MAKEINFO) --no-validate --no-headers --no-split -o -
+MAKEHTML = $(MAKEINFO) --html --no-split
+##                            ^^^^^^^^^^ today's bandwidth is fast
 
 ## Set ESSVERSION to the contents of VERSION
 ## This will only work with GNU make, but you won't

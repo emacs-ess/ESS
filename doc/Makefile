@@ -5,8 +5,12 @@
 include ../Makeconf
 
 # program to convert .texi{nfo} to .html
+#MM: use makeinfo (i.e. MAKEHTML from above) which is more
+#--  standardized than texi2html which exists in
+#MM  at least two widely differing versions (TeX vs GNU):
 TEXI2HTML = LANG=C texi2html -verbose -iso
 SPLITCHAP = -split_chapter -menu -glossary
+##
 
 TEXI2DVI = LANG=C texi2dvi
 TEXI2PDF = LANG=C texi2pdf
@@ -17,7 +21,7 @@ TEXI2PDF = LANG=C texi2pdf
 
 TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 	credits.texi currfeat.texi ess.texi getting.texi help-s.texi        \
-	help-sas.texi inst_cvs.texi inst_tar.texi license.texi mailing.texi \
+	help-sas.texi inst_svn.texi inst_tar.texi license.texi mailing.texi \
 	newfeat.texi readme.texi requires.texi stabilty.texi help-bugs.texi \
         ../VERSION
 
@@ -29,7 +33,7 @@ all  : info text html dvi pdf
 docs : info text html
 info : info/ess.info
 text : $(TXTs)
-html : html/ess_toc.html html/readme_toc.html
+html : html/ess.html html/readme.html
 dvi  : ess.dvi readme.dvi
 pdf  : $(PDFs)
 ps   : ess.ps  readme.ps
@@ -77,12 +81,15 @@ install : info/ess.info
 	test -f $(INFODIR)/dir || $(INSTALL) info/dir $(INFODIR)
 
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
-html/ess_toc.html: $(TEXISRC)
+html/ess.html: $(TEXISRC)
 	@echo "making HTML documentation..."
-	$(TEXI2HTML) $(SPLITCHAP) ess.texi
-	test -d ess && cp -p ess/ess_toc.html html/index.html || cp -p ess_toc.html html/index.html
-	test -d ess && mv -f ess/*.html html || mv -f *.html html
+	$(MAKEHTML) ess.texi && mv -f ess.html html
+#MM	$(TEXI2HTML) $(SPLITCHAP) ess.texi
+#MM	test -d ess && cp -p ess/ess_toc.html html/index.html || cp -p ess_toc.html html/index.html
+#MM	test -d ess && mv -f ess/*.html html || mv -f *.html html
 
-html/readme_toc.html: $(TEXISRC)
-	$(TEXI2HTML) readme.texi
-	mv -f readme*.html html
+html/readme.html: $(TEXISRC)
+	$(MAKEHTML)  --no-validate readme.texi
+##                   ^^^^^^^^^^^^^ (design bug: "FIXME" in ess.texi)
+#MM	$(TEXI2HTML) readme.texi
+	mv -f readme.html html
