@@ -422,9 +422,14 @@ This was rewritten by KH in April 1996."
   (let ((the-dir
 	 (expand-file-name
 	  (file-name-as-directory
-	   (read-file-name prompt
-			   (file-name-as-directory default)
-			   (file-name-as-directory default) t nil)))))
+	   (if (fboundp 'read-directory-name)
+	       ;; use XEmacs' read-directory-name if exists.
+	       (read-directory-name prompt
+				    (file-name-as-directory default)
+				    (file-name-as-directory default) t nil)
+	     (read-file-name prompt
+			     (file-name-as-directory default)
+			     (file-name-as-directory default) t nil))))))
     (if (file-directory-p the-dir) nil
       (error "%s is not a valid directory" the-dir))
     the-dir))
