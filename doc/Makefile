@@ -1,14 +1,15 @@
 ### Makefile - for DOCUMENTATION (./doc) of ESS distribution.
 ###
-### File: $Revision: 1.50 $.
-###
 
 ## Before making changes here, please take a look at Makeconf
 include ../Makeconf
 
 # program to convert .texi{nfo} to .html
-TEXI2HTML = texi2html -verbose -iso
+TEXI2HTML = LANG=C texi2html -verbose -iso
 SPLITCHAP = -split_chapter -menu -glossary
+
+TEXI2DVI = LANG=C texi2dvi
+TEXI2PDF = LANG=C texi2pdf
 
 # To obtain sorted indices run:	"texindex ess.??".
 
@@ -21,35 +22,34 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
         ../VERSION
 
 ### Targets --
+PDFs = ess.pdf readme.pdf
+TXTs = ../README ../ANNOUNCE
 
 all  : info text html dvi pdf
-info : info/ess.info
-text : ../README ../ANNOUNCE
-html : html/ess_toc.html html/readme_toc.html
 docs : info text html
+info : info/ess.info
+text : $(TXTs)
+html : html/ess_toc.html html/readme_toc.html
 dvi  : ess.dvi readme.dvi
-pdf  : ess.pdf readme.pdf
+pdf  : $(PDFs)
 ps   : ess.ps  readme.ps
 
-ess.dvi : $(TEXISRC); texi2dvi $<
-ess.pdf : $(TEXISRC)
-	texi2pdf ess.texi
-#ess.pdf : $(TEXISRC); pdftex $<; pdftex $<
-ess.ps  : ess.dvi; dvips $< -o $@
+ess.dvi : $(TEXISRC); $(TEXI2DVI) ess.texi
+ess.pdf : $(TEXISRC); $(TEXI2PDF) ess.texi
+ess.ps  : ess.dvi; LANG=C dvips $^ -o $@
 
-readme.dvi : $(TEXISRC); texi2dvi $<
-readme.pdf : $(TEXISRC); pdftex $<; pdftex $<
-readme.ps  : readme.dvi; dvips $< -o $@
+readme.dvi : $(TEXISRC); $(TEXI2DVI) readme.texi
+readme.pdf : $(TEXISRC); $(TEXI2PDF) readme.texi
+readme.ps  : readme.dvi; dvips $^ -o $@
 
+## this shall remove *exactly* those things that are *not* in version control:
 clean :
-	rm -f texput.log ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
-	 ess.tp ess.vr ess.cps ess.fns ess.vrs ess.fn \
-	 readme.aux readme.cp readme.ky readme.log readme.pg readme.toc \
-	 readme.tp readme.vr readme.cps readme.fns readme.vrs readme.fn
+	-@rm -f readme.pdf *.aux *.cp *.cps *.dvi *.fn *.fns *.ky *.kys \
+	  *.log *.out *.pg *.pgs *.ps *.ps-2 *.tmp *.toc *.tp *.vr *.vrs
 
+## this removes also things in VC (when they are remade by "make"):
 distclean : clean
-	rm -f ess.dvi ess.ps ess.pdf readme.dvi readme.ps readme.pdf
-	rm -f html/*.html
+	-@rm -f ess.pdf html/* info/*.info*
 
 ../README: $(TEXISRC)
 	$(MAKETXT) readme.texi \
