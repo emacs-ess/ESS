@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/22 23:49:46 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essd-r.el,v 1.9 1997/06/22 23:49:46 rossini Exp $
+;; Modified: $Date: 1997/07/02 16:16:19 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essd-r.el,v 1.10 1997/07/02 16:16:19 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.10  1997/07/02 16:16:19  rossini
+;;: moved vars to R defun.
+;;:
 ;;: Revision 1.9  1997/06/22 23:49:46  rossini
 ;;: -> ESS.
 ;;:
@@ -79,9 +82,19 @@
 
 (defun R () "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ.)"
   (interactive)
-  (add-hook 'ess-pre-run-hook  'ess-R-shortcut-pre-run-hook)
-  (add-hook 'ess-post-run-hook 'ess-R-shortcut-post-run-hook)
-  (setq     ess-proc-prefix    "R")
+;;  (add-hook 'ess-pre-run-hook  'ess-R-shortcut-pre-run-hook)
+;;  (add-hook 'ess-post-run-hook 'ess-R-shortcut-post-run-hook)
+  (setq-default ess-proc-prefix              "R"
+		ess-version-running          "R" ;using 'ls()' instead of objects..
+		inferior-ess-program         inferior-R-program-name
+		inferior-ess-objects-command "if(%d == 1) ls() else builtins()"
+		ess-help-sec-regex           ess-help-R-sec-regex
+		ess-help-sec-keys-alist      ess-help-R-sec-keys-alist
+		inferior-ess-help-command    "help(\"%s\")\n"
+		inferior-ess-exit-command    "q()\n"
+		ess-loop-timeout             100000 ; default is 50000
+		inferior-ess-primary-prompt  "[][a-zA-Z0-9() ]*> ?") 
+					;[] for browser()
   (inferior-ess))
 
 
