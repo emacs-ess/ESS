@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/03/17 17:42:45 $
-;; Version: $Revision: 5.17 $
-;; RCS: $Id: ess-site.el,v 5.17 1999/03/17 17:42:45 rossini Exp $
+;; Modified: $Date: 1999/03/18 07:57:55 $
+;; Version: $Revision: 5.18 $
+;; RCS: $Id: ess-site.el,v 5.18 1999/03/18 07:57:55 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -252,7 +252,8 @@
 ;;; On a PC, the default is R-microsoft.  Elsewhere the default is R-unix.
 (if (or (equal window-system 'w32) (equal window-system 'win32))
     (fset 'R 'R-microsoft)		; MS-Windows 9x/NT
-  (fset 'R 'R-unix))			; Unix
+   nil) ;(fset 'R 'R-unix))		; Unix
+
 
 ;;;;* Alias S-mode to s-mode
 ;;; Emacs will set the mode for a file based on the file's header.
