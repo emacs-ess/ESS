@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.67 2002/08/07 13:20:44 maechler Exp $
+## $Id: Makefile,v 5.68 2002/08/07 14:30:57 maechler Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -29,12 +29,12 @@ default:
 all clean distclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd ..; done
 
-dist:
+dist: VERSION
 	cd doc;  $(MAKE) docs; cd ..
 	cd lisp; $(MAKE) dist; grep 'ess-version' ess-cust.el; cd ..
-	@echo "** Committing README, ANNOUNCE and info **"
-	cvs commit -m "Updating README, ANNOUNCE for new version" \
-		README ANNOUNCE
+	@echo "** Committing VERSION, README, ANNOUNCE and info **"
+	cvs commit -m "Updating toplevel files for new version" \
+		VERSION README ANNOUNCE
 	cvs commit -m "Updating info for new version" info
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
@@ -61,7 +61,7 @@ dist:
 	@echo "** Cleaning up **"
 	chmod -R u+w $(ESSDIR); rm -rf $(ESSDIR)
 
-ChangeLog:
+ChangeLog: VERSION
 	$(EMACSLOGCVS)
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
@@ -71,7 +71,9 @@ ChangeLog:
 	 cat ChangeLog.old ) > ChangeLog
 	cvs commit -m 'Version .. released' ChangeLog
 
-rel: ChangeLog dist tag
+# FIXME: "ChangeLog" does not work (for MM)
+#rel: ChangeLog dist tag
+rel: dist tag
 	@echo "** Placing tar and zip files **"
 	scp $(ESSDIR).tar.gz software.biostat.washington.edu:/home/ess/downloads
 	scp $(ESSDIR).zip    software.biostat.washington.edu:/home/ess/downloads
