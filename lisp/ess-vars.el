@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/10/24 16:25:34 $
-;; Version: $Revision: 1.32 $
-;; RCS: $Id: ess-vars.el,v 1.32 1997/10/24 16:25:34 rossini Exp $
+;; Modified: $Date: 1997/11/07 18:47:30 $
+;; Version: $Revision: 1.33 $
+;; RCS: $Id: ess-vars.el,v 1.33 1997/11/07 18:47:30 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -192,10 +192,11 @@ regardless of where in the line point is when the TAB command is used.")
   "*Indentation of S statements with respect to containing block.")
 
 (defvar ess-brace-imaginary-offset 0
-  "*Imagined indentation of a S open brace that actually follows a statement.")
+  "*Imagined indentation of an open brace following a statement.")
 
 (defvar ess-brace-offset 0
-  "*Extra indentation for braces, compared with other text in same context.")
+  "*Extra indentation for open braces.
+Compares with other text in same context.")
 
 (defvar ess-continued-statement-offset 2
   "*Extra indent for lines not starting new statements.")
@@ -208,6 +209,14 @@ This is in addition to ess-continued-statement-offset.")
   "*Extra indent for internal substatements of function `foo' that called
 in `arg=foo(...)' form.
 If not number, the statements are indented at open-parenthesis following foo.")
+
+;;added rmh 2Nov97 at request of Terry Therneau
+(defvar ess-close-brace-offset 0
+  "*Extra indentation for closing braces")
+
+;;added rmh 2Nov97 at request of Terry Therneau
+(defvar ess-fancy-comments t
+  "*Non-nil means distiguish between #, ##, and ### for indentation")
 
 
 ;; PD, 1Apr97 : 
@@ -233,7 +242,8 @@ If not number, the statements are indented at open-parenthesis following
 	(cons 'ess-else-offset ess-else-offset)
 	(cons 'ess-brace-imaginary-offset ess-brace-imaginary-offset)
 	(cons 'ess-continued-brace-offset ess-continued-brace-offset)
-	(cons 'ess-arg-function-offset ess-arg-function-offset))
+	(cons 'ess-arg-function-offset ess-arg-function-offset)
+	(cons 'ess-close-brace-offset ess-close-brace-offset))
   "Default style constructed from initial values of indentation variables.")
 
 (defvar ess-style-alist
@@ -243,25 +253,37 @@ If not number, the statements are indented at open-parenthesis following
 	       (ess-brace-offset . 0)
 	       (ess-arg-function-offset . 4)
 	       (ess-expression-offset . 2)
-	       (ess-else-offset . 0))
+	       (ess-else-offset . 0)
+	       (ess-close-brace-offset . 0))
 	  (BSD (ess-indent-level . 8)
 	       (ess-continued-statement-offset . 8)
 	       (ess-brace-offset . -8)
 	       (ess-arg-function-offset . 0)
 	       (ess-expression-offset . 8)
-	       (ess-else-offset . 0))
+	       (ess-else-offset . 0)
+	       (ess-close-brace-offset . 0))
 	  (K&R (ess-indent-level . 5)
 	       (ess-continued-statement-offset . 5)
 	       (ess-brace-offset . -5)
 	       (ess-arg-function-offset . 0)
 	       (ess-expression-offset . 5)
-	       (ess-else-offset . 0))
+	       (ess-else-offset . 0)
+	       (ess-close-brace-offset . 0))
 	  (C++ (ess-indent-level . 4)
 	       (ess-continued-statement-offset . 4)
 	       (ess-brace-offset . -4)
 	       (ess-arg-function-offset . 0)
 	       (ess-expression-offset . 4)
-	       (ess-else-offset . 0))))
+	       (ess-else-offset . 0)
+	       (ess-close-brace-offset . 0))
+	  ;; CLB added rmh 2Nov97 at request of Terry Therneau
+	  (CLB (ess-indent-level . 2)
+	       (ess-continued-statement-offset . 4)
+	       (ess-brace-offset . 0)
+	       (ess-arg-function-offset . 0)
+	       (ess-expression-offset . 4)
+	       (ess-else-offset . 0)
+	       (ess-close-brace-offset . 2))))
   "Predefined formatting styles for ess code")
 
 (defvar ess-default-style 'DEFAULT
