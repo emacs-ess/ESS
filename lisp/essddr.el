@@ -19,7 +19,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.6 1999/01/04 13:52:43 maechler Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.7 1999/09/06 07:02:13 maechler Exp $
 
 ;;; Code:
 
@@ -132,7 +132,7 @@ All Rd mode abbrevs start with a grave accent (`).")
     'font-lock-keyword-face))
   "Additional Rd expressions to highlight.")
 
-(defvar Rd-indent-level 4
+(defvar Rd-indent-level 2
   "*Indentation of Rd code with respect to containing blocks.")
 
 (defvar Rd-mode-map nil
@@ -145,8 +145,9 @@ All Rd mode abbrevs start with a grave accent (`).")
     (define-key map "\C-m" 'reindent-then-newline-and-indent)
     (define-key map "\C-c\C-p" 'Rd-preview-help)
     (define-key map "\C-c\C-j" 'Rd-mode-insert-item)
-    (define-key map "\C-c\C-s" 'Rd-mode-insert-section)
     (define-key map "\C-c\C-e" 'Rd-mode-insert-skeleton)
+    (define-key map "\C-c\C-s" 'Rd-mode-insert-section)
+    (define-key map "\C-c\C-w" 'ess-switch-process); is on C-c C-s in ess-mode..
     (define-key map "\C-c\C-r" 'ess-eval-region)
     (define-key map "\C-c\C-n" 'ess-eval-line-and-next-line)
     (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
