@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/09/05 18:20:00 $
-;; Version: $Revision: 1.41 $
-;; RCS: $Id: ess-site.el,v 1.41 1997/09/05 18:20:00 rossini Exp $
+;; Modified: $Date: 1997/09/05 18:31:49 $
+;; Version: $Revision: 1.42 $
+;; RCS: $Id: ess-site.el,v 1.42 1997/09/05 18:31:49 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -71,6 +71,7 @@
 
 ;;*;; Requires : can't require, until path is set.
 
+(require 'assoc)
 (require 'ess)
 
 ;;; (1.2) Files ending in .q and .S are considered to be S source files
@@ -80,7 +81,7 @@
 ;;; line below.
 
 
-(remassoc "\\.[sS]\\'" auto-mode-alist) ; get rid of assembler mode.
+;;(remassoc "\\.[sS]\\'" auto-mode-alist) ; get rid of assembler mode.
 
 (if (assoc "\\.q" auto-mode-alist) nil
   (setq auto-mode-alist
