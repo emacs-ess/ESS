@@ -2,7 +2,9 @@ Changes/New Features in 5.2.5:
 @itemize @bullet
 @item ESS[R]: C-c C-q or ``Quit S'' from the menu now ask questions in
 the emacs buffer (instead of *R*) and do not append "-exited" to the
-buffer name.
+buffer name.  @b{Note} however that simply typing @kbd{Enter} to the
+question about saving the R workspace will result in @emph{not}
+saving, i.e., @emph{not} producing an @file{.RData} file.
 
 Further, the behavior of (ess-cleanup), called from
 ess-quit, now depends on the new customizable variable
