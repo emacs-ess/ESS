@@ -7,7 +7,7 @@ SHELL = /bin/sh
 
 ## emacs distribution that you are installing ESS for.
 ##
-## EMACS 21:  {MM: Keep this as default -- ``has always been''}
+## EMACS 21:  
 EMACS=emacs
 ## XEMACS 21:
 #EMACS=xemacs
@@ -23,13 +23,16 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 # if Emacs:
 #EMACSLOGCVS=$(EMACSBATCH) -f vc-update-change-log
 
-## Some install commands expect target-directory source-file,
-## but we want source-file target-directory; we also want to
-## preserve owner, group and time-stamp; two commands are
-## needed; one to create directories, if necessary, and
-## another to copy the files
-INSTALLDIR = mkdir -p
+## two install commands are needed; one to create directories, 
+## if necessary, and another to copy the files
+#  to create directories
+INSTALLDIR = install -d 
+#INSTALLDIR = mkdir -p
+
+## file copying commands expect source-file target-directory
+#  to copy the files
 INSTALL = cp -p
+#INSTALL = install 
 
 # What GZCAT is called on your system (GNU gzip "cat")
 #GZCAT = gzcat

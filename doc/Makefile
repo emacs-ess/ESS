@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.41 $.
+### File: $Revision: 1.42 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -74,7 +74,7 @@ ess.info: $(TEXISRC)
 	$(MAKEINFO) ess.texi
 
 install : ess.info 
-	test -d $(INFODIR) || $(INSTALLDIR) $(INFODIR)
+	-$(INSTALLDIR) $(INFODIR)
 	$(INSTALL) ess.info* $(INFODIR)
 	test -f $(INFODIR)/dir || $(INSTALL) dir $(INFODIR)
 

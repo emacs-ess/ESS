@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.50 $.
+### File: $Revision: 5.51 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -81,8 +81,8 @@ all: ESS
 ESS: $(OBJECTS)
 
 install: all
-	if [ ! -d $(LISPDIR) ]; then $(INSTALLDIR) $(LISPDIR); fi
-	if [ $(LISPDIR) != . ]; then $(INSTALL) *.elc $(LISPDIR); fi
+	-$(INSTALLDIR) $(LISPDIR)
+	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
 
 dist: ess-cust.el
 	cvs commit -m "'make dist' for new version" ess-cust.el
