@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2004/05/17 08:35:48 $
-;; Version: $Revision: 5.36 $
-;; RCS: $Id: essl-s.el,v 5.36 2004/05/17 08:35:48 maechler Exp $
+;; Modified: $Date: 2004/05/17 21:21:26 $
+;; Version: $Revision: 5.37 $
+;; RCS: $Id: essl-s.el,v 5.37 2004/05/17 21:21:26 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -388,26 +388,15 @@ Uses the file given by the variable `ess-function-outline-file'."
 (defun ess-fix-comments (&optional dont-query verbose)
   "Fix ess-mode buffer so that single-line comments start with at least `##'."
   (interactive "P")
-  (save-excursion
-    (goto-char (point-min))
-    (let ((rgxp "^\\([ \t]*#\\)\\([^#]\\)")
-	  (to   "\\1#\\2"))
-      (if dont-query
-	  (ess-rep-regexp     rgxp to nil nil verbose)
-	(query-replace-regexp rgxp to nil)))))
+  (ess-replace-regexp-dump-to-src "^\\([ \t]*#\\)\\([^#]\\)"
+				  "\\1#\\2" dont-query verbose))
 
 (defun ess-dump-to-src (&optional dont-query verbose)
   "Make the changes in an S - dump() file to improve human readability."
   (interactive "P")
-  (save-excursion
-    (if (not (equal major-mode 'ess-mode))
-	(ess-mode))
-    (goto-char (point-min))
-    (let ((rgxp "^\"\\([a-z.][a-z.0-9]*\\)\"<-\n")
-	  (to   "\n\\1 <- "))
-      (if dont-query
-	  (ess-rep-regexp     rgxp to nil nil verbose)
-	(query-replace-regexp rgxp to nil)))))
+  (ess-replace-regexp-dump-to-src  "^\"\\([a-z.][a-z.0-9]*\\)\"<-\n"
+				   "\n\\1 <- "
+				   dont-query verbose 'ensure-ess))
 
 (defun ess-num-var-round (&optional dont-query verbose)
   "Is VERY useful for dump(.)'ed numeric variables; ROUND some of them by
@@ -433,15 +422,48 @@ Uses the file given by the variable `ess-function-outline-file'."
 			'fixedcase 'literal verbose)
 	(setq num (1+ num))))))
 
+(defun ess-fix-dot (before-chars &optional dont-query verbose)
+  "Remove trailing decimal '.' (\"dot\"), before BEFORE; typically from S-plus"
+  ;; typically, before-chars =  "]:" or more
+  (ess-replace-regexp-dump-to-src
+   (concat "\\([0-9]\\)\\.\\( *[" before-chars "]\\)")
+   ;;           111      ^
+   "\\1\\2" dont-query verbose))
+
+(defun ess-fix-dot-1 (&optional do-query verbose)
+  "Remove trailing decimal '.' (\"dot\"), before ':' or ']', i.e.,
+in cases where it's ugly and nonsense.  DO-QUERY(prefix) asks before replacing."
+  (interactive "P")
+  (ess-fix-dot "]:" (not do-query) verbose))
+
+(defun ess-fix-dot-more (&optional dont-query verbose)
+  "Remove trailing decimal '.' (\"dot\", typically from S+) in more cases
+ than `ess-fix-dot-1'."
+  (interactive "P")
+  (ess-fix-dot-1 nil verbose)
+  (ess-fix-dot ",)" dont-query verbose))
+
+(defun ess-fix-EQ-assign (&optional dont-query verbose)
+  "Replace \"=\" by \"<-\" at least for function assignments."
+  ;;TODO: "in the few places we can be very sure.."
+  (interactive "P")
+  (ess-replace-regexp-dump-to-src
+   "^\\([a-z.][_a-z.0-9]*\\) *= *\\(function *(\\)"
+   "\\1 <- \\2" dont-query verbose))
+
 ;;; All of the above three :
 (defun ess-MM-fix-src (&optional dont-query verbose)
-  "Clean up ess-source code which has been produced by  dump(..).
- Produces more readable code, and one that is well formatted in emacs ess-mode."
+  "Clean up ess-source code which has been produced by dump(..), and other
+code not typically produced by other tools.  Produces more readable code,
+and one that is well formatted in emacs ess-mode."
   (interactive "P")
   ;; each of the following does a save-excursion:
   (ess-dump-to-src dont-query)
   (ess-fix-comments dont-query)
-  (ess-num-var-round dont-query verbose))
+  (ess-num-var-round dont-query verbose)
+  (ess-fix-dot-more dont-query verbose)
+  (ess-fix-EQ-assign dont-query verbose)
+  )
 
 (defun ess-fix-miscellaneous (&optional from verbose)
   "Fix Miscellaneous S/R `ill-formation's from current \\[point].
@@ -454,7 +476,7 @@ Uses the file given by the variable `ess-function-outline-file'."
 	 (require 'essd-r)
 	 (R-fix-T-F from (not verbose))))
 
-    ;; from R 1.9; "_" is valid in names -- here assume no initial / trailing:
+    ;;from R 1.9.x "_" is valid in names; here assume no initial / trailing '_'
     (goto-char from) (ess-rep-regexp " +_ *" " <- " nil 'literal verbose)
     (goto-char from) (ess-rep-regexp   "_ +" " <- " nil 'literal verbose)
 
