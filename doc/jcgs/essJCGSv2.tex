@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/31 20:14:28 $ - $Revision: 1.87 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/31 20:55:12 $ - $Revision: 1.88 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -501,26 +501,43 @@ including a description of the syntax of each
 supported statistical language in the form used by the standard Emacs
 \stexttt{font-lock-mode}.  
 
-Figure \ref{f.font} shows a black-and-white example of font-locking a
+Figure \ref{f.font} shows an example of font-locking a
 complicated S statement.  Figure \ref{f.font}a shows an \stexttt{if}
 statement with a long expression in the condition and a multi-line
-consequence.  The keyword \stexttt{if} is shown in an underlined font,
-the string \stexttt{"deltat"} in an italic underlined font.  The
-comments are in an italic font.  Everything else is in the standard
+consequence.  The keyword \stexttt{if} is shown in purple,
+the string \stexttt{"deltat"} in rosypurple.  The
+comments are in red.  Everything else is in the standard
 font.  The consequence is indented and the continuations of the
-consequence are further indented.  The matching parentheses are marked
-by a bold foreground and a shaded background.  The cursor is indicated
+consequence are further indented.  The matching parentheses are shown
+in green.  The cursor is indicated
 by a solid box.  In Figure \ref{f.font}b we replaced the matching
 parenthesis with an unbalanced bracket.  Emacs immediately marks that
-with the paren-mismatch font, inverse-video here and bright purple on
-a color terminal.
+with the paren-mismatch font, bright purple in this example.
+On a black and white terminal we would use bold, underline, italic,
+and reverse-video, rather than colors, to distinguish the fonts.
+
+% Figure \ref{f.font} shows a black-and-white example of font-locking a
+% complicated S statement.  Figure \ref{f.font}a shows an \stexttt{if}
+% statement with a long expression in the condition and a multi-line
+% consequence.  The keyword \stexttt{if} is shown in an underlined font,
+% the string \stexttt{"deltat"} in an italic underlined font.  The
+% comments are in an italic font.  Everything else is in the standard
+% font.  The consequence is indented and the continuations of the
+% consequence are further indented.  The matching parentheses are marked
+% by a bold foreground and a shaded background.  The cursor is indicated
+% by a solid box.  In Figure \ref{f.font}b we replaced the matching
+% parenthesis with an unbalanced bracket.  Emacs immediately marks that
+% with the paren-mismatch font, bright purple on
+% a color terminal.
 
 The font selection and the indentation depth are automatically
 supplied by Emacs as the lines are typed.  The user has several
 options for mapping of colors or fonts to each of the syntactic types.
-We selected a black-and-white font-mapping for display here.  On a
-terminal we might use blue for the keywords, red for comments, green
-for matching parens.  Emacs makes default choices of colors and ESS
+We selected a 
+%black-and-white font-mapping for display here.  On a terminal we might use 
+purple for the keywords, red for comments, green
+for matching parens, and inverse-video purple for mismatched parens.
+Emacs makes default choices of colors and ESS
 provides several other optional schemes.
 
 \begin{figure}
