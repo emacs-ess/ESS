@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/06/30 15:34:13 $
-;; Version: $Revision: 1.177 $
-;; RCS: $Id: essa-sas.el,v 1.177 2004/06/30 15:34:13 rsparapa Exp $
+;; Modified: $Date: 2004/07/08 20:45:40 $
+;; Version: $Revision: 1.178 $
+;; RCS: $Id: essa-sas.el,v 1.178 2004/07/08 20:45:40 rsparapa Exp $
 
 ;; Keywords: SAS 
 
@@ -377,6 +377,23 @@ on the way."
 ;;	  (if ess-sas-search-point (insert ess-sas-end-text))
 ;;         ))
 
+(defun ess-sas-cd ()
+"Change directory, taking into account various issues with respect to
+`ess-sas-file-path'."
+    ;(interactive)
+    (ess-sas-file-path)
+    (ess-sas-goto-shell t)
+    (if (equal ess-sas-submit-method 'sh)
+      (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) 
+	"\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
+	(if (equal ess-sas-submit-method 'ms-dos) (progn
+	    (if (string-equal ":" (substring ess-sas-file-path 1 2)) (progn
+		(insert (substring ess-sas-file-path 0 2))
+		(comint-send-input)))
+	    (insert "cd \"" (convert-standard-filename 
+		(file-name-directory ess-sas-file-path)) "\""))))
+    (comint-send-input))
+
 (defun ess-sas-create-local-variables-alist (&optional file-or-buffer)
 "Create an alist of local variables from file-or-buffer, use the 
 current buffer if nil."
@@ -389,6 +406,7 @@ current buffer if nil."
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
     (ess-save-and-set-local-variables)
+    (ess-sas-cd)
 
  (save-excursion (let ((ess-tmp-sas-data nil) 
     (ess-tmp-sas-data-view-fsview-statement ess-sas-data-view-fsview-statement)
@@ -423,6 +441,7 @@ current buffer if nil."
   "Open a dataset for viewing with PROC INSIGHT."
     (interactive)
     (ess-save-and-set-local-variables)
+    (ess-sas-cd)
 
  (save-excursion (let ((ess-tmp-sas-data nil) 
     (ess-tmp-sas-data-view-insight-statement ess-sas-data-view-insight-statement)
