@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/09 13:57:06 $
-;; Version: $Revision: 1.30 $
-;; RCS: $Id: essd-s+3.el,v 1.30 1997/09/09 13:57:06 rossini Exp $
+;; Modified: $Date: 1997/09/09 14:39:22 $
+;; Version: $Revision: 1.31 $
+;; RCS: $Id: essd-s+3.el,v 1.31 1997/09/09 14:39:22 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -56,9 +56,9 @@
     (ess-loop-timeout              . 100000 )
     (ess-object-name-db-file       . "ess-s+3-namedb.el" )
     (ess-retr-lastvalue-command
-     . ".Last.value <- get(\"smode.lvsave\",frame=0)\n")
+     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
     (ess-save-lastvalue-command
-     . "assign(\"smode.lvsave\",.Last.value,frame=0)\n")
+     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
     (inferior-ess-program          . inferior-S+3-program-name)
     (inferior-ess-objects-command  . "objects(%d)")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
