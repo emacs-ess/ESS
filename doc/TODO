@@ -1,6 +1,6 @@
 	-*- indented-text -*-
 
-$Revision: 4.11 $
+$Revision: 4.12 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1267,3 +1267,45 @@ Thanks for asking!
   I noted that the command lines are duplicated.  You might need
     (setq comint-process-echoes t)
   in the defun stata
+
+
+
+Date: Tue, 15 Jun 2004 01:11:33 -0400
+From: "Richard M. Heiberger" <rmh@temple.edu> Add To Address Book | This is Spam 
+Subject: Re: change in ESS with edit() in R 
+To: rossini@u.washington.edu 
+Cc: Stephen Eglen <stephen@anc.ed.ac.uk>, ess-core@stat.math.ethz.ch 
+
+
+
+I think Tony spotted the source of the problem.  I think I did it.
+
+The goal in ess-iw32.el was to change the behavior of 
+ess-eval-linewise and ess-eval-region to call the Windows S-Plus GUI
+through the DDE protocol.  This was successful.  I and others have used it daily
+for the past 6 years.
+
+I intended to restrict the change to the S-Plus
+GUI.  My thinking at the moment is that I didn't do that restriction well enough.
+
+I get an emacs freeze in both R and Sqpe on Windows.  An initial look at emacs
+variables makes me think that the "if" tests in ess-iw32.el for the substitute
+definitions of
+
+ess-eval-region
+ess-eval-linewise
+ess-load-file
+ess-dump-object-into-edit-buffer
+ess-display-help-on-object
+ess-dump-object
+
+aren't precise enough to detect that R and Sqpe should not be sent to ddeclient.
+
+This note goes on the master "To DO" list.  Do we have one?
+Taking it off the list is not a high priority for me because the work around of
+C-g is so easy.
+
+
+Rich
+
+
