@@ -184,23 +184,25 @@ The extension, in a file name, is the part that follows the last `.'."
 The ESS etc directory stores various auxillary files that are useful
 for ESS, such as icons.")
 
-(defvar ess-etc-directory-list '("/../etc/" "/../etc/ess/" "/../../etc/ess/")
+(defvar ess-etc-directory-list
+  '("../etc/" "../etc/ess/" "../../etc/ess/" "./etc/")
   "*List of directories, relative to `ess-lisp-directory', to search for etc.")
 
 (while (and (listp ess-etc-directory-list) (consp ess-etc-directory-list))
-    (setq ess-etc-directory
-	(expand-file-name (concat ess-lisp-directory
-	    (car ess-etc-directory-list))))
-    (if (file-directory-p ess-etc-directory)
-	(setq ess-etc-directory-list nil)
-	(setq ess-etc-directory nil)
-	(setq ess-etc-directory-list (cdr ess-etc-directory-list))
-	(if (null ess-etc-directory-list) (progn
-	    (beep 0) (beep 0) (message (concat
-	    "ERROR:ess-site.el:ess-etc-directory\n"
-	    "Relative to ess-lisp-directory\n"
-	    "At least one of ../etc, ../etc/ess, ../../etc/ess must exist!"))
-	    (sit-for 4)))))
+  (setq ess-etc-directory
+	(expand-file-name (concat ess-lisp-directory "/"
+				  (car ess-etc-directory-list))))
+  (if (file-directory-p ess-etc-directory)
+      (setq ess-etc-directory-list nil)
+    (setq ess-etc-directory nil)
+    (setq ess-etc-directory-list (cdr ess-etc-directory-list))
+    (when (null ess-etc-directory-list)
+      (beep 0) (beep 0)
+      (message (concat
+		"ERROR:ess-site.el:ess-etc-directory\n"
+		"Relative to ess-lisp-directory\n"
+		"At least one of ../etc, ../etc/ess, ../../etc/ess must exist!"))
+      (sit-for 4))))
 
 (defvar ess-info-directory nil
   "*Location of the ESS info/ directory.
