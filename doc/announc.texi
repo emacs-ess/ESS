@@ -3,7 +3,6 @@
 @setfilename announc.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: announc.texi,v 1.30 2002/08/05 17:48:37 rsparapa Exp $
 
 @comment  node-name,  next,  previous,  up
 @node Announce, Latest Version, General Information, General Information

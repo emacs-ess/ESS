@@ -12,7 +12,6 @@
 ESS version
 @include ../VERSION
 
-@c see '$Date' below @subtitle (Documentation $Revision: 5.59 $ $Date: 2004/07/12 21:01:37 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -57,9 +56,6 @@ ESS version
 
 ESS version
 @include ../VERSION
-
-@c with all the include files, it doesn't make sense to 'date' this one:
-@c        (Documentation $Revision: 5.59 $ $Date: 2004/07/12 21:01:37 $).
 
 @display
 by  A.J. Rossini,
