@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/26 21:04:08 $
-;; Version: $Revision: 4.55 $
-;; RCS: $Id: essd-sas.el,v 4.55 1997/11/26 21:04:08 rossini Exp $
+;; Modified: $Date: 1997/11/30 17:03:34 $
+;; Version: $Revision: 4.56 $
+;; RCS: $Id: essd-sas.el,v 4.56 1997/11/30 17:03:34 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -44,15 +44,12 @@
 (autoload 'ess-mode "ess-mode" no-doc t)
 (autoload 'ess-proc-name "ess-inf" no-doc nil)
 
-;;(defvar inferior-SAS-args "-stdio -linesize 80 -noovp "
-;;  "*Arguments to use for starting SAS.")
-
 (defvar inferior-SAS-args "-stdio -linesize 80 -noovp -nosyntaxcheck"
   "*Arguments to use for starting SAS.")
 
-;; workaround
-(defvar inferior-SAS-args-temp nil)
-;;workaround
+(defvar inferior-SAS-args-temp nil
+  "Hack variable, needed for args preprocessing. 
+Better logic needed!  (see 2 uses, in this file).")
 
 ;;; Code:
 
