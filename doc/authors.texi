@@ -1,7 +1,7 @@
 @itemize @bullet
 @item
-@c @uref{http://www.analytics.washington.edu/,A.J. Rossini}
-@uref{mailto:rossini@@blindglobe.net, A.J. Rossini}
+@c @uref{http://www.google.com/,A.J. Rossini}
+@uref{mailto:blindglobe@@gmail.com, A.J. Rossini}
 @c --------
 @item
 @c @uref{http://www.sbm.temple.edu/departments/statistics/,Richard M. Heiberger}

@@ -21,7 +21,7 @@ ESS version
 @c @end ifhtml
 @c
 @author Current Documentation by The ESS Developers
-@author Copyright @copyright{} 2002--2003 The ESS Developers
+@author Copyright @copyright{} 2002--2005 The ESS Developers
 @author Copyright @copyright{} 1996--2001 A.J. Rossini
 @c (@email{rossini@@biostat.washington.edu})
 @c @author Department of Biostatistics
@@ -910,7 +910,7 @@ To maintain a list of accessible objects for completion, ESS needs to
 determine which objects are contained in each directory or data frame on
 the search list.  This is done at the start of each @Sl{} session, by
 running the @code{objects()} command on every element of the search
-list.  
+list.
 
 @c On some systems, however, this can be rather slow; it's doubly
 @c frustrating when you consider that most of the directories on the search
