@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/04/05 21:20:53 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: essd-r.el,v 5.11 1999/04/05 21:20:53 rossini Exp $
+;; Modified: $Date: 1999/06/16 06:53:03 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: essd-r.el,v 5.12 1999/06/16 06:53:03 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -87,7 +87,7 @@
 ;;  (setq ess-customize-alist R-customize-alist)
 ;;  ;; for debugging only
 ;;  (ess-write-to-dribble-buffer
-;;   (format 
+;;   (format
 ;;    "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n\t current-prefix-arg=%s\n"
 ;;    ess-dialect (current-buffer) start-args
 ;;    current-prefix-arg))
@@ -99,19 +99,20 @@
 
 ;; R that does the right thing irregardless of OS.
 (defun R (&optional start-args)
-  "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ)."
+  "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ).
+Optional prefix (C-u) allows to set command line arguments, such as --vsize."
   (interactive "P")
   (setq ess-customize-alist R-customize-alist)
   ;; for debugging only
   (ess-write-to-dribble-buffer
-   (format 
+   (format
     "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
     ess-dialect (current-buffer) start-args current-prefix-arg))
   (let* ((r-always-arg
 	  (if (or (equal window-system 'w32) (equal window-system 'win32))
 	      "--ess "
 	    "--no-readline "))
-	 (r-start-args 
+	 (r-start-args
 	  (concat r-always-arg
 		  (if start-args
 		      (read-string
