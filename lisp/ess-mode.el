@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/05/13 10:00:52 $
-;; Version: $Revision: 5.24 $
-;; RCS: $Id: ess-mode.el,v 5.24 2004/05/13 10:00:52 stephen Exp $
+;; Modified: $Date: 2004/05/17 15:27:41 $
+;; Version: $Revision: 5.25 $
+;; RCS: $Id: ess-mode.el,v 5.25 2004/05/17 15:27:41 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -198,8 +198,9 @@
     ["Edit new object"		ess-dump-object-into-edit-buffer t]
     ["Goto end of ESS buffer"	ess-switch-to-end-of-ESS	t]
     ["Switch to ESS buffer"	ess-switch-to-ESS		t]
+    ["Beginning of function"	ess-beginning-of-function	t]
     ["End of function"		ess-end-of-function		t]
-    ["Beginning of function"	ess-beginning-of-function	t])
+    )
    ("ESS list..."
     ["Backward list"		backward-list			t]
     ["Forward list"		forward-list			t]
