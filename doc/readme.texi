@@ -3,7 +3,7 @@
 @setfilename readme.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: readme.texi,v 1.29 2002/11/30 03:26:42 stephen Exp $
+@comment $Id: readme.texi,v 1.30 2003/10/22 14:36:58 rsparapa Exp $
 
 @node General Information
 @comment  node-name,  next,  previous,  up
@@ -13,13 +13,13 @@
 This is the README file for the distribution of ESS version 
 @include ../VERSION
 
-The final release of the 5.1.x series on the way to 5.2 (the next stable 
-distribution).  ESS is a GNU Emacs and XEmacs mode for interactive
-statistical programming and data analysis.  Languages supported:  the
-S family (S 3/4, S-PLUS 3/4/5/6, and R), SAS, XLispStat, Stata and BUGS.
-Installation help can be found in sections for both Unix and Windows.
-ESS grew out of the desire for bug fixes and extensions to S-mode and 
-SAS-mode as well as a consistent union of their features in one package.
+The first release of the 5.2 series.  ESS is a GNU Emacs and XEmacs mode
+for interactive statistical programming and data analysis.  Languages
+supported: the S family (S 3/4, S-PLUS 3/4/5/6, and R), SAS, XLispStat,
+Stata and BUGS.  Installation help can be found in sections for both
+Unix and Windows.  ESS grew out of the desire for bug fixes and
+extensions to S-mode and SAS-mode as well as a consistent union of their
+features in one package.
 
 The current development team is led by A.J. (Tony) Rossini
 (@email{rossini@@biostat.washington.edu}), who did the initial port to

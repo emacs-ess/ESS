@@ -3,18 +3,18 @@ If you have a firewall, then you may need to take appropriate action.
 
 The repository name is
 @display
-:pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs
+:pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs
 @end display
 
 Using a command-line cvs client (i.e. on Unix or DOS), first type:
 @display
-cvs -d :pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs login
+cvs -d :pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs login
 @end display
 
 The password is "anoncvs".
 
 Then type:
 @display
-cvs -d :pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs co ess
+cvs -d :pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs co ess
 @end display
 

@@ -1,5 +1,5 @@
 The latest stable version of ESS is always available on the web at:
-@uref{http://software.biostat.washington.edu/ess/, ESS web page} or
+@uref{http://www.analytics.washington.edu/downloads/ess/, ESS web page} or
 @uref{http://lib.stat.cmu.edu/general/ESS/, StatLib}
 
 @include inst_cvs.texi
