@@ -23,7 +23,7 @@ This directory will be referred to below as ESSDIR.
 
 @item
 Retrieve the latest version from 
-@uref{http://ess.r-project.org/downloads/ess-VERSION.tar.gz, gzipped tar file } 
+@uref{http://ess.r-project.org/downloads, ESS downloads area} 
 to ESSDIR.
 
 @item
