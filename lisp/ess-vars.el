@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/06/30 22:26:46 $
-;; Version: $Revision: 5.45 $
-;; RCS: $Id: ess-vars.el,v 5.45 2000/06/30 22:26:46 rossini Exp $
+;; Modified: $Date: 2000/07/03 14:40:26 $
+;; Version: $Revision: 5.46 $
+;; RCS: $Id: ess-vars.el,v 5.46 2000/07/03 14:40:26 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -31,6 +31,11 @@
 ;; In short: you may use this code any way you like, as long as you
 ;; don't charge money for it, remove this notice, or hold anyone liable
 ;; for its results.
+
+;;;;======== This is now UNUSED whenever CUSTOM is available, i.e.
+;;;;======== it is used only for Emacs versions <= 19.xx that have NO CUSTOM
+;;;;======== ===> ./ess-cust.el
+;;;;========      ============= ``is the wave of the future''
 
 ;;; Code:
 
