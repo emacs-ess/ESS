@@ -1,6 +1,6 @@
 	-*- indented-text -*-
 
-$Revision: 4.10 $
+$Revision: 4.11 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -39,8 +39,6 @@ The following things need to be fixed. In a very rough order of priority.
 * (DS) Need a function to copy an object to a new object *and* copy
    it's source file to a new source file, modifying the target of
    the assignment.
-
-* (DS) Info docs need updating.
 
 * (DS) Debugging support, through trace() and tprint()
 
@@ -93,9 +91,6 @@ NOTE: Not all of these are clean OR are even consistent.
 
   (Tony, if you look at my R-inf.el, you'll notice that some effort goes
   into doing the right thing with output from startup args and files.)
-
-* (AJR) Add func-menu (imenu for Emacs 19.3x?) support, for traversing
-  files with lots of functions...
 
 * (KH) The function S-complete-object-name() in S-inf.el currently
   returns 
@@ -153,9 +148,6 @@ NOTE: Not all of these are clean OR are even consistent.
   let me know what you think.
 
 * (AJR) Need an AUTOCONF for configuring Makefile, etc...
-
-* (AJR) start converting to CUSTOM (Per Abraham's package), which
-  works with both Emacsen.  God bless Per.
 
 * (AJR) Move S-extras into the mainstream distribution files and as an 
   S-site example.
@@ -680,16 +672,6 @@ NOTE: Not all of these are clean OR are even consistent.
     Kurt>>> Hooks could be organized similarly
     Kurt>>> ... (ess-inf-S-S4-mode-hook?)
 
-
-* (RMH) 
-  > The "@afourpaper" option in the Ess.texi preamble is also, in my mind,
-  > a site-specific option that should be set in the Makefile.  It does
-  > not belong in the *.texi file itself.  I assume there must be some
-  > simple way to either get it from the unix environment (or by explicit
-  > mention in the Makefile) and then send it on to makinfo by doing
-  > something to the lines:
-  > # program to convert .texi{nfo} to .info
-  > MAKEINFO = makeinfo
 
 * (RMH 31 Jul 1997 07:22:10 -0400 or earlier)
 
@@ -1253,37 +1235,6 @@ NOTE: Not all of these are clean OR are even consistent.
   integration between the source code editor, the compiler, the
   debugger, and the utility for "building" executables or libraries
   surpasses that of any other IDE I have used.
-
-* From: Mary Lindstrom <lindstro@biostat.wisc.edu>  on the *ESS* buffer.
-Subject: *ESS* buffer
-
-Hi. A while ago, you helped me figure out that deleting the *ESS*
-buffer was a bad idea.  I still do this on occasion due to an over
-zealous delete finger. Is there a way I can recreate the *ESS* buffer?
-I tried saving the buffer as it appears in a new emacs process and
-copying that into a buffer called *ESS* but that doesn't seem to work.
-
-If this isn't a simple question then feel free to just say that. It's
-not worth a great deal of thought.  Thanks, - Mary
-
-(Jeff Mincy)
-The following code causes the buffer to be recreated (if necessary)
-before it is used.
-
-(defadvice ess-write-to-dribble-buffer (before get-dribble-buffer first activate)
-  (setq ess-dribble-buffer (get-buffer-create "*ESS*")))
-
-* From: Stephen Eglen <stephen@cogsci.ed.ac.uk>
-  Subject: Re: Using imenu facility in R mode
-
-  (defun my-ess-hook ()
-  "Add my keybindings for ESS."
-  ;;(local-set-key (kbd "<kp-1>") 'ess-eval-line-and-step)
-  (setq imenu-generic-expression 
-	'( (nil "^\\(.+\\)\\s-+<-\\s-+function" 1)))
-  (imenu-add-to-menubar "Imenu")
-  )
-
 
 *  From: Sandy Weisberg <sandy@stat.umn.edu>
 Subject: Re: ESS 5.1.14 supports ARC
