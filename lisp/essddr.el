@@ -6,9 +6,9 @@
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/03/31 15:59:56 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: essddr.el,v 5.12 2000/03/31 15:59:56 maechler Exp $
+;; Modified: $Date: 2000/04/03 15:26:43 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: essddr.el,v 5.13 2000/04/03 15:26:43 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.12 2000/03/31 15:59:56 maechler Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.13 2000/04/03 15:26:43 maechler Exp $
 
 ;;; Code:
 
@@ -41,10 +41,14 @@
   "Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>"
   "Current maintainer of essddr.el.")
 
-(autoload 'ess-eval-region	       "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-next-line "ess-inf" "[autoload]" t)
-(autoload 'ess-nuke-help-bs	       "ess-help" "[autoload]" t)
-(autoload 'ess-help-mode	       "ess-help" "[autoload]" t)
+(autoload 'ess-eval-region		"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-step	"ess-inf" "[autoload]" t)
+(autoload 'ess-switch-process		"ess-inf" "[autoload]" t)
+(autoload 'ess-switch-to-ESS		"ess-inf" "[autoload]" t)
+(autoload 'ess-switch-to-end-of-ESS	"ess-inf" "[autoload]" t)
+
+(autoload 'ess-help-mode		"ess-help" "[autoload]" t)
+(autoload 'ess-nuke-help-bs		"ess-help" "[autoload]" t)
 
 (defvar Rd-mode-abbrev-table nil
   "Abbrev table for R documentation keywords.
@@ -163,7 +167,7 @@ All Rd mode abbrevs start with a grave accent (`).")
     (define-key map "\C-c\C-s" 'Rd-mode-insert-section)
     (define-key map "\C-c\C-w" 'ess-switch-process); is on C-c C-s in ess-mode..
     (define-key map "\C-c\C-r" 'ess-eval-region)
-    (define-key map "\C-c\C-n" 'ess-eval-line-and-next-line)
+    (define-key map "\C-c\C-n" 'ess-eval-line-and-step)
     (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
     (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
     (setq Rd-mode-map map)))
@@ -176,7 +180,7 @@ All Rd mode abbrevs start with a grave accent (`).")
 	"-"
 	["Preview"			Rd-preview-help t]
 	"-"
-	["Eval Line"			ess-eval-line-and-next-line t]
+	["Eval Line"			ess-eval-line-and-step t]
 	["Eval Region"			ess-eval-region t]
 	["Switch to ESS Process"	ess-switch-to-ESS t]
 	["Switch to end{ESS Pr}"	ess-switch-to-end-of-ESS t]
