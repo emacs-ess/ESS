@@ -1,0 +1,101 @@
+$Id: README.Microsoft,v 1.1 1999/03/03 23:04:12 rossini Exp $
+
+An Initial FAQ List for ESS problems under Microsoft Windows 95/98/NT.
+======================================================================
+
+Also see the file:
+
+	README.SPLUS4WIN 
+
+for more information and details.
+
+* (RMH) system freeze and ctrl-m, a solution for some cases.
+
+	Frequently, when the *shell* buffer freezes while running
+	either COMMAND.COM or a DOS or Windows program initiated by
+	command.com, it can be unfrozen by entering the key sequence
+	C-q C-m RET into the frozen buffer.
+
+	What I think is happening is the coding-system got confused.
+	Command.com is waiting for the C-m C-l sequence and it only
+	sees the C-l, which it knows is not the end of the line.  When
+	we manually give the C-m, followed by RET, it is happy and
+	completes parsing the line.
+
+	For example, from a *shell* buffer running bash (with ps in
+	the path):
+
+	command.com
+	ps
+	C-q C-m RET
+	exit
+	C-q C-m RET
+
+
+	command.com /c date
+	RET
+	C-q C-m RET
+
+	command.com /c date
+	C-q C-m RET
+
+* (RMH) Comments:
+
+	Note to ess-bugs and R developers.  To be broadcast to
+	ess-help and S-news after several of you have checked this out
+	and the files are moved to franz.  
+	
+	------------------------
+
+	1. Error in ess-iw32.el in ESS 5.1.2
+
+	In response to the discussion on this list, I tested ESS 5.1.2
+	with R and discovered that as distributed it does not work
+	with R.  The distributed version of the file ess-iw32.el
+	bypassed a critical if-test.  I apologize for that error.
+
+	There are 3 locations in ess-iw32.el where the two lines
+	     nil)  ;;; temporary value.  Next line is what it should be.
+             ;;;(default-value 'inferior-ess-ddeclient))
+	must be replaced by the single line
+	     (default-value 'inferior-ess-ddeclient))
+
+	With this correction ESS 5.1.2 will work with Rterm.exe in an
+	NTemacs instance where the shell is MS-DOS when the
+	instructions in the file R/rw0632/README are followed.
+
+	2. Improvements, currently in essd-r32.el.  To be absorbed
+	   into essd-r.el.
+
+	One of the design goals in ESS was to make it almost
+	unnecessary for users to make modifications to the ess-*.el
+	files.  So I revised essd-r.el to use the argument "--ess "
+	for windows and the argument "--no-readline " for unix.  No
+	user changes are required.
+
+	M-x R
+
+	When used with MS-DOS as the NTemacs shell, no changes are
+	needed by the user.  The emacs command works correctly with
+	either bash or unix as the shell in emacs.
+
+	------------------------
+
+	The first version of these changes are in a separate file
+	essd-r32.el, which must be loaded into NTemacs after
+	ess-site.el has been loaded.  After testing by others, it will
+	be included into essd-r.el and distributed with the next
+	update to ESS.
+
+
+	A corrected version of ess-iw32.el and the first test version of
+	essd-r32.el are on my website:
+	  http://astro.ocis.temple.edu/~rmh/ess/
+
+	The essd-r32.el files sets
+	(setq-default inferior-R-program-name "c:/Progra~1/R/rw0632/bin/Rterm.exe")
+
+	If this is not correct for your machine, you may need to
+	change this one line.  This line will eventually appear in
+	ess-site.el, so a user change here is permitted.
+
