@@ -3,6 +3,12 @@ Changes/New Features in 5.2.5:
 @item ESS[R]: C-c C-q or ``Quit S'' from the menu now ask questions in
 the emacs buffer (instead of *R*) and do not append "-exited" to the
 buffer name.
+
+Further, the behavior of (ess-cleanup), called from
+ess-quit, now depends on the new customizable variable
+`ess-S-quit-kill-buffers-p' which defaults to nil. Consequently,
+the question ``Delete all buffers associated with ..?'' will not be
+asked anymore by default.
 @end itemize
 
 Changes/New Features in 5.2.4:
