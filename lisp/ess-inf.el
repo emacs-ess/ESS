@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/02 16:07:55 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: ess-inf.el,v 1.23 1997/07/02 16:07:55 rossini Exp $
+;; Modified: $Date: 1997/07/03 13:26:54 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: ess-inf.el,v 1.24 1997/07/03 13:26:54 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.24  1997/07/03 13:26:54  rossini
+;; added customization stuff.
+;;
 ;; Revision 1.23  1997/07/02 16:07:55  rossini
 ;; rehashed inferior-ess.  Should work better, now, I hope!
 ;;
@@ -366,9 +369,10 @@ when invoking S.
 	     (setq buf (get-buffer-create buf-name-str)))))
 	   
     (set-buffer buf)
-    (setq ess-history-file (concat "." ess-proc-prefix "history"))
+    ;; Now that we have the buffer, set buffer-local variables.
+    (if ess-customize-alist (ess-set-vars ess-customize--alist))
     (if startdir (setq default-directory startdir))
-    
+    (setq ess-history-file (concat "." ess-proc-prefix "history"))
     (ess-multi procname buf)))
 
 ;;; Old code:
