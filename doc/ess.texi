@@ -1,7 +1,7 @@
 \input texinfo   @c -*-texinfo-*-
 @comment %**start of header (This is for running Texinfo on a region.)
 @setfilename ess.info
-@settitle ESS
+@settitle ess
 @comment %**end of header (This is for running Texinfo on a region.)
 
 @ifinfo
@@ -28,12 +28,11 @@ and Martin Maechler.
 
 This file documents @code{ESS}, a GNU Emacs package for running
 @code{S(plus)}, @code{R}, @code{X-LispStat}, @code{SAS} and potentially
-other interactive `statistical' languages in an `inferior' buffer,
+any other interactive `statistical' languages in an `inferior' buffer,
 editing source code in these languages and interacting with the running
 program.
 
-
-This documentation relates to Version 4.9 of @code{ESS}.
+This documentation relates to Version 5.0 of @code{ESS}.
 
 Original Info Author: David M. Smith (D.M.Smith@@lancaster.ac.uk),
 Department of Mathematics and Statistics, Lancaster University, UK.
@@ -43,7 +42,7 @@ Statistics, University of South Carolina, Columbia, SC, 29208, USA.
 
 Info version: 1.7
 
-Please note: This manual is being prepared for version 4.9.  Revisions
+Please note: This manual is being prepared for version 5.0.  Revisions
 are very welcome!
 
 @end ifinfo
@@ -51,14 +50,14 @@ are very welcome!
 @titlepage
 @sp5
 @center @titlefont{ESS --- Emacs Speaks Statistics}
-@center version 4.9
-@center Rossini, Maechler, and Hornik.
+@center version 5.0
+@center Rossini, Heiberger, Hornik, and Maechler.
 @center (Doug Bates, Ed Kademan, Frank Ritter and David Smith)
 @sp2
-@center A GNU Emacs, XEmacs  package 
+@center A GNU Emacs, XEmacs package 
 @center for interacting with statistical
 @center software packages (primarily 
-@center S(plus), R, and XLispStat).
+@center S(plus), R, XLispStat, and SAS).
 @sp7
 @center Original Documentation by David Smith
 @center (@code{D.M.Smith@@lancaster.ac.uk})
@@ -122,7 +121,7 @@ Interacting with the S process
 * Command History::             Command History
 * History expansion::           References to historical commands
 * Hot keys::                    Hot keys for common commands
-* Other::                       Other commands provided by inferior-ess
+* Other::                       Other commands provided by inferior-ESS
 
 Manipulating the transcript
 
@@ -134,25 +133,17 @@ Manipulating the transcript
 Editing S functions
 
 * Edit buffer::                 Edit objects in a specialised buffer
-* Loading::                     
-* Error Checking::              
-* Evaluating code::             
-* Indenting::                   
-* Other edit buffer commands::  
-* Source Files::                Maintaining S source files
-* Source Directories::          Names and locations of dump files
-
-Creating or modifying S objects
-
 * Loading::                     Loading source files into the S process
 * Error Checking::              Detecting errors in source files
 * Evaluating code::             Sending code to the S process
 * Indenting::                   Indenting and formatting S code
 * Other edit buffer commands::  Commands for motion, completion and more
+* Source Files::                Maintaining S source files
+* Source Directories::          Names and locations of dump files
 
 Manipulating saved transcript files
 
-* Resumbit::                    Resubmitting commands from the transcript file
+* Resubmit::                    Resubmitting commands from the transcript file
 * Clean::                       Cleaning transcript files
 
 Other features of ESS
@@ -370,7 +361,7 @@ the code.
 
 @item 
 Thanks to Martin Maechler for reporting and fixing bugs, providing
-many useful comments and suggestions, and for maintining the S-mode
+many useful comments and suggestions, and for maintaining the S-mode
 mailing list.
 
 @item 
@@ -568,7 +559,7 @@ The primary function of the ESS package is to provide an easy-to-use
 front end to the S interpreter.  This is achieved by running the S
 process from within an Emacs buffer, so that the Emacs editing commands
 are available to correct mistakes in commands, etc.  The features of
-Inferior S mode are similiar to those provided by the standard Emacs
+Inferior S mode are similar to those provided by the standard Emacs
 shell mode (@pxref{Shell Mode,,, emacs, The Gnu Emacs Reference
 Manual}).  Command-line completion of S objects and a number of `hot
 keys' for commonly-used S commands are also provided for ease of typing.
@@ -791,7 +782,7 @@ The GNU Emacs Reference Manual}.
 @subsection Manipulating the output from the last command
 
 Viewing the output of the command you have just entered is a common
-occurence and ESS provides a number of facilities for doing this.
+occurrence and ESS provides a number of facilities for doing this.
 @c Within the ESS process buffer, the variable @code{scroll-step}
 @c @vindex scroll-step
 @c is set to 4 (you can redefine this using @code{inferior-ess-hook}
@@ -868,7 +859,7 @@ Moves point to the next command in the process buffer.
 @end itemize
 
 @noindent
-Note that these two commands are analagous to @kbd{C-p} and @kbd{C-n}
+Note that these two commands are analogous to @kbd{C-p} and @kbd{C-n}
 but apply to command lines rather than text lines.  And just like @kbd{C-p}
 and @kbd{C-n}, passing a prefix arg to these commands means to move to
 the @var{ARG}'th next (or previous) command.  (These commands are also
@@ -896,7 +887,7 @@ When moving through the transcript, you may wish to re-execute some of
 the commands you find there.  ESS provides three commands to do this;
 these commands may be used whenever the cursor is within a command line
 in the transcript (if the cursor is within some command @emph{output},
-an error is signalled).  Note all three commands involve the
+an error is signaled).  Note all three commands involve the
 @key{RETURN} key.
 
 @itemize @bullet
@@ -921,11 +912,11 @@ execute it.  Moves the cursor to the following command.
 @end itemize
 
 When the cursor is not after the current prompt, the @key{RETURN} key
-has a slightly different behaviour than usual.  Pressing @kbd{RET} on any
+has a slightly different behavior than usual.  Pressing @kbd{RET} on any
 line containing a command that you entered (i.e. a line beginning with a
 prompt) sends that command to the S process once again.  If you wish to
 edit the command before executing it, use @kbd{C-c RET} instead; it
-copies the command to the current propt but does not execute it,
+copies the command to the current prompt but does not execute it,
 allowing you to edit it before submitting it.  
 
 These two commands leave the cursor at the new command line, allowing
@@ -942,7 +933,7 @@ the resulting command is sent to the S process (currently this is the
 only way to resubmit a multi-line command to the S process in one go).
 If the current line does
 @cindex multi-line commands, resubmitting
-not begin with a prompt, an error is signalled.  This feature, coupled
+not begin with a prompt, an error is signaled.  This feature, coupled
 with the command-based motion commands described above, could be used as
 a primitive history mechanism.  ESS provides a more sophisticated
 mechanism, however, which is described in @ref{Command History}.  
@@ -1153,7 +1144,7 @@ command, with the first occurrence of the string @samp{old} deleted''
 
 To convert a history reference as described above to an input suitable
 for S, you need to @dfn{expand} the history reference, using the
-@key{TAB} key.  For this to work, the cursor must be preceeded by a
+@key{TAB} key.  For this to work, the cursor must be preceded by a
 space (otherwise it would try to complete an object name) and not be
 within a string (otherwise it would try to complete a filename).  So to
 expand the history reference, type @kbd{SPC TAB}.  This will convert the
@@ -1172,7 +1163,7 @@ functions.  These commands below are basically information-gaining
 commands (such as @code{objects()} or @code{search()}) which tend to
 clutter up your transcript and for this reason some of the hot keys
 display their output in a temporary buffer
-instead of the process buffer by default.  This behaviour is controlled
+instead of the process buffer by default.  This behavior is controlled
 by the variable @code{ess-execute-in-process-buffer} which, if
 @vindex ess-execute-in-process-buffer
 non-@code{nil}, means that these commands will produce their output in
@@ -1433,7 +1424,7 @@ file contains errors.
 Sometimes the error is not caused by a syntax error (loading a
 non-existent file for example). In this case typing @kbd{C-x `} will
 simply display a buffer containing S's error message.  You can force this
-behaviour (and avoid jumping to the file when there @emph{is} a syntax
+behavior (and avoid jumping to the file when there @emph{is} a syntax
 error) by passing a prefix argument to @code{S-parse-errors} with
 @kbd{C-u C-x `}.
 
@@ -1447,7 +1438,7 @@ directly by the S process as if you had typed them in at the command
 line; the @code{source()} function is not used.  You may choose whether
 both the commands and their output appear in the process buffer (as if
 you had typed in the commands yourself) or if the output alone is
-echoed.  The behaviour is controlled by the variable
+echoed.  The behavior is controlled by the variable
 @code{S-eval-visibly-p} whose default is @code{nil}
 @vindex S-eval-visibly-p
 (display output only).  Passing a prefix argument (@kbd{C-u}) to any of
@@ -1510,7 +1501,7 @@ As above, but returns you to the S process buffer as well.
 @kbd{C-c C-n} (@code{S-eval-line-and-next-line}) @*
 @pindex S-eval-line-and-next-line
 @cindex stepping through code
-@cindex debugging S functins
+@cindex debugging S functions
 Sends the current line to the S process, echoing it in the process
 buffer, and moves point to the next line.  Useful when debugging for
 stepping through your code.
@@ -1557,7 +1548,7 @@ the correct position when inserted, and optionally insert a newline at
 the appropriate place as well.  Lines which continue an incomplete
 expression are indented relative to the first line of the expression.
 Function definitions, @code{if} statements, calls to @code{expression()}
-and loop constructs are all recognised and indented appropriately.  User
+and loop constructs are all recognized and indented appropriately.  User
 variables are provided to control the amount if indentation in each
 case, and there are also a number of predefined indentation styles to
 choose from.  @xref{Indentation variables}.
@@ -1752,7 +1743,7 @@ means that ESS will always ask for confirmation before deleting the
 file.  Since this can get annoying if you always want to delete dump
 files created with @code{C-c C-d}, but not any other files, setting
 @code{S-keep-dump-files} to @code{check} (the default value) will
-silently delete dump files created with @kbd{C-c C-d} in thie current
+silently delete dump files created with @kbd{C-c C-d} in the current
 Emacs session, but query for any other file.  Note that in any case you
 will only be asked for confirmation once per file, and your answer
 is remembered for the rest of the Emacs session.
@@ -1906,7 +1897,7 @@ Section-based motion commands:
 @pindex S-skip-to-next-section
 @pindex S-skip-to-previous-section
 section header in the help file, respectively.  A section header consists
-of a number of capitalised words, followed by a colon.
+of a number of capitalized words, followed by a colon.
 
 In addition, the @kbd{s} key followed by one of the following letters
 will jump to a particular section in the help file:
@@ -2033,11 +2024,11 @@ its output, and you can move though commands either with the paragraph
 commands or with @kbd{C-c C-p} and @kbd{C-c C-n}.
 
 @menu
-* Resumbit::                    Resubmitting commands from the transcript file
+* Resubmit::                    Resubmitting commands from the transcript file
 * Clean::                       Cleaning transcript files
 @end menu
 
-@node Resumbit, Clean, Transcript Mode, Transcript Mode
+@node Resubmit, Clean, Transcript Mode, Transcript Mode
 @comment  node-name,  next,  previous,  up
 @section Resubmitting commands from the transcript file
 
@@ -2068,11 +2059,11 @@ Inferior S Mode.  In all three cases, the commands should be executed
 when the cursor is on a command line in the transcript; the prompt is
 automatically removed before the command is submitted.
 
-@node Clean,  , Resumbit, Transcript Mode
+@node Clean,  , Resubmit, Transcript Mode
 @comment  node-name,  next,  previous,  up
 @section Cleaning transcript files
 
-Yet another use for transcript files is to exatract the command lines
+Yet another use for transcript files is to extract the command lines
 for inclusion in an S source file or function.  Transcript mode provides
 one command which does just this:
 
@@ -2215,8 +2206,8 @@ hang.
 
 @item
 The function-based commands don't always work as expected on functions
-whose body is not a parenthesised or compound expression, and don't even
-recognise anonymous functions (i.e. functions not assigned to any variable).
+whose body is not a parenthesized or compound expression, and don't even
+recognize anonymous functions (i.e. functions not assigned to any variable).
 
 @item
 Multi-line commands could be handled better by the command history
@@ -2368,11 +2359,11 @@ system.
 @appendix Customizing ESS
 @cindex customisation
 
-ESS can be easily customised to your taste simply by including the
+ESS can be easily customized to your taste simply by including the
 appropriate lines in your @file{.emacs} file.  There are numerous
-variables which affect the behaviour of ESS in certain situations
+variables which affect the behavior of ESS in certain situations
 which can be modified to your liking.  Keybindings may be set or changed
-to your preferences, and for per-buffer customisations hooks are also
+to your preferences, and for per-buffer customizations hooks are also
 available.
 
 @menu
@@ -2386,7 +2377,7 @@ available.
 @appendixsec Variables for customisation
 @cindex variables
 
-ESS is easily customisable by means of setting variables in your
+ESS is easily customizable by means of setting variables in your
 @file{.emacs} file.
 @cindex @file{.emacs} file
 In most cases, you can change defaults by including lines of the form
@@ -2651,7 +2642,7 @@ your keybindings, etc.
 
 @defvr {Hook} inferior-ESS-hook
 Called just after the S process starts up, when the S process buffer is
-initialised.
+initialized.
 @end defvr
 
 @defvr {Hook} S-help-mode-hook
