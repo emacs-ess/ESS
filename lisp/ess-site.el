@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/02/06 18:20:49 $
-;; Version: $Revision: 5.67 $
-;; RCS: $Id: ess-site.el,v 5.67 2001/02/06 18:20:49 rossini Exp $
+;; Modified: $Date: 2001/02/27 23:36:40 $
+;; Version: $Revision: 5.68 $
+;; RCS: $Id: ess-site.el,v 5.68 2001/02/27 23:36:40 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -325,7 +325,7 @@ The extension, in a file name, is the part that follows the last `.'."
 (require 'essd-sp3)  ;; "sp" refers to S-PLUS (MathSoft/StatSci).
 (ess-message "[ess-site:] require 'essd-sp5 ...")
 (require 'essd-sp5)
-(ess-message "[ess-site:] require 'essd-sp5 ...")
+(ess-message "[ess-site:] require 'essd-sp6 ...")
 (require 'essd-sp6)
 (ess-message "[ess-site:] require 'essd-sta ...")
 (require 'essd-sta)  ;; for Stata.
@@ -337,6 +337,11 @@ The extension, in a file name, is the part that follows the last `.'."
 (require 'essd-arc)  ;; Arc
 (ess-message "[ess-site:] require 'essd-sas ...")
 (require 'essd-sas)
+(save-excursion                           ;;workaround for ess-smart-underscore
+  (switch-to-buffer "unlikely-name.sas")  ;;workaround for ess-smart-underscore
+  (sas-mode)                              ;;workaround for ess-smart-underscore
+  (define-key sas-mode-local-map "_" nil) ;;workaround for ess-smart-underscore
+  (kill-buffer "unlikely-name.sas"))      ;;workaround for ess-smart-underscore
 (ess-message "[ess-site:] require 'essd-els ...")
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 (ess-message "[ess-site:] require 'essd-omg ...")
