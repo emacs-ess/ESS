@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/04/07 08:35:56 $
-;; Version: $Revision: 5.49 $
-;; RCS: $Id: ess-site.el,v 5.49 2000/04/07 08:35:56 maechler Exp $
+;; Modified: $Date: 2000/06/06 18:33:03 $
+;; Version: $Revision: 5.50 $
+;; RCS: $Id: ess-site.el,v 5.50 2000/06/06 18:33:03 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -56,6 +56,37 @@
 (provide 'ess-site)
 
 ;;; Code:
+
+;;;; 0. Determine Emacs version that we are running:
+
+;;; Older versions of emacs did not have these variables
+;;; (emacs-major-version and emacs-minor-version.)
+;;; Let's define them if they're not around, since they make
+;;; it much easier to conditionalize on the emacs version.
+
+(if (and (not (boundp 'emacs-major-version))
+	 (string-match "^[0-9]+" emacs-version))
+    (setq emacs-major-version
+	  (string-to-int (substring emacs-version
+				    (match-beginning 0) (match-end 0)))))
+(if (and (not (boundp 'emacs-minor-version))
+	 (string-match "^[0-9]+\\.\\([0-9]+\\)" emacs-version))
+    (setq emacs-minor-version
+	  (string-to-int (substring emacs-version
+				    (match-beginning 1) (match-end 1)))))
+
+;;; Define a function to make it easier to check which version we're
+;;; running.
+
+(defun running-emacs-version-or-newer (major minor)
+  (or (> emacs-major-version major)
+      (and (= emacs-major-version major)
+	   (>= emacs-minor-version minor))))
+
+(defvar running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
+
+
+
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
@@ -176,6 +207,9 @@
 	 auto-mode-alist)))
 
 ;; (1.4) Customize the dialects for your setup.
+
+;;;; AS OF ESS 5.1.14, if you are using Emacs 20.x, x>3, or XEmacs
+;;;; 21.x, x>0, you can now use the "Customize" facility for customization. 
 
 ;;;; Choices for *(), where * is from inferior-*-program....
 ;; Most sites will not need to use these customized program-names.  They are
