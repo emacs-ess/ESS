@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/09 20:23:19 $
-;; Version: $Revision: 1.55 $
-;; RCS: $Id: ess-inf.el,v 1.55 1997/09/09 20:23:19 rossini Exp $
+;; Modified: $Date: 1997/09/10 17:12:12 $
+;; Version: $Revision: 1.56 $
+;; RCS: $Id: ess-inf.el,v 1.56 1997/09/10 17:12:12 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -888,7 +888,7 @@ process buffer. Arg has same meaning as for ess-eval-region."
 (easy-menu-define
  inferior-ess-mode-menu inferior-ess-mode-map
  "Menu for use in Inferior S mode"
- '("ess-run"
+ '("iESS"
    ["Resynch S completions"  ess-resynch                   t]
    ["Quit S"                 ess-quit                      t]
    ["Display search list"    ess-execute-search            t]
@@ -898,7 +898,7 @@ process buffer. Arg has same meaning as for ess-eval-region."
    ["Attach directory"       ess-execute-attach            t]
    "------"
    ["Send and move"  ess-transcript-send-command-and-move  t]
-   ["Copy command"   comint-copy-old-input               t]
+   ["Copy command"   comint-copy-old-input                 t]
    ["Send command"   inferior-ess-send-input               t]
    "------"
    ["Jump to Error"  ess-parse-errors                      t]
@@ -907,21 +907,22 @@ process buffer. Arg has same meaning as for ess-eval-region."
    ["Edit S Object"     ess-dump-object-into-edit-buffer   t]
    "------"
    ["Describe"  describe-mode                            t]
-   ;;["About" (lambda nil (interactive)  (ess-goto-info "Entering Commands")) t]
+   ;;["About" (lambda nil (interactive) (ess-goto-info "Entering Commands")) t]
    ["Send bug report"  ess-submit-bug-report               t]
    ))
 
 
-(if (not (string-match "XEmacs" emacs-version))
-    (progn
-      (if (featurep 'ess-inf)
-	  (define-key inferior-ess-mode-map [menu-bar ess-run]
-	     (cons "ess-run" inferior-ess-mode-menu))
-	(eval-after-load "ess-inf"
-			  '(define-key inferior-ess-mode-map
-			     [menu-bar ess-run]
-			     (cons "ess-run"
-				   inferior-ess-mode-menu))))))
+;; NOT NEEDED!
+;;(if (not (string-match "XEmacs" emacs-version))
+;;    (progn
+;;      (if (featurep 'ess-inf)
+;;	  (define-key inferior-ess-mode-map [menu-bar ess-run]
+;;	     (cons "ess-run" inferior-ess-mode-menu))
+;;	(eval-after-load "ess-inf"
+;;			  '(define-key inferior-ess-mode-map
+;;			     [menu-bar ess-run]
+;;			     (cons "ess-run"
+;;				   inferior-ess-mode-menu))))))
 
 
 (defun inferior-ess-mode-xemacs-menu ()
