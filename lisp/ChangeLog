@@ -1,3 +1,9 @@
+2000-10-09  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-fix-miscellaneous): new function for prettifying
+	S language code.
+	(ess-toggle-underscore): new function for "_" toggling.
+
 2000-10-04  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (ess-add-MM-keys): define-key "_" to ess-S-assign.

@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/10/06 16:47:41 $
-;; Version: $Revision: 5.18 $
-;; RCS: $Id: essl-s.el,v 5.18 2000/10/06 16:47:41 maechler Exp $
+;; Modified: $Date: 2000/10/09 07:38:05 $
+;; Version: $Revision: 5.19 $
+;; RCS: $Id: essl-s.el,v 5.19 2000/10/09 07:38:05 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -423,25 +423,82 @@ Uses the file given by the variable `ess-function-outline-file'."
 ;;; All of the above three :
 (defun ess-MM-fix-src (&optional dont-query verbose)
   "Clean up ess-source code which has been produced by  dump(..).
- Produces more readable code, and one that is well formatted in emacs
- ess-mode. Martin Maechler, ETH Zurich."
+ Produces more readable code, and one that is well formatted in emacs ess-mode."
   (interactive "P")
   ;; each of the following does a save-excursion:
   (ess-dump-to-src dont-query)
   (ess-fix-comments dont-query)
   (ess-num-var-round dont-query verbose))
 
-(defun ess-add-MM-keys ()
-  "Define \"C-c f\" and re-define \"_\", the latter to `ess-S-assign', typically \" <- \"."
-  (interactive)
+(defun ess-fix-miscellaneous (&optional from verbose)
+  "Fix Miscellaneous S/R `ill-formation's from current \\[point].
+ Particularly use \"<-\"and put spaces around operators."
+  (interactive "d\nP"); point and prefix (C-u)
+  (save-excursion
+
+    (and (string= ess-dialect "R")
+	 (require 'essd-r)
+	 (R-fix-T-F from (not verbose)))
+
+    (goto-char from) (ess-rep-regexp " *_ *" " <- " nil 'literal verbose)
+
+    ;; -- ensure space around  "<-"  ---- but only replace if necessary:
+    (goto-char from)(ess-rep-regexp "\\([^ \t\n]\\)<-" "\\1 <-" nil nil verbose)
+    (goto-char from)(ess-rep-regexp "<-\\([^ \t\n]\\)" "<- \\1" nil nil verbose)
+    ;; -- ensure space around  "<" (but not "<-" / "<=")  and ">" (not ">=") :
+    (goto-char from);; --> " <", care with "->":
+    (ess-rep-regexp "\\([^- \t\n]\\)\\([<>]\\)" "\\1 \\2" nil nil verbose)
+    ;; ">" -> "> " , for "<", don't split "<-":
+    (goto-char from)
+    (ess-rep-regexp "\\(>=?\\)\\([^ \t\n]\\)" "\\1 \\2" nil nil verbose)
+    (goto-char from)
+    (ess-rep-regexp "\\(<=?\\)\\([^- \t\n]\\)" "\\1 \\2" nil nil t);; !
+    ;; -- ensure space around "=", "==", "!=" :
+    (goto-char from) ;; --> " ="
+    (ess-rep-regexp "\\([^=!<> ]\\)\\([=!]?\\)=" "\\1 \\2=" nil nil verbose)
+    (goto-char from) (ess-rep-regexp "=\\([^= ]\\)" "= \\1" nil nil verbose)
+
+    (goto-char from) ;; add a space between "{" and a subsequent wordchar:
+    (ess-rep-regexp "\\([()]\\){\\([A-Za-z()]\\)" "{ \\1" 'fix nil verbose)
+    (goto-char from) ;; add a space between "}" and a preceding wordchar:
+    (ess-rep-regexp "\\([A-Za-z0-9()]\\)}" "\\1 }" 'fix nil verbose)
+
+    ;; add a newline and indent before a "}"
+    ;; --- IFF there's NO "{" or "#" AND some NON-white text on the same line:
+    ;;D (if verbose (message "\t R-fix-misc..: Hard.. '}'"))
+    (goto-char from)
+    (ess-rep-regexp "^\\([^#{\n]*[^#{ \t\n]+[ \t]*\\)}[ \t]*$"
+		     "\\1\n}" 'fix nil verbose)
+    ))
+
+;;; FIXME: MM thinkgs the following should be *on* by default.
+;;; -----  The user can always customize `ess-S-assign' ...
+(defun ess-toggle-underscore (force)
+  "(Re)define the \"_\" (underscore) key to `ess-S-assign' or back to \"_\".
+ Toggle current definition, unless FORCE is non-nil, when `ess-S-assign' is
+ set unconditionally. `ess-S-assign', typically \" <- \", can be customized.
+ Using \"C-q _\" will always just insert the underscore character."
+  (interactive "P")
   (require 'ess-mode)
   (require 'ess-inf)
+  (let ((uscore (lookup-key ess-mode-map "_")))
+    (if (and uscore
+	     ;; (stringp uscore) (string= uscore ess-S-assign)
+	     (not force))
+	(progn
+	 (define-key ess-mode-map          "_" nil); 'self-insert-command
+	 (define-key inferior-ess-mode-map "_" nil))
+      ;; else : "force" or uscore is "nil", i.e. default
+      (define-key ess-mode-map          "_" ess-S-assign)
+      (define-key inferior-ess-mode-map "_" ess-S-assign))
+    ))
+
+(defun ess-add-MM-keys ()
+  "Define \"C-c f\" and force \\[ess-toggle-underscore]."
+  (interactive)
+  (require 'ess-mode)
   (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline)
-;;; FIXME: MM thinkgs the following should be on by default.
-;;; -----  The user can always customize `ess-S-assign' ...
-  ;; Now you must use "C-q _" if you really want "_"
-  (define-key ess-mode-map          "_" ess-S-assign)
-  (define-key inferior-ess-mode-map "_" ess-S-assign)
+  (ess-toggle-underscore 'force-to-S-assign)
 )
 
 
