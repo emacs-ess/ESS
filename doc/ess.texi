@@ -3,13 +3,13 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 1.10 1997/11/10 21:47:58 rossini Exp $
+@comment $Id: ess.texi,v 1.11 1997/11/11 20:51:47 rossini Exp $
 
 @synindex pg vr
 
 @ifinfo
 @direntry
-* ESS: (ess).          Emacs Speaks Statistics (R, S, XLS, etc).
+* ESS: (ess).          Emacs Speaks Statistics (R, S, SAS, XLS, etc).
 @end direntry
 
 @majorheading ESS --- Emacs Speaks Statistics
@@ -120,7 +120,7 @@ Introduction to ESS
 
 Starting the @b{ESS} process
 
-* Multiple @b{ESS} processes::  
+* Multiple ESS processes::      
 * Customizing startup::         Changing the startup actions
 
 Interacting with the @b{ESS} process
@@ -603,11 +603,11 @@ with name @samp{*S*} which will be used
 for interacting with the @b{ESS} process, and you can start entering commands.
 
 @menu
-* Multiple @b{ESS} processes::  
+* Multiple ESS processes::      
 * Customizing startup::         Changing the startup actions
 @end menu
 
-@node Multiple @b{ESS} processes, Customizing startup, Starting Up, Starting Up
+@node Multiple ESS processes, Customizing startup, Starting Up, Starting Up
 @comment  node-name,  next,  previous,  up
 @section Running more than one @b{ESS} process
 @cindex Multiple @b{ESS} processes
@@ -630,7 +630,7 @@ C-k} (@code{ess-request-a-process}).  Just enter the name of the process
 you require; completion is provided over the names of all running S
 processes.  This is a good command to bind to a global key.
 
-@node Customizing startup,  , Multiple @b{ESS} processes, Starting Up
+@node Customizing startup,  , Multiple ESS processes, Starting Up
 @comment  node-name,  next,  previous,  up
 @section Changing the startup actions
 
