@@ -137,7 +137,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/14 18:13:41 $ - $Revision: 1.69 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/14 18:47:07 $ - $Revision: 1.70 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -417,6 +417,18 @@ preparation systems such as \LaTeX, \textsc{html}, or \textsc{xml}.
   \item navigation in units of characters, words, lines, sentences,
     paragraphs, and pages.
   \end{itemize}
+
+Rodney:  Let's see. 
+\begin{itemize}  
+\item viewing 2+ files:  handled in Buffers for Editing...
+\item visual comparison of 2+ files:  handled in System Support
+\item navigation in ...:  handled in Major and Minor Modes
+\end{itemize}
+Editing formatted text is what is alluded to by the last sentence 
+in Editing Extensions, but a little clarification is warranted.  And,
+insertion/deletion is superfulous since I don't know of any text
+editors that don't provide that :o)
+
 \end{Comment}
 
 Emacs interfaces to the computer's directory structure to provide a
@@ -728,7 +740,7 @@ BUGS with ESS-elsewhere; interactive BUGS with inferior-BUGS which does not
 and will never exist.  If you want to call ``inferior-ESS'' ``ESS-elsewhere'' 
 why do you need two different names?  ``inferior-ESS'' is a terrible name
 so the change would be fine with me, but you can't have it both ways?  Is
-this why you keep saying that ESS-elsewhere works for SAS?  See
+this why you keep saying that ESS-elsewhere works for SAS?  See 
 response to quibble below.
 
 \item[Rich:]
@@ -851,8 +863,8 @@ string literals in \SAS\ programs.  Optionally, the same language features
 are highlighted in the \SAS\ log with the addition of log notes, warnings 
 and error messages.
 
-ESS maps the function keys in \stexttt{SAS-mode} (files with the
-\stexttt{sas} extension) to match the definitions used by \SAS\
+ESS maps the function keys in ESS[SAS] mode, for files with the
+\stexttt{sas} extension, to match the definitions used by \SAS\
 Display Manager.  These definitions are optionally
 available in all modes, which is particularly useful
 while viewing \SAS\ log and \SAS\ listing files (with extensions of
@@ -993,15 +1005,15 @@ impetus for a single mode for statistical programming.
 %%by the success of R and the desire for more complete R support.
 This led to a merger of SAS-mode and S-mode along with changes
 to accommodate multiple languages in a flexible way.  The product of this
-merger was called ESS version 5.
+marriage was called ESS version 5.
 
 During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
-\begin{Comment}
-Rodney: need to move this discussion to interactive SAS above.
-a mode that allows text-based \stexttt{PROC} by
-\stexttt{PROC} interaction with an inferior buffer running an interactive SAS
-session either on the same computer or a remote computer over a network.
-\end{Comment}
+%\begin{Comment}
+%Rodney: need to move this discussion to interactive SAS above.
+%a mode that allows text-based \stexttt{PROC} by
+%\stexttt{PROC} interaction with an inferior buffer running an interactive SAS
+%session either on the same computer or a remote computer over a network.
+%\end{Comment}
 At the same time, SAS-mode was further incorporated into ESS.
 
 In 1997, more changes were made to facilitate
@@ -1024,6 +1036,7 @@ In 1998, Rodney Sparapani designed \SAS\ batch file processing for ESS
 on Unix, Windows and Macintosh.  In 1999 and 2000, Sparapani and Heiberger
 continually enhanced \SAS\ support. 
 In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.  
+
 In 2001, Sparapani added BUGS batch file processing for ESS.  
 
 \begin{Comment}
@@ -1098,19 +1111,12 @@ with problems you can send e-mail to \url{ess-help@stat.math.ethz.ch}.
 The latest development, hence unstable, version can be obtained by
 anonymous CVS.  First type:
 
-\begin{Comment}
-  AJR:  THIS IS COMPLETELY WRONG.   WE \textbf{NEVER} LET THE SOURCE REPOSITORY BE THE ANON CVS REPOSITORY.
-
-  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository login}
+  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login}
 
   You will be prompted for a password which is ``\stexttt{anoncvs}''.  Then type: 
 
-  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository co ess}
+  \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess}
   
-  \textbf{Should be something like /var/anoncvs instead of
-    /home/ess/repository.}
-  
-\end{Comment}
 
 \bibliographystyle{plainnat}
 %\pdfbookmark[1]{References}{section.7}
