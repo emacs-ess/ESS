@@ -3,7 +3,7 @@
 @setfilename readme.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: readme.texi,v 1.28 2002/08/05 17:48:37 rsparapa Exp $
+@comment $Id: readme.texi,v 1.29 2002/11/30 03:26:42 stephen Exp $
 
 @node General Information
 @comment  node-name,  next,  previous,  up
@@ -34,7 +34,7 @@ implementing interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.
 We are grateful to the previous developers of S-mode (Doug Bates, Ed Kademan,
 Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and Stata-mode (Thomas 
 Lumley).
-@c The name is @b{ESS}.  Not ESS-mode.
+@c The name is ESS.  Not ESS-mode.
 
 @menu
 * License::
