@@ -14,7 +14,7 @@
 \usepackage{times}
 %%% \usepackage{amsmath}
 
-%% The folowing is for creating PDF.
+%% The following is for creating PDF.
 \newif\ifpdf
 \ifx\pdfoutput\undefined
   \pdffalse     % not running PDFLaTeX
@@ -168,12 +168,20 @@ interest and how it can be used.  Sections \ref{sec:S} and
 S family of languages and SAS, respectively.  The history and advanced
 features will be then discussed, and this paper will conclude with a
 discussion of future work in this area, including Literate Statistical
-Analysis as well as important features.
+Analysis as well as enhanced programming features.
 
 \subsection{Emacs}
 \label{sec:intro:emacs}
 
-Emacs is a mature, powerful, and extensible text editor which has been
+Emacs 
+%% citep: "Writing GNU Emacs Extensions"
+%        Bob Glickstein <bobg@zoger.ipost.com> O'Reilly & Assoc, ISBN 1-56592-261-1, about $30 list.
+%"Sams Teach Yourself Emacs in 24 Hours (1999-04)"
+%        http://www.mcp.com/info/0-672/0-672-31594-7/ ISBN 0-672-31594-7 $25
+%        or http://www.mcp.com/ -> Product Support -> 0-672-31594-7
+%        McMillan book publishing company.
+%        By Jesper Pedersen, the author of "TDG -- The Dotfile generator!".
+is a mature, powerful, and extensible text editor which has been
 freely available for over 15 years and is available for a large number
 of platforms, including those currently most frequently in use for
 statistical computing, including Unix, Apple Corporation's Macintosh
@@ -223,8 +231,17 @@ disadvantage of requiring user to memorization.  There is some
 ability to use pull-down menus, and the menus can be configured to
 assist with learning keystrokes.
 
-The above reasons make Emacs a natural choice for providing a
-universal interface for data analysis and programming.
+Another strength of Emacs is its extension language.  It was one of
+the first tools with a programmable extension language, which is a
+dialect of Lisp
+%% \citep "ANSI Common Lisp" Paul Graham: ANSI
+%% Common Lisp; Prentice Hall, 1996. 
+, and has many examples of specialized extensions for tasks, including
+strange ones such as spreadsheets, database front and backends, forms
+entry, and even interactive games such as tetris.
+
+The above reasons make Emacs a natural choice as a basis for providing
+a universal interface for data analysis and programming.
 
 \subsubsection{Help for Using Emacs}
 
