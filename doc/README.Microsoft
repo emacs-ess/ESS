@@ -1,4 +1,4 @@
-$Id: README.Microsoft,v 1.1 1999/03/03 23:04:12 rossini Exp $
+$Id: README.Microsoft,v 1.2 1999/03/03 23:17:10 rossini Exp $
 
 An Initial FAQ List for ESS problems under Microsoft Windows 95/98/NT.
 ======================================================================
@@ -99,3 +99,53 @@ for more information and details.
 	change this one line.  This line will eventually appear in
 	ess-site.el, so a user change here is permitted.
 
+* (RMH) More comments about files and ideas:
+
+	I have sent six files on my astro page
+
+		 http://astro.ocis.temple.edu/~rmh/
+	
+	I attempted the cvs at franz and still don't have it figured
+	out.  CVS.EXE [checkout aborted]: cannot connect to socket:
+	Connection refused
+
+	ess-iw32.el  correction.
+
+	  The first version handled S+4, but not R.  The second version
+	handled R, but not S+4.  This one handles both.  The problem
+	was handling the (in my mind) broken ess-setq-vars-default
+	usage in ess-inf.el.  In this version of essd-s+4 and ess-iw32
+	I set the ddeclient variables outside of ess-customize-alist.
+	This way I can distinguish between global and local values for
+	tests.
+
+	essd-s+4.el
+
+	  Adjusted to match the change in ess-iw32.  The ddeclient variables
+	are set outside of ess-customize-alist.
+
+	msdos.el
+
+	  Start an msdos shell inside an NTemacs that uses bash as its shell.
+	It should have been easy, but had many parameters that needed
+	to be set.  I am sending a copy of this to the Ntemacs mailing
+	list.  I think this function should be merged into the Ntemacs
+	distribution, but for the moment I am attributing it to us.
+
+	msdos.el.cmts
+	  comments to the NTemacs mailing list
+	(AJR: merged with msdos.el, as a comment inside).
+
+	essd-r32.el
+	  Currently a separate file that depends on essd-r.el.  It should be
+	merged into essd-r.el.  I originally intended to use M-x msdos
+	and then run Rterm from there.  It turns out there is no
+	advantage that way and it would be much harder to explain.
+	There are still glitches in this interaction of R and ESS
+	together, documented in the startup message when you run M-x R
+	(after loading ess-site and essd-r32).  I think they are
+	consequences of Rterm not being designed to run with bash.
+
+	ess-bugs.cmts
+	  A copy of this email message.
+	(AJR: merged into README.Microsoft).
