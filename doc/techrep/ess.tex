@@ -155,13 +155,13 @@ above.  It provides an editing interface, an interface to statistical
 processes, and additional tools which can be useful for both
 statistical software development and data analysis.  It works with
 common statistical software including the S family of languages
-including S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\ \textbf{CITE
-  MathSoft}, and R \citep{ihak:gent:1996}; XLispStat \citep{Tier90}
-including the Arc \textbf{CITE Cook and Weisberg} and ViSta
-\citep{youn:fald:mcfa:1992} extensions; SAS \textbf{CITE SAS
-  Institute}; Stata \textbf{CITE: Stata Corporation}; Omegahat
-\citep{DTLang:2000}; and can be extended in at least a limited way to
-most statistical packages which can be controlled from a command-line.
+including S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\ \citep{Splus},
+and R \citep{ihak:gent:1996}; XLispStat \citep{Tier90} including the
+extension of Arc \citep{Cook:Weisberg:1999} and ViSta
+\citep{youn:fald:mcfa:1992}; SAS \citep{SAS:8.0}; Stata
+\citep{Stata:6.0}; Omegahat \citep{DTLang:2000}; and can be extended
+in at least a limited way to most statistical packages which can be
+controlled from a command-line.
 
 In the rest of this introduction, we will discuss the environment of
 interest and how it can be used.  Sections \ref{sec:S} and
@@ -177,10 +177,9 @@ Analysis as well as important features.
 Emacs is a mature, powerful, and extensible text editor which has been
 freely available for over 15 years and is available for a large number
 of platforms, including those currently most frequently in use for
-statistical computing, including Unix, Apple Corporation's Macintosh,
-and Microsoft OS platforms.  While it does not fall into the realm of
-word processors, relying on external programs for that, it does have
-similar features.
+statistical computing, including Unix, Apple Corporation's Macintosh
+platform, and Microsoft-based platforms.  While it does not fall into
+the category of word processors, it does have similar features.
 
 Most programming and documentation falls under the realm of text
 processing.  This is natural given that it is being worked on from the
@@ -189,20 +188,19 @@ enhanced by common IDE features such as contextual highlighting and
 recognition of special reserved words for the programming language or
 statistical program/package of interest.
 
-The main point is that with the ESS extensions, Emacs acts as a
-uniform interface to the statistical programming code, the statistical
-program/process, documentation tools (\LaTeX, SGML, XML, Noweb), and
-revision control tools (RCS,CVS,SCCS, PRCS), on both local and remote
-machines.  It handles the interface to both source code and
-transcripts using context (syntax highlighting, bookmarking features,
-command-history).
+With the ESS extensions, Emacs acts as a uniform interface to the
+statistical programming code, the statistical program/process,
+documentation tools (\LaTeX, SGML, XML, Noweb), and revision control
+tools (RCS,CVS,SCCS, PRCS), on both local and remote machines.  It
+handles the interface to both source code and transcripts using
+context (syntax highlighting, bookmarking features, command-history).
 
-In addition, Emacs is a sophisticated development environment for
-programming in traditional compiled languages such as C and Fortran as
-well as non-traditional byte-compiled and interpreted languages such
-as Perl, Java, and Python.  It provides interfaces to build tools such
-as make as well as debugging tools through the use of external
-debuggers such as JDebug, GDB, and DBX. 
+Emacs is also a sophisticated development environment for programming
+in traditional compiled languages such as C and Fortran as well as
+non-traditional byte-compiled and interpreted languages such as Perl,
+Java, and Python.  It provides interfaces to build tools such as make
+as well as debugging tools through the use of external debuggers such
+as JDebug, GDB, and DBX.
 
 Extensions to Emacs allow it to act as a World-Wide-Web browser, a
 highly sophisticated mail and news reader, a shell/terminal window
@@ -216,15 +214,19 @@ extension language has also facilitated the programming.
 Emacs is equipped to assist with programming in Fortran, C, C++, Java,
 and many more languages.  It has an interface to build and debugging
 tools including make and many common debuggers such as dbx, gdb, and
-jdb. 
-
-Along with this, Emacs provides an interface to revision control
+jdb.   Along with this, Emacs provides an interface to revision control
 systems for maintaining version history and a change-log for files.
 
-Because of the above, the choice of Emacs as the basis for a universal
-interface is a natural one.  
+One of the strengths of Emacs is that every activity can be
+facilitated by keystrokes.  This has the advantage of eliminating the
+slowness and potential danger of mouse usages, but also has the
+disadvantage of requiring user to memorization.  There is some
+ability to use 
 
-\textbf{AJR: Need an Introduction to EMACS}
+The above makes the choice of Emacs a natural one as the basis for a
+universal interface.
+
+\subsubsection{Finding Help for Using Emacs}
 
 We assume that you are familiar with Emacs terminology and syntax:
 file, buffer, region, description of keys etc.  If not, please read
@@ -234,24 +236,9 @@ control h, i) or Tutorial, "C-h t").
 To find the key-sequences for commands, view the keymap (C-h b) or
 view help for the current mode (C-h m).  
 
-One of the strengths of Emacs is that every activity can be
-facilitated by keystrokes.  This has the advantage of eliminating the
-slowness and potential danger of mouse usages, but also has the
-disadvantage of requiring memory of location and behavior.
+\section{Statistical User Interfaces}
+\label{sec:UI}
 
-%\textbf{Rationale for the goals?  This is weak.}
-
-For small projects, it can be useful to have a single repository (file
-or directory with a few files) for documenting code which produces
-datasets and analysis results.  This is facilitated by being able to
-edit files (different or the same) and being able to specify different
-modes for handling programming code for the different statistical
-languages.
-
-\subsection{Other Statistical User Interfaces}
-\label{sec:intro:UI}
-
-%% Statistical User Interfaces.
 For the purposes of the user interface, recent and traditional
 interfaces for statistical packages and languages can generally be
 classified into 3 forms.  There is the command-line interface that
@@ -265,7 +252,7 @@ which include graph-based interfaces as implemented in ViSta
 terminal window into 3 screens, and possibly others.
 
 \subsection{ESS}
-\label{sec:intro:ESS}
+\label{sec:UI:ESS}
 
 \textbf{AJR: History of ESS.}
 
@@ -292,8 +279,9 @@ support, it is still the basic functionality that the majority of ESS
 users take advantage of.  This appears to be sufficient to
 differentiate from typical package-provided interfaces.
 
-\section{Features and Usage}
+\section{Features and Use}
 \label{sec:basic}
+
 
 %%% MAKE THIS INTO A PARAGRAPH
 %%ESS provides a number of features, including:
@@ -378,13 +366,21 @@ handles source code, including syntax highlighting as well as the
 ability to submit code to a running ESS process, for example R or
 \Splus. 
 
+For small projects, it can be useful to have a single repository (file
+or directory with a few files) for documenting code which produces
+datasets and analysis results.  This is facilitated by being able to
+edit files (different or the same) and being able to specify different
+modes for handling programming code for the different statistical
+languages.
 
 \section{Using ESS with the S family of languages}
 \label{sec:S}
 
+ESS's history as originating from S-mode results in its strength for
+programming in S languages.
+
 \subsection{Editing Files}
 \label{sec:S:edit}
-
 
 ESS[S] is the mode for editing S language files.  This mode handles:
 
