@@ -1,5 +1,7 @@
 Changes/New Features in 5.2.0beta?:
 @itemize @bullet
+@item ESS[S]: Pressing underscore once inserts " <- " (as before);
+pressing underscore twice inserts a literal underscore.
 @item ESS[BUGS]:  now supports interactive processing thanks to
 @uref{mailto:Aki.Vehtari@@hut.fi, Aki Vehtari}; also new info documentation!
 @item ESS[SAS]:  convert .log to .sas with ess-sas-transcript;
