@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.45 1997/07/29 11:25:41 rossini Exp $
+## $Id: Makefile,v 1.46 1997/07/29 11:27:11 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.46  1997/07/29 11:27:11  rossini
+## makefile is cleaner.  Added AucTeX stuff for information.
+##
 ## Revision 1.45  1997/07/29 11:25:41  rossini
 ## stuff.
 ##
@@ -135,7 +138,6 @@ MYFTPDIR = /m2/ftp/rossini
 # byte compiler will compile everything that references them
 # incorrectly.  also preload a file that sets byte compiler options.
 PRELOADS = -l ./ess-comp.el
-# above was ess-site.el
 
 ## compile with noninteractive and relatively clean environment
 ## XEMACS 19.xx and before.
@@ -144,22 +146,18 @@ PRELOADS = -l ./ess-comp.el
 BATCHFLAGS = -batch --no-site-file --no-init-file
 
 ## files that contain key macro definitions.  almost everything
-## depends on them because the byte-compiler inlines macro
-## expansions.  everything also depends on the byte compiler
-## options file since this might do odd things like turn off
-## certain compiler optimizations.
+## depends on them because the byte-compiler inlines macro expansions.
+## everything also depends on the byte compiler options file since
+## this might do odd things like turn off certain compiler
+## optimizations.  When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
-
-## Need both types, UNFORTUNATELY, since we want to BUILD and
-## MAINTAIN.  Some one ought to fix this to be more GNUish.
 
 SOURCES = ess-vars.el ess.el \
 	essd-s3.el essd-s4.el essd-s+3.el essd-r.el essd-xls.el \
 	ess-site.el \
 	ess-inf.el ess-mode.el ess-trns.el ess-help.el # ess-xtra.el
 
-
-OBJECTS=$(SOURCES:.el=.elc)
+OBJECTS = $(SOURCES:.el=.elc)
 
 AUXFILES = COPYING Makefile NEWS README TODO \
 	ESS.texi ChangeLog
@@ -304,7 +302,6 @@ ess-mode.elc:  ess-mode.el $(CORE)
 ess-trns.elc:  ess-trns.el $(CORE)
 
 ess-help.elc:  ess-help.el $(CORE)
-
 
 # For Dialect Files:
 #	$(EMACS) $(BATCHFLAGS) -l ess.el -f batch-byte-compile essd-r.el
