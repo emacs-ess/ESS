@@ -1,14 +1,14 @@
 ;;;;; ess-cust.el --- Customization for ESS.
 
-;; Copyright (C) 1997--2000 A.J. Rossini, Martin Maechler,
+;; Copyright (C) 1997--2001 A.J. Rossini, Martin Maechler,
 ;; Kurt Hornik, Richard M. Heiberger, and Rodney Sparapani.
 
-;; Author: A.J. Rossini <rossini@biostat.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Author: A.J. Rossini <rossini@u.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2001/04/17 03:29:00 $
-;; Version: $Revision: 1.20 $
-;; RCS: $Id: ess-cust.el,v 1.20 2001/04/17 03:29:00 ess Exp $
+;; Modified: $Date: 2001/05/02 21:55:51 $
+;; Version: $Revision: 1.21 $
+;; RCS: $Id: ess-cust.el,v 1.21 2001/05/02 21:55:51 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
