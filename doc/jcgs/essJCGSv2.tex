@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/06 00:42:11 $ - $Revision: 1.117 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/06 00:51:18 $ - $Revision: 1.118 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -406,13 +406,21 @@ of shell-mode and file name completion which is brought up again in
 Process Interaction.
 \end{Comment}
 
-Emacs \stexttt{dired} mode %(discussed in section \ref{sec:modes})
-interfaces to the computer's directory structure to provide a
-file-manager capability.  Emacs command-history record goes back to
-the beginning of an editing session, allowing a near-infinite undo
-capability.  Other extensions to Emacs allow it to act as a web
-browser, a mail and news reader, and as an interface to other common
-text-based tools such as spell checking programs.
+Emacs extensions provide extensive
+capabilities such as \stexttt{dired} mode, %(discussed in section \ref{sec:modes})
+which interfaces to the computer's directory structure to provide a
+file-manager capability.  Other capabilities include storing
+command-history records which date back to the beginning of an editing
+session, allowing a near-infinite undo capability; more importantly,
+for modes which control processes, the process input history, for
+example, the actual data analysis commands entered, are stored.  This
+can look very different from the edits which have taken place in that
+buffer!  Tools such \stextss{etags} combine with \stextss{speedbar} to
+provide an hyperlinked index to features such as S function
+definitions and \SAS\ proc/run combinations, in files within a
+directory.  Other extensions to Emacs allow it to act as a web
+browser, a mail and news reader, and providing spell checking
+capabilities.
 
 
 \section{ESS extends Emacs}
