@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2002/05/10 19:33:24 $
-;; Version: $Revision: 5.29 $
-;; RCS: $Id: essl-s.el,v 5.29 2002/05/10 19:33:24 rmh Exp $
+;; Modified: $Date: 2002/11/01 20:06:05 $
+;; Version: $Revision: 5.30 $
+;; RCS: $Id: essl-s.el,v 5.30 2002/11/01 20:06:05 stephen Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -169,7 +169,7 @@
 (defconst ess-help-S+-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file.")
 
-(defconst ess-help-R-sec-regex "^\\s *[A-Z[a-z. ---]+:$"
+(defconst ess-help-R-sec-regex "^[A-Z][a-z].+:$"
   "Reg(ular) Ex(pression) of section headers in help file.")
 
 ;;; S-mode extras of Martin Maechler, Statistik, ETH Zurich.
