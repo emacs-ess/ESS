@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/17 20:33:42 $
-;; Version: $Revision: 1.43 $
-;; RCS: $Id: ess.el,v 1.43 1997/07/17 20:33:42 rossini Exp $
+;; Modified: $Date: 1997/07/17 20:56:55 $
+;; Version: $Revision: 1.44 $
+;; RCS: $Id: ess.el,v 1.44 1997/07/17 20:56:55 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.44  1997/07/17 20:56:55  rossini
+;; removed weird debugging code.
+;;
 ;; Revision 1.43  1997/07/17 20:33:42  rossini
 ;; need to be care WHEN to set buffer local (set again, as late as
 ;; possible!)
@@ -1186,9 +1189,9 @@ the basic idea: (setq ---  (cdr (assq --- var-alist)))."
   (ess-write-to-dribble-buffer 
     (format "(ess-setq-vars): ess-proc-prefix=%s buf=%s \n"
 	    ess-proc-prefix buf))
-  (ess-write-to-dribble-buffer
-   (format "(ess-setq-vars): %s"
-	   (buffer-local-variables)))
+  ;;  (ess-write-to-dribble-buffer
+  ;;   (format "(ess-setq-vars): %s"
+  ;;	   (buffer-local-variables)))
   )
 
 
