@@ -10,6 +10,7 @@ either Emacs (as developed and maintained by the Free Software
 Foundation) or XEmacs (which a derivative work).
 
 The following is covered in this document:
+- non ESS general Emacs features.
 - Editing files.
 - running an S process as an inferior process to Emacs (we
   include 
@@ -185,7 +186,7 @@ prefixed by "##").
 
 
 
-$Id: README.S,v 1.2 1997/11/07 14:23:54 rossini Exp $
+$Version$
 
 Local Variables: ***
 mode:indented-text ***
