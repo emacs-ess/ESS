@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/05/10 04:18:11 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: essd-els.el,v 1.18 2002/05/10 04:18:11 rmh Exp $
+;; Modified: $Date: 2002/05/10 04:58:54 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: essd-els.el,v 1.19 2002/05/10 04:58:54 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -162,13 +162,16 @@ return new alist whose car is the new pair and cdr is ALIST.
 
 
 ;;; ess-remote is constructed by looking at ess-add-process and
-;;; ESS-elsewhere and ess-multi and then simplifying.  Start a process
-;;; on a remote computer by manual use of telnet, rlogin, ssh, or some
-;;; other protocol.  Start the ESS process ("S" or "R" or "sas -stdio" ) in
-;;; that buffer.  Once you are talking to S or R or SAS, then execute
-;;; `ess-remote' to make the current buffer an inferior-ess buffer
-;;; with the right behavior for the language you are currently working
-;;; with.
+;;; ESS-elsewhere and ess-multi and then simplifying.
+;;;
+;;; Start a process on a remote computer by manual use of telnet,
+;;; rlogin, ssh, or some other protocol.  Start the ESS process ("S"
+;;; or "R" or "sas -stdio") in that buffer.  Once you are talking to S
+;;; or R or SAS, then execute `ess-remote' to make the current buffer
+;;; an inferior-ess buffer with the right behavior for the language
+;;; you are currently working with.  With S and R, use C-c C-n to send
+;;; lines over.  With SAS, use C-c i
+;;; `ess-eval-line-and-step-invisibly' to send lines over invisibly.
 
 (defun ess-remote (&optional proc-name)
   "Execute this command from within a buffer running a process.  It
@@ -196,6 +199,7 @@ shell or comint buffer on the local computer."
     (if (equal ess-language "SAS")
 	(progn (font-lock-mode 0)
 	       (SAS-log-mode)
+	       (shell-mode)
 	       (toggle-read-only nil)
 	       (font-lock-mode 1)))))
 
