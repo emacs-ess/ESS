@@ -1,3 +1,6 @@
+;;;;;;; OBSOLETE
+
+
 ;;;;; ess-vars.el --- Variable definitions for ESS.
 
 ;; Copyright (C) 1997--2000 A.J. Rossini, Martin Maechler,
@@ -6,9 +9,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/07/03 16:26:56 $
-;; Version: $Revision: 5.47 $
-;; RCS: $Id: ess-vars.el,v 5.47 2000/07/03 16:26:56 maechler Exp $
+;; Modified: $Date: 2000/09/03 19:23:16 $
+;; Version: $Revision: 5.48 $
+;; RCS: $Id: ess-vars.el,v 5.48 2000/09/03 19:23:16 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -39,7 +42,7 @@
 
 ;;; Code:
 
-(defconst ess-version "5.1.16"
+(defconst ess-version "5.1.17"
   "Version of ESS currently loaded.")
 
 (defvar no-doc
@@ -421,8 +424,10 @@ by `ess-function-template'.")
 
 (defvar inferior-S+4-program-name "Splus"
   "*Program name for invoking an external GUI S+4.")
+
 (defvar inferior-S+4-print-command "S_PRINT_COMMAND=gnuclientw.exe"
   "*Destination of print icon in S+4 Commands window.")
+
 (defvar inferior-S+4-editor-pager-command
   "options(editor='gnuclient.exe', pager='gnuclientw.exe')"
   "*Programs called by the editor() and pager() functions

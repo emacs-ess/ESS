@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/07/13 17:17:34 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: ess-comp.el,v 5.5 2000/07/13 17:17:34 rossini Exp $
+;; Modified: $Date: 2000/09/03 19:23:16 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: ess-comp.el,v 5.6 2000/09/03 19:23:16 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -57,9 +57,7 @@
 
 ;; needed for subsequent files:
 (ess-message "loading 'ess-emcs ..")    (require 'ess-emcs)
-
-;;-- FIXME : why ess-vars and not ess-cust ???
-(ess-message "loading 'ess-vars ..")    (require 'ess-vars) ; set up variables
+(ess-message "loading 'ess-cust ..")    (require 'ess-cust) ; set up variables
 (ess-message "loading 'ess ..")		(require 'ess)      ; configure
 (ess-message "loading 'ess-site ..")	(require 'ess-site) ; last, to overload previous settings.
 

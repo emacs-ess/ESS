@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 5.34 $.
+### File: $Revision: 5.35 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -51,7 +51,7 @@ PRELOADS = -l ./ess-comp.el
 ## optimizations.  When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
 
-TOCOMPILE = ess-vars.el ess-cust.el $(CORE) \
+TOCOMPILE = ess-cust.el $(CORE) \
 	ess-emcs.el ess-sysdp.el ess-utils.el \
 	ess-inf.el ess-iw32.el essnt204.el \
 	ess-mode.el ess-trns.el ess-help.el \
@@ -103,7 +103,7 @@ distclean: clean
 
 ## commented above ESSVERSION=$(shell cat ../VERSION)
 ## Use $(shell ..) only here, so only these are GNU make dependent :
-ess-cust.el ess-vars.el: ../VERSION
+ess-cust.el: ../VERSION
 	perl -pi -e 's/".*"/"$(shell cat $^)"/ if /ess-version/' $@
 ess-site.el: ../VERSION
 	perl -pi -e 's/$(ESSVER_NR_REGEXP)/\1-$(shell cat $^)/go' $@
@@ -115,11 +115,11 @@ ess-site.el: ../VERSION
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
 
 
-ess-vars.elc:	ess-vars.el
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-vars.el
+ess-cust.elc:	ess-cust.el
+	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-cust.el
 
-ess.elc: ess.el ess-vars.elc
-	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -l ess-vars.elc -f batch-byte-compile ess.el
+ess.elc: ess.el ess-cust.elc
+	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -l ess-cust.elc -f batch-byte-compile ess.el
 
 ess-site.elc: ess-site.el ess.elc
 

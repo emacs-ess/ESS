@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2000/07/10 09:41:58 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: ess-cust.el,v 1.9 2000/07/10 09:41:58 maechler Exp $
+;; Modified: $Date: 2000/09/03 19:23:16 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: ess-cust.el,v 1.10 2000/09/03 19:23:16 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -29,27 +29,26 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 ;;
 ;; In short: you may use this code any way you like, as long as you
-;; don't charge money for it, remove this notice, or hold anyone liable
+;; don't charge more than a distribution fee for it, do distribute the
+;; source with any binaries, remove this notice, or hold anyone liable
 ;; for its results.
 
 ;;; Code:
 
-
-;; Stolen from w3-cus.el,
-;; Author: wmperry
-;; Created: 1999/11/14 01:37:15
-;; Version: 1.4
+;; Stolen from w3-cus.el (via Per Abrahamsen's advice on the widgets page).
+;; This code provides compatibility with non-customized Emacsen.
 (eval-and-compile
   (condition-case ()
       (require 'custom)
     (error nil))
   (if (and (featurep 'custom) (fboundp 'custom-declare-variable))
       nil ;; We've got what we needed
-
-    ;; Else: have the old custom-library, hack around it!
+    ;; We have the old custom-library, hack around it!
     (defmacro defgroup (&rest args)
       nil)
-    (defmacro defcustom (var value doc &rest args)
+    (defmacro defface (var values doc &rest args)
+       (` (make-face (, var))))
+    (defmacro defcustom (var value doc &rest args) 
       (` (defvar (, var) (, value) (, doc))))))
 
 ;; Customization Groups
@@ -120,7 +119,7 @@
 
 ;; Variables (not user-changeable)
 
-(defcustom ess-version "5.1.16"
+(defcustom ess-version "5.1.17"
   "Version of ESS currently loaded."
   :group 'ess
   :type 'string)
@@ -658,8 +657,9 @@ different computer."
   :type 'string)
 
 ;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
+
 (defcustom inferior-ess-ddeclient nil
-  "*ddeclient program acting as intermediary between emacs and the ESS program."
+  "*ddeclient is the intermediary between emacs and the stat program."
   :group 'ess-proc
   :type 'string)
 
@@ -932,6 +932,8 @@ session.")
 
 (defvar inferior-ess-mode-map nil
   "Keymap for `inferior-ess' mode.")
+
+(defvar ess-mode-minibuffer-map nil)
 
 (defcustom ess-object-name-db-file "ess-namedb"
   "File containing definitions for `ess-object-name-db'."

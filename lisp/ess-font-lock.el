@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 06 Feb 2000
-;; Modified: $Date: 2000/03/02 18:27:40 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: ess-font-lock.el,v 1.3 2000/03/02 18:27:40 maechler Exp $
+;; Modified: $Date: 2000/09/03 19:23:16 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: ess-font-lock.el,v 1.4 2000/09/03 19:23:16 rossini Exp $
 
 ;; Keywords: ESS, font-lock
 
@@ -45,7 +45,7 @@
 ;; font-lock faces are defined in /emacs/emacs-20.5/lisp/font-lock.el
 
 ;; The font-lock faces are applied to ESS buffers by
-;; ess-mode.el ess-inf.el ess-trns.el ess-vars.el
+;; ess-mode.el ess-inf.el ess-trns.el ess-cust.el
 ;; The keywords for faces are defined in the ess[dl]*.el files.
 
 ;;; All faces can be looked at with

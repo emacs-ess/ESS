@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/06/30 22:21:51 $
-;; Version: $Revision: 5.48 $
-;; RCS: $Id: ess-inf.el,v 5.48 2000/06/30 22:21:51 rossini Exp $
+;; Modified: $Date: 2000/09/03 19:23:16 $
+;; Version: $Revision: 5.49 $
+;; RCS: $Id: ess-inf.el,v 5.49 2000/09/03 19:23:16 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -54,7 +54,7 @@
 
  ;;*;; Variables
 
-;; Moved to ess-vars.el
+;; Moved to ess-cust.el
 
  ;;*;; Process handling
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1084,9 +1084,6 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
 
 (if (string-match "XEmacs" emacs-version)
     (add-hook 'inferior-ess-mode-hook 'inferior-ess-mode-xemacs-menu))
-
-;; Need to move to ess-vars!  (AJR, 14Sept1999)
-(defvar ess-mode-minibuffer-map nil)
 
 (if ess-mode-minibuffer-map  nil
 

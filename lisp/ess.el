@@ -10,7 +10,7 @@
 ;;                Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.21 2000/07/07 00:42:38 rossini Exp $
+;; Version: $Id: ess.el,v 5.22 2000/09/03 19:23:16 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -136,14 +136,18 @@
 
 ;; The following should take care of all cases.  Currently, seems to
 ;; work, sigh...
-(if ess-local-custom-available
-    (eval-and-compile  ; was progn
-      (ess-message "--++ LOADING CUSTOM ++--")
-      (require 'ess-cust))
-  (eval-and-compile  ; was progn
-    (ess-message "--++ NOT NOT NOT loading custom ++--")
-    (require 'ess-vars)))
+;;(if ess-local-custom-available
+;;    (eval-and-compile  ; was progn
+;;      (ess-message "--++ LOADING CUSTOM ++--")
+;;      (require 'ess-cust))
+;;  (eval-and-compile  ; was progn
+;;    (ess-message "--++ NOT NOT NOT loading custom ++--")
+;;    (require 'ess-vars)))
 
+;; The above was commented out to verify that it would work on
+;; versions w/o customize.  Remove after verification.
+(eval-and-compile 
+  (require 'ess-cust))
 
  ; ess-mode: editing S/R/XLS/SAS source
 

@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/08/27 21:32:40 $
-;; Version: $Revision: 5.64 $
-;; RCS: $Id: ess-site.el,v 5.64 2000/08/27 21:32:40 rossini Exp $
+;; Modified: $Date: 2000/09/03 19:23:16 $
+;; Version: $Revision: 5.65 $
+;; RCS: $Id: ess-site.el,v 5.65 2000/09/03 19:23:16 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -500,8 +500,8 @@ The extension, in a file name, is the part that follows the last `.'."
 
 ;;; 3.6 Example of formatting changes
 
-;;; Formatting and indentation patterns are defined in ess-vars.el, please
-;;; see ess-vars.el for exact definitions of these variable settings.
+;;; Formatting and indentation patterns are defined in ess-cust.el, please
+;;; see ess-cust.el for exact definitions of these variable settings.
 ;;; To change them, uncomment one or both of the following lines:
 ;;; (eg, follow changes suggested by Terry Therneau)
 ;;(setq ess-fancy-comments nil)
