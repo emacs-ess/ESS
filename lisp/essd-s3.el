@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/10/21 21:45:43 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: essd-s3.el,v 1.10 1997/10/21 21:45:43 rossini Exp $
+;; Modified: $Date: 1997/10/22 14:43:12 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: essd-s3.el,v 1.11 1997/10/22 14:43:12 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -30,7 +30,9 @@
 ;;; Commentary:
 ;;; This file defines all the S 3 customizations for ess-mode.
 
-;;; Autoloads:
+;;; Requires and Autoloads:
+
+(require 'essl-s)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
 
@@ -50,13 +52,13 @@
 
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . S3-help-sec-keys-alist)
-    (ess-help-sec-regex            . ess-help-S+3-sec-regex)
-    (ess-help-sec-keys-alist       . ess-help-S+3-sec-keys-alist)
+;;;    (ess-help-sec-regex            . ess-help-S+3-sec-regex)
+;;;    (ess-help-sec-keys-alist       . ess-help-S+3-sec-keys-alist)
 
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-mode-edit                 . 'S3-mode)
-    (ess-object-name-db-file       . "ess-s+3-namedb.el" )
+    (ess-object-name-db-file       . "ess-s3-namedb.el" )
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
     (ess-save-lastvalue-command
@@ -73,19 +75,25 @@
     (inferior-ess-secondary-prompt . "+ ?")
     (inferior-ess-start-file       . nil) ;"~/.ess-S3")
     (inferior-ess-start-args       . ""))
-  "Variables to customize for S")
+  "Variables to customize for S3")
 
 
-(defun S3 ()
+(defun S3-mode (&optional proc-name)
+  "Major mode for editing S3 source.  See ess-mode for more help."
+  (interactive)
+  (setq-default ess-customize-alist S3-customize-alist)
+  (ess-mode S3-customize-alist proc-name))
+
+
+(defun S3 (&optional proc-name)
   "Call 'S 3.x', the version from AT&T."
   (interactive)
-  (setq ess-customize-alist S3-customize-alist)
+  (setq-default ess-customize-alist S3-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(S): ess-dialect=%s , buf=%s \n"
 	   ess-dialect
 	   (current-buffer)))
   (inferior-ess))
-
 
  ; Provide package
 
