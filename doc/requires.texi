@@ -1,8 +1,9 @@
-ESS version 5.1.n (n >= 2) requires Emacs version 19.29 or later, or version
+ESS version 5.1.n (n >= 2) requires Emacs version 19.34@footnote{if you
+have Emacs 19.29, you @emph{may} get it to work after unpacking @file{19.29.tar.gz}, see the installation instructions} or later, or version
 XEmacs 19.14 or later.  It has been most thoroughly tested with:
 
 @itemize @bullet
-@item S-PLUS versions 3.3, 3.4, 4.5, 5.0
+@item S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1
 @item R versions >=0.49
 @item XLispStat versions >=3.50
 @item S4
@@ -16,14 +17,15 @@ on the following platforms
 @item SunOS (all)
 @item Solaris (all)
 @item SGI (all)
-@item Linux (S-PLUS 5.0, R, XLispStat, S4, Stata 6.0)
-@item Microsoft Windows 95/98/NT (SPLUS 4.5)
+@item Linux (S-PLUS 5.0, 5.1,  R, XLispStat, S4, Stata 6.0)
+@item Microsoft Windows 95/98/NT (SPLUS 4.5 and 2000)
 @end itemize
 
 with the following Emacsen:
 
 @itemize @bullet
-@item Emacs 19.29, 19.34, 20.3, 20.4, XEmacs 19.16, XEmacs 20.4, XEmacs 21.0
+@item Emacs 19.29, 19.34, 20.3, 20.4, 20.7, XEmacs 19.16, 
+  XEmacs 20.4, XEmacs 21.0 
 @item Emacs 19.28 with SAS (with additional modifications)
 @item NTEmacs 20.3.1 with S-PLUS 4.5.
 @end itemize

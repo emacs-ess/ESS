@@ -32,6 +32,12 @@ Please skip to the next
   The @code{tar} command will extract files into the current directory.
   Do not create ESS-5.1.19 yourself, or you will get an extra level of
   depth to your directory structure.
+
+  Note if you have a very ancient version of GNU emacs (@emph{and}  really
+  can not upgrade to Emacs 20 or higher!) you can unpack the
+  @file{lisp/19.29.tar.gz} file, read the ensuing @file{lisp/19.29/README}
+  and you may succeed...
+
 @item
   Edit the file @file{lisp/ess-site.el} as explained in the comments
   section of that file.  Installations that are using ESS only for S-plus
