@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/04/05 18:45:39 $
-;; Version: $Revision: 5.22 $
-;; RCS: $Id: ess-site.el,v 5.22 1999/04/05 18:45:39 rossini Exp $
+;; Modified: $Date: 1999/04/05 21:27:18 $
+;; Version: $Revision: 5.23 $
+;; RCS: $Id: ess-site.el,v 5.23 1999/04/05 21:27:18 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -242,19 +242,21 @@
     (progn				; MS-Windows 9x/NT
       (fset 'S 'S+4)
       (fset 's-mode 'S+4-mode)
-      (fset 's-transcript-mode 'S+4-transcript-mode)
-      )
+      (fset 's-transcript-mode 'S+4-transcript-mode))
     (progn				; Unix
       (fset 'S 'S+3)
       (fset 's-mode 'S+3-mode)
-      (fset 's-transcript-mode 'S+3-transcript-mode)
-      )
-)
+      (fset 's-transcript-mode 'S+3-transcript-mode)))
 
+
+
+;;;
+;;; AS OF 5.1.8, NO MORE CONDITIONALS ARE NEEDED!
+;;;
 ;;; On a PC, the default is R-microsoft.  Elsewhere the default is R-unix.
-(if (or (equal window-system 'w32) (equal window-system 'win32))
-    (fset 'R 'R-microsoft)		; MS-Windows 9x/NT
-   nil) ;(fset 'R 'R-unix))		; Unix
+;;(if (or (equal window-system 'w32) (equal window-system 'win32))
+;;    (fset 'R 'R-microsoft)		; MS-Windows 9x/NT
+;;   nil) ;(fset 'R 'R-unix))		; Unix
 
 
 ;;;;* Alias S-mode to s-mode
