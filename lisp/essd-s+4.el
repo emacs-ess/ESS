@@ -1,14 +1,14 @@
 ;;; essd-s+4.el --- S-PLUS 4.x customization
 ;;; Richard M. Heiberger, December 1998
 
-;; Copyright (C) 1997 A. J. Rossini
+;; Copyright (C) 1997 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 
-;; Author: A.J. Rossini <rossini@stat.sc.edu>
+;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/12/11 00:57:59 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-s+4.el,v 1.1 1998/12/11 00:57:59 rossini Exp $
+;; Created: December 1998
+;; Modified: $Date: 1998/12/11 19:41:37 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-s+4.el,v 1.2 1998/12/11 19:41:37 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -29,7 +29,8 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the S-PLUS 4.x customizations for ess-mode with ddeclient.
+;;; This file defines all the S-PLUS 4.x customizations for ess-mode
+;;; with ddeclient.  
 
 ;;; Requires and Autoloads:
 
