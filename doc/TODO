@@ -1,6 +1,6 @@
 -*-indented-text-*-
 
-$Id: TODO,v 1.3 1997/10/23 12:29:02 rossini Exp $ 
+$Id: TODO,v 1.4 1997/10/27 15:25:46 rossini Exp $ 
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -1242,4 +1242,56 @@ NOTE: Not all of these are clean OR are even consistent.
 
 * (AJR, via MM, RMH, DB): distinguish between files of dumped objects
   and files of loading objects.
+
+* (RMH/AJR)
+    Richard> essl-sas.el
+    Richard> SAS-log-mode
+
+    Richard> As present, SAS-log-mode doesn't do anything but be
+    Richard> human-readable.  My intent in basing it on
+    Richard> ess-transcript-mode rather than on fundamental-mode is
+    Richard> that when sas-clean-region and related functions are
+    Richard> figured out, then the log file can be used to re-enter
+    Richard> commands back to *SAS:1*.  We will look for all numbered
+    Richard> lines between a
+    Richard>  34   PROC abcd;
+    Richard>  ...
+    Richard>  38   run;
+    Richard> pair, sas-clean-region them and send them over to
+    Richard> *SAS:1*.  This is NOT an exercise for 5.0.  But because
+    Richard> it is intended, I feel (weakly, not strongly) that it
+    Richard> would be better to base SAS-log-mode on
+    Richard> ess-transcript-mode.  This plan should be formally
+    Richard> entered into the TODO list.
+
+    I would agree with this.  I'd also like to make sure that we have a
+    means of easily going between linked buffers.  Added into the TODO
+    list. 
+
+    Richard> While we are entering things in the TODO list, I would
+    Richard> like to consider setting up *SAS:n* as a unix pipe,
+    Richard> rather than as a unix buffer/file.  I don't know how to
+    Richard> tell emacs to do that.  The idea is to mimic the behavior
+    Richard> of the SAS edit window where, once the Submit menu item
+    Richard> has been clicked, the window is emptied.
+
+    No, I think that using as a buffer would be better (especially for
+    debugging any weird problems).  Hiding it, though, will be desirable.
+
+    Richard> I can also see a case for leaving the *SAS:n* buffer as a
+    Richard> buffer.  We should consider making it read-only to force
+    Richard> the user to do all thinking in the ex123.sas buffer.  The
+    Richard> only reason I can currently think of for letting the user
+    Richard> write directly in the *SAS:n* buffer is to enter the
+    Richard> commands
+    Richard>     stop;
+    Richard> or
+    Richard>     endsas;
+    Richard> I can't think of any reason to save the *SAS:n* buffer
+    Richard> and would like to know if there is any way to prevent the
+    Richard> user from saving it.
+
+    and not even that, since that should be the result of C-c C-q, so
+    that we get a nice, uniform means of exiting.
+
 
