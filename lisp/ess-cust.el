@@ -677,6 +677,12 @@ the variable `inferior-ess-own-frame' is non-nil."
   :group 'ess-R
   :type 'string)
 
+(defcustom inferior-R-args ""
+  "*String of arguments used when starting R.
+These arguments are currently not passed to other versions of R that have
+been created using the variable `ess-r-versions'."
+  :group 'ess-R
+  :type 'string)
 
 (defcustom ess-r-versions '( "R-1" "R-2")
   "*List of partial strings for versions of R to access within ESS.
@@ -1016,11 +1022,9 @@ corresponding program.")
 ;;- 	    ))
 
 
-(defcustom inferior-ess-start-args ""
-  "*String of arguments passed to the ESS process.
-Useful for R and SAS.  This is generic."
-  :group 'ess-proc
-  :type 'string)
+(defvar inferior-ess-start-args ""
+  "String of arguments passed to the ESS process.
+If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 
 (defcustom inferior-ess-start-file nil
   "*File dumped into process, if non-nil."
