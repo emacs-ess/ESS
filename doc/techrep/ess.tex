@@ -514,32 +514,30 @@ useful 1-letter shortcuts for navigation and more, such as
 \subsection{Philosophies for using ESS}
 \label{sec:S:philosophy}
 
-The first is preferred, and configured for.  The second one can be
-retrieved again, by changing emacs variables.
+There are two primary philosophies for using ESS.  The first, which is
+preferred by the current group of developers, is how ESS is initially
+configured.  In this approach, the source code is real.  The objects
+are realizations of the source code.  Source for \textbf{every} user
+modified object is placed in a particular directory or directories,
+for later editing and retrieval.  This implicitly assumes that one
+might want to use written code and analyses on possibly differerent
+versions of the S language and allows for better portability as well
+as external version control for source code.
 
-\begin{enumerate}
-\item 
-  (preferred by the current group of developers):  The source code is 
-   real.  The objects are realizations of the source code.  Source
-   for \textbf{every} user modified object is placed in a particular directory
-   or directories, for later editing and retrieval.
-
-\item (older version): S objects are real.  Source code is a temporary
-   realization of the objects.  Dumped buffers should not be saved.
-   We strongly discourage this approach.  However, if you insist,
-   add the following lines to your \texttt{.emacs} file:\\[-1ex]
-   \begin{Salltt}
-      (setq ess-keep-dump-files 'nil)
-      (setq ess-delete-dump-files t)
-      (setq ess-mode-silently-save nil)
-   \end{Salltt}
-   This ``old'' view was based the permanent storage of objects
-   approach in the original S implementations, which used a separate
-   disk files for each object.
-
-\end{enumerate}
-The second saves a small amount of disk space.  The first allows for
-better portability as well as external version control for code.
+The second, depreciated view, is that S objects are real.  Source code
+is a temporary realization of the objects, and that dumped buffers
+should not be saved.  We strongly discourage this approach, which is a
+natural result of assuming that the S process will always be the same.
+However, it can be realized by adding the following lines to your
+\texttt{.emacs} file:\\[-1ex] 
+\begin{Salltt}
+  (setq ess-keep-dump-files 'nil)
+  (setq ess-delete-dump-files t)
+  (setq ess-mode-silently-save nil)
+\end{Salltt}
+This ``old'' view was based the permanent storage of objects approach
+in the original S implementations, which used a separate disk files
+for each object, and saves a small amount of disk space.  
 
 \subsection{Scenarios for use}
 \label{sec:S:scenarios}
