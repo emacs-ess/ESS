@@ -159,7 +159,7 @@ intelligent environment for statistical analysis}
   substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/25 22:05:45 $ - $Revision: 1.7 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/25 22:22:56 $ - $Revision: 1.8 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -213,46 +213,59 @@ Cross-platform User Interface.
 \label{sec:introduction}
 
 Statistical research activities, particularly data analysis and
-communication, involve some form of computing.  In particular, this is
-exemplified in the notion that many daily statistical activities can
-be considered to be \textit{programming with data} \cite{ChaJ98}.
-Thus the computer user interface's central role is to facilitate
-statistical tasks.  While presentation of character and graphical
-information is the most visual component of a user interface, perhaps
-a more critical component is how the computer interprets user input.
-A familiar, well-understood set of input behaviors can increase the
-efficiency of statistical practice.  This paper introduces Emacs
-Speaks Statistics (ESS) \citep{ESS}, a software package which provides
-a common interface to a variety of statistical packages on the most
-common computing platforms.
+communication, involve computing.  This is exemplified by the idea
+that many daily statistical activities can be considered to be
+\textit{programming with data} \citep{ChaJ98}.  The user interface,
+which maps behaviors between the computer and user, plays a central
+role in facilitating these tasks.  
+%% While presentation of character and
+%% graphical information is the most visual component of a user
+%% interface, perhaps a more critical component is how the computer
+%% interprets user input.  
+A familiar, coherent, and probably most importantly, well-understood
+set of input behaviors can increase the efficiency of statistical
+practice.  This paper introduces Emacs Speaks Statistics (ESS)
+\citep{ESS}, a software package which provides a common interface to a
+variety of statistical packages on the most common computing
+platforms.
 
-        many statistical systems can only be used or are best used
-        through a textual interface.
+%% AE's comments:
 
-        textual interfaces can be hard to use; ESS is a tool for
-        making them easier to use.
+%        many statistical systems can only be used or are best used
+%        through a textual interface.
 
-        preparing textual input for submission to a system is a form
-        of programming.
+%        textual interfaces can be hard to use; ESS is a tool for
+%        making them easier to use.
 
-        repeating analyses with minor variations and designing new
-        forms of analyses, perhaps using statistical languages, are
-        more advanced forms of programming
+%        preparing textual input for submission to a system is a form
+%        of programming.
 
-        ESS can help the user be more effective with all forms of data
-        analysis programming.
+%        repeating analyses with minor variations and designing new
+%        forms of analyses, perhaps using statistical languages, are
+%        more advanced forms of programming
+
+%        ESS can help the user be more effective with all forms of data
+%        analysis programming.
 
 Statistical package interfaces can generally be placed into 2
 categories.  The first and older approach is to provide a command-line
-or batch interface.  It was as a reaction to enhancing this interface
-that ESS was initially concieved.  The second approach is to provide a
-graphical user interface (GUI); this approach either supplements or
-completely replaces the command-line with the use of toolbars and
-menus along with dialog boxes for performing statistical procedures.
-Data display is provided through the use of a spreadsheet for entry
-and modification.  ESS provides a middle ground, with a focus on
-writing programming code for statistical computing, while providing
-tools, sometimes with associated GUIs, to speed up the associated
+or batch interface.  It has been claimed that these textual
+interfaces, which provide extensive  control over the data analysis
+procedures being performed, is probably the best interface for
+auditable and reproducible research.
+%% THIS BELONGS IN HISTORY:
+%% It was as a reaction to enhancing this interface that ESS was
+%% initially concieved.
+The second approach is to provide a graphical user interface (GUI);
+this approach either partially or completely replaces the command-line
+with the use of toolbars and menus along with dialog boxes for
+performing statistical procedures.  Data display is provided through
+the use of a spreadsheet for entry and modification.  However, some
+GUI-based packages can also accept scripts as input for regenerating
+statistical analyses.  ESS provides a middle ground, with a focus on
+writing data analysis scripts and programming code for statistical
+computing, while providing tools, sometimes with associated GUI tools
+such as menus, toolbars, and dialogs, for speeding up the associated
 programming tasks.
 
 ESS is an interface to statistical packages that provides tools which
