@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/03/02 18:28:14 $
-;; Version: $Revision: 5.32 $
-;; RCS: $Id: ess-vars.el,v 5.32 2000/03/02 18:28:14 maechler Exp $
+;; Modified: $Date: 2000/03/21 09:21:56 $
+;; Version: $Revision: 5.33 $
+;; RCS: $Id: ess-vars.el,v 5.33 2000/03/21 09:21:56 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -642,6 +642,9 @@ ess-load-file command.  Used for determining the default in the next one.")
 (make-variable-buffer-local 'ess-object-list)
 
 ;;*;; Miscellaneous system variables
+
+(defvar ess-temp-point nil
+ "Variable used to retain a buffer position past let or let*.")
 
 (defvar ess-mode-map nil
   "Keymap for ess-mode.")

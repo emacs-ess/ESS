@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/02/10 07:51:52 $
-;; Version: $Revision: 5.34 $
-;; RCS: $Id: ess-inf.el,v 5.34 2000/02/10 07:51:52 maechler Exp $
+;; Modified: $Date: 2000/03/21 09:21:56 $
+;; Version: $Revision: 5.35 $
+;; RCS: $Id: ess-inf.el,v 5.35 2000/03/21 09:21:56 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -1272,6 +1272,8 @@ to continue it."
 	(end-of-line)
 	(setq command (concat command "\n" (buffer-substring beg (point))))
 	(forward-line 1))
+      (forward-line -1)
+      (setq ess-temp-point (point))
       command)))
 
 ;;;*;;; Hot key commands

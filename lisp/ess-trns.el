@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/01/11 16:49:46 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: ess-trns.el,v 5.2 1999/01/11 16:49:46 maechler Exp $
+;; Modified: $Date: 2000/03/21 09:21:56 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: ess-trns.el,v 5.3 2000/03/21 09:21:56 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -234,6 +234,7 @@ is not already."
   "Send the ess-command on this line, and move point to the next command"
   (interactive)
   (ess-transcript-send-command)
+  (goto-char ess-temp-point)
   (comint-next-prompt 1))
 
 (defun ess-transcript-copy-command ()
