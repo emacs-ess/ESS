@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/07/24 19:52:17 $
-;; Version: $Revision: 1.142 $
-;; RCS: $Id: essa-sas.el,v 1.142 2003/07/24 19:52:17 rsparapa Exp $
+;; Modified: $Date: 2003/08/15 21:35:41 $
+;; Version: $Revision: 1.143 $
+;; RCS: $Id: essa-sas.el,v 1.143 2003/08/15 21:35:41 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -180,13 +180,14 @@ should set this variable to 'sh regardless of their local shell
 	;; nice is tricky, higher numbers give you lower priorities
 	;; if you are using csh/tcsh, the default priority is 4
 	;; if you are using most other shells, the default priority is 10,
-	;; but some implementations give you 19 unless you specify -0
+	;; and some implementations are higher, i.e. zsh unless you 
+	;; specify "setopt no_bg_nice" in your ~/.zshrc
 	;; therefore, on the same machine, you can run at a higher or
 	;; lower priority by changing shells, although, the command
 	;; line is the same!
 	;; the following code should give you a priority of 10 regardless
 	;; of which shell is in use, but it will default to the old
-	;; behavior if the shell is not recognized
+	;; behavior if csh or variant is not recognized
 	;; this should avoid the necessity of each user needing to set this
 	;; variable correctly based on the shell that they use and provide
 	;; an environment where all users are treated equally
@@ -199,9 +200,6 @@ should set this variable to 'sh regardless of their local shell
 
 	    (cond ((or (equal temp-shell "csh") (equal temp-shell "tcsh")) 
 			"nohup nice +6")
-                   ((or (string= temp-shell "sh") (string= temp-shell "ksh") 
-			(string= temp-shell "zsh") (string= temp-shell "bash")) 
-			"nohup nice -0")
 		   (t "nohup nice")))
 	(if ess-microsoft-p "start"))
     "*Command-line statement to precede SAS invocation, e.g. start or nohup"
