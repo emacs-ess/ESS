@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/17 19:09:26 $
-;; Version: $Revision: 1.39 $
-;; RCS: $Id: ess.el,v 1.39 1997/07/17 19:09:26 rossini Exp $
+;; Modified: $Date: 1997/07/17 19:12:28 $
+;; Version: $Revision: 1.40 $
+;; RCS: $Id: ess.el,v 1.40 1997/07/17 19:12:28 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.40  1997/07/17 19:12:28  rossini
+;; *** empty log message ***
+;;
 ;; Revision 1.39  1997/07/17 19:09:26  rossini
 ;; added a "set".  Is this really required for buffer-local?
 ;;
@@ -1160,7 +1163,7 @@ the basic idea: (setq ---  (cdr (assq --- var-alist)))."
   (setq-default  ess-history-file (concat "." ess-proc-prefix "history"))
 
   (ess-write-to-dribble-buffer 
-    (format "(ess-set-vars-default): ess-proc-prefix=%s, buf=%s \n"
+    (format "(ess-setq-vars-default): ess-proc-prefix=%s, buf=%s \n"
 	   ess-proc-prefix buf)))
 
  ; Run load hook and provide package
