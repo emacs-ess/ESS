@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/15 05:03:54 $ - $Revision: 1.176 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/15 17:31:46 $ - $Revision: 1.177 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -200,8 +200,9 @@ open-source, cross-platform
 Most statistical research activities, particularly data analysis and
 communication, involve some form of computing.  The computer user
 interface is thus placed in the central role of facilitating
-statistical tasks.  While presentation of components, information, and
-similar output is the most visual component of a user interface,
+statistical tasks.  While presentation of character and graphical
+%of components, information, and similar output 
+information is the most visual component of a user interface,
 perhaps a more critical component is how the computer interprets user
 input.  A familiar, well-understood set of input behaviors can provide
 large gains in efficiency.  This paper introduces Emacs Speaks
@@ -212,7 +213,7 @@ common computing platforms.
 ESS is a statistical package interface which provides, through Emacs,
 tools which facilitate both statistical software development and data
 analysis.  ESS provides assistance with both writing and evaluation of
-analysis code for both interactive and batch-file driven statistical
+analysis code for both interactive and batch statistical
 packages.  ESS currently supports the S family of languages (including
 S \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\regstrd\ \citep{Splus}, and
 R \citep{ihak:gent:1996}); \SAS\regstrd\ \citep{SAS:8}; \XLispStat\ 
@@ -227,8 +228,8 @@ platform on which ESS is built.  Next, we discuss how ESS enhances a
 statistician's daily activities by presenting its features
 and showing how it facilitates statistical computing.  The unique
 history of ESS as an open source project follows; it is a
-synthesis of several independent projects and has been passed down
-through many generations of developers.  We conclude with future
+synthesis of several independent projects and has passed through 
+generations of developers.  We conclude with future
 extensions and related work.
 
 \section{Emacs}
@@ -238,27 +239,31 @@ Emacs is a mature, powerful, and extensible text editing system which
 is freely available under the GNU General Public License (GPL) for a
 large number of platforms, including most distributions of
 Unix\regstrd, Microsoft Windows\regstrd\ and Apple Mac\tm\ OS.  There
-are two open-source implementations of Emacs which are released for
-use under the GPL: GNU Emacs \citep{GNU-Emacs} and XEmacs
+are two open-source implementations of Emacs released
+%which are released for use 
+under the GPL: GNU Emacs \citep{GNU-Emacs} and XEmacs
 \citep{XEmacs}.  Emacs shares many features with word processors, and
 some characteristics with operating systems, including many facilities
-which go beyond ordinary text editing.  More importantly to our goals,
+which go beyond ordinary text editing.  More important to our goals,
 Emacs can control and interact with other programs.
 
 \paragraph{Keyboard and Mouse Input.}
 When Emacs was originally written, character-based terminals were the
 most advanced method of computer access.  Common Emacs commands were
-mapped (or bound) to control-key sequences for ease of use.  Over the
+mapped (or bound) to key sequences for convenience which are called
+key-maps (or key-bindings).  Over the
 last decade, Emacs has been extended to use graphical windowing
 systems, such as X11\tm, Microsoft Windows, and Apple Mac OS, which
 allow additional forms of input, for example using a mouse, and which
 encourage multiple applications to share a single display.  Presently,
 Emacs is more often used with a GUI, with commands bound to mouse
-actions, but having commands also associated with a small number of
-keystrokes is an important time-saving feature for fast typists.
+actions, but having commands also associated with key-maps
+is an important time-saving feature so your hands don't have to leave 
+the keyboard.
+%for fast typists.
 Emacs menus and toolbars on the display screen allow mouse access to
 frequently used actions and provide a graphical alternative when the
-user does not know or can not recall a key binding; these are also
+user does not know or can not recall a key-binding; these are also
 subject to user-customization.
 
 \paragraph{Buffers give Emacs control.}
