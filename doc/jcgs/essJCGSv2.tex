@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/19 15:02:38 $ - $Revision: 1.189 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/19 15:24:42 $ - $Revision: 1.190 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -1229,8 +1229,8 @@ XEmacs and supported S, \Splus, and R.
 %%Kurt Hornik was instrumental in enhancing support for R,
 %%in particular, providing \stexttt{Rd-mode}.
 
-In 1995, Rossini extended SAS-mode to work with XEmacs and merged S-mode 
-and SAS-mode into a single Emacs package for statistical programming.  
+Rossini extended SAS-mode to work with XEmacs in 1995 and merged S-mode 
+and SAS-mode into a single Emacs package for statistical programming in 1997.  
 The product of this marriage, along with additional changes to accommodate 
 multiple languages in a flexible way, was called ESS version 5.
 
@@ -1239,17 +1239,18 @@ At the same time, SAS-mode was further integrated into ESS.
 
 In 1997, more changes in the internal structure of ESS were made to
 facilitate support for additional statistical languages.   \Stata\
-and \XLispStat were added to ESS's capabilitities.
+and \XLispStat\ were added to ESS's capabilitities.
 
-Most of the work, until 1998, was for Unix statistics packages that
-use the standard-input/standard-output model of inter-process
-communication for both the command-line interface and batch file
-processing.  ESS could not communicate with Windows versions of
-statistical packages that did not use the
-standard-input/standard-output model.  This hurdle fell in 1998 when
-Brian Ripley demonstrated how ESS could use the Windows Dynamic Data
-Exchange (DDE) protocol.  Heiberger used DDE to provide
-interactive interfaces for Windows versions of \Splus.
+Until 1998, ESS only worked with Unix statistics packages that
+used standard-input and standard-output for both the command-line 
+interface and batch file processing.  ESS could not communicate 
+with Windows versions of statistical packages that did not use this 
+method.  This changed in 1998.  Brian Ripley demonstrated how ESS 
+could use the Windows Dynamic Data Exchange (DDE) protocol.  
+Heiberger used DDE to provide interactive interfaces for Windows 
+versions of \Splus.  And, Rodney Sparapani designed \SAS\ batch file 
+processing for ESS on Unix, Windows and Mac which relied on files 
+rather than standard-input/standard-output.
 
 \begin{table}[tbp]
   \centering
