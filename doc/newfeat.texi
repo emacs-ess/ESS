@@ -10,8 +10,6 @@ characters are not converted to ASCII prior to their display.  So,
 the function ess-ebcdic-to-ascii-search-and-replace is provided for
 convenience and is bound to C-F11.  This function requires the dd
 command so Windows users will need to have Cygwin or something like it.
-@item ESS[R]: Completion of object names now also includes those
-starting with ``.''.
 @item ESS: Completion of object names is now always done dynamically rather
 than allowing the option of using a pre-computed database (by
 `ess-create-object-name-db') since modern computers seem fast enough for
@@ -20,9 +18,11 @@ pre-computed database method.)
 @item ESS: object completion in iESS buffers running on Windows was
 very slow (for GNU Emacs, but not Xemacs) and has now been fixed.
 Further, it was more or less broken for all versions of S-plus 6.x,
-and has been fixed to work everywhere but with the Windows' GUI.
-The list of objects now shows unique names also when an object appears
-more than once in the search path.
+and has been fixed to work everywhere but with the Windows' GUI of
+S-plus.  The list of objects now shows unique names also when an
+object appears more than once in the search path.
+@item ESS[R]: Completion of object names now also includes those
+starting with ``.''.
 @end itemize
 
 Changes/New Features in 5.2.3:
