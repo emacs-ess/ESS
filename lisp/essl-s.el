@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2004/02/12 15:03:02 $
-;; Version: $Revision: 5.34 $
-;; RCS: $Id: essl-s.el,v 5.34 2004/02/12 15:03:02 stephen Exp $
+;; Modified: $Date: 2004/05/13 10:50:16 $
+;; Version: $Revision: 5.35 $
+;; RCS: $Id: essl-s.el,v 5.35 2004/05/13 10:50:16 stephen Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -177,7 +177,7 @@
 ;;; See also ./ess-utils.el
 
 (defvar ess-function-outline-file
-  (concat ess-lisp-directory "/../etc/" "function-outline.S")
+  (concat ess-etc-directory  "function-outline.S")
   "The file name of the ess-function outline that is to be inserted at point,
 when \\<ess-mode-map>\\[ess-insert-function-outline] is used.
 Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
