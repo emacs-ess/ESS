@@ -144,8 +144,8 @@
      (ess-save-lastvalue-command
       . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
 
-     (inferior-ess-objects-command . inferior-Splus-objects-command)
-
+     (inferior-ess-objects-command  . inferior-Splus-objects-command)
+     (inferior-ess-font-lock-keywords . inferior-ess-S-font-lock-keywords)
      (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
      (inferior-ess-secondary-prompt . "+ ?")
 

@@ -200,7 +200,7 @@ in the region, leaving only the S commands.  Other keybindings are:
   ;; font-lock support
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults
-	'(ess-trans-font-lock-keywords nil nil ((?' . "."))))
+	'(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
 
   ;;; Keep <tabs> out of the code.
   (make-local-variable 'indent-tabs-mode)

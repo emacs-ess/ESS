@@ -258,6 +258,8 @@ Changes/New Features in 5.2.6:
    * ESS[S] (incl. R): in auto-fill mode, strings are not wrapped
      anymore.
 
+   * ESS[S] (incl. R): font-lock now correctly differs between R and S.
+
    Changes/New Features in 5.2.5:
    * ESS[R]: `C-c C-q' or `Quit S' from the menu now should work (again
      and less klunkily) and do not append `-exited' to the buffer name.

@@ -1,4 +1,5 @@
 2005-03-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+  based on much from Kurt Hornik
 
 	* ess-cust.el (ess-R-function-pattern): and ess-S-function-pattern
 		instead of ess-function-pattern.
@@ -9,6 +10,12 @@
 		instead of just one ess-mode-font-lock
 	* essl-s.el (R-editing-alist): additionally to S-editing-alist
 	* essd-r.el (R-customize-alist): use R-editing-alist
+
+
+	* ess-cust.el (inferior-ess-R-font-lock-keywords): and ess-S-*
+		instead of just one; building on auxiliary variables.
+	* essl-s.el (S+common-cust-alist): set inferior-ess-font-lock-*
+	* essd-r.el (R-customize-alist): dito
 
 
 2005-03-03  Martin Maechler  <maechler@stat.math.ethz.ch>

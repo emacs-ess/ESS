@@ -1373,118 +1373,144 @@ If nil, input is in the `font-lock-variable-name-face'."
   :group 'ess
   :type 'boolean)
 
+(defvar ess-R-constants
+  '("TRUE" "FALSE" "NA" "NULL" "Inf" "NaN"))
+
+(defvar ess-S-constants
+  (append ess-R-constants '("T" "F")))
+
+;; first the common ones
+(defvar ess-S-modifyiers
+  '("library" "attach" "detach" "source" "module"))
+(defvar ess-R-modifyiers
+  '("library" "attach" "detach" "source" "require"))
+
+(defvar ess-S-keywords
+  '("while" "for" "in" "repeat" "if" "else" "switch" "break" "next"
+    "function" "return" "stop" "warning"))
+(defvar ess-R-keywords
+  (append ess-S-keywords '("message")))
+
+(defvar ess-R-message-prefixes
+  '("Error:" "Error in"
+    "Warning:" "Warning in"
+    "Warning messages?"))
+(defvar ess-S-message-prefixes
+  (append ess-R-message-prefixes
+	  '("Syntax error:" "Dumped")))
+
+;;
+(defvar ess-R-assign-ops
+  '("<<-" "<-" "->") ; don't want "=" here which is not only for assign
+)
+(defvar ess-S-assign-ops
+  '("<<-" "<-" "_" "->") ; don't want "=" here which is not only for assign
+)
+
+(defvar ess-R-function-name-regexp
+  (concat "\\s\"?\\(\\(\\sw\\|\\s_\\)+"
+	  "\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)"
+	  "\\(\\s-\\|\n\\)*function")
+)
+(defvar ess-S-function-name-regexp
+  ess-R-function-name-regexp ; since "_" is deprecated for S-plus as well
+)
+
+
 (defvar ess-R-mode-font-lock-keywords
-  '(("<<-\\|<-\\|->" ; 2004-01: dropped "_" -- TODO later: for function-name
-     . font-lock-reference-face)	; assign
-    ("\\<\\(TRUE\\|FALSE\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" ; no T|F
-     . font-lock-type-face)
-    ("\\<\\(library\\|require\\|attach\\|detach\\|source\\)\\>"
-     . font-lock-reference-face)
-    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|message\\|function\\)\\>"
-     . font-lock-keyword-face)
-    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)\\(\\s-\\|\n\\)*function"
-     1 font-lock-function-name-face t)
-    )
+  (list
+   (cons (mapconcat 'identity ess-R-assign-ops "\\|")
+	 'font-lock-reference-face)	; assign
+   (cons (concat "\\<\\("
+		 (mapconcat 'identity ess-R-constants "\\|")
+		 "\\)\\>")
+	 'font-lock-type-face)		; constants
+   (cons (concat "\\<\\("
+		 (mapconcat 'identity ess-R-modifyiers "\\|")
+		 "\\)\\>")
+	 'font-lock-reference-face)	; modify search list or source
+					; new definitions
+   (cons (concat "\\<\\("
+		 (mapconcat 'identity ess-R-keywords "\\|")
+		 "\\)\\>")
+	 'font-lock-keyword-face)	; keywords
+   (cons ess-R-function-name-regexp
+	 '(1 font-lock-function-name-face t))
+					; function name
+   )
   "Font-lock patterns used in `R-mode' buffers.")
 
 (defvar ess-S-mode-font-lock-keywords
-  '(("<<-\\|<-\\|->" . font-lock-reference-face)	; assign
-    ("\\<\\(T\\|F\\|TRUE\\|FALSE\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" ; + T|F
-     . font-lock-type-face)
-    ("\\<\\(library\\|module\\|attach\\|detach\\|source\\)\\>"; s/require/module
-     . font-lock-reference-face)
-    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|message\\|function\\)\\>"
-     . font-lock-keyword-face) ; +  "_"  and "="
-    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\|_\\|=\\)\\(\\s-\\|\n\\)*function"
-     1 font-lock-function-name-face t)
-    )
-  "Font-lock patterns used in `S-mode' buffers.")
+  (list
+   (cons (mapconcat 'identity ess-S-assign-ops "\\|")
+	 'font-lock-reference-face)	; assign
+   (cons (concat "\\<\\("
+		 (mapconcat 'identity ess-S-constants "\\|")
+		 "\\)\\>")
+	 'font-lock-type-face)		; constants
+   (cons (concat "\\<\\("
+		 (mapconcat 'identity ess-S-modifyiers "\\|")
+		 "\\)\\>")
+	 'font-lock-reference-face)	; modify search list or source
+					; new definitions
+   (cons (concat "\\<\\("
+		 (mapconcat 'identity ess-S-keywords "\\|")
+		 "\\)\\>")
+	 'font-lock-keyword-face)	; keywords
+   (cons ess-S-function-name-regexp
+	 '(1 font-lock-function-name-face t))
+					; function name
+   )
+  "Font-lock patterns used in `R-mode' buffers.")
 
 
-;; FIXME:
-;; This should be split in  R and S versions too (at least because 'T' and 'F':
-(defvar inferior-ess-font-lock-keywords
-  '(("<<-\\|<-\\|->"
-     . font-lock-reference-face)		; assign
-    ("^\\*\\*\\*.*\\*\\*\\*\\s *$"
-     . font-lock-comment-face) ; ess-mode msg
-    ("\\[,?[1-9][0-9]*,?\\]"
-     . font-lock-reference-face)	; Vector/matrix labels
-    ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
-     . font-lock-type-face) ; keywords
-    ("\\<\\(library\\|attach\\|detach\\|source\\)\\>"
-     . font-lock-reference-face) ; modify search list or source new definitions
-    ("^Syntax error:"
-     . font-lock-reference-face);inferior-ess problems or errors
-    ("^Error:"
-     . font-lock-reference-face)
-    ("^Error in"
-     . font-lock-reference-face)
-    ("^Dumped"
-     . font-lock-reference-face)
-    ("^Warning messages:"
-     . font-lock-reference-face)
-    ("#"
-     . font-lock-comment-face) ; comment
-    ("^[^#]*#\\(.*$\\)"
-     (1 font-lock-comment-face keep t)) ; comments
-    ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function"
-     1 font-lock-function-name-face t) ; function name
-    ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|message\\|function\\)\\>"
-     . font-lock-keyword-face) ; keywords
-    )
-  "Font-lock patterns used in inferior-ess-mode buffers.")
+(defvar inferior-ess-R-font-lock-keywords
+  (append
+   '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)) ; "prompt" must be first
 
-;; add-to-list() places keywords in front of the previous keywords
-;; input and prompt must appear in inferior-ess-font-lock-keywords
-;; in the order  prompt error, hence they appear here in the reverse
-;; order.
+   (if (not inferior-ess-font-lock-input) ;; don't font-lock input :
+       (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
+		   '(1 font-lock-variable-name-face keep t))) )
 
-(if (not inferior-ess-font-lock-input)
-    (add-to-list 'inferior-ess-font-lock-keywords
-		 '("^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
-		   (1 font-lock-variable-name-face keep t));don't font-lock input
-		 ))
-(add-to-list 'inferior-ess-font-lock-keywords
-	     '("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face))	; prompt
+   ess-R-mode-font-lock-keywords
 
-(defvar ess-trans-font-lock-keywords
- inferior-ess-font-lock-keywords
- "Font-lock patterns used in `ess-transcript-mode' buffers.")
+   (list
+    (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
+    (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-reference-face);Vector/matrix labels
+    (cons (concat "^\\(" (mapconcat 'identity ess-R-message-prefixes "\\|")
+		  "\\)")
+	  'font-lock-reference-face) ; inferior-ess problems or errors
+    (cons "#" 	'font-lock-comment-face) ; comment
+    (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
+    ))
+  "Font-lock patterns used in inferior-R-mode buffers.")
 
-;;
-;;(defvar ess-mode-font-lock-keywords
-;; '(("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function" 1 font-lock-function-name-face t)
-;;   ("<<?-\\|_" . font-lock-reference-face)
-;;   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>" . font-lock-type-face)
-;;   ("\\<\\(library\\|attach\\|detach\\|source\\)\\>" . font-lock-reference-face)
-;;   "\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>")
-;; "Font-lock patterns used in ess-mode bufffers.")
-;;
-;;(defvar essd-S-inferior-font-lock-keywords
-;; '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)	; prompt
-;;   ("^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
-;;    (1 font-lock-variable-name-face keep t)) ; input
-;;   ("<-\\|_" . font-lock-reference-face)		; assign
-;;   ("^\\*\\*\\\*.*\\*\\*\\*\\s *$" . font-lock-comment-face) ; ess-mode msg
-;;   ("\\[,?[1-9][0-9]*,?\\]" . font-lock-reference-face)	; Vector/matrix labels
-;;   ("^Syntax error:" . font-lock-reference-face) ; error message
-;;   ("^Error:" . font-lock-reference-face) ; error message
-;;   ("^Error in" . font-lock-reference-face) ; error message
-;;   ("^Dumped" . font-lock-reference-face) ; error message
-;;   ("^Warning:" . font-lock-reference-face) ; warning message
-;;   ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
-;;    . font-lock-type-face)) ; keywords
-;; "Font-lock patterns for dialects of S, used in highlighting process
-;; buffers and transcripts.")
-;;
-;;(defvar inferior-ess-font-lock-keywords
-;;  essd-S-inferior-font-lock-keywords
-;; "Font-lock patterns used in inferior-ess-mode buffers.")
-;;
-;;(defvar ess-trans-font-lock-keywords
-;;  essd-S-inferior-font-lock-keywords
-;; "Font-lock patterns used in ess-transcript-mode buffers.")
+(defvar inferior-ess-S-font-lock-keywords
+  (append
+   '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)) ; "prompt" must be first
+
+   (if (not inferior-ess-font-lock-input) ;; don't font-lock input :
+       (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
+		   '(1 font-lock-variable-name-face keep t))) )
+
+   ess-S-mode-font-lock-keywords
+
+   (list
+    (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face) ; ess-mode msg
+    (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-reference-face);Vector/matrix labels
+    (cons (concat "^\\("
+		  (mapconcat 'identity ess-S-message-prefixes "\\|")
+		  "\\)")
+	  'font-lock-reference-face) ; inferior-ess problems or errors
+    (cons "#" 'font-lock-comment-face)	; comment
+    (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
+    ))
+  "Font-lock patterns used in inferior-S-mode buffers.")
+
+;; use the inferior-* ones directly in ess-trns.el
+;; (defvar ess-trans-font-lock-keywords
+;;   inferior-ess-font-lock-keywords
+;;   "Font-lock patterns used in `ess-transcript-mode' buffers.")
 
 
 ;;;*;;; ess-help variables
