@@ -1,10 +1,12 @@
 \documentclass{article}
 
+\newif\ifMM\MMtrue
+\MMfalse
 \newif\ifdraft
 % During writing: a draft:
 %\drafttrue
 % FINAL:
-\draftfalse
+\draftfalse \ifMM\drafttrue\fi
 
 \ifdraft  %% generate tableofcontents down to the \paragraph
 \setcounter{tocdepth}{5}
@@ -12,7 +14,7 @@
 %1. introduction
 %        a) a statistician's needs
 %        b) statistical analysis packages supported by ESS
-%2. emacs 
+%2. emacs
 %        a) buffers
 %        b) key sequences
 %        c) modes
@@ -54,6 +56,7 @@
 \addtolength{\oddsidemargin}{-0.5in}
 \addtolength{\textheight}{0.2in}
 \addtolength{\textwidth}{1in}
+\ifMM\addtolength{\textheight}{2cm}\fi
 
 %%%
 \usepackage[authoryear,round]{natbib}
@@ -105,6 +108,10 @@
 \rule{316pt}{.25pt}
 \rule{.25pt}{10pc}}
 
+\ifMM\newcommand{\ESSfig}[1]{\centering{#1}}
+\else\newcommand{\ESSfig}[1]{\centering\ifdraft\emptyfig\else{#1}\fi}
+\fi
+
 %% Use \begin{Comment} .. \end{Comment} for internal comments
 \ifdraft
 \newenvironment{Comment}{\begin{quote}\small\itshape }{\end{quote}}
@@ -133,7 +140,7 @@ intelligent environment for statistical analysis}
     Temple University, Philadelphia, PA, USA (E-mail: rmh@temple.edu);
 %%
     Rodney A. Sparapani is Senior Biostatistician in the Center for Patient
-    Care and Outcomes Research at the Medical College of Wisconsin, 
+    Care and Outcomes Research at the Medical College of Wisconsin,
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu);
 %%
     Martin M{\"a}chler is Senior Scientist and Lecturer in the Seminar for
@@ -146,7 +153,7 @@ intelligent environment for statistical analysis}
     Wien, Vienna, Austria (E-mail: Kurt.Hornik@r-project.org)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/22 08:16:47 $ - $Revision: 1.247 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/25 12:36:08 $ - $Revision: 1.248 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -154,7 +161,7 @@ intelligent environment for statistical analysis}
 %%  \DeclareGraphicsExtensions{.jpg,.pdf,.png,.mps}
 %%\fi
 %%%% To cite everything
-%%\nocite{*} 
+%%\nocite{*}
 
 \ifdraft
 \setcounter{page}{0}
@@ -164,7 +171,7 @@ intelligent environment for statistical analysis}
 
 \maketitle
 
-\ifdraft{}%% large line skip -- please not yet (MM)
+\ifdraft{}%% large line skip -- not for draft
 \else%FINAL:
  \renewcommand{\baselinestretch}{1.5}
  %%- \baselineskip=2pc
@@ -190,7 +197,7 @@ intelligent environment for statistical analysis}
   how it increases statistical programming efficiency.
 \end{abstract}
 
-\noindent Keywords: Data Analysis, Programming, 
+\noindent Keywords: Data Analysis, Programming,
 S, \SAS, \Splus, R, \XLispStat, \Stata, BUGS, Open Source Software,
 Cross-platform User Interface.
 
@@ -215,7 +222,7 @@ ESS provides assistance with both writing and evaluation of analysis
 code for both interactive and batch statistical packages.  ESS
 currently supports the S family of languages (including S
 \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\regstrd\ \citep{Splus}, and R
-\citep{ihak:gent:1996,R}; \SAS\regstrd\ \citep{SAS:8}; \Stata\ 
+\citep{ihak:gent:1996,R}; \SAS\regstrd\ \citep{SAS:8}; \Stata\
 \citep{Stata:7.0}; \XLispStat\ \citep{Tier90} and its extensions Arc
 \citep{Cook:Weisberg:1999} and ViSta \citep{youn:fald:mcfa:1992}; BUGS
 \citep{BUGS}; and Omegahat \citep{DTLang:2000}.  ESS can be extended
@@ -225,7 +232,7 @@ interactive command-line or process batch files for instructions.
 We start by describing the Emacs text editor, the underlying platform
 on which ESS is built.  Next, we discuss how ESS enhances a
 statistician's daily activities by presenting its features and showing
-how it facilitates statistical computing.  We conclude with a short history 
+how it facilitates statistical computing.  We conclude with a short history
 of the development of ESS.
 % and conclude with future extensions and related work.
 
@@ -279,11 +286,11 @@ interaction, which can be edited and searched while the program
 executes.
 
 \paragraph{Major and Minor Modes.}
-Emacs capabilities are extended by loading 
+Emacs capabilities are extended by loading
 %% AJR: If we remove ``or byte-compiled'' we need to remove ``text'',
 %% since it is wrong.
-%% text 
-%% or byte-compiled  
+%% text
+%% or byte-compiled
 files containing commands and functions written in Emacs Lisp (elisp)
 \citep{RChassell1999}, which is a dialect of Lisp
 \citep{PGraham:1996}.  Emacs commands can be called interactively by
@@ -340,7 +347,7 @@ shares many features with word processing programs and cooperates with
 markup-language document preparation systems such as \LaTeX,
 \textsc{html}, or \textsc{xml}.
 
-Tracking changes to a text file made by multiple users, potentially in 
+Tracking changes to a text file made by multiple users, potentially in
 different locations, is the job of source-code control programs.
 Emacs interacts with standard source-code control programs such as CVS, RCS,
 and SCCS through minor modes such as \stexttt{vc-mode}.  These
@@ -361,18 +368,13 @@ it provides the user with the ability to insert, delete or modify only
 the differing portions of text files.
 
 \begin{figure}[tbp]
-  \centering
-  \ifdraft
-     \emptyfig
-  \else
-     \includegraphics[angle=270,width=\textwidth]{ediff-sas}
-  \fi
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas}}
   \caption{Ediff of two versions of a file.}
   \label{f.ediff}
 \end{figure}
 
-% Rodney: You can't just mention complex functionality like etags and 
-% speedbar.  We would need to introduce these packages.  Since they 
+% Rodney: You can't just mention complex functionality like etags and
+% speedbar.  We would need to introduce these packages.  Since they
 % aren't critical to ESS at this time, let's ignore them.
 Emacs has many other important features.  Emacs provides file-manager
 capabilities, such as \stexttt{dired} (discussed in Major and Minor
@@ -470,13 +472,10 @@ and inverse-video purple for mismatched parens.  Emacs makes default
 choices of colors and ESS provides several other optional schemes.
 
 \begin{figure}[tbp]%h
-  \centering
-\ifdraft
-  \emptyfig
-\else
-  \includegraphics[angle=270,width=\textwidth]{font-cor-s}
-  \includegraphics[angle=270,width=\textwidth]{font-incor-s}
-\fi
+  \ESSfig{%
+    \includegraphics[angle=270,width=\textwidth]{font-cor-s}
+    \includegraphics[angle=270,width=\textwidth]{font-incor-s}%
+    }
   \caption{We illustrate here with fonts and colors appropriate for a
     color display.  On a black and white terminal we would use bold,
     underline, italic, and reverse-video.  On a color terminal we
@@ -497,12 +496,7 @@ standards.  Figure \ref{f.hilock} illustrates a standard for
 \stexttt{DATA=datasetname} option.
 
 \begin{figure}[tbp]
-  \centering
-  \ifdraft
-     \emptyfig
-  \else
-     \includegraphics[angle=270,width=\textwidth]{hilock-sas}
-  \fi
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{hilock-sas}}
   \caption{Enforce coding standards.  The standard here is
     that all \stexttt{PROC} statements must use the
     \stexttt{DATA=datasetname} option.  Lines that satisfy the
@@ -524,12 +518,7 @@ searching of previously entered commands.  Filename completion for
 local directories is also available.
 
 \begin{figure}[tb]
-  \centering
-  \ifdraft
-     \emptyfig
-  \else
-     \includegraphics[angle=270,width=\textwidth]{ess-demo}
-  \fi
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo}}
   \caption{Line-by-line execution of a command file. The cursor is
     placed on a line in the \stexttt{ESS[S]} buffer and then with a single
     key sequence
@@ -622,7 +611,7 @@ interfaces (interactive for R, batch for BUGS) are different.
 
 %\item[Rodney:]  I can't speak for everyone, but the BUGS users I know are
 % .. lots deleted by AJR
-%will make sense.  Besides, the most pressing need for me is to get 
+%will make sense.  Besides, the most pressing need for me is to get
 %ESS-elsewhere to work with ESS[BUGS] rather than creating inferior-BUGS.
 
 %\item[Rich:] How does making ``ESS-elsewhere work with ESS[BUGS]'' differ
@@ -631,12 +620,12 @@ interfaces (interactive for R, batch for BUGS) are different.
 %of the program irrelevant.
 %See my ESS-elsewhere quibble below.
 
-%\item[Rodney:] It's the whole batch BUGS vs. interactive BUGS thing.  Batch 
-%BUGS with ESS-elsewhere; interactive BUGS with inferior-BUGS which does not 
-%and will never exist.  If you want to call ``inferior-ESS'' ``ESS-elsewhere'' 
+%\item[Rodney:] It's the whole batch BUGS vs. interactive BUGS thing.  Batch
+%BUGS with ESS-elsewhere; interactive BUGS with inferior-BUGS which does not
+%and will never exist.  If you want to call ``inferior-ESS'' ``ESS-elsewhere''
 %why do you need two different names?  ``inferior-ESS'' is a terrible name
 %so the change would be fine with me, but you can't have it both ways?  Is
-%this why you keep saying that ESS-elsewhere works for SAS?  See 
+%this why you keep saying that ESS-elsewhere works for SAS?  See
 %response to quibble below.
 
 %\item[Rich:]
@@ -669,7 +658,7 @@ software packages.
 
 The increased popularity of exploratory data analysis as well as the
 advent of simple GUIs has made interactive data analysis an important
-component to statistical practices.  
+component to statistical practices.
 ESS uses three different approaches for communicating with statistical
 packages.
 
@@ -749,7 +738,7 @@ interface, but with Emacs key sequences.
 %can fix it later.
 %
 % rmh: Round umpteen.  Yes, this is redundant with the third paragraph
-% of interprocess communication.  I still want it here.  Try this rephrasing.  
+% of interprocess communication.  I still want it here.  Try this rephrasing.
 %
 \stexttt{ESS[SAS]} mode can be used in conjunction with the \SAS\
 Display Manager to allow simultaneous access to Emacs for editing
@@ -813,8 +802,8 @@ Emacs.
 
 \SAS\ is a popular choice for processing and analyzing large amounts
 of data.  However, interactive \SAS\ is rarely used in these situations
-due to the length of time involved.  Instead, a file containing \SAS\ 
-commands is created and \SAS\ executes these commands in the background, 
+due to the length of time involved.  Instead, a file containing \SAS\
+commands is created and \SAS\ executes these commands in the background,
 or batch, while the user moves on to other activities.
 
 ESS facilitates \SAS\ batch with \stexttt{ESS[SAS]}, the mode for files
@@ -826,7 +815,7 @@ highlighted in the \SAS\ log with the addition of log notes, warnings
 and error messages.
 
 For files with the \stexttt{sas} extension, ESS binds the function
-keys in \stexttt{ESS[SAS]} mode to match the definitions used by \SAS\ 
+keys in \stexttt{ESS[SAS]} mode to match the definitions used by \SAS\
 Display Manager.  These definitions are optionally available in all
 modes.  They are particularly useful when viewing \SAS\ log and
 listing files (with extensions of \stexttt{log} and \stexttt{lst}
@@ -850,8 +839,8 @@ the tab-stop.  This is a \SAS\ Display Manager feature that is not
 typically available in Emacs.
 
 The \SAS\ batch process runs on the computer where the \SAS\ program
-resides.  This is important because any \SAS\ permanent datasets 
-referenced in a \SAS\ program only exist on the computer running \SAS.  
+resides.  This is important because any \SAS\ permanent datasets
+referenced in a \SAS\ program only exist on the computer running \SAS.
 If the \SAS\ program resides on a remote computer, then the
 log and listing are also accessed remotely.  The net result is that
 running \SAS\ batch on remote computers is nearly transparent to the
@@ -903,11 +892,11 @@ ESS user.
 %You need to ignore the beginning and end of the expanded buffer name
 %that are the ange-ftp/EFS/tramp stubs which tell Emacs what the remote
 %username and hostname are.  I find the batch usage of ESS-elsewhere
-%entirely consistent with the interactive behavior.  OTOH, I don't find 
-%the terminology particularly illuminating.  I think ESS-remote or 
-%ESS-net would be more meaningful. 
+%entirely consistent with the interactive behavior.  OTOH, I don't find
+%the terminology particularly illuminating.  I think ESS-remote or
+%ESS-net would be more meaningful.
 %\end{Comment}
- 
+
 \paragraph{Batch BUGS.}
 BUGS software performs Markov Chain Monte Carlo integration.  There is
 an interactive capability, but it is not often used since the analyses
@@ -924,7 +913,7 @@ parameters.  Finally, key sequences are defined to create a command
 file and submit a BUGS batch process.
 
 \paragraph{Batch S family.}
-ESS provides 2 facilities for batch processing of S family language files.  
+ESS provides 2 facilities for batch processing of S family language files.
 The first is to execute the contents of a file using buffer-evaluation.  This
 differs from interactive processing only by the number of commands
 being evaluated; errors can be found by examining the resulting
@@ -943,11 +932,11 @@ first taste of the power of Emacs with \Fortran\ mode which was
 introduced in 1986.  As statisticians' preferences changed from
 generalist compiled languages such as \Fortran\ to specialist
 statistical analysis packages like S and \SAS, Emacs modes soon
-followed.  
+followed.
 
 The ESS environment is built on the open-source projects of
 many contributors, dating back over 10 years.
-Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and \Splus\ 
+Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and \Splus\
 files in GNU Emacs.  Frank Ritter and Mike Meyer added features,
 creating version 2.  Meyer and David Smith made further contributions,
 creating version 3.  For version 4, David Smith provided significant
@@ -961,7 +950,7 @@ distributed in 1994.
 In 1994, A.J. Rossini extended S-mode to support XEmacs.  Together
 with extensions written by Martin M{\"a}chler, this became version
 4.7 and supported S, \Splus, and R.
-In 1995, Rossini extended SAS-mode to work with XEmacs. 
+In 1995, Rossini extended SAS-mode to work with XEmacs.
 
 In 1997, Rossini merged S-mode and SAS-mode into a single Emacs
 package for statistical programming; the product of this marriage was
@@ -990,9 +979,9 @@ This history is summarized in Table \ref{tab:timeline}.
   {\scriptsize
   \begin{tabular}{c ll c ll}
 \hline
-    Year  \\ 
+    Year  \\
 \hline
-         & \multicolumn{2}{c}{S-mode}       && \multicolumn{2}{c}{SAS-mode} \\ 
+         & \multicolumn{2}{c}{S-mode}       && \multicolumn{2}{c}{SAS-mode} \\
 \cline{2-3} \cline{5-6}
     1989 & v.1 & (GNU Emacs, Unix, S/S+)        &&  \\
     1990 &     &                            &&     & (GNU Emacs, Unix, SAS editing) \\
@@ -1003,7 +992,7 @@ This history is summarized in Table \ref{tab:timeline}.
     \cline{2-6}\\[-3.5ex]
     \cline{2-6}
          & \multicolumn{5}{c}{Emacs Speaks Statistics (ESS)} \\
-    \cline{2-6} 
+    \cline{2-6}
          &\multicolumn{2}{c}{Emacs, Operating Systems} &&\multicolumn{2}{c}{Additional Functionality}\\
 \cline{2-3} \cline{5-6}
     1997 & v.5.0 & (GNU Emacs/XEmacs, Unix)         &&&  Stata, XLispStat, SAS interactive \\
@@ -1099,7 +1088,7 @@ statistical languages and data analysis packages.
 
 \clearpage
 
-\appendix 
+\appendix
 \section{Appendix: ESS Resources on the Internet}
 \addcontentsline {toc}{section}{\numberline {}ESS Resources on the Internet}
 \label{sec:access}
@@ -1116,7 +1105,7 @@ anonymous CVS.  First type:
 
 \stexttt{cvs -d
   :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login}
-  
+
 You will be prompted for a password which is ``\stexttt{anoncvs}''.
 Then type:
 
@@ -1124,7 +1113,7 @@ Then type:
   :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co
   ess}
 
-\paragraph{Additional documentation.} 
+\paragraph{Additional documentation.}
 
 An expanded version of the present paper is in \citep{RMHHS:2001}.  A
 general introduction and usage instructions can be found in
@@ -1144,25 +1133,17 @@ figures.
 
 \setcounter{figure}{0}
 \begin{figure}[tbp]
-  \centering
-  \ifdraft
-     \emptyfig
-  \else
-     \includegraphics[angle=270,width=\textwidth]{ediff-sas-bw}
-  \fi
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas-bw}}
   \caption{Ediff of two versions of a file.}
 %  \label{f.ediff}
 \end{figure}
 
 
 \begin{figure}[tbp]%h
-  \centering
-\ifdraft
-  \emptyfig
-\else
-  \includegraphics[angle=270,width=\textwidth]{font-cor-s-bw}
-  \includegraphics[angle=270,width=\textwidth]{font-incor-s-bw}
-\fi
+  \ESSfig{%
+    \includegraphics[angle=270,width=\textwidth]{font-cor-s-bw}
+    \includegraphics[angle=270,width=\textwidth]{font-incor-s-bw}
+  }
   \caption{We illustrate here with fonts and colors appropriate for a
     black and white display.   On a color terminal we
     would use a selection of colors.}
@@ -1170,12 +1151,7 @@ figures.
 \end{figure}
 
 \begin{figure}[tbp]
-  \centering
-  \ifdraft
-     \emptyfig
-  \else
-     \includegraphics[angle=270,width=\textwidth]{hilock-sas-bw}
-  \fi
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{hilock-sas-bw}}
   \caption{Enforce coding standards.  The standard here is
     that all \stexttt{PROC} statements must use the
     \stexttt{DATA=datasetname} option.  Lines that satisfy the
@@ -1186,12 +1162,7 @@ figures.
 \end{figure}
 
 \begin{figure}[tb]
-  \centering
-  \ifdraft
-     \emptyfig
-  \else
-     \includegraphics[angle=270,width=\textwidth]{ess-demo-bw}
-  \fi
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ess-demo-bw}}
   \caption{Line-by-line execution of a command file. The cursor is
     placed on a line in the \stexttt{ESS[S]} buffer and then with a single
     key sequence
