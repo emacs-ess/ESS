@@ -1,5 +1,15 @@
 Changes/New Features in 5.2.3:
 @itemize @bullet
+@item ESS[SAS] -- When you are working with EBCDIC files on an ASCII
+platform, .log NOTEs may display as gibberish since the EBCDIC
+characters are not converted to ASCII prior to their display.  So,
+the function ess-ebcdic-to-ascii-search-and-replace is provided for
+convenience and is bound to C-F11.  This function requires the dd
+command so Windows users will need to have Cygwin or something like it.
+@end itemize
+
+Changes/New Features in 5.2.3:
+@itemize @bullet
 @item ESS: When new inferior ESS processes are created, by default they
 will replace the current buffer (this restores behavior from pre
 5.2.0). If you wish new ESS processes to start in another window of the
