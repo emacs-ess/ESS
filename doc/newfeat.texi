@@ -22,6 +22,8 @@ C-c C-b for submit buffer, C-c C-x for goto .log; C-c C-y for goto .lst
 pressing underscore twice inserts a literal underscore;
 ess-dump-filename-template-proto (new name!) now can be
 customized successfully (for S language dialects);
+Support for Imenu has been improved; set ess-imenu-use-S to non-nil to
+get an "Imenu-S" item on your menubar;
 ess-help: Now using nice underlines (instead of `nuke-* ^H_')
 @item ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
 numbers from any Emacs buffer into an existing *R* process;
