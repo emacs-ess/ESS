@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/20 20:09:56 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: essl-sas.el,v 1.13 1997/10/20 20:09:56 rossini Exp $
+;; Modified: $Date: 1997/10/21 14:00:24 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: essl-sas.el,v 1.14 1997/10/21 14:00:24 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -31,20 +31,6 @@
 ;;; This is based upon Version 1.4 of SAS mode:
 
 
-
-
-
-
-
-;;; autoloads originally in ess-site.  
-
-(autoload 'SAS-transcript-mode
-  "ess-trns" "ESS source eval mode" t)
-
-(fset 'sas-mode 'SAS-mode)
-
-
-
 ;;;    sas-mode:  indent, run etc, SAS programs.
 ;;;    Copyright (C) 1994 Tom Cook
 ;;;  Author:   Tom Cook
@@ -60,6 +46,24 @@
 ;;; Last change: 2/1/95
 
 (require 'ess-mode)
+
+(autoload 'SAS-transcript-mode
+  "ess-trns" "ESS source eval mode" t)
+
+(defun SAS-log-mode ()
+   "Does the right thing."
+   (ess-transcript-mode SAS-customize-alist))
+
+(defun SAS-listing-mode()
+  "fundamental mode with read-only."
+  (fundamental-mode)
+  (toggle-read-only t)) ;; to protect the buffer.
+
+(fset 'sas-log-mode        'SAS-log-mode)
+(fset 'SAS-transcript-mode 'SAS-log-mode)
+(fset 'sas-transcript-mode 'SAS-log-mode)
+(fset 'sas-mode 'SAS-mode)
+(fset 'sas-listing-mode    'SAS-listing-mode)
 
 (defvar sas-indent-width 4
   "*Amount to indent sas statements")
@@ -158,6 +162,7 @@ popup window when the SAS job is finished.")
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . SAS-syntax-table)
+    (font-lock-keywords-case-fold-search . t)
     (font-lock-defaults           . '(SAS-mode-font-lock-keywords)))
   "General options for editing SAS source files.")
 
@@ -584,13 +589,11 @@ is automatically sets to t."
                         (if (not silent)
                             (message "File has changed on disk.  Buffer automatically updated."))))))
     (setq sas-file-name sfile))
-  (if (string-equal suff "sas")
-      (if (not (string-equal major-mode "sas-mode"))
-          ;;(sas-mode)
-	  )
-    (if (not (string-equal major-mode "sasl-mode"))
-	;;(sasl-mode)
-	))
+  ;;(if (string-equal suff "sas")
+  ;; (if (not (string-equal major-mode "sas-mode")) (sas-mode))
+  (if (not (string-equal major-mode "sasl-mode"))
+      ;;(sasl-mode)
+      )
   (current-buffer))
 
 (defun switch-to-sas-process-buffer ()
