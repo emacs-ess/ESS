@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/09/09 13:16:03 $
-;; Version: $Revision: 1.26 $
-;; RCS: $Id: ess-vars.el,v 1.26 1997/09/09 13:16:03 rossini Exp $
+;; Modified: $Date: 1997/10/02 04:46:30 $
+;; Version: $Revision: 1.27 $
+;; RCS: $Id: ess-vars.el,v 1.27 1997/10/02 04:46:30 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -127,7 +127,7 @@ as objects in that directory (when t). This is not true for DOS and
 other OS's with limited filename lengths.  Even if this is set
 incorrectly, the right things will probably still happen, however.")
 
-(defvar ess-keep-dump-files 'check
+(defvar ess-keep-dump-files 'ask
   "*Variable controlling whether to delete dump files after a successful load.
 If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
 to delete, except for files created with ess-dump-object-into-edit-buffer.
@@ -354,7 +354,10 @@ Called after inferior-ess-mode is entered and variables have been initialised.")
    "\\(\\sw\\|\\s_\\)+\\(<-\\)?" ; symbol (replacement?)
    "\\s\"" ; quote
    "\\)\\|\\(" ; OR
-   "\\<\\(\\sw\\|\\s_\\)+" ; symbol
+;;   "\\<\\(\\sw\\|\\s_\\)+" ; symbol
+;;   "[0-9a-zA-Z0-9$.]+" ; symbol
+   "\\(^\\|[ ]\\)" ; beginning of name
+   "\\(\\sw\\|\\s_\\)+" ; symbol
    "\\)\\)" ; END EITHER OR
    "\\s-*\\(<-\\|_\\|=\\)" ; whitespace, assign, whitespace/nl
    "\\(\\(\\s-\\|\n\\)*\\s<.*\\s>\\)*" ; whitespace, comment
