@@ -1,6 +1,6 @@
 -*- view -*-
 
-($Revision: 1.28 $)
+($Revision: 1.29 $)
 
 Emacs Speaks Statistics (ESS), version 5.0
 ------------------------------------------
@@ -192,7 +192,8 @@ The HTML version of the documentation can be found at:
   This will install the info files (and the lisp files, if they
   are to go in another directory).  Don't forget to edit the file
   `dir' in the info directory specified by INFODIR in the Makefile.
-
+  See the sample `dir' file for an example of the line to add.
+	
   If you are using XEmacs, you might do:
 
 	make EMACS=xemacs
