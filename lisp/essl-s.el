@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/11/24 15:45:20 $
-;; Version: $Revision: 4.51 $
-;; RCS: $Id: essl-s.el,v 4.51 1997/11/24 15:45:20 rossini Exp $
+;; Modified: $Date: 1997/11/24 15:50:51 $
+;; Version: $Revision: 4.52 $
+;; RCS: $Id: essl-s.el,v 4.52 1997/11/24 15:50:51 rossini Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -252,7 +252,6 @@ Returns nil if line starts inside a string, t if in a comment."
   '((paragraph-start              . (concat "^$\\|" page-delimiter))
     (paragraph-separate           . (concat "^$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
-    (indent-line-function         . 'ess-indent-line)
     (require-final-newline        . t)
     (comment-start                . "#")
     (comment-start-skip           . "#+ *")
@@ -261,6 +260,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (ess-comment-indent           . 'S-comment-indent)
     (ess-indent-line              . 'S-indent-line)
     (ess-calculate-indent         . 'S-calculate-indent)
+    (indent-line-function         . 'S-indent-line)
     (parse-sexp-ignore-comments   . t)
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
