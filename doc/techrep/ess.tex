@@ -504,7 +504,7 @@ useful 1-letter shortcuts for navigation and more, such as
   packages).
 \end{description}
 
-\subsection{Philosophies for using ESS}
+\subsection{Philosophies for combining S with ESS}
 \label{sec:S:philosophy}
 
 There are two primary philosophies for using ESS.  The first, which is
@@ -513,7 +513,7 @@ configured.  In this approach, the source code is real.  The objects
 are realizations of the source code.  Source for \textbf{every} user
 modified object is placed in a particular directory or directories,
 for later editing and retrieval.  This implicitly assumes that one
-might want to use written code and analyses on possibly differerent
+might want to use written code and analyses on possibly different
 versions of the S language and allows for better portability as well
 as external version control for source code.
 
@@ -536,11 +536,11 @@ for each object, and saves a small amount of disk space.
 \section{Using ESS with SAS}
 \label{sec:SAS}
 
-The SAS module in ESS (ESS[SAS]) is currently undergoing development,
-but it is still functional and pretty stable.  ESS (originally S-mode)
-was initially designed for use with S and S-PLUS(tm).  ESS has been
-extended to support other languages, including SAS(tm).  The editing
-of SAS files is based on the stable, old SAS mode by Cook
+The SAS module in ESS (ESS[SAS]) is currently undergoing development
+but is still functional and pretty stable.  While ESS (originally
+S-mode) was initially designed for use with S and S-PLUS(tm), it has
+been extended to support other languages, including SAS(tm).  The
+editing of SAS files is based on the stable, old SAS mode by Cook
 (ftp://ftp.biostat.wisc.edu/pub/cook/sas-mode/sas.tar.gz).  Those
 editing features and new advanced features are part of ESS[SAS].  The
 user interface with ESS[SAS] is similar in behavior to the interface
@@ -573,71 +573,106 @@ start an inferior SAS process with M-x SAS (described below).
 At this writing (ESS release 5.2), the indenting and syntactic
 highlighting are usually correct.
 
-\subsection{SAS Batch processing}
-\label{sec:SAS:batch}
+
+\subsubsection{SAS and TAB}
+\label{sec:SAS:tab}
+
+There are two options for how ESS will interpret the [TAB] key with
+respect to SAS code.  The TAB key is bound by default to
+sas-indent-line.  This function is used to syntactically indent SAS
+code so PROC and RUN are in the left margin, other statements are
+indented 4 spaces from the margin, continuation lines are indented 4
+spaces in from the beginning column of that statement.  This is the
+type of functionality that Emacs provides in most programming language
+modes.  This functionality is equivalent to uncommenting the following
+line in ess-site.el:
+\begin{verbatim}
+;;; (setq ess-sas-edit-keys-toggle 0)
+\end{verbatim}
+
+ESS provides an alternate behavior for the TAB key that makes it
+behave as it does on non-emacs terminals, i.e. move the cursor to the
+next tab stop.  The alternate behavior also provides a backwards TAB
+key: C-TAB.  This functionality is obtained by uncommenting the
+following line in ess-site.el:
+\begin{verbatim}
+;;; (setq ess-sas-edit-keys-toggle 1)
+\end{verbatim}
+Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
+and the tab stops are set by default at multiples of 4.
+
+
+\subsection{SAS process interaction}
+\label{sec:SAS:proc}
+
+
+\subsubsection{SAS Batch processing}
+\label{sec:SAS:proc:batch}
 
 The description of the setup for function keys for batch processing of
 SAS files is unavoidably more complex than we wish it were.  The actual
-use of the function keys is simple.  There are five distinct options:
+use of the function keys is simple.  There are five distinct options.
 
-1. (default) Function keys in ESS[SAS] modes do whatever they normally
-do in other emacs modes.  Many users will have defined some of the
-keys [f2]-f[8] in their \verb+.emacs+ or \verb|_emacs| file, or will
-have installation-wide definitions in their site-start.el file.  By
-default, ESS does not override those definitions.  This default is
-intended to make ESS[SAS] mode behave similarly to other emacs modes.
+The first option is to have function keys in ESS[SAS] modes do
+whatever they normally do in other emacs modes.  Many users will have
+defined some of the keys [f2]-f[8] in their \verb+.emacs+ or
+\verb|_emacs| file, or will have installation-wide definitions in
+their site-start.el file.  By default, ESS does not override those
+definitions.  This default is intended to make ESS[SAS] mode behave
+similarly to other emacs modes.
 
-2,3,4,5.
 Users who are primarily familiar with SAS, and who are learning emacs
 as a way to approach SAS, will likely want to duplicate the function
 key capabilities that SAS Institute provides with its Display Manager.
-There are still options.  SAS provides different function key
-definitions with its PC and Unix products; ESS can use either.  The
-ESS[SAS] function key definitions can be active in all buffers
-(global) or limited (local) only to buffers that have SAS-related file
-extensions: .sas, .log, .lst, and "Type-1" which defaults to .txt.
-The distinction between local and global appears subtle.  If you want
-the ESS[SAS] definitions to work when you are in *shell* or when
-editing files other than the file extensions that SAS recognizes, you
-will most likely want to use the global definitions.
-If you want your function keys to understand SAS batch commands when you
-are editing SAS files, and to behave normally when editing other files,
-then you will choose the local definitions.
+There are still 4 distinct options for how this can be done.  SAS
+provides different function key definitions with its PC and Unix
+products; ESS can use either.  The ESS[SAS] function key definitions
+can be active in all buffers (global) or limited (local) only to
+buffers that have SAS-related file extensions: .sas, .log, .lst, and
+"Type-1" which defaults to .txt.  The distinction between local and
+global appears subtle.  If you want the ESS[SAS] definitions to work
+when you are in *shell* or when editing files other than the file
+extensions that SAS recognizes, you will most likely want to use the
+global definitions.  If you want your function keys to understand SAS
+batch commands when you are editing SAS files, and to behave normally
+when editing other files, then you will choose the local definitions.
 
-The option can be chosen by the person installing ESS for a site or by
-an individual.
+The option can be chosen both site-wide and by individual users.
 
-The site manager can uncomment only one of the following lines.
-ESS[SAS] Function keys are available in ESS[SAS] and related modes if you
-uncomment either of the following lines in your ess-site.el:
-;;2; (setq ess-sas-local-unix-keys t)
-;;3; (setq ess-sas-local-pc-keys t)
-ESS[SAS] Function keys are available in all Emacs modes if you
-uncomment either of the following lines in your ess-site.el:
-\begin{verbatim}
-;;4; (setq ess-sas-global-unix-keys t)
-;;5; (setq ess-sas-global-pc-keys t)
-\end{verbatim}
-The names -unix- and -pc- have nothing to do with the operating system
-that you are running.  Rather they mimic the definitions that the SAS
-Display Manager uses by default on those platforms.
+%The site manager can uncomment only one of the following lines.
+%ESS[SAS] Function keys are available in ESS[SAS] and related modes if you
+%uncomment either of the following lines in your ess-site.el:
+%\begin{verbatim}
+%;;2; (setq ess-sas-local-unix-keys t)
+%;;3; (setq ess-sas-local-pc-keys t)
+%\end{verbatim}
+%ESS[SAS] Function keys are available in all Emacs modes if you
+%uncomment either of the following lines in your ess-site.el:
+%\begin{verbatim}
+%;;4; (setq ess-sas-global-unix-keys t)
+%;;5; (setq ess-sas-global-pc-keys t)
+%\end{verbatim}
+%The names -unix- and -pc- have nothing to do with the operating system
+%that you are running.  Rather they mimic the definitions that the SAS
+%Display Manager uses by default on those platforms.
 
-The option can be selected by an individual by adding a line to the
-\verb+.emacs+ (or \verb+_emacs+) file, immediately following the
-\begin{verbatim}
- (load "ess-site")
-\end{verbatim}
-line.  If your site manager has chosen an option 2,3,4,5 you don't
-want, you must turn it off before selecting a different option.  To
-turn off an option, add the appropriate line (uncommented) to your
-\verb+.emacs+ (\verb+_emacs+) file.
-\begin{verbatim}
-;;2; (setq ess-sas-local-unix-keys nil)
-;;3; (setq ess-sas-local-pc-keys nil)
-;;4; (setq ess-sas-global-unix-keys nil)
-;;5; (setq ess-sas-global-pc-keys nil)
-\end{verbatim}
-Finally we get to what the function keys do.
+%The option can be selected by an individual by adding a line to the
+%\verb+.emacs+ (or \verb+_emacs+) file, immediately following the
+%\begin{verbatim}
+% (load "ess-site")
+%\end{verbatim}
+%line.  If your site manager has chosen an option 2,3,4,5 you don't
+%want, you must turn it off before selecting a different option.  To
+%turn off an option, add the appropriate line (uncommented) to your
+%\verb+.emacs+ (\verb+_emacs+) file.
+%\begin{verbatim}
+%;;2; (setq ess-sas-local-unix-keys nil)
+%;;3; (setq ess-sas-local-pc-keys nil)
+%;;4; (setq ess-sas-global-unix-keys nil)
+%;;5; (setq ess-sas-global-pc-keys nil)
+%\end{verbatim}
+
+The function keys act as follows:
 \begin{verbatim}
 Unix PC
 F2   F2 Refresh:revert the buffer with the file if the file on disk is newer
@@ -666,34 +701,7 @@ the default, by specifying a different extension in your .emacs file:
 (setq ess-sas-suffix-1 '.txt')
 \end{verbatim}
 
-\subsection{SAS and TAB}
-\label{sec:SAS:tab}
-
-There are two options for how ESS will interpret the [TAB] key with
-respect to SAS code.  The TAB key is bound by default to
-sas-indent-line.  This function is used to syntactically indent SAS
-code so PROC and RUN are in the left margin, other statements are
-indented 4 spaces from the margin, continuation lines are indented 4
-spaces in from the beginning column of that statement.  This is the
-type of functionality that Emacs provides in most programming language
-modes.  This functionality is equivalent to uncommenting the following
-line in ess-site.el:
-\begin{verbatim}
-;;; (setq ess-sas-edit-keys-toggle 0)
-\end{verbatim}
-
-ESS provides an alternate behavior for the TAB key that makes it
-behave as it does on non-emacs terminals, i.e. move the cursor to the
-next tab stop.  The alternate behavior also provides a backwards TAB
-key: C-TAB.  This functionality is obtained by uncommenting the
-following line in ess-site.el:
-\begin{verbatim}
-;;; (setq ess-sas-edit-keys-toggle 1)
-\end{verbatim}
-Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
-and the tab stops are set by default at multiples of 4.
-
-\subsection{Inferior SAS processes}
+\subsubsection{Inferior SAS processes}
 \label{sec:SAS:proc}
 
 iESS (inferior ESS) is the mode for interfacing with active
@@ -705,10 +713,10 @@ We plan to add the ability to request help from a process for
 variables and functions, and to have the results sent into a separate
 buffer, as well as the completion of object names and file names.
 
-\subsection{SAS Batch processing}
-\label{sec:SAS:batch}
+\subsubsection{SAS Interface}
+\label{sec:SAS:interface}
 
-The default command used by the Submmit funciton key (F3 or F8) to
+The default command used by the Submit function key (F3 or F8) to
 submit a batch SAS job is simply "sas".  If necessary, you can
 over-ride this in your \verb+.emacs+ file something like one of the
 following:
@@ -737,8 +745,8 @@ file by (the default of 5 seconds is shown):
 \end{verbatim}
 
 
-Using Transcripts
-=================
+\subsection{Using Transcripts}
+\label{sec:SAS:trans}
 
 Not yet available.  The intent is that a marked section of a log file
 from a previous SAS run can be resubmitted to SAS.  The user would
