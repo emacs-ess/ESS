@@ -1,3 +1,11 @@
+2004-12-24  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-emcs.el (ess-replace-regexp-in-string): New function,
+	reapplied from Camm's patch.  This time the function is now used
+	in all relevant customization-alists.  This function is needed
+	since other elisp packages may also define
+	replace-regexp-in-string.
+
 2004-12-20  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-cust.el (ess-ms-slow): New variable.
