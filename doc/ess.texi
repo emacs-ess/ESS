@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.37 2002/07/31 20:48:29 rsparapa Exp $
+@comment $Id: ess.texi,v 5.38 2002/07/31 21:18:32 rsparapa Exp $
 
 @synindex pg vr
 
@@ -40,7 +40,7 @@ Department of Mathematics and Statistics, Lancaster University, UK.
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics 
-@subtitle (Documentation $Revision: 5.37 $ $Date: 2002/07/31 20:48:29 $)
+@subtitle (Documentation $Revision: 5.38 $ $Date: 2002/07/31 21:18:32 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.A. Sparapani.
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @c @author                and David Smith)
@@ -95,7 +95,7 @@ permission notice identical to this one.
 ESS version 
 @include ../VERSION
 
-        (Documentation $Revision: 5.37 $ $Date: 2002/07/31 20:48:29 $).
+        (Documentation $Revision: 5.38 $ $Date: 2002/07/31 21:18:32 $).
 
 @display
 by  A.J. Rossini, 
@@ -139,116 +139,118 @@ statements written in these statistical analysis languages.
 * Command Index::               
 * Concept Index::               
 * Variable and command index::  
-
-@detailmenu
- --- The Detailed Node Listing ---
-
-Introduction to @b{ESS}
-
-* Features::                    Why should I use ESS?
-* New features::                
-* Credits::                     Authors of and contributors to ESS
-* Latest version::              Getting the latest version of ESS
-* Manual::                      How to read this manual
-
-Installing ESS on your system
-
-* System dependent::            Other variables you may need to change
-
-Starting the @b{ESS} process
-
-* Multiple ESS processes::      
-* ESS processes on Remote Computers::
-* Customizing startup::         Changing the startup actions
-
-Help for the S family
-
-* ESS(S)--Editing files::
-* iESS(S)--Inferior ESS processes::
-* Handling and Reusing Transcripts::
-* ESS-help--assistance with viewing help::
-* Philosophies for using ESS(S)::
-* Scenarios for use (possibilities--based on actual usage)::
-* Customization Examples and Solutions to Problems::
-
-Help for SAS
-
-* ESS(SAS)--Design philosophy::
-* ESS(SAS)--Editing files::
-* iESS(SAS)--Interactive SAS processes::
-* ESS(SAS)--Batch SAS processes::
-* ESS(SAS)--Function keys for batch processing::
-* ESS(SAS)--TAB key::
-* ESS(SAS)--Usage scenarios::
-* iESS(SAS)--Common problems::
-* ESS(SAS)--MS Windows::
-
-Interacting with the @b{ESS} process
-
-* Command-line editing::        Entering commands and fixing mistakes
-* Completion::                  Completion of object names
-* Completion details::          Advanced completion concepts
-* Transcript::                  Manipulating the transcript
-* Command History::             Command History
-* History expansion::           References to historical commands
-* Hot keys::                    Hot keys for common commands
-* Statistical Process running in ESS?::  
-* Other::                       Other commands provided by inferior-ESS
-
-Manipulating the transcript
-
-* Last command::                Manipulating the output from the last command
-* Process buffer motion::       Viewing more historic commands
-* Transcript resubmit::         Re-submitting commands from the transcript
-* Saving transcripts::          Keeping a record of your @b{S} session
-
-Editing @b{S} functions
-
-* Edit buffer::                 Edit objects in a specialized buffer
-* Loading::                     Loading source files into the @b{ESS} process
-* Error Checking::              Detecting errors in source files
-* Evaluating code::             Sending code to the @b{ESS} process
-* Indenting::                   Indenting and formatting @b{S} code
-* Other edit buffer commands::  Commands for motion, completion and more
-* Source Files::                Maintaining @b{S} source files
-* Source Directories::          Names and locations of dump files
-
-Manipulating saved transcript files
-
-* Resubmit::                    Resubmitting commands from the transcript file
-* Clean::                       Cleaning transcript files
-
-Other features of ESS
-
-* Highlighting::                Syntactic highlighting of buffers
-* Graphics::                    Using graphics with ESS
-* Object Completion::           
-
-Using graphics with ESS
-
-* printer::                     The printer() graphics driver
-* X11::                         The X11() (and other X-windows based) driver
-
-Bugs and Bug Reporting, Mailing Lists
-
-* Bugs::                        
-* Reporting Bugs::              
-* Mailing Lists::               
-
-Customizing ESS
-
-* Variables::                   Variables for customization
-* Hooks::                       Customizing ESS with hooks
-* Keybindings::                 Changing the default ESS keybindings
-
-Variables for customization
-
-* Variables for starting ESS::  Variables for starting ESS
-* Dump file variables::         Variables for dump files
-* Indentation variables::       Variables controlling indentation
-* Variables controlling interaction::  Variables controlling interaction
-					with the @b{ESS} process
-@end detailmenu
+@c 
+@c @detailmenu
+@c  --- The Detailed Node Listing ---
+@c 
+@c Introduction to @b{ESS}
+@c 
+@c * Features::                    Why should I use ESS?
+@c * New features::                
+@c * Credits::                     Authors of and contributors to ESS
+@c * Latest version::              Getting the latest version of ESS
+@c * Manual::                      How to read this manual
+@c 
+@c Installing ESS on your system
+@c * Unix installation::              Installing ESS on your Unix system
+@c * Microsoft Windows installation:: Installing ESS on your MS Windows system
+@c * Requirements::         emacs, Operating Systems and Statistical Packages 
+@c * System dependent::               Other variables you may need to change
+@c 
+@c Starting the @b{ESS} process
+@c 
+@c * Multiple ESS processes::      
+@c * ESS processes on Remote Computers::
+@c * Customizing startup::         Changing the startup actions
+@c 
+@c Help for the S family
+@c 
+@c * ESS(S)--Editing files::
+@c * iESS(S)--Inferior ESS processes::
+@c * Handling and Reusing Transcripts::
+@c * ESS-help--assistance with viewing help::
+@c * Philosophies for using ESS(S)::
+@c * Scenarios for use (possibilities--based on actual usage)::
+@c * Customization Examples and Solutions to Problems::
+@c 
+@c Help for SAS
+@c 
+@c * ESS(SAS)--Design philosophy::
+@c * ESS(SAS)--Editing files::
+@c * iESS(SAS)--Interactive SAS processes::
+@c * ESS(SAS)--Batch SAS processes::
+@c * ESS(SAS)--Function keys for batch processing::
+@c * ESS(SAS)--TAB key::
+@c * ESS(SAS)--Usage scenarios::
+@c * iESS(SAS)--Common problems::
+@c * ESS(SAS)--MS Windows::
+@c 
+@c Interacting with the @b{ESS} process
+@c 
+@c * Command-line editing::        Entering commands and fixing mistakes
+@c * Completion::                  Completion of object names
+@c * Completion details::          Advanced completion concepts
+@c * Transcript::                  Manipulating the transcript
+@c * Command History::             Command History
+@c * History expansion::           References to historical commands
+@c * Hot keys::                    Hot keys for common commands
+@c * Statistical Process running in ESS?::  
+@c * Other::                       Other commands provided by inferior-ESS
+@c 
+@c Manipulating the transcript
+@c 
+@c * Last command::                Manipulating the output from the last command
+@c * Process buffer motion::       Viewing more historic commands
+@c * Transcript resubmit::         Re-submitting commands from the transcript
+@c * Saving transcripts::          Keeping a record of your @b{S} session
+@c 
+@c Editing @b{S} functions
+@c 
+@c * Edit buffer::                 Edit objects in a specialized buffer
+@c * Loading::                     Loading source files into the @b{ESS} process
+@c * Error Checking::              Detecting errors in source files
+@c * Evaluating code::             Sending code to the @b{ESS} process
+@c * Indenting::                   Indenting and formatting @b{S} code
+@c * Other edit buffer commands::  Commands for motion, completion and more
+@c * Source Files::                Maintaining @b{S} source files
+@c * Source Directories::          Names and locations of dump files
+@c 
+@c Manipulating saved transcript files
+@c 
+@c * Resubmit::                    Resubmitting commands from the transcript file
+@c * Clean::                       Cleaning transcript files
+@c 
+@c Other features of ESS
+@c 
+@c * Highlighting::                Syntactic highlighting of buffers
+@c * Graphics::                    Using graphics with ESS
+@c * Object Completion::           
+@c 
+@c Using graphics with ESS
+@c 
+@c * printer::                     The printer() graphics driver
+@c * X11::                         The X11() (and other X-windows based) driver
+@c 
+@c Bugs and Bug Reporting, Mailing Lists
+@c 
+@c * Bugs::                        
+@c * Reporting Bugs::              
+@c * Mailing Lists::               
+@c 
+@c Customizing ESS
+@c 
+@c * Variables::                   Variables for customization
+@c * Hooks::                       Customizing ESS with hooks
+@c * Keybindings::                 Changing the default ESS keybindings
+@c 
+@c Variables for customization
+@c 
+@c * Variables for starting ESS::  Variables for starting ESS
+@c * Dump file variables::         Variables for dump files
+@c * Indentation variables::       Variables controlling indentation
+@c * Variables controlling interaction::  Variables controlling interaction
+@c 					with the @b{ESS} process
+@c @end detailmenu
 @end menu
 
 @comment node-name,  next,  previous,  up
