@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/22 18:05:52 $
-;; Version: $Revision: 1.70 $
-;; RCS: $Id: ess-inf.el,v 1.70 1997/10/22 18:05:52 rossini Exp $
+;; Modified: $Date: 1997/10/22 18:12:45 $
+;; Version: $Revision: 1.71 $
+;; RCS: $Id: ess-inf.el,v 1.71 1997/10/22 18:12:45 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -117,8 +117,8 @@ accompany the call for inferior-ess-program.
   (interactive "P")
   ;; set up for current language (need here, to get ess-language,
   ;; etc).
-  (let (temp-ess-dialect nil)
-    
+  (let ((temp-ess-dialect (cdr (rassoc ess-dialect
+				       ess-customize-alist))))
     (save-excursion 
       (set-buffer ess-dribble-buffer)
       ;; next line isn't necessary now???

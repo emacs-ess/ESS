@@ -19,6 +19,10 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
+
+;;; ESS RCS: $Id: essddr.el,v 1.3 1997/10/22 18:17:44 rossini Exp $
+;;;
+
 ;;; Code:
 
 (defvar ess-doc-version "0.1.5"
