@@ -5,7 +5,7 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: 25 Mar 2001
-;; Modified: $Date: 2001/05/23 22:10:19 $
+;; Modified: $Date: 2002/01/03 09:20:38 $
 ;; Version: $Revision: 
 ;; RCS: $Id: ess-mous.el
 
@@ -39,48 +39,20 @@
 
 ;;*;; Requires
 (require 'mouseme)
+;;(if (or (equal window-system 'w32)
+;;	(equal window-system 'win32)
+;;	(equal window-system 'mswindows))
+;;    (require 'essiw32b))
 
-
-
-
-;;; Instructions:
-
-;;From: Rich Heiberger <rmh@surfer.sbm.temple.edu>
-;;Subject: Re: ess-send and ess-send2... which is right?
-;;To: Rich Heiberger <rmh@surfer.sbm.temple.edu>, rossini@u.washington.edu
-;;Date: Wed, 23 May 2001 17:30:42 -0400 (EDT)
-
-;;as i recall, both are preliminary and the real version is the one that'
-;;is in the cvs tree as ess-mous.el.  I checked ess-mous a few days ago and
-;;it works as long as you individually and manually execute the lines
-;;(make-variable-buffer-local 'mouse-me-menu-commands)
-;;(setq mouse-me-menu-commands ess-S-mouse-me-menu-commands-alist)
-;;for each ess buffer.  That needs to be turned on permanently and globally
-;;(within all ESS buffers).  And the ess-mous needs to be required in ess-site.
-
-;;get back to me after you try it out.  I can respond in the next few days.
-
-;;rich
-
-(if (not ess-running-xemacs)
-    (defun ess-mouse-me ()
-      "Popup a menu of functions to run on selected string or region."
-      (interactive)
-      (ess-mouse-me-helper
-       #'(lambda ()
-	   (or (x-popup-menu (list '(0 0) 
-				   (get-buffer-window (get-buffer (buffer-name))))
-			     (funcall mouse-me-build-menu-function name))
-	       (error "No command to run")))))
-  (defun ess-mouse-me ()
-      "Popup a menu of functions to run on selected string or region."
-      (interactive)
-      (ess-mouse-me-helper
-       #'(lambda ()
-	   (or (x-popup-menu (list '(0 0) 
-				   (get-buffer-window (get-buffer (buffer-name))))
-			     (funcall mouse-me-build-menu-function name))
-	       (error "No command to run"))))))
+(defun ess-mouse-me ()
+  "Popup a menu of functions to run on selected string or region."
+  (interactive)
+  (ess-mouse-me-helper
+   #'(lambda ()
+       (or (x-popup-menu (list '(0 0) 
+			       (get-buffer-window (get-buffer (buffer-name))))
+			 (funcall mouse-me-build-menu-function name))
+	   (error "No command to run")))))
 
     
   
@@ -133,11 +105,14 @@
            (funcall cmd name)))))
 
 (defcustom ess-S-mouse-me-menu-commands-alist
-  '(("print"       . ess-mouse-me-print)
-    ("summary"     . ess-mouse-me-summary)
-    ("show"        . ess-mouse-me-show)
-    ("help"        . ess-mouse-me-help)
+  '("S-Plus 4 and 6 GUI under Windows"
     ("Edit.data"   . ess-mouse-me-Edit.data)
+    "----"
+    ("print"       . ess-mouse-me-print)
+    ("summary"     . ess-mouse-me-summary)
+    ("plot"        . ess-mouse-me-plot)
+    ("show"        . ess-mouse-me-show)
+    ("help"        . ess-display-help-on-object)
     ("args"        . ess-mouse-me-args)
     "----"
     ("Browser on"  . ess-mouse-me-browser-on)
@@ -158,35 +133,72 @@ the symbol `string' it will be called with one string argument."
   :type '(repeat sexp)
   :group 'mouseme)
 
-(defun ess-mouse-me-eval-expanded (string &optional head tail commands-buffer)
-  "Send the expanded STRING to the inferior-ess
-process after first concating the head and tail."
-  (interactive)
-  (if (not head) (setq head "summary("))
-  (if (not tail) (setq tail ")"))
-  (if (not commands-buffer) (setq commands-buffer
-				  (get-buffer-create "tmp-buffer")))
-  (ess-command (concat head string tail)
-	       commands-buffer))
 
+(defun ess-mouse-me-Edit.data (string)
+  (ess-mouse-me-eval-expanded string "Edit.data(" ")" nil nil nil))
 
 (defun ess-mouse-me-print (string)
-  (ess-mouse-me-eval-expanded string "print(" ")"))
+  (ess-mouse-me-eval-expanded string "" "" nil (ess-ddeclient-p) t))
 (defun ess-mouse-me-summary (string)
-  (ess-mouse-me-eval-expanded string "summary(" ")"))
+  (ess-mouse-me-eval-expanded string "summary(" ")" nil (ess-ddeclient-p) t))
+(defun ess-mouse-me-plot (string)
+  (ess-mouse-me-eval-expanded string "plot(" ")") nil nil nil)
 (defun ess-mouse-me-show (string)
-  (ess-mouse-me-eval-expanded string "show(" ")"))
-(defun ess-mouse-me-help (string)
-  (ess-mouse-me-eval-expanded string "help(" ")"))
-(defun ess-mouse-me-Edit.data (string)
-  (ess-mouse-me-eval-expanded string "Edit.data(" ")"))
+  (ess-mouse-me-eval-expanded string "show(" ")") nil nil nil)
 (defun ess-mouse-me-args (string)
-  (ess-mouse-me-eval-expanded string "args(" ")"))
+  (ess-mouse-me-eval-expanded string "args(" ")" nil (ess-ddeclient-p) t))
 
 (defun ess-mouse-me-browser-on (string)
-  (ess-mouse-me-eval-expanded string "trace(" ", exit=browser)"))
+  (if (equal (substring ess-dialect 0 1) "R")
+       (ess-eval-linewise (concat "debug(" string ")"))
+   (ess-mouse-me-eval-expanded string "trace(" ", exit=browser)") nil nil nil))
+
 (defun ess-mouse-me-browser-off  (string)
-  (ess-mouse-me-eval-expanded string "untrace(" ")"))
+  (if (equal (substring ess-dialect 0 1) "R")
+       (ess-eval-linewise (concat "undebug(" string ")"))
+   (ess-mouse-me-eval-expanded string "untrace(" ")") nil nil nil))
+
+
+
+(defun ess-mouse-me-eval-expanded (string &optional head tail commands-buffer
+					  page value-returned)
+  "Send the expanded STRING to the inferior-ess process using `ess-command'
+after first concating the HEAD and TAIL.  Put answer in COMMANDS-BUFFER if
+specified and not using ddeclient, otherwise in \"tmp-buffer\".  In either
+case the buffer containing the answer is renamed to the value of the
+constructed command.  If PAGE is non-nil and using ddeclient, expand
+the string one more time by embedding it in a \"page()\" command."
+  (interactive)
+  (let* (scommand page-scommand)
+    (if (not head) (setq head "summary("))
+    (if (not tail) (setq tail ")"))
+    (if (not commands-buffer) (setq commands-buffer
+				    (get-buffer-create "tmp-buffer")))
+    (setq scommand (concat head string tail))
+
+    (if (ess-ddeclient-p)
+	(progn
+	  (setq page-scommand (if page
+				  (concat "page(" scommand ")")
+				scommand))
+	  (ess-command page-scommand commands-buffer)
+	  (if (not value-returned)
+	      nil
+	    (sleep-for 2)
+	    (switch-to-buffer (car (buffer-list)))))
+      (switch-to-buffer commands-buffer)
+      (ess-setq-vars-local (eval ess-local-customize-alist) (current-buffer))
+      (ess-command (concat scommand "\n") commands-buffer)
+      (if (not value-returned) (switch-to-buffer (nth 1 (buffer-list)))))
+    (if (not value-returned)
+	nil
+      (S-transcript-mode)
+      (setq ess-local-process-name ess-current-process-name)
+      (rename-buffer scommand))))
+
+;; (setq mode-line-format (concat scommand " from " ess-local-process-name))
+
+
 
 
  ; Provide package
@@ -197,18 +209,27 @@ process after first concating the head and tail."
 
 ;;;;;;;; STARTUP STUFF ;;;;;;;;;;;;
 
-;;; place this in a customize-alist, do it manually in each ESS buffer
-;;; while we are designing this function.
 (make-variable-buffer-local 'mouse-me-menu-commands)
-(setq mouse-me-menu-commands ess-S-mouse-me-menu-commands-alist)
-;;(mouse-me-build-menu "ESS")  ;; this seems not to be needed.
+
+(defun ess-S-mouse-me-menu-commands ()
+  (if (equal ess-language "S")
+      (setq mouse-me-menu-commands ess-S-mouse-me-menu-commands-alist)))
+
+(defun ess-S-mouse-me-ess-transcript-mode ()
+  (define-key ess-transcript-mode-map "\C-cm" 'ess-mouse-me))
 
 
 (if (not ess-running-xemacs)
 	 (global-set-key [S-mouse-2] 'mouse-me)
   (global-set-key [(shift button2)] 'mouse-me))
 
-(define-key ess-mode-map "\C-c\C-w" 'ess-mouse-me)
+(define-key ess-mode-map "\C-cm" 'ess-mouse-me)
+(define-key inferior-ess-mode-map "\C-cm" 'ess-mouse-me)
+
+(add-hook 'ess-mode-hook 'ess-S-mouse-me-menu-commands)
+(add-hook 'ess-transcript-mode-hook 'ess-S-mouse-me-menu-commands)
+(add-hook 'ess-transcript-mode-hook 'ess-S-mouse-me-ess-transcript-mode)
+(add-hook 'inferior-ess-mode-hook 'ess-S-mouse-me-menu-commands)
 
 
  ; Local variables section
