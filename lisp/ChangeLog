@@ -1,3 +1,9 @@
+Tue Dec  9 17:54:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-r.el: removed non-necessary autoload for a non-existant
+ 	function (was intended for start-args, but never was written or
+ 	used).
+
 Tue Dec  9 15:45:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essddr.el: one too many parens.
