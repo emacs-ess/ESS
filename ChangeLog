@@ -1,3 +1,8 @@
+Thu Oct 23 13:17:28 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (ess-eval-line-and-next-line, ess-eval-line,
+	ess-eval-function, ess-eval-buffer): ess-force-buffer-current
+
 Thu Oct 23 09:08:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (install): test lispdir to see if needs install (MM).
@@ -468,6 +473,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.8  1997/10/23 17:18:12  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.7  1997/10/23 13:31:31  rossini
 	* Removing *** empty log message ***
 	* Removing
