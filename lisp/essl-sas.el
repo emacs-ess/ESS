@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/03/05 16:27:10 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: essl-sas.el,v 5.13 2001/03/05 16:27:10 ess Exp $
+;; Modified: $Date: 2001/03/06 17:16:20 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: essl-sas.el,v 5.14 2001/03/06 17:16:20 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -335,13 +335,13 @@ popup window when the SAS job is finished.")
 	 (cons (concat
 		"[ \t(,]"
 		"\\(data\\|out\\|attrib\\|format\\|length\\|\\(sorted\\)?by"
-		"\\|i\\(d\\|f\\|ndex\\)\\|compress\\|drop\\|keep\\|label"
+		"\\|i\\(d\\|f\\|n\\)\\|compress\\|drop\\|keep\\|label"
 		"\\|order\\|\\(first\\)?obs\\|rename\\|where\\|var\\|split\\)"
 		"[ \t]*=")
 						    font-lock-keyword-face)
-	 (cons "\\<in[ \t]*[(=]"
-
+	 (cons "\\<\\(in\\(dex[ \t]*=\\)?\\|when\\)[ \t]*("
 						    font-lock-keyword-face)
+
 	 ;; SAS statements
 
 	 (cons (concat
@@ -351,13 +351,11 @@ popup window when the SAS job is finished.")
 		"\\|go\\([ \t]*to\\|ptions\\)\\|i\\(f\\|n\\(f\\(ile\\|ormat\\)\\|put\\)\\)\\|keep\\|options"
 		"\\|l\\(abel\\|ength\\|i\\(bname\\|nk\\)\\)\\|m\\(erge\\|issing\\|odify\\)\\|note"
 		"\\|o\\(therwise\\|utput\\)\\|put\\|re\\(name\\|tain\\)\\|s\\(e\\(lect\\|t\\)\\|kip\\)"
-		"\\|title\\(10?\\|[2-9]\\)?\\|update\\|w\\(he\\(n\\|re\\)\\|indow\\)"
+		"\\|title\\(10?\\|[2-9]\\)?\\|update\\|w\\(here\\|indow\\)"
 		"\\|c\\(hange\\|lass\\)\\|exc\\(hange\\|lude\\)\\|freq\\|i\\(d\\|ndex\\)"
 		"\\|plot\\|s\\(ave\\|um\\)\\|tables?\\|w\\(eight\\|ith\\)"
 		"\\|m\\(anova\\|odel\\)\\|r\\(andom\\|epeated\\)\\|va\\(lue\\|r\\)\\)"
-		"\\>")
-						    font-lock-keyword-face)
-
+		"\\>")				    font-lock-keyword-face)
 	 (cons "\\<\\(\\(\\(then\\|else\\)[ \t]*\\)?do[ \t]*\\(over\\|until\\|while\\)?\\|else\\)\\>"
 						    font-lock-keyword-face)
 
@@ -371,8 +369,7 @@ popup window when the SAS job is finished.")
 	 (cons (concat
 		"\\(^[0-9]*\\|):\\|[;,]\\)[ \t]*"
 		"\\(axis\\|legend\\|pattern\\|symbol\\)"
-		"\\([1-9][0-9]?\\)?\\>")
-						    font-lock-keyword-face)
+		"\\([1-9][0-9]?\\)?\\>")	    font-lock-keyword-face)
 
 	 ;; SAS functions and SAS macro functions
 	 (cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
@@ -413,8 +410,7 @@ popup window when the SAS job is finished.")
 		"\\|cexist\\|exist\\|f\\(etchobs\\|i\\(leexist\\|nfo\\)\\|put\\|write\\)"
 		"\\|get\\(option\\|var[cn]\\)\\|lib\\(name\\|ref\\)\\|op\\(en\\|t\\(getn\\|setn\\)\\)"
 		"\\|pathname\\|sysmsg\\|var\\(fmt\\|label\\|num\\|type\\)\\)"
-		"[ \t]*(")
-						    font-lock-function-name-face)
+		"[ \t]*(")			    font-lock-function-name-face)
 	 ))
 	"Font Lock regexs for SAS.")
 )); only if window-system
