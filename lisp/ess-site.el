@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/30 22:43:42 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: ess-site.el,v 1.17 1997/06/30 22:43:42 rossini Exp $
+;; Modified: $Date: 1997/07/01 14:17:12 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: ess-site.el,v 1.18 1997/07/01 14:17:12 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.18  1997/07/01 14:17:12  rossini
+;;: redid ess-directory defaults.
+;;:
 ;;: Revision 1.17  1997/06/30 22:43:42  rossini
 ;;: ess-trans -> ess-trns
 ;;:
@@ -296,19 +299,31 @@
 ;;; default (usually, the users home directory...).
 (setq ess-ask-for-ess-directory t)
 
-;;; (3.5) ess-directory
-;; You can put something like:
-;; (setq ess-directory (file-name-as-directory (concat (getenv "HOME") "/ess/")))
-;; in your ~/.emacs file and ess will always start up in your ~/ess directory.
-;; Alternatively, you can get ess to start up in the current buffer's directory 
-;; by putting this in your .emacs
-;; (setq ess-pre-run-hook '((lambda () (setq ess-directory default-directory))))
-;; Better (more correct) version:
-(defun ajr:ess-set-directory () 
-  "Set ess-directory to current directory."
-  (setq-default ess-directory (file-name-as-directory (getenv "HOME"))))
+;;; (3.5) ess-directory default  (correlated with above)
+;;; The default location for running the subprocess is configurable.
+;;; By default, that is the default-directory (a lisp variable which
+;;; initially contains the driectory from which Emacs is started).
+;;; For example, the following function (added to the pre-run-hook, by
+;;; the line following it) will set the default directory to be your
+;;; home directory:
+;;;
+;;(defun ajr:ess-set-directory () 
+;;  "Set ess-directory to home."
+;;  (setq-default ess-directory (file-name-as-directory (getenv "HOME"))))
+;;(add-hook 'ess-pre-run-hook 'ajr:ess-set-directory)
+;;;
+;;; If you replace the setq-default line with:
+;;;
+;; (setq-default ess-directory (file-name-as-directory (concat (getenv "HOME") "/ess/")))
+;;;
+;;; then it will always start up in the directory "ess" in your home
+;;; directory.
+;;;
+;;; The default is to have ess to start up in the current buffer's
+;;; directory (the one in which you started Emacs).  This is obtained
+;;; by setting ess-directory to nil, i.e. 
+;; (setq-default ess-directory nil) ; this is the default.
 
-(add-hook 'ess-pre-run-hook 'ajr:ess-set-directory)
 
  ; Local variables section
 
