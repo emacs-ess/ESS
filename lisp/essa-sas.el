@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/06/06 20:44:29 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: essa-sas.el,v 1.23 2001/06/06 20:44:29 ess Exp $
+;; Modified: $Date: 2001/06/07 14:59:47 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: essa-sas.el,v 1.24 2001/06/07 14:59:47 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -178,8 +178,12 @@ or comint buffer on the local computer."
 on the way."
   (interactive)
   
-  (let* (;; store beginning of match for backward search 
-	 (ess-sas-backward-search-point nil)
+  (let* (;; point of search 
+	 (ess-sas-search-point nil)
+	 ;; column of search 
+	 (ess-sas-search-column nil)
+	 ;; limit of search 
+	 (ess-sas-search-limit nil)
 	 ;; text to be inserted after a back-tab, if any
 	 (ess-sas-end-text "end;")
 	 ;; current-column
@@ -199,40 +203,52 @@ on the way."
 
          (if ess-sas-smart-back-tab (progn
 	  (save-excursion
-	    (setq ess-sas-backward-search-point	    
+	    (setq ess-sas-search-point	    
 		(search-backward-regexp "end" nil t))
 
-	    (if (and ess-sas-backward-search-point
-		(search-backward-regexp "%" (+ ess-sas-backward-search-point -1) t))
-		(setq ess-sas-backward-search-point (+ ess-sas-backward-search-point -1))
+	    (if (and ess-sas-search-point
+		(search-backward-regexp "%" (+ ess-sas-search-point -1) t))
+		(setq ess-sas-search-point (+ ess-sas-search-point -1))
 	    )
 		
-	    (if (and ess-sas-backward-search-point
+	    (if (and ess-sas-search-point
 		(not (equal ess-sas-column (current-column))))
-		(setq ess-sas-backward-search-point nil))
+		(setq ess-sas-search-point nil))
 	    )
 
 	  (save-excursion
-	    (setq ess-sas-backward-search-point	    
+	    (setq ess-sas-search-point	    
 		(search-backward-regexp "do\\|select" 
-		    ess-sas-backward-search-point t))
+		    ess-sas-search-point t))
 
-	    (if (and ess-sas-backward-search-point
-		(search-backward-regexp "%" (+ ess-sas-backward-search-point -1) t))
-		(progn
-		    (setq ess-sas-backward-search-point (+ ess-sas-backward-search-point -1))
+	    (setq ess-sas-search-column (current-column))
+
+	    (if ess-sas-search-point (progn
+		(save-excursion
+		 (search-backward-regexp "^" nil t)
+		 (setq ess-sas-search-limit (point))
+		)
+
+	        (if (search-backward-regexp "if.*then\\|else" ess-sas-search-limit t)
+		    (setq ess-sas-search-point (point)))
+
+	        (if (search-backward-regexp "%" ess-sas-search-limit t) (progn
 		    (setq ess-sas-end-text "%end;")
-	    ))
+		    (setq ess-sas-search-point (point))
+		))
 
-	    (if (and ess-sas-backward-search-point
-		(not (equal ess-sas-column (current-column))))
-		(setq ess-sas-backward-search-point nil))
-	  )
+		(setq ess-sas-search-column (current-column))
+		(message "%d" ess-sas-search-column)
 
-	  (if ess-sas-backward-search-point (insert ess-sas-end-text))
+	        (if (not (equal ess-sas-column ess-sas-search-column))
+		   (setq ess-sas-search-point nil))
+	  )))
+
+	  (if ess-sas-search-point (insert ess-sas-end-text))
          ))
     ))
 ))
+
 
 (defun ess-sas-data-view (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
