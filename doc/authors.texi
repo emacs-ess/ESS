@@ -9,7 +9,7 @@
 @c --------
 @item
 @c @uref{http://www.ci.tuwien.ac.at/~hornik,Kurt Hornik}
-@uref{mailto:hornik@@ci.tuwien.ac.at, Kurt Hornik}
+@uref{mailto:Kurt.Hornik@@R-project.org, Kurt Hornik}
 @c --------
 @item
 @c @uref{http://stat.ethz.ch/people/maechler/,Martin Maechler}
