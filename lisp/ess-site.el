@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/09/08 12:35:01 $
-;; Version: $Revision: 1.43 $
-;; RCS: $Id: ess-site.el,v 1.43 1997/09/08 12:35:01 rossini Exp $
+;; Modified: $Date: 1997/09/08 12:35:41 $
+;; Version: $Revision: 1.44 $
+;; RCS: $Id: ess-site.el,v 1.44 1997/09/08 12:35:41 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -79,9 +79,9 @@
 ;;; want to use assembler, comment the appropriate
 ;;; line below.
 
-;;(if (featurep 'remassoc)
+;; This fails in Emacs.  How can it be done simply?  Should it be done?
 ;;    ;; get rid of assembler mode.
-;;    (set auto-mode-alist (remassoc "\\.[sS]\\'" auto-mode-alist)))
+;;    (set auto-mode-alist (remassoc "\\.[sS]\\'" auto-mode-alist))
 
 
 (if (assoc "\\.q" auto-mode-alist) nil
