@@ -3,6 +3,8 @@
 ESS: Using S-Plus 4.x for Windows
 =================================
 
+(also see detailed help at the end, for more information)
+
 Beginning with ESS 5.1.2 we are able to use inferior iESS mode to
 communicate directly with a running S-Plus 4.x process using the
 Microsoft DDE protocol.  We use the familiar (from Unix ESS) C-c C-n
