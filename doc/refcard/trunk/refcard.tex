@@ -1,5 +1,4 @@
 \documentstyle[a4,twocolumn,parskip]{article}
-%-non-SfS: \documentstyle[fullpage,twocolumn,parskip]{article}
 
 \newenvironment{tabI}{\begin{tabular}{p{1.5cm}l}}{\end{tabular}}
 \newenvironment{tabTit}[1]{\underline{\bf #1}\\ \begin{tabI}}{\end{tabI}}
@@ -14,7 +13,7 @@
   }
   
   {\large For version 3.43}\\
-  (SfS local version) %-SfS-added
+  (SfS local version)
 \end{center}
 
 \vspace{1.5cm}
@@ -97,19 +96,18 @@ For use in {\tt S-mode} edit buffers.
 \end{tabTit}
 
 \begin{tabTit}{Others}
-  %%-SfS- changed:
-  %%{\tt M-TAB} & Complete S object name \\
+  %--SfS: changed {\tt M-TAB} & Complete S object name \\
   {\tt C-c C-h }& Help for S object \\
   {\tt C-c C-d }& Edit another object \\
   {\tt C-c C-y} & Return to S process \\
   {\tt C-c C-z} & Return to S process at prompt.
 \end{tabTit}
 
-\begin{tabTit}{SfS commands}				%-SfS-added
-  {\tt C-c f} & insert SfS function() header \\		%-SfS-added
-  {\tt M-TAB} & Complete UNIX file- / path- name \\	%-SfS-added
-  {\tt C-c TAB} & Complete S object name \\		%-SfS-added
-\end{tabTit}\\[0.5cm]					%-SfS-added
+\begin{tabTit}{SfS commands}
+  {\tt C-c f} & insert SfS function() header \\
+  {\tt M-TAB} & Complete UNIX file- / path- name \\
+  {\tt C-c TAB} & Complete S object name \\
+\end{tabTit}\\[0.5cm]
 
 \underline{\large\bf Reading help files}
 
