@@ -1,3 +1,7 @@
+2004-11-19  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-noweb.el: remove setting of global-font-lock-mode
+
 2004-11-09  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (inferior-ess-mode): Add elements to
