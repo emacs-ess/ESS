@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 18:58:25 $ - $Revision: 1.219 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/20 19:05:17 $ - $Revision: 1.220 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -512,12 +512,11 @@ Emacs has historically referred to processes under its control as
 denote the mode for interfacing with the statistical package.  Figure
 \ref{f.ess-demo} shows the S language program \stexttt{ess-demo.s} in
 the top buffer in \stexttt{ESS[S]} mode and the executing R process in
-the bottom buffer \stexttt{*R*}.  The
-\stexttt{iESS} major mode of the \stexttt{*R*} buffer is crafted for
-command-line editing.  This mode remembers and uses the command
-history, allowing for the recall and searching of previously entered
-commands.  Filename completion for local directories is also
-available.
+the bottom buffer \stexttt{*R*}.  The \stexttt{iESS} major mode of the
+\stexttt{*R*} buffer is crafted for command-line editing.  This mode
+remembers and uses the command history, allowing for the recall and
+searching of previously entered commands.  Filename completion for
+local directories is also available.
 
 \begin{figure}[tb] %p
   \centering
@@ -576,10 +575,10 @@ interactive analysis session to construct functions and batch files
 for routine analysis of similar data sets.
 
 \paragraph{Remote access to statistics packages}
-ESS provides reasonably transparent facilities for editing files and
-running programs which might reside on numerous remote machines during the
-same session.  The remote machine could be a very different platform
-than the local machine.
+ESS provides transparent facilities for editing files and running
+programs which might reside on numerous remote machines during the
+same session.  The remote machine could be a different platform than
+the local machine.
 
 \paragraph{Manipulating and Editing Objects (S).}
 For languages in the S family, ESS provides object-name completion of
