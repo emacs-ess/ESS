@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.1 $.
+### File: $Revision: 5.2 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -15,19 +15,8 @@ PREFIX=/usr/local
 EMACS = emacs
 #EMACS = xemacs
 
-# where the Info file should go -- THIS MIGHT BE WRONG!
-INFODIR = $(PREFIX)/info
-## XEmacs
-#INFODIR = $(PREFIX)/lib/$(EMACS)/info
-
 ## For strange setups...
 INSTALL = cp
-
-# program to convert .texi{nfo} to .info
-MAKEINFO = makeinfo
-
-# program to convert .texi{nfo} to .html
-MAKEHTML = texi2html -verbose -iso -split_chapter -menu -glossary
 
 # where the .elc, files should go
 LISPDIR = .
@@ -36,8 +25,7 @@ LISPDIR = .
 #GZCAT = gzcat
 GZCAT = zcat
 
-
-## compile with noninteractive and relatively clean environment
+## compile with noninteractive and relatively clean environment:
 ## XEMACS 19.xx and before.
 #BATCHFLAGS = -batch -no-site-file -no-init-file
 ## EMACS and XEMACS 20.x.
@@ -53,9 +41,6 @@ VERSION = 5.0
 VERSIONDIR = ESS-$(VERSION)
 
 LASTVERSION = 4.8.MM6.XE2
-
-MYWWWDIR = /stat2/faculty/rossini/public_html/projects
-MYFTPDIR = /m2/ftp/rossini
 
 # have to preload the files that contain macro definitions or the
 # byte compiler will compile everything that references them
@@ -79,76 +64,43 @@ SOURCES = ess-vars.el ess.el ess-site.el \
 	essl-sta.el \
 	essddr.el
 
-DOCS = 	README README.S README.XLispStat README.SAS \
-	ess.texi dir ess.info ess.info-1 ess.info-2 ess.info-3 ess.dvi \
-	Doc/TODO Doc/Why_S-mode_Rocks.DMS \
-	Doc/README-19.28 Doc/README.additions Doc/NEWS \
-	Doc/ajr-talk.tex Doc/rmh-talk.tex Doc/slverb.sty 
-
 SCRIPTS = ess-sas-sh-command install-sh mkinstalldirs
 
-AUXFILES = COPYING Makefile ChangeLog $(SCRIPTS) $(DOCS) 
-
-DOCDIST = ess.ps ess.pdf \
-	Doc/ajr-talk.ps Doc/ajr-talk.pdf \
-	Doc/rmh-talk.ps Doc/rmh-talk.pdf
+AUXFILES = COPYING Makefile ChangeLog $(SCRIPTS)
 
 # The following works mainly with GNU Make.
 
 OBJECTS = $(SOURCES:.el=.elc)
 
 DISTFILES = $(addprefix $(VERSIONDIR)/,$(SOURCES)) \
-	    $(addprefix $(VERSIONDIR)/,$(AUXFILES)) 
+	    $(addprefix $(VERSIONDIR)/,$(AUXFILES))
 
 DISTSCRIPTS = $(addprefix $(VERSIONDIR)/,$(SCRIPTS))
 
-# DOCDISTFILES = $(addprefix $(VERSIONDIR)/,$(DOCDIST)) 
 
 ### Targets
 
+all: ESS
+
 ESS: $(OBJECTS)
 
-ESS-doc: info html dvi 
-
-all:	ESS info html
-
-ess.info: ess.texi
-
-#
-# If indexes don't index, run:  "texindex ess.??" to obtain the sorted indices. 
-#
-
-html:	html/ess_toc.html
-
-ess.dvi: ess.texi
-
-ps:	ess.dvi
-	dvips ess.dvi -o ess.ps
-
-pdf: 	ess.ps
-	rm -f ess.pdf
-	ps2pdf ess.ps > ess.pdf
-
 install: all
-	mkdir -p $(INFODIR)
-	$(INSTALL) ess.info* $(INFODIR)
 	mkdir -p $(LISPDIR)
 	if [ x$(LISPDIR) != x. ]; then $(INSTALL) *.elc $(LISPDIR) ; fi
 
 clean:
-	rm -f $(OBJECTS) ess.aux ess.cp ess.ky ess.log ess.pg ess.toc \
-	  ess.tp ess.vr ess.cps ess.fns ess.vrs ess.fn texput.log
+	rm -f $(OBJECTS)
+
 
 
 ### Targets below here are only for developers.
 
-# ess.dvi ess.info
-dist:  
+dist:
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(VERSION)"
 	@echo "**********************************************************"
 	chmod a-w $(VERSIONDIR)/*.el
-	chmod a-w $(VERSIONDIR)/ChangeLog $(VERSIONDIR)/Doc/* 
+	chmod a-w $(VERSIONDIR)/ChangeLog $(VERSIONDIR)/Doc/*
 	chmod a-w $(VERSIONDIR)/ess.info* $(VERSIONDIR)/ess.dvi
 	chmod u+w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
 	chmod ugo+rx $(VERSIONDIR)/ess-sas-sh-command
@@ -160,19 +112,9 @@ dist:
 	chmod u+w $(VERSIONDIR)/README
 	cp $(VERSIONDIR)/README $(MYWWWDIR)/$(VERSIONDIR)-README
 	cp $(VERSIONDIR)/README $(MYFTPDIR)/$(VERSIONDIR)-README
-	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile	
+	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
 	chmod u-w $(VERSIONDIR)/README
 	chmod u+w $(VERSIONDIR)/Doc
-
-
-##dist-doc: $(DOCDISTFILES)
-##	@echo "**********************************************************"
-##	@echo "** Making distribution of ESS-DOC for release $(VERSION)"
-##	@echo "**********************************************************"
-##	tar hcovf $(VERSIONDIR)-doc.tar $(DOCDISTFILES)
-##	gzip $(VERSIONDIR)-doc.tar
-##	cp $(VERSIONDIR)-doc.tar.gz $(MYWWWDIR)
-##	cp $(VERSIONDIR)-doc.tar.gz $(MYFTPDIR)
 
 
 patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
@@ -190,16 +132,6 @@ patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 ### File Dependencies
 
 .SUFFIXES: .el .elc
-
-ess.info: ess.texi
-	@echo "making Info documentation..."
-	$(MAKEINFO) ess.texi
-
-html/ess_toc.html: ess.texi
-	@echo "making HTML documentation..."
-	-(mkdir -p html; cd html; $(MAKEHTML) ../ess.texi)
-	-@(cd html; ln -s ess_toc.html index.html)
-	@echo "Test by pointing your browser to 'file://localhost/$$PWD/html/index.html'"
 
 .el.elc:
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile $<
@@ -261,7 +193,7 @@ essd-xls.elc : essd-xls.el essl-lsp.elc ess.elc
 
 essd-vst.elc : essd-vst.el essl-lsp.elc ess.elc
 
-## SAS 
+## SAS
 
 essl-sas.elc : essl-sas.el ess.elc
 
