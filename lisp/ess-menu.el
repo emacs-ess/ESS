@@ -1,14 +1,15 @@
 ;;; ess-menu.el --- Menu and Speedbar support for statistical
-;;; programming and analysis
+;;;		    programming and analysis
 
-;; Copyright 2000--2004 (C) A.J. Rossini, Richard M. Heiberger,
-;; Kurt Hornik, Martin Maechler, Rodney Sparapani, and Stephen Eglen.
+;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author:  A.J. Rossini <rossini@u.washington.edu>
-;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>, Stephen Eglen <stephen@anc.ed.ac.uk> 
+;; Original Author: A.J. Rossini
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.22 2004/05/03 02:17:19 rossini Exp $
+;; Maintainer: ESS Core Team <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: statistical support
+
 ;; Summary: general functions for ESS
 
 ;; This file is part of ESS
@@ -48,7 +49,7 @@
 
  ;;; Function Menu (func-menu) for XEmacs:
 
-;; (if ess-funcmenu-use-p 
+;; (if ess-funcmenu-use-p
 ;;     (defvar fume-function-name-regexp-S
 ;;       (append
 ;;        '((s-mode  . fume-function-name-regexp-smode)

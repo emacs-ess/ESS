@@ -1,16 +1,15 @@
 ;;; essdsp6w.el --- S-PLUS 6.x  for Windows customization
-;;; copied and edited from essd-sp4.el
-;;; Richard M. Heiberger, April 2001
+
+;;; copied and edited from essd-sp4.el - Richard M. Heiberger, April 2001
 
 ;; Copyright (C) 2001 Richard M. Heiberger <rmh@sbm.temple.edu>
+;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
-;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
+;; Original Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2004/07/04 11:40:52 $
-;; Version: $Revision: 5.24 $
-;; RCS: $Id: essdsp6w.el,v 5.24 2004/07/04 11:40:52 stephen Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS.

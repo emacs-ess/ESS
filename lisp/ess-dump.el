@@ -1,16 +1,11 @@
 ;;; ess-dump.el --- Getting objects into text files for editing
 
-;; Copyright (C) 2000--2001 A.J. Rossini <rossini@u.washington.edu>
-;;			Kurt Hornik <hornik@ci.tuwien.ac.at>
-;;			Martin Maechler <maechler@stat.math.ethz.ch>
-;;                      Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;;
-;; Author:  A.J. Rossini <rossini@u.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
+;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+
+;; Original Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 3 Sept 2000
-;; Modified: $Date: 2001/12/20 14:03:14 $
-;; Version: $Revision: 5.4 $
-;; RCS: $Id: ess-dump.el,v 5.4 2001/12/20 14:03:14 ess Exp $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; This file is part of ESS
 

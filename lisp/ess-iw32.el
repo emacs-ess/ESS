@@ -1,13 +1,12 @@
 ;;; essd-iw32.el --- ESS customization for ddeclients under Windows 9x/NT
-;; Copyright (C) 1998--1999,  Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 
-;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Copyright (C) 1998--1999 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+
+;; Original Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 2002/03/03 21:59:52 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: ess-iw32.el,v 1.17 2002/03/03 21:59:52 rmh Exp $
-
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; This file is part of ESS
 

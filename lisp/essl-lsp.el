@@ -1,13 +1,12 @@
 ;;; essl-lsp.el --- Support for editing Lisp source code
 
 ;; Copyright (C) 1997 A.J. Rossini.
+;; Copyright (C) 1998--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@stat.sc.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 1 Sept 1997
-;; Modified: $Date: 1997/12/02 14:13:51 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: essl-lsp.el,v 5.1 1997/12/02 14:13:51 rossini Exp $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; This file is part of ESS.
 

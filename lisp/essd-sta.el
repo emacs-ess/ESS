@@ -1,14 +1,13 @@
 ;;; essd-sta.el --- Stata customization
 
 ;; Copyright (C) 1997--1999 A. J. Rossini, Thomas Lumley
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@biostat.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 2003/09/25 16:01:42 $
-;; Version: $Revision: 1.26 $
-;; RCS: $Id: essd-sta.el,v 1.26 2003/09/25 16:01:42 maechler Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS

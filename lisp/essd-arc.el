@@ -1,14 +1,13 @@
 ;;; essd-vst.el --- ARC customization
 
 ;; Copyright (C) 2000 A. J. Rossini
+;; Copyright (C) 2001--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@stat.sc.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 30 Jun 2000
-;; Modified: $Date: 2003/11/06 13:23:19 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-arc.el,v 1.6 2003/11/06 13:23:19 maechler Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS

@@ -1,17 +1,11 @@
 ;;; ess-trns.el --- Support for manipulating S transcript files
 
-;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997-2000 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;;				Kurt Hornik <hornik@ci.tuwien.ac.at>
-;;				Martin Maechler <maechler@stat.math.ethz.ch>
-;;				A.J. (Tony) Rossini <rossini@stat.sc.edu>
+;; Copyright (C) 1989--1994 Bates, Kademan, Ritter and Smith
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
-;; Created: 7 Jan 1994
-;; Modified: $Date: 2003/11/05 13:22:42 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: ess-trns.el,v 5.15 2003/11/05 13:22:42 maechler Exp $
+;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; This file is part of ESS
 

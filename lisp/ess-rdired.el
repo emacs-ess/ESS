@@ -1,8 +1,13 @@
 ;;; ess-rdired.el --- prototype object browser for R, looks like dired mode.
-;; Author: Stephen Eglen <stephen@anc.ed.ac.uk>
-;; Maintainer: Stephen Eglen <stephen@anc.ed.ac.uk>
+
+;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+
+;; Original Author: Stephen Eglen <stephen@anc.ed.ac.uk>
 ;; Created: Thu 24 Oct 2002
-;; $Id: ess-rdired.el,v 1.1 2003/01/01 18:40:51 stephen Exp $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
+;; This file is part of ESS
 
 ;; This file is not part of GNU Emacs.
 
@@ -281,7 +286,7 @@ If point is on first line, all objects will be unmarked."
   "Delete the marked objects.
 User is queried first to check that objects should really be deleted."
   (interactive)
-  (let ((objs "rm(") 
+  (let ((objs "rm(")
 	(count 0))
     (save-excursion
       (goto-line 2)

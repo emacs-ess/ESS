@@ -1,14 +1,13 @@
 ;;; essd-sas.el --- SAS customization
 
 ;; Copyright (C) 1997--2001 Richard M. Heiberger and A. J. Rossini
+;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Original Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2004/06/29 15:54:58 $
-;; Version: $Revision: 5.18 $
-;; RCS: $Id: essd-sas.el,v 5.18 2004/06/29 15:54:58 rsparapa Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS.
@@ -211,7 +210,7 @@ Better logic needed!  (see 2 uses, in this file).")
     (if ess-sas-global-pc-keys (ess-sas-global-pc-keys)))
   (define-key sas-mode-local-map "\C-ci" 'ess-eval-line-and-step-invisibly)
   (define-key sas-mode-local-map ";" 'ess-electric-run-semicolon)
-  
+
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
   (define-key sas-mode-local-map "\C-c\C-b" 'ess-sas-submit)
   (define-key sas-mode-local-map "\C-c\C-r" 'ess-sas-submit-region)

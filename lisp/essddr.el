@@ -1,14 +1,11 @@
 ;; essddr.el --- Support for editing R documentation (Rd) source
 
-;;; Copyright (C) 1998--2002 KH <Kurt.Hornik@ci.tuwien.ac.at>, AJR, MM
-;;;
+;; Copyright (C) 1997--2002  A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Original Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2003/08/20 10:17:15 $
-;; Version: $Revision: 5.25 $
-;; RCS: $Id: essddr.el,v 5.25 2003/08/20 10:17:15 hornik Exp $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 

@@ -1,14 +1,13 @@
 ;;; ess-debug.el --- debugging start up for ESS
 
 ;; Copyright (C) 1997--2001 A.J. Rossini
+;; Copyright (C) 2001--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@biostat.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
+;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: November 1997
-;; Modified: $Date: 2001/01/08 00:42:23 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: ess-debug.el,v 5.5 2001/01/08 00:42:23 rossini Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS.
@@ -27,10 +26,10 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;;; Commentary:  
+;;; Commentary:
 
 ;; Strictly for debugging and development.  usage is:
-;;           xemacs -no-site-file -no-init-file -load ess-debug.el -f S4    
+;;           xemacs -no-site-file -no-init-file -load ess-debug.el -f S4
 ;; (or similar!)
 
 ;;; Code:

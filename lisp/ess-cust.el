@@ -1,14 +1,11 @@
 ;;; ess-cust.el --- Customize variables for ESS
-;; Copyright (C) 1997--2004 A.J. Rossini, Martin Maechler,
-;; Kurt Hornik, Richard M. Heiberger, Rodney Sparapani,
-;; and Stephen Eglen. 
 
-;; Author: A.J. Rossini <rossini@u.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+
+;; Original Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/07/08 15:03:28 $
-;; Version: $Revision: 1.84 $
-;; RCS: $Id: ess-cust.el,v 1.84 2004/07/08 15:03:28 rsparapa Exp $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; Keywords: editing and process modes.
 
@@ -168,7 +165,7 @@ as `ess-imenu-use-S'."
   :group 'ess
   :type  'boolean)
 
-;; 
+;;
 
 (defcustom ess-ask-for-ess-directory t
   "*If non-nil, the process directory will be requested each time S is run."
@@ -672,7 +669,7 @@ the variable `inferior-ess-own-frame' is non-nil."
 
 (defcustom inferior-ess-same-window t
   "*Non-nil indicates new inferior ESS process appears in current window.
-Otherwise, the new inferior ESS buffer is shown in another window in the 
+Otherwise, the new inferior ESS buffer is shown in another window in the
 current frame.  This variable is ignored if `inferior-ess-own-frame' is
 non-nil."
   :group 'ess-proc
@@ -716,7 +713,7 @@ file."
   :group 'ess-R
   :type '(repeat string))
 
-(defcustom ess-SHOME-versions 
+(defcustom ess-SHOME-versions
   '("c:/progra~1/Insightful/splus62"
     "c:/progra~1/Insightful/splus61"
     "c:/progra~1/MathSoft/splus6"

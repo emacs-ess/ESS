@@ -1,15 +1,13 @@
 ;;; msdos.el --- Run an MS-DOS shell in an NTemacs buffer with bash as the shell
-;;; Richard M. Heiberger, February 1999
 
 ;; Copyright (C) 1999 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Original Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: February 1999
-;; Modified: $Date: 1999/03/03 22:32:51 $ 
-;; Version: $Revision: 1.1 $ 
-;; RCS: $Id: msdos.el,v 1.1 1999/03/03 22:32:51 rossini Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: processes
 
 ;; This file is part of ESS.

@@ -1,30 +1,30 @@
 ;; ess-latex.el - Interface ESS and LaTeX.
+
 ;; Copyright (C) 1999 by A.J. Rossini <rossini@biostat.washington.edu>
 ;; based on noweb-mode by: Thorsten.Ohl @ Physik.TH-Darmstadt.de
 ;;     with a little help from Norman Ramsey <norman@bellcore.com>
 ;;                         and Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
-;;                         and A.J. Rossini <rossini@biostat.washington.edu>
+
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
+;; This file is part of ESS.
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2, or (at your option)
 ;; any later version.
-;; 
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-;; 
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program; if not, write to the Free Software
 ;; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-;; 
+;;
 ;; See bottom of this file for information on language-dependent
 ;; highlighting, and recent changes.
-;;
-
-;; BASED ON: (from Mark Lunt).
-;; ESS CVS: --Id: noweb-mode.el,v 1.1 1999/04/21 18:03:51 rossini Exp --
 
 
 
@@ -64,27 +64,27 @@ This is the place to overwrite keybindings of the other modes.")
 It will be run whether or not the major-mode changes.")
 
 (defvar ess-latex-default-code-mode 'fundamental-mode
-  "Default major mode for editing code chunks.  
+  "Default major mode for editing code chunks.
 This is set to FUNDAMENTAL-MODE by default, but you might want to
 change this in the Local Variables section of your file to something
 more appropriate, like C-MODE, FORTRAN-MODE, or even
 INDENTED-TEXT-MODE.")
 
 (defvar ess-latex-code-mode 'c-mode
-  "Major mode for editing this particular code chunk. 
+  "Major mode for editing this particular code chunk.
 It defaults to ess-latex-default-code-mode, but can be reset by a comment
-on the first line of the chunk containing the string 
-\"-*- NEWMODE -*-\" or  
-\"-*- NEWMODE-mode -*-\" or  
+on the first line of the chunk containing the string
+\"-*- NEWMODE -*-\" or
+\"-*- NEWMODE-mode -*-\" or
 \"-*- mode: NEWMODE -*- \"  or
-\"-*- mode: NEWMODE-mode -*- \" 
-Option three is recommended, as it is the closest to standard emacs usage.") 
+\"-*- mode: NEWMODE-mode -*- \"
+Option three is recommended, as it is the closest to standard emacs usage.")
 
 (defvar ess-latex-default-doc-mode 'latex-mode
   "Major mode for editing documentation chunks.")
 
 (defvar ess-latex-doc-mode-syntax-table nil
-  "A syntax-table syntax table that makes quoted code in doc chunks to behave.") 
+  "A syntax-table syntax table that makes quoted code in doc chunks to behave.")
 
 (defvar ess-latex-last-chunk-index 0
   "This keeps track of the chunk we have just been in. If this is not the same as the current chunk, we have to check if we need to change major mode.")
@@ -120,10 +120,10 @@ mouse-1, this will override your binding.")
 ;       (progn
 ;       ;; Assume latex documentation, but set to html if appropriate
 ;       (if (eq ess-latex-doc-mode html-mode)
-;           (setq name (concat (substring (buffer-file-name) 0 
+;           (setq name (concat (substring (buffer-file-name) 0
 ;                                         (string-match ".nw" name))
 ;                              ".html"))
-;         (setq name (concat (substring (buffer-file-name) 0 
+;         (setq name (concat (substring (buffer-file-name) 0
 ;                                           (string-match ".nw" name))
 ;                                ".tex")))))
 ;     (setq name (concat "> " name))
@@ -144,12 +144,12 @@ mouse-1, this will override your binding.")
 ;; middle of a code quote in a doc chunk to see
 ;; what I mean: its odd.
 
-(defun ess-latex-newline (&optional arg) 
+(defun ess-latex-newline (&optional arg)
   "A kludge to get round very odd behaviour of newline in quoted code."
   (interactive "p")
   (if arg (newline arg) (newline 1)))
 
-(defvar ess-latex-mode-prefix-map 
+(defvar ess-latex-mode-prefix-map
   (let ((map (make-sparse-keymap)))
     (define-key map "\C-n" 'ess-latex-next-chunk)
     (define-key map "\C-p" 'ess-latex-previous-chunk)
@@ -182,7 +182,7 @@ mouse-1, this will override your binding.")
     map)
   "ess-latex minor-mode prefix keymap")
 
-(defvar ess-latex-minor-mode-map 
+(defvar ess-latex-minor-mode-map
   (let ((map (make-sparse-keymap)))
     (if ess-latex-electric-@-and-<
         (progn
@@ -196,7 +196,7 @@ mouse-1, this will override your binding.")
     map)
   "Ess-Latex minor mode keymap")
 
-(easy-menu-define 
+(easy-menu-define
  ess-latex-minor-mode-menu ess-latex-minor-mode-map "Menu keymap for ess-latex."
  '("Ess-Latex"
    ("Movement"
@@ -240,7 +240,7 @@ mouse-1, this will override your binding.")
    ["Help" ess-latex-describe-mode t]
    ["Version" ess-latex-mode-version t]))
 
-;; Add ess-latex-mode to the list of minor modes  
+;; Add ess-latex-mode to the list of minor modes
 (if (not (assq 'ess-latex-mode minor-mode-alist))
     (setq minor-mode-alist (append minor-mode-alist
                                    (list '(ess-latex-mode " Ess-Latex")))))
@@ -248,7 +248,7 @@ mouse-1, this will override your binding.")
 ;; available. Then, whenever ess-latex-mode is activated, the keymap is
 ;; automatically activated
 (if (not (assq 'ess-latex-mode minor-mode-map-alist))
-    (setq minor-mode-map-alist 
+    (setq minor-mode-map-alist
           (cons (cons 'ess-latex-mode ess-latex-minor-mode-map)
                 minor-mode-map-alist)))
 
@@ -312,7 +312,7 @@ Misc:
 "  (interactive "P")
 ; This bit is tricky: copied almost verbatim from bib-cite-mode.el
 ; It seems to ensure that the variable ess-latex-mode is made
-; local to this buffer. It then sets ess-latex-mode to `t' if 
+; local to this buffer. It then sets ess-latex-mode to `t' if
 ;     1) It was called with an argument greater than 0
 ; or  2) It was called with no argument, and ess-latex-mode is
 ;        currently nil
@@ -324,7 +324,7 @@ Misc:
          (not ess-latex-mode)))
 ; Now, if ess-latex-mode is true, we want to turn
 ; ess-latex-mode on
-  (cond 
+  (cond
    (ess-latex-mode                 ;Setup the minor-mode
     (mapcar 'ess-latex-make-variable-permanent-local
             '(ess-latex-mode
@@ -342,7 +342,7 @@ Misc:
     (if (equal 0 (ess-latex-find-chunk-index-buffer))
         (setq ess-latex-last-chunk-index 1)
       (setq ess-latex-last-chunk-index 0))
-    (if font-lock-mode 
+    (if font-lock-mode
         (progn
           (font-lock-mode -1)
           (ess-latex-font-lock-mode 1)))
@@ -354,7 +354,7 @@ Misc:
     (add-hook 'isearch-mode-end-hook 'ess-latex-note-isearch-mode-end)
     (setq ess-latex-doc-mode-syntax-table nil)
     (run-hooks 'ess-latex-mode-hook)
-    (message 
+    (message
      "ess-latex mode: use `M-x ess-latex-describe-mode' for further information"))
    ;; If we didn't do the above, then we want to turn ess-latex-mode
    ;; off, no matter what (hence the condition `t')
@@ -365,7 +365,7 @@ Misc:
     (remove-hook 'ess-latex-select-code-mode-hook 'ess-latex-auto-fill-code-mode)
     (remove-hook 'isearch-mode-hook 'ess-latex-note-isearch-mode)
     (remove-hook 'isearch-mode-end-hook 'ess-latex-note-isearch-mode-end)
-    (if ess-latex-font-lock-mode 
+    (if ess-latex-font-lock-mode
         (progn
           (ess-latex-font-lock-mode -1)
           (message "Ess-Latex and Ess-Latex-Font-Lock Modes Removed"))
@@ -420,7 +420,7 @@ Record them in ESS-LATEX-CHUNK-VECTOR."
                                   ;;buffer-substring-no-properties better
                                   ;;than buffer-substring if highlighting
                                   ;;may be used
-                                  (buffer-substring-no-properties 
+                                  (buffer-substring-no-properties
                                    (match-beginning 4) (match-end 4))
                                 'doc)
                               (point-marker))
@@ -435,7 +435,7 @@ Record them in ESS-LATEX-CHUNK-VECTOR."
                   ;; Now we can tell code vs docs
                   (cons (cons (if (looking-at "<<\\(.*\\)>>=")
                                   (buffer-substring-no-properties
-                                   (match-beginning 1) (match-end 1)) 
+                                   (match-beginning 1) (match-end 1))
                                 'doc)
                               (point-marker))
                         chunk-list))))
@@ -462,34 +462,34 @@ marker of the current chunk."
 
 (defun ess-latex-in-mode-line ()
   "Return the name of the mode to use if we are in a mode line, nil
-otherwise." 
+otherwise."
   (interactive)
   (let (beg end mode)
-    (save-excursion  
-      (beginning-of-line 1)                                                 
+    (save-excursion
+      (beginning-of-line 1)
       (and (search-forward "-*-"
-                           (save-excursion (end-of-line) (point))           
+                           (save-excursion (end-of-line) (point))
                            t)
-           (progn                                                           
-             (skip-chars-forward " \t")                                     
-             (setq beg (point))                                             
-             (search-forward "-*-"                                          
-                             (save-excursion (end-of-line) (point))         
+           (progn
+             (skip-chars-forward " \t")
+             (setq beg (point))
+             (search-forward "-*-"
+                             (save-excursion (end-of-line) (point))
                              t))
-           (progn               
-             (forward-char -3)                                              
-             (skip-chars-backward " \t")                                    
-             (setq end (point))                                             
-             (goto-char beg)                                                
-             (setq mode (concat                                            
-                         (downcase (buffer-substring beg end))             
+           (progn
+             (forward-char -3)
+             (skip-chars-backward " \t")
+             (setq end (point))
+             (goto-char beg)
+             (setq mode (concat
+                         (downcase (buffer-substring beg end))
                          "-mode"))
              (if (and (>= (length mode) 11)
                       (progn
                         (if
                             (equal (substring mode -10 -5) "-mode")
                             (setq mode (substring mode 0 -5)))
-                        (if 
+                        (if
                             (equal (substring mode 0 5) "mode:")
                             (setq mode (substring mode 6))))))
              (intern mode))))))
@@ -529,13 +529,13 @@ This will be particularly useful when interfacing with ESS."
   "Create a new buffer with the same name as the current code chunk,
 and copy all code  from chunks of the same name to it."
   (interactive)
-  (save-excursion 
+  (save-excursion
     (if (ess-latex-in-code-chunk)
         (progn
-          (let ((chunk-name (car (ess-latex-find-chunk))) 
+          (let ((chunk-name (car (ess-latex-find-chunk)))
                 (chunk-counter 0)
                 (copy-counter 0)
-                (this-chunk) (oldbuf (current-buffer))) 
+                (this-chunk) (oldbuf (current-buffer)))
             (if (get-buffer chunk-name)
                 (progn
                   (set-buffer-modified-p nil)
@@ -622,7 +622,7 @@ documentation and code chunks."
   "Replace all non blank characters in [[...]] code quotes
 in the current buffer (you might want to narrow to the interesting
 region first) by `*'.  Return a list of pairs with the position and
-value of the original strings." 
+value of the original strings."
   (save-excursion
     (let ((quote-list nil))
       (goto-char (point-min))
@@ -641,7 +641,7 @@ value of the original strings."
                        (skip-chars-forward "^ \t\n" end)
                        (point))))
               (if (> e b)
-                  ;; Save the string and a marker to the end of the 
+                  ;; Save the string and a marker to the end of the
                   ;; replacement text.  A marker to the beginning is
                   ;; useless.  See ESS-LATEX-RESTORE-CODE-QUOTES.
                   (save-excursion
@@ -1071,14 +1071,14 @@ and and update the chunk vector."
         (setq ess-latex-code-mode ess-latex-default-code-mode)
         (let (mode chunk-name)
           (save-restriction
-            (save-excursion  
+            (save-excursion
               (end-of-line)
               (re-search-backward "^[ \t]*<<\\(.*\\)>>=" nil t)
               (setq chunk-name (match-string 1))
               (widen)
               (goto-char (point-min))
               (re-search-forward (concat "^<<" chunk-name ">>=") nil t)
-              (beginning-of-line 2)    
+              (beginning-of-line 2)
               (setq mode (ess-latex-in-mode-line))
               (if (functionp mode)
                   (setq ess-latex-code-mode mode))))))
@@ -1093,10 +1093,10 @@ and and update the chunk vector."
           (modify-syntax-entry ?\[ "(]12b" ess-latex-doc-mode-syntax-table)
           (modify-syntax-entry ?\] ")[34b" ess-latex-doc-mode-syntax-table))
       (progn
-        (modify-syntax-entry  ?\[ 
+        (modify-syntax-entry  ?\[
                               (concat square-bracket-string " 12b")
                               ess-latex-doc-mode-syntax-table)
-        (modify-syntax-entry  ?\] 
+        (modify-syntax-entry  ?\]
                               (concat square-bracket-string " 34b")
                               ess-latex-doc-mode-syntax-table)))))
 
@@ -1126,9 +1126,9 @@ and and update the chunk vector."
                   (progn
                     (funcall ess-latex-doc-mode)))
               (if (not ess-latex-doc-mode-syntax-table)
-                  (progn 
+                  (progn
                     (message "Setting up syntax table")
-                    (setq ess-latex-doc-mode-syntax-table 
+                    (setq ess-latex-doc-mode-syntax-table
                           (make-syntax-table (syntax-table)))
                     (ess-latex-set-doc-syntax-table)))
               (set-syntax-table ess-latex-doc-mode-syntax-table)
@@ -1154,7 +1154,7 @@ to by added to the mode-line")
 (defun ess-latex-set-code-mode (mode)
   "Change the major mode for editing all code chunks."
   (interactive "CNew major mode for all code chunks: ")
-  (setq ess-latex-default-code-mode mode)   
+  (setq ess-latex-default-code-mode mode)
   ;;Pretend we've changed chunk, so the mode will be reset if necessary
   (setq ess-latex-last-chunk-index (1- ess-latex-last-chunk-index))
   (ess-latex-select-mode))
@@ -1167,7 +1167,7 @@ The only sensible way to do this is to add a mode line to the chunk"
       (progn
         (setq ess-latex-code-mode mode)
         (save-restriction
-          (save-excursion 
+          (save-excursion
             (let (chunk-name)
               (widen)
               (end-of-line)
@@ -1177,7 +1177,7 @@ The only sensible way to do this is to add a mode line to the chunk"
               (re-search-forward (concat "^<<" chunk-name ">>=") nil t)
               (beginning-of-line 2))
             ;; remove mode-line, if there is one
-            (if (ess-latex-in-mode-line) 
+            (if (ess-latex-in-mode-line)
                 (progn
                   (kill-line)
                   (kill-line)))
@@ -1187,8 +1187,8 @@ The only sensible way to do this is to add a mode line to the chunk"
                   ;; Need to set major mode so that we can comment out
                   ;; the mode line
                   (funcall ess-latex-code-mode)
-                  (insert comment-start 
-                          " -*- " mode 
+                  (insert comment-start
+                          " -*- " mode
                           " -*- " comment-end "\n")))
             (setq ess-latex-last-chunk-index (1- ess-latex-last-chunk-index)))))
     (message "This only makes sense in a code chunk.")))
@@ -1214,14 +1214,14 @@ ess-latex-set-doc-mode) before calling this function"
   (interactive)
   (save-excursion
     (goto-char 1)
-    (if (ess-latex-in-mode-line) 
+    (if (ess-latex-in-mode-line)
         (progn
           (kill-line)
           (kill-line)))
     (if (not (eq major-mode ess-latex-doc-mode))
         (ess-latex-select-mode))
     (insert comment-start " -*- mode: ess-latex; ess-latex-default-code-mode: "
-            (symbol-name ess-latex-default-code-mode) 
+            (symbol-name ess-latex-default-code-mode)
             (if (not (eq ess-latex-doc-mode ess-latex-default-doc-mode))
                 (concat "; ess-latex-doc-mode: " (symbol-name
                                               ess-latex-doc-mode) ";")
@@ -1233,20 +1233,20 @@ ess-latex-set-doc-mode) before calling this function"
   (interactive "e")
   (mouse-set-point event)
   (if (and ess-latex-use-mouse-navigation
-           (eq (save-excursion 
+           (eq (save-excursion
                  (end-of-line)
                  (re-search-backward "^[\t ]*\\(<<\\)\\(.*\\)\\(>>\\)" nil t))
-               (save-excursion 
+               (save-excursion
                  (beginning-of-line) (point))))
       (progn
 (if (< (point) (match-beginning 2))
-            (let ((chunk-name (buffer-substring-no-properties 
+            (let ((chunk-name (buffer-substring-no-properties
                                (match-beginning 2)
                                (match-end 2))))
               (re-search-backward (concat "<<" chunk-name ">>") nil t))
           (if (and (<= (match-end 2) (point))
                    (>  (+ 2 (match-end 2)) (point)))
-              (let ((chunk-name (buffer-substring-no-properties 
+              (let ((chunk-name (buffer-substring-no-properties
                                  (match-beginning 2)
                                  (match-end 2))))
                 (re-search-forward (concat "<<" chunk-name ">>") nil t)))))))
@@ -1272,7 +1272,7 @@ ess-latex-set-doc-mode) before calling this function"
 Each entry in the list contains 5 elements:
 1) The name of the threads
 2) The name of the immdiate parent thread in which it is used (nil if
-   it is a \"top-level\" thread which is not used anywhere). 
+   it is a \"top-level\" thread which is not used anywhere).
 3) The name of the top-level parent thread in which it is used (i.e. a
    thread in which it is used but which is not itself used anywhere:
    nil if this thread is not used anywhere.
@@ -1281,7 +1281,7 @@ Each entry in the list contains 5 elements:
    anywhere: if a thread is used as part of another thread, the parent
    thread's format string should be used.
 5) If this is nil, tabs are converted to spaces in the tangled
-   file. If it is a number, tabs are copied to the tangled file 
+   file. If it is a number, tabs are copied to the tangled file
    unchanged, and tabs are also used for indentation, with the number
    of spaces per tab defined by this number. This MUST be set in order
    to tangle makefiles, which depend on tabs.Should only be set if
@@ -1293,7 +1293,7 @@ Each entry in the list contains 5 elements:
 Each entry in the list contains 5 elements:
 1) The name of the thread
 2) The name of the immdiate parent thread in which it is used (nil if
-   it is a \"top-level\" thread which is not used anywhere). 
+   it is a \"top-level\" thread which is not used anywhere).
 3) The name of the top-level parent thread in which it is used (i.e. a
    thread in which it is used but which is not itself used anywhere:
    nil if this thread is not used anywhere.
@@ -1302,7 +1302,7 @@ Each entry in the list contains 5 elements:
    anywhere: if a thread is used as part of another thread, the parent
    thread's format string should be used.
 5) If this is nil, tabs are converted to spaces in the tangled
-   file. If it is a number, tabs are copied to the tangled file 
+   file. If it is a number, tabs are copied to the tangled file
    unchanged, and tabs are also used for indentation, with the number
    of spaces per tab defined by this number. This MUST be set in order
    to tangle makefiles, which depend on tabs.Should only be set if
@@ -1312,7 +1312,7 @@ Each entry in the list contains 5 elements:
     (goto-char (point-min))
     (let ((thread-alist) (thread-list-entry) (chunk-use-name)
           (current-thread) (new-thread-alist))
-      (while (re-search-forward 
+      (while (re-search-forward
               "^[ \t]*<<\\(.*\\)>>\\(=\\)?" nil t)
         (goto-char (match-beginning 0))
         ;; Is this the definition of a chunk ?
@@ -1320,25 +1320,25 @@ Each entry in the list contains 5 elements:
             ;;We have a chunk definition
             (progn
               ;; Get the thread name
-              (setq current-thread 
+              (setq current-thread
                     (buffer-substring-no-properties (match-beginning 1)
                                                     (match-end 1)))
               ;; Is this thread already in our list ?
               (if (assoc current-thread thread-alist)
                   nil
                 (progn
-                  ;; If not, create an entry with 4 nils at the end      
-                  (setq thread-list-entry 
-                        (list (cons current-thread 
+                  ;; If not, create an entry with 4 nils at the end
+                  (setq thread-list-entry
+                        (list (cons current-thread
                                     (make-list 4 nil))))
                   ;; And add it to the list
-                  (setq thread-alist 
+                  (setq thread-alist
                         (append thread-alist thread-list-entry)))))
-     
+
             ;; Not a definition but a use
             (progn
               ;; Get the thread name
-                (setq chunk-use-name 
+                (setq chunk-use-name
                     (buffer-substring-no-properties (match-beginning 1)
                                                     (match-end 1)))
               ;; Has the thread already been defined before being used ?
@@ -1348,13 +1348,13 @@ Each entry in the list contains 5 elements:
                   (setcar (cdr thread-list-entry) current-thread)
                 ;; If not, add it to the list, with its parent name and 3 nils
                 (progn
-                  (setq thread-list-entry 
-                        (list (cons chunk-use-name 
+                  (setq thread-list-entry
+                        (list (cons chunk-use-name
                                     (cons current-thread
                                           (make-list 3 nil)))))
                   (setq thread-alist (append thread-alist thread-list-entry)))))
 )
-        ;;Go to the next line   
+        ;;Go to the next line
         (beginning-of-line 2))
       ;; Now, the second element of each entry points to that thread's
       ;; immediate parent. Need to set it to the thread's ultimate
@@ -1364,11 +1364,11 @@ Each entry in the list contains 5 elements:
             (this-thread-parent))
         (while (<= thread-counter (1- (length thread-alist)))
           (setq this-thread (nth thread-counter thread-alist))
-          (setq this-thread-parent (assoc 
+          (setq this-thread-parent (assoc
                                     (car (cdr this-thread))
                                     thread-alist))
           (while (not (equal nil (car (cdr this-thread-parent))))
-            (setq this-thread-parent (assoc 
+            (setq this-thread-parent (assoc
                                       (car (cdr this-thread-parent))
                                       thread-alist)))
           (setq this-thread (cons (car this-thread)
@@ -1389,10 +1389,10 @@ Each entry in the list contains 5 elements:
 
 
 (defvar ess-latex-default-line-number-format nil
-  "The format string to use to  define line numbers in this thread. 
+  "The format string to use to  define line numbers in this thread.
 If nil, do  not use line numbers.")
 
-(defvar ess-latex-default-line-number-skip-lines 0 
+(defvar ess-latex-default-line-number-skip-lines 0
   "The number of initial lines to output before the line number.
 This may be useful in shell scripts, where the first line (or two) must have a
   specific form.")
@@ -1401,10 +1401,10 @@ This may be useful in shell scripts, where the first line (or two) must have a
   "If a number, convert tabs to  that number of spaces in the output. If nil, let tabs through to the output unaltered.")
 
 (defvar ess-latex-line-number-format  ess-latex-default-line-number-format
-  "The format string to use to  define line numbers in this thread. 
+  "The format string to use to  define line numbers in this thread.
 If nil, do  not use line numbers.")
 
-(defvar ess-latex-line-number-skip-lines ess-latex-default-line-number-skip-lines 
+(defvar ess-latex-line-number-skip-lines ess-latex-default-line-number-skip-lines
   "The number of initial lines to output before the line number.
 This may be useful in shell scripts, where the first line (or two) must have a
   specific form.")
@@ -1416,37 +1416,37 @@ This may be useful in shell scripts, where the first line (or two) must have a
   "Get the values of the variables that are local to a thread."
   (interactive)
   (save-restriction
-    (save-excursion  
+    (save-excursion
       (end-of-line)
       (re-search-backward "^[ \t]*<<\\(.*\\)>>=" nil t)
       (let ((chunk-name (match-string 1)))
         (widen)
         (goto-char (point-min))
         (re-search-forward (concat "^<<" chunk-name ">>=") nil t)
-        (beginning-of-line 2)    
+        (beginning-of-line 2)
         (while (looking-at ".*-\*-.*-\*-")
-          (let ((this-line (buffer-substring-no-properties 
+          (let ((this-line (buffer-substring-no-properties
                             (point)
                             (progn (end-of-line) (point)))))
-            (if (string-match 
+            (if (string-match
                  "mode:[ \t]*\\([^\t ]*\\)" this-line)
                 (setq ess-latex-code-mode (match-string-no-properties 1 this-line)))
-            (if (string-match 
+            (if (string-match
                  "ess-latex-line-number-format:[ \t]*\"\\([^\"]*\\)\"" this-line)
-                (setq ess-latex-line-number-format 
+                (setq ess-latex-line-number-format
                       (match-string-no-properties 1 this-line)))
-            (if (string-match 
+            (if (string-match
                  "ess-latex-line-number-skip-lines:[ \t]*\\([^\t ]*\\)" this-line)
-                (setq ess-latex-line-number-skip-lines 
+                (setq ess-latex-line-number-skip-lines
                       (string-to-number
                        (match-string-no-properties 1 this-line))))
-            (if (string-match 
+            (if (string-match
                  "ess-latex-tab-width:[ \t]*\\([^\t ]*\\)" this-line)
-                (setq ess-latex-tab-width    
+                (setq ess-latex-tab-width
                       (string-to-number
                        (match-string-no-properties 1 this-line))))
             (beginning-of-line 2)))))))
-  
+
 (defun ess-latex-reset-thread-local-variables ()
   "Resets the thread-local variables to their default values"
   (setq ess-latex-tab-width ess-latex-default-tab-width)
@@ -1463,7 +1463,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
                    (format "%d" this-line) t t line-number-format 1)))
           (while (string-match ".*\\(%F\\).*" line-number-format)
             (setq line-number-format
-                  (replace-match 
+                  (replace-match
                    (format "%s" (buffer-file-name)) t t line-number-format 1)))
           (while (string-match ".*\\(%N\\).*" line-number-format)
             (setq line-number-format
@@ -1480,22 +1480,22 @@ This may be useful in shell scripts, where the first line (or two) must have a
     (ess-latex-reset-thread-local-variables)
     (ess-latex-get-thread-local-variables)
     (ess-latex-update-chunk-vector)
-    (let* 
-        ((chunk-end (progn 
+    (let*
+        ((chunk-end (progn
                       (end-of-line)
                       (re-search-forward "^@" nil t)
                       (beginning-of-line)
                       (point)))
-         ;;get name and start point of this chunk    
+         ;;get name and start point of this chunk
          (chunk-start (progn
                         (re-search-backward "^<<\\([^>]*\\)>>=$" nil t)
                         (beginning-of-line 2)
                         (point)))
-         (chunk-name (buffer-substring-no-properties 
+         (chunk-name (buffer-substring-no-properties
                       (match-end 1)
                       (match-beginning 1)))
-         ;; get end of this chunk        
-         ;; Get information we need about this thread    
+         ;; get end of this chunk
+         ;; Get information we need about this thread
          (thread-info (assoc chunk-name ess-latex-thread-alist))
          (thread-tabs (nth 4 thread-info))
          (line-number-format (nth 3 thread-info))
@@ -1511,7 +1511,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
           ;; If we want to include line numbers, write one
           (if line-number-format
               (while (> ess-latex-line-number-skip-lines 0)
-                (append-to-buffer tangle-buffer 
+                (append-to-buffer tangle-buffer
                                   (point)
                                   (save-excursion (progn
                                                     (end-of-line) (point))))
@@ -1545,11 +1545,11 @@ This may be useful in shell scripts, where the first line (or two) must have a
                           (backward-char)
                           (insert post-chunk)
                           (beginning-of-line 2)))))
-                                      
-                ;; Otherwise, just copy this line 
+
+                ;; Otherwise, just copy this line
                 (setq pre-chunk
-                      (buffer-substring 
-                       (point) 
+                      (buffer-substring
+                       (point)
                        (save-excursion
                          (beginning-of-line 2)
                          (point))))
@@ -1562,7 +1562,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
                   (set-buffer tangle-buffer)
                   (insert pre-chunk)))
             ;; If this is the first line of the chunk, we need to change
-            ;; prefix-string to consist solely of spaces 
+            ;; prefix-string to consist solely of spaces
             (if (and first-line
                      prefix-string)
                 (progn
@@ -1577,7 +1577,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
             (while (re-search-forward "\@\<<" nil t)
               (replace-match "<<" nil nil)
               (forward-char 3))
-            (if thread-tabs 
+            (if thread-tabs
               (progn
                   (setq tab-width thread-tabs)
                   (tabify (point-min)(point-max)))
@@ -1597,13 +1597,13 @@ If no buffer is given, create a new one with the same name as the thread."
   (if (not buffer)
       (progn
         (setq buffer (get-buffer-create name))
-        (save-excursion 
+        (save-excursion
           (set-buffer buffer)
           (erase-buffer))))
   (save-excursion
     (goto-char (point-min))
     (let ((chunk-counter 0))
-      (while (re-search-forward 
+      (while (re-search-forward
               "^<<\\(.*\\)>>=[\t ]*" nil t)
         (if (string= (match-string 1)
                      name)
@@ -1616,11 +1616,11 @@ If no buffer is given, create a new one with the same name as the thread."
   (interactive)
   (save-excursion
     (let* ((chunk-start (progn
-                          (re-search-backward "^<<\\([^>]*\\)>>=[\t ]*$" 
+                          (re-search-backward "^<<\\([^>]*\\)>>=[\t ]*$"
                                               nil t)
                           (beginning-of-line 2)
                           (point)))
-           (chunk-name (buffer-substring-no-properties 
+           (chunk-name (buffer-substring-no-properties
                         (match-end 1)
                         (match-beginning 1))))
       (ess-latex-tangle-thread chunk-name buffer))))
@@ -1672,7 +1672,7 @@ If no buffer is given, create a new one with the same name as the thread."
 ;; '<<' of a chunk name moves to the previous instance of that chunk
 ;; name, and clicking in the '>>' moves to the next instance. They are
 ;; not mouse-hightlighted, though: too much hassle for zero added
-;; functionality. 
+;; functionality.
 
 ;; ess-latex-doc-mode has been given its own syntax-table. It is the same
 ;; as the current doc-mode syntax-table, except that [[ is a comment
@@ -1706,7 +1706,7 @@ If no buffer is given, create a new one with the same name as the thread."
 ;; is used.
 
 ;; New functions `ess-latex-in-code-chunk' & `ess-latex-chunk-is-code' created
-;; to replace (if (stringp (car (ess-latex-find-chunk)))) and 
+;; to replace (if (stringp (car (ess-latex-find-chunk)))) and
 ;; (if (stringp (car (ess-latex-chunk-vector-aref index)))).
 
 ;; `ess-latex-insert-mode-line' was renamed

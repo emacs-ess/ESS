@@ -1,14 +1,13 @@
 ;;; essd-s3.el ---  S 3 (AT&T version) customization
 
 ;; Copyright (C) 1997 A. J. Rossini
+;; Copyright (C) 1998--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@stat.sc.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2004/05/03 02:17:19 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: essd-s3.el,v 5.15 2004/05/03 02:17:19 rossini Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS.

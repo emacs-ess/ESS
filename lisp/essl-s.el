@@ -8,7 +8,6 @@
 ;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
-;; Version: $Id: essl-s.el,v 5.40 2004/07/08 07:48:58 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 

@@ -1,14 +1,12 @@
 ;;; essd-s4.el --- S4 customization
 
-;; Copyright (C) 1997--2004 A.J. Rossini
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@stat.sc.edu>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
+;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2004/05/03 02:24:58 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: essd-s4.el,v 5.14 2004/05/03 02:24:58 rossini Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS.

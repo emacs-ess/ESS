@@ -7,7 +7,6 @@
 ;; Original Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Created: 12 Nov 1993
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
-;; Version: $Id: ess-site.el,v 5.117 2004/07/08 07:48:58 maechler Exp $
 
 ;; Keywords: start up, configuration.
 

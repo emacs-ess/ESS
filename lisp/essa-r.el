@@ -1,14 +1,11 @@
 ;;; essa-r.el -- Possible local customizations for R with ESS.
 
-;; Copyright (C) 1997--2004 A.J. Rossini, Martin Maechler,
-;; Kurt Hornik, Richard M. Heiberger, Rodney Sparapani, and Stephen Eglen.
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@u.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
+;; Original Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/04/01 18:47:33 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essa-r.el,v 1.9 2004/04/01 18:47:33 rossini Exp $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; Keywords: editing and process modes.
 
@@ -46,7 +43,7 @@
   "Send the current region to R via AppleScript."
   (interactive "r\nP")
   (message "Starting evaluation...")
-  (do-applescript (concat 
+  (do-applescript (concat
     "try\n"
 	"tell application \"R\"\n"
 		"activate\n"
@@ -65,7 +62,7 @@
   (save-excursion
   (let ((end (point)))
   (move-to-column 0)
-  (do-applescript (concat 
+  (do-applescript (concat
     "try\n"
 	"tell application \"R\"\n"
 		"activate\n"
@@ -88,18 +85,18 @@ e.  BEG and END denote the region in the current buffer to be sent."
  	   cmd
 	   var)
       (write-region beg end tmp-file)
-      
+
       ;; Decide on the variable name to use in R; could use completion.
       (setq var (read-string "R Variable name (default e): "))
-      (if (equal var "") 
+      (if (equal var "")
 	  (setq var "e"))
-      
+
       ;; Command to send to the R process.  Get R to delete the file
       ;; rather than Emacs in case it takes R a long time to run the
       ;; scan command.
       (setq cmd (concat var " <- scan(\""  tmp-file "\"); "
 			"unlink(\"" tmp-file "\")" ))
-      
+
       ;; Put the output from the scan command into the process buffer so
       ;; the user has a record of it.
       (ess-execute cmd 'buffer))))
@@ -126,7 +123,7 @@ is)."
     (other-buffer 1)
     (if (= emacs "emacs")
 	(setq scroll-up-aggressively t)
-      (setq scroll-conservatively -4)) ;; <- change this 
+      (setq scroll-conservatively -4)) ;; <- change this
     (other-buffer -1))
 
   (defun show-max-other-window ()

@@ -1,13 +1,14 @@
 ;;; essd-els.el --- S-PLUS 3.x at another location customization
-;; Copyright (C) 1998 Richard M. Heiberger
 
-;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Copyright (C) 1998 Richard M. Heiberger
+;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+
+;; Original Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2004/05/17 15:14:15 $
-;; Version: $Revision: 1.26 $
-;; RCS: $Id: essd-els.el,v 1.26 2004/05/17 15:14:15 stephen Exp $
-;;
+
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS.
@@ -183,7 +184,7 @@ buffer on the local computer."
 runs `ess-add-ess-process' to add the process to
 `ess-process-name-alist' and to make it the
 `ess-current-process-name'.  It then prompts the user for an ESS
-language and sets the editing characteristics appropriately.  
+language and sets the editing characteristics appropriately.
 
 To use this command, first start a process on a remote computer by
 manual use of telnet, rlogin, ssh, or some other protocol.  Start the

@@ -1,15 +1,17 @@
 ;;; ess-noweb.el : support for Literate Data Analysis
 
-;; Copyright (C) 1999--2004, Mark Lunt and A.J. Rossini
+;; Copyright (C) 1999 Mark Lunt
+;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Authors: Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
+;; Original Authors: Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
 ;;          A.J. Rossini <rossini@u.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: April 18, 1999
-;; Version: $Revision: 1.11 $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: statistical support
 ;; Summary: Noweb support for ESS
-;; CVS: $Id: ess-noweb.el,v 1.11 2004/03/30 16:42:45 rossini Exp $
+
 
 ;; This file is part of ESS
 
@@ -55,14 +57,14 @@
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (let ( (process-name ess-local-process-name)
-	 new-process-name 
+	 new-process-name
 	 (cbuf (current-buffer))
 	 (temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
     (noweb-tangle-chunk temp-buffer)
     (set-buffer temp-buffer)
     ;; When the temp buffer is created, it does not inherit any value
     ;; of ess-local-process-name from the .Rnw buffer, so we have to set it
-    ;; here.  If ess-local-process-name is not set in the .Rnw buffer, 
+    ;; here.  If ess-local-process-name is not set in the .Rnw buffer,
     ;; it will inherit the value that is chosen here.
     (set (make-local-variable 'ess-local-process-name) process-name)
     (ess-eval-region (point-min) (point-max) vis "Eval buffer")

@@ -1,15 +1,14 @@
 ;;; essl-sta.el --- Stata customization
 
 ;; Copyright (C) 1999--2000, Thomas Lumley, A. J. Rossini, Brendan Halpin.
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: Thomas Lumley <thomas@biostat.washington.edu>,
-;;         Brendan Halpin <brendan@essex.ac.uk>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Original Authors: Thomas Lumley <thomas@biostat.washington.edu>,
+;;         	     Brendan Halpin <brendan@essex.ac.uk>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 2001/11/20 17:09:15 $
-;; Version: $Revision: 5.27 $
-;; RCS: $Id: essl-sta.el,v 5.27 2001/11/20 17:09:15 ess Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
@@ -38,7 +37,7 @@
 ;; Stata modes.  Emacs modes for using the Stata statistical package
 ;; Modified from S-mode, comint-mode
 ;;
-;; (c) thomas lumley 1997 
+;; (c) thomas lumley 1997
 ;;
 ;;  version 0.4  20/7/97
 ;;
@@ -154,22 +153,22 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       '(("^[ \t]*set") font-lock-reference-face)
       "[ \t]+"
-      '(("adosize" "ANSI" 
-         "b" "be" "bee" "beep" "checksum" "contents" 
+      '(("adosize" "ANSI"
+         "b" "be" "bee" "beep" "checksum" "contents"
          "d" "di" "dis" "disp" "displ" "displa" "display"
          "g" "gr" "gra" "grap" "graph" "graphi" "graphic" "graphics"
          "help"
-         "IBM" 
+         "IBM"
          "l" "le" "lev" "leve" "level"
-         "linesize" 
+         "linesize"
          "lo" "log"
          "mat" "mats" "matsi" "matsiz" "matsize"
-         "maxobs" "maxvar" 
+         "maxobs" "maxvar"
          "mem" "memo" "memor" "memory"
          "mo" "mor" "more"
          "obs"
          "ou" "out" "outp" "outpu" "output"
-         "pagesize" 
+         "pagesize"
          "r" "rm" "rms" "rmsg"
          "se" "see" "seed" "seed0" "shell"
          "te" "tex" "text" "texts" "textsi" "textsiz" "textsize"
@@ -186,7 +185,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "[ \t]+"
       '((
-         "cons" "const" "constr" "constra" "constrai" "constrain" "constraint" 
+         "cons" "const" "constr" "constra" "constrai" "constrain" "constraint"
          ) font-lock-reference-face)
       "[ \t]+"
       '((
@@ -195,7 +194,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "di" "dir"
          "drop"
          "l" "li" "lis" "list"
-         ) 
+         )
         font-lock-type-face)
       "\\b"
       ))
@@ -209,8 +208,8 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "e" "ex" "exi" "exis" "exist" "existe" "existen" "existenc" "existence"
-         "f" "fi" "fil" "file" 
-         "n" "nu" "num" "numb" "numbe" "number" 
+         "f" "fi" "fil" "file"
+         "n" "nu" "num" "numb" "numbe" "number"
          "v" "va" "var" "vari" "varia" "variab" "variabl" "variable"
          ) font-lock-type-face)
       "\\b"
@@ -262,7 +261,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          ) font-lock-type-face)
       "[ \t]+"
       '((
-         "v" "va" "var" "vari" "varia" "variab" "variabl" "variable" 
+         "v" "va" "var" "vari" "varia" "variab" "variabl" "variable"
          ) font-lock-type-face)
       "\\b"
       ))
@@ -280,7 +279,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          ) font-lock-type-face)
       "[1-9]+[0-9]*[ \t]+"
       '((
-         "v" "va" "var" "vari" "varia" "variab" "variabl" "variable" 
+         "v" "va" "var" "vari" "varia" "variab" "variabl" "variable"
          ) font-lock-type-face)
       "\\b"
       ))
@@ -302,9 +301,9 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "mat" "matr" "matri" "matrix"
          "post"
          "repost"
-         "sca" "scal" "scala" "scalar" 
+         "sca" "scal" "scala" "scalar"
          "u" "un" "unh" "unho" "unhol" "unhold"
-         ) 
+         )
         font-lock-type-face)
       "\\b"
       ))
@@ -326,7 +325,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "pen" "point"
          "text"
          "vline" "vpoint" "vpoly" "vtext"
-         ) 
+         )
         font-lock-type-face)
       "\\b"
       ))
@@ -337,20 +336,20 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '(("mat" "matr" "matri" "matrix") font-lock-reference-face)
       "[ \t]+"
-      '(("ac" "acc" "accu" "accum" 
-         "cole" "coleq" 
+      '(("ac" "acc" "accu" "accum"
+         "cole" "coleq"
          "coln" "colna" "colnam" "cloname" "colnames"
-         "d" "def" "defi" "defin" "define" 
+         "d" "def" "defi" "defin" "define"
          "di" "dir" "dispCns" "drop" "drop _all"
-         "glsa" "glsac" "glsacc" "glsaccu" "glsaccum" 
+         "glsa" "glsac" "glsacc" "glsaccu" "glsaccum"
          "l" "li" "lis" "list" "makeCns" "mlou" "mlout" "post"
-         "rowe" "roweq" 
+         "rowe" "roweq"
          "rown" "rowna" "rownam" "rowname" "rownames"
-         "sco" "scor" "score" 
-         "sub" "subs" "subst" "substi" "substit" "substitu" "substitut" "substitute" 
+         "sco" "scor" "score"
+         "sub" "subs" "subst" "substi" "substit" "substitu" "substitut" "substitute"
          "svd" "syme" "symei" "symeig" "symeige" "symeigen"
          "veca" "vecac" "vecacc" "vecaccu" "vecaccum"
-         ) 
+         )
         font-lock-type-face)
       "\\b"
       ))
@@ -360,10 +359,10 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '(("ml") font-lock-reference-face)
       "[ \t]+"
-      '(("b" "be" "beg" "begi" "begin" 
+      '(("b" "be" "beg" "begi" "begin"
          "check" "count"
-         "de" "dep" "depn" "depna" "depnam" "depname" "depnames" 
-         "di" "dis" "disp" "displ" "displa" "display" 
+         "de" "dep" "depn" "depna" "depnam" "depname" "depnames"
+         "di" "dis" "disp" "displ" "displa" "display"
          "f" "fu" "fun" "func" "funct" "functi" "functio" "function"
          "gr" "gra" "grap" "graph"
          "init"
@@ -372,7 +371,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "ml" "mlo" "mlou" "mlout"
          "mo" "mod" "mode" "model"
          "pl" "plo" "plot"
-         "po" "pos" "post" 
+         "po" "pos" "post"
          "q" "qu" "que" "quer" "query"
          "re" "rep" "repo" "repor" "report"
          "sa" "sam" "samp" "sampl" "sample"
@@ -539,15 +538,15 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "forward"
-         "minimize" 
-         "prefs load" 
-         "prefs save" 
+         "minimize"
+         "prefs load"
+         "prefs save"
          "prefs default"
          "print graph"
          "print log"
          "restore"
          "update variable"
-         ) 
+         )
         font-lock-type-face)
       "\\b"
       ))
@@ -570,7 +569,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "clear"
          "popout"
          "set"
-         ) 
+         )
         font-lock-type-face)
       "\\b"
       ))
@@ -583,11 +582,11 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          ) font-lock-reference-face)
       "[ \t]+"
       '((
-         "de" "def" "defi" "defin" "define" 
+         "de" "def" "defi" "defin" "define"
          "di" "dir"
          "drop"
          "l" "li" "lis" "list"
-         ) 
+         )
         font-lock-type-face)
       "\\b"
       ))
@@ -602,8 +601,8 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "^[ \t]+"
       '((
          "cap" "capt" "captu" "captur" "capture"
-         "char" "err" "erro" "error" "e" "ex" "exi" "exit" 
-         "par" "pars" "parse" 
+         "char" "err" "erro" "error" "e" "ex" "exi" "exit"
+         "par" "pars" "parse"
          "set"
          ) font-lock-reference-face)
       "\\b"
@@ -617,28 +616,28 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "\\b"
       '((
          "_huber" "_qreg" "_robust"
-         "acprplot" "adjust" 
-         "adopath" "alpha" 
+         "acprplot" "adjust"
+         "adopath" "alpha"
          "an" "ano" "anov" "anova" "arch"
-         "areg" "arima" 
-         "as" "ass" "asse" "asser" "assert" 
+         "areg" "arima"
+         "as" "ass" "asse" "asser" "assert"
          "avplot" "avplots"
-         "bcskew0" 
-         "be" "bee" "beep" 
+         "bcskew0"
+         "be" "bee" "beep"
          "biprobit" "bitest" "bitesti" "blogit"
-         "boxcox" "bprobit" "br" "break" "brier" 
-         "bro" "brow" "brows" "browse" 
+         "boxcox" "bprobit" "br" "break" "brier"
+         "bro" "brow" "brows" "browse"
          "bsqreg" "bstat" "by"
-         "canon" "cat" "cc" "cci" "cchart" "centile" "cf" "ci" "cii" 
+         "canon" "cat" "cc" "cci" "cchart" "centile" "cf" "ci" "cii"
          "clogi" "clogit" "clogitp" "cloglog"
-         "close" "cmdtool" 
-         "cnr" "cnre" "cnreg" "cnsreg" "codebook" "compare" 
-         "copy" 
+         "close" "cmdtool"
+         "cnr" "cnre" "cnreg" "cnsreg" "codebook" "compare"
+         "copy"
          "cor" "corc" "corr" "corre" "correl" "correla" "correlat" "correlate"
          "corrgram"
-         "cou" "coun" "count" 
-         "cox"	"cprplot" "_crcswxx" "cs" "csi" 
-         "ct" "ctset" "cttost" 
+         "cou" "coun" "count"
+         "cox"	"cprplot" "_crcswxx" "cs" "csi"
+         "ct" "ctset" "cttost"
          "cumul" "cusum")
         font-lock-reference-face)
       "\\b"
@@ -649,13 +648,13 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       '((
          "d" "de" "des" "desc" "descr" "descri" "describ" "describe"
          "dfbeta" "dfuller" "di"
-         "dir" "dis" "disp" "disp_res" "disp_s" 
+         "dir" "dis" "disp" "disp_res" "disp_s"
          "displ" "displa" "display"
          "do" "dotplot"
          "dprobit" "ds" "dstdize" "dwstat"
          "eivreg" "eq" "ereg"
          "fac" "fact" "facto" "factor"
-         "fit" "for" "fpredict" 
+         "fit" "for" "fpredict"
          "fracplot" "fracpoly" "fsl"
          ) font-lock-reference-face)
       "\\b"
@@ -668,7 +667,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "gphdot" "gphpen" "graph" "gprobit" "greigen" "grmeanby"
          "hadimvo" "hausman" "heckman" "heckprob" "hetprob" "hettest" "hilite"
          "hist" "hlu" "hotel"
-         "iqreg" "istdize" "iis" 
+         "iqreg" "istdize" "iis"
          "ins" "insp" "inspe" "inspec" "inspect"
          "integ" "intreg" "ir" "iri" "ivreg"
          "kap" "kappa" "kapwgt" "kdensity" "ksm" "ksmirnov" "ktau"
@@ -680,26 +679,26 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "[ \t]+"
       '((
-         "l" "ladder" "lfit" "lincom" "linktest" 
+         "l" "ladder" "lfit" "lincom" "linktest"
          "li" "lis" "list"
          "log"
-         "logistic" 
-         "logi" "logit" 
-         "loneway" "lookfor" 
+         "logistic"
+         "logi" "logit"
+         "loneway" "lookfor"
          "lo" "loo" "look" "looku" "lookup"
          "lpredict" "lroc" "lrtest" "ls" "lsens" "lstat" "ltable" "lv" "lvr2plot"
          "man" "matcproc" "mcc" "mcci"
-         "means" 
+         "means"
          "mlog" "mlogi" "mlogit"
          "mor" "more"
          "mvreg" "mx_param"
          "n" "nbreg" "newey" "news"
-         "nl" "nlinit" 
+         "nl" "nlinit"
          "no" "noi" "nois" "noisi" "noisil" "noisily"
          "note" "notes"
          "nptrend" "numlist"
          "olog" "ologi" "ologit"
-         "ologitp" 
+         "ologitp"
          "on" "one" "onew" "onewa" "oneway"
          "oprob" "oprobi" "oprobit"
          "oprobitp"
@@ -714,14 +713,14 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       '(("pac" "pchart" "pchi" "pcorr" "pergram"
          "pl" "plo" "plot"
          "pnorm" "poisgof" "poisson" "pperron"
-         "prais" 
+         "prais"
          "prob" "probi" "probit"
          "prtest" "prtesti"
          "pwcorr" "pwd"
-         "q" "qchi" "qnorm" "qqplot" "qreg" "quadchk" "quantile" 
+         "q" "qchi" "qnorm" "qqplot" "qreg" "quadchk" "quantile"
          "qu" "que" "quer" "query"
          "qui" "quie" "quiet" "quietl" "quietly"
-         "ranksum" "rchart" "regdw" "regph" 
+         "ranksum" "rchart" "regdw" "regph"
          "reg" "reg3" "regr" "regre" "regres" "regress" "reshape"
          "rot" "rota" "rotat" "rotate"
          "rreg"
@@ -733,7 +732,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "[ \t]+"
       '((
-         "sampsi" "sconfirm" 
+         "sampsi" "sconfirm"
          "sco" "scobit" "scor" "score"
          "sdtest" "sdtesti" "search" "serrbar"
          "sfrancia" "shell" "shelltool" "shewhart" "signrank" "signtest"
@@ -741,13 +740,13 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "st" "st_is" "st_show" "st_ct"
          "stcox" "stcoxkm" "stcurv" "stdes"
          "stem"
-         "stereg" "stir" "stmc" "stmh" "stphplot" "stphtest" 
+         "stereg" "stir" "stmc" "stmh" "stphplot" "stphtest"
          "strate" "streg"
          "sts" "stse" "stset" "stsum" "stvary" "stweib"
          "su" "sum" "summ" "summa" "summar" "summari" "summariz" "summarize"
          "sureg"
-         "svydes" "svyintrg" "svyivreg" "svylc" "svylogit" 
-         "svymean" "svymean" "svymlog" "svyolog" "svyoprob" "svypois" "svyprobt" 
+         "svydes" "svyintrg" "svyivreg" "svylc" "svylogit"
+         "svymean" "svymean" "svymlog" "svyolog" "svyoprob" "svypois" "svyprobt"
          "svyprop" "svyratio" "svyreg" "svyset" "svytab" "svytest" "svytotal"
          "swilk" "symmetry" "symmi" "symplot" "syntax" "sysdir"
          ) font-lock-reference-face)
@@ -757,24 +756,24 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "[ \t]+"
       '((
-         "ta" "tab" 
-         "tab1" "tab2" 
+         "ta" "tab"
+         "tab1" "tab2"
          "tabdisp"
-         "tabi" 
+         "tabi"
          "table"
          "tabu" "tabul" "tabula" "tabulat" "tabulate"
          "te" "tes" "test"
-         "testnl" "testparm" "tis" 
+         "testnl" "testparm" "tis"
          "tob" "tobi" "tobit"
-         "token" "tokeni" "tokeniz" "tokenize" 
+         "token" "tokeni" "tokeniz" "tokenize"
          "touch" "tsreport" "tsset" "tsunab" "ttest" "ttesti"
          "ty" "typ" "type"
          "unab" "using"
          "vce"
          "verinst" "vif" "vwls"
-         "weibull" "which" "who" "wntestb" "wntestq" 
+         "weibull" "which" "who" "wntestb" "wntestq"
          "xchart" "xcorr"
-         "xtclog" "xtdes" "xtgee" "xtgls" "xthaus" "xtintreg" 
+         "xtclog" "xtdes" "xtgee" "xtgls" "xthaus" "xtintreg"
          "xtlogit" "xtnbreg" "xtpois" "xtprobit"
          "xtrchh" "xtreg" "xtsum" "xttab" "xttest0" "xttobit" "xttrans"
          "zip" "zinb"
@@ -782,7 +781,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "\\b"
       ))
 
-   ;; conditional statements 
+   ;; conditional statements
    ;; if might not work right ('cuz it is also a keyword)
    (eval-when-compile
      (make-regexps
@@ -811,7 +810,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    ;; short version of list --- which can get fooled if used as a var
    (eval-when-compile
      (make-regexps
-      '(("^[ \t]*l\\b" 
+      '(("^[ \t]*l\\b"
          ) font-lock-reference-face)
       ))
 
@@ -837,7 +836,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    ;; things used with display
    ;; since these are often split across lines, and Stata commands are hard
    ;; to delimit, this will highlight even if out of context
-    
+
    (eval-when-compile
      (make-regexps
       "[ \t]+"
@@ -846,7 +845,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "_n" "_ne" "_new" "_newl" "_newli" "_newlin" "_newline"
          "_quote"
          "_r" "_re" "_req" "_requ" "_reque" "_reques" "_request"
-         ) 
+         )
         font-lock-type-face)
       "\\b"
       ))
@@ -857,7 +856,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "_col" "_colu" "_colum" "_column"
          "_d" "_du" "_dup"
          "_s" "_sk" "_ski" "_skip"
-         ) 
+         )
         font-lock-type-face)
       "([1-9]+[0-9]*)\\b"
       ))
@@ -865,7 +864,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "\\bin[ \t]+"
       '((
-         "b" "bl" "blu" "blue" 
+         "b" "bl" "blu" "blue"
          "g" "gr" "gre" "gree" "green"
          "r" "re" "red"
          "w" "wh" "whi" "whit" "white"
@@ -884,8 +883,8 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       '((
          "da" "dat" "data"
          "de" "def" "defi" "defin" "define"
-         "di" "dir" 
-         "drop" 
+         "di" "dir"
+         "drop"
          "l" "li" "lis" "list"
          "save"
          "val" "valu" "value" "values"
@@ -900,13 +899,13 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "\\b"
       '((
          "_pctile" "_predict"
-         "aorder" "append" 
+         "aorder" "append"
          "bcskew0" "bsample" "bs" "bstrap"
-         "cd" "chdir" "clear" "compress" 
+         "cd" "chdir" "clear" "compress"
          "contract" "convert" "cross"
          "dec" "deco" "decod" "decode"
          "discard" "drop" "dydx"
-         "ed" "edi" "edit" "egen" 
+         "ed" "edi" "edit" "egen"
          "en" "enc" "enco" "encod" "encode"
          "erase"
          "expand"
@@ -915,10 +914,10 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "fracgen" "fracpred"
          "g" "ge" "gen" "gene" "gener" "genera" "generat" "generate"
          "gsort"
-         "impute" 
+         "impute"
          "infile" "infix" "input" "insheet" "integ" "ipolate"
          "joinby"
-         "keep" 
+         "keep"
          "lnskew0"
          ) font-lock-keyword-face)
       "\\b"
@@ -928,34 +927,34 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "\\b"
       '((
          "mark" "markout" "marksample"
-         "matname" 
+         "matname"
          "mer" "merg" "merge"
          "mkdir" "mkmat" "mkspline"
          "mleval" "mlmatsum" "mlsum""mlvecsum"
          "modify" "mov" "move"
-         "mvdecode" "mvencode" "nlpred" "nobreak" "order" 
+         "mvdecode" "mvencode" "nlpred" "nobreak" "order"
          "ou" "out" "outf" "outfi" "outfil" "outfile"
          "outs" "outsh" "outshe" "outshee" "outsheet"
-         "pctile" 
-         "post" "postclose" "postfile" 
+         "pctile"
+         "post" "postclose" "postfile"
          "pre" "pred" "predi" "predic" "predict"
          "preserve" "range"
-         "recast" "recode" 
+         "recast" "recode"
          "ren" "rena" "renam" "rename"
          "renpfix" "replace" "restore" "rm"
-         "sappend" 
+         "sappend"
          "sa" "sav" "save"
          "sample" "sdrop"
          "separate"
-         "simul" "sinfile" "smerge" 
-         "smooth" "snapspan" 
+         "simul" "sinfile" "smerge"
+         "smooth" "snapspan"
          "so" "sor" "sort"
-         "ssave" "ssort" "stack" 
+         "ssave" "ssort" "stack"
          "stbase" "stfill" "stgen" "stjoin" "stsplit" "sttocc" "sttoct"
          "suse" "svmat"
          "tsfill" "tsrevar"
          "u" "us" "use"
-         "xi" "xi:" "xtile" "xpose" 
+         "xi" "xi:" "xtile" "xpose"
          "xtdata" "xtpred"
          ) font-lock-keyword-face)
       "\\b"
@@ -1017,9 +1016,9 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          ) font-lock-reference-face)
       "[ \t]+"
       '((
-         "de" "def" "define" 
+         "de" "def" "define"
          "di" "dir"
-         "drop" 
+         "drop"
          "l" "li" "lis" "list"
          "s" "sh" "shi" "shif" "shift"
          )
@@ -1034,20 +1033,20 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "abs" "acos" "asin" "atan" "autocode"
          "Binomial"
          "binorm"
-         "chiprob" "comb" "cond" "cos" 
-         "d" "date" "digamma" "day" 
+         "chiprob" "comb" "cond" "cos"
+         "d" "date" "digamma" "day"
          "dofh" "dofm" "dofq" "dofw" "dofy" "dow" "doy"
          "e" "exp"
-         "float" "fprob" "gammap" "get" "group" 
+         "float" "fprob" "gammap" "get" "group"
          "h" "halfyear" "halfyearly" "hofd"
          "ibeta" "index" "int"
          "invbinomial" "invchi" "invfprob" "invgammap" "invnchi" "invnorm" "invt"
-         "length" "ln" "lnfact" "lngamma" "log" "log10" "lower" "ltrim" 
+         "length" "ln" "lnfact" "lngamma" "log" "log10" "lower" "ltrim"
          "m" "matrix" "max" "mdy" "min" "missing" "mod" "mofd" "month" "monthly"
          "nchi" "normd" "normprob" "npnchi"
          "q" "qofd" "quarter" "quarterly"
-         "r" "real" "recode" "reldif" "replay" "return" "round" "rtrim" 
-         "s" "scalar" "sign" "sin" "sqrt" "string" "substr" "sum" 
+         "r" "real" "recode" "reldif" "replay" "return" "round" "rtrim"
+         "s" "scalar" "sign" "sin" "sqrt" "string" "substr" "sum"
          "tan" "tprob" "trigamma" "trim"
          "uniform" "uniform0" "upper"
          "w" "week" "weekly" "wofd"
@@ -1078,9 +1077,9 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "[ \t]*egen[ \t]+.*=[ \t]*"
-      '(("count" "diff" "fill" "group" "iqr" 
-         "ma" "max" "mean" "median" "min" "mtr" "pctile" 
-         "rank" "rfirst" "rlast" "rmax" "rmean" "rmin" "rmiss" "robs" "rsd" "rsum" 
+      '(("count" "diff" "fill" "group" "iqr"
+         "ma" "max" "mean" "median" "min" "mtr" "pctile"
+         "rank" "rfirst" "rlast" "rmax" "rmean" "rmin" "rmiss" "robs" "rsd" "rsum"
          "sd" "std" "sum")
         font-lock-reference-face t)
       "(.*)"
@@ -1096,14 +1095,14 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "datetoe" "dattomdy" "den2dem" "dishis" "dtapath" "dupclean" "echo"
          "exdupbil" "ezip2hsa" "getdate" "getlbl" "getnames" "getobs" "gplur"
          "icd9" "issorted" "isfile" "jultoe" "jultof" "jultomdy" "knowndup"
-         "labeldir" "linker" 
-         "markit" "makewide" "missize" "mpcounts" 
+         "labeldir" "linker"
+         "markit" "makewide" "missize" "mpcounts"
          "nodups" "notefile" "prov2zip"
-         "qcolsum" "qorder" 
+         "qcolsum" "qorder"
          "random" "readraw" "readzip" "repart"
          "setup" "stdrate"
          "timeslot"
-         "wdatetoe" "wdatomdy" "zip2ezip" 
+         "wdatetoe" "wdatomdy" "zip2ezip"
          "_addext" "_brclean" "_brckado" "_brdlog"
          "_ckbad" "_ckdunno" "_ckdupl" "_ckmiss" "_ckok" "_ckwarn"
          "_delimit" "_filenm" "_lookup" "_mk_ck"
@@ -1139,7 +1138,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 				      nil nil ((?\. . "w")))))
   "General options for editing Stata do and ado source files.")
 
-;; YOU USED TO HAVE TO (with Thomas's version): 
+;; YOU USED TO HAVE TO (with Thomas's version):
 ;;;;; Add the following to your .emacs file
 ;;
 ;;(autoload 'stata "~/essl-sta.el" "inferior stata mode" t )
@@ -1148,7 +1147,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 ;;
 ;;(if (assoc "\\.do$" auto-mode-alist) nil
 ;;  (setq auto-mode-alist
-;;	(append 
+;;	(append
 ;;	 '(("\\.do$" . stata-mode)
 ;;	   ("\\.ado$" . stata-mode))
 ;;	 auto-mode-alist)))
@@ -1166,19 +1165,19 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 ;;
 
 
-;;;;;;;;; Things to change 
+;;;;;;;;; Things to change
 
-(defvar stata-switches "-q" 
+(defvar stata-switches "-q"
   "*Switches to apply to stata invocation.")
 
-(defvar stata-profile "~/.stataprofile"  
+(defvar stata-profile "~/.stataprofile"
   "File to read on startup (nil for no file).")
 
-;;;;;;;;;;;;;;; 
+;;;;;;;;;;;;;;;
 
 ;;(require 'comint)
 
-(defun stata-help (the-subject) 
+(defun stata-help (the-subject)
   "Stata help in other buffer."
   (interactive "sHelp on: ")
   (let* ((stata-process (get-process "stata"))
@@ -1208,7 +1207,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 	(set-process-filter stata-process oldpf)
 	(set-marker (process-mark stata-process) oldpm)))
     (display-buffer "*stata help*")))
-  
+
 (defun stata-lookup (the-subject) "Stata lookup in other buffer"
   (interactive "sLook up: ")
   (let* ((stata-process (get-process "stata"))
@@ -1238,8 +1237,8 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 	(set-process-filter stata-process oldpf)
 	(set-marker (process-mark stata-process) oldpm)))
     (display-buffer "*stata help*")))
-  
-(defun stata-variables () 
+
+(defun stata-variables ()
   "Stata variable list in other buffer."
   (interactive)
   (let* ((stata-process (get-process "stata"))
@@ -1276,7 +1275,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
   (interactive)
   (display-buffer "*stata review*"))
 
-(defun stata-rehelp () 
+(defun stata-rehelp ()
   (interactive)
   (stata-help (current-word)))
 
@@ -1294,7 +1293,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 	  (if moving (goto-char (process-mark proc))))
       (set-buffer old-buffer))))
 
-      
+
 ;;;; <IGNORE>
 ;;; This doesn't do anything at the moment.  I have vague plans of
 ;;; implementing a menu interface using emacs
@@ -1320,7 +1319,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       (set-buffer old-buffer))))
 
 ;;;; </IGNORE>
-    
+
 (defun stata-add-to-review-buffer (string)
   "Adds input to review buffer."
   (save-excursion
@@ -1335,7 +1334,7 @@ PROC is the stata process. Does not change point."
   (save-excursion
     (while (progn
 	     ;; get output if there is some ready
-	     (accept-process-output proc 0 50) 
+	     (accept-process-output proc 0 50)
 	     (goto-char (marker-position (process-mark proc)))
 	     (beginning-of-line)
 	     (if (< (point) start-of-output) (goto-char start-of-output))
@@ -1350,7 +1349,7 @@ PROC is the stata process. Does not change point."
 ;;(define-key inferior-stata-mode-map "\C-c\C-h" 'stata-help)
 ;;(define-key inferior-stata-mode-map "\C-c\C-u" 'stata-lookup)
 ;;(define-key inferior-stata-mode-map "\C-c\C-r"   'stata-review-window)
-;;(define-key inferior-stata-mode-map [menu-bar stata] 
+;;(define-key inferior-stata-mode-map [menu-bar stata]
 ;;  (cons "Stata" (make-sparse-keymap "Stata")))
 ;;(define-key inferior-stata-mode-map [menu-bar stata statahelp]
 ;;  '("Help on..." . stata-help))
@@ -1364,7 +1363,7 @@ PROC is the stata process. Does not change point."
 
 ;;(defvar stata-mode-map nil
 ;;  "Keymap for Stata mode")
-  
+
 ;;(setq stata-mode-map (make-sparse-keymap))
 ;;(define-key stata-mode-map "\C-c\C-r"    'stata-eval-region)
 ;;(define-key stata-mode-map "\C-c\M-r" 'stata-eval-region-and-go)
@@ -1383,7 +1382,7 @@ PROC is the stata process. Does not change point."
 ;;(define-key stata-mode-map "\M-\t" 'comint-replace-by-expanded-filename)
 ;;(define-key stata-mode-map "\177" 'backward-delete-char-untabify)
 ;;(define-key stata-mode-map "\C-c\C-u" 'stata-lookup)
-;;(define-key stata-mode-map [menu-bar stata] 
+;;(define-key stata-mode-map [menu-bar stata]
 ;;  (cons "Stata" (make-sparse-keymap "Stata")))
 ;;(define-key stata-mode-map [menu-bar stata lookup]
 ;;  '("Look up..." . stata-lookup))
@@ -1414,7 +1413,7 @@ PROC is the stata process. Does not change point."
 ;(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
 ;(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
 ;(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
-;(define-key stata-help-mode-map [menu-bar stata] 
+;(define-key stata-help-mode-map [menu-bar stata]
 ;  (cons "Stata" (make-sparse-keymap "Stata")))
 ;(define-key stata-help-mode-map [menu-bar stata statahelp]
 ;  '("Help on..." . stata-help))
@@ -1426,11 +1425,11 @@ PROC is the stata process. Does not change point."
 ;;(defun inferior-stata-mode ()
 ;;"Major mode for running Stata. Based on comint-mode.
 ;;Features include Help (\\[stata-help]), Review (\\[stata-review-window]) and
-;;Variables (\\[stata-variables]) mimicking the help, review and 
+;;Variables (\\[stata-variables]) mimicking the help, review and
 ;;variables windows of Stata for Windows
 ;;\\{inferior-stata-mode-map}"
 ;;  (interactive)
-;;  (make-comint "stata" "stata" 
+;;  (make-comint "stata" "stata"
 ;;	       (and stata-profile
 ;;		    (or (file-exists-p stata-profile)
 ;;			(null (message "Startup file %s not found."
@@ -1454,9 +1453,9 @@ PROC is the stata process. Does not change point."
 ;;
 
 (defun stata-help-mode ()
-  "Major mode for displaying Stata help in a read-only buffer. 
+  "Major mode for displaying Stata help in a read-only buffer.
 Active commands are Help (\\[stata-help]) and hyperlink
-(\\[stata-rehelp] or mouse-2)." 
+(\\[stata-rehelp] or mouse-2)."
   (interactive)
   (setq major-mode 'stata-help-mode)
   (setq mode-name "Stata help")
@@ -1468,7 +1467,7 @@ Active commands are Help (\\[stata-help]) and hyperlink
 ;;(defun stata-mode ()
 ;;"Major mode for editing Stata files. Commands for sending lines to
 ;;Stata (\\[stata-eval-line], \\[stata-eval-line-and-go],
-;;\\[stata-eval-line-and-next-line]) 
+;;\\[stata-eval-line-and-next-line])
 ;;and for displaying Stata help (\\[stata-help]), variables (\\[stata-variables])
 ;; and review window (\\[stata-review-window])
 ;;\\{stata-mode-map}"
@@ -1512,7 +1511,7 @@ Active commands are Help (\\[stata-help]) and hyperlink
 ;;      (beginning-of-line)
 ;;      ;; RDB modified to go to end of S buffer so user can see result
 ;;      ;;(stata-eval-visibly (buffer-substring (point) end) nil t)))
-;;      (stata-eval-region (point) end))) 
+;;      (stata-eval-region (point) end)))
 ;;  (next-line 1))
 
 
@@ -1542,11 +1541,11 @@ Active commands are Help (\\[stata-help]) and hyperlink
 ;;With argument, positions cursor at end of buffer."
 ;;  (interactive "P")
 ;;  (let (stata-process (get-process "stata"))
-;;    (if stata-process 
+;;    (if stata-process
 ;;	(progn
 ;;	  (switch-to-buffer (process-buffer stata-process))
 ;;	  (if eob-p (goto-char (point-max))))
-;;      (progn 
+;;      (progn
 ;;	(message "No inferior stata process")
 ;;	(ding)))))
 
@@ -1564,7 +1563,7 @@ Active commands are Help (\\[stata-help]) and hyperlink
                                                     (region-end))))
       (set-buffer (get-buffer-create ess-STA-delimit-do-file))
       (delete-region (point-min) (point-max))
-      (insert "#delimit ;\n" 
+      (insert "#delimit ;\n"
               commands
               "\n#delimit cr\n")
       (write-file ess-STA-delimit-do-file nil)

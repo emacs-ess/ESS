@@ -1,18 +1,12 @@
 ;;; ess-emcs.el --- simple determination of Emacs/XEmacs and version #.
 
-;; Copyright (C) 2000--2003 A.J. Rossini <rossini@u.washington.edu>,
-;; R.M. Heiberger <rmh@surfer.sbm.temple.edu>,
-;; Martin Maechler <maechler@stat.math.ethz.ch>,
-;; Kurt Hornik <hornik@ci.tuwien.ac.at>, and
-;; Rodney Sparapani <rsparapa@mcw.edu>.
+;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2004/05/13 21:19:39 $
-;; Version: $Revision: 5.22 $
-;; RCS: $Id: ess-emcs.el,v 5.22 2004/05/13 21:19:39 rsparapa Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS

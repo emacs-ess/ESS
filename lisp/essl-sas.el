@@ -1,18 +1,14 @@
 ;;; essl-sas.el --- SAS customization
 
-;; Copyright (C) 1997--2004 Richard M. Heiberger, A. J. Rossini, 
-;;  M. Maechler, Rodney Sparapani
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Authors: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
+;; Original Authors: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;          A.J. Rossini <rossini@u.washington.edu>,
 ;;          Rodney Sparapani <rsparap@mcw.edu>
-;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
-;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2004/06/16 21:47:53 $
-;; Version: $Revision: 5.50 $
-;; RCS: $Id: essl-sas.el,v 5.50 2004/06/16 21:47:53 rsparapa Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
@@ -89,7 +85,7 @@ on this mode."
   "Toggle Ess-Listing minor mode.
 With arg, turn Ess-Listing minor mode on if arg is positive, off
 otherwise.  Ess-Listing mode is used solely to place an indicator on
-the mode line." 
+the mode line."
   (interactive "P")
   (setq ess-listing-minor-mode
 	(if (null arg) (not ess-listing-minor-mode)
@@ -113,8 +109,8 @@ the mode line."
   (use-local-map sas-mode-local-map)
   (toggle-read-only t)) ;; to protect the buffer.
 
-(if (not (featurep 'xemacs)) 
-    (setq auto-mode-alist 
+(if (not (featurep 'xemacs))
+    (setq auto-mode-alist
 	(append '(("\\.[lL][sS][tT]\\'" . sas-listing-mode)) auto-mode-alist)))
 ;;;###autoload(add-to-list 'auto-mode-alist '("\\.[lL][sS][tT]\\'" . sas-listing-mode))
 
@@ -140,7 +136,7 @@ the mode line."
   :type  'boolean)
 
 ;; user can specify the sas program name
-(defcustom sas-program 
+(defcustom sas-program
   (if (equal system-type 'Apple-Macintosh) "invoke SAS using program file" "sas")
   "*Command to invoke SAS, default for buffer-local `ess-sas-submit-command'."
   :group 'ess-sas
@@ -157,7 +153,7 @@ the mode line."
 ;  :group 'ess-sas
 ;  :type  'string)
 
-(defcustom sas-notify t 
+(defcustom sas-notify t
   "*Beep and display message when job is done."
   :group 'ess-sas
   :type  'boolean)
@@ -167,7 +163,7 @@ the mode line."
   :group 'ess-sas
   :type  'boolean)
 
-(defcustom sas-get-options nil 
+(defcustom sas-get-options nil
   "Options to be passed to SAS in sas-get-dataset."
   :group 'ess-sas
   :type '(choice (const nil) string))
@@ -187,7 +183,7 @@ number."
   :group 'ess-sas
   :type  'boolean)
 
-(defcustom sas-tmp-libname "_tmp_" 
+(defcustom sas-tmp-libname "_tmp_"
   "*Libname to use for sas-get-dataset."
   :group 'ess-sas
   :type  'string)
@@ -254,7 +250,7 @@ number."
       (require 'font-lock)
 
       (defvar SAS-mode-font-lock-keywords
-	(if ess-sas-run-make-regexp 
+	(if ess-sas-run-make-regexp
 	(list
 	 ;; SAS comments
 	 (cons "^[ \t]*%?\\*.*;"		font-lock-comment-face)
@@ -380,7 +376,7 @@ number."
 	 (cons "^ERROR: .*$"                        font-lock-keyword-face)
 
 	 ;; .log WARNING: messages
-	 (cons "^WARNING: .*$"                      font-lock-function-name-face)	
+	 (cons "^WARNING: .*$"                      font-lock-function-name-face)
 
 	 ;; SAS comments
 ;; /* */ handled by grammar above
@@ -449,8 +445,8 @@ number."
 		"\\|s\\(et\\(in\\|out\\)\\|how\\|ort\\|tore\\|ummary\\)\\|use\\)?"
 
 		"\\>")				    font-lock-keyword-face)
-		
-	
+
+
 
 ;;	 (cons "\\<\\(\\(then\\|else\\)[ \t]*\\)?\\(do\\([ \t]*over\\)?\\|else\\)\\>"
 ;;						    font-lock-keyword-face)
@@ -499,7 +495,7 @@ number."
 		"\\|c\\(nonct\\|ompbl\\)\\|d\\(airy\\|equote\\)\\|fnonct\\|tnonct"
 		"\\|i\\(bessel\\|n\\(dexw\\|put[cn]\\)\\)\\|jbessel\\|put[cn]"
 		"\\|lowcase\\|quote\\|resolve\\|s\\(oundex\\|ysprod\\)\\|tr\\(anwrd\\|imn\\)"
-		
+
 ;;;    ;; IML functions that are not also Datastep functions
 		"\\|a\\(ll\\|ny\\|pply\\|rmasim\\)\\|b\\(lock\\|ranks\\|tran\\)"
 		"\\|c\\(har\\|hoose\\|on\\(cat\\|tents\\|vexit\\|vmod\\)\\|ovlag\\|shape\\|usum\\|vexhull\\)"
@@ -512,7 +508,7 @@ number."
 		"\\|s\\(etdif\\|hape\\|olve\\|plinev\\|pot\\|qrsym\\|ssq\\|torage\\|weep\\|ymsqr\\)"
 		"\\|t\\(\\|eigv\\(al\\|ec\\)\\|oeplitz\\|race\\|risolv\\|ype\\)"
 		"\\|uni\\(on\\|que\\)\\|v\\(alue\\|ecdiag\\)\\|x\\(mult\\|sect\\)\\|yield"
-		
+
 ;;;    ;; SCL functions that are known to work with SAS macro function %sysfunc
 
 		"\\|attr[cn]\\|c\\(exist\\|lose\\)\\|d\\(close\\|num\\|open\\|read\\)"
@@ -741,7 +737,7 @@ opening /* appears.  returns 0 otherwise."
       (beginning-of-line)
       (while ok
         (if (re-search-forward
-	     "\\(^[ \t]*run[ ;]\\)\\|\\(^[ \t]*proc \\|^[ \t]*data[ ;]\\)" 
+	     "\\(^[ \t]*run[ ;]\\)\\|\\(^[ \t]*proc \\|^[ \t]*data[ ;]\\)"
 	     nil 1)
 	    (if (match-beginning 2)
 		(if (re-search-forward
@@ -879,7 +875,7 @@ $" "")
   (let ((name (buffer-file-name)))
     (cond ((not name))
           ((string-match (substring name -4 nil)
-			 "\\.sas\\|\\.lst\\|\\.log") 
+			 "\\.sas\\|\\.lst\\|\\.log")
 
            (setq sas-file-name (substring name 0 (- (length name) 4)))
            (setq sas-buffer-name (buffer-name))

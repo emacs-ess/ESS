@@ -1,14 +1,13 @@
 ;;; essd-vst.el --- ViSta customization
 
 ;; Copyright (C) 1997 A. J. Rossini
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@stat.sc.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Original Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2003/11/06 13:23:19 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: essd-vst.el,v 5.8 2003/11/06 13:23:19 maechler Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS

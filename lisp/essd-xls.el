@@ -1,14 +1,13 @@
 ;;; essd-xls.el --- XLispStat customization for ESS.
 
 ;; Copyright (C) 1997 A. J. Rossini
+;; Copyright (C) 1998--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@stat.sc.edu>
-;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2003/11/06 13:23:19 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: essd-xls.el,v 5.8 2003/11/06 13:23:19 maechler Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: Statistics
 
 ;; This file is part of ESS

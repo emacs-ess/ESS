@@ -1,16 +1,10 @@
 ;;; ess-font-lock.el -- font-lock color options
 
-;; Copyright (C) 1997--2001 Rodney Sparapani <rsparapa@mcw.edu>,
-;; A.J. Rossini <rossini@u.washington.edu>,  Martin Maechler
-;; <maechler@stat.math.ethz.ch>, Kurt Hornik < >, 
-;; Richard M. Heiberger <rmh@temple.edu>.
+;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: Richard M. Heiberger <rmh@temple.edu>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
+;; Original Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: 06 Feb 2000
-;; Modified: $Date: 2001/05/04 20:13:03 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: ess-font-lock.el,v 1.6 2001/05/04 20:13:03 ess Exp $
 
 ;; Keywords: ESS, font-lock
 

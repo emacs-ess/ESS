@@ -1,14 +1,11 @@
 ;;; ess-utils.el --- General Emacs utility functions used by ESS
 
-;; Copyright (C) 1998--2004 D. Bates, K. Hornik, R.M. Heiberger,
-;; M. Maechler, R.A. Sparapani and A.J. Rossini.
+;; Copyright (C) 1998--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
-;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
+;; Original Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2004/07/09 15:05:44 $
-;; Version: $Revision: 5.35 $
-;; RCS: $Id: ess-utils.el,v 5.35 2004/07/09 15:05:44 stephen Exp $
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -352,8 +349,8 @@ is specified, perform action in that buffer."
 "Clone local variables from one buffer to another buffer, current buffer if nil."
     (interactive)
 
-    (ess-set-local-variables 
-	(ess-sas-create-local-variables-alist from-file-or-buffer) 
+    (ess-set-local-variables
+	(ess-sas-create-local-variables-alist from-file-or-buffer)
 	    to-file-or-buffer))
 
 (defun ess-directory-sep (ess-dir-arg)
@@ -370,7 +367,7 @@ Given a directory, pad with directory-separator character, if necessary."
 (if (listp ess-arg) ess-arg (list ess-arg)))
 
 (defun ess-find-exec (ess-root-arg ess-root-dir)
-"Given a root directory and the root of an executable file name, find it's full 
+"Given a root directory and the root of an executable file name, find it's full
 name and path, if it exists, anywhere in the sub-tree."
   (let* ((ess-tmp-dirs (directory-files ess-root-dir t "^[^.]"))
 	 (ess-tmp-return (ess-find-exec-completions ess-root-arg ess-root-dir))
@@ -382,14 +379,14 @@ name and path, if it exists, anywhere in the sub-tree."
 	    (setq ess-tmp-dir (nth i ess-tmp-dirs))
 	    (setq i (+ i 1))
 	    (if (file-directory-p ess-tmp-dir)
-		(setq ess-tmp-return (nconc ess-tmp-return 
+		(setq ess-tmp-return (nconc ess-tmp-return
 		    (ess-find-exec ess-root-arg ess-tmp-dir)))))
     ess-tmp-return))
 
 (defun ess-find-exec-completions (ess-root-arg &optional ess-exec-dir)
 "Given the root of an executable file name, find all possible completions,
 if any exist, in PATH."
-  (let* ((ess-exec-path 
+  (let* ((ess-exec-path
 	 (if ess-exec-dir (ess-return-list ess-exec-dir) exec-path))
 	(ess-tmp-exec nil)
 	(ess-tmp-path-count (length ess-exec-path))
@@ -399,7 +396,7 @@ if any exist, in PATH."
 	(i 0) (j 0) (k 0))
 
 	(while (< i ess-tmp-path-count)
-	    (setq ess-tmp-dir (nth i ess-exec-path))	    
+	    (setq ess-tmp-dir (nth i ess-exec-path))
 	    (if (file-exists-p ess-tmp-dir) (progn
 		(setq ess-tmp-files (file-name-all-completions ess-root-arg ess-tmp-dir))
 		(setq j 0)
@@ -407,7 +404,7 @@ if any exist, in PATH."
 		(while (< j k)
 		    (setq ess-tmp-file (concat (file-name-as-directory ess-tmp-dir)
 			(nth j ess-tmp-files)))
-		    (if (and (file-executable-p ess-tmp-file) 
+		    (if (and (file-executable-p ess-tmp-file)
 			     (not (file-directory-p ess-tmp-file)))
 			(setq ess-tmp-exec (nconc ess-tmp-exec (list ess-tmp-file))))
 		    (setq j (+ j 1)))))

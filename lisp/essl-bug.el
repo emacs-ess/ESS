@@ -1,14 +1,13 @@
 ;;; essl-bug.el -- ESS BUGS customization
 
 ;; Copyright (C) 2001 Rodney Sparapani
-;; Copyright (C) 2002-2004 Free Software Foundation, Inc.
+;; Copyright (C) 2002--2004 Free Software Foundation, Inc.
+;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: Rodney Sparapani <rsparapa@mcw.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Original Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2004/05/13 10:52:38 $
-;; Version: $Revision: 1.25 $
-;; RCS: $Id: essl-bug.el,v 1.25 2004/05/13 10:52:38 stephen Exp $/ini
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -52,8 +51,8 @@
   :group 'ess
   :prefix "ess-")
 
-(defcustom ess-bugs-batch-method 
-  (if ess-microsoft-p 
+(defcustom ess-bugs-batch-method
+  (if ess-microsoft-p
     (if (w32-shell-dos-semantics) 'ms-dos 'sh)
     (if (equal system-type 'Apple-Macintosh) 'apple-script 'sh))
   "Method used by `ess-bugs-batch'.
@@ -69,7 +68,7 @@ Windows users running bash in *shell* will get 'sh by default.
 
 Unix users will get 'sh by default.
 
-Users whose default is not 'sh, but are accessing a remote machine with 
+Users whose default is not 'sh, but are accessing a remote machine with
 `telnet', `rlogin', or `ssh', should have the following in ~/.emacs
    (setq-default ess-bugs-batch-method 'sh)"
     :group 'ess-bugs
@@ -84,7 +83,7 @@ Users whose default is not 'sh, but are accessing a remote machine with
 ;; SJE Thu 13 May 2004
 ;; The "backbugs" scripts can be found in ess-etc-directory, so maybe we
 ;; can use ess-etc-directory here too.
-(defcustom ess-bugs-batch-command 
+(defcustom ess-bugs-batch-command
     (if (equal ess-bugs-batch-version "0.6") "backbugs" "backbug5")
   "*ESS[BUGS]: The name of the command to run BUGS in batch mode.
 
@@ -95,15 +94,15 @@ add path to the command name."
     :type  'string
 )
 
-(defcustom ess-bugs-batch-post-command 
-    (if (equal ess-bugs-batch-method 'sh) "&" " ") 
+(defcustom ess-bugs-batch-post-command
+    (if (equal ess-bugs-batch-method 'sh) "&" " ")
     "*ESS[BUGS]: Modifiers at the end of the batch BUGS command line."
     :group 'ess-bugs
     :type  'string
 )
 
-(defcustom ess-bugs-batch-pre-command 
-    (if (equal ess-bugs-batch-method 'sh) "test -f nohup.out && rm -f nohup.out || true; nohup" 
+(defcustom ess-bugs-batch-pre-command
+    (if (equal ess-bugs-batch-method 'sh) "test -f nohup.out && rm -f nohup.out || true; nohup"
 	(if ess-microsoft-p "start"))
     "*ESS[BUGS]: Modifiers at the beginning of the batch BUGS command line."
     :group 'ess-bugs
@@ -161,11 +160,11 @@ add path to the command name."
     :type  'string
 )
 
-(defcustom ess-bugs-suffix-regexp 
+(defcustom ess-bugs-suffix-regexp
     (concat "[.]\\([bB][oOuU][gG]\\|[bB][mM][dD]\\|"
-	(if ess-bugs-inits-suffix (concat 
+	(if ess-bugs-inits-suffix (concat
 	    "\\|" (downcase ess-bugs-inits-suffix) "\\|" (upcase ess-bugs-inits-suffix)))
-	(if ess-bugs-data-suffix (concat 
+	(if ess-bugs-data-suffix (concat
 	    "\\|" (downcase ess-bugs-data-suffix) "\\|" (upcase ess-bugs-data-suffix)))
         "\\)")
     "*ESS[BUGS]: Regular expression for BUGS suffixes."
@@ -173,7 +172,7 @@ add path to the command name."
     :type  'string
 )
 
-(defcustom ess-bugs-mode-hook nil 
+(defcustom ess-bugs-mode-hook nil
     "*ESS[BUGS]: List of functions to call upon entering mode."
     :group 'ess-bugs
     :type 'hook)
@@ -250,17 +249,17 @@ Set `ess-bugs-file', `ess-bugs-file-root', `ess-bugs-file-suffix'
 and `ess-bugs-file-dir'."
    (let ((ess-bugs-temp-string (buffer-name)))
         (setq ess-bugs-file (expand-file-name ess-bugs-temp-string))
-        (setq ess-bugs-file-dir 
+        (setq ess-bugs-file-dir
 	    (convert-standard-filename (file-name-directory ess-bugs-file)))
-        (setq ess-bugs-file-root 
+        (setq ess-bugs-file-root
 	    (file-name-nondirectory (file-name-sans-extension ess-bugs-file)))
 
-        (if (fboundp 'file-name-extension) 
+        (if (fboundp 'file-name-extension)
 	    (setq ess-bugs-file-suffix (file-name-extension ess-bugs-temp-string))
 	    ;;else
 	    (setq ess-bugs-file-suffix (car (last (split-string ess-bugs-temp-string "[.]")))))
 
-	(setq ess-bugs-file-suffix 
+	(setq ess-bugs-file-suffix
 	    (downcase (car (split-string (concat "." ess-bugs-file-suffix) "[<]"))))
 
 	(setq ess-bugs-file (concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-file-suffix))
@@ -285,7 +284,7 @@ and `ess-bugs-file-dir'."
             (insert "    for (i in 1:N) {\n    \n")
             (insert "    }\n")
             (insert "}\n")
-	))	
+	))
 
 	(if (equal ".bmd" suffix) (let
 	    ((tmp-bugs-file-dir (if (equal ess-bugs-batch-version "0.6") ess-bugs-file-dir)))
@@ -294,7 +293,7 @@ and `ess-bugs-file-dir'."
 	    (insert (concat "update(" ess-bugs-default-burn-in ")\n"))
 	    (insert (concat "save(\"" tmp-bugs-file-dir ess-bugs-file-root ".in1\")\n"))
 	    (insert "#%MONITOR\n\n#%MONITOR\n")
-	    (if (equal ess-bugs-batch-version "0.6") 
+	    (if (equal ess-bugs-batch-version "0.6")
 		(insert (concat "checkpoint(" ess-bugs-default-checkpoint ")\n")))
 	    (insert (concat "update(" ess-bugs-default-update ")\n"))
 	    (insert (concat "save(\"" tmp-bugs-file-dir ess-bugs-file-root ".in2\")\n"))
@@ -304,7 +303,7 @@ and `ess-bugs-file-dir'."
 	))
     ))
 )
-		
+
 (defun ess-exit-notify-sh (string)
   "Detect completion or failure of submitted job and notify the user."
   (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
@@ -317,7 +316,7 @@ and `ess-bugs-file-dir'."
    (ess-bugs-file)
 
    (if (equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
-   ;;else 
+   ;;else
    (if (equal ".bmd" ess-bugs-file-suffix) (ess-bugs-na-bmd))
 )
 
@@ -328,7 +327,7 @@ and `ess-bugs-file-dir'."
     (shell)
 
     (if (w32-shell-dos-semantics)
-	(if (string-equal ":" (substring ess-bugs-file 1 2)) 
+	(if (string-equal ":" (substring ess-bugs-file 1 2))
 	    (progn
 		(insert (substring ess-bugs-file 0 2))
 		(comint-send-input)
@@ -342,14 +341,14 @@ and `ess-bugs-file-dir'."
 	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " "
 	    (if (equal ess-bugs-batch-version "0.6") ess-bugs-default-bins)
 	     " " ess-bugs-file-root " "
-	    (if (equal ess-bugs-batch-version "0.6") 
+	    (if (equal ess-bugs-batch-version "0.6")
 		 ess-bugs-file (concat ess-bugs-file-root ".bmd"))
 	     " " ess-bugs-batch-post-command))
 
 	(comint-send-input)
 )
 
-   
+
 (defun ess-bugs-na-bug ()
     "ESS[BUGS]: Perform Next-Action for .bug"
 
@@ -358,11 +357,11 @@ and `ess-bugs-file-dir'."
 		((tmp-bugs-file-dir (if (equal ess-bugs-batch-version "0.6") ess-bugs-file-dir)))
 		(goto-char (point-min))
 
-	        (if (search-forward "%MODEL" nil t) 
+	        (if (search-forward "%MODEL" nil t)
 		    (replace-match ess-bugs-file-root t t))
 
 	        (if (search-forward "%DATA" nil t) (progn
-		    (setq ess-bugs-file-data 
+		    (setq ess-bugs-file-data
 			(concat tmp-bugs-file-dir ess-bugs-file-root ess-bugs-data-suffix))
 		    (replace-match ess-bugs-file-data t t))
 	        ;;else
@@ -372,15 +371,15 @@ and `ess-bugs-file-dir'."
 		    (setq ess-bugs-file-data "...")
 		))
 
-	        (if (search-forward "%INITS" nil t) 
-		    (replace-match 
+	        (if (search-forward "%INITS" nil t)
+		    (replace-match
 			(concat tmp-bugs-file-dir ess-bugs-file-root ess-bugs-inits-suffix) t t))
- 
+
 		(let ((ess-bugs-temp-string " ")
 		    (ess-bugs-buffer-ptr nil))
 		    (goto-char (point-min))
-		
-		    (if (search-forward-regexp 
+
+		    (if (search-forward-regexp
 			    "N[ \t]*=[ \t]*[0-9]+[ \t]*;[ \t]*#[ \t]*%N" nil t) (progn
 
 			(save-excursion (save-match-data
@@ -390,14 +389,14 @@ and `ess-bugs-file-dir'."
 				(set-buffer (create-file-buffer ess-bugs-file-data))
 				(insert-file-contents ess-bugs-file-data t))
 
-			    (setq ess-bugs-temp-string 
-				(concat "N = " 
+			    (setq ess-bugs-temp-string
+				(concat "N = "
 				    (int-to-string (count-lines (point-min) (point-max))) ";#%N"))
 			))
 
 			(replace-match ess-bugs-temp-string t t)
 		    ))
-		)	
+		)
 
 		(let (
 		    (ess-bugs-search-min nil)
@@ -408,25 +407,25 @@ and `ess-bugs-file-dir'."
 
 		    (goto-char (point-min))
 
-		    (if (search-forward-regexp "%MONITOR[ \t]+" nil t) 
+		    (if (search-forward-regexp "%MONITOR[ \t]+" nil t)
 			(setq ess-bugs-search-min (point))
 		    ;;else
 			(setq ess-bugs-search-min (search-forward "var"))
 		    )
 
 		    (setq ess-bugs-search-max (search-forward-regexp ";"))
-		    
+
 		    (goto-char ess-bugs-search-min)
 		    (setq ess-bugs-monitor-vars "")
-		    
+
 		    (while (search-forward-regexp ess-bugs-search-vars ess-bugs-search-max t)
 
-			(setq ess-bugs-monitor-vars 
-			    (concat ess-bugs-monitor-vars "monitor(" 
+			(setq ess-bugs-monitor-vars
+			    (concat ess-bugs-monitor-vars "monitor("
 				(match-string 1) (match-string 3) (match-string 4) (match-string 5) ")\n"))
 		    )
 
-		    (setq ess-bugs-monitor-vars 
+		    (setq ess-bugs-monitor-vars
 			(concat "#%MONITOR\n" ess-bugs-monitor-vars "#%MONITOR\n"))
 
 		    (goto-char (point-min))
@@ -434,14 +433,14 @@ and `ess-bugs-file-dir'."
 		    (if (search-forward-regexp "%STATS[ \t]+" nil t) (progn
 			(setq ess-bugs-search-min (point))
 			(setq ess-bugs-search-max (search-forward-regexp ";"))
-		    
+
 			(goto-char ess-bugs-search-min)
 			(setq ess-bugs-stats-vars "")
-		    
+
 			(while (search-forward-regexp ess-bugs-search-vars ess-bugs-search-max t)
 
-			    (setq ess-bugs-stats-vars 
-				(concat ess-bugs-stats-vars "stats(" 
+			    (setq ess-bugs-stats-vars
+				(concat ess-bugs-stats-vars "stats("
 				    (match-string 1) (match-string 3) (match-string 4) (match-string 5) ")\n"))
 			)
 
@@ -449,25 +448,25 @@ and `ess-bugs-file-dir'."
 		    )
 
 ;; replace-in-string may not be available, work-around necessary; see below
-;;			(setq ess-bugs-stats-vars 
+;;			(setq ess-bugs-stats-vars
 ;;			    (replace-in-string ess-bugs-monitor-vars "#%MONITOR" "#%STATS"))
-;;			(setq ess-bugs-stats-vars 
+;;			(setq ess-bugs-stats-vars
 ;;			    (replace-in-string ess-bugs-stats-vars "monitor" "stats" t))
 
 		    ;;else
 		    (setq ess-bugs-stats-vars ess-bugs-monitor-vars)
 
 		    (while (string-match "#%MONITOR" ess-bugs-stats-vars)
-			(setq ess-bugs-stats-vars 
+			(setq ess-bugs-stats-vars
 			    (replace-match "#%STATS" t t ess-bugs-stats-vars)))
 
 		    (while (string-match "monitor" ess-bugs-stats-vars)
-			(setq ess-bugs-stats-vars 
+			(setq ess-bugs-stats-vars
 			    (replace-match "stats" t t ess-bugs-stats-vars)))
 
 		    )
 		)
-		    
+
 	    ))
 
 	    (save-buffer)
@@ -476,14 +475,14 @@ and `ess-bugs-file-dir'."
     (save-excursion
 	(goto-char (point-min))
 
-	(if (search-forward-regexp "#%MONITOR\\(.\\|\n\\)*#%MONITOR\n" nil t) 
+	(if (search-forward-regexp "#%MONITOR\\(.\\|\n\\)*#%MONITOR\n" nil t)
 	    (replace-match ess-bugs-monitor-vars t))
 
-	(if (search-forward-regexp "#%STATS\\(.\\|\n\\)*#%STATS\n" nil t) 
+	(if (search-forward-regexp "#%STATS\\(.\\|\n\\)*#%STATS\n" nil t)
 	    (replace-match ess-bugs-stats-vars t))
     )
 
-	)	
+	)
 )
 
 
@@ -499,7 +498,7 @@ and `ess-bugs-file-dir'."
    (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
    (run-hooks 'ess-bugs-mode-hook)
 
-   (if (not (w32-shell-dos-semantics)) 
+   (if (not (w32-shell-dos-semantics))
 	(add-hook 'comint-output-filter-functions 'ess-exit-notify-sh))
 )
 

@@ -1,13 +1,12 @@
 ;;; ess-mous.el --- Support for mouse- or cursor-sensitive actions
 
 ;; Copyright (C) 2001 Richard M. Heiberger <rmh@sbm.temple.edu>
+;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
-;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
+;; Original Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: 25 Mar 2001
-;; Modified: $Date: 2002/06/20 21:52:06 $
-;; Version: $Revision:
-;; RCS: $Id: ess-mous.el
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; This file is part of ESS
 
@@ -231,7 +230,7 @@ the string one more time by embedding it in a \"page()\" command."
 ;;   (define-key inferior-ess-mode-map     [(shift button3)] 'ess-mouse-me)
 ;;   (defun ess-S-mouse-me-ess-transcript-mode ()
 ;;     (define-key ess-transcript-mode-map [(shift button3)] 'ess-mouse-me)))
-;; 
+;;
 (add-hook 'ess-mode-hook            'ess-S-mouse-me-menu-commands)
 (add-hook 'inferior-ess-mode-hook   'ess-S-mouse-me-menu-commands)
 (add-hook 'ess-transcript-mode-hook 'ess-S-mouse-me-menu-commands)

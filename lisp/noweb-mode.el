@@ -1,13 +1,17 @@
 ;; noweb-mode.el - edit noweb files with GNU Emacs
+
 ;; Copyright (C) 1995 by Thorsten.Ohl @ Physik.TH-Darmstadt.de
 ;;     with a little help from Norman Ramsey <norman@bellcore.com>
 ;;                         and Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
 ;;                         and A.J. Rossini <rossini@biostat.washington.edu>
+;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; ESS-related Changes for ESS added by Mark Lunt and A.J. Rossini,
 ;; starting March, 1999.
 
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2, or (at your option)

@@ -7,7 +7,6 @@
 ;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
-;; Version: $Id: ess-mode.el,v 5.34 2004/07/08 07:48:58 maechler Exp $
 
 ;; This file is part of ESS
 

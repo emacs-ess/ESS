@@ -1,10 +1,15 @@
 ;;; ess-toolbar.el --- Support for a toolbar in ESS.
-;;; Thu 06 May 2004
-;;; Stephen Eglen
-;;; GPL.
-;; Modified: $Date: 2004/06/24 12:05:22 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: ess-toolbar.el,v 1.16 2004/06/24 12:05:22 stephen Exp $
+
+;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+
+;; Original Author: Stephen Eglen
+;; Created: 06 May 2004
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
+;; This file is part of ESS
+
+;; GPL --> see beginning of ./ess-site.el
 
 ;;; Commentary:
 
@@ -22,7 +27,7 @@
 ;;; (require 'ess-toolbar)
 ;;; If you see a toolbar, but no icons, check out the value of
 ;;; ess-icon-directory.
-;;; 
+;;;
 ;;; The toolbar can be customized in several ways.  To see options, do:
 ;;; M-x customize-group RET ess-toolbar RET
 ;;; If you change any of the variables, you may need to restart Emacs
@@ -37,7 +42,7 @@
 ;; code should be regarded as proof of concept.
 
 ;; Also, I think the CVS GNU Emacs now has tool-bar support for the
-;; Mac OS X.  
+;; Mac OS X.
 
 ;;; Code:
 
@@ -47,7 +52,7 @@
   :link '(emacs-commentary-link :tag "Commentary" "ess-toolbar.el")
   :prefix "ess-")
 
-(defcustom ess-use-toolbar 
+(defcustom ess-use-toolbar
   (if (featurep 'xemacs)
       (memq (device-type) '(x gtk mswindows))
     (and (fboundp 'display-images-p) (display-images-p)))
@@ -60,7 +65,7 @@ Currently works only under Emacs 21 and maybe XEmacs 21.4."
 (defcustom ess-toolbar-own-icons nil
   "*Non-nil means that we only put our toolbar entries in ESS.
 Otherwise we get standard toolbar as well as ESS entries.
-Under Emacs, the standard toolbar items are copied from the default toolbar.  
+Under Emacs, the standard toolbar items are copied from the default toolbar.
 Under XEmacs, the items stored in `ess-toolbar-xemacs-general' are added."
   :group 'ess-toolbar
   :type 'boolean)
@@ -72,7 +77,7 @@ For beginners, this is probably better set to a non-nil value."
   :group 'ess-toolbar
   :type 'boolean)
 
-(defcustom ess-toolbar-items 
+(defcustom ess-toolbar-items
   '( (R   "startr"  "Start R process")
      (S   "spluslogo" "Start S process")
      (ess-eval-line-and-step   "rline" "Eval line & step")
@@ -86,14 +91,14 @@ Each list element has three items:
 2. the icon to be used (without .xpm extension)
 3. the tooltip doc string (XEmacs only; Emacs gets doc string from menu items.
 
-General toolbar items are also added to the ESS toolbar 
-iff `ess-toolbar-own-icons' is nil." 
+General toolbar items are also added to the ESS toolbar
+iff `ess-toolbar-own-icons' is nil."
   :group 'ess-toolbar
   :type '(repeat (list (function :tag "Function to run")
 		       (string  :tag "Icon")
 		       (string  :tag "Tooltip"))))
 
-(defvar ess-icon-directory 
+(defvar ess-icon-directory
   (expand-file-name (concat ess-etc-directory "/icons"))
   "*Location for ESS icons.
 This variable should be set automatically by the ESS install process.
@@ -116,7 +121,7 @@ If `ess-icon-directory' is invalid, please report a bug.")
 
 (defun ess-make-toolbar-emacs ()
   "Make the ESS toolbar under Emacs."
-  (setq ess-toolbar 
+  (setq ess-toolbar
 	(if (or ess-toolbar-own-icons (null tool-bar-map))
 	    (make-sparse-keymap)
 	  (copy-keymap tool-bar-map)))
@@ -133,9 +138,9 @@ If `ess-icon-directory' is invalid, please report a bug.")
   ;; we get the tooltips "for free" from ess-mode-map.
   (tool-bar-add-item-from-menu (car x) (cadr x) ess-mode-map))
 
-(defun ess-add-icon-xemacs (x) 
+(defun ess-add-icon-xemacs (x)
   "Return a 4-vector containing the spec for an ESS toolbar entry in XEmacs."
-  (vector 
+  (vector
    (toolbar-make-button-list
     (expand-file-name (concat (cadr x) ".xpm") ess-icon-directory))
    (car x)				;function
@@ -145,19 +150,19 @@ If `ess-icon-directory' is invalid, please report a bug.")
 
 (defvar ess-toolbar-xemacs-general
   (list
-   [toolbar-file-icon toolbar-open t "Open a file"] 
-   [toolbar-disk-icon toolbar-save t "Save buffer"] 
+   [toolbar-file-icon toolbar-open t "Open a file"]
+   [toolbar-disk-icon toolbar-save t "Save buffer"]
    [toolbar-printer-icon generic-print-buffer t "Print buffer"]
-   [toolbar-cut-icon toolbar-cut t "Kill region"] 
-   [toolbar-copy-icon toolbar-copy t "Copy region"] 
-   [toolbar-paste-icon toolbar-paste t "Paste from clipboard"] 
-   [toolbar-undo-icon toolbar-undo t "Undo edit"] 
-   [toolbar-replace-icon toolbar-replace t "Search & Replace"] 
+   [toolbar-cut-icon toolbar-cut t "Kill region"]
+   [toolbar-copy-icon toolbar-copy t "Copy region"]
+   [toolbar-paste-icon toolbar-paste t "Paste from clipboard"]
+   [toolbar-undo-icon toolbar-undo t "Undo edit"]
+   [toolbar-replace-icon toolbar-replace t "Search & Replace"]
    [:style 3d]
    )
   "General Xemacs icons to be added iff `ess-toolbar-own-icons' is non-nil.
 These toolbar items were taken from the list that John Fox's code provided.
-Each vector is of length four specifying: 1 - icon; 2 - function to call; 
+Each vector is of length four specifying: 1 - icon; 2 - function to call;
 3 - whether to activate; 4 - doc string.")
 
 (defun ess-make-toolbar-xemacs ()
@@ -169,7 +174,7 @@ Each vector is of length four specifying: 1 - icon; 2 - function to call;
 
 (defun ess-add-toolbar ()
   "Add the ESS toolbar to a particular mode.
-The toolbar is added iff `ess-toolbar-global' is nil, else the toolbar 
+The toolbar is added iff `ess-toolbar-global' is nil, else the toolbar
 is added globally when ess-toolbar.el is loaded."
   (if (and ess-toolbar (not ess-toolbar-global))
       (if (featurep 'xemacs)
@@ -209,5 +214,5 @@ is added globally when ess-toolbar.el is loaded."
 	 ;;(sit-for 2)
 	 ))
       ))
-      
+
 (provide 'ess-toolbar)

@@ -1,14 +1,13 @@
 ;;; essd-omg.el --- Omega customization
 
 ;; Copyright (C) 1999 A. J. Rossini
+;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: A.J. Rossini <rossini@biostat.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
+;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 August 1999
-;; Modified: $Date: 2003/09/25 16:01:42 $
-;; Version: $Revision: 5.9 $
-;; RCS: $Id: essd-omg.el,v 5.9 2003/09/25 16:01:42 maechler Exp $
-;;
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
 ;; Keywords: start up, configuration.
 
 ;; This file is part of ESS.

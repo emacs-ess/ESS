@@ -7,7 +7,6 @@
 ;; Original Authors: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Created: October 14, 1991
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
-;; Version: $Id: ess.el,v 5.30 2004/07/08 07:48:58 maechler Exp $
 
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
