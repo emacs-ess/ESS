@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/11/14 00:35:58 $
-;; Version: $Revision: 1.65 $
-;; RCS: $Id: ess.el,v 1.65 1997/11/14 00:35:58 rossini Exp $
+;; Modified: $Date: 1997/11/14 01:51:35 $
+;; Version: $Revision: 1.66 $
+;; RCS: $Id: ess.el,v 1.66 1997/11/14 01:51:35 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. M. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   ess-bugs@stat.math.ethz.ch|
@@ -185,9 +185,16 @@
 
 (defun ess-load-object-name-db-file ()
   "Load object database file if present, mention if not."
-  (make-local-variable 'ess-object-name-db)
-  (if (not (load ess-object-name-db-file))
-      (message "Object-name database file (see Install directions)")))
+  (if (string= ess-language "S")
+      (progn
+	(make-local-variable 'ess-object-name-db)
+	(condition-case ()
+	    (load ess-object-name-db-file)
+	  (error
+	   (message "%s does not exist.  Consider running ess-create-object-name-db."
+	   	    ess-object-name-db-file)
+	      (ding)
+	      (sit-for 1))))))
 
 
 
