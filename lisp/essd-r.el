@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/03/31 23:46:33 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: essd-r.el,v 5.10 1999/03/31 23:46:33 rossini Exp $
+;; Modified: $Date: 1999/04/05 21:20:53 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: essd-r.el,v 5.11 1999/04/05 21:20:53 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -79,26 +79,26 @@
 (fset 'r-mode 'R-mode)
 
 ;;
-;; Note that R is set to be R-unix or R-microsoft in ess-site.el.
+;; R for unix-only systems.  This should go away.
 ;;
+;;(defun R-original (&optional start-args)
+;;  "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ)."
+;;  (interactive "P")
+;;  (setq ess-customize-alist R-customize-alist)
+;;  ;; for debugging only
+;;  (ess-write-to-dribble-buffer
+;;   (format 
+;;    "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n\t current-prefix-arg=%s\n"
+;;    ess-dialect (current-buffer) start-args
+;;    current-prefix-arg))
+;;  (let ((r-start-args  (concat "--no-readline "
+;;	 (if start-args (read-string
+;;			 "Starting Args [other than `--no-readline'] ? ")
+;;	   nil))))
+;;    (inferior-ess r-start-args)))
 
+;; R that does the right thing irregardless of OS.
 (defun R (&optional start-args)
-  "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ)."
-  (interactive "P")
-  (setq ess-customize-alist R-customize-alist)
-  ;; for debugging only
-  (ess-write-to-dribble-buffer
-   (format 
-    "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n\t current-prefix-arg=%s\n"
-    ess-dialect (current-buffer) start-args
-    current-prefix-arg))
-  (let ((r-start-args  (concat "--no-readline "
-	 (if start-args (read-string
-			 "Starting Args [other than `--no-readline'] ? ")
-	   nil))))
-    (inferior-ess r-start-args)))
-
-(defun R-microsoft  (&optional start-args)
   "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ)."
   (interactive "P")
   (setq ess-customize-alist R-customize-alist)
@@ -109,7 +109,8 @@
     ess-dialect (current-buffer) start-args current-prefix-arg))
   (let* ((r-always-arg
 	  (if (or (equal window-system 'w32) (equal window-system 'win32))
-	      "--ess "  "--no-readline "))
+	      "--ess "
+	    "--no-readline "))
 	 (r-start-args 
 	  (concat r-always-arg
 		  (if start-args
@@ -127,7 +128,7 @@
 	(goto-char (point-max))
 	(beginning-of-line)
 	(insert
-"The interaction of ESS 5.1.4 and R 0.63.3 pre-Beta is slightly rough:\n
+"The interaction of ESS 5.1.8 and R 0.63.3 pre-Beta is rough:\n
 To start the graphics window, you must explicitly use the `x11()' command.\n
 You must quit R with `q()' or you take the risk of not being able
 to shut down the computer cleanly.\n\n")
