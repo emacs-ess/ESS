@@ -100,7 +100,9 @@
 (defun R (&optional start-args)
   "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ).
 Optional prefix (C-u) allows to set command line arguments, such as
---vsize.  This should be OS agnostic."
+--vsize.  This should be OS agnostic.
+If you have certain command line arguments that should always be passed
+to R, put them in the variable `inferior-R-args'."
   (interactive "P")
   (setq ess-customize-alist R-customize-alist)
   (ess-write-to-dribble-buffer   ;; for debugging only
@@ -113,6 +115,7 @@ Optional prefix (C-u) allows to set command line arguments, such as
 	    "--no-readline "))
 	 (r-start-args
 	  (concat r-always-arg
+		  inferior-R-args
 		  (if start-args
 		      (read-string
 		       (concat "Starting Args [other than `"
