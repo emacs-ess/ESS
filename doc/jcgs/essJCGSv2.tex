@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/06 22:20:25 $ - $Revision: 1.126 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/06 22:40:02 $ - $Revision: 1.127 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -189,45 +189,40 @@ open-source, cross-platform
 \label{sec:introduction}
 
 Most statistical research activities, particularly data analysis and
-communication, involve some form of computing.  This places the
-computer user interface in the central role of facilitating
+communication, involve some form of computing.  The computer user
+interface is thus placed in the central role of facilitating
 statistical tasks.  While presentation of components, information, and
 similar output is the most visual component of a user interface,
-perhaps a more critical component is how the user provides input to
-the computer.  A common, well-understood set of input behaviors can
-provide large gains in efficiency.  This paper introduces Emacs Speaks
-Statistics (ESS) \citep{ESS}, a software package which
-provides a common interface to a variety of statistical packages on
-the most common computing platforms.
-%designed to provide a
-%multi-platform, multi-package intelligent environment for statistical
-%analysis.
+perhaps a more critical component is how the computer interprets user
+input.  A familiar, well-understood set of input behaviors can provide
+large gains in efficiency.  This paper introduces Emacs Speaks
+Statistics (ESS) \citep{ESS}, a software package which provides a
+common interface to a variety of statistical packages on the most
+common computing platforms.
 
-ESS is an interface to statistical packages, and provides, through
-Emacs, additional tools which facilitate both statistical software
-development and data analysis.  ESS provides assistance with writing
-statistical code and with evaluation of that same
-code for the data analysis.  ESS works with software packages
-running in either interactive or batch modes.
-ESS currently supports
-the S family of languages (including S
-\citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\regstrd\ \citep{Splus}, and R
-\citep{ihak:gent:1996}); \SAS\regstrd\ \citep{SAS:8}; \XLispStat\ 
-\citep{Tier90} and its extensions Arc \citep{Cook:Weisberg:1999} and
-ViSta \citep{youn:fald:mcfa:1992}; \Stata\ \citep{Stata:6.0}; Omegahat
+ESS is a statistical package interface which provides, through Emacs,
+tools which facilitate both statistical software development and data
+analysis.  ESS provides assistance with both writing and evaluation of
+analysis code for statistical packages which are operated either
+interactively or through batch files.  ESS currently supports the S
+family of languages (including S \citep{BecRCW88,ChaJH92,ChaJ98},
+\Splus\regstrd\ \citep{Splus}, and R \citep{ihak:gent:1996});
+\SAS\regstrd\ \citep{SAS:8}; \XLispStat\ \citep{Tier90} and its
+extensions Arc \citep{Cook:Weisberg:1999} and ViSta
+\citep{youn:fald:mcfa:1992}; \Stata\ \citep{Stata:6.0}; Omegahat
 \citep{DTLang:2000}; and BUGS \citep{BUGS}.  ESS can be extended to
 accommodate most statistical packages which provide either an
 interactive command-line or process batch files for instructions.
 
-The rest of the paper is organized as follows.  We first describe the
-Emacs text editor, the platform upon which ESS runs.  Next,
-the role of ESS as the statistician's user interface is presented
-detailing its operation and showing how it facilitates common
-statistical computing activities.  The unique history of ESS as an
-open source project follows; it has been passed down
-through many generations of developers and has grown as a synthesis
-of several previously independent components.
-Finally, we conclude with future extensions.
+This paper starts by describing the Emacs text editor which forms the
+underlying platform for ESS.  Next, we discuss the role of ESS as part
+of the statistician's user interface, by presenting its features,
+operation, and how it facilitates common statistical computing
+activities.  The unique history of ESS as an open source project
+follows; it has been passed down through many generations of
+developers and has grown as a synthesis of several previously
+independent projects.  Finally, we conclude with future extensions and
+related work.
 
 \section{Emacs}
 \label{sec:emacs}
