@@ -1,3 +1,10 @@
+Wed Mar 31 15:46:37 1999  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* essd-r.el (R): reverted.  Martin fixed this right in ess-site.
+	* essd-r.el (R-unix): renamed from R.  
+	* ess-inf.el (ess-command): sleep-for only used for Splus 4.5,
+ 	i.e. Microsoft "operating systems", sigh.
+
 1999-03-18  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-site.el (auto-mode-alist): OOps for last change *.sty became
