@@ -1,3 +1,62 @@
+Thu Nov 13 20:07:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: forgot ")".
+
+Thu Nov 13 20:06:12 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el: fixed R then SAS buffer name problem.
+
+Thu Nov 13 19:56:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-site.el: added commented example for
+ 	ess-plain-first-buffername.  TRUE by default, i.e. for "novice"
+ 	mode.
+
+Thu Nov 13 19:54:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el: moved database loading to ess-mode and
+ 	inferior-ess-mode; removed old comments.
+
+Thu Nov 13 19:52:31 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (ess-proc-name): If ess-plain-first-buffername is
+	true, don't add "process number" to the first process.
+
+Thu Nov 13 19:35:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.el (ess-load-object-name-db-file): new function, use it.
+
+Thu Nov 13 19:35:27 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el: C-c tab is ess-complete-object-name.
+
+Thu Nov 13 19:34:48 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess-mode-map): C-c TAB is
+	ess-complete-object-name, same as in ess-mode.
+
+Thu Nov 13 19:27:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (inferior-ess-mode): load object-name db file if
+ 	exists.
+
+Thu Nov 13 19:19:37 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-mode): load object-name db file if exists.
+
+Thu Nov 13 19:17:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: bare-bones description of how to create object-name
+ 	databases.
+
+Thu Nov 13 19:09:07 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: added notes for database creation
+
+Thu Nov 13 10:16:12 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README.XLispStat : XLispStat isn't a trademark.
+
 Thu Nov 13 09:59:05 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Makefile (ess.elc): fixed action
@@ -1029,6 +1088,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.31  1997/11/14 01:08:00  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.30  1997/11/13 14:59:55  rossini
 	* Removing *** empty log message ***
 	* Removing

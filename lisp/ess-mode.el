@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/11 03:58:38 $
-;; Version: $Revision: 1.68 $
-;; RCS: $Id: ess-mode.el,v 1.68 1997/11/11 03:58:38 rossini Exp $
+;; Modified: $Date: 1997/11/14 01:11:45 $
+;; Version: $Revision: 1.69 $
+;; RCS: $Id: ess-mode.el,v 1.69 1997/11/14 01:11:45 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -351,6 +351,8 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (setq mode-line-process ;; AJR: in future, XEmacs will use modeline-process.
 	'(" [" (ess-local-process-name ess-local-process-name "none") "]"))
 
+
+  (ess-load-object-name-db-file)
   (run-hooks 'ess-mode-hook)
   (ess-write-to-dribble-buffer "\nFinished setting up ESS-mode.\n"))
 

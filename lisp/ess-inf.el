@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/14 00:53:41 $
-;; Version: $Revision: 1.86 $
-;; RCS: $Id: ess-inf.el,v 1.86 1997/11/14 00:53:41 rossini Exp $
+;; Modified: $Date: 1997/11/14 01:07:40 $
+;; Version: $Revision: 1.87 $
+;; RCS: $Id: ess-inf.el,v 1.87 1997/11/14 01:07:40 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -75,7 +75,7 @@
       (if (> n 1)
 	  (concat name ":" n)
 	(concat name))
-    (concat name ":" n))
+    (concat name ":" n)))
   
 (defun inferior-ess (&optional ess-start-args)
   "Start or switch to inferior ESS process N.

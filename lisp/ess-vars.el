@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/14 00:54:22 $
-;; Version: $Revision: 1.42 $
-;; RCS: $Id: ess-vars.el,v 1.42 1997/11/14 00:54:22 rossini Exp $
+;; Modified: $Date: 1997/11/14 01:11:17 $
+;; Version: $Revision: 1.43 $
+;; RCS: $Id: ess-vars.el,v 1.43 1997/11/14 01:11:17 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -95,11 +95,8 @@ run from.")
   "*File to pick up history from.
 If this is a relative file name, it is relative to ess-directory.")
 
-;;(make-variable-buffer-local 'ess-history-file)
-;;(setq-default ess-history-file ".ESShistory")
-
-;;(concat "." ess-dialect "history"))
-
+(defvar ess-plain-first-buffername t
+  "*No fancy process buffname for the first process of each type (novice mode).")
 
 ;;*;; Variables concerning editing behaviour
 
