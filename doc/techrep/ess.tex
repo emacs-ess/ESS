@@ -114,6 +114,13 @@ edit files (different or the same) and being able to specify different
 modes for handling programming code for the different statistical
 languages.
 
+\textbf{This needs rewriting} The main point is that it acts as a
+uniform interface to the statistical programming code, the statistical
+program/process, documentation tools (\LaTeX, SGML, XML, Noweb), and
+revision control tools (RCS,CVS,SCCS, PRCS), on both local and remote
+machines.  It handles the interface to both source code and
+transcripts using context (syntax highlighting, bookmarking features,
+command-history).
 
 \subsection{Emacs}
 \label{sec:intro:emacs}
@@ -161,7 +168,7 @@ needs for interfacing at the process level.  There is also the
 spreadsheet/MDI interface employed by both spreadsheet packages as
 well as most Apple and Microsoft-based statistical packages.  In
 addition, there have been other one-time implementation interfaces,
-which include graph-based interfaces as exhibited by ViSta
+which include graph-based interfaces as implemented in ViSta
 \citep{youn:lubi:1995}, the SAS terminal interface, which divides the
 terminal window into 3 screens, and possibly others.
 
@@ -188,17 +195,19 @@ well supported, but to a lesser extent.  The lack of objects in SAS
 has prevented the use of object completion facilities.  Stata and
 XLispStat (and the XLispStat extensions, ARC and ViSta) are marginally
 supported, providing mainly syntax highlighting and
-process-interfacing.  Note also that marginal support is the
-functionality that the majority of ESS users take advantage of.
+process-interfacing.  Note that even though we refer to it as marginal
+support, it is still the basic functionality that the majority of ESS
+users take advantage of to differentiate from the package-provided
+interfaces.
 
 %% Roadmap for the paper.
 We follow this up by describing how ESS can be used at first; then
 describe advanced usage.  The next sections explain where it can be
 obtained as well as some history of the project.  Finally, we close
-with a discussion of where it stands and how IDEs might be realized in
-the future.
+with a discussion of current and future extensions as well as how IDEs
+might be realized in the future.
 
-\section{Introductory Usage}
+\section{Features and Usage}
 \label{sec:basic}
 
 
