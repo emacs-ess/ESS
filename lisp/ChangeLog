@@ -1,4 +1,12 @@
-2004-04-16  Stephen Eglen  <stephen@bushmills.inf.ed.ac.uk>
+2004-04-18  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-cust.el (inferior-ess-own-frame): New variable.
+
+	* ess-inf.el (ess-switch-to-ESS): Respect inferior-ess-own-frame.
+	(ess-multi): Use pop-to-buffer if process already running, and 
+	respect inferior-ess-own-frame.
+
+2004-04-16  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-inf.el (ess-multi): Use pop-to-buffer rather than
 	switch-to-buffer, so that special-display-regexps should work.
