@@ -1,14 +1,14 @@
 ;;; ess-utils.el --- General Emacs utility functions used by ESS
 
-;; Copyright (C) 1998--2000 D. Bates, K. Hornik, R.M. Heiberger,
-;; M. Maechler, and A.J. Rossini.
+;; Copyright (C) 1998--2004 D. Bates, K. Hornik, R.M. Heiberger,
+;; M. Maechler, R.A. Sparapani and A.J. Rossini.
 
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2004/06/17 20:10:15 $
-;; Version: $Revision: 5.26 $
-;; RCS: $Id: ess-utils.el,v 5.26 2004/06/17 20:10:15 rsparapa Exp $
+;; Modified: $Date: 2004/06/17 20:11:12 $
+;; Version: $Revision: 5.27 $
+;; RCS: $Id: ess-utils.el,v 5.27 2004/06/17 20:11:12 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
