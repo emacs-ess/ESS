@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2003/09/25 21:22:04 $
-;; Version: $Revision: 5.24 $
-;; RCS: $Id: ess-utils.el,v 5.24 2003/09/25 21:22:04 rsparapa Exp $
+;; Modified: $Date: 2004/05/17 21:19:48 $
+;; Version: $Revision: 5.25 $
+;; RCS: $Id: ess-utils.el,v 5.25 2004/05/17 21:19:48 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -67,6 +67,20 @@
     ;;or  (message "s/%s/%s/ at %s" regexp to-string pl))
     ) )
 
+(defun ess-replace-regexp-dump-to-src
+  (regexp to-string &optional dont-query verbose ensure-mode)
+  "Depending on dont-query, call `ess-rep-regexp' or `query-replace-regexp'
+from the beginning of the buffer."
+  (save-excursion
+    (if (and ensure-mode
+	     (not (equal major-mode 'ess-mode)))
+	(ess-mode))
+    (goto-char (point-min))
+    (if dont-query
+	(ess-rep-regexp     regexp to-string nil nil verbose)
+      (query-replace-regexp regexp to-string nil))))
+
+
 (defun ess-revert-wisely ()
   "Revert from disk if file and buffer last modification times are different."
   (interactive)
@@ -77,17 +91,17 @@
 
 ; Maybe I am being a little hard on 21.1, but it behaves differently.
 ; Basically, revert means roll-back.  But, for SAS purposes, you never
-; really want to roll-back.  You want to refresh the buffer with the 
-; disk file which is being modified in the background.  So, we only 
+; really want to roll-back.  You want to refresh the buffer with the
+; disk file which is being modified in the background.  So, we only
 ; roll-back when the date/time stamp of the file is newer than the buffer
 ; (technically, this is roll-ahead).
 
-; However, I was supporting a version control system (RCS) when I originally 
-; wrote this function.  I added functionality so that the roll-back was 
-; performed by vc.  This worked fine until 21.1.  In 21.1 when you call this 
-; function with vc/CVS, it actually rolls-back to the prior version of the 
-; file rather than refreshing.  Apparently, it ignores the file on disk.  
-; This change actually makes some sense, but it isn't what we want. 
+; However, I was supporting a version control system (RCS) when I originally
+; wrote this function.  I added functionality so that the roll-back was
+; performed by vc.  This worked fine until 21.1.  In 21.1 when you call this
+; function with vc/CVS, it actually rolls-back to the prior version of the
+; file rather than refreshing.  Apparently, it ignores the file on disk.
+; This change actually makes some sense, but it isn't what we want.
 
   (if (not (verify-visited-file-modtime (current-buffer))) (progn
       (revert-buffer t t)
@@ -144,6 +158,8 @@
  Note that setting the default to `t' may not be a good idea when you edit
  binary files!")
 
+;;; MM: Newer Emacsen now have  delete-trailing-whitespace
+;;; --  but no customization like  nuke-trailing-whitespace-p ..
 (defun nuke-trailing-whitespace ()
   "Nuke all trailing whitespace in the buffer.
 Whitespace in this case is just spaces or tabs.
@@ -178,30 +194,30 @@ If not `nil' and not `t', query for each instance."
 
 (defun ess-kermit-get (&optional ess-file-arg ess-dir-arg)
 "Get a file with Kermit.  WARNING:  Experimental!  From your *shell*
-buffer, start kermit and then log in to the remote machine.  Open 
-a file that starts with `ess-kermit-prefix'.  From that buffer, 
-execute this command.  It will retrieve a file from the remote 
+buffer, start kermit and then log in to the remote machine.  Open
+a file that starts with `ess-kermit-prefix'.  From that buffer,
+execute this command.  It will retrieve a file from the remote
 directory that you specify with the same name, but without the
 `ess-kermit-prefix'."
 
     (interactive)
 
-;;     (save-match-data 
+;;     (save-match-data
        (let ((ess-temp-file (if ess-file-arg ess-file-arg (buffer-name)))
 	     (ess-temp-file-remote-directory ess-dir-arg))
-     
-	(if (string-equal ess-kermit-prefix (substring ess-temp-file 0 1)) 
+
+	(if (string-equal ess-kermit-prefix (substring ess-temp-file 0 1))
 	  (progn
 ;; I think there is a bug in the buffer-local variable handling in GNU Emacs 21.3
 ;; Setting ess-kermit-remote-directory every time is somehow resetting it to the
 ;; default on the second pass.  So, here's a temporary work-around.  It will fail
 ;; if you change the default, so maybe this variable should not be customizable.
-;; In any case, there is also trouble with local variables in XEmacs 21.4.9 and 
+;; In any case, there is also trouble with local variables in XEmacs 21.4.9 and
 ;; 21.4.10.  XEmacs 21.4.8 is fine.
-	    (if ess-temp-file-remote-directory 
+	    (if ess-temp-file-remote-directory
 		(setq ess-kermit-remote-directory ess-temp-file-remote-directory)
-		
-		(if (string-equal "." ess-kermit-remote-directory) 
+
+		(if (string-equal "." ess-kermit-remote-directory)
 		    (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
 		    ess-kermit-remote-directory))))
 
@@ -210,13 +226,13 @@ directory that you specify with the same name, but without the
 	  (ess-sas-goto-shell)
 	  (insert "cd " ess-temp-file-remote-directory "; " ess-kermit-command " -s "
 	    (substring ess-temp-file 1) " -a " ess-temp-file)
-          (comint-send-input)	
+          (comint-send-input)
 ;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
 ;;	  (comint-send-input)
-;;	  (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil 
-;;		  (concat "receive ]" ess-sas-temp-file)))                
+;;	  (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil
+;;		  (concat "receive ]" ess-sas-temp-file)))
 ;;	  (comint-send-input)
-;;	  (insert (read-string "Press Return when transfer is complete: " nil nil "c"))                
+;;	  (insert (read-string "Press Return when transfer is complete: " nil nil "c"))
 ;;	  (comint-send-input)
           (insert (read-string "Press Return when shell is ready: "))
 	  (comint-send-input)
@@ -225,42 +241,42 @@ directory that you specify with the same name, but without the
 ))))
 
 (defun ess-kermit-send ()
-"Send a file with Kermit.  WARNING:  Experimental!  From 
+"Send a file with Kermit.  WARNING:  Experimental!  From
 a file that starts with `ess-kermit-prefix',
-execute this command.  It will transfer this file to the remote 
+execute this command.  It will transfer this file to the remote
 directory with the same name, but without the `ess-kermit-prefix'."
 
     (interactive)
 
-;;     (save-match-data 
+;;     (save-match-data
        (let ((ess-temp-file (expand-file-name (buffer-name)))
 	     (ess-temp-file-remote-directory nil))
-     
-	(if (string-equal ess-kermit-prefix (substring (file-name-nondirectory ess-temp-file) 0 1)) 
+
+	(if (string-equal ess-kermit-prefix (substring (file-name-nondirectory ess-temp-file) 0 1))
 	  (progn
 ;; I think there is a bug in the buffer-local variable handling in GNU Emacs 21.3
 ;; Setting ess-kermit-remote-directory every time is somehow resetting it to the
 ;; default on the second pass.  Here's a temporary work-around.  It will fail
 ;; if you change the default, so maybe this variable should not be customizable.
-;; In any case, there is also trouble with local variables in XEmacs 21.4.9 and 
+;; In any case, there is also trouble with local variables in XEmacs 21.4.9 and
 ;; 21.4.10.  XEmacs 21.4.8 is fine.
-	    (if (string-equal "." ess-kermit-remote-directory)		
+	    (if (string-equal "." ess-kermit-remote-directory)
 	        (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file to: "
 		    ess-kermit-remote-directory)))
 
 	  (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
-		
+
 ;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
 	  (ess-sas-goto-shell)
-	  (insert "cd " ess-temp-file-remote-directory "; " ess-kermit-command " -a " 
+	  (insert "cd " ess-temp-file-remote-directory "; " ess-kermit-command " -a "
 	    (substring (file-name-nondirectory ess-temp-file) 1) " -g "  ess-temp-file)
-          (comint-send-input)	
+          (comint-send-input)
 ;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
 ;;	  (comint-send-input)
-;;	  (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil 
-;;		  (concat "receive ]" ess-sas-temp-file)))                
+;;	  (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil
+;;		  (concat "receive ]" ess-sas-temp-file)))
 ;;	  (comint-send-input)
-;;	  (insert (read-string "Press Return when transfer is complete: " nil nil "c"))                
+;;	  (insert (read-string "Press Return when transfer is complete: " nil nil "c"))
 ;;	  (comint-send-input)
           (insert (read-string "Press Return when shell is ready: "))
 	  (comint-send-input)
@@ -269,54 +285,55 @@ directory with the same name, but without the `ess-kermit-prefix'."
 ))))
 
 (defun ess-search-except (regexp &optional except backward)
-"Search for a regexp, store as match 1, optionally ignore strings that match exceptions."
-    (interactive)
-    
-    (let ((continue t) (exit nil))
+  "Search for a regexp, store as match 1, optionally ignore
+strings that match exceptions."
+  (interactive)
+
+  (let ((continue t) (exit nil))
 
     (while continue
-	(if (or (and backward (search-backward-regexp regexp nil t))
-                (and (not backward) (search-forward-regexp regexp nil t))) (progn
+      (if (or (and backward (search-backward-regexp regexp nil t))
+	      (and (not backward) (search-forward-regexp regexp nil t)))
+	  (progn
 	    (setq exit (match-string 1))
             (setq continue (and except (string-match except exit)))
 	    (if continue (setq exit nil)))
-        ;else
-	    (setq continue nil))
-    )
+	;;else
+	(setq continue nil))
+      )
 
-    exit)
-)
+    exit))
 
 (defun ess-save-and-set-local-variables ()
-"If buffer was modified, save file and set Local Variables if defined.  
+  "If buffer was modified, save file and set Local Variables if defined.
 Return t if buffer was modified, nil otherwise."
   (interactive)
 
   (let ((ess-temp-point (point))
-    (ess-temp-return-value (buffer-modified-p)))
-;; if buffer has changed, save buffer now (before potential revert)
-  (if ess-temp-return-value (save-buffer))
+	(ess-temp-return-value (buffer-modified-p)))
+    ;; if buffer has changed, save buffer now (before potential revert)
+    (if ess-temp-return-value (save-buffer))
 
-;; If Local Variables are defined, update them now
-;; since they may have changed since the last revert
-;;  (save-excursion 
+    ;; If Local Variables are defined, update them now
+    ;; since they may have changed since the last revert
+    ;;  (save-excursion
     (beginning-of-line -1)
-    (save-match-data 
-	(if (search-forward "End:" nil t) (revert-buffer t t)))
-;; save-excursion doesn't save point in the presence of a revert
-;; so you need to do it yourself
+    (save-match-data
+      (if (search-forward "End:" nil t) (revert-buffer t t)))
+    ;; save-excursion doesn't save point in the presence of a revert
+    ;; so you need to do it yourself
     (goto-char ess-temp-point)
 
-ess-temp-return-value))
+    ess-temp-return-value))
 
 (defun ess-get-file-or-buffer (file-or-buffer)
-"Return file-or-buffer if it is a buffer; otherwise return the buffer 
+  "Return file-or-buffer if it is a buffer; otherwise return the buffer
 associated with the file which must be qualified by it's path; if the
 buffer does not exist, return nil."
-(interactive)
+  (interactive)
 
-(if file-or-buffer
-    (if (bufferp file-or-buffer) file-or-buffer
+  (if file-or-buffer
+      (if (bufferp file-or-buffer) file-or-buffer
 	(find-buffer-visiting file-or-buffer))))
 
 (defun ess-set-local-variables (alist &optional file-or-buffer)
@@ -338,29 +355,33 @@ is specified, perform action in that buffer."
     (ess-set-local-variables (ess-sas-create-local-variables-alist from-file-or-buffer) to-file-or-buffer))
 
 (defun ess-find-exec (ess-root-arg)
-"Given the root of an executable file name, find it's full name and path,
-if it exists in PATH.  Note that emacs does not attempt to understand the various
-short-hands for CWD in PATH, but that shouldn't be a hindrance here."
+  "Given the root of an executable file name, find it's full name and path,
+if it exists in PATH.  Note that emacs does not attempt to understand the
+various short-hands for CWD in PATH, but that shouldn't be a hindrance here."
 
-(let ((ess-temp-exec nil)
+  (let ((ess-temp-exec nil)
 	(ess-temp-path-count (length exec-path))
 	(ess-temp-suffix-count (length exec-suffix-list))
 	(i 0) (j 0)
-    )
+	)
 
-    (while (and (<= i ess-temp-path-count) (not ess-temp-exec)) (progn
-	(while (and (<= j ess-temp-suffix-count) (not ess-temp-exec)) (progn
-	    (setq ess-temp-exec 
-		(concat (nth i exec-path) ess-root-arg (nth j exec-suffix-list)))
+    (while (and (<= i ess-temp-path-count) (not ess-temp-exec))
+      (progn
+	(while (and (<= j ess-temp-suffix-count) (not ess-temp-exec))
+	  (progn
+	    (setq ess-temp-exec
+		  (concat (nth i exec-path) ess-root-arg
+			  (nth j exec-suffix-list)))
 
 	    (message "%s" ess-temp-exec)
 
-	    (if (not (file-exists-p ess-temp-exec)) (setq ess-temp-exec nil))
+	    (if (not (file-exists-p ess-temp-exec))
+		(setq ess-temp-exec nil))
 	    (setq j (+ j 1))
-	))
+	    ))
 	(setq i (+ i 1))
 	(setq j 0))
-)
-ess-temp-exec))
-	
+      )
+    ess-temp-exec))
+
 (provide 'ess-utils)
