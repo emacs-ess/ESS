@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/06/14 23:14:17 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-xls.el,v 1.6 1997/06/14 23:14:17 rossini Exp $
+;; Modified: $Date: 1997/07/02 16:15:41 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essd-xls.el,v 1.7 1997/07/02 16:15:41 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-xls.el,v $
+;;: Revision 1.7  1997/07/02 16:15:41  rossini
+;;: moved variables to XLS defun.
+;;:
 ;;: Revision 1.6  1997/06/14 23:14:17  rossini
 ;;: finally setup.
 ;;:
@@ -42,12 +45,6 @@
 
 (defun ess-XLS-shortcut-pre-run-hook ()
   "Initialize variables."
-  (setq-default inferior-ess-program          inferior-XLS-program-name
-	ess-proc-prefix               "XLS"
-	ess-version-running           "XLS"
-	inferior-ess-primary-prompt   "> ?" 
-	inferior-ess-help-command     "(help '%s)\n"
-	inferior-ess-exit-command     "(exit)\n")
 )
 
 (defun ess-XLS-shortcut-post-run-hook ()
@@ -57,9 +54,14 @@
 
 (defun XLS () "Call 'XLS', but this is only minimally correct..."
   (interactive)
-  (add-hook 'ess-pre-run-hook  'ess-XLS-shortcut-pre-run-hook)
-  (add-hook 'ess-post-run-hook 'ess-XLS-shortcut-post-run-hook)
-  (setq     ess-proc-prefix    "XLS")
+  ;;(add-hook 'ess-pre-run-hook  'ess-XLS-shortcut-pre-run-hook)
+  ;;(add-hook 'ess-post-run-hook 'ess-XLS-shortcut-post-run-hook)
+  (setq-default inferior-ess-program          inferior-XLS-program-name
+		ess-proc-prefix               "XLS"
+		ess-version-running           "XLS"
+		inferior-ess-primary-prompt   "> ?" 
+		inferior-ess-help-command     "(help '%s)\n"
+		inferior-ess-exit-command     "(exit)\n")
   (inferior-ess))
 
 
