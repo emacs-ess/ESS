@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/07/28 13:51:48 $
-;; Version: $Revision: 1.25 $
-;; RCS: $Id: ess-site.el,v 1.25 1997/07/28 13:51:48 rossini Exp $
+;; Modified: $Date: 1997/07/28 13:57:50 $
+;; Version: $Revision: 1.26 $
+;; RCS: $Id: ess-site.el,v 1.26 1997/07/28 13:57:50 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.26  1997/07/28 13:57:50  rossini
+;;: added explanatory comments for the dialect customization...
+;;:
 ;;: Revision 1.25  1997/07/28 13:51:48  rossini
 ;;: added new customizations.  Need to move the def-vars to ess-vars.
 ;;:
@@ -240,27 +243,14 @@
 
 ;; (1.4) Customize the dialects for your setup.
 
-
+;;;; Choices for *(), where * is from inferior-*-program....
 ;;(setq-default inferior-S+3-program-name "Splus")
 ;;(setq-default inferior-R-program-name "/disk05/rmh/xemacs/R/R-0.49/bin/R"
 ;;(setq-default inferior-XLS-program-name "xlispstat")
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
+;;;; Choice for S().
 ;;(setq-default inferior-S-program-name inferior-S+3-program-name)
-
-;;(defvar inferior-S+3-program-name "Splus"
-;;  "*Program name for invoking an inferior S with S+3().")
-;;(defvar inferior-R-program-name "R"
-;;  "*Program name for invoking an inferior S with R().")
-;;(defvar inferior-XLS-program-name "xlispstat"
-;;  "*Program name for invoking an inferior S with XLS().")
-;;(defvar inferior-S4-program-name "/disk05/s4/S"
-;;  "*Program name for invoking an inferior S with S4().")
-;;(defvar inferior-S3-program-name "/disk05/s/S"
-;;  "*Program name for invoking an inferior S with S3().")
-;;;;; user settable default
-;;(defvar inferior-S-program-name inferior-S+3-program-name
-;;  "*Program name for invoking an inferior S with S().")
 
 ;; (1.5) Require the needed dialects for your setup.
 
