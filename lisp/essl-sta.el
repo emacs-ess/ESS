@@ -6,9 +6,9 @@
 ;;         Brendan Halpin <brendan@essex.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 5.26 $
-;; RCS: $Id: essl-sta.el,v 5.26 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2001/11/20 17:09:15 $
+;; Version: $Revision: 5.27 $
+;; RCS: $Id: essl-sta.el,v 5.27 2001/11/20 17:09:15 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -131,7 +131,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       ))
    (eval-when-compile
      (make-regexps
-      '(("^[ \t]*version") font-lock-builtin-face)
+      '(("^[ \t]*version") font-lock-reference-face)
       "[ \t]*"
       '(("1.0 2.0 2.1 3.0 3.1 4.0 5.0 6 6.0") font-lock-type-face)
       ))
@@ -145,14 +145,14 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    ;; delimit command
    (eval-when-compile
      (make-regexps
-      '(("^[ \t]*#delimit") font-lock-builtin-face)
+      '(("^[ \t]*#delimit") font-lock-reference-face)
       "\\s-*"
       '(("\\(cr\\|;\\)\\s-*$") font-lock-type-face nil)
       ))
    ;; set command (with endless options!)
    (eval-when-compile
      (make-regexps
-      '(("^[ \t]*set") font-lock-builtin-face)
+      '(("^[ \t]*set") font-lock-reference-face)
       "[ \t]+"
       '(("adosize" "ANSI" 
          "b" "be" "bee" "beep" "checksum" "contents" 
@@ -177,7 +177,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "t" "ty" "typ" "type" "video"
          "vir" "virt" "virtu" "virtua" "virtual"
          )
-        font-lock-builtin-face t)
+        font-lock-reference-face t)
       "[ \t]*"
       '(("[a-zA-Z0-9]*") font-lock-type-face)
       ))
@@ -187,7 +187,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "cons" "const" "constr" "constra" "constrai" "constrain" "constraint" 
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "d"
@@ -205,7 +205,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "conf" "confi" "confir" "confirm"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "e" "ex" "exi" "exis" "exist" "existe" "existen" "existenc" "existence"
@@ -220,7 +220,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "conf" "confi" "confir" "confirm"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "integer"
@@ -236,7 +236,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "conf" "confi" "confir" "confirm"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "n" "ne" "new"
@@ -253,7 +253,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "conf" "confi" "confir" "confirm"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "byte" "double" "float" "int" "long"
@@ -273,7 +273,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "conf" "confi" "confir" "confirm"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "str"
@@ -290,7 +290,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "est" "esti" "estim" "estima" "estimat" "estimate" "estimates"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "clear"
@@ -314,7 +314,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "gph"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "arc"
@@ -335,7 +335,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "[ \t]+"
-      '(("mat" "matr" "matri" "matrix") font-lock-builtin-face)
+      '(("mat" "matr" "matri" "matrix") font-lock-reference-face)
       "[ \t]+"
       '(("ac" "acc" "accu" "accum" 
          "cole" "coleq" 
@@ -358,7 +358,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "[ \t]+"
-      '(("ml") font-lock-builtin-face)
+      '(("ml") font-lock-reference-face)
       "[ \t]+"
       '(("b" "be" "beg" "begi" "begin" 
          "check" "count"
@@ -385,7 +385,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "[ \t]+"
-      '(("net") font-lock-builtin-face)
+      '(("net") font-lock-reference-face)
       "[ \t]+"
       '((
          "cd"
@@ -399,9 +399,9 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "[ \t]+"
-      '(("net") font-lock-builtin-face)
+      '(("net") font-lock-reference-face)
       "[ \t]+"
-      '(("set") font-lock-builtin-face)
+      '(("set") font-lock-reference-face)
       "[ \t]+"
       '(("ado" "other") font-lock-type-face)
       "\\b"
@@ -409,7 +409,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "[ \t]+"
-      '(("ado") font-lock-builtin-face)
+      '(("ado") font-lock-reference-face)
       "[ \t]+"
       '(("d" "de" "des" "desc" "descr" "descri" "describ" "describe"
          "dir"
@@ -437,7 +437,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "[ \t]+"
-      '(("ret" "retu" "retur" "return") font-lock-builtin-face)
+      '(("ret" "retu" "retur" "return") font-lock-reference-face)
       "[ \t]+"
       '(("add" "clear" "local" "matrix" "scalar") font-lock-type-face)
       "\\b"
@@ -445,7 +445,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "[ \t]+"
-      '(("sret" "sretu" "sretur" "sreturn") font-lock-builtin-face)
+      '(("sret" "sretu" "sretur" "sreturn") font-lock-reference-face)
       "[ \t]+"
       '(("clear" "local") font-lock-type-face)
       "\\b"
@@ -454,7 +454,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "[ \t]+"
-      '(("sts") font-lock-builtin-face)
+      '(("sts") font-lock-reference-face)
       "[ \t]+"
       '((
          "g"
@@ -470,7 +470,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "[ \t]+"
-      '(("sw") font-lock-builtin-face)
+      '(("sw") font-lock-reference-face)
       "[ \t]+"
       '((
 	 "cloglog" "cnreg" "cox" "ereg" "gamma" "glm" "gompertz" "hetprob"
@@ -487,7 +487,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "win" "wind" "windo" "window"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "d"
@@ -507,11 +507,11 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "win" "wind" "windo" "window"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "c" "co" "con" "cont" "contr" "contro" "control"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       '((
          "button" "check" "clear"
          "edit"
@@ -531,11 +531,11 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "win" "wind" "windo" "window"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "man" "mana" "manag" "manage"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "forward"
@@ -557,11 +557,11 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "win" "wind" "windo" "window"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "m" "me" "men" "menu"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "append popout"
@@ -580,7 +580,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]+"
       '((
          "xwin" "xwind" "xwindo" "xwindow"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "de" "def" "defi" "defin" "define" 
@@ -605,7 +605,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "char" "err" "erro" "error" "e" "ex" "exi" "exit" 
          "par" "pars" "parse" 
          "set"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "\\b"
       ))
    ;; here are some keywords which appear in the middle of lines
@@ -640,7 +640,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "cox"	"cprplot" "_crcswxx" "cs" "csi" 
          "ct" "ctset" "cttost" 
          "cumul" "cusum")
-        font-lock-builtin-face)
+        font-lock-reference-face)
       "\\b"
       ))
    (eval-when-compile
@@ -657,7 +657,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "fac" "fact" "facto" "factor"
          "fit" "for" "fpredict" 
          "fracplot" "fracpoly" "fsl"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "\\b"
       ))
    (eval-when-compile
@@ -673,7 +673,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "integ" "intreg" "ir" "iri" "ivreg"
          "kap" "kappa" "kapwgt" "kdensity" "ksm" "ksmirnov" "ktau"
          "kwallis"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "\\b"
       ))
    (eval-when-compile
@@ -705,7 +705,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "oprobitp"
          "orthog" "orthpoly"
          "ovtest")
-        font-lock-builtin-face)
+        font-lock-reference-face)
       "\\b"
       ))
    (eval-when-compile
@@ -726,7 +726,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "rot" "rota" "rotat" "rotate"
          "rreg"
          "run" "runtest" "rvfplot" "rvpplot"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "\\b"
       ))
    (eval-when-compile
@@ -750,7 +750,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "svymean" "svymean" "svymlog" "svyolog" "svyoprob" "svypois" "svyprobt" 
          "svyprop" "svyratio" "svyreg" "svyset" "svytab" "svytest" "svytotal"
          "swilk" "symmetry" "symmi" "symplot" "syntax" "sysdir"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "\\b"
       ))
    (eval-when-compile
@@ -778,7 +778,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "xtlogit" "xtnbreg" "xtpois" "xtprobit"
          "xtrchh" "xtreg" "xtsum" "xttab" "xttest0" "xttobit" "xttrans"
          "zip" "zinb"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "\\b"
       ))
 
@@ -788,7 +788,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "^[ \t]*\\sw+[ \t]*"
       '(("if"
-         ) font-lock-builtin-face t t)
+         ) font-lock-reference-face t t)
       "\\b"
       ))
 
@@ -796,7 +796,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "^[ \t]*"
       '(("if" "while"
-         ) font-lock-builtin-face t t)
+         ) font-lock-reference-face t t)
       "[ \t]+.*{"
       ))
    ;; else statement (which must just have a {)
@@ -804,7 +804,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "^[ \t]*"
       '(("else"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]*{"
       ))
 
@@ -812,7 +812,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       '(("^[ \t]*l\\b" 
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       ))
 
    ;; all the Stata options
@@ -879,7 +879,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "[ \t]+"
       '(("lab" "labe" "label"
-         ) font-lock-builtin-face t)
+         ) font-lock-reference-face t)
       "[ \t]+"
       '((
          "da" "dat" "data"
@@ -966,7 +966,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "^[ \t]*"
       '(("global" "local" "scalar"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       '(("\\([ \t]+[a-zA-Z_]+[a-zA-Z_0-9]*\\b\\)?"
          ) font-lock-variable-name-face t)
       ))
@@ -975,7 +975,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "^[ \t]*"
       '(("tempname" "tempfile" "tempvar"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       '(("\\([ \t]+[a-zA-Z_]+[a-zA-Z_0-9`']*\\)+"
          ) font-lock-type-face t)
       ))
@@ -1014,7 +1014,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       "[ \t]*"
       '((
          "ma" "mac" "macr" "macro"
-         ) font-lock-builtin-face)
+         ) font-lock-reference-face)
       "[ \t]+"
       '((
          "de" "def" "define" 
@@ -1053,7 +1053,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "w" "week" "weekly" "wofd"
          "y" "year" "yearly" "yh" "ym" "yofd" "yq" "yw"
          )
-        font-lock-builtin-face t)
+        font-lock-reference-face t)
       "("
       ))
    ;; stata 'functions' i.e. things which require [] after them
@@ -1061,7 +1061,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "\\b"
       '(("_b" "_coef" "_se")
-        font-lock-builtin-face t)
+        font-lock-reference-face t)
       "\\["
       ))
    ;; common Stata options which require a () after them
@@ -1082,7 +1082,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "ma" "max" "mean" "median" "min" "mtr" "pctile" 
          "rank" "rfirst" "rlast" "rmax" "rmean" "rmin" "rmiss" "robs" "rsd" "rsum" 
          "sd" "std" "sum")
-        font-lock-builtin-face t)
+        font-lock-reference-face t)
       "(.*)"
       ))
    ;; All Custom ado files which are 'reliable' and which are not file killers
