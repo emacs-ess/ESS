@@ -89,7 +89,7 @@
 
 ;;;### autoload
 (defun R (&optional start-args)
-  "Call 'R', the GNU 'S clone' from Robert & Ross (Auckland, NZ).
+  "Call 'R', the 'GNU S' system from the R Foundation.
 Optional prefix (C-u) allows to set command line arguments, such as
 --vsize.  This should be OS agnostic.
 If you have certain command line arguments that should always be passed
