@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/03 16:27:15 $
-;; Version: $Revision: 1.51 $
-;; RCS: $Id: ess-inf.el,v 1.51 1997/09/03 16:27:15 rossini Exp $
+;; Modified: $Date: 1997/09/03 17:03:36 $
+;; Version: $Revision: 1.52 $
+;; RCS: $Id: ess-inf.el,v 1.52 1997/09/03 17:03:36 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -1121,7 +1121,7 @@ to continue it."
   (setq ess-object-list nil)) ;; Will be reconstucted from cache if needs be
 
 (defun inferior-ess-get-old-input ()
-  "Returns the S command surrounding point."
+  "Returns the ESS command surrounding point."
   (save-excursion
     (beginning-of-line)
     (if (not (looking-at inferior-ess-prompt))
