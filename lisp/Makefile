@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.39 1997/07/25 15:20:07 rossini Exp $
+## $Id: Makefile,v 1.40 1997/07/25 21:06:07 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.40  1997/07/25 21:06:07  rossini
+## added ess-vars, essd-s3, essd-s4 to SOURCES.
+##
 ## Revision 1.39  1997/07/25 15:20:07  rossini
 ## redid to use ess-comp, rather than ess-mode, as the preload.
 ##
@@ -131,8 +134,8 @@ CORE = ess.elc ess-site.elc
 ## Need both types, UNFORTUNATELY, since we want to BUILD and
 ## MAINTAIN.  Some one ought to fix this to be more GNUish.
 
-SOURCES = ess.el \
-	essd-s+3.el essd-r.el essd-xls.el \
+SOURCES = ess-vars.el ess.el \
+	essd-s3.el essd-s4.el essd-s+3.el essd-r.el essd-xls.el \
 	ess-site.el \
 	ess-inf.el ess-mode.el ess-trns.el ess-help.el ess-xtra.el
 
