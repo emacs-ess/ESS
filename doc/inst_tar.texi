@@ -31,9 +31,10 @@ For Microsoft Windows Installation please skip to the
 	gunzip ess-@essver{}.tar.gz
 	tar vxf ess-@essver{}.tar
 @end example
+@display
 	(or: @code{gunzip < ess-@essver{}.tar.gz | tar vxf -} ).
 	(or using GNU tar:  @code{tar zvxf ess-@essver{}.tar.gz}).
-
+@end display
 
   The @code{tar} command will extract files into the current directory.
   Do not create ess-@essver yourself, or you will get an extra level of
