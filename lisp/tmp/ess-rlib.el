@@ -1,4 +1,4 @@
-;;; ess-rlib.el --- browse contents of R libraries.
+;;; ess-rlib.el --- browse contents of R packages.
 ;; Stephen Eglen, GPL applies.
 ;;
 ;; Primitive browswing facilities for the list of packages, and
@@ -12,11 +12,6 @@
 ;;
 ;; Then do M-x
 ;; ess-rpackage or use C-x C-e at end of one of following lines:
-;;
-;; (ess-rpackage "")
-
-;; okay -- shows all libraries; click on one lib (e.g. ctest) to show
-;; info for that lib.  [Click here means RETURN or mouse-2.]
 ;;
 ;; (ess-rpackage "ctest")
 ;; okay
@@ -32,7 +27,8 @@
 ;; not so good, due to regexp failure!
 
 ;; (ess-rpackage "base")
-;; Terrible!
+;; (ess-rpackage "mva")
+;; one problem, near end of buffer.
 
 ;; Presumably, adding link markup to the output from library() command
 ;; would help here so that only functions will get converted into 
@@ -50,11 +46,58 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun ess-rpackage (lib)
+
+(defun ess-rpackage (package)
+  "View functions within the package named PACKAGE.  The package must
+have already been loaded; if the package is not loaded, the functions
+in it can still be viewed, but the help for those functions cannot be
+viewed.  This function is therefore currently restricted to show
+contents for loaded packages only.  This calls an extra R funcition named
+funs.for.package()."
+  (interactive (let ()
+		 (list 
+		  (completing-read "Package name: "  
+				   (mapcar 'list
+					   (ess-rpackage-list))))))
+  (let (beg str (all t))
+    (setq str (concat "funs.for.package('"
+		      package
+		      "')\n"))
+    (ess-execute str nil "ess-rlib")
+    (pop-to-buffer "*ess-rlib*")
+    (goto-char (point-min))
+    (while (re-search-forward "^[^ ]+ " nil t)
+      (beginning-of-line)
+      (setq beg (point))
+      (re-search-forward "[ \t]")
+      (add-text-properties beg (1- (point)) 
+			   '(face underline
+				  mouse-face highlight
+				  help-xref function))
+      (end-of-line)
+      ))
+  
+  ;; End of mark up, so add some text to the top of buffer.
+  (goto-char (point-min))
+  (insert "Functions in package " package ":\n\n")
+  (goto-char (point-min))
+  (ess-rpackage-mode)
+  )
+(defun ess-rpackage-list ()
+  "Return list of packages"
+  (save-window-excursion
+    (ess-execute "cat(.packages(), '\\n')")
+    (pop-to-buffer "*ess-output*")
+    (cdr (reverse
+	  (split-string (buffer-substring (point-min) (point-max)) " ")))))
+
+
+(defun ess-rpackage-1 (lib)
   "View help available for a topic.  Lib should either be blank or
 name of a package.  It currently uses regexps to guess which parts of
 the output are function and package names.  This mostly works, but for
-a classic failure, see output from viewing the base package."
+a classic failure, see output from viewing the base package.
+Old version."
   (interactive "sPackage name (leave blank for lib list): ")
   ;; todo: would it be worth getting completion for package list?
   (let (beg str (all t))
@@ -83,7 +126,7 @@ a classic failure, see output from viewing the base package."
 
     ;; end of mark up
     (goto-char (point-min))
-    (ess-rlib-mode)
+    (ess-rpackage-mode)
     )
   )
 
@@ -121,23 +164,23 @@ a classic failure, see output from viewing the base package."
 
 ;;; Set up the major mode for viewing.
 
-(define-derived-mode ess-rlib-mode
+(define-derived-mode ess-rpackage-mode
   text-mode "Rlib"
   "Major mode for browsing package contents.
-\\{ess-rlib-mode-map}"
+\\{ess-rpackage-mode-map}"
   (setq case-fold-search nil))
 
 
 ;; define the keys.
 (if (featurep 'xemacs)
-    (define-key ess-rlib-mode-map [button2] 'ess-rlib-mouse-view)
-  (define-key ess-rlib-mode-map [mouse-2] 'ess-rlib-mouse-view)
+    (define-key ess-rpackage-mode-map [button2] 'ess-rpackage-mouse-view)
+  (define-key ess-rpackage-mode-map [mouse-2] 'ess-rpackage-mouse-view)
   )
-(define-key ess-rlib-mode-map  [return] 'ess-rpackage-show-help)
-(define-key ess-rlib-mode-map "\t" 'help-next-ref)
+(define-key ess-rpackage-mode-map  [return] 'ess-rpackage-show-help)
+(define-key ess-rpackage-mode-map "\t" 'help-next-ref)
 (if (featurep 'xemacs)
-    (define-key ess-rlib-mode-map [iso-left-tab] 'help-previous-ref)
-  (define-key ess-rlib-mode-map [<S-iso-lefttab>] 'help-previous-ref))
+    (define-key ess-rpackage-mode-map [iso-left-tab] 'help-previous-ref)
+  (define-key ess-rpackage-mode-map [<S-iso-lefttab>] 'help-previous-ref))
 
 
 (defun ess-rpackage-show-help ()
@@ -157,7 +200,7 @@ a classic failure, see output from viewing the base package."
 	    (ess-display-help-on-object fn)
 	  (ess-rpackage fn))))))
 
-(defun ess-rlib-mouse-view (event)
+(defun ess-rpackage-mouse-view (event)
   "In rdired, visit the object on the line you click on."
   ;; copied from ess-rdired.
   (interactive "e")
