@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rodney.sparapani@duke.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2000/09/05 16:56:58 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essa-sas.el,v 1.8 2000/09/05 16:56:58 ess Exp $
+;; Modified: $Date: 2001/01/23 00:48:10 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essa-sas.el,v 1.9 2001/01/23 00:48:10 rossini Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, asynchronous.
 
@@ -148,6 +148,24 @@
   (ess-sas-file ess-sas-suffix-2 'revert))
 
 
+;;;;; Some of R.S.'s additions
+
+
+
+(defvar explicit-command-args nil
+   "Switches for COMMAND.COM.")
+		
+
+(defvar explicit-cmd-args nil
+   "Switches for CMD.EXE.")
+
+(if (featurep 'xemacs)
+  (defun w32-shell-dos-semantics ()
+  "Return t if the interactive shell being used expects msdos shell semantics."
+	(or (string-equal "COMMAND.COM" (file-name-nondirectory shell-file-name))
+	    (string-equal "CMD.EXE" (file-name-nondirectory shell-file-name)))))
+		
+
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that
 depends on the value of  `ess-sas-submit-method'"
@@ -203,14 +221,22 @@ in ess-site.el or in .emacs.")
 			  (buffer-name) "\"")))
 
 
+
+
 (defun ess-sas-submit-windows (ess-sas-arg)
   "Windows using MS-DOS prompt in the *shell* buffer.
 Multiple processing is supported on this platform.
 On most Windows installations, SAS will not be found in your
-PATH.  You can alter your PATH to include SAS or you can specify
-the PATHNAME (PATHNAME can NOT contain spaces), i.e. let
-`ess-sas-arg' be your local equivalent of
-\"c:\\progra~1\\sas\\sas.exe\"."
+PATH.  You can set `ess-sas-submit-command' to 
+\"sas -icon -rsasuser\" and alter your PATH to include SAS, i.e.
+
+SET PATH=%PATH%;C:\\Program Files\\SAS
+
+Or you can specify the PATHNAME directly (you must escape 
+spaces by enclosing the string in \\\"'s), i.e. let 
+`ess-sas-submit-command' be \"\\\"C:\\Program Files\\SAS\\sas.exe\\\"\".
+Keep in mind that the maximum command line length in MS-DOS is
+127 characters so altering your PATH is preferable."
     (shell)
     (if (string-equal ":" (substring ess-sas-file-path 1 2)) 
 	(progn
@@ -218,12 +244,73 @@ the PATHNAME (PATHNAME can NOT contain spaces), i.e. let
 		(comint-send-input)
 	)
     )
-    (insert "cd " (convert-standard-filename 
-	(file-name-directory ess-sas-file-path)))
+    (insert "cd \"" (convert-standard-filename 
+	(file-name-directory ess-sas-file-path)) "\"")
     (comint-send-input)
-    (insert "start " ess-sas-arg " " 
-	(convert-standard-filename ess-sas-file-path))
+    (insert "start " ess-sas-arg " -sysin \"" 
+	(convert-standard-filename ess-sas-file-path) "\"")
     (comint-send-input))
+
+
+;(defun ess-sas-submit-windows (ess-sas-arg)
+;  "Windows using MS-DOS prompt in the *shell* buffer.
+;Multiple processing is supported on this platform.
+;On most Windows installations, SAS will not be found in your
+;PATH.  You can alter your PATH to include SAS or you can specify
+;the PATHNAME (PATHNAME can NOT contain spaces), i.e. let
+;`ess-sas-arg' be your local equivalent of
+;\"c:\\progra~1\\sas\\sas.exe\"."
+;    (shell)
+;    (if (string-equal ":" (substring ess-sas-file-path 1 2)) 
+;	(progn
+;		(insert (substring ess-sas-file-path 0 2))
+;		(comint-send-input)
+;	)
+;    )
+;    (insert "cd " (convert-standard-filename 
+;	(file-name-directory ess-sas-file-path)))
+;    (comint-send-input)
+;    (insert "start " ess-sas-arg " " 
+;	(convert-standard-filename ess-sas-file-path))
+;    (comint-send-input))
+
+
+
+
+
+
+
+(defvar ess-sas-data-view-options 
+  "-nosysin -log NUL: -noenhancededitor"
+  "The options necessary for your enviromment and your 
+operating system.")
+
+
+(defun ess-sas-data-view ()
+  "Open a dataset for viewing with PROC FSVIEW."
+    (interactive)
+    (ess-sas-file-path)
+    (shell)
+    (insert ess-sas-submit-command " " ess-sas-data-view-options 
+	" -initstmt \"proc fsview data=" 
+	(read-string "SAS Dataset: ")
+	"; run;\"")
+    (comint-send-input)
+    (ess-sas-goto-sas))
+
+
+(defun ess-sas-toggle-sas-mode ()
+  "Toggle SAS-mode for .log files."
+  (interactive)
+
+  (if (assoc "\\.log\\'" auto-mode-alist) 
+    (setq auto-mode-alist (delete '("\\.log\\'" . SAS-mode) auto-mode-alist))
+  (setq auto-mode-alist (append '(("\\.log\\'" . SAS-mode)) auto-mode-alist)))
+
+  (if (assoc "\\.LOG\\'" auto-mode-alist) 
+    (setq auto-mode-alist (delete '("\\.LOG\\'" . SAS-mode) auto-mode-alist))
+  (setq auto-mode-alist (append '(("\\.LOG\\'" . SAS-mode)) auto-mode-alist)))
+)
 
 
 (defun ess-sas-submit-sh (ess-sas-arg)
@@ -285,7 +372,6 @@ or comint buffer on the local computer."
 
 
 
-
 (defvar ess-sas-global-unix-keys nil
   "Non-nil if function keys use Unix-like SAS key definitions in all modes.")
 (defun ess-sas-global-unix-keys ()
@@ -297,7 +383,10 @@ or comint buffer on the local computer."
   (global-set-key [f6] 'ess-sas-goto-lst)
   (global-set-key [f7] 'ess-sas-goto-file-1)
   (global-set-key [f8] 'shell)
+  (global-set-key [f9] 'ess-sas-data-view)
+  (global-set-key [f10] 'ess-sas-toggle-sas-mode)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+
 
 (defvar ess-sas-global-pc-keys nil
   "Non-nil if function keys use PC-like SAS key definitions in all modes.")
@@ -310,6 +399,8 @@ or comint buffer on the local computer."
   (global-set-key [f6] 'ess-sas-goto-log)
   (global-set-key [f7] 'ess-sas-goto-lst)
   (global-set-key [f8] 'ess-sas-submit)
+  (global-set-key [f9] 'ess-sas-data-view)
+  (global-set-key [f10] 'ess-sas-toggle-sas-mode)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 
@@ -325,7 +416,10 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map [f6] 'ess-sas-goto-lst)
   (define-key sas-mode-local-map [f7] 'ess-sas-goto-file-1)
   (define-key sas-mode-local-map [f8] 'shell)
+  (define-key sas-mode-local-map [f9] 'ess-sas-data-view)
+  (define-key sas-mode-local-map [f10] 'ess-sas-toggle-sas-mode)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+
 
 (defvar ess-sas-local-pc-keys nil
   "Non-nil if function keys use PC-like SAS key definitions
@@ -339,7 +433,67 @@ in SAS-mode and related modes.")
   (define-key sas-mode-local-map [f6] 'ess-sas-goto-log)
   (define-key sas-mode-local-map [f7] 'ess-sas-goto-lst)
   (define-key sas-mode-local-map [f8] 'ess-sas-submit)
+  (define-key sas-mode-local-map [f9] 'ess-sas-data-view)
+  (define-key sas-mode-local-map [f10] 'ess-sas-toggle-sas-mode)
   (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+
+
+
+
+;(defvar ess-sas-global-unix-keys nil
+;  "Non-nil if function keys use Unix-like SAS key definitions in all modes.")
+;(defun ess-sas-global-unix-keys ()
+;  "Unix/Mainframe-like SAS key definitions"
+;  (global-set-key [f2] 'ess-revert-wisely)
+;  (global-set-key [f3] 'ess-sas-submit)
+;  (global-set-key [f4] 'ess-sas-goto-sas)
+;  (global-set-key [f5] 'ess-sas-goto-log)
+;  (global-set-key [f6] 'ess-sas-goto-lst)
+;  (global-set-key [f7] 'ess-sas-goto-file-1)
+;  (global-set-key [f8] 'shell)
+;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+
+;(defvar ess-sas-global-pc-keys nil
+;  "Non-nil if function keys use PC-like SAS key definitions in all modes.")
+;(defun ess-sas-global-pc-keys ()
+;  "PC-like SAS key definitions"
+;  (global-set-key [f2] 'ess-revert-wisely)
+;  (global-set-key [f3] 'shell)
+;  (global-set-key [f4] 'ess-sas-goto-file-1)
+;  (global-set-key [f5] 'ess-sas-goto-sas)
+;  (global-set-key [f6] 'ess-sas-goto-log)
+;  (global-set-key [f7] 'ess-sas-goto-lst)
+;  (global-set-key [f8] 'ess-sas-submit)
+;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+
+
+;(defvar ess-sas-local-unix-keys nil
+;  "Non-nil if function keys use Unix-like SAS key definitions
+;in SAS-mode and related modes.")
+;(defun ess-sas-local-unix-keys ()
+;  "Unix/Mainframe-like SAS key definitions"
+;  (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
+;  (define-key sas-mode-local-map [f3] 'ess-sas-submit)
+;  (define-key sas-mode-local-map [f4] 'ess-sas-goto-sas)
+;  (define-key sas-mode-local-map [f5] 'ess-sas-goto-log)
+;  (define-key sas-mode-local-map [f6] 'ess-sas-goto-lst)
+;  (define-key sas-mode-local-map [f7] 'ess-sas-goto-file-1)
+;  (define-key sas-mode-local-map [f8] 'shell)
+;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
+
+;(defvar ess-sas-local-pc-keys nil
+;  "Non-nil if function keys use PC-like SAS key definitions
+;in SAS-mode and related modes.")
+;(defun ess-sas-local-pc-keys ()
+;  "PC-like SAS key definitions."
+;  (define-key sas-mode-local-map [f2] 'ess-revert-wisely)
+;  (define-key sas-mode-local-map [f3] 'shell)
+;  (define-key sas-mode-local-map [f4] 'ess-sas-goto-file-1)
+;  (define-key sas-mode-local-map [f5] 'ess-sas-goto-sas)
+;  (define-key sas-mode-local-map [f6] 'ess-sas-goto-log)
+;  (define-key sas-mode-local-map [f7] 'ess-sas-goto-lst)
+;  (define-key sas-mode-local-map [f8] 'ess-sas-submit)
+;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path))
 
 
 
