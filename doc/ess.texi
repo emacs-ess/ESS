@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.48 2004/03/05 08:25:48 maechler Exp $
+@comment $Id: ess.texi,v 5.49 2004/04/18 15:20:28 stephen Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle (Documentation $Revision: 5.48 $ $Date: 2004/03/05 08:25:48 $)
+@subtitle (Documentation $Revision: 5.49 $ $Date: 2004/04/18 15:20:28 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version
 @include ../VERSION
 
-        (Documentation $Revision: 5.48 $ $Date: 2004/03/05 08:25:48 $).
+        (Documentation $Revision: 5.49 $ $Date: 2004/04/18 15:20:28 $).
 
 @display
 by  A.J. Rossini,
@@ -2565,6 +2565,11 @@ variables which affect the behavior of ESS in certain situations which
 can be modified to your liking.  Keybindings may be set or changed to
 your preferences, and for per-buffer customizations hooks are also
 available.
+
+Most of these variables can be viewed and set using the Custom facility
+within Emacs.  Type @kbd{M-x customize-group RET ess RET} to see all the
+ESS variables that can be customized.
+
 
 @menu
 * Variables::                   Variables for customization
