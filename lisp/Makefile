@@ -1,4 +1,3 @@
-
 # Stolen from the VM 5.70 distribution.  Thanks Kyle!
 
 PREFIX=/usr/local
@@ -90,7 +89,7 @@ clean:
 
 distrib: $(SOURCES) $(AUXFILES)
 	chmod a-w *.el
-	chmod u+w S-site.el Makefile
+	chmod u+w ess-site.el Makefile
 	tar cvf ESS-$(VERSION).tar $(SOURCES) $(AUXFILES)
 	gzip ESS-$(VERSION).tar
 
