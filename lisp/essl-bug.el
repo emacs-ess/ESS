@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/07/25 18:52:26 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essl-bug.el,v 1.8 2001/07/25 18:52:26 ess Exp $
+;; Modified: $Date: 2001/07/25 22:42:16 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essl-bug.el,v 1.9 2001/07/25 22:42:16 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -100,10 +100,10 @@ Note that the script that comes with ESS is an enhanced version."
     :type  'string
 )
 
-(defvar ess-bugs-monitor-vars "monitor( )\n"
+(defvar ess-bugs-monitor-vars " "
     "ESS[BUGS]:  List of BUGS variables to be written out to a file.")
 
-(defvar ess-bugs-stats-vars "stats( )\n"
+(defvar ess-bugs-stats-vars " "
     "ESS[BUGS]:  List of BUGS variables to be summarized with statistics.")
 
 (defvar ess-bugs-mode-hook nil 
@@ -209,12 +209,12 @@ Note that the script that comes with ESS is an enhanced version."
 	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in0\")\n"))
 	    (insert "update( )\n")
 	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in1\")\n"))
-	    (insert ess-bugs-monitor-vars)
+	    (insert "#%MONITOR\n\n#%MONITOR\n")
 	    (insert "checkpoint( )\n")
 	    (insert "update( )\n")
 	    (insert (concat "save(\"" ess-bugs-file-dir ess-bugs-file-root ".in2\")\n"))
-	    (insert ess-bugs-stats-vars)
-	    (insert "q( )\n")
+	    (insert "#%STATS\n\n#%STATS\n")
+	    (insert "q(\"" ess-bugs-file-dir ess-bugs-file-root ".bog\")\n")
 	))
     ))
 )
@@ -246,8 +246,18 @@ Note that the script that comes with ESS is an enhanced version."
 
 (defun ess-bugs-na-cmd ()
     "ESS[BUGS]:  Perform the Next-Action for .cmd."
-	(save-buffer)
-	(shell)
+    (save-excursion
+	(goto-char (point-min))
+
+	(if (search-forward-regexp "#%MONITOR.*#%MONITOR" nil t) 
+	    (replace-match ess-bugs-monitor-vars t))
+
+	(if (search-forward-regexp "#%STATS.*#%STATS" nil t) 
+	    (replace-match ess-bugs-stats-vars t))
+    )
+
+    (save-buffer)
+    (shell)
 
     (if (w32-shell-dos-semantics)
 	(if (string-equal ":" (substring ess-bugs-file 1 2)) 
@@ -331,6 +341,8 @@ Note that the script that comes with ESS is an enhanced version."
 			    (concat ess-bugs-monitor-vars "monitor(" (match-string 1) (match-string 3) (match-string 4) ")\n"))
 		    )
 
+		    (setq ess-bugs-monitor-vars (concat "#%MONITOR\n" ess-bugs-monitor-vars "#%MONITOR\n"))
+
 		    (goto-char (point-min))
 
 		    (if (search-forward "%STATS" nil t) (progn
@@ -346,9 +358,12 @@ Note that the script that comes with ESS is an enhanced version."
 			    (setq ess-bugs-stats-vars 
 				(concat ess-bugs-stats-vars "stats(" (match-string 1) (match-string 3) (match-string 4) ")\n"))
 			)
+
+			(setq ess-bugs-stats-vars (concat "#%STATS\n" ess-bugs-stats-vars "#%STATS\n"))
 		    )
 		    ;;else
-			(setq ess-bugs-stats-vars (replace-in-string ess-bugs-monitor-vars "monitor" "stats"))
+			(setq ess-bugs-stats-vars (replace-in-string ess-bugs-monitor-vars "#%MONITOR" "#%STATS"))
+			(setq ess-bugs-stats-vars (replace-in-string ess-bugs-stats-vars "monitor" "stats" t))
 		    )
 		)
 		    
