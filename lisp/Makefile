@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.24 $.
+### File: $Revision: 5.25 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -41,7 +41,7 @@ BATCHFLAGS = -batch --no-site-file --no-init-file
 SHELL = /bin/sh
 
 VERSION = 5.1.12
-$15.1.110
+LASTVERSION = 5.1.11
 
 #--- Dont forget to set  ess-version  in  ess-vars.el !!!!
 #			 ~~~~~~~~~~~      -----------
