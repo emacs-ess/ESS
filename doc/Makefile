@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 1.8 $.
+### File: $Revision: 1.9 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -23,7 +23,8 @@ INSTALL = cp
 MAKEINFO = makeinfo
 
 # program to convert .texi{nfo} to .html
-MAKEHTML = texi2html -verbose -iso -split_chapter -menu -glossary
+MAKEHTML = texi2html -verbose -iso
+MAKEHTMLs = $(MAKEHTML) -split_chapter -menu -glossary
 
 # What GZCAT is called on your system (GNU gzip "cat")
 #GZCAT = gzcat
@@ -34,15 +35,14 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 5.1.8
-VERSIONDIR = ESS-$(VERSION)
-
-LASTVERSION = 5.1.7
+# Rather use ESSVERSION from ../Makefile  (how)?
+#unused VERSION = 5.1.7
+#unused VERSIONDIR = ESS-$(VERSION)
 
 MYWWWDIR = /none/at/this/time
 MYFTPDIR = /none/at/this/time
 
-DOCS = 	README README.S README.XLispStat README.SAS \
+DOCS =	README README.S README.XLispStat README.SAS \
 	ess.texi dir ess.info ess.info-1 ess.info-2 ess.info-3 ess.dvi \
 	TODO Why_S-mode_Rocks.DMS \
 	README-19.28 README.additions NEWS \
@@ -56,25 +56,26 @@ DOCDIST = ess.ps ess.pdf \
 
 # DOCDISTFILES = $(addprefix $(VERSIONDIR)/,$(DOCDIST))
 
-### Targets
+### Targets -- new 'readme.texi' !?
 
-all: ess.info html ess.dvi
+all: ess.info html ess.dvi readme.dvi
 
 # Documentation mentions info, not ess.info
 
 info : ess.info
 
 #
-# If indexes don't index, run:  "texindex ess.??" to obtain the sorted indices.
+# If indexes don't index, run:	"texindex ess.??" to obtain the sorted indices.
 #
 
-html:	html/ess_toc.html
+html:	html/ess_toc.html html/readme_toc.html
 
 ess.dvi: ess.texi
 
 ess.ps: ess.dvi
 	dvips ess.dvi -o ess.ps
 
+## or use pdftex ?
 ess.pdf: ess.ps
 	rm -f ess.pdf
 	ps2pdf ess.ps > ess.pdf
@@ -108,12 +109,18 @@ realclean: distclean
 
 ### File Dependencies
 
-ess.info: *.texi 
+ess.info: *.texi
 	@echo "making Info documentation..."
 	$(MAKEINFO) ess.texi
 
+##-- HTML:
+##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
+##  =====
 html/ess_toc.html: *.texi
 	@echo "making HTML documentation..."
-	-(mkdir -p html; cd html; $(MAKEHTML) ../ess.texi)
+	-(mkdir -p html; cd html; $(MAKEHTMLs) ../ess.texi)
 	-@(cd html; rm -f index.html; ln -s ess_toc.html index.html)
 	@echo "Test by pointing your browser to 'file://localhost/$$PWD/html/index.html'"
+
+html/readme_toc.html: *.texi
+	-(mkdir -p html; cd html; $(MAKEHTML) ../readme.texi)
