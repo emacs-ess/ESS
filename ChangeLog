@@ -1,3 +1,84 @@
+2000-10-17  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/ess.info, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-2, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-3:
+	upgrade to 5.1.18 and rebuild doc
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/readme.texi, /home/ess/src/cvsroot/gnu/ess/doc/announc.texi:
+	upgrade to 5.1.18
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/README.SPLUS4WIN, /home/ess/src/cvsroot/gnu/ess/lisp/ess-cust.el:
+	upgraded to 5.1.18
+
+2000-10-11  maechler  <maechler@rossini.YP.biostat>
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/ChangeLog, /home/ess/src/cvsroot/gnu/ess/lisp/essl-s.el, /home/ess/src/cvsroot/gnu/ess/doc/newfeat.texi:
+	ess-smart-underscore
+
+2000-10-10  A.J. Rossini  <rossini@biostat.washington.edu>
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/inst_tar.texi:
+	fixed documentation for XLispStat under windows.
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/authors.texi:
+	fixed Rodney's homepage pointer.
+
+	* /home/ess/src/cvsroot/gnu/ess/VERSION: upgrade version to 5.1.18
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1:
+	Updating docs for new version [make dist]
+
+	* /home/ess/src/cvsroot/gnu/ess/ANNOUNCE, /home/ess/src/cvsroot/gnu/ess/README:
+	Updating README, ANNOUNCE for new version [make dist]
+
+	* /home/ess/src/cvsroot/gnu/ess/lisp/ChangeLog:
+	small changes.  This log is incomplete.
+
+	* /home/ess/src/cvsroot/gnu/ess/ChangeLog: updated change log.
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/README.SPLUS4WIN, /home/ess/src/cvsroot/gnu/ess/doc/ess.info, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1:
+	Misc changes
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/inst_tar.texi:
+	@enumerate can't have a @bullet.
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/newfeat.texi:
+	added 5.1.17 new features
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/announc.texi: update for 5.1.17
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/README.SAS:
+	Merged Rich's comments/changes.
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/inst_tar.texi:
+	added Rich H's README changes.
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/mailing.texi:
+	itemize the "flat text list".
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/readme.texi: Small changes.
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/authors.texi:
+	added Rodney to authors list.
+
+	* /home/ess/src/cvsroot/gnu/ess/doc/stabilty.texi:
+	comment re: some versions better than others.
+
+2000-10-10  ESS Maintainers <ess@franz.stat.wisc.edu>
+
+  * Version 5.1.17 released.
+
+2000-10-10  ESS Maintainers <ess@franz.stat.wisc.edu>
+
+  * Version 5.1.17 released.
+
+2000-10-10  ESS Maintainers <ess@franz.stat.wisc.edu>
+
+  * Version 5.1.17 released.
+
+2000-10-10  ESS Maintainers <ess@franz.stat.wisc.edu>
+
+  * Version 5.1.17 released.
+
 2000-10-10  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* /home/ess/src/cvsroot/gnu/ess/doc/README.SPLUS4WIN, /home/ess/src/cvsroot/gnu/ess/doc/ess.info, /home/ess/src/cvsroot/gnu/ess/doc/ess.info-1:
@@ -817,7 +898,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* doc/ess.texi: MM: (CVS) Date added
 
-	* doc/ess.texi: added '$Date: 2000/10/10 18:48:00 $'; 5.0 -> 5.1.x
+	* doc/ess.texi: added '$Date: 2000/10/17 13:16:58 $'; 5.0 -> 5.1.x
 
 Mon Dec 14 20:23:55 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -3007,6 +3088,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 5.24  2000/10/17 13:16:58  rossini
+	* Removing updated changelog.
+	* Removing
 	* Removing Revision 5.23  2000/10/10 18:48:00  rossini
 	* Removing updated change log.
 	* Removing
