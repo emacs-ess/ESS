@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.35 1997/06/19 20:39:23 rossini Exp $
+## $Id: Makefile,v 1.36 1997/06/22 23:36:39 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.36  1997/06/22 23:36:39  rossini
+## added essd files.
+##
 ## Revision 1.35  1997/06/19 20:39:23  rossini
 ## edited comments.
 ##
@@ -208,6 +211,17 @@ ess-mode.elc:  ess-mode.el $(CORE)
 
 ess-trns.elc:  ess-trns.el $(CORE)
 	$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile ess-trns.el
+
+
+essd-r.elc : essd-r.el $(CORE)
+
+essd-s+3.elc : essd-s+3.el $(CORE)
+
+essd-s4.elc : essd-s4.el $(CORE)
+
+essd-vst.elc : essd-vst.el $(CORE)
+
+essd-xls.elc : essd-xls.el $(CORE)
 
 # Ignore this.
 #(defun S-insert-make-rule (file)
