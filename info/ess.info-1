@@ -32,7 +32,7 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.22
 
-   (Documentation $Revision: 1.8 $ $Date: 2002/07/26 14:24:50 $).
+   (Documentation $Revision: 1.9 $ $Date: 2002/07/26 19:23:19 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
      Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and
@@ -318,11 +318,7 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 New features in ESS
 ===================
 
-   Changes/New Features in 5.2.0:
-   * Stable release.  Final release of the 5.x series (except for
-     necessary bug-fixes).  Next release will be 6.0 which will be a
-     radical departure.
-
+   Changes/New Features in 5.1.22:
    * Now that info documentation is available, the README.* files are
      no longer supported.  However, they are still distributed for what
      it's worth.
@@ -333,7 +329,12 @@ New features in ESS
 
    * ESS[SAS]: more user-friendly enhancements for remote SAS batch
      jobs with Kermit file transfers (LOG and OUTPUT function key
-     features now supported).
+     features now supported).  Multiple shells now supported so you can
+     run SAS on different computers from different buffers by setting
+     the buffer-local variable ess-sas-shell-buffer to unique buffer
+     names.
+
+   * Major re-vamping of Makefile/Makeconf.
 
    Changes/New Features in 5.1.21:
    * ESS[SAS]: info documentation now available!, see ESS->Help for
