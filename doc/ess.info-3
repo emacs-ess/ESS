@@ -28,6 +28,43 @@ Department of Mathematics and Statistics, Lancaster University, UK.
 University of Washington, Seattle, WA 98185, USA
 
 
+File: ess.info,  Node: Keybindings,  Prev: Hooks,  Up: Customization
+
+Changing the default ESS keybindings
+====================================
+
+   ESS provides a separate keymaps (keymap variables) for ESS process
+buffers, edit buffers and for help buffers.  The key bindings in the
+edit buffers further depend on the language and dialect in use.
+
+ - Keymap: inferior-ess-mode-map
+     Keymap used in the ESS process buffer.  The bindings from
+     `comint-mode-map' are automatically inherited.
+
+ - Keymap: ess-mode-map
+     Keymap used within edit (ess-mode) buffers.
+
+ - Keymap: ess-eval-map
+     Keymap used within edit buffers for sending ESS code to the running
+     process.
+
+ - Keymap: ess-help-mode-map
+     Keymap used within help buffers.  In addition, `ess-help-sec-map'
+     is the keymap for the `s' prefix key.  Keys defined in
+     `ess-help-sec-keys-alist' are automatically inserted into this
+     keymap when ESS is loaded.
+
+ - Keymap: ess-transcript-mode-map
+     Keymap used within ESS transcript buffers.
+
+
+File: ess.info,  Node: Key Index,  Next: Command Index,  Prev: Customization,  Up: Top
+
+Key (Character) Index
+*********************
+
+* Menu:
+
 File: ess.info,  Node: Command Index,  Next: Concept Index,  Prev: Key Index,  Up: Top
 
 Command and Function Index

@@ -28,6 +28,32 @@ Department of Mathematics and Statistics, Lancaster University, UK.
 University of Washington, Seattle, WA 98185, USA
 
 
+File: ess.info,  Node: Editing,  Next: Help,  Prev: Entering commands,  Up: Top
+
+Editing S functions
+*******************
+
+   ESS provides facilities for editing S objects within your Emacs
+session.  Most editing is performed on S functions, although in theory
+you may edit datasets as well.  Edit buffers are always associated with
+files, although you may choose to make these files temporary if you
+wish.  Alternatively, you may make use of a simple yet powerful
+mechanism for maintaining backups of text representations of S
+functions.  Error-checking is performed when S code is loaded into the
+ESS process.
+
+* Menu:
+
+* Edit buffer::                 Edit objects in a specialized buffer
+* Loading::                     Loading source files into the ESS process
+* Error Checking::              Detecting errors in source files
+* Evaluating code::             Sending code to the ESS process
+* Indenting::                   Indenting and formatting S code
+* Other edit buffer commands::  Commands for motion, completion and more
+* Source Files::                Maintaining S source files
+* Source Directories::          Names and locations of dump files
+
+
 File: ess.info,  Node: Edit buffer,  Next: Loading,  Prev: Editing,  Up: Editing
 
 Creating or modifying S objects
@@ -1287,40 +1313,3 @@ Customizing ESS with hooks
  - Hook: ess-transcript-mode-hook
      For customizing ESS transcript mode.
 
-
-File: ess.info,  Node: Keybindings,  Prev: Hooks,  Up: Customization
-
-Changing the default ESS keybindings
-====================================
-
-   ESS provides a separate keymaps (keymap variables) for ESS process
-buffers, edit buffers and for help buffers.  The key bindings in the
-edit buffers further depend on the language and dialect in use.
-
- - Keymap: inferior-ess-mode-map
-     Keymap used in the ESS process buffer.  The bindings from
-     `comint-mode-map' are automatically inherited.
-
- - Keymap: ess-mode-map
-     Keymap used within edit (ess-mode) buffers.
-
- - Keymap: ess-eval-map
-     Keymap used within edit buffers for sending ESS code to the running
-     process.
-
- - Keymap: ess-help-mode-map
-     Keymap used within help buffers.  In addition, `ess-help-sec-map'
-     is the keymap for the `s' prefix key.  Keys defined in
-     `ess-help-sec-keys-alist' are automatically inserted into this
-     keymap when ESS is loaded.
-
- - Keymap: ess-transcript-mode-map
-     Keymap used within ESS transcript buffers.
-
-
-File: ess.info,  Node: Key Index,  Next: Command Index,  Prev: Customization,  Up: Top
-
-Key (Character) Index
-*********************
-
-* Menu:

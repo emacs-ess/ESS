@@ -35,7 +35,7 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.x
 
-   (Documentation $Revision: 1.8 $ $Date: 2000/10/10 19:38:44 $).
+   (Documentation $Revision: 1.9 $ $Date: 2000/10/17 13:15:39 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler
      (Formerly: Doug Bates, Ed Kademan, Frank Ritter and David Smith).
@@ -298,6 +298,12 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 New features in ESS
 ===================
 
+   Changes/New Features in 5.1.18:
+   * New `ess-smart-underscore' function, now assigned to "_" by
+     default.        Inserts `ess-S-assign' (customizable " <- "),
+     unless inside string       and comments where plain "_" is used
+     instead.
+
    Changes/New Features in 5.1.17:
    * Documentation for Windows Installation (Rich Heiberger
      (<rmh@surfer.stat.temple.edu>))
@@ -310,8 +316,8 @@ New features in ESS
      (<maechler@stat.math.ethz.ch>)).
 
    * addition of the "S-equal" variable and provide M-x ess-add-MM-keys
-          a way to remap "_" to 'S-equal, typically " <- ", but
-     configurable. (MMaechler, (<maechler@stat.math.ethz.ch>)).
+          a way to remap "_" to `ess-S-assign', typically " <- ", but
+         customizable. (MMaechler, (<maechler@stat.math.ethz.ch>)).
 
    Changes/New Features in 5.1.16:
    * BUG FIXES
@@ -441,7 +447,7 @@ maintained by
    * Martin Maechler (http://stat.ethz.ch/~maechler/)
      <maechler@stat.math.ethz.ch>
 
-   * Rodney Sparapani (see http://www.duke.edu/~spara002/)
+   * Rodney Sparapani (http://www.duke.edu/~spara002/)
      <rodney.sparapani@duke.edu>
 
 
@@ -1173,30 +1179,4 @@ Other commands provided by inferior-ESS
 
    Other commands available is Inferior S mode are discussed in *Note
 Shell Mode: (emacs)Shell Mode.
-
-
-File: ess.info,  Node: Editing,  Next: Help,  Prev: Entering commands,  Up: Top
-
-Editing S functions
-*******************
-
-   ESS provides facilities for editing S objects within your Emacs
-session.  Most editing is performed on S functions, although in theory
-you may edit datasets as well.  Edit buffers are always associated with
-files, although you may choose to make these files temporary if you
-wish.  Alternatively, you may make use of a simple yet powerful
-mechanism for maintaining backups of text representations of S
-functions.  Error-checking is performed when S code is loaded into the
-ESS process.
-
-* Menu:
-
-* Edit buffer::                 Edit objects in a specialized buffer
-* Loading::                     Loading source files into the ESS process
-* Error Checking::              Detecting errors in source files
-* Evaluating code::             Sending code to the ESS process
-* Indenting::                   Indenting and formatting S code
-* Other edit buffer commands::  Commands for motion, completion and more
-* Source Files::                Maintaining S source files
-* Source Directories::          Names and locations of dump files
 
