@@ -3,7 +3,7 @@
 
 This is the README file for the distribution of ESS version
 
-   5.2.6
+   5.2.7
 
    The first release of the 5.2 series.  ESS is a GNU Emacs and XEmacs
 mode for interactive statistical programming and data analysis.
@@ -17,12 +17,13 @@ union of their features in one package.
 2004. Former project leader A.J. (Tony) Rossini
 (<rossini@blindglobe.net>) did the initial port to XEmacs and has been
 the primary coder.  Martin Maechler (<maechler@stat.math.ethz.ch>) and
-Kurt Hornik (<hornik@ci.tuwien.ac.at>) have assisted with S-PLUS, S4,
-R, and XLispStat.  Stephen Eglen (<stephen@gnu.org>) has worked mostly
-on R support.  Richard M. Heiberger (<rmh@temple.edu>) has assisted
-with S-PLUS and S4 development for Windows.  Richard and Rodney A.
-Sparapani (<rsparapa@mcw.edu>) have done much of the work implementing
-interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.
+Kurt Hornik (<Kurt.Hornik@R-project.org>) have assisted with S-PLUS,
+S4, R, and XLispStat.  Stephen Eglen (<stephen@gnu.org>) has worked
+mostly on R support.  Richard M. Heiberger (<rmh@temple.edu>) has
+assisted with S-PLUS and S4 development for Windows.  Richard and
+Rodney A. Sparapani (<rsparapa@mcw.edu>) have done much of the work
+implementing interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS])
+support.
 
    We are grateful to the previous developers of S-mode (Doug Bates, Ed
 Kademan, Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and
@@ -844,7 +845,7 @@ low-volume mailing list.
 
    * Richard M. Heiberger (mailto:rmh@temple.edu)
 
-   * Kurt Hornik (mailto:hornik@ci.tuwien.ac.at)
+   * Kurt Hornik (mailto:Kurt.Hornik@R-project.org)
 
    * Martin Maechler (mailto:maechler@stat.math.ethz.ch)
 

@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.2.6
+   5.2.7
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -214,7 +214,7 @@ donations are also more than welcome.
 
    * Richard M. Heiberger (mailto:rmh@temple.edu)
 
-   * Kurt Hornik (mailto:hornik@ci.tuwien.ac.at)
+   * Kurt Hornik (mailto:Kurt.Hornik@R-project.org)
 
    * Martin Maechler (mailto:maechler@stat.math.ethz.ch)
 
