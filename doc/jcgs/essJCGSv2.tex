@@ -85,6 +85,12 @@
 \newcommand{\marpar}[1]{\marginpar{\raggedright#1}}
 \newenvironment{Salltt}{\small\begin{alltt}}{\end{alltt}}
 
+\newcommand{\emptyfig}{
+\hspace*{42pt}\rule{324pt}{.25pt}\\
+\hspace*{42pt}\rule{.25pt}{10pc}
+\rule{316pt}{.25pt}
+\rule{.25pt}{10pc}}
+
 %% Use \begin{Comment} .. \end{Comment} for internal comments
 \ifdraft
 \newenvironment{Comment}{\begin{quote}\small\itshape }{\end{quote}}
@@ -124,7 +130,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/09 22:37:43 $ - $Revision: 1.42 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/10 15:24:03 $ - $Revision: 1.43 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -303,75 +309,58 @@ tasks.  An important example of this kind of major-mode is
 a buffer.  ESS uses this type of major-mode to control statistical
 packages.  Other major modes are \stexttt{telnet} mode for logging in
 to a remote machine, either securely by running \stexttt{ssh} or
-non-securely by running \texttt{telnet}, and a directory editor mode
+non-securely by running \stexttt{telnet}, and a directory editor mode
 \stexttt{dired} that permits access to files (for viewing, editing,
 and saving back) on the local or remote machine with equal ease.
 
 Minor-modes, by contrast, provide services that are not mutually
-exclusive.  For example, the minor-mode
-\stexttt{font-lock-mode} allows Emacs to highlight, with fonts or
-colors, the syntax of a programming language whose characteristics are
-described by a major-mode like ESS.  \stexttt{overwrite-mode}, usually
-mapped to the \ssf{Insert} key, determines whether typed characters replace
-the existing text or push it to the right.
-Minor modes can be used to change the key mapping, for example to
-emulate the keys used by another editor.  This is often used
-by people who want the power of emacs without having to retrain their
-fingers to use the standard emacs key mappings.
-Minor modes are also used for remote access to files over a
-network.  \stexttt{ange-ftp} and \stexttt{EFS} are used for non-secure 
-connections via ftp and \stexttt{tramp} is used for both secure connections 
-via ssh or scp and non-secure connections via telnet.  This provides the
-the user with the ability to view, edit, and save any file they have remote
-access to, as if it were on their local machine.  
-%\stexttt{telnet} mode is 
-%used for logging in to a remote machine, either securely by running \stexttt{ssh} or
-%non-securely by running \stexttt{telnet}.
+exclusive.  For example, the minor-mode \stexttt{font-lock-mode}
+allows Emacs to highlight, with fonts or colors, the syntax of a
+programming language whose characteristics are described by a
+major-mode like ESS.  \stexttt{overwrite-mode}, usually mapped to the
+\ssf{Insert} key, determines whether typed characters replace the
+existing text or push it to the right.  Minor modes can be used to
+change the key mapping, for example to emulate the keys used by
+another editor.  This is often used by people who want the power of
+emacs without having to retrain their fingers to use the standard
+emacs key mappings.
+
+
+\paragraph{System Support.}
+Emacs allows transparent access to remote files and
+shells over a network.  \stexttt{ange-ftp} or \stexttt{EFS} are used
+for non-secure file transfers between machines using ftp.
+\stexttt{tramp} is used for secure file transfers using scp.
+Transparent access means the user views, edits, and saves any file on
+a remote machine exactly as if it were on the local machine.
+\stexttt{tramp} is also used for logging in to a remote shell, both
+for secure connections via ssh and non-secure connections via telnet.
+
 Interacting with revision control
 programs is provided by the minor-mode \stexttt{vc-mode} for packages
 like CVS, RCS and SCCS (or the more
 specialized \stexttt{pcl-cvs-mode} for CVS only).
 
-\begin{Comment}
-Rich: I can't make sense of the previous wording of the ftp etc sentence.
-Also it wasn't true.  both telnet-mode and internal-ange-ftp-mode are
-major modes.
+Comparison of two files, for example successive drafts of a paper
+by multiple authors, is simplified by \stexttt{ediff}, a visual 
+way to browse simultaneously through
+the differences between a pair (or a triple) of files or buffers.
+An example is shown in Figure \ref{f.ediff}.  The lines that are similar
+are highlighted in the two buffers, one for each file, and the specific
+words that mismatch are highlighted in a contrasting color.
+\stexttt{ediff} has many tools for working with the differences in
+files and in entire directories.
 
-Rodney: Ok, maybe technically they are not minor-modes.  They are just 
-hooks, but the idea is the same.  When I'm remotely editing a .sas file 
-with ange-ftp, the major mode is ESS[SAS], not ange-ftp.  I'm restoring it.  
-People will want to know if emacs is up to the job.  Of course, the 
-alternative is to have a paragraph on hooks and I don't like that idea.
-Also, note that pcl-cvs-mode cooperates with vc-mode, but I think that
-is too much detail as well.
+\begin{figure}
+\emptyfig
+\caption[place holder for a long caption]{Ediff of two versions of a file.\\
+{\it ediff-sas.gif}
+\label{f.ediff}}
+\end{figure}
 
-Rich: Here is an attempt at rewording.
 
-{\bf
-Two different minor modes are used for remote access of files.
-\stexttt{ange-ftp} is used for non-secure connections via ftp and
-\stexttt{EFS} is used for secure connections with ssh.  With either,
-the user can view, edit, and save the file exactly as if it were on
-the local machine.  \stexttt{telnet} mode is used for logging in to a
-remote machine, either securely by running \stexttt{ssh} or
-non-securely by running \texttt{telnet}.
-}
 
-But I much prefer how I handled this issue above in the
-paragraph beginning  ``Second, major modes''.
 
-I still prefer to remove that bold-face sentence, in either
-phrasing.  If you think we need to emphasize even more strongly that
-emacs can transparently access and edit remote files, say so explicitly.
-
-Rodney: I like your re-wording of the remote access.  But, I think you are 
-misunderstanding the differences between ange-ftp, EFS and tramp.  
-ange-ftp and EFS basically provide the same functionality, non-secure 
-ftp access while tramp allows both secure connections, like scp and ssh, 
-and non-secure telnet.  So, it's ange-ftp or EFS for ftp and tramp for 
-anything else.  See my attempt above. (I think the last sentence is a bit
-overkill).
-\end{Comment}
 
 \paragraph{Extensions to Editing.}
 Most programming and documentation tasks fall under the realm of text
@@ -400,6 +389,21 @@ reader, and as an interface to
 other common text-based tools such as spell checking programs.  The
 Emacs keyboard and mouse interface can be re-mapped to resemble that
 of other text-editors, such as vi, wordstar, and brief.
+
+We can use syntax highlighting to help enforce company coding
+standards.  Figure \ref{f.hilock} shows how to enfor a standard
+for \SAS\ programming that says all \stexttt{PROC} statements must
+have a \stexttt{DATA=datasetname} statement attached.
+
+\begin{figure}
+\emptyfig
+\caption[place holder for a long caption]{Enforce company coding
+standards.  The standard here is that all \stexttt{PROC} statements must have
+a \stexttt{DATA=datasetname} statement attached.  Lines that satisfy the standard
+turn green, lines that don't turn red.  Ambiguous ones turn yellow.\\
+{\it hilock-sas.gif}
+\label{f.hilock}}
+\end{figure}
 
 
 \section{ESS extends Emacs}
@@ -462,75 +466,104 @@ supported with the basic functionality of syntax highlighting and
 process-interfacing.  ESS and its interface are fully discussed in the
 next section.
 
-\begin{Comment}
- Rodney:  I've tried to rearrange these in a more coherent fashion,
-but I'm hindered because I don't use some of these
-features.  Please remove this comment when done.  Thanks.
-\end{Comment}
+\paragraph{Syntactic highlighting and indentation of source code.}
+The programmers task is eased when language constructs (such as
+reserved words, function calls, strings, and comments) are visually
+identifiable and when lines of code are automatically indented to a
+depth appropriate to their context (e.g., if--then clauses, loops).
+ESS provides both of these supports to the programmer by
+including a description of the syntax of each
+supported statistical language in the form used by the standard Emacs
+\stexttt{font-lock-mode}.  
 
-\paragraph{Syntactic indentation and color/font-based source code
-  highlighting.}  The ESS interface includes a description of the
-syntax of each statistical language it supports.
-%%  This gives ESS the ability to edit the programming language code,
-%% often more smoothly than with editors distributed with the languages.
-The process of programming is enhanced as ESS provides the user with
-syntax highlighting of language constructs such as reserved words,
-function calls, strings, and comments.  ESS allows the user to specify
-the increment of indentation and each new line is indented
-to the same level as the previous line.
-%% ESS has customizable automatic indentation, with the customization based
-%%on the syntactic structure of groups of expressions.
+Figure \ref{f.font} shows a black-and-white example of font-locking a
+complicated S statement.  Figure \ref{f.font}a shows an \stexttt{if}
+statement with a long expression in the condition and a multi-line
+consequence.  The keyword \stexttt{if} is shown in an underlined font,
+the string \stexttt{"deltat"} in an italic underlined font.  The
+comments are in an italic font.  Everything else is in the standard
+font.  The consequence is indented and the continuations of the
+consequence are further indented.  The matching parentheses are marked
+by a bold foreground and a shaded background.  The cursor is indicated
+by a solid box.  In Figure \ref{f.font}b we replaced the matching
+parenthesis with an unbalanced bracket.  Emacs immediately marks that
+with the paren-mismatch font, inverse-video here and bright purple on
+a color terminal.
 
-\begin{Comment}
- Rodney:  What is ``source code checking''?
-          Should we lump this with highlighting?
+The font selection and the indentation depth are automatically
+supplied by Emacs as the lines are typed.  The user has several
+options for mapping of colors or fonts to each of the syntactic types.
+We selected a black-and-white font-mapping for display here.  On a
+terminal we might use blue for the keywords, red for comments, green
+for matching parens.  Emacs makes default choices of colors and ESS
+provides several other optional schemes.
 
- Martin: There are two parts:  1) small parts, 2) entire files (C-c C-l).
- \begin{enumerate}
- \item small parts:\\
-   This is for S and LispStat at least; not available to SAS
-   --- so, no, don't lump it, but proably the ``\emph{and \SAS}'' part
-   should be deleted below! \\
-   It not only means sending small sections of code (to see if they parse or
-   what they do); it's also the matching of string quotes and
-   \verb| ( ) [ ] { }|
-   which is very useful and part of basic source code checking.
-   I would like to add this (paren-checking) below.
- \item entire files:\\
-   This is ``C-c C-l''.
-   Here \SAS goes along as well.
-   and if there are syntax errors, you get exact line numbers where there
-   syntax error happened
+\begin{figure}
+a: balanced parentheses\\
+\emptyfig
 
- Rodney:  That's nice!  Can you write something like that?  Thanks.
- \end{enumerate}
-\end{Comment}
+b: unbalanced parentheses\\
+\emptyfig
+\caption[place holder for a long caption]{Syntactic highlighting and
+indentation of source code.  We illustrate here with fonts and colors
+appropriate for black and white display.  On a color terminal we would
+use a selection of colors.\\
+{\it a: font-cor-s.gif; b: font-incor-s.gif}
+\label{f.font}}
+\end{figure}
 
-\paragraph{Source code checking.}
-ESS facilitates the editing of source code by providing a means for
-loading and error-checking of small sections of code for S,
-\XLispStat, and \SAS.  This allows for source-level debugging of batch
-files.
 
-\begin{Comment}
- Rodney:  What does ``entire function definitions'' mean?
 
- Martin:What it says: The natural thing for S or Lisp programmers.
+\paragraph{Source Code Checking and Partial Code Evaluation.}
 
- Rodney:  I see.  I think that we should be careful to point out what is
- R/S-only functionality and what is universal.  I realize that this is a
- pain, but most of it is probably stuff that is only available for R/S
- and we could have a section that is R/S only like we do with R Help Files. 
-\end{Comment}
+ESS facilitates the editing of source code files, sets of commands
+written in the package's language by the statistical analyst, by
+providing a means for loading and error-checking small sections of
+code.  This allows for source-level debugging of batch files.
 
-\paragraph{Partial code evaluation.}
+ESS does this in several ways.
+\begin{enumerate}
+\item The simplest is by displaying the code with syntactic highlighting.
+Unbalanced parentheses and mismatched or unterminated quotes are immediately
+evident.
+
+\item Next is by providing a simple and consistent way to submit
+natural units of the code (function definitions in S or \XLispStat,
+\stexttt{PROC \dots RUN;} sections in \SAS) for execution.
+The relevant lines of the code are highlighted and sent over to the
+executing statistical program by keystroke commands (saving the wrists
+and elbows from the ergonomic strain of perpetually moving a mouse from
+one window to another).  If they execute correctly, the user goes to the
+next section of code.  If not, the user edits the current section and resends
+the revised lines.
+
 Emacs can send individual lines, entire function definitions, marked
 regions, and whole buffers to the statistical analysis package for
 execution.  Emacs sends the code directly to
 the statistical package and receives the output, if any, which is
-the result.  This is a major improvement over cut-and-paste as it does
-not require switching between buffers or windows.  The response is received
-immediately in an editable Emacs buffer.
+the result.  The response is received immediately in an editable Emacs buffer.
+This is a major improvement over cut-and-paste as it does
+not require switching between buffers or windows.
+
+\item
+Output from the package normally sent directly to an Emacs buffer.
+There are several advantages to this destination.  We can look for the
+small section of output that is of immediate interest by using the
+string-search key commands; there is no need to page through the
+output until we see something we recognize.  If there are errors we
+can use the search and edit facilities to investigate the cause of the
+error.  When we are sending over a few lines at a time, we find
+it very easy to localize the probably location of the error.
+There is no need to copy output from a static window into an
+editable buffer; it is already there.
+
+\item
+An entire buffer, or file, of code can be sent to the package as a unit
+once the code is clean.  The file can also be used as a batch file for
+routine analysis at a later time.
+
+\end{enumerate}
+
 
 \paragraph{Process interaction.}
 Emacs has historically referred to processes under its control as
@@ -542,6 +575,8 @@ recalling and searching for previously entered commands.  Filename
 completion is available.  In addition (currently only for S languages),
 there exists object-name and function-name completion.
 
+
+\paragraph{Interactive transcripts.}
 \begin{Comment}
  Rodney:  we need a short description transcript-mode
 
@@ -557,7 +592,6 @@ there exists object-name and function-name completion.
  Rodney: I think it's fine now.  Thanks.
 \end{Comment}
 
-\paragraph{Interactive transcripts.}
 ESS can create transcripts, a recording of the commands issued in an
 interactive session with a statistical analysis package.
 %%ESS interacts well with the
@@ -772,11 +806,12 @@ adding support for additional statistical languages like \Stata\ and
 \XLispStat.
 
 Most of the work, until 1998, was for Unix statistics
-packages that used either a command-line interface or batch file
-processing for input/output.  ESS could not communicate
-with Windows versions of statistical packages that did not provide
-the same method of input/output.  This hurdle
-fell in 1998 when Brian Ripley designed input/output based on
+packages that used the standard-input/standard-output model of inter-process
+communication for both the command-line interface and batch file
+processing.  ESS could not communicate
+with Windows versions of statistical packages that did not
+use the standard-input/standard-output model.  This hurdle
+fell in 1998 when Brian Ripley designed a way for ESS to use
 the Windows technology of dynamic data exchange (DDE).
 Based on this work, Heiberger provided interactive interfaces
 for Windows versions of \Splus.
