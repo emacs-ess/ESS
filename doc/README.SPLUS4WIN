@@ -277,8 +277,7 @@ Here is my site-start.el file:
 (load "C:/Emacs-20.4/ess-5.1.13/lisp/ess-site")
 (setenv "SHELL" "C:/Cygnus/Cygwin-b20/H-i586-cygwin32/bin/bash")
 (setenv "S_ELMHOST" "123.45.67.890")
-(setenv "S_FIRST" "source(\"U:/Splus/init.s\")")          ; Initialization
-file
+(setenv "S_FIRST" "source(\"U:/Splus/init.s\")")     ; Initialization file
 (setenv "SHOME" "C:/Progra~1/sp2000")
 (setq-default inferior-Sqpe+4-program-name "c:/Progra~1/sp2000/cmd/Sqpe")
 (setq ess-ask-for-ess-directory nil)
@@ -287,8 +286,7 @@ file
 (make-local-variable 'comment-indent-function)
 (setq-default comment-indent-function 'ess-comment-indent)
 (fset 'run-s "\C-x2\M-xS\C-m")
-(global-set-key "\M-s" 'run-s)		    ; ESC-s runs "run-s" which
-starts S
+(global-set-key "\M-s" 'run-s)         ; ESC-s runs "run-s" which starts S
 
 ; Window size:
 (set-frame-size (selected-frame) 80 56)
