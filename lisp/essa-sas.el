@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/11 19:42:31 $
-;; Version: $Revision: 1.67 $
-;; RCS: $Id: essa-sas.el,v 1.67 2002/01/11 19:42:31 rsparapa Exp $
+;; Modified: $Date: 2002/01/11 21:16:35 $
+;; Version: $Revision: 1.68 $
+;; RCS: $Id: essa-sas.el,v 1.68 2002/01/11 21:16:35 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -195,27 +195,26 @@ or comint buffer on the local computer."
   "Send a file with Kermit.  Works so far with ssh, but not telnet."
     (interactive)
 
-     (save-match-data 
-	(if (and (not (string-match "[[]" ess-sas-file-path))
-	  (string-match "]" ess-sas-file-path))
+     (save-match-data (let ((ess-temp-file (expand-file-name (buffer-name))))
+	(if (and (not (string-match "[[]" ess-temp-file))
+	  (string-match "]" ess-temp-file)) (progn
 
-	  (let ((ess-sas-temp-file (substring ess-sas-file-path (match-end 0))))
-	     (ess-sas-file-path)
+	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
              (save-buffer)
 	     (shell)
-	     (insert "cd $HOME; " ess-kermit-command " -r "); ess-sas-temp-file)
+	     (insert "cd $HOME; " ess-kermit-command " -g ]" ess-temp-file " -a " ess-temp-file)
              (comint-send-input)	
-	     (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
-	     (comint-send-input)
-	     (insert (read-string "Press Return when Kermit is ready to send: " nil nil
-		     (concat "send ]" ess-sas-temp-file " " ess-sas-temp-file)))                
-	     (comint-send-input)
-	     (insert (read-string "Press Return when transfer is complete: " nil nil "c"))              
-             (comint-send-input)
+;;	     (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
+;;	     (comint-send-input)
+;;	     (insert (read-string "Press Return when Kermit is ready to send: " nil nil
+;;		     (concat "send ]" ess-sas-temp-file " " ess-sas-temp-file)))                
+;;	     (comint-send-input)
+;;	     (insert (read-string "Press Return when transfer is complete: " nil nil "c"))              
+;;           (comint-send-input)
              (insert (read-string "Press Return when shell is ready: "))
 	     (comint-send-input)
-	     (ess-sas-goto-sas)
-))))
+	     (switch-to-buffer (find-buffer-visiting (concat "]" ess-temp-file)))
+)))))
 
 (defun ess-revert-wisely ()
   "Revert from disk if file and buffer last modification times are different."
@@ -536,7 +535,6 @@ SAS may not be found in your PATH.  You can alter your PATH to include
 SAS or you can specify the PATHNAME (PATHNAME can NOT contain spaces),
 i.e. let `ess-sas-arg' be your local equivalent of
 \"/usr/local/sas612/sas\"."
-    (ess-kermit-send)
     (shell)
     (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh) ;; 19.28
                                           ;; nil t) works for newer emacsen
