@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/24 14:48:05 $
-;; Version: $Revision: 4.51 $
-;; RCS: $Id: essd-sas.el,v 4.51 1997/11/24 14:48:05 rossini Exp $
+;; Modified: $Date: 1997/11/25 13:49:16 $
+;; Version: $Revision: 4.52 $
+;; RCS: $Id: essd-sas.el,v 4.52 1997/11/25 13:49:16 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -184,11 +184,18 @@
 
 ;;; The functions of interest (mode, inferior mode)
 
+(defvar sas-mode-local-map nil "contains modified local keymap for SAS")
+
 (defun SAS-mode (&optional proc-name)
   "Major mode for editing SAS source.  See ess-mode for more help."
   (interactive)
   (setq ess-customize-alist SAS-customize-alist)
-  (ess-mode SAS-customize-alist proc-name))
+  (ess-mode SAS-customize-alist proc-name)
+
+  ;; Local map settings, AFTER initialization.
+  (setq sas-mode-local-map (copy-keymap (current-local-map)))
+  (use-local-map sas-mode-local-map)
+  (local-set-key "\t" 'sas-indent-line))
 
 (defun SAS ()
   "Call 'SAS', from SAS Institute."
