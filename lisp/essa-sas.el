@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/12/20 21:47:20 $
-;; Version: $Revision: 1.131 $
-;; RCS: $Id: essa-sas.el,v 1.131 2002/12/20 21:47:20 rsparapa Exp $
+;; Modified: $Date: 2002/12/21 17:20:53 $
+;; Version: $Revision: 1.132 $
+;; RCS: $Id: essa-sas.el,v 1.132 2002/12/21 17:20:53 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -663,21 +663,13 @@ SAS may not be found in your PATH.  You can alter your PATH to include
 SAS or you can specify the PATHNAME (PATHNAME can NOT contain spaces),
 i.e. let arg1 be your local equivalent of
 \"/usr/local/sas612/sas\"."
-;    (ess-sas-goto-shell)
-;    (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh) ;; 19.28
-                                          ;; nil t) works for newer emacsen
     (if (string-equal (substring (file-name-nondirectory ess-sas-file-path) 0 1) ess-kermit-prefix)
       (progn
        (ess-kermit-send)
-       (let ((ess-temp-directory ess-kermit-remote-directory))
-        (ess-sas-goto-shell t)
-        (insert "cd " ess-temp-directory)
-        (comint-send-input)
-        (insert ess-sas-submit-pre-command " " arg1 " "  
+       (ess-sas-goto-shell t)
+       (insert ess-sas-submit-pre-command " " arg1 " "  
 	 (substring (file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 1)
 	 " " arg2 " " ess-sas-submit-post-command))
-        ;(ess-sas-goto-sas)
-       )
     ;;else
       (ess-sas-goto-shell t)
 ;      (if ess-microsoft-p
@@ -688,9 +680,7 @@ i.e. let arg1 be your local equivalent of
       (comint-send-input)
       (insert ess-sas-submit-pre-command " " arg1 " "  
 	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 
-	" " arg2 " " ess-sas-submit-post-command)
-      )
-    ;(comint-send-input)
+	" " arg2 " " ess-sas-submit-post-command))
     (ess-sleep)
     (comint-send-input))
 
