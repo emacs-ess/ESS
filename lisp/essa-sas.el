@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/23 21:50:05 $
-;; Version: $Revision: 1.79 $
-;; RCS: $Id: essa-sas.el,v 1.79 2002/01/23 21:50:05 rsparapa Exp $
+;; Modified: $Date: 2002/01/23 21:56:14 $
+;; Version: $Revision: 1.80 $
+;; RCS: $Id: essa-sas.el,v 1.80 2002/01/23 21:56:14 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -365,6 +365,14 @@ on the way."
     (comint-send-input)
 )))))
 
+(defun ess-sas-file-path ()
+ "*Set `ess-sas-file-path' depending on suffix."
+  (interactive)
+
+  (save-match-data (let ((ess-temp-file (expand-file-name (buffer-name))))
+    (if (string-match ess-sas-suffix-regexp ess-temp-file)
+        (setq ess-sas-file-path (nth 0 (split-string ess-temp-file "[<]")))))))
+
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with a SAS file by suffix and revert if necessary."
     (let ((ess-temp-regexp (concat ess-sas-suffix-regexp "\\(@.+\\)?")))
@@ -374,7 +382,7 @@ on the way."
 	    (string-match ess-temp-regexp ess-sas-file-path))
 
 	(progn
-	    (ess-set-file-path)
+	    (ess-sas-file-path)
 
 	    (let* (
 		(ess-sas-temp-file (replace-match (concat "." suffix) t t ess-sas-file-path))
@@ -465,7 +473,7 @@ on the way."
   "Save the .sas file and submit to shell using a function that
 depends on the value of  `ess-sas-submit-method'"
   (interactive)
-  (ess-set-file-path)
+  (ess-sas-file-path)
   (ess-sas-goto-sas)
   (save-buffer)
 
@@ -519,7 +527,7 @@ of the form \"with options { \\\"option-1\\\", \\\"option-2\\\", etc.}\" ."
 (defun ess-sas-submit-region ()
     "Write region to temporary file, and submit to SAS."
     (interactive)
-    (ess-set-file-path)
+    (ess-sas-file-path)
     (write-region (region-beginning) (region-end) 
 	(concat ess-sas-temp-root ".sas"))
 
