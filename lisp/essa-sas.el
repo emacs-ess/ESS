@@ -6,9 +6,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/04/26 16:38:46 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: essa-sas.el,v 1.16 2001/04/26 16:38:46 ess Exp $
+;; Modified: $Date: 2001/04/26 17:18:38 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: essa-sas.el,v 1.17 2001/04/26 17:18:38 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -48,8 +48,8 @@
 
 ;; Begin Function definitions for Emacs versions < 20.4 or XEmacs
 ;; These are taken verbatim from the file emacs-20.6/lisp/w32-fns.el
-(if (not (fboundp 'w32-shell-dos-semantics))
-	    (load-file (concat ess-lisp-directory "/essnt204.el")))
+;;(if (not (fboundp 'w32-shell-dos-semantics))
+;;	    (load-file (concat ess-lisp-directory "/essnt204.el")))
 ;; End Function definitions for Emacs versions < 20.4 or XEmacs
 
 

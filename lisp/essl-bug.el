@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/04/26 16:38:46 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: essl-bug.el,v 1.2 2001/04/26 16:38:46 ess Exp $
+;; Modified: $Date: 2001/04/26 17:18:38 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: essl-bug.el,v 1.3 2001/04/26 17:18:38 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -35,12 +35,6 @@
 
 (require 'font-lock)
 (require 'comint)
-
-;; Begin Function definitions for Emacs versions < 20.4 or XEmacs
-;; These are taken verbatim from the file emacs-20.6/lisp/w32-fns.el
-(if (not (fboundp 'w32-shell-dos-semantics))
-	    (load-file (concat ess-lisp-directory "/essnt204.el")))
-;; End Function definitions for Emacs versions < 20.4 or XEmacs
 
 (if (assoc "\\.bug\\'" auto-mode-alist) nil
     (setq auto-mode-alist
