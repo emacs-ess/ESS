@@ -1,10 +1,58 @@
+1999-11-10  rossini  <rossini@biostat.washington.edu>
+
+	* essl-omg.el: S- becomes OMG-
+	Comments redone (to use //, ///, and //// for levels of indentation)
+	OMG-syntax started, variable defined, needs to be fixed.
+
+	* essd-omg.el:
+	further Omegahat dialect changes (use OMG syntax, which needs fixing!)
+
 1999-11-05  Martin Maechler  <maechler@@stat.math.ethz.ch>
 
 	* ess.el: added a definition of (functionp ..) if there isn't any
 
+
+1999-11-05   Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ChangeLog, ess.el, noweb-mode.el: functionp definition if necessary
+
+	* noweb-mode.el: functionp for  emacs-19.34
+
 1999-11-04  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* TONS of things -- see ../ChangeLog
+
+1999-11-04  rossini  <rossini@biostat.washington.edu>
+
+	* essd-els.el: fixed paren error.
+
+	* Makefile, ess-site.el, ess-vars.el, essd-sas.el:
+	Changed version numbers
+
+1999-11-03  rossini  <rossini@biostat.washington.edu>
+
+	* Makefile, ess-inf.el, ess-site.el, ess-vars.el, essd-sp5.el:
+	Changes for ESS-elsewhere.
+
+	* essd-els.el: added a generic ESS-elsewhere function.
+
+1999-10-06  Anthony Rossini  <rossini@aleph.YP.biostat>
+
+	* ess-inf.el: fixed extraneous echoes in Stata.
+
+1999-10-04   rossini  <rossini@biostat.washington.edu>
+
+	* essd-sta.el: fset both stata-mode and Stata-mode.
+
+	* ess-site.el:
+	cleaned up autoload conflicts between 2 local (AJR) copies.
+
+1999-09-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ChangeLog, Makefile: don't byte-compile ess-debug.el
+
+	* ChangeLog, essd-r.el: for R, use help(. , htmlhelp=F)
+
 
 1999-09-27  Martin Maechler  <maechler@stat.math.ethz.ch>
 
