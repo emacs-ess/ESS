@@ -172,7 +172,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	      (if (not (listp nodocs))
 		  (setq nodocs (list PM (point-max))))
 	      (ess-write-to-dribble-buffer
-	       (format "(ess-help: error-buffer «%s» nodocs (%d %d)\n"
+	       (format "(ess-help: error-buffer '%s' nodocs (%d %d)\n"
 		       (buffer-name) (car nodocs) (cadr nodocs)))
 	      ;; Avoid using 'message here -- may be %'s in string
 	      ;;(princ (buffer-substring (car nodocs) (cadr nodocs)) t)
@@ -185,7 +185,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	  ;; else : show it
 
 	  ;;dbg (ess-write-to-dribble-buffer
-	  ;;dbg	 (format "(ess-help «%s» before switch-to..\n" hb-name)
+	  ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
 	  (let ((special-display-regexps
 		 (if ess-help-own-frame '(".") nil))
 		(special-display-frame-alist ess-help-frame-alist)
