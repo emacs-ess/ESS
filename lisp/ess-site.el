@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/08/28 13:04:23 $
-;; Version: $Revision: 1.35 $
-;; RCS: $Id: ess-site.el,v 1.35 1997/08/28 13:04:23 rossini Exp $
+;; Modified: $Date: 1997/09/01 18:34:21 $
+;; Version: $Revision: 1.36 $
+;; RCS: $Id: ess-site.el,v 1.36 1997/09/01 18:34:21 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -81,18 +81,27 @@
 (if (assoc "\\.q$" auto-mode-alist) nil
   (setq auto-mode-alist
 	(append
-	 '(("\\.q$\\'" . S-mode)
-	   ("\\.s$\\'"  . S-mode) ;; Comment for default asm-mode
-	   ("\\.sp$\\'" . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
-	   ("\\.S$\\'"  . S-mode)
-	   ("\\.st$\\'" . S-transcript-mode)
-	   ("\\.St$\\'" . S-transcript-mode)
-	   ("\\.r$\\'"  . R-mode)
-	   ("\\.R$\\'"  . R-mode)
-	   ("R.*/src/library/[A-Za-z]+/funs/[A-Za-z]"  . R-mode)
-	   ("\\.rt$\\'" . R-transcript-mode)
-	   ("\\.Rt$\\'" . R-transcript-mode))
+	 '(("\\.q$\\'"   . S-mode)
+	   ("\\.s$\\'"   . S-mode) ;; Comment for default asm-mode
+	   ("\\.sp$\\'"  . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
+	   ("\\.S$\\'"   . S-mode)
+	   ("\\.[rR]\\'" . R-mode)
+	   ("R.*/src/library/[A-Za-z]+/funs/[A-Za-z]" . R-mode)
+	   ("\\.lsp\\'"                               . XLS-mode)
+	   ("\\.sas\\'"                               . SAS-mode)
+	   ("\\.SAS\\'"                               . SAS-mode)
+	   ("\\.lst\\'"                               . SASout-mode);sasl
+	   ("\\.[Ss]\\(ou\\)?t\\'"                    . S-transcript-mode)
+	   ("\\.[Rr]\\(ou\\)?t\\'"                    . R-transcript-mode)
+	   ("\\.Rd\\'"                                . Rd-mode))
 	 auto-mode-alist)))
+
+;;-- if you don't have 'rd-mode.el' yet, use the following as substitute:
+;;--   (fset 'Rd-mode 'R-mode)
+;;-- else :
+(autoload 'Rd-mode "rd-mode" "Major mode for editing R manual pages." t)
+;;---> /u/maechler/emacs/rd-mode.el <<<<
+
 
 ;; (1.4) Customize the dialects for your setup.
 
@@ -110,6 +119,8 @@
 ;;(setq-default inferior-XLS-program-name "xlispstat")
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
+;;(setq-default inferior-SAS-program-name "sas")
+
 ;;;; Choice for S().
 ;;(setq-default inferior-S-program-name inferior-S+3-program-name)
 
@@ -118,13 +129,13 @@
 (require 'essd-s+3)
 (require 'essd-r)
 (require 'essd-xls)
+(require 'essd-sas)
 ;;(require 'essd-s3)  ;; You might not have this
 ;;(require 'essd-s4)  ;; or this one...
 
 ;;TODO, for 5.0 :-).
 ;; (require 'essd-vst) ; built on essd-xls.
 ;; (require 'essd-s+4)
-;;(require 'essd-sas)
 
 ;;; 2. Site Specific setup
 ;;;; ===============================================
@@ -228,42 +239,6 @@
 
 
 ;;; 4.0 SAS configuration
-
-;;-*-emacs-lisp-*-
-;;;  file name: sas-site.el
-;;;
-;;;  Version 1.4
-;;; 
-;;;    sas-mode:  indent, run etc, SAS programs.
-;;;    Copyright (C) 1994 Tom Cook
-;;;
-;;;    This program is free software; you can redistribute it and/or modify
-;;;    it under the terms of the GNU General Public License as published by
-;;;    the Free Software Foundation; either version 2 of the License, or
-;;;    (at your option) any later version.
-;;;
-;;;    This program is distributed in the hope that it will be useful,
-;;;    but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;;;    GNU General Public License for more details.
-;;;
-;;;    You should have received a copy of the GNU General Public License
-;;;    along with this program; if not, write to the Free Software
-;;;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-;;;
-;;;  Author:   Tom Cook
-;;;            Dept. of Biostatistics
-;;;            University of Wisconsin - Madison
-;;;            Madison, WI 53706
-;;;            cook@biostat.wisc.edu
-;;   Last change: 2/1/95
-;;
-;;
-;;  Acknowledgements:  
-;;
-;;  Menu code for XEmacs/Lucid emacs and startup mods
-;;  contributed by arossini@biostats.hmc.psu.edu
-
 
 (defvar sas-require-confirmation t
   "*Require confirmation when revisiting sas-output which has changed on disk.")
