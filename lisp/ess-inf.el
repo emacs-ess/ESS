@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1998/11/12 17:24:08 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: ess-inf.el,v 5.5 1998/11/12 17:24:08 maechler Exp $
+;; Modified: $Date: 1998/11/16 17:29:25 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: ess-inf.el,v 5.6 1998/11/16 17:29:25 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -1150,7 +1150,8 @@ to continue it."
   ;; to go into the dialect configuration...
   (if (or (string= ess-language "XLS")
 	  (string= ess-language "SAS")
-	  (string= ess-dialect "S+5")
+	  ;; not necessary, when comint-input-sender is set below:
+	  ;;	(string= ess-dialect "S+5")
 	  )
       (setq comint-process-echoes nil)
     (setq comint-process-echoes t))
