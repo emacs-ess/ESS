@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/12 18:24:08 $
-;; Version: $Revision: 1.31 $
-;; RCS: $Id: essd-sas.el,v 1.31 1997/11/12 18:24:08 rossini Exp $
+;; Modified: $Date: 1997/11/14 01:06:11 $
+;; Version: $Revision: 1.32 $
+;; RCS: $Id: essd-sas.el,v 1.32 1997/11/14 01:06:11 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -54,19 +54,17 @@
 
 ;;; Code:
 
-(defun ess-SAS-pre-run-hook (temp-ess-dialect)
+(defun ess-SAS-pre-run-hook (alist)
   "Set up log and list files for interactive SAS."
 
   (let* ((ess-shell-buffer-name-flag (get-buffer "*shell*"))
 	 ess-shell-buffer-name
+	 (temp-ess-dialect (cdr (rassoc ess-dialect alist)))
 	 ;; isn't pretty yet.
 	 ;;  ess-local-process-name is defined after this function.
 	 ;;  it needs to be defined prior to this function.
 	 ;;(n 0)
 	 (tmp-procname
-	  ;;(if n (ess-proc-name (prefix-numeric-value n)
-	  ;;  temp-ess-dialect)
-	  ;; no prefix arg
 	  (or (and (not (comint-check-proc (current-buffer)))
 		   ;; Don't start a new process in current buffer if
 		   ;; one is already running
@@ -200,7 +198,7 @@
    (format "(SAS): ess-dialect=%s , buf=%s \n"
 	   ess-dialect
 	   (current-buffer)))
-  (ess-SAS-pre-run-hook ess-dialect)
+  (ess-SAS-pre-run-hook SAS-customize-alist)
   (inferior-ess))
 
 
