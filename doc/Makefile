@@ -1,6 +1,6 @@
 ### Makefile - for DOCUMENTATION (./doc) of ESS distribution.
 ###
-### File: $Revision: 1.43 $.
+### File: $Revision: 1.44 $.
 ###
 
 ## Before making changes here, please take a look at Makeconf
@@ -25,7 +25,7 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 all  : info text html dvi pdf
 info : ess.info 
 text : ../README ../ANNOUNCE
-docs : install text
+docs : info text html
 html : html/ess_toc.html html/readme_toc.html
 dvi  : ess.dvi readme.dvi
 pdf  : ess.pdf readme.pdf

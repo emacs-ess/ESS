@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.78 2004/05/10 19:00:21 rsparapa Exp $
+## $Id: Makefile,v 5.79 2004/05/11 15:37:31 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -42,14 +42,14 @@ dist: VERSION cleanup-dist
 	@echo "**********************************************************"
 	@echo "** Exporting Files **"
 	-cvs export -D today ess
-	@echo "** Correct Write Permissions and RM Papers **"
+	@echo "** Correct Write Permissions and Clean-up docs **"
 	mv ess $(ESSDIR)
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
 	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
-	for D in jcgs techrep dsc2001-rmh; do DD=$(ESSDIR)/doc/$$D; \
-	  chmod -R u+w $$DD ; rm -rf $$DD ; done
+	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* Why_* README.*"; \
+	cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; cd ../..
 	test -f $(ESSDIR).tar.gz && rm -rf $(ESSDIR).tar.gz || true
 	@echo "** Creating tar file **"
 	tar hcvof $(ESSDIR).tar $(ESSDIR)
@@ -79,11 +79,7 @@ ChangeLog: VERSION
 
 # Note: we do not want to tag every minor release
 #       ==> "tag" manually after `important' releases
-
-# FIXME: "ChangeLog" does not work (for MM);
-#	if it would it still needed cleanup of full-path names
-#rel: ChangeLog dist
-rel: dist
+rel: ChangeLog dist
 	@echo "** Placing tar and zip files **"
 	scp -p $(ESSDIR).tar.gz $(ESSDIR).zip $(UPLOAD_SITE):$(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
