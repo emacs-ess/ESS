@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/10/23 13:00:41 $
-;; Version: $Revision: 1.44 $
-;; RCS: $Id: essd-r.el,v 1.44 1997/10/23 13:00:41 rossini Exp $
+;; Modified: $Date: 1997/11/12 21:30:34 $
+;; Version: $Revision: 1.45 $
+;; RCS: $Id: essd-r.el,v 1.45 1997/11/12 21:30:34 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -36,7 +36,7 @@
 (require 'essl-s)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
-
+(autoload 'ess-get-start-args "ess-inf" "Get arguments for ESS process")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process")
 
 ;;; Code:
@@ -78,16 +78,23 @@
 (fset 'r-mode 'R-mode)
 
 
-(defun R ()
+(defun R (&optional start-args)
   "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ)."
-  (interactive)
+  (interactive "P")
   (setq ess-customize-alist R-customize-alist)
   ;; for debugging only
   (ess-write-to-dribble-buffer
-   (format "(R): ess-dialect=%s , buf=%s \n"
+   (format "(R): ess-dialect=%s , buf=%s, start-arg=%s\n"
 	   ess-dialect
-	   (current-buffer)))
-  (inferior-ess))
+	   (current-buffer)
+	   start-args))
+  (ess-write-to-dribble-buffer
+   (format "(R): current-prefix-arg=%s \n"
+	   current-prefix-arg))
+
+  (let ((r-start-args  (if start-args (read-string "Starting Args ? ") nil)))
+    (if (not start-args) (inferior-ess)
+      (inferior-ess r-start-args))))
 
 
 (autoload 'ess-transcript-mode "ess-trns"
