@@ -1,4 +1,10 @@
-# Stolen from the VM 5.70 distribution.  Thanks Kyle!
+# Makefile - for ESS distribution.
+#
+# Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
+# For ESS Version: 5.0
+#
+# Edit the makefile, type `make', and follow the instructions.
+# Based/Stolen from VM 5.70, AUC-TeX 9.7p distributions.  Thanks Kyle and Per!
 
 PREFIX=/usr/local
 
@@ -34,6 +40,7 @@ GZCAT = zcat
 SHELL = /bin/sh
 
 VERSION = 4.9-b16
+VERSIONDIR = ESS-$(VERSION)
 
 LASTVERSION = 4.8.MM6.XE2
 
@@ -59,7 +66,7 @@ BATCHFLAGS = -batch --no-site-file --no-init-file
 CORE = ess.elc ess-site.elc
 
 SOURCES = ess-vars.el ess.el ess-site.el \
-	essl-s.el essl-lsp.el essl-sas.el \
+	essl-s.el essl-lsp.el essl-sas.el essl-sta.el \
 	essd-s3.el essd-s4.el essd-s+3.el essd-r.el essd-xls.el essd-sas.el \
 	ess-inf.el ess-mode.el ess-trns.el ess-help.el \
 	essddr.el
@@ -90,11 +97,27 @@ clean:
 	  ess.ky ess.log ess.pg ess.toc ess.tp ess.vr \
 	  ess.fn texput.log
 
-distrib: $(SOURCES) $(AUXFILES)
-	chmod a-w *.el
-	chmod u+w ess-site.el Makefile
-	tar cvf ESS-$(VERSION).tar $(SOURCES) $(AUXFILES)
-	gzip ESS-$(VERSION).tar
+# $(SOURCES) $(AUXFILES)
+dist:
+	@echo "**********************************************************"
+	@echo "** Making distribution of ESS for release $(VERSION)"
+	@echo "**********************************************************"
+	-(cd $(VERSIONDIR) ; make clean )
+	-(cd $(VERSIONDIR) ; mv ChangeLog ChangeLog.old \
+	  echo `date "+%a %b %d %T %Y "` " A.J. Rossini <rossini@stat.sc.edu>" > ChangeLog \
+	  echo >> ChangeLog \
+	  echo "	* Version" $(VERSION) released. >> ChangeLog \
+	  echo >> ChangeLog \
+	 cat ChangeLog.old >> ChangeLog )
+	chmod a-w $(VERSIONDIR)/*.el
+	chmod u+w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
+	tar hcovf $(VERSIONDIR).tar $(VERSIONDIR)/$(SOURCES) \
+				 $(VERSIONDIR)/$(AUXFILES)
+	gzip $(VERSIONDIR).tar
+	cp $(VERSIONDIR).tar.gz $(MYWWWDIR)
+	cp $(VERSIONDIR).tar.gz $(MYFTPDIR)
+	chmod u-w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
+
 
 patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 	-rm -rf ESS-$(VERSION)

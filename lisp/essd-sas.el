@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/20 20:09:26 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: essd-sas.el,v 1.13 1997/10/20 20:09:26 rossini Exp $
+;; Modified: $Date: 1997/10/22 18:39:38 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: essd-sas.el,v 1.14 1997/10/22 18:39:38 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -40,6 +40,10 @@
 (defvar inferior-SAS-args "-stdio -linesize 80 -noovp"
   "*Arguments to use for starting SAS.")
 
+;; workaround
+(defvar inferior-SAS-args-temp nil)
+;;workaround
+
 ;;; Code:
 
 (defun ess-SAS-pre-run-hook () "Set up log and list files for interactive SAS."
@@ -68,7 +72,7 @@
 					     ess-sas-lst
 					     " "
 					     ess-sas-log))
-  (setq inferior-SAS-args (concat inferior-SAS-args
+  (setq inferior-SAS-args-temp (concat inferior-SAS-args
 				  additional-inferior-SAS-args))
   
   (if ess-shell-buffer-name-p
@@ -87,7 +91,7 @@
   (split-window-vertically)
   (other-window 1)
   (switch-to-buffer "*myfile.lst*")
-  (other-window 1)
+  (other-window 2)
 
   ;;workaround
   (setq inferior-SAS-program-name (concat ess-lisp-directory "/" "ess-sas-sh-command"))
@@ -125,7 +129,7 @@
     (inferior-ess-primary-prompt   . "^")
     (inferior-ess-secondary-prompt . "^")
     (inferior-ess-start-file       . nil) ;"~/.ess-SAS")
-    (inferior-ess-start-args       . inferior-SAS-args) 
+    (inferior-ess-start-args       . inferior-SAS-args-temp) 
     (ess-pre-run-hook              . 'ess-SAS-pre-run-hook)
     (ess-local-process-name        . nil))
   "Variables to customize for SAS")
