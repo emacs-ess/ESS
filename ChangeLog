@@ -1,3 +1,11 @@
+Sun Nov 30 13:44:55 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: comments for indexing.
+
+Sun Nov 30 13:41:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.texi: more fixes. Many more to go.
+
 Sun Nov 30 12:38:26 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* README.SAS: added more information.
@@ -1799,6 +1807,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 4.12  1997/11/30 18:45:09  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 4.11  1997/11/30 17:42:06  rossini
 	* Removing *** empty log message ***
 	* Removing
