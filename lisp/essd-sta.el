@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 1998/09/24 23:17:25 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essd-sta.el,v 1.3 1998/09/24 23:17:25 rossini Exp $
+;; Modified: $Date: 1999/02/22 23:01:14 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essd-sta.el,v 1.4 1999/02/22 23:01:14 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -27,8 +27,9 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;;; Commentary:
-;;; This file defines all the Stata customizations for ess-mode.
+;;; Commentary: This file defines all the Stata customizations for
+;;; ess-mode.  It is somewhat based on Stata-mode by Thomas Lumley
+;;; <thomas@biostat.washington.edu>.
 
 ;;; Requires and Autoloads:
 
@@ -116,4 +117,4 @@
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; essd-s+3.el ends here
+;;; essd-sta.el ends here

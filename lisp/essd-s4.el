@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/11/12 17:08:12 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essd-s4.el,v 5.3 1998/11/12 17:08:12 maechler Exp $
+;; Modified: $Date: 1999/02/22 23:01:14 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essd-s4.el,v 5.4 1999/02/22 23:01:14 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -28,7 +28,7 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; DB contributed the changes from essd-s+3.el to
+;;; DB contributed the changes from essd-sp3.el to
 ;;; essd-s4.el. (removed the old ugly approach).
 ;;; This file defines S4 customizations for ess-mode.  Lots of thanks
 ;;; to RMH and JMC for code and suggestions

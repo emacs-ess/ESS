@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1999/01/11 17:11:50 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: ess-site.el,v 5.13 1999/01/11 17:11:50 maechler Exp $
+;; Modified: $Date: 1999/02/22 23:01:12 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: ess-site.el,v 5.14 1999/02/22 23:01:12 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -163,7 +163,7 @@
 ;;; These commands are for running the PC version of Sqpe of S+4 in
 ;;; an emacs buffer, using the same technology as ESS uses for Unix
 ;;; S-Plus.  Interactive graphics are unavailable in this mode.
-;;; See essd-s+4.el
+;;; See essd-sp4.el
 
 ;;(setq-default inferior-Sqpe+4-program-name "Sqpe")
 ;;(setq-default inferior-Sqpe+4-SHOME-name "c:/Progra~1/spls45se")
@@ -177,18 +177,18 @@
 
 ;; (1.5) Require the needed dialects for your setup.
 
-(require 'essd-s+3)
-(require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 (require 'essd-r)
+(require 'essd-s4)
+(require 'essd-sp3)
+(require 'essd-sp5)
+(require 'essd-sta) ; for Stata.
 (require 'essd-xls)
 (require 'essd-sas)
-(require 'essd-s4)
-(require 'essd-s+5)
-(require 'essd-sta) ; for Stata.
+(require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 
 (if (or (equal window-system 'w32) (equal window-system 'win32))
 ;;     (progn
-       (require 'essd-s+4)  ; PC
+       (require 'essd-sp4)  ; PC
 ;;       (require 'essd-sq4))
 )
 

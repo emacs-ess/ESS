@@ -1,12 +1,13 @@
-;;; essd-els.el --- S-PLUS 3.x at another location customization
-;; Copyright (C) 1998 Richard M. Heiberger
+;;; essd-sp5.el --- S-plus 5  customization
 
-;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Copyright (C) 1998 A.J. Rossini
+
+;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
-;; Created: December 1998
-;; Modified: $Date: 1999/02/22 23:01:14 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essd-els.el,v 1.5 1999/02/22 23:01:14 rossini Exp $
+;; Created: 9 Nov 1998
+;; Modified: $Date: 1999/02/22 23:00:57 $
+;; Version: $Revision: 1.1 $
+;; RCS: $Id: essd-sp5.el,v 1.1 1999/02/22 23:00:57 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -27,7 +28,12 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the S-PLUS 3.x customizations for ess-mode.
+;;; AJR copied S4 to be S+5.
+;;; DB contributed the changes from essd-sp3.el to
+;;; essd-s4.el. (removed the old ugly approach).
+;;; This file defines Sp5 customizations for ess-mode.  Lots of thanks
+;;; to RMH and JMC for code and suggestions
+;;; Thanks to MM for making this sensible.
 
 ;;; Requires and Autoloads:
 
@@ -36,66 +42,83 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process")
 
-; Code:
+;;; Code:
 
-(defvar S+elsewhere-dialect-name "S+3"
-  "Name of 'dialect' for S-PLUS 3.x at another location.")
-					;easily changeable in a user's .emacs
+(defvar S+5-dialect-name "S+5"
+  "Name of 'dialect' for S-PLUS 5.");easily changeable in a user's .emacs
 
-(defvar S+elsewhere-customize-alist
-  '((ess-local-customize-alist     . 'S+elsewhere-customize-alist)
+(defvar S+5-customize-alist
+  '((ess-local-customize-alist     . 'S+5-customize-alist)
     (ess-language                  . "S")
-    (ess-dialect                   . S+elsewhere-dialect-name)
+    (ess-dialect                   . S+5-dialect-name)
     (ess-suffix                    . "S")
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
 					     ess-suffix))
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-mode-syntax-table         . S-syntax-table)
-    (ess-help-sec-regex            . ess-help-S+-sec-regex)
+    (ess-help-sec-regex            . ess-help-S+-sec-regex) 
+					;or just "^[A-Z. ---]+:$"
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
+
+    (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
     (ess-loop-timeout              . 100000 )
-    (ess-object-name-db-file       . "ess-spelsewhere-namedb.el" )
+    (ess-object-name-db-file       . "ess-sp5-namedb.el")
+    (ess-dumped-missing-re  
+     . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
+    (ess-syntax-error-re
+     . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
     (ess-retr-lastvalue-command
      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
     (ess-save-lastvalue-command
      . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-    (inferior-ess-program          . inferior-S-elsewhere-program-name)
+    (inferior-ess-program          . inferior-S+5-program-name)
     (inferior-ess-objects-command  . "objects(%d)\n")
+    (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
-    (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
-    (inferior-ess-start-args       . "-i"))
- "Variables to customize for S+elsewhere")
+    (inferior-ess-secondary-prompt . "+ ?"))
+
+  "Variables to customize for S")
+
+;; For loading up the S code required for the above.
+;;(add-hook 'ess-post-run-hook
+;;	  '(lambda ()
+;;	     (ess-command
+;;	      (concat
+;;	       "if(exists(\"Sversion\")) library(emacs) else source(\""
+;;	       ess-mode-run-file
+;;	       "\")\n"))
+;;	     (if ess-mode-run-file2
+;;		 (ess-command
+;;		  (concat "source(\"" ess-mode-run-file2 "\")\n")))))
 
 
-(defun S+elsewhere (&optional proc-name)
-  "Call 'S-PLUS 3.x', the 'Real Thing'  from StatSci."
+(defun S+5 (&optional proc-name)
+  "Call 'Splus5', based on S version 4, from Bell Labs.
+New way to do it."
   (interactive)
-  (setq ess-customize-alist S+elsewhere-customize-alist)
+  (setq ess-customize-alist S+5-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "\n(S+elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
-	   (current-buffer)))
+   (format "\n(S+5): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
   (inferior-ess))
 
-(defun S+elsewhere-mode (&optional proc-name)
-  "Major mode for editing S+3 source.  See ess-mode for more help."
+
+(defun S+5-mode (&optional proc-name)
+  "Major mode for editing S+5 source.  See ess-mode for more help."
   (interactive)
-  (setq ess-customize-alist S+elsewhere-customize-alist)
-  (ess-mode S+elsewhere-customize-alist proc-name))
+  (setq ess-customize-alist S+5-customize-alist)
+  (ess-mode S+5-customize-alist proc-name))
 
-(defun S+elsewhere-transcript-mode ()
-  "S-PLUS 3.x transcript mode."
+(defun S+5-transcript-mode ()
+  "S-PLUS 5 transcript mode."
   (interactive)
-  (ess-transcript-mode S+elsewhere-customize-alist))
-
-
+  (ess-transcript-mode S+5-customize-alist))
 
  ; Provide package
 
-(provide 'essd-els)
+(provide 'essd-sp5)
 
  ; Local variables section
 
@@ -114,4 +137,4 @@
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; essd-els.el ends here
+;;; essd-sp5.el ends here

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/11/12 17:27:30 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: essd-s3.el,v 5.3 1998/11/12 17:27:30 maechler Exp $
+;; Modified: $Date: 1999/02/22 23:01:14 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: essd-s3.el,v 5.4 1999/02/22 23:01:14 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -112,4 +112,4 @@
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; essd-s+3.el ends here
+;;; essd-s3.el ends here
