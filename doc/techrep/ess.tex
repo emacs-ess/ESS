@@ -478,7 +478,7 @@ Doug Bates, Ed Kademan, Frank Ritter, and Mike Meyer.  David Smith was
 the next primary maintainer, and his most important contribution was
 to enhance the interface to the \Splus\ command-line interface and to
 allow for control of multiple processes simultaneously.  In 1995, A.J.
-Rossini extended S-mode to support XEmacs, an opensource editor which
+Rossini extended S-mode to support XEmacs, an open-source editor which
 was derived from Emacs.  At the same time, extensions from ETH,
 written of Martin Maechler, were folded into what was to become the
 primary codebase.  By 1996, S-mode was merged into a uniform S-mode
@@ -496,7 +496,7 @@ codebase to accommodate multiple languages in a flexible way.
 
 During 1996 and 1997, Richard M. Heiberger further incorporated
 SAS-mode into ESS and designed the inferior ESS mode for SAS.  In
-1997, the grand redesign of the internals occured, where by a generic
+1997, the grand redesign of the internals occurred, where by a generic
 means for configuring ESS for new statistical languages was
 implemented. 
 
@@ -967,7 +967,6 @@ functional equivalent of bringing a file into the \ssf{SAS: PROGRAM
   EDITOR} window followed by the \ssf{Local/Submit} menu commands.  The
 user should never use this buffer directly.
 
-
 \section{Remarks and Extensions}
 \label{sec:remarks}
 
@@ -978,28 +977,31 @@ browsers, tool-tips, and interfacing cleaning.  The other is to
 target appropriate potentially useful programming methodologies for
 transfer to statistical practice.
 
-Literate Programming methodologies \citep{Knuth:1992,NRamsey:1994}.
-We refer to the application to statistical analysis as Literate
-Statistical Practice \citep{rossini:dsc:2001}.  The tools used are
-Noweb \citep{NRamsey:1994} and the use of an XML authoring environment
-for statistical analysis.
+Literate Programming methodologies \citep{Knuth:1992,NRamsey:1994} are
+a natural fit for statistical practice.  We refer to the application
+to statistical analysis as Literate Statistical Practice
+\citep{rossini:dsc:2001}.  The tools used are Noweb
+\citep{NRamsey:1994} and either \LaTeX, \textsc{html}, or \textsc{xml}
+for documenting and explaining the analysis.  This approach to
+programming suggests the use of a literary documentation style with
+embedded code to explain how the analysis approach is realized.
 
-IDE extensions which are important to construct include class
-browsers, analysis templates, tool-tips, and similar tools for
-effective working.  Class browsers can be thought of as a tree or
-outline for presenting variables and functions, allowing for rapid and
-appropriate inspection.   Analysis templates would allow groups to
-provide standardized templates for initiating an analysis.
+Important IDE extensions which should be implemented in future
+versions include class browsers, analysis templates, tool-tips, and
+similar features.  Class browsers can be thought of as a tree or
+outline for presenting datasets, variables and functions in the
+context of what they represent; this allows for rapid and appropriate
+inspection.  Analysis templates would allow statistics centers and
+groups to provide standardized templates for initiating an analysis.
+While most IDE features have been developed for object-oriented
+languages, the above also can apply to non-object oriented
+programming.
 
-Combinations of the above include report construction and generation,
-using literate programming techniques.  This could be a useful
-approach for solving data management auditing.
-
-%\textbf{RODNEY:} Are you telling the reader where ESS is going?  If
-%so, this is news to me.  I'm guessing that ESS is going to add BUGS
-%(that's my plan) and will have better support for all of the packages
-%you mentioned: S et.~al., SAS, \Stata, \XLispStat, etc.  If I am
-%confused, then many readers will be to.
+ESS is one of the first IDEs intended for statisticians.  It provides
+an enhanced, powerful interface for efficient interactive data
+analysis and statistical programming.  It is customizable for
+individual desires as well as extensible to other statistical
+languages and analysis packages.
 
 \singlespace
 
