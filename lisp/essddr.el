@@ -19,7 +19,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.1 1997/12/02 14:13:51 rossini Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.2 1997/12/09 20:44:16 rossini Exp $
 
 ;;; Code:
 
@@ -106,7 +106,9 @@ All Rd mode abbrevs start with a grave accent (`).")
   '("bold" "cr" "code" "deqn" "dots" "email" "emph" "eqn" "file" "item"
     "ldots" "link" "url"))
 
-(defvar Rd-bold-face 'bold)
+;; (defvar Rd-bold-face 'font-lock-function-name-face)
+(defvar Rd-bold-face 'bold))
+
 (defvar Rd-font-lock-keywords
   (list
    (cons
