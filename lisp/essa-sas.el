@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/02/20 22:26:48 $
-;; Version: $Revision: 1.83 $
-;; RCS: $Id: essa-sas.el,v 1.83 2002/02/20 22:26:48 rsparapa Exp $
+;; Modified: $Date: 2002/02/26 19:35:25 $
+;; Version: $Revision: 1.84 $
+;; RCS: $Id: essa-sas.el,v 1.84 2002/02/26 19:35:25 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -382,9 +382,11 @@ on the way."
 
 (defun ess-sas-graph-view ()
   "Open a GSASFILE for viewing."
-    (interactive)
+  (interactive)
+  (ess-sas-file-path)
 
- (save-excursion (let ((ess-tmp-sas-graph nil))
+  (let ((ess-tmp-sas-graph nil)
+        (ess-tmp-sas-glyph nil))
     (save-match-data 
        (search-backward-regexp "[ \t=]" nil t)
 
@@ -399,13 +401,29 @@ on the way."
        (if ess-tmp-sas-graph 
 	    (setq ess-tmp-sas-graph (read-string "GSASFILE: " ess-tmp-sas-graph))
 	    (setq ess-tmp-sas-graph (read-string "GSASFILE: " 
-		(file-name-non-directory ess-sas-file-path))))
+		(file-name-nondirectory ess-sas-file-path))))
 
-       (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
+	    (setq ess-tmp-sas-graph    (convert-standard-filename 
+			(concat (file-name-directory ess-sas-file-path) "/" ess-tmp-sas-graph)))
 
-       (insert ess-sas-submit-pre-command " " ess-sas-image-viewer " " ess-tmp-sas-graph 
-	    (if (equal ess-sas-submit-method 'sh) " &"))
-       (comint-send-input)
+	  (if (fboundp 'ess-xemacs-insert-glyph) (progn
+	      (if (string-match "[.][gG][iI][fF]" ess-tmp-sas-graph)
+		 (setq ess-tmp-sas-glyph 'gif)
+	      ;;else
+	      (if (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-sas-graph)
+		 (setq ess-tmp-sas-glyph 'jpeg)))))
+
+	  (if ess-tmp-sas-glyph (progn
+		(switch-to-buffer (file-name-nondirectory ess-tmp-sas-graph))
+		(ess-xemacs-insert-glyph (make-glyph (vector ess-tmp-sas-glyph :file ess-tmp-sas-graph)))
+	  )
+	  ;;else
+          (save-excursion
+            (if (get-buffer "*shell*") (set-buffer "*shell*") (shell))
+
+            (insert ess-sas-submit-pre-command " " ess-sas-image-viewer " " ess-tmp-sas-graph 
+	      (if (equal ess-sas-submit-method 'sh) " &"))
+            (comint-send-input))
 ))))
 
 (defun ess-sas-file-path ()
