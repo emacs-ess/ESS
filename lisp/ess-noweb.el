@@ -43,7 +43,7 @@
   "Set to t if you want to use font-locking in ESS noweb buffers.")
 
 ;; this helps with XEmacs barfing, sigh...
-;; but it *NOT* okay to do *globally*: (setq global-font-lock-mode t)
+;; but is *NOT* okay to do *globally*: (setq global-font-lock-mode t)
 
 (if ess-noweb-use-font-lock
      (require 'noweb-font-lock-mode))
