@@ -162,7 +162,7 @@ intelligent environment for statistical analysis}
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/28 00:51:30 $ - $Revision: 1.17 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/30 09:57:30 $ - $Revision: 1.18 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -220,13 +220,13 @@ communication, involve computing.  This is exemplified by the idea
 that many daily statistical activities can be considered to be
 \textit{programming with data} \citep{ChaJ98}.  The user interface,
 which maps behaviors between the computer and user, plays a central
-role in facilitating these tasks.  
+role in facilitating these tasks.
 %% While presentation of character and
 %% graphical information is the most visual component of a user
 %% interface, perhaps a more critical component is how the computer
-%% interprets user input.  
+%% interprets user input.
 A familiar, coherent, and well-understood
-%probably most importantly, 
+%probably most importantly,
 set of input behaviors can increase the efficiency of statistical
 practice.  This paper introduces Emacs Speaks Statistics (ESS)
 \citep{ESS}, a software package which provides a common interface to a
@@ -278,7 +278,7 @@ ESS provides assistance with both the writing and evaluation of
 analysis code for many types of statistical packages.  ESS currently
 supports the S family of languages (including S
 \citep{BecRCW88,ChaJH92,ChaJ98}, \Splus\regstrd\ \citep{Splus}, and R
-\citep{ihak:gent:1996,R}; \SAS\regstrd\ \citep{SAS:8}; \Stata\ 
+\citep{ihak:gent:1996,R}; \SAS\regstrd\ \citep{SAS:8}; \Stata\
 \citep{Stata:7.0}; \XLispStat\ \citep{Tier90} and its extensions Arc
 \citep{Cook:Weisberg:1999} and ViSta \citep{youn:fald:mcfa:1992}; BUGS
 \citep{BUGS}; and Omegahat \citep{DTLang:2000}.  ESS can be extended
@@ -300,7 +300,7 @@ general computer programs for data analysis and processing.  Both
 forms will be referred to as programs and source code (the textual result) or
 programming (the activity).
 % in the sequel.  huh?
-These programs can be written in a general computer language such as \Fortran\, 
+These programs can be written in a general computer language such as \Fortran\,
 C/C$++$, or Java. However, specialized scripting languages supporting
 common statistical procedures are a popular option among
 statisticians.  These include \Splus, R, \SAS, \Stata, or
@@ -403,8 +403,11 @@ optional schemes.
     \includegraphics[angle=270,width=\textwidth]{font-incor-s-bw}
   }
   \caption{We illustrate here with fonts and colors appropriate for a
-    black and white display.  On a color terminal we would use a
-    selection of colors.}
+    black and white display.  On
+    % a color terminal we would use a selection of colors.
+    today's color terminals,        a selection of colors make the effect
+    much more prominent.
+    }
   \label{f.font}
 \end{figure}
 
@@ -416,9 +419,9 @@ a line), indentation offsets for if-then-else constructs, and similar
 characteristics.  XLispStat can also be reformatted.
 %Rodney:  Not that I know of.  \textbf{RODNEY/RICH: CAN SAS BE REFORMATTED?}
 
-Syntax highlighting can be used to enforce coding standards.  Figure 
-\ref{f.hilock} illustrates a standard for \SAS\ programming, but coding 
-standards aids could be implemented for other languages such as R or \Splus\.
+Syntax highlighting can be used to enforce coding standards.  Figure
+\ref{f.hilock} illustrates a standard for \SAS\ programming, but coding
+standards aids could be implemented for other languages such as R or \Splus.
 %that says all \stexttt{PROC} statements must use the
 %\stexttt{DATA=datasetname} option.
 
@@ -444,6 +447,9 @@ standards aids could be implemented for other languages such as R or \Splus\.
 \end{figure}
 
 
+%%% NOTE: Help file reading, navigating and example execution is
+%%% ----  MORE IMPORTANT (because for a much wider audience)
+%%% and for all the S family !!!
 \paragraph{Help File Editing.}
 ESS provides an R documentation mode (\stexttt{Rd-mode}) which assists
 in writing help files for R functions, objects, and other topics worth
@@ -481,8 +487,8 @@ using DDE; and batch submission of whole or partial text files
 containing analysis scripts.  For packages which do not support any of
 these, the primary use of ESS is as an editing tool, with interaction
 done using windowing cut-and-paste techniques; this still provides
-benefits through the availability of useful editing features.  
-%too vague:  In this case, the package's GUI tools are available for use.  
+benefits through the availability of useful editing features.
+%too vague:  In this case, the package's GUI tools are available for use.
 Examples of this last situation include Windows versions of SAS, Stata, and
 XLispStat.
 
@@ -561,8 +567,9 @@ session to construct functions and batch files for routine analysis of
 similar data sets.
 
 \paragraph{Cooperation across Multiple Tools.}
-Statistical packages are intended for either general statistical
-analyses or for specialized forms of statistical analyses.  The
+Statistical packages are intended for either general
+or % (twice the same phrase) statistical analyses or for
+specialized forms of statistical analyses.  The
 specialized statistical packages can be far more efficient for their
 intended activities, but this is balanced by their inability to
 perform a wide range of general statistical functions.  Tightly
@@ -592,7 +599,7 @@ same session.  The remote machine could be a different platform than
 the local machine.  This is accomplished through the use of Emacs
 capabilities for transparent access to remote files over a network.
 This means that the user views, edits, and saves files on a remote
-machine exactly as if they were on the local machine.  
+machine exactly as if they were on the local machine.
 
 %\paragraph{Inter-Process Communication.}
 %Packages that use unix-style command-line interfaces can be run as an
@@ -610,7 +617,7 @@ machine exactly as if they were on the local machine.
 %Statistical packages that use neither the standard input/standard
 %output protocol nor DDE can not be directly controlled by Emacs.  If
 %the package has a batch environment that can operate from a file, ESS
-%can start and monitor its evaluation.  
+%can start and monitor its evaluation.
 
 %ESS can still provide an editing environment for these statistical
 %languages.  The user must either manually cut and paste the edited
@@ -643,7 +650,7 @@ the executing process with a single keystroke.  \stexttt{iESS[S]} is
 used with S, \Splus, and R on Unix and with Sqpe and R on Windows.
 
 The \Splus\ GUI on Windows can be a DDE server.  There are two
-advantages to using even this limited communication with the \Splus\ 
+advantages to using even this limited communication with the \Splus\
 GUI through ESS.  First, through \stexttt{ESS[S]} mode the user gets
 the full editing capabilities of Emacs.  Second, S language commands
 are sent from the editing mode \stexttt{ESS[S]} buffer and from
@@ -673,9 +680,9 @@ interface, but with Emacs key sequences.
 
 \paragraph{Interactive BUGS.}
 BUGS software performs Markov Chain Monte Carlo integration.  ESS
-supports interactive processing of BUGS commands. 
+supports interactive processing of BUGS commands.
 
-% \stexttt{ESS[SAS]} mode can be used in conjunction with the \SAS\ 
+% \stexttt{ESS[SAS]} mode can be used in conjunction with the \SAS\
 % Display Manager to allow simultaneous access to Emacs for editing
 % \SAS\ language code and to the \SAS\ mouse-based interfaces to the
 % graphical routines and help system.
@@ -741,7 +748,7 @@ running \SAS\ batch on remote computers is nearly transparent to the
 ESS user.
 
 \paragraph{Batch BUGS.}
-%BUGS software performs Markov Chain Monte Carlo integration.  
+%BUGS software performs Markov Chain Monte Carlo integration.
 There is
 an interactive capability, but it is not often used since the analyses
 can be very time-consuming.  Most BUGS programs are executed as batch
@@ -778,7 +785,7 @@ are two open-source implementations of Emacs: GNU Emacs
 features with word processors, and some characteristics with operating
 systems, including many facilities which go beyond ordinary text
 editing.  More important to our goals, Emacs can control and interact
-with other programs.  
+with other programs.
 
 We quickly describe features which enable ESS; these are not
 necessarily unique to Emacs, but Emacs was among the first to have
@@ -903,8 +910,9 @@ the differing portions of text files.
 \end{figure}
 
 Emacs has many other important features.  Emacs provides file-manager
-capabilities, such as \stexttt{dired} (discussed in Major and Minor
-Modes above) and \stexttt{speedbar}, both of which interface to the
+capabilities, such as \stexttt{dired}
+%no longer  (discussed in Major and Minor Modes above)
+and \stexttt{speedbar}, both of which interface to the
 computer's directory structure.  Emacs stores the complete history of
 commands issued in an editing session, allowing a flexible and fairly
 complete undo capability.  More importantly, for modes which control
@@ -942,7 +950,7 @@ wrote S-mode in 1989 to edit S and \Splus\ files in GNU Emacs.  Frank
 Ritter and Mike Meyer added features, creating version 2.  Meyer and
 David Smith made further contributions, creating version 3.  For
 version 4, David Smith provided significant enhancements to allow for
-powerful process interaction.  
+powerful process interaction.
 
 John Sall wrote GNU Emacs macros for \SAS\ source code in 1990.
 Tom Cook added functions to submit jobs, review listing and log files,
@@ -991,8 +999,8 @@ This history is summarized in Table \ref{tab:timeline}.
     1991 & v.2   & (GNU Emacs, Unix, S/S+)          && \\
     1993 & v.3   & (GNU Emacs, Unix, S/S+)          && \\
     1994 & v.4   & (GNU Emacs/XEmacs, Unix, S/S+)   && v.1 & (GNU Emacs, Unix, SAS batch) \\
-    1995 & v.4.7 & (GNU Emacs/XEmacs, Unix, S/S+/R) && v.2 & (GNU Emacs/XEmacs, Unix, SAS batch) \\ 
-         &       &                                  &&     & \\ \cline{2-6} 
+    1995 & v.4.7 & (GNU Emacs/XEmacs, Unix, S/S+/R) && v.2 & (GNU Emacs/XEmacs, Unix, SAS batch) \\
+         &       &                                  &&     & \\ \cline{2-6}
 %\\ [-3.5ex] \cline{2-6}
          & \multicolumn{5}{c}{Emacs Speaks Statistics (ESS)} \\
     \cline{2-6}
