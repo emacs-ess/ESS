@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/07 00:38:29 $ - $Revision: 1.142 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/07 04:57:48 $ - $Revision: 1.143 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -271,7 +271,7 @@ which optimize the users reading and navigation activities.  One
 common program that is run within Emacs buffers is the interactive
 operating system command line interpreter, called a shell.  By using
 this, most programs which take input from and provide output to the
-command-line can be run within and controlled by Emacs.
+command-line can run within and be controlled by Emacs.
 %% buffer and be controlled by programs written in Emacs Lisp. 
 %%% AJR: we don't talk about Emacs Lisp yet, so postpone until later.
 %% This is the Emacs feature that ESS uses to run statistical
@@ -285,6 +285,12 @@ execution.
 %% \label{sec:modes}  
 %%% AJR: WE CAN'T REFER PARAGRAPHS, BUT COULD IF WE MAKE THESE
 %%% SUBSECTIONS.
+%%% Rich: section 3 has subsections, the other sections don't.
+%%% We could promote the section 2 paragraphs to subsections, and
+%%% the section 3 paragraphs to subsubsections.  My preference
+%%% is to leave them as they are as I think all the units that are
+%%% currently called paragraphs should have the same weight.
+%%% I changed the phrasing of the cross-reference below.
 Emacs capabilities are extended by loading text files containing code
 written in Emacs Lisp (elisp) \citep{RChassell1999}, a dialect of Lisp
 \citep{PGraham:1996}.  Emacs commands, which are actually Lisp
@@ -334,13 +340,11 @@ with a small amount of customization, for many major modes.  For
 example, \stexttt{font-lock-mode} allows Emacs to highlight, with
 fonts or colors, the syntax of a programming language whose
 characteristics are described within a major-mode like \stexttt{ESS[S]}.
-%%% AJR: previous, or should we revert to the next line?
-%% ESS\@.   
 The \stexttt{overwrite-mode}
 %%% AJR: again, not a user manual.
 %% usually mapped to the \ssf{Insert} key, 
 determines whether typed characters replace the existing text or are
-inserted at the cursor. Minor modes can be used to change key bindings
+inserted at the cursor.  Minor modes can be used to change key bindings
 to emulate the keys used by another editor such as \stexttt{vi}.  In
 addition, they can be used to
 %%% AJR: talked about in next paragraph
@@ -351,9 +355,9 @@ nearly identical between file types.
 \paragraph{Network Support.}
 Emacs allows transparent access to remote files over a network.
 Transparent access means the user views, edits, and saves files on a
-remote machine exactly as if they were on the local machine.  Emacs
-can also monitor and control remote processes which are running in a
-shell running in a local buffer.  \stexttt{ange-ftp} and \stexttt{EFS}
+remote machine exactly as if they were on the local machine.  The local Emacs
+can also monitor and control remote processes running in a
+shell buffer.  \stexttt{ange-ftp} and \stexttt{EFS}
 are used for file transfers using the insecure ftp protocol.
 \stexttt{tramp} is used for file transfers using the secure shell
 protocol.
@@ -378,9 +382,10 @@ interacts with standard revision control programs such as CVS,
 RCS, and SCCS through minor modes such as \stexttt{vc-mode}.
 %% AJR: No need to bring up all the details, which will become obsolete. 
 %% and major modes such as \stexttt{cvs-mode}.
-These revision control systems facilitate tracking edits and changes
-to a file as well as for documenting what was changed during a
-particular revision.  More importantly, they allow for branching and
+These revision control systems facilitate documenting and
+tracking edits and changes to a file.
+%% as well as for documenting what was changed during a particular revision.
+More importantly, they allow for branching and
 merging of versions so that material present in an older version of
 the file can be recovered and inserted into a newer version in a
 fairly easy manner.
@@ -405,15 +410,6 @@ deleted sections of code files, documentation, or papers.
   \label{f.ediff}
 \end{figure}
 
-%%% AJR: have you two settled this on dired/redundancy?
-%\begin{Comment} Rodney: Is the 1st sentence of the next paragraph
-%a reference to dired?  If so, let's be specific.  And, also note that 
-%dired was introduced in Modes.  I think we should either keep the 
-%discussions together or make them complementary by a cross-reference
-%like (see Modes).  
-%
-%Rich: done
-%
 %Rodney: I feel the same way about the two separate discussions 
 %of shell-mode and file name completion which is brought up again in 
 %Process Interaction.
@@ -421,18 +417,19 @@ deleted sections of code files, documentation, or papers.
 
 There are many features which Emacs has which, while innovative when
 introduced, are fairly common now.  Emacs provides file-manager
-capabilities such as \stexttt{dired},
-%%% AJR: can't reference a paragraph 
-%% (discussed in section \ref{sec:modes})
+capabilities such as \stexttt{dired}
+(discussed in the Major and Minor Modes paragraph above),
+%%% of section \ref{sec:modes}
 which interfaces to the computer's directory structure.  It also
 stores command-history records from the beginning of an editing
 session, allowing a near-infinite undo capability.  More importantly,
 for modes which control processes, the process input history is
-stored; this is, for example, the actual data analysis commands
-entered and can be very different from observed buffer due to editing.
+stored.  The actual data analysis commands
+entered can be very different from what is observed in the buffer after editing.
 Tools such as \stexttt{etags} combined with \stexttt{speedbar} provide
 a hyperlinked index to text objects, such as S function definitions
-and \SAS\ proc/run combinations, across files within a directory.
+and \SAS\ \stexttt{PROC \dots\ RUN;} sections,
+across files within a directory.
 Other extensions to Emacs include web browsers, mail and news readers,
 and spell checking.
 
@@ -588,9 +585,12 @@ choices of colors and ESS provides several other optional schemes.
 
 \begin{figure}[thbp]
   \centering
+\ifdraft
+  \emptyfig
+\else
   \includegraphics[angle=270,width=\textwidth]{font-cor-s}
   \includegraphics[angle=270,width=\textwidth]{font-incor-s}
-
+\fi
   \caption{We illustrate here with fonts and colors appropriate for a
     color display.  On a black and white terminal we would use bold,
     underline, italic, and reverse-video.  On a color terminal we
@@ -643,6 +643,7 @@ ESS should stay out of it, at least as far as the paper goes.
      \emptyfig
   \else
      \includegraphics[angle=270,width=\textwidth]{hilock-sas}
+  \fi
   \caption{Enforce company coding standards.  The standard here is
     that all \stexttt{PROC} statements must use the
     \stexttt{DATA=datasetname} option.  Lines that satisfy the
@@ -1016,7 +1017,7 @@ sending the \stexttt{-stdio} command-line option to the \stexttt{sas}
 command.  As of this writing, \SAS\ supports the \stexttt{-stdio} option
 only on Unix machines.
 
-The user highlights a region (normally a \stexttt{PROC ... RUN;}
+The user highlights a region (normally a \stexttt{PROC \dots\ RUN;}
 section) in the command file (\stexttt{myfile.sas} for convenience)
 and sends it over to \SAS\ with mapped key commands.  The
 \stexttt{*SAS:1.log*} and \stexttt{*SAS:1.lst*} buffers immediately
@@ -1216,20 +1217,30 @@ of developers, with 5 major versions released.  ESS descended from and combined
 
 \begin{table}[tbp]
   \centering
-  \begin{tabular}{cccccc}
-    Year & S-mode & SAS-mode \\ 
-    1989 & v.1 (Emacs, Unix, S/S+) &  \\
-    1990 &                         & v.JS (Emacs, Unix, SAS editing) \\
-    1991 & v.2 (Emacs, Unix, S/S+) & \\
-    1993 & v.3 (Emacs, Unix, S/S+) & \\
-    1994 & v.4 (Emacs/XEmacs, Unix, S/S+)   & v.1 TC (Emacs, Unix, SAS batch) \\
-    1995 & v.5 (Emacs/XEmacs, Unix, S/S+/R) & v.2 TC (Emacs/XEmacs, Unix, SAS batch) \\
-    \hline & \multicolumn{2}{c}{ESS} \\ \hline 
-    1997 & v.5.0 (Emacs/XEmacs, Unix)         &  Stata, XLispStat, SAS interactive \\
-    1998 & v.5.1 (Emacs/XEmacs, Unix/Windows) &  Windows:  S+/R\\
-    1999 & v.5.1 (Emacs/XEmacs, Unix/Windows/Mac) & SAS batch, Omegahat \\
-    2001 & v.5.1 (Emacs/XEmacs, Unix/Windows)     & BUGS batch \\
-    2002 & v.5.2 & \\
+  \begin{tabular}{c ll c ll}
+\hline
+    Year  \\ 
+\hline
+         & \multicolumn{2}{c}{S-mode}       && \multicolumn{2}{c}{SAS-mode} \\ 
+\cline{2-3} \cline{5-6}
+    1989 & v.1 & (Emacs, Unix, S/S+)        &&  \\
+    1990 &     &                            &&     & (Emacs, Unix, SAS editing) \\
+    1991 & v.2 & (Emacs, Unix, S/S+)        && \\
+    1993 & v.3 & (Emacs, Unix, S/S+)        && \\
+    1994 & v.4 & (Emacs/XEmacs, Unix, S/S+) && v.1  & (Emacs, Unix, SAS batch) \\
+    1995 & v.4.7 & (Emacs/XEmacs, Unix, S/S+/R) && v.2 & (Emacs/XEmacs, Unix, SAS batch) \\
+    \cline{2-6}\\[-3.5ex]
+    \cline{2-6}
+         & \multicolumn{5}{c}{ESS (Emacs Speaks Statistics)} \\
+    \cline{2-6} 
+         &\multicolumn{2}{c}{Operating System} &&\multicolumn{2}{c}{Additional Functionality}\\
+\cline{2-3} \cline{5-6}
+    1997 & v.5.0 & (Emacs/XEmacs, Unix)         &&&  Stata, XLispStat, SAS interactive \\
+    1998 & v.5.1 & (Emacs/XEmacs, Unix/Windows) &&&  Windows:  S+/R, ESS-elsewhere\\
+    1999 & v.5.1 & (Emacs/XEmacs, Unix/Windows/Mac) &&& SAS batch, Omegahat \\
+    2001 & v.5.1 & (Emacs/XEmacs, Unix/Windows)     &&& BUGS batch \\
+    2002 & v.5.2 &&&& \\
+\hline
     %% Should we send this table around to the previous generations?
     %% Anything else  
     %% they should see?  Of course, we should have an Acknowledgement
@@ -1272,7 +1283,7 @@ to accommodate multiple languages in a flexible way.  The product of this
 marriage was called ESS version 5.
 
 During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
-At the same time, SAS-mode was further incorporated into ESS.
+At the same time, SAS-mode was further integrated into ESS.
 
 In 1997, more changes were made to facilitate
 %% the grand redesign of the internals occurred, where by a generic
@@ -1297,7 +1308,7 @@ In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.
 
 In 2001, Sparapani added BUGS batch file processing for ESS.
 
-
+This history is summarized in Table \ref{tab:timeline}.
 
 \begin{Comment}
 Rich: see my discussion of ESS-elsewhere terminology.
