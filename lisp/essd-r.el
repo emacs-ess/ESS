@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/03 14:38:57 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: essd-r.el,v 1.16 1997/07/03 14:38:57 rossini Exp $
+;; Modified: $Date: 1997/07/07 16:25:29 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: essd-r.el,v 1.17 1997/07/07 16:25:29 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.17  1997/07/07 16:25:29  rossini
+;;: set variables in the "call". (i.e. R2).
+;;:
 ;;: Revision 1.16  1997/07/03 14:38:57  rossini
 ;;: changed alist -- to not use defs in ess.el!
 ;;:
@@ -120,9 +123,13 @@
 (defun R2 ()
   "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ)."
   (interactive)
+  ;; Setup the needed vars
   (setq ess-customize-alist R-customize-alist) ; setq or setq-default?
+  (ess-set-vars ess-customize-alist (current-buffer))
+  ;; debug, only
   (message "(R2): ess-proc-prefix=%s , buf=%s"
 	   ess-proc-prefix (current-buffer))
+  ;; now run...
   (inferior-ess))
 
  ; Provide package
