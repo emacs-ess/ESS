@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/10/18 17:19:16 $
-;; Version: $Revision: 1.123 $
-;; RCS: $Id: essa-sas.el,v 1.123 2002/10/18 17:19:16 rsparapa Exp $
+;; Modified: $Date: 2002/10/18 20:20:29 $
+;; Version: $Revision: 1.124 $
+;; RCS: $Id: essa-sas.el,v 1.124 2002/10/18 20:20:29 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -686,8 +686,11 @@ Keep in mind that the maximum command line length in MS-DOS is
 
     (while (search-forward-regexp (concat
            "^\\(\\(1[ \t]+The SAS System\\|\\|NOTE\\|WARNING\\|ERROR\\|"
-           "[ \t]+\\(\\(real\\|cpu\\) time\\|Licensed to\\|Engine:\\|Physical Name:\\)\\).*$"
-           "\\|[0-9]+\\([ \t]+!\\)?\\|MPRINT([_A-Z]+):\\)") 
+           "[ \t]+\\(\\(real\\|cpu\\) time\\|Licensed to\\|Engine:\\|Physical Name:\\|"
+	   "[0-9]+:[0-9]+[ /t]+[0-9]+:[0-9]+\\)\\).*$"
+           "\\|[0-9]+\\([ \t]+!\\)?\\|MPRINT([_A-Z]+):\\|"
+	   "[ \t]+\\(values at the places given by: (Line):(Column).\\|"
+           "[0-9][0-9]:[0-9][0-9] [MTWFS][a-z]+day, [JFMASOND][a-z]+ [0-9]+, 20[0-9][0-9]\\)\\)") 
            nil t) (replace-match "/*\\&*/" t))
 ))
 
