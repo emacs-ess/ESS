@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/01 19:03:43 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essd-sas.el,v 1.8 1997/09/01 19:03:43 rossini Exp $
+;; Modified: $Date: 1997/09/02 20:42:19 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essd-sas.el,v 1.9 1997/09/02 20:42:19 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -55,8 +55,9 @@
     (inferior-ess-primary-prompt   . "^")
     (inferior-ess-secondary-prompt . "+ ?")
     (inferior-ess-start-file       . nil) ;"~/.ess-SAS")
-    (inferior-ess-start-args       . inferior-SAS-args))
- "Variables to customize for SAS")
+    (inferior-ess-start-args       . inferior-SAS-args)
+    (ess-local-process-name        . nil))
+  "Variables to customize for SAS")
 
 ;;; The functions of interest (mode, inferior mode)
 

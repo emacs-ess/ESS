@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/02 20:05:41 $
-;; Version: $Revision: 1.36 $
-;; RCS: $Id: essd-r.el,v 1.36 1997/09/02 20:05:41 rossini Exp $
+;; Modified: $Date: 1997/09/02 20:36:56 $
+;; Version: $Revision: 1.37 $
+;; RCS: $Id: essd-r.el,v 1.37 1997/09/02 20:36:56 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -43,6 +43,9 @@
   '((ess-language                  . "S")
     (ess-dialect                   . "R")
     (ess-suffix                    . "R")
+    (ess-dump-filename-template    . (concat (user-login-name)
+					     ".%s."
+					     ess-suffix)
     (ess-mode-editing-alist        . S-editing-alist)
     (ess-help-sec-regex            . ess-help-R-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-R-sec-keys-alist) 

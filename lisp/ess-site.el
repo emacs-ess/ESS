@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/09/02 17:46:33 $
-;; Version: $Revision: 1.38 $
-;; RCS: $Id: ess-site.el,v 1.38 1997/09/02 17:46:33 rossini Exp $
+;; Modified: $Date: 1997/09/02 20:42:31 $
+;; Version: $Revision: 1.39 $
+;; RCS: $Id: ess-site.el,v 1.39 1997/09/02 20:42:31 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -77,6 +77,9 @@
 ;;; NB: in standard Emacs, files ending in .s are assembler files.  If you
 ;;; want to use assembler, comment the appropriate
 ;;; line below.
+
+
+(remassoc "\\.[sS]\\'" auto-mode-alist) ; get rid of assembler mode.
 
 (if (assoc "\\.q$" auto-mode-alist) nil
   (setq auto-mode-alist

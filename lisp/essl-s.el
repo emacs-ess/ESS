@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/09/02 19:43:43 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essl-s.el,v 1.5 1997/09/02 19:43:43 rossini Exp $
+;; Modified: $Date: 1997/09/02 20:39:57 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essl-s.el,v 1.6 1997/09/02 20:39:57 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -76,6 +76,25 @@
 ;;; `key' indicates the keystroke to use to search for the section heading
 ;;; `string' in an S help file. `string' is used as part of a
 ;;; regexp-search, and so specials should be quoted.
+
+
+(defvar S3-help-sec-keys-alist
+  '((?a . "ARGUMENTS:")
+    (?b . "BACKGROUND:")
+    (?B . "BUGS:")
+    (?d . "DETAILS:")
+    (?D . "DESCRIPTION:")
+    (?e . "EXAMPLES:")
+    (?n . "NOTE:")
+;;    (?o . "OPTIONAL ARGUMENTS:")
+;;    (?r . "REQUIRED ARGUMENTS:")
+    (?R . "REFERENCES:")
+    (?S . "SEE ALSO:")
+    (?s . "SIDE EFFECTS:")
+    (?u . "USAGE:")
+    (?v . "VALUE:"))
+  "Help section keys for display.")
+
 
 (defvar S4-help-sec-keys-alist
   '((?a . "ARGUMENTS:")
