@@ -1,3 +1,8 @@
+1999-12-21  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-sp5.el: S+5-customize-alist was there *TWICE*
+		finally replaced cat by "slynx -dump"
+
 1999-12-08  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-sta.el (setq max-lisp-eval-depth): increase necessary

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 1999/11/03 22:54:17 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essd-sp5.el,v 1.3 1999/11/03 22:54:17 ess Exp $
+;; Modified: $Date: 1999/12/21 11:05:44 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essd-sp5.el,v 1.4 1999/12/21 11:05:44 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -44,7 +44,7 @@
 
 ;;; Code:
 
-;; You now need to make sure you've defined if you are running 5.0 or 5.1.  
+;; You now need to make sure you've defined if you are running 5.0 or 5.1.
 ;; Lots of things are broken between them, GRR...
 
 (defvar S+5-dialect-name "S+5"
@@ -78,43 +78,7 @@
     (inferior-ess-program          . inferior-S+5-program-name)
     (inferior-ess-objects-command  . "objects(%d)\n")
     (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
-    (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
-    (inferior-ess-exit-command     . "q()\n")
-    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?"))
-
-  "Variables to customize for S")
-
-
-(defvar S+5-customize-alist
-  '((ess-local-customize-alist     . 'S+5-customize-alist)
-    (ess-language                  . "S")
-    (ess-dialect                   . S+5-dialect-name)
-    (ess-suffix                    . "S")
-    (ess-dump-filename-template    . (concat (user-login-name)
-					     ".%s."
-					     ess-suffix))
-    (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . S-syntax-table)
-    (ess-help-sec-regex            . ess-help-S+-sec-regex)
-					;or just "^[A-Z. ---]+:$"
-    (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-
-    (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
-    (ess-loop-timeout              . 500000 )
-    (ess-object-name-db-file       . "ess-sp5-namedb.el")
-    (ess-dumped-missing-re
-     . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
-    (ess-syntax-error-re
-     . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
-    (ess-retr-lastvalue-command
-     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-    (inferior-ess-program          . inferior-S+5-program-name)
-    (inferior-ess-objects-command  . "objects(%d)\n")
-    (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
-    (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
+    (inferior-ess-help-command     . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
     (inferior-ess-secondary-prompt . "+ ?"))
