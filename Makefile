@@ -1,26 +1,8 @@
-## $Id: Makefile,v 5.76 2004/05/05 17:03:16 rsparapa Exp $
+## $Id: Makefile,v 5.77 2004/05/10 18:22:58 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
-
-UPLOAD_SITE = cvs.analytics.washington.edu
-UPLOAD_DIR = /home/ess/downloads
-
-## Set ESSVERSIONTAG to ESS-$(ESSVERSION) with .'s replaced by -s.
-## CVS tags can NOT contain .'s.
-## This will only work with GNU make, but you won't
-## need to change this unless you are an ESS developer.
-## If you don't have GNU make, use the command line; for example:
-## make tag ESSVERSION=5.2.0 ESSVERSIONTAG=ESS-5-2-0
-ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
-ESSDIR=ess-$(ESSVERSION)
-
-## Updating ChangeLog via CVS with emacs requires the vc package!
-## If this setting doesn't suit you, you can use the command line:
-## make ChangeLog EMACSLOGCVS="myemacs -mybatchflags -mychangelogflags"
-
-EMACSLOGCVS=$(EMACSBATCH) -f vc-update-changelogs
 
 Subdirs = lisp doc
 

@@ -103,45 +103,38 @@ and then @code{M-x ess-create-object-name-db} creating
 @item
 @b{(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING}:
 
-In the ESSDIR/ess-VERSION directory, edit the file @file{Makeconf} if you
-want to place the compiled files in other locations; see LISPDIR and INFODIR.
+If you want to place the compiled files in other locations edit the LISPDIR and INFODIR
+entries in @file{Makeconf} in the ESSDIR/ess-VERSION directory (if you are using XEmacs, 
+then you also need to edit the EMACS entry as follows:  EMACS=xemacs).
 
-Then type:
+You can compile those files by:
 @example
 make all
 @end example
 
-If this works, then you might try:
+When that completes successfully, install the compiled files:
 @example
 make install
 @end example
 
-This will install the info files (and the lisp files, if they are to go
-in another directory).  Don't forget to edit the file @file{dir} in the
-info directory specified by @code{INFODIR} in @file{doc/Makefile}.  See
-the sample @file{dir} file for an example of the line to add.
+This will install the info files and the lisp files.  However, you may have
+to edit the file @file{dir} that is found in the directory specified by 
+@code{INFODIR}:  see the sample @file{dir} in ESSDIR/ess-VERSION/doc.  
+If @file{dir} does not exist in @code{INFODIR}, then the sample 
+@file{dir} will be installed.
 
-If you are using XEmacs, you might do:
-@example
-make EMACS=xemacs all
-@end example
+@emph{Note} that you need to use @b{GNU make} for everything to
+work smoothly; otherwise, edit the ESSVERSION and ESSVERSIONTAG
+entries in @file{Makeconf} appropriately, e.g.: ESSVERSION=5.2.0 
+and ESSVERSIONTAG=ESS-5-2-0
 
-and then
-@example
-make EMACS=xemacs install
-@end example
-instead of editing the Makefile.
-
-@emph{Note} that you might need to use @b{GNU make} for everything to
-work properly
-
-An alternative, if you are running XEmacs and have access to the
-XEmacs system directories, would be to place the directory in the
-site-lisp directory, and simply type @code{make all} (and copy the
-documentation as appropriate).
-
-For GNU Emacs, you would still have to move the files into the top level
-site-lisp directory.
+@comment An alternative, if you are running XEmacs and have access to the
+@comment XEmacs system directories, would be to place the directory in the
+@comment site-lisp directory, and simply type @code{make all} (and copy the
+@comment documentation as appropriate).
+@comment 
+@comment For GNU Emacs, you would still have to move the files into the top level
+@comment site-lisp directory.
 
 @end enumerate
 
