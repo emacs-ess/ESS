@@ -1,4 +1,4 @@
-This is ess.info, produced by makeinfo version 4.2 from ess.texi.
+Dies ist ess.info, hergestellt von Makeinfo Version 4.0 aus ess.texi.
 
 ESS -- Emacs Speaks Statistics
 ******************************
@@ -15,9 +15,9 @@ ESS: Emacs Speaks Statistics
 
    ESS version
 
-   5.1.22
+   5.1.23
 
-   (Documentation $Revision: 1.17 $ $Date: 2002/08/06 16:45:07 $).
+   (Documentation $Revision: 1.18 $ $Date: 2002/08/07 13:00:15 $).
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -197,9 +197,15 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 New features in ESS
 ===================
 
+   Changes/New Features in 5.1.23:
+   * The version number is now correct even inside ESS/Emacs
+
+   * Minor more Makefile clean up.
+
    Changes/New Features in 5.1.22:
    * Besides info documentation, PDF and HTML documentation are also
-     provided and now available on the web as well; see ESS web page
+     provided (instead of built using "make") and available on the web
+     as well; see ESS web page
      (http://software.biostat.washington.edu/ess/doc) and StatLib
      (http://lib.stat.cmu.edu/general/ESS/doc)
 
@@ -1213,30 +1219,4 @@ ESS-help-assistance with viewing help
    * move between help sections
 
    * send examples to S for evaluation
-
-
-File: ess.info,  Node: Philosophies for using ESS(S),  Next: Scenarios for use (possibilities--based on actual usage),  Prev: ESS-help--assistance with viewing help,  Up: Help for the S family
-
-Philosophies for using ESS[S]
-=============================
-
-   The first is preferred, and configured for.  The second one can be
-retrieved again, by changing emacs variables.
-
-   1: (preferred by the current group of developers):  The source code
-is    real.  The objects are realizations of the source code.  Source
-for EVERY user modified object is placed in a particular directory
-or directories, for later editing and retrieval.
-
-   2: (older version): S objects are real.  Source code is a temporary
- realization of the objects.  Dumped buffers should not be saved.
-_We_strongly_discourage_this_approach_.  However, if you insist,    add
-the following lines to your .emacs file (GNU emacs uses the filename
-`~/.emacs' and Xemacs uses the filename `~/.xemacs/init.el' for the
-initialization file):
-     (setq ess-keep-dump-files 'nil)
-     (setq ess-delete-dump-files t)
-     (setq ess-mode-silently-save nil)
-   The second saves a small amount of disk space.  The first allows for
-better portability as well as external version control for code.
 
