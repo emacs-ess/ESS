@@ -8,9 +8,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>, MM
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: ess-help.el,v 5.8 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/03/31 15:59:56 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: ess-help.el,v 5.9 2000/03/31 15:59:56 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -43,25 +43,25 @@
 
 (require 'ess)
 
-(autoload 'ess-eval-region "ess-mode" "[autoload]" t)
-(autoload 'ess-eval-region-and-go "ess-mode" "[autoload]" t)
-(autoload 'ess-eval-function "ess-mode" "[autoload]" t)
-(autoload 'ess-eval-function-and-go "ess-mode" "[autoload]" t)
-(autoload 'ess-eval-line "ess-mode" "[autoload]" t)
-(autoload 'ess-eval-line-and-go "ess-mode" "[autoload]" t)
-(autoload 'ess-eval-line-and-next-line "ess-mode" "[autoload]" t)
-(autoload 'ess-beginning-of-function "ess-mode" "[autoload]" t)
-(autoload 'ess-end-of-function "ess-mode" "[autoload]" t)
+(autoload 'ess-eval-region		"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-region-and-go	"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-function		"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-function-and-go	"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line		"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-go		"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-next-line	"ess-inf" "[autoload]" t)
 
-(autoload 'ess-load-file "ess-inf" "[autoload]" t)
-(autoload 'ess-command "ess-inf" "(autoload)" nil)
-(autoload 'ess-display-temp-buffer "ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-ESS "ess-inf" "(autoload)" nil)
+(autoload 'ess-beginning-of-function	"ess-mode" "[autoload]" t)
+(autoload 'ess-end-of-function		"ess-mode" "[autoload]" t)
+
+(autoload 'ess-load-file		"ess-inf" "[autoload]" t)
+(autoload 'ess-command			"ess-inf" "(autoload)" nil)
+(autoload 'ess-display-temp-buffer	"ess-inf" "(autoload)" nil)
+(autoload 'ess-switch-to-ESS		"ess-inf" "(autoload)" nil)
 (autoload 'ess-read-object-name-default "ess-inf" "(autoload)" nil)
-(autoload 'ess-make-buffer-current "ess-inf" "(autoload)" nil)
-(autoload 'ess-search-list "ess-inf" "(autoload)" nil)
-(autoload 'ess-get-object-list "ess-inf" "(autoload)" nil)
-
+(autoload 'ess-make-buffer-current	"ess-inf" "(autoload)" nil)
+(autoload 'ess-search-list		"ess-inf" "(autoload)" nil)
+(autoload 'ess-get-object-list		"ess-inf" "(autoload)" nil)
 
 
  ; ess-help-mode

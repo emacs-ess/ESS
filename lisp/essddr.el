@@ -6,9 +6,9 @@
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: essddr.el,v 5.11 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2000/03/31 15:59:56 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: essddr.el,v 5.12 2000/03/31 15:59:56 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.11 2000/03/30 14:49:26 maechler Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.12 2000/03/31 15:59:56 maechler Exp $
 
 ;;; Code:
 
@@ -41,8 +41,8 @@
   "Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>"
   "Current maintainer of essddr.el.")
 
-(autoload 'ess-eval-region	       "ess-mode" "[autoload]" t)
-(autoload 'ess-eval-line-and-next-line "ess-mode" "[autoload]" t)
+(autoload 'ess-eval-region	       "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-next-line "ess-inf" "[autoload]" t)
 (autoload 'ess-nuke-help-bs	       "ess-help" "[autoload]" t)
 (autoload 'ess-help-mode	       "ess-help" "[autoload]" t)
 
