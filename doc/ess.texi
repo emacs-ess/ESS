@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 1.17 1997/11/17 14:06:43 rossini Exp $
+@comment $Id: ess.texi,v 1.18 1997/11/20 14:46:18 rossini Exp $
 
 @synindex pg vr
 
@@ -485,17 +485,17 @@ The latest (beta) versions are always available
 @itemize @bullet
 @item via WWW
 @ifhtml
- <A HREF="http://www.stat.sc.edu/~rossini/projects/">
+ <A HREF="http://franz.stat.wisc.edu/pub/ESS/">
 @end ifhtml
-    @code{http://www.stat.sc.edu/~rossini/projects/}
+    @code{http://franz.stat.wisc.edu/pub/ESS/}
 @ifhtml
  </A>
 @end ifhtml
 @item or FTP, from the directory
 @ifhtml
- <A HREF="ftp://ftp.math.sc.edu/rossini/">
+ <A HREF="ftp://franz.stat.wisc.edu/pub/ESS/">
 @end ifhtml
-    @code{ftp://ftp.math.sc.edu/rossini/}
+    @code{ftp://franz.stat.wisc.edu/pub/ESS/}
 @ifhtml
  </A>
 @end ifhtml
@@ -514,41 +514,7 @@ from:
 @end ifhtml
 @end itemize
 
-Recent versions of ESS are also available for anonymous FTP from
-the following sites:
-@itemize @bullet
-@item
-@ifhtml
-        <A HREF="ftp://wingra.stat.wisc.edu/pub/src/emacs-lisp/">
-@end ifhtml
-           @code{ftp://wingra.stat.wisc.edu/pub/src/emacs-lisp}
-@ifhtml
-        </A>
-@end ifhtml
-@item
-        @code{ftp://attunga.stats.adelaide.edu.au/pub/S-mode}
-@end itemize
-
 Check the @code{README} file first to see which files you need.
-ESS is also available from the Emacs-Lisp archive on
-@code{archive.cis.ohio-state-edu} --- retrieve
-@display
-@file{pub/gnu/emacs/elisp-archive/README}
-@end display
-
-@noindent
-for information on the
-archive.  An older version is also available from
-@ifhtml
- <A HREF="http://lib.stat.cmu.edu/">
-@end ifhtml
-Statlib
-@ifhtml
- </A>
-@end ifhtml
-(directly) or by sending a blank message with subject ``send index from
-S'' to @email{statlib@@stat.cmu.edu}, and following the directions from
-there.
 
 Note that all new user-visible features to versions of ESS are
 documented in the @file{Doc/NEWS} file; all changes are listed in the
