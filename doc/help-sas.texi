@@ -46,16 +46,16 @@ ESS[SAS] is the mode for editing SAS language files.  This mode handles:
 
 ESS[SAS] is automatically turned on when editing a file with a ".sas" 
 suffix (or other, if specified in ess-site via auto-mode-alist).  The batch 
-processing keypress commands can be enabled to use the same function keys that the 
-SAS Display Manager does.  The interactive capabilities of ESS require you to
-start an inferior SAS process with M-x SAS
+processing keypress commands can be enabled to use the same function keys that
+the SAS Display Manager does.  The interactive capabilities of ESS require you 
+to start an inferior SAS process with M-x SAS
 (@xref{iESS(SAS)--Interactive SAS processes}.)
 
 At this writing, the indenting and syntax highlighting are generally 
 correct.  Known issues:  for multiple line * or %*
 comments, only the first line is highlighted; for .log files, only the first
-line of a NOTE:, WARNING: or ERROR: message is highlighted; unmatched single/double
-quotes in CARDS data lines are NOT ignored.
+line of a NOTE:, WARNING: or ERROR: message is highlighted; unmatched 
+single/double quotes in CARDS data lines are NOT ignored.
 
 @comment  node-name,  next,  previous,  up
 @node  iESS(SAS)--Interactive SAS processes, ESS(SAS)--Batch SAS processes, ESS(SAS)--Editing files, Help for SAS
@@ -137,7 +137,7 @@ the end of your program).  The command line is also made of
 ess-sas-submit-pre-command, ess-sas-submit-post-command and 
 ess-sas-submit-command-options (the last of which is also buffer-local).
 Here are some examples for your .emacs file (you may also use 
-M-x customize-variable with):
+M-x customize-variable):
 @example
 (setq ess-sas-submit-pre-command "nohup")                 ;'sh default
 (setq ess-sas-submit-post-command "-rsasuser &")          ;'sh default
@@ -176,12 +176,12 @@ these keys are often unused.  So, ESS[SAS] provides
 users with the option of binding elisp commands to these keys.  Users 
 who are familiar with SAS will, most likely, want to duplicate the function
 key capabilities of the SAS Display Manager.  There are four options (noted
-in parentheses below).
+in parentheses).
 
 @enumerate a
 @item
-SAS provides different function key definitions with its Unix (2, 4) and 
-Windows (3, 5) products; ESS can use either.
+SAS Display Manager has different function key definitions for
+Unix (2, 4) and Windows (3, 5); ESS can use either.
 @item
 The ESS[SAS] function key definitions can be active in all buffers
 (global: 4, 5) or limited (local: 2, 3) only to buffers with files that are
@@ -200,9 +200,9 @@ the person installing ESS for a site or by an individual.
 @enumerate a
 @item
 For a site installation or an individual, uncomment ONLY ONE of the 
-following lines in your ess-site.el!
-ESS[SAS] Function keys are available in ESS[SAS] if you
-uncomment either 2 or 3 and in all modes if you uncomment 4 or 5:
+following lines in your ess-site.el.  ESS[SAS] Function keys are available 
+in ESS[SAS] if you uncomment either 2 or 3 and in all modes if you uncomment 
+4 or 5:
 @example
 ;;2; (setq ess-sas-local-unix-keys t)
 ;;3; (setq ess-sas-local-pc-keys t)
@@ -320,7 +320,7 @@ internally.  You may need to change the following two variables for your
 own situation:
 @example
 (setq ess-sas-graph-suffix-regexp "[.]\\(e?ps\\|gif\\|jpe?g\\|tiff?\\)")
-(setq ess-sas-image-viewer "kodakimg") ;; Windows external viewer
+(setq ess-sas-image-viewer "kodakimg") ;; Windows default
 @end example
 
 @comment  node-name,  next,  previous,  up
@@ -339,11 +339,11 @@ equivalent to uncommenting the following line in ess-site.el:
 @end example
 
 ESS provides an alternate behavior for the TAB key that makes it
-behave as it does in other editors, i.e. move the cursor to the
+behave as it does in SAS Display Manager, i.e. move the cursor to the
 next tab stop.  The alternate behavior also provides a backwards TAB,  
 C-TAB, that moves the cursor to the tab stop to the left and deletes
-any characters between them.  This functionality is obtained by uncommenting the
-following line in ess-site.el:
+any characters between them.  This functionality is obtained by uncommenting 
+the following line in ess-site.el:
 @example
 (setq ess-sas-edit-keys-toggle 1)
 @end example
