@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/06/17 18:50:12 $
-;; Version: $Revision: 1.172 $
-;; RCS: $Id: essa-sas.el,v 1.172 2004/06/17 18:50:12 rsparapa Exp $
+;; Modified: $Date: 2004/06/17 20:09:04 $
+;; Version: $Revision: 1.173 $
+;; RCS: $Id: essa-sas.el,v 1.173 2004/06/17 20:09:04 rsparapa Exp $
 
 ;; Keywords: SAS 
 
@@ -95,15 +95,15 @@ or `ess-sas-data-view-insight'."
     (let ((ess-tmp-alist nil)
         (ess-tmp-file nil))
 
-    (setq ess-tmp-file (ess-find-exec "acroread"))
+    (setq ess-tmp-file (executable-find "acroread"))
 
     (if ess-tmp-file 
 	(setq ess-tmp-alist (cons "[pP][dD][fF]" ess-tmp-file)))
-    (setq ess-tmp-file (ess-find-exec "gv"))
+    (setq ess-tmp-file (executable-find "gv"))
 
-    (if (not ess-tmp-file) (setq ess-tmp-file (ess-find-exec "ghostview")))
+    (if (not ess-tmp-file) (setq ess-tmp-file (executable-find "ghostview")))
 
-    (if (not ess-tmp-file) (setq ess-tmp-file (ess-find-exec 
+    (if (not ess-tmp-file) (setq ess-tmp-file (executable-find 
 	(if ess-microsoft-p "gsview32" "gsview"))))
 
     (if ess-tmp-file 
