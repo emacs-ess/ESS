@@ -1,3 +1,65 @@
+Wed Nov 19 12:24:22 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile: removed veryclean.  unnecessary target.  Fixed
+ 	dist-doc target.
+
+Wed Nov 19 12:21:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/rmh-talk.tex: no changes.
+	
+Wed Nov 19 12:21:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/ajr-talk.tex: final version.  Not best, but we've got docs
+ 	provided.
+
+Wed Nov 19 12:03:03 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Doc/ajr-talk.tex: use the ugly version
+
+Wed Nov 19 12:01:53 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-sas.el (ess-SAS-pre-run-hook): never take name from a
+ 	running process buffer.
+
+Wed Nov 19 11:56:09 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-xls.el: added transcript mode.
+
+Wed Nov 19 11:43:24 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-mode.el (ess-mode-menu): bug in "About".
+	
+Wed Nov 19 11:25:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: database creation works.
+
+Wed Nov 19 11:20:28 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (ess-create-object-name-db): use temporary name for
+	ess-object-name-db; since we make it buffer local to accomodate
+	different languages, need to handle it carefully.  In particular,
+	might be better to make buffer local upon demand, rather than
+	always buffer local.  But lots of considerations, here.
+
+Wed Nov 19 11:14:10 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-inf.el (ess-create-object-name-db): added *ESS* messages.
+
+Wed Nov 19 10:56:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess.el (ess-load-object-name-db-file): no warning when object
+	database name fails to exist; the code is still there.
+
+Wed Nov 19 10:55:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* essd-s+3.el: setq-default to setq
+
+	* essd-r.el: setq, not setq default.
+
+Wed Nov 19 10:52:28 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* README: added statement about object-name db being broken.
+
 Wed Nov 19 10:33:47 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essd-s+3.el (S+3-transcript-mode): make interactive.
@@ -1287,6 +1349,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.39  1997/11/19 17:24:26  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.38  1997/11/19 15:35:29  rossini
 	* Removing *** empty log message ***
 	* Removing
