@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/08 13:01:17 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: essl-sas.el,v 1.7 1997/09/08 13:01:17 rossini Exp $
+;; Modified: $Date: 1997/09/08 19:39:18 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: essl-sas.el,v 1.8 1997/09/08 19:39:18 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -91,6 +91,28 @@ popup window when the SAS job is finished.")
 (defvar sas-dataset nil)
 
 
+(defvar SAS-syntax-table nil "Syntax table for SAS code.")
+
+(if SAS-syntax-table
+    nil
+  (setq SAS-syntax-table (make-syntax-table))
+  (modify-syntax-entry ?\\ "\\" SAS-syntax-table)
+  (modify-syntax-entry ?+  "."  SAS-syntax-table)
+  (modify-syntax-entry ?-  "."  SAS-syntax-table)
+  (modify-syntax-entry ?=  "."  SAS-syntax-table)
+  (modify-syntax-entry ?%  "."  SAS-syntax-table)
+  (modify-syntax-entry ?<  "."  SAS-syntax-table)
+  (modify-syntax-entry ?>  "."  SAS-syntax-table)
+  (modify-syntax-entry ?&  "."  SAS-syntax-table)
+  (modify-syntax-entry ?|  "."  SAS-syntax-table)
+  (modify-syntax-entry ?\' "\"" SAS-syntax-table)
+  (modify-syntax-entry ?*  "<"  SAS-syntax-table) ; open comment
+  (modify-syntax-entry ?\; ">"  SAS-syntax-table) ; close comment
+  (modify-syntax-entry ?_  "."  SAS-syntax-table)  
+  (modify-syntax-entry ?*  "."  SAS-syntax-table)
+  (modify-syntax-entry ?<  "."  SAS-syntax-table)
+  (modify-syntax-entry ?>  "."  SAS-syntax-table)
+  (modify-syntax-entry ?/  "."  SAS-syntax-table))
 
 (defvar SAS-mode-font-lock-keywords
   '(("/\\*.\\*/"       . font-lock-comment-face)
@@ -113,7 +135,7 @@ popup window when the SAS job is finished.")
     ("%[a-z0-9_]*\\>" . font-lock-preprocessor-face))
   "Font Lock regexs for SAS.")
 
-(defvar SAS-edit-alist
+(defvar SAS-editing-alist
   '((sentence-end                 . ";[\t\n */]*")
     (paragraph-start              . "^[ \t]*$")
     (paragraph-separate           . "^[ \t]*$")
@@ -132,6 +154,7 @@ popup window when the SAS job is finished.")
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
     (ess-keep-dump-files          . nil)
+    (ess-mode-syntax-table        . SAS-syntax-table)
     (font-lock-defaults           . '(SAS-mode-font-lock-keywords)))
   "General options for editing SAS source files.")
 
@@ -152,6 +175,91 @@ popup window when the SAS job is finished.")
             (skip-chars-forward "\ \t\n\f")
             ))
       ))
+
+
+
+
+
+(defun sas-indent-line ()
+  "Indent function for SAS mode."
+  (interactive)
+  (let (indent prev-end 
+               (pos (- (point-max) (point)))
+               (case-fold-search t)
+               (cur-ind (current-indentation))
+               (comment-col (sas-comment-start-col)) ;; 2/1/95 TDC
+               )
+    (save-excursion
+      (cond ((progn 
+               (back-to-indentation)
+               (or (bobp)
+                   (looking-at
+                    "data[ ;]\\|proc[ ;]\\|run[ ;]\\|endsas[ ;]\\|g?options[ ;]\\|%macro[ ;]\\|%mend[ ;]")))
+;;;  Case where current statement is DATA, PROC, etc...
+             (setq prev-end (point))
+             (goto-char (point-min))
+;;;  Added 6/27/94
+;;;  May get fooled if %MACRO, %DO, etc embedded in comments
+             (setq indent (+ (* (- (sas-how-many "^[ \t]*%macro\\|[ \t]+%do"
+                                              prev-end)
+                                (sas-how-many "^[ \t]*%mend\\|%end" prev-end))
+                             sas-indent-width) comment-col)))  ;; 2/1/95 TDC
+;;;  Case where current line begins with sas-indent-ignore-comment
+            ((progn               ;; added 6/27/94  to leave "* ;" comments alone.
+               (back-to-indentation)
+               (and (not (looking-at "*/"))
+                    (looking-at (concat sas-indent-ignore-comment "\\|/\\*"))))
+             (setq indent (current-indentation)))
+;;;  Case where current statement not DATA, PROC etc...
+            (t (beginning-of-line 1)
+               (skip-chars-backward " \n\f\t")
+               (if (bobp) nil
+                 (backward-char 1))
+               (cond
+                ((looking-at ";")       ;  modified 1/31/95
+                 (setq indent (sas-next-statement-indentation)))
+                ((save-excursion;; added 4/28/94 to properly check
+                   (if (bobp) () (backward-char 1));; for end of comment
+                   (setq prev-end (point))
+                   (looking-at "*/"));;  improved 1/31/95
+                 (save-excursion                            
+                   (search-backward "*/" (point-min) 1 1)  ;; comment start is first /*
+                   (search-forward "/*" prev-end 1 1)      ;; after previous */ 
+                   (backward-char 2)                       ;; 2/1/95 TDC
+                   (skip-chars-backward " \n\f\t")
+                   (setq indent
+                         (if (bobp) 0
+                           (if (looking-at ";") (sas-next-statement-indentation)
+                             (+ (current-indentation) sas-indent-width))))))
+                  
+                  ((save-excursion;; added 6/27/94 to leave "* ;" comments alone
+                     (progn
+                       (beginning-of-sas-statement 1 t)
+                       (and (not (looking-at "*/"))
+                            (looking-at sas-indent-ignore-comment))))
+                   (setq indent cur-ind))
+                  ((progn (beginning-of-sas-statement 1) (bobp));; added 4/13/94
+                   (setq indent sas-indent-width));; so the first line works
+                  (t
+                   (if (progn
+                         (save-excursion
+                           (beginning-of-line 1)
+                           (skip-chars-backward " \n\f\t")
+                           (if (bobp) nil (backward-char 1))
+                           (or (looking-at ";")
+                               (bobp) (backward-char 1) (looking-at "\\*/"))))
+                       (setq indent (+ (current-indentation) sas-indent-width))
+                     (setq indent (current-indentation))))))))
+    (save-excursion 
+      (let (beg end)
+        (back-to-indentation)
+        (setq end (point))
+        (beginning-of-line 1)
+        (setq beg (point))
+        (delete-region beg end)
+        (indent-to indent)))
+    (if (> (- (point-max) pos) (point))
+        (goto-char (- (point-max) pos)))))
 
 (defun indent-sas-statement (arg)
   "Indent all continuation lines sas-indent-width spaces from first

@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/08 12:50:59 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: essd-sas.el,v 1.10 1997/09/08 12:50:59 rossini Exp $
+;; Modified: $Date: 1997/09/08 19:39:23 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: essd-sas.el,v 1.11 1997/09/08 19:39:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -45,7 +45,7 @@
   '((ess-local-customize-alist     . 'SAS-customize-alist)
     (ess-language                  . "SAS")
     (ess-dialect                   . "SAS")
-    (ess-edit-alist                . SAS-edit-alist) ; from essl-sas.el
+    (ess-mode-editing-alist        . SAS-editing-alist) ; from essl-sas.el
     (inferior-ess-program          . inferior-SAS-program-name)
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . " ")

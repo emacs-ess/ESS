@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/09/08 17:23:44 $
-;; Version: $Revision: 1.9 $
-;; RCS: $Id: essl-s.el,v 1.9 1997/09/08 17:23:44 rossini Exp $
+;; Modified: $Date: 1997/09/08 19:40:02 $
+;; Version: $Revision: 1.10 $
+;; RCS: $Id: essl-s.el,v 1.10 1997/09/08 19:40:02 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -67,7 +67,7 @@
 
 
 
-(defvar S-syntax-table nil "Syntax table for ess-mode.")
+(defvar S-syntax-table nil "Syntax table for S code.")
 (if S-syntax-table
     nil
   (setq S-syntax-table (make-syntax-table))
@@ -106,6 +106,7 @@
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
     (ess-keep-dump-files          . nil)
+    (ess-mode-syntax-table        . S-syntax-table)
     (font-lock-defaults           . '(ess-mode-font-lock-keywords)))
   "General options for editing S, S+, and R source files.")
 

@@ -7,9 +7,9 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/08 16:27:31 $
-;; Version: $Revision: 1.53 $
-;; RCS: $Id: ess-inf.el,v 1.53 1997/09/08 16:27:31 rossini Exp $
+;; Modified: $Date: 1997/09/08 19:39:52 $
+;; Version: $Revision: 1.54 $
+;; RCS: $Id: ess-inf.el,v 1.54 1997/09/08 19:39:52 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -1013,11 +1013,14 @@ to continue it."
   (comint-mode)
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq major-mode 'inferior-ess-mode)
-  (setq mode-name (concat "iESS:" ess-dialect)) ;;(concat "Inferior " ess-language))
+  (setq mode-name (concat "iESS:" ess-dialect))
   (setq mode-line-process
 	'(" [" ess-local-process-name "]: %s"))
   (use-local-map inferior-ess-mode-map)
-  (set-syntax-table ess-mode-syntax-table)
+  (if ess-mode-syntax-table
+      (set-syntax-table ess-mode-syntax-table)
+    ; FIXME: need to do something if not set!  Get from the proper place!
+    )
   (add-hook 'comint-input-filter-functions 'ess-search-path-tracker)
   (setq comint-get-old-input 'inferior-ess-get-old-input)
 
