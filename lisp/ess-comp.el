@@ -1,13 +1,13 @@
 ;;; ess-comp.el --- setting for compiling, only.
 
-;; Copyright (C) 1997--2001 A. J. Rossini
+;; Copyright (C) 1997--2004 A. J. Rossini
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2001/01/07 19:43:43 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: ess-comp.el,v 5.10 2001/01/07 19:43:43 rossini Exp $
+;; Modified: $Date: 2004/02/19 05:42:55 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: ess-comp.el,v 5.11 2004/02/19 05:42:55 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
