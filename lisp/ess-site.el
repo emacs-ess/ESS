@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2002/04/26 14:37:52 $
-;; Version: $Revision: 5.87 $
-;; RCS: $Id: ess-site.el,v 5.87 2002/04/26 14:37:52 maechler Exp $
+;; Modified: $Date: 2002/05/01 05:15:16 $
+;; Version: $Revision: 5.88 $
+;; RCS: $Id: ess-site.el,v 5.88 2002/05/01 05:15:16 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -302,11 +302,21 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;(setq-default inferior-Sqpe+6-SHOME-name "c:/progra~1/Insightful/SPLUS6")
 ;;(setq-default inferior-Sqpe+6-program-name "c:/progra~1/Insightful/SPLUS6/cmd/Sqpe.exe")
 
-;;; These ddeclient values will be buffer-local on WS-Windows 9x/NT
+;;; These ddeclient values will be buffer-local on MS-Windows 9x/NT
 (setq-default inferior-ess-ddeclient	     "Initial")
 (setq-default inferior-ess-client-name	     "Initial")
 (setq-default inferior-ess-client-command    "Initial")
 
+;;; S-Plus 6 for Windows startup time depends on the amount of RAM and
+;;; the processor speed.  ESS needs to build a delay into the M-x S+6
+;;; sequence to allow time for S-Plus 6 to open the Commands window.
+;;; We then send several lines to the Commands window before returning
+;;; control to the user.  On a 300 MHz machine with 96MB of RAM the
+;;; delay is 60 seconds.  On a ???? MHz machine with 523MB the delay is
+;;; 10 seconds.  The user may need to adjust this number.
+(defvar ess-S+6-startup-delay 60
+"*Number of seconds to wait for the Commands window to appear before
+sending `inferior-ess-language-start' to S-Plus.")
 
 
 ;;; see essd-els.el

@@ -7,9 +7,9 @@
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2002/04/29 01:01:38 $
-;; Version: $Revision: 5.11 $
-;; RCS: $Id: essdsp6w.el,v 5.11 2002/04/29 01:01:38 rmh Exp $
+;; Modified: $Date: 2002/05/01 05:15:16 $
+;; Version: $Revision: 5.12 $
+;; RCS: $Id: essdsp6w.el,v 5.12 2002/05/01 05:15:16 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -169,36 +169,39 @@ connects it to the '(ddeESS [S+6])' window.")
 (defun S+6 (&optional proc-name)
   "Verify that `inferior-S+6-program-name' points to S-Plus 6.
 Start normally for S-Plus 6.1.  Inform the user to start S-Plus 6.0
-from the icon and than connect to it with `S+6-existing'.  Give an error
+from the icon and then connect to it with `S+6-existing'.  Give an error
 message if `inferior-S+6-program-name' doesn't point to S-Plus 6."
   (interactive)
   (save-excursion
-    (find-file (concat (executable-find inferior-S+6-program-name)
-		       "/../../versions"))
+    (set-buffer (find-file-noselect
+		 (concat (executable-find inferior-S+6-program-name)
+			 "/../../versions") t))
+    (toggle-read-only 1)
     (forward-line)
-    (if (search-backward "6.1" (point-min) t)
-	(S+6-initiate proc-name) ;; normal start
-      (if (search-backward "6.0" (point-min) t)
-	  (error "S-Plus 6.0 for Microsoft Windows has a bug that
+    (if (not (search-backward "6.1" (point-min) t))
+	(if (search-backward "6.0" (point-min) t)
+	    (error "S-Plus 6.0 for Microsoft Windows has a bug that
 prevents it from being started by emacs.  Instead, you must start it
 by double-clicking an icon.  Then you can connect to it with
 `S+6-existing'.  You should consider upgrading to S-Plus 6.1.")
-	(error "The emacs variable `inferior-S+6-program-name' does
-not point to S-Plus 6.  Please add S-Plus 6 to your `exec-path' or
+	  (error "The emacs variable `inferior-S+6-program-name' does
+not point to S-Plus 6.  Please add `splus61/cmd' to your `exec-path' or
 specify the complete path to `Splus.exe' in the variable
-`inferior-S+6-program-name' in your `.emacs' file.")))))
+`inferior-S+6-program-name' in your `.emacs' file."))))
+  (S+6-initiate proc-name)) ;; normal start
 
 (defun S+6-initiate (&optional proc-name)
-  "Call 'S-PLUS 6.x for Windows', the 'GUI Thing' from StatSci.  Put S-Plus
-in an independent MS-Window (Splus persists even if the '(ddeESS [S+6])'
-window is killed in emacs).  Do this by creating a comint process that
-calls sh.  Send a shell command in that sh buffer to call Splus.  When
-it completes set up a shell as a placeholder in the '(ddeESS [S+6])'
-buffer.  The S-Plus options are correctly set.  In particular, the
-S-Plus Commands window is opened if the Options/General
-Settings/Startup menu says it should be.  There is a 30 second delay
-during startup in which the screen will not be refreshed.  This delay
-is here to allow slow disks to start the Splus program."
+  "Call 'S-PLUS 6.x for Windows', the 'GUI Thing' from StatSci.  Put
+S-Plus in an independent MS-Window (Splus persists even if the
+'(ddeESS [S+6])' window is killed in emacs).  Do this by creating a
+comint process that calls sh.  Send a shell command in that sh buffer
+to call Splus.  When it completes set up a shell as a placeholder in
+the '(ddeESS [S+6])' buffer.  The S-Plus options are correctly set.
+In particular, the S-Plus Commands window is opened if the
+Options/General Settings/Startup menu says it should be.  There is a
+startup delay of `ess-S+6-startup-delay' seconds during which the
+screen will not be refreshed.  This delay is here to allow slow disks
+to start the Splus program."
   (interactive)
   (save-excursion
     (setq ess-customize-alist S+6-customize-alist)
@@ -235,7 +238,7 @@ is here to allow slow disks to start the Splus program."
     ;; Without the "&", the results of  !system.command  come to '(ddeESS [S+6])'
     ;; With the "&", the results of  !system.command  in S get lost.
     (inferior-ess-send-input)
-    (sleep-for 60) ; Need to wait, else working too fast!
+    (sleep-for ess-S+6-startup-delay) ; Need to wait, else working too fast!
                    ; If the ess-current-process-name doesn't appear in the
        		   ; Splus Commands window increase the sleep-for time!
     (setq ess-local-process-name ess-current-process-name)
@@ -272,7 +275,8 @@ S-Plus, then a new one will be opened in the default directory,
 usually something like c:/Program Files/spls45se/users/yourname.
 If you have a HOME environment variable, it will open it there."
   (interactive)
-  (let* ((inferior-S+6-multipleinstances " & # ")) ; Note: there is a final "&".
+  (let* ((inferior-S+6-multipleinstances " & # ") ; Note: there is a final "&".
+	 (ess-S+6-startup-delay 0)) ;; No delay for existing S-Plus
     ;; Without the "&", there is a core dump.
     ;; With the "&", the results of  !system.command  in S get lost.
     ;; We are picking up an existing S-Plus process for sending to.
@@ -351,28 +355,42 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
 
 
 (defun S+6-msdos (&optional proc-name)
-  "S-Plus 6 for Microsoft Windows (Version 6.0.3 Release 2 and
-earlier) has a bug that prevents it from being started by emacs.
-Instead, you must start it by double-clicking an icon.  Then you can
-connect to it with `S+6-msdos-existing'"
+  "Verify that `inferior-S+6-program-name' points to S-Plus 6.
+Start normally for S-Plus 6.1.  Inform the user to start S-Plus 6.0
+from the icon and then connect to it with `S+6-msdos-existing'.  Give an error
+message if `inferior-S+6-program-name' doesn't point to S-Plus 6."
   (interactive)
-(error "S-Plus 6 for Microsoft Windows (Version 6.0.3 Release 2 and
-earlier) has a bug that prevents it from being started by emacs.
-Instead, you must start it by double-clicking an icon.  Then you can
-connect to it with `S+6-msdos-existing'"))
+  (save-excursion
+    (set-buffer (find-file-noselect
+		 (concat (executable-find inferior-S+6-program-name)
+			 "/../../versions") t))
+    (toggle-read-only 1)
+    (forward-line)
+    (if (not (search-backward "6.1" (point-min) t))
+	(if (search-backward "6.0" (point-min) t)
+	    (error "S-Plus 6.0 for Microsoft Windows has a bug that
+prevents it from being started by emacs.  Instead, you must start it
+by double-clicking an icon.  Then you can connect to it with
+`S+6-msdos-existing'.  You should consider upgrading to S-Plus 6.1.")
+	  (error "The emacs variable `inferior-S+6-program-name' does
+not point to S-Plus 6.  Please add `splus61/cmd' to your `exec-path' or
+specify the complete path to `Splus.exe' in the variable
+`inferior-S+6-program-name' in your `.emacs' file."))))
+  (S+6-msdos-initiate proc-name)) ;; normal start
 
 
 (defun S+6-msdos-initiate (&optional proc-name)
-  "Call 'S-PLUS 6.x for Windows', the 'GUI Thing' from StatSci.  Put S-Plus
-in an independent MS-Window (Splus persists even if the '(ddeESS [S+6])'
-window is killed in emacs).  Do this by creating a comint process that
-calls sh.  Send a shell command in that sh buffer to call Splus.  When
-it completes set up a shell as a placeholder in the '(ddeESS [S+6])'
-buffer.  The S-Plus options are correctly set.  In particular, the
-S-Plus Commands window is opened if the Options/General
-Settings/Startup menu says it should be.  There is a 30 second delay
-during startup in which the screen will not be refreshed.  This delay
-is here to allow slow disks to start the Splus program."
+  "Call 'S-PLUS 6.x for Windows', the 'GUI Thing' from StatSci.  Put
+S-Plus in an independent MS-Window (Splus persists even if the
+'(ddeESS [S+6])' window is killed in emacs).  Do this by creating a
+comint process that calls sh.  Send a shell command in that sh buffer
+to call Splus.  When it completes set up a shell as a placeholder in
+the '(ddeESS [S+6])' buffer.  The S-Plus options are correctly set.
+In particular, the S-Plus Commands window is opened if the
+Options/General Settings/Startup menu says it should be.  There is a
+startup delay of `ess-S+6-startup-delay' seconds during which the
+screen will not be refreshed.  This delay is here to allow slow disks
+to start the Splus program."
   (interactive)
   (save-excursion
     (setq ess-customize-alist S+6-customize-alist)
@@ -408,10 +426,10 @@ is here to allow slow disks to start the Splus program."
     (goto-char (point-max))
     (insert (concat inferior-S+6-program-name " "
 		    inferior-ess-start-args)) ; Note: there is no final "&".
-; Without the "&", the results of  !system.command  come to '(ddeESS [S+6])'
-; With the "&", the results of  !system.command  in S get lost.
+    ;; Without the "&", the results of  !system.command  come to '(ddeESS [S+6])'
+    ;; With the "&", the results of  !system.command  in S get lost.
     (inferior-ess-send-input)
-    (sleep-for 30) ; Need to wait, else working too fast!
+    (sleep-for ess-S+6-startup-delay) ; Need to wait, else working too fast!
                    ; If the ess-current-process-name doesn't appear in the
        		   ; Splus Commands window increase the sleep-for time!
 ;;; from msdos-minor-mode
@@ -423,14 +441,14 @@ is here to allow slow disks to start the Splus program."
     (beginning-of-buffer)
     (insert
      "This is a placeholder buffer.  You can't type anything here.
-Use 'C-x b RET' to return to your file.\n
+Use `C-x b RET' to return to your file.\n
 Anything sent to this process from an S-mode buffer goes
 directly to the associated Splus Commands window.\n
 The S-Plus Commands window must be visible.
 You may need to open the S-Plus Commands window manually
 (by clicking on Splus/Window/Commands Window).\n
-There is a 30 second delay when this program starts during which the
-emacs screen will be partially blank.\n
+There is a `ess-S+6-startup-delay' second delay when this program starts
+during which the emacs screen will be partially blank.\n
 Remember to 'q()' from S-Plus and
 then C-x C-q exit from the '(ddeESS [S+6])' buffer,
 or take the risk of not being able to shut down your computer
@@ -454,7 +472,8 @@ S-Plus, then a new one will be opened in the default directory,
 usually something like c:/Program Files/spls45se/users/yourname.
 If you have a HOME environment variable, it will open it there."
   (interactive)
-  (let* ((inferior-S+6-multipleinstances ""))
+  (let* ((inferior-S+6-multipleinstances "")
+	 (ess-S+6-startup-delay 0)) ;; No delay for existing S-Plus
     (S+6-msdos-initiate proc-name))
   (save-excursion
     (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
