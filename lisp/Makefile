@@ -96,7 +96,7 @@ DISTFILES = $(addprefix $(VERSIONDIR)/,$(SOURCES)) \
 
 DISTSCRIPTS = $(addprefix $(VERSIONDIR)/,$(SCRIPTS))
 
-DOCDISTFILES = $(addprefix $(VERSIONDIR)/,$(DOCDIST)) 
+# DOCDISTFILES = $(addprefix $(VERSIONDIR)/,$(DOCDIST)) 
 
 ### Targets
 
