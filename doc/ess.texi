@@ -3,18 +3,18 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.35 2002/07/29 17:05:36 rsparapa Exp $
+@comment $Id: ess.texi,v 5.36 2002/07/31 16:20:50 rsparapa Exp $
 
 @include version.texi
 
 @synindex pg vr
 
+
 @ifinfo
+@majorheading ESS --- Emacs Speaks Statistics
 @direntry
 * ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
 @end direntry
-
-@majorheading ESS --- Emacs Speaks Statistics
 
 @comment Originally known as S-mode, written by Doug Bates, Ed Kademan, Frank
 @comment Ritter, and David Smith.
@@ -30,29 +30,35 @@ program.
 
 This documentation relates to Version @essver{} of @code{ESS}.
 
-Original Info Author: David M. Smith (@email{D.M.Smith@@lancaster.ac.uk}),
-Department of Mathematics and Statistics, Lancaster University, UK.
-
 Current Info Author: A.J. Rossini
 (@email{rossini@@biostat.washington.edu}), Department of Biostatistics,
 University of Washington, Seattle, WA 98185, USA
+
+Original Info Author: David M. Smith (@email{D.M.Smith@@lancaster.ac.uk}),
+Department of Mathematics and Statistics, Lancaster University, UK.
 
 @end ifinfo
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.35 $ $Date: 2002/07/29 17:05:36 $)
-@author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
-@author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
-@author                and David Smith)
+@subtitle version @essver{} (Documentation $Revision: 5.36 $ $Date: 2002/07/31 16:20:50 $)
+@author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.A. Sparapani.
+@c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
+@c @author                and David Smith)
 @ifhtml
 <P><HR></P>
 @end ifhtml
 @sp 2
-@author A programming and inferior mode package for (X)Emacs
-@author intended for interacting with statistical software packages
-@author (primarily S(plus), R, XLisp-Stat, SAS, and Stata), for data
-@author analysis and statistical software development
+Emacs Speaks Statistics (ESS) provides an intelligent, consistent 
+interface between the user and the software.  ESS interfaces with 
+SAS, S-PLUS, R, BUGS and other statistical analysis packages under
+the Unix, Microsoft Windows, and Apple Mac operating systems.  ESS
+is itself a package within the emacs text editor and uses emacs
+features to streamline the creation and use of statistical software.
+ESS knows the syntax and grammar of statistical analysis packages
+and provides consistent display and editing features based on that 
+knowledge.  ESS assists in interactive and batch execution of 
+statements written in these statistical analysis languages.
 @sp 5
 @center Current Documentation by A.J. Rossini
 @center (@email{rossini@@biostat.washington.edu})
@@ -86,31 +92,45 @@ permission notice identical to this one.
 
 ESS version @essver{}
 
-        (Documentation $Revision: 5.35 $ $Date: 2002/07/29 17:05:36 $).
+        (Documentation $Revision: 5.36 $ $Date: 2002/07/31 16:20:50 $).
 
+@display
+by  A.J. Rossini, 
+    R.M. Heiberger, 
+    K. Hornik, 
+    M. Maechler, 
+and R.A. Sparapani 
+@end display
+
+@c (Formerly: Doug
+@c Bates, Ed Kademan, Frank Ritter and David Smith).
 @quotation
-A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
-Bates, Ed Kademan, Frank Ritter and David Smith).
-
-A programming and inferior mode package for (X)Emacs intended for
-interacting with statistical software packages (primarily S(plus), R,
-XLisp-Stat, and SAS), for data analysis and statistical software
-development.
+Emacs Speaks Statistics (ESS) provides an intelligent, consistent 
+interface between the user and the software.  ESS interfaces with 
+SAS, S-PLUS, R, BUGS and other statistical analysis packages under
+the Unix, Microsoft Windows, and Apple Mac operating systems.  ESS
+is itself a package within the emacs text editor and uses emacs
+features to streamline the creation and use of statistical software.
+ESS knows the syntax and grammar of statistical analysis packages
+and provides consistent display and editing features based on that 
+knowledge.  ESS assists in interactive and batch execution of 
+statements written in these statistical analysis languages.
 @end quotation
 
 @end ifinfo
 
 @menu
 * Introduction::                Overview of features provided by this package
-* Starting Up::                 Starting the @b{ESS} process
+* Installation::                Installing ESS on your system
+* Starting up::                 Starting the @b{ESS} process
+* Help for the S family::       
+* Help for SAS::                
 * Entering commands::           Interacting with the process buffer
 * Editing::                     How to create or edit @b{S} objects or functions
 * Help::                        Reading help files in ESS
 * Transcript Mode::             Manipulating saved transcript files
 * Miscellaneous::               Other features of ESS
 * Bugs Etc::                    
-* Help for Statistical Packages::  
-* Installation::                Installing ESS on your system
 * Customization::               Customizing ESS
 * Key Index::                   
 * Command Index::               
@@ -128,11 +148,37 @@ Introduction to @b{ESS}
 * Latest version::              Getting the latest version of ESS
 * Manual::                      How to read this manual
 
+Installing ESS on your system
+
+* System dependent::            Other variables you may need to change
+
 Starting the @b{ESS} process
 
 * Multiple ESS processes::      
 * ESS processes on Remote Computers::
 * Customizing startup::         Changing the startup actions
+
+Help for the S family
+
+* ESS(S)--Editing files::
+* iESS(S)--Inferior ESS processes::
+* Handling and Reusing Transcripts::
+* ESS-help--assistance with viewing help::
+* Philosophies for using ESS(S)::
+* Scenarios for use (possibilities--based on actual usage)::
+* Customization Examples and Solutions to Problems::
+
+Help for SAS
+
+* ESS(SAS)--Design philosophy::
+* ESS(SAS)--Editing files::
+* iESS(SAS)--Interactive SAS processes::
+* ESS(SAS)--Batch SAS processes::
+* ESS(SAS)--Function keys for batch processing::
+* ESS(SAS)--TAB key::
+* ESS(SAS)--Usage scenarios::
+* iESS(SAS)--Common problems::
+* ESS(SAS)--MS Windows::
 
 Interacting with the @b{ESS} process
 
@@ -186,37 +232,6 @@ Bugs and Bug Reporting, Mailing Lists
 * Reporting Bugs::              
 * Mailing Lists::               
 
-Help for Statistical Packages
-
-* Help for the S family::       
-* Help for SAS::                
-
-Help for the S family
-
-* ESS(S)--Editing files::
-* iESS(S)--Inferior ESS processes::
-* Handling and Reusing Transcripts::
-* ESS-help--assistance with viewing help::
-* Philosophies for using ESS(S)::
-* Scenarios for use (possibilities--based on actual usage)::
-* Customization Examples and Solutions to Problems::
-
-Help for SAS
-
-* ESS(SAS)--Design philosophy::
-* ESS(SAS)--Editing files::
-* iESS(SAS)--Interactive SAS processes::
-* ESS(SAS)--Batch SAS processes::
-* ESS(SAS)--Function keys for batch processing::
-* ESS(SAS)--TAB key::
-* ESS(SAS)--Usage scenarios::
-* iESS(SAS)--Common problems::
-* ESS(SAS)--MS Windows::
-
-Installing ESS on your system
-
-* System dependent::            Other variables you may need to change
-
 Customizing ESS
 
 * Variables::                   Variables for customization
@@ -230,39 +245,33 @@ Variables for customization
 * Indentation variables::       Variables controlling indentation
 * Variables controlling interaction::  Variables controlling interaction
 					with the @b{ESS} process
-
 @end detailmenu
 @end menu
 
-@node Introduction, Starting Up, Top, Top
-@comment  node-name,  next,  previous,  up
+@comment node-name,  next,  previous,  up
+@node Introduction, Installation, Top, Top
 @chapter Introduction to @b{ESS}
 @cindex introduction
 
-The @b{S} and Splus packages provide sophisticated statistical and
-graphical routines for manipulating data.  S-mode, the package on which
-ESS was based, provided a programming environment for data analysis and
-statistical programming, as well as an intelligent interface to the S
-process.
+The S family (@b{S}, Splus and R) and SAS statistical analysis packages
+provide sophisticated statistical and graphical routines for manipulating 
+data.   @b{E}macs @b{S}peaks @b{S}tatistics (ESS) is based on the merger 
+of two pre-cursors, S-mode and SAS-mode, which provided support for the
+S family and SAS respectively.  Later on, Stata-mode was also incorporated.
 
-The @emph{ESS (:= @b{E}macs @b{S}peaks @b{S}tatistics)} package is an
-extension of S-mode to provide a common, generic, and useful interface,
-through Emacs, to many statistical packages.  It has currently been
-extended for R, XLisp-Stat, and SAS, with other statistical languages
-such as Stata, SPSS, and Fiasco slated for implementations in the
-future.
+ESS provides a common, generic, and useful interface, through emacs, to 
+many statistical packages.  It currently supports the S family, SAS, BUGS, 
+Stata and XLisp-Stat with the level of support roughly in that order.
 
-A bit of notation before we begin.  @emph{Emacs} refers to both
-@emph{Emacs} as distributed by the Free Software Foundation, as well as
-@emph{XEmacs}, which is a second GNU version of Emacs.  The Emacs major
-mode @code{ESS[language]} which is used for editing source for dialect
-@code{language}, can take values @code{S}, @code{SAS}, or @code{XLS},
-for instance.  The inferior process interface (the connection between
-Emacs and the running process) referred to as interactive ESS
+A bit of notation before we begin.  @emph{emacs} refers to both
+@emph{GNU Emacs} by the Free Software Foundation, as well as
+@emph{XEmacs} by the XEmacs Project.  The emacs major
+mode @code{ESS[language]}, where @code{language} can take values such as 
+@code{S}, @code{SAS}, or @code{XLS}.  The inferior process interface 
+(the connection between emacs and the running process) referred to as inferior ESS
 (@code{iESS}), is denoted in the modeline by @code{ESS[dialect]}, where
-@code{dialect} can take values @code{S3}, @code{S4}, @code{S+3},
-@code{S+4}, @code{S+5}, @code{S+6},
-@code{R}, @code{XLS}, @code{VST}, @code{SAS}, as well as others.
+@code{dialect} can take values such as @code{S3}, @code{S4}, @code{S+3},
+@code{S+4}, @code{S+5}, @code{S+6}, @code{R}, @code{XLS}, @code{VST}, @code{SAS}.
 
 Currently, the documentation contains many references to @cite{`S'}
 where actually any supported (statistics) language is meant, i.e., `S'
@@ -304,8 +313,8 @@ your @b{S} functions in specified source directories.
 * Manual::                      How to read this manual
 @end menu
 
-@node Features, New features, Introduction, Introduction
 @comment  node-name,  next,  previous,  up
+@node Features, New features, Introduction, Introduction
 @section Why should I use ESS?
 
 S is a powerful system for manipulating and analyzing data, but its user
@@ -402,30 +411,27 @@ unnecessary prompts.
 
 @end itemize
 
-@node New features, Credits, Features, Introduction
 @comment  node-name,  next,  previous,  up
+@node New features, Credits, Features, Introduction
 @section New features in ESS
 
 @include newfeat.texi
 
-@node Credits, Latest version, New features, Introduction
 @comment  node-name,  next,  previous,  up
+@node Credits, Latest version, New features, Introduction
 @section Authors of and contributors to ESS
 
 @include credits.texi
 
-@node Latest version, Manual, Credits, Introduction
 @comment  node-name,  next,  previous,  up
+@node Latest version, Manual, Credits, Introduction
 @section Getting the latest version of ESS
 
 @include getting.texi
 
-@node Manual,  , Latest version, Introduction
 @comment  node-name,  next,  previous,  up
+@node Manual,  , Latest version, Introduction
 @section How to read this manual
-
-If ESS has already been installed on your system, the next chapter has
-details on how to get started using @b{S} under ESS.
 
 If you need to install ESS, read @ref{Installation} for details on what
 needs to be done before proceeding to the next chapter.
@@ -440,9 +446,96 @@ pressing @kbd{C-h m} when in the process buffer, edit buffer or help
 buffer) is quite useful.  However the best source of information is, as
 always, experience --- try it out!
 
-
-@node Starting Up, Entering commands, Introduction, Top
 @comment  node-name,  next,  previous,  up
+@node Installation, Starting up, Introduction, Top
+@appendix Installing ESS on your system
+@cindex installation
+
+The following section details those steps necessary to get ESS running
+on your system.
+
+@menu
+* Unix installation::              Installing ESS on your Unix system
+* Microsoft Windows installation:: Installing ESS on your MS Windows system
+* Requirements::         emacs, Operating Systems and Statistical Packages 
+* System dependent::               Other variables you may need to change
+@end menu
+
+@include inst_tar.texi
+
+@comment  node-name,  next,  previous,  up
+@node System dependent,  , Installation, Installation
+@appendixsec Other variables you may need to change
+
+If you run the @b{S} program (from the shell) with a command other than
+@samp{Splus} you will need to set the variable
+@code{inferior-ess-program}
+@vindex inferior-ess-program
+to the name of the appropriate program by including a line such as
+@cindex @b{S} program name
+@cindex name of @b{S} program
+@cindex command to run @b{S} program
+@example
+(setq inferior-ess-program "S+")
+@end example
+@noindent
+in your @file{.emacs} file
+@cindex @file{.emacs} file
+@noindent
+(substituting @samp{S+} for the name of your @b{S} program.)
+
+If you need to call this program with any arguments, the variable you
+@cindex arguments to @b{S} program
+need to set is dependent on the value of @code{inferior-ess-program}; for
+example if it is @code{"Splus"}, set the variable
+@code{inferior-Splus-args}
+@vindex inferior-Splus-args
+to a string of arguments to the @code{Splus} program.  If
+@code{inferior-ess-program} has some other value, substitute the
+@code{Splus} part of @code{inferior-Splus-args} with the appropriate
+program name.  There aren't many instances where you need to call @b{S}
+with arguments, however: in particular do not call the @b{S} program
+with the @samp{-e} command-line editor argument since ESS provides this
+feature for you.
+
+@cindex Splus
+@vindex S-plus
+If you are running Splus (the enhanced version of @b{S} from Statsci) you
+may also need to set the variable @code{S-plus} to @code{t}.  If your
+value of @code{inferior-ess-program} is @code{"S+"} or @code{Splus} this
+will not be necessary, however; @code{S-plus} defaults to @code{t} in
+this case.
+
+Finally, if you use a non-standard prompt within S, you will need to set the
+variable @code{inferior-ess-prompt}
+@cindex prompts in S
+@vindex inferior-ess-prompt
+to a regular expression which will match both the primary prompt (@code{"> "}
+@cindex primary prompt
+by default) and the continuing prompt (default of @code{"+ "}.) The
+@cindex continuing prompt
+default value of this variable matches S's default prompts.  For example,
+if you use (@code{"$ "}) as your primary prompt (you have
+@w{@code{options(prompt="$ ")}} in your @code{.First} function), add the
+@pindex options()
+@cindex @code{.First} function
+following line to your @file{.emacs}:
+@example
+(setq inferior-ess-prompt "^\\(\\+\\|[^\\$]*\\$\\) *")
+@end example
+@noindent
+You will also need to set the variable @code{inferior-ess-primary-prompt}
+@vindex inferior-ess-primary-prompt
+to a regular expression which matches the primary prompt only.  Do not
+anchor the regexp to the beginning of the line with @samp{^}.  Once
+again, the default value matches S's default prompt; in the example
+above the appropriate value would be @code{"[^\\$]*\\$ *"}.
+
+Once these variables are set appropriately, ESS should work on any
+system.
+
+@comment  node-name,  next,  previous,  up
+@node Starting up, Help for the S family, Installation, Top
 @chapter Starting the @b{ESS} process
 @cindex starting ESS
 @cindex running S
@@ -478,8 +571,8 @@ for interacting with the @b{ESS} process, and you can start entering commands.
 * Customizing startup::         Changing the startup actions
 @end menu
 
-@node Multiple ESS processes,  ESS processes on Remote Computers, Starting Up, Starting Up
 @comment  node-name,  next,  previous,  up
+@node Multiple ESS processes,  ESS processes on Remote Computers, Starting up, Starting up
 @section Running more than one @b{ESS} process
 @cindex Multiple @b{ESS} processes
 
@@ -512,9 +605,8 @@ obtain this behavior, set the variable @code{ess-plain-first-buffername}
 to @code{t}.  See @file{ess-site} for how to set this for all users.
 
 
-
-@node ESS processes on Remote Computers, Customizing startup, Multiple ESS processes, Starting Up
 @comment  node-name,  next,  previous,  up
+@node ESS processes on Remote Computers, Customizing startup, Multiple ESS processes, Starting up
 @section ESS processes on Remote Computers
 @cindex Remote Computers
 @vindex ess-remote
@@ -574,8 +666,8 @@ on remote computers.
 @xref{S+elsewhere and ess-elsewhere}.
 
 
-@node S+elsewhere and ess-elsewhere,  , ESS processes on Remote Computers, ESS processes on Remote Computers
 @comment  node-name,  next,  previous,  up
+@node S+elsewhere and ess-elsewhere,  , ESS processes on Remote Computers, ESS processes on Remote Computers
 @section S+elsewhere and ess-elsewhere
 
 These commands are now deprecated.  We recommend @samp{ess-remote}.
@@ -634,9 +726,8 @@ and display it with ghostscript.
 @end enumerate
 
 
-
-@node Customizing startup,  , ESS processes on Remote Computers, Starting Up
 @comment  node-name,  next,  previous,  up
+@node Customizing startup,  , ESS processes on Remote Computers, Starting up
 @section Changing the startup actions
 
 If you do not wish ESS to prompt for a starting directory when starting
@@ -681,8 +772,41 @@ It is not normally necessary to pass arguments to the @b{S} program; in
 particular do not pass the @samp{-e} option to @code{Splus}, since ESS
 provides its own command history mechanism.
 
-@node Entering commands, Editing, Starting Up, Top
+
 @comment  node-name,  next,  previous,  up
+@node Help for the S family, Help for SAS, Starting up, Top
+@chapter Help for the S family
+@menu
+* ESS(S)--Editing files::
+* iESS(S)--Inferior ESS processes::
+* Handling and Reusing Transcripts::
+* ESS-help--assistance with viewing help::
+* Philosophies for using ESS(S)::
+* Scenarios for use (possibilities--based on actual usage)::
+* Customization Examples and Solutions to Problems::
+@end menu
+@include help-s.texi
+
+@comment  node-name,  next,  previous,  up
+@node Help for SAS, Entering commands, Help for the S family, Top
+@chapter Help for SAS
+
+@menu
+* ESS(SAS)--Design philosophy::
+* ESS(SAS)--Editing files::
+* iESS(SAS)--Interactive SAS processes::
+* ESS(SAS)--Batch SAS processes::
+* ESS(SAS)--Function keys for batch processing::
+* ESS(SAS)--TAB key::
+* ESS(SAS)--Usage scenarios::
+* iESS(SAS)--Common problems::
+* ESS(SAS)--MS Windows::
+@end menu
+@include help-sas.texi
+
+
+@comment  node-name,  next,  previous,  up
+@node Entering commands, Editing, Help for SAS, Top
 @chapter Interacting with the @b{ESS} process
 @cindex entering commands
 @cindex commands
@@ -710,8 +834,8 @@ typing.
 * Other::                       Other commands provided by inferior-ESS
 @end menu
 
-@node Command-line editing, Completion, Entering commands, Entering commands
 @comment  node-name,  next,  previous,  up
+@node Command-line editing, Completion, Entering commands, Entering commands
 @section Entering commands and fixing mistakes
 @cindex command-line editing
 
@@ -756,8 +880,8 @@ prompt, if any.
 @xref{Shell Mode,,, emacs, The Gnu Emacs Reference Manual}, for other
 commands relevant to entering input.
 
-@node  Completion, Completion details, Command-line editing, Entering commands
 @comment  node-name,  next,  previous,  up
+@node  Completion, Completion details, Command-line editing, Entering commands
 @section Completion of object names
 @cindex completion of object names
 @cindex command-line completion
@@ -828,8 +952,8 @@ If the cursor is not in a string and does not follow a (partial) object
 name, the @key{TAB} key has a third use: it expands history references.
 @xref{History expansion}.
 
-@node Completion details, Transcript, Completion, Entering commands
 @comment  node-name,  next,  previous,  up
+@node Completion details, Transcript, Completion, Entering commands
 @section Completion details
 
 ESS automatically keeps track of any objects added or deleted to the
@@ -870,8 +994,8 @@ ess-resynch}
 forces the @emph{entire} cache to be refreshed, which should fix the
 problem.
 
-@node Transcript, Command History, Completion details, Entering commands
 @comment  node-name,  next,  previous,  up
+@node Transcript, Command History, Completion details, Entering commands
 @section Manipulating the transcript
 
 Most of the time, the cursor spends most of its time at the bottom of
@@ -911,8 +1035,8 @@ Reference Manual}.
 * Saving transcripts::          Keeping a record of your @b{S} session
 @end menu
 
-@node Last command, Process buffer motion, Transcript, Transcript
 @comment  node-name,  next,  previous,  up
+@node Last command, Process buffer motion, Transcript, Transcript
 @subsection Manipulating the output from the last command
 
 Viewing the output of the command you have just entered is a common
@@ -972,8 +1096,8 @@ Deletes everything from the last command to the current prompt.
 to delete it.  Use this command judiciously to keep your transcript to a
 more manageable size.
 
-@node Process buffer motion, Transcript resubmit, Last command, Transcript
 @comment  node-name,  next,  previous,  up
+@node Process buffer motion, Transcript resubmit, Last command, Transcript
 @subsection Viewing more historic commands
 
 If you want to view the output from more historic commands than the
@@ -1013,8 +1137,8 @@ Search backward (forward) through the transcript buffer for the
 is the prefix argument; @var{regexp} is prompted for in the minibuffer.
 @end deffn
 
-@node Transcript resubmit, Saving transcripts, Process buffer motion, Transcript
 @comment  node-name,  next,  previous,  up
+@node Transcript resubmit, Saving transcripts, Process buffer motion, Transcript
 @subsection Re-submitting commands from the transcript
 
 When moving through the transcript, you may wish to re-execute some of
@@ -1072,8 +1196,8 @@ with the command-based motion commands described above, could be used as
 a primitive history mechanism.  ESS provides a more sophisticated
 mechanism, however, which is described in @ref{Command History}.
 
-@node Saving transcripts,  , Transcript resubmit, Transcript
 @comment  node-name,  next,  previous,  up
+@node Saving transcripts,  , Transcript resubmit, Transcript
 @subsection Keeping a record of your @b{S} session
 
 To keep a record of your @b{S} session in a disk file, use the Emacs
@@ -1112,8 +1236,8 @@ This command works in any Emacs buffer, and removes all prompts and
 command output from an ESS transcript within the current region, leaving
 only the commands.  Don't forget to remove any erroneous commands first!
 
-@node Command History, History expansion, Transcript, Entering commands
 @comment  node-name,  next,  previous,  up
+@node Command History, History expansion, Transcript, Entering commands
 @section Command History
 @cindex command history
 @cindex editing commands
@@ -1196,8 +1320,8 @@ keys.)
 @xref{Shell Ring,,Shell History Ring,emacs, The GNU Emacs Reference
 Manual}, for a more detailed discussion of the history mechanism.
 
-@node History expansion, Hot keys, Command History, Entering commands
 @comment  node-name,  next,  previous,  up
+@node History expansion, Hot keys, Command History, Entering commands
 @section References to historical commands
 
 Instead of searching through the command history using the command
@@ -1286,8 +1410,8 @@ then edit or press @key{RET} to execute.
 For example, to execute the last command that referenced the variable
 @code{data}, type @kbd{!?data SPC TAB RET}.
 
-@node Hot keys, Statistical Process running in ESS?, History expansion, Entering commands
 @comment  node-name,  next,  previous,  up
+@node Hot keys, Statistical Process running in ESS?, History expansion, Entering commands
 @section Hot keys for common commands
 
 ESS provides a number of commands for executing the commonly used
@@ -1395,8 +1519,8 @@ command explicitly to make sure that all the files that need to be saved
 have been saved, and that all the temporary buffers have been killed.
 @end itemize
 
-@node Statistical Process running in ESS?, Other, Hot keys, Entering commands
 @comment  node-name,  next,  previous,  up
+@node Statistical Process running in ESS?, Other, Hot keys, Entering commands
 @section Is the Statistical Process running under ESS?
 
 @cindex STERM
@@ -1432,8 +1556,8 @@ ESS can't set these other values since the S language program is not
 under the control of ESS.
 
 
-@node Other,  , Statistical Process running in ESS?, Entering commands
 @comment  node-name,  next,  previous,  up
+@node Other,  , Statistical Process running in ESS?, Entering commands
 @section Other commands provided by inferior-ESS
 
 The following commands are also provided in the process buffer:
@@ -1469,8 +1593,8 @@ Prompts for an object to be edited in an edit buffer.  @xref{Editing}.
 Other commands available is Inferior @b{S} mode are discussed in
 @ref{Shell Mode,,, emacs, The Gnu Emacs Reference Manual}.
 
-@node Editing, Help, Entering commands, Top
 @comment  node-name,  next,  previous,  up
+@node Editing, Help, Entering commands, Top
 @chapter Editing @b{S} functions
 
 @cindex editing functions
@@ -1494,8 +1618,8 @@ into the @b{ESS} process.
 * Source Directories::          Names and locations of dump files
 @end menu
 
-@node Edit buffer, Loading, Editing, Editing
 @comment  node-name,  next,  previous,  up
+@node Edit buffer, Loading, Editing, Editing
 @section Creating or modifying @b{S} objects
 @cindex edit buffer
 
@@ -1549,8 +1673,8 @@ definition (say, to reformat an unmodified buffer or to revert back to
 S's idea of the object's definition) pass a prefix argument to
 @code{ess-dump-object-into-edit-buffer} by typing @kbd{C-u C-c C-d}.
 
-@node Loading, Error Checking, Edit buffer, Editing
 @comment  node-name,  next,  previous,  up
+@node Loading, Error Checking, Edit buffer, Editing
 @section Loading source files into the @b{ESS} process
 
 The best way to get information --- particularly function definitions
@@ -1577,8 +1701,8 @@ happens automatically if the buffer was generated with @kbd{C-c C-d}).
 The file will then be loaded, and if it loads successfully you will be
 returned to the @b{ESS} process.
 
-@node Error Checking, Evaluating code, Loading, Editing
 @comment  node-name,  next,  previous,  up
+@node Error Checking, Evaluating code, Loading, Editing
 @section Detecting errors in source files
 @cindex errors
 @cindex parsing errors
@@ -1600,8 +1724,8 @@ this behavior (and avoid jumping to the file when there @emph{is} a
 syntax error) by passing a prefix argument to @code{ess-parse-errors}
 with @kbd{C-u C-x `}.
 
-@node Evaluating code, Indenting, Error Checking, Editing
 @comment  node-name,  next,  previous,  up
+@node Evaluating code, Indenting, Error Checking, Editing
 @section Sending code to the @b{ESS} process
 
 Other commands are also available for evaluating portions of code in the
@@ -1708,8 +1832,8 @@ of the window, you will need to set the variable
 
 *** Maybe a link to customization section here ***
 
-@node Indenting, Other edit buffer commands, Evaluating code, Editing
 @comment  node-name,  next,  previous,  up
+@node Indenting, Other edit buffer commands, Evaluating code, Editing
 @section Indenting and formatting @b{S} code
 
 ESS now provides a sophisticated mechanism for indenting @b{S} source
@@ -1786,8 +1910,8 @@ This command causes all of the formatting variables
 @pxref{Indentation variables} to be buffer-local.
 @end itemize
 
-@node Other edit buffer commands, Source Files, Indenting, Editing
 @comment  node-name,  next,  previous,  up
+@node Other edit buffer commands, Source Files, Indenting, Editing
 @section Commands for motion, completion and more
 
 A number of commands are provided to move across function definitions
@@ -1843,8 +1967,8 @@ available in the edit buffer.  You can still read help files with
 @kbd{C-c C-l} can be used to load a source file into S.  @xref{Other},
 for more details on these commands.
 
-@node Source Files, Source Directories, Other edit buffer commands, Editing
 @comment  node-name,  next,  previous,  up
+@node Source Files, Source Directories, Other edit buffer commands, Editing
 @section Maintaining @b{S} source files
 
 Every edit buffer in ESS is associated with a @dfn{dump file} on disk.
@@ -1937,8 +2061,8 @@ if you happen to quit Emacs before correcting the error.
 Dump buffers are always autosaved, regardless of the value of
 @code{ess-keep-dump-files}.
 
-@node Source Directories,  , Source Files, Editing
 @comment  node-name,  next,  previous,  up
+@node Source Directories,  , Source Files, Editing
 @section Names and locations of dump files
 
 @cindex dump file names
@@ -2021,8 +2145,8 @@ If you choose not to, or the directory cannot be created, you will not
 be able to edit functions.
 
 
-@node Help, Transcript Mode, Editing, Top
 @comment  node-name,  next,  previous,  up
+@node Help, Transcript Mode, Editing, Top
 @chapter Reading help files in ESS
 @cindex help files
 
@@ -2182,8 +2306,8 @@ when @code{ess-quit} or @code{ess-cleanup} are called.
 @pindex ess-cleanup
 @cindex temporary buffers
 
-@node Transcript Mode, Miscellaneous, Help, Top
 @comment  node-name,  next,  previous,  up
+@node Transcript Mode, Miscellaneous, Help, Top
 @chapter Manipulating saved transcript files
 
 Inferior @b{S} mode records the transcript (the list of all commands
@@ -2209,8 +2333,8 @@ and @kbd{C-c C-n}.
 * Clean::                       Cleaning transcript files
 @end menu
 
-@node Resubmit, Clean, Transcript Mode, Transcript Mode
 @comment  node-name,  next,  previous,  up
+@node Resubmit, Clean, Transcript Mode, Transcript Mode
 @section Resubmitting commands from the transcript file
 
 Three commands are provided to re-submit command lines from the
@@ -2241,8 +2365,8 @@ Inferior @b{S} Mode.  In all three cases, the commands should be
 executed when the cursor is on a command line in the transcript; the
 prompt is automatically removed before the command is submitted.
 
-@node Clean,  , Resubmit, Transcript Mode
 @comment  node-name,  next,  previous,  up
+@node Clean,  , Resubmit, Transcript Mode
 @section Cleaning transcript files
 
 Yet another use for transcript files is to extract the command lines for
@@ -2262,8 +2386,8 @@ buffer for inclusion in a function definition, or may be evaluated
 directly (@pxref{Evaluating code}) using the code evaluation commands
 from @b{S} mode, also available in @b{S} Transcript Mode.
 
-@node Miscellaneous, Bugs Etc, Transcript Mode, Top
 @comment  node-name,  next,  previous,  up
+@node Miscellaneous, Bugs Etc, Transcript Mode, Top
 @chapter Other features of ESS
 
 ESS has a few miscellaneous features, which didn't fit anywhere else.
@@ -2274,8 +2398,8 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 * Object Completion::           
 @end menu
 
-@node Highlighting, Graphics, Miscellaneous, Miscellaneous
 @comment  node-name,  next,  previous,  up
+@node Highlighting, Graphics, Miscellaneous, Miscellaneous
 @section Syntactic highlighting of buffers
 
 ESS provides Font-Lock (@pxref{Faces,,Using Multiple Typefaces,
@@ -2312,8 +2436,8 @@ Font-lock patterns for @b{ESS} Transcript Mode.  The default value
 highlights the same stuff as in Inferior @b{ESS} Mode.
 @end defvar
 
-@node Graphics, Object Completion, Highlighting, Miscellaneous
 @comment  node-name,  next,  previous,  up
+@node Graphics, Object Completion, Highlighting, Miscellaneous
 @section Using graphics with ESS
 
 @cindex graphics
@@ -2326,8 +2450,8 @@ features for dealing with such plots.
 * X11::                         The X11() (and other X-windows based) driver
 @end menu
 
-@node printer, X11, Graphics, Graphics
 @comment  node-name,  next,  previous,  up
+@node printer, X11, Graphics, Graphics
 @subsection Using ESS with the @code{printer()} driver
 
 This is the simplest (and least desirable) method of using graphics
@@ -2344,8 +2468,8 @@ a different number of columns.) Plotting commands do not generate
 graphics immediately, but are stored until the @code{show()} command
 is issued, which displays the current figure.
 
-@node X11,  , printer, Graphics
 @comment  node-name,  next,  previous,  up
+@node X11,  , printer, Graphics
 @subsection Using ESS with windowing devices
 
 @cindex X windows
@@ -2357,13 +2481,13 @@ DISPLAY before the @b{ESS} process is started if the variable
 @code{ess-ask-about-display}
 @pindex ess-ask-about-display
 is non-@code{nil}.  @xref{Customization}, for details of this variable,
-and @pxref{Starting Up} for information on how to set the value of
+and @pxref{Starting up} for information on how to set the value of
 DISPLAY when beginning an @b{S} session.
 
 
 
-@node Object Completion,  , Graphics, Miscellaneous
 @comment  node-name,  next,  previous,  up
+@node Object Completion,  , Graphics, Miscellaneous
 @section Object Completion
 
 
@@ -2395,8 +2519,8 @@ For R:
 directory, move it there).
 
 
-@node Bugs Etc, Help for Statistical Packages, Miscellaneous, Top
 @comment  node-name,  next,  previous,  up@chapter Using S4
+@node Bugs Etc, Customization, Miscellaneous, Top
 @chapter Bugs and Bug Reporting, Mailing Lists
 
 @menu
@@ -2410,59 +2534,18 @@ directory, move it there).
 @cindex bugs
 @include bugs.texi
 
-@node Reporting Bugs, Mailing Lists, Bugs, Bugs Etc
 @comment  node-name,  next,  previous,  up
+@node Reporting Bugs, Mailing Lists, Bugs, Bugs Etc
 @section Reporting Bugs
 @cindex Bug reports
 @pindex ess-submit-bug-report
 @include bugrept.texi
 
-@node Mailing Lists,  , Reporting Bugs, Bugs Etc
 @comment  node-name,  next,  previous,  up
+@node Mailing Lists,  , Reporting Bugs, Bugs Etc
 @section Mailing Lists
 
 @include mailing.texi
-
-@comment  node-name,  next,  previous,  up
-@comment @chapter Using S4
-@node Help for Statistical Packages, Installation, Bugs Etc, Top
-@comment @chapter Help for Statistical Packages
-
-@menu
-* Help for the S family::       
-* Help for SAS::                
-@end menu
-
-
-@comment  node-name,  next,  previous,  up
-@node Help for the S family, Help for SAS, Help for Statistical Packages, Help for Statistical Packages
-@chapter Help for the S family
-@menu
-* ESS(S)--Editing files::
-* iESS(S)--Inferior ESS processes::
-* Handling and Reusing Transcripts::
-* ESS-help--assistance with viewing help::
-* Philosophies for using ESS(S)::
-* Scenarios for use (possibilities--based on actual usage)::
-* Customization Examples and Solutions to Problems::
-@end menu
-@include help-s.texi
-
-@node Help for SAS,  , Help for the S family, Help for Statistical Packages
-@chapter Help for SAS
-
-@menu
-* ESS(SAS)--Design philosophy::
-* ESS(SAS)--Editing files::
-* iESS(SAS)--Interactive SAS processes::
-* ESS(SAS)--Batch SAS processes::
-* ESS(SAS)--Function keys for batch processing::
-* ESS(SAS)--TAB key::
-* ESS(SAS)--Usage scenarios::
-* iESS(SAS)--Common problems::
-* ESS(SAS)--MS Windows::
-@end menu
-@include help-sas.texi
 
 @c _not_yet_ @node Help OS, Installation, Help for Statistical Packages, Top
 @c _not_yet_ @comment  node-name,  next,  previous,  up
@@ -2475,96 +2558,9 @@ directory, move it there).
 @c _not_yet_ @end menu
 
 
-@node Installation, Customization, Help for Statistical Packages, Top
+
 @comment  node-name,  next,  previous,  up
-@appendix Installing ESS on your system
-@cindex installation
-
-The following section details those steps necessary to get ESS running
-on your system.
-
-@menu
-* Unix installation::              Installing ESS on your Unix system
-* Microsoft Windows installation:: Installing ESS on your MS Windows system
-* Requirements::         emacs, Operating Systems and Statistical Packages 
-* System dependent::               Other variables you may need to change
-@end menu
-
-@include inst_tar.texi
-
-@node System dependent,  , Installation, Installation
-@comment  node-name,  next,  previous,  up
-@appendixsec Other variables you may need to change
-
-If you run the @b{S} program (from the shell) with a command other than
-@samp{Splus} you will need to set the variable
-@code{inferior-ess-program}
-@vindex inferior-ess-program
-to the name of the appropriate program by including a line such as
-@cindex @b{S} program name
-@cindex name of @b{S} program
-@cindex command to run @b{S} program
-@example
-(setq inferior-ess-program "S+")
-@end example
-@noindent
-in your @file{.emacs} file
-@cindex @file{.emacs} file
-@noindent
-(substituting @samp{S+} for the name of your @b{S} program.)
-
-If you need to call this program with any arguments, the variable you
-@cindex arguments to @b{S} program
-need to set is dependent on the value of @code{inferior-ess-program}; for
-example if it is @code{"Splus"}, set the variable
-@code{inferior-Splus-args}
-@vindex inferior-Splus-args
-to a string of arguments to the @code{Splus} program.  If
-@code{inferior-ess-program} has some other value, substitute the
-@code{Splus} part of @code{inferior-Splus-args} with the appropriate
-program name.  There aren't many instances where you need to call @b{S}
-with arguments, however: in particular do not call the @b{S} program
-with the @samp{-e} command-line editor argument since ESS provides this
-feature for you.
-
-@cindex Splus
-@vindex S-plus
-If you are running Splus (the enhanced version of @b{S} from Statsci) you
-may also need to set the variable @code{S-plus} to @code{t}.  If your
-value of @code{inferior-ess-program} is @code{"S+"} or @code{Splus} this
-will not be necessary, however; @code{S-plus} defaults to @code{t} in
-this case.
-
-Finally, if you use a non-standard prompt within S, you will need to set the
-variable @code{inferior-ess-prompt}
-@cindex prompts in S
-@vindex inferior-ess-prompt
-to a regular expression which will match both the primary prompt (@code{"> "}
-@cindex primary prompt
-by default) and the continuing prompt (default of @code{"+ "}.) The
-@cindex continuing prompt
-default value of this variable matches S's default prompts.  For example,
-if you use (@code{"$ "}) as your primary prompt (you have
-@w{@code{options(prompt="$ ")}} in your @code{.First} function), add the
-@pindex options()
-@cindex @code{.First} function
-following line to your @file{.emacs}:
-@example
-(setq inferior-ess-prompt "^\\(\\+\\|[^\\$]*\\$\\) *")
-@end example
-@noindent
-You will also need to set the variable @code{inferior-ess-primary-prompt}
-@vindex inferior-ess-primary-prompt
-to a regular expression which matches the primary prompt only.  Do not
-anchor the regexp to the beginning of the line with @samp{^}.  Once
-again, the default value matches S's default prompt; in the example
-above the appropriate value would be @code{"[^\\$]*\\$ *"}.
-
-Once these variables are set appropriately, ESS should work on any
-system.
-
-@node Customization, Key Index, Installation, Top
-@comment  node-name,  next,  previous,  up
+@node Customization, Key Index, Bugs Etc, Top
 @appendix Customizing ESS
 @cindex customization
 
@@ -2581,8 +2577,8 @@ available.
 * Keybindings::                 Changing the default ESS keybindings
 @end menu
 
-@node Variables, Hooks, Customization, Customization
 @comment  node-name,  next,  previous,  up
+@node Variables, Hooks, Customization, Customization
 @appendixsec Variables for customization
 @cindex variables
 
@@ -2609,8 +2605,8 @@ the new value into the template above.
 					with the @b{ESS} process
 @end menu
 
-@node Variables for starting ESS, Dump file variables, Variables, Variables
 @comment  node-name,  next,  previous,  up
+@node Variables for starting ESS, Dump file variables, Variables, Variables
 @appendixsubsec Variables for starting ESS
 
 @defvr {User Option} ess-ask-for-ess-directory
@@ -2671,8 +2667,8 @@ List of possible values for the @code{DISPLAY} environment variable,
 provided for completion when prompting for such a value.
 @end defvr
 
-@node Dump file variables, Indentation variables, Variables for starting ESS, Variables
 @comment  node-name,  next,  previous,  up
+@node Dump file variables, Indentation variables, Variables for starting ESS, Variables
 @appendixsubsec Variables for dump files
 
 @defvr {User Option} ess-insert-function-templates
@@ -2705,8 +2701,8 @@ Boolean flag signifying whether to keep dump files or to delete them
 after each use.  @xref{Source Files}, for more details.
 @end defvr
 
-@node Indentation variables, Variables controlling interaction, Dump file variables, Variables
 @comment  node-name,  next,  previous,  up
+@node Indentation variables, Variables controlling interaction, Dump file variables, Variables
 @appendixsubsec Variables controlling indentation
 @cindex formatting source code
 @cindex indentation
@@ -2802,8 +2798,8 @@ See @file{ess-cust.el} for the complete definitions of the styles.
 @xref{Edit buffer}, for more details.
 @end defvr
 
-@node Variables controlling interaction,  , Indentation variables, Variables
 @comment  node-name,  next,  previous,  up
+@node Variables controlling interaction,  , Indentation variables, Variables
 @appendixsubsec Variables controlling interaction with the @b{ESS} process
 
 @defvr {User Option} comint-input-ring-size
@@ -2826,8 +2822,8 @@ case, passing a prefix argument to the eval command reverses the meaning
 of this variable.
 @end defvr
 
-@node Hooks, Keybindings, Variables, Customization
 @comment  node-name,  next,  previous,  up
+@node Hooks, Keybindings, Variables, Customization
 @appendixsec Customizing ESS with hooks
 @cindex hooks
 
@@ -2921,8 +2917,8 @@ Keymap used within ESS transcript buffers.
 @printindex fn
 
 
-@node Concept Index, Variable and command index, Command Index, Top
 @comment  node-name,  next,  previous,  up
+@node Concept Index, Variable and command index, Command Index, Top
 @unnumbered Concept Index
 @printindex cp
 
@@ -2934,6 +2930,7 @@ Keymap used within ESS transcript buffers.
 
 @bye
 @c Remember to delete these lines before creating the info file.
+@c Why?  I makeinfo all of the time without following this advice.
 @iftex
 @lucidbook
 @bindingoffset = 0.5in

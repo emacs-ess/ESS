@@ -17,12 +17,12 @@ source code in these languages and interacting with the running program.
 
    This documentation relates to Version 5.1.22 of `ESS'.
 
-   Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
-Department of Mathematics and Statistics, Lancaster University, UK.
-
    Current Info Author: A.J. Rossini
 (<rossini@biostat.washington.edu>), Department of Biostatistics,
 University of Washington, Seattle, WA 98185, USA
+
+   Original Info Author: David M. Smith (<D.M.Smith@lancaster.ac.uk>),
+Department of Mathematics and Statistics, Lancaster University, UK.
 
 
 File: ess.info,  Node: Top,  Next: Introduction,  Prev: (dir),  Up: (dir)
@@ -32,29 +32,39 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.22
 
-   (Documentation $Revision: 1.10 $ $Date: 2002/07/29 17:05:36 $).
+   (Documentation $Revision: 1.11 $ $Date: 2002/07/31 16:20:49 $).
 
-     A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
-     Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and
-     David Smith).
+     by  A.J. Rossini,
+         R.M. Heiberger,
+         K. Hornik,
+         M. Maechler,
+     and R.A. Sparapani
 
-     A programming and inferior mode package for (X)Emacs intended for
-     interacting with statistical software packages (primarily S(plus),
-     R, XLisp-Stat, and SAS), for data analysis and statistical software
-     development.
+     Emacs Speaks Statistics (ESS) provides an intelligent, consistent
+     interface between the user and the software.  ESS interfaces with
+     SAS, S-PLUS, R, BUGS and other statistical analysis packages under
+     the Unix, Microsoft Windows, and Apple Mac operating systems.  ESS
+     is itself a package within the emacs text editor and uses emacs
+     features to streamline the creation and use of statistical
+     software.  ESS knows the syntax and grammar of statistical
+     analysis packages and provides consistent display and editing
+     features based on that knowledge.  ESS assists in interactive and
+     batch execution of statements written in these statistical
+     analysis languages.
 
 * Menu:
 
 * Introduction::                Overview of features provided by this package
-* Starting Up::                 Starting the ESS process
+* Installation::                Installing ESS on your system
+* Starting up::                 Starting the ESS process
+* Help for the S family::
+* Help for SAS::
 * Entering commands::           Interacting with the process buffer
 * Editing::                     How to create or edit S objects or functions
 * Help::                        Reading help files in ESS
 * Transcript Mode::             Manipulating saved transcript files
 * Miscellaneous::               Other features of ESS
 * Bugs Etc::
-* Help for Statistical Packages::
-* Installation::                Installing ESS on your system
 * Customization::               Customizing ESS
 * Key Index::
 * Command Index::
@@ -71,11 +81,37 @@ Introduction to ESS
 * Latest version::              Getting the latest version of ESS
 * Manual::                      How to read this manual
 
+Installing ESS on your system
+
+* System dependent::            Other variables you may need to change
+
 Starting the ESS process
 
 * Multiple ESS processes::
 * ESS processes on Remote Computers::
 * Customizing startup::         Changing the startup actions
+
+Help for the S family
+
+* ESS(S)--Editing files::
+* iESS(S)--Inferior ESS processes::
+* Handling and Reusing Transcripts::
+* ESS-help--assistance with viewing help::
+* Philosophies for using ESS(S)::
+* Scenarios for use (possibilities--based on actual usage)::
+* Customization Examples and Solutions to Problems::
+
+Help for SAS
+
+* ESS(SAS)--Design philosophy::
+* ESS(SAS)--Editing files::
+* iESS(SAS)--Interactive SAS processes::
+* ESS(SAS)--Batch SAS processes::
+* ESS(SAS)--Function keys for batch processing::
+* ESS(SAS)--TAB key::
+* ESS(SAS)--Usage scenarios::
+* iESS(SAS)--Common problems::
+* ESS(SAS)--MS Windows::
 
 Interacting with the ESS process
 
@@ -129,37 +165,6 @@ Bugs and Bug Reporting, Mailing Lists
 * Reporting Bugs::
 * Mailing Lists::
 
-Help for Statistical Packages
-
-* Help for the S family::
-* Help for SAS::
-
-Help for the S family
-
-* ESS(S)--Editing files::
-* iESS(S)--Inferior ESS processes::
-* Handling and Reusing Transcripts::
-* ESS-help--assistance with viewing help::
-* Philosophies for using ESS(S)::
-* Scenarios for use (possibilities--based on actual usage)::
-* Customization Examples and Solutions to Problems::
-
-Help for SAS
-
-* ESS(SAS)--Design philosophy::
-* ESS(SAS)--Editing files::
-* iESS(SAS)--Interactive SAS processes::
-* ESS(SAS)--Batch SAS processes::
-* ESS(SAS)--Function keys for batch processing::
-* ESS(SAS)--TAB key::
-* ESS(SAS)--Usage scenarios::
-* iESS(SAS)--Common problems::
-* ESS(SAS)--MS Windows::
-
-Installing ESS on your system
-
-* System dependent::            Other variables you may need to change
-
 Customizing ESS
 
 * Variables::                   Variables for customization
@@ -175,33 +180,31 @@ Variables for customization
 					with the ESS process
 
 
-File: ess.info,  Node: Introduction,  Next: Starting Up,  Prev: Top,  Up: Top
+File: ess.info,  Node: Introduction,  Next: Installation,  Prev: Top,  Up: Top
 
 Introduction to ESS
 *******************
 
-   The S and Splus packages provide sophisticated statistical and
-graphical routines for manipulating data.  S-mode, the package on which
-ESS was based, provided a programming environment for data analysis and
-statistical programming, as well as an intelligent interface to the S
-process.
+   The S family (S, Splus and R) and SAS statistical analysis packages
+provide sophisticated statistical and graphical routines for
+manipulating data.   Emacs Speaks Statistics (ESS) is based on the
+merger of two pre-cursors, S-mode and SAS-mode, which provided support
+for the S family and SAS respectively.  Later on, Stata-mode was also
+incorporated.
 
-   The _ESS (:= Emacs Speaks Statistics)_ package is an extension of
-S-mode to provide a common, generic, and useful interface, through
-Emacs, to many statistical packages.  It has currently been extended
-for R, XLisp-Stat, and SAS, with other statistical languages such as
-Stata, SPSS, and Fiasco slated for implementations in the future.
+   ESS provides a common, generic, and useful interface, through emacs,
+to many statistical packages.  It currently supports the S family, SAS,
+BUGS, Stata and XLisp-Stat with the level of support roughly in that
+order.
 
-   A bit of notation before we begin.  _Emacs_ refers to both _Emacs_
-as distributed by the Free Software Foundation, as well as _XEmacs_,
-which is a second GNU version of Emacs.  The Emacs major mode
-`ESS[language]' which is used for editing source for dialect
-`language', can take values `S', `SAS', or `XLS', for instance.  The
-inferior process interface (the connection between Emacs and the
-running process) referred to as interactive ESS (`iESS'), is denoted in
-the modeline by `ESS[dialect]', where `dialect' can take values `S3',
-`S4', `S+3', `S+4', `S+5', `S+6', `R', `XLS', `VST', `SAS', as well as
-others.
+   A bit of notation before we begin.  _emacs_ refers to both _GNU
+Emacs_ by the Free Software Foundation, as well as _XEmacs_ by the
+XEmacs Project.  The emacs major mode `ESS[language]', where `language'
+can take values such as `S', `SAS', or `XLS'.  The inferior process
+interface (the connection between emacs and the running process)
+referred to as inferior ESS (`iESS'), is denoted in the modeline by
+`ESS[dialect]', where `dialect' can take values such as `S3', `S4',
+`S+3', `S+4', `S+5', `S+6', `R', `XLS', `VST', `SAS'.
 
    Currently, the documentation contains many references to ``S'' where
 actually any supported (statistics) language is meant, i.e., `S' could
@@ -628,9 +631,6 @@ File: ess.info,  Node: Manual,  Prev: Latest version,  Up: Introduction
 How to read this manual
 =======================
 
-   If ESS has already been installed on your system, the next chapter
-has details on how to get started using S under ESS.
-
    If you need to install ESS, read *Note Installation:: for details on
 what needs to be done before proceeding to the next chapter.
 
@@ -645,7 +645,369 @@ buffer) is quite useful.  However the best source of information is, as
 always, experience -- try it out!
 
 
-File: ess.info,  Node: Starting Up,  Next: Entering commands,  Prev: Introduction,  Up: Top
+File: ess.info,  Node: Installation,  Next: Starting up,  Prev: Introduction,  Up: Top
+
+Installing ESS on your system
+*****************************
+
+   The following section details those steps necessary to get ESS
+running on your system.
+
+* Menu:
+
+* Unix installation::              Installing ESS on your Unix system
+* Microsoft Windows installation:: Installing ESS on your MS Windows system
+* Requirements::         emacs, Operating Systems and Statistical Packages
+* System dependent::               Other variables you may need to change
+
+   We now discuss installation, which might happen under Unix or
+Microsoft Windows.  First, we discuss Unix installation.  *Note Unix
+installation::.
+
+   For Microsoft Windows Installation please skip to the *Note
+Microsoft Windows installation::.
+
+
+File: ess.info,  Node: Unix installation,  Next: Microsoft Windows installation,  Up: Installation
+
+Unix installation
+=================
+
+  1. cd to a directory where you want to install ESS, creating it if
+     necessary.  This directory will be referred to below as ESSDIR.
+
+  2. Retrieve the gzipped tar file
+     (http://software.biostat.washington.edu/ess/ess-5.1.22.tar.gz) to
+     ESSDIR.
+
+  3. Decompress/unarchive the files from the disribution.
+          gunzip ess-5.1.22.tar.gz
+          tar xvf ess-5.1.22.tar
+
+          (or: `gunzip < ess-5.1.22.tar.gz | tar xvf -' ).
+          (or using GNU tar:  `tar zxvf ess-5.1.22.tar.gz').
+
+     The `tar' command will create the subdirectory ess-5.1.22 and
+     unarchive the files there.
+
+     If you are using GNU Emacs 19.29, decompress/unarchive
+     `ESSDIR/ess-5.1.22/lisp/19.29.tar.gz', read
+     `ESSDIR/ess-5.1.22/lisp/19.29/README', follow the instructions and
+     you might be able to get ESS to work.  _Please note that GNU Emacs
+     19.29 is no longer supported_.  For a list of supported versions
+     of emacs, see *Note Requirements::.
+
+  4. Edit the file `ESSDIR/ess-5.1.22/lisp/ess-site.el' as explained in
+     the comments section of that file.
+
+  5.  Add the line
+          (load "ESSDIR/ess-5.1.22/lisp/ess-site")
+     to your user or system installation file (GNU Emacs uses
+     `$HOME/.emacs' and XEmacs uses `$HOME/.xemacs/init.el' for the
+     user initialization file.  GNU Emacs uses default.el or
+     site-init.el and XEmacs uses site-start.el for the system
+     installation file).
+
+     Alternatively, if ess-site.el is in your current Lisp path, you
+     can do:
+          (require 'ess-site)
+     to configure emacs for ESS.
+
+  6. That's it!  To edit statistical programs, load the files with the
+     requiste extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R,
+     and ".lsp" for XLispStat).
+
+  7. (OPTIONAL) If you are running S-PLUS or R, you might consider
+     installing the database files.  From within emacs, `C-x d' to the
+     directory containing ESS.  Now:
+          M-x S+6
+     get running.  once you have reached the SPLUS prompt, do:
+          M-x ess-create-object-name-db
+     (this will create the file `ess-s+6-namedb.el'; if it isn't in the
+     ESS directory, move it there).
+
+     Then, completions will be autoloaded and will not be regenerated
+     for every session.
+
+     For R, do the same, using
+          M-x R
+     and then `M-x ess-create-object-name-db' creating
+     `ess-r-namedb.el'; if it isn't in the ESS directory, move it
+     there).
+
+  8. (OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING:
+
+     In the ESSDIR/ess-5.1.22 directory, edit the file `Makeconf' if you
+     want to place the compiled files in other locations; see LISPDIR
+     and INFODIR.
+
+     Then type:
+          make all
+
+     If this works, then you might try:
+          make install
+
+     This will install the info files (and the lisp files, if they are
+     to go in another directory).  Don't forget to edit the file `dir'
+     in the info directory specified by `INFODIR' in `doc/Makefile'.
+     See the sample `dir' file for an example of the line to add.
+
+     If you are using XEmacs, you might do:
+          make EMACS=xemacs all
+
+     and then
+          make EMACS=xemacs install
+     instead of editing the Makefile.
+
+     _Note_ that you might need to use GNU make for everything to work
+     properly
+
+     An alternative, if you are running XEmacs and have access to the
+     XEmacs system directories, would be to place the directory in the
+     site-lisp directory, and simply type `make all' (and copy the
+     documentation as appropriate).
+
+     For GNU Emacs, you would still have to move the files into the top
+     level site-lisp directory.
+
+
+
+File: ess.info,  Node: Microsoft Windows installation,  Next: Requirements,  Prev: Unix installation,  Up: Installation
+
+Microsoft Windows installation
+==============================
+
+   For Microsoft Windows installation, please follow the next steps:
+(see separate instructions above for UNIX *Note Unix installation::.
+
+  1. cd to a directory where you keep emacs lisp files, or create a new
+     directory (for example, `c:\emacs\') to hold the distribution.
+     This directory will be referred to below as "the ESS distribution
+     directory".  It will contain, at the end, either the tar file
+     `ess-5.1.22.tar.gz' or the zip file `ess-5.1.22.zip', and a
+     directory for the ESS source, which will be termed "the ESS-5.1.22
+     source directory".
+
+  2. Retrieve the compressed tar file `ess-5.1.22.tar.gz' or the zipped
+     file `ess-5.1.22.zip' from one of the FTP or WWW archive sites via
+     FTP (or HTTP).  Be aware that http browsers on Windows frequently
+     change the "." and "-" characters in filenames to other
+     punctuation.  Please change the names back to their original form.
+
+  3. Copy `ess-5.1.22.tar.gz' to the location where you want the
+     ess-5.1.22 directory, for example to `c:\emacs\ess-5.1.22.tar.gz',
+     and cd there.  For example,
+
+          cd c:\emacs
+
+     Extract the files from the distribution, which will unpack into a
+     subdirectory, `ess-5.1.22'.
+          gunzip ess-5.1.22.tar.gz
+          tar xvf ess-5.1.22.tar
+          (or: `gunzip < ess-5.1.22.tar.gz | tar xvf -' ).
+          (or: from the zip file: `unzip ess-5.1.22.zip')
+
+     The `tar' command will extract files into the current directory.
+
+     Do not create `ess-5.1.22' yourself, or you will get an extra level
+     of depth to your directory structure.
+
+  4. Windows users will usually be able to use the `lisp/ess-site.el'
+     as distributed.  Only rarely will changes be needed.
+
+  5. Windows users will need to make sure that the directories for the
+     software they will be using is in the PATH environment variable.
+     On Windows 9x, add lines similar to the following to your
+     `c:\autoexec.bat' file:
+          path=%PATH%;c:\progra~1\spls2000\cmd
+     On Windows NT/2000, add the directories to the PATH using the
+     MyComputer menu.  Note that the directory containing the program is
+     added to the PATH, not the program itself.  One such line is needed
+     for each software program.  Be sure to use the abbreviation
+     `progra~1' and not the long version with embedded blanks.  Use
+     backslashes "\".
+
+  6. Add the line
+          (load "/PATH/ess-site")
+     to your .emacs (or _emacs) file (or default.el or site-init.el, for
+     a site-wide installation).  Replace `/PATH' above with the value
+     of ess-lisp-directory as defined in `ess-site.el'.  Use
+     forwardslashes `/'.  (GNU Emacs uses the filename `%HOME%/.emacs'
+     and XEmacs uses the filename `%HOME%/.xemacs/init.el' for the
+     initialization file.)
+
+  7. To edit statistical programs, load the files with the requisite
+     extensions  (".sas" for SAS, ".S" or "s" or "q" or "Q" for S-PLUS,
+     ".r" or ".R" for R, and ".lsp"   for XLispStat).
+
+  8. To run statistical processes under emacs:
+
+     Run S-PLUS 6.x or 2000 with:
+          M-x S+6
+          (or `M-x S').
+     You will then be asked for a pathname ("S starting data
+     directory?"), from which to start the process.  The prompt will
+     propose your current directory as the default.  Similarly for
+     S-PLUS 6.x.  Send lines or regions from the emacs buffer
+     containing your S program (for example, `myfile.s') to the S-Plus
+     Commands Window with the `C-c C-n' or `C-c C-r' keys.
+
+     Run S-PLUS 6.x or 2000 inside an emacs buffer
+          M-x Sqpe+6
+     You will then be asked for a pathname ("S starting data
+     directory?"), from which to start the process.  The prompt will
+     propose your current directory as the default.  Similarly for
+     S-PLUS 6.x.  Send lines or regions from the emacs buffer
+     containing your S program (for example, `myfile.s') to the *S+6*
+     buffer with the `C-c C-n' or `C-c C-r' keys.  You do not have
+     access to interactive graphics in this mode.  You get Unix-like
+     behavior, in particular the entire transcript is available for
+     emacs-style search commands.
+
+     If you wish to run R, you can start it with:
+          M-x R
+
+     XLispStat can not currently be run with
+          M-x XLS
+     Hopefully, this will change.  However, you can still edit with
+     emacs, and cut and paste the results into the XLispStat *Listener*
+     Window under Microsoft Windows.
+
+     SAS for Windows uses the batch access with function keys that is
+     described in `doc/README.SAS'.  The user can also edit SAS files
+     in an `ESS[SAS]' buffer and than manually copy and paste them into
+     an Editor window in the SAS Display Manager.
+
+     For Windows, inferior SAS in an `iESS[SAS]' buffer does not work
+     on the local machine.  It does work over a network connection to
+     SAS running on a remote Unix computer.
+
+     Reason:  we use ddeclient to interface with programs and SAS
+     doesn't provide the corresponding ddeserver capability.
+
+  9. (OPTIONAL) If you are running Sqpe or R, you might consider
+     installing the database files.  From within emacs, `C-x d' to the
+     directory containing ESS.  Now:
+          M-x Sqpe+6
+     (get running.  once you have reached the SPLUS prompt, do:)
+          M-x ess-create-object-name-db
+     (this will create the file `ess-s+6-namedb.el'; if it isn't in the
+     ESS directory, move it there).
+
+     Then, completions will be autoloaded and will not be regenerated
+     for every session.
+
+     For R, do the same, using
+          M-x R
+     and then `M-x ess-create-object-name-db' creating
+     `ess-r-namedb.el'; if it isn't in the ESS directory, move it
+     there).
+
+ 10. That's it!
+
+
+
+File: ess.info,  Node: Requirements,  Prev: Microsoft Windows installation,  Up: Installation
+
+Requirements
+============
+
+   ESS version 5.1.n (n >= 2) works best with either GNU Emacs version
+20.3 or higher, or XEmacs version 20.0 or higher.  It has been most
+thoroughly tested with:
+
+   * S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6
+
+   * R versions >=0.49
+
+   * S4
+
+   * SAS 6.x, 7.x, 8.x
+
+   * BUGS 0.5, 0.603
+
+   * Stata >=6.0
+
+   * XLispStat versions >=3.50
+
+   on the following platforms
+
+   * Solaris/SunOS (all)
+
+   * SGI (all)
+
+   * Linux (S4, S-PLUS 5.x, R, XLispStat, Stata 6.0)
+
+   * Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
+
+   * Apple Mac OS (SAS for OS 9 and X11 R for OS X)
+
+   with the following versions of emacs
+
+   * GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1
+
+   * XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
+
+   * XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34(1)
+
+   ---------- Footnotes ----------
+
+   (1) Note  that you must have `custom' support.  It is available at
+The Custom Library (http://www.dina.kvl.dk/~abraham/custom/).   These
+releases of emacs are no longer supported, so an upgrade is
+recommended if you plan to use ESS.  If you have GNU Emacs 19.29,  see
+*Note Unix installation::.
+
+
+File: ess.info,  Node: System dependent,  Prev: Installation,  Up: Installation
+
+Other variables you may need to change
+======================================
+
+   If you run the S program (from the shell) with a command other than
+`Splus' you will need to set the variable `inferior-ess-program' to the
+name of the appropriate program by including a line such as
+     (setq inferior-ess-program "S+")
+
+in your `.emacs' file
+
+(substituting `S+' for the name of your S program.)
+
+   If you need to call this program with any arguments, the variable you
+need to set is dependent on the value of `inferior-ess-program'; for
+example if it is `"Splus"', set the variable `inferior-Splus-args' to a
+string of arguments to the `Splus' program.  If `inferior-ess-program'
+has some other value, substitute the `Splus' part of
+`inferior-Splus-args' with the appropriate program name.  There aren't
+many instances where you need to call S with arguments, however: in
+particular do not call the S program with the `-e' command-line editor
+argument since ESS provides this feature for you.
+
+   If you are running Splus (the enhanced version of S from Statsci) you
+may also need to set the variable `S-plus' to `t'.  If your value of
+`inferior-ess-program' is `"S+"' or `Splus' this will not be necessary,
+however; `S-plus' defaults to `t' in this case.
+
+   Finally, if you use a non-standard prompt within S, you will need to
+set the variable `inferior-ess-prompt' to a regular expression which
+will match both the primary prompt (`"> "' by default) and the
+continuing prompt (default of `"+ "'.) The default value of this
+variable matches S's default prompts.  For example, if you use (`"$ "')
+as your primary prompt (you have `options(prompt="$ ")' in your
+`.First' function), add the following line to your `.emacs':
+     (setq inferior-ess-prompt "^\\(\\+\\|[^\\$]*\\$\\) *")
+
+You will also need to set the variable `inferior-ess-primary-prompt' to
+a regular expression which matches the primary prompt only.  Do not
+anchor the regexp to the beginning of the line with `^'.  Once again,
+the default value matches S's default prompt; in the example above the
+appropriate value would be `"[^\\$]*\\$ *"'.
+
+   Once these variables are set appropriately, ESS should work on any
+system.
+
+
+File: ess.info,  Node: Starting up,  Next: Help for the S family,  Prev: Installation,  Up: Top
 
 Starting the ESS process
 ************************
@@ -671,7 +1033,7 @@ commands.
 * Customizing startup::         Changing the startup actions
 
 
-File: ess.info,  Node: Multiple ESS processes,  Next: ESS processes on Remote Computers,  Prev: Starting Up,  Up: Starting Up
+File: ess.info,  Node: Multiple ESS processes,  Next: ESS processes on Remote Computers,  Prev: Starting up,  Up: Starting up
 
 Running more than one ESS process
 =================================
@@ -697,7 +1059,7 @@ obtain this behavior, set the variable `ess-plain-first-buffername' to
 `t'.  See `ess-site' for how to set this for all users.
 
 
-File: ess.info,  Node: ESS processes on Remote Computers,  Next: Customizing startup,  Prev: Multiple ESS processes,  Up: Starting Up
+File: ess.info,  Node: ESS processes on Remote Computers,  Next: Customizing startup,  Prev: Multiple ESS processes,  Up: Starting up
 
 ESS processes on Remote Computers
 =================================
@@ -810,7 +1172,7 @@ function `ess-elsewhere' is not as stable.
      your PC with dired and display it with ghostscript.
 
 
-File: ess.info,  Node: Customizing startup,  Prev: ESS processes on Remote Computers,  Up: Starting Up
+File: ess.info,  Node: Customizing startup,  Prev: ESS processes on Remote Computers,  Up: Starting up
 
 Changing the startup actions
 ============================
@@ -850,323 +1212,47 @@ not pass the `-e' option to `Splus', since ESS provides its own command
 history mechanism.
 
 
-File: ess.info,  Node: Entering commands,  Next: Editing,  Prev: Starting Up,  Up: Top
+File: ess.info,  Node: Help for the S family,  Next: Help for SAS,  Prev: Starting up,  Up: Top
 
-Interacting with the ESS process
-********************************
-
-   The primary function of the ESS package is to provide an easy-to-use
-front end to the S interpreter.  This is achieved by running the S
-process from within an Emacs buffer, so that the Emacs editing commands
-are available to correct mistakes in commands, etc.  The features of
-Inferior S mode are similar to those provided by the standard Emacs
-shell mode (*note Shell Mode: (emacs)Shell Mode.).  Command-line
-completion of S objects and a number of `hot keys' for commonly-used S
-commands are also provided for ease of typing.
+Help for the S family
+*********************
 
 * Menu:
 
-* Command-line editing::        Entering commands and fixing mistakes
-* Completion::                  Completion of object names
-* Completion details::          Advanced completion concepts
-* Transcript::                  Manipulating the transcript
-* Command History::             Command History
-* History expansion::           References to historical commands
-* Hot keys::                    Hot keys for common commands
-* Statistical Process running in ESS?::
-* Other::                       Other commands provided by inferior-ESS
+* ESS(S)--Editing files::
+* iESS(S)--Inferior ESS processes::
+* Handling and Reusing Transcripts::
+* ESS-help--assistance with viewing help::
+* Philosophies for using ESS(S)::
+* Scenarios for use (possibilities--based on actual usage)::
+* Customization Examples and Solutions to Problems::
 
 
-File: ess.info,  Node: Command-line editing,  Next: Completion,  Prev: Entering commands,  Up: Entering commands
+File: ess.info,  Node: ESS(S)--Editing files,  Next: iESS(S)--Inferior ESS processes,  Up: Help for the S family
 
-Entering commands and fixing mistakes
-=====================================
+ESS[S]-Editing files
+====================
 
-   Sending a command to the ESS process is as simple as typing it in
-and pressing the <RETURN> key:
+   ESS[S] is the mode for editing S language files.  This mode handles:
 
-   * `RET' (`inferior-ess-send-input')
-     Send the command on the current line to the ESS process.
+   -  proper indenting, generated by both [Tab] and [Return].
 
-   If you make a typing error before pressing `RET' all the usual Emacs
-editing commands are available to correct it (*note Basic:
-(emacs)Basic.).  Once the command has been corrected you can press
-<RETURN> (even if the cursor is not at the end of the line) to send the
-corrected command to the ESS process.
+   -  color and font choices based on syntax.
 
-   ESS provides some other commands which are useful for fixing
-mistakes:
+   -  ability to send the contents of an entire buffer, a highlighted
+     region, an S function, or a single line to an inferior S process,
+     if   one is currently running.
 
-   * `C-c C-w' (`backward-kill-word')
-     Deletes the previous word (such as an object name) on the command
-     line.
+   -  ability to switch between processes which would be the target of
+     the   buffer (for the above).
 
-   * `C-c C-u' (`comint-kill-input')
-     Deletes everything from the prompt to point.  Use this to abandon a
-     command you have not yet sent to the ESS process.
+   -  The ability to request help from an S process for variables and
+     functions, and to have the results sent into a separate buffer.
 
-   * `C-c C-a' (`comint-bol')
-     Move to the beginning of the line, and then skip forwards past the
-     prompt, if any.
+   -  completion of object names and file names.
 
-   *Note Shell Mode: (emacs)Shell Mode, for other commands relevant to
-entering input.
-
-
-File: ess.info,  Node: Completion,  Next: Completion details,  Prev: Command-line editing,  Up: Entering commands
-
-Completion of object names
-==========================
-
-   In the process buffer, the <TAB> key is for completion, similar to
-that provided by Shell Mode for filenames.  In Inferior S mode,
-pressing the <TAB> key when the cursor is following the first few
-characters of an object name _completes_ the object name; if the cursor
-is following a file name `TAB' completes the file name.
-
-   * `TAB' (`comint-dynamic-complete')
-     Complete the S object name or filename before point.
-
-   When the cursor is just after a partially-completed object name,
-pressing <TAB> provides completion in a similar fashion to `tcsh'
-except that completion is performed over all known S object names
-instead of file names.  ESS maintains a list of all objects known to S
-at any given time, which basically consists of all objects (functions
-and datasets) in every attached directory listed by the `search()'
-command along with the component objects of attached data frames (if
-your version of S supports them).
-
-   For example, consider the three functions (available in Splus version
-3.0) called `binomplot()', `binom.test()' and `binomial()'.  Typing
-`bin TAB' after the S prompt will insert the characters `om',
-completing the longest prefix (`binom') which distinguishes these three
-commands.  Pressing `TAB' once more provides a list of the three
-commands which have this prefix, allowing you to add more characters
-(say, `.') which specify the function you desire.  After entering more
-characters pressing `TAB' yet again will complete the object name up to
-uniqueness, etc.  If you just wish to see what completions exist without
-adding any extra characters, type `M-?'.
-
-   * `M-?' (`ess-list-object-name-completions')
-     List all possible completions of the object name at point.
-
-   ESS also provides completion over the components of named lists
-accessed using the `$' notation, to any level of nested lists.  This
-feature is particularly useful for checking what components of a list
-object exist while partway through entering a command: simply type the
-object name and `$' and press `TAB' to see the names of existing list
-components for that object.
-
-   Completion is also provided over file names, which is particularly
-useful when using S functions such as `get()' or `scan()' which require
-fully expanded file names.  Whenever the cursor is within an S string,
-pressing `TAB' completes the file name before point, and also expands
-any `~' or environment variable references.
-
-   If the cursor is not in a string and does not follow a (partial)
-object name, the <TAB> key has a third use: it expands history
-references.  *Note History expansion::.
-
-
-File: ess.info,  Node: Completion details,  Next: Transcript,  Prev: Completion,  Up: Entering commands
-
-Completion details
-==================
-
-   ESS automatically keeps track of any objects added or deleted to the
-system (such as new objects created, or directories added to the search
-list) to make completion as accurate as possible.  Whenever ESS notices
-that search list has changed (1)  when you attach a directory or data
-frame, the objects associated with it immediately become available for a
-completion; when it is detached completion is no longer available on
-those objects.
-
-   To maintain a list of accessible objects for completion, ESS needs to
-determine which objects are contained in each directory or data frame on
-the search list.  This is done at the start of each S session, by
-running the `objects()' command on every element of the search list.
-On some systems, however, this can be rather slow; it's doubly
-frustrating when you consider that most of the directories on the search
-list are the standard S libraries, which never change anyway!  When ESS
-was installed, a database of the standard object names should have been
-created which should speed up this process at the start of an S
-session; if it has not been created you will get a warning like
-`S-namedb.el does not exist'.  *Note Installation::, for information on
-how to create this database.
-
-   Efficiency in completion is gained by maintaining a cache of objects
-currently known to S; when a new object becomes available or is deleted,
-only one component of the cache corresponding to the associated
-directory needs to be refreshed.  If ESS ever becomes confused about
-what objects are available for completion (such as when if refuses to
-complete an object you *know* is there), the command `M-x ess-resynch'
-forces the _entire_ cache to be refreshed, which should fix the problem.
-
-   ---------- Footnotes ----------
-
-   (1) The variable `ess-change-sp-regex' is a regular expression
-matching commands which change the search list.  You will need to
-modify this variable if you have defined custom commands (other than
-`attach', `detach', `collection' or `library') which modify the search
-list.
-
-
-File: ess.info,  Node: Transcript,  Next: Command History,  Prev: Completion details,  Up: Entering commands
-
-Manipulating the transcript
-===========================
-
-   Most of the time, the cursor spends most of its time at the bottom of
-the ESS process buffer, entering commands.  However all the input and
-output from the current (and previous) ESS sessions is stored in the
-process buffer (we call this the transcript) and often we want to move
-back up through the buffer, to look at the output from previous
-commands for example.
-
-   Within the process buffer, a paragraph is defined as the prompt, the
-command after the prompt, and the output from the command.  Thus `M-{'
-and `M-}' move you backwards and forwards, respectively, through
-commands in the transcript.  A particularly useful command is `M-h'
-(`mark-paragraph') which will allow you to mark a command and its
-entire output (for deletion, perhaps).  For more information about
-paragraph commands, *note Paragraphs: (emacs)Paragraphs..
-
-   If an ESS process finishes and you restart it in the same process
-buffer, the output from the new ESS process appears after the output
-from the first ESS process separated by a form-feed (`^L') character.
-Thus pages in the ESS process buffer correspond to ESS sessions.  Thus,
-for example, you may use `C-x [' and `C-x ]' to move backward and
-forwards through ESS sessions in a single ESS process buffer.  For more
-information about page commands, *note Pages: (emacs)Pages..
-
-* Menu:
-
-* Last command::                Manipulating the output from the last command
-* Process buffer motion::       Viewing more historic commands
-* Transcript resubmit::         Re-submitting commands from the transcript
-* Saving transcripts::          Keeping a record of your S session
-
-
-File: ess.info,  Node: Last command,  Next: Process buffer motion,  Prev: Transcript,  Up: Transcript
-
-Manipulating the output from the last command
----------------------------------------------
-
-   Viewing the output of the command you have just entered is a common
-occurrence and ESS provides a number of facilities for doing this.
-Whenever a command produces a longish output, it is possible that the
-window will scroll, leaving the next prompt near the middle of the
-window.  The first part of the command output may have scrolled off the
-top of the window, even though the entire output would fit in the window
-if the prompt were near the bottom of the window.  If this happens, you
-can use the command
-
-   * `C-c C-e' (`comint-show-maximum-output')
-     Move to the end of the buffer, and place cursor on bottom line of
-     window.
-
-to make more of the last output visible.  (To make this happen
-automatically for all inputs, set the variable
-`comint-scroll-to-bottom-on-input' to `t'; for information on this and
-other options for handling process input and output *note Shell Mode
-Options: (emacs)Shell Options..)
-
-   If the first part of the output is still obscured, use
-   * `C-c C-r' (`comint-show-output')
-     Moves cursor to the previous command line and and places it at the
-     top of the window.
-
-to view it.  Finally, if you want to discard the last command output
-altogether, use
-
-   * `C-c C-o' (`comint-kill-output')
-     Deletes everything from the last command to the current prompt.
-
-to delete it.  Use this command judiciously to keep your transcript to a
-more manageable size.
-
-
-File: ess.info,  Node: Process buffer motion,  Next: Transcript resubmit,  Prev: Last command,  Up: Transcript
-
-Viewing more historic commands
-------------------------------
-
-   If you want to view the output from more historic commands than the
-previous command, commands are also provided to move backwards and
-forwards through previously entered commands in the process buffer:
-
-   * `C-c C-p' (`comint-previous-input')
-     Moves point to the preceding command in the process buffer.
-
-   * `C-c C-n' (`comint-next-input')
-     Moves point to the next command in the process buffer.
-
-Note that these two commands are analogous to `C-p' and `C-n' but apply
-to command lines rather than text lines.  And just like `C-p' and
-`C-n', passing a prefix argument to these commands means to move to the
-ARG'th next (or previous) command.  (These commands are also discussed
-in *Note Shell History Copying: (emacs)Shell History Copying.)
-
-   There are also two similar commands (not bound to any keys by
-default) which move to preceding or succeeding commands, but which
-first prompt for a regular expression (*note Syntax of Regular
-Expression: (emacs)Regexps.), and then moves to the next (previous)
-command matching the pattern.
-
- - Command: comint-backward-matching-input regexp arg
- - Command: comint-forward-matching-input regexp arg
-     Search backward (forward) through the transcript buffer for the
-     ARG'th previous (next) command matching REGEXP.  ARG is the prefix
-     argument; REGEXP is prompted for in the minibuffer.
-
-
-File: ess.info,  Node: Transcript resubmit,  Next: Saving transcripts,  Prev: Process buffer motion,  Up: Transcript
-
-Re-submitting commands from the transcript
-------------------------------------------
-
-   When moving through the transcript, you may wish to re-execute some
-of the commands you find there.  ESS provides three commands to do this;
-these commands may be used whenever the cursor is within a command line
-in the transcript (if the cursor is within some command _output_, an
-error is signaled).  Note all three commands involve the <RETURN> key.
-
-   * `RET' (`inferior-ess-send-input')
-     Copy the command under the cursor to the current command line, and
-     execute it.
-
-   * `C-c RET' (`comint-copy-old-input')
-     Copy the command under the cursor to the current command line, but
-     don't execute it.  Leaves the cursor on the command line so that
-     the copied command may be edited.
-
-   * `M-RET' (`ess-transcript-send-command-and-move')
-     Copy the command under the cursor to the current command line, and
-     execute it.  Moves the cursor to the following command.
-
-   When the cursor is not after the current prompt, the <RETURN> key
-has a slightly different behavior than usual.  Pressing `RET' on any
-line containing a command that you entered (i.e. a line beginning with a
-prompt) sends that command to the ESS process once again.  If you wish
-to edit the command before executing it, use `C-c RET' instead; it
-copies the command to the current prompt but does not execute it,
-allowing you to edit it before submitting it.
-
-   These two commands leave the cursor at the new command line, allowing
-you to continue with interactive use of S.  If you wish to resubmit a
-series of commands from the transcript, consider using `M-RET' instead,
-which leaves the cursor at the command line following the one you
-re-submitted.  Thus by using `M-RET' repeatedly, you can re-submit a
-whole series of commands.
-
-   These commands work even if if the current line is a continuation
-line (i.e. the prompt is `+' instead of `>') -- in this case all the
-lines that form the multi-line command are concatenated together and
-the resulting command is sent to the ESS process (currently this is the
-only way to resubmit a multi-line command to the ESS process in one
-go).  If the current line does not begin with a prompt, an error is
-signaled.  This feature, coupled with the command-based motion commands
-described above, could be used as a primitive history mechanism.  ESS
-provides a more sophisticated mechanism, however, which is described in
-*Note Command History::.
+   ESS[S] mode should be automatically turned on when loading a file
+with the suffices found in ess-site (*.R, *.S, *.s, etc).  However, one
+will have to start up an inferior process to take advantage of the
+interactive features.
 
