@@ -1,3 +1,14 @@
+2004-12-03  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-els.el (ess-add-ess-process): Check first that the current
+	buffer has a process.
+	(ess-select-alist-dialect): Add colon to prompt string.
+
+	* ess-inf.el (inferior-ess-mode): Set inferior-ess-mode here,
+	rather than within ess-multi.  (ess-multi is not run when
+	ess-remote is used, and so prompt was not set for remote buffers
+	running ESS processes.)
+
 2004-11-24  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (S-editing-alist): change comment-start from "#" to "##"
