@@ -43,48 +43,26 @@
 ;;     Copyright (C) 1996, John M. Chambers.
 
 (defvar S4-customize-alist
-  '((ess-local-customize-alist     . 'S4-customize-alist)
-    (ess-language                  . "S")
-    (ess-dialect                   . "S4")
-    (ess-suffix                    . "S")
-    (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . S-syntax-table)
-    (ess-change-sp-regexp	   . ess-S-change-sp-regexp)
-    (ess-help-sec-regex            . "^[A-Z. ---]+:$")
-    (ess-help-sec-keys-alist       . S4-help-sec-keys-alist)
-    (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
-    (ess-loop-timeout              . ess-S-loop-timeout)
-    (ess-dump-filename-template    . (ess-replace-regexp-in-string
-				      "S$" ess-suffix ; in the one from custom:
-				      ess-dump-filename-template-proto))
-    (ess-object-name-db-file       . "ess-s4-namedb.el")
-    (ess-dumped-missing-re
-     . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
-    (ess-syntax-error-re
-     . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
-    (ess-retr-lastvalue-command
-     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-    (inferior-ess-program          . inferior-S4-program-name)
-    (inferior-ess-objects-command  . ".SmodeObs(%d, pattern=\"%s\")\n")
-					; ^ was "objects(%d)")
-    (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
-    (inferior-ess-help-command     . "help(\"%s\")\n")
-    (inferior-ess-exit-command     . "q()\n")
-    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
-    (inferior-ess-load-command     . ".SmodeLoad(\"%s\")\n")
-    (inferior-ess-dump-command     . ".SmodeDump(\"%s\", \"%s\")\n")
-    (inferior-ess-search-list-command . ".SmodePaths()\n")
-    (inferior-ess-start-file       . nil) ;"~/.ess-S3")
-    (inferior-ess-start-args       . "")
-    (ess-STERM  . "iESS")
-    (ess-editor . S-editor)
-    (ess-pager  . S-pager)
-    (inferior-ess-language-start . (eval inferior-S-language-start))
-    )
+  (append
+   '((ess-local-customize-alist     	. 'S4-customize-alist)
+     (ess-dialect                   	. "S4")
+     (ess-loop-timeout	           	. ess-S-loop-timeout);fixme: dialect spec.
+     (ess-change-sp-regexp	   	. ess-S-change-sp-regexp)
+     (ess-help-sec-keys-alist       	. ess-help-S3-sec-keys-alist)
+     (ess-object-name-db-file       	. "ess-s4-namedb.el")
+     (inferior-ess-program          	. inferior-S4-program-name)
+     (inferior-ess-objects-command  	. ".SmodeObs(%d, pattern=\"%s\")\n")
+     ;;(inferior-ess-objects-pattern	. ".*") ; for new s4 stuff
+     (inferior-ess-help-command     	. "help(\"%s\")\n")
+     (inferior-ess-search-list-command	. ".SmodePaths()\n")
+     (inferior-ess-load-command     	. ".SmodeLoad(\"%s\")\n")
+     (inferior-ess-dump-command     	. ".SmodeDump(\"%s\", \"%s\")\n")
+
+     (inferior-ess-start-file       	. nil) ;"~/.ess-S3")
+     (ess-STERM  . "iESS")
+     )
+   S+common-cust-alist); use S+ ones here; partly overwritten above!!
+
   "Variables to customize for S4.")
 
 ;; For loading up the S code required for the above.

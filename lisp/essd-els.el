@@ -1,7 +1,7 @@
 ;;; essd-els.el --- S-PLUS 3.x at another location customization
 
 ;; Copyright (C) 1998 Richard M. Heiberger
-;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1999--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
@@ -39,41 +39,25 @@
 
 ; Code:
 
-(defvar S+elsewhere-dialect-name "S+3"
-  "Name of 'dialect' for S-PLUS 3.x at another location.")
+(defvar S+elsewhere-dialect-name "S+6"
+  "Name of 'dialect' for S-PLUS at another location.")
 					;easily changeable in a user's .emacs
 
 (defvar S+elsewhere-customize-alist
-  '((ess-local-customize-alist     . 'S+elsewhere-customize-alist)
-    (ess-language                  . "S")
-    (ess-dialect                   . S+elsewhere-dialect-name)
-    (ess-suffix                    . "S")
-    (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . S-syntax-table)
-    (ess-change-sp-regexp          . ess-S+-change-sp-regexp)
-    (ess-help-sec-regex            . ess-help-S+-sec-regex)
-    (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-    (ess-loop-timeout              . ess-S-loop-timeout)
-    (ess-object-name-db-file       . "ess-spelsewhere-namedb.el" )
-    (ess-retr-lastvalue-command
-     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-    (inferior-ess-program          . inferior-S-elsewhere-program-name)
-    (inferior-ess-objects-command  . "objects(%d)\n")
-    (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
-    (inferior-ess-exit-command     . "q()\n")
-    (inferior-ess-primary-prompt   . "[/a-zA-Z0-9() ]*[>$%] ?")
-    (inferior-ess-secondary-prompt . "[+>] ?")
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
-    (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
-    (inferior-ess-start-args       . "-i")
-    (ess-STERM  . "iESS")
-    (ess-editor . S-editor)
-    (ess-pager  . S-pager)
-    (inferior-ess-language-start . (eval inferior-S-language-start))
-    )
- "Variables to customize for S+elsewhere")
+  (append
+   '((ess-local-customize-alist		. 'S+elsewhere-customize-alist)
+     (ess-dialect			. S+elsewhere-dialect-name)
+     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
+     (ess-object-name-db-file		. "ess-spelsewhere-namedb.el" )
+     (inferior-ess-program		. inferior-S-elsewhere-program-name)
+     (inferior-ess-help-command		. "help(\"%s\",pager=\"cat\",window=F)\n")
+
+     (inferior-ess-start-file		. nil) ;"~/.ess-S+3")
+     (inferior-ess-start-args		. "-i")
+     (ess-STERM	 . "iESS")
+     )
+   S+common-cust-alist)
+  "Variables to customize for S+elsewhere")
 
 
 (defun S+elsewhere (&optional proc-name)
@@ -213,10 +197,10 @@ C-n to send lines over.  With SAS, use C-c i
     (if (equal ess-language "S")
 	(if inferior-ess-language-start
 	    (progn
+	      ;; FIXME hack (not in line with using ess-customize-alist)
 	      (setq ess-editor nil)
 	      (setq ess-pager nil)
-	      (setq inferior-ess-language-start
-		    (eval inferior-S-language-start))
+	      (setq inferior-ess-language-start (eval inferior-S-language-start))
 	      (ess-eval-linewise inferior-ess-language-start))))
     (if (equal ess-language "SAS")
 	(progn (font-lock-mode 0)

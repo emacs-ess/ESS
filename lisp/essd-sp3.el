@@ -41,40 +41,20 @@
   "Name of 'dialect' for S-PLUS 3.x.");easily changeable in a user's .emacs
 
 (defvar S+3-customize-alist
-  '((ess-local-customize-alist     . 'S+3-customize-alist)
-    (ess-language                  . "S")
-    (ess-dialect                   . S+3-dialect-name)
-    (ess-suffix                    . "S")
-    (ess-loop-timeout              . ess-S-loop-timeout)
-    (ess-dump-filename-template    . (ess-replace-regexp-in-string
-				      "S$" ess-suffix ; in the one from custom:
-				      ess-dump-filename-template-proto))
-    (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . S-syntax-table)
-    (ess-change-sp-regexp	   . ess-S+-change-sp-regexp)
-    (ess-help-sec-regex            . ess-help-S+-sec-regex)
-    (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-    (ess-object-name-db-file       . "ess-s+3-namedb.el" )
-    (ess-retr-lastvalue-command
-     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-    (inferior-ess-program          . inferior-S+3-program-name)
-    (inferior-ess-objects-command  . inferior-Splus-objects-command)
-    (inferior-ess-search-list-command   . "search()\n")
-    (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
-    (inferior-ess-exit-command     . "q()\n")
-    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
-    (inferior-ess-start-file       . nil) ;"~/.ess-S+3")
-    (inferior-ess-start-args       . "")
-    (ess-STERM  . "iESS")
-    (ess-editor . S-editor)
-    (ess-pager  . S-pager)
-    (inferior-ess-language-start . (eval inferior-S-language-start))
-    )
- "Variables to customize for S+3.")
+  (append
+   '((ess-local-customize-alist     	. 'S+3-customize-alist)
+     (ess-dialect                   	. S+3-dialect-name)
+     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
+     (ess-object-name-db-file       	. "ess-s+3-namedb.el" )
+     (inferior-ess-program          	. inferior-S+3-program-name)
+     (inferior-ess-help-command     	. "help(\"%s\",pager=\"cat\",window=F)\n")
+     (inferior-ess-search-list-command  . "search()\n")
+     (inferior-ess-start-file       	. nil) ;"~/.ess-S+3")
+     (ess-STERM  . "iESS")
+     )
+   S+common-cust-alist)
+
+  "Variables to customize for S+3.")
 
 
 (defun S+3 (&optional proc-name)

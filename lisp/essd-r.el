@@ -1,6 +1,6 @@
 ;;; essd-r.el --- R customization
 
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: A.J. Rossini
@@ -49,44 +49,39 @@
 ;;; Code:
 
 (defvar R-customize-alist
-  '((ess-local-customize-alist     . 'R-customize-alist)
-    (ess-language                  . "S")
-    (ess-dialect                   . "R")
-    (ess-suffix                    . "R")
-    (ess-dump-filename-template    . (ess-replace-regexp-in-string
-				      "S$" ess-suffix ; in the one from custom:
-				      ess-dump-filename-template-proto))
-    (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . R-syntax-table)
-    (ess-change-sp-regexp	   . ess-R-change-sp-regexp)
-    (ess-help-sec-regex		   . ess-help-R-sec-regex)
-    (ess-help-sec-keys-alist       . R-help-sec-keys-alist)
-    (ess-loop-timeout              . ess-S-loop-timeout)
-    (ess-object-name-db-file       . "ess-r-namedb.el" )
-    (ess-retr-lastvalue-command
-     . "assign(\".Last.value\", .ess.lvsave, envir=NULL)\n") ; package:base
-;;    (ess-retr-lastvalue-command
-;;     . ".Last.value <- get(\".ess.lvsave\",inherits=TRUE)\n") ; envir=1
-    (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,inherits=TRUE)\n") ;envir=1
-    (ess-imenu-mode-function       . 'ess-imenu-R)
-    (inferior-ess-program          . inferior-R-program-name)
-    (inferior-ess-objects-command  . inferior-R-objects-command)
-    (inferior-ess-search-list-command   . "search()\n")
-    (inferior-ess-help-command     . "help(\"%s\", htmlhelp=FALSE)\n")
-    (inferior-ess-exit-command     . "q()")
-    (inferior-ess-exit-prompt      . "Save workspace image? [y/n/c]: ")
-    (inferior-ess-primary-prompt   . "\\([A-Z][][A-Za-z0-9.]*\\)*> ")
-    (inferior-ess-secondary-prompt . "+ ?")
-    ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
-    (inferior-ess-start-file       . nil)            ;; "~/.ess-R"
-    (inferior-ess-start-args       . "")
-    (ess-STERM  . "iESS")
-    (ess-editor . R-editor)
-    (ess-pager  . R-pager)
-    (inferior-ess-language-start . (eval inferior-S-language-start))
-    )
+  (append
+   '((ess-local-customize-alist		. 'R-customize-alist)
+     (ess-dialect			. "R")
+     (ess-suffix			. "R")
+     (ess-dump-filename-template	. (ess-replace-regexp-in-string
+					   "S$" ess-suffix ; in the one from custom:
+					   ess-dump-filename-template-proto))
+     (ess-mode-syntax-table		. R-syntax-table)
+     (ess-change-sp-regexp		. ess-R-change-sp-regexp)
+     (ess-help-sec-regex		. ess-help-R-sec-regex)
+     (ess-help-sec-keys-alist		. ess-help-R-sec-keys-alist)
+     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
+     (ess-need-delay			. ess-R-need-delay)
+     (ess-object-name-db-file		. "ess-r-namedb.el" )
+     (ess-retr-lastvalue-command	. "assign(\".Last.value\", .ess.lvsave, envir=NULL)\n") ; package:base
+     (ess-save-lastvalue-command	. "assign(\".ess.lvsave\",.Last.value,inherits=TRUE)\n") ;envir=1
+     (ess-imenu-mode-function		. 'ess-imenu-R)
+     (inferior-ess-program		. inferior-R-program-name)
+     (inferior-ess-objects-command	. inferior-R-objects-command)
+     (inferior-ess-search-list-command	. "search()\n")
+     (inferior-ess-help-command		. "help(\"%s\", htmlhelp=FALSE)\n")
+     (inferior-ess-exit-command		. "q()")
+     (inferior-ess-exit-prompt		. "Save workspace image? [y/n/c]: ")
+     (inferior-ess-primary-prompt	. "\\([A-Z][][A-Za-z0-9.]*\\)*> ")
+     (inferior-ess-secondary-prompt	. "+ ?")
+     ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
+     (inferior-ess-start-file		. nil) ;; "~/.ess-R"
+     (inferior-ess-start-args		. "")
+     (ess-STERM		. "iESS")
+     (ess-editor	. R-editor)
+     (ess-pager		. R-pager)
+     )
+   S-common-cust-alist)
   "Variables to customize for R")
 
 ;;; AJR: Need to condition on this...!

@@ -1,3 +1,17 @@
+2005-01-01  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-command): 3rd argument sleep; internally using
+	ess-need-delay; decreased sleep factors to (.05, .4, .05).
+
+	* ess-cust.el (ess-need-delay): and ess-R-*, ess-S+-*: instead of
+	ess-ms-slow.
+	(ess-editor): and (ess-pager): defvar instead of defcustom
+
+	* essl-s.el (S+common-cust-alist): and (S-common-cust-alist):
+	 new variables to store all common S language and S+ "customize-alist"s
+
+	* essd*.el (<dialect>-customize-alist): append the above variables
+
 2004-12-30  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-save-lastvalue-command): newly (defvar .) and

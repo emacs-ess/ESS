@@ -73,54 +73,21 @@
             ))))
 
 (defvar S+6-customize-alist
-  '((ess-local-customize-alist     . 'S+6-customize-alist)
-    (ess-language                  . "S")
-    (ess-dialect                   . S+6-dialect-name)
-    (ess-suffix                    . "S")
-    (ess-directory-function        . S+6-directory-function)
-    (ess-setup-directory-function  . S+6-setup-directory-function)
-    (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . S-syntax-table)
-    (ess-change-sp-regexp	   . ess-S+-change-sp-regexp)
-    (ess-help-sec-regex		   . ess-help-S+-sec-regex)
-    (ess-help-sec-keys-alist	   . S+-help-sec-keys-alist)
+  (append
+   '((ess-local-customize-alist		. 'S+6-customize-alist)
+     (ess-dialect			. S+6-dialect-name)
+     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
+     (ess-object-name-db-file		. "ess-sp6-namedb.el")
+     (inferior-ess-program		. inferior-S+6-program-name)
+     (inferior-ess-help-command	  . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
+     (inferior-ess-search-list-command	. "searchPaths()\n")
 
-    (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
-    (ess-loop-timeout              . ess-S-loop-timeout)
-    (ess-dump-filename-template    . (ess-replace-regexp-in-string
-				      "S$" ess-suffix ; in the one from custom:
-				      ess-dump-filename-template-proto))
-    (ess-object-name-db-file       . "ess-sp6-namedb.el")
-    (ess-dumped-missing-re
-     . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
-    (ess-syntax-error-re
-     . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
-    (ess-retr-lastvalue-command
-     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-    (inferior-ess-program          . inferior-S+6-program-name)
-    (inferior-ess-start-args       . inferior-Splus-args)
-    (inferior-ess-objects-command  . inferior-Splus-objects-command)
-    (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
-    (inferior-ess-help-command     . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
-    ;; "paths": get the "/" needed by  (ess-dir-modtime dir)  in ./ess-inf.el:
-    (inferior-ess-search-list-command . "search(\"paths\")\n")
-;; or better: evaluate these two on startup :
-;; assign(".ESS.apData", function(d) paste(d,".Data", sep="/"), frame=0)
-;; assign(".ESS.search", function(){s <- searchPaths(); .D <- sapply(s,function(d)is.dir(.ESS.apData(d))); s[.D] <- .ESS.apData(s[.D]); s}, frame=0)
-;; (inferior-ess-search-list-command . ".ESS.search()\n")
+     (ess-directory-function		. S+6-directory-function)
+     (ess-setup-directory-function	. S+6-setup-directory-function)
+     (ess-STERM	 . "iESS")
+     )
+   S+common-cust-alist)
 
-
-    (inferior-ess-exit-command     . "q()\n")
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
-    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
-    (ess-STERM  . "iESS")
-    (ess-editor . S-editor)
-    (ess-pager  . S-pager)
-    (inferior-ess-language-start . (eval inferior-S-language-start))
-    )
   "Variables to customize for S+6.")
 
 

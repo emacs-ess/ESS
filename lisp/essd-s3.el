@@ -1,7 +1,7 @@
 ;;; essd-s3.el ---  S 3 (AT&T version) customization
 
 ;; Copyright (C) 1997 A. J. Rossini
-;; Copyright (C) 1998--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1998--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
@@ -38,42 +38,23 @@
 ;;; Code:
 
 (defvar S3-customize-alist
-  '((ess-local-customize-alist     . 'S3-customize-alist)
-    (ess-language                  . "S")
-    (ess-dialect                   . "S3")
-    (ess-suffix                    . "S")
-    (ess-loop-timeout              . ess-S-loop-timeout)
-    (ess-dump-filename-template    . (ess-replace-regexp-in-string
-				      "S$" ess-suffix ; in the one from custom:
-				      ess-dump-filename-template-proto))
-    (ess-help-sec-regex            . "^[A-Z. ---]+:$")
-;;;    (ess-help-sec-regex            . ess-help-S+-sec-regex)
-    (ess-change-sp-regexp	   . ess-S-change-sp-regexp)
-    (ess-help-sec-keys-alist       . S3-help-sec-keys-alist)
-    (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table         . S-syntax-table)
-    (ess-object-name-db-file       . "ess-s3-namedb.el" )
-    (ess-retr-lastvalue-command
-     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
+  (append
+   '((ess-local-customize-alist    	. 'S3-customize-alist)
+     (ess-dialect                  	. "S3")
+     (ess-loop-timeout	           	. ess-S-loop-timeout);fixme: dialect spec.
+     (ess-change-sp-regexp	   	. ess-S-change-sp-regexp)
+     (ess-help-sec-keys-alist       	. ess-help-S3-sec-keys-alist)
+     (ess-object-name-db-file       	. "ess-s3-namedb.el" )
+     (inferior-ess-program          	. inferior-S3-program-name) ;        "S")
+     (inferior-ess-help-command     	. "help(\"%s\")\n")
+     (inferior-ess-search-list-command	. "search()\n")
+     (inferior-ess-objects-command  	. "objects(%d)\n")
+     (inferior-ess-start-file       	. nil) ;"~/.ess-S3")
+     (ess-STERM  . "iESS")
+     )
+   S+common-cust-alist); use S+ ones here; partly overwritten above!!
 
-    (inferior-ess-program          . inferior-S3-program-name) ;        "S")
-    (inferior-ess-help-command     . "help(\"%s\")\n")
-    (inferior-ess-exit-command     . "q()\n")
-    (inferior-ess-objects-command  . "objects(%d)\n")
-    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
-    (inferior-ess-start-file       . nil) ;"~/.ess-S3")
-    (inferior-ess-start-args       . "")
-    (ess-STERM  . "iESS")
-    (ess-editor . S-editor)
-    (ess-pager  . S-pager)
-    (inferior-ess-language-start . (eval inferior-S-language-start))
-    )
   "Variables to customize for S3")
-
 
 (defun S3 (&optional proc-name)
   "Call 'S 3.x', the version from AT&T."

@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1989-1997 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
 ;;	R.M. Heiberger, M. Maechler, and A.J. Rossini.
-;; Copyright (C) 1998-2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1998-2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
@@ -97,9 +97,54 @@
 	     ")")
   "S language expression for startup -- default for all S dialects.")
 
+(defconst S-common-cust-alist
+  '((ess-language                  . "S")
+    (inferior-ess-exit-command     . "q()\n")
+    (ess-mode-editing-alist        . S-editing-alist)
+    (inferior-ess-language-start   . (eval inferior-S-language-start))
+    ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help(?) :
+    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
+  )
+  "S-language common settings for all <dialect>-customize-alist s"
+)
+
+(defconst S+common-cust-alist
+  (append
+   '((ess-suffix                . "S")
+     (ess-mode-syntax-table     . S-syntax-table)
+     (ess-help-sec-regex	. ess-help-S+-sec-regex)
+     (ess-help-sec-keys-alist	. ess-help-S+sec-keys-alist)
+     (ess-change-sp-regexp	. ess-S+-change-sp-regexp)
+     (ess-need-delay		. ess-S+-need-delay)
+     (ess-function-template	. " <- \n#\nfunction()\n{\n\n}\n")
+     (ess-dump-filename-template . (ess-replace-regexp-in-string
+				    "S$" ess-suffix ; in the one from custom:
+				    ess-dump-filename-template-proto))
+     (ess-dumped-missing-re
+      . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
+     (ess-syntax-error-re
+      . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
+     (ess-retr-lastvalue-command
+      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
+     (ess-save-lastvalue-command
+      . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
+
+     (inferior-ess-start-args      . inferior-Splus-args)
+     (inferior-ess-objects-command . inferior-Splus-objects-command)
+
+     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
+     (inferior-ess-secondary-prompt . "+ ?")
+
+     (ess-editor . S-editor)
+     (ess-pager  . S-pager)
+     )
+   S-common-cust-alist)
+  "Common settings for all S+<*>-customize-alist s"
+)
+
 ;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in essl-s!).
 
-(defconst S+-help-sec-keys-alist
+(defconst ess-help-S+sec-keys-alist
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
     (?B . "BUGS:")
@@ -120,7 +165,7 @@
 ;;; regexp-search, and so specials should be quoted.
 
 ;; S ver.3 (NOT S-Plus)
-(defconst S3-help-sec-keys-alist
+(defconst ess-help-S3-sec-keys-alist
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
     (?B . "BUGS:")
@@ -136,7 +181,7 @@
   "Help section keys for S ver.3.")
 
 ;; S ver.4 (NOT S-Plus)
-(defconst S4-help-sec-keys-alist
+(defconst ess-help-S4-sec-keys-alist
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
     (?B . "BUGS:")
@@ -152,7 +197,7 @@
   "Help section keys for S4.")
 
 ;; R
-(defconst R-help-sec-keys-alist
+(defconst ess-help-R-sec-keys-alist
   '((?a . "\\s *Arguments:")
     (?d . "\\s *Description:")
     (?D . "\\s *Details:")
@@ -181,7 +226,7 @@
 when \\<ess-mode-map>\\[ess-insert-function-outline] is used.
 Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
 
-;; Use the user's own ~/S/emacs-fun.outline  is (s)he has one : ---
+;; Use the user's own ~/S/emacs-fun.outline  if (s)he has one : ---
 (let ((outline-file (concat (getenv "HOME") "/S/function-outline.S")))
   (if (file-exists-p outline-file)
       (setq ess-function-outline-file outline-file)))

@@ -50,44 +50,19 @@
   "Name of 'dialect' for S-PLUS 5.");easily changeable in a user's .emacs
 
 (defvar S+5-customize-alist
-  '((ess-local-customize-alist     . 'S+5-customize-alist)
-    (ess-language                  . "S")
-    (ess-dialect                   . S+5-dialect-name)
-    (ess-suffix                    . "S")
-    (ess-mode-editing-alist        . S-editing-alist)
-    (ess-mode-syntax-table	   . S-syntax-table)
-    (ess-change-sp-regexp	   . ess-S+-change-sp-regexp)
-    (ess-help-sec-regex		   . ess-help-S+-sec-regex)
-    (ess-help-sec-keys-alist	   . S+-help-sec-keys-alist)
-    (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
-    (ess-loop-timeout              . ess-S-loop-timeout)
-    (ess-dump-filename-template    . (ess-replace-regexp-in-string
-				      "S$" ess-suffix ; in the one from custom:
-				      ess-dump-filename-template-proto))
-    (ess-object-name-db-file       . "ess-sp5-namedb.el")
-    (ess-dumped-missing-re
-     . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
-    (ess-syntax-error-re
-     . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
-    (ess-retr-lastvalue-command
-     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-    (inferior-ess-program          . inferior-S+5-program-name)
-    (inferior-ess-objects-command  . inferior-Splus-objects-command)
-    (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
-    (inferior-ess-help-command     . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
-    ;; "paths": get the "/" needed by  (ess-dir-modtime dir)  in ./ess-inf.el:
-    (inferior-ess-search-list-command . "search(\"paths\")\n")
-    (inferior-ess-exit-command     . "q()\n")
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
-    (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt . "+ ?")
-    (ess-STERM  . "iESS")
-    (ess-editor . S-editor)
-    (ess-pager  . S-pager)
-    (inferior-ess-language-start . (eval inferior-S-language-start))
-    )
+  (append
+   '((ess-local-customize-alist		. 'S+5-customize-alist)
+     (ess-dialect			. S+5-dialect-name)
+     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
+     (ess-object-name-db-file		. "ess-sp5-namedb.el")
+     (inferior-ess-program		. inferior-S+5-program-name)
+     ;;(inferior-ess-objects-pattern	. ".*") ; for new s4 stuff
+     (inferior-ess-help-command	  . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
+     (inferior-ess-search-list-command	. "searchPaths()\n")
+     (ess-STERM	 . "iESS")
+     )
+   S+common-cust-alist)
+
   "Variables to customize for S+5.")
 
 
