@@ -1,3 +1,7 @@
+2000-11-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-fix-miscellaneous): Fix bug which broke "<=" & ">="
+
 2000-10-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (ess-smart-underscore): remove extra spaces when

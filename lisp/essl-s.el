@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 2000/10/23 17:07:47 $
-;; Version: $Revision: 5.21 $
-;; RCS: $Id: essl-s.el,v 5.21 2000/10/23 17:07:47 maechler Exp $
+;; Modified: $Date: 2000/11/03 10:00:57 $
+;; Version: $Revision: 5.22 $
+;; RCS: $Id: essl-s.el,v 5.22 2000/11/03 10:00:57 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -450,9 +450,9 @@ Uses the file given by the variable `ess-function-outline-file'."
     (ess-rep-regexp "\\([^- \t\n]\\)\\([<>]\\)" "\\1 \\2" nil nil verbose)
     ;; ">" -> "> " , for "<", don't split "<-":
     (goto-char from)
-    (ess-rep-regexp "\\(>=?\\)\\([^ \t\n]\\)" "\\1 \\2" nil nil verbose)
+    (ess-rep-regexp "\\(>=?\\)\\([^= \t\n]\\)" "\\1 \\2" nil nil verbose)
     (goto-char from)
-    (ess-rep-regexp "\\(<=?\\)\\([^- \t\n]\\)" "\\1 \\2" nil nil t);; !
+    (ess-rep-regexp "\\(<=?\\)\\([^-= \t\n]\\)" "\\1 \\2" nil nil t);; !
     ;; -- ensure space around "=", "==", "!=" :
     (goto-char from) ;; --> " ="
     (ess-rep-regexp "\\([^=!<> ]\\)\\([=!]?\\)=" "\\1 \\2=" nil nil verbose)
