@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1998/08/18 08:44:54 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essd-s+3.el,v 5.2 1998/08/18 08:44:54 maechler Exp $
+;; Modified: $Date: 1998/11/11 10:07:15 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essd-s+3.el,v 5.3 1998/11/11 10:07:15 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -72,13 +72,6 @@
  "Variables to customize for S+3")
 
 
-(defun S+3-mode (&optional proc-name)
-  "Major mode for editing S+3 source.  See ess-mode for more help."
-  (interactive)
-  (setq ess-customize-alist S+3-customize-alist)
-  (ess-mode S+3-customize-alist proc-name))
-
-
 (defun S+3 (&optional proc-name)
   "Call 'S-PLUS 3.x', the 'Real Thing'  from StatSci."
   (interactive)
@@ -89,6 +82,11 @@
 	   (current-buffer)))
   (inferior-ess))
 
+(defun S+3-mode (&optional proc-name)
+  "Major mode for editing S+3 source.  See ess-mode for more help."
+  (interactive)
+  (setq ess-customize-alist S+3-customize-alist)
+  (ess-mode S+3-customize-alist proc-name))
 
 (defun S+3-transcript-mode ()
   "S-PLUS 3.x transcript mode."
