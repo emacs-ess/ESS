@@ -1,0 +1,48 @@
+Source: *.texi  [texinfo]
+
+Targets:  
+	  ess.dvi	[DVI -> PostScript]
+
+	  ess.info*	[Info]
+
+	  ./html/*html
+
+----------------------
+
+Structure of Source:
+
+ ess.texi
+  |
+  |-- newfeat.texi
+  |
+  |-- credits.texi
+  |
+  |-- bugs.texi
+  |
+  |-- bugrepts.texi
+
+
+ readme.texi
+  |
+  |-- license.texi
+  |
+  |-- newfeat.texi
+  |
+  |-- currfeat.texi
+  |
+  |-- stabilty.texi
+  |
+  |-- requires.texi
+  |
+  |-- getting.texi
+  |
+  |-- inst_tar.texi
+  |
+  |-- inst_cvs.texi
+  |
+  |-- bugrept.texi
+  |
+  |-- mailing.texi
+  |
+  |-- authors.texi
+  
