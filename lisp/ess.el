@@ -9,7 +9,7 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 1.68 1997/11/14 16:22:03 rossini Exp $
+;; Version: $Id: ess.el,v 1.69 1997/11/17 13:56:41 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -19,7 +19,7 @@
 ;;                   General Interface for Statistical Software Packages|
 ;;                   92-06-29|
 ;;                   5.0|
-;;                   /ftp.math.sc.edu:rossini/ESS-5.0.tar.gz
+;;                   ftp://franz.stat.wisc.edu/pub/ESS/ESS-5.0.tar.gz
 
 ;; This file is part of ess-mode
 
