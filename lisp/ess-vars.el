@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1999/03/04 23:10:43 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: ess-vars.el,v 5.15 1999/03/04 23:10:43 rossini Exp $
+;; Modified: $Date: 1999/03/15 23:31:01 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: ess-vars.el,v 5.16 1999/03/15 23:31:01 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -321,6 +321,10 @@ Good for evaluating ESS code.")
   "*Hook for customizing inferior ess mode.
 Called after inferior-ess-mode is entered and variables have been initialised.")
 
+;;; make it possible to save an inferior-ess-mode buffer without losing
+;;; the connection to the running ESS process.
+(put 'inferior-ess-mode 'mode-class 'special)
+
 (defvar ess-help-mode-hook nil
   "Functions to call when entering ess-help-mode. ")
 
@@ -402,7 +406,11 @@ by ess-function-template.")
 (defvar inferior-S+4-program-name "Splus"
   "*Program name for invoking an external GUI S+4.")
 (defvar inferior-S+4-print-command "S_PRINT_COMMAND=gnuclientw.exe"
-  "*destination of print icon in S+4 Commands window.")
+  "*Destination of print icon in S+4 Commands window.")
+(defvar inferior-S+4-editor-pager-command
+  "options(editor='gnuclient.exe', pager='gnuclientw.exe')"
+  "*Programs called by the editor() and pager() functions
+in S+4 Commands window and in Sqpe+4 buffer.")
 
 (defvar inferior-Sqpe+4-program-name "Sqpe"
   "*Program name for invoking an inferior ESS with Sqpe+4().")
