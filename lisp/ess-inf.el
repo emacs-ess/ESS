@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/01 16:16:30 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: ess-inf.el,v 1.18 1997/07/01 16:16:30 rossini Exp $
+;; Modified: $Date: 1997/07/01 16:23:43 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: ess-inf.el,v 1.19 1997/07/01 16:23:43 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.19  1997/07/01 16:23:43  rossini
+;; make-local-variables moved to make-variable-... in ess.el
+;;
 ;; Revision 1.18  1997/07/01 16:16:30  rossini
 ;; more local-variable def's moved to ess.el
 ;;
@@ -429,13 +432,13 @@ Default-directory is the S starting directory. BUFFER may be visiting a file."
 	(setq comint-input-ring-file-name
 	      (expand-file-name ess-history-file ess-directory))
 	(comint-read-input-ring)
-	(make-local-variable 'ess-local-process-name)
+	;;(make-local-variable 'ess-local-process-name)
 	(setq ess-local-process-name proc-name)
-	(make-local-variable 'ess-search-list)
-	(make-local-variable 'ess-sl-modtime-alist)
-	(make-local-variable 'ess-prev-load-dir/file)
-	(make-local-variable 'ess-sp-change)
-	(make-local-variable 'ess-object-list)
+	;;(make-local-variable 'ess-search-list)
+	;;(make-local-variable 'ess-sl-modtime-alist)
+	;;(make-local-variable 'ess-prev-load-dir/file)
+	;;(make-local-variable 'ess-sp-change)
+	;;(make-local-variable 'ess-object-list)
 	(run-hooks 'ess-pre-run-hook)
 	(set-buffer
 	 (if switches
