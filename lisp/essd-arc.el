@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 30 Jun 2000
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: essd-arc.el,v 1.5 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2003/11/06 13:23:19 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: essd-arc.el,v 1.6 2003/11/06 13:23:19 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -44,7 +44,7 @@
   '((ess-customize-alist           .  ARC-customize-alist )
     (ess-language                  .  "XLS"               )
     (ess-dialect                   .  "ARC"               )
-    (ess-loop-timeout              .  50000               )
+    (ess-loop-timeout              .  ess-XLS-loop-timeout)
     (ess-object-name-db-file       .  "ess-xls-namedb.el" )
     (ess-help-sec-regex            .  " ")
     (ess-help-sec-keys-alist       .  " ")

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2003/09/25 16:01:42 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: essd-s3.el,v 5.13 2003/09/25 16:01:42 maechler Exp $
+;; Modified: $Date: 2003/11/06 13:23:19 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: essd-s3.el,v 5.14 2003/11/06 13:23:19 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -43,7 +43,7 @@
     (ess-language                  . "S")
     (ess-dialect                   . "S3")
     (ess-suffix                    . "S")
-    (ess-loop-timeout              . 500000 )
+    (ess-loop-timeout              . ess-S-loop-timeout)
     (ess-dump-filename-template    . (replace-regexp-in-string
 				      "S$" ess-suffix ; in the one from custom:
 				      ess-dump-filename-template-proto))

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2001/08/08 19:25:07 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: essd-xls.el,v 5.7 2001/08/08 19:25:07 ess Exp $
+;; Modified: $Date: 2003/11/06 13:23:19 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: essd-xls.el,v 5.8 2003/11/06 13:23:19 maechler Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -50,7 +50,7 @@
     (ess-language                  . "XLS"               )
     (ess-dialect                   . "XLS"               )
     (ess-mode-editing-alist        . XLS-editing-alist   )
-    (ess-loop-timeout              . 50000               )
+    (ess-loop-timeout              . ess-XLS-loop-timeout)
     (ess-object-name-db-file       . "ess-xls-namedb.el" )
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . XLS-help-sec-keys-alist)

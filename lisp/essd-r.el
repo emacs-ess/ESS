@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2003/09/25 16:01:42 $
-;; Version: $Revision: 5.45 $
-;; RCS: $Id: essd-r.el,v 5.45 2003/09/25 16:01:42 maechler Exp $
+;; Modified: $Date: 2003/11/06 13:23:19 $
+;; Version: $Revision: 5.46 $
+;; RCS: $Id: essd-r.el,v 5.46 2003/11/06 13:23:19 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -51,7 +51,6 @@
     (ess-language                  . "S")
     (ess-dialect                   . "R")
     (ess-suffix                    . "R")
-    (ess-loop-timeout              . 500000 )
     (ess-dump-filename-template    . (replace-regexp-in-string
 				      "S$" ess-suffix ; in the one from custom:
 				      ess-dump-filename-template-proto))
@@ -59,6 +58,7 @@
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-R-sec-regex)
     (ess-help-sec-keys-alist       . R-help-sec-keys-alist)
+    (ess-loop-timeout              . ess-S-loop-timeout)
     (ess-object-name-db-file       . "ess-r-namedb.el" )
     (ess-retr-lastvalue-command
      . "assign(\".Last.value\", .ess.lvsave, envir=NULL)\n") ; package:base
@@ -75,6 +75,7 @@
     (inferior-ess-exit-prompt      . "Save workspace image? [y/n/c]: ")
     (inferior-ess-primary-prompt   . "\\([A-Z][][A-Za-z0-9.]*\\)*> ")
     (inferior-ess-secondary-prompt . "+ ?")
+    ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
     (inferior-ess-start-file       . nil)            ;; "~/.ess-R"
     (inferior-ess-start-args       . "")

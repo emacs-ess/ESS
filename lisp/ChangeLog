@@ -1,3 +1,18 @@
+2003-11-06  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (ess-S-loop-timeout): new variable (and same for 	-XLS-)
+	* essd-*.el  use these new customizable variables.
+
+2003-11-05  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (inferior-ess): make comint-use-prompt-... buffer-local
+	  such that we no longer "pollute" other comint modes such as M-x shell
+
+2003-10-29  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-trns.el (ess-transcript-mode-map): add C-a := comint-bol
+	* ess-inf.el (inferior-ess-mode-map):  ditto
+
 2003-09-25  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el (ess-dump-filename-template-proto): renamed,

@@ -6,9 +6,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2003/09/25 16:01:42 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: essd-sp4.el,v 1.15 2003/09/25 16:01:42 maechler Exp $
+;; Modified: $Date: 2003/11/06 13:23:19 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: essd-sp4.el,v 1.16 2003/11/06 13:23:19 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -60,7 +60,7 @@ connects it to the '(ddeESS [S+4])' window.")
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
-    (ess-loop-timeout              . 500000 )
+    (ess-loop-timeout              . ess-S-loop-timeout)
     (ess-dump-filename-template    . (replace-regexp-in-string
 				      "S$" ess-suffix ; in the one from custom:
 				      ess-dump-filename-template-proto))

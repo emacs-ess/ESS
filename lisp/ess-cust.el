@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2003/11/05 13:24:14 $
-;; Version: $Revision: 1.45 $
-;; RCS: $Id: ess-cust.el,v 1.45 2003/11/05 13:24:14 maechler Exp $
+;; Modified: $Date: 2003/11/06 13:23:19 $
+;; Version: $Revision: 1.46 $
+;; RCS: $Id: ess-cust.el,v 1.46 2003/11/06 13:23:19 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -1183,15 +1183,22 @@ See also function `ess-create-object-name-db'.")
 (make-variable-buffer-local 'ess-object-name-db)
 (setq-default ess-object-name-db nil)
 
-(defcustom ess-loop-timeout 1200000
+(defcustom ess-S-loop-timeout 1200000
   "Integer specifying how many loops ess-mode will wait for the prompt
-before signaling an error.   This is important for S-PLUS and R, not so
-important for XLispStat.  Increase this, if you have a fast(er) machine."
+before signaling an error. Will be set to `ess-loop-timeout' in the S dialects'
+alists.  Increase this, if you have a fast(er) machine."
   :group 'ess-proc
   :type 'integer)
 
-(make-variable-buffer-local 'ess-loop-timeout)
-;;all dialects set this in their alist: (setq-default ess-loop-timeout 500000)
+(defcustom ess-XLS-loop-timeout 50000
+  "Integer specifying how many loops ess-mode will wait for the prompt
+before signaling an error. Will be set to `ess-loop-timeout' in the XLispStat
+dialects' alists.  Increase this, if you have a fast(er) machine."
+  :group 'ess-proc
+  :type 'integer)
+
+;; NOTA BENE: Other languages/dialect currently set `ess-loop-timeout'
+;;            **directly** in their essd-*.el alist !!
 
 ;;;*;;; Font-lock support
 

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Modified: $Date: 2003/09/25 16:01:42 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: essd-sp5.el,v 1.11 2003/09/25 16:01:42 maechler Exp $
+;; Modified: $Date: 2003/11/06 13:23:19 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: essd-sp5.el,v 1.12 2003/11/06 13:23:19 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -62,7 +62,7 @@
     (ess-help-sec-keys-alist       . S+-help-sec-keys-alist)
 
     (ess-function-template         . " <- \n#\nfunction()\n{\n\n}\n")
-    (ess-loop-timeout              . 500000 )
+    (ess-loop-timeout              . ess-S-loop-timeout)
     (ess-dump-filename-template    . (replace-regexp-in-string
 				      "S$" ess-suffix ; in the one from custom:
 				      ess-dump-filename-template-proto))
