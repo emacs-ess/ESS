@@ -112,7 +112,7 @@ statistics, programming is an important skill which can be augmented
 and enhanced by the right tools and environment.  This is especially
 important with the rise of computational tools such as resampling
 (bootstrap and jackknife approaches) and Markov Chain Monte Carlo
-(MCMC) sampling (such as Gibbs and Metropolis-Hastings).
+(MCMC) sampling (such as Gibbs and Metropolis--Hastings).
 
 In the field of statistics, different analytic tools are targeted for
 particular styles of statistical analysis.  This suggests that
@@ -120,7 +120,7 @@ efficient work habits can require switching between data analysis
 tools.  One example is that general purpose tools such as R
 \citep{ihak:gent:1996} are not as easy to use to perform Bayesian
 analyses as special tools such as BUGS \citep{SpieThomBest:1999}.  On
-the other hand, these specialized tools can not efficiently be used to
+the other hand, these specialized tools can not be used efficiently to
 handle general analyses and graphical summaries.  Indeed, BUGS is distributed
 with procedures that simplify the transfer of BUGS output
 to R or S for display of the results.  More generally, this suggests a
@@ -130,8 +130,8 @@ tools have their own idiosyncratic user interfaces which can
 negate an efficiency gain.
 
 Emacs Speaks Statistics (ESS) provides a single keyboard interface for
-a family of statistical computing tasks.  The primary user tasks which
-ESS focuses on for optimization and efficiency are statistical coding
+a family of statistical computing tasks.  The primary user tasks for which
+ESS is optimizated are statistical coding
 and interactive data analysis.  Statistical coding is the writing of
 computer code for data analysis.  This code might be in a compilable
 language, such as C or Fortran, or it might be in an interpreted
@@ -219,9 +219,13 @@ structure, and command-history.
 Emacs provides a sophisticated development environment for programming
 in traditional compiled languages such as C, C++, and Fortran as well
 as non-traditional byte-compiled and interpreted languages such as
-Perl, Java, and \XLispStat.  It provides interfaces to build tools such as
-make as well as debugging tools through the use of external debuggers
-such as JDebug, gdb, and dbx.  Finally, it assists with project tasks
+Perl, Java, and \XLispStat.  The development environment is built on Emacs's
+ability to communicate directly with other processes running simultaneously
+on the same or connected computers.
+Emacs provides interfaces to system-building tools such as
+\file{make} and to debugging such as the external debuggers
+\file{JDebug}, \file{gdb}, and \file{dbx}.  Finally, Emacs assists with
+project tasks
 such as documentation of changes, design, and version control.
 
 Other extensions to Emacs allow it to act as a World-Wide-Web browser,
@@ -347,15 +351,17 @@ those provided by Emacs.
 %, as listed in section~\ref{sec:intro:emacs}.
 
 \paragraph{Syntactic indentation and highlighting of source code.}
-For the interface with the programming language code as well as the
-interface with the statistical program, this includes syntax
-highlighting to denote assignment, reserved words, presence of
-strings, and comments.
-For the programming code, to assist with providing a clear
-presentation, customizable automatic indentation is possible, with the
-customization based on the syntactic structure of groups of
-expressions.  For the interface with the statistics package/program,
-there is also a means of searching the command-line history for
+The ESS interface includes a description of the syntax and grammar of
+each statistical language it knows about.  This gives ESS the ability
+to edit the programming language code, often more smoothly than with
+editors distributed with the languages.  The process of programming
+code is enhanced as ESS provides the user with a clear presentation of
+the code with syntax highlighting to denote assignment, reserved
+words, presence of strings, and comments.  ESS has customizable
+automatic indentation, with the customization based on the syntactic
+structure of groups of expressions.
+For the interface with the executing statistics package/program,
+ESS also provides a means of searching the command-line history for
 previous commands as well as editing past commands for current use.
 
 \paragraph{Partial evaluations of code.}
@@ -365,16 +371,16 @@ displayed for editing to the statistical program/package for
 execution.  Emacs can complete partially typed file
 names by referring to the current working directory.
 
-In addition to the above, for languages in the S family (S (versions 3
-and 4) developed at Bell Labs, \Splus\ (all versions), and R (all
-versions)) there is object-name completion of both user- and
+In addition, for languages in the S family \{S
+(versions 3 and 4) developed at Bell Labs, \Splus\ (all versions), and
+R (all versions)\} ESS provides object-name completion of both user- and
 system-defined functions and data.  There is also the ability to dump
-and save objects (user- and system- generated) into text files in a
+and save objects (user- and system-generated) into text files in a
 formatted manner for editing, as well as to reload (after possible
 editing) back into the statistical package/process.
 
 \paragraph{Source code checking.}
-ESS also facilitates the editing of source code by providing a means
+ESS facilitates the editing of source code by providing a means
 for loading and error-checking of small sections of code for S,
 \XLispStat, and SAS.  This allows for one form of source-level
 debugging.
@@ -382,20 +388,23 @@ debugging.
 \paragraph{Interacting with the process.}
 Emacs has historically referred to processes under its control as
 inferior, accounting for the name inferior ESS (\stexttt{iESS}) to
-denote the mode for interfacing with the statistical package.  This
+denote the mode for interfacing with the statistical package.  
+The output of the package goes directly to an editable text buffer in Emacs.
+This
 mode allows for command-line editing and saving history, as well as
 recalling and searching for previously entered commands.
 Filename completion is available.    In addition (currently only for for S
 languages), there exists object-name and function-name completion.
-Transcripts are easily recorded and can be editing into an ideal
+Transcripts are easily recorded and can be edited into an ideal
 activity log which can then be saved.  There is a good interface for
 handling and intercepting calls to the internal help systems for S,
 \XLispStat, and \Stata.
 
 \paragraph{Interacting with statistical programs on remote computers.}
-ESS provides the facility to edit and run programs on remote machines.
-The remote machine could be a very different platform than the local
-machine.
+ESS provides the facility to edit and run programs on remote machines
+in the same session and with the same simplicity as if they were
+running on the local machine.  The remote machine could be a very
+different platform than the local machine.
 
 \paragraph{Transcription Manipulation and Reuse.}
 Once a transcript log is generated, perhaps by saving an
@@ -404,14 +413,14 @@ all of the entered commands.  It permits editing and re-evaluating the
 commands directly from the saved transcript.  This is is useful for
 demonstration of techniques as well as for reconstruction of data
 analyses.  There currently exist functions within ESS for cleaning
-transcripts from S languages back to source code, by finding all input
+transcripts from S languages back to source code by finding all input
 lines and isolating them into an input file.
 
 \paragraph{Help File Editing (R).}
 ESS also provides an interface for writing help files for R functions
 and packages.  It provides the ability to view and execute embedded R
 source code directly from the help file in the same manner as ESS
-normally handles code from a source file.  R Help mode provides syntax
+normally handles code from a source file.  R \stexttt{Help mode} provides syntax
 highlighting and the ability to submit code to a running ESS
 process, either R or \Splus.
 
@@ -513,13 +522,13 @@ useful 1-letter shortcuts for navigation and more, such as
 \item[{s \textit{x}}] move to help section code ``\textit{x}'' where
   \textit{x} is e.g. \stexttt{u} for ``Usage'', or \stexttt{e} for
   ``Examples''.  You can see a full list by entering \stexttt{s ?} from within
-an \file{ESS Help} buffer.
+an \stexttt{ESS Help} buffer.
 \item[h] fast `hyperlink' to other help pages
 \item[l] (after \stexttt{"s e"}) send examples \textbf{l}inewise to S for
   evaluation, also \stexttt{C-c C-r} for sending a whole region.  This 
   is particularly useful in R which guarantees that all examples are
-  directly executable (possibly after \stexttt{library(*)} for non-base
-  packages).
+  directly executable.
+% (possibly after \stexttt{library(*)} for non-base packages).
 \end{list}
 
 \subsection{Philosophies for Combining S with ESS}
@@ -528,8 +537,8 @@ an \file{ESS Help} buffer.
 There are two primary philosophies for using ESS.  The first is that
 the source code (the file \file{myfile.s}, for example) is real,
 and objects in S are temporary realizations of the source.  This is
-the approach preferred by the current group of developers and how ESS
-is initially configured.  A project is constructed by writing S
+the approach preferred by the current group of developers and the default
+when ESS is initially installed.  A project is constructed by writing S
 language source code for \textbf{every} user defined function or data
 object.  The code is stored in one or more text files stored in a
 project directory or directories.  The code is read into S for a
@@ -547,7 +556,7 @@ should not be saved in this philosophy.  We strongly discourage this approach.
 It is a
 natural result of assuming that the S process will always be the
 same, an assumption we are not willing to make.
-Details for this activating this configuration can be found in the
+Details for activating this configuration are in the
 documentation distributed with ESS.
 %However, it can be realized by adding the following lines to one's
 %\file{.emacs} configuration file:
@@ -573,10 +582,11 @@ Those editing features and new advanced features are part of
 \stexttt{ESS[SAS]}.  ESS provides two user interfaces for executing SAS
 programs.  Both have similarities to the
 windowing interface that SAS itself provides.
-One is more similar in behavior to the ESS interface with S
-and the other to batch processing of SAS jobs.  In addition, SAS files can be
+One is more similar in behavior to batch processing of SAS jobs
+and the other to the ESS interface with S.  In addition, SAS files can be
 edited in \stexttt{ESS[SAS]} mode in Emacs and then pasted into the SAS
-Display Manager \ssf{Program Editor} window.
+Display Manager \ssf{Program Editor} window.  All three procedures can
+be used with SAS running either locally or remotely.
 
 \subsection{Editing SAS Files}
 \label{sec:SAS:edit}
@@ -595,20 +605,21 @@ process through the shell buffer; the capability of allowing the
 SAS process to keep on
 running after you exit Emacs; single keypress navigation of \file{.sas},
 \file{.log} and \file{.lst} files (\file{.log} and \file{.lst}
-files are automatically refreshed with each keypress).
+files are automatically refreshed).
 
-\stexttt{ESS[SAS]}, the mode for editing SAS language files, is automatically
-turned on when editing a file with a \file{.sas} suffix.
-The batch processing keypress commands are
-enabled by default to use the same function keys that the SAS Display
-Manager uses.  The interactive capabilities of ESS require you to
-start an inferior SAS process with \stexttt{M-x SAS} (described below).
-Batch SAS usage starts a separate instance of SAS each time a file is submitted.
+\stexttt{ESS[SAS]} is automatically turned on when editing a file with
+a \file{.sas} suffix.  \stexttt{ESS[SAS]} mode provides all the
+flexibility of the Emacs editor for editing and searching in each file
+and for simultaneously working with multiple SAS files.  For example,
+while designing a SAS analysis a user may need to construct macro
+files as well as specific files for one or more data sets.  The code
+for the macros or the analysis can be compared to similar code
+developed for other projects.
 
 % At this writing (ESS release 5.2), the indenting and syntactic
 % highlighting for SAS are usually correct.
 
-\paragraph{Preconceptions.}
+\paragraph{Preconceptions and Configuration.}
 
 People using ESS and SAS together come from two incompatible starting positions.
 Some are Emacs users who are adding SAS to their repertoire.  They expect the 
@@ -618,6 +629,10 @@ power of editing their SAS source files with Emacs.  They expect the keyboard
 to behave as it always has in their previous editor and they expect to gain some
 more powerful editing and interaction capabilities by using Emacs.
 
+The two places where the keyboard must be configured are the
+\texttt{[TAB]} key and the function keys.  The batch processing
+keypress commands use the same function keys that the SAS Display
+Manager uses.
 
 \paragraph{The \texttt{[TAB]} Key.}
 \label{sec:SAS:tab}
@@ -631,11 +646,13 @@ are indented 4 spaces in from the beginning column of that statement.
 This is the type of functionality that Emacs provides in most
 programming language modes.  This functionality is equivalent to
 uncommenting the following line in \file{ess-site.el}:
-\elcode{;;; (setq ess-sas-edit-keys-toggle 0)}
+\stexttt{;;; (setq ess-sas-edit-keys-toggle 0)}
+
 ESS provides an alternate behavior for the \stexttt{TAB} key that makes it
 behave as it does on non-Emacs terminals, i.e. move the cursor to the
 next tab stop.  The alternate behavior also provides a backwards \stexttt{TAB}
-key: \stexttt{C-TAB}.  This functionality is obtained by
+key: \stexttt{C-TAB}.  With this option the user is responsible for the
+indentation of the code.  The alternate behavior is obtained by
 uncommenting the following line in \file{ess-site.el}:
 \elcode{;;; (setq ess-sas-edit-keys-toggle 1)}
 Under the alternate behavior, the \stexttt{TAB} key is bound to
@@ -648,10 +665,11 @@ editing tasks and expect the keys to continue to behave in their
 customized way.  For example, Heiberger uses the function keys to
 cycle among the currently open editing buffers.  SAS users who are
 familiar with the SAS Display Manager would like to use the function
-keys that SAS provides.  The SAS Unix keys and the SAS Windows keys
-are not the same.  ESS therefore provides all possible options: SAS
-keys effective only in SAS buffers, Unix-style function keys (either
-in all buffers or restricted to SAS buffers), Windows-style function
+keys that SAS provides.  SAS provides different function key assignments on
+Windows and Unix platforms.  ESS therefore provides all possible options: 
+no special function keys in SAS mode,
+Unix-style SAS function keys (either
+in all buffers or restricted to SAS buffers), Windows-style SAS function
 keys (either in all buffers or restricted to SAS buffers).
 More detail on the function keys is in section \ref{sec:SAS:proc:batch}
 
@@ -659,9 +677,18 @@ More detail on the function keys is in section \ref{sec:SAS:proc:batch}
 \subsection{SAS process interaction}
 \label{sec:SAS:proc}
 
-We describe batch processing from ESS, running SAS in an inferior ESS buffer,
-running SAS with the Display Manager,
-and running SAS on a remote machine from a local Emacs.
+There are three methods for interacting with SAS.  We describe batch
+processing from ESS, running SAS in an inferior ESS buffer, running
+SAS with the Display Manager, and running SAS on a remote machine from
+a local Emacs.
+
+The ESS methods for interacting with SAS are based on the SAS Display
+Manager's procedures.  Why therefore use ESS rather than the
+Display Manager?  
+
+The interactive capabilities of ESS require you to start an inferior
+SAS process with \stexttt{M-x SAS} (described below).  Batch SAS usage
+starts a separate instance of SAS each time a file is submitted.
 
 \subsubsection{SAS Batch processing}
 \label{sec:SAS:proc:batch}
@@ -673,18 +700,18 @@ Windows style function key definitions for use in the
 those actions are:\\
 \begin{tabular}{llll}
 Unix& PC&\\
-\stexttt{F2} &\stexttt{F2}& Refresh:&revert the buffer with the file if the file on disk is newer\\
+\stexttt{F2} &\stexttt{F2}& Refresh &revert the buffer with the file if the file on disk is newer\\
 \stexttt{}   &\stexttt{}  &         &       than the file currently in the buffer.\\
-\stexttt{F3} &\stexttt{F8}& Submit: &save   the current \file{.sas} buffer (which may be the \file{.sas}\\
+\stexttt{F3} &\stexttt{F8}& Submit  &save   the current \file{.sas} buffer (which may be the \file{.sas}\\
 \stexttt{}   &\stexttt{}  &         &       file associated with the \file{.lst} or \file{.log} file you\\
 \stexttt{}   &\stexttt{}  &         &       are actually looking at) to a file and submit\\
 \stexttt{}   &\stexttt{}  &         &       the file to a background SAS job.\\
-\stexttt{F4} &\stexttt{F5}& Program:&switch buffer to \file{.sas} file.\\
-\stexttt{F5} &\stexttt{F6}& Log:    &switch buffer to \file{.log} file, ``refresh" and \\
+\stexttt{F4} &\stexttt{F5}& Program &switch buffer to \file{.sas} file.\\
+\stexttt{F5} &\stexttt{F6}& Log     &switch buffer to \file{.log} file, ``refresh" and \\
 \stexttt{}   &\stexttt{}  &         &        goto next error message, if any.\\
-\stexttt{F6} &\stexttt{F7}& Listing:&switch buffer to \file{.lst} file and ``refresh".\\
-\stexttt{F7} &\stexttt{F4}& Type-1: &switch buffer to \stexttt{Type-1} (defaults to \file{.txt}) file and ``refresh".\\
-\stexttt{F8} &\stexttt{F3}& Shell:  &switch buffer to shell.\\
+\stexttt{F6} &\stexttt{F7}& Listing &switch buffer to \file{.lst} file and ``refresh".\\
+\stexttt{F7} &\stexttt{F4}& Type-1  &switch buffer to \stexttt{Type-1} (defaults to \file{.txt}) file and ``refresh".\\
+\stexttt{F8} &\stexttt{F3}& Shell   &switch buffer to shell.\\
 \end{tabular}
 
 
@@ -699,13 +726,14 @@ with a user-specified extension; \file{.txt} by default.
 \stexttt{Type-1} files are not a standard from the SAS Institute, but
 are included here because many companies have developed internal
 standards that use them.  You can over-ride the default, by specifying
-a different extension in your \file{.emacs} file:
-\elcode{(setq ess-sas-suffix-1 '.txt')}
+a different extension in your \file{.emacs} file:\\
+\stexttt{(setq ess-sas-suffix-1 '.txt')}
 
 \paragraph{SAS Interface.}
 \label{sec:SAS:interface}
 
-The default command used by the Submit function key (\stexttt{F3} or \stexttt{F8}) to
+The default command used by the Submit function key
+(\stexttt{F3} or \stexttt{F8}) to
 submit a batch SAS job is simply \stexttt{sas}.  If necessary, you can
 over-ride this in your \file{.emacs} file.
 The default assumption is that SAS is run on the local machine.  This too
@@ -838,8 +866,8 @@ corresponds to the file \file{myfile.lst} in SAS batch usage and to the
 \ssf{SAS: OUTPUT} window in the SAS window environment.  All data-related
 printed output from the \stexttt{PROC}s appear in this window.
 
-The interactive \file{iESS [SAS:1]} buffer exists solely as a communications buffer.
-Files are edited in the myfile.sas buffer.  The \stexttt{C-c C-r} key in
+The interactive \stexttt{iESS [SAS:1]} buffer exists solely as a communications buffer.
+Files are edited in the \file{myfile.sas} buffer.  The \stexttt{C-c C-r} key in
 \stexttt{ESS[SAS]} mode is the functional equivalent of bringing a file into the
 \ssf{SAS: PROGRAM EDITOR} window followed by the \ssf{Local/Submit} menu
 commands.  The user should never use this buffer directly.
@@ -863,7 +891,7 @@ including Debian, RedHat, Mandrake, and SuSE.
 
 ESS (originally S-mode) was initially designed for use with S and
 \Splus\tm; hence, this family of statistical languages currently has
-the most support.  We use S to generically denote any of the currently
+the most support.  We use S generically to denote any of the currently
 available implementations in this of the family, including S 3.x, S
 4.x, \Splus~3.x, \Splus~4.x (incl.\ \Splus~2000), \Splus~5.x,
 \Splus~6.x and R.  In addition, we use Emacs to denote the GNU family
@@ -884,7 +912,7 @@ ESS is a remarkable example of how open-source products can continue
 to develop beyond what their initial authors planned.  ESS started as
 S-mode, an Emacs extension which was developed in 1991 as a simple
 tool for editing program files for S and \Splus.  In 1994, Rossini
-extended S-mode to support XEmacs, which was a forked version of
+extended S-mode to support XEmacs, which is a forked version of
 Emacs.  At the same time, Rossini extended a successful SAS-mode
 written by Tom Cook to work with XEmacs.  In 1995, S-mode was merged
 into a uniform S-mode for Emacs, XEmacs, and supported S, \Splus, and
@@ -904,7 +932,7 @@ mode.  Sparapani and Heiberger developed SAS batch support including
 function key behavior that followed SAS Institute's function key
 definitions,  developed a more comprehensive and efficient syntax
 highlighting mechanism using the Emacs \stexttt{font-lock-mode},
-extended the  \file{*ESS-elsewhere*} functionality to include SAS processes,
+extended the  \stexttt{*ESS-elsewhere*} functionality to include SAS processes,
 and provided  automated error message lookup in the log file.
 These are features that people using SAS today
 actually need and want.  ESS is now by far the best environment for
@@ -983,8 +1011,8 @@ different statistical language systems, S and SAS.
 We present some basic suggestions for using ESS to interact with S.
 We illustrate both data analysis and program revision examples under
 the philosophies that source code is real.
-Examples using the philosophy that S objects are real available in the documentation
-distributed with ESS.
+Examples using the philosophy that S objects are real is available in
+the documentation distributed with ESS.
 
 \subsubsection{Data Analysis Example (source code is real)}
 The current ESS developers recommend this procedure.
@@ -1012,7 +1040,7 @@ the \file{*S+x:1*} buffer and the program's response also appears.
 For \Splus\ on Windows, the commands are forwarded to the \Splus\ Commands
 window and the program's response also appears in the Commands window.
 
-Re-edit myfile.s as necessary to correct any difficulties.  Add
+Re-edit \file{myfile.s} as necessary to correct any difficulties.  Add
 new commands here.  Send them to S by region with
   \elcode{C-c C-r}
 or one line at a time with
@@ -1044,7 +1072,7 @@ or send individual lines with
 or load the entire buffer into S with
   \elcode{C-c C-l}
 Save the revised \file{myfile.s} when you have finished
-  \elcode{C-x C-s}
+  \stexttt{C-x C-s}
 
 %\subsubsection{Program revision example (S object is real)}
 %The current ESS developers do {\bf not} recommend this procedure.
@@ -1233,8 +1261,8 @@ in \file{myfile.sas}.
 
 \stexttt{PROC PLOT} graphs can be viewed in the listing buffer.  You
 may wish to control the vertical spacing to allow the entire plot to
-be visible on screen, for example, by
-\elcode{proc plot; plot a*b / vpos=25;}
+be visible on screen, for example, by\\
+\stexttt{proc plot; plot a*b / vpos=25;}
  
 At the end of the session you may save the log and listing buffers
 with the usual \stexttt{C-x C-s} commands.  You will be prompted for a
