@@ -1,13 +1,15 @@
 ;;; ess-site.el --- user customization of ess-mode
 
 ;; Copyright (C) 1993 David M. Smith
+;; Copyright (C) 1997--1998 A.J. Rossini, R.M. Heiberger, Martin
+;; Maechler, Kurt Hornik.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/12/05 15:09:57 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: ess-site.el,v 5.2 1997/12/05 15:09:57 rossini Exp $
+;; Modified: $Date: 1998/04/06 20:18:41 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: ess-site.el,v 5.3 1998/04/06 20:18:41 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -65,13 +67,14 @@
   ;; Not important in XEmacs, if unpacking from ../xemacs/site-lisp/
   ;; directory.
 
-  ;; WARNING- WITH EMACS 20.2, NEED TO USE ONE OF THE FOLLOWING
+  ;; WARNING- WITH EMACS 20.2, MUST USE ONE OF THE FOLLOWING
   ;; NON-DEFAULT SETTINGS
 
   ;; A nice default
   (defvar ess-lisp-directory
     (directory-file-name (file-name-directory (file-truename load-file-name))))
 
+  ;; NON DEFAULTS:
   ;;(defvar ess-lisp-directory
   ;;(directory-file-name "/usr/local/lib/xemacs/site-lisp/ESS"))
 
@@ -152,8 +155,8 @@
 ;;TODO, for 5.0 :-), or rare.
 ;;(require 'essd-s3)  ; You might not have this
 ;;(require 'essd-vst) ; built on essd-xls.
-;;(require 'essd-s+4) ; not for Unix, yet.
-
+;;(require 'essd-s+4) ; for MS Windows NT/95.
+;;(require 'essd-s+5) ; for Unix, not distributed.
 
 (require 'ess)
 

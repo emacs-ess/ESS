@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/12/02 14:09:55 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: ess-inf.el,v 5.1 1997/12/02 14:09:55 rossini Exp $
+;; Modified: $Date: 1998/04/06 20:18:41 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: ess-inf.el,v 5.2 1998/04/06 20:18:41 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -1277,7 +1277,7 @@ A negative prefix argument gets the objects for that position
 		    (prefix-numeric-value posn)))
 	(the-posn (if (< num-arg 0) (- num-arg) num-arg))
 	(invert (< num-arg 0))
-	(the-command (format inferior-ess-objects-command the-posn))
+	(the-command (format inferior-ess-objects-command the-posn ".*"))
 	(the-message (concat ">>> Position "
 			     the-posn
 			     " ("
@@ -1384,7 +1384,8 @@ buffer (defaults to the command if BUFF is not given.)"
   (ess-make-buffer-current)
   (let ((sprocess (get-ess-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running."))
-    (if (yes-or-no-p "Really quit from ESS? ")
+    (if (yes-or-no-p (format "Really quit ESS (process %s)" sprocess)) 
+	;; or %S above?
 	(save-excursion
 	  (ess-cleanup)
 	  (ess-switch-to-ESS nil)
@@ -1603,13 +1604,13 @@ In all cases, the value is an list of object names."
 	       (directory-files obj))
 	  ;; Get objects(pos) instead
 	  (ess-get-words-from-vector
-	   (format inferior-ess-objects-command pos)))
+	   (format inferior-ess-objects-command pos ".*")))
     ;; Want names(obj)
     (or (and obj (ess-get-words-from-vector
 		  (format inferior-ess-names-command obj)))
 	;; get objects(pos)
 	(ess-get-words-from-vector
-	 (format inferior-ess-objects-command pos ""))))) ; s4 needs 2
+	 (format inferior-ess-objects-command pos ".*"))))) ; s4 needs 2
 					; args, rest only need 1 ?
 					; changes needed to allow for
 					; pattern argument to

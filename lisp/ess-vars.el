@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/12/02 14:09:55 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: ess-vars.el,v 5.1 1997/12/02 14:09:55 rossini Exp $
+;; Modified: $Date: 1998/04/06 20:18:41 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: ess-vars.el,v 5.2 1998/04/06 20:18:41 rossini Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -674,7 +674,7 @@ If nil, input is in the font-lock-variable-name-face.")
     ("#"
      . font-lock-comment-face) ; comment
     ("^[^#]*#\\(.*$\\)"
-     (1 font-lock-comment-face keep t)) ; comments
+     1 font-lock-comment-face keep t) ; comments
     ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\)\\s\"?\\s-*\\(<-\\|_\\)\\(\\s-\\|\n\\)*function"
      1 font-lock-function-name-face t) ; function name
     ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>"

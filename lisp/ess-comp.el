@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/12/02 14:09:55 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: ess-comp.el,v 5.1 1997/12/02 14:09:55 rossini Exp $
+;; Modified: $Date: 1998/04/06 20:18:41 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: ess-comp.el,v 5.2 1998/04/06 20:18:41 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -31,13 +31,12 @@
 
 ;;; This file sets up all compilation needs.
 
-
 (provide 'ess-comp)
 
 ;;; Code:
 
-;;; primarily for Emacs, but also for setting up compile load-path
-;;; properly (Emacs doesn't include '.' in the emacs lisp load path).
+;;; primarily for setting up compile load-path properly (Emacs doesn't
+;;; include '.' in the emacs lisp load path).
 
 (add-to-list 'load-path nil)
 
@@ -49,9 +48,11 @@
 ;;				  obsolete))
 ;;  (setq byte-optimize t))
 
-(require 'ess-vars)
-(require 'ess)
-(require 'ess-site)
+;; These are required by every other file.
+
+(require 'ess-vars)    ; set up the variables
+(require 'ess)         ; configure
+(require 'ess-site)    ; last, to overload previous settings.
 
  ; Local variables section
 
