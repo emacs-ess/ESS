@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/11/07 23:17:54 $
-;; Version: $Revision: 1.57 $
-;; RCS: $Id: ess-site.el,v 1.57 1997/11/07 23:17:54 rossini Exp $
+;; Modified: $Date: 1997/11/09 19:48:55 $
+;; Version: $Revision: 1.58 $
+;; RCS: $Id: ess-site.el,v 1.58 1997/11/09 19:48:55 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,8 +47,6 @@
 (provide 'ess-site)
 
 ;;; Code:
-
-;;(setq-default debug-on-error t)
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
@@ -104,8 +102,7 @@
 	   ;;("\\.log\\'"                               . SAS-log-mode);sasl
 	   ("\\.[Ss]\\(ou\\)?t\\'"                    . S-transcript-mode)
 	   ("\\.[Rr]\\(ou\\)?t\\'"                    . R-transcript-mode)
-	   ("\\.Rd\\'"                                . Rd-mode);all R>=0.60
-	   )
+	   ("\\.Rd\\'"                                . Rd-mode)) ;all R>=0.60
 	 auto-mode-alist)))
 
 
@@ -169,7 +166,7 @@
   (S+3))
 
 ;;; The basic mode.
-(defun S-mode (&optional proc-name)
+(defun s-mode (&optional proc-name)
   "Major mode for editing S+3 source.  See ess-mode for more help."
   (interactive)
   (if proc-name (S+3-mode proc-name)
@@ -194,7 +191,7 @@
 ;;; s-mode in lower case too.  That is, "#-*- S-*-" invokes s-mode and 
 ;;; not S-mode.
 (fset 'S-transcript-mode 's-transcript-mode)
-(fset 's-mode 'S-mode)
+(fset 'S-mode 's-mode)
 
 
 ;; Alternative method (better?)
