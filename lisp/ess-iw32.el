@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Dec 1998
-;; Modified: $Date: 1999/02/24 20:43:23 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: ess-iw32.el,v 1.5 1999/02/24 20:43:23 rossini Exp $
+;; Modified: $Date: 1999/03/03 22:32:51 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: ess-iw32.el,v 1.6 1999/03/03 22:32:51 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -30,6 +30,7 @@
 ;; Code for dealing with running external processes on Windows 9x/NT
 ;; through ddeclient.
 
+
 ;;; Code:
 
  ; Requires and autoloads
@@ -42,6 +43,15 @@
 ;; C-c C-r
 (defun ess-eval-region-ddeclient (start end toggle &optional message)
 "*Loop through lines in region and send them to ESS via ddeclient."
+  (setq inferior-ess-ddeclient
+	(ess-get-process-variable
+	 ess-current-process-name 'inferior-ess-ddeclient))
+  (setq inferior-ess-client-name
+	(ess-get-process-variable
+	 ess-current-process-name 'inferior-ess-client-name))
+  (setq inferior-ess-client-command
+	(ess-get-process-variable
+	 ess-current-process-name 'inferior-ess-client-command))
   (narrow-to-region start end)
   (beginning-of-buffer)
   (let ((beg))
@@ -63,7 +73,6 @@
   (interactive "r\nP")
   (if (equal (ess-get-process-variable
 	      ess-current-process-name 'inferior-ess-ddeclient)
-	     ;; nil) temporary value.  Next line is what it should be.
 	     (default-value 'inferior-ess-ddeclient))
       (ess-eval-region-original start end toggle message)
     (ess-force-buffer-current "Process to load into: ")
@@ -86,8 +95,7 @@
 (defun ess-eval-visibly (text-withtabs &optional invisibly eob)
   (if (equal (ess-get-process-variable
 	      ess-current-process-name 'inferior-ess-ddeclient)
-	     ;; nil) temporary value.  Next line is what it should be.
-	     (default-value 'inferior-ess-ddeclient))
+             (default-value 'inferior-ess-ddeclient))
       (ess-eval-visibly-original text-withtabs invisibly eob)
       (ess-eval-visibly-ddeclient text-withtabs invisibly eob)))
 
@@ -109,11 +117,150 @@ file.  Otherwise just pops to an existing buffer if it exists."
   (interactive "sHelp on: ")
   (if (equal (ess-get-process-variable
 	      ess-current-process-name 'inferior-ess-ddeclient)
-	     ;; nil) temporary value.  Next line is what it should be.
 	     (default-value 'inferior-ess-ddeclient))
       (ess-display-help-on-object-original object)
     (ess-display-help-on-object-ddeclient object))
   (widen))
+
+
+
+;;; Alternate version of ess-load-file, required with S+4.
+;;; This version sends the S-Plus command
+;;;         source("filename")
+;;; to S.  This version does not guarantee to save .Last.value
+;;; This version does not offer alternate buffers or editing capability.
+
+;; C-c C-l
+;;; this works for Sqpe+4 and S+4
+(defun ess-load-file-ddeclient (filename)
+  "Load an S source file into an inferior ESS process."
+  (ess-make-buffer-current)
+  (let ((source-buffer (get-file-buffer filename)))
+    (if (ess-check-source filename)
+	(error "Buffer %s has not been saved" (buffer-name source-buffer))
+      ;; Find the process to load into
+      (if source-buffer
+	  (save-excursion
+	    (set-buffer source-buffer)
+    (ess-force-buffer-current "Process to load into: "))))
+    (ess-eval-visibly (format inferior-ess-load-command filename))))
+
+(fset 'ess-load-file-original
+      (symbol-function  'ess-load-file))
+
+(defun ess-load-file (filename)
+"Alternate version of ess-load-file, required with S+4.
+This version sends the S-Plus command
+     source(\"filename\")
+to S.  This version does not guarantee to save .Last.value
+This version does not offer alternate buffers or editing capability."
+     (interactive (list
+		   (or
+		    (and (eq major-mode 'ess-mode)
+			 (buffer-file-name))
+		    (expand-file-name
+		     (read-file-name "Load S file: " nil nil t)))))
+     (if (equal (ess-get-process-variable
+		 ess-current-process-name 'inferior-ess-ddeclient)
+		(default-value 'inferior-ess-ddeclient))
+	 (ess-load-file-original filename)
+       (ess-load-file-ddeclient filename))
+     (widen))
+
+;; C-c C-d
+(defun ess-dump-object-ddeclient (object filename)
+  "Dump the ESS object OBJECT into file FILENAME."
+  (ess-force-buffer-current "Process to load into: ")
+  (ess-eval-visibly (concat "dump('" object "','" filename "')"))
+  (sleep-for 5)
+  (find-file filename)
+)
+
+
+(fset 'ess-dump-object-original
+      (symbol-function  'ess-dump-object))
+
+(defun ess-dump-object (object filename)
+  "Dump the ESS object OBJECT into file FILENAME."
+  (if (equal (ess-get-process-variable
+	      ess-current-process-name 'inferior-ess-ddeclient)
+	     (default-value 'inferior-ess-ddeclient))
+      (ess-dump-object-original object filename)
+    (ess-dump-object-ddeclient object filename))
+  (widen))
+
+
+
+
+(fset 'ess-dump-object-into-edit-buffer-original
+      (symbol-function  'ess-dump-object-into-edit-buffer))
+
+(defun ess-dump-object-into-edit-buffer (object)
+  "Dump the ESS object OBJECT into file FILENAME."
+  (interactive
+   (progn
+     (ess-force-buffer-current "Process to dump from: ")
+     (list (read-string "Object to edit: "))))
+  (if (equal (ess-get-process-variable
+	      ess-current-process-name 'inferior-ess-ddeclient)
+	     (default-value 'inferior-ess-ddeclient))
+      (ess-dump-object-into-edit-buffer-original object)
+    (ess-dump-object-into-edit-buffer-ddeclient object))
+  (widen))
+
+
+
+
+(defun ess-dump-object-into-edit-buffer-ddeclient (object)
+  "Edit an ESS object in its own buffer.
+
+Without a prefix argument, this simply finds the file pointed to by
+ess-source-directory. If this file does not exist, or if a
+prefix argument is given, a dump() command is sent to the ESS process to
+generate the source buffer."
+  (interactive
+   (progn
+     (ess-force-buffer-current "Process to dump from: ")
+     (ess-read-object-name "Object to edit: ")))
+  (let* ((dirname (file-name-as-directory
+		   (if (stringp ess-source-directory)
+		       ess-source-directory
+		     (save-excursion
+		       (set-buffer
+			(process-buffer (get-ess-process
+					 ess-local-process-name)))
+		       (ess-setq-vars-local ess-customize-alist)
+		       (apply ess-source-directory nil)))))
+	 (filename (concat dirname (format ess-dump-filename-template object)))
+	 (old-buff (get-file-buffer filename)))
+
+    ;; If the directory doesn't exist, offer to create it
+    (if (file-exists-p (directory-file-name dirname)) nil
+      (if (y-or-n-p	; Approved
+	   (format "Directory %s does not exist. Create it? " dirname))
+	  (make-directory (directory-file-name dirname))
+	(error "Directory %s does not exist." dirname)))
+
+    ;; Three options:
+    ;;  (1) Pop to an existing buffer containing the file in question
+    ;;  (2) Find an existing file
+    ;;  (3) Create a new file by issuing a dump() command to S
+    ;; Force option (3) if there is a prefix arg
+
+    (if current-prefix-arg
+	(ess-dump-object object filename)
+      (if old-buff
+	  (progn
+	    (pop-to-buffer old-buff)
+	    (message "Popped to edit buffer."))
+	;; No current buffer containing desired file
+	(if (file-exists-p filename)
+	    (progn
+	      (ess-find-dump-file-other-window filename)
+	      (message "Read %s" filename))
+	  ;; No buffer and no file
+	  (ess-dump-object object filename))))))
+
 
 (provide 'ess-iw32)
 
