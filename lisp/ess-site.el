@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/11/21 23:18:23 $
-;; Version: $Revision: 4.50 $
-;; RCS: $Id: ess-site.el,v 4.50 1997/11/21 23:18:23 rossini Exp $
+;; Modified: $Date: 1997/11/26 15:28:54 $
+;; Version: $Revision: 4.51 $
+;; RCS: $Id: ess-site.el,v 4.51 1997/11/26 15:28:54 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -31,7 +31,7 @@
 
 ;;; This file defines all the site-specific customizations for ESS.
 ;;; It should be edited on a per-site basis.  Read the comments (1.1
-;;; in Section 1 to see if ess-site.el must be editied.  The final
+;;; in Section 1 to see if ess-site.el must be edited.  The final
 ;;; directory location of this file must be supplied in
 ;;; ess-lisp-directory.  The editing of remaining sections is
 ;;; optional.  It should then be byte-compiled, and users who wish to
@@ -235,7 +235,7 @@
 (setq inferior-ess-font-lock-input t) ; from RMH
 
 ;;; (3.2) Framepop.  Windows produced by ess-execute-objects etc. are
-;;; often unneccessarily large. The framepop package makes such
+;;; often unnecessarily large. The framepop package makes such
 ;;; windows appear in a separate, shrink-wrapped frame. This will
 ;;; also affect other "temporary" windows such as those produced by
 ;;; C-h k, etc.  To enable, uncomment both lines of code below).
@@ -250,7 +250,7 @@
 ;;; If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
 ;;; to delete, except for files created with ess-dump-object-into-edit-buffer.
 ;;; Anything else (for example `always'): always keep and never delete.
-;;; This variable only affects the behaviour
+;;; This variable only affects the behavior
 ;;; of ess-load-file.  Dump files are never deleted if an error occurs
 ;;; during the load. 
 ;;;
