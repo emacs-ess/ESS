@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/02 19:52:14 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essl-sas.el,v 1.6 1997/09/02 19:52:14 rossini Exp $
+;; Modified: $Date: 1997/09/08 13:01:17 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essl-sas.el,v 1.7 1997/09/08 13:01:17 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -29,7 +29,21 @@
 
 ;;; Commentary:
 ;;; This is based upon Version 1.4 of SAS mode:
-;;; 
+
+
+
+
+
+
+
+;;; autoloads originally in ess-site.  
+
+(autoload 'SAS-transcript-mode
+  "ess-trns" "ESS source eval mode" t)
+
+
+
+
 ;;;    sas-mode:  indent, run etc, SAS programs.
 ;;;    Copyright (C) 1994 Tom Cook
 ;;;  Author:   Tom Cook

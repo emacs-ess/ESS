@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/09/01 21:27:32 $
-;; Version: $Revision: 1.61 $
-;; RCS: $Id: ess.el,v 1.61 1997/09/01 21:27:32 rossini Exp $
+;; Modified: $Date: 1997/09/08 13:02:24 $
+;; Version: $Revision: 1.62 $
+;; RCS: $Id: ess.el,v 1.62 1997/09/08 13:02:24 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -41,35 +41,38 @@
 ;; don't charge money for it, remove this notice, or hold anyone liable
 ;; for its results.
 
-;; Copyright 1989,1991,1992, Doug Bates    bates@stat.wisc.edu
-;;            1993, 1994     Ed Kademan    kademan@stat.wisc.edu
-;;                           Frank Ritter  ritter@psychology.nottingham.ac.uk
-;;            1994--1997     David Smith <maa036@lancaster.ac.uk>
-;;                           
-;;            1996--1997     Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>
-;;            1996--1997     Martin Maechler <maechler@stat.math.ethz.ch>
-;;            1996--1997     A.J. Rossini <rossini@stat.sc.edu>
-;;
+;; Copyright 1989--92,1997 Doug Bates    bates@stat.wisc.edu
+;;           1993, 1994    Ed Kademan    kademan@stat.wisc.edu
+;;                         Frank Ritter  ritter@psychology.nottingham.ac.uk
+;;           1994--1997    David Smith <maa036@lancaster.ac.uk>
+;;                          
+;;           1996--1997    Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>
+;;           1996--1997    Martin Maechler <maechler@stat.math.ethz.ch>
+;;           1996--1997    A.J. Rossini <rossini@stat.sc.edu>
+;;           1996--1997    Richard M. Heiberger <rmh@astro.ocis.temple.edu>
+;;      
 
 ;;; Commentary:
 
 ;;; PURPOSE
-;;; Interface to the S and XLisp dialects of statistical programming
-;;; languages 
+;;;
+;;; Interface to the S, SAS, and XLisp dialects of statistical
+;;; programming languages.  Written to be extendable to any other
+;;; interactive statistical programming language.
 
 ;;; BRIEF OVERVIEW
 ;;;
-;;; Supports structured editing of S and XLisp (statistics programming
-;;; languages) functions that are integrated with a running process in
-;;; a buffer.
+;;; Supports structured editing of S, SAS, and XLisp (statistics
+;;; programming languages) functions that are integrated with a
+;;; running process in a buffer.
 
-;;; THE ESS-MODE MAILING LIST 
+;;; THE ESS MAILING LIST 
 ;;;
-;;; There is an informal mailing list for discussions of ess-mode. Alpha
-;;; and beta releases of ess-mode are also announced here. Send mail to
-;;; S-mode-request@stat.math.ethz.ch to join.
+;;; There is an informal mailing list for discussions of ESS. Alpha
+;;; and beta releases of ESS are also announced here. Send mail
+;;; to ess-request@stat.math.ethz.ch to join.
 
-;;; OVERVIEW OF S MODE
+;;; OVERVIEW OF ESS
 ;;;
 ;;; S is a statistics programming language developed at Bell Labs
 ;;; particularly suited for descriptive and exploratory statistics.
@@ -104,13 +107,14 @@
 ;;;   (rod@marcam.dsir.govt.nz)
 ;;; Also thanks from David Smith to the previous authors for all their
 ;;; help and suggestions.
-;;; And thanks from Hornik/Maechler/Rossini to David Smith.
+;;; And thanks from Richard M. Heiberger, Kurt Hornik, Martin
+;;; Maechler, and A.J. Rossini to David Smith.
 
 ;;; BUG REPORTS
 ;;; Please report bugs to ess-bugs@stat.math.ethz.ch
 ;;; Comments, suggestions, words of praise and large cash donations
 ;;; are also more than welcome, but should generally be split between
-;;; the authors :-).  
+;;; all authors :-).  
 
 ;;; Code:
 
@@ -124,32 +128,10 @@
 
 
 
-
-;;; autoloads originally in ess-site.  
-
-(autoload 'S-mode "ess-mode"
-  "Major mode for editing S source code." t)
-(autoload 'R-mode "ess-mode"
-  "Major mode for editing R source code." t)
-(autoload 'XLS-mode "ess-mode"
-  "major mode for editing XLispStat code." t)
-(autoload 'SAS-mode "ess-mode"
-  "Major mode for editing SAS source code." t)
-
-(autoload 'S-transcript-mode
-  "ess-trns" "ESS source eval mode" t)
-(autoload 'R-transcript-mode
-  "ess-trns" "ESS source eval mode" t)
-(autoload 'SAS-transcript-mode
-  "ess-trns" "ESS source eval mode" t)
+ ; ess-mode: editing S source
 
 (autoload 'inferior-ess "ess-inf"
   "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
-
-
-
-
- ; ess-mode: editing S source
 
 (autoload 'ess-dump-object-into-edit-buffer "ess-mode"
   "Edit an S object" t)
@@ -160,26 +142,10 @@
 (autoload 'ess-load-file "ess-mode"
   "Source a file into S.")
 
-;;;;* Alias ess-mode to s-mode
-;;; Emacs will set the mode for a file based on the file's header.
-;;; The mode name is indicated by putting it between -*- on the top line. 
-;;; (Other commands can go here too, see an Emacs manual.)
-;;; For a file you also load, you will want a leading # (comment to S)
-;;; Emacs will downcase the name of the mode, e.g., S, so we must provide
-;;; s-mode in lower case too.  That is, "#-*- S-*-" invokes s-mode and 
-;;; not S-mode.
-(fset 's-mode 'S-mode)
-(fset 'r-mode 'R-mode)
-
  ; ess-transcript-mode
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files" t)
-
-(fset 's-transcript-mode 'ess-transcript-mode)
-(fset 'S-transcript-mode 'ess-transcript-mode)
-(fset 'r-transcript-mode 'ess-transcript-mode)
-(fset 'R-transcript-mode 'ess-transcript-mode)
 
 (autoload 'ess-display-help-on-object "ess-help"
   "Display help on an S object" t)
