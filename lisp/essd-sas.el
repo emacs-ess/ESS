@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/23 21:21:45 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: essd-sas.el,v 1.15 1997/10/23 21:21:45 rossini Exp $
+;; Modified: $Date: 1997/10/23 21:24:45 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: essd-sas.el,v 1.16 1997/10/23 21:24:45 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -45,6 +45,12 @@
 ;;workaround
 
 ;;; Code:
+
+;; Are these buffer local?
+(defvar ess-sas-shell-buffer-name nil
+  "buffer to run SAS in.")
+(defvar ess-sas-shell-buffer-name-flag nil
+  "Set if presently exists ess-shell-buffer-name.")
 
 (defun ess-SAS-pre-run-hook ()
   "Set up log and list files for interactive SAS."
