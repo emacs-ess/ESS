@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/03 14:21:02 $
-;; Version: $Revision: 1.29 $
-;; RCS: $Id: ess.el,v 1.29 1997/07/03 14:21:02 rossini Exp $
+;; Modified: $Date: 1997/07/03 14:32:33 $
+;; Version: $Revision: 1.30 $
+;; RCS: $Id: ess.el,v 1.30 1997/07/03 14:32:33 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.30  1997/07/03 14:32:33  rossini
+;; referencing error: need to do symbols, not vars!
+;;
 ;; Revision 1.29  1997/07/03 14:21:02  rossini
 ;; trying setq again.
 ;;
@@ -1057,16 +1060,16 @@ the basic idea: (setq ---  (cdr (assq --- var-alist)))."
 
   (if buf (set-buffer buf))
   ;;(setq-default ess-customize-alist var-alist)
-  (setq	 ess-proc-prefix              (cdr (assq ess-proc-prefix              var-alist)))
-  (setq	 ess-version-running          (cdr (assq ess-version-running          var-alist)))
-  (setq	 inferior-ess-program         (cdr (assq inferior-ess-program         var-alist)))
-  (setq	 inferior-ess-objects-command (cdr (assq inferior-ess-objects-command var-alist)))
-  (setq	 ess-help-sec-regex           (cdr (assq ess-help-sec-regex           var-alist)))
-  (setq	 ess-help-sec-keys-alist      (cdr (assq ess-help-sec-keys-alist      var-alist)))
-  (setq	 inferior-ess-help-command    (cdr (assq inferior-ess-help-command    var-alist)))
-  (setq	 inferior-ess-exit-command    (cdr (assq inferior-ess-exit-command    var-alist)))
-  (setq	 ess-loop-timeout             (cdr (assq ess-loop-timeout             var-alist)))
-  (setq	 inferior-ess-primary-prompt  (cdr (assq inferior-ess-primary-prompt  var-alist)))
+  (setq	 ess-proc-prefix              (cdr (assq 'ess-proc-prefix              var-alist)))
+  (setq	 ess-version-running          (cdr (assq 'ess-version-running          var-alist)))
+  (setq	 inferior-ess-program         (cdr (assq 'inferior-ess-program         var-alist)))
+  (setq	 inferior-ess-objects-command (cdr (assq 'inferior-ess-objects-command var-alist)))
+  (setq	 ess-help-sec-regex           (cdr (assq 'ess-help-sec-regex           var-alist)))
+  (setq	 ess-help-sec-keys-alist      (cdr (assq 'ess-help-sec-keys-alist      var-alist)))
+  (setq	 inferior-ess-help-command    (cdr (assq 'inferior-ess-help-command    var-alist)))
+  (setq	 inferior-ess-exit-command    (cdr (assq 'inferior-ess-exit-command    var-alist)))
+  (setq	 ess-loop-timeout             (cdr (assq 'ess-loop-timeout             var-alist)))
+  (setq	 inferior-ess-primary-prompt  (cdr (assq 'inferior-ess-primary-prompt  var-alist)))
   (message "(ess-set-vars): ess-proc-prefix=%s" ess-proc-prefix)
   )
 
