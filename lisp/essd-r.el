@@ -8,9 +8,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>
 ;;              M. Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 2002/06/24 07:48:01 $
-;; Version: $Revision: 5.40 $
-;; RCS: $Id: essd-r.el,v 5.40 2002/06/24 07:48:01 maechler Exp $
+;; Modified: $Date: 2002/10/22 06:49:27 $
+;; Version: $Revision: 5.41 $
+;; RCS: $Id: essd-r.el,v 5.41 2002/10/22 06:49:27 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -148,7 +148,8 @@ Optional prefix (C-u) allows to set command line arguments, such as --vsize."
 (fset 'r-transcript-mode 'R-transcript-mode)
 
 (defun R-fix-T-F (&optional from quietly)
-  "Fix T/F into TRUE and FALSE --- CAUTIOUSLY"
+  "Fix T/F into TRUE and FALSE *cautiously*, i.e. not in comments and strings;
+ starting from the current position (point)."
   (interactive "d\nP"); point and prefix (C-u)
   (save-excursion
     (goto-char from)
