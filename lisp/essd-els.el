@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 1999/11/03 22:46:27 $
-;; Version: $Revision: 1.7 $
-;; RCS: $Id: essd-els.el,v 1.7 1999/11/03 22:46:27 ess Exp $
+;; Modified: $Date: 1999/11/04 17:00:06 $
+;; Version: $Revision: 1.8 $
+;; RCS: $Id: essd-els.el,v 1.8 1999/11/04 17:00:06 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -121,7 +121,7 @@ return new alist whose car is the new pair and cdr is ALIST.
 	    R-customize-alist
 	  (if (string= dialect "xls")
 	      XLS-customize-alist
-	    S+5-customize-alist)))))))
+	    S+5-customize-alist))))))
 
 (defun ESS-elsewhere (&optional proc-name)
   "Call an inferior process from ELSEWHERE."
