@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/07/15 14:57:30 $
-;; Version: $Revision: 1.179 $
-;; RCS: $Id: essa-sas.el,v 1.179 2004/07/15 14:57:30 rsparapa Exp $
+;; Modified: $Date: 2004/07/19 14:44:48 $
+;; Version: $Revision: 1.180 $
+;; RCS: $Id: essa-sas.el,v 1.180 2004/07/19 14:44:48 rsparapa Exp $
 
 ;; Keywords: SAS 
 
@@ -406,7 +406,6 @@ current buffer if nil."
   "Open a dataset for viewing with PROC FSVIEW."
     (interactive)
     (ess-save-and-set-local-variables)
-    ;(ess-sas-cd)
 
  (save-excursion (let ((ess-tmp-sas-data nil) 
     (ess-tmp-sas-data-view-fsview-statement ess-sas-data-view-fsview-statement)
@@ -429,6 +428,7 @@ current buffer if nil."
 	(setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
         (ess-sas-goto-shell t)
+	(ess-sas-cd)
 
 	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
 	    " -initstmt \"" ess-sas-data-view-libname ess-sas-data-view-fsview-command 
@@ -441,7 +441,6 @@ current buffer if nil."
   "Open a dataset for viewing with PROC INSIGHT."
     (interactive)
     (ess-save-and-set-local-variables)
-    ;(ess-sas-cd)
 
  (save-excursion (let ((ess-tmp-sas-data nil) 
     (ess-tmp-sas-data-view-insight-statement ess-sas-data-view-insight-statement)
@@ -464,6 +463,7 @@ current buffer if nil."
 	(setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
         (ess-sas-goto-shell t)
+	(ess-sas-cd)
 
 	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command 
 	    " -initstmt \"" ess-sas-data-view-libname ess-sas-data-view-insight-command 
