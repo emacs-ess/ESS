@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 1999/09/14 23:09:21 $
-;; Version: $Revision: 1.21 $
-;; RCS: $Id: essd-sta.el,v 1.21 1999/09/14 23:09:21 rossini Exp $
+;; Modified: $Date: 1999/10/04 15:12:43 $
+;; Version: $Revision: 1.22 $
+;; RCS: $Id: essd-sta.el,v 1.22 1999/10/04 15:12:43 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -78,6 +78,7 @@
   (ess-mode STA-customize-alist proc-name))
 
 (fset 'stata-mode 'STA-mode)
+(fset 'Stata-mode 'STA-mode)
 
 (defun stata (&optional start-args)
   "Call Stata."
