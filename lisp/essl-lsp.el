@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 1 Sept 1997
-;; Modified: $Date: 1997/09/01 17:48:11 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essl-lsp.el,v 1.1 1997/09/01 17:48:11 rossini Exp $
+;; Modified: $Date: 1997/09/01 21:48:20 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essl-lsp.el,v 1.2 1997/09/01 21:48:20 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -54,7 +54,7 @@
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
     (ess-keep-dump-files          . nil)
-    (font-lock-defaults           . ess-mode-font-lock-keywords))
+    (font-lock-defaults           . '(ess-mode-font-lock-keywords)))
   "General options for editing LispStat, XLispStat, and ViSta source files.")
 
 (provide 'essl-lsp)

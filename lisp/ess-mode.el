@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Hornik, Maechler, A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/01 21:03:52 $
-;; Version: $Revision: 1.51 $
-;; RCS: $Id: ess-mode.el,v 1.51 1997/09/01 21:03:52 rossini Exp $
+;; Modified: $Date: 1997/09/01 21:47:58 $
+;; Version: $Revision: 1.52 $
+;; RCS: $Id: ess-mode.el,v 1.52 1997/09/01 21:47:58 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -273,6 +273,9 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
 	   ess-language
 	   ess-dialect
 	   (current-buffer)))
+  (ess-write-to-dribble-buffer
+   (format "(ess-mode-1.2): ess-process= %s \n"
+	   (ess-local-process-name ess-local-process-name "none")))
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1.5): alist=%s \n"
 	   alist))
@@ -1011,8 +1014,10 @@ generate the source buffer."
 		   (if (stringp ess-source-directory)
 		       ess-source-directory
 		     (save-excursion
-		       (set-buffer (process-buffer
-				    (get-ess-process ess-local-process-name)))
+		       (set-buffer
+			(process-buffer (get-ess-process
+					 ess-local-process-name)))
+		       (ess-setq-vars-local ess-customize-alist)
 		       (apply ess-source-directory nil)))))
 	 (filename (concat dirname (format ess-dump-filename-template object)))
 	 (old-buff (get-file-buffer filename)))

@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/09/01 17:37:35 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: essl-s.el,v 1.3 1997/09/01 17:37:35 rossini Exp $
+;; Modified: $Date: 1997/09/01 21:48:17 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: essl-s.el,v 1.4 1997/09/01 21:48:17 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -51,7 +51,7 @@
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
     (ess-keep-dump-files          . nil)
-    (font-lock-defaults           . ess-mode-font-lock-keywords))
+    (font-lock-defaults           . '(ess-mode-font-lock-keywords)))
   "General options for editing S, S+, and R source files.")
 
 (provide 'essl-s)
