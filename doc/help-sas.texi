@@ -10,7 +10,7 @@ XEmacs Project.
 
 
 @comment  node-name,  next,  previous,  up
-@node ESS[SAS]--Design philosophy, ESS[SAS]--Recommended autoexec.sas, Help for SAS, Help for SAS
+@node ESS(SAS)--Design philosophy, ESS(SAS)--Recommended autoexec, Help for SAS, Help for SAS
 @section ESS[SAS]--Design philosophy
 
 ESS[SAS] mode was designed to aid the user in writing and maintaining
@@ -50,7 +50,7 @@ via a network or dial-up who can not use the native SAS window environment.
 inherent efficiency of using the same superior interface all of the time.
 
 @comment  node-name,  next,  previous,  up
-@node ESS[SAS]--Recommended autoexec.sas, ESS[SAS]--Editing files, ESS[SAS]--Design philosophy, Help for SAS
+@node ESS(SAS)--Recommended autoexec, ESS(SAS)--Editing files, ESS(SAS)--Design philosophy, Help for SAS
 @section ESS[SAS]--Recommended autoexec.sas
 
 The default settings of the inferior-SAS-args in essd-sas.el are
@@ -89,7 +89,7 @@ the autoexec.sas.  The redundancy means that these options are in
 effect for both SAS interactive and batch jobs.
 
 @comment  node-name,  next,  previous,  up
-@node ESS[SAS]--Editing files, iESS[SAS]--Inferior ESS processes, ESS[SAS]--Recommended autoexec.sas, Help for SAS
+@node ESS(SAS)--Editing files, iESS(SAS)--Inferior ESS processes, ESS(SAS)--Recommended autoexec, Help for SAS
 @section ESS[SAS]--Editing files
 
 ESS[SAS] is the mode for editing SAS language files.  This mode handles:
@@ -121,7 +121,7 @@ At this writing (@essver{}), the indenting and syntactic
 highlighting are usually correct.
 
 @comment  node-name,  next,  previous,  up
-@node  iESS[SAS]--Inferior ESS processes, ESS[SAS]--Batch processes, ESS[SAS]--Editing files, Help for SAS
+@node  iESS(SAS)--Inferior ESS processes, ESS(SAS)--Batch processes, ESS(SAS)--Editing files, Help for SAS
 @section iESS[SAS]--Inferior ESS processes
 
 iESS (inferior ESS) is the mode for interfacing with active
@@ -140,7 +140,7 @@ We plan to add
 @end display
 
 @comment  node-name,  next,  previous,  up
-@node  ESS[SAS]--Batch processes, ESS[SAS]--Function keys for batch processing, iESS[SAS]--Inferior ESS processes, Help for SAS
+@node  ESS(SAS)--Batch processes, ESS(SAS)--Function keys for batch processing, iESS(SAS)--Inferior ESS processes, Help for SAS
 @section ESS[SAS]--Batch processes
 
 The command used by the SUBMIT function key (F3 or F8) to submit a batch SAS 
@@ -174,7 +174,7 @@ file by (the default of 5 seconds is shown):
 @end example
 
 @comment  node-name,  next,  previous,  up
-@node  ESS[SAS]--Function keys for batch processing, ESS[SAS]--TAB key, ESS[SAS]--Batch processes, Help for SAS
+@node  ESS(SAS)--Function keys for batch processing, ESS(SAS)--TAB key, ESS(SAS)--Batch processes, Help for SAS
 @section ESS[SAS]--Function keys for batch processing
 
 The description of the setup for function keys for batch processing of
@@ -333,7 +333,7 @@ own situation:
 @end example
 
 @comment  node-name,  next,  previous,  up
-@node  ESS[SAS]--TAB key, ESS[SAS]--Usage scenarios, ESS[SAS]--Function keys for batch processing, Help for SAS
+@node  ESS(SAS)--TAB key, ESS(SAS)--Usage scenarios, ESS(SAS)--Function keys for batch processing, Help for SAS
 @section ESS[SAS]--TAB key
 
 Again, two options.
@@ -361,7 +361,7 @@ Under the alternate behavior, the TAB key is bound to tab-to-tab-stop
 and the tab stops are set by default at multiples of 4.
 
 @comment  node-name,  next,  previous,  up
-@node   ESS[SAS]--Usage scenarios, ESS[SAS]--Common problems, ESS[SAS]--TAB key, Help for SAS
+@node   ESS(SAS)--Usage scenarios, ESS(SAS)--Common problems, ESS(SAS)--TAB key, Help for SAS
 @section ESS[SAS]--Usage scenarios
 
 We present one scenario for using ESS to interact with SAS.
@@ -491,7 +491,7 @@ Here is a typical myfile.sas:
 @end example
 
 @comment  node-name,  next,  previous,  up
-@node   ESS[SAS]--Common problems, , ESS[SAS]--Usage scenarios, Help for SAS
+@node   ESS(SAS)--Common problems, , ESS(SAS)--Usage scenarios, Help for SAS
 @section ESS[SAS]--Common problems
 
 @display

@@ -1,5 +1,5 @@
 @comment @comment  node-name,  next,  previous,  up
-@comment @node emacs--General features, ESS[S]--Editing files, , Help for the S family
+@comment @node emacs--General features, ESS(S)--Editing files, , Help for the S family
 @comment @section emacs--General features
 @comment
 @comment We assume that you are familiar with Emacs terminology and syntax:
@@ -10,7 +10,7 @@
 @comment To find the key-sequences for commands, view the keymap (C-h b) or
 @comment view help for the current mode (C-h m).
 
-@node ESS[S]--Editing files, iESS[S]--Inferior ESS processes, , Help for the S family
+@node ESS(S)--Editing files, iESS(S)--Inferior ESS processes, , Help for the S family
 @comment  node-name,  next,  previous,  up
 @section ESS[S]--Editing files
 
@@ -40,9 +40,9 @@ the suffices found in ess-site (*.R, *.S, *.s, etc).  However, one
 will have to start up an inferior process to take advantage of the
 interactive features.
 
-@node iESS[S]--Inferior ESS processes, Handling and Reusing Transcripts, ESS[S]--Editing files, Help for the S family
+@node iESS(S)--Inferior ESS processes, Handling and Reusing Transcripts, ESS(S)--Editing files, Help for the S family
 @comment  node-name,  next,  previous,  up
-@section  iESS[S]--Inferior ESS processes
+@section iESS[S]--Inferior ESS processes
 iESS (inferior ESS) is the mode for interfacing with active
 statistical processes (programs).  This mode handles:
 
@@ -101,7 +101,7 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
   machine get sent through the buffer "*S-elsewhere*" to be executed
   by S on the other machine.
 
-@node Handling and Reusing Transcripts, ESS-help--assistance with viewing help, iESS[S]--Inferior ESS processes, Help for the S family
+@node Handling and Reusing Transcripts, ESS-help--assistance with viewing help, iESS(S)--Inferior ESS processes, Help for the S family
 @comment  node-name,  next,  previous,  up
 @section Handling and Reusing Transcripts
 
@@ -117,7 +117,7 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
 - ability to switch between processes which would be the target of the
   buffer (for the above).
 
-@node ESS-help--assistance with viewing help, Philosophies for using ESS[S], Handling and Reusing Transcripts, Help for the S family
+@node ESS-help--assistance with viewing help, Philosophies for using ESS(S), Handling and Reusing Transcripts, Help for the S family
 @comment  node-name,  next,  previous,  up
 @section ESS-help--assistance with viewing help
 @itemize @bullet
@@ -126,7 +126,7 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
 @end itemize
 
 
-@node Philosophies for using ESS[S], Scenarios for use (possibilities--based on actual usage), ESS-help--assistance with viewing help, Help for the S family
+@node Philosophies for using ESS(S), Scenarios for use (possibilities--based on actual usage), ESS-help--assistance with viewing help, Help for the S family
 @section Philosophies for using ESS[S]
 
 The first is preferred, and configured for.  The second one can be
@@ -149,7 +149,7 @@ retrieved again, by changing emacs variables.
 The second saves a small amount of disk space.  The first allows for
 better portability as well as external version control for code.
 
-@node Scenarios for use (possibilities--based on actual usage), Customization Examples and Solutions to Problems, Philosophies for using ESS[S], Help for the S family
+@node Scenarios for use (possibilities--based on actual usage), Customization Examples and Solutions to Problems, Philosophies for using ESS(S), Help for the S family
 @section Scenarios for use (possibilities--based on actual usage)
 
 We present some basic suggestions for using ESS to interact with S.
