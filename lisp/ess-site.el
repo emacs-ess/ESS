@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/05/18 19:33:25 $
-;; Version: $Revision: 5.74 $
-;; RCS: $Id: ess-site.el,v 5.74 2001/05/18 19:33:25 ess Exp $
+;; Modified: $Date: 2001/06/06 20:44:29 $
+;; Version: $Revision: 5.75 $
+;; RCS: $Id: ess-site.el,v 5.75 2001/06/06 20:44:29 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -554,6 +554,10 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;;   Use the function call (ess-sas-edit-keys-toggle 0)
 ;;;   or                    (ess-sas-edit-keys-toggle 1)
 ;;;   to change the setting after the first SAS-mode buffer has been created.
+;;;   1c. You can also have SAS-mode automatically generate and END; or %END;
+;;;       statement to close a DO, DO% or SELECT block when you press C-TAB  
+;;;       on a blank line with the optional behavior.  Uncomment the following line:
+;;;(setq ess-sas-smart-back-tab t)    ;; requires optional behavior above
 ;;;
 ;;;   2. Managing submitted SAS jobs with function keys.
 ;;;   2a. Default: Function keys retain their global bindings.

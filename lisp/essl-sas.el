@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2001/05/31 15:47:15 $
-;; Version: $Revision: 5.23 $
-;; RCS: $Id: essl-sas.el,v 5.23 2001/05/31 15:47:15 ess Exp $
+;; Modified: $Date: 2001/06/06 20:44:29 $
+;; Version: $Revision: 5.24 $
+;; RCS: $Id: essl-sas.el,v 5.24 2001/06/06 20:44:29 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -372,8 +372,6 @@ number."
 	 (list "/\\*.*\\*/"			 0  font-lock-comment-face t)
 
 	 ;; SAS execution blocks, DATA/RUN, PROC/RUN, SAS Macro Statements
-	 (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"	    font-lock-reference-face)
-
 	 (cons "\\<%do[ \t]*\\(%until\\|%while\\)?\\>"
 						    font-lock-reference-face)
 	 (cons (concat "\\(^[0-9]*\\|;\\)[ \t]*"
@@ -381,7 +379,7 @@ number."
 		"\\>")				    font-lock-reference-face)
 
 	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
-		"\\(data\\|endsas\\|quit\\|run\\)[ \t\n;]")
+		"\\(data\\|endsas\\|quit\\|run\\|proc[ \t]+[a-z][a-z_0-9]+\\)[ \t\n;]")
 		      				    font-lock-reference-face)
 	 (cons (concat "\\(^[0-9]*\\|;\\|%then\\|%else\\)[ \t]*"
 		"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"
