@@ -13,9 +13,14 @@ all install clean distclean:
 #ESS is now an official xemacs-package, but the xemacs-links target
 #persists since there is generally a lag between an ESS release and
 #the corresponding xemacs-package release
+#Previous ESS xemacs-package installation is stored prev-ver-ess
 xemacs-links: 
-	-rm -rf $(XEMACSDIR)/xemacs-packages/etc/ess* $(XEMACSDIR)/xemacs-packages/lisp/ess* \
-	    $(XEMACSDIR)/xemacs-packages/info/ess.info*
+	test -d $(XEMACSDIR)/xemacs-packages/prev-ver-ess/etc || mkdir -p $(XEMACSDIR)/xemacs-packages/prev-ver-ess/etc
+	-mv -f $(XEMACSDIR)/xemacs-packages/etc/ess*  $(XEMACSDIR)/xemacs-packages/prev-ver-ess/etc 
+	test -d $(XEMACSDIR)/xemacs-packages/prev-ver-ess/lisp || mkdir $(XEMACSDIR)/xemacs-packages/prev-ver-ess/lisp
+	-mv -f $(XEMACSDIR)/xemacs-packages/lisp/ess* $(XEMACSDIR)/xemacs-packages/prev-ver-ess/lisp 
+	test -d $(XEMACSDIR)/xemacs-packages/prev-ver-ess/info || mkdir $(XEMACSDIR)/xemacs-packages/prev-ver-ess/info
+	-mv -f $(XEMACSDIR)/xemacs-packages/info/ess.info* $(XEMACSDIR)/xemacs-packages/prev-ver-ess/info 
 	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/etc                  $(XEMACSDIR)/xemacs-packages/etc/ess
 	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/lisp                 $(XEMACSDIR)/xemacs-packages/lisp/ess
 	ln -s $(ESSDIR)/$(ESSVERSIONDIR)/doc/info/ess.info    $(XEMACSDIR)/xemacs-packages/info/ess.info
