@@ -18,7 +18,7 @@ END-INFO-DIR-ENTRY
 @comment  node-name,  next,  previous,  up
 
 @ifinfo
-@majorheading ESS
+@majorheading ESS --- Emacs Speaks Statistics
 
 (Originally known as S-mode, written by Doug Bates, Ed Kademan, Frank
 Ritter, and David Smith.)
@@ -26,8 +26,12 @@ Ritter, and David Smith.)
 Currently maintained by A.J. Rossini, Richard M. Heiberger, Kurt Hornik,
 and Martin Maechler.
 
-This file documents @code{S.el}, a GNU Emacs mode for running
-@code{Splus} in a buffer.
+This file documents @code{ESS}, a GNU Emacs package for running
+@code{S(plus)}, @code{R}, @code{X-LispStat}, @code{SAS} and potentially
+other interactive `statistical' languages in an `inferior' buffer,
+editing source code in these languages and interacting with the running
+program.
+
 
 This documentation relates to Version 4.9 of @code{ESS}.
 
@@ -46,15 +50,15 @@ are very welcome!
 
 @titlepage
 @sp5
-@center @titlefont{ESS}
+@center @titlefont{ESS --- Emacs Speaks Statistics}
 @center version 4.9
 @center Rossini, Maechler, and Hornik.
 @center (Doug Bates, Ed Kademan, Frank Ritter and David Smith)
 @sp2
-@center An GNU Emacs, XEmacs  package 
+@center A GNU Emacs, XEmacs  package 
 @center for interacting with statistical
 @center software packages (primarily 
-@center Splus, R, and XLispStat).
+@center S(plus), R, and XLispStat).
 @sp7
 @center Original Documentation by David Smith
 @center (@code{D.M.Smith@@lancaster.ac.uk})
@@ -185,19 +189,25 @@ Variables for customisation
 @cindex introduction
 
 The S and Splus packages provide sophisticated statistical and graphical
-routines for manipulating data.  The ESS package was originally
-constructed to provide a useful interface, through Emacs, to these
-packages.  It has currently been extended for R, with plans for
-XLispStat and other interactive languages in the future.
+routines for manipulating data.  The ESS @emph{ESS := @b{E}macs @b{S}peaks
+@b{S}tatistics} package was originally
+constructed (as ``S-mode'') to provide a useful interface, through Emacs,
+to these packages.  It has currently been extended for R, with plans for
+XLispStat, SAS and other interactive languages in the future.
 
-A bit of notation before we begin.  I will refer to both the `new S'
+A bit of notation before we begin.  I will refer to the `new S'
 package (as described in Becker, Chambers and Wilks, @cite{The New S
-Language: A programming environment for data analysis and graphics}) and
-`Splus' (an enhanced version of new S from Statsci) simply by
+Language: A programming environment for data analysis and graphics}),
+`Splus' (an enhanced version of new S from Mathsoft), and `R' (a free
+system strikingly similar to S), simply by
 ``S''.  The interface which is used to run S under Emacs (which this manual
 documents) will be referred to as ``ESS'', which should not be
 confused with the GNU Emacs major mode @code{ESS[S]} which is used for
 editing S source. 
+
+Currently, the documentation contains many references to @cite{`S'} where
+actually any supported (statistics) language is meant, i.e.,
+`S' could also mean `XlispStat'.
 
 @cindex interactive use of S
 
@@ -216,7 +226,7 @@ No special knowledge of Emacs is necessary when using S interactively
 under ESS.
 
 @cindex programming in S
-For those that use S in the typical edit-test-revise cycle when
+For those that use S in the typical edit--test--revise cycle when
 programming S functions, ESS provides for editing of S functions in
 Emacs edit buffers.  Unlike the typical use of S where the editor is
 restarted every time an object is edited, ESS uses the current Emacs
@@ -337,10 +347,10 @@ ESS is based on Olin Shivers' excellent comint package (which is supplied
 @cindex comint
 @cindex authors
 @cindex credits
-with version 19 of FSF GNU Emacs).  The original version of ESS was
-written by Doug Bates (@code{bates@@stat.wisc.edu}) and Ed Kademan
+with version 19 of GNU Emacs).  The original version of ESS (then known as
+`S-mode') was written by Doug Bates (@code{bates@@stat.wisc.edu}) and Ed Kademan
 (@code{kademan@@stat.wisc.edu}).  Frank Ritter
-(@code{ritter@@psy.cmu.edu}) then merged this version with his own S
+(@code{ritter@@psy.cmu.edu}) then merged this version with his own S-mode
 mode to form @code{S.el} version 2.1.
 
 Version 2.1 of S.el was then updated and expanded by David Smith to form
@@ -360,7 +370,7 @@ the code.
 
 @item 
 Thanks to Martin Maechler for reporting and fixing bugs, providing
-many useful comments and suggestions, and for maintining the ESS
+many useful comments and suggestions, and for maintining the S-mode
 mailing list.
 
 @item 
@@ -373,14 +383,20 @@ excellent indenting code, and many comments and suggestions.
 
 @item
 Last but definitely not least, thanks to the many beta testers of the
-ESS mailing list.
+S-mode and ESS mailing list.
 @end itemize
 
 @node Latest version, Manual, Credits, Introduction
 @comment  node-name,  next,  previous,  up
 @section Getting the latest version of ESS
 
-The latest version is always available via WWW from:
+The latest (beta) versions are always available 
+@itemize @bullet
+@item via WWW @code{http://www.stat.sc.edu/~rossini/projects/}
+@item or FTP, from the directory @code{ftp://ftp.math.sc.edu/rossini/}
+@end itemize
+
+The latest officially released version is still available via WWW from:
 @itemize @bullet
 @item
 @code{http://www.maths.lancs.ac.uk:2080/~maa036/elisp/S-mode/}
