@@ -61,7 +61,8 @@ CORE = ess.elc ess-site.elc
 SOURCES = ess-vars.el ess.el ess-site.el \
 	essl-s.el essl-lsp.el essl-sas.el \
 	essd-s3.el essd-s4.el essd-s+3.el essd-r.el essd-xls.el essd-sas.el \
-	ess-inf.el ess-mode.el ess-trns.el ess-help.el
+	ess-inf.el ess-mode.el ess-trns.el ess-help.el \
+	ess-doc.el
 
 OBJECTS = $(SOURCES:.el=.elc)
 
