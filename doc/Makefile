@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.23 $.
+### File: $Revision: 1.24 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -11,7 +11,7 @@
 
 include ../Makeconf
 
-# where the Info file should go 
+# where the Info file should go
 #ESSINFODIR = $(PREFIX)/info
 ## XEmacs
 #ESSINFODIR = $(PREFIX)/lib/$(EMACS)/info
@@ -46,7 +46,7 @@ DOCDIST = ess.ps ess.pdf \
 all  : info txts html dvi
 
 # Documentation mentions info, not ess.info -- NOT readme.info <<< FIXME >>
-info : $(ESSINFODIR)/ess.info 
+info : ../info/ess.info
 dvi  :  ess.dvi readme.dvi
 txts : $(READMEtargets)
 
@@ -114,14 +114,14 @@ ess.texi : ../VERSION
 
 ### File Dependencies
 
-$(ESSINFODIR)/ess.info: ess.texi help-sas.texi inst_tar.texi help-s.texi
+../info/ess.info: ess.texi help-sas.texi inst_tar.texi help-s.texi
 	@echo "making Info documentation..."
 	test -f version.texi && rm -f version.texi || true
 	echo "@macro essver{}" > version.texi
 	echo $(ESSVERSION) >> version.texi
 	echo "@end macro" >> version.texi
 	$(MAKEINFO) ess.texi
-	cp ess.info* $(ESSINFODIR) 
+	cp -p ess.info* ../info
 
 ##-- HTML:
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
