@@ -5,9 +5,9 @@
 ;; Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 27 February 2001
-;; Modified: $Date: 2001/07/27 19:21:13 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: essl-bug.el,v 1.11 2001/07/27 19:21:13 ess Exp $
+;; Modified: $Date: 2001/07/30 14:24:32 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: essl-bug.el,v 1.12 2001/07/30 14:24:32 ess Exp $
 
 ;; Keywords: BUGS, bugs, BACKBUGS, backbugs.
 
@@ -53,7 +53,9 @@
 )
 
 (defcustom ess-bugs-batch-command 
-	(convert-standard-filename (concat ess-lisp-directory "/../etc/" "backbugs")) 
+    (convert-standard-filename 
+	(concat ess-lisp-directory "/../etc/" 
+	    (if (w32-shell-dos-semantics) "backbugs.bat" "backbugs")))
     "ESS[BUGS]:  Set to name and location of ESS \"backbugs\" script."
     :group 'ess-bugs
     :type  'string
@@ -214,7 +216,7 @@
 		(nth (- (length ess-bugs-temp-string) 1) ess-bugs-temp-string)))
 
 	(setq ess-bugs-file-suffix 
-	    (nth 0 (split-string (concat "." ess-bugs-file-suffix) "[<]")))
+	    (downcase (nth 0 (split-string (concat "." ess-bugs-file-suffix) "[<]"))))
    )
 )
 
@@ -228,6 +230,8 @@
 	    (insert (concat "model %MODEL;\n"))
 	    (insert (concat "const N = 0;#%N\n"))
 	    (insert "var ;\n")
+	    (insert "#%MONITOR;\n")
+	    (insert "#%STATS;\n")
 	    (insert (concat "data  in \"%DATA\";\n"))
 	    (insert (concat "inits in \"%INITS\";\n"))
 	    (insert "{\n")
@@ -350,11 +354,16 @@
 
 		(let (
 		    (ess-bugs-search-min nil)
-		    (ess-bugs-search-max nil))
+		    (ess-bugs-search-max nil)
+		    (ess-bugs-search-vars
+"\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(,\\)?[a-zA-Z0-9]*\\(\\]\\)\\)?[ \t]*[,]?[ \t]*\\(#.*\\)?[\n]?"
+;;"[ \t]+\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(,\\)?[a-zA-Z0-9]*\\(\\]\\)\\)?[ \t]*[,]?[ \t]*\\(#.*\\)?[\n]?"
+		    ))
 
 		    (goto-char (point-min))
 
-		    (if (search-forward "%MONITOR" nil t) (setq ess-bugs-search-min (point))
+		    (if (search-forward-regexp "%MONITOR[ \t]+" nil t) 
+			(setq ess-bugs-search-min (point))
 		    ;;else
 			(setq ess-bugs-search-min (search-forward "var"))
 		    )
@@ -364,13 +373,11 @@
 		    (goto-char ess-bugs-search-min)
 		    (setq ess-bugs-monitor-vars "")
 		    
-		    (while (search-forward-regexp 
-			"[, \t\n#]+\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(\\]\\)\\)?" 
-			ess-bugs-search-max t)
+		    (while (search-forward-regexp ess-bugs-search-vars ess-bugs-search-max t)
 
 			(setq ess-bugs-monitor-vars 
 			    (concat ess-bugs-monitor-vars "monitor(" 
-				(match-string 1) (match-string 3) (match-string 4) ")\n"))
+				(match-string 1) (match-string 3) (match-string 4) (match-string 5) ")\n"))
 		    )
 
 		    (setq ess-bugs-monitor-vars 
@@ -378,20 +385,18 @@
 
 		    (goto-char (point-min))
 
-		    (if (search-forward "%STATS" nil t) (progn
+		    (if (search-forward-regexp "%STATS[ \t]+" nil t) (progn
 			(setq ess-bugs-search-min (point))
 			(setq ess-bugs-search-max (search-forward-regexp ";"))
 		    
 			(goto-char ess-bugs-search-min)
 			(setq ess-bugs-stats-vars "")
 		    
-			(while (search-forward-regexp 
-			    "[, \t\n#]+\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(\\]\\)\\)?" 
-			    ess-bugs-search-max t)
+			(while (search-forward-regexp ess-bugs-search-vars ess-bugs-search-max t)
 
 			    (setq ess-bugs-stats-vars 
 				(concat ess-bugs-stats-vars "stats(" 
-				    (match-string 1) (match-string 3) (match-string 4) ")\n"))
+				    (match-string 1) (match-string 3) (match-string 4) (match-string 5) ")\n"))
 			)
 
 			(setq ess-bugs-stats-vars (concat "#%STATS\n" ess-bugs-stats-vars "#%STATS\n"))
