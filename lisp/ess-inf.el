@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/17 20:34:13 $
-;; Version: $Revision: 1.40 $
-;; RCS: $Id: ess-inf.el,v 1.40 1997/07/17 20:34:13 rossini Exp $
+;; Modified: $Date: 1997/07/24 11:21:06 $
+;; Version: $Revision: 1.41 $
+;; RCS: $Id: ess-inf.el,v 1.41 1997/07/24 11:21:06 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.41  1997/07/24 11:21:06  rossini
+;; ess-mode-version -> ESS-version
+;;
 ;; Revision 1.40  1997/07/17 20:34:13  rossini
 ;; added ess-setq-vars to inferior-ess-mode, where I should've put it,
 ;; LONG AGO!
@@ -1287,7 +1290,7 @@ to continue it."
   (message
    (concat (substitute-command-keys
 	    "Type \\[describe-mode] for help on ESS version ")
-	   ess-mode-version)))
+	   ESS-version)))
 
 ;;*;; Commands used exclusively in inferior-ess-mode
 

@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/15 21:56:38 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: ess-help.el,v 1.3 1997/06/15 21:56:38 rossini Exp $
+;; Modified: $Date: 1997/07/24 11:21:22 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: ess-help.el,v 1.4 1997/07/24 11:21:22 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -32,6 +32,9 @@
 
 ;;
 ;; $Log: ess-help.el,v $
+;; Revision 1.4  1997/07/24 11:21:22  rossini
+;; ess-mode-version -> ESS-version
+;;
 ;; Revision 1.3  1997/06/15 21:56:38  rossini
 ;; *** empty log message ***
 ;;
@@ -400,7 +403,7 @@ Keystroke    Section
   (let ((reporter-prompt-for-summary-p 't))
     (reporter-submit-bug-report
      "rossini@stat.sc.edu"
-     (concat "ess-mode " ess-mode-version)
+     (concat "ess-mode " ESS-version)
      (list 'ess-program-name
 	   'ess-proc-prefix
 	   'ess-version-running
