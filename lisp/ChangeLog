@@ -1,3 +1,8 @@
+2002-01-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-help.el (ess-help-bogus-buffer-p): now also works in R when
+	help.try.all.packages = TRUE.
+
 2002-01-03  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-ddeclient-p): new function from Rich

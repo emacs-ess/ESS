@@ -10,9 +10,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>,
 ;;              Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/01/08 00:56:36 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: ess-help.el,v 5.15 2001/01/08 00:56:36 rossini Exp $
+;; Modified: $Date: 2002/01/10 17:23:49 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: ess-help.el,v 5.16 2002/01/10 17:23:49 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -97,6 +97,9 @@
 		   (and nil (if (not nr-first) (setq nr-first 120)))
 		   (progn (goto-char PM) ;; R:
 			  (re-search-forward "Error in help"	nr-first t))
+		   (progn (goto-char PM) ;; R with help.try.all.packages = TRUE:
+			  (re-search-forward "topic \`.*\' is not in any loaded"
+					     nr-first t))
 		   (progn (goto-char PM) ;; S-plus 5.1 :
 			  (re-search-forward "^cat: .*--"	nr-first t))
 		   (progn (goto-char PM) ;; S version 3 ; R :
