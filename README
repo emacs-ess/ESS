@@ -3,7 +3,7 @@ General Information: README
 
    This is the README file for the distribution of ESS version
 
-   5.2.4
+   5.2.5
 
    The first release of the 5.2 series.  ESS is a GNU Emacs and XEmacs
 mode for interactive statistical programming and data analysis.
@@ -43,6 +43,19 @@ in the file COPYING in the same directory as this file for more details.
 
 New Features
 ============
+
+   Changes/New Features in 5.2.5:
+   * ESS[R]: C-c C-q or "Quit S" from the menu now ask questions in the
+     emacs buffer (instead of *R*) and do not append "-exited" to the
+     buffer name.  Note however that simply typing `Enter' to the
+     question about saving the R workspace will result in _not_ saving,
+     i.e., _not_ producing an `.RData' file.
+
+     Further, the behavior of (ess-cleanup), called from ess-quit, now
+     depends on the new customizable variable
+     `ess-S-quit-kill-buffers-p' which defaults to nil. Consequently,
+     the question "Delete all buffers associated with ..?" will not be
+     asked anymore by default.
 
    Changes/New Features in 5.2.4:
    * The documentation now includes an overview of how to use the emacs

@@ -253,7 +253,15 @@ Up:<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
      <ul>
 <li>ESS[R]: C-c C-q or "Quit S" from the menu now ask questions in
 the emacs buffer (instead of *R*) and do not append "-exited" to the
-buffer name. 
+buffer name.  <b>Note</b> however that simply typing <kbd>Enter</kbd> to the
+question about saving the R workspace will result in <em>not</em>
+saving, i.e., <em>not</em> producing an <code>.RData</code> file.
+
+     <p>Further, the behavior of (ess-cleanup), called from
+ess-quit, now depends on the new customizable variable
+`ess-S-quit-kill-buffers-p' which defaults to nil. Consequently,
+the question "Delete all buffers associated with ..?" will not be
+asked anymore by default. 
 </ul>
 
    <p>Changes/New Features in 5.2.4:
