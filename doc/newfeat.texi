@@ -1,3 +1,19 @@
+Changes/New Features in 5.1.17:
+@itemize @bullet
+@item 
+@end itemize
+
+Changes/New Features in 5.1.16:
+@itemize @bullet
+@item BUG FIXES 
+@item Better SAS support
+@end itemize
+
+Changes/New Features in 5.1.15:
+@itemize @bullet
+@item BUG FIXES 
+@end itemize
+
 Changes/New Features in 5.1.14:
 @itemize @bullet
 @item Yet more fixes to SAS mode, (Rich Heiberger 
@@ -8,7 +24,6 @@ Changes/New Features in 5.1.14:
 @item ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini,
       @email{rossini@@biostat.washington.edu})
 @end itemize
-
 
 Changes/New Features in 5.1.13:
 @itemize @bullet
