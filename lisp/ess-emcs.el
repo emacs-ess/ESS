@@ -64,6 +64,8 @@
   "Value is nil if custom.el not available, t if available.
 Only a concern with earlier versions of Emacs.")
 
+;; FIXME:  When emacs is started from Cygwin shell in Windows,
+;;         we have (equal window-system 'x) -and should use "--ess" in *d-r.el
 (defvar ess-microsoft-p (or (equal window-system 'w32)
 			    ;; XEmacs only...
 ;;;			    (equal (console-type) 'pc)
