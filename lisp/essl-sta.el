@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1997/12/09 21:49:35 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essl-sta.el,v 5.2 1997/12/09 21:49:35 rossini Exp $
+;; Modified: $Date: 1998/09/09 23:48:13 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essl-sta.el,v 5.3 1998/09/09 23:48:13 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -68,6 +68,15 @@
 ;;	   ("\\.ado$" . stata-mode))
 ;;	 auto-mode-alist)))
 ;;
+
+
+;; QUESTIONS TO ASK THOMAS:
+;; 1 - are 'help' and 'lookup' the same?
+;; 2 - what is the point of the review buffer?
+;; 3 - how to quit?
+
+
+
 ;;;;;;;;; Things to change 
 
 (defvar stata-switches "-q" 
