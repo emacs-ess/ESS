@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/09 12:59:23 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: essd-s4.el,v 1.13 1997/09/09 12:59:23 rossini Exp $
+;; Modified: $Date: 1997/10/08 17:57:23 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: essd-s4.el,v 1.14 1997/10/08 17:57:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -53,7 +53,7 @@
     (ess-mode-syntax-table         . S-syntax-table)
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . S4-help-sec-keys-alist)
-    (inferior-ess-objects-command  . ".SmodeObs(%d, pattern=\"%s\")")
+    (inferior-ess-objects-command  . ".SmodeObs(%d, pattern=\"%s\")\n")
 					; ^ was "objects(%d)")
     (inferior-ess-objects-pattern  . ".*") ; for new s4 stuff
     (inferior-ess-help-command     . "help(\"%s\")\n")
