@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/09/03 16:54:43 $
-;; Version: $Revision: 1.3 $
-;; RCS: $Id: ess-trns.el,v 1.3 1997/09/03 16:54:43 rossini Exp $
+;; Modified: $Date: 1997/10/02 01:45:29 $
+;; Version: $Revision: 1.4 $
+;; RCS: $Id: ess-trns.el,v 1.4 1997/10/02 01:45:29 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -80,38 +80,38 @@
 	 ;; Code for GNU Emacs
 	 (setq ess-transcript-mode-map (make-sparse-keymap))))
 
-  (define-key ess-transcript-mode-map "\C-c\C-r"    'ess-eval-region)
-  (define-key ess-transcript-mode-map "\C-c\M-r"    'ess-eval-region-and-go)
-  (define-key ess-transcript-mode-map "\M-\C-x"     'ess-eval-function)
-  (define-key ess-transcript-mode-map "\C-c\M-f"    'ess-eval-function-and-go)
-  (define-key ess-transcript-mode-map "\C-c\C-j"    'ess-eval-line)
-  (define-key ess-transcript-mode-map "\C-c\M-j"    'ess-eval-line-and-go)
+  (define-key ess-transcript-mode-map "\C-c\C-r" 'ess-eval-region)
+  (define-key ess-transcript-mode-map "\C-c\M-r" 'ess-eval-region-and-go)
+  (define-key ess-transcript-mode-map "\M-\C-x"  'ess-eval-function)
+  (define-key ess-transcript-mode-map "\C-c\M-f" 'ess-eval-function-and-go)
+  (define-key ess-transcript-mode-map "\C-c\C-j" 'ess-eval-line)
+  (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-eval-line-and-go)
+  (define-key ess-transcript-mode-map "\M-\C-a"  'ess-beginning-of-function)
+  (define-key ess-transcript-mode-map "\M-\C-e"  'ess-end-of-function)
+  (define-key ess-transcript-mode-map "\C-c\C-y" 'ess-switch-to-S)
+  (define-key ess-transcript-mode-map "\C-c\C-z" 'ess-switch-to-end-of-S)
+  (define-key ess-transcript-mode-map "\C-c\C-v" 'ess-display-help-on-object)
+  (define-key ess-transcript-mode-map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
+  (define-key ess-transcript-mode-map "\C-c\C-t" 'ess-execute-in-tb)
+  (define-key ess-transcript-mode-map "\C-c\t"   'ess-complete-object-name)
+  (define-key ess-transcript-mode-map "\M-\t"    'comint-replace-by-expanded-filename)
+  (define-key ess-transcript-mode-map "\M-?"     'comint-dynamic-list-completions)
+  (define-key ess-transcript-mode-map "\C-c\C-k" 'ess-request-a-process)
+  (define-key ess-transcript-mode-map "{"        'ess-electric-brace)
+  (define-key ess-transcript-mode-map "}"        'ess-electric-brace)
+  (define-key ess-transcript-mode-map "\e\C-h"   'ess-mark-function)
+  (define-key ess-transcript-mode-map "\e\C-q"   'ess-indent-exp)
+  (define-key ess-transcript-mode-map "\177"     'backward-delete-char-untabify)
+  (define-key ess-transcript-mode-map "\t"       'ess-indent-command)
+						
+  (define-key ess-transcript-mode-map "\C-c\C-p" 'comint-previous-prompt)
+  (define-key ess-transcript-mode-map "\C-c\C-n" 'comint-next-prompt)
   ;; (define-key ess-transcript-mode-map "\C-c\C-n"    'ess-eval-line-and-next-line)
-  (define-key ess-transcript-mode-map "\M-\C-a"     'ess-beginning-of-function)
-  (define-key ess-transcript-mode-map "\M-\C-e"     'ess-end-of-function)
-  (define-key ess-transcript-mode-map "\C-c\C-y"    'ess-switch-to-S)
-  (define-key ess-transcript-mode-map "\C-c\C-z"    'ess-switch-to-end-of-S)
-  (define-key ess-transcript-mode-map "\C-c\C-v"    'ess-display-help-on-object)
-  (define-key ess-transcript-mode-map "\C-c\C-d"    'ess-dump-object-into-edit-buffer)
-  (define-key ess-transcript-mode-map "\C-c\C-t"    'ess-execute-in-tb)
-  (define-key ess-transcript-mode-map "\C-c\t"      'ess-complete-object-name)
-  (define-key ess-transcript-mode-map "\M-\t"       'comint-replace-by-expanded-filename)
-  (define-key ess-transcript-mode-map "\M-?"        'comint-dynamic-list-completions)
-  (define-key ess-transcript-mode-map "\C-c\C-k"    'ess-request-a-process)
-  (define-key ess-transcript-mode-map "{"           'ess-electric-brace)
-  (define-key ess-transcript-mode-map "}"           'ess-electric-brace)
-  (define-key ess-transcript-mode-map "\e\C-h"      'ess-mark-function)
-  (define-key ess-transcript-mode-map "\e\C-q"      'ess-indent-exp)
-  (define-key ess-transcript-mode-map "\177"        'backward-delete-char-untabify)
-  (define-key ess-transcript-mode-map "\t"          'ess-indent-command)
 
-  (define-key ess-transcript-mode-map "\C-c\C-p"    'comint-previous-prompt)
-  (define-key ess-transcript-mode-map "\C-c\C-n"    'comint-next-prompt)
-
-  (define-key ess-transcript-mode-map "\r"    'ess-transcript-send-command)
-  (define-key ess-transcript-mode-map "\M-\r" 'ess-transcript-send-command-and-move)
-  (define-key ess-transcript-mode-map "\C-c\r"  'ess-transcript-copy-command)
-  (define-key ess-transcript-mode-map "\C-c\C-w"    'ess-transcript-clean-region))
+  (define-key ess-transcript-mode-map "\r"       'ess-transcript-send-command)
+  (define-key ess-transcript-mode-map "\M-\r"    'ess-transcript-send-command-and-move)
+  (define-key ess-transcript-mode-map "\C-c\r"   'ess-transcript-copy-command)
+  (define-key ess-transcript-mode-map "\C-c\C-w" 'ess-transcript-clean-region))
 
 
 
