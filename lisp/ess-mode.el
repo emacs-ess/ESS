@@ -10,9 +10,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/26 16:00:06 $
-;; Version: $Revision: 4.56 $
-;; RCS: $Id: ess-mode.el,v 4.56 1997/11/26 16:00:06 rossini Exp $
+;; Modified: $Date: 1997/11/30 17:06:00 $
+;; Version: $Revision: 4.57 $
+;; RCS: $Id: ess-mode.el,v 4.57 1997/11/30 17:06:00 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -213,10 +213,9 @@ Optional arg PROC-NAME is name of associated inferior process.
 
 \\{ess-mode-map}
 
+Extra binding to note:  'ESC C-\\' indent-region.
 
-Extra binding to note:  'ESC C-\" indent-region.
-
-Customization: Entry to this mode runs the hooks in ess-mode-hook.
+Entry to this mode runs the hooks in ess-mode-hook.
 
 You can send text to the inferior ESS process from other buffers containing
 ESS source.
