@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/18 18:41:51 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: ess-site.el,v 1.13 1997/06/18 18:41:51 rossini Exp $
+;; Modified: $Date: 1997/06/19 20:49:29 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: ess-site.el,v 1.14 1997/06/19 20:49:29 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.14  1997/06/19 20:49:29  rossini
+;;: added ess-ask-for-ess-directory.
+;;:
 ;;: Revision 1.13  1997/06/18 18:41:51  rossini
 ;;: ess -> S.
 ;;:
@@ -279,6 +282,11 @@
 ;;; The default behavior is for people who believe the object is real
 ;;; and the source file temporary.
 (setq ess-keep-dump-files "always")
+
+;;; (3.4) ess-ask-for-ess-directory 
+;;; If t, will ask for the directory to use.  If nil, assumes the
+;;; default (usually, the users home directory...).
+(setq ess-ask-for-ess-directory t)
 
  ; Local variables section
 
