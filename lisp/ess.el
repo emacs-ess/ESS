@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/06/30 22:33:21 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: ess.el,v 1.12 1997/06/30 22:33:21 rossini Exp $
+;; Modified: $Date: 1997/06/30 22:35:36 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: ess.el,v 1.13 1997/06/30 22:35:36 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.13  1997/06/30 22:35:36  rossini
+;; one more ) to remove.
+;;
 ;; Revision 1.12  1997/06/30 22:33:21  rossini
 ;; ess-directory defaults to "nil".
 ;;
@@ -274,7 +277,7 @@ Use `setq-default' if setting it in .emacs")
 (setq-default ess-proc-prefix "S")
 
 
-(defvar ess-directory nil) 
+(defvar ess-directory nil
   "*The directory ess is run from.  It must end in a slash.
 Provided as a default if ess-ask-for-ess-directory is non-nil.
 A nil value means use the current buffer's default directory.
