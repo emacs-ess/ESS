@@ -11,9 +11,9 @@ information about the license.
 
 ESS grew out of the desire to extend S-mode-4.8.  The current set of
 developers desired support for:
-- XEmacs 
+- XEmacs
 - R
-- S4.  
+- S4.
 
 In addition, with new modes being developed for R, Stata, and SAS, it
 was felt a unifying interface and framework for the user interface,
@@ -43,31 +43,31 @@ Languages Supported (or planned for support)
 - SAS
 - Stata
 - SPSS dialects (SPSS, Fiasco (GNU project))
-	
+
 Editing source code (S, LispStat, SAS)
 
-- Syntactic indentation and highlighting of source code 
+- Syntactic indentation and highlighting of source code
 - Evaluations of subsets of code in different processes (one at a
-  time)  
-- Loading and error-checking of code 
-- Source code revision maintenance 
+  time)
+- Loading and error-checking of code
+- Source code revision maintenance
 - limited interaction with Noweb, for literate statistical
-  programming. 
+  programming.
 
 Interacting with the process (S, LispStat, SAS)
 
-- Command-line editing 
-- Searchable Command history 
-- Command-line completion of S object names and file names 
-- Quick access to object lists and search lists 
-- Transcript recording 
-- Interface to the help system 
+- Command-line editing
+- Searchable Command history
+- Command-line completion of S object names and file names
+- Quick access to object lists and search lists
+- Transcript recording
+- Interface to the help system
 
 Transcript manipulation (S3, S+3, S4, R, XLispStat)
 
-- Recording and saving transcript files 
-- Manipulating and editing saved transcripts 
-- Re-evaluating commands from transcript files 
+- Recording and saving transcript files
+- Manipulating and editing saved transcripts
+- Re-evaluating commands from transcript files
 
 2. STABILITY
 ------------
@@ -114,12 +114,12 @@ The latest versions of ESS are always available by WWW from:
 
 	http://franz.stat.wisc.edu/pub/ESS/
 	ftp://franz.stat.wisc.edu/pub/ESS/
- 
-You can download the current version of the README there, as well. 
+
+You can download the current version of the README there, as well.
 
 The HTML version of the documentation can be found at:
 
-	http://www.stat.math.ethz.ch/ESS/
+	http://stat.ethz.ch/ESS/
 
 
 5. THE ESS MAILING LIST
@@ -143,4 +143,4 @@ The purposes of the mailing list include
 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 Kurt Hornik <hornik@ci.tuwien.ac.at>
 Martin Maechler <maechler@stat.math.ethz.ch>
-A.J. (Tony) Rossini <rossini@stat.sc.edu> (alt: <rossini@hsph.harvard.edu>) 
+A.J. (Tony) Rossini <rossini@stat.sc.edu> (alt: <rossini@hsph.harvard.edu>)

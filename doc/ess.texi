@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.1 1997/12/01 21:48:13 rossini Exp $
+@comment $Id: ess.texi,v 5.2 1998/08/24 12:50:45 maechler Exp $
 
 @synindex pg vr
 
@@ -38,7 +38,7 @@ Statistics, University of South Carolina, Columbia, SC, 29208, USA.
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version 5.0
+@subtitle version 5.0   (Documentation version $Revision: 5.2 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter and David Smith)
 @ifhtml
@@ -105,24 +105,24 @@ development.
 * Bugs::                        Known bugs in ESS
 * Installation::                Installing ESS on your system
 * Customization::               Customizing ESS
-* Key Index::                   
-* Command Index::               
-* Concept Index::               
-* Variable and command index::  
+* Key Index::
+* Command Index::
+* Concept Index::
+* Variable and command index::
 
  --- The Detailed Node Listing ---
 
 Introduction to ESS
 
 * Features::                    Why should I use ESS?
-* New features::                
+* New features::
 * Credits::                     Authors of and contributors to ESS
 * Latest version::              Getting the latest version of ESS
 * Manual::                      How to read this manual
 
 Starting the @b{ESS} process
 
-* Multiple ESS processes::      
+* Multiple ESS processes::
 * Customizing startup::         Changing the startup actions
 
 Interacting with the @b{ESS} process
@@ -163,7 +163,7 @@ Other features of ESS
 
 * Highlighting::                Syntactic highlighting of buffers
 * Graphics::                    Using graphics with ESS
-* Object Completion::           
+* Object Completion::
 
 Using graphics with ESS
 
@@ -252,7 +252,7 @@ your @b{S} functions in specified source directories.
 
 @menu
 * Features::                    Why should I use ESS?
-* New features::                
+* New features::
 * Credits::                     Authors of and contributors to ESS
 * Latest version::              Getting the latest version of ESS
 * Manual::                      How to read this manual
@@ -299,12 +299,12 @@ also applies to object names and list components.
 
 @item
 @b{Transcript recording} for a complete record of all the actions in an
-S session.  
+S session.
 @xref{Transcript}.
 
 @item
 @b{Interface to the help system}, with a specialized mode for viewing S
-help files.  
+help files.
 @xref{Help}.
 
 @end itemize
@@ -320,7 +320,7 @@ features:
 @item
 @b{Object editing}.  ESS allows you to edit more than one function
 simultaneously in dedicated Emacs buffers.  The @b{ESS} process may
-continue to be used while functions are being edited.  
+continue to be used while functions are being edited.
 @xref{Edit buffer}.
 
 @item
@@ -335,7 +335,7 @@ keystroke to jump straight to the position of an error in a source file.
 
 @item
 @b{Source code revision maintenance}, which allows you to keep historic
-versions of @b{S} source files.  
+versions of @b{S} source files.
 @xref{Source Files}.
 
 @item
@@ -468,7 +468,7 @@ Kurt Hornik
 @c --------
 @item
 @ifhtml
-<A HREF="http://www.stat.math.ethz.ch/~maechler/">
+<A HREF="http://stat.ethz.ch/~maechler/">
 @end ifhtml
 Martin Maechler
 @ifhtml
@@ -550,7 +550,7 @@ always, experience --- try it out!
 
 To start an @b{S} session, simply type @kbd{M-x S RET}, i.e. press
 @key{ESC}, then @key{x}, then capital @key{S} and then the @key{RETURN}
-key. 
+key.
 @pindex S
 
 @cindex @b{ESS} process directory
@@ -574,7 +574,7 @@ with name @samp{*S*} which will be used
 for interacting with the @b{ESS} process, and you can start entering commands.
 
 @menu
-* Multiple ESS processes::      
+* Multiple ESS processes::
 * Customizing startup::         Changing the startup actions
 @end menu
 
@@ -590,7 +590,7 @@ same session.  Each process has a name and a number; the initial process
 @comment You may start a new process by passing a numeric argument to
 @comment @kbd{M-x S}.  For example, typing @kbd{ESC 2 M-x S} starts up
 @comment an @b{ESS} process with name @samp{S2}, in a buffer whose name
-@comment is initially @samp{*S2*}. 
+@comment is initially @samp{*S2*}.
 The name of the process is shown in the mode line in square brackets
 (for example, @samp{[S+3:2]}); this is useful if the process buffer is
 renamed.  Without a prefix argument, @kbd{M-x S} starts a new @b{ESS}
@@ -606,10 +606,11 @@ you require; completion is provided over the names of all running S
 processes.  This is a good command to consider binding to a global key.
 
 @pindex ess-plain-first-buffername
-With the predecessor to ESS (S-mode 4.8), the initial process was not
+For the predecessor to ESS (S-mode 4.8), the initial process was not
 visibly numbered, i.e. S instead of S1 was used in the mode-line.  To
 obtain this behavior, set the variable @code{ess-plain-first-buffername}
 to @code{t}.  See @file{ess-site} for how to set this for all users.
+
 
 
 @node Customizing startup,  , Multiple ESS processes, Starting Up
@@ -1708,7 +1709,7 @@ Indents a comment line appropriately, or inserts an empty
 (single-@samp{#}) comment.
 
 @item
-@kbd{M-x ess-set-style} @* 
+@kbd{M-x ess-set-style} @*
 Set the formatting style in this buffer to be one of the predefined
 styles: @code{GNU}, @code{BSD}, @code{K&R}, @code{CLB}, and @code{C++}.
 The @code{DEFAULT} style uses the default values for the indenting
@@ -1998,7 +1999,7 @@ Move one page forwards through the help file.
 
 @item
 @kbd{>} (@code{beginning-of-buffer}) and @kbd{<} (@code{end-of-buffer})
-@* 
+@*
 Move to the beginning and end of the help file, respectively.
 
 Section-based motion commands:
@@ -2183,7 +2184,7 @@ one command which does just this:
 @itemize @bullet
 @item
 @kbd{C-c C-w} (@code{ess-transcript-clean-region}) @*
-Deletes all prompts and command output in the region, leaving only the 
+Deletes all prompts and command output in the region, leaving only the
 commands themselves.
 @end itemize
 
@@ -2202,7 +2203,7 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 @menu
 * Highlighting::                Syntactic highlighting of buffers
 * Graphics::                    Using graphics with ESS
-* Object Completion::           
+* Object Completion::
 @end menu
 
 @node Highlighting, Graphics, Miscellaneous, Miscellaneous
@@ -2411,7 +2412,7 @@ will unpack into a subdirectory, ESS-5.0.
 	@code{gunzip ESS-5.0.tar.gz}
         @code{tar vxf ESS-5.0.tar}
         @item
-	(or: @code{gunzip < ESS-5.0.tar.gz | tar vxf -}).	
+	(or: @code{gunzip < ESS-5.0.tar.gz | tar vxf -}).
         @item
         (or using GNU tar: @code{tar zvxf ESS-5.0.tar.gz}).
         @end itemize

@@ -1,6 +1,6 @@
 -*- mode: text; mode: view-minor -*-
 
-($Revision: 5.1 $)
+($Revision: 5.2 $)
 
 Emacs Speaks Statistics (ESS), version 5.0
 ------------------------------------------
@@ -55,7 +55,7 @@ ESS is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
-	
+
 ESS is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
@@ -73,28 +73,28 @@ Languages Supported (or planned to be supported)
 	SAS
 	Stata
 	SPSS dialects (SPSS, Fiasco (GNU project))
-	
+
 Editing source code (S, LispStat, SAS)
 
-        Syntactic indentation and highlighting of source code 
-        Partial evaluations of code 
-        Loading and error-checking of code 
-        Source code revision maintenance 
+        Syntactic indentation and highlighting of source code
+        Partial evaluations of code
+        Loading and error-checking of code
+        Source code revision maintenance
 
 Interacting with the process (S, LispStat, SAS)
 
-        Command-line editing 
-	Searchable Command history 
-        Command-line completion of S object names and file names 
-        Quick access to object lists and search lists 
-        Transcript recording 
-        Interface to the help system 
+        Command-line editing
+	Searchable Command history
+        Command-line completion of S object names and file names
+        Quick access to object lists and search lists
+        Transcript recording
+        Interface to the help system
 
 Transcript manipulation (S3, S+3, S4, R, XLispStat)
 
-        Recording and saving transcript files 
-        Manipulating and editing saved transcripts 
-        Re-evaluating commands from transcript files 
+        Recording and saving transcript files
+        Manipulating and editing saved transcripts
+        Re-evaluating commands from transcript files
 
 Help File Editing (R)
 
@@ -149,10 +149,10 @@ The latest versions of ESS are always available by WWW from:
 
 	http://franz.stat.wisc.edu/pub/ESS/
 	ftp://franz.stat.wisc.edu/pub/ESS/
- 
+
 The HTML version of the documentation can be found at:
 
-	http://www.stat.math.ethz.ch/ESS/
+	http://stat.ethz.ch/ESS/
 
 
 5. INSTALLATION
@@ -190,7 +190,7 @@ The HTML version of the documentation can be found at:
   have one or more of (S4 R SAS XLispStat Stata) will need to uncomment
   corresponding lines in ess-site.el.
 
-* READ THIS ITEM THOROUGHLY BEFORE STARTING: 
+* READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
   In the ESS-5.0 directory, edit the file Makefile (only if you want
   to place the executables in other locations; see LISPDIR and
@@ -203,7 +203,7 @@ The HTML version of the documentation can be found at:
   are to go in another directory).  Don't forget to edit the file
   `dir' in the info directory specified by INFODIR in the Makefile.
   See the sample `dir' file for an example of the line to add.
-	
+
   If you are using XEmacs, you might do:
 
 	make EMACS=xemacs
@@ -214,16 +214,16 @@ The HTML version of the documentation can be found at:
   An alternative, if you are running XEmacs and have access to the
   XEmacs system directories, would be to place the directory in the
   site-lisp directory, and simply type "make"  (and copy the
-  documentation as appropriate).  
+  documentation as appropriate).
 
-  For Emacs, you would still have to move the files into the top level 
+  For Emacs, you would still have to move the files into the top level
   site-lisp directory.
 
 * Add the line
 
 	(load "/PATH/ess-site")
 
-  to your .emacs file (or default.el or site-init.el, for a site-wide 
+  to your .emacs file (or default.el or site-init.el, for a site-wide
   installation).  Replace `/PATH' above with the value of
   ess-lisp-directory as defined in ess-site.el.
 
@@ -244,7 +244,7 @@ The HTML version of the documentation can be found at:
   (this will create the file: ess-s+3-namedb.el; if it isn't in the
    ESS directory, move it there).
 
-  Then, completions will be autoloaded and will not be regenerated for 
+  Then, completions will be autoloaded and will not be regenerated for
   every session.
 
   For R:
@@ -253,16 +253,16 @@ The HTML version of the documentation can be found at:
       M-x ess-create-object-name-db
   (this will create the file: ess-r-namedb.el; if it isn't in the
    ESS directory, move it there).
-   
+
 
 * For more information on using ESS in your daily work, see the files
-  README.S, README.SAS, and README.XLispStat.  
+  README.S, README.SAS, and README.XLispStat.
 
 
   For the impatient, the quick version of usage follows:
 
 * To edit statistical programs, load the files with the requiste
-  extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and ".lsp" 
+  extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and ".lsp"
   for XLispStat).
 
 * To run statistical processes under (X)Emacs:
@@ -273,13 +273,13 @@ The HTML version of the documentation can be found at:
 
   (or M-x S  using backwards compatibility).  You will then be asked
   for a pathname ("S starting data directory?"), from which to start
-  the process. 
+  the process.
 
   If you wish to run R, you can start it with:
 
 	M-x R
 
-  XLispStat can be run with 
+  XLispStat can be run with
 
 	M-x XLS
 
@@ -299,7 +299,7 @@ Please send bug reports, suggestions etc. to
 
 The easiest way to do this is within Emacs by typing
 
-	M-x ess-submit-bug-report 
+	M-x ess-submit-bug-report
 
 This also gives the maintainers valuable information about your
 installation which may help us to identify or even fix the bug.
