@@ -32,7 +32,7 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.21
 
-   (Documentation $Revision: 1.3 $ $Date: 2002/05/17 19:54:31 $).
+   (Documentation $Revision: 1.4 $ $Date: 2002/05/17 21:28:04 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R.
      Sparapani (Formerly: Doug Bates, Ed Kademan, Frank Ritter and
@@ -74,6 +74,7 @@ Introduction to ESS
 Starting the ESS process
 
 * Multiple ESS processes::
+* ESS processes on Remote Computers::
 * Customizing startup::         Changing the startup actions
 
 Interacting with the ESS process
@@ -648,10 +649,11 @@ commands.
 * Menu:
 
 * Multiple ESS processes::
+* ESS processes on Remote Computers::
 * Customizing startup::         Changing the startup actions
 
 
-File: ess.info,  Node: Multiple ESS processes,  Next: Customizing startup,  Prev: Starting Up,  Up: Starting Up
+File: ess.info,  Node: Multiple ESS processes,  Next: ESS processes on Remote Computers,  Prev: Starting Up,  Up: Starting Up
 
 Running more than one ESS process
 =================================
@@ -677,7 +679,110 @@ obtain this behavior, set the variable `ess-plain-first-buffername' to
 `t'.  See `ess-site' for how to set this for all users.
 
 
-File: ess.info,  Node: Customizing startup,  Prev: Multiple ESS processes,  Up: Starting Up
+File: ess.info,  Node: ESS processes on Remote Computers,  Next: Customizing startup,  Prev: Multiple ESS processes,  Up: Starting Up
+
+ESS processes on Remote Computers
+=================================
+
+   ESS works with processes on remote computers as easily as with
+processes on the local machine.  The recommended way to access a
+statistical program on remote computer is to start it from a telnet or
+ssh buffer and then connect ESS to that buffer.
+
+  1. Start a new telnet or ssh buffer and connect to the remote
+     computer.
+
+  2. Start the ESS process on the remote machine, for example with one
+     of the commands `Splus', or `R', or `sas -stdio'.
+
+  3. Enter the ESS command `M-x ess-remote'.  You will be prompted for
+     a program name.  Enter `sp6' or `r' or `sas' or another valid
+     name.  Your telnet process is now known to ESS.  All the usual ESS
+     commands (`C-c C-n' and its relatives) now work with the S
+     language processes.  For SAS you need to use a different command
+     `C-c i' (that is a regular `i', not a `C-i') to send lines from
+     your `myfile.sas' to the remote SAS process.  `C-c i' sends lines
+     over invisibly and lets SAS display them formatted correctly as in
+     a SAS log file.
+
+  4. Graphics on the remote machine works fine.  If you run X-windows
+     graphics on the remote unix machine you should be able to display
+     them in `xfree86' on your PC.  If you don't run X-windows, then
+     you can write graphics to the postscript device and copy it to
+     your PC with dired and display it with ghostscript.
+
+   Should you or a colleague inadvertently start a statistical process
+in an ordinary `*shell*' buffer, the `ess-remote' command can be used
+to convert it to an ESS buffer and allow you to use the ESS commands
+with it.
+
+   We have two older commands, now deprecated, for accessing ESS
+processes on remote computers.
+
+* Menu:
+
+* S+elsewhere and ess-elsewhere::
+
+
+File: ess.info,  Node: S+elsewhere and ess-elsewhere,  Prev: ESS processes on Remote Computers,  Up: ESS processes on Remote Computers
+
+S+elsewhere and ess-elsewhere
+=============================
+
+   These commands are now deprecated.  We recommend `ess-remote'.
+
+   We have two versions of the elsewhere function.
+
+   `S+elsewhere' is specific for the S-Plus program.  The more general
+function `ess-elsewhere' is not as stable.
+
+  1. Enter `M-x S+elsewhere'.  You will be prompted for a starting
+     directory.  I usually give it my project directory on the local
+     machine, say  `~myname/myproject/'
+
+     Or enter `M-x ess-elsewhere'.  You will be prompted for an ESS
+     program and for a starting directory.  I usually give it my project
+     directory on the local machine, say `~myname/myproject/'
+
+  2. The `*S+3*' buffer will appear with a prompt from the local
+     operating system (the unix prompt on a unix workstation or with
+     cygwin bash on a PC, or the msdos prompt on a PC without bash).
+     emacs may freeze because the cursor is at the wrong place.
+     Unfreeze it with `C-g' then move the cursor to the end with `M->'.
+     With `S+elsewhere' the buffer name is based on the name of the ESS
+     program.
+
+  3. Enter `telnet myname@other.machine' (or `ssh
+     myname@other.machine').  You will be prompted for your password on
+     the remote machine.  Use `M-x send-invisible' before typing the
+     password itself.
+
+  4. Before starting the ESS process, type `stty -echo nl' at the unix
+     prompt.  The `-echo' turns off the echo, the `nl' turns off the
+     newline that you see as `^M'.
+
+  5. You are now talking to the unix prompt on the other machine in the
+     `*S+3*' buffer.  cd into the directory for the current project and
+     start the ESS process by entering `Splus' or `R' or `sas -stdio'
+     as appropriate.  If you can login remotely to your Windows 2000,
+     then you should be able to run `Sqpe' on the Windows machine.  I
+     haven't tested this and noone has reported their tests to me.  You
+     will not be able to run the GUI through this text-only connection.
+
+  6. Once you get the S or R or SAS prompt, then you are completely
+     connected.  All the `C-c C-n' and related commands work correctly
+     in sending commands from `myfile.s' or `myfile.r' on the PC to the
+     `*S+3*' buffer running the S or R or SAS program on the remote
+     machine.
+
+  7. Graphics on the remote machine works fine.  If you run X-windows
+     graphics on the remote unix machine you should be able to display
+     them in `xfree86' on your PC.  If you don't run X-windows, then
+     you can write graphics to the postscript device and copy it to
+     your PC with dired and display it with ghostscript.
+
+
+File: ess.info,  Node: Customizing startup,  Prev: ESS processes on Remote Computers,  Up: Starting Up
 
 Changing the startup actions
 ============================
@@ -1073,64 +1178,4 @@ transcript, then the command `M-x ess-clean-region' may be of use.
 This command works in any Emacs buffer, and removes all prompts and
 command output from an ESS transcript within the current region, leaving
 only the commands.  Don't forget to remove any erroneous commands first!
-
-
-File: ess.info,  Node: Command History,  Next: History expansion,  Prev: Transcript,  Up: Entering commands
-
-Command History
-===============
-
-   ESS provides easy-to-use facilities for re-executing or editing
-previous commands.  An input history of the last few commands is
-maintained (by default the last 50 commands are stored, although this
-can be changed by setting the variable `comint-input-ring-size' in
-`inferior-ess-mode-hook'.) The simplest history commands simply select
-the next and previous commands in the input history:
-
-   * `M-p' (`comint-previous-input')
-     Select the previous command in the input history.
-
-   * `M-n'  (`comint-next-input')
-     Select the next command in the input history.
-
-For example, pressing `M-p' once will re-enter the last command into
-the process buffer after the prompt but does not send it to the ESS
-process, thus allowing editing or correction of the command before the
-ESS process sees it.  Once corrections have been made, press `RET' to
-send the edited command to the ESS process.
-
-   If you want to select a particular command from the history by
-matching it against a regular expression (*note Syntax of Regular
-Expression: (emacs)Regexps.), to search for a particular variable name
-for example, these commands are also available:
-
-   * `M-r' (`comint-previous-matching-input')
-     Prompt for a regular expression, and search backwards through the
-     input history for a command matching the expression.
-
-   * `M-s' (`comint-next-matching-input')
-     Prompt for a regular expression, and search backwards through the
-     input history for a command matching the expression.
-
-A common type of search is to find the last command that began with a
-particular sequence of characters; the following two commands provide an
-easy way to do this:
-
-   * `A-M-r' (`comint-previous-matching-input-from-input')
-     Select the previous command in the history which matches the string
-     typed so far.
-
-   * `A-M-s' (`comint-next-matching-input-from-input')
-     Select the next command in the history which matches the string
-     typed so far.
-
-Instead of prompting for a regular expression to match against, as they
-instead select commands starting with those characters already entered.
-For instance, if you wanted to re-execute the last `attach()' command,
-you may only need to type `att' and then `A-M-r' and `RET'.  (Note: you
-may not have an <ALT> key on your keyboard, in which case it may be a
-good idea to bind these commands to some other keys.)
-
-   *Note Shell History Ring: (emacs)Shell Ring, for a more detailed
-discussion of the history mechanism.
 

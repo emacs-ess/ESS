@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.28 2002/05/17 19:54:31 rmh Exp $
+@comment $Id: ess.texi,v 5.29 2002/05/17 21:28:04 rmh Exp $
 
 @include version.texi
 
@@ -41,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.28 $ $Date: 2002/05/17 19:54:31 $)
+@subtitle version @essver{} (Documentation $Revision: 5.29 $ $Date: 2002/05/17 21:28:04 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -86,7 +86,7 @@ permission notice identical to this one.
 
 ESS version @essver{}
 
-        (Documentation $Revision: 5.28 $ $Date: 2002/05/17 19:54:31 $).
+        (Documentation $Revision: 5.29 $ $Date: 2002/05/17 21:28:04 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
@@ -131,6 +131,7 @@ Introduction to @b{ESS}
 Starting the @b{ESS} process
 
 * Multiple ESS processes::      
+* ESS processes on Remote Computers::
 * Customizing startup::         Changing the startup actions
 
 Interacting with the @b{ESS} process
@@ -473,10 +474,11 @@ for interacting with the @b{ESS} process, and you can start entering commands.
 
 @menu
 * Multiple ESS processes::      
+* ESS processes on Remote Computers::
 * Customizing startup::         Changing the startup actions
 @end menu
 
-@node Multiple ESS processes, Customizing startup, Starting Up, Starting Up
+@node Multiple ESS processes,  ESS processes on Remote Computers, Starting Up, Starting Up
 @comment  node-name,  next,  previous,  up
 @section Running more than one @b{ESS} process
 @cindex Multiple @b{ESS} processes
@@ -511,7 +513,116 @@ to @code{t}.  See @file{ess-site} for how to set this for all users.
 
 
 
-@node Customizing startup,  , Multiple ESS processes, Starting Up
+@node ESS processes on Remote Computers, Customizing startup, Multiple ESS processes, Starting Up
+@comment  node-name,  next,  previous,  up
+@section ESS processes on Remote Computers
+@cindex Remote Computers
+@vindex ess-remote
+@vindex ess-elsewhere
+@vindex S+elsewhere
+
+ESS works with processes on remote computers as easily as with
+processes on the local machine.  The recommended way to access a
+statistical program on remote computer is to start it from a telnet or
+ssh buffer and then connect ESS to that buffer.
+
+@enumerate
+@item Start a new telnet or ssh buffer and connect to the remote computer.
+
+@item Start the ESS process on the remote machine, for example with one of
+the commands @samp{Splus}, or @samp{R}, or @samp{sas -stdio}.
+
+@item Enter the ESS command @samp{M-x ess-remote}.  You will be prompted for
+a program name.  Enter @samp{sp6} or @samp{r} or @samp{sas} or another
+valid name.  Your telnet process is now known to ESS.  All the usual
+ESS commands (@samp{C-c C-n} and its relatives) now work with the S
+language processes.  For SAS you need to use a different command
+@samp{C-c i} (that is a regular @samp{i}, not a @samp{C-i}) to send
+lines from your @file{myfile.sas} to the remote SAS process.
+@samp{C-c i} sends lines over invisibly and lets SAS display them
+formatted correctly as in a SAS log file.
+
+@item Graphics on the remote machine works fine.  If you run X-windows
+graphics on the remote unix machine you should be able to display them
+in @samp{xfree86} on your PC.  If you don't run X-windows, then you can write
+graphics to the postscript device and copy it to your PC with dired
+and display it with ghostscript.
+@end enumerate
+
+Should you or a colleague inadvertently start a statistical process in
+an ordinary @samp{*shell*} buffer, the @samp{ess-remote} command can
+be used to convert it to an ESS buffer and allow you to use the ESS
+commands with it.
+
+We have two older commands, now deprecated, for accessing ESS processes
+on remote computers.
+
+@menu
+* S+elsewhere and ess-elsewhere::
+@end menu
+
+@node S+elsewhere and ess-elsewhere,  , ESS processes on Remote Computers, ESS processes on Remote Computers
+@comment  node-name,  next,  previous,  up
+@section S+elsewhere and ess-elsewhere
+
+These commands are now deprecated.  We recommend @samp{ess-remote}.
+
+
+We have two versions of the elsewhere function.
+
+@samp{S+elsewhere} is specific for the S-Plus program.
+The more general function @samp{ess-elsewhere} is not as stable.
+
+@enumerate
+@item Enter @samp{M-x S+elsewhere}.
+You will be prompted for a starting directory.  I usually give it my
+project directory on the local machine, say  @samp{~myname/myproject/}
+
+Or enter @samp{M-x ess-elsewhere}.  You will be prompted for an ESS
+program and for a starting directory.  I usually give it my project
+directory on the local machine, say @samp{~myname/myproject/}
+
+@item The @samp{*S+3*} buffer will appear with a prompt from the
+local operating system (the unix prompt on a unix workstation or with
+cygwin bash on a PC, or the msdos prompt on a PC without bash).  emacs
+may freeze because the cursor is at the wrong place.  Unfreeze it with
+@samp{C-g} then move the cursor to the end with @samp{M->}.
+With @samp{S+elsewhere} the buffer name is based on the name of the ESS program.
+@item Enter
+@samp{telnet myname@@other.machine} (or @samp{ssh myname@@other.machine}).
+You will be prompted for your password on the remote machine.
+Use
+@samp{M-x send-invisible}
+before typing the password itself.
+
+@item Before starting the ESS process, type @samp{stty -echo nl}
+at the unix prompt.  The @samp{-echo} turns off the echo, the
+@samp{nl} turns off the newline that you see as @samp{^M}.
+
+@item You are now talking to the unix prompt on the other machine in the
+@samp{*S+3*} buffer.  cd into the directory for the current project and start
+the ESS process by entering
+@samp{Splus} or @samp{R} or @samp{sas -stdio}
+as appropriate.  If you can login remotely to your Windows 2000, then
+you should be able to run @samp{Sqpe} on the Windows machine.  I haven't
+tested this and noone has reported their tests to me.  You will not be
+able to run the GUI through this text-only connection.
+
+@item Once you get the S or R or SAS prompt, then you are completely connected.
+All the @samp{C-c C-n} and related commands work correctly in sending
+commands from @samp{myfile.s} or @samp{myfile.r} on the PC to the
+@samp{*S+3*} buffer running the S or R or SAS program on the remote machine.
+
+@item Graphics on the remote machine works fine.  If you run X-windows
+graphics on the remote unix machine you should be able to display them
+in @samp{xfree86} on your PC.  If you don't run X-windows, then you can write
+graphics to the postscript device and copy it to your PC with dired
+and display it with ghostscript.
+@end enumerate
+
+
+
+@node Customizing startup,  , ESS processes on Remote Computers, Starting Up
 @comment  node-name,  next,  previous,  up
 @section Changing the startup actions
 
