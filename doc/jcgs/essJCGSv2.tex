@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/05 22:53:17 $ - $Revision: 1.110 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/05 22:58:12 $ - $Revision: 1.111 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -306,18 +306,16 @@ buffer at any time.  The major-mode is often determined by the file
 name extension, i.e. the characters at the end of the file name that
 follow a period like \stexttt{txt}, \stexttt{R} or \stexttt{sas}.
 Examples of this kind of major-mode are \stexttt{ESS[S]} and
-\stexttt{ESS[SAS]} (technically, both are special cases of
-\stexttt{ess-mode}).  Major-modes of this kind provide automatic
-indentation; navigation in units of characters, words, lines,
-sentences, paragraphs, and pages; syntax-based fontification and
-colorization; and many other features.
+\stexttt{ESS[SAS]}.% which are derived from a  (technically, both are special cases of
+%\stexttt{ess-mode}).
+Major-modes of this kind provide automatic indentation; navigation in
+units of characters, words, lines, sentences, paragraphs, and pages;
+syntax-based fontification and colorization; and many other features.
 
 Second, major modes provide the ability to run other programs.  In
-this case, the other program's standard-input can be drawn from a
-buffer or a file and its standard-output can be directed to a buffer
-or a file.  Buffers of this kind can control programs that transfer
-files over a network, perform version control operations or many other
-tasks.  An important example of this kind of major-mode is
+this case, the other program's standard-input is based upon input from
+a buffer and its standard-output is redirected to either the same or a
+different buffer.  An important example of this kind of major-mode is
 \stexttt{shell-mode} in which an ordinary command shell is run inside
 a buffer.  ESS uses this type of major-mode to control statistical
 packages.  Other major modes are \stexttt{telnet} mode for logging in
@@ -335,7 +333,9 @@ language whose characteristics are described by a major-mode like ESS\@.
 determines whether typed characters replace the existing text or push
 it to the right.  Minor modes can be used to change the key bindings,
 for example to emulate the keys used by another editor such as
-\stexttt{vi}.
+\stexttt{vi}.  Modes can be programmed to control programs that
+transfer files over a network, perform version control operations or
+many other tasks.  
 
 \paragraph{Network Support.}
 Emacs allows transparent access to remote files over a network.
