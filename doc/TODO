@@ -1,6 +1,6 @@
--*-indented-text-*-
+-*- view -*-
 
-$Id: TODO,v 1.8 1997/11/09 21:30:37 rossini Exp $ 
+$Revision: 1.9 $
 
  The original TODO list (nothing fixed there yet):
 ===========================================================
@@ -889,3 +889,120 @@ NOTE: Not all of these are clean OR are even consistent.
 
   Hmm ...  Perhaps we should have a variable (ess-inf-always-prompt-...)
   to get around this problem?
+
+* (RMH - SAS) 
+  graphics are possible in two ways:
+  a. proc plot; plot a*b / vpos=25;
+  b. goptions device=psfile;
+     filename gsasfile 'temp.ps';
+  and then use ghostview from another *shell* buffer.
+
+  autoexec.sas defines the departmental printers and truns off overprinting.
+  My autoexec.sas file is:
+  libname gdevice0 '/home/public/stat/gdevice0' ;
+  options noovp;
+
+* (RMH - SAS) I have another proposal for font-lock in SAS-mode.  I
+  think it will be easy, but I would like discussion first.  My new
+  proposal is that 
+
+  proc whatever
+  data myfile
+  %macro macname
+
+  and maybe a few others (including both the keyword and name of the
+  dataset or proc) be in font-lock-function-name-face
+
+  %include will be in font-lock-reference-face
+
+  Any other FIRST word in a statement will be in
+  font-lock-keyword-face
+
+  My reasoning is that the current laundry list is too long, and still
+  misses many keywords.  The structure of the SAS language is
+  essentially keyword and arguments, so let's follow that.
+
+* (Tobias Laatsch - SAS) 
+  There seem to be some problems fontifying SAS Comments in ESS 5.0
+  Pre1. (I'm running xemacs 20.2 on AIX .) 
+  Currently I recognized following problems:
+  1) Multi-line-comments are not fontified. (open comment "/*", some
+     lines of code,  close comment "*/") 
+  2) When typing  / , " or '  in a comment-area, ESS fontifies the
+     whole line as normal code instead of comment. 
+  3) Typing a '* in a comment-area fontifies the rest of the line as
+     string. 
+
+* (AJR) 
+    Richard> I think of S-transcript-mode as identical to
+    Richard> inferior-S-mode except that the transmission is to the
+    Richard> same buffer in inferior-S-mode and to a different buffer
+    Richard> in transcript-mdoe.  So I expect ^M (enter) to behave
+    Richard> normally for lines that begin with "> command" and "+
+    Richard> continuation".
+
+    Which is what my proposal does (send command, move to next prompt).
+
+    What needs to be modified is that currently, it moves to any next
+    prompt, including "+ ", rather than just to the next primary prompt -- 
+    it is smart enough to strip the "+ " as well from the whole command,
+    and collect the rest of the command line.   
+
+    Richard> I haven't tried eval-region commands from either *S* or
+    Richard> from a filename.st.  I think both ^C^N and ^C^R should
+    Richard> make sense and work if the region is valid input.  Both
+    Richard> modes should strip leading ">" and "+" characters.  I
+    Richard> think that a region which is a subset of a line, or which
+    Richard> doesn't begin with the standard prompt sequences, should
+    Richard> send it over literally.
+
+    So, C-c C-r would only send lines beginning with
+    inferior-ess-primary-prompt (up to the last consecutive
+    inferior-ess-secondary-prompt), strip off the prompt, and ignore lines
+    which do not begin with prompts.  Does this sound correct 
+    (for C-c C-r)?
+
+    C-c C-n should be correct (comint-next-prompt).
+
+* (KH/AJR)
+  I see.  This is what the "help(\"%s\")\n" does.
+
+  Well, we have the following problem.  The `new' interface to help()
+  I created is
+
+	help(topic, package = .package(), library = .lib.loc)
+
+  This allows you to get help on a topic (R object, ie fun or var or
+  whatever else is documented) in a package without loading it, via
+
+	help(topic, p = PKG)
+
+  I've eliminated the help(data = ) part, but there may soon be
+  another argument to search for keys ...
+
+  If we want people to be able to use the extended forms, we can
+
+  * use "help(%s)\n" for the format, which means they have to quote
+    special things as they would need to from the command line
+ 
+  * or do something smarter, such as
+	quote only if object does not contain ","
+    which appears to be the right thing.
+
+  What do you think?
+
+  > How about this 3rd alternative?  
+
+  > C-c C-v		works as usual
+  > C-u C-c C-v	prompts for the extra arguments (a "wizards
+  > 		help", of sorts)
+
+  > Completion will only work with the prompt for the command, and will be 
+  > turned off for the others? 
+
+  > If not, we'll go with the "right thing" (option 2).
+
+  The alternative sounds good.  We might still want to quote the help
+  string in case it does not contain a `,', so that C-c C-v +
+  continues to work ...
+
