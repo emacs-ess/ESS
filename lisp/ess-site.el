@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/07/27 23:28:25 $
-;; Version: $Revision: 5.79 $
-;; RCS: $Id: ess-site.el,v 5.79 2001/07/27 23:28:25 rossini Exp $
+;; Modified: $Date: 2001/09/25 20:44:11 $
+;; Version: $Revision: 5.80 $
+;; RCS: $Id: ess-site.el,v 5.80 2001/09/25 20:44:11 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -552,14 +552,14 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;; 4.0 SAS configuration
 
 ;;; Beginning with ESS 5.1.13, we have editing options in SAS-mode.
-;;; The default behavior continues as it was in prior releases.
+;;; The default behavior is as it was in prior releases.
 ;;;
-;;; There are now two sets of alternatives.
+;;; There are two sets of alternatives.
 ;;;   1. Editing SAS-mode files.
 ;;;   1a. Default: TAB is bound to sas-indent-line.
 ;;;       Current line is correctly indented as SAS code.  Equivalent to
-;;;(setq ess-sas-edit-keys-toggle 0) ;; TAB in sas-mode is 'sas-indent-line
-;;;   1b. Options: TAB is bound to tab-to-tab-stop and inserts up to 4
+;;;(setq ess-sas-edit-keys-toggle 0) ;; default TAB in sas-mode
+;;;   1b. Optional: TAB is bound to tab-to-tab-stop and inserts up to 4
 ;;;       columns at a time.  C-TAB moves backwards and deletes characters
 ;;;       up to 4 columns at a time.
 ;;;       Uncomment the following line for the optional behavior.
@@ -567,10 +567,10 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;;   Use the function call (ess-sas-edit-keys-toggle 0)
 ;;;   or                    (ess-sas-edit-keys-toggle 1)
 ;;;   to change the setting after the first SAS-mode buffer has been created.
-;;;   1c. You can also have SAS-mode automatically generate and END; or %END;
-;;;       statement to close a DO, DO% or SELECT block when you press C-TAB  
-;;;       on a blank line with the optional behavior.  Uncomment the following line:
-;;;(setq ess-sas-smart-back-tab t)    ;; requires optional behavior above
+;;;   1c. You can also define C-TAB in all modes by specifying a 
+;;;       non-nil second argument.  This is convenient when you find yourself
+;;;       pressing C-TAB in other modes and, of course, nothing happens.
+;;;(setq ess-sas-edit-keys-toggle 1 t) ;; optional C-TAB in all modes
 ;;;
 ;;;   2. Managing submitted SAS jobs with function keys.
 ;;;   2a. Default: Function keys retain their global bindings.

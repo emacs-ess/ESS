@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2001/08/22 17:00:47 $
-;; Version: $Revision: 1.36 $
-;; RCS: $Id: essa-sas.el,v 1.36 2001/08/22 17:00:47 ess Exp $
+;; Modified: $Date: 2001/09/25 20:44:11 $
+;; Version: $Revision: 1.37 $
+;; RCS: $Id: essa-sas.el,v 1.37 2001/09/25 20:44:11 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -510,13 +510,14 @@ Keep in mind that the maximum command line length in MS-DOS is
   C-TAB to `ess-sas-backward-delete-tab', and
   RET to `newline'.")
 
-(defun ess-sas-edit-keys-toggle (&optional arg)
+(defun ess-sas-edit-keys-toggle (&optional arg global)
   "Toggle TAB key in `SAS-mode'.
-If arg is 0, TAB is `sas-indent-line'.
-If arg is positive, TAB is `ess-sas-tab-to-tab-stop', 
+If first arg is 0, TAB is `sas-indent-line'.
+If first arg is positive, TAB is `ess-sas-tab-to-tab-stop', 
 C-TAB is `ess-sas-backward-delete-tab' and
 RET is `newline'.
-Without arg, toggle between these options."
+Without args, toggle between these options.
+If second arg is non-nil, then C-TAB definition is global."
   (interactive "P")
   (setq ess-sas-edit-keys-toggle
 	(if (null arg) (not ess-sas-edit-keys-toggle)
@@ -524,8 +525,13 @@ Without arg, toggle between these options."
   (if ess-sas-edit-keys-toggle
       (progn
 	(if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
-	    (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab)
-	  (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
+	    (if global (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
+	    ;else
+	       (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab))
+	    (if global (global-set-key [(control tab)] 'ess-sas-backward-delete-tab)
+	    ;else
+	       (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab)))
+	;else
         (define-key sas-mode-local-map [return] 'newline)
 	(define-key sas-mode-local-map "\t" 'ess-sas-tab-to-tab-stop))
     (define-key sas-mode-local-map "\t" 'sas-indent-line)))
