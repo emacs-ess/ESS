@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 2000/03/30 14:49:26 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: essd-sta.el,v 1.23 2000/03/30 14:49:26 maechler Exp $
+;; Modified: $Date: 2001/02/06 18:54:17 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: essd-sta.el,v 1.24 2001/02/06 18:54:17 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -89,7 +89,8 @@
 	   ess-dialect
 	   (current-buffer)))
   (let ((sta-start-args
-	 (concat inferior-ess-start-args
+	 (concat "TERM=emacs stata " 
+	         inferior-ess-start-args
 		 (if start-args (read-string
 				 "Starting Args [possibly -k####] ? ")
 		   nil))))
