@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.57 2002/05/06 05:27:54 rmh Exp $
+## $Id: Makefile,v 5.58 2002/05/20 14:13:41 rsparapa Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -98,7 +98,7 @@ dist: docs
 	mv ess $(ESSVERSIONDIR)
 	chmod a-w $(ESSVERSIONDIR)/lisp/*.el
 	chmod a-w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
-	chmod u+w $(ESSVERSIONDIR)/doc/ess.info*
+#	chmod u+w $(ESSVERSIONDIR)/doc/ess.info*
 	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Make*
 	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
 	for D in jcgs techrep dsc2001-rmh; do DD=$(ESSVERSIONDIR)/doc/$$D; \
