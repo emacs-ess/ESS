@@ -1,15 +1,23 @@
 							-*- text -*-
 
-ESS VERSION 4.9
+ESS VERSION 5.0
 ------------------
 
-This directory contains the distribution of ESS version 4.9, which
+This directory contains the distribution of ESS version 5.0, which
 used to be S-mode.  This is an Emacs-Lisp interface to interactive
-statistical programming and data analysis languages, including the S
-dialects, S, Splus, and R, as well as the LispStat dialect, XLispStat.
+statistical programming and data analysis languages, including:
+
+* S dialects (S 3, S 4, Splus 3.x, Splus 4.x and R)
+* LispStat dialects (XLispStat, ViSta, Common LispStat(?))
+* SAS
+* SPSS dialects (SPSS, Fiasco)
+
+Note that not all of these languages are currently supported by ESS,
+or are even in production versions at this stage.  However, this is
+the long term goal.
 
 
-0. LICENCE
+0. LICENSE
 ----------
 
 ESS is free software; you can redistribute it and/or modify it under
@@ -27,17 +35,17 @@ details.
 1. FEATURES
 -----------
 
-Editing source code (S3, S+3, S4, R)
+Editing source code (S, LispStat, SAS)
 
         Syntactic indentation and highlighting of source code 
         Partial evaluations of code 
         Loading and error-checking of code 
         Source code revision maintenance 
 
-Interacting with the process (S3, S+3, S4, R, XLispStat)
+Interacting with the process (S, LispStat, SAS)
 
         Command-line editing 
-        Searchable command history 
+        Command history 
         Command-line completion of S object names and file names 
         Quick access to object lists and search lists 
         Transcript recording 
@@ -52,19 +60,21 @@ Transcript manipulation (S3, S+3, S4, R, XLispStat)
 See the accompanying manual ESS.texi for details of features of ESS.
 See the file NEWS for changes in recent versions.
 
+Future features include a language-independent data analysis UI (and
+analysis GUI), as well as links with Literate Programming methodology.
 
 2. REQUIREMENTS
 ---------------
 
-ESS version 4.9 requires Emacs version 19.29 or later, or version
+ESS version 5.0 requires Emacs version 19.29 or later, or version
 XEmacs 19.14 or later.  ESS is supposed to work with any version of S,
-Splus, R, or XLispStat.  
+Splus, R, or XLispStat.
 
 It has been most thoroughly tested with:
-	Splus 3.3, R 0.49 and 0.50, and XLispStat 3.50 on SunOS,
-	Solaris, and Linux (Unix) systems;
+	Splus 3.3, R 0.49 and 0.50, XLispStat 3.50, S4, and SAS on
+	SunOS, Solaris, and Linux (Unix) systems;
 
-	Emacs 19.29, 19.34, XEmacs 19.15, XEmacs 20.3 (beta versions)
+	Emacs 19.29, 19.34, XEmacs 19.16, XEmacs 20.3
 
 It may need some work with other configurations.
 
@@ -72,10 +82,10 @@ It may need some work with other configurations.
 3. STABILITY
 ------------
 
-Version 4.9 is meant as a functional release.  However, there are a
+Version 5.0 is meant as a functional release.  However, there are a
 few known bugs (and countless other undiscovered ones); see the TODO
 file for details.  Bug reports are solicited; see the BUGS section
-below.  Fixes and patches with bug reports are generously accepted.
+below.  Fixes and patches with bug reports are appreciated!
 
 
 4. INSTALLATION  (AJR: NEEDS TO BE CHANGED!).
@@ -84,7 +94,7 @@ below.  Fixes and patches with bug reports are generously accepted.
 * cd to a directory where you keep emacs lisp files, or create a new
   directory to hold the distribution.  This directory will be referred
   to below as "the ESS-4.9 directory".  Note that the .elc files
-  may be installed elswehere (as specified in the Makefile) if
+  may be installed elsewhere (as specified in the Makefile) if
   desired.
 
 * Copy ESS-4.9.tar.gz to the location where you want the ESS-4.9
@@ -96,7 +106,7 @@ below.  Fixes and patches with bug reports are generously accepted.
 
 	(or using GNU tar:  tar zxvf ESS-4.9.tar.gz).
 
-  The tar commmand will extract files into the current directory.
+  The tar command will extract files into the current directory.
 
   Do not create ESS-4.9 yourself, or you will get an extra level of
   depth to your directory structure.
@@ -146,25 +156,32 @@ below.  Fixes and patches with bug reports are generously accepted.
 5. BUGS
 -------
 
-Please send bug reports, suggestions etc. to rossini@stat.sc.edu.  The
-easiest way to do this is within Emacs by typing 
+Please send bug reports, suggestions etc. to
+
+	ess-bugs@stat.math.ethz.ch
+
+The easiest way to do this is within Emacs by typing
 
 	M-x ess-submit-bug-report 
 
-This also gives me valuable information about your installation with
-may help me to identify or even fix the bug.
+This also gives the maintainers valuable information about your
+installation with may help me to identify or even fix the bug.
 
 
 6. GETTING THE LATEST VERSION
 -----------------------------
 
-The latest version of ESS is always available by WWW from
-http://www.maths.lancs.ac.uk:2080/~maa036/elisp/S-mode/.  ESS is
-also available via anonymous FTP from
-wingra.stat.wisc.edu:pub/src/emacs-lisp/.
+The latest stable version of ESS is always available by WWW from
 
-The latest version of ESS is available via WWW or FTP, and can be
+	http://www.maths.lancs.ac.uk:2080/~maa036/elisp/S-mode/
+
+ESS is also available via anonymous FTP from
+
+	ftp://wingra.stat.wisc.edu/pub/src/emacs-lisp/.
+
+The latest alpha version of ESS is available via WWW or FTP, and can be
 found in the directory specified by:
+
 	http://www.stat.sc.edu/~rossini/projects/
 	ftp://ftp.math.sc.edu/rossini/
 
@@ -185,7 +202,6 @@ The purposes of the mailing list include
 - suggestions for improvements.
 - announcements of new [beta] releases of ESS.
 - posting small patches to ESS.
-
 
 ----
 Richard M. Heiberger <rmh@fisher.stat.temple.edu>, Stat Dept., Temple U.
