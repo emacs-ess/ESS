@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/07 04:57:48 $ - $Revision: 1.143 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/07 06:34:02 $ - $Revision: 1.144 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -655,12 +655,35 @@ ESS should stay out of it, at least as far as the paper goes.
 \paragraph{Process interaction.}
 Emacs has historically referred to processes under its control as
 ``inferior'', accounting for the name inferior ESS (\stexttt{iESS}) to
-denote the mode for interfacing with the statistical package.  The
-output of the package goes directly to an editable buffer whose major
-mode is crafted to allow for command-line editing.  This mode
-remembers and uses the command history allowing for the recall and
-searching of previously entered commands.  Filename completion for
-local directories is also available.
+denote the mode for interfacing with the statistical package.  Figure
+\ref{f.ess-demo} shows the S language program \stexttt{ess-demo.s} in
+the top buffer in \stexttt{ESS[S]} mode and the executing R process in
+the bottom buffer \stexttt{*R*}.  The
+(\stexttt{iESS}) major mode of the \stexttt{*R*} buffer is crafted for
+command-line editing.  This mode remembers and uses the command
+history, allowing for the recall and searching of previously entered
+commands.  Filename completion for local directories is also
+available.
+
+
+
+\begin{figure}[tbp]
+  \centering
+  \ifdraft
+     \emptyfig
+  \else
+     \includegraphics[angle=270,width=\textwidth]{ess-demo}
+  \fi
+  \caption{Line-by-line execution of a command file.
+The cursor is placed on a line in
+the \stexttt{ESS[S]} buffer and with a single keypress the line is
+sent to the \stexttt{*R*} buffer for execution.  The output of the
+package goes directly to the editable \stexttt{*R*} buffer.}
+  \label{f.ess-demo}
+\end{figure}
+
+
+
 
 \paragraph{Source-level Debugging}% Code Checking and Partial Code Evaluation.}
 ESS facilitates the editing of source code files, sets of commands
