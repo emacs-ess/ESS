@@ -1,3 +1,8 @@
+2002-01-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-ddeclient-p): new function from Rich
+	  and a few related changes
+
 2001-10-16  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-execute-objects): use (number-to-string ..) for
