@@ -3,7 +3,7 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.27 2002/05/12 04:33:40 rmh Exp $
+@comment $Id: ess.texi,v 5.28 2002/05/17 19:54:31 rmh Exp $
 
 @include version.texi
 
@@ -41,7 +41,7 @@ University of Washington, Seattle, WA 98185, USA
 
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-@subtitle version @essver{} (Documentation $Revision: 5.27 $ $Date: 2002/05/12 04:33:40 $)
+@subtitle version @essver{} (Documentation $Revision: 5.28 $ $Date: 2002/05/17 19:54:31 $)
 @author A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani.
 @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @author                and David Smith)
@@ -86,7 +86,7 @@ permission notice identical to this one.
 
 ESS version @essver{}
 
-        (Documentation $Revision: 5.27 $ $Date: 2002/05/12 04:33:40 $).
+        (Documentation $Revision: 5.28 $ $Date: 2002/05/17 19:54:31 $).
 
 @quotation
 A.J. Rossini, R.M. Heiberger, K. Hornik, M. Maechler, and R. Sparapani (Formerly: Doug
@@ -1616,6 +1616,9 @@ extends beyond the indentation column.  You turn off the default
 behavior by adding the line
 @code{(setq ess-fancy-comments nil)} to your @file{.emacs} file.
 @vindex ess-fancy-comments
+(GNU emacs uses the filename @file{~/.emacs} and
+Xemacs uses the filename @file{~/.xemacs/init.el}
+for the initialization file.)
 
 The indentation commands provided by ESS are:
 @cindex indenting

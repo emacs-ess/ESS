@@ -25,6 +25,38 @@ Department of Mathematics and Statistics, Lancaster University, UK.
 University of Washington, Seattle, WA 98185, USA
 
 
+File: ess.info,  Node: Dump file variables,  Next: Indentation variables,  Prev: Variables for starting ESS,  Up: Variables
+
+Variables for dump files
+------------------------
+
+ - User Option: ess-insert-function-templates
+     Default: `t'
+     If this variable has a non-`nil' value, then dumping a
+     non-existent object will result in the edit buffer containing a
+     skeleton function definition, ready for editing.
+
+ - User Option: ess-source-directory
+     Default: `"/tmp/"'
+     Directory name (ending in `/') in which dump files are placed.
+     This should always be a writable directory.
+
+ - User Option: ess-source-directory-generator
+     Default: `nil'
+     Alternative, dynamic method of specifying the directory for dump
+     files.
+
+ - User Option: ess-dump-filename-template
+     Default: USER_NAME`.'OBJECT_NAME`.S'
+     Naming system to use for dumped object files.  *Note Source
+     Directories::, for details of this and the previous two variables.
+
+ - User Option: ess-keep-dump-files
+     Default: `nil'
+     Boolean flag signifying whether to keep dump files or to delete
+     them after each use.  *Note Source Files::, for more details.
+
+
 File: ess.info,  Node: Indentation variables,  Next: Variables controlling interaction,  Prev: Dump file variables,  Up: Variables
 
 Variables controlling indentation

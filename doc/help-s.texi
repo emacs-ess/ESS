@@ -140,7 +140,10 @@ retrieved again, by changing emacs variables.
 2: (older version): S objects are real.  Source code is a temporary
    realization of the objects.  Dumped buffers should not be saved.
    _We_strongly_discourage_this_approach_.  However, if you insist,
-   add the following lines to your .emacs file:
+   add the following lines to your .emacs file
+(GNU emacs uses the filename @file{~/.emacs} and
+Xemacs uses the filename @file{~/.xemacs/init.el}
+for the initialization file):
 @example
 (setq ess-keep-dump-files 'nil)
 (setq ess-delete-dump-files t)

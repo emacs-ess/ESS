@@ -1,7 +1,7 @@
 General Information: README
 ***************************
 
-   ($Revision: 5.38 $, for ESS version 5.1.21)
+   ($Revision: 5.39 $, for ESS version 5.1.21)
 
    This is the README file for the distribution of ESS version 5.1.21,
 the gamma series we are using on the way to producing 5.2 (the next
@@ -493,6 +493,9 @@ Unix installation
      to your .emacs file (or default.el or site-init.el, for a site-wide
      installation).  Replace `/PATH' above with the value of
      ess-lisp-directory as defined in ess-site.el.
+     (GNU emacs uses the filename ~/.emacs and
+     Xemacs uses the filename ~/.xemacs/init.el
+     for the initialization file.)
 
      Alternatively, if ess-site.el is in your current Lisp path, you can
      do:
@@ -607,6 +610,10 @@ Microsoft Windows installation
      a site-wide installation).  Replace `/PATH' above with the value
      of ess-lisp-directory as defined in `ess-site.el'.  Use
      forwardslashes `/'.
+     (GNU emacs uses the filename ~/.emacs and
+     Xemacs uses the filename ~/.xemacs/init.el
+     for the initialization file.)
+
 
   7.  (OPTIONAL) If you are running Sqpe or R, you might consider
      installing the database files.  From within (X)Emacs, `C-x d' to

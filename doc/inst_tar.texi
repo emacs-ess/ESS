@@ -101,6 +101,9 @@ site-lisp directory.
 to your .emacs file (or default.el or site-init.el, for a site-wide
 installation).  Replace `/PATH' above with the value of
 ess-lisp-directory as defined in ess-site.el.
+(GNU emacs uses the filename @file{~/.emacs} and
+Xemacs uses the filename @file{~/.xemacs/init.el}
+for the initialization file.)
 
 Alternatively, if ess-site.el is in your current Lisp path, you can
 do:
@@ -257,6 +260,9 @@ to your .emacs (or _emacs) file (or default.el or site-init.el, for
 a site-wide installation).  Replace @code{/PATH} above with the
 value of ess-lisp-directory as defined in @file{ess-site.el}.  Use
 forwardslashes @code{/}.
+(GNU emacs uses the filename @file{~/.emacs} and
+Xemacs uses the filename @file{~/.xemacs/init.el}
+for the initialization file.)
 
 @item
 

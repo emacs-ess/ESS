@@ -25,6 +25,32 @@ Department of Mathematics and Statistics, Lancaster University, UK.
 University of Washington, Seattle, WA 98185, USA
 
 
+File: ess.info,  Node: Philosophies for using ESS(S),  Next: Scenarios for use (possibilities--based on actual usage),  Prev: ESS-help--assistance with viewing help,  Up: Help for the S family
+
+Philosophies for using ESS[S]
+=============================
+
+   The first is preferred, and configured for.  The second one can be
+retrieved again, by changing emacs variables.
+
+   1: (preferred by the current group of developers):  The source code
+is    real.  The objects are realizations of the source code.  Source
+for EVERY user modified object is placed in a particular directory
+or directories, for later editing and retrieval.
+
+   2: (older version): S objects are real.  Source code is a temporary
+ realization of the objects.  Dumped buffers should not be saved.
+_We_strongly_discourage_this_approach_.  However, if you insist,    add
+the following lines to your .emacs file (GNU emacs uses the filename
+`~/.emacs' and Xemacs uses the filename `~/.xemacs/init.el' for the
+initialization file):
+     (setq ess-keep-dump-files 'nil)
+     (setq ess-delete-dump-files t)
+     (setq ess-mode-silently-save nil)
+   The second saves a small amount of disk space.  The first allows for
+better portability as well as external version control for code.
+
+
 File: ess.info,  Node: Scenarios for use (possibilities--based on actual usage),  Next: Customization Examples and Solutions to Problems,  Prev: Philosophies for using ESS(S),  Up: Help for the S family
 
 Scenarios for use (possibilities-based on actual usage)
@@ -333,16 +359,34 @@ File: ess.info,  Node: ESS(SAS)--Batch processes,  Next: ESS(SAS)--Function keys
 ESS[SAS]-Batch processes
 ========================
 
+   Submission of a SAS batch job is dependent on your environment.
+ess-sas-submit-method is determined by your operating system and your
+shell.  It defaults to 'sh unless you are running Windows or Mac
+Classic.  Under Windows, it will default to 'sh if you are using bash
+for your shell rather than MS-DOS ('ms-dos).  On Mac OS X, it will
+default to 'sh, but under Mac Classic AppleScript is used
+('apple-script).  You will also set this to 'sh if the SAS batch job
+needs to run on a remote machine rather than your local machine.  This
+works transparently if you are editing the remote file via ange-ftp/EFS
+or tramp.  However, if you are editing the file locally and
+transferring it back and forth with Kermit, you need some additional
+steps.  First of all, start Kermit locally before remotely logging in.
+Execute the command ess-kermit-get.  A local copy of the file will be
+created with the ess-kermit-prefix character prepended (the default is
+":").  Also, note that the remote Kermit command is defined by
+ess-kermit-command.
+
    The command used by the SUBMIT function key (F3 or F8) to submit a
-batch SAS job is ess-sas-submit-command which defaults to sas-program.
-sas-program is "invoke SAS using program file" for Mac Classic and
-"sas" otherwise.  However, you may have to alter ess-sas-submit-command
-for a particular program, so it is defined as buffer-local
-(conveniently, you can set it in Local Variables: at the end of your
-program).  The command line is also made of ess-sas-submit-pre-command,
-ess-sas-submit-post-command and ess-sas-submit-command-options (the
-last of which is also buffer-local).  Here are some examples for your
-.emacs file (you may also use custom-ize):
+batch SAS job, whether local or remote, is ess-sas-submit-command which
+defaults to sas-program.  sas-program is "invoke SAS using program
+file" for Mac Classic and "sas" otherwise.  However, you may have to
+alter ess-sas-submit-command for a particular program, so it is defined
+as buffer-local (conveniently, you can set it in Local Variables: at
+the end of your program).  The command line is also made of
+ess-sas-submit-pre-command, ess-sas-submit-post-command and
+ess-sas-submit-command-options (the last of which is also buffer-local).
+Here are some examples for your .emacs file (you may also use
+custom-ize):
      (setq ess-sas-submit-pre-command "nohup")                 ;'sh default
      (setq ess-sas-submit-post-command "-rsasuser &")          ;'sh default
      (setq ess-sas-submit-command "/usr/local/sas/sas")        ;'sh example
@@ -790,7 +834,9 @@ Unix installation
           (load "/PATH/ess-site")
      to your .emacs file (or default.el or site-init.el, for a site-wide
      installation).  Replace `/PATH' above with the value of
-     ess-lisp-directory as defined in ess-site.el.
+     ess-lisp-directory as defined in ess-site.el.  (GNU emacs uses the
+     filename `~/.emacs' and Xemacs uses the filename
+     `~/.xemacs/init.el' for the initialization file.)
 
      Alternatively, if ess-site.el is in your current Lisp path, you can
      do:
@@ -907,7 +953,9 @@ Microsoft Windows installation
      to your .emacs (or _emacs) file (or default.el or site-init.el, for
      a site-wide installation).  Replace `/PATH' above with the value
      of ess-lisp-directory as defined in `ess-site.el'.  Use
-     forwardslashes `/'.
+     forwardslashes `/'.  (GNU emacs uses the filename `~/.emacs' and
+     Xemacs uses the filename `~/.xemacs/init.el' for the
+     initialization file.)
 
   7.  (OPTIONAL) If you are running Sqpe or R, you might consider
      installing the database files.  From within (X)Emacs, `C-x d' to
@@ -1119,36 +1167,4 @@ Variables for starting ESS
      Default: `'(":0.0")'
      List of possible values for the `DISPLAY' environment variable,
      provided for completion when prompting for such a value.
-
-
-File: ess.info,  Node: Dump file variables,  Next: Indentation variables,  Prev: Variables for starting ESS,  Up: Variables
-
-Variables for dump files
-------------------------
-
- - User Option: ess-insert-function-templates
-     Default: `t'
-     If this variable has a non-`nil' value, then dumping a
-     non-existent object will result in the edit buffer containing a
-     skeleton function definition, ready for editing.
-
- - User Option: ess-source-directory
-     Default: `"/tmp/"'
-     Directory name (ending in `/') in which dump files are placed.
-     This should always be a writable directory.
-
- - User Option: ess-source-directory-generator
-     Default: `nil'
-     Alternative, dynamic method of specifying the directory for dump
-     files.
-
- - User Option: ess-dump-filename-template
-     Default: USER_NAME`.'OBJECT_NAME`.S'
-     Naming system to use for dumped object files.  *Note Source
-     Directories::, for details of this and the previous two variables.
-
- - User Option: ess-keep-dump-files
-     Default: `nil'
-     Boolean flag signifying whether to keep dump files or to delete
-     them after each use.  *Note Source Files::, for more details.
 
