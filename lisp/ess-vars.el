@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/11/12 07:45:33 $
-;; Version: $Revision: 1.40 $
-;; RCS: $Id: ess-vars.el,v 1.40 1997/11/12 07:45:33 rossini Exp $
+;; Modified: $Date: 1997/11/13 14:58:41 $
+;; Version: $Revision: 1.41 $
+;; RCS: $Id: ess-vars.el,v 1.41 1997/11/13 14:58:41 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -80,30 +80,6 @@ Used to adjust for changes in versions of the program")
 
 (make-variable-buffer-local 'ess-dialect)
 (setq-default ess-dialect "Initial-dialect")
-
-;;Old Docs for the above (unverified if they survived the changes):
-;;
-;;The value of this variable affects the default values of the following
-;;variables:
-;; 	 inferior-ess-help-command
-;;	 inferior-ess-search-list-command
-;;	 ess-dump-error-re
-;;
-;;Modifications to these variables are made at *load* time (provided, of
-;;course, they have not already been given values), hence changing the
-;;value of ess-version-running after this package is loaded will have no
-;;effect.
-;;
-;;Currently the string \"3.0\" is the only value of this variable with
-;;any real meaning; in this case the defaults are set to comply with the
-;;August '91 (3.0) version of S/S-PLUS, defaults which also work for
-;;version 2.3. Any other value than \"3.0\" sets the defaults to comply
-;;with the 1988 version of S/S-PLUS.
-;;
-;;Please reserve the following values as special:
-;;   \"3.0\"    Version 3.0 (August '91) of S/Splus
-;;   \"2.3\"    Version 2.3 of S/Splus
-;;   \"old\"    Any older version
 
 (defvar ess-directory nil
   "*The directory ESS is run from.  It must end in a slash.
