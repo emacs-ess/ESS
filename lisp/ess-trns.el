@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2002/01/15 01:52:54 $
-;; Version: $Revision: 5.10 $
-;; RCS: $Id: ess-trns.el,v 5.10 2002/01/15 01:52:54 rmh Exp $
+;; Modified: $Date: 2002/04/27 07:17:10 $
+;; Version: $Revision: 5.11 $
+;; RCS: $Id: ess-trns.el,v 5.11 2002/04/27 07:17:10 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -127,7 +127,7 @@
  ess-transcript-mode-menu ess-transcript-mode-map
  "Menu for use in S transcript mode."
  '("ESS-trans"
-   ["What is this? (beta)"    ess-mouse-me                      t]
+   ["What is this? (beta)" ess-mouse-me                  t]
    ["Describe"	       describe-mode			 t]
    ["About"	       (ess-goto-info "Transcript Mode") t]
    ["Send bug report"  ess-submit-bug-report		 t]
@@ -138,7 +138,9 @@
    "------"
    ["Send and move"  ess-transcript-send-command-and-move t]
    ["Copy command"   ess-transcript-copy-command	  t]
-   ["Send command"   ess-transcript-send-command	  t]))
+   ["Send command"   ess-transcript-send-command	  t]
+   ["Clean Region"   ess-transcript-DO-clean-region       t]))
+
 
 
 (if (not (string-match "XEmacs" emacs-version))
@@ -253,18 +255,27 @@ is not already."
       (insert input)))
   (ess-switch-to-end-of-ESS))
 
-(defun ess-transcript-clean-region (beg end)
+(defun ess-transcript-clean-region (beg end even-if-read-only)
   "Strip the transcript in the region, leaving only (R/S/Lsp/..) commands.
 Deletes any lines not beginning with a prompt, and then removes the
-prompt from those lines than remain."
+prompt from those lines that remain.  Prefix argument means to use
+\\[toggle-read-only] to clean even if the buffer is \\[read-only]."
+  (interactive "r\nP")
+  (let ((do-toggle (and buffer-read-only even-if-read-only)))
+    (if do-toggle (toggle-read-only 0))
+    (save-excursion
+      (save-restriction
+	(narrow-to-region beg end)
+	(goto-char (point-min))
+	(delete-non-matching-lines (concat "^" inferior-ess-prompt))
+	(goto-char (point-min))
+	(replace-regexp (concat "^" inferior-ess-prompt) "")))
+    (if do-toggle (toggle-read-only 1))))
+
+(defun ess-transcript-DO-clean-region (beg end)
+  "Clean the current via \\[ess-transcript-clean-region] even if the buffer is read-only."
   (interactive "r")
-  (save-excursion
-    (save-restriction
-      (narrow-to-region beg end)
-      (goto-char (point-min))
-      (delete-non-matching-lines (concat "^" inferior-ess-prompt))
-      (goto-char (point-min))
-      (replace-regexp (concat "^" inferior-ess-prompt) ""))))
+  (ess-transcript-clean-region (beg end 'In-ANY-case)))
 
  ; Local variables section
 
