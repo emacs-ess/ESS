@@ -290,26 +290,16 @@ ESS can also be retrieved using anonymous cvs:
 
    You need a cvs client (that works with your firewall, if any)
 
-   <<<<<<< inst_cvs.texi the repository name is
-:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src ======= the
-repository name is
-`:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src' >>>>>>> 1.3
+   the repository name is
+`:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src'
 
    using a command-line cvs client (i.e. on Unix or DOS), first type:
-
-   <<<<<<< inst_cvs.texi    cvs -d
-:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login =======
 `cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src login'
->>>>>>> 1.3
 
    password is anoncvs
 
-   then type:
-
-   <<<<<<< inst_cvs.texi    cvs -d
-:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess =======
-`cvs -d  :pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess'
->>>>>>> 1.3
+   then type:    `cvs -d
+:pserver:anoncvs@ess.stat.wisc.edu:/home/anoncvs/src co ess'
 
    Check the `README'  file first to see which files you need.  Look at
 `ANNOUNCE' to learn about new user-visible features; also, many changes
