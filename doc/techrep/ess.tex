@@ -246,6 +246,7 @@ ESS provides a number of features for statistical programming, beyond
 those generally provided by Emacs, which were listed in
 section~\ref{sec:intro:emacs}.
 
+%\item Syntactic indentation and highlighting of source code
 For the interface with the programming language code as well as the
 interface with the statistical program, this includes syntax
 highlighting to denote assignment, reserved words, presence of
@@ -255,6 +256,7 @@ customization relating to how one would want to indent groups of
 expression.  For the interface with the statistics package/program,
 there is also a means of searching the command-line history for
 previous commands as well as editing past commands for current use.
+%\item Partial evaluations of code
 These are connected by the ability to send, within Emacs, lines,
 functions, regions, and whole edited buffers from the programming code
 to the statistical program/package for execution.  In addition, it is
@@ -279,8 +281,6 @@ editing back into the statistical package/process.
 %%% MAKE THIS INTO A PARAGRAPH
 Editing source code (S, LispStat, SAS)
 \begin{itemize}
-\item Syntactic indentation and highlighting of source code
-\item Partial evaluations of code
 \item Loading and error-checking of code
 \end{itemize}
 
@@ -409,7 +409,6 @@ New for ESS 5.1.2 (and later):  "S-elsewhere" command
 
 \subsection{Programming Language Help}
 \label{sec:S:help}
-
 
 - move between help sections
 - send examples to S for evaluation
@@ -562,6 +561,13 @@ prefixed by "\verb+##+").
     ## help file in a separate buffer.
 \end{verbatim}
 \end{itemize}
+
+
+\section{Using ESS with SAS}
+\label{sec:SAS}
+
+
+
 
 
 \section{Advanced Usage}
