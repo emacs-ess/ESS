@@ -1,3 +1,13 @@
+2004-06-20  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* essd-sp6.el (S+6-mode): Hook in toolbar support.
+
+	* essd-r.el (R-mode): Hook in toolbar support.
+
+	* ess-toolbar.el: Update toolbar support so that we have only one
+	ESS toolbar that can be used over multiple modes.  This makes it
+	simpler to use I feel.
+
 2004-05-22  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* ess-inf.el (ess-eval-linewise): Try again to get the point at
