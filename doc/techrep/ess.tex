@@ -136,8 +136,8 @@ hand, these specialized tools lack breadth in the range of analyses
 and graphics that can be generated.  For this reason, BUGS is
 distributed with applications providing loose interoperability for
 simplifying the transfer of output to R or \Splus\ for processing the
-results.  However, while the interfaces for WinBUGS and R are similar,
-they are still distinct enough to create tension on the part of the
+results.  Although the interfaces for WinBUGS and R are similar,
+they are distinct enough to create tension on the part of the
 analyst.
 
 Emacs Speaks Statistics (ESS) \citep{ESS} is an extension package for
@@ -207,7 +207,7 @@ the online documentation that comes with the package.  The next
 section introduces common forms of statistical user interfaces.  This
 is followed by a discussion of ESS and Emacs.  Specifics on the
 realized interfaces for the S family and SAS are discussed in sections
-\ref{sec:S} and \ref{sec:SAS} respectively.  Finally, the conclusion
+\ref{sec:S} and \ref{sec:SAS} respectively.  The conclusion
 brings up related work and future extensions.
 
 \section{Statistical User Interfaces}
@@ -228,16 +228,15 @@ screens; and by the coherent implementation provided by DataDesk
 \citep{vell:prat:1989}, which has a tight link between data and
 graphics.
 
-Individual feelings about computer user interfaces have traditionally
-been extremely personal.  It is extremely difficult to convince
-computer users to change from one interface to another.  This can be
+Computer users strongly resist changes to their interface.  This can be
 observed in the choice of editors such as vi and emacs; mail user agents
 such as mail, Pine, Elm, Netscape Mail, and Microsoft Outlook; word
 processors such as Microsoft Word and Corel WordPerfect; and other
-commonly used tools.  Choice has little to do with theory, and more to
-do with compatibility with previous usage as well as ease-of-use with
-respect to the initial learning curve.  However, sometimes the hardest
-interfaces to master are the most efficient in the long run, after the
+commonly used tools.  The user's choice has little to do with theory,
+and more to do with compatibility with previous usage and with
+perceived size of the learning curve for a new package.
+However, sometimes the hardest
+interfaces to master are the most efficient in the long run---after the
 initial investment in time.
 
 \subsection{Command line interfaces}
@@ -291,10 +290,10 @@ including \Splus\ and SPSS.
 
 The Single Document Interface (SDI) provides a single frame for each
 document, view, or figure created.  Unix-based interfaces tend to be
-SDI-based, due in part to the nature of the X11 windowing system its
+SDI-based, due in part to the nature of the X11 windowing system---with its
 flexibility in allowing a single application to place frames and
-windows across multiple displays on potentially multiple computers and
-in part to the lack, until recently, of available GUI toolkits which
+windows across multiple displays on potentially multiple computers---and
+in part to the lack until recently of available GUI toolkits which
 worked across different Unix platforms.  Examples of statistics
 packages using the SDI are the command-line interfaces for \Stata,
 \Splus, \XLispStat, or R under Unix and the \Rgui\ interface for R
@@ -334,11 +333,11 @@ the code with syntax highlighting to denote assignment, reserved
 words, presence of strings, and comments.  ESS has customizable
 automatic indentation, with the customization based on the syntactic
 structure of groups of expressions.  ESS knows the structure of
-transcripts of the executing session, as well as it knows the source
-language, and provides syntactic highlighting here as well.  For the
-interface with the executing statistics language/program, ESS also
-provides a means of searching the command-line history for previous
-commands as well as editing past commands for current use.
+transcripts of the executing session and provides syntactic highlighting
+for transcripts.  ESS interacts well with the executing statistics
+language/program and
+provides means for searching the command-line history for previous
+commands and editing them for current use.
 
 \paragraph{Partial code evaluation.}
 Emacs can send individual lines, entire function definitions, marked
@@ -352,12 +351,12 @@ not require switching buffers or windows.  The response is
 received immediately in an editable Emacs buffer.
 
 \paragraph{Object name completion.}
-In addition, for languages in the S family \{S (versions 3 and 4)
-developed at Bell Labs, \Splus\ (all versions), and R (all versions)\}
+In addition, for languages in the S family (S 
+developed at Bell Labs, \Splus, and R)
 ESS provides object-name completion of both user- and system-defined
-functions and data.  There is also the ability to dump and save
+functions and data.  ESS can dump and save
 objects (user- and system-generated) into text files in a formatted
-manner for editing, as well as to reload (after possible editing) back
+manner for editing, and reload them (possiblly after editing) back
 into the statistical language/program.
 
 \paragraph{Source code checking.}
@@ -483,8 +482,8 @@ allow for control of multiple processes simultaneously.  In 1995, A.J.
 Rossini extended S-mode to support XEmacs, an open-source editor which
 was derived from Emacs.  At the same time, extensions from ETH,
 written by Martin M{\"a}chler, were folded into what was to become the
-primary codebase.  By 1996, S-mode was merged into a uniform S-mode
-for Emacs, XEmacs, and supported S, \Splus and to some extent, R.
+primary codebase.  By 1996 a uniform S-mode, available
+for both Emacs and XEmacs, supported S, \Splus, and to some extent R.
 
 The other ancestor of the ESS codebase was a successful SAS-mode
 written by Tom Cook.  The initial extension was done by A.J. Rossini
@@ -727,10 +726,10 @@ Manager.
 \subsection{SAS process interaction}
 \label{sec:SAS:proc}
 
-There are four methods for interacting with SAS.  We describe running
-SAS with the Display Manager, batch
-processing from ESS, running SAS on a remote machine from
-a local Emacs, and running SAS in an inferior ESS buffer.
+There are three methods for interacting with SAS.  We describe running
+SAS with the Display Manager, batch processing from ESS,
+% running SAS on a remote machine from a local Emacs,
+and running SAS in an inferior ESS buffer.
 
 The ESS methods for interacting with SAS are based on the SAS Display
 Manager's procedures.  The two reasons to use ESS rather than the
@@ -755,22 +754,16 @@ When the file is submitted for batch processing, it will automatically
 be saved back to the remote machine and be exactly where the remote
 SAS will find it.
 
-%%% AJR: The next two seem a bit silly?  or need to be rewritten?
-%%% 
-%\paragraph{\stexttt{iESS} Processing on remote Emacs.}
-%Telnet to a remote computer using a telnet client other than an Emacs
-%buffer.  Run an Emacs on the remote machine in the telnet window.  Run
-%\stexttt{M-x SAS} on the remote machine in that remote instance of
-%Emacs.  On a Unix machine, this technique also works for a local Emacs
-%and local SAS.
+\paragraph{\stexttt{iESS} Processing.}
+ESS can run an interactive SAS session in several \file{*shell*}
+buffers, either locally on a Unix machine or remotely from any local
+machine to SAS running on a Unix host.  Highlighted lines in the
+\file{myfile.sas} buffer are sent incrementally to the SAS session
+running in an \stexttt{iESS[SAS]} buffer.  The \file{.log} and
+\file{.lst} file information is received back incrementally in two
+other buffers.  This process simulates SAS Display Manager behavior on
+text-only terminals over slow telephone lines.
 
-%\paragraph{\stexttt{iESS} Processing on local Emacs.}
-%In principle, we can run remote SAS on a local Emacs, but none
-%of us has found the need
-%compelling.  Essentially what is needed is for three independent shell
-%processes to be connected to the remote machine.  The SAS process on
-%the remote machine runs in one of the shell windows, and redirects its
-%log output and its lst output to the other two.
 
 \subsection{Design of \texttt{ESS[SAS]} mode}
 \label{sec:SAS:phil}
@@ -795,12 +788,12 @@ the \ssf{SAS: OUTPUT} window in the SAS window environment.  All
 data-related printed output from the \stexttt{PROC}s appear in this
 window.
 
-The interactive \stexttt{iESS [SAS:1]} buffer exists solely as a
-communications buffer.  Files are edited in the \file{myfile.sas}
-buffer.  The \stexttt{C-c C-r} key in \stexttt{ESS[SAS]} mode is the
-functional equivalent of bringing a file into the \ssf{SAS: PROGRAM
-  EDITOR} window followed by the \ssf{Local/Submit} menu commands.  The
-user should never use this buffer directly.
+%The interactive \stexttt{iESS [SAS:1]} buffer exists solely as a
+%communications buffer.  Files are edited in the \file{myfile.sas}
+%buffer.  The \stexttt{C-c C-r} key in \stexttt{ESS[SAS]} mode is the
+%functional equivalent of bringing a file into the \ssf{SAS: PROGRAM
+%  EDITOR} window followed by the \ssf{Local/Submit} menu commands.  The
+%user should never use this buffer directly.
 
 \section{Remarks and Extensions}
 \label{sec:remarks}
