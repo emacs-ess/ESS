@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.82 2004/07/08 15:02:32 rsparapa Exp $
+## $Id: Makefile,v 5.83 2004/07/26 15:03:48 rsparapa Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -79,7 +79,7 @@ ChangeLog: VERSION
 
 # Note: we do not want to tag every minor release
 #       ==> "tag" manually after `important' releases
-rel: ChangeLog dist
+rel: ChangeLog dist tag
 	@echo "** Placing tar and zip files **"
 	scp -p $(ESSDIR).tar.gz $(ESSDIR).zip $(UPLOAD_SITE):$(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
