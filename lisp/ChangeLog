@@ -2,7 +2,6 @@
 
 	* ess-mode.el (ess-mode): Remove call to
 	ess-load-object-name-db-file.
-	
 
 	* ess-menu.el (ess-imenu-S): Shorten doc string.
 
