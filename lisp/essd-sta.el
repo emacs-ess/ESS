@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998
-;; Modified: $Date: 1999/09/01 02:41:46 $
-;; Version: $Revision: 1.19 $
-;; RCS: $Id: essd-sta.el,v 1.19 1999/09/01 02:41:46 ess Exp $
+;; Modified: $Date: 1999/09/14 20:26:06 $
+;; Version: $Revision: 1.20 $
+;; RCS: $Id: essd-sta.el,v 1.20 1999/09/14 20:26:06 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -45,7 +45,7 @@
 
 (defvar STA-customize-alist
   '((ess-local-customize-alist     . 'STA-customize-alist)
-    (ess-language                  . "Stata")
+    (ess-language                  . "STA")
     (ess-dialect                   . STA-dialect-name)
     (ess-suffix                    . "ado")
     (ess-dump-filename-template    . (concat (user-login-name)
@@ -64,8 +64,8 @@
     (inferior-ess-objects-command  . "description\n")
     (inferior-ess-help-command     . "set more off\n help %s\n")
     (inferior-ess-exit-command     . "exit\n")
-    (inferior-ess-primary-prompt   . "^. ?")
-    (inferior-ess-secondary-prompt . "^. ?")
+    (inferior-ess-primary-prompt   . "^.") ;; "^. ?") 
+    (inferior-ess-secondary-prompt . "^.") ;; "^. ?") 
     (inferior-ess-start-file       . nil) ;"~/.ess-stata")
     (inferior-ess-start-args       . "")) ; "-q"
  "Variables to customize for Stata")

@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/09/14 18:06:35 $
-;; Version: $Revision: 5.24 $
-;; RCS: $Id: ess-inf.el,v 5.24 1999/09/14 18:06:35 rossini Exp $
+;; Modified: $Date: 1999/09/14 20:26:06 $
+;; Version: $Revision: 5.25 $
+;; RCS: $Id: ess-inf.el,v 5.25 1999/09/14 20:26:06 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -700,8 +700,18 @@ Waits for prompt after each line of input, so won't break on large texts."
 	 (text (ess-replace-in-string text-withtabs "\t" " ")) ; AJR 971022
 	 start-of-output
 	 com pos)
+
     ;;(message "'ess-eval-visibly: sbuffer = %s" sbuffer)
     (set-buffer sbuffer)
+
+    ;; the following is required to make sure things work!
+    (ess-write-to-dribble-buffer
+     (format "(eval-visibly 0): lang invisibly=%s \n" ess-language invisibly))
+    (if (string= ess-language "STA")
+	(setq invisibly t))
+    (ess-write-to-dribble-buffer
+     (format "(eval-visibly 1): lang invisibly=%s \n" ess-language invisibly))
+
     (goto-char (marker-position (process-mark sprocess)))
     (if (stringp invisibly)
 	(insert-before-markers (concat "*** " invisibly " ***\n")))
@@ -1098,30 +1108,28 @@ to continue it."
   (setq comint-get-old-input 'inferior-ess-get-old-input)
 
   (ess-write-to-dribble-buffer
-   (format "(inf.ess-mode 1): buf=%s, ess-language=%s, comint..echoes=%s, comint..sender=%s,\n"
+   (format "(i-ess 1): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
 	   (current-buffer) ess-language
 	   comint-process-echoes comint-input-sender))
+
+  (make-local-variable 'comint-process-echoes)
+  (make-local-variable 'comint-input-sender)
+
+  ;; Configuration for SAS/XLispStat input handling
   ;; We set comint-process-echoes to t because inferior-ess-input-sender
   ;; recopies the input. If comint-process-echoes was *meant* to be t ...
   ;;
   ;; except that XLS doesn't like it.  This is an ugly hack that ought
   ;; to go into the dialect configuration...
-  (make-local-variable 'comint-process-echoes)
   (if (or (string= ess-language "SAS")
-	  ;; not necessary, when comint-input-sender is set below:
-	  ;;	(string= ess-dialect "S+5")
-	  ;; Not necessary either?
-	  (string= ess-language "STA")
 	  (string= ess-language "XLS"))
       (setq comint-process-echoes nil)
     (setq comint-process-echoes t))
 
-  (make-local-variable 'comint-input-sender)
+  ;; Configuration for S/R input handling
   ;; AJR: add KH's fix.	 This is ugly, change to do it right.
   ;; i.e. put it as a buffer local var, in S or R defuns...
-  (if (or (string= ess-language "S")
-	  ;;(string= ess-language "STA")
-	  )
+  (if (or (string= ess-language "S"))
       (cond
        ((string= ess-dialect "R")
 	(setq comint-input-sender 'inferior-R-input-sender))
@@ -1130,10 +1138,15 @@ to continue it."
 	    (string= ess-dialect "S+3")
 	    (string= ess-dialect "S+4")
 	    (string= ess-dialect "S+5")
-	    (string= ess-dialect "S")
-	    ;;(string= ess-dialect "STA") ;; Stata
-	    )
+	    (string= ess-dialect "S"))
 	(setq comint-input-sender 'inferior-ess-input-sender))))
+
+  ;; Configuration for Stata input handling
+  ;; AJR: Stata is hell.   This is the primary configuration point.
+  (if (string= ess-language "STA")
+      (progn 
+	(setq comint-input-sender 'inferior-STA-input-sender)
+	(setq comint-process-echoes t)))
 
   (ess-write-to-dribble-buffer
    (format "(i-ess 2): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
@@ -1191,6 +1204,9 @@ to continue it."
 
 (defun inferior-ess-input-sender (proc string)
   (ess-eval-visibly (concat string "\n")))
+
+(defun inferior-STA-input-sender (proc string)
+  (ess-eval-visibly (concat string "\n") t t))
 
 ;;> <PD writes>:
 ;;> Also, invoking help() from the command line may lead to confusing

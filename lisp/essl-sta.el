@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/09/01 02:41:46 $
-;; Version: $Revision: 5.16 $
-;; RCS: $Id: essl-sta.el,v 5.16 1999/09/01 02:41:46 ess Exp $
+;; Modified: $Date: 1999/09/14 20:26:06 $
+;; Version: $Revision: 5.17 $
+;; RCS: $Id: essl-sta.el,v 5.17 1999/09/14 20:26:06 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -451,81 +451,81 @@ PROC is the stata process. Does not change point"
 ;;  (use-local-map stata-mode-map))
 ;;
 ;;
-(defun stata-eval-region (start end)
-  "Send the current region to the inferior stata process."
-  (interactive "r")
-  (process-send-region "stata" start end)
-  (process-send-string "stata" "\n"))
+;;(defun stata-eval-region (start end)
+;;  "Send the current region to the inferior stata process."
+;;  (interactive "r")
+;;  (process-send-region "stata" start end)
+;;  (process-send-string "stata" "\n"))
 
 
 
-(defun stata-eval-buffer ()
-  "Send the current buffer to the inferior stata process."
-  (interactive)
-  (stata-eval-region (point-min) (point-max)))
+;;(defun stata-eval-buffer ()
+;;  "Send the current buffer to the inferior stata process."
+;;  (interactive)
+;;  (stata-eval-region (point-min) (point-max)))
 
-(defun stata-eval-line ()
-  "Send the current line to the inferior stata process."
-  (interactive)
-  (save-excursion
-    (end-of-line)
-    (let ((end (point)))
-      (beginning-of-line)
-      (stata-eval-region (point) end))))
+;;(defun stata-eval-line ()
+;;  "Send the current line to the inferior stata process."
+;;  (interactive)
+;;  (save-excursion
+;;    (end-of-line)
+;;    (let ((end (point)))
+;;      (beginning-of-line)
+;;      (stata-eval-region (point) end))))
 
-(defun stata-eval-line-and-next-line ()
-  "Evaluate the current line  and move to the next line."
-  ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
-  (interactive)
-  (display-buffer (process-buffer (get-process "stata")))
-  (save-excursion
-    (end-of-line)
-    (let ((end (point)))
-      (beginning-of-line)
-      ;; RDB modified to go to end of S buffer so user can see result
-      ;;(stata-eval-visibly (buffer-substring (point) end) nil t)))
-      (stata-eval-region (point) end))) 
-  (next-line 1))
-
-
-(defun stata-eval-region-and-go (start end )
-  "Send the current region to the inferior S and switch to the process buffer."
-  (interactive "r\nP")
-  (stata-eval-region start end)
-  (stata-switch-to-stata t))
-
-(defun stata-eval-buffer-and-go ()
-  "Send the current buffer to the inferior stata and switch to the process buffer."
-  (interactive)
-  (stata-eval-buffer)
-  (stata-switch-to-stata t))
+;;(defun stata-eval-line-and-next-line ()
+;;  "Evaluate the current line  and move to the next line."
+;;  ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
+;;  (interactive)
+;;  (display-buffer (process-buffer (get-process "stata")))
+;;  (save-excursion
+;;    (end-of-line)
+;;    (let ((end (point)))
+;;      (beginning-of-line)
+;;      ;; RDB modified to go to end of S buffer so user can see result
+;;      ;;(stata-eval-visibly (buffer-substring (point) end) nil t)))
+;;      (stata-eval-region (point) end))) 
+;;  (next-line 1))
 
 
-(defun stata-eval-line-and-go ()
-  "Send the current line to the inferior stata process and switch to the
-process buffer."
-  (interactive)
-  (stata-eval-line)
-  (stata-switch-to-stata t))
+;;(defun stata-eval-region-and-go (start end )
+;;  "Send the current region to the inferior S and switch to the process buffer."
+;;  (interactive "r\nP")
+;;  (stata-eval-region start end)
+;;  (stata-switch-to-stata t))
+
+;;(defun stata-eval-buffer-and-go ()
+;;  "Send the current buffer to the inferior stata and switch to the process buffer."
+;;  (interactive)
+;;  (stata-eval-buffer)
+;;  (stata-switch-to-stata t))
 
 
-(defun stata-switch-to-stata (eob-p)
-  "Switch to the current inferior stata process buffer.
-With argument, positions cursor at end of buffer."
-  (interactive "P")
-  (let (stata-process (get-process "stata"))
-    (if stata-process 
-	(progn
-	  (switch-to-buffer (process-buffer stata-process))
-	  (if eob-p (goto-char (point-max))))
-      (progn 
-	(message "No inferior stata process")
-	(ding)))))
+;;(defun stata-eval-line-and-go ()
+;;  "Send the current line to the inferior stata process and switch to the
+;;process buffer."
+;;  (interactive)
+;;  (stata-eval-line)
+;;  (stata-switch-to-stata t))
 
-(defun stata-switch-to-end-of-stata nil
-  "Switch to the end of the inferior stata process buffer."
-  (interactive)
-  (stata-switch-to-stata t))
+
+;;(defun stata-switch-to-stata (eob-p)
+;;  "Switch to the current inferior stata process buffer.
+;;With argument, positions cursor at end of buffer."
+;;  (interactive "P")
+;;  (let (stata-process (get-process "stata"))
+;;    (if stata-process 
+;;	(progn
+;;	  (switch-to-buffer (process-buffer stata-process))
+;;	  (if eob-p (goto-char (point-max))))
+;;      (progn 
+;;	(message "No inferior stata process")
+;;	(ding)))))
+
+;;(defun stata-switch-to-end-of-stata nil
+;;  "Switch to the end of the inferior stata process buffer."
+;;  (interactive)
+;;  (stata-switch-to-stata t))
 
 
 

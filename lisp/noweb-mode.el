@@ -29,7 +29,7 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;; ESS CVS: $Id: noweb-mode.el,v 1.2 1999/09/01 02:41:46 ess Exp $
+;; ESS CVS: $Id: noweb-mode.el,v 1.3 1999/09/14 20:26:06 rossini Exp $
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -93,7 +93,7 @@
 ;;; Variables
 
 (defconst noweb-mode-RCS-Id
-  "$Id: noweb-mode.el,v 1.2 1999/09/01 02:41:46 ess Exp $")
+  "$Id: noweb-mode.el,v 1.3 1999/09/14 20:26:06 rossini Exp $")
 
 (defconst noweb-mode-RCS-Name
   "$Name:  $")
@@ -321,7 +321,7 @@ mouse-1, this will override your binding.")
 (defun noweb-minor-mode (&optional arg)
   "Minor meta mode for editing noweb files. See NOWEB-MODE."
   (interactive)
-  (noweb-minor-mode arg))
+  (noweb-mode arg)) ; this was noweb-minor-mode???  (truly recursive)
 
 (defun noweb-mode ( &optional arg )
   "Minor meta mode for editing noweb files.
