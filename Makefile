@@ -1,11 +1,11 @@
-## $Id: Makefile,v 5.44 2001/08/02 21:47:41 ess Exp $
+## $Id: Makefile,v 5.45 2001/08/10 07:53:41 maechler Exp $
 ## Top Level Makefile
 
 include ./Makeconf
 ##      ========== {edit that one if any !}
 
 ## Set ESSVERSION to the contents of VERSION
-## This is only set correctly by GNU make, but you will only 
+## This is only set correctly by GNU make, but you will only
 ## need this if you are performing an XEmacs installation or
 ## you are an ESS developer.
 ## If you don't have GNU make, create an environment variable
@@ -18,11 +18,11 @@ ESSVERSIONTAG=ess-$(shell sed 's/\./_/g' VERSION)
 
 ## XEMACSDIR and ESSDIR facilitate imitation of an XEmacs distribution
 ## If you don't have XEmacs or ESS installed in the usual places, then
-## you will need to set them by "make -e" with environment variables 
+## you will need to set them by "make -e" with environment variables
 ## If you are not using GNU make, then see remarks above.
 
 ## make    xemacs-links	# w/  GNU make, XEmacs/ESS in the usual places
-## 
+##
 
 ## make -e xemacs-links	# w/  GNU make, XEmacs/ESS not in the usual places
 ##                      # environment variables XEMACSDIR/ESSDIR set
@@ -100,8 +100,8 @@ tar:
 	chmod u+w $(ESSVERSIONDIR)/doc/ess.info*
 	chmod u+w $(ESSVERSIONDIR)/lisp/ess-site.el $(ESSVERSIONDIR)/Make*
 	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
-	#for D in techrep dsc2001-rmh; do DD=$(ESSVERSIONDIR)/doc/$$D; \
-	#  chmod -R u+w $$DD ; rm -rf $$DD ; done
+	for D in techrep dsc2001-rmh; do DD=$(ESSVERSIONDIR)/doc/$$D; \
+	  chmod -R u+w $$DD ; rm -rf $$DD ; done
 	@echo "** Creating tar file **"
 	tar hcvof ESS-$(ESSVERSION).tar $(ESSVERSIONDIR)
 	gzip ESS-$(ESSVERSION).tar
