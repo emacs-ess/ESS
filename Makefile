@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.65 2002/07/27 00:34:07 rsparapa Exp $
+## $Id: Makefile,v 5.66 2002/08/07 12:50:39 maechler Exp $
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
@@ -29,9 +29,10 @@ default:
 all clean distclean:
 	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd ..; done
 
-dist:   
+dist:
+	cd doc;  $(MAKE) docs; cd ..
+	cd lisp; $(MAKE) ess-cust.el; grep 'ess-version' ess-cust.el; cd ..
 	@echo "** Committing README, ANNOUNCE and info **"
-	cd doc; $(MAKE) docs; cd ..
 	cvs commit -m "Updating README, ANNOUNCE for new version" \
 		README ANNOUNCE
 	cvs commit -m "Updating info for new version" info
@@ -41,7 +42,7 @@ dist:
 	@echo "** (must set CVSROOT, etc, prior to checkout for security)"
 	@echo "**********************************************************"
 	@echo "** Exporting Files **"
-	cvs export -D today ess 
+	cvs export -D today ess
 	@echo "** Correct Write Permissions and RM Papers **"
 	mv ess $(ESSDIR)
 	chmod a-w $(ESSDIR)/lisp/*.el
@@ -70,12 +71,12 @@ ChangeLog:
 	 cat ChangeLog.old ) > ChangeLog
 	cvs commit -m 'Version .. released' ChangeLog
 
-rel: ChangeLog dist
+rel: ChangeLog dist tag
 	@echo "** Placing tar and zip files **"
 	scp $(ESSDIR).tar.gz software.biostat.washington.edu:/home/ess/downloads
 	scp $(ESSDIR).zip    software.biostat.washington.edu:/home/ess/downloads
 
-tag: 
+tag:
 	@echo "** Tagging the release **"
 	cvs tag -R $(ESSVERSIONTAG)
 
