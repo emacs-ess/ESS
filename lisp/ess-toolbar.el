@@ -67,7 +67,7 @@ e.g. for saving/loading files.")
 		       :help "Start R process" )
     (tool-bar-add-item-from-menu 'ess-eval-line-and-step "rline" ess-mode-map)
     (tool-bar-add-item-from-menu 'ess-eval-region "rregion" ess-mode-map)
-    (tool-bar-add-item-from-menu 'ess-eval-buffer "rbuffer" ess-mode-map)
+    (tool-bar-add-item-from-menu 'ess-load-file "rbuffer" ess-mode-map)
     (tool-bar-add-item-from-menu 'ess-eval-function "rfunction" ess-mode-map)
     (tool-bar-add-item-from-menu 'ess-switch-to-ESS "switchr" ess-mode-map)
     ))
@@ -136,7 +136,7 @@ e.g. for saving/loading files.")
 	 [toolbar-r-icon R t "Start R"]
 	 [toolbar-send-line-icon ess-eval-line-and-step t "Send line to R"]
 	 [toolbar-send-reg-icon ess-eval-region t "Send region to R"]
-	 [toolbar-source-icon ess-eval-buffer t "Source buffer to R"]
+	 [toolbar-source-icon ess-load-file t "Send file to R"]
 	 [toolbar-send-function-icon ess-eval-function t "Send function to R"]
 	 [toolbar-switch-ess-icon ess-switch-to-ESS t "Switch to ESS"]
 		       
@@ -144,9 +144,13 @@ e.g. for saving/loading files.")
 
   )
 
+;; Make the toolbar.  The toolbar is hopefully made only when this file
+;; is loaded; we don't need it to be remade every time.
 (if ess-use-toolbar 
     (ess-make-toolbar-r))
 
+;; Temporary hack to hook the toolbar creation into R mode.  This should
+;; eventually be deleted.
 (defun R-mode  (&optional proc-name)
   "Major mode for editing R source.  See `ess-mode' for more help."
   (interactive)
