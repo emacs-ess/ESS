@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/12 21:33:31 $
-;; Version: $Revision: 1.82 $
-;; RCS: $Id: ess-inf.el,v 1.82 1997/11/12 21:33:31 rossini Exp $
+;; Modified: $Date: 1997/11/12 22:26:24 $
+;; Version: $Revision: 1.83 $
+;; RCS: $Id: ess-inf.el,v 1.83 1997/11/12 22:26:24 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -198,14 +198,18 @@ accompany the call for inferior-ess-program.
       (ess-setq-vars-local ess-customize-alist buf)
       (if ess-start-args (setq inferior-ess-start-args ess-start-args))
       (ess-write-to-dribble-buffer
-       (format "(inferior-ess 2): ess-language=%s, ess-dialect=%s buf=%s \n"
+       (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
 	       ess-language
 	       ess-dialect
 	       (current-buffer)))
+      (ess-write-to-dribble-buffer
+       (format "(inf-ess 2.2): start args = %s, inf-ess-start-args=%s \n"
+	       ess-start-args
+	       inferior-ess-start-args))
       (if startdir (setq default-directory startdir))
       (setq-default ess-history-file
 		    (concat "." ess-dialect "history"))
-      (ess-multi procname buf))))
+      (ess-multi procname buf inferior-ess-start-args))))
 
 ;; Old code:
 
@@ -270,7 +274,7 @@ accompany the call for inferior-ess-program.
 ;;; local to the ESS process buffer. If required, these variables should
 ;;; be accessed with the function ess-get-process-variable
 
-(defun ess-multi (name &optional buffer)
+(defun ess-multi (name &optional buffer inf-ess-start-args)
   "Start or switch to ESS process named NAME in the buffer BUFFER.
 BUFFER is only needed if process NAME is not running. BUFFER must
 exist.  Default-directory is the ESS starting directory. BUFFER may be
@@ -310,10 +314,18 @@ visiting a file."
 	      (expand-file-name ess-history-file ess-directory))
 	(comint-read-input-ring)
 	;;(run-hooks 'ess-pre-run-hook) ONLY IN 'inferior-ess'
+	(ess-write-to-dribble-buffer
+	 (format "(ess-multi 1):  inf-ess-start-args=%s \n"
+	       inf-ess-start-args))
 	(set-buffer
 	 (if switches
-	     (inferior-ess-make-comint buf-name-str proc-name switches)
-	   (inferior-ess-make-comint buf-name-str proc-name)))
+	     (inferior-ess-make-comint buf-name-str
+				       proc-name
+				       inf-ess-start-args
+				       switches)
+	   (inferior-ess-make-comint buf-name-str
+				     proc-name
+				     inf-ess-start-args)))
 	;; Set the process sentinel to save the history
 	(set-process-sentinel (get-process proc-name) 'ess-process-sentinel)
 	;; Add this process to ess-process-name-list, if need be
@@ -362,7 +374,10 @@ visiting a file."
 ;;    buffer))
 
 ;;KH's version, 6Apr96
-(defun inferior-ess-make-comint (bufname procname &rest switches)
+(defun inferior-ess-make-comint (bufname
+				 procname
+				 inferior-ess-start-args
+				 &rest switches)
   "Make an S comint process in buffer NAME with process called PROC."
 ;;; This function is a modification of make-comint from the comint.el
 ;;; code of Olin Shivers.
@@ -394,8 +409,10 @@ visiting a file."
 			  procname
 			  inferior-ess-program
 			  inferior-ess-start-file
-			  (ess-line-to-list-of-words inferior-ess-start-args)))))
+			  (ess-line-to-list-of-words
+			   inferior-ess-start-args)))))
     buffer))
+
 
 
 
