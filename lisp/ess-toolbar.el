@@ -2,9 +2,9 @@
 ;;; Thu 06 May 2004
 ;;; Stephen Eglen
 ;;; GPL.
-;; Modified: $Date: 2004/06/21 10:52:49 $
-;; Version: $Revision: 1.14 $
-;; RCS: $Id: ess-toolbar.el,v 1.14 2004/06/21 10:52:49 stephen Exp $
+;; Modified: $Date: 2004/06/23 13:13:31 $
+;; Version: $Revision: 1.15 $
+;; RCS: $Id: ess-toolbar.el,v 1.15 2004/06/23 13:13:31 stephen Exp $
 
 ;;; Commentary:
 
@@ -39,17 +39,6 @@
 ;; Also, I think the CVS GNU Emacs now has tool-bar support for the
 ;; Mac OS X.  
 
-
-
-;;; Creating pixmaps:
-;; Need to add backgrounToolBarColor for XEmacs to show okay.
-;;/usr/share/xemacs-21.4.12/etc/toolbar/folder-cap-up.xpm
-;; has header:
-;;"X	c Gray75 s backgroundToolBarColor",
-;; whereas I have set "c None" to indicate the background pixel; this line 
-;; seems to work for both toolbars.
-;;;". c None s backgroundToolBarColor",
-
 ;;; Code:
 
 (defgroup ess-toolbar nil
@@ -59,7 +48,10 @@
   :prefix "ess-")
 
 ;; Check default for XEmacs?
-(defcustom ess-use-toolbar (fboundp 'tool-bar-add-item)
+(defcustom ess-use-toolbar 
+  (if (featurep 'xemacs)
+      (featurep 'toolbar)
+    (fboundp 'tool-bar-add-item))
   "*Non-nil means ESS should support the toolbar.
 Currently works only under Emacs 21 and maybe XEmacs 21.4."
   :group 'ess-toolbar
@@ -136,6 +128,8 @@ If `ess-icon-directory' is invalid, please report a bug.")
 
 (defun ess-add-icon-emacs (x)
   "Add an ESS item to the Emacs toolbar."
+  ;; By using tool-bar-add-item-from-menu instead of tool-bar-add-item
+  ;; we get the tooltips "for free" from ess-mode-map.
   (tool-bar-add-item-from-menu (car x) (cadr x) ess-mode-map))
 
 (defun ess-add-icon-xemacs (x) 
@@ -161,8 +155,9 @@ If `ess-icon-directory' is invalid, please report a bug.")
    [:style 3d]
    )
   "General Xemacs icons to be added iff `ess-toolbar-own-icons' is non-nil.
-These toolbar items were taken from the list that John Fox's code provided."
-  )
+These toolbar items were taken from the list that John Fox's code provided.
+Each vector is of length four specifying: 1 - icon; 2 - function to call; 
+3 - whether to activate; 4 - doc string.")
 
 (defun ess-make-toolbar-xemacs ()
   "Set up the ESS toolbar for XEmacs."
@@ -197,20 +192,21 @@ is added globally when ess-toolbar.el is loaded."
 	    ;; Emacs
 	    (setq tool-bar-map ess-toolbar)
 	    (ess-write-to-dribble-buffer "Creating global Emacs toolbar"))
-	    )))
+	    )
 
-;;; Check for toolbar support.
-(or
- ;; XEmacs test for image support, adapted from vm-version.el:
- (and (featurep 'xemacs) (memq (device-type) '(x gtk mswindows)))
- ;;
- ;; Emacs support for images:
- (and (fboundp 'display-images-p) (display-images-p))
- ;; if above tests failed, give a warning.
- (progn
-   (message "Toolbar support for ESS not available in this emacs.")
-   ;; Not sure if we want to delay startup of ESS.
-   ;;(sit-for 2)
-   ))
-
+      ;; Check for toolbar support - needed iff ess-use-toolbar is non-nil.
+      (or
+       ;; XEmacs test for image support, adapted from vm-version.el:
+       (and (featurep 'xemacs) (memq (device-type) '(x gtk mswindows)))
+       ;;
+       ;; Emacs support for images:
+       (and (fboundp 'display-images-p) (display-images-p))
+       ;; if above tests failed, give a warning.
+       (progn
+	 (message "Toolbar support for ESS not available in this emacs.")
+	 ;; Not sure if we want to delay startup of ESS.
+	 ;;(sit-for 2)
+	 ))
+      ))
+      
 (provide 'ess-toolbar)
