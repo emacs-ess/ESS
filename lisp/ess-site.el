@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1998/11/13 17:47:12 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: ess-site.el,v 5.7 1998/11/13 17:47:12 rossini Exp $
+;; Modified: $Date: 1998/11/13 18:25:51 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: ess-site.el,v 5.8 1998/11/13 18:25:51 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -138,6 +138,7 @@
 ;; redefine inferior-S-program-name.
 ;;
 ;;(setq-default inferior-S+3-program-name "Splus")
+;;(setq-default inferior-S+5-program-name "Splus5")
 ;;(setq-default inferior-R-program-name "/disk05/rmh/xemacs/R/R-0.49/bin/R")
 ;;(setq-default inferior-XLS-program-name "xlispstat")
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
