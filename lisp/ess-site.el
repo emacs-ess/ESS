@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/09/05 13:42:20 $
-;; Version: $Revision: 5.66 $
-;; RCS: $Id: ess-site.el,v 5.66 2000/09/05 13:42:20 rossini Exp $
+;; Modified: $Date: 2001/02/06 18:20:49 $
+;; Version: $Revision: 5.67 $
+;; RCS: $Id: ess-site.el,v 5.67 2001/02/06 18:20:49 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -242,7 +242,7 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;; redefine inferior-S-program-name.
 
 ;;(setq-default inferior-S3-program-name "/disk05/s/S")
-;;(setq-default inferior-S+3-program-name "Splus")
+(setq-default inferior-S+3-program-name "Splus34")
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S+4-program-name "Splus")
 ;;(setq-default inferior-S+5-program-name "Splus5")
@@ -325,6 +325,8 @@ The extension, in a file name, is the part that follows the last `.'."
 (require 'essd-sp3)  ;; "sp" refers to S-PLUS (MathSoft/StatSci).
 (ess-message "[ess-site:] require 'essd-sp5 ...")
 (require 'essd-sp5)
+(ess-message "[ess-site:] require 'essd-sp5 ...")
+(require 'essd-sp6)
 (ess-message "[ess-site:] require 'essd-sta ...")
 (require 'essd-sta)  ;; for Stata.
 (ess-message "[ess-site:] require 'essd-xls ...")
