@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/07/03 14:32:33 $
-;; Version: $Revision: 1.30 $
-;; RCS: $Id: ess.el,v 1.30 1997/07/03 14:32:33 rossini Exp $
+;; Modified: $Date: 1997/07/07 16:25:41 $
+;; Version: $Revision: 1.31 $
+;; RCS: $Id: ess.el,v 1.31 1997/07/07 16:25:41 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.31  1997/07/07 16:25:41  rossini
+;; added ess-history-file setup...
+;;
 ;; Revision 1.30  1997/07/03 14:32:33  rossini
 ;; referencing error: need to do symbols, not vars!
 ;;
@@ -1070,8 +1073,9 @@ the basic idea: (setq ---  (cdr (assq --- var-alist)))."
   (setq	 inferior-ess-exit-command    (cdr (assq 'inferior-ess-exit-command    var-alist)))
   (setq	 ess-loop-timeout             (cdr (assq 'ess-loop-timeout             var-alist)))
   (setq	 inferior-ess-primary-prompt  (cdr (assq 'inferior-ess-primary-prompt  var-alist)))
-  (message "(ess-set-vars): ess-proc-prefix=%s" ess-proc-prefix)
-  )
+  (setq  ess-history-file (concat "." ess-proc-prefix "history"))
+
+  (message "(ess-set-vars): ess-proc-prefix=%s" ess-proc-prefix))
 
  ; Run load hook and provide package
 
