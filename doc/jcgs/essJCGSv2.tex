@@ -34,11 +34,10 @@
 %                a)ESS-mode
 %                b)Emacs/XEmacs
 %        3) what's next
-%5. Discussion
-%        1) internet resources
-%                a) home page
-%                b) ess-help
-%                c) anonymous cvs
+%5. internet resources
+%        1) home page
+%        2) ess-help
+%        3) anonymous cvs
 
 \ifdraft
  \addtolength{\topmargin}{-1cm}
@@ -138,7 +137,7 @@
     of Wisconsin, Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/01/14 00:33:35 $ - $Revision: 1.53 $ $\tiny printed \today}
+\date{$ $Date: 2002/01/14 00:44:30 $ - $Revision: 1.54 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -423,7 +422,7 @@ markup languages such as \LaTeX, \textsc{html}, or \textsc{xml}.
 Emacs handles the interface to both source code and transcripts
 contextually, providing syntax highlighting, bookmarking features,
 interfaces to directory structure, and command-history.  Other
-extensions to Emacs allow it to act as a World-Wide-Web browser, a
+extensions to Emacs allow it to act as a web browser, a
 mail and news reader, and as an interface to other common text-based
 tools such as spell checking programs.  The Emacs keyboard and mouse
 interface can be re-mapped to resemble that of other text-editors,
@@ -501,7 +500,7 @@ AJR: THIS NEEDS WORK.
 
 ESS strongly supports the S family (S, \Splus, and R).
 \SAS\ is also well supported.  \Stata\
-and \XLispStat\ (and the \XLispStat\ extensions, ARC and ViSta) are
+and \XLispStat\ (and the extensions, ARC and ViSta) are
 supported with the basic functionality of syntax highlighting and
 process-interfacing.  ESS and its interface are fully discussed in the
 next section.
@@ -980,6 +979,12 @@ to accommodate multiple languages in a flexible way.  The product of this
 merger was called ESS version 5.
 
 During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
+\begin{Comment}
+Rodney: need to move this discussion to interactive SAS above.
+a mode that allows text-based \stexttt{PROC} by
+\stexttt{PROC} interaction with an inferior buffer running an interactive SAS
+session either on the same computer or a remote computer over a network.
+\end{Comment}
 At the same time, SAS-mode was further incorporated into ESS.
 
 In 1997, more changes were made to facilitate
@@ -997,21 +1002,24 @@ fell in 1998 when Brian Ripley designed a way for ESS to use
 the Windows technology of dynamic data exchange (DDE).
 Based on this work, Heiberger provided interactive interfaces
 for Windows versions of \Splus.
-\begin{Comment}
-Rich: Rodney, the standard input/standard output model is a single model.
-It is used for interaction when stdin/stdout refer to the terminal.
-It is used for batch when they refer to the card reader and the line printer.
-There is no difference in the program.  I restored my wording.
-\end{Comment}
 
 In 1998, Rodney Sparapani designed \SAS\ batch file processing for ESS
 on Unix, Windows and Macintosh.  In 1999 and 2000, Sparapani and Heiberger
 continually enhanced \SAS\ support. 
 In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.  
 \begin{Comment}
+Rodney: moved this discussion to a new section above
+%Sparapani and Heiberger developed \SAS\ batch support including function
+%key behavior which mimics the \SAS\ Display Manager,
+%a more comprehensive and efficient syntax highlighting scheme for \SAS\
+%programs and logs, and automated and intelligent error message searching
+%of the log.  
+
 Rich: see my discussion of ESS-elsewhere terminology.
 
 What is the behavior for remote SAS that is new for 2002?
+
+Rodney: SAS batch now works and Kermit was added as a method of transfer.
 \end{Comment}
 %ESS-elsewhere provides interactive and batch processing
 %with \SAS\ running on a remote machine that is accessed over a
@@ -1024,19 +1032,6 @@ In 2001, Sparapani added BUGS batch file processing for ESS.
 
 \section{Discussion}
 \label{sec:discussion}
-
-ESS is software that is constantly in flux.  New versions of statistical
-packages, Emacs and operating systems require new releases of ESS to
-support them.  The latest stable version of ESS can be found on the web at
-http://software.biostat.washington.edu/statsoft/ess/.  To get help
-with problems you can send e-mail to ess-help@stat.math.ethz.ch.  The latest
-unstable version can be obtained from anonymous CVS.  First type:
-
-\stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository login}
-
-Enter the password ``anoncvs''.  Then type: 
-
-\stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository co ess}
 
 %%There are two active areas of extensions for user environments.  One
 %%is to enhance the capabilities of the IDE for statistical practice;
@@ -1073,9 +1068,8 @@ analysis and statistical programming.  It is completely customizable
 to satisfy individual desires for interface styles as well as being
 extensible to additional statistical languages and analysis packages.
 
-
-\section*{Software Access}
-\addcontentsline {toc}{section}{\numberline {}Software Access}
+\section*{ESS Resources on the Internet}
+\addcontentsline {toc}{section}{\numberline {}ESS Resources on the Internet}
 \label{sec:access}
 The ESS software is constantly in flux.  New versions of statistical
 packages, Emacs and operating systems require new releases of ESS to
@@ -1090,9 +1084,6 @@ anonymous CVS.  First type:
 You will be prompted for a password which is ``\stexttt{anoncvs}''.  Then type: 
 
 \stexttt{cvs -d :pserver:anoncvs@software.biostat.washington.edu:/home/ess/repository co ess}
-
-
-
 
 \bibliographystyle{plainnat}
 %\pdfbookmark[1]{References}{section.7}
