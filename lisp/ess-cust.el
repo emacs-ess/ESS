@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2002/08/26 09:29:37 $
-;; Version: $Revision: 1.37 $
-;; RCS: $Id: ess-cust.el,v 1.37 2002/08/26 09:29:37 maechler Exp $
+;; Modified: $Date: 2002/11/30 04:08:05 $
+;; Version: $Revision: 1.38 $
+;; RCS: $Id: ess-cust.el,v 1.38 2002/11/30 04:08:05 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -152,12 +152,12 @@ Full documentation will be available after autoloading the function."
   :type 'boolean)
 
 (defcustom ess-ask-for-ess-directory t
-  "*If non-nil, the process directory will be requested each time S is run"
+  "*If non-nil, the process directory will be requested each time S is run."
   :group 'ess
   :type 'boolean)
 
 (defcustom ess-ask-about-transfile nil
-  "*If non-nil, asks about a transcript file before running ess"
+  "*If non-nil, asks about a transcript file before running ESS."
   :group 'ess
   :type 'boolean)
 
@@ -309,7 +309,7 @@ nil, and the file is successfully loaded back into S."
 ;;; From ess-mode:
 
 (defcustom ess-mode-silently-save t
-  "*If non-nil, automatically save ESS source buffers before loading"
+  "*If non-nil, automatically save ESS source buffers before loading."
   :group 'ess-edit
   :type 'boolean)
 
@@ -503,7 +503,7 @@ Good for evaluating ESS code."
   :type 'hook)
 
 (defcustom inferior-ess-mode-hook nil
-  "*Hook for customizing inferior ess mode.  Called after
+  "*Hook for customizing inferior ESS mode.  Called after
 `inferior-ess-mode' is entered and variables have been initialised."
   :group 'ess-hooks
   :type 'hook)
@@ -532,7 +532,7 @@ Good for evaluating ESS code."
  ; System variables
 
 (defcustom ess-local-process-name nil
-  "The name of the ess process associated with the current buffer."
+  "The name of the ESS process associated with the current buffer."
   :group 'ess
   :type '(choice (const nil) string))
 
@@ -866,7 +866,7 @@ for editing and then to be returned to the process."
   :type 'string)
 
 (defcustom inferior-ess-language-start nil
-  "*Initialization commands sent to the ess process."
+  "*Initialization commands sent to the ESS process."
   :group 'ess-proc
   :type 'string)
 
@@ -893,7 +893,7 @@ for editing and then to be returned to the process."
 (make-variable-buffer-local 'inferior-ess-client-name)
 
 (defcustom inferior-ess-client-command nil
-  "*ddeclient command sent to the ESS program")
+  "*ddeclient command sent to the ESS program.")
 
 (make-variable-buffer-local 'inferior-ess-client-command)
 
@@ -968,7 +968,7 @@ in the process buffer."
   :type 'boolean)
 
 (defcustom ess-synchronize-evals nil
-  "*If t, then all evaluations will synchronize with the ess process. This
+  "*If t, then all evaluations will synchronize with the ESS process. This
 means ess-mode will wait for S to dent a prompt before sending the next
 line of code. This allows users of Emacs version 18.57 or less to
 evaluate large regions of code without causing an error.  Users of newer
@@ -1020,15 +1020,15 @@ Might have to:"
 ;; defconst ess-local-process-name now done in S.el
 
 (defcustom ess-process-name-list nil
-  "Alist of active ess processes.")
+  "Alist of active ESS processes.")
 
-;;*;; Inferior ess commands
+;;*;; Inferior ESS commands
 
 (defcustom inferior-ess-load-command "source(\"%s\")\n"
   "Format-string for building the ess command to load a file.
 
 This format string should use %s to substitute a file name and should
-result in an ess expression that will command the inferior ess to load
+result in an ESS expression that will command the inferior ESS to load
 that file."
   :group 'ess-command
   :type 'string)
@@ -1042,7 +1042,7 @@ Use second %s to substitute the dump file name."
   :type 'string)
 
 (defcustom inferior-ess-help-command "help(\"%s\")\n"
-  "Format-string for building the ess command to ask for help on an object.
+  "Format-string for building the ESS command to ask for help on an object.
 
 This format string should use %s to substitute an object name."
   :group 'ess-command
@@ -1072,14 +1072,14 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el"
 
 
 (defcustom inferior-ess-names-command "names(%s)\n"
-  "Format string for ess command to extract names from an object.
+  "Format string for ESS command to extract names from an object.
 
 %s is replaced by the object name -- usually a list or data frame."
   :group 'ess-command
   :type 'string)
 
 (defcustom inferior-ess-objects-command "ls()\n" ;; others: in (S) or (R)
-  "Format string for ess command to get a list of objects at position %d
+  "Format string for ESS command to get a list of objects at position %d.
 
 Don't include a newline at the end! Used in ess-execute-objects."
   :group 'ess-command
@@ -1106,14 +1106,14 @@ Don't include a newline at the end! Used in ess-execute-objects."
 
 (defcustom ess-change-sp-regexp
   "\\(attach(\\([^)]\\|$\\)\\|detach(\\|collection(\\|library(\\|require(\\|source(\\)"
-  "The regexp for matching the ess commands that change the search path."
+  "The regexp for matching the ESS commands that change the search path."
   :group 'ess-proc
   :type 'regexp)
 
 ;;*;; Process-dependent variables
 
 (defvar ess-search-list nil
-  "Cache of list of directories and objects to search for ess objects.")
+  "Cache of list of directories and objects to search for ESS objects.")
 
 (make-variable-buffer-local 'ess-search-list)
 
