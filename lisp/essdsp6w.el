@@ -2,14 +2,14 @@
 ;;; copied and edited from essd-sp4.el
 ;;; Richard M. Heiberger, April 2001
 
-;; Copyright (C) 1998--2001 Richard M. Heiberger <rmh@sbm.temple.edu>
+;; Copyright (C) 2001 Richard M. Heiberger <rmh@sbm.temple.edu>
 
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
+;; Maintainer: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Modified: $Date: 2001/04/17 03:28:11 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: essdsp6w.el,v 5.1 2001/04/17 03:28:11 ess Exp $
+;; Modified: $Date: 2001/05/02 22:03:08 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: essdsp6w.el,v 5.2 2001/05/02 22:03:08 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -30,8 +30,9 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the S-PLUS 6.x for Windows customizations for ess-mode
-;;; with ddeclient.
+;;; 
+;;; This file defines all the S-PLUS 6.x for Windows customizations
+;;; for ess-mode with ddeclient.
 
 ;;; Requires and Autoloads:
 
@@ -41,10 +42,11 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-; Code:
+;;; Code:
 
 (defvar S+6-dialect-name "S+6"
-  "Name of 'dialect' for S-PLUS 6.x.");easily changeable in a user's .emacs
+  "Name of 'dialect' for S-PLUS 6.x.
+Easily changeable in a user's `.emacs'.")
 
 (defvar inferior-S+6-multipleinstances "/MULTIPLEINSTANCES"
   "Default \"/MULTIPLEINSTANCES\" opens up a new instance of S+6 in a
@@ -85,8 +87,7 @@ connects it to the *S+6 ddeclient* window.")
 				      " "
 				      inferior-S+6-print-command
 				      " S_PROJ="
-				      (directory-file-name default-directory))
-				   ))
+				      (directory-file-name default-directory))))
  "Variables to customize for S+6")
 
 (defvar Sqpe+6-customize-alist
