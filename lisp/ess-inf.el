@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/09/21 08:52:59 $
-;; Version: $Revision: 5.29 $
-;; RCS: $Id: ess-inf.el,v 5.29 1999/09/21 08:52:59 ess Exp $
+;; Modified: $Date: 1999/10/06 00:30:09 $
+;; Version: $Revision: 5.30 $
+;; RCS: $Id: ess-inf.el,v 5.30 1999/10/06 00:30:09 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -1147,7 +1147,7 @@ to continue it."
   ;; AJR: Stata is hell.   This is the primary configuration point.
   (if (string= ess-language "STA")
       (progn 
-	(setq comint-input-sender 'inferior-STA-input-sender)
+	(setq comint-input-sender 'inferior-ess-input-sender) ; was STA
 	(setq comint-process-echoes t)))
 
   ;; Configuration for Omegahat input handling
