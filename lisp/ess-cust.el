@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2000/06/05 20:33:03 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: ess-cust.el,v 1.2 2000/06/05 20:33:03 ess Exp $
+;; Modified: $Date: 2000/06/05 20:53:23 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: ess-cust.el,v 1.3 2000/06/05 20:53:23 ess Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -53,21 +53,21 @@
 
 ;; Customization Groups
 
-(defgroup ess 
+(defgroup ess nil
   "ESS: Emacs Speaks Statistics."
   :group 'local)
 
-(defgroup ess-edit
+(defgroup ess-edit nil
   "ESS: editing behavior."
   :group 'ess
   :prefix "ess-")
 
-(defgroup ess-proc
+(defgroup ess-proc nil
   "ESS: process control."
   :group 'ess
   :prefix "ess-")
 
-(defgroup ess-command
+(defgroup ess-command nil
   "ESS: Commands for various things."
   :group 'ess
   :prefix "ess-")
@@ -124,6 +124,11 @@
   :group 'ess
   :type 'string)
 
+(defvar no-doc
+  "This function is part of ESS, but has not yet been loaded.
+Full documentation will be available after autoloading the function."
+  "Documentation for autoload functions.")
+
 
  ; User changeable variables
 
@@ -146,7 +151,7 @@
   :group 'ess
   :type 'boolean)
 
-(defcustom ess-ask-for-transfile nil
+(defcustom ess-ask-about-transfile nil
   "*If non-nil, asks about a transcript file before running ess"
   :group 'ess
   :type 'boolean)
@@ -406,7 +411,7 @@ This can be a string (an absolute directory name ending in a slash) or
 a lambda expression of no arguments which will return a suitable string
 value.  The lambda expression is evaluated with the process buffer as the
 current buffer."
-  :group ess-edit
+  :group 'ess-edit
   :type 'directory)
 
 ;;; Possible value:
@@ -541,8 +546,7 @@ by `ess-function-template'."
   :group 'ess
   :type 'regexp)
 
-;; This is
- tested for S dialects (actually only for R) -- be careful with it!
+;; This is tested for S dialects (actually only for R) -- be careful with it!
 (defcustom ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
   "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg."
   :group 'ess
@@ -716,19 +720,19 @@ Otherwise, they get their own temporary buffer."
   :group 'ess-proc
   :type 'boolean)
 
-(defvar ess-eval-empty nil
+(defcustom ess-eval-empty nil
   "*If non-nil, `ess-eval-line-and-step' and `ess-eval-linewise'
 will send empty lines to the ESS process."
   :group 'ess-proc
   :type 'boolean)
 
-(defvar ess-eval-visibly-p t
+(defcustom ess-eval-visibly-p t
   "*If non-nil, the ess-eval- commands display the text to be evaluated
 in the process buffer."
   :group 'ess-proc
   :type 'boolean)
 
-(defvar ess-synchronize-evals nil
+(defcustom ess-synchronize-evals nil
   "*If t, then all evaluations will synchronize with the ess process. This
 means ess-mode will wait for S to dent a prompt before sending the next
 line of code. This allows users of Emacs version 18.57 or less to
@@ -738,7 +742,7 @@ of Emacs until the code has been successfully evaluated."
   :group 'ess-proc
   :type 'boolean)
 
-(defvar ess-eval-visibly-at-end t
+(defcustom ess-eval-visibly-at-end t
   "*If non-nil, the ess-eval- commands display the results of evaluation
   at the bottom of the process buffer."
   :group 'ess-proc
@@ -749,10 +753,10 @@ of Emacs until the code has been successfully evaluated."
 
 This is the command to save the last value.  See S section for more details.
 
-Might have to:
-(make-variable-buffer-local 'ess-save-lastvalue-command)
-(setq-default ess-save-lastvalue-command
-	      \"assign(\\"smode.lvsave\\",.Last.value,frame=0)\n\")"
+Might have to:"
+;;(make-variable-buffer-local 'ess-save-lastvalue-command)
+;;(setq-default ess-save-lastvalue-command
+;;	      "assign(\"smode.lvsave\",.Last.value,frame=0)\n")
   :group 'ess-command
   :type 'string)
 
@@ -776,7 +780,7 @@ Might have to:
 
 ;; defconst ess-local-process-name now done in S.el
 
-(defvar ess-process-name-list nil
+(defcustom ess-process-name-list nil
   "Alist of active ess processes.")
 
 ;;*;; Inferior ess commands
@@ -944,7 +948,7 @@ important for XLispStat.  Increase this, if you have a fast(er) machine."
 
 ;;; for programming, transcript, and inferior process modes.
 
-(defvar inferior-ess-font-lock-input t
+(defcustom inferior-ess-font-lock-input t
   "*If non-nil, input is syntactically font-locked.
 If nil, input is in the `font-lock-variable-name-face'."
   :group 'ess
@@ -1066,7 +1070,7 @@ If nil, input is in the `font-lock-variable-name-face'."
 ;;; with a * are the ones you can generally change safely, and
 ;;; may have to upon occasion.
 
-(defvar ess-help-kill-bogus-buffers nil
+(defcustom ess-help-kill-bogus-buffers nil
   "*If non-nil, kill ESS help buffers immediately if they are \"bogus\"."
   :group 'ess
   :type 'boolean)
