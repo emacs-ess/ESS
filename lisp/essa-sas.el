@@ -90,10 +90,6 @@ or `ess-sas-data-view-insight'."
     (let ((ess-tmp-alist nil)
         (ess-tmp-file nil))
 
-    (setq ess-tmp-file (executable-find (if ess-microsoft-p "acrord32" "acroread")))
-
-    (if ess-tmp-file
-	(setq ess-tmp-alist (cons "[pP][dD][fF]" ess-tmp-file)))
     (setq ess-tmp-file (executable-find "gv"))
 
     (if (not ess-tmp-file) (setq ess-tmp-file (executable-find "ghostview")))
@@ -102,11 +98,14 @@ or `ess-sas-data-view-insight'."
 	(if ess-microsoft-p "gsview32" "gsview"))))
 
     (if ess-tmp-file
-	(if ess-tmp-alist
-	    (setq ess-tmp-alist (list ess-tmp-alist
-		(cons "[eE]?[pP][sS]" ess-tmp-file)))
-	    (setq ess-tmp-alist (list (cons "[pP][dD][fF]" ess-tmp-file)
-		(cons "[eE]?[pP][sS]" ess-tmp-file))))))
+	(setq ess-tmp-alist (list (cons "[eE]?[pP][sS]" ess-tmp-file)
+	    (cons "[pP][dD][fF]" ess-tmp-file)))
+
+	(setq ess-tmp-file (executable-find (if ess-microsoft-p "acrord32" "acroread")))
+
+	(if ess-tmp-file
+	    (setq ess-tmp-alist (cons "[pP][dD][fF]" ess-tmp-file)))))
+
   "*Associate file name extensions with graphics image file viewers."
   :group 'ess-sas
   :type  'string)
