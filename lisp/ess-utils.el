@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/07/24 18:45:10 $
-;; Version: $Revision: 5.13 $
-;; RCS: $Id: ess-utils.el,v 5.13 2002/07/24 18:45:10 rsparapa Exp $
+;; Modified: $Date: 2002/07/24 19:25:01 $
+;; Version: $Revision: 5.14 $
+;; RCS: $Id: ess-utils.el,v 5.14 2002/07/24 19:25:01 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -279,8 +279,10 @@ Return t if buffer was modified, nil otherwise."
  ;; buffer has changed and Local Variables are defined, so update them with revert
     (beginning-of-line -1)
     (save-match-data 
-	(if (search-forward "End:" nil t) (revert-buffer t t))))
-    t nil)
+	(if (search-forward "End:" nil t) (revert-buffer t t)))
+    t)
+ ;;else
+ nil)
 )
 
 (provide 'ess-utils)
