@@ -1,7 +1,7 @@
 ANNOUNCING ESS
 **************
 
-   Annoucing the release of ESS-5.1.16 (Emacs Speaks Statistics).
+   Annoucing the release of ESS-5.1.17 (Emacs Speaks Statistics).
 ------------------------------------------------------------
 
    ESS is an Emacs package which provides a standard interface between
@@ -24,6 +24,29 @@ file README with the distribution.
 
 New Features
 ============
+
+   Changes/New Features in 5.1.17:
+   * Documentation for Windows Installation (Rich Heiberger
+     (<rmh@surfer.stat.temple.edu>))
+
+   * removal of ess-vars, finalization of customize support (in the
+      sense that there is no more use of ess-vars, but that we need to
+          fix ess-cust) (AJ Rossini (<rossini@u.washington.edu>))
+
+   * Many small (and large) fixes/contributions (MMaechler,
+     (<maechler@stat.math.ethz.ch>)).
+
+   * addition of the "S-equal" variable and provide M-x ess-add-MM-keys
+          a way to remap "_" to 'S-equal, typically " <- ", but
+     configurable. (MMaechler, (<maechler@stat.math.ethz.ch>)).
+
+   Changes/New Features in 5.1.16:
+   * BUG FIXES
+
+   * Better SAS support
+
+   Changes/New Features in 5.1.15:
+   * BUG FIXES
 
    Changes/New Features in 5.1.14:
    * Yet more fixes to SAS mode, (Rich Heiberger
@@ -80,23 +103,15 @@ New Features
 
    * R documentation mode defaults changed
 
-   Beginning with ESS 5.1.2 we are able to use inferior iESS mode to
-communicate directly with a running S-Plus 4.x process using the
-Microsoft DDE protocol.  We use the familiar (from Unix ESS) C-c C-n
-and related key sequences to send lines from the S-mode file to the
-inferior S process.  We continue to edit S input files in ESS[S] mode
-and transcripts of previous S sessions in ESS Transcript mode.  All
-three modes know the S language, syntax, and indentation patterns and
-provide the syntactic highlighting that eases the programming tasks.
-
-   For Microsoft platforms, the version of Emacs that this has been
-tested with is NTEmacs 20.x, x greater than 2.  More information about
-NTEmacs can be retrieved from:
-
-   *   `http://www.cs.washington.edu/homes/voelker/ntemacs.html'
-
-   including information on retrieval and installation.  This has not
-yet been tested with XEmacs for Microsoft Windows 95/98/NT.
+   Changes/New Features in 5.1.2:
+   * able to use inferior iESS mode to communicate directly with a
+     running S-Plus 4.x process using the Microsoft DDE protocol.  We
+     use the familiar (from Unix ESS) C-c C-n and related key sequences
+     to send lines from the S-mode file to the inferior S process.  We
+     continue to edit S input files in ESS[S] mode and transcripts of
+     previous S sessions in ESS Transcript mode.  All three modes know
+     the S language, syntax, and indentation patterns and provide the
+     syntactic highlighting that eases the programming tasks.
 
 Current Features
 ================
@@ -158,6 +173,9 @@ are fixed from 5.0, others have been introduced, especially with
 regards to new features.  See the file Doc/TODO for details.  Bug
 reports are solicited; see the BUGS section below.  Patches or
 suggested coding fixes with bug reports are much appreciated!
+
+   Some versions tend to be more stable than others, and for new support
+(Microsoft support), 5.1.16 is the current favorite.
 
 Requirements
 ============
@@ -248,16 +266,21 @@ low-volume mailing list.
 
    The purposes of the mailing list include
 
-   - helping users of ESS to get along with it.  - discussing aspects
-of using ESS for GNU Emacs and XEmacs.  - suggestions for improvements.
-- announcements of new [beta] releases of ESS.  - posting small patches
-to ESS.
+   *  helping users of ESS to get along with it.
+
+   *  discussing aspects of using ESS for GNU Emacs and XEmacs.
+
+   *  suggestions for improvements.
+
+   *  announcements of new [beta] releases of ESS.
+
+   *  posting small patches to ESS.
 
 Authors
 =======
 
    * A.J. Rossini (http://www.biostat.washington.edu/~rossini/)
-     <rossini@stat.sc.edu>
+     <rossini@u.washington.edu>
 
    * Richard M. Heiberger
      (http://www.sbm.temple.edu/departments/statistics/)
@@ -268,6 +291,9 @@ Authors
 
    * Martin Maechler (http://stat.ethz.ch/~maechler/)
      <maechler@stat.math.ethz.ch>
+
+   * Rodney Sparapani (see http://www.duke.edu/~spara002/)
+     <rodney.sparapani@duke.edu>
 
 License
 =======
