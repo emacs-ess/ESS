@@ -1,14 +1,14 @@
 ;;; ess-inf.el --- Support for running S as an inferior Emacs process
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997--1999, A.J. Rossini, M. Maechler.
+;; Copyright (C) 1997--2000, A.J. Rossini, M. Maechler.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/01/31 00:17:00 $
-;; Version: $Revision: 5.33 $
-;; RCS: $Id: ess-inf.el,v 5.33 2000/01/31 00:17:00 rossini Exp $
+;; Modified: $Date: 2000/02/10 07:51:52 $
+;; Version: $Revision: 5.34 $
+;; RCS: $Id: ess-inf.el,v 5.34 2000/02/10 07:51:52 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -260,7 +260,7 @@ there is no process NAME)."
 	 (format "(ess-multi 0):  inf-ess-start-args=%s, comint-..echoes=%s\n"
 	       inf-ess-start-args comint-process-echoes))
 	(set-buffer buffer)
-	(setq-default inferior-ess-prompt	
+	(setq-default inferior-ess-prompt
 
 		      ;; shouldn't be setq-default!  And I've
 		      ;; forgotten why!   (AJR)
@@ -402,7 +402,7 @@ This was rewritten by KH in April 1996."
 		   (ess-error "Timeout waiting for prompt. Check inferior-ess-prompt or ess-loop-timeout."))
 	       (accept-process-output)
 	       (goto-char (point-max))
-	       (beginning-of-line); bol ==> no need for "^" in *-prompt! (MM?) 
+	       (beginning-of-line); bol ==> no need for "^" in *-prompt! (MM?)
 	       ;; above, except for Stata, which has "broken" i/o,
 	       ;; sigh... (AJR)
 	       (setq r (looking-at inferior-ess-prompt))
@@ -1146,13 +1146,13 @@ to continue it."
   ;; Configuration for Stata input handling
   ;; AJR: Stata is hell.   This is the primary configuration point.
   (if (string= ess-language "STA")
-      (progn 
+      (progn
 	(setq comint-input-sender 'inferior-ess-input-sender) ; was STA
 	(setq comint-process-echoes t)))
 
   ;; Configuration for Omegahat input handling
   (if (string= ess-language "OMG")
-      (progn 
+      (progn
 	; the following doesn't exist (until needed?)
 	;(setq comint-input-sender 'inferior-OMG-input-sender)
 	(setq comint-process-echoes nil)))
