@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/10/21 13:41:08 $
-;; Version: $Revision: 1.50 $
-;; RCS: $Id: ess-site.el,v 1.50 1997/10/21 13:41:08 rossini Exp $
+;; Modified: $Date: 1997/10/21 20:00:23 $
+;; Version: $Revision: 1.51 $
+;; RCS: $Id: ess-site.el,v 1.51 1997/10/21 20:00:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -156,6 +156,12 @@
 ;; (setq inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?")
 ;; (setq inferior-ess-secondary-prompt "+ ?")
 
+
+;;; What you want S to call...
+(defun S ()
+  "Basic, usual, call..."
+  (interactive)
+  (S+3))
 
 
 
