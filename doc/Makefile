@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.26 $.
+### File: $Revision: 1.27 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -57,11 +57,12 @@ DOCDIST = ess.ps ess.pdf \
 
 ### Targets --
 
-all  : info txts html dvi
+all  : info txts html dvi pdf
 
 # Documentation mentions info, not ess.info -- NOT readme.info <<< FIXME >>
 info : ../info/ess.info
 dvi  :  ess.dvi readme.dvi
+pdf  :  ess.pdf readme.pdf
 txts : $(READMEtargets)
 
 #
@@ -69,15 +70,15 @@ txts : $(READMEtargets)
 #
 html :	html/ess_toc.html html/readme_toc.html
 
-ess.dvi : $(ManSRC); texi2dvi ess.texi
-ess.pdf : $(ManSRC); pdftex $^; pdftex $^
-ess.ps  : ess.dvi; dvips $^ -o $@
+ess.dvi : $(ManSRC); texi2dvi $<
+ess.pdf : $(ManSRC); pdftex $<; pdftex $<
+ess.ps  : ess.dvi; dvips $< -o $@
 ## If you don't have pdftex, you won't get the bookmarks, hyperlinks, etc..
 # ess.pdf: ess.ps ; rm -f ess.pdf ; ps2pdf ess.ps > ess.pdf
 
-readme.dvi : $(ReadmeSRC); texi2dvi $^
-readme.pdf : $(ReadmeSRC); pdftex $^; pdftex $^
-readme.ps  : readme.dvi; dvips $^ -o $@
+readme.dvi : $(ReadmeSRC); texi2dvi $<
+readme.pdf : $(ReadmeSRC); pdftex $<; pdftex $<
+readme.ps  : readme.dvi; dvips $< -o $@
 
 install : all
 # no longer :  (directly via ../info/..
