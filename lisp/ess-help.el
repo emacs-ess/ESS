@@ -10,9 +10,9 @@
 ;; Maintainers: A.J. Rossini <rossini@u.washington.edu>,
 ;;              Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2003/11/06 13:25:18 $
-;; Version: $Revision: 5.19 $
-;; RCS: $Id: ess-help.el,v 5.19 2003/11/06 13:25:18 maechler Exp $
+;; Modified: $Date: 2004/04/18 14:52:06 $
+;; Version: $Revision: 5.20 $
+;; RCS: $Id: ess-help.el,v 5.20 2004/04/18 14:52:06 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -189,13 +189,37 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 
 	  ;;dbg (ess-write-to-dribble-buffer
 	  ;;dbg  (format "(ess-help «%s» before switch-to..\n" hb-name)
-	  (if (eq curr-win-mode 'ess-help-mode)
-	      (switch-to-buffer tbuffer)
-	    (ess-display-temp-buffer tbuffer))
+	  (let ((special-display-regexps 
+		 (if ess-help-own-frame '(".") nil))
+		(special-display-function 'ess-help-own-frame))
+	    (if (eq curr-win-mode 'ess-help-mode)
+		(switch-to-buffer tbuffer)
+	      (ess-display-temp-buffer tbuffer)))
 	  (if curr-help-syntax-table
 	      (set-syntax-table curr-help-syntax-table))
 	  (set-buffer-modified-p 'nil)
 	  (toggle-read-only t))))))
+
+(defvar ess-help-frame nil
+  "Stores the frame used for displaying R help buffers.")
+
+(defun  ess-help-own-frame (buffer &rest ignore)
+  "Put all ESS help buffers into `ess-help-frame'."
+  ;; SJE: Code adapted from Kevin Rodgers.
+  (if (frame-live-p ess-help-frame)
+      (progn
+	(or (frame-visible-p ess-help-frame)
+	    (make-frame-visible ess-help-frame))
+	(raise-frame ess-help-frame)
+	(select-frame ess-help-frame)
+	(switch-to-buffer buffer)
+	(selected-window))
+    ;; else
+    (let ((window (special-display-popup-frame buffer)))
+      (set-window-dedicated-p window nil)
+      (setq ess-help-frame (window-frame window))
+      window)))
+
 
 
 ;;; THIS WORKS!
