@@ -716,7 +716,7 @@ PROC is the ESS process. Does not change point"
   (save-excursion
     (while (progn
 	     ;; get output if there is some ready
-	     (if (or (equal window-system 'w32) (equal window-system 'win32))
+	     (if (and ess-microsoft-p ess-ms-slow)
 		 (accept-process-output proc 0 1500) ; Microsoft is slow
 	       (accept-process-output proc 0 500))
 	     (goto-char (marker-position (process-mark proc)))
@@ -777,16 +777,16 @@ Guarantees that the value of .Last.value will be preserved."
 	      (erase-buffer)
 	      (set-marker (process-mark sprocess) (point-min))
 	      (process-send-string sprocess ess-save-lastvalue-command)
-	      (if (or (equal window-system 'w32) (equal window-system 'win32))
+	      (if (and ess-microsoft-p ess-ms-slow)
 		  (sleep-for 0.5))
 	      (ess-prompt-wait sprocess)
 	      (erase-buffer)
 	      (process-send-string sprocess com)
-	      (if (or (equal window-system 'w32) (equal window-system 'win32))
+	      (if (and ess-microsoft-p ess-ms-slow)
 		  (sleep-for 4))	;this much time is needed for
 					;ess-create-object-name-db on PC
 	      (ess-prompt-wait sprocess)
-	      (if (or (equal window-system 'w32) (equal window-system 'win32))
+	      (if (and ess-microsoft-p ess-ms-slow)
 		  (sleep-for 0.5))
 	      (goto-char (point-max))
 	      (save-excursion
@@ -795,7 +795,7 @@ Guarantees that the value of .Last.value will be preserved."
 	      (process-send-string sprocess ess-retr-lastvalue-command)
 
 	      ;; For S+4
-	      (if (or (equal window-system 'w32) (equal window-system 'win32))
+	      (if (and ess-microsoft-p ess-ms-slow)
 		  (sleep-for 0.5))
 	      (ess-prompt-wait sprocess end-of-output)
 
