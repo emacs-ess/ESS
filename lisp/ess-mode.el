@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2001/06/23 12:18:09 $
-;; Version: $Revision: 5.17 $
-;; RCS: $Id: ess-mode.el,v 5.17 2001/06/23 12:18:09 hornik Exp $
+;; Modified: $Date: 2001/08/31 16:33:07 $
+;; Version: $Revision: 5.18 $
+;; RCS: $Id: ess-mode.el,v 5.18 2001/08/31 16:33:07 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -144,6 +144,7 @@
   (define-key ess-mode-map "\C-c\M-j"	'ess-eval-line-and-go)
   (define-key ess-mode-map "\M-\C-a"	'ess-beginning-of-function)
   (define-key ess-mode-map "\M-\C-e"	'ess-end-of-function)
+  (define-key ess-mode-map "\C-xnd"	'ess-narrow-to-defun)
   (define-key ess-mode-map "\C-c\C-y"	'ess-switch-to-ESS)
   (define-key ess-mode-map "\C-c\C-z"	'ess-switch-to-end-of-ESS)
   (define-key ess-mode-map "\C-c\C-l"	'ess-load-file)
@@ -443,6 +444,19 @@ Optional argument for location of beginning.  Return '(beg end)."
     (ess-end-of-function beg)
     (exchange-point-and-mark)))
 
+;; Donated by Stephen Eglen, 2001-08-29:
+;; This command is analogous to `narrow-to-defun' (elisp)
+;; and `py-narrow-to-defun' (python)."
+(defun ess-narrow-to-defun ()
+  "Make text outside current function invisible.
+If text is already narrowed, this is removed before narrowing to the
+current function."
+  (interactive)
+   ;; if point is not in a function, ess-end-of-function catches the error.
+  (save-excursion
+    (widen)
+    (let* ((beg-end (ess-end-of-function)))
+      (narrow-to-region (nth 0 beg-end) (nth 1 beg-end)))))
 
 ;;*;; Loading files
 
