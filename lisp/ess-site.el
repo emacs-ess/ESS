@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1998/04/06 20:18:41 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: ess-site.el,v 5.3 1998/04/06 20:18:41 rossini Exp $
+;; Modified: $Date: 1998/09/24 23:12:26 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: ess-site.el,v 5.4 1998/09/24 23:12:26 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -111,6 +111,8 @@
 	   ("R.*/src/library/[A-Za-z]+/R/[A-Za-z]"    . R-mode); R >= 0.60
 	   ("R.*/src/library/[A-Za-z]+/man/[A-Za-z]"  . Rd-mode)
 	   ("\\.lsp\\'"                               . XLS-mode)
+	   ("\\.do\\'"                                . STA-mode)
+	   ("\\.ado\\'"                               . STA-mode)
 	   ("\\.sas\\'"                               . SAS-mode)
 	   ("\\.SAS\\'"                               . SAS-mode)
 	   ("\\.lst\\'"                               . SAS-listing-mode);sasl
