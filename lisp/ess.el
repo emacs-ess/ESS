@@ -11,16 +11,16 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/09/08 13:02:24 $
-;; Version: $Revision: 1.62 $
-;; RCS: $Id: ess.el,v 1.62 1997/09/08 13:02:24 rossini Exp $
+;; Modified: $Date: 1997/10/20 19:11:44 $
+;; Version: $Revision: 1.63 $
+;; RCS: $Id: ess.el,v 1.63 1997/10/20 19:11:44 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
-;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
-;;                   rossini@stat.sc.edu|
-;;                   Generic Interface for Statistical Software Packages|
+;;                   R. M. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
+;;                   ess-bugs@stat.math.ethz.ch|
+;;                   General Interface for Statistical Software Packages|
 ;;                   92-06-29|
-;;                   4.9|
-;;                   /ftp.math.sc.edu:rossini/ESS-4.9.tar.gz
+;;                   5.0|
+;;                   /ftp.math.sc.edu:rossini/ESS-5.0.tar.gz
 ;; This file is part of ess-mode
 
 ;; This file is free software; you can redistribute it and/or modify
@@ -57,8 +57,9 @@
 ;;; PURPOSE
 ;;;
 ;;; Interface to the S, SAS, and XLisp dialects of statistical
-;;; programming languages.  Written to be extendable to any other
-;;; interactive statistical programming language.
+;;; programming languages, with potential extensions to other
+;;; languages.  Designed to be extendable to most other interactive
+;;; statistical programming situations.
 
 ;;; BRIEF OVERVIEW
 ;;;
