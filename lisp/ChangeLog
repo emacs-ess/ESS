@@ -1,3 +1,16 @@
+2004-02-19  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* essd-els.el (ess-select-alist-dialect): Use completing-read to
+	select dialect.
+
+2004-02-12  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* essl-s.el (ess-smart-underscore): Only be smart in buffers where
+	`ess-language' is "S".
+
+	* ess-site.el ("[ess-site:] require 'essd-els ..."): oRemove the
+	code that fixes ess-smart-underscore in SAS mode.
+
 2004-01-20  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* essl-s.el (ess-smart-underscore): Pressing _ twice inserts _
