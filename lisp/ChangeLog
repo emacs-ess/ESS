@@ -1,3 +1,8 @@
+2005-02-11  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el: do not turn on sas-listing-mode via
+	auto-mode-alist.
+
 2005-02-09  Martin Maechler  <maechler@stat.math.ethz.ch>
 	really
 2005-02-09  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>

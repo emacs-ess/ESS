@@ -205,18 +205,6 @@ number."
   :group 'ess-sas
   :type '(choice (const nil) string))
 
-(defcustom ess-sas-auto-lst-mode t
-  "Should files ending in '*.lst' be put in sas-listing-mode automagically?
-Set this to nil if you have other files ending in *.lst"
-  :group 'ess-sas
-  :type 'boolean)
-
-(if (and ess-sas-auto-lst-mode
-	 (not (featurep 'xemacs)))
-    (setq auto-mode-alist
-	(append '(("\\.[lL][sS][tT]\\'" . sas-listing-mode)) auto-mode-alist)))
-;;;###autoload(add-to-list 'auto-mode-alist '("\\.[lL][sS][tT]\\'" . sas-listing-mode))
-
 (require 'essa-sas)
 
 (defvar sas-buffer-name nil)
