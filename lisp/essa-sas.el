@@ -1,6 +1,6 @@
 ;;; essa-sas.el -- clean-room implementation of many SAS-mode features
 
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: Rodney A. Sparapani <rsparapa@mcw.edu>
@@ -426,7 +426,7 @@ current buffer if nil."
  (save-excursion (let ((ess-tmp-sas-data nil)
     (ess-tmp-sas-data-view-fsview-statement ess-sas-data-view-fsview-statement)
     (ess-search-regexp
-    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[. ,()\t;]")
+    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[. ,()\t;/]")
     (ess-search-except
     "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
 
