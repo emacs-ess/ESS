@@ -1,9 +1,9 @@
 ;;; ess.el --- Emacs Speaks Statistics: statistical programming within Emacs
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1996--2001 Rossini, Heiberger, Hornik, Maechler and
-;;                          Sparapani.
-
+;; Copyright (C) 1997--2004 A.J. Rossini, Martin Maechler,
+;; Kurt Hornik, Richard M. Heiberger, Rodney Sparapani,
+;; and Stephen Eglen. 
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainer(s): A.J. Rossini <rossini@biostat.washington.edu>
 ;;                Martin Maechler  <maechler@stat.math.ethz.ch>
@@ -11,17 +11,9 @@
 ;;                Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;;                Rodney Sparapani <rsparapa@mcw.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.28 2004/04/27 11:41:13 stephen Exp $
+;; Version: $Id: ess.el,v 5.29 2004/05/13 13:47:38 stephen Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
-
-;; Lisp-dir-entry  : ESS |
-;;                   R. M. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
-;;                   ess-bugs@stat.math.ethz.ch|
-;;                   General Interface for Statistical Software Packages|
-;;                   92-06-29|
-;;                   5.0|
-;;                   ftp://ess.stat.wisc.edu/pub/ESS/ESS-5.0.tar.gz
 
 ;; This file is part of ESS
 
@@ -42,19 +34,6 @@
 ;; In short: you may use this code any way you like, as long as you
 ;; don't charge money for it, remove this notice, or hold anyone liable
 ;; for its results.
-
-;; Copyright 1989--92,1997 Doug Bates    bates@stat.wisc.edu
-;;           1993, 1994    Ed Kademan    kademan@stat.wisc.edu
-;;                         Frank Ritter  ritter@psychology.nottingham.ac.uk
-;;           1994--1997    David Smith <maa036@lancaster.ac.uk>
-;;
-;;           1996--2000    Kurt Hornik <Kurt.Hornik@ci.tuwien.ac.at>
-;;           1996--2001    Martin Maechler <maechler@stat.math.ethz.ch>
-;;           1996--2000    A.J. Rossini <rossini@stat.sc.edu>,
-;;           1998--2001                 <rossini@biostat.washington.edu>
-;;           1996--2001    Richard M. Heiberger <rmh@astro.ocis.temple.edu>
-;;           1999--2001    Rodney Sparapani <rsparapa@mcw.edu>
-;;
 
 ;;; Commentary:
 
@@ -100,7 +79,7 @@
 ;;; See README and S-site for details.
 
 ;;; GETTING RELEASES OF ESS
-;;; ===> http://ess.stat.wisc.edu/
+;;; ===> http://ess.r-project.org
 ;;;
 
 ;;; CREDITS.
@@ -135,18 +114,6 @@
 
 (require 'ess-emcs)
 
-;; The following should take care of all cases.  Currently, seems to
-;; work, sigh...
-;;(if ess-local-custom-available
-;;    (eval-and-compile  ; was progn
-;;      (ess-message "--++ LOADING CUSTOM ++--")
-;;      (require 'ess-cust))
-;;  (eval-and-compile  ; was progn
-;;    (ess-message "--++ NOT NOT NOT loading custom ++--")
-;;    (require 'ess-vars)))
-
-;; The above was commented out to verify that it would work on
-;; versions w/o customize.  Remove after verification.
 (eval-and-compile
   (require 'ess-cust))
 
