@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/07/03 13:26:35 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: essd-r.el,v 1.12 1997/07/03 13:26:35 rossini Exp $
+;; Modified: $Date: 1997/07/03 13:58:20 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: essd-r.el,v 1.13 1997/07/03 13:58:20 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.13  1997/07/03 13:58:20  rossini
+;;: stuff
+;;:
 ;;: Revision 1.12  1997/07/03 13:26:35  rossini
 ;;: added alist's for setting up things properly.
 ;;:
@@ -64,7 +67,8 @@
 
 
 (defvar R-customize-alist
-  '((ess-proc-prefix               . "R")
+  '((ess-customize-alist           . R-customize-alist)
+    (ess-proc-prefix               . "R")
     (ess-version-running           . "R" )
     (inferior-ess-program          . inferior-R-program-name)
     (inferior-ess-objects-command  . "if(%d == 1) ls() else builtins()")
@@ -101,7 +105,7 @@
 (defun R2 ()
   "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ)."
   (interactive)
-  (setq-default ess-customize-alist R-customize-alist)
+  (setq ess-customize-alist R-customize-alist) ; setq or setq-default?
   (inferior-ess))
 
  ; Provide package
