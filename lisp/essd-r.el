@@ -7,9 +7,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1999/06/17 17:34:56 $
-;; Version: $Revision: 5.14 $
-;; RCS: $Id: essd-r.el,v 5.14 1999/06/17 17:34:56 maechler Exp $
+;; Modified: $Date: 1999/07/06 10:21:05 $
+;; Version: $Revision: 5.15 $
+;; RCS: $Id: essd-r.el,v 5.15 1999/07/06 10:21:05 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -155,9 +155,11 @@ to shut down the computer cleanly.\n\n")
   (interactive "d\nP"); point and prefix (C-u)
   (save-excursion
     (goto-char from)
-    (ess-rep-regexp "\\(= *\\|<- *\\)T\\>" "\\1TRUE" 'fixcase nil (not quietly))
+    (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)T\\>" "\\1TRUE"
+		    'fixcase nil (not quietly))
     (goto-char from)
-    (ess-rep-regexp "\\(= *\\|<- *\\)F\\>" "\\1FALSE" 'fixcase nil(not quietly))
+    (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)F\\>" "\\1FALSE"
+		    'fixcase nil (not quietly))
     ))
 
  ; Provide package
