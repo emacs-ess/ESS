@@ -19,7 +19,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.5 1998/09/10 06:15:55 hornik Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.6 1999/01/04 13:52:43 maechler Exp $
 
 ;;; Code:
 
@@ -176,7 +176,7 @@ All Rd mode abbrevs start with a grave accent (`).")
 (defvar Rd-mode-hook nil
   "*Hook to be run when Rd mode is entered.")
 
-(defvar Rd-to-help-command "Rd2txt"
+(defvar Rd-to-help-command "R CMD Rd2txt"
   "*Shell command for converting R documentation source to help text.")
 
 ;;;###autoload
@@ -235,7 +235,7 @@ following lines to your `.emacs' file:
   (easy-menu-define Rd-mode-menu-map Rd-mode-map
 		    "Menu keymap for Rd mode." Rd-mode-menu)
   (easy-menu-add Rd-mode-menu-map Rd-mode-map)
-  
+
   (turn-on-auto-fill)
   (message "Rd mode version %s" essddr-version)
   (run-hooks 'Rd-mode-hook))
