@@ -1,4 +1,7 @@
-Wed Oct 22 15:49:50 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Wed Oct 22 15:53:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* ess-vars.el (ess-version): updated version number (17)
+	* Makefile (VERSION): updated version number (17)
 
 	* beta 16 released.
 
@@ -426,6 +429,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.6  1997/10/22 19:54:22  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.5  1997/10/22 19:51:08  rossini
 	* Removing *** empty log message ***
 	* Removing
