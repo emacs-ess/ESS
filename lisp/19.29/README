@@ -1,0 +1,8 @@
+-*- mode: text -*-
+$Id: README,v 1.1 2000/07/13 16:46:14 rossini Exp $
+
+The rationale for this directory is backwards compatibility.
+
+These files come from the 19.29 distribution, for use with Emacs 19.x
+where X<29.
+
