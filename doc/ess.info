@@ -11,7 +11,7 @@ ESS -- Emacs Speaks Statistics
 Ritter, and David Smith.
 
    Currently maintained by A.J. (Tony) Rossini, Richard M. Heiberger,
-Kurt Hornik, and Martin Maechler.
+Kurt Hornik, Martin Maechler, and Rodney Sparapani.
 
    This file documents `ESS', a GNU Emacs package for running
 `S(plus)', `R', `XLisp-Stat', `SAS' and potentially any other
@@ -24,87 +24,90 @@ source code in these languages and interacting with the running program.
 Department of Mathematics and Statistics, Lancaster University, UK.
 
    Current Info Author: A.J. Rossini
-(<rossini@biostat.washington.edu>), Department of Biotatistics,
+(<rossini@biostat.washington.edu>), Department of Biostatistics,
 University of Washington, Seattle, WA 98185, USA
 
 
 Indirect:
-ess.info-1: 1061
-ess.info-2: 47958
-ess.info-3: 97209
+ess.info-1: 1080
+ess.info-2: 49930
+ess.info-3: 98449
 
 Tag Table:
 (Indirect)
-Node: Top1061
-Node: Introduction5643
-Node: Features8733
-Node: New features11794
-Node: Credits16903
-Node: Latest version19058
-Node: Manual20144
-Node: Starting Up21032
-Node: Multiple ESS processes21823
-Node: Customizing startup23175
-Node: Entering commands25150
-Node: Command-line editing26346
-Node: Completion27625
-Node: Completion details30392
-Ref: Completion details-Footnote-132302
-Node: Transcript32581
-Node: Last command34361
-Node: Process buffer motion35970
-Node: Transcript resubmit37504
-Node: Saving transcripts40102
-Node: Command History42136
-Node: History expansion44755
-Node: Hot keys47958
-Node: Other51384
-Node: Editing52418
-Node: Edit buffer53576
-Node: Loading55624
-Node: Error Checking56669
-Node: Evaluating code57710
-Node: Indenting61185
-Node: Other edit buffer commands64045
-Node: Source Files65918
-Node: Source Directories70449
-Node: Help73576
-Node: Transcript Mode77144
-Node: Resubmit78279
-Node: Clean79354
-Node: Miscellaneous80068
-Node: Highlighting80432
-Node: Graphics81843
-Node: printer82317
-Node: X1183079
-Node: Object Completion83747
-Node: Bugs Etc84555
-Node: Bugs84779
-Node: Reporting Bugs86027
-Node: Mailing Lists86558
-Node: Help Statistics87282
-Node: Help on Unix Splus87576
-Node: Help on Microsoft Splus87744
-Node: Help on R87896
-Node: Help on SAS88023
-Node: Help on XLispStat88148
-Node: Help on Stata88289
-Node: Help OS88402
-Node: Help Unix88605
-Node: Help Microsoft88723
-Node: Installation88835
-Node: System dependent91425
-Node: Customization93700
-Node: Variables94371
-Node: Variables for starting ESS95196
-Node: Dump file variables97209
-Node: Indentation variables98380
-Node: Variables controlling interaction101235
-Node: Hooks102088
-Node: Keybindings103234
-Node: Key Index104265
-Node: Command Index104408
-Node: Concept Index104691
-Node: Variable and command index111578
+Node: Top1080
+Node: Introduction5902
+Node: Features8992
+Node: New features12083
+Node: Credits18798
+Node: Latest version20953
+Node: Manual22039
+Node: Starting Up22927
+Node: Multiple ESS processes23718
+Node: Customizing startup25070
+Node: Entering commands27045
+Node: Command-line editing28318
+Node: Completion29597
+Node: Completion details32364
+Ref: Completion details-Footnote-134274
+Node: Transcript34553
+Node: Last command36333
+Node: Process buffer motion37942
+Node: Transcript resubmit39476
+Node: Saving transcripts42074
+Node: Command History44108
+Node: History expansion46727
+Node: Hot keys49930
+Node: Is the Statistical Process running under ESS?53396
+Node: Other54700
+Node: Editing55771
+Node: Edit buffer56929
+Node: Loading58977
+Node: Error Checking60022
+Node: Evaluating code61063
+Node: Indenting64538
+Node: Other edit buffer commands67554
+Node: Source Files69427
+Node: Source Directories73958
+Node: Help77085
+Node: Transcript Mode80653
+Node: Resubmit81788
+Node: Clean82863
+Node: Miscellaneous83577
+Node: Highlighting83941
+Node: Graphics85352
+Node: printer85826
+Node: X1186588
+Node: Object Completion87256
+Node: Bugs Etc88064
+Node: Bugs88288
+Node: Reporting Bugs89536
+Node: Mailing Lists90067
+Node: Help Statistics90791
+Node: Help on Unix Splus91085
+Node: Help on Microsoft Splus91253
+Node: Help on R91405
+Node: Help on SAS91532
+Node: Help on XLispStat91657
+Node: Help on Stata91798
+Node: Help OS91911
+Node: Help Unix92114
+Node: Help Microsoft92232
+Node: Installation92416
+Node: Unix installation93042
+Node: Microsoft Windows installation98449
+Node: System dependent104916
+Node: Customization107191
+Node: Variables107862
+Node: Variables for starting ESS108687
+Node: Dump file variables110700
+Node: Indentation variables111871
+Node: Variables controlling interaction114852
+Node: Hooks115705
+Node: Keybindings116851
+Node: Key Index117882
+Node: Command Index118025
+Node: Concept Index118308
+Node: Variable and command index125283
 
 End Tag Table

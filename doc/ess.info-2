@@ -11,7 +11,7 @@ ESS -- Emacs Speaks Statistics
 Ritter, and David Smith.
 
    Currently maintained by A.J. (Tony) Rossini, Richard M. Heiberger,
-Kurt Hornik, and Martin Maechler.
+Kurt Hornik, Martin Maechler, and Rodney Sparapani.
 
    This file documents `ESS', a GNU Emacs package for running
 `S(plus)', `R', `XLisp-Stat', `SAS' and potentially any other
@@ -24,11 +24,11 @@ source code in these languages and interacting with the running program.
 Department of Mathematics and Statistics, Lancaster University, UK.
 
    Current Info Author: A.J. Rossini
-(<rossini@biostat.washington.edu>), Department of Biotatistics,
+(<rossini@biostat.washington.edu>), Department of Biostatistics,
 University of Washington, Seattle, WA 98185, USA
 
 
-File: ess.info,  Node: Hot keys,  Next: Other,  Prev: History expansion,  Up: Entering commands
+File: ess.info,  Node: Hot keys,  Next: Is the Statistical Process running under ESS?,  Prev: History expansion,  Up: Entering commands
 
 Hot keys for common commands
 ============================
@@ -98,7 +98,43 @@ process buffer or in a separate buffer, as indicated:
      temporary buffers have been killed.
 
 
-File: ess.info,  Node: Other,  Prev: Hot keys,  Up: Entering commands
+File: ess.info,  Node: Is the Statistical Process running under ESS?,  Next: Other,  Prev: Hot keys,  Up: Entering commands
+
+Is the Statistical Process running under ESS?
+=============================================
+
+   For the S languages (S, S-Plus, R) ESS sets an option in the current
+process that programs in the language can check to determine the
+environment in which they are currently running.
+
+   ESS sets `options(STERM="iESS")' for S language processes running in
+an inferior `iESS[S]' or `iESS[R]' buffer.
+
+   ESS sets `options(STERM="ddeESS")' for independent S-Plus for Windows
+processes running in the GUI and communicating with ESS via the DDE
+(Microsoft Dynamic Data Exchange) protocol through a `ddeESS[S]' buffer.
+
+   Other values of `options()$STERM' that we recommend are:
+
+   * `length':     Fixed length xterm or telnet window.
+
+   * `scrollable': Unlimited length xterm or telnet window.
+
+   * `server':     S-Plus Stat Server.
+
+   * `BATCH':      BATCH.
+
+   * `Rgui':       R GUI.
+
+   * `Commands':   S-Plus GUI without DDE interface to ESS.
+
+   Additional values may be recommended in the future as new interaction
+protocols are created.  Unlike the values `iESS' and `ddeESS', ESS
+can't set these other values since the S language program is not under
+the control of ESS.
+
+
+File: ess.info,  Node: Other,  Prev: Is the Statistical Process running under ESS?,  Up: Entering commands
 
 Other commands provided by inferior-ESS
 =======================================
@@ -332,14 +368,15 @@ case, and there are also a number of predefined indentation styles to
 choose from.  *Note Indentation variables::.
 
    Comments are also handled specially by ESS, using an idea borrowed
-from the Emacs-Lisp indentation style.  Comments beginning with `###'
-are aligned to the beginning of the line.  Comments beginning with `##'
-are aligned to the current level of indentation for the block
-containing the comment.  Finally, comments beginning with `#' are
-aligned to a column on the right (the 40th column by default, but this
-value is controlled by the variable `comment-column',) or just after
-the expression on the line containing the comment if it extends beyond
-the indentation column.
+from the Emacs-Lisp indentation style.  By default, comments beginning
+with `###' are aligned to the beginning of the line.  Comments
+beginning with `##' are aligned to the current level of indentation for
+the block containing the comment.  Finally, comments beginning with `#'
+are aligned to a column on the right (the 40th column by default, but
+this value is controlled by the variable `comment-column',) or just
+after the expression on the line containing the comment if it extends
+beyond the indentation column.  You turn off the default behavior by
+adding the line `(setq ess-fancy-comments nil)' to your `.emacs' file.
 
    The indentation commands provided by ESS are:
 
@@ -370,7 +407,8 @@ the indentation column.
      styles: `GNU', `BSD', `K&R', `CLB', and `C++'.  The `DEFAULT'
      style uses the default values for the indenting variables (unless
      they have been modified in your `.emacs' file.)  This command
-     causes all of the formatting variables to be buffer-local.
+     causes all of the formatting variables *note Indentation
+     variables:: to be buffer-local.
 
 
 File: ess.info,  Node: Other edit buffer commands,  Next: Source Files,  Prev: Indenting,  Up: Editing
@@ -1071,6 +1109,10 @@ File: ess.info,  Node: Help Microsoft,  Prev: Help Unix,  Up: Help OS
 Help for Microsoft
 ==================
 
+* Menu:
+
+* Installation::                Installing ESS on your system
+
 
 File: ess.info,  Node: Installation,  Next: Customization,  Prev: Help OS,  Up: Top
 
@@ -1080,204 +1122,156 @@ Installing ESS on your system
    The following section details those steps necessary to get ESS
 running on your system.
 
-   * cd to a directory where you keep emacs lisp files, or create a new
-     directory to hold the distribution.  This directory will be
-     referred to below as "the ESS-5.1.20 distribution directory".  It
-     will contain, at the end, the tar file ESS-5.1.20.tar.gz, and a
-     directory for the ESS source, which will be termed "the ESS-5.1.20
-     directory".  Note that the .elc files may be installed elsewhere
-     (as specified in the Makefile) if desired.
-
-   * Retrieve the compressed tar file from one of the FTP or WWW archive
-     sites via FTP (or HTTP).
-
-   * Copy ESS-5.1.20.tar.gz to the location where you want the
-     ESS-5.1.20 directory, and cd there.  Extract the files from the
-     distribution, which will unpack into a subdirectory, ESS-5.1.20.
-
-        - 	`gunzip ESS-5.1.20.tar.gz'         `tar vxf
-          ESS-5.1.20.tar'
-
-        - 	(or: `gunzip < ESS-5.1.20.tar.gz | tar vxf -').
-
-        -         (or using GNU tar: `tar zvxf ESS-5.1.20.tar.gz').
-
-     The tar command will extract files into the current directory.
-
-     Do not create ESS-5.1.20 yourself, or you will get an extra level
-     of depth to your directory structure.
-
-   * Edit the file `ess-site.el' as explained in the comments section
-     of that file.  (This is optional, initially).
-
-   * In the ESS-5.1.20 directory, edit the file `Makefile' (only if you
-     want to place the executables in other locations; see LISPDIR and
-     INFODIR) and then type:
-
-        - 	`make'
-
-        -         `make install'
-
-     This will install the info files (and the lisp files, if they are
-     to go in another directory).  Don't forget to edit the file `dir'
-     in the info directory specified by INFODIR in the Makefile.
-
-     If you are using XEmacs, you might do:
-
-        -         `make EMACS=xemacs'
-
-        -         `make EMACS=xemacs install'
-
-     instead of editing the `Makefile'.
-
-   * Add the line
-
-     `(load "/PATH/ess-site")'
-
-     to your `.emacs' file (or to `default.e'l or `site-init.el', for a
-     site-wide installation).  Replace `/PATH' above with the value of
-     ess-lisp-directory as defined in `ess-site.el'.
-
-   * For more information on using ESS in your daily work, see the files
-     README.S, README.SAS, and README.XLispStat.
-
-
 * Menu:
 
+* Unix installation::
+* Microsoft Windows installation::
 * System dependent::            Other variables you may need to change
 
-
-File: ess.info,  Node: System dependent,  Prev: Installation,  Up: Installation
+   We now discuss installation, which might happen under Unix or
+Microsoft Windows.  First, we discuss Unix installation.  *Note Unix
+installation::.
 
-Other variables you may need to change
-======================================
-
-   If you run the S program (from the shell) with a command other than
-`Splus' you will need to set the variable `inferior-ess-program' to the
-name of the appropriate program by including a line such as
-     (setq inferior-ess-program "S+")
-
-in your `.emacs' file
-
-(substituting `S+' for the name of your S program.)
-
-   If you need to call this program with any arguments, the variable you
-need to set is dependent on the value of `inferior-ess-program'; for
-example if it is `"Splus"', set the variable `inferior-Splus-args' to a
-string of arguments to the `Splus' program.  If `inferior-ess-program'
-has some other value, substitute the `Splus' part of
-`inferior-Splus-args' with the appropriate program name.  There aren't
-many instances where you need to call S with arguments, however: in
-particular do not call the S program with the `-e' command-line editor
-argument since ESS provides this feature for you.
-
-   If you are running Splus (the enhanced version of S from Statsci) you
-may also need to set the variable `S-plus' to `t'.  If your value of
-`inferior-ess-program' is `"S+"' or `Splus' this will not be necessary,
-however; `S-plus' defaults to `t' in this case.
-
-   Finally, if you use a non-standard prompt within S, you will need to
-set the variable `inferior-ess-prompt' to a regular expression which
-will match both the primary prompt (`"> "' by default) and the
-continuing prompt (default of `"+ "'.) The default value of this
-variable matches S's default prompts.  For example, if you use (`"$ "')
-as your primary prompt (you have `options(prompt="$ ")' in your
-`.First' function), add the following line to your `.emacs':
-     (setq inferior-ess-prompt "^\\(\\+\\|[^\\$]*\\$\\) *")
-
-You will also need to set the variable `inferior-ess-primary-prompt' to
-a regular expression which matches the primary prompt only.  Do not
-anchor the regexp to the beginning of the line with `^'.  Once again,
-the default value matches S's default prompt; in the example above the
-appropriate value would be `"[^\\$]*\\$ *"'.
-
-   Once these variables are set appropriately, ESS should work on any
-system.
+   For Microsoft Windows Installation please skip to the *Note
+Microsoft Windows installation::.
 
 
-File: ess.info,  Node: Customization,  Next: Key Index,  Prev: Installation,  Up: Top
+File: ess.info,  Node: Unix installation,  Next: Microsoft Windows installation,  Up: Top
 
-Customizing ESS
-***************
+Unix installation
+=================
 
-   ESS can be easily customized to your taste simply by including the
-appropriate lines in your `.emacs' file.  There are numerous variables
-which affect the behavior of ESS in certain situations which can be
-modified to your liking.  Keybindings may be set or changed to your
-preferences, and for per-buffer customizations hooks are also available.
+  1.   cd to a directory where you keep emacs lisp files, or create a
+     new   directory to hold the distribution.  This directory will be
+     referred   to below as "the ESS distribution directory".  It will
+     contain,   at the end, the tar file `ESS-5.1.20.tar.gz', and a
+     directory for   the ESS source, which will be termed "the
+     ESS-5.1.20 source directory".
 
-* Menu:
+     Note that the .elc files may be installed elsewhere (as specified
+     in the   Makefile) if desired.
 
-* Variables::                   Variables for customization
-* Hooks::                       Customizing ESS with hooks
-* Keybindings::                 Changing the default ESS keybindings
+  2.   Retrieve the compressed tar file from one of the FTP or WWW
+     archive   sites via FTP (or HTTP).
 
-
-File: ess.info,  Node: Variables,  Next: Hooks,  Prev: Customization,  Up: Customization
+  3.   Copy `ESS-5.1.20.tar.gz' to the location where you want the
+     ESS-5.1.20 directory, and cd there.  Extract the files from the
+     distribution, which will unpack into a subdirectory, ESS-5.1.20.
+          	gunzip ESS-5.1.20.tar.gz
+          	tar vxf ESS-5.1.20.tar
+     	(or: `gunzip < ESS-5.1.20.tar.gz | tar vxf -' ).  	(or using GNU
+     tar:  `tar zvxf ESS-5.1.20.tar.gz').
 
-Variables for customization
-===========================
+     The `tar' command will extract files into the current directory.
+     Do not create ESS-5.1.20 yourself, or you will get an extra level
+     of   depth to your directory structure.
 
-   ESS is easily customizable by means of setting variables in your
-`.emacs' file.  In most cases, you can change defaults by including
-lines of the form
-     (setq VARIABLE-NAME VALUE)
+     Note if you have a very ancient version of GNU emacs (_and_  really
+      can not upgrade to Emacs 20 or higher!) you can unpack the
+     `lisp/19.29.tar.gz' file, read the ensuing `lisp/19.29/README'
+     and you may succeed...
 
-in your `.emacs'.
+  4.   Edit the file `lisp/ess-site.el' as explained in the comments
+     section of that file.  Installations that are using ESS only for
+     S-Plus   6.x will probably not need to make any changes.
+     Installations that also   have one or more of (S+5 S4 S+4 S+3 R
+     SAS XLispStat Stata)   may need to uncomment corresponding lines
+     in `ess-site.el'.
 
-   In what follows, variable names will be listed along with their
-descriptions and default values.  Just substitute the variable name and
-the new value into the template above.
+  5.   READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
-* Menu:
+     In the ESS-5.1.20 directory, edit the file `Makeconf' (only if you
+      want to place the executables in other locations; see LISPDIR and
+      INFODIR) and then type:
+          	make
 
-* Variables for starting ESS::  Variables for starting ESS
-* Dump file variables::         Variables for dump files
-* Indentation variables::       Variables controlling indentation
-* Variables controlling interaction::  Variables controlling interaction
-					with the ESS process
+     If this works, then you might try:
+          	make install
+       Note that the latter does the former as well, so if you are
+     feeling   lucky, you might want to skip it.
 
-
-File: ess.info,  Node: Variables for starting ESS,  Next: Dump file variables,  Prev: Variables,  Up: Variables
+     This will install the info files (and the lisp files, if they are
+     to go   in another directory).  Don't forget to edit the file
+     `dir' in the   info directory specified by `INFODIR' in
+     `doc/Makefile'.  See   the sample `dir' file for an example of the
+     line to add.
 
-Variables for starting ESS
---------------------------
+     If you are using XEmacs, you might do:
+          	make EMACS=xemacs
 
- - User Option: ess-ask-for-ess-directory
-     Default: `t'
-     If this variable has a non-`nil' value, then every time ESS is run
-     with `M-x S' you will be prompted for a directory to use as the
-     working directory for your S session; this directory should have a
-     `.Data' subdirectory.  If the value of `ess-ask-for-ess-directory'
-     is `nil', the value of `S-directory' is used as the working
-     directory.
+     and then
+          	make EMACS=xemacs install
+       instead of editing the Makefile.
 
- - User Option: S-directory
-     Default: Your home directory
-     The working directory for your S session if
-     `ess-ask-for-ess-directory' is `nil', and the default when
-     prompting for a directory if it is not.  For example, you may wish
-     to set this to the value of the current buffer's working directory
-     before starting S by adding the following line to your `.emacs'
-     file (*note Hooks::)
-          (setq ess-pre-run-hook
-             '((lambda () (setq S-directory default-directory))))
+     _Note_ that you might need to use GNU make for everything to
+     work properly
 
- - User Option: ess-ask-about-display
-     Default: `nil'
-     If this variable has a non-`nil' value, then every time ESS is run
-     with `M-x S' you will be asked for a value for the `DISPLAY'
-     environment variable to be used in the current S session.  If this
-     variable is not set correctly, S will not be able to create any
-     windows under the X windowing environment.  Completion is provided
-     over the `X-displays-list' variable; the default is the current
-     value of `DISPLAY'.  This feature is useful is you often run S on
-     a different display than that of the machine you are running S
-     from.  If `ess-ask-about-display' is `nil', the current value of
-     `DISPLAY' is used.
+     An alternative, if you are running XEmacs and have access to the
+     XEmacs system directories, would be to place the directory in the
+     site-lisp directory, and simply type `make' (and copy the
+     documentation as appropriate).
 
- - User Option: X-displays-list
-     Default: `'(":0.0")'
-     List of possible values for the `DISPLAY' environment variable,
-     provided for completion when prompting for such a value.
+     For Emacs, you would still have to move the files into the top
+     level   site-lisp directory.
+
+  6.   Add the line
+            (load "/PATH/ess-site")
+       to your .emacs file (or default.el or site-init.el, for a
+     site-wide   installation).  Replace `/PATH' above with the value of
+      ess-lisp-directory as defined in ess-site.el.
+
+     Alternatively, if ess-site.el is in your current Lisp path, you can
+      do:
+          	(require 'ess-site)
+       to configure Emacs for ESS.
+
+  7.   (OPTIONAL) If you are running S-PLUS or R, you might consider
+     installing the database files.  From within (X)Emacs, `C-x d' to
+     the   directory containing ESS.  Now:
+                 M-x S+6
+       (or `M-x S+5': get running.  once you have reached the SPLUS
+     prompt, do:)
+                 M-x ess-create-object-name-db
+       (this will create the file `ess-s+6-namedb.el'; if it isn't in
+     the    ESS directory, move it there).
+
+     Then, completions will be autoloaded and will not be regenerated
+     for   every session.
+
+     For R, do the same, using
+                M-x R
+       and then `M-x ess-create-object-name-db' creating
+     `ess-r-namedb.el'; if it isn't in the ESS directory, move it
+     there).
+
+  8.   For more information on using ESS in your daily work, see the
+     files   README.S, README.SAS, and README.XLispStat.
+
+     For the impatient, the quick version of usage follows:
+
+  9.   To edit statistical programs, load the files with the requiste
+     extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and
+     ".lsp"   for XLispStat).
+
+ 10.   To run statistical processes under (X)Emacs:
+
+     Run S-PLUS 6.x with:
+          	M-x S+6
+       (or M-x S  using backwards compatibility).  You will then be
+     asked   for a pathname ("S starting data directory?"), from which
+     to start   the process.  Similarly for S-PLUS 5.x.
+
+     If you wish to run R, you can start it with:
+          	M-x R
+
+     XLispStat can be run with
+          	M-x XLS
+
+     An interactive SAS can be run in an `iESS[SAS]' buffer with:
+          	M-x SAS
+     This works when SAS is running on a Unix machine, either the local
+     machine or over a network connection.  M-x SAS does not work when
+     SAS is running on a Windows machine.
+
+ 11.   That's it!
 

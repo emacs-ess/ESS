@@ -11,7 +11,7 @@ ESS -- Emacs Speaks Statistics
 Ritter, and David Smith.
 
    Currently maintained by A.J. (Tony) Rossini, Richard M. Heiberger,
-Kurt Hornik, and Martin Maechler.
+Kurt Hornik, Martin Maechler, and Rodney Sparapani.
 
    This file documents `ESS', a GNU Emacs package for running
 `S(plus)', `R', `XLisp-Stat', `SAS' and potentially any other
@@ -24,8 +24,285 @@ source code in these languages and interacting with the running program.
 Department of Mathematics and Statistics, Lancaster University, UK.
 
    Current Info Author: A.J. Rossini
-(<rossini@biostat.washington.edu>), Department of Biotatistics,
+(<rossini@biostat.washington.edu>), Department of Biostatistics,
 University of Washington, Seattle, WA 98185, USA
+
+
+File: ess.info,  Node: Microsoft Windows installation,  Prev: Unix installation,  Up: Top
+
+Microsoft Windows installation
+==============================
+
+   For Microsoft Windows installation, please follow the next steps:
+(see separate instructions above for UNIX *Note Unix installation::.
+
+  1.     cd to a directory where you keep emacs lisp files, or create a
+     new    directory (for example, `c:\emacs\') to hold the
+     distribution.  This    directory will be referred to below as "the
+     ESS distribution    directory".  It will contain, at the end,
+     either the tar file    `ESS-5.1.20.tar.gz' or the zip file
+     `ESS-5.1.20.zip', and a    directory    for the ESS source, which
+     will be termed "the ESS-5.1.20 source    directory".
+
+  2.       Retrieve the compressed tar file `ESS-5.1.20.tar.gz' or the
+        zipped file `ESS-5.1.20.zip' from one of the FTP or WWW
+     archive sites      via FTP (or HTTP).  Be aware that http browsers
+     on Windows      frequently change the "." and "-" characters in
+     filenames to other      punctuation.  Please change the names back
+     to their original form.
+
+  3.       Copy `ESS-5.1.20.tar.gz' to the location where you want the
+        ESS-5.1.20 directory, for example to
+     `c:\emacs\ESS-5.1.20.tar.gz', and cd there.  For example,
+
+                       cd c:\emacs
+
+     Extract the files from the distribution, which will unpack
+     into a subdirectory, `ess-5.1.20'.
+                    	gunzip ESS-5.1.20.tar.gz
+                    	tar vxf ESS-5.1.20.tar
+          	(or: `gunzip < ESS-5.1.20.tar.gz | tar vxf -' ).
+        (or: from the zip file: `unzip ESS-5.1.20.zip')
+
+     The `tar' command will extract files into the current directory.
+
+     Do not create `ess-5.1.20' yourself, or you will get an extra level
+         of   depth to your directory structure.
+
+  4.      Windows users will usually be able to use the
+     `lisp/ess-site.el'      as distributed.  Only rarely will changes
+     be needed.
+
+  5.       Windows users will need to make sure that the directories
+     for the      software they will be using is in the PATH
+     environment variable.  On      Windows 9x, add lines similar to
+     the following to your      `c:\autoexec.bat'      file:
+                   path=%PATH%;c:\progra~1\spls2000\cmd
+          On Windows NT/2000, add the directories to the PATH using the
+         MyComputer menu.  Note that the directory containing the
+     program is      added to the PATH, not the program itself.  One
+     such line is needed      for each software program.  Be sure to
+     use the abbreviation      `progra~1' and not the long version with
+     embedded blanks.  Use      backslashes "\".
+
+  6.       Add the line
+                      (load "/PATH/ess-site")
+          to your .emacs (or _emacs) file (or default.el or
+     site-init.el, for      a site-wide installation).  Replace `/PATH'
+     above with the      value of ess-lisp-directory as defined in
+     `ess-site.el'.  Use      forwardslashes `/'.
+
+  7.       (OPTIONAL) If you are running Sqpe or R, you might consider
+        installing the database files.  From within (X)Emacs, `C-x d'
+     to      the   directory containing ESS.  Now:
+                           M-x Sqpe+6
+            (get running.  once you have reached the SPLUS prompt, do:)
+                           M-x ess-create-object-name-db
+            (this will create the file `ess-s+6-namedb.el'; if it isn't
+     in the        ESS directory, move it there).
+
+     Then, completions will be autoloaded and will not be regenerated
+       for every session.
+
+     For R, do the same, using
+                          M-x R
+          and then `M-x ess-create-object-name-db' creating
+     `ess-r-namedb.el'; if it isn't in the ESS directory, move it
+     there).
+
+  8.       For more information on using ESS in your daily work, see the
+         files doc/README.SPLUS4WIN, doc/README.S, doc/README.SAS, and
+         doc/README.XLispStat.
+
+     For the impatient, the quick version of usage follows:
+
+  9.       To edit statistical programs, load the files with the
+     requisite      extensions  (".sas" for SAS, ".S" or "s" or "q" or
+     "Q" for S-PLUS,      ".r" or ".R" for R, and ".lsp"   for
+     XLispStat).
+
+ 10.       To run statistical processes under (X)Emacs:
+
+     Run S-PLUS 6.x or 2000 with:
+                    	M-x S+6
+            (or `M-x S').  You will then be      asked for a pathname
+     ("S starting data directory?"), from which to      start the
+     process.  The prompt will propose your current directory      as
+     the default.  Similarly for S-PLUS 6.x.  Send lines or regions
+     from the emacs buffer containing your S program (for example,
+     `myfile.s') to the S-Plus Commands Window with the      `C-c C-n'
+     or `C-c C-r' keys.
+
+     Run S-PLUS 6.x or 2000 inside an emacs buffer
+                    	M-x Sqpe+6
+          You will then be asked for a pathname ("S starting data
+     directory?"), from which to start the process.  The prompt will
+      propose your current directory as the default.  Similarly for
+     S-PLUS      6.x.  Send lines or regions from the emacs buffer
+     containing your S      program (for example, `myfile.s') to the
+     *S+6* buffer with the      `C-c C-n' or `C-c C-r' keys.  You do
+     not have access to      interactive graphics in      this mode.
+     You get Unix-like behavior, in particular the entire
+     transcript is available for emacs-style search commands.
+
+     If you wish to run R, you can start it with:
+                    	M-x R
+
+     XLispStat can not currently be run with
+                    	M-x XLS
+          Hopefully, this will change.  However, you can still edit with
+         Emacs, and cut and paste the results into the XLispStat
+     *Listener* Window under Microsoft Windows.
+
+     SAS for Windows uses the batch access with function keys that is
+       described in `doc/README.SAS'.  The user can also edit SAS files
+         in an `ESS[SAS]' buffer and than manually copy and paste them
+     into      an Editor window in the SAS Display Manager.
+
+     For Windows, inferior SAS in an `iESS[SAS]' buffer does not work
+       on the local machine.  It does work over a network connection to
+         SAS running on a remote Unix computer.
+
+     Reason:  we use ddeclient to interface with programs and SAS
+     doesn't      provide the corresponding ddeserver capability.
+
+ 11. That's it!
+
+
+
+File: ess.info,  Node: System dependent,  Prev: Installation,  Up: Installation
+
+Other variables you may need to change
+======================================
+
+   If you run the S program (from the shell) with a command other than
+`Splus' you will need to set the variable `inferior-ess-program' to the
+name of the appropriate program by including a line such as
+     (setq inferior-ess-program "S+")
+
+in your `.emacs' file
+
+(substituting `S+' for the name of your S program.)
+
+   If you need to call this program with any arguments, the variable you
+need to set is dependent on the value of `inferior-ess-program'; for
+example if it is `"Splus"', set the variable `inferior-Splus-args' to a
+string of arguments to the `Splus' program.  If `inferior-ess-program'
+has some other value, substitute the `Splus' part of
+`inferior-Splus-args' with the appropriate program name.  There aren't
+many instances where you need to call S with arguments, however: in
+particular do not call the S program with the `-e' command-line editor
+argument since ESS provides this feature for you.
+
+   If you are running Splus (the enhanced version of S from Statsci) you
+may also need to set the variable `S-plus' to `t'.  If your value of
+`inferior-ess-program' is `"S+"' or `Splus' this will not be necessary,
+however; `S-plus' defaults to `t' in this case.
+
+   Finally, if you use a non-standard prompt within S, you will need to
+set the variable `inferior-ess-prompt' to a regular expression which
+will match both the primary prompt (`"> "' by default) and the
+continuing prompt (default of `"+ "'.) The default value of this
+variable matches S's default prompts.  For example, if you use (`"$ "')
+as your primary prompt (you have `options(prompt="$ ")' in your
+`.First' function), add the following line to your `.emacs':
+     (setq inferior-ess-prompt "^\\(\\+\\|[^\\$]*\\$\\) *")
+
+You will also need to set the variable `inferior-ess-primary-prompt' to
+a regular expression which matches the primary prompt only.  Do not
+anchor the regexp to the beginning of the line with `^'.  Once again,
+the default value matches S's default prompt; in the example above the
+appropriate value would be `"[^\\$]*\\$ *"'.
+
+   Once these variables are set appropriately, ESS should work on any
+system.
+
+
+File: ess.info,  Node: Customization,  Next: Key Index,  Prev: Installation,  Up: Top
+
+Customizing ESS
+***************
+
+   ESS can be easily customized to your taste simply by including the
+appropriate lines in your `.emacs' file.  There are numerous variables
+which affect the behavior of ESS in certain situations which can be
+modified to your liking.  Keybindings may be set or changed to your
+preferences, and for per-buffer customizations hooks are also available.
+
+* Menu:
+
+* Variables::                   Variables for customization
+* Hooks::                       Customizing ESS with hooks
+* Keybindings::                 Changing the default ESS keybindings
+
+
+File: ess.info,  Node: Variables,  Next: Hooks,  Prev: Customization,  Up: Customization
+
+Variables for customization
+===========================
+
+   ESS is easily customizable by means of setting variables in your
+`.emacs' file.  In most cases, you can change defaults by including
+lines of the form
+     (setq VARIABLE-NAME VALUE)
+
+in your `.emacs'.
+
+   In what follows, variable names will be listed along with their
+descriptions and default values.  Just substitute the variable name and
+the new value into the template above.
+
+* Menu:
+
+* Variables for starting ESS::  Variables for starting ESS
+* Dump file variables::         Variables for dump files
+* Indentation variables::       Variables controlling indentation
+* Variables controlling interaction::  Variables controlling interaction
+					with the ESS process
+
+
+File: ess.info,  Node: Variables for starting ESS,  Next: Dump file variables,  Prev: Variables,  Up: Variables
+
+Variables for starting ESS
+--------------------------
+
+ - User Option: ess-ask-for-ess-directory
+     Default: `t'
+     If this variable has a non-`nil' value, then every time ESS is run
+     with `M-x S' you will be prompted for a directory to use as the
+     working directory for your S session; this directory should have a
+     `.Data' subdirectory.  If the value of `ess-ask-for-ess-directory'
+     is `nil', the value of `S-directory' is used as the working
+     directory.
+
+ - User Option: S-directory
+     Default: Your home directory
+     The working directory for your S session if
+     `ess-ask-for-ess-directory' is `nil', and the default when
+     prompting for a directory if it is not.  For example, you may wish
+     to set this to the value of the current buffer's working directory
+     before starting S by adding the following line to your `.emacs'
+     file (*note Hooks::)
+          (setq ess-pre-run-hook
+             '((lambda () (setq S-directory default-directory))))
+
+ - User Option: ess-ask-about-display
+     Default: `nil'
+     If this variable has a non-`nil' value, then every time ESS is run
+     with `M-x S' you will be asked for a value for the `DISPLAY'
+     environment variable to be used in the current S session.  If this
+     variable is not set correctly, S will not be able to create any
+     windows under the X windowing environment.  Completion is provided
+     over the `X-displays-list' variable; the default is the current
+     value of `DISPLAY'.  This feature is useful is you often run S on
+     a different display than that of the machine you are running S
+     from.  If `ess-ask-about-display' is `nil', the current value of
+     `DISPLAY' is used.
+
+ - User Option: X-displays-list
+     Default: `'(":0.0")'
+     List of possible values for the `DISPLAY' environment variable,
+     provided for completion when prompting for such a value.
 
 
 File: ess.info,  Node: Dump file variables,  Next: Indentation variables,  Prev: Variables for starting ESS,  Up: Variables
@@ -135,8 +412,9 @@ In addition, a number of default styles are defined for you (in
      The default formatting style to use in edit buffers.  The DEFAULT
      style uses the values of the above indentation variables at
      load-time, so that changing these variables in your `.emacs' file
-     will affect your buffer defaults.  *Note Edit buffer::, for more
-     details.
+     will affect your buffer defaults.  Other styles are: `GNU', `BSD',
+     `K&R', `CLB', and `C++'.  See `ess-cust.el' for the complete
+     definitions of the styles.  *Note Edit buffer::, for more details.
 
 
 File: ess.info,  Node: Variables controlling interaction,  Prev: Indentation variables,  Up: Variables
@@ -256,10 +534,10 @@ Concept Index
 * Menu:
 
 * .Data directory:                       Variables for starting ESS.
-* .emacs file <1>:                       Variables for starting ESS.
+* .emacs file <1>:                       Source Directories.
 * .emacs file <2>:                       System dependent.
 * .emacs file <3>:                       Indenting.
-* .emacs file <4>:                       Source Directories.
+* .emacs file <4>:                       Variables for starting ESS.
 * .emacs file:                           Variables.
 * .First function:                       System dependent.
 * aborting S commands:                   Other.
@@ -297,9 +575,9 @@ Concept Index
 * DISPLAY environment variable:          Variables for starting ESS.
 * dump file directories:                 Source Directories.
 * dump file names:                       Source Directories.
-* dump files <1>:                        Source Files.
+* dump files <1>:                        Dump file variables.
 * dump files <2>:                        Edit buffer.
-* dump files:                            Dump file variables.
+* dump files:                            Source Files.
 * echoing commands when evaluating:      Evaluating code.
 * edit buffer:                           Edit buffer.
 * editing commands:                      Command History.
@@ -353,14 +631,15 @@ Concept Index
 * reverting function definitions:        Edit buffer.
 * running S:                             Starting Up.
 * S program name:                        System dependent.
-* search list <1>:                       Hot keys.
-* search list:                           Source Directories.
+* search list <1>:                       Source Directories.
+* search list:                           Hot keys.
 * sending input:                         Entering commands.
 * Splus:                                 System dependent.
-* starting directory <1>:                Variables for starting ESS.
-* starting directory:                    Starting Up.
+* starting directory <1>:                Starting Up.
+* starting directory:                    Variables for starting ESS.
 * starting ESS:                          Starting Up.
 * stepping through code:                 Evaluating code.
+* STERM:                                 Is the Statistical Process running under ESS?.
 * tcsh:                                  Completion.
 * temporary buffers:                     Help.
 * temporary buffers, killing:            Hot keys.
@@ -371,10 +650,10 @@ Concept Index
 * transcripts of S sessions:             Introduction.
 * using S interactively:                 Introduction.
 * variables:                             Variables.
-* working directory <1>:                 Starting Up.
-* working directory:                     Source Directories.
-* X windows <1>:                         Variables for starting ESS.
-* X windows:                             X11.
+* working directory <1>:                 Source Directories.
+* working directory:                     Starting Up.
+* X windows <1>:                         X11.
+* X windows:                             Variables for starting ESS.
 
 
 File: ess.info,  Node: Variable and command index,  Prev: Concept Index,  Up: Top
@@ -391,18 +670,18 @@ Variable and command index
 * comint-copy-old-input:                 Transcript resubmit.
 * comint-delimiter-argument-list:        History expansion.
 * comint-dynamic-complete:               Completion.
-* comint-input-ring-size <1>:            Variables controlling interaction.
-* comint-input-ring-size:                Command History.
+* comint-input-ring-size <1>:            Command History.
+* comint-input-ring-size:                Variables controlling interaction.
 * comint-interrupt-subjob:               Other.
 * comint-kill-input:                     Command-line editing.
 * comint-kill-output:                    Last command.
 * comint-mode-map:                       Keybindings.
-* comint-next-input <1>:                 Command History.
-* comint-next-input:                     Process buffer motion.
+* comint-next-input <1>:                 Process buffer motion.
+* comint-next-input:                     Command History.
 * comint-next-matching-input:            Command History.
 * comint-next-matching-input-from-input: Command History.
-* comint-previous-input <1>:             Command History.
-* comint-previous-input:                 Process buffer motion.
+* comint-previous-input <1>:             Process buffer motion.
+* comint-previous-input:                 Command History.
 * comint-previous-matching-input:        Command History.
 * comint-previous-matching-input-from-input: Command History.
 * comint-show-maximum-output:            Last command.
@@ -416,8 +695,8 @@ Variable and command index
 * ess-ask-about-display:                 Variables for starting ESS.
 * ess-ask-about-transfile <1>:           Customizing startup.
 * ess-ask-about-transfile:               Saving transcripts.
-* ess-ask-for-ess-directory <1>:         Customizing startup.
-* ess-ask-for-ess-directory:             Variables for starting ESS.
+* ess-ask-for-ess-directory <1>:         Variables for starting ESS.
+* ess-ask-for-ess-directory:             Customizing startup.
 * ess-auto-newline:                      Indentation variables.
 * ess-beginning-of-function:             Other edit buffer commands.
 * ess-brace-imaginary-offset:            Indentation variables.
@@ -431,13 +710,13 @@ Variable and command index
 * ess-default-style:                     Indentation variables.
 * ess-delete-dump-files:                 Source Files.
 * ess-describe-help-mode:                Help.
-* ess-directory <1>:                     Source Directories.
-* ess-directory:                         Customizing startup.
+* ess-directory <1>:                     Customizing startup.
+* ess-directory:                         Source Directories.
 * ess-display-help-on-object:            Help.
 * ess-dump-filename-template <1>:        Source Directories.
 * ess-dump-filename-template:            Dump file variables.
-* ess-dump-object-into-edit-buffer <1>:  Edit buffer.
-* ess-dump-object-into-edit-buffer:      Other.
+* ess-dump-object-into-edit-buffer <1>:  Other.
+* ess-dump-object-into-edit-buffer:      Edit buffer.
 * ess-else-offset:                       Indentation variables.
 * ess-end-of-function:                   Other edit buffer commands.
 * ess-eval-buffer:                       Evaluating code.
@@ -447,19 +726,20 @@ Variable and command index
 * ess-eval-line-and-go:                  Evaluating code.
 * ess-eval-line-and-next-line:           Evaluating code.
 * ess-eval-map:                          Keybindings.
-* ess-eval-region <1>:                   Help.
-* ess-eval-region:                       Evaluating code.
+* ess-eval-region <1>:                   Evaluating code.
+* ess-eval-region:                       Help.
 * ess-eval-region-and-go:                Evaluating code.
-* ess-eval-visibly-p <1>:                Evaluating code.
-* ess-eval-visibly-p:                    Variables controlling interaction.
+* ess-eval-visibly-p <1>:                Variables controlling interaction.
+* ess-eval-visibly-p:                    Evaluating code.
 * ess-execute:                           Hot keys.
 * ess-execute-attach:                    Hot keys.
-* ess-execute-in-process-buffer <1>:     Hot keys.
-* ess-execute-in-process-buffer:         Variables controlling interaction.
+* ess-execute-in-process-buffer <1>:     Variables controlling interaction.
+* ess-execute-in-process-buffer:         Hot keys.
 * ess-execute-in-tb:                     Evaluating code.
 * ess-execute-objects:                   Hot keys.
 * ess-execute-search:                    Hot keys.
 * ess-expression-offset:                 Indentation variables.
+* ess-fancy-comments:                    Indenting.
 * ESS-font-lock-keywords:                Highlighting.
 * ess-function-template:                 Edit buffer.
 * ess-help-mode-hook:                    Hooks.
@@ -467,13 +747,13 @@ Variable and command index
 * ess-help-sec-keys-alist:               Keybindings.
 * ess-indent-level:                      Indentation variables.
 * ess-inf-font-lock-keywords:            Highlighting.
-* ess-insert-function-templates <1>:     Dump file variables.
-* ess-insert-function-templates:         Edit buffer.
+* ess-insert-function-templates <1>:     Edit buffer.
+* ess-insert-function-templates:         Dump file variables.
 * ess-keep-dump-files <1>:               Source Files.
 * ess-keep-dump-files:                   Dump file variables.
 * ess-list-object-name-completions:      Completion.
-* ess-load-file <1>:                     Loading.
-* ess-load-file:                         Hot keys.
+* ess-load-file <1>:                     Hot keys.
+* ess-load-file:                         Loading.
 * ess-mode-hook:                         Hooks.
 * ess-mode-load-hook:                    Hooks.
 * ess-mode-map:                          Keybindings.
@@ -482,8 +762,8 @@ Variable and command index
 * ess-plain-first-buffername:            Multiple ESS processes.
 * ess-post-run-hook:                     Hooks.
 * ess-pre-run-hook:                      Hooks.
-* ess-quit <1>:                          Help.
-* ess-quit:                              Other.
+* ess-quit <1>:                          Other.
+* ess-quit:                              Help.
 * ess-request-a-process:                 Multiple ESS processes.
 * ess-resynch:                           Completion details.
 * ess-search-list:                       Source Directories.
@@ -496,8 +776,8 @@ Variable and command index
 * ess-source-directory-generator:        Dump file variables.
 * ess-style-alist:                       Indentation variables.
 * ess-submit-bug-report:                 Reporting Bugs.
-* ess-switch-to-end-of-ESS <1>:          Help.
-* ess-switch-to-end-of-ESS:              Other edit buffer commands.
+* ess-switch-to-end-of-ESS <1>:          Other edit buffer commands.
+* ess-switch-to-end-of-ESS:              Help.
 * ess-switch-to-ESS:                     Other edit buffer commands.
 * ess-tab-always-indent:                 Indentation variables.
 * ess-trans-font-lock-keywords:          Highlighting.
@@ -513,15 +793,14 @@ Variable and command index
 * inferior-ess-program <1>:              Customizing startup.
 * inferior-ess-program:                  System dependent.
 * inferior-ess-prompt:                   System dependent.
-* inferior-ess-send-input <1>:           Transcript resubmit.
-* inferior-ess-send-input:               Command-line editing.
+* inferior-ess-send-input <1>:           Command-line editing.
+* inferior-ess-send-input:               Transcript resubmit.
 * inferior-Splus-args:                   System dependent.
 * objects():                             Hot keys.
 * options():                             System dependent.
 * printer():                             printer.
 * q():                                   Hot keys.
-* S <1>:                                 Variables for starting ESS.
-* S <2>:                                 Starting Up.
+* S <1>:                                 Starting Up.
 * S:                                     Variables for starting ESS.
 * S-directory:                           Variables for starting ESS.
 * S-plus:                                System dependent.
@@ -529,6 +808,7 @@ Variable and command index
 * search():                              Hot keys.
 * source() <1>:                          Loading.
 * source():                              Evaluating code.
+* STERM:                                 Is the Statistical Process running under ESS?.
 * X-displays-list:                       Variables for starting ESS.
 
 
