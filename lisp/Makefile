@@ -8,9 +8,8 @@
 
 PREFIX=/usr/local
 
-# what emacs is called on your system
+# Emacs version that you are installing ESS for.
 EMACS = emacs
-## XEmacs
 #EMACS = xemacs
 
 # where the Info file should go -- THIS MIGHT BE WRONG!
