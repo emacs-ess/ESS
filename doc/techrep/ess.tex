@@ -162,24 +162,25 @@ extension of Arc \citep{Cook:Weisberg:1999} and ViSta
 in at least a limited way to most statistical packages which can be
 controlled from a command-line.
 
-In the rest of this introduction, we will discuss the environment of
-interest and how it can be used.  Sections \ref{sec:S} and
-\ref{sec:SAS} will discuss the implementation, features, and use with
-S family of languages and SAS, respectively.  The history and advanced
-features will be then discussed, and this paper will conclude with a
-discussion of future work in this area, including Literate Statistical
-Analysis as well as enhanced programming features.
+The rest of this introduction will discuss the proposed development
+environment and how it can be used.  Sections \ref{sec:S} and
+\ref{sec:SAS} will discuss how this is realized for two completely
+distinct statistical languages, the S family of languages and SAS,
+respectively.  Advanced features and history will then be discussed,
+and this paper will conclude with a discussion of future work in this
+area, including both Literate Statistical Analysis and other planned
+enhancements.
 
 \subsection{Emacs}
 \label{sec:intro:emacs}
 
 Emacs \citep{RMS:2000} is a mature, powerful, and easily extensible
-text editor which has been freely available for over 15 years and is
-available for a large number of platforms, including those currently
-most frequently in use for statistical computing, including Unix,
-Apple Corporation's Macintosh platform, and Microsoft-based platforms.
-While it does not fall into the category of word processors, it does
-have similar features.
+text editor which is freely available for a large number of platforms,
+including those most frequently used for statistical computing.  These
+include Unix, Apple Corporation's Macintosh platform, and
+Microsoft-based platforms.  While Emacs is not a word processor, it
+does share some similar features and can behave to a limited extent as
+one.
 
 Most programming and documentation tasks fall under the realm of text
 processing.  This is natural given that it is being worked on from the
@@ -291,14 +292,6 @@ Minitab, \Splus for Windows, and ViSta, as well as many others.
 \subsection{ESS}
 \label{sec:UI:ESS}
 
-ESS originated from the extension for programming and process
-interface in Emacs supplied by S-mode (D. Bates, F. Ritter, et.al.; 
-M. Meyer; D. Smith).  The extension to a language-independent generic
-interface was prompted by the success of R, and the need for an
-R-mode.  This led to a merger with the SAS-mode (T. Cook), and the
-refactoring of the S-mode codebase to accommodate multiple languages
-in a flexible way.  A detailed history can be found in
-section~\ref{sec:history}.
 
 ESS currently supports a number of interactive statistical programs as
 well as a few interpreted statistical languages.  There are various
@@ -539,120 +532,6 @@ This ``old'' view was based the permanent storage of objects approach
 in the original S implementations, which used a separate disk files
 for each object, and saves a small amount of disk space.  
 
-\subsection{Scenarios for use}
-\label{sec:S:scenarios}
-
-We present some basic suggestions for using ESS to interact with S.
-These are just a subset of approaches, many better approaches are
-possible. Comments for the intent of what should be happening are
-prefixed by "\verb+##+".
-
-\begin{itemize}
-\item Data Analysis Example (source code is real)
-\begin{Salltt}
-  \Scmt{Load the file you want to work with}
-  C-x C-f myfile.s
-  \Scmt{Edit as appropriate, and then start up \Splus~3.x}
-  M-x S+3
-  \Scmt{A new buffer *S+3:1* will appear.  Splus will have been started}
-  \Scmt{in this buffer.  The buffer is in iESS [S+3:1] mode.}
-
-  \Scmt{Split the screen and go back to the file editing buffer.}
-  C-x 2 C-x b myfile.s
-  \Scmt{Send regions, lines, or the entire file contents to \Splus.}
-  \Scmt{For regions, highlight a region with keystrokes or mouse}
-  \Scmt{and then send with:}
-  C-c C-r
-  \Scmt{Re-edit myfile.s as necessary to correct any difficulties.  Add}
-  \Scmt{new commands here.  Send them to S by region with}
-  C-c C-r
-  \Scmt{or one line at a time with}
-  C-c C-n
-  \Scmt{Save the revised myfile.s with C-x C-s.}
-
-  \Scmt{Save the entire *S+3:1* interaction buffer with C-x C-s.  You}
-  \Scmt{will be prompted for a file name.  The recommended name is}
-  \Scmt{myfile.St.  With the *.St suffix, the file will come up in ESS}
-  \Scmt{Transcript mode the next time it is accessed from Emacs.}
-  \end{Salltt}
-
-\item Program revision example (source code is real)
-  \begin{Salltt}
-  \Scmt{Start up \Splus~3.x in a process buffer (this will be *S+3:1*)}
-  M-x S+3
-  \Scmt{Load the file you want to work with}
-  C-x C-f myfile.s
-  \Scmt{edit program, functions, and code in myfile.s, and}
-  \Scmt{send revised functions to S when ready with}
-  C-c C-f
-  \Scmt{or highlighted regions with}
-  C-c C-r
-  \Scmt{or individual lines with}
-  C-c C-n
-  \Scmt{or load the entire buffer with} 
-  C-c C-l
-  \Scmt{save the revised myfile.s when you have finished}
-  C-x C-s
-  \end{Salltt}
-
-\item Program revision example (S object is real)
-  \begin{Salltt}
-  \Scmt{Start up \Splus~3.x, in a process buffer (this will be \textbf{*S+3:1*})} 
-  M-x S+3
-  \Scmt{Dump an existing S object my.function into a buffer to work with}
-  C-c C-d my.function
-  \Scmt{a new buffer named \textit{yourloginname}.my.function.S will be created with}
-  \Scmt{an editable copy of the object.  The buffer is associated with the}
-  \Scmt{pathname {\footnotesize /tmp/\textit{yourloginname}.my.function.S} and will}
-  \Scmt{almost certainly not exist after you log off.}
-
-  \Scmt{Enter program, functions, and code into work buffer,}
-  \Scmt{and send entire contents to \Splus\ when ready:}
-  C-c C-b
-  \Scmt{Go to *S+3:1* buffer, which is the process buffer, and examine}
-  \Scmt{the results.}
-  C-c C-y
-  \Scmt{The sequence C-c C-y is a shortcut for:  C-x b *S+3:1*}
-
-  \Scmt{Return to the work buffer (may/may not be prefixed)}
-  C-x C-b \textit{yourloginname}.my.function.S
-  \Scmt{Fix the function that didn't work, and resubmit by}
-  \Scmt{placing the cursor somewhere in the function and}
-  C-c C-f
-  \Scmt{Or you could've selected a region (using the mouse, or keyboard}
-  \Scmt{via setting point/mark) and}
-  C-c C-r
-  \Scmt{Or you could step through, line by line, using}
-  C-c C-n
-  \Scmt{Or just send a single line (without moving to the next) using}
-  C-c C-j
-  \Scmt{To fix that error in syntax for the "rchisq" command, get help}
-  \Scmt{by}
-  C-c C-v rchisq
-\end{Salltt}
-\item Data Analysis (S object is real)
-\begin{Salltt}
-  \Scmt{Start up R in a process buffer (this will be \textbf{*R*})} 
-  M-x R
-  \Scmt{Work in the process buffer.  When you find an object that needs}
-  \Scmt{to be changed (this could be a data frame, or a variable,}
-  \Scmt{or a function), dump it to a buffer:}
-  C-c C-d my.cool.function
-  \Scmt{Edit the function as appropriate, and dump back in to the}
-  \Scmt{process buffer}
-  C-c C-b
-  \Scmt{Return to the R process buffer}
-  C-c C-y
-  \Scmt{Continue working.}
-  \Scmt{When you need help, use}
-  C-c C-v rchisq
-  \Scmt{(which you can do using command name completion)}
-  \Scmt{but entering:   \underline{help("rchisq")} or  \underline{?rchisq}}
-  \Scmt{will bring up the help file in a separate buffer}
-  \Scmt{\emph{--- currently only for \textbf{*R*}}.}
-\end{Salltt}
-\end{itemize}
-
 
 \section{Using ESS with SAS}
 \label{sec:SAS}
@@ -857,6 +736,324 @@ file by (the default of 5 seconds is shown):
 (setq ess-sleep-for 5)
 \end{verbatim}
 
+
+Using Transcripts
+=================
+
+Not yet available.  The intent is that a marked section of a log file
+from a previous SAS run can be resubmitted to SAS.  The user would
+highlight a region from 'PROC' to 'RUN;' and then send it to the
+inferior SAS process with the [RET] key.  ESS would automatically
+clean the region (remove line numbers) and send the entire region over
+as a single request to SAS.
+
+
+\subsection{ESS interface with SAS Design Philosophy}
+\label{sec:SAS:phil}
+
+ESS[SAS] mode was designed to aid the user in writing and maintaining
+input command files, such as myfile.sas, for SAS.  These are files
+containing SAS statements.  In a batch environment such files would be
+submitted to SAS by the operating system command:
+\begin{verbatim}
+    sas myfile.sas
+\end{verbatim}
+In a SAS window environment, these files would be brought into the
+"SAS: PROGRAM EDITOR" window and then submitted with the 'Local' 'Submit'
+menu commands.
+
+The *SAS:1.log* buffer in ESStr mode corresponds to the file
+myfile.log in SAS batch usage and to the "SAS: LOG" window in the SAS
+window environment.  All commands submitted to SAS, informative
+messages, warnings, and errors appear here.
+
+The *SAS:1.lst* buffer in ESSlst mode corresponds to the file
+myfile.lst in SAS batch usage and to the "SAS: OUTPUT" window in the
+SAS window environment.  All data related printed output from the
+PROCs appear in this window.
+
+The iESS [SAS:1] buffer exists solely as a communications buffer.
+Files are edited in the myfile.sas buffer.  The C-c C-r key in
+ESS[SAS] mode is the functional equivalent of bringing a file into the
+"SAS: PROGRAM EDITOR" window followed by the 'Local' 'Submit' menu
+commands.  The user should never use this buffer directly.
+
+The ESS[SAS] mode was written with two primary goals.
+\begin{itemize}
+\item Using Emacs, a window environment becomes available for dial-up
+  users who do not have access to the SAS window environment.
+\item The authors prefer the Emacs environment for editing and
+  managing input and output files, even on computer systems which run
+  the SAS window environment.
+\end{itemize}
+A secondary goal was also realized.  That is, with an X-windows
+terminal connected by ppp at 14400 baud to a Unix system running SAS,
+iESS[SAS] interaction with SAS was hundreds of times faster than the
+SAS window system.  The savings come because the ESS windows are
+subunits of a text-based xterm window, rather than the remotely
+managed graphical windows provided by SAS.  (The timings are SAS
+timings from the log files.  The SAS windows times include window
+management and communications times as well as calculation times.  The
+iESS times include only the calculations by the SAS computing engine.)
+
+
+% Some Frequently Seen Problems
+% =============================
+
+% 1. If M-x SAS gives weird errors upon startup, check the following:
+%    - ess-sas-sh-command (in the ESS source directory) needs to be
+%      executable (solution: "chmod ugo+rx ess-sas-sh-command").
+%    - sas isn't in your executable path (verify using "which sas" from
+%      a shell command-line)
+%    - you need a copy of SAS (we can't solve this)
+
+% 2. M-x SAS starts up SAS in the window system (motif, for example),
+%    instead of starting it up in the emacs buffers.
+
+%    Probably the unix command "sas" on your system calls a local
+%    script which in turn calls the sas executable.  The fix is to
+%    call the sas executable directly.
+
+%    Change the line in ess-sas-sh command from:
+% \begin{verbatim}
+%       sas </dev/tty 1>$stdout 2>$stderr $@
+% \end{verbatim}
+%    to a call to the complete path name of the sas executable on
+%    your system, for example:
+% \begin{verbatim}
+%       /usr/local/sas612/sas </dev/tty 1>$stdout 2>$stderr $@
+% \end{verbatim}
+%    To find the complete path name on your system, you can
+%    execute the line (from the unix prompt):
+% \begin{verbatim}
+%       find / -name 'sas' -exec ls -ld {} \;
+% \end{verbatim}
+%    and expect a response similar to the following
+% \begin{verbatim}
+%    -rwxr-xr-x   1 sas      sas  2441216 Sep  9  1997 /usr/local/sas612/sas
+% \end{verbatim}
+
+\section{Advanced Usage}
+\label{sec:advanced}
+
+\textbf{SHOULD WE DROP THIS?}
+
+\begin{itemize}
+\item Switching the engine
+\item \texttt{S+elsewhere}
+
+\end{itemize}
+
+\section{Obtaining ESS}
+\label{sec:getIt}
+
+ESS is primarily located at ess.stat.wisc.edu, and is available by FTP
+or through the World-Wide-Web (WWW).  A basic installation consists of
+downloading the package, unpacking, and then adding a line to the
+emacs initialization file (\verb+.emacs+ or \verb+_emacs+), pointing
+to the lisp subdirectory of the unpacked archive.
+
+There exist packages for various Linux distributions, as well,
+including Debian, RedHat, Mandrake, and SuSE.
+
+\section{History}
+\label{sec:history}
+
+ESS (originally S-mode) was initially designed for use with S and
+\Splus(tm); hence, this family of statistical languages currently has
+the most support.  We denote by S, any of the currently available
+members (or ``dialects'') of the family, including S 3.x, S 4.x, \Splus
+3.x, \Splus~4.x (incl.\ \Splus~2000), \Splus~5.x, and R.  In addition, we
+denote by Emacs, one of the GNU family of editors, either Emacs (as
+developed and maintained by the Free Software Foundation) or XEmacs (which
+is a derivative work).
+
+ESS originated from the extension for programming and process
+interface in Emacs supplied by S-mode (D. Bates, F. Ritter, et.al.; 
+M. Meyer; D. Smith).  The extension to a language-independent generic
+interface was prompted by the success of R, and the need for an
+R-mode.  This led to a merger with the SAS-mode (T. Cook), and the
+refactoring of the S-mode codebase to accommodate multiple languages
+in a flexible way.  A detailed history can be found in
+section~\ref{sec:history}.
+
+ESS is a remarkable example of how open-source products can continue
+to develop beyond what their initial authors planned.  ESS started as
+S-mode, an Emacs extension which was developed in 1991 as a simple
+tool for editing program files for S and \Splus.  In 1994, Rossini
+extended S-mode to support XEmacs, which was a forked version of
+Emacs.  At the same time, Rossini extended a successful SAS-mode
+written by Tom Cook to work with XEmacs.  In 1995, S-mode was merged
+into a uniform S-mode for Emacs, XEmacs, and supported S, \Splus, and
+R. During 1996 and 1997, this was extended to incorporate the
+SAS-mode as well as to provide a generic means for configuring ESS to
+accommodate changed as well as new statistical languages.
+
+Most of this was primarily done under Unix.  However, in 1998, thanks
+to an example of interprocess communication using Microsoft's DDE by
+Brian Ripley, Richard M. Heiberger provided interfaces for \Splus~4.x
+and then \Splus~2000.
+
+Most of what has been done recently is debugging and tuning.  New
+features in the plans include robust extensions for Literate Data
+Analysis using Noweb \citep{NRamsey:1994}, as well as extensions for
+XML-based Literate Statistical Analysis.
+
+\section{Remarks and Extensions}
+\label{sec:remarks}
+
+There are two active areas of extensions for user environments.  One
+is to enhance the capabilities of the IDE for statistical practice;
+this includes implementing such common IDE features as object browsers
+as well as clean up the interface.
+
+The other exciting extension is towards the use of Literate
+Programming methodologies \citep{Knuth:1992,NRamsey:1994}, which we
+will refer to as Literate Statistical Analysis \citep{ross:lunt:2001}.
+The tools include the use of Noweb \citep{NRamsey:1994} and an
+additional step towards the use of an XML authoring environment for
+statistical analysis.  Literate Data Analysis based on Noweb, is a
+means of documenting a statistical analysis plan and procedure.
+Literate Statistical Analysis is intended to be a round-trip
+environment for both design and analysis.
+
+The future use of XML is to accommodate the growing use of WWW-based
+services for document publishing as well as information conversion.
+By marking up the document with XML, it is possible to display subsets
+of the document contextually according to the intent of the document.
+Unlike Literate Data Analysis, which provides a single document for
+code and analysis plan, Literate Statistical Analysis is a round-trip
+cycle, using document modification through the Document Object Model
+interface (W3 Consortium).  This is described more in
+\citep{ross:lunt:2001}. 
+
+\bibliographystyle{plainnat} %alpha}
+\bibliography{ess}
+
+\appendix
+
+
+\section{Scenarios for Use}
+\label{app:Scenarios}
+
+The next 2 sections discuss specific use patterns for ESS under 2 very
+different statistical language systems, S and SAS.
+
+\subsection{Scenarios for using S}
+\label{sec:S:scenarios}
+
+We present some basic suggestions for using ESS to interact with S.
+These are just a subset of approaches, many better approaches are
+possible. Comments for the intent of what should be happening are
+prefixed by "\verb+##+".
+
+\begin{itemize}
+\item Data Analysis Example (source code is real)
+\begin{Salltt}
+  \Scmt{Load the file you want to work with}
+  C-x C-f myfile.s
+  \Scmt{Edit as appropriate, and then start up \Splus~3.x}
+  M-x S+3
+  \Scmt{A new buffer *S+3:1* will appear.  Splus will have been started}
+  \Scmt{in this buffer.  The buffer is in iESS [S+3:1] mode.}
+
+  \Scmt{Split the screen and go back to the file editing buffer.}
+  C-x 2 C-x b myfile.s
+  \Scmt{Send regions, lines, or the entire file contents to \Splus.}
+  \Scmt{For regions, highlight a region with keystrokes or mouse}
+  \Scmt{and then send with:}
+  C-c C-r
+  \Scmt{Re-edit myfile.s as necessary to correct any difficulties.  Add}
+  \Scmt{new commands here.  Send them to S by region with}
+  C-c C-r
+  \Scmt{or one line at a time with}
+  C-c C-n
+  \Scmt{Save the revised myfile.s with C-x C-s.}
+
+  \Scmt{Save the entire *S+3:1* interaction buffer with C-x C-s.  You}
+  \Scmt{will be prompted for a file name.  The recommended name is}
+  \Scmt{myfile.St.  With the *.St suffix, the file will come up in ESS}
+  \Scmt{Transcript mode the next time it is accessed from Emacs.}
+  \end{Salltt}
+
+\item Program revision example (source code is real)
+  \begin{Salltt}
+  \Scmt{Start up \Splus~3.x in a process buffer (this will be *S+3:1*)}
+  M-x S+3
+  \Scmt{Load the file you want to work with}
+  C-x C-f myfile.s
+  \Scmt{edit program, functions, and code in myfile.s, and}
+  \Scmt{send revised functions to S when ready with}
+  C-c C-f
+  \Scmt{or highlighted regions with}
+  C-c C-r
+  \Scmt{or individual lines with}
+  C-c C-n
+  \Scmt{or load the entire buffer with} 
+  C-c C-l
+  \Scmt{save the revised myfile.s when you have finished}
+  C-x C-s
+  \end{Salltt}
+
+\item Program revision example (S object is real)
+  \begin{Salltt}
+  \Scmt{Start up \Splus~3.x, in a process buffer (this will be \textbf{*S+3:1*})} 
+  M-x S+3
+  \Scmt{Dump an existing S object my.function into a buffer to work with}
+  C-c C-d my.function
+  \Scmt{a new buffer named \textit{yourloginname}.my.function.S will be created with}
+  \Scmt{an editable copy of the object.  The buffer is associated with the}
+  \Scmt{pathname {\footnotesize /tmp/\textit{yourloginname}.my.function.S} and will}
+  \Scmt{almost certainly not exist after you log off.}
+
+  \Scmt{Enter program, functions, and code into work buffer,}
+  \Scmt{and send entire contents to \Splus\ when ready:}
+  C-c C-b
+  \Scmt{Go to *S+3:1* buffer, which is the process buffer, and examine}
+  \Scmt{the results.}
+  C-c C-y
+  \Scmt{The sequence C-c C-y is a shortcut for:  C-x b *S+3:1*}
+
+  \Scmt{Return to the work buffer (may/may not be prefixed)}
+  C-x C-b \textit{yourloginname}.my.function.S
+  \Scmt{Fix the function that didn't work, and resubmit by}
+  \Scmt{placing the cursor somewhere in the function and}
+  C-c C-f
+  \Scmt{Or you could've selected a region (using the mouse, or keyboard}
+  \Scmt{via setting point/mark) and}
+  C-c C-r
+  \Scmt{Or you could step through, line by line, using}
+  C-c C-n
+  \Scmt{Or just send a single line (without moving to the next) using}
+  C-c C-j
+  \Scmt{To fix that error in syntax for the "rchisq" command, get help}
+  \Scmt{by}
+  C-c C-v rchisq
+\end{Salltt}
+\item Data Analysis (S object is real)
+\begin{Salltt}
+  \Scmt{Start up R in a process buffer (this will be \textbf{*R*})} 
+  M-x R
+  \Scmt{Work in the process buffer.  When you find an object that needs}
+  \Scmt{to be changed (this could be a data frame, or a variable,}
+  \Scmt{or a function), dump it to a buffer:}
+  C-c C-d my.cool.function
+  \Scmt{Edit the function as appropriate, and dump back in to the}
+  \Scmt{process buffer}
+  C-c C-b
+  \Scmt{Return to the R process buffer}
+  C-c C-y
+  \Scmt{Continue working.}
+  \Scmt{When you need help, use}
+  C-c C-v rchisq
+  \Scmt{(which you can do using command name completion)}
+  \Scmt{but entering:   \underline{help("rchisq")} or  \underline{?rchisq}}
+  \Scmt{will bring up the help file in a separate buffer}
+  \Scmt{\emph{--- currently only for \textbf{*R*}}.}
+\end{Salltt}
+\end{itemize}
+
+
 \subsection{Scenarios for using ESS with SAS}
 \label{sec:SAS:scen}
 
@@ -1018,190 +1215,6 @@ effect for SAS batch usage and SAS window manager usage as well as for
 ESS[SAS] usage.
 \end{verbatim}
 
-
-Using Transcripts
-=================
-
-Not yet available.  The intent is that a marked section of a log file
-from a previous SAS run can be resubmitted to SAS.  The user would
-highlight a region from 'PROC' to 'RUN;' and then send it to the
-inferior SAS process with the [RET] key.  ESS would automatically
-clean the region (remove line numbers) and send the entire region over
-as a single request to SAS.
-
-
-\subsection{ESS interface with SAS Design Philosophy}
-\label{sec:SAS:phil}
-
-ESS[SAS] mode was designed to aid the user in writing and maintaining
-input command files, such as myfile.sas, for SAS.  These are files
-containing SAS statements.  In a batch environment such files would be
-submitted to SAS by the operating system command:
-\begin{verbatim}
-    sas myfile.sas
-\end{verbatim}
-In a SAS window environment, these files would be brought into the
-"SAS: PROGRAM EDITOR" window and then submitted with the 'Local' 'Submit'
-menu commands.
-
-The *SAS:1.log* buffer in ESStr mode corresponds to the file
-myfile.log in SAS batch usage and to the "SAS: LOG" window in the SAS
-window environment.  All commands submitted to SAS, informative
-messages, warnings, and errors appear here.
-
-The *SAS:1.lst* buffer in ESSlst mode corresponds to the file
-myfile.lst in SAS batch usage and to the "SAS: OUTPUT" window in the
-SAS window environment.  All data related printed output from the
-PROCs appear in this window.
-
-The iESS [SAS:1] buffer exists solely as a communications buffer.
-Files are edited in the myfile.sas buffer.  The C-c C-r key in
-ESS[SAS] mode is the functional equivalent of bringing a file into the
-"SAS: PROGRAM EDITOR" window followed by the 'Local' 'Submit' menu
-commands.  The user should never use this buffer directly.
-
-The ESS[SAS] mode was written with two primary goals.
-\begin{itemize}
-\item Using Emacs, a window environment becomes available for dial-up
-  users who do not have access to the SAS window environment.
-\item The authors prefer the Emacs environment for editing and
-  managing input and output files, even on computer systems which run
-  the SAS window environment.
-\end{itemize}
-A secondary goal was also realized.  That is, with an X-windows
-terminal connected by ppp at 14400 baud to a Unix system running SAS,
-iESS[SAS] interaction with SAS was hundreds of times faster than the
-SAS window system.  The savings come because the ESS windows are
-subunits of a text-based xterm window, rather than the remotely
-managed graphical windows provided by SAS.  (The timings are SAS
-timings from the log files.  The SAS windows times include window
-management and communications times as well as calculation times.  The
-iESS times include only the calculations by the SAS computing engine.)
-
-
-% Some Frequently Seen Problems
-% =============================
-
-% 1. If M-x SAS gives weird errors upon startup, check the following:
-%    - ess-sas-sh-command (in the ESS source directory) needs to be
-%      executable (solution: "chmod ugo+rx ess-sas-sh-command").
-%    - sas isn't in your executable path (verify using "which sas" from
-%      a shell command-line)
-%    - you need a copy of SAS (we can't solve this)
-
-% 2. M-x SAS starts up SAS in the window system (motif, for example),
-%    instead of starting it up in the emacs buffers.
-
-%    Probably the unix command "sas" on your system calls a local
-%    script which in turn calls the sas executable.  The fix is to
-%    call the sas executable directly.
-
-%    Change the line in ess-sas-sh command from:
-% \begin{verbatim}
-%       sas </dev/tty 1>$stdout 2>$stderr $@
-% \end{verbatim}
-%    to a call to the complete path name of the sas executable on
-%    your system, for example:
-% \begin{verbatim}
-%       /usr/local/sas612/sas </dev/tty 1>$stdout 2>$stderr $@
-% \end{verbatim}
-%    To find the complete path name on your system, you can
-%    execute the line (from the unix prompt):
-% \begin{verbatim}
-%       find / -name 'sas' -exec ls -ld {} \;
-% \end{verbatim}
-%    and expect a response similar to the following
-% \begin{verbatim}
-%    -rwxr-xr-x   1 sas      sas  2441216 Sep  9  1997 /usr/local/sas612/sas
-% \end{verbatim}
-
-\section{Advanced Usage}
-\label{sec:advanced}
-
-\textbf{SHOULD WE DROP THIS?}
-
-\begin{itemize}
-\item Switching the engine
-\item \texttt{S+elsewhere}
-
-\end{itemize}
-
-\section{Obtaining ESS}
-\label{sec:getIt}
-
-ESS is primarily located at ess.stat.wisc.edu, and is available by FTP
-or through the World-Wide-Web (WWW).  A basic installation consists of
-downloading the package, unpacking, and then adding a line to the
-emacs initialization file (\verb+.emacs+ or \verb+_emacs+), pointing
-to the lisp subdirectory of the unpacked archive.
-
-There exist packages for various Linux distributions, as well,
-including Debian, RedHat, Mandrake, and SuSE.
-
-\section{History}
-\label{sec:history}
-
-ESS (originally S-mode) was initially designed for use with S and
-\Splus(tm); hence, this family of statistical languages currently has
-the most support.  We denote by S, any of the currently available
-members (or ``dialects'') of the family, including S 3.x, S 4.x, \Splus
-3.x, \Splus~4.x (incl.\ \Splus~2000), \Splus~5.x, and R.  In addition, we
-denote by Emacs, one of the GNU family of editors, either Emacs (as
-developed and maintained by the Free Software Foundation) or XEmacs (which
-is a derivative work).
-
-ESS is a remarkable example of how open-source products can continue
-to develop beyond what their initial authors planned.  ESS started as
-S-mode, an Emacs extension which was developed in 1991 as a simple
-tool for editing program files for S and \Splus.  In 1994, Rossini
-extended S-mode to support XEmacs, which was a forked version of
-Emacs.  At the same time, Rossini extended a successful SAS-mode
-written by Tom Cook to work with XEmacs.  In 1995, S-mode was merged
-into a uniform S-mode for Emacs, XEmacs, and supported S, \Splus, and
-R. During 1996 and 1997, this was extended to incorporate the
-SAS-mode as well as to provide a generic means for configuring ESS to
-accommodate changed as well as new statistical languages.
-
-Most of this was primarily done under Unix.  However, in 1998, thanks
-to an example of interprocess communication using Microsoft's DDE by
-Brian Ripley, Richard M. Heiberger provided interfaces for \Splus~4.x
-and then \Splus~2000.
-
-Most of what has been done recently is debugging and tuning.  New
-features in the plans include robust extensions for Literate Data
-Analysis using Noweb \citep{NRamsey:1994}, as well as extensions for
-XML-based Literate Statistical Analysis.
-
-\section{Remarks and Extensions}
-\label{sec:remarks}
-
-There are two active areas of extensions for user environments.  One
-is to enhance the capabilities of the IDE for statistical practice;
-this includes implementing such common IDE features as object browsers
-as well as clean up the interface.
-
-The other exciting extension is towards the use of Literate
-Programming methodologies \citep{Knuth:1992,NRamsey:1994}, which we
-will refer to as Literate Statistical Analysis \citep{ross:lunt:2001}.
-The tools include the use of Noweb \citep{NRamsey:1994} and an
-additional step towards the use of an XML authoring environment for
-statistical analysis.  Literate Data Analysis based on Noweb, is a
-means of documenting a statistical analysis plan and procedure.
-Literate Statistical Analysis is intended to be a round-trip
-environment for both design and analysis.
-
-The future use of XML is to accommodate the growing use of WWW-based
-services for document publishing as well as information conversion.
-By marking up the document with XML, it is possible to display subsets
-of the document contextually according to the intent of the document.
-Unlike Literate Data Analysis, which provides a single document for
-code and analysis plan, Literate Statistical Analysis is a round-trip
-cycle, using document modification through the Document Object Model
-interface (W3 Consortium).  This is described more in
-\citep{ross:lunt:2001}. 
-
-\bibliographystyle{plainnat} %alpha}
-\bibliography{ess}
 
 \end{document}
 
