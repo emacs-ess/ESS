@@ -10,4 +10,9 @@ essl-*.el  : language specific considerations
 essd-*.el  : describe dialect  and process specific modifications.
 	     This should also contain the language specific interface
 	     functions.   
-essdd*.el  :
+essdd*.el  : modes for writing documentation.
+
+
+This will be finished for 5.2.
+
+
