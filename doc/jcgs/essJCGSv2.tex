@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 00:05:57 $ - $Revision: 1.212 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/20 16:25:42 $ - $Revision: 1.213 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -1086,35 +1086,33 @@ Sall's earlier work.
 
 In 1994, A.J. Rossini extended S-mode to support XEmacs.  
 Together with extensions written by Martin M{\"a}chler, this
-became version 4.5.  By 1996, S-mode was available for GNU Emacs and
-XEmacs and supported S, \Splus, and R.
+became version 4.5.  In 1995, Rossini extended SAS-mode to work with XEmacs.
+By 1996, S-mode was available for both GNU Emacs and XEmacs and supported 
+S, \Splus, and R.  
 
+In 1997, Rossini merged S-mode and SAS-mode into a single Emacs package 
+for statistical programming; the product of this marriage was called ESS 
+version 5.
+%, along with additional changes to accommodate 
+%multiple languages in a flexible way, 
 %%Kurt Hornik was instrumental in enhancing support for R,
 %%in particular, providing \stexttt{Rd-mode}.
+Richard M. Heiberger designed ``inferior'' ESS for \SAS\ and SAS-mode was 
+further integrated into ESS.  More changes were made to support
+additional statistical languages such as \Stata\ and \XLispStat.
+% which were added to ESS's capabilitities.
 
-Rossini extended SAS-mode to work with XEmacs in 1995 and merged S-mode 
-and SAS-mode into a single Emacs package for statistical programming in 1997.  
-The product of this marriage, along with additional changes to accommodate 
-multiple languages in a flexible way, was called ESS version 5.
-
-During 1996 and 1997, Richard M. Heiberger designed ``inferior'' ESS for \SAS.
-At the same time, SAS-mode was further integrated into ESS.
-
-In 1997, more changes in the internal structure of ESS were made to
-facilitate support for additional statistical languages.  \Stata\
-and \XLispStat\ were added to ESS's capabilitities.
-
-In the beginning, ESS only worked with Unix statistics packages that
+But, ESS only worked with Unix statistics packages that
 used standard-input and standard-output for both the command-line 
-interface and batch processing.  ESS could not communicate with Windows 
-versions of statistical packages that did not use this protocol.  This 
-changed in 1998.  Brian Ripley demonstrated ESS using the Windows Dynamic 
-Data Exchange (DDE) protocol.  Heiberger used DDE to provide interactive 
-interfaces for Windows versions of \Splus.  Also, Rodney Sparapani 
-designed ESS batch file processing for \SAS\ on Unix, Windows and Mac 
-which relies on files rather than standard-input/standard-output.  In 
-2001, Sparapani added BUGS batch file processing to ESS for Unix and 
-Windows.
+interface and batch processing.  ESS could not communicate with 
+%Windows versions of 
+statistical packages that did not use this protocol.  This changed in 1998.  
+Brian Ripley demonstrated the Windows Dynamic Data Exchange (DDE) protocol 
+with ESS.  Heiberger used DDE to provide interactive interfaces for Windows 
+versions of \Splus.  In 1999, Rodney Sparapani and Heiberger implemented 
+ESS batch file processing for \SAS\ on Unix, Windows and Mac which relies on 
+files rather than standard-input/standard-output.  In 2001, Sparapani added 
+BUGS batch file processing to ESS for Unix and Windows.
 
 \begin{table}[tbp]
   \centering
