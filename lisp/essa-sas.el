@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/04 20:03:05 $
-;; Version: $Revision: 1.44 $
-;; RCS: $Id: essa-sas.el,v 1.44 2002/01/04 20:03:05 ess Exp $
+;; Modified: $Date: 2002/01/04 21:03:25 $
+;; Version: $Revision: 1.45 $
+;; RCS: $Id: essa-sas.el,v 1.45 2002/01/04 21:03:25 ess Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -173,7 +173,7 @@ or comint buffer on the local computer."
 (defun ess-sas-append-log ()
     "Append ess-temp.log to the current .log file."
     (interactive)
-    (ess-sas-file "log" 'revert)
+    (ess-sas-goto "log" 'revert)
     (goto-char (point-max))
     (insert-file-contents (concat ess-sas-temp-root ".log"))
     (save-buffer))
@@ -181,7 +181,7 @@ or comint buffer on the local computer."
 (defun ess-sas-append-lst ()
     "Append ess-temp.lst to the current .lst file."
     (interactive)
-    (ess-sas-file "lst" 'revert)
+    (ess-sas-goto "lst" 'revert)
     (goto-char (point-max))
     (insert-file-contents (concat ess-sas-temp-root ".lst"))
     (save-buffer))
@@ -285,14 +285,18 @@ on the way."
     ))
 )
 
-(defun ess-sas-goto (suffix)
+(defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with the SAS file by suffix."
-    (if (string-match "[.]\\(sas\\|log\\|lst\\|txt\\)" ess-sas-file-path) (let* (
+    (if (string-match 
+	    "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)" 
+	    ess-sas-file-path) (let* (
 	(ess-sas-temp-file (replace-match (concat "." suffix) t t ess-sas-file-path))
 	(ess-sas-temp-buff (find-buffer-visiting ess-sas-temp-file)))
 
 	(if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
 	    (find-file ess-sas-temp-file))
+
+	(if revert (ess-revert-wisely))
     ))
 )
 
@@ -323,17 +327,17 @@ on the way."
 (defun ess-sas-goto-file-1 ()
   "Switch to ess-sas-file-1 and revert from disk."
   (interactive)
-  (ess-sas-file ess-sas-suffix-1 'revert))
+  (ess-sas-goto ess-sas-suffix-1 'revert))
 
 (defun ess-sas-goto-file-2 ()
   "Switch to ess-sas-file-2 and revert from disk."
   (interactive)
-  (ess-sas-file ess-sas-suffix-2 'revert))
+  (ess-sas-goto ess-sas-suffix-2 'revert))
 
 (defun ess-sas-goto-log ()
   "Switch to the .log file, revert from disk and search for error messages."
   (interactive)
-  (ess-sas-file "log" 'revert)
+  (ess-sas-goto "log" 'revert)
 
   (let ((ess-sas-error (concat "^ERROR [0-9]+-[0-9]+:\\|^ERROR:\\|_ERROR_=1 _\\|_ERROR_=1[ ]?$"
     "\\|NOTE: MERGE statement has more than one data set with repeats of BY values."
@@ -355,12 +359,12 @@ on the way."
 (defun ess-sas-goto-lst ()
   "Switch to the .lst file and revert from disk."
   (interactive)
-  (ess-sas-file "lst" 'revert))
+  (ess-sas-goto "lst" 'revert))
 
 (defun ess-sas-goto-sas ()
   "Switch to the .sas file."
   (interactive)
-  (ess-sas-file "sas"))
+  (ess-sas-goto "sas"))
 
 ;;
 ;;(defun ess-sas-goto-shell ()
@@ -510,7 +514,7 @@ Keep in mind that the maximum command line length in MS-DOS is
   "Toggle SAS-mode for .log files."
   (interactive)
 
-  (ess-sas-file "log")
+  (ess-sas-goto "log")
   (kill-buffer nil)
 
   (if (assoc "\\.log\\'" auto-mode-alist) 
@@ -521,7 +525,7 @@ Keep in mind that the maximum command line length in MS-DOS is
     (setq auto-mode-alist (delete '("\\.LOG\\'" . SAS-mode) auto-mode-alist))
   (setq auto-mode-alist (append '(("\\.LOG\\'" . SAS-mode)) auto-mode-alist)))
 
-  (ess-sas-file "log")
+  (ess-sas-goto "log")
 )
 
 
