@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/21 21:17:46 $
-;; Version: $Revision: 1.62 $
-;; RCS: $Id: ess-mode.el,v 1.62 1997/10/21 21:17:46 rossini Exp $
+;; Modified: $Date: 1997/10/21 21:19:52 $
+;; Version: $Revision: 1.63 $
+;; RCS: $Id: ess-mode.el,v 1.63 1997/10/21 21:19:52 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -42,6 +42,7 @@
 (autoload 'ess-read-object-name "ess-inf" "" nil)
 (autoload 'ess-list-object-completions "ess-inf" "" nil)
 
+(autoload 'ess-load-file "ess-inf" "" nil)
 (autoload 'get-ess-process "ess-inf" "" nil)
 (autoload 'ess-switch-to-S "ess-inf" "" nil)
 (autoload 'ess-request-a-process "ess-inf" "" nil)

@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/21 12:59:22 $
-;; Version: $Revision: 1.12 $
-;; RCS: $Id: ess-help.el,v 1.12 1997/10/21 12:59:22 rossini Exp $
+;; Modified: $Date: 1997/10/21 21:19:57 $
+;; Version: $Revision: 1.13 $
+;; RCS: $Id: ess-help.el,v 1.13 1997/10/21 21:19:57 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -49,8 +49,8 @@
 (autoload 'ess-eval-line-and-next-line "ess-mode" "[autoload]" t)
 (autoload 'ess-beginning-of-function "ess-mode" "[autoload]" t)
 (autoload 'ess-end-of-function "ess-mode" "[autoload]" t)
-(autoload 'ess-load-file "ess-mode" "[autoload]" t)
 
+(autoload 'ess-load-file "ess-inf" "[autoload]" t)
 (autoload 'ess-command "ess-inf" "(autoload)" nil)
 (autoload 'ess-display-temp-buffer "ess-inf" "(autoload)" nil)
 (autoload 'ess-switch-to-S "ess-inf" "(autoload)" nil)

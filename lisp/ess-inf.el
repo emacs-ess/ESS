@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/21 21:17:40 $
-;; Version: $Revision: 1.67 $
-;; RCS: $Id: ess-inf.el,v 1.67 1997/10/21 21:17:40 rossini Exp $
+;; Modified: $Date: 1997/10/21 21:20:44 $
+;; Version: $Revision: 1.68 $
+;; RCS: $Id: ess-inf.el,v 1.68 1997/10/21 21:20:44 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -44,7 +44,6 @@
   (load "comint"))
 
 ;;*;; Autoloads
-(autoload 'ess-load-file "ess-mode" "(autoload)." t)
 (autoload 'ess-parse-errors "ess-mode" "(autoload)." t)
 (autoload 'ess-dump-object-into-edit-buffer "ess-mode" "(autoload)." t)
 (autoload 'ess-end-of-function "ess-mode" "(autoload)." t)

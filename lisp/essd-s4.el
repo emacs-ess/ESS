@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/10/21 20:42:27 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: essd-s4.el,v 1.15 1997/10/21 20:42:27 rossini Exp $
+;; Modified: $Date: 1997/10/21 21:20:33 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: essd-s4.el,v 1.16 1997/10/21 21:20:33 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -59,6 +59,10 @@
      . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
     (ess-syntax-error-re
      . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
+    (ess-retr-lastvalue-command
+     . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
+    (ess-save-lastvalue-command
+     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
     (inferior-ess-program          . inferior-S4-program-name)
     (inferior-ess-objects-command  . ".SmodeObs(%d, pattern=\"%s\")\n")
 					; ^ was "objects(%d)")
