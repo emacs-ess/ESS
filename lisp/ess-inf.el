@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/23 12:53:03 $
-;; Version: $Revision: 1.72 $
-;; RCS: $Id: ess-inf.el,v 1.72 1997/10/23 12:53:03 rossini Exp $
+;; Modified: $Date: 1997/10/23 17:24:40 $
+;; Version: $Revision: 1.73 $
+;; RCS: $Id: ess-inf.el,v 1.73 1997/10/23 17:24:40 rossini Exp $
 
 
 ;; This file is part of S-mode
@@ -826,6 +826,7 @@ Waits for prompt after each line of input, so won't break on large texts."
   "Send the current paragraph to the inferior S process.
 Prefix arg. VIS-TOGGLE  toggle visibility of ess-code  as for ess-eval-region."
   (interactive "P")
+  (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (forward-paragraph)
     (let ((end (point)))
@@ -859,12 +860,14 @@ With prefix argument, toggle meaning of ess-eval-visibly-p."
   "Send the current buffer to the inferior S process.
 Arg has same meaning as for ess-eval-region."
   (interactive "P")
+  (ess-force-buffer-current "Process to load into: ")
   (ess-eval-region (point-min) (point-max) vis "Eval buffer"))
 
 (defun ess-eval-function (vis)
   "Send the current function to the inferior S process.
 Arg has same meaning as for ess-eval-region."
   (interactive "P")
+  (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (ess-end-of-function)
     (let ((end (point)))
@@ -877,6 +880,7 @@ Arg has same meaning as for ess-eval-region."
   "Send the current line to the inferior S process.
 Arg has same meaning as for ess-eval-region."
   (interactive "P")
+  (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (end-of-line)
     (let ((end (point)))
@@ -888,6 +892,7 @@ Arg has same meaning as for ess-eval-region."
   "Evaluate the current line visibly and move to the next line."
   ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
   (interactive)
+  (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (end-of-line)
     (let ((end (point)))
