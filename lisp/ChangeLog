@@ -1,3 +1,11 @@
+2003-12-08  Stephen Eglen  <stephen@anc.ed.ac.uk>
+
+	* ess-noweb.el (ess-eval-chunk): The code chunk is evaluated in a
+	temp buffer, and should inherit the value of
+	ess-local-process-name from the source value.  If the source
+	buffer did not set ess-local-process-name, it is set once the
+	chunk has been evaluated.
+
 2003-11-24  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-emcs.el (replace-regexp-in-string): also needed for Emacs 20.
