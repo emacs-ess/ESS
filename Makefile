@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.45 2001/08/10 07:53:41 maechler Exp $
+## $Id: Makefile,v 5.46 2001/08/17 12:23:32 maechler Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -67,7 +67,7 @@ ANNOUNCE: doc/announc.texi $(INTRO.DEPENDS)
 	cd doc; $(MAKE) readme.texi; $(MAKEINFOascii) announc.texi \
 	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
 
-dist: README ANNOUNCE docs
+pre-dist: README ANNOUNCE docs
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSVERSIONDIR)"
@@ -83,14 +83,16 @@ dist: README ANNOUNCE docs
 	     " ESS Maintainers <ess@franz.stat.wisc.edu>" ; \
 	 echo; echo "  * Version $(ESSVERSION) released."; echo; \
 	 cat ChangeLog.old ) > ChangeLog
+	cvs commit -m'Version .. released [make dist]' ChangeLog
 	@echo "** Tagging the release **"
 	cvs tag -R $(ESSVERSIONTAG)
-	$(MAKE) tar
+
+dist: pre-dist tar
 	@echo "** Placing tar and zip files **"
 	scp ESS-$(ESSVERSION).tar.gz ess@franz.stat.wisc.edu:~/public_html
 	scp ESS-$(ESSVERSION).zip    ess@franz.stat.wisc.edu:~/public_html
 
-tar:
+tar: docs
 	@echo "** Exporting Files **"
 	cvs export -D today ess
 	@echo "** Correct Write Permissions and RM Papers **"
@@ -111,7 +113,7 @@ tar:
 	chmod -R u+w ess; rm -rf ess $(ESSVERSIONDIR)
 
 doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3: doc/ess.texi
-	make docs
+	$(MAKE) docs
 
 xemacs-links: doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3
 	rm -f $(XEMACSDIR)/xemacs-packages/etc/ess-* $(XEMACSDIR)/xemacs-packages/lisp/ess-* \
