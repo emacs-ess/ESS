@@ -9,9 +9,9 @@
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2001/08/10 13:46:07 $
-;; Version: $Revision: 5.12 $
-;; RCS: $Id: ess-emcs.el,v 5.12 2001/08/10 13:46:07 maechler Exp $
+;; Modified: $Date: 2001/11/01 17:24:30 $
+;; Version: $Revision: 5.13 $
+;; RCS: $Id: ess-emcs.el,v 5.13 2001/11/01 17:24:30 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -86,9 +86,13 @@ Only a concern with earlier versions of Emacs.")
 ;; version 20.4 or higher.  NTemacs 20.2 is not supported by ESS.
 
 ;; XEmacs 20.x needs this
-
 (if (not (fboundp 'find-buffer-visiting))
     (fset 'find-buffer-visiting 'get-file-buffer))
+
+;; XEmacs 21.x need this
+(defun w32-using-nt ()
+  "Return non-nil if literally running on Windows NT (i.e., not Windows 9X)."
+  (and (eq system-type 'windows-nt) (getenv "SystemRoot")))
 
 ;; XEmacs and NTemacs 19.x need these
 (if (not (boundp 'w32-system-shells))
