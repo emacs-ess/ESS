@@ -23,7 +23,8 @@
 \else
   %% Stuff with hyperref
   \usepackage{hyperref}
-  \hypersetup{backref,colorlinks=true,pagebackref=true,hyperindex=true}
+  %%\hypersetup{backref,colorlinks=true,pagebackref=true,hyperindex=true}
+  \hypersetup{backref,colorlinks=false,pagebackref=true,hyperindex=true}
 \fi
 
 %%---End of package requiring ---------- Own Definitions -------------
@@ -32,6 +33,7 @@
 \newcommand*{\XLispStat}{\textsc{XLispStat}}
 \newcommand*{\Stata}{\textsc{Stata}}
 \newcommand*{\Rgui}{\textsc{Rgui}}
+\newcommand*{\Perl}{\textsc{Perl}}
 \newcommand*{\Fortran}{\textsc{Fortran}}
 \newcommand*{\Scmt}[1]{\hbox{\qquad {\footnotesize \#\#} \textsl{#1}}}
 \newtheorem{defn}{Definition}[section]
@@ -79,9 +81,6 @@
 
 \maketitle
 
-Keywords: Data Analysis, Programming Tools, User Interfaces, SAS,
-\Splus, R, \XLispStat, \Stata
-
 \begin{abstract}
   Emacs Speaks Statistics (ESS) is a user interface for developing
   statistical applications and performing data analysis using any of
@@ -91,6 +90,9 @@ Keywords: Data Analysis, Programming Tools, User Interfaces, SAS,
   programs.  We discuss how it works, the advantages of using it, and
   extensions for increasing statistical programming efficiency.
 \end{abstract}
+
+Keywords: Data Analysis, Programming Tools, User Interfaces, SAS,
+\Splus, R, \XLispStat, \Stata
 
 \baselineskip=2pc
 
@@ -102,11 +104,12 @@ environments which combine features and tools in a single interface
 with the intent of increasing programmer productivity and efficiency.
 In the last decade, the use of IDEs and other Rapid Application
 Development (RAD) tools has shortened the development time of complex
-software systems with programming languages such as Visual Basic,
-Java, C++, Python, and Smalltalk.  For the field of statistics,
-programming is an important skill which can be augmented and enhanced
-by the right tools and environment.  This is especially important with
-the increased use of simulation-based statistical procedures including
+software systems which use programming languages such as Visual Basic,
+Java, C++, Python, and Smalltalk.  Computer programming, in the
+context of both data analysis and computer program development, is an
+important statistical skill which can be augmented and enhanced by the
+right tools and environment.  This is especially true with the
+increased use of simulation-based statistical procedures including
 resampling and Markov Chain Monte Carlo (MCMC) sampling.
 
 Statistical software tools are intended for either general data
@@ -123,9 +126,8 @@ hand, these specialized tools lack breadth in the range of analyses
 and graphics that can be generated.  For this reason, BUGS is
 distributed with applications providing loose interoperability for
 simplifying the transfer of output to R or \Splus{} for processing the
-results.  Although the interfaces for WinBUGS and R are similar,
-they are distinct enough to create tension on the part of the
-analyst.
+results.  Although the interfaces for WinBUGS and R are similar, they
+are distinct enough to create tension for the analyst.
 
 Emacs Speaks Statistics (ESS) \citep{ESS} is an extension package for
 the Emacs editor which provides a single interface for a variety of
@@ -133,7 +135,7 @@ statistical computing tasks.  ESS is optimized for statistical coding
 and interactive data analysis.  Statistical coding is the writing of
 computer code for data analysis.  This code might be in a compiled
 language, such as C or \Fortran, or it might be in an interpreted
-language such as \Splus, SAS, R, \XLispStat, Perl, or Python.
+language such as \Splus, SAS, R, \XLispStat, \Perl, or Python.
 Entering commands for interactive data analysis is a similar activity.
 In either case, text is written in a computer language and sent to a
 computer program for evaluation.  The primary difference is that the
@@ -186,16 +188,16 @@ ViSta \citep{youn:fald:mcfa:1992}; SAS \citep{SAS:8.0}; \Stata\
 \citep{SpieThomBest:1999}.  ESS can be extended to accommodate most
 statistical packages which can be controlled from a command-line.
 
-The present paper is intended as the primary historical and
-non-technical description of ESS.  A general paper with some user
-how-to/FAQ information appears in \citep{heiberger:dsc:2001}.  Details
-on the functions within ESS and examples of its use are included in
-the online documentation that comes with the package.  The next
+The present paper provides historical and non-technical information on
+ESS and its capabilities.  A general introduction and usage
+instructions can be found in \cite{heiberger:dsc:2001}.  Details on
+the programmer API for ESS as well as examples of its use are included
+in package documentation that comes with the ESS source.  The next
 section introduces common forms of statistical user interfaces.  This
 is followed by a discussion of ESS and Emacs.  Specifics on the
 realized interfaces for the S family and SAS are discussed in sections
-\ref{sec:S} and \ref{sec:SAS} respectively.  The conclusion
-brings up related work and future extensions.
+\ref{sec:S} and \ref{sec:SAS} respectively.  The conclusion brings up
+related work and future extensions.
 
 \section{Statistical User Interfaces}
 \label{sec:UI}
@@ -307,11 +309,10 @@ within XEmacs.
 
 Figure~\ref{fig:2} shows ESS running in NTemacs 21.0 on Windows 2000.
 We are currently displaying 6 buffers.  \stexttt{highlight.s}
-illustrates several uses of syntactic highlighting.
-The most glaring one is the bright purple indicator for the
-unbalanced parentheses.
-We also see color choices for  keywords (\stexttt{if}), comments,
-and quoted strings.  The string on the last line was not properly
+illustrates several uses of syntactic highlighting.  The most glaring
+one is the bright purple indicator for the unbalanced parentheses.  We
+also see color choices for keywords (\stexttt{if}), comments, and
+quoted strings.  The string on the last line was not properly
 terminated and we are immediately warned by the string color staying
 on through (what we think is) the end of the line.
 
@@ -852,15 +853,18 @@ including Debian, RedHat, Mandrake, and SuSE.
 \begin{figure}[htbp]
   \begin{center}
     \includegraphics[height=7.0in,width=6.0in]{ess-xemacs-fig-1}
-    \caption{XEmacs and ESS}%Editing SAS and R code and evaluation with R.}
+    \caption{XEmacs and ESS editing SAS and R code and R evaluation on
+      Unix}
     \label{fig:1}
   \end{center}
 \end{figure}
 
+\clearpage
+
 \begin{figure}[htbp]
   \begin{center}
-%    \includegraphics[height=7.0in,width=6.0in]{ess-xemacs-fig-2}
-    \caption{XEmacs and ESS}%Editing and running \Splus\ and R.}
+    \includegraphics[height=7.0in,width=6.0in]{ess-ntemacs-fig-2_files/image001}
+    \caption{Emacs and ESS running R and S-PLUS on Microsoft Windows}
     \label{fig:2}
   \end{center}
 \end{figure}
