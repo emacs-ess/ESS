@@ -1,0 +1,105 @@
+\documentclass[12pt]{article}         %LaTeX 2e
+
+\newcommand{\tty}[1]{{\tt #1}}
+
+\begin{document}
+December 10, 1998
+
+I ahve now fully incorporated the ideas I did quickly in  essi-w32 into the ESS
+package.
+
+While I was at it, I incorporated the ideas in \tty{M-x S-elsewhere}, essentially the
+proposal I sent to ess-bugs in April 1998.
+
+We can now do
+\begin{description}
+\item[\tty{M-x S+4}:]
+Run S+4 in it's own GUI window from an emacs buffer \tty{myfile.s}.
+It does not open an \tty{*S+4*} buffer.
+\item[\tty{M-x Sqpe+4}:]
+Run Sqpe+4 in an emacs buffer \tty{*S+4*} from an emacs buffer \tty{myfile.s}.
+It behaves exactly like S+3 on unix, except of course, for no interactive graphics.
+\item[\tty{M-x ess-external-minor-mode}:]
+Toggle between the above from the same \tty{myfile.s} buffer.
+\item[\tty{M-x S+elsewhere}:]
+Run an S process on another computer in an\\
+\tty{*S-elsewhere*} buffer
+from \tty{myfile.s} on my computer.  This will work not only from a PC
+to a unix machine, but also from one unix machine to another.
+\end{description}
+
+My goal is a release of the next version of ESS in early January
+1999 to catch the beginning of the Spring Semester.
+
+
+Here is what is going on:
+\begin{enumerate}
+\item
+I am using the Andrew Innes' ddeclient distributed with NTemacs
+20.3.1.  The fundamental trick is to define a new keymap,
+ess-external-mode-map, which is almost the same as ess-mode-map.  The
+difference is that \tty{C-c C-n} and \tty{C-c C-r}, originally bound
+to \tty{ess-eval-region} and \tty{ess-eval-line-and-next-line},\\
+are now bound to \tty{ess-eval-region-ddeclient} and\\
+\tty{ess-eval-line-and-next-line-ddeclient}.
+
+\item
+Maybe an improved ddeclient should be written, to return S's response
+to whatever we type.  I assume that the logic of
+Brian Ripley's Sdde, together with the details of Andrew Innes'
+ddeclient, can be written and that it will work.
+This is not necessary.  I am willing to pick up useful output from the S-Plus commands
+window and drop it into an emacs \tty{myfile.st} buffer manually.
+
+If the improved dddeclient is written,
+it should have the S-Plus Commands window closed.
+
+
+\item
+The problem with the earlier attempts at \tty{M-x Sqpe+4} (I made it
+work last summer, as did Brian, and maybe others of you), was the lack
+of prompt.  I solved that by a two-step process.  First start the
+process with \tty{M-x Sqpe+4}.  Then when ESS times out for lack of a
+prompt, run \tty{M-x Sqpe+4b}.  The magic in \tty{M-x Sqpe+4b} is
+twofold: I make S interactive and I tell emacs that S is not echoing
+the commands.  Putting these two routines together requires changing
+the inferior-ess-wait-for-prompt() loop in ess-inf.el.  This is buried deep
+in ess-multi().
+
+\item
+Unlike in unix, I think the S+4 GUI should be launched to survive
+killing the emacs process.  This means (assuming bash) that it needs
+to be launched with the command \tty{Splus \&} and not just with
+\tty{Splus}.  I ducked the question and \tty{M-x S+4} gives a minibuffer
+message that says the user should click on the S-Plus icon.
+
+\item
+Help with \tty{C-c C-v} needs sends the
+\tty{?command} to S.  The Splus libraries cannot have their help
+redirected.  Only user-written libraries can have help redirected.
+An empty *help()* buffer currently appears.
+
+\item
+The idea of \tty{M-x S-elsewhere} is that we open a telnet (or rlogin) to
+another machine, call the buffer \tty{*S-elsewhere*}, and
+then run S on the other machine in that buffer.  I do that by defining \tty{sh}
+as the inferior-S-elsewhere-program-name.  Emacs sets it up in a \tty{*S-elsewhere*}
+iESS buffer.  The user does a telnet or login from that buffer to the other machine
+and then starts S on the other machine.
+
+\item
+I think this generalizes to any program that ESS can run.  All the magic is isolated in
+the essd-iw32.el file.
+
+\item
+I did this with 6 files based on ESS 5.0.
+\begin{verbatim}
+  4574 Dec 10 00:50 essd-sq4.el
+ 14943 Dec 10 00:09 ess-site.el
+  4050 Dec 10 00:02 ess-iw32.el
+ 31159 Dec  9 23:28 ess-vars.el
+  4028 Dec  9 23:20 essd-els.el
+  4158 Dec  9 23:17 essd-s+4.el
+\end{verbatim}
+\end{enumerate}
+\end{document}
