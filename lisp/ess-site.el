@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/10/23 13:02:04 $
-;; Version: $Revision: 1.55 $
-;; RCS: $Id: ess-site.el,v 1.55 1997/10/23 13:02:04 rossini Exp $
+;; Modified: $Date: 1997/10/24 16:11:30 $
+;; Version: $Revision: 1.56 $
+;; RCS: $Id: ess-site.el,v 1.56 1997/10/24 16:11:30 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -89,8 +89,9 @@
 	 '(("\\.sp\\'"    . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
 	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S
 	   ("\\.[rR]\\'"  . R-mode)
-	   ("R.*/src/library/[A-Za-z]+/funs/[A-Za-z]" . R-mode)
-	   ("R.*/src/library/[A-Za-z]+/man/[A-Za-z]"  . Rd-mode)
+	   ("R.*/src/library/[A-Za-z]+/funs/[A-Za-z]" . R-mode); R <= 0.50
+	   ("R.*/src/library/[A-Za-z]+/R/[A-Za-z]"    . R-mode); R >= 0.60
+	   ("R.*/src/library/[A-Za-z]+/man/[A-Za-z]"  . Rman-mode);R <= 0.50
 	   ("\\.lsp\\'"                               . XLS-mode)
 	   ("\\.sas\\'"                               . SAS-mode)
 	   ("\\.SAS\\'"                               . SAS-mode)
@@ -99,7 +100,8 @@
 	   ;;("\\.log\\'"                               . SAS-log-mode);sasl
 	   ("\\.[Ss]\\(ou\\)?t\\'"                    . S-transcript-mode)
 	   ("\\.[Rr]\\(ou\\)?t\\'"                    . R-transcript-mode)
-	   ("\\.Rd\\'"                                . Rd-mode))
+	   ("\\.Rd\\'"                                . Rd-mode);all R>=0.60
+	   )
 	 auto-mode-alist)))
 
 
