@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/19 18:54:35 $ - $Revision: 1.200 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/19 19:21:43 $ - $Revision: 1.201 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -297,7 +297,7 @@ file editing are often determined by the file name extension, i.e.
 the characters at the end of the file name that follow a period like
 \stexttt{txt}, \stexttt{R} or \stexttt{sas}.  Examples of this kind of
 major mode are \stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes
-can know the file type syntax and grammer and thus provide intelligent
+can know the file type syntax and grammar and thus provide intelligent
 actions such as automatic indentation; navigation in units of
 characters, words, lines, sentences, paragraphs, function definitions,
 and pages; syntax-based fontification and colorization; and
@@ -321,8 +321,8 @@ types.
 Emacs allows transparent access to remote files over a network.  This
 means that the user views, edits, and saves files on a remote machine
 exactly as if they were on the local machine.  Mechanisms for both
-unsecure (\stexttt{ange-ftp} and \stexttt{EFS} use ftp) and secure
-(\stexttt{tramp} uses scp or ssh) access are available.  Emacs can
+open (\stexttt{ange-ftp} and \stexttt{EFS} use ftp) and secure
+(\stexttt{tramp} uses scp or ssh) transfer are available.  Emacs can
 also monitor and control remote processes running in a shell buffer,
 and also has the ability to initial secure socket connections using
 SSL.
@@ -368,6 +368,9 @@ the differing portions of text files.
   \label{f.ediff}
 \end{figure}
 
+% Rodney: You can't just mention complex functionality like etags and 
+% speedbar.  We would need to introduce these packages.  Since they 
+% aren't critical to ESS at this time, let's ignore them.
 Emacs has many other important features.  Emacs provides file-manager
 capabilities, such as \stexttt{dired} (discussed in Major and Minor
 Modes above) and \stexttt{speedbar}, both of which interface to the
@@ -377,9 +380,6 @@ complete undo capability.  More importantly, for modes which control
 processes, the process input history is stored for recall as well as
 for later editing for printing or re-use.  Emacs also includes web
 browsers, mail and news readers, and spell checking.
-% Rodney: You can't just mention complex functionality like etags and 
-% speedbar.  We would need to introduce these packages.  Since they 
-% aren't critical to ESS at this time, let's ignore them.
 
 In addition to being an an extremely powerful editor, Emacs also
 includes capabilities usually found in an operating system.  Thus it
@@ -391,14 +391,31 @@ platform on which to construct a statistical analysis user interface.
 \section{ESS extends Emacs}
 \label{sec:ess-extends-emacs}
 
-ESS is an extension package for the Emacs editor which provides a
-single interface for a variety of statistical computing tasks.  ESS is
-optimized for statistical programming and interactive data analysis.
 Statistical programming is the writing of computer programs for data
 analysis and processing.  These programs might be written in a
 computer language that requires a compiler, such as C or \Fortran.
 But, more likely, they are written in a statistical analysis language
 that only requires an interpreter such as R, \SAS\ or \XLispStat.
+General purpose languages such as \Fortran, C($++$), Java, and PERL
+have integrated development environments which facilitate writing and
+debugging code.  ESS is an extension package for the Emacs editor
+which provides features commonly found in such environments but which
+are customized for statistical languages.  It provides a single
+interface for a variety of statistical computing tasks including
+interactive data analysis and statistical programming.
+
+ESS supports the S family (S, \Splus, and R) interactively.  \SAS\ and
+BUGS are also well supported for batch-style processing.  \Stata,
+\XLispStat\ (including ARC and ViSta) are supported with the basic
+functionality of syntax highlighting and process-interfacing.
+
+ESS extends Emacs to provide a functional and extensible interface
+which is uniform and consistent across multiple statistical packages.
+This is done by adding shortcuts and features for accelerated editing
+of files as well as by interacting with the particular statistical
+packages to provide, for example, control of input/output, assistance
+with evaluation, and specialized parsing of help files.
+
 %% An interpreted language is executed by an interpreter, but a
 %% compiled language must be processed by a compiler which creates an
 %% executable form of the program that can be executed.  There is a
@@ -420,33 +437,11 @@ that only requires an interpreter such as R, \SAS\ or \XLispStat.
 %% but the results of all commands are of interest in the coding
 %% phase.
 
-ESS fully supports the S family (S, \Splus, and R)\@.  \SAS\ and BUGS
-are also well supported.  \Stata, \XLispStat\ (including extensions
-ARC and ViSta) are supported with the basic functionality of syntax
-highlighting and process-interfacing.
-
-ESS extends Emacs to provide a functional and extensible interface
-which is uniform and consistent across multiple statistical packages.
-This is done first, by adding shortcuts and features for accelerated
-editing of files, and second, by interacting with the particular
-statistical packages through a number of activities: control of
-input/output, assistance with evaluation, and specialized parsing of
-help files.
-
-% Rodney:  these are Emacs features.  Why are they in the ESS Extends
-% Emacs section?
-%Emacs can assist with, or be
-%programmed to perform, many tasks related to data cleaning,
-%management, and editing.  For example, conversion of data files
-%between standard input formats, such as from comma-separated to
-%tab-delimited, can be automated through the use of commands written in
-%elisp which can be mapped to a key sequence.
-
-Differences between user interfaces can arise from coordinating
-several data files, multiple statistical software packages, and the
-corresponding source code for each of these packages during a single
-analysis.  ESS helps to remedy these differences by providing a single
-point of contact for all tasks.  
+%Differences between user interfaces can arise from coordinating
+%several data files, multiple statistical software packages, and the
+%corresponding source code for each of these packages during a single
+%analysis.  ESS helps to remedy these differences by providing a single
+%point of contact for all tasks.  
 
 % Rodney:  same comment as above.
 %Other features which provide potential for efficient
