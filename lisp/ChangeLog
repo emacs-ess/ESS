@@ -1,3 +1,9 @@
+2004-11-09  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (inferior-ess-mode): Add elements to
+	comint-dynamic-complete-functions using `add-hook' rather than
+	`setq', on advice from Emacs developers.
+
 2004-11-07  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-multi): Fix bug: when inferior-ess-own-frame is
