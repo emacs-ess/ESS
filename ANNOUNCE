@@ -1,7 +1,7 @@
 ANNOUNCING ESS
 **************
 
-   Annoucing the release of ESS-5.1.5 (Emacs Speaks Statistics).
+   Annoucing the release of ESS-5.1.6 (Emacs Speaks Statistics).
 ------------------------------------------------------------
 
    (New: improvements to SAS support,       Splus 5 support,
@@ -133,7 +133,7 @@ suggested coding fixes with bug reports are much appreciated!
 Requirements
 ============
 
-   ESS version 5.1.5 requires Emacs version 19.29 or later, or version
+   ESS version 5.1.6 requires Emacs version 19.29 or later, or version
 XEmacs 19.14 or later.  It has been most thoroughly tested with:
 
    * S-PLUS versions 3.3, 3.4, 4.5, 5.0
