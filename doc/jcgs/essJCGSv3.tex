@@ -165,7 +165,7 @@
     substantially improved the presentation of the paper.}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/30 16:09:29 $ - $Revision: 1.26 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/30 16:18:02 $ - $Revision: 1.27 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -397,16 +397,18 @@ optional schemes.
 \end{figure}
 
 ESS uses the Emacs tools for reformatting code to match particular
-styles.  For S, common C format styles, as well as locally customized
-styles, are defined by specifying the indentation level for nested
+styles.  For S, both common C format styles and locally customized
+styles can be used to define the indentation level for nested
 statements, location of open-braces (at the end or at the beginning of
 a line), indentation offsets for if-then-else constructs, and similar
-characteristics.  XLispStat can also be reformatted.
-%Rodney:  Not that I know of.  \textbf{RODNEY/RICH: CAN SAS BE REFORMATTED?}
+characteristics.  Functions exist to reformat blocks of code to match
+the desired style.  Similar functions exist for XLispStat, though good
+Lisp programming style is better defined and hence more restrictive.
 
 Syntax highlighting can be used to enforce coding standards.  Figure
-\ref{f.hilock} illustrates a standard for \SAS\ programming, but coding
-standards aids could be implemented for other languages such as R or \Splus.
+\ref{f.hilock} illustrates a standard for \SAS\ programming, but
+coding standards aids could be implemented for other languages such as
+R or \Splus.
 %that says all \stexttt{PROC} statements must use the
 %\stexttt{DATA=datasetname} option.
 
@@ -435,17 +437,23 @@ standards aids could be implemented for other languages such as R or \Splus.
 %%% NOTE: Help file reading, navigating and example execution is
 %%% ----  MORE IMPORTANT (because for a much wider audience)
 %%% and for all the S family !!!
-\paragraph{Help File Editing.}
-ESS provides an R documentation mode (\stexttt{Rd-mode}) which assists
-in writing help files for R functions, objects, and other topics worth
-documenting.  \stexttt{Rd-mode} provides the ability to view and
+\paragraph{Getting Help.}
+ESS provides display and navigation tools for S (R and \SPlus\) and
+\Stata\ help displays.  Displays of help files are done in a separate
+buffer.  These buffers include single key bookmarks of the main
+sections of the help file, such as to jump to the examples sections or
+function arguments sections.  
+
+In addition, ESS provides an R documentation mode (\stexttt{Rd-mode})
+which assists in writing help files for R functions, objects, and
+other topics.  \stexttt{Rd-mode} provides the ability to view and
 execute code embedded in the help file in the same manner as ESS
 handles code from any S language source file.  It provides syntax
 highlighting and the ability to submit code directly to a running ESS
-process, either R or \Splus, for evaluation and debugging.  This
-latter feature is useful for ensuring that code developed using R runs
-under \Splus.
-
+process, either R or \Splus, for evaluation and debugging.  
+%% AJR: Is this really an issue, separate from the editing one?
+%% This latter feature is useful for ensuring that code developed
+%% using R runs under \Splus.
 
 %\paragraph{Simplifying Keymap Differences.}
 %Simple conflicts between interfaces are exemplified by different key
@@ -457,7 +465,6 @@ under \Splus.
 %of statistical packages that might be used.  That is, the same key
 %sequences are used for cursor movement, evaluation, and basic tasks
 %such as loading files for editing.
-
 
 \subsection{Interactive Processing.}
 \label{sec:interactive}
