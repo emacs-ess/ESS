@@ -1,303 +1,413 @@
-<HTML>
-<HEAD>
-<!-- Created by texi2html 1.56k from ess.texi on 21 October 2002 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created on June, 30 2004 by texi2html 1.70 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
 
-<TITLE>ESS -- Emacs Speaks Statistics - Starting the ESS process</TITLE>
-</HEAD>
-<BODY>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_2.html">previous</A>, <A HREF="ess_4.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
-<P><HR><P>
+-->
+<head>
+<title>ESS -- Emacs Speaks Statistics: B. Interacting with statistical programs</title>
 
-
-<H1><A NAME="SEC12" HREF="ess_toc.html#TOC12">Starting the <B>ESS</B> process</A></H1>
-<P>
-<A NAME="IDX26"></A>
-<A NAME="IDX27"></A>
-
-
-<P>
-To start an <B>S</B> session, simply type <KBD>M-x S RET</KBD>, i.e. press
-<KBD>ESC</KBD>, then <KBD>x</KBD>, then capital <KBD>S</KBD> and then the <KBD>RETURN</KBD>
-key.
-<A NAME="IDX28"></A>
-
-
-<P>
-<A NAME="IDX29"></A>
-<A NAME="IDX30"></A>
-<A NAME="IDX31"></A>
-<A NAME="IDX32"></A>
-
-
-<P>
-S will then (by default) ask the question
-
-<PRE>
-S starting data directory?
-</PRE>
-
-<P>
-Enter the name of the directory you wish to start <B>S</B> from (that is,
-the directory you would have <CODE>cd</CODE>'d to before starting <B>S</B> from
-the shell).  This directory should have a <TT>`.Data'</TT> subdirectory.
+<meta name="description" content="ESS -- Emacs Speaks Statistics: B. Interacting with statistical programs">
+<meta name="keywords" content="ESS -- Emacs Speaks Statistics: B. Interacting with statistical programs">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.70">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+ul.toc {list-style: none}
+-->
+</style>
 
 
-<P>
-You will then be popped into a buffer
-<A NAME="IDX33"></A>
-<A NAME="IDX34"></A>
-with name <SAMP>`*S*'</SAMP> which will be used
-for interacting with the <B>ESS</B> process, and you can start entering commands.
+</head>
 
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 
+<a name="NOD12"></a>
+<a name="SEC12"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="ess_2.html#SEC11" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC13" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess_2.html#SEC7" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_4.html#SEC18" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1 class="chapter"> B. Interacting with statistical programs </h1>
 
-<UL>
-<LI><A HREF="ess_3.html#SEC13">Multiple ESS processes</A>
-<LI><A HREF="ess_3.html#SEC14">ESS processes on Remote Computers</A>
-<LI><A HREF="ess_3.html#SEC16">Customizing startup</A>: Changing the startup actions
-</UL>
+<p>As well as using ESS to edit your source files for statistical programs,
+you can ESS to run these statistical programs.  In this chapter, we
+mostly will refer by example to running S from within emacs.  The emacs
+convention is to name such proceses running under its control as
+`inferior processes'.  This term can be slightly misleading, in which
+case these processes can be thought of `interactive processes'.  Either
+way, we use the term `iESS' to refer to the Emacs mode used to interact
+with statistical programs.
 
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC13">B.1 Starting an ESS process</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">                 
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC14">B.2 Running more than one ESS process</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">      
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC15">B.3 ESS processes on Remote Computers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC16">B.4 S+elsewhere and ESS-elsewhere</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC17">B.5 Changing the startup actions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">         
+</td></tr>
+</table>
 
+<hr size="6">
+<a name="NOD13"></a>
+<a name="SEC13"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC12" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC14" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC12" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC12" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_4.html#SEC18" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> B.1 Starting an ESS process </h2>
 
-<H2><A NAME="SEC13" HREF="ess_toc.html#TOC13">Running more than one <B>ESS</B> process</A></H2>
-<P>
-<A NAME="IDX35"></A>
+<p>To start an S session, simply type <kbd>M-x S RET</kbd>.
+<a name="IDX21"></a>
 
+</p><a name="IDX22"></a>
+<a name="IDX23"></a>
+<a name="IDX24"></a>
+<a name="IDX25"></a>
 
-<P>
-ESS allows you to run more than one <B>ESS</B> process simultaneously in the
+<p>S will then (by default) ask the question
+</p><table><tr><td>&nbsp;</td><td><pre class="example">S starting data directory?
+</pre></td></tr></table>
+<p>Enter the name of the directory you wish to start S from (that is,
+the directory you would have <code>cd</code>'d to before starting S from
+the shell).  This directory should have a `<tt>.Data</tt>' subdirectory.
+
+</p><p>You will then be popped into a buffer
+<a name="IDX26"></a>
+<a name="IDX27"></a>
+with name `<samp>*S*</samp>' which will be used
+for interacting with the ESS process, and you can start entering commands.
+
+</p>
+<hr size="6">
+<a name="NOD14"></a>
+<a name="SEC14"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC13" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC15" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC12" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC12" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_4.html#SEC18" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> B.2 Running more than one ESS process </h2>
+
+<p>ESS allows you to run more than one ESS process simultaneously in the
 same session.  Each process has a name and a number; the initial process
-<A NAME="IDX36"></A>
-(process 1) is simply named (using S-PLUS as an example) <SAMP>`S+3:1'</SAMP>.
+<a name="IDX28"></a>
+(process 1) is simply named (using S-PLUS as an example) `<samp>S+3:1</samp>'.
 The name of the process is shown in the mode line in square brackets
-(for example, <SAMP>`[S+3:2]'</SAMP>); this is useful if the process buffer is
-renamed.  Without a prefix argument, <KBD>M-x S</KBD> starts a new <B>ESS</B>
+(for example, `<samp>[S+3:2]</samp>'); this is useful if the process buffer is
+renamed.  Without a prefix argument, <kbd>M-x S</kbd> starts a new ESS
 process, using the first available process number.  With a prefix
-argument (for R), <KBD>C-u M-x R</KBD> allows for the specification of
-command line options for the size of memory allocated to the R process,
-for example.
+argument (for R), <kbd>C-u M-x R</kbd> allows for the specification of
+command line options.
 
-
-<P>
-<A NAME="IDX37"></A>
-You can switch to any active <B>ESS</B> process with the command <KBD>C-c
-C-k</KBD> (<CODE>ess-request-a-process</CODE>).  Just enter the name of the process
+</p><a name="IDX29"></a>
+<p>You can switch to any active ESS process with the command
+`<samp>M-x ess-request-a-process</samp>'.  Just enter the name of the process
 you require; completion is provided over the names of all running S
 processes.  This is a good command to consider binding to a global key.
 
+</p>
 
-<P>
-<A NAME="IDX38"></A>
-For the predecessor to ESS (S-mode 4.8), the initial process was not
-visibly numbered, i.e. S instead of S1 was used in the mode-line.  To
-obtain this behavior, set the variable <CODE>ess-plain-first-buffername</CODE>
-to <CODE>t</CODE>.  See <TT>`ess-site'</TT> for how to set this for all users.
+<hr size="6">
+<a name="NOD15"></a>
+<a name="SEC15"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC14" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC16" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC12" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC12" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_4.html#SEC18" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> B.3 ESS processes on Remote Computers </h2>
 
-
-
-
-<H2><A NAME="SEC14" HREF="ess_toc.html#TOC14">ESS processes on Remote Computers</A></H2>
-<P>
-<A NAME="IDX39"></A>
-<A NAME="IDX40"></A>
-<A NAME="IDX41"></A>
-<A NAME="IDX42"></A>
-
-
-<P>
-ESS works with processes on remote computers as easily as with
+<p>ESS works with processes on remote computers as easily as with
 processes on the local machine.  The recommended way to access a
 statistical program on remote computer is to start it from a telnet or
 ssh buffer and then connect ESS to that buffer.
 
+</p><ol>
+<li><p> Start a new telnet or ssh buffer and connect to the remote computer
+(e.g. use `<samp>M-x telnet</samp>' or `<samp>M-x ssh</samp>'; ssh.el is available at
+<a href="ftp://ftp.splode.com/pub/users/friedman/emacs-lisp/ssh.el">ftp://ftp.splode.com/pub/users/friedman/emacs-lisp/ssh.el</a>).
 
+</p></li><li><p> Start the ESS process on the remote machine, for example with one of
+the commands `<samp>Splus</samp>', or `<samp>R</samp>', or `<samp>sas -stdio</samp>'.
 
-<OL>
-<LI>Start a new telnet or ssh buffer and connect to the remote computer.
-
-<LI>Start the ESS process on the remote machine, for example with one of
-
-the commands <SAMP>`Splus'</SAMP>, or <SAMP>`R'</SAMP>, or <SAMP>`sas -stdio'</SAMP>.
-
-<LI>Enter the ESS command <SAMP>`M-x ess-remote'</SAMP>.  You will be prompted for
-
-a program name.  Enter <SAMP>`sp6'</SAMP> or <SAMP>`r'</SAMP> or <SAMP>`sas'</SAMP> or another
+</p></li><li><p> Enter the ESS command `<samp>M-x ess-remote</samp>'.  You will be prompted for
+a program name.  Enter `<samp>sp6</samp>' or `<samp>r</samp>' or `<samp>sas</samp>' or another
 valid name.  Your telnet process is now known to ESS.  All the usual
-ESS commands (<SAMP>`C-c C-n'</SAMP> and its relatives) now work with the S
+ESS commands (`<samp>C-c C-n</samp>' and its relatives) now work with the S
 language processes.  For SAS you need to use a different command
-<SAMP>`C-c i'</SAMP> (that is a regular <SAMP>`i'</SAMP>, not a <SAMP>`C-i'</SAMP>) to send
-lines from your <TT>`myfile.sas'</TT> to the remote SAS process.
-<SAMP>`C-c i'</SAMP> sends lines over invisibly and lets SAS display them
+`<samp>C-c i</samp>' (that is a regular `<samp>i</samp>', not a `<samp>C-i</samp>') to send
+lines from your `<tt>myfile.sas</tt>' to the remote SAS process.
+`<samp>C-c i</samp>' sends lines over invisibly and lets SAS display them
 formatted correctly as in a SAS log file.
 
-<LI>Graphics (interactive) on the remote machine.  If you run X11
-
-(See section <A HREF="ess_11.html#SEC70">Using ESS with windowing devices</A>, X-windows)
+</p></li><li><p> Graphics (interactive) on the remote machine.  If you run X11
+(See section <a href="ess_11.html#SEC72">Using ESS with windowing devices</a>, X-windows)
 on both the local and remote machines then you should be able to
-display the graphs locally by setting the <SAMP>`DISPLAY'</SAMP> environment
-variable appropriately.  Windows users can download <SAMP>`xfree86'</SAMP>
+display the graphs locally by setting the `<samp>DISPLAY</samp>' environment
+variable appropriately.  Windows users can download `<samp>xfree86</samp>'
 from cygwin.
 
-<LI>Graphics (static) on the remote machine.
-
-If you don't run X-windows on the local machine, then you can write
+</p></li><li><p> Graphics (static) on the remote machine.
+If you don't run the X window system on the local machine, then you can write
 graphics to a file on the remote machine, and display the file in
 a graphics viewer on the local machine.  Most statistical software can
 write one or more of postscript, GIF, or JPEG files.
 Depending on the versions of emacs and the operating system that you
-are running, emacs itself may display <SAMP>`.gif'</SAMP> and <SAMP>`.jpg'</SAMP>
+are running, emacs itself may display `<samp>.gif</samp>' and `<samp>.jpg</samp>'
 files.  Otherwise, a graphics file viewer will be needed.
-Ghostscript/ghostview may be downloaded to display <SAMP>`.ps'</SAMP> and
-<SAMP>`.eps'</SAMP> files.  Viewers for GIF and JPEG are usually included with
-operating systems.  See section <A HREF="ess_5.html#SEC30">ESS[SAS]--Function keys for batch processing</A>,
+Ghostscript/ghostview may be downloaded to display `<samp>.ps</samp>' and
+`<samp>.eps</samp>' files.  Viewers for GIF and JPEG are usually included with
+operating systems.  See section <a href="ess_5.html#SEC31">ESS[SAS]-Function keys for batch processing</a>,
 for more information on using the F12 key for displaying graphics files
 with SAS.
-</OL>
+</p></li></ol>
 
-<P>
-Should you or a colleague inadvertently start a statistical process in
-an ordinary <SAMP>`*shell*'</SAMP> buffer, the <SAMP>`ess-remote'</SAMP> command can
+<p>Should you or a colleague inadvertently start a statistical process in
+an ordinary `<samp>*shell*</samp>' buffer, the `<samp>ess-remote</samp>' command can
 be used to convert it to an ESS buffer and allow you to use the ESS
 commands with it.
 
-
-<P>
-We have two older commands, now deprecated, for accessing ESS processes
+</p><p>We have two older commands, now deprecated, for accessing ESS processes
 on remote computers.
-See section <A HREF="ess_3.html#SEC15">S+elsewhere and ess-elsewhere</A>.
+See section <a href="#SEC16">S+elsewhere and ESS-elsewhere</a>.
 
+</p>
+<hr size="6">
+<a name="NOD16"></a>
+<a name="SEC16"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC15" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC17" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC12" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC12" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_4.html#SEC18" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> B.4 S+elsewhere and ESS-elsewhere </h2>
 
+<p>These commands are now deprecated.  We recommend `<samp>ess-remote</samp>'.
 
+</p>
+<p>We have two versions of the elsewhere function.
 
-<H2><A NAME="SEC15" HREF="ess_toc.html#TOC15">S+elsewhere and ess-elsewhere</A></H2>
+</p><p>`<samp>S+elsewhere</samp>' is specific for the S-Plus program.
+The more general function `<samp>ESS-elsewhere</samp>' is not as stable.
 
-<P>
-These commands are now deprecated.  We recommend <SAMP>`ess-remote'</SAMP>.
-
-
-<P>
-We have two versions of the elsewhere function.
-
-
-<P>
-<SAMP>`S+elsewhere'</SAMP> is specific for the S-Plus program.
-The more general function <SAMP>`ess-elsewhere'</SAMP> is not as stable.
-
-
-
-<OL>
-<LI>Enter <SAMP>`M-x S+elsewhere'</SAMP>.
-
+</p><ol>
+<li><p> Enter `<samp>M-x S+elsewhere</samp>'.
 You will be prompted for a starting directory.  I usually give it my
-project directory on the local machine, say  <SAMP>`~myname/myproject/'</SAMP>
+project directory on the local machine, say  `<samp>~myname/myproject/</samp>'
 
-Or enter <SAMP>`M-x ess-elsewhere'</SAMP>.  You will be prompted for an ESS
+</p><p>Or enter `<samp>M-x ESS-elsewhere</samp>'.  You will be prompted for an ESS
 program and for a starting directory.  I usually give it my project
-directory on the local machine, say <SAMP>`~myname/myproject/'</SAMP>
+directory on the local machine, say `<samp>~myname/myproject/</samp>'
 
-<LI>The <SAMP>`*S+3*'</SAMP> buffer will appear with a prompt from the
-
+</p></li><li><p> The `<samp>*S+3*</samp>' buffer will appear with a prompt from the
 local operating system (the unix prompt on a unix workstation or with
 cygwin bash on a PC, or the msdos prompt on a PC without bash).  emacs
 may freeze because the cursor is at the wrong place.  Unfreeze it with
-<SAMP>`C-g'</SAMP> then move the cursor to the end with <SAMP>`M-&#62;'</SAMP>.
-With <SAMP>`S+elsewhere'</SAMP> the buffer name is based on the name of the ESS program.
-<LI>Enter
-
-<SAMP>`telnet myname@other.machine'</SAMP> (or <SAMP>`ssh myname@other.machine'</SAMP>).
+`<samp>C-g</samp>' then move the cursor to the end with `<samp>M-&gt;</samp>'.
+With `<samp>S+elsewhere</samp>' the buffer name is based on the name of the ESS program.
+</p></li><li><p> Enter
+`<samp>telnet myname@other.machine</samp>' (or `<samp>ssh myname@other.machine</samp>').
 You will be prompted for your password on the remote machine.
 Use
-<SAMP>`M-x send-invisible'</SAMP>
+`<samp>M-x send-invisible</samp>'
 before typing the password itself.
 
-<LI>Before starting the ESS process, type <SAMP>`stty -echo nl'</SAMP>
+</p></li><li><p> Before starting the ESS process, type `<samp>stty -echo nl</samp>'
+at the unix prompt.  The `<samp>-echo</samp>' turns off the echo, the
+`<samp>nl</samp>' turns off the newline that you see as `<samp>^M</samp>'.
 
-at the unix prompt.  The <SAMP>`-echo'</SAMP> turns off the echo, the
-<SAMP>`nl'</SAMP> turns off the newline that you see as <SAMP>`^M'</SAMP>.
-
-<LI>You are now talking to the unix prompt on the other machine in the
-
-<SAMP>`*S+3*'</SAMP> buffer.  cd into the directory for the current project and start
+</p></li><li><p> You are now talking to the unix prompt on the other machine in the
+`<samp>*S+3*</samp>' buffer.  cd into the directory for the current project and start
 the ESS process by entering
-<SAMP>`Splus'</SAMP> or <SAMP>`R'</SAMP> or <SAMP>`sas -stdio'</SAMP>
+`<samp>Splus</samp>' or `<samp>R</samp>' or `<samp>sas -stdio</samp>'
 as appropriate.  If you can login remotely to your Windows 2000, then
-you should be able to run <SAMP>`Sqpe'</SAMP> on the Windows machine.  I haven't
+you should be able to run `<samp>Sqpe</samp>' on the Windows machine.  I haven't
 tested this and noone has reported their tests to me.  You will not be
 able to run the GUI through this text-only connection.
 
-<LI>Once you get the S or R or SAS prompt, then you are completely connected.
+</p></li><li><p> Once you get the S or R or SAS prompt, then you are completely connected.
+All the `<samp>C-c C-n</samp>' and related commands work correctly in sending
+commands from `<samp>myfile.s</samp>' or `<samp>myfile.r</samp>' on the PC to the
+`<samp>*S+3*</samp>' buffer running the S or R or SAS program on the remote machine.
 
-All the <SAMP>`C-c C-n'</SAMP> and related commands work correctly in sending
-commands from <SAMP>`myfile.s'</SAMP> or <SAMP>`myfile.r'</SAMP> on the PC to the
-<SAMP>`*S+3*'</SAMP> buffer running the S or R or SAS program on the remote machine.
-
-<LI>Graphics on the remote machine works fine.  If you run X-windows
-
-graphics on the remote unix machine you should be able to display them
-in <SAMP>`xfree86'</SAMP> on your PC.  If you don't run X-windows, then you can write
-graphics to the postscript device and copy it to your PC with dired
-and display it with ghostscript.
-</OL>
+</p></li><li><p> Graphics on the remote machine works fine.  If you run the X window
+sysyem on the remote unix machine you should be able to display them in
+`<samp>xfree86</samp>' on your PC.  If you don't run X11, then you can write
+graphics to the postscript device and copy it to your PC with dired and
+display it with ghostscript.
+</p></li></ol>
 
 
+<hr size="6">
+<a name="NOD17"></a>
+<a name="SEC17"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC16" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess_4.html#SEC18" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC12" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC12" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_4.html#SEC18" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> B.5 Changing the startup actions </h2>
 
-<H2><A NAME="SEC16" HREF="ess_toc.html#TOC16">Changing the startup actions</A></H2>
-
-<P>
-If you do not wish ESS to prompt for a starting directory when starting
-a new process, set the variable <CODE>ess-ask-for-ess-directory</CODE> to
-<A NAME="IDX43"></A>
-<CODE>nil</CODE>.  In this case, the value of the variable <CODE>ess-directory</CODE>
-<A NAME="IDX44"></A>
+<p>If you do not wish ESS to prompt for a starting directory when starting
+a new process, set the variable <code>ess-ask-for-ess-directory</code> to
+<a name="IDX30"></a>
+<code>nil</code>.  In this case, the value of the variable <code>ess-directory</code>
+<a name="IDX31"></a>
 is used as the starting directory.  The default value for this variable
-is your home directory.  If <CODE>ess-ask-for-ess-directory</CODE> has a
-non-<CODE>nil</CODE> value (as it does by default) then the value of
-<CODE>ess-directory</CODE> provides the default when prompting for the
-starting directory.  Incidentally, <CODE>ess-directory</CODE> is an ideal
-variable to set in <CODE>ess-pre-run-hook</CODE>.
+is your home directory.  If <code>ess-ask-for-ess-directory</code> has a
+non-<code>nil</code> value (as it does by default) then the value of
+<code>ess-directory</code> provides the default when prompting for the
+starting directory.  Incidentally, <code>ess-directory</code> is an ideal
+variable to set in <code>ess-pre-run-hook</code>.
 
+</p><p>If you like to keep a record of your S sessions, set the variable
+<code>ess-ask-about-transfile</code> to <code>t</code>, and you will be asked for a
+filename for the transcript before the ESS process starts.
 
-<P>
-If you like to keep a records of your <B>S</B> sessions, set the variable
-<CODE>ess-ask-about-transfile</CODE> to <CODE>t</CODE>, and you will be asked for a
-filename for the transcript before the <B>ESS</B> process starts.
-
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-ask-about-transfile</B>
-<DD><A NAME="IDX45"></A>
-If non-<CODE>nil</CODE>, as for a file name in which to save the session
+</p><dl>
+<dt><u>User Option:</u> <b>ess-ask-about-transfile</b>
+<a name="IDX32"></a>
+</dt>
+<dd><p>If non-<code>nil</code>, as for a file name in which to save the session
 transcript.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<A NAME="IDX46"></A>
-Enter the name of a file in which to save the transcript at the prompt.
+<a name="IDX33"></a>
+<p>Enter the name of a file in which to save the transcript at the prompt.
 If the file doesn't exist it will be created (and you should give it a
-file name ending in <SAMP>`.St'</SAMP>; if the file already exists the
+file name ending in `<samp>.St</samp>'); if the file already exists the
 transcript will be appended to the file.  (Note: if you don't set this
 variable but you still want to save the transcript, you can still do it
-later -- see section <A HREF="ess_7.html#SEC47">Keeping a record of your <B>S</B> session</A>.)
+later -- see section <a href="ess_7.html#SEC48">Keeping a record of your S session</a>.)
 
-
-<P>
-Once these questions are answered (if they are asked at all) the S
+</p><p>Once these questions are answered (if they are asked at all) the S
 process itself is started by calling the program name specified in the
-variable <CODE>inferior-ess-program</CODE>.
-<A NAME="IDX47"></A>
+variable <code>inferior-ess-program</code>.
+<a name="IDX34"></a>
 If you need to pass any arguments to this program, they may be specified
-in the variable <CODE>inferior-<VAR>S_program_name</VAR>-args</CODE> (e.g. if
-<CODE>inferior-ess-program</CODE> is <CODE>"S+"</CODE> then the variable to set is
-<CODE>inferior-S+-args</CODE>.
-<A NAME="IDX48"></A>
-It is not normally necessary to pass arguments to the <B>S</B> program; in
-particular do not pass the <SAMP>`-e'</SAMP> option to <CODE>Splus</CODE>, since ESS
+in the variable <code>inferior-<var>S_program_name</var>-args</code> (e.g. if
+<code>inferior-ess-program</code> is <code>&quot;S+&quot;</code> then the variable to set is
+<code>inferior-S+-args</code>.
+<a name="IDX35"></a>
+It is not normally necessary to pass arguments to the S program; in
+particular do not pass the `<samp>-e</samp>' option to <code>Splus</code>, since ESS
 provides its own command history mechanism.
 
+</p><p>By default, the new process will be displayed in another window in the
+current frame.  If you wish your S process to appear in a separate
+variable, customize the variable <code>inferior-ess-own-frame</code>.
 
-<P><HR><P>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_2.html">previous</A>, <A HREF="ess_4.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
-</BODY>
-</HTML>
+</p><hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC12" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess_4.html#SEC18" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Rodney Sparapani</em> on <em>June, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

@@ -1,194 +1,395 @@
-<HTML>
-<HEAD>
-<!-- Created by texi2html 1.56k from ess.texi on 21 October 2002 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created on June, 30 2004 by texi2html 1.70 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
 
-<TITLE>ESS -- Emacs Speaks Statistics - Other features of ESS</TITLE>
-</HEAD>
-<BODY>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_10.html">previous</A>, <A HREF="ess_12.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
-<P><HR><P>
+-->
+<head>
+<title>ESS -- Emacs Speaks Statistics: J. Other features of ESS</title>
+
+<meta name="description" content="ESS -- Emacs Speaks Statistics: J. Other features of ESS">
+<meta name="keywords" content="ESS -- Emacs Speaks Statistics: J. Other features of ESS">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.70">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+ul.toc {list-style: none}
+-->
+</style>
 
 
-<H1><A NAME="SEC66" HREF="ess_toc.html#TOC66">Other features of ESS</A></H1>
+</head>
 
-<P>
-ESS has a few miscellaneous features, which didn't fit anywhere else.
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 
+<a name="NOD68"></a>
+<a name="SEC68"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="ess_10.html#SEC67" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC69" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess_10.html#SEC65" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1 class="chapter"> J. Other features of ESS </h1>
 
+<p>ESS has a few miscellaneous features, which didn't fit anywhere else.
 
-<UL>
-<LI><A HREF="ess_11.html#SEC67">Highlighting</A>: Syntactic highlighting of buffers
-<LI><A HREF="ess_11.html#SEC68">Graphics</A>: Using graphics with ESS
-<LI><A HREF="ess_11.html#SEC71">Object Completion</A>
-</UL>
+</p><table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC69">J.1 Syntactic highlighting of buffers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC70">J.2 Using graphics with ESS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC74">J.3 Imenu</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">                       Support for Imenu in ESS
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC75">J.4 Toolbar</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">                     Support for toolbar in ESS
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC76">J.5 Object Completion</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
 
+<hr size="6">
+<a name="NOD69"></a>
+<a name="SEC69"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC68" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC70" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> J.1 Syntactic highlighting of buffers </h2>
 
+<p>ESS provides Font-Lock (see <a href="../emacs/Faces.html">(emacs)Faces</a> section `Using Multiple Typefaces' in <cite>The Gnu Emacs Reference Manual</cite>) patterns for Inferior S Mode, S
+Mode, and S Transcript Mode buffers.
+<a name="IDX181"></a>
+<a name="IDX182"></a>
 
-<H2><A NAME="SEC67" HREF="ess_toc.html#TOC67">Syntactic highlighting of buffers</A></H2>
-
-<P>
-ESS provides Font-Lock (see section `Using Multiple Typefaces' in <CITE>The Gnu Emacs Reference Manual</CITE>) patterns for Inferior <B>S</B> Mode, S
-Mode, and <B>S</B> Transcript Mode buffers.
-<A NAME="IDX211"></A>
-<A NAME="IDX212"></A>
-
-
-<P>
-To activate the highlighting, you need to turn on Font Lock mode in the
+</p><p>To activate highlighting, you need to turn on Font Lock mode in the
 appropriate buffers.  This can be done on a per-buffer basis with
-<KBD>M-x font-lock-mode</KBD>, or may be done by adding
-<CODE>turn-on-font-lock</CODE> to <CODE>inferior-ess-mode-hook</CODE>,
-<CODE>ess-mode-hook</CODE> and <CODE>ess-transcript-mode-hook</CODE>
-(see section <A HREF="ess_13.html#SEC82">Customizing ESS with hooks</A>).  Your systems administrator may have done this for you
-in <TT>`ess-site.el'</TT> (see section <A HREF="ess_13.html#SEC76">Customizing ESS</A>).
+<kbd>M-x font-lock-mode</kbd>, or may be done by adding
+<code>turn-on-font-lock</code> to <code>inferior-ess-mode-hook</code>,
+<code>ess-mode-hook</code> and <code>ess-transcript-mode-hook</code>
+(see section <a href="ess_13.html#SEC88">Customizing ESS with hooks</a>).  Your systems administrator may have done this for you
+in `<tt>ess-site.el</tt>' (see section <a href="ess_13.html#SEC81">Customizing ESS</a>).
 
-
-<P>
-The font-lock patterns are defined in three variables, which you may
+</p><p>The font-lock patterns are defined in three variables, which you may
 modify if desired:
 
-
-<P>
-<DL>
-<DT><U>Variable:</U> <B>ess-inf-font-lock-keywords</B>
-<DD><A NAME="IDX213"></A>
-Font-lock patterns for Inferior <B>ESS</B> Mode.  The default value
+</p><dl>
+<dt><u>Variable:</u> <b>inferior-ess-font-lock-keywords</b>
+<a name="IDX183"></a>
+</dt>
+<dd><p>Font-lock patterns for Inferior ESS Mode.  The default value
 highlights prompts, inputs, assignments, output messages, vector and
-matrix labels, and literals such as <SAMP>`NA'</SAMP> and <CODE>TRUE</CODE>.
-</DL>
+matrix labels, and literals such as `<samp>NA</samp>' and <code>TRUE</code>.
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>Variable:</U> <B>ESS-font-lock-keywords</B>
-<DD><A NAME="IDX214"></A>
-Font-lock patterns for <B>ESS</B> programming mode.  The default value
+<dl>
+<dt><u>Variable:</u> <b>ess-mode-font-lock-keywords</b>
+<a name="IDX184"></a>
+</dt>
+<dd><p>Font-lock patterns for ESS programming mode.  The default value
 highlights function names, literals, assignments, source functions and
 reserved words.
-</DL>
+</p></dd></dl>
 
+<dl>
+<dt><u>Variable:</u> <b>ess-trans-font-lock-keywords</b>
+<a name="IDX185"></a>
+</dt>
+<dd><p>Font-lock patterns for ESS Transcript Mode.  The default value
+highlights the same patterns as in Inferior ESS Mode.
+</p></dd></dl>
 
-<P>
-<DL>
-<DT><U>Variable:</U> <B>ess-trans-font-lock-keywords</B>
-<DD><A NAME="IDX215"></A>
-Font-lock patterns for <B>ESS</B> Transcript Mode.  The default value
-highlights the same stuff as in Inferior <B>ESS</B> Mode.
-</DL>
+<hr size="6">
+<a name="NOD70"></a>
+<a name="SEC70"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC69" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC71" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> J.2 Using graphics with ESS </h2>
 
-
-
-
-<H2><A NAME="SEC68" HREF="ess_toc.html#TOC68">Using graphics with ESS</A></H2>
-
-<P>
-<A NAME="IDX216"></A>
-One of the main features of the <CODE>S</CODE> package is its ability to
+<p>One of the main features of the <code>S</code> package is its ability to
 generate high-resolution graphics plots, and ESS provides a number of
 features for dealing with such plots.
 
+</p><table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC71">J.2.1 Using ESS with the <code>printer()</code> driver</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">                     The printer() graphics driver
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC72">J.2.2 Using ESS with windowing devices</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">                         The X11() (and other X-windows based) driver
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC73">J.2.3 Java Graphics Device</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
 
+<hr size="6">
+<a name="NOD71"></a>
+<a name="SEC71"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC70" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC72" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC70" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> J.2.1 Using ESS with the <code>printer()</code> driver </h3>
 
-<UL>
-<LI><A HREF="ess_11.html#SEC69">printer</A>: The printer() graphics driver
-<LI><A HREF="ess_11.html#SEC70">X11</A>: The X11() (and other X-windows based) driver
-</UL>
-
-
-
-<H3><A NAME="SEC69" HREF="ess_toc.html#TOC69">Using ESS with the <CODE>printer()</CODE> driver</A></H3>
-
-<P>
-This is the simplest (and least desirable) method of using graphics
-within ESS.  S's <CODE>printer()</CODE> device driver produces crude character
-based plots which can be contained within the <B>ESS</B> process buffer
-itself.  To start using character graphics, issue the <B>S</B> command
-
-<PRE>
-printer(width=79)
-</PRE>
-
-<P>
-<A NAME="IDX217"></A>
-(the <CODE>width=79</CODE> argument prevents Emacs line-wrapping at column
+<p>This is the simplest (and least desirable) method of using graphics
+within ESS.  S's <code>printer()</code> device driver produces crude character
+based plots which can be contained within the ESS process buffer
+itself.  To start using character graphics, issue the S command
+</p><table><tr><td>&nbsp;</td><td><pre class="example">printer(width=79)
+</pre></td></tr></table><a name="IDX186"></a>
+<p>(the <code>width=79</code> argument prevents Emacs line-wrapping at column
 80 on an 80-column terminal.  Use a different value for a terminal with
 a different number of columns.) Plotting commands do not generate
-graphics immediately, but are stored until the <CODE>show()</CODE> command
+graphics immediately, but are stored until the <code>show()</code> command
 is issued, which displays the current figure.
 
+</p><hr size="6">
+<a name="NOD72"></a>
+<a name="SEC72"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC71" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC73" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC70" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> J.2.2 Using ESS with windowing devices </h3>
 
-
-
-<H3><A NAME="SEC70" HREF="ess_toc.html#TOC70">Using ESS with windowing devices</A></H3>
-
-<P>
-<A NAME="IDX218"></A>
-Of course, the ideal way to use graphics with ESS is to use a windowing
-system.  Under X windows, this requires that the DISPLAY environment
+<p>Of course, the ideal way to use graphics with ESS is to use a windowing
+system.  Under X11, this requires that the DISPLAY environment
 variable be appropriately set, which may not always be the case within
 your Emacs process.  ESS provides a facility for setting the value of
-DISPLAY before the <B>ESS</B> process is started if the variable
-<CODE>ess-ask-about-display</CODE>
-<A NAME="IDX219"></A>
-is non-<CODE>nil</CODE>.  See section <A HREF="ess_13.html#SEC76">Customizing ESS</A>, for details of this variable,
-and see section <A HREF="ess_3.html#SEC12">Starting the <B>ESS</B> process</A> for information on how to set the value of
-DISPLAY when beginning an <B>S</B> session.
+DISPLAY before the ESS process is started if the variable
+<code>ess-ask-about-display</code>
+<a name="IDX187"></a>
+is non-<code>nil</code>.  See section <a href="ess_13.html#SEC83">Variables for starting ESS</a>, for details of
+this variable.
+
+</p><hr size="6">
+<a name="NOD73"></a>
+<a name="SEC73"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC72" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC74" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC70" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> J.2.3 Java Graphics Device </h3>
 
 
+<p>S+6.2 on Windows contains a java library that supports graphics.  Send
+the commands:
+
+</p><table><tr><td>&nbsp;</td><td><pre class="example">library(winjava)
+java.graph()
+</pre></td></tr></table>
+<p>to start the graphics driver.  This allows you to use ESS for both
+interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
+this information.)
+
+</p><hr size="6">
+<a name="NOD74"></a>
+<a name="SEC74"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC73" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC75" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> J.3 Imenu </h2>
+
+<p>Imenu is an Emacs tool for providing mode-specific buffer indexes.  In
+some of the ESS editing modes, support for Imenu is provided.  For
+example, in S mode buffers, the menubar should display an item called
+&quot;Imenu-S&quot;.  Within this menubar you will then be offered bookmarks to
+particular parts of your source file (such as the starting point of each
+function definition).
+
+</p><hr size="6">
+<a name="NOD75"></a>
+<a name="SEC75"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC74" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC76" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> J.4 Toolbar </h2>
+
+<p>The R and S editing modes have support for a toolbar.  This toolbar
+provides icons to act as shortcuts for starting new S/R processes, or
+for evaluating regions of your source buffers.  The toolbar should be
+present if your emacs can display images.  See section <a href="ess_13.html#SEC81">Customizing ESS</a>, for ways
+to change the toolbar.
+
+</p>
+<hr size="6">
+<a name="NOD76"></a>
+<a name="SEC76"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC75" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC68" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> J.5 Object Completion </h2>
 
 
-<H2><A NAME="SEC71" HREF="ess_toc.html#TOC71">Object Completion</A></H2>
-
-<P>
-If you are running S-PLUS or R, you might consider installing the
-database files.  From within (X)Emacs, "C-x d" to the directory
+<p>If you are running S-PLUS or R, you might consider installing the
+database files.  From within Emacs, &quot;C-x d&quot; to the directory
 containing ESS.  Now:
 
+</p><p><code>M-x S+3</code>
 
-<P>
-<CODE>M-x S+3</CODE>
+</p><p>(get S-PLUS running.  once you have reached the SPLUS 3.x prompt, do:)
 
+</p><p><code>M-x ess-create-object-name-db</code>
 
-<P>
-(get S-PLUS running.  once you have reached the SPLUS 3.x prompt, do:)
-
-
-<P>
-<CODE>M-x ess-create-object-name-db</CODE>
-
-
-<P>
-(this will create the file: ess-s+3-namedb.el; if it isn't in the ESS
+</p><p>(this will create the file: ess-s+3-namedb.el; if it isn't in the ESS
 directory, move it there).
 
-
-<P>
-Then, completions will be autoloaded and will not be regenerated for
+</p><p>Then, completions will be autoloaded and will not be regenerated for
 every session.
 
+</p><p>For R:
 
-<P>
-For R:
+</p><p><code>M-x R</code>
 
+</p><p>(get R running.  once you have reached the R prompt, do:)
 
-<P>
-<CODE>M-x R</CODE>
+</p><p><code>M-x ess-create-object-name-db</code>
 
-
-<P>
-(get R running.  once you have reached the R prompt, do:)
-
-
-<P>
-<CODE>M-x ess-create-object-name-db</CODE>
-
-
-<P>
-(this will create the file: ess-r-namedb.el; if it isn't in the ESS
+</p><p>(this will create the file: ess-r-namedb.el; if it isn't in the ESS
 directory, move it there).
 
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC68" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Rodney Sparapani</em> on <em>June, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
+ </font>
+ <br>
 
-<P><HR><P>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_10.html">previous</A>, <A HREF="ess_12.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
-</BODY>
-</HTML>
+</p>
+</body>
+</html>

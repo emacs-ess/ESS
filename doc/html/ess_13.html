@@ -1,527 +1,690 @@
-<HTML>
-<HEAD>
-<!-- Created by texi2html 1.56k from ess.texi on 21 October 2002 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created on June, 30 2004 by texi2html 1.70 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
 
-<TITLE>ESS -- Emacs Speaks Statistics - Customizing ESS</TITLE>
-</HEAD>
-<BODY>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_12.html">previous</A>, <A HREF="ess_14.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
-<P><HR><P>
+-->
+<head>
+<title>ESS -- Emacs Speaks Statistics: L. Customizing ESS</title>
+
+<meta name="description" content="ESS -- Emacs Speaks Statistics: L. Customizing ESS">
+<meta name="keywords" content="ESS -- Emacs Speaks Statistics: L. Customizing ESS">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.70">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+ul.toc {list-style: none}
+-->
+</style>
 
 
-<H1><A NAME="SEC76" HREF="ess_toc.html#TOC76">Customizing ESS</A></H1>
-<P>
-<A NAME="IDX223"></A>
+</head>
 
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 
-<P>
-ESS can be easily customized to your taste simply by including the
-appropriate lines in your <TT>`.emacs'</TT> file.  There are numerous
+<a name="NOD81"></a>
+<a name="SEC81"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="ess_12.html#SEC80" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC82" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess_12.html#SEC77" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1 class="appendix"> L. Customizing ESS </h1>
+
+<p>ESS can be easily customized to your taste simply by including the
+appropriate lines in your `<tt>.emacs</tt>' file.  There are numerous
 variables which affect the behavior of ESS in certain situations which
 can be modified to your liking.  Keybindings may be set or changed to
 your preferences, and for per-buffer customizations hooks are also
 available.
 
+</p><p>Most of these variables can be viewed and set using the Custom facility
+within Emacs.  Type <kbd>M-x customize-group RET ess RET</kbd> to see all the
+ESS variables that can be customized.
 
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC82">L.1 Variables for customization</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC88">L.2 Customizing ESS with hooks</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC89">L.3 Changing the default ESS keybindings</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
 
-<UL>
-<LI><A HREF="ess_13.html#SEC77">Variables</A>: Variables for customization
-<LI><A HREF="ess_13.html#SEC82">Hooks</A>: Customizing ESS with hooks
-<LI><A HREF="ess_13.html#SEC83">Keybindings</A>: Changing the default ESS keybindings
-</UL>
+<hr size="6">
+<a name="NOD82"></a>
+<a name="SEC82"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC81" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC83" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC81" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC81" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="appendixsec"> L.1 Variables for customization </h2>
 
-
-
-<H2><A NAME="SEC77" HREF="ess_toc.html#TOC77">Variables for customization</A></H2>
-<P>
-<A NAME="IDX224"></A>
-
-
-<P>
-ESS is easily customizable by means of setting variables in your
-<TT>`.emacs'</TT> file.
-<A NAME="IDX225"></A>
+<p>ESS is easily customizable by means of setting variables in your
+`<tt>.emacs</tt>' file.
+<a name="IDX188"></a>
 In most cases, you can change defaults by including lines of the form
-<A NAME="IDX226"></A>
+<a name="IDX189"></a>
+</p><table><tr><td>&nbsp;</td><td><pre class="example">(setq <var>variable-name</var> <var>value</var>)
+</pre></td></tr></table>
+<p>in your `<tt>.emacs</tt>'.
 
-<PRE>
-(setq <VAR>variable-name</VAR> <VAR>value</VAR>)
-</PRE>
-
-<P>
-in your <TT>`.emacs'</TT>.
-
-
-<P>
-In what follows, variable names will be listed along with their
+</p><p>In what follows, variable names will be listed along with their
 descriptions and default values.  Just substitute the variable name and
 the new value into the template above.
 
+</p><table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC83">L.1.1 Variables for starting ESS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC84">L.1.2 Variables for dump files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC85">L.1.3 Variables controlling indentation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC86">L.1.4 Variables controlling interaction with the ESS process</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC87">L.1.5 Variables for restoring assembly mode associations</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
 
+<hr size="6">
+<a name="NOD83"></a>
+<a name="SEC83"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC82" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC84" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC81" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC82" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="appendixsubsec"> L.1.1 Variables for starting ESS </h3>
 
-<UL>
-<LI><A HREF="ess_13.html#SEC78">Variables for starting ESS</A>: Variables for starting ESS
-<LI><A HREF="ess_13.html#SEC79">Dump file variables</A>: Variables for dump files
-<LI><A HREF="ess_13.html#SEC80">Indentation variables</A>: Variables controlling indentation
-<LI><A HREF="ess_13.html#SEC81">Variables controlling interaction</A>: Variables controlling interaction
-					with the <B>ESS</B> process
-</UL>
-
-
-
-<H3><A NAME="SEC78" HREF="ess_toc.html#TOC78">Variables for starting ESS</A></H3>
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-ask-for-ess-directory</B>
-<DD><A NAME="IDX227"></A>
-Default: <CODE>t</CODE> <BR>
-<A NAME="IDX228"></A>
-<A NAME="IDX229"></A>
-If this variable has a non-<CODE>nil</CODE> value, then every time ESS is
-run with <KBD>M-x S</KBD>
-<A NAME="IDX230"></A>
+<dl>
+<dt><u>User Option:</u> <b>ess-ask-for-ess-directory</b>
+<a name="IDX190"></a>
+</dt>
+<dd><p>Default: <code>t</code> <br>
+<a name="IDX191"></a>
+<a name="IDX192"></a>
+If this variable has a non-<code>nil</code> value, then every time ESS is
+run with <kbd>M-x S</kbd>
+<a name="IDX193"></a>
 you will be prompted for a directory to use as the working directory for
-your <B>S</B> session; this directory should have a <TT>`.Data'</TT>
+your S session; this directory should have a `<tt>.Data</tt>'
 subdirectory.
-<A NAME="IDX231"></A>
-If the value of <CODE>ess-ask-for-ess-directory</CODE> is <CODE>nil</CODE>, the
-value of <CODE>S-directory</CODE>
-<A NAME="IDX232"></A>
+<a name="IDX194"></a>
+If the value of <code>ess-ask-for-ess-directory</code> is <code>nil</code>, the
+value of <code>S-directory</code>
+<a name="IDX195"></a>
 is used as the working directory.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>S-directory</B>
-<DD><A NAME="IDX233"></A>
-Default: Your home directory <BR> The working directory for your <B>S</B>
-session if <CODE>ess-ask-for-ess-directory</CODE> is <CODE>nil</CODE>, and the
+<dl>
+<dt><u>User Option:</u> <b>S-directory</b>
+<a name="IDX196"></a>
+</dt>
+<dd><p>Default: Your home directory <br> The working directory for your S
+session if <code>ess-ask-for-ess-directory</code> is <code>nil</code>, and the
 default when prompting for a directory if it is not.  For example, you
 may wish to set this to the value of the current buffer's working
-directory before starting <B>S</B> by adding the following line to your
-<TT>`.emacs'</TT> file (see section <A HREF="ess_13.html#SEC82">Customizing ESS with hooks</A>)
-<A NAME="IDX234"></A>
-
-<PRE>
-(setq ess-pre-run-hook
+directory before starting S by adding the following line to your
+`<tt>.emacs</tt>' file (see section <a href="#SEC88">Customizing ESS with hooks</a>)
+<a name="IDX197"></a>
+</p><table><tr><td>&nbsp;</td><td><pre class="example">(setq ess-pre-run-hook
    '((lambda () (setq S-directory default-directory))))
-</PRE>
+</pre></td></tr></table></dd></dl>
 
-</DL>
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-ask-about-display</B>
-<DD><A NAME="IDX235"></A>
-Default: <CODE>nil</CODE> <BR>
-If this variable has a non-<CODE>nil</CODE> value, then every time ESS is
-run with <KBD>M-x S</KBD>
-<A NAME="IDX236"></A>
-you will be asked for a value for the <CODE>DISPLAY</CODE> environment
+<dl>
+<dt><u>User Option:</u> <b>ess-ask-about-display</b>
+<a name="IDX198"></a>
+</dt>
+<dd><p>Default: <code>nil</code> <br>
+If this variable has a non-<code>nil</code> value, then every time ESS is
+run with <kbd>M-x S</kbd>
+<a name="IDX199"></a>
+you will be asked for a value for the <code>DISPLAY</code> environment
 variable
-<A NAME="IDX237"></A>
-<A NAME="IDX238"></A>
-to be used in the current <B>S</B> session.  If this variable is not set
-correctly, <B>S</B> will not be able to create any windows under the X
+<a name="IDX200"></a>
+<a name="IDX201"></a>
+to be used in the current S session.  If this variable is not set
+correctly, S will not be able to create any windows under the X
 windowing environment.
-<A NAME="IDX239"></A>
-Completion is provided over the <CODE>X-displays-list</CODE> variable; the
-default is the current value of <CODE>DISPLAY</CODE>.  This feature is useful
-is you often run <B>S</B> on a different display than that of the machine you
-are running <B>S</B> from.  If
-<CODE>ess-ask-about-display</CODE> is <CODE>nil</CODE>, the current value of
-<CODE>DISPLAY</CODE> is used.
-</DL>
+<a name="IDX202"></a>
+Completion is provided over the <code>X-displays-list</code> variable; the
+default is the current value of <code>DISPLAY</code>.  This feature is useful
+is you often run S on a different display than that of the machine you
+are running S from.  If
+<code>ess-ask-about-display</code> is <code>nil</code>, the current value of
+<code>DISPLAY</code> is used.
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>X-displays-list</B>
-<DD><A NAME="IDX240"></A>
-Default: <CODE>'(":0.0")</CODE> <BR>
-List of possible values for the <CODE>DISPLAY</CODE> environment variable,
+<dl>
+<dt><u>User Option:</u> <b>X-displays-list</b>
+<a name="IDX203"></a>
+</dt>
+<dd><p>Default: <code>'(&quot;:0.0&quot;)</code> <br>
+List of possible values for the <code>DISPLAY</code> environment variable,
 provided for completion when prompting for such a value.
-</DL>
+</p></dd></dl>
 
+<hr size="6">
+<a name="NOD84"></a>
+<a name="SEC84"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC83" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC85" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC81" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC82" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="appendixsubsec"> L.1.2 Variables for dump files </h3>
 
-
-
-<H3><A NAME="SEC79" HREF="ess_toc.html#TOC79">Variables for dump files</A></H3>
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-insert-function-templates</B>
-<DD><A NAME="IDX241"></A>
-Default: <CODE>t</CODE> <BR> If this variable has a non-<CODE>nil</CODE> value, then
+<dl>
+<dt><u>User Option:</u> <b>ess-insert-function-templates</b>
+<a name="IDX204"></a>
+</dt>
+<dd><p>Default: <code>t</code> <br> If this variable has a non-<code>nil</code> value, then
 dumping a non-existent object will result in the edit buffer containing
 a skeleton function definition, ready for editing.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-source-directory</B>
-<DD><A NAME="IDX242"></A>
-Default: <CODE>"/tmp/"</CODE> <BR>
-<A NAME="IDX243"></A>
-Directory name (ending in <SAMP>`/'</SAMP>) in which dump files are placed.  This
+<dl>
+<dt><u>User Option:</u> <b>ess-source-directory</b>
+<a name="IDX205"></a>
+</dt>
+<dd><p>Default: <code>&quot;/tmp/&quot;</code> <br>
+<a name="IDX206"></a>
+Directory name (ending in `<samp>/</samp>') in which dump files are placed.  This
 should always be a writable directory.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-source-directory-generator</B>
-<DD><A NAME="IDX244"></A>
-Default: <CODE>nil</CODE> <BR>
+<dl>
+<dt><u>User Option:</u> <b>ess-source-directory-generator</b>
+<a name="IDX207"></a>
+</dt>
+<dd><p>Default: <code>nil</code> <br>
 Alternative, dynamic method of specifying the directory for dump files.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-dump-filename-template</B>
-<DD><A NAME="IDX245"></A>
-Default: <VAR>user_name</VAR><CODE>.</CODE><VAR>object_name</VAR><CODE>.S</CODE> <BR>
-Naming system to use for dumped object files.  See section <A HREF="ess_8.html#SEC61">Names and locations of dump files</A>,
+<dl>
+<dt><u>User Option:</u> <b>ess-dump-filename-template</b>
+<a name="IDX208"></a>
+</dt>
+<dd><p>Default: <var>user_name</var><code>.</code><var>object_name</var><code>.S</code> <br>
+Naming system to use for dumped object files.  See section <a href="ess_8.html#SEC63">Names and locations of dump files</a>,
 for details of this and the previous two variables.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-keep-dump-files</B>
-<DD><A NAME="IDX246"></A>
-Default: <CODE>nil</CODE> <BR>
+<dl>
+<dt><u>User Option:</u> <b>ess-keep-dump-files</b>
+<a name="IDX209"></a>
+</dt>
+<dd><p>Default: <code>nil</code> <br>
 Boolean flag signifying whether to keep dump files or to delete them
-after each use.  See section <A HREF="ess_8.html#SEC60">Maintaining <B>S</B> source files</A>, for more details.
-</DL>
+after each use.  See section <a href="ess_8.html#SEC62">Maintaining S source files</a>, for more details.
+</p></dd></dl>
 
+<hr size="6">
+<a name="NOD85"></a>
+<a name="SEC85"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC84" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC86" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC81" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC82" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="appendixsubsec"> L.1.3 Variables controlling indentation </h3>
 
-
-
-<H3><A NAME="SEC80" HREF="ess_toc.html#TOC80">Variables controlling indentation</A></H3>
-<P>
-<A NAME="IDX247"></A>
-<A NAME="IDX248"></A>
-
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-tab-always-indent</B>
-<DD><A NAME="IDX249"></A>
-Default: <CODE>t</CODE> <BR>
-If non-<CODE>nil</CODE>, then <KBD>TAB</KBD> in the edit buffer always indents the
+<dl>
+<dt><u>User Option:</u> <b>ess-tab-always-indent</b>
+<a name="IDX210"></a>
+</dt>
+<dd><p>Default: <code>t</code> <br>
+If non-<code>nil</code>, then <kbd>TAB</kbd> in the edit buffer always indents the
 current line, regardless of the position of point in the line.
 Otherwise, indentation is only performed if point is in the lines
 indentation, and a tab character is inserted is point is after the first
 nonblank character.
-</DL>
+</p></dd></dl>
 
+<dl>
+<dt><u>User Option:</u> <b>ess-auto-newline</b>
+<a name="IDX211"></a>
+</dt>
+<dd><p>Default: <code>nil</code> <br>
+Non-<code>nil</code> means automatically newline before and after braces
+inserted in S code.
+</p></dd></dl>
 
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-auto-newline</B>
-<DD><A NAME="IDX250"></A>
-Default: <CODE>nil</CODE> <BR>
-Non-<CODE>nil</CODE> means automatically newline before and after braces
-inserted in <B>S</B> code.
-</DL>
-
-
-<P>
-The following variables control amounts of indentation.  These variables
+<p>The following variables control amounts of indentation.  These variables
 automatically become buffer-local in any ESS buffer, and so setting
 any of these variables has effect in the current buffer only.
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-indent-level</B>
-<DD><A NAME="IDX251"></A>
-Default: 2 <BR>
-Extra indentation of <B>S</B> statement sub-block with respect to enclosing
+</p>
+<dl>
+<dt><u>User Option:</u> <b>ess-indent-level</b>
+<a name="IDX212"></a>
+</dt>
+<dd><p>Default: 2 <br>
+Extra indentation of S statement sub-block with respect to enclosing
 braces.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-brace-imaginary-offset</B>
-<DD><A NAME="IDX252"></A>
-Default: 0 <BR>
+<dl>
+<dt><u>User Option:</u> <b>ess-brace-imaginary-offset</b>
+<a name="IDX213"></a>
+</dt>
+<dd><p>Default: 0 <br>
 Extra indentation (over sub-block indentation) for block following an
 open brace which follows on the same line as a statement.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-brace-offset</B>
-<DD><A NAME="IDX253"></A>
-Default: 0 <BR>
+<dl>
+<dt><u>User Option:</u> <b>ess-brace-offset</b>
+<a name="IDX214"></a>
+</dt>
+<dd><p>Default: 0 <br>
 Extra indentation for braces, compared with other text in same context.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-continued-statement-offset</B>
-<DD><A NAME="IDX254"></A>
-Default: 0 <BR>
+<dl>
+<dt><u>User Option:</u> <b>ess-continued-statement-offset</b>
+<a name="IDX215"></a>
+</dt>
+<dd><p>Default: 0 <br>
 Extra indent for lines not starting new statements.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-continued-brace-offset</B>
-<DD><A NAME="IDX255"></A>
-Default: 0 <BR>
+<dl>
+<dt><u>User Option:</u> <b>ess-continued-brace-offset</b>
+<a name="IDX216"></a>
+</dt>
+<dd><p>Default: 0 <br>
 Extra indent for substatements that start with open-braces.
-This is in addition to <CODE>ess-continued-statement-offset</CODE>.
-</DL>
+This is in addition to <code>ess-continued-statement-offset</code>.
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-arg-function-offset</B>
-<DD><A NAME="IDX256"></A>
-Default: 2 <BR>
-Extra indent for arguments of function <CODE>foo</CODE> when it is called as
+<dl>
+<dt><u>User Option:</u> <b>ess-arg-function-offset</b>
+<a name="IDX217"></a>
+</dt>
+<dd><p>Default: 2 <br>
+Extra indent for arguments of function <code>foo</code> when it is called as
 the value of an argument to another function in
-<CODE>arg=foo(...)</CODE> form.  If not number, the statements are indented at
-open-parenthesis following <CODE>foo</CODE>.
-</DL>
+<code>arg=foo(...)</code> form.  If not number, the statements are indented at
+open-parenthesis following <code>foo</code>.
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-expression-offset</B>
-<DD><A NAME="IDX257"></A>
-Default: 4 <BR>
+<dl>
+<dt><u>User Option:</u> <b>ess-expression-offset</b>
+<a name="IDX218"></a>
+</dt>
+<dd><p>Default: 4 <br>
 Extra indent for internal substatements of the call to
-<CODE>expression()</CODE> specified in
-<A NAME="IDX258"></A>
+<code>expression()</code> specified in
+<a name="IDX219"></a>
+</p><table><tr><td>&nbsp;</td><td><pre class="example"><code>obj &lt;- expression(...)</code>
+</pre></td></tr></table>
+<p>form.  If not a number, the statements are indented at open-parenthesis
+following `<samp>expression</samp>'.
+</p></dd></dl>
 
-<PRE>
-<CODE>obj &#60;- expression(...)</CODE>
-</PRE>
-
-<P>
-form.  If not a number, the statements are indented at open-parenthesis
-following <SAMP>`expression'</SAMP>.
-</DL>
-
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-else-offset</B>
-<DD><A NAME="IDX259"></A>
-Default: 2 <BR>
-Extra indentation of the <CODE>else</CODE> clause with respect to the
-corresponding <CODE>if</CODE>.
-</DL>
+<dl>
+<dt><u>User Option:</u> <b>ess-else-offset</b>
+<a name="IDX220"></a>
+</dt>
+<dd><p>Default: 2 <br>
+Extra indentation of the <code>else</code> clause with respect to the
+corresponding <code>if</code>.
+</p></dd></dl>
 
 
-<P>
-In addition, a number of default styles are defined for you (in
-<CODE>ess-style-alist</CODE>):
-<A NAME="IDX260"></A>
+<p>In addition, a number of default styles are defined for you (in
+<code>ess-style-alist</code>):
+<a name="IDX221"></a>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-default-style</B>
-<DD><A NAME="IDX261"></A>
-Default: <CODE>DEFAULT</CODE> <BR>
+</p><dl>
+<dt><u>User Option:</u> <b>ess-default-style</b>
+<a name="IDX222"></a>
+</dt>
+<dd><p>Default: <code>DEFAULT</code> <br>
 The default formatting style to use in edit buffers.  The DEFAULT style
 uses the values of the above indentation variables at load-time, so that
-changing these variables in your <TT>`.emacs'</TT> file will affect your
+changing these variables in your `<tt>.emacs</tt>' file will affect your
 buffer defaults.  Other styles are:
-<CODE>GNU</CODE>, <CODE>BSD</CODE>, <CODE>K&#38;R</CODE>, <CODE>CLB</CODE>, and <CODE>C++</CODE>.
-See <TT>`ess-cust.el'</TT> for the complete definitions of the styles.
-See section <A HREF="ess_8.html#SEC54">Creating or modifying <B>S</B> objects</A>, for more details.
-</DL>
+<code>GNU</code>, <code>BSD</code>, <code>K&amp;R</code>, <code>CLB</code>, and <code>C++</code>.
+See `<tt>ess-cust.el</tt>' for the complete definitions of the styles.
+See section <a href="ess_8.html#SEC56">Creating or modifying S objects</a>, for more details.
+</p></dd></dl>
 
+<hr size="6">
+<a name="NOD86"></a>
+<a name="SEC86"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC85" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC87" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC81" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC82" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="appendixsubsec"> L.1.4 Variables controlling interaction with the ESS process </h3>
 
-
-
-<H3><A NAME="SEC81" HREF="ess_toc.html#TOC81">Variables controlling interaction with the <B>ESS</B> process</A></H3>
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>comint-input-ring-size</B>
-<DD><A NAME="IDX262"></A>
-Default: 50 <BR>
+<dl>
+<dt><u>User Option:</u> <b>comint-input-ring-size</b>
+<a name="IDX223"></a>
+</dt>
+<dd><p>Default: 50 <br>
 Number of commands to store in the command history.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-execute-in-process-buffer</B>
-<DD><A NAME="IDX263"></A>
-Default: <CODE>nil</CODE> <BR>
-If this is <CODE>nil</CODE>, then the <CODE>ess-execute-</CODE> commands (see section <A HREF="ess_7.html#SEC52">Other commands provided by inferior-ESS</A>)
+<dl>
+<dt><u>User Option:</u> <b>ess-execute-in-process-buffer</b>
+<a name="IDX224"></a>
+</dt>
+<dd><p>Default: <code>nil</code> <br>
+If this is <code>nil</code>, then the <code>ess-execute-</code> commands (see section <a href="ess_7.html#SEC54">Other commands provided by inferior-ESS</a>)
 output to a temporary buffer.  Otherwise, the
-output goes to the <B>ESS</B> process.
-</DL>
+output goes to the ESS process.
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>User Option:</U> <B>ess-eval-visibly-p</B>
-<DD><A NAME="IDX264"></A>
-Default: <CODE>nil</CODE> <BR>
-If non-<CODE>nil</CODE>, then the <CODE>ess-eval-</CODE> commands (see section <A HREF="ess_8.html#SEC54">Creating or modifying <B>S</B> objects</A>) echo the <B>S</B> commands in the process buffer by default.  In any
+<dl>
+<dt><u>User Option:</u> <b>ess-eval-visibly-p</b>
+<a name="IDX225"></a>
+</dt>
+<dd><p>Default: <code>nil</code> <br>
+If non-<code>nil</code>, then the <code>ess-eval-</code> commands (see section <a href="ess_8.html#SEC56">Creating or modifying S objects</a>) echo the S commands in the process buffer by default.  In any
 case, passing a prefix argument to the eval command reverses the meaning
 of this variable.
-</DL>
+</p></dd></dl>
 
+<hr size="6">
+<a name="NOD87"></a>
+<a name="SEC87"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC86" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC88" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC81" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC82" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="appendixsubsec"> L.1.5 Variables for restoring assembly mode associations </h3>
 
+<dl>
+<dt><u>User Option:</u> <b>auto-mode-alist</b>
+<a name="IDX226"></a>
+</dt>
+<dd><p>Association list mapping file extensions to emacs modes.
+</p></dd></dl>
 
+<a name="IDX227"></a>
+<a name="IDX228"></a>
+<a name="IDX229"></a>
+<p>If you edit assembler files but not S files, you may want to retain
+the default mode for the .s and .S extensions, namely assembler
+mode.  ESS provides a function, <code>ess-restore-asm-extns</code> that you
+can use to restore default behavior for these files.
 
-<H2><A NAME="SEC82" HREF="ess_toc.html#TOC82">Customizing ESS with hooks</A></H2>
-<P>
-<A NAME="IDX265"></A>
+</p><p>You can add the following lisp to your `<tt>.emacs</tt>':
+</p><table><tr><td>&nbsp;</td><td><pre class="example">(add-hook 'ess-mode-hook 'ess-restore-asm-extns)
+(add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
+</pre></td></tr></table>
+<p>This code removes the association between .s and .S files and S
+mode.
 
+</p><hr size="6">
+<a name="NOD88"></a>
+<a name="SEC88"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC87" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC89" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC81" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC81" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="appendixsec"> L.2 Customizing ESS with hooks </h2>
 
-<P>
-ESS provides the following hooks:
+<p>ESS provides the following hooks:
 
+</p><dl>
+<dt><u>Hook:</u> <b>ess-mode-hook</b>
+<a name="IDX230"></a>
+</dt>
+<dd><p>Called every time <code>ESS</code> is run.
+</p></dd></dl>
 
-<P>
-<DL>
-<DT><U>Hook:</U> <B>ess-mode-hook</B>
-<DD><A NAME="IDX266"></A>
-Called every time <CODE>ESS</CODE> is run.
-</DL>
-
-
-<P>
-<DL>
-<DT><U>Hook:</U> <B>ess-mode-load-hook</B>
-<DD><A NAME="IDX267"></A>
-Called just after the file <TT>`ess.el'</TT> is loaded.  Useful for setting
+<dl>
+<dt><u>Hook:</u> <b>ess-mode-load-hook</b>
+<a name="IDX231"></a>
+</dt>
+<dd><p>Called just after the file `<tt>ess.el</tt>' is loaded.  Useful for setting
 up your keybindings, etc.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>Hook:</U> <B>ess-pre-run-hook</B>
-<DD><A NAME="IDX268"></A>
-Called before the <B>ESS</B> process is started (e.g., with <KBD>M-x S</KBD>).
+<dl>
+<dt><u>Hook:</u> <b>ess-pre-run-hook</b>
+<a name="IDX232"></a>
+</dt>
+<dd><p>Called before the ESS process is started (e.g., with <kbd>M-x S</kbd>).
 Good for setting up your directory.
-</DL>
+</p></dd></dl>
+
+<dl>
+<dt><u>Hook:</u> <b>ess-post-run-hook</b>
+<a name="IDX233"></a>
+</dt>
+<dd><p>Called just after the ESS process starts up.  This can be used to
+evaluate ESS code at the start of a session, with
+<code>ess-eval-visibly</code>, say.
+</p></dd></dl>
 
 
-<P>
-<DL>
-<DT><U>Hook:</U> <B>ess-post-run-hook</B>
-<DD><A NAME="IDX269"></A>
-Called just after the <B>ESS</B> process starts up.  This can be used to
-evaluate <B>ESS</B> code at the start of a session, with
-<CODE>ess-eval-visibly</CODE>, say.
-</DL>
-
-
-<P>
-<DL>
-<DT><U>Hook:</U> <B>inferior-ess-mode-hook</B>
-<DD><A NAME="IDX270"></A>
-For customizing inferior ess mode.  Called after inferior-ess-mode is
+<dl>
+<dt><u>Hook:</u> <b>inferior-ess-mode-hook</b>
+<a name="IDX234"></a>
+</dt>
+<dd><p>For customizing inferior ESS mode.  Called after inferior-ess-mode is
 entered and variables have been initialized.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>Hook:</U> <B>ess-help-mode-hook</B>
-<DD><A NAME="IDX271"></A>
-Called every time when entering ess-help-mode (i.e., an <B>ESS</B> help
+<dl>
+<dt><u>Hook:</u> <b>ess-help-mode-hook</b>
+<a name="IDX235"></a>
+</dt>
+<dd><p>Called every time when entering ess-help-mode (i.e., an ESS help
 buffer is generated).
-</DL>
+</p></dd></dl>
+
+<dl>
+<dt><u>Hook:</u> <b>ess-send-input-hook</b>
+<a name="IDX236"></a>
+</dt>
+<dd><p>Called just before line input is sent to the process.
+</p></dd></dl>
+
+<dl>
+<dt><u>Hook:</u> <b>ess-transcript-mode-hook</b>
+<a name="IDX237"></a>
+</dt>
+<dd><p>For customizing ESS transcript mode.
+</p></dd></dl>
 
 
-<P>
-<DL>
-<DT><U>Hook:</U> <B>ess-send-input-hook</B>
-<DD><A NAME="IDX272"></A>
-Called just before line input is sent to the process.
-</DL>
+<hr size="6">
+<a name="NOD89"></a>
+<a name="SEC89"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC88" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC81" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC81" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="appendixsec"> L.3 Changing the default ESS keybindings </h2>
 
-
-<P>
-<DL>
-<DT><U>Hook:</U> <B>ess-transcript-mode-hook</B>
-<DD><A NAME="IDX273"></A>
-For customizing ESS transcript mode.
-</DL>
-
-
-
-
-<H2><A NAME="SEC83" HREF="ess_toc.html#TOC83">Changing the default ESS keybindings</A></H2>
-
-<P>
-ESS provides a separate keymaps (keymap variables) for <B>ESS</B> process
+<p>ESS provides a separate keymaps (keymap variables) for ESS process
 buffers, edit buffers and for help buffers.  The key bindings in the
 edit buffers further depend on the language and dialect in use.
 
+</p><dl>
+<dt><u>Keymap:</u> <b>inferior-ess-mode-map</b>
+<a name="IDX238"></a>
+</dt>
+<dd><a name="IDX239"></a>
+<p>Keymap used in the ESS process buffer.  The bindings from
+<code>comint-mode-map</code> are automatically inherited.
+</p></dd></dl>
 
-<P>
-<DL>
-<DT><U>Keymap:</U> <B>inferior-ess-mode-map</B>
-<DD><A NAME="IDX274"></A>
-<A NAME="IDX275"></A>
-Keymap used in the <B>ESS</B> process buffer.  The bindings from
-<CODE>comint-mode-map</CODE> are automatically inherited.
-</DL>
+<dl>
+<dt><u>Keymap:</u> <b>ess-mode-map</b>
+<a name="IDX240"></a>
+</dt>
+<dd><p>Keymap used within edit (ess-mode) buffers.
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>Keymap:</U> <B>ess-mode-map</B>
-<DD><A NAME="IDX276"></A>
-Keymap used within edit (ess-mode) buffers.
-</DL>
-
-
-<P>
-<DL>
-<DT><U>Keymap:</U> <B>ess-eval-map</B>
-<DD><A NAME="IDX277"></A>
-Keymap used within edit buffers for sending ESS code to the running
+<dl>
+<dt><u>Keymap:</u> <b>ess-eval-map</b>
+<a name="IDX241"></a>
+</dt>
+<dd><p>Keymap used within edit buffers for sending ESS code to the running
 process.
-</DL>
+</p></dd></dl>
 
-
-<P>
-<DL>
-<DT><U>Keymap:</U> <B>ess-help-mode-map</B>
-<DD><A NAME="IDX278"></A>
-Keymap used within help buffers.  In addition, <CODE>ess-help-sec-map</CODE>
-is the keymap for the <SAMP>`s'</SAMP> prefix key.  Keys defined in
-<CODE>ess-help-sec-keys-alist</CODE> are automatically inserted into this
+<dl>
+<dt><u>Keymap:</u> <b>ess-help-mode-map</b>
+<a name="IDX242"></a>
+</dt>
+<dd><p>Keymap used within help buffers.  In addition, <code>ess-help-sec-map</code>
+is the keymap for the `<samp>s</samp>' prefix key.  Keys defined in
+<code>ess-help-sec-keys-alist</code> are automatically inserted into this
 keymap
-<A NAME="IDX279"></A>
+<a name="IDX243"></a>
 when ESS is loaded.
-</DL>
+</p></dd></dl>
+
+<dl>
+<dt><u>Keymap:</u> <b>ess-transcript-mode-map</b>
+<a name="IDX244"></a>
+</dt>
+<dd><p>Keymap used within ESS transcript buffers.
+</p></dd></dl>
 
 
-<P>
-<DL>
-<DT><U>Keymap:</U> <B>ess-transcript-mode-map</B>
-<DD><A NAME="IDX280"></A>
-Keymap used within ESS transcript buffers.
-</DL>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC81" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Rodney Sparapani</em> on <em>June, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
+ </font>
+ <br>
 
-
-<P><HR><P>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_12.html">previous</A>, <A HREF="ess_14.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
-</BODY>
-</HTML>
+</p>
+</body>
+</html>

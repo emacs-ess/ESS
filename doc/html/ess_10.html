@@ -1,110 +1,194 @@
-<HTML>
-<HEAD>
-<!-- Created by texi2html 1.56k from ess.texi on 21 October 2002 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created on June, 30 2004 by texi2html 1.70 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
 
-<TITLE>ESS -- Emacs Speaks Statistics - Manipulating saved transcript files</TITLE>
-</HEAD>
-<BODY>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_9.html">previous</A>, <A HREF="ess_11.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
-<P><HR><P>
+-->
+<head>
+<title>ESS -- Emacs Speaks Statistics: I. Manipulating saved transcript files</title>
+
+<meta name="description" content="ESS -- Emacs Speaks Statistics: I. Manipulating saved transcript files">
+<meta name="keywords" content="ESS -- Emacs Speaks Statistics: I. Manipulating saved transcript files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.70">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+ul.toc {list-style: none}
+-->
+</style>
 
 
-<H1><A NAME="SEC63" HREF="ess_toc.html#TOC63">Manipulating saved transcript files</A></H1>
+</head>
 
-<P>
-Inferior <B>S</B> mode records the transcript (the list of all commands
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="NOD65"></a>
+<a name="SEC65"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="ess_9.html#SEC64" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC66" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess_9.html#SEC64" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_11.html#SEC68" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1 class="chapter"> I. Manipulating saved transcript files </h1>
+
+<p>Inferior S mode records the transcript (the list of all commands
 executed, and their output) in the process buffer, which can be saved as
-a <EM>transcript file</EM>, which should normally have the suffix
-<TT>`.St'</TT>.  The most obvious use for a transcript file is as a static
-record of the actions you have performed in a particular <B>S</B> session.
+a <em>transcript file</em>, which should normally have the suffix
+`<tt>.St</tt>'.  The most obvious use for a transcript file is as a static
+record of the actions you have performed in a particular S session.
 Sometimes, however, you may wish to re-execute commands recorded in the
-transcript file by submitting them to a running <B>ESS</B> process.  This
+transcript file by submitting them to a running ESS process.  This
 is what Transcript Mode is for.
 
-
-<P>
-If you load file a with the suffix <TT>`.St'</TT> into Emacs, it is placed
-in S Transcript Mode.  Transcript Mode is similar to Inferior <B>S</B> mode
-(see section <A HREF="ess_7.html#SEC39">Interacting with the <B>ESS</B> process</A>):
-<A NAME="IDX207"></A>
-<A NAME="IDX208"></A>
+</p><p>If you load file a with the suffix `<tt>.St</tt>' into Emacs, it is placed
+in S Transcript Mode.  Transcript Mode is similar to Inferior S mode
+(see section <a href="ess_7.html#SEC40">Interacting with the ESS process</a>):
+<a name="IDX177"></a>
+<a name="IDX178"></a>
 paragraphs are defined as a command and its output, and you can move
-though commands either with the paragraph commands or with <KBD>C-c C-p</KBD>
-and <KBD>C-c C-n</KBD>.
+though commands either with the paragraph commands or with <kbd>C-c C-p</kbd>
+and <kbd>C-c C-n</kbd>.
 
+</p><table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC66">I.1 Resubmitting commands from the transcript file</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC67">I.2 Cleaning transcript files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
 
+<hr size="6">
+<a name="NOD66"></a>
+<a name="SEC66"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC65" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC67" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC65" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC65" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_11.html#SEC68" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> I.1 Resubmitting commands from the transcript file </h2>
 
-<UL>
-<LI><A HREF="ess_10.html#SEC64">Resubmit</A>: Resubmitting commands from the transcript file
-<LI><A HREF="ess_10.html#SEC65">Clean</A>: Cleaning transcript files
-</UL>
+<p>Three commands are provided to re-submit command lines from the
+transcript file to a running ESS process.  They are:
 
+</p><ul>
+<li>
+<p><kbd>RET</kbd> (<code>ess-transcript-send-command</code>) <br>
+Send the current command line to the ESS process, and execute it.
+<a name="IDX179"></a>
 
+</p></li><li>
+<p><kbd>C-c RET</kbd> (<code>ess-transcript-copy-command</code>) <br>
+Copy the current command to the ESS process, and switch to the
+ESS process buffer (ready to edit the copied command).
+<a name="IDX180"></a>
 
-<H2><A NAME="SEC64" HREF="ess_toc.html#TOC64">Resubmitting commands from the transcript file</A></H2>
-
-<P>
-Three commands are provided to re-submit command lines from the
-transcript file to a running <B>ESS</B> process.  They are:
-
-
-
-<UL>
-<LI>
-
-<KBD>RET</KBD> (<CODE>ess-transcript-send-command</CODE>) <BR>
-Send the current command line to the <B>ESS</B> process, and execute it.
-<A NAME="IDX209"></A>
-
-<LI>
-
-<KBD>C-c RET</KBD> (<CODE>ess-transcript-copy-command</CODE>) <BR>
-Copy the current command to the <B>ESS</B> process, and switch to the
-<B>ESS</B> process buffer (ready to edit the copied command).
-<A NAME="IDX210"></A>
-
-<LI>
-
-<KBD>M-RET</KBD> (<CODE>ess-transcript-send-command-and-move</CODE>) <BR>
-Send the current command to the <B>ESS</B> process, and move to the next
+</p></li><li>
+<p><kbd>M-RET</kbd> (<code>ess-transcript-send-command-and-move</code>) <br>
+Send the current command to the ESS process, and move to the next
 command line.  This command is useful for submitting a series of
 commands.
-</UL>
+</p></li></ul>
 
-<P>
-Note that these commands are similar to those on the same keys in
-Inferior <B>S</B> Mode.  In all three cases, the commands should be
+
+<p>Note that these commands are similar to those on the same keys in
+Inferior S Mode.  In all three cases, the commands should be
 executed when the cursor is on a command line in the transcript; the
 prompt is automatically removed before the command is submitted.
 
+</p><hr size="6">
+<a name="NOD67"></a>
+<a name="SEC67"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC66" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess_11.html#SEC68" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC65" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC65" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_11.html#SEC68" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> I.2 Cleaning transcript files </h2>
 
-
-
-<H2><A NAME="SEC65" HREF="ess_toc.html#TOC65">Cleaning transcript files</A></H2>
-
-<P>
-Yet another use for transcript files is to extract the command lines for
-inclusion in an <B>S</B> source file or function.  Transcript mode provides
+<p>Yet another use for transcript files is to extract the command lines for
+inclusion in an S source file or function.  Transcript mode provides
 one command which does just this:
 
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-w</KBD> (<CODE>ess-transcript-clean-region</CODE>) <BR>
+</p><ul>
+<li>
+<p><kbd>C-c C-w</kbd> (<code>ess-transcript-clean-region</code>) <br>
 Deletes all prompts and command output in the region, leaving only the
 commands themselves.
-</UL>
+</p></li></ul>
 
-<P>
-The remaining command lines may then be copied to a source file or edit
+
+<p>The remaining command lines may then be copied to a source file or edit
 buffer for inclusion in a function definition, or may be evaluated
-directly (see section <A HREF="ess_8.html#SEC57">Sending code to the <B>ESS</B> process</A>) using the code evaluation commands
-from <B>S</B> mode, also available in <B>S</B> Transcript Mode.
+directly (see section <a href="ess_8.html#SEC59">Sending code to the ESS process</a>) using the code evaluation commands
+from S mode, also available in S Transcript Mode.
 
+</p><hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC65" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess_11.html#SEC68" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Rodney Sparapani</em> on <em>June, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
+ </font>
+ <br>
 
-<P><HR><P>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_9.html">previous</A>, <A HREF="ess_11.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
-</BODY>
-</HTML>
+</p>
+</body>
+</html>

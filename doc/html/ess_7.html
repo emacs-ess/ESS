@@ -1,292 +1,369 @@
-<HTML>
-<HEAD>
-<!-- Created by texi2html 1.56k from ess.texi on 21 October 2002 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created on June, 30 2004 by texi2html 1.70 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
 
-<TITLE>ESS -- Emacs Speaks Statistics - Interacting with the ESS process</TITLE>
-</HEAD>
-<BODY>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_6.html">previous</A>, <A HREF="ess_8.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
-<P><HR><P>
+-->
+<head>
+<title>ESS -- Emacs Speaks Statistics: F. Interacting with the ESS process</title>
+
+<meta name="description" content="ESS -- Emacs Speaks Statistics: F. Interacting with the ESS process">
+<meta name="keywords" content="ESS -- Emacs Speaks Statistics: F. Interacting with the ESS process">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.70">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+ul.toc {list-style: none}
+-->
+</style>
 
 
-<H1><A NAME="SEC39" HREF="ess_toc.html#TOC39">Interacting with the <B>ESS</B> process</A></H1>
-<P>
-<A NAME="IDX49"></A>
-<A NAME="IDX50"></A>
-<A NAME="IDX51"></A>
+</head>
 
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 
-<P>
-The primary function of the ESS package is to provide an easy-to-use
-front end to the <B>S</B> interpreter.  This is achieved by running the S
+<a name="NOD40"></a>
+<a name="SEC40"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="ess_6.html#SEC39" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC41" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess_6.html#SEC36" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1 class="chapter"> F. Interacting with the ESS process </h1>
+
+<p>The primary function of the ESS package is to provide an easy-to-use
+front end to the S interpreter.  This is achieved by running the S
 process from within an Emacs buffer, so that the Emacs editing commands
 are available to correct mistakes in commands, etc.  The features of
-Inferior <B>S</B> mode are similar to those provided by the standard Emacs
-shell mode (see section `Shell Mode' in <CITE>The Gnu Emacs Reference Manual</CITE>).  Command-line completion of <B>S</B> objects and a number of `hot
-keys' for commonly-used <B>S</B> commands are also provided for ease of
+Inferior S mode are similar to those provided by the standard Emacs
+shell mode (see <a href="../emacs/Shell-Mode.html">(emacs)Shell Mode</a> section `Shell Mode' in <cite>The Gnu Emacs Reference Manual</cite>).  Command-line completion of S objects and a number of `hot
+keys' for commonly-used S commands are also provided for ease of
 typing.
 
+</p><table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC41">F.1 Entering commands and fixing mistakes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC42">F.2 Completion of object names</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC43">F.3 Completion details</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">          Advanced completion concepts
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC44">F.4 Manipulating the transcript</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC49">F.5 Command History</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC50">F.6 References to historical commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC51">F.7 Hot keys for common commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC52">F.8 Is the Statistical Process running under ESS?</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC53">F.9 Using emacsclient</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC54">F.10 Other commands provided by inferior-ESS</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
 
+<hr size="6">
+<a name="NOD41"></a>
+<a name="SEC41"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC40" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC42" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> F.1 Entering commands and fixing mistakes </h2>
 
-<UL>
-<LI><A HREF="ess_7.html#SEC40">Command-line editing</A>: Entering commands and fixing mistakes
-<LI><A HREF="ess_7.html#SEC41">Completion</A>: Completion of object names
-<LI><A HREF="ess_7.html#SEC42">Completion details</A>: Advanced completion concepts
-<LI><A HREF="ess_7.html#SEC43">Transcript</A>: Manipulating the transcript
-<LI><A HREF="ess_7.html#SEC48">Command History</A>: Command History
-<LI><A HREF="ess_7.html#SEC49">History expansion</A>: References to historical commands
-<LI><A HREF="ess_7.html#SEC50">Hot keys</A>: Hot keys for common commands
-<LI><A HREF="ess_7.html#SEC51">Statistical Process running in ESS?</A>
-<LI><A HREF="ess_7.html#SEC52">Other</A>: Other commands provided by inferior-ESS
-</UL>
+<p>Sending a command to the ESS process is as simple as typing it in
+and pressing the <kbd>RETURN</kbd> key:
 
+</p><ul>
+<li>
+<p><kbd>RET</kbd> (<code>inferior-ess-send-input</code>) <br>
+<a name="IDX36"></a>
+Send the command on the current line to the ESS process.
+</p></li></ul>
 
-
-<H2><A NAME="SEC40" HREF="ess_toc.html#TOC40">Entering commands and fixing mistakes</A></H2>
-<P>
-<A NAME="IDX52"></A>
-
-
-<P>
-Sending a command to the <B>ESS</B> process is as simple as typing it in
-and pressing the <KBD>RETURN</KBD> key:
-
-
-
-<UL>
-<LI>
-
-<KBD>RET</KBD> (<CODE>inferior-ess-send-input</CODE>) <BR>
-<A NAME="IDX53"></A>
-Send the command on the current line to the <B>ESS</B> process.
-</UL>
-
-<P>
-If you make a typing error before pressing <KBD>RET</KBD> all the usual Emacs
-editing commands are available to correct it (see section `Basic editing commands' in <CITE>The GNU Emacs Reference Manual</CITE>).  Once the
-command has been corrected you can press <KBD>RETURN</KBD> (even if the
+<p>If you make a typing error before pressing <kbd>RET</kbd> all the usual Emacs
+editing commands are available to correct it (see <a href="../emacs/Basic.html">Basic: (emacs)Basic</a> section `Basic editing commands' in <cite>The GNU Emacs Reference Manual</cite>).  Once the
+command has been corrected you can press <kbd>RETURN</kbd> (even if the
 cursor is not at the end of the line) to send the corrected command to
-the <B>ESS</B> process.
+the ESS process.
 
+</p><p>ESS provides some other commands which are useful for fixing mistakes:
 
-<P>
-ESS provides some other commands which are useful for fixing mistakes:
-
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-w</KBD> (<CODE>backward-kill-word</CODE>) <BR>
-<A NAME="IDX54"></A>
+</p><ul>
+<li>
+<p><kbd>C-c C-w</kbd> (<code>backward-kill-word</code>) <br>
+<a name="IDX37"></a>
 Deletes the previous word (such as an object name) on the command line.
 
-<LI>
-
-<KBD>C-c C-u</KBD> (<CODE>comint-kill-input</CODE>) <BR>
-<A NAME="IDX55"></A>
+</p></li><li>
+<p><kbd>C-c C-u</kbd> (<code>comint-kill-input</code>) <br>
+<a name="IDX38"></a>
 Deletes everything from the prompt to point.  Use this to abandon a
-command you have not yet sent to the <B>ESS</B> process.
+command you have not yet sent to the ESS process.
 
-<LI>
-
-<KBD>C-c C-a</KBD> (<CODE>comint-bol</CODE>) <BR>
-<A NAME="IDX56"></A>
+</p></li><li>
+<p><kbd>C-c C-a</kbd> (<code>comint-bol</code>) <br>
+<a name="IDX39"></a>
 Move to the beginning of the line, and then skip forwards past the
 prompt, if any.
-</UL>
+</p></li></ul>
 
-<P>
-See section `Shell Mode' in <CITE>The Gnu Emacs Reference Manual</CITE>, for other
+<p>See <a href="../emacs/Shell-Mode.html">(emacs)Shell Mode</a> section `Shell Mode' in <cite>The Gnu Emacs Reference Manual</cite>, for other
 commands relevant to entering input.
 
+</p><hr size="6">
+<a name="NOD42"></a>
+<a name="SEC42"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC41" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC43" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> F.2 Completion of object names </h2>
 
+<p>In the process buffer, the <kbd>TAB</kbd> key is for completion, similar to
+that provided by Shell Mode for filenames.  In Inferior S mode,
+pressing the <kbd>TAB</kbd> key when the cursor is following the first few
+characters of an object name <em>completes</em> the object name; if the
+cursor is following a file name <kbd>TAB</kbd> completes the file name.
 
+</p><ul>
+<li>
+<p><kbd>TAB</kbd> (<code>comint-dynamic-complete</code>) <br>
+<a name="IDX40"></a>
+Complete the S object name or filename before point.
+</p></li></ul>
 
-<H2><A NAME="SEC41" HREF="ess_toc.html#TOC41">Completion of object names</A></H2>
-<P>
-<A NAME="IDX57"></A>
-<A NAME="IDX58"></A>
-
-
-<P>
-In the process buffer, the <KBD>TAB</KBD> key is for completion, similar to
-that provided by Shell Mode for filenames.  In Inferior <B>S</B> mode,
-pressing the <KBD>TAB</KBD> key when the cursor is following the first few
-characters of an object name <EM>completes</EM> the object name; if the
-cursor is following a file name <KBD>TAB</KBD> completes the file name.
-
-
-
-<UL>
-<LI>
-
-<KBD>TAB</KBD> (<CODE>comint-dynamic-complete</CODE>) <BR>
-<A NAME="IDX59"></A>
-Complete the <B>S</B> object name or filename before point.
-</UL>
-
-<P>
-When the cursor is just after a partially-completed object name,
-pressing <KBD>TAB</KBD> provides completion in a similar fashion to
-<CODE>tcsh</CODE>
-<A NAME="IDX60"></A>
-except that completion is performed over all known <B>S</B> object names
+<p>When the cursor is just after a partially-completed object name,
+pressing <kbd>TAB</kbd> provides completion in a similar fashion to
+<code>tcsh</code>
+<a name="IDX41"></a>
+except that completion is performed over all known S object names
 instead of file names.  ESS maintains a list of all objects known to S
 at any given time, which basically consists of all objects (functions
-and datasets) in every attached directory listed by the <CODE>search()</CODE>
+and datasets) in every attached directory listed by the <code>search()</code>
 command
-<A NAME="IDX61"></A>
+<a name="IDX42"></a>
 along with the component objects of attached data frames
-<A NAME="IDX62"></A>
-(if your version of <B>S</B> supports them).
+<a name="IDX43"></a>
+(if your version of S supports them).
 
-
-<P>
-For example, consider the three functions (available in Splus version
-3.0) called <CODE>binomplot()</CODE>, <CODE>binom.test()</CODE> and
-<CODE>binomial()</CODE>.  Typing <KBD>bin TAB</KBD> after the <B>S</B> prompt will
-insert the characters <SAMP>`om'</SAMP>, completing the longest prefix
-(<SAMP>`binom'</SAMP>) which distinguishes these three commands.  Pressing
-<KBD>TAB</KBD> once more provides a list of the three commands which have
-this prefix, allowing you to add more characters (say, <SAMP>`.'</SAMP>) which
+</p><p>For example, consider the three functions (available in Splus version
+3.0) called <code>binomplot()</code>, <code>binom.test()</code> and
+<code>binomial()</code>.  Typing <kbd>bin TAB</kbd> after the S prompt will
+insert the characters `<samp>om</samp>', completing the longest prefix
+(`<samp>binom</samp>') which distinguishes these three commands.  Pressing
+<kbd>TAB</kbd> once more provides a list of the three commands which have
+this prefix, allowing you to add more characters (say, `<samp>.</samp>') which
 specify the function you desire.  After entering more characters
-pressing <KBD>TAB</KBD> yet again will complete the object name up to
+pressing <kbd>TAB</kbd> yet again will complete the object name up to
 uniqueness, etc.  If you just wish to see what completions exist without
-adding any extra characters, type <KBD>M-?</KBD>.
+adding any extra characters, type <kbd>M-?</kbd>.
 
-
-
-<UL>
-<LI>
-
-<KBD>M-?</KBD> (<CODE>ess-list-object-name-completions</CODE>) <BR>
-<A NAME="IDX63"></A>
+</p><ul>
+<li>
+<p><kbd>M-?</kbd> (<code>ess-list-object-completions</code>) <br>
+<a name="IDX44"></a>
 List all possible completions of the object name at point.
-</UL>
+</p></li></ul>
 
-<P>
-ESS also provides completion over the components of named lists accessed
-using the <SAMP>`$'</SAMP> notation, to any level of nested lists.  This feature
+<p>ESS also provides completion over the components of named lists accessed
+using the `<samp>$</samp>' notation, to any level of nested lists.  This feature
 is particularly useful for checking what components of a list object
 exist while partway through entering a command: simply type the object
-name and <SAMP>`$'</SAMP> and press <KBD>TAB</KBD> to see the names of existing list
+name and `<samp>$</samp>' and press <kbd>TAB</kbd> to see the names of existing list
 components for that object.
-<A NAME="IDX64"></A>
-<A NAME="IDX65"></A>
+<a name="IDX45"></a>
+<a name="IDX46"></a>
 
-
-<P>
-<A NAME="IDX66"></A>
-Completion is also provided over file names, which is particularly
-useful when using <B>S</B> functions such as <CODE>get()</CODE> or <CODE>scan()</CODE>
+</p><a name="IDX47"></a>
+<p>Completion is also provided over file names, which is particularly
+useful when using S functions such as <code>get()</code> or <code>scan()</code>
 which require fully expanded file names.  Whenever the cursor is within
-an <B>S</B> string, pressing <KBD>TAB</KBD> completes the file name before
-point, and also expands any <SAMP>`~'</SAMP> or environment variable references.
+an S string, pressing <kbd>TAB</kbd> completes the file name before
+point, and also expands any `<samp>~</samp>' or environment variable references.
 
+</p><p>If the cursor is not in a string and does not follow a (partial) object
+name, the <kbd>TAB</kbd> key has a third use: it expands history references.
+See section <a href="#SEC50">References to historical commands</a>.
 
-<P>
-If the cursor is not in a string and does not follow a (partial) object
-name, the <KBD>TAB</KBD> key has a third use: it expands history references.
-See section <A HREF="ess_7.html#SEC49">References to historical commands</A>.
+</p><hr size="6">
+<a name="NOD43"></a>
+<a name="SEC43"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC42" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC44" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> F.3 Completion details </h2>
 
-
-
-
-<H2><A NAME="SEC42" HREF="ess_toc.html#TOC42">Completion details</A></H2>
-
-<P>
-ESS automatically keeps track of any objects added or deleted to the
+<p>ESS automatically keeps track of any objects added or deleted to the
 system (such as new objects created, or directories added to the search
 list) to make completion as accurate as possible.  Whenever ESS notices
 that search list has changed
-<A NAME="IDX67"></A>
-<A NAME="DOCF2" HREF="ess_foot.html#FOOT2">(2)</A>  when you attach a directory or data
+<a name="IDX48"></a>
+<a name="DOCF3" href="ess_fot.html#FOOT3">(3)</a>  when you attach a directory or data
 frame, the objects associated with it immediately become available for a
 completion; when it is detached completion is no longer available on
 those objects.
 
-
-<P>
-To maintain a list of accessible objects for completion, ESS needs to
+</p><p>To maintain a list of accessible objects for completion, ESS needs to
 determine which objects are contained in each directory or data frame on
-the search list.  This is done at the start of each <B>S</B> session, by
-running the <CODE>objects()</CODE> command on every element of the search
+the search list.  This is done at the start of each S session, by
+running the <code>objects()</code> command on every element of the search
 list.  On some systems, however, this can be rather slow; it's doubly
 frustrating when you consider that most of the directories on the search
-list are the standard <B>S</B> libraries, which never change anyway!  When
+list are the standard S libraries, which never change anyway!  When
 ESS was installed, a database of the standard object names should have
 been created which should speed up this process at the start of an S
 session; if it has not been created you will get a warning like
-`S-namedb.el does not exist'.  See section <A HREF="ess_2.html#SEC7">Installing ESS on your system</A>, for information on
+`S-namedb.el does not exist'.  See section <a href="ess_2.html#SEC7">Installing ESS on your system</a>, for information on
 how to create this database.
 
-
-<P>
-Efficiency in completion is gained by maintaining a cache of objects
+</p><p>Efficiency in completion is gained by maintaining a cache of objects
 currently known to S; when a new object becomes available or is deleted,
 only one component of the cache corresponding to the associated
 directory needs to be refreshed.  If ESS ever becomes confused about
 what objects are available for completion (such as when if refuses to
-complete an object you <STRONG>know</STRONG> is there), the command <KBD>M-x
-ess-resynch</KBD>
-<A NAME="IDX68"></A>
-forces the <EM>entire</EM> cache to be refreshed, which should fix the
+complete an object you <strong>know</strong> is there), the command <kbd>M-x
+ess-resynch</kbd>
+<a name="IDX49"></a>
+forces the <em>entire</em> cache to be refreshed, which should fix the
 problem.
 
+</p><hr size="6">
+<a name="NOD44"></a>
+<a name="SEC44"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC43" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC45" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> F.4 Manipulating the transcript </h2>
 
-
-
-<H2><A NAME="SEC43" HREF="ess_toc.html#TOC43">Manipulating the transcript</A></H2>
-
-<P>
-Most of the time, the cursor spends most of its time at the bottom of
-the <B>ESS</B> process buffer, entering commands.  However all the input
-and output from the current (and previous) <B>ESS</B> sessions is stored in
+<p>Most of the time, the cursor spends most of its time at the bottom of
+the ESS process buffer, entering commands.  However all the input
+and output from the current (and previous) ESS sessions is stored in
 the process buffer (we call this the transcript) and often we want to
-<A NAME="IDX69"></A>
+<a name="IDX50"></a>
 move back up through the buffer, to look at the output from previous
 commands for example.
 
-
-<P>
-Within the process buffer, a paragraph
-<A NAME="IDX70"></A>
+</p><p>Within the process buffer, a paragraph
+<a name="IDX51"></a>
 is defined as the prompt, the command after the prompt, and the output
-from the command.  Thus <KBD>M-{</KBD> and <KBD>M-}</KBD> move you backwards and
+from the command.  Thus <kbd>M-{</kbd> and <kbd>M-}</kbd> move you backwards and
 forwards, respectively, through commands in the transcript.  A
-particularly useful command is <KBD>M-h</KBD> (<CODE>mark-paragraph</CODE>) which
+particularly useful command is <kbd>M-h</kbd> (<code>mark-paragraph</code>) which
 will allow you to mark a command and its entire output (for deletion,
 perhaps).  For more information about paragraph commands,
-see section `Paragraphs' in <CITE>The GNU Emacs Reference Manual</CITE>.
+see <a href="../emacs/Paragraphs.html">Paragraphs: (emacs)Paragraphs</a> section `Paragraphs' in <cite>The GNU Emacs Reference Manual</cite>.
 
-
-<P>
-If an ESS process finishes and you restart it in the same process
+</p><p>If an ESS process finishes and you restart it in the same process
 buffer, the output from the new ESS process appears after the output
-from the first ESS process separated by a form-feed (<SAMP>`^L'</SAMP>)
+from the first ESS process separated by a form-feed (`<samp>^L</samp>')
 character.  Thus pages in the ESS
-<A NAME="IDX71"></A>
+<a name="IDX52"></a>
 process buffer correspond to ESS sessions.  Thus, for example, you may
-use <KBD>C-x [</KBD> and <KBD>C-x ]</KBD> to move backward and forwards through
+use <kbd>C-x [</kbd> and <kbd>C-x ]</kbd> to move backward and forwards through
 ESS sessions in a single ESS process buffer.  For more information about
-page commands, see section `Pages' in <CITE>The GNU Emacs Reference Manual</CITE>.
+page commands, see <a href="../emacs/Pages.html">Pages: (emacs)Pages</a> section `Pages' in <cite>The GNU Emacs Reference Manual</cite>.
 
+</p><table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC45">F.4.1 Manipulating the output from the last command</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC46">F.4.2 Viewing older commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC47">F.4.3 Re-submitting commands from the transcript</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC48">F.4.4 Keeping a record of your S session</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
 
+<hr size="6">
+<a name="NOD45"></a>
+<a name="SEC45"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC44" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC46" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC44" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> F.4.1 Manipulating the output from the last command </h3>
 
-<UL>
-<LI><A HREF="ess_7.html#SEC44">Last command</A>: Manipulating the output from the last command
-<LI><A HREF="ess_7.html#SEC45">Process buffer motion</A>: Viewing more historic commands
-<LI><A HREF="ess_7.html#SEC46">Transcript resubmit</A>: Re-submitting commands from the transcript
-<LI><A HREF="ess_7.html#SEC47">Saving transcripts</A>: Keeping a record of your <B>S</B> session
-</UL>
-
-
-
-<H3><A NAME="SEC44" HREF="ess_toc.html#TOC44">Manipulating the output from the last command</A></H3>
-
-<P>
-Viewing the output of the command you have just entered is a common
+<p>Viewing the output of the command you have just entered is a common
 occurrence and ESS provides a number of facilities for doing this.
 Whenever a command produces a longish output, it is possible that the
 window will scroll, leaving the next prompt near the middle of the
@@ -295,667 +372,741 @@ top of the window, even though the entire output would fit in the window
 if the prompt were near the bottom of the window.  If this happens, you
 can use the command
 
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-e</KBD> (<CODE>comint-show-maximum-output</CODE>) <BR>
-<A NAME="IDX72"></A>
+</p><ul>
+<li>
+<p><kbd>C-c C-e</kbd> (<code>comint-show-maximum-output</code>) <br>
+<a name="IDX53"></a>
 Move to the end of the buffer, and place cursor on bottom line of
 window.
-</UL>
+</p></li></ul>
 
-<P>
-to make more of the last output visible.  (To make this happen
+
+<p>to make more of the last output visible.  (To make this happen
 automatically for all inputs, set the variable
-<CODE>comint-scroll-to-bottom-on-input</CODE> to <CODE>t</CODE>; for information on
+<code>comint-scroll-to-bottom-on-input</code> to <code>t</code>; for information on
 this and other options for handling process input and output
-see section `Shell Mode Options' in <CITE>The GNU Emacs Reference Manual</CITE>.)
+see <a href="../emacs/Shell-Options.html">(emacs)Shell Options</a> section `Shell Mode Options' in <cite>The GNU Emacs Reference Manual</cite>.)
 
-
-<P>
-If the first part of the output is still obscured, use
-<A NAME="IDX73"></A>
-
-<UL>
-<LI>
-
-<KBD>C-c C-r</KBD> (<CODE>comint-show-output</CODE>) <BR>
-<A NAME="IDX74"></A>
+</p><p>If the first part of the output is still obscured, use
+<a name="IDX54"></a>
+</p><ul>
+<li>
+<p><kbd>C-c C-r</kbd> (<code>comint-show-output</code>) <br>
+<a name="IDX55"></a>
 Moves cursor to the previous command line and and places it at the top
 of the window.
-</UL>
+</p></li></ul>
 
-<P>
-to view it.  Finally, if you want to discard the last command output
+
+<p>to view it.  Finally, if you want to discard the last command output
 altogether, use
 
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-o</KBD> (<CODE>comint-kill-output</CODE>) <BR>
-<A NAME="IDX75"></A>
-<A NAME="IDX76"></A>
+</p><ul>
+<li>
+<p><kbd>C-c C-o</kbd> (<code>comint-kill-output</code>) <br>
+<a name="IDX56"></a>
+<a name="IDX57"></a>
 Deletes everything from the last command to the current prompt.
-</UL>
+</p></li></ul>
 
-<P>
-to delete it.  Use this command judiciously to keep your transcript to a
+
+<p>to delete it.  Use this command judiciously to keep your transcript to a
 more manageable size.
 
+</p><hr size="6">
+<a name="NOD46"></a>
+<a name="SEC46"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC45" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC47" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC44" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> F.4.2 Viewing older commands </h3>
 
-
-
-<H3><A NAME="SEC45" HREF="ess_toc.html#TOC45">Viewing more historic commands</A></H3>
-
-<P>
-If you want to view the output from more historic commands than the
+<p>If you want to view the output from more historic commands than the
 previous command, commands are also provided to move backwards and
 forwards through previously entered commands in the process buffer:
 
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-p</KBD> (<CODE>comint-previous-input</CODE>) <BR>
-<A NAME="IDX77"></A>
+</p><ul>
+<li>
+<p><kbd>C-c C-p</kbd> (<code>comint-previous-input</code>) <br>
+<a name="IDX58"></a>
 Moves point to the preceding command in the process buffer.
 
-<LI>
-
-<KBD>C-c C-n</KBD> (<CODE>comint-next-input</CODE>) <BR>
-<A NAME="IDX78"></A>
+</p></li><li>
+<p><kbd>C-c C-n</kbd> (<code>comint-next-input</code>) <br>
+<a name="IDX59"></a>
 Moves point to the next command in the process buffer.
-</UL>
+</p></li></ul>
 
-<P>
-Note that these two commands are analogous to <KBD>C-p</KBD> and <KBD>C-n</KBD>
+
+<p>Note that these two commands are analogous to <kbd>C-p</kbd> and <kbd>C-n</kbd>
 but apply to command lines rather than text lines.  And just like
-<KBD>C-p</KBD> and <KBD>C-n</KBD>, passing a prefix argument to these commands
-means to move to the <VAR>ARG</VAR>'th next (or previous) command.  (These
-commands are also discussed in section `Shell History Copying' in <CITE>The GNU Emacs Reference Manual</CITE>.)
+<kbd>C-p</kbd> and <kbd>C-n</kbd>, passing a prefix argument to these commands
+means to move to the <var>ARG</var>'th next (or previous) command.  (These
+commands are also discussed in <a href="../emacs/Shell-History-Copying.html">(emacs)Shell History Copying</a> section `Shell History Copying' in <cite>The GNU Emacs Reference Manual</cite>.)
 
-
-<P>
-There are also two similar commands (not bound to any keys by default)
+</p><p>There are also two similar commands (not bound to any keys by default)
 which move to preceding or succeeding commands, but which first prompt
-for a regular expression (see section `Syntax of Regular Expression' in <CITE>The GNU Emacs Reference Manual</CITE>), and then moves to
+for a regular expression (see <a href="../emacs/Regexps.html">(emacs)Regexps</a> section `Syntax of Regular Expression' in <cite>The GNU Emacs Reference Manual</cite>), and then moves to
 the next (previous) command matching the pattern.
 
-
-<P>
-<DL>
-<DT><U>Command:</U> <B>comint-backward-matching-input</B> <I>regexp arg</I>
-<DD><A NAME="IDX79"></A>
-<DT><U>Command:</U> <B>comint-forward-matching-input</B> <I>regexp arg</I>
-<DD><A NAME="IDX80"></A>
+</p><ul>
+<li>
+<p><code>(comint-backward-matching-input regexp arg)</code> <br>
+<a name="IDX60"></a>
+<code>(comint-forward-matching-input regexp arg)</code> <br>
+<a name="IDX61"></a>
 Search backward (forward) through the transcript buffer for the
-<VAR>arg</VAR>'th previous (next) command matching <VAR>regexp</VAR>.  <VAR>arg</VAR>
-is the prefix argument; <VAR>regexp</VAR> is prompted for in the minibuffer.
-</DL>
+<var>arg</var>'th previous (next) command matching <var>regexp</var>.  <var>arg</var>
+is the prefix argument; <var>regexp</var> is prompted for in the minibuffer.
+</p></li></ul>
 
+<hr size="6">
+<a name="NOD47"></a>
+<a name="SEC47"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC46" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC48" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC44" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> F.4.3 Re-submitting commands from the transcript </h3>
 
-
-
-<H3><A NAME="SEC46" HREF="ess_toc.html#TOC46">Re-submitting commands from the transcript</A></H3>
-
-<P>
-When moving through the transcript, you may wish to re-execute some of
+<p>When moving through the transcript, you may wish to re-execute some of
 the commands you find there.  ESS provides three commands to do this;
 these commands may be used whenever the cursor is within a command line
-in the transcript (if the cursor is within some command <EM>output</EM>,
-an error is signaled).  Note all three commands involve the <KBD>RETURN</KBD>
+in the transcript (if the cursor is within some command <em>output</em>,
+an error is signaled).  Note all three commands involve the <kbd>RETURN</kbd>
 key.
 
-
-
-<UL>
-<LI>
-
-<KBD>RET</KBD> (<CODE>inferior-ess-send-input</CODE>) <BR>
-<A NAME="IDX81"></A>
+</p><ul>
+<li>
+<p><kbd>RET</kbd> (<code>inferior-ess-send-input</code>) <br>
+<a name="IDX62"></a>
 Copy the command under the cursor to the current command line, and
 execute it.
 
-<LI>
-
-<KBD>C-c RET</KBD> (<CODE>comint-copy-old-input</CODE>) <BR>
-<A NAME="IDX82"></A>
+</p></li><li>
+<p><kbd>C-c RET</kbd> (<code>comint-copy-old-input</code>) <br>
+<a name="IDX63"></a>
 Copy the command under the cursor to the current command line, but don't
 execute it.  Leaves the cursor on the command line so that the copied
 command may be edited.
 
-<LI>
-
-<KBD>M-RET</KBD> (<CODE>ess-transcript-send-command-and-move</CODE>) <BR>
-<A NAME="IDX83"></A>
+</p></li><li>
+<p><kbd>M-RET</kbd> (<code>ess-transcript-send-command-and-move</code>) <br>
+<a name="IDX64"></a>
 Copy the command under the cursor to the current command line, and
 execute it.  Moves the cursor to the following command.
-</UL>
+</p></li></ul>
 
-<P>
-When the cursor is not after the current prompt, the <KBD>RETURN</KBD> key
-has a slightly different behavior than usual.  Pressing <KBD>RET</KBD> on any
+<p>When the cursor is not after the current prompt, the <kbd>RETURN</kbd> key
+has a slightly different behavior than usual.  Pressing <kbd>RET</kbd> on any
 line containing a command that you entered (i.e. a line beginning with a
-prompt) sends that command to the <B>ESS</B> process once again.  If you
-wish to edit the command before executing it, use <KBD>C-c RET</KBD> instead;
+prompt) sends that command to the ESS process once again.  If you
+wish to edit the command before executing it, use <kbd>C-c RET</kbd> instead;
 it copies the command to the current prompt but does not execute it,
 allowing you to edit it before submitting it.
 
-
-<P>
-These two commands leave the cursor at the new command line, allowing
+</p><p>These two commands leave the cursor at the new command line, allowing
 you to continue with interactive use of S.  If you wish to resubmit a
-series of commands from the transcript, consider using <KBD>M-RET</KBD>
+series of commands from the transcript, consider using <kbd>M-RET</kbd>
 instead, which leaves the cursor at the command line following the one
-you re-submitted.  Thus by using <KBD>M-RET</KBD> repeatedly, you can
+you re-submitted.  Thus by using <kbd>M-RET</kbd> repeatedly, you can
 re-submit a whole series of commands.
 
-
-<P>
-These commands work even if if the current line is a continuation line
-(i.e. the prompt is <SAMP>`+'</SAMP> instead of <SAMP>`&#62;'</SAMP>) -- in this case all
+</p><p>These commands work even if if the current line is a continuation line
+(i.e. the prompt is `<samp>+</samp>' instead of `<samp>&gt;</samp>') -- in this case all
 the lines that form the multi-line command are concatenated together and
-the resulting command is sent to the <B>ESS</B> process (currently this is
-the only way to resubmit a multi-line command to the <B>ESS</B> process in
+the resulting command is sent to the ESS process (currently this is
+the only way to resubmit a multi-line command to the ESS process in
 one go).  If the current line does
-<A NAME="IDX84"></A>
+<a name="IDX65"></a>
 not begin with a prompt, an error is signaled.  This feature, coupled
 with the command-based motion commands described above, could be used as
 a primitive history mechanism.  ESS provides a more sophisticated
-mechanism, however, which is described in section <A HREF="ess_7.html#SEC48">Command History</A>.
+mechanism, however, which is described in <a href="#SEC49">Command History</a>.
 
+</p><hr size="6">
+<a name="NOD48"></a>
+<a name="SEC48"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC47" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC49" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC44" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> F.4.4 Keeping a record of your S session </h3>
 
-
-
-<H3><A NAME="SEC47" HREF="ess_toc.html#TOC47">Keeping a record of your <B>S</B> session</A></H3>
-
-<P>
-To keep a record of your <B>S</B> session in a disk file, use the Emacs
-command <KBD>C-x C-w</KBD> (<CODE>write-file</CODE>) to attach a file to the
-<B>ESS</B> process buffer.  The name of the process buffer will (probably)
+<p>To keep a record of your S session in a disk file, use the Emacs
+command <kbd>C-x C-w</kbd> (<code>write-file</code>) to attach a file to the
+ESS process buffer.  The name of the process buffer will (probably)
 change to the name of the file, but this is not a problem.  You can
-still use <B>S</B> as usual; just remember to save the file before you quit
-Emacs with <KBD>C-x C-s</KBD>.  You can make ESS prompt you for a filename in
-which to save the transcript every time you start <B>S</B> by setting the
+still use S as usual; just remember to save the file before you quit
+Emacs with <kbd>C-x C-s</kbd>.  You can make ESS prompt you for a filename in
+which to save the transcript every time you start S by setting the
 variable
-<A NAME="IDX85"></A>
-<CODE>ess-ask-about-transfile</CODE> to <CODE>t</CODE>; see section <A HREF="ess_3.html#SEC16">Changing the startup actions</A>.
-<A NAME="IDX86"></A>
+<a name="IDX66"></a>
+<code>ess-ask-about-transfile</code> to <code>t</code>; see <a href="ess_3.html#SEC17">Changing the startup actions</a>.
+<a name="IDX67"></a>
 We recommend you save your transcripts with filenames that end in
-<SAMP>`.St'</SAMP>.  There is a special mode (ESS transcript mode ---
-see section <A HREF="ess_10.html#SEC63">Manipulating saved transcript files</A>) for editing transcript files which is
+`<samp>.St</samp>'.  There is a special mode (ESS transcript mode --
+see section <a href="ess_10.html#SEC65">Manipulating saved transcript files</a>) for editing transcript files which is
 automatically selected for files with this suffix.
 
-
-<P>
-<A NAME="IDX87"></A>
-S transcripts can get very large, so some judicious editing is
-appropriate if you are saving it in a file.  Use <KBD>C-c C-o</KBD> whenever
+</p><a name="IDX68"></a>
+<p>S transcripts can get very large, so some judicious editing is
+appropriate if you are saving it in a file.  Use <kbd>C-c C-o</kbd> whenever
 a command produces excessively long output (printing large arrays, for
 example).  Delete erroneous commands (and the resulting error messages
 or other output) by moving to the command (or its output) and typing
-<KBD>M-h C-w</KBD>.  Also, remember that <KBD>C-c C-e</KBD> (and other hot keys)
+<kbd>M-h C-w</kbd>.  Also, remember that <kbd>C-c C-e</kbd> (and other hot keys)
 may be used for commands whose output you do not wish to appear in the
 transcript.  These suggestions are appropriate even if you are not
 saving your transcript to disk, since the larger the transcript, the
 more memory your Emacs process will use on the host machine.
 
-
-<P>
-Finally, if it is your intention to produce <B>S</B> source code (suitable
-for using with <CODE>source()</CODE> or inclusion in an <B>S</B> function) from a
-transcript, then the command <KBD>M-x ess-clean-region</KBD> may be of use.
-<A NAME="IDX88"></A>
+</p><p>Finally, if you intend to produce S source code (suitable for using
+with <code>source()</code> or inclusion in an S function) from a
+transcript, then the command <kbd>M-x ess-transcript-clean-region</kbd> may
+be of use.
+<a name="IDX69"></a>
 This command works in any Emacs buffer, and removes all prompts and
 command output from an ESS transcript within the current region, leaving
 only the commands.  Don't forget to remove any erroneous commands first!
 
+</p><hr size="6">
+<a name="NOD49"></a>
+<a name="SEC49"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC48" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC50" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> F.5 Command History </h2>
 
-
-
-<H2><A NAME="SEC48" HREF="ess_toc.html#TOC48">Command History</A></H2>
-<P>
-<A NAME="IDX89"></A>
-<A NAME="IDX90"></A>
-<A NAME="IDX91"></A>
-
-
-<P>
-ESS provides easy-to-use facilities for re-executing or editing previous
+<p>ESS provides easy-to-use facilities for re-executing or editing previous
 commands.  An input history of the last few commands is maintained (by
 default the last 50 commands are stored, although this can be changed by
-setting the variable <CODE>comint-input-ring-size</CODE> in
-<A NAME="IDX92"></A>
-<CODE>inferior-ess-mode-hook</CODE>.) The simplest history commands simply
+setting the variable <code>comint-input-ring-size</code> in
+<a name="IDX70"></a>
+<code>inferior-ess-mode-hook</code>.) The simplest history commands simply
 select the next and previous commands in the input history:
 
-
-
-<UL>
-<LI>
-
-<KBD>M-p</KBD> (<CODE>comint-previous-input</CODE>) <BR>
-<A NAME="IDX93"></A>
+</p><ul>
+<li>
+<p><kbd>M-p</kbd> (<code>comint-previous-input</code>) <br>
+<a name="IDX71"></a>
 Select the previous command in the input history.
 
-<LI>
-
-<KBD>M-n</KBD>  (<CODE>comint-next-input</CODE>) <BR>
-<A NAME="IDX94"></A>
+</p></li><li>
+<p><kbd>M-n</kbd>  (<code>comint-next-input</code>) <br>
+<a name="IDX72"></a>
 Select the next command in the input history.
-</UL>
+</p></li></ul>
 
-<P>
-For example, pressing <KBD>M-p</KBD> once will re-enter the last command into
-the process buffer after the prompt but does not send it to the <B>ESS</B>
+
+<p>For example, pressing <kbd>M-p</kbd> once will re-enter the last command into
+the process buffer after the prompt but does not send it to the ESS
 process, thus allowing editing or correction of the command before the
-<B>ESS</B> process sees it.  Once corrections have been made, press
-<KBD>RET</KBD> to send the edited command to the <B>ESS</B> process.
+ESS process sees it.  Once corrections have been made, press
+<kbd>RET</kbd> to send the edited command to the ESS process.
 
-
-<P>
-If you want to select a particular command from the history by matching
-it against a regular expression (see section `Syntax of Regular Expression' in <CITE>The GNU Emacs Reference Manual</CITE>), to search for a
+</p><p>If you want to select a particular command from the history by matching
+it against a regular expression (see <a href="../emacs/Regexps.html">(emacs)Regexps</a> section `Syntax of Regular Expression' in <cite>The GNU Emacs Reference Manual</cite>), to search for a
 particular variable name for example, these commands are also available:
 
-
-
-<UL>
-<LI>
-
-<KBD>M-r</KBD> (<CODE>comint-previous-matching-input</CODE>) <BR>
-<A NAME="IDX95"></A>
+</p><ul>
+<li>
+<p><kbd>M-r</kbd> (<code>comint-previous-matching-input</code>) <br>
+<a name="IDX73"></a>
 Prompt for a regular expression, and search backwards through the input
 history for a command matching the expression.
 
-<LI>
-
-<KBD>M-s</KBD> (<CODE>comint-next-matching-input</CODE>) <BR>
-<A NAME="IDX96"></A>
+</p></li><li>
+<p><kbd>M-s</kbd> (<code>comint-next-matching-input</code>) <br>
+<a name="IDX74"></a>
 Prompt for a regular expression, and search backwards through the input
 history for a command matching the expression.
-</UL>
+</p></li></ul>
 
-<P>
-A common type of search is to find the last command that began with a
+
+<p>A common type of search is to find the last command that began with a
 particular sequence of characters; the following two commands provide an
 easy way to do this:
 
-
-
-<UL>
-<LI>
-
-<KBD>A-M-r</KBD> (<CODE>comint-previous-matching-input-from-input</CODE>) <BR>
-<A NAME="IDX97"></A>
+</p><ul>
+<li>
+<p><kbd>A-M-r</kbd> (<code>comint-previous-matching-input-from-input</code>) <br>
+<a name="IDX75"></a>
 Select the previous command in the history which matches the string
 typed so far.
 
-<LI>
-
-<KBD>A-M-s</KBD> (<CODE>comint-next-matching-input-from-input</CODE>) <BR>
-<A NAME="IDX98"></A>
+</p></li><li>
+<p><kbd>A-M-s</kbd> (<code>comint-next-matching-input-from-input</code>) <br>
+<a name="IDX76"></a>
 Select the next command in the history which matches the string typed so
 far.
-</UL>
+</p></li></ul>
 
-<P>
-Instead of prompting for a regular expression to match against, as they
+
+<p>Instead of prompting for a regular expression to match against, as they
 instead select commands starting with those characters already entered.
-For instance, if you wanted to re-execute the last <CODE>attach()</CODE>
-command, you may only need to type <KBD>att</KBD> and then <KBD>A-M-r</KBD> and
-<KBD>RET</KBD>.  (Note: you may not have an <KBD>ALT</KBD> key on your keyboard,
+For instance, if you wanted to re-execute the last <code>attach()</code>
+command, you may only need to type <kbd>att</kbd> and then <kbd>A-M-r</kbd> and
+<kbd>RET</kbd>.  (Note: you may not have an <kbd>ALT</kbd> key on your keyboard,
 in which case it may be a good idea to bind these commands to some other
 keys.)
 
+</p><p>See <a href="../emacs/Shell-Ring.html">(emacs)Shell Ring</a> section `Shell History Ring' in <cite>The GNU Emacs Reference Manual</cite>, for a more detailed discussion of the history mechanism.
 
-<P>
-See section `Shell History Ring' in <CITE>The GNU Emacs Reference Manual</CITE>, for a more detailed discussion of the history mechanism.
+</p><hr size="6">
+<a name="NOD50"></a>
+<a name="SEC50"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC49" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC51" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> F.6 References to historical commands </h2>
 
-
-
-
-<H2><A NAME="SEC49" HREF="ess_toc.html#TOC49">References to historical commands</A></H2>
-
-<P>
-Instead of searching through the command history using the command
+<p>Instead of searching through the command history using the command
 described in the previous section, you can alternatively refer to a
 historical command directly using a notation very similar to that used
-in <CODE>csh</CODE>.  History references are introduced by a <SAMP>`!'</SAMP> or
-<SAMP>`^'</SAMP> character and have meanings as follows:
+in <code>csh</code>.  History references are introduced by a `<samp>!</samp>' or
+`<samp>^</samp>' character and have meanings as follows:
 
+</p><dl compact="compact">
+<dt>`<samp> !!</samp>'</dt>
+<dd><p>The immediately previous command
 
-<DL COMPACT>
+</p></dd>
+<dt>`<samp> !-<var>N</var></samp>'</dt>
+<dd><p>The <var>N</var>th previous command
 
-<DT><SAMP>`!!'</SAMP>
-<DD>
-The immediately previous command
+</p></dd>
+<dt>`<samp> !text</samp>'</dt>
+<dd><p>The last command beginning with the string `<samp>text</samp>'
 
-<DT><SAMP>`!-<VAR>N</VAR>'</SAMP>
-<DD>
-The <VAR>N</VAR>th previous command
+</p></dd>
+<dt>`<samp> !?text</samp>'</dt>
+<dd><p>The last command containing the string `<samp>text</samp>'
+</p></dd>
+</dl>
 
-<DT><SAMP>`!text'</SAMP>
-<DD>
-The last command beginning with the string <SAMP>`text'</SAMP>
-
-<DT><SAMP>`!?text'</SAMP>
-<DD>
-The last command containing the string <SAMP>`text'</SAMP>
-</DL>
-
-<P>
-In addition, you may follow the reference with a <EM>word designator</EM>
-to select particular <EM>words</EM> of the input.  A word is defined as a
+<p>In addition, you may follow the reference with a <em>word designator</em>
+to select particular <em>words</em> of the input.  A word is defined as a
 sequence of characters separated by whitespace.  (You can modify this
-definition by setting the value of <CODE>comint-delimiter-argument-list</CODE>
+definition by setting the value of <code>comint-delimiter-argument-list</code>
 to a list of characters that are allowed to separate words and
-<A NAME="IDX99"></A>
+<a name="IDX77"></a>
 themselves form words.)  Words are numbered beginning with zero.  The
-word designator usually begins with a <SAMP>`:'</SAMP> (colon) character;
-however it may be omitted if the word reference begins with a <SAMP>`^'</SAMP>,
-<SAMP>`$'</SAMP>, <SAMP>`*'</SAMP> or <SAMP>`-'</SAMP>.  If the word is to be selected from the
-previous command, the second <SAMP>`!'</SAMP>  character can be omitted from the
-event specification.  For instance, <SAMP>`!!:1'</SAMP> and <SAMP>`!:1'</SAMP> both
-refer to the first word of the previous command, while <SAMP>`!!$'</SAMP> and
-<SAMP>`!$'</SAMP> both refer to the last word in the previous command.  The
+word designator usually begins with a `<samp>:</samp>' (colon) character;
+however it may be omitted if the word reference begins with a `<samp>^</samp>',
+`<samp>$</samp>', `<samp>*</samp>' or `<samp>-</samp>'.  If the word is to be selected from the
+previous command, the second `<samp>!</samp>'  character can be omitted from the
+event specification.  For instance, `<samp>!!:1</samp>' and `<samp>!:1</samp>' both
+refer to the first word of the previous command, while `<samp>!!$</samp>' and
+`<samp>!$</samp>' both refer to the last word in the previous command.  The
 format of word designators is as follows:
 
+</p><dl compact="compact">
+<dt>`<samp> 0</samp>'</dt>
+<dd><p>The zeroth word (i.e. the first one on the command line)
 
-<DL COMPACT>
+</p></dd>
+<dt>`<samp> <var>n</var></samp>'</dt>
+<dd><p>The <var>n</var>th word, where <var>n</var> is a number
 
-<DT><SAMP>`0'</SAMP>
-<DD>
-The zeroth word (i.e. the first one on the command line)
+</p></dd>
+<dt>`<samp> ^</samp>'</dt>
+<dd><p>The first word (i.e. the second one on the command line)
 
-<DT><SAMP>`<VAR>n</VAR>'</SAMP>
-<DD>
-The <VAR>n</VAR>th word, where <VAR>n</VAR> is a number
+</p></dd>
+<dt>`<samp> $</samp>'</dt>
+<dd><p>The last word
 
-<DT><SAMP>`^'</SAMP>
-<DD>
-The first word (i.e. the second one on the command line)
+</p></dd>
+<dt>`<samp> <var>x</var>-<var>y</var></samp>'</dt>
+<dd><p>A range of words; `<samp>-<var>y</var></samp>' abbreviates `<samp>0-<var>y</var></samp>'
 
-<DT><SAMP>`$'</SAMP>
-<DD>
-The last word
-
-<DT><SAMP>`<VAR>x</VAR>-<VAR>y</VAR>'</SAMP>
-<DD>
-A range of words; <SAMP>`-<VAR>y</VAR>'</SAMP> abbreviates <SAMP>`0-<VAR>y</VAR>'</SAMP>
-
-<DT><SAMP>`*'</SAMP>
-<DD>
-All the words except the zeroth word, or nothing if the command had just
+</p></dd>
+<dt>`<samp> *</samp>'</dt>
+<dd><p>All the words except the zeroth word, or nothing if the command had just
 one word (the zeroth)
 
-<DT><SAMP>`<VAR>x</VAR>*'</SAMP>
-<DD>
-Abbreviates <VAR>x</VAR>-$
+</p></dd>
+<dt>`<samp> <var>x</var>*</samp>'</dt>
+<dd><p>Abbreviates <var>x</var>-$
 
-<DT><SAMP>`<VAR>x</VAR>-'</SAMP>
-<DD>
-Like <SAMP>`<VAR>x</VAR>*'</SAMP>, but omitting the last word
-</DL>
+</p></dd>
+<dt>`<samp> <var>x</var>-</samp>'</dt>
+<dd><p>Like `<samp><var>x</var>*</samp>', but omitting the last word
+</p></dd>
+</dl>
 
-<P>
-In addition, you may surround the entire reference except for the first
-<SAMP>`!'</SAMP> by braces to allow it to be followed by other (non-whitespace)
+<p>In addition, you may surround the entire reference except for the first
+`<samp>!</samp>' by braces to allow it to be followed by other (non-whitespace)
 characters (which will be appended to the expanded reference).
 
+</p><p>Finally, ESS also provides quick substitution; a reference like
+`<samp>^old^new^</samp>' means &quot;the last command, but with the first occurrence
+of the string `<samp>old</samp>' replaced with the string `<samp>new</samp>'&quot; (the last
+`<samp>^</samp>' is optional).  Similarly, `<samp>^old^</samp>' means &quot;the last
+command, with the first occurrence of the string `<samp>old</samp>' deleted&quot;
+(again, the last `<samp>^</samp>' is optional).
 
-<P>
-Finally, ESS also provides quick substitution; a reference like
-<SAMP>`^old^new^'</SAMP> means "the last command, but with the first occurrence
-of the string <SAMP>`old'</SAMP> replaced with the string <SAMP>`new'</SAMP>" (the last
-<SAMP>`^'</SAMP> is optional).  Similarly, <SAMP>`^old^'</SAMP> means "the last
-command, with the first occurrence of the string <SAMP>`old'</SAMP> deleted"
-(again, the last <SAMP>`^'</SAMP> is optional).
-
-
-<P>
-To convert a history reference as described above to an input suitable
-for S, you need to <EM>expand</EM> the history reference, using the
-<KBD>TAB</KBD> key.  For this to work, the cursor must be preceded by a space
+</p><p>To convert a history reference as described above to an input suitable
+for S, you need to <em>expand</em> the history reference, using the
+<kbd>TAB</kbd> key.  For this to work, the cursor must be preceded by a space
 (otherwise it would try to complete an object name) and not be within a
 string (otherwise it would try to complete a filename).  So to expand
-the history reference, type <KBD>SPC TAB</KBD>.  This will convert the
-history reference into an <B>S</B> command from the history, which you can
-then edit or press <KBD>RET</KBD> to execute.
+the history reference, type <kbd>SPC TAB</kbd>.  This will convert the
+history reference into an S command from the history, which you can
+then edit or press <kbd>RET</kbd> to execute.
 
+</p><p>For example, to execute the last command that referenced the variable
+<code>data</code>, type <kbd>!?data SPC TAB RET</kbd>.
 
-<P>
-For example, to execute the last command that referenced the variable
-<CODE>data</CODE>, type <KBD>!?data SPC TAB RET</KBD>.
+</p><hr size="6">
+<a name="NOD51"></a>
+<a name="SEC51"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC50" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC52" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> F.7 Hot keys for common commands </h2>
 
-
-
-
-<H2><A NAME="SEC50" HREF="ess_toc.html#TOC50">Hot keys for common commands</A></H2>
-
-<P>
-ESS provides a number of commands for executing the commonly used
+<p>ESS provides a number of commands for executing the commonly used
 functions.  These commands below are basically information-gaining
-commands (such as <CODE>objects()</CODE> or <CODE>search()</CODE>) which tend to
+commands (such as <code>objects()</code> or <code>search()</code>) which tend to
 clutter up your transcript and for this reason some of the hot keys
 display their output in a temporary buffer instead of the process buffer
 by default.  This behavior is controlled by the variable
-<CODE>ess-execute-in-process-buffer</CODE> which, if
-<A NAME="IDX100"></A>
-non-<CODE>nil</CODE>, means that these commands will produce their output in
+<code>ess-execute-in-process-buffer</code> which, if
+<a name="IDX78"></a>
+non-<code>nil</code>, means that these commands will produce their output in
 the process buffer instead.  In any case, passing a prefix argument to
-the commands (with <KBD>C-u</KBD>) will reverse the meaning of
-<CODE>ess-execute-in-process-buffer</CODE> for that command, i.e. the output
+the commands (with <kbd>C-u</kbd>) will reverse the meaning of
+<code>ess-execute-in-process-buffer</code> for that command, i.e. the output
 will be displayed in the process buffer if it usually goes to a
 temporary buffer, and vice-versa.  These are the hot keys that behave in
 this way:
 
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-x</KBD> (<CODE>ess-execute-objects</CODE>) <BR>
-<A NAME="IDX101"></A>
-Sends the <CODE>objects()</CODE>
-<A NAME="IDX102"></A>
-command to the <B>ESS</B> process.  A prefix argument specifies the
+</p><ul>
+<li>
+<p><kbd>C-c C-x</kbd> (<code>ess-execute-objects</code>) <br>
+<a name="IDX79"></a>
+Sends the <code>objects()</code>
+<a name="IDX80"></a>
+command to the ESS process.  A prefix argument specifies the
 position on the search list (use a negative argument to toggle
-<CODE>es-execute-in-process-buffer</CODE> as well).  A quick way to see what
+<code>es-execute-in-process-buffer</code> as well).  A quick way to see what
 objects are in your working directory.
-<A NAME="IDX103"></A>
-<A NAME="IDX104"></A>
+<a name="IDX81"></a>
+<a name="IDX82"></a>
 
-<LI>
-
-<KBD>C-c C-s</KBD> (<CODE>ess-execute-search</CODE>) <BR>
-<A NAME="IDX105"></A>
-Sends the <CODE>search()</CODE>
-<A NAME="IDX106"></A>
+</p></li><li>
+<p><kbd>C-c C-s</kbd> (<code>ess-execute-search</code>) <br>
+<a name="IDX83"></a>
+Sends the <code>search()</code>
+<a name="IDX84"></a>
 command to the ESS process.
-<A NAME="IDX107"></A>
-<A NAME="IDX108"></A>
+<a name="IDX85"></a>
+<a name="IDX86"></a>
 
-<LI>
-
-<KBD>C-c C-e</KBD> (<CODE>ess-execute</CODE>) <BR>
-<A NAME="IDX109"></A>
+</p></li><li>
+<p><kbd>C-c C-e</kbd> (<code>ess-execute</code>) <br>
+<a name="IDX87"></a>
 Prompt for an ESS expression, and evaluate it.
-</UL>
+</p></li></ul>
 
-<P>
-<CODE>ess-execute</CODE> may seem pointless when you could just type the
+<p><code>ess-execute</code> may seem pointless when you could just type the
 command in anyway, but it proves useful for `spot' calculations which
 would otherwise clutter your transcript, or for evaluating an expression
 while partway through entering a command.  You can also use this command
 to generate new hot keys using the Emacs keyboard macro facilities;
-see section `Keyboard Macros' in <CITE>The GNU Emacs Reference Manual</CITE>.
-<A NAME="IDX110"></A>
-<A NAME="IDX111"></A>
+see <a href="../emacs/Keyboard-Macros.html">Keyboard Macros: (emacs)Keyboard Macros</a> section `Keyboard Macros' in <cite>The GNU Emacs Reference Manual</cite>.
+<a name="IDX88"></a>
+<a name="IDX89"></a>
 
-
-<P>
-The following hot keys do not use <CODE>ess-execute-in-process-buffer</CODE>
+</p><p>The following hot keys do not use <code>ess-execute-in-process-buffer</code>
 to decide where to display the output -- they either always display in
 the process buffer or in a separate buffer, as indicated:
 
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-a</KBD> (<CODE>ess-execute-attach</CODE>) <BR>
-<A NAME="IDX112"></A>
+</p><ul>
+<li>
+<p><kbd>C-c C-a</kbd> (<code>ess-execute-attach</code>) <br>
+<a name="IDX90"></a>
 Prompts for a directory to attach to the ESS process with the
-<CODE>attach()</CODE> command.
-<A NAME="IDX113"></A>
+<code>attach()</code> command.
+<a name="IDX91"></a>
 If a numeric prefix argument is given it is used as the position on the
-search list to attach the directory; otherwise the <B>S</B> default of 2 is
-used.  The <CODE>attach()</CODE> command actually executed appears in the
+search list to attach the directory; otherwise the S default of 2 is
+used.  The <code>attach()</code> command actually executed appears in the
 process buffer.
 
-<LI>
+</p></li><li>
+<p><kbd>C-c C-l</kbd> (<code>ess-load-file</code>) <br>
+<a name="IDX92"></a>
+Prompts for a file to load into the ESS process using
+<code>source()</code>.  If there is an error during loading, you can jump to
+the error in the file with <kbd>C-x `</kbd> (<code>ess-parse-errors</code>).
+<a name="IDX93"></a>
+See section <a href="ess_8.html#SEC58">Detecting errors in source files</a>, for more details.
 
-<KBD>C-c C-l</KBD> (<CODE>ess-load-file</CODE>) <BR>
-<A NAME="IDX114"></A>
-Prompts for a file to load into the <B>ESS</B> process using
-<CODE>source()</CODE>.  If there is an error during loading, you can jump to
-the error in the file with <KBD>C-x `</KBD> (<CODE>ess-parse-errors</CODE>).
-<A NAME="IDX115"></A>
-See section <A HREF="ess_8.html#SEC56">Detecting errors in source files</A>, for more details.
-
-<LI>
-
-<KBD>C-c C-v</KBD> (<CODE>ess-display-help-on-object</CODE>) <BR> Pops up a help
-buffer for an <B>S</B> object or function.  See section <A HREF="ess_9.html#SEC62">Reading help files in ESS</A> for more
+</p></li><li>
+<p><kbd>C-c C-v</kbd> (<code>ess-display-help-on-object</code>) <br> Pops up a help
+buffer for an S object or function.  See <a href="ess_9.html#SEC64">Reading help files in ESS</a> for more
 details.
 
-<LI>
-
-<KBD>C-c C-q</KBD> (<CODE>ess-quit</CODE>) <BR>
-<A NAME="IDX116"></A>
-<A NAME="IDX117"></A>
-Sends the <CODE>q()</CODE>
-<A NAME="IDX118"></A>
-command to the <B>ESS</B> process (or <CODE>(exit)</CODE>
-<A NAME="IDX119"></A>
-to the <B>XLS</B> process), and cleans up any temporary buffers (such as
+</p></li><li>
+<p><kbd>C-c C-q</kbd> (<code>ess-quit</code>) <br>
+<a name="IDX94"></a>
+<a name="IDX95"></a>
+Sends the <code>q()</code>
+<a name="IDX96"></a>
+command to the ESS process (or <code>(exit)</code>
+<a name="IDX97"></a>
+to the <b>XLS</b> process), and cleans up any temporary buffers (such as
 help buffers or edit buffers) you may have created along the way.  Use
-this command when you have finished your <B>S</B> session instead of simply
-typing <CODE>q()</CODE> yourself, otherwise you will need to issue the command
-<KBD>M-x ess-cleanup</KBD>
-<A NAME="IDX120"></A>
-<A NAME="IDX121"></A>
-<A NAME="IDX122"></A>
-<A NAME="IDX123"></A>
+this command when you have finished your S session instead of simply
+typing <code>q()</code> yourself, otherwise you will need to issue the command
+<kbd>M-x ess-cleanup</kbd>
+<a name="IDX98"></a>
+<a name="IDX99"></a>
+<a name="IDX100"></a>
+<a name="IDX101"></a>
 command explicitly to make sure that all the files that need to be saved
 have been saved, and that all the temporary buffers have been killed.
-</UL>
+</p></li></ul>
 
+<hr size="6">
+<a name="NOD52"></a>
+<a name="SEC52"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC51" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC53" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> F.8 Is the Statistical Process running under ESS? </h2>
 
-
-<H2><A NAME="SEC51" HREF="ess_toc.html#TOC51">Is the Statistical Process running under ESS?</A></H2>
-
-<P>
-<A NAME="IDX124"></A>
-<A NAME="IDX125"></A>
-For the S languages (S, S-Plus, R) ESS sets an option in the current
+<p>For the S languages (S, S-Plus, R) ESS sets an option in the current
 process that programs in the language can check to determine the
 environment in which they are currently running.
 
+</p><p>ESS sets
+<code>options(STERM=&quot;iESS&quot;)</code> for S language processes running in an
+inferior <code>iESS[S]</code> or <code>iESS[R]</code> buffer.
 
-<P>
-ESS sets
-<CODE>options(STERM="iESS")</CODE> for S language processes running in an
-inferior <CODE>iESS[S]</CODE> or <CODE>iESS[R]</CODE> buffer.
-
-
-<P>
-ESS sets
-<CODE>options(STERM="ddeESS")</CODE> for independent S-Plus for Windows
+</p><p>ESS sets
+<code>options(STERM=&quot;ddeESS&quot;)</code> for independent S-Plus for Windows
 processes running in the GUI and communicating with ESS via
 the DDE (Microsoft Dynamic Data Exchange) protocol through a
-<CODE>ddeESS[S]</CODE> buffer.
+<code>ddeESS[S]</code> buffer.
 
+</p><p>Other values of <code>options()$STERM</code> that we recommend are:
 
-<P>
-Other values of <CODE>options()$STERM</CODE> that we recommend are:
+</p><ul>
+<li><p> <code>length</code>:     Fixed length xterm or telnet window.
+</p></li><li><p> <code>scrollable</code>: Unlimited length xterm or telnet window.
+</p></li><li><p> <code>server</code>:     S-Plus Stat Server.
+</p></li><li><p> <code>BATCH</code>:      BATCH.
+</p></li><li><p> <code>Rgui</code>:       R GUI.
+</p></li><li><p> <code>Commands</code>:   S-Plus GUI without DDE interface to ESS.
+</p></li></ul>
 
-
-
-<UL>
-<LI><CODE>length</CODE>:     Fixed length xterm or telnet window.
-
-<LI><CODE>scrollable</CODE>: Unlimited length xterm or telnet window.
-
-<LI><CODE>server</CODE>:     S-Plus Stat Server.
-
-<LI><CODE>BATCH</CODE>:      BATCH.
-
-<LI><CODE>Rgui</CODE>:       R GUI.
-
-<LI><CODE>Commands</CODE>:   S-Plus GUI without DDE interface to ESS.
-
-</UL>
-
-<P>
-Additional values may be recommended in the future as new interaction
-protocols are created.  Unlike the values <CODE>iESS</CODE> and <CODE>ddeESS</CODE>,
+<p>Additional values may be recommended in the future as new interaction
+protocols are created.  Unlike the values <code>iESS</code> and <code>ddeESS</code>,
 ESS can't set these other values since the S language program is not
 under the control of ESS.
 
+</p><hr size="6">
+<a name="NOD53"></a>
+<a name="SEC53"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC52" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC54" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> F.9 Using emacsclient </h2>
 
 
+<p>When starting R or S under Unix, ESS sets
+<code>options(editor=&quot;emacsclient&quot;)</code>.  (Under Microsoft Windows, it will
+use gnuclient.exe rather than emacsclient, but the same principle
+applies.)  Within your R session, for example, if you have a function
+called <code>iterator</code>, typing <code>fix(iterator)</code>, will show that
+function in a temporary Emacs buffer.  You can then correct the
+function.  When you kill the buffer, the definition of the function is
+updated.  Using <code>edit()</code> rather than <code>fix()</code> means that the
+function is not updated.  Finally, the S function <code>page(x)</code> will
+also show a text representation of the object <code>x</code> in a temporary
+Emacs buffer.
 
-<H2><A NAME="SEC52" HREF="ess_toc.html#TOC52">Other commands provided by inferior-ESS</A></H2>
+</p>
+<hr size="6">
+<a name="NOD54"></a>
+<a name="SEC54"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC53" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC40" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> F.10 Other commands provided by inferior-ESS </h2>
 
-<P>
-The following commands are also provided in the process buffer:
+<p>The following commands are also provided in the process buffer:
 
-
-
-<UL>
-<LI>
-
-<KBD>C-c C-c</KBD> (<CODE>comint-interrupt-subjob</CODE>) <BR>
-<A NAME="IDX126"></A>
-Sends a Control-C signal to the <B>ESS</B> process.  This has the effect of
-<A NAME="IDX127"></A>
-<A NAME="IDX128"></A>
+</p><ul>
+<li>
+<p><kbd>C-c C-c</kbd> (<code>comint-interrupt-subjob</code>) <br>
+<a name="IDX102"></a>
+Sends a Control-C signal to the ESS process.  This has the effect of
+<a name="IDX103"></a>
+<a name="IDX104"></a>
 aborting the current command.
 
-<LI>
-
-<KBD>C-c C-z</KBD> (<CODE>ess-abort</CODE>) <BR>
-<A NAME="IDX129"></A>
-<A NAME="IDX130"></A>
-Sends a STOP signal to the <B>ESS</B> process, killing it immediately.
-It's not a good idea to use this, in general: Neither <CODE>q()</CODE> nor
-<CODE>.Last</CODE> will be executed and device drivers will not finish
+</p></li><li>
+<p><kbd>C-c C-z</kbd> (<code>ess-abort</code>) <br>
+<a name="IDX105"></a>
+<a name="IDX106"></a>
+Sends a STOP signal to the ESS process, killing it immediately.
+It's not a good idea to use this, in general: Neither <code>q()</code> nor
+<code>.Last</code> will be executed and device drivers will not finish
 cleanly.  This command is provided as a safety to
-<CODE>comint-stop-subjob</CODE>, which is usually bound to <KBD>C-c C-z</KBD>.  If
-you want to quit from S, use <KBD>C-c C-q</KBD> (<CODE>ess-quit</CODE>) instead.
-<A NAME="IDX131"></A>
-<A NAME="IDX132"></A>
+<code>comint-stop-subjob</code>, which is usually bound to <kbd>C-c C-z</kbd>.  If
+you want to quit from S, use <kbd>C-c C-q</kbd> (<code>ess-quit</code>) instead.
+<a name="IDX107"></a>
+<a name="IDX108"></a>
 
-<LI>
+</p></li><li>
+<p><kbd>C-c C-d</kbd> (<code>ess-dump-object-into-edit-buffer</code>) <br>
+<a name="IDX109"></a>
+Prompts for an object to be edited in an edit buffer.  See section <a href="ess_8.html#SEC55">Editing S functions</a>.
+</p></li></ul>
 
-<KBD>C-c C-d</KBD> (<CODE>ess-dump-object-into-edit-buffer</CODE>) <BR>
-<A NAME="IDX133"></A>
-Prompts for an object to be edited in an edit buffer.  See section <A HREF="ess_8.html#SEC53">Editing <B>S</B> functions</A>.
-</UL>
+<p>Other commands available in Inferior S mode are discussed in
+<a href="../emacs/Shell-Mode.html">(emacs)Shell Mode</a> section `Shell Mode' in <cite>The Gnu Emacs Reference Manual</cite>.
 
-<P>
-Other commands available is Inferior <B>S</B> mode are discussed in
-section `Shell Mode' in <CITE>The Gnu Emacs Reference Manual</CITE>.
+</p><hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC40" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="ess_8.html#SEC55" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="ess.html#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="ess_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="ess_14.html#SEC90" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="ess_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Rodney Sparapani</em> on <em>June, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
+ </font>
+ <br>
 
-
-<P><HR><P>
-Go to the <A HREF="ess_1.html">first</A>, <A HREF="ess_6.html">previous</A>, <A HREF="ess_8.html">next</A>, <A HREF="ess_17.html">last</A> section, <A HREF="ess_toc.html">table of contents</A>.
-</BODY>
-</HTML>
+</p>
+</body>
+</html>

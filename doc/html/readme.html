@@ -1,178 +1,291 @@
-<HTML>
-<HEAD>
-<!-- Created by texi2html 1.56k from readme.texi on 21 October 2002 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created on June, 30 2004 by texi2html 1.70 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
 
-<TITLE>ESS -- Emacs Speaks Statistics</TITLE>
-</HEAD>
-<BODY>
-<H1>ESS -- Emacs Speaks Statistics</H1>
-<P>
-<P><HR><P>
+-->
+<head>
+<title>ESS -- Emacs Speaks Statistics: 1. General Information: README</title>
+
+<meta name="description" content="ESS -- Emacs Speaks Statistics: 1. General Information: README">
+<meta name="keywords" content="ESS -- Emacs Speaks Statistics: 1. General Information: README">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.70">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+ul.toc {list-style: none}
+-->
+</style>
 
 
+</head>
 
-<H1><A NAME="SEC1" HREF="readme_toc.html#TOC1">General Information: README</A></H1>
-<P>
-<A NAME="IDX1"></A>
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 
+<a name="NOD1"></a>
+<a name="SEC1"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[ &lt; ]</td>
+<td valign="middle" align="left">[<a href="#SEC2" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[ &lt;&lt; ]</td>
+<td valign="middle" align="left">[ Up ]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1 class="chapter"> 1. General Information: README </h1>
 
-<P>
-This is the README file for the distribution of ESS version 
-5.1.24
+<p>This is the README file for the distribution of ESS version 
 
+</p><p>5.2.1
 
-<P>
-The final release of the 5.1.x series on the way to 5.2 (the next stable 
-distribution).  ESS is a GNU Emacs and XEmacs mode for interactive
-statistical programming and data analysis.  Languages supported:  the
-S family (S 3/4, S-PLUS 3/4/5/6, and R), SAS, XLispStat, Stata and BUGS.
-Installation help can be found in sections for both Unix and Windows.
-ESS grew out of the desire for bug fixes and extensions to S-mode and 
-SAS-mode as well as a consistent union of their features in one package.
+</p><p>The first release of the 5.2 series.  ESS is a GNU Emacs and XEmacs mode
+for interactive statistical programming and data analysis.  Languages
+supported: the S family (S 3/4, S-PLUS 3/4/5/6, and R), SAS, XLispStat,
+Stata and BUGS.  Installation help can be found in sections for both
+Unix and Windows.  ESS grew out of the desire for bug fixes and
+extensions to S-mode and SAS-mode as well as a consistent union of their
+features in one package.
 
-
-<P>
-The current development team is led by A.J. (Tony) Rossini
-(<A HREF="mailto:rossini@biostat.washington.edu">rossini@biostat.washington.edu</A>), who did the initial port to
+</p><p>The current development team is led by A.J. (Tony) Rossini
+(<a href="mailto:rossini@biostat.washington.edu">rossini@biostat.washington.edu</a>), who did the initial port to
 XEmacs and has been the primary coder.  Martin Maechler
-(<A HREF="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</A>) and Kurt Hornik
-(<A HREF="mailto:hornik@ci.tuwien.ac.at">hornik@ci.tuwien.ac.at</A>) have assisted with S-PLUS, S4, R, and
-XLispStat.  Richard M. Heiberger (<A HREF="mailto:rmh@temple.edu">rmh@temple.edu</A>) has 
+(<a href="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</a>) and Kurt Hornik
+(<a href="mailto:hornik@ci.tuwien.ac.at">hornik@ci.tuwien.ac.at</a>) have assisted with S-PLUS, S4, R, and
+XLispStat.  Richard M. Heiberger (<a href="mailto:rmh@temple.edu">rmh@temple.edu</a>) has 
 assisted with S-PLUS and S4 development for Windows.  Richard and 
-Rodney A. Sparapani (<A HREF="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</A>) have done much of the work 
+Rodney A. Sparapani (<a href="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</a>) have done much of the work 
 implementing interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.  
 
-
-<P>
-We are grateful to the previous developers of S-mode (Doug Bates, Ed Kademan,
+</p><p>We are grateful to the previous developers of S-mode (Doug Bates, Ed Kademan,
 Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and Stata-mode (Thomas 
 Lumley).
 
+</p><table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC2">1.1 License</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC3">1.2 New Features</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC4">1.3 Current Features</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC5">1.4 Stability</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC6">1.5 Requirements</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC7">1.6 Getting the Latest Version</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC8">1.7 Installation (from tar file)</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC12">1.11 Reporting Bugs</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC13">1.12 Mailing Lists</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC14">1.13 Authors</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr size="6">
+<a name="NOD2"></a>
+<a name="SEC2"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC1" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC3" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.1 License </h2>
 
 
-
-<H2><A NAME="SEC2" HREF="readme_toc.html#TOC2">License</A></H2>
-
-<P>
-ESS is free software; you can redistribute it and/or modify it under
+<p>ESS is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
 
-
-<P>
-ESS is distributed in the hope that it will be useful, but WITHOUT ANY
+</p><p>ESS is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 in the file COPYING in the same directory as this file for more
 details.
 
+</p><hr size="6">
+<a name="NOD3"></a>
+<a name="SEC3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC2" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC4" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.2 New Features </h2>
 
 
+<p>Changes/New Features in 5.2.1:
+</p><ul>
+<li><p> ESS[R]: If you have other versions of R, such as &quot;R-1.8.1&quot; on your
+exec-path, ESS will find and create appropriate functions, such as M-x
+R-1.8.1, for calling them.  By default only programs beginning &quot;R-1&quot; and
+&quot;R-2&quot; will be found, but see ess-r-versions for ways to find other
+versions of R.
+</p></li><li><p> ESS[S] (R and S-plus): now have toolbar support
+with icons to evaluate code in the inferior process or to switch
+there.  This code is experimental and likely to change as XEmacs/Emacs
+issues get resolved. The toolbar should be enabled if your Emacs
+displays images, but can be disabled with the variable ess-use-toolbar.
+Thanks to David Smith from Insightful for the S-plus logo.
+</p></li><li><p> ESS[SAS]: ess-sas-graph-view (F12) enhanced; you can specify
+external file viewers for each graphics file type via the alist
+ess-sas-graph-view-viewer-alist; also .jpg/.gif are now handled
+by image-mode on XEmacs, if available, otherwise by graphics
+primitives as before 
+</p></li></ul>
 
-<H2><A NAME="SEC3" HREF="readme_toc.html#TOC3">New Features</A></H2>
+<p>Changes/New Features in 5.2.0:
+</p><ul>
+<li><p> ESS[BUGS]:  new info documentation!  now supports interactive
+processing thanks to <a href="mailto:Aki.Vehtari@hut.fi">Aki Vehtari</a>;
+new architecture-independent unix support as well as support for BUGS v. 0.5
+</p></li><li><p> ESS[SAS]:  convert .log to .sas with ess-sas-transcript;
+info documentation improved; Local Variable bug fixes;
+SAS/IML statements/functions now highlighted; files edited
+remotely by ange-ftp/EFS/tramp are recognized and pressing
+SUBMIT opens a buffer on the remote host via the local variable
+ess-sas-shell-buffer-remote-init which defaults to &quot;ssh&quot;;
+changed the definition of the variable ess-sas-edit-keys-toggle
+to boolean rather than 0/1; added the function ess-electric-run-semicolon
+which automatically reverse indents lines containing only &quot;run;&quot;;
+C-F1 creates MS RTF portrait from the current buffer;
+C-F2 creates MS RTF landscape from the current buffer;
+C-F9 opens a SAS DATASET with PROC INSIGHT rather than PROC FSVIEW;
+C-F10 kills all buffers associated with .sas program;
+&quot;inferior&quot; aliases for SAS batch:  C-c C-r for submit region,
+C-c C-b for submit buffer, C-c C-x for goto .log; C-c C-y for goto .lst
+</p></li><li><p> ESS[S]: Pressing underscore (&quot;_&quot;) once inserts &quot; &lt;- &quot; (as before);
+pressing underscore twice inserts a literal underscore.  To stop this
+smart behaviour, add &quot;(ess-smart-underscore nil)&quot; to your .emacs after
+ess-site has been loaded;
+ess-dump-filename-template-proto (new name!) now can be
+customized successfully (for S language dialects);
+Support for Imenu has been improved; set ess-imenu-use-S to non-nil to
+get an &quot;Imenu-S&quot; item on your menubar;
+ess-help: Now using nice underlines (instead of `nuke-* ^H_')
+</p></li><li><p> ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
+numbers from any Emacs buffer into an existing *R* process;
+M-x ess-rdired gives a &quot;directory editor&quot; of R objects;
+fixed ess-retr-lastvalue-command, i.e. .Last.value bug
+(thanks to David Brahm)
+</p></li><li><p> ESS: Support for creating new window frames has been added to
+ESS.  Inferior ESS processes can be created in dedicated frames by
+setting inferior-ess-own-frame to t.  ESS help buffers can also open in
+new frames; see the documentation for ess-help-own-frame for details.
+(Thanks to Kevin Rodgers for contributing code.)
+</p></li></ul>
 
-<P>
-Changes/New Features in 5.2.0:
+<p>Changes/New Features in 5.1.24:
+</p><ul>
+<li><p> The version number is now correct even inside ESS/Emacs
+</p></li></ul>
 
-<UL>
-<LI>ESS[BUGS]:  now supports interactive processing; special thanks to
+<p>Changes/New Features in 5.1.23:
+</p><ul>
+<li><p> Minor more Makefile clean up.
+</p></li></ul>
 
-<A HREF="mailto:Aki.Vehtari@hut.fi">Aki Vehtari</A>; new info documentation!
-<LI>ESS[SAS]:  convert .log to .sas with ess-sas-transcript; THEN statements now highlighted correctly; info documentation improved; Local Variables bug fixes
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.24:
-
-<UL>
-<LI>The version number is now correct even inside ESS/Emacs
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.23:
-
-<UL>
-<LI>Minor more Makefile clean up.
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.22:
-
-<UL>
-<LI>Besides info documentation, PDF and HTML
-
-documentation are also provided (instead of built using "make") and available
-on the web as well; see <A HREF="http://software.biostat.washington.edu/ess/doc">ESS web page</A> and <A HREF="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</A>
-<LI>Now that info documentation is available, the
-
+<p>Changes/New Features in 5.1.22:
+</p><ul>
+<li><p> Besides info documentation, PDF and HTML
+documentation are also provided (instead of built using &quot;make&quot;) and available
+on the web as well; see <a href="http://software.biostat.washington.edu/ess/doc">ESS web page</a> and <a href="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</a>
+</p></li><li><p> Now that info documentation is available, the
 README.* files are no longer supported.  However, they
 are still distributed for what it's worth.
-<LI>ESS is now an XEmacs package!  See
-
-<A HREF="http://www.xemacs.org/Install/index.html">XEmacs Installation HOWTO</A>
+</p></li><li><p> ESS is now an XEmacs package!  See
+<a href="http://www.xemacs.org/Install/index.html">XEmacs Installation HOWTO</a>
 for details (specifically, items 10-15).
-<LI>ESS[SAS]: more user-friendly enhancements for remote
-
+</p></li><li><p> ESS[SAS]: more user-friendly enhancements for remote
 SAS batch jobs with Kermit file transfers (LOG and OUTPUT
 function key features now supported).  Multiple shells
 now supported so you can run SAS on different computers
 from different buffers by setting the buffer-local variable
 ess-sas-shell-buffer to unique buffer names.
-<LI>Major re-vamping of Makefile/Makeconf.
+</p></li><li><p> Major re-vamping of Makefile/Makeconf.
+</p></li></ul>
 
-</UL>
-
-<P>
-Changes/New Features in 5.1.21:
-
-<UL>
-<LI>ESS[SAS]: info documentation now available!, see
-
-ESS-&#62;Help for SAS; F12 opens GSASFILE nearest point for viewing
+<p>Changes/New Features in 5.1.21:
+</p><ul>
+<li><p> ESS[SAS]: info documentation now available!, see
+ESS-&gt;Help for SAS; F12 opens GSASFILE nearest point for viewing
 either within emacs, when available, or via an external viewer;
 more syntax highlighting keywords; more enhancements for remote
 SAS batch jobs with Kermit; new framework for remote SAS interactive
 jobs, see ess-remote
-<LI>ESS[S]: info documentation now available!, see
-
-ESS-&#62;Help for the S family
-<LI>Makefile: tag now independent of rel; info files
-
+</p></li><li><p> ESS[S]: info documentation now available!, see
+ESS-&gt;Help for the S family
+</p></li><li><p> Makefile: tag now independent of rel; info files
 made by doc/Makefile and installed in new info sub-directory
-</UL>
+</p></li></ul>
 
-<P>
-Changes/New Features in 5.1.20:
-
-<UL>
-<LI>New `options()$STERM' in the S dialects (S, S-Plus, R).
-
+<p>Changes/New Features in 5.1.20:
+</p><ul>
+<li><p> New `options()$STERM' in the S dialects (S, S-Plus, R).
 The S program can determine the environment in which it is
 currently running.  ESS sets the option to `iESS' or `ddeESS'
 when it starts an S language process.  We recommend other specific
 values for S language processes that ESS does not start.
-<LI>New `ess-mouse-me' function, assigned to S-mouse-3 by default.
-
+</p></li><li><p> New `ess-mouse-me' function, assigned to S-mouse-3 by default.
 User may click on a word or region and then choose from the
 menu to display the item, or a summary, or a plot, etc.
 This feature is still under development.
-<LI>GNU Emacs 21.1 is now supported (fixed for S dialects, SAS &#38; BUGS),
-
+</p></li><li><p> GNU Emacs 21.1 is now supported (fixed for S dialects, SAS &amp; BUGS),
 (some from Stephen Eglen).
-<LI>XEmacs 21.x is now supported (fixed w32-using-nt bug)
-
-<LI>XEmacs on Win (NT) is better supported.
-
-<LI>Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
-
-<LI>should now work even when imenu is not available (for old Xemacsen).
-
-<LI>ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your
-
+</p></li><li><p> XEmacs 21.x is now supported (fixed w32-using-nt bug)
+</p></li><li><p> XEmacs on Win (NT) is better supported.
+</p></li><li><p> Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
+</p></li><li><p> should now work even when imenu is not available (for old Xemacsen).
+</p></li><li><p> ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your
 function-key definitions, if specified; you can specify your SAS
 library definitions outside of autoexec.sas for ess-sas-data-view
 with SAS code placed in the variable ess-sas-data-view-libname,
@@ -189,199 +302,128 @@ local file variable sections at the end of your .sas files to
 request different executables or specify special options and the
 local file variables are re-read at submit instead of only at file
 open so that if you make a change it is picked up immediately;
-<LI>ESS[BUGS]: font-lock with `in' fixed.
-
-<LI>for STATA: font-lock bug fixed.
-
-<LI>for Rd mode: C-c C-v and `switch-process' in menu.
-
+</p></li><li><p> ESS[BUGS]: font-lock with `in' fixed.
+</p></li><li><p> for STATA: font-lock bug fixed.
+</p></li><li><p> for Rd mode: C-c C-v and `switch-process' in menu.
 further, C-c C-f prefix (Rd-font) for inserting or surrounding a word
 by things such as \code{.}, \code{\link{.}}, \emph{.} etc.
-<LI>new functions (ess-directory-function) and (ess-narrow-to-defun)
+</p></li><li><p> new functions (ess-directory-function) and (ess-narrow-to-defun)
+ess-directory &lt;-&gt; default-directory logic (Jeff Mincy).
+</p></li><li><p> Re-organized Makefile and fixed a few bugs.
+</p></li></ul>
 
-ess-directory &#60;-&#62; default-directory logic (Jeff Mincy).
-<LI>Re-organized Makefile and fixed a few bugs.
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.19:
-
-<UL>
-<LI>S+6 now supported (Tony Rossini (Unix) and Rich Heiberger (Windows))
-
-<LI>New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
-
+<p>Changes/New Features in 5.1.19:
+</p><ul>
+<li><p> S+6 now supported (Tony Rossini (Unix) and Rich Heiberger (Windows))
+</p></li><li><p> New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
 Templates assist you in writing .bug and .cmd code (.cmd and .log
 are replaced by .bmd and .bog to avoid emacs extension collisions).
-Substitution" parameters facilitate "automagic" generation of
-data...in" and "init...in" filenames, "const N=" from your data
-file and "monitor()/stats()" commands.  Activated by pressing F12.
-<LI>Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
-
-<LI>You can change between PC and Unix, local and global SAS function-key
-
+Substitution&quot; parameters facilitate &quot;automagic&quot; generation of
+data...in&quot; and &quot;init...in&quot; filenames, &quot;const N=&quot; from your data
+file and &quot;monitor()/stats()&quot; commands.  Activated by pressing F12.
+</p></li><li><p> Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
+</p></li><li><p> You can change between PC and Unix, local and global SAS function-key
 definitions interactively (Rich Heiberger)
-<LI>C-Submit a highlighted region to SAS batch (Rodney Sparapani)
-
-<LI>New and improved SAS syntax highlighting (Rodney Sparapani)
-
+</p></li><li><p> C-Submit a highlighted region to SAS batch (Rodney Sparapani)
+</p></li><li><p> New and improved SAS syntax highlighting (Rodney Sparapani)
 To get the new functionality, set ess-sas-run-make-regexp to nil.
 Also available in .log files via F10.
-<LI>Open a permanent SAS dataset for viewing via F9 (Rodney Sparapani)
-
+</p></li><li><p> Open a permanent SAS dataset for viewing via F9 (Rodney Sparapani)
 You must have the library defined in autoexec.sas for it to work.
-<LI>User-friendly defaults for `sas-program', `ess-sas-batch-pre-command'
-
+</p></li><li><p> User-friendly defaults for `sas-program', `ess-sas-batch-pre-command'
 and `ess-sas-batch-post-command' as well Customize support for these
 and other ESS[SAS] variables (Rodney Sparapani)
-<LI>`ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
+</p></li><li><p> `ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
+</p></li><li><p> Emacs/XEmacs, Unix/Windows issues collectively handled in ess-emcs.el
+</p></li><li><p> defadvice solves problem of missing *ESS* (thanks to Jeff Mincy)
+</p></li><li><p> Improved manual a bit by including things that were only in `README'.
+</p></li></ul>
 
-<LI>Emacs/XEmacs, Unix/Windows issues collectively handled in ess-emcs.el
+<p>Changes/New Features in 5.1.18:
+</p><ul>
+<li><p> New `ess-smart-underscore' function, now assigned to &quot;_&quot; by default.
+Inserts `ess-S-assign' (customizable &quot; &lt;- &quot;), unless inside string
+and comments where plain &quot;_&quot; is used instead. (MM)
+</p></li><li><p> Fixes for longstanding interactive SAS breakage (RMH)
+</p></li></ul>
 
-<LI>defadvice solves problem of missing *ESS* (thanks to Jeff Mincy)
-
-<LI>Improved manual a bit by including things that were only in `README'.
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.18:
-
-<UL>
-<LI>New `ess-smart-underscore' function, now assigned to "_" by default.
-
-Inserts `ess-S-assign' (customizable " &#60;- "), unless inside string
-and comments where plain "_" is used instead. (MM)
-<LI>Fixes for longstanding interactive SAS breakage (RMH)
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.17:
-
-<UL>
-<LI>Documentation for Windows Installation (Rich Heiberger)
-
-<LI>removal of ess-vars, finalization of customize support (in the
-
+<p>Changes/New Features in 5.1.17:
+</p><ul>
+<li><p> Documentation for Windows Installation (Rich Heiberger)
+</p></li><li><p> removal of ess-vars, finalization of customize support (in the
 sense that there is no more use of ess-vars, but that we need to
 fix ess-cust) (AJ Rossini)
-<LI>Many small (and large) fixes/contributions (MMaechler)
-
-<LI>addition of the "S-equal" variable and provide M-x ess-add-MM-keys
-
-a way to remap "_" to `ess-S-assign', typically " &#60;- ", but
+</p></li><li><p> Many small (and large) fixes/contributions (MMaechler)
+</p></li><li><p> addition of the &quot;S-equal&quot; variable and provide M-x ess-add-MM-keys
+a way to remap &quot;_&quot; to `ess-S-assign', typically &quot; &lt;- &quot;, but
 customizable. (MMaechler)
-</UL>
+</p></li></ul>
 
-<P>
-Changes/New Features in 5.1.16:
+<p>Changes/New Features in 5.1.16:
+</p><ul>
+<li><p> BUG FIXES
+</p></li><li><p> Better SAS support
+</p></li></ul>
 
-<UL>
-<LI>BUG FIXES
+<p>Changes/New Features in 5.1.15:
+</p><ul>
+<li><p> BUG FIXES
+</p></li></ul>
 
-<LI>Better SAS support
+<p>Changes/New Features in 5.1.14:
+</p><ul>
+<li><p> Yet more fixes to SAS mode, (Rich Heiberger and Rodney Sparapani)
+</p></li><li><p> Customize support (for most Emacsen which support it) (AJRossini)
+</p></li><li><p> ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini)
+</p></li></ul>
 
-</UL>
-
-<P>
-Changes/New Features in 5.1.15:
-
-<UL>
-<LI>BUG FIXES
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.14:
-
-<UL>
-<LI>Yet more fixes to SAS mode, (Rich Heiberger and Rodney Sparapani)
-
-<LI>Customize support (for most Emacsen which support it) (AJRossini)
-
-<LI>ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini)
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.13:
-
-<UL>
-<LI>Version numbering finally all depending on the ./VERSION file,
-
+<p>Changes/New Features in 5.1.13:
+</p><ul>
+<li><p> Version numbering finally all depending on the ./VERSION file,
 thanks to Martin Maechler.
-<LI>Yet more fixes to SAS mode, thanks to Rich Heiberger.
+</p></li><li><p> Yet more fixes to SAS mode, thanks to Rich Heiberger.
+</p></li></ul>
 
-</UL>
-
-<P>
-Changes/New Features in 5.1.12:
-
-<UL>
-<LI>Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
-
+<p>Changes/New Features in 5.1.12:
+</p><ul>
+<li><p> Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
 Chuck Taylor, and others.
-<LI>More fixes to SAS mode, thanks to Rodney Sparapani
-
+</p></li><li><p> More fixes to SAS mode, thanks to Rodney Sparapani
 and Rich Heiberger.
-</UL>
+</p></li></ul>
 
-<P>
-Changes/New Features in 5.1.11:
+<p>Changes/New Features in 5.1.11:
+</p><ul>
+<li><p> More fixes to Stata mode, thanks to
+<a href="mailto:brendan@essex.ac.uk">Brendan Halpin</a>.
+</p></li><li><p> fixed bugs in ESS-elsewhere, thanks to many testers
+</p></li><li><p> README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
+to <a href="mailto:brahm@alum.mit.edu">David Brahm</a>.
+</p></li><li><p> Fixes to SAS mode, thanks to Rodney Sparapani
+</p></li></ul>
 
-<UL>
-<LI>More fixes to Stata mode, thanks to
+<p>Changes/New Features in 5.1.10:
+</p><ul>
+<li><p> More fixes to Stata mode
+</p></li><li><p> primitive generic version of ESS-elsewhere
+</p></li><li><p> Small fixes to SAS/Stata.
+</p></li></ul>
 
-<A HREF="mailto:brendan@essex.ac.uk">Brendan Halpin</A>.
-<LI>fixed bugs in ESS-elsewhere, thanks to many testers
+<p>Changes/New Features in 5.1.9:
+</p><ul>
+<li><p> Stata mode works
+</p></li><li><p> Literate Data Analysis using Noweb works
+</p></li></ul>
 
-<LI>README.SPLUS4WIN has DETAILED instructions for S-PLUS 2000, thanks
+<p>Changes/New Features in 5.1.8:
+</p><ul>
+<li><p> Bug fixes
+</p></li><li><p> R documentation mode defaults changed
+</p></li></ul>
 
-to <A HREF="mailto:brahm@alum.mit.edu">David Brahm</A>.
-<LI>Fixes to SAS mode, thanks to Rodney Sparapani
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.10:
-
-<UL>
-<LI>More fixes to Stata mode
-
-<LI>primitive generic version of ESS-elsewhere
-
-<LI>Small fixes to SAS/Stata.
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.9:
-
-<UL>
-<LI>Stata mode works
-
-<LI>Literate Data Analysis using Noweb works
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.8:
-
-<UL>
-<LI>Bug fixes
-
-<LI>R documentation mode defaults changed
-
-</UL>
-
-<P>
-Changes/New Features in 5.1.2:
-
-<UL>
-<LI>able to use inferior iESS mode to
-
+<p>Changes/New Features in 5.1.2:
+</p><ul>
+<li><p>  able to use inferior iESS mode to
 communicate directly with a running S-Plus 4.x process using the
 Microsoft DDE protocol.  We use the familiar (from Unix ESS) C-c C-n
 and related key sequences to send lines from the S-mode file to the
@@ -389,726 +431,856 @@ inferior S process.  We continue to edit S input files in ESS[S] mode
 and transcripts of previous S sessions in ESS Transcript mode.  All
 three modes know the S language, syntax, and indentation patterns and
 provide the syntactic highlighting that eases the programming tasks.
-</UL>
+</p></li></ul>
+
+<hr size="6">
+<a name="NOD4"></a>
+<a name="SEC4"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC3" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC5" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.3 Current Features </h2>
+
+
+<ul>
+<li><p> Languages Supported:
+  </p><ul>
+<li><p> S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
+  </p></li><li><p> SAS
+  </p></li><li><p> BUGS
+  </p></li><li><p> Stata 
+  </p></li><li><p> XLispStat including Arc and ViSta
+  </p></li></ul></li><li><p> Editing source code (S family, SAS, BUGS, XLispStat)
+  </p><ul>
+<li><p> Syntactic indentation and highlighting of source code
+  </p></li><li><p> Partial evaluation of code
+  </p></li><li><p> Loading and error-checking of code
+  </p></li><li><p> Source code revision maintenance
+  </p></li><li><p> Batch execution (SAS, BUGS)
+  </p></li><li><p> Use of imenu to provide links to appropriate functions
+  </p></li></ul></li><li><p> Interacting with the process (S family, SAS, XLispStat)
+  </p><ul>
+<li><p> Command-line editing
+  </p></li><li><p> Searchable Command history
+  </p></li><li><p> Command-line completion of S family object names and file names
+  </p></li><li><p> Quick access to object lists and search lists
+  </p></li><li><p> Transcript recording
+  </p></li><li><p> Interface to the help system
+  </p></li></ul></li><li><p> Transcript manipulation (S family, XLispStat)
+  </p><ul>
+<li><p> Recording and saving transcript files
+  </p></li><li><p> Manipulating and editing saved transcripts
+  </p></li><li><p> Re-evaluating commands from transcript files
+  </p></li></ul></li><li><p> Help File Editing (R)
+  </p><ul>
+<li><p> Syntactic indentation and highlighting of source code.
+  </p></li><li><p> Sending Examples to running ESS process.
+  </p></li><li><p> Previewing
+  </p></li></ul></li></ul>
+
+
+<hr size="6">
+<a name="NOD5"></a>
+<a name="SEC5"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC4" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC6" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.4 Stability </h2>
 
 
 
-<H2><A NAME="SEC4" HREF="readme_toc.html#TOC4">Current Features</A></H2>
-
-
-<UL>
-<LI>Languages Supported:
-
-
-<UL>
-<LI>S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x, and R)
-
-<LI>SAS
-
-<LI>BUGS
-
-<LI>Stata
-
-<LI>XLispStat including Arc and ViSta
-
-</UL>
-
-<LI>Editing source code (S family, SAS, BUGS, XLispStat)
-
-
-<UL>
-<LI>Syntactic indentation and highlighting of source code
-
-<LI>Partial evaluation of code
-
-<LI>Loading and error-checking of code
-
-<LI>Source code revision maintenance
-
-<LI>Batch execution (SAS, BUGS)
-
-</UL>
-
-<LI>Interacting with the process (S family, SAS, XLispStat)
-
-
-<UL>
-<LI>Command-line editing
-
-<LI>Searchable Command history
-
-<LI>Command-line completion of S family object names and file names
-
-<LI>Quick access to object lists and search lists
-
-<LI>Transcript recording
-
-<LI>Interface to the help system
-
-</UL>
-
-<LI>Transcript manipulation (S family, XLispStat)
-
-
-<UL>
-<LI>Recording and saving transcript files
-
-<LI>Manipulating and editing saved transcripts
-
-<LI>Re-evaluating commands from transcript files
-
-</UL>
-
-<LI>Help File Editing (R)
-
-
-<UL>
-<LI>Syntactic indentation and highlighting of source code.
-
-<LI>Sending Examples to running ESS process.
-
-<LI>Previewing
-
-</UL>
-
-</UL>
-
-
-
-<H2><A NAME="SEC5" HREF="readme_toc.html#TOC5">Stability</A></H2>
-
-<P>
-Versions 5.1.x are meant to be gamma-level releases.  While some bugs
+<p>Versions 5.1.x are meant to be gamma-level releases.  While some bugs
 are fixed, others may have been introduced, especially with
 regards to new features.  See the file doc/TODO for details.  Bug
 reports are solicited; see the Bugs Section below.  Patches or
 suggested coding fixes with bug reports are much appreciated!
 
+</p>
+<hr size="6">
+<a name="NOD6"></a>
+<a name="SEC6"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC5" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC7" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.5 Requirements </h2>
+
+
+<p>ESS has been tested with
+
+</p><ul>
+<li><p> S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
+</p></li><li><p> R &gt;=0.49
+</p></li><li><p> S4
+</p></li><li><p> SAS &gt;=6.12
+</p></li><li><p> BUGS 0.5, 0.603
+</p></li><li><p> Stata &gt;=6.0
+</p></li><li><p> XLispStat &gt;=3.50
+</p></li></ul>
+
+<p>on the following platforms
+
+</p><ul>
+<li><p> Linux (all)
+</p></li><li><p> Solaris/SunOS (all)
+</p></li><li><p> Microsoft Windows 95/98/NT/2000/XP (SPLUS 4.5/2000/6.*, R, SAS and BUGS)
+</p></li><li><p> Apple Mac OS (SAS for OS 9 and X11 R for OS X)
+</p></li></ul>
+
+<p>with the following versions of emacs
+
+</p><ul>
+<li><p> GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
+</p></li><li><p> XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17<a name="DOCF1" href="#FOOT1">(1)</a>, 21.4.14-15
+</p></li><li><p> GNU Emacs &lt;20.3 and XEmacs &lt;21.0<a name="DOCF2" href="#FOOT2">(2)</a>
+</p></li></ul>
+
+<hr size="6">
+<a name="NOD7"></a>
+<a name="SEC7"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC6" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC8" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.6 Getting the Latest Version </h2>
+
+
+<p>The latest version of ESS is always available on the web at:
+<a href="http://www.analytics.washington.edu/downloads/ess/">ESS web page</a> or
+<a href="http://lib.stat.cmu.edu/general/ESS/">StatLib</a>
+
+</p>
+
+<p>There no longer is an anonymous CVS repository for ESS, due to lack of
+interest, little demand, and problems with security.
+
+</p>
 
 
 
-<H2><A NAME="SEC6" HREF="readme_toc.html#TOC6">Requirements</A></H2>
-
-<P>
-ESS works best with either GNU Emacs version 20.3 or higher, or
-XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
 
 
 
-<UL>
-<LI>S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1
-
-<LI>R versions &#62;=0.49
-
-<LI>S4
-
-<LI>SAS 6.x, 7.x, 8.x
-
-<LI>BUGS 0.5, 0.603
-
-<LI>Stata &#62;=6.0
-
-<LI>XLispStat versions &#62;=3.50
-
-</UL>
-
-<P>
-on the following platforms
-
-
-
-<UL>
-<LI>Solaris/SunOS (all)
-
-<LI>SGI (all)
-
-<LI>Linux (S4, S-PLUS 5.x, R, XLispStat, Stata 6.0)
-
-<LI>Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
-
-<LI>Apple Mac OS (SAS for OS 9 and X11 R for OS X)
-
-</UL>
-
-<P>
-with the following versions of emacs
+<hr size="6">
+<a name="NOD8"></a>
+<a name="SEC8"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC7" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC9" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.7 Installation (from tar file) </h2>
 
 
 
-<UL>
-<LI>GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
-
-<LI>XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
-
-<LI>XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34<A NAME="DOCF1" HREF="readme_foot.html#FOOT1">(1)</A>
-</UL>
-
-
-
-<H2><A NAME="SEC7" HREF="readme_toc.html#TOC7">Getting the Latest Version</A></H2>
-
-<P>
-The latest stable version of ESS is always available on the web at:
-<A HREF="http://software.biostat.washington.edu/ess/">ESS web page</A> or
-<A HREF="http://lib.stat.cmu.edu/general/ESS/">StatLib</A>
-
-
-<P>
-The latest public version of ESS can also be retrieved via cvs client.  
-If you have a firewall, then you may need to take appropriate action.
-
-
-<P>
-The repository name is
-
-<PRE>
-:pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs
-</PRE>
-
-<P>
-Using a command-line cvs client (i.e. on Unix or DOS), first type:
-
-<PRE>
-cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs login
-</PRE>
-
-<P>
-The password is "anoncvs".
-
-
-<P>
-Then type:
-
-<PRE>
-cvs -d :pserver:anoncvs@software.biostat.washington.edu:/var/anoncvs co ess
-</PRE>
-
-
-
-<H2><A NAME="SEC8" HREF="readme_toc.html#TOC8">Installation (from tar file)</A></H2>
-
-<P>
-We now discuss installation, which might happen under Unix or
+<p>We now discuss installation, which might happen under Unix or
 Microsoft Windows.  First, we discuss Unix installation.  
-See section <A HREF="readme.html#SEC9">Unix installation</A>.
+See section <a href="#SEC9">Unix installation</a>.
 
+</p><p>For Microsoft Windows Installation please skip to the
+See section <a href="#SEC10">Microsoft Windows installation</a>.
 
-<P>
-For Microsoft Windows Installation please skip to the
-See section <A HREF="readme.html#SEC10">Microsoft Windows installation</A>.
+</p><hr size="6">
+<a name="NOD9"></a>
+<a name="SEC9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC8" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC10" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.8 Unix installation </h2>
 
-
-
-
-<H2><A NAME="SEC9" HREF="readme_toc.html#TOC9">Unix installation</A></H2>
-
-
-<OL>
-
-<LI>
-
-cd to a directory where you want to install ESS, creating it if necessary.
+<ol>
+<li>
+<p>cd to a directory where you want to install ESS, creating it if necessary.
 This directory will be referred to below as ESSDIR.  
 
-<LI>
-
-Retrieve the latest version from 
-<A HREF="http://software.biostat.washington.edu/ess/ess-VERSION.tar.gz">gzipped tar file </A> 
+</p></li><li>
+<p>Retrieve the latest version from 
+<a href="http://www.analytics.washington.edu/downloads/ess/ess-VERSION.tar.gz">gzipped tar file</a> 
 to ESSDIR.
 
-<LI>
-
-Decompress/unarchive the files from the disribution.
-
-<PRE>
-gunzip ess-VERSION.tar.gz
+</p></li><li>
+<p>Decompress/unarchive the files from the disribution.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">gunzip ess-VERSION.tar.gz
 tar xvf ess-VERSION.tar
-</PRE>
-
-
-<PRE>
-(or: <CODE>gunzip &#60; ess-VERSION.tar.gz | tar xvf -</CODE> ).
-(or using GNU tar:  <CODE>tar zxvf ess-VERSION.tar.gz</CODE>).
-</PRE>
-
-The <CODE>tar</CODE> command will create the subdirectory ess-VERSION and unarchive
+</pre></td></tr></table><table><tr><td>&nbsp;</td><td><pre class="display">(or: <code>gunzip &lt; ess-VERSION.tar.gz | tar xvf -</code> ).
+(or using GNU tar:  <code>tar zxvf ess-VERSION.tar.gz</code>).
+</pre></td></tr></table>
+<p>The <code>tar</code> command will create the subdirectory ess-VERSION and unarchive
 the files there.
 
-If you are using GNU Emacs 19.29, decompress/unarchive
-<TT>`ESSDIR/ess-VERSION/lisp/19.29.tar.gz'</TT>, 
-read <TT>`ESSDIR/ess-VERSION/lisp/19.29/README'</TT>, follow the instructions
+</p><p>If you are using GNU Emacs 19.29, decompress/unarchive
+`<tt>ESSDIR/ess-VERSION/lisp/19.29.tar.gz</tt>', 
+read `<tt>ESSDIR/ess-VERSION/lisp/19.29/README</tt>', follow the instructions
 and you might be able to get ESS to work.  
-<EM>Please note that GNU Emacs 19.29 is no longer supported</EM>.
-For a list of supported versions of emacs, see See section <A HREF="readme.html#SEC6">Requirements</A>.
+<em>Please note that GNU Emacs 19.29 is no longer supported</em>.
+For a list of supported versions of emacs, see See section <a href="#SEC6">Requirements</a>.
 
-<LI>
-
-Edit the file <TT>`ESSDIR/ess-VERSION/lisp/ess-site.el'</TT> as explained in the 
+</p></li><li>
+<p>Edit the file `<tt>ESSDIR/ess-VERSION/lisp/ess-site.el</tt>' as explained in the 
 comments section of that file.  
 
-<LI>
-
- Add the line
-
-<PRE>
-(load "ESSDIR/ess-VERSION/lisp/ess-site")
-</PRE>
-
-to your user or system installation file
-(GNU Emacs uses <TT>`$HOME/.emacs'</TT> and XEmacs uses <TT>`$HOME/.xemacs/init.el'</TT>
+</p></li><li>
+<p> Add the line
+</p><table><tr><td>&nbsp;</td><td><pre class="example">(load &quot;ESSDIR/ess-VERSION/lisp/ess-site&quot;)
+</pre></td></tr></table><p>to your user or system installation file
+(GNU Emacs uses `<tt>$HOME/.emacs</tt>' and XEmacs uses `<tt>$HOME/.xemacs/init.el</tt>'
 for the user initialization file.  GNU Emacs uses default.el or site-init.el and 
 XEmacs uses site-start.el for the system installation file). 
 
-Alternatively, if ess-site.el is in your current Lisp path, you can do:
+</p><p>Alternatively, if ess-site.el is in your current Lisp path, you can do:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">(require 'ess-site)
+</pre></td></tr></table><p>to configure emacs for ESS.
 
-<PRE>
-(require 'ess-site)
-</PRE>
-
-to configure emacs for ESS.
-
-<LI>
-
-That's it!  To edit statistical programs, load the files with the requiste
-extensions  (".sas" for SAS, ".S" for S-PLUS, ".R" for R, and ".lsp"
+</p></li><li>
+<p>That's it!  To edit statistical programs, load the files with the requiste
+extensions  (&quot;.sas&quot; for SAS, &quot;.S&quot; for S-PLUS, &quot;.R&quot; for R, and &quot;.lsp&quot;
 for XLispStat).
 
-<LI>
-
-(OPTIONAL) If you are running S-PLUS or R, you might consider
-installing the database files.  From within emacs, <CODE>C-x d</CODE> to the
+</p></li><li>
+<p>(OPTIONAL) If you are running S-PLUS or R, you might consider
+installing the database files.  From within emacs, <code>C-x d</code> to the
 directory containing ESS.  Now:
-
-<PRE>
-M-x S+6
-</PRE>
-
-get running.  once you have reached the SPLUS
-prompt, do: 
-
-<PRE>
-M-x ess-create-object-name-db
-</PRE>
-
-(this will create the file <TT>`ess-s+6-namedb.el'</TT>; if it isn't in the
+</p><table><tr><td>&nbsp;</td><td><pre class="example">M-x S+6
+</pre></td></tr></table><p>to get S running.  Once you see the SPLUS prompt, do: 
+</p><table><tr><td>&nbsp;</td><td><pre class="example">M-x ess-create-object-name-db
+</pre></td></tr></table><p>(this will create the file `<tt>ess-s+6-namedb.el</tt>'; if it isn't in the
 ESS directory, move it there).
 
-Then, completions will be autoloaded and will not be regenerated for
+</p><p>Then, completions will be autoloaded and will not be regenerated for
 every session.
 
-For R, do the same, using
+</p><p>For R, do the same, using
+</p><table><tr><td>&nbsp;</td><td><pre class="example">M-x R
+</pre></td></tr></table><p>and then <code>M-x ess-create-object-name-db</code> creating
+`<tt>ess-r-namedb.el</tt>'; if it isn't in the ESS directory, move it there).
 
-<PRE>
-M-x R
-</PRE>
+</p></li><li>
+<p><b>(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING</b>:
 
-and then <CODE>M-x ess-create-object-name-db</CODE> creating
-<TT>`ess-r-namedb.el'</TT>; if it isn't in the ESS directory, move it there).
+</p><p>If you want to place the compiled files in other locations edit the LISPDIR and INFODIR
+entries in `<tt>Makeconf</tt>' in the ESSDIR/ess-VERSION directory (if you are using XEmacs, 
+then you also need to edit the EMACS entry as follows:  EMACS=xemacs).
 
-<LI>
+</p><p>You can compile those files by:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">make all
+</pre></td></tr></table>
+<p>When that completes successfully, install the compiled files:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">make install
+</pre></td></tr></table>
+<p>This will install the compiled info files and lisp files.  If you are an
+XEmacs user, then you should be done.  If not, then you may have to
+edit/create the file `<tt>dir</tt>' that is found in the directory specified
+by <code>INFODIR</code>: see the sample `<tt>dir</tt>' in ESSDIR/ess-VERSION/doc/info.
+If `<tt>dir</tt>' does not exist in <code>INFODIR</code>, then the sample
+`<tt>dir</tt>' will be installed.
 
-<B>(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING</B>:
+</p><p><em>Note 1:</em> It is assumed that <b>GNU make</b> will be used; otherwise,
+edit the ESSVERSION and ESSVERSIONTAG entries in `<tt>Makeconf</tt>'
+appropriately, e.g.: ESSVERSION=5.2.0 and ESSVERSIONTAG=ESS-5-2-0
 
-In the ESSDIR/ess-VERSION directory, edit the file <TT>`Makeconf'</TT> if you
-want to place the compiled files in other locations; see LISPDIR and INFODIR.
+</p><p><em>Note 2:</em>  ESS can be installed for XEmacs as an XEmacs package 
+much more easily than what has been described anywhere above.  However,
+the latest ESS version will not be available at the same time as an
+XEmacs package; generally, it can take weeks or months to appear in the
+latter format.  For more information on installing ESS as an XEmacs
+package see <a href="http://www.xemacs.org/Documentation/packageGuide.html">Quickstart Package Guide</a>.
 
-Then type:
+</p></li></ol>
 
-<PRE>
-make all
-</PRE>
+<hr size="6">
+<a name="NOD10"></a>
+<a name="SEC10"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC9" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC11" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.9 Microsoft Windows installation </h2>
 
-If this works, then you might try:
+<p>For <b>Microsoft Windows installation</b>, please follow the next steps:
+(see separate instructions above for UNIX See section <a href="#SEC9">Unix installation</a>.
 
-<PRE>
-make install
-</PRE>
-
-This will install the info files (and the lisp files, if they are to go
-in another directory).  Don't forget to edit the file <TT>`dir'</TT> in the
-info directory specified by <CODE>INFODIR</CODE> in <TT>`doc/Makefile'</TT>.  See
-the sample <TT>`dir'</TT> file for an example of the line to add.
-
-If you are using XEmacs, you might do:
-
-<PRE>
-make EMACS=xemacs all
-</PRE>
-
-and then
-
-<PRE>
-make EMACS=xemacs install
-</PRE>
-
-instead of editing the Makefile.
-
-<EM>Note</EM> that you might need to use <B>GNU make</B> for everything to
-work properly
-
-An alternative, if you are running XEmacs and have access to the
-XEmacs system directories, would be to place the directory in the
-site-lisp directory, and simply type <CODE>make all</CODE> (and copy the
-documentation as appropriate).
-
-For GNU Emacs, you would still have to move the files into the top level
-site-lisp directory.
-
-</OL>
-
-
-
-<H2><A NAME="SEC10" HREF="readme_toc.html#TOC10">Microsoft Windows installation</A></H2>
-
-<P>
-For <B>Microsoft Windows installation</B>, please follow the next steps:
-(see separate instructions above for UNIX See section <A HREF="readme.html#SEC9">Unix installation</A>.
-
-
-
-<OL>
-
-<LI>
-
-cd to a directory where you keep emacs lisp files, or create a new
-directory (for example, <TT>`c:\emacs\'</TT>) to hold the distribution.  This
-directory will be referred to below as "the ESS distribution
-directory".  It will contain, at the end, either the tar file
-<TT>`ess-VERSION.tar.gz'</TT> or the zip file <TT>`ess-VERSION.zip'</TT>, and a
+</p><ol>
+<li>
+<p>cd to a directory where you keep emacs lisp files, or create a new
+directory (for example, `<tt>c:\emacs\</tt>') to hold the distribution.  This
+directory will be referred to below as &quot;the ESS distribution
+directory&quot;.  It will contain, at the end, either the tar file
+`<tt>ess-VERSION.tar.gz</tt>' or the zip file `<tt>ess-VERSION.zip</tt>', and a
 directory 
-for the ESS source, which will be termed "the ESS-VERSION source
-directory".
+for the ESS source, which will be termed &quot;the ESS-VERSION source
+directory&quot;.
 
-<LI>
-
-Retrieve the compressed tar file <TT>`ess-VERSION.tar.gz'</TT> or the
-zipped file <TT>`ess-VERSION.zip'</TT> from one of the FTP or WWW
+</p></li><li>
+<p>Retrieve the compressed tar file `<tt>ess-VERSION.tar.gz</tt>' or the
+zipped file `<tt>ess-VERSION.zip</tt>' from one of the FTP or WWW
 archive sites 
 via FTP (or HTTP).  Be aware that http browsers on Windows
-frequently change the "." and "-" characters in filenames to other
+frequently change the &quot;.&quot; and &quot;-&quot; characters in filenames to other
 punctuation.  Please change the names back to their original form.
 
-<LI>
-
-Copy <TT>`ess-VERSION.tar.gz'</TT> to the location where you want the
+</p></li><li>
+<p>Copy `<tt>ess-VERSION.tar.gz</tt>' to the location where you want the
 ess-VERSION directory, for example to
-<TT>`c:\emacs\ess-VERSION.tar.gz'</TT>, and cd there.  For example,
+`<tt>c:\emacs\ess-VERSION.tar.gz</tt>', and cd there.  For example,
 
-
-<PRE>
-cd c:\emacs
-</PRE>
-
-Extract the files from the distribution, which will unpack
-into a subdirectory, <TT>`ess-VERSION'</TT>.
-
-<PRE>
-gunzip ess-VERSION.tar.gz
+</p><table><tr><td>&nbsp;</td><td><pre class="example">cd c:\emacs
+</pre></td></tr></table>
+<p>Extract the files from the distribution, which will unpack
+into a subdirectory, `<tt>ess-VERSION</tt>'.
+</p><table><tr><td>&nbsp;</td><td><pre class="example">gunzip ess-VERSION.tar.gz
 tar xvf ess-VERSION.tar
-(or: <CODE>gunzip &#60; ess-VERSION.tar.gz | tar xvf -</CODE> ).
-(or: from the zip file: <CODE>unzip ess-VERSION.zip</CODE>)
-</PRE>
+(or: <code>gunzip &lt; ess-VERSION.tar.gz | tar xvf -</code> ).
+(or: from the zip file: <code>unzip ess-VERSION.zip</code>)
+</pre></td></tr></table>
+<p>The <code>tar</code> command will extract files into the current directory.
 
-The <CODE>tar</CODE> command will extract files into the current directory.
-
-Do not create <TT>`ess-VERSION'</TT> yourself, or you will get an extra level
+</p><p>Do not create `<tt>ess-VERSION</tt>' yourself, or you will get an extra level
 of depth to your directory structure.
 
-<LI>
-
-Windows users will usually be able to use the `lisp/ess-site.el'
+</p></li><li>
+<p>Windows users will usually be able to use the `lisp/ess-site.el'
 as distributed.  Only rarely will changes be needed.
 
-<LI>
-
-Windows users will need to make sure that the directories for the
+</p></li><li>
+<p>Windows users will need to make sure that the directories for the
 software they will be using is in the PATH environment variable.  On
 Windows 9x, add lines similar to the following to your
-<TT>`c:\autoexec.bat'</TT> 
+`<tt>c:\autoexec.bat</tt>' 
 file:
-
-<PRE>
-path=%PATH%;c:\progra~1\spls2000\cmd
-</PRE>
-
-On Windows NT/2000, add the directories to the PATH using the
-MyComputer menu.  Note that the directory containing the program is
+</p><table><tr><td>&nbsp;</td><td><pre class="example">path=%PATH%;c:\progra~1\spls2000\cmd
+</pre></td></tr></table><p>On Windows NT/2000/XP, add the directories to the PATH using the
+<code>My Computer/Control Panel/System/Advanced/Environment Variables</code> menu.
+Note that the directory containing the program is
 added to the PATH, not the program itself.  One such line is needed
 for each software program.  Be sure to use the abbreviation
-<CODE>progra~1</CODE> and not the long version with embedded blanks.  Use
-backslashes "\".
+<code>progra~1</code> and not the long version with embedded blanks.  Use
+backslashes &quot;\&quot;.
 
-<LI>
-
-Add the line 
-
-<PRE>
-(load "/PATH/ess-site")
-</PRE>
-
-to your .emacs (or _emacs) file (or default.el or site-init.el, for
-a site-wide installation).  Replace <CODE>/PATH</CODE> above with the
-value of ess-lisp-directory as defined in <TT>`ess-site.el'</TT>.  Use
-forwardslashes <CODE>/</CODE>.
-(GNU Emacs uses the filename <TT>`%HOME%/.emacs'</TT> and
-XEmacs uses the filename <TT>`%HOME%/.xemacs/init.el'</TT>
+</p></li><li>
+<p>Add the line 
+</p><table><tr><td>&nbsp;</td><td><pre class="example">(load &quot;/PATH/ess-site&quot;)
+</pre></td></tr></table><p>to your .emacs (or _emacs) file (or default.el or site-init.el, for
+a site-wide installation).  Replace <code>/PATH</code> above with the
+value of ess-lisp-directory as defined in `<tt>ess-site.el</tt>'.  Use
+forwardslashes <code>/</code>.
+(GNU Emacs uses the filename `<tt>%HOME%/.emacs</tt>' and
+XEmacs uses the filename `<tt>%HOME%/.xemacs/init.el</tt>'
 for the initialization file.)
 
-<LI>
+</p></li><li>
+<p>To edit statistical programs, load the files with the requisite
+extensions  (&quot;.sas&quot; for SAS, &quot;.S&quot; or &quot;s&quot; or &quot;q&quot; or &quot;Q&quot; for S-PLUS,
+&quot;.r&quot; or &quot;.R&quot; for R, and &quot;.lsp&quot;   for XLispStat).
 
-To edit statistical programs, load the files with the requisite
-extensions  (".sas" for SAS, ".S" or "s" or "q" or "Q" for S-PLUS,
-".r" or ".R" for R, and ".lsp"   for XLispStat).
+</p></li><li>
+<p>To run statistical processes under emacs:
 
-<LI>
-
-To run statistical processes under emacs:
-
-Run S-PLUS 6.x or 2000 with:
-
-<PRE>
-M-x S+6
-(or <CODE>M-x S</CODE>).
-</PRE>
-
-You will then be
-asked for a pathname ("S starting data directory?"), from which to
+</p><p>To start the S-PLUS 6.x GUI from ESS under emacs:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">M-x S
+(or <code>M-x S+6</code>).
+</pre></td></tr></table><p>You will then be
+asked for a pathname (&quot;S starting data directory?&quot;), from which to
 start the process.  The prompt will propose your current directory
-as the default.  Similarly for S-PLUS 6.x.  Send lines or regions
+as the default.  ESS will start the S-PLUS GUI.  There will be
+slight delay during which emacs is temporarily frozen.  ESS will arrange for
+communication with the S-PLUS GUI using the DDE protocol.
+Send lines or regions
 from the emacs buffer containing your S program (for example,
-<TT>`myfile.s'</TT>) to the S-Plus Commands Window with the 
-<CODE>C-c C-n</CODE> or <CODE>C-c C-r</CODE> keys.
+`<tt>myfile.s</tt>') to the S-PLUS Commands Window with the 
+<code>C-c C-n</code> or <code>C-c C-r</code> keys.
+(If you are still using S-PLUS 4.x or 2000, then use <code>M-x S+4</code>.)
 
-Run S-PLUS 6.x or 2000 inside an emacs buffer
-
-<PRE>
-M-x Sqpe+6
-</PRE>
-
-You will then be asked for a pathname ("S starting data
-directory?"), from which to start the process.  The prompt will
-propose your current directory as the default.  Similarly for S-PLUS
-6.x.  Send lines or regions from the emacs buffer containing your S
-program (for example, <TT>`myfile.s'</TT>) to the *S+6* buffer with the
-<CODE>C-c C-n</CODE> or <CODE>C-c C-r</CODE> keys.  You do not have access to
-interactive graphics in 
-this mode.  You get Unix-like behavior, in particular the entire
+</p><p>To start an S-PLUS 6.x session inside an emacs buffer--and
+without the S-PLUS GUI:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">M-x Sqpe
+(or <code>M-x Sqpe+6</code>).
+</pre></td></tr></table><p>You will then be asked for a pathname (&quot;S starting data
+directory?&quot;), from which to start the process.  The prompt will
+propose your current directory as the default.
+You get Unix-like behavior, in particular the entire
 transcript is available for emacs-style search commands.
+Send lines or regions from the emacs buffer containing your S
+program (for example, `<tt>myfile.s</tt>') to the *S+6* buffer with the
+<code>C-c C-n</code> or <code>C-c C-r</code> keys.
+Interactive graphics are available with Sqpe by using the java
+library supplied with S-PLUS 6.1 and newer releases.
+Enter the commands:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">library(winjava)
+java.graph()
+</pre></td></tr></table><p>Graphs can be saved from the <code>java.graph</code> device
+in several formats, but not PostScript.   If you
+need a PostScript file you will need to open a separate
+<code>postscript</code> device.
+(If you are still using S-PLUS 4.x or 2000, then use <code>M-x Sqpe+4</code>.)
 
-If you wish to run R, you can start it with:
+</p><p>To connect to an already running S-PLUS GUI (started, for example,
+from the S-PLUS icon):
+</p><table><tr><td>&nbsp;</td><td><pre class="example">M-x S+6-existing
+</pre></td></tr></table><p>You will then be
+asked for a pathname (&quot;S starting data directory?&quot;), from which to
+start the process.  The prompt will propose your current directory
+as the default.  ESS will arrange for
+communication with the already running S-PLUS GUI using the DDE protocol.
+Send lines or regions
+from the emacs buffer containing your S program (for example,
+`<tt>myfile.s</tt>') to the S-PLUS Commands Window with the 
+<code>C-c C-n</code> or <code>C-c C-r</code> keys.
+(If you are still using S-PLUS 4.x or 2000, then use <code>M-x S+4-existing</code>.)
 
-<PRE>
-M-x R
-</PRE>
-
-XLispStat can not currently be run with
-
-<PRE>
-M-x XLS
-</PRE>
-
-Hopefully, this will change.  However, you can still edit with
+</p><p>If you wish to run R, you can start it with:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">M-x R
+</pre></td></tr></table>
+<p>XLispStat can not currently be run with
+</p><table><tr><td>&nbsp;</td><td><pre class="example">M-x XLS
+</pre></td></tr></table><p>Hopefully, this will change.  However, you can still edit with
 emacs, and cut and paste the results into the XLispStat
 *Listener* Window under Microsoft Windows.
 
-SAS for Windows uses the batch access with function keys that is
-described in <TT>`doc/README.SAS'</TT>.  The user can also edit SAS files
-in an <CODE>ESS[SAS]</CODE> buffer and than manually copy and paste them into
+</p><p>SAS for Windows uses the batch access with function keys that is
+described in @xref{ESS(SAS)--MS Windows}.
+The user can also edit SAS files
+in an <code>ESS[SAS]</code> buffer and than manually copy and paste them into
 an Editor window in the SAS Display Manager.
 
-For Windows, inferior SAS in an <CODE>iESS[SAS]</CODE> buffer does not work
+</p><p>For Windows, inferior SAS in an <code>iESS[SAS]</code> buffer does not work
 on the local machine.  It does work over a network connection to
 SAS running on a remote Unix computer.
 
-Reason:  we use ddeclient to interface with programs and SAS doesn't
+</p><p>Reason:  we use ddeclient to interface with programs and SAS doesn't
 provide the corresponding ddeserver capability.
 
-<LI>
-
-(OPTIONAL) If you are running Sqpe or R, you might consider
-installing the database files.  From within emacs, <CODE>C-x d</CODE> to
+</p></li><li>
+<p>(OPTIONAL) If you are running Sqpe or R, you might consider
+installing the database files.  From within emacs, <code>C-x d</code> to
 the   directory containing ESS.  Now:
-
-<PRE>
-M-x Sqpe+6
-</PRE>
-
-(get running.  once you have reached the SPLUS prompt, do:)
-
-<PRE>
-M-x ess-create-object-name-db
-</PRE>
-
-(this will create the file <TT>`ess-s+6-namedb.el'</TT>; if it isn't in the
+</p><table><tr><td>&nbsp;</td><td><pre class="example">M-x Sqpe+6
+</pre></td></tr></table><p>to get S running.  Once you see the SPLUS prompt, do:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">M-x ess-create-object-name-db
+</pre></td></tr></table><p>(this will create the file `<tt>ess-s+6-namedb.el</tt>'; if it isn't in the
 ESS directory, move it there).
 
-Then, completions will be autoloaded and will not be regenerated
+</p><p>Then, completions will be autoloaded and will not be regenerated
 for every session.
 
-For R, do the same, using
-
-<PRE>
-M-x R
-</PRE>
-
-and then <CODE>M-x ess-create-object-name-db</CODE> creating
-<TT>`ess-r-namedb.el'</TT>; if it isn't in the ESS directory, move it
+</p><p>For R, do the same, using
+</p><table><tr><td>&nbsp;</td><td><pre class="example">M-x R
+</pre></td></tr></table><p>and then <code>M-x ess-create-object-name-db</code> creating
+`<tt>ess-r-namedb.el</tt>'; if it isn't in the ESS directory, move it
 there).
 
-<LI>That's it!
+</p></li><li><p> That's it!
 
-</OL>
+</p></li></ol>
 
+<hr size="6">
+<a name="SEC11"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC10" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC12" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.10 Requirements </h2>
 
+<p>ESS has been tested with
 
-<H2><A NAME="SEC11" HREF="readme_toc.html#TOC11">Requirements</A></H2>
-<P>
-ESS works best with either GNU Emacs version 20.3 or higher, or
-XEmacs version 20.0 or higher.  It has been most thoroughly tested with:
+</p><ul>
+<li><p> S-PLUS 3.3, 3.4, 4.5, 2000, 5.0, 5.1, 6.0, 6.1, 6.2
+</p></li><li><p> R &gt;=0.49
+</p></li><li><p> S4
+</p></li><li><p> SAS &gt;=6.12
+</p></li><li><p> BUGS 0.5, 0.603
+</p></li><li><p> Stata &gt;=6.0
+</p></li><li><p> XLispStat &gt;=3.50
+</p></li></ul>
 
+<p>on the following platforms
 
+</p><ul>
+<li><p> Linux (all)
+</p></li><li><p> Solaris/SunOS (all)
+</p></li><li><p> Microsoft Windows 95/98/NT/2000/XP (SPLUS 4.5/2000/6.*, R, SAS and BUGS)
+</p></li><li><p> Apple Mac OS (SAS for OS 9 and X11 R for OS X)
+</p></li></ul>
 
-<UL>
-<LI>S-PLUS versions 3.3, 3.4, 4.5, 5.0, 5.1, 6.0, 6.1
+<p>with the following versions of emacs
 
-<LI>R versions &#62;=0.49
+</p><ul>
+<li><p> GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
+</p></li><li><p> XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13/21.5.17<a name="DOCF3" href="#FOOT3">(3)</a>, 21.4.14-15
+</p></li><li><p> GNU Emacs &lt;20.3 and XEmacs &lt;21.0<a name="DOCF4" href="#FOOT4">(4)</a>
+</p></li></ul>
 
-<LI>S4
-
-<LI>SAS 6.x, 7.x, 8.x
-
-<LI>BUGS 0.5, 0.603
-
-<LI>Stata &#62;=6.0
-
-<LI>XLispStat versions &#62;=3.50
-
-</UL>
-
-<P>
-on the following platforms
-
-
-
-<UL>
-<LI>Solaris/SunOS (all)
-
-<LI>SGI (all)
-
-<LI>Linux (S4, S-PLUS 5.x, R, XLispStat, Stata 6.0)
-
-<LI>Microsoft Windows 95/98/NT/2000 (SPLUS 4.5 and 2000)
-
-<LI>Apple Mac OS (SAS for OS 9 and X11 R for OS X)
-
-</UL>
-
-<P>
-with the following versions of emacs
-
-
-
-<UL>
-<LI>GNU Emacs 20.3, 20.4, 20.5, 20.6, 20.7, 21.1, 21.3
-
-<LI>XEmacs 20.0, 20.4, 21.0, 21.1.13, 21.1.14, 21.4
-
-<LI>XEmacs 19.14, 19.16 and GNU Emacs 19.28, 19.29, 19.34<A NAME="DOCF2" HREF="readme_foot.html#FOOT2">(2)</A>
-</UL>
-
-
-
-<H2><A NAME="SEC12" HREF="readme_toc.html#TOC12">Reporting Bugs</A></H2>
-
-<P>
-Please send bug reports, suggestions etc. to
-
-
-<A HREF="mailto:ESS-bugs@stat.math.ethz.ch">
-<P>
-<A HREF="mailto:ESS-bugs@stat.math.ethz.ch">ESS-bugs@stat.math.ethz.ch</A>
-</A>
-
-
-<P>
-The easiest way to do this is within Emacs by typing
+<hr size="6">
+<a name="NOD11"></a>
+<a name="SEC12"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC11" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC13" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.11 Reporting Bugs </h2>
 
 
-<P>
-<KBD>M-x ess-submit-bug-report</KBD>
+<p>Please send bug reports, suggestions etc. to
 
+</p><p>&lt;A HREF=&quot;mailto:ESS-bugs@stat.math.ethz.ch&quot;&gt;
+<a href="mailto:ESS-bugs@stat.math.ethz.ch">ESS-bugs@stat.math.ethz.ch</a>
+&lt;/A&gt;
 
-<P>
-This also gives the maintainers valuable information about your
+</p><p>The easiest way to do this is within Emacs by typing
+
+</p><p><kbd>M-x ess-submit-bug-report</kbd>
+
+</p><p>This also gives the maintainers valuable information about your
 installation which may help us to identify or even fix the bug.
 
+</p><p>If Emacs reports an error, backtraces can help us debug the problem.
+Type &quot;M-x set-variable RET debug-on-error RET t RET&quot;.  Then run the
+command that causes the error and you should see a *Backtrace* buffer
+containing debug information; send us that buffer.
 
-<P>
-Note that comments, suggestions, words of praise and large cash
+</p><p>Note that comments, suggestions, words of praise and large cash
 donations are also more than welcome.
 
+</p><hr size="6">
+<a name="NOD12"></a>
+<a name="SEC13"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC12" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC14" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.12 Mailing Lists </h2>
 
 
 
-<H2><A NAME="SEC13" HREF="readme_toc.html#TOC13">Mailing Lists</A></H2>
-
-<P>
-There is a mailing list for discussions and announcements relating to
-ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
-"help") in the body to <A HREF="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</A>;
+<p>There is a mailing list for discussions and announcements relating to
+ESS.  Join the list by sending an e-mail with &quot;subscribe ess-help&quot; (or
+&quot;help&quot;) in the body to <a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>;
 contributions to the list may be mailed to
-<A HREF="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</A>.  Rest assured, this is a fairly
+<a href="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</a>.  Rest assured, this is a fairly
 low-volume mailing list.
 
+</p><p>The purposes of the mailing list include
 
-<P>
-The purposes of the mailing list include
+</p><ul class="toc">
+<li>
+<p> helping users of ESS to get along with it.
+</p></li><li>
+<p> discussing aspects of using ESS on Emacs and XEmacs.
+</p></li><li>
+<p> suggestions for improvements.
+</p></li><li>
+<p> announcements of new releases of ESS.
+</p></li><li>
+<p> posting small patches to ESS.
+</p></li></ul>
+
+<hr size="6">
+<a name="NOD13"></a>
+<a name="SEC14"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC13" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[ &gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[ &gt;&gt; ]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 1.13 Authors </h2>
 
 
+<ul>
+<li>
+<p><a href="mailto:rossini@u.washington.edu">A.J. Rossini</a>
+</p></li><li>
+<p><a href="mailto:rmh@temple.edu">Richard M. Heiberger</a>
+</p></li><li>
+<p><a href="mailto:hornik@ci.tuwien.ac.at">Kurt Hornik</a>
+</p></li><li>
+<p><a href="mailto:maechler@stat.math.ethz.ch">Martin Maechler</a>
+</p></li><li>
+<p><a href="mailto:rsparapa@mcw.edu">Rodney A. Sparapani</a>
+</p></li><li>
+<p><a href="mailto:stephen@gnu.org">Stephen Eglen</a>
+</p></li></ul>
 
-<UL>
-<LI>
+<hr size="6">
+<a name="SEC_Foot"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1>Footnotes</h1>
+<h3><a name="FOOT1" href="#DOCF1">(1)</a></h3>
 
- helping users of ESS to get along with it.
-<LI>
+<p>requires the files.el patch to revert-buffer for the Local Variables 
+updating problem
+</p><h3><a name="FOOT2" href="#DOCF2">(2)</a></h3>
+<p>These releases of emacs are no 
+longer supported, so an upgrade is recommended if you plan to use ESS.
+If you have GNU Emacs 19.29, see See section <a href="#SEC9">Unix installation</a>.  Also, note
+that the `custom' library bundled with Emacs 19.34 is too _old_, its API is
+incompatible with the `new custom' bundled with recent Emacsen.
+The `new custom' for Emacs 19.34 is available for download
+<a href="ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz">here</a>.
+</p><h3><a name="FOOT3" href="#DOCF3">(3)</a></h3>
 
- discussing aspects of using ESS on Emacs and XEmacs.
-<LI>
+<p>requires the files.el patch to revert-buffer for the Local Variables 
+updating problem
+</p><h3><a name="FOOT4" href="#DOCF4">(4)</a></h3>
+<p>These releases of emacs are no 
+longer supported, so an upgrade is recommended if you plan to use ESS.
+If you have GNU Emacs 19.29, see See section <a href="#SEC9">Unix installation</a>.  Also, note
+that the `custom' library bundled with Emacs 19.34 is too _old_, its API is
+incompatible with the `new custom' bundled with recent Emacsen.
+The `new custom' for Emacs 19.34 is available for download
+<a href="ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz">here</a>.
+</p><hr size="1">
+<a name="SEC_About"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC1" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[Contents]</td>
+<td valign="middle" align="left">[Index]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1>About This Document</h1>
+<p>
+  This document was generated by <em>Rodney Sparapani</em> on <em>June, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
+</p>
+<p>
+  The buttons in the navigation panels have the following meaning:
+</p>
+<table border="1">
+  <tr>
+    <th> Button </th>
+    <th> Name </th>
+    <th> Go to </th>
+    <th> From 1.2.3 go to</th>
+  </tr>
+  <tr>
+    <td align="center"> [ &lt; ] </td>
+    <td align="center">Back</td>
+    <td>previous section in reading order</td>
+    <td>1.2.2</td>
+  </tr>
+  <tr>
+    <td align="center"> [ &gt; ] </td>
+    <td align="center">Forward</td>
+    <td>next section in reading order</td>
+    <td>1.2.4</td>
+  </tr>
+  <tr>
+    <td align="center"> [ &lt;&lt; ] </td>
+    <td align="center">FastBack</td>
+    <td>beginning of this chapter or previous chapter</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td align="center"> [ Up ] </td>
+    <td align="center">Up</td>
+    <td>up section</td>
+    <td>1.2</td>
+  </tr>
+  <tr>
+    <td align="center"> [ &gt;&gt; ] </td>
+    <td align="center">FastForward</td>
+    <td>next chapter</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td align="center"> [Top] </td>
+    <td align="center">Top</td>
+    <td>cover (top) of document</td>
+    <td> &nbsp; </td>
+  </tr>
+  <tr>
+    <td align="center"> [Contents] </td>
+    <td align="center">Contents</td>
+    <td>table of contents</td>
+    <td> &nbsp; </td>
+  </tr>
+  <tr>
+    <td align="center"> [Index] </td>
+    <td align="center">Index</td>
+    <td>index</td>
+    <td> &nbsp; </td>
+  </tr>
+  <tr>
+    <td align="center"> [ ? ] </td>
+    <td align="center">About</td>
+    <td>about (help)</td>
+    <td> &nbsp; </td>
+  </tr>
+</table>
 
- suggestions for improvements.
-<LI>
+<p>
+  where the <strong> Example </strong> assumes that the current position is at <strong> Subsubsection One-Two-Three </strong> of a document of the following structure:
+</p>
 
- announcements of new releases of ESS.
-<LI>
+<ul>
+  <li> 1. Section One
+    <ul>
+      <li>1.1 Subsection One-One
+        <ul>
+          <li>...</li>
+        </ul>
+      </li>
+      <li>1.2 Subsection One-Two
+        <ul>
+          <li>1.2.1 Subsubsection One-Two-One</li>
+          <li>1.2.2 Subsubsection One-Two-Two</li>
+          <li>1.2.3 Subsubsection One-Two-Three &nbsp; &nbsp;
+            <strong>&lt;== Current Position </strong></li>
+          <li>1.2.4 Subsubsection One-Two-Four</li>
+        </ul>
+      </li>
+      <li>1.3 Subsection One-Three
+        <ul>
+          <li>...</li>
+        </ul>
+      </li>
+      <li>1.4 Subsection One-Four</li>
+    </ul>
+  </li>
+</ul>
 
- posting small patches to ESS.
-</UL>
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated by <em>Rodney Sparapani</em> on <em>June, 30 2004</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.70</em></a>.
+ </font>
+ <br>
 
-
-
-<H2><A NAME="SEC14" HREF="readme_toc.html#TOC14">Authors</A></H2>
-
-
-<UL>
-<LI>
-
-<A HREF="mailto:rossini@u.washington.edu">A.J. Rossini</A>
-<LI>
-
-<A HREF="mailto:rmh@temple.edu">Richard M. Heiberger</A>
-<LI>
-
-<A HREF="mailto:hornik@ci.tuwien.ac.at">Kurt Hornik</A>
-<LI>
-
-<A HREF="mailto:maechler@stat.math.ethz.ch">Martin Maechler</A>
-<LI>
-
-<A HREF="mailto:rsparapa@mcw.edu">Rodney A. Sparapani</A>
-</UL>
-
-<P><HR><P>
-This document was generated on 21 October 2002 using
-<A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
-</BODY>
-</HTML>
+</p>
+</body>
+</html>
