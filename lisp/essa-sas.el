@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/03/25 19:50:18 $
-;; Version: $Revision: 1.158 $
-;; RCS: $Id: essa-sas.el,v 1.158 2004/03/25 19:50:18 rsparapa Exp $
+;; Modified: $Date: 2004/04/12 18:38:41 $
+;; Version: $Revision: 1.159 $
+;; RCS: $Id: essa-sas.el,v 1.159 2004/04/12 18:38:41 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -935,28 +935,18 @@ Sometimes its necessary to wait for a shell prompt."
 ;;; Section 3:  Key Definitions
 
 
-(defvar ess-sas-edit-keys-toggle nil
-  "Toggle TAB key in `SAS-mode'.
-nil to bind TAB to `sas-indent-line'.
-Non-nil to bind TAB to `ess-sas-tab-to-tab-stop', 
-C-TAB to `ess-sas-backward-delete-tab', and
-RET to `newline'.")
+(defun ess-sas-edit-keys-set (&optional arg)
+"Set TAB/RET key in `SAS-mode'.
+If arg is nil
+    TAB is `sas-indent-line' and
+    RET is `newline-and-indent'.
+Else
+    TAB is `ess-sas-tab-to-tab-stop', 
+    C-TAB is `ess-sas-backward-delete-tab' and
+    RET is `newline'."
+  (interactive)
 
-(defun ess-sas-edit-keys-toggle (&optional arg)
-  "Toggle TAB key in `SAS-mode'.
-If arg is null, toggle `ess-sas-edit-keys-toggle'.
-If arg is nil, TAB is `sas-indent-line',
-RET is `newline-and-indent'.
-If arg is non-nil, TAB is `ess-sas-tab-to-tab-stop', 
-C-TAB is `ess-sas-backward-delete-tab' and
-RET is `newline'.
-Without args, toggle between these options."
-  (interactive "P")
-
-  (setq ess-sas-edit-keys-toggle
-	(if (null arg) (not ess-sas-edit-keys-toggle) arg))
-  (if ess-sas-edit-keys-toggle
-      (progn
+  (if arg (progn
 	(if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
 	       (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab)
 	;else
@@ -966,6 +956,20 @@ Without args, toggle between these options."
   ;else
       (define-key sas-mode-local-map [return] 'newline-and-indent)
       (define-key sas-mode-local-map "\t" 'sas-indent-line)))
+
+(defvar ess-sas-edit-keys-toggle nil
+"Toggle TAB/RET key in `SAS-mode'.
+nil binds TAB to `sas-indent-line' and RET to `newline-and-indent'.
+Non-nil binds TAB to `ess-sas-tab-to-tab-stop', 
+C-TAB to `ess-sas-backward-delete-tab', and RET to `newline'.")
+
+(defun ess-sas-edit-keys-toggle (&optional arg)
+  "Toggle `ess-sas-edit-keys-toggle'."
+  (interactive)
+
+  (setq ess-sas-edit-keys-toggle (not ess-sas-edit-keys-toggle))
+  (ess-sas-edit-keys-set ess-sas-edit-keys-toggle)
+)
 
 (defvar ess-sas-global-pc-keys nil
   "Non-nil if function keys use PC-like SAS key definitions in all modes.")

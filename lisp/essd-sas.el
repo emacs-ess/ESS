@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2004/03/25 19:50:18 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: essd-sas.el,v 5.15 2004/03/25 19:50:18 rsparapa Exp $
+;; Modified: $Date: 2004/04/12 18:38:41 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: essd-sas.el,v 5.16 2004/04/12 18:38:41 rsparapa Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -203,7 +203,7 @@ Better logic needed!  (see 2 uses, in this file).")
   (if sas-mode-local-map
       nil
     (setq sas-mode-local-map (copy-keymap (current-local-map)))
-    (ess-sas-edit-keys-toggle ess-sas-edit-keys-toggle)
+    (ess-sas-edit-keys-set ess-sas-edit-keys-toggle)
     (if ess-sas-local-unix-keys (ess-sas-local-unix-keys))
     (if ess-sas-local-pc-keys (ess-sas-local-pc-keys))
     (if ess-sas-global-unix-keys (ess-sas-global-unix-keys))
