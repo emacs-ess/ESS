@@ -1,4 +1,9 @@
-Fri Dec  5 10:09:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+Fri Dec  5 10:12:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-site.el: added comments about Emacs 20.2 errors.
+
+Fri Dec  5 10:09:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* CVS (ChangeLog): Starting 5.1 series.
+	
 
