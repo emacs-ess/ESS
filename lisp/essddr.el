@@ -6,9 +6,9 @@
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1999/11/17 18:57:59 $
-;; Version: $Revision: 5.8 $
-;; RCS: $Id: essddr.el,v 5.8 1999/11/17 18:57:59 ess Exp $
+;; Modified: $Date: 2000/01/12 17:09:30 $
+;; Version: $Revision: 5.9 $
+;; RCS: $Id: essddr.el,v 5.9 2000/01/12 17:09:30 hornik Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -27,7 +27,7 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
-;;; ESS RCS: $Id: essddr.el,v 5.8 1999/11/17 18:57:59 ess Exp $
+;;; ESS RCS: $Id: essddr.el,v 5.9 2000/01/12 17:09:30 hornik Exp $
 
 ;;; Code:
 
@@ -72,7 +72,8 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev Rd-mode-abbrev-table "`re" "\\references")
   (define-abbrev Rd-mode-abbrev-table "`sa" "\\seealso")
   (define-abbrev Rd-mode-abbrev-table "`se" "\\section")
-  (define-abbrev Rd-mode-abbrev-table "`se" "\\source")
+  (define-abbrev Rd-mode-abbrev-table "`so" "\\source")
+  (define-abbrev Rd-mode-abbrev-table "`sy" "\\synopsis")
   (define-abbrev Rd-mode-abbrev-table "`ta" "\\tabular")
   (define-abbrev Rd-mode-abbrev-table "`ti" "\\title")
   (define-abbrev Rd-mode-abbrev-table "`us" "\\usage")
@@ -117,8 +118,8 @@ All Rd mode abbrevs start with a grave accent (`).")
 (defvar Rd-section-names
   '("arguments" "alias" "author" "describe" "description" "details"
     "enumerate" "examples" "format" "itemize" "keyword" "name" "note"
-    "references" "seealso" "section" "source" "tabular" "title" "usage"
-    "value" "verbatim"))
+    "references" "seealso" "section" "source" "synopsis" "tabular"
+    "title" "usage" "value" "verbatim"))
 (defvar Rd-keywords
   '("Alpha" "Gamma" "R" "alpha" "beta" "bold" "cr" "code" "deqn" "dots"
     "email" "emph" "epsilon" "eqn" "file" "ge" "item" "lambda" "ldots"
@@ -274,7 +275,8 @@ following lines to your `.emacs' file:
 (defun Rd-mode-in-verbatim-p ()
   (let ((pos (point)))
     (save-excursion
-      (if (and (re-search-backward "\\\\\\(usage\\|examples\\)" nil t)
+      (if (and (re-search-backward
+		"\\\\\\(usage\\|examples\\|synopsis\\)" nil t)
 	       (re-search-forward "\\s(" nil t))
 	  (condition-case ()
 	      (progn
@@ -340,8 +342,8 @@ following lines to your `.emacs' file:
   (insert "\\name{}\n")
   (insert "\\alias{}\n")
   (insert "\\title{}\n")
-  (insert "\\usage{\n}\n")
   (insert "\\description{\n}\n")
+  (insert "\\usage{\n}\n")
   (insert "\\arguments{\n}\n")
   (insert "\\value{\n}\n")
   (insert "\\details{\n}\n")
