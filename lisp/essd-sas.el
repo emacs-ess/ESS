@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/12/02 14:13:51 $
-;; Version: $Revision: 5.1 $
-;; RCS: $Id: essd-sas.el,v 5.1 1997/12/02 14:13:51 rossini Exp $
+;; Modified: $Date: 1998/04/17 12:29:46 $
+;; Version: $Revision: 5.2 $
+;; RCS: $Id: essd-sas.el,v 5.2 1998/04/17 12:29:46 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -48,7 +48,7 @@
   "*Arguments to use for starting SAS.")
 
 (defvar inferior-SAS-args-temp nil
-  "Hack variable, needed for args preprocessing. 
+  "Hack variable, needed for args preprocessing.
 Better logic needed!  (see 2 uses, in this file).")
 
 ;;; Code:
@@ -78,7 +78,7 @@ Better logic needed!  (see 2 uses, in this file).")
 	 inferior-SAS-redirect-args
 	 ess-sas-lst
 	 ess-sas-log)
-    
+
     (ess-write-to-dribble-buffer
      (format "(ess-SAS-pre-run-hook 1): ess-lang=%s, ess-dialect=%s, temp-dialect=%s, buf=%s \n"
 	     ess-language
@@ -88,11 +88,11 @@ Better logic needed!  (see 2 uses, in this file).")
     ;; If someone is running a *shell* buffer, rename it to avoid
     ;; inadvertent nuking.
     (if ess-shell-buffer-name-flag
-	(save-excursion       
+	(save-excursion
 	  (set-buffer "*shell*")
 	  (setq ess-shell-buffer-name
 		(rename-buffer "*ess-shell-regular*" t))))
-    
+
     ;; Construct the LST buffer for output
     (if (get-buffer ess-sas-lst-bufname)
 	nil
@@ -104,7 +104,7 @@ Better logic needed!  (see 2 uses, in this file).")
       (shell-mode)
       (ess-listing-minor-mode t)
       (rename-buffer ess-sas-lst-bufname t))
-    
+
      ;; Construct the LOG buffer for output
     (if (get-buffer  ess-sas-log-bufname)
 	nil
@@ -116,7 +116,7 @@ Better logic needed!  (see 2 uses, in this file).")
       (shell-mode)
       (ess-transcript-minor-mode t)
       (rename-buffer ess-sas-log-bufname t))
-    
+
     (setq inferior-SAS-redirect-args (concat " "
 					     ess-sas-lst
 					     " "
@@ -124,13 +124,13 @@ Better logic needed!  (see 2 uses, in this file).")
 					     " ")
 	  inferior-SAS-args-temp (concat inferior-SAS-redirect-args
 					 inferior-SAS-args))
-    
+
     ;; Restore the *shell* buffer
     (if ess-shell-buffer-name-flag
-	(save-excursion       
+	(save-excursion
 	  (set-buffer ess-shell-buffer-name)
 	  (rename-buffer "*shell*")))
-    
+
     (delete-other-windows)
     (split-window-vertically)
     (split-window-vertically)
@@ -141,12 +141,12 @@ Better logic needed!  (see 2 uses, in this file).")
     (other-window 1)
     (switch-to-buffer ess-sas-lst-bufname)
     (other-window 2)
-    
+
     ;;workaround
     (setq inferior-SAS-program-name
-	  (concat ess-lisp-directory "/" "ess-sas-sh-command"))
+	  (concat ess-lisp-directory "/../etc/" "ess-sas-sh-command"))
     (setq inferior-ess-program inferior-SAS-program-name)))
- 
+
 (defun ess-insert-accept (command)
   "Submit command to process, get next line."
   (interactive)
@@ -178,7 +178,7 @@ Better logic needed!  (see 2 uses, in this file).")
     (inferior-ess-primary-prompt   . "^")
     (inferior-ess-secondary-prompt . "^")
     (inferior-ess-start-file       . nil) ;"~/.ess-SAS")
-    (inferior-ess-start-args       . inferior-SAS-args-temp) 
+    (inferior-ess-start-args       . inferior-SAS-args-temp)
     ;; (ess-pre-run-hook              . 'ess-SAS-pre-run-hook)
     (ess-local-process-name        . nil))
   "Variables to customize for SAS")
