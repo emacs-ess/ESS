@@ -1,3 +1,7 @@
+Mon Sep  7 18:26:47 1998  Martin Maechler  <maechler@...>
+
+	* essl-s.el (ess-time-string): 4 digit year!
+
 Wed Aug 26 14:16:35 1998  Martin Maechler  <maechler@...>
 
 	* essl-s.el (S-editing-alist): font-lock-defaults: treat "." as
