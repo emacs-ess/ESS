@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/17 14:59:35 $
-;; Version: $Revision: 1.95 $
-;; RCS: $Id: ess-inf.el,v 1.95 1997/11/17 14:59:35 rossini Exp $
+;; Modified: $Date: 1997/11/18 22:05:23 $
+;; Version: $Revision: 1.96 $
+;; RCS: $Id: ess-inf.el,v 1.96 1997/11/18 22:05:23 rossini Exp $
 
 
 ;; This file is part of ESS
@@ -133,20 +133,20 @@ accompany the call for inferior-ess-program.
     (let* ((defdir (directory-file-name (or ess-directory default-directory)))
 	   (temp-dialect temp-ess-dialect)
 	   (temp-lang temp-ess-lang)
-	   (procname (or (and (not (comint-check-proc (current-buffer)))
+	   (procname ;;(or ;;(and (not (comint-check-proc (current-buffer)))
 			      ;; Don't start a new process in current buffer if
 			      ;; one is already running
-			      ess-local-process-name)
+			      ;;ess-local-process-name)
 			 ;; find a non-existent process
-			 (let ((ntry 0)
-			       (done nil))
-			   (while (not done)
-			     (setq ntry (1+ ntry)
-				   done (not
-					 (get-process (ess-proc-name
-						       ntry
-						       temp-dialect)))))
-			   (ess-proc-name ntry temp-dialect))))
+		      (let ((ntry 0)
+			    (done nil))
+			(while (not done)
+			  (setq ntry (1+ ntry)
+				done (not
+				      (get-process (ess-proc-name
+						    ntry
+						    temp-dialect)))))
+			(ess-proc-name ntry temp-dialect))) ;)
 ;;	   (procname-lang (or (and (not (comint-check-proc (current-buffer)))
 ;;			      ;; Don't start a new process in current buffer if
 ;;			      ;; one is already running
@@ -172,9 +172,10 @@ accompany the call for inferior-ess-program.
 	       temp-dialect
 	       buf-name-str))
       (cond
-       ;; If process is running, we use it:
-       ((get-process procname)
-	(setq buf (process-buffer (get-process procname))))
+       ;; If process is running, we use it: 
+       ;; AJR- NO!  We no longer use this for switching buffers!
+       ;;((get-process procname)
+	;; (setq buf (process-buffer (get-process procname))))
 
        ;; Else (it's a new or terminated process) try to use current buffer
        ((and (not buf)
