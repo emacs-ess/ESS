@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2002/05/02 18:32:30 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: essd-els.el,v 1.17 2002/05/02 18:32:30 rmh Exp $
+;; Modified: $Date: 2002/05/10 04:18:11 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: essd-els.el,v 1.18 2002/05/10 04:18:11 rmh Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -164,20 +164,21 @@ return new alist whose car is the new pair and cdr is ALIST.
 ;;; ess-remote is constructed by looking at ess-add-process and
 ;;; ESS-elsewhere and ess-multi and then simplifying.  Start a process
 ;;; on a remote computer by manual use of telnet, rlogin, ssh, or some
-;;; other protocol.  Start the ESS process (S or R tested so far) in
-;;; that buffer.  Once you are talking to S or R, then execute
+;;; other protocol.  Start the ESS process ("S" or "R" or "sas -stdio" ) in
+;;; that buffer.  Once you are talking to S or R or SAS, then execute
 ;;; `ess-remote' to make the current buffer an inferior-ess buffer
 ;;; with the right behavior for the language you are currently working
 ;;; with.
 
 (defun ess-remote (&optional proc-name)
-  "Execute this command from within a buffer running a process.  It runs
-`ess-add-ess-process' to add the process to `ess-process-name-alist'
-and to make it the `ess-current-process-name'.  It then prompts the
-user for an ess language and sets the editing characteristics
-appropriately.  This command will normally be run in a telnet buffer
-connected to another computer or in a shell or comint buffer on the
-local computer."
+  "Execute this command from within a buffer running a process.  It
+runs `ess-add-ess-process' to add the process to
+`ess-process-name-alist' and to make it the
+`ess-current-process-name'.  It then prompts the user for an ess
+language and sets the editing characteristics appropriately.  This
+command will normally be run in a telnet buffer connected to another
+computer, or a shell buffer running ssh to another computer, or in a
+shell or comint buffer on the local computer."
   (interactive)
   (ess-add-ess-process)
   ;; Need to select a remote-customize-alist
@@ -191,7 +192,12 @@ local computer."
     (goto-char (point-max))
     (if (equal ess-language "S")
 	(if inferior-ess-language-start
-	    (ess-eval-linewise inferior-ess-language-start)))))
+	    (ess-eval-linewise inferior-ess-language-start)))
+    (if (equal ess-language "SAS")
+	(progn (font-lock-mode 0)
+	       (SAS-log-mode)
+	       (toggle-read-only nil)
+	       (font-lock-mode 1)))))
 
 
  ; Provide package
