@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/10/20 20:04:18 $
-;; Version: $Revision: 1.33 $
-;; RCS: $Id: essd-s+3.el,v 1.33 1997/10/20 20:04:18 rossini Exp $
+;; Modified: $Date: 1997/10/21 20:11:22 $
+;; Version: $Revision: 1.34 $
+;; RCS: $Id: essd-s+3.el,v 1.34 1997/10/21 20:11:22 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -91,10 +91,11 @@
 	   (current-buffer)))
   (inferior-ess))
 
-(defun S ()
-  "Basic, usual, call..."
-  (interactive)
-  (S+3))
+
+(defun S+3-transcript-mode ()
+  "S-PLUS 3.x transcript mode."
+  (ess-transcript-mode S+3-customize-alist))
+
 
 
  ; Provide package

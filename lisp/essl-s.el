@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/10/20 20:04:51 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: essl-s.el,v 1.15 1997/10/20 20:04:51 rossini Exp $
+;; Modified: $Date: 1997/10/21 20:08:39 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: essl-s.el,v 1.16 1997/10/21 20:08:39 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -35,11 +35,6 @@
  ; Requires and autoloads
 
 
-(autoload 'S-transcript-mode
-  "ess-trns" "ESS source eval mode" t)
-(autoload 'R-transcript-mode
-  "ess-trns" "ESS source eval mode" t)
-
 ;;;;* Alias ess-mode to s-mode
 ;;; Emacs will set the mode for a file based on the file's header.
 ;;; The mode name is indicated by putting it between -*- on the top line. 
@@ -61,8 +56,9 @@
   "Does the right thing."
   (ess-transcript-mode S+3-customize-alist))
 
-
 (fset 'S-transcript-mode 's-transcript-mode)
+(fset 'S+3-transcript-mode 's-transcript-mode)
+
 
 (defun r-transcript-mode ()
   "Does the right thing."

@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/10/20 19:58:32 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: ess-trns.el,v 1.8 1997/10/20 19:58:32 rossini Exp $
+;; Modified: $Date: 1997/10/21 20:11:14 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: ess-trns.el,v 1.9 1997/10/21 20:11:14 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -80,6 +80,7 @@
 	 ;; Code for GNU Emacs
 	 (setq ess-transcript-mode-map (make-sparse-keymap))))
 
+  (define-key ess-mode-map "\C-c\C-s"    'ess-switch-process)
   (define-key ess-transcript-mode-map "\C-c\C-r" 'ess-eval-region)
   (define-key ess-transcript-mode-map "\C-c\M-r" 'ess-eval-region-and-go)
 ;;  (define-key ess-transcript-mode-map "\M-\C-x"  'ess-eval-function)
