@@ -350,35 +350,38 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction<
      <ul>
 <li>Removed non-ASCII characters in a few files. 
 <li>ESS[R]: now works better when UTF-8 locale is active; in
-particular, you get correct directional quotes in R's startup message
-for R-devel (unstable development version of R 2.1.0) when using
-environment variables LANGUAGE=en@quot LC_ALL=en_US.UTF-8
+ particular, you get correct directional quotes in R's startup message
+ for R-devel (unstable development version of R 2.1.0) when using
+ environment variables LANGUAGE=en@quot LC_ALL=en_US.UTF-8
 <li>ESS[SAS]: toggling of .log mode improved (<kbd>F10</kbd>); toggling of
-.lst mode now also available (<kbd>C-F10</kbd>); in particular, opening of a
-<samp><span class="file">*.lst</span></samp> file does not auto-mode to sas-listing.
-
-     <p>Killing all buffers associated with .sas program no longer bound to
-<kbd>C-F10</kbd> since it seems to be a bit overzealous. 
+.lst mode now also available (<kbd>C-F10</kbd>); killing all buffers associated
+with .sas program no longer bound to <kbd>C-F10</kbd> since its a bit overzealous;
+EXPERIMENTAL new feature:  if your .log grows to more than 2.5MB, just
+the first 2.5MB are refreshed; this is helpful when your .sas program
+generates lots of error messages and gets too big for emacs to display;
+the truncation size is controlled by the variable ess-sas-log-max and
+defaults to 2500000. 
 <li>S-Plus 7 for Windows is now recognized. 
 <li>ESS[S] (incl. R): in auto-fill mode, strings are not wrapped anymore. 
-<li>ESS[S] (incl. R): font-lock now correctly differs between R and S. 
+<li>ESS[S] (incl. R): font-lock now correctly differs between R and S,
+e.g., for "_"; both now fontify warning(.) and S does terminate() additionally. 
+<li>Support for `bell' aka `beep' aka `ding' aka `alarm' in all inferior
+modes: When \a is output &ldquo;to the the console&rdquo; at the beginning of a line,
+the bell is rung. 
 </ul>
 
    <p>Changes/New Features in 5.2.5:
      <ul>
 <li>ESS[R]: <kbd>C-c C-q</kbd> or `<samp><span class="samp">Quit S</span></samp>' from the menu now should work
 (again and less klunkily) and do not append `<samp><span class="samp">-exited</span></samp>' to the
-buffer name.
-
-     <p>Further, the behavior of <code>(ess-cleanup)</code>, called from
+buffer name.  Further, the behavior of <code>(ess-cleanup)</code>, called from
 ess-quit, now depends on the new customizable variable
 <code>ess-S-quit-kill-buffers-p</code> which defaults to <code>nil</code>. 
 Consequently, the question <em>&ldquo;Delete all buffers associated
-with ..?&rdquo;</em> will not be asked anymore by default.
-
-     <li>ESS[S] (incl. R): Name completion for slots of S4 objects now works! 
-<li>ESS[SAS] <code>ess-ebcdic-to-ascii-search-and-replace</code> will now
-work with the recode application (available on many platforms) as well. 
+with ..?&rdquo;</em> will not be asked anymore by default. 
+<li>ESS[SAS] &ndash; ess-ebcdic-to-ascii-search-and-replace will now work
+with the <code>recode</code> application as well which is available on many platforms
+<li>ESS[S] (incl. R): Name completion for slots of S4 objects now works! 
 </ul>
 
    <p>Changes/New Features in 5.2.4:
@@ -392,7 +395,7 @@ platform, .log NOTEs may display as gibberish since the EBCDIC
 characters are not converted to ASCII prior to their display.  So,
 the function ess-ebcdic-to-ascii-search-and-replace is provided for
 convenience and is bound to <kbd>C-F11</kbd>.  This function requires the
-<code>dd</code> command (unix). 
+<code>dd</code> command (only available on unix or unix-like platforms). 
 <li>ESS: Completion of object names is now always done dynamically rather
 than allowing the option of using a pre-computed database (by
 <code>ess-create-object-name-db</code>) since modern computers seem fast
@@ -1279,8 +1282,8 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation<
    <p>with the following versions of emacs
 
      <ul>
-<li>GNU Emacs 20.3-7, 21.1, 21.3
-<li>XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17, 21.5.18-19
+<li>GNU Emacs 20.3-7, 21.1, 21.3, 21.4
+<li>XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17, 21.5.18
 <!-- @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no -->
 <!-- longer supported, so an upgrade is recommended if you plan to use ESS. -->
 <!-- If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note -->
@@ -5188,7 +5191,7 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <div class="footnote">
 <hr>
 <a name="texinfo-footnotes-in-document"></a><h4>Fu&szlig;noten</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> 
-requires the files.el patch to revert-buffer for the Local Variables
+require the files.el patch to revert-buffer for the Local Variables
 updating problem</p>
 
    <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> The variable <code>ess-change-sp-regexp</code> is a regular
