@@ -8,9 +8,9 @@
 ;;         (now: dsmith@insightful.com)
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/05/18 14:34:35 $
-;; Version: $Revision: 5.89 $
-;; RCS: $Id: ess-inf.el,v 5.89 2004/05/18 14:34:35 stephen Exp $
+;; Modified: $Date: 2004/05/22 16:07:15 $
+;; Version: $Revision: 5.90 $
+;; RCS: $Id: ess-inf.el,v 5.90 2004/05/22 16:07:15 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -945,11 +945,12 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
     (goto-char (marker-position (process-mark sprocess)))
     (if eob
 	(progn
-	  (save-excursion
-	    (set-buffer sbuffer)
-	    (goto-char (point-max)))
-	  (ess-show-buffer (buffer-name sbuffer) nil)))
-    (set-buffer cbuffer)
+	  (ess-show-buffer (buffer-name sbuffer) nil)
+	  ;; Once SBUFFER is visible, we can then move the point in that
+	  ;; window to the end of the buffer.
+	  (set-window-point (get-buffer-window sbuffer t) 
+			    (with-current-buffer sbuffer (point-max))))
+      (set-buffer cbuffer))
     ))
 
 ;;;*;;; Evaluate only
