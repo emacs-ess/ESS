@@ -1,3 +1,63 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+;;; essd-sas.el --- SAS customization
+
+;; Copyright (C) 1997 Richard M. Heiberger and A. J. Rossini
+
+;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
+;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Created: 20 Aug 1997
+;; Modified: $Date: 1997/11/09 19:38:29 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essl-sta.el,v 1.2 1997/11/09 19:38:29 rossini Exp $
+;;
+;; Keywords: start up, configuration.
+;;; essl-sta.el --- Stata customization
+
+;; Copyright (C) 1997 Thomas Lumley and A. J. Rossini
+
+;; Author: Thomas Lumley <thomas@biostat.washington.edu>
+;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
+;; Created: 2 Nov 1997
+;; Modified: $Date: 1997/11/09 19:38:29 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essl-sta.el,v 1.2 1997/11/09 19:38:29 rossini Exp $
+;;
+;; Keywords: start up, configuration.
+
+;; This file is part of ESS.
+
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+
+;;; Commentary:
+;;; This is based upon Version 0.4 of Stata mode:
+
+
+
+
 ;;
 ;; Stata modes.  Emacs modes for using the Stata statistical package
 ;; Modified from S-mode, comint-mode
@@ -47,8 +107,7 @@
 (defun stata-help (the-subject) "Stata help in other buffer"
   (interactive "sHelp on: ")
   (let* ((stata-process (get-process "stata"))
-	 (stata-buffer (process-buffer stata-process))
-	 )
+	 (stata-buffer (process-buffer stata-process)))
     (set-buffer stata-buffer)
     (setq oldpf (process-filter stata-process))
     (setq oldpb (process-buffer stata-process))
@@ -71,18 +130,13 @@
 	(set-buffer stata-buffer)
 	(set-process-buffer stata-process oldpb)
 	(set-process-filter stata-process oldpf)
-	(set-marker (process-mark stata-process) oldpm)
-	)
-      )
-    (display-buffer "*stata help*")
-    )
-  )
+	(set-marker (process-mark stata-process) oldpm)))
+    (display-buffer "*stata help*")))
   
 (defun stata-lookup (the-subject) "Stata lookup in other buffer"
   (interactive "sLook up: ")
   (let* ((stata-process (get-process "stata"))
-	 (stata-buffer (process-buffer stata-process))
-	 )
+	 (stata-buffer (process-buffer stata-process)))
     (set-buffer stata-buffer)
     (setq oldpf (process-filter stata-process))
     (setq oldpb (process-buffer stata-process))
@@ -105,18 +159,15 @@
 	(set-buffer stata-buffer)
 	(set-process-buffer stata-process oldpb)
 	(set-process-filter stata-process oldpf)
-	(set-marker (process-mark stata-process) oldpm)
-	)
-      )
-    (display-buffer "*stata help*")
-    )
-  )
+	(set-marker (process-mark stata-process) oldpm)))
+    (display-buffer "*stata help*")))
   
 (defun stata-variables () "Stata variable list in other buffer"
   (interactive)
   (let* ((stata-process (get-process "stata"))
-	 (stata-buffer (if stata-process (process-buffer stata-process) (error "Stata is not running.")))
-	 )
+	 (stata-buffer (if stata-process
+			   (process-buffer stata-process)
+			 (error "Stata is not running."))))
     (set-buffer stata-buffer)
     (setq oldpf (process-filter stata-process))
     (setq oldpb (process-buffer stata-process))
@@ -126,7 +177,8 @@
       (beginning-of-line)
       (if (looking-at ". ") nil  (error "Stata not ready."))
        (save-excursion
-	(set-process-buffer stata-process (get-buffer-create "*stata variables*"))
+	(set-process-buffer stata-process
+			    (get-buffer-create "*stata variables*"))
 	(set-process-filter stata-process 'ordinary-insertion-filter)
 	(set-buffer "*stata variables*")
 	(setq buffer-read-only nil)
@@ -137,18 +189,13 @@
 	(set-buffer stata-buffer)
 	(set-process-buffer stata-process oldpb)
 	(set-marker (process-mark stata-process) oldpm)
-	(set-process-filter stata-process oldpf)
-	)
-       )
+	(set-process-filter stata-process oldpf)))
     (display-buffer "*stata variables*")
-    (goto-char (point-max))
-    )
-  )
+    (goto-char (point-max))))
 
 (defun stata-review-window ()
-(interactive)
-(display-buffer "*stata review*")
-)
+  (interactive)
+  (display-buffer "*stata review*"))
 
 (defun stata-rehelp () 
   (interactive)
@@ -174,14 +221,17 @@
 ;;; implementing a menu interface using emacs
 ;;;
 (defun stata-watch-for-menu-filter (proc string)
-      (if (string-match "^!!!window!!!" string) (stata-handle-menu-code proc string) (comint-output-filter proc string)))
+  (if (string-match "^!!!window!!!" string)
+      (stata-handle-menu-code proc string)
+    (comint-output-filter proc string)))
 
 (defun stata-handle-menu-code (proc string)
    (let ((old-buffer (current-buffer)))
     (unwind-protect
 	(let (moving)
 	  (set-buffer (process-buffer proc))
-	  (setq moving (= (point) (process-mark proc)))
+	  (setq moving (= (point)
+			  (process-mark proc)))
 	  (save-excursion
 	    ;; Insert the text, moving the process-marker.
 	    (goto-char (process-mark proc))
@@ -189,6 +239,7 @@
 	    (set-marker (process-mark proc) (point)))
 	  (if moving (goto-char (process-mark proc))))
       (set-buffer old-buffer))))
+
 ;;;; </IGNORE>
     
 (defun stata-add-to-review-buffer (string)
@@ -196,9 +247,7 @@
 (save-excursion
   (set-buffer (get-buffer-create "*stata review*"))
   (goto-char (point-max))
-  (insert string)
-  )
-)
+  (insert string)))
 
 (defun stata-prompt-wait (proc &optional start-of-output)
   "Wait for a prompt to appear at BOL of current buffer
@@ -298,25 +347,26 @@ variables windows of Stata for Windows
 \\{inferior-stata-mode-map}"
   (interactive)
   (make-comint "stata" "stata" 
-	       (and  stata-profile (or (file-exists-p stata-profile) (null (message "Startup file %s not found." stata-profile))) stata-profile)
+	       (and stata-profile
+		    (or (file-exists-p stata-profile)
+			(null (message "Startup file %s not found."
+				       stata-profile))) stata-profile)
 	       stata-switches)
   (switch-to-buffer "*stata*" )
   (setq comint-process-echoes t)
   (set-process-filter (get-process "stata") 'stata-watch-for-menu-filter)
-  (setq comint-input-filter-functions (cons 'stata-add-to-review-buffer comint-input-filter-functions))
+  (setq comint-input-filter-functions
+	(cons 'stata-add-to-review-buffer comint-input-filter-functions))
   (save-excursion
     (set-buffer (get-buffer-create "*stata review*"))
-    (stata-mode)
-    )
+    (stata-mode))
   (setq major-mode 'inferior-stata-mode)
   (setq mode-name "inferior Stata")
-  (use-local-map inferior-stata-mode-map)
-)
+  (use-local-map inferior-stata-mode-map))
 
 (defun stata ()
   (interactive)
-  (inferior-stata-mode)
-)
+  (inferior-stata-mode))
 
 (defun stata-help-mode ()
 "Major mode for displaying Stata help in a read-only
@@ -326,13 +376,13 @@ hyperlink (\\[stata-rehelp] or mouse-2)"
   (setq major-mode 'stata-help-mode)
   (setq mode-name "Stata help")
   (use-local-map stata-help-mode-map)
-  (setq buffer-read-only t)
-)
+  (setq buffer-read-only t))
 
 
 (defun stata-mode ()
 "Major mode for editing Stata files. Commands for sending lines to
-Stata (\\[stata-eval-line], \\[stata-eval-line-and-go], \\[stata-eval-line-and-next-line])
+Stata (\\[stata-eval-line], \\[stata-eval-line-and-go],
+\\[stata-eval-line-and-next-line]) 
 and for displaying Stata help (\\[stata-help]), variables (\\[stata-variables])
  and review window (\\[stata-review-window])
 \\{stata-mode-map}"
@@ -340,8 +390,7 @@ and for displaying Stata help (\\[stata-help]), variables (\\[stata-variables])
   (kill-all-local-variables)
   (setq major-mode 'stata-mode)
   (setq mode-name "Stata")
-  (use-local-map stata-mode-map)
-  )
+  (use-local-map stata-mode-map))
 
 
 (defun stata-eval-region (start end)
@@ -355,8 +404,8 @@ and for displaying Stata help (\\[stata-help]), variables (\\[stata-variables])
 (defun stata-eval-buffer ()
   "Send the current buffer to the inferior stata process."
   (interactive)
-  (stata-eval-region (point-min) (point-max))
-)
+  (stata-eval-region (point-min) (point-max)))
+
 (defun stata-eval-line ()
   "Send the current line to the inferior stata process."
   (interactive)
@@ -381,9 +430,6 @@ and for displaying Stata help (\\[stata-help]), variables (\\[stata-variables])
   (next-line 1))
 
 
-
-
-
 (defun stata-eval-region-and-go (start end )
   "Send the current region to the inferior S and switch to the process buffer."
   (interactive "r\nP")
@@ -405,7 +451,6 @@ process buffer."
   (stata-switch-to-stata t))
 
 
-
 (defun stata-switch-to-stata (eob-p)
   "Switch to the current inferior stata process buffer.
 With argument, positions cursor at end of buffer."
@@ -417,14 +462,9 @@ With argument, positions cursor at end of buffer."
 	(if eob-p (goto-char (point-max))))
     (progn 
       (message "No inferior stata process")
-      (ding)
-      )
-    )
-)
+      (ding))))
 
 (defun stata-switch-to-end-of-stata nil
   "Switch to the end of the inferior stata process buffer."
   (interactive)
   (stata-switch-to-stata t))
-
-
