@@ -394,8 +394,8 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (put 'ess-local-process-name 'permanent-local t) ; protect from RCS
   (setq mode-line-process ;; AJR: in future, XEmacs will use modeline-process.
 	'(" [" (ess-local-process-name ess-local-process-name "none") "]"))
-
-  (ess-load-object-name-db-file)
+  ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
+  ;; (ess-load-object-name-db-file)
   (run-hooks 'ess-mode-hook)
   (ess-write-to-dribble-buffer "\nFinished setting up ESS-mode.\n"))
 
