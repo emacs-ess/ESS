@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/11/09 19:32:53 $
-;; Version: $Revision: 1.22 $
-;; RCS: $Id: essl-sas.el,v 1.22 1997/11/09 19:32:53 rossini Exp $
+;; Modified: $Date: 1997/11/09 19:56:31 $
+;; Version: $Revision: 1.23 $
+;; RCS: $Id: essl-sas.el,v 1.23 1997/11/09 19:56:31 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -1126,8 +1126,7 @@ whose beginning matches the regexp `page-delimiter'."
 
 (defun sas-narrow-to-page ()
   (save-excursion
-    (let* (min
-	   max))
+    (let* (min max))
           ;;(omin (point-min))
 	  ;;(omax (point-max)))
       (if (or (bolp) (beginning-of-line)
@@ -1138,7 +1137,7 @@ whose beginning matches the regexp `page-delimiter'."
       (forward-page 1)
       (beginning-of-line)
       (setq max (point))
-      (narrow-to-region min max))))
+      (narrow-to-region min max)))
 
 (defun sas-forward-page-narrow (arg)
   "Move forward to page boundary and narrow to page.
