@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2004/06/25 13:24:50 $
-;; Version: $Revision: 5.33 $
-;; RCS: $Id: ess-utils.el,v 5.33 2004/06/25 13:24:50 rsparapa Exp $
+;; Modified: $Date: 2004/07/02 10:09:16 $
+;; Version: $Revision: 5.34 $
+;; RCS: $Id: ess-utils.el,v 5.34 2004/07/02 10:09:16 stephen Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -424,5 +424,24 @@ if any exist, in PATH."
       (setq items (cdr items)))
     new-list
     ))
+
+(defun ess-flatten-list (&rest list)
+  "Take the arguments and flatten them into one long list."
+  ;; Taken from lpr.el
+  ;; `lpr-flatten-list' is defined here (copied from "message.el" and
+  ;; enhanced to handle dotted pairs as well) until we can get some
+  ;; sensible autoloads, or `flatten-list' gets put somewhere decent.
+
+  ;; (ess-flatten-list '((a . b) c (d . e) (f g h) i . j))
+  ;; => (a b c d e f g h i j)
+  (ess-flatten-list-1 list))
+
+(defun ess-flatten-list-1 (list)
+  (cond
+   ((null list) (list))
+   ((consp list)
+    (append (ess-flatten-list-1 (car list))
+	    (ess-flatten-list-1 (cdr list))))
+   (t (list list))))
 
 (provide 'ess-utils)
