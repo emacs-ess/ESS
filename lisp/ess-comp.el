@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/08/26 22:54:23 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: ess-comp.el,v 1.11 1997/08/26 22:54:23 rossini Exp $
+;; Modified: $Date: 1997/11/09 19:44:05 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: ess-comp.el,v 1.12 1997/11/09 19:44:05 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;: $Log: ess-comp.el,v $
+;;: Revision 1.12  1997/11/09 19:44:05  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.11  1997/08/26 22:54:23  rossini
 ;;: *** empty log message ***
 ;;:
@@ -75,7 +78,6 @@
 ;;; primarily for Emacs, but also for setting up compile load-path
 ;;; properly (Emacs doesn't include '.' in the emacs lisp load path).
 
-;;(setq load-path (cons "." load-path))
 (add-to-list 'load-path nil)
 
 ;;(if (not (string-match "XEmacs\\|Lucid" emacs-version))
@@ -87,11 +89,9 @@
 ;;
 ;;  (setq byte-optimize t))
 
-;;(require 'cl)
 (require 'ess-vars)
 (require 'ess)
-(require 'ess-site)       ; order: so that any changes in ess-site
-					; take place last
+(require 'ess-site)
 
  ; Local variables section
 
