@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/17 14:58:35 $
-;; Version: $Revision: 1.70 $
-;; RCS: $Id: ess-mode.el,v 1.70 1997/11/17 14:58:35 rossini Exp $
+;; Modified: $Date: 1997/11/19 16:43:53 $
+;; Version: $Revision: 1.71 $
+;; RCS: $Id: ess-mode.el,v 1.71 1997/11/19 16:43:53 rossini Exp $
 
 
 ;; This file is part of ess-mode
@@ -158,7 +158,9 @@
     ["Step through line" ess-eval-line-and-next-line t]
     ["Enter expression"  ess-execute-in-tb           t]
     ["Eval line"         ess-eval-line               t]
-    ["About" (lambda nil (interactive) (ess-goto-info "Evaluating code"))]
+    ["About"             (lambda nil
+			   (interactive)
+			   (ess-goto-info "Evaluating code")) t]
     )
    ("Motion..."
     ["Edit new object"       ess-dump-object-into-edit-buffer t]
