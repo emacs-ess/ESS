@@ -1,3 +1,8 @@
+2004-07-09  Stephen Eglen  <stephen@bushmills.inf.ed.ac.uk>
+
+	* ess-utils.el (ess-find-exec-completions): After checking that
+	ess-tmp-file is executable, check that it is not a directory.
+
 2004-07-04  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
 	* essdsp6w.el (ess-sqpe-versions-created): Variable deleted.
