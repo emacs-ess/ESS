@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2000/10/26 09:11:39 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: ess-utils.el,v 5.5 2000/10/26 09:11:39 maechler Exp $
+;; Modified: $Date: 2001/02/28 12:58:19 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: ess-utils.el,v 5.6 2001/02/28 12:58:19 maechler Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -65,6 +65,20 @@
     ;;or (if (and verbose pl)
     ;;or  (message "s/%s/%s/ at %s" regexp to-string pl))
     ) )
+
+(defun ess-space-around (word &optional from verbose) 
+  "Replace-regexp .. ensuring space around all occurences of WORD,
+ starting from FROM {defaults to (point)}."
+  (interactive "d\nP"); Defaults: point and prefix (C-u)
+  (save-excursion
+    (goto-char from)
+    (ess-rep-regexp (concat "\\([^ \t\n]\\)\\(\\<" word "\\>\\)")
+		    "\\1 \\2" nil nil verbose)
+    (goto-char from)
+    (ess-rep-regexp (concat "\\(\\<" word "\\>\\)\\([^ \t\n]\\)")
+		    "\\1 \\2" nil nil verbose)
+  )
+)
 
 (defun ess-time-string (&optional clock)
   "Returns a string for use as a timestamp. + hr:min if CLOCK is non-nil.
