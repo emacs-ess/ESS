@@ -309,9 +309,13 @@ F12  F12  viewgraph
                     open a GSASFILE near point for viewing either in emacs
                     or with an external viewer
 
-C-F1 C-F1 create-rtf
-                    create an MS RTF file from the current buffer with a
-                    file name that replaces the file extension with .rtf
+C-F1 C-F1 rtf-portrait
+                    create an MS RTF portrait file from the current buffer 
+                    with a file extension of .rtf
+
+C-F2 C-F2 rtf-landscape
+                    create an MS RTF landscape file from the current buffer 
+                    with a file extension of .rtf
 
 C-F3 C-F8 submit-region    
                     write region to ess-temp.sas and submit
@@ -321,6 +325,9 @@ C-F5 C-F6 append-to-log
 
 C-F6 C-F7 append-to-output 
                     append ess-temp.lst to the current .lst file
+
+C-F9 C-F9 kill-em-all
+                    kill all buffers associated with a .sas program
 @end display
 
 SUBMIT, PROGRAM, LOG and OUTPUT need no further explanation since
