@@ -1,3 +1,10 @@
+2004-12-30  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-save-lastvalue-command): newly (defvar .) and
+	buffer local, {instead of defcustom}; ditto for ess-retr-last....
+
+	* ess-cust.el: drop them here
+
 2004-12-29  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-mode.el (ess-mode): Remove call to

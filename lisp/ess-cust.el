@@ -1150,31 +1150,6 @@ of Emacs until the code has been successfully evaluated."
   :group 'ess-proc
   :type 'boolean)
 
-;;; SJE - suggest this is not defcustom, looks like each mode sets this.
-;;; SJE - this still produces mismatch.
-(defcustom ess-save-lastvalue-command nil
-  "Default depends on the ESS language/dialect.
-
-This is the command to save the last value.  See S section for more details.
-
-Might have to:"
-;;(make-variable-buffer-local 'ess-save-lastvalue-command)
-;;(setq-default ess-save-lastvalue-command
-;;	      "assign(\"smode.lvsave\",.Last.value,frame=0)\n")
-  :group 'ess-command
-  :type 'string)
-
-;;; SJE - suggest this is not defcustom, looks like each mode sets this.
-;;; SJE - this still produces mismatch.
-(defcustom ess-retr-lastvalue-command nil
-  "Default is currently the S+ version."
-  :group 'ess-command
-  :type 'string)
-
-;;(make-variable-buffer-local 'ess-retr-lastvalue-command)
-;;(setq-default ess-retr-lastvalue-command
-;;	      ".Last.value <- get(\"smode.lvsave\",frame=0)\n")
-
  ; System variables
 
 ;;*;; Variables relating to multiple processes
@@ -1253,7 +1228,7 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el"
 (defcustom ess-ms-slow nil
   "Set to non-nil if your computer is slow so that ESS will include delays.
 These delays are introduced to prevent timeouts in certain processes, such
-as completion.  The value of this variable is only considered when 
+as completion.  The value of this variable is only considered when
 `ess-microsoft-p' is non-nil.
 This variable may need to become mode-specific."
   :group 'ess-command
@@ -1323,7 +1298,7 @@ session.")
 
 (defvar ess-mode-minibuffer-map nil)
 
-;; SJE: Wed 29 Dec 2004 - following 3 ess-object* variables can be removed 
+;; SJE: Wed 29 Dec 2004 - following 3 ess-object* variables can be removed
 ;; soon if no-one needs the completion code.
 (defvar ess-object-name-db-file "ess-namedb"
   "File containing definitions for `ess-object-name-db'.")

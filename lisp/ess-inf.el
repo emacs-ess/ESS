@@ -255,6 +255,15 @@ It is initialized from the corresponding inferior-<lang>-objects-command
 and then made buffer local."); and the *-<lang>-* ones are customized!
 (make-variable-buffer-local 'inferior-ess-objects-command)
 
+(defvar ess-save-lastvalue-command nil
+  "The command to save the last value.  See S section for more details.
+Default depends on the ESS language/dialect and hence made buffer local")
+(make-variable-buffer-local 'ess-save-lastvalue-command)
+
+(defvar ess-retr-lastvalue-command nil
+  "The command to retrieve the last value.  See S section for more details.
+Default depends on the ESS language/dialect and hence made buffer local")
+(make-variable-buffer-local 'ess-retr-lastvalue-command)
 
 ;;; A note on multiple processes: the following variables
 ;;;	ess-local-process-name
