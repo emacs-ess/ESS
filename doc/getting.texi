@@ -2,5 +2,5 @@ The latest version of ESS is always available on the web at:
 @uref{http://ess.r-project.org, ESS web page} or
 @uref{http://lib.stat.cmu.edu/general/ESS/, StatLib}
 
-@include inst_cvs.texi
+@include inst_svn.texi
 
