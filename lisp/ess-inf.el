@@ -1681,28 +1681,43 @@ to the command if BUFF is not given.)"
 ;;;*;;; Quitting
 
 (defun ess-quit (dont-cleanup)
-  "Issue an exiting command to the inferior process, and clean up."
+  "Issue an exiting command to the inferior process.
+By default, you will be asked if you wish to delete all buffers
+associated with the current buffer; if you specify a prefix
+arg (with C-u), this step will be omitted."
   (interactive "P")
+  (if (string-equal ess-dialect "R")
+      (ess-quit-r dont-cleanup)
+    (ess-force-buffer-current "Process to quit: ")
+    (ess-make-buffer-current)
+    (let ((sprocess (get-ess-process ess-current-process-name)))
+      (if (not sprocess) (error "No ESS process running."))
+      (when (yes-or-no-p (format "Really quit ESS process %s? " sprocess))
+	(if dont-cleanup nil (ess-cleanup))
+	(goto-char (marker-position (process-mark sprocess)))
+	(insert inferior-ess-exit-command)
+	(process-send-string sprocess inferior-ess-exit-command)
+	(rename-buffer (concat (buffer-name) "-exited") t)))))
+
+(defun ess-quit-r (dont-cleanup)
+  "Issue an exiting command to an inferior R process, and optionally clean up.
+This version is for killing *R* processes; it asks the extra question 
+regarding whether the workspace image should be save."
   (ess-force-buffer-current "Process to quit: ")
   (ess-make-buffer-current)
-  ;;  Modified to handle R (rmh 2002 Mar 12)
-  (let ((sprocess (get-ess-process ess-current-process-name)))
+  (let (response cmd
+		 (sprocess (get-ess-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running."))
-    (if (yes-or-no-p (format "Really quit ESS process %s? " sprocess))
-	(progn ;; previously (save-excursion
-	  (if dont-cleanup nil (ess-cleanup))
-	  (goto-char (marker-position (process-mark sprocess)))
-	  (insert inferior-ess-exit-command)
-	  (if (string-equal ess-dialect "R")
-	      (progn
-		(inferior-ess-send-input)
-		(setq inferior-ess-prompt inferior-ess-exit-prompt)
-		(if ess-verbose
-		    (ess-write-to-dribble-buffer
-		     (format "(ess-quit): prompt '%s'\n" inferior-ess-prompt)))
-		(inferior-ess-wait-for-prompt))
-	    (process-send-string sprocess inferior-ess-exit-command))
-	  (rename-buffer (concat (buffer-name) "-exited") t)))))
+    (setq response (completing-read "Save workspace image? " 
+				    '( ( "yes".1) ("no" . 1) ("cancel" . 1))
+				    nil t))
+    (unless (string-equal response "cancel")
+      (if dont-cleanup nil (ess-cleanup))
+      (setq cmd (format "q(\"%s\")\n" response))
+      (goto-char (marker-position (process-mark sprocess)))
+      (process-send-string sprocess cmd)
+      (rename-buffer (concat (buffer-name) "-exited") t)
+      )))
 
 (defun ess-abort ()
   "Kill the ESS process, without executing .Last or terminating devices.
