@@ -1,3 +1,8 @@
+Fri Oct 24 16:31:12 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (install): -ne should be !=, since doing string, not
+	integer, comparison. (KH)
+
 Fri Oct 24 12:25:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-vars.el (ess-version): 
@@ -543,6 +548,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 1.13  1997/10/24 20:34:42  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 1.12  1997/10/24 16:25:49  rossini
 	* Removing *** empty log message ***
 	* Removing
