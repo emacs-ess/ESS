@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/05/21 20:07:29 $
-;; Version: $Revision: 1.5 $
-;; RCS: $Id: ess-site.el,v 1.5 1997/05/21 20:07:29 rossini Exp $
+;; Modified: $Date: 1997/06/14 23:17:09 $
+;; Version: $Revision: 1.6 $
+;; RCS: $Id: ess-site.el,v 1.6 1997/06/14 23:17:09 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.6  1997/06/14 23:17:09  rossini
+;;: moved language stuff into essd-* files.
+;;:
 ;;: Revision 1.5  1997/05/21 20:07:29  rossini
 ;;: conversion to ess complete
 ;;:
@@ -122,6 +125,8 @@
 ;;:
 ;;;
 
+(provide 'ess-site)
+
 ;;; Code:
 
 ;;;; 1. Load path, autoloads, and major modes
@@ -175,71 +180,11 @@
 (autoload 'inferior-ess "ess-inf"
   "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
 
-;; Short cut: Splus
+;; Require the needed dialects for your setup.
 
-(defun ess-S-shortcut-pre-run-hook ()
-  "Initialize variables for S."
-  (setq ess-proc-prefix              "S"
-	ess-version-running          "S+3"
-	inferior-ess-program         inferior-S-program-name
-	ess-help-sec-regex           ess-help-S-sec-regex
-	ess-help-sec-keys-alist      ess-help-S-sec-keys-alist
-	inferior-ess-objects-command "objects(%d)"
-	                             ;;(if (string= ess-version-running "S3")
-				     ;;    "objects(%d)"
-				     ;;  "ls()")
-	inferior-ess-help-command    "help(\"%s\",pager=\"cat\",window=F)\n"
-	                             ;;(if S-plus
-				     ;; "help(\"%s\",pager=\"cat\",window=F)\n"
-				     ;; "help(\"%s\")\n")
-	inferior-ess-exit-command    "q()\n"))
-
-
-(defun ess-S-shortcut-post-run-hook ()
-  "Remove initialization."
-  (remove-hook 'ess-pre-run-hook 'ess-S-shortcut-pre-run-hook))
-
-(defun S () "Call 'S', even after calling R."
-  (interactive)
-  (add-hook 'ess-pre-run-hook  'ess-S-shortcut-pre-run-hook)
-  (add-hook 'ess-post-run-hook 'ess-S-shortcut-post-run-hook)
-  (setq ess-proc-prefix "S")
-  (inferior-ess))
-
-;; Shortcut: R
-
-(defun ess-R-shortcut-pre-run-hook ()
-  "Initialize variables."
-  (setq ess-proc-prefix              "R"
-	ess-version-running          "R" ;-> using 'ls()' instead of objects..
-	inferior-ess-program         inferior-R-program-name
-	inferior-ess-objects-command "if(%d == 1) ls() else builtins()"
-	ess-help-sec-regex           ess-help-R-sec-regex
-	ess-help-sec-keys-alist      ess-help-R-sec-keys-alist
-	inferior-ess-help-command    "help(\"%s\")\n"
-	inferior-ess-exit-command    "q()\n"
-	ess-loop-timeout             100000 ;- default is 50000
-	inferior-ess-primary-prompt  "[][a-zA-Z0-9() ]*> ?") ;; [] for browser()
-  (remove-hook  'ess-post-run-hook 'ess-execute-screen-options); length fails
-  (add-hook 'S-mode-load-hook
-	    '(lambda () (setq-default S-proc-prefix "R")))
-  ;;(setq inferior-S-search-list-command "search()\n");- is failing in R
-  (setenv "PAGER" inferior-ess-pager)   ;-- a MUST for the old-style
-					;(nroff) help  above ! 
-)
-
-(defun ess-R-shortcut-post-run-hook ()
-  "Remove initialization."
-  (remove-hook 'ess-pre-run-hook 'ess-R-shortcut-pre-run-hook))
-
-(defun R () "Call 'R', the 'Splus clone' from Robert & Ross (Auckland, NZ.)"
-  (interactive)
-  (add-hook 'ess-pre-run-hook  'ess-R-shortcut-pre-run-hook)
-  (add-hook 'ess-post-run-hook 'ess-R-shortcut-post-run-hook)
-  (setq     ess-proc-prefix    "R")
-  (inferior-ess))
-
-;; Short cut: XLispStat
+(require 'essd-s+3)
+(require 'essd-r)
+(require 'essd-xls)
 
 (defun ess-XLS-shortcut-pre-run-hook ()
   "Initialize variables."
@@ -264,26 +209,14 @@
   (inferior-ess))
 
 ;;TODO:
-;; Short cut: ViSta
-;; Short cut: S4
-;; Short cut: S3
+;;  ViSta (essd-vst)
+;;  S4 (essd-s4)
+;;  S3 (essd-s3)
+;;  S+4 (essd-s+4)
+;;  SAS (essd-sas)
 
 
-
-
-
-;;; In what follows I have tried to list the main user variables you
-;;; might want to modify in this file (at least those that are
-;;; necessary for getting S-mode running).  It is not an exhaustive
-;;; list, however; check the files S.el, S-inf.el, S-mode.el,
-;;; S-trans.el and S-help.el (or the texinfo manual) for others.
-;;; Variables you can change are listed with the leading comment ";;"
-;;; (two semicolons) which you must delete if you wish to change the
-;;; variable.  Default values are listed; if you are not sure do not
-;;; change anything.
-
-
-;;;; 2. Executable location and version for S/S-plus
+;;; 2. Site Specific setup
 ;;;; ===============================================
 
 ;;; Set this to the name of the program you use to run S or Splus.  It
@@ -304,8 +237,9 @@
 ;; (setq inferior-S-secondary-prompt "+ ?")
 
 
-;;;; 3. Optional extras
-;;;; ==================
+;;; 3. Customization (and commented out examples) for your site
+;;;; ===============================================
+
 
 ;;; (3.1) Font-lock
 ;; The following two expressions automatically enable font-lock-mode
@@ -330,10 +264,6 @@
 ;; (cond (window-system
 ;;       (require 'framepop)))
 
- ; Provide package
-
-(provide 'ess-site)
-
  ; Local variables section
 
 ;;; This file is automatically placed in Outline minor mode.
@@ -346,7 +276,6 @@
 
 ;;; Local variables:
 ;;; mode: emacs-lisp
-;;; outline-minor-mode: nil
 ;;; mode: outline-minor
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
