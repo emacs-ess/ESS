@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2003/12/19 16:23:17 $
-;; Version: $Revision: 5.98 $
-;; RCS: $Id: ess-site.el,v 5.98 2003/12/19 16:23:17 maechler Exp $
+;; Modified: $Date: 2004/02/12 15:05:23 $
+;; Version: $Revision: 5.99 $
+;; RCS: $Id: ess-site.el,v 5.99 2004/02/12 15:05:23 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -375,11 +375,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 (require 'essd-arc)  ;; Arc
 (ess-message "[ess-site:] require 'essd-sas ...")
 (require 'essd-sas)
-(save-excursion				  ;;workaround for ess-smart-underscore
-  (switch-to-buffer "unlikely-name.sas")  ;;workaround for ess-smart-underscore
-  (sas-mode)				  ;;workaround for ess-smart-underscore
-  (define-key sas-mode-local-map "_" nil) ;;workaround for ess-smart-underscore
-  (kill-buffer "unlikely-name.sas"))	  ;;workaround for ess-smart-underscore
 (ess-message "[ess-site:] require 'essd-els ...")
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 (ess-message "[ess-site:] require 'essd-omg ...")
