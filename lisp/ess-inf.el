@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/06/17 17:33:50 $
-;; Version: $Revision: 5.21 $
-;; RCS: $Id: ess-inf.el,v 5.21 1999/06/17 17:33:50 maechler Exp $
+;; Modified: $Date: 1999/07/22 10:37:17 $
+;; Version: $Revision: 5.22 $
+;; RCS: $Id: ess-inf.el,v 5.22 1999/07/22 10:37:17 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -872,12 +872,15 @@ Arg has same meaning as for ess-eval-region."
   (interactive "P")
   (ess-force-buffer-current "Process to load into: ")
   (save-excursion
-    (ess-end-of-function)
-    (let ((end (point)))
-      (ess-beginning-of-function)
-      (princ (concat "Loading: " (ess-extract-word-name)) t)
-      (ess-eval-region (point) end vis
-		     (concat "Eval function " (ess-extract-word-name))))))
+    (let* ((beg-end (ess-end-of-function))
+	   (beg (car beg-end))
+	   (end (cadr beg-end))
+	   name)
+      (goto-char beg)
+      (setq name (ess-extract-word-name))
+      (princ (concat "Loading: " name) t)
+      (ess-eval-region beg end vis
+		       (concat "Eval function " name)))))
 
 (defun ess-eval-line (vis)
   "Send the current line to the inferior ESS process.

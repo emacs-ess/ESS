@@ -1,3 +1,19 @@
+1999-07-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-mode.el (ess-beginning-of-function):
+	Delimit (search-forward "(" ..) ---> fixed bug !
+
+1999-07-21  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-eval-function):  Use (ess-end-function) only,
+	since that now returns beginning & end;
+	further, use (ess-extract-word-name) only once.
+
+	* ess-mode.el (ess-beginning-of-function): return beginning
+	*             (ess-end-of-function): accept optional `beginning'
+		argument;  return BOTH beginning & end
+	*             (ess-mark-function): use new beg/end functions.
+
 1999-04-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-site.el (auto-mode-alist): Change regexp's in order to work
@@ -61,7 +77,7 @@
 Wed Mar 31 15:46:37 1999  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* essd-r.el (R): reverted.  Martin fixed this right in ess-site.
-	* essd-r.el (R-unix): renamed from R.  
+	* essd-r.el (R-unix): renamed from R.
 	* ess-inf.el (ess-command): sleep-for only used for Splus 4.5,
  	i.e. Microsoft "operating systems", sigh.
 

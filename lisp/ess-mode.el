@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossinI@biostat.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/04/20 21:17:34 $
-;; Version: $Revision: 5.6 $
-;; RCS: $Id: ess-mode.el,v 5.6 1999/04/20 21:17:34 rossini Exp $
+;; Modified: $Date: 1999/07/22 10:37:17 $
+;; Version: $Revision: 5.7 $
+;; RCS: $Id: ess-mode.el,v 5.7 1999/07/22 10:37:17 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -366,42 +366,57 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 ;;;*;;; Buffer motion/manipulation commands
 
 (defun ess-beginning-of-function ()
-  "Leave the point at the beginning of the current ESS function."
+  "Leave (and return) the point at the beginning of the current ESS function."
   (interactive)
   (let ((init-point (point))
  	beg end done)
-    (if (search-forward "(" nil t) (forward-char 1))
-    ;; in case we're sitting in a function header
+    ;;DBG (ess-write-to-dribble-buffer "ess-BEG-of-fun:")
+    ;; in case we're sitting in a function header:
+    (if (search-forward "(" (line-end-position 2) t); at most end of next line
+	(forward-char 1))
     (while (not done)
-      (if
- 	  (re-search-backward ess-function-pattern (point-min) t)
+      (if (re-search-backward ess-function-pattern (point-min) t)
  	  nil
  	(goto-char init-point)
  	(error "Point is not in a function."))
+
       (setq beg (point))
+      ;;DBG (ess-write-to-dribble-buffer
+      ;;DBG (format "Match,Pt:(%d,%d),%d" (match-beginning 0)(match-end 0) beg))
       (forward-list 1)			; get over arguments
+      ;;DBG (ess-write-to-dribble-buffer ":")
+      ;; The following used to bomb  "Unbalanced parentheses", n1, n2
+      ;; when the above (search-forward "(" ..) wasn't delimited :
       (forward-sexp 1)			; move over braces
+      ;;DBG (ess-write-to-dribble-buffer "|")
       (setq end (point))
       (goto-char beg)
       ;; current function must begin and end around point
-      (setq done (and (>= end init-point) (<= beg init-point))))))
+      (setq done (and (>= end init-point) (<= beg init-point))))
+    ;;DBG (ess-write-to-dribble-buffer (format "found beg=%d\n" beg))
+    beg))
 
-
-(defun ess-end-of-function nil
-  "Leave the point at the end of the current ESS function."
+(defun ess-end-of-function (&optional beginning)
+  "Leave the point at the end of the current ESS function.
+Optional argument for location of beginning.  Return '(beg end)."
   (interactive)
-  (ess-beginning-of-function)
+  (if beginning
+      (goto-char beginning)
+    (setq beginning (ess-beginning-of-function)))
   (forward-list 1)			; get over arguments
-  (forward-sexp 1))			; move over braces
+  (forward-sexp 1)			; move over braces
+  ;;DBG (ess-write-to-dribble-buffer "ess-END-of-fun: found ok\n")
+  (list beginning (point))
+  )
 
 ;;; Kurt's version, suggested 970306.
 (defun ess-mark-function ()
   "Put mark at end of ESS function, point at beginning."
   (interactive)
-  (ess-beginning-of-function)
-  (push-mark (point))
-  (ess-end-of-function)
-  (exchange-point-and-mark))
+  (let ((beg (ess-beginning-of-function)))
+    (push-mark (point))
+    (ess-end-of-function beg)
+    (exchange-point-and-mark)))
 
 
 ;;*;; Loading files
