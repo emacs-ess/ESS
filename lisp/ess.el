@@ -11,7 +11,7 @@
 ;;                Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;;                Rodney Sparapani <rsparapa@mcw.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.25 2001/04/26 19:12:53 ess Exp $
+;; Version: $Id: ess.el,v 5.26 2001/08/10 13:46:43 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -147,7 +147,7 @@
 
 ;; The above was commented out to verify that it would work on
 ;; versions w/o customize.  Remove after verification.
-(eval-and-compile 
+(eval-and-compile
   (require 'ess-cust))
 
  ; ess-mode: editing S/R/XLS/SAS source
@@ -344,10 +344,13 @@
 ;;	R-customize-alist)
 
 
+;; The following code causes the *ESS* buffer to be recreated (if necessary)
+;; before it is used; Jeff Mincy <jeff@delphioutpost.com>, 27 Jul 2001.
+(defadvice ess-write-to-dribble-buffer
+  (before get-dribble-buffer first activate)
+  (setq ess-dribble-buffer (get-buffer-create "*ESS*")))
 
-
-
- ; Run load hook and provide package
+; Run load hook and provide package
 
 (run-hooks 'ess-mode-load-hook)
 

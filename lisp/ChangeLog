@@ -1,3 +1,7 @@
+2001-08-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess.el: (defadvice ess-write-to-dribble-buffer ....) from Jeff Mincy
+
 2001-06-19  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-utils.el (nuke-trailing-whitespace-p): make interactive; cosmetic
@@ -15,7 +19,7 @@
 	* essl-s.el (ess-fix-miscellaneous): Fix bug which broke "<=" & ">="
 	  Further fix bug which broke "<<-" (and "->").
 	  separate e.g., "){" ; space around "else".
-	  
+
 2000-10-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (ess-smart-underscore): remove extra spaces when
