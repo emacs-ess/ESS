@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/06/30 22:30:41 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: ess-inf.el,v 1.13 1997/06/30 22:30:41 rossini Exp $
+;; Modified: $Date: 1997/06/30 22:43:03 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: ess-inf.el,v 1.14 1997/06/30 22:43:03 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.14  1997/06/30 22:43:03  rossini
+;; ess-trans -> ess-trns
+;;
 ;; Revision 1.13  1997/06/30 22:30:41  rossini
 ;; cleaned up code.
 ;;
@@ -204,7 +207,7 @@
 (autoload 'ess-extract-word-name "ess-mode" "(autoload)." t)
 
 
-(autoload 'ess-transcript-send-command-and-move "ess-trans" "(autoload)." t)
+(autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload)." t)
 
  ;;*;; Variables
 

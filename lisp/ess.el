@@ -8,9 +8,9 @@
 ;; Author: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Maintainers: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/06/30 22:35:36 $
-;; Version: $Revision: 1.13 $
-;; RCS: $Id: ess.el,v 1.13 1997/06/30 22:35:36 rossini Exp $
+;; Modified: $Date: 1997/06/30 22:41:41 $
+;; Version: $Revision: 1.14 $
+;; RCS: $Id: ess.el,v 1.14 1997/06/30 22:41:41 rossini Exp $
 ;; Lisp-dir-entry  : ess-mode|
 ;;                   K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -111,6 +111,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.14  1997/06/30 22:41:41  rossini
+;; ess-trans -> ess-trns
+;;
 ;; Revision 1.13  1997/06/30 22:35:36  rossini
 ;; one more ) to remove.
 ;;
@@ -943,7 +946,7 @@ browse-url to find the location")
 
  ; ess-transcript-mode
 
-(autoload 'ess-transcript-mode "ess-trans"
+(autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files" t)
 
 (fset 's-transcript-mode 'ess-transcript-mode)

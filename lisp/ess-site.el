@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/30 22:34:36 $
-;; Version: $Revision: 1.16 $
-;; RCS: $Id: ess-site.el,v 1.16 1997/06/30 22:34:36 rossini Exp $
+;; Modified: $Date: 1997/06/30 22:43:42 $
+;; Version: $Revision: 1.17 $
+;; RCS: $Id: ess-site.el,v 1.17 1997/06/30 22:43:42 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.17  1997/06/30 22:43:42  rossini
+;;: ess-trans -> ess-trns
+;;:
 ;;: Revision 1.16  1997/06/30 22:34:36  rossini
 ;;: removed custom stuff to ess-directory.
 ;;:
@@ -206,7 +209,7 @@
 ;;(autoload 'XLS-mode "ess-mode"
 ;;    "major mode for editing XLispStat code." t)
 (autoload 'ess-transcript-mode
-  "ess-trans" "ESS source eval mode" t)
+  "ess-trns" "ESS source eval mode" t)
 (autoload 'inferior-ess "ess-inf"
   "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
 
@@ -301,14 +304,11 @@
 ;; by putting this in your .emacs
 ;; (setq ess-pre-run-hook '((lambda () (setq ess-directory default-directory))))
 ;; Better (more correct) version:
-;;(defun ajr:ess-set-directory () 
-;;  "Set ess-directory to current directory."
-  ;; CHOICES: pick only one.
-  ;;(setq-default ess-directory default-directory)
-  ;;(setq-default ess-directory (file-name-as-directory (getenv "HOME"))
-;;)
+(defun ajr:ess-set-directory () 
+  "Set ess-directory to current directory."
+  (setq-default ess-directory (file-name-as-directory (getenv "HOME"))))
 
-;;(add-hook 'ess-pre-run-hook 'ajr:ess-set-directory)
+(add-hook 'ess-pre-run-hook 'ajr:ess-set-directory)
 
  ; Local variables section
 
