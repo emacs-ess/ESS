@@ -1,3 +1,7 @@
+Wed Nov 26 16:10:02 1997  Anthony Rossini  <rossini@stat.sc.edu>
+
+	* Makefile (dist): do the right thing w/ README.
+
 Wed Nov 26 16:05:20 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-sas-sh-command: more information. cleaned up for current
@@ -54,12 +58,12 @@ Wed Nov 26 10:49:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Nov 26 10:42:58 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* essl-sas.el (SAS-editing-alist): function definitions are
- 	useless.
+ 	useless.  Remove.
 
 Wed Nov 26 10:37:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* essl-s.el (S-editing-alist): removed function definitions.  This
- 	doesn't work.
+	* essl-s.el (S-editing-alist): removed function definitions.  They
+ 	don't work.
 
 Wed Nov 26 10:29:00 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -1740,6 +1744,9 @@ Wed Aug 27 14:27:44 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Aug 27 14:14:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* Removing $Log: ChangeLog,v $
+	* Removing Revision 4.9  1997/11/26 21:10:23  rossini
+	* Removing *** empty log message ***
+	* Removing
 	* Removing Revision 4.8  1997/11/26 21:05:56  rossini
 	* Removing *** empty log message ***
 	* Removing
