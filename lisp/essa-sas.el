@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/23 16:41:26 $
-;; Version: $Revision: 1.78 $
-;; RCS: $Id: essa-sas.el,v 1.78 2002/01/23 16:41:26 rsparapa Exp $
+;; Modified: $Date: 2002/01/23 21:50:05 $
+;; Version: $Revision: 1.79 $
+;; RCS: $Id: essa-sas.el,v 1.79 2002/01/23 21:50:05 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -83,21 +83,21 @@
 
 (defvar ess-sas-submit-method 
   (if ess-microsoft-p 
-    (if (w32-shell-dos-semantics) 'windows-nt 'sh)
-    (if (equal system-type 'Apple-Macintosh) 'Apple-Macintosh 'sh))
+    (if (w32-shell-dos-semantics) 'ms-dos 'sh)
+    (if (equal system-type 'Apple-Macintosh) 'apple-script 'sh))
   "Method used by `ess-sas-submit'.
 The default is based on the value of the emacs variable `system-type'
 and, on Windows machines, the function `w32-shell-dos-semantics'.
-'Apple-Macintosh  AppleScript
-'windows-nt       if *shell* follows MS-DOS semantics
+'ms-dos           if *shell* follows MS-DOS semantics
 'iESS             inferior ESS, may be local or remote
 'sh               if *shell* runs sh, ksh, csh, tcsh or bash
+'apple-script     *shell* unavailable, use AppleScript
 
-Windows users running an MS-DOS shell will get 'windows-nt by default.
+Windows users running MS-DOS in *shell* will get 'ms-dos by default.
 
-Windows users running bash in their *shell* buffer will get 'sh by default.
+Windows users running bash in *shell* will get 'sh by default.
 
-Unix users will get `system-type' which defaults to 'sh behavior.
+Unix users will get 'sh by default.
 
 Users accessing a remote machine with `telnet', `rlogin', `ssh',
 or `ESS-elsewhere' should have one of the following in ~/.emacs
@@ -476,9 +476,9 @@ depends on the value of  `ess-sas-submit-method'"
 	(if (search-forward "End:" nil t) (revert-buffer t t))))
 
   (cond
-   ((eq ess-sas-submit-method 'Apple-Macintosh) 
+   ((eq ess-sas-submit-method 'apple-script) 
 	(ess-sas-submit-mac ess-sas-submit-command ess-sas-submit-command-options))
-   ((eq ess-sas-submit-method 'windows-nt) 
+   ((eq ess-sas-submit-method 'ms-dos) 
 	(ess-sas-submit-windows ess-sas-submit-command ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'iESS) 
 	(ess-sas-submit-iESS ess-sas-submit-command ess-sas-submit-command-options))
