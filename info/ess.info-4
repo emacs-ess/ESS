@@ -8,6 +8,136 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
+File: ess.info,  Node: Clean,  Prev: Resubmit,  Up: Transcript Mode
+
+Cleaning transcript files
+=========================
+
+   Yet another use for transcript files is to extract the command lines
+for inclusion in an S source file or function.  Transcript mode provides
+one command which does just this:
+
+   * `C-c C-w' (`ess-transcript-clean-region')
+     Deletes all prompts and command output in the region, leaving only
+     the commands themselves.
+
+The remaining command lines may then be copied to a source file or edit
+buffer for inclusion in a function definition, or may be evaluated
+directly (*note Evaluating code::) using the code evaluation commands
+from S mode, also available in S Transcript Mode.
+
+
+File: ess.info,  Node: Miscellaneous,  Next: Bugs Etc,  Prev: Transcript Mode,  Up: Top
+
+Other features of ESS
+*********************
+
+   ESS has a few miscellaneous features, which didn't fit anywhere else.
+
+* Menu:
+
+* Highlighting::                Syntactic highlighting of buffers
+* Graphics::                    Using graphics with ESS
+* Object Completion::
+
+
+File: ess.info,  Node: Highlighting,  Next: Graphics,  Prev: Miscellaneous,  Up: Miscellaneous
+
+Syntactic highlighting of buffers
+=================================
+
+   ESS provides Font-Lock (*note Using Multiple Typefaces:
+(emacs)Faces.) patterns for Inferior S Mode, S Mode, and S Transcript
+Mode buffers.
+
+   To activate highlighting, you need to turn on Font Lock mode in the
+appropriate buffers.  This can be done on a per-buffer basis with `M-x
+font-lock-mode', or may be done by adding `turn-on-font-lock' to
+`inferior-ess-mode-hook', `ess-mode-hook' and `ess-transcript-mode-hook'
+(*note Hooks::).  Your systems administrator may have done this for you
+in `ess-site.el' (*note Customization::).
+
+   The font-lock patterns are defined in three variables, which you may
+modify if desired:
+
+ - Variable: inferior-ess-font-lock-keywords
+     Font-lock patterns for Inferior ESS Mode.  The default value
+     highlights prompts, inputs, assignments, output messages, vector
+     and matrix labels, and literals such as `NA' and `TRUE'.
+
+ - Variable: ess-mode-font-lock-keywords
+     Font-lock patterns for ESS programming mode.  The default value
+     highlights function names, literals, assignments, source functions
+     and reserved words.
+
+ - Variable: ess-trans-font-lock-keywords
+     Font-lock patterns for ESS Transcript Mode.  The default value
+     highlights the same patterns as in Inferior ESS Mode.
+
+
+File: ess.info,  Node: Graphics,  Next: Object Completion,  Prev: Highlighting,  Up: Miscellaneous
+
+Using graphics with ESS
+=======================
+
+   One of the main features of the `S' package is its ability to
+generate high-resolution graphics plots, and ESS provides a number of
+features for dealing with such plots.
+
+* Menu:
+
+* printer::                     The printer() graphics driver
+* X11::                         The X11() (and other X-windows based) driver
+* winjava::                     Java Graphics Device
+
+
+File: ess.info,  Node: printer,  Next: X11,  Prev: Graphics,  Up: Graphics
+
+Using ESS with the `printer()' driver
+-------------------------------------
+
+   This is the simplest (and least desirable) method of using graphics
+within ESS.  S's `printer()' device driver produces crude character
+based plots which can be contained within the ESS process buffer
+itself.  To start using character graphics, issue the S command
+     printer(width=79)
+   (the `width=79' argument prevents Emacs line-wrapping at column 80
+on an 80-column terminal.  Use a different value for a terminal with a
+different number of columns.) Plotting commands do not generate
+graphics immediately, but are stored until the `show()' command is
+issued, which displays the current figure.
+
+
+File: ess.info,  Node: X11,  Next: winjava,  Prev: printer,  Up: Graphics
+
+Using ESS with windowing devices
+--------------------------------
+
+   Of course, the ideal way to use graphics with ESS is to use a
+windowing system.  Under X11, this requires that the DISPLAY environment
+variable be appropriately set, which may not always be the case within
+your Emacs process.  ESS provides a facility for setting the value of
+DISPLAY before the ESS process is started if the variable
+`ess-ask-about-display' is non-`nil'.  *Note Variables for starting
+ESS::, for details of this variable.
+
+
+File: ess.info,  Node: winjava,  Prev: X11,  Up: Graphics
+
+Java Graphics Device
+--------------------
+
+   S+6.2 on Windows contains a java library that supports graphics.
+Send the commands:
+
+     library(winjava)
+     java.graph()
+
+to start the graphics driver.  This allows you to use ESS for both
+interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
+this information.)
+
+
 File: ess.info,  Node: Object Completion,  Prev: Graphics,  Up: Miscellaneous
 
 Object Completion
@@ -103,6 +233,11 @@ Reporting Bugs
    This also gives the maintainers valuable information about your
 installation which may help us to identify or even fix the bug.
 
+   If Emacs reports an error, backtraces can help us debug the problem.
+Type "M-x set-variable RET debug-on-error RET t RET".  Then run the
+command that causes the error and you should see a *Backtrace* buffer
+containing debug information; send us that buffer.
+
    Note that comments, suggestions, words of praise and large cash
 donations are also more than welcome.
 
@@ -143,6 +278,10 @@ which affect the behavior of ESS in certain situations which can be
 modified to your liking.  Keybindings may be set or changed to your
 preferences, and for per-buffer customizations hooks are also available.
 
+   Most of these variables can be viewed and set using the Custom
+facility within Emacs.  Type `M-x customize-group RET ess RET' to see
+all the ESS variables that can be customized.
+
 * Menu:
 
 * Variables::                   Variables for customization
@@ -173,6 +312,8 @@ the new value into the template above.
 * Indentation variables::       Variables controlling indentation
 * Variables controlling interaction::  Variables controlling interaction
 					with the ESS process
+* Editing assembly files::      Variables for restoring assembly mode
+                                        associations
 
 
 File: ess.info,  Node: Variables for starting ESS,  Next: Dump file variables,  Prev: Variables,  Up: Variables
@@ -331,7 +472,7 @@ In addition, a number of default styles are defined for you (in
      definitions of the styles.  *Note Edit buffer::, for more details.
 
 
-File: ess.info,  Node: Variables controlling interaction,  Prev: Indentation variables,  Up: Variables
+File: ess.info,  Node: Variables controlling interaction,  Next: Editing assembly files,  Prev: Indentation variables,  Up: Variables
 
 Variables controlling interaction with the ESS process
 ------------------------------------------------------
@@ -352,6 +493,26 @@ Variables controlling interaction with the ESS process
      echo the S commands in the process buffer by default.  In any
      case, passing a prefix argument to the eval command reverses the
      meaning of this variable.
+
+
+File: ess.info,  Node: Editing assembly files,  Prev: Variables controlling interaction,  Up: Variables
+
+Variables for restoring assembly mode associations
+--------------------------------------------------
+
+ - User Option: auto-mode-alist
+     Association list mapping file extensions to emacs modes.
+
+   If you edit assembler files but not S files, you may want to retain
+the default mode for the .s and .S extensions, namely assembler mode.
+ESS provides a function, `ess-restore-asm-extns' that you can use to
+restore default behavior for these files.
+
+   You can add the following lisp to your `.emacs':
+     (add-hook 'ess-mode-hook 'ess-restore-asm-extns)
+     (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
+
+This code removes the association between .s and .S files and S mode.
 
 
 File: ess.info,  Node: Hooks,  Next: Keybindings,  Prev: Variables,  Up: Customization
@@ -437,16 +598,17 @@ Concept Index
 * Menu:
 
 * .Data directory:                       Variables for starting ESS.
-* .emacs file <1>:                       Variables.
-* .emacs file <2>:                       System dependent.
-* .emacs file <3>:                       Variables for starting ESS.
-* .emacs file <4>:                       Source Directories.
-* .emacs file:                           Indenting.
+* .emacs file <1>:                       System dependent.
+* .emacs file <2>:                       Variables for starting ESS.
+* .emacs file <3>:                       Source Directories.
+* .emacs file <4>:                       Indenting.
+* .emacs file:                           Variables.
 * .First function:                       System dependent.
 * aborting S commands:                   Other.
 * aborting the ESS process:              Other.
 * arguments to S program <1>:            System dependent.
 * arguments to S program:                Customizing startup.
+* Assembler mode:                        Editing assembly files.
 * authors:                               Credits.
 * autosaving:                            Source Files.
 * Bug reports:                           Reporting Bugs.
@@ -495,8 +657,8 @@ Concept Index
 * evaluating code with echoed commands:  Evaluating code.
 * evaluating S expressions:              Evaluating code.
 * Font-lock mode:                        Highlighting.
-* formatting source code <1>:            Indentation variables.
-* formatting source code:                Indenting.
+* formatting source code <1>:            Indenting.
+* formatting source code:                Indentation variables.
 * graphics:                              Graphics.
 * help files:                            Help.
 * highlighting:                          Highlighting.
@@ -536,12 +698,12 @@ Concept Index
 * reverting function definitions:        Edit buffer.
 * running S:                             Starting up.
 * S program name:                        System dependent.
-* search list <1>:                       Source Directories.
-* search list:                           Hot keys.
+* search list <1>:                       Hot keys.
+* search list:                           Source Directories.
 * sending input:                         Entering commands.
 * Splus:                                 System dependent.
-* starting directory <1>:                Starting up.
-* starting directory:                    Variables for starting ESS.
+* starting directory <1>:                Variables for starting ESS.
+* starting directory:                    Starting up.
 * starting ESS:                          Starting up.
 * stepping through code:                 Evaluating code.
 * STERM:                                 Statistical Process running in ESS?.
@@ -555,6 +717,7 @@ Concept Index
 * transcripts of S sessions:             Introduction.
 * using S interactively:                 Introduction.
 * variables:                             Variables.
+* winjava:                               winjava.
 * working directory <1>:                 Source Directories.
 * working directory:                     Starting up.
 * X windows <1>:                         X11.
@@ -569,6 +732,7 @@ Variable and command index
 * Menu:
 
 * attach():                              Hot keys.
+* auto-mode-alist:                       Editing assembly files.
 * backward-kill-word:                    Command-line editing.
 * comint-backward-matching-input:        Process buffer motion.
 * comint-bol:                            Command-line editing.
@@ -586,8 +750,8 @@ Variable and command index
 * comint-next-input:                     Process buffer motion.
 * comint-next-matching-input:            Command History.
 * comint-next-matching-input-from-input: Command History.
-* comint-previous-input <1>:             Process buffer motion.
-* comint-previous-input:                 Command History.
+* comint-previous-input <1>:             Command History.
+* comint-previous-input:                 Process buffer motion.
 * comint-previous-matching-input:        Command History.
 * comint-previous-matching-input-from-input: Command History.
 * comint-show-maximum-output:            Last command.
@@ -599,10 +763,10 @@ Variable and command index
 * ess-arg-function-offset:               Indentation variables.
 * ess-ask-about-display <1>:             X11.
 * ess-ask-about-display:                 Variables for starting ESS.
-* ess-ask-about-transfile <1>:           Customizing startup.
-* ess-ask-about-transfile:               Saving transcripts.
-* ess-ask-for-ess-directory <1>:         Variables for starting ESS.
-* ess-ask-for-ess-directory:             Customizing startup.
+* ess-ask-about-transfile <1>:           Saving transcripts.
+* ess-ask-about-transfile:               Customizing startup.
+* ess-ask-for-ess-directory <1>:         Customizing startup.
+* ess-ask-for-ess-directory:             Variables for starting ESS.
 * ess-auto-newline:                      Indentation variables.
 * ess-beginning-of-function:             Other edit buffer commands.
 * ess-brace-imaginary-offset:            Indentation variables.
@@ -618,8 +782,8 @@ Variable and command index
 * ess-directory <1>:                     Customizing startup.
 * ess-directory:                         Source Directories.
 * ess-display-help-on-object:            Help.
-* ess-dump-filename-template <1>:        Source Directories.
-* ess-dump-filename-template:            Dump file variables.
+* ess-dump-filename-template <1>:        Dump file variables.
+* ess-dump-filename-template:            Source Directories.
 * ess-dump-object-into-edit-buffer <1>:  Other.
 * ess-dump-object-into-edit-buffer:      Edit buffer.
 * ess-else-offset:                       Indentation variables.
@@ -632,8 +796,8 @@ Variable and command index
 * ess-eval-line-and-go:                  Evaluating code.
 * ess-eval-line-and-step:                Evaluating code.
 * ess-eval-map:                          Keybindings.
-* ess-eval-region <1>:                   Help.
-* ess-eval-region:                       Evaluating code.
+* ess-eval-region <1>:                   Evaluating code.
+* ess-eval-region:                       Help.
 * ess-eval-region-and-go:                Evaluating code.
 * ess-eval-visibly-p <1>:                Evaluating code.
 * ess-eval-visibly-p:                    Variables controlling interaction.
@@ -655,29 +819,29 @@ Variable and command index
 * ess-keep-dump-files <1>:               Source Files.
 * ess-keep-dump-files:                   Dump file variables.
 * ess-list-object-completions:           Completion.
-* ess-load-file <1>:                     Hot keys.
-* ess-load-file:                         Loading.
+* ess-load-file <1>:                     Loading.
+* ess-load-file:                         Hot keys.
 * ess-mode-font-lock-keywords:           Highlighting.
 * ess-mode-hook:                         Hooks.
 * ess-mode-load-hook:                    Hooks.
 * ess-mode-map:                          Keybindings.
 * ess-parse-errors <1>:                  Error Checking.
 * ess-parse-errors:                      Hot keys.
-* ess-plain-first-buffername:            Multiple ESS processes.
 * ess-post-run-hook:                     Hooks.
 * ess-pre-run-hook:                      Hooks.
 * ess-quit <1>:                          Help.
 * ess-quit:                              Other.
 * ess-remote:                            ESS processes on Remote Computers.
 * ess-request-a-process:                 Multiple ESS processes.
+* ess-restore-asm-extns:                 Editing assembly files.
 * ess-resynch:                           Completion details.
 * ess-search-list:                       Source Directories.
 * ess-send-input-hook:                   Hooks.
 * ess-skip-to-help-section:              Help.
 * ess-skip-to-next-section:              Help.
 * ess-skip-to-previous-section:          Help.
-* ess-source-directory <1>:              Dump file variables.
-* ess-source-directory:                  Source Directories.
+* ess-source-directory <1>:              Source Directories.
+* ess-source-directory:                  Dump file variables.
 * ess-source-directory-generator:        Dump file variables.
 * ess-style-alist:                       Indentation variables.
 * ess-submit-bug-report:                 Reporting Bugs.
@@ -701,22 +865,23 @@ Variable and command index
 * inferior-ess-program <1>:              System dependent.
 * inferior-ess-program:                  Customizing startup.
 * inferior-ess-prompt:                   System dependent.
-* inferior-ess-send-input <1>:           Command-line editing.
-* inferior-ess-send-input:               Transcript resubmit.
+* inferior-ess-send-input <1>:           Transcript resubmit.
+* inferior-ess-send-input:               Command-line editing.
 * inferior-Splus-args:                   System dependent.
 * objects():                             Hot keys.
 * options():                             System dependent.
 * printer():                             printer.
 * q():                                   Hot keys.
 * S <1>:                                 Variables for starting ESS.
-* S:                                     Starting up.
+* S <2>:                                 Starting up.
+* S:                                     Variables for starting ESS.
 * S+elsewhere:                           ESS processes on Remote Computers.
 * S-directory:                           Variables for starting ESS.
 * S-plus:                                System dependent.
 * search() <1>:                          Hot keys.
 * search():                              Completion.
-* source() <1>:                          Loading.
-* source():                              Evaluating code.
+* source() <1>:                          Evaluating code.
+* source():                              Loading.
 * STERM:                                 Statistical Process running in ESS?.
 * X-displays-list:                       Variables for starting ESS.
 

@@ -8,6 +8,81 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
+File: ess.info,  Node: Transcript,  Next: Command History,  Prev: Completion details,  Up: Entering commands
+
+Manipulating the transcript
+===========================
+
+   Most of the time, the cursor spends most of its time at the bottom of
+the ESS process buffer, entering commands.  However all the input and
+output from the current (and previous) ESS sessions is stored in the
+process buffer (we call this the transcript) and often we want to move
+back up through the buffer, to look at the output from previous
+commands for example.
+
+   Within the process buffer, a paragraph is defined as the prompt, the
+command after the prompt, and the output from the command.  Thus `M-{'
+and `M-}' move you backwards and forwards, respectively, through
+commands in the transcript.  A particularly useful command is `M-h'
+(`mark-paragraph') which will allow you to mark a command and its
+entire output (for deletion, perhaps).  For more information about
+paragraph commands, *note Paragraphs: (emacs)Paragraphs..
+
+   If an ESS process finishes and you restart it in the same process
+buffer, the output from the new ESS process appears after the output
+from the first ESS process separated by a form-feed (`^L') character.
+Thus pages in the ESS process buffer correspond to ESS sessions.  Thus,
+for example, you may use `C-x [' and `C-x ]' to move backward and
+forwards through ESS sessions in a single ESS process buffer.  For more
+information about page commands, *note Pages: (emacs)Pages..
+
+* Menu:
+
+* Last command::                Manipulating the output from the last command
+* Process buffer motion::       Viewing older commands
+* Transcript resubmit::         Re-submitting commands from the transcript
+* Saving transcripts::          Keeping a record of your S session
+
+
+File: ess.info,  Node: Last command,  Next: Process buffer motion,  Prev: Transcript,  Up: Transcript
+
+Manipulating the output from the last command
+---------------------------------------------
+
+   Viewing the output of the command you have just entered is a common
+occurrence and ESS provides a number of facilities for doing this.
+Whenever a command produces a longish output, it is possible that the
+window will scroll, leaving the next prompt near the middle of the
+window.  The first part of the command output may have scrolled off the
+top of the window, even though the entire output would fit in the window
+if the prompt were near the bottom of the window.  If this happens, you
+can use the command
+
+   * `C-c C-e' (`comint-show-maximum-output')
+     Move to the end of the buffer, and place cursor on bottom line of
+     window.
+
+to make more of the last output visible.  (To make this happen
+automatically for all inputs, set the variable
+`comint-scroll-to-bottom-on-input' to `t'; for information on this and
+other options for handling process input and output *note Shell Mode
+Options: (emacs)Shell Options..)
+
+   If the first part of the output is still obscured, use
+   * `C-c C-r' (`comint-show-output')
+     Moves cursor to the previous command line and and places it at the
+     top of the window.
+
+to view it.  Finally, if you want to discard the last command output
+altogether, use
+
+   * `C-c C-o' (`comint-kill-output')
+     Deletes everything from the last command to the current prompt.
+
+to delete it.  Use this command judiciously to keep your transcript to a
+more manageable size.
+
+
 File: ess.info,  Node: Process buffer motion,  Next: Transcript resubmit,  Prev: Last command,  Up: Transcript
 
 Viewing older commands
@@ -566,7 +641,7 @@ evaluating code are:
    * `C-c M-j' (`ess-eval-line-and-go')
      As above, but returns you to the ESS process buffer as well.
 
-   * `C-c C-f' or `ESC C-x' (`ess-eval-function')
+   * `C-c C-f' or `ESC C-x' (aka `M-C-x') (`ess-eval-function')
      Send the S function containing point to the ESS process.
 
    * `C-c M-f' (`ess-eval-function-and-go')
@@ -656,7 +731,7 @@ adding the line `(setq ess-fancy-comments nil)' to your `.emacs' file.
      keyboard does not have a <LINEFEED> key, you can use `C-j'
      instead.)  Some people prefer to bind <RET> to this command.
 
-   * `ESC C-q' (`ess-indent-exp')
+   * `ESC C-q' aka `M-C-q' aka `C-M-q' (`ess-indent-exp')
      Indents each line in the S (compound) expression which follows
      point.  Very useful for beautifying your S code.
 
@@ -683,13 +758,13 @@ Commands for motion, completion and more
 
    A number of commands are provided to move across function definitions
 in the edit buffer:
-   * `ESC C-e' (`ess-beginning-of-function')
+   * `ESC C-a' aka `C-M-a' (`ess-beginning-of-function')
      Moves point to the beginning of the function containing point.
 
-   * `ESC C-a' (`ess-end-of-function')
+   * `ESC C-e' aka `C-M-e' (`ess-end-of-function')
      Moves point to the end of the function containing point.
 
-   * `ESC C-h' (`ess-mark-function')
+   * `ESC C-h' aka `C-M-h' (`ess-mark-function')
      Places point at the beginning of the S function containing point,
      and mark at the end.
 
@@ -1009,6 +1084,11 @@ either need to kill the help buffer first, or pass a prefix argument
    Help buffers are marked as temporary buffers in ESS, and are deleted
 when `ess-quit' or `ess-cleanup' are called.
 
+   Help buffers normally appear in another window within the current
+frame.  If you wish help buffers to appear in their own frame (either
+one per help buffer, or one for all help buffers), you can customize the
+variable `ess-help-own-frame'.
+
 
 File: ess.info,  Node: Transcript Mode,  Next: Miscellaneous,  Prev: Help,  Up: Top
 
@@ -1060,117 +1140,4 @@ Note that these commands are similar to those on the same keys in
 Inferior S Mode.  In all three cases, the commands should be executed
 when the cursor is on a command line in the transcript; the prompt is
 automatically removed before the command is submitted.
-
-
-File: ess.info,  Node: Clean,  Prev: Resubmit,  Up: Transcript Mode
-
-Cleaning transcript files
-=========================
-
-   Yet another use for transcript files is to extract the command lines
-for inclusion in an S source file or function.  Transcript mode provides
-one command which does just this:
-
-   * `C-c C-w' (`ess-transcript-clean-region')
-     Deletes all prompts and command output in the region, leaving only
-     the commands themselves.
-
-The remaining command lines may then be copied to a source file or edit
-buffer for inclusion in a function definition, or may be evaluated
-directly (*note Evaluating code::) using the code evaluation commands
-from S mode, also available in S Transcript Mode.
-
-
-File: ess.info,  Node: Miscellaneous,  Next: Bugs Etc,  Prev: Transcript Mode,  Up: Top
-
-Other features of ESS
-*********************
-
-   ESS has a few miscellaneous features, which didn't fit anywhere else.
-
-* Menu:
-
-* Highlighting::                Syntactic highlighting of buffers
-* Graphics::                    Using graphics with ESS
-* Object Completion::
-
-
-File: ess.info,  Node: Highlighting,  Next: Graphics,  Prev: Miscellaneous,  Up: Miscellaneous
-
-Syntactic highlighting of buffers
-=================================
-
-   ESS provides Font-Lock (*note Using Multiple Typefaces:
-(emacs)Faces.) patterns for Inferior S Mode, S Mode, and S Transcript
-Mode buffers.
-
-   To activate highlighting, you need to turn on Font Lock mode in the
-appropriate buffers.  This can be done on a per-buffer basis with `M-x
-font-lock-mode', or may be done by adding `turn-on-font-lock' to
-`inferior-ess-mode-hook', `ess-mode-hook' and `ess-transcript-mode-hook'
-(*note Hooks::).  Your systems administrator may have done this for you
-in `ess-site.el' (*note Customization::).
-
-   The font-lock patterns are defined in three variables, which you may
-modify if desired:
-
- - Variable: inferior-ess-font-lock-keywords
-     Font-lock patterns for Inferior ESS Mode.  The default value
-     highlights prompts, inputs, assignments, output messages, vector
-     and matrix labels, and literals such as `NA' and `TRUE'.
-
- - Variable: ess-mode-font-lock-keywords
-     Font-lock patterns for ESS programming mode.  The default value
-     highlights function names, literals, assignments, source functions
-     and reserved words.
-
- - Variable: ess-trans-font-lock-keywords
-     Font-lock patterns for ESS Transcript Mode.  The default value
-     highlights the same patterns as in Inferior ESS Mode.
-
-
-File: ess.info,  Node: Graphics,  Next: Object Completion,  Prev: Highlighting,  Up: Miscellaneous
-
-Using graphics with ESS
-=======================
-
-   One of the main features of the `S' package is its ability to
-generate high-resolution graphics plots, and ESS provides a number of
-features for dealing with such plots.
-
-* Menu:
-
-* printer::                     The printer() graphics driver
-* X11::                         The X11() (and other X-windows based) driver
-
-
-File: ess.info,  Node: printer,  Next: X11,  Prev: Graphics,  Up: Graphics
-
-Using ESS with the `printer()' driver
--------------------------------------
-
-   This is the simplest (and least desirable) method of using graphics
-within ESS.  S's `printer()' device driver produces crude character
-based plots which can be contained within the ESS process buffer
-itself.  To start using character graphics, issue the S command
-     printer(width=79)
-   (the `width=79' argument prevents Emacs line-wrapping at column 80
-on an 80-column terminal.  Use a different value for a terminal with a
-different number of columns.) Plotting commands do not generate
-graphics immediately, but are stored until the `show()' command is
-issued, which displays the current figure.
-
-
-File: ess.info,  Node: X11,  Prev: printer,  Up: Graphics
-
-Using ESS with windowing devices
---------------------------------
-
-   Of course, the ideal way to use graphics with ESS is to use a
-windowing system.  Under X11, this requires that the DISPLAY environment
-variable be appropriately set, which may not always be the case within
-your Emacs process.  ESS provides a facility for setting the value of
-DISPLAY before the ESS process is started if the variable
-`ess-ask-about-display' is non-`nil'.  *Note Variables for starting
-ESS::, for details of this variable.
 
