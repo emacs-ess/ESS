@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/03/02 18:27:54 $
-;; Version: $Revision: 5.45 $
-;; RCS: $Id: ess-site.el,v 5.45 2000/03/02 18:27:54 maechler Exp $
+;; Modified: $Date: 2000/03/06 10:33:33 $
+;; Version: $Revision: 5.46 $
+;; RCS: $Id: ess-site.el,v 5.46 2000/03/06 10:33:33 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -439,6 +439,36 @@
 ;;(setq ess-default-style 'CLB)
 
 ;;; 4.0 SAS configuration
+
+;;; Beginning with ESS 5.1.13, we have editing options in SAS-mode.
+;;; The default behavior continues as it was in prior releases.
+;;;
+;;; There are now two sets of alternatives.
+;;;   1. Editing SAS-mode files.
+;;;   1a. Default: TAB is bound to sas-indent-line.
+;;;       Current line is correctly indented as SAS code.  Equivalent to
+;;;(setq ess-sas-edit-keys-toggle 0) ;; TAB in sas-mode is 'sas-indent-line
+;;;   1b. Options: TAB is bound to tab-to-tab-stop and inserts up to 4
+;;;       columns at a time.  C-TAB moves backwards and deletes characters
+;;;       up to 4 columns at a time.
+;;;       Uncomment the following line for the optional behavior.
+;;;(setq ess-sas-edit-keys-toggle 1)   ;; optional TAB and C-TAB in sas-mode
+;;;   Use the function call (ess-sas-edit-keys-toggle 0)
+;;;   or                    (ess-sas-edit-keys-toggle 1)
+;;;   to change the setting after the first SAS-mode buffer has been created.
+;;;
+;;;   2. Managing submitted SAS jobs with function keys.
+;;;   2a. Default: Function keys retain their global bindings.
+;;;   2b. Options: Uncomment at most one of the following four lines.
+;;;(setq ess-sas-local-unix-keys t)  ;; [f2]--[f8] bound in sas-mode and related modes
+;;;(setq ess-sas-local-pc-keys t)    ;; [f2]--[f8] bound in sas-mode and related modes
+;;;(setq ess-sas-global-unix-keys t) ;; [f2]--[f8] bound in all modes
+;;;(setq ess-sas-global-pc-keys t)   ;; [f2]--[f8] bound in all modes
+;;;
+;;;   3. If it is more convenient to have "*Async Shell Command*"
+;;;      in same-window-buffer-names, then uncomment the following line
+;;;(ess-same-window-async)
+
 
 ;(defvar sas-require-confirmation t
 ;  "*Require confirmation when revisiting sas-output which has changed on disk.")
