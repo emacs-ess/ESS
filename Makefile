@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.30 2000/03/21 18:04:32 maechler Exp $
+## $Id: Makefile,v 5.31 2000/03/30 07:18:48 maechler Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -59,9 +59,15 @@ dist: README ANNOUNCE docs
 	 cat ChangeLog.old ) > ChangeLog
 	@echo "** Tagging the release **"
 	cvs tag -R $(ESSVERSIONTAG)
+	$(MAKE) tar
+	@echo "** Placing tar and zip files **"
+	scp ESS-$(ESSVERSION).tar.gz ess@franz.stat.wisc.edu:~/public_html
+	scp ESS-$(ESSVERSION).zip    ess@franz.stat.wisc.edu:~/public_html
+
+tar:
 	@echo "** Exporting Files **"
 	cvs export -D today ess
-	@echo "** Creating and placing tar file **"
+	@echo "** Creating tar file **"
 	ln -s ess $(ESSVERSIONDIR)
 	chmod a-w $(ESSVERSIONDIR)/lisp/*.el
 	chmod a-w $(ESSVERSIONDIR)/ChangeLog $(ESSVERSIONDIR)/doc/*
@@ -70,10 +76,8 @@ dist: README ANNOUNCE docs
 	chmod u+w $(ESSVERSIONDIR)/doc/Makefile $(ESSVERSIONDIR)/lisp/Makefile
 	tar hcvof ESS-$(ESSVERSION).tar $(ESSVERSIONDIR)
 	gzip ESS-$(ESSVERSION).tar
-	scp ESS-$(ESSVERSION).tar.gz ess@franz.stat.wisc.edu:~/public_html
-	@echo "** Creating and placing zip file **"
+	@echo "** Creating zip file **"
 	zip -r ESS-$(ESSVERSION).zip $(ESSVERSIONDIR)
-	scp ESS-$(ESSVERSION).zip ess@franz.stat.wisc.edu:~/public_html
 	@echo "** Cleaning up **"
 	rm -rf ess $(ESSVERSIONDIR)
 
