@@ -5,9 +5,9 @@
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 2 Nov 1997
-;; Modified: $Date: 1999/03/04 22:39:17 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: essl-sta.el,v 5.7 1999/03/04 22:39:17 rossini Exp $
+;; Modified: $Date: 1999/03/04 22:43:42 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: essl-sta.el,v 5.8 1999/03/04 22:43:42 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -58,29 +58,6 @@
 
 
 
-(defvar STA-editing-alist
-  '((paragraph-start              . (concat "^$\\|" page-delimiter))
-    (paragraph-separate           . (concat "^$\\|" page-delimiter))
-    (paragraph-ignore-fill-prefix . t)
-    (require-final-newline        . t)
-    (comment-start                . "#")
-    (comment-start-skip           . "#+ *")
-    (comment-column               . 40)
-    ;;(comment-indent-function  . 'S-comment-indent)
-    ;;(ess-comment-indent           . 'S-comment-indent)
-    ;;(ess-indent-line                      . 'S-indent-line)
-    ;;(ess-calculate-indent           . 'S-calculate-indent)
-    (indent-line-function            . 'S-indent-line)
-    (parse-sexp-ignore-comments   . t)
-    (ess-set-style                . ess-default-style)
-    (ess-local-process-name       . nil)
-    ;;(ess-keep-dump-files          . 'ask)
-    (ess-mode-syntax-table        . S-syntax-table)
-    (font-lock-defaults           . '(ess-mode-font-lock-keywords
-				      nil nil ((?\. . "w")))))
-  "General options for editing Stata do and ado source files.")
-
-
 (defvar STA-syntax-table nil "Syntax table for S code.")
 (if STA-syntax-table
     nil
@@ -106,6 +83,29 @@
   (modify-syntax-entry ?<  "."  STA-syntax-table)
   (modify-syntax-entry ?>  "."  STA-syntax-table)
   (modify-syntax-entry ?/  "."  STA-syntax-table))
+
+
+(defvar STA-editing-alist
+  '((paragraph-start              . (concat "^$\\|" page-delimiter))
+    (paragraph-separate           . (concat "^$\\|" page-delimiter))
+    (paragraph-ignore-fill-prefix . t)
+    (require-final-newline        . t)
+    (comment-start                . "#")
+    (comment-start-skip           . "#+ *")
+    (comment-column               . 40)
+    ;;(comment-indent-function  . 'S-comment-indent)
+    ;;(ess-comment-indent           . 'S-comment-indent)
+    ;;(ess-indent-line                      . 'S-indent-line)
+    ;;(ess-calculate-indent           . 'S-calculate-indent)
+    (indent-line-function            . 'S-indent-line)
+    (parse-sexp-ignore-comments   . t)
+    (ess-set-style                . ess-default-style)
+    (ess-local-process-name       . nil)
+    ;;(ess-keep-dump-files          . 'ask)
+    (ess-mode-syntax-table        . STA-syntax-table)
+    (font-lock-defaults           . '(ess-mode-font-lock-keywords
+				      nil nil ((?\. . "w")))))
+  "General options for editing Stata do and ado source files.")
 
 
 
