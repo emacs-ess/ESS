@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.26 1997/04/04 17:31:37 rossini Exp $
+## $Id: Makefile,v 1.27 1997/06/15 08:11:01 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.27  1997/06/15 08:11:01  rossini
+## added variable sub.
+##
 ## Revision 1.26  1997/04/04 17:31:37  rossini
 ## better variable labels.
 ##
@@ -87,10 +90,10 @@ CORE = ess.elc
 ## Need both types, UNFORTUNATELY, since we want to BUILD and
 ## MAINTAIN.  Some one ought to fix this to be more GNUish.
 
-OBJECTS = ess.elc ess-inf.elc ess-mode.elc ess-trans.elc ess-help.elc ess-site.elc 
-
 SOURCES = ess.el ess-inf.el ess-mode.el ess-trans.el ess-help.el ess-site.el  \
-	ess-modeadds.el ess-extras.el
+	ess-extras.el essd-s+3.el essd-r.el essd-xls.el
+
+OBJECTS=$(SOURCES:.el=.elc)
 
 AUXFILES = COPYING Makefile NEWS README README.XE TODO \
 	S-mode.texi ChangeLog
