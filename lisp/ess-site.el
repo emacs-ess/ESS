@@ -272,7 +272,7 @@ between .s or .S files and assembly mode.
 	   ("\\.do\\'"		. STA-mode)
 	   ("\\.ado\\'"		. STA-mode)
 	   ("\\.[Ss][Aa][Ss]\\'"	. SAS-mode)
-	   ;; Many .log/.lst files, not just SAS 
+	   ;; Many .log/.lst files, not just SAS
 	   ;;("\\.log\\'"	. SAS-log-mode)
 	   ;;("\\.lst\\'"	. SAS-listing-mode)
 	   ("\\.[Ss]t\\'"	. S-transcript-mode)
@@ -561,7 +561,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;; The following two expressions automatically enable font-lock-mode
 ;; for ess-mode and inferior-ess-mode buffers.
 
-;; XEmacs has font-lock for ttys, as well.  So we need a better check!
+;; FIXME: XEmacs and Emacs 21.x has font-lock for ttys, as well.
+;; So we need a better check! [or do this unconditionally -working everywhere ??]
 (if window-system
     (progn
       (add-hook 'ess-mode-hook 'turn-on-font-lock t)
