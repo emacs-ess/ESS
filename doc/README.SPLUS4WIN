@@ -1,7 +1,5 @@
 -*- text -*-
 
-$Revision: 1.2 $ 
-
 ESS: Using S-Plus 4.x for Windows
 =================================
 
@@ -21,14 +19,6 @@ designed for the Microsoft Windows 95/98/NT and uses DDE as the
 interprocess communications protocol.  The protocols are very
 different.
 
-The version of Emacs that this has been tested with is NTEmacs 20.2.1
-(and 20.3?).  More information about NTEmacs can be retrieved from
-
-    http://www.cs.washington.edu/homes/voelker/ntemacs.html 
-
-including information on retrieval and installation.  This has not yet
-been tested with XEmacs for Microsoft Windows 95/98/NT.
-
 See the document README.S for detailed information on:
 - general Emacs features.
 - Editing files.
@@ -40,6 +30,7 @@ The following are not identical in MS Windows to the similarly named
 sections in README.S and are covered in this document:
 - running an S process as an inferior process to Emacs
 - ESS-help: assistance with viewing help
+
 
 iESS: Inferior ESS processes
 ============================
@@ -60,11 +51,22 @@ features.  At this time it has been used extensively with NTemacs 20.3.l
   http://www.cs.washington.edu/homes/voelker/ntemacs.html
   http://www.cs.washington.edu/homes/voelker/ntemacs/ftp/
 iESS uses the ddeclient program included as part of the NTemacs distribution.
-We assume that the user has installed bash as the shell under emacs.
+We recommend that the user install bash as the shell under emacs.
   http://www.cygnus.com/misc/gnu-win32/
+Our programs do work should the user choose to use one of the Windows
+shells (command.com on 95/98, or cmd.exe on NT).
 
-The S-Plus user starts S-Plus from within emacs with M-x S (or with
-"M-x S+4").  This emacs command sequence starts the usual S-Plus 4.x
+The starting key sequence depends on the shell the user prefers:
+
+ bash users: The S-Plus user starts S-Plus from within emacs with
+   "M-x S" (or with "M-x S+4").
+
+ msdos users: The S-Plus user starts S-Plus from within emacs with
+   "M-x S+4-msdos".  msdos users MUST remember to close S-Plus cleanly
+   and then close the *S+4 ddeclient* buffer with `exit', or take the
+   risk of not being able to shut down the computer cleanly.
+
+Either of these emacs command sequences starts the usual S-Plus 4.x
 window.  There may be a slight delay before the emacs window can be
 used.  The S-Plus window must have a visible Commands window placed on
 the left side of the S-Plus window.  We recommend placing the S-Plus
@@ -74,13 +76,20 @@ S-Plus commands window to be monitored while lines are sent over from
 the active emacs window.  
 
 The user then sends individual lines or groups of lines to the S-Plus
-process using the emacs command C-c C-n (for lines) or C-c C-r (for
-regions).  The lines magically appear in the S-Plus Commands window,
-as if they had been typed manually or been sent by mouse copy and
-paste commands.  The results of the commands appear in the S-Plus
-Commands window.  No results come back to the emacs process (this is
-the major difference between the Unix and Windows actions of ESS).  In
-order to create an S transcript it is necessary to
+process using the emacs command C-c C-n (for lines), C-c C-r (for
+regions), C-c C-b (for the entire buffer).  The lines magically appear
+in the S-Plus Commands window, as if they had been typed manually or
+been sent by mouse copy and paste commands.  The results of the
+commands appear in the S-Plus Commands window.  No results come back
+to the emacs process (this is the major difference between the Unix
+and Windows actions of ESS).
+
+An entire file can be sent over with C-c C-l.  In this case, only the
+command `source("filename")' appears in the S-Plus Commands window.
+No input statements or output from the commands appear.  All global
+assignments have been made.
+
+In order to create an S transcript it is necessary to
 
 (1) highlight a region in the S-Plus Commands window (the easiest way
     is to use the Ctrl+A keystroke or the "Edit/Select All" menu
@@ -115,7 +124,7 @@ Optional Ways to Start S-Plus 4.x with emacs
 
 1. If you already have an S-Plus 4.x window and wish to add emacs
    access to that window, then you can start an emacs iESS buffer with
-   "M-x S+4-existing".
+   "M-x S+4-existing" (bash users) or "M-x S+4-msdos-existing" (msdos users).
 
 2. If you really like the S-Plus to run inside an emacs *S+4* buffer,
    just the way it does in Unix, then you can start an emacs iESS
@@ -153,10 +162,28 @@ programs:
   Change Pager to gnuclientw.
 Note these are different.  The behavioral difference is that gnuclient
 will freeze S-Plus until "C-x #" is typed to the emacs buffer.
-This is the correct behavior when you are using the S function edit()
+This is the correct behavior when you are using the S function edit().
+With emacs as your editor, you are less likely to need the edit() function.
 
 - Click Options/Command Line Options/Options/Key Scroll/Page Keys.
 
 - Click Options/Graph Options/Options/Auto Pages/Every Graph.
 
 - Click Options/"Save Window Size/Properties as Default"
+
+
+History of M-x S+4 and related functions
+========================================
+
+In May 1998, Brian Ripley wrote an early version of an interface
+between ESS and S-Plus using the DDE concept.  The original version
+demonstrated feasability of the concept.  It was limited to a single
+line (that is, C-c C-n worked correctly when the S statement was
+complete on a single line).  The region and buffer commands C-c C-r
+and C-c C-b did not work.
+
+In December 1998, Richard Heiberger completely rewrote the DDE
+interaction to use the ddeclient program that was first distributed
+with NTemacs 20.3.1.  He further developed the remaining functions
+to the point where all ESS functions now work with S-Plus 4.x on the
+Windows operating systems.
