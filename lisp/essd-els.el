@@ -4,9 +4,9 @@
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: December 1998
-;; Modified: $Date: 2003/11/06 13:23:19 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: essd-els.el,v 1.23 2003/11/06 13:23:19 maechler Exp $
+;; Modified: $Date: 2004/02/19 12:46:36 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: essd-els.el,v 1.24 2004/02/19 12:46:36 stephen Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -117,8 +117,11 @@ return new alist whose car is the new pair and cdr is ALIST.
 (defun ess-select-alist-dialect ()
   "Query user for an ESS dialect and return the matching customize-alist."
   (interactive)
-  (let ((dialect (read-string
-		  "Dialect (enter one of: stata, r, sp3, sp5, sp6, xls, sas)?")))
+  (let ((dialects '("arc" "vst" "omg" "s3"  "s4" "stata" "r" "sp3" "sp4" 
+		    "sqpe4" "sp5" "sp6" "sqpe6" "xls" "sas"))
+	(dialect (completing-read "Dialect (press TAB for choices)"
+				  (mapcar '(lambda (x) (cons x 1)) dialects)
+				  nil t)))
     (cond
      ((string= dialect "arc")	ARC-customize-alist)
      ((string= dialect "vst")	VST-customize-alist)
