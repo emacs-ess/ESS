@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/11/10 20:02:32 $
-;; Version: $Revision: 1.11 $
-;; RCS: $Id: ess-trns.el,v 1.11 1997/11/10 20:02:32 rossini Exp $
+;; Modified: $Date: 1997/11/10 22:04:53 $
+;; Version: $Revision: 1.12 $
+;; RCS: $Id: ess-trns.el,v 1.12 1997/11/10 22:04:53 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -190,10 +190,16 @@ in the region, leaving only the S commands.
   (make-local-variable 'paragraph-separate)
   (setq paragraph-separate "^\^L")
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
+
   ;; font-lock support
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults
 	'(ess-trans-font-lock-keywords nil nil ((?' . "."))))
+
+  ;;; Keep <tabs> out of the code.
+  (make-local-variable 'indent-tabs-mode)
+  (setq indent-tabs-mode nil)
+
   (run-hooks 'ess-transcript-mode-hook))
 
 ;;*;; Commands used in S transcript mode
