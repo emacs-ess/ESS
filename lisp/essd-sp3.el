@@ -46,7 +46,7 @@
     (ess-dialect                   . S+3-dialect-name)
     (ess-suffix                    . "S")
     (ess-loop-timeout              . ess-S-loop-timeout)
-    (ess-dump-filename-template    . (replace-regexp-in-string
+    (ess-dump-filename-template    . (ess-replace-regexp-in-string
 				      "S$" ess-suffix ; in the one from custom:
 				      ess-dump-filename-template-proto))
     (ess-mode-editing-alist        . S-editing-alist)
