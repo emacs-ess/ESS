@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/24 12:51:08 $
-;; Version: $Revision: 1.18 $
-;; RCS: $Id: essd-sas.el,v 1.18 1997/10/24 12:51:08 rossini Exp $
+;; Modified: $Date: 1997/10/27 15:05:26 $
+;; Version: $Revision: 1.19 $
+;; RCS: $Id: essd-sas.el,v 1.19 1997/10/27 15:05:26 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -59,7 +59,8 @@
     (if ess-shell-buffer-name-flag
 	(save-excursion       
 	  (set-buffer "*shell*")
-	  (setq ess-shell-buffer-name (rename-buffer "*ess-shell-regular*"))))
+	  (setq ess-shell-buffer-name
+		(rename-buffer "*ess-shell-regular*" t))))
   
     ;; Construct the LST buffer for output
     (if (get-buffer "*myfile.lst*")
