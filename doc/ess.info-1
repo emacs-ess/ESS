@@ -35,7 +35,7 @@ ESS: Emacs Speaks Statistics
 
    ESS version 5.1.x
 
-   (Documentation $Revision: 1.2 $ $Date: 2000/03/13 13:45:14 $).
+   (Documentation $Revision: 1.3 $ $Date: 2000/06/30 21:17:44 $).
 
      A.J. Rossini, R.M. Heiberger, K. Hornik, and M. Maechler
      (Formerly: Doug Bates, Ed Kademan, Frank Ritter and David Smith).
@@ -297,6 +297,17 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 
 New features in ESS
 ===================
+
+   Changes/New Features in 5.1.14:
+   * Yet more fixes to SAS mode, (Rich Heiberger
+     (<rmh@surfer.stat.temple.edu>) and Rodney Sparapani
+     <spara002@onyx.dcri.duke.edu>)).
+
+   * Customize support (for most Emacsen which support it) (AJRossini,
+         (<rossini@biostat.washington.edu>)
+
+   * ARC and ViSta support out of the box, and fixes for XLispStat
+     (AJRossini,       <rossini@biostat.washington.edu>)
 
    Changes/New Features in 5.1.13:
    * Version numbering finally all depending on the ./VERSION file,
