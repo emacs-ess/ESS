@@ -1,5 +1,8 @@
 2004-07-02  Stephen Eglen  <stephen@anc.ed.ac.uk>
 
+	* essd-r.el (ess-r-versions-create): Do not set the value of
+	ess-r-versions-created here, just return the required value.
+
 	* ess-site.el (ess-versions-created): Tidy up the code for calling
 	older versions of R and Sqpe.  Old version did not work on Unix,
 	since ess-sqpe-versions-created was not bound.  New version checks
