@@ -94,14 +94,13 @@ Keywords: Data Analysis, Programming Tools, User Interfaces, SAS,
 \Splus, R, \XLispStat, \Stata
 
 \begin{abstract}
-  We discuss Emacs Speaks Statistics (ESS), a user interface for
-  developing statistical applications and performing data analysis
-  using any of several powerful statistical programming languages.
-  ESS falls in the programming tools category of Integrated
-  Development Environments (IDEs), which are approaches for developing
-  and visualizing computer programs.  We discuss how it works, the
-  advantages of using it, and extensions for increasing statistical
-  programming efficiency.
+  Emacs Speaks Statistics (ESS) is a user interface for developing
+  statistical applications and performing data analysis using any of
+  several common statistical programming languages.  ESS falls in the
+  programming tools category of Integrated Development Environments
+  (IDEs), which are approaches for developing and visualizing computer
+  programs.  We discuss how it works, the advantages of using it, and
+  extensions for increasing statistical programming efficiency.
 \end{abstract}
 
 \doublespace
@@ -163,7 +162,7 @@ because our fingers are trained for a primary interface convention
 which is continually interfered with.  ESS solves this problem by
 providing a uniform keyboard interface.
 
-Some interface conflicts can be complex, involving the coordination of
+Complex conflicts between interfaces can involve the coordination of
 several data files, multiple statistical software packages, and the
 corresponding source code in each of these languages, combined for a
 single analysis.  ESS, as part of Emacs, has tools which assist in
@@ -173,8 +172,8 @@ interfaces to documentation systems including \LaTeX\ and
 \textsc{xml}.  In addition, Emacs can assist with or be programmed to
 perform many tasks related to data cleaning, management, and editing.
 
-The use of multiple running statistical processes, either on a single
-machine or a variety of machines, is a useful feature.  This ability
+It can be useful to use of multiple running statistical processes,
+either on a single machine or a variety of machines.  This ability
 assists with code design and testing across multiple versions of
 statistical software packages, as well as large scale numerical
 simulations.  For example, one might want to be connected to multiple
@@ -224,50 +223,58 @@ graphics.
 
 Individual feelings about computer user interfaces have traditionally
 been extremely personal.  It is extremely difficult to convince
-computer users to change from one to another.  
+computer users to change from interface to another.  This can be
+observed in choice of editors such as vi and emacs; mail user agents
+such as mail, Pine, Elm, Netscape Mail, and Microsoft Outlook; word
+processors such as Microsoft Word and Corel WordPerfect; and other
+commonly used tools.  Choice has little to do with theory, and more to
+do with compatibility with previous usage as well as ease-of-use with
+respect to the initial learning curve.  However, sometimes the hardest
+interfaces to master are the most efficient in the long run, after the
+initial investment in time.
 
 \subsection{Command line interfaces}
 \label{sec:UI:command}
 
-The classic command-line interface is available for some statistical
-packages on most Unix and mainframe computers.  This interface
-consists of entering commands one line at a time.  Current examples
-can mostly be found under Unix, including \Splus, R, \Stata, and
-\XLispStat.  Note that the \Stata\ CLI is deprecated in favor of a new
-GUI, and this direction seems to be a general trend.  ESS assists
-command-line interfaces by providing a comprehensive interface layer
-on top of the command-line.  SAS does not have a true CLI.  The two
-possible options are a prompt-less input device which sends a combined
-log and list-file text stream directly back to the same device, and
-second, the 3-window graphical terminal interface which is being
-deprecated in favor of a GUI version.
+The CLI is available for some statistical packages on most Unix and
+mainframe computers.  This was the successor to the IBM punchcard
+based batch interface.  The CLI consists of entering memorized
+commands one line at a time.  Current examples can mostly be found
+under Unix, including \Splus, R, \Stata, and \XLispStat.  Note that
+the \Stata\ CLI is deprecated in favor of a new GUI, and this
+direction seems to be a general trend.  We note that SAS does not have
+a true CLI.  The two possible options for SAS are a prompt-less input
+device which sends a combined log and list-file text stream directly
+back to the same device, and second, the classic 3-window %graphical
+terminal interface which is being deprecated in favor of a GUI
+version.
+
+% ESS assists command-line
+%interfaces by providing a comprehensive interface layer on top of the
+%command-line. 
 
 \subsection{Graphical User Interfaces}
 \label{sec:UI:GUI}
 
-The advent of Apple Macintosh (Mac) and Microsoft Windows operating
-systems have encouraged a partial standardization of interfaces for
-statistical packages.  Many packages written for both Mac and
-Windows personal computers have adopted a data display descended
-from the spreadsheet data-table approach.  Generally, these feature a
-cases-by-variables spreadsheet representation of the data, along with
-pull-down menus and dialog boxes for data analysis activities.
-Depending upon their nature, numerical results can be saved as well as
-displayed on the spreadsheet.  Software that takes this approach
-includes SPSS, Minitab, \Splus\ 4.x for Windows and 6.x for Unix and
-Windows, DataDesk, ViSta, and many others.
+The advent of Apple Macintosh (Mac) and Microsoft Windows (Windows)
+operating systems have encouraged a partial standardization of
+interfaces for statistical packages.  Many packages written for both
+Mac and Windows personal computers have adopted a data display
+descended from the spreadsheet data-table approach.  Generally, these
+feature a cases-by-variables spreadsheet representation of the data,
+along with pull-down menus and dialog boxes for data analysis
+activities.  Depending upon their nature, numerical results can be
+saved as well as displayed on the spreadsheet.  Statistical software
+packages that takes this basic approach include SPSS, Minitab, \Splus\ 
+4.x for Windows and 6.x for Unix and Windows, DataDesk, and ViSta.
 
-Most of the statistical software, including spreadsheets, uses the
-Multiple Document Interface (MDI), where multiple windows representing
-numerous documents are enclosed by the surrounding application, rather
-than a Single Document Interface (SDI), which provides a single frame
-for each document, view, or figure created.  The use of MDI seems to
-be more a function of the availability of GUI toolkits for Apple
-Macintosh and Microsoft Windows applications, which promote such
-interfaces, rather than from a consistent recommendation of theories
-for user-interface design.  Unix-based interfaces tend to be
-SDI-based, due in part to the nature of the X11 windowing system and
-until recently, the small number of available GUI toolkits.
+Most statistical software, including spreadsheets, use the Multiple
+Document Interface (MDI).  This user interface style encloses multiple
+views of text, figures, and toolbars enclosed by the surrounding
+application.  The use of MDI seems to be more a function of the
+availability of GUI toolkits for Apple Macintosh and Microsoft Windows
+applications, which promote such interfaces, rather than a consistent
+choice based on theories for user-interface design.  
 
 The common approach taken by statistics packages for MDI is to wrap
 menus and toolbars around a region containing representations of
@@ -279,11 +286,27 @@ contingency table interface.  This approach is employed by both
 spreadsheet packages such as Microsoft Excel as well as most Apple and
 Microsoft-based statistical packages including \Splus\ and SPSS.
 
+The Single Document Interface (SDI) provides a single frame for each
+document, view, or figure created.  Unix-based interfaces tend to be
+SDI-based, due in part to the nature of the X11 windowing system its
+flexibility in allowing a single application to place frames and
+windows across multiple displays on potentially multiple computers.
+Another factor has been the lack, until recently, of available GUI
+toolkits which worked across different Unix platforms.  The closest
+example of the SDI is with Unix command-line \Stata\, \Splus\, and R,
+and then considering then graphics displays and GUI data-entry tools
+(at least in \Splus) to be parts of an overall GUI.
+
 \section{The ESS user interface}
 \label{sec:ESS}
 
-ESS provides a number of features for statistical programming beyond
-those provided by Emacs.
+ESS provides a number of features to Emacs for statistical
+programming.  These include syntax-based colors and fontification,
+integration of the statistical package as a subprocess of Emacs,
+common accelerators (key-strokes) for general functionality such as
+requesting help and exiting the statistics package, and the ability to
+jump directly to functions and other important sections of the
+program code.
 
 \subsection{How ESS extends the CLI}
 \label{sec:ESS:UI}
@@ -295,7 +318,6 @@ needs of users.  Because ESS builds on the extremely powerful Emacs
 editing capabilities and the Emacs ability to communicate directly
 with a running process, ESS provides very powerful and uniform
 interaction with the statistical programs and languages.
-
 
 \subsection{Features and capabilities}
 \label{sec:ESS:features}
