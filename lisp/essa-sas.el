@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2003/07/23 21:29:12 $
-;; Version: $Revision: 1.140 $
-;; RCS: $Id: essa-sas.el,v 1.140 2003/07/23 21:29:12 rsparapa Exp $
+;; Modified: $Date: 2003/07/24 18:42:56 $
+;; Version: $Revision: 1.141 $
+;; RCS: $Id: essa-sas.el,v 1.141 2003/07/24 18:42:56 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -86,13 +86,21 @@
 
 (make-variable-buffer-local 'ess-sas-shell-buffer)
 
-(defcustom ess-sas-shell-buffer-init nil 
-"*Command that you want to execute on shell startup."
+(defcustom ess-sas-shell-buffer-remote-host nil 
+"*Remote host that you want to open a shell on."
     :group 'ess-sas
     :type  'string
 )
 
-(make-variable-buffer-local 'ess-sas-shell-buffer-init)
+(make-variable-buffer-local 'ess-sas-shell-buffer-remote-host)
+
+(defcustom ess-sas-shell-buffer-remote-init "ssh" 
+"*Command to open a shell on a remote host."
+    :group 'ess-sas
+    :type  'string
+)
+
+(make-variable-buffer-local 'ess-sas-shell-buffer-remote-init)
 
 (defcustom ess-sas-submit-mac-virtual-pc nil
 "*Non-nil means that you want to run Windows SAS in a
@@ -362,17 +370,21 @@ current buffer if nil."
 
  (save-excursion (let ((ess-tmp-sas-data nil) 
     (ess-tmp-sas-data-view-fsview-statement ess-sas-data-view-fsview-statement)
-    (ess-search-regexp "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[ ,()\t;]")
-    (ess-search-except "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
+    (ess-search-regexp 
+    "[ \t=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)\\(&.*\\)?[ ,()\t;]")
+    (ess-search-except 
+    "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
 
     (if ess-sas-data nil (save-match-data 
 	(search-backward-regexp "[ \t=]" nil t)
 
         (save-excursion 
-	    (setq ess-tmp-sas-data (ess-search-except ess-search-regexp ess-search-except)))
+	    (setq ess-tmp-sas-data 
+		(ess-search-except ess-search-regexp ess-search-except)))
 
         (if (not ess-tmp-sas-data) 
-	    (setq ess-tmp-sas-data (ess-search-except ess-search-regexp ess-search-except t)))
+	    (setq ess-tmp-sas-data 
+		(ess-search-except ess-search-regexp ess-search-except t)))
 
 	(setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
@@ -392,7 +404,8 @@ current buffer if nil."
 
   (save-excursion (let ((ess-tmp-sas-graph nil)
         (ess-tmp-sas-glyph nil)
-        (ess-tmp-sas-graph-regexp (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
+        (ess-tmp-sas-graph-regexp 
+	    (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
 
     (save-match-data 
        (search-backward-regexp "[ \t=]" nil t)
@@ -406,8 +419,8 @@ current buffer if nil."
 	(setq ess-tmp-sas-graph (read-string "GSASFILE: " 
 	    (or ess-tmp-sas-graph (file-name-nondirectory ess-sas-file-path))))
 
-	    (setq ess-tmp-sas-graph    (convert-standard-filename 
-			(concat (file-name-directory ess-sas-file-path) "/" ess-tmp-sas-graph)))
+	    (setq ess-tmp-sas-graph (convert-standard-filename 
+		(concat (file-name-directory ess-sas-file-path) "/" ess-tmp-sas-graph)))
 
 	  (if (fboundp 'ess-xemacs-insert-glyph) (progn
 	      (if (string-match "[.][gG][iI][fF]" ess-tmp-sas-graph)
@@ -418,7 +431,8 @@ current buffer if nil."
 
 	  (if ess-tmp-sas-glyph (progn
 		(switch-to-buffer (file-name-nondirectory ess-tmp-sas-graph))
-		(ess-xemacs-insert-glyph (make-glyph (vector ess-tmp-sas-glyph :file ess-tmp-sas-graph)))
+		(ess-xemacs-insert-glyph 
+		    (make-glyph (vector ess-tmp-sas-glyph :file ess-tmp-sas-graph)))
 	     )
 	  ;;else
 	  (if (and (boundp 'auto-image-file-mode) auto-image-file-mode
@@ -428,7 +442,8 @@ current buffer if nil."
          
             (ess-sas-goto-shell t)
 
-            (insert ess-sas-submit-pre-command " " ess-sas-image-viewer " " ess-tmp-sas-graph 
+            (insert ess-sas-submit-pre-command " " ess-sas-image-viewer " " 
+	      ess-tmp-sas-graph 
 	      (if (equal ess-sas-submit-method 'sh) " &"))
             (comint-send-input))
 )))))
@@ -439,8 +454,28 @@ current buffer if nil."
 
   (save-match-data (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
     (if (string-match ess-sas-suffix-regexp ess-sas-temp-file) ;;(progn
-	(setq ess-sas-file-path (nth 0 (split-string ess-sas-temp-file "[<]")))))))
+	(setq ess-sas-file-path 
+	   (nth 0 (split-string ess-sas-temp-file "[<]")))))))
 	;; (setq ess-directory (file-name-directory ess-sas-file-path)))))))
+
+(defun ess-sas-file-path-remote-host ()
+"Return the remote host, if any, associated with `ess-sas-file-path'."
+(interactive)
+
+(let* ((temp-colon-pos (string-match ":" ess-sas-file-path))
+       (temp-list 
+	(if (or (not temp-colon-pos) (> temp-colon-pos 2))
+	    (split-string (file-name-directory ess-sas-file-path) 
+		"\\(@\\|:\\|]\\)")
+	(list ess-sas-file-path)))
+       (temp-list-length (length temp-list)))	
+    (if (= temp-list-length 1) (setq temp-list nil)
+	(if (= temp-list-length 2) (setq temp-list (car temp-list))
+	    (setq temp-list (nth 1 temp-list))))
+
+    (if temp-list (setq temp-list 
+		(car (last (split-string temp-list "/"))))) 
+    temp-list))	
 
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with a SAS file by suffix and revert if necessary."
@@ -454,7 +489,8 @@ current buffer if nil."
 	    (ess-sas-file-path)
 
 	    (let* (
-		(ess-sas-temp-file (replace-match (concat "." suffix) t t ess-sas-file-path))
+		(ess-sas-temp-file (replace-match (concat "." suffix) t t 
+		    ess-sas-file-path))
 		(ess-sas-temp-buff (find-buffer-visiting ess-sas-temp-file))
 		(ess-temp-kermit-remote-directory ess-kermit-remote-directory))
 
@@ -462,7 +498,8 @@ current buffer if nil."
 	        (find-file ess-sas-temp-file))
 	
 	    (if (or (string-equal suffix "log") (string-equal suffix "lst"))
-		(ess-kermit-get (file-name-nondirectory ess-sas-temp-file) ess-temp-kermit-remote-directory))
+		(ess-kermit-get (file-name-nondirectory ess-sas-temp-file) 
+		    ess-temp-kermit-remote-directory))
 
 	    (if revert (ess-revert-wisely) nil)
 ))))))
@@ -544,15 +581,25 @@ optional argument is non-nil, then set-buffer rather than switch."
 ; Nice idea, but needs to be hardened to deal with remote directories.
 ;
 ; (let ((ess-temp-directory default-directory))
-  (if (get-buffer ess-sas-shell-buffer) 
-    (if set-buffer (set-buffer ess-sas-shell-buffer) (switch-to-buffer ess-sas-shell-buffer))
-    (let ((temp-shell-buffer ess-sas-shell-buffer)
-	(temp-shell-buffer-init ess-sas-shell-buffer-init))
+
+    (let* ((temp-shell-buffer-remote-host 
+	    (or ess-sas-shell-buffer-remote-host (ess-sas-file-path-remote-host)))
+	(temp-shell-buffer-remote-init ess-sas-shell-buffer-remote-init)
+	(temp-shell-buffer 
+	    (if temp-shell-buffer-remote-host 
+		(concat "*" temp-shell-buffer-remote-host "*")
+		ess-sas-shell-buffer))
+)
+
+  (if (get-buffer temp-shell-buffer) 
+    (if set-buffer (set-buffer temp-shell-buffer) 
+		   (switch-to-buffer temp-shell-buffer))
     (shell)
     (rename-buffer temp-shell-buffer)
     
-    (if temp-shell-buffer-init (progn
-	(insert temp-shell-buffer-init)
+    (if temp-shell-buffer-remote-host (progn
+	(insert (concat 
+	    temp-shell-buffer-remote-init " " temp-shell-buffer-remote-host))
 	(comint-send-input))
     )
 
@@ -571,12 +618,14 @@ optional argument is non-nil, then set-buffer rather than switch."
     (ess-sas-file-path)
 
     (let ((ess-temp-sas-file 
-(nth 0 (split-string (car (last (split-string ess-sas-file-path "\\([a-zA-Z][a-zA-Z]:\\|]\\)"))) "[.]"))))
+(nth 0 (split-string 
+(car (last (split-string ess-sas-file-path "\\([a-zA-Z][a-zA-Z]:\\|]\\)"))) "[.]"))))
 ;;    (message "%s" ess-temp-sas-file)
     (setq ess-sas-shell-buffer "*iESS[SAS]*") 
     (ess-sas-goto-shell)
     (insert (concat ess-sas-submit-command " " ess-sas-submit-command-options 
-        " -altlog " ess-temp-sas-file ".log -altprint "ess-temp-sas-file ".lst -stdio < /dev/tty"))
+        " -altlog " ess-temp-sas-file ".log -altprint "
+	    ess-temp-sas-file ".lst -stdio < /dev/tty"))
     (comint-send-input)
     (ess-add-ess-process)
     (ess-sas-goto-sas)
@@ -634,14 +683,19 @@ depends on the value of  `ess-sas-submit-method'"
 
   (cond
    ((eq ess-sas-submit-method 'apple-script) 
-	(ess-sas-submit-mac ess-sas-submit-command ess-sas-submit-command-options))
+	(ess-sas-submit-mac ess-sas-submit-command 
+	    ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'ms-dos) 
-	(ess-sas-submit-windows ess-sas-submit-command ess-sas-submit-command-options))
+	(ess-sas-submit-windows ess-sas-submit-command 
+	    ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'iESS) 
-	(ess-sas-submit-iESS ess-sas-submit-command ess-sas-submit-command-options))
+	(ess-sas-submit-iESS ess-sas-submit-command 
+	    ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'sh) 
-	(ess-sas-submit-sh ess-sas-submit-command ess-sas-submit-command-options)) 
-   (t (ess-sas-submit-sh ess-sas-submit-command ess-sas-submit-command-options)))
+	(ess-sas-submit-sh ess-sas-submit-command 
+	    ess-sas-submit-command-options)) 
+   (t (ess-sas-submit-sh ess-sas-submit-command 
+	ess-sas-submit-command-options)))
 ;  (ess-sas-goto-sas)
 )
 
@@ -660,9 +714,11 @@ remote computer and be accessed through `ange-ftp'.  When
 computer.  The various functions such as `ess-sas-goto-lst' retrieve
 their files from the remote computer.  Local copies of the .sas .lst
 .log and others may be made manually with `write-buffer'."
+  ;;  (ess-eval-linewise (concat "cd  default-directory))
   (ess-force-buffer-current "Process to load into: ")
-  ;;  (ess-eval-linewise (concat "cd " default-directory))
-  (ess-eval-linewise (concat "cd " (car (last (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)")))))
+  (ess-eval-linewise 
+    (concat "cd " (car (last 
+	(split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)")))))
   (ess-eval-linewise (concat arg1 " " arg2 " " (buffer-name) " &")))
 
 (defun ess-sas-submit-mac (arg1 arg2)
@@ -675,7 +731,8 @@ should be ..."
   ;(ess-save-and-set-local-variables)
 
   (do-applescript (concat arg1 " \""
-     (if (not ess-sas-submit-mac-virtual-pc) (unix-filename-to-mac default-directory))
+     (if (not ess-sas-submit-mac-virtual-pc) 
+	    (unix-filename-to-mac default-directory))
 	(buffer-name) "\"" arg2)))
 
 (defun ess-sas-submit-region ()
@@ -712,18 +769,21 @@ SAS may not be found in your PATH.  You can alter your PATH to include
 SAS or you can specify the PATHNAME (PATHNAME can NOT contain spaces),
 i.e. let arg1 be your local equivalent of
 \"/usr/local/sas612/sas\"."
-    (if (string-equal (substring (file-name-nondirectory ess-sas-file-path) 0 1) ess-kermit-prefix)
+    (if (string-equal (substring 
+	    (file-name-nondirectory ess-sas-file-path) 0 1) ess-kermit-prefix)
       (progn
        (ess-kermit-send)
        (ess-sas-goto-shell t)
        (insert ess-sas-submit-pre-command " " arg1 " "  
-	 (substring (file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) 1)
+	 (substring (file-name-sans-extension 
+	    (file-name-nondirectory ess-sas-file-path)) 1)
 	 " " arg2 " " ess-sas-submit-post-command))
     ;;else
       (ess-sas-goto-shell t)
 ;      (if ess-microsoft-p
 ;	  (insert "cd "  (file-name-directory ess-sas-file-path))
-;	(insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)")))))
+;	(insert "cd " (car (last (split-string 
+;	    (file-name-directory ess-sas-file-path) "\\(:\\|]\\)")))))
       (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path) 
 "\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
       (comint-send-input)
