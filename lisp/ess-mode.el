@@ -9,9 +9,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2004/06/20 23:26:40 $
-;; Version: $Revision: 5.27 $
-;; RCS: $Id: ess-mode.el,v 5.27 2004/06/20 23:26:40 rmh Exp $
+;; Modified: $Date: 2004/06/21 10:10:42 $
+;; Version: $Revision: 5.28 $
+;; RCS: $Id: ess-mode.el,v 5.28 2004/06/21 10:10:42 stephen Exp $
 
 ;; This file is part of ESS
 
@@ -224,9 +224,9 @@
     ;; SJE - :help not yet recognised in XEmacs.
     ["R"     R   t] ;; :help "Start a new R process" :active t
     ["S"     S   t] ;; :help "Start a new S process" :active t
-;;(if ess-microsoft-p   '["Sqpe" Sqpe t] );; :help "Start a new Sqpe process" :active t
-;;(if ess-microsoft-p   '["S+6-exisiting" S+6-existing t]) ;; :help "Access an existing S process" :active t
-    ["SAS"   SAS t] ;;  :help "Start a new SAS process" :active t
+    ["Sqpe" Sqpe ess-microsoft-p] ;; :help "Start a new Sqpe process" :active t
+    ["S+6-exisiting" S+6-existing ess-microsoft-p] ;; :help "Access an existing S process" :active t
+    ["SAS"   SAS-menu t] ;;  :help "Start a new SAS process" :active t
     ["About" 
      (ess-goto-info "Starting up") t]
      ;; :help "Read about starting a new ESS process" :active t]
@@ -237,6 +237,14 @@
    ["About"		(ess-goto-info "Editing")	t]
    ["Send bug report"	ess-submit-bug-report		t]
    ))
+
+(defun SAS-menu ()
+  "Start SAS from the menu."
+  (interactive)
+  (if ess-microsoft-p
+      ;; replace with other choices for starting SAS under XEmacs?
+      (error "SAS cannot be started this way in ESS.")
+    (SAS)))
 
 (defun ess-mode-xemacs-menu ()
   "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
