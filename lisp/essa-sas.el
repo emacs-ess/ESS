@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/02/16 21:17:11 $
-;; Version: $Revision: 1.150 $
-;; RCS: $Id: essa-sas.el,v 1.150 2004/02/16 21:17:11 rsparapa Exp $
+;; Modified: $Date: 2004/02/17 14:57:18 $
+;; Version: $Revision: 1.151 $
+;; RCS: $Id: essa-sas.el,v 1.151 2004/02/17 14:57:18 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -479,7 +479,7 @@ current buffer if nil."
 		(car (last (split-string temp-list "/"))))) 
     temp-list))	
 
-(defun ess-sas-goto (suffix &optional revert)
+(defun ess-sas-goto (suffix &optional revert no-create)
   "Find a file associated with a SAS file by suffix and revert if necessary."
     (let ((ess-temp-regexp (concat ess-sas-suffix-regexp "\\(@.+\\)?")))
 	(save-match-data 
@@ -497,9 +497,10 @@ current buffer if nil."
 		(ess-temp-kermit-remote-directory ess-kermit-remote-directory))
 
 	    (if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
-	        (find-file ess-sas-temp-file))
+	        (if no-create (setq revert nil) (find-file ess-sas-temp-file)))
 	
-	    (if (or (string-equal suffix "log") (string-equal suffix "lst"))
+	    (if (and (not no-create) 
+		(or (string-equal suffix "log") (string-equal suffix "lst")))
 		(ess-kermit-get (file-name-nondirectory ess-sas-temp-file) 
 		    ess-temp-kermit-remote-directory))
 
@@ -673,15 +674,15 @@ optional argument is non-nil, then set-buffer rather than switch."
 "Kill all buffers related to a .sas file."
   (interactive)
   (ess-sas-file-path)
-  (ess-sas-goto "log" nil)
+  (ess-sas-goto "log" nil t)
   (kill-buffer nil)  
-  (ess-sas-goto "lst" nil)
+  (ess-sas-goto "lst" nil t)
   (kill-buffer nil)  
-  (ess-sas-goto ess-sas-suffix-1 nil)
+  (ess-sas-goto ess-sas-suffix-1 nil t)
   (kill-buffer nil)  
-  (ess-sas-goto ess-sas-suffix-2 nil)
+  (ess-sas-goto ess-sas-suffix-2 nil t)
   (kill-buffer nil)  
-  (ess-sas-goto "sas" nil)
+  (ess-sas-goto "sas" nil t)
   (kill-buffer nil)  
 )
 
