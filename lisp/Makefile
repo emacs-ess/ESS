@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 4.9 $.
+### File: $Revision: 4.10 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -148,6 +148,7 @@ dist:
 	chmod a-w $(VERSIONDIR)/ChangeLog $(VERSIONDIR)/Doc/* 
 	chmod a-w $(VERSIONDIR)/ess.info* $(VERSIONDIR)/ess.dvi
 	chmod u+w $(VERSIONDIR)/ess-site.el $(VERSIONDIR)/Makefile
+	chmod ugo+rx $(VERSIONDIR)/ess-sas-sh-command
 	chmod ugo+x $(DISTSCRIPTS)
 	tar hcovf $(VERSIONDIR).tar $(DISTFILES)
 	gzip $(VERSIONDIR).tar
