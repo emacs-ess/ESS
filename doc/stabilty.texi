@@ -1,7 +1,7 @@
 
-Versions 5.1.x are meant as a beta-level releases.  While some bugs
-are fixed from 5.0, others have been introduced, especially with
+Versions 5.1.x are meant to be gamma-level releases.  While some bugs
+are fixed, others may have been introduced, especially with
 regards to new features.  See the file doc/TODO for details.  Bug
-reports are solicited; see the BUGS section below.  Patches or
+reports are solicited; see the Bugs Section below.  Patches or
 suggested coding fixes with bug reports are much appreciated!
 

@@ -11,12 +11,27 @@ Changes/New Features in 5.1.20:
       This feature is still under development.
 @item GNU Emacs 21.1 is now supported (fixed for S dialects, SAS & BUGS),
       (some from Stephen Eglen).
+@item XEmacs 21.x is now supported (fixed w32-using-nt bug)
 @item XEmacs on Win (NT) is better supported.
 @item Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
 @item should now work even when imenu is not available (for old Xemacsen).
-@item for SAS : XEmacs-Imenu fix; C-TAB.. ; you can specify your SAS
+@item for SAS : XEmacs-Imenu fix; C-TAB is globalized along with your 
+      function-key definitions, if specified; you can specify your SAS
       library definitions outside of autoexec.sas for ess-sas-data-view
-      with SAS code placed in the variable ess-sas-data-view-libname.
+      with SAS code placed in the variable ess-sas-data-view-libname, 
+      also the dataset name is defaulted to the nearest permanent dataset 
+      to point; Speedbar support now works for permanent datasets, please 
+      ignore first./last.; new font-locking is now the default with more 
+      improvements for font-locking PROCs, macro statements, * ; and %* ; 
+      comments; you can toggle sas-log-mode with F10 which will font-lock 
+      your .log (if it isn't too big); submit remote .sas files accessed
+      with ange-ftp, EFS or Tramp (Kermit is experimental) by setting 
+      ess-sas-submit-method to 'sh; ess-sas-submit-command and 
+      ess-sas-submit-command-options are buffer-local so you can have
+      local file variable sections at the end of your .sas files to 
+      request different executables or specify special options and the 
+      local file variables are re-read at submit instead of only at file
+      open so that if you make a change it is picked up immediately;
 @item for BUGS: font-lock with `in' fixed.
 @item for STATA: font-lock bug fixed.
 @item for Rd mode: C-c C-v and `switch-process' in menu.
@@ -24,7 +39,7 @@ Changes/New Features in 5.1.20:
       by things such as \code@{.@}, \code@{\link@{.@}@}, \emph@{.@} etc.
 @item new functions (ess-directory-function) and (ess-narrow-to-defun)
       ess-directory <-> default-directory logic (Jeff Mincy).
-@item Better Makefile logic structure
+@item Re-organized Makefile and fixed a few bugs.
 @end itemize
 
 Changes/New Features in 5.1.19:

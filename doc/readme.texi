@@ -3,17 +3,17 @@
 @setfilename readme.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: readme.texi,v 1.20 2001/08/21 16:17:02 maechler Exp $
+@comment $Id: readme.texi,v 1.21 2002/02/07 17:13:38 rsparapa Exp $
 
 @node General Information
 @comment  node-name,  next,  previous,  up
 @chapter General Information: README
 @cindex README
 
-($Revision: 1.20 $, for ESS version 5.1.20)
+($Revision: 1.21 $, for ESS version 5.1.20)
 
 This is the README file for the distribution of ESS version 5.1.20, the
-alpha/beta series we are using on the way to producing 5.2 (the next
+gamma series we are using on the way to producing 5.2 (the next
 stable distribution).  ESS is an Emacs-Lisp interface for interactive
 statistical programming and data analysis.  Languages supported include:
 S dialects (S 3/4, S-PLUS 3.x, and R), LispStat dialects (XLispStat,
@@ -31,7 +31,7 @@ were desired.  In addition, with new modes being developed for R,
 Stata, and SAS, it was felt that providing for a unifying framework
 would eliminate differences in the user interface, as well as to
 provide for faster development of production tools and statistical
-analysis.  5.1.y has, for its guts, the basic framework from S-mode.
+analysis.  5.1.x has, for its guts, the basic framework from S-mode.
 However, it has been cleaned, streamlined, brought closer to
 conformance as a standard GNU Emacs package, and redesigned for
 modularity and reuse.
@@ -41,13 +41,12 @@ The current development team is led by A.J. (Tony) Rossini
 XEmacs and has been the primary coder.  Martin Maechler
 (@email{maechler@@stat.math.ethz.ch}) and Kurt Hornik
 (@email{hornik@@ci.tuwien.ac.at}) have assisted with S-PLUS, S4, R, and
-XLispStat sub-modes, and Richard M. Heiberger
-(@email{rmh@@fisher.stat.temple.edu}) has done much of the work for
-implementing the SAS sub-mode, as well as assisted with S-PLUS (under MS
-Windows and remote access) and S4 development.  Douglas Bates
-(@email{bates@@stat.wisc.edu}) contributed the initial S4 mode, as well
-as provided disk space, ftp and http access to the source for
-development purposes.
+XLispStat sub-modes, and Richard M. Heiberger 
+(@email{rmh@@fisher.stat.temple.edu}) has assisted with S-PLUS (under MS
+Windows and remote access) and S4 development.  Richard and Rodney Sparapani 
+(@email{rsparapa@@mcw.edu}) have done much of the work for implementing the 
+SAS sub-mode.  Douglas Bates (@email{bates@@stat.wisc.edu}) contributed the 
+initial S4 mode.
 
 We are grateful to David M. Smith, the previous developer (for S-mode
 3.x and 4.x), as well as to the initial developers of S-mode, Doug

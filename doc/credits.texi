@@ -21,8 +21,7 @@ The multiple process code, and the idea for
 @code{ess-eval-line-and-next-line} are by Rod Ball.
 
 @item
-Thanks to Doug Bates for many useful suggestions, and an FTP home for
-the code.
+Thanks to Doug Bates for many useful suggestions.
 
 @item
 Thanks to Martin Maechler for reporting and fixing bugs, providing many

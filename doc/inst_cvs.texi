@@ -1,13 +1,13 @@
 You need a cvs client (that works with your firewall, if any)
 
 the repository name is
-   @code{:pserver:anoncvs@@ess.stat.wisc.edu:/home/anoncvs/src}
+   @code{:pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs}
 
 using a command-line cvs client (i.e. on Unix or DOS), first type:
-   @code{cvs -d  :pserver:anoncvs@@ess.stat.wisc.edu:/home/anoncvs/src login}
+   @code{cvs -d :pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs login}
 
 password is anoncvs
 
 then type:
-   @code{cvs -d  :pserver:anoncvs@@ess.stat.wisc.edu:/home/anoncvs/src co ess}
+   @code{cvs -d :pserver:anoncvs@@software.biostat.washington.edu:/var/anoncvs co ess}
 

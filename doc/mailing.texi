@@ -16,7 +16,7 @@ The purposes of the mailing list include
 @item
  suggestions for improvements.
 @item
- announcements of new [beta] releases of ESS.
+ announcements of new releases of ESS.
 @item
  posting small patches to ESS.
 @end itemize
