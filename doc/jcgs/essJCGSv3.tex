@@ -14,14 +14,6 @@
 %1. introduction
 %        a) a statistician's needs
 %        b) statistical analysis packages supported by ESS
-%2. emacs
-%        a) buffers
-%        b) key sequences
-%        c) modes
-%                1) font-lock
-%                2) shell/comint
-%                3) ange-ftp/EFS/tramp
-%                4) vc/pcl-cvs
 %3. ESS
 %        a) interactive
 %           1) S family
@@ -30,6 +22,14 @@
 %           1) SAS
 %           2) BUGS
 %           3) S family
+%2. emacs
+%        a) buffers
+%        b) key sequences
+%        c) modes
+%                1) font-lock
+%                2) shell/comint
+%                3) ange-ftp/EFS/tramp
+%                4) vc/pcl-cvs
 %4. ESS as an open-source project
 %        a) origins
 %                1)S-mode
@@ -47,6 +47,10 @@
 %        c) anonymous cvs
 %   References
 %
+
+%% Critiques and Suggestions needing to be addressed:
+%% 1. 
+
 \ifdraft
  \addtolength{\topmargin}{-1cm}
  \addtolength{\textheight}{+1cm}
@@ -157,7 +161,7 @@ intelligent environment for statistical analysis}
     Wien, Vienna, Austria (E-mail: Kurt.Hornik@r-project.org)}}
 
 \date{\today}
-%%\date{$ $Date: 2002/09/16 15:50:07 $ - $Revision: 1.1 $ $\tiny printed \today}
+%%\date{$ $Date: 2002/09/24 05:15:08 $ - $Revision: 1.2 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -209,16 +213,19 @@ Cross-platform User Interface.
 \label{sec:introduction}
 
 Most statistical research activities, particularly data analysis and
-communication, involve some form of computing.  The computer user
-interface is thus placed in the central role of facilitating
-statistical tasks.  While presentation of character and graphical
-information is the most visual component of a user interface,
-perhaps a more critical component is how the computer interprets user
-input.  A familiar, well-understood set of input behaviors can provide
-large gains in efficiency.  This paper introduces Emacs Speaks
-Statistics (ESS) \citep{ESS}, a software package which provides a
-common interface to a variety of statistical packages on the most
-common computing platforms.
+communication, involve some form of computing.  In particular, this is
+exemplified in the notion that statistical activities can be
+considered to be \textit{programming with data}, as per the book of
+that name (cite: John Chambers).  The computer user interface is thus
+placed in the central role of facilitating statistical tasks.  While
+presentation of character and graphical information is the most visual
+component of a user interface, perhaps a more critical component is
+how the computer interprets user input.  A familiar, well-understood
+set of input behaviors can increase the efficiency of statistical
+practice.  This paper introduces Emacs Speaks Statistics (ESS)
+\citep{ESS}, a software package which provides a common interface to a
+variety of statistical packages on the most common computing
+platforms.
 
 ESS is an interface to statistical packages that provides tools which
 facilitate both statistical software development and data analysis.
@@ -233,171 +240,13 @@ currently supports the S family of languages (including S
 to accommodate most statistical packages which provide either an
 interactive command-line or process batch files for instructions.
 
-We start by describing the Emacs text editor, the underlying platform
-on which ESS is built.  Next, we discuss how ESS enhances a
-statistician's daily activities by presenting its features and showing
-how it facilitates statistical computing.  We conclude with a short history
-of the development of ESS.
-% and conclude with future extensions and related work.
+We start by discuss how ESS enhances a statistician's daily activities
+by presenting its features and showing how it facilitates statistical
+computing.  Next, we describing the Emacs text editor, the underlying
+platform on which ESS is built.  We conclude with a short history of
+the development of ESS and goals for the future.
 
-\section{Emacs}
-\label{sec:emacs}
-
-Emacs is a mature, powerful, and extensible text editing system which
-is freely available, under the GNU General Public License (GPL), for a
-large number of platforms, including most Unix\regstrd
-distributions, Microsoft Windows\regstrd\ and Apple Mac\tm\ OS.  There
-are two open-source implementations of Emacs: GNU Emacs
-\citep{GNU-Emacs} and XEmacs \citep{XEmacs}.  Emacs shares many
-features with word processors, and some characteristics with operating
-systems, including many facilities which go beyond ordinary text
-editing.  More important to our goals, Emacs can control and interact
-with other programs.
-
-\paragraph{Keyboard and Mouse Input.}
-When Emacs was originally written, character-based terminals were the
-most advanced method of computer access.  Common Emacs commands were
-mapped to key sequences, creating keyboard shortcuts for convenience.
-Over the last decade, Emacs has been extended to use graphical
-windowing systems, such as X11\tm, Microsoft Windows, and Apple Mac
-OS, which allow additional forms of input, for example using a mouse,
-and which encourage multiple applications to share a single display.
-Presently, Emacs is more often used with a GUI, with commands bound to
-mouse actions, but having commands also associated with key sequences
-is an important ergonomic and time-saving feature.  Emacs menus and
-toolbars on the display screen allow mouse access to frequently used
-actions and provide a graphical alternative when the user does not
-know or can not recall a key sequence; these are also subject to
-user-customization.
-
-\paragraph{Buffers give Emacs control.}
-Emacs buffers are the interface between the user and computer.  They
-can be considered to be a collection of scratch pads that both the
-user and computer can read, write, and respond to.  The user can
-simultaneously edit many files and control numerous programs by
-opening multiple buffers.  With disk files, the working copy of the
-opened file is placed in an Emacs buffer where it can be viewed and
-edited either by the user or automatically by Emacs or another program
-under the control of Emacs.  Emacs can save a backup of the contents
-to disk at specified intervals.  Emacs presents buffer contents in
-ways which optimize reading and navigation activities.  One example of
-program control is the embedding of the interactive operating system
-command line interpreter, called a shell, within Emacs.  Variations on
-this theme are used to control programs such as statistical packages
-which take input from and provide output to the command-line.  The
-resulting buffers provide a copy of the entire transcript of the
-interaction, which can be edited and searched while the program
-executes.
-
-\paragraph{Major and Minor Modes.}
-Emacs capabilities are extended by loading
-%% AJR: If we remove ``or byte-compiled'' we need to remove ``text'',
-%% since it is wrong.
-%% text
-%% or byte-compiled
-files containing commands and functions written in Emacs Lisp (elisp)
-\citep{RChassell1999}, which is a dialect of Lisp
-\citep{PGraham:1996}.  Emacs commands can be called interactively by
-pressing a key sequence mapped to the command or by name.
-%% AJR: this is actually true for M-x long-command-not-bound-to-keys,
-%% but I'm not telling anyone this!
-% Rodney: I don't understand what the problem is with telling them.
-The most important extensions to Emacs take the form of modes, which
-provide specific enhancements to the editing behavior.
-
-Major modes provide a customized environment consisting of mapped key
-sequences and associated commands for performing tasks such as file
-editing, reading mail, or browsing disk directories.  Only one major
-mode can be active for a given buffer at any time.  Major modes also
-can be written to intelligently control other programs such as
-statistics packages.  Major modes for file editing are often
-determined by the file type or extension, i.e.  the characters at the
-end of the file name that follow a period like \stexttt{txt},
-\stexttt{s}, or \stexttt{sas}.  Examples of this kind of major mode are
-\stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes understand a
-file's syntax and grammar and therefore provide intelligent
-actions such as automatic indentation; navigation in units of
-characters, words, lines, sentences, paragraphs, function definitions,
-and pages; syntax-based fontification and colorization; and
-reformatting based on programmed conventions.
-
-Minor modes provide complementary services that that are applicable
-across major modes.  Many minor modes can be active at once.  For
-example, \stexttt{font-lock-mode} allows Emacs to highlight, with
-fonts or colors, the syntax of a programming language whose
-characteristics are described within a major mode like
-\stexttt{ESS[S]}.  The \stexttt{overwrite-mode} determines whether
-typed characters replace the existing text or are inserted at the
-cursor.  Minor modes can emulate the key sequences used by another
-editor such as \stexttt{vi}.  In addition, they can be used to perform
-version control operations and many other operations which are nearly
-identical across file types.
-
-\paragraph{Network Support.}
-Emacs allows transparent access to remote files over a network.  This
-means that the user views, edits, and saves files on a remote machine
-exactly as if they were on the local machine.  Mechanisms for both
-open (\stexttt{ange-ftp} and \stexttt{EFS} use ftp) and secure
-(\stexttt{tramp} uses scp or ssh) access are available.  Emacs can
-also monitor and control remote processes running in a shell buffer.
-
-\paragraph{Editing Extensions.}
-Most programming and documentation tasks consist of editing text.
-These tasks can be enhanced by contextual highlighting and recognition
-of special reserved words appropriate to the programming language in
-use.  In addition, Emacs also supports folding, outlining, tags, and
-bookmarks, all of which assist with maneuvering around a file.  Emacs
-shares many features with word processing programs and cooperates with
-markup-language document preparation systems such as \LaTeX,
-\textsc{html}, or \textsc{xml}.
-
-Tracking changes to a text file made by multiple users, potentially in
-different locations, is the job of source-code control programs.
-Emacs interacts with standard source-code control programs such as CVS, RCS,
-and SCCS through minor modes such as \stexttt{vc-mode}.  These
-source-code control systems facilitate documenting and tracking edits and
-changes to a file.  More importantly, they allow for branching and
-merging of versions so that material present in an older version of
-the file can be recovered and inserted into a newer version in a
-fairly easy manner.
-
-Comparison of files, two or three drafts of a paper for example, is
-simplified by \stexttt{ediff}.  An example is shown in Figure
-\ref{f.ediff}.  The lines that are similar are highlighted in the two
-buffers, one for each file, and the specific words that mismatch are
-highlighted in a contrasting color.  \stexttt{ediff} has many tools
-for working with the differences in files and in entire directories.
-When combined with the patch utility or a source-code control system,
-it provides the user with the ability to insert, delete or modify only
-the differing portions of text files.
-
-\begin{figure}[tbp]
-  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas}}
-  \caption{Ediff of two versions of a file.}
-  \label{f.ediff}
-\end{figure}
-
-% Rodney: You can't just mention complex functionality like etags and
-% speedbar.  We would need to introduce these packages.  Since they
-% aren't critical to ESS at this time, let's ignore them.
-Emacs has many other important features.  Emacs provides file-manager
-capabilities, such as \stexttt{dired} (discussed in Major and Minor
-Modes above) and \stexttt{speedbar}, both of which interface to the
-computer's directory structure.  Emacs stores the complete history of
-commands issued in an editing session, allowing a flexible and fairly
-complete undo capability.  More importantly, for modes which control
-processes, the process input history is stored for recall as well as
-for later editing for printing or re-use.  Emacs also includes web
-browsers, mail/newsgroup readers, and spell checking.
-
-In addition to being an extremely powerful editor, Emacs also
-includes capabilities usually found in an operating system.  Thus, it
-provides a strong foundation for constructing an integrated
-development environment focused on the needs of statisticians.  Emacs'
-power, flexibility, portability, and extensibility make it a solid
-platform on which to construct a statistical analysis user interface.
-
-\section{ESS extends Emacs}
+\section{ESS and Statistical Practice}
 \label{sec:ess-extends-emacs}
 
 Statistical programming is the writing of computer programs for data
@@ -410,15 +259,15 @@ have integrated development environments which facilitate writing and
 debugging code.
 
 ESS extends Emacs to provide an integrated development environment for
-statistical languages.  It offers a single
-interface for a variety of statistical computing tasks including
-interactive data analysis and statistical programming.
-ESS is able to provide a functional and extensible interface
-which is uniform and consistent across multiple statistical packages.
-This is done by adding shortcuts and features for accelerated editing
-of files as well as by interacting with the particular statistical
-packages to provide, for example, control of input/output, assistance
-with evaluation, and specialized parsing of help files.
+statistical languages.  It offers a single interface for a variety of
+statistical computing tasks including interactive data analysis and
+statistical programming.  ESS is able to provide a functional and
+extensible interface which is uniform and consistent across multiple
+statistical packages.  This is done by adding shortcuts and features
+for accelerated editing of files as well as by interacting with the
+particular statistical packages to provide, for example, control of
+input/output, assistance with evaluation, and specialized parsing of
+help files.
 
 ESS supports the S family (S, \Splus, and R) interactively.  \SAS\ and
 BUGS are also well supported for batch processing.  \Stata\ and
@@ -613,32 +462,6 @@ between general packages and specialized packages.  ESS helps by
 providing a single point of contact to both tools, though the typical
 interfaces (interactive for R, batch for BUGS) are different.
 
-%\item[Rodney:]  I can't speak for everyone, but the BUGS users I know are
-% .. lots deleted by AJR
-%will make sense.  Besides, the most pressing need for me is to get
-%ESS-elsewhere to work with ESS[BUGS] rather than creating inferior-BUGS.
-
-%\item[Rich:] How does making ``ESS-elsewhere work with ESS[BUGS]'' differ
-%from ``creating inferior-BUGS''?  My question is predicated on the assumption
-%that ESS-elsewhere is a (generalized) minor-mode that makes the location
-%of the program irrelevant.
-%See my ESS-elsewhere quibble below.
-
-%\item[Rodney:] It's the whole batch BUGS vs. interactive BUGS thing.  Batch
-%BUGS with ESS-elsewhere; interactive BUGS with inferior-BUGS which does not
-%and will never exist.  If you want to call ``inferior-ESS'' ``ESS-elsewhere''
-%why do you need two different names?  ``inferior-ESS'' is a terrible name
-%so the change would be fine with me, but you can't have it both ways?  Is
-%this why you keep saying that ESS-elsewhere works for SAS?  See
-%response to quibble below.
-
-%\item[Rich:]
-%\stexttt{iESS[SAS]} was designed to mimic as well as possible \stexttt{iESS[S]}.
-%I need to read doc/README.SAS to make sure all of its options are represented
-%here. --- Not yet done.
-%\end{description}
-%\end{Comment}
-
 \paragraph{Simplifying Keymap Differences.}
 Simple conflicts between interfaces are exemplified by different key
 sequences for editing tasks such as cut, copy, paste, beginning of
@@ -675,17 +498,17 @@ with limited cooperation.
 
 ESS can use the Windows DDE (Dynamic Data Exchange) protocol to
 provide one-way communication directly to packages which function as a
-DDE server.  ESS can control the actions of the package, but it can not capture
-the results directly.  Transcripts must be physically copied to an
-Emacs buffer to get the transcript editing features.
+DDE server.  ESS can control the actions of the package, but it can
+not capture the results directly.  Transcripts must be physically
+copied to an Emacs buffer to get the transcript editing features.
 
 Statistical packages that use neither the standard input/standard
-output protocol nor DDE can not be directly controlled by Emacs.  But, ESS
-can still provide an editing environment for these statistical languages.  The
-user must either manually cut and paste the edited code into the
-package or save the edited files and run them in a batch environment.
-The Microsoft Windows versions of \SAS, \Stata, and \XLispStat\ are
-in this category.
+output protocol nor DDE can not be directly controlled by Emacs.  But,
+ESS can still provide an editing environment for these statistical
+languages.  The user must either manually cut and paste the edited
+code into the package or save the edited files and run them in a batch
+environment.  The Microsoft Windows versions of \SAS, \Stata, and
+\XLispStat\ are in this category.
 
 One useful extension in ESS is relaxation of the requirement that the
 statistics program be available on the local machine.  ESS provides
@@ -702,10 +525,10 @@ remote Unix systems onto a local Microsoft Windows or Apple Mac
 display.
 
 \paragraph{Interactive S family}
-ESS for S family statistical languages, \stexttt{iESS[S]},
-replaces the \Splus\ Commands window or the R GUI window.  In addition
-to running the S family language process, \stexttt{iESS[S]} mode provides the
-same editing features, including syntactic highlighting and
+ESS for S family statistical languages, \stexttt{iESS[S]}, replaces
+the \Splus\ Commands window or the R GUI window.  In addition to
+running the S family language process, \stexttt{iESS[S]} mode provides
+the same editing features, including syntactic highlighting and
 string-search, as the editing mode \stexttt{ESS[S]}.  It also provides
 an interactive history mechanism; transcript recording and editing;
 and the ability to re-submit the contents of a multi-line command to
@@ -713,11 +536,9 @@ the executing process with a single keystroke.  \stexttt{iESS[S]} is
 used with S, \Splus, and R on Unix and with Sqpe and R on Windows.
 
 The \Splus\ GUI on Windows can be a DDE server.  There are two
-advantages to using even this limited communication with the \Splus\
+advantages to using even this limited communication with the \Splus\ 
 GUI through ESS.  First, through \stexttt{ESS[S]} mode the user gets
 the full editing capabilities of Emacs.  Second, S language commands
-% rmh: S, not \Splus, in both places.  The {\it language} is S.
-% The previous session could be R or ATT S.  It is not restricted to \Splus.
 are sent from the editing mode \stexttt{ESS[S]} buffer and from
 transcript buffers from previous S sessions directly to the GUI
 Commands window with the same Emacs key sequences as are used with ESS
@@ -737,54 +558,10 @@ network connections to a remote computer with \SAS\ installed.  The
 resulting interface is similar to the SAS character terminal
 interface, but with Emacs key sequences.
 
-%Rodney:  What is this paragraph about?  I'm going to comment it out
-%because I don't recognize what it is supposed to be.  Maybe somebody
-%can fix it later.
-%
-% rmh: Round umpteen.  Yes, this is redundant with the third paragraph
-% of interprocess communication.  I still want it here.  Try this rephrasing.
-%
-\stexttt{ESS[SAS]} mode can be used in conjunction with the \SAS\
+\stexttt{ESS[SAS]} mode can be used in conjunction with the \SAS\ 
 Display Manager to allow simultaneous access to Emacs for editing
 \SAS\ language code and to the \SAS\ mouse-based interfaces to the
 graphical routines and help system.
-
-%%%%% AJR: WHY IS THIS SUBSTANTIALLY DIFFERENT THAN BATCH?  I KNOW ITS
-%%%%% SLIGHTLY DIFFERENT, BUT SUBSTANTIALLY?
-%%%%% rmh: this is a form of interaction, not batch.  I restored the
-%%%%% first paragraph with some expansion.
-%\paragraph{\SAS---Interactive cooperation with the \SAS\ Display Manager.}
-%ESS users who write data analysis code in \stexttt{ESS[SAS]} mode in Emacs
-%often need to work with the \SAS\ Display Manager's
-%mouse-based interface to the graphical
-%routines, the help system, and other non-text-based features.
-%%The authors of ESS prefer the Emacs environment for
-%%the text-file interaction with \SAS, that is with editing and
-%%managing input command files and output listing and log files,
-%%even on computer systems which run
-%%the \SAS\ Display Manager environment.
-%In this situation, the user
-%designs the command file in \stexttt{ESS[SAS]} mode and highlights
-%regions to be forwarded to \SAS\ for processing.
-%%
-%% Rodney: I don't see this as a feature of either ESS or emacs.  And,
-%% what the authors prefer is certainly not germane.
-%%
-%%
-%% rmh: This is my preferred mode for interacting with SAS.  I tried another
-%% rephrasing.  It {\it is} a feature of ESS.  ESS is able to provide ESS[SAS]
-%% mode for the text processing (.sas .lst. log files) and simultaneously
-%% let the user have interactive graphical access.
-%%This can be done by either:
-%%\begin{enumerate}
-%%\item copying and pasting the marked regions to the \SAS\ Editor window
-%%  and then pressing the \stexttt{RUN} button.  Highlighted sections of
-%%  the \SAS\ Listing window are brought back to Emacs to be read in the
-%%  \stexttt{ESSlst} mode editing environment.
-%%\item submitting the marked region for Batch File Processing (see the
-%%  next section) but using the mapped key sequences to append to the log
-%%  and listing files instead of replacing them.
-%%\end{enumerate}
 
 \subsection{Batch File Processing.}
 \label{sec:batch-file}
@@ -846,57 +623,6 @@ log and listing are also accessed remotely.  The net result is that
 running \SAS\ batch on remote computers is nearly transparent to the
 ESS user.
 
-%\begin{Comment}
-%Rich's version:
-%\end{Comment}
-%The \SAS\ batch process can run on the same computer on which the
-%emacs session is running or it can run on a remote computer.  For
-%remote jobs, files are transparently saved (with ftp or scp or kermit)
-%and the batch process is transparently submitted through a telnet or
-%ssh connection.
-
-%\begin{Comment}
-%Rich: I have some terminology quibbles here with how the term
-%``ESS-elsewhere'' is used with SAS BATCH.  I think of S-elsewhere or
-%ESS-elsewhere as a trick to make a \stexttt{telnet-mode} buffer think
-%it is \stexttt{iESS-mode} buffer.
-
-%I don't think of file saving, editing, and retrieval as an example
-%of ESS-elsewhere.   Neither is submission of the remote job;
-%that is just an ordinary shell command in an ordinary shell buffer.
-%M-x SAS probably is an example of ESS-elsewhere, but I
-%designed it before I thought of the ESS-elsewhere concept.
-
-%The initial idea behind S-elsewhere was to run an interactive S or S-Plus
-%session on a remote computer in telnet (or equivalent) buffer.  The trick
-%was to make the \stexttt{telnet-mode} buffer accept C-c C-n and
-%related commands from the \stexttt{S-mode} buffers.  Hence I had to
-%make the \stexttt{telnet-mode} buffer think it is \stexttt{iESS-mode}
-%buffer.  The ``elsewhere'' part of the name is entirely related to a
-%different start up procedure.  Once the connection is made, there is
-%{\em no} difference visible to the user.  The buffer shows itself to
-%be an ordinary \stexttt{iESS} buffer.  Tony generalized S-elsewhere
-%to ESS-elsewhere to allow other languages than S to be used
-%interactively.
-
-%I have been using ESS for SAS remote BATCH for years, ever since you
-%and I started working on this together.  We initially defined
-%ess-sas-submit-method to encapsulate the location of the sas process.
-%Except for a few lines of elisp to get the connection started, the user
-%behavior has been identical whether the SAS process is on the same or
-%different machine.  Since we are not interactively talking to the SAS
-%process in an inferior-ESS buffer I don't see this as ESS-elsewhere.
-
-%Rodney: Remote submissions of SAS batch jobs never worked.  I only got
-%it to work a couple of weeks ago.  The problem was with the cd command.
-%You need to ignore the beginning and end of the expanded buffer name
-%that are the ange-ftp/EFS/tramp stubs which tell Emacs what the remote
-%username and hostname are.  I find the batch usage of ESS-elsewhere
-%entirely consistent with the interactive behavior.  OTOH, I don't find
-%the terminology particularly illuminating.  I think ESS-remote or
-%ESS-net would be more meaningful.
-%\end{Comment}
-
 \paragraph{Batch BUGS.}
 BUGS software performs Markov Chain Monte Carlo integration.  There is
 an interactive capability, but it is not often used since the analyses
@@ -922,6 +648,156 @@ means of jumping to errors in the source file, but doesn't display the
 evaluated commands in the transcript.  These mechanisms provide
 different tools for debugging the source files.
 
+\section{Emacs, the Basis for ESS}
+\label{sec:emacs}
+
+Emacs is a mature, powerful, and extensible text editing system which
+is freely available, under the GNU General Public License (GPL), for a
+large number of platforms, including most Unix\regstrd
+distributions, Microsoft Windows\regstrd\ and Apple Mac\tm\ OS.  There
+are two open-source implementations of Emacs: GNU Emacs
+\citep{GNU-Emacs} and XEmacs \citep{XEmacs}.  Emacs shares many
+features with word processors, and some characteristics with operating
+systems, including many facilities which go beyond ordinary text
+editing.  More important to our goals, Emacs can control and interact
+with other programs.
+
+\paragraph{Keyboard and Mouse Input.}
+When Emacs was originally written, character-based terminals were the
+most advanced method of computer access.  Common Emacs commands were
+mapped to key sequences, creating keyboard shortcuts for convenience.
+Over the last decade, Emacs has been extended to use graphical
+windowing systems, such as X11\tm, Microsoft Windows, and Apple Mac
+OS, which allow additional forms of input, for example using a mouse,
+and which encourage multiple applications to share a single display.
+Presently, Emacs is more often used with a GUI, with commands bound to
+mouse actions, but having commands also associated with key sequences
+is an important ergonomic and time-saving feature.  Emacs menus and
+toolbars on the display screen allow mouse access to frequently used
+actions and provide a graphical alternative when the user does not
+know or can not recall a key sequence; these are also subject to
+user-customization.
+
+\paragraph{Buffers give Emacs control.}
+Emacs buffers are the interface between the user and computer.  They
+can be considered to be a collection of scratch pads that both the
+user and computer can read, write, and respond to.  The user can
+simultaneously edit many files and control numerous programs by
+opening multiple buffers.  With disk files, the working copy of the
+opened file is placed in an Emacs buffer where it can be viewed and
+edited either by the user or automatically by Emacs or another program
+under the control of Emacs.  Emacs can save a backup of the contents
+to disk at specified intervals.  Emacs presents buffer contents in
+ways which optimize reading and navigation activities.  One example of
+program control is the embedding of the interactive operating system
+command line interpreter, called a shell, within Emacs.  Variations on
+this theme are used to control programs such as statistical packages
+which take input from and provide output to the command-line.  The
+resulting buffers provide a copy of the entire transcript of the
+interaction, which can be edited and searched while the program
+executes.
+
+\paragraph{Major and Minor Modes.}
+Emacs capabilities are extended by loading files containing commands
+and functions written in Emacs Lisp (elisp) \citep{RChassell1999},
+which is a dialect of Lisp \citep{PGraham:1996}.  Emacs commands can
+be called interactively by pressing a key sequence mapped to the
+command or by name.  The most important extensions to Emacs take the
+form of modes, which provide specific enhancements to the editing
+behavior.
+
+Major modes provide a customized environment consisting of mapped key
+sequences and associated commands for performing tasks such as file
+editing, reading mail, or browsing disk directories.  Only one major
+mode can be active for a given buffer at any time.  Major modes also
+can be written to intelligently control other programs such as
+statistics packages.  Major modes for file editing are often
+determined by the file type or extension, i.e.  the characters at the
+end of the file name that follow a period like \stexttt{txt},
+\stexttt{s}, or \stexttt{sas}.  Examples of this kind of major mode
+are \stexttt{ESS[S]} and \stexttt{ESS[SAS]}.  Major modes understand a
+file's syntax and grammar and therefore provide intelligent actions
+such as automatic indentation; navigation in units of characters,
+words, lines, sentences, paragraphs, function definitions, and pages;
+syntax-based fontification and colorization; and reformatting based on
+programmed conventions.
+
+Minor modes provide complementary services that that are applicable
+across major modes.  Many minor modes can be active at once.  For
+example, \stexttt{font-lock-mode} allows Emacs to highlight, with
+fonts or colors, the syntax of a programming language whose
+characteristics are described within a major mode like
+\stexttt{ESS[S]}.  The \stexttt{overwrite-mode} determines whether
+typed characters replace the existing text or are inserted at the
+cursor.  Minor modes can emulate the key sequences used by another
+editor such as \stexttt{vi}.  In addition, they can be used to perform
+version control operations and many other operations which are nearly
+identical across file types.
+
+\paragraph{Network Support.}
+Emacs allows transparent access to remote files over a network.  This
+means that the user views, edits, and saves files on a remote machine
+exactly as if they were on the local machine.  Mechanisms for both
+open (\stexttt{ange-ftp} and \stexttt{EFS} use ftp) and secure
+(\stexttt{tramp} uses scp or ssh) access are available.  Emacs can
+also monitor and control remote processes running in a shell buffer.
+
+\paragraph{Editing Extensions.}
+Most programming and documentation tasks consist of editing text.
+These tasks can be enhanced by contextual highlighting and recognition
+of special reserved words appropriate to the programming language in
+use.  In addition, Emacs also supports folding, outlining, tags, and
+bookmarks, all of which assist with maneuvering around a file.  Emacs
+shares many features with word processing programs and cooperates with
+markup-language document preparation systems such as \LaTeX,
+\textsc{html}, or \textsc{xml}.
+
+Tracking changes to a text file made by multiple users, potentially in
+different locations, is the job of source-code control programs.
+Emacs interacts with standard source-code control programs such as
+CVS, RCS, and SCCS through minor modes such as \stexttt{vc-mode}.
+These source-code control systems facilitate documenting and tracking
+edits and changes to a file.  More importantly, they allow for
+branching and merging of versions so that material present in an older
+version of the file can be recovered and inserted into a newer version
+in a fairly easy manner.
+
+Comparison of files, two or three drafts of a paper for example, is
+simplified by \stexttt{ediff}.  An example is shown in Figure
+\ref{f.ediff}.  The lines that are similar are highlighted in the two
+buffers, one for each file, and the specific words that mismatch are
+highlighted in a contrasting color.  \stexttt{ediff} has many tools
+for working with the differences in files and in entire directories.
+When combined with the patch utility or a source-code control system,
+it provides the user with the ability to insert, delete or modify only
+the differing portions of text files.
+
+\begin{figure}[tbp]
+  \ESSfig{\includegraphics[angle=270,width=\textwidth]{ediff-sas}}
+  \caption{Ediff of two versions of a file.}
+  \label{f.ediff}
+\end{figure}
+
+% Rodney: You can't just mention complex functionality like etags and
+% speedbar.  We would need to introduce these packages.  Since they
+% aren't critical to ESS at this time, let's ignore them.
+Emacs has many other important features.  Emacs provides file-manager
+capabilities, such as \stexttt{dired} (discussed in Major and Minor
+Modes above) and \stexttt{speedbar}, both of which interface to the
+computer's directory structure.  Emacs stores the complete history of
+commands issued in an editing session, allowing a flexible and fairly
+complete undo capability.  More importantly, for modes which control
+processes, the process input history is stored for recall as well as
+for later editing for printing or re-use.  Emacs also includes web
+browsers, mail/newsgroup readers, and spell checking.
+
+In addition to being an extremely powerful editor, Emacs also
+includes capabilities usually found in an operating system.  Thus, it
+provides a strong foundation for constructing an integrated
+development environment focused on the needs of statisticians.  Emacs'
+power, flexibility, portability, and extensibility make it a solid
+platform on which to construct a statistical analysis user interface.
+
 \section{History of ESS}
 \label{sec:ESS:history}
 
@@ -934,13 +810,13 @@ generalist compiled languages such as \Fortran\ to specialist
 statistical analysis packages like S and \SAS, Emacs modes soon
 followed.
 
-The ESS environment is built on the open-source projects of
-many contributors, dating back over 10 years.
-Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and \Splus\
-files in GNU Emacs.  Frank Ritter and Mike Meyer added features,
-creating version 2.  Meyer and David Smith made further contributions,
-creating version 3.  For version 4, David Smith provided significant
-enhancements to allow for powerful process interaction.
+The ESS environment is built on the open-source projects of many
+contributors, dating back over 10 years.  Doug Bates and Ed Kademan
+wrote S-mode in 1989 to edit S and \Splus\ files in GNU Emacs.  Frank
+Ritter and Mike Meyer added features, creating version 2.  Meyer and
+David Smith made further contributions, creating version 3.  For
+version 4, David Smith provided significant enhancements to allow for
+powerful process interaction.  
 
 John Sall wrote GNU Emacs macros for \SAS\ source code around 1990.
 Tom Cook added functions to submit jobs, review listing and log files,
@@ -1009,6 +885,22 @@ This history is summarized in Table \ref{tab:timeline}.
 \end{table}
 
 
+
+
+\section{Conclusions}
+\label{sec:concl}
+
+ESS provides an enhanced, powerful interface for efficient interactive
+data analysis and statistical programming.  It allows the user
+complete control over the communications among the files in which the
+analysis is specified, the statistical process doing the computation,
+and the output.  Because all are within the same programming
+environment, and therefore are accessed with the same editing and
+searching concepts and the same key sequences, user efficiency is
+increased.  It is completely customizable to satisfy individual
+desires for interface styles and can be extended to support other
+statistical languages and data analysis packages.
+
 %\section{Future Work}
 
 %%%There are two active areas of extensions for user environments.  One
@@ -1051,35 +943,6 @@ This history is summarized in Table \ref{tab:timeline}.
 %environments intended for statisticians.  It provides
 
 
-\section{Conclusion}
-\label{sec:concl}
-
-ESS provides an enhanced, powerful interface for efficient interactive
-data analysis and statistical programming.  It allows the user
-complete control over the communications among the files in which the
-analysis is specified, the statistical process doing the computation,
-and the output.  Because all are within the same programming
-environment, and therefore are accessed with the same editing and
-searching concepts and the same key sequences, user efficiency is
-increased.  It is completely customizable to satisfy individual
-desires for interface styles and can be extended to support other
-statistical languages and data analysis packages.
-
-%\begin{Comment}
-%Rich: see my discussion of ESS-elsewhere terminology.
-
-%What is the behavior for remote SAS that is new for 2002?
-
-%Rodney: SAS batch now works and Kermit was added as a method of transfer.
-%\end{Comment}
-%ESS-elsewhere provides interactive and batch processing
-%with \SAS\ running on a remote machine that is accessed over a
-%network.  This provides a powerful development environment for \SAS.
-
-%%This
-%%includes support for syntax highlighting and template-based source file
-%%generation that provides the capability of specifying all the necessary
-%%parameters for a BUGS batch run in a single file.
 
 \bibliographystyle{plainnat}
 %\pdfbookmark[1]{References}{section.7}
@@ -1095,11 +958,11 @@ statistical languages and data analysis packages.
 
 \paragraph{Latest Version.}
 
-ESS is constantly in flux.  New versions of statistical
-packages, Emacs and operating systems require new releases of ESS to
-support them.  The latest stable version of ESS can be found on the web at
-\url{http://software.biostat.washington.edu/statsoft/ess/}.  To get help
-with problems, send e-mail to \url{ess-help@stat.math.ethz.ch}.
+ESS is constantly in flux.  New versions of statistical packages,
+Emacs and operating systems require new releases of ESS to support
+them.  The latest stable version of ESS can be found on the web at
+\url{http://software.biostat.washington.edu/statsoft/ess/}.  To get
+help with problems, send e-mail to \url{ess-help@stat.math.ethz.ch}.
 The latest development, hence unstable, version can be obtained by
 anonymous CVS.  First type:
 
@@ -1172,11 +1035,7 @@ figures.
 %  \label{f.ess-demo}
 \end{figure}
 
-
-
-
 \end{document}
-
 
 %%% Local Variables:
 %%% mode: latex
