@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 2000/10/04 17:21:29 $
-;; Version: $Revision: 5.55 $
-;; RCS: $Id: ess-inf.el,v 5.55 2000/10/04 17:21:29 maechler Exp $
+;; Modified: $Date: 2000/10/17 18:17:41 $
+;; Version: $Revision: 5.56 $
+;; RCS: $Id: ess-inf.el,v 5.56 2000/10/17 18:17:41 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -169,7 +169,7 @@ accompany the call for `inferior-ess-program'.
 	     (not (comint-check-proc (current-buffer)))
 	     (memq major-mode '(inferior-ess-mode)))
 	(setq startdir
-	      (if ess-ask-for-ess-directory (ess-get-directory defdir)
+	      (if ess-ask-for-ess-directory (ess-get-directory-2 defdir)
 		ess-directory))
 	(setq buf (current-buffer))
 	(ess-write-to-dribble-buffer "(inferior-ess) Method #1\n"))
@@ -186,7 +186,7 @@ accompany the call for `inferior-ess-program'.
        ;;      be used again, to justify?
        ((not buf)
 	(setq startdir
-	      (if ess-ask-for-ess-directory (ess-get-directory defdir)
+	      (if ess-ask-for-ess-directory (ess-get-directory-2 defdir)
 		ess-directory))
 	(if ess-ask-about-transfile
 	    (let ((transfilename (read-file-name
@@ -375,19 +375,38 @@ This was rewritten by KH in April 1996."
 
 ;;*;; Requester functions called at startup
 
+;(defun ess-get-directory-ORIG (default)
+;  "Request and return S starting directory."
+;  (let ((the-dir
+;	 (expand-file-name
+;	  (file-name-as-directory
+;	   (read-file-name
+;	    (format "ESS [%s(%s): %s] starting data directory? "
+;		    ess-language ess-dialect inferior-ess-program)
+;	    (file-name-as-directory default)
+;	    (file-name-as-directory default) t nil)))))
+;    (if (file-directory-p the-dir) nil
+;      (error "%s is not a valid directory" the-dir))
+;    the-dir))
+
 (defun ess-get-directory (default)
-  "Request and return S starting directory."
+  (ess-prompt-for-directory 
+        default
+	(format "ESS [%s(%s): %s] starting data directory? "
+		ess-language ess-dialect inferior-ess-program)))
+  
+(defun ess-prompt-for-directory (default prompt)
+  "`prompt' for a directory, using `default' as the usual."
   (let ((the-dir
 	 (expand-file-name
 	  (file-name-as-directory
-	   (read-file-name
-	    (format "ESS [%s(%s): %s] starting data directory? "
-		    ess-language ess-dialect inferior-ess-program)
-	    (file-name-as-directory default)
-	    (file-name-as-directory default) t nil)))))
+	   (read-file-name prompt 
+			   (file-name-as-directory default)
+			   (file-name-as-directory default) t nil)))))
     (if (file-directory-p the-dir) nil
       (error "%s is not a valid directory" the-dir))
     the-dir))
+
 
 ;;*;; General process handling code
 
