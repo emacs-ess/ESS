@@ -90,7 +90,7 @@ Emacs, such as R, type @code{M-x R}.
 @c @example
 @c M-x ess-create-object-name-db
 @c @end example
-@c (this will create the file @file{ess-s+6-namedb.el}; if it isn't in the
+@c (this will create the file @file{ess-sp6-namedb.el}; if it isn't in the
 @c ESS directory, move it there).
 
 @c Then, completions will be autoloaded and will not be regenerated for
