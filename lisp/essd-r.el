@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/25 20:43:40 $
-;; Version: $Revision: 1.29 $
-;; RCS: $Id: essd-r.el,v 1.29 1997/08/25 20:43:40 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:54:23 $
+;; Version: $Revision: 1.30 $
+;; RCS: $Id: essd-r.el,v 1.30 1997/08/26 22:54:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-r.el,v $
+;;: Revision 1.30  1997/08/26 22:54:23  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.29  1997/08/25 20:43:40  rossini
 ;;: added Martin's changes
 ;;:
@@ -127,8 +130,8 @@
 
 (defvar R-customize-alist
   '((ess-customize-alist           . 'R-customize-alist)
-    (ess-proc-prefix               . "R")
-    (ess-version-running           . "0.50-a1" )
+    (ess-language                  . "S")
+    (ess-dialect                   . "R")
     (ess-help-sec-regex            . ess-help-R-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-R-sec-keys-alist) 
     (ess-loop-timeout              . 100000 )
@@ -152,7 +155,7 @@
   "Major mode for editing R source.  See ess-mode for more help."
   (interactive)
   (setq ess-customize-alist R-customize-alist)
-  (ess-mode proc-name ess-proc-prefix))
+  (ess-mode proc-name ess-language))
 
 
 (defun R ()
@@ -162,8 +165,8 @@ New way to do it."
   (setq ess-customize-alist R-customize-alist)
   ;; for debugging only
   (ess-write-to-dribble-buffer
-   (format "(R): ess-proc-prefix=%s , buf=%s \n"
-	   ess-proc-prefix
+   (format "(R): ess-dialect=%s , buf=%s \n"
+	   ess-dialect
 	   (current-buffer)))
   (inferior-ess))
 

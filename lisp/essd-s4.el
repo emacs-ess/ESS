@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/25 20:50:16 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-s4.el,v 1.6 1997/08/25 20:50:16 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:54:23 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essd-s4.el,v 1.7 1997/08/26 22:54:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -35,6 +35,9 @@
 
 ;;;
 ;;; $Log: essd-s4.el,v $
+;;; Revision 1.7  1997/08/26 22:54:23  rossini
+;;; *** empty log message ***
+;;;
 ;;; Revision 1.6  1997/08/25 20:50:16  rossini
 ;;; MM's changes.
 ;;;
@@ -77,17 +80,17 @@
   "Help section keys for S4.")
 
 (defvar S4-customize-alist
-  '((ess-proc-prefix      .         "S")
-    (ess-version-running  .         "S4")
-    (inferior-ess-program .         inferior-S4-program-name) ;"S")
-    (ess-help-sec-regex   .         "^[A-Z. ---]+:$")
-    (ess-help-sec-keys-alist .      S4-help-sec-keys-alist)
-    (inferior-ess-objects-command . "objects(%d)")
-    (inferior-ess-help-command .    "help(\"%s\")\n")
-    (inferior-ess-exit-command .    "q()\n")
+  '((ess-language                  . "S")
+    (ess-dialect                   . "S4")
+    (inferior-ess-program          . inferior-S4-program-name) ;"S")
+    (ess-help-sec-regex            . "^[A-Z. ---]+:$")
+    (ess-help-sec-keys-alist       . S4-help-sec-keys-alist)
+    (inferior-ess-objects-command  . "objects(%d)")
+    (inferior-ess-help-command     . "help(\"%s\")\n")
+    (inferior-ess-exit-command     . "q()\n")
     (ess-loop-timeout              . 100000 )
     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-    (inferior-ess-secondary-prompt   . "+ ?"))
+    (inferior-ess-secondary-prompt . "+ ?"))
  "Variables to customize for S")
 
 
@@ -97,8 +100,8 @@ New way to do it."
   (interactive)
   (setq ess-customize-alist S4-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(S): ess-proc-prefix=%s , buf=%s \n"
-	   ess-proc-prefix
+   (format "(S): ess-dialect=%s , buf=%s \n"
+	   ess-dialect
 	   (current-buffer)))
   (inferior-ess))
 

@@ -7,12 +7,15 @@
 ;;                       Maechler <maechler@stat.math.ethz.ch>,
 ;;                       Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/08/25 14:31:04 $
-;; Version: $Revision: 1.46 $
-;; RCS: $Id: ess-inf.el,v 1.46 1997/08/25 14:31:04 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:54:23 $
+;; Version: $Revision: 1.47 $
+;; RCS: $Id: ess-inf.el,v 1.47 1997/08/26 22:54:23 rossini Exp $
 
 ;;
 ;; $Log: ess-inf.el,v $
+;; Revision 1.47  1997/08/26 22:54:23  rossini
+;; *** empty log message ***
+;;
 ;; Revision 1.46  1997/08/25 14:31:04  rossini
 ;; *** empty log message ***
 ;;
@@ -21,7 +24,7 @@
 ;; customizations in essd-r, essd-s+3 (thanks, DB).
 ;;
 ;; Revision 1.44  1997/07/26 01:55:32  rossini
-;; comint-process-echoes is nil if ess-proc-prefix is "XLS".
+;; comint-process-echoes is nil if ess-language is "XLS".
 ;;
 ;; Revision 1.43  1997/07/24 13:12:00  rossini
 ;; moved menu items.
@@ -331,7 +334,7 @@
 
 (defun ess-proc-name (n)
   "Return process name of process N, as a string."
-  (concat ess-proc-prefix (if (> n 1) n)))
+  (concat ess-dialect (if (> n 1) n)))
 
 ;; AJR: Moved S,R,XLS to ess-site.
 
@@ -364,14 +367,14 @@ when invoking S.
   ;;
   ;; Without prefix arg: switch to buffer of ess-local-process-name if it
   ;; exists, maybe starting a new process; If not, find first N
-  ;; s.t. there is no process `ess-proc-prefix'+N.
+  ;; s.t. there is no process `ess-dialect'+N.
   ;; Ask as above. 
   ;;
   ;; This function is primarily used to figure out the Process and
   ;; buffer names to use for inferior-ess.
 
   (interactive "P")
-  ;; set up for current language (need here, to get ess-proc-prefix,
+  ;; set up for current language (need here, to get ess-language,
   ;; etc).
   (set-buffer ess-dribble-buffer)
   (ess-setq-vars-default ess-customize-alist (current-buffer))
@@ -379,8 +382,10 @@ when invoking S.
   ;; run hooks now, to overwrite the above!
   (run-hooks 'ess-pre-run-hook)    
   (ess-write-to-dribble-buffer 
-   (format "(inferior-ess 1): ess-proc-prefix=%s, buf=%s \n"
-	   ess-proc-prefix (current-buffer)))
+   (format "(inferior-ess 1): ess-language=%s, ess-dialect=%s, buf=%s \n"
+	   ess-language
+	   ess-dialect
+	   (current-buffer)))
   (let* ((defdir (directory-file-name (or ess-directory default-directory)))
 ;;	(procname
 ;;	 (if n (ess-proc-name (prefix-numeric-value n))
@@ -456,11 +461,13 @@ when invoking S.
     ;; Now that we have the buffer, set buffer-local variables.
     (ess-setq-vars ess-customize-alist buf)
     (ess-write-to-dribble-buffer
-     (format "(inferior-ess 2): ess-proc-prefix=%s , buf=%s \n"
-	     ess-proc-prefix (current-buffer)))
+     (format "(inferior-ess 2): ess-language=%s, ess-dialect=%s buf=%s \n"
+	     ess-language
+	     ess-dialect
+	     (current-buffer)))
     (if startdir (setq default-directory startdir))
     (setq-default ess-history-file
-		  (concat "." ess-proc-prefix "history"))
+		  (concat "." ess-dialect "history"))
     (ess-multi procname buf)))
 
 ;; Old code:
@@ -738,7 +745,7 @@ Returns the name of the selected process."
 			       'require-match
 			       ;; If in S buffer, don't offer current process
 			       (if (eq major-mode 'inferior-ess-mode)
-				   ess-proc-prefix
+				   ess-language
 				 ess-current-process-name
 				 ;; maybe rather  ess-local-process-name IF exists
 				 ))))
@@ -756,7 +763,7 @@ If not, or  FORCE (prefix argument) is non-nil,
 prompt for a process name with PROMPT.
 ess-local-process-name is set to the name of the process selected."
   (interactive 
-   (list (concat ess-proc-prefix " process to use: ") current-prefix-arg))
+   (list (concat ess-dialect " process to use: ") current-prefix-arg))
   (if (and (not force) (ess-make-buffer-current))
       nil ; do nothing
     ;; Make sure the source buffer is attached to a process
@@ -1252,7 +1259,7 @@ to continue it."
   (comint-mode)
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq major-mode 'inferior-ess-mode)
-  (setq mode-name "iESS") ;;(concat "Inferior " ess-proc-prefix))
+  (setq mode-name "iESS") ;;(concat "Inferior " ess-language))
   (setq mode-line-process
 	'(" [" ess-local-process-name "]: %s"))
   (use-local-map inferior-ess-mode-map)
@@ -1265,16 +1272,21 @@ to continue it."
   ;;
   ;; except that XLS doesn't like it.  This is an ugly hack that ought 
   ;; to go into the dialect configuration...
-  (if (string= ess-proc-prefix "XLS")
+  (if (string= ess-language "XLS")
       (setq comint-process-echoes nil)
     (setq comint-process-echoes t))
 
   ;; AJR: add KH's fix.  This is ugly, change to do it right.
   ;; i.e. put it as a buffer local var, in S or R defuns...
-  (cond ((string= ess-proc-prefix "S")
-	 (setq comint-input-sender 'inferior-ess-input-sender))
-	((string= ess-proc-prefix "R")
-	 (setq comint-input-sender 'inferior-R-input-sender)))
+  (if (string= ess-language "S")
+      (cond ((string= ess-dialect "S3")
+	     (setq comint-input-sender 'inferior-ess-input-sender))
+	    ((string= ess-dialect "S4")
+	     (setq comint-input-sender 'inferior-ess-input-sender))
+	    ((string= ess-dialect "S+3")
+	     (setq comint-input-sender 'inferior-ess-input-sender))
+	    ((string= ess-dialect "R")
+	     (setq comint-input-sender 'inferior-R-input-sender))))
 
   ;; Font-lock support
   ;; AJR: This (the following local-var is already the case!   

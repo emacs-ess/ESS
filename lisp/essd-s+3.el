@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/25 14:31:04 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: essd-s+3.el,v 1.17 1997/08/25 14:31:04 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:54:23 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: essd-s+3.el,v 1.18 1997/08/26 22:54:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s+3.el,v $
+;;: Revision 1.18  1997/08/26 22:54:23  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.17  1997/08/25 14:31:04  rossini
 ;;: *** empty log message ***
 ;;:
@@ -73,20 +76,23 @@
 ;;; Autoloads:
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process")
+(autoload 'ess-mode     "ess-mode" "Edit an ESS process")
+
+;;; Definitions for Splus
 
 (defconst ess-help-S+3-sec-keys-alist
   '((?a . "ARGUMENTS:")
     (?b . "BACKGROUND:")
     (?B . "BUGS:")
-    (?d . "DETAILS:")
     (?D . "DESCRIPTION:")
+    (?d . "DETAILS:")
     (?e . "EXAMPLES:")
     (?n . "NOTE:")
     (?o . "OPTIONAL ARGUMENTS:")
+    (?R . "REFERENCES:") 
     (?r . "REQUIRED ARGUMENTS:")
-    (?R . "REFERENCES:")
-    (?s . "SIDE EFFECTS:")
     (?S . "SEE ALSO:")
+    (?s . "SIDE EFFECTS:")
     (?u . "USAGE:")
     (?v . "VALUE:"))
   "Alist of (key . string) pairs for use in section searching.")
@@ -100,8 +106,8 @@
 ; Code:
 
 (defvar S+3-customize-alist
-  '((ess-proc-prefix               . "S+")
-    (ess-version-running           . "3.3")
+  '((ess-language                  . "S")
+    (ess-dialect                   . "S+3")
     (ess-help-sec-regex            . ess-help-S+3-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-S+3-sec-keys-alist)
     (ess-loop-timeout              . 100000 )
@@ -124,7 +130,7 @@
   "Major mode for editing S+3 source.  See ess-mode for more help."
   (interactive)
 
-  (ess-mode proc-name ess-proc-prefix))
+  (ess-mode proc-name ess-language))
 
 
 (defun S+3 ()
@@ -133,8 +139,8 @@ New way to do it."
   (interactive)
   (setq ess-customize-alist S+3-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(S): ess-proc-prefix=%s , buf=%s \n"
-	   ess-proc-prefix
+   (format "(S): ess-dialect=%s , buf=%s \n"
+	   ess-dialect
 	   (current-buffer)))
   (inferior-ess))
 

@@ -5,9 +5,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: Anthony Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1997/07/24 11:21:22 $
-;; Version: $Revision: 1.4 $
-;; RCS: $Id: ess-help.el,v 1.4 1997/07/24 11:21:22 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:54:46 $
+;; Version: $Revision: 1.5 $
+;; RCS: $Id: ess-help.el,v 1.5 1997/08/26 22:54:46 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -32,6 +32,9 @@
 
 ;;
 ;; $Log: ess-help.el,v $
+;; Revision 1.5  1997/08/26 22:54:46  rossini
+;; *** empty log message ***
+;;
 ;; Revision 1.4  1997/07/24 11:21:22  rossini
 ;; ess-mode-version -> ESS-version
 ;;
@@ -337,7 +340,10 @@ Keystroke    Section
 
 (defun ess-find-help-file (p-string)
   (ess-make-buffer-current)
-  (let* ((help-files-list (ess-get-help-files-list))
+  (let* ((help-files-list  (or (ess-get-help-files-list)
+                              (mapcar 'list
+                                      (ess-get-object-list
+                                       ess-current-process-name))))
 	 (default (ess-read-helpobj-name-default help-files-list))
          (prompt-string (if default
                             (format "%s(default %s) " p-string default)
@@ -403,10 +409,10 @@ Keystroke    Section
   (let ((reporter-prompt-for-summary-p 't))
     (reporter-submit-bug-report
      "rossini@stat.sc.edu"
-     (concat "ess-mode " ESS-version)
+     (concat "ess-mode " ess-version)
      (list 'ess-program-name
-	   'ess-proc-prefix
-	   'ess-version-running
+	   'ess-language
+	   'ess-dialect
 	   'ess-ask-for-ess-directory
 	   'ess-ask-about-transfile
 	   'ess-directory

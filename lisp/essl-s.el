@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/08/26 21:49:12 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essl-s.el,v 1.1 1997/08/26 21:49:12 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:54:23 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essl-s.el,v 1.2 1997/08/26 22:54:23 rossini Exp $
 
 ;; This file is part of ess-mode
 
@@ -94,8 +94,8 @@
 
 
 (easy-menu-define
- ess-mode-menu essl-s-mode-map
- "Menu for use in ess-mode"
+ essl-s-mode-menu essl-s-mode-map
+ "Menu for use in essl-s-mode"
  '("S mode"
    ["Load file"  ess-load-file t]
    ("Eval and Go"
@@ -148,24 +148,24 @@
 
 (if (not (string-match "XEmacs" emacs-version))
     (progn
-      (if (featurep 'ess-mode)
+      (if (featurep 'essl-s-mode)
 	   (define-key essl-s-mode-map
-	     [menu-bar ess-mode]
-	     (cons "ess-mode" ess-mode-menu))
-	 (eval-after-load "ess-mode"
+	     [menu-bar essl-s-mode]
+	     (cons "essl-s-mode" essl-s-mode-menu))
+	 (eval-after-load "essl-s-mode"
 			  '(define-key essl-s-mode-map
-			     [menu-bar ess-mode]
-			     (cons "ess-mode"
-				   ess-mode-menu))))))
+			     [menu-bar essl-s-mode]
+			     (cons "essl-s-mode"
+				   essl-s-mode-menu))))))
 
-(defun ess-mode-xemacs-menu ()
-  "Hook to install ess-mode menu for XEmacs (w/ easymenu)"
-  (if 'ess-mode
-        (easy-menu-add ess-mode-menu)
-    (easy-menu-remove ess-mode-menu)))
+(defun essl-s-mode-xemacs-menu ()
+  "Hook to install essl-s-mode menu for XEmacs (w/ easymenu)"
+  (if 'essl-s-mode
+        (easy-menu-add essl-s-mode-menu)
+    (easy-menu-remove essl-s-mode-menu)))
 
 (if (string-match "XEmacs" emacs-version)
-    (add-hook 'ess-mode-hook 'ess-mode-xemacs-menu))
+    (add-hook 'essl-s-mode-hook 'essl-s-mode-xemacs-menu))
 
 (defun essl-s-mode (&optional proc-name type)
   "Major mode for editing S source.
@@ -173,7 +173,7 @@ Optional arg PROC-NAME is name of associated inferior process.
 
 \\{essl-s-mode-map}
 
-Customization: Entry to this mode runs the hooks in ess-mode-hook.
+Customization: Entry to this mode runs the hooks in essl-s-mode-hook.
 
 You can send text to the inferior S process from other buffers containing
 S source.
@@ -240,15 +240,15 @@ Variables controlling indentation style:
  ess-else-offset
     Extra indentation for line if it starts with `else'.
 
-Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
+Furthermore, \\[ess-set-style] command enables you to set up predefined essl-s-mode
 indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
  (quoted from C language style)."
   (interactive)
   (kill-all-local-variables)
-  (setq major-mode 'ess-mode)
+  (setq major-mode 'essl-s-mode)
   (setq mode-name (concat "ESS[" type "]")) ;; will be S.  
   (use-local-map essl-s-mode-map)
-  (set-syntax-table ess-mode-syntax-table)
+  (set-syntax-table essl-s-mode-syntax-table)
   (make-local-variable 'paragraph-start)
   (setq paragraph-start (concat "^$\\|" page-delimiter))
   (make-local-variable 'paragraph-separate)
@@ -277,10 +277,10 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
 	'(" [" (ess-local-process-name ess-local-process-name "none") "]"))
   ;; font-lock support
   (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults '(ess-mode-font-lock-keywords))
-  (run-hooks 'ess-mode-hook))
+  (setq font-lock-defaults '(essl-s-mode-font-lock-keywords))
+  (run-hooks 'essl-s-mode-hook))
 
-;;*;; User commands in ess-mode
+;;*;; User commands in essl-s-mode
 
 ;;;*;;; Handy commands
 
@@ -328,7 +328,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R' `C++'
     (re-search-forward "\\<\\w+\\>" nil t)
     (buffer-substring (match-beginning 0) (match-end 0))))
 
-;;; Original ess-mode 4.8.6 version
+;;; Original essl-s-mode 4.8.6 version
 ;;(defun ess-mark-function ()
 ;;  "Put mark at end of S function, point at beginning."
 ;;  (interactive)
@@ -393,7 +393,7 @@ Returns t if the buffer existed and was modified, but was not saved"
 		(set-buffer-modified-p t)
 		(save-buffer))
 	    (if (and (buffer-modified-p buff)
-		     (or ess-mode-silently-save
+		     (or essl-s-mode-silently-save
 			 (y-or-n-p
 			  (format "Save buffer %s first? "
 				  (buffer-name buff)))))
@@ -406,7 +406,7 @@ Returns t if the buffer existed and was modified, but was not saved"
   "Load an S source file into an inferior S process."
   (interactive (list
 		(or
-		 (and (eq major-mode 'ess-mode)
+		 (and (eq major-mode 'essl-s-mode)
 		      (buffer-file-name))
 		 (expand-file-name
 		  (read-file-name "Load S file: " nil nil t)))))
@@ -481,7 +481,7 @@ With prefix argument, only shows the errors S reported."
 		(setq fbuffer (find-file-noselect filename))
 		(save-excursion
 		  (set-buffer fbuffer)
-		  (ess-mode)))
+		  (essl-s-mode)))
 	      (pop-to-buffer fbuffer)
 	      (goto-line linenum))
 	    (princ errmess t))
@@ -912,7 +912,7 @@ Returns nil if line starts inside a string, t if in a comment."
 ;;;*;;; Predefined indentation styles
 
 (defun ess-set-style (&optional style)
-  "Set up the ess-mode style variables from the ess-style variable or if
+  "Set up the essl-s-mode style variables from the ess-style variable or if
   STYLE argument is given, use that.  It makes the S indentation style
   variables buffer local."
 
@@ -1022,7 +1022,7 @@ generate the source buffer."
     (ess-find-dump-file-other-window filename)
 
     ;; PD, 1Apr97
-    ;;This ensures that the object gets indented according to ess-mode,
+    ;;This ensures that the object gets indented according to essl-s-mode,
     ;;not as the R/S deparser does it. At the same time, it gets rid
     ;;of the mess generated by sending TAB characters to the readline
     ;;functions in R when you eval-buffer-*.
@@ -1049,7 +1049,7 @@ generate the source buffer."
 
   ;; Generate a buffer with the dumped data
   (find-file-other-window filename)
-  (ess-mode)
+  (essl-s-mode)
 
   (auto-save-mode 1)		; Auto save in this buffer
   (setq ess-local-process-name ess-current-process-name)
@@ -1076,7 +1076,7 @@ generate the source buffer."
 
 
 
-(provide 'ess-mode)
+(provide 'essl-s)
 
  ; Local variables section
 
@@ -1095,5 +1095,5 @@ generate the source buffer."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-mode.el ends here
+;;; essl-s.el ends here
 

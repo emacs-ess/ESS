@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/08/25 14:30:49 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: essd-sas.el,v 1.1 1997/08/25 14:30:49 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:54:23 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: essd-sas.el,v 1.2 1997/08/26 22:54:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-sas.el,v $
+;;: Revision 1.2  1997/08/26 22:54:23  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.1  1997/08/25 14:30:49  rossini
 ;;: Initial revision
 ;;:
@@ -74,18 +77,17 @@
 (defun SAS-mode (&optional proc-name)
   "Major mode for editing SAS source.  See ess-mode for more help."
   (interactive)
-  (setq ess-proc-prefix "SAS"
-        ess-default-style 'GNU)
-  (ess-mode proc-name ess-proc-prefix))
+
+  (ess-mode proc-name ess-language))
 
 ;;; Code:
 
 (defvar SAS-customize-alist
-  '((ess-proc-prefix      .         "SAS")
-    (ess-version-running  .         "SAS")
-    (inferior-ess-program .         inferior-SAS-program-name)
-    (ess-help-sec-regex   .         "^[A-Z. ---]+:$")
-    (ess-help-sec-keys-alist .      '((?a . "ARGUMENTS:")
+  '((ess-language                 . "SAS")
+    (ess-dialect                  . "SAS")
+    (inferior-ess-program         . inferior-SAS-program-name)
+    (ess-help-sec-regex           . "^[A-Z. ---]+:$")
+    (ess-help-sec-keys-alist      . '((?a . "ARGUMENTS:")
 				      (?b . "BACKGROUND:")
 				      (?B . "BUGS:")
 				      (?d . "DETAILS:")
@@ -99,29 +101,22 @@
 				      (?S . "SEE ALSO:")
 				      (?u . "USAGE:")
 				      (?v . "VALUE:")))
-    (inferior-ess-objects-command . "objects(%d)")
-                                     ;(if (string= ess-version-running "S3")
-				     ;    "objects(%d)"
-				     ;  "ls()")
-    (inferior-ess-help-command .    "help(\"%s\",pager=\"cat\",window=F)\n")
-	                             ;(if S-plus
-				     ; "help(\"%s\",pager=\"cat\",window=F)\n"
-				     ; "help(\"%s\")\n")
-    (inferior-ess-exit-command .    "q()\n")
-    (ess-loop-timeout              . 100000 )
-    (inferior-ess-primary-prompt   . "^\'")
-    (inferior-ess-secondary-prompt   . "+ ?"))
+    (inferior-ess-objects-command  . "objects(%d)")
+    (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
+    (inferior-ess-exit-command     . "q()\n")
+    (ess-loop-timeout              .  100000 )
+    (inferior-ess-primary-prompt   .  "^\'")
+    (inferior-ess-secondary-prompt . "+ ?"))
  "Variables to customize for SAS")
 
 
 (defun SAS ()
-  "Call 'SAS', from SAS Institute.
-New way to do it."
+  "Call 'SAS', from SAS Institute."
   (interactive)
   (setq ess-customize-alist SAS-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(SAS): ess-proc-prefix=%s , buf=%s \n"
-	   ess-proc-prefix
+   (format "(SAS): ess-dialect=%s , buf=%s \n"
+	   ess-dialect
 	   (current-buffer)))
   (inferior-ess))
 

@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/08/25 20:50:43 $
-;; Version: $Revision: 1.6 $
-;; RCS: $Id: essd-s3.el,v 1.6 1997/08/25 20:50:43 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:54:23 $
+;; Version: $Revision: 1.7 $
+;; RCS: $Id: essd-s3.el,v 1.7 1997/08/26 22:54:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -32,6 +32,9 @@
 
 ;;;
 ;;: $Log: essd-s3.el,v $
+;;: Revision 1.7  1997/08/26 22:54:23  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.6  1997/08/25 20:50:43  rossini
 ;;: MM's changes.
 ;;:
@@ -103,8 +106,8 @@
   "Help section keys for display.")
 
 (defvar S3-customize-alist
-  '((ess-proc-prefix               . "S")
-    (ess-version-running           . "S3")
+  '((ess-language                  . "S")
+    (ess-dialect                   . "S3")
     (inferior-ess-program          . inferior-S3-program-name) ;        "S")
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . S3-help-sec-keys-alist)
@@ -121,10 +124,10 @@
   "Call 'S 3.x', the version from AT&T."
   (interactive)
   (setq ess-customize-alist S3-customize-alist)
-  ;;  (ess-write-to-dribble-buffer
-  ;;   (format "(S): ess-proc-prefix=%s , buf=%s \n"
-  ;;	   ess-proc-prefix
-  ;;	   (current-buffer)))
+  (ess-write-to-dribble-buffer
+   (format "(S): ess-dialect=%s , buf=%s \n"
+	   ess-dialect
+	   (current-buffer)))
   (inferior-ess))
 
 

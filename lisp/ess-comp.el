@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/07/31 13:06:59 $
-;; Version: $Revision: 1.10 $
-;; RCS: $Id: ess-comp.el,v 1.10 1997/07/31 13:06:59 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:54:23 $
+;; Version: $Revision: 1.11 $
+;; RCS: $Id: ess-comp.el,v 1.11 1997/08/26 22:54:23 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -33,6 +33,9 @@
 
 ;;;
 ;;: $Log: ess-comp.el,v $
+;;: Revision 1.11  1997/08/26 22:54:23  rossini
+;;: *** empty log message ***
+;;:
 ;;: Revision 1.10  1997/07/31 13:06:59  rossini
 ;;: add byte compiler stuff again, when we release it.
 ;;:
@@ -84,8 +87,7 @@
 ;;
 ;;  (setq byte-optimize t))
 
-(require 'cl)
-;;(require 'cl-macs)  SHOULD NOT NEED THIS!
+;;(require 'cl)
 (require 'ess-vars)
 (require 'ess)
 (require 'ess-site)       ; order: so that any changes in ess-site

@@ -11,9 +11,9 @@
 ;;                       Kurt Hornik <hornik@ci.tuwien.ac.at>  <-- CHANGE
 ;;                       Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Modified: $Date: 1997/08/25 14:31:04 $
-;; Version: $Revision: 1.54 $
-;; RCS: $Id: ess.el,v 1.54 1997/08/25 14:31:04 rossini Exp $
+;; Modified: $Date: 1997/08/26 22:54:23 $
+;; Version: $Revision: 1.55 $
+;; RCS: $Id: ess.el,v 1.55 1997/08/26 22:54:23 rossini Exp $
 ;; Lisp-dir-entry  : ESS |
 ;;                   R. Heiberger, K. Hornik, M. Maechler, A.J. Rossini|
 ;;                   rossini@stat.sc.edu|
@@ -114,6 +114,9 @@
 
 ;;
 ;; $Log: ess.el,v $
+;; Revision 1.55  1997/08/26 22:54:23  rossini
+;; *** empty log message ***
+;;
 ;; Revision 1.54  1997/08/25 14:31:04  rossini
 ;; *** empty log message ***
 ;;
@@ -466,8 +469,8 @@
             (set (car pair) (eval (cdr pair))))
           alist)
   (ess-write-to-dribble-buffer 
-   (format "(ess-setq-vars): ess-proc-prefix=%s, buf=%s \n"
-           ess-proc-prefix buf)))
+   (format "(ess-setq-vars): ess-language=%s, buf=%s \n"
+           ess-language buf)))
 
 (defun ess-setq-vars-default (alist &optional buf) 
   "Set language variables from ALIST, in buffer `BUF', if desired."
@@ -476,8 +479,8 @@
             (set-default (car pair) (eval (cdr pair))))
           alist)
   (ess-write-to-dribble-buffer 
-   (format "(ess-setq-vars-default): ess-proc-prefix=%s, buf=%s \n"
-           ess-proc-prefix buf)))
+   (format "(ess-setq-vars-default): ess-language=%s, buf=%s \n"
+           ess-language buf)))
 
 ;;; versions thanks to Barry Margolin <barmar@bbnplanet.com>.
 ;;(defun ess-setq-vars (var-alist &optional buf) 
@@ -486,16 +489,16 @@
 ;;  (dolist (pair var-alist)
 ;;    (set (car pair) (eval (cdr pair))))
 ;;  (ess-write-to-dribble-buffer 
-;;    (format "(ess-setq-vars): ess-proc-prefix=%s, buf=%s \n"
-;;	   ess-proc-prefix buf)))
+;;    (format "(ess-setq-vars): ess-language=%s, buf=%s \n"
+;;	   ess-language buf)))
 ;;(defun ess-setq-vars-default (var-alist &optional buf) 
 ;;  "Set language variables from alist, in buffer `buf', if desired."
 ;;  (if buf (set-buffer buf))
 ;;  (dolist (pair var-alist)
 ;;    (set-default (car pair) (eval (cdr pair))))
 ;;  (ess-write-to-dribble-buffer 
-;;    (format "(ess-setq-vars-default): ess-proc-prefix=%s, buf=%s \n"
-;;	   ess-proc-prefix buf)))
+;;    (format "(ess-setq-vars-default): ess-language=%s, buf=%s \n"
+;;	   ess-language buf)))
 
 ;; Toby Speight <Toby.Speight@ansa.co.uk>
 ;;> ;; untested
