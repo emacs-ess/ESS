@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2000/06/05 20:30:29 $
-;; Version: $Revision: 1.1 $
-;; RCS: $Id: ess-cust.el,v 1.1 2000/06/05 20:30:29 ess Exp $
+;; Modified: $Date: 2000/06/05 20:33:03 $
+;; Version: $Revision: 1.2 $
+;; RCS: $Id: ess-cust.el,v 1.2 2000/06/05 20:33:03 ess Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -827,7 +827,7 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el"
   :group 'ess-command
   :type 'string)
 
-;; Fixme: This is S only
+
 (defcustom inferior-ess-names-command "names(%s)\n"
   "Format string for ess command to extract names from an object.
 
@@ -1170,4 +1170,4 @@ Used to store the values for passing on to newly created buffers.")
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-vars.el ends here
+;;; ess-cust.el ends here
