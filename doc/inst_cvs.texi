@@ -1,24 +1,27 @@
 
-There no longer is an anonymous CVS repository for ESS, due to lack of
-interest, little demand, and problems with security.
+@c There no longer is an anonymous CVS repository for ESS, due to lack of
+@c interest, little demand, and problems with security.
 
-@c The latest public version of ESS can also be retrieved via cvs client.  
-@c If you have a firewall, then you may need to take appropriate action.
+To get the latest development version of ESS, you need a subversion
+client `svn' configured with `--with-ssl' support.  You can then do:
 
-@c The repository name is
-@c @display
-@c :pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs
-@c @end display
+@example
+% svn checkout https://svn.r-project.org/ESS/trunk ess-svn
+@end example
+@noindent
+which will put the ESS files into a subdirectory called ess-svn.  Later,
+within that directory, `svn update' will bring that directory up to
+date.  Windows-based tools such as TortoiseSVN are also available for
+downloading the files.  Alternatively, you can browse the sources with a
+web browser at: @uref{https://svn.r-project.org/ESS/trunk, ESS SVN
+site}.  However, please use a subversion client instead to minimize the
+load when retrieving.
 
-@c Using a command-line cvs client (i.e. on Unix or DOS), first type:
-@c @display
-@c cvs -d :pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs login
-@c @end display
+If you remove other versions of ESS from your emacs load-path, you can
+then use the development version by adding the following to .emacs:
 
-@c The password is "anoncvs".
+@example
+(load "/path/to/ess-svn/lisp/ess-site.el") 
+@end example
 
-@c Then type:
-@c @display
-@c cvs -d :pserver:anoncvs@@cvs.analytics.washington.edu:/var/anoncvs co ess
-@c @end display
 
