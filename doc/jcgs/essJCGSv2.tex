@@ -63,7 +63,7 @@
 \usepackage{alltt}
 
 %% Postscript fonts
-%\usepackage{times}
+\usepackage{times}
 \usepackage{graphicx}
 %\usepackage{psfig}
 
@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/07 19:38:28 $ - $Revision: 1.160 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/12 16:31:47 $ - $Revision: 1.161 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -671,52 +671,41 @@ package goes directly to the editable \stexttt{*R*} buffer.}
   \label{f.ess-demo}
 \end{figure}
 
-
-
-
 \paragraph{Source-level Debugging}% Code Checking and Partial Code Evaluation.}
 ESS facilitates the editing of source code files, sets of commands
 written in the package's language by the statistical analyst, by
 providing a means for loading and error-checking small sections of
-code.  %This allows for source-level debugging of batch files.
-
-ESS does this in several ways:%.
-\begin{enumerate}
-\item %The simplest is by displaying the code with
-  Syntactic highlighting of code, which makes immediately evident the
-  presence of unbalanced parentheses and mismatched or unterminated
-  quotes.% are immediately evident.
-
-\item %Next is by 
-  Providing a simple and consistent way to submit natural units of the
-  code (function definitions in S or \XLispStat, \stexttt{PROC \dots
-    RUN;} sections in \SAS) for execution.  The relevant lines of the
-  code are highlighted and sent over to the executing statistical
-  program using functions which have both associated menus and keybindings.
+code.  This is done through several mechanisms.  First, syntactic
+highlighting of code makes immediately evident the presence of
+unbalanced parentheses and mismatched or unterminated quotes.  Second,
+by providing functions for simple and consistent evaluation of
+user-specified or natural units of the code (function definitions in S
+or \XLispStat, \stexttt{PROC \dots
+  RUN;} sections in \SAS).% for execution.  The relevant lines of the
+%code are highlighted and sent over to the executing statistical
+%program using functions which have both associated menus and
+%keybindings.
   %% by mapped key commands (saving the wrists and elbows from
   %% the ergonomic strain of perpetually moving a mouse from one window
   %% to another).
-  If they execute correctly, the user goes to the next
-  section of code.  If not, the user edits the current section and
-  resends the revised lines.
-  
-  Emacs can send individual lines, entire function definitions, marked
-  regions, and whole buffers to the statistical analysis package for
-  execution.  Emacs sends the code directly to the statistical package
-  and receives the resulting output, if any, immediately in an
-  editable Emacs buffer.  This is a major improvement over
-  cut-and-paste as it does not require switching between buffers or
-  windows.
-  
-  Once the code is verified, an entire buffer, or file, of code can be
-  sent to the package as a unit.  This file can also be used as a
-  batch file for routine analysis at a later time.
-
-\item Output from the statistics package is normally sent directly to
-  an Emacs buffer, from which it can be edited and searched.
-  Particular forms of output such as requests for help pages and
-  log-file output can be diverted into special buffers with modes
-  crafted to facilitate reading.   These modes include tools for 
+For this usage, correct execution lets the user evaluate the next
+section of code; if errors arise, the user edits the current section
+and reevaluates.
+%  Emacs can send individual lines, entire function definitions, marked
+%  regions, and whole buffers to the statistical analysis package for
+%  execution.  Emacs sends the code directly to the statistical package
+%  and receives the resulting output, if any, immediately in an
+%  editable Emacs buffer.  This is a major improvement over
+%  cut-and-paste as it does not require switching between buffers or
+%  windows.
+Once the code is verified, an entire buffer, or file, of code can be
+sent to the package as a unit.  This file can also be used as a batch
+file for routine analysis at a later time.  Finally, output from the
+statistics package is normally sent directly to an Emacs buffer, from
+which it can be edited and searched.  Particular forms of output such
+as requests for help pages and log-file output can be diverted into
+special buffers with modes crafted to facilitate reading.  These modes
+include tools for
   %, such as help output..  There are
 %  several advantages to this destination.
 %  There is no need to copy output %%from a static window
@@ -729,15 +718,13 @@ ESS does this in several ways:%.
 %  are sending over a few lines at a time, we find it very easy to
 %  localize the probable location of the error.  With \SAS\ log files,
   %we 
-  automatically placing the cursor on the first \stexttt{ERROR},
-  for example in \SAS\ and S. %in =SAS and 
-
+automatically placing the cursor on the first \stexttt{ERROR},
+for example in \SAS\ and S. %in =SAS and 
 % THIS REPEATS #2 above.
 %\item An entire buffer, or file, of code can be sent to the package as
 %  a unit once the code is clean.  The file can also be used as a batch
 %  file for routine analysis at a later time.  This is a different
-
-\end{enumerate}
+%\end{enumerate}
 
 \paragraph{Interactive transcripts.}
 A transcript is a record of all commands entered by the analyst and
