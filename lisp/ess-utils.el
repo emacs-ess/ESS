@@ -6,9 +6,9 @@
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Modified: $Date: 2002/07/31 02:37:23 $
-;; Version: $Revision: 5.15 $
-;; RCS: $Id: ess-utils.el,v 5.15 2002/07/31 02:37:23 rsparapa Exp $
+;; Modified: $Date: 2002/08/07 16:22:57 $
+;; Version: $Revision: 5.16 $
+;; RCS: $Id: ess-utils.el,v 5.16 2002/08/07 16:22:57 rsparapa Exp $
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -190,8 +190,13 @@ directory that you specify with the same name, but without the
      
 	(if (string-equal ess-kermit-prefix (substring ess-temp-file 0 1)) 
 	  (progn
-	    (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
-	  	ess-kermit-remote-directory))
+;; I think there is a bug in the buffer-local variable handling in GNU Emacs 21.3
+;; Setting ess-kermit-remote-directory every time is somehow resetting it to the
+;; default on the second pass.  So, here's a temporary work-around.  It will fail
+;; if you change the default, so we need to re-visit this in later versions.
+	    (if (string-equal "$HOME" ess-kermit-remote-directory)
+		(setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
+		    ess-kermit-remote-directory)))
 
 	  (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
 ;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
@@ -226,9 +231,14 @@ directory with the same name, but without the `ess-kermit-prefix'."
      
 	(if (string-equal ess-kermit-prefix (substring (file-name-nondirectory ess-temp-file) 0 1)) 
 	  (progn
-		
-	  (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file to: "
-	    ess-kermit-remote-directory))
+;; I think there is a bug in the buffer-local variable handling in GNU Emacs 21.3
+;; Setting ess-kermit-remote-directory every time is somehow resetting it to the
+;; default on the second pass.  So, here's a temporary work-around.  It will fail
+;; if you change the default, so we need to re-visit this in later versions.
+	    (if (string-equal "$HOME" ess-kermit-remote-directory)		
+	        (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file to: "
+		    ess-kermit-remote-directory)))
+
 	  (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
 		
 ;;	  (setq ess-temp-file (substring ess-temp-file (match-end 0)))
