@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1998/04/17 12:29:46 $
-;; Version: $Revision: 5.2 $
-;; RCS: $Id: essd-sas.el,v 5.2 1998/04/17 12:29:46 maechler Exp $
+;; Modified: $Date: 1999/02/10 23:25:35 $
+;; Version: $Revision: 5.3 $
+;; RCS: $Id: essd-sas.el,v 5.3 1999/02/10 23:25:35 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -211,6 +211,27 @@ Better logic needed!  (see 2 uses, in this file).")
     (inferior-ess)))
 
 
+(defun ess-multi-frame-SAS ()
+  "Put running SAS buffers into separate frames.
+Load this function M-x load-file essx-sas.el RET.
+Then find-file myfile.sas.  If myfile.sas is already in a buffer, kill-buffer
+it and then find-file it again.
+Place the cursor in a myfile.sas buffer.  Run SAS with M-x SAS,
+Return the cursor to the myfile.sas buffer,
+then enter C-c C-w to put *SAS* *SAS.log* *SAS.lst* buffers into
+their own frames."
+  (interactive)
+  (delete-other-windows)
+  (save-excursion       
+      (set-buffer "*SAS*")
+      (make-frame)
+      (set-buffer "*SAS.log*")
+      (make-frame)
+      (set-buffer "*SAS.lst*")
+      (make-frame)))
+
+
+(define-key ess-mode-map "\C-c\C-w"        'ess-multi-frame-SAS)
 
  ; Provide package
 
@@ -234,6 +255,3 @@ Better logic needed!  (see 2 uses, in this file).")
 ;;; End:
 
 ;;; essd-sas.el ends here
-
-
-
