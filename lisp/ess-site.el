@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/06/08 13:11:12 $
-;; Version: $Revision: 5.53 $
-;; RCS: $Id: ess-site.el,v 5.53 2000/06/08 13:11:12 ess Exp $
+;; Modified: $Date: 2000/06/28 08:29:41 $
+;; Version: $Revision: 5.54 $
+;; RCS: $Id: ess-site.el,v 5.54 2000/06/28 08:29:41 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -53,6 +53,7 @@
 ;;;      (setq load-path (cons "/path/to/ess/lisp-directory" load-path)
 ;;;
 
+;; Shouldn't this be at the *end*, when we are sure no error made this stop?
 (provide 'ess-site)
 
 ;;; Code:
