@@ -266,6 +266,8 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
   (define-key ess-help-mode-map "\177" 'scroll-down) ; DEL
   (define-key ess-help-mode-map "s" ess-help-sec-map)
   (define-key ess-help-mode-map "h" 'ess-display-help-on-object)
+;; TODO: `electric mouse-2'
+;; (define-key ess-help-mode-map [mouse-2] 'ess-display-help-on-object)
   (define-key ess-help-mode-map "l" 'ess-eval-line-and-step)
   (define-key ess-help-mode-map "r" 'ess-eval-region-and-go)
   (define-key ess-help-mode-map "n" 'ess-skip-to-next-section)
