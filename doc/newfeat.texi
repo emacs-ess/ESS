@@ -1,3 +1,11 @@
+Changes/New Features in 5.1.12:
+@itemize @bullet
+@item Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
+      Chuck Taylor, and others.
+@item More fixes to SAS mode, thanks to Rodney Sparapani
+      (@email{spara002@@duke.edu}) and Rich Heiberger
+      (@email{rmh@@surfer.stat.temple.edu}). 
+@end itemize
 
 Changes/New Features in 5.1.11:
 @itemize @bullet
@@ -9,7 +17,6 @@ Changes/New Features in 5.1.11:
 @item Fixes to SAS mode, thanks to Rodney Sparapani
       (@email{spara002@@duke.edu}) 
 @end itemize
-
 
 Changes/New Features in 5.1.10:
 @itemize @bullet
