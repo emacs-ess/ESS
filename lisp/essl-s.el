@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/10/21 21:45:21 $
-;; Version: $Revision: 1.17 $
-;; RCS: $Id: essl-s.el,v 1.17 1997/10/21 21:45:21 rossini Exp $
+;; Modified: $Date: 1997/10/23 13:03:51 $
+;; Version: $Revision: 1.18 $
+;; RCS: $Id: essl-s.el,v 1.18 1997/10/23 13:03:51 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -34,37 +34,6 @@
 
  ; Requires and autoloads
 
-
-;;;;* Alias S-mode to s-mode
-;;; Emacs will set the mode for a file based on the file's header.
-;;; The mode name is indicated by putting it between -*- on the top line. 
-;;; (Other commands can go here too, see an Emacs manual.)
-;;; For a file you also load, you will want a leading # (comment to S)
-;;; Emacs will downcase the name of the mode, e.g., S, so we must provide
-;;; s-mode in lower case too.  That is, "#-*- S-*-" invokes s-mode and 
-;;; not S-mode.
-(fset 's-mode 'S-mode)
-(fset 'r-mode 'R-mode)
-
-
- ; ess-transcript-mode
-
-(autoload 'ess-transcript-mode "ess-trns"
-  "Major mode for editing S transcript files" t)
-
-(defun s-transcript-mode ()
-  "Does the right thing."
-  (ess-transcript-mode S+3-customize-alist))
-
-(fset 'S-transcript-mode 's-transcript-mode)
-(fset 'S+3-transcript-mode 's-transcript-mode)
-
-
-(defun r-transcript-mode ()
-  "Does the right thing."
-  (ess-transcript-mode R-customize-alist))
-
-(fset 'R-transcript-mode 'r-transcript-mode)
 
 
  ; Configuration variables

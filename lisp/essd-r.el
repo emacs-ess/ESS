@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/10/23 13:00:11 $
-;; Version: $Revision: 1.43 $
-;; RCS: $Id: essd-r.el,v 1.43 1997/10/23 13:00:11 rossini Exp $
+;; Modified: $Date: 1997/10/23 13:00:41 $
+;; Version: $Revision: 1.44 $
+;; RCS: $Id: essd-r.el,v 1.44 1997/10/23 13:00:41 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -74,6 +74,8 @@
   (interactive)
   (setq-default ess-customize-alist R-customize-alist)
   (ess-mode R-customize-alist proc-name))
+
+(fset 'r-mode 'R-mode)
 
 
 (defun R ()

@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/10/21 14:01:30 $
-;; Version: $Revision: 1.15 $
-;; RCS: $Id: essl-sas.el,v 1.15 1997/10/21 14:01:30 rossini Exp $
+;; Modified: $Date: 1997/10/23 13:07:38 $
+;; Version: $Revision: 1.16 $
+;; RCS: $Id: essl-sas.el,v 1.16 1997/10/23 13:07:38 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -47,8 +47,7 @@
 
 (require 'ess-mode)
 
-(autoload 'SAS-transcript-mode
-  "ess-trns" "ESS source eval mode" t)
+(autoload 'ess-transcript-mode "ess-trns" "ESS source eval mode" t)
 
 (defun SAS-log-mode ()
    "Does the right thing."
