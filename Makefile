@@ -1,4 +1,4 @@
-## $Id: Makefile,v 5.50 2002/01/04 02:34:54 ess Exp $
+## $Id: Makefile,v 5.51 2002/02/07 18:26:41 rsparapa Exp $
 ## Top Level Makefile
 
 include ./Makeconf
@@ -123,8 +123,8 @@ rel: ChangeLog dist
 	@echo "** Tagging the release **"
 	cvs tag -R $(ESSVERSIONTAG)
 	@echo "** Placing tar and zip files **"
-	scp ess-$(ESSVERSION).tar.gz ess@franz.stat.wisc.edu:~/public_html
-	scp ess-$(ESSVERSION).zip    ess@franz.stat.wisc.edu:~/public_html
+	scp ess-$(ESSVERSION).tar.gz software.biostat.washington.edu:/home/ess/downloads
+	scp ess-$(ESSVERSION).zip    software.biostat.washington.edu:/home/ess/downloads
 
 doc/ess.info doc/ess.info-1 doc/ess.info-2 doc/ess.info-3: doc/ess.texi
 	$(MAKE) docs
