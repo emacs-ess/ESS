@@ -7,9 +7,9 @@
 ;; Maintainer: Rodney Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2002/01/16 20:04:53 $
-;; Version: $Revision: 1.75 $
-;; RCS: $Id: essa-sas.el,v 1.75 2002/01/16 20:04:53 rmh Exp $
+;; Modified: $Date: 2002/01/16 22:01:22 $
+;; Version: $Revision: 1.76 $
+;; RCS: $Id: essa-sas.el,v 1.76 2002/01/16 22:01:22 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -134,6 +134,13 @@ or `ESS-elsewhere' should have one of the following in ~/.emacs
 
 (defcustom ess-sas-suffix-2 "dat"
     "*The ess-sas-suffix-2 file to perform operations on."
+    :group 'ess-sas
+    :type  'string
+)
+
+(defcustom ess-sas-suffix-regexp "[tT][xX][tT]\\|[dD][aA][tT]"
+    "*Regular expression for `ess-sas-suffix-1' and 
+`ess-sas-suffix-2' files."
     :group 'ess-sas
     :type  'string
 )
@@ -352,14 +359,13 @@ on the way."
 
 (defun ess-sas-goto (suffix &optional revert)
   "Find a file associated with a SAS file by suffix and revert if necessary."
-    (save-match-data 
-	(if (or (string-match 
-	    "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)\\(@.+\\)?" 
-	    (expand-file-name (buffer-name)))
+    (let ((ess-temp-regexp (concat
+	    "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|" 
+	    ess-sas-suffix-regexp "\\)\\(@.+\\)?")))
+	(save-match-data 
+	(if (or (string-match ess-temp-regexp (expand-file-name (buffer-name)))
 	
-	    (string-match 
-	    "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)\\(@.+\\)?" 
-	    ess-sas-file-path))
+	    (string-match ess-temp-regexp ess-sas-file-path))
 
 	(progn
 	    (ess-sas-file-path)
@@ -372,7 +378,7 @@ on the way."
 	    (find-file ess-sas-temp-file))
 	
 	  (if revert (ess-revert-wisely))
-)))))
+))))))
 
 (defun ess-sas-file (suffix &optional revert)
   "Please use `ess-sas-goto' instead."
@@ -395,10 +401,11 @@ on the way."
  "Define the variable `ess-sas-file-path' to be the file in the current buffer"
   (interactive)
 
-  (save-match-data (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
-    (if (string-match 
-	"[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|[tT][xX][tT]\\)" 
-	ess-sas-temp-file) 
+  (save-match-data (let ((ess-sas-temp-file (expand-file-name (buffer-name)))
+    (ess-temp-regexp (concat
+	"[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]\\|"
+	ess-sas-suffix-regexp "\\)"))) 
+    (if (string-match ess-temp-regexp ess-sas-temp-file) 
 	(setq ess-sas-file-path (nth 0 (split-string ess-sas-temp-file "[<]")))))))
 
 (defun ess-sas-goto-file-1 ()
