@@ -1,7 +1,7 @@
 /* XPM */
 static char *switch_ess[]={
 "24 24 13 1",
-". c None",
+". c None s backgroundToolBarColor",
 "a c #000000",
 "e c #131313",
 "# c #1532ed",
