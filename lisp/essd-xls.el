@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Modified: $Date: 1997/09/01 18:22:43 $
-;; Version: $Revision: 1.26 $
-;; RCS: $Id: essd-xls.el,v 1.26 1997/09/01 18:22:43 rossini Exp $
+;; Modified: $Date: 1997/09/01 19:51:45 $
+;; Version: $Revision: 1.27 $
+;; RCS: $Id: essd-xls.el,v 1.27 1997/09/01 19:51:45 rossini Exp $
 ;;
 ;; Keywords: Statistics
 
@@ -43,7 +43,7 @@
 (defvar XLS-customize-alist
   '((ess-language                  .  "XLS"               )
     (ess-dialect                   .  "XLS"               )
-    (ess-editing-alist             .  XLS-editing-alist   )
+    (ess-mode-editing-alist             .  XLS-editing-alist   )
     (ess-loop-timeout              .  10000               )
     (ess-object-name-db-file       .  "ess-xls-namedb.el" )
     (ess-help-sec-regex            .  " ")
