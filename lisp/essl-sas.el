@@ -5,9 +5,9 @@
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 1997/09/01 18:54:59 $
-;; Version: $Revision: 1.2 $
-;; RCS: $Id: essl-sas.el,v 1.2 1997/09/01 18:54:59 rossini Exp $
+;; Modified: $Date: 1997/09/01 19:44:45 $
+;; Version: $Revision: 1.3 $
+;; RCS: $Id: essl-sas.el,v 1.3 1997/09/01 19:44:45 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -69,6 +69,14 @@
   "*If t (and sas-notify is also t), causes emacs to create a
 popup window when the SAS job is finished.")
 (defvar sas-tmp-libname "_tmp_" "*Libname to use for sas-get-dataset.")
+
+(defvar sas-file-name nil)
+(defvar sas-buffer-name nil)
+(defvar sas-file-root nil)
+(defvar sas-submitable nil)
+(defvar sas-dataset nil)
+
+
 
 (defvar SAS-mode-font-lock-keywords
   '(("/\\*.\\*/"       . font-lock-comment-face)
@@ -275,9 +283,12 @@ OFFSET to actual page number."
     (goto-char (point-min))
     (replace-regexp "^\f\\(.+\\)" "\f\n\\1")
     (goto-char (point-min))
-    (replace-regexp "$" "")
+    (replace-regexp "
+$" "")
     (goto-char (point-min))
-    (replace-regexp "\\([^\\$]+\\)" "\n\\1")
+    (replace-regexp "
+\\([^
+\\$]+\\)" "\n\\1")
     (goto-char (point-max))
     (if (not (bobp))
         (progn (backward-char 1)
@@ -382,12 +393,12 @@ is automatically sets to t."
   "Switches to sas source file associated with the current file"
   (interactive)
      (switch-to-sas-file-other-window "log"))
- 
-;; (defun switch-to-sas-file (suff &optional revert silent)
-;;   "Switches to sas \"SUFF\" file associated with the current file"
-;;   (let* ((sfile sas-file-name)
-;;          (buf (get-file-buffer (concat sfile "." suff)))
-;;          (sas-require-confirmation
+
+;;(defun switch-to-sas-file (suff &optional revert silent)
+;;  "Switches to sas \"SUFF\" file associated with the current file"
+;;  (let* ((sfile sas-file-name)
+;;	 (buf (get-file-buffer (concat sfile "." suff)))
+;;	 (sas-require-confirmation
 ;;           (and sas-require-confirmation (not revert))))
 ;;     (if (or sas-require-confirmation (string-equal suff "sas") (not buf))
 ;;         (find-file (concat sfile "." suff))
@@ -403,35 +414,36 @@ is automatically sets to t."
 ;;     (if (not (string-equal major-mode "sasl-mode"))
 ;;         (sasl-mode))))
 ;; 
-;; (defun switch-to-sas-file-other-window (suff)
-;;   "Switches to sas \"SUFF\" file associated with the current file"
-;;   (let* ((sfile sas-file-name)
-;;          (buf (get-file-buffer (concat sfile "." suff))))
-;;     (if (or sas-require-confirmation (string-equal suff "sas") (not buf))
-;;         (find-file-other-window (concat sfile "." suff))
-;;       (progn (switch-to-buffer-other-window buf)
-;;              (if (not (verify-visited-file-modtime (current-buffer)))
-;;                  (progn (revert-buffer t t)
-;;                         (message "File has changed on disk.  Buffer automatically updated.")))))
-;;     (setq sas-file-name sfile))
-;;   (if (string-equal suff "sas")
-;;       (if (not (string-equal major-mode "sas-mode"))
-;;           (sas-mode))
-;;     (if (not (string-equal major-mode "sasl-mode"))
-;;         (sasl-mode))))
+;;(defun switch-to-sas-file-other-window (suff)
+;;  "Switches to sas \"SUFF\" file associated with the current file"
+;;  (let* ((sfile sas-file-name)
+;;	 (buf (get-file-buffer (concat sfile "." suff))))
+;;    (if (or sas-require-confirmation (string-equal suff "sas") (not buf))
+;;	(find-file-other-window (concat sfile "." suff))
+;;      (progn (switch-to-buffer-other-window buf)
+;;	     (if (not (verify-visited-file-modtime (current-buffer)))
+;;		 (progn (revert-buffer t t)
+;;			(message "File has changed on disk.  Buffer automatically updated.")))))
+;;    (setq sas-file-name sfile))
+;;  (if (string-equal suff "sas")
+;;      (if (not (string-equal major-mode "sas-mode"))
+;;	  ;;(sas-mode)
+;;	  )
+;;    (if (not (string-equal major-mode "sasl-mode"))
+;;	;;(sasl-mode)
+;;	)))
 
 (defun switch-to-sas-file (suff)
   "Switches to sas \"SUFF\" file associated with the current file"
-  (switch-to-buffer (set-sas-file-buffer suff))
-  )
+  (switch-to-buffer (set-sas-file-buffer suff)))
 
 (defun switch-to-sas-file-other-window (suff)
   "Switches to sas \"SUFF\" file associated with the current file"
-  (switch-to-buffer-other-window (set-sas-file-buffer suff))
-  )
+  (switch-to-buffer-other-window (set-sas-file-buffer suff)))
 
 ;;  The following was created 6/7/94 to handle buffers without messing up
 ;;  windows.
+
 (defun set-sas-file-buffer (suff &optional revert silent)
   "Sets current buffer to sas \"SUFF\" file associated with the current file"
   (let* ((sfile sas-file-name)
@@ -448,9 +460,11 @@ is automatically sets to t."
     (setq sas-file-name sfile))
   (if (string-equal suff "sas")
       (if (not (string-equal major-mode "sas-mode"))
-          (sas-mode))
+          ;;(sas-mode)
+	  )
     (if (not (string-equal major-mode "sasl-mode"))
-        (sasl-mode)))
+	;;(sasl-mode)
+	))
   (current-buffer))
 
 (defun switch-to-sas-process-buffer ()
@@ -486,7 +500,7 @@ is automatically sets to t."
           (set-sas-file-name))
         (let ((sas-file sas-file-name)
 	      (sas-root sas-file-root)
-	      (sas-buf  sas-buffer-name)
+	      ;;(sas-buf  sas-buffer-name)
 	      proc-name
 	      buf)
 
@@ -556,10 +570,9 @@ is automatically sets to t."
     (goto-char (point-max))
     (insert msg)
     (bury-buffer (get-buffer sbuf))
-    (if (and sas-notify-popup window-system)
-        (x-popup-dialog
-         t
-         (list "SAS Menu" (cons msg  nil) )))
+    ;;(if (and sas-notify-popup window-system)
+    ;;    (x-popup-dialog t
+    ;;		(list "SAS Menu" (cons msg  nil) )))
     ;;(if (not (minibuffer-window-active-p)) (princ msg))
     (princ msg)
     )))
@@ -568,48 +581,48 @@ is automatically sets to t."
 
 ;; 5/2/94 Modified run-sas-on-region to separate log and output buffers.
 ;; 
-(defun run-sas-on-region (start end append &optional buffer)
-  "Submit region to SAS"
-  (interactive "r\nP")
-  (message "----  Running SAS  ----")
-  (let ((sfile sas-file-name)
-        (shell-file-name "/bin/sh")
-        serror buff)
-    (setq buffer (or buffer "*SAS output*"))
-    (save-excursion
-      (shell-command-on-region
-       start end;; added sas-program 
-       (concat sas-program " -nonews -stdio 2> /tmp/_temp_.log" nil))
-      (get-buffer-create "*SAS Log*")
-      (save-window-excursion
-        (switch-to-buffer "*SAS Log*")
-        (erase-buffer)
-        (insert-file-contents "/tmp/_temp_.log")
-        (delete-file "/tmp/_temp_.log")
-        (setq serror (re-search-forward "^ERROR" nil t))
-        (if serror () (bury-buffer)))
-      (setq buff (get-buffer-create buffer))
-      (save-window-excursion
-        (switch-to-buffer buff)
-        (setq sas-file-name sfile)
-        (if append
-            (progn
-              (end-of-buffer)
-              (insert "\f\n"))
-          (erase-buffer))
-        (if (get-buffer "*Shell Command Output*")
-            (progn (insert-buffer "*Shell Command Output*")
-                   (kill-buffer "*Shell Command Output*"))
-          (insert "SAS completed with no output."))
-        (if append () (sasl-mode))
-        (message "----  SAS Complete ----")))
-    (if (not serror)
-        (switch-to-buffer-other-window  buff)
-      (switch-to-buffer-other-window "*SAS Log*")
-      (goto-char serror)
-      (beep)
-      (message "Error found in log file.")
-      )))
+;;(defun run-sas-on-region (start end append &optional buffer)
+;;  "Submit region to SAS"
+;;  (interactive "r\nP")
+;;  (message "----  Running SAS  ----")
+;;  (let ((sfile sas-file-name)
+;;        (shell-file-name "/bin/sh")
+;;        serror buff)
+;;    (setq buffer (or buffer "*SAS output*"))
+;;    (save-excursion
+;;      (shell-command-on-region
+;;       start end;; added sas-program 
+;;       (concat sas-program " -nonews -stdio 2> /tmp/_temp_.log" nil))
+;;      (get-buffer-create "*SAS Log*")
+;;      (save-window-excursion
+;;        (switch-to-buffer "*SAS Log*")
+;;        (erase-buffer)
+;;        (insert-file-contents "/tmp/_temp_.log")
+;;        (delete-file "/tmp/_temp_.log")
+;;        (setq serror (re-search-forward "^ERROR" nil t))
+;;        (if serror () (bury-buffer)))
+;;      (setq buff (get-buffer-create buffer))
+;;      (save-window-excursion
+;;        (switch-to-buffer buff)
+;;        (setq sas-file-name sfile)
+;;        (if append
+;;            (progn
+;;              (end-of-buffer)
+;;              (insert "\f\n"))
+;;          (erase-buffer))
+;;        (if (get-buffer "*Shell Command Output*")
+;;            (progn (insert-buffer "*Shell Command Output*")
+;;                   (kill-buffer "*Shell Command Output*"))
+;;          (insert "SAS completed with no output."))
+;;        (if append () (sasl-mode))
+;;        (message "----  SAS Complete ----")))
+;;    (if (not serror)
+;;        (switch-to-buffer-other-window  buff)
+;;      (switch-to-buffer-other-window "*SAS Log*")
+;;      (goto-char serror)
+;;      (beep)
+;;      (message "Error found in log file.")
+;;      )))
   
 (defun switch-to-dataset-log-buffer ()
   "Switch to log buffer for run-sas-on-region."
@@ -621,64 +634,64 @@ is automatically sets to t."
   (interactive)
   (switch-to-buffer-other-window (format " *sas-tmp-%s*" sas-dataset)))
 
-(defun sas-get-dataset (filename &optional arg opts-p append buffer vars)
-  "Run proc contents and proc print on SAS dataset.  Automatically prompts 
-for SAS options to use.  Default options are defined by the variable
-`sas-get-options'.  Output may be updated from within output buffer with
-C-cr if dataset changes.  Also, the source code which generates the output
-may be edited with C-cs.  Typing C-cr within the output buffer reexecutes
-the (modified) source code."
-  (interactive "fName of SAS dataset (file name):")
-  (let ((file (file-name-nondirectory filename))
-        (dir (file-name-directory filename))
-        (opts sas-get-options)
-        (minibuffer-history sas-get-options-history)
-        buf fsize)
-    (setq buffer (or buffer (concat "*" file "*")))
-    (setq opts (if opts-p opts (read-string "SAS options: " opts)))
-    (setq sas-get-options-history minibuffer-history)
-    (cond ((string-match (substring file -6 nil) "\\.ssd01")
-      (setq file (substring file 0 (- (length file) 6))))
-    (t (error "This file is not a SAS dataset.")))
-    (setq buf (format " *sas-tmp-%s*" file))
-    (get-buffer-create buf)
-    (save-window-excursion
-      (switch-to-buffer buf)
-      (erase-buffer)
-      (setq default-directory dir)
-      (if opts 
-          (insert (format "options  %s ;\n" opts)))
-      (insert (format "title \"Contents of SAS dataset `%s'\" ;\n" file))
-      (insert (format "libname %s '%s' ;\n" sas-tmp-libname dir))
-      (if (not (equal arg 1))
-               (insert (format "proc contents data = %s.%s ;\n" sas-tmp-libname file)))
-      (if (equal arg 2) ()
-        (insert (format "proc print data = %s.%s ;\n" sas-tmp-libname file))
-        (if vars (insert (format "  var %s ;\n" vars))))
-      (run-sas-on-region (point-min) (point-max) append
-                         buffer)
-      (get-buffer buffer)
-      (if append () (sasd-mode))  ;; added 5/5/94 
-      (setq sas-dataset file))
-    (if (get-buffer-window buffer t)
-        (raise-frame (window-frame (get-buffer-window buffer t)))
-    (display-buffer buffer (not append)))
-    ))
+;;(defun sas-get-dataset (filename &optional arg opts-p append buffer vars)
+;;  "Run proc contents and proc print on SAS dataset.  Automatically prompts 
+;;for SAS options to use.  Default options are defined by the variable
+;;`sas-get-options'.  Output may be updated from within output buffer with
+;;C-cr if dataset changes.  Also, the source code which generates the output
+;;may be edited with C-cs.  Typing C-cr within the output buffer reexecutes
+;;the (modified) source code."
+;;  (interactive "fName of SAS dataset (file name):")
+;;  (let ((file (file-name-nondirectory filename))
+;;        (dir (file-name-directory filename))
+;;        (opts sas-get-options)
+;;        (minibuffer-history sas-get-options-history)
+;;        buf); fsize)
+;;    (setq buffer (or buffer (concat "*" file "*")))
+;;    (setq opts (if opts-p opts (read-string "SAS options: " opts)))
+;;    (setq sas-get-options-history minibuffer-history)
+;;    (cond ((string-match (substring file -6 nil) "\\.ssd01")
+;;      (setq file (substring file 0 (- (length file) 6))))
+;;    (t (error "This file is not a SAS dataset.")))
+;;    (setq buf (format " *sas-tmp-%s*" file))
+;;    (get-buffer-create buf)
+;;    (save-window-excursion
+;;      (switch-to-buffer buf)
+;;      (erase-buffer)
+;;      (setq default-directory dir)
+;;      (if opts 
+;;          (insert (format "options  %s ;\n" opts)))
+;;      (insert (format "title \"Contents of SAS dataset `%s'\" ;\n" file))
+;;      (insert (format "libname %s '%s' ;\n" sas-tmp-libname dir))
+;;      (if (not (equal arg 1))
+;;               (insert (format "proc contents data = %s.%s ;\n" sas-tmp-libname file)))
+;;      (if (equal arg 2) ()
+;;        (insert (format "proc print data = %s.%s ;\n" sas-tmp-libname file))
+;;        (if vars (insert (format "  var %s ;\n" vars))))
+;;      (run-sas-on-region (point-min) (point-max) append
+;;                         buffer)
+;;      (get-buffer buffer)
+;;      (if append () (sasd-mode))  ;; added 5/5/94 
+;;      (setq sas-dataset file))
+;;    (if (get-buffer-window buffer t)
+;;        (raise-frame (window-frame (get-buffer-window buffer t)))
+;;    (display-buffer buffer (not append)))
+;;    ))
     
-(defun revert-sas-dataset ()
-  "Revert current sas dataset from disk version"
-  (interactive)
-  (let* ((file sas-dataset)
-        (buf (format " *sas-tmp-%s*" file))
-        (pos (point)))
-      (save-window-excursion
-        (switch-to-buffer buf)
-        (run-sas-on-region (point-min) (point-max) nil
-                           (concat "*" file ".ssd01*"))
-        )
-      (goto-char pos)  ;; added 6/9/94
-    (sasd-mode)  ;; added 5/5/94 
-    (setq sas-dataset file)))
+;;(defun revert-sas-dataset ()
+;;  "Revert current sas dataset from disk version"
+;;  (interactive)
+;;  (let* ((file sas-dataset)
+;;        (buf (format " *sas-tmp-%s*" file))
+;;        (pos (point)))
+;;      (save-window-excursion
+;;        (switch-to-buffer buf)
+;;        (run-sas-on-region (point-min) (point-max) nil
+;;                           (concat "*" file ".ssd01*"))
+;;        )
+;;      (goto-char pos)  ;; added 6/9/94
+;;    (sasd-mode)  ;; added 5/5/94 
+;;    (setq sas-dataset file)))
 
 (defun sas-insert-local-variables ()  ;; created 6/17/94 
   "Add local variables code to end of sas source file."
