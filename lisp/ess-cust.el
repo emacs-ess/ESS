@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2004/07/04 11:36:28 $
-;; Version: $Revision: 1.81 $
-;; RCS: $Id: ess-cust.el,v 1.81 2004/07/04 11:36:28 stephen Exp $
+;; Modified: $Date: 2004/07/04 11:47:34 $
+;; Version: $Revision: 1.82 $
+;; RCS: $Id: ess-cust.el,v 1.82 2004/07/04 11:47:34 stephen Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -719,7 +719,7 @@ file."
     "c:/progra~1/Insightful/splus61netclient"
     "c:/progra~1/Insightful/splus61net/server"
     "c:/progra~1/Insightful/splus6se")
-"*List of possible values of the environment variable SHOME for recent
+  "*List of possible values of the environment variable SHOME for recent
 releases of S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
 correspond to a directory on your machine, running the function
@@ -729,7 +729,7 @@ emacs buffer in iESS[S] mode.  If you have versions of S-Plus in
 locations other than these default values, redefine this variable with
 a `custom-set-variables' statement in your site-start.el or .emacs
 file.  The list of functions actually created appears in the *ESS*
-buffer and should appear in the "ESS / Start Process / Other"
+buffer and should appear in the \"ESS / Start Process / Other\"
 menu."
   :group 'ess-S
   :type '(repeat string))
