@@ -3,14 +3,14 @@
 @setfilename ess.info
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
-@comment $Id: ess.texi,v 5.42 2002/11/30 03:23:51 stephen Exp $
+@comment $Id: ess.texi,v 5.43 2002/12/01 00:40:12 stephen Exp $
 
 @synindex pg vr
 
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics 
-@subtitle (Documentation $Revision: 5.42 $ $Date: 2002/11/30 03:23:51 $)
+@subtitle (Documentation $Revision: 5.43 $ $Date: 2002/12/01 00:40:12 $)
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik, 
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
@@ -54,7 +54,7 @@
 ESS version 
 @include ../VERSION
 
-        (Documentation $Revision: 5.42 $ $Date: 2002/11/30 03:23:51 $).
+        (Documentation $Revision: 5.43 $ $Date: 2002/12/01 00:40:12 $).
 
 @display
 by  A.J. Rossini, 
@@ -563,7 +563,7 @@ C-k} (@code{ess-request-a-process}).  Just enter the name of the process
 you require; completion is provided over the names of all running S
 processes.  This is a good command to consider binding to a global key.
 
-@pindex ess-plain-first-buffername
+@vindex ess-plain-first-buffername
 For the predecessor to ESS (S-mode 4.8), the initial process was not
 visibly numbered, i.e. S instead of S1 was used in the mode-line.  To
 obtain this behavior, set the variable @code{ess-plain-first-buffername}
@@ -574,9 +574,9 @@ to @code{t}.  See @file{ess-site} for how to set this for all users.
 @node ESS processes on Remote Computers, Customizing startup, Multiple ESS processes, Starting up
 @section ESS processes on Remote Computers
 @cindex Remote Computers
-@vindex ess-remote
+@pindex ess-remote
 @vindex ess-elsewhere
-@vindex S+elsewhere
+@pindex S+elsewhere
 
 ESS works with processes on remote computers as easily as with
 processes on the local machine.  The recommended way to access a
@@ -936,8 +936,8 @@ ESS automatically keeps track of any objects added or deleted to the
 system (such as new objects created, or directories added to the search
 list) to make completion as accurate as possible.  Whenever ESS notices
 that search list has changed
-@vindex ess-change-sp-regex
-@footnote{The variable @code{ess-change-sp-regex} is a regular
+@vindex ess-change-sp-regexp
+@footnote{The variable @code{ess-change-sp-regexp} is a regular
 expression matching commands which change the search list.  You will
 need to modify this variable if you have defined custom commands (other
 than @code{attach}, @code{detach}, @code{collection} or @code{library})
@@ -1210,8 +1210,9 @@ more memory your Emacs process will use on the host machine.
 
 Finally, if you intend to produce @Sl{} source code (suitable for using
 with @code{source()} or inclusion in an @Sl{} function) from a
-transcript, then the command @kbd{M-x ess-clean-region} may be of use.
-@pindex ess-clean-region
+transcript, then the command @kbd{M-x ess-transcript-clean-region} may
+be of use.
+@pindex ess-transcript-clean-region
 This command works in any Emacs buffer, and removes all prompts and
 command output from an ESS transcript within the current region, leaving
 only the commands.  Don't forget to remove any erroneous commands first!
@@ -1640,12 +1641,10 @@ or you may enter the name of a new object.
 @cindex new objects, creating
 A buffer will be created containing the text representation of the
 requested object or, if you entered the name of a non-existent object at
-the prompt and the variable @code{ess-insert-function-templates}
-@vindex ess-insert-function-templates
-is non-@code{nil}, you will be presented with a template defined by
-@code{ess-function-template}
+the prompt and the variable @code{ess-function-template}
 @vindex ess-function-template
-which defaults to a skeleton function construct.
+is non-@code{nil}, you will be presented with a template defined by that
+variable, which defaults to a skeleton function construct.
 
 You may then edit the function as required.  The edit buffer generated
 by @code{ess-dump-object-into-edit-buffer} is placed in the @code{ESS}
@@ -1792,8 +1791,8 @@ Send the contents of the edit buffer to the ESS process.
 As above, but returns you to the ESS process buffer as well.
 
 @item
-@kbd{C-c C-n} (@code{ess-eval-line-and-next-line}) @*
-@pindex ess-eval-line-and-next-line
+@kbd{C-c C-n} (@code{ess-eval-line-and-step}) @*
+@pindex ess-eval-line-and-step
 @cindex stepping through code
 @cindex debugging S functions
 Sends the current line to the ESS process, echoing it in the process
@@ -2414,13 +2413,13 @@ in @file{ess-site.el} (@pxref{Customization}).
 The font-lock patterns are defined in three variables, which you may
 modify if desired:
 
-@defvar ess-inf-font-lock-keywords
+@defvar inferior-ess-font-lock-keywords
 Font-lock patterns for Inferior ESS Mode.  The default value
 highlights prompts, inputs, assignments, output messages, vector and
 matrix labels, and literals such as @samp{NA} and @code{TRUE}.
 @end defvar
 
-@defvar ESS-font-lock-keywords
+@defvar ess-mode-font-lock-keywords
 Font-lock patterns for ESS programming mode.  The default value
 highlights function names, literals, assignments, source functions and
 reserved words.
