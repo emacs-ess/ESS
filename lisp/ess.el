@@ -10,7 +10,7 @@
 ;;                Kurt Hornik <hornik@ci.tuwien.ac.at>
 ;;                Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: October 14, 1991
-;; Version: $Id: ess.el,v 5.20 2000/07/06 18:08:53 rossini Exp $
+;; Version: $Id: ess.el,v 5.21 2000/07/07 00:42:38 rossini Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -134,17 +134,16 @@
 
 (require 'ess-emcs)
 
-;; Remove messages after we debug...
-
-;(if (or (ess-running-emacs-version-or-newer 20 2) ess-local-custom-available)
+;; The following should take care of all cases.  Currently, seems to
+;; work, sigh...
+(if ess-local-custom-available
     (eval-and-compile  ; was progn
       (ess-message "--++ LOADING CUSTOM ++--")
-      (require 'ess-cust)
-      )
-;  (eval-and-compile  ; was progn
-;    (ess-message "--++ NOT NOT NOT loading custom ++--")
-;    (require 'ess-vars)
-;    ))
+      (require 'ess-cust))
+  (eval-and-compile  ; was progn
+    (ess-message "--++ NOT NOT NOT loading custom ++--")
+    (require 'ess-vars)))
+
 
  ; ess-mode: editing S/R/XLS/SAS source
 
