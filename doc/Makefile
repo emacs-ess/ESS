@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.x.y
 ###
-### File: $Revision: 1.20 $.
+### File: $Revision: 1.21 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -12,7 +12,7 @@
 include ../Makeconf
 
 # where the Info file should go 
-ESSINFODIR = $(PREFIX)/info
+#ESSINFODIR = $(PREFIX)/info
 ## XEmacs
 #ESSINFODIR = $(PREFIX)/lib/$(EMACS)/info
 
