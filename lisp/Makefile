@@ -62,31 +62,31 @@ CORE = ess.elc ess-site.elc
 SOURCES = ess-vars.el ess.el ess-site.el \
 	essl-s.el essl-lsp.el essl-sas.el \
 	essd-s3.el essd-s4.el essd-s+3.el essd-r.el essd-xls.el essd-sas.el \
-	ess-inf.el ess-mode.el ess-trns.el ess-help.el # ess-xtra.el
+	ess-inf.el ess-mode.el ess-trns.el ess-help.el
 
 OBJECTS = $(SOURCES:.el=.elc)
 
 AUXFILES = COPYING Makefile NEWS README TODO \
-	ESS.texi ChangeLog
+	ess.texi ChangeLog
 
 ### Commands
 
 ESS: $(OBJECTS)
 
-all:	ESS info html
+all:	ess info html
 
-info:	ESS.info
+info:	ess.info
 
-html:	html/ESS_toc.html
+html:	html/ess_toc.html
 
 install: all
-	$(INSTALL) ESS.info* $(INFODIR)
+	$(INSTALL) ess.info* $(INFODIR)
 	$(INSTALL) *.elc $(LISPDIR)
 
 clean:
-	rm -f $(OBJECTS) ESS.info* ESS.aux ESS.cp ESS.dvi \
-	  ESS.ky ESS.log ESS.pg ESS.toc ESS.tp ESS.vr \
-	  ESS.fn texput.log
+	rm -f $(OBJECTS) ess.info* ess.aux ess.cp ess.dvi \
+	  ess.ky ess.log ess.pg ess.toc ess.tp ess.vr \
+	  ess.fn texput.log
 
 distrib: $(SOURCES) $(AUXFILES)
 	chmod a-w *.el
@@ -110,14 +110,14 @@ patch: ESS-$(VERSION).tar.gz ESS-$(LASTVERSION).tar.gz
 
 .SUFFIXES: .el .elc
 
-ESS.info: ESS.texi
+ess.info: ess.texi
 	@echo "making Info documentation..."
-	$(MAKEINFO) ESS.texi
+	$(MAKEINFO) ess.texi
 
-html/ESS_toc.html: ESS.texi
+html/ess_toc.html: ess.texi
 	@echo "making HTML documentation..."
-	-(mkdir -p html; cd html; $(MAKEHTML) ../ESS.texi)
-	-@(cd html; ln -s ESS_toc.html index.html)
+	-(mkdir -p html; cd html; $(MAKEHTML) ../ess.texi)
+	-@(cd html; ln -s ess_toc.html index.html)
 	@echo "Test by pointing your browser to 'file://localhost/$$PWD/html/'"
 
 
@@ -164,26 +164,3 @@ essd-xls.elc : essd-xls.el ess.el
 #(defun S-insert-make-rule (file)
 #  (interactive "sFile:")
 #  (insert (format "%s.elc:  %s.el $(CORE)\n\t@echo compiling %s.el...\n\t@$(EMACS) $(BATCHFLAGS) $(PRELOADS) -f batch-byte-compile %s.el" file file file file)))
-
-
-#### RMH suggests:
-
-
-##
-##* makefile
-##ESS:
-##	emacs -batch -q  -f batch-byte-compile  ess-vars.el
-##	emacs -batch -q  -l ess-vars.elc -l cl -l cl-macs -f batch-byte-compile  ess.el
-##	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s3.el
-##	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s+3.el
-##	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-s4.el
-##	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-r.el
-##	emacs -batch -q  -l ess-vars.elc -l ess.elc -f batch-byte-compile  essd-xls.el
-##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s3.elc -l essd-s+3.elc  -l essd-s4.elc  -l essd-r.elc  -l essd-xls.elc -f batch-byte-compile  ess-site.el
-##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-comp.el
-##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-inf.el
-##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-mode.el
-##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-trns.el
-##	emacs -batch -q  -l ess-vars.elc -l ess.elc -l essd-s+3.elc -l essd-r.elc -l essd-xls.elc -l ess-site.elc -f batch-byte-compile  ess-help.el
-##
-##
