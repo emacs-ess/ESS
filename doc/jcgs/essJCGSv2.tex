@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 21:25:02 $ - $Revision: 1.233 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/20 22:05:23 $ - $Revision: 1.234 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -908,52 +908,54 @@ won a MacArthur Foundation Fellowship in 1990.  Emacs has a long
 history of being a programmer's editor.  Many statisticians got their
 first taste of the power of Emacs with \Fortran\ mode which was
 introduced in 1986.  As statisticians' preferences changed from
-generalist compiled languages such as \Fortran\ to specialist
-interactive statistical analysis packages like S and \SAS, Emacs modes
-for them soon followed.
+generalist compiled languages such as \Fortran\ to special interactive
+statistical analysis packages like S and \SAS, Emacs modes soon
+followed.  
 
-Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and \Splus\ files 
-in GNU Emacs.  Frank Ritter and Mike Meyer added features, creating version 2.
-Meyer and David Smith made further contributions, creating version 3.  David 
-Smith provided process interaction changes for version 4.
-%%David Smith was the next primary maintainer, and his most
-%%important contribution was to enhance the \Splus\
-%%command-line interface and allow for control of multiple processes
-%%simultaneously.  
+One of the most interesting features of this open source project have
+been the many contributors and projects that have merged over the
+years to form ESS, dating back over 10 years.
 
-In 1990, John Sall authored GNU Emacs macros for \SAS\ source code 
-editing.  Tom Cook wrote SAS-mode in 1994, partially basing it on 
-Sall's earlier work.  
+Doug Bates and Ed Kademan wrote S-mode in 1989 to edit S and \Splus\ 
+files in GNU Emacs.  Frank Ritter and Mike Meyer added features,
+creating version 2.  Meyer and David Smith made further contributions,
+creating version 3.  For version 4, David Smith provided significant
+enhancements to allow for powerful process interaction.
 
-In 1994, A.J. Rossini extended S-mode to support XEmacs.  
-Together with extensions written by Martin M{\"a}chler, this
-became version 4.5.  In 1995, Rossini extended SAS-mode to work with XEmacs.
-By 1996, S-mode was available for both GNU Emacs and XEmacs and supported 
-S, \Splus, and R.  
+Along the same lines, for SAS, John Sall authored GNU Emacs macros for
+\SAS\ source code editing around 1990.  Tom Cook wrote an enhanced
+SAS-mode which was distributed in 1994, partially basing it on Sall's
+earlier work.  Cook's version provided a means to submit jobs, review
+listing and log files, as well as functions for producing basic views
+for a dataset.
 
-In 1997, Rossini merged S-mode and SAS-mode into a single Emacs package 
-for statistical programming; the product of this marriage was called ESS 
-version 5.
-%, along with additional changes to accommodate 
-%multiple languages in a flexible way, 
-%%Kurt Hornik was instrumental in enhancing support for R,
-%%in particular, providing \stexttt{Rd-mode}.
-Richard M. Heiberger designed the inferior mode for interactive \SAS\
-and SAS-mode was further integrated into ESS.  More changes were made to 
-support additional statistical languages such as \Stata\ and \XLispStat.
-% which were added to ESS's capabilitities.
+In 1994, A.J. Rossini extended S-mode to support XEmacs.  Together
+with extensions written by Martin M{\"a}chler, this became version
+4.6.  In 1995, Rossini extended SAS-mode to work with XEmacs.  By
+1996, S-mode was available for both GNU Emacs and XEmacs and supported
+S, \Splus, and R.
 
-ESS initially worked only with Unix statistics packages that
-used standard-input and standard-output for both the command-line 
-interface and batch processing.  ESS could not communicate with 
-%Windows versions of 
-statistical packages that did not use this protocol.  This changed in 1998 when
-Brian Ripley demonstrated use of the Windows Dynamic Data Exchange (DDE)
-protocol with ESS.  Heiberger then used DDE to provide interactive interfaces 
-for Windows versions of \Splus.  In 1999, Rodney Sparapani and Heiberger 
-implemented \SAS\ batch for ESS, which relies on files rather than 
-standard-input/standard-output, on Unix, Windows and Mac.  In 2001, Sparapani 
-added BUGS batch file processing to ESS for Unix and Windows.
+In 1997, Rossini merged S-mode and SAS-mode into a single Emacs
+package for statistical programming; the product of this marriage was
+called ESS version 5.  Richard M. Heiberger designed the inferior mode
+for interactive \SAS\ and SAS-mode was further integrated into ESS.
+Thomas Lumley's Stata mode, written around 1996, was also folded into
+ESS.  More changes were made to support additional statistical
+languages such as \XLispStat.
+
+ESS initially worked only with Unix statistics packages that used
+standard-input and standard-output for both the command-line interface
+and batch processing.  ESS could not communicate with statistical
+packages that did not use this protocol.  This changed in 1998 when
+Brian Ripley demonstrated use of the Windows Dynamic Data Exchange
+(DDE) protocol with ESS.  Heiberger then used DDE to provide
+interactive interfaces for Windows versions of \Splus.  In 1999,
+Rodney Sparapani and Heiberger implemented \SAS\ batch for ESS, which
+relies on files rather than standard-input/standard-output, on Unix,
+Windows and Mac.  In 2001, Sparapani added BUGS batch file processing
+to ESS for Unix and Windows.
+
+This history is summarized in Table \ref{tab:timeline}.
 
 \begin{table}[tbp]
   \centering
@@ -987,51 +989,39 @@ added BUGS batch file processing to ESS for Unix and Windows.
   \label{tab:timeline}
 \end{table}
 
-%  Based on this work, Heiberger provided interactive
-%interfaces for Windows versions of \Splus.
+%\section{Future Work}
 
-%In 1998, Rodney Sparapani designed \SAS\ batch file processing for ESS
-%on Unix, Windows and Mac.  In 1999 and 2000, Sparapani and Heiberger
-%continually enhanced \SAS\ support. 
-%In 2001 and 2002, they designed and implemented ESS-elsewhere for \SAS.  
+%%%There are two active areas of extensions for user environments.  One
+%%%is to enhance the capabilities of the IDE for statistical practice;
+%%%this includes implementing such common IDE features as object
+%%%browsers, tool-tips, and interfacing cleaning.  The other is to target
+%%%appropriate potentially useful programming methodologies for transfer
+%%%to statistical practice.
+%%%
+%%%Literate Programming methodologies \citep{Knuth:1992,NRamsey:1994} are
+%%%a natural fit for statistical practice.  We refer to the application
+%%%to statistical analysis as Literate Statistical Practice
+%%%\citep{rossini:dsc:2001}.  The tools used are Noweb
+%%%\citep{NRamsey:1994} and either \LaTeX, \textsc{html}, or \textsc{xml}
+%%%for documenting and explaining the analysis.  This approach to
+%%%programming encourages the use of a literary documentation style to
+%%%explain the programming code for the data analysis.  The program can
+%%%then be extracted from the documentation text for realizing the
+%%%statistical analysis.
 
+%%future enhancement perhaps
+%%ESS provides the same ESS-elsewhere support for BUGS batch
+%%that it does for \SAS\ batch (see above).
 
-This history is summarized in Table \ref{tab:timeline}.
+%Important extensions which should be implemented in future
+%versions include class browsers, analysis templates, tool-tips, and
+%similar features.  Class browsers can be thought of as a tree or
+%outline for presenting datasets, variables and functions in the
+%context of what they represent; this allows for rapid and appropriate
+%inspection.  Analysis templates would allow statistics centers and
+%groups to provide standardized templates for initiating an analysis.
 
-
-\section{Future Work}
-
-%%There are two active areas of extensions for user environments.  One
-%%is to enhance the capabilities of the IDE for statistical practice;
-%%this includes implementing such common IDE features as object
-%%browsers, tool-tips, and interfacing cleaning.  The other is to target
-%%appropriate potentially useful programming methodologies for transfer
-%%to statistical practice.
-%%
-%%Literate Programming methodologies \citep{Knuth:1992,NRamsey:1994} are
-%%a natural fit for statistical practice.  We refer to the application
-%%to statistical analysis as Literate Statistical Practice
-%%\citep{rossini:dsc:2001}.  The tools used are Noweb
-%%\citep{NRamsey:1994} and either \LaTeX, \textsc{html}, or \textsc{xml}
-%%for documenting and explaining the analysis.  This approach to
-%%programming encourages the use of a literary documentation style to
-%%explain the programming code for the data analysis.  The program can
-%%then be extracted from the documentation text for realizing the
-%%statistical analysis.
-
-%future enhancement perhaps
-%ESS provides the same ESS-elsewhere support for BUGS batch
-%that it does for \SAS\ batch (see above).
-
-Important extensions which should be implemented in future
-versions include class browsers, analysis templates, tool-tips, and
-similar features.  Class browsers can be thought of as a tree or
-outline for presenting datasets, variables and functions in the
-context of what they represent; this allows for rapid and appropriate
-inspection.  Analysis templates would allow statistics centers and
-groups to provide standardized templates for initiating an analysis.
-
-Additional statistical packages can easily be added to ESS.
+%Additional statistical packages can easily be added to ESS.
 
 %%While most IDE features have been developed for object-oriented
 %%languages, the above also can apply to non-object oriented
@@ -1052,8 +1042,8 @@ and the output.  Because all are within the same programming
 environment, and therefore are accessed with the same editing and
 searching concepts and the same key sequences, user efficiency is
 increased.  It is completely customizable to satisfy individual
-desires for interface styles as well as being extensible to additional
-statistical languages and analysis packages.
+desires for interface styles and can be extended to support other
+statistical languages and data analysis packages.
 
 %\begin{Comment}
 %Rich: see my discussion of ESS-elsewhere terminology.
