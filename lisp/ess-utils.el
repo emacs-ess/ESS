@@ -148,8 +148,8 @@ from the beginning of the buffer."
 ;; 	  '(lambda ()
 ;; 	     (add-hook 'local-write-file-hooks 'nuke-trailing-whitespace)))
 
-(defvar nuke-trailing-whitespace-p nil;disabled by default  'ask
-  "*[Dis]activates (nuke-trailing-whitespace).
+(defvar ess-nuke-trailing-whitespace-p nil;disabled by default  'ask
+  "*[Dis]activates (ess-nuke-trailing-whitespace).
  Disabled if `nil'; if `t', it works unconditionally, otherwise,
  the user is queried.
  Note that setting the default to `t' may not be a good idea when you edit
@@ -157,12 +157,12 @@ from the beginning of the buffer."
 
 ;;; MM: Newer Emacsen now have  delete-trailing-whitespace
 ;;; --  but no customization like  nuke-trailing-whitespace-p ..
-(defun nuke-trailing-whitespace ()
+(defun ess-nuke-trailing-whitespace ()
   "Nuke all trailing whitespace in the buffer.
 Whitespace in this case is just spaces or tabs.
 This is a useful function to put on write-file-hooks.
 
-If the variable `nuke-trailing-whitespace-p' is `nil', this function is
+If the variable `ess-nuke-trailing-whitespace-p' is `nil', this function is
 disabled.  If `t', unreservedly strip trailing whitespace.
 If not `nil' and not `t', query for each instance."
   (interactive)
@@ -174,13 +174,13 @@ If not `nil' and not `t', query for each instance."
 
 	  (t
 	   (and (not buffer-read-only)
-		nuke-trailing-whitespace-p
+		ess-nuke-trailing-whitespace-p
 		(save-match-data
 		  (save-excursion
 		    (save-restriction
 		      (widen)
 		      (goto-char (point-min))
-		      (cond ((eq nuke-trailing-whitespace-p t)
+		      (cond ((eq ess-nuke-trailing-whitespace-p t)
 			     (while (re-search-forward "[ \t]+$" (point-max) t)
 			       (delete-region (match-beginning 0)
 					      (match-end 0))))

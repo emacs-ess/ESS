@@ -47,6 +47,7 @@ ESS version
 @ifnottex
 @majorheading ESS --- Emacs Speaks Statistics
 
+@dircategory Emacs
 @direntry
 * ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
 @end direntry

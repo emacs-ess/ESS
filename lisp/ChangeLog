@@ -2,6 +2,15 @@
 
 	* ess-help.el: ess-help-mode-hook is now run correctly.
 
+2004-10-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-sp6.el: added Debian patches from Camm Maguire
+	* ess-help.el: dito for these:
+	* ess-utils.el
+	* ess.el
+	* ess-latex.el
+	* ess-emcs.el
+
 2004-10-14  Stephen Eglen  <S.J.Eglen@damtp.cam.ac.uk>
 
 	* ess-cust.el (ess-default-style): Customize.

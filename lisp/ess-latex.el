@@ -484,14 +484,15 @@ otherwise."
              (setq mode (concat
                          (downcase (buffer-substring beg end))
                          "-mode"))
-             (if (and (>= (length mode) 11)
+             (if ;(and 
+		 (>= (length mode) 11)
                       (progn
                         (if
                             (equal (substring mode -10 -5) "-mode")
                             (setq mode (substring mode 0 -5)))
                         (if
                             (equal (substring mode 0 5) "mode:")
-                            (setq mode (substring mode 6))))))
+                            (setq mode (substring mode 6)))))
              (intern mode))))))
 
 (defun ess-latex-find-chunk-index-buffer ()

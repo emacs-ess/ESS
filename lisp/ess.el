@@ -132,7 +132,7 @@
 
 (autoload 'ess-time-string "ess-utils" "Return time-stamp string." t)
 
-(autoload 'nuke-trailing-whitespace "ess-utils"
+(autoload 'ess-nuke-trailing-whitespace "ess-utils"
   "Maybe get rid of trailing blanks." t)
 
  ; ess-transcript-mode: editing ``outputs'

@@ -1,3 +1,13 @@
+2004-10-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* doc/ess.texi: added Debian patches from Camm Maguire
+	* lisp/essd-sp6.el: <<< and for these too
+	* lisp/ess-help.el
+	* lisp/ess-utils.el
+	* lisp/ess.el
+	* lisp/ess-latex.el
+	* lisp/ess-emcs.el
+
 2004-09-21  ESS Maintainers <ESS-core@stat.math.ethz.ch>
 
   * Version 5.2.3 released.
