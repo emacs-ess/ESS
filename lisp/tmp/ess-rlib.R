@@ -196,7 +196,7 @@ data <- function (..., list = character(0), package = .packages(),
 
 ## This function needed for ess-rpackage, Sun 14 Sep 2003
 funs.for.package <- function(package) {
-  x <- .readRDS(file = system.file("Meta/Rd.rds", package = package))
+  x <- .readRDS(file = system.file("Meta", "Rd.rds", package = package))
   writeLines(formatDL(unlist(x[,5]),
                     rep(x[,4], sapply(x[,5], length))))
 }
