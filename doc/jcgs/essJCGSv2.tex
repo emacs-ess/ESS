@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/20 19:29:48 $ - $Revision: 1.227 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/20 19:33:08 $ - $Revision: 1.228 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -790,19 +790,18 @@ and error messages.
 For files with the \stexttt{sas} extension, ESS binds the function
 keys in \stexttt{ESS[SAS]} mode to match the definitions used by \SAS\ 
 Display Manager.  These definitions are optionally available in all
-modes.   They are particularly useful when viewing \SAS\ log and \SAS\ listing
-files (with extensions of \stexttt{log} and \stexttt{lst}
+modes.  They are particularly useful when viewing \SAS\ log and
+listing files (with extensions of \stexttt{log} and \stexttt{lst}
 respectively).
 
 Only one function key press is needed to submit a \SAS\ batch process.
 Other function keys open the \SAS\ program, the \SAS\ log and the
-\SAS\ listing buffers.  When accessed in this manner, the \SAS\ log and 
-\SAS\ listing buffers are automatically updated since they may have 
-been appended or over-written
-%if they are being appended 
-by the \SAS\ batch process.  In addition, the \SAS\ log is searched for error
-messages and the error messages, if any, are sequentially displayed
-with consecutive key presses.
+\SAS\ listing buffers.  When accessed in this manner, the \SAS\ log
+and \SAS\ listing buffers are automatically updated since they may
+have been appended or over-written by the \SAS\ batch process.  In
+addition, the \SAS\ log is searched for error messages and the error
+messages, if any, are sequentially displayed with consecutive key
+presses.
 
 Another function key opens a \SAS\ permanent dataset for editing or
 viewing.  An option is provided so that the tab and return keys
@@ -814,15 +813,10 @@ typically available in Emacs.
 
 The \SAS\ batch process runs on the computer where the \SAS\ program
 resides.  If the \SAS\ program resides on a remote computer, then the
-program, log and output are also accessed remotely.
-%with one of the remote file modes.
-%(\stexttt{ange-ftp}, \stexttt{EFS} and \stexttt{tramp}) or Kermit.
-This is important because any \SAS\ permanent datasets referenced in a
-\SAS\ program only exist on the computer running \SAS.
-%\ program resides.  The 
-%\SAS\ batch processes are submitted to the remote computer via ssh or
-%telnet running in a \stexttt{shell-mode} buffer.  
-Running \SAS\ batch on remote computers is nearly transparent to the
+program, log and output are also accessed remotely.  This is important
+because any \SAS\ permanent datasets referenced in a \SAS\ program
+only exist on the computer running \SAS.  The end result is that
+running \SAS\ batch on remote computers is nearly transparent to the
 ESS user.
 
 %\begin{Comment}
@@ -884,7 +878,7 @@ an interactive capability, but it is not often used since the analyses
 can take a long time.  Most BUGS programs are executed as batch
 processes.
 
-%Emacs and 
+
 ESS facilitates BUGS %by \stexttt{ESS[BUGS]}, the mode in
 %which files with the \stexttt{bug} extension are opened.  There are 
 through 4 features.
