@@ -146,7 +146,7 @@ intelligent environment for statistical analysis}
     Milwaukee, WI, USA (E-mail: rsparapa@mcw.edu)}}
 
 %%S\date{\today}
-\date{$ $Date: 2002/02/21 23:29:03 $ - $Revision: 1.242 $ $\tiny printed \today}
+\date{$ $Date: 2002/02/21 23:32:43 $ - $Revision: 1.243 $ $\tiny printed \today}
 
 \begin{document}
 
@@ -796,9 +796,12 @@ interface, with Emacs key sequences.
 %Exploratory data analysis is most often accomplished interactively.
 %Situations exist for which interactive analyses are problematic.
 Batch file processing with statistical analysis packages is a better
-choice than interactive processing when the execution times are longer 
-than the user is willing to wait as well as for regularly updated 
-statistical reports and figures.
+choice than interactive processing when the execution times are longer
+than the user is willing to wait as well as for regularly updated
+statistical reports and figures.  ESS provides a means to shorten the
+debugging cycle for writing code intended for batch evaluation by
+containing the whole process, both writing and evaluation, from within
+Emacs.
 
 \paragraph{\SAS Batch.}
 \label{sec:sas-batch}
@@ -904,17 +907,16 @@ ESS user.
 BUGS software performs Markov Chain Monte Carlo integration.  There is
 an interactive capability, but it is not often used since the analyses
 can be very time-consuming.  Most BUGS programs are executed as batch
-processes.
-
-ESS facilitates BUGS batch with \stexttt{ESS[BUGS]}, the mode for files
-with the \stexttt{bug} extension.  ESS provides 4 features.  First, 
-BUGS syntax is described to allow for proper fontification of statements,
-distributions, functions, commands and comments in BUGS model files,
-command files and log files.  Second, ESS creates templates for the
-command file from the model file so that a BUGS batch process can be
-defined by a single file.  Third, ESS provides a BUGS batch script
-that allows ESS to set BUGS batch parameters.  Finally, key sequences
-are defined to create a command file and submit a BUGS batch process.
+processes.  ESS facilitates BUGS batch with \stexttt{ESS[BUGS]}, the
+mode for files with the \stexttt{bug} extension.  ESS provides 4
+features.  First, BUGS syntax is described to allow for proper
+fontification of statements, distributions, functions, commands and
+comments in BUGS model files, command files and log files.  Second,
+ESS creates templates for the command file from the model file so that
+a BUGS batch process can be defined by a single file.  Third, ESS
+provides a BUGS batch script that allows ESS to set BUGS batch
+parameters.  Finally, key sequences are defined to create a command
+file and submit a BUGS batch process.
 
 \paragraph{S family Batch.}
 ESS provides 2 facilities for batch processing of S family language files.  
@@ -925,8 +927,6 @@ transcript.  The second is the load-source mechanism, which provides a
 means of jumping to errors in the source file, but doesn't display the
 evaluated commands in the transcript.  These mechanisms provide
 different tools for debugging the source files.
-% Once the files are debugged, all S implementations have a standard
-% feature for batch evaluation independent of ESS, \stexttt{S BATCH}.
 
 \section{History of ESS}
 \label{sec:ESS:history}
