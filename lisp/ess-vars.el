@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 1997/09/08 17:09:15 $
-;; Version: $Revision: 1.23 $
-;; RCS: $Id: ess-vars.el,v 1.23 1997/09/08 17:09:15 rossini Exp $
+;; Modified: $Date: 1997/09/08 17:23:50 $
+;; Version: $Revision: 1.24 $
+;; RCS: $Id: ess-vars.el,v 1.24 1997/09/08 17:23:50 rossini Exp $
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -802,29 +802,6 @@ browse-url to find the location")
 ;;; This syntax table is required by ess-mode.el, ess-inf.el and
 ;;; ess-trans.el, so we provide it here.
 (defvar ess-mode-syntax-table nil "Syntax table for ess-mode.")
-(if ess-mode-syntax-table
-    nil
-  (setq ess-mode-syntax-table (make-syntax-table))
-  (modify-syntax-entry ?\\ "\\" ess-mode-syntax-table)
-  (modify-syntax-entry ?+  "."  ess-mode-syntax-table)
-  (modify-syntax-entry ?-  "."  ess-mode-syntax-table)
-  (modify-syntax-entry ?=  "."  ess-mode-syntax-table)
-  (modify-syntax-entry ?%  "."  ess-mode-syntax-table)
-  (modify-syntax-entry ?<  "."  ess-mode-syntax-table)
-  (modify-syntax-entry ?>  "."  ess-mode-syntax-table)
-  (modify-syntax-entry ?&  "."  ess-mode-syntax-table)
-  (modify-syntax-entry ?|  "."  ess-mode-syntax-table)
-  (modify-syntax-entry ?\' "\"" ess-mode-syntax-table)
-  (modify-syntax-entry ?#  "<"  ess-mode-syntax-table) ; open comment
-  (modify-syntax-entry ?\n ">"  ess-mode-syntax-table) ; close comment
-  (modify-syntax-entry ?.  "w"  ess-mode-syntax-table) ; used in S obj names
-  (modify-syntax-entry ?$  "_"  ess-mode-syntax-table) ; foo.bar$hack is 1 symbol
-  (modify-syntax-entry ?_  "."  ess-mode-syntax-table)  
-  (modify-syntax-entry ?*  "."  ess-mode-syntax-table)
-  (modify-syntax-entry ?<  "."  ess-mode-syntax-table)
-  (modify-syntax-entry ?>  "."  ess-mode-syntax-table)
-  (modify-syntax-entry ?/  "."  ess-mode-syntax-table))
-
 
  ; Buffer local customization stuff
 

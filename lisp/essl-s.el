@@ -6,9 +6,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossinI@stat.sc.edu>
 ;; Created: 26 Aug 1997
-;; Modified: $Date: 1997/09/08 13:02:31 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essl-s.el,v 1.8 1997/09/08 13:02:31 rossini Exp $
+;; Modified: $Date: 1997/09/08 17:23:44 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essl-s.el,v 1.9 1997/09/08 17:23:44 rossini Exp $
 
 ;; This file is part of ESS
 
@@ -64,6 +64,32 @@
 
 
  ; Configuration variables
+
+
+
+(defvar S-syntax-table nil "Syntax table for ess-mode.")
+(if S-syntax-table
+    nil
+  (setq S-syntax-table (make-syntax-table))
+  (modify-syntax-entry ?\\ "\\" S-syntax-table)
+  (modify-syntax-entry ?+  "."  S-syntax-table)
+  (modify-syntax-entry ?-  "."  S-syntax-table)
+  (modify-syntax-entry ?=  "."  S-syntax-table)
+  (modify-syntax-entry ?%  "."  S-syntax-table)
+  (modify-syntax-entry ?<  "."  S-syntax-table)
+  (modify-syntax-entry ?>  "."  S-syntax-table)
+  (modify-syntax-entry ?&  "."  S-syntax-table)
+  (modify-syntax-entry ?|  "."  S-syntax-table)
+  (modify-syntax-entry ?\' "\"" S-syntax-table)
+  (modify-syntax-entry ?#  "<"  S-syntax-table) ; open comment
+  (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
+  (modify-syntax-entry ?.  "w"  S-syntax-table) ; used in S obj names
+  (modify-syntax-entry ?$  "_"  S-syntax-table) ; foo.bar$hack is 1 symbol
+  (modify-syntax-entry ?_  "."  S-syntax-table)  
+  (modify-syntax-entry ?*  "."  S-syntax-table)
+  (modify-syntax-entry ?<  "."  S-syntax-table)
+  (modify-syntax-entry ?>  "."  S-syntax-table)
+  (modify-syntax-entry ?/  "."  S-syntax-table))
 
 
 (defvar S-editing-alist
