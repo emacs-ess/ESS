@@ -3,7 +3,7 @@
 ### Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ### For ESS Version: 5.0
 ###
-### File: $Revision: 5.18 $.
+### File: $Revision: 5.19 $.
 ###
 ### Edit the makefile, type `make', and follow the instructions.  Based
 ### on (i.e. Borrowed from) VM 5.70, AUC-TeX 9.7p distributions.  Thanks
@@ -75,10 +75,10 @@ PRELOADS = -l ./ess-comp.el
 ## optimizations.  When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
 
-SOURCES = ess-vars.el ess.el ess-site.el ess-utils.el \
+TOCOMPILE = ess-vars.el ess.el ess-site.el ess-utils.el \
 	ess-inf.el ess-iw32.el \
 	ess-mode.el ess-trns.el ess-help.el \
-	ess-comp.el ess-debug.el \
+	ess-comp.el \
 	essl-s.el essd-s3.el essd-s4.el essd-sp3.el essd-sp4.el essd-sp5.el \
 	essd-r.el \
 	essd-els.el \
@@ -86,6 +86,8 @@ SOURCES = ess-vars.el ess.el ess-site.el ess-utils.el \
 	essl-sas.el essd-sas.el \
 	essl-sta.el essd-sta.el \
 	essddr.el
+SOURCES = $(TOCOMPILE) ess-debug.el
+
 
 SCRIPTS = ess-sas-sh-command install-sh mkinstalldirs
 
@@ -93,7 +95,7 @@ AUXFILES = COPYING Makefile ChangeLog $(SCRIPTS)
 
 # The following works mainly with GNU Make.
 
-OBJECTS = $(SOURCES:.el=.elc)
+OBJECTS = $(TOCOMPILE:.el=.elc)
 
 DISTFILES = $(addprefix $(VERSIONDIR)/,$(SOURCES)) \
 	    $(addprefix $(VERSIONDIR)/,$(AUXFILES))

@@ -1,5 +1,9 @@
 1999-09-27  Martin Maechler  <maechler@stat.math.ethz.ch>
 
+	* Makefile (SOURCES): use new $(TOCOMPILE) -- don't ess-debug.el !
+
+1999-09-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
 	* essd-r.el (R-customize-alist): help( .. htmlhelp = FALSE)
 
 Wed Sep 15 22:34:37 1999  A.J. Rossini  <rossini@biostat.washington.edu>
