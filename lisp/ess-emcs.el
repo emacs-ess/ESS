@@ -1,14 +1,15 @@
 ;;; ess-emcs.el --- simple determination of Emacs/XEmacs and version #.
 
-;; Copyright (C) 2000 A.J. Rossini, R.M. Heiberger,
-;;		      Martin Maechler, Kurt Hornik, R. Sparapani.
+;; Copyright (C) 2000--2001 A.J. Rossini <rossini@u.washington.edu>, 
+;; R.M. Heiberger < >, Martin Maechler <maechler@stat.math.ethz.ch>,
+;; Kurt Hornik < >, and Rodney Sparapani < >.
 
 ;; Author:  A.J. Rossini <rossini@biostat.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Modified: $Date: 2000/07/07 00:40:27 $
-;; Version: $Revision: 5.5 $
-;; RCS: $Id: ess-emcs.el,v 5.5 2000/07/07 00:40:27 rossini Exp $
+;; Modified: $Date: 2001/01/08 00:47:11 $
+;; Version: $Revision: 5.6 $
+;; RCS: $Id: ess-emcs.el,v 5.6 2001/01/08 00:47:11 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -30,8 +31,10 @@
 
 ;;; Commentary:
 
-;; This file contains functions for easily determining which version
-;; of Emacs we are using.
+;; This file contains functions for easily determining features of the
+;; version of Emacs that we are using.   In particular, it look for
+;; version number, customize support, as well as Emacs/XEmacs, for
+;; flaggin support later on.
 
 ;;; Code:
 
