@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 05 June 2000
-;; Modified: $Date: 2003/12/09 17:51:23 $
-;; Version: $Revision: 1.49 $
-;; RCS: $Id: ess-cust.el,v 1.49 2003/12/09 17:51:23 rsparapa Exp $
+;; Modified: $Date: 2004/01/10 16:03:12 $
+;; Version: $Revision: 1.50 $
+;; RCS: $Id: ess-cust.el,v 1.50 2004/01/10 16:03:12 maechler Exp $
 
 ;; Keywords: editing and process modes.
 
@@ -1211,20 +1211,20 @@ If nil, input is in the `font-lock-variable-name-face'."
   :type 'boolean)
 
 (defvar ess-mode-font-lock-keywords
-  '(("<<-\\|<-\\|_\\|->"
+  '(("<<-\\|<-\\|->" ; 2004-01: dropped "_" -- TODO later: for function-name
      . font-lock-reference-face)
     ("\\<\\(TRUE\\|FALSE\\|T\\|F\\|NA\\|NULL\\|Inf\\|NaN\\)\\>"
      . font-lock-type-face)
-    ("\\<\\(library\\|attach\\|detach\\|source\\)\\>"
+    ("\\<\\(library\\|require\\|attach\\|detach\\|source\\)\\>"
      . font-lock-reference-face)
     ("\\<\\(while\\|for\\|in\\|repeat\\|if\\|else\\|switch\\|break\\|next\\|return\\|stop\\|warning\\|function\\)\\>"
-     . font-lock-keyword-face)
+     . font-lock-keyword-face) ; TODO : drop "_" (here and below)
     ("\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\|_\\|=\\)\\(\\s-\\|\n\\)*function"
      1 font-lock-function-name-face t))
   "Font-lock patterns used in `ess-mode' buffers.")
 
 (defvar inferior-ess-font-lock-keywords
-  '(("<<-\\|<-\\|_\\|->"
+  '(("<<-\\|<-\\|->"
      . font-lock-reference-face)		; assign
     ("^\\*\\*\\*.*\\*\\*\\*\\s *$"
      . font-lock-comment-face) ; ess-mode msg
