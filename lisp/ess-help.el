@@ -6,9 +6,9 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 7 Jan 1994
-;; Modified: $Date: 1999/03/05 21:13:48 $
-;; Version: $Revision: 5.3 $
-;; RCS: $Id: ess-help.el,v 5.3 1999/03/05 21:13:48 rossini Exp $
+;; Modified: $Date: 1999/03/09 14:26:31 $
+;; Version: $Revision: 5.4 $
+;; RCS: $Id: ess-help.el,v 5.4 1999/03/09 14:26:31 maechler Exp $
 
 ;; This file is part of ESS
 
@@ -75,7 +75,8 @@
 (defun ess-display-help-on-object (object)
   "Display the ESS documentation for OBJECT in another window.
 If prefix arg is given, forces a query of the ESS process for the help
-file.  Otherwise just pops to an existing buffer if it exists."
+file.  Otherwise just pops to an existing buffer if it exists.
+Uses the variable `inferior-ess-help-command' for the actual help command."
   (interactive (ess-find-help-file "Help on: "))
   (let* ((hb-name (concat "*help["
 			  ess-current-process-name
