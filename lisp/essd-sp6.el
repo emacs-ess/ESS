@@ -3,11 +3,11 @@
 ;; Copyright (C) 2001 A.J. Rossini <rossini@u.washington.edu>
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
-;; Maintainer: A.J. Rossini <rossini@u.washington.edu>
-;; Created: ?? ??? 2001
-;; Modified: $Date: 2002/02/25 12:40:36 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: essd-sp6.el,v 1.8 2002/02/25 12:40:36 maechler Exp $
+;; Maintainer: ESS Core Team <ESS-core@stat.math.ethz.ch>
+;; Created: 2001/02/06
+;; Modified: $Date: 2002/04/27 07:16:28 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: essd-sp6.el,v 1.9 2002/04/27 07:16:28 maechler Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -51,23 +51,36 @@
 (defvar S+6-dialect-name "S+6"
   "Name of 'dialect' for S-PLUS 6.");easily changeable in a user's .emacs
 
-(defvar ess-splus-directory-function
-   #'(lambda ()
-       (if (and default-directory (file-directory-p (concat default-directory ".Data")))
-           (progn
-             (if (getenv "S_WORK")
-                 (setenv "S_WORK" (concat default-directory ":" (getenv "S_WORK")))
-                 (setenv "S_WORK" default-directory))
-             default-directory)
-           (or ess-directory default-directory))))
+(defun S+6-directory-p (directory)
+  "Splus 5++ directories have a .Data directory and a __Meta directory within."
+  (and directory
+       (file-directory-p (concat directory ".Data"))
+       (file-directory-p (concat directory ".Data/__Meta"))))
 
+(defvar S+6-directory-function
+  #'(lambda ()
+      (if (S+6-directory-p default-directory)
+	  default-directory
+	(or ess-directory default-directory))))
+
+(defvar S+6-setup-directory-function
+  #'(lambda (startdir)
+      (if (and startdir (S+6-directory-p startdir))
+          (progn
+	    (setenv "S_WORK"
+		    (if (getenv "S_WORK")
+			(concat startdir ":" (getenv "S_WORK"))
+		      ;;(message "adding %s to S_WORK" startdir)
+		      startdir))
+            ))))
 
 (defvar S+6-customize-alist
   '((ess-local-customize-alist     . 'S+6-customize-alist)
     (ess-language                  . "S")
     (ess-dialect                   . S+6-dialect-name)
     (ess-suffix                    . "S")
-    (ess-directory-function        . ess-splus-directory-function)
+    (ess-directory-function        . S+6-directory-function)
+    (ess-setup-directory-function  . S+6-setup-directory-function)
     (ess-dump-filename-template    . (concat (user-login-name)
 					     ".%s."
 					     ess-suffix))
