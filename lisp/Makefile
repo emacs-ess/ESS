@@ -1,7 +1,10 @@
-## $Id: Makefile,v 1.27 1997/06/15 08:11:01 rossini Exp $
+## $Id: Makefile,v 1.28 1997/06/15 09:02:51 rossini Exp $
 ##
 ##
 ## $Log: Makefile,v $
+## Revision 1.28  1997/06/15 09:02:51  rossini
+## reordered essd and ess-site files in dependencies, for now.
+##
 ## Revision 1.27  1997/06/15 08:11:01  rossini
 ## added variable sub.
 ##
@@ -90,8 +93,8 @@ CORE = ess.elc
 ## Need both types, UNFORTUNATELY, since we want to BUILD and
 ## MAINTAIN.  Some one ought to fix this to be more GNUish.
 
-SOURCES = ess.el ess-inf.el ess-mode.el ess-trans.el ess-help.el ess-site.el  \
-	ess-extras.el essd-s+3.el essd-r.el essd-xls.el
+SOURCES = ess.el ess-inf.el ess-mode.el ess-trans.el ess-help.el  \
+	ess-extras.el essd-s+3.el essd-r.el essd-xls.el ess-site.el
 
 OBJECTS=$(SOURCES:.el=.elc)
 
