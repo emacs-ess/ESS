@@ -58,6 +58,7 @@
 
 %%---End of package requiring ---------- Own Definitions -------------
 
+\newcommand*{\SAS}{\textsc{SAS}\textregistered}
 \newcommand*{\Splus}{\textsc{S-Plus}}
 \newcommand*{\XLispStat}{\textsc{XLispStat}}
 \newcommand*{\Stata}{\textsc{Stata}}
@@ -121,7 +122,7 @@
   statistical programming efficiency.
 \end{abstract}
 
-\noindent Keywords: Data Analysis, Programming Tools, User Interfaces, SAS,
+\noindent Keywords: Data Analysis, Programming Tools, User Interfaces, \SAS,
 \Splus, R, \XLispStat, \Stata
 
 \baselineskip=2pc
@@ -152,7 +153,7 @@ data analysis.  It works with common statistical software, including
 the S languages (which include S \citep{BecRCW88,ChaJH92,ChaJ98},
 \Splus{} \citep{Splus}, and R \citep{ihak:gent:1996}); \XLispStat\ 
 \citep{Tier90} and its extensions Arc \citep{Cook:Weisberg:1999} and
-ViSta \citep{youn:fald:mcfa:1992}; SAS \citep{SAS:8.0}; \Stata\ 
+ViSta \citep{youn:fald:mcfa:1992}; \SAS \citep{SAS:8.0}; \Stata\ 
 \citep{Stata:6.0}; Omegahat \citep{DTLang:2000}; and BUGS
 \citep{SpieThomBest:1999}.  ESS can be extended to accommodate most
 statistical packages which can be controlled from a command-line.
@@ -275,7 +276,7 @@ section.
 Since ESS originated as S-mode, which provided an interface for
 programming and process control under GNU Emacs for \Splus\ version 3,
 ESS strongly supports the S family of languages; these include recent
-versions of S, \Splus, and R.  SAS is also well supported.  \Stata\
+versions of S, \Splus, and R.  \SAS is also well supported.  \Stata\
 and \XLispStat\ (and the \XLispStat\ extensions, ARC and ViSta) are
 supported with the basic functionality of syntax highlighting and
 process-interfacing.  ESS and its interface are fully discussed in the
@@ -321,7 +322,7 @@ into the statistical language/program.
 \paragraph{Source code checking.}
 ESS facilitates the editing of source code by providing a means for
 loading and error-checking of small sections of code for S,
-\XLispStat, and SAS.  This allows for source-level debugging of batch
+\XLispStat, and \SAS.  This allows for source-level debugging of batch
 files.
 
 \paragraph{Process interaction.}
@@ -391,7 +392,7 @@ statistical computing tasks.  ESS is optimized for statistical coding
 and interactive data analysis.  Statistical coding is the writing of
 computer code for data analysis.  This code might be in a compiled
 language, such as C or \Fortran, or it might be in an interpreted
-language such as \Splus, SAS, R, \XLispStat, \Perl, or Python.
+language such as \Splus, \SAS, R, \XLispStat, \Perl, or Python.
 Entering commands for interactive data analysis is a similar activity.
 In either case, text is written in a computer language and sent to a
 computer program for evaluation.  The primary difference is that the
@@ -448,7 +449,7 @@ develop beyond what their initial authors planned.  There have been 3
 generations of developers, and the genealogy is more tree-like than
 linear.  There are 2 codebases which formed this project and from
 which this descended from; the first is the original Emacs S-mode, and
-the second is the original SAS editing mode.
+the second is the original \SAS editing mode.
 
 
 The ESS codebase was brought to life in 1989 initially as S-mode, to
@@ -467,7 +468,7 @@ for R, in particular providing Rd mode.
 
 The other ancestor of the ESS codebase was a successful SAS-mode
 written by Tom Cook, partially based on ideas, and possibly code, from
-a set of Emacs macros written by John Sall of SAS \textbf{NEED TO GET
+a set of Emacs macros written by John Sall of \SAS \textbf{NEED TO GET
   DATES FROM AJR's ARCHIVE!?}.  The initial
 extension was done by A.J. Rossini in 1995 to work with XEmacs, and
 this provided the initial impetus to provide a uniform codebase for
@@ -479,7 +480,7 @@ with the SAS-mode \citep{SASMODE}, and the refactoring of the S-mode
 codebase to accommodate multiple languages in a flexible way.
 
 During 1996 and 1997, Richard M. Heiberger further incorporated
-SAS-mode into ESS and designed the inferior ESS mode for SAS.  In
+SAS-mode into ESS and designed the inferior ESS mode for \SAS.  In
 1997, the grand redesign of the internals occurred, where by a generic
 means for configuring ESS for new statistical languages was
 implemented.
@@ -489,14 +490,14 @@ The first example of interprocess communication for Windows using DDE
 was constructed in 1998 by Brian Ripley.  Based on this work, Richard
 M. Heiberger provided interfaces for Windows versions of \Splus.
 
-In 1998, Rodney Sparapani designed the SAS batch interaction mode.
-Sparapani and Heiberger developed SAS batch support including function
+In 1998, Rodney Sparapani designed the \SAS batch interaction mode.
+Sparapani and Heiberger developed \SAS batch support including function
 key behavior that followed SAS Institute's function key definitions,
 developed a more comprehensive and efficient syntax highlighting
 mechanism using the Emacs Font-lock mode, extended the
-\stexttt{*ESS-elsewhere*} functionality to include SAS processes, and
+\stexttt{*ESS-elsewhere*} functionality to include \SAS processes, and
 provided automated error message lookup in the log file.  This provides
-a powerful development environment for SAS.
+a powerful development environment for \SAS.
 
 
 \section{Discussion}
