@@ -33,7 +33,7 @@ GZCAT = zcat
 # no csh please
 SHELL = /bin/sh
 
-VERSION = 4.9-b14
+VERSION = 4.9-b16
 
 LASTVERSION = 4.8.MM6.XE2
 
@@ -62,7 +62,7 @@ SOURCES = ess-vars.el ess.el ess-site.el \
 	essl-s.el essl-lsp.el essl-sas.el \
 	essd-s3.el essd-s4.el essd-s+3.el essd-r.el essd-xls.el essd-sas.el \
 	ess-inf.el ess-mode.el ess-trns.el ess-help.el \
-	ess-doc.el
+	essdr.el
 
 OBJECTS = $(SOURCES:.el=.elc)
 
