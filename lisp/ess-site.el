@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2001/06/13 18:20:44 $
-;; Version: $Revision: 5.76 $
-;; RCS: $Id: ess-site.el,v 5.76 2001/06/13 18:20:44 rossini Exp $
+;; Modified: $Date: 2001/06/21 22:29:59 $
+;; Version: $Revision: 5.77 $
+;; RCS: $Id: ess-site.el,v 5.77 2001/06/21 22:29:59 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -208,7 +208,6 @@ The extension, in a file name, is the part that follows the last `.'."
 	   ("\\.ssc\\'"	  . S-mode) ;; Splus 4.x script files.
 	   ("\\.[rR]\\'"  . R-mode)
 	   ("\\.[rR]profile\\'" . R-mode)
-	   ("\\.nw\\'"          . noweb-mode) ;; Literate Data Analysis
 	   ("\\.omg\\'"         . omegahat-mode)
 	   ("\\.hat\\'"         . omegahat-mode) ;; Duncan's pref'd...
 	   ("\\.lsp\\'"		. XLS-mode)
@@ -366,8 +365,12 @@ The extension, in a file name, is the part that follows the last `.'."
    (format "[ess-site.el]: ess-customize-alist=%s \n"
 	   ess-customize-alist))
 
-;; (1.7) Literate Data Analysis
-(require 'ess-noweb)
+;;; (1.7) Literate Data Analysis
+;(require 'ess-noweb)
+;(setq auto-mode-alist
+;      (append
+;       '(("\\.nw\\'"          . noweb-mode)) ;; Literate Data Analysis
+;       auto-mode-alist))
 
 ;; ALWAYS:
 (require 'ess)
