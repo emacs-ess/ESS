@@ -7,7 +7,7 @@
 ;; Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Maintainer(s): A.J. Rossini <rossini@u.washington.edu>
 ;; Created: September 4, 2000
-;; Version: $Id: ess-menu.el,v 1.13 2001/08/31 16:33:26 maechler Exp $
+;; Version: $Id: ess-menu.el,v 1.14 2001/09/20 10:26:23 maechler Exp $
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
 
@@ -37,10 +37,10 @@
 
 ;;(require 'ess-site)
 (require 'ess-cust)
-(if (not (require 'imenu "imenu.elc" ; how can I have 'no-error without f.name?
-		  'no-error))
-    (message "** warning: 'imenu not available")
-)
+(if (and ess-running-xemacs; need this, since require in E 19.34 has only 2 arg
+	 (not (require 'imenu "imenu.elc" 'no-error)))
+    (message "** warning: 'imenu not available for this version of XEmacs")
+  )
 ;;possibly below, after checking: (require 'speedbar)
 
  ;;; Function Menu (func-menu) for XEmacs:
