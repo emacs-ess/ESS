@@ -1,15 +1,15 @@
 ;;; essa-sas.el -- ESS local customizations for SAS, part a.
 
-;; Copyright (C) 1997--2002 Rodney A. Sparapani, A.J. Rossini, 
+;; Copyright (C) 1997-2004 Rodney A. Sparapani, A.J. Rossini, 
 ;; Martin Maechler, Kurt Hornik, and Richard M. Heiberger.
 
 ;; Author: Rodney A. Sparapani <rsparapa@mcw.edu>
 ;; Maintainer: Rodney A. Sparapani <rsparapa@mcw.edu>, 
 ;;             A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 17 November 1999
-;; Modified: $Date: 2004/05/03 01:40:23 $
-;; Version: $Revision: 1.164 $
-;; RCS: $Id: essa-sas.el,v 1.164 2004/05/03 01:40:23 rossini Exp $
+;; Modified: $Date: 2004/05/03 14:05:20 $
+;; Version: $Revision: 1.165 $
+;; RCS: $Id: essa-sas.el,v 1.165 2004/05/03 14:05:20 rsparapa Exp $
 
 ;; Keywords: ESS, ess, SAS, sas, BATCH, batch 
 
@@ -96,8 +96,6 @@ or `ess-sas-data-view-insight'."
     :group 'ess-sas  
     :type  'string)
 
-
-
 ;;(defcustom ess-sas-smart-back-tab nil
 ;;    "*Set to t to make C-TAB insert an end/%end; statement to close a block."
 ;;    :group 'ess-sas
@@ -182,7 +180,6 @@ should set this variable to 'sh regardless of their local shell
     "*Application to view GSASFILE."
     :group 'ess-sas  
     :type  'string)
-
 
 (defcustom ess-sas-submit-post-command 
     (if (equal ess-sas-submit-method 'sh) "-rsasuser &" 
