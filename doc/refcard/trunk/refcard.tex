@@ -1,23 +1,29 @@
-%%%- $Header: /scratch/CVS-ARCHIVE/ess-refcard/refcard.tex,v 1.13 2003/10/28 11:54:00 maechler Exp $
-\documentclass[twocolumn]{article}
-%FIXME\usepackage{multicolumn}
-\usepackage{a4}%-Northamerica: {fullpage}
+%%%- $Header: /scratch/CVS-ARCHIVE/ess-refcard/refcard.tex,v 1.14 2003/10/28 16:58:14 maechler Exp $
+\documentclass[a4paper]{article}
+\usepackage{multicol}
 \usepackage{parskip}
+\usepackage{a4}%-Northamerica: {fullpage}
+\addtolength{\textheight}{20mm}
+\addtolength{\topmargin}{-16mm}
 
-\newenvironment{tabI}{\begin{tabular}{p{1.5cm}l}}{\end{tabular}}
-\newenvironment{tabTit}[1]{\underline{\bf #1}\\ \begin{tabI}}{\end{tabI}}
+
+\newenvironment{tabI}{\begin{tabular}{p{16mm}l}}{\end{tabular}}
+\newenvironment{tabTit}[1]{\underline{\textbf{#1}}\\ \begin{tabI}}{\end{tabI}}
+%
 \newcommand{\Sect}[1]{\par\noindent\medskip\fbox{\large\textbf{#1}}
   \vskip -.2ex plus 1ex minus 1ex}
-
 \newcommand*{\Ecmd}[1]{$\left\langle \textrm{#1} \right\rangle$}
 \newcommand*{\sEcmd}[1]{{\small\Ecmd{#1}}}
 \newcommand*{\RET}[0]{\Ecmd{\textsc{ret}}}
 \newcommand*{\TAB}[0]{\Ecmd{\textsc{tab}}}
 
-\raggedbottom \pagestyle{empty}
+\raggedcolumns%\raggedbottom
+\setlength{\columnseprule}{.4pt}% default 0
+\setlength{\columnsep}{22pt}% default is less (18 pt?)
+\pagestyle{empty}
 
 \begin{document}
-%FIXME doesn't work: \onecolumn
+%\begin{multicols}{1}
 \begin{center}
   {\LARGE ESS \ \ \ \ {\large
       [\textbf{E}macs \textbf{S}peaks \textbf{Statistics}]}
@@ -26,7 +32,7 @@
   \smallskip
 
   {\small updated for ESS 5.x}% {\footnotesize --- needs \em{more} updating!}}
-  \\[1ex] {\tiny $ $Date: 2003/10/28 11:54:00 $ $}
+  \\[1ex] {\tiny $ $Date: 2003/10/28 16:58:14 $ $}
            \footnotesize --- as of \today
 \end{center}
 \begin{enumerate}
@@ -35,10 +41,12 @@
 \item This is a list of the more widely used \textbf{key - shortcuts}.
   Many more are available, and most are accessible from the Emacs
   \textbf{Menus} such as \texttt{iESS}, \texttt{ESS}, etc.
+%NN  \vspace*{-3ex}
 \end{enumerate}
+%\end{multicols}
+%NN \rule{\textwidth}{.2pt}%----------------------------------------------------
 
-%%FIXME starts a new page (when above \onecolumn): \twocolumn
-\medskip
+\begin{multicols}{2}
 
 \Sect{Interacting with the S process}
 %%    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,6 +58,7 @@ For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
   \texttt{\TAB   }& Complete S object name \\
   \texttt{C-c C-c }& Break \\
   \texttt{C-g}     & interrupt Emacs' waiting for S\\
+  %% SfS-only (others need C-u C-a for comint-bol !
   \texttt{C-a} / \texttt{C-e} & Beginning / End of command \\
   \texttt{C-c C-u }& Delete this command \\
   \texttt{C-c C-w }& Delete last word
@@ -58,10 +67,15 @@ For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
 \begin{tabTit}{Command history (part of Menu `\texttt{In/Out}')}
   \texttt{M-p   }& Previous            command \\
   \texttt{M-n   }& Next \hspace{1.4em} command \\
-  \texttt{$\uparrow =$ \Ecmd{up}}
-              & Previous            similar command \\
-  \texttt{$\downarrow=$\sEcmd{down}}
-              & Next \hspace{1.4em} similar command \\
+  \texttt{C-c C-l}& List command history (\& choose!)\\
+%% MM has these on the arrow keys:
+  \texttt{C-c M-r}& Previous            similar command \\
+  \texttt{C-c M-s}& Next \hspace{1.4em} similar command \\
+%% MM-only:
+%%-   \texttt{$\uparrow$ / \Ecmd{up}}
+%%-               & Previous            similar command \\
+%%-   \texttt{\hbox{$\downarrow$ / \sEcmd{down}}}
+%%-               & Next \hspace{1.4em} similar command \\
   \texttt{C-c\RET}& Copy current input \\
 %  \texttt{M-C-r }& String search
   \texttt{C-c C-r }& Top of last output \\
@@ -102,9 +116,10 @@ Inside \texttt{ESS transcript} buffers, (\texttt{*.Rout} files):
   \texttt{\RET} & Send and Move \\
   \texttt{C-c C-n}& Next \hspace{1.4em} prompt \\
   \texttt{C-c C-p}& Previous            prompt \\
-  \texttt{C-c C-w}& Clean Region (i.e., transform to input only)
+  \texttt{C-c C-w}& Clean Region ($\mapsto$ input only)
 \end{tabI}
-\pagebreak
+
+\columnbreak
 %%%%%%%%%%================================================================
 
 
@@ -170,5 +185,7 @@ For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
   \texttt{q}   & Return to S process (`\textbf{q}uit) \\
   \texttt{x}   & Kill this buffer and return (`e\textbf{x}it) \\
 \end{tabI}
+
+\end{multicols}
 
 \end{document}
