@@ -5,9 +5,9 @@
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 25 July 1997
-;; Modified: $Date: 2000/09/03 19:33:45 $
-;; Version: $Revision: 5.7 $
-;; RCS: $Id: ess-comp.el,v 5.7 2000/09/03 19:33:45 rossini Exp $
+;; Modified: $Date: 2000/09/03 19:36:02 $
+;; Version: $Revision: 5.8 $
+;; RCS: $Id: ess-comp.el,v 5.8 2000/09/03 19:36:02 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -41,18 +41,11 @@
 
 (add-to-list 'load-path nil)
 
-;;(if (not (string-match "XEmacs\\|Lucid" emacs-version))
-;;    (setq byte-compile-warnings '(free-vars
-;;				  callargs
-;;				  unresolved
-;;				  redefine
-;;				  obsolete))
-;;  (setq byte-optimize t))
-
 (setq ess-show-load-messages t); defvar'ed to nil in ./ess-site.el
+
 (defun ess-message (msg)
-  (if ess-show-load-messages (message msg))
-    "Shortcut for \\[message] only if `ess-show-load-messages' is non-nil.")
+  "Shortcut for \\[message] only if `ess-show-load-messages' is non-nil."
+  (if ess-show-load-messages (message msg)))
 
 ;; These are required by every other file.
 (ess-message "loading 'ess-emcs ..")    (require 'ess-emcs)
