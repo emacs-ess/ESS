@@ -5,9 +5,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 1997/06/15 09:23:36 $
-;; Version: $Revision: 1.8 $
-;; RCS: $Id: ess-site.el,v 1.8 1997/06/15 09:23:36 rossini Exp $
+;; Modified: $Date: 1997/06/15 09:43:38 $
+;; Version: $Revision: 1.9 $
+;; RCS: $Id: ess-site.el,v 1.9 1997/06/15 09:43:38 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -46,6 +46,9 @@
 
 ;;;
 ;;: $Log: ess-site.el,v $
+;;: Revision 1.9  1997/06/15 09:43:38  rossini
+;;: FILES, NOT FILE...
+;;:
 ;;: Revision 1.8  1997/06/15 09:23:36  rossini
 ;;: fixed docs, (assemb vs S mode) ala RH.
 ;;:
@@ -263,7 +266,7 @@
 ;;; The default behavior is for people who believe the object is real
 ;;; and the source file temporary.
 
-(setq ess-keep-dump-file "always")
+(setq ess-keep-dump-files "always")
 
  ; Local variables section
 
