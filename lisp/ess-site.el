@@ -7,9 +7,9 @@
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Maintainer: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 12 Nov 1993
-;; Modified: $Date: 2000/01/25 17:57:36 $
-;; Version: $Revision: 5.39 $
-;; RCS: $Id: ess-site.el,v 5.39 2000/01/25 17:57:36 maechler Exp $
+;; Modified: $Date: 2000/01/30 23:44:48 $
+;; Version: $Revision: 5.40 $
+;; RCS: $Id: ess-site.el,v 5.40 2000/01/30 23:44:48 rossini Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -376,7 +376,7 @@
 ;;; If you replace the setq-default line with:
 ;;;
 ;; (setq-default ess-directory (file-name-as-directory
-;;						    (concat (getenv "HOME") "/ess/")))
+;;			    (concat (getenv "HOME") "/ess/")))
 ;;;
 ;;; then it will always start up in the directory "ess" in your home
 ;;; directory.
