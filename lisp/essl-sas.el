@@ -9,9 +9,9 @@
 ;; Maintainer: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
 ;;             Rodney Sparapani <rsparap@mcw.edu>
 ;; Created: 20 Aug 1997
-;; Modified: $Date: 2002/01/08 18:04:52 $
-;; Version: $Revision: 5.30 $
-;; RCS: $Id: essl-sas.el,v 5.30 2002/01/08 18:04:52 ess Exp $
+;; Modified: $Date: 2002/01/08 18:05:40 $
+;; Version: $Revision: 5.31 $
+;; RCS: $Id: essl-sas.el,v 5.31 2002/01/08 18:05:40 ess Exp $
 ;;
 ;; Keywords: start up, configuration.
 
@@ -140,7 +140,7 @@ the mode line."
   :type  'string)
 
 (defcustom sas-pre-run-hook nil
-  "Hook to execute prior to running SAS vis `submit-sas'."
+  "Hook to execute prior to running SAS via `submit-sas'."
   :group 'ess-sas
   :type  'hook)
 
