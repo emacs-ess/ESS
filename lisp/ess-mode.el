@@ -212,6 +212,7 @@
     ["Mark function"	 ess-mark-function			t]
     ["Indent expression" ess-indent-exp				t]
     ["Indent line"	 ess-indent-command			t]
+    ["Toggle Auto-Fill Mode" auto-fill-mode			t]
     ["Undo"		 undo					t]
     ["About"		 (ess-goto-info "Edit buffer")		t]
     )
