@@ -85,8 +85,8 @@ Changes/New Features in 5.2.2:
 if ess-info not found by info
 @item ESS[R]: If you have other versions of R on your
 exec-path, such as "R-1.8.1" with Unix or "rw1081" with Windows,
-ESS will find them and create appropriate functions, such as M-x
-R-1.8.1 or M-x rw1081, for calling them.
+ESS will find them and create appropriate functions, such as 
+@kbd{M-x R-1.8.1} or @kbd{M-x rw1081}, for calling them.
 By default only Unix programs beginning "R-1" and
 "R-2" and Windows programs parallel to the
 version of R in your exec-path will be found,
@@ -97,14 +97,14 @@ Windows, are added to the
 "ESS / Start Process / Other" menu.
 @item ESS[S]: If you have other versions of S-Plus on your Windows computer,
 such as S-Plus 6.1 or S-Plus 4.5, ESS will find them and create appropriate
-functions, such as M-x splus61, for calling the console version (Sqpe)
+functions, such as @kbd{M-x splus61}, for calling the console version (Sqpe)
 inside an emacs buffer.  By default only
 programs installed in the default location will be found, but see
 ess-SHOME-versions for ways to find other versions of S-Plus.
 @item ESS[S]: Other versions of Sqpe on Windows, such as "splus61",
 are added to the
 "ESS / Start Process / Other" menu.
-@item ESS[R]: (bug fix) ess-quit (bound to C-c C-q) should now quit the
+@item ESS[R]: (bug fix) ess-quit (bound to @kbd{C-c C-q}) should now quit the
 inferior R process, when issued from either the inferior buffer, or from
 a .R buffer.
 @end itemize
@@ -117,7 +117,7 @@ there.  This code is experimental and likely to change as XEmacs/Emacs
 issues get resolved. The toolbar should be enabled if your Emacs
 displays images, but can be disabled with the variable ess-use-toolbar.
 Thanks to David Smith from Insightful for the S-plus logo.
-@item ESS[SAS]: ess-sas-graph-view (F12) enhanced; you can specify
+@item ESS[SAS]: ess-sas-graph-view (@kbd{F12}) enhanced; you can specify
 external file viewers for each graphics file type via the alist
 ess-sas-graph-view-viewer-alist; also .jpg/.gif are now handled
 by image-mode on XEmacs, if available, otherwise by graphics
@@ -138,11 +138,11 @@ ess-sas-shell-buffer-remote-init which defaults to "ssh";
 changed the definition of the variable ess-sas-edit-keys-toggle
 to boolean rather than 0/1; added the function ess-electric-run-semicolon
 which automatically reverse indents lines containing only "run;";
-C-F1 creates MS RTF portrait from the current buffer;
-C-F2 creates MS RTF landscape from the current buffer;
-C-F9 opens a SAS DATASET with PROC INSIGHT rather than PROC FSVIEW;
-"inferior" aliases for SAS batch:  C-c C-r for submit region,
-C-c C-b for submit buffer, C-c C-x for goto .log; C-c C-y for goto .lst
+@kbd{C-F1} creates MS RTF portrait from the current buffer;
+@kbd{C-F2} creates MS RTF landscape from the current buffer;
+@kbd{C-F9} opens a SAS DATASET with PROC INSIGHT rather than PROC FSVIEW;
+"inferior" aliases for SAS batch:  @kbd{C-c C-r} for submit region,
+@kbd{C-c C-b} for submit buffer, @kbd{C-c C-x} for goto .log; @kbd{C-c C-y} for goto .lst
 @item ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
 pressing underscore twice inserts a literal underscore.  To stop this
 smart behaviour, add "(ess-smart-underscore nil)" to your .emacs after
@@ -152,9 +152,9 @@ customized successfully (for S language dialects);
 Support for Imenu has been improved; set ess-imenu-use-S to non-nil to
 get an "Imenu-S" item on your menubar;
 ess-help: Now using nice underlines (instead of `nuke-* ^H_')
-@item ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
+@item ESS[R]:  After (require 'essa-r), @kbd{M-x ess-r-var} allows to load
 numbers from any Emacs buffer into an existing *R* process;
-M-x ess-rdired gives a ``directory editor'' of R objects;
+@kbd{M-x ess-rdired} gives a ``directory editor'' of R objects;
 fixed ess-retr-lastvalue-command, i.e. .Last.value bug
 (thanks to David Brahm)
 @item ESS: Support for creating new window frames has been added to
@@ -198,7 +198,7 @@ ess-sas-shell-buffer to unique buffer names.
 Changes/New Features in 5.1.21:
 @itemize @bullet
 @item ESS[SAS]: info documentation now available!, see
-ESS->Help for SAS; F12 opens GSASFILE nearest point for viewing
+ESS->Help for SAS; @kbd{F12} opens GSASFILE nearest point for viewing
 either within emacs, when available, or via an external viewer;
 more syntax highlighting keywords; more enhancements for remote
 SAS batch jobs with Kermit; new framework for remote SAS interactive
@@ -226,7 +226,7 @@ This feature is still under development.
 @item XEmacs on Win (NT) is better supported.
 @item Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
 @item should now work even when imenu is not available (for old XEmacsen).
-@item ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your
+@item ESS[SAS]: XEmacs-Imenu fix; @kbd{C-TAB} is globalized along with your
 function-key definitions, if specified; you can specify your SAS
 library definitions outside of autoexec.sas for ess-sas-data-view
 with SAS code placed in the variable ess-sas-data-view-libname,
@@ -234,7 +234,7 @@ also the dataset name is defaulted to the nearest permanent dataset
 to point; Speedbar support now works for permanent datasets, please
 ignore first./last.; new font-locking is now the default with more
 improvements for font-locking PROCs, macro statements, * ; and %* ;
-comments; you can toggle sas-log-mode with F10 which will font-lock
+comments; you can toggle sas-log-mode with @kbd{F10} which will font-lock
 your .log (if it isn't too big); submit remote .sas files accessed
 with ange-ftp, EFS or Tramp (Kermit is experimental) by setting
 ess-sas-submit-method to 'sh; ess-sas-submit-command and
@@ -245,8 +245,8 @@ local file variables are re-read at submit instead of only at file
 open so that if you make a change it is picked up immediately;
 @item ESS[BUGS]: font-lock with `in' fixed.
 @item for STATA: font-lock bug fixed.
-@item for Rd mode: C-c C-v and `switch-process' in menu.
-further, C-c C-f prefix (Rd-font) for inserting or surrounding a word
+@item for Rd mode: @kbd{C-c C-v} and `switch-process' in menu.
+further, @kbd{C-c C-f} prefix (Rd-font) for inserting or surrounding a word
 by things such as \code@{.@}, \code@{\link@{.@}@}, \emph@{.@} etc.
 @item new functions (ess-directory-function) and (ess-narrow-to-defun)
 ess-directory <-> default-directory logic (Jeff Mincy).
@@ -261,20 +261,20 @@ Templates assist you in writing .bug and .cmd code (.cmd and .log
 are replaced by .bmd and .bog to avoid emacs extension collisions).
 Substitution" parameters facilitate "automagic" generation of
 data...in" and "init...in" filenames, "const N=" from your data
-file and "monitor()/stats()" commands.  Activated by pressing F12.
+file and "monitor()/stats()" commands.  Activated by pressing @kbd{F12}.
 @item Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
 @item You can change between PC and Unix, local and global SAS function-key
 definitions interactively (Rich Heiberger)
-@item C-Submit a highlighted region to SAS batch (Rodney Sparapani)
+@item @kbd{C-Submit} a highlighted region to SAS batch (Rodney Sparapani)
 @item New and improved SAS syntax highlighting (Rodney Sparapani)
 To get the new functionality, set ess-sas-run-make-regexp to nil.
-Also available in .log files via F10.
-@item Open a permanent SAS dataset for viewing via F9 (Rodney Sparapani)
+Also available in .log files via @kbd{F10}.
+@item Open a permanent SAS dataset for viewing via @kbd{F9} (Rodney Sparapani)
 You must have the library defined in autoexec.sas for it to work.
 @item User-friendly defaults for `sas-program', `ess-sas-batch-pre-command'
 and `ess-sas-batch-post-command' as well Customize support for these
 and other ESS[SAS] variables (Rodney Sparapani)
-@item `ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
+@item `ess-sas-suffix-2' now defaults to .dat via @kbd{F11} (Rodney Sparapani)
 @item Emacs/XEmacs, Unix/Windows issues collectively handled in ess-emcs.el
 @item defadvice solves problem of missing *ESS* (thanks to Jeff Mincy)
 @item Improved manual a bit by including things that were only in `README'.
@@ -295,7 +295,7 @@ Changes/New Features in 5.1.17:
 sense that there is no more use of ess-vars, but that we need to
 fix ess-cust) (AJ Rossini)
 @item Many small (and large) fixes/contributions (MMaechler)
-@item addition of the "S-equal" variable and provide M-x ess-add-MM-keys
+@item addition of the "S-equal" variable and provide @kbd{M-x ess-add-MM-keys}
 a way to remap "_" to `ess-S-assign', typically " <- ", but
 customizable. (MMaechler)
 @end itemize
@@ -366,7 +366,7 @@ Changes/New Features in 5.1.2:
 @itemize @bullet
 @item  able to use inferior iESS mode to
 communicate directly with a running S-Plus 4.x process using the
-Microsoft DDE protocol.  We use the familiar (from Unix ESS) C-c C-n
+Microsoft DDE protocol.  We use the familiar (from Unix ESS) @kbd{C-c C-n}
 and related key sequences to send lines from the S-mode file to the
 inferior S process.  We continue to edit S input files in ESS[S] mode
 and transcripts of previous S sessions in ESS Transcript mode.  All
