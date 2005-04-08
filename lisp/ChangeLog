@@ -1,3 +1,9 @@
+2005-04-08  Stephen Eglen  <stephen@gnu.org>
+
+	* essl-s.el (R-editing-alist): Changed comment-start to #
+	and set comment-add to 1 so that ## is put on empty lines at
+	correction indentation.
+
 2005-04-07  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el (ess-mode-menu): add "Toggle Auto-Fill Mode"
