@@ -115,8 +115,8 @@ or `ess-sas-data-view-insight'."
 ;;    :group 'ess-sas
 ;;)
 
-(defcustom ess-sas-log-max 2500000
-  "*If a .log file exceeds this many bytes, just \"refresh\" this many bytes."
+(defcustom ess-sas-log-max 0
+  "*If >0 and .log file exceeds this many bytes, just \"refresh\" this many bytes."
   :group 'ess-sas
   :type  'integer)
 
@@ -620,7 +620,7 @@ current buffer if nil."
 				  ess-temp-kermit-remote-directory))
 
 	      (if revert
-		  (if (and ess-sas-log-max (string-equal suffix "log")
+		  (if (and (> ess-sas-log-max 0) (string-equal suffix "log")
 			   (> (nth 7 (file-attributes ess-sas-temp-file))
 			      ess-sas-log-max))
 		      (progn
