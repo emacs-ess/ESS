@@ -6,6 +6,9 @@ the new toolbar is used in all subsequent ESS buffers.
 your .log grows to more than ess-sas-log-max bytes, just
 the first ess-sas-log-max bytes are refreshed; this is helpful when your .sas program
 generates lots of error messages and gets too big for emacs to display
+@item ESS[R/S]: @kbd{M-;} in R/S editing modes will now indent with
+either one or two hashes depending on context.
+
 @end itemize
 
 Changes/New Features in 5.2.6:
