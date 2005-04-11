@@ -2,6 +2,11 @@ Changes/New Features in 5.2.7:
 @itemize @bullet
 @item If you use Custom to change the variable ess-toolbar-items,
 the new toolbar is used in all subsequent ESS buffers.
+@item ESS[SAS]: new feature:  if ess-sas-log-max >0 and
+your .log grows to more than ess-sas-log-max bytes, just
+the first ess-sas-log-max bytes are refreshed; this is helpful when your .sas program
+generates lots of error messages and gets too big for emacs to display
+@end itemize
 
 Changes/New Features in 5.2.6:
 @itemize @bullet
