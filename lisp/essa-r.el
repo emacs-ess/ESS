@@ -1,9 +1,9 @@
 ;;; essa-r.el -- Possible local customizations for R with ESS.
 
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@u.washington.edu>
+;; Original Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 17 November 1999
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
@@ -79,8 +79,7 @@
 			"\"\n"
 		"end timeout\n"
 	"end tell\n"
-    "end try\n"))
-  ))
+    "end try\n"))))
   (message "Finished evaluation"))
 
 (defun ess-r-var (beg end)
@@ -89,9 +88,9 @@ a variable name.  If none is given, it uses a default variable name,
 e.  BEG and END denote the region in the current buffer to be sent."
   (interactive "r")
   (save-window-excursion
-    (let ( (tmp-file (make-temp-file "ess-r-var"))
- 	   cmd
-	   var)
+    (let ((tmp-file (make-temp-file "ess-r-var"))
+	  cmd
+	  var)
       (write-region beg end tmp-file)
 
       ;; Decide on the variable name to use in R; could use completion.
@@ -146,8 +145,6 @@ is)."
 
   (global-set-key [f11] 'show-max-other-window)
   (global-set-key [f12] 'ess-eval-line-and-step))
-
-
 
 
  ; Provide package
