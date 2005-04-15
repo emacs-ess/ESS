@@ -354,4 +354,4 @@ See `noweb-mode' and `R-mode' for more help."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-site.el ends here
+;;; essd-r.el ends here
