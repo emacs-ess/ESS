@@ -67,9 +67,9 @@
 ;;; correctly).
 ;;;
 ;;; 2. Also need to add ess-makeBibtex.
-
-;;; Might be good to have a way to chain commands.
-
+;;;
+;;; 3. Might be good to have a way to chain commands.
+;;;
 
 ;;; Autoloads and Requires
 
