@@ -91,36 +91,33 @@
    "Run LaTeX on the product of Sweave()ing the current file."
    (interactive)
    (save-excursion
-     (setq thisbuffer (buffer-name))
-     (setq namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
-     (setq latex-filename (concat namestem ".tex"))
-     (message "Running LaTeX ..." )
-     (switch-to-buffer "*tex-output*")
-     (call-process "latex" nil "*tex-output*" 1 latex-filename)
-     (switch-to-buffer thisbuffer)
-     (message "Finished running LaTeX" )))
+     (let* ((thisbuffer (buffer-name))
+	    (namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
+	    (latex-filename (concat namestem ".tex")))
+       (message "Running LaTeX ..." )
+       (switch-to-buffer "*tex-output*")
+       (call-process "latex" nil "*tex-output*" 1 latex-filename)
+       (switch-to-buffer thisbuffer)
+       (message "Finished running LaTeX" ))))
 
 
 (defun ess-makePS ()
    "Create a postscript file from a dvi file (name based on the current
 Sweave file buffer name) and display it with gv."
    (interactive)
-   (setq namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
-   (setq dvi-filename (concat namestem ".dvi"))
-   (setq my-command-string (concat "dvips -o temp.ps " dvi-filename))
-   (shell-command my-command-string)
-   (shell-command "gv temp.ps & "))
+   (let ((namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
+	 (dvi-filename (concat namestem ".dvi")))
+     (shell-command (concat "dvips -o temp.ps " dvi-filename))
+     (shell-command "gv temp.ps & ")))
 
 
 (defun ess-makePDF ()
    "Create a PDF file and display it with acroread."
    (interactive)
-   (setq namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
-   (setq tex-filename (concat namestem ".tex"))
-   (setq my-command-string (concat "pdflatex " tex-filename))
-   (shell-command my-command-string)
-   (setq my-command-string (concat "acroread " namestem ".pdf &"))
-   (shell-command my-command-string))
+   (let* ((namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
+	 (tex-filename (concat namestem ".tex")))
+     (shell-command (concat "pdflatex " tex-filename))
+     (shell-command (concat "acroread " namestem ".pdf &"))))
 
 (defun ess-insert-Sexpr ()
  "Insert Sexpr{} into the buffer at point."
