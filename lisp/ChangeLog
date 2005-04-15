@@ -1,3 +1,8 @@
+2005-04-15  A.J. Rossini  <blindglobe@gmail.com>
+
+	* ess-swv.el: New file, slightly modified from code done by David
+	Whiting.
+
 2005-04-08  Stephen Eglen  <stephen@gnu.org>
 
 	* essl-s.el (R-editing-alist): Changed comment-start to #
