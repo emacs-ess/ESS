@@ -45,7 +45,23 @@ in the file COPYING in the same directory as this file for more details.
 1.2 New Features
 ================
 
-Changes/New Features in 5.2.6:
+Changes/New Features in 5.2.7:
+   * If you use Custom to change the variable ess-toolbar-items, the
+     new toolbar is used in all subsequent ESS buffers.
+
+   * ESS[SAS]: new feature:  if ess-sas-log-max >0 and your .log grows
+     to more than ess-sas-log-max bytes, just the first ess-sas-log-max
+     bytes are refreshed; this is helpful when your .sas program
+     generates lots of error messages and gets too big for emacs to
+     display
+
+   * ESS[R/S]: `M-;' in R/S editing modes will now indent with either
+     one or two hashes depending on context.
+
+   * ESS[R]: David Whiting's Sweave extensions (to 'noweb') are now
+     available (from ess-swv.el loaded by default).
+
+   Changes/New Features in 5.2.6:
    * Removed non-ASCII characters in a few files.
 
    * ESS[R]: now works better when UTF-8 locale is active; in
@@ -139,11 +155,12 @@ Changes/New Features in 5.2.6:
 
    * ESS[R]: If you have other versions of R on your exec-path, such as
      "R-1.8.1" with Unix or "rw1081" with Windows, ESS will find them
-     and create appropriate functions, such as M-x R-1.8.1 or M-x
-     rw1081, for calling them.  By default only Unix programs beginning
-     "R-1" and "R-2" and Windows programs parallel to the version of R
-     in your exec-path will be found, but see ess-r-versions and
-     ess-rterm-versions for ways to find other versions of R.
+     and create appropriate functions, such as `M-x R-1.8.1' or `M-x
+     rw1081', for calling them.  By default only Unix programs
+     beginning "R-1" and "R-2" and Windows programs parallel to the
+     version of R in your exec-path will be found, but see
+     ess-r-versions and ess-rterm-versions for ways to find other
+     versions of R.
 
    * ESS[R]: Other versions of R, such as "R-1.8.1" on Unix and
      "rw1081" on Windows, are added to the "ESS / Start Process /
@@ -151,15 +168,15 @@ Changes/New Features in 5.2.6:
 
    * ESS[S]: If you have other versions of S-Plus on your Windows
      computer, such as S-Plus 6.1 or S-Plus 4.5, ESS will find them and
-     create appropriate functions, such as M-x splus61, for calling the
-     console version (Sqpe) inside an emacs buffer.  By default only
+     create appropriate functions, such as `M-x splus61', for calling
+     the console version (Sqpe) inside an emacs buffer.  By default only
      programs installed in the default location will be found, but see
      ess-SHOME-versions for ways to find other versions of S-Plus.
 
    * ESS[S]: Other versions of Sqpe on Windows, such as "splus61", are
      added to the "ESS / Start Process / Other" menu.
 
-   * ESS[R]: (bug fix) ess-quit (bound to C-c C-q) should now quit the
+   * ESS[R]: (bug fix) ess-quit (bound to `C-c C-q') should now quit the
      inferior R process, when issued from either the inferior buffer,
      or from a .R buffer.
 
@@ -171,7 +188,7 @@ Changes/New Features in 5.2.6:
      images, but can be disabled with the variable ess-use-toolbar.
      Thanks to David Smith from Insightful for the S-plus logo.
 
-   * ESS[SAS]: ess-sas-graph-view (F12) enhanced; you can specify
+   * ESS[SAS]: ess-sas-graph-view (`F12') enhanced; you can specify
      external file viewers for each graphics file type via the alist
      ess-sas-graph-view-viewer-alist; also .jpg/.gif are now handled by
      image-mode on XEmacs, if available, otherwise by graphics
@@ -192,11 +209,11 @@ Changes/New Features in 5.2.6:
      the definition of the variable ess-sas-edit-keys-toggle to boolean
      rather than 0/1; added the function ess-electric-run-semicolon
      which automatically reverse indents lines containing only "run;";
-     C-F1 creates MS RTF portrait from the current buffer; C-F2 creates
-     MS RTF landscape from the current buffer; C-F9 opens a SAS DATASET
-     with PROC INSIGHT rather than PROC FSVIEW; "inferior" aliases for
-     SAS batch:  C-c C-r for submit region, C-c C-b for submit buffer,
-     C-c C-x for goto .log; C-c C-y for goto .lst
+     `C-F1' creates MS RTF portrait from the current buffer; `C-F2'
+     creates MS RTF landscape from the current buffer; `C-F9' opens a
+     SAS DATASET with PROC INSIGHT rather than PROC FSVIEW; "inferior"
+     aliases for SAS batch:  `C-c C-r' for submit region, `C-c C-b' for
+     submit buffer, `C-c C-x' for goto .log; `C-c C-y' for goto .lst
 
    * ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
      pressing underscore twice inserts a literal underscore.  To stop
@@ -208,9 +225,9 @@ Changes/New Features in 5.2.6:
      on your menubar; ess-help: Now using nice underlines (instead of
      `nuke-* ^H_')
 
-   * ESS[R]:  After (require 'essa-r), M-x ess-r-var allows to load
-     numbers from any Emacs buffer into an existing *R* process; M-x
-     ess-rdired gives a "directory editor" of R objects; fixed
+   * ESS[R]:  After (require 'essa-r), `M-x ess-r-var' allows to load
+     numbers from any Emacs buffer into an existing *R* process; `M-x
+     ess-rdired' gives a "directory editor" of R objects; fixed
      ess-retr-lastvalue-command, i.e. .Last.value bug (thanks to David
      Brahm)
 
@@ -251,7 +268,7 @@ Changes/New Features in 5.2.6:
 
    Changes/New Features in 5.1.21:
    * ESS[SAS]: info documentation now available!, see ESS->Help for
-     SAS; F12 opens GSASFILE nearest point for viewing either within
+     SAS; `F12' opens GSASFILE nearest point for viewing either within
      emacs, when available, or via an external viewer; more syntax
      highlighting keywords; more enhancements for remote SAS batch jobs
      with Kermit; new framework for remote SAS interactive jobs, see
@@ -287,7 +304,7 @@ Changes/New Features in 5.2.6:
    * should now work even when imenu is not available (for old
      XEmacsen).
 
-   * ESS[SAS]: XEmacs-Imenu fix; C-TAB is globalized along with your
+   * ESS[SAS]: XEmacs-Imenu fix; `C-TAB' is globalized along with your
      function-key definitions, if specified; you can specify your SAS
      library definitions outside of autoexec.sas for ess-sas-data-view
      with SAS code placed in the variable ess-sas-data-view-libname,
@@ -295,23 +312,24 @@ Changes/New Features in 5.2.6:
      to point; Speedbar support now works for permanent datasets, please
      ignore first./last.; new font-locking is now the default with more
      improvements for font-locking PROCs, macro statements, * ; and %* ;
-     comments; you can toggle sas-log-mode with F10 which will font-lock
-     your .log (if it isn't too big); submit remote .sas files accessed
-     with ange-ftp, EFS or Tramp (Kermit is experimental) by setting
-     ess-sas-submit-method to 'sh; ess-sas-submit-command and
-     ess-sas-submit-command-options are buffer-local so you can have
-     local file variable sections at the end of your .sas files to
-     request different executables or specify special options and the
-     local file variables are re-read at submit instead of only at file
-     open so that if you make a change it is picked up immediately;
+     comments; you can toggle sas-log-mode with `F10' which will
+     font-lock your .log (if it isn't too big); submit remote .sas
+     files accessed with ange-ftp, EFS or Tramp (Kermit is
+     experimental) by setting ess-sas-submit-method to 'sh;
+     ess-sas-submit-command and ess-sas-submit-command-options are
+     buffer-local so you can have local file variable sections at the
+     end of your .sas files to request different executables or specify
+     special options and the local file variables are re-read at submit
+     instead of only at file open so that if you make a change it is
+     picked up immediately;
 
    * ESS[BUGS]: font-lock with `in' fixed.
 
    * for STATA: font-lock bug fixed.
 
-   * for Rd mode: C-c C-v and `switch-process' in menu.  further, C-c
-     C-f prefix (Rd-font) for inserting or surrounding a word by things
-     such as \code{.}, \code{\link{.}}, \emph{.} etc.
+   * for Rd mode: `C-c C-v' and `switch-process' in menu.  further,
+     `C-c C-f' prefix (Rd-font) for inserting or surrounding a word by
+     things such as \code{.}, \code{\link{.}}, \emph{.} etc.
 
    * new functions (ess-directory-function) and (ess-narrow-to-defun)
      ess-directory <-> default-directory logic (Jeff Mincy).
@@ -327,28 +345,31 @@ Changes/New Features in 5.2.6:
      are replaced by .bmd and .bog to avoid emacs extension collisions).
      Substitution" parameters facilitate "automagic" generation of
      data...in" and "init...in" filenames, "const N=" from your data
-     file and "monitor()/stats()" commands.  Activated by pressing F12.
+     file and "monitor()/stats()" commands.  Activated by pressing
+     `F12'.
 
    * Fixes for `ess-smart-underscore' SAS breakage (Rich Heiberger)
 
    * You can change between PC and Unix, local and global SAS
      function-key definitions interactively (Rich Heiberger)
 
-   * C-Submit a highlighted region to SAS batch (Rodney Sparapani)
+   * `C-Submit' a highlighted region to SAS batch (Rodney Sparapani)
 
    * New and improved SAS syntax highlighting (Rodney Sparapani) To get
      the new functionality, set ess-sas-run-make-regexp to nil.  Also
-     available in .log files via F10.
+     available in .log files via `F10'.
 
-   * Open a permanent SAS dataset for viewing via F9 (Rodney Sparapani)
-     You must have the library defined in autoexec.sas for it to work.
+   * Open a permanent SAS dataset for viewing via `F9' (Rodney
+     Sparapani) You must have the library defined in autoexec.sas for
+     it to work.
 
    * User-friendly defaults for `sas-program',
      `ess-sas-batch-pre-command' and `ess-sas-batch-post-command' as
      well Customize support for these and other ESS[SAS] variables
      (Rodney Sparapani)
 
-   * `ess-sas-suffix-2' now defaults to .dat via F11 (Rodney Sparapani)
+   * `ess-sas-suffix-2' now defaults to .dat via `F11' (Rodney
+     Sparapani)
 
    * Emacs/XEmacs, Unix/Windows issues collectively handled in
      ess-emcs.el
@@ -374,9 +395,9 @@ Changes/New Features in 5.2.6:
 
    * Many small (and large) fixes/contributions (MMaechler)
 
-   * addition of the "S-equal" variable and provide M-x ess-add-MM-keys
-     a way to remap "_" to `ess-S-assign', typically " <- ", but
-     customizable. (MMaechler)
+   * addition of the "S-equal" variable and provide `M-x
+     ess-add-MM-keys' a way to remap "_" to `ess-S-assign', typically "
+     <- ", but customizable. (MMaechler)
 
    Changes/New Features in 5.1.16:
    * BUG FIXES
@@ -438,12 +459,13 @@ Changes/New Features in 5.2.6:
    Changes/New Features in 5.1.2:
    * able to use inferior iESS mode to communicate directly with a
      running S-Plus 4.x process using the Microsoft DDE protocol.  We
-     use the familiar (from Unix ESS) C-c C-n and related key sequences
-     to send lines from the S-mode file to the inferior S process.  We
-     continue to edit S input files in ESS[S] mode and transcripts of
-     previous S sessions in ESS Transcript mode.  All three modes know
-     the S language, syntax, and indentation patterns and provide the
-     syntactic highlighting that eases the programming tasks.
+     use the familiar (from Unix ESS) `C-c C-n' and related key
+     sequences to send lines from the S-mode file to the inferior S
+     process.  We continue to edit S input files in ESS[S] mode and
+     transcripts of previous S sessions in ESS Transcript mode.  All
+     three modes know the S language, syntax, and indentation patterns
+     and provide the syntactic highlighting that eases the programming
+     tasks.
 
 1.3 Current Features
 ====================
@@ -841,7 +863,7 @@ low-volume mailing list.
 1.12 Authors
 ============
 
-   * A.J. Rossini (mailto:rossini@blindglobe.net)
+   * A.J. Rossini (mailto:blindglobe@gmail.com)
 
    * Richard M. Heiberger (mailto:rmh@temple.edu)
 
