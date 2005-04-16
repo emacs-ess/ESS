@@ -19,18 +19,15 @@
 ;;; This code is experimental, and runs best on Emacs 21 and XEmacs
 ;;; 21.  It has been tested only on Linux machines.  All feedback
 ;;; appreciated.
-;;; To use this code, place the following in .emacs after you have
-;;; loaded ess-site:
 ;;;
-;;; (setq ess-use-toolbar t)
-;;; (if (fboundp 'tool-bar-mode) (tool-bar-mode t))	;Emacs 21.
-;;; (require 'ess-toolbar)
+;;; If your emacs can support images, the ESS toolbar should be loaded.
+;;; 
 ;;; If you see a toolbar, but no icons, check out the value of
 ;;; ess-icon-directory.
 ;;;
 ;;; The toolbar can be customized in several ways.  To see options, do:
 ;;; M-x customize-group RET ess-toolbar RET
-;;; If you change any of the variables, you may need to restart Emacs
+;;; If you change any of the variables, you _may_ need to restart Emacs
 ;;; to see any effect.  See also the documentation for ess-toolbar-items
 ;;; if you wish to change its value.
 ;;;
