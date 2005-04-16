@@ -444,6 +444,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;;; (1.7) Literate Data Analysis
 (require 'ess-noweb)
+(require 'ess-swv); for Sweave
 
 ;; ALWAYS:
 (require 'ess); -> loads ess-cust.el and more

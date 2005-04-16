@@ -7,8 +7,8 @@
 
 2005-04-15  A.J. Rossini  <blindglobe@gmail.com>
 
-	* ess-swv.el: New file, slightly modified from code done by David
-	Whiting.
+	* ess-swv.el: New file for Sweave, slightly modified from code
+	done by David Whiting.
 
 2005-04-08  Stephen Eglen  <stephen@gnu.org>
 

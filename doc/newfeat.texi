@@ -8,7 +8,8 @@ the first ess-sas-log-max bytes are refreshed; this is helpful when your .sas pr
 generates lots of error messages and gets too big for emacs to display
 @item ESS[R/S]: @kbd{M-;} in R/S editing modes will now indent with
 either one or two hashes depending on context.
-
+@item ESS[R]: David Whiting's Sweave extensions (to 'noweb')
+are now available (from ess-swv.el loaded by default).
 @end itemize
 
 Changes/New Features in 5.2.6:
@@ -93,7 +94,7 @@ Changes/New Features in 5.2.2:
 if ess-info not found by info
 @item ESS[R]: If you have other versions of R on your
 exec-path, such as "R-1.8.1" with Unix or "rw1081" with Windows,
-ESS will find them and create appropriate functions, such as 
+ESS will find them and create appropriate functions, such as
 @kbd{M-x R-1.8.1} or @kbd{M-x rw1081}, for calling them.
 By default only Unix programs beginning "R-1" and
 "R-2" and Windows programs parallel to the

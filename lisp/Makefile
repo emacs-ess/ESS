@@ -50,7 +50,7 @@ ELC = ess-cust.elc $(CORE) \
 	essl-bug.elc \
 	ess-noweb.elc noweb-mode.elc noweb-font-lock-mode.elc \
 	ess-font-lock.elc \
-	essa-r.elc ess-toolbar.elc\
+	essa-r.elc ess-swv.elc ess-toolbar.elc\
 	essddr.elc
 
 ### Targets
@@ -135,6 +135,8 @@ essd-sp3.elc : essd-sp3.el essl-s.elc ess.elc
 essd-s4.elc : essd-s4.el essl-s.elc ess.elc
 
 essd-r.elc : essd-r.el essl-s.elc ess.elc
+
+ess-swv.elc: ess-swv.el ess-noweb.elc
 
 ## Lisp Languages
 
