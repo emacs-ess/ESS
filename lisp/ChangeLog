@@ -1,3 +1,10 @@
+2005-04-16  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-toolbar.el (ess-make-toolbar): If Emacs is running in a
+	terminal, tool-bar-map is not defined (because tool-bars cannot be
+	displayed) and hence we should not bother trying to make a
+	tool-bar.
+
 2005-04-15  A.J. Rossini  <blindglobe@gmail.com>
 
 	* ess-swv.el: New file, slightly modified from code done by David
