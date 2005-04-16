@@ -128,7 +128,11 @@ If `ess-icon-directory' is invalid, please report a bug.")
   "Make the ESS toolbar."
   (if (featurep 'xemacs)
       (ess-make-toolbar-xemacs)
-    (ess-make-toolbar-emacs)))
+    ;; Under Emacs, only worth building the toolbar if tool-bar-map is 
+    ;; available.  e.g. when running Emacs within a terminal, tool-bar-map
+    ;; is not available, so no need to make the tool-bar.
+    (if (boundp 'tool-bar-map)
+	(ess-make-toolbar-emacs))))
 
 (defun ess-make-toolbar-emacs ()
   "Make the ESS toolbar under Emacs."
