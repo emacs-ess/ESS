@@ -1942,8 +1942,8 @@ The braces automatically indent to the correct position when typed.
 
 @item
 @kbd{M-;} (@code{indent-for-comment}) @*
-Indents a comment line appropriately, or inserts an empty
-(single-@samp{#}) comment.
+Indents an existing comment line appropriately, or inserts an
+appropriate comment marker.
 
 @item
 @kbd{M-x ess-set-style} @*
