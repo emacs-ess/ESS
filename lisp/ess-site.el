@@ -667,18 +667,18 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;;(setq ess-sas-edit-keys-toggle t)   ;; optional TAB and C-TAB in sas-mode
 ;;;   Use the function call (ess-sas-edit-keys-toggle)
 ;;;   to change the setting after the first SAS-mode buffer has been created.
-;;;   1c. You can also define C-TAB in all modes by specifying either
-;;;(setq ess-sas-global-unix-keys t) ;; optional C-TAB bound in all modes
-;;;(setq ess-sas-global-pc-keys t)   ;; optional C-TAB bound in all modes
-;;;	  See below.
+;;;   1c. You can also define C-TAB in all modes by Option 2b (below).
 ;;;
 ;;;   2. Managing submitted SAS jobs with function keys.
-;;;   2a. Default: Function keys retain their global bindings.
-;;;   2b. Options: Uncomment at most one of the following four lines.
-;;;(setq ess-sas-local-unix-keys t)  ;; [f2]--[f8] bound in sas-mode and related modes
-;;;(setq ess-sas-local-pc-keys t)    ;; [f2]--[f8] bound in sas-mode and related modes
-;;;(setq ess-sas-global-unix-keys t) ;; [f2]--[f8] bound in all modes
-;;;(setq ess-sas-global-pc-keys t)   ;; [f2]--[f8] bound in all modes
+;;;   2a. Default: To define the function keys in ESS[SAS] mode only,
+;;;   uncomment at most one of the following two lines.
+;;;(setq ess-sas-local-unix-keys t)  ;; F2-F12 bound in ESS[SAS] mode
+;;;(setq ess-sas-local-pc-keys t)    ;; F2-F12 bound in ESS[SAS] mode
+;;;
+;;;   2b. Options: To define the function keys in all modes,
+;;;   uncomment at most one of the following two lines.
+;;;(setq ess-sas-global-unix-keys t) ;; F2-F12 bound in all modes
+;;;(setq ess-sas-global-pc-keys t)   ;; F2-F12 bound in all modes
 ;;;
 ;;;   3. If it is more convenient to have "*Async Shell Command*"
 ;;;	 in same-window-buffer-names, then uncomment the following line
