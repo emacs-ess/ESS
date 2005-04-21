@@ -86,14 +86,14 @@ following line in @file{ess-site.el}:
 (setq ess-sas-edit-keys-toggle t)
 @end example
 Under the alternate behavior, @key{TAB} is bound to @kbd{M-x tab-to-tab-stop}
-and the stops are set at multiples of @var{sas-indent-width}.
+and the stops are set at multiples of @samp{sas-indent-width}.
 
 @comment  node-name,  next,  previous,  up
 @node  ESS(SAS)--Batch SAS processes, ESS(SAS)--Function keys for batch processing, ESS(SAS)--TAB key
 @section @ESS-SAS{}--Batch @SAS{} processes
 
 Submission of a @SAS{} batch job is dependent on your environment.
-@var{ess-sas-submit-method} is determined by your operating system and your
+@samp{ess-sas-submit-method} is determined by your operating system and your
 shell.  It defaults to @code{'sh} unless you are running Windows or Mac
 Classic.  Under Windows, it will default to @code{'sh} if you are using a
 @UNIX{}-imitating shell; otherwise @code{'ms-dos} for an @acronym{MS-DOS} shell.  On Mac OS
@@ -101,7 +101,7 @@ X, it will default to @code{'sh}, but under Mac Classic AppleScript is used
 (@code{'apple-script}).  You will also set this to @code{'sh} if the @SAS{} batch job
 needs to run on a remote machine rather than your local machine.  This
 works transparently if you are editing the remote file via ange-ftp/EFS
-or tramp.  Note that @var{ess-sas-shell-buffer-remote-init} is a Local
+or tramp.  Note that @samp{ess-sas-shell-buffer-remote-init} is a Local
 Variable that defaults to "ssh" which will be used to open the buffer on
 the remote host and it is assumed that no password is necessary,
 i.e. you are using the equivalent of ssh-agent/ssh-add (see the
@@ -111,19 +111,19 @@ default).
 However, if you are editing the file locally and transferring it back
 and forth with Kermit, you need some additional steps.  First, start
 Kermit locally before remotely logging in.  Open a local copy of the
-file with the @var{ess-kermit-prefix} character prepended (the default is
+file with the @samp{ess-kermit-prefix} character prepended (the default is
 "#").  Execute the command @kbd{M-x ess-kermit-get} which automatically brings the
 contents of the remote file into your local copy.  If you transfer files
 with Kermit manually in a shell buffer, then note that the Kermit escape
 sequence is @kbd{C-q C-\ c} rather than @kbd{C-\ c} which it would be in an ordinary
 terminal application, i.e. not in an emacs buffer.  Lastly, note that
-the remote Kermit command is specified by @var{ess-kermit-command}.
+the remote Kermit command is specified by @samp{ess-kermit-command}.
 
 The command used by the @samp{SUBMIT} function key (@key{F3} or @key{F8}) to submit a batch
-@SAS{} job, whether local or remote, is @var{ess-sas-submit-command} which
-defaults to @var{sas-program}.  @var{sas-program} is @code{"invoke SAS using program file"}
+@SAS{} job, whether local or remote, is @samp{ess-sas-submit-command} which
+defaults to @samp{sas-program}.  @samp{sas-program} is @code{"invoke SAS using program file"}
 for Mac Classic and @code{"sas"} otherwise.  However, you may have to alter
-@var{ess-sas-submit-command} for a particular program, so it is defined as
+@samp{ess-sas-submit-command} for a particular program, so it is defined as
 buffer-local.  Conveniently, it can be set at the end of the program:
 @example
 endsas;
@@ -132,8 +132,8 @@ ess-sas-submit-command: "sas8"
 End:
 @end example
 
-The command line is also made of @var{ess-sas-submit-pre-command}, 
-@var{ess-sas-submit-post-command} and @var{ess-sas-submit-command-options} 
+The command line is also made of @samp{ess-sas-submit-pre-command}, 
+@samp{ess-sas-submit-post-command} and @samp{ess-sas-submit-command-options} 
 (the last of which is also buffer-local).
 Here are some examples for your @file{~/.emacs} or @file{~/.xemacs/init.el}
 file (you may also use @kbd{M-x customize-variable}):
@@ -178,7 +178,7 @@ submit the batch @SAS{} job.
 @key{F3} (@key{F8})
 @end example
 The job runs in the shell buffer while you continue to edit 
-@file{@var{foo}.sas}.  If @var{ess-sas-submit-method} is @code{'sh}, then the 
+@file{@var{foo}.sas}.  If @samp{ess-sas-submit-method} is @code{'sh}, then the 
 message buffer will display the shell notification when the 
 job is complete.  The @code{'sh} setting also allows you to 
 terminate the @SAS{} batch job before it is finished.
@@ -325,7 +325,7 @@ capitals).
                     and `refresh'
 
 @key{F12}  @key{F12}  viewgraph
-                    open a @var{GSASFILE} near point for viewing either in emacs
+                    open a @samp{GSASFILE} near point for viewing either in emacs
                     or with an external viewer
 
 @kbd{C-@key{F1}} @kbd{C-@key{F1}} rtf-portrait
@@ -362,10 +362,10 @@ However, six other keys have been provided for convenience and are described bel
 your operating system.  This is especially helpful if you would like to 
 kill a @SAS{} batch job.  You can specify a different buffer name to 
 associate with a @SAS{} batch job (besides @file{*shell*}) with the buffer-local 
-variable @var{ess-sas-shell-buffer}.  This allows you to have multiple 
+variable @samp{ess-sas-shell-buffer}.  This allows you to have multiple 
 buffers running @SAS{} batch jobs on multiple local/remote computers
 that may rely on different methods specified by the buffer-local variable
-@var{ess-sas-submit-method}.
+@samp{ess-sas-submit-method}.
 
 @key{F2} performs the `refresh' operation on the current buffer.  `refresh'
 compares the buffer's last modified date/time with the file's last
@@ -383,19 +383,19 @@ file, but with a different extension (@file{.txt} by default) and performs
 
 @key{F9} will prompt you for the name of a permanent @SAS{} dataset near point to
 be opened for viewing by @samp{PROC FSEDIT}.  You can control the @SAS{} batch
-command-line with @var{ess-sas-data-view-submit-options}.  For controlling the
+command-line with @samp{ess-sas-data-view-submit-options}.  For controlling the
 @SAS{} batch commands, you have the global variables
-@var{ess-sas-data-view-libname} and @var{ess-sas-data-view-fsview-command} as well
-as the buffer-local variable @var{ess-sas-data-view-fsview-statement}.  If you
+@samp{ess-sas-data-view-libname} and @samp{ess-sas-data-view-fsview-command} as well
+as the buffer-local variable @samp{ess-sas-data-view-fsview-statement}.  If you
 have your @SAS{} @samp{LIBNAME} defined in @file{~/autoexec.sas}, then the defaults for
 these variables should be sufficient.
 
 Similarly, @kbd{C-@key{F9}} will prompt you for the name of a permanent @SAS{} dataset
 near point to be opened for viewing by @samp{PROC INSIGHT}.  You can control
-the @SAS{} batch command-line with @var{ess-sas-data-view-submit-options}.  For
-controlling the @SAS{} batch commands, you have the global variables
-@var{ess-sas-data-view-libname} and @var{ess-sas-data-view-insight-command} as well
-as the buffer-local variable @var{ess-sas-data-view-insight-statement}. 
+the @SAS{} batch command-line with @samp{ess-sas-data-view-submit-options}.  For
+controlling the SAS{} batch commands, you have the global variables
+@samp{ess-sas-data-view-libname} and @samp{ess-sas-data-view-insight-command} as well
+as the buffer-local variable @samp{ess-sas-data-view-insight-statement}. 
 
 @key{F10} toggles @ESS-SAS{} mode for @file{.log} files which is off by default
 (technically, it is @samp{SAS-log-mode}, but it looks the same).  The syntax
@@ -404,15 +404,15 @@ highlighting can be helpful in certain debugging situations, but large
 
 @key{F11} is the same as `filetype-1' except it is @file{.dat} by default.  
 
-@key{F12} will prompt you for the name of a @var{GSASFILE} near the point in @file{.log} to
+@key{F12} will prompt you for the name of a @samp{GSASFILE} near the point in @file{.log} to
 be opened for viewing either with emacs or with an external viewer.
 Depending on your version of emacs and the operating system you are
 using, emacs may support @file{.gif} and @file{.jpg} files internally.  You may need
 to change the following variables for your own situation.  
-@var{ess-sas-graph-view-suffix-regexp} is a regular expression of supported 
+@samp{ess-sas-graph-view-suffix-regexp} is a regular expression of supported 
 file types defined via file name extensions.  
-@var{ess-sas-graph-view-viewer-default} is the default external viewer for
-your platform.  @var{ess-sas-graph-view-viewer-alist} is an alist of 
+@samp{ess-sas-graph-view-viewer-default} is the default external viewer for
+your platform.  @samp{ess-sas-graph-view-viewer-alist} is an alist of 
 exceptions to the default; i.e. file types and their associated
 viewers which will be used rather than the default viewer.
 @example
@@ -442,7 +442,7 @@ statistical processes (programs).  @IESS-SAS{} is what is needed for
 interactive @SAS{} programming.  @IESS-SAS{} works best
 with the @SAS{} command-line option settings
 @code{"-stdio -linesize 80 -noovp -nosyntaxcheck"}
-(the default of @var{inferior-SAS-args}).
+(the default of @samp{inferior-SAS-args}).
 
 @display
 @code{-stdio}          
