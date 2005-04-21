@@ -20,7 +20,7 @@ TEXI2PDF = LANG=C texi2pdf
 #### no user servicable parts beyond this point ####
 
 TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
-	credits.texi currfeat.texi ess.texi getting.texi help-s.texi        \
+	credits.texi currfeat.texi ess.texi ess-defs.texi getting.texi help-s.texi \
 	help-sas.texi inst_svn.texi inst_tar.texi license.texi mailing.texi \
 	newfeat.texi readme.texi requires.texi stabilty.texi help-bugs.texi \
         ../VERSION

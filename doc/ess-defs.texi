@@ -1,26 +1,14 @@
 @c keep all doc macros here
 
-@macro ESS{}
-@acronym{ESS}
+@macro ESS{ARG}
+@w{@acronym{ESS\ARG\}}
 @end macro
 
-@macro IESS{}
-@acronym{IESS}
+@macro IESS{ARG}
+@w{@acronym{IESS\ARG\}}
 @end macro
 
-@macro ESS-S{}
-@acronym{ESS[S]}
-@end macro
-
-@macro ESS-SAS{}
-@acronym{ESS[SAS]}
-@end macro
-
-@macro IESS-SAS{}
-@acronym{IESS[SAS]}
-@end macro
-
-@macro ESS-VERSION{}
+@macro ESSVER{}
 @include ../VERSION
 @end macro
 
@@ -36,16 +24,16 @@ S
 @sc{S-Plus}
 @end macro
 
-@macro SAS{}
-@acronym{SAS}
-@end macro
-
-@macro SAS-GRAPH{}
-@acronym{SAS/GRAPH}
+@macro SAS{ARG} 
+@w{@acronym{SAS\ARG\}}
 @end macro
 
 @macro UNIX{}
 @acronym{UNIX}
+@end macro
+
+@macro PC{}
+@acronym{PC}
 @end macro
 
 @macro MS{}
@@ -54,4 +42,8 @@ S
 
 @macro RTF{}
 @acronym{RTF}
+@end macro
+
+@macro initfile{}
+@file{~/.emacs} or @file{~/.xemacs/init.el}
 @end macro
