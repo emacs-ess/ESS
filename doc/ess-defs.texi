@@ -1,5 +1,13 @@
 @c keep all doc macros here
 
+@macro wkbd{ARG}
+@w{@kbd{\ARG\}}
+@end macro
+
+@macro wcode{ARG}
+@w{@code{\ARG\}}
+@end macro
+
 @macro ESS{ARG}
 @w{@acronym{ESS\ARG\}}
 @end macro
@@ -8,7 +16,7 @@
 @w{@acronym{IESS\ARG\}}
 @end macro
 
-@macro ESSVER{}
+@macro ESSVER
 @include ../VERSION
 @end macro
 
@@ -24,26 +32,21 @@ S
 @sc{S-Plus}
 @end macro
 
-@macro SAS{ARG} 
-@w{@acronym{SAS\ARG\}}
-@end macro
+@macro SAS{ARG}
+@w{@acronym{SAS\ARG\}}@end macro
 
-@macro UNIX{}
+@macro UNIX
 @acronym{UNIX}
 @end macro
 
-@macro PC{}
+@macro PC
 @acronym{PC}
 @end macro
 
-@macro MS{}
+@macro MS
 @acronym{MS}
 @end macro
 
-@macro RTF{}
-@acronym{RTF}
-@end macro
-
-@macro initfile{}
+@macro initfile
 @file{~/.emacs} or @file{~/.xemacs/init.el}
 @end macro
