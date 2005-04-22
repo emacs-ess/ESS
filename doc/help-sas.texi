@@ -513,11 +513,11 @@ The @file{*SAS:1.lst*} buffer in ESSlst mode corresponds to the file
 @file{@var{foo}.lst} in @SAS{} batch usage and to the @code{SAS: OUTPUT} window in the
 @SAS{} Display Manager.  All printed output appears in this window.
 
-The @IESS{} @file{[SAS:1]} buffer exists solely as a communications buffer.
+The @file{*SAS:1*} buffer exists solely as a communications buffer.
+The user should never use this buffer directly.
 Files are edited in the @file{@var{foo}.sas} buffer.  The @wkbd{C-c C-r} key in
 @ESS{[SAS]} is the functional equivalent of bringing a file into the
-@code{SAS: PROGRAM EDITOR} window followed by the 'Local' 'Submit' menu
-commands.  The user should never use this buffer directly.
+@code{SAS: PROGRAM EDITOR} window followed by @code{SUBMIT}. 
 
 For example, open the file you want to work with.
 @example
@@ -529,17 +529,17 @@ up @SAS{} with the cursor in the @file{@var{foo}.sas} buffer.
 @wkbd{M-x SAS}
 @end example
 Four buffers will appear on screen:
-@multitable {buffer-names} {long-mode-names} {even-longer-description}
+@multitable {buffer-names} {long-mode-names} {much-much-much-much-longer-description}
 @item
-Buffer               @tab Mode            @tab Description
+Buffer               @tab Mode                   @tab Description
 @item
-@file{@var{foo}.sas} @tab @ESS{[SAS]}     @tab your source file
+@file{@var{foo}.sas} @tab @code{ESS[SAS]}        @tab your source file
 @item
-@file{*SAS:1*}       @tab @IESS{} [SAS:1] @tab @IESS{} communication buffer
+@file{*SAS:1*}       @tab @code{iESS[SAS:1]}     @tab @IESS{} communication buffer
 @item
-@file{*SAS:1.log*}   @tab Shell [] ESStr  @tab @SAS{} log information
+@file{*SAS:1.log*}   @tab @code{Shell ESStr []}  @tab @SAS{} log information
 @item
-@file{*SAS:1.lst*}   @tab Shell [] ESSlst @tab @SAS{} listing information
+@file{*SAS:1.lst*}   @tab @code{Shell ESSlst []} @tab @SAS{} listing information
 @end multitable
 If you would prefer each of the four buffers to appear in its
 own individual frame, you can arrange for that.  Place the
