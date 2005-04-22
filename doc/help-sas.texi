@@ -505,19 +505,19 @@ To start up @IESS{[SAS]} mode, use:
 @end example
 
 The @file{*SAS:1.log*} buffer in ESStr mode corresponds to the file
-@file{@var{foo}.log} in @SAS{} batch usage and to the @code{SAS: LOG} window in the 
+@file{@var{foo}.log} in @SAS{} batch usage and to the @samp{SAS: LOG} window in the 
 @SAS{} Display Manager.  All commands submitted to @SAS{}, informative
 messages, warnings, and errors appear here.
 
 The @file{*SAS:1.lst*} buffer in ESSlst mode corresponds to the file
-@file{@var{foo}.lst} in @SAS{} batch usage and to the @code{SAS: OUTPUT} window in the
+@file{@var{foo}.lst} in @SAS{} batch usage and to the @samp{SAS: OUTPUT} window in the
 @SAS{} Display Manager.  All printed output appears in this window.
 
 The @file{*SAS:1*} buffer exists solely as a communications buffer.
 The user should never use this buffer directly.
 Files are edited in the @file{@var{foo}.sas} buffer.  The @wkbd{C-c C-r} key in
 @ESS{[SAS]} is the functional equivalent of bringing a file into the
-@code{SAS: PROGRAM EDITOR} window followed by @code{SUBMIT}. 
+@samp{SAS: PROGRAM EDITOR} window followed by @code{SUBMIT}. 
 
 For example, open the file you want to work with.
 @example
