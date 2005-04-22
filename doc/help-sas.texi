@@ -591,14 +591,18 @@ If @wkbd{M-x SAS} gives errors upon startup, check the following:
 you are running Windows:  see 1.
 @item
 @file{ess-sas-sh-command} (from the @ESS{} @file{etc} directory) needs to be
-executable; you can see by pressing @wkbd{@key{F1} v} and supplying the argument 
-@code{executable-chmod} which needs to have the value @code{73}; if not,
-fix it with @wkbd{M-x set-variable} by supplying the arguments
-@code{executable-chmod} and @code{73}. 
+executable; too check, type @wkbd{C-x C-f ess-sas-sh-command}, then 
+@wkbd{@key{F1} v}, at the minibuffer prompt
+@wsamp{Describe variable:}, type @code{executable-chmod} 
+which should have the value @code{73}; if not, then you can fix it:
+type @wkbd{M-x set-variable}, at the minibuffer prompt @wsamp{Set variable:}, 
+type @code{executable-chmod}, and at @samp{Set executable-chmod to value:},
+type @code{73}. 
 @c (solution: @code{chmod ugo+rx ess-sas-sh-command}).
 @item
-@code{sas} isn't in your executable path; verify by typing 
-@wcode{(executable-find "sas")} followed by @kbd{C-j} in the @file{*scratch*} buffer
+@code{sas} isn't in your executable path; to verify, type
+@kbd{M-:} and at the minibuffer prompt @samp{Eval:}, type
+@code{(executable-find "sas")}
 @end itemize
 @item
 @wkbd{M-x SAS} starts @w{@SAS{} Display} Manager.  Probably, the command @code{sas}

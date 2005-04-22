@@ -8,6 +8,10 @@
 @w{@code{\ARG\}}
 @end macro
 
+@macro wsamp{ARG}
+@w{@samp{\ARG\}}
+@end macro
+
 @macro ESS{ARG}
 @w{@acronym{ESS\ARG\}}
 @end macro
