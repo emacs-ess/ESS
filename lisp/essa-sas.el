@@ -261,9 +261,10 @@ to the shell on Windows when `ess-sas-submit-method' is 'sh."
   :group 'ess-sas
   :type  'number)
 
-(defvar ess-sas-tab-stop-alist
+(defcustom ess-sas-tab-stop-list
   '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120)
-  "List of tab stop positions used by `tab-to-tab-stop' in ESS[SAS].")
+  "List of tab stop positions used by `tab-to-tab-stop' in ESS[SAS]."
+  :group 'ess-sas)
 
 (defcustom ess-sas-temp-root "ess-temp"
   "*The root of the temporary .sas file for `ess-sas-submit-region'."

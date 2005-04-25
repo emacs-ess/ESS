@@ -538,7 +538,7 @@ number."
     (ess-set-style                . ess-default-style)
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
-    (tab-stop-list                . ess-sas-tab-stop-alist)
+    (tab-stop-list                . ess-sas-tab-stop-list)
     (ess-mode-syntax-table        . SAS-syntax-table)
     (font-lock-keywords-case-fold-search . t)
     (font-lock-defaults           . '(SAS-mode-font-lock-keywords)))
