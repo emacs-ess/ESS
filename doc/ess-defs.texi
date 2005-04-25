@@ -39,7 +39,7 @@ S
 @macro SAS{ARG}
 @w{@acronym{SAS\ARG\}}@end macro
 
-@macro UNIX
+@macro UNIX{}
 @acronym{UNIX}
 @end macro
 
@@ -51,6 +51,6 @@ S
 @acronym{MS}
 @end macro
 
-@macro initfile
+@macro initfile{}
 @file{~/.emacs} or @file{~/.xemacs/init.el}
 @end macro
