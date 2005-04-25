@@ -37,7 +37,8 @@ S
 @end macro
 
 @macro SAS{ARG}
-@w{@acronym{SAS\ARG\}}@end macro
+@w{@acronym{SAS\ARG\}}
+@end macro
 
 @macro UNIX{}
 @acronym{UNIX}
