@@ -9,8 +9,7 @@
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-ESS version
-@include ../VERSION
+ESS @w{version @ESSVER}
 
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani  and S.J. Eglen)
@@ -2478,10 +2477,10 @@ variable @code{ess-help-own-frame}.
 * ESS(SAS)--TAB key::
 * ESS(SAS)--Batch SAS processes::
 * ESS(SAS)--Function keys for batch processing::
-* iESS(SAS)--Interactive SAS processes::
-* iESS(SAS)--Common problems::
+* IESS(SAS)--Interactive SAS processes::
+* IESS(SAS)--Common problems::
 * ESS(SAS)--Graphics::
-* ESS(SAS)--MS Windows::
+* ESS(SAS)--Windows::
 @end menu
 @include help-sas.texi
 
