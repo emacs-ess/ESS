@@ -13,7 +13,7 @@ SPLITCHAP = -split_chapter -menu -glossary
 ##
 
 TEXI2DVI = LANG=C texi2dvi
-TEXI2PDF = LANG=C texi2pdf
+TEXI2PDF = LANG=C texi2dvi --pdf
 
 # To obtain sorted indices run:	"texindex ess.??".
 
