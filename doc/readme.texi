@@ -12,13 +12,12 @@
 This is the README file for the distribution of ESS version
 @include ../VERSION
 
-The first release of the 5.2 series.  ESS is a GNU Emacs and XEmacs mode
-for interactive statistical programming and data analysis.  Languages
-supported: the S family (S 3/4, S-PLUS 3/4/5/6/7, and R), SAS, XLispStat,
-Stata and BUGS.  Installation help can be found in sections for both
-Unix and Windows.  ESS grew out of the desire for bug fixes and
-extensions to S-mode and SAS-mode as well as a consistent union of their
-features in one package.
+ESS is a GNU Emacs and XEmacs mode for interactive statistical programming
+and data analysis.  Languages supported: the S family (S 3/4, S-PLUS
+3/4/5/6/7, and R), SAS, XLispStat, Stata and BUGS.  Installation help can
+be found in sections for both Unix and Windows.  ESS grew out of the desire
+for bug fixes and extensions to S-mode and SAS-mode as well as a consistent
+union of their features in one package.
 
 The current development team is led by Martin Maechler since August
 2004. Former project leader A.J. (Tony) Rossini
