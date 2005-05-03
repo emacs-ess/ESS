@@ -39,6 +39,8 @@ dist: VERSION RPM.spec
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
 	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
 	chmod a-w $(ESSDIR)/lisp/*.el
+#      should be newer than 'VERSION' :
+	touch $(ESSDIR)/lisp/ess-cust.el
 	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
 	test -f $(ESSDIR).tar.gz && rm -rf $(ESSDIR).tar.gz || true
 	@echo "** Creating tar file **"
