@@ -1,3 +1,11 @@
+2005-05-05  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-complete-filename): Add doc string.
+	(inferior-ess-mode): Change order of functions added to
+	comint-dynamic-complete-functions local hook.  Removed the value
+	`t' from that hook to prevent the global value of that hook also
+	being used.
+
 2005-04-16  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-toolbar.el (ess-make-toolbar): If Emacs is running in a
