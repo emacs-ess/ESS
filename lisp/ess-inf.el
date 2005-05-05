@@ -1458,13 +1458,20 @@ to continue it."
 
   ;; Completion support
   ;; SJE: comint-dynamic-complete-functions is regarded as a hook, rather
-  ;; than a regular variable.
-  (add-hook 'comint-dynamic-complete-functions
-	    'ess-complete-object-name nil 'local)
-  (add-hook 'comint-dynamic-complete-functions
-	     'comint-replace-by-expanded-history 'append 'local)
+  ;; than a regular variable.  Note order of completion (thanks David Brahm):
+  
   (add-hook 'comint-dynamic-complete-functions
 	    'ess-complete-filename 'append 'local)
+  (add-hook 'comint-dynamic-complete-functions
+ 	    'ess-complete-object-name 'append 'local)
+  (add-hook 'comint-dynamic-complete-functions
+	    'comint-replace-by-expanded-history 'append 'local)
+
+  ;; When a hook is buffer-local, the dummy function `t' is added to
+  ;; indicate that the functions in the global value of the hook
+  ;; should also be run.  I have removed this, as I think it
+  ;; interferes with our normal completion.
+  (remove-hook 'comint-dynamic-complete-functions 't 'local)
 
 
 
@@ -2096,8 +2103,8 @@ form completions."
  (ess-get-modtime-list))
 
 
-(defun ess-complete-filename nil
-  ;; Do file completion only within strings, or when the ! call is being used
+(defun ess-complete-filename ()
+  "Do file completion only within strings, or when ! call is being used."
   (if (comint-within-quotes
        (1- (process-mark (get-buffer-process (current-buffer)))) (point))
       ;; (- comint-last-input-start 1) (point))	 <- from S4 modeadds.
