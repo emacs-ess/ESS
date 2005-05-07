@@ -27,7 +27,7 @@
 
 ;;
 ;; Some simple functions for ESS and Sweave
-;; david.whiting at ncl.ac.uk david.whiting at ncl.ac.uk
+;; david.whiting at ncl.ac.uk
 ;; Wed Sep 1 14:55:52 CEST 2004
 
 ;; I have written some very simple elisp functions that I have found
