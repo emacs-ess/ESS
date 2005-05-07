@@ -1,3 +1,9 @@
+Changes/New Features in 5.2.8:
+@itemize @bullet
+@item iESS: [Tab] completes @strong{file} names ``inside string'' as in
+earlier (<= 5.2.3) ESS versions.
+@end itemize
+
 Changes/New Features in 5.2.7:
 @itemize @bullet
 @item If you use Custom to change the variable ess-toolbar-items,
