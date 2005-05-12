@@ -3,7 +3,7 @@
 # $Id: emacs-ess.spec,v 1.9 2004/10/15 16:44:43 thor Exp $
 
 %define name emacs-ess
-%define version 5.2.7
+%define version 5.2.8
 %define release 1.tgm
 Summary: Emacs Speaks Statistics add-on package for Emacs
 Name: %{name}
