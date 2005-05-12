@@ -106,8 +106,15 @@ from the beginning of the buffer."
 ; file rather than refreshing.  Apparently, it ignores the file on disk.
 ; This change actually makes some sense, but it isn't what we want.
 
+; Long-winded Explanation Ends (no longer interesting, will remove soon)
+
+; whether or not a revert is needed, force load local variables
+; for example, suppose that you change the local variables and then
+; save the file, a revert is unneeded, but a force load is
+  (hack-local-variables)
+
   (if (not (verify-visited-file-modtime (current-buffer))) (progn
-      (revert-buffer t t)
+      (revert-buffer t t)      
       t)
   nil))
 
