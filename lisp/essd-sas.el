@@ -223,7 +223,7 @@ Better logic needed!  (see 2 uses, in this file).")
 (defun ess-electric-run-semicolon (arg)
   "Insert character.  If the line contains \"run;\" and nothing else then indent line."
   (interactive "P")
-  (let (insertpos)
+  (if ess-sas-edit-keys-toggle (insert ";") (let (insertpos)
     (if (and (not arg)
 	     (eolp)
 	     (save-excursion
@@ -231,11 +231,7 @@ Better logic needed!  (see 2 uses, in this file).")
 		   (backward-word 1)
 		   (and (looking-at "run")
 			(progn
-			;; if ess-sas-edit-keys-toggle, then
-			;; call ess-sas-backward-delete-tab
-			;; rather than skip-chars-backward
-			  (if ess-sas-edit-keys-toggle (ess-sas-backward-delete-tab)
-			      (skip-chars-backward " \t"))
+			      (skip-chars-backward " \t")
 			  (bolp)))))
 	(progn
 	  (insert last-command-char)
@@ -247,7 +243,7 @@ Better logic needed!  (see 2 uses, in this file).")
 	(save-excursion
 	  (goto-char insertpos)
 	  (self-insert-command (prefix-numeric-value arg)))
-      (self-insert-command (prefix-numeric-value arg)))))
+      (self-insert-command (prefix-numeric-value arg))))))
 
 (defun SAS ()
   "Call 'SAS', from SAS Institute."
