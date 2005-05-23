@@ -27,12 +27,7 @@ Changes/New Features in 5.2.6:
  environment variables LANGUAGE=en@@quot LC_ALL=en_US.UTF-8
 @item ESS[SAS]: toggling of .log mode improved (@kbd{F10}); toggling of
 .lst mode now also available (@kbd{C-F10}); killing all buffers associated
-with .sas program no longer bound to @kbd{C-F10} since its a bit overzealous;
-EXPERIMENTAL new feature:  if your .log grows to more than 2.5MB, just
-the first 2.5MB are refreshed; this is helpful when your .sas program
-generates lots of error messages and gets too big for emacs to display;
-the truncation size is controlled by the variable ess-sas-log-max and
-defaults to 2500000.
+with .sas program no longer bound to @kbd{C-F10} since its a bit overzealous.
 @item S-Plus 7 for Windows is now recognized.
 @item ESS[S] (incl.@: R): in auto-fill mode, strings are not wrapped anymore.
 @item ESS[S] (incl.@: R): font-lock now correctly differs between R and S,
