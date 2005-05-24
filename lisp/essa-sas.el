@@ -866,7 +866,9 @@ depends on the value of  `ess-sas-submit-method'"
   (interactive)
   (ess-sas-file-path)
   (ess-sas-goto-sas)
-  (ess-save-and-set-local-variables)
+  (save-buffer)
+  (hack-local-variables)
+  ;(ess-save-and-set-local-variables)
 
   (cond
    ((eq ess-sas-submit-method 'apple-script)
