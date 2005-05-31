@@ -484,7 +484,7 @@ on your system.
 As well as using ESS to edit your source files for statistical programs,
 you can use ESS to run these statistical programs.  In this chapter, we
 mostly will refer by example to running S from within emacs.  The emacs
-convention is to name such proceses running under its control as
+convention is to name such processes running under its control as
 `inferior processes'.  This term can be slightly misleading, in which
 case these processes can be thought of `interactive processes'.  Either
 way, we use the term `iESS' to refer to the Emacs mode used to interact
@@ -682,7 +682,7 @@ commands from @samp{myfile.s} or @samp{myfile.r} on the PC to the
 @samp{*S+3*} buffer running the S or R or SAS program on the remote machine.
 
 @item Graphics on the remote machine works fine.  If you run the X window
-sysyem on the remote unix machine you should be able to display them in
+system on the remote unix machine you should be able to display them in
 @samp{xfree86} on your PC.  If you don't run X11, then you can write
 graphics to the postscript device and copy it to your PC with dired and
 display it with ghostscript.
@@ -1083,7 +1083,7 @@ When moving through the transcript, you may wish to re-execute some of
 the commands you find there.  ESS provides three commands to do this;
 these commands may be used whenever the cursor is within a command line
 in the transcript (if the cursor is within some command @emph{output},
-an error is signaled).  Note all three commands involve the @key{RETURN}
+an error is signalled).  Note all three commands involve the @key{RETURN}
 key.
 
 @itemize @bullet
@@ -1129,7 +1129,7 @@ the resulting command is sent to the ESS process (currently this is
 the only way to resubmit a multi-line command to the ESS process in
 one go).  If the current line does
 @cindex multi-line commands, resubmitting
-not begin with a prompt, an error is signaled.  This feature, coupled
+not begin with a prompt, an error is signalled.  This feature, coupled
 with the command-based motion commands described above, could be used as
 a primitive history mechanism.  ESS provides a more sophisticated
 mechanism, however, which is described in @ref{Command History}.
@@ -2503,6 +2503,7 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 
 @menu
 * Highlighting::                Syntactic highlighting of buffers
+* Parens::                      Parenthesis matching
 * Graphics::                    Using graphics with ESS
 * Imenu::                       Support for Imenu in ESS
 * Toolbar::                     Support for toolbar in ESS
@@ -2511,7 +2512,7 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 @end menu
 
 @comment  node-name,  next,  previous,  up
-@node Highlighting, Graphics, Miscellaneous, Miscellaneous
+@node Highlighting, Parens, Miscellaneous, Miscellaneous
 @section Syntactic highlighting of buffers
 
 ESS provides Font-Lock (@pxref{Faces,,Using Multiple Typefaces,
@@ -2549,7 +2550,27 @@ highlights the same patterns as in Inferior ESS Mode.
 @end defvar
 
 @comment  node-name,  next,  previous,  up
-@node Graphics, Imenu, Highlighting, Miscellaneous
+@node Parens, Graphics, Highlighting, Miscellaneous
+@section Parenthesis matching
+
+Emacs and XEmacs have facilities for highlighting the parenthesis
+matching the parenthesis at point.  This feature is very useful when
+trying to examine which parentheses match each other.  This highlighting
+also indicates when parentheses are not matching.  Depending on what
+version of emacs you use, one of the following should work in your
+initialisation file:
+
+@example
+(paren-set-mode 'paren) ;for XEmacs
+(show-paren-mode t) ;for Emacs
+@end example
+
+
+
+
+
+@comment  node-name,  next,  previous,  up
+@node Graphics, Imenu, Parens, Miscellaneous
 @section Using graphics with ESS
 
 @cindex graphics
