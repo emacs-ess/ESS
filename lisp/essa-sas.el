@@ -670,6 +670,7 @@ current buffer if nil."
     "\\|WARNING: Apparent symbolic reference .* not resolved."
     "\\|NOTE 485-185: Informat .* was not found or could not be loaded."
     "\\|WARNING: Length of character variable has already been set."
+    "\\|WARNING: Not all variables in the list "
     "\\|Bus Error In Task\\|Segmentation Violation In Task"
     "\\|NOTE: Estimated G matrix is not positive definite."))
 	(ess-sas-save-point nil))
