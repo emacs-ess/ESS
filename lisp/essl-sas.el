@@ -461,7 +461,10 @@ number."
 	 ;; SAS Datastep functions and SAS macro functions
 	 ;(cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
 	 ;; SAS macro functions occasionally defined with no arguments
-	 (cons "%[a-z_][a-z_0-9]*[ \t();,]"
+	 ;; which means they can be followed by any character that can
+         ;; separate tokens, however, they are most likely to be followed 
+         ;; by operat-ions/ors
+	 (cons "%[a-z_][a-z_0-9]*[- \t();,+*/=<>]"
 						    font-lock-function-name-face)
 	 (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
 						    font-lock-function-name-face)
