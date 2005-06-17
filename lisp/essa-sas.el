@@ -89,13 +89,12 @@ or `ess-sas-data-view-insight'."
 ;;'(("[pP][dD][fF]" . "/usr/local/bin/acroread") ("[eE]?[pP][sS]" . "/usr/local/bin/gv")))
     (let ((ess-tmp-alist nil)
         (ess-tmp-file nil))
+    
+    (setq ess-tmp-file (executable-find (if ess-microsoft-p "gsview32" "gsview")))
 
-    (setq ess-tmp-file (executable-find "gv"))
+    (if (not ess-tmp-file) (setq ess-tmp-file (executable-find "gv")))
 
     (if (not ess-tmp-file) (setq ess-tmp-file (executable-find "ghostview")))
-
-    (if (not ess-tmp-file) (setq ess-tmp-file (executable-find
-	(if ess-microsoft-p "gsview32" "gsview"))))
 
     (if ess-tmp-file
 	(setq ess-tmp-alist (list (cons "[eE]?[pP][sS]" ess-tmp-file)
