@@ -502,16 +502,28 @@ in cases where it's ugly and nonsense.	DO-QUERY(prefix) asks before replacing."
   (ess-fix-dot-1 nil verbose)
   (ess-fix-dot ",)" dont-query verbose))
 
-(defun ess-fix-EQ-assign (&optional dont-query verbose)
-  "Replace \"=\" by \"<-\" at least for function assignments.
-CAREFUL if have list()s of functions!"
+(defun ess-fix-EQ-assign (&optional dont-query verbose not-all)
+  "Replace \"=\" by \"<-\" in places where it 'might make sense', e.g.,
+for function assignments and lines not ending in \",\".
+Be *careful* for list()s of functions and when argument not-all is
+nil (as by default) !"
   ;;TODO: "in the few places we can be very sure.."
   ;;---- is hard in general: local functions: ok; but functions in
   ;;  list(a = function(x) abs(x), b= function(y) bound(y))  *NOT* ok!
   (interactive "P")
   (ess-replace-regexp-dump-to-src
    "^\\( *[a-z.][_a-z.0-9]*\\) *= *\\(function *(\\)"
-   "\\1 <- \\2" dont-query verbose))
+   "\\1 <- \\2" dont-query verbose)
+
+  (unless not-all
+    ;; "too" aggressive {proposing to replace function argument specs}:
+    (ess-replace-regexp-dump-to-src ;; all those *not* ending in ","
+     ;; including  Mat[ i, ] = ...,
+     ;; but not `names(x) = "..."' for that is "confused" with plot(x=x,..)
+     "^\\( *[a-z.][][, \"_a-z.0-9]*\\) *= *\\([a-z.0-9({].*[^,] *$\\)"
+     "\\1 <- \\2" nil ;; always query - often has many "false positives"
+     verbose)
+    ))
 
 ;;; All of the above three :
 (defun ess-MM-fix-src (&optional dont-query verbose)
@@ -524,7 +536,7 @@ and one that is well formatted in emacs ess-mode."
   (ess-fix-comments dont-query)
   (ess-num-var-round dont-query verbose)
   (ess-fix-dot-more dont-query verbose)
-  (ess-fix-EQ-assign dont-query verbose)
+  (ess-fix-EQ-assign dont-query verbose 'not-all)
   )
 
 (defun ess-fix-miscellaneous (&optional from verbose)

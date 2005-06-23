@@ -1,3 +1,7 @@
+2005-06-23  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-fix-EQ-assign): extend to propose more s/=/<-/
+
 2005-05-05  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-complete-filename): Add doc string.
