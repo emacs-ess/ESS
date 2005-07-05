@@ -73,8 +73,15 @@
 
 (defun ess-help-bogus-buffer-p (buffer &optional nr-first return-match debug)
   "Return non-nil if  BUFFER  looks like a bogus ESS help buffer.
- Return pair of (match-beg. match-end) when optional RETURN-MATCH is non-nil.
- Utility used in \\[ess-display-help-on-object]."
+NR-FIRST is the number of characters at the start of the buffer
+to examine when deciding if the buffer if bogus.  If nil, the
+first 120 characters of the buffer are searched.  Return pair
+of (match-beg. match-end) when optional RETURN-MATCH is non-nil.
+Utility used in \\[ess-display-help-on-object]."
+
+  ;; search in first nr-first (default 120) chars only
+  (if (not nr-first) (setq nr-first 120))
+
   (let* ((searching nil)
 	 (buffer-ok (bufferp buffer))
 	 (res
@@ -85,18 +92,14 @@
 		    (ess-write-to-dribble-buffer
 		     (format "(ess-help-bogus-buffer-p %s)" (buffer-name))))
 
-		(let ((PM (point-min)))
+		(let 
+		    ((PM (point-min))
+		     (case-fold-search t) )
 		  (or  ;; evaluate up to first non-nil (or end):
 		   (< (- (point-max) PM) 80); buffer less than 80 chars
 		   (not (setq searching t))
-		   (not (setq case-fold-search t))
-		   ;; search in first nr-first (default 120) chars only
-		   (and nil (if (not nr-first) (setq nr-first 120)))
 		   (progn (goto-char PM) ;; R:
 			  (re-search-forward "Error in help"	nr-first t))
-		   (progn (goto-char PM) ;; R with help.try.all.packages = TRUE:
-			  (re-search-forward "topic \`.*\' is not in any loaded"
-					     nr-first t))
 		   (progn (goto-char PM) ;; S-plus 5.1 :
 			  (re-search-forward "^cat: .*--"	nr-first t))
 		   (progn (goto-char PM) ;; S version 3 ; R :
@@ -163,7 +166,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 
     (save-excursion
       (let ((PM (point-min))
-	    (nodocs (ess-help-bogus-buffer-p (current-buffer) nil 'give-match))
+	    (nodocs (ess-help-bogus-buffer-p (current-buffer) nil 'give-match ))
 	    )
 	(goto-char PM)
 	(if (and nodocs
@@ -182,7 +185,38 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	      (ding)
 	      (kill-buffer tbuffer))
 
-	  ;; else : show it
+	  ;; else : show the help buffer.
+
+	  ;; Check if this buffer describes where help can be found in
+	  ;; various packages. (R only).  This is a kind of bogus help
+	  ;; buffer, but it should not be killed immediately even if
+	  ;; ess-help-kill-bogus-buffers is t.
+
+	  ;; e.g. if within R, the user does:
+	  
+	  ;; > options("help.try.all.packages" = TRUE)
+
+	  ;; > ?rlm
+
+	  ;; then a list of packages for where ?rlm is defined is
+	  ;; shown.  (In this case, rlm is in package MASS).  This
+	  ;; help buffer is then renamed *help[R](rlm in packages)* so
+	  ;; that after MASS is loaded, ?rlm will then show 
+	  ;; *help[R](rlm)*
+
+	  (if (equal inferior-ess-program inferior-R-program-name)
+	      ;; this code should be used only for R processes.
+	      (save-excursion
+		(goto-char (point-min))
+		(if (looking-at "Help for topic")
+		    (let 
+			( (newbuf 
+			   (concat "*help[" ess-current-process-name
+				   "](" object " in packages)*")))
+		      ;; if NEWBUF already exists, remove it.
+		      (if (get-buffer newbuf)
+			  (kill-buffer newbuf))
+		      (rename-buffer  newbuf)))))
 
 	  ;;dbg (ess-write-to-dribble-buffer
 	  ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
