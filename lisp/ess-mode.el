@@ -425,8 +425,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
       (if (re-search-backward ess-function-pattern (point-min) t)
 	  nil
 	(goto-char init-point)
-	(error "Point is not in a function."))
-
+	(error "Point is not in a function according to 'ess-function-pattern'."))
       (setq beg (point))
       ;;DBG (ess-write-to-dribble-buffer
       ;;DBG (format "Match,Pt:(%d,%d),%d" (match-beginning 0)(match-end 0) beg))
@@ -450,6 +449,8 @@ Optional argument for location of beginning.  Return '(beg end)."
   (if beginning
       (goto-char beginning)
     (setq beginning (ess-beginning-of-function)))
+  (ess-write-to-dribble-buffer
+   (format "ess-END-of-fun: beginning = %d\n" beginning))
   (forward-list 1)			; get over arguments
   (forward-sexp 1)			; move over braces
   ;;DBG (ess-write-to-dribble-buffer "ess-END-of-fun: found ok\n")
