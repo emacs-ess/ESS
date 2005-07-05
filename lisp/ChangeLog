@@ -1,3 +1,15 @@
+2005-07-05  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-help.el (ess-help-bogus-buffer-p): Document NR-FIRST, and
+	reinstate code such that if NR-FIRST is nil, we search just the
+	first 120 characters of a help buffer to see if it is bogus.  Have
+	removed check for R text of the form "Help for topic `rlm'..."
+	since this is caught elsewhere (see below).
+	(ess-display-help-on-object): In R help buffers, if
+	options("help.try.all.packages" = TRUE) then ?rlm will list which
+	packages rlm is defined in.  This help buffer is not bogus, but
+	instead is now relabelled *help[R](rlm in packages)*.
+
 2005-07-05  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el (ess-beginning-of-function): more helpful error
