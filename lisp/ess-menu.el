@@ -1,7 +1,7 @@
 ;;; ess-menu.el --- Menu and Speedbar support for statistical
 ;;;		    programming and analysis
 
-;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2000--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: A.J. Rossini
@@ -69,10 +69,12 @@
 (defvar ess-imenu-S-generic-expression
   '(("Functions" "^\\(.+\\)\\s-*<-[ \t\n]*function[ ]*(" 1)
     ("Classes" "^.*setClass(\\(.*\\)," 1)
-    ("Generics" "^.*setGeneric(\\(.*\\)," 1)
-    ;;("Methods" "^.*setMethod(\\(.*,\\(signature=\\)?.*\\)," 1)
+    ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to
+    ("Generics" "^.*setGeneric(\\([^,]*\\)," 1)
+    ("Methods" "^.*set\\(Group\\|Replace\\)?Method(\"\\(.+\\)\"," 2)
+    ;;[ ]*\\(signature=\\)?(\\(.*,?\\)*\\)," 1)
+    ;;
     ;;("Other" "^\\(.+\\)\\s-*<-[ \t\n]*[^\\(function\\|read\\|.*data\.frame\\)]" 1)
-    ("Methods" "^.*setMethod(\"\\(.+\\)\","1)   ;;[ ]*\\signature=\\)?(\\(.*,?\\)*\\)," 1)
     ("Package" "^.*\\(library\\|require\\)(\\(.*\\)," 2)
     ("Data" "^\\(.+\\)\\s-*<-[ \t\n]*\\(read\\|.*data\.frame\\).*(" 1)))
 

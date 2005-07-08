@@ -1,3 +1,8 @@
+2005-07-08  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-menu.el (ess-imenu-S-generic-expression): adding SetAs(..),
+	but also e.g., setGroupMethod(..)
+
 2005-07-05  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-help.el (ess-help-bogus-buffer-p): Document NR-FIRST, and
