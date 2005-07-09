@@ -75,6 +75,7 @@
 
 
 (defun ess-line-end-position (&optional N)
+  "return the 'point' at the end of N lines. N defaults to 1, i.e., current line."
   (save-excursion
     (end-of-line N)
     (point)))
@@ -135,6 +136,7 @@
   (define-key ess-mode-map "\C-c\C-n"	'ess-eval-line-and-step)
   (define-key ess-mode-map "\C-c\C-j"	'ess-eval-line)
   (define-key ess-mode-map "\C-c\M-j"	'ess-eval-line-and-go)
+  ;; the next three can only work in S/R - mode {FIXME}
   (define-key ess-mode-map "\M-\C-a"	'ess-beginning-of-function)
   (define-key ess-mode-map "\M-\C-e"	'ess-end-of-function)
   (define-key ess-mode-map "\C-xnd"	'ess-narrow-to-defun)
@@ -412,34 +414,130 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
 ;;;*;;; Buffer motion/manipulation commands
 
+(defvar ess-set-function-start
+  ;; setAs, setGeneric;  setMethod, setReplaceMethod, setGroupMethod
+  "^set[MGAR][Ma-z]+\\s-?("
+)
+
+;; common R and S
+(let*
+    ((Q     "\\s\"")			; quote
+     (repl "\\(<-\\)?")                 ; replacement (function)
+     (Sym-0 "\\(\\sw\\|\\s_\\)")	; symbol
+     (Symb  (concat Sym-0 "+"))
+     (xSymb (concat "\\[?\\[?" Sym-0 "*")); symbol / [ / [[ / [symbol / [[symbol
+     ;; FIXME: allow '%foo%' but only when quoted; don't allow [_0-9] at beg.
+     (_or_  "\\)\\|\\(")		; OR
+     (space "\\(\\s-\\|\n\\)*")         ; white space
+
+     (part-1 (concat
+	      "\\(" ;;--------outer Either-------
+	      "\\(\\("		; EITHER
+	      Q xSymb repl Sym-0 "*" Q  ; quote ([) (replacement) symbol quote
+	      _or_
+	      "\\(^\\|[ ]\\)" Symb 	; (beginning of name) + Symb
+	      "\\)\\)"))	; END EITHER OR
+
+     (set-S4-exp
+      (concat
+       "^set\\(As\\|Method\\|Generic\\|GroupMethod\\|ReplaceMethod\\)(" ; S4 ...
+       Q xSymb Q "," space
+       ;; and now often `` signature(......), : ''
+       ".*" ;; <<< FIXME ???
+       ))
+
+     (part-2 (concat
+	      "\\|" ;;--------outer Or ---------
+	      set-S4-exp
+	      "\\)" ;;--------end outer Either/Or-------
+
+	      "\\(" space "\\s<.*\\s>\\)*"	; whitespace, comment
+	      space "function\\s-*(" ; whitespace, function keyword, parenthesis
+	      ))
+     )
+
+  (defvar ess-R-function-pattern
+    (concat part-1
+	    "\\s-*\\(<-\\|=\\)"	; whitespace, assign
+	    part-2)
+    "The regular expression for matching the beginning of an R function.")
+
+  (defvar ess-S-function-pattern
+    (concat part-1
+	    "\\s-*\\(<-\\|_\\|=\\)" ; whitespace, assign (incl. "_")
+	    part-2)
+    "The regular expression for matching the beginning of an S function.")
+
+); {end let}
+
 (defun ess-beginning-of-function ()
   "Leave (and return) the point at the beginning of the current ESS function."
   (interactive)
   (let ((init-point (point))
+	(in-set-S4 nil)
 	beg end done)
-    ;;DBG (ess-write-to-dribble-buffer "ess-BEG-of-fun:")
-    ;; in case we're sitting in a function header:
-    (if (search-forward "(" (ess-line-end-position 2) t); at most end of next line
+
+    ;; Note that we must be sure that we are past the 'function (' text,
+    ;; such that ess-function-pattern is found in BACKwards later.
+    ;; In case we're sitting in a function or setMethod() header,
+    ;; we need to move further.
+    ;; But not too far! {wrongly getting into next function}
+    (if (search-forward "("
+			(ess-line-end-position 2) t); at most end of next line
 	(forward-char 1))
+
+    (setq end (point)); = init-point when nothing found
+    (ess-write-to-dribble-buffer
+     (format "ess-BEG-of-fun after 'search-FWD (': Ini-pt %d, (p)-Ini-pt = %d\n"
+	     init-point (- end init-point)))
+    (if (re-search-backward ;; in case of setMethod() etc ..
+	 ess-set-function-start
+	 ;; at most one line earlier {2 is too much: finds previous sometimes}
+	 (+ 1 (ess-line-end-position -1)) t)
+	(progn ;; yes we *have* an S4  setMethod(..)-like
+	  (setq in-set-S4 t
+		beg (point))
+	  (ess-write-to-dribble-buffer
+	   (format " set*() function start at position %d" beg))
+	  ;; often need to move even further to have 'function(' to our left
+;; 	  (if (search-forward "function" end t)
+;; 	      (ess-write-to-dribble-buffer
+;; 	       (format " -> 'function' already at pos %d\n" (point)))
+;; 	    ;; else need to move further
+	    (goto-char end)
+	    ;; search 4 lines, we are pretty sure now:
+	    (search-forward
+	     "function" (ess-line-end-position 4) t)
+;;        )
+	  (search-forward "(" (ess-line-end-position) t)
+	  )
+      ;; else: regular function; no set*Method(..)
+      (ess-write-to-dribble-buffer "ELSE  not in setMethod() header ...\n")
+      )
+
     (while (not done)
+      ;; Need this while loop to skip over local function definitions
+
+      ;; In the case of non-success, it is inefficient;
+      ;; going back in the buffer through all function definitions...
       (if (re-search-backward ess-function-pattern (point-min) t)
 	  nil
 	(goto-char init-point)
 	(error "Point is not in a function according to 'ess-function-pattern'."))
       (setq beg (point))
-      ;;DBG (ess-write-to-dribble-buffer
-      ;;DBG (format "Match,Pt:(%d,%d),%d" (match-beginning 0)(match-end 0) beg))
+      (ess-write-to-dribble-buffer
+       (format "\tMatch,Pt:(%d,%d),%d\n" (match-beginning 0)(match-end 0) beg))
+      (setq in-set-S4 (looking-at ess-set-function-start))
       (forward-list 1)			; get over arguments
-      ;;DBG (ess-write-to-dribble-buffer ":")
+
       ;; The following used to bomb  "Unbalanced parentheses", n1, n2
       ;; when the above (search-forward "(" ..) wasn't delimited :
-      (forward-sexp 1)			; move over braces
+      (unless in-set-S4 (forward-sexp 1))		; move over braces
       ;;DBG (ess-write-to-dribble-buffer "|")
       (setq end (point))
       (goto-char beg)
       ;; current function must begin and end around point
       (setq done (and (>= end init-point) (<= beg init-point))))
-    ;;DBG (ess-write-to-dribble-buffer (format "found beg=%d\n" beg))
     beg))
 
 (defun ess-end-of-function (&optional beginning)
@@ -449,13 +547,15 @@ Optional argument for location of beginning.  Return '(beg end)."
   (if beginning
       (goto-char beginning)
     (setq beginning (ess-beginning-of-function)))
-  (ess-write-to-dribble-buffer
-   (format "ess-END-of-fun: beginning = %d\n" beginning))
-  (forward-list 1)			; get over arguments
-  (forward-sexp 1)			; move over braces
-  ;;DBG (ess-write-to-dribble-buffer "ess-END-of-fun: found ok\n")
-  (list beginning (point))
-  )
+  ;; *hack* only for S (R || S+): are we in setMethod(..) etc?
+  (let ((in-set-S4 (looking-at ess-set-function-start)))
+    (ess-write-to-dribble-buffer
+     (format "ess-END-of-fun: S4=%s, beginning = %d\n" in-set-S4 beginning))
+    (forward-list 1)		; get over arguments || whole set*(..)
+    (unless in-set-S4 (forward-sexp 1))		; move over braces
+    ;;DBG (ess-write-to-dribble-buffer "ess-END-of-fun: found ok\n")
+    (list beginning (point))
+    ))
 
 ;;; Kurt's version, suggested 970306.
 (defun ess-mark-function ()

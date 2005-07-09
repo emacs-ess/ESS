@@ -625,49 +625,8 @@ Good for evaluating ESS code."
 
 ;;*;; Regular expressions
 
-;; FIXME : This is just for the S dialects;  need to define this for others,
-;; -----
-;;  {however  "XLS-mode" should just use standard lisp "beginning of function"}
-
-(defcustom ess-R-function-pattern
-  (concat
-   "\\(\\(" ; EITHER
-   "\\s\"" ; quote
-   "\\(\\sw\\|\\s_\\)+\\(<-\\)?" ; symbol (replacement?)
-   "\\s\"" ; quote
-   "\\)\\|\\(" ; OR
-   "\\(^\\|[ ]\\)" ; beginning of name
-   "\\(\\sw\\|\\s_\\)+" ; symbol
-   "\\)\\)" ; END EITHER OR
-   "\\s-*\\(<-\\|=\\)" ; whitespace, assign, whitespace/nl
-   "\\(\\(\\s-\\|\n\\)*\\s<.*\\s>\\)*" ; whitespace, comment
-   "\\(\\s-\\|\n\\)*function\\s-*(" ; whitespace, function keyword, parenthesis
-   )
-  "The regular expression for matching the beginning of an R function."
-  :group 'ess
-  :type 'regexp)
-
-(defcustom ess-S-function-pattern
-  ;; the same as "R" - but allowing "_" in assign
-  (concat
-   "\\(\\(" ; EITHER
-   "\\s\"" ; quote
-   "\\(\\sw\\|\\s_\\)+\\(<-\\)?" ; symbol (replacement?)
-   "\\s\"" ; quote
-   "\\)\\|\\(" ; OR
-;;   "\\<\\(\\sw\\|\\s_\\)+" ; symbol
-;;   "[0-9a-zA-Z0-9$.]+" ; symbol
-   "\\(^\\|[ ]\\)" ; beginning of name
-   "\\(\\sw\\|\\s_\\)+" ; symbol
-   "\\)\\)" ; END EITHER OR
-   "\\s-*\\(<-\\|_\\|=\\)" ; whitespace, assign, whitespace/nl
-   "\\(\\(\\s-\\|\n\\)*\\s<.*\\s>\\)*" ; whitespace, comment
-   "\\(\\s-\\|\n\\)*function\\s-*(" ; whitespace, function keyword, parenthesis
-   )
-  "The regular expression for matching the beginning of an S function."
-  :group 'ess
-  :type 'regexp)
-
+;; -- Note: Some variables not-to-customize moved to ./ess-mode.el :
+;; ess-set-function-start
 
 ;; Fixme: the following is just for S dialects :
 (defcustom ess-dumped-missing-re
