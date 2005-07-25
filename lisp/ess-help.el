@@ -527,7 +527,7 @@ Stata or XLispStat for additional information."
   (delete-region (point-min) (point)))
 
 (defun ess-help-underline ()
-  "Replace ^_H codes with underline face."
+  "Replace _^H codes with underline face."
   (save-excursion
     (goto-char (point-min))
     (while (search-forward "_" nil t)
