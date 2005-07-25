@@ -176,8 +176,8 @@ This version does not offer alternate buffers or editing capability."
 		   (or
 		    (and (eq major-mode 'ess-mode)
 			 (buffer-file-name))
-		    (expand-file-name
-		     (read-file-name "Load S file: " nil nil t)))))
+		    (ess-replace-in-string (expand-file-name
+		     (read-file-name "Load S file: " nil nil t)) "[\\]" "/"))))
      (if (equal (ess-get-process-variable
 		 ess-current-process-name 'inferior-ess-ddeclient)
 		(default-value 'inferior-ess-ddeclient))
