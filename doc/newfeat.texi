@@ -1,3 +1,9 @@
+Changes/New Features in 5.2.9:
+@itemize @bullet
+@item ESS[R] for Windows:  the \ directory character bug
+with respect to ess-load-file has been eradicated
+@end itemize
+
 Changes/New Features in 5.2.8:
 @itemize @bullet
 @item iESS: [Tab] completes @strong{file} names ``inside string'' as in
