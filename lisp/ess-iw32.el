@@ -173,11 +173,11 @@ This version sends the S-Plus command
 to S.  This version does not guarantee to save .Last.value
 This version does not offer alternate buffers or editing capability."
      (interactive (list
-		   (or
+		   (ess-replace-in-string (or
 		    (and (eq major-mode 'ess-mode)
 			 (buffer-file-name))
-		    (ess-replace-in-string (expand-file-name
-		     (read-file-name "Load S file: " nil nil t)) "[\\]" "/"))))
+		     (expand-file-name
+		     (read-file-name "Load S file: " nil nil t))) "[\\]" "/")))
      (if (equal (ess-get-process-variable
 		 ess-current-process-name 'inferior-ess-ddeclient)
 		(default-value 'inferior-ess-ddeclient))
