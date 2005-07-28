@@ -500,9 +500,9 @@ Stata or XLispStat for additional information."
 				 (ess-search-list))))))
 
 (defun ess-nuke-help-bs ()
-  (interactive "*")
-;;; This function is a modification of nuke-nroff-bs in man.el from the
-;;; standard emacs 18 lisp library.
+  "Remove ASCII underlining and overstriking performed by ^H codes."
+  ;; This function is a modification of nuke-nroff-bs in man.el from the
+  ;; standard emacs 18 lisp library.
   ;; Nuke underlining and overstriking (only by the same letter)
   (goto-char (point-min))
   (while (search-forward "\b" nil t)
