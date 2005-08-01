@@ -290,7 +290,7 @@ capitals).
 
 @multitable {123456} {123456} {really-really-really-really-really-really-really-really-really-really-long}
 @item
-@UNIX{} @tab @PC @tab Nickname and @IESS{} Alias (if any)
+@UNIX{} @tab @PC @tab Nickname
 @item
 @key{F2} @tab @key{F2} @tab @samp{refresh}
 @item
@@ -298,7 +298,7 @@ capitals).
                     revert the current buffer with the file of the same
                     name if the file is newer than the buffer
 @item
-@key{F3} @tab @key{F8} @tab @code{SUBMIT} @kbd{C-c C-b}
+@key{F3} @tab @key{F8} @tab @code{SUBMIT} 
 @item
 @tab @tab
                     save the current @file{.sas} file (which is either the @file{.sas}
@@ -311,13 +311,13 @@ capitals).
 @tab @tab
                     switch buffer to @file{.sas} file
 @item
-@key{F5} @tab @key{F6} @tab @code{LOG} @kbd{C-c C-x}
+@key{F5} @tab @key{F6} @tab @code{LOG}
 @item
 @tab @tab
                     switch buffer to @file{.log} file, @samp{refresh} and goto next
                     error message, if any
 @item
-@key{F6} @tab @key{F7} @tab @code{OUTPUT} @kbd{C-c C-y}
+@key{F6} @tab @key{F7} @tab @code{OUTPUT}
 @item
 @tab @tab
                     switch buffer to @file{.lst} file and @samp{refresh}
@@ -357,7 +357,7 @@ capitals).
                     open a @code{GSASFILE} near point for viewing either in emacs
                     or with an external viewer
 @item
-@kbd{C-@key{F1}} @tab @kbd{C-@key{F1}} @tab  rtf-portrait
+@kbd{C-@key{F1}} @tab @kbd{C-@key{F1}} @tab rtf-portrait
 @item
 @tab @tab
                     create an @sc{MS RTF} portrait file from the current buffer
@@ -369,7 +369,7 @@ capitals).
                     create an @sc{MS RTF} landscape file from the current buffer
                     with a file extension of @file{.rtf}
 @item
-@kbd{C-@key{F3}} @tab @kbd{C-@key{F8}} @tab submit-region @kbd{C-c C-r}
+@kbd{C-@key{F3}} @tab @kbd{C-@key{F8}} @tab submit-region 
 @item
 @tab @tab
                     write region to @file{ess-temp.sas} and submit

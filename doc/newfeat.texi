@@ -1,7 +1,9 @@
 Changes/New Features in 5.2.9:
 @itemize @bullet
-@item ESS[R] for Windows:  the \ directory character bug
+@item @ESS{[R]} for Windows:  the \ directory character bug
 with respect to ess-load-file has been eradicated
+@item @IESS{[SAS]}: @kbd{C-c C-r} and @kbd{C-c C-b} once again
+work as intended and documented
 @end itemize
 
 Changes/New Features in 5.2.8:
