@@ -4,6 +4,7 @@
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
 
+@include ess-defs.texi
 @node General Information, , (dir), (dir)
 @comment  node-name,  next,  previous,  up
 @chapter General Information: README
