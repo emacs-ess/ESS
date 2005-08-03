@@ -1,9 +1,15 @@
 Changes/New Features in 5.2.9:
 @itemize @bullet
 @item @ESS{[R]} for Windows:  the \ directory character bug
-with respect to ess-load-file has been eradicated
+with respect to ess-load-file has been eradicated.
 @item @iESS{[SAS]}: @kbd{C-c C-r} and @kbd{C-c C-b} once again
-work as intended and documented
+work as intended and documented.
+@item @ESS{[S]}: M-x ess-fix-EQ-assign is a bit more agressive.
+@item @ESS{[S]}: Imenu now also shows setAs(), etc.
+@item @ESS{[R]}: R function pattern enhanced with underlying code such that
+ @kbd{M-C-a} (@code{ess-beginning-of-function}) etc now work for many more
+ cases, including S4 method definitions.
+@item @iESS{[R]}: myOwnhelp(1) no longer wrongly triggers help(1).
 @end itemize
 
 Changes/New Features in 5.2.8:
