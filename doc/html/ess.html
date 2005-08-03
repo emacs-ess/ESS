@@ -34,7 +34,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.2.8
+5.2.9
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -341,7 +341,15 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
 <h3 class="section">1.2 New features in ESS</h3>
 
-<p>Changes/New Features in 5.2.8:
+<p>Changes/New Features in 5.2.9:
+     <ul>
+<li><acronym>ESS[R]</acronym> for Windows:  the \ directory character bug
+with respect to ess-load-file has been eradicated
+<li>i<acronym>ESS[SAS]</acronym><!-- /@w -->: <kbd>C-c C-r</kbd> and <kbd>C-c C-b</kbd> once again
+work as intended and documented
+</ul>
+
+   <p>Changes/New Features in 5.2.8:
      <ul>
 <li>iESS: [Tab] completes <strong>file</strong> names &ldquo;inside string&rdquo; as in
 earlier (&lt;= 5.2.3) ESS versions. 
@@ -351,34 +359,29 @@ earlier (&lt;= 5.2.3) ESS versions.
      <ul>
 <li>If you use Custom to change the variable ess-toolbar-items,
 the new toolbar is used in all subsequent ESS buffers. 
-<li>ESS[SAS]: new feature:  if ess-sas-log-max &gt;0 and
+<li><acronym>ESS[SAS]</acronym>: new feature:  if ess-sas-log-max &gt;0 and
 your .log grows to more than ess-sas-log-max bytes, just
 the first ess-sas-log-max bytes are refreshed; this is helpful when your .sas program
 generates lots of error messages and gets too big for emacs to display
-<li>ESS[R/S]: <kbd>M-;</kbd> in R/S editing modes will now indent with
+<li><acronym>ESS[R/S]</acronym>: <kbd>M-;</kbd> in R/S editing modes will now indent with
 either one or two hashes depending on context. 
-<li>ESS[R]: David Whiting's Sweave extensions (to 'noweb')
+<li><acronym>ESS[R]</acronym>: David Whiting's Sweave extensions (to 'noweb')
 are now available (from ess-swv.el loaded by default). 
 </ul>
 
    <p>Changes/New Features in 5.2.6:
      <ul>
 <li>Removed non-ASCII characters in a few files. 
-<li>ESS[R]: now works better when UTF-8 locale is active; in
+<li><acronym>ESS[R]</acronym>: now works better when UTF-8 locale is active; in
  particular, you get correct directional quotes in R's startup message
  for R-devel (unstable development version of R 2.1.0) when using
  environment variables LANGUAGE=en@quot LC_ALL=en_US.UTF-8
-<li>ESS[SAS]: toggling of .log mode improved (<kbd>F10</kbd>); toggling of
+<li><acronym>ESS[SAS]</acronym>: toggling of .log mode improved (<kbd>F10</kbd>); toggling of
 .lst mode now also available (<kbd>C-F10</kbd>); killing all buffers associated
-with .sas program no longer bound to <kbd>C-F10</kbd> since its a bit overzealous;
-EXPERIMENTAL new feature:  if your .log grows to more than 2.5MB, just
-the first 2.5MB are refreshed; this is helpful when your .sas program
-generates lots of error messages and gets too big for emacs to display;
-the truncation size is controlled by the variable ess-sas-log-max and
-defaults to 2500000. 
+with .sas program no longer bound to <kbd>C-F10</kbd> since its a bit overzealous. 
 <li>S-Plus 7 for Windows is now recognized. 
-<li>ESS[S] (incl. R): in auto-fill mode, strings are not wrapped anymore. 
-<li>ESS[S] (incl. R): font-lock now correctly differs between R and S,
+<li><acronym>ESS[S]</acronym> (incl. R): in auto-fill mode, strings are not wrapped anymore. 
+<li><acronym>ESS[S]</acronym> (incl. R): font-lock now correctly differs between R and S,
 e.g., for "_"; both now fontify warning(.) and S does terminate() additionally. 
 <li>Support for `bell' aka `beep' aka `ding' aka `alarm' in all inferior
 modes: When \a is output &ldquo;to the the console&rdquo; at the beginning of a line,
@@ -387,16 +390,16 @@ the bell is rung.
 
    <p>Changes/New Features in 5.2.5:
      <ul>
-<li>ESS[R]: <kbd>C-c C-q</kbd> or <span class="samp">Quit S</span> from the menu now should work
+<li><acronym>ESS[R]</acronym>: <kbd>C-c C-q</kbd> or <span class="samp">Quit S</span> from the menu now should work
 (again and less klunkily) and do not append <span class="samp">-exited</span> to the
 buffer name.  Further, the behavior of <code>(ess-cleanup)</code>, called from
 ess-quit, now depends on the new customizable variable
 <code>ess-S-quit-kill-buffers-p</code> which defaults to <code>nil</code>. 
 Consequently, the question <em>&ldquo;Delete all buffers associated
 with ..?&rdquo;</em> will not be asked anymore by default. 
-<li>ESS[SAS] &ndash; ess-ebcdic-to-ascii-search-and-replace will now work
+<li><acronym>ESS[SAS]</acronym> &ndash; ess-ebcdic-to-ascii-search-and-replace will now work
 with the <code>recode</code> application as well which is available on many platforms
-<li>ESS[S] (incl. R): Name completion for slots of S4 objects now works! 
+<li><acronym>ESS[S]</acronym> (incl. R): Name completion for slots of S4 objects now works! 
 </ul>
 
    <p>Changes/New Features in 5.2.4:
@@ -405,7 +408,7 @@ with the <code>recode</code> application as well which is available on many plat
 TAGS facility for S functions.  (The distribution also used to contain a
 directory <span class="file">etc/other/Tags</span> where a ~1990 version of <span class="file">etags.c</span> was
 distributed; this is no longer relevant and so has been deleted.) 
-<li>ESS[SAS] &ndash; When you are working with EBCDIC files on an ASCII
+<li><acronym>ESS[SAS]</acronym> &ndash; When you are working with EBCDIC files on an ASCII
 platform, .log NOTEs may display as gibberish since the EBCDIC
 characters are not converted to ASCII prior to their display.  So,
 the function ess-ebcdic-to-ascii-search-and-replace is provided for
@@ -422,7 +425,7 @@ Further, it was more or less broken for all versions of S-plus 6.x,
 and has been fixed to work everywhere but with the Windows' GUI of
 S-plus.  The list of objects now shows unique names also when an
 object appears more than once in the search path. 
-<li>ESS[R]: Completion of object names now also includes those
+<li><acronym>ESS[R]</acronym>: Completion of object names now also includes those
 starting with &ldquo;.&rdquo;. 
 </ul>
 
@@ -441,7 +444,7 @@ way to pass command line arguments to starting S and R processes.
 <li>bug-fixes for 5.2.1 (require 'executable), html docs, etc. 
 <li>ess-lisp-directory/../doc/info added to Info-directory-list
 if ess-info not found by info
-<li>ESS[R]: If you have other versions of R on your
+<li><acronym>ESS[R]</acronym>: If you have other versions of R on your
 exec-path, such as "R-1.8.1" with Unix or "rw1081" with Windows,
 ESS will find them and create appropriate functions, such as
 <kbd>M-x R-1.8.1</kbd> or <kbd>M-x rw1081</kbd>, for calling them. 
@@ -450,32 +453,32 @@ By default only Unix programs beginning "R-1" and
 version of R in your exec-path will be found,
 but see ess-r-versions and ess-rterm-versions for ways to find other
 versions of R. 
-<li>ESS[R]: Other versions of R, such as "R-1.8.1" on Unix and "rw1081" on
+<li><acronym>ESS[R]</acronym>: Other versions of R, such as "R-1.8.1" on Unix and "rw1081" on
 Windows, are added to the
 "ESS / Start Process / Other" menu. 
-<li>ESS[S]: If you have other versions of S-Plus on your Windows computer,
+<li><acronym>ESS[S]</acronym>: If you have other versions of S-Plus on your Windows computer,
 such as S-Plus 6.1 or S-Plus 4.5, ESS will find them and create appropriate
 functions, such as <kbd>M-x splus61</kbd>, for calling the console version (Sqpe)
 inside an emacs buffer.  By default only
 programs installed in the default location will be found, but see
 ess-SHOME-versions for ways to find other versions of S-Plus. 
-<li>ESS[S]: Other versions of Sqpe on Windows, such as "splus61",
+<li><acronym>ESS[S]</acronym>: Other versions of Sqpe on Windows, such as "splus61",
 are added to the
 "ESS / Start Process / Other" menu. 
-<li>ESS[R]: (bug fix) ess-quit (bound to <kbd>C-c C-q</kbd>) should now quit the
+<li><acronym>ESS[R]</acronym>: (bug fix) ess-quit (bound to <kbd>C-c C-q</kbd>) should now quit the
 inferior R process, when issued from either the inferior buffer, or from
 a .R buffer. 
 </ul>
 
    <p>Changes/New Features in 5.2.1:
      <ul>
-<li>ESS[S] (R and S-plus): now have toolbar support
+<li><acronym>ESS[S]</acronym> (R and S-plus): now have toolbar support
 with icons to evaluate code in the inferior process or to switch
 there.  This code is experimental and likely to change as XEmacs/Emacs
 issues get resolved. The toolbar should be enabled if your Emacs
 displays images, but can be disabled with the variable ess-use-toolbar. 
 Thanks to David Smith from Insightful for the S-plus logo. 
-<li>ESS[SAS]: ess-sas-graph-view (<kbd>F12</kbd>) enhanced; you can specify
+<li><acronym>ESS[SAS]</acronym>: ess-sas-graph-view (<kbd>F12</kbd>) enhanced; you can specify
 external file viewers for each graphics file type via the alist
 ess-sas-graph-view-viewer-alist; also .jpg/.gif are now handled
 by image-mode on XEmacs, if available, otherwise by graphics
@@ -484,10 +487,10 @@ primitives as before
 
    <p>Changes/New Features in 5.2.0:
      <ul>
-<li>ESS[BUGS]:  new info documentation!  now supports interactive
+<li><acronym>ESS[BUGS]</acronym>:  new info documentation!  now supports interactive
 processing thanks to <a href="mailto:Aki.Vehtari@hut.fi">Aki Vehtari</a>;
 new architecture-independent unix support as well as support for BUGS v. 0.5
-<li>ESS[SAS]:  convert .log to .sas with ess-sas-transcript;
+<li><acronym>ESS[SAS]</acronym>:  convert .log to .sas with ess-sas-transcript;
 info documentation improved; Local Variable bug fixes;
 SAS/IML statements/functions now highlighted; files edited
 remotely by ange-ftp/EFS/tramp are recognized and pressing
@@ -501,7 +504,7 @@ which automatically reverse indents lines containing only "run;";
 <kbd>C-F9</kbd> opens a SAS DATASET with PROC INSIGHT rather than PROC FSVIEW;
 "inferior" aliases for SAS batch:  <kbd>C-c C-r</kbd> for submit region,
 <kbd>C-c C-b</kbd> for submit buffer, <kbd>C-c C-x</kbd> for goto .log; <kbd>C-c C-y</kbd> for goto .lst
-<li>ESS[S]: Pressing underscore ("_") once inserts " &lt;- " (as before);
+<li><acronym>ESS[S]</acronym>: Pressing underscore ("_") once inserts " &lt;- " (as before);
 pressing underscore twice inserts a literal underscore.  To stop this
 smart behaviour, add "(ess-smart-underscore nil)" to your .emacs after
 ess-site has been loaded;
@@ -510,7 +513,7 @@ customized successfully (for S language dialects);
 Support for Imenu has been improved; set ess-imenu-use-S to non-nil to
 get an "Imenu-S" item on your menubar;
 ess-help: Now using nice underlines (instead of `nuke-* ^H_')
-<li>ESS[R]:  After (require 'essa-r), <kbd>M-x ess-r-var</kbd> allows to load
+<li><acronym>ESS[R]</acronym>:  After (require 'essa-r), <kbd>M-x ess-r-var</kbd> allows to load
 numbers from any Emacs buffer into an existing *R* process;
 <kbd>M-x ess-rdired</kbd> gives a &ldquo;directory editor&rdquo; of R objects;
 fixed ess-retr-lastvalue-command, i.e. .Last.value bug
@@ -543,7 +546,7 @@ are still distributed for what it's worth.
 <li>ESS is now an XEmacs package!  See
 <a href="http://www.xemacs.org/Install/index.html">XEmacs Installation HOWTO</a>
 for details (specifically, items 10-15). 
-<li>ESS[SAS]: more user-friendly enhancements for remote
+<li><acronym>ESS[SAS]</acronym>: more user-friendly enhancements for remote
 SAS batch jobs with Kermit file transfers (LOG and OUTPUT
 function key features now supported).  Multiple shells
 now supported so you can run SAS on different computers
@@ -554,13 +557,13 @@ ess-sas-shell-buffer to unique buffer names.
 
    <p>Changes/New Features in 5.1.21:
      <ul>
-<li>ESS[SAS]: info documentation now available!, see
+<li><acronym>ESS[SAS]</acronym>: info documentation now available!, see
 ESS-&gt;Help for SAS; <kbd>F12</kbd> opens GSASFILE nearest point for viewing
 either within emacs, when available, or via an external viewer;
 more syntax highlighting keywords; more enhancements for remote
 SAS batch jobs with Kermit; new framework for remote SAS interactive
 jobs, see ess-remote
-<li>ESS[S]: info documentation now available!, see
+<li><acronym>ESS[S]</acronym>: info documentation now available!, see
 ESS-&gt;Help for the S family
 <li>Makefile: tag now independent of rel; info files
 made by doc/Makefile and installed in new info sub-directory
@@ -583,7 +586,7 @@ This feature is still under development.
 <li>XEmacs on Win (NT) is better supported. 
 <li>Workaround for bug in Sqpe+6 (S-PLUS 6 for Win). 
 <li>should now work even when imenu is not available (for old XEmacsen). 
-<li>ESS[SAS]: XEmacs-Imenu fix; <kbd>C-TAB</kbd> is globalized along with your
+<li><acronym>ESS[SAS]</acronym>: XEmacs-Imenu fix; <kbd>C-TAB</kbd> is globalized along with your
 function-key definitions, if specified; you can specify your SAS
 library definitions outside of autoexec.sas for ess-sas-data-view
 with SAS code placed in the variable ess-sas-data-view-libname,
@@ -600,7 +603,7 @@ local file variable sections at the end of your .sas files to
 request different executables or specify special options and the
 local file variables are re-read at submit instead of only at file
 open so that if you make a change it is picked up immediately;
-<li>ESS[BUGS]: font-lock with `in' fixed. 
+<li><acronym>ESS[BUGS]</acronym>: font-lock with `in' fixed. 
 <li>for STATA: font-lock bug fixed. 
 <li>for Rd mode: <kbd>C-c C-v</kbd> and `switch-process' in menu. 
 further, <kbd>C-c C-f</kbd> prefix (Rd-font) for inserting or surrounding a word
@@ -613,7 +616,7 @@ ess-directory &lt;-&gt; default-directory logic (Jeff Mincy).
    <p>Changes/New Features in 5.1.19:
      <ul>
 <li>S+6 now supported (Tony Rossini (Unix) and Rich Heiberger (Windows))
-<li>New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
+<li>New BUGS support through <acronym>ESS[BUGS]</acronym> mode (Rodney Sparapani)
 Templates assist you in writing .bug and .cmd code (.cmd and .log
 are replaced by .bmd and .bog to avoid emacs extension collisions). 
 Substitution" parameters facilitate "automagic" generation of
@@ -630,7 +633,7 @@ Also available in .log files via <kbd>F10</kbd>.
 You must have the library defined in autoexec.sas for it to work. 
 <li>User-friendly defaults for `sas-program', `ess-sas-batch-pre-command'
 and `ess-sas-batch-post-command' as well Customize support for these
-and other ESS[SAS] variables (Rodney Sparapani)
+and other <acronym>ESS[SAS]</acronym> variables (Rodney Sparapani)
 <li>`ess-sas-suffix-2' now defaults to .dat via <kbd>F11</kbd> (Rodney Sparapani)
 <li>Emacs/XEmacs, Unix/Windows issues collectively handled in ess-emcs.el
 <li>defadvice solves problem of missing *ESS* (thanks to Jeff Mincy)
@@ -725,7 +728,7 @@ to <a href="mailto:brahm@alum.mit.edu">David Brahm</a>.
 communicate directly with a running S-Plus 4.x process using the
 Microsoft DDE protocol.  We use the familiar (from Unix ESS) <kbd>C-c C-n</kbd>
 and related key sequences to send lines from the S-mode file to the
-inferior S process.  We continue to edit S input files in ESS[S] mode
+inferior S process.  We continue to edit S input files in <acronym>ESS[S]</acronym> mode
 and transcripts of previous S sessions in ESS Transcript mode.  All
 three modes know the S language, syntax, and indentation patterns and
 provide the syntactic highlighting that eases the programming tasks. 
@@ -1219,7 +1222,7 @@ emacs, and cut and paste the results into the XLispStat
 <!-- The user can also edit SAS files -->
 <!-- in an @code{ESS[SAS]} buffer and than manually copy and paste them into -->
 <!-- an Editor window in the SAS Display Manager. -->
-<!-- For Windows, inferior SAS in an @code{iESS[SAS]} buffer does not work -->
+<!-- For Windows, inferior SAS in an @code{@iESS{[SAS]}} buffer does not work -->
 <!-- on the local machine.  It does work over a network connection to -->
 <!-- SAS running on a remote Unix computer. -->
 <!-- Reason:  we use ddeclient to interface with programs and SAS doesn't -->
@@ -1268,8 +1271,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 <p>ESS has been tested with
 
      <ul>
-<li>S-PLUS 3.3-4, 4.5, 2000, 5.0-1, 6.0-2, 7.0
 <li>R &gt;=0.49
+<li>S-PLUS 3.3-4, 4.5, 5.0-1, 6.0-2, 7.0, 2000
 <li>S4
 <li>SAS &gt;=6.12
 <li>BUGS 0.5, 0.603
@@ -1283,14 +1286,14 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 <li>Linux (all)
 <li>Solaris/SunOS (all)
 <!-- cannot confirm this right now @item SGI (all) -->
-<li>Microsoft Windows 95/98/NT/2000/XP (SPLUS 4.5/2000/6.*, R, SAS and BUGS)
+<li>Microsoft Windows 95/98/NT/2000/XP (R, SPLUS 4.5/6.0-2/7.0/2000, SAS and BUGS)
 <li>Apple Mac OS (SAS for OS 9 and R for OS X)
 </ul>
 
    <p>with the following versions of emacs
 
      <ul>
-<li>GNU Emacs 20.3-7, 21.1, 21.3, 21.4
+<li>GNU Emacs 20.3-7, 21.1, 21.3-4
 <li>XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17, 21.5.18
 <!-- @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no -->
 <!-- longer supported, so an upgrade is recommended if you plan to use ESS. -->
@@ -1315,7 +1318,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <p>As well as using ESS to edit your source files for statistical programs,
 you can use ESS to run these statistical programs.  In this chapter, we
 mostly will refer by example to running S from within emacs.  The emacs
-convention is to name such proceses running under its control as
+convention is to name such processes running under its control as
 `inferior processes'.  This term can be slightly misleading, in which
 case these processes can be thought of `interactive processes'.  Either
 way, we use the term `iESS' to refer to the Emacs mode used to interact
@@ -1521,7 +1524,7 @@ commands from <span class="samp">myfile.s</span> or <span class="samp">myfile.r<
 <span class="samp">*S+3*</span> buffer running the S or R or SAS program on the remote machine.
 
      <li>Graphics on the remote machine works fine.  If you run the X window
-sysyem on the remote unix machine you should be able to display them in
+system on the remote unix machine you should be able to display them in
 <span class="samp">xfree86</span> on your PC.  If you don't run X11, then you can write
 graphics to the postscript device and copy it to your PC with dired and
 display it with ghostscript.
@@ -1924,7 +1927,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript">Transcript</a>
 the commands you find there.  ESS provides three commands to do this;
 these commands may be used whenever the cursor is within a command line
 in the transcript (if the cursor is within some command <em>output</em>,
-an error is signaled).  Note all three commands involve the &lt;RETURN&gt;
+an error is signalled).  Note all three commands involve the &lt;RETURN&gt;
 key.
 
      <ul>
@@ -1963,7 +1966,7 @@ the lines that form the multi-line command are concatenated together and
 the resulting command is sent to the ESS process (currently this is
 the only way to resubmit a multi-line command to the ESS process in
 one go).  If the current line does
-<a name="index-multi_002dline-commands_002c-resubmitting-67"></a>not begin with a prompt, an error is signaled.  This feature, coupled
+<a name="index-multi_002dline-commands_002c-resubmitting-67"></a>not begin with a prompt, an error is signalled.  This feature, coupled
 with the command-based motion commands described above, could be used as
 a primitive history mechanism.  ESS provides a more sophisticated
 mechanism, however, which is described in <a href="#Command-History">Command History</a>.
@@ -2267,7 +2270,7 @@ environment in which they are currently running.
 
    <p>ESS sets
 <code>options(STERM="iESS")</code> for S language processes running in an
-inferior <code>iESS[S]</code> or <code>iESS[R]</code> buffer.
+inferior <code>i<acronym>ESS[S]</acronym><!-- /@w --></code> or <code>i<acronym>ESS[R]</acronym><!-- /@w --></code> buffer.
 
    <p>ESS sets
 <code>options(STERM="ddeESS")</code> for independent S-Plus for Windows
@@ -2464,10 +2467,10 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S fa
 <br>
 </div>
 
-<!-- node-name,  next,  previous,  up -->
+<!-- node-name,  next,  previous,  up - don't use @ESS .. -->
 <h3 class="section">6.1 ESS[S]&ndash;Editing files</h3>
 
-<p>ESS[S] is the mode for editing S language files.  This mode handles:
+<p><acronym>ESS[S]</acronym> is the mode for editing S language files.  This mode handles:
 
      <ul>
 <li> proper indenting, generated by both [Tab] and [Return]. 
@@ -2482,7 +2485,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S fa
 <li> completion of object names and file names. 
 </ul>
 
-   <p>ESS[S] mode should be automatically turned on when loading a file with
+   <p><acronym>ESS[S]</acronym> mode should be automatically turned on when loading a file with
 the suffices found in ess-site (*.R, *.S, *.s, etc).  However, one
 will have to start up an inferior process to take advantage of the
 interactive features.
@@ -3333,7 +3336,7 @@ and by showing Rd keywords, strings, etc. in different faces (with
 Font Lock Mode).
 
    <p>Note that R also accepts Rd files with extension <span class="file">rd</span>; to activate
-ESS[Rd] support for this extension, you may need to add
+<acronym>ESS[Rd]</acronym> support for this extension, you may need to add
 
 <pre class="example">     (add-to-list 'auto-mode-alist '("\\.rd\\'" . Rd-mode))
 </pre>
@@ -3560,16 +3563,16 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a accesskey="3" href="#ESS_0028SAS_0029_002d_002dTAB-key">ESS(SAS)--TAB key</a>
 <li><a accesskey="4" href="#ESS_0028SAS_0029_002d_002dBatch-SAS-processes">ESS(SAS)--Batch SAS processes</a>
 <li><a accesskey="5" href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">ESS(SAS)--Function keys for batch processing</a>
-<li><a accesskey="6" href="#IESS_0028SAS_0029_002d_002dInteractive-SAS-processes">IESS(SAS)--Interactive SAS processes</a>
-<li><a accesskey="7" href="#IESS_0028SAS_0029_002d_002dCommon-problems">IESS(SAS)--Common problems</a>
+<li><a accesskey="6" href="#iESS_0028SAS_0029_002d_002dInteractive-SAS-processes">iESS(SAS)--Interactive SAS processes</a>
+<li><a accesskey="7" href="#iESS_0028SAS_0029_002d_002dCommon-problems">iESS(SAS)--Common problems</a>
 <li><a accesskey="8" href="#ESS_0028SAS_0029_002d_002dGraphics">ESS(SAS)--Graphics</a>
 <li><a accesskey="9" href="#ESS_0028SAS_0029_002d_002dWindows">ESS(SAS)--Windows</a>
 </ul>
 
-<p><acronym>ESS[SAS]</acronym><!-- /@w --> was designed for use with <acronym>SAS</acronym><!-- /@w -->.  It is descended from emacs
+<p><acronym>ESS[SAS]</acronym> was designed for use with <acronym>SAS</acronym><!-- /@w -->.  It is descended from emacs
 macros developed by John Sall for editing <acronym>SAS</acronym><!-- /@w --> programs and <code>SAS-mode</code> by
 Tom Cook.  Those editing features and new advanced features are part of
-<acronym>ESS[SAS]</acronym><!-- /@w -->.  The user interface of <acronym>ESS[SAS]</acronym><!-- /@w --> has similarities with <acronym>ESS[S]</acronym><!-- /@w -->
+<acronym>ESS[SAS]</acronym>.  The user interface of <acronym>ESS[SAS]</acronym> has similarities with <acronym>ESS[S]</acronym>
 and the <acronym>SAS</acronym><!-- /@w --> Display Manager.
 
 <!-- node-name,  next,  previous,  up -->
@@ -3583,20 +3586,20 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
 
 <h3 class="section">10.1 ESS(SAS)&ndash;Design philosophy</h3>
 
-<p><acronym>ESS[SAS]</acronym><!-- /@w --> was designed to aid the user in writing and maintaining <acronym>SAS</acronym><!-- /@w -->
+<p><acronym>ESS[SAS]</acronym> was designed to aid the user in writing and maintaining <acronym>SAS</acronym><!-- /@w -->
 programs, such as <var>foo</var><span class="file">.sas</span>.  Both interactive and batch
 submission of <acronym>SAS</acronym><!-- /@w --> programs is supported.
 
-   <p><acronym>ESS[SAS]</acronym><!-- /@w --> was written with two primary goals.
+   <p><acronym>ESS[SAS]</acronym> was written with two primary goals.
      <ol type=1 start=1>
 <li>The emacs text editor provides a powerful and flexible development
 environment for programming languages.  These features are a boon to all
-programmers and, with the help of <acronym>ESS[SAS]</acronym><!-- /@w -->, to <acronym>SAS</acronym><!-- /@w --> users as well. 
-<li>Although a departure from <acronym>SAS</acronym><!-- /@w --> Display Manager, <acronym>ESS[SAS]</acronym><!-- /@w --> provides
-similar key definitions to give novice <acronym>ESS[SAS]</acronym><!-- /@w --> users a head start. 
+programmers and, with the help of <acronym>ESS[SAS]</acronym>, to <acronym>SAS</acronym><!-- /@w --> users as well. 
+<li>Although a departure from <acronym>SAS</acronym><!-- /@w --> Display Manager, <acronym>ESS[SAS]</acronym> provides
+similar key definitions to give novice <acronym>ESS[SAS]</acronym> users a head start. 
 Also, inconvenient <acronym>SAS</acronym><!-- /@w --> Display Manager features, like remote submission
 and syntax highlighting, are provided transparently; appealing to
-advanced <acronym>ESS[SAS]</acronym><!-- /@w --> users.
+advanced <acronym>ESS[SAS]</acronym> users.
         </ol>
 
 <!-- node-name,  next,  previous,  up -->
@@ -3610,7 +3613,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
 
 <h3 class="section">10.2 ESS(SAS)&ndash;Editing files</h3>
 
-<p><acronym>ESS[SAS]</acronym><!-- /@w --> is the mode for editing <acronym>SAS</acronym><!-- /@w --> language files.  This mode handles:
+<p><acronym>ESS[SAS]</acronym> is the mode for editing <acronym>SAS</acronym><!-- /@w --> language files.  This mode handles:
 
      <ul>
 <li>proper indenting, generated by both &lt;TAB&gt; and &lt;RET&gt;. 
@@ -3628,12 +3631,12 @@ or a single line to an interactive <acronym>SAS</acronym><!-- /@w --> process.
 buffer (for the above). 
 </ul>
 
-   <p><acronym>ESS[SAS]</acronym><!-- /@w --> is automatically turned on when editing a file with a <span class="file">.sas</span>
+   <p><acronym>ESS[SAS]</acronym> is automatically turned on when editing a file with a <span class="file">.sas</span>
 suffix (or other extension, if specified via <code>auto-mode-alist</code>).  The function
 keys can be enabled to use the same function keys that
-the <acronym>SAS</acronym><!-- /@w --> Display Manager does.  The interactive capabilities of <acronym>ESS</acronym><!-- /@w --> require you
+the <acronym>SAS</acronym><!-- /@w --> Display Manager does.  The interactive capabilities of <acronym>ESS</acronym> require you
 to start an inferior <acronym>SAS</acronym><!-- /@w --> process with <kbd>M-x&nbsp;SAS</kbd><!-- /@w -->
-(See <a href="#IESS_0028SAS_0029_002d_002dInteractive-SAS-processes">IESS(SAS)&ndash;Interactive SAS processes</a>.)
+(See <a href="#iESS_0028SAS_0029_002d_002dInteractive-SAS-processes">iESS(SAS)&ndash;Interactive SAS processes</a>.)
 
    <p>At this writing, the indenting and syntax highlighting are generally
 correct.  Known issues: for multiple line <code>*</code> or <code>%*</code> comments, only the
@@ -3662,7 +3665,7 @@ in most programming language modes.  This functionality is equivalent to
 uncommenting the following line in <span class="file">ess-site.el</span>:
 <pre class="example">     (setq ess-sas-edit-keys-toggle nil)
 </pre>
-   <p><acronym>ESS</acronym><!-- /@w --> provides an alternate behavior for &lt;TAB&gt; that makes it behave
+   <p><acronym>ESS</acronym> provides an alternate behavior for &lt;TAB&gt; that makes it behave
 as it does in <acronym>SAS</acronym><!-- /@w --> Display Manager, i.e. move the cursor to the next stop. 
 The alternate behavior also provides a "TAB" backwards, <kbd>C-&lt;TAB&gt;</kbd><!-- /@w -->, that
 moves the cursor to the stop to the left and deletes any characters
@@ -3754,9 +3757,9 @@ speed things up.  You can over-ride the default in your <span class="file">~/.em
 </pre>
    <p>For example, <code>(setq ess-sas-global-unix-keys t)</code> keys shown,
 <code>(setq ess-sas-global-pc-keys t)</code> in parentheses;
-<acronym>ESS[SAS]</acronym><!-- /@w --> function keys are presented in the next section. 
+<acronym>ESS[SAS]</acronym> function keys are presented in the next section. 
 Open the file you want to work with <kbd>C-x&nbsp;C-f&nbsp;foo.sas</kbd><!-- /@w -->. 
-<var>foo</var><span class="file">.sas</span> will be in <acronym>ESS[SAS]</acronym><!-- /@w --> mode.  Edit as appropriate, then save and
+<var>foo</var><span class="file">.sas</span> will be in <acronym>ESS[SAS]</acronym> mode.  Edit as appropriate, then save and
 submit the batch <acronym>SAS</acronym><!-- /@w --> job.
 <pre class="example">     &lt;F3&gt; (&lt;F8&gt;)
 </pre>
@@ -3791,7 +3794,7 @@ taken to the first error message, if any.
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
 <p><hr>
-<a name="ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#IESS_0028SAS_0029_002d_002dInteractive-SAS-processes">IESS(SAS)--Interactive SAS processes</a>,
+<a name="ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#iESS_0028SAS_0029_002d_002dInteractive-SAS-processes">iESS(SAS)--Interactive SAS processes</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dBatch-SAS-processes">ESS(SAS)--Batch SAS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
 <br>
@@ -3803,13 +3806,13 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
 is unavoidably complex, but the usage of function keys is simple. 
 There are five distinct options:
 
-   <p>Option 1 (default).  Function keys in <acronym>ESS[SAS]</acronym><!-- /@w --> are not bound to elisp
+   <p>Option 1 (default).  Function keys in <acronym>ESS[SAS]</acronym> are not bound to elisp
 commands.  This is in accordance with the GNU Elisp Coding Standards
 (<acronym>GECS</acronym>) which do not allow function keys to be bound so that they are
 available to the user.
 
    <p>Options 2-5.  Since <acronym>GECS</acronym> does not allow function keys to be bound by
-modes, these keys are often unused.  So, <acronym>ESS[SAS]</acronym><!-- /@w --> provides users with
+modes, these keys are often unused.  So, <acronym>ESS[SAS]</acronym> provides users with
 the option of binding elisp commands to these keys.  Users who are
 familiar with <acronym>SAS</acronym><!-- /@w --> will, most likely, want to duplicate the function key
 capabilities of the <acronym>SAS</acronym><!-- /@w --> Display Manager.  There are four options (noted
@@ -3817,25 +3820,25 @@ in parentheses).
 
      <ol type=a start=1>
 <li><acronym>SAS</acronym><!-- /@w --> Display Manager has different function key definitions for
-<acronym>UNIX</acronym> (2, 4) and Windows (3, 5); <acronym>ESS[SAS]</acronym><!-- /@w --> can use either. 
-<li>The <acronym>ESS[SAS]</acronym><!-- /@w --> function key definitions can be active in all buffers
+<acronym>UNIX</acronym> (2, 4) and Windows (3, 5); <acronym>ESS[SAS]</acronym> can use either. 
+<li>The <acronym>ESS[SAS]</acronym> function key definitions can be active in all buffers
 (global: 4, 5) or limited (local: 2, 3) only to buffers with files that
-are associated with <acronym>ESS[SAS]</acronym><!-- /@w --> as specified in your <code>auto-mode-alist</code>.
+are associated with <acronym>ESS[SAS]</acronym> as specified in your <code>auto-mode-alist</code>.
         </ol>
 
    <p>The distinction between local and global is subtle.  If you want the
-<acronym>ESS[SAS]</acronym><!-- /@w --> definitions to work when you are in the <span class="file">*shell*</span> buffer or when
-editing files other than the file extensions that <acronym>ESS[SAS]</acronym><!-- /@w --> recognizes,
+<acronym>ESS[SAS]</acronym> definitions to work when you are in the <span class="file">*shell*</span> buffer or when
+editing files other than the file extensions that <acronym>ESS[SAS]</acronym> recognizes,
 you will most likely want to use the global definitions.  If you want
 your function keys to understand <acronym>SAS</acronym><!-- /@w --> batch commands when you are editing
 <acronym>SAS</acronym><!-- /@w --> files, and to behave normally when editing other files, then you
 will choose the local definitions.  The option can be chosen by the
-person installing <acronym>ESS</acronym><!-- /@w --> for a site or by an individual.
+person installing <acronym>ESS</acronym> for a site or by an individual.
 
      <ol type=a start=1>
 <li>For a site installation or an individual, uncomment <strong>ONLY ONE</strong> of the
-following lines in your <span class="file">ess-site.el</span>.  <acronym>ESS[SAS]</acronym><!-- /@w --> function keys are
-available in <acronym>ESS[SAS]</acronym><!-- /@w --> if you uncomment either 2 or 3 and in all modes if
+following lines in your <span class="file">ess-site.el</span>.  <acronym>ESS[SAS]</acronym> function keys are
+available in <acronym>ESS[SAS]</acronym> if you uncomment either 2 or 3 and in all modes if
 you uncomment 4 or 5:
      <pre class="example">          ;;2; (setq ess-sas-local-unix-keys t)
           ;;3; (setq ess-sas-local-pc-keys t)
@@ -3857,12 +3860,12 @@ liking, then you must call the appropriate function.
 some of the nicknames as <acronym>SAS</acronym><!-- /@w --> Display Manager commands (they are in all
 capitals).
 
-   <p><table summary=""><tr align="left"><td valign="top"><acronym>UNIX</acronym> </td><td valign="top"><acronym>PC</acronym> </td><td valign="top">Nickname and <acronym>IESS</acronym><!-- /@w --> Alias (if any)
+   <p><table summary=""><tr align="left"><td valign="top"><acronym>UNIX</acronym> </td><td valign="top"><acronym>PC</acronym> </td><td valign="top">Nickname
 <br></td></tr><tr align="left"><td valign="top">&lt;F2&gt; </td><td valign="top">&lt;F2&gt; </td><td valign="top"><span class="samp">refresh</span>
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     revert the current buffer with the file of the same
                     name if the file is newer than the buffer
-<br></td></tr><tr align="left"><td valign="top">&lt;F3&gt; </td><td valign="top">&lt;F8&gt; </td><td valign="top"><code>SUBMIT</code> <kbd>C-c C-b</kbd>
+<br></td></tr><tr align="left"><td valign="top">&lt;F3&gt; </td><td valign="top">&lt;F8&gt; </td><td valign="top"><code>SUBMIT</code>
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     save the current <span class="file">.sas</span> file (which is either the <span class="file">.sas</span>
                     file in the current buffer or the <span class="file">.sas</span> file associated
@@ -3871,11 +3874,11 @@ capitals).
 <br></td></tr><tr align="left"><td valign="top">&lt;F4&gt; </td><td valign="top">&lt;F5&gt; </td><td valign="top"><code>PROGRAM</code>
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     switch buffer to <span class="file">.sas</span> file
-<br></td></tr><tr align="left"><td valign="top">&lt;F5&gt; </td><td valign="top">&lt;F6&gt; </td><td valign="top"><code>LOG</code> <kbd>C-c C-x</kbd>
+<br></td></tr><tr align="left"><td valign="top">&lt;F5&gt; </td><td valign="top">&lt;F6&gt; </td><td valign="top"><code>LOG</code>
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     switch buffer to <span class="file">.log</span> file, <span class="samp">refresh</span> and goto next
                     error message, if any
-<br></td></tr><tr align="left"><td valign="top">&lt;F6&gt; </td><td valign="top">&lt;F7&gt; </td><td valign="top"><code>OUTPUT</code> <kbd>C-c C-y</kbd>
+<br></td></tr><tr align="left"><td valign="top">&lt;F6&gt; </td><td valign="top">&lt;F7&gt; </td><td valign="top"><code>OUTPUT</code>
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     switch buffer to <span class="file">.lst</span> file and <span class="samp">refresh</span>
 <br></td></tr><tr align="left"><td valign="top">&lt;F7&gt; </td><td valign="top">&lt;F4&gt; </td><td valign="top"><span class="samp">filetype-1</span>
@@ -3891,7 +3894,7 @@ capitals).
                     <acronym>SAS</acronym><!-- /@w --> dataset near point
 <br></td></tr><tr align="left"><td valign="top">&lt;F10&gt; </td><td valign="top">&lt;F10&gt; </td><td valign="top">toggle-log
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
-                    toggle <acronym>ESS[SAS]</acronym><!-- /@w --> for <span class="file">.log</span> files; useful for
+                    toggle <acronym>ESS[SAS]</acronym> for <span class="file">.log</span> files; useful for
                     certain debugging situations
 <br></td></tr><tr align="left"><td valign="top">&lt;F11&gt; </td><td valign="top">&lt;F11&gt; </td><td valign="top"><span class="samp">filetype-2</span>
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
@@ -3909,7 +3912,7 @@ capitals).
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     create an <span class="sc">MS RTF</span> landscape file from the current buffer
                     with a file extension of <span class="file">.rtf</span>
-<br></td></tr><tr align="left"><td valign="top"><kbd>C-&lt;F3&gt;</kbd> </td><td valign="top"><kbd>C-&lt;F8&gt;</kbd> </td><td valign="top">submit-region <kbd>C-c C-r</kbd>
+<br></td></tr><tr align="left"><td valign="top"><kbd>C-&lt;F3&gt;</kbd> </td><td valign="top"><kbd>C-&lt;F8&gt;</kbd> </td><td valign="top">submit-region
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     write region to <span class="file">ess-temp.sas</span> and submit
 <br></td></tr><tr align="left"><td valign="top"><kbd>C-&lt;F5&gt;</kbd> </td><td valign="top"><kbd>C-&lt;F6&gt;</kbd> </td><td valign="top">append-to-log
@@ -3924,7 +3927,7 @@ capitals).
                     <acronym>SAS</acronym><!-- /@w --> dataset near point
 <br></td></tr><tr align="left"><td valign="top"><kbd>C-&lt;F10&gt;</kbd> </td><td valign="top"><kbd>C-&lt;F10&gt;</kbd> </td><td valign="top">toggle-listing
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
-                    toggle <acronym>ESS[SAS]</acronym><!-- /@w --> for <span class="file">.lst</span> files;
+                    toggle <acronym>ESS[SAS]</acronym> for <span class="file">.lst</span> files;
                     useful for toggling read-only
    <br></td></tr></table>
 
@@ -3972,7 +3975,7 @@ commands, you have the global variables <code>ess-sas-data-view-libname</code>
 and <code>ess-sas-data-view-insight-command</code> as well as the buffer-local
 variable <code>ess-sas-data-view-insight-statement</code>.
 
-   <p>&lt;F10&gt; toggles <acronym>ESS[SAS]</acronym><!-- /@w --> mode for <span class="file">.log</span> files which is off by default
+   <p>&lt;F10&gt; toggles <acronym>ESS[SAS]</acronym> mode for <span class="file">.log</span> files which is off by default
 (technically, it is <code>SAS-log-mode</code>, but it looks the same).  The syntax
 highlighting can be helpful in certain debugging situations, but large
 <span class="file">.log</span> files may take a long time to highlight.
@@ -4006,17 +4009,17 @@ landscape (first line for "global" key mapping, second for "local"):
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
 <p><hr>
-<a name="IESS_0028SAS_0029_002d_002dInteractive-SAS-processes"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#IESS_0028SAS_0029_002d_002dCommon-problems">IESS(SAS)--Common problems</a>,
+<a name="iESS_0028SAS_0029_002d_002dInteractive-SAS-processes"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#iESS_0028SAS_0029_002d_002dCommon-problems">iESS(SAS)--Common problems</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">ESS(SAS)--Function keys for batch processing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
 <br>
 </div>
 
-<h3 class="section">10.6 IESS(SAS)&ndash;Interactive SAS processes</h3>
+<h3 class="section">10.6 iESS(SAS)&ndash;Interactive SAS processes</h3>
 
-<p>Inferior <acronym>ESS</acronym><!-- /@w --> (<acronym>IESS</acronym><!-- /@w -->) is the method for interfacing with interactive
-statistical processes (programs).  <acronym>IESS[SAS]</acronym><!-- /@w --> is what is needed for
-interactive <acronym>SAS</acronym><!-- /@w --> programming.  <acronym>IESS[SAS]</acronym><!-- /@w --> works best
+<p>Inferior <acronym>ESS</acronym> (i<acronym>ESS</acronym><!-- /@w -->) is the method for interfacing with interactive
+statistical processes (programs).  i<acronym>ESS[SAS]</acronym><!-- /@w --> is what is needed for
+interactive <acronym>SAS</acronym><!-- /@w --> programming.  i<acronym>ESS[SAS]</acronym><!-- /@w --> works best
 with the <acronym>SAS</acronym><!-- /@w --> command-line option settings
 <code>"-stdio -linesize 80 -noovp -nosyntaxcheck"</code>
 (the default of <code>inferior-SAS-args</code>).
@@ -4030,7 +4033,7 @@ with the <acronym>SAS</acronym><!-- /@w --> command-line option settings
      <code>-nosyntaxcheck</code>
                  permits recovery after syntax errors
 </pre>
-   <p>To start up <acronym>IESS[SAS]</acronym><!-- /@w --> mode, use:
+   <p>To start up i<acronym>ESS[SAS]</acronym><!-- /@w --> mode, use:
 <pre class="example">        <kbd>M-x&nbsp;SAS</kbd><!-- /@w -->
 </pre>
    <p>The <span class="file">*SAS:1.log*</span> buffer in <code>ESStr</code> mode corresponds to the file
@@ -4045,20 +4048,20 @@ messages, warnings, and errors appear here.
    <p>The <span class="file">*SAS:1*</span> buffer exists solely as a communications buffer. 
 The user should never use this buffer directly. 
 Files are edited in the <var>foo</var><span class="file">.sas</span> buffer.  The <kbd>C-c&nbsp;C-r</kbd><!-- /@w --> key in
-<acronym>ESS[SAS]</acronym><!-- /@w --> is the functional equivalent of bringing a file into the
+<acronym>ESS[SAS]</acronym> is the functional equivalent of bringing a file into the
 <span class="samp">SAS: PROGRAM EDITOR</span> window followed by <code>SUBMIT</code>.
 
    <p>For example, open the file you want to work with.
 <pre class="example">     <kbd>C-x&nbsp;C-f&nbsp;foo.sas</kbd><!-- /@w -->
 </pre>
-   <p><var>foo</var><span class="file">.sas</span> will be in <acronym>ESS[SAS]</acronym><!-- /@w --> mode.  Edit as appropriate, and then start
+   <p><var>foo</var><span class="file">.sas</span> will be in <acronym>ESS[SAS]</acronym> mode.  Edit as appropriate, and then start
 up <acronym>SAS</acronym><!-- /@w --> with the cursor in the <var>foo</var><span class="file">.sas</span> buffer.
 <pre class="example">     <kbd>M-x&nbsp;SAS</kbd><!-- /@w -->
 </pre>
    <p>Four buffers will appear on screen:
    <p><table summary=""><tr align="left"><td valign="top">Buffer               </td><td valign="top">Mode                   </td><td valign="top">Description
-<br></td></tr><tr align="left"><td valign="top"><var>foo</var><span class="file">.sas</span> </td><td valign="top"><code>ESS[SAS]</code>        </td><td valign="top">your source file
-<br></td></tr><tr align="left"><td valign="top"><span class="file">*SAS:1*</span>       </td><td valign="top"><code>iESS[SAS:1]</code>     </td><td valign="top"><acronym>IESS</acronym><!-- /@w --> communication buffer
+<br></td></tr><tr align="left"><td valign="top"><var>foo</var><span class="file">.sas</span> </td><td valign="top"><code><acronym>ESS[SAS]</acronym></code>        </td><td valign="top">your source file
+<br></td></tr><tr align="left"><td valign="top"><span class="file">*SAS:1*</span>       </td><td valign="top"><code>i<acronym>ESS[SAS:1]</acronym><!-- /@w --></code>     </td><td valign="top">i<acronym>ESS</acronym><!-- /@w --> communication buffer
 <br></td></tr><tr align="left"><td valign="top"><span class="file">*SAS:1.log*</span>   </td><td valign="top"><code>Shell ESStr []</code>  </td><td valign="top"><acronym>SAS</acronym><!-- /@w --> log information
 <br></td></tr><tr align="left"><td valign="top"><span class="file">*SAS:1.lst*</span>   </td><td valign="top"><code>Shell ESSlst []</code> </td><td valign="top"><acronym>SAS</acronym><!-- /@w --> listing information
    <br></td></tr></table>
@@ -4087,41 +4090,37 @@ command <kbd>C-x&nbsp;C-q</kbd><!-- /@w -->.
 
    <p>At the end of the session, the input file <var>foo</var><span class="file">.sas</span> will
 typically have been revised.  You can save it.  It can be used
-later as the beginning of another <acronym>IESS[SAS]</acronym><!-- /@w --> session.  It can
+later as the beginning of another i<acronym>ESS[SAS]</acronym><!-- /@w --> session.  It can
 also be used as a batch input file to <acronym>SAS</acronym><!-- /@w -->.
 
-   <p>The <span class="file">*SAS:1*</span> buffer is strictly for <acronym>ESS</acronym><!-- /@w --> use.  The user should
+   <p>The <span class="file">*SAS:1*</span> buffer is strictly for <acronym>ESS</acronym> use.  The user should
 never need to read it or write to it.  Refer to the <span class="file">.lst</span> and
 <span class="file">.log</span> buffers for monitoring output!
 
-   <p>Troubleshooting: See <a href="#IESS_0028SAS_0029_002d_002dCommon-problems">IESS(SAS)&ndash;Common problems</a>.
+   <p>Troubleshooting: See <a href="#iESS_0028SAS_0029_002d_002dCommon-problems">iESS(SAS)&ndash;Common problems</a>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
 <p><hr>
-<a name="IESS_0028SAS_0029_002d_002dCommon-problems"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dGraphics">ESS(SAS)--Graphics</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="#IESS_0028SAS_0029_002d_002dInteractive-SAS-processes">IESS(SAS)--Interactive SAS processes</a>,
+<a name="iESS_0028SAS_0029_002d_002dCommon-problems"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dGraphics">ESS(SAS)--Graphics</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#iESS_0028SAS_0029_002d_002dInteractive-SAS-processes">iESS(SAS)--Interactive SAS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
 <br>
 </div>
 
-<h3 class="section">10.7 IESS(SAS)&ndash;Common problems</h3>
+<h3 class="section">10.7 iESS(SAS)&ndash;Common problems</h3>
 
      <ol type=1 start=1>
-<li><acronym>IESS[SAS]</acronym><!-- /@w --> does not work on Windows.  In order to run <acronym>SAS</acronym><!-- /@w --> inside
+<li>i<acronym>ESS[SAS]</acronym><!-- /@w --> does not work on Windows.  In order to run <acronym>SAS</acronym><!-- /@w --> inside
 an emacs buffer, it is necessary to start <acronym>SAS</acronym><!-- /@w --> with the <code>-stdio</code> option. 
 <acronym>SAS</acronym><!-- /@w --> does not support the <code>-stdio</code> option on Windows. 
 <li>If <kbd>M-x&nbsp;SAS</kbd><!-- /@w --> gives errors upon startup, check the following:
           <ul>
 <li>you are running Windows:  see 1. 
-<li><span class="file">ess-sas-sh-command</span> (from the <acronym>ESS</acronym><!-- /@w --> <span class="file">etc</span> directory) needs to be
-executable; too check, type <kbd>C-x&nbsp;C-f&nbsp;ess-sas-sh-command</kbd><!-- /@w -->, then
-<kbd>&lt;F1&gt;&nbsp;v</kbd><!-- /@w -->, at the minibuffer prompt
-<span class="samp">Describe&nbsp;variable:</span><!-- /@w -->, type <code>executable-chmod</code>
-which should have the value <code>73</code>; if not, then you can fix it:
-type <kbd>M-x&nbsp;set-variable</kbd><!-- /@w -->, at the minibuffer prompt <span class="samp">Set&nbsp;variable:</span><!-- /@w -->,
-type <code>executable-chmod</code>, and at <span class="samp">Set executable-chmod to value:</span>,
-type <code>73</code>. 
+<li><span class="file">ess-sas-sh-command</span> (from the <acronym>ESS</acronym> <span class="file">etc</span> directory) needs to be
+executable; too check, type <kbd>M-x&nbsp;dired</kbd><!-- /@w -->; if not, fix it as follows,
+type <kbd>M-:</kbd>, then at the minibuffer prompt <span class="samp">Eval:</span><!-- /@w -->,
+type <code>(set-file-modes "ess-sas-sh-command" 493)</code>. 
 <!-- (solution: @code{chmod ugo+rx ess-sas-sh-command}). -->
 <li><code>sas</code> isn't in your executable path; to verify, type
 <kbd>M-:</kbd> and at the minibuffer prompt <span class="samp">Eval:</span>, type
@@ -4141,7 +4140,7 @@ on your system calls a shell script.  Specify the path to the real
 <div class="node">
 <p><hr>
 <a name="ESS_0028SAS_0029_002d_002dGraphics"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dWindows">ESS(SAS)--Windows</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="#IESS_0028SAS_0029_002d_002dCommon-problems">IESS(SAS)--Common problems</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#iESS_0028SAS_0029_002d_002dCommon-problems">iESS(SAS)--Common problems</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
 <br>
 </div>
@@ -4174,9 +4173,9 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
 <h3 class="section">10.9 ESS(SAS)&ndash;Windows</h3>
 
      <ul>
-<li><acronym>IESS[SAS]</acronym><!-- /@w --> does not work on Windows.  See <a href="#IESS_0028SAS_0029_002d_002dCommon-problems">IESS(SAS)&ndash;Common problems</a>.
+<li>i<acronym>ESS[SAS]</acronym><!-- /@w --> does not work on Windows.  See <a href="#iESS_0028SAS_0029_002d_002dCommon-problems">iESS(SAS)&ndash;Common problems</a>.
 
-     <li><acronym>ESS[SAS]</acronym><!-- /@w --> mode for editing <acronym>SAS</acronym><!-- /@w --> language files works very well. 
+     <li><acronym>ESS[SAS]</acronym> mode for editing <acronym>SAS</acronym><!-- /@w --> language files works very well. 
 See <a href="#ESS_0028SAS_0029_002d_002dEditing-files">ESS(SAS)&ndash;Editing files</a>.
 
      <li>There are two execution options for <acronym>SAS</acronym><!-- /@w --> on Windows. 
@@ -4207,9 +4206,9 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a accesskey="3" href="#ESS_0028BUGS_0029_002d_002dLog-files">ESS(BUGS)--Log files</a>
 </ul>
 
-<p>ESS[BUGS] was designed for use with BUGS software.  It was developed by
-Rodney A. Sparapani and has some similarities with ESS[SAS]. 
-ESS facilitates BUGS batch with ESS[BUGS], the mode for files with the .bug
+<p><acronym>ESS[BUGS]</acronym> was designed for use with BUGS software.  It was developed by
+Rodney A. Sparapani and has some similarities with <acronym>ESS[SAS]</acronym>. 
+ESS facilitates BUGS batch with <acronym>ESS[BUGS]</acronym>, the mode for files with the .bug
 extension.  ESS provides 5 features.  First, BUGS syntax is described to allow
 for proper fontification of statements, distributions, functions, commands and
 comments in BUGS model files, command files and log files.  Second,
@@ -4231,14 +4230,14 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-BUGS">ESS for BUGS</a>
 
 <h3 class="section">11.1 ESS[BUGS]&ndash;Model files</h3>
 
-<p>Model files (with the .bug extension) are edited in ESS[BUGS] mode.  Two keys
-are bound for your use in ESS[BUGS], F2 and F12.  F2 performs the same action
-as it does in ESS[SAS], See <a href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">ESS(SAS)&ndash;Function keys for batch processing</a>. 
+<p>Model files (with the .bug extension) are edited in <acronym>ESS[BUGS]</acronym> mode.  Two keys
+are bound for your use in <acronym>ESS[BUGS]</acronym>, F2 and F12.  F2 performs the same action
+as it does in <acronym>ESS[SAS]</acronym>, See <a href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">ESS(SAS)&ndash;Function keys for batch processing</a>. 
 F12 performs the function
 ess-bugs-next-action which you will use a lot.  Pressing F12 in an empty buffer
 for a model file will produce a template for you.
 
-   <p>ESS[BUGS] supports "replacement" variables.  These variables are created as
+   <p><acronym>ESS[BUGS]</acronym> supports "replacement" variables.  These variables are created as
 part of the template, i.e. with the first press of F12 in an empty buffer. 
 They are named by
 all capitals and start with '%':  %N, %DATA, %INIT, %MONITOR and %STATS. 
@@ -4322,7 +4321,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-BUGS">ESS for BUGS</a>
 <p>To avoid extension name collision, .bog is used for BUGS log files.  The BUGS
 batch script provided with ESS creates the .bog file from the .log file when
 the batch process completes.  If you need to look at the .log file while
-the batch process is running, it will not appear in ESS[BUGS] mode unless
+the batch process is running, it will not appear in <acronym>ESS[BUGS]</acronym> mode unless
 you modify the auto-mode-alist variable.  If you have done so, then you
 may find F2 useful to refresh the .log if the batch process over-writes or
 appends it.
@@ -4342,17 +4341,18 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <ul class="menu">
 <li><a accesskey="1" href="#Highlighting">Highlighting</a>:                 Syntactic highlighting of buffers
-<li><a accesskey="2" href="#Graphics">Graphics</a>:                     Using graphics with ESS
-<li><a accesskey="3" href="#Imenu">Imenu</a>:                        Support for Imenu in ESS
-<li><a accesskey="4" href="#Toolbar">Toolbar</a>:                      Support for toolbar in ESS
-<li><a accesskey="5" href="#TAGS">TAGS</a>:                         Using TAGS for S files
-<li><a accesskey="6" href="#Rdired">Rdired</a>:                       Directory editor for R objects
+<li><a accesskey="2" href="#Parens">Parens</a>:                       Parenthesis matching
+<li><a accesskey="3" href="#Graphics">Graphics</a>:                     Using graphics with ESS
+<li><a accesskey="4" href="#Imenu">Imenu</a>:                        Support for Imenu in ESS
+<li><a accesskey="5" href="#Toolbar">Toolbar</a>:                      Support for toolbar in ESS
+<li><a accesskey="6" href="#TAGS">TAGS</a>:                         Using TAGS for S files
+<li><a accesskey="7" href="#Rdired">Rdired</a>:                       Directory editor for R objects
 </ul>
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
 <p><hr>
-<a name="Highlighting"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Graphics">Graphics</a>,
+<a name="Highlighting"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Parens">Parens</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Miscellaneous">Miscellaneous</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 <br>
@@ -4397,13 +4397,34 @@ highlights the same patterns as in Inferior ESS Mode.
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
 <p><hr>
-<a name="Graphics"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Imenu">Imenu</a>,
+<a name="Parens"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Graphics">Graphics</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Highlighting">Highlighting</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 <br>
 </div>
 
-<h3 class="section">12.2 Using graphics with ESS</h3>
+<h3 class="section">12.2 Parenthesis matching</h3>
+
+<p>Emacs and XEmacs have facilities for highlighting the parenthesis
+matching the parenthesis at point.  This feature is very useful when
+trying to examine which parentheses match each other.  This highlighting
+also indicates when parentheses are not matching.  Depending on what
+version of emacs you use, one of the following should work in your
+initialisation file:
+
+<pre class="example">     (paren-set-mode 'paren) ;for XEmacs
+     (show-paren-mode t) ;for Emacs
+</pre>
+   <!-- node-name,  next,  previous,  up -->
+<div class="node">
+<p><hr>
+<a name="Graphics"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Imenu">Imenu</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Parens">Parens</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
+<br>
+</div>
+
+<h3 class="section">12.3 Using graphics with ESS</h3>
 
 <p><a name="index-graphics-200"></a>One of the main features of the <code>S</code> package is its ability to
 generate high-resolution graphics plots, and ESS provides a number of
@@ -4424,7 +4445,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
 <br>
 </div>
 
-<h4 class="subsection">12.2.1 Using ESS with the <code>printer()</code> driver</h4>
+<h4 class="subsection">12.3.1 Using ESS with the <code>printer()</code> driver</h4>
 
 <p>This is the simplest (and least desirable) method of using graphics
 within ESS.  S's <code>printer()</code> device driver produces crude character
@@ -4447,7 +4468,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
 <br>
 </div>
 
-<h4 class="subsection">12.2.2 Using ESS with windowing devices</h4>
+<h4 class="subsection">12.3.2 Using ESS with windowing devices</h4>
 
 <p><a name="index-X-windows-202"></a>Of course, the ideal way to use graphics with ESS is to use a windowing
 system.  Under X11, this requires that the DISPLAY environment
@@ -4465,7 +4486,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
 <br>
 </div>
 
-<h4 class="subsection">12.2.3 Java Graphics Device</h4>
+<h4 class="subsection">12.3.3 Java Graphics Device</h4>
 
 <p><a name="index-winjava-204"></a>
 S+6.1 and newer on Windows contains a java library that supports graphics.  Send
@@ -4487,7 +4508,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 <br>
 </div>
 
-<h3 class="section">12.3 Imenu</h3>
+<h3 class="section">12.4 Imenu</h3>
 
 <p>Imenu is an Emacs tool for providing mode-specific buffer indexes.  In
 some of the ESS editing modes (currently SAS and S), support for Imenu
@@ -4511,7 +4532,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 <br>
 </div>
 
-<h3 class="section">12.4 Toolbar</h3>
+<h3 class="section">12.5 Toolbar</h3>
 
 <p>The R and S editing modes have support for a toolbar.  This toolbar
 provides icons to act as shortcuts for starting new S/R processes, or
@@ -4528,7 +4549,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 <br>
 </div>
 
-<h3 class="section">12.5 TAGS</h3>
+<h3 class="section">12.6 TAGS</h3>
 
 <p>The Emacs tags facility can be used to navigate around your files
 containing definitions of S functions.  This facility is independent of
@@ -4560,7 +4581,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 <br>
 </div>
 
-<h3 class="section">12.6 Rdired</h3>
+<h3 class="section">12.7 Rdired</h3>
 
 <p>Ess-rdired provides a dired-like buffer for viewing, editing and
 plotting objects in your current R session.  If you are used to using
@@ -5069,8 +5090,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#ESS_0028SAS_0029_002d_002dTAB-key">10.3 ESS(SAS)&ndash;&lt;TAB&gt; key</a>
 <li><a href="#ESS_0028SAS_0029_002d_002dBatch-SAS-processes">10.4 ESS(SAS)&ndash;Batch SAS processes</a>
 <li><a href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">10.5 ESS(SAS)&ndash;Function keys for batch processing</a>
-<li><a href="#IESS_0028SAS_0029_002d_002dInteractive-SAS-processes">10.6 IESS(SAS)&ndash;Interactive SAS processes</a>
-<li><a href="#IESS_0028SAS_0029_002d_002dCommon-problems">10.7 IESS(SAS)&ndash;Common problems</a>
+<li><a href="#iESS_0028SAS_0029_002d_002dInteractive-SAS-processes">10.6 iESS(SAS)&ndash;Interactive SAS processes</a>
+<li><a href="#iESS_0028SAS_0029_002d_002dCommon-problems">10.7 iESS(SAS)&ndash;Common problems</a>
 <li><a href="#ESS_0028SAS_0029_002d_002dGraphics">10.8 ESS(SAS)&ndash;Graphics</a>
 <li><a href="#ESS_0028SAS_0029_002d_002dWindows">10.9 ESS(SAS)&ndash;Windows</a>
 </li></ul>
@@ -5083,16 +5104,17 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a name="toc_Miscellaneous" href="#Miscellaneous">12 Other features of ESS</a>
 <ul>
 <li><a href="#Highlighting">12.1 Syntactic highlighting of buffers</a>
-<li><a href="#Graphics">12.2 Using graphics with ESS</a>
+<li><a href="#Parens">12.2 Parenthesis matching</a>
+<li><a href="#Graphics">12.3 Using graphics with ESS</a>
 <ul>
-<li><a href="#printer">12.2.1 Using ESS with the <code>printer()</code> driver</a>
-<li><a href="#X11">12.2.2 Using ESS with windowing devices</a>
-<li><a href="#winjava">12.2.3 Java Graphics Device</a>
+<li><a href="#printer">12.3.1 Using ESS with the <code>printer()</code> driver</a>
+<li><a href="#X11">12.3.2 Using ESS with windowing devices</a>
+<li><a href="#winjava">12.3.3 Java Graphics Device</a>
 </li></ul>
-<li><a href="#Imenu">12.3 Imenu</a>
-<li><a href="#Toolbar">12.4 Toolbar</a>
-<li><a href="#TAGS">12.5 TAGS</a>
-<li><a href="#Rdired">12.6 Rdired</a>
+<li><a href="#Imenu">12.4 Imenu</a>
+<li><a href="#Toolbar">12.5 Toolbar</a>
+<li><a href="#TAGS">12.6 TAGS</a>
+<li><a href="#Rdired">12.7 Rdired</a>
 </li></ul>
 <li><a name="toc_Mailing-lists_002fbug-reports" href="#Mailing-lists_002fbug-reports">13 Bugs and Bug Reporting, Mailing Lists</a>
 <ul>
