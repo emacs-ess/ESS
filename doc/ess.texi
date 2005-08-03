@@ -1757,7 +1757,7 @@ returned to the ESS process.
 @cindex parsing errors
 If any errors occur when loading a file with @code{C-c C-l}, ESS will
 inform you of this fact.  In this case, you can jump directly to the
-line in the source file which caused the error by typing @kbd{C-x `}
+line in the source file which caused the error by typing @kbd{C-c `}
 (@code{ess-parse-errors}).
 @pindex ess-parse-errors
 You will be returned to the offending file (loading it into a buffer if
@@ -1767,11 +1767,11 @@ none of the commands in an @Sl{} source file will take effect if any
 part of the file contains errors.
 
 Sometimes the error is not caused by a syntax error (loading a
-non-existent file for example). In this case typing @kbd{C-x `} will
+non-existent file for example). In this case typing @kbd{C-c `} will
 simply display a buffer containing S's error message.  You can force
 this behavior (and avoid jumping to the file when there @emph{is} a
 syntax error) by passing a prefix argument to @code{ess-parse-errors}
-with @kbd{C-u C-x `}.
+with @kbd{C-u C-c `}.
 
 @comment  node-name,  next,  previous,  up
 @node Evaluating code, Indenting, Error Checking, Editing
@@ -1925,10 +1925,10 @@ all following lines which are part of the same (compound) expression are
 indented by the same amount (but relative indents are preserved).
 
 @item
-@kbd{LFD} (@code{newline-and-indent}) @*
-Insert a newline, and indent the next line.  (Note: if your keyboard
-does not have a @key{LINEFEED} key, you can use @kbd{C-j} instead.)
-Some people prefer to bind @key{RET} to this command.
+@kbd{RET} (@code{newline-and-indent}) @*
+@kbd{LFD} (@emph{newline-and-indent}) @*
+Insert a newline, and indent the next line.  (Note that most keyboards
+nowadays do not have a @key{LINEFEED} key, but @kbd{C-j} is equivalent.)
 
 @item
 @kbd{ESC C-q} aka @kbd{M-C-q} aka @kbd{C-M-q} (@code{ess-indent-exp}) @*
