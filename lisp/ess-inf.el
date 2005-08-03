@@ -349,7 +349,7 @@ there is no process NAME)."
 	;; Add the process filter to catch certain output.
 	(set-process-filter (get-process proc-name)
 			    'inferior-ess-output-filter)
-	
+
 	(run-hooks 'ess-post-run-hook))
       (if (and inferior-ess-same-window (not inferior-ess-own-frame))
 	  (switch-to-buffer (process-buffer (get-process proc-name)))
@@ -1459,7 +1459,7 @@ to continue it."
   ;; Completion support
   ;; SJE: comint-dynamic-complete-functions is regarded as a hook, rather
   ;; than a regular variable.  Note order of completion (thanks David Brahm):
-  
+
   (add-hook 'comint-dynamic-complete-functions
 	    'ess-complete-filename 'append 'local)
   (add-hook 'comint-dynamic-complete-functions
@@ -1525,7 +1525,7 @@ to continue it."
 ;;  ___hack much improved by MM___ , both help(.) and ?... now work
 ;; FIXME: Note that  '??' nicely works in *R*, but
 ;;        'type ? topic' doesn't use ess-help {but display in *R*}
-(defconst inferior-R-1-input-help (format "help *(%s)" ess-help-arg-regexp))
+(defconst inferior-R-1-input-help (format "^ *help *(%s)" ess-help-arg-regexp))
 (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
 (defconst inferior-R-page         (format "^ *page *(%s)" ess-help-arg-regexp))
 

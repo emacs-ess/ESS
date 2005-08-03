@@ -1,3 +1,8 @@
+2005-08-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (inferior-R-1-input-help): '^ *help': do not trigger
+	for, e.g., showMyhelp().
+
 2005-07-28  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-help.el (ess-nuke-help-bs): Add doc string and remove
