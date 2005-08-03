@@ -2,7 +2,7 @@ Changes/New Features in 5.2.9:
 @itemize @bullet
 @item @ESS{[R]} for Windows:  the \ directory character bug
 with respect to ess-load-file has been eradicated
-@item @IESS{[SAS]}: @kbd{C-c C-r} and @kbd{C-c C-b} once again
+@item @iESS{[SAS]}: @kbd{C-c C-r} and @kbd{C-c C-b} once again
 work as intended and documented
 @end itemize
 
@@ -16,29 +16,29 @@ Changes/New Features in 5.2.7:
 @itemize @bullet
 @item If you use Custom to change the variable ess-toolbar-items,
 the new toolbar is used in all subsequent ESS buffers.
-@item ESS[SAS]: new feature:  if ess-sas-log-max >0 and
+@item @ESS{[SAS]}: new feature:  if ess-sas-log-max >0 and
 your .log grows to more than ess-sas-log-max bytes, just
 the first ess-sas-log-max bytes are refreshed; this is helpful when your .sas program
 generates lots of error messages and gets too big for emacs to display
-@item ESS[R/S]: @kbd{M-;} in R/S editing modes will now indent with
+@item @ESS{[R/S]}: @kbd{M-;} in R/S editing modes will now indent with
 either one or two hashes depending on context.
-@item ESS[R]: David Whiting's Sweave extensions (to 'noweb')
+@item @ESS{[R]}: David Whiting's Sweave extensions (to 'noweb')
 are now available (from ess-swv.el loaded by default).
 @end itemize
 
 Changes/New Features in 5.2.6:
 @itemize @bullet
 @item Removed non-ASCII characters in a few files.
-@item ESS[R]: now works better when UTF-8 locale is active; in
+@item @ESS{[R]}: now works better when UTF-8 locale is active; in
  particular, you get correct directional quotes in R's startup message
  for R-devel (unstable development version of R 2.1.0) when using
  environment variables LANGUAGE=en@@quot LC_ALL=en_US.UTF-8
-@item ESS[SAS]: toggling of .log mode improved (@kbd{F10}); toggling of
+@item @ESS{[SAS]}: toggling of .log mode improved (@kbd{F10}); toggling of
 .lst mode now also available (@kbd{C-F10}); killing all buffers associated
 with .sas program no longer bound to @kbd{C-F10} since its a bit overzealous.
 @item S-Plus 7 for Windows is now recognized.
-@item ESS[S] (incl.@: R): in auto-fill mode, strings are not wrapped anymore.
-@item ESS[S] (incl.@: R): font-lock now correctly differs between R and S,
+@item @ESS{[S]} (incl.@: R): in auto-fill mode, strings are not wrapped anymore.
+@item @ESS{[S]} (incl.@: R): font-lock now correctly differs between R and S,
 e.g., for "_"; both now fontify warning(.) and S does terminate() additionally.
 @item Support for `bell' aka `beep' aka `ding' aka `alarm' in all inferior
 modes: When \a is output ``to the the console'' at the beginning of a line,
@@ -47,16 +47,16 @@ the bell is rung.
 
 Changes/New Features in 5.2.5:
 @itemize @bullet
-@item ESS[R]: @kbd{C-c C-q} or @samp{Quit S} from the menu now should work
+@item @ESS{[R]}: @kbd{C-c C-q} or @samp{Quit S} from the menu now should work
 (again and less klunkily) and do not append @samp{-exited} to the
 buffer name.  Further, the behavior of @code{(ess-cleanup)}, called from
 ess-quit, now depends on the new customizable variable
 @code{ess-S-quit-kill-buffers-p} which defaults to @code{nil}.
 Consequently, the question @emph{``Delete all buffers associated
 with ..?''} will not be asked anymore by default.
-@item ESS[SAS] -- ess-ebcdic-to-ascii-search-and-replace will now work
+@item @ESS{[SAS]} -- ess-ebcdic-to-ascii-search-and-replace will now work
 with the @code{recode} application as well which is available on many platforms
-@item ESS[S] (incl.@: R): Name completion for slots of S4 objects now works!
+@item @ESS{[S]} (incl.@: R): Name completion for slots of S4 objects now works!
 @end itemize
 
 Changes/New Features in 5.2.4:
@@ -65,7 +65,7 @@ Changes/New Features in 5.2.4:
 TAGS facility for S functions.  (The distribution also used to contain a
 directory @file{etc/other/Tags} where a ~1990 version of @file{etags.c} was
 distributed; this is no longer relevant and so has been deleted.)
-@item ESS[SAS] -- When you are working with EBCDIC files on an ASCII
+@item @ESS{[SAS]} -- When you are working with EBCDIC files on an ASCII
 platform, .log NOTEs may display as gibberish since the EBCDIC
 characters are not converted to ASCII prior to their display.  So,
 the function ess-ebcdic-to-ascii-search-and-replace is provided for
@@ -82,7 +82,7 @@ Further, it was more or less broken for all versions of S-plus 6.x,
 and has been fixed to work everywhere but with the Windows' GUI of
 S-plus.  The list of objects now shows unique names also when an
 object appears more than once in the search path.
-@item ESS[R]: Completion of object names now also includes those
+@item @ESS{[R]}: Completion of object names now also includes those
 starting with ``.''.
 @end itemize
 
@@ -101,7 +101,7 @@ Changes/New Features in 5.2.2:
 @item bug-fixes for 5.2.1 (require 'executable), html docs, etc.
 @item ess-lisp-directory/../doc/info added to Info-directory-list
 if ess-info not found by info
-@item ESS[R]: If you have other versions of R on your
+@item @ESS{[R]}: If you have other versions of R on your
 exec-path, such as "R-1.8.1" with Unix or "rw1081" with Windows,
 ESS will find them and create appropriate functions, such as
 @kbd{M-x R-1.8.1} or @kbd{M-x rw1081}, for calling them.
@@ -110,32 +110,32 @@ By default only Unix programs beginning "R-1" and
 version of R in your exec-path will be found,
 but see ess-r-versions and ess-rterm-versions for ways to find other
 versions of R.
-@item ESS[R]: Other versions of R, such as "R-1.8.1" on Unix and "rw1081" on
+@item @ESS{[R]}: Other versions of R, such as "R-1.8.1" on Unix and "rw1081" on
 Windows, are added to the
 "ESS / Start Process / Other" menu.
-@item ESS[S]: If you have other versions of S-Plus on your Windows computer,
+@item @ESS{[S]}: If you have other versions of S-Plus on your Windows computer,
 such as S-Plus 6.1 or S-Plus 4.5, ESS will find them and create appropriate
 functions, such as @kbd{M-x splus61}, for calling the console version (Sqpe)
 inside an emacs buffer.  By default only
 programs installed in the default location will be found, but see
 ess-SHOME-versions for ways to find other versions of S-Plus.
-@item ESS[S]: Other versions of Sqpe on Windows, such as "splus61",
+@item @ESS{[S]}: Other versions of Sqpe on Windows, such as "splus61",
 are added to the
 "ESS / Start Process / Other" menu.
-@item ESS[R]: (bug fix) ess-quit (bound to @kbd{C-c C-q}) should now quit the
+@item @ESS{[R]}: (bug fix) ess-quit (bound to @kbd{C-c C-q}) should now quit the
 inferior R process, when issued from either the inferior buffer, or from
 a .R buffer.
 @end itemize
 
 Changes/New Features in 5.2.1:
 @itemize @bullet
-@item ESS[S] (R and S-plus): now have toolbar support
+@item @ESS{[S]} (R and S-plus): now have toolbar support
 with icons to evaluate code in the inferior process or to switch
 there.  This code is experimental and likely to change as XEmacs/Emacs
 issues get resolved. The toolbar should be enabled if your Emacs
 displays images, but can be disabled with the variable ess-use-toolbar.
 Thanks to David Smith from Insightful for the S-plus logo.
-@item ESS[SAS]: ess-sas-graph-view (@kbd{F12}) enhanced; you can specify
+@item @ESS{[SAS]}: ess-sas-graph-view (@kbd{F12}) enhanced; you can specify
 external file viewers for each graphics file type via the alist
 ess-sas-graph-view-viewer-alist; also .jpg/.gif are now handled
 by image-mode on XEmacs, if available, otherwise by graphics
@@ -144,10 +144,10 @@ primitives as before
 
 Changes/New Features in 5.2.0:
 @itemize @bullet
-@item ESS[BUGS]:  new info documentation!  now supports interactive
+@item @ESS{[BUGS]}:  new info documentation!  now supports interactive
 processing thanks to @uref{mailto:Aki.Vehtari@@hut.fi, Aki Vehtari};
 new architecture-independent unix support as well as support for BUGS v. 0.5
-@item ESS[SAS]:  convert .log to .sas with ess-sas-transcript;
+@item @ESS{[SAS]}:  convert .log to .sas with ess-sas-transcript;
 info documentation improved; Local Variable bug fixes;
 SAS/IML statements/functions now highlighted; files edited
 remotely by ange-ftp/EFS/tramp are recognized and pressing
@@ -161,7 +161,7 @@ which automatically reverse indents lines containing only "run;";
 @kbd{C-F9} opens a SAS DATASET with PROC INSIGHT rather than PROC FSVIEW;
 "inferior" aliases for SAS batch:  @kbd{C-c C-r} for submit region,
 @kbd{C-c C-b} for submit buffer, @kbd{C-c C-x} for goto .log; @kbd{C-c C-y} for goto .lst
-@item ESS[S]: Pressing underscore ("_") once inserts " <- " (as before);
+@item @ESS{[S]}: Pressing underscore ("_") once inserts " <- " (as before);
 pressing underscore twice inserts a literal underscore.  To stop this
 smart behaviour, add "(ess-smart-underscore nil)" to your .emacs after
 ess-site has been loaded;
@@ -170,7 +170,7 @@ customized successfully (for S language dialects);
 Support for Imenu has been improved; set ess-imenu-use-S to non-nil to
 get an "Imenu-S" item on your menubar;
 ess-help: Now using nice underlines (instead of `nuke-* ^H_')
-@item ESS[R]:  After (require 'essa-r), @kbd{M-x ess-r-var} allows to load
+@item @ESS{[R]}:  After (require 'essa-r), @kbd{M-x ess-r-var} allows to load
 numbers from any Emacs buffer into an existing *R* process;
 @kbd{M-x ess-rdired} gives a ``directory editor'' of R objects;
 fixed ess-retr-lastvalue-command, i.e. .Last.value bug
@@ -204,7 +204,7 @@ are still distributed for what it's worth.
 @item ESS is now an XEmacs package!  See
 @uref{http://www.xemacs.org/Install/index.html, XEmacs Installation HOWTO}
 for details (specifically, items 10-15).
-@item ESS[SAS]: more user-friendly enhancements for remote
+@item @ESS{[SAS]}: more user-friendly enhancements for remote
 SAS batch jobs with Kermit file transfers (LOG and OUTPUT
 function key features now supported).  Multiple shells
 now supported so you can run SAS on different computers
@@ -215,13 +215,13 @@ ess-sas-shell-buffer to unique buffer names.
 
 Changes/New Features in 5.1.21:
 @itemize @bullet
-@item ESS[SAS]: info documentation now available!, see
+@item @ESS{[SAS]}: info documentation now available!, see
 ESS->Help for SAS; @kbd{F12} opens GSASFILE nearest point for viewing
 either within emacs, when available, or via an external viewer;
 more syntax highlighting keywords; more enhancements for remote
 SAS batch jobs with Kermit; new framework for remote SAS interactive
 jobs, see ess-remote
-@item ESS[S]: info documentation now available!, see
+@item @ESS{[S]}: info documentation now available!, see
 ESS->Help for the S family
 @item Makefile: tag now independent of rel; info files
 made by doc/Makefile and installed in new info sub-directory
@@ -244,7 +244,7 @@ This feature is still under development.
 @item XEmacs on Win (NT) is better supported.
 @item Workaround for bug in Sqpe+6 (S-PLUS 6 for Win).
 @item should now work even when imenu is not available (for old XEmacsen).
-@item ESS[SAS]: XEmacs-Imenu fix; @kbd{C-TAB} is globalized along with your
+@item @ESS{[SAS]}: XEmacs-Imenu fix; @kbd{C-TAB} is globalized along with your
 function-key definitions, if specified; you can specify your SAS
 library definitions outside of autoexec.sas for ess-sas-data-view
 with SAS code placed in the variable ess-sas-data-view-libname,
@@ -261,7 +261,7 @@ local file variable sections at the end of your .sas files to
 request different executables or specify special options and the
 local file variables are re-read at submit instead of only at file
 open so that if you make a change it is picked up immediately;
-@item ESS[BUGS]: font-lock with `in' fixed.
+@item @ESS{[BUGS]}: font-lock with `in' fixed.
 @item for STATA: font-lock bug fixed.
 @item for Rd mode: @kbd{C-c C-v} and `switch-process' in menu.
 further, @kbd{C-c C-f} prefix (Rd-font) for inserting or surrounding a word
@@ -274,7 +274,7 @@ ess-directory <-> default-directory logic (Jeff Mincy).
 Changes/New Features in 5.1.19:
 @itemize @bullet
 @item S+6 now supported (Tony Rossini (Unix) and Rich Heiberger (Windows))
-@item New BUGS support through ESS[BUGS] mode (Rodney Sparapani)
+@item New BUGS support through @ESS{[BUGS]} mode (Rodney Sparapani)
 Templates assist you in writing .bug and .cmd code (.cmd and .log
 are replaced by .bmd and .bog to avoid emacs extension collisions).
 Substitution" parameters facilitate "automagic" generation of
@@ -291,7 +291,7 @@ Also available in .log files via @kbd{F10}.
 You must have the library defined in autoexec.sas for it to work.
 @item User-friendly defaults for `sas-program', `ess-sas-batch-pre-command'
 and `ess-sas-batch-post-command' as well Customize support for these
-and other ESS[SAS] variables (Rodney Sparapani)
+and other @ESS{[SAS]} variables (Rodney Sparapani)
 @item `ess-sas-suffix-2' now defaults to .dat via @kbd{F11} (Rodney Sparapani)
 @item Emacs/XEmacs, Unix/Windows issues collectively handled in ess-emcs.el
 @item defadvice solves problem of missing *ESS* (thanks to Jeff Mincy)
@@ -386,7 +386,7 @@ Changes/New Features in 5.1.2:
 communicate directly with a running S-Plus 4.x process using the
 Microsoft DDE protocol.  We use the familiar (from Unix ESS) @kbd{C-c C-n}
 and related key sequences to send lines from the S-mode file to the
-inferior S process.  We continue to edit S input files in ESS[S] mode
+inferior S process.  We continue to edit S input files in @ESS{[S]} mode
 and transcripts of previous S sessions in ESS Transcript mode.  All
 three modes know the S language, syntax, and indentation patterns and
 provide the syntactic highlighting that eases the programming tasks.

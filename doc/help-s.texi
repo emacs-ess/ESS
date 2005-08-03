@@ -1,8 +1,8 @@
 @node ESS(S)--Editing files, iESS(S)--Inferior ESS processes, , ESS for the S family
-@comment  node-name,  next,  previous,  up
+@comment  node-name,  next,  previous,  up -- don't use @ESS ..
 @section ESS[S]--Editing files
 
-ESS[S] is the mode for editing S language files.  This mode handles:
+@ESS{[S]} is the mode for editing S language files.  This mode handles:
 
 @itemize @minus
 @item
@@ -23,7 +23,7 @@ ESS[S] is the mode for editing S language files.  This mode handles:
  completion of object names and file names.
 @end itemize
 
-ESS[S] mode should be automatically turned on when loading a file with
+@ESS{[S]} mode should be automatically turned on when loading a file with
 the suffices found in ess-site (*.R, *.S, *.s, etc).  However, one
 will have to start up an inferior process to take advantage of the
 interactive features.
@@ -104,7 +104,7 @@ type @kbd{M-x R-} and then hit [Tab].  You will then see if any defuns
 for particular versions of R have been created.  These other versions of
 R can also be started from the "ESS->Start Process->Other" menu.
 
-R on Windows systems: 
+R on Windows systems:
 If you have "rw1081" on
 your `exec-path', it can be started using @kbd{M-x rw1081}.  By
 default, ESS will find versions of R located in directories

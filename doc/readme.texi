@@ -30,7 +30,7 @@ XLispStat.  Stephen Eglen (@email{stephen@@gnu.org}) has worked mostly
 on R support.  Richard M. Heiberger (@email{rmh@@temple.edu}) has
 assisted with S-PLUS and S4 development for Windows.  Richard and
 Rodney A. Sparapani (@email{rsparapa@@mcw.edu}) have done much of the work
-implementing interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS]) support.
+implementing interactive SAS (@iESS{[SAS]}) and batch SAS (@ESS{[SAS]}) support.
 
 We are grateful to the previous developers of S-mode (Doug Bates, Ed Kademan,
 Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and Stata-mode (Thomas

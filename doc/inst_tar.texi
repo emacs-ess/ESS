@@ -319,7 +319,7 @@ emacs, and cut and paste the results into the XLispStat
 @comment in an @code{ESS[SAS]} buffer and than manually copy and paste them into
 @comment an Editor window in the SAS Display Manager.
 @comment
-@comment For Windows, inferior SAS in an @code{iESS[SAS]} buffer does not work
+@comment For Windows, inferior SAS in an @code{@iESS{[SAS]}} buffer does not work
 @comment on the local machine.  It does work over a network connection to
 @comment SAS running on a remote Unix computer.
 @comment

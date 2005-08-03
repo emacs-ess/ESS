@@ -1470,7 +1470,7 @@ environment in which they are currently running.
 
 ESS sets
 @code{options(STERM="iESS")} for S language processes running in an
-inferior @code{iESS[S]} or @code{iESS[R]} buffer.
+inferior @code{@iESS{[S]}} or @code{@iESS{[R]}} buffer.
 
 ESS sets
 @code{options(STERM="ddeESS")} for independent S-Plus for Windows
@@ -2206,7 +2206,7 @@ and by showing Rd keywords, strings, etc.@: in different faces (with
 Font Lock Mode).
 
 Note that R also accepts Rd files with extension @file{rd}; to activate
-ESS[Rd] support for this extension, you may need to add
+@ESS{[Rd]} support for this extension, you may need to add
 
 @example
 (add-to-list 'auto-mode-alist '("\\.rd\\'" . Rd-mode))
@@ -2477,8 +2477,8 @@ variable @code{ess-help-own-frame}.
 * ESS(SAS)--TAB key::
 * ESS(SAS)--Batch SAS processes::
 * ESS(SAS)--Function keys for batch processing::
-* IESS(SAS)--Interactive SAS processes::
-* IESS(SAS)--Common problems::
+* iESS(SAS)--Interactive SAS processes::
+* iESS(SAS)--Common problems::
 * ESS(SAS)--Graphics::
 * ESS(SAS)--Windows::
 @end menu
@@ -2703,7 +2703,7 @@ similar functionality for R objects.
 To get started, first make sure you can load ess-rdired.  Add the
 following to your .emacs and then restart emacs.
 @example
-(autoload 'ess-rdired "ess-rdired" 
+(autoload 'ess-rdired "ess-rdired"
   "View *R* objects in a dired-like buffer." t)
 @end example
 

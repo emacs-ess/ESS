@@ -60,7 +60,7 @@ suffix (or other extension, if specified via @code{auto-mode-alist}).  The funct
 keys can be enabled to use the same function keys that
 the @SAS{} Display Manager does.  The interactive capabilities of @ESS{} require you
 to start an inferior @SAS{} process with @wkbd{M-x SAS}
-(@xref{IESS(SAS)--Interactive SAS processes}.)
+(@xref{iESS(SAS)--Interactive SAS processes}.)
 
 At this writing, the indenting and syntax highlighting are generally
 correct.  Known issues: for multiple line @code{*} or @code{%*} comments, only the
@@ -220,7 +220,7 @@ Make your editing changes and submit again.
 @end example
 
 @comment  node-name,  next,  previous,  up
-@node  ESS(SAS)--Function keys for batch processing, IESS(SAS)--Interactive SAS processes, ESS(SAS)--Batch SAS processes, ESS for SAS
+@node  ESS(SAS)--Function keys for batch processing, iESS(SAS)--Interactive SAS processes, ESS(SAS)--Batch SAS processes, ESS for SAS
 @section ESS(SAS)--Function keys for batch processing
 
 The setup of function keys for @SAS{} batch processing
@@ -298,7 +298,7 @@ capitals).
                     revert the current buffer with the file of the same
                     name if the file is newer than the buffer
 @item
-@key{F3} @tab @key{F8} @tab @code{SUBMIT} 
+@key{F3} @tab @key{F8} @tab @code{SUBMIT}
 @item
 @tab @tab
                     save the current @file{.sas} file (which is either the @file{.sas}
@@ -369,7 +369,7 @@ capitals).
                     create an @sc{MS RTF} landscape file from the current buffer
                     with a file extension of @file{.rtf}
 @item
-@kbd{C-@key{F3}} @tab @kbd{C-@key{F8}} @tab submit-region 
+@kbd{C-@key{F3}} @tab @kbd{C-@key{F8}} @tab submit-region
 @item
 @tab @tab
                     write region to @file{ess-temp.sas} and submit
@@ -480,12 +480,12 @@ landscape (first line for "global" key mapping, second for "local"):
 
 
 @comment  node-name,  next,  previous,  up
-@node  IESS(SAS)--Interactive SAS processes, IESS(SAS)--Common problems, ESS(SAS)--Function keys for batch processing, ESS for SAS
-@section IESS(SAS)--Interactive SAS processes
+@node  iESS(SAS)--Interactive SAS processes, iESS(SAS)--Common problems, ESS(SAS)--Function keys for batch processing, ESS for SAS
+@section iESS(SAS)--Interactive SAS processes
 
-Inferior @ESS{} (@IESS{}) is the method for interfacing with interactive
-statistical processes (programs).  @IESS{[SAS]} is what is needed for
-interactive @SAS{} programming.  @IESS{[SAS]} works best
+Inferior @ESS{} (@iESS{}) is the method for interfacing with interactive
+statistical processes (programs).  @iESS{[SAS]} is what is needed for
+interactive @SAS{} programming.  @iESS{[SAS]} works best
 with the @SAS{} command-line option settings
 @code{"-stdio -linesize 80 -noovp -nosyntaxcheck"}
 (the default of @code{inferior-SAS-args}).
@@ -501,7 +501,7 @@ with the @SAS{} command-line option settings
             permits recovery after syntax errors
 @end display
 
-To start up @IESS{[SAS]} mode, use:
+To start up @iESS{[SAS]} mode, use:
 @example
    @wkbd{M-x SAS}
 @end example
@@ -535,9 +535,9 @@ Four buffers will appear on screen:
 @item
 Buffer               @tab Mode                   @tab Description
 @item
-@file{@var{foo}.sas} @tab @code{ESS[SAS]}        @tab your source file
+@file{@var{foo}.sas} @tab @code{@ESS{[SAS]}}        @tab your source file
 @item
-@file{*SAS:1*}       @tab @code{iESS[SAS:1]}     @tab @IESS{} communication buffer
+@file{*SAS:1*}       @tab @code{@iESS{[SAS:1]}}     @tab @iESS{} communication buffer
 @item
 @file{*SAS:1.log*}   @tab @code{Shell ESStr []}  @tab @SAS{} log information
 @item
@@ -568,22 +568,22 @@ command @wkbd{C-x C-q}.
 
 At the end of the session, the input file @file{@var{foo}.sas} will
 typically have been revised.  You can save it.  It can be used
-later as the beginning of another @IESS{[SAS]} session.  It can
+later as the beginning of another @iESS{[SAS]} session.  It can
 also be used as a batch input file to @SAS{}.
 
 The @file{*SAS:1*} buffer is strictly for @ESS{} use.  The user should
 never need to read it or write to it.  Refer to the @file{.lst} and
 @file{.log} buffers for monitoring output!
 
-Troubleshooting: @xref{IESS(SAS)--Common problems}.
+Troubleshooting: @xref{iESS(SAS)--Common problems}.
 
 @comment  node-name,  next,  previous,  up
-@node   IESS(SAS)--Common problems, ESS(SAS)--Graphics, IESS(SAS)--Interactive SAS processes, ESS for SAS
-@section IESS(SAS)--Common problems
+@node   iESS(SAS)--Common problems, ESS(SAS)--Graphics, iESS(SAS)--Interactive SAS processes, ESS for SAS
+@section iESS(SAS)--Common problems
 
 @enumerate
 @item
-@IESS{[SAS]} does not work on Windows.  In order to run @SAS{} inside
+@iESS{[SAS]} does not work on Windows.  In order to run @SAS{} inside
 an emacs buffer, it is necessary to start @SAS{} with the @code{-stdio} option.
 @SAS{} does not support the @code{-stdio} option on Windows.
 @item
@@ -616,7 +616,7 @@ find / -name sas -print
 @end enumerate
 
 @comment  node-name,  next,  previous,  up
-@node   ESS(SAS)--Graphics, ESS(SAS)--Windows, IESS(SAS)--Common problems, ESS for SAS
+@node   ESS(SAS)--Graphics, ESS(SAS)--Windows, iESS(SAS)--Common problems, ESS for SAS
 @section ESS(SAS)--Graphics
 
 Output from a @SAS{/GRAPH} @code{PROC} can be displayed in a @SAS{/GRAPH}
@@ -643,7 +643,7 @@ run;
 
 @itemize @bullet
 @item
-@IESS{[SAS]} does not work on Windows.  @xref{IESS(SAS)--Common problems}.
+@iESS{[SAS]} does not work on Windows.  @xref{iESS(SAS)--Common problems}.
 
 @item
 @ESS{[SAS]} mode for editing @SAS{} language files works very well.

@@ -13,11 +13,11 @@
 @end macro
 
 @macro ESS{ARG}
-@w{@acronym{ESS\ARG\}}
+@acronym{ESS\ARG\}
 @end macro
 
-@macro IESS{ARG}
-@w{@acronym{IESS\ARG\}}
+@macro iESS{ARG}
+@w{i@ESS{\ARG\}}
 @end macro
 
 @macro ESSVER

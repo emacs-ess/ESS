@@ -4,8 +4,9 @@
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
 
-@comment  node-name,  next,  previous,  up
+@include ess-defs.texi
 @node Announce, Latest Version, General Information, General Information
+@comment  node-name,  next,  previous,  up
 @chapter ANNOUNCING ESS
 @cindex ANNOUNCE
 
