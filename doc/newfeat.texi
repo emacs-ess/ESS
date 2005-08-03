@@ -10,6 +10,13 @@ work as intended and documented.
  @kbd{M-C-a} (@code{ess-beginning-of-function}) etc now work for many more
  cases, including S4 method definitions.
 @item @iESS{[R]}: myOwnhelp(1) no longer wrongly triggers help(1).
+@item @ESS{[R]}: Improved detection of bogus help buffers: valid help
+ buffers containing with the string ``no documentation''(e.g. contour)
+ were being treated as bogus.
+@item @ESS{[R]}: In R help buffers, if @code{options("help.try.all.packages" =
+ TRUE)} then @code{?rlm} will list which packages rlm is defined in.  This help
+ buffer is not bogus, but instead is now relabelled ``*help[R](rlm in
+ packages)*''.
 @end itemize
 
 Changes/New Features in 5.2.8:
