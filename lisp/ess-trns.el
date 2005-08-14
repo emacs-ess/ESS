@@ -1,7 +1,7 @@
 ;;; ess-trns.el --- Support for manipulating S transcript files
 
 ;; Copyright (C) 1989--1994 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
@@ -272,6 +272,12 @@ prompt from those lines that remain.  Prefix argument means to use
   "Clean the current via \\[ess-transcript-clean-region] even if the buffer is read-only."
   (interactive "r")
   (ess-transcript-clean-region beg end 'In-ANY-case))
+
+(defun ess-transcript-clean-buffer ()
+  "Cleanup the whole buffer. 
+Use point-min/max to obey narrow-to-region."
+  (interactive)
+  (ess-transcript-clean-region (point-min) (point-max)))
 
  ; Local variables section
 
