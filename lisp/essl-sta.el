@@ -87,8 +87,23 @@ regexp-search, and so specials should be quoted.
   (modify-syntax-entry ?\$ "." STA-syntax-table)
   (modify-syntax-entry ?` "(\'" STA-syntax-table)
   (modify-syntax-entry ?\' ")`" STA-syntax-table)
-  (modify-syntax-entry ?/ ". 14" STA-syntax-table)
-  (modify-syntax-entry ?* ". 23" STA-syntax-table)
+  ;;--------- begin cut-and-paste from  lisp/progmodes/c-langs.el
+  (cond
+   ;; XEmacs 19, 20, 21
+   ((memq '8-bit c-emacs-features)
+    (modify-syntax-entry ?/  ". 1456" table)
+    (modify-syntax-entry ?*  ". 23"   table))
+   ;; Emacs 19, 20, 21
+   ((memq '1-bit c-emacs-features)
+    (modify-syntax-entry ?/  ". 124b" table)
+    (modify-syntax-entry ?*  ". 23"   table))
+   ;; incompatible
+   (t (error "CC Mode is incompatible with this version of Emacs"))
+   )
+  (modify-syntax-entry ?\n "> b"  table)
+  ;; Give CR the same syntax as newline, for selective-display
+  (modify-syntax-entry ?\^m "> b" table)
+  ;;--------- end cut-and-paste ------------------
   (modify-syntax-entry ?+ "." STA-syntax-table)
   (modify-syntax-entry ?- "." STA-syntax-table)
   (modify-syntax-entry ?= "." STA-syntax-table)
