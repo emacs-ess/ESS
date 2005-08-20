@@ -17,6 +17,7 @@ work as intended and documented.
  TRUE)} then @code{?rlm} will list which packages rlm is defined in.  This help
  buffer is not bogus, but instead is now relabelled ``*help[R](rlm in
  packages)*''.
+@item @ESS{[STA]}: add ``//'' as comment starting character to syntax-table.
 @end itemize
 
 Changes/New Features in 5.2.8:

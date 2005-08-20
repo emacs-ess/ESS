@@ -91,18 +91,18 @@ regexp-search, and so specials should be quoted.
   (cond
    ;; XEmacs 19, 20, 21
    ((memq '8-bit c-emacs-features)
-    (modify-syntax-entry ?/  ". 1456" table)
-    (modify-syntax-entry ?*  ". 23"   table))
+    (modify-syntax-entry ?/  ". 1456" STA-syntax-table)
+    (modify-syntax-entry ?*  ". 23"   STA-syntax-table))
    ;; Emacs 19, 20, 21
    ((memq '1-bit c-emacs-features)
-    (modify-syntax-entry ?/  ". 124b" table)
-    (modify-syntax-entry ?*  ". 23"   table))
+    (modify-syntax-entry ?/  ". 124b" STA-syntax-table)
+    (modify-syntax-entry ?*  ". 23"   STA-syntax-table))
    ;; incompatible
    (t (error "CC Mode is incompatible with this version of Emacs"))
    )
-  (modify-syntax-entry ?\n "> b"  table)
+  (modify-syntax-entry ?\n "> b"  STA-syntax-table)
   ;; Give CR the same syntax as newline, for selective-display
-  (modify-syntax-entry ?\^m "> b" table)
+  (modify-syntax-entry ?\^m "> b" STA-syntax-table)
   ;;--------- end cut-and-paste ------------------
   (modify-syntax-entry ?+ "." STA-syntax-table)
   (modify-syntax-entry ?- "." STA-syntax-table)

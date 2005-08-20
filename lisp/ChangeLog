@@ -1,3 +1,7 @@
+2005-08-20  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-sta.el (STA-syntax-table): allow // for comments
+
 2005-08-03  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (inferior-R-1-input-help): '^ *help': do not trigger
