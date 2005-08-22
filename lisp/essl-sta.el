@@ -60,6 +60,9 @@
 (require 'make-regexp)  ; it's now local to the directory.
 ;;(load-library "make-regexp") ;; this is necessary for
 			     ;; ado-set-font-lock-keywords
+;; only needed in Emacs >= 22.x and newish Xemacsen:
+(unless (boundp 'c-emacs-features)
+  (require 'cc-vars));; for syntax-table
 
 ;(setq max-lisp-eval-depth 500)
 (eval-when-compile
