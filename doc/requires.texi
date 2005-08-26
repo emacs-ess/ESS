@@ -2,7 +2,7 @@ ESS has been tested with
 
 @itemize @bullet
 @item R >=0.49
-@item S-PLUS 3.3-4, 4.5, 5.0-1, 6.0-2, 7.0, 2000 
+@item S-PLUS 3.3-4, 4.5, 5.0-1, 6.0-2, 7.0, 2000
 @item S4
 @item SAS >=6.12
 @item BUGS 0.5, 0.603
@@ -23,9 +23,9 @@ on the following platforms
 with the following versions of emacs
 
 @itemize @bullet
-@item GNU Emacs 20.3-7, 21.1, 21.3-4
+@item GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
 @item XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13@footnote{
-require the files.el patch to revert-buffer for the Local Variables 
+require the files.el patch to revert-buffer for the Local Variables
 updating problem}, 21.4.14-15, 21.4.17, 21.5.18
 @c @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no
 @c longer supported, so an upgrade is recommended if you plan to use ESS.
