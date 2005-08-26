@@ -107,9 +107,23 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <p>Changes/New Features in 5.2.9:
      <ul>
 <li><acronym>ESS[R]</acronym> for Windows:  the \ directory character bug
-with respect to ess-load-file has been eradicated
+with respect to ess-load-file has been eradicated. 
 <li>i<acronym>ESS[SAS]</acronym><!-- /@w -->: <kbd>C-c C-r</kbd> and <kbd>C-c C-b</kbd> once again
-work as intended and documented
+work as intended and documented. 
+<li><acronym>ESS[S]</acronym>: M-x ess-fix-EQ-assign is a bit more agressive. 
+<li><acronym>ESS[S]</acronym>: Imenu now also shows setAs(), etc. 
+<li><acronym>ESS[R]</acronym>: R function pattern enhanced with underlying code such that
+ <kbd>M-C-a</kbd> (<code>ess-beginning-of-function</code>) etc now work for many more
+ cases, including S4 method definitions. 
+<li>i<acronym>ESS[R]</acronym><!-- /@w -->: myOwnhelp(1) no longer wrongly triggers help(1). 
+<li><acronym>ESS[R]</acronym>: Improved detection of bogus help buffers: valid help
+ buffers containing with the string &ldquo;no documentation&rdquo;(e.g. contour)
+ were being treated as bogus. 
+<li><acronym>ESS[R]</acronym>: In R help buffers, if <code>options("help.try.all.packages" =
+ TRUE)</code> then <code>?rlm</code> will list which packages rlm is defined in.  This help
+ buffer is not bogus, but instead is now relabelled &ldquo;*help[R](rlm in
+ packages)*&rdquo;. 
+<li><acronym>ESS[STA]</acronym>: add &ldquo;//&rdquo; as comment starting character to syntax-table. 
 </ul>
 
    <p>Changes/New Features in 5.2.8:
@@ -601,7 +615,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
    <p>with the following versions of emacs
 
      <ul>
-<li>GNU Emacs 20.3-7, 21.1, 21.3-4
+<li>GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
 <li>XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17, 21.5.18
 <!-- @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no -->
 <!-- longer supported, so an upgrade is recommended if you plan to use ESS. -->

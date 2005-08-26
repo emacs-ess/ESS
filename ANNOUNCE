@@ -145,7 +145,7 @@ ESS has been tested with
 
    with the following versions of emacs
 
-   * GNU Emacs 20.3-7, 21.1, 21.3-4
+   * GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
 
    * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13(1), 21.4.14-15,
      21.4.17, 21.5.18
@@ -240,10 +240,31 @@ in the file COPYING in the same directory as this file for more details.
 
 Changes/New Features in 5.2.9:
    * ESS[R] for Windows:  the \ directory character bug with respect to
-     ess-load-file has been eradicated
+     ess-load-file has been eradicated.
 
    * iESS[SAS]: `C-c C-r' and `C-c C-b' once again work as intended and
-     documented
+     documented.
+
+   * ESS[S]: M-x ess-fix-EQ-assign is a bit more agressive.
+
+   * ESS[S]: Imenu now also shows setAs(), etc.
+
+   * ESS[R]: R function pattern enhanced with underlying code such that
+     `M-C-a' (`ess-beginning-of-function') etc now work for many more
+     cases, including S4 method definitions.
+
+   * iESS[R]: myOwnhelp(1) no longer wrongly triggers help(1).
+
+   * ESS[R]: Improved detection of bogus help buffers: valid help
+     buffers containing with the string "no documentation"(e.g. contour)
+     were being treated as bogus.
+
+   * ESS[R]: In R help buffers, if `options("help.try.all.packages" =
+     TRUE)' then `?rlm' will list which packages rlm is defined in.
+     This help  buffer is not bogus, but instead is now relabelled
+     "*help[R](rlm in  packages)*".
+
+   * ESS[STA]: add "//" as comment starting character to syntax-table.
 
    Changes/New Features in 5.2.8:
    * iESS: [Tab] completes *file* names "inside string" as in earlier

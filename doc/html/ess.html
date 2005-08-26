@@ -344,9 +344,23 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 <p>Changes/New Features in 5.2.9:
      <ul>
 <li><acronym>ESS[R]</acronym> for Windows:  the \ directory character bug
-with respect to ess-load-file has been eradicated
+with respect to ess-load-file has been eradicated. 
 <li>i<acronym>ESS[SAS]</acronym><!-- /@w -->: <kbd>C-c C-r</kbd> and <kbd>C-c C-b</kbd> once again
-work as intended and documented
+work as intended and documented. 
+<li><acronym>ESS[S]</acronym>: M-x ess-fix-EQ-assign is a bit more agressive. 
+<li><acronym>ESS[S]</acronym>: Imenu now also shows setAs(), etc. 
+<li><acronym>ESS[R]</acronym>: R function pattern enhanced with underlying code such that
+ <kbd>M-C-a</kbd> (<code>ess-beginning-of-function</code>) etc now work for many more
+ cases, including S4 method definitions. 
+<li>i<acronym>ESS[R]</acronym><!-- /@w -->: myOwnhelp(1) no longer wrongly triggers help(1). 
+<li><acronym>ESS[R]</acronym>: Improved detection of bogus help buffers: valid help
+ buffers containing with the string &ldquo;no documentation&rdquo;(e.g. contour)
+ were being treated as bogus. 
+<li><acronym>ESS[R]</acronym>: In R help buffers, if <code>options("help.try.all.packages" =
+ TRUE)</code> then <code>?rlm</code> will list which packages rlm is defined in.  This help
+ buffer is not bogus, but instead is now relabelled &ldquo;*help[R](rlm in
+ packages)*&rdquo;. 
+<li><acronym>ESS[STA]</acronym>: add &ldquo;//&rdquo; as comment starting character to syntax-table. 
 </ul>
 
    <p>Changes/New Features in 5.2.8:
@@ -1293,7 +1307,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
    <p>with the following versions of emacs
 
      <ul>
-<li>GNU Emacs 20.3-7, 21.1, 21.3-4
+<li>GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
 <li>XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17, 21.5.18
 <!-- @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no -->
 <!-- longer supported, so an upgrade is recommended if you plan to use ESS. -->
@@ -2915,7 +2929,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
 
 <p><a name="index-errors-134"></a><a name="index-parsing-errors-135"></a>If any errors occur when loading a file with <code>C-c C-l</code>, ESS will
 inform you of this fact.  In this case, you can jump directly to the
-line in the source file which caused the error by typing <kbd>C-x `</kbd>
+line in the source file which caused the error by typing <kbd>C-c `</kbd>
 (<code>ess-parse-errors</code>). 
 <a name="index-ess_002dparse_002derrors-136"></a>You will be returned to the offending file (loading it into a buffer if
 necessary) with point at the line S reported as containing the
@@ -2924,11 +2938,11 @@ none of the commands in an S source file will take effect if any
 part of the file contains errors.
 
    <p>Sometimes the error is not caused by a syntax error (loading a
-non-existent file for example). In this case typing <kbd>C-x `</kbd> will
+non-existent file for example). In this case typing <kbd>C-c `</kbd> will
 simply display a buffer containing S's error message.  You can force
 this behavior (and avoid jumping to the file when there <em>is</em> a
 syntax error) by passing a prefix argument to <code>ess-parse-errors</code>
-with <kbd>C-u C-x `</kbd>.
+with <kbd>C-u C-c `</kbd>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
@@ -3062,10 +3076,10 @@ Indents the current line as S code.  If a prefix argument is given,
 all following lines which are part of the same (compound) expression are
 indented by the same amount (but relative indents are preserved).
 
-     <li><kbd>LFD</kbd> (<code>newline-and-indent</code>) <br>
-Insert a newline, and indent the next line.  (Note: if your keyboard
-does not have a &lt;LINEFEED&gt; key, you can use <kbd>C-j</kbd> instead.) 
-Some people prefer to bind &lt;RET&gt; to this command.
+     <li><kbd>RET</kbd> (<code>newline-and-indent</code>) <br>
+<kbd>LFD</kbd> (<em>newline-and-indent</em>) <br>
+Insert a newline, and indent the next line.  (Note that most keyboards
+nowadays do not have a &lt;LINEFEED&gt; key, but <kbd>C-j</kbd> is equivalent.)
 
      <li><kbd>ESC C-q</kbd> aka <kbd>M-C-q</kbd> aka <kbd>C-M-q</kbd> (<code>ess-indent-exp</code>) <br>
 Indents each line in the S (compound) expression which follows point. 
