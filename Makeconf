@@ -7,23 +7,19 @@ PREFIX=$(DESTDIR)
 # Bourne shell or XPG4 compliant shell
 SHELL = /bin/sh
 
-## emacs variant that you are installing ESS for.
+## emacs variant that you are installing ESS for
 ##
-## emacs
+## GNU Emacs
 EMACS=emacs
-## xemacs and its "standard" install location
+LISPDIR=$(PREFIX)/share/emacs/site-lisp # Destination of compiled elisp (.elc) files
+INFODIR=$(PREFIX)/info                  # Destination of info files
+## XEmacs 
 #EMACS=xemacs
+#LISPDIR=$(PREFIX)/lib/xemacs/xemacs-packages/lisp/ess # Destination of compiled elisp (.elc) files
+#INFODIR=$(PREFIX)/lib/xemacs/xemacs-packages/info/ess # Destination of info files
 
+## the following command is the same for most recent versions of Emacs and XEmacs
 EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
-
-# Destination of your info files
-INFODIR =$(PREFIX)/info
-
-# Destination of your byte-compiled elisp (.elc) files
-# Emacs
-LISPDIR =$(PREFIX)/share/emacs/site-lisp
-# XEmacs
-#LISPDIR = $(PREFIX)/lib/xemacs/xemacs-packages/lisp/ess
 
 ## two install commands are needed; one to create directories,
 ## if necessary, and another to copy the files
