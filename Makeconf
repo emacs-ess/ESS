@@ -11,7 +11,7 @@ SHELL = /bin/sh
 ##
 ## emacs
 EMACS=emacs
-## xemacs
+## xemacs and its "standard" install location
 #EMACS=xemacs
 
 EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
@@ -23,7 +23,7 @@ INFODIR =$(PREFIX)/info
 # Emacs
 LISPDIR =$(PREFIX)/share/emacs/site-lisp
 # XEmacs
-#LISPDIR = $(XEMACSDIR)/xemacs-packages/lisp/ess
+#LISPDIR = $(PREFIX)/lib/xemacs/xemacs-packages/lisp/ess
 
 ## two install commands are needed; one to create directories,
 ## if necessary, and another to copy the files
