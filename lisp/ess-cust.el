@@ -706,7 +706,9 @@ file \"R-1.8.1\" is found and this variable includes the string
 version of R.
 If duplicate versions of the same program are found (which happens if
 the same path is listed on `exec-path' more than once), they are
-ignored by calling `ess-uniq-list'."
+ignored by calling `ess-uniq-list'.
+If you set this variable, you need to restart Emacs (and set it before 
+ess-site is loaded) for it to take effect."
   :group 'ess-R
   :type '(repeat string))
 
