@@ -336,14 +336,14 @@ capitals).
 @key{F9} @tab @key{F9} @tab @code{VIEWTABLE}
 @item
 @tab @tab
-                    open an interactive @code{PROC FSEDIT} session on the
-                    @SAS{} dataset near point
+                    open an interactive @code{PROC FSEDIT} session on the @SAS{}
+                    dataset near point
 @item
 @key{F10} @tab @key{F10} @tab toggle-log
 @item
 @tab @tab
-                    toggle @ESS{[SAS]} for @file{.log} files; useful for
-                    certain debugging situations
+                    toggle @ESS{[SAS]} for @file{.log} files; useful for certain
+                    debugging situations
 @item
 @key{F11} @tab @key{F11} @tab @samp{filetype-2}
 @item
@@ -387,14 +387,14 @@ capitals).
 @kbd{C-@key{F9}} @tab @kbd{C-@key{F9}} @tab @code{INSIGHT}
 @item
 @tab @tab
-                    open an interactive @code{PROC INSIGHT} session on the
-                    @SAS{} dataset near point
+                    open an interactive @code{PROC INSIGHT} session on the @SAS{}
+                    dataset near point
 @item
 @kbd{C-@key{F10}} @tab @kbd{C-@key{F10}} @tab toggle-listing
 @item
 @tab @tab
-                    toggle @ESS{[SAS]} for @file{.lst} files;
-                    useful for toggling read-only
+                    toggle @ESS{[SAS]} for @file{.lst} files; useful for toggling
+                    read-only
 @end multitable
 
 @code{SUBMIT}, @code{PROGRAM}, @code{LOG} and @code{OUTPUT} need no further

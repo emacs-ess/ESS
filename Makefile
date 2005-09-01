@@ -3,12 +3,10 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
-Subdirs = lisp doc
-
 ## This is the default target, i.e. 'make' and 'make all' are the same.
 
 all install clean distclean:
-	@for D in $(Subdirs); do cd $$D; $(MAKE) $@; cd ..; done
+	@for D in lisp doc etc; do cd $$D; $(MAKE) $@; cd ..; done
 
 ## the rest of the targets are for ESS developer's use only :
 

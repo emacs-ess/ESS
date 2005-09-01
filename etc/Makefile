@@ -7,6 +7,9 @@ include ../Makeconf
 ETCFILES = $(wildcard BACKBUG[S5].BAT backbug[s5] *.S sas-keys.* icons/*.xpm) \
 	ess-sas-sh-command config.guess
 
+all clean distclean:
+	@true
+
 install : 
 	-$(INSTALLDIR) $(ETCDIR)
 	$(INSTALL) $(ETCFILES) $(ETCDIR)
