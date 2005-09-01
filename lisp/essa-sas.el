@@ -811,7 +811,7 @@ optional argument is non-nil, then set-buffer rather than switch."
   (kill-buffer nil)
 )
 
-(eval-when-compile
+;(eval-when-compile
   (condition-case nil
       (progn
         (require 'rtf-support)
@@ -859,7 +859,7 @@ optional argument is non-nil, then set-buffer rather than switch."
 "\\landscape\\paperh11905\\paperw16837\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
     (save-buffer))
 ))
-    (error nil)))
+    (error nil)) ;)
 
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that
