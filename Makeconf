@@ -1,4 +1,4 @@
-####======= Common Declarations for *all* ESS -*- Makefile -*- s ==========
+####======= Common Declarations for *all* ESS Makefiles ==========
 
 # Specify either PREFIX or DESTDIR, whatever suits you
 DESTDIR=/usr/local
@@ -13,12 +13,14 @@ SHELL = /bin/sh
 EMACS=emacs
 LISPDIR=$(PREFIX)/share/emacs/site-lisp # Destination of compiled elisp (.elc) files
 INFODIR=$(PREFIX)/info                  # Destination of info files
+ETCDIR =$(PREFIX)/share/emacs/etc/ess   # Destination of scripts and icon files
 ## XEmacs 
 #EMACS=xemacs
 #LISPDIR=$(PREFIX)/lib/xemacs/xemacs-packages/lisp/ess # Destination of compiled elisp (.elc) files
 #INFODIR=$(PREFIX)/lib/xemacs/xemacs-packages/info/ess # Destination of info files
+#ETCDIR =$(PREFIX)/lib/xemacs/xemacs-packages/etc/ess  # Destination of scripts and icon files
 
-## the following command is the same for most recent versions of Emacs and XEmacs
+## the following command is the same for recent versions of both Emacs and XEmacs
 EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 
 ## two install commands are needed; one to create directories,
@@ -27,17 +29,13 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 INSTALLDIR = install -d
 #INSTALLDIR = mkdir -p
 
-## file copying commands expect source-file target-directory
+## file copying commands expect two arguments: first, source-file, and second, target-directory
 #  to copy the files
 INSTALL = cp -p
 #INSTALL = install
 
 ## the sed that you want to use
 SED = sed
-
-# What GZCAT is called on your system (GNU gzip "cat")
-#GZCAT = gzcat
-GZCAT = zcat
 
 # program to convert .texi{nfo} to .info, .txt, and .html
 MAKEINFO = LANG=C makeinfo

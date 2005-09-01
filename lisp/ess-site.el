@@ -185,7 +185,7 @@ The ESS etc directory stores various auxillary files that are useful
 for ESS, such as icons.")
 
 (defvar ess-etc-directory-list
-  '("../etc/" "../etc/ess/" "../../etc/ess/" "./etc/")
+  '("../etc/ess/" "../etc/" "../../etc/ess/" "./etc/")
   "*List of directories, relative to `ess-lisp-directory', to search for etc.")
 
 (while (and (listp ess-etc-directory-list) (consp ess-etc-directory-list))
@@ -200,8 +200,8 @@ for ESS, such as icons.")
       (beep 0) (beep 0)
       (message (concat
 		"ERROR:ess-site.el:ess-etc-directory\n"
-		"Relative to ess-lisp-directory\n"
-		"At least one of ../etc, ../etc/ess, ../../etc/ess must exist!"))
+		"Relative to ess-lisp-directory, one of the following must exist:\n"
+		"../etc/ess, ../etc, ../../etc/ess or ./etc"))
       (sit-for 4))))
 
 (defvar ess-info-directory nil
