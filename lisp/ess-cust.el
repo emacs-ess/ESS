@@ -696,7 +696,7 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
   :type 'string)
 
-(defcustom ess-r-versions '( "R-1" "R-2")
+(defcustom ess-r-versions '("R-1" "R-2" "R-devel" "R-patched")
   "*List of partial strings for versions of R to access within ESS.
 Each string specifies the start of a filename.  If a filename
 beginning with one of these strings is found on `exec-path', a M-x
