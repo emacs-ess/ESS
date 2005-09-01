@@ -1,13 +1,17 @@
 ####======= Common Declarations for *all* ESS Makefiles ==========
 
-# Bourne shell or XPG4 compliant shell
-SHELL = /bin/sh
+## To install ESS for all users on your unix system:
+## 1. Edit ess-site.el accordingly
+## 2. Edit Section 1 and 2 below
+## 3. Execute: gmake install
 
+## Section 1
 ## Installation variables for your emacs variant
 ##
 ## Variable        Description
 ## EMACS           use emacs for GNU Emacs, xemacs for XEmacs
-## LISPDIR         Destination of compiled elisp (.elc) files
+## EMACSBATCH      emacs/xemacs command for compiling elisp files
+## LISPDIR         Destination of compiled elisp files
 ## INFODIR         Destination of info files
 ## ETCDIR          Destination of script and icon files
 ## PREFIX/DESTDIR  Directory prepended to LISPDIR, INFODIR & ETCDIR
@@ -26,49 +30,50 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 #LISPDIR=$(PREFIX)/lib/xemacs/xemacs-packages/lisp/ess
 #INFODIR=$(PREFIX)/lib/xemacs/xemacs-packages/info
 #ETCDIR =$(PREFIX)/lib/xemacs/xemacs-packages/etc/ess
-
+#
 ## the following command is the same for recent versions of both Emacs and XEmacs
 EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 
-## two install commands are needed; one to create directories,
-## if necessary, and another to copy the files
-#  to create directories
+## Section 2
+## Installation variables for your unix variant
+## 
+## Variable        Description 
+## SHELL           Bourne shell or XPG4 compliant shell
+## MAKEINFO        program to convert .texi{nfo} to .info
+## MAKEHTML        program to convert .texi{nfo} to .html
+## MAKETXT         program to convert .texi{nfo} to .txt
+## INSTALLDIR      to create directories, if necessary
+## INSTALL         to copy files, file copying commands expect 2 args: 
+##                 1st) source-file & 2nd) target-directory
+#
+SHELL = /bin/sh
+#
+MAKEINFO = LANG=C makeinfo
+MAKEHTML = $(MAKEINFO) --html --no-split
+##                            ^^^^^^^^^^ today's bandwidth is fast
+MAKETXT  = $(MAKEINFO) --no-validate --no-headers --no-split -o -
+#
 INSTALLDIR = install -d
 #INSTALLDIR = mkdir -p
-
-## file copying commands expect two arguments: first, source-file, and second, target-directory
-#  to copy the files
+#
 INSTALL = cp -p
 #INSTALL = install
 
-## the sed that you want to use
-SED = sed
-
-# program to convert .texi{nfo} to .info, .txt, and .html
-MAKEINFO = LANG=C makeinfo
-MAKETXT = $(MAKEINFO) --no-validate --no-headers --no-split -o -
-MAKEHTML = $(MAKEINFO) --html --no-split
-##                            ^^^^^^^^^^ today's bandwidth is fast
-
-## Set ESSVERSION to the contents of VERSION
-## This will only work with GNU make, but you won't
-## need to change this unless you are an ESS developer.
-## If you don't have GNU make, edit this file; for example:
-## ESSVERSION=5.2.0
+## Section 3
+## For ESS developers only, not part of installation procedure
+## Note that $(shell ... ) only works with GNU make
+##
+## Variable        Description
+## ESSVERSION      set to the contents of VERSION
+## ESSDIR          ess- prepended to ESSVERSION
+## ESSVERSIONTAG   repository tags cannot contain .'s
+## SVN_URL         repository URL
+## UPLOAD_DIR      Martin's upload directory
+##
 ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 ESSDIR=ess-$(ESSVERSION)
-
-## Set ESSVERSIONTAG to ESS-$(ESSVERSION) with .'s replaced by -s.
-## CVS tags can NOT contain .'s.
-## This will only work with GNU make, but you won't
-## need to change this unless you are an ESS developer.
-## If you don't have GNU make, use the command line; for example:
-## make tag ESSVERSION=5.2.0 ESSVERSIONTAG=ESS-5-2-0
 ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
-
 SVN_URL = https://svn.R-project.org/ESS
-
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess
-
 
 .SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el .elc
