@@ -670,9 +670,10 @@ current buffer if nil."
     "\\|NOTE 485-185: Informat .* was not found or could not be loaded."
     "\\|WARNING: Length of character variable has already been set."
     "\\|WARNING: Not all variables in the list "
+    "\\|WARNING: RUN statement ignored due to previous errors."
     "\\|Bus Error In Task\\|Segmentation Violation In Task"
     "\\|NOTE: Estimated G matrix is not positive definite."))
-	(ess-sas-save-point nil))
+	(ess-sas-save-point nil) (ess-sas-pop-mark nil))
 
   (if (ess-sas-goto "log" 'revert) (progn
 	(setq ess-sas-save-point (point))
