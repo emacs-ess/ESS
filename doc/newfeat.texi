@@ -1,3 +1,12 @@
+Changes/New Features in 5.2.10:
+@itemize @bullet
+@item @ESS{[R]}: ess-r-versions can no longer be customized (since the
+customization was not taking effect unless customizations were loaded
+before ESS).  Its value has been changed so that it will also find R
+executables beginning ``R-devel'' and ``R-patched''.  If you wish to
+change this variable, it must be set in your .emacs before ESS is
+loaded.
+
 Changes/New Features in 5.2.9:
 @itemize @bullet
 @item @ESS{[R]} for Windows:  the \ directory character bug
