@@ -1,3 +1,10 @@
+2005-09-02  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-r.el, ess-cust.el (ess-r-versions): Moved this variable
+	from ess-cust.el.  (As a custom variable, it could be set after
+	ess-site had been loaded, which is the time when its value is
+	used.  Hence customized values were ignored.)
+
 2005-08-20  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-sta.el (STA-syntax-table): allow // for comments
