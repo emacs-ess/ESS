@@ -4,6 +4,10 @@
 	from ess-cust.el.  (As a custom variable, it could be set after
 	ess-site had been loaded, which is the time when its value is
 	used.  Hence customized values were ignored.)
+	(ess-r-versions-create): Apply unique to list of list of R
+	binaries after stripping off the directory.  This prevents
+	multiple entries with the same name occuring in the ESS -> Start
+	Process -> Other menu.
 
 2005-08-20  Martin Maechler  <maechler@stat.math.ethz.ch>
 
