@@ -87,6 +87,20 @@
    S-common-cust-alist)
   "Variables to customize for R")
 
+(defvar ess-r-versions '("R-1" "R-2" "R-devel" "R-patched")
+  "List of partial strings for versions of R to access within ESS.
+Each string specifies the start of a filename.  If a filename
+beginning with one of these strings is found on `exec-path', a M-x
+command for that version of R is made available.  For example, if the
+file \"R-1.8.1\" is found and this variable includes the string
+\"R-1\", a function called `M-x R-1.8.1' will be available to run that
+version of R.
+If duplicate versions of the same program are found (which happens if
+the same path is listed on `exec-path' more than once), they are
+ignored by calling `ess-uniq-list'.
+If you set this variable, you need to restart Emacs (and set this variable 
+before ess-site is loaded) for it to take effect.")
+
 ;;;### autoload
 (defun R (&optional start-args)
   "Call 'R', the 'GNU S' system from the R Foundation.
