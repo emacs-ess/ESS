@@ -6,6 +6,11 @@ before ESS).  Its value has been changed so that it will also find R
 executables beginning ``R-devel'' and ``R-patched''.  If you wish to
 change this variable, it must be set in your @file{.emacs} before ESS is
 loaded.
+@item Installation with GNU Make enhanced:  unix and unix-like
+operating systems will now be able to install @ESS{} for all
+users in either a GNU Emacs site-lisp or an XEmacs package
+configuration by editing @file{lisp/ess-site.el} and @file{Makeconf}
+accordingly, then issuing @code{make install}
 @end itemize
 
 Changes/New Features in 5.2.9:
