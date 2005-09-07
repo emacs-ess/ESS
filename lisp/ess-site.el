@@ -211,15 +211,14 @@ The ESS info directory stores the ESS info files.")
 ;;(1.2) If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix & xemacs compatibility
 (unless
-    (member t
-	(mapcar 'file-exists-p
-	    (mapcar '(lambda (x) (concat (file-name-as-directory x) "ess.info"))
-		(if (featurep 'xemacs)
-		    Info-directory-list Info-default-directory-list))))
-    (add-to-list (if (featurep 'xemacs)
-		     'Info-directory-list 'Info-default-directory-list)
-		     (expand-file-name
-			 (concat ess-lisp-directory "/../doc/info/"))))
+    (any (mapcar 'file-exists-p
+		 (mapcar
+		  '(lambda(x) (concat (file-name-as-directory x) "ess.info"))
+		  (if (featurep 'xemacs) Info-directory-list
+		    Info-default-directory-list))))
+  (add-to-list (if (featurep 'xemacs)
+		   'Info-directory-list 'Info-default-directory-list)
+	       (expand-file-name "../doc/info/" ess-lisp-directory)))
 
 ;;; (1.3) Files ending in .q and .S are considered to be S source files
 ;;; Files ending in .St are considered to be S transcript files
