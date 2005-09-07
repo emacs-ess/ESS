@@ -122,41 +122,41 @@
  ess-transcript-mode-menu ess-transcript-mode-map
  "Menu for use in S transcript mode."
  '("ESS-trans"
-   ["What is this? (beta)" ess-mouse-me                  t]
-   ["Describe"	       describe-mode			 t]
-   ["About"	       (ess-goto-info "Transcript Mode") t]
-   ["Send bug report"  ess-submit-bug-report		 t]
+   ["What is this? (beta)" ess-mouse-me			t]
+   ["Describe"	       describe-mode			t]
+   ["About"	      (ess-goto-info "Transcript Mode") t]
+   ["Send bug report"  ess-submit-bug-report		t]
    "------"
-   ["Mark cmd group"   mark-paragraph	      t]
-   ["Previous prompt"  comint-previous-prompt t]
-   ["Next prompt"      comint-next-prompt     t]
+   ["Mark cmd group"   mark-paragraph		t]
+   ["Previous prompt"  comint-previous-prompt	t]
+   ["Next prompt"      comint-next-prompt	t]
    "------"
-   ["Send and move"  ess-transcript-send-command-and-move t]
-   ["Copy command"   ess-transcript-copy-command	  t]
-   ["Send command"   ess-transcript-send-command	  t]
-   ["Clean Region"   ess-transcript-DO-clean-region       t]))
+   ["Send and move" ess-transcript-send-command-and-move t]
+   ["Copy command"  ess-transcript-copy-command		t]
+   ["Send command"  ess-transcript-send-command		t]
+   ["Clean Region"  ess-transcript-DO-clean-region	t]
+   ["Switch S process" ess-switch-process		t]
+))
 
+(unless (featurep 'xemacs)
+  (if (featurep 'ess-trans)
+      (define-key ess-transcript-mode-map [menu-bar ess-trans]
+	(cons "ess-trans" ess-transcript-mode-menu))
+    (eval-after-load "ess-trans"
+      '(define-key ess-transcript-mode-map
+	 [menu-bar ess-trans]
+	 (cons "ess-trans"
+	       ess-transcript-mode-menu)))))
 
-
-(if (not (string-match "XEmacs" emacs-version))
-    (progn
-       (if (featurep 'ess-trans)
-	   (define-key ess-transcript-mode-map [menu-bar ess-trans]
-	     (cons "ess-trans" ess-transcript-mode-menu))
-	 (eval-after-load "ess-trans"
-			  '(define-key ess-transcript-mode-map
-			     [menu-bar ess-trans]
-			     (cons "ess-trans"
-				   ess-transcript-mode-menu))))))
-
-(defun ess-transcript-mode-xemacs-menu ()
+(when (featurep 'xemacs)
+  (defun ess-transcript-mode-xemacs-menu ()
   "Hook to install `ess-transcript-mode' menu for XEmacs (w/ easymenu)."
   (if 'ess-transcript-mode
 	(easy-menu-add ess-transcript-mode-menu)
     (easy-menu-remove ess-transcript-mode-menu)))
 
-(if (string-match "XEmacs" emacs-version)
-    (add-hook 'ess-transcript-mode-hook 'ess-transcript-mode-xemacs-menu))
+  (add-hook 'ess-transcript-mode-hook 'ess-transcript-mode-xemacs-menu))
+
 
 (defun ess-transcript-mode (alist &optional proc)
   "Major mode for manipulating {ESS} transcript files.
@@ -274,7 +274,7 @@ prompt from those lines that remain.  Prefix argument means to use
   (ess-transcript-clean-region beg end 'In-ANY-case))
 
 (defun ess-transcript-clean-buffer ()
-  "Cleanup the whole buffer. 
+  "Cleanup the whole buffer.
 Use point-min/max to obey narrow-to-region."
   (interactive)
   (ess-transcript-clean-region (point-min) (point-max)))

@@ -1,3 +1,7 @@
+2005-09-06  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-trns.el (ess-transcript-mode-menu): add entry "Switch S process"
+
 2005-09-02  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-r.el, ess-cust.el (ess-r-versions): Moved this variable
