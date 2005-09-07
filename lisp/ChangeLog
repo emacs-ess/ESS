@@ -1,3 +1,8 @@
+2005-09-07  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-complete-filename): work around Xemacs bug:
+	(comint-dynamic-complete-filename) fails in Xemacs 21.4.17
+
 2005-09-06  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-trns.el (ess-transcript-mode-menu): add entry "Switch S process"

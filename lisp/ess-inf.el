@@ -131,18 +131,14 @@ accompany the call for `inferior-ess-program'.
       ;; now the abomination:
       (ess-setq-vars-default ess-customize-alist)
 
+      ;; Emacs 22.0.50: ".. obsolete since 22.1;
+      ;;		use `comint-use-prompt-regexp' instead
       (setq-default comint-use-prompt-regexp-instead-of-fields nil); re set HACK!
       ;;>> Doesn't set ess-language,
       ;;>> => comint-input-sender is not set to 'ess-input-  ==> no input echo!
       ;;>> => that's why things fail:
       ;;>> (ess-setq-vars-local ess-customize-alist (current-buffer))
       ;;		 ======
-      ;;MM --- why set them here again when already "(let ..)" above ?
-      ;;   --> trying without (comment the following 4 lines):
-      ;; (setq temp-ess-dialect
-      ;;    (eval(cdr(assoc 'ess-dialect ess-customize-alist))))
-      ;; (setq temp-ess-lang
-      ;;    (eval(cdr(assoc 'ess-language ess-customize-alist))))
       )
 
     ;; run hooks now, to overwrite the above!
@@ -1474,13 +1470,17 @@ to continue it."
   ;; interferes with our normal completion.
   (remove-hook 'comint-dynamic-complete-functions 't 'local)
 
-  ;; MM: in *R* in GNU emacs the c*-dyn*-compl*-fun* are now
-  ;; (comint-replace-by-expanded-history
-  ;;  shell-dynamic-complete-environment-variable
-  ;;  shell-dynamic-complete-command
-  ;;  shell-replace-by-expanded-directory
-  ;;  comint-dynamic-complete-filename)
+  ;; MM: in *R* in GNU emacs and in Xemacs, the c*-dyn*-compl*-fun* are now
+  ;; (ess-complete-filename
+  ;;  ess-complete-object-name
+  ;;  comint-replace-by-expanded-history)
 
+  ;; However this fails in Xemacs 21.4.17 where the value in *shell* is
+  ;; -- the same as in GNU emacs *shell* :
+  ;; (comint-replace-by-expanded-history shell-dynamic-complete-environment-variable shell-dynamic-complete-command shell-replace-by-expanded-directory comint-dynamic-complete-filename)
+
+  ;; and the (Xemacs) global  'Default-value' is
+  ;; (comint-replace-by-expanded-history comint-dynamic-complete-filename)
 
   ;; (setq comint-completion-addsuffix nil) ; To avoid spaces after filenames
   ;; KH: next 2 lines solve.
@@ -2123,8 +2123,11 @@ form completions."
       ;;    (looking-at "\\s-*!"))
       ;;  (comint-within-quotes comint-last-input-start (point)))
       (progn
-	(ess-message "ess-complete-filename: are 'within-quotes'")
-	(comint-replace-by-expanded-filename)
+	;;DBG (ess-write-to-dribble-buffer "ess-complete-f.name: within-quotes")
+	(if (featurep 'xemacs) ;; work around Xemacs bug
+	    (comint-dynamic-complete-filename)
+	  ;; GNU emacs and correctly working Xemacs:
+	  (comint-replace-by-expanded-filename))
 	;; always return t if in a string
 	t)))
 
