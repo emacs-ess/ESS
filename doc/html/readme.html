@@ -32,7 +32,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <p><a name="index-README-1"></a>
 This is the README file for the distribution of ESS version
 
-   <p>5.2.9
+   <p>5.2.10
 
    <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical programming
 and data analysis.  Languages supported: the S family (S 3/4, S-PLUS
@@ -104,7 +104,22 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">1.2 New Features</h3>
 
-<p>Changes/New Features in 5.2.9:
+<p>Changes/New Features in 5.2.10:
+     <ul>
+<li><acronym>ESS[R]</acronym>: ess-r-versions can no longer be customized (since the
+customization was not taking effect unless customizations were loaded
+before ESS).  Its value has been changed so that it will also find R
+executables beginning &ldquo;R-devel&rdquo; and &ldquo;R-patched&rdquo;.  If you wish to
+change this variable, it must be set in your <span class="file">.emacs</span> before ESS is
+loaded. 
+<li>Installation with GNU Make enhanced:  unix and unix-like
+operating systems will now be able to install <acronym>ESS</acronym> for all
+users in either a GNU Emacs site-lisp or an XEmacs package
+configuration by editing <span class="file">lisp/ess-site.el</span> and <span class="file">Makeconf</span>
+accordingly, then issuing <code>make install</code>
+</ul>
+
+   <p>Changes/New Features in 5.2.9:
      <ul>
 <li><acronym>ESS[R]</acronym> for Windows:  the \ directory character bug
 with respect to ess-load-file has been eradicated. 

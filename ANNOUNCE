@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.2.9
+   5.2.10
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -238,7 +238,21 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
-Changes/New Features in 5.2.9:
+Changes/New Features in 5.2.10:
+   * ESS[R]: ess-r-versions can no longer be customized (since the
+     customization was not taking effect unless customizations were
+     loaded before ESS).  Its value has been changed so that it will
+     also find R executables beginning "R-devel" and "R-patched".  If
+     you wish to change this variable, it must be set in your `.emacs'
+     before ESS is loaded.
+
+   * Installation with GNU Make enhanced:  unix and unix-like operating
+     systems will now be able to install ESS for all users in either a
+     GNU Emacs site-lisp or an XEmacs package configuration by editing
+     `lisp/ess-site.el' and `Makeconf' accordingly, then issuing `make
+     install'
+
+   Changes/New Features in 5.2.9:
    * ESS[R] for Windows:  the \ directory character bug with respect to
      ess-load-file has been eradicated.
 

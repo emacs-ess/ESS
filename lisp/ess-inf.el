@@ -1456,7 +1456,8 @@ to continue it."
    (format "(i-ess 3): curr-buf=%s, comint..echo=%s, comint..sender=%s,\n"
 	   (current-buffer) comint-process-echoes comint-input-sender))
 
-  ;; Completion support
+  ;;; Completion support ----------------
+
   ;; SJE: comint-dynamic-complete-functions is regarded as a hook, rather
   ;; than a regular variable.  Note order of completion (thanks David Brahm):
 
@@ -1469,10 +1470,16 @@ to continue it."
 
   ;; When a hook is buffer-local, the dummy function `t' is added to
   ;; indicate that the functions in the global value of the hook
-  ;; should also be run.  I have removed this, as I think it
+  ;; should also be run.  SJE: I have removed this, as I think it
   ;; interferes with our normal completion.
   (remove-hook 'comint-dynamic-complete-functions 't 'local)
 
+  ;; MM: in *R* in GNU emacs the c*-dyn*-compl*-fun* are now
+  ;; (comint-replace-by-expanded-history
+  ;;  shell-dynamic-complete-environment-variable
+  ;;  shell-dynamic-complete-command
+  ;;  shell-replace-by-expanded-directory
+  ;;  comint-dynamic-complete-filename)
 
 
   ;; (setq comint-completion-addsuffix nil) ; To avoid spaces after filenames
@@ -2116,6 +2123,7 @@ form completions."
       ;;    (looking-at "\\s-*!"))
       ;;  (comint-within-quotes comint-last-input-start (point)))
       (progn
+	(ess-message "ess-complete-filename: are 'within-quotes'")
 	(comint-replace-by-expanded-filename)
 	;; always return t if in a string
 	t)))

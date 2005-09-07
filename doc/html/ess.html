@@ -34,7 +34,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.2.9
+5.2.10
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -341,7 +341,22 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
 <h3 class="section">1.2 New features in ESS</h3>
 
-<p>Changes/New Features in 5.2.9:
+<p>Changes/New Features in 5.2.10:
+     <ul>
+<li><acronym>ESS[R]</acronym>: ess-r-versions can no longer be customized (since the
+customization was not taking effect unless customizations were loaded
+before ESS).  Its value has been changed so that it will also find R
+executables beginning &ldquo;R-devel&rdquo; and &ldquo;R-patched&rdquo;.  If you wish to
+change this variable, it must be set in your <span class="file">.emacs</span> before ESS is
+loaded. 
+<li>Installation with GNU Make enhanced:  unix and unix-like
+operating systems will now be able to install <acronym>ESS</acronym> for all
+users in either a GNU Emacs site-lisp or an XEmacs package
+configuration by editing <span class="file">lisp/ess-site.el</span> and <span class="file">Makeconf</span>
+accordingly, then issuing <code>make install</code>
+</ul>
+
+   <p>Changes/New Features in 5.2.9:
      <ul>
 <li><acronym>ESS[R]</acronym> for Windows:  the \ directory character bug
 with respect to ess-load-file has been eradicated. 
@@ -3904,12 +3919,12 @@ capitals).
                     switch buffer to <span class="file">*shell*</span>
 <br></td></tr><tr align="left"><td valign="top">&lt;F9&gt; </td><td valign="top">&lt;F9&gt; </td><td valign="top"><code>VIEWTABLE</code>
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
-                    open an interactive <code>PROC FSEDIT</code> session on the
-                    <acronym>SAS</acronym><!-- /@w --> dataset near point
+                    open an interactive <code>PROC FSEDIT</code> session on the <acronym>SAS</acronym><!-- /@w -->
+                    dataset near point
 <br></td></tr><tr align="left"><td valign="top">&lt;F10&gt; </td><td valign="top">&lt;F10&gt; </td><td valign="top">toggle-log
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
-                    toggle <acronym>ESS[SAS]</acronym> for <span class="file">.log</span> files; useful for
-                    certain debugging situations
+                    toggle <acronym>ESS[SAS]</acronym> for <span class="file">.log</span> files; useful for certain
+                    debugging situations
 <br></td></tr><tr align="left"><td valign="top">&lt;F11&gt; </td><td valign="top">&lt;F11&gt; </td><td valign="top"><span class="samp">filetype-2</span>
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     switch buffer to <span class="samp">filetype-2</span> (defaults to <span class="file">.dat</span>) file
@@ -3937,12 +3952,12 @@ capitals).
                     append <span class="file">ess-temp.lst</span> to the current <span class="file">.lst</span> file
 <br></td></tr><tr align="left"><td valign="top"><kbd>C-&lt;F9&gt;</kbd> </td><td valign="top"><kbd>C-&lt;F9&gt;</kbd> </td><td valign="top"><code>INSIGHT</code>
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
-                    open an interactive <code>PROC INSIGHT</code> session on the
-                    <acronym>SAS</acronym><!-- /@w --> dataset near point
+                    open an interactive <code>PROC INSIGHT</code> session on the <acronym>SAS</acronym><!-- /@w -->
+                    dataset near point
 <br></td></tr><tr align="left"><td valign="top"><kbd>C-&lt;F10&gt;</kbd> </td><td valign="top"><kbd>C-&lt;F10&gt;</kbd> </td><td valign="top">toggle-listing
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
-                    toggle <acronym>ESS[SAS]</acronym> for <span class="file">.lst</span> files;
-                    useful for toggling read-only
+                    toggle <acronym>ESS[SAS]</acronym> for <span class="file">.lst</span> files; useful for toggling
+                    read-only
    <br></td></tr></table>
 
    <p><code>SUBMIT</code>, <code>PROGRAM</code>, <code>LOG</code> and <code>OUTPUT</code> need no further
