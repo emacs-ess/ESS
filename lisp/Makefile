@@ -73,14 +73,12 @@ distclean: clean
 # and potentially more
 
 
-### Targets below here are only for developers.
+### Targets below here are only for developers - and these must have perl
 
 ### Replace Version numbers (as in ../doc/Makefile !):
 ess-cust.el: ../VERSION
-#	perl -pi -e 's/".*"/"$(shell cat $^)"/ if /ess-version/' $@
-	cp -p ess-cust.el ess-temp.el
-	$(SED) -e "s/(defvar ess-version \".*\"/(defvar ess-version \"$(ESSVERSION)\"/" ess-temp.el > ess-cust.el
-	rm ess-temp.el
+	perl -pi -e 's/".*"/"$(ESSVERSION)"/ if /ess-version/' $@
+
 
 ### File Dependencies
 
