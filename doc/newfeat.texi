@@ -11,6 +11,9 @@ operating systems will now be able to install @ESS{} for all
 users in either a GNU Emacs site-lisp or an XEmacs package
 configuration by editing @file{lisp/ess-site.el} and @file{Makeconf}
 accordingly, then issuing @code{make install}
+@item @ESS{[S]}: Filename completion (inside strings) now also works in
+Xemacs, for R and S-plus.
+@c working around a bug in Xemacs
 @end itemize
 
 Changes/New Features in 5.2.9:
