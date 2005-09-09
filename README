@@ -60,6 +60,9 @@ Changes/New Features in 5.2.10:
      `lisp/ess-site.el' and `Makeconf' accordingly, then issuing `make
      install'
 
+   * ESS[S]: Filename completion (inside strings) now also works in
+     Xemacs, for R and S-plus.
+
    Changes/New Features in 5.2.9:
    * ESS[R] for Windows:  the \ directory character bug with respect to
      ess-load-file has been eradicated.
