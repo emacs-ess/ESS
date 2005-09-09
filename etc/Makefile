@@ -13,7 +13,6 @@ all clean distclean:
 	@true
 
 install : 
-	-$(INSTALLDIR) $(ETCDIR)
-	$(INSTALL) $(ETCFILES) $(ETCDIR)
 	-$(INSTALLDIR) $(ETCDIR)/icons
+	$(INSTALL) $(ETCFILES) $(ETCDIR)
 	$(INSTALL) $(ICONS) $(ETCDIR)/icons
