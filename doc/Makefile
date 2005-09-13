@@ -25,6 +25,10 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 	newfeat.texi readme.texi requires.texi stabilty.texi help-bugs.texi \
         ../VERSION
 
+ESSINFONODE1='* ESS: (ess).'
+ESSINFONODE2='	        Emacs Speaks Statistics'
+ESSINFONODE3='                        (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).'
+
 ### Targets --
 PDFs = ess.pdf readme.pdf
 DVIs = ess.dvi readme.dvi
@@ -76,12 +80,16 @@ README.Microsoft : README.Microsoft.texi
 info/ess.info: $(TEXISRC)
 	@echo "making Info documentation..."
 	$(MAKEINFO) ess.texi
-	mv -f ess.info* info
+	mv -f ess.info info
 
 install : info/ess.info
 	-$(INSTALLDIR) $(INFODIR)
-	$(INSTALL) info/ess.info* $(INFODIR)
+	$(INSTALL) info/ess.info $(INFODIR)
 	test -f $(INFODIR)/dir || $(INSTALL) info/dir $(INFODIR)
+	grep -q $(ESSINFONODE1) $(INFODIR)/dir || \
+	(echo >> $(INFODIR)/dir; echo 'Emacs' >> $(INFODIR)/dir; \
+	echo $(ESSINFONODE1) $(ESSINFONODE2) >> $(INFODIR)/dir; \
+	echo $(ESSINFONODE3) >> $(INFODIR)/dir)
 
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess.html: $(TEXISRC)
