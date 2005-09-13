@@ -1,3 +1,10 @@
+Changes/New Features in 5.2.11:
+@itemize @bullet
+@item Info menu file, @file{dir}, handled, hopefully, more sanely
+for GNU Emacs users (XEmacs users don't need it, but they will
+get it anyway)
+@end itemize
+
 Changes/New Features in 5.2.10:
 @itemize @bullet
 @item @ESS{[R]}: ess-r-versions can no longer be customized (since the
