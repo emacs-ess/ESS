@@ -13,8 +13,8 @@ For Microsoft Windows Installation please skip to the
 @enumerate
 
 @item
-cd to a directory where you want to install ESS, creating it if necessary.
-This directory will be referred to below as ESSDIR.
+@code{cd} to a directory where you want to install ESS, creating it if necessary.
+This directory will be referred to below as @file{ESSDIR}.
 @comment It will contain,
 @comment at the end, the tar file @file{ess-VERSION.tar.gz}, and a directory for
 @comment the ESS source, which will be termed "the ESS-VERSION source directory".
@@ -24,20 +24,16 @@ This directory will be referred to below as ESSDIR.
 @item
 Retrieve the latest version from
 @uref{http://ess.r-project.org/downloads/ess, ESS downloads area}
-to ESSDIR.
+to @file{ESSDIR}.
 
 @item
 Decompress/unarchive the files from the disribution.
-@example
-gunzip ess-VERSION.tar.gz
-tar xvf ess-VERSION.tar
-@end example
 @display
-(or: @code{gunzip < ess-VERSION.tar.gz | tar xvf -} ).
-(or using GNU tar:  @code{tar zxvf ess-VERSION.tar.gz}).
+Either, @code{gunzip < ess-VERSION.tar.gz | tar xf -},
+or using GNU tar, @code{tar zxf ess-VERSION.tar.gz}.
 @end display
 
-The @code{tar} command will create the subdirectory ess-VERSION and unarchive
+The @code{tar} command will create the subdirectory @file{ess-VERSION} and install
 the files there.
 
 @comment If you are using GNU Emacs 19.29, decompress/unarchive
@@ -60,12 +56,13 @@ comments section of that file.
 @example
 (load "ESSDIR/ess-VERSION/lisp/ess-site")
 @end example
-to your user or system installation file
-(GNU Emacs uses @file{$HOME/.emacs} and XEmacs uses @file{$HOME/.xemacs/init.el}
-for the user initialization file.  GNU Emacs uses default.el or site-init.el and
-XEmacs uses site-start.el for the system installation file).
+to your user or system installation file (GNU Emacs uses
+@file{$HOME/.emacs} and XEmacs uses @file{$HOME/.xemacs/init.el} for the
+user initialization file.  GNU Emacs uses @file{default.el} or
+@file{site-init.el} and XEmacs uses @file{site-start.el} for the system
+installation file).
 
-Alternatively, if ess-site.el is in your current Lisp path, you can do:
+Alternatively, if @file{ess-site.el} is in your current @code{load-path}, then:
 @example
 (require 'ess-site)
 @end example
@@ -73,11 +70,11 @@ to configure emacs for ESS.
 
 @item
 That's it!  If you are installing just a local copy of ESS for yourself,
-ESS is now ready to be used.  (The remaining step below is for
-advanced installation.)  To edit statistical programs, load the files
-with the requiste extensions (".sas" for SAS, ".S" for S-PLUS, ".R" for
-R, and ".lsp" for XLispStat).  To start a statistical process within
-Emacs, such as R, type @code{M-x R}.
+ESS is now ready to be used.  (The remaining step below is for advanced
+installation.)  To edit statistical programs, load the files with the
+requiste extensions (@file{.sas} for SAS, @file{.S} for S-PLUS,
+@file{.R} for R, and @file{.lsp} for XLispStat).  To start a statistical
+process within emacs, such as R, type @code{M-x R}.
 
 @c @item
 @c (OPTIONAL) If you are running S-PLUS or R, you might consider
@@ -106,9 +103,11 @@ Emacs, such as R, type @code{M-x R}.
 @item
 @b{(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING}:
 
-If you want to place the compiled files in other locations edit the LISPDIR and INFODIR
-entries in @file{Makeconf} in the ESSDIR/ess-VERSION directory (if you are using XEmacs,
-then you also need to edit the EMACS entry as follows:  EMACS=xemacs).
+If you want to place the compiled files in other locations edit the
+@code{LISPDIR}, @code{INFODIR} and @code{ETCDIR} entries in
+@file{Makeconf} in the @file{ESSDIR/ess-VERSION} directory (if you are
+using XEmacs, then you also need to edit the @code{EMACS} entry as follows:
+@code{EMACS=xemacs}).
 
 You can compile those files by:
 @example
@@ -120,17 +119,17 @@ When that completes successfully, install the compiled files:
 make install
 @end example
 
-This will install the compiled info files and lisp files.  If you are an
-XEmacs user, then you should be done.  If not, then you may have to
-edit/create the file @file{dir} that is found in the directory specified
-by @code{INFODIR}: see the sample @file{dir} in ESSDIR/ess-VERSION/doc/info.
-If @file{dir} does not exist in @code{INFODIR}, then the sample
-@file{dir} will be installed.
+@c This will install the compiled info files and lisp files.  If you are an
+@c XEmacs user, then you should be done.  If not, then you may have to
+@c edit/create the file @file{dir} that is found in the directory specified
+@c by @code{INFODIR}: see the sample @file{dir} in ESSDIR/ess-VERSION/doc/info.
+@c If @file{dir} does not exist in @code{INFODIR}, then the sample
+@c @file{dir} will be installed.
 
 @emph{Note:} ESS can be installed for XEmacs as an XEmacs package
 much more easily than what has been described anywhere above.  However,
-the latest ESS version will not be available at the same time as an
-XEmacs package; generally, it can take weeks or months to appear in the
+the latest ESS version will most likely not be available as an XEmacs package; 
+generally, it can take weeks or months to appear in the
 latter format.  For more information on installing ESS as an XEmacs
 package see @uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickstart Package Guide}.
 
@@ -156,7 +155,7 @@ For @b{Microsoft Windows installation}, please follow the next steps:
 @enumerate
 
 @item
-cd to a directory where you keep emacs lisp files, or create a new
+@code{cd} to a directory where you keep emacs lisp files, or create a new
 directory (for example, @file{c:\emacs\}) to hold the distribution.  This
 directory will be referred to below as "the ESS distribution
 directory".  It will contain, at the end, either the tar file
@@ -186,8 +185,8 @@ Extract the files from the distribution, which will unpack
 into a subdirectory, @file{ess-VERSION}.
 @example
 gunzip ess-VERSION.tar.gz
-tar xvf ess-VERSION.tar
-(or: @code{gunzip < ess-VERSION.tar.gz | tar xvf -} ).
+tar xf ess-VERSION.tar
+(or: @code{gunzip < ess-VERSION.tar.gz | tar xf -} ).
 (or: from the zip file: @code{unzip ess-VERSION.zip})
 @end example
 
