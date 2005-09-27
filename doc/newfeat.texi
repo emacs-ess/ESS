@@ -1,8 +1,10 @@
 Changes/New Features in 5.2.11:
 @itemize @bullet
 @item Info menu file, @file{dir}, handled, hopefully, more sanely
-for GNU Emacs users (XEmacs users don't need it, but they will
-get it anyway)
+for GNU Emacs users
+@item ESS[SAS]: temporary files created for batch submission of a
+region are now named based on the current file; see @code{ess-sas-file-root}
+for details
 @end itemize
 
 Changes/New Features in 5.2.10:

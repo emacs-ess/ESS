@@ -265,8 +265,8 @@ to the shell on Windows when `ess-sas-submit-method' is 'sh."
   "List of tab stop positions used by `tab-to-tab-stop' in ESS[SAS]."
   :group 'ess-sas)
 
-(defcustom ess-sas-temp-root "ess-temp"
-  "*The root of the temporary .sas file for `ess-sas-submit-region'."
+(defcustom ess-sas-temp-root "-temp"
+  "*Appended to root name of the temporary .sas file for `ess-sas-submit-region'."
   :group 'ess-sas
   :type  'string)
 
@@ -305,7 +305,7 @@ to the shell on Windows when `ess-sas-submit-method' is 'sh."
     (interactive)
     (ess-sas-goto "log" 'revert)
     (goto-char (point-max))
-    (insert-file-contents (concat ess-sas-temp-root ".log"))
+    (insert-file-contents (concat (ess-sas-temp-root) ".log"))
     (save-buffer))
 
 (defun ess-sas-append-lst ()
@@ -313,7 +313,7 @@ to the shell on Windows when `ess-sas-submit-method' is 'sh."
     (interactive)
     (ess-sas-goto "lst" 'revert)
     (goto-char (point-max))
-    (insert-file-contents (concat ess-sas-temp-root ".lst"))
+    (insert-file-contents (concat (ess-sas-temp-root) ".lst"))
     (save-buffer))
 
 (defun ess-sas-backward-delete-tab ()
@@ -930,7 +930,7 @@ should be ..."
     (interactive)
     (ess-sas-file-path)
     (write-region (region-beginning) (region-end)
-	(concat ess-sas-temp-root ".sas"))
+	(concat (ess-sas-temp-root) ".sas"))
 
     (save-excursion
       (ess-sas-goto-shell t)
@@ -947,7 +947,7 @@ should be ..."
     (comint-send-input)
 
     (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command
-          " " ess-sas-temp-root " " ess-sas-submit-post-command))
+          " " (ess-sas-temp-root) " " ess-sas-submit-post-command))
     (comint-send-input)
     )
 )
@@ -1019,6 +1019,10 @@ Keep in mind that the maximum command line length in MS-DOS is
   (tab-to-tab-stop)
   (setq left-margin (current-column))
 )
+
+(defun ess-sas-temp-root ()
+"Return `ess-sas-file-path' sans extension with `ess-sas-temp-root' appended."
+(concat (file-name-sans-extension ess-sas-file-path) ess-sas-temp-root))
 
 (defun ess-sas-transcript (&optional strip)
 "Comment .log messages to create a .sas program; use C-u to strip."
