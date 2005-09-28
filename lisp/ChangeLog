@@ -1,3 +1,7 @@
+2005-09-26  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r.el (R): add space after inferior-R-args
+
 2005-09-07  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-complete-filename): work around Xemacs bug:

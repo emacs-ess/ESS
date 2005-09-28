@@ -98,7 +98,7 @@ version of R.
 If duplicate versions of the same program are found (which happens if
 the same path is listed on `exec-path' more than once), they are
 ignored by calling `ess-uniq-list'.
-If you set this variable, you need to restart Emacs (and set this variable 
+If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
 
 ;;;### autoload
@@ -120,7 +120,7 @@ to R, put them in the variable `inferior-R-args'."
 	    "--no-readline "))
 	 (r-start-args
 	  (concat r-always-arg
-		  inferior-R-args
+		  inferior-R-args " " ; add space just in case
 		  (if start-args
 		      (read-string
 		       (concat "Starting Args [other than `"
