@@ -4,10 +4,11 @@
 ## Before making changes here, please take a look at Makeconf
 include ../Makeconf
 
-ETCFILES = $(wildcard BACKBUG[S5].BAT backbug[s5] *.S sas-keys.*) \
-	ess-sas-sh-command config.guess
+#ETCFILES = $(wildcard BACKBUG[S5].BAT backbug[s5] *.S sas-keys.*) 
+ETCFILES = BACKBUG?.BAT backbug? *.S sas-keys.* ess-sas-sh-command config.guess
 
-ICONS = $(wildcard icons/*.xpm) 
+#ICONS = $(wildcard icons/*.xpm) 
+ICONS = icons/*.xpm 
 
 all clean distclean:
 	@true
