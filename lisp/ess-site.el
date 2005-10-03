@@ -523,6 +523,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 (let ( (ess-sqpe-versions-created)
        (ess-rterm-versions-created)
        (ess-r-versions-created)
+       (ess-s-versions-created)
        (ess-versions-created)
        )
   (if ess-microsoft-p
@@ -532,8 +533,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 	(setq ess-rterm-versions (ess-find-rterm))
 	(setq ess-rterm-versions-created
 	      (ess-rterm-versions-create))) ;; use ess-rterm-versions
-    (setq ess-r-versions-created
-	  (ess-r-versions-create)))	    ;; use ess-r-versions
+    (progn
+      (setq ess-s-versions-created
+	    (ess-s-versions-create))      ;; use ess-s-versions
+      (setq ess-r-versions-created
+	    (ess-r-versions-create))))	    ;; use ess-r-versions
 
   ;; Add the new defuns, if any, to the menu.
   ;; Check that each variable exists, before adding.
@@ -542,7 +546,9 @@ sending `inferior-ess-language-start' to S-Plus.")
 	(ess-flatten-list
 	 (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
 		 '(ess-r-versions-created
-		   ess-rterm-versions-created ess-sqpe-versions-created))))
+		   ess-rterm-versions-created
+		   ess-s-versions-created
+		   ess-sqpe-versions-created))))
 
   (when ess-versions-created
     ;; new-menu will be a list of 3-vectors, of the form:
