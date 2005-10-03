@@ -1,3 +1,10 @@
+2005-10-03  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-sp6.el (ess-s-versions-list): New variable.
+	(ess-s-versions): New variable.
+	(ess-s-versions-create): New defun to allow other versions of S to
+	be added to ESS, similar to ess-r-versions-create.
+
 2005-09-26  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r.el (R): add space after inferior-R-args
