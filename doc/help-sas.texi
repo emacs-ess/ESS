@@ -604,16 +604,33 @@ type @code{(set-file-modes "ess-sas-sh-command" 493)}.
 @end itemize
 @item
 @wkbd{M-x SAS} starts @w{@SAS{} Display} Manager.  Probably, the command @code{sas}
-on your system calls a shell script.  Specify the path to the real
-@code{sas} executable in @file{ess-sas-sh-command}, i.e.:
-@example
-/usr/local/sas612/sas $@@ </dev/tty 1>$stdout 2>$stderr
-@end example
-   To find the @code{sas} exectuable, you can execute the @UNIX{} command:
+on your system calls a shell script.  In that case you will need to locate
+the real  @code{sas} executable and link to it.
+You can execute the @UNIX{} command:
 @example
 find / -name sas -print
 @end example
+Now place a soft link to the real @code{sas} executable in your @code{~/bin}
+directory, with for example
+@example
+cd ~/bin
+ln -s /usr/local/sas9/sas sas
+@end example
 @end enumerate
+Check your @code{PATH} environment variable to confirm that
+@code{~/bin} appears before the directory in which the @code{sas}
+shell script appears.
+
+@comment Specify the path to the real
+@comment @code{sas} executable in @file{ess-sas-sh-command}, i.e.:
+@comment @example
+@comment /usr/local/sas9/sas $@@ </dev/tty 1>$stdout 2>$stderr
+@comment @end example
+@comment    To find the @code{sas} executable, you can execute the @UNIX{} command:
+@comment @example
+@comment find / -name sas -print
+@comment @end example
+@comment @end enumerate
 
 @comment  node-name,  next,  previous,  up
 @node   ESS(SAS)--Graphics, ESS(SAS)--Windows, iESS(SAS)--Common problems, ESS for SAS
