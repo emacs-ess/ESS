@@ -85,7 +85,7 @@ info/ess.info: $(TEXISRC)
 install : info/ess.info
 	-$(INSTALLDIR) $(INFODIR)
 	$(INSTALL) info/ess.info $(INFODIR)
-	test -f $(INFODIR)/dir || $(INSTALL) info/dir $(INFODIR)
+	test -f $(INFODIR)/dir || $(INSTALL) dir.txt $(INFODIR)/dir
 	grep -q $(ESSINFONODE1) $(INFODIR)/dir || \
 	(echo >> $(INFODIR)/dir; echo 'Emacs' >> $(INFODIR)/dir; \
 	echo $(ESSINFONODE1) $(ESSINFONODE2) >> $(INFODIR)/dir; \
