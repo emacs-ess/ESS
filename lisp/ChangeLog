@@ -1,3 +1,11 @@
+2005-10-12  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-toolbar.el (ess-add-icon-xemacs): Swap caddr for (nth 2)
+
+	* essd-sp6.el (ess-s-versions-create): Use nth rather than car,
+	cadr, caddr.  Much more readable and removes reliance on cl
+	library for caddr.
+
 2005-10-03  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-sp6.el (ess-s-versions-list): New variable.
