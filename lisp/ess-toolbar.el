@@ -157,7 +157,7 @@ If `ess-icon-directory' is invalid, please report a bug.")
     (expand-file-name (concat (cadr x) ".xpm") ess-icon-directory))
    (car x)				;function
    t
-   (caddr x)				;doc string
+   (nth 2 x)				;doc string
    ))
 
 (defvar ess-toolbar-xemacs-general
