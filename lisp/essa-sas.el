@@ -817,10 +817,13 @@ optional argument is non-nil, then set-buffer rather than switch."
         (require 'rtf-support)
         (when (featurep 'rtf-support)
 
-(defun ess-sas-rtf-portrait ()
+(defun ess-sas-rtf-portrait (&optional ess-tmp-font-size)
 "Creates an MS RTF portrait file from the current buffer."
     (interactive)
     (ess-sas-file-path)
+
+    (if (equal ess-tmp-font-size nil) 
+	(setq ess-tmp-font-size "18"))
 
     (let
 	((ess-temp-rtf-file (replace-in-string ess-sas-file-path "[.][^.]*$" ".rtf")))
@@ -831,14 +834,14 @@ optional argument is non-nil, then set-buffer rather than switch."
 	(replace-regexp "\\\\fmodern .*;" "\\\\fmodern courier;" )
         (goto-char (point-min))
 
-        (while (replace-regexp "\\\\fs[0-9]+" "\\\\fs18" ) nil)
+        (while (replace-regexp "\\\\fs[0-9]+" (concat "\\\\fs" ess-tmp-font-size)) nil)
 
         (save-buffer)))
 
 (defun ess-sas-rtf-us-landscape ()
 "Creates an MS RTF US landscape file from the current buffer."
     (interactive)
-    (ess-sas-rtf-portrait)
+    (ess-sas-rtf-portrait "16")
     (ess-sas-goto "rtf" t)
     (goto-char (point-min))
     (forward-line 3)
@@ -850,7 +853,7 @@ optional argument is non-nil, then set-buffer rather than switch."
 (defun ess-sas-rtf-a4-landscape ()
 "Creates an MS RTF A4 landscape file from the current buffer."
     (interactive)
-    (ess-sas-rtf-portrait)
+    (ess-sas-rtf-portrait "16")
     (ess-sas-goto "rtf" t)
     (goto-char (point-min))
     (forward-line 3)
