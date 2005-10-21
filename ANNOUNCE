@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.2.10
+   5.2.11
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -238,7 +238,20 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
-Changes/New Features in 5.2.10:
+Changes/New Features in 5.2.11:
+   * Info menu file, `dir', handled, hopefully, more sanely for GNU
+     Emacs users
+
+   * ESS[SAS]: temporary files created for batch submission of a region
+     are now named based on the current file; see `ess-sas-file-root'
+     for details
+
+   * ESS[R]: Support for running other versions of Splus has been added
+     for unix.  Two new variables, `ess-s-versions' and
+     `ess-s-versions-list', are used to tell ESS what other versions of
+     Splus you would like to run.
+
+   Changes/New Features in 5.2.10:
    * ESS[R]: ess-r-versions can no longer be customized (since the
      customization was not taking effect unless customizations were
      loaded before ESS).  Its value has been changed so that it will
@@ -253,7 +266,7 @@ Changes/New Features in 5.2.10:
      install'
 
    * ESS[S]: Filename completion (inside strings) now also works in
-     Xemacs, for R and S-plus.
+     XEmacs for R and S-plus.
 
    Changes/New Features in 5.2.9:
    * ESS[R] for Windows:  the \ directory character bug with respect to
