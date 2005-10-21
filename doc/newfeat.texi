@@ -5,7 +5,7 @@ for GNU Emacs users
 @item ESS[SAS]: temporary files created for batch submission of a
 region are now named based on the current file; see @code{ess-sas-file-root}
 for details
-@item @ESS{[R]}: Support for running other versions of Splus has been
+@item @ESS{[S]}: Support for running other versions of Splus has been
 added for unix.  Two new variables, @code{ess-s-versions} and
 @code{ess-s-versions-list}, are used to tell ESS what other versions of
 Splus you would like to run.
