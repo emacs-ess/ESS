@@ -119,7 +119,7 @@ R can also be started from the "ESS->Start Process->Other" menu.
 
 S on Unix systems: If you have "Splus7" on your `exec-path', it can be
 started using @kbd{M-x Splus7}.  By default, ESS will find all
-executables beginning "Splus" on your path.  If your versions of R are
+executables beginning "Splus" on your path.  If your versions of S are
 called other names, consider renaming them with a symbolic link or
 change the variable @code{ess-s-versions}.  To see which defuns have
 been created for starting different versions of Splus, type @kbd{M-x
