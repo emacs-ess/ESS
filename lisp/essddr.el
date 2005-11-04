@@ -36,21 +36,16 @@
   "Kurt Hornik <Kurt.Hornik@R-project.org>"
   "Current maintainer of essddr.el.")
 
-;; Special support for XEmacs (curtesy of auctex):
 
-(when (featurep 'xemacs)
+(if (featurep 'xemacs)
+    ;; Special support for XEmacs (curtesy of auctex):
+    (defun Rd-active-mark ()
+      (and zmacs-regions (mark)))
 
-  (defun Rd-active-mark ()
-    (and zmacs-regions (mark)))
-  )
-
-;; Special support for GNU Emacs
-
-(unless (featurep 'xemacs)
-
+  ;; else:  special support for GNU Emacs
   (defun Rd-active-mark ()
     (and transient-mark-mode mark-active))
-  )
+)
 
 
 (autoload 'ess-eval-region		"ess-inf" "[autoload]" t)
