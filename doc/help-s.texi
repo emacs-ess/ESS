@@ -137,7 +137,7 @@ Here is an example setting:
 @example
 (setq ess-s-versions-list 
       '( ("Splus64" "/usr/local/bin/Splus64")
-         ("Splus64-j" "/usr/local/bin/Splus64" "-j -headless")))
+         ("Splus64-j" "/usr/local/bin/Splus64" "-j")))
 @end example
 which will then allow you to do @kbd{M-x Splus64-j} to start  Splus64
 with the corresponding command line arguments.
