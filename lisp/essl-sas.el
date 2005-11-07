@@ -466,7 +466,7 @@ number."
          ;; by operat-ions/ors
 	 (cons "%[a-z_][a-z_0-9]*[- \t();,+*/=<>]"
 						    font-lock-function-name-face)
-	 (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
+	 (cons "\\(\\<call[ \t]+\\)?[a-z_][a-z_0-9]*[ \t]*("
 						    font-lock-function-name-face)
 
 	 (cons (concat
