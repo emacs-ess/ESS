@@ -1,3 +1,9 @@
+2005-11-07  AJ Rossini <blindglobe@gmail.com>
+
+	* essa-sas.el (ess-sas-submit-pre-command): make sure that if
+	there is no shell, i.e. (= (getenv "SHELL") nil), that we don't
+	die.  This is true for old cygwins.
+
 2005-10-12  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-toolbar.el (ess-add-icon-xemacs): Swap caddr for (nth 2)
