@@ -202,7 +202,7 @@ should set this variable to 'sh regardless of their local shell
   :group 'ess-sas
   :type  'string)
 
-(defcustom ess-sas-submit-pre-command
+(defcustom ess-sas-submit-pre-command ;;"nohup"
   (if (equal ess-sas-submit-method 'sh)
       ;; nice is tricky, higher numbers give you lower priorities
       ;; if you are using csh/tcsh, the default priority is 4
@@ -218,13 +218,17 @@ should set this variable to 'sh regardless of their local shell
       ;; this should avoid the necessity of each user needing to set this
       ;; variable correctly based on the shell that they use and provide
       ;; an environment where all shells are treated equally
-      (let* ((temp-shell (getenv "SHELL"))
-	     (temp-char (string-match "/" temp-shell)))
 
+      (let* ((temp-shell (getenv "SHELL"))
+	     ;; AJR: old CYGWIN versions return nil for (getenv
+	     ;; "SHELL"), so we need to deal with it 'cause I have to 
+	     (temp-char (if temp-shell
+			    (string-match "/" temp-shell)
+			  nil)))
 	(while temp-char
 	  (setq temp-shell (substring temp-shell (+ 1 temp-char)))
 	  (setq temp-char (string-match "/" temp-shell)))
-
+	
 	(cond ((or (equal temp-shell "csh") (equal temp-shell "tcsh"))
 	       "nohup nice +6")
 	      (t "nohup nice")))
