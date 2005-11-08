@@ -466,7 +466,7 @@ number."
          ;; by operat-ions/ors
 	 (cons "%[a-z_][a-z_0-9]*[- \t();,+*/=<>]"
 						    font-lock-function-name-face)
-	 (cons "\\(\\<call[ \t]+\\)?[a-z_][a-z_0-9]*[ \t]*("
+	 (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
 						    font-lock-function-name-face)
 
 	 (cons (concat
@@ -475,11 +475,11 @@ number."
 		"\\|c\\(eil\\|inv\\|o\\(llate\\|mpress\\|sh?\\)\\|ss\\|v\\)"
 		"\\|dacc\\(db\\(\\|sl\\)\\|s\\(l\\|yd\\)\\|tab\\)"
 		"\\|dep\\(db\\(\\|sl\\)\\|s\\(l\\|yd\\)\\|tab\\)"
-		"\\|d\\(a\\(te\\(\\|jul\\|part\\|time\\)\\|y\\)\\|hms\\|i\\([fm]\\|gamma\\)\\)"
+		"\\|d\\(a\\(te\\(\\|jul\\|part\\|time\\)\\|y\\)\\|hms\\|i\\(f[0-9]*\\|m\\|gamma\\)\\)"
 		"\\|e\\(rfc?\\|xp\\)"
 		"\\|f\\(i\\(nv\\|p\\(namel?\\|state\\)\\)\\|loor\\|uzz\\)\\|gam\\(inv\\|ma\\)"
 		"\\|h\\(bound\\|ms\\|our\\)\\|i\\(n\\(dexc?\\|put\\|t\\(\\|ck\\|nx\\|rr\\)\\)\\|rr\\)"
-		"\\|juldate\\|kurtosis\\|l\\(ag\\|bound\\|e\\(ft\\|ngth\\)\\|gamma\\|og\\(\\|10\\|2\\)\\)"
+		"\\|juldate\\|kurtosis\\|l\\(ag[0-9]*\\|bound\\|e\\(ft\\|ngth\\)\\|gamma\\|og\\(\\|10\\|2\\)\\)"
 		"\\|m\\(ax\\|dy\\|ean\\|in\\(\\|ute\\)\\|o\\(d\\|nth\\|rt\\)\\)\\|n\\(\\|etpv\\|miss\\|ormal\\|pv\\)"
 		"\\|prob\\([ft]\\|b\\(eta\\|nml\\)\\|chi\\|gam\\|hypr\\|it\\|n\\(egb\\|orm\\)\\)"
 		"\\|ordinal\\|p\\(oisson\\|ut\\)\\|qtr\\|r\\(e\\(peat\\|verse\\)\\|ight\\|ound\\)"
