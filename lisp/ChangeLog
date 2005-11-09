@@ -1,3 +1,8 @@
+2005-11-09  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-sp6.el (ess-s-versions-create): kill temporary buffer after
+	new defuns have been loaded.
+
 2005-11-07  AJ Rossini <blindglobe@gmail.com>
 
 	* essa-sas.el (ess-sas-submit-pre-command): make sure that if
