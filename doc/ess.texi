@@ -735,9 +735,11 @@ It is not normally necessary to pass arguments to the @Sl{} program; in
 particular do not pass the @samp{-e} option to @code{Splus}, since ESS
 provides its own command history mechanism.
 
-By default, the new process will be displayed in another window in the
+By default, the new process will be displayed in the same window in the
 current frame.  If you wish your S process to appear in a separate
 variable, customize the variable @code{inferior-ess-own-frame}.
+Alternatively, change @code{inferior-ess-same-window} if you wish the
+process to appear within another window of the current frame.
 
 @comment  node-name,  next,  previous,  up
 @node Entering commands, Transcript Mode, Interactive ESS, Top
