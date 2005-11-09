@@ -92,6 +92,11 @@ An initialization file (dumped into the process) is specified by
 `inferior-ess-start-file', and `inferior-ess-start-args' is used to
 accompany the call for `inferior-ess-program'.
 
+When creating a new process, the process buffer replaces the
+current window if `inferior-ess-same-window' is non-nil.
+Alternatively, it can appear in its own frame if
+`inferior-ess-own-frame' is non-nil.
+
 \(Type \\[describe-mode] in the process buffer for a list of commands.)"
 
   ;; Use the current buffer if it is in inferior-ess-mode or ess-trans-mode
