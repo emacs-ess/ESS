@@ -1,5 +1,8 @@
 2005-11-09  Stephen Eglen  <stephen@gnu.org>
 
+	* ess-inf.el (inferior-ess): Update doc string to describe
+	inferior-ess-same-window and inferior-ess-same-window.
+
 	* essd-sp6.el (ess-s-versions-create): kill temporary buffer after
 	new defuns have been loaded.
 
