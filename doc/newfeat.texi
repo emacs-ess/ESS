@@ -1,10 +1,11 @@
 Changes/New Features in 5.2.11:
 @itemize @bullet
-@item Info menu file, @file{dir}, handled, hopefully, more sanely
-for GNU Emacs users
+@item ESS Info entry and @file{dir} handled more effectively for GNU Emacs users
 @item ESS[SAS]: temporary files created for batch submission of a
 region are now named based on the current file; see @code{ess-sas-file-root}
-for details
+for details; all @code{lag} and @code{dif} functions now fontified correctly 
+@item iESS[SAS]: fixed a few nagging bugs, however, still does not appear to
+work at this time; please let us know if you have any ideas.
 @item @ESS{[S]}: Support for running other versions of Splus has been
 added for unix.  Two new variables, @code{ess-s-versions} and
 @code{ess-s-versions-list}, are used to tell ESS what other versions of
