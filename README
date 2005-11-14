@@ -47,12 +47,16 @@ in the file COPYING in the same directory as this file for more details.
 ================
 
 Changes/New Features in 5.2.11:
-   * Info menu file, `dir', handled, hopefully, more sanely for GNU
-     Emacs users
+   * ESS Info entry and `dir' handled more effectively for GNU Emacs
+     users
 
    * ESS[SAS]: temporary files created for batch submission of a region
      are now named based on the current file; see `ess-sas-file-root'
-     for details
+     for details; all `lag' and `dif' functions now fontified correctly
+
+   * iESS[SAS]: fixed a few nagging bugs, however, still does not
+     appear to work at this time; please let us know if you have any
+     ideas.
 
    * ESS[S]: Support for running other versions of Splus has been added
      for unix.  Two new variables, `ess-s-versions' and
@@ -624,7 +628,7 @@ ESS has been tested with
    * GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
 
    * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13(1), 21.4.14-15,
-     21.4.17, 21.5.18
+     21.4.17, 21.5.23
 
    ---------- Footnotes ----------
 
