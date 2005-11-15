@@ -1,12 +1,5 @@
 Please send bug reports, suggestions etc. to
-
-@ifhtml
-<A HREF="mailto:ESS-bugs@@stat.math.ethz.ch">
-@end ifhtml
 @email{ESS-bugs@@stat.math.ethz.ch}
-@ifhtml
-</A>
-@end ifhtml
 
 The easiest way to do this is within Emacs by typing
 
