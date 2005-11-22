@@ -1,3 +1,8 @@
+2005-11-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-dump-args-and-go): don't use (replace-string ..)
+	(ess-fix-miscellaneous): also remove trailing ";"
+
 2005-11-09  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (inferior-ess): Update doc string to describe

@@ -550,6 +550,10 @@ and one that is well formatted in emacs ess-mode."
 	 (require 'essd-r)
 	 (R-fix-T-F from (not verbose))))
 
+    ;; former C and matlab programmers leave trailing  ";" :
+    (goto-char from) (ess-rep-regexp "; *$" "" nil 'literal verbose)
+    (goto-char from) (ess-rep-regexp ";\\( *\\)#" "\\1#" nil 'literal verbose)
+
     ;;from R 1.9.x "_" is valid in names; here assume no initial / trailing '_'
     (goto-char from) (ess-rep-regexp " +_ *" " <- " nil 'literal verbose)
     (goto-char from) (ess-rep-regexp   "_ +" " <- " nil 'literal verbose)
@@ -660,7 +664,8 @@ and I need to relearn emacs lisp (but I had to, anyway."
 	 (buf (ess-execute (format "args(%s)" Sfunc) t buffname)))
     (pop-to-buffer buf)
     (message "here yet?")
-    (replace-string "function" Sfunc)
+    (while (search-forward "function" nil t)
+      (replace-match Sfunc nil t))
     (ess-setq-vars-local ess-customize-alist); (current-buffer))
     (setq major-mode 'ess-mode)
     (use-local-map ess-mode-map)
