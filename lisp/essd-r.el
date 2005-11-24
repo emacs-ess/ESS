@@ -115,7 +115,7 @@ to R, put them in the variable `inferior-R-args'."
     "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
     ess-dialect (current-buffer) start-args current-prefix-arg))
   (let* ((r-always-arg
-	  (if ess-microsoft-p
+	  (if (or ess-microsoft-p (eq system-type 'cygwin))
 	      "--ess "
 	    "--no-readline "))
 	 (r-start-args

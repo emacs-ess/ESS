@@ -1,3 +1,8 @@
+Changes/New Features in 5.2.12:
+@itemize @bullet
+@item Rterm/Cygwin combination works under Microsoft Windows.
+@end itemize
+
 Changes/New Features in 5.2.11:
 @itemize @bullet
 @item ESS Info entry and @file{dir} handled more effectively for GNU Emacs users

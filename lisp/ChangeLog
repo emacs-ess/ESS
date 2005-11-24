@@ -1,3 +1,9 @@
+2005-11-24  AJ Rossini <blindglobe@gmail.com>
+
+	* essd-r.el (R): cygwin, at least older versions, probably need to
+	consider adding the --ess flag rather than the --no-readline,
+	since we most likely are using Rterm and not R.
+
 2005-11-22  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-s.el (ess-dump-args-and-go): don't use (replace-string ..)
