@@ -239,7 +239,12 @@ in the exec-path."
 		      (file-name-directory Rpath)
 		      "../../"))
 		  ""))))
-    (setq rwxxyy (file-name-all-completions "rw" ess-R-root-dir))
+    (setq rwxxyy (append (file-name-all-completions "rw" ess-R-root-dir)
+			 (file-name-all-completions "R-1" ess-R-root-dir)
+			 (file-name-all-completions "R-2" ess-R-root-dir)
+			 (file-name-all-completions "R-devel" ess-R-root-dir)
+			 (file-name-all-completions "R-patched" ess-R-root-dir)
+))  ;; this needs to rewritten to use (append '("rw") ess-r-versions)
     (while rwxxyy
       (setq rw (car rwxxyy))
       (setq rwxxyy (cdr rwxxyy))
