@@ -393,7 +393,7 @@ number."
 	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
 		;;"proc[ \t]+[a-z][a-z_0-9]+")        font-lock-reference-face)
 		"proc[ \t]+"
-		;;SAS/Base and SAS/Graph
+		;;SAS/Base, SAS/Graph and common add-ons
 		"\\(append"
 		"\\|c\\(a\\(lendar\\|talog\\)\\|port\\|o\\(mpare\\|ntents\\|py\\|rr\\)\\)"
 		"\\|d\\(atasets\\|bcstab\\|isplay\\)\\|ex\\(plode\\|port\\)"
@@ -401,7 +401,7 @@ number."
 		"\\|g?\\(chart\\|p\\(lot\\|rint\\)\\)"
 		"\\|g\\(anno\\|contour\\|device\\|font\\|\\(key\\)?map\\|options\\|project"
 		"\\|re\\(duce\\|move\\|play\\)\\|slide\\|testit\\|3\\(d\\|grid\\)\\)"   
-		"\\|[cg]?import\\|means\\|options\\|p\\(menu\\|rintto\\)"
+		"\\|[cg]?import\\|i\\(ml\\|nsight\\)\\|means\\|options\\|p\\(menu\\|rintto\\)"
 		"\\|r\\(ank\\|e\\(gistry\\|port\\)\\)"
 		"\\|s\\(ort\\|ql\\|tandard\\|ummary\\)"
 		"\\|t\\(abulate\\|imeplot\\|ran\\(spose\\|tab\\)\\)\\|univariate"
