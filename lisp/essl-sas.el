@@ -411,13 +411,12 @@ number."
 		"\\|discrim\\|f\\(a\\(ctor\\|stclus\\)\\|req\\)"
 		"\\|g\\(enmod\\|lm\\(mod\\)?\\)\\|inbreed\\|k\\(de\\|rige2d\\)"
 		"\\|l\\(attice\\|ife\\(reg\\|test\\)\\|o\\(ess\\|gistic\\)\\)"
-		"\\|m\\(d5\\|ixed\\|odeclus\\|ulttest\\)"
+		"\\|m\\(ds\\|ixed\\|odeclus\\|ulttest\\)"
 		"\\|n\\(ested\\|l\\(in\\|mixed\\)\\|par1way\\)\\|orthoreg"
 		"\\|p\\(hreg\\|l\\(an\\|s\\)\\|r\\(in\\(comp\\|qual\\)\\|obit\\)\\)\\|rs?reg"
 		"\\|s\\(core\\|im2d\\|t\\(dize\\|epdisc\\)\\|urvey\\(means\\|reg\\|select\\)\\)"
-		"\\|t\\(pspline\\|r\\(ee\\|ansreg\\)\\|test\\)"
-		"\\|var\\(clus\\|comp\\|iogram\\)"
-		"\\)")        font-lock-reference-face)
+		"\\|t\\(pspline\\|r\\(ansreg\\|ee\\)\\|test\\)"
+		"\\|var\\(clus\\|comp\\|iogram\\)\\)")        font-lock-reference-face)
 
 	 ;;(cons (concat "\\(^[0-9]*\\|;\\|%then\\|%else\\)[ \t]*"
 		;;"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"
