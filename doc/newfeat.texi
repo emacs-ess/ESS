@@ -1,12 +1,16 @@
 Changes/New Features in 5.2.12:
 @itemize @bullet
+@item @ESS{[SAS]}: @kbd{M-;} fixed, but the XEmacs function @code{comment-dwim}
+may be broken, if so, use @kbd{M-x comment-region} and @kbd{M-x uncomment-region}
+instead; only SAS/Base, SAS/GRAPH and SAS/STAT PROCs are fontified which is very
+helpful finding syntax errors
 @item Rterm/Cygwin combination works under Microsoft Windows.
 @end itemize
 
 Changes/New Features in 5.2.11:
 @itemize @bullet
 @item ESS Info entry and @file{dir} handled more effectively for GNU Emacs users
-@item ESS[SAS]: temporary files created for batch submission of a
+@item @ESS{[SAS]}: temporary files created for batch submission of a
 region are now named based on the current file; see @code{ess-sas-file-root}
 for details; all @code{lag} and @code{dif} functions now fontified correctly 
 @item iESS[SAS]: fixed a few nagging bugs, however, still does not appear to
