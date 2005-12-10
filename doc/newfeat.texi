@@ -2,8 +2,8 @@ Changes/New Features in 5.2.12:
 @itemize @bullet
 @item @ESS{[SAS]}: @kbd{M-;} fixed, but the XEmacs function @code{comment-dwim}
 may be broken, if so, use @kbd{M-x comment-region} and @kbd{M-x uncomment-region}
-instead; only SAS/Base, SAS/GRAPH and SAS/STAT PROCs are fontified which is very
-helpful finding syntax errors
+instead; only valid PROCs are fontified which is very helpful finding syntax errors 
+(currently supported:  BASE, ETS, FSP, GRAPH, IML, INSIGHT and STAT).
 @item Rterm/Cygwin combination works under Microsoft Windows.
 @end itemize
 

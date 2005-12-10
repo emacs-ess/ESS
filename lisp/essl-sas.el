@@ -393,11 +393,11 @@ number."
 	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
 		;;"proc[ \t]+[a-z][a-z_0-9]+")        font-lock-reference-face)
 		"proc[ \t]+"
-		;;SAS/Base, SAS/Graph and common add-ons
+		;;SAS/Base, SAS/Graph, SAS/FSP and common add-ons
 		"\\(append"
 		"\\|c\\(a\\(lendar\\|talog\\)\\|port\\|o\\(mpare\\|ntents\\|py\\|rr\\)\\)"
 		"\\|d\\(atasets\\|bcstab\\|isplay\\)\\|ex\\(plode\\|port\\)"
-		"\\|f\\(orm\\(at\\|s\\)\\|req\\|slist\\)"
+		"\\|f\\(orm\\(at\\|s\\)\\|req\\|s\\(browse\\|edit\\|l\\(etter\\|ist\\)\\|view\\)\\)"
 		"\\|g?\\(chart\\|p\\(lot\\|rint\\)\\)"
 		"\\|g\\(anno\\|contour\\|device\\|font\\|\\(key\\)?map\\|options\\|project"
 		"\\|re\\(duce\\|move\\|play\\)\\|slide\\|testit\\|3\\(d\\|grid\\)\\)"   
@@ -405,18 +405,19 @@ number."
 		"\\|r\\(ank\\|e\\(gistry\\|port\\)\\)"
 		"\\|s\\(ort\\|ql\\|tandard\\|ummary\\)"
 		"\\|t\\(abulate\\|imeplot\\|ran\\(spose\\|tab\\)\\)\\|univariate"
-		;;SAS/Stat
-		"\\|a\\(ceclus\\|nova\\)\\|boxplot"
-		"\\|c\\(a\\(lis\\|n\\(corr\\|disc\\)\\|tmod\\)\\|luster\\|orresp\\)"
-		"\\|discrim\\|f\\(a\\(ctor\\|stclus\\)\\|req\\)"
+		;;SAS/Stat and SAS/ETS
+		"\\|a\\(ceclus\\|nova\\|rima\\|utoreg\\)\\|boxplot"
+		"\\|c\\(a\\(lis\\|n\\(corr\\|disc\\)\\|tmod\\)\\|itibase\\|luster\\|o\\(mputab\\|rresp\\)\\)"
+		"\\|discrim\\|expand\\|f\\(a\\(ctor\\|stclus\\)\\|orecast\\|req\\)"
 		"\\|g\\(enmod\\|lm\\(mod\\)?\\)\\|inbreed\\|k\\(de\\|rige2d\\)"
 		"\\|l\\(attice\\|ife\\(reg\\|test\\)\\|o\\(ess\\|gistic\\)\\)"
-		"\\|m\\(ds\\|ixed\\|odeclus\\|ulttest\\)"
+		"\\|m\\(ds\\|ixed\\|o\\(de\\(clus\\|l\\)\\|rtgage\\)\\|ulttest\\)"
 		"\\|n\\(ested\\|l\\(in\\|mixed\\)\\|par1way\\)\\|orthoreg"
-		"\\|p\\(hreg\\|l\\(an\\|s\\)\\|r\\(in\\(comp\\|qual\\)\\|obit\\)\\)\\|rs?reg"
-		"\\|s\\(core\\|im2d\\|t\\(dize\\|epdisc\\)\\|urvey\\(means\\|reg\\|select\\)\\)"
+		"\\|p\\(dlreg\\|hreg\\|l\\(an\\|s\\)\\|r\\(in\\(comp\\|qual\\)\\|obit\\)\\)\\|rs?reg"
+"\\|s\\(core\\|im\\(2d\\|lin\\)\\|pectra\\|t\\(atespace\\|dize\\|epdisc\\)\\|urvey\\(means\\|reg\\|select\\)\\|yslin\\)"
 		"\\|t\\(pspline\\|r\\(ansreg\\|ee\\)\\|test\\)"
-		"\\|var\\(clus\\|comp\\|iogram\\)\\)")        font-lock-reference-face)
+		"\\|var\\(clus\\|comp\\|iogram\\)\\|x11"
+		"\\)")        font-lock-reference-face)
 
 	 ;;(cons (concat "\\(^[0-9]*\\|;\\|%then\\|%else\\)[ \t]*"
 		;;"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"
