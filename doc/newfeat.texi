@@ -2,9 +2,11 @@ Changes/New Features in 5.2.12:
 @itemize @bullet
 @item @ESS{[SAS]}: @kbd{M-;} fixed, but the XEmacs function @code{comment-dwim}
 may be broken, if so, use @kbd{M-x comment-region} and @kbd{M-x uncomment-region}
-instead; only valid PROCs are fontified which is very helpful finding syntax errors 
+instead; only valid PROCs are fontified which is very helpful finding syntax errors
 (currently supported:  BASE, ETS, FSP, GRAPH, IML, INSIGHT and STAT).
 @item Rterm/Cygwin combination works under Microsoft Windows.
+@item @ESS{[R]}: internal calls use baseenv() instead of NULL and
+define 'baseenv' where needed.
 @end itemize
 
 Changes/New Features in 5.2.11:
@@ -12,7 +14,7 @@ Changes/New Features in 5.2.11:
 @item ESS Info entry and @file{dir} handled more effectively for GNU Emacs users
 @item @ESS{[SAS]}: temporary files created for batch submission of a
 region are now named based on the current file; see @code{ess-sas-file-root}
-for details; all @code{lag} and @code{dif} functions now fontified correctly 
+for details; all @code{lag} and @code{dif} functions now fontified correctly
 @item iESS[SAS]: fixed a few nagging bugs, however, still does not appear to
 work at this time; please let us know if you have any ideas.
 @item @ESS{[S]}: Support for running other versions of Splus has been

@@ -3,7 +3,7 @@
 
 This is the README file for the distribution of ESS version
 
-   5.2.11
+   5.2.12
 
    ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S
@@ -46,7 +46,19 @@ in the file COPYING in the same directory as this file for more details.
 1.2 New Features
 ================
 
-Changes/New Features in 5.2.11:
+Changes/New Features in 5.2.12:
+   * ESS[SAS]: `M-;' fixed, but the XEmacs function `comment-dwim' may
+     be broken, if so, use `M-x comment-region' and `M-x
+     uncomment-region' instead; only valid PROCs are fontified which is
+     very helpful finding syntax errors (currently supported:  BASE,
+     ETS, FSP, GRAPH, IML, INSIGHT and STAT).
+
+   * Rterm/Cygwin combination works under Microsoft Windows.
+
+   * ESS[R]: internal calls use baseenv() instead of NULL and define
+     'baseenv' where needed.
+
+   Changes/New Features in 5.2.11:
    * ESS Info entry and `dir' handled more effectively for GNU Emacs
      users
 
@@ -628,7 +640,7 @@ ESS has been tested with
    * GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
 
    * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13(1), 21.4.14-15,
-     21.4.17, 21.5.23
+     21.4.17-18, 21.5.23
 
    ---------- Footnotes ----------
 
@@ -871,8 +883,7 @@ separate instructions above for UNIX *Note Unix installation::.
 ===================
 
 Please send bug reports, suggestions etc. to
-
-   <ESS-bugs@stat.math.ethz.ch>
+<ESS-bugs@stat.math.ethz.ch>
 
    The easiest way to do this is within Emacs by typing
 

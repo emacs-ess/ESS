@@ -21,8 +21,8 @@
 <body>
 <div class="node">
 <p><hr>
-<a name="General-Information"></a>voriges:&nbsp;<a rel="previous" accesskey="p" href="#dir">(dir)</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
+<a name="General-Information"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="#dir">(dir)</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <br>
 </div>
 
@@ -32,7 +32,7 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <p><a name="index-README-1"></a>
 This is the README file for the distribution of ESS version
 
-   <p>5.2.11
+   <p>5.2.12
 
    <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical programming
 and data analysis.  Languages supported: the S family (S 3/4, S-PLUS
@@ -73,9 +73,9 @@ Lumley).
 
 <div class="node">
 <p><hr>
-<a name="License"></a>n&auml;chstes:&nbsp;<a rel="next" accesskey="n" href="#New-Features">New Features</a>,
-voriges:&nbsp;<a rel="previous" accesskey="p" href="#General-Information">General Information</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+<a name="License"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#New-Features">New Features</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#General-Information">General Information</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 <br>
 </div>
 
@@ -95,19 +95,30 @@ details.
 
 <div class="node">
 <p><hr>
-<a name="New-Features"></a>n&auml;chstes:&nbsp;<a rel="next" accesskey="n" href="#Current-Features">Current Features</a>,
-voriges:&nbsp;<a rel="previous" accesskey="p" href="#License">License</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+<a name="New-Features"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Current-Features">Current Features</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#License">License</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 <br>
 </div>
 
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">1.2 New Features</h3>
 
-<p>Changes/New Features in 5.2.11:
+<p>Changes/New Features in 5.2.12:
+     <ul>
+<li><acronym>ESS[SAS]</acronym>: <kbd>M-;</kbd> fixed, but the XEmacs function <code>comment-dwim</code>
+may be broken, if so, use <kbd>M-x comment-region</kbd> and <kbd>M-x uncomment-region</kbd>
+instead; only valid PROCs are fontified which is very helpful finding syntax errors
+(currently supported:  BASE, ETS, FSP, GRAPH, IML, INSIGHT and STAT). 
+<li>Rterm/Cygwin combination works under Microsoft Windows. 
+<li><acronym>ESS[R]</acronym>: internal calls use baseenv() instead of NULL and
+define 'baseenv' where needed. 
+</ul>
+
+   <p>Changes/New Features in 5.2.11:
      <ul>
 <li>ESS Info entry and <span class="file">dir</span> handled more effectively for GNU Emacs users
-<li>ESS[SAS]: temporary files created for batch submission of a
+<li><acronym>ESS[SAS]</acronym>: temporary files created for batch submission of a
 region are now named based on the current file; see <code>ess-sas-file-root</code>
 for details; all <code>lag</code> and <code>dif</code> functions now fontified correctly
 <li>iESS[SAS]: fixed a few nagging bugs, however, still does not appear to
@@ -545,9 +556,9 @@ provide the syntactic highlighting that eases the programming tasks.
 
 <div class="node">
 <p><hr>
-<a name="Current-Features"></a>n&auml;chstes:&nbsp;<a rel="next" accesskey="n" href="#Stability">Stability</a>,
-voriges:&nbsp;<a rel="previous" accesskey="p" href="#New-Features">New Features</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+<a name="Current-Features"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Stability">Stability</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#New-Features">New Features</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 <br>
 </div>
 
@@ -597,9 +608,9 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">Genera
 
 <div class="node">
 <p><hr>
-<a name="Stability"></a>n&auml;chstes:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
-voriges:&nbsp;<a rel="previous" accesskey="p" href="#Current-Features">Current Features</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+<a name="Stability"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Current-Features">Current Features</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 <br>
 </div>
 
@@ -613,9 +624,9 @@ Patches or suggested fixes with bug reports are much appreciated!
 
 <div class="node">
 <p><hr>
-<a name="Requirements"></a>n&auml;chstes:&nbsp;<a rel="next" accesskey="n" href="#Latest-Version">Latest Version</a>,
-voriges:&nbsp;<a rel="previous" accesskey="p" href="#Stability">Stability</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+<a name="Requirements"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Latest-Version">Latest Version</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Stability">Stability</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 <br>
 </div>
 
@@ -648,7 +659,7 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">Genera
 
      <ul>
 <li>GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
-<li>XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17, 21.5.23
+<li>XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17-18, 21.5.23
 <!-- @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no -->
 <!-- longer supported, so an upgrade is recommended if you plan to use ESS. -->
 <!-- If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note -->
@@ -660,9 +671,9 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">Genera
 
 <div class="node">
 <p><hr>
-<a name="Latest-Version"></a>n&auml;chstes:&nbsp;<a rel="next" accesskey="n" href="#Installation">Installation</a>,
-voriges:&nbsp;<a rel="previous" accesskey="p" href="#Requirements">Requirements</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+<a name="Latest-Version"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Installation">Installation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Requirements">Requirements</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 <br>
 </div>
 
@@ -710,9 +721,9 @@ certificate permanently and will not be asked about it anymore.
 <!-- vvvvvvvvvvvv node name  *must* match the one in ./ess.texi ! -->
 <div class="node">
 <p><hr>
-<a name="Installation"></a>n&auml;chstes:&nbsp;<a rel="next" accesskey="n" href="#Reporting-Bugs">Reporting Bugs</a>,
-voriges:&nbsp;<a rel="previous" accesskey="p" href="#Latest-Version">Latest Version</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+<a name="Installation"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Reporting-Bugs">Reporting Bugs</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Latest-Version">Latest Version</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 <br>
 </div>
 
@@ -721,15 +732,15 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">Genera
 
 <p>We now discuss installation, which might happen under Unix or
 Microsoft Windows.  First, we discuss Unix installation. 
-Siehe <a href="#Unix-installation">Unix installation</a>.
+See <a href="#Unix-installation">Unix installation</a>.
 
    <p>For Microsoft Windows Installation please skip to the
-Siehe <a href="#Microsoft-Windows-installation">Microsoft Windows installation</a>.
+See <a href="#Microsoft-Windows-installation">Microsoft Windows installation</a>.
 
 <div class="node">
 <p><hr>
-<a name="Unix-installation"></a>n&auml;chstes:&nbsp;<a rel="next" accesskey="n" href="#Microsoft-Windows-installation">Microsoft Windows installation</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
+<a name="Unix-installation"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Microsoft-Windows-installation">Microsoft Windows installation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 <br>
 </div>
 
@@ -848,9 +859,9 @@ has been installed.  For more information on installing XEmacs packages, see
 <!-- @node Microsoft Windows installation, , Unix installation, Installation -->
 <div class="node">
 <p><hr>
-<a name="Microsoft-Windows-installation"></a>n&auml;chstes:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
-voriges:&nbsp;<a rel="previous" accesskey="p" href="#Unix-installation">Unix installation</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
+<a name="Microsoft-Windows-installation"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Unix-installation">Unix installation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 <br>
 </div>
 
@@ -858,7 +869,7 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation<
 <h3 class="section">1.9 Microsoft Windows installation</h3>
 
 <p>For <b>Microsoft Windows installation</b>, please follow the next steps:
-(see separate instructions above for UNIX Siehe <a href="#Unix-installation">Unix installation</a>.
+(see separate instructions above for UNIX See <a href="#Unix-installation">Unix installation</a>.
 
      <ol type=1 start=1>
 
@@ -1042,9 +1053,9 @@ emacs, and cut and paste the results into the XLispStat
 
 <div class="node">
 <p><hr>
-<a name="Reporting-Bugs"></a>n&auml;chstes:&nbsp;<a rel="next" accesskey="n" href="#Mailing-Lists">Mailing Lists</a>,
-voriges:&nbsp;<a rel="previous" accesskey="p" href="#Installation">Installation</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+<a name="Reporting-Bugs"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Mailing-Lists">Mailing Lists</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Installation">Installation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 <br>
 </div>
 
@@ -1052,10 +1063,7 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">Genera
 <h3 class="section">1.10 Reporting Bugs</h3>
 
 <p>Please send bug reports, suggestions etc. to
-
-   <p>&lt;A HREF="mailto:ESS-bugs@stat.math.ethz.ch"&gt;
 <a href="mailto:ESS-bugs@stat.math.ethz.ch">ESS-bugs@stat.math.ethz.ch</a>
-&lt;/A&gt;
 
    <p>The easiest way to do this is within Emacs by typing
 
@@ -1074,9 +1082,9 @@ donations are also more than welcome.
 
 <div class="node">
 <p><hr>
-<a name="Mailing-Lists"></a>n&auml;chstes:&nbsp;<a rel="next" accesskey="n" href="#Authors">Authors</a>,
-voriges:&nbsp;<a rel="previous" accesskey="p" href="#Reporting-Bugs">Reporting Bugs</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+<a name="Mailing-Lists"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Authors">Authors</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Reporting-Bugs">Reporting Bugs</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 <br>
 </div>
 
@@ -1102,8 +1110,8 @@ low-volume mailing list.
 
 <div class="node">
 <p><hr>
-<a name="Authors"></a>voriges:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-Lists">Mailing Lists</a>,
-aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+<a name="Authors"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-Lists">Mailing Lists</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 <br>
 </div>
 
@@ -1132,7 +1140,7 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">Genera
 
    <div class="footnote">
 <hr>
-<a name="texinfo-footnotes-in-document"></a><h4>Fu&szlig;noten</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> 
+<a name="texinfo-footnotes-in-document"></a><h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> 
 require the files.el patch to revert-buffer for the Local Variables
 updating problem</p>
 
