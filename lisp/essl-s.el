@@ -520,7 +520,7 @@ nil (as by default) !"
     (ess-replace-regexp-dump-to-src ;; all those *not* ending in ","
      ;; including  Mat[ i, ] = ...,
      ;; but not `names(x) = "..."' for that is "confused" with plot(x=x,..)
-     "^\\( *[a-z.][][, \"_a-z.0-9]*\\) *= *\\([a-z.0-9({].*[^,] *$\\)"
+     "^\\( *[a-z.][][, \"_a-z.0-9]*\\) *= *\\([a-z.0-9({]\\(.*[^,]\\)? *$\\)"
      "\\1 <- \\2" nil ;; always query - often has many "false positives"
      verbose)
     ))
