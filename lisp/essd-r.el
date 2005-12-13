@@ -65,8 +65,8 @@
      (ess-cmd-delay			. ess-R-cmd-delay)
      (ess-function-pattern              . ess-R-function-pattern)
      (ess-object-name-db-file		. "ess-r-namedb.el" )
-     (ess-retr-lastvalue-command	. "assign(\".Last.value\", .ess.lvsave, envir=NULL)\n") ; package:base
-     (ess-save-lastvalue-command	. "assign(\".ess.lvsave\",.Last.value,inherits=TRUE)\n") ;envir=1
+     (ess-retr-lastvalue-command	. "assign(\".Last.value\", .ess.lvsave, envir=baseenv()))\n")
+     (ess-save-lastvalue-command	. "assign(\".ess.lvsave\", get(\".Last.value\", envir=baseenv())\n")
      (ess-imenu-mode-function		. 'ess-imenu-R)
      (inferior-ess-program		. inferior-R-program-name)
      (inferior-ess-objects-command	. inferior-R-objects-command)
@@ -135,6 +135,9 @@ to R, put them in the variable `inferior-R-args'."
     (ess-write-to-dribble-buffer
      (format "(R): inferior-ess-language-start=%s\n"
 	     inferior-ess-language-start))
+    ;; currently rely on baseenv() which is in R only since version 2.2:
+    (ess-eval-linewise
+     "if(!exists(\"baseenv\", mode=\"function\")) baseenv <- function() NULL")
     (if inferior-ess-language-start
 	(ess-eval-linewise inferior-ess-language-start))))
 

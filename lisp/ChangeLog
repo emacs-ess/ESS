@@ -1,3 +1,13 @@
+2005-12-13  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r.el (R-customize-alist): ess-*lastvalue-command's now use
+		baseenv().
+	(R): make sure 'baseenv()' will work.
+
+2005-11-24  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-fix-EQ-assign): slight improvement in regexp.
+
 2005-11-24  AJ Rossini <blindglobe@gmail.com>
 
 	* essd-r.el (R): cygwin, at least older versions, probably need to
