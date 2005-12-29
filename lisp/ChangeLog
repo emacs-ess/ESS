@@ -1,5 +1,9 @@
 2005-12-29  Stephen Eglen  <stephen@gnu.org>
 
+	* essd-sp6.el (ess-s-versions-create): If ess-s-versions is nil, do
+	not search for other versions of S using this method
+	(ess-s-versions-list will still be examined).
+
 	* essd-r.el (ess-r-versions-create): If ess-r-versions is nil, do
 	not search for other versions of R.
 
