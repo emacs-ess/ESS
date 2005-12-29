@@ -1,3 +1,8 @@
+2005-12-29  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-r.el (ess-r-versions-create): If ess-r-versions is nil, do
+	not search for other versions of R.
+
 2005-12-13  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r.el (R-customize-alist): ess-*lastvalue-command's now use
