@@ -307,7 +307,7 @@ between .s or .S files and assembly mode.
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S+4-program-name "Splus")
 ;;(setq-default inferior-S+5-program-name "Splus5")
-;;(setq-default inferior-S+6-program-name "Splus6")
+;;(setq-default inferior-S+6-program-name "Splus7") ; unix systems
 ;;(setq-default inferior-R-program-name "R")	  ; unix systems
 ;;(setq-default inferior-R-program-name "Rterm")  ; msdos systems
 ;;(setq-default inferior-R-program-name "C:\\Program Files\\R\rw1081\\bin\\Rterm.exe")	; msdos systems
@@ -346,7 +346,8 @@ between .s or .S files and assembly mode.
 
 ;;; These commands are for running the PC version of Sqpe of S+4 and
 ;;; S+6 in an emacs buffer, using the same technology as ESS uses for
-;;; Unix S-Plus.  Interactive graphics are unavailable in this mode.
+;;; Unix S-Plus.  Interactive graphics with javagraph are available
+;;; in this mode beginning with S-Plus 6.1.
 ;;; See essd-sp4.el or essd-sp6w.el
 
 ;;; These are the defaults.  Change them here if the defaults don't work.
@@ -357,9 +358,9 @@ between .s or .S files and assembly mode.
 ;;(setq-default inferior-Sqpe+4-SHOME-name "c:/progra~1/SPLS45SE")
 ;;(setq-default inferior-Sqpe+4-program-name "c:/progra~1/SPLS45SE/cmd/Sqpe.exe")
 ;;
-;;(setq-default inferior-S+6-program-name "c:/progra~1/Insightful/SPLUS6/cmd/Splus")
-;;(setq-default inferior-Sqpe+6-SHOME-name "c:/progra~1/Insightful/SPLUS6")
-;;(setq-default inferior-Sqpe+6-program-name "c:/progra~1/Insightful/SPLUS6/cmd/Sqpe.exe")
+;;(setq-default inferior-S+6-program-name "c:/progra~1/Insightful/splus70/cmd/Splus")
+;;(setq-default inferior-Sqpe+6-SHOME-name "c:/progra~1/Insightful/splus70")
+;;(setq-default inferior-Sqpe+6-program-name "c:/progra~1/Insightful/splus70/cmd/Sqpe.exe")
 
 ;;; These ddeclient values will be buffer-local on MS-Windows 9x/NT
 (setq-default inferior-ess-ddeclient	     "Initial")
