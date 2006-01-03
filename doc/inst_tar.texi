@@ -155,8 +155,8 @@ For @b{Microsoft Windows installation}, please follow the next steps:
 @code{cd} to a directory where you keep emacs lisp files, or create a
 new directory (for example, @file{c:\emacs\}) to hold the distribution.
 This directory will be referred to below as "the ESS distribution
-directory".  It will contain, at the end, a directory for the ESS
-source, which will be termed "the ESS-VERSION source directory".
+directory".  
+
 
 @item
 Retrieve the latest zip file (@file{ess-VERSION.zip}) from
@@ -198,7 +198,7 @@ sure that the directories for the software they will be using is in the
 PATH environment variable.  On Windows 9x, add lines similar to the
 following to your @file{c:\autoexec.bat} file:
 @example
-path=%PATH%;c:\progra~1\spls2000\cmd
+path=%PATH%;c:\progra~1\insightful\splus70\cmd
 @end example
 On Windows NT/2000/XP, add the directories to the PATH using the
 @code{My Computer/Control Panel/System/Advanced/Environment Variables} menu.
