@@ -725,7 +725,7 @@ releases of S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
 correspond to a directory on your machine, running the function
 `ess-sqpe-versions-create' will create a function, for example, `M-x
-splus62', that will start the corresponding version Sqpe inside an
+splus70', that will start the corresponding version Sqpe inside an
 emacs buffer in iESS[S] mode.  If you have versions of S-Plus in
 locations other than these default values, redefine this variable with
 a `custom-set-variables' statement in your site-start.el or .emacs
@@ -822,10 +822,10 @@ different computer."
 
 (if ess-microsoft-p
     (defcustom inferior-S+6-program-name
-      "c:/progra~1/insigh~1/splus6/cmd/Splus.exe"
+      "c:/progra~1/insigh~1/splus70/cmd/Splus.exe"
       "*Program name for invoking an external GUI S+6 for Windows.
 The default value is correct for a default installation of
-S-Plus 6.0.3 Release 2 and with bash as the shell.
+S-Plus 7.0 and with bash as the shell.
 For any other version or location, change this value in ess-site.el or
 site-start.el.  Use the 8.3 version of the pathname.
 Use double backslashes if you use the msdos shell."
@@ -861,17 +861,17 @@ in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
   :type 'string)
 
 (defcustom inferior-Sqpe+6-program-name
-  "c:/progra~1/insigh~1/splus6/cmd/Sqpe.exe"
+  "c:/progra~1/insigh~1/splus70/cmd/Sqpe.exe"
   "*Program name for invoking an inferior ESS with Sqpe+6() for Windows."
   :group 'ess-S
   :type 'string)
 
 ;;; SJE - avoid mismatch by changing default nil to ""
 (defcustom inferior-Sqpe+6-SHOME-name
-  (if ess-microsoft-p "c:/progra~1/insigh~1/splus6" "")
+  (if ess-microsoft-p "c:/progra~1/insigh~1/splus70" "")
   "*SHOME name for invoking an inferior ESS with Sqpe+6() for Windows.
 The default value is correct for a default installation of
-S-Plus 6.0.3 Release 2.  For any other version or location,
+S-Plus 7.0.  For any other version or location,
 change this value in ess-site.el or site-start.el.  Use the 8.3
 version of the pathname."
   :group 'ess-S
