@@ -28,7 +28,7 @@
 ;; for its results.
 
 
-;; Commentary
+;;; Commentary:
 
 ;; Although installing ESS is relatively simple, sometimes people get
 ;; confused as to what to add to their init files, or even where their
