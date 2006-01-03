@@ -27,15 +27,68 @@
 ;; source with any binaries, remove this notice, or hold anyone liable
 ;; for its results.
 
-;; Steps:
-;;
-;; Open this file within emacs and then type:
-;; M-x eval-buffer RET
-;; to install ESS in Emacs.
 
+;; Commentary
 
-;; Installing ESS should be straightforward, but sometimes people get
-;; confused about where to put the startup lines.  This should help!
+;; Although installing ESS is relatively simple, sometimes people get
+;; confused as to what to add to their init files, or even where their
+;; init files are located.  The following procedure should be a bit
+;; simpler, as Emacs will add the necessary start-up lines itself.
+;; 
+;; Installing ESS for the first time.
+;; 
+;; 1. Create a folder (e.g C:/emacs) where you will store ESS.  We will
+;;   assume that you are installing ESS into C:/emacs (unix users can use
+;;   ~/emacs).
+;; 
+;; 2. Download ess-5.2.12.zip and store it in the folder you created.
+;; 
+;; 3. Unpack the files from the zip archive, e.g. by right-clicking on it
+;;    within Windows explorer and selecting "Extract all".  On unix, use
+;;    "unzip ess-5.2.12.zip".
+;; 
+;; 4. Start a new emacs (or xemacs).
+;; 
+;; 5. In the new emacs, you need to open the file "ess-install.el" which
+;;    is part of ESS.  To do this, type:
+;; 
+;;    C-x C-f c:/emacs/ess-5.2.12/lisp/ess-install.el RET
+;; 
+;; You should now see a lisp file with the top line:
+;;   ;;; ess-install.el --- Automatic installation of ESS.
+;; 
+;; 6. Type M-x eval-buffer RET
+;; 
+;; What does this do?  This will find your emacs initialisation file, and
+;; it will add the following two lines to the end of the file:
+;; 
+;;   ;;; ESS setup for version 5.2.12
+;;   (load "c:/emacs/ess-5.2.12/lisp/ess-site")
+;; 
+;; Do not edit those two lines!  They are useful if later you come to
+;; upgrade ESS.
+;; 
+;; 7. Start a new Emacs and you should find then that ESS is loaded.  For
+;;    example, create a new file called "foo.R" and check that it opens
+;;    in R mode by looking at the mode line and menubar.
+;; 
+;; Upgrading your version of ESS.
+;; 
+;; If (and only if) you use the above instructions for installing ESS,
+;; when a new version of ESS is released, you can use the same method to
+;; install the new version.  Repeat steps 2-7 for the new release of ESS,
+;; and this time in step 6, if emacs finds that you already have the
+;; special line ";;; ESS setup for version 5.2.12", it will highlight
+;; those lines, and query whether you want to replace those two lines
+;; with the new setup code.
+;; 
+;; If you do upgrade ESS this way, bear in mind that your old version
+;; will not be deleted from your filespace -- you will have to delete it
+;; yourself.
+
+;; TODO: possibly add a call to (byte-recompile-directory ess-lisp-dir
+;; 0) so that lisp files are byte compiled.
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Location where the new lisp files are stored.
 (defvar ess-lisp-dir (file-name-directory 
