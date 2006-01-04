@@ -30,7 +30,7 @@ ESSINFONODE2='	        Emacs Speaks Statistics'
 ESSINFONODE3='                        (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).'
 
 ### Targets --
-PDFs = ess.pdf readme.pdf
+PDFs = ess.pdf readme.pdf refcard/refcard.pdf
 DVIs = ess.dvi readme.dvi
 TXTs = ../README ../ANNOUNCE
 
@@ -104,3 +104,6 @@ html/readme.html: $(TEXISRC)
 ##                   ^^^^^^^^^^^^^ (design bug: "FIXME" in ess.texi)
 #MM	$(TEXI2HTML) readme.texi
 	mv -f readme.html html
+
+refcard/refcard.pdf: refcard/refcard.tex
+	(cd refcard ; pdflatex refcard)
