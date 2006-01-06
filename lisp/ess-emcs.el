@@ -42,12 +42,12 @@
 (if (and (not (boundp 'emacs-major-version))
 	 (string-match "^[0-9]+" emacs-version))
     (setq emacs-major-version
-	  (string-to-int (substring emacs-version
+	  (string-to-number (substring emacs-version
 				    (match-beginning 0) (match-end 0)))))
 (if (and (not (boundp 'emacs-minor-version))
 	 (string-match "^[0-9]+\\.\\([0-9]+\\)" emacs-version))
     (setq emacs-minor-version
-	  (string-to-int (substring emacs-version
+	  (string-to-number (substring emacs-version
 				    (match-beginning 1) (match-end 1)))))
 
 ;;; Define a function to make it easier to check which version we're
