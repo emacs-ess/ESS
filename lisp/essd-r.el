@@ -274,6 +274,7 @@ placed on the menubar upon ESS initialisation."
 	(beg)
 	(versions)
 	(version)
+	(version-root)
 	(eval-buf (get-buffer-create "*ess-temp-r-evals*"))
 	(ess-rterm-versions-created)
 )
