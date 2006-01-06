@@ -107,6 +107,16 @@ Do not include .el extension in case there is also a .elc around.")
 
 (defvar ess-installed nil)
 
+
+(defun ess-install-byte-compile ()
+  "Byte compile the ESS files.
+This will probably generate warnings, but they can hopefully be
+ignored."
+  ;; To do byte compilation, XEmacs seems to want the files on its
+  ;; load-path so that it can do the (require 'xyz) statements.
+  (add-to-list 'load-path ess-lisp-dir)
+  (byte-recompile-directory ess-lisp-dir 0))
+
 ;; Check that ess-site-file is written using unix directory separators.
 ;; i.e. need to change c:\\some\\dir\\ess-site.el to 
 ;; c:/some/dir/ess-site.el
@@ -211,13 +221,13 @@ Do not include .el extension in case there is also a .elc around.")
 	    (kill-region beg (point))
 	    (insert ess-commands)
 	    (save-buffer)
-	    (byte-recompile-directory ess-lisp-dir 0)
+	    (ess-install-byte-compile)
 	    (message (concat "ESS updated to version "  ess-new-version))
 	    ))
       ;; else, just insert commands at end.
       (goto-char (point-max))
       (insert ess-commands)
       (save-buffer)
-      (byte-recompile-directory ess-lisp-dir 0)
+      (ess-install-byte-compile)
       (message (concat "ESS version "ess-new-version" installed."))
       )))
