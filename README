@@ -762,43 +762,43 @@ separate instructions above for UNIX *Note Unix installation::.
   1. `cd' to a directory where you keep emacs lisp files, or create a
      new directory (for example, `c:\emacs\') to hold the distribution.
      This directory will be referred to below as "the ESS distribution
-     directory".  It will contain, at the end, either the tar file
-     `ess-VERSION.tar.gz' or the zip file `ess-VERSION.zip', and a
-     directory for the ESS source, which will be termed "the
-     ESS-VERSION source directory".
+     directory".
 
-  2. Retrieve the compressed tar file `ess-VERSION.tar.gz' or the
-     zipped file `ess-VERSION.zip' from one of the FTP or WWW archive
-     sites via FTP (or HTTP).  Be aware that http browsers on Windows
-     frequently change the "." and "-" characters in filenames to other
-     punctuation.  Please change the names back to their original form.
+  2. Retrieve the latest zip file (`ess-VERSION.zip') from ESS
+     downloads area (http://ess.r-project.org/downloads/ess) and store
+     it in the ESS distribution directory.  Be aware that http browsers
+     on Windows frequently change the "." and "-" characters in
+     filenames to other punctuation.  Please change the names back to
+     their original form.
 
-  3. Copy `ess-VERSION.tar.gz' to the location where you want the
-     ess-VERSION directory, for example to
-     `c:\emacs\ess-VERSION.tar.gz', and cd there.  For example,
+  3. Extract all the files from `ess-VERSION.zip' into the ESS
+     distribution directory.  In Windows Explorer, you can unpack the
+     archive by double clicking on the folder; you should then see a
+     new folder called `ess-VERSION'.  Drag that folder into your ESS
+     distribution directory.
 
-          cd c:\emacs
+  4. Add the line
+          (load "C:/emacs/ess-VERSION/lisp/ess-site")
+     to your emacs initialization file.  (GNU Emacs uses the filename
+     `~/.emacs' and XEmacs uses the filename `~/.xemacs/init.el' for
+     the initialization file.  The tilde is recognised by emacs as your
+     HOME directory, i.e. the value of your HOME environment variable.)
+     Replace `VERSION' above with the version number of ESS.  Remember
+     to use forwardslashes `/' rather than `\\' in your filename.
 
-     Extract the files from the distribution, which will unpack into a
-     subdirectory, `ess-VERSION'.
-          gunzip ess-VERSION.tar.gz
-          tar xf ess-VERSION.tar
-          (or: `gunzip < ess-VERSION.tar.gz | tar xf -' ).
-          (or: from the zip file: `unzip ess-VERSION.zip')
+     After saving your initialization file, ESS is now installed.
+     Start a new emacs and you should be ready to use ESS.  For
+     example, to edit statistical programs, load the files with the
+     requisite extensions (".sas" for SAS, ".S" or "s" or "q" or "Q"
+     for S-PLUS, ".r" or ".R" for R, and ".lsp" for XLispStat).  One
+     further step is needed if you wish to run statistical processes,
+     see below.
 
-     The `tar' command will extract files into the current directory.
-
-     Do not create `ess-VERSION' yourself, or you will get an extra
-     level of depth to your directory structure.
-
-  4. Windows users will usually be able to use the `lisp/ess-site.el'
-     as distributed.  Only rarely will changes be needed.
-
-  5. Windows users will need to make sure that the directories for the
-     software they will be using is in the PATH environment variable.
-     On Windows 9x, add lines similar to the following to your
-     `c:\autoexec.bat' file:
-          path=%PATH%;c:\progra~1\spls2000\cmd
+  5. To run statistical processes under ESS, Windows users will need to
+     make sure that the directories for the software they will be using
+     is in the PATH environment variable.  On Windows 9x, add lines
+     similar to the following to your `c:\autoexec.bat' file:
+          path=%PATH%;c:\progra~1\insightful\splus70\cmd
      On Windows NT/2000/XP, add the directories to the PATH using the
      `My Computer/Control Panel/System/Advanced/Environment Variables'
      menu.  Note that the directory containing the program is added to
@@ -807,20 +807,12 @@ separate instructions above for UNIX *Note Unix installation::.
      and not the long version with embedded blanks.  Use backslashes
      "\".
 
-  6. Add the line
-          (load "/PATH/ess-site")
-     to your .emacs (or _emacs) file (or default.el or site-init.el, for
-     a site-wide installation).  Replace `/PATH' above with the value
-     of ess-lisp-directory as defined in `ess-site.el'.  Use
-     forwardslashes `/'.  (GNU Emacs uses the filename `%HOME%/.emacs'
-     and XEmacs uses the filename `%HOME%/.xemacs/init.el' for the
-     initialization file.)
-
-  7. To edit statistical programs, load the files with the requisite
-     extensions  (".sas" for SAS, ".S" or "s" or "q" or "Q" for S-PLUS,
-     ".r" or ".R" for R, and ".lsp"   for XLispStat).
-
-  8. To run statistical processes under emacs:
+     An alternative, for R users, is that rather than adjusting the PATH
+     variable, you can add the following to your emacs initialization
+     file (and restart emacs):
+          (setq inferior-R-program-name "C:/progra~1/R/R-2.2.1/bin/Rterm.exe")
+     This assumes that you have installed R-2.2.1 in the default
+     location.  Change the path otherwise to point to other locations.
 
      To start the S-PLUS [67].x GUI from ESS under emacs:
           M-x S
@@ -876,7 +868,7 @@ separate instructions above for UNIX *Note Unix installation::.
      emacs, and cut and paste the results into the XLispStat *Listener*
      Window under Microsoft Windows.
 
-  9. That's it!
+  6. That's it!
 
 
 1.10 Reporting Bugs
