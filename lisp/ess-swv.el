@@ -80,11 +80,12 @@
    (interactive)
    (save-excursion
      ;; Make sure tools is loaded.
-     (setq ess-command (format "library(tools)"))
-     (ess-execute ess-command)
-     (message "Sweaving %S" (buffer-file-name))
-     (setq ess-command (format "Sweave(%S)" (buffer-file-name)))
-     (ess-execute ess-command 'buffer nil nil)))
+     (let ((ess-command))
+       (setq ess-command (format "library(tools)"))
+       (ess-execute ess-command)
+       (message "Sweaving %S" (buffer-file-name))
+       (setq ess-command (format "Sweave(%S)" (buffer-file-name)))
+       (ess-execute ess-command 'buffer nil nil))))
 
 
 (defun ess-makeLatex ()
