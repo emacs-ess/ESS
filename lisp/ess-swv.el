@@ -106,7 +106,7 @@
    "Create a postscript file from a dvi file (name based on the current
 Sweave file buffer name) and display it with gv."
    (interactive)
-   (let ((namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
+   (let* ((namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
 	 (dvi-filename (concat namestem ".dvi")))
      (shell-command (concat "dvips -o temp.ps " dvi-filename))
      (shell-command "gv temp.ps & ")))
