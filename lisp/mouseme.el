@@ -248,8 +248,9 @@ ending positions of the string in the buffer in that order."
   "Execute STRING as a filename."
   (interactive "sFile: ")
   (message "This function currently not working."))
-;; w32-shell-execute not defined in ESS.
-  (w32-shell-execute "open" (convert-standard-filename string)))
+;; w32-shell-execute not defined in ESS, so following line
+;; removed from defun.
+;; (w32-shell-execute "open" (convert-standard-filename string)))
 
 (defun mouse-me-bbdb (string)
   "Lookup STRING in bbdb."
