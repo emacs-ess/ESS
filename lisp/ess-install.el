@@ -34,6 +34,9 @@
 ;; confused as to what to add to their init files, or even where their
 ;; init files are located.  The following procedure should be a bit
 ;; simpler, as Emacs will add the necessary start-up lines itself.
+;; (The instructions below assume you have downloaded ess as a zip
+;; package, but it will work also for the .tar.gz version of ESS as
+;; long as you know how to unpack a .tar.gz in step 3.)
 ;; 
 ;; Installing ESS for the first time.
 ;; 
