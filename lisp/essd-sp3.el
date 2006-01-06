@@ -73,7 +73,7 @@
   (interactive)
   (setq ess-customize-alist S+3-customize-alist)
   (ess-mode S+3-customize-alist proc-name)
-  (if ess-S-use-imenu (ess-imenu-R)))
+  (if ess-imenu-use-S (ess-imenu-S)))
 
 (defun S+3-transcript-mode ()
   "S-PLUS 3.x transcript mode."
