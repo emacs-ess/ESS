@@ -53,7 +53,7 @@ The prefix argument is ignored when ddeclient is used"
 	(ess-get-process-variable
 	 ess-current-process-name 'inferior-ess-client-command))
   (narrow-to-region start end)
-  (beginning-of-buffer)
+  (goto-char (point-min))
   (let ((beg))
     (while (or (< (point) (point-max))
 	       (and (= 1 (point-max)) even-empty))
