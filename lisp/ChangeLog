@@ -1,5 +1,51 @@
 2006-01-06  Stephen Eglen  <stephen@gnu.org>
 
+	* msdos.el (msdos-minor-mode): Shouldn't msdos-minor-mode be
+	defined earlier in the file?  Have not moved yet, as I cannot test
+	on Unix.
+
+	* ess-swv.el (ess-makePS): let* needed so that namestem can be
+	used within definitions of let.
+
+	* ess-inf.el (ess-bufs-in-frame): Defvar.
+
+	* mouseme.el (mouse-me-execute): This function is broken, so I've
+	made it just report an error [w32-shell-execute not present].
+
+	* essddr.el (Rd-font-list): Move to top of document, before it is
+	used in defuns.
+	(Rd-active-mark): Put empty definition of defun before defining
+	conditional on Emacs/Xemacs.  This silences the compiler.
+
+	* essd-sp4.el (S+4, S+4-msdos): Replace
+	(beginning-of-buffer) with (goto-char (point-min)).
+
+	* essd-sp3.el (S+3-mode): Correct call to imenu (defun was
+	broken).
+
+	* essd-r.el (ess-rterm-versions-create): version-root should be a
+	local variable.
+
+	* ess.el (ess-write-to-dribble-buffer): Chnage insert-string to
+	insert.
+
+	* ess-swv.el (ess-makeSweave): ess-command is local variable.
+
+	* ess-rdired.el (ess-rdired-sort-num): Make defvar.
+
+	* ess-mode.el (ess-parse-errors): Change string-to-int (obsolete)
+	to string-to-number.
+
+	* ess-iw32.el (ess-eval-region-ddeclient): Replace
+	(beginning-of-buffer) with (goto-char (point-min)).
+
+	* ess-emcs.el: Change string-to-int (obsolete) to
+	string-to-number.
+
+	* ess-cust.el (inferior-ess-primary-prompt): Add group, type.
+	(inferior-ess-secondary-prompt): Add group, type.
+	(ess-process-name-list): Make defvar.
+
 	* ess-install.el: Add call to byte compiler to recompile all files
 	in the new lisp directory.
 
