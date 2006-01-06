@@ -211,15 +211,13 @@ Do not include .el extension in case there is also a .elc around.")
 	    (kill-region beg (point))
 	    (insert ess-commands)
 	    (save-buffer)
+	    (byte-recompile-directory ess-lisp-dir 0)
 	    (message (concat "ESS updated to version "  ess-new-version))
 	    ))
       ;; else, just insert commands at end.
       (goto-char (point-max))
       (insert ess-commands)
       (save-buffer)
+      (byte-recompile-directory ess-lisp-dir 0)
       (message (concat "ESS version "ess-new-version" installed."))
       )))
-
-
-
-
