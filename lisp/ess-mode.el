@@ -661,7 +661,9 @@ With prefix argument, only shows the errors ESS reported."
 	   t)
 	  (let* ((filename (buffer-substring (match-beginning 3) (match-end 3)))
 		 (fbuffer (get-file-buffer filename))
-		 (linenum (string-to-int (buffer-substring (match-beginning 2) (match-end 2))))
+		 (linenum 
+		  (string-to-number 
+		   (buffer-substring (match-beginning 2) (match-end 2))))
 		 (errmess (buffer-substring (match-beginning 1) (match-end 1))))
 	    (if showerr
 		  (ess-display-temp-buffer errbuff)
