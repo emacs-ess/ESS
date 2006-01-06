@@ -221,7 +221,7 @@
 	(setq ess-dribble-buffer (get-buffer-create "*ESS*")))
     (set-buffer ess-dribble-buffer)
     (goto-char (point-max))
-    (insert-string text)))
+    (insert text)))
 
 (defun ess-setq-vars-local (alist &optional buf)
   "Set language variables from ALIST, in buffer BUF, if desired."
