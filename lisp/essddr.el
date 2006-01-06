@@ -36,7 +36,7 @@
   "Kurt Hornik <Kurt.Hornik@R-project.org>"
   "Current maintainer of essddr.el.")
 
-
+(defun Rd-active-mark () nil)		;silence compiler.
 (if (featurep 'xemacs)
     ;; Special support for XEmacs (curtesy of auctex):
     (defun Rd-active-mark ()
@@ -223,6 +223,26 @@ All Rd mode abbrevs start with a grave accent (`).")
 
 (defvar Rd-to-help-command "R CMD Rd2txt"
   "*Shell command for converting R documentation source to help text.")
+
+
+(defvar Rd-font-list
+  '((?\C-b "\\bold{"	"}")
+    (?\C-c "\\code{"	"}")
+    (?\C-e "\\emph{"	"}")
+    (?\C-l "\\link{"	"}")
+    (?l "\\code{\\link{" "}}")
+    (?\C-m "\\email{"	"}")
+    (?\C-q "\\eqn{"	"}")
+    (?\C-u "\\url{"	"}")
+    )
+  "List of ``fonts'' used by Rd-font.
+
+Each entry is a list.
+The first element is the key to activate the font.
+The second element is the string to insert before point, and the third
+element is the string to insert after point."
+)
+
 
 ;;;###autoload
 (defun Rd-mode ()
@@ -439,25 +459,6 @@ following lines to your `.emacs' file:
 	   (insert before)
 	   (save-excursion
 	     (insert after))))))
-
-
-(defvar Rd-font-list
-  '((?\C-b "\\bold{"	"}")
-    (?\C-c "\\code{"	"}")
-    (?\C-e "\\emph{"	"}")
-    (?\C-l "\\link{"	"}")
-    (?l "\\code{\\link{" "}}")
-    (?\C-m "\\email{"	"}")
-    (?\C-q "\\eqn{"	"}")
-    (?\C-u "\\url{"	"}")
-    )
-  "List of ``fonts'' used by Rd-font.
-
-Each entry is a list.
-The first element is the key to activate the font.
-The second element is the string to insert before point, and the third
-element is the string to insert after point."
-)
 
 
 (defun Rd-preview-help ()
