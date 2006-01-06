@@ -7,6 +7,7 @@ instead; only valid PROCs are fontified which is very helpful finding syntax err
 @item Rterm/Cygwin combination works under Microsoft Windows.
 @item @ESS{[R]}: internal calls use baseenv() instead of NULL and
 define 'baseenv' where needed.
+@item New experimental support for installing ESS.  See the file @file{lisp/ess-install.el}.
 @end itemize
 
 Changes/New Features in 5.2.11:
