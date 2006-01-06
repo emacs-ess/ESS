@@ -2742,6 +2742,7 @@ deletion (`x' will actually perform the deletion).
 * Bugs::
 * Reporting Bugs::
 * Mailing Lists::
+* Help with emacs::
 @end menu
 
 @node Bugs, Reporting Bugs, Mailing lists/bug reports, Mailing lists/bug reports
@@ -2757,10 +2758,23 @@ deletion (`x' will actually perform the deletion).
 @include bugrept.texi
 
 @comment  node-name,  next,  previous,  up
-@node Mailing Lists,  , Reporting Bugs, Mailing lists/bug reports
+@node Mailing Lists, Help with emacs, Reporting Bugs, Mailing lists/bug reports
 @section Mailing Lists
 
 @include mailing.texi
+
+@comment  node-name,  next,  previous,  up
+@node Help with emacs,  , Mailing Lists, Mailing lists/bug reports
+@section Help with emacs
+
+Emacs is a complex editor with many abilities that we do not have space
+to describe here.  If you have problems with other features of emacs
+(e.g. printing), there are several sources to consult, including the
+emacs FAQs (try @kbd{M-x xemacs-www-faq} or @kbd{M-x view-emacs-FAQ})
+and EmacsWiki (@uref{http://www.emacswiki.org}).  Please consult them
+before asking on the mailing list about issues that are not specific to
+ESS.
+
 
 @c _not_yet_ @node Help OS, Installation, Help for Statistical Packages, Top
 @c _not_yet_ @comment  node-name,  next,  previous,  up
