@@ -181,7 +181,7 @@ is here to allow slow disks to start the Splus program."
 		   ; Splus Commands window increase the sleep-for time!
     (setq ess-local-process-name ess-current-process-name)
     (ess-eval-linewise (concat "#" ess-current-process-name))
-    (beginning-of-buffer)
+    (goto-char (point-min))
     (insert
      "This is a placeholder buffer.  You can't type anything here.
 Use `C-x b RET' to return to your file.\n
@@ -348,7 +348,7 @@ is here to allow slow disks to start the Splus program."
 ;;; end from msdos-minor-mode
     (setq ess-local-process-name ess-current-process-name)
     (ess-eval-linewise (concat "#" ess-current-process-name))
-    (beginning-of-buffer)
+    (goto-char (point-min))
     (insert
      "This is a placeholder buffer.  You can't type anything here.
 Use 'C-x b RET' to return to your file.\n
