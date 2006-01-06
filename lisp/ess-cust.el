@@ -1055,7 +1055,9 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 
 (defcustom inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?"
   "Regular expression used by `ess-mode' to detect the primary prompt.
-Do not anchor to bol with `^'.")
+Do not anchor to bol with `^'."
+  :group 'ess-proc
+  :type 'string)
 
 (make-variable-buffer-local 'inferior-ess-primary-prompt)
 (setq-default inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?")
@@ -1063,7 +1065,9 @@ Do not anchor to bol with `^'.")
 (defcustom inferior-ess-secondary-prompt "+ ?"
   "Regular expression used by ess-mode to detect the secondary prompt.
 (This is issued by S to continue an incomplete expression). Do not
-anchor to bol with `^'.")
+anchor to bol with `^'."
+  :group 'ess-proc
+  :type 'string)
 
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
 (setq-default inferior-ess-secondary-prompt "+ ?")
@@ -1115,7 +1119,7 @@ of Emacs until the code has been successfully evaluated."
 
 ;; defconst ess-local-process-name now done in S.el
 
-(defcustom ess-process-name-list nil
+(defvar ess-process-name-list nil
   "Alist of active ESS processes.")
 
 ;;*;; Inferior ESS commands
