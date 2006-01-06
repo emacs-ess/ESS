@@ -700,6 +700,7 @@ as the current buffer."
 	  (select-window (get-buffer-window buf 0))))))
 
 
+(defvar ess-bufs-in-frame nil)		;silence the compiler.
 ;; The next few functions are copied from my (SJE) iswitchb library.
 (defun ess-get-bufname (win)
   "Used by `ess-get-buffers-in-frames' to walk through all windows."
