@@ -154,6 +154,9 @@ can then examine these objects, plot them, and so on.
   (setq major-mode 'ess-rdired-mode)
   (setq mode-name (concat "RDired " ess-local-process-name)))
 
+(defvar ess-rdired-sort-num nil)	;silence the compiler.
+;; but see following defun -- maybe it should be buffer local.
+
 (defun ess-rdired ()
   "Run dired-like mode on R objects.
 This is the main function.  See documentation for `ess-rdired-mode' though
