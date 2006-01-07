@@ -58,6 +58,9 @@ Changes/New Features in 5.2.12:
    * ESS[R]: internal calls use baseenv() instead of NULL and define
      'baseenv' where needed.
 
+   * New experimental support for installing ESS.  See the file
+     `lisp/ess-install.el'.
+
    Changes/New Features in 5.2.11:
    * ESS Info entry and `dir' handled more effectively for GNU Emacs
      users
