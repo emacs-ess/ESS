@@ -67,6 +67,10 @@ environment variable."
   :type '(choice (const :tag "None" nil) file)
   :group 'shell)
 
+(make-variable-buffer-local 'msdos-minor-mode)
+(defvar msdos-minor-mode nil
+  "Non-nil if using msdos-minor mode as a minor mode of some other mode.")
+
 (defun msdos ()
   "Run an inferior msdos shell, with I/O through buffer *msdos*.
 This function is intended to be used in an Ntemacs session in which
@@ -154,12 +158,6 @@ d. strips ctrl-m from output.
 
 ;; Install ourselves:
 
-;; SJE: shouldn't this come at the top of the file, before the
-;; variable is used?
-
-(make-variable-buffer-local 'msdos-minor-mode)
-(defvar msdos-minor-mode nil
-  "Non-nil if using msdos-minor mode as a minor mode of some other mode.")
 
 (put 'msdos-minor-mode 'permanent-local t)
 (or (assq 'msdos-minor-mode minor-mode-alist)
