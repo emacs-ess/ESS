@@ -219,10 +219,19 @@ Change the path otherwise to point to other locations.
 
 
 To start the S-PLUS [67].x GUI from ESS under emacs:
+@enumerate
+@item
+If you use Cygwin bash as your primary shell, then
 @example
 M-x S
 (or @code{M-x S+6}).
 @end example
+@item
+If you use the MSDOS prompt window as your primary shell, then
+@example
+M-x S+6-msdos
+@end example
+@end enumerate
 You will then be
 asked for a pathname ("S starting data directory?"), from which to
 start the process.  The prompt will propose your current directory
@@ -233,7 +242,8 @@ Send lines or regions
 from the emacs buffer containing your S program (for example,
 @file{myfile.s}) to the S-PLUS Commands Window with the
 @code{C-c C-n} or @code{C-c C-r} keys.
-(If you are still using S-PLUS 4.x or 2000, then use @code{M-x S+4}.)
+(If you are still using S-PLUS 4.x or 2000,\
+then use @code{M-x S+4} or @code{M-x S+4-msdos}.)
 
 To start an S-PLUS [67].x session inside an emacs buffer---and
 without the S-PLUS GUI:
@@ -241,6 +251,7 @@ without the S-PLUS GUI:
 M-x Sqpe
 (or @code{M-x Sqpe+6}).
 @end example
+This works with both the bash and msdos shells.
 You will then be asked for a pathname ("S starting data
 directory?"), from which to start the process.  The prompt will
 propose your current directory as the default.
@@ -267,6 +278,10 @@ from the S-PLUS icon):
 @example
 M-x S+6-existing
 @end example
+or
+@example
+M-x S+6-msdos-existing
+@end example
 You will then be
 asked for a pathname ("S starting data directory?"), from which to
 start the process.  The prompt will propose your current directory
@@ -276,7 +291,8 @@ Send lines or regions
 from the emacs buffer containing your S program (for example,
 @file{myfile.s}) to the S-PLUS Commands Window with the
 @code{C-c C-n} or @code{C-c C-r} keys.
-(If you are still using S-PLUS 4.x or 2000, then use @code{M-x S+4-existing}.)
+(If you are still using S-PLUS 4.x or 2000,
+ then use @code{M-x S+4-existing} or @code{M-x S+4-msdos-existing}.)
 
 If you wish to run R, you can start it with:
 @example

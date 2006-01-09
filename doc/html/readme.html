@@ -933,10 +933,16 @@ variable, you can add the following to your emacs initialization file
 Change the path otherwise to point to other locations.
 
      <p>To start the S-PLUS [67].x GUI from ESS under emacs:
-     <pre class="example">          M-x S
-          (or <code>M-x S+6</code>).
-     </pre>
-     <p>You will then be
+          <ol type=1 start=1>
+<li>If you use Cygwin bash as your primary shell, then
+          <pre class="example">               M-x S
+               (or <code>M-x S+6</code>).
+          </pre>
+          <li>If you use the MSDOS prompt window as your primary shell, then
+          <pre class="example">               M-x S+6-msdos
+          </pre>
+          </ol>
+You will then be
 asked for a pathname ("S starting data directory?"), from which to
 start the process.  The prompt will propose your current directory
 as the default.  ESS will start the S-PLUS GUI.  There will be
@@ -946,14 +952,16 @@ Send lines or regions
 from the emacs buffer containing your S program (for example,
 <span class="file">myfile.s</span>) to the S-PLUS Commands Window with the
 <code>C-c C-n</code> or <code>C-c C-r</code> keys. 
-(If you are still using S-PLUS 4.x or 2000, then use <code>M-x S+4</code>.)
+(If you are still using S-PLUS 4.x or 2000,\
+then use <code>M-x S+4</code> or <code>M-x S+4-msdos</code>.)
 
      <p>To start an S-PLUS [67].x session inside an emacs buffer&mdash;and
 without the S-PLUS GUI:
      <pre class="example">          M-x Sqpe
           (or <code>M-x Sqpe+6</code>).
      </pre>
-     <p>You will then be asked for a pathname ("S starting data
+     <p>This works with both the bash and msdos shells. 
+You will then be asked for a pathname ("S starting data
 directory?"), from which to start the process.  The prompt will
 propose your current directory as the default. 
 You get Unix-like behavior, in particular the entire
@@ -977,6 +985,9 @@ need a PostScript file you will need to open a separate
 from the S-PLUS icon):
      <pre class="example">          M-x S+6-existing
      </pre>
+     <p>or
+     <pre class="example">          M-x S+6-msdos-existing
+     </pre>
      <p>You will then be
 asked for a pathname ("S starting data directory?"), from which to
 start the process.  The prompt will propose your current directory
@@ -986,7 +997,8 @@ Send lines or regions
 from the emacs buffer containing your S program (for example,
 <span class="file">myfile.s</span>) to the S-PLUS Commands Window with the
 <code>C-c C-n</code> or <code>C-c C-r</code> keys. 
-(If you are still using S-PLUS 4.x or 2000, then use <code>M-x S+4-existing</code>.)
+(If you are still using S-PLUS 4.x or 2000,
+ then use <code>M-x S+4-existing</code> or <code>M-x S+4-msdos-existing</code>.)
 
      <p>If you wish to run R, you can start it with:
      <pre class="example">          M-x R

@@ -1193,10 +1193,16 @@ variable, you can add the following to your emacs initialization file
 Change the path otherwise to point to other locations.
 
      <p>To start the S-PLUS [67].x GUI from ESS under emacs:
-     <pre class="example">          M-x S
-          (or <code>M-x S+6</code>).
-     </pre>
-     <p>You will then be
+          <ol type=1 start=1>
+<li>If you use Cygwin bash as your primary shell, then
+          <pre class="example">               M-x S
+               (or <code>M-x S+6</code>).
+          </pre>
+          <li>If you use the MSDOS prompt window as your primary shell, then
+          <pre class="example">               M-x S+6-msdos
+          </pre>
+          </ol>
+You will then be
 asked for a pathname ("S starting data directory?"), from which to
 start the process.  The prompt will propose your current directory
 as the default.  ESS will start the S-PLUS GUI.  There will be
@@ -1206,14 +1212,16 @@ Send lines or regions
 from the emacs buffer containing your S program (for example,
 <span class="file">myfile.s</span>) to the S-PLUS Commands Window with the
 <code>C-c C-n</code> or <code>C-c C-r</code> keys. 
-(If you are still using S-PLUS 4.x or 2000, then use <code>M-x S+4</code>.)
+(If you are still using S-PLUS 4.x or 2000,\
+then use <code>M-x S+4</code> or <code>M-x S+4-msdos</code>.)
 
      <p>To start an S-PLUS [67].x session inside an emacs buffer&mdash;and
 without the S-PLUS GUI:
      <pre class="example">          M-x Sqpe
           (or <code>M-x Sqpe+6</code>).
      </pre>
-     <p>You will then be asked for a pathname ("S starting data
+     <p>This works with both the bash and msdos shells. 
+You will then be asked for a pathname ("S starting data
 directory?"), from which to start the process.  The prompt will
 propose your current directory as the default. 
 You get Unix-like behavior, in particular the entire
@@ -1237,6 +1245,9 @@ need a PostScript file you will need to open a separate
 from the S-PLUS icon):
      <pre class="example">          M-x S+6-existing
      </pre>
+     <p>or
+     <pre class="example">          M-x S+6-msdos-existing
+     </pre>
      <p>You will then be
 asked for a pathname ("S starting data directory?"), from which to
 start the process.  The prompt will propose your current directory
@@ -1246,7 +1257,8 @@ Send lines or regions
 from the emacs buffer containing your S program (for example,
 <span class="file">myfile.s</span>) to the S-PLUS Commands Window with the
 <code>C-c C-n</code> or <code>C-c C-r</code> keys. 
-(If you are still using S-PLUS 4.x or 2000, then use <code>M-x S+4-existing</code>.)
+(If you are still using S-PLUS 4.x or 2000,
+ then use <code>M-x S+4-existing</code> or <code>M-x S+4-msdos-existing</code>.)
 
      <p>If you wish to run R, you can start it with:
      <pre class="example">          M-x R
@@ -4901,8 +4913,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 
 <ul class="index-cp" compact>
-<li><a href="#index-_0040file_007b_002eemacs_007d-file-176"><span class="file">.emacs</span> file</a>: <a href="#Source-Directories">Source Directories</a></li>
 <li><a href="#index-_0040file_007b_002eemacs_007d-file-159"><span class="file">.emacs</span> file</a>: <a href="#Indenting">Indenting</a></li>
+<li><a href="#index-_0040file_007b_002eemacs_007d-file-176"><span class="file">.emacs</span> file</a>: <a href="#Source-Directories">Source Directories</a></li>
 <li><a href="#index-aborting-S-commands-111">aborting S commands</a>: <a href="#Other">Other</a></li>
 <li><a href="#index-aborting-the-ESS-process-116">aborting the ESS process</a>: <a href="#Other">Other</a></li>
 <li><a href="#index-arguments-to-S-program-31">arguments to S program</a>: <a href="#Customizing-startup">Customizing startup</a></li>
@@ -4981,8 +4993,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-Remote-Computers-22">Remote Computers</a>: <a href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a></li>
 <li><a href="#index-reverting-function-definitions-130">reverting function definitions</a>: <a href="#Edit-buffer">Edit buffer</a></li>
 <li><a href="#index-running-S-11">running S</a>: <a href="#Starting-up">Starting up</a></li>
-<li><a href="#index-search-list-178">search list</a>: <a href="#Source-Directories">Source Directories</a></li>
 <li><a href="#index-search-list-90">search list</a>: <a href="#Hot-keys">Hot keys</a></li>
+<li><a href="#index-search-list-178">search list</a>: <a href="#Source-Directories">Source Directories</a></li>
 <li><a href="#index-sending-input-34">sending input</a>: <a href="#Entering-commands">Entering commands</a></li>
 <li><a href="#index-starting-directory-14">starting directory</a>: <a href="#Starting-up">Starting up</a></li>
 <li><a href="#index-starting-ESS-10">starting ESS</a>: <a href="#Starting-up">Starting up</a></li>
@@ -5025,12 +5037,12 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-comint_002dinterrupt_002dsubjob-110"><code>comint-interrupt-subjob</code></a>: <a href="#Other">Other</a></li>
 <li><a href="#index-comint_002dkill_002dinput-38"><code>comint-kill-input</code></a>: <a href="#Command_002dline-editing">Command-line editing</a></li>
 <li><a href="#index-comint_002dkill_002doutput-58"><code>comint-kill-output</code></a>: <a href="#Last-command">Last command</a></li>
-<li><a href="#index-comint_002dnext_002dinput-77"><code>comint-next-input</code></a>: <a href="#Command-History">Command History</a></li>
 <li><a href="#index-comint_002dnext_002dinput-61"><code>comint-next-input</code></a>: <a href="#Process-buffer-motion">Process buffer motion</a></li>
+<li><a href="#index-comint_002dnext_002dinput-77"><code>comint-next-input</code></a>: <a href="#Command-History">Command History</a></li>
 <li><a href="#index-comint_002dnext_002dmatching_002dinput-79"><code>comint-next-matching-input</code></a>: <a href="#Command-History">Command History</a></li>
 <li><a href="#index-comint_002dnext_002dmatching_002dinput_002dfrom_002dinput-81"><code>comint-next-matching-input-from-input</code></a>: <a href="#Command-History">Command History</a></li>
-<li><a href="#index-comint_002dprevious_002dinput-76"><code>comint-previous-input</code></a>: <a href="#Command-History">Command History</a></li>
 <li><a href="#index-comint_002dprevious_002dinput-60"><code>comint-previous-input</code></a>: <a href="#Process-buffer-motion">Process buffer motion</a></li>
+<li><a href="#index-comint_002dprevious_002dinput-76"><code>comint-previous-input</code></a>: <a href="#Command-History">Command History</a></li>
 <li><a href="#index-comint_002dprevious_002dmatching_002dinput-78"><code>comint-previous-matching-input</code></a>: <a href="#Command-History">Command History</a></li>
 <li><a href="#index-comint_002dprevious_002dmatching_002dinput_002dfrom_002dinput-80"><code>comint-previous-matching-input-from-input</code></a>: <a href="#Command-History">Command History</a></li>
 <li><a href="#index-comint_002dshow_002dmaximum_002doutput-55"><code>comint-show-maximum-output</code></a>: <a href="#Last-command">Last command</a></li>
@@ -5045,13 +5057,13 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-ess_002dask_002dfor_002dess_002ddirectory-26"><code>ess-ask-for-ess-directory</code></a>: <a href="#Customizing-startup">Customizing startup</a></li>
 <li><a href="#index-ess_002dbeginning_002dof_002dfunction-160"><code>ess-beginning-of-function</code></a>: <a href="#Other-edit-buffer-commands">Other edit buffer commands</a></li>
 <li><a href="#index-ess_002dchange_002dsp_002dregexp-50"><code>ess-change-sp-regexp</code></a>: <a href="#Completion-details">Completion details</a></li>
-<li><a href="#index-ess_002dcleanup-193"><code>ess-cleanup</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002dcleanup-103"><code>ess-cleanup</code></a>: <a href="#Hot-keys">Hot keys</a></li>
+<li><a href="#index-ess_002dcleanup-193"><code>ess-cleanup</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002ddelete_002ddump_002dfiles-166"><code>ess-delete-dump-files</code></a>: <a href="#Source-Files">Source Files</a></li>
 <li><a href="#index-ess_002ddescribe_002dhelp_002dmode-183"><code>ess-describe-help-mode</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002ddirectory-177"><code>ess-directory</code></a>: <a href="#Source-Directories">Source Directories</a></li>
 <li><a href="#index-ess_002ddirectory-27"><code>ess-directory</code></a>: <a href="#Customizing-startup">Customizing startup</a></li>
-<li><a href="#index-ess_002ddisplay_002dhelp_002don_002dobject-182"><code>ess-display-help-on-object</code></a>: <a href="#Help">Help</a></li>
+<li><a href="#index-ess_002ddisplay_002dhelp_002don_002dobject-184"><code>ess-display-help-on-object</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002ddump_002dfilename_002dtemplate-173"><code>ess-dump-filename-template</code></a>: <a href="#Source-Directories">Source Directories</a></li>
 <li><a href="#index-ess_002ddump_002dobject_002dinto_002dedit_002dbuffer-124"><code>ess-dump-object-into-edit-buffer</code></a>: <a href="#Edit-buffer">Edit buffer</a></li>
 <li><a href="#index-ess_002ddump_002dobject_002dinto_002dedit_002dbuffer-117"><code>ess-dump-object-into-edit-buffer</code></a>: <a href="#Other">Other</a></li>
@@ -5059,11 +5071,11 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-ess_002dend_002dof_002dfunction-161"><code>ess-end-of-function</code></a>: <a href="#Other-edit-buffer-commands">Other edit buffer commands</a></li>
 <li><a href="#index-ess_002deval_002dbuffer-148"><code>ess-eval-buffer</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002deval_002dfunction-144"><code>ess-eval-function</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
-<li><a href="#index-ess_002deval_002dfunction_002dand_002dgo-145"><code>ess-eval-function-and-go</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
+<li><a href="#index-ess_002deval_002dfunction_002dand_002dgo-149"><code>ess-eval-function-and-go</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002deval_002dline-142"><code>ess-eval-line</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002deval_002dline_002dand_002dgo-143"><code>ess-eval-line-and-go</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
-<li><a href="#index-ess_002deval_002dline_002dand_002dstep-189"><code>ess-eval-line-and-step</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002deval_002dline_002dand_002dstep-150"><code>ess-eval-line-and-step</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
+<li><a href="#index-ess_002deval_002dline_002dand_002dstep-189"><code>ess-eval-line-and-step</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002deval_002dregion-190"><code>ess-eval-region</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002deval_002dregion-146"><code>ess-eval-region</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002deval_002dregion_002dand_002dgo-147"><code>ess-eval-region-and-go</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
@@ -5081,10 +5093,10 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-ess_002dload_002dfile-132"><code>ess-load-file</code></a>: <a href="#Loading">Loading</a></li>
 <li><a href="#index-ess_002dload_002dfile-97"><code>ess-load-file</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-ess_002dmode_002dfont_002dlock_002dkeywords-198"><code>ess-mode-font-lock-keywords</code></a>: <a href="#Highlighting">Highlighting</a></li>
-<li><a href="#index-ess_002dparse_002derrors-136"><code>ess-parse-errors</code></a>: <a href="#Error-Checking">Error Checking</a></li>
 <li><a href="#index-ess_002dparse_002derrors-98"><code>ess-parse-errors</code></a>: <a href="#Hot-keys">Hot keys</a></li>
-<li><a href="#index-ess_002dquit-192"><code>ess-quit</code></a>: <a href="#Help">Help</a></li>
+<li><a href="#index-ess_002dparse_002derrors-136"><code>ess-parse-errors</code></a>: <a href="#Error-Checking">Error Checking</a></li>
 <li><a href="#index-ess_002dquit-115"><code>ess-quit</code></a>: <a href="#Other">Other</a></li>
+<li><a href="#index-ess_002dquit-192"><code>ess-quit</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002dremote-23"><code>ess-remote</code></a>: <a href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a></li>
 <li><a href="#index-ess_002drequest_002da_002dprocess-21"><code>ess-request-a-process</code></a>: <a href="#Multiple-ESS-processes">Multiple ESS processes</a></li>
 <li><a href="#index-ess_002dresynch-51"><code>ess-resynch</code></a>: <a href="#Completion-details">Completion details</a></li>
@@ -5112,7 +5124,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-q_0028_0029-101"><code>q()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-S-12"><code>S</code></a>: <a href="#Starting-up">Starting up</a></li>
 <li><a href="#index-S_002belsewhere-25"><code>S+elsewhere</code></a>: <a href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a></li>
-<li><a href="#index-search_0028_0029-89"><code>search()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
+<li><a href="#index-search_0028_0029-91"><code>search()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-search_0028_0029-44"><code>search()</code></a>: <a href="#Completion">Completion</a></li>
 <li><a href="#index-source_0028_0029-138"><code>source()</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-source_0028_0029-133"><code>source()</code></a>: <a href="#Loading">Loading</a></li>
