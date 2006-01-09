@@ -505,7 +505,12 @@ with statistical programs.
 @cindex starting ESS
 @cindex running S
 
-To start an @Sl{} session, simply type @kbd{M-x S RET}.
+To start an @Sl{} session on Unix or on Windows when you
+use the Cygwin bash shell, simply type @kbd{M-x S RET}.
+
+To start an @Sl{} session on Windows when you
+use the MSDOS prompt shell, simply type @kbd{M-x S+6-msdos RET}.
+
 @pindex S
 
 @cindex ESS process directory

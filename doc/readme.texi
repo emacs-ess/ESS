@@ -39,6 +39,7 @@ Lumley).
 
 @menu
 * License::
+* Starting an ESS Process::
 * New Features::
 * Current Features::
 * Stability::
@@ -50,13 +51,22 @@ Lumley).
 * Authors::
 @end menu
 
-@node License, New Features, General Information, General Information
+@node License, Starting up, General Information, General Information
 @comment  node-name,  next,  previous,  up
 @section License
 
 @include license.texi
 
-@node New Features, Current Features, License, General Information
+@node Starting up, New Features, License, General Information
+@section Starting an ESS process
+To start an @Sl{} session on Unix or on Windows when you
+use the Cygwin bash shell, simply type @kbd{M-x S RET}.
+
+To start an @Sl{} session on Windows when you
+use the MSDOS prompt shell, simply type @kbd{M-x S+6-msdos RET}.
+
+
+@node New Features, Current Features, Starting up, General Information
 @comment  node-name,  next,  previous,  up
 @section New Features
 
