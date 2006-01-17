@@ -107,7 +107,7 @@ toolbar has changed."
 		       (string  :tag "Tooltip"))))
 
 (defvar ess-icon-directory
-  (expand-file-name (concat ess-etc-directory "/icons"))
+  (expand-file-name (concat (file-name-as-directory ess-etc-directory) "icons"))
   "*Location for ESS icons.
 This variable should be set automatically by the ESS install process.
 Icons should be found in ESS/etc/icons/ directory.
