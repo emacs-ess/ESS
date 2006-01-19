@@ -528,7 +528,7 @@ nil (as by default) !"
 ;;; All of the above three :
 (defun ess-MM-fix-src (&optional dont-query verbose)
   "Clean up ess-source code which has been produced by dump(..), and other
-code not typically produced by other tools.  Produces more readable code,
+code typically produced by other tools.  Produces more readable code,
 and one that is well formatted in emacs ess-mode."
   (interactive "P")
   ;; each of the following does a save-excursion:
