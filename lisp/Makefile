@@ -59,7 +59,7 @@ all: $(ELC)
 
 install: $(ELC)
 	-$(INSTALLDIR) $(LISPDIR)
-	$(INSTALL) *.elc $(LISPDIR)
+	$(INSTALL) ChangeLog *.elc $(LISPDIR)
 #	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
 
 dist: ess-cust.el
