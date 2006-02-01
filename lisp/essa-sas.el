@@ -683,15 +683,16 @@ current buffer if nil."
 
   (let ((ess-sas-error (concat
     "^ERROR [0-9]+-[0-9]+:\\|^ERROR:\\|_ERROR_=1 _N_=\\|_ERROR_=1[ ]?$"
-    "\\|NOTE: MERGE statement has more than one data set with repeats of BY values."
+    "\\|NOTE: MERGE statement has more than one data set with repeats"
     "\\|NOTE: Variable .* is uninitialized."
+    "\\|NOTE: SAS went to a new line when INPUT statement reached past" 
+    "\\|NOTE 485-185: Informat .* was not found"
+    "\\|NOTE: Estimated G matrix is not positive definite."
     "\\|WARNING: Apparent symbolic reference .* not resolved."
-    "\\|NOTE 485-185: Informat .* was not found or could not be loaded."
     "\\|WARNING: Length of character variable has already been set."
     "\\|WARNING: Not all variables in the list "
     "\\|WARNING: RUN statement ignored due to previous errors."
-    "\\|Bus Error In Task\\|Segmentation Violation In Task"
-    "\\|NOTE: Estimated G matrix is not positive definite."))
+    "\\|Bus Error In Task\\|Segmentation Violation In Task"))
 	(ess-sas-save-point nil) (ess-sas-pop-mark nil))
 
   (if (ess-sas-goto "log" 'revert) (progn
