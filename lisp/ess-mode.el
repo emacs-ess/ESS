@@ -452,6 +452,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 	      "\\)" ;;--------end outer Either/Or-------
 
 	      "\\(" space "\\s<.*\\s>\\)*"	; whitespace, comment
+	      ;; FIXME: in principle we should skip 'definition *= *' here
 	      space "function\\s-*(" ; whitespace, function keyword, parenthesis
 	      ))
      )
