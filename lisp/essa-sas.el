@@ -634,20 +634,20 @@ current buffer if nil."
 		    (if (file-exists-p ess-sas-temp-file)
 			(find-file ess-sas-temp-file)
 		    ;; else
-			(let* ((ess-sas-buffer-list (buffer-list)) 
-			       (ess-sas-buffer-list-index 0)
-			       (ess-sas-buffer-list-file nil)
-			       (ess-sas-buffer-list-length (length ess-sas-buffer-list)))
-			    (while (< ess-sas-buffer-list-index ess-sas-buffer-list-length)
-				(setq ess-sas-buffer-list-file 
-				    (buffer-file-name (nth ess-sas-buffer-list-index ess-sas-buffer-list)))
-				(if (and ess-sas-buffer-list-file
-				    (string-match (concat "." suffix) ess-sas-buffer-list-file))
-				    (switch-to-buffer (nth ess-sas-buffer-list-index ess-sas-buffer-list))
-				    (setq ess-sas-buffer-list-index ess-sas-buffer-list-length)
-				)
-				(setq ess-sas-buffer-list-index (+ 1 ess-sas-buffer-list-index))
-		        )))
+		    ;;	(let* ((ess-sas-buffer-list (buffer-list)) 
+		    ;;	       (ess-sas-buffer-list-index 0)
+		    ;;	       (ess-sas-buffer-list-file nil)
+		    ;;	       (ess-sas-buffer-list-length (length ess-sas-buffer-list)))
+		    ;;	    (while (< ess-sas-buffer-list-index ess-sas-buffer-list-length)
+		    ;;		(setq ess-sas-buffer-list-file 
+		    ;;		    (buffer-file-name (nth ess-sas-buffer-list-index ess-sas-buffer-list)))
+		    ;;		(if (and ess-sas-buffer-list-file
+		    ;;		    (string-match (concat "." suffix) ess-sas-buffer-list-file))
+		    ;;		    (switch-to-buffer (nth ess-sas-buffer-list-index ess-sas-buffer-list))
+		    ;;		    (setq ess-sas-buffer-list-index ess-sas-buffer-list-length)
+		    ;;		)
+		    ;;		(setq ess-sas-buffer-list-index (+ 1 ess-sas-buffer-list-index))
+		    ;;    )))
                 )
 	      )
 
