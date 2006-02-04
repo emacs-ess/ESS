@@ -4,10 +4,12 @@ Changes/New Features in 5.2.12:
 may be broken, if so, use @kbd{M-x comment-region} and @kbd{M-x uncomment-region}
 instead; only valid PROCs are fontified which is very helpful finding syntax errors
 (currently supported:  BASE, ETS, FSP, GRAPH, IML, INSIGHT and STAT).
+
+Further, sas-mode now also works in simple terminals.
 @item Rterm/Cygwin combination works under Microsoft Windows.
 @item @ESS{[R]}: internal calls use baseenv() instead of NULL and
 define 'baseenv' where needed.
-@item New experimental support for installing ESS.  See the file 
+@item New experimental support for installing ESS.  See the file
 @file{lisp/ess-install.el}.
 @end itemize
 

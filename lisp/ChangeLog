@@ -1,3 +1,12 @@
+2006-02-04  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): font-lock in any case,
+	also for dumb terminals
+
+2006-01-20  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-add-MM-keys): add *-execute-screen-options
+
 2006-01-06  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-install.el (ess-install-byte-compile): New defun.
