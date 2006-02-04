@@ -645,10 +645,15 @@ an underscore is always inserted. "
 (ess-toggle-underscore 'force-to-S-assign)
 
 (defun ess-add-MM-keys ()
-  "Define MM's user keys, currently only \\<ess-mode-map>\\[ess-insert-function-outline]."
+  "Define MM's user keys, currently \\<ess-mode-map>\\[ess-insert-function-outline], and
+ \\<inferior-ess-mode-map>\\[ess-execute-screen-options]."
   (interactive)
-  (require 'ess-mode)
-  (define-key ess-mode-map "\C-cf" 'ess-insert-function-outline))
+  (require 'ess-mode); typically unnecessary
+  (require 'ess-inf); dito
+  (define-key ess-mode-map          "\C-cf" 'ess-insert-function-outline)
+  (define-key inferior-ess-mode-map "\C-cw" 'ess-execute-screen-options)
+  )
+
 
 (defun ess-dump-args-and-go (Sfunc) ; &optional buff)
   "Dump the function name, with arguments, to a buffer for editing.
