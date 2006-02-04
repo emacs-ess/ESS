@@ -239,108 +239,109 @@ number."
 (modify-syntax-entry ?/  ". 14"  SAS-syntax-table) ; comment character
 (modify-syntax-entry ?.  "w"  SAS-syntax-table))
 
-(if (or window-system
-	noninteractive) ; compilation!
-    (progn
-      (require 'font-lock)
+(require 'font-lock); fontification also works in terminals!
+;; (if (or window-system
+;;  	noninteractive) ; compilation!
+;;; ...
 
-      (defvar SAS-mode-font-lock-keywords
-	(if ess-sas-run-make-regexp
-	(list
-	 ;; SAS comments
-	 (cons "^[ \t]*%?\\*.*;"		font-lock-comment-face)
-	 (cons ";[ \t]*%?\\*.*;"		font-lock-comment-face)
-	 (list "/\\*\\([^*/]\\)*\\*/"      0  font-lock-comment-face t)
 
-	 ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND
-	 (cons "\\<\\(data\\|run\\|%macro\\|%mend\\)\\>" font-lock-reference-face)
-	 (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"            font-lock-reference-face)
+(defvar SAS-mode-font-lock-keywords
+  (if ess-sas-run-make-regexp
+      (list
+       ;; SAS comments
+       (cons "^[ \t]*%?\\*.*;"		font-lock-comment-face)
+       (cons ";[ \t]*%?\\*.*;"		font-lock-comment-face)
+       (list "/\\*\\([^*/]\\)*\\*/"      0  font-lock-comment-face t)
 
-	 ;; SAS statements
+       ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND
+       (cons "\\<\\(data\\|run\\|%macro\\|%mend\\)\\>" font-lock-constant-face)
+       (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"            font-lock-constant-face)
 
-	 (cons (concat
-		"\\<"
-		"%?do[ \t]*" (make-regexp '("over" "%?until" "%?while") t) "?"
-		"\\>")
-	       font-lock-keyword-face)
+       ;; SAS statements
 
-	 (cons (concat
-		"\\<"
-		(make-regexp
-		 '(
-		   "abort" "array" "attrib" "by" "delete" "display" "dm"
-		   "drop" "error" "file" "filename" "footnote\\(10?\\|[2-9]\\)?"
-		   "format"
-		   "%go[ \t]*to" "%if" "%then" "%else"
-		   "go[ \t]*to" "if" "then" "else"
-		   "infile" "informat" "input" "%input" "keep" "label"
-		   "length" "libname" "link"
-		   "merge" "missing" "modify" "note" "options" "goptions" "output"
-		   "otherwise" "put" "%put" "rename" "retain" "select" "when" "set"
-		   "skip" "title\\(10?\\|[2-9]\\)?" "where" "window" "update" "out"
-		   "change" "class" "exchange" "exclude" "freq" "id" "index"
-		   "model" "plot" "save" "sum" "tables?" "var" "weight" "with"
-		   "manova" "repeated" "value" "random" "means" "lsmeans"
-		   ;; SAS macro statements not handled above
-		   "%global" "%include" "%local" "%let" "%sysexec"
-		   ) t) "\\>")
-	       font-lock-keyword-face)
+       (cons (concat
+	      "\\<"
+	      "%?do[ \t]*" (make-regexp '("over" "%?until" "%?while") t) "?"
+	      "\\>")
+	     font-lock-keyword-face)
 
-	 ;; SAS statements that must be followed by a semi-colon
-	 (cons (concat
-		"\\<"
-		(make-regexp
-		 '(
-		   "cards4?" "end" "%end" "endsas" "list" "lostcard" "page"
-		   "return" "stop"
-		   ) t) "\\>" "[ \t]*;")
-	       font-lock-keyword-face)
+       (cons (concat
+	      "\\<"
+	      (make-regexp
+	       '(
+		 "abort" "array" "attrib" "by" "delete" "display" "dm"
+		 "drop" "error" "file" "filename" "footnote\\(10?\\|[2-9]\\)?"
+		 "format"
+		 "%go[ \t]*to" "%if" "%then" "%else"
+		 "go[ \t]*to" "if" "then" "else"
+		 "infile" "informat" "input" "%input" "keep" "label"
+		 "length" "libname" "link"
+		 "merge" "missing" "modify" "note" "options" "goptions" "output"
+		 "otherwise" "put" "%put" "rename" "retain" "select" "when" "set"
+		 "skip" "title\\(10?\\|[2-9]\\)?" "where" "window" "update" "out"
+		 "change" "class" "exchange" "exclude" "freq" "id" "index"
+		 "model" "plot" "save" "sum" "tables?" "var" "weight" "with"
+		 "manova" "repeated" "value" "random" "means" "lsmeans"
+		 ;; SAS macro statements not handled above
+		 "%global" "%include" "%local" "%let" "%sysexec"
+		 ) t) "\\>")
+	     font-lock-keyword-face)
 
-	 ;; SAS/GRAPH statements not handled above
-	 (cons (concat
-		"\\<"
-		(make-regexp
-		 '("axis" "legend" "pattern" "symbol") t) "\\([1-9][0-9]?\\)?"
-		"\\>")
-	       font-lock-keyword-face)
+       ;; SAS statements that must be followed by a semi-colon
+       (cons (concat
+	      "\\<"
+	      (make-regexp
+	       '(
+		 "cards4?" "end" "%end" "endsas" "list" "lostcard" "page"
+		 "return" "stop"
+		 ) t) "\\>" "[ \t]*;")
+	     font-lock-keyword-face)
 
-	 ;; SAS functions and SAS macro functions
-	 (cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
-	       font-lock-function-name-face)
-	 (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
-	       font-lock-function-name-face)
+       ;; SAS/GRAPH statements not handled above
+       (cons (concat
+	      "\\<"
+	      (make-regexp
+	       '("axis" "legend" "pattern" "symbol") t) "\\([1-9][0-9]?\\)?"
+	      "\\>")
+	     font-lock-keyword-face)
 
-	 (cons (concat
-		"\\<"
-		(make-regexp
-		 '(
-		   "abs" "arcos" "arsin" "atan" "betainv" "byte" "ceil" "cinv"
-		   "collate" "compress" "cosh?" "css" "cv"
-		   "daccdb" "daccdbsl" "daccsl" "daccsyd" "dacctab"
-		   "depdb" "depdbsl" "depsl" "depsyd" "deptab"
-		   "date" "datejul" "datepart" "datetime" "day" "hms" "dhms" "dif"
-		   "digamma" "dim" "erfc?" "exp" "finv"
-		   "fipnamel?" "fipstate" "floor" "fuzz" "gaminv" "gamma"
-		   "hbound" "hour" "indexc?" "input" "int" "intck" "intnx" "intrr"
-		   "irr" "juldate" "kurtosis" "lag" "lbound" "left" "length"
-		   "lgamma" "log" "log10" "log2" "max" "mdy" "mean" "min" "minute"
-		   "mod" "month" "mort" "n" "netpv" "nmiss" "normal" "npv"
+       ;; SAS functions and SAS macro functions
+       (cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
+	     font-lock-function-name-face)
+       (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
+	     font-lock-function-name-face)
+
+       (cons (concat
+	      "\\<"
+	      (make-regexp
+	       '(
+		 "abs" "arcos" "arsin" "atan" "betainv" "byte" "ceil" "cinv"
+		 "collate" "compress" "cosh?" "css" "cv"
+		 "daccdb" "daccdbsl" "daccsl" "daccsyd" "dacctab"
+		 "depdb" "depdbsl" "depsl" "depsyd" "deptab"
+		 "date" "datejul" "datepart" "datetime" "day" "hms" "dhms" "dif"
+		 "digamma" "dim" "erfc?" "exp" "finv"
+		 "fipnamel?" "fipstate" "floor" "fuzz" "gaminv" "gamma"
+		 "hbound" "hour" "indexc?" "input" "int" "intck" "intnx" "intrr"
+		 "irr" "juldate" "kurtosis" "lag" "lbound" "left" "length"
+		 "lgamma" "log" "log10" "log2" "max" "mdy" "mean" "min" "minute"
+		 "mod" "month" "mort" "n" "netpv" "nmiss" "normal" "npv"
 ;;;) t) "\\>" "[ \t]*(")
 ;;;      font-lock-function-name-face)
 ;;;
 ;;;    (cons (concat "\\<"
 ;;;(make-regexp '(
-		   "probbeta" "probbnml" "probchi" "probf" "probgam" "probhypr"
-		   "probit" "probnegb" "probnorm" "probt"
-		   "ordinal" "poisson" "put" "qtr" "range" "rank" "repeat"
-		   "ranbin" "rancau" "ranexp" "rangam" "rannor" "ranpoi"
-		   "rantbl" "rantri" "ranuni"
-		   "reverse" "right" "round" "saving" "scan" "second" "sign" "sinh?"
-		   "sqrt" "std" "stderr" "stfips" "stnamel?" "substr" "sum"
-		   "symget" "tanh?" "time" "timepart" "tinv" "today" "translate"
-		   "trigamma" "trim" "trunc" "uniform" "upcase" "uss" "var"
-		   "verify" "weekday" "year" "yyq"
-		   "zipfips" "zipnamel?" "zipstate"
+		 "probbeta" "probbnml" "probchi" "probf" "probgam" "probhypr"
+		 "probit" "probnegb" "probnorm" "probt"
+		 "ordinal" "poisson" "put" "qtr" "range" "rank" "repeat"
+		 "ranbin" "rancau" "ranexp" "rangam" "rannor" "ranpoi"
+		 "rantbl" "rantri" "ranuni"
+		 "reverse" "right" "round" "saving" "scan" "second" "sign" "sinh?"
+		 "sqrt" "std" "stderr" "stfips" "stnamel?" "substr" "sum"
+		 "symget" "tanh?" "time" "timepart" "tinv" "today" "translate"
+		 "trigamma" "trim" "trunc" "uniform" "upcase" "uss" "var"
+		 "verify" "weekday" "year" "yyq"
+		 "zipfips" "zipnamel?" "zipstate"
 ;;;) t) "\\>" "[ \t]*(")
 ;;;      font-lock-function-name-face)
 ;;;
@@ -349,204 +350,202 @@ number."
 ;;;    ;; SCL functions that are known to work with SAS macro function %sysfunc
 ;;;    (cons (concat "\\<"
 ;;;(make-regexp '(
-		   "airy" "band" "blshift" "brshift" "bnot" "bor" "bxor"
-		   "cnonct" "fnonct" "tnonct" "compbl" "dairy" "dequote"
-		   "ibessel" "jbessel"
-		   "indexw" "inputc" "inputn"  "lowcase"
-		   "putc" "putn" "quote" "resolve" "soundex" "sysprod"
-		   "tranwrd" "trimn"
-		   "%sysfunc" "attrc" "attrn" "cexist" "close" "dclose" "dnum"
-		   "dopen" "dread" "exist" "fclose" "fetchobs" "fileexist"
-		   "finfo" "fopen" "fput" "fwrite" "getoption"
-		   "getvarc" "getvarn" "libname" "libref" "open" "optgetn" "optsetn"
-		   "pathname" "sysmsg" "varfmt" "varlabel" "varnum" "vartype"
-		   ) t) "\\>" "[ \t]*(")
-	       font-lock-function-name-face)
-	 )
-	(list
-	 ;; .log NOTE: messages
-	 (cons "^NOTE: .*$"                         font-lock-reference-face)
+		 "airy" "band" "blshift" "brshift" "bnot" "bor" "bxor"
+		 "cnonct" "fnonct" "tnonct" "compbl" "dairy" "dequote"
+		 "ibessel" "jbessel"
+		 "indexw" "inputc" "inputn"  "lowcase"
+		 "putc" "putn" "quote" "resolve" "soundex" "sysprod"
+		 "tranwrd" "trimn"
+		 "%sysfunc" "attrc" "attrn" "cexist" "close" "dclose" "dnum"
+		 "dopen" "dread" "exist" "fclose" "fetchobs" "fileexist"
+		 "finfo" "fopen" "fput" "fwrite" "getoption"
+		 "getvarc" "getvarn" "libname" "libref" "open" "optgetn" "optsetn"
+		 "pathname" "sysmsg" "varfmt" "varlabel" "varnum" "vartype"
+		 ) t) "\\>" "[ \t]*(")
+	     font-lock-function-name-face)
+       )
+    (list
+     ;; .log NOTE: messages
+     (cons "^NOTE: .*$"                         font-lock-constant-face)
 
-	 ;; .log ERROR: messages
-	 (cons "^ERROR: .*$"                        font-lock-keyword-face)
+     ;; .log ERROR: messages
+     (cons "^ERROR: .*$"                        font-lock-keyword-face)
 
-	 ;; .log WARNING: messages
-	 (cons "^WARNING: .*$"                      font-lock-function-name-face)
+     ;; .log WARNING: messages
+     (cons "^WARNING: .*$"                      font-lock-function-name-face)
 
-	 ;; SAS comments
-;; /* */ handled by grammar above
-;;	 (list "/\\*.*\\*/"                      0  font-lock-comment-face t)
-	 (cons "\\(^[0-9]*\\|;\\)[ \t]*\\(%?\\*\\|comment\\).*\\(;\\|$\\)" font-lock-comment-face)
+     ;; SAS comments
+     ;; /* */ handled by grammar above
+     ;;	 (list "/\\*.*\\*/"                      0  font-lock-comment-face t)
+     (cons "\\(^[0-9]*\\|;\\)[ \t]*\\(%?\\*\\|comment\\).*\\(;\\|$\\)" font-lock-comment-face)
 
-	 ;; SAS execution blocks, DATA/RUN, PROC/RUN, SAS Macro Statements
-	 (cons "\\<%do[ \t]*\\(%until\\|%while\\)?\\>"
-						    font-lock-reference-face)
-	 ;;(cons (concat "\\(^[0-9]*\\|;\\)[ \t]*"
-		;;"%\\(end\\|global\\|local\\|m\\(acro\\|end\\)\\)"
-		;;"\\>")				    font-lock-reference-face)
-	 (cons "\\<%\\(end\\|global\\|local\\|m\\(acro\\|end\\)\\)\\>"
-						    font-lock-reference-face)
+     ;; SAS execution blocks, DATA/RUN, PROC/RUN, SAS Macro Statements
+     (cons "\\<%do[ \t]*\\(%until\\|%while\\)?\\>"
+	   font-lock-constant-face)
+     ;;(cons (concat "\\(^[0-9]*\\|;\\)[ \t]*"
+     ;;"%\\(end\\|global\\|local\\|m\\(acro\\|end\\)\\)"
+     ;;"\\>")				    font-lock-constant-face)
+     (cons "\\<%\\(end\\|global\\|local\\|m\\(acro\\|end\\)\\)\\>"
+	   font-lock-constant-face)
 
-	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
-		"\\(data\\|endsas\\|finish\\|quit\\|run\\|start\\)[ \t\n;]")
-		      				    font-lock-reference-face)
-	 (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
-		;;"proc[ \t]+[a-z][a-z_0-9]+")        font-lock-reference-face)
-		"proc[ \t]+"
-		;;SAS/Base, SAS/Graph, SAS/FSP and common add-ons
-		"\\(append"
-		"\\|c\\(a\\(lendar\\|talog\\)\\|port\\|o\\(mpare\\|ntents\\|py\\|rr\\)\\)"
-		"\\|d\\(atasets\\|bcstab\\|isplay\\)\\|ex\\(plode\\|port\\)"
-		"\\|f\\(orm\\(at\\|s\\)\\|req\\|s\\(browse\\|edit\\|l\\(etter\\|ist\\)\\|view\\)\\)"
-		"\\|g?\\(chart\\|p\\(lot\\|rint\\)\\)"
-		"\\|g\\(anno\\|contour\\|device\\|font\\|\\(key\\)?map\\|options\\|project"
-		"\\|re\\(duce\\|move\\|play\\)\\|slide\\|testit\\|3\\(d\\|grid\\)\\)"   
-		"\\|[cg]?import\\|i\\(ml\\|nsight\\)\\|means\\|options\\|p\\(menu\\|rintto\\)"
-		"\\|r\\(ank\\|e\\(gistry\\|port\\)\\)"
-		"\\|s\\(ort\\|ql\\|tandard\\|ummary\\)"
-		"\\|t\\(abulate\\|imeplot\\|ran\\(spose\\|tab\\)\\)\\|univariate"
-		;;SAS/Stat and SAS/ETS
-		"\\|a\\(ceclus\\|nova\\|rima\\|utoreg\\)\\|boxplot"
-		"\\|c\\(a\\(lis\\|n\\(corr\\|disc\\)\\|tmod\\)\\|itibase\\|luster\\|o\\(mputab\\|rresp\\)\\)"
-		"\\|discrim\\|expand\\|f\\(a\\(ctor\\|stclus\\)\\|orecast\\|req\\)"
-		"\\|g\\(enmod\\|lm\\(mod\\|power\\)?\\)\\|inbreed\\|k\\(de\\|rige2d\\)"
-		"\\|l\\(attice\\|ife\\(reg\\|test\\)\\|o\\(ess\\|gistic\\)\\)"
-		"\\|m\\(ds\\|ixed\\|o\\(de\\(clus\\|l\\)\\|rtgage\\)\\|ulttest\\)"
-		"\\|n\\(ested\\|l\\(in\\|mixed\\)\\|par1way\\)\\|orthoreg"
-		"\\|p\\(dlreg\\|hreg\\|l\\(an\\|s\\)\\|ower\\|r\\(in\\(comp\\|qual\\)\\|obit\\)\\)\\|rs?reg"
-"\\|s\\(core\\|im\\(2d\\|lin\\)\\|pectra\\|t\\(atespace\\|dize\\|epdisc\\)\\|urvey\\(means\\|reg\\|select\\)\\|yslin\\)"
-		"\\|t\\(phreg\\|pspline\\|r\\(ansreg\\|ee\\)\\|test\\)"
-		"\\|var\\(clus\\|comp\\|iogram\\)\\|x11"
-		"\\)")        font-lock-reference-face)
+     (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
+		   "\\(data\\|endsas\\|finish\\|quit\\|run\\|start\\)[ \t\n;]")
+	   font-lock-constant-face)
+     (cons (concat "\\(^[0-9]*\\|;\\|):\\|%then\\|%else\\)[ \t]*"
+		   ;;"proc[ \t]+[a-z][a-z_0-9]+")        font-lock-constant-face)
+		   "proc[ \t]+"
+		   ;;SAS/Base, SAS/Graph, SAS/FSP and common add-ons
+		   "\\(append"
+		   "\\|c\\(a\\(lendar\\|talog\\)\\|port\\|o\\(mpare\\|ntents\\|py\\|rr\\)\\)"
+		   "\\|d\\(atasets\\|bcstab\\|isplay\\)\\|ex\\(plode\\|port\\)"
+		   "\\|f\\(orm\\(at\\|s\\)\\|req\\|s\\(browse\\|edit\\|l\\(etter\\|ist\\)\\|view\\)\\)"
+		   "\\|g?\\(chart\\|p\\(lot\\|rint\\)\\)"
+		   "\\|g\\(anno\\|contour\\|device\\|font\\|\\(key\\)?map\\|options\\|project"
+		   "\\|re\\(duce\\|move\\|play\\)\\|slide\\|testit\\|3\\(d\\|grid\\)\\)"
+		   "\\|[cg]?import\\|i\\(ml\\|nsight\\)\\|means\\|options\\|p\\(menu\\|rintto\\)"
+		   "\\|r\\(ank\\|e\\(gistry\\|port\\)\\)"
+		   "\\|s\\(ort\\|ql\\|tandard\\|ummary\\)"
+		   "\\|t\\(abulate\\|imeplot\\|ran\\(spose\\|tab\\)\\)\\|univariate"
+		   ;;SAS/Stat and SAS/ETS
+		   "\\|a\\(ceclus\\|nova\\|rima\\|utoreg\\)\\|boxplot"
+		   "\\|c\\(a\\(lis\\|n\\(corr\\|disc\\)\\|tmod\\)\\|itibase\\|luster\\|o\\(mputab\\|rresp\\)\\)"
+		   "\\|discrim\\|expand\\|f\\(a\\(ctor\\|stclus\\)\\|orecast\\|req\\)"
+		   "\\|g\\(enmod\\|lm\\(mod\\|power\\)?\\)\\|inbreed\\|k\\(de\\|rige2d\\)"
+		   "\\|l\\(attice\\|ife\\(reg\\|test\\)\\|o\\(ess\\|gistic\\)\\)"
+		   "\\|m\\(ds\\|ixed\\|o\\(de\\(clus\\|l\\)\\|rtgage\\)\\|ulttest\\)"
+		   "\\|n\\(ested\\|l\\(in\\|mixed\\)\\|par1way\\)\\|orthoreg"
+		   "\\|p\\(dlreg\\|hreg\\|l\\(an\\|s\\)\\|ower\\|r\\(in\\(comp\\|qual\\)\\|obit\\)\\)\\|rs?reg"
+		   "\\|s\\(core\\|im\\(2d\\|lin\\)\\|pectra\\|t\\(atespace\\|dize\\|epdisc\\)\\|urvey\\(means\\|reg\\|select\\)\\|yslin\\)"
+		   "\\|t\\(phreg\\|pspline\\|r\\(ansreg\\|ee\\)\\|test\\)"
+		   "\\|var\\(clus\\|comp\\|iogram\\)\\|x11"
+		   "\\)")        font-lock-constant-face)
 
-	 ;;(cons (concat "\\(^[0-9]*\\|;\\|%then\\|%else\\)[ \t]*"
-		;;"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"
-		;;"\\>")				    font-lock-reference-face)
-	 (cons "\\<%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\>"
-						    font-lock-reference-face)
+     ;;(cons (concat "\\(^[0-9]*\\|;\\|%then\\|%else\\)[ \t]*"
+     ;;"\\(%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\)"
+     ;;"\\>")				    font-lock-constant-face)
+     (cons "\\<%\\(go[ \t]*to\\|i\\(f\\|n\\(clude\\|put\\)\\)\\|let\\|put\\|sysexec\\)\\>"
+	   font-lock-constant-face)
 
-	 (cons "\\<%\\(by\\|else\\|t\\(o\\|hen\\)\\)\\>"
-						    font-lock-reference-face)
+     (cons "\\<%\\(by\\|else\\|t\\(o\\|hen\\)\\)\\>"
+	   font-lock-constant-face)
 
-	 ;; SAS dataset options/PROC statements followed by an equal sign/left parentheses
+     ;; SAS dataset options/PROC statements followed by an equal sign/left parentheses
 
-	 (cons (concat
-		"[ \t(,]"
-		"\\(attrib\\|by\\|compress\\|d\\(ata\\|rop\\)\\|f\\(irstobs\\|ormat\\)"
-		"\\|i\\(d\\|f\\|n\\)\\|ke\\(ep\\|y\\)\\|l\\(abel\\|ength\\)"
-		"\\|o\\(bs\\|rder\\|ut\\)\\|rename\\|s\\(ortedby\\|plit\\)"
-		"\\|var\\|where\\)"
-		"[ \t]*=")
-						    font-lock-keyword-face)
-	 (cons "\\<\\(in\\(:\\|dex[ \t]*=\\)?\\|until\\|wh\\(en\\|ile\\)\\)[ \t]*("
-						    font-lock-keyword-face)
+     (cons (concat
+	    "[ \t(,]"
+	    "\\(attrib\\|by\\|compress\\|d\\(ata\\|rop\\)\\|f\\(irstobs\\|ormat\\)"
+	    "\\|i\\(d\\|f\\|n\\)\\|ke\\(ep\\|y\\)\\|l\\(abel\\|ength\\)"
+	    "\\|o\\(bs\\|rder\\|ut\\)\\|rename\\|s\\(ortedby\\|plit\\)"
+	    "\\|var\\|where\\)"
+	    "[ \t]*=")
+	   font-lock-keyword-face)
+     (cons "\\<\\(in\\(:\\|dex[ \t]*=\\)?\\|until\\|wh\\(en\\|ile\\)\\)[ \t]*("
+	   font-lock-keyword-face)
 
-	 ;; SAS statements
-	 (cons (concat
-		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
-		"\\(a\\(bort\\|rray\\|ttrib\\)\\|by"
-		"\\|c\\(hange\\|lass\\|ontrast\\)"
-		"\\|d\\(elete\\|isplay\\|m\\|o\\([ \t]+\\(data\\|over\\)\\)?\\|rop\\)"
-		"\\|e\\(rror\\|stimate\\|xc\\(hange\\|lude\\)\\)"
-		"\\|f\\(ile\\(name\\)?\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\|req\\)"
-		"\\|go\\([ \t]*to\\|ptions\\)"
-		"\\|i\\(d\\|f\\|n\\(dex\\|f\\(ile\\|ormat\\)\\|put\\|value\\)\\)"
-		"\\|keep\\|l\\(abel\\|ength\\|i\\(bname\\|nk\\|st\\)\\|smeans\\)"
-		"\\|m\\(anova\\|e\\(ans\\|rge\\)\\|issing\\|od\\(el\\|ify\\)\\)\\|note"
-		"\\|o\\(ptions\\|therwise\\|utput\\)\\|p\\(arms\\|lot\\|ut\\)"
-		"\\|r\\(andom\\|e\\(name\\|peated\\|tain\\)\\)"
-		"\\|s\\(ave\\|e\\(lect\\|t\\)\\|kip\\|trata\\|umby\\)"
-		"\\|t\\(ables?\\|i\\(me\\|tle\\(10?\\|[2-9]\\)?\\)\\)\\|update"
-		"\\|va\\(lue\\|r\\)\\|w\\(eight\\|here\\|i\\(ndow\\|th\\)\\)"
+     ;; SAS statements
+     (cons (concat
+	    "\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
+	    "\\(a\\(bort\\|rray\\|ttrib\\)\\|by"
+	    "\\|c\\(hange\\|lass\\|ontrast\\)"
+	    "\\|d\\(elete\\|isplay\\|m\\|o\\([ \t]+\\(data\\|over\\)\\)?\\|rop\\)"
+	    "\\|e\\(rror\\|stimate\\|xc\\(hange\\|lude\\)\\)"
+	    "\\|f\\(ile\\(name\\)?\\|o\\(otnote\\(10?\\|[2-9]\\)?\\|rmat\\)\\|req\\)"
+	    "\\|go\\([ \t]*to\\|ptions\\)"
+	    "\\|i\\(d\\|f\\|n\\(dex\\|f\\(ile\\|ormat\\)\\|put\\|value\\)\\)"
+	    "\\|keep\\|l\\(abel\\|ength\\|i\\(bname\\|nk\\|st\\)\\|smeans\\)"
+	    "\\|m\\(anova\\|e\\(ans\\|rge\\)\\|issing\\|od\\(el\\|ify\\)\\)\\|note"
+	    "\\|o\\(ptions\\|therwise\\|utput\\)\\|p\\(arms\\|lot\\|ut\\)"
+	    "\\|r\\(andom\\|e\\(name\\|peated\\|tain\\)\\)"
+	    "\\|s\\(ave\\|e\\(lect\\|t\\)\\|kip\\|trata\\|umby\\)"
+	    "\\|t\\(ables?\\|i\\(me\\|tle\\(10?\\|[2-9]\\)?\\)\\)\\|update"
+	    "\\|va\\(lue\\|r\\)\\|w\\(eight\\|here\\|i\\(ndow\\|th\\)\\)"
 
-	;; IML statements that are not also SAS statements
-		"\\|append\\|c\\(lose\\(file\\)?\\|reate\\)\\|edit\\|f\\(ind\\|orce\\|ree\\)"
-		"\\|insert\\|load\\|mattrib\\|p\\(a[ru]se\\|rint\\|urge\\)"
-		"\\|re\\(move\\|peat\\|place\\|set\\|sume\\)"
-		"\\|s\\(et\\(in\\|out\\)\\|how\\|ort\\|tore\\|ummary\\)\\|use\\)?"
+	    ;; IML statements that are not also SAS statements
+	    "\\|append\\|c\\(lose\\(file\\)?\\|reate\\)\\|edit\\|f\\(ind\\|orce\\|ree\\)"
+	    "\\|insert\\|load\\|mattrib\\|p\\(a[ru]se\\|rint\\|urge\\)"
+	    "\\|re\\(move\\|peat\\|place\\|set\\|sume\\)"
+	    "\\|s\\(et\\(in\\|out\\)\\|how\\|ort\\|tore\\|ummary\\)\\|use\\)?"
 
-		"\\>")				    font-lock-keyword-face)
+	    "\\>")				    font-lock-keyword-face)
 
 
 
-;;	 (cons "\\<\\(\\(then\\|else\\)[ \t]*\\)?\\(do\\([ \t]*over\\)?\\|else\\)\\>"
-;;						    font-lock-keyword-face)
+     ;;	 (cons "\\<\\(\\(then\\|else\\)[ \t]*\\)?\\(do\\([ \t]*over\\)?\\|else\\)\\>"
+     ;;						    font-lock-keyword-face)
 
-	 ;; SAS statements that must be followed by a semi-colon
-	 (cons (concat
-		"\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
-		"\\(cards4?\\|datalines\\|end\\|l\\(ostcard\\)\\|page\\|return\\|stop\\)?"
-		"[ \t]*;")			    font-lock-keyword-face)
+     ;; SAS statements that must be followed by a semi-colon
+     (cons (concat
+	    "\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
+	    "\\(cards4?\\|datalines\\|end\\|l\\(ostcard\\)\\|page\\|return\\|stop\\)?"
+	    "[ \t]*;")			    font-lock-keyword-face)
 
-	 ;; SAS/GRAPH statements not handled above
-	 (cons (concat
-		"\\(^[0-9]*\\|):\\|[;,]\\)[ \t]*"
-		"\\(axis\\|legend\\|pattern\\|symbol\\)"
-		"\\([1-9][0-9]?\\)?\\>")	    font-lock-keyword-face)
+     ;; SAS/GRAPH statements not handled above
+     (cons (concat
+	    "\\(^[0-9]*\\|):\\|[;,]\\)[ \t]*"
+	    "\\(axis\\|legend\\|pattern\\|symbol\\)"
+	    "\\([1-9][0-9]?\\)?\\>")	    font-lock-keyword-face)
 
-	 ;; SAS Datastep functions and SAS macro functions
-	 ;(cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
-	 ;; SAS macro functions occasionally defined with no arguments
-	 ;; which means they can be followed by any character that can
-         ;; separate tokens, however, they are most likely to be followed 
-         ;; by operat-ions/ors
-	 (cons "%[a-z_][a-z_0-9]*[- \t();,+*/=<>]"
-						    font-lock-function-name-face)
-	 (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
-						    font-lock-function-name-face)
+     ;; SAS Datastep functions and SAS macro functions
+					;(cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
+     ;; SAS macro functions occasionally defined with no arguments
+     ;; which means they can be followed by any character that can
+     ;; separate tokens, however, they are most likely to be followed
+     ;; by operat-ions/ors
+     (cons "%[a-z_][a-z_0-9]*[- \t();,+*/=<>]"
+	   font-lock-function-name-face)
+     (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
+	   font-lock-function-name-face)
 
-	 (cons (concat
-		"\\<"
-		"\\(a\\(bs\\|r\\(cos\\|sin\\)\\|tan\\)\\|b\\(etainv\\|yte\\)"
-		"\\|c\\(eil\\|inv\\|o\\(llate\\|mpress\\|sh?\\)\\|ss\\|v\\)"
-		"\\|dacc\\(db\\(\\|sl\\)\\|s\\(l\\|yd\\)\\|tab\\)"
-		"\\|dep\\(db\\(\\|sl\\)\\|s\\(l\\|yd\\)\\|tab\\)"
-		"\\|d\\(a\\(te\\(\\|jul\\|part\\|time\\)\\|y\\)\\|hms\\|i\\(f[0-9]*\\|m\\|gamma\\)\\)"
-		"\\|e\\(rfc?\\|xp\\)"
-		"\\|f\\(i\\(nv\\|p\\(namel?\\|state\\)\\)\\|loor\\|uzz\\)\\|gam\\(inv\\|ma\\)"
-		"\\|h\\(bound\\|ms\\|our\\)\\|i\\(n\\(dexc?\\|put\\|t\\(\\|ck\\|nx\\|rr\\)\\)\\|rr\\)"
-		"\\|juldate\\|kurtosis\\|l\\(ag[0-9]*\\|bound\\|e\\(ft\\|ngth\\)\\|gamma\\|og\\(\\|10\\|2\\)\\)"
-		"\\|m\\(ax\\|dy\\|ean\\|in\\(\\|ute\\)\\|o\\(d\\|nth\\|rt\\)\\)\\|n\\(\\|etpv\\|miss\\|ormal\\|pv\\)"
-		"\\|prob\\([ft]\\|b\\(eta\\|nml\\)\\|chi\\|gam\\|hypr\\|it\\|n\\(egb\\|orm\\)\\)"
-		"\\|ordinal\\|p\\(oisson\\|ut\\)\\|qtr\\|r\\(e\\(peat\\|verse\\)\\|ight\\|ound\\)"
-		"\\|ran\\(bin\\|cau\\|exp\\|g\\(am\\|e\\)\\|k\\|nor\\|poi\\|t\\(bl\\|ri\\)\\|uni\\)"
-                "\\|s\\(aving\\|can\\|econd\\|i\\(gn\\|nh?\\)\\|qrt\\|t\\(d\\(\\|err\\)\\|fips\\|namel?\\)\\|u\\(bstr\\|m\\)\\|ymget\\)"
-		"\\|t\\(anh?\\|i\\(me\\(\\|part\\)\\|nv\\)\\|oday\\|r\\(anslate\\|i\\(gamma\\|m\\)\\|unc\\)\\)"
-		"\\|u\\(niform\\|pcase\\|ss\\)\\|v\\(ar\\|erify\\)"
-		"\\|weekday\\|y\\(ear\\|yq\\)\\|zip\\(fips\\|namel?\\|state\\)"
+     (cons (concat
+	    "\\<"
+	    "\\(a\\(bs\\|r\\(cos\\|sin\\)\\|tan\\)\\|b\\(etainv\\|yte\\)"
+	    "\\|c\\(eil\\|inv\\|o\\(llate\\|mpress\\|sh?\\)\\|ss\\|v\\)"
+	    "\\|dacc\\(db\\(\\|sl\\)\\|s\\(l\\|yd\\)\\|tab\\)"
+	    "\\|dep\\(db\\(\\|sl\\)\\|s\\(l\\|yd\\)\\|tab\\)"
+	    "\\|d\\(a\\(te\\(\\|jul\\|part\\|time\\)\\|y\\)\\|hms\\|i\\(f[0-9]*\\|m\\|gamma\\)\\)"
+	    "\\|e\\(rfc?\\|xp\\)"
+	    "\\|f\\(i\\(nv\\|p\\(namel?\\|state\\)\\)\\|loor\\|uzz\\)\\|gam\\(inv\\|ma\\)"
+	    "\\|h\\(bound\\|ms\\|our\\)\\|i\\(n\\(dexc?\\|put\\|t\\(\\|ck\\|nx\\|rr\\)\\)\\|rr\\)"
+	    "\\|juldate\\|kurtosis\\|l\\(ag[0-9]*\\|bound\\|e\\(ft\\|ngth\\)\\|gamma\\|og\\(\\|10\\|2\\)\\)"
+	    "\\|m\\(ax\\|dy\\|ean\\|in\\(\\|ute\\)\\|o\\(d\\|nth\\|rt\\)\\)\\|n\\(\\|etpv\\|miss\\|ormal\\|pv\\)"
+	    "\\|prob\\([ft]\\|b\\(eta\\|nml\\)\\|chi\\|gam\\|hypr\\|it\\|n\\(egb\\|orm\\)\\)"
+	    "\\|ordinal\\|p\\(oisson\\|ut\\)\\|qtr\\|r\\(e\\(peat\\|verse\\)\\|ight\\|ound\\)"
+	    "\\|ran\\(bin\\|cau\\|exp\\|g\\(am\\|e\\)\\|k\\|nor\\|poi\\|t\\(bl\\|ri\\)\\|uni\\)"
+	    "\\|s\\(aving\\|can\\|econd\\|i\\(gn\\|nh?\\)\\|qrt\\|t\\(d\\(\\|err\\)\\|fips\\|namel?\\)\\|u\\(bstr\\|m\\)\\|ymget\\)"
+	    "\\|t\\(anh?\\|i\\(me\\(\\|part\\)\\|nv\\)\\|oday\\|r\\(anslate\\|i\\(gamma\\|m\\)\\|unc\\)\\)"
+	    "\\|u\\(niform\\|pcase\\|ss\\)\\|v\\(ar\\|erify\\)"
+	    "\\|weekday\\|y\\(ear\\|yq\\)\\|zip\\(fips\\|namel?\\|state\\)"
 
 ;;;    ;; SAS functions introduced in Technical Report P-222
 
-		"\\|airy\\|b\\(and\\|lshift\\|not\\|or\\|rshift\\|xor\\)"
-		"\\|c\\(nonct\\|ompbl\\)\\|d\\(airy\\|equote\\)\\|fnonct\\|tnonct"
-		"\\|i\\(bessel\\|n\\(dexw\\|put[cn]\\)\\)\\|jbessel\\|put[cn]"
-		"\\|lowcase\\|quote\\|resolve\\|s\\(oundex\\|ysprod\\)\\|tr\\(anwrd\\|imn\\)"
+	    "\\|airy\\|b\\(and\\|lshift\\|not\\|or\\|rshift\\|xor\\)"
+	    "\\|c\\(nonct\\|ompbl\\)\\|d\\(airy\\|equote\\)\\|fnonct\\|tnonct"
+	    "\\|i\\(bessel\\|n\\(dexw\\|put[cn]\\)\\)\\|jbessel\\|put[cn]"
+	    "\\|lowcase\\|quote\\|resolve\\|s\\(oundex\\|ysprod\\)\\|tr\\(anwrd\\|imn\\)"
 
 ;;;    ;; IML functions that are not also Datastep functions
-		"\\|a\\(ll\\|ny\\|pply\\|rmasim\\)\\|b\\(lock\\|ranks\\|tran\\)"
-		"\\|c\\(har\\|hoose\\|on\\(cat\\|tents\\|vexit\\|vmod\\)\\|ovlag\\|shape\\|usum\\|vexhull\\)"
-		"\\|d\\(atasets\\|esignf?\\|et\\|iag\\|o\\|uration\\)"
-		"\\|e\\(chelon\\|igv\\(al\\|ec\\)\\)\\|f\\(ft\\|orward\\)\\|ginv"
-		"\\|h\\(alf\\|ankel\\|dir\\|ermite\\|omogen\\)"
-		"\\|i\\(\\|fft\\|nsert\\|nv\\(updt\\)?\\)\\|j\\(\\|root\\)\\|loc\\|mad"
-		"\\|n\\(ame\\|col\\|leng\\|row\\|um\\)\\|o\\(pscal\\|rpol\\)"
-		"\\|p\\(olyroot\\|roduct\\|v\\)\\|r\\(anktie\\|ates\\|atio\\|emove\\|eturn\\|oot\\|owcatc?\\)"
-		"\\|s\\(etdif\\|hape\\|olve\\|plinev\\|pot\\|qrsym\\|ssq\\|torage\\|weep\\|ymsqr\\)"
-		"\\|t\\(\\|eigv\\(al\\|ec\\)\\|oeplitz\\|race\\|risolv\\|ype\\)"
-		"\\|uni\\(on\\|que\\)\\|v\\(alue\\|ecdiag\\)\\|x\\(mult\\|sect\\)\\|yield"
+	    "\\|a\\(ll\\|ny\\|pply\\|rmasim\\)\\|b\\(lock\\|ranks\\|tran\\)"
+	    "\\|c\\(har\\|hoose\\|on\\(cat\\|tents\\|vexit\\|vmod\\)\\|ovlag\\|shape\\|usum\\|vexhull\\)"
+	    "\\|d\\(atasets\\|esignf?\\|et\\|iag\\|o\\|uration\\)"
+	    "\\|e\\(chelon\\|igv\\(al\\|ec\\)\\)\\|f\\(ft\\|orward\\)\\|ginv"
+	    "\\|h\\(alf\\|ankel\\|dir\\|ermite\\|omogen\\)"
+	    "\\|i\\(\\|fft\\|nsert\\|nv\\(updt\\)?\\)\\|j\\(\\|root\\)\\|loc\\|mad"
+	    "\\|n\\(ame\\|col\\|leng\\|row\\|um\\)\\|o\\(pscal\\|rpol\\)"
+	    "\\|p\\(olyroot\\|roduct\\|v\\)\\|r\\(anktie\\|ates\\|atio\\|emove\\|eturn\\|oot\\|owcatc?\\)"
+	    "\\|s\\(etdif\\|hape\\|olve\\|plinev\\|pot\\|qrsym\\|ssq\\|torage\\|weep\\|ymsqr\\)"
+	    "\\|t\\(\\|eigv\\(al\\|ec\\)\\|oeplitz\\|race\\|risolv\\|ype\\)"
+	    "\\|uni\\(on\\|que\\)\\|v\\(alue\\|ecdiag\\)\\|x\\(mult\\|sect\\)\\|yield"
 
 ;;;    ;; SCL functions that are known to work with SAS macro function %sysfunc
 
-		"\\|attr[cn]\\|c\\(exist\\|lose\\)\\|d\\(close\\|num\\|open\\|read\\)"
-		"\\|exist\\|f\\(close\\|etchobs\\|i\\(leexist\\|nfo\\)\\|open\\|put\\|write\\)"
-		"\\|get\\(option\\|var[cn]\\)\\|lib\\(name\\|ref\\)\\|op\\(en\\|t\\(getn\\|setn\\)\\)"
-		"\\|pathname\\|sysmsg\\|var\\(fmt\\|l\\(abel\\|en\\)\\|n\\(ame\\|um\\)\\|type\\)\\)"
-		"[ \t]*(")			    font-lock-function-name-face)
-	 ))
-	"Font Lock regexs for SAS.")
-)
-  (defvar SAS-mode-font-lock-keywords "") ;; empty if not window-system
-); only if window-system
+	    "\\|attr[cn]\\|c\\(exist\\|lose\\)\\|d\\(close\\|num\\|open\\|read\\)"
+	    "\\|exist\\|f\\(close\\|etchobs\\|i\\(leexist\\|nfo\\)\\|open\\|put\\|write\\)"
+	    "\\|get\\(option\\|var[cn]\\)\\|lib\\(name\\|ref\\)\\|op\\(en\\|t\\(getn\\|setn\\)\\)"
+	    "\\|pathname\\|sysmsg\\|var\\(fmt\\|l\\(abel\\|en\\)\\|n\\(ame\\|um\\)\\|type\\)\\)"
+	    "[ \t]*(")			    font-lock-function-name-face)
+     ))
+  "Font Lock regexs for SAS.")
+
 
 (defvar SAS-editing-alist
   '((sentence-end                 . ";[\t\n */]*")
