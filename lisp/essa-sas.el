@@ -632,7 +632,7 @@ current buffer if nil."
 	        ;; else
 		(if no-create (setq revert nil) 
 		    (if (file-exists-p ess-sas-temp-file)
-			(find-file ess-sas-temp-file)
+			(find-file ess-sas-temp-file))))
 		    ;; else
 		    ;;	(let* ((ess-sas-buffer-list (buffer-list)) 
 		    ;;	       (ess-sas-buffer-list-index 0)
@@ -648,8 +648,6 @@ current buffer if nil."
 		    ;;		)
 		    ;;		(setq ess-sas-buffer-list-index (+ 1 ess-sas-buffer-list-index))
 		    ;;    )))
-                )
-	      )
 
 	      (if (and (not no-create)
 		       (or (string-equal suffix "log")
