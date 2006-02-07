@@ -3,7 +3,7 @@
 <title>ESS --- Emacs Speaks Statistics</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ESS --- Emacs Speaks Statistics">
-<meta name="generator" content="makeinfo 4.7">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="top" href="#Top">
 <link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
 <meta http-equiv="Content-Style-Type" content="text/css">
@@ -14,16 +14,18 @@
   pre.smallformat  { font-family:inherit; font-size:smaller }
   pre.smallexample { font-size:smaller }
   pre.smalllisp    { font-size:smaller }
-  span.sc { font-variant:small-caps }
-  span.roman { font-family: serif; font-weight: normal; } 
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
 --></style>
 </head>
 <body>
 <div class="node">
 <p><hr>
-<a name="General-Information"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="#dir">(dir)</a>,
+<a name="General-Information"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#dir">(dir)</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -74,10 +76,11 @@ Lumley).
 
 <div class="node">
 <p><hr>
-<a name="License"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Starting-up">Starting up</a>,
+<a name="License"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Starting-up">Starting up</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#General-Information">General Information</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -96,10 +99,11 @@ details.
 
 <div class="node">
 <p><hr>
-<a name="Starting-up"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#New-Features">New Features</a>,
+<a name="Starting-up"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#New-Features">New Features</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#License">License</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
-<br>
+
 </div>
 
 <h3 class="section">1.2 Starting an ESS process</h3>
@@ -112,10 +116,11 @@ use the MSDOS prompt shell, simply type <kbd>M-x S+6-msdos RET</kbd>.
 
 <div class="node">
 <p><hr>
-<a name="New-Features"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Current-Features">Current Features</a>,
+<a name="New-Features"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Current-Features">Current Features</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Starting-up">Starting up</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -124,19 +129,23 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <p>Changes/New Features in 5.2.12:
      <ul>
 <li><acronym>ESS[SAS]</acronym>: <kbd>M-;</kbd> fixed, but the XEmacs function <code>comment-dwim</code>
-may be broken, if so, use <kbd>M-x comment-region</kbd> and <kbd>M-x uncomment-region</kbd>
-instead; only valid PROCs are fontified which is very helpful finding syntax errors
-(currently supported:  BASE, ETS, FSP, GRAPH, IML, INSIGHT and STAT). 
+may be broken, if so, use <kbd>M-x comment-region</kbd> and <kbd>M-x
+uncomment-region</kbd> instead; only valid PROCs are fontified which is very
+helpful finding syntax errors (currently supported: BASE, ETS, FSP, GRAPH,
+IML, INSIGHT and STAT); the &ldquo;feature&rdquo; where <kbd>F</kbd>-keys take you to an
+empty buffer when the requested destination is a file that does not exist
+has been fixed, now the request results in a no-op. 
+Further, sas-mode now also works in simple terminals. 
 <li>Rterm/Cygwin combination works under Microsoft Windows. 
 <li><acronym>ESS[R]</acronym>: internal calls use baseenv() instead of NULL and
 define 'baseenv' where needed. 
 <li>New experimental support for installing ESS.  See the file
-<span class="file">lisp/ess-install.el</span>. 
+<samp><span class="file">lisp/ess-install.el</span></samp>. 
 </ul>
 
    <p>Changes/New Features in 5.2.11:
      <ul>
-<li>ESS Info entry and <span class="file">dir</span> handled more effectively for GNU Emacs users
+<li>ESS Info entry and <samp><span class="file">dir</span></samp> handled more effectively for GNU Emacs users
 <li><acronym>ESS[SAS]</acronym>: temporary files created for batch submission of a
 region are now named based on the current file; see <code>ess-sas-file-root</code>
 for details; all <code>lag</code> and <code>dif</code> functions now fontified correctly
@@ -154,12 +163,12 @@ Splus you would like to run.
 customization was not taking effect unless customizations were loaded
 before ESS).  Its value has been changed so that it will also find R
 executables beginning &ldquo;R-devel&rdquo; and &ldquo;R-patched&rdquo;.  If you wish to
-change this variable, it must be set in your <span class="file">.emacs</span> before ESS is
+change this variable, it must be set in your <samp><span class="file">.emacs</span></samp> before ESS is
 loaded. 
 <li>Installation with GNU Make enhanced:  unix and unix-like
 operating systems will now be able to install <acronym>ESS</acronym> for all
 users in either a GNU Emacs site-lisp or an XEmacs package
-configuration by editing <span class="file">lisp/ess-site.el</span> and <span class="file">Makeconf</span>
+configuration by editing <samp><span class="file">lisp/ess-site.el</span></samp> and <samp><span class="file">Makeconf</span></samp>
 accordingly, then issuing <code>make install</code>
 <li><acronym>ESS[S]</acronym>: Filename completion (inside strings) now also works in
 XEmacs for R and S-plus. 
@@ -229,8 +238,8 @@ the bell is rung.
 
    <p>Changes/New Features in 5.2.5:
      <ul>
-<li><acronym>ESS[R]</acronym>: <kbd>C-c C-q</kbd> or <span class="samp">Quit S</span> from the menu now should work
-(again and less klunkily) and do not append <span class="samp">-exited</span> to the
+<li><acronym>ESS[R]</acronym>: <kbd>C-c C-q</kbd> or `<samp><span class="samp">Quit S</span></samp>' from the menu now should work
+(again and less klunkily) and do not append `<samp><span class="samp">-exited</span></samp>' to the
 buffer name.  Further, the behavior of <code>(ess-cleanup)</code>, called from
 ess-quit, now depends on the new customizable variable
 <code>ess-S-quit-kill-buffers-p</code> which defaults to <code>nil</code>. 
@@ -245,7 +254,7 @@ with the <code>recode</code> application as well which is available on many plat
      <ul>
 <li>The documentation now includes an overview of how to use the emacs
 TAGS facility for S functions.  (The distribution also used to contain a
-directory <span class="file">etc/other/Tags</span> where a ~1990 version of <span class="file">etags.c</span> was
+directory <samp><span class="file">etc/other/Tags</span></samp> where a ~1990 version of <samp><span class="file">etags.c</span></samp> was
 distributed; this is no longer relevant and so has been deleted.) 
 <li><acronym>ESS[SAS]</acronym> &ndash; When you are working with EBCDIC files on an ASCII
 platform, .log NOTEs may display as gibberish since the EBCDIC
@@ -575,10 +584,11 @@ provide the syntactic highlighting that eases the programming tasks.
 
 <div class="node">
 <p><hr>
-<a name="Current-Features"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Stability">Stability</a>,
+<a name="Current-Features"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Stability">Stability</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#New-Features">New Features</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -627,10 +637,11 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 
 <div class="node">
 <p><hr>
-<a name="Stability"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
+<a name="Stability"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Current-Features">Current Features</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -643,10 +654,11 @@ Patches or suggested fixes with bug reports are much appreciated!
 
 <div class="node">
 <p><hr>
-<a name="Requirements"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Latest-Version">Latest Version</a>,
+<a name="Requirements"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Latest-Version">Latest Version</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Stability">Stability</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -690,10 +702,11 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 
 <div class="node">
 <p><hr>
-<a name="Latest-Version"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Installation">Installation</a>,
+<a name="Latest-Version"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Installation">Installation</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Requirements">Requirements</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -740,10 +753,11 @@ certificate permanently and will not be asked about it anymore.
 <!-- vvvvvvvvvvvv node name  *must* match the one in ./ess.texi ! -->
 <div class="node">
 <p><hr>
-<a name="Installation"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Reporting-Bugs">Reporting Bugs</a>,
+<a name="Installation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Reporting-Bugs">Reporting Bugs</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Latest-Version">Latest Version</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -758,9 +772,10 @@ See <a href="#Microsoft-Windows-installation">Microsoft Windows installation</a>
 
 <div class="node">
 <p><hr>
-<a name="Unix-installation"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Microsoft-Windows-installation">Microsoft Windows installation</a>,
+<a name="Unix-installation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Microsoft-Windows-installation">Microsoft Windows installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -769,7 +784,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
      <ol type=1 start=1>
 
      <li><code>cd</code> to a directory where you want to install ESS, creating it if necessary. 
-This directory will be referred to below as <span class="file">ESSDIR</span>. 
+This directory will be referred to below as <samp><span class="file">ESSDIR</span></samp>. 
 <!-- It will contain, -->
 <!-- at the end, the tar file @file{ess-VERSION.tar.gz}, and a directory for -->
 <!-- the ESS source, which will be termed "the ESS-VERSION source directory". -->
@@ -778,13 +793,13 @@ This directory will be referred to below as <span class="file">ESSDIR</span>.
 
      <li>Retrieve the latest version from
 <a href="http://ess.r-project.org/downloads/ess">ESS downloads area</a>
-to <span class="file">ESSDIR</span>.
+to <samp><span class="file">ESSDIR</span></samp>.
 
      <li>Decompress/unarchive the files from the disribution.
      <pre class="display">          Either, <code>gunzip &lt; ess-VERSION.tar.gz | tar xf -</code>,
           or using GNU tar, <code>tar zxf ess-VERSION.tar.gz</code>.
      </pre>
-     <p>The <code>tar</code> command will create the subdirectory <span class="file">ess-VERSION</span> and install
+     <p>The <code>tar</code> command will create the subdirectory <samp><span class="file">ess-VERSION</span></samp> and install
 the files there.
 
      <!-- If you are using GNU Emacs 19.29, decompress/unarchive -->
@@ -793,7 +808,7 @@ the files there.
 <!-- and you might be able to get ESS to work. -->
 <!-- @emph{Please note that GNU Emacs 19.29 is no longer supported}. -->
 <!-- For a list of supported versions of emacs, see @xref{Requirements}. -->
-<li>Edit the file <span class="file">ESSDIR/ess-VERSION/lisp/ess-site.el</span> as explained in the
+<li>Edit the file <samp><span class="file">ESSDIR/ess-VERSION/lisp/ess-site.el</span></samp> as explained in the
 comments section of that file. 
 <!-- Installations that are using ESS only for S-Plus -->
 <!-- 6.x will probably not need to make any changes.  Installations that also -->
@@ -804,12 +819,12 @@ comments section of that file.
      <pre class="example">          (load "ESSDIR/ess-VERSION/lisp/ess-site")
      </pre>
      <p>to your user or system installation file (GNU Emacs uses
-<span class="file">$HOME/.emacs</span> and XEmacs uses <span class="file">$HOME/.xemacs/init.el</span> for the
-user initialization file.  GNU Emacs uses <span class="file">default.el</span> or
-<span class="file">site-init.el</span> and XEmacs uses <span class="file">site-start.el</span> for the system
+<samp><span class="file">$HOME/.emacs</span></samp> and XEmacs uses <samp><span class="file">$HOME/.xemacs/init.el</span></samp> for the
+user initialization file.  GNU Emacs uses <samp><span class="file">default.el</span></samp> or
+<samp><span class="file">site-init.el</span></samp> and XEmacs uses <samp><span class="file">site-start.el</span></samp> for the system
 installation file).
 
-     <p>Alternatively, if <span class="file">ess-site.el</span> is in your current <code>load-path</code>, then:
+     <p>Alternatively, if <samp><span class="file">ess-site.el</span></samp> is in your current <code>load-path</code>, then:
      <pre class="example">          (require 'ess-site)
      </pre>
      <p>to configure emacs for ESS.
@@ -817,8 +832,8 @@ installation file).
      <li>That's it!  If you are installing just a local copy of ESS for yourself,
 ESS is now ready to be used.  (The remaining step below is for advanced
 installation.)  To edit statistical programs, load the files with the
-requiste extensions (<span class="file">.sas</span> for SAS, <span class="file">.S</span> for S-PLUS,
-<span class="file">.R</span> for R, and <span class="file">.lsp</span> for XLispStat).  To start a statistical
+requiste extensions (<samp><span class="file">.sas</span></samp> for SAS, <samp><span class="file">.S</span></samp> for S-PLUS,
+<samp><span class="file">.R</span></samp> for R, and <samp><span class="file">.lsp</span></samp> for XLispStat).  To start a statistical
 process within emacs, such as R, type <code>M-x R</code>.
 
      <!-- @item -->
@@ -846,8 +861,8 @@ process within emacs, such as R, type <code>M-x R</code>.
 
      <p>If you want to place the compiled files in other locations edit the
 <code>LISPDIR</code>, <code>INFODIR</code> and <code>ETCDIR</code> entries in Section 1 of
-<span class="file">Makeconf</span> in the <span class="file">ESSDIR/ess-VERSION</span> directory (if you are
-using XEmacs, then see the XEmacs subsection in Section 1 of <span class="file">Makeconf</span>).
+<samp><span class="file">Makeconf</span></samp> in the <samp><span class="file">ESSDIR/ess-VERSION</span></samp> directory (if you are
+using XEmacs, then see the XEmacs subsection in Section 1 of <samp><span class="file">Makeconf</span></samp>).
 
      <p>You can compile those files by:
      <pre class="example">          make all
@@ -878,10 +893,11 @@ has been installed.  For more information on installing XEmacs packages, see
 <!-- @node Microsoft Windows installation, , Unix installation, Installation -->
 <div class="node">
 <p><hr>
-<a name="Microsoft-Windows-installation"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
+<a name="Microsoft-Windows-installation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Unix-installation">Unix installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -893,28 +909,28 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
      <ol type=1 start=1>
 
      <li><code>cd</code> to a directory where you keep emacs lisp files, or create a
-new directory (for example, <span class="file">c:\emacs\</span>) to hold the distribution. 
+new directory (for example, <samp><span class="file">c:\emacs\</span></samp>) to hold the distribution. 
 This directory will be referred to below as "the ESS distribution
 directory".
 
-     <li>Retrieve the latest zip file (<span class="file">ess-VERSION.zip</span>) from
+     <li>Retrieve the latest zip file (<samp><span class="file">ess-VERSION.zip</span></samp>) from
 <a href="http://ess.r-project.org/downloads/ess">ESS downloads area</a> and
 store it in the ESS distribution directory.  Be aware that http browsers
 on Windows frequently change the "." and "-" characters in filenames to
 other punctuation.  Please change the names back to their original form.
 
-     <li>Extract all the files from <span class="file">ess-VERSION.zip</span> into the ESS
+     <li>Extract all the files from <samp><span class="file">ess-VERSION.zip</span></samp> into the ESS
 distribution directory.  In Windows Explorer,
 you can unpack the archive by double clicking on the folder; you should
-then see a new folder called <span class="file">ess-VERSION</span>.  Drag that folder into
+then see a new folder called <samp><span class="file">ess-VERSION</span></samp>.  Drag that folder into
 your ESS distribution directory.
 
      <li>Add the line
      <pre class="example">          (load "C:/emacs/ess-VERSION/lisp/ess-site")
      </pre>
      <p>to your emacs initialization file.  (GNU Emacs uses the filename
-<span class="file">~/.emacs</span> and XEmacs uses the filename
-<span class="file">~/.xemacs/init.el</span> for the initialization file.  The tilde is
+<samp><span class="file">~/.emacs</span></samp> and XEmacs uses the filename
+<samp><span class="file">~/.xemacs/init.el</span></samp> for the initialization file.  The tilde is
 recognised by emacs as your HOME directory, i.e. the value of your HOME
 environment variable.)  Replace
 <code>VERSION</code> above with the version number of ESS.  Remember to use
@@ -930,7 +946,7 @@ run statistical processes, see below.
      <li>To run statistical processes under ESS, Windows users will need to make
 sure that the directories for the software they will be using is in the
 PATH environment variable.  On Windows 9x, add lines similar to the
-following to your <span class="file">c:\autoexec.bat</span> file:
+following to your <samp><span class="file">c:\autoexec.bat</span></samp> file:
      <pre class="example">          path=%PATH%;c:\progra~1\insightful\splus70\cmd
      </pre>
      <p>On Windows NT/2000/XP, add the directories to the PATH using the
@@ -967,7 +983,7 @@ slight delay during which emacs is temporarily frozen.  ESS will arrange for
 communication with the S-PLUS GUI using the DDE protocol. 
 Send lines or regions
 from the emacs buffer containing your S program (for example,
-<span class="file">myfile.s</span>) to the S-PLUS Commands Window with the
+<samp><span class="file">myfile.s</span></samp>) to the S-PLUS Commands Window with the
 <code>C-c C-n</code> or <code>C-c C-r</code> keys. 
 (If you are still using S-PLUS 4.x or 2000,\
 then use <code>M-x S+4</code> or <code>M-x S+4-msdos</code>.)
@@ -984,7 +1000,7 @@ propose your current directory as the default.
 You get Unix-like behavior, in particular the entire
 transcript is available for emacs-style search commands. 
 Send lines or regions from the emacs buffer containing your S
-program (for example, <span class="file">myfile.s</span>) to the *S+6* buffer with the
+program (for example, <samp><span class="file">myfile.s</span></samp>) to the *S+6* buffer with the
 <code>C-c C-n</code> or <code>C-c C-r</code> keys. 
 Interactive graphics are available with Sqpe by using the java
 library supplied with S-PLUS 6.1 and newer releases. 
@@ -1012,7 +1028,7 @@ as the default.  ESS will arrange for
 communication with the already running S-PLUS GUI using the DDE protocol. 
 Send lines or regions
 from the emacs buffer containing your S program (for example,
-<span class="file">myfile.s</span>) to the S-PLUS Commands Window with the
+<samp><span class="file">myfile.s</span></samp>) to the S-PLUS Commands Window with the
 <code>C-c C-n</code> or <code>C-c C-r</code> keys. 
 (If you are still using S-PLUS 4.x or 2000,
  then use <code>M-x S+4-existing</code> or <code>M-x S+4-msdos-existing</code>.)
@@ -1072,10 +1088,11 @@ emacs, and cut and paste the results into the XLispStat
 
 <div class="node">
 <p><hr>
-<a name="Reporting-Bugs"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Mailing-Lists">Mailing Lists</a>,
+<a name="Reporting-Bugs"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Mailing-Lists">Mailing Lists</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Installation">Installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -1101,10 +1118,11 @@ donations are also more than welcome.
 
 <div class="node">
 <p><hr>
-<a name="Mailing-Lists"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Authors">Authors</a>,
+<a name="Mailing-Lists"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Authors">Authors</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Reporting-Bugs">Reporting Bugs</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
@@ -1129,9 +1147,10 @@ low-volume mailing list.
 
 <div class="node">
 <p><hr>
-<a name="Authors"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-Lists">Mailing Lists</a>,
+<a name="Authors"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-Lists">Mailing Lists</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
-<br>
+
 </div>
 
 <!-- node-name,  next,  previous,  up -->
