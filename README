@@ -43,15 +43,28 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 in the file COPYING in the same directory as this file for more details.
 
-1.2 New Features
+1.2 Starting an ESS process
+===========================
+
+To start an S session on Unix or on Windows when you use the Cygwin
+bash shell, simply type `M-x S RET'.
+
+   To start an S session on Windows when you use the MSDOS prompt
+shell, simply type `M-x S+6-msdos RET'.
+
+1.3 New Features
 ================
 
 Changes/New Features in 5.2.12:
    * ESS[SAS]: `M-;' fixed, but the XEmacs function `comment-dwim' may
      be broken, if so, use `M-x comment-region' and `M-x
      uncomment-region' instead; only valid PROCs are fontified which is
-     very helpful finding syntax errors (currently supported:  BASE,
-     ETS, FSP, GRAPH, IML, INSIGHT and STAT).
+     very helpful finding syntax errors (currently supported: BASE,
+     ETS, FSP, GRAPH, IML, INSIGHT and STAT); the "feature" where
+     `F'-keys take you to an empty buffer when the requested
+     destination is a file that does not exist has been fixed, now the
+     request results in a no-op.  Further, sas-mode now also works in
+     simple terminals.
 
    * Rterm/Cygwin combination works under Microsoft Windows.
 
@@ -545,7 +558,7 @@ Changes/New Features in 5.2.12:
      and provide the syntactic highlighting that eases the programming
      tasks.
 
-1.3 Current Features
+1.4 Current Features
 ====================
 
    * Languages Supported:
@@ -600,7 +613,7 @@ Changes/New Features in 5.2.12:
 
         * Previewing
 
-1.4 Stability
+1.5 Stability
 =============
 
 Versions 5.2.x are meant to be release-quality versions.  While some
@@ -608,7 +621,7 @@ new features are being introduced, we are cleaning up and improving the
 interface.  We know about some remaining documentation inconsistencies.
 Patches or suggested fixes with bug reports are much appreciated!
 
-1.5 Requirements
+1.6 Requirements
 ================
 
 ESS has been tested with
@@ -650,7 +663,7 @@ ESS has been tested with
    (1) require the files.el patch to revert-buffer for the Local
 Variables updating problem
 
-1.6 Getting the Latest Version
+1.7 Getting the Latest Version
 ==============================
 
 The latest released version of ESS is always available on the web at:
@@ -687,7 +700,7 @@ Subversion server of the R project is
 (currently, there is no "trusted certificate").  You can accept this
 certificate permanently and will not be asked about it anymore.
 
-1.7 Installation (from tar file)
+1.8 Installation (from tar file)
 ================================
 
 We now discuss installation, which might happen under Unix or Microsoft
@@ -697,7 +710,7 @@ installation::.
    For Microsoft Windows Installation please skip to the *Note
 Microsoft Windows installation::.
 
-1.8 Unix installation
+1.9 Unix installation
 =====================
 
   1. `cd' to a directory where you want to install ESS, creating it if
@@ -756,8 +769,8 @@ Microsoft Windows installation::.
      (http://www.xemacs.org/Documentation/packageGuide.html).
 
 
-1.9 Microsoft Windows installation
-==================================
+1.10 Microsoft Windows installation
+===================================
 
 For Microsoft Windows installation, please follow the next steps: (see
 separate instructions above for UNIX *Note Unix installation::.
@@ -818,9 +831,13 @@ separate instructions above for UNIX *Note Unix installation::.
      location.  Change the path otherwise to point to other locations.
 
      To start the S-PLUS [67].x GUI from ESS under emacs:
-          M-x S
-          (or `M-x S+6').
-     You will then be asked for a pathname ("S starting data
+       1. If you use Cygwin bash as your primary shell, then
+               M-x S
+               (or `M-x S+6').
+
+       2. If you use the MSDOS prompt window as your primary shell, then
+               M-x S+6-msdos
+          You will then be asked for a pathname ("S starting data
      directory?"), from which to start the process.  The prompt will
      propose your current directory as the default.  ESS will start the
      S-PLUS GUI.  There will be slight delay during which emacs is
@@ -828,21 +845,23 @@ separate instructions above for UNIX *Note Unix installation::.
      S-PLUS GUI using the DDE protocol.  Send lines or regions from the
      emacs buffer containing your S program (for example, `myfile.s')
      to the S-PLUS Commands Window with the `C-c C-n' or `C-c C-r' keys.
-     (If you are still using S-PLUS 4.x or 2000, then use `M-x S+4'.)
+     (If you are still using S-PLUS 4.x or 2000,\ then use `M-x S+4' or
+     `M-x S+4-msdos'.)
 
      To start an S-PLUS [67].x session inside an emacs buffer--and
      without the S-PLUS GUI:
           M-x Sqpe
           (or `M-x Sqpe+6').
-     You will then be asked for a pathname ("S starting data
-     directory?"), from which to start the process.  The prompt will
-     propose your current directory as the default.  You get Unix-like
-     behavior, in particular the entire transcript is available for
-     emacs-style search commands.  Send lines or regions from the emacs
-     buffer containing your S program (for example, `myfile.s') to the
-     *S+6* buffer with the `C-c C-n' or `C-c C-r' keys.  Interactive
-     graphics are available with Sqpe by using the java library
-     supplied with S-PLUS 6.1 and newer releases.  Enter the commands:
+     This works with both the bash and msdos shells.  You will then be
+     asked for a pathname ("S starting data directory?"), from which to
+     start the process.  The prompt will propose your current directory
+     as the default.  You get Unix-like behavior, in particular the
+     entire transcript is available for emacs-style search commands.
+     Send lines or regions from the emacs buffer containing your S
+     program (for example, `myfile.s') to the *S+6* buffer with the
+     `C-c C-n' or `C-c C-r' keys.  Interactive graphics are available
+     with Sqpe by using the java library supplied with S-PLUS 6.1 and
+     newer releases.  Enter the commands:
           library(winjava)
           java.graph()
      Graphs can be saved from the `java.graph' device in several
@@ -853,6 +872,8 @@ separate instructions above for UNIX *Note Unix installation::.
      To connect to an already running S-PLUS GUI (started, for example,
      from the S-PLUS icon):
           M-x S+6-existing
+     or
+          M-x S+6-msdos-existing
      You will then be asked for a pathname ("S starting data
      directory?"), from which to start the process.  The prompt will
      propose your current directory as the default.  ESS will arrange
@@ -860,7 +881,8 @@ separate instructions above for UNIX *Note Unix installation::.
      DDE protocol.  Send lines or regions from the emacs buffer
      containing your S program (for example, `myfile.s') to the S-PLUS
      Commands Window with the `C-c C-n' or `C-c C-r' keys.  (If you are
-     still using S-PLUS 4.x or 2000, then use `M-x S+4-existing'.)
+     still using S-PLUS 4.x or 2000,  then use `M-x S+4-existing' or
+     `M-x S+4-msdos-existing'.)
 
      If you wish to run R, you can start it with:
           M-x R
@@ -874,7 +896,7 @@ separate instructions above for UNIX *Note Unix installation::.
   6. That's it!
 
 
-1.10 Reporting Bugs
+1.11 Reporting Bugs
 ===================
 
 Please send bug reports, suggestions etc. to
@@ -895,7 +917,7 @@ containing debug information; send us that buffer.
    Note that comments, suggestions, words of praise and large cash
 donations are also more than welcome.
 
-1.11 Mailing Lists
+1.12 Mailing Lists
 ==================
 
 There is a mailing list for discussions and announcements relating to
@@ -917,7 +939,7 @@ low-volume mailing list.
 
    *  posting small patches to ESS.
 
-1.12 Authors
+1.13 Authors
 ============
 
    * A.J. Rossini (mailto:blindglobe@gmail.com)

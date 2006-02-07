@@ -241,8 +241,12 @@ Changes/New Features in 5.2.12:
    * ESS[SAS]: `M-;' fixed, but the XEmacs function `comment-dwim' may
      be broken, if so, use `M-x comment-region' and `M-x
      uncomment-region' instead; only valid PROCs are fontified which is
-     very helpful finding syntax errors (currently supported:  BASE,
-     ETS, FSP, GRAPH, IML, INSIGHT and STAT).
+     very helpful finding syntax errors (currently supported: BASE,
+     ETS, FSP, GRAPH, IML, INSIGHT and STAT); the "feature" where
+     `F'-keys take you to an empty buffer when the requested
+     destination is a file that does not exist has been fixed, now the
+     request results in a no-op.  Further, sas-mode now also works in
+     simple terminals.
 
    * Rterm/Cygwin combination works under Microsoft Windows.
 
