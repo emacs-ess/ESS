@@ -1,3 +1,7 @@
+2006-02-07  ESS Maintainers <ESS-core@stat.math.ethz.ch>
+
+  * Version 5.2.12 released.
+
 2006-01-06  Stephen Eglen  <stephen@gnu.org>
 
 	* doc/ess.texi (Help with emacs): New section, referring people to
