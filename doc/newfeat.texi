@@ -1,12 +1,12 @@
 Changes/New Features in 5.2.12:
 @itemize @bullet
 @item @ESS{[SAS]}: @kbd{M-;} fixed, but the XEmacs function @code{comment-dwim}
-may be broken, if so, use @kbd{M-x comment-region} and @kbd{M-x uncomment-region}
-instead; only valid PROCs are fontified which is very helpful finding syntax errors
-(currently supported:  BASE, ETS, FSP, GRAPH, IML, INSIGHT and STAT); the ``feature''
-where @kbd{F}-keys take you to an empty buffer when the requested destination is a 
-file that does not exist has been fixed, now the request results in a no-op.
-
+may be broken, if so, use @kbd{M-x comment-region} and @kbd{M-x
+uncomment-region} instead; only valid PROCs are fontified which is very
+helpful finding syntax errors (currently supported: BASE, ETS, FSP, GRAPH,
+IML, INSIGHT and STAT); the ``feature'' where @kbd{F}-keys take you to an
+empty buffer when the requested destination is a file that does not exist
+has been fixed, now the request results in a no-op.
 Further, sas-mode now also works in simple terminals.
 @item Rterm/Cygwin combination works under Microsoft Windows.
 @item @ESS{[R]}: internal calls use baseenv() instead of NULL and
