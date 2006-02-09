@@ -3,7 +3,7 @@
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997-1999 A.J. Rossini <rossini@u.washington.edu>,
 ;;	Martin Maechler <maechler@stat.math.ethz.ch>.
-;; Copyright (C) 2000--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2000--2006 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
@@ -55,24 +55,29 @@
  ;;*;; Process handling
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; In this section:
-;;;;
-;;;; * User commands for starting an ESS process
-;;;; * Functions called at startup
-;;;; * Process handling code
-;;;; * Multiple process implementation
+;;; In this section:
+;;;
+;;; * User commands for starting an ESS process
+;;; * Functions called at startup
+;;; * Process handling code
+;;; * Multiple process implementation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;;*;; Starting a process
 
 (defun ess-proc-name (n name)
-  "Return name of process N, as a string, with NAME prepended."
-  (if ess-plain-first-buffername
-      (if (> n 1)
-	  (concat name ":" (number-to-string n))
-	(concat name))
-    (concat name ":" (number-to-string n))))
+  "Return name of process N, as a string, with NAME prepended.
+If ess-plain-first-buffername, then initial process is number-free."
+  (concat name (if (and ess-plain-first-buffername
+			(= n 1))
+		   ""
+		 (concat ":" (number-to-string n)))))
+;; can still clean up, but logic was ugly:
+;;  (if ess-plain-first-buffername
+;;      (if (> n 1)
+;;	  (concat name ":" (number-to-string n))
+;;	(concat name))
+;;    (concat name ":" (number-to-string n))))
 
 (defun inferior-ess (&optional ess-start-args)
   "Start inferior ESS process.
