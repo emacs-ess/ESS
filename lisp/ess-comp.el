@@ -1,10 +1,10 @@
 ;;; ess-comp.el --- setting for compiling, only.
 
-;; Copyright (C) 1997--2004 A. J. Rossini
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2006 A. J. Rossini
+;; Copyright (C) 1997--2006 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
+;; Original Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 25 July 1997
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
@@ -66,4 +66,3 @@
 ;;; End:
 
 ;;; ess-comp.el ends here
-

@@ -1,3 +1,9 @@
+2006-02-09  AJ Rossini <blindglobe@gmail.com>
+
+	* ess-comp.el: copyright dates changed.
+	* ess-debug.el: added minimal documentation.  Removed cruft (this
+	is cruft?).  copyright dates changed.
+
 2006-02-09  Anthony Rossini <anthony.rossini@novartis.com>
 
 	* ess-inf.el (ess-proc-name): better logic, cleanup.

@@ -1,9 +1,9 @@
 ;;; ess-cust.el --- Customize variables for ESS
 
-;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2006 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@u.washington.edu>
+;; Original Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 05 June 2000
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 

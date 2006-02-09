@@ -1,7 +1,7 @@
 ;;; ess-debug.el --- debugging start up for ESS
 
 ;; Copyright (C) 1997--2001 A.J. Rossini
-;; Copyright (C) 2001--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2001--2006 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
@@ -31,15 +31,11 @@
 ;; Strictly for debugging and development.  usage is:
 ;;           xemacs -no-site-file -no-init-file -load ess-debug.el -f S4
 ;; (or similar!)
+;;
+;; The whole point of this file is to enable debugging from a vanilla
+;; environment.  It probably isn't needed too much right now.
 
 ;;; Code:
-
-
-;;; For Tony's environment
-;(require 'tex-site)
-;(require 'x-symbol-hooks)
-;(x-symbol-initialize)
-
 
 (defun ess-add-path (path &rest options)
   "Add PATH to `load-path' if it exists under `default-load-path'
@@ -74,7 +70,7 @@ default-load-path."
 		(cons p load-path))))))
 
 (setq-default debug-on-error t)
-(ess-add-path "~rossini/sandbox/Src/Emacs/ESS/ess/lisp")
+(ess-add-path "~rossini/Repos/repos-svn/ess/lisp")
 (require 'ess-site)
 
 ; Local variables section
