@@ -68,16 +68,10 @@
 (defun ess-proc-name (n name)
   "Return name of process N, as a string, with NAME prepended.
 If ess-plain-first-buffername, then initial process is number-free."
-  (concat name (if (and ess-plain-first-buffername
-			(= n 1))
-		   ""
-		 (concat ":" (number-to-string n)))))
-;; can still clean up, but logic was ugly:
-;;  (if ess-plain-first-buffername
-;;      (if (> n 1)
-;;	  (concat name ":" (number-to-string n))
-;;	(concat name))
-;;    (concat name ":" (number-to-string n))))
+  (concat name
+	  (if (not (and ess-plain-first-buffername
+			(= n 1))) ; if not both first and plain-first add number
+	      (concat ":" (number-to-string n)))))
 
 (defun inferior-ess (&optional ess-start-args)
   "Start inferior ESS process.
@@ -159,7 +153,13 @@ Alternatively, it can appear in its own frame if
     (let* ((process-environment process-environment)
 	   (defdir (or (and ess-directory-function (funcall ess-directory-function))
 		       ess-directory default-directory))
-	   (temp-dialect temp-ess-dialect)
+	   (temp-dialect (if ess-use-inferior-program-name-in-buffer-name 
+			     (if (string-equal temp-ess-dialect "R")
+				 inferior-R-program-name
+			       temp-ess-dialect) ; use temp-ess-dialect
+					; if not R, R program name
+					; otherwise.
+			   temp-ess-dialect))
 	   (temp-lang temp-ess-lang)
 	   (procname (let ((ntry 0) ;; find a non-existent process
 			   (done nil))

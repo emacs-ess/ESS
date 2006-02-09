@@ -1,5 +1,13 @@
 2006-02-09  Anthony Rossini <anthony.rossini@novartis.com>
 
+	* ess-inf.el (ess-proc-name): better logic, cleanup.
+	* ess-cust.el (ess-use-inferior-program-name-in-buffer-name): new variable.
+	* ess-site.el: documentation for this
+	* ess-inf.el (inferior-ess): use new variable for buffername
+	construction. 
+
+2006-02-09  Anthony Rossini <anthony.rossini@novartis.com>
+
 	* ess-inf.el (ess-proc-name): cleaned up truly ugly logic.
 
 2006-02-04  Martin Maechler  <maechler@stat.math.ethz.ch>

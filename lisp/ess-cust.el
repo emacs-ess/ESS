@@ -256,6 +256,14 @@ If this is a relative file name, it is relative to `ess-history-directory'."
   :group 'ess
   :type 'boolean)
 
+
+(defcustom ess-use-inferior-program-name-in-buffer-name nil
+  "*For R, use R-2.1.0 (the program name) for buffer name.
+Avoids the plain dialect name."
+  :group 'ess
+  :type 'boolean)
+
+
 (defcustom ess-S-assign " <- "
   "*String to be used for left assignment in all S dialects.
  Used by \\[ess-smart-underscore]."

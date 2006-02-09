@@ -1,7 +1,7 @@
 ;;; ess-site.el --- user customization of ESS
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2006 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: David Smith <D.M.Smith@lancaster.ac.uk>
@@ -568,6 +568,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; won't like fancy buffer names for their first (and only :-)
 ;;; process.  To number all processes, uncomment the next line.
 ;;(setq ess-plain-first-buffername nil)
+
+;;; (3.02) Some people have requested using the program name as part
+;;; of the buffer.  Turned on for R.
+;;(setq ess-use-inferior-program-name-in-buffer-name t)
+
 
 ;;; (3.1) Font-lock
 ;; The following two expressions automatically enable font-lock-mode
