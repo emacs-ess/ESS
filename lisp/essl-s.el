@@ -453,7 +453,7 @@ Uses the file given by the variable `ess-function-outline-file'."
 (defun ess-dump-to-src (&optional dont-query verbose)
   "Make the changes in an S - dump() file to improve human readability."
   (interactive "P")
-  (ess-replace-regexp-dump-to-src  "^\"\\([a-z.][a-z.0-9]*\\)\"<-\n"
+  (ess-replace-regexp-dump-to-src  "^\"\\([a-z.][a-z.0-9]*\\)\" *<-\n"
 				   "\n\\1 <- "
 				   dont-query verbose 'ensure-ess))
 

@@ -16,6 +16,10 @@
 
 	* ess-inf.el (ess-proc-name): cleaned up truly ugly logic.
 
+2006-02-08  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-dump-to-src): minimal improvement
+
 2006-02-04  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): font-lock in any case,
