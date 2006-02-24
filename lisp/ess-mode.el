@@ -342,7 +342,6 @@ Variables controlling indentation style:
 Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
 indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 `CLB' (quoted from C language style)."
-  (interactive)
   (kill-all-local-variables) ;; NOTICE THIS!
   (ess-setq-vars-local alist)
   (ess-write-to-dribble-buffer
