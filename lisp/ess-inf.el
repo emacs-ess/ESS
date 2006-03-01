@@ -153,7 +153,7 @@ Alternatively, it can appear in its own frame if
     (let* ((process-environment process-environment)
 	   (defdir (or (and ess-directory-function (funcall ess-directory-function))
 		       ess-directory default-directory))
-	   (temp-dialect (if ess-use-inferior-program-name-in-buffer-name 
+	   (temp-dialect (if ess-use-inferior-program-name-in-buffer-name
 			     (if (string-equal temp-ess-dialect "R")
 				 inferior-R-program-name
 			       temp-ess-dialect) ; use temp-ess-dialect
@@ -1688,7 +1688,7 @@ This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
   (interactive)
   (if (string= ess-language "S")
       (ess-eval-linewise (format "options(width=%d,length=99999)"
-				 (1- (frame-width))))))
+				 (1- (window-width))))))
 
 (defun ess-execute (command &optional invert buff message)
   "Send a command to the ESS process.
