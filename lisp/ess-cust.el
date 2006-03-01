@@ -126,7 +126,7 @@
 
 ;; Variables (not user-changeable)
 
-(defvar ess-version "5.2.12"
+(defvar ess-version "5.2.13"
   "Version of ESS currently loaded.")
 
 (defvar no-doc
@@ -258,7 +258,7 @@ If this is a relative file name, it is relative to `ess-history-directory'."
 
 
 (defcustom ess-use-inferior-program-name-in-buffer-name nil
-  "*For R, use R-2.1.0 (the program name) for buffer name.
+  "*For R, use e.g., 'R-2.1.0' or 'R-devel' (the program name) for buffer name.
 Avoids the plain dialect name."
   :group 'ess
   :type 'boolean)

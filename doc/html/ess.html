@@ -36,7 +36,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.2.12
+5.2.13
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -346,7 +346,18 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
 <h3 class="section">1.2 New features in ESS</h3>
 
-<p>Changes/New Features in 5.2.12:
+<p>Changes/New Features in 5.2.13:
+     <ul>
+<li>New variable, <code>ess-use-inferior-program-name-in-buffer-name</code>,
+which uses the executable name instead of the dialect name for
+R. Feature request. 
+<li><acronym>ESS[S]</acronym> <kbd>ess-execute-screen-options</kbd>
+now also works correctly when there is more than one window *side-by-side*
+in the same frame and runs in the correct buffer also when there is more
+than one S buffer. 
+</ul>
+
+   <p>Changes/New Features in 5.2.12:
      <ul>
 <li><acronym>ESS[SAS]</acronym>: <kbd>M-;</kbd> fixed, but the XEmacs function <code>comment-dwim</code>
 may be broken, if so, use <kbd>M-x comment-region</kbd> and <kbd>M-x
