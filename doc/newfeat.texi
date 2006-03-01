@@ -4,6 +4,10 @@ Changes/New Features in 5.2.13:
 @item New variable, @code{ess-use-inferior-program-name-in-buffer-name},
 which uses the executable name instead of the dialect name for
 R. Feature request.
+@item @ESS{[S]} @kbd{ess-execute-screen-options}
+now also works correctly when there is more than one window *side-by-side*
+in the same frame and runs in the correct buffer also when there is more
+than one S buffer.
 @end itemize
 
 

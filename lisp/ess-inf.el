@@ -1687,8 +1687,14 @@ Also sets the \"length\" option to 99999.
 This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
   (interactive)
   (if (string= ess-language "S")
-      (ess-eval-linewise (format "options(width=%d,length=99999)"
-				 (1- (window-width))))))
+      (let ((ess-current-process-name)); local, used as S-process buffer below
+	;; when run inside an ESS process buffer, use that one
+	(if (and (comint-check-proc (current-buffer)); has running proc
+		 (memq major-mode '(inferior-ess-mode)))
+	    (setq ess-current-process-name ess-local-process-name))
+
+	(ess-eval-linewise (format "options(width=%d,length=99999)"
+				   (1- (window-width)))))))
 
 (defun ess-execute (command &optional invert buff message)
   "Send a command to the ESS process.
