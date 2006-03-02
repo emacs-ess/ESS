@@ -397,8 +397,9 @@ name and path, if it exists, anywhere in the sub-tree."
     ess-tmp-return))
 
 (defun ess-find-exec-completions (ess-root-arg &optional ess-exec-dir)
-"Given the root of an executable file name, find all possible completions,
-if any exist, in PATH."
+  "Given the root of an executable file name, find all possible completions.
+Search for the executables in ESS-EXEC-DIR which defaults to
+`exec-path' if no value is given."
   (let* ((ess-exec-path
 	 (if ess-exec-dir (ess-return-list ess-exec-dir) exec-path))
 	(ess-tmp-exec nil)
