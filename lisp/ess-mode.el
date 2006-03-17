@@ -51,6 +51,8 @@
 (autoload 'ess-eval-buffer-and-go	"ess-inf" "" nil)
 (autoload 'ess-eval-function		"ess-inf" "" nil)
 (autoload 'ess-eval-function-and-go	"ess-inf" "" nil)
+(autoload 'ess-eval-function-or-paragraph-and-step
+                                        "ess-inf" "" nil)
 (autoload 'ess-eval-line		"ess-inf" "" nil)
 (autoload 'ess-eval-line-and-go		"ess-inf" "" nil)
 (autoload 'ess-eval-line-and-step	"ess-inf" "" nil)
@@ -134,6 +136,7 @@
   (define-key ess-mode-map "\C-c\M-b"	'ess-eval-buffer-and-go)
   (define-key ess-mode-map "\C-c\C-f"	'ess-eval-function)
   (define-key ess-mode-map "\C-c\M-f"	'ess-eval-function-and-go)
+  (define-key ess-mode-map "\C-c\C-c"	'ess-eval-function-or-paragraph-and-step)
   (define-key ess-mode-map "\C-c\C-p"	'ess-eval-paragraph-and-step)
   (define-key ess-mode-map "\C-c\M-p"	'ess-eval-paragraph-and-go)
   (define-key ess-mode-map "\M-\C-x"	'ess-eval-function)
@@ -486,6 +489,7 @@ it cannot find a function beginning."
 	(in-set-S4 nil)
 	beg end done)
 
+
     ;; Note that we must be sure that we are past the 'function (' text,
     ;; such that ess-function-pattern is found in BACKwards later.
     ;; In case we're sitting in a function or setMethod() header,
@@ -496,13 +500,16 @@ it cannot find a function beginning."
 	(forward-char 1))
 
     (setq end (point)); = init-point when nothing found
+
     (ess-write-to-dribble-buffer
      (format "ess-BEG-of-fun after 'search-FWD (': Ini-pt %d, (p)-Ini-pt = %d\n"
 	     init-point (- end init-point)))
-    (if (re-search-backward ;; in case of setMethod() etc ..
-	 ess-set-function-start
-	 ;; at most one line earlier {2 is too much: finds previous sometimes}
-	 (+ 1 (ess-line-end-position -1)) t)
+    (if (and (> end 1)
+	     (re-search-backward ;; in case of setMethod() etc ..
+	      ess-set-function-start
+	      ;; at most 1 line earlier {2 is too much: finds previous sometimes}
+	      (+ 1 (ess-line-end-position -1)) t))
+
 	(progn ;; yes we *have* an S4  setMethod(..)-like
 	  (setq in-set-S4 t
 		beg (point))

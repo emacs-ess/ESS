@@ -4,8 +4,11 @@
 		     (ess-eval-paragraph-and-go): dito.
 	(ess-eval-region): now returns a (beg end) list
 
+	(ess-eval-function-or-paragraph-and-step): new, to be bound to C-cC-c
+
 	* ess-mode.el (ess-beginning-of-function): &optional no-error
-	(ess-mode-map): add ess-eval-paragraph-and-(go|step)
+	(ess-mode-map): add ess-eval-paragraph-and-(go|step) and
+			ess-eval-function-or-paragraph-and-step
 	(ess-mode-menu): dito
 
 2006-03-02  Stephen Eglen  <stephen@gnu.org>

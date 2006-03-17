@@ -1029,16 +1029,12 @@ With prefix argument, toggle meaning of `ess-eval-visibly-p'."
   "Send the current buffer to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  ;; already in eval-region:
-  ;;    (ess-force-buffer-current "Process to load into: ")
   (ess-eval-region (point-min) (point-max) vis "Eval buffer"))
 
 (defun ess-eval-function (vis)
   "Send the current function to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  ;; already in eval-region:
-  ;;     (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (let* ((beg-end (ess-end-of-function))
 	   (beg (nth 0 beg-end))
@@ -1056,18 +1052,37 @@ Arg has same meaning as for `ess-eval-region'."
   "Send the current paragraph to the inferior ESS process.
 Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
   (interactive "P")
-  (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (forward-paragraph)
     (let ((end (point)))
       (backward-paragraph)
       (ess-eval-region (point) end vis "Eval paragraph"))))
 
+(defun ess-eval-function-or-paragraph-and-step (vis)
+  "Send the current function if \\[point] is inside one, otherwise the current
+paragraph other to the inferior ESS process.
+Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
+  (interactive "P")
+  (let ((beg (ess-beginning-of-function 'no-error)))
+    (if beg ;; inside a function
+	(let ((end-fun (cadr (ess-end-of-function beg)))
+	      name)
+	  (message "ess-eval-fun|para-*: inside fun: end = %d" end-fun)
+	  (goto-char beg)
+	  (setq name (ess-extract-word-name))
+	  (princ (concat "Loading: " name) t)
+	  (ess-eval-region beg end-fun vis
+			   (concat "Eval function " name))
+	  (goto-char (1+ end-fun)))
+      ;; else: not in a function
+      (ess-eval-paragraph-and-step vis)
+      ))
+)
+
 (defun ess-eval-line (vis)
   "Send the current line to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  (ess-force-buffer-current "Process to load into: ")
   (save-excursion
     (end-of-line)
     (let ((end (point)))

@@ -8,6 +8,9 @@ R. Feature request.
 now also works correctly when there is more than one window *side-by-side*
 in the same frame and runs in the correct buffer also when there is more
 than one S buffer.
+@item @iESS{[S]} new functions @code{ess-eval-paragraph-and-step} and
+ @code{ess-eval-function-or-paragraph-and-step} are bound to keys
+ @kbd{C-c C-p} and @kbd{C-c C-c} respectively.
 @end itemize
 
 
