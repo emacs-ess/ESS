@@ -1020,7 +1020,10 @@ With prefix argument, toggle meaning of `ess-eval-visibly-p'."
 	(let ((sprocess (get-ess-process ess-current-process-name)))
 	  (process-send-region sprocess start end)
 	  (process-send-string sprocess "\n")))))
-  (message "Finished evaluation"))
+  (message "Finished evaluation")
+  ;; return value
+  (list start end)
+  )
 
 (defun ess-eval-buffer (vis)
   "Send the current buffer to the inferior ESS process.
@@ -1113,7 +1116,7 @@ both SIMPLE-NEXT and EVEN-EMPTY are interpreted as true."
       (forward-line 1)
     (ess-next-code-line 1)))
 
-(defun ess-eval-line-and-step-invisibly (&optional simple-next even-empty)
+(defun ess-eval-line-and-step-invisibly ()
    "Evaluate the current line invisibly and step to the next line.
 Evaluate all comments and empty lines."
   (interactive)
@@ -1155,6 +1158,21 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-line vis)
   (ess-switch-to-ESS t))
+
+(defun ess-eval-paragraph-and-go (vis)
+  "Send the current paragraph to the inferior ESS process and switch to the
+process buffer. Arg has same meaning as for `ess-eval-region'."
+  (interactive "P")
+  (ess-eval-paragraph vis)
+  (ess-switch-to-ESS t))
+
+(defun ess-eval-paragraph-and-step (vis)
+  "Send the current paragraph to the inferior ESS process and move forward to
+the next paragraph.  Arg has same meaning as for `ess-eval-region'."
+  (interactive "P")
+  (let ((beg-end (ess-eval-paragraph vis)))
+    (goto-char (1+ (cadr beg-end))))
+)
 
 ;;; Related to the ess-eval-* commands, there are the ess-load
 ;;; commands.	Need to add appropriate stuff...

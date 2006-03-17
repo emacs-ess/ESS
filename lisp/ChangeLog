@@ -1,3 +1,13 @@
+2006-03-17  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-eval-paragraph-and-step): new;
+		     (ess-eval-paragraph-and-go): dito.
+	(ess-eval-region): now returns a (beg end) list
+
+	* ess-mode.el (ess-beginning-of-function): &optional no-error
+	(ess-mode-map): add ess-eval-paragraph-and-(go|step)
+	(ess-mode-menu): dito
+
 2006-03-02  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-utils.el (ess-find-exec-completions): Doc fix.
@@ -194,7 +204,7 @@
 
 	* ess-mode.el (ess-R-function-pattern) etc: moved here from
 	* ess-cust.el: greatly improved to also catch things like
- 		 "names<-.foo" <- function(.) { .... }
+		 "names<-.foo" <- function(.) { .... }
 
 2005-07-08  Martin Maechler  <maechler@stat.math.ethz.ch>
 

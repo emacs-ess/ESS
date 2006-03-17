@@ -47,17 +47,19 @@
 (autoload 'ess-read-object-name		"ess-inf" "" nil)
 (autoload 'ess-list-object-completions	"ess-inf" "" nil)
 
+(autoload 'ess-eval-buffer		"ess-inf" "" nil)
+(autoload 'ess-eval-buffer-and-go	"ess-inf" "" nil)
+(autoload 'ess-eval-function		"ess-inf" "" nil)
+(autoload 'ess-eval-function-and-go	"ess-inf" "" nil)
+(autoload 'ess-eval-line		"ess-inf" "" nil)
+(autoload 'ess-eval-line-and-go		"ess-inf" "" nil)
+(autoload 'ess-eval-line-and-step	"ess-inf" "" nil)
 (autoload 'ess-eval-linewise		"ess-inf" "" nil)
 (autoload 'ess-eval-paragraph		"ess-inf" "" nil)
+(autoload 'ess-eval-paragraph-and-go    "ess-inf" "" nil)
+(autoload 'ess-eval-paragraph-and-step  "ess-inf" "" nil)
 (autoload 'ess-eval-region		"ess-inf" "" nil)
-(autoload 'ess-eval-buffer		"ess-inf" "" nil)
-(autoload 'ess-eval-function		"ess-inf" "" nil)
-(autoload 'ess-eval-line		"ess-inf" "" nil)
-(autoload 'ess-eval-line-and-step	"ess-inf" "" nil)
 (autoload 'ess-eval-region-and-go	"ess-inf" "" nil)
-(autoload 'ess-eval-buffer-and-go	"ess-inf" "" nil)
-(autoload 'ess-eval-function-and-go	"ess-inf" "" nil)
-(autoload 'ess-eval-line-and-go		"ess-inf" "" nil)
 
 (autoload 'ess-load-file		"ess-inf" "" nil)
 (autoload 'ess-switch-process		"ess-inf" "" nil)
@@ -132,6 +134,8 @@
   (define-key ess-mode-map "\C-c\M-b"	'ess-eval-buffer-and-go)
   (define-key ess-mode-map "\C-c\C-f"	'ess-eval-function)
   (define-key ess-mode-map "\C-c\M-f"	'ess-eval-function-and-go)
+  (define-key ess-mode-map "\C-c\C-p"	'ess-eval-paragraph-and-step)
+  (define-key ess-mode-map "\C-c\M-p"	'ess-eval-paragraph-and-go)
   (define-key ess-mode-map "\M-\C-x"	'ess-eval-function)
   (define-key ess-mode-map "\C-c\C-n"	'ess-eval-line-and-step)
   (define-key ess-mode-map "\C-c\C-j"	'ess-eval-line)
@@ -176,6 +180,7 @@
     ["Eval region"	ess-eval-region-and-go		  t]
     ["Eval function"	ess-eval-function-and-go	  t]
     ["Eval line"	ess-eval-line-and-go		  t]
+    ["Eval paragraph"   ess-eval-paragraph-and-go	  t]
     ["Eval chunk"	ess-eval-chunk-and-go	 noweb-mode]
     ["Eval thread"	ess-eval-thread-and-go	 noweb-mode]
     ["About"		(ess-goto-info "Evaluating code") t]
@@ -187,6 +192,8 @@
     ["Enter expression" ess-execute-in-tb		  t]
     ["Eval line"	ess-eval-line			  t]
     ["Eval line & step" ess-eval-line-and-step		  t]
+    ["Eval paragraph"   ess-eval-paragraph		  t]
+    ["Eval para. & step" ess-eval-paragraph-and-step	  t]
     ["Eval chunk"	ess-eval-chunk		 noweb-mode]
     ["Eval thread"	ess-eval-thread		 noweb-mode]
     ["About"		(ess-goto-info "Evaluating code") t]
@@ -470,8 +477,10 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
 ); {end let}
 
-(defun ess-beginning-of-function ()
-  "Leave (and return) the point at the beginning of the current ESS function."
+(defun ess-beginning-of-function (&optional no-error)
+  "Leave (and return) the point at the beginning of the current ESS function.
+If the optional argument NO-ERROR is non-nil, the function returns nil when
+it cannot find a function beginning."
   (interactive)
   (let ((init-point (point))
 	(in-set-S4 nil)
@@ -518,46 +527,54 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
     (while (not done)
       ;; Need this while loop to skip over local function definitions
 
-      ;; In the case of non-success, it is inefficient;
+      ;; In the case of non-success, it is inefficiently
       ;; going back in the buffer through all function definitions...
-      (if (re-search-backward ess-function-pattern (point-min) t)
-	  nil
+      (unless (re-search-backward ess-function-pattern (point-min) t)
 	(goto-char init-point)
-	(error "Point is not in a function according to 'ess-function-pattern'."))
-      (setq beg (point))
-      (ess-write-to-dribble-buffer
-       (format "\tMatch,Pt:(%d,%d),%d\n" (match-beginning 0)(match-end 0) beg))
-      (setq in-set-S4 (looking-at ess-set-function-start))
-      (forward-list 1)			; get over arguments
+	(if no-error
+	    (setq  done t  beg nil)
+	  ;; else [default]:
+	  (error "Point is not in a function according to 'ess-function-pattern'.")
+	  ))
+      (unless done
+	(setq beg (point))
+	(ess-write-to-dribble-buffer
+	 (format "\tMatch,Pt:(%d,%d),%d\n"
+		 (match-beginning 0) (match-end 0) beg))
+	(setq in-set-S4 (looking-at ess-set-function-start))
+	(forward-list 1)		; get over arguments
 
-      ;; The following used to bomb  "Unbalanced parentheses", n1, n2
-      ;; when the above (search-forward "(" ..) wasn't delimited :
-      (unless in-set-S4 (forward-sexp 1))		; move over braces
-      ;;DBG (ess-write-to-dribble-buffer "|")
-      (setq end (point))
-      (goto-char beg)
-      ;; current function must begin and end around point
-      (setq done (and (>= end init-point) (<= beg init-point))))
+	;; The following used to bomb  "Unbalanced parentheses", n1, n2
+	;; when the above (search-forward "(" ..) wasn't delimited :
+	(unless in-set-S4 (forward-sexp 1)) ; move over braces
+	;;DBG (ess-write-to-dribble-buffer "|")
+	(setq end (point))
+	(goto-char beg)
+	;; current function must begin and end around point
+	(setq done (and (>= end init-point) (<= beg init-point)))))
     beg))
 
-(defun ess-end-of-function (&optional beginning)
+(defun ess-end-of-function (&optional beginning no-error)
   "Leave the point at the end of the current ESS function.
 Optional argument for location of beginning.  Return '(beg end)."
   (interactive)
   (if beginning
       (goto-char beginning)
-    (setq beginning (ess-beginning-of-function)))
-  ;; *hack* only for S (R || S+): are we in setMethod(..) etc?
-  (let ((in-set-S4 (looking-at ess-set-function-start)))
-    (ess-write-to-dribble-buffer
-     (format "ess-END-of-fun: S4=%s, beginning = %d\n" in-set-S4 beginning))
-    (forward-list 1)		; get over arguments || whole set*(..)
-    (unless in-set-S4 (forward-sexp 1))		; move over braces
-    ;;DBG (ess-write-to-dribble-buffer "ess-END-of-fun: found ok\n")
-    (list beginning (point))
-    ))
+    (setq beginning (ess-beginning-of-function no-error)))
+  (if beginning
+      ;; *hack* only for S (R || S+): are we in setMethod(..) etc?
+      (let ((in-set-S4 (looking-at ess-set-function-start)))
+	(ess-write-to-dribble-buffer
+	 (format "ess-END-of-fun: S4=%s, beginning = %d\n" in-set-S4 beginning))
+	(forward-list 1)	; get over arguments || whole set*(..)
+	(unless in-set-S4 (forward-sexp 1)) ; move over braces
+	;;DBG (ess-write-to-dribble-buffer "ess-END-of-fun: found ok\n")
+	(list beginning (point))
+	)
+    ;; else: 'no-error': we are not in a function
+    nil))
 
-;;; Kurt's version, suggested 970306.
+;;; Kurt's version, suggested 1997-03-06.
 (defun ess-mark-function ()
   "Put mark at end of ESS function, point at beginning."
   (interactive)
@@ -661,8 +678,8 @@ With prefix argument, only shows the errors ESS reported."
 	   t)
 	  (let* ((filename (buffer-substring (match-beginning 3) (match-end 3)))
 		 (fbuffer (get-file-buffer filename))
-		 (linenum 
-		  (string-to-number 
+		 (linenum
+		  (string-to-number
 		   (buffer-substring (match-beginning 2) (match-end 2))))
 		 (errmess (buffer-substring (match-beginning 1) (match-end 1))))
 	    (if showerr
