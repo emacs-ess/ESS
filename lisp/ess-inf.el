@@ -1067,7 +1067,6 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
     (if beg ;; inside a function
 	(let ((end-fun (cadr (ess-end-of-function beg)))
 	      name)
-	  (message "ess-eval-fun|para-*: inside fun: end = %d" end-fun)
 	  (goto-char beg)
 	  (setq name (ess-extract-word-name))
 	  (princ (concat "Loading: " name) t)
