@@ -1,3 +1,7 @@
+2006-03-23  Richard M. Heiberger <rmh@temple.edu>
+	* ess-iw32.el (ess-display-help-on-object)
+	repair prompt on Windows to suggest a default as on Unix.
+
 2006-03-17  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-eval-paragraph-and-step): new;
