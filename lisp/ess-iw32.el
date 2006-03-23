@@ -127,7 +127,7 @@ file.  Otherwise just pops to an existing buffer if it exists."
       (symbol-function  'ess-display-help-on-object))
 
 (defun ess-display-help-on-object (object)
-  (interactive "sHelp on: ")
+  (interactive (ess-find-help-file "Help on: "))
   (if (equal (ess-get-process-variable
 	      ess-current-process-name 'inferior-ess-ddeclient)
 	     (default-value 'inferior-ess-ddeclient))
@@ -207,6 +207,21 @@ This version does not offer alternate buffers or editing capability."
   (widen))
 
 
+
+
+(defun ess-dput-expression-ddeclient (object filename)
+  "Dump the ESS object found by evaluating OBJECT into file FILENAME."
+  (ess-force-buffer-current "Process to load into: ")f
+  (ess-eval-linewise (concat "dput(" object ",'" filename "')"))
+  (sleep-for 2)
+  (find-file filename))
+
+(defun ess-command-ddeclient (object filename)
+  "Dump the ESS object found by evaluating OBJECT into file FILENAME."
+  (ess-force-buffer-current "Process to load into: ")f
+  (ess-eval-linewise (concat "dput(" object ",'" filename "')"))
+  (sleep-for 2)
+  (find-file filename))
 
 
 (fset 'ess-dump-object-into-edit-buffer-original
