@@ -63,6 +63,11 @@
 (autoload 'ess-search-list		"ess-inf" "(autoload)" nil)
 (autoload 'ess-get-object-list		"ess-inf" "(autoload)" nil)
 
+(autoload 'ess-ddeclient-p		"ess-inf" "(autoload)" nil)
+
+(autoload 'ess-display-help-on-object-ddeclient "ess-dde" "(autoload)" nil)
+
+
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; In this section:
@@ -92,7 +97,7 @@ Utility used in \\[ess-display-help-on-object]."
 		    (ess-write-to-dribble-buffer
 		     (format "(ess-help-bogus-buffer-p %s)" (buffer-name))))
 
-		(let 
+		(let
 		    ((PM (point-min))
 		     (case-fold-search t) )
 		  (or  ;; evaluate up to first non-nil (or end):
@@ -115,127 +120,131 @@ Utility used in \\[ess-display-help-on-object]."
       ;; else
       res)))
 
-;;*;; Access function for displaying help
-
 (defun ess-display-help-on-object (object)
   "Display documentation for OBJECT in another window.
 If prefix arg is given, forces a query of the  ESS process for the help
 file.  Otherwise just pops to an existing buffer if it exists.
 Uses the variable `inferior-ess-help-command' for the actual help command."
   (interactive (ess-find-help-file "Help on: "))
-  (let* ((hb-name (concat "*help["
-			  ess-current-process-name
-			  "](" object ")*"))
-	 (old-hb-p	(get-buffer hb-name))
-	 (curr-win-mode major-mode)
-	 (tbuffer	(get-buffer-create hb-name))
-	 (curr-help-command		inferior-ess-help-command)
-	 ;;-- pass the buffer-local 'ess-help-sec-..'  to the ess-help buffer:
-	 (curr-help-sec-regex		ess-help-sec-regex)
-	 (curr-help-sec-keys-alist	ess-help-sec-keys-alist)
-	 (curr-help-syntax-table	(syntax-table))
-	 (alist		ess-local-customize-alist))
 
-    (set-buffer tbuffer)
-    (ess-setq-vars-local (eval alist))
-    (setq ess-help-sec-regex	  curr-help-sec-regex)
-    (setq ess-help-sec-keys-alist curr-help-sec-keys-alist)
-    ;; see above, do same for inferior-ess-help-command... (i.e. remove
-    ;; hack, restore old code :-).
+  (if (ess-ddeclient-p)
+    ;; ddeclient version
+      (progn (ess-display-help-on-object-ddeclient object)
+	     (widen))
+    ;; else: "normal", non-DDE behavior:
+    (let* ((hb-name (concat "*help["
+			    ess-current-process-name
+			    "](" object ")*"))
+	   (old-hb-p	(get-buffer hb-name))
+	   (curr-win-mode major-mode)
+	   (tbuffer	(get-buffer-create hb-name))
+	   (curr-help-command		inferior-ess-help-command)
+	   ;;-- pass the buffer-local 'ess-help-sec-..'  to the ess-help buffer:
+	   (curr-help-sec-regex		ess-help-sec-regex)
+	   (curr-help-sec-keys-alist	ess-help-sec-keys-alist)
+	   (curr-help-syntax-table	(syntax-table))
+	   (alist		ess-local-customize-alist))
 
-    (if (or (not old-hb-p)
-	    current-prefix-arg
-	    (ess-help-bogus-buffer-p old-hb-p nil nil 'debug)
-	    )
+      (set-buffer tbuffer)
+      (ess-setq-vars-local (eval alist))
+      (setq ess-help-sec-regex	  curr-help-sec-regex)
+      (setq ess-help-sec-keys-alist curr-help-sec-keys-alist)
+      ;; see above, do same for inferior-ess-help-command... (i.e. remove
+      ;; hack, restore old code :-).
 
-	;; Ask the corresponding ESS process for the help file:
-	(progn
-	  (if buffer-read-only (setq buffer-read-only nil))
-	  (delete-region (point-min) (point-max))
-	  (ess-help-mode)
-	  (setq ess-local-process-name ess-current-process-name)
-	  (ess-command (format curr-help-command object) tbuffer)
-	  ;; was inferior-ess-help-command
+      (if (or (not old-hb-p)
+	      current-prefix-arg
+	      (ess-help-bogus-buffer-p old-hb-p nil nil 'debug)
+	      )
 
-	  (ess-help-underline)
-	  ;; Stata is clean, so we get a big BARF from this.
-	  (if (not (string= ess-language "STA"))
-	      (ess-nuke-help-bs))
+	  ;; Ask the corresponding ESS process for the help file:
+	  (progn
+	    (if buffer-read-only (setq buffer-read-only nil))
+	    (delete-region (point-min) (point-max))
+	    (ess-help-mode)
+	    (setq ess-local-process-name ess-current-process-name)
+	    (ess-command (format curr-help-command object) tbuffer)
+	    ;; was inferior-ess-help-command
 
-	  (goto-char (point-min))))
+	    (ess-help-underline)
+	    ;; Stata is clean, so we get a big BARF from this.
+	    (if (not (string= ess-language "STA"))
+		(ess-nuke-help-bs))
 
-    (save-excursion
-      (let ((PM (point-min))
-	    (nodocs (ess-help-bogus-buffer-p (current-buffer) nil 'give-match ))
-	    )
-	(goto-char PM)
-	(if (and nodocs
-		 ess-help-kill-bogus-buffers)
-	    (progn
-	      (if (not (listp nodocs))
-		  (setq nodocs (list PM (point-max))))
-	      (ess-write-to-dribble-buffer
-	       (format "(ess-help: error-buffer '%s' nodocs (%d %d)\n"
-		       (buffer-name) (car nodocs) (cadr nodocs)))
-	      ;; Avoid using 'message here -- may be %'s in string
-	      ;;(princ (buffer-substring (car nodocs) (cadr nodocs)) t)
-	      ;; MM [3/2000]: why avoid?  Yes, I *do* want message:
-	      (message "%s" (buffer-substring (car nodocs) (cadr nodocs)))
-	      ;; ^^^ fixme : remove new lines from the above {and abbrev.}
-	      (ding)
-	      (kill-buffer tbuffer))
+	    (goto-char (point-min))))
 
-	  ;; else : show the help buffer.
+      (save-excursion
+	(let ((PM (point-min))
+	      (nodocs
+	       (ess-help-bogus-buffer-p (current-buffer) nil 'give-match )))
+	  (goto-char PM)
+	  (if (and nodocs
+		   ess-help-kill-bogus-buffers)
+	      (progn
+		(if (not (listp nodocs))
+		    (setq nodocs (list PM (point-max))))
+		(ess-write-to-dribble-buffer
+		 (format "(ess-help: error-buffer '%s' nodocs (%d %d)\n"
+			 (buffer-name) (car nodocs) (cadr nodocs)))
+		;; Avoid using 'message here -- may be %'s in string
+		;;(princ (buffer-substring (car nodocs) (cadr nodocs)) t)
+		;; MM [3/2000]: why avoid?  Yes, I *do* want message:
+		(message "%s" (buffer-substring (car nodocs) (cadr nodocs)))
+		;; ^^^ fixme : remove new lines from the above {and abbrev.}
+		(ding)
+		(kill-buffer tbuffer))
 
-	  ;; Check if this buffer describes where help can be found in
-	  ;; various packages. (R only).  This is a kind of bogus help
-	  ;; buffer, but it should not be killed immediately even if
-	  ;; ess-help-kill-bogus-buffers is t.
+	    ;; else : show the help buffer.
 
-	  ;; e.g. if within R, the user does:
-	  
-	  ;; > options("help.try.all.packages" = TRUE)
+	    ;; Check if this buffer describes where help can be found in
+	    ;; various packages. (R only).  This is a kind of bogus help
+	    ;; buffer, but it should not be killed immediately even if
+	    ;; ess-help-kill-bogus-buffers is t.
 
-	  ;; > ?rlm
+	    ;; e.g. if within R, the user does:
 
-	  ;; then a list of packages for where ?rlm is defined is
-	  ;; shown.  (In this case, rlm is in package MASS).  This
-	  ;; help buffer is then renamed *help[R](rlm in packages)* so
-	  ;; that after MASS is loaded, ?rlm will then show 
-	  ;; *help[R](rlm)*
+	    ;; > options("help.try.all.packages" = TRUE)
 
-	  (if (equal inferior-ess-program inferior-R-program-name)
-	      ;; this code should be used only for R processes.
-	      (save-excursion
-		(goto-char (point-min))
-		(if (looking-at "Help for topic")
-		    (let 
-			( (newbuf 
-			   (concat "*help[" ess-current-process-name
-				   "](" object " in packages)*")))
-		      ;; if NEWBUF already exists, remove it.
-		      (if (get-buffer newbuf)
-			  (kill-buffer newbuf))
-		      (rename-buffer  newbuf)))))
+	    ;; > ?rlm
 
-	  ;;dbg (ess-write-to-dribble-buffer
-	  ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
-	  (let ((special-display-regexps
-		 (if ess-help-own-frame '(".") nil))
-		(special-display-frame-alist ess-help-frame-alist)
-		(special-display-function
-		 (if (eq ess-help-own-frame 'one)
-		     'ess-help-own-frame
-		   special-display-function)))
-	    (if (eq curr-win-mode 'ess-help-mode)
-		(if ess-help-own-frame
-		    (pop-to-buffer tbuffer)
-		  (switch-to-buffer tbuffer))
-	      (ess-display-temp-buffer tbuffer)))
-	  (if curr-help-syntax-table
-	      (set-syntax-table curr-help-syntax-table))
-	  (set-buffer-modified-p 'nil)
-	  (toggle-read-only t))))))
+	    ;; then a list of packages for where ?rlm is defined is
+	    ;; shown.  (In this case, rlm is in package MASS).  This
+	    ;; help buffer is then renamed *help[R](rlm in packages)* so
+	    ;; that after MASS is loaded, ?rlm will then show
+	    ;; *help[R](rlm)*
+
+	    (if (equal inferior-ess-program inferior-R-program-name)
+		;; this code should be used only for R processes.
+		(save-excursion
+		  (goto-char (point-min))
+		  (if (looking-at "Help for topic")
+		      (let
+			  ( (newbuf
+			     (concat "*help[" ess-current-process-name
+				     "](" object " in packages)*")))
+			;; if NEWBUF already exists, remove it.
+			(if (get-buffer newbuf)
+			    (kill-buffer newbuf))
+			(rename-buffer  newbuf)))))
+
+	    ;;dbg (ess-write-to-dribble-buffer
+	    ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
+	    (let ((special-display-regexps
+		   (if ess-help-own-frame '(".") nil))
+		  (special-display-frame-alist ess-help-frame-alist)
+		  (special-display-function
+		   (if (eq ess-help-own-frame 'one)
+		       'ess-help-own-frame
+		     special-display-function)))
+	      (if (eq curr-win-mode 'ess-help-mode)
+		  (if ess-help-own-frame
+		      (pop-to-buffer tbuffer)
+		    (switch-to-buffer tbuffer))
+		(ess-display-temp-buffer tbuffer)))
+	    (if curr-help-syntax-table
+		(set-syntax-table curr-help-syntax-table))
+	    (set-buffer-modified-p 'nil)
+	    (toggle-read-only t)))))))
 
 (defvar ess-help-frame nil
   "Stores the frame used for displaying R help buffers.")

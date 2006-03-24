@@ -35,7 +35,7 @@ CORE = ess.elc ess-site.elc
 
 ELC = ess-cust.elc $(CORE) \
 	ess-emcs.elc ess-utils.elc \
-	ess-inf.elc ess-iw32.elc \
+	ess-inf.elc ess-dde.elc \
 	ess-mode.elc ess-trns.elc ess-help.elc \
 	ess-comp.elc \
 	ess-menu.elc ess-mous.elc mouseme.elc \

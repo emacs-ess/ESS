@@ -1,3 +1,16 @@
+2006-03-24  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-eval-linewise): now calls
+	(ess-eval-linewise-ddeclient .) when appropriate; similar in other
+	functions; the same applies to
+	* ess-help.el:	autoload and *-ddeclient functions when needed
+	* ess-mode.el:	dito
+
+	* ess-dde.el: renamed from ess-iw32.el: removed all function
+	*RE*definitions and all (require .) leaving only `*-ddeclient'
+	function definitions;
+
+
 2006-03-23  Richard M. Heiberger <rmh@temple.edu>
 	* ess-iw32.el (ess-display-help-on-object)
 	repair prompt on Windows to suggest a default as on Unix.

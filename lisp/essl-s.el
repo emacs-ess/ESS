@@ -246,6 +246,9 @@ Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
   (if (file-exists-p outline-file)
       (setq ess-function-outline-file outline-file)))
 
+(defvar ess-S-assign-key "_"
+  "This key will be mapped to insert ess-S-assign '<-'")
+
  ; Function Definitions
 
 (defun S-comment-indent ()
@@ -591,6 +594,30 @@ and one that is well formatted in emacs ess-mode."
 		     "\\1\n}" 'fix nil verbose)
     ))
 
+;; This is by Seth Falcon, modeled after ess-toggle-underscore (see below).
+;; FIXME:  "toggle" should revert to previous behavior, i.e. by default to
+;; -----   smart underscore
+(defun ess-toggle-S-assign-key (force)
+  "Set the key defined in `ess-S-assign-key'"
+  (interactive "P")
+  (require 'ess-mode)
+  (require 'ess-inf)
+  (let ((current-key (lookup-key ess-mode-map ess-S-assign-key))
+	(insert-S-assign #'(lambda() (interactive)
+			     (delete-horizontal-space) (insert ess-S-assign))))
+    (message "[ess-toggle-S-assign-key:] current-key is '%s'" current-key)
+    (if current-key
+	(setq ess-S-previous-assign-key current-key))
+    (if (and current-key
+	     ;; (stringp current-key) (string= current-key ess-S-assign)
+	     (not force))
+	(progn
+	  (define-key ess-mode-map	    ess-S-assign-key nil)
+	  (define-key inferior-ess-mode-map ess-S-assign-key nil))
+      ;; else : "force" or current-key is "nil", i.e. default
+      (define-key ess-mode-map		ess-S-assign-key insert-S-assign)
+      (define-key inferior-ess-mode-map ess-S-assign-key insert-S-assign))))
+
 (defun ess-smart-underscore ()
   "Smart \"_\" key: insert `ess-S-assign', unless in string/comment.
 If the underscore key is pressed a second time, the assignment
@@ -629,14 +656,14 @@ an underscore is always inserted. "
   (interactive "P")
   (require 'ess-mode)
   (require 'ess-inf)
-  (let ((uscore (lookup-key ess-mode-map "_")))
-    (if (and uscore
-	     ;; (stringp uscore) (string= uscore ess-S-assign)
+  (let ((current-key (lookup-key ess-mode-map "_")))
+    (if (and current-key
+	     ;; (stringp current-key) (string= current-key ess-S-assign)
 	     (not force))
 	(progn
 	 (define-key ess-mode-map	   "_" nil); 'self-insert-command
 	 (define-key inferior-ess-mode-map "_" nil))
-      ;; else : "force" or uscore is "nil", i.e. default
+      ;; else : "force" or current-key is "nil", i.e. default
       (define-key ess-mode-map		"_" 'ess-smart-underscore)
       (define-key inferior-ess-mode-map "_" 'ess-smart-underscore))))
 

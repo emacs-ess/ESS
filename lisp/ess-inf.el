@@ -52,6 +52,11 @@
 
 (autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload)." t)
 
+(autoload 'ess-eval-region-ddeclient	    "ess-dde" "(autoload)" nil)
+(autoload 'ess-eval-linewise-ddeclient	    "ess-dde" "(autoload)" nil)
+(autoload 'ess-load-file-ddeclient	    "ess-dde" "(autoload)" nil)
+(autoload 'ess-command-ddeclient	    "ess-dde" "(autoload)" nil)
+
  ;;*;; Process handling
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -740,7 +745,7 @@ Assumes that buffer has not already been in found in current frame."
  ; Functions for evaluating code
 
 (defun ess-ddeclient-p ()
-  "Returns t if the ess-local-process-name is associated with an
+  "Returns t iff `ess-local-process-name' is associated with an
 inferior-ess-ddeclient, and nil if the ess-process is running as an
 ordinary inferior process.  Alway nil on Unix machines."
   (interactive)
@@ -791,67 +796,79 @@ When optional third arg SLEEP is non-nil, `(sleep-for (* a SLEEP))'
 will be used in a few places where `a' is proportional to `ess-cmd-delay'."
   ;; Use this function when you need to evaluate some S code, and the
   ;; result is needed immediately. Waits until the output is ready
-  (let* ((sprocess (get-ess-process ess-current-process-name))
-	 sbuffer
-	 do-sleep end-of-output
-	 oldpb oldpf oldpm
-	 my-retr-cmd my-save-cmd)
-    (if sprocess nil
-      (error "Process %s is not running!" ess-current-process-name))
-    (setq sbuffer (process-buffer sprocess))
-    (save-excursion
-      (set-buffer sbuffer)
-      (setq do-sleep		    ; only now when in sprocess buffer
-	    (progn
-	      (if sleep (if (numberp sleep) nil (setq sleep 1))); t means 1
-	      (and ess-cmd-delay sleep)))
-      (if do-sleep (setq sleep (* sleep ess-cmd-delay)))
-      (save-excursion
-	(goto-char (marker-position (process-mark sprocess)))
-	(beginning-of-line)
-	(if (looking-at inferior-ess-primary-prompt) nil
-	  (ess-error
-	   "ESS process not ready. Finish your command before trying again.")))
-      (if buf nil (setq buf (get-buffer-create " *ess-command-output*")))
-      (setq oldpf (process-filter sprocess))
-      (setq oldpb (process-buffer sprocess))
-      (setq oldpm (marker-position (process-mark sprocess)))
-      ;; need the buffer-local values in result buffer "buf":
-      (setq my-retr-cmd ess-retr-lastvalue-command)
-      (setq my-save-cmd ess-save-lastvalue-command)
-      (unwind-protect
-	  (progn
-	    (set-process-buffer sprocess buf)
-	    (set-process-filter sprocess 'ordinary-insertion-filter)
-	    ;; Output is now going to BUF:
+
+  (if (ess-ddeclient-p)
+      (progn
+	(if buf				; Mar 01 2002 rmh
 	    (save-excursion
 	      (set-buffer buf)
-	      (erase-buffer)
-	      (set-marker (process-mark sprocess) (point-min))
-	      (process-send-string sprocess my-save-cmd)
+	      (setq ess-local-process-name ess-current-process-name)))
+	(ess-force-buffer-current "Process to load into: ")
+	(ess-command-ddeclient com))
 
-	      (ess-prompt-wait sprocess nil (and do-sleep (* 0.05 sleep)))
-	      (erase-buffer)
-	      (process-send-string sprocess com)
+    ;; else: "normal", non-DDE behavior:
 
-	      ;; need time for ess-create-object-name-db on PC
-	      (ess-prompt-wait sprocess nil (and do-sleep (* 0.4 sleep)));MS: 4
-	      ;;(if do-sleep (sleep-for (* 0.0 sleep))); microsoft: 0.5
-	      (goto-char (point-max))
+    (let* ((sprocess (get-ess-process ess-current-process-name))
+	   sbuffer
+	   do-sleep end-of-output
+	   oldpb oldpf oldpm
+	   my-retr-cmd my-save-cmd)
+      (if sprocess nil
+	(error "Process %s is not running!" ess-current-process-name))
+      (setq sbuffer (process-buffer sprocess))
+      (save-excursion
+	(set-buffer sbuffer)
+	(setq do-sleep		    ; only now when in sprocess buffer
+	      (progn
+		(if sleep (if (numberp sleep) nil (setq sleep 1))) ; t means 1
+		(and ess-cmd-delay sleep)))
+	(if do-sleep (setq sleep (* sleep ess-cmd-delay)))
+	(save-excursion
+	  (goto-char (marker-position (process-mark sprocess)))
+	  (beginning-of-line)
+	  (if (looking-at inferior-ess-primary-prompt) nil
+	    (ess-error
+	     "ESS process not ready. Finish your command before trying again.")))
+	(if buf nil (setq buf (get-buffer-create " *ess-command-output*")))
+	(setq oldpf (process-filter sprocess))
+	(setq oldpb (process-buffer sprocess))
+	(setq oldpm (marker-position (process-mark sprocess)))
+	;; need the buffer-local values in result buffer "buf":
+	(setq my-retr-cmd ess-retr-lastvalue-command)
+	(setq my-save-cmd ess-save-lastvalue-command)
+	(unwind-protect
+	    (progn
+	      (set-process-buffer sprocess buf)
+	      (set-process-filter sprocess 'ordinary-insertion-filter)
+	      ;; Output is now going to BUF:
 	      (save-excursion
-		(beginning-of-line)	; so prompt will be deleted
-		(setq end-of-output (point)))
-	      (process-send-string sprocess my-retr-cmd)
+		(set-buffer buf)
+		(erase-buffer)
+		(set-marker (process-mark sprocess) (point-min))
+		(process-send-string sprocess my-save-cmd)
 
-	      (ess-prompt-wait sprocess end-of-output
-			       (and do-sleep (* 0.05 sleep))); microsoft: 0.5)
+		(ess-prompt-wait sprocess nil (and do-sleep (* 0.05 sleep)))
+		(erase-buffer)
+		(process-send-string sprocess com)
 
-	      ;; Get rid out output from last assign
-	      (delete-region end-of-output (point-max))))
-	;; Restore old values for process filter
-	(set-process-buffer sprocess oldpb)
-	(set-process-filter sprocess oldpf)
-	(set-marker (process-mark sprocess) oldpm)))))
+		;; need time for ess-create-object-name-db on PC
+		(ess-prompt-wait sprocess nil (and do-sleep (* 0.4 sleep))) ;MS: 4
+		;;(if do-sleep (sleep-for (* 0.0 sleep))); microsoft: 0.5
+		(goto-char (point-max))
+		(save-excursion
+		  (beginning-of-line)	; so prompt will be deleted
+		  (setq end-of-output (point)))
+		(process-send-string sprocess my-retr-cmd)
+
+		(ess-prompt-wait sprocess end-of-output
+				 (and do-sleep (* 0.05 sleep)))	; microsoft: 0.5)
+
+		;; Get rid out output from last assign
+		(delete-region end-of-output (point-max))))
+	  ;; Restore old values for process filter
+	  (set-process-buffer sprocess oldpb)
+	  (set-process-filter sprocess oldpf)
+	  (set-marker (process-mark sprocess) oldpm))))))
 
 (defun ess-replace-in-string (str regexp newtext &optional literal)
   "Replace all matches in STR for REGEXP with NEWTEXT string.
@@ -914,8 +931,8 @@ Otherwise treat \\ in NEWTEXT string as special:
 ;;	(ess-eval-region   ....)
 
 (defun ess-eval-linewise (text-withtabs &optional invisibly eob even-empty)
-;; RDB 28/8/92 added optional arg eob
-;; AJR 971022:	 text-withtabs was text.
+  ;; RDB 28/8/92 added optional arg eob
+  ;; AJR 971022:	 text-withtabs was text.
   "Evaluate TEXT-WITHTABS in the ESS process buffer as if typed in w/o tabs.
 Waits for prompt after each line of input, so won't break on large texts.
 
@@ -923,107 +940,118 @@ If optional second arg INVISIBLY is non-nil, don't echo commands.  If it
 is a string, just include that string.  If optional third arg
 EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 4th arg EVEN-EMPTY is non-nil, also send empty text (e.g. an empty line)."
-  ;; Use this to evaluate some code, but don't wait for output.
-  (let* ((cbuffer (current-buffer))
-	 (sprocess (get-ess-process ess-current-process-name))
-	 (sbuffer (process-buffer sprocess))
-	 (text (ess-replace-in-string text-withtabs "\t" " "))
-	 start-of-output
-	 com pos txt-gt-0)
 
-    ;;(message "'ess-eval-linewise: sbuffer = %s" sbuffer)
-    (set-buffer sbuffer)
+  (if (ess-ddeclient-p)
+      (ess-eval-linewise-ddeclient text-withtabs invisibly eob even-empty)
 
-    ;; the following is required to make sure things work!
-    (if (string= ess-language "STA")
-	(setq invisibly t))
-    ;; dbg:
-    ;; dbg(ess-write-to-dribble-buffer
-    ;; dbg (format "(eval-visibly 1): lang %s (invis=%s, eob=%s, even-empty=%s)\n"
-    ;; dbg     ess-language invisibly eob even-empty))
+    ;; else: "normal", non-DDE behavior:
 
-    (goto-char (marker-position (process-mark sprocess)))
-    (if (stringp invisibly)
-	(insert-before-markers (concat "*** " invisibly " ***\n")))
-    ;; dbg:
-    ;; dbg (ess-write-to-dribble-buffer
-    ;; dbg  (format "(eval-visibly 2): text[%d]= '%s'\n" (length text) text))
-    (while (or (setq txt-gt-0 (> (length text) 0))
-	       even-empty)
-      (if even-empty (setq even-empty nil))
-      (if txt-gt-0
-	  (progn
-	    (setq pos (string-match "\n\\|$" text))
-	    (setq com (concat (substring text 0 pos) "\n"))
-	    (setq text (substring text (min (length text) (1+ pos)))))
-	;; else 0-length text
-	(setq com "\n")
-	)
+    ;; Use this to evaluate some code, but don't wait for output.
+    (let* ((cbuffer (current-buffer))
+	   (sprocess (get-ess-process ess-current-process-name))
+	   (sbuffer (process-buffer sprocess))
+	   (text (ess-replace-in-string text-withtabs "\t" " "))
+	   start-of-output
+	   com pos txt-gt-0)
+
+      ;;(message "'ess-eval-linewise: sbuffer = %s" sbuffer)
+      (set-buffer sbuffer)
+
+      ;; the following is required to make sure things work!
+      (if (string= ess-language "STA")
+	  (setq invisibly t))
+      ;; dbg:
+      ;; dbg(ess-write-to-dribble-buffer
+      ;; dbg (format "(eval-visibly 1): lang %s (invis=%s, eob=%s, even-empty=%s)\n"
+      ;; dbg     ess-language invisibly eob even-empty))
+
       (goto-char (marker-position (process-mark sprocess)))
-      (if (not invisibly)
-	  ;; Terrible kludge -- need to insert after all markers *except*`
-	  ;; the process mark
-	  (let ((dokludge (eq (point)
-			      (marker-position (process-mark sprocess)))))
-	    (insert com)
-	    (if dokludge (set-marker (process-mark sprocess) (point)))))
-      (setq start-of-output (marker-position (process-mark sprocess)))
-      ;; A kludge to prevent the delay between insert and process output
-      ;; affecting the display.	 A case for a comint-send-input-hook?
-      ;; (save-excursion
-      ;;   ;; comint-postoutput-scroll-to-bottom can change
-      ;;   ;; current-buffer. Argh.
-      ;;   (let ((functions comint-output-filter-functions))
-      ;;     (while functions
-      ;;       (funcall (car functions) com)
-      ;;       (setq functions (cdr functions)))))
-      (process-send-string sprocess com)
-      ;; Don't hang around waiting for the prompt after the last
-      ;; line of input
-      (if (eq (length text) 0)
-	  nil
-	(while (progn
-		 (accept-process-output nil 0 100)
-		 (goto-char (marker-position (process-mark sprocess)))
-		 (beginning-of-line)
-		 (if (< (point) start-of-output)
-		     (goto-char start-of-output))
-		 (not (looking-at inferior-ess-prompt))))))
-    (goto-char (marker-position (process-mark sprocess)))
-    (if eob
-	(progn
-	  (ess-show-buffer (buffer-name sbuffer) nil)
-	  ;; Once SBUFFER is visible, we can then move the point in that
-	  ;; window to the end of the buffer.
-	  (set-window-point (get-buffer-window sbuffer t)
-			    (with-current-buffer sbuffer (point-max))))
-      (set-buffer cbuffer))
-    ))
+      (if (stringp invisibly)
+	  (insert-before-markers (concat "*** " invisibly " ***\n")))
+      ;; dbg:
+      ;; dbg (ess-write-to-dribble-buffer
+      ;; dbg  (format "(eval-visibly 2): text[%d]= '%s'\n" (length text) text))
+      (while (or (setq txt-gt-0 (> (length text) 0))
+		 even-empty)
+	(if even-empty (setq even-empty nil))
+	(if txt-gt-0
+	    (progn
+	      (setq pos (string-match "\n\\|$" text))
+	      (setq com (concat (substring text 0 pos) "\n"))
+	      (setq text (substring text (min (length text) (1+ pos)))))
+	  ;; else 0-length text
+	  (setq com "\n")
+	  )
+	(goto-char (marker-position (process-mark sprocess)))
+	(if (not invisibly)
+	    ;; Terrible kludge -- need to insert after all markers *except*`
+	    ;; the process mark
+	    (let ((dokludge (eq (point)
+				(marker-position (process-mark sprocess)))))
+	      (insert com)
+	      (if dokludge (set-marker (process-mark sprocess) (point)))))
+	(setq start-of-output (marker-position (process-mark sprocess)))
+	;; A kludge to prevent the delay between insert and process output
+	;; affecting the display.	 A case for a comint-send-input-hook?
+	;; (save-excursion
+	;;   ;; comint-postoutput-scroll-to-bottom can change
+	;;   ;; current-buffer. Argh.
+	;;   (let ((functions comint-output-filter-functions))
+	;;     (while functions
+	;;       (funcall (car functions) com)
+	;;       (setq functions (cdr functions)))))
+	(process-send-string sprocess com)
+	;; Don't hang around waiting for the prompt after the last
+	;; line of input
+	(if (eq (length text) 0)
+	    nil
+	  (while (progn
+		   (accept-process-output nil 0 100)
+		   (goto-char (marker-position (process-mark sprocess)))
+		   (beginning-of-line)
+		   (if (< (point) start-of-output)
+		       (goto-char start-of-output))
+		   (not (looking-at inferior-ess-prompt))))))
+      (goto-char (marker-position (process-mark sprocess)))
+      (if eob
+	  (progn
+	    (ess-show-buffer (buffer-name sbuffer) nil)
+	    ;; Once SBUFFER is visible, we can then move the point in that
+	    ;; window to the end of the buffer.
+	    (set-window-point (get-buffer-window sbuffer t)
+			      (with-current-buffer sbuffer (point-max))))
+	(set-buffer cbuffer))
+      )))
 
 ;;;*;;; Evaluate only
 
 (defun ess-eval-region (start end toggle &optional message)
   "Send the current region to the inferior ESS process.
-With prefix argument, toggle meaning of `ess-eval-visibly-p'."
+With prefix argument toggle the meaning of `ess-eval-visibly-p';
+this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (interactive "r\nP")
   ;;(untabify (point-min) (point-max))
   ;;(untabify start end); do we really need to save-excursion?
   (ess-force-buffer-current "Process to load into: ")
   (message "Starting evaluation...")
-  (let ((visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p)))
-    (if visibly
-	(ess-eval-linewise (buffer-substring start end))
-      (if ess-synchronize-evals
-	  (ess-eval-linewise (buffer-substring start end)
-			     (or message "Eval region"))
-	;; else [almost always!]
-	(let ((sprocess (get-ess-process ess-current-process-name)))
-	  (process-send-region sprocess start end)
-	  (process-send-string sprocess "\n")))))
+
+  (if (ess-ddeclient-p)
+      (ess-eval-region-ddeclient start end toggle message 'even-empty)
+    ;; else: "normal", non-DDE behavior:
+    (let ((visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p)))
+      (if visibly
+	  (ess-eval-linewise (buffer-substring start end))
+	(if ess-synchronize-evals
+	    (ess-eval-linewise (buffer-substring start end)
+			       (or message "Eval region"))
+	  ;; else [almost always!]
+	  (let ((sprocess (get-ess-process ess-current-process-name)))
+	    (process-send-region sprocess start end)
+	    (process-send-string sprocess "\n"))))))
+
   (message "Finished evaluation")
   ;; return value
-  (list start end)
-  )
+  (list start end))
 
 (defun ess-eval-buffer (vis)
   "Send the current buffer to the inferior ESS process.
@@ -1191,6 +1219,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 ;;; Related to the ess-eval-* commands, there are the ess-load
 ;;; commands.	Need to add appropriate stuff...
 
+
 (defun ess-load-file (filename)
   "Load an S source file into an inferior ESS process."
   (interactive (list
@@ -1200,49 +1229,57 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 		 (expand-file-name
 		  (read-file-name "Load S file: " nil nil t)))))
   (ess-make-buffer-current)
-  (let ((source-buffer (get-file-buffer filename)))
-    (if (ess-check-source filename)
-	(error "Buffer %s has not been saved" (buffer-name source-buffer))
-      ;; Find the process to load into
-      (if source-buffer
+  (if (ess-ddeclient-p)
+      (setq filename (ess-replace-in-string filename "[\\]" "/"))
+    (let ((source-buffer (get-file-buffer filename)))
+      (if (ess-check-source filename)
+	  (error "Buffer %s has not been saved" (buffer-name source-buffer)))
+      ;; else
+      (if (ess-ddeclient-p)
+	  (ess-load-file-ddeclient filename)
+
+	;; else: "normal", non-DDE behavior:
+
+	;; Find the process to load into
+	(if source-buffer
+	    (save-excursion
+	      (set-buffer source-buffer)
+	      (ess-force-buffer-current "Process to load into: ")
+	      (ess-check-modifications)))
+	(let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
+	      error-occurred nomessage)
+	  (ess-command (format inferior-ess-load-command filename) errbuffer) ;sleep ?
 	  (save-excursion
-	    (set-buffer source-buffer)
-    (ess-force-buffer-current "Process to load into: ")
-	    (ess-check-modifications))))
-    (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
-	  error-occurred nomessage)
-      (ess-command (format inferior-ess-load-command filename) errbuffer);sleep ?
-      (save-excursion
-	(set-buffer errbuffer)
-	(goto-char (point-max))
-	(setq error-occurred (re-search-backward ess-dump-error-re nil t))
-	(setq nomessage (= (buffer-size) 0)))
-      (if error-occurred
-	  (message "Errors: Use %s to find error."
-		   (substitute-command-keys
-		    "\\<inferior-ess-mode-map>\\[ess-parse-errors]"))
-	;; Load did not cause an error
-	(if nomessage (message "Load successful.")
-	  ;; There was a warning message from S
-	  (ess-display-temp-buffer errbuffer))
-	;; Consider deleting the file
-	(let ((skdf (if source-buffer
-			(save-excursion
-			  (set-buffer source-buffer)
-			  ess-keep-dump-files)
-		      ess-keep-dump-files))) ;; global value
-	  (cond
-	   ((null skdf)
-	    (delete-file filename))
-	   ((memq skdf '(check ask))
-	    (let ((doit (y-or-n-p (format "Delete %s " filename))))
-	      (if doit (delete-file filename))
-	      (and source-buffer
-		   (local-variable-p 'ess-keep-dump-files source-buffer)
-		   (save-excursion
-		     (set-buffer source-buffer)
-		     (setq ess-keep-dump-files doit)))))))
-	(ess-switch-to-ESS t)))))
+	    (set-buffer errbuffer)
+	    (goto-char (point-max))
+	    (setq error-occurred (re-search-backward ess-dump-error-re nil t))
+	    (setq nomessage (= (buffer-size) 0)))
+	  (if error-occurred
+	      (message "Errors: Use %s to find error."
+		       (substitute-command-keys
+			"\\<inferior-ess-mode-map>\\[ess-parse-errors]"))
+	    ;; Load did not cause an error
+	    (if nomessage (message "Load successful.")
+	      ;; There was a warning message from S
+	      (ess-display-temp-buffer errbuffer))
+	    ;; Consider deleting the file
+	    (let ((skdf (if source-buffer
+			    (save-excursion
+			      (set-buffer source-buffer)
+			      ess-keep-dump-files)
+			  ess-keep-dump-files))) ;; global value
+	      (cond
+	       ((null skdf)
+		(delete-file filename))
+	       ((memq skdf '(check ask))
+		(let ((doit (y-or-n-p (format "Delete %s " filename))))
+		  (if doit (delete-file filename))
+		  (and source-buffer
+		       (local-variable-p 'ess-keep-dump-files source-buffer)
+		       (save-excursion
+			 (set-buffer source-buffer)
+			 (setq ess-keep-dump-files doit)))))))
+	    (ess-switch-to-ESS t)))))))
 
  ; Inferior S mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

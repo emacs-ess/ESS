@@ -36,7 +36,7 @@
 ;;; Requires and Autoloads:
 
 (require 'essl-s)
-(require 'ess-iw32)
+;;NO: this is autoloaded from other places (require 'ess-dde)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
