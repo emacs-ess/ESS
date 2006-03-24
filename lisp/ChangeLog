@@ -3,13 +3,15 @@
 	* ess-inf.el (ess-eval-linewise): now calls
 	(ess-eval-linewise-ddeclient .) when appropriate; similar in other
 	functions; the same applies to
-	* ess-help.el:	autoload and *-ddeclient functions when needed
+	* ess-help.el:	autoload and *-ddeclient functions when needed.
 	* ess-mode.el:	dito
 
 	* ess-dde.el: renamed from ess-iw32.el: removed all function
 	*RE*definitions and all (require .) leaving only `*-ddeclient'
 	function definitions;
 
+	* ess-help.el(ess-help-mode-map): and menu; added one of the new
+	ess-eval-*and-step (of a week ago).
 
 2006-03-23  Richard M. Heiberger <rmh@temple.edu>
 	* ess-iw32.el (ess-display-help-on-object)
@@ -19,7 +21,6 @@
 
 	* essl-s.el (ess-toggle-S-assign-key): based on code by Seth Falcon;
 	see ESS-help; TODO: a better 'toggle'
-
 
 2006-03-17  Martin Maechler  <maechler@stat.math.ethz.ch>
 

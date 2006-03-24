@@ -1,7 +1,7 @@
 ;;; ess-mode.el --- Support for editing ESS source code
 
 ;; Copyright (C) 1989-1994 Doug Bates, Ed Kademan, Frank Ritter, David Smith.
-;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2006 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
@@ -180,6 +180,7 @@
  '("ESS" ; ESS-mode
    ["What is this? (beta)"    ess-mouse-me			t]
    ["Load file"	 ess-load-file t]
+   ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]
    ("Eval and Go"
     ["Eval buffer"	ess-eval-buffer-and-go		  t]
     ["Eval region"	ess-eval-region-and-go		  t]
@@ -194,6 +195,7 @@
     ["Eval buffer"	ess-eval-buffer			  t]
     ["Eval region"	ess-eval-region			  t]
     ["Eval function"	ess-eval-function		  t]
+    ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]
     ["Enter expression" ess-execute-in-tb		  t]
     ["Eval line"	ess-eval-line			  t]
     ["Eval line & step" ess-eval-line-and-step		  t]

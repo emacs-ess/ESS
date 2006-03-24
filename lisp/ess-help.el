@@ -304,15 +304,16 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
   (suppress-keymap ess-help-mode-map)	; suppress all usual "printing" characters
   (define-key ess-help-mode-map " " 'scroll-up)
   (define-key ess-help-mode-map "b" 'scroll-down)
+  (define-key ess-help-mode-map "\177" 'scroll-down) ; DEL
   (define-key ess-help-mode-map "q" 'ess-switch-to-end-of-ESS)
   (define-key ess-help-mode-map "\C-m" 'next-line)
-  (define-key ess-help-mode-map "\177" 'scroll-down) ; DEL
   (define-key ess-help-mode-map "s" ess-help-sec-map)
   (define-key ess-help-mode-map "h" 'ess-display-help-on-object)
 ;; TODO: `electric mouse-2'
 ;; (define-key ess-help-mode-map [mouse-2] 'ess-display-help-on-object)
   (define-key ess-help-mode-map "l" 'ess-eval-line-and-step)
   (define-key ess-help-mode-map "r" 'ess-eval-region-and-go)
+  (define-key ess-help-mode-map "f" 'ess-eval-function-or-paragraph-and-step)
   (define-key ess-help-mode-map "n" 'ess-skip-to-next-section)
   (define-key ess-help-mode-map "p" 'ess-skip-to-previous-section)
   (define-key ess-help-mode-map "/" 'isearch-forward)
@@ -321,7 +322,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
   (define-key ess-help-mode-map "x" 'ess-kill-buffer-and-go)
   (define-key ess-help-mode-map "k" 'kill-buffer)
   (define-key ess-help-mode-map "?" 'ess-describe-help-mode)
-  ;;-- those should be "inherited" from ess-mode-map :
+  ;;-- those should be "inherited" from ess-mode-map ( ./ess-mode.el )
   (define-key ess-help-mode-map "\C-c\C-s" 'ess-switch-process)
   (define-key ess-help-mode-map "\C-c\C-r" 'ess-eval-region)
   (define-key ess-help-mode-map "\C-c\M-r" 'ess-eval-region-and-go)
@@ -341,9 +342,9 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 ;; One reason for the following menu is to <TEACH> the user about key strokes
 (defvar ess-help-mode-menu
   (list "ESS-help"
+	["Search Forward"		isearch-forward t]
 	["Next Section"			ess-skip-to-next-section t]
 	["Previous Section"		ess-skip-to-previous-section t]
-	["Search Forwards"		isearch-forward t]
 	["Help on Section Skipping"	ess-describe-sec-map t]
 	["Beginning of Buffer"		beginning-of-buffer t]
 	["End of Buffer"		end-of-buffer t]
@@ -351,14 +352,16 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	["Help on ..."			ess-display-help-on-object t]
 	"-"
 	["Eval Line"			ess-eval-line-and-step t]
+	["Eval Paragraph & step" 	ess-eval-paragraph-and-step t]
 	["Eval Region & Go"		ess-eval-region-and-go t]
 	["Switch to ESS Process"	ess-switch-to-ESS t]
+	["Switch to End of ESS Proc."	ess-switch-to-end-of-ESS t]
+	["Switch _the_ Process"		ess-switch-process t]
 	"-"
 	["Describe ESS-help Mode"	ess-describe-help-mode t]
 	"-"
 	["Kill Buffer"			kill-buffer t]
 	["Kill Buffer & Go"		ess-kill-buffer-and-go t]
-	["Back to end of ESS Pr."	ess-switch-to-end-of-ESS t]
 	)
   "Menu used in ess-help mode.")
 
