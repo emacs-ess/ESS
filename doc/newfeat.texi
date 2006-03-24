@@ -10,7 +10,8 @@ in the same frame and runs in the correct buffer also when there is more
 than one S buffer.
 @item @iESS{[S]} new functions @code{ess-eval-paragraph-and-step} and
  @code{ess-eval-function-or-paragraph-and-step} are bound to keys
- @kbd{C-c C-p} and @kbd{C-c C-c} respectively.
+ @kbd{C-c C-p} and @kbd{C-c C-c} respectively and to the menu in
+ @ESS{}-mode; also bound in the help mode (for evaluating examples).
 @item @ESS{[S]} new function @code{ess-toggle-S-assign-key} allows to
 assign the `` <- '' insertion to an arbitrary key.
 @item @ESS{[S]} long standing bugs in ess-help for Windows (S-plus GUI)
