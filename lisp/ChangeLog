@@ -15,6 +15,12 @@
 	* ess-iw32.el (ess-display-help-on-object)
 	repair prompt on Windows to suggest a default as on Unix.
 
+2006-03-21  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-toggle-S-assign-key): based on code by Seth Falcon;
+	see ESS-help; TODO: a better 'toggle'
+
+
 2006-03-17  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-eval-paragraph-and-step): new;

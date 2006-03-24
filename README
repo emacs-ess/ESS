@@ -65,6 +65,16 @@ Changes/New Features in 5.2.13:
      runs in the correct buffer also when there is more than one S
      buffer.
 
+   * iESS[S] new functions `ess-eval-paragraph-and-step' and
+     `ess-eval-function-or-paragraph-and-step' are bound to keys  `C-c
+     C-p' and `C-c C-c' respectively.
+
+   * ESS[S] new function `ess-toggle-S-assign-key' allows to assign the
+     " <- " insertion to an arbitrary key.
+
+   * ESS[S] long standing bugs in ess-help for Windows (S-plus GUI)
+     fixed.
+
    Changes/New Features in 5.2.12:
    * ESS[SAS]: `M-;' fixed, but the XEmacs function `comment-dwim' may
      be broken, if so, use `M-x comment-region' and `M-x

@@ -11,6 +11,10 @@ than one S buffer.
 @item @iESS{[S]} new functions @code{ess-eval-paragraph-and-step} and
  @code{ess-eval-function-or-paragraph-and-step} are bound to keys
  @kbd{C-c C-p} and @kbd{C-c C-c} respectively.
+@item @ESS{[S]} new function @code{ess-toggle-S-assign-key} allows to
+assign the `` <- '' insertion to an arbitrary key.
+@item @ESS{[S]} long standing bugs in ess-help for Windows (S-plus GUI)
+fixed.
 @end itemize
 
 
