@@ -441,23 +441,24 @@ to see which keystrokes find which sections."
 (defun ess-describe-sec-map nil
   "Display help for the `s' key."
   (interactive)
-  (describe-function 'ess-skip-to-help-section)
-  (save-excursion
-    (set-buffer "*Help*")
-    (toggle-read-only nil)
-    (goto-char (point-max))
-    (insert "\n\nCurrently defined keys are:
+  (let ((keys-alist ess-help-sec-keys-alist))
+    (describe-function 'ess-skip-to-help-section)
+    (save-excursion
+      (set-buffer "*Help*")
+      (toggle-read-only nil)
+      (goto-char (point-max))
+      (insert "\n\nCurrently defined keys are:
 
 Keystroke    Section
 ---------    -------\n")
-    (mapcar '(lambda (cs) (insert "    "
-				  (car cs)
-				  "	   "
-				  (cdr cs) "\n"))
-	    ess-help-sec-keys-alist)
-    (insert "\nFull list of key definitions:\n"
-	    (substitute-command-keys
-	     "\\{ess-help-sec-map}"))))
+      (mapcar '(lambda (cs) (insert "	 "
+				    (car cs)
+				    "	   "
+				    (cdr cs) "\n"))
+	      keys-alist)
+      (insert "\nFull list of key definitions:\n"
+	      (substitute-command-keys
+	       "\\{ess-help-sec-map}")))))
 
 (defun ess-read-helpobj-name-default (olist)
   ;;; Returns the object name at point, or else the name of the
