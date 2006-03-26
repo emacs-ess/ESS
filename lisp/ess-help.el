@@ -578,7 +578,7 @@ Stata or XLispStat for additional information."
 	   'ess-keep-dump-files
 	   'ess-source-directory)
      nil
-     (lambda () (goto-char (point-max)) (insert-buffer "*ESS*")))))
+     (lambda () (goto-char (point-max)) (insert-buffer-substring "*ESS*")))))
 
 
 ;;; Provide
