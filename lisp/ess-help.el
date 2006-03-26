@@ -285,17 +285,6 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 
 
 (defvar ess-help-sec-map nil "Sub-keymap for ESS help mode.")
-(if ess-help-sec-map
-    nil
-  (setq ess-help-sec-map (make-sparse-keymap))
-  (mapcar '(lambda (key)
-	    (define-key ess-help-sec-map (char-to-string key)
-	      'ess-skip-to-help-section))
-	    (mapcar 'car ess-help-sec-keys-alist))
-  (define-key ess-help-sec-map "?" 'ess-describe-sec-map)
-  (define-key ess-help-sec-map ">" 'end-of-buffer)
-  (define-key ess-help-sec-map "<" 'beginning-of-buffer)
-)
 
 (defvar ess-help-mode-map nil "Keymap for ESS help mode.")
 (if ess-help-mode-map
@@ -307,7 +296,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
   (define-key ess-help-mode-map "\177" 'scroll-down) ; DEL
   (define-key ess-help-mode-map "q" 'ess-switch-to-end-of-ESS)
   (define-key ess-help-mode-map "\C-m" 'next-line)
-  (define-key ess-help-mode-map "s" ess-help-sec-map)
+  ;; (define-key ess-help-mode-map "s" ess-help-sec-map)
   (define-key ess-help-mode-map "h" 'ess-display-help-on-object)
 ;; TODO: `electric mouse-2'
 ;; (define-key ess-help-mode-map [mouse-2] 'ess-display-help-on-object)
@@ -391,6 +380,20 @@ Other keybindings are as follows:
   (easy-menu-define ess-help-mode-menu-map ess-help-mode-map
 		    "Menu keymap for ess-help mode." ess-help-mode-menu)
   (easy-menu-add ess-help-mode-menu-map ess-help-mode-map)
+
+  ;; Add the keys for navigating among sections; this is done
+  ;; dynamically since different languages (e.g. S vs R) have different
+  ;; section headings.
+
+  (setq ess-help-sec-map (make-sparse-keymap))
+  (mapcar '(lambda (key)
+	    (define-key ess-help-sec-map (char-to-string key)
+	      'ess-skip-to-help-section))
+	    (mapcar 'car ess-help-sec-keys-alist))
+  (define-key ess-help-sec-map "?" 'ess-describe-sec-map)
+  (define-key ess-help-sec-map ">" 'end-of-buffer)
+  (define-key ess-help-sec-map "<" 'beginning-of-buffer)
+  (define-key ess-help-mode-map "s" ess-help-sec-map)
 
   (run-hooks 'ess-help-mode-hook))
 
