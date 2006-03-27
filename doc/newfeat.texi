@@ -1,6 +1,10 @@
 
 Changes/New Features in 5.2.13:
 @itemize @bullet
+
+@item The keys for navigating among section headings in help buffers
+worked, but only for one language per session; they should now work for
+multiple languages.  (They were also broken on Windows machines.)
 @item New variable, @code{ess-use-inferior-program-name-in-buffer-name},
 which uses the executable name instead of the dialect name for
 R. Feature request.
