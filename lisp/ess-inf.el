@@ -52,10 +52,13 @@
 
 (autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload)." t)
 
-(autoload 'ess-eval-region-ddeclient	    "ess-dde" "(autoload)" nil)
-(autoload 'ess-eval-linewise-ddeclient	    "ess-dde" "(autoload)" nil)
-(autoload 'ess-load-file-ddeclient	    "ess-dde" "(autoload)" nil)
-(autoload 'ess-command-ddeclient	    "ess-dde" "(autoload)" nil)
+(autoload 'ess-eval-region-ddeclient	    "ess-dde" "(autoload)." nil)
+(autoload 'ess-eval-linewise-ddeclient	    "ess-dde" "(autoload)." nil)
+(autoload 'ess-display-help-on-object-ddeclient "ess-dde" "(autoload)." nil)
+(autoload 'ess-load-file-ddeclient	    "ess-dde" "(autoload)." nil)
+(autoload 'ess-dump-object-ddeclient        "ess-dde" "(autoload)." nil)
+(autoload 'ess-dput-expression-ddeclient    "ess-dde" "(autoload)." nil)
+(autoload 'ess-command-ddeclient	    "ess-dde" "(autoload)." nil)
 
  ;;*;; Process handling
 
