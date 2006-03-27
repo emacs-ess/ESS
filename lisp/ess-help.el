@@ -285,6 +285,8 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 
 
 (defvar ess-help-sec-map nil "Sub-keymap for ESS help mode.")
+;; this breaks "s ?" rather than to fix any (unbroken !) thing:
+;; (make-variable-buffer-local 'ess-help-sec-map)
 
 (defvar ess-help-mode-map nil "Keymap for ESS help mode.")
 (if ess-help-mode-map
