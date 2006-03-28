@@ -118,18 +118,10 @@ nor offer alternate buffers or editing capability."
 
 (defun ess-dput-expression-ddeclient (object filename)
   "Dump the ESS object found by evaluating OBJECT into file FILENAME."
-  (ess-force-buffer-current "Process to load into: ")f
-  (ess-eval-linewise-ddeclient (concat "dput(" object ",'" filename "')"))
-  (sleep-for 2)
-  (find-file filename))
-
-(defun ess-command-ddeclient (object filename)
-  "Dump the ESS object found by evaluating OBJECT into file FILENAME."
   (ess-force-buffer-current "Process to load into: ")
   (ess-eval-linewise-ddeclient (concat "dput(" object ",'" filename "')"))
   (sleep-for 2)
   (find-file filename))
-
 
 (defun ess-command-ddeclient (com)
   "ddeclient version of real `ess-command'."
