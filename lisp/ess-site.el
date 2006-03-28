@@ -114,23 +114,6 @@
   ;;(defvar ess-lisp-directory
   ;;(directory-file-name "/stat2/faculty/rossini/ESS/lisp"))
 
-  ;; emacs 19.28 doesn't have functions we need, therefore we provide them
-  ;; by using files from emacs 19.29
-  (if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
-      (progn
-	(require 'cl)			; rassoc
-	;; add-to-list taken from subr.el
-	;; we use functions not in 19.28, so include them
-	(load-file (concat ess-lisp-directory "/19.29/extras.el"))
-	(load-file (concat ess-lisp-directory "/19.29/easymenu.el"))
-;;	(if window-system  ;;  essl-sas wants these even without window-system
-	    (progn
-	      ;; comment and reference faces
-	      (load-file (concat ess-lisp-directory
-				 "/19.29/faces.el"))
-	      ;; font-lock features not in 19.28
-	      (load-file (concat ess-lisp-directory
-				 "/19.29/font-lock.el")))))
 ;;)
 
   ;; emacs 19.28 and 19.29 don't have functions we need.
