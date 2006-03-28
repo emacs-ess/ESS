@@ -73,7 +73,7 @@
     (ess-setq-vars-local ess-customize-alist (current-buffer))
     (erase-buffer)
     (insert text-withtabs)
-    (ess-eval-region-ddeclient (point-min) (point-max) t t even-empty)))
+    (ess-eval-region-ddeclient (point-min) (point-max) even-empty)))
 
 ;; C-c C-v
 (defun ess-display-help-on-object-ddeclient (object)
@@ -125,7 +125,7 @@ nor offer alternate buffers or editing capability."
 
 (defun ess-command-ddeclient (object filename)
   "Dump the ESS object found by evaluating OBJECT into file FILENAME."
-  (ess-force-buffer-current "Process to load into: ")f
+  (ess-force-buffer-current "Process to load into: ")
   (ess-eval-linewise-ddeclient (concat "dput(" object ",'" filename "')"))
   (sleep-for 2)
   (find-file filename))
