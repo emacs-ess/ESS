@@ -36,7 +36,7 @@
 ;; *NO* Requires and autoloads
 
 ;; C-c C-r
-(defun ess-eval-region-ddeclient (start end toggle message even-empty)
+(defun ess-eval-region-ddeclient (start end even-empty)
   "Loop through lines in region and send them to ESS via ddeclient."
   (setq ;; set the following variables for the current ddeESS process.
    inferior-ess-ddeclient (ess-get-process-variable

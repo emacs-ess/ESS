@@ -1039,7 +1039,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (message "Starting evaluation...")
 
   (if (ess-ddeclient-p)
-      (ess-eval-region-ddeclient start end toggle message 'even-empty)
+      (ess-eval-region-ddeclient start end 'even-empty)
     ;; else: "normal", non-DDE behavior:
     (let ((visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p)))
       (if visibly
