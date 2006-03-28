@@ -277,7 +277,7 @@ prompt from those lines that remain.  Prefix argument means to use
   "Cleanup the whole buffer.
 Use point-min/max to obey narrow-to-region."
   (interactive)
-  (ess-transcript-clean-region (point-min) (point-max)))
+  (ess-transcript-clean-region (point-min) (point-max) 'In-ANY-case))
 
  ; Local variables section
 
