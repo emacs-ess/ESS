@@ -1,4 +1,4 @@
-;;; essd-sp6.el --- S-Plus 6 & 7  customization
+;;; essd-sp6.el --- S-Plus 6 & 7 & 8  customization
 
 ;; Copyright (C) 2001--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
