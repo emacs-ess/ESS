@@ -807,7 +807,7 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 	      (set-buffer buf)
 	      (setq ess-local-process-name ess-current-process-name)))
 	(ess-force-buffer-current "Process to load into: ")
-	(ess-command-ddeclient com))
+	(ess-command-ddeclient com buf sleep))
 
     ;; else: "normal", non-DDE behavior:
 

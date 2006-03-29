@@ -87,7 +87,7 @@ file.  Otherwise just pops to an existing buffer if it exists."
 ;; C-c C-l
 (defun ess-load-file-ddeclient (filename)
   "Load an S source file into an inferior ESS process; alternate behavior for
-`ess-load-file', required with S+4: Sends the S-Plus command
+`ess-load-file', required with S-Plus GUI for Windows: Sends the S-Plus command
 source(\"filename\") to S.  This version does not guarantee to save .Last.value,
 nor offer alternate buffers or editing capability."
   (let ((source-buffer (get-file-buffer filename)))
@@ -123,9 +123,31 @@ nor offer alternate buffers or editing capability."
   (sleep-for 2)
   (find-file filename))
 
-(defun ess-command-ddeclient (com)
-  "ddeclient version of real `ess-command'."
-  (ess-eval-linewise-ddeclient com))
+(defun ess-command-ddeclient (com &optional buf sleep)
+  "ddeclient version of real `ess-command'.
+Send the ESS process command COM and redirect its output to the
+temporary file named BUF.  The temporary filename is constructed
+in emacs, not in the ESS process.  The default name for the
+temporary buffer is \"ess-temp.st\".  The function waits
+SLEEP (which defaults to 1) seconds and then brings the temporary
+file into an emacs buffer and displays it."
+  (let (filename bufname)
+    (if (not buf) (setq buf "ess-temp.st"))
+    (if (not sleep) (setq sleep 1))
+    (setq filename (concat (file-name-as-directory (getenv "TEMP")) buf))
+    (ess-eval-linewise-ddeclient
+     (concat ".old.Last.value <- .Last.value; sink('"
+	     filename 
+	     "'); print("
+	     com 
+	     "); sink(); .Last.value <- .old.Last.value"))
+    (setq bufname (ess-get-file-or-buffer filename)) ;; must follow the eval
+    (sleep-for sleep)
+    (if (not bufname)
+	(find-file filename)
+      (switch-to-buffer bufname))
+    (revert-buffer t t) ;; this allows the user to reuse the BUF name
+    ))
 
 (provide 'ess-dde)
 
