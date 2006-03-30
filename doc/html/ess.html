@@ -36,7 +36,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.2.13
+5.3.0
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -346,10 +346,16 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
 <h3 class="section">1.2 New features in ESS</h3>
 
-<p>Changes/New Features in 5.2.13:
+<p>Changes/New Features in 5.3.0:
      <ul>
+<li>The keys for navigating among section headings in help buffers
+worked, but only for one language per session; they should now work for
+multiple languages.  (They were also broken on Windows machines.) 
+<li><acronym>ESS[S]</acronym> long standing buglets in the internal logic for loading
+lisp code on Windows.  Particularly fixed behavior in help mode with S-plus
+GUI. 
 <li>New variable, <code>ess-use-inferior-program-name-in-buffer-name</code>,
-which uses the executable name instead of the dialect name for
+which enables usingg the executable name instead of the dialect name for
 R. Feature request. 
 <li><acronym>ESS[S]</acronym> <kbd>ess-execute-screen-options</kbd>
 now also works correctly when there is more than one window *side-by-side*
@@ -357,11 +363,10 @@ in the same frame and runs in the correct buffer also when there is more
 than one S buffer. 
 <li>i<acronym>ESS[S]</acronym><!-- /@w --> new functions <code>ess-eval-paragraph-and-step</code> and
  <code>ess-eval-function-or-paragraph-and-step</code> are bound to keys
- <kbd>C-c C-p</kbd> and <kbd>C-c C-c</kbd> respectively. 
+ <kbd>C-c C-p</kbd> and <kbd>C-c C-c</kbd> respectively and to the menu in
+ <acronym>ESS</acronym>-mode; also bound in the help mode (for evaluating examples). 
 <li><acronym>ESS[S]</acronym> new function <code>ess-toggle-S-assign-key</code> allows to
 assign the &ldquo; &lt;- &rdquo; insertion to an arbitrary key. 
-<li><acronym>ESS[S]</acronym> long standing bugs in ess-help for Windows (S-plus GUI)
-fixed. 
 </ul>
 
    <p>Changes/New Features in 5.2.12:

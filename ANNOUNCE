@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.2.13
+   5.3.0
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -237,10 +237,19 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
-Changes/New Features in 5.2.13:
+Changes/New Features in 5.3.0:
+   * The keys for navigating among section headings in help buffers
+     worked, but only for one language per session; they should now
+     work for multiple languages.  (They were also broken on Windows
+     machines.)
+
+   * ESS[S] long standing buglets in the internal logic for loading
+     lisp code on Windows.  Particularly fixed behavior in help mode
+     with S-plus GUI.
+
    * New variable, `ess-use-inferior-program-name-in-buffer-name',
-     which uses the executable name instead of the dialect name for R.
-     Feature request.
+     which enables usingg the executable name instead of the dialect
+     name for R. Feature request.
 
    * ESS[S] `ess-execute-screen-options' now also works correctly when
      there is more than one window *side-by-side* in the same frame and
@@ -249,13 +258,11 @@ Changes/New Features in 5.2.13:
 
    * iESS[S] new functions `ess-eval-paragraph-and-step' and
      `ess-eval-function-or-paragraph-and-step' are bound to keys  `C-c
-     C-p' and `C-c C-c' respectively.
+     C-p' and `C-c C-c' respectively and to the menu in  ESS-mode; also
+     bound in the help mode (for evaluating examples).
 
    * ESS[S] new function `ess-toggle-S-assign-key' allows to assign the
      " <- " insertion to an arbitrary key.
-
-   * ESS[S] long standing bugs in ess-help for Windows (S-plus GUI)
-     fixed.
 
    Changes/New Features in 5.2.12:
    * ESS[SAS]: `M-;' fixed, but the XEmacs function `comment-dwim' may
