@@ -1126,8 +1126,6 @@ of Emacs until the code has been successfully evaluated."
   :group 'ess-proc
   :type '(choice (const nil) string))
 
-;; defconst ess-local-process-name now done in S.el
-
 (defvar ess-process-name-list nil
   "Alist of active ESS processes.")
 
