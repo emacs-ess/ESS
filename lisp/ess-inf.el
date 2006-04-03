@@ -800,17 +800,17 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
   ;; Use this function when you need to evaluate some S code, and the
   ;; result is needed immediately. Waits until the output is ready
 
+  (if buf nil (setq buf (get-buffer-create " *ess-command-output*")))
+  (save-excursion
+    (set-buffer buf)
+    (if ess-local-process-name
+	nil 
+      (setq ess-local-process-name ess-current-process-name)))
   (if (ess-ddeclient-p)
-      (progn
-	(if buf				; Mar 01 2002 rmh
-	    (save-excursion
-	      (set-buffer buf)
-	      (setq ess-local-process-name ess-current-process-name)))
-	(ess-force-buffer-current "Process to load into: ")
-	(ess-command-ddeclient com buf sleep))
-
+      (ess-command-ddeclient com buf sleep)
+    
     ;; else: "normal", non-DDE behavior:
-
+    
     (let* ((sprocess (get-ess-process ess-current-process-name))
 	   sbuffer
 	   do-sleep end-of-output
@@ -832,7 +832,6 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 	  (if (looking-at inferior-ess-primary-prompt) nil
 	    (ess-error
 	     "ESS process not ready. Finish your command before trying again.")))
-	(if buf nil (setq buf (get-buffer-create " *ess-command-output*")))
 	(setq oldpf (process-filter sprocess))
 	(setq oldpb (process-buffer sprocess))
 	(setq oldpm (marker-position (process-mark sprocess)))

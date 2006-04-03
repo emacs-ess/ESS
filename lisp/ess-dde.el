@@ -66,7 +66,7 @@
       (forward-line 1))
     (widen)))
 
-
+;; C-c C-n
 (defun ess-eval-linewise-ddeclient (text-withtabs &optional invisibly eob even-empty)
   (save-excursion
     (set-buffer (get-buffer-create "*ESS-temporary*"))
@@ -123,7 +123,7 @@ nor offer alternate buffers or editing capability."
   (sleep-for 2)
   (find-file filename))
 
-(defun ess-command-ddeclient (com &optional buf sleep)
+(defun ess-command-ddeclient-proposed (com &optional buf sleep)
   "ddeclient version of real `ess-command'.
 Send the ESS process command COM and redirect its output to the
 temporary file named BUF.  The temporary filename is constructed
@@ -148,6 +148,11 @@ file into an emacs buffer and displays it."
       (switch-to-buffer bufname))
     (revert-buffer t t) ;; this allows the user to reuse the BUF name
     ))
+
+;; previous version (ESS-5.2.12 and earlier)
+(defun ess-command-ddeclient (com &optional buf sleep)
+  "ddeclient bypass of real ess-command"
+  (ess-eval-linewise com))
 
 (provide 'ess-dde)
 
