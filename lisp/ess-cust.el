@@ -1006,6 +1006,17 @@ for editing and then to be returned to the process.")
 
 
 
+;;;;; names for S-Plus help files on MS-Windows
+
+(defcustom inferior-ess-help-filetype nil
+  "S-Plus and Sqpe for Windows use the \"chm\" (compiled html) filetype
+for help files.  The default value is nil for other systems."
+  :group 'ess-proc
+  :type 'string)
+(make-variable-buffer-local 'inferior-ess-help-filetype)
+(setq-default inferior-ess-help-filetype nil)
+
+
 ;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
 
 (defcustom inferior-ess-ddeclient nil

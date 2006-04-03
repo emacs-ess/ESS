@@ -124,13 +124,21 @@ Utility used in \\[ess-display-help-on-object]."
   "Display documentation for OBJECT in another window.
 If prefix arg is given, forces a query of the  ESS process for the help
 file.  Otherwise just pops to an existing buffer if it exists.
-Uses the variable `inferior-ess-help-command' for the actual help command."
-  (interactive (ess-find-help-file "Help on: "))
+Uses the variable `inferior-ess-help-command' for the actual help command.
+Prompts for the object name based on the cursor location for all cases
+except the S-Plus GUI.  With S-Plus on Windows (both GUI and in an inferior
+emacs buffer) the GUI help window is used."
+  (interactive 
+   (if (ess-ddeclient-p)
+       (list (read-string "Help on: "))
+     (ess-find-help-file "Help on: ")))
 
-  (if (ess-ddeclient-p)
-    ;; ddeclient version
-      (progn (ess-display-help-on-object-ddeclient object)
-	     (widen))
+  (if (or (ess-ddeclient-p)
+	  (equal inferior-ess-help-filetype "chm"))
+      (if (ess-ddeclient-p)
+	  (ess-display-help-on-object-ddeclient object) ;; ddeclient version
+	(ess-eval-linewise (concat "help(" object ")"))) ;; "chm" version
+
     ;; else: "normal", non-DDE behavior:
     (let* ((hb-name (concat "*help["
 			    ess-current-process-name
@@ -143,12 +151,14 @@ Uses the variable `inferior-ess-help-command' for the actual help command."
 	   (curr-help-sec-regex		ess-help-sec-regex)
 	   (curr-help-sec-keys-alist	ess-help-sec-keys-alist)
 	   (curr-help-syntax-table	(syntax-table))
+	   (curr-help-filetype	        inferior-ess-help-filetype)
 	   (alist		ess-local-customize-alist))
 
       (set-buffer tbuffer)
       (ess-setq-vars-local (eval alist))
       (setq ess-help-sec-regex	  curr-help-sec-regex)
       (setq ess-help-sec-keys-alist curr-help-sec-keys-alist)
+      (setq inferior-ess-help-filetype curr-help-filetype)
       ;; see above, do same for inferior-ess-help-command... (i.e. remove
       ;; hack, restore old code :-).
 
