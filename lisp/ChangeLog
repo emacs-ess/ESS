@@ -1,6 +1,14 @@
+2006-04-03  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-show-buffer): Use
+	ess-select-frame-set-input-focus.
+	* ess-utils.el (ess-select-frame-set-input-focus): New defun.
+
 2006-03-26  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-help.el (ess-help-mode): Dynamically set section keys.
+	(ess-submit-bug-report): Use insert-buffer-substring, not
+	insert-buffer (byte compiler warning).
 
 2006-03-25  Stephen Eglen  <stephen@gnu.org>
 
