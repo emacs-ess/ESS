@@ -54,6 +54,7 @@
      (inferior-ess-objects-command  	. ".SmodeObs(%d, pattern=\"%s\")\n")
      ;;(inferior-ess-objects-pattern	. ".*") ; for new s4 stuff
      (inferior-ess-help-command     	. "help(\"%s\")\n")
+     (inferior-ess-help-filetype . nil)
      (inferior-ess-search-list-command	. ".SmodePaths()\n")
      (inferior-ess-load-command     	. ".SmodeLoad(\"%s\")\n")
      (inferior-ess-dump-command     	. ".SmodeDump(\"%s\", \"%s\")\n")

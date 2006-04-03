@@ -58,6 +58,7 @@
      (inferior-ess-program		. inferior-S+5-program-name)
      ;;(inferior-ess-objects-pattern	. ".*") ; for new s4 stuff
      (inferior-ess-help-command	  . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
+     (inferior-ess-help-filetype . nil)
      (inferior-ess-search-list-command	. "searchPaths()\n")
      (inferior-ess-start-args      . inferior-Splus-args)
      (ess-STERM	 . "iESS")

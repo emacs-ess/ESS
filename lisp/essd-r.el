@@ -73,6 +73,7 @@
      (inferior-ess-font-lock-keywords   . inferior-ess-R-font-lock-keywords)
      (inferior-ess-search-list-command	. "search()\n")
      (inferior-ess-help-command		. "help(\"%s\", htmlhelp=FALSE)\n")
+     (inferior-ess-help-filetype        . nil)
      (inferior-ess-exit-command		. "q()")
      (inferior-ess-exit-prompt		. "Save workspace image? [y/n/c]: ")
      (inferior-ess-primary-prompt	. "\\([A-Z][][A-Za-z0-9.]*\\)*> ")

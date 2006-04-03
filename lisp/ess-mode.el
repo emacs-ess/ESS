@@ -1184,7 +1184,6 @@ prefix argument is given, a dump() command is sent to the ESS process to
 generate the source buffer."
   (interactive
    (progn
-     (require 'ess-inf)
      (ess-force-buffer-current "Process to dump from: ")
      (if (ess-ddeclient-p)
 	 (list (read-string "Object to edit: "))
@@ -1244,8 +1243,7 @@ generate the source buffer."
 
       ;; Make sure we start fresh
       (if (get-file-buffer filename)
-	  (or (kill-buffer (get-file-buffer filename))
-	      (error "Aborted.")))
+	  (kill-buffer (get-file-buffer filename)))
 
       (ess-command complete-dump-command)
       (message "Dumped in %s" filename)

@@ -47,6 +47,7 @@
      (ess-object-name-db-file       	. "ess-s3-namedb.el" )
      (inferior-ess-program          	. inferior-S3-program-name) ;        "S")
      (inferior-ess-help-command     	. "help(\"%s\")\n")
+     (inferior-ess-help-filetype . nil)
      (inferior-ess-search-list-command	. "search()\n")
      (inferior-ess-objects-command  	. "objects(%d)\n")
      (inferior-ess-start-file       	. nil) ;"~/.ess-S3")

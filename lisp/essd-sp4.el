@@ -1,10 +1,10 @@
 ;;; essd-sp4.el --- S-PLUS 4.x customization
 
-;; Copyright (C) 1998--2002 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Copyright (C) 1998--2002 Richard M. Heiberger <rmh@temple.edu>
 ;; Copyright (C) 2003--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Original Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: December 1998
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
@@ -57,6 +57,7 @@ connects it to the '(ddeESS [S+4])' window.")
      (ess-object-name-db-file		. "ess-sp4-namedb.el" )
      (inferior-ess-program		. inferior-S+4-program-name)
      (inferior-ess-help-command		. "help(\"%s\")\n")
+     (inferior-ess-help-filetype . "chm")
 
      (inferior-ess-start-file		. nil) ;"~/.ess-S+4")
      (inferior-ess-start-args		. (concat
@@ -81,6 +82,7 @@ connects it to the '(ddeESS [S+4])' window.")
      (ess-object-name-db-file		. "ess-sp4-namedb.el" )
      (inferior-ess-program		. inferior-Sqpe+4-program-name)
      (inferior-ess-help-command		. "help(\"%s\")\n")
+     (inferior-ess-help-filetype . "chm")
      (inferior-ess-search-list-command	. "searchPaths()\n")
      (inferior-ess-start-file		. nil) ;"~/.ess-S+4")
      (inferior-ess-language-start . (concat
