@@ -1,3 +1,14 @@
+2006-04-03  Richard M. Heiberger <rmh@temple.edu>
+	* ess-help.el (inferior-ess-help-filetype): distinguish between
+	regular S language help files that can appear in an emacs buffer
+	and "chm" (compiled html) used by S-Plus that cannot appear in
+	an emacs buffer.
+	* essd-r.el
+	* essd-s*[3456]*.el
+	* ess-cust.el
+	* ess-inf.el
+	* ess-mode.el
+	
 2006-04-03  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-show-buffer): Use
