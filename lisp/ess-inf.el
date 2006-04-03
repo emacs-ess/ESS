@@ -698,19 +698,14 @@ as the current buffer."
 	(display-buffer buf)))
     ;; At this stage, the buffer should now be visible on screen,
     ;; although it won't have been made current.
-    (if visit
-	(progn
-	  ;; Need to select the buffer.
-	  ;;
-	  ;; First of all, check case 2 if buffer is in another frame
-	  ;; but that frame may not be selected.
-	  (if (and frame (not (featurep 'xemacs)))
-	      (progn
-		;; need to select the frame
-		(select-frame frame)
-		;; reposition mouse to make frame active.
-		(set-mouse-position (selected-frame) (1- (frame-width)) 0)))
-	  (select-window (get-buffer-window buf 0))))))
+    (when visit
+      ;; Need to select the buffer.
+      ;;
+      ;; First of all, check case 2 if buffer is in another frame
+      ;; but that frame may not be selected.
+      (if frame 
+	  (ess-select-frame-set-input-focus frame))
+      (select-window (get-buffer-window buf 0)))))
 
 
 (defvar ess-bufs-in-frame nil)		;silence the compiler.
