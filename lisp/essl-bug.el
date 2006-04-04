@@ -505,19 +505,34 @@ and `ess-bugs-file-dir'."
 (defun ess-bugs-sci-to-round-4-dp () 
     "ESS[BUGS]: round output from +/-0.000E+/-0 to 4 decimal places."
     (interactive)
-    
+    (setq buffer-read-only nil)
+    (save-excursion (goto-char 0)
     (save-match-data (let ((ess-bugs-replacement-string nil)                            
+			    (ess-bugs-replacement-9 0)
 			    (ess-bugs-replacement-diff 0))
      (while (search-forward-regexp "-?[0-9][.][0-9][0-9][0-9]E[+-][0-9]" nil t)
-	    (setq ess-bugs-replacement-string (int-to-string (string-to-int (match-string 0))))	    
+	    (setq ess-bugs-replacement-string (int-to-string (string-to-int (match-string 0))))	 
+	    (setq ess-bugs-replacement-diff (- (match-end 0) (match-beginning 0)))
+	    (save-match-data
+	        (setq ess-bugs-replacement-9 
+		    (string-match "99999999999$" ess-bugs-replacement-string))
+
+		(if (not ess-bugs-replacement-9)
+		    (setq ess-bugs-replacement-9 
+			(string-match "000000000001$" ess-bugs-replacement-string))))
+	
+	    (if ess-bugs-replacement-9	
+		(setq ess-bugs-replacement-string 
+		    (substring ess-bugs-replacement-string 0 ess-bugs-replacement-9)))
+
 	    (setq ess-bugs-replacement-diff 
-		(- (- (match-end 0) (match-beginning 0)) (string-width ess-bugs-replacement-string)))
+		(- ess-bugs-replacement-diff (string-width ess-bugs-replacement-string)))
 
 	   (while (> ess-bugs-replacement-diff 0)
 		(setq ess-bugs-replacement-string (concat ess-bugs-replacement-string " "))
 		(setq ess-bugs-replacement-diff (- ess-bugs-replacement-diff 1)))
 
-           (replace-match ess-bugs-replacement-string)))))
+           (replace-match ess-bugs-replacement-string))))))
 
 ;;; ESS[BUGS-Shell] for running BUGS interactively
 (defgroup ess-bugs-shell nil
