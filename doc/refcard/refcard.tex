@@ -1,4 +1,3 @@
-%%%- $Header: /scratch/CVS-ARCHIVE/ess-refcard/refcard.tex,v 1.15 2003/10/28 17:50:07 maechler Exp $
 \documentclass[a4paper]{article}
 \usepackage{multicol}
 \usepackage{parskip}
@@ -31,7 +30,7 @@
 
   \smallskip
 
-  {\small updated for ESS 5.x}% {\footnotesize --- needs \em{more} updating!}}
+  {\small updated for ESS 5.3.0 and newer}% {\footnotesize --- needs \em{more} updating!}}
   \\[1ex] {\tiny $ $Date: 2003/10/28 17:50:07 $ $}
            \footnotesize --- as of \today
 \end{center}
@@ -137,7 +136,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   \texttt{M-C-h} & Mark this function
 \end{tabI}
 
-\begin{tabTit}{Evaluation commands (Prefix \texttt{C-u}: \emph{visibly})}
+\begin{tabTit}{Evaluation commands (Prefix \texttt{C-u}: \emph{in/visibly})}
   \texttt{C-c C-l} & Load this buffer -- detect errors !\\
   \texttt{C-c C-n} & \underline{Step through code -- line by line} \\
   \texttt{C-c C-e} & Evaluate an expression \\
@@ -146,6 +145,8 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   \texttt{M-C-x}   & Evaluate this function \\
   \texttt{C-c C-f} & \underline{Evaluate this function} \\
   \texttt{C-c M-f} & Evaluate this function and go \\
+  \texttt{C-c C-p} & Evaluate this paragraph and step \\
+  \texttt{C-c C-c} & \underline{Evaluate this para.\ or function \emph{\& step}}\\
   \texttt{C-c C-r} & \underline{Evaluate this region} \\
   \texttt{C-c M-r} & Evaluate this region and go \\
   \texttt{C-c C-b} & Evaluate this buffer \\
@@ -162,7 +163,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
 \begin{tabTit}{At SfS, or activated by \texttt{M-x ess-add-MM-keys}}%-SfS-added
   \texttt{C-c f}   & insert function() definition outline%-SfS-added
-\end{tabTit}\\[0.5cm]                                   %-SfS-added
+\end{tabTit}\\[-1mm]%\\[0.5cm]                           %-SfS-added
 
 \Sect{Reading help files}
 %%    ~~~~~~~~~~~~~~~~~~
