@@ -7,7 +7,7 @@ multiple languages.  (They were also broken on Windows machines.)
 lisp code on Windows.  Particularly fixed behavior in help mode with S-plus
 GUI.
 @item New variable, @code{ess-use-inferior-program-name-in-buffer-name},
-which enables usingg the executable name instead of the dialect name for
+which enables using the executable name instead of the dialect name for
 R. Feature request.
 @item @ESS{[S]} @kbd{ess-execute-screen-options}
 now also works correctly when there is more than one window *side-by-side*
