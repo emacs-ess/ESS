@@ -157,14 +157,14 @@ or S-Plus 8."
 			 "/../../versions") t))
     (toggle-read-only 1)
     (forward-line)
-    (if (not (search-backward-regexp "[678].[0-9]" (point-min) t))
+    (if (not (search-backward-regexp "splus\t[678].[0-9]" (point-min) t))
 	(error "The emacs variable `inferior-S+6-program-name' does
 not point to S-Plus 6 or 7 or 8.  Please add `splus[678]?/cmd' (expand the
 `[678]?' to match your setup) to your `exec-path' or specify the complete
 path to `Splus.exe' in the variable `inferior-S+6-program-name' in your
 `.emacs' file.")
       (forward-line)
-      (if (search-backward "6.0" (point-min) t)
+      (if (search-backward "splus\t6.0" (point-min) t)
 	  (error "S-Plus 6.0 for Microsoft Windows has a bug that
 prevents it from being started by emacs.  Instead, you must start it
 by double-clicking an icon.  Then you can connect to it with
@@ -350,7 +350,7 @@ S-Plus 7 or S-Plus 8."
 			 "/../../versions") t))
     (toggle-read-only 1)
     (forward-line)
-    (if (not (search-backward-regexp "[678].[0-9]" (point-min) t))
+    (if (not (search-backward-regexp "splus\t[678].[0-9]" (point-min) t))
 	(error "The emacs variable `inferior-S+6-program-name' does
 not point to S-Plus 6 or 7 or 8.  Please add `splus[678]?/cmd'
 (expand the `[678]?' to match your setup) to your `exec-path' or
@@ -358,7 +358,7 @@ specify the complete path to `Splus.exe' in the variable
 `inferior-S+6-program-name' in your `.emacs' file.")
       (progn
     (forward-line)
-      (if (search-backward "6.0" (point-min) t)
+      (if (search-backward "splus\t6.0" (point-min) t)
 	    (error "S-Plus 6.0 for Microsoft Windows has a bug that
 prevents it from being started by emacs.  Instead, you must start it
 by double-clicking an icon.  Then you can connect to it with
