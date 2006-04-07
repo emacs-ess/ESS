@@ -238,6 +238,10 @@ in the file COPYING in the same directory as this file for more details.
 ================
 
 Changes/New Features in 5.3.0:
+   * ESS[BUGS]: sanely re-format statistical output, `.bog'), from
+     scientific notation to numbers rounded with 4 decimal places with
+     `M-x ess-bugs-sci-round-to-4-dp'.
+
    * The keys for navigating among section headings in help buffers
      worked, but only for one language per session; they should now
      work for multiple languages.  (They were also broken on Windows
@@ -248,7 +252,7 @@ Changes/New Features in 5.3.0:
      with S-plus GUI.
 
    * New variable, `ess-use-inferior-program-name-in-buffer-name',
-     which enables usingg the executable name instead of the dialect
+     which enables using the executable name instead of the dialect
      name for R. Feature request.
 
    * ESS[S] `ess-execute-screen-options' now also works correctly when
