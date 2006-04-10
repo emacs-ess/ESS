@@ -1,4 +1,4 @@
-Versions 5.2.x are meant to be release-quality versions.  While some
+Versions 5.3.x are meant to be release-quality versions.  While some
 new features are being introduced, we are cleaning up and improving
 the interface.  We know about some remaining documentation inconsistencies.
 Patches or suggested fixes with bug reports are much appreciated!
