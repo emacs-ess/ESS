@@ -1,6 +1,6 @@
 Changes/New Features in 5.3.0:
 @itemize @bullet
-@item @ESS{[BUGS]}: sanely re-format statistical output, @file{.bog}),
+@item @ESS{[BUGS]}: sanely re-format statistical output, @file{.bog},
 from scientific notation to numbers rounded with 4 decimal places
 with @kbd{M-x ess-bugs-sci-round-to-4-dp}.
 @item The keys for navigating among section headings in help buffers
