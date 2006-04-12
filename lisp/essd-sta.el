@@ -56,6 +56,7 @@
     (ess-object-name-db-file       . "ess-sta-namedb.el" )
     (ess-retr-lastvalue-command    . "\n")
     (ess-save-lastvalue-command    . "\n")
+    (inferior-ess-font-lock-keywords . ess-STA-mode-font-lock-keywords)
     (inferior-ess-program          . inferior-STA-program-name)
     (inferior-ess-objects-command  . "description\n")
     (inferior-ess-help-command     . "set more off\n help %s\n")
