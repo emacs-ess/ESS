@@ -48,7 +48,7 @@ Edit the file @file{ESSDIR/ess-VERSION/lisp/ess-site.el} as explained in the
 comments section of that file.
 @comment Installations that are using ESS only for S-Plus
 @comment 6.x will probably not need to make any changes.  Installations that also
-@comment have one or more of (S4, S+3/4/5/6/7, R, SAS, BUGS, XLispStat, Stata)
+@comment have one or more of (S4, S+3/4/5/6/7/8, R, SAS, BUGS, XLispStat, Stata)
 @comment may need to uncomment corresponding lines in @file{ESSDIR/ess-VERSION/lisp/ess-site.el}.
 
 @item
@@ -159,16 +159,21 @@ directory".
 
 
 @item
-Retrieve the latest zip file (@file{ess-VERSION.zip}) from
+Retrieve the latest zip file (@file{ess-VERSION.zip}) 
+or compressed tar file @file{ess-VERSION.tar.gz} from
 @uref{http://ess.r-project.org/downloads/ess, ESS downloads area} and
 store it in the ESS distribution directory.  Be aware that http browsers
 on Windows frequently change the "." and "-" characters in filenames to
 other punctuation.  Please change the names back to their original form.
 
 @item
-Extract all the files from @file{ess-VERSION.zip} into the ESS
-distribution directory.  In Windows Explorer,
-you can unpack the archive by double clicking on the folder; you should
+Extract all the files from @file{ess-VERSION.zip} or @file{ess-VERSION.tar.gz} 
+into the ESS
+distribution directory as @file{c:\emacs\ess-VERSION\}.
+You may use the commands @file{unzip} on the zip archive or
+@file{gunzip} and @file{tar} on the tar.gz file.
+It is possible to unpack the zip archive in Windows Explorer,
+by double clicking on the folder; you should
 then see a new folder called @file{ess-VERSION}.  Drag that folder into
 your ESS distribution directory.
 
@@ -183,7 +188,8 @@ to your emacs initialization file.  (GNU Emacs uses the filename
 recognised by emacs as your HOME directory, i.e. the value of your HOME
 environment variable.)  Replace
 @code{VERSION} above with the version number of ESS.  Remember to use
-forwardslashes @code{/} rather than @code{\\} in your filename.
+forwardslashes @code{/}, rather than backslashes @code{\}, in your filename
+inside emacs code files.
 
 After saving your initialization file, ESS is now installed.  Start a
 new emacs and you should be ready to use ESS.  For example, to edit
@@ -206,7 +212,7 @@ Note that the directory containing the program is
 added to the PATH, not the program itself.  One such line is needed
 for each software program.  Be sure to use the abbreviation
 @code{progra~1} and not the long version with embedded blanks.  Use
-backslashes "\".
+backslashes "@code{\}".
 
 An alternative, for R users, is that rather than adjusting the PATH
 variable, you can add the following to your emacs initialization file
@@ -217,8 +223,27 @@ variable, you can add the following to your emacs initialization file
 This assumes that you have installed R-2.2.1 in the default location.
 Change the path otherwise to point to other locations.
 
+Windows users who place S-PLUS anywhere other than the default
+location will also need to add the following three lines (properly
+adjusted for their location) to their @file{%HOME%/.emacs} or
+@file{%HOME%/.xemacs/init.el} file:
+@example
+(setq-default inferior-S+6-program-name
+    "c:/progra~1/Insightful/SPLUS70/cmd/Splus")
+(setq-default inferior-Sqpe+6-SHOME-name
+    "c:/progra~1/Insightful/SPLUS70")
+(setq-default inferior-Sqpe+6-program-name
+    "c:/progra~1/Insightful/SPLUS70/cmd/Sqpe.exe")
+@end example
+The above example uses the default location of S-PLUS in
+@code{c:/progra~1/Insightful}.  Please note that ESS
+considers S-PLUS 6, 7, and 8 to be variants of S+6.
 
-To start the S-PLUS [67].x GUI from ESS under emacs:
+These users may also need to modify the emacs variable @code{ess-SHOME-versions}
+to match their installation in order to get the full set of S-PLUS versions
+on their machine into the @code{ESS} menu.
+ 
+To start the S-PLUS [678].x GUI from ESS under emacs:
 @enumerate
 @item
 If you use Cygwin bash as your primary shell, then
@@ -245,7 +270,7 @@ from the emacs buffer containing your S program (for example,
 (If you are still using S-PLUS 4.x or 2000,\
 then use @code{M-x S+4} or @code{M-x S+4-msdos}.)
 
-To start an S-PLUS [67].x session inside an emacs buffer---and
+To start an S-PLUS [678].x session inside an emacs buffer---and
 without the S-PLUS GUI:
 @example
 M-x Sqpe
@@ -315,7 +340,7 @@ emacs, and cut and paste the results into the XLispStat
 @comment in an @code{ESS[SAS]} buffer and than manually copy and paste them into
 @comment an Editor window in the SAS Display Manager.
 @comment
-@comment For Windows, inferior SAS in an @code{@iESS{[SAS]}} buffer does not work
+@comment For Windows, inferior SAS in an @code{iESS{[SAS]}} buffer does not work
 @comment on the local machine.  It does work over a network connection to
 @comment SAS running on a remote Unix computer.
 @comment
