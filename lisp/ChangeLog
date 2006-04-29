@@ -1,8 +1,12 @@
+2006-04-29  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-mode.el (ess-mode-map): work around Xemacs bug ("Meta backspace")
+
 2006-04-04  Richard M. Heiberger <rmh@temple.edu>
 	* essd-sp6w.el (S+6) and (S+6-msdos): change string to detect S-Plus 6.0,
 	previous string was catching the date 2006.03.30.
 	* ess-cust.el (ess-SHOME-versions): add splus80
-	
+
 2006-04-03  Richard M. Heiberger <rmh@temple.edu>
 	* ess-help.el (inferior-ess-help-filetype): distinguish between
 	regular S language help files that can appear in an emacs buffer
@@ -13,7 +17,7 @@
 	* ess-cust.el
 	* ess-inf.el
 	* ess-mode.el
-	
+
 2006-04-03  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-show-buffer): Use
