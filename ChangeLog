@@ -1,7 +1,15 @@
+2006-04-07  ESS Maintainers <ESS-core@stat.math.ethz.ch>
+
+  * Version 5.3.0 released.
+
+2006-04-07  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* doc/refcard/refcard.tex: update for ESS 5.3.0
+
 2006-02-09  Anthony Rossini <anthony.rossini@novartis.com>
 
 	* doc/newfeat.texi: documentation for
-	@code{ess-use-inferior-program-name-in-buffer-name}, 
+	@code{ess-use-inferior-program-name-in-buffer-name},
 
 2006-02-07  ESS Maintainers <ESS-core@stat.math.ethz.ch>
 
