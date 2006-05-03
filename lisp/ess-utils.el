@@ -43,8 +43,10 @@
     (nth 3 (parse-partial-sexp (line-beginning-position) (point)))))
 
 ;; simple alternative to ess-read-object-name-default of ./ess-inf.el :
+;; is "wrongly" returning   "p1"  for word "p1.part2" :
 (defun ess-extract-word-name ()
-  "Get the word you're on."
+  "Get the word you're on (cheap algorithm). Use `ess-read-object-name-default'
+for a better but slower version."
   (save-excursion
     (re-search-forward "\\<\\w+\\>" nil t)
     (buffer-substring (match-beginning 0) (match-end 0))))
@@ -114,7 +116,7 @@ from the beginning of the buffer."
   (hack-local-variables)
 
   (if (not (verify-visited-file-modtime (current-buffer))) (progn
-      (revert-buffer t t)      
+      (revert-buffer t t)
       t)
   nil))
 
@@ -640,7 +642,7 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 	(t
 	 (raise-frame frame)
 	 (select-frame frame)
-	 (cond ((and 
+	 (cond ((and
 		 (memq window-system '(x mac))
 		 (fboundp 'x-focus-frame))
 		(x-focus-frame frame))

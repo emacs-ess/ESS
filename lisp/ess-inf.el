@@ -1069,7 +1069,7 @@ Arg has same meaning as for `ess-eval-region'."
 	   (end (nth 1 beg-end))
 	   name)
       (goto-char beg)
-      (setq name (ess-extract-word-name))
+      (setq name (ess-read-object-name-default))
       (princ (concat "Loading: " name) t)
       (ess-eval-region beg end vis
 		       (concat "Eval function " name)))))
@@ -1096,7 +1096,7 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
 	(let ((end-fun (cadr (ess-end-of-function beg)))
 	      name)
 	  (goto-char beg)
-	  (setq name (ess-extract-word-name))
+	  (setq name (ess-read-object-name-default))
 	  (princ (concat "Loading: " name) t)
 	  (ess-eval-region beg end-fun vis
 			   (concat "Eval function " name))

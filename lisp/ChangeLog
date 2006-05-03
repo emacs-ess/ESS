@@ -1,3 +1,9 @@
+2006-05-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-eval-function): and *-or-para...:
+	use (ess-read-object-name-default) instead of simpler but slightly buggy
+	(ess-extract-word-name).
+
 2006-04-29  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el (ess-mode-map): work around Xemacs bug ("Meta backspace")
