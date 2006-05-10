@@ -56,7 +56,7 @@ shell, simply type `M-x S+6-msdos RET'.
 ================
 
 Changes/New Features in 5.3.0:
-   * ESS[BUGS]: sanely re-format statistical output, `.bog'), from
+   * ESS[BUGS]: sanely re-format statistical output, `.bog', from
      scientific notation to numbers rounded with 4 decimal places with
      `M-x ess-bugs-sci-round-to-4-dp'.
 
@@ -647,7 +647,7 @@ Changes/New Features in 5.3.0:
 1.5 Stability
 =============
 
-Versions 5.2.x are meant to be release-quality versions.  While some
+Versions 5.3.x are meant to be release-quality versions.  While some
 new features are being introduced, we are cleaning up and improving the
 interface.  We know about some remaining documentation inconsistencies.
 Patches or suggested fixes with bug reports are much appreciated!
@@ -811,18 +811,21 @@ separate instructions above for UNIX *Note Unix installation::.
      This directory will be referred to below as "the ESS distribution
      directory".
 
-  2. Retrieve the latest zip file (`ess-VERSION.zip') from ESS
-     downloads area (http://ess.r-project.org/downloads/ess) and store
-     it in the ESS distribution directory.  Be aware that http browsers
-     on Windows frequently change the "." and "-" characters in
-     filenames to other punctuation.  Please change the names back to
-     their original form.
+  2. Retrieve the latest zip file (`ess-VERSION.zip') or compressed tar
+     file `ess-VERSION.tar.gz' from ESS downloads area
+     (http://ess.r-project.org/downloads/ess) and store it in the ESS
+     distribution directory.  Be aware that http browsers on Windows
+     frequently change the "." and "-" characters in filenames to other
+     punctuation.  Please change the names back to their original form.
 
-  3. Extract all the files from `ess-VERSION.zip' into the ESS
-     distribution directory.  In Windows Explorer, you can unpack the
-     archive by double clicking on the folder; you should then see a
-     new folder called `ess-VERSION'.  Drag that folder into your ESS
-     distribution directory.
+  3. Extract all the files from `ess-VERSION.zip' or
+     `ess-VERSION.tar.gz' into the ESS distribution directory as
+     `c:\emacs\ess-VERSION\'.  You may use the commands `unzip' on the
+     zip archive or `gunzip' and `tar' on the tar.gz file.  It is
+     possible to unpack the zip archive in Windows Explorer, by double
+     clicking on the folder; you should then see a new folder called
+     `ess-VERSION'.  Drag that folder into your ESS distribution
+     directory.
 
   4. Add the line
           (load "C:/emacs/ess-VERSION/lisp/ess-site")
@@ -831,7 +834,8 @@ separate instructions above for UNIX *Note Unix installation::.
      the initialization file.  The tilde is recognised by emacs as your
      HOME directory, i.e. the value of your HOME environment variable.)
      Replace `VERSION' above with the version number of ESS.  Remember
-     to use forwardslashes `/' rather than `\\' in your filename.
+     to use forwardslashes `/', rather than backslashes `\', in your
+     filename inside emacs code files.
 
      After saving your initialization file, ESS is now installed.
      Start a new emacs and you should be ready to use ESS.  For
@@ -852,7 +856,7 @@ separate instructions above for UNIX *Note Unix installation::.
      the PATH, not the program itself.  One such line is needed for
      each software program.  Be sure to use the abbreviation `progra~1'
      and not the long version with embedded blanks.  Use backslashes
-     "\".
+     "`\'".
 
      An alternative, for R users, is that rather than adjusting the PATH
      variable, you can add the following to your emacs initialization
@@ -861,7 +865,26 @@ separate instructions above for UNIX *Note Unix installation::.
      This assumes that you have installed R-2.2.1 in the default
      location.  Change the path otherwise to point to other locations.
 
-     To start the S-PLUS [67].x GUI from ESS under emacs:
+     Windows users who place S-PLUS anywhere other than the default
+     location will also need to add the following three lines (properly
+     adjusted for their location) to their `%HOME%/.emacs' or
+     `%HOME%/.xemacs/init.el' file:
+          (setq-default inferior-S+6-program-name
+              "c:/progra~1/Insightful/SPLUS70/cmd/Splus")
+          (setq-default inferior-Sqpe+6-SHOME-name
+              "c:/progra~1/Insightful/SPLUS70")
+          (setq-default inferior-Sqpe+6-program-name
+              "c:/progra~1/Insightful/SPLUS70/cmd/Sqpe.exe")
+     The above example uses the default location of S-PLUS in
+     `c:/progra~1/Insightful'.  Please note that ESS considers S-PLUS
+     6, 7, and 8 to be variants of S+6.
+
+     These users may also need to modify the emacs variable
+     `ess-SHOME-versions' to match their installation in order to get
+     the full set of S-PLUS versions on their machine into the `ESS'
+     menu.
+
+     To start the S-PLUS [678].x GUI from ESS under emacs:
        1. If you use Cygwin bash as your primary shell, then
                M-x S
                (or `M-x S+6').
@@ -879,7 +902,7 @@ separate instructions above for UNIX *Note Unix installation::.
      (If you are still using S-PLUS 4.x or 2000,\ then use `M-x S+4' or
      `M-x S+4-msdos'.)
 
-     To start an S-PLUS [67].x session inside an emacs buffer--and
+     To start an S-PLUS [678].x session inside an emacs buffer--and
      without the S-PLUS GUI:
           M-x Sqpe
           (or `M-x Sqpe+6').
