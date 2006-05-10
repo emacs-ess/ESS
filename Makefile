@@ -29,7 +29,7 @@ dist: VERSION RPM.spec
 	@echo "** Exporting Files **"
 	svn checkout --quiet $(SVN_URL)/trunk $(ESSDIR)-svn
 	mkdir -p $(ESSDIR)
-	(cd $(ESSDIR)-svn; tar cvf - --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); tar xf - )
+	(cd $(ESSDIR)-svn; $(GNUTAR) cvf - --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); $(GNUTAR) xf - )
 	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
 	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
@@ -40,13 +40,21 @@ dist: VERSION RPM.spec
 #      should be newer than 'VERSION' :
 	touch $(ESSDIR)/lisp/ess-cust.el
 	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
-	test -f $(ESSDIR).tar.gz && rm -rf $(ESSDIR).tar.gz || true
-	@echo "** Creating tar file **"
-	tar hcvofz $(ESSDIR).tar.gz $(ESSDIR)
+	@echo "** Creating .tgz file **"
+	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
+	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
+	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
-	@echo "** Creating zip file **"
 	zip -r $(ESSDIR).zip $(ESSDIR)
-	$(MAKE) cleanup-dist
+	@echo "** Creating .tgz and .zip files for the XEmacs Package System **"
+	test -f $(ESSDIR)-pkg.tgz && rm -rf $(ESSDIR)-pkg.tgz || true
+	test -f $(ESSDIR)-pkg.zip && rm -rf $(ESSDIR)-pkg.zip || true
+	cd $(ESSDIR); mv etc ess; mkdir etc; mv ess etc; mkdir info; \
+	cp doc/info/ess.info info; mv lisp ess; mkdir lisp; mv ess lisp; \
+	$(GNUTAR) hcvofz ../$(ESSDIR)-pkg.tgz etc info lisp; \
+	zip -r ../$(ESSDIR)-pkg.zip etc info lisp; cd ..
+#	called at the beginning of the process, better for testing this way
+#	$(MAKE) cleanup-dist
 	touch $@
 
 .PHONY: cleanup-dist cleanup-rel
@@ -76,8 +84,8 @@ ChangeLog: VERSION
 
 rel: ChangeLog dist tag
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
-	@echo "** Placing tar and zip files **"
-	cp -p $(ESSDIR).tar.gz $(ESSDIR).zip   $(UPLOAD_DIR)
+	@echo "** Placing .tgz and .zip files **"
+	cp -p $(ESSDIR)*.tgz $(ESSDIR)*.zip $(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
 	rm -f $(UPLOAD_DIR)/LATEST.IS.*
 	touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)
@@ -90,4 +98,4 @@ tag:
 ## TODO (when MM has GPG set up properly): add this to 'rel'
 .PHONY: buildrpm
 buildrpm: dist
-	rpmbuild -ta --sign $(ESSDIR).tar.gz
+	rpmbuild -ta --sign $(ESSDIR).tgz
