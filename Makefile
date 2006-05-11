@@ -47,12 +47,12 @@ dist: VERSION RPM.spec
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
 	@echo "** Creating .tgz and .zip files for the XEmacs Package System **"
-	test -f $(ESSDIR)-pkg.tgz && rm -rf $(ESSDIR)-pkg.tgz || true
-	test -f $(ESSDIR)-pkg.zip && rm -rf $(ESSDIR)-pkg.zip || true
+	test -f $(ESSDIR)-xemacs-pkg.tgz && rm -rf $(ESSDIR)-xemacs-pkg.tgz || true
+	test -f $(ESSDIR)-xemacs-pkg.zip && rm -rf $(ESSDIR)-xemacs-pkg.zip || true
 	cd $(ESSDIR); mv etc ess; mkdir etc; mv ess etc; mkdir info; \
 	cp doc/info/ess.info info; mv lisp ess; mkdir lisp; mv ess lisp; \
-	$(GNUTAR) hcvofz ../$(ESSDIR)-pkg.tgz etc info lisp; \
-	zip -r ../$(ESSDIR)-pkg.zip etc info lisp; cd ..
+	$(GNUTAR) hcvofz ../$(ESSDIR)-xemacs-pkg.tgz etc info lisp; \
+	zip -r ../$(ESSDIR)-xemacs-pkg.zip etc info lisp; cd ..
 #	called at the beginning of the process, better for testing this way
 #	$(MAKE) cleanup-dist
 	touch $@
