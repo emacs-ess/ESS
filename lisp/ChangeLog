@@ -1,3 +1,8 @@
+2006-05-12  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r.el (R-site-search): experimental function provided by
+	Sebastian Luque on ess-help, May 1--2, 2006
+
 2006-05-03  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-eval-function): and *-or-para...:
