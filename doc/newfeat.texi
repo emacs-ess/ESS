@@ -1,6 +1,20 @@
 Changes/New Features in 5.3.1:
 @itemize @bullet
-@item Rodney FIXME: Xemacs package creation ...
+@item There are now 3 ways to install @ESS{} for XEmacs
+      @enumerate
+      @item as an XEmacs package by uncommenting the XEmacs part of
+            Section 1 of @file{Makeconf} and then @code{make install}
+      @item as an Emacs installation by unpacking either 
+            @file{ess-5.3.1.tgz} or @file{ess-5.3.1.zip} into 
+            @file{PREFIX/lib/xemacs/site-packages} on unix or 
+            @file{PREFIX\XEmacs\Packages\site-packages} on windows
+@comment            @file{PREFIX\\XEmacs\\Packages\\site-packages} on windows
+      @item and now by unpacking the new @file{ess-5.3.1-xemacs-pkg.tgz} or 
+            @file{ess-5.3.1-xemacs-pkg.zip} into 
+            @file{PREFIX/lib/xemacs/xemacs-packages} on unix or 
+            @file{PREFIX\XEmacs\Packages\xemacs-packages} on windows
+@comment            @file{PREFIX\\XEmacs\\Packages\\xemacs-packages} on windows
+      @end enumerate
 @item Martin FIXME: ess-toggle-S-assign-key ...
 @item Martin FIXME: R-site-search ...
 @end itemize
