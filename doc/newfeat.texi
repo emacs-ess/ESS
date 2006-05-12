@@ -1,3 +1,9 @@
+Changes/New Features in 5.3.1:
+@itemize @bullet
+@item Rodney FIXME: Xemacs package creation ...
+@item Martin FIXME: ess-toggle-S-assign-key ...
+@end itemize
+
 Changes/New Features in 5.3.0:
 @itemize @bullet
 @item @ESS{[BUGS]}: sanely re-format statistical output, @file{.bog},
