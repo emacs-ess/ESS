@@ -382,49 +382,54 @@ Given a directory, pad with directory-separator character, if necessary."
 (if (listp ess-arg) ess-arg (list ess-arg)))
 
 (defun ess-find-exec (ess-root-arg ess-root-dir)
-"Given a root directory and the root of an executable file name, find it's full
-name and path, if it exists, anywhere in the sub-tree."
+  "Given a root directory and the root of an executable file name, 
+find it's full name and path, if it exists, anywhere in the sub-tree."
   (let* ((ess-tmp-dirs (directory-files ess-root-dir t "^[^.]"))
 	 (ess-tmp-return (ess-find-exec-completions ess-root-arg ess-root-dir))
-	 (ess-tmp-dirs-n (length ess-tmp-dirs))
-	 (ess-tmp-dir nil)
-	 (i 0))
-
-	(while (< i ess-tmp-dirs-n)
-	    (setq ess-tmp-dir (nth i ess-tmp-dirs))
-	    (setq i (+ i 1))
-	    (if (file-directory-p ess-tmp-dir)
-		(setq ess-tmp-return (nconc ess-tmp-return
-		    (ess-find-exec ess-root-arg ess-tmp-dir)))))
+	 (ess-tmp-dir nil))
+    
+    (while ess-tmp-dirs
+      (setq ess-tmp-dir (car ess-tmp-dirs)
+	    ess-tmp-dirs (cdr ess-tmp-dirs))
+      (if (file-directory-p ess-tmp-dir)
+	  (setq ess-tmp-return 
+		(nconc ess-tmp-return
+		       (ess-find-exec ess-root-arg ess-tmp-dir)))))
     ess-tmp-return))
 
 (defun ess-find-exec-completions (ess-root-arg &optional ess-exec-dir)
   "Given the root of an executable file name, find all possible completions.
-Search for the executables in ESS-EXEC-DIR which defaults to
-`exec-path' if no value is given."
+Search for the executables in ESS-EXEC-DIR (which defaults to
+`exec-path' if no value is given)."
   (let* ((ess-exec-path
-	 (if ess-exec-dir (ess-return-list ess-exec-dir) exec-path))
-	(ess-tmp-exec nil)
-	(ess-tmp-path-count (length ess-exec-path))
-	(ess-tmp-dir nil)
-	(ess-tmp-files nil)
-	(ess-tmp-file nil)
-	(i 0) (j 0) (k 0))
+	  (if ess-exec-dir (ess-return-list ess-exec-dir) exec-path))
+	 (ess-tmp-exec nil)
+	 (ess-tmp-path-count (length ess-exec-path))
+	 (ess-tmp-dir nil)
+	 (ess-tmp-files nil)
+	 (ess-tmp-file nil))
 
-	(while (< i ess-tmp-path-count)
-	    (setq ess-tmp-dir (nth i ess-exec-path))
-	    (if (file-exists-p ess-tmp-dir) (progn
-		(setq ess-tmp-files (file-name-all-completions ess-root-arg ess-tmp-dir))
-		(setq j 0)
-		(setq k (length ess-tmp-files))
-		(while (< j k)
-		    (setq ess-tmp-file (concat (file-name-as-directory ess-tmp-dir)
-			(nth j ess-tmp-files)))
-		    (if (and (file-executable-p ess-tmp-file)
-			     (not (file-directory-p ess-tmp-file)))
-			(setq ess-tmp-exec (nconc ess-tmp-exec (list ess-tmp-file))))
-		    (setq j (+ j 1)))))
-	(setq i (+ i 1)))
+    (while ess-exec-path
+      (setq ess-tmp-dir (car ess-exec-path)
+	    ess-exec-path (cdr ess-exec-path))
+      (when
+	  (and (> (length ess-tmp-dir) 0) 
+	       (file-exists-p ess-tmp-dir))
+	;; the first test above excludes "" from exec-path, which can be
+	;; problematic with Tramp.
+	(setq ess-tmp-files 
+	      (file-name-all-completions ess-root-arg ess-tmp-dir))
+
+	(while ess-tmp-files
+	  (setq ess-tmp-file 
+		(concat (file-name-as-directory ess-tmp-dir)
+			(car ess-tmp-files))
+		ess-tmp-files (cdr ess-tmp-files))
+	  (if (and (file-executable-p ess-tmp-file)
+		   (not (file-directory-p ess-tmp-file)))
+	      ;; we have found a possible executable, so keep it.
+	      (setq ess-tmp-exec 
+		    (nconc ess-tmp-exec (list ess-tmp-file)))))))
     ess-tmp-exec))
 
 ;; (defun ess-uniq-list (items)
