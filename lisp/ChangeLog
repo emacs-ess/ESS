@@ -1,3 +1,15 @@
+2006-05-16  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-utils.el (ess-find-exec): Remove explicit loop counter (i) and
+	rewrite while loop.
+	(ess-find-exec-completions): Remove explicit loop counters (i,j) and
+	rewrite while loops.  Add test to check that a directory on
+	exec-path is not "" (which signifies current working directory) as
+	that confuses tramp.
+	(ess-return-list): Indent/doc fix.
+	(ess-clone-local-variables): Indent.
+	(ess-directory-sep): Indent (perhaps this should be deleted?)
+
 2006-05-12  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r.el (R-site-search): experimental function provided by
