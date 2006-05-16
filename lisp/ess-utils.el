@@ -349,10 +349,9 @@ buffer does not exist, return nil."
 	(find-buffer-visiting file-or-buffer))))
 
 (defun ess-set-local-variables (alist &optional file-or-buffer)
-"Set local variables from ALIST in current buffer; if file-or-buffer
+  "Set local variables from ALIST in current buffer; if file-or-buffer
 is specified, perform action in that buffer."
-(interactive)
-
+  (interactive)
   (if file-or-buffer (set-buffer (ess-get-file-or-buffer file-or-buffer)))
 
   (mapcar (lambda (pair)
@@ -360,16 +359,16 @@ is specified, perform action in that buffer."
             (set (car pair) (eval (cdr pair))))
           alist))
 
-(defun ess-clone-local-variables (from-file-or-buffer &optional to-file-or-buffer)
-"Clone local variables from one buffer to another buffer, current buffer if nil."
-    (interactive)
-
-    (ess-set-local-variables
-	(ess-sas-create-local-variables-alist from-file-or-buffer)
-	    to-file-or-buffer))
+(defun ess-clone-local-variables (from-file-or-buffer 
+				  &optional to-file-or-buffer)
+  "Clone local variables from one buffer to another buffer."
+  (interactive)
+  (ess-set-local-variables
+   (ess-sas-create-local-variables-alist from-file-or-buffer)
+   to-file-or-buffer))
 
 (defun ess-directory-sep (ess-dir-arg)
-"Deprecated.  Use file-name-as-directory instead.
+  "Deprecated.  Use file-name-as-directory instead.
 Given a directory, pad with directory-separator character, if necessary."
 (let ((ess-tmp-dir-last-char (substring ess-dir-arg -1)))
     (if (or (equal ess-tmp-dir-last-char "/")
@@ -378,8 +377,8 @@ Given a directory, pad with directory-separator character, if necessary."
     (concat ess-dir-arg (if ess-microsoft-p "\\" "/")))))
 
 (defun ess-return-list (ess-arg)
-"Given an item, if it is a list return it, otherwise return item in a list."
-(if (listp ess-arg) ess-arg (list ess-arg)))
+  "Given an item, if it is a list return it, else return item in a list."
+  (if (listp ess-arg) ess-arg (list ess-arg)))
 
 (defun ess-find-exec (ess-root-arg ess-root-dir)
   "Given a root directory and the root of an executable file name, 
