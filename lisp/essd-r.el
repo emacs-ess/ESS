@@ -339,6 +339,8 @@ See `noweb-mode' and `R-mode' for more help."
   (noweb-set-doc-mode 'latex-mode)
   (noweb-set-code-mode 'R-mode))
 
+(fset 'Snw-mode 'Rnw-mode); just a synonym (for now or ever)
+
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files." t)

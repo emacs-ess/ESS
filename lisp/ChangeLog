@@ -1,5 +1,8 @@
 2006-05-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
+	* essd-r.el (Snw-mode): synonym for Rnw-mode
+	* ess-site.el (auto-mode-alist): *.Snw -> Snw-mode
+
 	* essl-s.el (ess-toggle-S-assign-key): changes
 	(ess-S-assign-key): new default -- the one Seth uses.
 

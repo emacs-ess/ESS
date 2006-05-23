@@ -248,6 +248,7 @@ between .s or .S files and assembly mode.
 	   ("\\.ssc\\'"		. S-mode) ;; Splus 4.x script files.
 	   ("\\.[rR]\\'"	. R-mode)
 	   ("\\.[rR]nw\\'"	. Rnw-mode)
+	   ("\\.[sS]nw\\'"	. Snw-mode); currently identical to Rnw-mode
 	   ("\\.[rR]profile\\'" . R-mode)
 	   ("NAMESPACE\\'"	. R-mode)
 	   ("\\.omg\\'"         . omegahat-mode)
