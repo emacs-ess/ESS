@@ -1,7 +1,5 @@
 ### Makefile - for compiled e-lisp of ESS distribution.
 ###
-### File: $Revision: 5.54 $.
-###
 
 ## Before making changes here, please take a look at Makeconf
 include ../Makeconf
