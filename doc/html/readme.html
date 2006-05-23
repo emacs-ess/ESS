@@ -34,7 +34,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <p><a name="index-README-1"></a>
 This is the README file for the distribution of ESS version
 
-   <p>5.3.0
+   <p>5.3.1
 
    <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical programming
 and data analysis.  Languages supported: the S family (S 3/4, S-PLUS
@@ -126,7 +126,31 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">1.3 New Features</h3>
 
-<p>Changes/New Features in 5.3.0:
+<p>Changes/New Features in 5.3.1:
+     <ul>
+<li>There are now 3 ways to install <acronym>ESS</acronym> for XEmacs
+          <ol type=1 start=1>
+      <li>as an XEmacs package by uncommenting the XEmacs part of
+            Section 1 of <samp><span class="file">Makeconf</span></samp> and then <code>make install</code>
+      <li>as an Emacs installation by unpacking either
+            <samp><span class="file">ess-5.3.1.tgz</span></samp> or <samp><span class="file">ess-5.3.1.zip</span></samp> into
+            <samp><span class="file">PREFIX/lib/xemacs/site-packages</span></samp> on unix or
+            <samp><span class="file">PREFIX\XEmacs\Packages\site-packages</span></samp> on windows
+<!-- @file{PREFIX\\XEmacs\\Packages\\site-packages} on windows -->
+      <li>and now by unpacking the new <samp><span class="file">ess-5.3.1-xemacs-pkg.tgz</span></samp> or
+            <samp><span class="file">ess-5.3.1-xemacs-pkg.zip</span></samp> into
+            <samp><span class="file">PREFIX/lib/xemacs/xemacs-packages</span></samp> on unix or
+            <samp><span class="file">PREFIX\XEmacs\Packages\xemacs-packages</span></samp> on windows
+<!-- @file{PREFIX\\XEmacs\\Packages\\xemacs-packages} on windows -->
+          </ol>
+<li><acronym>ESS[S]</acronym>: <kbd>ess-toggle-S-assign-key</kbd> is slightly changed; in
+ particular, the default <code>ess-assign-key</code> is now <kbd>C-x =</kbd>. 
+<li><acronym>ESS[R]</acronym>: <kbd>M-x R-site-search</kbd> is a new (slightly experimental)
+ utility similar to R's <code>RSiteSearch(..)</code> but with the advantage of
+ using an emacs-builtin web browser. 
+</ul>
+
+   <p>Changes/New Features in 5.3.0:
      <ul>
 <li><acronym>ESS[BUGS]</acronym>: sanely re-format statistical output, <samp><span class="file">.bog</span></samp>,
 from scientific notation to numbers rounded with 4 decimal places

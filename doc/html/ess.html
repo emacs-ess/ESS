@@ -36,7 +36,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.3.0
+5.3.1
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -346,7 +346,31 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
 <h3 class="section">1.2 New features in ESS</h3>
 
-<p>Changes/New Features in 5.3.0:
+<p>Changes/New Features in 5.3.1:
+     <ul>
+<li>There are now 3 ways to install <acronym>ESS</acronym> for XEmacs
+          <ol type=1 start=1>
+      <li>as an XEmacs package by uncommenting the XEmacs part of
+            Section 1 of <samp><span class="file">Makeconf</span></samp> and then <code>make install</code>
+      <li>as an Emacs installation by unpacking either
+            <samp><span class="file">ess-5.3.1.tgz</span></samp> or <samp><span class="file">ess-5.3.1.zip</span></samp> into
+            <samp><span class="file">PREFIX/lib/xemacs/site-packages</span></samp> on unix or
+            <samp><span class="file">PREFIX\XEmacs\Packages\site-packages</span></samp> on windows
+<!-- @file{PREFIX\\XEmacs\\Packages\\site-packages} on windows -->
+      <li>and now by unpacking the new <samp><span class="file">ess-5.3.1-xemacs-pkg.tgz</span></samp> or
+            <samp><span class="file">ess-5.3.1-xemacs-pkg.zip</span></samp> into
+            <samp><span class="file">PREFIX/lib/xemacs/xemacs-packages</span></samp> on unix or
+            <samp><span class="file">PREFIX\XEmacs\Packages\xemacs-packages</span></samp> on windows
+<!-- @file{PREFIX\\XEmacs\\Packages\\xemacs-packages} on windows -->
+          </ol>
+<li><acronym>ESS[S]</acronym>: <kbd>ess-toggle-S-assign-key</kbd> is slightly changed; in
+ particular, the default <code>ess-assign-key</code> is now <kbd>C-x =</kbd>. 
+<li><acronym>ESS[R]</acronym>: <kbd>M-x R-site-search</kbd> is a new (slightly experimental)
+ utility similar to R's <code>RSiteSearch(..)</code> but with the advantage of
+ using an emacs-builtin web browser. 
+</ul>
+
+   <p>Changes/New Features in 5.3.0:
      <ul>
 <li><acronym>ESS[BUGS]</acronym>: sanely re-format statistical output, <samp><span class="file">.bog</span></samp>,
 from scientific notation to numbers rounded with 4 decimal places
@@ -5161,8 +5185,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-Remote-Computers-22">Remote Computers</a>: <a href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a></li>
 <li><a href="#index-reverting-function-definitions-130">reverting function definitions</a>: <a href="#Edit-buffer">Edit buffer</a></li>
 <li><a href="#index-running-S-11">running S</a>: <a href="#Starting-up">Starting up</a></li>
-<li><a href="#index-search-list-90">search list</a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-search-list-178">search list</a>: <a href="#Source-Directories">Source Directories</a></li>
+<li><a href="#index-search-list-90">search list</a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-sending-input-34">sending input</a>: <a href="#Entering-commands">Entering commands</a></li>
 <li><a href="#index-starting-directory-14">starting directory</a>: <a href="#Starting-up">Starting up</a></li>
 <li><a href="#index-starting-ESS-10">starting ESS</a>: <a href="#Starting-up">Starting up</a></li>
@@ -5206,8 +5230,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-comint_002dinterrupt_002dsubjob-110"><code>comint-interrupt-subjob</code></a>: <a href="#Other">Other</a></li>
 <li><a href="#index-comint_002dkill_002dinput-38"><code>comint-kill-input</code></a>: <a href="#Command_002dline-editing">Command-line editing</a></li>
 <li><a href="#index-comint_002dkill_002doutput-58"><code>comint-kill-output</code></a>: <a href="#Last-command">Last command</a></li>
-<li><a href="#index-comint_002dnext_002dinput-61"><code>comint-next-input</code></a>: <a href="#Process-buffer-motion">Process buffer motion</a></li>
 <li><a href="#index-comint_002dnext_002dinput-77"><code>comint-next-input</code></a>: <a href="#Command-History">Command History</a></li>
+<li><a href="#index-comint_002dnext_002dinput-61"><code>comint-next-input</code></a>: <a href="#Process-buffer-motion">Process buffer motion</a></li>
 <li><a href="#index-comint_002dnext_002dmatching_002dinput-79"><code>comint-next-matching-input</code></a>: <a href="#Command-History">Command History</a></li>
 <li><a href="#index-comint_002dnext_002dmatching_002dinput_002dfrom_002dinput-81"><code>comint-next-matching-input-from-input</code></a>: <a href="#Command-History">Command History</a></li>
 <li><a href="#index-comint_002dprevious_002dinput-76"><code>comint-previous-input</code></a>: <a href="#Command-History">Command History</a></li>
@@ -5221,18 +5245,18 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-dump_0028_0029-131"><code>dump()</code></a>: <a href="#Edit-buffer">Edit buffer</a></li>
 <li><a href="#index-ess_002dabort-113"><code>ess-abort</code></a>: <a href="#Other">Other</a></li>
 <li><a href="#index-ess_002dask_002dabout_002ddisplay-203"><code>ess-ask-about-display</code></a>: <a href="#X11">X11</a></li>
-<li><a href="#index-ess_002dask_002dabout_002dtransfile-28"><code>ess-ask-about-transfile</code></a>: <a href="#Customizing-startup">Customizing startup</a></li>
 <li><a href="#index-ess_002dask_002dabout_002dtransfile-68"><code>ess-ask-about-transfile</code></a>: <a href="#Saving-transcripts">Saving transcripts</a></li>
+<li><a href="#index-ess_002dask_002dabout_002dtransfile-28"><code>ess-ask-about-transfile</code></a>: <a href="#Customizing-startup">Customizing startup</a></li>
 <li><a href="#index-ess_002dask_002dfor_002dess_002ddirectory-26"><code>ess-ask-for-ess-directory</code></a>: <a href="#Customizing-startup">Customizing startup</a></li>
 <li><a href="#index-ess_002dbeginning_002dof_002dfunction-160"><code>ess-beginning-of-function</code></a>: <a href="#Other-edit-buffer-commands">Other edit buffer commands</a></li>
 <li><a href="#index-ess_002dchange_002dsp_002dregexp-50"><code>ess-change-sp-regexp</code></a>: <a href="#Completion-details">Completion details</a></li>
-<li><a href="#index-ess_002dcleanup-103"><code>ess-cleanup</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-ess_002dcleanup-193"><code>ess-cleanup</code></a>: <a href="#Help">Help</a></li>
+<li><a href="#index-ess_002dcleanup-103"><code>ess-cleanup</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-ess_002ddelete_002ddump_002dfiles-166"><code>ess-delete-dump-files</code></a>: <a href="#Source-Files">Source Files</a></li>
 <li><a href="#index-ess_002ddescribe_002dhelp_002dmode-183"><code>ess-describe-help-mode</code></a>: <a href="#Help">Help</a></li>
-<li><a href="#index-ess_002ddirectory-27"><code>ess-directory</code></a>: <a href="#Customizing-startup">Customizing startup</a></li>
 <li><a href="#index-ess_002ddirectory-177"><code>ess-directory</code></a>: <a href="#Source-Directories">Source Directories</a></li>
-<li><a href="#index-ess_002ddisplay_002dhelp_002don_002dobject-184"><code>ess-display-help-on-object</code></a>: <a href="#Help">Help</a></li>
+<li><a href="#index-ess_002ddirectory-27"><code>ess-directory</code></a>: <a href="#Customizing-startup">Customizing startup</a></li>
+<li><a href="#index-ess_002ddisplay_002dhelp_002don_002dobject-182"><code>ess-display-help-on-object</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002ddump_002dfilename_002dtemplate-173"><code>ess-dump-filename-template</code></a>: <a href="#Source-Directories">Source Directories</a></li>
 <li><a href="#index-ess_002ddump_002dobject_002dinto_002dedit_002dbuffer-124"><code>ess-dump-object-into-edit-buffer</code></a>: <a href="#Edit-buffer">Edit buffer</a></li>
 <li><a href="#index-ess_002ddump_002dobject_002dinto_002dedit_002dbuffer-117"><code>ess-dump-object-into-edit-buffer</code></a>: <a href="#Other">Other</a></li>
@@ -5240,13 +5264,13 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-ess_002dend_002dof_002dfunction-161"><code>ess-end-of-function</code></a>: <a href="#Other-edit-buffer-commands">Other edit buffer commands</a></li>
 <li><a href="#index-ess_002deval_002dbuffer-148"><code>ess-eval-buffer</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002deval_002dfunction-144"><code>ess-eval-function</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
-<li><a href="#index-ess_002deval_002dfunction_002dand_002dgo-149"><code>ess-eval-function-and-go</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
+<li><a href="#index-ess_002deval_002dfunction_002dand_002dgo-145"><code>ess-eval-function-and-go</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002deval_002dline-142"><code>ess-eval-line</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002deval_002dline_002dand_002dgo-143"><code>ess-eval-line-and-go</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
-<li><a href="#index-ess_002deval_002dline_002dand_002dstep-150"><code>ess-eval-line-and-step</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002deval_002dline_002dand_002dstep-189"><code>ess-eval-line-and-step</code></a>: <a href="#Help">Help</a></li>
-<li><a href="#index-ess_002deval_002dregion-146"><code>ess-eval-region</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
+<li><a href="#index-ess_002deval_002dline_002dand_002dstep-150"><code>ess-eval-line-and-step</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002deval_002dregion-190"><code>ess-eval-region</code></a>: <a href="#Help">Help</a></li>
+<li><a href="#index-ess_002deval_002dregion-146"><code>ess-eval-region</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002deval_002dregion_002dand_002dgo-147"><code>ess-eval-region-and-go</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002deval_002dvisibly_002dp-137"><code>ess-eval-visibly-p</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-ess_002dexecute-92"><code>ess-execute</code></a>: <a href="#Hot-keys">Hot keys</a></li>
@@ -5264,8 +5288,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-ess_002dmode_002dfont_002dlock_002dkeywords-198"><code>ess-mode-font-lock-keywords</code></a>: <a href="#Highlighting">Highlighting</a></li>
 <li><a href="#index-ess_002dparse_002derrors-136"><code>ess-parse-errors</code></a>: <a href="#Error-Checking">Error Checking</a></li>
 <li><a href="#index-ess_002dparse_002derrors-98"><code>ess-parse-errors</code></a>: <a href="#Hot-keys">Hot keys</a></li>
-<li><a href="#index-ess_002dquit-115"><code>ess-quit</code></a>: <a href="#Other">Other</a></li>
 <li><a href="#index-ess_002dquit-192"><code>ess-quit</code></a>: <a href="#Help">Help</a></li>
+<li><a href="#index-ess_002dquit-115"><code>ess-quit</code></a>: <a href="#Other">Other</a></li>
 <li><a href="#index-ess_002dremote-23"><code>ess-remote</code></a>: <a href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a></li>
 <li><a href="#index-ess_002drequest_002da_002dprocess-21"><code>ess-request-a-process</code></a>: <a href="#Multiple-ESS-processes">Multiple ESS processes</a></li>
 <li><a href="#index-ess_002dresynch-51"><code>ess-resynch</code></a>: <a href="#Completion-details">Completion details</a></li>
@@ -5275,8 +5299,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-ess_002dskip_002dto_002dprevious_002dsection-187"><code>ess-skip-to-previous-section</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002dsource_002ddirectory-175"><code>ess-source-directory</code></a>: <a href="#Source-Directories">Source Directories</a></li>
 <li><a href="#index-ess_002dsubmit_002dbug_002dreport-207"><code>ess-submit-bug-report</code></a>: <a href="#Reporting-Bugs">Reporting Bugs</a></li>
-<li><a href="#index-ess_002dswitch_002dto_002dend_002dof_002dESS-163"><code>ess-switch-to-end-of-ESS</code></a>: <a href="#Other-edit-buffer-commands">Other edit buffer commands</a></li>
 <li><a href="#index-ess_002dswitch_002dto_002dend_002dof_002dESS-191"><code>ess-switch-to-end-of-ESS</code></a>: <a href="#Help">Help</a></li>
+<li><a href="#index-ess_002dswitch_002dto_002dend_002dof_002dESS-163"><code>ess-switch-to-end-of-ESS</code></a>: <a href="#Other-edit-buffer-commands">Other edit buffer commands</a></li>
 <li><a href="#index-ess_002dswitch_002dto_002dESS-164"><code>ess-switch-to-ESS</code></a>: <a href="#Other-edit-buffer-commands">Other edit buffer commands</a></li>
 <li><a href="#index-ess_002dtrans_002dfont_002dlock_002dkeywords-199"><code>ess-trans-font-lock-keywords</code></a>: <a href="#Highlighting">Highlighting</a></li>
 <li><a href="#index-ess_002dtranscript_002dclean_002dregion-71"><code>ess-transcript-clean-region</code></a>: <a href="#Saving-transcripts">Saving transcripts</a></li>
@@ -5286,15 +5310,15 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-exit_0028_0029-102"><code>exit()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-inferior_002dess_002dfont_002dlock_002dkeywords-197"><code>inferior-ess-font-lock-keywords</code></a>: <a href="#Highlighting">Highlighting</a></li>
 <li><a href="#index-inferior_002dess_002dprogram-30"><code>inferior-ess-program</code></a>: <a href="#Customizing-startup">Customizing startup</a></li>
-<li><a href="#index-inferior_002dess_002dsend_002dinput-36"><code>inferior-ess-send-input</code></a>: <a href="#Command_002dline-editing">Command-line editing</a></li>
 <li><a href="#index-inferior_002dess_002dsend_002dinput-64"><code>inferior-ess-send-input</code></a>: <a href="#Transcript-resubmit">Transcript resubmit</a></li>
-<li><a href="#index-objects_0028_0029-87"><code>objects()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
+<li><a href="#index-inferior_002dess_002dsend_002dinput-36"><code>inferior-ess-send-input</code></a>: <a href="#Command_002dline-editing">Command-line editing</a></li>
+<li><a href="#index-objects_0028_0029-85"><code>objects()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-printer_0028_0029-201"><code>printer()</code></a>: <a href="#printer">printer</a></li>
 <li><a href="#index-q_0028_0029-101"><code>q()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-S-12"><code>S</code></a>: <a href="#Starting-up">Starting up</a></li>
 <li><a href="#index-S_002belsewhere-25"><code>S+elsewhere</code></a>: <a href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a></li>
+<li><a href="#index-search_0028_0029-89"><code>search()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-search_0028_0029-44"><code>search()</code></a>: <a href="#Completion">Completion</a></li>
-<li><a href="#index-search_0028_0029-91"><code>search()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-source_0028_0029-138"><code>source()</code></a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-source_0028_0029-133"><code>source()</code></a>: <a href="#Loading">Loading</a></li>
 <li><a href="#index-STERM-108"><code>STERM</code></a>: <a href="#Statistical-Process-running-in-ESS_003f">Statistical Process running in ESS?</a></li>
