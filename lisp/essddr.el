@@ -139,7 +139,7 @@ All Rd mode abbrevs start with a grave accent (`).")
   '("Alpha" "Gamma" "R" "S3method" "S4method" "acronym" "alpha" "beta"
     "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dontrun"
     "dontshow" "dots" "email" "emph" "env" "epsilon" "eqn" "file" "ge"
-    "item" "kbd" "lambda" "ldots" "le" "left" "link" "method" "mu"
+    "item" "kbd" "lambda" "ldots" "le" "left" "link" "linkS4class" "method" "mu"
     "option" "pi" "pkg" "right" "sQuote" "samp" "sigma" "strong" "tab"
     "url" "var"))
 
