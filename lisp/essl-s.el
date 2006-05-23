@@ -246,8 +246,14 @@ Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
   (if (file-exists-p outline-file)
       (setq ess-function-outline-file outline-file)))
 
-(defvar ess-S-assign-key "_"
-  "This key will be mapped to insert ess-S-assign '<-'")
+;; Seth's idea; see ess-toggle-S-assign-key below
+(defvar ess-S-assign-key [?\C-=] ;; = "\C-c=" ; old-default:  "_"
+  "This key is mapped to insert `ess-S-assign' (by default '<-'),
+when \\[ess-toggle-S-assign-key] is called.")
+
+(defvar ess-S-assign-key-last nil
+  "This caches the previous value (binding) of `ess-S-assign-key'.  It allows
+ \\[ess-toggle-S-assign-key] to toggle back to the previous definition.")
 
  ; Function Definitions
 
@@ -595,28 +601,34 @@ and one that is well formatted in emacs ess-mode."
     ))
 
 ;; This is by Seth Falcon, modeled after ess-toggle-underscore (see below).
-;; FIXME:  "toggle" should revert to previous behavior, i.e. by default to
-;; -----   smart underscore
 (defun ess-toggle-S-assign-key (force)
-  "Set the key defined in `ess-S-assign-key'"
+  "Possibly bind the key in `ess-S-assign-key' to inserting `ess-S-assign'.
+If `ess-S-assign-key' is \"_\", simply use \\[ess-toggle-underscore].
+Otherwise, unless the prefix argument FORCE is set,
+toggle between the new and the previous assignment."
   (interactive "P")
   (require 'ess-mode)
   (require 'ess-inf)
-  (let ((current-key (lookup-key ess-mode-map ess-S-assign-key))
+  (let ((current-action (lookup-key ess-mode-map ess-S-assign-key))
 	(insert-S-assign #'(lambda() (interactive)
 			     (delete-horizontal-space) (insert ess-S-assign))))
-    (message "[ess-toggle-S-assign-key:] current-key is '%s'" current-key)
-    (if current-key
-	(setq ess-S-previous-assign-key current-key))
-    (if (and current-key
-	     ;; (stringp current-key) (string= current-key ess-S-assign)
-	     (not force))
-	(progn
-	  (define-key ess-mode-map	    ess-S-assign-key nil)
-	  (define-key inferior-ess-mode-map ess-S-assign-key nil))
-      ;; else : "force" or current-key is "nil", i.e. default
-      (define-key ess-mode-map		ess-S-assign-key insert-S-assign)
-      (define-key inferior-ess-mode-map ess-S-assign-key insert-S-assign))))
+    (if (and (stringp ess-S-assign-key)
+	     (string= ess-S-assign-key "_"))
+	(ess-toggle-underscore force)
+      ;; else "do things here"
+      (let* ((current-is-S-assign (eq current-action insert-S-assign))
+	     (new-action (if force insert-S-assign
+			   ;; else "not force" (default):
+			   (if (or current-is-S-assign
+				   (eq ess-S-assign-key-last insert-S-assign))
+			       ess-S-assign-key-last
+			     insert-S-assign))))
+	(message "[ess-toggle-S-assign-key:] current: '%s', new: '%s'"
+		 current-action new-action)
+	(define-key ess-mode-map	  ess-S-assign-key new-action)
+	(define-key inferior-ess-mode-map ess-S-assign-key new-action)
+	(if (not (and force current-is-S-assign))
+	    (setq ess-S-assign-key-last current-action))))))
 
 (defun ess-smart-underscore ()
   "Smart \"_\" key: insert `ess-S-assign', unless in string/comment.
