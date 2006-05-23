@@ -19,7 +19,7 @@ Changes/New Features in 5.3.1:
  particular, the default @code{ess-assign-key} is now @kbd{C-x =}.
 @item @ESS{[R]}: @kbd{M-x R-site-search} is a new (slightly experimental)
  utility similar to R's @code{RSiteSearch(..)} but with the advantage of
- using an emacs-builtin web browser.
+ using Emacs' preferred browser, see @code{browse-url-browser-function}
 @end itemize
 
 Changes/New Features in 5.3.0:
