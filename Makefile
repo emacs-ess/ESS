@@ -46,15 +46,16 @@ dist: VERSION RPM.spec
 	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
-	@echo "** Creating .tgz and .zip files for the XEmacs Package System **"
-	test -f $(ESSDIR)-xemacs-pkg.tgz && rm -rf $(ESSDIR)-xemacs-pkg.tgz || true
-	test -f $(ESSDIR)-xemacs-pkg.zip && rm -rf $(ESSDIR)-xemacs-pkg.zip || true
-	cd $(ESSDIR); mv etc ess; mkdir etc; mv ess etc; mkdir info; \
-	cp doc/info/ess.info info; mv lisp ess; mkdir lisp; mv ess lisp; \
-	$(GNUTAR) hcvofz ../$(ESSDIR)-xemacs-pkg.tgz etc info lisp; \
-	zip -r ../$(ESSDIR)-xemacs-pkg.zip etc info lisp; cd ..
-#	called at the beginning of the process, better for testing this way
-#	$(MAKE) cleanup-dist
+#	Change of plans:  no longer think this is a good idea
+#	Rather, the improved installation docs for xemacs will serve us better
+#	@echo "** Creating .tgz and .zip files for the XEmacs Package System **"
+#	test -f $(ESSDIR)-xemacs-pkg.tgz && rm -rf $(ESSDIR)-xemacs-pkg.tgz || true
+#	test -f $(ESSDIR)-xemacs-pkg.zip && rm -rf $(ESSDIR)-xemacs-pkg.zip || true
+#	cd $(ESSDIR); mv etc ess; mkdir etc; mv ess etc; mkdir info; \
+#	cp doc/info/ess.info info; mv lisp ess; mkdir lisp; mv ess lisp; \
+#	$(GNUTAR) hcvofz ../$(ESSDIR)-xemacs-pkg.tgz etc info lisp; \
+#	zip -r ../$(ESSDIR)-xemacs-pkg.zip etc info lisp; cd ..
+	$(MAKE) cleanup-dist
 	touch $@
 
 .PHONY: cleanup-dist cleanup-rel
@@ -85,7 +86,7 @@ ChangeLog: VERSION
 rel: ChangeLog dist tag
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
 	@echo "** Placing .tgz and .zip files **"
-	cp -p $(ESSDIR)*.tgz $(ESSDIR)*.zip $(UPLOAD_DIR)
+	cp -p $(ESSDIR).tgz $(ESSDIR).zip $(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
 	rm -f $(UPLOAD_DIR)/LATEST.IS.*
 	touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)

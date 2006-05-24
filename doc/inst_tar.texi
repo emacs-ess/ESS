@@ -29,8 +29,8 @@ to @file{ESSDIR}.
 @item
 Decompress/unarchive the files from the disribution.
 @display
-Either, @code{gunzip < ess-VERSION.tar.gz | tar xf -},
-or using GNU tar, @code{tar zxf ess-VERSION.tar.gz}.
+Either, @code{gunzip < ess-VERSION.tgz | tar xf -},
+or using GNU tar, @code{tar zxf ess-VERSION.tgz}.
 @end display
 
 The @code{tar} command will create the subdirectory @file{ess-VERSION} and install
@@ -125,8 +125,12 @@ make install
 @c If @file{dir} does not exist in @code{INFODIR}, then the sample
 @c @file{dir} will be installed.
 
-@emph{Note:} ESS is no longer available as an XEmacs package.  However,
-ESS will work best if the XEmacs sumo tarball (all XEmacs packages combined)
+@emph{Note:} ESS is no longer available as an XEmacs package.  But, you can
+still install ESS into the XEmacs package system by choosing the appropriate
+directory for unpacking as follows:
+            @file{PREFIX/lib/xemacs/site-packages} on unix or 
+            @file{PREFIX\XEmacs\site-packages} on windows
+@emph{Note:} ESS will work best if the XEmacs sumo tarball (all XEmacs packages combined)
 has been installed.  For more information on installing XEmacs packages, see 
 @uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickstart Package Guide}.
 
@@ -160,18 +164,18 @@ directory".
 
 @item
 Retrieve the latest zip file (@file{ess-VERSION.zip}) 
-or compressed tar file @file{ess-VERSION.tar.gz} from
+or compressed tar file @file{ess-VERSION.tgz} from
 @uref{http://ess.r-project.org/downloads/ess, ESS downloads area} and
 store it in the ESS distribution directory.  Be aware that http browsers
 on Windows frequently change the "." and "-" characters in filenames to
 other punctuation.  Please change the names back to their original form.
 
 @item
-Extract all the files from @file{ess-VERSION.zip} or @file{ess-VERSION.tar.gz} 
+Extract all the files from @file{ess-VERSION.zip} or @file{ess-VERSION.tgz} 
 into the ESS
 distribution directory as @file{c:\emacs\ess-VERSION\}.
 You may use the commands @file{unzip} on the zip archive or
-@file{gunzip} and @file{tar} on the tar.gz file.
+@file{gunzip} and @file{tar} on the tgz file.
 It is possible to unpack the zip archive in Windows Explorer,
 by double clicking on the folder; you should
 then see a new folder called @file{ess-VERSION}.  Drag that folder into
