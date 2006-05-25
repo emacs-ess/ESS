@@ -710,6 +710,7 @@ current buffer if nil."
     "\\|WARNING: Length of character variable has already been set."
     "\\|WARNING: Not all variables in the list "
     "\\|WARNING: RUN statement ignored due to previous errors."
+    "\\|WARNING: Values exist outside the axis range"
     "\\|Bus Error In Task\\|Segmentation Violation In Task"))
 	(ess-sas-save-point nil) (ess-sas-pop-mark nil))
 

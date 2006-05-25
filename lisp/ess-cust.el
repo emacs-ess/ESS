@@ -1361,7 +1361,7 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-R-message-prefixes
   '("Error:" "Error in"
     "Warning:" "Warning in"
-    "Warning messages?"))
+    "Warning messages"))
 (defvar ess-S-message-prefixes
   (append ess-R-message-prefixes
 	  '("Syntax error:" "Dumped")))
