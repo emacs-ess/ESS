@@ -238,26 +238,23 @@ in the file COPYING in the same directory as this file for more details.
 ================
 
 Changes/New Features in 5.3.1:
-   * There are now 3 ways to install ESS for XEmacs
-       1. as an XEmacs package by uncommenting the XEmacs part of
-               Section 1 of `Makeconf' and then `make install'
+   * See the docs for 2 ways to install ESS for XEmacs
+       1. by uncommenting the XEmacs part of             Section 1 of
+          `Makeconf' and performing `make install'
 
-       2. as an Emacs installation by unpacking either
-          `ess-5.3.1.tgz' or `ess-5.3.1.zip' into
+       2. by unpacking either             `ess-5.3.1.tgz' or
+          `ess-5.3.1.zip' into
           `PREFIX/lib/xemacs/site-packages' on unix or
-          `PREFIX\XEmacs\Packages\site-packages' on windows
+          `PREFIX\XEmacs\site-packages' on windows
 
-       3. and now by unpacking the new `ess-5.3.1-xemacs-pkg.tgz' or
-                  `ess-5.3.1-xemacs-pkg.zip' into
-          `PREFIX/lib/xemacs/xemacs-packages' on unix or
-          `PREFIX\XEmacs\Packages\xemacs-packages' on windows
+   * ESS[R]: fixed bugs so that Rterm.exe can be found by XEmacs
 
    * ESS[S]: `ess-toggle-S-assign-key' is slightly changed; in
      particular, the default `ess-assign-key' is now `C-x ='.
 
    * ESS[R]: `M-x R-site-search' is a new (slightly experimental)
      utility similar to R's `RSiteSearch(..)' but with the advantage of
-     using an emacs-builtin web browser.
+     using Emacs' preferred browser, see `browse-url-browser-function'
 
    Changes/New Features in 5.3.0:
    * ESS[BUGS]: sanely re-format statistical output, `.bog', from

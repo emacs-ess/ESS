@@ -56,26 +56,23 @@ shell, simply type `M-x S+6-msdos RET'.
 ================
 
 Changes/New Features in 5.3.1:
-   * There are now 3 ways to install ESS for XEmacs
-       1. as an XEmacs package by uncommenting the XEmacs part of
-               Section 1 of `Makeconf' and then `make install'
+   * See the docs for 2 ways to install ESS for XEmacs
+       1. by uncommenting the XEmacs part of             Section 1 of
+          `Makeconf' and performing `make install'
 
-       2. as an Emacs installation by unpacking either
-          `ess-5.3.1.tgz' or `ess-5.3.1.zip' into
+       2. by unpacking either             `ess-5.3.1.tgz' or
+          `ess-5.3.1.zip' into
           `PREFIX/lib/xemacs/site-packages' on unix or
-          `PREFIX\XEmacs\Packages\site-packages' on windows
+          `PREFIX\XEmacs\site-packages' on windows
 
-       3. and now by unpacking the new `ess-5.3.1-xemacs-pkg.tgz' or
-                  `ess-5.3.1-xemacs-pkg.zip' into
-          `PREFIX/lib/xemacs/xemacs-packages' on unix or
-          `PREFIX\XEmacs\Packages\xemacs-packages' on windows
+   * ESS[R]: fixed bugs so that Rterm.exe can be found by XEmacs
 
    * ESS[S]: `ess-toggle-S-assign-key' is slightly changed; in
      particular, the default `ess-assign-key' is now `C-x ='.
 
    * ESS[R]: `M-x R-site-search' is a new (slightly experimental)
      utility similar to R's `RSiteSearch(..)' but with the advantage of
-     using an emacs-builtin web browser.
+     using Emacs' preferred browser, see `browse-url-browser-function'
 
    Changes/New Features in 5.3.0:
    * ESS[BUGS]: sanely re-format statistical output, `.bog', from
@@ -773,8 +770,8 @@ Microsoft Windows installation::.
      (http://ess.r-project.org/downloads/ess) to `ESSDIR'.
 
   3. Decompress/unarchive the files from the disribution.
-          Either, `gunzip < ess-VERSION.tar.gz | tar xf -',
-          or using GNU tar, `tar zxf ess-VERSION.tar.gz'.
+          Either, `gunzip < ess-VERSION.tgz | tar xf -',
+          or using GNU tar, `tar zxf ess-VERSION.tgz'.
 
      The `tar' command will create the subdirectory `ess-VERSION' and
      install the files there.
@@ -815,10 +812,14 @@ Microsoft Windows installation::.
      When that completes successfully, install the compiled files:
           make install
 
-     _Note:_ ESS is no longer available as an XEmacs package.  However,
-     ESS will work best if the XEmacs sumo tarball (all XEmacs packages
-     combined) has been installed.  For more information on installing
-     XEmacs packages, see Quickstart Package Guide
+     _Note:_ ESS is no longer available as an XEmacs package.  But, you
+     can still install ESS into the XEmacs package system by choosing
+     the appropriate directory for unpacking as follows:
+     `PREFIX/lib/xemacs/site-packages' on unix or
+     `PREFIX\XEmacs\site-packages' on windows _Note:_ ESS will work
+     best if the XEmacs sumo tarball (all XEmacs packages combined) has
+     been installed.  For more information on installing XEmacs
+     packages, see Quickstart Package Guide
      (http://www.xemacs.org/Documentation/packageGuide.html).
 
 
@@ -834,20 +835,19 @@ separate instructions above for UNIX *Note Unix installation::.
      directory".
 
   2. Retrieve the latest zip file (`ess-VERSION.zip') or compressed tar
-     file `ess-VERSION.tar.gz' from ESS downloads area
+     file `ess-VERSION.tgz' from ESS downloads area
      (http://ess.r-project.org/downloads/ess) and store it in the ESS
      distribution directory.  Be aware that http browsers on Windows
      frequently change the "." and "-" characters in filenames to other
      punctuation.  Please change the names back to their original form.
 
-  3. Extract all the files from `ess-VERSION.zip' or
-     `ess-VERSION.tar.gz' into the ESS distribution directory as
-     `c:\emacs\ess-VERSION\'.  You may use the commands `unzip' on the
-     zip archive or `gunzip' and `tar' on the tar.gz file.  It is
-     possible to unpack the zip archive in Windows Explorer, by double
-     clicking on the folder; you should then see a new folder called
-     `ess-VERSION'.  Drag that folder into your ESS distribution
-     directory.
+  3. Extract all the files from `ess-VERSION.zip' or `ess-VERSION.tgz'
+     into the ESS distribution directory as `c:\emacs\ess-VERSION\'.
+     You may use the commands `unzip' on the zip archive or `gunzip'
+     and `tar' on the tgz file.  It is possible to unpack the zip
+     archive in Windows Explorer, by double clicking on the folder; you
+     should then see a new folder called `ess-VERSION'.  Drag that
+     folder into your ESS distribution directory.
 
   4. Add the line
           (load "C:/emacs/ess-VERSION/lisp/ess-site")

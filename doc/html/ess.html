@@ -348,26 +348,21 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
 <p>Changes/New Features in 5.3.1:
      <ul>
-<li>There are now 3 ways to install <acronym>ESS</acronym> for XEmacs
+<li>See the docs for 2 ways to install <acronym>ESS</acronym> for XEmacs
           <ol type=1 start=1>
-      <li>as an XEmacs package by uncommenting the XEmacs part of
-            Section 1 of <samp><span class="file">Makeconf</span></samp> and then <code>make install</code>
-      <li>as an Emacs installation by unpacking either
+      <li>by uncommenting the XEmacs part of
+            Section 1 of <samp><span class="file">Makeconf</span></samp> and performing <code>make install</code>
+      <li>by unpacking either
             <samp><span class="file">ess-5.3.1.tgz</span></samp> or <samp><span class="file">ess-5.3.1.zip</span></samp> into
             <samp><span class="file">PREFIX/lib/xemacs/site-packages</span></samp> on unix or
-            <samp><span class="file">PREFIX\XEmacs\Packages\site-packages</span></samp> on windows
-<!-- @file{PREFIX\\XEmacs\\Packages\\site-packages} on windows -->
-      <li>and now by unpacking the new <samp><span class="file">ess-5.3.1-xemacs-pkg.tgz</span></samp> or
-            <samp><span class="file">ess-5.3.1-xemacs-pkg.zip</span></samp> into
-            <samp><span class="file">PREFIX/lib/xemacs/xemacs-packages</span></samp> on unix or
-            <samp><span class="file">PREFIX\XEmacs\Packages\xemacs-packages</span></samp> on windows
-<!-- @file{PREFIX\\XEmacs\\Packages\\xemacs-packages} on windows -->
+            <samp><span class="file">PREFIX\XEmacs\site-packages</span></samp> on windows
           </ol>
+<li><acronym>ESS[R]</acronym>: fixed bugs so that Rterm.exe can be found by XEmacs
 <li><acronym>ESS[S]</acronym>: <kbd>ess-toggle-S-assign-key</kbd> is slightly changed; in
  particular, the default <code>ess-assign-key</code> is now <kbd>C-x =</kbd>. 
 <li><acronym>ESS[R]</acronym>: <kbd>M-x R-site-search</kbd> is a new (slightly experimental)
  utility similar to R's <code>RSiteSearch(..)</code> but with the advantage of
- using an emacs-builtin web browser. 
+ using Emacs' preferred browser, see <code>browse-url-browser-function</code>
 </ul>
 
    <p>Changes/New Features in 5.3.0:
@@ -1088,8 +1083,8 @@ This directory will be referred to below as <samp><span class="file">ESSDIR</spa
 to <samp><span class="file">ESSDIR</span></samp>.
 
      <li>Decompress/unarchive the files from the disribution.
-     <pre class="display">          Either, <code>gunzip &lt; ess-VERSION.tar.gz | tar xf -</code>,
-          or using GNU tar, <code>tar zxf ess-VERSION.tar.gz</code>.
+     <pre class="display">          Either, <code>gunzip &lt; ess-VERSION.tgz | tar xf -</code>,
+          or using GNU tar, <code>tar zxf ess-VERSION.tgz</code>.
      </pre>
      <p>The <code>tar</code> command will create the subdirectory <samp><span class="file">ess-VERSION</span></samp> and install
 the files there.
@@ -1168,8 +1163,12 @@ using XEmacs, then see the XEmacs subsection in Section 1 of <samp><span class="
 <!-- by @code{INFODIR}: see the sample @file{dir} in ESSDIR/ess-VERSION/doc/info. -->
 <!-- If @file{dir} does not exist in @code{INFODIR}, then the sample -->
 <!-- @file{dir} will be installed. -->
-<p><em>Note:</em> ESS is no longer available as an XEmacs package.  However,
-ESS will work best if the XEmacs sumo tarball (all XEmacs packages combined)
+<p><em>Note:</em> ESS is no longer available as an XEmacs package.  But, you can
+still install ESS into the XEmacs package system by choosing the appropriate
+directory for unpacking as follows:
+            <samp><span class="file">PREFIX/lib/xemacs/site-packages</span></samp> on unix or
+            <samp><span class="file">PREFIX\XEmacs\site-packages</span></samp> on windows
+<em>Note:</em> ESS will work best if the XEmacs sumo tarball (all XEmacs packages combined)
 has been installed.  For more information on installing XEmacs packages, see
 <a href="http://www.xemacs.org/Documentation/packageGuide.html">Quickstart Package Guide</a>.
 
@@ -1206,17 +1205,17 @@ This directory will be referred to below as "the ESS distribution
 directory".
 
      <li>Retrieve the latest zip file (<samp><span class="file">ess-VERSION.zip</span></samp>)
-or compressed tar file <samp><span class="file">ess-VERSION.tar.gz</span></samp> from
+or compressed tar file <samp><span class="file">ess-VERSION.tgz</span></samp> from
 <a href="http://ess.r-project.org/downloads/ess">ESS downloads area</a> and
 store it in the ESS distribution directory.  Be aware that http browsers
 on Windows frequently change the "." and "-" characters in filenames to
 other punctuation.  Please change the names back to their original form.
 
-     <li>Extract all the files from <samp><span class="file">ess-VERSION.zip</span></samp> or <samp><span class="file">ess-VERSION.tar.gz</span></samp>
+     <li>Extract all the files from <samp><span class="file">ess-VERSION.zip</span></samp> or <samp><span class="file">ess-VERSION.tgz</span></samp>
 into the ESS
 distribution directory as <samp><span class="file">c:\emacs\ess-VERSION\</span></samp>. 
 You may use the commands <samp><span class="file">unzip</span></samp> on the zip archive or
-<samp><span class="file">gunzip</span></samp> and <samp><span class="file">tar</span></samp> on the tar.gz file. 
+<samp><span class="file">gunzip</span></samp> and <samp><span class="file">tar</span></samp> on the tgz file. 
 It is possible to unpack the zip archive in Windows Explorer,
 by double clicking on the folder; you should
 then see a new folder called <samp><span class="file">ess-VERSION</span></samp>.  Drag that folder into
