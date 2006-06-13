@@ -58,6 +58,7 @@ all: $(ELC)
 install: $(ELC)
 	-$(INSTALLDIR) $(LISPDIR)
 	$(INSTALL) ChangeLog *.elc $(LISPDIR)
+	export J; for I in *.elc; do J=$$I; $(INSTALL) `basename $$J .elc`.el $(LISPDIR); done
 #	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
 
 dist: ess-cust.el
