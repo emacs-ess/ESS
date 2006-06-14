@@ -260,7 +260,8 @@ prompt from those lines that remain.  Prefix argument means to use
     (save-excursion
       (if do-toggle (toggle-read-only 0))
       (save-restriction
-	(deactivate-mark)
+	(unless 'xemacs-p ;; does not exist in xemacs:
+	  (deactivate-mark))
 	(narrow-to-region beg end)
 	(goto-char (point-min))
 	(delete-non-matching-lines (concat "^" inferior-ess-prompt))
