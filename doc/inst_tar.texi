@@ -15,6 +15,14 @@ For Microsoft Windows Installation please skip to the
 @item
 @code{cd} to a directory where you want to install ESS, creating it if necessary.
 This directory will be referred to below as @file{ESSDIR}.
+@emph{Note for XEmacs:} ESS is no longer available as an XEmacs package.  But, you 
+can still install ESS into the XEmacs package system by choosing the appropriate
+directory for ESSDIR:  @file{PREFIX/lib/xemacs/site-packages} on Unix or 
+@file{PREFIX\XEmacs\site-packages} on Windows.
+ESS requires that the XEmacs sumo tarball (all XEmacs packages combined) also
+be installed.  For information on installing XEmacs packages, follow this link: 
+@uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickstart Package Guide}.
+
 @comment It will contain,
 @comment at the end, the tar file @file{ess-VERSION.tar.gz}, and a directory for
 @comment the ESS source, which will be termed "the ESS-VERSION source directory".
@@ -29,8 +37,8 @@ to @file{ESSDIR}.
 @item
 Decompress/unarchive the files from the disribution.
 @display
-Either, @code{gunzip < ess-VERSION.tgz | tar xf -},
-or using GNU tar, @code{tar zxf ess-VERSION.tgz}.
+If you are using GNU tar, @code{tar zxf ess-VERSION.tgz}.
+Otherwise, @code{gunzip < ess-VERSION.tgz | tar xf -},
 @end display
 
 The @code{tar} command will create the subdirectory @file{ess-VERSION} and install
@@ -52,29 +60,35 @@ comments section of that file.
 @comment may need to uncomment corresponding lines in @file{ESSDIR/ess-VERSION/lisp/ess-site.el}.
 
 @item
- Add the line
+If you are using GNU Emacs add the line
 @example
 (load "ESSDIR/ess-VERSION/lisp/ess-site")
 @end example
-to your user or system installation file (GNU Emacs uses
-@file{$HOME/.emacs} and XEmacs uses @file{$HOME/.xemacs/init.el} for the
-user initialization file.  GNU Emacs uses @file{default.el} or
-@file{site-init.el} and XEmacs uses @file{site-start.el} for the system
-installation file).
-
-Alternatively, if @file{ess-site.el} is in your current @code{load-path}, then:
+to @file{$HOME/.emacs}.  For XEmacs, if you followed the XEmacs package system
+installation advice, add the line
 @example
 (require 'ess-site)
 @end example
-to configure emacs for ESS.
+to @file{$HOME/.xemacs/init.el}.  Otherwise, for XEmacs, add the line
+@example
+(load "ESSDIR/ess-VERSION/lisp/ess-site")
+@end example
+to @file{$HOME/.xemacs/init.el}.  
+  
+@comment GNU Emacs uses @file{default.el} or
+@comment @file{site-init.el} and XEmacs uses @file{site-start.el} for the system
+@comment installation file).
+@comment Alternatively, if @file{ess-site.el} is in your current @code{load-path}, then:
+@comment @example
+@comment (require 'ess-site)
+@comment @end example
+@comment to configure emacs for ESS.
 
 @item
-That's it!  If you are installing just a local copy of ESS for yourself,
-ESS is now ready to be used.  (The remaining step below is for advanced
-installation.)  To edit statistical programs, load the files with the
-requiste extensions (@file{.sas} for SAS, @file{.S} for S-PLUS,
-@file{.R} for R, and @file{.lsp} for XLispStat).  To start a statistical
-process within emacs, such as R, type @code{M-x R}.
+That's it!  ESS is now ready to use.  (The remaining step below is only for a
+custom installation.)  To edit statistical programs, just open files with the
+requisite extensions (@file{.R} for R, @file{.sas} for SAS, @file{.bug} for BUGS,
+etc.).  To start a statistical process within emacs, such as R, type @code{M-x R}.
 
 @c @item
 @c (OPTIONAL) If you are running S-PLUS or R, you might consider
@@ -106,7 +120,7 @@ process within emacs, such as R, type @code{M-x R}.
 If you want to place the compiled files in other locations edit the
 @code{LISPDIR}, @code{INFODIR} and @code{ETCDIR} entries in Section 1 of
 @file{Makeconf} in the @file{ESSDIR/ess-VERSION} directory (if you are
-using XEmacs, then see the XEmacs subsection in Section 1 of @file{Makeconf}).
+using XEmacs, then uncomment the XEmacs subsection in Section 1).
 
 You can compile those files by:
 @example
@@ -125,14 +139,6 @@ make install
 @c If @file{dir} does not exist in @code{INFODIR}, then the sample
 @c @file{dir} will be installed.
 
-@emph{Note:} ESS is no longer available as an XEmacs package.  But, you can
-still install ESS into the XEmacs package system by choosing the appropriate
-directory for unpacking as follows:
-            @file{PREFIX/lib/xemacs/site-packages} on unix or 
-            @file{PREFIX\XEmacs\site-packages} on windows
-@emph{Note:} ESS will work best if the XEmacs sumo tarball (all XEmacs packages combined)
-has been installed.  For more information on installing XEmacs packages, see 
-@uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickstart Package Guide}.
 
 @comment An alternative, if you are running XEmacs and have access to the
 @comment XEmacs system directories, would be to place the directory in the
