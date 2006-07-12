@@ -15,10 +15,9 @@ For Microsoft Windows Installation please skip to the
 @item
 @code{cd} to a directory where you want to install ESS, creating it if necessary.
 This directory will be referred to below as @file{ESSDIR}.
-@emph{Note for XEmacs:} ESS is no longer available as an XEmacs package.  But, you 
-can still install ESS into the XEmacs package system by choosing the appropriate
-directory for ESSDIR:  @file{PREFIX/lib/xemacs/site-packages} on Unix or 
-@file{PREFIX\XEmacs\site-packages} on Windows.
+@emph{Note for XEmacs packages:} ESS is no longer available as an XEmacs package.  
+But, you can still install ESS into the XEmacs package system by choosing
+@file{ESSDIR}=@file{PREFIX/lib/xemacs/site-packages}.
 ESS requires that the XEmacs sumo tarball (all XEmacs packages combined) also
 be installed.  For information on installing XEmacs packages, follow this link: 
 @uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickstart Package Guide}.
@@ -165,8 +164,12 @@ For @b{Microsoft Windows installation}, please follow the next steps:
 @code{cd} to a directory where you keep emacs lisp files, or create a
 new directory (for example, @file{c:\emacs\}) to hold the distribution.
 This directory will be referred to below as "the ESS distribution
-directory".  
-
+directory".  @emph{Note for XEmacs packages:} ESS is no longer available as an 
+XEmacs package. But, you can still install ESS into the XEmacs package system by 
+choosing @file{ESSDIR}=@file{PREFIX\XEmacs\site-packages}.
+ESS requires that the XEmacs sumo tarball (all XEmacs packages combined) also
+be installed.  For information on installing XEmacs packages, follow this link: 
+@uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickstart Package Guide}.
 
 @item
 Retrieve the latest zip file (@file{ess-VERSION.zip}) 
@@ -187,19 +190,38 @@ by double clicking on the folder; you should
 then see a new folder called @file{ess-VERSION}.  Drag that folder into
 your ESS distribution directory.
 
+@comment @item
+@comment Add the line
+@comment @example
+@comment (load "C:/emacs/ess-VERSION/lisp/ess-site")
+@comment @end example
+@comment to your emacs initialization file.  (GNU Emacs uses the filename
+@comment @file{~/.emacs} and XEmacs uses the filename
+@comment @file{~/.xemacs/init.el} for the initialization file.  The tilde is
+@comment recognised by emacs as your HOME directory, i.e. the value of your HOME
+@comment environment variable.)  Replace
+@comment @code{VERSION} above with the version number of ESS.  Remember to use
+@comment forwardslashes @code{/}, rather than backslashes @code{\}, in your filename
+@comment inside emacs code files.
+
 @item
-Add the line
+If you are using GNU Emacs add the line
 @example
-(load "C:/emacs/ess-VERSION/lisp/ess-site")
+(load "ESSDIR/ess-VERSION/lisp/ess-site")
 @end example
-to your emacs initialization file.  (GNU Emacs uses the filename
-@file{~/.emacs} and XEmacs uses the filename
-@file{~/.xemacs/init.el} for the initialization file.  The tilde is
-recognised by emacs as your HOME directory, i.e. the value of your HOME
-environment variable.)  Replace
-@code{VERSION} above with the version number of ESS.  Remember to use
-forwardslashes @code{/}, rather than backslashes @code{\}, in your filename
-inside emacs code files.
+to @file{%HOME%/.emacs}.  For XEmacs, if you followed the XEmacs package system
+installation advice, add the line
+@example
+(require 'ess-site)
+@end example
+to @file{%HOME%/.xemacs/init.el}.  Otherwise, for XEmacs, add the line
+@example
+(load "ESSDIR/ess-VERSION/lisp/ess-site")
+@end example
+to @file{%HOME%/.xemacs/init.el}.  
+@emph{Note:} Both GNU Emacs and XEmacs require that the HOME environment
+variable be set on your system, otherwise, your initialization file will
+not be utilized, and therefore, ESS will not work.
 
 After saving your initialization file, ESS is now installed.  Start a
 new emacs and you should be ready to use ESS.  For example, to edit
