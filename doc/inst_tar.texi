@@ -1,11 +1,4 @@
 
-We now discuss installation, which might happen under Unix or
-Microsoft Windows.  First, we discuss Unix installation.
-@xref{Unix installation}.
-
-For Microsoft Windows Installation please skip to the
-@xref{Microsoft Windows installation}.
-
 @node Unix installation, Microsoft Windows installation, , Installation
 @comment  node-name,  next,  previous,  up
 @section Unix installation
@@ -13,8 +6,12 @@ For Microsoft Windows Installation please skip to the
 @enumerate
 
 @item
-@code{cd} to a directory where you want to install ESS, creating it if necessary.
-This directory will be referred to below as @file{ESSDIR}.
+
+@code{cd} to a directory where you keep emacs lisp files, or create a
+new directory (for example, @file{$HOME/emacs}) to hold the distribution.
+This directory will be referred to below as "the ESS distribution
+directory".  
+
 @emph{Note for XEmacs packages:} ESS is no longer available as an XEmacs package.  
 But, you can still install ESS into the XEmacs package system by choosing
 @file{ESSDIR}=@file{PREFIX/lib/xemacs/site-packages}.
@@ -34,7 +31,7 @@ Retrieve the latest version from
 to @file{ESSDIR}.
 
 @item
-Decompress/unarchive the files from the disribution.
+Extract the files from the disribution.
 @display
 If you are using GNU tar, @code{tar zxf ess-VERSION.tgz}.
 Otherwise, @code{gunzip < ess-VERSION.tgz | tar xf -},
@@ -155,8 +152,7 @@ make install
 @comment  node-name,  next,  previous,  up
 @section Microsoft Windows installation
 
-For @b{Microsoft Windows installation}, please follow the next steps:
-(see separate instructions above for UNIX @xref{Unix installation}.
+For @b{Microsoft Windows installation}, please follow the next steps.
 
 @enumerate
 
@@ -164,31 +160,30 @@ For @b{Microsoft Windows installation}, please follow the next steps:
 @code{cd} to a directory where you keep emacs lisp files, or create a
 new directory (for example, @file{c:\emacs\}) to hold the distribution.
 This directory will be referred to below as "the ESS distribution
-directory".  @emph{Note for XEmacs packages:} ESS is no longer available as an 
-XEmacs package. But, you can still install ESS into the XEmacs package system by 
-choosing @file{ESSDIR}=@file{PREFIX\XEmacs\site-packages}.
-ESS requires that the XEmacs sumo tarball (all XEmacs packages combined) also
-be installed.  For information on installing XEmacs packages, follow this link: 
-@uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickstart Package Guide}.
+directory".  
+
+@emph{Note for XEmacs packages:} ESS is no longer available as an XEmacs
+package. But, you can still install ESS into the XEmacs package system
+by choosing @file{ESSDIR}=@file{PREFIX\XEmacs\site-packages}.  ESS
+requires that the XEmacs sumo tarball (all XEmacs packages combined)
+also be installed.  For information on installing XEmacs packages,
+follow this link:
+@uref{http://www.xemacs.org/Documentation/packageGuide.html, Quickstart
+Package Guide}.
 
 @item
-Retrieve the latest zip file (@file{ess-VERSION.zip}) 
-or compressed tar file @file{ess-VERSION.tgz} from
+Retrieve the latest zip file (@file{ess-VERSION.zip}) from
 @uref{http://ess.r-project.org/downloads/ess, ESS downloads area} and
 store it in the ESS distribution directory.  Be aware that http browsers
 on Windows frequently change the "." and "-" characters in filenames to
 other punctuation.  Please change the names back to their original form.
 
 @item
-Extract all the files from @file{ess-VERSION.zip} or @file{ess-VERSION.tgz} 
-into the ESS
-distribution directory as @file{c:\emacs\ess-VERSION\}.
-You may use the commands @file{unzip} on the zip archive or
-@file{gunzip} and @file{tar} on the tgz file.
-It is possible to unpack the zip archive in Windows Explorer,
-by double clicking on the folder; you should
-then see a new folder called @file{ess-VERSION}.  Drag that folder into
-your ESS distribution directory.
+Extract all the files from @file{ess-VERSION.zip} into the ESS
+distribution directory as @file{c:\emacs\ess-VERSION\}.  (It is possible
+to unpack the zip archive in Windows Explorer by double clicking on the
+folder; you should then see a new folder called @file{ess-VERSION}.
+Drag that folder into your ESS distribution directory.)
 
 @comment @item
 @comment Add the line
