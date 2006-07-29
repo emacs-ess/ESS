@@ -20,6 +20,6 @@
 @uref{mailto:rsparapa@@mcw.edu, Rodney A. Sparapani}
 @c --------
 @item
-@c @uref{http://www.anc.ed.ac.uk/~stephen,Stephen Eglen}
+@c @uref{http://www.damtp.cam.ac.uk/user/eglen,Stephen Eglen}
 @uref{mailto:stephen@@gnu.org, Stephen Eglen}
 @end itemize
