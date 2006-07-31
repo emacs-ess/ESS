@@ -3,12 +3,12 @@
 @cindex credits
 
 The ESS environment is built on the open-source projects of many
-contributors, dating back over 15 years.  Doug Bates and Ed Kademan
-wrote S-mode in 1989 to edit S and Splus files in GNU Emacs.  Frank
-Ritter and Mike Meyer added features, creating version 2.  Meyer and
-David Smith made further contributions, creating version 3.  For
-version 4, David Smith provided significant enhancements to allow for
-powerful process interaction.
+contributors, dating back to 1989 where Doug Bates and Ed Kademan wrote
+S-mode to edit S and Splus files in GNU Emacs.  Frank Ritter and Mike
+Meyer added features, creating version 2.  Meyer and David Smith made
+further contributions, creating version 3.  For version 4, David Smith
+provided significant enhancements to allow for powerful process
+interaction.
 
 John Sall wrote GNU Emacs macros for SAS source code around 1990.  Tom
 Cook added functions to submit jobs, review listing and log files, and
@@ -54,8 +54,8 @@ useful comments and suggestions, and for maintaining the ESS mailing
 lists.
 
 @item
-Thanks to Frank Ritter for updates from the previous version, the menu
-code, and invaluable comments on the manual.
+Thanks to Frank Ritter for updates, particularly the menu code, and
+invaluable comments on the manual.
 
 @item
 Thanks to Ken'ichi Shibayama for his excellent indenting code, and many
