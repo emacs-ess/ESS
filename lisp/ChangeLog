@@ -1,3 +1,7 @@
+2006-07-31  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essddr.el (Rd-mode-map): add C-c C-c (as in ess-mode)
+
 2006-05-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r.el (Snw-mode): synonym for Rnw-mode

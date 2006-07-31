@@ -185,10 +185,12 @@ All Rd mode abbrevs start with a grave accent (`).")
     (define-key map "\C-c\C-f" 'Rd-font)
     ;;  ^C^F ^E : \emph{ . }
     ;;  ^C^F ^C : \code{ . }
-    ;;  ^C^F ^L : \code{\link{ . }}
+    ;;  ^C^F ^L : \link{ . }
+    ;;  ^C^F  L : \code{\link{ . }}  etc
     (define-key map "\C-c\C-s" 'Rd-mode-insert-section)
     (define-key map "\C-c\C-n" 'ess-eval-line-and-step)
     (define-key map "\C-c\C-r" 'ess-eval-region)
+    (define-key map "\C-c\C-c" 'ess-eval-function-or-paragraph-and-step)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-w" 'ess-switch-process); is on C-c C-s in ess-mode..
     (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
