@@ -84,7 +84,9 @@ Users whose default is not 'sh, but are accessing a remote machine with
 ;; The "backbugs" scripts can be found in ess-etc-directory, so maybe we
 ;; can use ess-etc-directory here too.
 (defcustom ess-bugs-batch-command
-    (if (equal ess-bugs-batch-version "0.6") "backbugs" "backbug5")
+    (if (equal ess-bugs-batch-version "0.6") "backbugs" 
+      (if (equal ess-bugs-batch-version "0.5") "backbug5"
+        (if (equal ess-bugs-batch-version "jags") "jags" "backbugs")))
   "*ESS[BUGS]: The name of the command to run BUGS in batch mode.
 
 Set to the name of the batch BUGS script that comes with ESS or
@@ -109,7 +111,7 @@ add path to the command name."
     :type  'string
 )
 
-(defcustom ess-bugs-default-bins "32"
+(defcustom ess-bugs-default-bins (if (equal ess-bugs-batch-version "0.6") "32" " ")
 "ESS[BUGS]: Number of bins to use in the Griddy algorithm (Metropolis sampling)."
     :group 'ess-bugs
     :type  'string
@@ -212,28 +214,31 @@ add path to the command name."
 	;; .bug files
 	(cons "#.*\n"			font-lock-comment-face)
 
-	(cons "^[ \t]*\\(model\\|const\\|data\\|inits\\|var\\)\\>"
+	(cons "^[ \t]*\\(const\\|data\\|in\\(it\\(ialize\\|s\\)\\)?\\|model\\|var\\)\\>"
 					font-lock-keyword-face)
 
-	(cons "\\<in[ \t]+[1-9]\\>"	font-lock-keyword-face)
+	;;(cons "\\<in[ \t]+[1-9]\\>"	font-lock-keyword-face)
 
-	(cons (concat "\\<d\\(bern\\|beta\\|bin\\|cat\\|chisq\\|"
-		"dexp\\|dirch\\|exp\\|gamma\\|lnorm\\|logis\\|"
-		"mnorm\\|multi\\|negbin\\|norm\\|par\\|pois\\|"
+	(cons (concat "\\<d\\(bern\\|beta\\|bin\\|cat\\|chisqr\\|"
+		"dexp\\|dirch\\|exp\\|gamma\\|interval\\|lnorm\\|logis\\|"
+		"mnorm\\|multi\\|negbin\\|norm\\|par\\|pois\\|sum\\|"
 		"t\\|unif\\|weib\\|wish\\)[ \t\n]*(")
 					font-lock-reference-face)
 
 	(cons (concat "\\<\\(for\\|cloglog\\|equals\\|exp\\|inprod\\|"
 		"inverse\\|log\\(det\\|fact\\|gam\\|it\\)?\\|max\\|"
-		"mean\\|min\\|phi\\|pow\\|probit\\|sd\\|sqrt\\|"
-		"step\\|sum\\|I\\)[ \t\n]*(")
+		"mean\\|min\\|phi\\|pow\\|probit\\|sd\\|sort\\|sqrt\\|"
+		"step\\|sum\\|I\\|T\\)[ \t\n]*(")
 					font-lock-function-name-face)
 
 	;; .bmd files
-	(cons (concat "\\<\\(clear\\|checkpoint\\|compile\\|data\\|"
+	(cons (concat "\\<\\(by\\|clear\\|chain\\|checkpoint\\|compile\\|data\\|"
 		"diag\\|help\\|inits\\|iter\\|model\\|monitor\\|"
-		"out\\|q\\|save\\|stats\\|update\\)[ \t\n]*(")
+		"out\\|q\\|save\\|stats\\|stem\\|thin\\|update\\)[ \t\n]*(")
 					font-lock-function-name-face)
+
+	(cons "^[ \t]*\\(clear\\|coda\\|exit\\|monitor\\|parameters\\|seed\\|set\\|to\\)\\>"
+					font-lock-keyword-face)
 
 	;; .dat files
 	;;(cons (concat "\\<\\(c\\|list\\)[ \t\n]*(")
