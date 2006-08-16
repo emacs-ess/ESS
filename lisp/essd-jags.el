@@ -59,7 +59,7 @@
 
 	(cons (concat "\\<\\(for\\|cloglog\\|equals\\|exp\\|inprod\\|"
 		"inverse\\|log\\(det\\|fact\\|gam\\|it\\)?\\|max\\|"
-		"mean\\|min\\|phi\\|pow\\|probit\\|sd\\|sqrt\\|"
+		"mean\\|min\\|phi\\|pow\\|probit\\|sd\\|sort\\|sqrt\\|"
 		"step\\|sum\\|T\\)[ \t\n]*(")
 					font-lock-function-name-face)
 
@@ -146,9 +146,6 @@
 	(if (equal 0 (buffer-size)) (ess-bugs-switch-to-suffix ".bug")
 	    (save-excursion 
 		(goto-char (point-min))
-
-	        (if (search-forward "%MODEL" nil t)
-		    (replace-match ess-bugs-file-root t t))
 
 		(let (
 		    (ess-bugs-search-min nil)
