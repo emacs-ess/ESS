@@ -312,4 +312,5 @@
 	(add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
 )
 
+(setq features (delete 'essd-jags features))
 (provide 'essd-bugs)
