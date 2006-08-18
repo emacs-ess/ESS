@@ -1,3 +1,13 @@
+Changes/New Features in 5.3.2:
+@itemize @bullet
+@item Classic BUGS now supported by @code{(require 'essd-bugs)} with @ESS{[BUGS]}
+      and JAGS by @code{(require 'essd-jags)} with @ESS{[JAGS]}.  But, only one
+      of them can be used at a time since they don't play nice together.  Also,
+      @kbd{C-c C-c} is now bound to the function @code{ess-bugs-next-action}
+      (@kbd{F12} has been retired).  And finally, note that @file{essl-bug.el}
+      is deprecated and the replacement is @file{essl-bugs.el}.
+@end itemize
+
 Changes/New Features in 5.3.1:
 @itemize @bullet
 @item See the docs for 2 ways to install @ESS{} for XEmacs

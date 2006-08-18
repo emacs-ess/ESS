@@ -30,14 +30,11 @@
 
 (require 'essl-bugs)
 
-(if (assoc "\\.[bB][mM][dD]\\'" auto-mode-alist) nil
-    (setq auto-mode-alist
-	(append
-	   '(("\\.[bB][uUoO][gG]\\'"	. ess-bugs-mode)
-	     ("\\.[bB][mM][dD]\\'"	. ess-bugs-mode))
-	auto-mode-alist)
-    )
-)
+(setq auto-mode-alist 
+    (delete '("\\.[bB][uU][gG]\\'" . ess-jags-mode) auto-mode-alist))
+
+(setq auto-mode-alist 
+    (append '(("\\.[bB][uU][gG]\\'" . ess-bugs-mode)) auto-mode-alist))
 
 (defcustom ess-bugs-batch-version "0.6"
 "ESS[BUGS]: Major version of BUGS, i.e. 0.6 or 0.5"

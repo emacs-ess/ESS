@@ -131,7 +131,7 @@ Users whose default is not 'sh, but are accessing a remote machine with
 
 (if ess-bugs-mode-map nil (setq ess-bugs-mode-map (make-keymap)))
 (define-key ess-bugs-mode-map (quote [f2])  'ess-revert-wisely)
-(define-key ess-bugs-mode-map (quote [f12]) 'ess-bugs-next-action)
+;(define-key ess-bugs-mode-map (quote [f12]) 'ess-bugs-next-action)
 (define-key ess-bugs-mode-map "\C-c\C-c" 'ess-bugs-next-action)
 
 (defvar ess-bugs-syntax-table nil

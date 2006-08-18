@@ -1,4 +1,5 @@
-;;; essl-bug.el -- ESS BUGS customization
+;;; essl-bug.el -- ESS[BUGS] 
+;;;WARNING! deprecated; see essl-bugs.el, essd-bugs.el, essd-jags.el
 
 ;; Copyright (C) 2001 Rodney Sparapani
 ;; Copyright (C) 2002--2004 Free Software Foundation, Inc.

@@ -45,7 +45,7 @@ ELC = ess-cust.elc $(CORE) \
 	essl-sas.elc essd-sas.elc essa-sas.elc \
 	essl-sta.elc essd-sta.elc make-regexp.elc \
 	essl-omg.elc essd-omg.elc \
-	essl-bug.elc \
+	essl-bugs.elc essd-bugs.elc essd-jags.elc \
 	ess-noweb.elc noweb-mode.elc noweb-font-lock-mode.elc \
 	ess-font-lock.elc \
 	essa-r.elc ess-swv.elc ess-toolbar.elc\

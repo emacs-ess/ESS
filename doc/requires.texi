@@ -5,7 +5,8 @@ ESS has been tested with
 @item S-PLUS 3.3-4, 4.5, 2000, 5.0-1, 6.0-2, 7.0, 8.0
 @item S4
 @item SAS >=6.12
-@item BUGS 0.5, 0.603
+@item BUGS 0.5, 0.6
+@item JAGS 0.9
 @item Stata >=6.0
 @item XLispStat >=3.50
 @end itemize
@@ -13,18 +14,18 @@ ESS has been tested with
 on the following platforms
 
 @itemize @bullet
-@item Linux (all)
-@item Solaris/SunOS (all)
+@item GNU Linux (all)
+@item Sun Solaris (all)
 @c cannot confirm this right now @item SGI (all)
-@item Microsoft Windows 95/98/NT/2000/XP (R, SPLUS 4.5/2000/6.0-2/7.0/8.0, SAS, and BUGS)
-@item Apple Mac OS (SAS for OS 9 and R for OS X)
+@item Microsoft Windows 98/NT/2000/XP (R, SPLUS 4.5/2000/6.0-2/7.0/8.0, SAS, and BUGS 0.6)
+@item Apple Mac OS X 10.3-4 (R, JAGS)
 @end itemize
 
 with the following versions of emacs
 
 @itemize @bullet
 @item GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
-@item XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13@footnote{
+@item XEmacs 21.4.0-8, 21.4.9-13@footnote{
 require the files.el patch to revert-buffer for the Local Variables
 updating problem}, 21.4.14-15, 21.4.17-19, 21.5.23
 @c @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no

@@ -265,9 +265,10 @@ between .s or .S files and assembly mode.
 	   ("\\.[Rr]t\\'"	. R-transcript-mode)
 	   ("\\.[Rr]out"	. R-transcript-mode)
 	   ("\\.Rd\\'"		. Rd-mode)
-           ("\\.[Bb][Uu][Gg]\\'"         . ess-bugs-mode)
+           ;("\\.[Bb][Uu][Gg]\\'"         . ess-bugs-mode)
            ("\\.[Bb][Oo][Gg]\\'"         . ess-bugs-mode)
            ("\\.[Bb][Mm][Dd]\\'"         . ess-bugs-mode)
+           ("\\.[Jj][Mm][Dd]\\'"         . ess-jags-mode)
           )
 	 auto-mode-alist)))
 
@@ -421,8 +422,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 (ess-message "[ess-site:] require 'essd-omg ...")
 (require 'essd-omg)  ;; for omegahat
-(ess-message "[ess-site:] require 'essl-bug ...")
-(require 'essl-bug)  ;; for batch BUGS
+(ess-message "[ess-site:] require 'essl-bugs ...")
+(require 'essl-bugs)  ;; for batch BUGS
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el]: ess-customize-alist=%s \n"

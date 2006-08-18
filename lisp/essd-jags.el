@@ -30,14 +30,11 @@
 
 (require 'essl-bugs)
 
-(if (assoc "\\.[jJ][mM][dD]\\'" auto-mode-alist) nil
-    (setq auto-mode-alist
-	(append
-	   '(("\\.[bB][uU][gG]\\'"	. ess-jags-mode)
-	     ("\\.[jJ][mM][dD]\\'"	. ess-jags-mode))
-	auto-mode-alist)
-    )
-)
+(setq auto-mode-alist 
+    (delete '("\\.[bB][uU][gG]\\'" . ess-bugs-mode) auto-mode-alist))
+
+(setq auto-mode-alist 
+    (append '(("\\.[bB][uU][gG]\\'" . ess-jags-mode)) auto-mode-alist))
 
 (setq ess-bugs-batch-command "jags")
 
