@@ -719,8 +719,8 @@ variable is nil.
 @end enumerate
 
 If @code{ess-ask-for-ess-directory} has a non-@code{nil} value (as it
-does by default) then the value of @code{ess-directory} provides the
-default when prompting for the starting directory.  Incidentally,
+does by default) then the value determined by the above rules provides
+the default when prompting for the starting directory.  Incidentally,
 @code{ess-directory} is an ideal variable to set in
 @code{ess-pre-run-hook}.
 
