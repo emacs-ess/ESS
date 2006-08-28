@@ -1,3 +1,10 @@
+2006-08-28  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-swv.el (ess-makeSweave): improve to show *R* buffer;
+	also add comments about more "TODO"s
+
+	* ess-swv.el (ess-make*): using (search .) needs 'cl.
+
 2006-07-31  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essddr.el (Rd-mode-map): add C-c C-c (as in ess-mode)

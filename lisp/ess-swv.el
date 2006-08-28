@@ -71,21 +71,38 @@
 ;;; 3. Might be good to have a way to chain commands.
 ;;;
 
+;; 4. ADD to the ../doc/ess.texi !!
+
+;; 5. M-n C-h ==> runs the command noweb-describe-mode
+;;            which does *NOT* list the new key sequences below.
+;; (not good:  <key_seq> C-h  should list help on all key bindings
+;;                            starting with <key_seq> !
+;; --> fix the above and / or also add a menu <Sweave> to teach users about
+;;     the possibilities
+
 ;;; Autoloads and Requires
 
 (require 'ess-noweb)
 
+;; MM: I think we should *not* require 'cl, but it's needed for
+;;     (search .) below ... -> ``please'' replace the (search ...) parts
+(require 'cl)
+
 (defun ess-makeSweave ()
    "Run Sweave on the current .Rnw file."
    (interactive)
+   (ess-force-buffer-current "Process to load into: ")
    (save-excursion
      ;; Make sure tools is loaded.
-     (let ((ess-command))
-       (setq ess-command (format "library(tools)"))
-       (ess-execute ess-command)
-       (message "Sweaving %S" (buffer-file-name))
-       (setq ess-command (format "Sweave(%S)" (buffer-file-name)))
-       (ess-execute ess-command 'buffer nil nil))))
+     (ess-execute (format "library(tools)"))
+     (message "Sweaving %S" (buffer-file-name))
+     (ess-execute (format "Sweave(%S)" (buffer-file-name))
+		    'buffer nil nil))
+   (let* ((this-buf (current-buffer))
+	  (sprocess (get-ess-process ess-current-process-name))
+	  (sbuffer (process-buffer sprocess)))
+     (ess-show-buffer (buffer-name sbuffer) nil)))
+
 
 
 (defun ess-makeLatex ()
