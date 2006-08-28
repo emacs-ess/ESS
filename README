@@ -3,7 +3,7 @@
 
 This is the README file for the distribution of ESS version
 
-   5.3.1
+   5.3.2
 
    ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S
@@ -55,7 +55,16 @@ shell, simply type `M-x S+6-msdos RET'.
 1.3 New Features
 ================
 
-Changes/New Features in 5.3.1:
+Changes/New Features in 5.3.2:
+   * Classic BUGS now supported by `(require 'essd-bugs)' with ESS[BUGS]
+          and JAGS by `(require 'essd-jags)' with ESS[JAGS].  But,
+     only one       of them can be used at a time since they don't play
+     nice together.  Also,       `C-c C-c' is now bound to the function
+     `ess-bugs-next-action'       (`F12' has been retired).  And
+     finally, note that `essl-bug.el'       is deprecated and the
+     replacement is `essl-bugs.el'.
+
+   Changes/New Features in 5.3.1:
    * See the docs for 2 ways to install ESS for XEmacs
        1. by uncommenting the XEmacs part of             Section 1 of
           `Makeconf' and performing `make install'
@@ -612,17 +621,17 @@ Changes/New Features in 5.3.1:
 ====================
 
    * Languages Supported:
-        * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x, and R)
+        * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x/8.x, and R)
 
         * SAS
 
-        * BUGS
+        * BUGS/JAGS
 
         * Stata
 
         * XLispStat including Arc and ViSta
 
-   * Editing source code (S family, SAS, BUGS, XLispStat)
+   * Editing source code (S family, SAS, BUGS/JAGS, XLispStat)
         * Syntactic indentation and highlighting of source code
 
         * Partial evaluation of code
@@ -631,7 +640,7 @@ Changes/New Features in 5.3.1:
 
         * Source code revision maintenance
 
-        * Batch execution (SAS, BUGS)
+        * Batch execution (SAS, BUGS/JAGS)
 
         * Use of imenu to provide links to appropriate functions
 
@@ -678,13 +687,15 @@ ESS has been tested with
 
    * R >=0.49
 
-   * S-PLUS 3.3-4, 4.5, 5.0-1, 6.0-2, 7.0, 2000
+   * S-PLUS 3.3-4, 4.5, 2000, 5.0-1, 6.0-2, 7.0, 8.0
 
    * S4
 
    * SAS >=6.12
 
-   * BUGS 0.5, 0.603
+   * BUGS 0.5, 0.6
+
+   * JAGS 0.9
 
    * Stata >=6.0
 
@@ -692,21 +703,20 @@ ESS has been tested with
 
    on the following platforms
 
-   * Linux (all)
+   * GNU Linux (all)
 
-   * Solaris/SunOS (all)
+   * Sun Solaris (all)
 
-   * Microsoft Windows 95/98/NT/2000/XP (R, SPLUS 4.5/6.0-2/7.0/2000,
-     SAS and BUGS)
+   * Microsoft Windows 98/NT/2000/XP (R, SPLUS 4.5/2000/6.0-2/7.0/8.0,
+     SAS, and BUGS 0.6)
 
-   * Apple Mac OS (SAS for OS 9 and R for OS X)
+   * Apple Mac OS X 10.3-4 (R, JAGS)
 
    with the following versions of emacs
 
    * GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
 
-   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13(1), 21.4.14-15,
-     21.4.17-18, 21.5.23
+   * XEmacs 21.4.0-8, 21.4.9-13(1), 21.4.14-15, 21.4.17-19, 21.5.23
 
    ---------- Footnotes ----------
 
@@ -753,25 +763,29 @@ certificate permanently and will not be asked about it anymore.
 1.8 Installation (from tar file)
 ================================
 
-We now discuss installation, which might happen under Unix or Microsoft
-Windows.  First, we discuss Unix installation.  *Note Unix
-installation::.
-
-   For Microsoft Windows Installation please skip to the *Note
-Microsoft Windows installation::.
-
 1.9 Unix installation
 =====================
 
-  1. `cd' to a directory where you want to install ESS, creating it if
-     necessary.  This directory will be referred to below as `ESSDIR'.
+  1.  `cd' to a directory where you keep emacs lisp files, or create a
+     new directory (for example, `$HOME/emacs') to hold the
+     distribution.  This directory will be referred to below as "the
+     ESS distribution directory".
+
+     _Note for XEmacs packages:_ ESS is no longer available as an
+     XEmacs package.  But, you can still install ESS into the XEmacs
+     package system by choosing
+     `ESSDIR'=`PREFIX/lib/xemacs/site-packages'.  ESS requires that the
+     XEmacs sumo tarball (all XEmacs packages combined) also be
+     installed.  For information on installing XEmacs packages, follow
+     this link: Quickstart Package Guide
+     (http://www.xemacs.org/Documentation/packageGuide.html).
 
   2. Retrieve the latest version from ESS downloads area
      (http://ess.r-project.org/downloads/ess) to `ESSDIR'.
 
-  3. Decompress/unarchive the files from the disribution.
-          Either, `gunzip < ess-VERSION.tgz | tar xf -',
-          or using GNU tar, `tar zxf ess-VERSION.tgz'.
+  3. Extract the files from the disribution.
+          If you are using GNU tar, `tar zxf ess-VERSION.tgz'.
+          Otherwise, `gunzip < ess-VERSION.tgz | tar xf -',
 
      The `tar' command will create the subdirectory `ess-VERSION' and
      install the files there.
@@ -779,32 +793,27 @@ Microsoft Windows installation::.
   4. Edit the file `ESSDIR/ess-VERSION/lisp/ess-site.el' as explained
      in the comments section of that file.
 
-  5.  Add the line
+  5. If you are using GNU Emacs add the line
           (load "ESSDIR/ess-VERSION/lisp/ess-site")
-     to your user or system installation file (GNU Emacs uses
-     `$HOME/.emacs' and XEmacs uses `$HOME/.xemacs/init.el' for the
-     user initialization file.  GNU Emacs uses `default.el' or
-     `site-init.el' and XEmacs uses `site-start.el' for the system
-     installation file).
-
-     Alternatively, if `ess-site.el' is in your current `load-path',
-     then:
+     to `$HOME/.emacs'.  For XEmacs, if you followed the XEmacs package
+     system installation advice, add the line
           (require 'ess-site)
-     to configure emacs for ESS.
+     to `$HOME/.xemacs/init.el'.  Otherwise, for XEmacs, add the line
+          (load "ESSDIR/ess-VERSION/lisp/ess-site")
+     to `$HOME/.xemacs/init.el'.
 
-  6. That's it!  If you are installing just a local copy of ESS for
-     yourself, ESS is now ready to be used.  (The remaining step below
-     is for advanced installation.)  To edit statistical programs, load
-     the files with the requiste extensions (`.sas' for SAS, `.S' for
-     S-PLUS, `.R' for R, and `.lsp' for XLispStat).  To start a
-     statistical process within emacs, such as R, type `M-x R'.
+  6. That's it!  ESS is now ready to use.  (The remaining step below is
+     only for a custom installation.)  To edit statistical programs,
+     just open files with the requisite extensions (`.R' for R, `.sas'
+     for SAS, `.bug' for BUGS, etc.).  To start a statistical process
+     within emacs, such as R, type `M-x R'.
 
   7. (OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING:
 
      If you want to place the compiled files in other locations edit the
      `LISPDIR', `INFODIR' and `ETCDIR' entries in Section 1 of
      `Makeconf' in the `ESSDIR/ess-VERSION' directory (if you are using
-     XEmacs, then see the XEmacs subsection in Section 1 of `Makeconf').
+     XEmacs, then uncomment the XEmacs subsection in Section 1).
 
      You can compile those files by:
           make all
@@ -812,52 +821,50 @@ Microsoft Windows installation::.
      When that completes successfully, install the compiled files:
           make install
 
-     _Note:_ ESS is no longer available as an XEmacs package.  But, you
-     can still install ESS into the XEmacs package system by choosing
-     the appropriate directory for unpacking as follows:
-     `PREFIX/lib/xemacs/site-packages' on unix or
-     `PREFIX\XEmacs\site-packages' on windows _Note:_ ESS will work
-     best if the XEmacs sumo tarball (all XEmacs packages combined) has
-     been installed.  For more information on installing XEmacs
-     packages, see Quickstart Package Guide
-     (http://www.xemacs.org/Documentation/packageGuide.html).
-
 
 1.10 Microsoft Windows installation
 ===================================
 
-For Microsoft Windows installation, please follow the next steps: (see
-separate instructions above for UNIX *Note Unix installation::.
+For Microsoft Windows installation, please follow the next steps.
 
   1. `cd' to a directory where you keep emacs lisp files, or create a
      new directory (for example, `c:\emacs\') to hold the distribution.
      This directory will be referred to below as "the ESS distribution
      directory".
 
-  2. Retrieve the latest zip file (`ess-VERSION.zip') or compressed tar
-     file `ess-VERSION.tgz' from ESS downloads area
-     (http://ess.r-project.org/downloads/ess) and store it in the ESS
-     distribution directory.  Be aware that http browsers on Windows
-     frequently change the "." and "-" characters in filenames to other
-     punctuation.  Please change the names back to their original form.
+     _Note for XEmacs packages:_ ESS is no longer available as an XEmacs
+     package. But, you can still install ESS into the XEmacs package
+     system by choosing `ESSDIR'=`PREFIX\XEmacs\site-packages'.  ESS
+     requires that the XEmacs sumo tarball (all XEmacs packages
+     combined) also be installed.  For information on installing XEmacs
+     packages, follow this link: Quickstart Package Guide
+     (http://www.xemacs.org/Documentation/packageGuide.html).
 
-  3. Extract all the files from `ess-VERSION.zip' or `ess-VERSION.tgz'
-     into the ESS distribution directory as `c:\emacs\ess-VERSION\'.
-     You may use the commands `unzip' on the zip archive or `gunzip'
-     and `tar' on the tgz file.  It is possible to unpack the zip
-     archive in Windows Explorer, by double clicking on the folder; you
-     should then see a new folder called `ess-VERSION'.  Drag that
-     folder into your ESS distribution directory.
+  2. Retrieve the latest zip file (`ess-VERSION.zip') from ESS
+     downloads area (http://ess.r-project.org/downloads/ess) and store
+     it in the ESS distribution directory.  Be aware that http browsers
+     on Windows frequently change the "." and "-" characters in
+     filenames to other punctuation.  Please change the names back to
+     their original form.
 
-  4. Add the line
-          (load "C:/emacs/ess-VERSION/lisp/ess-site")
-     to your emacs initialization file.  (GNU Emacs uses the filename
-     `~/.emacs' and XEmacs uses the filename `~/.xemacs/init.el' for
-     the initialization file.  The tilde is recognised by emacs as your
-     HOME directory, i.e. the value of your HOME environment variable.)
-     Replace `VERSION' above with the version number of ESS.  Remember
-     to use forwardslashes `/', rather than backslashes `\', in your
-     filename inside emacs code files.
+  3. Extract all the files from `ess-VERSION.zip' into the ESS
+     distribution directory as `c:\emacs\ess-VERSION\'.  (It is possible
+     to unpack the zip archive in Windows Explorer by double clicking
+     on the folder; you should then see a new folder called
+     `ess-VERSION'.  Drag that folder into your ESS distribution
+     directory.)
+
+  4. If you are using GNU Emacs add the line
+          (load "ESSDIR/ess-VERSION/lisp/ess-site")
+     to `%HOME%/.emacs'.  For XEmacs, if you followed the XEmacs
+     package system installation advice, add the line
+          (require 'ess-site)
+     to `%HOME%/.xemacs/init.el'.  Otherwise, for XEmacs, add the line
+          (load "ESSDIR/ess-VERSION/lisp/ess-site")
+     to `%HOME%/.xemacs/init.el'.  _Note:_ Both GNU Emacs and XEmacs
+     require that the HOME environment variable be set on your system,
+     otherwise, your initialization file will not be utilized, and
+     therefore, ESS will not work.
 
      After saving your initialization file, ESS is now installed.
      Start a new emacs and you should be ready to use ESS.  For

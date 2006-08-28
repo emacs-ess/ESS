@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.3.1
+   5.3.2
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -62,17 +62,17 @@ certificate permanently and will not be asked about it anymore.
 ====================
 
    * Languages Supported:
-        * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x, and R)
+        * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x/8.x, and R)
 
         * SAS
 
-        * BUGS
+        * BUGS/JAGS
 
         * Stata
 
         * XLispStat including Arc and ViSta
 
-   * Editing source code (S family, SAS, BUGS, XLispStat)
+   * Editing source code (S family, SAS, BUGS/JAGS, XLispStat)
         * Syntactic indentation and highlighting of source code
 
         * Partial evaluation of code
@@ -81,7 +81,7 @@ certificate permanently and will not be asked about it anymore.
 
         * Source code revision maintenance
 
-        * Batch execution (SAS, BUGS)
+        * Batch execution (SAS, BUGS/JAGS)
 
         * Use of imenu to provide links to appropriate functions
 
@@ -120,13 +120,15 @@ ESS has been tested with
 
    * R >=0.49
 
-   * S-PLUS 3.3-4, 4.5, 5.0-1, 6.0-2, 7.0, 2000
+   * S-PLUS 3.3-4, 4.5, 2000, 5.0-1, 6.0-2, 7.0, 8.0
 
    * S4
 
    * SAS >=6.12
 
-   * BUGS 0.5, 0.603
+   * BUGS 0.5, 0.6
+
+   * JAGS 0.9
 
    * Stata >=6.0
 
@@ -134,21 +136,20 @@ ESS has been tested with
 
    on the following platforms
 
-   * Linux (all)
+   * GNU Linux (all)
 
-   * Solaris/SunOS (all)
+   * Sun Solaris (all)
 
-   * Microsoft Windows 95/98/NT/2000/XP (R, SPLUS 4.5/6.0-2/7.0/2000,
-     SAS and BUGS)
+   * Microsoft Windows 98/NT/2000/XP (R, SPLUS 4.5/2000/6.0-2/7.0/8.0,
+     SAS, and BUGS 0.6)
 
-   * Apple Mac OS (SAS for OS 9 and R for OS X)
+   * Apple Mac OS X 10.3-4 (R, JAGS)
 
    with the following versions of emacs
 
    * GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
 
-   * XEmacs 21.0, 21.1.13-14, 21.4.0-8, 21.4.9-13(1), 21.4.14-15,
-     21.4.17-18, 21.5.23
+   * XEmacs 21.4.0-8, 21.4.9-13(1), 21.4.14-15, 21.4.17-19, 21.5.23
 
    ---------- Footnotes ----------
 
@@ -237,7 +238,16 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
-Changes/New Features in 5.3.1:
+Changes/New Features in 5.3.2:
+   * Classic BUGS now supported by `(require 'essd-bugs)' with ESS[BUGS]
+          and JAGS by `(require 'essd-jags)' with ESS[JAGS].  But,
+     only one       of them can be used at a time since they don't play
+     nice together.  Also,       `C-c C-c' is now bound to the function
+     `ess-bugs-next-action'       (`F12' has been retired).  And
+     finally, note that `essl-bug.el'       is deprecated and the
+     replacement is `essl-bugs.el'.
+
+   Changes/New Features in 5.3.1:
    * See the docs for 2 ways to install ESS for XEmacs
        1. by uncommenting the XEmacs part of             Section 1 of
           `Makeconf' and performing `make install'

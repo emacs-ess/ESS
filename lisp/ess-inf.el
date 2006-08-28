@@ -930,9 +930,11 @@ Otherwise treat \\ in NEWTEXT string as special:
 ;; and
 ;;	(ess-eval-region   ....)
 
-(defun ess-eval-linewise (text-withtabs &optional invisibly eob even-empty)
+(defun ess-eval-linewise (text-withtabs
+			  &optional invisibly eob even-empty timeout-ms)
   ;; RDB 28/8/92 added optional arg eob
   ;; AJR 971022: text-withtabs was text.
+  ;; MM 2006-08-23: added 'timeout-ms' -- but the effect seems "nil"
   "Evaluate TEXT-WITHTABS in the ESS process buffer as if typed in w/o tabs.
 Waits for prompt after each line of input, so won't break on large texts.
 
@@ -953,6 +955,9 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 	   (text (ess-replace-in-string text-withtabs "\t" " "))
 	   start-of-output
 	   com pos txt-gt-0)
+
+      (unless (numberp timeout-ms)
+	(setq timeout-ms 100));; << make '100' into a custom-variable
 
       ;;(message "'ess-eval-linewise: sbuffer = %s" sbuffer)
       (set-buffer sbuffer)
@@ -1006,7 +1011,7 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 	(if (eq (length text) 0)
 	    nil
 	  (while (progn
-		   (accept-process-output nil 0 100)
+		   (accept-process-output nil 0 timeout-ms)
 		   (goto-char (marker-position (process-mark sprocess)))
 		   (beginning-of-line)
 		   (if (< (point) start-of-output)
