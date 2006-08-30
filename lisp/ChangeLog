@@ -1,3 +1,7 @@
+2006-08-30  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* noweb-mode.el (noweb-mode-prefix-map): do *not* override C-h
+
 2006-08-28  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-swv.el (ess-makeSweave): improve to show *R* buffer;

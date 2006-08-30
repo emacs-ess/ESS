@@ -254,7 +254,7 @@ mouse-1, this will override your binding.")
     (define-key map "o" 'noweb-occur)
     (define-key map "v" 'noweb-mode-version)
     (define-key map "h" 'noweb-describe-mode)
-    (define-key map "\C-h" 'noweb-describe-mode)
+    ;; do *NOT* override C-h (give all keybindings startings with M-n!
     map)
   "noweb minor-mode prefix keymap")
 
