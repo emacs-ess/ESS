@@ -1,6 +1,10 @@
+2006-08-31  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-swv.el (ess-makeLatex): improved
+
 2006-08-30  Martin Maechler  <maechler@stat.math.ethz.ch>
 
-	* noweb-mode.el (noweb-mode-prefix-map): do *not* override C-h
+	* noweb-mode.el (noweb-mode-prefix-map): do *not* override M-n C-h
 
 2006-08-28  Martin Maechler  <maechler@stat.math.ethz.ch>
 

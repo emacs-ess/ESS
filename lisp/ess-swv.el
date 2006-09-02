@@ -88,20 +88,45 @@
 ;;     (search .) below ... -> ``please'' replace the (search ...) parts
 (require 'cl)
 
+(defun ess-Swv-make (thing)
+   "Run Sweave on the current .Rnw file."
+   (interactive)
+   (ess-force-buffer-current "Process to load into: ")
+   (save-excursion
+     (ess-execute (format "require(tools)"));; Make sure tools is loaded.
+     (let* ((this-buf (current-buffer))
+	    (sprocess (get-ess-process ess-current-process-name))
+	    (sbuffer (process-buffer sprocess))
+	    (this-file (buffer-file-name))
+	    (Rnw-dir (file-name-directory this-file))
+	    (Sw-cmd
+	     (format
+	      "local({..od <- getwd(); setwd(%S); Sweave(%S); setwd(..od) })"
+	      Rnw-dir this-file))
+	    )
+       (message "Sweaving %S" this-file)
+       (ess-execute Sw-cmd 'buffer nil nil)
+       (ess-show-buffer (buffer-name sbuffer) nil))))
+
 (defun ess-makeSweave ()
    "Run Sweave on the current .Rnw file."
    (interactive)
    (ess-force-buffer-current "Process to load into: ")
    (save-excursion
-     ;; Make sure tools is loaded.
-     (ess-execute (format "library(tools)"))
-     (message "Sweaving %S" (buffer-file-name))
-     (ess-execute (format "Sweave(%S)" (buffer-file-name))
-		    'buffer nil nil))
-   (let* ((this-buf (current-buffer))
-	  (sprocess (get-ess-process ess-current-process-name))
-	  (sbuffer (process-buffer sprocess)))
-     (ess-show-buffer (buffer-name sbuffer) nil)))
+     (ess-execute (format "require(tools)"));; Make sure tools is loaded.
+     (let* ((this-buf (current-buffer))
+	    (sprocess (get-ess-process ess-current-process-name))
+	    (sbuffer (process-buffer sprocess))
+	    (this-file (buffer-file-name))
+	    (Rnw-dir (file-name-directory this-file))
+	    (Sw-cmd
+	     (format
+	      "local({..od <- getwd(); setwd(%S); Sweave(%S); setwd(..od) })"
+	      Rnw-dir this-file))
+	    )
+       (message "Sweaving %S" this-file)
+       (ess-execute Sw-cmd 'buffer nil nil)
+       (ess-show-buffer (buffer-name sbuffer) nil))))
 
 
 
@@ -111,11 +136,13 @@
    (save-excursion
      (let* ((thisbuffer (buffer-name))
 	    (namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
-	    (latex-filename (concat namestem ".tex")))
-       (message "Running LaTeX ..." )
-       (switch-to-buffer "*tex-output*")
-       (call-process "latex" nil "*tex-output*" 1 latex-filename)
+	    (latex-filename (concat namestem ".tex"))
+	    (tex-buf (get-buffer-create " *ESS-tex-output*")))
+       (message "Running LaTeX on '%s' ..." latex-filename)
+       (switch-to-buffer tex-buf)
+       (call-process "latex" nil tex-buf 1 latex-filename)
        (switch-to-buffer thisbuffer)
+       (display-buffer tex-buf)
        (message "Finished running LaTeX" ))))
 
 
