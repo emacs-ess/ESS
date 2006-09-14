@@ -1,3 +1,9 @@
+2006-09-14  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-complete-object-name): add comment
+	(ess-get-object-list): some more (ess-write-to-dribble-..)
+	diagnostic output.
+
 2006-08-31  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-swv.el (ess-makeLatex): improved

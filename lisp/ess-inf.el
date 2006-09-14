@@ -1964,6 +1964,8 @@ completions are listed [__UNIMPLEMENTED__]."
 			     (ess-object-names listname)
 			   (if classname
 			       (ess-slot-names classname)
+			     ;; Default case: It hangs here when
+			     ;;    options(error=recoves) :
 			     (ess-get-object-list ess-current-process-name)))))
 	;; always return a non-nil value to prevent history expansions
 	(or (comint-dynamic-simple-complete  pattern components) 'none))))
@@ -2018,7 +2020,7 @@ Returns nil if that file cannot be found, i.e., for R or any non-S language!"
 (defun ess-get-object-list (name)
   "Return a list of current S object names associated with process NAME,
 using `ess-object-list' if that is non-nil."
-  (or ess-object-list
+  (or ess-object-list ;; <<-  MM: I think this is now always nil
       (save-excursion
 	(set-buffer (process-buffer (get-ess-process name)))
 	(ess-make-buffer-current)
@@ -2033,8 +2035,11 @@ using `ess-object-list' if that is non-nil."
 	       (i 2)
 	       (n (length alist))
 	       result)
+	  (ess-write-to-dribble-buffer (format " (length alist) : %d\n" n))
 	  ;; Always force a re-read of position 1 :
 	  (setq result (ess-extract-onames-from-alist alist 1 'force))
+	  (ess-write-to-dribble-buffer
+	   (format " have re-read pos=1: -> length %d\n" (length result)))
 	  ;; Re-read remaining directories if necessary.
 	  (while (<= i n)
 	    (setq result
