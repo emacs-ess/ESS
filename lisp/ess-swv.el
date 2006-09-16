@@ -69,15 +69,10 @@
 ;;; 2. Also need to add ess-makeBibtex.
 ;;;
 ;;; 3. Might be good to have a way to chain commands.
-;;;
-
+;;
 ;; 4. ADD to the ../doc/ess.texi !!
-
-;; 5. M-n C-h ==> runs the command noweb-describe-mode
-;;            which does *NOT* list the new key sequences below.
-;; (not good:  <key_seq> C-h  should list help on all key bindings
-;;                            starting with <key_seq> !
-;; --> fix the above and / or also add a menu <Sweave> to teach users about
+;;
+;; 5. add a sub-menu [Sweave] to the [Noweb] menu to teach users about
 ;;     the possibilities
 
 ;;; Autoloads and Requires
