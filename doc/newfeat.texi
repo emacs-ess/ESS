@@ -8,7 +8,7 @@ Changes/New Features in 5.3.2:
       is deprecated and the replacement is @file{essl-bugs.el}.
 @item @ESS{[R]} Improved some of the ``Sweave-make''
  functions (yet scarcely documented) in @file{ess-swv.el}.
-@item @ESS{[S]} No longer mess with .Last.value {nor in other ``languages''}
+@item @ESS{[S]} No longer mess with .Last.value (nor in other ``languages'').
 @end itemize
 
 Changes/New Features in 5.3.1:
