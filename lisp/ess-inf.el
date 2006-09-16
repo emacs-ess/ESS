@@ -813,7 +813,7 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 	   sbuffer
 	   do-sleep end-of-output
 	   oldpb oldpf oldpm
-	   my-retr-cmd my-save-cmd)
+	   )
       (if sprocess nil
 	(error "Process %s is not running!" ess-current-process-name))
       (setq sbuffer (process-buffer sprocess))
@@ -834,8 +834,6 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 	(setq oldpb (process-buffer sprocess))
 	(setq oldpm (marker-position (process-mark sprocess)))
 	;; need the buffer-local values in result buffer "buf":
-	(setq my-retr-cmd ess-retr-lastvalue-command)
-	(setq my-save-cmd ess-save-lastvalue-command)
 	(unwind-protect
 	    (progn
 	      (set-process-buffer sprocess buf)
@@ -845,26 +843,12 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 		(set-buffer buf)
 		(erase-buffer)
 		(set-marker (process-mark sprocess) (point-min))
-		(process-send-string sprocess my-save-cmd)
-
-		(ess-prompt-wait sprocess nil (and do-sleep (* 0.05 sleep)))
-		(erase-buffer)
 		(process-send-string sprocess com)
-
 		;; need time for ess-create-object-name-db on PC
 		(ess-prompt-wait sprocess nil (and do-sleep (* 0.4 sleep))) ;MS: 4
 		;;(if do-sleep (sleep-for (* 0.0 sleep))); microsoft: 0.5
 		(goto-char (point-max))
-		(save-excursion
-		  (beginning-of-line)	; so prompt will be deleted
-		  (setq end-of-output (point)))
-		(process-send-string sprocess my-retr-cmd)
-
-		(ess-prompt-wait sprocess end-of-output
-				 (and do-sleep (* 0.05 sleep)))	; microsoft: 0.5)
-
-		;; Get rid out output from last assign
-		(delete-region end-of-output (point-max))))
+		))
 	  ;; Restore old values for process filter
 	  (set-process-buffer sprocess oldpb)
 	  (set-process-filter sprocess oldpf)
@@ -2254,6 +2238,7 @@ and (indirectly) by \\[ess-get-help-files-list]."
 	  ;; use cache:
 	  ess-search-list
 	;; else, re-compute:
+	(ess-write-to-dribble-buffer " (ess-search-list: re-computing..) ")
 	(let ((tbuffer (get-buffer-create " *search-list*"))
 	      (homedir ess-directory)
 	      (my-search-cmd inferior-ess-search-list-command); from ess-buffer
@@ -2263,6 +2248,8 @@ and (indirectly) by \\[ess-get-help-files-list]."
 	    ;; guaranteed by the initial space in its name: (buffer-disable-undo)
 	    (ess-command my-search-cmd tbuffer 0.2); <- sleep; does (erase-buffer)
 	    (goto-char (point-min))
+	    (ess-write-to-dribble-buffer
+	     (format "after '%s', point-max=%d\n" my-search-cmd (point-max)))
 	    (while (re-search-forward "\"\\([^\"]*\\)\"" nil t)
 	      (setq elt (buffer-substring (match-beginning 1) (match-end 1)))
 	      ;;Dbg: (ess-write-to-dribble-buffer (format "  .. elt= %s \t" elt))

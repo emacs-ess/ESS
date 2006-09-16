@@ -56,10 +56,6 @@
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-S+sec-keys-alist)
     (ess-object-name-db-file       . "ess-omg-namedb.el" )
-    (ess-retr-lastvalue-command
-     . ".Last.value = get(\".ess.lvsave\",frame=0)\n")
-    (ess-save-lastvalue-command
-     . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
     (inferior-ess-program          . inferior-OMG-program-name)
     (inferior-ess-objects-command  . "objects(%d)\n")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")

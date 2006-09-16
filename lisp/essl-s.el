@@ -140,11 +140,6 @@
       . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
      (ess-syntax-error-re
       . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
-     (ess-retr-lastvalue-command
-      . ".Last.value <- get(\".ess.lvsave\",frame=0)\n")
-     (ess-save-lastvalue-command
-      . "assign(\".ess.lvsave\",.Last.value,frame=0)\n")
-
      (inferior-ess-objects-command  . inferior-Splus-objects-command)
      (inferior-ess-font-lock-keywords . inferior-ess-S-font-lock-keywords)
      (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")

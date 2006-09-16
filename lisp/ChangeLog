@@ -1,3 +1,9 @@
+2006-09-15  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-command): get rid of ess-save-lastvalue-command
+	* .... also in some other places.
+	Consequently we no longer mess with .Last.value in the S dialects.
+
 2006-09-14  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-complete-object-name): add comment

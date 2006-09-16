@@ -53,8 +53,6 @@
     (ess-object-name-db-file       . "ess-xls-namedb.el" )
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . ess-help-XLS-sec-keys-alist)
-    (ess-retr-lastvalue-command    . "()\n" )
-    (ess-save-lastvalue-command    . "()\n" )
     (inferior-ess-primary-prompt   . "> ?"               )
     (inferior-ess-secondary-prompt . "^"                 )
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
