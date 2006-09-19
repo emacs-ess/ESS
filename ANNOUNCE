@@ -247,6 +247,11 @@ Changes/New Features in 5.3.2:
      finally, note that `essl-bug.el'       is deprecated and the
      replacement is `essl-bugs.el'.
 
+   * ESS[R] Improved some of the "Sweave-make"  functions (yet scarcely
+     documented) in `ess-swv.el'.
+
+   * ESS[S] No longer mess with .Last.value (nor in other "languages").
+
    Changes/New Features in 5.3.1:
    * See the docs for 2 ways to install ESS for XEmacs
        1. by uncommenting the XEmacs part of             Section 1 of
