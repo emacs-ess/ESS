@@ -36,7 +36,7 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.3.2
+5.3.3
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -346,7 +346,16 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction<
 
 <h3 class="section">1.2 New features in ESS</h3>
 
-<p>Changes/New Features in 5.3.2:
+<p>Changes/New Features in 5.3.3:
+     <ul>
+<li><acronym>ESSfix buglet (5.3.2 only) which left command prompt in</acronym>
+&ldquo;execute buffer&rdquo; and hence help files. 
+<li>new customizable variable <code>ess-display-buffer-reuse-frames</code>
+set to true (which changes default behavior) such that execution or
+help *frames* are reused. 
+</ul>
+
+   <p>Changes/New Features in 5.3.2:
      <ul>
 <li>Classic BUGS now supported by <code>(require 'essd-bugs)</code> with <acronym>ESS[BUGS]</acronym>
       and JAGS by <code>(require 'essd-jags)</code> with <acronym>ESS[JAGS]</acronym>.  But, only one

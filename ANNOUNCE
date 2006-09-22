@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.3.2
+   5.3.3
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -238,7 +238,15 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
-Changes/New Features in 5.3.2:
+Changes/New Features in 5.3.3:
+   * ESSfix buglet (5.3.2 only) which left command prompt in "execute
+     buffer" and hence help files.
+
+   * new customizable variable `ess-display-buffer-reuse-frames' set to
+     true (which changes default behavior) such that execution or help
+     *frames* are reused.
+
+   Changes/New Features in 5.3.2:
    * Classic BUGS now supported by `(require 'essd-bugs)' with ESS[BUGS]
           and JAGS by `(require 'essd-jags)' with ESS[JAGS].  But,
      only one       of them can be used at a time since they don't play

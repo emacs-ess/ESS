@@ -34,7 +34,7 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <p><a name="index-README-1"></a>
 This is the README file for the distribution of ESS version
 
-   <p>5.3.2
+   <p>5.3.3
 
    <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical programming
 and data analysis.  Languages supported: the S family (S 3/4, S-PLUS
@@ -126,7 +126,16 @@ aufw&auml;rts:&nbsp;<a rel="up" accesskey="u" href="#General-Information">Genera
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">1.3 New Features</h3>
 
-<p>Changes/New Features in 5.3.2:
+<p>Changes/New Features in 5.3.3:
+     <ul>
+<li><acronym>ESSfix buglet (5.3.2 only) which left command prompt in</acronym>
+&ldquo;execute buffer&rdquo; and hence help files. 
+<li>new customizable variable <code>ess-display-buffer-reuse-frames</code>
+set to true (which changes default behavior) such that execution or
+help *frames* are reused. 
+</ul>
+
+   <p>Changes/New Features in 5.3.2:
      <ul>
 <li>Classic BUGS now supported by <code>(require 'essd-bugs)</code> with <acronym>ESS[BUGS]</acronym>
       and JAGS by <code>(require 'essd-jags)</code> with <acronym>ESS[JAGS]</acronym>.  But, only one
