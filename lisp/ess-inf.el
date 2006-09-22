@@ -847,7 +847,14 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 		;; need time for ess-create-object-name-db on PC
 		(ess-prompt-wait sprocess nil (and do-sleep (* 0.4 sleep))) ;MS: 4
 		;;(if do-sleep (sleep-for (* 0.0 sleep))); microsoft: 0.5
+
+		;; goto end, making sure final prompt is deleted
+		;; FIXME? do this with much less code
 		(goto-char (point-max))
+		(save-excursion
+		  (beginning-of-line)
+		  (setq end-of-output (point)))
+		(delete-region end-of-output (point-max))
 		))
 	  ;; Restore old values for process filter
 	  (set-process-buffer sprocess oldpb)
@@ -2423,8 +2430,10 @@ P-STRING is the prompt string."
 
 
 (defun ess-display-temp-buffer (buff)
-  "Display the buffer BUFF using `temp-buffer-show-function'."
-  (funcall (or temp-buffer-show-function 'display-buffer) buff))
+  "Display the buffer BUFF using `temp-buffer-show-function' and respecting
+`ess-display-buffer-reuse-frames'."
+  (let ((display-buffer-reuse-frames ess-display-buffer-reuse-frames))
+    (funcall (or temp-buffer-show-function 'display-buffer) buff)))
 
 ;;*;; Error messages
 

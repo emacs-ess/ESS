@@ -1,3 +1,12 @@
+2006-09-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-command): make sure final prompt is deleted (again!).
+
+	* ess-cust.el (ess-display-buffer-reuse-frames): new variable,
+	defaulting to 't which is now used by
+	* ess-inf.el (ess-display-temp-buffer): uses the above.
+	Consequently, (ess-execute) reuses an *ess-output* frame.
+
 2006-09-15  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-command): get rid of ess-save-lastvalue-command

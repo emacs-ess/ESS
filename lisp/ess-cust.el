@@ -177,6 +177,12 @@ as `ess-imenu-use-S'."
   :group 'ess
   :type 'boolean)
 
+(defcustom ess-display-buffer-reuse-frames t
+  "*If non-nil, \[[display-buffer] reuses existing frames; see
+`display-buffer-reuse-frames'."
+  :group 'ess
+  :type 'boolean)
+
 (defcustom ess-language nil
   "*Prefix of all ESS processes, and defines the dialect in use.
 Currently acceptable values are `S',  `XLS', `SAS'.

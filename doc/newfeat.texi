@@ -1,3 +1,12 @@
+Changes/New Features in 5.3.3:
+@itemize @bullet
+@item @ESS fix buglet (5.3.2 only) which left command prompt in
+``execute buffer'' and hence help files.
+@item new customizable variable @code{ess-display-buffer-reuse-frames}
+set to true (which changes default behavior) such that execution or
+help *frames* are reused.
+@end itemize
+
 Changes/New Features in 5.3.2:
 @itemize @bullet
 @item Classic BUGS now supported by @code{(require 'essd-bugs)} with @ESS{[BUGS]}
