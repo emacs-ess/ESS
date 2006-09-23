@@ -404,6 +404,8 @@ following lines to your `.emacs' file:
 
 (defun Rd-mode-insert-skeleton ()
   (interactive)
+  ;; Hmm: in theory this should be kept in sync with prompt()
+  ;; ---  maybe using prompt() [or promptClass()...] would be better anyway?!
   (insert "\\name{}\n")
   (insert "\\alias{}\n")
   (insert "\\title{}\n")
@@ -416,7 +418,7 @@ following lines to your `.emacs' file:
   (insert "\\seealso{\n}\n")
   (insert "\\examples{\n}\n")
   (insert "\\author{}\n")
-  (insert "\\keyword{}"))
+  (insert "\\keyword{}\n"))
 
 ;; This is an `easy' version of (defun TeX-font ..) in AUCtex's  tex.el ;
 ;;  see TeX-font-list and also LaTeX-font-list in latex.el

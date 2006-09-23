@@ -1,3 +1,7 @@
+2006-09-23  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essddr.el (Rd-mode-insert-skeleton): add final "\n"
+
 2006-09-22  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-command): make sure final prompt is deleted (again!).
