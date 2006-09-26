@@ -4,6 +4,9 @@
 
 2006-09-22  Martin Maechler  <maechler@stat.math.ethz.ch>
 
+	* ess-mode.el (ess-mode-menu): move "ess-execute" up; the menus
+	are for beginners after all.
+
 	* ess-inf.el (ess-command): make sure final prompt is deleted (again!).
 
 	* ess-cust.el (ess-display-buffer-reuse-frames): new variable,
