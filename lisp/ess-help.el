@@ -590,7 +590,14 @@ Stata or XLispStat for additional information."
 	   'ess-keep-dump-files
 	   'ess-source-directory)
      nil
-     (lambda () (goto-char (point-max)) (insert-buffer-substring "*ESS*")))))
+     (lambda () 
+       ;;(goto-char (point-max)) 
+       (rfc822-goto-eoh)
+       (forward-line 1)
+       (insert "\nThis bug report will be sent to the ESS bugs email list\n")
+       (insert "Press C-c C-c when you are ready to send your message.\n\n")
+       (insert "\n\n\n")
+       (insert-buffer-substring "*ESS*")))))
 
 
 ;;; Provide
