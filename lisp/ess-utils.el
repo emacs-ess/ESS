@@ -390,7 +390,7 @@ find it's full name and path, if it exists, anywhere in the sub-tree."
     (while ess-tmp-dirs
       (setq ess-tmp-dir (car ess-tmp-dirs)
 	    ess-tmp-dirs (cdr ess-tmp-dirs))
-      (if (file-directory-p ess-tmp-dir)
+      (if (file-accessible-directory-p ess-tmp-dir)
 	  (setq ess-tmp-return 
 		(nconc ess-tmp-return
 		       (ess-find-exec ess-root-arg ess-tmp-dir)))))
@@ -413,7 +413,7 @@ Search for the executables in ESS-EXEC-DIR (which defaults to
 	    ess-exec-path (cdr ess-exec-path))
       (when
 	  (and (> (length ess-tmp-dir) 0) 
-	       (file-exists-p ess-tmp-dir))
+	       (file-accessible-directory-p ess-tmp-dir))
 	;; the first test above excludes "" from exec-path, which can be
 	;; problematic with Tramp.
 	(setq ess-tmp-files 
