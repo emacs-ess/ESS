@@ -1225,7 +1225,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 		 (expand-file-name
 		  (read-file-name "Load S file: " nil nil t)))))
   (ess-make-buffer-current)
-  (if (ess-ddeclient-p)
+  (if (ess-ddeclient-p);; << FIXME: rather  ess-microsoft-p
       (setq filename (ess-replace-in-string filename "[\\]" "/")))
   (let ((source-buffer (get-file-buffer filename)))
     (if (ess-check-source filename)
