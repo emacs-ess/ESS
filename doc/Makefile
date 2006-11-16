@@ -8,8 +8,8 @@ include ../Makeconf
 #MM: use makeinfo (i.e. MAKEHTML from above) which is more
 #--  standardized than texi2html which exists in
 #MM  at least two widely differing versions (TeX vs GNU):
-TEXI2HTML = LANG=C texi2html -verbose -iso
-SPLITCHAP = -split_chapter -menu -glossary
+#MM TEXI2HTML = LANG=C texi2html -verbose -iso
+#MM SPLITCHAP = -split_chapter -menu -glossary
 ##
 
 TEXI2DVI = LANG=C texi2dvi
