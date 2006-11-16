@@ -438,6 +438,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 ;; common R and S
 (let*
     ((Q     "\\s\"")			; quote
+     ;;FAILS: why?? (Q     "\\s[\"`]")  ; quote {R now has `..`}
      (repl "\\(<-\\)?")                 ; replacement (function)
      (Sym-0 "\\(\\sw\\|\\s_\\)")	; symbol
      (Symb  (concat Sym-0 "+"))
