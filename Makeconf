@@ -48,7 +48,7 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 #
 SHELL = /bin/sh
 #
-MAKEINFO = LANG=C makeinfo
+MAKEINFO = LC_ALL=C LANG=en makeinfo
 MAKEHTML = $(MAKEINFO) --html --no-split
 ##                            ^^^^^^^^^^ today's bandwidth is fast
 MAKETXT  = $(MAKEINFO) --no-validate --no-headers --no-split -o -
