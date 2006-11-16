@@ -357,7 +357,7 @@ Returns nil if line starts inside a string, t if in a comment."
 		      (+ (current-column) ess-expression-offset))
 		     ((and (numberp ess-arg-function-offset)
 			   (re-search-backward
-			    "=[ \t]*\\s\"*\\(\\w\\|\\s_\\)+\\s\"*[ \t]*"
+			    "=[ \t]*\\s\"?\\(\\w\\|\\s_\\)+\\s\"?[ \t]*"
 			    bol
 			    t))
 		      (forward-sexp -1)
