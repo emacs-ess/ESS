@@ -141,23 +141,34 @@
        (message "Finished running LaTeX" ))))
 
 
+;;-- trying different viewers; thanks to a patch from Leo <sdl@web.de> ---
+
 (defun ess-makePS ()
    "Create a postscript file from a dvi file (name based on the current
-Sweave file buffer name) and display it with gv."
+Sweave file buffer name) and display it."
    (interactive)
    (let* ((namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
-	 (dvi-filename (concat namestem ".dvi")))
+	 (dvi-filename (concat namestem ".dvi"))
+	 (psviewer (file-name-nondirectory
+		    (or (executable-find "gv")
+			(executable-find "evince")
+			(executable-find "kghostview")))))
      (shell-command (concat "dvips -o temp.ps " dvi-filename))
-     (shell-command "gv temp.ps & ")))
+     (shell-command (concat psviewer " temp.ps & "))))
 
 
 (defun ess-makePDF ()
-   "Create a PDF file and display it with acroread."
+   "Create a PDF file and display it."
    (interactive)
    (let* ((namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
-	 (tex-filename (concat namestem ".tex")))
+	 (tex-filename (concat namestem ".tex"))
+	 (pdfviewer (file-name-nondirectory
+		     (or (executable-find "evince")
+			 (executable-find "kpdf")
+			 (executable-find "xpdf")
+			 (executable-find "acroread")))))
      (shell-command (concat "pdflatex " tex-filename))
-     (shell-command (concat "acroread " namestem ".pdf &"))))
+     (shell-command (concat pdfviewer " " namestem ".pdf &"))))
 
 (defun ess-insert-Sexpr ()
  "Insert Sexpr{} into the buffer at point."

@@ -1,3 +1,9 @@
+2006-11-25  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-swv.el (ess-makePS, ess-makePDF): search for PS and PDF
+	viewer instead of using having 'gv' and 'acroread' hardcoded;
+	thanks to patch from Leo <sdl at web_de>.
+
 2006-10-27  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-help.el (ess-submit-bug-report): Add note to use C-c C-c to
