@@ -221,7 +221,8 @@ mouse-1, this will override your binding.")
 (defun noweb-newline (&optional arg)
   "A kludge to get round very odd behaviour of newline in quoted code."
   (interactive "p")
-  (if arg (newline arg) (newline 1)))
+  (if arg (newline arg) (newline 1))
+  (noweb-indent-line))
 
 (defvar noweb-mode-prefix-map
   (let ((map (if (featurep 'xemacs)
