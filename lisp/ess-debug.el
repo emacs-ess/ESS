@@ -71,6 +71,7 @@ default-load-path."
 
 (setq-default debug-on-error t)
 (ess-add-path "~rossini/Repos/repos-svn/ess/lisp")
+;;            ^^adapt!!!^^^^^^^^^^^^^^^
 (require 'ess-site)
 
 ; Local variables section
