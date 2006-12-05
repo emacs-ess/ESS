@@ -31,15 +31,21 @@ PRELOADS = -l ./ess-comp.el
 ## optimizations.  When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
 
-ELC = ess-cust.elc $(CORE) \
-	ess-emcs.elc ess-utils.elc \
-	ess-inf.elc ess-dde.elc \
-	ess-mode.elc ess-trns.elc ess-help.elc \
-	ess-comp.elc \
+### Everything but ess-debug.el, ess-install.el
+###		  ess-send.el , ess-send2.el
+###              ess-latex.el
+### DEPRECATED:  essl-bug.el
+### [WHY_??_] msdos.elc essd-sp6w.elc
+##
+ELC = $(CORE) ess-comp.elc ess-cust.elc \
+	ess-dde.elc ess-emcs.elc ess-font-lock.elc \
+	ess-help.elc ess-inf.elc ess-mode.elc \
 	ess-menu.elc ess-mous.elc mouseme.elc \
+	ess-swv.elc ess-toolbar.elc \
+	ess-trns.elc ess-utils.elc \
 	essl-s.elc essd-s3.elc essd-s4.elc \
 	essd-sp3.elc essd-sp4.elc essd-sp5.elc essd-sp6.elc \
-	essd-r.elc \
+	essd-r.elc ess-rdired.elc \
 	essd-els.elc \
 	essl-lsp.elc essd-xls.elc essd-vst.elc essd-arc.elc \
 	essl-sas.elc essd-sas.elc essa-sas.elc \
@@ -47,8 +53,7 @@ ELC = ess-cust.elc $(CORE) \
 	essl-omg.elc essd-omg.elc \
 	essl-bugs.elc essd-bugs.elc essd-jags.elc \
 	ess-noweb.elc noweb-mode.elc noweb-font-lock-mode.elc \
-	ess-font-lock.elc \
-	essa-r.elc ess-swv.elc ess-toolbar.elc\
+	essa-r.elc
 	essddr.elc
 
 ### Targets
