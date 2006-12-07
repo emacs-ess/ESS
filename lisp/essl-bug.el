@@ -517,7 +517,8 @@ and `ess-bugs-file-dir'."
 			    (ess-bugs-replacement-9 0)
 			    (ess-bugs-replacement-diff 0))
      (while (search-forward-regexp "-?[0-9][.][0-9][0-9][0-9]E[+-][0-9]" nil t)
-	    (setq ess-bugs-replacement-string (int-to-string (string-to-int (match-string 0))))	 
+	    (setq ess-bugs-replacement-string 
+		  (int-to-string (string-to-number (match-string 0))))	 
 	    (setq ess-bugs-replacement-diff (- (match-end 0) (match-beginning 0)))
 	    (save-match-data
 	        (setq ess-bugs-replacement-9 
