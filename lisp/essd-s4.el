@@ -220,7 +220,7 @@
 ;;		 (end-pos (progn (re-search-forward "\"" nil t) (- (point) 1)))
 ;;		 (filename (buffer-substring beg-pos end-pos))
 ;;                 (fbuffer (get-file-buffer filename))
-;;                 (linenum (string-to-int
+;;                 (linenum (string-to-number
 ;;			   (progn (re-search-backward "," nil t)
 ;;				  (current-word))))
 ;;		 (end-pos (point))
