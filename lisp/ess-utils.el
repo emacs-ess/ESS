@@ -664,7 +664,8 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 			    (ess-temp-replacement-9 0)
 			    (ess-temp-replacement-diff 0))
      (while (search-forward-regexp "-?[0-9][.][0-9][0-9]?[0-9]?[Ee][+-][0-9][0-9]?" nil t)
-	    (setq ess-temp-replacement-string (int-to-string (string-to-int (match-string 0))))	 
+	    (setq ess-temp-replacement-string 
+		  (int-to-string (string-to-number (match-string 0))))
 	    (setq ess-temp-replacement-diff (- (match-end 0) (match-beginning 0)))
 	    (save-match-data
 	        (setq ess-temp-replacement-9 
