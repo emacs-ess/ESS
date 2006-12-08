@@ -608,6 +608,11 @@ Good for evaluating ESS code."
   :group 'ess-hooks
   :type 'hook)
 
+(defcustom Rnw-mode-hook nil
+  "Hook run when entering Rnw mode."
+  :type 'hook
+  :group 'ess-R)
+
  ; System variables
 
 (defcustom ess-local-process-name nil
