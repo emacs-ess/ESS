@@ -337,7 +337,8 @@ See `noweb-mode' and `R-mode' for more help."
   (require 'ess-noweb);; << probably someplace else
   (noweb-mode 1); turn it on
   (noweb-set-doc-mode 'latex-mode)
-  (noweb-set-code-mode 'R-mode))
+  (noweb-set-code-mode 'R-mode)
+  (run-hooks 'Rnw-mode-hook))
 
 (fset 'Snw-mode 'Rnw-mode); just a synonym (for now or ever)
 
