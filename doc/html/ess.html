@@ -3770,7 +3770,23 @@ Move to the beginning and end of the help file, respectively.
 consists of a number of capitalized words, followed by a colon.
 
      <p>In addition, the <kbd>s</kbd> key followed by one of the following letters
-will jump to a particular section in the help file:
+will jump to a particular section in the help file. 
+Note that R uses capitalized instead of all-capital section headers,
+e.g., `<samp><span class="samp">Description:</span></samp>' instead of  `<samp><span class="samp">DESCRIPTION:</span></samp>' and also
+only some versions of S(-plus) have
+sections `<samp><span class="samp">BACKGROUND</span></samp>', `<samp><span class="samp">BUGS</span></samp>', `<samp><span class="samp">OPTIONAL ARGUMENTS</span></samp>',
+`<samp><span class="samp">REQUIRED ARGUMENTS</span></samp>', and `<samp><span class="samp">SIDE EFFECTS</span></samp>'. 
+<!-- The bindings are all in ../lisp/essl-s.el -->
+<!-- ess-help-*-sec-keys-alist -->
+<!-- S-plus only: -->
+<!-- @item b			BACKGROUND: -->
+<!-- @item B			BUGS: -->
+<!-- @item O			OPTIONAL ARGUMENTS: -->
+<!-- @item R			REQUIRED ARGUMENTS: -->
+
+     <!-- S and S-plus only: -->
+<!-- @item S			SIDE EFFECTS: -->
+<p>Do use <kbd>s ?</kbd> to get the current list of active key bindings. 
 <a name="index-ess_002dskip_002dto_002dhelp_002dsection-187"></a>
           <dl>
 <dt>`<samp><span class="samp">a</span></samp>'<dd>ARGUMENTS:
@@ -3779,23 +3795,23 @@ will jump to a particular section in the help file:
 
           <br><dt>`<samp><span class="samp">B</span></samp>'<dd>BUGS:
 
-          <br><dt>`<samp><span class="samp">d</span></samp>'<dd>DETAILS:
+          <br><dt>`<samp><span class="samp">d</span></samp>'<dd>DESCRIPTION:
 
-          <br><dt>`<samp><span class="samp">D</span></samp>'<dd>DESCRIPTION:
+          <br><dt>`<samp><span class="samp">D</span></samp>'<dd>DETAILS:
 
           <br><dt>`<samp><span class="samp">e</span></samp>'<dd>EXAMPLES:
 
           <br><dt>`<samp><span class="samp">n</span></samp>'<dd>NOTE:
 
-          <br><dt>`<samp><span class="samp">o</span></samp>'<dd>OPTIONAL ARGUMENTS:
+          <br><dt>`<samp><span class="samp">O</span></samp>'<dd>OPTIONAL ARGUMENTS:
 
-          <br><dt>`<samp><span class="samp">r</span></samp>'<dd>REQUIRED ARGUMENTS:
+          <br><dt>`<samp><span class="samp">R</span></samp>'<dd>REQUIRED ARGUMENTS:
 
-          <br><dt>`<samp><span class="samp">R</span></samp>'<dd>REFERENCES:
-
-          <br><dt>`<samp><span class="samp">s</span></samp>'<dd>SIDE EFFECTS:
+          <br><dt>`<samp><span class="samp">r</span></samp>'<dd>REFERENCES:
 
           <br><dt>`<samp><span class="samp">s</span></samp>'<dd>SEE ALSO:
+
+          <br><dt>`<samp><span class="samp">S</span></samp>'<dd>SIDE EFFECTS:
 
           <br><dt>`<samp><span class="samp">u</span></samp>'<dd>USAGE:
 

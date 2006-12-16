@@ -2375,7 +2375,24 @@ section header in the help file, respectively.  A section header
 consists of a number of capitalized words, followed by a colon.
 
 In addition, the @kbd{s} key followed by one of the following letters
-will jump to a particular section in the help file:
+will jump to a particular section in the help file.
+Note that R uses capitalized instead of all-capital section headers,
+e.g., @samp{Description:} instead of  @samp{DESCRIPTION:} and also
+only some versions of S(-plus) have
+sections @samp{BACKGROUND}, @samp{BUGS}, @samp{OPTIONAL ARGUMENTS},
+@samp{REQUIRED ARGUMENTS}, and @samp{SIDE EFFECTS}.
+@c The bindings are all in ../lisp/essl-s.el
+@c  ess-help-*-sec-keys-alist
+@c
+@c S-plus only:
+@c @item b			BACKGROUND:
+@c @item B			BUGS:
+@c @item O			OPTIONAL ARGUMENTS:
+@c @item R			REQUIRED ARGUMENTS:
+
+@c S and S-plus only:
+@c @item S			SIDE EFFECTS:
+Do use @kbd{s ?} to get the current list of active key bindings.
 @pindex ess-skip-to-help-section
 @table @samp
 @item a
@@ -2388,10 +2405,10 @@ BACKGROUND:
 BUGS:
 
 @item d
-DETAILS:
+DESCRIPTION:
 
 @item D
-DESCRIPTION:
+DETAILS:
 
 @item e
 EXAMPLES:
@@ -2399,20 +2416,20 @@ EXAMPLES:
 @item n
 NOTE:
 
-@item o
+@item O
 OPTIONAL ARGUMENTS:
 
-@item r
+@item R
 REQUIRED ARGUMENTS:
 
-@item R
+@item r
 REFERENCES:
 
 @item s
-SIDE EFFECTS:
-
-@item s
 SEE ALSO:
+
+@item S
+SIDE EFFECTS:
 
 @item u
 USAGE:
