@@ -89,7 +89,7 @@ or `ess-sas-data-view-insight'."
 ;;'(("[pP][dD][fF]" . "/usr/local/bin/acroread") ("[eE]?[pP][sS]" . "/usr/local/bin/gv")))
     (let ((ess-tmp-alist nil)
         (ess-tmp-file nil))
-    
+
     (setq ess-tmp-file (executable-find (if ess-microsoft-p "gsview32" "gsview")))
 
     (if (not ess-tmp-file) (setq ess-tmp-file (executable-find "gv")))
@@ -221,14 +221,14 @@ should set this variable to 'sh regardless of their local shell
 
       (let* ((temp-shell (getenv "SHELL"))
 	     ;; AJR: old CYGWIN versions return nil for (getenv
-	     ;; "SHELL"), so we need to deal with it 'cause I have to 
+	     ;; "SHELL"), so we need to deal with it 'cause I have to
 	     (temp-char (if temp-shell
 			    (string-match "/" temp-shell)
 			  nil)))
 	(while temp-char
 	  (setq temp-shell (substring temp-shell (+ 1 temp-char)))
 	  (setq temp-char (string-match "/" temp-shell)))
-	
+
 	(cond ((or (equal temp-shell "csh") (equal temp-shell "tcsh"))
 	       "nohup nice +6")
 	      (t "nohup nice")))
@@ -630,16 +630,16 @@ current buffer if nil."
 
 	      (if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
 	        ;; else
-		(if no-create (setq revert nil) 
+		(if no-create (setq revert nil)
 		    (if (file-exists-p ess-sas-temp-file)
 			(find-file ess-sas-temp-file))))
 		    ;; else
-		    ;;	(let* ((ess-sas-buffer-list (buffer-list)) 
+		    ;;	(let* ((ess-sas-buffer-list (buffer-list))
 		    ;;	       (ess-sas-buffer-list-index 0)
 		    ;;	       (ess-sas-buffer-list-file nil)
 		    ;;	       (ess-sas-buffer-list-length (length ess-sas-buffer-list)))
 		    ;;	    (while (< ess-sas-buffer-list-index ess-sas-buffer-list-length)
-		    ;;		(setq ess-sas-buffer-list-file 
+		    ;;		(setq ess-sas-buffer-list-file
 		    ;;		    (buffer-file-name (nth ess-sas-buffer-list-index ess-sas-buffer-list)))
 		    ;;		(if (and ess-sas-buffer-list-file
 		    ;;		    (string-match (concat "." suffix) ess-sas-buffer-list-file))
@@ -702,7 +702,7 @@ current buffer if nil."
     "^ERROR [0-9]+-[0-9]+:\\|^ERROR:\\|_ERROR_=1 _N_=\\|_ERROR_=1[ ]?$"
     "\\|NOTE: MERGE statement has more than one data set with repeats"
     "\\|NOTE: Variable .* is uninitialized."
-    "\\|NOTE: SAS went to a new line when INPUT statement reached past" 
+    "\\|NOTE: SAS went to a new line when INPUT statement reached past"
     "\\|NOTE 485-185: Informat .* was not found"
     "\\|NOTE: Estimated G matrix is not positive definite."
     "\\|NOTE: Compressing data set .* increased size by"
@@ -811,22 +811,22 @@ optional argument is non-nil, then set-buffer rather than switch."
 ;;    (ess-sas-goto-shell)
 ;;    (insert "tty")
 ;;    (comint-send-input)
-;;    (ess-sleep)
+;;    (sleep-for ess-sleep-for)
 ;;    (save-excursion (setq ess-temp-stderr (ess-search-except "\\(/dev/[a-z0-9/]+\\)" nil t)))
 ;;    (setq ess-sas-shell-buffer "*OUTPUT*")
 ;;    (ess-sas-goto-shell)
 ;;    (insert "tty")
 ;;    (comint-send-input)
-;;    (ess-sleep)
+;;    (sleep-for ess-sleep-for)
 ;;    (save-excursion (setq ess-temp-stdout (ess-search-except "\\(/dev/[a-z0-9/]+\\)" nil t)))
 ;;    (setq ess-sas-shell-buffer "*PROGRAM*")
 ;;    (ess-sas-goto-shell)
 ;;;;    (insert "tty")
 ;;    (comint-send-input)
-;;    (ess-sleep)
+;;    (sleep-for ess-sleep-for)
 ;;    (insert "sh")
 ;;    (comint-send-input)
-;;    (ess-sleep)
+;;    (sleep-for ess-sleep-for)
 ;;    (save-excursion (setq ess-temp-stdin (ess-search-except "\\(/dev/[a-z0-9/]+\\)" nil t)))
 ;;    (insert (concat ess-sas-submit-command " " ess-sas-submit-command-options " -stdio <"
 ;;	ess-temp-stdin " >1 " ess-temp-stdout " >2 " ess-temp-stderr))
@@ -862,7 +862,7 @@ optional argument is non-nil, then set-buffer rather than switch."
     (interactive)
     (ess-sas-file-path)
 
-    (if (equal ess-tmp-font-size nil) 
+    (if (equal ess-tmp-font-size nil)
 	(setq ess-tmp-font-size "18"))
 
     (let
@@ -1023,7 +1023,7 @@ i.e. let arg1 be your local equivalent of
       (insert ess-sas-submit-pre-command " " arg1 " "
 	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path))
 	" " arg2 " " ess-sas-submit-post-command))
-    (ess-sleep)
+    (sleep-for ess-sleep-for)
     (comint-send-input))
 
 (defun ess-sas-submit-windows (arg1 arg2)
@@ -1118,14 +1118,6 @@ Keep in mind that the maximum command line length in MS-DOS is
       (ess-transcript-minor-mode 1)
       (font-lock-mode 1)
       (font-lock-fontify-buffer)))
-
-(defun ess-sleep ()
-  "Put emacs to sleep for `ess-sleep-for' seconds.
-Sometimes its necessary to wait for a shell prompt."
-  (if (featurep 'xemacs) (sleep-for ess-sleep-for)
-    (sleep-for 0 (truncate (* ess-sleep-for 1000)))
-    )
-  )
 
 (defun ess-sas-versions-create ()
   "Generate the `M-x SASV' functions for starting other versions of SAS.
