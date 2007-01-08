@@ -67,13 +67,17 @@
     (widen)))
 
 ;; C-c C-n
-(defun ess-eval-linewise-ddeclient (text-withtabs &optional invisibly eob even-empty)
+(defun ess-eval-linewise-ddeclient (text-withtabs &optional
+						  invisibly eob even-empty
+						  sleep-sec)
   (save-excursion
     (set-buffer (get-buffer-create "*ESS-temporary*"))
     (ess-setq-vars-local ess-customize-alist (current-buffer))
     (erase-buffer)
     (insert text-withtabs)
-    (ess-eval-region-ddeclient (point-min) (point-max) even-empty)))
+    (ess-eval-region-ddeclient (point-min) (point-max) even-empty))
+  (if (numberp sleep-sec)
+      (sleep-for sleep-sec))); in addition to timeout-ms
 
 ;; C-c C-v
 (defun ess-display-help-on-object-ddeclient (object)
@@ -137,9 +141,9 @@ file into an emacs buffer and displays it."
     (setq filename (concat (file-name-as-directory (getenv "TEMP")) buf))
     (ess-eval-linewise-ddeclient
      (concat ".old.Last.value <- .Last.value; sink('"
-	     filename 
+	     filename
 	     "'); print("
-	     com 
+	     com
 	     "); sink(); .Last.value <- .old.Last.value"))
     (setq bufname (ess-get-file-or-buffer filename)) ;; must follow the eval
     (sleep-for sleep)

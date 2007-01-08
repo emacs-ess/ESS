@@ -921,21 +921,31 @@ Otherwise treat \\ in NEWTEXT string as special:
 ;; and
 ;;	(ess-eval-region   ....)
 
-(defun ess-eval-linewise (text-withtabs
-			  &optional invisibly eob even-empty timeout-ms)
+(defun ess-eval-linewise (text-withtabs &optional
+					invisibly eob even-empty
+					wait-last-prompt sleep-sec timeout-ms)
   ;; RDB 28/8/92 added optional arg eob
   ;; AJR 971022: text-withtabs was text.
   ;; MM 2006-08-23: added 'timeout-ms' -- but the effect seems "nil"
+  ;; MM 2007-01-05: added 'sleep-sec'
   "Evaluate TEXT-WITHTABS in the ESS process buffer as if typed in w/o tabs.
 Waits for prompt after each line of input, so won't break on large texts.
 
 If optional second arg INVISIBLY is non-nil, don't echo commands.  If it
 is a string, just include that string.	If optional third arg
-EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
-4th arg EVEN-EMPTY is non-nil, also send empty text (e.g. an empty line)."
-
+EOB is non-nil go to end of ESS process buffer after evaluation.  If
+optional 4th arg EVEN-EMPTY is non-nil, also send empty text (e.g. an
+empty line).  If 5th arg WAIT-LAST-PROMPT is non-nil, also wait for
+the prompt after the last line;  if 6th arg SLEEP-SEC is a number, ESS
+will call '(\\[sleep-for] SLEEP-SEC) at the end of this function.  If the
+7th arg TIMEOUT-MS is set to number, it will be used instead of the
+default 100 ms and be passed to \\[accept-process-output]."
+;; but the effect is unclear
   (if (ess-ddeclient-p)
-      (ess-eval-linewise-ddeclient text-withtabs invisibly eob even-empty)
+      (ess-eval-linewise-ddeclient text-withtabs
+				   invisibly eob even-empty
+				   (if wait-last-prompt
+				       ess-eval-ddeclient-sleep))
 
     ;; else: "normal", non-DDE behavior:
 
@@ -997,10 +1007,9 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 	;;	 (funcall (car functions) com)
 	;;	 (setq functions (cdr functions)))))
 	(process-send-string sprocess com)
-	;; Don't hang around waiting for the prompt after the last
-	;; line of input
-	(if (eq (length text) 0)
-	    nil
+	;; wait for the prompt - after the last line of input only if wait-last:
+	(if (or wait-last-prompt
+		(> (length text) 0))
 	  (while (progn
 		   (accept-process-output nil 0 timeout-ms)
 		   (goto-char (marker-position (process-mark sprocess)))
@@ -1008,6 +1017,7 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 		   (if (< (point) start-of-output)
 		       (goto-char start-of-output))
 		   (not (looking-at inferior-ess-prompt))))))
+
       (goto-char (marker-position (process-mark sprocess)))
       (if eob
 	  (progn
@@ -1017,7 +1027,9 @@ EOB is non-nil go to end of ESS process buffer after evaluation.  If optional
 	    (set-window-point (get-buffer-window sbuffer t)
 			      (with-current-buffer sbuffer (point-max))))
 	(set-buffer cbuffer))
-      )))
+      (if (numberp sleep-sec)
+	  (sleep-for sleep-sec))))); in addition to timeout-ms
+
 
 ;;;*;;; Evaluate only
 
@@ -1759,7 +1771,8 @@ This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
 	    (setq ess-current-process-name ess-local-process-name))
 
 	(ess-eval-linewise (format "options(width=%d,length=99999)"
-				   (1- (window-width)))))))
+				   (1- (window-width)))
+			   nil nil nil 'wait-prompt))))
 
 (defun ess-execute (command &optional invert buff message)
   "Send a command to the ESS process.

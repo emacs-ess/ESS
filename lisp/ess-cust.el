@@ -704,7 +704,7 @@ non-nil."
   :type 'string)
 
 (defcustom inferior-R-args ""
-  "*String of arguments used when starting R.
+  "*String of arguments (see 'R --help') used when starting R.
 These arguments are currently not passed to other versions of R that have
 been created using the variable `ess-r-versions'."
   :group 'ess-R
@@ -1139,6 +1139,15 @@ of Emacs until the code has been successfully evaluated."
   at the bottom of the process buffer."
   :group 'ess-proc
   :type 'boolean)
+
+
+(defcustom ess-eval-ddeclient-sleep 0.06
+  "*If non-nil, a number specifying *seconds* to wait after certain
+\[[ess-eval-linewise-ddeclient]] calls, such as those at startup."
+;; i.e this currently only applies to (if microsoft-p ...) !
+  :group 'ess-proc
+  :type '(choice (const nil) number))
+
 
  ; System variables
 

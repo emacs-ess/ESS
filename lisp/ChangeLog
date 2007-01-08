@@ -1,7 +1,29 @@
+2007-01-08  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essa-sas.el (ess-sleep): elimnated, since no xemacs/emacs
+	distinction needed: GNU emacs can well (sleep-for 0.12)
+
+2007-01-06  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-site.el (ess-microsoft-p): issue "options(chmhelp = FALSE)"
+	for microsoft-p
+
+2007-01-05  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-eval-linewise): new argument 'wait-last-prompt'
+	and 'sleep-sec'
+	* ess-inf.el (ess-execute-screen-options): use wait-last.. and sleep-sec
+
+	* ess-dde.el (ess-eval-linewise-ddeclient): use sleep-sec
+
+	* essd-r.el (R): using ess-eval-linewise + 'wait (2 x)
+
+	* ess-cust.el (ess-eval-linewise-sleep): new variable; default 0.06
+
 2006-12-08  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-cust.el (Rnw-mode-hook): New hook.
-	
+
 	* essd-r.el (Rnw-mode): Use Rnw-mode-hook.
 
 2006-12-07  Stephen Eglen  <stephen@gnu.org>
@@ -9,7 +31,7 @@
 	* ess-utils.el (ess-sci-to-dec), essl-bug.el
 	(ess-bugs-sci-to-round-4-dp), essl-bugs.el
 	(ess-bugs-sci-to-round-4-dp), essd-s4.el: string-to-int is
-	deprecated; use string-to-number. 
+	deprecated; use string-to-number.
 
 2006-12-03  Stephen Eglen  <stephen@gnu.org>
 

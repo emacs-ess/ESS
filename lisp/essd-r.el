@@ -137,9 +137,11 @@ to R, put them in the variable `inferior-R-args'."
 	     inferior-ess-language-start))
     ;; currently rely on baseenv() which is in R only since version 2.2:
     (ess-eval-linewise
-     "if(!exists(\"baseenv\", mode=\"function\")) baseenv <- function() NULL")
+     "if(!exists(\"baseenv\", mode=\"function\")) baseenv <- function() NULL"
+     nil nil nil 'wait-prompt);; solving "lines running together"
     (if inferior-ess-language-start
-	(ess-eval-linewise inferior-ess-language-start))))
+	(ess-eval-linewise inferior-ess-language-start
+			   nil nil nil 'wait-prompt))))
 
 ;;;### autoload
 (defun R-mode  (&optional proc-name)
@@ -255,7 +257,7 @@ then use \"c:/progra~1/R/\" which is the default location for the R distribution
     (while rwxxyy
       (setq rw (car rwxxyy))
       (setq rwxxyy (cdr rwxxyy))
-      (setq Rterm (cons (ess-replace-regexp-in-string "[\\]" "/" 
+      (setq Rterm (cons (ess-replace-regexp-in-string "[\\]" "/"
 			    (concat ess-R-root-dir rw "bin/Rterm.exe"))
 		  Rterm)))
     Rterm))
