@@ -638,6 +638,13 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; by setting ess-directory to nil, i.e.
 ;; (setq-default ess-directory nil) ; this is the default.
 
+(if ess-microsoft-p
+    (add-hook 'ess-post-run-hook
+	      '(lambda()
+		 (if (string= ess-dialect "R")
+		     (ess-eval-linewise "options(chmhelp = FALSE)"
+					nil nil nil 'wait)))))
+
 
 ;;; 3.6 Example of formatting changes
 
