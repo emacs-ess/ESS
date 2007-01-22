@@ -1215,6 +1215,13 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
   :group 'ess-command
   :type 'string)
 
+(defcustom inferior-ess-safe-names-command "try(names(%s), silent=TRUE)\n"
+  "Format string for ESS command to extract names from an object *safely*.
+
+%s is replaced by the object name -- usually a list or data frame."
+  :group 'ess-command
+  :type 'string)
+
 (defcustom inferior-ess-get-prompt-command "options()$prompt\n"
   "Command to find the value of the current S prompt."
   :group 'ess-command

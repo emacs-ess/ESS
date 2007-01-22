@@ -1,3 +1,12 @@
+2007-01-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (inferior-ess-safe-names-command): new
+	try(names(.)); this finally gets rid of "hanging" in object
+	completion, e.g., when options(error=recover) is active in R.
+
+	* ess-inf.el (ess-object-names): using the above ..-safe-names-..
+
+
 2007-01-08  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essa-sas.el (ess-sleep): elimnated, since no xemacs/emacs
