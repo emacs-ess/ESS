@@ -1218,7 +1218,9 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
 (defcustom inferior-ess-safe-names-command "try(names(%s), silent=TRUE)\n"
   "Format string for ESS command to extract names from an object *safely*.
 
-%s is replaced by the object name -- usually a list or data frame."
+%s is replaced by an \"object name\" -- usually a list or data frame, but in R also
+ e.g., 'package:stats'."
+
   :group 'ess-command
   :type 'string)
 

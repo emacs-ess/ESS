@@ -62,11 +62,11 @@
 
 ;;; TODO:
 ;;;
-;;; 1. I want to be able to send ess-makeLatex a parameter to tell it
+;;; 1. I want to be able to send ess-swv-latex a parameter to tell it
 ;;; the number of times to run LaTeX (to get references updated
 ;;; correctly).
 ;;;
-;;; 2. Also need to add ess-makeBibtex.
+;;; 2. Also need to add ess-swv-Bibtex.
 ;;;
 ;;; 3. Might be good to have a way to chain commands.
 ;;
@@ -83,7 +83,36 @@
 ;;     (search .) below ... -> ``please'' replace the (search ...) parts
 (require 'cl)
 
-(defun ess-Swv-make (thing)
+(defun ess-swv-run-in-R (cmd)
+   "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
+   (ess-force-buffer-current "Process to load into: ")
+   (save-excursion
+     (ess-execute (format "require(tools)"));; Make sure tools is loaded.
+     (let* ((this-buf (current-buffer))
+	    (sprocess (get-ess-process ess-current-process-name))
+	    (sbuffer (process-buffer sprocess))
+	    (this-file (buffer-file-name))
+	    (Rnw-dir (file-name-directory this-file))
+	    (Sw-cmd
+	     (format
+	      "local({..od <- getwd(); setwd(%S); %s(%S); setwd(..od) })"
+	      Rnw-dir cmd this-file))
+	    )
+       (message "%s()ing %S" this-file)
+       (ess-execute Sw-cmd 'buffer nil nil)
+       (ess-show-buffer (buffer-name sbuffer) nil))))
+
+(defun ess-swv-tangle ()
+   "Run Stangle on the current .Rnw file."
+   (interactive)
+   (ess-swv-run-in-R "Stangle"))
+
+(defun ess-swv-weave ()
+   "Run Sweave on the current .Rnw file."
+   (interactive)
+   (ess-swv-run-in-R "Sweave"))
+
+(defun ess-swv-weave ()
    "Run Sweave on the current .Rnw file."
    (interactive)
    (ess-force-buffer-current "Process to load into: ")
@@ -103,29 +132,8 @@
        (ess-execute Sw-cmd 'buffer nil nil)
        (ess-show-buffer (buffer-name sbuffer) nil))))
 
-(defun ess-makeSweave ()
-   "Run Sweave on the current .Rnw file."
-   (interactive)
-   (ess-force-buffer-current "Process to load into: ")
-   (save-excursion
-     (ess-execute (format "require(tools)"));; Make sure tools is loaded.
-     (let* ((this-buf (current-buffer))
-	    (sprocess (get-ess-process ess-current-process-name))
-	    (sbuffer (process-buffer sprocess))
-	    (this-file (buffer-file-name))
-	    (Rnw-dir (file-name-directory this-file))
-	    (Sw-cmd
-	     (format
-	      "local({..od <- getwd(); setwd(%S); Sweave(%S); setwd(..od) })"
-	      Rnw-dir this-file))
-	    )
-       (message "Sweaving %S" this-file)
-       (ess-execute Sw-cmd 'buffer nil nil)
-       (ess-show-buffer (buffer-name sbuffer) nil))))
 
-
-
-(defun ess-makeLatex ()
+(defun ess-swv-latex ()
    "Run LaTeX on the product of Sweave()ing the current file."
    (interactive)
    (save-excursion
@@ -143,7 +151,7 @@
 
 ;;-- trying different viewers; thanks to a patch from Leo <sdl@web.de> ---
 
-(defun ess-makePS ()
+(defun ess-swv-PS ()
    "Create a postscript file from a dvi file (name based on the current
 Sweave file buffer name) and display it."
    (interactive)
@@ -157,8 +165,8 @@ Sweave file buffer name) and display it."
      (shell-command (concat psviewer " temp.ps & "))))
 
 
-(defun ess-makePDF ()
-   "Create a PDF file and display it."
+(defun ess-swv-PDF ()
+   "Create a PDF file ('pdflatex') and display it."
    (interactive)
    (let* ((namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
 	 (tex-filename (concat namestem ".tex"))
@@ -177,12 +185,41 @@ Sweave file buffer name) and display it."
  (backward-char))
 
 
+;;; back-compatible wrappers:
+(defun ess-makeSweave () "old *DEPRECATED* version of \\[ess-swv-weave]."
+ (interactive) (ding)
+ (message
+  "** warning: ess-makeSweave is deprecated. Do use (ess-swv-weave) instead!")
+ (ess-swv-weave))
+
+(defun ess-makeLatex () "old *DEPRECATED* version of \\[ess-swv-latex]."
+ (interactive) (ding)
+ (message
+  "** warning: ess-makeLatex is deprecated. Do use (ess-swv-latex) instead!")
+ (ess-swv-latex))
+
+(defun ess-makePS () "old *DEPRECATED* version of \\[ess-swv-PS]."
+ (interactive) (ding)
+ (message
+  "** warning: ess-makePS is deprecated. Do use (ess-swv-PS) instead!")
+ (ess-swv-PS))
+
+(defun ess-makePDF () "old *DEPRECATED* version of \\[ess-swv-PDF]."
+ (interactive) (ding)
+ (message
+  "** warning: ess-makePDF is deprecated. Do use (ess-swv-PDF) instead!")
+ (ess-swv-PDF))
+
+
 ;;; Now bind some keys.
-(define-key noweb-minor-mode-map "\M-ns" 'ess-makeSweave)
-(define-key noweb-minor-mode-map "\M-nl" 'ess-makeLatex)
-(define-key noweb-minor-mode-map "\M-np" 'ess-makePS)
-(define-key noweb-minor-mode-map "\M-nP" 'ess-makePDF)
+(define-key noweb-minor-mode-map "\M-ns" 'ess-swv-weave)
+(define-key noweb-minor-mode-map "\M-nT" 'ess-swv-tangle)
+(define-key noweb-minor-mode-map "\M-nl" 'ess-swv-latex)
+(define-key noweb-minor-mode-map "\M-np" 'ess-swv-PS)
+(define-key noweb-minor-mode-map "\M-nP" 'ess-swv-PDF)
+
 (define-key noweb-minor-mode-map "\M-nx" 'ess-insert-Sexpr)
+
 
 
  ; provides
