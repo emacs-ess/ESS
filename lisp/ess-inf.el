@@ -2055,7 +2055,7 @@ using `ess-object-list' if that is non-nil."
 (defun ess-get-words-from-vector (command)
   "Evaluate the S command COMMAND, which returns a character vector.
 Return the elements of the result of COMMAND as an alist of strings.
-A newline is automatically added to COMMAND."
+COMMAND should have a terminating newline."
   (let ((tbuffer (get-buffer-create
 		  " *ess-names-list*")); initial space: disable-undo
 	names)
