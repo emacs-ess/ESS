@@ -1,3 +1,7 @@
+2007-04-26  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-get-words-from-vector): Doc fix.
+
 2007-03-16  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-swv.el (ess-swv-tangle): new; also rename all the
