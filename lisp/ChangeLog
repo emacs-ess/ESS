@@ -1,3 +1,8 @@
+2007-05-01  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r-args.el: new functionality donated from
+	Sven Hartenstein, see http://www.svenhartenstein.de/emacs-ess.php
+
 2007-04-26  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-get-words-from-vector): Doc fix.

@@ -1,3 +1,17 @@
+Changes/New Features in 5.3.5:
+@itemize @bullet
+@item @ESS{[R]} add Sven Hartenstein's ``R tooltip'' functionality,
+ via new file @file{lisp/essd-r-args.el}.
+@end itemize
+
+Changes/New Features in 5.3.4:
+@itemize @bullet
+@item @ESS{[R]} now better work with options(error=recover); and the
+new default of CHM help files on windows.
+@item @ESS{[R]} some more cleanup in the ``sweave'' functions
+@item miscellaneous fixes
+@end itemize
+
 Changes/New Features in 5.3.3:
 @itemize @bullet
 @item @ESS{[S]} fix buglet (5.3.2 only) which left command prompt in
