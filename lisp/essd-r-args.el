@@ -1,7 +1,10 @@
 ;; Copyright (C) 2007 Sven Hartenstein
 ;; e-mail: mail at svenhartenstein dot de
 
-;; This file is intended to be part of ESS.
+;; Copyright (C) 2007 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+
+;; This file is part of ESS
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -177,6 +180,8 @@
 
 (eval-and-compile
   (require 'ess-cust)
+)
+(eval-when-compile
   (require 'tooltip); for tooltip-show
 )
 
