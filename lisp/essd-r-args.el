@@ -96,18 +96,16 @@
 ;; you want to see the arguments list, you most probably want to bind
 ;; the functions to a key which again should be done in your ~/.emacs
 ;; file. You can also let Emacs call the function each time you insert
-;; an opening parenthesis ("("). Again, the following is an example
-;; only:
+;; an opening parenthesis ("(").
 
-;; ;; bind ess-r-args-show to F2
+;; -----> do this below
+
+;; Again, the following is an example only:
+
+;; bind ess-r-args-show to F2
 ;; (define-key ess-mode-map [f2] 'ess-r-args-show)
-;;
-;; ;; call ess-r-args-show automatically
-;; (define-key ess-mode-map "(" '(lambda nil "" (interactive)
-;;   (skeleton-pair-insert-maybe nil)
-;;   (ess-r-args-show)))
-;;
-;; ;; bind ess-r-args-insert to F3
+
+;; bind ess-r-args-insert to F3
 ;; (define-key ess-mode-map [f3] 'ess-r-args-insert)
 
 ;; == Setting the tooltip position ==
@@ -205,7 +203,8 @@ within the argument list or nil if no possible function name is
 found."
   (interactive "*")
   (save-excursion
-    (condition-case nil (up-list -1) (error (message "Can't find opening paranthesis.")))
+    (condition-case nil (up-list -1)
+      (error (message "Can't find opening paranthesis.")))
     (let ((posend (point)))
       (backward-sexp 1)
       (let ((rfunname (buffer-substring-no-properties posend (point))))
@@ -217,55 +216,69 @@ found."
 FUNCTION or nil if no possible function name found. Calls
 ess-r-args-current-function if no argument given."
   (interactive "*")
-  (if (not (equal ess-current-process-name "R"))
-      ((lambda () (message "No R process running") nil))
-    (let ((rfunname function)
-	  (ess-nuke-trailing-whitespace-p t)
+
+  (if (null function)
+      (setq function (ess-r-args-current-function)))
+  (when function
+    (ess-force-buffer-current "R process to use: ")
+    ;;   (ess-make-buffer-current)
+    ;; This is not ok: could be "R-devel" or ...
+    ;;   (if (not (equal ess-current-process-name "R"))
+    ;;       ((lambda () (message "No R process running") nil))
+    (let ((ess-nuke-trailing-whitespace-p t)
 	  (args))
-      (if (equal nil rfunname) (setq rfunname (ess-r-args-current-function)))
-      (if (equal nil rfunname)
-	  nil
-	(ess-command (concat "try(args(" rfunname "), silent=TRUE)\n")
-		     (get-buffer-create "*ess-r-args-tmp*"))
-	(with-current-buffer "*ess-r-args-tmp*"
+      (ess-command (concat "try(args(" function "), silent=TRUE)\n")
+		   (get-buffer-create "*ess-r-args-tmp*"))
+      (with-current-buffer "*ess-r-args-tmp*"
+	(goto-char (point-min))
+	(if (null (search-forward "function" 10 t))
+	    (message ess-r-args-noargsmsg)
 	  (goto-char (point-min))
-	  (if (equal nil (search-forward "function" 10 t))
-	      (message ess-r-args-noargsmsg)
-	    (goto-char (point-min))
-	    (zap-to-char 1 (string-to-char "("))
-	    (goto-char (point-max))
-	    (zap-to-char -1 (string-to-char ")"))
-	    (ess-nuke-trailing-whitespace); should also work in Xemacs
-	    (setq args (buffer-string))))
-	(kill-buffer "*ess-r-args-tmp*")
-	args))))
+	  (zap-to-char 1 (string-to-char "("))
+	  (goto-char (point-max))
+	  (zap-to-char -1 (string-to-char ")"))
+	  (ess-nuke-trailing-whitespace); should also work in Xemacs
+	  (setq args (buffer-string))))
+      (kill-buffer "*ess-r-args-tmp*")
+      args)))
 
 (defun ess-r-args-show (&optional function)
   "Show arguments and their default values of R function. Calls
 ess-r-args-current-function if no argument given."
   (interactive "*")
-  (let ((rfunname function)
-	(args))
-    (if (equal nil rfunname) (setq rfunname (ess-r-args-current-function)))
-    (if (equal nil rfunname)
-	nil
-      (setq args (ess-r-args-get rfunname))
-      (unless (equal nil args)
+  (if (null function)
+      (setq function (ess-r-args-current-function)))
+  (when function
+    (let ((args (ess-r-args-get function)))
+      (unless (null args)
 	(if (equal ess-r-args-show-as "tooltip")
 	    (progn (require 'tooltip)
 		   (tooltip-show (concat ess-r-args-show-prefix args)))
 	  (message (concat ess-r-args-show-prefix args)))))))
 
+;; MM: I would strongly discourage use of the following:
+;;     it leads to clueless newbie-users  who indeed
+;;     explicitly call a function with all its default arguments;
+;;     instead of only setting the required arguments
 (defun ess-r-args-insert (&optional function)
   "Insert arguments and their default values of function. Calls
 ess-r-args-current-function if no argument given."
   (interactive "*")
-  (let ((rfunname function)
-	(args) (pointpos))
-    (if (equal nil rfunname) (setq function (ess-r-args-current-function)))
-    (if (equal nil rfunname)
-	nil
-      (setq args (ess-r-args-get rfunname))
-      (setq pointpos (point))
+  (if (null function)
+      (setq function (ess-r-args-current-function)))
+  (when function
+    (let ((args (ess-r-args-get function))
+	  (pointpos (point)))
       (insert args)
       (goto-char pointpos))))
+
+;; MM: activate this for now --- FIXME:  *not* unconditionally
+;; call ess-r-args-show automatically --- this should be optional
+(define-key ess-mode-map "("
+  '(lambda ()
+     (interactive)
+     (skeleton-pair-insert-maybe nil)
+     (ess-r-args-show)))
+
+
+(provide 'essd-r-args)

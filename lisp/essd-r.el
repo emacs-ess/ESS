@@ -34,6 +34,8 @@
 (ess-message "[essd-r:] (require 'essl-s)")
 (require 'essl-s)
 
+(require 'essd-r-args);  for now
+
 ;; modify S Syntax table:
 (setq R-syntax-table S-syntax-table)
 ;; R >= 1.8: back tick `string` -- unfortunately no *pair* checking:
