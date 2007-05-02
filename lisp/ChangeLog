@@ -29,7 +29,7 @@
 
 2007-01-08  Martin Maechler  <maechler@stat.math.ethz.ch>
 
-	* essa-sas.el (ess-sleep): elimnated, since no xemacs/emacs
+	* essa-sas.el (ess-sleep): eliminated, since no xemacs/emacs
 	distinction needed: GNU emacs can well (sleep-for 0.12)
 
 2007-01-06  Martin Maechler  <maechler@stat.math.ethz.ch>

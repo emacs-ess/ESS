@@ -274,11 +274,13 @@ ess-r-args-current-function if no argument given."
 
 ;; MM: activate this for now --- FIXME:  *not* unconditionally
 ;; call ess-r-args-show automatically --- this should be optional
-(define-key ess-mode-map "("
-  '(lambda ()
-     (interactive)
-     (skeleton-pair-insert-maybe nil)
-     (ess-r-args-show)))
 
+(add-hook 'ess-mode-hook
+	  (lambda ()
+	    (define-key ess-mode-map "("
+	      '(lambda ()
+		 (interactive)
+		 (skeleton-pair-insert-maybe nil)
+		 (ess-r-args-show)))))
 
 (provide 'essd-r-args)
