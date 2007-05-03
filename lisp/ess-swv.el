@@ -89,24 +89,39 @@
 ;;     by        ' (string-match "\\.Rnw$" buf '
 ;; (require 'cl)
 
-(defun ess-swv-run-in-R (cmd)
-   "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
-   (ess-force-buffer-current "Process to load into: ")
-   (save-excursion
-     (ess-execute (format "require(tools)"));; Make sure tools is loaded.
-     (let* ((this-buf (current-buffer))
-	    (sprocess (get-ess-process ess-current-process-name))
-	    (sbuffer (process-buffer sprocess))
-	    (this-file (buffer-file-name))
-	    (Rnw-dir (file-name-directory this-file))
-	    (Sw-cmd
-	     (format
-	      "local({..od <- getwd(); setwd(%S); %s(%S); setwd(..od) })"
-	      Rnw-dir cmd this-file))
-	    )
-       (message "%s()ing %S" cmd this-file)
-       (ess-execute Sw-cmd 'buffer nil nil)
-       (ess-show-buffer (buffer-name sbuffer) nil))))
+(defun ess-swv-run-in-R (cmd &optional choose-process)
+  "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
+  (let* ((rnw-buf (current-buffer)))
+    (if choose-process ;; previous behavior
+	(ess-force-buffer-current "R process to load into: ")
+      ;; else
+      (update-ess-process-name-list)
+      (cond ((= 0 (length ess-process-name-list))
+	     (message "no ESS processes running; starting R")
+	     (sit-for 1); so the user notices before the next msgs/prompt
+	     (R)
+	     (set-buffer rnw-buf)
+	     )
+	    ((not (string= "R" (ess-make-buffer-current))); e.g. Splus, need R
+	     (ess-force-buffer-current "R process to load into: "))
+       ))
+
+    (save-excursion
+      (ess-execute (format "require(tools)")) ;; Make sure tools is loaded.
+      (basic-save-buffer); do not Sweave/Stangle old version of file !
+      (let* ((sprocess (get-ess-process ess-current-process-name))
+	     (sbuffer (process-buffer sprocess))
+	     (rnw-file (buffer-file-name))
+	     (Rnw-dir (file-name-directory rnw-file))
+	     (Sw-cmd
+	      (format
+	       "local({..od <- getwd(); setwd(%S); %s(%S); setwd(..od) })"
+	       Rnw-dir cmd rnw-file))
+	     )
+	(message "%s()ing %S" cmd rnw-file)
+	(ess-execute Sw-cmd 'buffer nil nil)
+	(switch-to-buffer rnw-buf)
+	(ess-show-buffer (buffer-name sbuffer) nil)))))
 
 (defun ess-swv-tangle ()
    "Run Stangle on the current .Rnw file."
@@ -133,26 +148,40 @@
        (message "Finished running LaTeX" ))))
 
 
-;;-- trying different viewers; thanks to a patch from Leo <sdl@web.de> ---
-
 (defun ess-swv-PS ()
   "Create a postscript file from a dvi file (name based on the current
 Sweave file buffer name) and display it."
   (interactive)
-  (let* ((namestem (file-name-sans-extension (buffer-file-name)))
+  (let* ((buf (buffer-name))
+	 (namestem (file-name-sans-extension (buffer-file-name)))
 	 (dvi-filename (concat namestem ".dvi"))
 	 (psviewer (ess-get-ps-viewer)))
     (shell-command (concat "dvips -o temp.ps " dvi-filename))
-    (shell-command (concat psviewer " temp.ps & "))))
+    (shell-command (concat psviewer " temp.ps & "))
+    (switch-to-buffer buf)
+    ))
 
 (defun ess-swv-PDF ()
   "Create a PDF file ('pdflatex') and display it."
   (interactive)
-  (let* ((namestem (file-name-sans-extension (buffer-file-name)))
-	 (tex-filename (concat namestem ".tex"))
-	 (pdfviewer (ess-get-pdf-viewer)))
-    (shell-command (concat "pdflatex " tex-filename))
-    (shell-command (concat pdfviewer " " namestem ".pdf &"))))
+  (let* ((buf (buffer-name))
+	 (namestem (file-name-sans-extension (buffer-file-name)))
+	 (latex-filename (concat namestem ".tex"))
+	 (tex-buf (get-buffer-create " *ESS-tex-output*"))
+	 (pdfviewer (ess-get-pdf-viewer))
+	 (pdf-status))
+    ;;(shell-command (concat "pdflatex " latex-filename))
+    (message "Running pdfLaTeX on '%s' ..." latex-filename)
+    (switch-to-buffer tex-buf)
+    (setq pdf-status
+	  (call-process "pdflatex" nil tex-buf 1 latex-filename))
+    (if (not (= 0 pdf-status))
+	(message "** OOPS: error in 'pdflatex' (%d)!" pdf-status)
+      ;; else: pdflatex probably ok
+      (shell-command (concat pdfviewer " " namestem ".pdf &")))
+    (switch-to-buffer buf)
+    (display-buffer tex-buf)))
+
 
 (defun ess-insert-Sexpr ()
  "Insert Sexpr{} into the buffer at point."

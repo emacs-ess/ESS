@@ -195,9 +195,13 @@
 ;;	      (ding)
 	      (sit-for 1))))))
 
+
+
 ;;; Running these must be done "every time" before use, since
 ;;; they depend on a customizable variable.
 
+;; trying different viewers; thanks to an original patch for
+;; ess-swv.el from Leo <sdl@web.de> :
 (defun ess-get-ps-viewer ()
   "Get external PostScript viewer to be used from ESS.
 Use `ess-ps-viewer-pref' when that is executably found by \\[executable-find].

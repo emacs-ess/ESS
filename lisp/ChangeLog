@@ -3,7 +3,10 @@
 	* ess.el (ess-get-ps-viewer, ess-get-pdf-viewer): new functions,
 	currently used in
 	* ess-swv.el (ess-swv-PS, ess-swv-PDF): cleaned up; using the above and
-	(ess-swv-run-in-R): fix bug in (message .)
+	(ess-swv-run-in-R): fix bug in (message .);
+	start R automatically if none is running.
+	(ess-swv-PDF): use (call-process .) return value to detect
+	errors from pdflatex.
 
 	* ess-cust.el (ess-pdf-viewer-pref, ess-ps-viewer-pref): new
 	user customizable variables.
