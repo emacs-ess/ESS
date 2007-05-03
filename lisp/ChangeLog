@@ -3,6 +3,8 @@
 	* ess.el (ess-get-ps-viewer, ess-get-pdf-viewer): new functions,
 	currently used in
 	* ess-swv.el (ess-swv-PS, ess-swv-PDF): cleaned up; using the above and
+	(ess-swv-run-in-R): fix bug in (message .)
+
 	* ess-cust.el (ess-pdf-viewer-pref, ess-ps-viewer-pref): new
 	user customizable variables.
 

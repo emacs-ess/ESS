@@ -104,7 +104,7 @@
 	      "local({..od <- getwd(); setwd(%S); %s(%S); setwd(..od) })"
 	      Rnw-dir cmd this-file))
 	    )
-       (message "%s()ing %S" this-file)
+       (message "%s()ing %S" cmd this-file)
        (ess-execute Sw-cmd 'buffer nil nil)
        (ess-show-buffer (buffer-name sbuffer) nil))))
 
