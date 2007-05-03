@@ -36,7 +36,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.3.4
+5.3.5
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -346,7 +346,25 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
 <h3 class="section">1.2 New features in ESS</h3>
 
-<p>Changes/New Features in 5.3.3:
+<p>Changes/New Features in 5.3.5:
+     <ul>
+<li><acronym>ESS[R]</acronym> add Sven Hartenstein's &ldquo;R tooltip&rdquo; functionality,
+ via new file <samp><span class="file">lisp/essd-r-args.el</span></samp>. 
+<li><acronym>ESS</acronym>: functions <code>ess-get-pdf-viewer</code> and *-ps-viewer; built on new
+ customizable variables <var>ess-pdf-viewer-pref</var> and
+ <var>ess-ps-viewer-pref</var>; currently used in <code>ess-swv-PDF</code> and
+ <code>*-PS</code>. 
+</ul>
+
+   <p>Changes/New Features in 5.3.4:
+     <ul>
+<li><acronym>ESS[R]</acronym> now better work with options(error=recover); and the
+new default of CHM help files on windows. 
+<li><acronym>ESS[R]</acronym> some more cleanup in the &ldquo;sweave&rdquo; functions
+<li>miscellaneous fixes
+</ul>
+
+   <p>Changes/New Features in 5.3.3:
      <ul>
 <li><acronym>ESS[S]</acronym> fix buglet (5.3.2 only) which left command prompt in
 &ldquo;execute buffer&rdquo; and hence help files. 

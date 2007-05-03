@@ -34,7 +34,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <p><a name="index-README-1"></a>
 This is the README file for the distribution of ESS version
 
-   <p>5.3.4
+   <p>5.3.5
 
    <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical programming
 and data analysis.  Languages supported: the S family (S 3/4, S-PLUS
@@ -126,7 +126,25 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">1.3 New Features</h3>
 
-<p>Changes/New Features in 5.3.3:
+<p>Changes/New Features in 5.3.5:
+     <ul>
+<li><acronym>ESS[R]</acronym> add Sven Hartenstein's &ldquo;R tooltip&rdquo; functionality,
+ via new file <samp><span class="file">lisp/essd-r-args.el</span></samp>. 
+<li><acronym>ESS</acronym>: functions <code>ess-get-pdf-viewer</code> and *-ps-viewer; built on new
+ customizable variables <var>ess-pdf-viewer-pref</var> and
+ <var>ess-ps-viewer-pref</var>; currently used in <code>ess-swv-PDF</code> and
+ <code>*-PS</code>. 
+</ul>
+
+   <p>Changes/New Features in 5.3.4:
+     <ul>
+<li><acronym>ESS[R]</acronym> now better work with options(error=recover); and the
+new default of CHM help files on windows. 
+<li><acronym>ESS[R]</acronym> some more cleanup in the &ldquo;sweave&rdquo; functions
+<li>miscellaneous fixes
+</ul>
+
+   <p>Changes/New Features in 5.3.3:
      <ul>
 <li><acronym>ESS[S]</acronym> fix buglet (5.3.2 only) which left command prompt in
 &ldquo;execute buffer&rdquo; and hence help files. 
