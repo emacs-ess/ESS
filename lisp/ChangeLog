@@ -1,5 +1,8 @@
 2007-05-03  Martin Maechler  <maechler@stat.math.ethz.ch>
 
+	* ess-inf.el (ess-request-a-process): Don't ask if there's only one
+	process.
+
 	* ess.el (ess-get-ps-viewer, ess-get-pdf-viewer): new functions,
 	currently used in
 	* ess-swv.el (ess-swv-PS, ess-swv-PDF): cleaned up; using the above and

@@ -464,17 +464,13 @@ This was rewritten by KH in April 1996."
 
 (defun ess-prompt-for-directory (default prompt)
   "`prompt' for a directory, using `default' as the usual."
-  (let ((the-dir
-	 (expand-file-name
-	  (file-name-as-directory
-	   (if (fboundp 'read-directory-name)
-	       ;; use XEmacs' read-directory-name if exists.
-	       (read-directory-name prompt
-				    (file-name-as-directory default)
-				    (file-name-as-directory default) t nil)
-	     (read-file-name prompt
-			     (file-name-as-directory default)
-			     (file-name-as-directory default) t nil))))))
+  (let* ((def-dir (file-name-as-directory default))
+	 (the-dir (expand-file-name
+		   (file-name-as-directory
+		    (if (fboundp 'read-directory-name)
+			;; use XEmacs' read-directory-name if exists.
+			(read-directory-name prompt def-dir def-dir t nil)
+		      (read-file-name prompt def-dir def-dir t nil))))))
     (if (file-directory-p the-dir) nil
       (error "%s is not a valid directory" the-dir))
     the-dir))
@@ -550,33 +546,41 @@ Returns the name of the process, or nil if the current buffer has none."
     (set-buffer (process-buffer (get-ess-process name)))
     (set var val)))
 
-(defun ess-request-a-process (message &optional noswitch)
+(defun ess-request-a-process (message &optional noswitch ask-if-1)
   "Ask for a process, and make it the current ESS process.
+If there is exactly one process, only ask if ASK-IF-1 is non-nil.
 Also switches to the process buffer unless NOSWITCH is non-nil.	 Interactively,
 NOSWITCH can be set by giving a prefix argument.
 Returns the name of the selected process."
   (interactive
    (list "Switch to which ESS process? " current-prefix-arg)) ;prefix sets 'noswitch
   (update-ess-process-name-list)
-  (if (eq (length ess-process-name-list) 0)
-      (error "No ESS processes running."))
-  (let ((proc (completing-read message
-			       ess-process-name-list
-			       nil ; predicate
-			       'require-match
-			       ;; If in S buffer, don't offer current process
-			       (if (eq major-mode 'inferior-ess-mode)
-				   ess-language
-				 ess-current-process-name
-				 ;; maybe ess-local-process-name IF exists?
-				 ))))
-    (save-excursion
-      (set-buffer (process-buffer (get-process proc)))
-      (ess-make-buffer-current))
-    (if noswitch
-	nil
-      (ess-show-buffer (buffer-name (process-buffer (get-process proc))) t))
-    proc))
+  (let ((num-processes (length ess-process-name-list)))
+    (if (= 0 num-processes)
+	(error "No ESS processes running."))
+    ;; else
+    (let ((proc
+	   (if (and (not ask-if-1) (= 1 num-processes))
+	       (car (car ess-process-name-list))
+	     ;; else
+	     (completing-read message
+			      ess-process-name-list
+			      nil	; predicate
+			      'require-match
+			      ;; If in S buffer, don't offer current process
+			      (if (eq major-mode 'inferior-ess-mode)
+				  ess-language
+				ess-current-process-name
+				;; maybe ess-local-process-name IF exists?
+				)))))
+      (save-excursion
+	(set-buffer (process-buffer (get-process proc)))
+	(ess-make-buffer-current))
+      (if noswitch
+	  nil
+	(ess-show-buffer (buffer-name (process-buffer (get-process proc))) t))
+      proc)))
+
 
 (defun ess-force-buffer-current (prompt &optional force)
   "Make sure the current buffer is attached to an ESS process.
