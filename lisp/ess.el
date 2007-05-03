@@ -195,6 +195,34 @@
 ;;	      (ding)
 	      (sit-for 1))))))
 
+;;; Running these must be done "every time" before use, since
+;;; they depend on a customizable variable.
+
+(defun ess-get-ps-viewer ()
+  "Get external PostScript viewer to be used from ESS.
+Use `ess-ps-viewer-pref' when that is executably found by \\[executable-find].
+Otherwise try a list of fixed known viewers."
+  (file-name-nondirectory
+   (or (and ess-ps-viewer-pref		; -> ./ess-cust.el
+	    (executable-find ess-ps-viewer-pref))
+       (executable-find "gv")
+       (executable-find "evince")
+       (executable-find "kghostview"))))
+
+(defun ess-get-pdf-viewer ()
+  "Get external PDF viewer to be used from ESS.
+Use `ess-pdf-viewer-pref' when that is executably found by \\[executable-find].
+Otherwise try a list of fixed known viewers."
+  (file-name-nondirectory
+   (or (and ess-pdf-viewer-pref		; -> ./ess-cust.el
+	    (executable-find ess-pdf-viewer-pref))
+       (car (ess-get-words-from-vector
+	     "getOption(\"pdfviewer\")\n"))
+       (executable-find "evince")
+       (executable-find "kpdf")
+       (executable-find "xpdf")
+       (executable-find "acroread"))))
+
 
 
  ; Buffer local customization stuff
@@ -248,21 +276,6 @@
    (format "ess-setq-vars-default 1: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
 	   ess-language ess-dialect buf comint-process-echoes comint-input-sender))
 )
-
-;;--- emacs 19.34 compatibility [MM]:
-(if (not (fboundp 'functionp))
-    ;; take the definition from emacs 20.4  lisp/subr.el:
- (defun functionp (object)
-  "Non-nil if OBJECT is a type of object that can be called as a function."
-  (or (subrp object) (byte-code-function-p object)
-      (eq (car-safe object) 'lambda)
-      (and (symbolp object) (fboundp object))))
-)
-
-;;-- more emacs 19 back compatibility
-(if (not (fboundp 'cadr)); could (require 'cl) but that is too big
- (defun cadr (list) (car (cdr list))))
-
 
 ;;; versions thanks to Barry Margolin <barmar@bbnplanet.com>.
 ;;; unfortunately, requires 'cl.  Whoops.

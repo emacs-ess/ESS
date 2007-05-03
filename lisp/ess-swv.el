@@ -77,11 +77,17 @@
 
 ;;; Autoloads and Requires
 
-(require 'ess-noweb)
-
+(eval-when-compile
+  (require 'ess-cust)
+  (require 'ess)
+  (require 'ess-noweb)
+)
 ;; MM: I think we should *not* require 'cl, but it's needed for
 ;;     (search .) below ... -> ``please'' replace the (search ...) parts
-(require 'cl)
+;; (string-match "\\.Rnw$"  ....)  |-->  (nil | index)  should suffice
+;; ==> replaced  ' (search ".Rnw" buf) '
+;;     by        ' (string-match "\\.Rnw$" buf '
+;; (require 'cl)
 
 (defun ess-swv-run-in-R (cmd)
    "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
@@ -112,39 +118,17 @@
    (interactive)
    (ess-swv-run-in-R "Sweave"))
 
-(defun ess-swv-weave ()
-   "Run Sweave on the current .Rnw file."
-   (interactive)
-   (ess-force-buffer-current "Process to load into: ")
-   (save-excursion
-     (ess-execute (format "require(tools)"));; Make sure tools is loaded.
-     (let* ((this-buf (current-buffer))
-	    (sprocess (get-ess-process ess-current-process-name))
-	    (sbuffer (process-buffer sprocess))
-	    (this-file (buffer-file-name))
-	    (Rnw-dir (file-name-directory this-file))
-	    (Sw-cmd
-	     (format
-	      "local({..od <- getwd(); setwd(%S); Sweave(%S); setwd(..od) })"
-	      Rnw-dir this-file))
-	    )
-       (message "Sweaving %S" this-file)
-       (ess-execute Sw-cmd 'buffer nil nil)
-       (ess-show-buffer (buffer-name sbuffer) nil))))
-
-
 (defun ess-swv-latex ()
    "Run LaTeX on the product of Sweave()ing the current file."
    (interactive)
    (save-excursion
-     (let* ((thisbuffer (buffer-name))
-	    (namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
+     (let* ((namestem (file-name-sans-extension (buffer-file-name)))
 	    (latex-filename (concat namestem ".tex"))
 	    (tex-buf (get-buffer-create " *ESS-tex-output*")))
        (message "Running LaTeX on '%s' ..." latex-filename)
        (switch-to-buffer tex-buf)
        (call-process "latex" nil tex-buf 1 latex-filename)
-       (switch-to-buffer thisbuffer)
+       (switch-to-buffer (buffer-name))
        (display-buffer tex-buf)
        (message "Finished running LaTeX" ))))
 
@@ -152,31 +136,23 @@
 ;;-- trying different viewers; thanks to a patch from Leo <sdl@web.de> ---
 
 (defun ess-swv-PS ()
-   "Create a postscript file from a dvi file (name based on the current
+  "Create a postscript file from a dvi file (name based on the current
 Sweave file buffer name) and display it."
-   (interactive)
-   (let* ((namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
+  (interactive)
+  (let* ((namestem (file-name-sans-extension (buffer-file-name)))
 	 (dvi-filename (concat namestem ".dvi"))
-	 (psviewer (file-name-nondirectory
-		    (or (executable-find "gv")
-			(executable-find "evince")
-			(executable-find "kghostview")))))
-     (shell-command (concat "dvips -o temp.ps " dvi-filename))
-     (shell-command (concat psviewer " temp.ps & "))))
-
+	 (psviewer (ess-get-ps-viewer)))
+    (shell-command (concat "dvips -o temp.ps " dvi-filename))
+    (shell-command (concat psviewer " temp.ps & "))))
 
 (defun ess-swv-PDF ()
-   "Create a PDF file ('pdflatex') and display it."
-   (interactive)
-   (let* ((namestem (substring (buffer-name) 0 (search ".Rnw" (buffer-name))))
+  "Create a PDF file ('pdflatex') and display it."
+  (interactive)
+  (let* ((namestem (file-name-sans-extension (buffer-file-name)))
 	 (tex-filename (concat namestem ".tex"))
-	 (pdfviewer (file-name-nondirectory
-		     (or (executable-find "evince")
-			 (executable-find "kpdf")
-			 (executable-find "xpdf")
-			 (executable-find "acroread")))))
-     (shell-command (concat "pdflatex " tex-filename))
-     (shell-command (concat pdfviewer " " namestem ".pdf &"))))
+	 (pdfviewer (ess-get-pdf-viewer)))
+    (shell-command (concat "pdflatex " tex-filename))
+    (shell-command (concat pdfviewer " " namestem ".pdf &"))))
 
 (defun ess-insert-Sexpr ()
  "Insert Sexpr{} into the buffer at point."

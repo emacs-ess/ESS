@@ -126,7 +126,7 @@
 
 ;; Variables (not user-changeable)
 
-(defvar ess-version "5.3.4"
+(defvar ess-version "5.3.5"
   "Version of ESS currently loaded.")
 
 (defvar no-doc
@@ -612,6 +612,21 @@ Good for evaluating ESS code."
   "Hook run when entering Rnw mode."
   :type 'hook
   :group 'ess-R)
+
+
+(defcustom ess-pdf-viewer-pref nil
+  "External pdf viewer you like to use from ESS.
+If nil, will use  getOption(\"pdfviewer\") in R, and try finding one
+from a list."
+  :type '(choice (const nil) string)
+  :group 'ess)
+
+(defcustom ess-ps-viewer-pref nil
+  "External PostScript viewer you like to use from ESS.
+If nil, ESS will try finding one from a list."
+  :type '(choice (const nil) string)
+  :group 'ess)
+
 
  ; System variables
 
