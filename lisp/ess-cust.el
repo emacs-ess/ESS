@@ -1418,9 +1418,8 @@ If nil, input is in the `font-lock-variable-name-face'."
   '("<<-" "<-" "_" "->") ; don't want "=" here which is not only for assign
 )
 
-;; FIXME: for R, we also have `...` <- function(...) ....
-;; ----- but replacing the two  ' \" ' below by  ' [`\"] '
-;;       *breaks* function-name fontlocking -- I (MM) don't understand ...
+;; Note: \\s\" is really \s" which means match a char belonging to the 
+;; "quote character" syntax class.
 (defvar ess-R-function-name-regexp
   (concat "\\s\"?\\(\\(\\sw\\|\\s_\\)+"
 	  "\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)"
