@@ -38,9 +38,13 @@
 
 ;; modify S Syntax table:
 (setq R-syntax-table S-syntax-table)
-;; R >= 1.8: back tick `string` -- unfortunately no *pair* checking:
+
+;; In R 2.x, back tick now is a quote character, so lets tell Emacs
+;; that it is; the problem below for older R should no longer be a
+;; serious issue.
+;;R >= 1.8: back tick `string` -- unfortunately no *pair* checking:
 ;; breaks when things like `..' are used:
-;; (modify-syntax-entry ?` "\"" R-syntax-table)
+(modify-syntax-entry ?` "\"" R-syntax-table)
 (modify-syntax-entry ?_  "_"  R-syntax-table) ; foo_bar is symbol in R >=1.9
 
 (ess-message "[essd-r:] (autoload ..) & (def** ..)")
