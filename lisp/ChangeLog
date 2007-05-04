@@ -1,3 +1,12 @@
+2007-05-04  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-r.el(?`): define the backquote (`) character to be in the
+	quote character syntax class.
+
+	* ess-cust.el: Doc fix to comment regarding regexps for finding R
+	functions.
+	
+
 2007-05-03  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-request-a-process): Don't ask if there's only one
