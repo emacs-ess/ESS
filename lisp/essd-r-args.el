@@ -185,18 +185,6 @@
 
 (require 'ess)
 
-;;; FIXME: These three should become customizable and move to ./ess-cust.el :
-(defvar ess-r-args-noargsmsg "No args found."
-  "The message that is returned if ess-r-args-get does not find a list
-of arguments.")
-
-(defvar ess-r-args-show-as nil
-  "How ess-r-args-show should show the argument list. Possible values
-are: 'message' (the default) or 'tooltip'.")
-(defvar ess-r-args-show-prefix "ARGS: "
-  "A prefix string that is shown before the arguments list.")
-
-
 (defun ess-r-args-current-function ()
   "Returns the name of the R function assuming point is currently
 within the argument list or nil if no possible function name is
@@ -219,7 +207,9 @@ ess-r-args-current-function if no argument given."
 
   (if (null function)
       (setq function (ess-r-args-current-function)))
-  (when function
+  (when (and function
+	     (or ess-current-process-name
+		 (interactive-p)))
     (ess-force-buffer-current "R process to use: ")
     ;;   (ess-make-buffer-current)
     ;; This is not ok: could be "R-devel" or ...

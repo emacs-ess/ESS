@@ -768,7 +768,7 @@ a `custom-set-variables' statement in your site-start.el or .emacs
 file.  The list of functions actually created appears in the *ESS*
 buffer and should appear in the \"ESS / Start Process / Other\"
 menu."
-  :group 'ess-S
+  :group 'ess-SPLUS
   :type '(repeat string))
 
 (defcustom inferior-S3-program-name "/disk05/s/S"
@@ -778,7 +778,7 @@ menu."
 
 (defcustom inferior-S+3-program-name "Splus"
   "*Program name for invoking an inferior ESS with S+3()."
-  :group 'ess-S
+  :group 'ess-SPLUS
   :type 'string)
 
 (defcustom inferior-S+4-program-name "c:/progra~1/spls45se/cmd/Splus.exe"
@@ -788,12 +788,12 @@ S-Plus 4.5 Student Edition and with bash as the shell.
 For any other version or location, change this value in ess-site.el or
 site-start.el.  Use the 8.3 version of the pathname.
 Use double backslashes if you use the msdos shell."
-  :group 'ess-S
+  :group 'ess-SPLUS
   :type 'string)
 
 (defcustom inferior-S+4-print-command "S_PRINT_COMMAND=gnuclientw.exe"
   "*Destination of print icon in S+4 Commands window."
-  :group 'ess-S
+  :group 'ess-SPLUS
   :type 'string)
 
 (defcustom inferior-S+4-editor-pager-command
@@ -805,7 +805,7 @@ in S+4 Commands window and in Sqpe+4 buffer."
 
 (defcustom inferior-Sqpe+4-program-name "c:/progra~1/spls45se/cmd/Sqpe.exe"
   "*Program name for invoking an inferior ESS with Sqpe+4()."
-  :group 'ess-S
+  :group 'ess-SPLUS
   :type 'string)
 
 ;;; SJE - avoid mismatch by changing default nil to ""
@@ -816,7 +816,7 @@ The default value is correct for a default installation of
 S-Plus 4.5 Student Edition.  For any other version or location,
 change this value in ess-site.el or site-start.el.  Use the 8.3
 version of the pathname."
-  :group 'ess-S
+  :group 'ess-SPLUS
   :type 'string)
 ;;(if ess-microsoft-p
 ;;    (let* ((SHOME (getenv "SHOME"))
@@ -853,7 +853,7 @@ different computer."
 
 (defcustom inferior-S+5-program-name "Splus5"
   "*Program name for invoking an inferior ESS with S+5()."
-  :group 'ess-S
+  :group 'ess-SPLUS
   :type 'string)
 
 (if ess-microsoft-p
@@ -865,17 +865,17 @@ S-Plus 7.0 and with bash as the shell.
 For any other version or location, change this value in ess-site.el or
 site-start.el.  Use the 8.3 version of the pathname.
 Use double backslashes if you use the msdos shell."
-      :group 'ess-S
+      :group 'ess-SPLUS
       :type 'string)
   (defcustom inferior-S+6-program-name "Splus6"
     "*Program name for invoking an inferior ESS with S+6() for Unix."
-    :group 'ess-S
+    :group 'ess-SPLUS
     :type 'string))
 
 (defcustom inferior-Splus-args ""
   "*String of arguments used when starting S.
 These arguments are currently passed only to S+6."
-  :group 'ess-S
+  :group 'ess-SPLUS
   :type 'string)
 
 (defcustom inferior-Splus-objects-command "objects(where=%d)\n"
@@ -886,14 +886,14 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
 
 (defcustom inferior-S+6-print-command "S_PRINT_COMMAND=gnuclientw.exe"
   "*Destination of print icon in S+6 for Windows Commands window."
-  :group 'ess-S
+  :group 'ess-SPLUS
   :type 'string)
 
 (defcustom inferior-S+6-editor-pager-command
   "options(editor='gnuclient.exe', pager='gnuclientw.exe')"
   "*Programs called by the editor() and pager() functions
 in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
-  :group 'ess-S
+  :group 'ess-SPLUS
   :type 'string)
 
 (defcustom inferior-Sqpe+6-program-name
@@ -910,7 +910,7 @@ The default value is correct for a default installation of
 S-Plus 7.0.  For any other version or location,
 change this value in ess-site.el or site-start.el.  Use the 8.3
 version of the pathname."
-  :group 'ess-S
+  :group 'ess-SPLUS
   :type 'string)
 ;;(if ess-microsoft-p
 ;;    (let* ((SHOME (getenv "SHOME"))
@@ -1402,6 +1402,11 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-S-keywords
   (append ess-R-keywords '("terminate")))
 
+;; only some of these keywords "look like functions but are not":
+(defvar ess-S-non-functions
+  '("if" "for" "function" "while"))
+
+
 (defvar ess-R-message-prefixes
   '("Error:" "Error in"
     "Warning:" "Warning in"
@@ -1418,7 +1423,7 @@ If nil, input is in the `font-lock-variable-name-face'."
   '("<<-" "<-" "_" "->") ; don't want "=" here which is not only for assign
 )
 
-;; Note: \\s\" is really \s" which means match a char belonging to the 
+;; Note: \\s\" is really \s" which means match a char belonging to the
 ;; "quote character" syntax class.
 (defvar ess-R-function-name-regexp
   (concat "\\s\"?\\(\\(\\sw\\|\\s_\\)+"
@@ -1428,7 +1433,6 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-S-function-name-regexp
   ess-R-function-name-regexp ; since "_" is deprecated for S-plus as well
 )
-
 
 (defvar ess-R-mode-font-lock-keywords
   (list
@@ -1564,6 +1568,32 @@ Choices are `separate-buffer', `s-process', `www'.  The latter uses
 
 (defvar ess-help-w3-url-funs "funs/"
   "Place to find functions.")
+
+;;; FIXME: These three should become customizable and move to ./ess-cust.el :
+(defcustom ess-r-args-noargsmsg "No args found."
+  "The message that is returned if \\[ess-r-args-get] does not find a list
+of arguments."
+  :group 'ess-R
+  :type 'string)
+
+(defcustom ess-r-args-show-prefix "ARGS: "
+  "A prefix string that is shown before the arguments list."
+  :group 'ess-R
+  :type 'string)
+
+(defcustom ess-r-args-show-as 'message
+  "How ess-r-args-show should show the argument list. Possible values
+are: 'message' (the default) or 'tooltip'."
+  :group 'ess-R
+  :type '(choice
+	  (const :tag "message" :value 'message)
+	  (const :tag "tooltip" :value 'tooltip)))
+
+(defcustom ess-r-args-keep-silent ess-S-non-functions
+  "list of functions names which should *not* trigger \\[ess-r-args-show];
+Defaults to `ess-S-non-functions'."
+  :group 'ess-R
+  :type '(repeat string))
 
 
  ; System variables

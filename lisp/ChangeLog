@@ -1,3 +1,11 @@
+2007-05-11  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (ess-r-args-show-as): and others: moved
+	(defvar ...) to
+	* essd-r-args.el: and changed to (defcustom ...)
+	* ess-cust.el (ess-S-non-functions): new variable to be used by
+	* ess-cust.el (ess-r-args-keep-silent): new customizable variable.
+
 2007-05-04  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-r.el(?`): define the backquote (`) character to be in the
@@ -5,7 +13,7 @@
 
 	* ess-cust.el: Doc fix to comment regarding regexps for finding R
 	functions.
-	
+
 
 2007-05-03  Martin Maechler  <maechler@stat.math.ethz.ch>
 
