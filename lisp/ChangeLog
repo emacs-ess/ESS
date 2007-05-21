@@ -1,3 +1,8 @@
+2007-05-21  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-request-a-process): give (message .) when not
+	asking {see 2007-05-03}.
+
 2007-05-11  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el (ess-r-args-show-as): and others: moved

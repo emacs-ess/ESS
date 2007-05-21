@@ -553,7 +553,8 @@ Also switches to the process buffer unless NOSWITCH is non-nil.	 Interactively,
 NOSWITCH can be set by giving a prefix argument.
 Returns the name of the selected process."
   (interactive
-   (list "Switch to which ESS process? " current-prefix-arg)) ;prefix sets 'noswitch
+   (list "Switch to which ESS process? " current-prefix-arg))
+					; prefix sets 'noswitch
   (update-ess-process-name-list)
   (let ((num-processes (length ess-process-name-list)))
     (if (= 0 num-processes)
@@ -561,7 +562,9 @@ Returns the name of the selected process."
     ;; else
     (let ((proc
 	   (if (and (not ask-if-1) (= 1 num-processes))
-	       (car (car ess-process-name-list))
+	       (let ((rr (car (car ess-process-name-list))))
+		 (message "using process '%s'" rr)
+		 rr)
 	     ;; else
 	     (completing-read message
 			      ess-process-name-list
