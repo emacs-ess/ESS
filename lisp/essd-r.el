@@ -90,7 +90,7 @@
      (ess-pager		. R-pager)
      )
    S-common-cust-alist)
-  "Variables to customize for R")
+  "Variables to customize for R -- set up later than emacs initialization.")
 
 (defvar ess-r-versions '("R-1" "R-2" "R-devel" "R-patched")
   "List of partial strings for versions of R to access within ESS.

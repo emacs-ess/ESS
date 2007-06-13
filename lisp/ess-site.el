@@ -434,6 +434,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 (require 'ess-swv); for Sweave
 
 ;; ALWAYS:
+(ess-message "[ess-site:] require 'ess   *ITSELF* ...")
 (require 'ess); -> loads ess-cust.el and more
 
 (ess-write-to-dribble-buffer
