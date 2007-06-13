@@ -32,7 +32,7 @@
 
  ; Requires and autoloads
 
-(require 'ess)
+(require 'ess); includes ess-cust.el
 
 ;;; AJR: THIS IS GROSS AND DISGUSTING (but I wrote it).
 ;;; MM:	 and I had to add all other 'ess-eval-*** ...
@@ -361,6 +361,9 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 `CLB' (quoted from C language style)."
   (kill-all-local-variables) ;; NOTICE THIS!
   (ess-setq-vars-local alist)
+  ;; must happen here, since the mode map is set up too early:
+  (define-key ess-mode-map "("  ;; allow to toggle after customization:
+    (if ess-r-args-electric-paren 'ess-r-args-auto-show 'self-insert-command))
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1): ess-language=%s, ess-dialect=%s buf=%s \n"
 	   ess-language
@@ -370,8 +373,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   ;;  (format "(ess-mode-1.2): ess-process= %s \n"
   ;;   (ess-local-process-name ess-local-process-name "none")))
   (ess-write-to-dribble-buffer
-   (format "(ess-mode-1.5): alist=%s \n"
-	   alist))
+   (format "(ess-mode-1.5): alist=%s \n" alist))
   (setq major-mode 'ess-mode)
   (setq mode-name (concat "ESS[" ess-language "]")) ; was ess-dialect
   ;; The following line does the next 20 or so :-).

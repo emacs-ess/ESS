@@ -210,11 +210,8 @@ ess-r-args-current-function if no argument given."
   (when (and function
 	     (or ess-current-process-name
 		 (interactive-p)))
-    (ess-force-buffer-current "R process to use: ")
-    ;;   (ess-make-buffer-current)
-    ;; This is not ok: could be "R-devel" or ...
-    ;;   (if (not (equal ess-current-process-name "R"))
-    ;;       ((lambda () (message "No R process running") nil))
+    (ess-force-buffer-current "R process to use: " 'force)
+    ;; ^^^^^^^^^^^^^^^ has own error handler
     (let ((ess-nuke-trailing-whitespace-p t)
 	  (args))
       (ess-command (concat "try(args(" function "), silent=TRUE)\n")
@@ -234,17 +231,24 @@ ess-r-args-current-function if no argument given."
 
 (defun ess-r-args-show (&optional function)
   "Show arguments and their default values of R function. Calls
-ess-r-args-current-function if no argument given."
+\\[ess-r-args-current-function] if called without argument."
   (interactive "*")
   (if (null function)
       (setq function (ess-r-args-current-function)))
-  (when function
+  (if function
     (let ((args (ess-r-args-get function)))
       (unless (null args)
-	(if (equal ess-r-args-show-as "tooltip")
+	(if (equal ess-r-args-show-as 'tooltip)
 	    (progn (require 'tooltip)
 		   (tooltip-show (concat ess-r-args-show-prefix args)))
 	  (message (concat ess-r-args-show-prefix args)))))))
+
+(defun ess-r-args-auto-show ()
+  "Typically assigned to \"(\": Automatically show arguments and
+their default values of an R function. Built on \\[ess-r-args-show]."
+  (interactive)
+  (skeleton-pair-insert-maybe nil)
+  (ess-r-args-show))
 
 ;; MM: I would strongly discourage use of the following:
 ;;     it leads to clueless newbie-users  who indeed
@@ -256,21 +260,17 @@ ess-r-args-current-function if no argument given."
   (interactive "*")
   (if (null function)
       (setq function (ess-r-args-current-function)))
-  (when function
+  (if function
     (let ((args (ess-r-args-get function))
 	  (pointpos (point)))
       (insert args)
       (goto-char pointpos))))
 
-;; MM: activate this for now --- FIXME:  *not* unconditionally
-;; call ess-r-args-show automatically --- this should be optional
-
-(add-hook 'ess-mode-hook
-	  (lambda ()
-	    (define-key ess-mode-map "("
-	      '(lambda ()
-		 (interactive)
-		 (skeleton-pair-insert-maybe nil)
-		 (ess-r-args-show)))))
+;; ;; call ess-r-args-show automatically --- this should be optional
+;; now in ess-mode.el :
+;; (if ess-r-args-electric-paren ; <<- in ./ess-cust.el -- default nil
+;;     (add-hook 'ess-mode-hook
+;; 	      (lambda ()
+;; 		(define-key ess-mode-map "(" 'ess-r-args-auto-show))))
 
 (provide 'essd-r-args)

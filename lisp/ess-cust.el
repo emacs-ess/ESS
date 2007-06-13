@@ -1569,7 +1569,6 @@ Choices are `separate-buffer', `s-process', `www'.  The latter uses
 (defvar ess-help-w3-url-funs "funs/"
   "Place to find functions.")
 
-;;; FIXME: These three should become customizable and move to ./ess-cust.el :
 (defcustom ess-r-args-noargsmsg "No args found."
   "The message that is returned if \\[ess-r-args-get] does not find a list
 of arguments."
@@ -1594,6 +1593,11 @@ are: 'message' (the default) or 'tooltip'."
 Defaults to `ess-S-non-functions'."
   :group 'ess-R
   :type '(repeat string))
+
+(defcustom ess-r-args-electric-paren nil
+  "*If non-nil, re-assign \"(\" to \\[ess-r-args-auto-show]."
+  :group 'ess-R
+  :type 'boolean)
 
 
  ; System variables
