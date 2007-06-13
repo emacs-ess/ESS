@@ -233,7 +233,7 @@
 (defvar ess-function-outline-file
   (concat ess-etc-directory  "/function-outline.S")
   "The file name of the ess-function outline that is to be inserted at point,
-when \\<ess-mode-map>\\[ess-insert-function-outline] is used.
+when \\[ess-insert-function-outline] is used.
 Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
 
 ;; Use the user's own ~/S/emacs-fun.outline  if (s)he has one : ---
