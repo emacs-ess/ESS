@@ -1,7 +1,10 @@
 Changes/New Features in 5.3.5:
 @itemize @bullet
-@item @ESS{[R]} add Sven Hartenstein's ``R tooltip'' functionality,
- via new file @file{lisp/essd-r-args.el}.
+@item @ESS{[R]} add Sven Hartenstein's ``R function arguments tips''
+ functionality, via new file @file{../lisp/essd-r-args.el}.
+ Note that this includes an ``electric "("'' behavior inside @code{R-mode}
+ which can be customized via @var{ess-r-args-electric-paren}, and
+ @var{ess-r-args-show-as} allows to switch to the ``tooltip'' mode.
 @item @ESS{}: functions @code{ess-get-pdf-viewer} and *-ps-viewer; built on new
  customizable variables @var{ess-pdf-viewer-pref} and
  @var{ess-ps-viewer-pref}; currently used in @code{ess-swv-PDF} and
