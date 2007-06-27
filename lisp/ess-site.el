@@ -229,13 +229,12 @@ between .s or .S files and assembly mode.
   (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
 "
   (interactive)
-  (if (assoc "\\.[qsS]\\'" auto-mode-alist)
-      (progn
-	(setq auto-mode-alist
-	      (remassoc "\\.[qsS]\\'" auto-mode-alist))
-	;; put .q extention back
-	;; (add-to-list is in xemacs and GNU emacs)
-	(add-to-list 'auto-mode-alist '("\\.q\\'" . S-mode)))))
+  (when (assoc "\\.[qsS]\\'" auto-mode-alist)
+    (setq auto-mode-alist
+	  (remassoc "\\.[qsS]\\'" auto-mode-alist))
+    ;; put .q extention back
+    ;; (add-to-list is in xemacs and GNU emacs)
+    (add-to-list 'auto-mode-alist '("\\.q\\'" . S-mode))))
 
 ;; Be careful when editing the following. MISTAKES WILL RESULT IN
 ;; *.sty BEING TREATED AS ESS[S], rather than LaTeX-mode!
