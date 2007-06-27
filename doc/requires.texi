@@ -24,7 +24,7 @@ on the following platforms
 with the following versions of emacs
 
 @itemize @bullet
-@item GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
+@item GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1
 @item XEmacs 21.4.0-8, 21.4.9-13@footnote{
 require the files.el patch to revert-buffer for the Local Variables
 updating problem}, 21.4.14-15, 21.4.17-19, 21.5.23
