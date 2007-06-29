@@ -1455,7 +1455,6 @@ to continue it."
 
   ;; SJE: is this the proper place for setting inferior-ess-prompt,
   ;; rather than within ess-multi?  Tony - have you remembered yet
-
   ;; about the setq-default, as I changed it back to setq.
   (setq inferior-ess-prompt
 	;; shouldn't be setq-default!  And I've
@@ -1486,8 +1485,7 @@ to continue it."
 
   (make-local-variable 'comint-process-echoes)
   (make-local-variable 'comint-input-sender)
-  (make-local-variable 'process-connection-type)
-  (setq process-connection-type t)
+  (set (make-local-variable 'process-connection-type) t)
 
   ;; Configuration for SAS/XLispStat input handling
   ;; We set comint-process-echoes to t because inferior-ess-input-sender
@@ -1495,40 +1493,36 @@ to continue it."
   ;;
   ;; except that XLS doesn't like it.  This is an ugly hack that ought
   ;; to go into the dialect configuration...
-  (if (or (string= ess-language "SAS")
-	  (string= ess-language "XLS"))
-      (setq comint-process-echoes nil)
-    (setq comint-process-echoes t))
+  (setq comint-process-echoes (not (member ess-language '("SAS" "XLS"))))
 
   ;; Configuration for S/R input handling
   ;; AJR: add KH's fix.	 This is ugly, change to do it right.
   ;; i.e. put it as a buffer local var, in S or R defuns...
+  ;;
+  ;; SJE: Do you mean that we should put this code into (R) and the S
+  ;; dialects?  I agree that would be cleaner. e.g. in essd-r.el, for
+  ;; the R defun we could have:
+  ;; (inferior-ess r-start-args) ;; (R)  
+  ;; (setq comint-input-sender 'inferior-R-input-sender) ;; <<- add this.
   (if (or (string= ess-language "S"))
       (cond
        ((string= ess-dialect "R")
 	(setq comint-input-sender 'inferior-R-input-sender))
-       ((or (string= ess-dialect "S3") ;; S dialects
-	    (string= ess-dialect "S4")
-	    (string= ess-dialect "S+3")
-	    (string= ess-dialect "S+4")
-	    (string= ess-dialect "S+5")
-	    (string= ess-dialect "S+6")
-	    (string= ess-dialect "S"))
+       ( (member ess-dialect '("S3" "S4" "S+3" "S+4" "S+5" "S+6" "S"))
 	(setq comint-input-sender 'inferior-ess-input-sender))))
 
   ;; Configuration for Stata input handling
   ;; AJR: Stata is hell.   This is the primary configuration point.
-  (if (string= ess-language "STA")
-      (progn
-	(setq comint-input-sender 'inferior-ess-input-sender) ; was STA
-	(setq comint-process-echoes t)))
+  (when (string= ess-language "STA")
+    (setq comint-input-sender 'inferior-ess-input-sender) ; was STA
+    (setq comint-process-echoes t))
 
   ;; Configuration for Omegahat input handling
-  (if (string= ess-language "OMG")
-      (progn
-	;; the following doesn't exist (until needed?)
-	;;(setq comint-input-sender 'inferior-OMG-input-sender)
-	(setq comint-process-echoes nil)))
+  ;; SJE: cleanup
+  (when (string= ess-language "OMG")
+    ;; the following doesn't exist (until needed?)
+    ;;(setq comint-input-sender 'inferior-OMG-input-sender)
+    (setq comint-process-echoes nil))
 
   (ess-write-to-dribble-buffer
    (format "(i-ess 2): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
@@ -1536,11 +1530,20 @@ to continue it."
 	   comint-process-echoes comint-input-sender))
   ;; Font-lock support
   ;; AJR: This (the following local-var is already the case!
-  ;; KH sez: only in XEmacs :-(.
-  (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults
-	'(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
+  ;; KH sez: only in XEmacs :-(.  (& Emacs 22.1, SJE).
+  (set (make-local-variable 'font-lock-defaults)
+       '(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
 
+  ;; SJE 2007-06-28: Emacs 22.1 has a bug in that comint-mode will set
+  ;; this variable to t, when we need it to be nil.  The Emacs 22
+  ;; solution to this bug is to use define-dervied-mode to derive
+  ;; inferior-ess-mode from comint-mode.  Not sure if we can go down
+  ;; that route yet.  I've used the when condition so that if the var
+  ;; is nil, don't bother setting it -- as setting it will make a new
+  ;; local var.
+  (when font-lock-keywords-only
+    (setq font-lock-keywords-only nil))
+  
   (ess-setq-vars-local ess-customize-alist) ; (current-buffer))
 
   (ess-write-to-dribble-buffer
@@ -1579,19 +1582,17 @@ to continue it."
 
   ;; (setq comint-completion-addsuffix nil) ; To avoid spaces after filenames
   ;; KH: next 2 lines solve.
-  (make-local-variable 'comint-completion-addsuffix)
-  (setq comint-completion-addsuffix (cons "/" ""))
+  (set (make-local-variable 'comint-completion-addsuffix)
+       (cons "/" ""))
 
   (setq comint-input-autoexpand t) ; Only for completion, not on input.
 
   ;;; Keep <tabs> out of the code.
-  (make-local-variable 'indent-tabs-mode)
-  (setq indent-tabs-mode nil)
+  (set (make-local-variable 'indent-tabs-mode) nil)
 
-  (make-local-variable 'paragraph-start)
-  (setq paragraph-start (concat inferior-ess-primary-prompt "\\|\^L"))
-  (make-local-variable 'paragraph-separate)
-  (setq paragraph-separate "\^L")
+  (set (make-local-variable 'paragraph-start)
+       (concat inferior-ess-primary-prompt "\\|\^L"))
+  (set (make-local-variable 'paragraph-separate) "\^L")
 
   ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
   ;; (ess-load-object-name-db-file)
