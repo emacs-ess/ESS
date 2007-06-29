@@ -1,5 +1,8 @@
 2007-06-29  Stephen Eglen  <stephen@gnu.org>
 
+	* essl-sta.el (ordinary-insertion-filter): Delete this defun, it
+	is also in ess-inf.el
+
 	* ess-inf.el (inferior-ess-mode): Ensure font-lock-keywords-only
 	is t (to fix bug in Emacs 22.1).  Other small changes:
 	- using `member' rather than lots of `string=' comparisons.
