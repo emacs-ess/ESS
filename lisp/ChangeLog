@@ -1,3 +1,16 @@
+2007-06-29  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (inferior-ess-mode): Ensure font-lock-keywords-only
+	is t (to fix bug in Emacs 22.1).  Other small changes:
+	- using `member' rather than lots of `string=' comparisons.
+	- replacing (if cond (progn ...)) by (when cond ...)
+	- replacing:
+	(make-local-variable some-var)
+	(setq some-var val)
+	with
+	(set (make-local-variable some-var) val)
+
+
 2007-06-27  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-site.el (ess-restore-asm-extns): use `when' rather than 
