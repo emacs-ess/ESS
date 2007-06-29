@@ -1297,21 +1297,6 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
   (interactive)
   (stata-help (current-word)))
 
-(defun ordinary-insertion-filter (proc string)
-  (let ((old-buffer (current-buffer)))
-    (unwind-protect
-	(let (moving)
-	  (set-buffer (process-buffer proc))
-	  (setq moving (= (point) (process-mark proc)))
-	  (save-excursion
-	    ;; Insert the text, moving the process-marker.
-	    (goto-char (process-mark proc))
-	    (insert string)
-	    (set-marker (process-mark proc) (point)))
-	  (if moving (goto-char (process-mark proc))))
-      (set-buffer old-buffer))))
-
-
 ;;;; <IGNORE>
 ;;; This doesn't do anything at the moment.  I have vague plans of
 ;;; implementing a menu interface using emacs
