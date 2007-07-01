@@ -77,7 +77,7 @@
 ;; (setq ess-r-args-show-as nil)
 ;;
 ;; ;; ess-r-args-show-prefix is a string that is printed in front of
-;; ;; the arguments list. The default ist "ARGS: ".
+;; ;; the arguments list. The default is "ARGS: ".
 ;; (setq ess-r-args-show-prefix "ARGS: ")
 
 ;; == Usage ==
@@ -177,11 +177,10 @@
 ;; ==================================================
 
 (eval-and-compile
-  (require 'ess-cust)
-)
+  (require 'ess-cust))
+
 (eval-when-compile
-  (require 'tooltip); for tooltip-show
-)
+  (require 'tooltip)); for tooltip-show
 
 (require 'ess)
 
@@ -192,7 +191,7 @@ found."
   (interactive "*")
   (save-excursion
     (condition-case nil (up-list -1)
-      (error (message "Can't find opening paranthesis.")))
+      (error (message "Can't find opening parenthesis.")))
     (let ((posend (point)))
       (backward-sexp 1)
       (let ((rfunname (buffer-substring-no-properties posend (point))))
@@ -221,9 +220,9 @@ ess-r-args-current-function if no argument given."
 	(if (null (search-forward "function" 10 t))
 	    (message ess-r-args-noargsmsg)
 	  (goto-char (point-min))
-	  (zap-to-char 1 (string-to-char "("))
+	  (zap-to-char 1 ?\( )
 	  (goto-char (point-max))
-	  (zap-to-char -1 (string-to-char ")"))
+	  (zap-to-char -1 ?\) )
 	  (ess-nuke-trailing-whitespace); should also work in Xemacs
 	  (setq args (buffer-string))))
       (kill-buffer "*ess-r-args-tmp*")
