@@ -53,7 +53,10 @@
 ;; done in an earlier version, to save repeated calls to
 ;; ess-r-args-get.
 
-;; This code has been tested only in Emacs 22.1.
+;; This code has been tested only in Emacs 22.1.  It will not work on
+;; Emacs 21, because it needs the variable
+;; eldoc-documentation-function.
+
 
 ;; Bug (in eldoc?): the arg list for legend() is too long to fit in
 ;; minibuffer, and it seems that we see the last N lines of the arg
