@@ -523,7 +523,10 @@ sending `inferior-ess-language-start' to S-Plus.")
       (setq ess-s-versions-created
 	    (ess-s-versions-create))      ;; use ess-s-versions
       (setq ess-r-versions-created
-	    (ess-r-versions-create))))	    ;; use ess-r-versions
+	    (ess-r-versions-create))
+      ;; SJE: try to find newest version.
+      (ess-newest-r (add-to-list 'ess-r-versions-created "R"))
+      ))	    ;; use ess-r-versions
 
   ;; Add the new defuns, if any, to the menu.
   ;; Check that each variable exists, before adding.
