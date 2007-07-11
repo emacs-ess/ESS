@@ -1,3 +1,10 @@
+2007-07-11  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-r.el (ess-newest-r, ess-r-version-time, ess-which-newest):
+	New defuns to find the newest version of R.
+
+	* ess-site.el (ess-sqpe-versions-created): Use ess-newest-r.
+
 2007-07-01  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-eldoc.el: New file: add support for ELDOC in R buffers.
