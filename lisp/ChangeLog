@@ -1,3 +1,12 @@
+2007-07-13  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-r.el (ess-r-version-date): New defun, replacing
+	ess-r-version-time as it returns the date stamp of R as a string
+	rather than a time in seconds.
+	(ess-find-newest-date): New defun, replacing
+	ess-which-newest-date.
+	
+
 2007-07-11  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-r.el (ess-newest-r, ess-r-version-time, ess-which-newest):
