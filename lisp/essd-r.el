@@ -279,7 +279,7 @@ as strings.  If a date is listed as \"-1\", that version of R
 could not be found.  
 
 If the value returned is nil, no valid newest version of R could be found."
-  (let (new-r 
+  (let (new-r this-r
 	(new-time "0"))
     (while rvers
       (setq this-r (car rvers)
