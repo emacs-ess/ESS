@@ -1,3 +1,7 @@
+2007-07-14  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-r.el (ess-find-newest-date): this-r should be a local var.
+
 2007-07-13  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-r.el (ess-r-version-date): New defun, replacing
