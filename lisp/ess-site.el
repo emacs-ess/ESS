@@ -506,9 +506,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 (fset 'S-mode 's-mode)
 
 ;;; Create functions for calling older versions of R and Sqpe.
+(defvar ess-r-versions-created nil)
+
 (let ( (ess-sqpe-versions-created)
        (ess-rterm-versions-created)
-       (ess-r-versions-created)
+       ;;(ess-r-versions-created)
        (ess-s-versions-created)
        (ess-versions-created)
        )
@@ -526,7 +528,7 @@ sending `inferior-ess-language-start' to S-Plus.")
       (setq ess-r-versions-created
 	    (ess-r-versions-create))      ;; use ess-r-versions
       ;; SJE: try to find newest version.
-      (ess-newest-r (add-to-list 'ess-r-versions-created "R"))
+      ;; (ess-newest-r (add-to-list 'ess-r-versions-created "R"))
       ))
 
   ;; Add the new defuns, if any, to the menu.
