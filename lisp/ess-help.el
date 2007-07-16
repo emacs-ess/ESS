@@ -382,7 +382,6 @@ Other keybindings are as follows:
   (setq major-mode 'ess-help-mode)
   (setq mode-name "ESS Help")
   (use-local-map ess-help-mode-map)
-  (make-local-variable 'ess-local-process-name)
 
   ;;; Keep <tabs> out of the code.
   (make-local-variable 'indent-tabs-mode)
