@@ -474,7 +474,9 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 	      space "function\\s-*(" ; whitespace, function keyword, parenthesis
 	      ))
      )
-
+  ;; SJE: 2007-07-16 add to quieten byte-compiler.
+  (defvar ess-function-pattern nil
+    "Regexp to match the beginning of a function in S buffers.")
   (defvar ess-R-function-pattern
     (concat part-1
 	    "\\s-*\\(<-\\|=\\)"	; whitespace, assign
