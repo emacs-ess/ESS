@@ -513,6 +513,7 @@ sending `inferior-ess-language-start' to S-Plus.")
        ;;(ess-r-versions-created)
        (ess-s-versions-created)
        (ess-versions-created)
+       (R-newest-list '("R-newest"))
        )
   (if ess-microsoft-p
       (progn
@@ -521,7 +522,9 @@ sending `inferior-ess-language-start' to S-Plus.")
 	(setq ess-rterm-versions (ess-find-rterm))
 	(setq ess-rterm-versions-created
 	      (ess-rterm-versions-create)) ;; use ess-rterm-versions
-	(ess-newest-r ess-rterm-versions))
+	;; RMH: try to find newest version.
+ 	;; (ess-newest-r ess-rterm-versions)
+	)
     (progn
       (setq ess-s-versions-created
 	    (ess-s-versions-create))      ;; use ess-s-versions
@@ -537,7 +540,8 @@ sending `inferior-ess-language-start' to S-Plus.")
   (setq ess-versions-created
 	(ess-flatten-list
 	 (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
-		 '(ess-r-versions-created
+		 '(R-newest-list
+		   ess-r-versions-created
 		   ess-rterm-versions-created
 		   ess-s-versions-created
 		   ess-sqpe-versions-created))))

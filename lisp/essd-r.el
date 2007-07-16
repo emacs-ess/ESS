@@ -243,8 +243,10 @@ prompt for command line arguments."
   (interactive "P")
   (let (rnewest)
     (setq rnewest (ess-newest-r 
+		   (if ess-microsoft-p
+		       ess-rterm-versions
 		   (add-to-list 'ess-r-versions-created 
-				inferior-R-program-name)))
+				inferior-R-program-name))))
     (if (not rnewest)
 	(error "No version of R could be found.")
       ;; Else: we have a working version of R.
