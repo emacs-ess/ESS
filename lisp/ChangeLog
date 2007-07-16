@@ -1,5 +1,10 @@
 2007-07-16  Stephen Eglen  <stephen@gnu.org>
 
+	* essd-r.el (R-newest): New defun.  First time it is called, try
+	to find the newest version of R.
+	(ess-newest-r): Just return the name of the newst version of R;
+	let R-newest do the fset call.
+
 	* ess-mode.el (ess-function-pattern): Add defvar to quieten byte
 	compiler.
 
