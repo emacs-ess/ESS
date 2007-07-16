@@ -1,5 +1,13 @@
 2007-07-16  Stephen Eglen  <stephen@gnu.org>
 
+	* ess-mode.el (ess-function-pattern): Add defvar to quieten byte
+	compiler.
+
+	* ess-help.el (ess-help-mode): No need to make
+	ess-local-process-name buffer local; that's done elsewhere.
+	* ess-inf.el (ess-execute):  Ditto.
+
+
 	* ess-cust.el: Update many doc strings, and change some vars from
 	defcustom to defvar.
 
