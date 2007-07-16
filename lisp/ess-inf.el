@@ -1814,7 +1814,6 @@ to the command if BUFF is not given.)"
 	      ;; Print the command in the buffer if it has not been
 	      ;; given a special name
 	      (insert "> " the-command)))
-	  ;;(make-local-variable 'ess-local-process-name)
 	  (setq ess-local-process-name ess-current-process-name))
 	(ess-display-temp-buffer buff)))))
 
