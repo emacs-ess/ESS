@@ -1,5 +1,12 @@
 2007-07-16  Stephen Eglen  <stephen@gnu.org>
 
+	* ess-site.el (ess-sqpe-versions-created): Remove call to
+	ess-newest-R, and instead allow R-newest to find the newest
+	version of R.  This relies on a new devar, ess-r-versions-created,
+	to store the other versions of R that were found when ess-site was
+	loaded.
+	
+
 	* essd-r.el (R-newest): New defun.  First time it is called, try
 	to find the newest version of R.
 	(ess-newest-r): Just return the name of the newst version of R;
