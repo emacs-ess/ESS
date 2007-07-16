@@ -283,23 +283,14 @@ returned."
 
 (defun ess-newest-r (rvers)
   "Check all the versions of RVERS to see which is the newest.
-Create an alias for that version of R, so that M-x R-newest will run it."
-  (let* ((rtimes (mapcar 'ess-r-version-date rvers))
-	 (rnewest (ess-find-newest-date rtimes)))
-
-    (fset 'R-newest 
-	  (intern
-	   (if ess-microsoft-p
-	       (file-name-nondirectory
-		(substring (file-name-directory
-			    (substring (file-name-directory rnewest) 0 -1))
-			   0 -1))
-	     rnewest)))
+Return the name of the newest version of R."
+  (let (rnewest
+	(rtimes (mapcar 'ess-r-version-date rvers)))
     ;; SJE: 2007-07-13 -- following line is a temp var to check that
     ;; the newest version of R is found correctly.
-    (setq temp-ess-newest rtimes)
-    (message (concat "newest is " rnewest))))
-
+    (setq ess-temp-newest rtimes)
+    (setq rnewest (ess-find-newest-date rtimes))
+    rnewest))
 
 ;; Test case for following defun:
 ;; (setq a '( ("2003-10-04" . "R-1.7")
