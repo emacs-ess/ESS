@@ -518,15 +518,16 @@ sending `inferior-ess-language-start' to S-Plus.")
 	      (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
 	(setq ess-rterm-versions (ess-find-rterm))
 	(setq ess-rterm-versions-created
-	      (ess-rterm-versions-create))) ;; use ess-rterm-versions
+	      (ess-rterm-versions-create)) ;; use ess-rterm-versions
+	(ess-newest-r ess-rterm-versions))
     (progn
       (setq ess-s-versions-created
 	    (ess-s-versions-create))      ;; use ess-s-versions
       (setq ess-r-versions-created
-	    (ess-r-versions-create))
+	    (ess-r-versions-create))      ;; use ess-r-versions
       ;; SJE: try to find newest version.
       (ess-newest-r (add-to-list 'ess-r-versions-created "R"))
-      ))	    ;; use ess-r-versions
+      ))
 
   ;; Add the new defuns, if any, to the menu.
   ;; Check that each variable exists, before adding.

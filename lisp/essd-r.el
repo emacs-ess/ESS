@@ -260,7 +260,16 @@ Create an alias for that version of R, so that M-x R-newest will run it."
   (let ( rnewest
 	 (rtimes (mapcar 'ess-r-version-date rvers)))
     (setq rnewest (ess-find-newest-date rtimes))
-    (fset 'R-newest (intern rnewest))
+    (if ess-microsoft-p
+	(fset 'R-newest (intern
+			 (file-name-nondirectory
+			  (substring (file-name-directory
+				      (substring
+				       (file-name-directory 
+					rnewest)
+				       0 -1))
+				     0 -1))))
+      (fset 'R-newest (intern rnewest)))
     ;; SJE: 2007-07-13 -- following line is a temp var to check that
     ;; the newest version of R is found correctly.
     (setq temp-ess-newest rtimes)
