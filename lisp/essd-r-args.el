@@ -209,7 +209,7 @@ ess-r-args-current-function if no argument given."
   (when (and function
 	     (or ess-current-process-name
 		 (interactive-p)))
-    (ess-force-buffer-current "R process to use: " 'force)
+    (ess-force-buffer-current "R process to use: ")
     ;; ^^^^^^^^^^^^^^^ has own error handler
     (let ((ess-nuke-trailing-whitespace-p t)
 	  (args))
