@@ -1,5 +1,7 @@
 Changes/New Features in 5.3.5:
 @itemize @bullet
+@item @ESS{[R]} a new defun is available, M-x R-newest, which will start
+the newest version of R that it can find on your system.
 @item @ESS{[R]} add Sven Hartenstein's ``R function arguments tips''
  functionality, via new file @file{../lisp/essd-r-args.el}.
  Note that this includes an ``electric "("'' behavior inside @code{R-mode}
