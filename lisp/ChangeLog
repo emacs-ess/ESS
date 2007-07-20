@@ -1,3 +1,10 @@
+2007-07-20  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-r-args.el (ess-r-args-get): Do not use zap-to-char within defun,
+	since it will add unwnated text to the kill-ring; use
+	delete-region instead.  Also, defun should not be interactive.
+	(ess-r-args-current-function): Remove (interactive) call.
+
 2007-07-16  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-site.el (ess-sqpe-versions-created): Remove call to
