@@ -1,3 +1,7 @@
+2007-07-20  Stephen Eglen  <stephen@gnu.org>
+
+	* doc/help-s.texi (iESS(S)--Inferior ESS processes): Document R-newest.
+
 2007-04-26  ESS Maintainers <ESS-core@stat.math.ethz.ch>
 
   * Version 5.3.4 released.
