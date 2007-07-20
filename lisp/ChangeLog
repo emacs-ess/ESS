@@ -4,6 +4,7 @@
 	since it will add unwnated text to the kill-ring; use
 	delete-region instead.  Also, defun should not be interactive.
 	(ess-r-args-current-function): Remove (interactive) call.
+	Add comment re: installation.
 
 2007-07-16  Stephen Eglen  <stephen@gnu.org>
 
