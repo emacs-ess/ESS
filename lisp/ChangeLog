@@ -1,7 +1,8 @@
 2007-07-20  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r-args.el (ess-r-args-auto-show): only act electrically when
-	there's a non-nil ess-current-process-name
+	there's a non-nil ess-local-process-name
+			      ~~~~~
 
 2007-07-20  Stephen Eglen  <stephen@gnu.org>
 

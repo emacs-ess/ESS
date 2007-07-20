@@ -246,11 +246,11 @@ ess-r-args-current-function if no argument given."
 	  (message (concat ess-r-args-show-prefix args)))))))
 
 (defun ess-r-args-auto-show ()
-  "Typically assigned to \"(\": Automatically show arguments and
-their default values of an R function. Built on \\[ess-r-args-show]."
+  "Typically assigned to \"(\": If there's an ess-process, automatically show arguments
+and their default values of an R function. Built on \\[ess-r-args-show]."
   (interactive)
   (skeleton-pair-insert-maybe nil)
-  (if ess-current-process-name
+  (if ess-local-process-name
       (ess-r-args-show)))
 
 ;; MM: I would strongly discourage use of the following:
