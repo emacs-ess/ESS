@@ -188,7 +188,6 @@
   "Returns the name of the R function assuming point is currently
 within the argument list or nil if no possible function name is
 found."
-  (interactive "*")
   (save-excursion
     (condition-case nil (up-list -1)
       (error (message "Can't find opening parenthesis.")))
@@ -202,8 +201,6 @@ found."
   "Returns string of arguments and their default values of R function
 FUNCTION or nil if no possible function name found. Calls
 ess-r-args-current-function if no argument given."
-  (interactive "*")
-
   (if (null function)
       (setq function (ess-r-args-current-function)))
   (when (and function
@@ -220,9 +217,11 @@ ess-r-args-current-function if no argument given."
 	(if (null (search-forward "function" 10 t))
 	    (message ess-r-args-noargsmsg)
 	  (goto-char (point-min))
-	  (zap-to-char 1 ?\( )
+	  (search-forward "(" nil t)
+	  (delete-region (point-min) (point))
 	  (goto-char (point-max))
-	  (zap-to-char -1 ?\) )
+	  (search-backward ")" nil t)
+	  (delete-region (point) (point-max))
 	  (ess-nuke-trailing-whitespace); should also work in Xemacs
 	  (setq args (buffer-string))))
       (kill-buffer "*ess-r-args-tmp*")
