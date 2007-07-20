@@ -250,7 +250,8 @@ ess-r-args-current-function if no argument given."
 their default values of an R function. Built on \\[ess-r-args-show]."
   (interactive)
   (skeleton-pair-insert-maybe nil)
-  (ess-r-args-show))
+  (if ess-current-process-name
+      (ess-r-args-show)))
 
 ;; MM: I would strongly discourage use of the following:
 ;;     it leads to clueless newbie-users  who indeed
