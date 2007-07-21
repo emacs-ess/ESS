@@ -247,13 +247,13 @@ Otherwise try a list of fixed known viewers."
 
 (defun ess-write-to-dribble-buffer (text)
   "Write TEXT to dribble buffer."
-  (save-excursion
-    (if (not (buffer-live-p ess-dribble-buffer))
-	;; ESS dribble buffer must be re-created.
-	(setq ess-dribble-buffer (get-buffer-create "*ESS*")))
-    (set-buffer ess-dribble-buffer)
-    (goto-char (point-max))
-    (insert text)))
+  (unless (buffer-live-p ess-dribble-buffer)
+    ;; ESS dribble buffer must be re-created.
+    (setq ess-dribble-buffer (get-buffer-create "*ESS*")))
+  (let (deactivate-mark)
+    (with-current-buffer ess-dribble-buffer
+      (goto-char (point-max))
+      (insert text))))
 
 (defun ess-setq-vars-local (alist &optional buf)
   "Set language variables from ALIST, in buffer BUF, if desired."
