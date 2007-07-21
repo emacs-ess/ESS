@@ -805,11 +805,10 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
   ;; result is needed immediately. Waits until the output is ready
 
   ;; the ddeclient-p checks needs to use the local-process-name
-  (if buf nil (setq buf (get-buffer-create " *ess-command-output*")))
-  (save-excursion
-    (set-buffer buf)
-    (if ess-local-process-name
-	nil
+  (unless buf 
+    (setq buf (get-buffer-create " *ess-command-output*")))
+  (with-current-buffer buf
+    (unless ess-local-process-name
       (setq ess-local-process-name ess-current-process-name)))
   (if (ess-ddeclient-p)
       (ess-command-ddeclient com buf sleep)
