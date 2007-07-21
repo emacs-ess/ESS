@@ -831,8 +831,8 @@ chunks."
   "Fill a paragraph in the current chunk."
   (interactive "P")
   (noweb-update-chunk-vector)
-  (save-restriction
-    (save-excursion
+  (save-excursion
+    (save-restriction
       (noweb-narrow-to-chunk)
       (if (stringp (car (noweb-find-chunk)))
           (progn
@@ -1173,8 +1173,8 @@ and and update the chunk vector."
         ;; Reset code-mode to default and then check for a mode comment.
         (setq noweb-code-mode noweb-default-code-mode)
         (let (mode chunk-name)
-          (save-restriction
-            (save-excursion
+	  (save-excursion
+	    (save-restriction
               (end-of-line)
               (re-search-backward "^[ \t]*<<\\(.*\\)>>=" nil t)
               (setq chunk-name (match-string 1))
@@ -1269,8 +1269,8 @@ The only sensible way to do this is to add a mode line to the chunk"
   (if (noweb-in-code-chunk)
       (progn
         (setq noweb-code-mode mode)
-        (save-restriction
-          (save-excursion
+	(save-excursion
+	  (save-restriction
             (let (chunk-name)
               (widen)
               (end-of-line)
@@ -1520,8 +1520,8 @@ This may be useful in shell scripts, where the first line (or two) must have a
 (defun noweb-get-thread-local-variables ()
   "Get the values of the variables that are local to a thread."
   (interactive)
-  (save-restriction
-    (save-excursion
+  (save-excursion
+    (save-restriction
       (end-of-line)
       (re-search-backward "^[ \t]*<<\\(.*\\)>>=" nil t)
       (let ((chunk-name (match-string 1)))
@@ -1551,16 +1551,16 @@ This may be useful in shell scripts, where the first line (or two) must have a
                  "noweb-line-number-skip-lines:[ \t]*\\([^\t ]*\\)" this-line)
                 (setq noweb-line-number-skip-lines
                       (string-to-number
-		      (if (featurep 'xemacs)
-			  (match-string 1 this-line)
-			(match-string-no-properties 1 this-line)))))
+		       (if (featurep 'xemacs)
+			   (match-string 1 this-line)
+			 (match-string-no-properties 1 this-line)))))
             (if (string-match
                  "noweb-tab-width:[ \t]*\\([^\t ]*\\)" this-line)
                 (setq noweb-tab-width
                       (string-to-number
-		      (if (featurep 'xemacs)
-			  (match-string 1 this-line)
-			(match-string-no-properties 1 this-line)))))
+		       (if (featurep 'xemacs)
+			   (match-string 1 this-line)
+			 (match-string-no-properties 1 this-line)))))
             (beginning-of-line 2)))))))
 
 (defun noweb-reset-thread-local-variables ()
@@ -1646,8 +1646,8 @@ This may be useful in shell scripts, where the first line (or two) must have a
             (if (looking-at
 		 "\\([^\n\"@]*\\)<<\\(.*\\)\\(>>\\)\\([^\n\"]*\\)$")
                 (progn
-                  (save-restriction
-                    (save-excursion
+		  (save-excursion
+		    (save-restriction
                       (setq thread-name-re
 			    (concat "<<"
 				    (match-string 2)
