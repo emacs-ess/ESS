@@ -1,21 +1,16 @@
-2007-07-21  Martin Maechler  <maechler@stat.math.ethz.ch>
+2007-07-21  Stephen Eglen  <stephen@gnu.org>
 
-	* ess.el (ess-write-to-dribble-buffer): patch from Markus Triska,
-	ensuring that an acticated regions is not deactivated.
+	* ess-inf.el (ess-command): Use with-current-buffer and simplify.
 
-2007-07-20  Martin Maechler  <maechler@stat.math.ethz.ch>
+	* ess-help.el (ess-help-underline): Fix indenting.
+	(ess-describe-sec-map): Use with-current-buffer.
 
-	* essd-r-args.el (ess-r-args-auto-show): only act electrically when
-	there's a non-nil ess-local-process-name
-			      ~~~~~
-
-2007-07-20  Stephen Eglen  <stephen@gnu.org>
-
-	* essd-r-args.el (ess-r-args-get): Do not use zap-to-char within defun,
-	since it will add unwnated text to the kill-ring; use
-	delete-region instead.  Also, defun should not be interactive.
-	(ess-r-args-current-function): Remove (interactive) call.
-	Add comment re: installation.
+	* ess.el (ess-write-to-dribble-buffer): patch from Markus Triska
+	<markus.triska@gmx.at>.  Most importantly, deactivate-mark is set
+	to nil so that any active region is not affected.  (Without this,
+	in transient-mark-mode in GNU Emacs, highlighting of the region is
+	lost when moving over chunks, and M-h (= mark-paragraph) on chunks
+	doesn't work as expected.).  Now also use with-current-buffer.
 
 2007-07-16  Stephen Eglen  <stephen@gnu.org>
 
@@ -24,7 +19,7 @@
 	version of R.  This relies on a new devar, ess-r-versions-created,
 	to store the other versions of R that were found when ess-site was
 	loaded.
-
+	
 
 	* essd-r.el (R-newest): New defun.  First time it is called, try
 	to find the newest version of R.
@@ -53,7 +48,7 @@
 	rather than a time in seconds.
 	(ess-find-newest-date): New defun, replacing
 	ess-which-newest-date.
-
+	
 
 2007-07-11  Stephen Eglen  <stephen@gnu.org>
 
@@ -68,7 +63,7 @@
 
 	* essd-r-args.el (ess-r-args-get): Use ?\( rather than using
 	string-to-char.  Other small typo/doc fixes.
-
+	
 
 2007-06-29  Stephen Eglen  <stephen@gnu.org>
 
@@ -88,7 +83,7 @@
 
 2007-06-27  Stephen Eglen  <stephen@gnu.org>
 
-	* ess-site.el (ess-restore-asm-extns): use `when' rather than
+	* ess-site.el (ess-restore-asm-extns): use `when' rather than 
 	`(if x (progn ...))'.
 
 2007-06-13  Martin Maechler  <maechler@stat.math.ethz.ch>
