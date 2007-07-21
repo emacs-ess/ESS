@@ -457,8 +457,8 @@ to see which keystrokes find which sections."
   (interactive)
   (let ((keys-alist ess-help-sec-keys-alist))
     (describe-function 'ess-skip-to-help-section)
-    (save-excursion
-      (set-buffer "*Help*")
+
+    (with-current-buffer "*Help*"
       (toggle-read-only nil)
       (goto-char (point-max))
       (insert "\n\nCurrently defined keys are:
@@ -558,8 +558,8 @@ Stata or XLispStat for additional information."
   (save-excursion
     (goto-char (point-min))
     (while (search-forward "_" nil t)
-    (backward-delete-char 2)
-    (put-text-property (point) (1+ (point)) 'face 'underline))))
+      (backward-delete-char 2)
+      (put-text-property (point) (1+ (point)) 'face 'underline))))
 
 ;;*;; Link to Info
 
