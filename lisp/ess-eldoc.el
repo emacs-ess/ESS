@@ -97,7 +97,7 @@ to look up any doc strings."
   (interactive)
   (let ((doc nil)
 	name)
-    (when ess-current-process-name
+    (when ess-local-process-name
       (setq name (ess-guess-fun))		;guess the word at point.
       (unless (= (length name) 0) 
 	;; look up function name at point.
