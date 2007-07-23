@@ -1,3 +1,9 @@
+2007-07-23  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-eldoc.el (ess-eldoc): Use ess-local-process-name rather than
+	ess-current-process-name.
+	
+
 2007-07-21  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-command): Use with-current-buffer and simplify.
