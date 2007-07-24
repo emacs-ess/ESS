@@ -245,6 +245,9 @@ instead call the defun `ess-find-newest-R'.")
 cache it in the variable `ess-newest-R' for future use as finding the
 newest version of R can be potentially time-consuming."
   (or ess-newest-R
+      (progn (message "Finding all versions of R on your system...")
+	     ;;(sleep-for 3)
+	     nil)
       (setq ess-newest-R (ess-newest-r 
 			  (if ess-microsoft-p
 			      ess-rterm-versions
