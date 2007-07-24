@@ -6,6 +6,11 @@
 	(ess-check-R-name): New defun to check that
 	inferior-R-program-name points to an executable.
 	(R-newest): Use ess-find-newest-R defun.
+	(ess-find-newest-R): Add message whilst searching.
+
+	* ess-site.el: Call ess-check-R-name once, upon startup.
+	Searching for newest version takes place only if
+	inferior-R-program-name is invalid.
 
 2007-07-23  Stephen Eglen  <stephen@gnu.org>
 
