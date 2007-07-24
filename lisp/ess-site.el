@@ -554,6 +554,10 @@ sending `inferior-ess-language-start' to S-Plus.")
     (easy-menu-add-item ess-mode-menu '("Start Process")
 			(cons "Other" new-menu)))))
 
+;; Check to see that inferior-R-program-name points to a working version
+;; of R; if not, try to find a newer version.
+(ess-check-R-name)
+
 
 ;;; 3. Customization (and commented out examples) for your site
 ;;;; ===============================================
