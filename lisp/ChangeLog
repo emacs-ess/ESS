@@ -1,3 +1,12 @@
+2007-07-24  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-r.el (ess-find-newest-R): New defun, to find the newest
+	version of R, either for Unix or Windows.  Result is cached in a
+	variable, ess-newest-R.
+	(ess-check-R-name): New defun to check that
+	inferior-R-program-name points to an executable.
+	(R-newest): Use ess-find-newest-R defun.
+
 2007-07-23  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-eldoc.el (ess-eldoc): Use ess-local-process-name rather than
