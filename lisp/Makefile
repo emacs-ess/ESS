@@ -33,7 +33,6 @@ CORE = ess.elc ess-site.elc
 
 ### Everything but ess-debug.el, ess-install.el
 ###		  ess-send.el , ess-send2.el
-###              ess-latex.el
 ### DEPRECATED:  essl-bug.el
 ### [WHY_??_] msdos.elc essd-sp6w.elc
 ##
