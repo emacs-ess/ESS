@@ -56,12 +56,29 @@ shell, simply type `M-x S+6-msdos RET'.
 ================
 
 Changes/New Features in 5.3.5:
-   * ESS[R] add Sven Hartenstein's "R tooltip" functionality,  via new
-     file `lisp/essd-r-args.el'.
+   * ESS[R] a new defun is available, `M-x R-newest', which will start
+     the newest version of R that it can find on your system.
+
+   * ESS[R] add Sven Hartenstein's "R function arguments tips"
+     functionality, via new file `../lisp/essd-r-args.el'.   Note that
+     this includes an "electric "("" behavior inside `R-mode'  which is
+     _active by default_ and can be customized via
+     ESS-R-ARGS-ELECTRIC-PAREN; i.e., use `(setq
+     ess-r-args-electric-paren nil)' to turn it off.  Further,
+     ESS-R-ARGS-SHOW-AS allows to switch to the "tooltip" mode.
 
    * ESS: functions `ess-get-pdf-viewer' and *-ps-viewer; built on new
      customizable variables ESS-PDF-VIEWER-PREF and
      ESS-PS-VIEWER-PREF; currently used in `ess-swv-PDF' and  `*-PS'.
+
+   * ESS[R] Improved `ess-swv-PDF' to run pdf viewer only if  pdflatex
+     was ok
+
+   * ESS[R] Improved `ess-swv-weave' to start R automatically if  none
+     is running.
+
+   * ESS: Do no longer ask _which_ ESS process to use if there  is only
+     one.
 
    Changes/New Features in 5.3.4:
    * ESS[R] now better work with options(error=recover); and the new
@@ -743,7 +760,7 @@ ESS has been tested with
 
    with the following versions of emacs
 
-   * GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
+   * GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1
 
    * XEmacs 21.4.0-8, 21.4.9-13(1), 21.4.14-15, 21.4.17-19, 21.5.23
 
