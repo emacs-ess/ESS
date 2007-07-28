@@ -128,12 +128,25 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 
 <p>Changes/New Features in 5.3.5:
      <ul>
-<li><acronym>ESS[R]</acronym> add Sven Hartenstein's &ldquo;R tooltip&rdquo; functionality,
- via new file <samp><span class="file">lisp/essd-r-args.el</span></samp>. 
+<li><acronym>ESS[R]</acronym> a new defun is available, <kbd>M-x R-newest</kbd>, which will start
+the newest version of R that it can find on your system. 
+<li><acronym>ESS[R]</acronym> add Sven Hartenstein's &ldquo;R function arguments tips&rdquo;
+ functionality, via new file <samp><span class="file">../lisp/essd-r-args.el</span></samp>. 
+ Note that this includes an &ldquo;electric "("&rdquo; behavior inside <code>R-mode</code>
+ which is <em>active by default</em> and can be customized via
+ <var>ess-r-args-electric-paren</var>; i.e., use <code>(setq
+ ess-r-args-electric-paren nil)</code> to turn it off.  Further,
+ <var>ess-r-args-show-as</var> allows to switch to the &ldquo;tooltip&rdquo; mode. 
 <li><acronym>ESS</acronym>: functions <code>ess-get-pdf-viewer</code> and *-ps-viewer; built on new
  customizable variables <var>ess-pdf-viewer-pref</var> and
  <var>ess-ps-viewer-pref</var>; currently used in <code>ess-swv-PDF</code> and
  <code>*-PS</code>. 
+<li><acronym>ESS[R]</acronym> Improved <code>ess-swv-PDF</code> to run pdf viewer only if
+ pdflatex was ok
+<li><acronym>ESS[R]</acronym> Improved <code>ess-swv-weave</code> to start R automatically if
+ none is running. 
+<li><acronym>ESS</acronym>: Do no longer ask <em>which</em> ESS process to use if there
+ is only one. 
 </ul>
 
    <p>Changes/New Features in 5.3.4:
@@ -775,7 +788,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
    <p>with the following versions of emacs
 
      <ul>
-<li>GNU Emacs 20.3-7, 21.1, 21.3-4, 22.0.50-pretesting
+<li>GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1
 <li>XEmacs 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17-19, 21.5.23
 <!-- @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no -->
 <!-- longer supported, so an upgrade is recommended if you plan to use ESS. -->
