@@ -1,5 +1,55 @@
 #### File showing off  things that go wrong -- with R-mode
 
+## From: Robert Gentleman <rgentlem@fhcrc.org>
+## To: Martin Maechler <maechler@stat.math.ethz.ch>
+## Subject: ESS buglet
+## Date: Sun, 01 Jul 2007 21:41:24 -0700
+
+## Hi Martin,
+##   It seems that the following buglet exists (at least in what ever
+## version I am using)
+
+##a silly comment
+##and a second one
+foo <- function(x=a, abc = list("def", a=1,3,3), more.args, and, bla,
+                blu, bl
+                another, and, another, and bmbasd,
+                lots = NULL,
+                more = NULL,
+                args = NULL)
+
+##-   when the line before a function def is a comment, and adding args,
+##- then new lines, when generated have a comment char at the beginning of
+##- the line. It is slighly annoying as I have to remove the comment char.
+##-
+##- If I add a blank line after the comment line, then the problem does not
+##- occur.
+## and another ''anonymous'' function:
+function(x=a, abc = list("def", a=c(1,3,3)), more.args, and, bla, blu,
+         blo, blu, bla
+         another, and, another, and, bmbasd) {
+    ...; ...
+}
+
+
+### --- Suggestion (Jenny Brian): --> Create a (defun ess-eval-multiline .)
+### Here is useful valid R "test code":
+
+## From 'example(plot.default)' :
+
+Speed <- cars$speed
+Distance <- cars$dist
+plot(Speed, Distance, panel.first = grid(8,8),
+     pch = 0, cex = 1.2, col = "blue")
+pp <- plot(Speed, Distance, panel.first = grid(8,8),
+           pch = 0, cex = 1.2, col = "blue")
+plot(Speed, Distance,
+     panel.first = lines(lowess(Speed, Distance), lty = "dashed"),
+     pch = 0, cex = 1.2, col = "blue")
+
+
+
+
 
 ### Here, the indentation is wrong:
 
