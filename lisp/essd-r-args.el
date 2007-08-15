@@ -184,7 +184,8 @@
   (require 'ess-cust))
 
 (eval-when-compile
-  (require 'tooltip)); for tooltip-show
+  (if ess-has-tooltip
+    (require 'tooltip))); for tooltip-show
 
 (require 'ess)
 
@@ -240,7 +241,8 @@ ess-r-args-current-function if no argument given."
   (if function
     (let ((args (ess-r-args-get function)))
       (unless (null args)
-	(if (equal ess-r-args-show-as 'tooltip)
+	(if (and (equal ess-r-args-show-as 'tooltip)
+		 ess-has-tooltip)
 	    (progn (require 'tooltip)
 		   (tooltip-show (concat ess-r-args-show-prefix args)))
 	  (message (concat ess-r-args-show-prefix args)))))))

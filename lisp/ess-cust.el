@@ -35,6 +35,7 @@
 ;; Stolen from w3-cus.el (via Per Abrahamsen's advice on the widgets page).
 ;; This code provides compatibility with non-customized Emacsen.
 (eval-and-compile
+  (require 'ess-emcs); for 'xemacs feature
   (condition-case ()
       (require 'custom)
     (error nil))
@@ -1588,6 +1589,10 @@ Defaults to `ess-S-non-functions'."
   "*non-nil means re-assign \"(\" to \\[ess-r-args-auto-show]."
   :group 'ess-R
   :type 'boolean)
+
+(defvar ess-has-tooltip
+  "non-nil if 'tooltip can be required; typically nil for Xemacs."
+  (not (featurep 'xemacs)))
 
 
  ; System variables
