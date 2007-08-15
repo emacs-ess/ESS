@@ -73,6 +73,9 @@ cleanup-rel:
 
 ## --- RELEASE ---
 
+## NB: Typically use  'make -W VERSION ChangeLog' before 'make rel'
+##	since          ~~~~~~~~~~~~~~~~~~~~~~~~~
+## 	ChangeLog often ends up newer than VERSION
 ChangeLog: VERSION
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
