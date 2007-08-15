@@ -1,3 +1,8 @@
+2007-07-26  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (ess-r-args-electric-paren): default changed to t;
+	newbies should see the new feature automatically.
+
 2007-07-24  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-r.el (ess-find-newest-R): New defun, to find the newest
@@ -16,7 +21,7 @@
 
 	* ess-eldoc.el (ess-eldoc): Use ess-local-process-name rather than
 	ess-current-process-name.
-	
+
 
 2007-07-21  Stephen Eglen  <stephen@gnu.org>
 
