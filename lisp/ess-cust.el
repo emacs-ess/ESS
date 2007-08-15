@@ -1590,9 +1590,8 @@ Defaults to `ess-S-non-functions'."
   :group 'ess-R
   :type 'boolean)
 
-(defvar ess-has-tooltip
-  "non-nil if 'tooltip can be required; typically nil for Xemacs."
-  (not (featurep 'xemacs)))
+(defvar ess-has-tooltip (not (featurep 'xemacs))
+  "non-nil if 'tooltip can be required; typically nil for Xemacs.")
 
 
  ; System variables
