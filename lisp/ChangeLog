@@ -1,3 +1,8 @@
+2007-08-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-site.el: replace kludgey (defun find-load-file-directory)
+	by simple (locate-library .) thanks to a hint from Philipp Lord.
+
 2007-08-15  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r-args.el (require 'tooltip): only when ess-has-tooltip

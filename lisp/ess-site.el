@@ -1,7 +1,7 @@
 ;;; ess-site.el --- user customization of ESS
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--2006 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2007 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: David Smith <D.M.Smith@lancaster.ac.uk>
@@ -79,29 +79,13 @@
 
   ;; A nice default
   (defvar ess-lisp-directory
-    (if (and (boundp 'load-file-name) load-file-name)
-	;; A nice default
-	(directory-file-name (file-name-directory
-			      (file-truename load-file-name)))
-      (defun find-load-file-directory nil
-	"Locate directory in which load-file sits."
-	(interactive)
-	(let ((load-file-directory)
-	      (beg (point)))
-	  (list-command-history)
-	  (set-buffer "*Command History*")
-	  (goto-char (point-min))
-	  (search-forward "(load-file ")
-	  (goto-char (1+ (match-end 0)))
-	  (setq beg (point))
-	  (end-of-line)(search-backward "/")
-	  (goto-char (match-end 0))
-	  (setq load-file-directory
-		(expand-file-name (buffer-substring beg (point))))
-	  (kill-buffer "*Command History*")
-	  load-file-directory))
-      (directory-file-name (find-load-file-directory)))
-    "Directory containing ess-site.el and other ESS files.")
+    (directory-file-name
+     (file-name-directory
+      (if (and (boundp 'load-file-name) load-file-name) ;; A nice default
+	  (file-truename load-file-name)
+	(locate-library "ess-site") )))
+    "Directory containing ess-site.el(c) and other ESS lisp files.")
+
 
   ;; NON DEFAULTS:
   ;;(defvar ess-lisp-directory
@@ -146,7 +130,9 @@ The extension, in a file name, is the part that follows the last `.'."
 
 ;; DEBUG: (setq ess-show-load-messages t); instead of nil above
 
-(ess-message "[ess-site:] after (eval-and-compile ..)")
+(ess-message
+ (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
+
 ;; load code to figure out what version/strain of Emacs we are running
 ;; must come *AFTER* load-path is set !
 
