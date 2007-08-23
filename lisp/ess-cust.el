@@ -127,7 +127,7 @@
 
 ;; Variables (not user-changeable)
 
-(defvar ess-version "5.3.5"
+(defvar ess-version "5.3.6"
   "Version of ESS currently loaded.")
 
 (defvar no-doc
@@ -736,20 +736,24 @@ file."
   :type '(repeat string))
 
 (defcustom ess-SHOME-versions
-  '("c:/progra~1/Insightful/splus62"
-    "c:/progra~1/Insightful/splus61"
-    "c:/progra~1/MathSoft/splus6"
-    "c:/progra~1/spls45se"
-    "c:/progra~1/Insightful/splus62netclient"
-    "c:/progra~1/Insightful/splus62net/server"
-    "c:/progra~1/Insightful/splus61netclient"
-    "c:/progra~1/Insightful/splus61net/server"
-    "c:/progra~1/Insightful/splus6se"
-    "c:/progra~1/Insightful/splus61se"
-    "c:/progra~1/Insightful/splus62se"
-    "c:/progra~1/Insightful/splus70"
-    "c:/progra~1/Insightful/splus71"
-    "c:/progra~1/Insightful/splus80")
+  (let ((P-dir (getenv "ProgramFiles")))
+    ;;   P-dir  ~= "c:/progra~1"  for typical locales/languages
+    (mapcar
+     '(lambda (ch) (concat P-dir ch))
+     '("/Insightful/splus62"
+       "/Insightful/splus61"
+       "/MathSoft/splus6"
+       "/spls45se"
+       "/Insightful/splus62netclient"
+       "/Insightful/splus62net/server"
+       "/Insightful/splus61netclient"
+       "/Insightful/splus61net/server"
+       "/Insightful/splus6se"
+       "/Insightful/splus61se"
+       "/Insightful/splus62se"
+       "/Insightful/splus70"
+       "/Insightful/splus71"
+       "/Insightful/splus80")))
   "*List of possible values of the environment variable SHOME for recent
 releases of S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
@@ -775,7 +779,8 @@ menu."
   :group 'ess-SPLUS
   :type 'string)
 
-(defcustom inferior-S+4-program-name "c:/progra~1/spls45se/cmd/Splus.exe"
+(defcustom inferior-S+4-program-name
+  (concat (getenv "ProgramFiles") "/spls45se/cmd/Splus.exe")
   "*Program name for invoking an external GUI S+4.
 The default value is correct for a default installation of
 S-Plus 4.5 Student Edition and with bash as the shell.
@@ -797,13 +802,14 @@ in S+4 Commands window and in Sqpe+4 buffer."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-Sqpe+4-program-name "c:/progra~1/spls45se/cmd/Sqpe.exe"
+(defcustom inferior-Sqpe+4-program-name
+  (concat (getenv "ProgramFiles") "/spls45se/cmd/Sqpe.exe")
   "*Program name for invoking an inferior ESS with Sqpe+4()."
   :group 'ess-SPLUS
   :type 'string)
 
 (defcustom inferior-Sqpe+4-SHOME-name
-  (if ess-microsoft-p "c:/progra~1/spls45se" "")
+  (if ess-microsoft-p (concat (getenv "ProgramFiles") "/spls45se" ""))
   "*SHOME name for invoking an inferior ESS with Sqpe+4().
 The default value is correct for a default installation of
 S-Plus 4.5 Student Edition.  For any other version or location,
@@ -851,7 +857,7 @@ different computer."
 
 (if ess-microsoft-p
     (defcustom inferior-S+6-program-name
-      "c:/progra~1/insigh~1/splus70/cmd/Splus.exe"
+      (concat (getenv "ProgramFiles") "/insigh~1/splus70/cmd/Splus.exe")
       "*Program name for invoking an external GUI S+6 for Windows.
 The default value is correct for a default installation of
 S-Plus 7.0 and with bash as the shell.
@@ -890,13 +896,13 @@ in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
   :type 'string)
 
 (defcustom inferior-Sqpe+6-program-name
-  "c:/progra~1/insigh~1/splus70/cmd/Sqpe.exe"
+  (concat (getenv "ProgramFiles") "/insigh~1/splus70/cmd/Sqpe.exe")
   "*Program name for invoking an inferior ESS with Sqpe+6() for Windows."
   :group 'ess-S
   :type 'string)
 
 (defcustom inferior-Sqpe+6-SHOME-name
-  (if ess-microsoft-p "c:/progra~1/insigh~1/splus70" "")
+  (if ess-microsoft-p (concat (getenv "ProgramFiles") "/insigh~1/splus70" ""))
   "*SHOME name for invoking an inferior ESS with Sqpe+6() for Windows.
 The default value is correct for a default installation of
 S-Plus 7.0.  For any other version or location,

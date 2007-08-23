@@ -348,33 +348,35 @@ If the value returned is nil, no valid newest version of R could be found."
   "Find the full path of all occurences of Rterm.exe under the ESS-R-ROOT-DIR.
 If ESS-R-ROOT-DIR is nil, construct it by looking for an occurence of Rterm.exe
 in the exec-path.  If there are no occurences of Rterm.exe in the exec-path,
-then use \"c:/progra~1/R/\" which is the default location for the R distribution."
-  (let* ((Rpath)
-  (rwxxyy)
-  (rw)
-  (Rterm nil))
+then use something like \"c:/progra~1/R/\" which is
+the default location for the R distribution."
+  (let* ((rwxxyy)
+	 (rw)
+	 (Rterm nil))
     (if (not ess-R-root-dir)
- (progn
-   (setq Rpath (executable-find "Rterm"))
-   (setq ess-R-root-dir
-  (if Rpath
-      (expand-file-name
-       (concat
-        (file-name-directory Rpath)
-        "../../"))
-    "c:/progra~1/R/"))))
+	(let ((Rpath (executable-find "Rterm")))
+	  (setq ess-R-root-dir
+		(expand-file-name
+		 (if Rpath
+		     (concat (file-name-directory Rpath) "../../")
+		   (concat (getenv "ProgramFiles") "/R/"))))
+	  (ess-write-to-dribble-buffer
+	   (format "(ess-find-rterm): ess-R-root-dir = '%s'"))
+	  ))
     (setq rwxxyy (append (file-name-all-completions "rw" ess-R-root-dir)
-    (file-name-all-completions "R-1" ess-R-root-dir)
-    (file-name-all-completions "R-2" ess-R-root-dir)
-    (file-name-all-completions "R-devel" ess-R-root-dir)
-    (file-name-all-completions "R-patched" ess-R-root-dir)
-))  ;; this needs to rewritten to use (append '("rw") ess-r-versions)
+			 (file-name-all-completions "R-1" ess-R-root-dir)
+			 (file-name-all-completions "R-2" ess-R-root-dir)
+			 (file-name-all-completions "R-devel" ess-R-root-dir)
+			 (file-name-all-completions "R-patched" ess-R-root-dir)
+			 ))
+    ;; FIXME: needs to rewritten to use (append '("rw") ess-r-versions)
     (while rwxxyy
       (setq rw (car rwxxyy))
       (setq rwxxyy (cdr rwxxyy))
-      (setq Rterm (cons (ess-replace-regexp-in-string "[\\]" "/"
-			    (concat ess-R-root-dir rw "bin/Rterm.exe"))
-		  Rterm)))
+      (setq Rterm (cons (ess-replace-regexp-in-string
+			 "[\\]" "/"
+			 (concat ess-R-root-dir rw "bin/Rterm.exe"))
+			Rterm)))
     Rterm))
 
 (defun ess-rterm-versions-create ()

@@ -320,17 +320,8 @@ between .s or .S files and assembly mode.
 ;;; in this mode beginning with S-Plus 6.1.
 ;;; See essd-sp4.el or essd-sp6w.el
 
-;;; These are the defaults.  Change them here if the defaults don't work.
-;;; Use the 8.3 version of the pathname because embedded blanks will cause
-;;; trouble.
-;;; The emacs command `w32-short-file-name' will help you find the 8.3 name.
-;;(setq-default inferior-S+4-program-name "c:/progra~1/SPLS45SE/cmd/Splus")
-;;(setq-default inferior-Sqpe+4-SHOME-name "c:/progra~1/SPLS45SE")
-;;(setq-default inferior-Sqpe+4-program-name "c:/progra~1/SPLS45SE/cmd/Sqpe.exe")
-;;
-;;(setq-default inferior-S+6-program-name "c:/progra~1/Insightful/splus70/cmd/Splus")
-;;(setq-default inferior-Sqpe+6-SHOME-name "c:/progra~1/Insightful/splus70")
-;;(setq-default inferior-Sqpe+6-program-name "c:/progra~1/Insightful/splus70/cmd/Sqpe.exe")
+;;; -----> configuration now via custom, see ./ess-cust.el and look for
+;;;        inferior-Sqpe+... e.g. inferior-Sqpe+6-program-name
 
 ;;; These ddeclient values will be buffer-local on MS-Windows 9x/NT
 (setq-default inferior-ess-ddeclient	     "Initial")
