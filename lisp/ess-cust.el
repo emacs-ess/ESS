@@ -725,9 +725,20 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
   :type 'string)
 
+
+(defcustom ess-program-files
+  (if ess-microsoft-p
+      (w32-short-file-name (getenv "ProgramFiles"))
+    nil)
+  "Safe (no embedded blanks) 8.3 name that works across internationalization."
+  :group 'ess
+  :type 'string)
+
+
 (defcustom ess-rterm-versions nil
 "*Construct ess-rterm-versions.  If you have versions of R in
-locations other than in ../../rw*/bin/Rterm.exe, relative to the
+locations other than in ../../R-*/bin/Rterm.exe or
+../../rw*/bin/Rterm.exe, relative to the
 directory in the `exec-path' variable containing your default location
 of Rterm, you will need to redefine this variable with a
 `custom-set-variables' statement in your site-start.el or .emacs
@@ -736,10 +747,9 @@ file."
   :type '(repeat string))
 
 (defcustom ess-SHOME-versions
-  (let ((P-dir (getenv "ProgramFiles")))
-    ;;   P-dir  ~= "c:/progra~1"  for typical locales/languages
+    ;;   ess-program-files  ~= "c:/progra~1"  for typical locales/languages
     (mapcar
-     '(lambda (ch) (concat P-dir ch))
+     '(lambda (ch) (concat ess-program-files ch))
      '("/Insightful/splus62"
        "/Insightful/splus61"
        "/MathSoft/splus6"
@@ -753,7 +763,9 @@ file."
        "/Insightful/splus62se"
        "/Insightful/splus70"
        "/Insightful/splus71"
-       "/Insightful/splus80")))
+       "/Insightful/splus8.0.1"
+       "/Insightful/splus8.0.4"
+       "/Insightful/splus80"))
   "*List of possible values of the environment variable SHOME for recent
 releases of S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
@@ -780,7 +792,7 @@ menu."
   :type 'string)
 
 (defcustom inferior-S+4-program-name
-  (concat (getenv "ProgramFiles") "/spls45se/cmd/Splus.exe")
+  (concat ess-program-files "/spls45se/cmd/Splus.exe")
   "*Program name for invoking an external GUI S+4.
 The default value is correct for a default installation of
 S-Plus 4.5 Student Edition and with bash as the shell.
@@ -803,13 +815,13 @@ in S+4 Commands window and in Sqpe+4 buffer."
   :type 'string)
 
 (defcustom inferior-Sqpe+4-program-name
-  (concat (getenv "ProgramFiles") "/spls45se/cmd/Sqpe.exe")
+  (concat ess-program-files "/spls45se/cmd/Sqpe.exe")
   "*Program name for invoking an inferior ESS with Sqpe+4()."
   :group 'ess-SPLUS
   :type 'string)
 
 (defcustom inferior-Sqpe+4-SHOME-name
-  (if ess-microsoft-p (concat (getenv "ProgramFiles") "/spls45se" ""))
+  (if ess-microsoft-p (concat ess-program-files "/spls45se" ""))
   "*SHOME name for invoking an inferior ESS with Sqpe+4().
 The default value is correct for a default installation of
 S-Plus 4.5 Student Edition.  For any other version or location,
@@ -857,7 +869,7 @@ different computer."
 
 (if ess-microsoft-p
     (defcustom inferior-S+6-program-name
-      (concat (getenv "ProgramFiles") "/insigh~1/splus70/cmd/Splus.exe")
+      (concat ess-program-files "/insigh~1/splus70/cmd/Splus.exe")
       "*Program name for invoking an external GUI S+6 for Windows.
 The default value is correct for a default installation of
 S-Plus 7.0 and with bash as the shell.
@@ -896,13 +908,13 @@ in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
   :type 'string)
 
 (defcustom inferior-Sqpe+6-program-name
-  (concat (getenv "ProgramFiles") "/insigh~1/splus70/cmd/Sqpe.exe")
+  (concat ess-program-files "/insigh~1/splus70/cmd/Sqpe.exe")
   "*Program name for invoking an inferior ESS with Sqpe+6() for Windows."
   :group 'ess-S
   :type 'string)
 
 (defcustom inferior-Sqpe+6-SHOME-name
-  (if ess-microsoft-p (concat (getenv "ProgramFiles") "/insigh~1/splus70" ""))
+  (if ess-microsoft-p (concat ess-program-files "/insigh~1/splus70" ""))
   "*SHOME name for invoking an inferior ESS with Sqpe+6() for Windows.
 The default value is correct for a default installation of
 S-Plus 7.0.  For any other version or location,

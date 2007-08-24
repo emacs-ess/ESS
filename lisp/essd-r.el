@@ -348,16 +348,15 @@ If the value returned is nil, no valid newest version of R could be found."
   "Find the full path of all occurences of Rterm.exe under the ESS-R-ROOT-DIR.
 If ESS-R-ROOT-DIR is nil, construct it by looking for an occurence of Rterm.exe
 in the exec-path.  If there are no occurences of Rterm.exe in the exec-path,
-then use something like \"c:/progra~1/R/\" which is
-the default location for the R distribution."
+then use `ess-program-files' (which evaluates to something like \"c:/progra~1/R/\"
+in English locales) which is the default location for the R distribution."
     (if (not ess-R-root-dir)
 	(let ((Rpath (executable-find "Rterm")))
 	  (setq ess-R-root-dir
 		(expand-file-name
 		 (if Rpath
 		     (concat (file-name-directory Rpath) "../../")
-		   ;; (getenv "ProgramFiles") instead of "c:/progra~1/" does not work (in US)
-		   (concat "c:/progra~1/" "/R/"))))
+		   (concat ess-program-files "/R/"))))
 	  (ess-write-to-dribble-buffer
 	   (format "(ess-find-rterm): ess-R-root-dir = '%s'\n" ess-R-root-dir))
 	  ))

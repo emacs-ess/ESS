@@ -168,7 +168,8 @@ path to `Splus.exe' in the variable `inferior-S+6-program-name' in your
 	  (error "S-Plus 6.0 for Microsoft Windows has a bug that
 prevents it from being started by emacs.  Instead, you must start it
 by double-clicking an icon.  Then you can connect to it with
-`S+6-existing'.  You should consider upgrading to S-Plus 6.1 or higher."))))
+`S+6-existing'.  You should consider upgrading to a newer
+release of S-Plus."))))
   (S+6-initiate proc-name)) ;; normal start ;
 
 
@@ -253,8 +254,10 @@ Splus Commands window appear in this buffer.\n\n")
   "Call 'S-PLUS [678].x for Windows', the 'GUI Thing' from StatSci.  Do so by
 finding an existing S-Plus in an independent MS-Window (if there is one) and
 set up a '(ddeESS [S+6])' buffer in emacs.  If there is no existing
-S-Plus, then a new one will be opened in the default directory,
-usually something like c:/Program Files/Insightful/splus70/users/yourname.
+S-Plus, then a new one will be opened in the default directory.  The default
+is usually something like 'c:/Program Files/Insightful/splus70/users/yourname'
+for S-Plus before 8.0.4.  Beginning with 8.0.4, S-Plus uses the default directory
+'c:/Documents and Settings/yourname/My Documents/S-PLUS Projects/Project1'.
 If you have a HOME environment variable, it will open it there."
   (interactive)
   (let* ((inferior-S+6-multipleinstances " & # ") ; Note: there is a final "&".
@@ -362,7 +365,8 @@ specify the complete path to `Splus.exe' in the variable
 	    (error "S-Plus 6.0 for Microsoft Windows has a bug that
 prevents it from being started by emacs.  Instead, you must start it
 by double-clicking an icon.  Then you can connect to it with
-`S+6-msdos-existing'.  You should consider upgrading to S-Plus 6.1 or higher.")
+`S+6-msdos-existing'.  You should consider upgrading to a newer
+release of S-Plus.")
   (S+6-msdos-initiate proc-name))) ;; normal start ;
       )))
 
@@ -456,8 +460,10 @@ Splus Commands window (are supposed to) appear in this buffer.\n\n")
   "Call 'S-PLUS [678].x for Windows', the 'GUI Thing' from StatSci.  Do so by
 finding an existing S-Plus in an independent MS-Window (if there is one) and
 set up a '(ddeESS [S+6])' buffer in emacs.  If there is no existing
-S-Plus, then a new one will be opened in the default directory,
-usually something like c:/Program Files/Insightful/splus70/users/yourname.
+S-Plus, then a new one will be opened in the default directory.  The default
+is usually something like 'c:/Program Files/Insightful/splus70/users/yourname'
+for S-Plus before 8.0.4.  Beginning with 8.0.4, S-Plus uses the default directory
+'c:/Documents and Settings/yourname/My Documents/S-PLUS Projects/Project1'.
 If you have a HOME environment variable, it will open it there."
   (interactive)
   (let* ((inferior-S+6-multipleinstances "")
