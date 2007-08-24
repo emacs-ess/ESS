@@ -350,34 +350,29 @@ If ESS-R-ROOT-DIR is nil, construct it by looking for an occurence of Rterm.exe
 in the exec-path.  If there are no occurences of Rterm.exe in the exec-path,
 then use something like \"c:/progra~1/R/\" which is
 the default location for the R distribution."
-  (let* ((rwxxyy)
-	 (rw)
-	 (Rterm nil))
     (if (not ess-R-root-dir)
 	(let ((Rpath (executable-find "Rterm")))
 	  (setq ess-R-root-dir
 		(expand-file-name
 		 (if Rpath
 		     (concat (file-name-directory Rpath) "../../")
-		   (concat (getenv "ProgramFiles") "/R/"))))
+		   ;; (getenv "ProgramFiles") instead of "c:/progra~1/" does not work (in US)
+		   (concat "c:/progra~1/" "/R/"))))
 	  (ess-write-to-dribble-buffer
-	   (format "(ess-find-rterm): ess-R-root-dir = '%s'" ess-R-root-dir))
+	   (format "(ess-find-rterm): ess-R-root-dir = '%s'\n" ess-R-root-dir))
 	  ))
-    (setq rwxxyy (append (file-name-all-completions "rw" ess-R-root-dir)
-			 (file-name-all-completions "R-1" ess-R-root-dir)
-			 (file-name-all-completions "R-2" ess-R-root-dir)
-			 (file-name-all-completions "R-devel" ess-R-root-dir)
-			 (file-name-all-completions "R-patched" ess-R-root-dir)
-			 ))
-    ;; FIXME: needs to rewritten to use (append '("rw") ess-r-versions)
-    (while rwxxyy
-      (setq rw (car rwxxyy))
-      (setq rwxxyy (cdr rwxxyy))
-      (setq Rterm (cons (ess-replace-regexp-in-string
-			 "[\\]" "/"
-			 (concat ess-R-root-dir rw "bin/Rterm.exe"))
-			Rterm)))
-    Rterm))
+
+    (when (file-directory-p ess-R-root-dir) ; otherwise file-name-all-.. errors
+      (setq ess-R-root-dir (ess-replace-regexp-in-string "[\\]" "/" ess-R-root-dir))
+      (let ((R-ver
+	     (ess-flatten-list
+	      (mapcar '(lambda (r-prefix)
+			 (file-name-all-completions r-prefix ess-R-root-dir))
+		      (append '("rw") ess-r-versions)))))
+	(mapcar '(lambda (dir)
+		   (concat ess-R-root-dir dir "bin/Rterm.exe"))
+		R-ver))))
+
 
 (defun ess-rterm-versions-create ()
   "Generate the `M-x rwxxyy' functions for starting other versions of R.
