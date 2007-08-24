@@ -361,7 +361,7 @@ the default location for the R distribution."
 		     (concat (file-name-directory Rpath) "../../")
 		   (concat (getenv "ProgramFiles") "/R/"))))
 	  (ess-write-to-dribble-buffer
-	   (format "(ess-find-rterm): ess-R-root-dir = '%s'"))
+	   (format "(ess-find-rterm): ess-R-root-dir = '%s'" ess-R-root-dir))
 	  ))
     (setq rwxxyy (append (file-name-all-completions "rw" ess-R-root-dir)
 			 (file-name-all-completions "R-1" ess-R-root-dir)
