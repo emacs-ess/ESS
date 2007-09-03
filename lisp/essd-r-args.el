@@ -236,10 +236,13 @@ ess-r-args-current-function if no argument given."
   "Show arguments and their default values of R function. Calls
 \\[ess-r-args-current-function] if called without argument."
   (interactive "*")
+  (ess-message "(ess-r-args-show): start")
   (if (null function)
       (setq function (ess-r-args-current-function)))
+  (ess-message ".... function='%s'" function)
   (if function
     (let ((args (ess-r-args-get function)))
+      (ess-message "(ess-r-args-show): args='%s'" args)
       (unless (null args)
 	(if (and (equal ess-r-args-show-as 'tooltip)
 		 ess-has-tooltip)

@@ -1,7 +1,14 @@
+2007-09-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-comp.el (ess-message): use format-string - exactly
+	* ess-site.el: {ditto}       paralleling (message .);  such that
+	we can use (... "%s" msg) as recommended in here:
+	* essd-r-args.el (ess-r-args-show): 
+
 2007-08-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el (ess-SHOME-versions, et al): use (getenv "ProgramFiles")
-	instead of "c:/progra~1..."; ditto in 
+	instead of "c:/progra~1..."; ditto in
 	* essd-r.el etc.
 
 2007-08-22  Martin Maechler  <maechler@stat.math.ethz.ch>

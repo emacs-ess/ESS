@@ -40,9 +40,9 @@
 ;; defvar'ed to nil in ./ess-site.el
 (setq ess-show-load-messages t)
 
-(defun ess-message (msg)
+(defun ess-message (format-string &rest args)
   "Shortcut for \\[message] only if `ess-show-load-messages' is non-nil."
-  (if ess-show-load-messages (message msg)))
+  (if ess-show-load-messages (message format-string args)))
 
 ;; These are required by every other file.
 (ess-message "loading 'ess-emcs ..")  (require 'ess-emcs) ;set Emacsen diffs

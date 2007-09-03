@@ -124,9 +124,10 @@ The extension, in a file name, is the part that follows the last `.'."
       (defvar ess-show-load-messages nil
 	"If t, show many more \"loading ..\" messages."))
   (if (not (fboundp 'ess-message))
-      (defun ess-message (msg)
+      (defun ess-message (format-string &rest args)
 	"Shortcut for \\[message] only if `ess-show-load-messages' is non-nil."
-	(if ess-show-load-messages (message msg))))); eval-*-compile
+	(if ess-show-load-messages (message format-string args)))
+    )); eval-*-compile
 
 ;; DEBUG: (setq ess-show-load-messages t); instead of nil above
 
