@@ -1,3 +1,13 @@
+Changes/New Features in 5.3.6:
+@itemize @bullet
+@item @ESS{}: for Xemacs, using ``gnuclient'' (without a ``-q'') works for
+ things like fix() after M-x gnuserv-start has been done.
+@item @ESS{R}: M-x R-newest should now work in more situations on MS
+ Windows, e.g., when R has been installed in a non-default "ProgramFiles"
+ directory tree.
+@item @ESS{R}: For Xemacs, startup (with new tooltip code) works again.
+@end itemize
+
 Changes/New Features in 5.3.5:
 @itemize @bullet
 @item @ESS{[R]} a new defun is available, @kbd{M-x R-newest}, which will start
