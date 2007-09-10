@@ -997,7 +997,7 @@ order for it to work right.  And Emacs is too smart for it."
 (defcustom R-editor
   (if ess-microsoft-p "gnuclient.exe"
     (if (equal system-type 'Apple-Macintosh) nil
-      (if (featurep 'xemacs) "gnuclient -q" "emacsclient"))) ;; unix
+      (if (featurep 'xemacs) "gnuclient" "emacsclient"))) ;; unix
   "*Editor called by R process with 'edit()' command."
   :group 'ess
   :type 'string)
@@ -1010,7 +1010,7 @@ order for it to work right.  And Emacs is too smart for it."
 (defcustom S-editor
   (if ess-microsoft-p "gnuclient.exe"
     (if (equal system-type 'Apple-Macintosh) nil
-      (if (featurep 'xemacs) "gnuclient -q" "emacsclient"))) ;; unix
+      (if (featurep 'xemacs) "gnuclient" "emacsclient"))) ;; unix
   "*Editor called by S process with 'edit()' command."
   :group 'ess
   :type 'string)
@@ -1018,7 +1018,7 @@ order for it to work right.  And Emacs is too smart for it."
 (defcustom S-pager
   (if ess-microsoft-p "gnuclientw.exe"
     (if (equal system-type 'Apple-Macintosh) nil
-      (if (featurep 'xemacs) "gnuclient -q" "emacsclient")))
+      (if (featurep 'xemacs) "gnuclient" "emacsclient")))
   "*Pager called by S process with 'page()' command."
   ;; Change made to provide a better help(function) experience with
   ;; S+6 and xemacs
