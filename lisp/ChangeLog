@@ -1,3 +1,8 @@
+2007-09-11  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-utils.el: remove long deprecated (defun ess-directory-sep)
+	(ess-chop-last, ess-drop-non-directories): new utilities.
+
 2007-09-10  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el (R-editor et al): use "gnuclient" instead of "... -q"

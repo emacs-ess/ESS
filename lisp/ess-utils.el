@@ -359,7 +359,7 @@ is specified, perform action in that buffer."
             (set (car pair) (eval (cdr pair))))
           alist))
 
-(defun ess-clone-local-variables (from-file-or-buffer 
+(defun ess-clone-local-variables (from-file-or-buffer
 				  &optional to-file-or-buffer)
   "Clone local variables from one buffer to another buffer."
   (interactive)
@@ -367,31 +367,22 @@ is specified, perform action in that buffer."
    (ess-sas-create-local-variables-alist from-file-or-buffer)
    to-file-or-buffer))
 
-(defun ess-directory-sep (ess-dir-arg)
-  "Deprecated.  Use file-name-as-directory instead.
-Given a directory, pad with directory-separator character, if necessary."
-(let ((ess-tmp-dir-last-char (substring ess-dir-arg -1)))
-    (if (or (equal ess-tmp-dir-last-char "/")
-	(and ess-microsoft-p (equal ess-tmp-dir-last-char "\\")))
-    ess-dir-arg
-    (concat ess-dir-arg (if ess-microsoft-p "\\" "/")))))
-
 (defun ess-return-list (ess-arg)
   "Given an item, if it is a list return it, else return item in a list."
   (if (listp ess-arg) ess-arg (list ess-arg)))
 
 (defun ess-find-exec (ess-root-arg ess-root-dir)
-  "Given a root directory and the root of an executable file name, 
+  "Given a root directory and the root of an executable file name,
 find it's full name and path, if it exists, anywhere in the sub-tree."
   (let* ((ess-tmp-dirs (directory-files ess-root-dir t "^[^.]"))
 	 (ess-tmp-return (ess-find-exec-completions ess-root-arg ess-root-dir))
 	 (ess-tmp-dir nil))
-    
+
     (while ess-tmp-dirs
       (setq ess-tmp-dir (car ess-tmp-dirs)
 	    ess-tmp-dirs (cdr ess-tmp-dirs))
       (if (file-accessible-directory-p ess-tmp-dir)
-	  (setq ess-tmp-return 
+	  (setq ess-tmp-return
 		(nconc ess-tmp-return
 		       (ess-find-exec ess-root-arg ess-tmp-dir)))))
     ess-tmp-return))
@@ -412,36 +403,24 @@ Search for the executables in ESS-EXEC-DIR (which defaults to
       (setq ess-tmp-dir (car ess-exec-path)
 	    ess-exec-path (cdr ess-exec-path))
       (when
-	  (and (> (length ess-tmp-dir) 0) 
+	  (and (> (length ess-tmp-dir) 0)
 	       (file-accessible-directory-p ess-tmp-dir))
 	;; the first test above excludes "" from exec-path, which can be
 	;; problematic with Tramp.
-	(setq ess-tmp-files 
+	(setq ess-tmp-files
 	      (file-name-all-completions ess-root-arg ess-tmp-dir))
 
 	(while ess-tmp-files
-	  (setq ess-tmp-file 
+	  (setq ess-tmp-file
 		(concat (file-name-as-directory ess-tmp-dir)
 			(car ess-tmp-files))
 		ess-tmp-files (cdr ess-tmp-files))
 	  (if (and (file-executable-p ess-tmp-file)
 		   (not (file-directory-p ess-tmp-file)))
 	      ;; we have found a possible executable, so keep it.
-	      (setq ess-tmp-exec 
+	      (setq ess-tmp-exec
 		    (nconc ess-tmp-exec (list ess-tmp-file)))))))
     ess-tmp-exec))
-
-;; (defun ess-uniq-list (items)
-;;   "Remove all duplicate strings from the list ITEMS."
-;;   ;; build up a new-list, only adding an item from ITEMS if it is not
-;;   ;; already present in new-list.
-;;   (let (new-list)
-;;     (while items
-;;       (if (not (member (car items) new-list))
-;; 	  (setq new-list (cons (car items) new-list)))
-;;       (setq items (cdr items)))
-;;     new-list
-;;     ))
 
 ;; Copyright (C) 1994 Simon Marshall.
 ;; Author: Simon Marshall <Simon.Marshall@mail.esrin.esa.it>
@@ -461,13 +440,23 @@ This function will work even if LIST is unsorted.  See also `uniq'."
     (while list
       (setq list (setcdr list (funcall predicate (car list) (cdr list))))))
   list)
+
 (defun ess-uniq-list (items)
   "Delete all duplicate entries in ITEMS list, calling `ess-unique'."
   (ess-unique items 'delete))
 
+(defun ess-drop-non-directories (file-strings)
+  "Drop all entries that do not \"look like\" directories."
+  (ess-flatten-list (mapcar 'file-name-directory file-strings)))
+
+(defun ess-chop1 (string)
+  "chop last character; typically to remove trailing \"/\"."
+ (substring string 0 -1))
+
 
 (defun ess-flatten-list (&rest list)
-  "Take the arguments and flatten them into one long list."
+  "Take the arguments and flatten them into one long list.
+Drops 'nil' entries."
   ;; Taken from lpr.el
   ;; `lpr-flatten-list' is defined here (copied from "message.el" and
   ;; enhanced to handle dotted pairs as well) until we can get some
@@ -655,31 +644,31 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 	 (when focus-follows-mouse
 	   (set-mouse-position frame (1- (frame-width frame)) 0)))))
 
-(defun ess-sci-to-dec () 
+(defun ess-sci-to-dec ()
     "For BUGS/S family: Express +/-0.000E+/-0 or +/-0.0e+/-00 as a decimal."
     (interactive)
     (setq buffer-read-only nil)
     (save-excursion (goto-char 0)
-    (save-match-data (let ((ess-temp-replacement-string nil)                            
+    (save-match-data (let ((ess-temp-replacement-string nil)
 			    (ess-temp-replacement-9 0)
 			    (ess-temp-replacement-diff 0))
      (while (search-forward-regexp "-?[0-9][.][0-9][0-9]?[0-9]?[Ee][+-][0-9][0-9]?" nil t)
-	    (setq ess-temp-replacement-string 
+	    (setq ess-temp-replacement-string
 		  (int-to-string (string-to-number (match-string 0))))
 	    (setq ess-temp-replacement-diff (- (match-end 0) (match-beginning 0)))
 	    (save-match-data
-	        (setq ess-temp-replacement-9 
+	        (setq ess-temp-replacement-9
 		    (string-match "99999999999$" ess-temp-replacement-string))
 
 		(if (not ess-temp-replacement-9)
-		    (setq ess-temp-replacement-9 
+		    (setq ess-temp-replacement-9
 			(string-match "000000000001$" ess-temp-replacement-string))))
-	
-	    (if ess-temp-replacement-9	
-		(setq ess-temp-replacement-string 
+
+	    (if ess-temp-replacement-9
+		(setq ess-temp-replacement-string
 		    (substring ess-temp-replacement-string 0 ess-temp-replacement-9)))
 
-	    (setq ess-temp-replacement-diff 
+	    (setq ess-temp-replacement-diff
 		(- ess-temp-replacement-diff (string-width ess-temp-replacement-string)))
 
 	   (while (> ess-temp-replacement-diff 0)
