@@ -483,25 +483,23 @@ sending `inferior-ess-language-start' to S-Plus.")
 (fset 'S-transcript-mode 's-transcript-mode)
 (fset 'S-mode 's-mode)
 
-;;; Create functions for calling older versions of R and Sqpe.
+;;; Create functions for calling different (older or newer than default)
+;;;  versions of R and S(qpe).
 (defvar ess-r-versions-created nil)
 
-(let ( (ess-sqpe-versions-created)
-       (ess-rterm-versions-created)
-       ;;(ess-r-versions-created)
-       (ess-s-versions-created)
+(let ( (ess-s-versions-created)
        (ess-versions-created)
        (R-newest-list '("R-newest"))
        )
   (if ess-microsoft-p
       (progn
-	(setq ess-sqpe-versions-created
+	(setq ess-s-versions-created
 	      (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
-	(setq ess-rterm-versions (ess-find-rterm))
-	(setq ess-rterm-versions-created
-	      (ess-rterm-versions-create)) ;; use ess-rterm-versions
+	(setq ess-rterm-version-paths (ess-find-rterm))
+	(setq ess-r-versions-created
+	      (ess-rterm-versions-create)) ;; using ess-rterm-version-paths
 	;; RMH: try to find newest version.
- 	;; (ess-newest-r ess-rterm-versions)
+ 	;; (ess-newest-r ess-rterm-version-paths)
 	)
     ;;else  real OS :
       (setq ess-s-versions-created
@@ -520,9 +518,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 	 (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
 		 '(R-newest-list
 		   ess-r-versions-created
-		   ess-rterm-versions-created
-		   ess-s-versions-created
-		   ess-sqpe-versions-created))))
+		   ess-s-versions-created))))
 
   (when ess-versions-created
     ;; new-menu will be a list of 3-vectors, of the form:

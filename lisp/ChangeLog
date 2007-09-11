@@ -1,7 +1,16 @@
 2007-09-11  Martin Maechler  <maechler@stat.math.ethz.ch>
 
+	* ess-site.el (ess-versions-created): slightly more parallelism
+	between microsoft and "normal".
+
 	* ess-utils.el: remove long deprecated (defun ess-directory-sep)
-	(ess-chop-last, ess-drop-non-directories): new utilities.
+	(ess-chop1, ess-drop-non-directories): new utilities.
+
+	* essd-r.el (ess-r-versions-create): and
+	(ess-rterm-versions-create): parallelized much more, to be merged
+	later.
+	(ess-find-rterm): now make use of ess-drop-non-directories:
+	a "zip" file starting with R-2.6 now longer harms.
 
 2007-09-10  Martin Maechler  <maechler@stat.math.ethz.ch>
 

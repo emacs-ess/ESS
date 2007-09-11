@@ -735,9 +735,9 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :type 'string)
 
 
-(defcustom ess-rterm-versions nil
-"*Construct ess-rterm-versions.  If you have versions of R in
-locations other than in ../../R-*/bin/Rterm.exe or
+(defcustom ess-rterm-version-paths nil
+"*To contain the full path file names of Rterm versions.  If you have versions
+of R in locations other than in ../../R-*/bin/Rterm.exe or
 ../../rw*/bin/Rterm.exe, relative to the
 directory in the `exec-path' variable containing your default location
 of Rterm, you will need to redefine this variable with a
