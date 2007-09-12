@@ -736,9 +736,9 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
 
 
 (defcustom ess-rterm-version-paths nil
-"*To contain the full path file names of Rterm versions.  If you have versions
-of R in locations other than in ../../R-*/bin/Rterm.exe or
-../../rw*/bin/Rterm.exe, relative to the
+"*To contain the full path file names of Rterm versions, computed via
+\\[ess-find-rterm].  If you have versions of R in locations other than 
+in ../../R-*/bin/Rterm.exe or ../../rw*/bin/Rterm.exe, relative to the
 directory in the `exec-path' variable containing your default location
 of Rterm, you will need to redefine this variable with a
 `custom-set-variables' statement in your site-start.el or .emacs

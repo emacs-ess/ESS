@@ -254,12 +254,12 @@ newest version of R can be potentially time-consuming."
       (setq ess-newest-R
 	    (ess-newest-r
 	     (if ess-microsoft-p
-		 ess-r-versions-created
+		 ess-rterm-version-paths
 	       (add-to-list 'ess-r-versions-created
 			    inferior-R-program-name))))))
 
-(defun ess-check-R-name ()
-  "Check `inferior-R-program-name' points to an executable version of R.
+(defun ess-check-R-program-name ()
+  "Check if `inferior-R-program-name' points to an executable version of R.
 If not, try to find the newest version of R elsewhere on the system, and
 update `inferior-R-program-name' accordingly."
   (unless (executable-find inferior-R-program-name)
@@ -315,13 +315,11 @@ returned."
 (defun ess-newest-r (rvers)
   "Check all the versions of RVERS to see which is the newest.
 Return the name of the newest version of R."
-  (let (rnewest
-	(rtimes (mapcar 'ess-r-version-date rvers)))
+  (let ((rtimes (mapcar 'ess-r-version-date rvers)))
     ;; SJE: 2007-07-13 -- following line is a temp var to check that
     ;; the newest version of R is found correctly.
     (setq ess-temp-newest rtimes)
-    (setq rnewest (ess-find-newest-date rtimes))
-    rnewest))
+    (ess-find-newest-date rtimes)))
 
 ;; Test case for following defun:
 ;; (setq a '( ("2003-10-04" . "R-1.7")

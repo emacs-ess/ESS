@@ -498,16 +498,12 @@ sending `inferior-ess-language-start' to S-Plus.")
 	(setq ess-rterm-version-paths (ess-find-rterm))
 	(setq ess-r-versions-created
 	      (ess-rterm-versions-create)) ;; using ess-rterm-version-paths
-	;; RMH: try to find newest version.
- 	;; (ess-newest-r ess-rterm-version-paths)
 	)
     ;;else  real OS :
       (setq ess-s-versions-created
 	    (ess-s-versions-create))      ;; use ess-s-versions
       (setq ess-r-versions-created
 	    (ess-r-versions-create))      ;; use ess-r-versions
-      ;; SJE: try to find newest version.
-      ;; (ess-newest-r (add-to-list 'ess-r-versions-created "R"))
       )
 
   ;; Add the new defuns, if any, to the menu.
@@ -523,15 +519,14 @@ sending `inferior-ess-language-start' to S-Plus.")
   (when ess-versions-created
     ;; new-menu will be a list of 3-vectors, of the form:
     ;; ["R-1.8.1" R-1.8.1 t]
-    (let (( new-menu (mapcar '(lambda(x) (vector x (intern x) t))
-			     ess-versions-created)))
-    (easy-menu-add-item ess-mode-menu '("Start Process")
-			(cons "Other" new-menu)))))
+    (let ((new-menu (mapcar '(lambda(x) (vector x (intern x) t))
+			    ess-versions-created)))
+      (easy-menu-add-item ess-mode-menu '("Start Process")
+			  (cons "Other" new-menu)))))
 
 ;; Check to see that inferior-R-program-name points to a working version
-;; of R; if not, try to find a newer version.
-(ess-check-R-name)
-
+;; of R; if not, try to find the newest version:
+(ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./essd-r.el
 
 ;;; 3. Customization (and commented out examples) for your site
 ;;;; ===============================================
