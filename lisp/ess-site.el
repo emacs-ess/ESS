@@ -496,15 +496,14 @@ sending `inferior-ess-language-start' to S-Plus.")
 	(setq ess-s-versions-created
 	      (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
 	(setq ess-rterm-version-paths (ess-find-rterm))
-	(setq ess-r-versions-created
-	      (ess-rterm-versions-create)) ;; using ess-rterm-version-paths
 	)
     ;;else  real OS :
       (setq ess-s-versions-created
 	    (ess-s-versions-create))      ;; use ess-s-versions
-      (setq ess-r-versions-created
-	    (ess-r-versions-create))      ;; use ess-r-versions
       )
+
+  (setq ess-r-versions-created ;;  for Unix *and* Windows, using either
+	(ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths
 
   ;; Add the new defuns, if any, to the menu.
   ;; Check that each variable exists, before adding.

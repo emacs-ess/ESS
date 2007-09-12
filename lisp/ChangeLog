@@ -1,5 +1,10 @@
 2007-09-12  Martin Maechler  <maechler@stat.math.ethz.ch>
 
+	* essd-r.el (ess-r-versions-create): merged
+	ess-rterm-versions-create into this one, using (if ..microsoft..);
+	* ess-site.el: ditto
+
+
 	* essd-r.el (ess-find-newest-R): fix M$: use ess-rterm-version-paths
 	(ess-check-R-program-name): renamed from ess-check-R-name
 
