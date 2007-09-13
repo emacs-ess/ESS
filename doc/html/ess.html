@@ -346,7 +346,18 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
 <h3 class="section">1.2 New features in ESS</h3>
 
-<p>Changes/New Features in 5.3.5:
+<p>Changes/New Features in 5.3.6:
+     <ul>
+<li><acronym>ESS</acronym>: for Xemacs, using &ldquo;gnuclient&rdquo; (without a &ldquo;-q&rdquo;) works for
+ things like fix() after M-x gnuserv-start has been done. 
+<li><acronym>ESSR</acronym>: M-x R-newest should now work in more situations on MS
+ Windows, e.g., when R has been installed in a non-default "ProgramFiles"
+ directory tree.  In these cases, there's no need to specify the name (and
+ full path) of the R program anymore. 
+<li><acronym>ESSR</acronym>: For Xemacs, startup (with new tooltip code) works again. 
+</ul>
+
+   <p>Changes/New Features in 5.3.5:
      <ul>
 <li><acronym>ESS[R]</acronym> a new defun is available, <kbd>M-x R-newest</kbd>, which will start
 the newest version of R that it can find on your system. 
