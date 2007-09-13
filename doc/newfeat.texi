@@ -4,7 +4,8 @@ Changes/New Features in 5.3.6:
  things like fix() after M-x gnuserv-start has been done.
 @item @ESS{R}: M-x R-newest should now work in more situations on MS
  Windows, e.g., when R has been installed in a non-default "ProgramFiles"
- directory tree.
+ directory tree.  In these cases, there's no need to specify the name (and
+ full path) of the R program anymore.
 @item @ESS{R}: For Xemacs, startup (with new tooltip code) works again.
 @end itemize
 
