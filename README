@@ -55,7 +55,18 @@ shell, simply type `M-x S+6-msdos RET'.
 1.3 New Features
 ================
 
-Changes/New Features in 5.3.5:
+Changes/New Features in 5.3.6:
+   * ESS: for Xemacs, using "gnuclient" (without a "-q") works for
+     things like fix() after M-x gnuserv-start has been done.
+
+   * ESSR: M-x R-newest should now work in more situations on MS
+     Windows, e.g., when R has been installed in a non-default
+     "ProgramFiles"  directory tree.  In these cases, there's no need
+     to specify the name (and  full path) of the R program anymore.
+
+   * ESSR: For Xemacs, startup (with new tooltip code) works again.
+
+   Changes/New Features in 5.3.5:
    * ESS[R] a new defun is available, `M-x R-newest', which will start
      the newest version of R that it can find on your system.
 
