@@ -390,7 +390,9 @@ in English locales) which is the default location for the R distribution."
 			  (file-name-all-completions r-prefix ess-R-root-dir))
 		       (append '("rw") ess-r-versions))))))
 	(mapcar '(lambda (dir)
-		   (concat ess-R-root-dir dir "bin/Rterm.exe"))
+		   (concat ess-R-root-dir
+			   (ess-replace-regexp-in-string "[\\]" "/" dir)
+			   "bin/Rterm.exe"))
 		R-ver))))
 
 

@@ -1,3 +1,8 @@
+2007-09-28  Martin for Rodney Sparapany  <rsparapa@mcw.edu>
+
+	* essd-r.el (ess-find-rterm): yet another "replace \\ by /",
+	needed for Xemacs (on Windows).
+
 2007-09-12  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r.el (ess-r-versions-create): merged
