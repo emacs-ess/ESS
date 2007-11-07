@@ -1,3 +1,9 @@
+2007-11-07  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-cust.el (ess-font-lock-mode): New variable.
+	* ess-site.el: Use ess-font-lock-mode.
+
+
 2007-09-28  Martin for Rodney Sparapany  <rsparapa@mcw.edu>
 
 	* essd-r.el (ess-find-rterm): yet another "replace \\ by /",
