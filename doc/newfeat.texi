@@ -1,5 +1,7 @@
 Changes/New Features in 5.3.6:
 @itemize @bullet
+@item @ESS{}: @var{ess-font-lock-mode} is a new variable (default: t)
+which controls whether font-locking is enabled in ESS buffers.
 @item @ESS{}: for Xemacs, using ``gnuclient'' (without a ``-q'') works for
  things like fix() after M-x gnuserv-start has been done.
 @item @ESS{R}: M-x R-newest should now work in more situations on MS
