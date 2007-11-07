@@ -1,7 +1,12 @@
-Changes/New Features in 5.3.6:
+Changes/New Features in 5.x.y:
 @itemize @bullet
 @item @ESS{}: @var{ess-font-lock-mode} is a new variable (default: t)
 which controls whether font-locking is enabled in ESS buffers.
+@item @ESS{R}: for Xemacs on Windows; another tweak to find R versions
+@end itemize
+
+Changes/New Features in 5.3.6:
+@itemize @bullet
 @item @ESS{}: for Xemacs, using ``gnuclient'' (without a ``-q'') works for
  things like fix() after M-x gnuserv-start has been done.
 @item @ESS{R}: M-x R-newest should now work in more situations on MS
