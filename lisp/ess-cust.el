@@ -1388,6 +1388,17 @@ dialects' alists.  Increase this, if you have a fast(er) machine."
 
 ;;; for programming, transcript, and inferior process modes.
 
+(defcustom ess-font-lock-mode
+  (if  (ess-running-emacs-version-or-newer 22 1)
+      global-font-lock-mode
+    ;; else for emacs 21.x and earlier
+    t)
+  "*Non-nil means we use font lock support for ESS buffers.
+Default is t, to use font lock support.
+If you change the value of this variable, restart Emacs for it to take effect."
+  :group 'ess
+  :type 'boolean)
+
 (defcustom inferior-ess-font-lock-input t
   "*Non-nil means input is syntactically font-locked.
 If nil, input is in the `font-lock-variable-name-face'."
