@@ -109,10 +109,13 @@ to look up any doc strings."
 	  (condition-case nil 
 	      (progn 
 		(up-list -1)
-		(setq doc (ess-r-args-get (ess-guess-fun))))
+		(setq name (ess-guess-fun))
+		(setq doc (ess-r-args-get name)))
 	    ;; error handler -- not possible to go up one list level.
 	    (error nil) ))))
-    doc))
+    (if doc
+	(concat name ": " doc)
+      doc)))
   
 (defun ess-eldoc-2 ()
   ;; simple, old version.
