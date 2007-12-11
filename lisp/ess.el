@@ -258,7 +258,7 @@ Otherwise try a list of fixed known viewers."
 ;; Shortcut to render "dribbling" statements less cluttering:
 (defun ess-if-verbose-write (text)
   "Write TEXT to dribble buffer ('*ESS*') only *if* `ess-verbose'."
-  (if ess-verbose (ess-write-to-dribble-buffer text))
+  (if ess-verbose (ess-write-to-dribble-buffer text)))
 
 (defun ess-setq-vars-local (alist &optional buf)
   "Set language variables from ALIST, in buffer BUF, if desired."
