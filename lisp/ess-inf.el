@@ -793,7 +793,7 @@ PROC is the ESS process. Does not change point"
 	  (if moving (goto-char (process-mark proc))))
       (set-buffer old-buffer))))
 
-(defun ess-command (com &optional buf sleep)
+(defun ess-command (com &optional buf sleep no-prompt-check)
   "Send the ESS process command COM and delete the output
 from the ESS process buffer.  If an optional second argument BUF exists
 save the output in that buffer. BUF is erased before use.
@@ -805,7 +805,7 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
   ;; result is needed immediately. Waits until the output is ready
 
   ;; the ddeclient-p checks needs to use the local-process-name
-  (unless buf 
+  (unless buf
     (setq buf (get-buffer-create " *ess-command-output*")))
   (with-current-buffer buf
     (unless ess-local-process-name
@@ -830,12 +830,15 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 		(if sleep (if (numberp sleep) nil (setq sleep 1))) ; t means 1
 		(and ess-cmd-delay sleep)))
 	(if do-sleep (setq sleep (* sleep ess-cmd-delay)))
+	(ess-if-verbose-write (format "(ess-command %s ..)" com))
 	(save-excursion
 	  (goto-char (marker-position (process-mark sprocess)))
 	  (beginning-of-line)
-	  (if (looking-at inferior-ess-primary-prompt) nil
-	    (ess-error
-	     "ESS process not ready. Finish your command before trying again.")))
+	  (unless no-prompt-check
+	    (if (looking-at inferior-ess-primary-prompt)
+		nil
+	      (ess-error
+	       "ESS process not ready. Finish your command before trying again."))))
 	(setq oldpf (process-filter sprocess))
 	(setq oldpb (process-buffer sprocess))
 	(setq oldpm (marker-position (process-mark sprocess)))
@@ -851,7 +854,11 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 		(set-marker (process-mark sprocess) (point-min))
 		(process-send-string sprocess com)
 		;; need time for ess-create-object-name-db on PC
-		(ess-prompt-wait sprocess nil (and do-sleep (* 0.4 sleep))) ;MS: 4
+		(if no-prompt-check
+		    (sleep-for 0.020); 0.1 is noticable!
+		    ;; else: default
+		  (ess-prompt-wait sprocess nil
+				   (and do-sleep (* 0.4 sleep))));MS: 4
 		;;(if do-sleep (sleep-for (* 0.0 sleep))); microsoft: 0.5
 
 		;; goto end, making sure final prompt is deleted
@@ -862,6 +869,7 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 		  (setq end-of-output (point)))
 		(delete-region end-of-output (point-max))
 		))
+	  (ess-if-verbose-write " .. ok{ess-command}\n")
 	  ;; Restore old values for process filter
 	  (set-process-buffer sprocess oldpb)
 	  (set-process-filter sprocess oldpf)
@@ -1099,6 +1107,21 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
     (let ((end (point)))
       (backward-paragraph)
       (ess-eval-region (point) end vis "Eval paragraph"))))
+
+;; ;; Experimental - after suggestion from Jenny Brian for an 'eval-multiline'
+;; ;; 'sentence' is too much : almost like 'paragraph'
+;; ;; 'sexp'     is close, but too little [when point is inside function call;
+;; ;;	      it moves all the way to the end - which is fine]
+;; (defun ess-eval-sexp (vis)
+;;   "Send the current sexp to the inferior ESS process.
+;; Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
+;;   (interactive "P")
+;;   (save-excursion
+;;     (forward-sexp)
+;;     (let ((end (point)))
+;;       (backward-sexp)
+;;       (ess-eval-region (point) end vis "Eval sexp"))))
+
 
 (defun ess-eval-function-or-paragraph-and-step (vis)
   "Send the current function if \\[point] is inside one, otherwise the current
@@ -1501,7 +1524,7 @@ to continue it."
   ;; SJE: Do you mean that we should put this code into (R) and the S
   ;; dialects?  I agree that would be cleaner. e.g. in essd-r.el, for
   ;; the R defun we could have:
-  ;; (inferior-ess r-start-args) ;; (R)  
+  ;; (inferior-ess r-start-args) ;; (R)
   ;; (setq comint-input-sender 'inferior-R-input-sender) ;; <<- add this.
   (if (or (string= ess-language "S"))
       (cond
@@ -1542,7 +1565,7 @@ to continue it."
   ;; local var.
   (when font-lock-keywords-only
     (setq font-lock-keywords-only nil))
-  
+
   (ess-setq-vars-local ess-customize-alist) ; (current-buffer))
 
   (ess-write-to-dribble-buffer
@@ -1632,7 +1655,7 @@ to continue it."
 (defconst inferior-R-page	  (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defun inferior-R-input-sender (proc string)
-  ;; REALLY only for debugging: this S_L_O_W_S D_O_W_N	 [here AND below]
+  ;; next line only for debugging: this S_L_O_W_S D_O_W_N [here AND below]
   ;;(ess-write-to-dribble-buffer (format "(inf..-R-..): string='%s'; " string))
   ;; rmh: 2002-01-12 catch page() in R
   (let ((help-string (or (string-match inferior-R-1-input-help string)
@@ -2058,36 +2081,35 @@ using `ess-object-list' if that is non-nil."
 	    (setq i (1+ i)))
 	  (setq ess-object-list (ess-uniq-list result))))))
 
-(defun ess-get-words-from-vector (command)
+(defun ess-get-words-from-vector (command &optional no-prompt-check)
   "Evaluate the S command COMMAND, which returns a character vector.
 Return the elements of the result of COMMAND as an alist of strings.
 COMMAND should have a terminating newline."
   (let ((tbuffer (get-buffer-create
-		  " *ess-names-list*")); initial space: disable-undo
-	names)
+		  " *ess-get-words*")); initial space: disable-undo
+	words)
     (save-excursion
       (set-buffer tbuffer)
-      (ess-command command tbuffer 'sleep)
+      (ess-if-verbose-write (format "ess-get-words*(%s).. " command))
+      (ess-command command tbuffer 'sleep no-prompt-check)
+      (ess-if-verbose-write " [ok] ..")
       (goto-char (point-min))
-      (if ess-verbose (ess-write-to-dribble-buffer "ess-get-words-.. "))
       (if (not (looking-at "\\s-*\\[1\\]"))
-	  (progn (if ess-verbose
-		     (ess-write-to-dribble-buffer "not seeing \"[1]\".. "))
-		 (setq names nil)
+	  (progn (ess-if-verbose-write "not seeing \"[1]\".. ")
+		 (setq words nil)
 	  )
 	(goto-char (point-max))
 	(while (re-search-backward "\"\\([^\"]*\\)\"" nil t)
-	  (setq names (cons (buffer-substring (match-beginning 1)
-					      (match-end 1)) names))))
+	  (setq words (cons (buffer-substring (match-beginning 1)
+					      (match-end 1)) words))))
       ;;DBG, do *not* (i.e., comment):
       (kill-buffer tbuffer)
       )
-    (if ess-verbose
-	(ess-write-to-dribble-buffer
-	 (if (> (length names) 5)
-	     (format " |-> (length names)= %d\n" (length names))
-	   (format " |-> names= '%s'\n" names))))
-    names))
+    (ess-if-verbose-write
+	 (if (> (length words) 5)
+	     (format " |-> (length words)= %d\n" (length words))
+	   (format " |-> words= '%s'\n" words)))
+    words))
 
 (defun ess-compiled-dir (dir)
   "Return non-nil if DIR is an S object directory with special files.

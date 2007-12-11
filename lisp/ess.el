@@ -246,7 +246,7 @@ Otherwise try a list of fixed known viewers."
     (nreverse list)))
 
 (defun ess-write-to-dribble-buffer (text)
-  "Write TEXT to dribble buffer."
+  "Write TEXT to dribble ('*ESS*') buffer."
   (unless (buffer-live-p ess-dribble-buffer)
     ;; ESS dribble buffer must be re-created.
     (setq ess-dribble-buffer (get-buffer-create "*ESS*")))
@@ -254,6 +254,11 @@ Otherwise try a list of fixed known viewers."
     (with-current-buffer ess-dribble-buffer
       (goto-char (point-max))
       (insert text))))
+
+;; Shortcut to render "dribbling" statements less cluttering:
+(defun ess-if-verbose-write (text)
+  "Write TEXT to dribble buffer ('*ESS*') only *if* `ess-verbose'."
+  (if ess-verbose (ess-write-to-dribble-buffer text))
 
 (defun ess-setq-vars-local (alist &optional buf)
   "Set language variables from ALIST, in buffer BUF, if desired."
