@@ -80,7 +80,7 @@
      (inferior-ess-help-filetype        . nil)
      (inferior-ess-exit-command		. "q()")
      (inferior-ess-exit-prompt		. "Save workspace image? [y/n/c]: ")
-     (inferior-ess-primary-prompt	. "\\([A-Z][][A-Za-z0-9.]*\\)*> ")
+     (inferior-ess-primary-prompt	. "\\([A-Z][][A-Za-z0-9.]*\\)?> ")
      (inferior-ess-secondary-prompt	. "+ ?")
      ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
      (inferior-ess-start-file		. nil) ;; "~/.ess-R"
