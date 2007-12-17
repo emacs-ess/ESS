@@ -27,7 +27,7 @@ with the following versions of emacs
 @item GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1
 @item XEmacs 21.4.0-8, 21.4.9-13@footnote{
 require the files.el patch to revert-buffer for the Local Variables
-updating problem}, 21.4.14-15, 21.4.17-19, 21.5.23
+updating problem}, 21.4.14-15, 21.4.17-21, 21.5.23
 @c @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no
 @c longer supported, so an upgrade is recommended if you plan to use ESS.
 @c If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note
