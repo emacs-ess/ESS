@@ -1,19 +1,23 @@
-Changes/New Features in 5.x.y:
+Changes/New Features in 5.3.7:
 @itemize @bullet
 @item @ESS{}: @code{ess-font-lock-mode} is a new variable (default: t)
 which controls whether font-locking is enabled in ESS buffers.
-@item @ESS{R}: for Xemacs on Windows; another tweak to find R versions
+@item @ESS{[R]}: for XEmacs on Windows; another tweak to find R versions
+@item @ESS{[SAS]}: font-locking updated for ODS and SAS Bayesian Procedures;
+a more consistent handling of SAS options by @code{ess-sas-submit-command-options}
+which is buffer-local; portable snooze for MS Windows via customize-able 
+@code{ess-sleep-for} (floats welcome)
 @end itemize
 
 Changes/New Features in 5.3.6:
 @itemize @bullet
-@item @ESS{}: for Xemacs, using ``gnuclient'' (without a ``-q'') works for
+@item @ESS{}: for XEmacs, using ``gnuclient'' (without a ``-q'') works for
  things like fix() after M-x gnuserv-start has been done.
 @item @ESS{R}: M-x R-newest should now work in more situations on MS
  Windows, e.g., when R has been installed in a non-default "ProgramFiles"
  directory tree.  In these cases, there's no need to specify the name (and
  full path) of the R program anymore.
-@item @ESS{R}: For Xemacs, startup (with new tooltip code) works again.
+@item @ESS{R}: For XEmacs, startup (with new tooltip code) works again.
 @end itemize
 
 Changes/New Features in 5.3.5:
@@ -160,7 +164,7 @@ configuration by editing @file{lisp/ess-site.el} and @file{Makeconf}
 accordingly, then issuing @code{make install}
 @item @ESS{[S]}: Filename completion (inside strings) now also works in
 XEmacs for R and S-plus.
-@c working around a bug in Xemacs
+@c working around a bug in XEmacs
 @end itemize
 
 Changes/New Features in 5.2.9:
