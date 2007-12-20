@@ -48,7 +48,7 @@ or `ess-sas-data-view-insight'."
 
 (defcustom ess-sas-data-view-submit-options
   (if ess-microsoft-p "-noenhancededitor -nosysin -log NUL:"
-    "-nodms -nosysin -log /dev/null")
+    "-nodms -nosysin -log /dev/null -terminal")
   "*The command-line options necessary for your OS with respect to
 `ess-sas-data-view-fsview' and `ess-sas-data-view-insight'."
   :group 'ess-sas
@@ -155,7 +155,7 @@ Virtual PC emulator on your Mac; buffer-local."
 
 (make-variable-buffer-local 'ess-sas-submit-command)
 
-(defcustom ess-sas-submit-command-options " "
+(defcustom ess-sas-submit-command-options "-rsasuser"
   "*Options to pass to SAS in batch; buffer-local."
   :group 'ess-sas
   :type  'string)
@@ -196,9 +196,9 @@ should set this variable to 'sh regardless of their local shell
   :type  'string)
 
 (defcustom ess-sas-submit-post-command
-  (if (equal ess-sas-submit-method 'sh) "-rsasuser &"
-    (if ess-microsoft-p "-rsasuser -icon"))
-  "*Command-line statement to post-modify SAS invocation, e.g. -rsasuser"
+  (if (equal ess-sas-submit-method 'sh) "&"
+    (if ess-microsoft-p "-icon"))
+  "*Command-line statement to post-modify SAS invocation"
   :group 'ess-sas
   :type  'string)
 
@@ -468,6 +468,7 @@ current buffer if nil."
 	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command
 	    " -initstmt \"" ess-sas-data-view-libname ess-sas-data-view-fsview-command
 	    ess-sas-data ";" ess-tmp-sas-data-view-fsview-statement "; run;\" "
+	    ess-sas-submit-command-options " "
 	    ess-sas-data-view-submit-options " " ess-sas-submit-post-command))
     (comint-send-input)
 )))))
@@ -1023,15 +1024,14 @@ i.e. let arg1 be your local equivalent of
       (insert ess-sas-submit-pre-command " " arg1 " "
 	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path))
 	" " arg2 " " ess-sas-submit-post-command))
-    (sleep-for ess-sleep-for)
+    (ess-sleep)
     (comint-send-input))
 
 (defun ess-sas-submit-windows (arg1 arg2)
   "Windows using MS-DOS prompt in the *shell* buffer.
 Multiple processing is supported on this platform.
 On most Windows installations, SAS will not be found in your
-PATH.  You can set `ess-sas-submit-command' to
-\"sas -icon -rsasuser\" and alter your PATH to include SAS, i.e.
+PATH so you should alter your PATH to include SAS, i.e.
 
 SET PATH=%PATH%;C:\\Program Files\\SAS
 
