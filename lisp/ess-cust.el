@@ -516,6 +516,7 @@ GNU, BSD, ...) map onto different settings for variables."
 		 (const CLB))
   :group 'ess-edit)
 
+;; the real setting of this happens via <foo>-editing-alist:
 (defvar ess-style ess-default-style
   "*The buffer specific ESS indentation style.")
 
@@ -737,7 +738,7 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
 
 (defcustom ess-rterm-version-paths nil
 "*To contain the full path file names of Rterm versions, computed via
-\\[ess-find-rterm].  If you have versions of R in locations other than 
+\\[ess-find-rterm].  If you have versions of R in locations other than
 in ../../R-*/bin/Rterm.exe or ../../rw*/bin/Rterm.exe, relative to the
 directory in the `exec-path' variable containing your default location
 of Rterm, you will need to redefine this variable with a
@@ -1229,6 +1230,7 @@ when it searches for objects.
 Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
 ;; and hence made buffer-local via that scheme...
 
+;; FIXME: this is nowhere used :
 (defcustom inferior-ess-names-command "names(%s)\n"
   "Format string for ESS command to extract names from an object.
 
@@ -1271,7 +1273,7 @@ prevent timeouts in certain processes, such as completion.")
 (defvar inferior-ess-prompt nil
   "The regular expression inferior ess mode uses for recognizing prompts.
  Constructed at run time from `inferior-ess-primary-prompt' and
-`inferior-ess-secondary-prompt' within `inferior-ess-mode'.")
+ `inferior-ess-secondary-prompt' within \\[ess-multi].")
 
 (make-variable-buffer-local 'inferior-ess-prompt)
 

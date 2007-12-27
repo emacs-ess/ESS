@@ -265,7 +265,7 @@ Returns nil if line starts inside a string, t if in a comment."
     ;;(ess-calculate-indent           . 'S-calculate-indent)
     (indent-line-function            . 'S-indent-line)
     (parse-sexp-ignore-comments   . t)
-    (ess-set-style                . ess-default-style)
+    (ess-style                . ess-default-style)
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . S-syntax-table)
