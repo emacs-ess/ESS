@@ -36,7 +36,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.3.6
+5.3.7
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -346,15 +346,28 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
 <h3 class="section">1.2 New features in ESS</h3>
 
-<p>Changes/New Features in 5.3.6:
+<p>Changes/New Features in 5.3.7:
      <ul>
-<li><acronym>ESS</acronym>: for Xemacs, using &ldquo;gnuclient&rdquo; (without a &ldquo;-q&rdquo;) works for
+<li><acronym>ESS</acronym>: <code>ess-default-style</code> now *is* customizable, i.e.,
+  changing its value in <samp><span class="file">~/.emacs</span></samp> now does have the desired effect. 
+<li><acronym>ESS</acronym>: <code>ess-font-lock-mode</code> is a new variable (default: t)
+which controls whether font-locking is enabled in ESS buffers. 
+<li><acronym>ESS[R]</acronym>: for XEmacs on Windows; another tweak to find R versions
+<li><acronym>ESS[SAS]</acronym>: font-locking updated for ODS and SAS Bayesian Procedures;
+a more consistent handling of SAS options by
+<code>ess-sas-submit-command-options</code> which is buffer-local; portable
+snooze for MS Windows via customize-able <code>ess-sleep-for</code> (floats welcome)
+</ul>
+
+   <p>Changes/New Features in 5.3.6:
+     <ul>
+<li><acronym>ESS</acronym>: for XEmacs, using &ldquo;gnuclient&rdquo; (without a &ldquo;-q&rdquo;) works for
  things like fix() after M-x gnuserv-start has been done. 
-<li><acronym>ESSR</acronym>: M-x R-newest should now work in more situations on MS
+<li><acronym>ESS[R]</acronym>: M-x R-newest should now work in more situations on MS
  Windows, e.g., when R has been installed in a non-default "ProgramFiles"
  directory tree.  In these cases, there's no need to specify the name (and
  full path) of the R program anymore. 
-<li><acronym>ESSR</acronym>: For Xemacs, startup (with new tooltip code) works again. 
+<li><acronym>ESS[R]</acronym>: For XEmacs, startup (with new tooltip code) works again. 
 </ul>
 
    <p>Changes/New Features in 5.3.5:
@@ -365,12 +378,12 @@ the newest version of R that it can find on your system.
  functionality, via new file <samp><span class="file">../lisp/essd-r-args.el</span></samp>. 
  Note that this includes an &ldquo;electric "("&rdquo; behavior inside <code>R-mode</code>
  which is <em>active by default</em> and can be customized via
- <var>ess-r-args-electric-paren</var>; i.e., use <code>(setq
+ <code>ess-r-args-electric-paren</code>; i.e., use <code>(setq
  ess-r-args-electric-paren nil)</code> to turn it off.  Further,
- <var>ess-r-args-show-as</var> allows to switch to the &ldquo;tooltip&rdquo; mode. 
+ <code>ess-r-args-show-as</code> allows to switch to the &ldquo;tooltip&rdquo; mode. 
 <li><acronym>ESS</acronym>: functions <code>ess-get-pdf-viewer</code> and *-ps-viewer; built on new
- customizable variables <var>ess-pdf-viewer-pref</var> and
- <var>ess-ps-viewer-pref</var>; currently used in <code>ess-swv-PDF</code> and
+ customizable variables <code>ess-pdf-viewer-pref</code> and
+ <code>ess-ps-viewer-pref</code>; currently used in <code>ess-swv-PDF</code> and
  <code>*-PS</code>. 
 <li><acronym>ESS[R]</acronym> Improved <code>ess-swv-PDF</code> to run pdf viewer only if
  pdflatex was ok
@@ -501,7 +514,7 @@ configuration by editing <samp><span class="file">lisp/ess-site.el</span></samp>
 accordingly, then issuing <code>make install</code>
 <li><acronym>ESS[S]</acronym>: Filename completion (inside strings) now also works in
 XEmacs for R and S-plus. 
-<!-- working around a bug in Xemacs -->
+<!-- working around a bug in XEmacs -->
 </ul>
 
    <p>Changes/New Features in 5.2.9:
@@ -1524,18 +1537,18 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 <li>S4
 <li>SAS &gt;=6.12
 <li>BUGS 0.5, 0.6
-<li>JAGS 0.9
-<li>Stata &gt;=6.0
-<li>XLispStat &gt;=3.50
+<li>JAGS 0.9, 1.0 (not quite working yet, patches welcome)
+<li>Stata &gt;=6.0 (recent Stata support limited due to changes in Stata)
+<!-- is anyone still using this? @item XLispStat >=3.50 -->
 </ul>
 
    <p>on the following platforms
 
      <ul>
-<li>GNU Linux (all)
-<li>Sun Solaris (all)
+<li>Linux/x86 (all)
+<li>Solaris/SPARC (all)
 <!-- cannot confirm this right now @item SGI (all) -->
-<li>Microsoft Windows 98/NT/2000/XP (R, SPLUS 4.5/2000/6.0-2/7.0/8.0, SAS, and BUGS 0.6)
+<li>MS Windows 98/NT/2000/XP (R, SPLUS 4.5/2000/6.0-2/7.0/8.0, SAS interactive only, and BUGS 0.6)
 <li>Apple Mac OS X 10.3-4 (R, JAGS)
 </ul>
 
@@ -1543,7 +1556,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 
      <ul>
 <li>GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1
-<li>XEmacs 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17-19, 21.5.23
+<li>XEmacs 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17-21 (betas not supported, but 21.5.23+ may work)
 <!-- @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no -->
 <!-- longer supported, so an upgrade is recommended if you plan to use ESS. -->
 <!-- If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note -->
@@ -4792,37 +4805,45 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 <p>ESS provides Font-Lock (see <a href="emacs.html#Faces">Using Multiple Typefaces</a>) patterns for Inferior S Mode, S
 Mode, and S Transcript Mode buffers. 
 <a name="index-Font_002dlock-mode-194"></a><a name="index-highlighting-195"></a>
-To activate highlighting, you need to turn on Font Lock mode in the
-appropriate buffers.  This can be done on a per-buffer basis with
-<kbd>M-x font-lock-mode</kbd>, or may be done by adding
-<code>turn-on-font-lock</code> to <code>inferior-ess-mode-hook</code>,
-<code>ess-mode-hook</code> and <code>ess-transcript-mode-hook</code>.  Your systems
-administrator may have done this for you in <samp><span class="file">ess-site.el</span></samp>
-(see <a href="#Customization">Customization</a>).
+Syntax highlighting within ESS buffers is controlled by the variable
+<code>ess-font-lock-mode</code>, which by default is true. 
+Input to inferior ESS processes is also highlighted syntactically if
+<code>inferior-ess-font-lock-input</code> is non-nil (the default). 
+If you change the value of either of these varibles, you need to restart
+emacs for your changes to take effect.
 
-   <p>The font-lock patterns are defined in three variables, which you may
-modify if desired:
+<!-- To activate highlighting, you need to turn on Font Lock mode in the -->
+<!-- appropriate buffers.  This can be done on a per-buffer basis with -->
+<!-- @kbd{M-x font-lock-mode}, or may be done by adding -->
+<!-- @code{turn-on-font-lock} to @code{inferior-ess-mode-hook}, -->
+<!-- @code{ess-mode-hook} and @code{ess-transcript-mode-hook}.  Your systems -->
+<!-- administrator may have done this for you in @file{ess-site.el} -->
+<!-- (@pxref{Customization}). -->
+<p>The font-lock patterns are defined in the following variables, which you
+may modify if desired:
 
 <div class="defun">
-&mdash; Variable: <b>inferior-ess-font-lock-keywords</b><var><a name="index-inferior_002dess_002dfont_002dlock_002dkeywords-196"></a></var><br>
-<blockquote><p>Font-lock patterns for Inferior ESS Mode.  The default value
-highlights prompts, inputs, assignments, output messages, vector and
-matrix labels, and literals such as `<samp><span class="samp">NA</span></samp>' and <code>TRUE</code>. 
+&mdash; Variable: <b>inferior-ess-R-font-lock-keywords</b><var><a name="index-inferior_002dess_002dR_002dfont_002dlock_002dkeywords-196"></a></var><br>
+<blockquote><p>Font-lock patterns for inferior *R* processes.  (There is a
+corresponding <code>inferior-ess-S-font-lock-keywords</code> for *S*
+processes.) The default value highlights prompts, inputs, assignments,
+output messages, vector and matrix labels, and literals such as
+`<samp><span class="samp">NA</span></samp>' and <code>TRUE</code>. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Variable: <b>ess-mode-font-lock-keywords</b><var><a name="index-ess_002dmode_002dfont_002dlock_002dkeywords-197"></a></var><br>
-<blockquote><p>Font-lock patterns for ESS programming mode.  The default value
-highlights function names, literals, assignments, source functions and
-reserved words. 
+&mdash; Variable: <b>ess-R-mode-font-lock-keywords</b><var><a name="index-ess_002dR_002dmode_002dfont_002dlock_002dkeywords-197"></a></var><br>
+<blockquote><p>Font-lock patterns for ESS R programming mode.  (There is a
+corresponding <code>ess-S-mode-font-lock-keywords</code> for S buffers.) The
+default value highlights function names, literals, assignments, source
+functions and reserved words. 
 </p></blockquote></div>
 
-<div class="defun">
-&mdash; Variable: <b>ess-trans-font-lock-keywords</b><var><a name="index-ess_002dtrans_002dfont_002dlock_002dkeywords-198"></a></var><br>
-<blockquote><p>Font-lock patterns for ESS Transcript Mode.  The default value
-highlights the same patterns as in Inferior ESS Mode. 
-</p></blockquote></div>
-
+<!-- 2007-11-08 - this var no longer exists. -->
+<!-- @defvar ess-trans-font-lock-keywords -->
+<!-- Font-lock patterns for ESS Transcript Mode.  The default value -->
+<!-- highlights the same patterns as in Inferior ESS Mode. -->
+<!-- @end defvar -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
 <p><hr>
@@ -4857,7 +4878,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 
 <h3 class="section">12.3 Using graphics with ESS</h3>
 
-<p><a name="index-graphics-199"></a>One of the main features of the <code>S</code> package is its ability to
+<p><a name="index-graphics-198"></a>One of the main features of the <code>S</code> package is its ability to
 generate high-resolution graphics plots, and ESS provides a number of
 features for dealing with such plots.
 
@@ -4885,7 +4906,7 @@ based plots which can be contained within the ESS process buffer
 itself.  To start using character graphics, issue the S command
 <pre class="example">     printer(width=79)
 </pre>
-   <p><a name="index-printer_0028_0029-200"></a>(the <code>width=79</code> argument prevents Emacs line-wrapping at column
+   <p><a name="index-printer_0028_0029-199"></a>(the <code>width=79</code> argument prevents Emacs line-wrapping at column
 80 on an 80-column terminal.  Use a different value for a terminal with
 a different number of columns.) Plotting commands do not generate
 graphics immediately, but are stored until the <code>show()</code> command
@@ -4903,13 +4924,13 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
 
 <h4 class="subsection">12.3.2 Using ESS with windowing devices</h4>
 
-<p><a name="index-X-windows-201"></a>Of course, the ideal way to use graphics with ESS is to use a windowing
+<p><a name="index-X-windows-200"></a>Of course, the ideal way to use graphics with ESS is to use a windowing
 system.  Under X11, this requires that the DISPLAY environment
 variable be appropriately set, which may not always be the case within
 your Emacs process.  ESS provides a facility for setting the value of
 DISPLAY before the ESS process is started if the variable
 <code>ess-ask-about-display</code>
-<a name="index-ess_002dask_002dabout_002ddisplay-202"></a>is non-<code>nil</code>.
+<a name="index-ess_002dask_002dabout_002ddisplay-201"></a>is non-<code>nil</code>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
@@ -4922,7 +4943,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
 
 <h4 class="subsection">12.3.3 Java Graphics Device</h4>
 
-<p><a name="index-winjava-203"></a>
+<p><a name="index-winjava-202"></a>
 S+6.1 and newer on Windows contains a java library that supports graphics.  Send
 the commands:
 
@@ -5083,7 +5104,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing
 
 <h3 class="section">13.1 Bugs</h3>
 
-<p><a name="index-bugs-204"></a>
+<p><a name="index-bugs-203"></a>
 
      <ul>
 <li>Commands like <code>ess-display-help-on-object</code> and list completion
@@ -5133,7 +5154,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing
 
 <h3 class="section">13.2 Reporting Bugs</h3>
 
-<p><a name="index-Bug-reports-205"></a><a name="index-ess_002dsubmit_002dbug_002dreport-206"></a>
+<p><a name="index-Bug-reports-204"></a><a name="index-ess_002dsubmit_002dbug_002dreport-205"></a>
 
    <p>Please send bug reports, suggestions etc. to
 <a href="mailto:ESS-bugs@stat.math.ethz.ch">ESS-bugs@stat.math.ethz.ch</a>
@@ -5222,7 +5243,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <h2 class="appendix">Appendix A Customizing ESS</h2>
 
-<p><a name="index-customization-207"></a>
+<p><a name="index-customization-206"></a>
 ESS can be easily customized to your taste simply by including the
 appropriate lines in your <samp><span class="file">.emacs</span></samp> file.  There are numerous
 variables which affect the behavior of ESS in certain situations which
@@ -5273,8 +5294,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-arguments-to-S-program-30">arguments to S program</a>: <a href="#Customizing-startup">Customizing startup</a></li>
 <li><a href="#index-authors-7">authors</a>: <a href="#Credits">Credits</a></li>
 <li><a href="#index-autosaving-170">autosaving</a>: <a href="#Source-Files">Source Files</a></li>
-<li><a href="#index-Bug-reports-205">Bug reports</a>: <a href="#Reporting-Bugs">Reporting Bugs</a></li>
-<li><a href="#index-bugs-204">bugs</a>: <a href="#Bugs">Bugs</a></li>
+<li><a href="#index-Bug-reports-204">Bug reports</a>: <a href="#Reporting-Bugs">Reporting Bugs</a></li>
+<li><a href="#index-bugs-203">bugs</a>: <a href="#Bugs">Bugs</a></li>
 <li><a href="#index-cleaning-up-103">cleaning up</a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-comint-6">comint</a>: <a href="#Credits">Credits</a></li>
 <li><a href="#index-command-history-71">command history</a>: <a href="#Command-History">Command History</a></li>
@@ -5290,7 +5311,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-completion_002c-when-prompted-for-object-names-124">completion, when prompted for object names</a>: <a href="#Edit-buffer">Edit buffer</a></li>
 <li><a href="#index-creating-new-objects-125">creating new objects</a>: <a href="#Edit-buffer">Edit buffer</a></li>
 <li><a href="#index-credits-8">credits</a>: <a href="#Credits">Credits</a></li>
-<li><a href="#index-customization-207">customization</a>: <a href="#Customization">Customization</a></li>
+<li><a href="#index-customization-206">customization</a>: <a href="#Customization">Customization</a></li>
 <li><a href="#index-data-frames-44">data frames</a>: <a href="#Completion">Completion</a></li>
 <li><a href="#index-debugging-S-functions-151">debugging S functions</a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-deleting-output-58">deleting output</a>: <a href="#Last-command">Last command</a></li>
@@ -5313,7 +5334,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-evaluating-S-expressions-140">evaluating S expressions</a>: <a href="#Evaluating-code">Evaluating code</a></li>
 <li><a href="#index-Font_002dlock-mode-194">Font-lock mode</a>: <a href="#Highlighting">Highlighting</a></li>
 <li><a href="#index-formatting-source-code-157">formatting source code</a>: <a href="#Indenting">Indenting</a></li>
-<li><a href="#index-graphics-199">graphics</a>: <a href="#Graphics">Graphics</a></li>
+<li><a href="#index-graphics-198">graphics</a>: <a href="#Graphics">Graphics</a></li>
 <li><a href="#index-help-files-180">help files</a>: <a href="#Help">Help</a></li>
 <li><a href="#index-highlighting-195">highlighting</a>: <a href="#Highlighting">Highlighting</a></li>
 <li><a href="#index-historic-backups-169">historic backups</a>: <a href="#Source-Files">Source Files</a></li>
@@ -5362,10 +5383,10 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-transcript-mode-motion-117">transcript mode motion</a>: <a href="#Transcript-Mode">Transcript Mode</a></li>
 <li><a href="#index-transcripts-of-S-sessions-4">transcripts of S sessions</a>: <a href="#Introduction">Introduction</a></li>
 <li><a href="#index-using-S-interactively-3">using S interactively</a>: <a href="#Introduction">Introduction</a></li>
-<li><a href="#index-winjava-203">winjava</a>: <a href="#winjava">winjava</a></li>
+<li><a href="#index-winjava-202">winjava</a>: <a href="#winjava">winjava</a></li>
 <li><a href="#index-working-directory-178">working directory</a>: <a href="#Source-Directories">Source Directories</a></li>
 <li><a href="#index-working-directory-15">working directory</a>: <a href="#Starting-up">Starting up</a></li>
-<li><a href="#index-X-windows-201">X windows</a>: <a href="#X11">X11</a></li>
+<li><a href="#index-X-windows-200">X windows</a>: <a href="#X11">X11</a></li>
    </ul><div class="node">
 <p><hr>
 <a name="Variable-and-command-index"></a>
@@ -5405,7 +5426,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-comment_002dcolumn-154"><code>comment-column</code></a>: <a href="#Indenting">Indenting</a></li>
 <li><a href="#index-dump_0028_0029-130"><code>dump()</code></a>: <a href="#Edit-buffer">Edit buffer</a></li>
 <li><a href="#index-ess_002dabort-112"><code>ess-abort</code></a>: <a href="#Other">Other</a></li>
-<li><a href="#index-ess_002dask_002dabout_002ddisplay-202"><code>ess-ask-about-display</code></a>: <a href="#X11">X11</a></li>
+<li><a href="#index-ess_002dask_002dabout_002ddisplay-201"><code>ess-ask-about-display</code></a>: <a href="#X11">X11</a></li>
 <li><a href="#index-ess_002dask_002dabout_002dtransfile-67"><code>ess-ask-about-transfile</code></a>: <a href="#Saving-transcripts">Saving transcripts</a></li>
 <li><a href="#index-ess_002dask_002dabout_002dtransfile-27"><code>ess-ask-about-transfile</code></a>: <a href="#Customizing-startup">Customizing startup</a></li>
 <li><a href="#index-ess_002dask_002dfor_002dess_002ddirectory-26"><code>ess-ask-for-ess-directory</code></a>: <a href="#Customizing-startup">Customizing startup</a></li>
@@ -5445,11 +5466,11 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-ess_002dlist_002dobject_002dcompletions-45"><code>ess-list-object-completions</code></a>: <a href="#Completion">Completion</a></li>
 <li><a href="#index-ess_002dload_002dfile-131"><code>ess-load-file</code></a>: <a href="#Loading">Loading</a></li>
 <li><a href="#index-ess_002dload_002dfile-96"><code>ess-load-file</code></a>: <a href="#Hot-keys">Hot keys</a></li>
-<li><a href="#index-ess_002dmode_002dfont_002dlock_002dkeywords-197"><code>ess-mode-font-lock-keywords</code></a>: <a href="#Highlighting">Highlighting</a></li>
 <li><a href="#index-ess_002dparse_002derrors-135"><code>ess-parse-errors</code></a>: <a href="#Error-Checking">Error Checking</a></li>
 <li><a href="#index-ess_002dparse_002derrors-97"><code>ess-parse-errors</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-ess_002dquit-191"><code>ess-quit</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002dquit-114"><code>ess-quit</code></a>: <a href="#Other">Other</a></li>
+<li><a href="#index-ess_002dR_002dmode_002dfont_002dlock_002dkeywords-197"><code>ess-R-mode-font-lock-keywords</code></a>: <a href="#Highlighting">Highlighting</a></li>
 <li><a href="#index-ess_002dremote-23"><code>ess-remote</code></a>: <a href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a></li>
 <li><a href="#index-ess_002drequest_002da_002dprocess-21"><code>ess-request-a-process</code></a>: <a href="#Multiple-ESS-processes">Multiple ESS processes</a></li>
 <li><a href="#index-ess_002dresynch-50"><code>ess-resynch</code></a>: <a href="#Completion-details">Completion details</a></li>
@@ -5458,22 +5479,21 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-ess_002dskip_002dto_002dnext_002dsection-185"><code>ess-skip-to-next-section</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002dskip_002dto_002dprevious_002dsection-186"><code>ess-skip-to-previous-section</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002dsource_002ddirectory-174"><code>ess-source-directory</code></a>: <a href="#Source-Directories">Source Directories</a></li>
-<li><a href="#index-ess_002dsubmit_002dbug_002dreport-206"><code>ess-submit-bug-report</code></a>: <a href="#Reporting-Bugs">Reporting Bugs</a></li>
+<li><a href="#index-ess_002dsubmit_002dbug_002dreport-205"><code>ess-submit-bug-report</code></a>: <a href="#Reporting-Bugs">Reporting Bugs</a></li>
 <li><a href="#index-ess_002dswitch_002dto_002dend_002dof_002dESS-190"><code>ess-switch-to-end-of-ESS</code></a>: <a href="#Help">Help</a></li>
 <li><a href="#index-ess_002dswitch_002dto_002dend_002dof_002dESS-162"><code>ess-switch-to-end-of-ESS</code></a>: <a href="#Other-edit-buffer-commands">Other edit buffer commands</a></li>
 <li><a href="#index-ess_002dswitch_002dto_002dESS-163"><code>ess-switch-to-ESS</code></a>: <a href="#Other-edit-buffer-commands">Other edit buffer commands</a></li>
-<li><a href="#index-ess_002dtrans_002dfont_002dlock_002dkeywords-198"><code>ess-trans-font-lock-keywords</code></a>: <a href="#Highlighting">Highlighting</a></li>
 <li><a href="#index-ess_002dtranscript_002dclean_002dregion-70"><code>ess-transcript-clean-region</code></a>: <a href="#Saving-transcripts">Saving transcripts</a></li>
 <li><a href="#index-ess_002dtranscript_002dcopy_002dcommand-120"><code>ess-transcript-copy-command</code></a>: <a href="#Resubmit">Resubmit</a></li>
 <li><a href="#index-ess_002dtranscript_002dsend_002dcommand-119"><code>ess-transcript-send-command</code></a>: <a href="#Resubmit">Resubmit</a></li>
 <li><a href="#index-ess_002dtranscript_002dsend_002dcommand_002dand_002dmove-65"><code>ess-transcript-send-command-and-move</code></a>: <a href="#Transcript-resubmit">Transcript resubmit</a></li>
 <li><a href="#index-exit_0028_0029-101"><code>exit()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
-<li><a href="#index-inferior_002dess_002dfont_002dlock_002dkeywords-196"><code>inferior-ess-font-lock-keywords</code></a>: <a href="#Highlighting">Highlighting</a></li>
 <li><a href="#index-inferior_002dess_002dprogram-29"><code>inferior-ess-program</code></a>: <a href="#Customizing-startup">Customizing startup</a></li>
+<li><a href="#index-inferior_002dess_002dR_002dfont_002dlock_002dkeywords-196"><code>inferior-ess-R-font-lock-keywords</code></a>: <a href="#Highlighting">Highlighting</a></li>
 <li><a href="#index-inferior_002dess_002dsend_002dinput-63"><code>inferior-ess-send-input</code></a>: <a href="#Transcript-resubmit">Transcript resubmit</a></li>
 <li><a href="#index-inferior_002dess_002dsend_002dinput-35"><code>inferior-ess-send-input</code></a>: <a href="#Command_002dline-editing">Command-line editing</a></li>
 <li><a href="#index-objects_0028_0029-84"><code>objects()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
-<li><a href="#index-printer_0028_0029-200"><code>printer()</code></a>: <a href="#printer">printer</a></li>
+<li><a href="#index-printer_0028_0029-199"><code>printer()</code></a>: <a href="#printer">printer</a></li>
 <li><a href="#index-q_0028_0029-100"><code>q()</code></a>: <a href="#Hot-keys">Hot keys</a></li>
 <li><a href="#index-S-12"><code>S</code></a>: <a href="#Starting-up">Starting up</a></li>
 <li><a href="#index-S_002belsewhere-25"><code>S+elsewhere</code></a>: <a href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a></li>

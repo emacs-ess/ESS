@@ -34,7 +34,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <p><a name="index-README-1"></a>
 This is the README file for the distribution of ESS version
 
-   <p>5.3.6
+   <p>5.3.7
 
    <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical programming
 and data analysis.  Languages supported: the S family (S 3/4, S-PLUS
@@ -126,15 +126,28 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">1.3 New Features</h3>
 
-<p>Changes/New Features in 5.3.6:
+<p>Changes/New Features in 5.3.7:
      <ul>
-<li><acronym>ESS</acronym>: for Xemacs, using &ldquo;gnuclient&rdquo; (without a &ldquo;-q&rdquo;) works for
+<li><acronym>ESS</acronym>: <code>ess-default-style</code> now *is* customizable, i.e.,
+  changing its value in <samp><span class="file">~/.emacs</span></samp> now does have the desired effect. 
+<li><acronym>ESS</acronym>: <code>ess-font-lock-mode</code> is a new variable (default: t)
+which controls whether font-locking is enabled in ESS buffers. 
+<li><acronym>ESS[R]</acronym>: for XEmacs on Windows; another tweak to find R versions
+<li><acronym>ESS[SAS]</acronym>: font-locking updated for ODS and SAS Bayesian Procedures;
+a more consistent handling of SAS options by
+<code>ess-sas-submit-command-options</code> which is buffer-local; portable
+snooze for MS Windows via customize-able <code>ess-sleep-for</code> (floats welcome)
+</ul>
+
+   <p>Changes/New Features in 5.3.6:
+     <ul>
+<li><acronym>ESS</acronym>: for XEmacs, using &ldquo;gnuclient&rdquo; (without a &ldquo;-q&rdquo;) works for
  things like fix() after M-x gnuserv-start has been done. 
-<li><acronym>ESSR</acronym>: M-x R-newest should now work in more situations on MS
+<li><acronym>ESS[R]</acronym>: M-x R-newest should now work in more situations on MS
  Windows, e.g., when R has been installed in a non-default "ProgramFiles"
  directory tree.  In these cases, there's no need to specify the name (and
  full path) of the R program anymore. 
-<li><acronym>ESSR</acronym>: For Xemacs, startup (with new tooltip code) works again. 
+<li><acronym>ESS[R]</acronym>: For XEmacs, startup (with new tooltip code) works again. 
 </ul>
 
    <p>Changes/New Features in 5.3.5:
@@ -145,12 +158,12 @@ the newest version of R that it can find on your system.
  functionality, via new file <samp><span class="file">../lisp/essd-r-args.el</span></samp>. 
  Note that this includes an &ldquo;electric "("&rdquo; behavior inside <code>R-mode</code>
  which is <em>active by default</em> and can be customized via
- <var>ess-r-args-electric-paren</var>; i.e., use <code>(setq
+ <code>ess-r-args-electric-paren</code>; i.e., use <code>(setq
  ess-r-args-electric-paren nil)</code> to turn it off.  Further,
- <var>ess-r-args-show-as</var> allows to switch to the &ldquo;tooltip&rdquo; mode. 
+ <code>ess-r-args-show-as</code> allows to switch to the &ldquo;tooltip&rdquo; mode. 
 <li><acronym>ESS</acronym>: functions <code>ess-get-pdf-viewer</code> and *-ps-viewer; built on new
- customizable variables <var>ess-pdf-viewer-pref</var> and
- <var>ess-ps-viewer-pref</var>; currently used in <code>ess-swv-PDF</code> and
+ customizable variables <code>ess-pdf-viewer-pref</code> and
+ <code>ess-ps-viewer-pref</code>; currently used in <code>ess-swv-PDF</code> and
  <code>*-PS</code>. 
 <li><acronym>ESS[R]</acronym> Improved <code>ess-swv-PDF</code> to run pdf viewer only if
  pdflatex was ok
@@ -281,7 +294,7 @@ configuration by editing <samp><span class="file">lisp/ess-site.el</span></samp>
 accordingly, then issuing <code>make install</code>
 <li><acronym>ESS[S]</acronym>: Filename completion (inside strings) now also works in
 XEmacs for R and S-plus. 
-<!-- working around a bug in Xemacs -->
+<!-- working around a bug in XEmacs -->
 </ul>
 
    <p>Changes/New Features in 5.2.9:
@@ -781,18 +794,18 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <li>S4
 <li>SAS &gt;=6.12
 <li>BUGS 0.5, 0.6
-<li>JAGS 0.9
-<li>Stata &gt;=6.0
-<li>XLispStat &gt;=3.50
+<li>JAGS 0.9, 1.0 (not quite working yet, patches welcome)
+<li>Stata &gt;=6.0 (recent Stata support limited due to changes in Stata)
+<!-- is anyone still using this? @item XLispStat >=3.50 -->
 </ul>
 
    <p>on the following platforms
 
      <ul>
-<li>GNU Linux (all)
-<li>Sun Solaris (all)
+<li>Linux/x86 (all)
+<li>Solaris/SPARC (all)
 <!-- cannot confirm this right now @item SGI (all) -->
-<li>Microsoft Windows 98/NT/2000/XP (R, SPLUS 4.5/2000/6.0-2/7.0/8.0, SAS, and BUGS 0.6)
+<li>MS Windows 98/NT/2000/XP (R, SPLUS 4.5/2000/6.0-2/7.0/8.0, SAS interactive only, and BUGS 0.6)
 <li>Apple Mac OS X 10.3-4 (R, JAGS)
 </ul>
 
@@ -800,7 +813,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 
      <ul>
 <li>GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1
-<li>XEmacs 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17-19, 21.5.23
+<li>XEmacs 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17-21 (betas not supported, but 21.5.23+ may work)
 <!-- @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no -->
 <!-- longer supported, so an upgrade is recommended if you plan to use ESS. -->
 <!-- If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note -->

@@ -1,12 +1,14 @@
 Changes/New Features in 5.3.7:
 @itemize @bullet
+@item @ESS{}: @code{ess-default-style} now *is* customizable, i.e.,
+  changing its value in @file{~/.emacs} now does have the desired effect.
 @item @ESS{}: @code{ess-font-lock-mode} is a new variable (default: t)
 which controls whether font-locking is enabled in ESS buffers.
 @item @ESS{[R]}: for XEmacs on Windows; another tweak to find R versions
 @item @ESS{[SAS]}: font-locking updated for ODS and SAS Bayesian Procedures;
-a more consistent handling of SAS options by @code{ess-sas-submit-command-options}
-which is buffer-local; portable snooze for MS Windows via customize-able 
-@code{ess-sleep-for} (floats welcome)
+a more consistent handling of SAS options by
+@code{ess-sas-submit-command-options} which is buffer-local; portable
+snooze for MS Windows via customize-able @code{ess-sleep-for} (floats welcome)
 @end itemize
 
 Changes/New Features in 5.3.6:
