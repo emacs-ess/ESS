@@ -1,3 +1,8 @@
+2007-12-28  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-sp6w.el (S+6-dialect-name): Make defcustom and change
+	default to "S".  Change of default suggested by Tim Hesterberg.
+
 2007-12-27  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el (ess-mode): set style to ess-style which is now in
