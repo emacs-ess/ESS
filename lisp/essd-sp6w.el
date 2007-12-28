@@ -43,9 +43,11 @@
 
 ;;; Code:
 
-(defvar S+6-dialect-name "S+6"
-  "Name of 'dialect' for S-PLUS 6.x.
-Easily changeable in a user's `.emacs'.")
+(defcustom S+6-dialect-name "S"
+  "Name of 'dialect' for S-PLUS 6.x and later.
+Easily changeable in a user's `.emacs'."
+  :group 'ess-SPLUS
+  :type 'string)
 
 (defvar inferior-S+6-start-args " "
   "Default is empty.  Can be used for license manager information, for example
