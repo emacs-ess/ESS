@@ -556,7 +556,7 @@ and one that is well formatted in emacs ess-mode."
 
     ;; former C and matlab programmers leave trailing  ";" :
     (goto-char from) (ess-rep-regexp "; *$" "" nil 'literal verbose)
-    (goto-char from) (ess-rep-regexp ";\\( *\\)#" "\\1#" nil 'literal verbose)
+    (goto-char from) (ess-rep-regexp ";\\( *\\)#" "\\1#" nil nil verbose)
 
     ;;from R 1.9.x "_" is valid in names; here assume no initial / trailing '_'
     (goto-char from) (ess-rep-regexp " +_ *" " <- " nil 'literal verbose)

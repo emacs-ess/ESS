@@ -1,3 +1,7 @@
+2008-01-08  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essl-s.el (ess-fix-miscellaneous): no 'literal in fixing ";  #"
+
 2007-12-28  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-sp6w.el (S+6-dialect-name): Make defcustom and change
