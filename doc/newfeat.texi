@@ -9,6 +9,7 @@ which controls whether font-locking is enabled in ESS buffers.
 a more consistent handling of SAS options by
 @code{ess-sas-submit-command-options} which is buffer-local; portable
 snooze for MS Windows via customize-able @code{ess-sleep-for} (floats welcome)
+@item @ESS{[Rnw]}: now also works with ``emacs -nw'' and Emacs 22.
 @end itemize
 
 Changes/New Features in 5.3.6:

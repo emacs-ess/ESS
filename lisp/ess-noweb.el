@@ -36,10 +36,12 @@
  ; Requires and autoloads
 
 (require 'noweb-mode)
+;; still needed when user turns font-lock-mode *on* (from initial off):
+(autoload 'noweb-font-lock-mode "noweb-font-lock-mode")
 
  ; Variables
 
-(defvar ess-noweb-use-font-lock window-system
+(defvar ess-noweb-use-font-lock font-lock-mode
   "Set to t if you want to use font-locking in ESS noweb buffers.")
 
 ;; this helps with XEmacs barfing, sigh...
