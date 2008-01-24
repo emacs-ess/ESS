@@ -1,6 +1,6 @@
 ;;; essl-sas.el --- SAS customization
 
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2008 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Authors: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
@@ -458,7 +458,7 @@ number."
 	    "\\|m\\(anova\\|e\\(ans\\|rge\\)\\|issing\\|od\\(el\\|ify\\)\\)\\|note"
 	    "\\|o\\(ds\\|ptions\\|therwise\\|utput\\)\\|p\\(arms\\|lot2?\\|ut\\)"
 	    "\\|r\\(andom\\|e\\(name\\|peated\\|tain\\)\\)"
-	    "\\|s\\(ave\\|e\\(lect\\|t\\)\\|kip\\|trata\\|umby\\)"
+	    "\\|s\\(ave\\|e\\(lect\\|t\\)\\|kip\\|trata\\|um\\(by\\)?\\)"
 	    "\\|t\\(ables?\\|i\\(me\\|tle\\(10?\\|[2-9]\\)?\\)\\)\\|update"
 	    "\\|va\\(lue\\|r\\)\\|w\\(eight\\|here\\|i\\(ndow\\|th\\)\\)"
 
