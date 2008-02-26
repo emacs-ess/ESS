@@ -8,7 +8,8 @@ which controls whether font-locking is enabled in ESS buffers.
 @item @ESS{[SAS]}: font-locking updated for ODS and SAS Bayesian Procedures;
 a more consistent handling of SAS options by
 @code{ess-sas-submit-command-options} which is buffer-local; portable
-snooze for MS Windows via customize-able @code{ess-sleep-for} (floats welcome)
+snooze for MS Windows via customize-able @code{ess-sleep-for} (floats welcome);
+xpdf now supported as a PDF viewer 
 @item @ESS{[Rnw]}: now also works with ``emacs -nw'' and Emacs 22.
 @end itemize
 

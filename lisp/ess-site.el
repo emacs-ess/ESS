@@ -279,9 +279,9 @@ between .s or .S files and assembly mode.
 ;;(setq-default inferior-S+4-program-name "Splus")
 ;;(setq-default inferior-S+5-program-name "Splus5")
 ;;(setq-default inferior-S+6-program-name "Splus7") ; unix systems
-;;(setq-default inferior-R-program-name "R")	  ; unix systems
-;;(setq-default inferior-R-program-name "Rterm")  ; msdos systems
-;;(setq-default inferior-R-program-name "C:\\Program Files\\R\rw1081\\bin\\Rterm.exe")	; msdos systems
+;;(setq-default inferior-R-program-name "R")	    ; unix systems
+;;(setq-default inferior-R-program-name "Rterm")    ; MS Windows, see below for path as well
+;;(setq-default inferior-R-program-name "C:\\Program Files\\R\\R-2.5.0\\bin\\Rterm.exe")
 ;;(setq-default inferior-XLS-program-name "xlispstat")
 ;;(setq-default inferior-ARC-program-name "arc")
 ;;(setq-default inferior-VST-program-name "vista")
@@ -525,6 +525,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;; Check to see that inferior-R-program-name points to a working version
 ;; of R; if not, try to find the newest version:
+(require 'essd-r)
 (ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./essd-r.el
 
 ;;; 3. Customization (and commented out examples) for your site
