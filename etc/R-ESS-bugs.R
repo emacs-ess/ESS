@@ -1,5 +1,7 @@
 #### File showing off  things that go wrong -- with R-mode
 
+### -------- 1 ---------  extraneous comment chars :  This seems fixed
+
 ## From: Robert Gentleman <rgentlem@fhcrc.org>
 ## To: Martin Maechler <maechler@stat.math.ethz.ch>
 ## Subject: ESS buglet
@@ -16,7 +18,9 @@ foo <- function(x=a, abc = list("def", a=1,3,3), more.args, and, bla,
                 another, and, another, and bmbasd,
                 lots = NULL,
                 more = NULL,
-                args = NULL)
+                args = NULL) {
+    x
+}
 
 ##-   when the line before a function def is a comment, and adding args,
 ##- then new lines, when generated have a comment char at the beginning of
@@ -26,9 +30,9 @@ foo <- function(x=a, abc = list("def", a=1,3,3), more.args, and, bla,
 ##- occur.
 ## and another ''anonymous'' function:
 function(x=a, abc = list("def", a=c(1,3,3)), more.args, and, bla, blu,
-         blo, blu, abc,
+         blo, Abc,
          def,
-         another, and, another, and, bmbasd) {
+         another, and_another, and_this) {
     ...; ...
 }
 
@@ -48,11 +52,11 @@ plot(Speed, Distance,
      panel.first = lines(lowess(Speed, Distance), lty = "dashed"),
      pch = 0, cex = 1.2, col = "blue")
 
+## Note: We now at least C-c C-c {ess-eval-function-or-paragraph-and-step}
 
 
 
-
-### Here, the indentation is wrong:
+### Here, the indentation is wrong ... rather an Emacs buglet ?
 
 a <- function(ch) {
     if(ch == Inf) {
