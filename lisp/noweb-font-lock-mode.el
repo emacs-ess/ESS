@@ -72,7 +72,7 @@
 ;;  good as you would get outside noweb-mode, though.
 ;;
 ;;  To use it, you must add
-;;  (require noweb-font-lock-mode) to your .emacs file.
+;;  (require 'noweb-font-lock-mode) to your .emacs file.
 ;;  Then, if you use either global-font-lock or turn-on-font-lock
 ;;  statements, any noweb-mode buffers will be fontified
 ;;  appropriately. (We have to redefine turn-on-font-lock, but it
