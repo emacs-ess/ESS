@@ -68,6 +68,7 @@ these programs (by default S+6) to the simpler name:
 
    M-x S
 
+@cindex command line arguments
 In the (rare) case that you wish to pass command line arguments to the
 starting S+6 process, set the variable @code{inferior-Splus-args}.
 
@@ -139,7 +140,7 @@ PATH is the full path to the version of S you want to run; ARGS is an
 optional string of command-line arguments to pass to the S process.
 Here is an example setting:
 @example
-(setq ess-s-versions-list 
+(setq ess-s-versions-list
       '( ("Splus64" "/usr/local/bin/Splus64")
          ("Splus64-j" "/usr/local/bin/Splus64" "-j")))
 @end example
