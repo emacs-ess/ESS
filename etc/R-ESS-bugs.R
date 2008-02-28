@@ -26,7 +26,8 @@ foo <- function(x=a, abc = list("def", a=1,3,3), more.args, and, bla,
 ##- occur.
 ## and another ''anonymous'' function:
 function(x=a, abc = list("def", a=c(1,3,3)), more.args, and, bla, blu,
-         blo, blu, bla
+         blo, blu, abc,
+         def,
          another, and, another, and, bmbasd) {
     ...; ...
 }
@@ -95,6 +96,24 @@ setMeneric <-
     "ABC"
 }
 
+## In one-liners without "{ ... }" body, the end-of-function is also
+## not correctly found:
+## Use C-M-e to see:  In these two, the "end-of-function" is after
+## 'class' :
+onelinerFails <- function(x, ...) class(x)
+
+onelinerFailsToo <-
+    function(x, ...)
+    class(x)
+
+onelinerWorks <- function(x, ...) { class(x) }
+
+onelinerWorksToo <-
+    function(x, ...) {
+        class(x)
+    }
+
+
 ## this has one line more before 'function' than "typically:"
 setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
 			 drop = "logical"),
@@ -141,7 +160,7 @@ setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
     x
 }
 
-"[<-.data.frame" <- function(x, i, j, value)
+`[<-.data.frame` <- function(x, i, j, value)
 {
     nA <- nargs() # value is never missing, so 3 or 4.
 
