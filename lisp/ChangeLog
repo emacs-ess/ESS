@@ -1,3 +1,9 @@
+2008-03-11  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-cust.el (custom): Remove old code checking if custom package
+	is provided; custom is now in all recent versions of Emacs and
+	XEmacs.
+
 2008-03-11  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r.el (ess-current-R-version, ess-current-R-at-least): two
