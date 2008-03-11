@@ -32,22 +32,7 @@
 
 ;;; Code:
 
-;; Stolen from w3-cus.el (via Per Abrahamsen's advice on the widgets page).
-;; This code provides compatibility with non-customized Emacsen.
-(eval-and-compile
-  (require 'ess-emcs); for 'xemacs feature
-  (condition-case ()
-      (require 'custom)
-    (error nil))
-  (if (and (featurep 'custom) (fboundp 'custom-declare-variable))
-      nil ;; We've got what we needed
-    ;; We have the old custom-library, hack around it!
-    (defmacro defgroup (&rest args)
-      nil)
-    (defmacro defface (var values doc &rest args)
-       (` (make-face (, var))))
-    (defmacro defcustom (var value doc &rest args)
-      (` (defvar (, var) (, value) (, doc))))))
+(require 'custom)
 
 ;; Customization Groups
 
