@@ -1,3 +1,10 @@
+2008-03-11  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r.el (ess-current-R-version, ess-current-R-at-least): two
+	new utilities.
+	* essd-r.el (ess-R-complete-object-name): modified from Jim
+	MacDonald's 'alt-ess-complete-object-name, to work in R >= 2.7.0.
+
 2008-03-05  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (inferior-R-input-sender): wrap into

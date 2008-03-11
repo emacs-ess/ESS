@@ -328,6 +328,21 @@ returned."
       (setq date (match-string 2 ver-string)))
     (cons  date rver)))
 
+(defun ess-current-R-version ()
+  "Get the version of R currently running in the ESS buffer as a string"
+  (ess-make-buffer-current)
+  (car (ess-get-words-from-vector "as.character(getRversion())\n")))
+
+(defun ess-current-R-at-least (version)
+  "Is the version of R (in the ESS buffer) at least (\">=\") VERSION ?
+Examples: (ess-current-R-at-least '2.7.0)
+      or  (ess-current-R-at-least \"2.5.1\")"
+  (ess-make-buffer-current)
+  (string= "TRUE"
+	   (car (ess-get-words-from-vector
+		 (format "as.character(getRversion() >= \"%s\")\n" version)))))
+
+
 (defun ess-newest-r (rvers)
   "Check all the versions of RVERS to see which is the newest.
 Return the name of the newest version of R."
@@ -395,6 +410,42 @@ in English locales) which is the default location for the R distribution."
 			   "bin/Rterm.exe"))
 		R-ver))))
 
+;; From Jim (James W.) MacDonald, based on code by Deepayan Sarkar,
+;; originally named  'alt-ess-complete-object-name'.
+;; Use rcompgen in ESS
+;; Can be activated by something like
+;; (define-key inferior-ess-mode-map "\t" 'ess-R-complete-object-name)
+(defun ess-R-complete-object-name ()
+  "Completion in R via R's completion utilities (formerly 'rcompgen').
+To be used instead of ESS' completion engine for R versions >= 2.5.0
+ (or slightly older versions of R with an attached and working 'rcompgen' package)."
+  (interactive)
+  (ess-make-buffer-current)
+  (let* ((comint-completion-addsuffix nil)
+	 (beg-of-line (save-excursion (comint-bol) (point)))
+	 (end-of-line (point-at-eol))
+	 (line-buffer (buffer-substring beg-of-line end-of-line))
+	 (NS (if (ess-current-R-at-least '2.7.0)
+		 "utils:::"
+	       "rcompgen:::"))
+	 (token-string ;; setup, including computation of the token
+	  (progn
+	    (ess-command
+	     (format (concat NS ".assignLinebuffer('%s')\n") line-buffer))
+	    (ess-command (format (concat NS ".assignEnd(%d)\n")
+				 (- (point) beg-of-line)))
+	    (car (ess-get-words-from-vector
+		  (concat NS ".guessTokenFromLine()\n")))))
+
+	 (possible-completions ;; compute and retrieve possible completions
+	  (progn
+	    (ess-command (concat NS ".completeToken()\n"))
+	    (ess-get-words-from-vector
+	     (concat NS ".retrieveCompletions()\n")))))
+
+    (or (comint-dynamic-simple-complete token-string
+					possible-completions)
+	'none)))
 
 ;;;### autoload
 (defun Rnw-mode ()
