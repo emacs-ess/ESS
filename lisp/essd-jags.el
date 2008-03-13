@@ -61,12 +61,12 @@
 					font-lock-function-name-face)
 
 	;; .jmd files
-	(cons (concat "\\<\\(clear\\|coda\\|compile\\|data\\|"
-		"exit\\|in\\|initialize\\|monitor\\|parameters\\|"
-		"seed\\|set\\|to\\|update\\)\\>")
+	(cons (concat "\\<\\(adapt\\|cd\\|clear\\|coda\\|compile\\|data\\|dir\\|"
+		"exit\\|in\\(itialize\\)?\\|load\\|model\\|monitor\\(s\\)?\\|parameters\\|"
+		"pwd\\|run\\|samplers\\|to\\|update\\)\\>")
 					font-lock-keyword-face)
 
-	(cons (concat "\\<\\(by\\|chain\\|nchains\\|stem\\|thin\\)[ \t\n]*(")
+	(cons (concat "\\<\\(by\\|chain\\|nchains\\|stem\\|thin\\|type\\)[ \t\n]*(")
 					font-lock-function-name-face)
     )
     "ESS[JAGS]: Font lock keywords."
@@ -80,6 +80,7 @@
 	(if (equal ".bug" suffix) (progn
 	    (insert "var ;\n")
 	    (insert "#%MONITOR;\n")
+	    (insert "#%THIN 1;\n")
 	    (insert "model {\n")
             (insert "    for (i in 1:N) {\n    \n")
             (insert "    }\n")
@@ -88,7 +89,7 @@
 
 	(if (equal ".jmd" suffix) (progn
 	    (insert (concat "model in \"" ess-bugs-file-dir ess-bugs-file-root ".bug\"\n"))
-	    (insert (concat "data in \"" ess-bugs-file-dir ess-bugs-file-root ".bug\"\n"))
+	    (insert (concat "data in \"" ess-bugs-file-dir ess-bugs-file-root ".txt\"\n"))
 	    (insert "compile\n")
 	    (insert (concat "parameters in \"" ess-bugs-file-dir ess-bugs-file-root ".in\"\n"))
 	    (insert "initialize\n")
@@ -98,6 +99,8 @@
 	    (insert "#%MONITOR\n\n#%MONITOR\n")
 	    (insert (concat "update " ess-bugs-default-update "\n"))
 	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".in2\"\n"))
+	    ;(insert (concat "cd " ess-bugs-file-dir "\n"))
+	    (insert (concat "coda *,  stem(\"" ess-bugs-file-root "\")\n"))
 	    (insert "exit\n")
 	))
     ))
@@ -148,7 +151,7 @@
 		    (ess-bugs-search-min nil)
 		    (ess-bugs-search-max nil)
 		    (ess-bugs-search-vars
-"\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(,\\)?[a-zA-Z0-9]*\\(\\]\\)\\)?[ \t]*[,]?[ \t]*\\(#.*\\)?[\n]?"
+"\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[0-9]*\\(,\\)?[0-9]*\\(\\]\\)\\)?[ \t]*[,]?[ \t]*\\(#.*\\)?[\n]?"
 		    ))
 
 		    (goto-char (point-min))
@@ -167,8 +170,10 @@
 		    (while (search-forward-regexp ess-bugs-search-vars ess-bugs-search-max t)
 
 			(setq ess-bugs-monitor-vars
-			    (concat ess-bugs-monitor-vars "monitor set "
-				(match-string 1) (match-string 3) (match-string 4) (match-string 5) "\n"))
+			    (concat ess-bugs-monitor-vars "monitor "
+				(match-string 1) (match-string 2)
+				;(match-string 3) (match-string 4) (match-string 5)  
+				"\n"))
 		    )
 
 		    (setq ess-bugs-monitor-vars

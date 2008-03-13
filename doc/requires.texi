@@ -6,7 +6,7 @@ ESS has been tested with
 @item S4
 @item SAS >=6.12
 @item BUGS 0.5, 0.6
-@item JAGS 0.9, 1.0 (not quite working yet, patches welcome)
+@item JAGS 1.0
 @item Stata >=6.0 (recent Stata support limited due to changes in Stata)
 @c is anyone still using this? @item XLispStat >=3.50 
 @end itemize
