@@ -1,9 +1,8 @@
-@ESS{[BUGS]} was originally designed for use with BUGS software.  It
-was developed by Rodney A. Sparapani and has some similarities with
-@ESS{[SAS]}.  Later, it evolved to support JAGS as a dialect of the
-BUGS language via @ESS{[JAGS]}.  Unless otherwise noted, whenever this
-documentation says BUGS, you can assume that it applies to JAGS as
-well.  @ESS{} provides 5 features.  First, BUGS syntax is described to
+@ESS{[BUGS]} was originally designed for use with BUGS software. 
+Later, it evolved to support JAGS as a dialect of the
+BUGS language via @ESS{[JAGS]}, however, @ESS{[JAGS]} is documented in
+the section Help for JAGS.  
+@ESS{[BUGS]} provides 5 features.  First, BUGS syntax is described to
 allow for proper fontification of statements, distributions,
 functions, commands and comments in BUGS model files, command files
 and log files.  Second, @ESS{} creates templates for the command file
@@ -29,11 +28,10 @@ in an empty buffer for a model file will produce a template for you.
 @ESS{[BUGS]} supports "replacement" variables.  These variables are
 created as part of the template, i.e. with the first press of @kbd{C-c C-c} 
 in an empty buffer.  They are named by all capitals and start
-with @code{%}: @code{%N}, @code{%DATA}, @code{%INIT}, @code{%MONITOR} and @code{%STATS}.  When you are
+with @code{%}: @code{%N}, @code{%DATA}, @code{%INIT}, @code{%MONITOR} and 
+@code{%STATS}.  When you are
 finished editing your model file, pressing @kbd{C-c C-c} will perform
-the necessary replacements and build your command file for you.  Note
-that @ESS{[JAGS]} only supports @code{%MONITOR} since none of the other
-variables are compatible with the JAGS dialect.
+the necessary replacements and build your command file for you. 
 
 The @code{%DATA} variable appears in the line @code{data in "%DATA";}.  On the
 second press of @kbd{C-c C-c}, @code{%DATA} will be replaced by the model file name

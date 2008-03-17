@@ -1,6 +1,6 @@
 ;;; essd-jags.el -- ESS[JAGS] dialect
 
-;; Copyright (C) 2006 Rodney Sparapani
+;; Copyright (C) 2006-2008 Rodney Sparapani
 
 ;; Original Author: Rodney Sparapani <rsparapa@mcw.edu>
 ;; Created: 16 August 2006
@@ -29,6 +29,7 @@
 ;; Code:
 
 (require 'essl-bugs)
+(require 'ess-utils)
 
 (setq auto-mode-alist 
     (delete '("\\.[bB][uU][gG]\\'" . ess-bugs-mode) auto-mode-alist))
@@ -37,6 +38,14 @@
     (append '(("\\.[bB][uU][gG]\\'" . ess-jags-mode)) auto-mode-alist))
 
 (setq ess-bugs-batch-command "jags")
+
+(defvar ess-jags-monitor-vars nil)
+(make-local-variable 'ess-jags-monitor-vars)
+
+(defvar ess-jags-thin-vars nil)
+(make-local-variable 'ess-jags-thin-vars)
+
+(defvar ess-jags-monitor-vars nil)
 
 (defvar ess-bugs-font-lock-keywords
     (list
@@ -63,7 +72,7 @@
 	;; .jmd files
 	(cons (concat "\\<\\(adapt\\|cd\\|clear\\|coda\\|compile\\|data\\|dir\\|"
 		"exit\\|in\\(itialize\\)?\\|load\\|model\\|monitor\\(s\\)?\\|parameters\\|"
-		"pwd\\|run\\|samplers\\|to\\|update\\)\\>")
+		"pwd\\|run\\|samplers\\|to\\|update\\)[ \t\n]")
 					font-lock-keyword-face)
 
 	(cons (concat "\\<\\(by\\|chain\\|nchains\\|stem\\|thin\\|type\\)[ \t\n]*(")
@@ -79,12 +88,15 @@
    (if (equal 0 (buffer-size)) (progn
 	(if (equal ".bug" suffix) (progn
 	    (insert "var ;\n")
-	    (insert "#%MONITOR;\n")
-	    (insert "#%THIN 1;\n")
+	    ;(insert "#%MONITOR;\n")
 	    (insert "model {\n")
             (insert "    for (i in 1:N) {\n    \n")
             (insert "    }\n")
             (insert "}\n")
+	    (insert "#Local Variables:\n")
+	    (insert "#ess-jags-monitor-vars:()\n")
+	    (insert "#ess-jags-thin-vars:\"1\"\n")
+	    (insert "#End:\n")
 	))
 
 	(if (equal ".jmd" suffix) (progn
@@ -96,11 +108,13 @@
 	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".in0\"\n"))
 	    (insert (concat "update " ess-bugs-default-burn-in "\n"))
 	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".in1\"\n"))
-	    (insert "#%MONITOR\n\n#%MONITOR\n")
+	    ;(insert "#%MONITOR\n\n#%MONITOR\n")
+	    (insert ess-bugs-monitor-vars)
 	    (insert (concat "update " ess-bugs-default-update "\n"))
 	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".in2\"\n"))
-	    ;(insert (concat "cd " ess-bugs-file-dir "\n"))
-	    (insert (concat "coda *,  stem(\"" ess-bugs-file-root "\")\n"))
+	    (insert (concat "coda " 
+		(if ess-microsoft-p (if (w32-shell-dos-semantics) "*" "\\*") "\\*") 
+		", stem(\"" ess-bugs-file-dir ess-bugs-file-root "\")\n"))
 	    (insert "exit\n")
 	))
     ))
@@ -135,7 +149,8 @@
 	(comint-send-input)
 
 	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " "
-	     (concat ess-bugs-file-root ".jmd") " " ess-bugs-batch-post-command))
+	     (concat ess-bugs-file-root ".jmd") " > " 
+	     (concat ess-bugs-file-root ".out") " " ess-bugs-batch-post-command))
 
 	(comint-send-input)
 )
@@ -144,51 +159,19 @@
     "ESS[JAGS]: Perform Next-Action for .bug"
 
 	(if (equal 0 (buffer-size)) (ess-bugs-switch-to-suffix ".bug")
-	    (save-excursion 
-		(goto-char (point-min))
+	;else
+	    (ess-save-and-set-local-variables)
+   
+	    (setq ess-bugs-monitor-vars nil)
 
-		(let (
-		    (ess-bugs-search-min nil)
-		    (ess-bugs-search-max nil)
-		    (ess-bugs-search-vars
-"\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[0-9]*\\(,\\)?[0-9]*\\(\\]\\)\\)?[ \t]*[,]?[ \t]*\\(#.*\\)?[\n]?"
-		    ))
+		(while (and (listp ess-jags-monitor-vars) (consp ess-jags-monitor-vars))
+		    (setq ess-bugs-monitor-vars 
+			(concat ess-bugs-monitor-vars 
+			    "monitor " (car ess-jags-monitor-vars) 
+			    ", thin(" ess-jags-thin-vars ")\n"))
+		    (setq ess-jags-monitor-vars (cdr ess-jags-monitor-vars)))
 
-		    (goto-char (point-min))
-
-		    (if (search-forward-regexp "%MONITOR[ \t]+" nil t)
-			(setq ess-bugs-search-min (point))
-		    ;;else
-			(setq ess-bugs-search-min (search-forward "var"))
-		    )
-
-		    (setq ess-bugs-search-max (search-forward-regexp ";"))
-
-		    (goto-char ess-bugs-search-min)
-		    (setq ess-bugs-monitor-vars "")
-
-		    (while (search-forward-regexp ess-bugs-search-vars ess-bugs-search-max t)
-
-			(setq ess-bugs-monitor-vars
-			    (concat ess-bugs-monitor-vars "monitor "
-				(match-string 1) (match-string 2)
-				;(match-string 3) (match-string 4) (match-string 5)  
-				"\n"))
-		    )
-
-		    (setq ess-bugs-monitor-vars
-			(concat "#%MONITOR\n" ess-bugs-monitor-vars "#%MONITOR\n"))
-	    ))
-
-	    (save-buffer)
 	    (ess-bugs-switch-to-suffix ".jmd"))
-
-    (save-excursion
-	(goto-char (point-min))
-
-	(if (search-forward-regexp "#%MONITOR\\(.\\|\n\\)*#%MONITOR\n" nil t)
-	    (replace-match ess-bugs-monitor-vars t))
-	)
 )
 
 (defun ess-jags-mode ()

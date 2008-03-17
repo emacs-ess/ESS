@@ -11,10 +11,9 @@ a more consistent handling of SAS options by
 snooze for MS Windows via customize-able @code{ess-sleep-for} (floats welcome);
 xpdf now supported as a PDF viewer 
 @item @ESS{[Rnw]}: now also works with ``emacs -nw'' and Emacs 22.
-@item @ESS{[JAGS]}: works once again, but requires JAGS 1.0 
-(see 5.3.2 @ESS{[JAGS]} comments below for more information): more advanced
-features like multiple chains, thinning, etc. not available yet, but are 
-TODO items
+@item @ESS{[JAGS]}: now requires JAGS 1.0 
+(see the new ESS for JAGS help section for more information): more advanced
+features like multiple chains not available yet, but are TODO items
 @end itemize
 
 Changes/New Features in 5.3.6:

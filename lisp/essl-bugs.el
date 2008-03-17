@@ -64,7 +64,7 @@ Users whose default is not 'sh, but are accessing a remote machine with
 )
 
 (defcustom ess-bugs-batch-pre-command
-    (if (equal ess-bugs-batch-method 'sh) "rm -f nohup.out; nohup"
+    (if (equal ess-bugs-batch-method 'sh) "nohup"
 	(if ess-microsoft-p "start"))
     "*ESS[BUGS]: Modifiers at the beginning of the batch BUGS command line."
     :group 'ess-bugs

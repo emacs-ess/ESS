@@ -48,7 +48,7 @@ ESS @w{version @ESSVER}
 
 @dircategory Emacs
 @direntry
-* ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
+* ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS/JAGS, Stata, XLisp-Stat).
 @end direntry
 @c node-name,  next,  previous,  up
 @node Top, Introduction, (dir), (dir)
@@ -71,7 +71,7 @@ and S.J. Eglen.
 @quotation
 Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
-SAS, S-PLUS, R, BUGS and other statistical analysis packages under
+SAS, S-PLUS, R, BUGS/JAGS and other statistical analysis packages under
 the Unix, Microsoft Windows, and Apple Mac operating systems.  ESS
 is itself a package within the emacs text editor and uses emacs
 features to streamline the creation and use of statistical software.
@@ -98,6 +98,7 @@ statements written in these statistical analysis languages.
 
 * ESS for SAS::
 * ESS for BUGS::
+* ESS for JAGS::
 
 * Miscellaneous::               Other features of ESS
 * Mailing lists/bug reports::   How to get assistance with ESS
@@ -232,7 +233,7 @@ of two pre-cursors, S-mode and SAS-mode, which provided support for the
 S family and SAS respectively.  Later on, Stata-mode was also incorporated.
 
 ESS provides a common, generic, and useful interface, through emacs, to
-many statistical packages.  It currently supports the S family, SAS, BUGS,
+many statistical packages.  It currently supports the S family, SAS, BUGS/JAGS,
 Stata and XLisp-Stat with the level of support roughly in that order.
 
 A bit of notation before we begin.  @emph{emacs} refers to both
@@ -2523,7 +2524,7 @@ variable @code{ess-help-own-frame}.
 @include help-sas.texi
 
 @comment  node-name,  next,  previous,  up
-@node ESS for BUGS, Miscellaneous, ESS for SAS, Top
+@node ESS for BUGS, ESS for JAGS, ESS for SAS, Top
 @chapter ESS for BUGS
 
 @menu
@@ -2534,7 +2535,18 @@ variable @code{ess-help-own-frame}.
 @include help-bugs.texi
 
 @comment  node-name,  next,  previous,  up
-@node Miscellaneous, Mailing lists/bug reports, ESS for BUGS, Top
+@node ESS for JAGS, Miscellaneous, ESS for BUGS, Top
+@chapter ESS for JAGS
+
+@menu
+* ESS(JAGS)--Model files::
+* ESS(JAGS)--Command files::
+* ESS(JAGS)--Log files::
+@end menu
+@include help-jags.texi
+
+@comment  node-name,  next,  previous,  up
+@node Miscellaneous, Mailing lists/bug reports, ESS for JAGS, Top
 @chapter Other features of ESS
 
 ESS has a few miscellaneous features, which didn't fit anywhere else.
