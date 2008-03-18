@@ -55,18 +55,18 @@
 	(cons "^[ \t]*\\(model\\|var\\)\\>"
 					font-lock-keyword-face)
 
-	;(cons "\\<in[ \t]+[1-9]\\>"	font-lock-keyword-face)
-
-	(cons (concat "\\<d\\(bern\\|beta\\|bin\\|cat\\|chisqr\\|"
-		"dexp\\|dirch\\|exp\\|gamma\\|interval\\|lnorm\\|logis\\|"
-		"mnorm\\|multi\\|negbin\\|norm\\|par\\|pois\\|"
-		"sum\\|t\\|unif\\|weib\\|wish\\)[ \t\n]*(")
+	(cons (concat "\\<d\\(bern\\|beta\\|bin\\|cat\\|chisq\\|"
+		"dexp\\|dirch\\|exp\\|\\(gen[.]\\)?gamma\\|hyper\\|"
+		"interval\\|lnorm\\|logis\\|mnorm\\|mt\\|multi\\|"
+		"negbin\\|norm\\(mix\\)?\\|par\\|pois\\|sum\\|t\\|"
+		"unif\\|weib\\|wish\\)[ \t\n]*(")
 					font-lock-reference-face)
 
-	(cons (concat "\\<\\(for\\|cloglog\\|equals\\|exp\\|inprod\\|"
-		"inverse\\|log\\(det\\|fact\\|gam\\|it\\)?\\|max\\|"
-		"mean\\|min\\|phi\\|pow\\|probit\\|sd\\|sort\\|sqrt\\|"
-		"step\\|sum\\|T\\)[ \t\n]*(")
+	(cons (concat "\\<\\(abs\\|cos\\|dim\\|\\(i\\)?cloglog\\|equals\\|"
+		"exp\\|for\\|inprod\\|interp[.]line\\|inverse\\|length\\|"
+		"\\(i\\)?logit\\|logdet\\|logfact\\|loggam\\|max\\|mean\\|"
+		"mexp\\|min\\|phi\\|pow\\|probit\\|prod\\|rank\\|round\\|"
+		"sd\\|sin\\|sort\\|sqrt\\|step\\|sum\\|t\\|trunc\\|T\\)[ \t\n]*(")
 					font-lock-function-name-face)
 
 	;; .jmd files
@@ -88,7 +88,6 @@
    (if (equal 0 (buffer-size)) (progn
 	(if (equal ".bug" suffix) (progn
 	    (insert "var ;\n")
-	    ;(insert "#%MONITOR;\n")
 	    (insert "model {\n")
             (insert "    for (i in 1:N) {\n    \n")
             (insert "    }\n")
@@ -108,7 +107,6 @@
 	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".in0\"\n"))
 	    (insert (concat "update " ess-bugs-default-burn-in "\n"))
 	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".in1\"\n"))
-	    ;(insert "#%MONITOR\n\n#%MONITOR\n")
 	    (insert ess-bugs-monitor-vars)
 	    (insert (concat "update " ess-bugs-default-update "\n"))
 	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".in2\"\n"))
