@@ -147,8 +147,13 @@
 	(comint-send-input)
 
 	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " "
-	     (concat ess-bugs-file-root ".jmd") " > " 
-	     (concat ess-bugs-file-root ".out") " " ess-bugs-batch-post-command))
+		ess-bugs-file-dir ess-bugs-file-root ".jmd") 
+		(if (or (equal shell-file-name "/bin/csh") 
+			(equal shell-file-name "/bin/tcsh")
+			(equal shell-file-name "/bin/zsh")) 
+			    (concat " >& " ess-bugs-file-dir ess-bugs-file-root ".out ")
+			    (concat " > "  ess-bugs-file-dir ess-bugs-file-root ".out 2>&1 ")) 
+		(concat ess-bugs-batch-post-command))
 
 	(comint-send-input)
 )
