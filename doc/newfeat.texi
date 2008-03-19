@@ -9,7 +9,7 @@ which controls whether font-locking is enabled in ESS buffers.
 a more consistent handling of SAS options by
 @code{ess-sas-submit-command-options} which is buffer-local; portable
 snooze for MS Windows via customize-able @code{ess-sleep-for} (floats welcome);
-xpdf now supported as a PDF viewer 
+Xpdf now supported as a PDF viewer 
 @item @ESS{[Rnw]}: now also works with ``emacs -nw'' and Emacs 22.
 @item @ESS{[JAGS]}: now requires JAGS 1.0 
 (see the new ESS for JAGS help section for more information): more advanced
