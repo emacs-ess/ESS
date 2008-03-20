@@ -93,7 +93,7 @@
             (insert "    }\n")
             (insert "}\n")
 	    (insert "#Local Variables:\n")
-	    (insert "#ess-jags-monitor-vars:()\n")
+	    (insert "#ess-jags-monitor-vars:(\"\")\n")
 	    (insert "#ess-jags-thin-vars:\"1\"\n")
 	    (insert "#End:\n")
 	))
