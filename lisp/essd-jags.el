@@ -30,6 +30,7 @@
 
 (require 'essl-bugs)
 (require 'ess-utils)
+(require 'ess-inf)
 
 (setq auto-mode-alist 
     (delete '("\\.[bB][uU][gG]\\'" . ess-bugs-mode) auto-mode-alist))
@@ -110,16 +111,14 @@
 	(if (equal ".jmd" suffix) (progn
 	    (insert (concat "model in \"" ess-bugs-file-dir ess-bugs-file-root ".bug\"\n"))
 	    (insert (concat "data in \"" ess-bugs-file-dir ess-bugs-file-root ".txt\"\n"))
-	    ;(insert "compile\n")
-	    ;(insert (concat "parameters in \"" ess-bugs-file-dir ess-bugs-file-root ".in\"\n"))
-	    (insert ess-jags-global-chains)
+	    (insert (ess-replace-in-string ess-jags-global-chains "##" "in"))
 	    (insert "initialize\n")
-	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".to0\"\n"))
 	    (insert (concat "update " ess-bugs-default-burn-in "\n"))
-	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".to1\"\n"))
 	    (insert ess-jags-global-monitor)
 	    (insert (concat "update " ess-bugs-default-update "\n"))
-	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".to2\"\n"))
+	    (insert (ess-replace-in-string 
+		(ess-replace-in-string ess-jags-global-chains 
+		    "compile, nchains([0-9]+)" "#") "##" "to"))
 	    (insert (concat "coda " 
 		(if ess-microsoft-p (if (w32-shell-dos-semantics) "*" "\\*") "\\*") 
 		", stem(\"" ess-bugs-file-dir ess-bugs-file-root "\")\n"))
@@ -181,8 +180,9 @@
 	    (while (< 0 ess-jags-chains)
 		(setq ess-jags-global-chains 
 		    (concat ess-jags-global-chains
-			"parameters in \"" ess-bugs-file-dir ess-bugs-file-root 
-			".in" (format "%d" ess-jags-chains) "\"\n"))
+			"parameters ## \"" ess-bugs-file-dir ess-bugs-file-root 
+			".##" (format "%d" ess-jags-chains) "\", chain("
+			(format "%d" ess-jags-chains) ")\n"))
 		(setq ess-jags-chains (- ess-jags-chains 1)))
  
 	    (setq ess-jags-global-monitor nil)
