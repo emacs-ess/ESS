@@ -39,13 +39,18 @@
 
 (setq ess-bugs-batch-command "jags")
 
-(defvar ess-jags-monitor-vars nil)
-(make-local-variable 'ess-jags-monitor-vars)
+(defvar ess-jags-monitor nil)
+(make-local-variable 'ess-jags-monitor)
 
-(defvar ess-jags-thin-vars nil)
-(make-local-variable 'ess-jags-thin-vars)
+(defvar ess-jags-thin nil)
+(make-local-variable 'ess-jags-thin)
 
-(defvar ess-jags-monitor-vars nil)
+(defvar ess-jags-chains nil)
+(make-local-variable 'ess-jags-chains)
+
+(defvar ess-jags-global-monitor nil)
+
+(defvar ess-jags-global-chains nil)
 
 (defvar ess-bugs-font-lock-keywords
     (list
@@ -70,12 +75,15 @@
 					font-lock-function-name-face)
 
 	;; .jmd files
-	(cons (concat "\\<\\(adapt\\|cd\\|clear\\|coda\\|compile\\|data\\|dir\\|"
-		"exit\\|in\\(itialize\\)?\\|load\\|model\\|monitor\\(s\\)?\\|parameters\\|"
+	(cons (concat "\\<\\(adapt\\|cd\\|clear\\|coda\\|data\\|dir\\|"
+		"exit\\|in\\(itialize\\)?\\|load\\|model\\|monitors\\|parameters\\|"
 		"pwd\\|run\\|samplers\\|to\\|update\\)[ \t\n]")
 					font-lock-keyword-face)
 
-	(cons (concat "\\<\\(by\\|chain\\|nchains\\|stem\\|thin\\|type\\)[ \t\n]*(")
+	(cons (concat "\\<\\(compile\\|monitor\\)[, \t\n]")
+					font-lock-keyword-face)
+
+	(cons (concat "[, \t\n]\\(by\\|chain\\|nchains\\|stem\\|thin\\|type\\)[ \t\n]*(")
 					font-lock-function-name-face)
     )
     "ESS[JAGS]: Font lock keywords."
@@ -93,23 +101,25 @@
             (insert "    }\n")
             (insert "}\n")
 	    (insert "#Local Variables:\n")
-	    (insert "#ess-jags-monitor-vars:(\"\")\n")
-	    (insert "#ess-jags-thin-vars:\"1\"\n")
+	    (insert "#ess-jags-chains:1\n")
+	    (insert "#ess-jags-monitor:(\"\")\n")
+	    (insert "#ess-jags-thin:\"1\"\n")
 	    (insert "#End:\n")
 	))
 
 	(if (equal ".jmd" suffix) (progn
 	    (insert (concat "model in \"" ess-bugs-file-dir ess-bugs-file-root ".bug\"\n"))
 	    (insert (concat "data in \"" ess-bugs-file-dir ess-bugs-file-root ".txt\"\n"))
-	    (insert "compile\n")
-	    (insert (concat "parameters in \"" ess-bugs-file-dir ess-bugs-file-root ".in\"\n"))
+	    ;(insert "compile\n")
+	    ;(insert (concat "parameters in \"" ess-bugs-file-dir ess-bugs-file-root ".in\"\n"))
+	    (insert ess-jags-global-chains)
 	    (insert "initialize\n")
-	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".in0\"\n"))
+	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".to0\"\n"))
 	    (insert (concat "update " ess-bugs-default-burn-in "\n"))
-	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".in1\"\n"))
-	    (insert ess-bugs-monitor-vars)
+	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".to1\"\n"))
+	    (insert ess-jags-global-monitor)
 	    (insert (concat "update " ess-bugs-default-update "\n"))
-	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".in2\"\n"))
+	    (insert (concat "parameters to \"" ess-bugs-file-dir ess-bugs-file-root ".to2\"\n"))
 	    (insert (concat "coda " 
 		(if ess-microsoft-p (if (w32-shell-dos-semantics) "*" "\\*") "\\*") 
 		", stem(\"" ess-bugs-file-dir ess-bugs-file-root "\")\n"))
@@ -165,14 +175,24 @@
 	;else
 	    (ess-save-and-set-local-variables)
    
-	    (setq ess-bugs-monitor-vars nil)
+	    (setq ess-jags-global-chains 
+		(concat "compile, nchains(" (format "%d" ess-jags-chains) ")\n"))
 
-		(while (and (listp ess-jags-monitor-vars) (consp ess-jags-monitor-vars))
-		    (setq ess-bugs-monitor-vars 
-			(concat ess-bugs-monitor-vars 
-			    "monitor " (car ess-jags-monitor-vars) 
-			    ", thin(" ess-jags-thin-vars ")\n"))
-		    (setq ess-jags-monitor-vars (cdr ess-jags-monitor-vars)))
+	    (while (< 0 ess-jags-chains)
+		(setq ess-jags-global-chains 
+		    (concat ess-jags-global-chains
+			"parameters in \"" ess-bugs-file-dir ess-bugs-file-root 
+			".in" (format "%d" ess-jags-chains) "\"\n"))
+		(setq ess-jags-chains (- ess-jags-chains 1)))
+ 
+	    (setq ess-jags-global-monitor nil)
+
+		(while (and (listp ess-jags-monitor) (consp ess-jags-monitor))
+		    (setq ess-jags-global-monitor 
+			(concat ess-jags-global-monitor 
+			    "monitor " (car ess-jags-monitor) 
+			    ", thin(" ess-jags-thin ")\n"))
+		    (setq ess-jags-monitor (cdr ess-jags-monitor)))
 
 	    (ess-bugs-switch-to-suffix ".jmd"))
 )
