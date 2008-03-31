@@ -38,15 +38,16 @@
 (setq auto-mode-alist 
     (append '(("\\.[bB][uU][gG]\\'" . ess-jags-mode)) auto-mode-alist))
 
-(setq ess-bugs-batch-command "jags")
+(defvar ess-jags-command "jags")
+(make-local-variable 'ess-jags-command)
 
-(defvar ess-jags-monitor nil)
+(defvar ess-jags-monitor '(""))
 (make-local-variable 'ess-jags-monitor)
 
-(defvar ess-jags-thin nil)
+(defvar ess-jags-thin 1)
 (make-local-variable 'ess-jags-thin)
 
-(defvar ess-jags-chains nil)
+(defvar ess-jags-chains 1)
 (make-local-variable 'ess-jags-chains)
 
 (defvar ess-jags-global-monitor nil)
@@ -104,7 +105,7 @@
 	    (insert "#Local Variables:\n")
 	    (insert "#ess-jags-chains:1\n")
 	    (insert "#ess-jags-monitor:(\"\")\n")
-	    (insert "#ess-jags-thin:\"1\"\n")
+	    (insert "#ess-jags-thin:1\n")
 	    (insert "#End:\n")
 	))
 
@@ -123,6 +124,9 @@
 		(if ess-microsoft-p (if (w32-shell-dos-semantics) "*" "\\*") "\\*") 
 		", stem(\"" ess-bugs-file-dir ess-bugs-file-root "\")\n"))
 	    (insert "exit\n")
+	    (insert "Local Variables:\n")
+	    (insert "ess-jags-command:\"jags\"\n")
+	    (insert "End:\n")
 	))
     ))
 )
@@ -140,7 +144,7 @@
 (defun ess-bugs-na-jmd ()
     "ESS[JAGS]: Perform the Next-Action for .jmd."
 
-    (save-buffer)
+    (ess-save-and-set-local-variables)
     (shell)
 
     (if (w32-shell-dos-semantics)
@@ -155,7 +159,7 @@
 	(insert (concat "cd \"" ess-bugs-file-dir "\""))
 	(comint-send-input)
 
-	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " "
+	(insert (concat ess-bugs-batch-pre-command " " ess-jags-command " "
 		ess-bugs-file-dir ess-bugs-file-root ".jmd") 
 		(if (or (equal shell-file-name "/bin/csh") 
 			(equal shell-file-name "/bin/tcsh")
@@ -191,7 +195,7 @@
 		    (setq ess-jags-global-monitor 
 			(concat ess-jags-global-monitor 
 			    "monitor " (car ess-jags-monitor) 
-			    ", thin(" ess-jags-thin ")\n"))
+			    ", thin(" (format "%d" ess-jags-thin) ")\n"))
 		    (setq ess-jags-monitor (cdr ess-jags-monitor)))
 
 	    (ess-bugs-switch-to-suffix ".jmd"))
