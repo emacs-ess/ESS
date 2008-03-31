@@ -477,10 +477,10 @@ See `noweb-mode' and `R-mode' for more help."
   (interactive "d\nP"); point and prefix (C-u)
   (save-excursion
     (goto-char from)
-    (ess-rep-regexp "\\(\\([][=,()]\\|<-\\|_\\) *\\)T\\>" "\\1TRUE"
+    (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)T\\>" "\\1TRUE"
 		    'fixcase nil (not quietly))
     (goto-char from)
-    (ess-rep-regexp "\\(\\([][=,()]\\|<-\\|_\\\) *\\)F\\>" "\\1FALSE"
+    (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)F\\>" "\\1FALSE"
 		    'fixcase nil (not quietly))))
 
 ;; From: Sebastian Luque <spluque@gmail.com>

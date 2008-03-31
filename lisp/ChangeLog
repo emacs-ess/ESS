@@ -1,8 +1,11 @@
+2008-03-31  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r.el (R-fix-T-F): remove "_" (and extraneous "\"); thanks to Stephen
+
 2008-03-31  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-mode.el (ess-continued-statement-p): remove _ from regexp to
 	fix Kurt's bug re indendation after NA_INTEGER_
-	
 
 2008-03-11  Stephen Eglen  <stephen@gnu.org>
 
