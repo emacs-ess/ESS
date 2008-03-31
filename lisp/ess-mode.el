@@ -1103,7 +1103,7 @@ Returns nil if line starts inside a string, t if in a comment."
 		    (skip-chars-backward " \t")
 		    (or (and (> (current-column) 1)
 			     (save-excursion (backward-char 1)
-					     (looking-at "[-:+*/_><=]")))
+					     (looking-at "[-:+*/><=]")))
 			(and (> (current-column) 3)
 			     (progn (backward-char 3)
 				    (looking-at "%[^ \t]%"))))))))))
