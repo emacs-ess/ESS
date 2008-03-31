@@ -128,7 +128,7 @@ ESS has been tested with
 
    * BUGS 0.5, 0.6
 
-   * JAGS 0.9, 1.0 (not quite working yet, patches welcome)
+   * JAGS 1.0
 
    * Stata >=6.0 (recent Stata support limited due to changes in Stata)
 
@@ -250,7 +250,12 @@ Changes/New Features in 5.3.7:
      a more consistent handling of SAS options by
      `ess-sas-submit-command-options' which is buffer-local; portable
      snooze for MS Windows via customize-able `ess-sleep-for' (floats
-     welcome)
+     welcome); Xpdf now supported as a PDF viewer
+
+   * ESS[Rnw]: now also works with "emacs -nw" and Emacs 22.
+
+   * ESS[JAGS]: now requires JAGS 1.0 (see the new ESS for JAGS help
+     section for more information): both need work; suggestions welcome
 
    Changes/New Features in 5.3.6:
    * ESS: for XEmacs, using "gnuclient" (without a "-q") works for

@@ -3,8 +3,8 @@ Name completion (for R and S-plus):
 
 Want to keep an up-to-date list of S object names, on which we can
 complete.
-  Additionally, list-component completion "x$a<TAB>" also work;
-  Not slot completion on S4 objects though  <<< TODO
+  Additionally, list-component completion "x$a<TAB>" also work,
+  as does slot completion on S4 objects "ob@<TAB>".
 
 Historically, for S and S-plus, we had made an effort to only reread
 the objects of database entries in search() ``when needed''.
@@ -17,7 +17,7 @@ For R, this is not available and for newer versions of S-plus, with
 
 I (MM) think R does never re-read things as long as search() is not
 changed by  library(), attach(), detach(), source(),..
-These are, BTW, given by  ess-change-sp-regexp in ../lisp/ess-cust.el
+These calls are, BTW, given by  ess-change-sp-regexp in ../lisp/ess-cust.el
 (initialized by dialect specific ess-<dialect>-sp-regexp  "defcustom"s).
 
 How are things working in ../lisp/ess-inf.el currently :
