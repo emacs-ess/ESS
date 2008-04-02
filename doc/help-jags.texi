@@ -30,20 +30,21 @@ feature, creating the elisp code for their operation was challenging.  So, a
 more elisp-ish approach was adopted for @ESS{[JAGS]}:  elisp local variables.
 These variables are
 created as part of the template, i.e. with the first press of @kbd{C-c C-c} 
-in an empty buffer.  They are named @code{ess-jags-monitor-vars} and
-@code{ess-jags-thin-vars} and they appear in the @code{Local Variables:} section
-at the end of your @file{.bug} file.  When you are
+in an empty buffer.  For your @file{.bug} file, they are named 
+@code{ess-jags-chains}, @code{ess-jags-monitor} and @code{ess-jags-thin}, 
+and they appear in the @code{Local Variables} section.  When you are
 finished editing your model file, pressing @kbd{C-c C-c} will perform
 the necessary actions to build your command file for you. 
 
-The @code{ess-jags-monitor-vars} variable is a list of variables
+The @code{ess-jags-chains} variable is the number of chains that
+you want to initialize and sample from; defaults to 1.
+The @code{ess-jags-monitor} variable is a list of variables
 that you want monitored: encase each variable in double quotes.  
 When you press @kbd{C-c C-c}, the
 appropriate statements are created in the command file to monitor the
-list of variables.  By default, no variables are monitored. 
-@comment If the line is blank, then the list is populated
-@comment with the variables from the @code{var} statement.
-The @code{ess-jags-thin-vars} variable is the thinning parameter.  
+list of variables.  By default, no variables are explicitly monitored 
+which means JAGS will implicitly monitor all ``default'' variables. 
+The @code{ess-jags-thin} variable is the thinning parameter.  
 By default, the thinning parameter is set to 1, i.e. no thinning. 
 
 @comment  node-name,  next,  previous,  up
@@ -51,11 +52,15 @@ By default, the thinning parameter is set to 1, i.e. no thinning.
 @section ESS[JAGS]--Command files
 
 To avoid extension name collision, @file{.bmd} is used for BUGS
-command files and @file{.jmd} for JAGS command files.  When you have
+command files and @file{.jmd} for JAGS command files.  For your 
+@file{.jmd} file, there is only one variable, @code{ess-jags-command}, 
+in the @code{Local Variables} section.  When you have
 finished editing your model file and press @kbd{C-c C-c}, a command
 file is created if one does not already exist.  
 When you are finished editing your command file, pressing @kbd{C-c C-c} 
 again will submit your command file as a batch job. 
+The @code{ess-jags-command} variable allows you to specify a different
+JAGS program to use to run your model; defaults to ``jags''.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(JAGS)--Log files, , ESS(JAGS)--Command files, ESS for JAGS

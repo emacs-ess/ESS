@@ -138,13 +138,14 @@
 
    (if (equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
    ;;else
-   (if (equal ".jmd" ess-bugs-file-suffix) (ess-bugs-na-jmd))
+   (if (equal ".jmd" ess-bugs-file-suffix) (progn
+	(ess-save-and-set-local-variables)
+	(ess-bugs-na-jmd ess-jags-command)))
 )
 
-(defun ess-bugs-na-jmd ()
+(defun ess-bugs-na-jmd (jags-command)
     "ESS[JAGS]: Perform the Next-Action for .jmd."
-
-    (ess-save-and-set-local-variables)
+    ;(ess-save-and-set-local-variables)
     (shell)
 
     (if (w32-shell-dos-semantics)
@@ -159,7 +160,7 @@
 	(insert (concat "cd \"" ess-bugs-file-dir "\""))
 	(comint-send-input)
 
-	(insert (concat ess-bugs-batch-pre-command " " ess-jags-command " "
+	(insert (concat ess-bugs-batch-pre-command " " jags-command " "
 		ess-bugs-file-dir ess-bugs-file-root ".jmd") 
 		(if (or (equal shell-file-name "/bin/csh") 
 			(equal shell-file-name "/bin/tcsh")
