@@ -1,0 +1,293 @@
+ess (5.3.6-1) unstable; urgency=low
+
+  * New upstream release
+  * ess Debian package now hosted at https://svn.R-project.org/ESS
+  * Changed build-depends to texlive packages
+
+ -- Stefan Theussl <stefan.theussl@wu-wien.ac.at>  Wed, 4 Apr 2008 01:25:19 +0100
+
+ess (5.3.0-1) unstable; urgency=low
+
+  * New upstream release
+  * Add tetex-extra to build-depends, Closes: #363080, Closes: #358327. 
+  * Apply xemacs key binding fix, Closes: #343234.
+  * Comment out svn references in refcard.tex, as Debian does not have
+    svn.sty at the moment.
+  * Add ess-intro-graphs.pdf and refcard.pdf to docs
+
+ -- Camm Maguire <camm@enhanced.com>  Fri, 28 Apr 2006 16:27:11 +0000
+
+ess (5.2.12-1) unstable; urgency=low
+
+  * New upstream release
+  * Bug fix: "ess-mode rebinds [(meta backspace)]", thanks to Rafael
+    Laboissiere (Closes: #343234). Applied patch
+
+ -- Camm Maguire <camm@enhanced.com>  Wed,  1 Mar 2006 16:13:18 +0000
+
+ess (5.2.11-1) unstable; urgency=low
+
+  * New upstream release
+  * Newer standards
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 22 Nov 2005 23:13:20 +0000
+
+ess (5.2.10-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Camm Maguire <camm@enhanced.com>  Fri, 21 Oct 2005 00:50:06 +0000
+
+ess (5.2.6-1) unstable; urgency=high
+
+  * New upstream release
+  * chmod -R u+w on orig source
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 22 Mar 2005 13:48:07 +0000
+
+ess (5.2.5-1) unstable; urgency=high
+
+  * New upstream release
+  * Bug fix: "ess: error in doc-base file", thanks to Laurent Bonnaud
+    (Closes: #283699).  index.html -> ess.html in doc-base.
+  * Revert to (require 'ess-site) in emacsen-startup now that
+    global-font-lock issue is resolved.
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 10 Mar 2005 15:25:56 +0000
+
+ess (5.2.3-4) unstable; urgency=high
+
+  * Suggests: xlispstat, r-base | r-base-core, pspp
+
+ -- Camm Maguire <camm@enhanced.com>  Fri, 19 Nov 2004 14:40:23 +0000
+
+ess (5.2.3-3) unstable; urgency=high
+
+  * repair broken replace-regexp-in-string -> ess-replace-regexp-in-string
+    patch
+  * expand autoload functionality in emacsen-startup
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 11 Nov 2004 00:51:43 +0000
+
+ess (5.2.3-2) unstable; urgency=high
+
+  * Fix autoload on 'R, 'R-mode, and 'XLS
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 28 Oct 2004 15:28:56 +0000
+
+ess (5.2.3-1) unstable; urgency=high
+
+  * New upstream release
+  * Remove debian/info in favor of command line args generated at compile
+    time.
+  * Full make in doc directory
+  * Suggest r-base and xlispstat
+  * Autoload ess-site on M-x R and M-x XLS instead of require in emacs
+    startup.  Closes: #271845.
+  * replace-regexp-in-string -> ess-replace-regexp-in-string, Closes:
+    #278253.
+  * Clean README ANNOUNCE doc/html/readme.html doc/html/ess.html
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 26 Oct 2004 18:48:59 +0000
+
+ess (5.2.2-2) unstable; urgency=high
+
+  * Chnage menu entry in ess.el to re-enable R icon functionality.
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 14 Sep 2004 13:04:06 +0000
+
+ess (5.2.2-1) unstable; urgency=low
+
+  * New upstream release
+  * New release Closes: #267588
+  * new watch file
+  * Added INFO-DIR-SECTION Emacs info es.info
+  * Add ess.dvi and readme.dvi to documentation
+  * minor rules changes to doc/Makefile
+  * comment out ess-display-w3-help-on-object-other-window, as is not
+    finished and contains code called for effect.
+  * Carry forward bug fix to ess-latex.el
+  * Carry forward ess-sysdp.el disabling of local variables
+  * Carry forward renamining of 'nuke-trailing...' in ess-utils.el
+  * Several old doc files no longer available
+  * Add /usr/share/ess/etc directory for icon support.  TODO, need to
+    clean the contents.
+  * compat 4
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 30 Aug 2004 16:41:21 +0000
+
+ess (5.1.24-6) unstable; urgency=low
+
+  * Newer standards
+  * Bug fix: "Half-broken dependency on emacs20", thanks to Martin
+    Michlmayr (Closes: #232757).  replace with emacs21
+
+ -- Camm Maguire <camm@enhanced.com>  Sun, 15 Feb 2004 20:08:31 +0000
+
+ess (5.1.24-5) unstable; urgency=low
+
+  * nuke-trailing-whitespace -> ess-nuke-trailing-whitespace to avoid
+    collision with emacs-goodies, Closes: #214583
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 14 Oct 2003 13:35:04 +0000
+
+ess (5.1.24-4) unstable; urgency=low
+
+  * Remove references to old info files - Closes: #204035
+  * Newer texinfo adds content to index sections, Closes: #188937
+  * Newer standards
+  * Lintian cleanups to copyright file
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 14 Oct 2003 13:34:54 +0000
+
+ess (5.1.24-3) unstable; urgency=low
+
+  * Build-depend on texi2html, Closes: #173641
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 19 Dec 2002 14:24:20 -0500
+
+ess (5.1.24-2) unstable; urgency=low
+
+  * Fix bug in ess-latex.el, Closes: #168792
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 14 Nov 2002 21:46:18 -0500
+
+ess (5.1.24-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 30 Oct 2002 15:08:50 -0500
+
+ess (5.1.20-3) unstable; urgency=low
+
+  * New upstream site
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 30 Oct 2002 12:34:16 -0500
+
+ess (5.1.20-2) unstable; urgency=low
+
+  * flavor ->debian-emacs-flavor in emacsen-startup
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  4 Mar 2002 14:26:19 -0500
+
+ess (5.1.20-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 28 Feb 2002 15:25:29 -0500
+
+ess (5.1.19-5) unstable; urgency=low
+
+  * Info files in section Emacs, Closes: #135171
+  * Newer standards
+  * Build-Depends-Indep
+  * Depends emacs20 | emacsen
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 23 Feb 2002 09:40:49 -0500
+
+ess (5.1.19-4) unstable; urgency=low
+
+  * Reformatted doc string in essl-bug.el, disabled indentation eval
+    local variables in ess-sysdp.el, eliminates warnings when byte
+    compiling, Closes: #132436
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 12 Feb 2002 14:14:02 -0500
+
+ess (5.1.19-3) unstable; urgency=low
+
+  * /etc/emacs/site-start.d/50ess.el as conffile, Closes: #132138
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  4 Feb 2002 09:12:13 -0500
+
+ess (5.1.19-2) unstable; urgency=low
+
+  * autoload -> require in emacsen startup
+
+ -- Camm Maguire <camm@enhanced.com>  Fri,  1 Feb 2002 14:41:16 -0500
+
+ess (5.1.19-1) unstable; urgency=low
+
+  * New upstream release
+  * chmod u+w doc/user-faq doc/user-manual
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 10 Sep 2001 09:47:31 -0400
+
+ess (5.1.18-4) unstable; urgency=low
+
+  * Fixed emacsen startup, Closes: #102850, Closes: #103142
+
+ -- Camm Maguire <camm@enhanced.com>  Tue,  3 Jul 2001 22:02:08 -0400
+
+ess (5.1.18-3) unstable; urgency=low
+
+  * Autoload instead of load in emacsen-startup
+
+ -- Camm Maguire <camm@enhanced.com>  Wed,  7 Mar 2001 09:44:33 -0500
+
+ess (5.1.18-2) unstable; urgency=low
+
+  * Updated Build-Depends
+
+ -- Camm Maguire <camm@enhanced.com>  Tue,  6 Mar 2001 23:53:35 -0500
+
+ess (5.1.18-1) unstable; urgency=low
+
+  * New upstream source, Closes #74938
+  * New source, Closes #86626.
+  * New upstream source, Closes: #81565
+
+ -- Camm Maguire <camm@enhanced.com>  Tue,  6 Mar 2001 22:42:01 -0500
+
+ess (5.1.13-3) unstable; urgency=low
+
+  * Added build-depends line.  Closes #70297.
+  * Changed load-path in emacsen-startup to load .elc instead of .el
+    files
+  * Added doc-base registration file
+
+ -- Camm Maguire <camm@enhanced.com>  Sun, 17 Sep 2000 03:44:16 +0200
+
+ess (5.1.13-2) unstable; urgency=low
+
+  * Commented out requirement of tex-site in ess-debug.el to avoid
+    dependency on auctex.  Closes #65453.
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 12 Jun 2000 18:07:47 +0200
+
+ess (5.1.13-1) unstable; urgency=low
+
+  * New upstream release, fixing various bugs
+  * Incorporated lintian fixes of previous version into this upload to
+    frozen
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 30 Mar 2000 00:47:26 +0200
+
+ess (5.1.8-4) unstable; urgency=low
+
+  * Upgraded to latest standards version
+  * Fixed rules to build on freshly unpacked source
+  * Made local copy of dh_dhelp script in debian/
+  * Upgraded GPL copyright path
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 29 Mar 2000 18:09:18 +0200
+
+ess (5.1.8-3) unstable; urgency=low
+
+  * Fixed confusing description (closes #51303)
+  * Modified dhelp setup slightly
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 11 Sep 1999 15:22:00 -0400
+
+ess (5.1.8-2) unstable; urgency=low
+
+  * Fixed dhelp support
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 11 Sep 1999 13:49:06 -0400
+
+ess (5.1.8-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 11 Sep 1999 12:03:46 -0400
+
+

@@ -1,0 +1,7 @@
+# Example watch control file for uscan
+# Rename this file to "watch" and then you can run the "uscan" command
+# to check for upstream updates and more.
+# Site		Directory		Pattern			Version	Script
+version=2
+http://stat.ethz.ch/ESS/downloads/ess/  ess-(.*)\.tar\.gz	debian	uupdate
+#http://software.biostat.washington.edu	/ess/	ess-(.*)\\.tar\\.gz	debian	uupdate

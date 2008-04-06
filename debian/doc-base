@@ -1,0 +1,14 @@
+Document: ess
+Title: Ess Manual
+Author: A.J. Rossini,Richard M. Heiberger,Kurt Hornik,Martin Maechler
+Abstract: Emacs statistics mode, supporting R,S and others
+Section: math
+
+Format: text
+Files: /usr/share/doc/ess/README*
+
+Format: HTML
+Index: /usr/share/doc/ess/html/ess.html
+Files: /usr/share/doc/ess/html/*.html
+
+  

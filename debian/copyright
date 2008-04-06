@@ -1,0 +1,20 @@
+This package was debianized by Camm Maguire <camm@enhanced.com> on
+Sat, 11 Sep 1999 12:03:46 -0400.
+
+It was downloaded from http://software.biostat.washington.edu/ess
+
+Upstream Authors:    
+* A.J. Rossini (http://www.biostat.washington.edu/~rossini/)
+     <rossini@stat.sc.edu>
+
+   * Richard M. Heiberger (http://www.sbm.temple.edu/departments/statistics/) <rmh@fisher.stat.temple.edu>
+
+   * Kurt Hornik (http://www.ci.tuwien.ac.at/~hornik)
+     <hornik@ci.tuwien.ac.at>
+
+   * Martin Maechler (http://stat.ethz.ch/~maechler/)
+     <maechler@stat.math.ethz.ch>
+
+Copyright: GPL
+
+See /usr/share/common-licenses/GPL

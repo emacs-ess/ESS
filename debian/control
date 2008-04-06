@@ -1,0 +1,18 @@
+Source: ess
+Section: math
+Priority: optional
+Maintainer: Stefan Theussl <stefan.theussl@wu-wien.ac.at>
+Uploaders: Kurt Hornik <kurt.hornik@R-project.org>, Dirk Eddelbuettel <edd@debian.org>
+Standards-Version: 3.7.3
+Build-Depends-Indep: debhelper (>= 5.0.0), texlive-base, texlive-latex-base, texlive-generic-recommended, texlive-extra-utils, texinfo, texi2html
+
+Package: ess
+Architecture: all
+Depends: emacs21 | emacsen
+Conflicts: dhelp (<= 0.3.12)
+Suggests: xlispstat, r-base | r-base-core, pspp
+Description: Emacs statistics mode, supporting R,S and others
+ ESS is an Emacs package which provides a standard interface between
+ statistical programs and statistical processes.  It is intended to
+ provide assistance for interactive statistical programming and data
+ analysis, and is based on and extends the capabilities of S-mode.

@@ -103,3 +103,6 @@ tag:
 .PHONY: buildrpm
 buildrpm: dist
 	rpmbuild -ta --sign $(ESSDIR).tgz
+
+builddeb:
+	dpkg-buildpackage -uc -us -rfakeroot -tc

@@ -1,0 +1,16 @@
+# Automatically added by dh_installdocs
+if [ "$1" = configure ] && which install-docs >/dev/null 2>&1; then
+	install-docs -i /usr/share/doc-base/ess
+fi
+# End automatically added section
+# Automatically added by dh_installemacsen
+if [ "$1" = "configure" ] && [ -x /usr/lib/emacsen-common/emacs-package-install ]
+then
+	/usr/lib/emacsen-common/emacs-package-install ess
+fi
+# End automatically added section
+# Automatically added by dh_installinfo
+if [ "$1" = "configure" ]; then
+	install-info --quiet --section "Emacs" "Emacs" /usr/share/info/ess.info
+fi
+# End automatically added section

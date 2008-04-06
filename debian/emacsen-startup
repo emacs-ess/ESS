@@ -1,0 +1,54 @@
+;; -*-emacs-lisp-*-
+;;
+;; Emacs startup file for the Debian GNU/Linux ess package
+;;
+;; Originally contributed by Nils Naumann <naumann@unileoben.ac.at>
+;; Modified by Dirk Eddelbuettel <edd@debian.org>
+;; Adapted for dh-make by Jim Van Zandt <jrv@vanzandt.mv.com>
+
+;; The ess package follows the Debian/GNU Linux 'emacsen' policy and
+;; byte-compiles its elisp files for each 'emacs flavor' (emacs19,
+;; xemacs19, emacs20, xemacs20...).  The compiled code is then
+;; installed in a subdirectory of the respective site-lisp directory.
+;; We have to add this to the load-path:
+(setq load-path (cons  (concat "/usr/share/"
+                                (symbol-name debian-emacs-flavor)
+                                "/site-lisp/ess") load-path ))
+
+;(if (assoc "\\.[rR]\\'" auto-mode-alist) nil
+;  (setq auto-mode-alist
+; 	(append
+; 	 '(("\\.sp\\'"	  . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
+; 	   ("\\.[qsS]\\'" . S-mode) ;; q,s,S [see ess-restore-asm-extns above!]
+; 	   ("\\.ssc\\'"	  . S-mode) ;; Splus 4.x script files.
+; 	   ("\\.[rR]\\'"  . R-mode)
+; 	   ("\\.[rR]nw\\'"  . Rnw-mode)
+; 	   ("\\.[rR]profile\\'" . R-mode)
+; 	   ("NAMESPACE\\'" . R-mode)
+; 	   ("\\.omg\\'"		. omegahat-mode)
+; 	   ("\\.hat\\'"		. omegahat-mode) ;; Duncan's pref'd...
+; 	   ("\\.lsp\\'"		. XLS-mode)
+; 	   ("\\.do\\'"		. STA-mode)
+; 	   ("\\.ado\\'"		. STA-mode)
+; 	   ("\\.sas\\'"		. SAS-mode)
+; 	   ("\\.SAS\\'"		. SAS-mode)
+; 	   ;;("\\.lst\\'"		. SAS-listing-mode);sasl
+; 	   ;; Too many *.log files, not only SAS :
+; 	   ;;("\\.log\\'"	. SAS-log-mode);sasl
+; 	   ("\\.[Ss]t\\'"	. S-transcript-mode)
+; 	   ("\\.[Ss]out"	. S-transcript-mode)
+; 	   ("\\.[Rr]t\\'"	. R-transcript-mode)
+; 	   ("\\.[Rr]out"	. R-transcript-mode)
+; 	   ("\\.Rd\\'"		. Rd-mode)
+; 	   ("\\.[Bb][Uu][Gg]\\'"	 . ess-bugs-mode)
+; 	   ("\\.[Bb][Oo][Gg]\\'"	 . ess-bugs-mode)
+; 	   ("\\.[Bb][Mm][Dd]\\'"	 . ess-bugs-mode)
+;	   )
+; 	 auto-mode-alist)))
+
+;(dolist (l '(R XLS S Splus R-mode S-mode SAS-mode STA-mode
+;	       Rnw-mode omegahat-mode S-transcript-mode R-transcript-mode
+;	       Rd-mode ess-bugs-mode SAS-liting-mode SAS-log-mode))
+;  (autoload l "ess-site" "" t))
+
+(require 'ess-site)
