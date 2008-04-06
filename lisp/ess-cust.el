@@ -1392,11 +1392,14 @@ If nil, input is in the `font-lock-variable-name-face'."
   :group 'ess
   :type 'boolean)
 
-(defvar ess-R-constants
+(defvar ess-RS-constants
   '("TRUE" "FALSE" "NA" "NULL" "Inf" "NaN"))
-
+(defvar ess-R-constants
+  (append ess-RS-constants
+          '("NA_integer_" "NA_real_" "NA_complex_" "NA_character_")))
 (defvar ess-S-constants
-  (append ess-R-constants '("T" "F")))
+  (append ess-RS-constants
+	  '("T" "F")))
 
 ;; first the common ones
 (defvar ess-S-modifyiers
