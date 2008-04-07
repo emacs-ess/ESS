@@ -1,3 +1,8 @@
+2008-04-07  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-emcs.el (ess-line-beginning-position): defalias renamed
+	from original 'line-beg...' in order to be good emacs citizens.
+
 2008-03-31  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r.el (R-fix-T-F): remove "_" (and extraneous "\"); thanks to Stephen

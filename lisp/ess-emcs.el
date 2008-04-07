@@ -84,9 +84,11 @@ Only a concern with earlier versions of Emacs.")
 ;; XEmacs 20.x needs this
 (if (not (fboundp 'find-buffer-visiting))
     (fset 'find-buffer-visiting 'get-file-buffer))
-;; XEmacs <= 21.4.15 needs this
-(if (not (fboundp 'line-beginning-position))
-    (defalias 'line-beginning-position 'point-at-bol))
+;; XEmacs <= 21.4.15 needs this:
+(defalias 'ess-line-beginning-position
+  (if (fboundp 'line-beginning-position)
+      'line-beginning-position
+    'point-at-bol))
 
 (if (and (not (featurep 'xemacs))
 	 (string-match "XEmacs\\|Lucid" emacs-version))
