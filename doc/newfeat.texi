@@ -18,6 +18,10 @@ mechanism (for R >= 2.5.0).
 @item @ESS{[R], [S]}: interpretation of ``_'' as assignment has
 been removed in @code{ess-continued-statement-p} for R and S.
 @item several internal code cleanups.
+@item @ESS{[R]}: An experimental version of a new command @code{Rgui}
+on MS Windows to send lines directly from emacs
+to @code{Rgui} is available in file @code{lisp/essd-rgui.el}.
+Preliminary documentation is in file @code{doc/rgui-doc.txt}.
 @end itemize
 
 Changes/New Features in 5.3.6:
