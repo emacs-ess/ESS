@@ -43,21 +43,23 @@
   (require 'ess-utils))
 
 ;;*;; Autoloads
-(autoload 'ess-parse-errors		    "ess-mode"	"(autoload)." t)
-(autoload 'ess-dump-object-into-edit-buffer "ess-mode"	"(autoload)." t)
-(autoload 'ess-beginning-of-function	    "ess-mode"	"(autoload)." t)
-(autoload 'ess-end-of-function		    "ess-mode"	"(autoload)." t)
-(autoload 'ess-display-help-on-object	    "ess-help"	"(autoload)." t)
+(autoload 'ess-parse-errors		    "ess-mode"	"(autoload).")
+(autoload 'ess-dump-object-into-edit-buffer "ess-mode"	"(autoload).")
+(autoload 'ess-beginning-of-function	    "ess-mode"	"(autoload).")
+(autoload 'ess-end-of-function		    "ess-mode"	"(autoload).")
+(autoload 'ess-display-help-on-object	    "ess-help"	"(autoload).")
 
-(autoload 'ess-extract-word-name	    "ess-utils" "(autoload)." t)
-(autoload 'ess-uniq-list		    "ess-utils" "(autoload)." t)
+(autoload 'ess-extract-word-name	    "ess-utils" "(autoload).")
+(autoload 'ess-uniq-list		    "ess-utils" "(autoload).")
 
-(autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload)." t)
+(autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload).")
 
-(autoload 'ess-eval-region-ddeclient	    "ess-dde" "(autoload)." nil)
-(autoload 'ess-eval-linewise-ddeclient	    "ess-dde" "(autoload)." nil)
-(autoload 'ess-load-file-ddeclient	    "ess-dde" "(autoload)." nil)
-(autoload 'ess-command-ddeclient	    "ess-dde" "(autoload)." nil)
+(autoload 'ess-R-complete-object-name	    "essd-r"	"(autoload).")
+
+(autoload 'ess-eval-region-ddeclient	    "ess-dde"	"(autoload).")
+(autoload 'ess-eval-linewise-ddeclient	    "ess-dde"	"(autoload).")
+(autoload 'ess-load-file-ddeclient	    "ess-dde"	"(autoload).")
+(autoload 'ess-command-ddeclient	    "ess-dde"	"(autoload).")
 
  ;;*;; Process handling
 
@@ -1771,7 +1773,7 @@ A negative prefix argument gets the objects for that position
 
 (defun ess-execute-search (invert)
   "Send the `inferior-ess-search-list-command' command to the `ess-language' process.
-[search(..) in S]"
+ [search(..) in S]"
   (interactive "P")
   (ess-execute inferior-ess-search-list-command	 invert "S search list"))
 
@@ -1939,6 +1941,15 @@ before you quit.  It is run automatically by \\[ess-quit]."
 
 ;;;*;;; The user completion command
 (defun ess-complete-object-name (&optional listcomp)
+  "Perform completion on `ess-language' object preceding point.
+Uses \\[ess-R-complete-object-name] when `ess-use-R-completion' is non-nil,
+or \\[ess-internal-complete-object-name] otherwise."
+  (interactive "P");; FIXME : the `listcomp' argument is NOT used
+  (if ess-use-R-completion
+      (ess-R-complete-object-name)
+    (ess-internal-complete-object-name listcomp)))
+
+(defun ess-internal-complete-object-name (&optional listcomp)
   "Perform completion on `ess-language' object preceding point.
 The object is compared against those objects known by
 `ess-get-object-list' and any additional characters up to ambiguity are

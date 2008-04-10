@@ -137,14 +137,25 @@ to R, put them in the variable `inferior-R-args'."
 	 ;;Micro$ ?: default-process-coding-system ;-breaks UTF locales on Unix:
     (if ess-microsoft-p
 	(setq default-process-coding-system '(undecided-dos . undecided-dos)))
-    (inferior-ess r-start-args) ;; (R)
+    (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
+    ;;-------------------------
     (ess-write-to-dribble-buffer
      (format "(R): inferior-ess-language-start=%s\n"
 	     inferior-ess-language-start))
-    ;; currently rely on baseenv() which is in R only since version 2.2:
-    (ess-eval-linewise
-     "if(!exists(\"baseenv\", mode=\"function\")) baseenv <- function() NULL"
-     nil nil nil 'wait-prompt);; solving "lines running together"
+    ;; can test only now that R is running:
+    (if (ess-current-R-at-least '2.5.0)
+	(progn
+	  (if ess-use-R-completion ;; use R's completion mechanism (pkg "rcompgen" or "utils")
+	      (progn ; nothing to happen here -- is all in ess-complete-object-name
+		(ess-write-to-dribble-buffer "resetting completion to 'ess-R-complete-object-name")
+		)))
+      ;; else R version <= 2.4.1
+
+      ;; for R <= 2.1.x : define baseenv() :
+      (ess-eval-linewise
+       "if(!exists(\"baseenv\", mode=\"function\")) baseenv <- function() NULL"
+       nil nil nil 'wait-prompt);; solving "lines running together"
+      )
     (if inferior-ess-language-start
 	(ess-eval-linewise inferior-ess-language-start
 			   nil nil nil 'wait-prompt))))

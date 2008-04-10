@@ -1,3 +1,16 @@
+2008-04-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (ess-use-R-completion): customizable boolean for this:
+
+	* ess-inf.el (ess-internal-complete-object-name): new name for
+	original (ess-complete-object-name).
+	* ess-inf.el (ess-complete-object-name): now simple wrapper to
+	either ess-R-complete-object-name or ess-internal-complete-object-name.
+
+	* essd-r.el (R): use ess-R-complete-object-name for
+	R versions >= 2.5.0 {where pkg 'rcompgen' became recommended};
+	check for baseenv() only for older versions of R.
+
 2008-04-07  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-emcs.el (ess-line-beginning-position): defalias renamed

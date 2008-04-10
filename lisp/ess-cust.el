@@ -1148,6 +1148,11 @@ of Emacs until the code has been successfully evaluated."
   :group 'ess-proc
   :type 'boolean)
 
+(defcustom ess-use-R-completion t
+  "*Non-nil means that the R-builtin completion mechanism should be used
+when available."
+  :group 'ess-proc
+  :type 'boolean)
 
 (defcustom ess-eval-ddeclient-sleep 0.06
   "*If non-nil, a number specifying *seconds* to wait after certain

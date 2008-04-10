@@ -9,10 +9,15 @@ which controls whether font-locking is enabled in ESS buffers.
 a more consistent handling of SAS options by
 @code{ess-sas-submit-command-options} which is buffer-local; portable
 snooze for MS Windows via customize-able @code{ess-sleep-for} (floats welcome);
-Xpdf now supported as a PDF viewer 
+Xpdf now supported as a PDF viewer
 @item @ESS{[Rnw]}: now also works with ``emacs -nw'' and Emacs 22.
-@item @ESS{[JAGS]}: now requires JAGS 1.0 (see the new ESS for JAGS help 
+@item @ESS{[JAGS]}: now requires JAGS 1.0 (see the new ESS for JAGS help
 section for more information): both need work; suggestions welcome
+@item @ESS{[R]}: [TAB] completion now uses the R-internal completion
+mechanism (for R >= 2.5.0).
+@item @ESS{[R], [S]}: interpretation of ``_'' as assignment has
+been removed in @code{ess-continued-statement-p} for R and S.
+@item several internal code cleanups.
 @end itemize
 
 Changes/New Features in 5.3.6:
