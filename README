@@ -75,6 +75,19 @@ Changes/New Features in 5.3.7:
    * ESS[JAGS]: now requires JAGS 1.0 (see the new ESS for JAGS help
      section for more information): both need work; suggestions welcome
 
+   * ESS[R]: [TAB] completion now uses the R-internal completion
+     mechanism (for R >= 2.5.0).
+
+   * ESS[R] ([S]): interpretation of "_" as assignment has been removed
+     in `ess-continued-statement-p' for R and S.
+
+   * several internal code cleanups.
+
+   * ESS[R]: An experimental version of a new command `Rgui' on MS
+     Windows to send lines directly from emacs to `Rgui' is available
+     in file `lisp/essd-rgui.el'.  Preliminary documentation is in file
+     `doc/rgui-doc.txt'.
+
    Changes/New Features in 5.3.6:
    * ESS: for XEmacs, using "gnuclient" (without a "-q") works for
      things like fix() after M-x gnuserv-start has been done.
