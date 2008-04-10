@@ -141,24 +141,33 @@ Xpdf now supported as a PDF viewer
 <li><acronym>ESS[Rnw]</acronym>: now also works with &ldquo;emacs -nw&rdquo; and Emacs 22. 
 <li><acronym>ESS[JAGS]</acronym>: now requires JAGS 1.0 (see the new ESS for JAGS help
 section for more information): both need work; suggestions welcome
+<li><acronym>ESS[R]</acronym>: [TAB] completion now uses the R-internal completion
+mechanism (for R &gt;= 2.5.0). 
+<li><acronym title="[S]">ESS[R]</acronym> ([S]): interpretation of &ldquo;_&rdquo; as assignment has
+been removed in <code>ess-continued-statement-p</code> for R and S. 
+<li>several internal code cleanups. 
+<li><acronym title="[S]">ESS[R]</acronym>: An experimental version of a new command <code>Rgui</code>
+on MS Windows to send lines directly from emacs
+to <code>Rgui</code> is available in file <code>lisp/essd-rgui.el</code>. 
+Preliminary documentation is in file <code>doc/rgui-doc.txt</code>. 
 </ul>
 
    <p>Changes/New Features in 5.3.6:
      <ul>
 <li><acronym>ESS</acronym>: for XEmacs, using &ldquo;gnuclient&rdquo; (without a &ldquo;-q&rdquo;) works for
  things like fix() after M-x gnuserv-start has been done. 
-<li><acronym>ESS[R]</acronym>: M-x R-newest should now work in more situations on MS
+<li><acronym title="[S]">ESS[R]</acronym>: M-x R-newest should now work in more situations on MS
  Windows, e.g., when R has been installed in a non-default "ProgramFiles"
  directory tree.  In these cases, there's no need to specify the name (and
  full path) of the R program anymore. 
-<li><acronym>ESS[R]</acronym>: For XEmacs, startup (with new tooltip code) works again. 
+<li><acronym title="[S]">ESS[R]</acronym>: For XEmacs, startup (with new tooltip code) works again. 
 </ul>
 
    <p>Changes/New Features in 5.3.5:
      <ul>
-<li><acronym>ESS[R]</acronym> a new defun is available, <kbd>M-x R-newest</kbd>, which will start
+<li><acronym title="[S]">ESS[R]</acronym> a new defun is available, <kbd>M-x R-newest</kbd>, which will start
 the newest version of R that it can find on your system. 
-<li><acronym>ESS[R]</acronym> add Sven Hartenstein's &ldquo;R function arguments tips&rdquo;
+<li><acronym title="[S]">ESS[R]</acronym> add Sven Hartenstein's &ldquo;R function arguments tips&rdquo;
  functionality, via new file <samp><span class="file">../lisp/essd-r-args.el</span></samp>. 
  Note that this includes an &ldquo;electric "("&rdquo; behavior inside <code>R-mode</code>
  which is <em>active by default</em> and can be customized via
@@ -169,9 +178,9 @@ the newest version of R that it can find on your system.
  customizable variables <code>ess-pdf-viewer-pref</code> and
  <code>ess-ps-viewer-pref</code>; currently used in <code>ess-swv-PDF</code> and
  <code>*-PS</code>. 
-<li><acronym>ESS[R]</acronym> Improved <code>ess-swv-PDF</code> to run pdf viewer only if
+<li><acronym title="[S]">ESS[R]</acronym> Improved <code>ess-swv-PDF</code> to run pdf viewer only if
  pdflatex was ok
-<li><acronym>ESS[R]</acronym> Improved <code>ess-swv-weave</code> to start R automatically if
+<li><acronym title="[S]">ESS[R]</acronym> Improved <code>ess-swv-weave</code> to start R automatically if
  none is running. 
 <li><acronym>ESS</acronym>: Do no longer ask <em>which</em> ESS process to use if there
  is only one. 
@@ -179,9 +188,9 @@ the newest version of R that it can find on your system.
 
    <p>Changes/New Features in 5.3.4:
      <ul>
-<li><acronym>ESS[R]</acronym> now better work with options(error=recover); and the
+<li><acronym title="[S]">ESS[R]</acronym> now better work with options(error=recover); and the
 new default of CHM help files on windows. 
-<li><acronym>ESS[R]</acronym> some more cleanup in the &ldquo;sweave&rdquo; functions
+<li><acronym title="[S]">ESS[R]</acronym> some more cleanup in the &ldquo;sweave&rdquo; functions
 <li>miscellaneous fixes
 </ul>
 
@@ -202,7 +211,7 @@ help *frames* are reused.
       <kbd>C-c C-c</kbd> is now bound to the function <code>ess-bugs-next-action</code>
       (<kbd>F12</kbd> has been retired).  And finally, note that <samp><span class="file">essl-bug.el</span></samp>
       is deprecated and the replacement is <samp><span class="file">essl-bugs.el</span></samp>. 
-<li><acronym>ESS[R]</acronym> Improved some of the &ldquo;Sweave-make&rdquo;
+<li><acronym title="[S]">ESS[R]</acronym> Improved some of the &ldquo;Sweave-make&rdquo;
  functions (yet scarcely documented) in <samp><span class="file">ess-swv.el</span></samp>. 
 <li><acronym>ESS[S]</acronym> No longer mess with .Last.value (nor in other &ldquo;languages&rdquo;). 
 </ul>
@@ -218,10 +227,10 @@ help *frames* are reused.
             <samp><span class="file">PREFIX/lib/xemacs/site-packages</span></samp> on unix or
             <samp><span class="file">PREFIX\XEmacs\site-packages</span></samp> on windows
           </ol>
-<li><acronym>ESS[R]</acronym>: fixed bugs so that Rterm.exe can be found by XEmacs
+<li><acronym title="[S]">ESS[R]</acronym>: fixed bugs so that Rterm.exe can be found by XEmacs
 <li><acronym>ESS[S]</acronym>: <kbd>ess-toggle-S-assign-key</kbd> is slightly changed; in
  particular, the default <code>ess-assign-key</code> is now <kbd>C-x =</kbd>. 
-<li><acronym>ESS[R]</acronym>: <kbd>M-x R-site-search</kbd> is a new (slightly experimental)
+<li><acronym title="[S]">ESS[R]</acronym>: <kbd>M-x R-site-search</kbd> is a new (slightly experimental)
  utility similar to R's <code>RSiteSearch(..)</code> but with the advantage of
  using Emacs' preferred browser, see <code>browse-url-browser-function</code>
 </ul>
@@ -263,7 +272,7 @@ empty buffer when the requested destination is a file that does not exist
 has been fixed, now the request results in a no-op. 
 Further, sas-mode now also works in simple terminals. 
 <li>Rterm/Cygwin combination works under Microsoft Windows. 
-<li><acronym>ESS[R]</acronym>: internal calls use baseenv() instead of NULL and
+<li><acronym title="[S]">ESS[R]</acronym>: internal calls use baseenv() instead of NULL and
 define 'baseenv' where needed. 
 <li>New experimental support for installing ESS.  See the file
 <samp><span class="file">lisp/ess-install.el</span></samp>. 
@@ -285,7 +294,7 @@ Splus you would like to run.
 
    <p>Changes/New Features in 5.2.10:
      <ul>
-<li><acronym>ESS[R]</acronym>: ess-r-versions can no longer be customized (since the
+<li><acronym title="[S]">ESS[R]</acronym>: ess-r-versions can no longer be customized (since the
 customization was not taking effect unless customizations were loaded
 before ESS).  Its value has been changed so that it will also find R
 executables beginning &ldquo;R-devel&rdquo; and &ldquo;R-patched&rdquo;.  If you wish to
@@ -303,20 +312,20 @@ XEmacs for R and S-plus.
 
    <p>Changes/New Features in 5.2.9:
      <ul>
-<li><acronym>ESS[R]</acronym> for Windows:  the \ directory character bug
+<li><acronym title="[S]">ESS[R]</acronym> for Windows:  the \ directory character bug
 with respect to ess-load-file has been eradicated. 
 <li>i<acronym>ESS[SAS]</acronym><!-- /@w -->: <kbd>C-c C-r</kbd> and <kbd>C-c C-b</kbd> once again
 work as intended and documented. 
 <li><acronym>ESS[S]</acronym>: M-x ess-fix-EQ-assign is a bit more agressive. 
 <li><acronym>ESS[S]</acronym>: Imenu now also shows setAs(), etc. 
-<li><acronym>ESS[R]</acronym>: R function pattern enhanced with underlying code such that
+<li><acronym title="[S]">ESS[R]</acronym>: R function pattern enhanced with underlying code such that
  <kbd>M-C-a</kbd> (<code>ess-beginning-of-function</code>) etc now work for many more
  cases, including S4 method definitions. 
-<li>i<acronym>ESS[R]</acronym><!-- /@w -->: myOwnhelp(1) no longer wrongly triggers help(1). 
-<li><acronym>ESS[R]</acronym>: Improved detection of bogus help buffers: valid help
+<li>i<acronym&nbsp;title="[S]">ESS[R]</acronym><!-- /@w -->: myOwnhelp(1) no longer wrongly triggers help(1). 
+<li><acronym title="[S]">ESS[R]</acronym>: Improved detection of bogus help buffers: valid help
  buffers containing with the string &ldquo;no documentation&rdquo;(e.g. contour)
  were being treated as bogus. 
-<li><acronym>ESS[R]</acronym>: In R help buffers, if <code>options("help.try.all.packages" =
+<li><acronym title="[S]">ESS[R]</acronym>: In R help buffers, if <code>options("help.try.all.packages" =
  TRUE)</code> then <code>?rlm</code> will list which packages rlm is defined in.  This help
  buffer is not bogus, but instead is now relabelled &ldquo;*help[R](rlm in
  packages)*&rdquo;. 
@@ -339,14 +348,14 @@ the first ess-sas-log-max bytes are refreshed; this is helpful when your .sas pr
 generates lots of error messages and gets too big for emacs to display
 <li><acronym>ESS[R/S]</acronym>: <kbd>M-;</kbd> in R/S editing modes will now indent with
 either one or two hashes depending on context. 
-<li><acronym>ESS[R]</acronym>: David Whiting's Sweave extensions (to 'noweb')
+<li><acronym title="[S]">ESS[R]</acronym>: David Whiting's Sweave extensions (to 'noweb')
 are now available (from ess-swv.el loaded by default). 
 </ul>
 
    <p>Changes/New Features in 5.2.6:
      <ul>
 <li>Removed non-ASCII characters in a few files. 
-<li><acronym>ESS[R]</acronym>: now works better when UTF-8 locale is active; in
+<li><acronym title="[S]">ESS[R]</acronym>: now works better when UTF-8 locale is active; in
  particular, you get correct directional quotes in R's startup message
  for R-devel (unstable development version of R 2.1.0) when using
  environment variables LANGUAGE=en@quot LC_ALL=en_US.UTF-8
@@ -364,7 +373,7 @@ the bell is rung.
 
    <p>Changes/New Features in 5.2.5:
      <ul>
-<li><acronym>ESS[R]</acronym>: <kbd>C-c C-q</kbd> or `<samp><span class="samp">Quit S</span></samp>' from the menu now should work
+<li><acronym title="[S]">ESS[R]</acronym>: <kbd>C-c C-q</kbd> or `<samp><span class="samp">Quit S</span></samp>' from the menu now should work
 (again and less klunkily) and do not append `<samp><span class="samp">-exited</span></samp>' to the
 buffer name.  Further, the behavior of <code>(ess-cleanup)</code>, called from
 ess-quit, now depends on the new customizable variable
@@ -399,7 +408,7 @@ Further, it was more or less broken for all versions of S-plus 6.x,
 and has been fixed to work everywhere but with the Windows' GUI of
 S-plus.  The list of objects now shows unique names also when an
 object appears more than once in the search path. 
-<li><acronym>ESS[R]</acronym>: Completion of object names now also includes those
+<li><acronym title="[S]">ESS[R]</acronym>: Completion of object names now also includes those
 starting with &ldquo;.&rdquo;. 
 </ul>
 
@@ -418,7 +427,7 @@ way to pass command line arguments to starting S and R processes.
 <li>bug-fixes for 5.2.1 (require 'executable), html docs, etc. 
 <li>ess-lisp-directory/../doc/info added to Info-directory-list
 if ess-info not found by info
-<li><acronym>ESS[R]</acronym>: If you have other versions of R on your
+<li><acronym title="[S]">ESS[R]</acronym>: If you have other versions of R on your
 exec-path, such as "R-1.8.1" with Unix or "rw1081" with Windows,
 ESS will find them and create appropriate functions, such as
 <kbd>M-x R-1.8.1</kbd> or <kbd>M-x rw1081</kbd>, for calling them. 
@@ -427,7 +436,7 @@ By default only Unix programs beginning "R-1" and
 version of R in your exec-path will be found,
 but see ess-r-versions and ess-rterm-versions for ways to find other
 versions of R. 
-<li><acronym>ESS[R]</acronym>: Other versions of R, such as "R-1.8.1" on Unix and "rw1081" on
+<li><acronym title="[S]">ESS[R]</acronym>: Other versions of R, such as "R-1.8.1" on Unix and "rw1081" on
 Windows, are added to the
 "ESS / Start Process / Other" menu. 
 <li><acronym>ESS[S]</acronym>: If you have other versions of S-Plus on your Windows computer,
@@ -439,7 +448,7 @@ ess-SHOME-versions for ways to find other versions of S-Plus.
 <li><acronym>ESS[S]</acronym>: Other versions of Sqpe on Windows, such as "splus61",
 are added to the
 "ESS / Start Process / Other" menu. 
-<li><acronym>ESS[R]</acronym>: (bug fix) ess-quit (bound to <kbd>C-c C-q</kbd>) should now quit the
+<li><acronym title="[S]">ESS[R]</acronym>: (bug fix) ess-quit (bound to <kbd>C-c C-q</kbd>) should now quit the
 inferior R process, when issued from either the inferior buffer, or from
 a .R buffer. 
 </ul>
@@ -487,7 +496,7 @@ customized successfully (for S language dialects);
 Support for Imenu has been improved; set ess-imenu-use-S to non-nil to
 get an "Imenu-S" item on your menubar;
 ess-help: Now using nice underlines (instead of `nuke-* ^H_')
-<li><acronym>ESS[R]</acronym>:  After (require 'essa-r), <kbd>M-x ess-r-var</kbd> allows to load
+<li><acronym title="[S]">ESS[R]</acronym>:  After (require 'essa-r), <kbd>M-x ess-r-var</kbd> allows to load
 numbers from any Emacs buffer into an existing *R* process;
 <kbd>M-x ess-rdired</kbd> gives a &ldquo;directory editor&rdquo; of R objects;
 fixed ess-retr-lastvalue-command, i.e. .Last.value bug
