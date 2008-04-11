@@ -110,8 +110,8 @@
 	))
 
 	(if (equal ".jmd" suffix) (progn
-	    (insert "model in \"" ess-bugs-file-dir ess-bugs-file-root ".bug\"\n")
-	    (insert "data in \"" ess-bugs-file-dir ess-bugs-file-root ".txt\"\n")
+	    (insert "model in \"" ess-bugs-file-root ".bug\"\n")
+	    (insert "data in \"" ess-bugs-file-root ".txt\"\n")
 	    (insert (ess-replace-in-string ess-jags-global-chains "##" "in"))
 	    (insert "initialize\n")
 	    (insert "update " ess-bugs-default-burn-in "\n")
@@ -122,7 +122,7 @@
 		    "compile, nchains([0-9]+)" "#") "##" "to"))
 	    (insert "coda " 
 		(if ess-microsoft-p (if (w32-shell-dos-semantics) "*" "\\*") "\\*") 
-		", stem(\"" ess-bugs-file-dir ess-bugs-file-root "\")\n")
+		", stem(\"" ess-bugs-file-root "\")\n")
 	    (insert "exit\n")
 	    (insert "Local Variables" ":\n")
 	    ;(insert "ess-jags-chains:" (format "%d" ess-jags-chains) "\n")
@@ -173,9 +173,13 @@
 			    "> " ess-bugs-file-root ".out 2>&1 ") 
 
 		;.txt not recognized by BOA and impractical to over-ride
-		"&& ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root "index.ind "
+		"&& (if [ -f " ess-bugs-file-root "index.ind ]; then "
+		"rm -f " ess-bugs-file-root "index.ind; fi; "
+		"ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root "index.ind) "
 		"&& (for i in 1 2 3 4 5 6 7 8 9; do; "
 		"if [ -f " ess-bugs-file-root "chain$i.txt ]; then "
+		"if [ -f " ess-bugs-file-root "chain$i.out ]; then "
+		"rm -f " ess-bugs-file-root "chain$i.out; fi; "
 		"ln -s " ess-bugs-file-root "chain$i.txt " ess-bugs-file-root "chain$i.out; "
 		"fi; done)"
 	    
@@ -204,7 +208,7 @@
 	    (while (< 0 ess-jags-chains)
 		(setq ess-jags-global-chains 
 		    (concat ess-jags-global-chains
-			"parameters ## \"" ess-bugs-file-dir ess-bugs-file-root 
+			"parameters ## \"" ess-bugs-file-root 
 			".##" (format "%d" ess-jags-chains) "\", chain("
 			(format "%d" ess-jags-chains) ")\n"))
 		(setq ess-jags-chains (- ess-jags-chains 1)))
