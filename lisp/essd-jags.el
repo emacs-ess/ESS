@@ -50,10 +50,6 @@
 (defvar ess-jags-chains 1)
 (make-local-variable 'ess-jags-chains)
 
-(defvar ess-jags-global-monitor nil)
-
-(defvar ess-jags-global-chains nil)
-
 (defvar ess-jags-font-lock-keywords
     (list
 	;; .bug files
@@ -91,7 +87,7 @@
     "ESS[JAGS]: Font lock keywords."
 )
 
-(defun ess-jags-switch-to-suffix (suffix)
+(defun ess-jags-switch-to-suffix (suffix &optional jags-chains jags-monitor jags-thin)
    "ESS[JAGS]: Switch to file with suffix."
    (find-file (concat ess-bugs-file-dir ess-bugs-file-root suffix))
 
@@ -109,23 +105,51 @@
 	    (insert "#End:\n")
 	))
 
-	(if (equal ".jmd" suffix) (progn
+	(if (equal ".jmd" suffix) (let
+	    ((ess-jags-temp-chains "") (ess-jags-temp-monitor ""))
+
+	    (if jags-chains (setq ess-jags-chains jags-chains))
+	    (if jags-monitor (setq ess-jags-monitor jags-monitor))
+	    (if jags-thin (setq ess-jags-thin jags-thin))
+
+	    (setq ess-jags-temp-chains 
+		(concat "compile, nchains(" (format "%d" ess-jags-chains) ")\n"))
+
+	    (setq jags-chains ess-jags-chains)
+
+	    (while (< 0 jags-chains)
+		(setq ess-jags-temp-chains 
+		    (concat ess-jags-temp-chains
+			"parameters ## \"" ess-bugs-file-root 
+			".##" (format "%d" jags-chains) "\", chain("
+			(format "%d" jags-chains) ")\n"))
+		(setq jags-chains (- jags-chains 1)))
+
+	    (setq ess-jags-temp-monitor nil)
+
+		(while (and (listp ess-jags-monitor) (consp ess-jags-monitor))
+		    (setq ess-jags-temp-monitor 
+			(concat ess-jags-temp-monitor 
+			    "monitor " (car ess-jags-monitor) 
+			    ", thin(" (format "%d" ess-jags-thin) ")\n"))
+		    (setq ess-jags-monitor (cdr ess-jags-monitor)))
+
 	    (insert "model in \"" ess-bugs-file-root ".bug\"\n")
 	    (insert "data in \"" ess-bugs-file-root ".txt\"\n")
-	    (insert (ess-replace-in-string ess-jags-global-chains "##" "in"))
+	    (insert (ess-replace-in-string ess-jags-temp-chains "##" "in"))
 	    (insert "initialize\n")
 	    (insert "update " ess-bugs-default-burn-in "\n")
-	    (insert ess-jags-global-monitor)
+	    (insert ess-jags-temp-monitor)
 	    (insert "update " ess-bugs-default-update "\n")
 	    (insert (ess-replace-in-string 
-		(ess-replace-in-string ess-jags-global-chains 
+		(ess-replace-in-string ess-jags-temp-chains 
 		    "compile, nchains([0-9]+)" "#") "##" "to"))
 	    (insert "coda " 
 		(if ess-microsoft-p (if (w32-shell-dos-semantics) "*" "\\*") "\\*") 
 		", stem(\"" ess-bugs-file-root "\")\n")
 	    (insert "exit\n")
 	    (insert "Local Variables" ":\n")
-	    ;(insert "ess-jags-chains:" (format "%d" ess-jags-chains) "\n")
+	    (insert "ess-jags-chains:" (format "%d" ess-jags-chains) "\n")
 	    (insert "ess-jags-command:\"jags\"\n")
 	    (insert "End:\n")
 	))
@@ -137,17 +161,18 @@
    (interactive)
    (ess-bugs-file)
 
-   (if (equal ".bug" ess-bugs-file-suffix) (ess-jags-na-bug))
+   (if (equal ".bug" ess-bugs-file-suffix) (ess-jags-na-bug)
    ;;else
    (if (equal ".jmd" ess-bugs-file-suffix) (progn
 	(ess-save-and-set-local-variables)
-	(ess-jags-na-jmd ess-jags-command)))
+	(ess-jags-na-jmd ess-jags-command ess-jags-chains))))
 )
 
-(defun ess-jags-na-jmd (jags-command)
+(defun ess-jags-na-jmd (jags-command jags-chains)
     "ESS[JAGS]: Perform the Next-Action for .jmd."
     ;(ess-save-and-set-local-variables)
 (if (equal 0 (buffer-size)) (ess-jags-switch-to-suffix ".jmd") 
+;else
     (shell)
 
     (if (w32-shell-dos-semantics)
@@ -162,6 +187,13 @@
 	(insert "cd \"" ess-bugs-file-dir "\"")
 	(comint-send-input)
 
+    (let ((ess-jags-temp-chains ""))
+
+	(while (< 0 jags-chains)
+	    (setq ess-jags-temp-chains 
+		(concat (format "%d " jags-chains) ess-jags-temp-chains)) 
+	    (setq jags-chains (- jags-chains 1)))
+
 	(insert ess-bugs-batch-pre-command " " jags-command " "
 		ess-bugs-file-root ".jmd "  
 
@@ -173,27 +205,16 @@
 			    "> " ess-bugs-file-root ".out 2>&1 ") 
 
 		;.txt not recognized by BOA and impractical to over-ride
-		"&& (if [ -f " ess-bugs-file-root "index.ind ]; then "
-		"rm -f " ess-bugs-file-root "index.ind; fi; "
-		"ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root "index.ind) "
-		"&& (for i in 1 2 3 4 5 6 7 8 9; do; "
-		"if [ -f " ess-bugs-file-root "chain$i.txt ]; then "
-		"if [ -f " ess-bugs-file-root "chain$i.out ]; then "
-		"rm -f " ess-bugs-file-root "chain$i.out; fi; "
-		"ln -s " ess-bugs-file-root "chain$i.txt " ess-bugs-file-root "chain$i.out; "
-		"fi; done)"
-	    
-		;(while (< 0 ess-jags-chains)
-		;    (concat "&& ln -s " ess-bugs-file-root "chain" 
-		;	(format "%d" ess-jags-chains) ".txt " 
-		;	ess-bugs-file-root "chain"
-		;	(format "%d" ess-jags-chains) ".out ")
-		;    (setq ess-jags-chains (- ess-jags-chains 1)))
+		"&& (rm -f " ess-bugs-file-root ".ind; "
+		"ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root ".ind; "
+		"for i in " ess-jags-temp-chains "; do; "
+		"rm -f " ess-bugs-file-root "$i.out; "
+		"ln -s " ess-bugs-file-root "chain$i.txt " ess-bugs-file-root "$i.out; done) "
 
 		ess-bugs-batch-post-command)
 
 	(comint-send-input)
-))
+)))
 
 (defun ess-jags-na-bug ()
     "ESS[JAGS]: Perform Next-Action for .bug"
@@ -201,28 +222,8 @@
 	(if (equal 0 (buffer-size)) (ess-jags-switch-to-suffix ".bug")
 	;else
 	    (ess-save-and-set-local-variables)
-   
-	    (setq ess-jags-global-chains 
-		(concat "compile, nchains(" (format "%d" ess-jags-chains) ")\n"))
-
-	    (while (< 0 ess-jags-chains)
-		(setq ess-jags-global-chains 
-		    (concat ess-jags-global-chains
-			"parameters ## \"" ess-bugs-file-root 
-			".##" (format "%d" ess-jags-chains) "\", chain("
-			(format "%d" ess-jags-chains) ")\n"))
-		(setq ess-jags-chains (- ess-jags-chains 1)))
- 
-	    (setq ess-jags-global-monitor nil)
-
-		(while (and (listp ess-jags-monitor) (consp ess-jags-monitor))
-		    (setq ess-jags-global-monitor 
-			(concat ess-jags-global-monitor 
-			    "monitor " (car ess-jags-monitor) 
-			    ", thin(" (format "%d" ess-jags-thin) ")\n"))
-		    (setq ess-jags-monitor (cdr ess-jags-monitor)))
-
-	    (ess-jags-switch-to-suffix ".jmd"))
+	    (ess-jags-switch-to-suffix ".jmd" 
+		ess-jags-chains ess-jags-monitor ess-jags-thin))
 )
 
 (defun ess-jags-mode ()

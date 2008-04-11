@@ -1,7 +1,10 @@
 Changes/New Features in 5.3.8:
 @itemize @bullet
 @item @ESS{[JAGS]}: more separation from @ESS{[BUGS]} (as much as is currently planned);
-now @kbd{C-c C-c} on an empty @file{.jmd} creates a template as it should
+now @kbd{C-c C-c} on an empty @file{.jmd} creates a template as it should;
+symbolic links are created for CODA output so BOA is happy:
+from @file{index.txt} to @file{.ind}
+and @file{chain#.txt} to @file{#.out} 
 @end itemize
 
 Changes/New Features in 5.3.7:
