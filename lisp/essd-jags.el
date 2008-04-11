@@ -54,7 +54,7 @@
 
 (defvar ess-jags-global-chains nil)
 
-(defvar ess-bugs-font-lock-keywords
+(defvar ess-jags-font-lock-keywords
     (list
 	;; .bug files
 	(cons "#.*\n"			font-lock-comment-face)
@@ -82,16 +82,16 @@
 		"pwd\\|run\\|samplers\\|to\\|update\\)[ \t\n]")
 					font-lock-keyword-face)
 
-	(cons (concat "\\<\\(compile\\|monitor\\)[, \t\n]")
+	(cons "\\<\\(compile\\|monitor\\)[, \t\n]"
 					font-lock-keyword-face)
 
-	(cons (concat "[, \t\n]\\(by\\|chain\\|nchains\\|stem\\|thin\\|type\\)[ \t\n]*(")
+	(cons "[, \t\n]\\(by\\|chain\\|nchains\\|stem\\|thin\\|type\\)[ \t\n]*("
 					font-lock-function-name-face)
     )
     "ESS[JAGS]: Font lock keywords."
 )
 
-(defun ess-bugs-switch-to-suffix (suffix)
+(defun ess-jags-switch-to-suffix (suffix)
    "ESS[JAGS]: Switch to file with suffix."
    (find-file (concat ess-bugs-file-dir ess-bugs-file-root suffix))
 
@@ -102,7 +102,7 @@
             (insert "    for (i in 1:N) {\n    \n")
             (insert "    }\n")
             (insert "}\n")
-	    (insert (concat "#Local Variables" ":\n"))
+	    (insert "#Local Variables" ":\n")
 	    (insert "#ess-jags-chains:1\n")
 	    (insert "#ess-jags-monitor:(\"\")\n")
 	    (insert "#ess-jags-thin:1\n")
@@ -110,21 +110,22 @@
 	))
 
 	(if (equal ".jmd" suffix) (progn
-	    (insert (concat "model in \"" ess-bugs-file-dir ess-bugs-file-root ".bug\"\n"))
-	    (insert (concat "data in \"" ess-bugs-file-dir ess-bugs-file-root ".txt\"\n"))
+	    (insert "model in \"" ess-bugs-file-dir ess-bugs-file-root ".bug\"\n")
+	    (insert "data in \"" ess-bugs-file-dir ess-bugs-file-root ".txt\"\n")
 	    (insert (ess-replace-in-string ess-jags-global-chains "##" "in"))
 	    (insert "initialize\n")
-	    (insert (concat "update " ess-bugs-default-burn-in "\n"))
+	    (insert "update " ess-bugs-default-burn-in "\n")
 	    (insert ess-jags-global-monitor)
-	    (insert (concat "update " ess-bugs-default-update "\n"))
+	    (insert "update " ess-bugs-default-update "\n")
 	    (insert (ess-replace-in-string 
 		(ess-replace-in-string ess-jags-global-chains 
 		    "compile, nchains([0-9]+)" "#") "##" "to"))
-	    (insert (concat "coda " 
+	    (insert "coda " 
 		(if ess-microsoft-p (if (w32-shell-dos-semantics) "*" "\\*") "\\*") 
-		", stem(\"" ess-bugs-file-dir ess-bugs-file-root "\")\n"))
+		", stem(\"" ess-bugs-file-dir ess-bugs-file-root "\")\n")
 	    (insert "exit\n")
-	    (insert (concat "Local Variables" ":\n"))
+	    (insert "Local Variables" ":\n")
+	    ;(insert "ess-jags-chains:" (format "%d" ess-jags-chains) "\n")
 	    (insert "ess-jags-command:\"jags\"\n")
 	    (insert "End:\n")
 	))
@@ -136,16 +137,17 @@
    (interactive)
    (ess-bugs-file)
 
-   (if (equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
+   (if (equal ".bug" ess-bugs-file-suffix) (ess-jags-na-bug))
    ;;else
    (if (equal ".jmd" ess-bugs-file-suffix) (progn
 	(ess-save-and-set-local-variables)
-	(ess-bugs-na-jmd ess-jags-command)))
+	(ess-jags-na-jmd ess-jags-command)))
 )
 
-(defun ess-bugs-na-jmd (jags-command)
+(defun ess-jags-na-jmd (jags-command)
     "ESS[JAGS]: Perform the Next-Action for .jmd."
     ;(ess-save-and-set-local-variables)
+(if (equal 0 (buffer-size)) (ess-jags-switch-to-suffix ".jmd") 
     (shell)
 
     (if (w32-shell-dos-semantics)
@@ -157,25 +159,42 @@
 	)
     )
 
-	(insert (concat "cd \"" ess-bugs-file-dir "\""))
+	(insert "cd \"" ess-bugs-file-dir "\"")
 	(comint-send-input)
 
-	(insert (concat ess-bugs-batch-pre-command " " jags-command " "
-		ess-bugs-file-dir ess-bugs-file-root ".jmd") 
+	(insert ess-bugs-batch-pre-command " " jags-command " "
+		ess-bugs-file-root ".jmd "  
+
 		(if (or (equal shell-file-name "/bin/csh") 
 			(equal shell-file-name "/bin/tcsh")
 			(equal shell-file-name "/bin/zsh")) 
-			    (concat " >& " ess-bugs-file-dir ess-bugs-file-root ".out ")
-			    (concat " > "  ess-bugs-file-dir ess-bugs-file-root ".out 2>&1 ")) 
-		(concat ess-bugs-batch-post-command))
+			    (concat ">& " ess-bugs-file-root ".out ")
+		;else
+			    "> " ess-bugs-file-root ".out 2>&1 ") 
+
+		;.txt not recognized by BOA and impractical to over-ride
+		"&& ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root "index.ind "
+		"&& (for i in 1 2 3 4 5 6 7 8 9; do; "
+		"if [ -f " ess-bugs-file-root "chain$i.txt ]; then "
+		"ln -s " ess-bugs-file-root "chain$i.txt " ess-bugs-file-root "chain$i.out; "
+		"fi; done)"
+	    
+		;(while (< 0 ess-jags-chains)
+		;    (concat "&& ln -s " ess-bugs-file-root "chain" 
+		;	(format "%d" ess-jags-chains) ".txt " 
+		;	ess-bugs-file-root "chain"
+		;	(format "%d" ess-jags-chains) ".out ")
+		;    (setq ess-jags-chains (- ess-jags-chains 1)))
+
+		ess-bugs-batch-post-command)
 
 	(comint-send-input)
-)
+))
 
-(defun ess-bugs-na-bug ()
+(defun ess-jags-na-bug ()
     "ESS[JAGS]: Perform Next-Action for .bug"
 
-	(if (equal 0 (buffer-size)) (ess-bugs-switch-to-suffix ".bug")
+	(if (equal 0 (buffer-size)) (ess-jags-switch-to-suffix ".bug")
 	;else
 	    (ess-save-and-set-local-variables)
    
@@ -199,7 +218,7 @@
 			    ", thin(" (format "%d" ess-jags-thin) ")\n"))
 		    (setq ess-jags-monitor (cdr ess-jags-monitor)))
 
-	    (ess-bugs-switch-to-suffix ".jmd"))
+	    (ess-jags-switch-to-suffix ".jmd"))
 )
 
 (defun ess-jags-mode ()
@@ -211,7 +230,7 @@
    (use-local-map ess-bugs-mode-map)
    (setq font-lock-auto-fontify t)
    (make-local-variable 'font-lock-defaults)
-   (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
+   (setq font-lock-defaults '(ess-jags-font-lock-keywords nil t))
    (run-hooks 'ess-bugs-mode-hook)
 
    (if (not (w32-shell-dos-semantics))
