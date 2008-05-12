@@ -1665,25 +1665,27 @@ to continue it."
                            (string-match inferior-R-2-input-help string)))
           (page-string	 (string-match inferior-R-page	       string)))
       (if (or help-string page-string)
-          (let* ((string2 (match-string 2 string))
-                 (string2-rt (concat string2 ".rt")))
-            ;; (ess-write-to-dribble-buffer (format " new string='%s'\n" string2))
+          (let* ((string2 (match-string 2 string)))
+            ;;(ess-write-to-dribble-buffer (format " new string='%s'\n" string2))
             (beginning-of-line)
             (if (looking-at inferior-ess-primary-prompt)
                 (progn
                   (end-of-line)
                   (insert-before-markers string)) ;; emacs 21.0.105 and older
               (delete-backward-char 1)) ;; emacs 21.0.106 and newer
-            (if page-string
-                (progn
-                  (ess-command (concat string2 "\n")
-                               (get-buffer-create (concat string2 ".rt")))
-                  (ess-eval-linewise "\n")
-                  (switch-to-buffer-other-window string2-rt)
-                  (R-transcript-mode))
-              (ess-display-help-on-object
-               (if (string= string2 "") "help" string2))
-              (ess-eval-linewise "\n")))
+            (if help-string ; more frequently
+		(progn
+		  (ess-display-help-on-object
+		   (if (string= string2 "") "help" string2))
+		  (ess-eval-linewise "\n"))
+
+	      ;; else  page-string
+	      (let ((str2-buf (concat string2 ".rt")))
+		(ess-command (concat string2 "\n")
+			     (get-buffer-create str2-buf))
+		(ess-eval-linewise "\n")
+		(switch-to-buffer-other-window str2-buf)
+		(R-transcript-mode))))
         ;; else:	normal command
         (inferior-ess-input-sender proc string)))))
 
