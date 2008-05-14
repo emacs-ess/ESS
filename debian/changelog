@@ -1,10 +1,11 @@
-ess (5.3.6-1) unstable; urgency=low
+ess (5.3.7-1) unstable; urgency=low
 
   * New upstream release
-  * ess Debian package now hosted at https://svn.R-project.org/ESS
-  * Changed build-depends to texlive packages
+  * ess Debian package now hosted at https://svn.R-project.org/ESS .
+  * Change build-depends to texlive packages, Closes: #420945.
+  * Add details to copyright.
 
- -- Stefan Theussl <stefan.theussl@wu-wien.ac.at>  Wed, 4 Apr 2008 01:25:19 +0100
+ -- Stefan Theussl <stefan.theussl@wu-wien.ac.at>  Wed, 10 Apr 2008 01:25:19 +0100
 
 ess (5.3.0-1) unstable; urgency=low
 

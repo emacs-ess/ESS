@@ -30,7 +30,7 @@ clean:
 
 	rm -f build-stamp install-stamp doc/*.info*
 
-	-$(MAKE) clean
+	[ ! -f Makefile ] || $(MAKE) clean
 
 	rm -f doc/*.dvi README ANNOUNCE doc/html/readme.html doc/html/ess.html
 	rm -f doc/refcard/refcard.log doc/refcard/refcard.aux
