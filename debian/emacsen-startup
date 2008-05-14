@@ -6,6 +6,21 @@
 ;; Modified by Dirk Eddelbuettel <edd@debian.org>
 ;; Adapted for dh-make by Jim Van Zandt <jrv@vanzandt.mv.com>
 
+;;  The following code fixes bug #440194 - thanks to Peter S Galbraith <psg@debian.org> 
+;;  skip loading when
+;;  not ess is fully installed, as this file still exists when the
+;;  package is removed but not purged.
+
+(cond
+ ((not (file-exists-p "/usr/share/emacs/site-lisp/ess"))
+  (message
+   "Package ess removed but not purged.  Skipping setup."))
+ ((not (file-exists-p (concat "/usr/share/"
+                              (symbol-name debian-emacs-flavor)
+                              "/site-lisp/ess/ess-site.elc")))
+  (message "Package ess not fully installed.  Skipping setup."))
+ (t 
+
 ;; The ess package follows the Debian/GNU Linux 'emacsen' policy and
 ;; byte-compiles its elisp files for each 'emacs flavor' (emacs19,
 ;; xemacs19, emacs20, xemacs20...).  The compiled code is then
