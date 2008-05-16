@@ -1,12 +1,11 @@
 \documentclass[a4paper]{article}
 \usepackage{multicol}
 \usepackage{parskip}
-\usepackage{a4}%-Northamerica: {fullpage}
-\usepackage{svn}%!/hg/s/linux/9/app/teTeX/11.05/texmf-dist/tex/latex/svn/svn.sty
-%           --- ubuntu lacks this but has latex-svinfo - usepackage{svninfo}
+\usepackage{fullpage}% +- ok for paper 'A4' as well
+\usepackage{svn}% << ubuntu now has this in pkg 'texlive-latex-extra'
+
 \addtolength{\textheight}{20mm}
 \addtolength{\topmargin}{-16mm}
-
 
 \newenvironment{tabI}{\begin{tabular}{p{16mm}l}}{\end{tabular}}
 \newenvironment{tabTit}[1]{\underline{\textbf{#1}}\\ \begin{tabI}}{\end{tabI}}
