@@ -10,6 +10,16 @@
 # This is the debhelper compatability version to use.
 #export DH_COMPAT=1
 
+## edd 16 May 2008  trivial 'orig.tar.gz' creator
+##                  this still needs a trivial extraction of the version number 
+##                  from somewhere, debian/changelog can be the last resort
+tarball:
+	(cd .. && \
+		tar cvzf ess.orig.tar.gz ess \
+			--exclude=.svn \
+			--exclude=.git \
+			--exclude=debian/)
+
 build: build-stamp
 build-stamp:
 	dh_testdir

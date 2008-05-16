@@ -1,11 +1,33 @@
 ess (5.3.7-1) unstable; urgency=low
 
+  [ UNRELEASED ]
+  
   * New upstream release
-  * ess Debian package now hosted at https://svn.R-project.org/ESS .
-  * Change build-depends to texlive packages, Closes: #420945.
+
+  * New maintainers: the package is now maintained by group of Ess and 
+    Debian developers that can be reached at ess-debian@stat.math.ethz.ch
+  * The repository is available at https://svn.R-project.org/ESS 
+  
+  [ Stefan Theussl ]
+  * debian/control: Change build-depends to texlive packages 	(Closes: #420945)
+  * debian/emacsen-startup.el: Applied patch kindly supplied by Peter Galbraith 
+    to not load Ess when it has been purged 			(Closes: #440194)
   * Add details to copyright.
 
- -- Stefan Theussl <stefan.theussl@wu-wien.ac.at>  Wed, 10 Apr 2008 01:25:19 +0100
+  [ Martin Maechler ]
+  * doc/refcard/refcard.tex:  Switched to fullpage.sty		(Closes: #443462)
+  
+  [ Dirk Eddelbuettel ]
+  * New upstream version addresses the following bugs: 
+    "options(error=recover) in R confuses ESS			(Closes: #400382)
+    "upgrade to fix complaints about .Last.value"		(Closes: #442159)
+    "warning: make-variable-buffer-local should be called ..."	(Closes: #456001)
+  * Bug report #371058 is being looked at upstream and the missing functionality 
+    may be added in the future.  All other open bugs are now closed.
+  * debian/copyright: Updated to new parseable form for copyright and license
+  * debian/doc-base: Updated Section:
+  
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 16 May 2008 12:26:50 -0500
 
 ess (5.3.0-1) unstable; urgency=low
 
