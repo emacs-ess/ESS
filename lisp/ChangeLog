@@ -1,3 +1,7 @@
+2008-05-19  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el: use make-local-variable 'comint-use... to silence warning
+
 2008-04-10  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el (ess-use-R-completion): customizable boolean for this:
