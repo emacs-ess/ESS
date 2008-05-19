@@ -140,7 +140,8 @@ Alternatively, it can appear in its own frame if
       (set-buffer ess-dribble-buffer)
       ;; Hack to work around the following "default" (global) setting of vars:
       ;; make sure our comint-... hack doesn't affect anything else
-      (make-variable-buffer-local 'comint-use-prompt-regexp-instead-of-fields)
+      ;;(make-variable-buffer-local 'comint-use-prompt-regexp-instead-of-fields)
+      (make-local-variable 'comint-use-prompt-regexp-instead-of-fields)
       ;; now the abomination:
       (ess-setq-vars-default ess-customize-alist)
 
