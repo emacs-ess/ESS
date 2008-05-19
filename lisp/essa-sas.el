@@ -976,9 +976,12 @@ should be ..."
     "Write region to temporary file, and submit to SAS."
     (interactive)
     (ess-sas-file-path)
+    (hack-local-variables t)
     (write-region (region-beginning) (region-end)
 	(concat (ess-sas-temp-root) ".sas"))
 
+    (let ((arg1 ess-sas-submit-command)
+	  (arg2 ess-sas-submit-command-options))
     (save-excursion
       (ess-sas-goto-shell t)
 
@@ -993,10 +996,11 @@ should be ..."
 	(file-name-directory ess-sas-file-path)) "\"")
     (comint-send-input)
 
-    (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command
+    (insert (concat ess-sas-submit-pre-command " " arg1
+	  " " arg2
           " " (ess-sas-temp-root) " " ess-sas-submit-post-command))
     (comint-send-input)
-    )
+    ))
 )
 
 (defun ess-sas-submit-sh (arg1 arg2)
