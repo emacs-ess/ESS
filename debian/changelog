@@ -1,12 +1,11 @@
-ess (5.3.8-1) unstable; urgency=low
+ess (5.3.8~svn3895-1) unstable; urgency=low
 
-  [ UNRELEASED ]
-  
-  * New upstream release
+  * New upstream version based on svn revision 3895 approaching release 5.3.8.
 
   * New maintainers: the package is now maintained by group of Ess and 
-    Debian developers that can be reached at ess-debian@stat.math.ethz.ch
-  * The repository is available at https://svn.R-project.org/ESS 
+    Debian developers that can be reached at ess-debian@stat.math.ethz.ch. 
+    Camm's many years of diligent maintenance are gratefully acknowledged.    
+  * The group repository is available at https://svn.R-project.org/ESS 
   
   [ Stefan Theussl ]
   * debian/control: Change build-depends to texlive packages 	(Closes: #420945)
@@ -27,7 +26,7 @@ ess (5.3.8-1) unstable; urgency=low
   * debian/copyright: Updated to new parseable form for copyright and license
   * debian/doc-base: Updated Section:
   
- -- Dirk Eddelbuettel <edd@debian.org>  Fri, 16 May 2008 12:26:50 -0500
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 19 May 2008 21:13:02 -0500
 
 ess (5.3.0-1) unstable; urgency=low
 

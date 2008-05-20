@@ -11,11 +11,13 @@
 #export DH_COMPAT=1
 
 ## edd 16 May 2008  trivial 'orig.tar.gz' creator
-##                  this still needs a trivial extraction of the version number 
-##                  from somewhere, debian/changelog can be the last resort
+##                  technically, this could be a native Debian package as 
+##                  the debian/ is in upstream SVN but it is easier to have
+##                  another degree of freedom for Debian revisions
+version := $(shell head -1 debian/changelog | perl -nle 'm/\((\S+)-\d\)/ && print $$1')
 tarball:
 	(cd .. && \
-		tar cvzf ess.orig.tar.gz ess \
+		tar cvzf ess_${version}.orig.tar.gz ess \
 			--exclude=.svn \
 			--exclude=.git \
 			--exclude=debian/)
@@ -42,7 +44,7 @@ clean:
 
 	[ ! -f Makefile ] || $(MAKE) clean
 
-	rm -f doc/*.dvi README ANNOUNCE doc/html/readme.html doc/html/ess.html
+	rm -f doc/*.dvi #README ANNOUNCE doc/html/readme.html doc/html/ess.html
 	rm -f doc/refcard/refcard.log doc/refcard/refcard.aux
 	dh_clean
 
