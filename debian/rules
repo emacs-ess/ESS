@@ -15,9 +15,12 @@
 ##                  the debian/ is in upstream SVN but it is easier to have
 ##                  another degree of freedom for Debian revisions
 version := $(shell head -1 debian/changelog | perl -nle 'm/\((\S+)-\d\)/ && print $$1')
+showversion:
+	@echo Version is ${version}
+
 tarball:
 	(cd .. && \
-		tar cvzf ess_${version}.orig.tar.gz ess \
+		tar czf ess_${version}.orig.tar.gz ess \
 			--exclude=.svn \
 			--exclude=.git \
 			--exclude=debian/)

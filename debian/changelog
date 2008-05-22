@@ -1,3 +1,10 @@
+ess (5.3.8~svn3899-1) unstable; urgency=low
+
+  * New upstream version based on svn revision 3899
+  * lisp/Makefile: Add ess-eldoc to targets			(Closes: #482351)
+  
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 22 May 2008 06:13:36 -0500
+
 ess (5.3.8~svn3895-1) unstable; urgency=low
 
   * New upstream version based on svn revision 3895 approaching release 5.3.8.
