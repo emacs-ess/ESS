@@ -1,3 +1,8 @@
+2008-05-22  Stephen Eglen  <stephen@gnu.org>
+
+	* Makefile (ELC): Add ess-eldoc.elc to the ELC variable list.  
+	Debian bug 482351 reported by Sebastian Luque.
+
 2008-05-19  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el: use make-local-variable 'comint-use... to silence warning
