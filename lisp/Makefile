@@ -97,11 +97,11 @@ ess.elc: ess.el ess-cust.elc
 ess-site.elc: ess-site.el ess.elc
 
 ess-inf.elc: ess-inf.el $(CORE)
-	@echo " "
-	@echo "For the next compile, please disregard the messages"
-	@echo " ** the function set-keymap-parent is not known to be defined."
-	@echo " ** assignment to free variable comint-last-input-end"
-	@echo "from the byte compiler if they occur. It is completely normal."
+# 	@echo " "
+# 	@echo "For the next compile, please disregard the messages"
+# 	@echo " ** the function set-keymap-parent is not known to be defined."
+# 	@echo " ** assignment to free variable comint-last-input-end"
+# 	@echo "from the byte compiler if they occur. It is completely normal."
 	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-inf.el
 
 

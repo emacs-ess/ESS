@@ -561,8 +561,28 @@ Returns the name of the selected process."
   (update-ess-process-name-list)
   (let ((num-processes (length ess-process-name-list)))
     (if (= 0 num-processes)
-	(error "No ESS processes running."))
-    ;; else
+	;; try to start "the appropriate" process  or bail out
+	(progn
+	  (ess-write-to-dribble-buffer
+	   (concat "ess-request-a-process:\n  "
+		   (format
+		    "major mode is %s; ess-language: %s, ess-dialect: %s"
+		    major-mode ; 'ess-mode; how can we guess R?
+		    ess-language ess-dialect)))
+	  (if (string= ess-language "S")
+	      (if (string= ess-dialect "R")
+		  (R)
+		;; else S, but not R
+		(message
+		 "No ESS process running, trying to start R, since ess-language = 'S")
+		(R))
+	    ;; else: ess-language is not S
+	    ;; FIXME find a better solution than this, at least in some cases:
+	    (error "No ESS processes running.")
+	    )
+	  (setq num-processes 1)))
+
+    ;; else : num-processes >= 1 :
     (let ((proc
 	   (if (and (not ask-if-1) (= 1 num-processes))
 	       (let ((rr (car (car ess-process-name-list))))

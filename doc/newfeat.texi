@@ -3,9 +3,12 @@ Changes/New Features in 5.3.8:
 @item @ESS{[JAGS]}: more separation from @ESS{[BUGS]} (as much as is currently planned);
 now @kbd{C-c C-c} on an empty @file{.jmd} creates a template as it should;
 symbolic links are created for CODA output so BOA is happy:
-from @file{index.txt} to @file{.ind} and @file{chain#.txt} to @file{#.out} 
+from @file{index.txt} to @file{.ind} and @file{chain#.txt} to @file{#.out}
 @item @ESS{[SAS]}: buffer-local @code{ess-sas-submit-command} and
 @code{ess-sas-submit-command-options} now recognized by @code{ess-sas-submit-region}
+@item @ESS{[S]}: When trying to evaluate code in an S language buffer and
+ there is no associated process, now start R automatically instead of
+ signalling an error.
 @end itemize
 
 Changes/New Features in 5.3.7:
