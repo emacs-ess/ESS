@@ -33,7 +33,7 @@ fi
 
 install -m 755 -d ${ELCDIR}
 cd ${ELDIR}
-FILES=`ls -1 *.el | grep -v ess.el`
+FILES=$(ls -1 *.el | grep -vx 'ess.el')
 cp ${FILES} ess.el ${ELCDIR}
 cd ${ELCDIR}
 
