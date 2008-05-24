@@ -2,9 +2,11 @@ ess (5.3.8~svn3902-1) unstable; urgency=low
 
   * debian/emacsen-install: Strengthen regular expression to only exclude
     ess.el. Thanks to Sebastian Luque for fixing the bug he reported! This now
-    really closes #482351.
+    really fixed bug report 482351 addressed in the previous upload.
 
- -- Dirk Eddelbuettel <edd@debian.org>  Fri, 23 May 2008 21:25:43 -0500
+  * debian/watch: Updated URL and regular expression
+  
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 23 May 2008 21:39:40 -0500
 
 ess (5.3.8~svn3899-1) unstable; urgency=low
 
