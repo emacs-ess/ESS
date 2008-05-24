@@ -8,7 +8,8 @@ from @file{index.txt} to @file{.ind} and @file{chain#.txt} to @file{#.out}
 @code{ess-sas-submit-command-options} now recognized by @code{ess-sas-submit-region}
 @item @ESS{[S]}: When trying to evaluate code in an S language buffer and
  there is no associated process, now start R automatically instead of
- signalling an error.
+ signalling an error.  Also, restart R if there is an associated process
+ which is not running.
 @end itemize
 
 Changes/New Features in 5.3.7:
