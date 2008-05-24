@@ -1,3 +1,11 @@
+2008-05-24  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-start-process-specific): new function,
+	implementing the process (re)start of yesterday
+	(get-ess-process): also call ess-start-process-specific) if the
+	process is no longer running.
+	(ess-eval-line-and-step): (save-excursion ..) even earlier.
+
 2008-05-23  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-request-a-process): when there is no associated

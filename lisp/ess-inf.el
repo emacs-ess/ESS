@@ -484,11 +484,28 @@ This was rewritten by KH in April 1996."
 (defun get-ess-process (name)
   "Return the ESS process named by NAME."
   (update-ess-process-name-list)
-  (if (null name)
-      (error "No ESS process is associated with this buffer now.")
+
+  ;; note: typically the (current-buffer) is *R*
+;;   (ess-write-to-dribble-buffer
+;;    (format " (get-ess-proc): name=%s lang:dialect= %s:%s, current-buf=%s\n"
+;; 	   name ess-language ess-dialect (current-buffer)))
+
+  (if (null name)	    ; should almost never happen at this point
+      (error "No ESS process is associated with this buffer now")
     (if (assoc name ess-process-name-list)
 	(get-process name)
-      (error "Process %s is not running." name))))
+      ;; else :
+      (save-current-buffer
+	(ess-write-to-dribble-buffer
+	 (format
+	  "get-ess-process: restart proc %s for language %s (buf %s)\n"
+	  name ess-language (current-buffer)))
+	(message "trying to (re)start process %s for language %s ..."
+		 name ess-language)
+	(ess-start-process-specific ess-language ess-dialect)
+	;; was (error "Process %s is not running" name)
+	;; and return the process: "call me again"
+	(get-ess-process name)))))
 
 (defun inferior-ess-wait-for-prompt ()
   "Wait until the ESS process is ready for input."
@@ -549,6 +566,28 @@ Returns the name of the process, or nil if the current buffer has none."
     (set-buffer (process-buffer (get-ess-process name)))
     (set var val)))
 
+(defun ess-start-process-specific (language dialect)
+  "Start an ESS process typically from a language-specific buffer, using
+LANGUAGE (and DIALECT)."
+  (let ((cur-buf (current-buffer)))
+    (ess-write-to-dribble-buffer
+     (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
+	     language dialect cur-buf))
+    (cond ((string= language "S")
+	   (if (string= dialect "R")
+	       (R)
+	     ;; else S, but not R
+	     (message
+	     "ESS process not running, trying to start R, since language = 'S")
+	     (R))
+	   ;;(ess-show-buffer cur-buf); keep <file>.R buffer visible
+	   )
+	  (t
+	   ;; else: ess-language is not S
+	   ;; FIXME find a better solution than this, at least in some cases:
+	   (error "No ESS processes running; not yet implemented to start (%s,%s)"
+		  language dialect)))))
+
 (defun ess-request-a-process (message &optional noswitch ask-if-1)
   "Ask for a process, and make it the current ESS process.
 If there is exactly one process, only ask if ASK-IF-1 is non-nil.
@@ -558,31 +597,23 @@ Returns the name of the selected process."
   (interactive
    (list "Switch to which ESS process? " current-prefix-arg))
 					; prefix sets 'noswitch
+  (ess-write-to-dribble-buffer "ess-request-a-process: {beginning}\n")
   (update-ess-process-name-list)
   (let ((num-processes (length ess-process-name-list)))
     (if (= 0 num-processes)
-	;; try to start "the appropriate" process  or bail out
+	;; try to start "the appropriate" process
 	(progn
 	  (ess-write-to-dribble-buffer
-	   (concat "ess-request-a-process:\n  "
+	   (concat " ... request-a-process:\n  "
 		   (format
-		    "major mode is %s; ess-language: %s, ess-dialect: %s"
+		    "major mode is %s; ess-language: %s, ess-dialect: %s\n"
 		    major-mode ; 'ess-mode; how can we guess R?
 		    ess-language ess-dialect)))
-	  (if (string= ess-language "S")
-	      (if (string= ess-dialect "R")
-		  (R)
-		;; else S, but not R
-		(message
-		 "No ESS process running, trying to start R, since ess-language = 'S")
-		(R))
-	    ;; else: ess-language is not S
-	    ;; FIXME find a better solution than this, at least in some cases:
-	    (error "No ESS processes running.")
-	    )
+	  (ess-start-process-specific ess-language ess-dialect)
+	  (ess-write-to-dribble-buffer
+	   (format "  ... request-a-process: buf=%s\n" (current-buffer)))
 	  (setq num-processes 1)))
-
-    ;; else : num-processes >= 1 :
+    ;; now num-processes >= 1 :
     (let ((proc
 	   (if (and (not ask-if-1) (= 1 num-processes))
 	       (let ((rr (car (car ess-process-name-list))))
@@ -620,7 +651,7 @@ prompt for a process name with PROMPT.
       nil ; do nothing
     ;; Make sure the source buffer is attached to a process
     (if (and ess-local-process-name (not force))
-	(error "Process %s has died." ess-local-process-name)
+	(error "Process %s has died" ess-local-process-name)
       ;; ess-local-process-name is nil -- which process to attach to
       (save-excursion
 	(let ((proc (ess-request-a-process prompt 'no-switch))
@@ -843,7 +874,8 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 	   do-sleep end-of-output
 	   oldpb oldpf oldpm
 	   )
-      (if sprocess nil
+      (if (null sprocess)
+	;; should hardly happen, since (get-ess-process *)  already checked:
 	(error "Process %s is not running!" ess-current-process-name))
       (setq sbuffer (process-buffer sprocess))
       (save-excursion
@@ -1206,8 +1238,8 @@ also send empty lines.	When the variable `ess-eval-empty' is non-nil
 both SIMPLE-NEXT and EVEN-EMPTY are interpreted as true."
   ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
   (interactive "P\nP"); prefix sets BOTH !
-  (ess-force-buffer-current "Process to load into: ")
   (save-excursion
+    (ess-force-buffer-current "Process to load into: ")
     (end-of-line)
     (let ((end (point)))
       (beginning-of-line)
@@ -1876,7 +1908,7 @@ also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
     (ess-force-buffer-current "Process to quit: ")
     (ess-make-buffer-current)
     (let ((sprocess (get-ess-process ess-current-process-name)))
-      (if (not sprocess) (error "No ESS process running."))
+      (if (not sprocess) (error "No ESS process running"))
       (when (yes-or-no-p (format "Really quit ESS process %s? " sprocess))
 	(ess-cleanup)
 	(goto-char (marker-position (process-mark sprocess)))
@@ -1895,7 +1927,7 @@ regarding whether the workspace image should be saved."
   (let (cmd
 ;;Q	response
 	(sprocess (get-ess-process ess-current-process-name)))
-    (if (not sprocess) (error "No ESS process running."))
+    (if (not sprocess) (error "No ESS process running"))
 ;;Q	(setq response (completing-read "Save workspace image? "
 ;;Q				    '( ( "yes".1) ("no" . 1) ("cancel" . 1))
 ;;Q				    nil t))
