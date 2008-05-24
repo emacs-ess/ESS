@@ -578,9 +578,10 @@ LANGUAGE (and DIALECT)."
 	       (R)
 	     ;; else S, but not R
 	     (message
-	     "ESS process not running, trying to start R, since language = 'S")
+	      "ESS process not running, trying to start R, since language = 'S")
 	     (R))
-	   ;;(ess-show-buffer cur-buf); keep <file>.R buffer visible
+	   ;; (save-excursion <the above>) fails, but this "works":
+	   (switch-to-buffer cur-buf)
 	   )
 	  (t
 	   ;; else: ess-language is not S
