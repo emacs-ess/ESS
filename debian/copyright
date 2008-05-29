@@ -1,8 +1,8 @@
 This is the Debian GNU/Linux ess package of Emacs Speaks Statistics (ESS)
-which provides a common, generic, and useful interface, through emacs, 
-to many statistical packages. 
+which provides a common, generic, and useful interface, through emacs,
+to many statistical packages.
 
-Upstream Authors: A.J. Rossini <rossini@stat.sc.edu>, 
+Upstream Authors: A.J. Rossini <rossini@stat.sc.edu>,
                   Richard M. Heiberger <rmh@temple.edu>,
                   Kurt Hornik <kurt.hornik@R-project.org>,
                   Martin Maechler <maechler@stat.math.ethz.ch>,
@@ -18,18 +18,21 @@ Sat, 11 Sep 1999 12:03:46 -0400.
 As of May 2008, the package is maintained by a group of ESS and Debian
 developers which can be reached at ess-debian@stat.math.ethz.ch.
 
-Sources were downloaded from http://ESS.R-project.org/downloads/ess/ and 
-changes, typically only to files in the Debian/ directory are fully documented 
+Sources were downloaded from http://ESS.R-project.org/downloads/ess/ and
+changes, typically only to files in the Debian/ directory are fully documented
 in the file /usr/share/doc/ess/changelog.Debian.gz
 
-Copyright (C) 2004 - 2008 Martin Maechler 
-Copyright (C) 1994 - 2004 A.J. Rossini
-Copyright (C) 1994 - 2008 Richard M. Heiberger <rmh@temple.edu>,
-Copyright (C) 1994 - 2008 Kurt Hornik <kurt.hornik@R-project.org>,
-Copyright (C) 1994 - 2008 Rodney A. Sparapani <rsparapa@mcw.edu>,
-Copyright (C) 2002 - 2008 Stephen Eglen <stephen@gnu.org>
+Copyright (C) 1994 - 2008 Martin Maechler
+Copyright (C) 1994 - 2008 A.J. Rossini
+Copyright (C) 1994 - 2008 Richard M. Heiberger
+Copyright (C) 1994 - 2008 Kurt Hornik
+Copyright (C) 1999 - 2008 Rodney A. Sparapani
+Copyright (C) 2002 - 2008 Stephen Eglen
 
 License: GPL
+
+Earlier copyrights apply to some of the emacs lisp sources files in
+../lisp/. These authors have all transferred copyright to the ESS core team.
 
 On a Debian GNU/Linux system, the GNU General Public License (GPL) is
 included in the file /usr/share/common-licenses/GPL.
