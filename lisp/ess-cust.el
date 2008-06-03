@@ -497,7 +497,7 @@ GNU, BSD, ...) map onto different settings for variables."
 		 (const BSD)
 		 (const K&R)
 		 (const C++)
-		 (const :tag "Common R" :value 'RRR)
+		 (const :tag "Common R" :value RRR)
 		 (const CLB))
   :group 'ess-edit)
 
