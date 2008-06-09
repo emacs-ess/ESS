@@ -481,31 +481,46 @@ This was rewritten by KH in April 1996."
 
 ;;*;; General process handling code
 
-(defun get-ess-process (name)
-  "Return the ESS process named by NAME."
-  (update-ess-process-name-list)
-
-  ;; note: typically the (current-buffer) is *R*
-;;   (ess-write-to-dribble-buffer
-;;    (format " (get-ess-proc): name=%s lang:dialect= %s:%s, current-buf=%s\n"
-;; 	   name ess-language ess-dialect (current-buffer)))
-
+(defun get-ess-process (name &optional try-another)
+  "Return the ESS process named by NAME.  If TRY-ANOTHER is non-nil,
+and the process NAME is not running (anymore), try to connect to another if
+there is one."
   (if (null name)	    ; should almost never happen at this point
-      (error "No ESS process is associated with this buffer now")
-    (if (assoc name ess-process-name-list)
-	(get-process name)
-      ;; else :
-      (save-current-buffer
-	(ess-write-to-dribble-buffer
-	 (format
-	  "get-ess-process: restart proc %s for language %s (buf %s)\n"
-	  name ess-language (current-buffer)))
-	(message "trying to (re)start process %s for language %s ..."
-		 name ess-language)
-	(ess-start-process-specific ess-language ess-dialect)
-	;; was (error "Process %s is not running" name)
-	;; and return the process: "call me again"
-	(get-ess-process name)))))
+      (error "No ESS process is associated with this buffer now"))
+  (update-ess-process-name-list)
+  (if (assoc name ess-process-name-list)
+      (get-process name)
+    ;; else :
+    ;; was (error "Process %s is not running" name)
+    (ess-write-to-dribble-buffer
+     (format "get-ess-process: process '%s' not running" name))
+    (if (= 0 (length ess-process-name-list))
+	(save-current-buffer
+	  (ess-write-to-dribble-buffer
+	   (format " .. restart proc %s for language %s (buf %s)\n"
+		   name ess-language (current-buffer)))
+	  (message "trying to (re)start process %s for language %s ..."
+		   name ess-language)
+	  (ess-start-process-specific ess-language ess-dialect)
+	  ;; and return the process: "call me again"
+	  (get-ess-process name))
+
+      ;; else: there are other running processes
+      (if try-another ; connect to another running process : the first one
+	  (let ((other-name (car (elt ess-process-name-list 0))))
+	    ;; "FIXME": try to find the process name that matches *closest*
+	    (message "associating with *other* process '%s'" other-name)
+	    (get-ess-process other-name))
+	;; else
+	(ding)
+	(if (yes-or-no-p
+	     (format "Process %s is not running, but others are. Switch? " name))
+	    (progn
+	      (ess-force-buffer-current
+	       (concat ess-dialect " process to use: ") t)
+	      (get-ess-process ess-current-process-name))
+	  (error "Process %s is not running" name))))))
+
 
 (defun inferior-ess-wait-for-prompt ()
   "Wait until the ESS process is ready for input."
@@ -640,7 +655,7 @@ Returns the name of the selected process."
       proc)))
 
 
-(defun ess-force-buffer-current (prompt &optional force)
+(defun ess-force-buffer-current (&optional prompt force)
   "Make sure the current buffer is attached to an ESS process.
 If not, or FORCE (prefix argument) is non-nil,
 prompt for a process name with PROMPT.
