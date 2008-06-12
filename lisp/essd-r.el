@@ -433,7 +433,7 @@ To be used instead of ESS' completion engine for R versions >= 2.5.0
   (interactive)
   (ess-make-buffer-current)
   (let* ((comint-completion-addsuffix nil)
-	 (beg-of-line (save-excursion (comint-bol) (point)))
+	 (beg-of-line (save-excursion (comint-bol nil) (point)))
 	 (end-of-line (point-at-eol))
 	 (line-buffer (buffer-substring beg-of-line end-of-line))
 	 (NS (if (ess-current-R-at-least '2.7.0)
