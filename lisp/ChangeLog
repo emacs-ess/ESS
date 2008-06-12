@@ -1,3 +1,9 @@
+2008-06-12  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-r.el (ess-R-complete-object-name): comint-bol given nil
+	argument to work on XEmacs (the arg is optional on Emacs, but not
+	in XEmacs).
+
 2008-06-09  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (get-ess-process): if NAME is not running, do not
