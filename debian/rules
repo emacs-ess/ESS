@@ -69,7 +69,8 @@ install-stamp: build-stamp
 	mkdir -p debian/ess/usr/share/ess
 	cp -a etc debian/ess/usr/share/ess/
 	rm -f debian/ess/usr/share/ess/etc/BACKBUGS.BAT
-	rm -f debian/ess/usr/share/ess/etc/ess-sas-sh-command
+#	rm -f debian/ess/usr/share/ess/etc/ess-sas-sh-command
+	chmod 0755 debian/ess/usr/share/ess/etc/ess-sas-sh-command
 	rm -f debian/ess/usr/share/ess/etc/backbug5
 	rm -f debian/ess/usr/share/ess/etc/backbug5.sparc
 	rm -f debian/ess/usr/share/ess/etc/backbugs.sparc
