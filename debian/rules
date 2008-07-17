@@ -11,7 +11,7 @@
 #export DH_COMPAT=1
 
 ## edd 16 May 2008  trivial 'orig.tar.gz' creator
-##                  technically, this could be a native Debian package as 
+##                  technically, this could be a native Debian package as
 ##                  the debian/ is in upstream SVN but it is easier to have
 ##                  another degree of freedom for Debian revisions
 version := $(shell head -1 debian/changelog | perl -nle 'm/\((\S+)-\d\)/ && print $$1')
@@ -63,7 +63,7 @@ install-stamp: build-stamp
 	! [ -e debian/ess/usr/share/emacs/site-lisp/ess/ess-site.el ] || \
 		chmod u+w debian/ess/usr/share/emacs/site-lisp/ess/ess-site.el
 	cat lisp/ess-site.el | \
-		sed -e 's,(defvar ess-etc-directory nil,(defvar ess-etc-directory "/usr/share/ess/etc",1'\
+		sed -e 's,(defvar ess-etc-directory nil,(defvar ess-etc-directory "/usr/share/ess/etc/",1'\
 		    -e 's,(while (and (listp ess-etc,(while (and (not ess-etc-directory) (listp ess-etc,1' \
 		> debian/ess/usr/share/emacs/site-lisp/ess/ess-site.el
 	mkdir -p debian/ess/usr/share/ess
@@ -96,7 +96,7 @@ binary-indep: build install
 # Build architecture-dependent files here.
 binary-arch: build install
 
-source diff:                                                                  
+source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
 binary: binary-indep binary-arch
