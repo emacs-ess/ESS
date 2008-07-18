@@ -1,3 +1,12 @@
+ess (5.3.8~svn3917-1) unstable; urgency=low
+
+  * New upstream version based on svn revision 3917 approaching release 5.3.8.
+
+  * debian/rules: Add trailing slash to ess-etc-directory definition -- with
+    thanks to Martin Maechler for finding this as the cause to SAS load issues
+  
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 17 Jul 2008 19:16:57 -0500
+
 ess (5.3.8~svn3902-1) unstable; urgency=low
 
   * debian/emacsen-install: Strengthen regular expression to only exclude
