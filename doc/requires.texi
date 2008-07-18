@@ -7,7 +7,7 @@ ESS has been tested with
 @item SAS >=6.12
 @item BUGS 0.5, 0.6
 @item JAGS 1.0
-@item Stata >=6.0 (recent Stata support limited due to changes in Stata)
+@item Stata >=6.0 (command line only)
 @c is anyone still using this? @item XLispStat >=3.50 
 @end itemize
 
@@ -15,10 +15,10 @@ on the following platforms
 
 @itemize @bullet
 @item Linux/x86 (all)
-@item Solaris/SPARC (all)
+@item Solaris (all)
 @c cannot confirm this right now @item SGI (all)
-@item MS Windows 98/NT/2000/XP (R, SPLUS 4.5/2000/6.0-2/7.0/8.0, SAS interactive only, and BUGS 0.6)
-@item Apple Mac OS X 10.3-4 (R, JAGS)
+@item MS Windows 98/NT/2000/XP (R, S-PLUS, SAS interactive only, and BUGS)
+@item Apple Mac OS X 10.4-5 (R, JAGS, Stata)
 @end itemize
 
 with the following versions of emacs
