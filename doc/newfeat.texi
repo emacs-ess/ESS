@@ -1,3 +1,13 @@
+Changes/New Features in 5.3.9:
+@itemize @bullet
+@item @ESS{[JAGS]}: cleanup/re-organization of elisp code;
+symbolic links for CODA output are now only created by the new
+JAGS @code{system} command in version 1.0.3; specify whether
+this command is available via @code{ess-jags-system}; if not
+present, then no links are created so that the @code{*shell*}
+buffer does not become unresponsive during the batch run
+@end itemize
+
 Changes/New Features in 5.3.8:
 @itemize @bullet
 @item @ESS{[JAGS]}: more separation from @ESS{[BUGS]} (as much as is currently planned);

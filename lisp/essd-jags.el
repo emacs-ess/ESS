@@ -38,17 +38,19 @@
 (setq auto-mode-alist 
     (append '(("\\.[bB][uU][gG]\\'" . ess-jags-mode)) auto-mode-alist))
 
-(defvar ess-jags-command "jags")
+(defvar ess-jags-command "jags" "Default JAGS program in PATH.")
 (make-local-variable 'ess-jags-command)
 
-(defvar ess-jags-monitor '(""))
+(defvar ess-jags-monitor '("") "Default list of variables to monitor.")
 (make-local-variable 'ess-jags-monitor)
 
-(defvar ess-jags-thin 1)
+(defvar ess-jags-thin 1 "Default thinning parameter.")
 (make-local-variable 'ess-jags-thin)
 
-(defvar ess-jags-chains 1)
+(defvar ess-jags-chains 1 "Default number of chains.")
 (make-local-variable 'ess-jags-chains)
+
+(defvar ess-jags-system t "Default whether JAGS recognizes the system command.") 
 
 (defvar ess-jags-font-lock-keywords
     (list
@@ -75,7 +77,7 @@
 	;; .jmd files
 	(cons (concat "\\<\\(adapt\\|cd\\|clear\\|coda\\|data\\|dir\\|"
 		"exit\\|in\\(itialize\\)?\\|load\\|model\\|monitors\\|parameters\\|"
-		"pwd\\|run\\|samplers\\|to\\|update\\)[ \t\n]")
+		"pwd\\|run\\|s\\(amplers\\|ystem\\)\\|to\\|update\\)[ \t\n]")
 					font-lock-keyword-face)
 
 	(cons "\\<\\(compile\\|monitor\\)[, \t\n]"
@@ -106,7 +108,7 @@
 	))
 
 	(if (equal ".jmd" suffix) (let
-	    ((ess-jags-temp-chains "") (ess-jags-temp-monitor ""))
+	    ((ess-jags-temp-chains "") (ess-jags-temp-monitor "") (ess-jags-temp-chain ""))
 
 	    (if jags-chains (setq ess-jags-chains jags-chains))
 	    (if jags-monitor (setq ess-jags-monitor jags-monitor))
@@ -147,6 +149,22 @@
 	    (insert "coda " 
 		(if ess-microsoft-p (if (w32-shell-dos-semantics) "*" "\\*") "\\*") 
 		", stem(\"" ess-bugs-file-root "\")\n")
+
+	    (if ess-jags-system (progn
+		(insert "system rm -f " ess-bugs-file-root ".ind\n")
+		(insert "system ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root ".ind\n")
+	    
+		(setq jags-chains ess-jags-chains)
+
+		(while (< 0 jags-chains)
+		    (setq ess-jags-temp-chain (format "%d" jags-chains)) 
+
+		    ;.txt not recognized by BOA and impractical to over-ride
+		    (insert "system rm -f " ess-bugs-file-root ess-jags-temp-chain ".out\n")
+		    (insert "system ln -s " ess-bugs-file-root "chain" ess-jags-temp-chain ".txt " 
+			ess-bugs-file-root ess-jags-temp-chain ".out\n")
+		    (setq jags-chains (- jags-chains 1)))))
+	    
 	    (insert "exit\n")
 	    (insert "Local Variables" ":\n")
 	    (insert "ess-jags-chains:" (format "%d" ess-jags-chains) "\n")
@@ -187,12 +205,12 @@
 	(insert "cd \"" ess-bugs-file-dir "\"")
 	(comint-send-input)
 
-    (let ((ess-jags-temp-chains ""))
-
-	(while (< 0 jags-chains)
-	    (setq ess-jags-temp-chains 
-		(concat (format "%d " jags-chains) ess-jags-temp-chains)) 
-	    (setq jags-chains (- jags-chains 1)))
+;    (let ((ess-jags-temp-chains ""))
+;
+;	(while (< 0 jags-chains)
+;	    (setq ess-jags-temp-chains 
+;		(concat (format "%d " jags-chains) ess-jags-temp-chains)) 
+;	    (setq jags-chains (- jags-chains 1)))
 
 	(insert ess-bugs-batch-pre-command " " jags-command " "
 		ess-bugs-file-root ".jmd "  
@@ -204,17 +222,17 @@
 		;else
 			    "> " ess-bugs-file-root ".out 2>&1 ") 
 
-		;.txt not recognized by BOA and impractical to over-ride
-		"&& (rm -f " ess-bugs-file-root ".ind; "
-		"ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root ".ind; "
-		"for i in " ess-jags-temp-chains "; do; "
-		"rm -f " ess-bugs-file-root "$i.out; "
-		"ln -s " ess-bugs-file-root "chain$i.txt " ess-bugs-file-root "$i.out; done) "
+;		;.txt not recognized by BOA and impractical to over-ride
+;		"&& (rm -f " ess-bugs-file-root ".ind; "
+;		"ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root ".ind; "
+;		"for i in " ess-jags-temp-chains "; do; "
+;		"rm -f " ess-bugs-file-root "$i.out; "
+;		"ln -s " ess-bugs-file-root "chain$i.txt " ess-bugs-file-root "$i.out; done) "
 
 		ess-bugs-batch-post-command)
 
 	(comint-send-input)
-)))
+));)
 
 (defun ess-jags-na-bug ()
     "ESS[JAGS]: Perform Next-Action for .bug"
