@@ -174,9 +174,10 @@ for ESS, such as icons.")
 		"../etc/ess, ../etc, ../../etc/ess or ./etc"))
       (sit-for 4))))
 
-(defvar ess-info-directory nil
-  "*Location of the ESS info/ directory.
-The ESS info directory stores the ESS info files.")
+;;-- no longer used thanks to the (unless ...) clause below --
+;; (defvar ess-info-directory nil
+;;   "*Location of the ESS info/ directory.
+;; The ESS info directory stores the ESS info files.")
 
 ;;(1.2) If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix & xemacs compatibility

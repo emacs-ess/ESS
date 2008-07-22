@@ -1,5 +1,7 @@
 ;; Copyright (C) 2005 David Whiting, A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;; Copyright (C) 2006-2008 A.J. Rossini, Rich M. Heiberger, Martin Maechler,
+;;	Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: David Whiting <david.whiting@ncl.ac.uk>
 ;; Created: 15 April 2005
@@ -82,12 +84,6 @@
   (require 'ess)
   (require 'ess-noweb)
 )
-;; MM: I think we should *not* require 'cl, but it's needed for
-;;     (search .) below ... -> ``please'' replace the (search ...) parts
-;; (string-match "\\.Rnw$"  ....)  |-->  (nil | index)  should suffice
-;; ==> replaced  ' (search ".Rnw" buf) '
-;;     by        ' (string-match "\\.Rnw$" buf '
-;; (require 'cl)
 
 (defun ess-swv-run-in-R (cmd &optional choose-process)
   "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
