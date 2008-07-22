@@ -149,7 +149,8 @@ Better logic needed!  (see 2 uses, in this file).")
 
     ;;workaround
     (setq inferior-SAS-program-name
-	  (concat ess-etc-directory "ess-sas-sh-command"))
+	  (concat (file-name-as-directory ess-etc-directory)
+		  "ess-sas-sh-command"))
     (setq inferior-ess-program inferior-SAS-program-name)))
 
 (defun ess-insert-accept (command)
