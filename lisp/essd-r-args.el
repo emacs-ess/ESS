@@ -255,7 +255,8 @@ ess-r-args-current-function if no argument given."
 and their default values of an R function. Built on \\[ess-r-args-show]."
   (interactive)
   (skeleton-pair-insert-maybe nil)
-  (if ess-local-process-name
+  (if (and ess-local-process-name ; has a process and it must still be running
+	   (get-ess-process ess-local-process-name))
       (ess-r-args-show)))
 
 ;; MM: I would strongly discourage use of the following:

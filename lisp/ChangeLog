@@ -1,3 +1,13 @@
+2008-07-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r-args.el (ess-r-args-auto-show): only "act" if ess process
+	is still active
+
+2008-07-18  Rodney Sparapany  <rsparapa@mcw.edu>
+
+	* essd-jags.el (ess-jags-switch-to-suffix): using ess-jags-system;
+	see long svn message
+
 2008-06-12  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-r.el (ess-R-complete-object-name): comint-bol given nil
