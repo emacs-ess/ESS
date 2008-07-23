@@ -1,13 +1,3 @@
-Changes/New Features in 5.3.9:
-@itemize @bullet
-@item @ESS{[JAGS]}: cleanup/re-organization of elisp code;
-symbolic links for CODA output are now only created by the new
-JAGS @code{system} command in version 1.0.3; specify whether
-this command is available via @code{ess-jags-system}; if not
-present, then no links are created so that the @code{*shell*}
-buffer does not become unresponsive during the batch run
-@end itemize
-
 Changes/New Features in 5.3.8:
 @itemize @bullet
 @item @ESS{[JAGS]}: more separation from @ESS{[BUGS]} (as much as is currently planned);
@@ -19,7 +9,14 @@ from @file{index.txt} to @file{.ind} and @file{chain#.txt} to @file{#.out}
 @item @ESS{[S]}: When trying to evaluate code in an S language buffer and
  there is no associated process, now start R automatically instead of
  signalling an error.  Also, restart R if there is an associated process
- which is not running.
+ which is not running.  However, do not start R just via the ``electric''
+ @kbd{(} (@code{}).
+@item @ESS{[JAGS]}: cleanup/re-organization of elisp code;
+symbolic links for CODA output are now only created by the new
+JAGS @code{system} command in version 1.0.3; specify whether
+this command is available via @code{ess-jags-system}; if not
+present, then no links are created so that the @code{*shell*}
+buffer does not become unresponsive during the batch run
 @end itemize
 
 Changes/New Features in 5.3.7:
