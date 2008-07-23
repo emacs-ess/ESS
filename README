@@ -67,7 +67,20 @@ Changes/New Features in 5.3.8:
 
    * ESS[S]: When trying to evaluate code in an S language buffer and
      there is no associated process, now start R automatically instead
-     of  signalling an error.
+     of  signalling an error.  Also, restart R if there is an
+     associated process  which is not running.  However, do not start R
+     just via the "electric"  `(' (`ess-r-args-auto-show').
+
+   * ESS[S]: For (one-line) functions withOUT '{ .. }' bodys, the end
+     of function is now correctly found more often.  This notably
+     improves  `C-c C-c' (`ess-eval-function-or-paragraph-and-step').
+
+   * ESS[JAGS]: cleanup/re-organization of elisp code; symbolic links
+     for CODA output are now only created by the new JAGS `system'
+     command in version 1.0.3; specify whether this command is
+     available via `ess-jags-system'; if not present, then no links are
+     created so that the `*shell*' buffer does not become unresponsive
+     during the batch run
 
    Changes/New Features in 5.3.7:
    * ESS: `ess-default-style' now *is* customizable, i.e.,   changing
@@ -156,9 +169,9 @@ Changes/New Features in 5.3.8:
 
    Changes/New Features in 5.3.2:
    * Classic BUGS now supported by `(require 'essd-bugs)' with ESS[BUGS]
-          and JAGS by `(require 'essd-jags)' with ESS[JAGS].  But, only
-     one       of them can be used at a time since they don't play nice
-     together.  Also,       `C-c C-c' is now bound to the function
+          and JAGS by `(require 'essd-jags)' with ESS[JAGS].  But,
+     only one       of them can be used at a time since they don't play
+     nice together.  Also,       `C-c C-c' is now bound to the function
      `ess-bugs-next-action'       (`F12' has been retired).  And
      finally, note that `essl-bug.el'       is deprecated and the
      replacement is `essl-bugs.el'.
@@ -801,18 +814,18 @@ ESS has been tested with
 
    * JAGS 1.0
 
-   * Stata >=6.0 (recent Stata support limited due to changes in Stata)
+   * Stata >=6.0 (command line only)
 
    on the following platforms
 
    * Linux/x86 (all)
 
-   * Solaris/SPARC (all)
+   * Solaris (all)
 
-   * MS Windows 98/NT/2000/XP (R, SPLUS 4.5/2000/6.0-2/7.0/8.0, SAS
-     interactive only, and BUGS 0.6)
+   * MS Windows 98/NT/2000/XP (R, S-PLUS, SAS interactive only, and
+     BUGS)
 
-   * Apple Mac OS X 10.3-4 (R, JAGS)
+   * Apple Mac OS X 10.4-5 (R, JAGS, Stata)
 
    with the following versions of emacs
 

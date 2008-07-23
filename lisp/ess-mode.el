@@ -588,6 +588,12 @@ Optional argument for location of beginning.  Return '(beg end)."
 	(forward-list 1)	; get over arguments || whole set*(..)
 	(unless in-set-S4 (forward-sexp 1)) ; move over braces
 	;;DBG (ess-write-to-dribble-buffer "ess-END-of-fun: found ok\n")
+
+	;; For one-line functions withOUT '{ .. }' body  -- added 2008-07-23 --
+	;; particularly helpful for C-c C-c (ess-eval-function-or-paragraph-and-step):
+	(unless (= (point) (ess-line-end-position))
+	  (forward-sexp 1)) ; if not at end of line, move further forward
+
 	(list beginning (point))
 	)
     ;; else: 'no-error': we are not in a function

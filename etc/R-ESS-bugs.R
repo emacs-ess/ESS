@@ -14,8 +14,8 @@
 ##a silly comment
 ##and a second one
 foo <- function(x=a, abc = list("def", a=1,3,3), more.args, and, bla,
-                blu, bl
-                another, and, another, and bmbasd,
+                blu, bl,
+                another, plus, yet.another, and_mbasd,
                 lots = NULL,
                 more = NULL,
                 args = NULL) {
@@ -36,6 +36,14 @@ function(x=a, abc = list("def", a=c(1,3,3)), more.args, and, bla, blu,
     ...; ...
 }
 
+abc <- function(x, y, ...) this.is.just.a.one.liner(x,y, z=TRUE, ...)
+
+## A more-liner function with no "{...}"
+mindiff <- function(df) df[which.min(df$diff),
+                           which.max(df$daff)]
+
+## Two functions in one line - can I "send" just one of them?
+f1 <- function(x) be.friendly(x, force=TRUE); f2 <- function(x,y) x*sin(pi*x)
 
 ### --- Suggestion (Jenny Brian): --> Create a (defun ess-eval-multiline .)
 ### Here is useful valid R "test code":

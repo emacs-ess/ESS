@@ -10,7 +10,10 @@ from @file{index.txt} to @file{.ind} and @file{chain#.txt} to @file{#.out}
  there is no associated process, now start R automatically instead of
  signalling an error.  Also, restart R if there is an associated process
  which is not running.  However, do not start R just via the ``electric''
- @kbd{(} (@code{}).
+ @kbd{(} (@code{ess-r-args-auto-show}).
+@item @ESS{[S]}: For (one-line) functions withOUT '@{ .. @}' bodys, the end
+ of function is now correctly found more often.  This notably improves
+ @kbd{C-c C-c} (@code{ess-eval-function-or-paragraph-and-step}).
 @item @ESS{[JAGS]}: cleanup/re-organization of elisp code;
 symbolic links for CODA output are now only created by the new
 JAGS @code{system} command in version 1.0.3; specify whether
