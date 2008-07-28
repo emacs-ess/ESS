@@ -1,3 +1,9 @@
+Changes/New Features in 5.3.9:
+@itemize @bullet
+@item @ESS{[SAS]}: evince PDF viewer now supported as well; search order:
+evince, Xpdf, Adobe/Acrobat Reader
+@end itemize
+
 Changes/New Features in 5.3.8:
 @itemize @bullet
 @item @ESS{[JAGS]}: more separation from @ESS{[BUGS]} (as much as is currently planned);

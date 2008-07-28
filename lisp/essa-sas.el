@@ -96,7 +96,9 @@ or `ess-sas-data-view-insight'."
 
     (if (not ess-tmp-ps) (setq ess-tmp-ps (executable-find "ghostview")))
 
-    (setq ess-tmp-pdf (executable-find "xpdf"))
+    (setq ess-tmp-pdf (executable-find "evince"))
+
+    (if (not ess-tmp-pdf) (setq ess-tmp-pdf (executable-find "xpdf")))
 
     (if (not ess-tmp-pdf) (setq ess-tmp-pdf (if ess-microsoft-p "acrord32" "acroread"))) 
 
