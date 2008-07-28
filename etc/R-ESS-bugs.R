@@ -36,9 +36,12 @@ function(x=a, abc = list("def", a=c(1,3,3)), more.args, and, bla, blu,
     ...; ...
 }
 
+## This is a "TRUE" example (from Matrix/tests/ ):
+NA.or.True <- function(x) is.na(x) | x
+
 abc <- function(x, y, ...) this.is.just.a.one.liner(x,y, z=TRUE, ...)
 
-## A more-liner function with no "{...}"
+## A more-liner function with no "{...}" -- this one even works (but not all!)
 mindiff <- function(df) df[which.min(df$diff),
                            which.max(df$daff)]
 
