@@ -82,7 +82,9 @@ info/ess.info: $(TEXISRC)
 	$(MAKEINFO) ess.texi
 	mv -f ess.info info
 
-install : info/ess.info
+install: install-info install-other-docs
+
+install-info : info/ess.info
 	-$(INSTALLDIR) $(INFODIR)
 	$(INSTALL) info/ess.info $(INFODIR)
 	test -f $(INFODIR)/dir || $(INSTALL) dir.txt $(INFODIR)/dir
@@ -90,6 +92,11 @@ install : info/ess.info
 	(echo >> $(INFODIR)/dir; echo 'Emacs' >> $(INFODIR)/dir; \
 	echo $(ESSINFONODE1) $(ESSINFONODE2) >> $(INFODIR)/dir; \
 	echo $(ESSINFONODE3) >> $(INFODIR)/dir)
+
+install-other-docs: pdf html
+	$(INSTALL) ess.dvi ess.pdf readme.dvi readme.pdf ../README ../ANNOUNCE $(DOCDIR)
+	$(INSTALL) html/ess.html html/readme.html $(DOCDIR)/html
+	$(INSTALL) refcard/refcard.pdf $(DOCDIR)/refcard
 
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess.html: $(TEXISRC)
