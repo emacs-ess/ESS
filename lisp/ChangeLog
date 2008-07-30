@@ -1,3 +1,9 @@
+2008-07-30  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-eval-region): (deactivate-mark)
+	when the new customizable variable
+	* ess-cust.el (ess-eval-deactivate-mark): is non-nil.
+
 2008-07-28  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el (ess-end-of-function): tweak

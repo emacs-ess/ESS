@@ -1107,7 +1107,7 @@ Do not anchor to bol with `^'."
 
 (defcustom inferior-ess-secondary-prompt "+ ?"
   "Regular expression used by ess-mode to detect the secondary prompt.
-(This is issued by S to continue an incomplete expression). Do not
+ (This is issued by S to continue an incomplete expression). Do not
 anchor to bol with `^'."
   :group 'ess-proc
   :type 'string)
@@ -1130,6 +1130,13 @@ Otherwise, they get their own temporary buffer."
 
 (defcustom ess-eval-visibly-p t
   "*Non-nil means ess-eval- commands display commands in the process buffer."
+  :group 'ess-proc
+  :type 'boolean)
+
+(defcustom ess-eval-deactivate-mark nil
+  "*Non-nil means that after ess-eval- commands the mark is deactivated,
+ (see \[[deactivate-mark]).  This only affects the situation where
+`transient-mark-mode' is non-nil."
   :group 'ess-proc
   :type 'boolean)
 
@@ -1156,7 +1163,7 @@ when available."
 
 (defcustom ess-eval-ddeclient-sleep 0.06
   "*If non-nil, a number specifying *seconds* to wait after certain
-\[[ess-eval-linewise-ddeclient]] calls, such as those at startup."
+\[[ess-eval-linewise-ddeclient] calls, such as those at startup."
 ;; i.e this currently only applies to (if microsoft-p ...) !
   :group 'ess-proc
   :type '(choice (const nil) number))
