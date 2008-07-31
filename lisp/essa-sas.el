@@ -526,7 +526,7 @@ current buffer if nil."
 	(ess-tmp-graph-alist nil)
         (ess-tmp-glyph nil)
         (ess-tmp-graph-regexp
-	    (concat "[ ]RECORDS[ ]WRITTEN[ ]TO[ ]\n?[ ]*\\(\\(\n\\|[^.]\\)*"
+	    (concat "[ ]RECORDS[ ]WRITTEN[ ]+TO[ ]\n?[ ]*\\(\\(\n\\|[^.]\\)*"
 		ess-sas-graph-view-suffix-regexp "\\)")))
 ;	    (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
 
@@ -562,7 +562,7 @@ current buffer if nil."
 	  (if ess-tmp-glyph (progn
 		(switch-to-buffer (file-name-nondirectory ess-tmp-graph))
 		(ess-xemacs-insert-glyph
-		    (make-glyph (vector ess-tmp-glyph :file ess-tmp-graph))))
+		    (make-glyph (vector ess-tmp-glyph :file ess-tmp-graph))))    
 
           ;;else use the appropriate graphics file image viewer
 	    (while (< ess-tmp-counter ess-tmp-length)
