@@ -34,7 +34,6 @@ CORE = ess.elc ess-site.elc
 ### Everything but ess-debug.el, ess-install.el
 ###		  ess-send.el , ess-send2.el
 ### DEPRECATED:  essl-bug.el
-### [WHY_??_] msdos.elc essd-sp6w.elc
 ##
 ELC = $(CORE) ess-comp.elc ess-cust.elc \
 	ess-dde.elc ess-emcs.elc ess-font-lock.elc \
@@ -54,6 +53,7 @@ ELC = $(CORE) ess-comp.elc ess-cust.elc \
 	ess-noweb.elc noweb-mode.elc noweb-font-lock-mode.elc \
 	essa-r.elc essddr.elc ess-eldoc.elc \
 	essd-sp6w.elc msdos.elc
+##      ^^^^^^^^^^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
 
 ### Targets
 
