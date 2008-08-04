@@ -232,7 +232,8 @@ between .s or .S files and assembly mode.
 	(append
 	 '(("\\.sp\\'"		. S-mode) ;; re: Don MacQueen <macq@llnl.gov>
 	   ("\\.[qsS]\\'"	. S-mode) ;; q,s,S [see ess-restore-asm-extns above!]
-	   ("\\.ssc\\'"		. S-mode) ;; Splus 4.x script files.
+	   ("\\.ssc\\'"		. S-mode) ;; Splus (>= 4.x) script files.
+	   ("\\.SSC\\'"		. S-mode) ;; ditto for windoze
 	   ("\\.[rR]\\'"	. R-mode)
 	   ("\\.[rR]nw\\'"	. Rnw-mode)
 	   ("\\.[sS]nw\\'"	. Snw-mode); currently identical to Rnw-mode
