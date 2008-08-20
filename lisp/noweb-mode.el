@@ -1180,7 +1180,7 @@ and and update the chunk vector."
               (setq chunk-name (match-string 1))
               (widen)
               (goto-char (point-min))
-              (re-search-forward (concat "^<<" chunk-name ">>=") nil t)
+              (re-search-forward (concat "^<<" (regexp-quote chunk-name) ">>=") nil t)
               (beginning-of-line 2)
               (setq mode (noweb-in-mode-line))
               (if (functionp mode)
@@ -1277,7 +1277,7 @@ The only sensible way to do this is to add a mode line to the chunk"
               (re-search-backward "^[ \t]*<<\\(.*\\)>>=" nil t)
               (setq chunk-name (match-string 1))
               (goto-char (point-min))
-              (re-search-forward (concat "^<<" chunk-name ">>=") nil t)
+              (re-search-forward (concat "^<<" (regexp-quote chunk-name) ">>=") nil t)
               (beginning-of-line 2))
             ;; remove mode-line, if there is one
             (if (noweb-in-mode-line)
@@ -1348,13 +1348,13 @@ noweb-set-doc-mode) before calling this function"
             (let ((chunk-name (buffer-substring-no-properties
                                (match-beginning 2)
                                (match-end 2))))
-              (re-search-backward (concat "<<" chunk-name ">>") nil t))
+              (re-search-backward (concat "<<" (regexp-quote chunk-name) ">>") nil t))
           (if (and (<= (match-end 2) (point))
                    (>  (+ 2 (match-end 2)) (point)))
               (let ((chunk-name (buffer-substring-no-properties
                                  (match-beginning 2)
                                  (match-end 2))))
-                (re-search-forward (concat "<<" chunk-name ">>") nil t)))))))
+                (re-search-forward (concat "<<" (regexp-quote chunk-name) ">>") nil t)))))))
 
 
 ;;; Debugging
@@ -1527,7 +1527,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
       (let ((chunk-name (match-string 1)))
         (widen)
         (goto-char (point-min))
-        (re-search-forward (concat "^<<" chunk-name ">>=") nil t)
+        (re-search-forward (concat "^<<" (regexp-quote chunk-name) ">>=") nil t)
         (beginning-of-line 2)
         (while (looking-at ".*-\*-.*-\*-")
           (let ((this-line (buffer-substring-no-properties
@@ -1650,7 +1650,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
 		    (save-restriction
                       (setq thread-name-re
 			    (concat "<<"
-				    (match-string 2)
+				    (regexp-quote (match-string 2))
 				    ">>="))
                       (setq pre-chunk (match-string 1))
                       (if prefix-string

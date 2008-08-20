@@ -1,3 +1,10 @@
+2008-08-20  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* noweb-mode.el (noweb-set-chunk-code-mode): use
+	(regexp-quote chunk-name) instead of just chunk-name,
+	here and in another few cases.
+	Thanks to a patch from  Rafael Laboissiere at Debian.
+
 2008-07-30  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-eval-region): (deactivate-mark)
