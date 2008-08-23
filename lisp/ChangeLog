@@ -1,3 +1,7 @@
+2008-08-23  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-roxygen.el: New file.
+
 2008-08-20  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* noweb-mode.el (noweb-set-chunk-code-mode): use
