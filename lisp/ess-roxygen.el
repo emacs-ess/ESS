@@ -46,13 +46,13 @@ The template is inserted just before "
       ;; Now insert the arguments ahead of the function.
       (goto-char (1- beg))
       (mapc 'ess-roxygen-print-one-param args)
-      (insert "\n#' @return ...\n")
+      (insert "\n##' @return ...\n")
       ;;(setq s args)
       )))
 
 (defun ess-roxygen-print-one-param (p) 
   "Insert parameter P to the roxygen comments."
-  (insert (format "#' @param %s\n" p)))
+  (insert (format "##' @param %s\n" p)))
 
 
 ;; Perhaps extract code that returns the args of the current function?
