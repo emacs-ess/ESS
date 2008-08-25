@@ -45,7 +45,7 @@ abc <- function(x, y, ...) this.is.just.a.one.liner(x,y, z=TRUE, ...)
 mindiff <- function(df) df[which.min(df$diff),
                            which.max(df$daff)]
 
-## Two functions in one line - can I "send" just one of them?
+## Two functions in one line - can I "send" just one of them? {no, not "simply"}
 f1 <- function(x) be.friendly(x, force=TRUE); f2 <- function(x,y) x*sin(pi*x)
 
 ### --- Suggestion (Jenny Brian): --> Create a (defun ess-eval-multiline .)
@@ -115,6 +115,7 @@ setMeneric <-
 ## not correctly found:
 ## Use C-M-e to see:  In these two, the "end-of-function" is after
 ## 'class' :
+## ---- these all work now (ESS version 5.3.8) :
 onelinerFails <- function(x, ...) class(x)
 
 onelinerFailsToo <-

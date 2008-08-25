@@ -1,3 +1,7 @@
+2008-08-25  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-mode.el (ess-end-of-function): more careful final advance.
+
 2008-08-23  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-roxygen.el: New file.

@@ -583,19 +583,21 @@ Optional argument for location of beginning.  Return '(beg end)."
   (if beginning
       ;; *hack* only for S (R || S+): are we in setMethod(..) etc?
       (let ((in-set-S4 (looking-at ess-set-function-start))
-	    (end-pos))
+	    (end-pos) (npos))
 	(ess-write-to-dribble-buffer
 	 (format "ess-END-of-fun: S4=%s, beginning = %d\n" in-set-S4 beginning))
 	(forward-list 1)	; get over arguments || whole set*(..)
 	(unless in-set-S4 (forward-sexp 1)) ; move over braces
-	;;DBG (ess-write-to-dribble-buffer "ess-END-of-fun: found ok\n")
+	(ess-write-to-dribble-buffer
+	 (format "ess-END-of-fun: found #1 : %d\n" (point)))
 
 	;; For one-line functions withOUT '{ .. }' body  -- added 2008-07-23 --
 	;; particularly helpful for C-c C-c (ess-eval-function-or-paragraph-and-step):
 	(setq end-pos (ess-line-end-position))
-	(while (< (point) end-pos)
-	  (forward-sexp 1)) ; if not at end of line, move further forward
-
+	(while (< (point) end-pos) ; if not at end of line, move further forward
+	  (goto-char ;; careful not to move too far; e.g. *not* over empty lines:
+	   (min (save-excursion (forward-sexp 1) (point))
+		(save-excursion (forward-paragraph 1) (point)))))
 	(list beginning (point))
 	)
     ;; else: 'no-error': we are not in a function
