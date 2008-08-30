@@ -107,18 +107,9 @@ ess-inf.elc: ess-inf.el $(CORE)
 
 
 ess-mode.elc: ess-mode.el $(CORE)
-	@echo " "
-	@echo "For the next compile, please disregard the message"
-	@echo " ** the function set-keymap-parent is not known to be defined."
-	@echo " ** variable last-sexp bound but not referenced"
-	@echo "from the byte compiler if they occur. It is completely normal."
 	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-mode.el
 
 ess-trns.elc: ess-trns.el $(CORE)
-	@echo " "
-	@echo "For the next compile, please disregard the message"
-	@echo " ** the function set-keymap-parent is not known to be defined."
-	@echo "from the byte compiler if it occurs. It is completely normal."
 	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-trns.el
 
 ess-help.elc: ess-help.el $(CORE)
