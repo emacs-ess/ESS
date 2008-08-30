@@ -12,7 +12,7 @@ The template is inserted just before "
 	   (end (nth 1 beg-end))
 	   (fn-regex "^\\(.+\\)\\s-*<-[ \t\n]*function[ ]*(")
 	   names
-	   args-text
+	   args-beg args-end args-text
 	   args
 	   name)
 
@@ -21,7 +21,7 @@ The template is inserted just before "
       (goto-char beg)
       (setq name (ess-read-object-name-default))
       (princ (concat "Roxygen found: " name) t)
-      (re-search-forward fn-regex end) 
+      (re-search-forward fn-regex end)
       ;; handle case that end of regex not found?
 
       ;; args and now between point and the next end round paren.
@@ -38,10 +38,10 @@ The template is inserted just before "
       ;; break string into list of arguments, and remove any
       ;; default value.
       (setq names (split-string args-text ","))
-      (setq args 
+      (setq args
 	    (mapcar
 	     (lambda (x) (ess-replace-in-string x "=.*" "")) names))
-      
+
 
       ;; Now insert the arguments ahead of the function.
       (goto-char (1- beg))
@@ -50,7 +50,7 @@ The template is inserted just before "
       ;;(setq s args)
       )))
 
-(defun ess-roxygen-print-one-param (p) 
+(defun ess-roxygen-print-one-param (p)
   "Insert parameter P to the roxygen comments."
   (insert (format "##' @param %s\n" p)))
 
