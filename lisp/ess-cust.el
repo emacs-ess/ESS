@@ -1457,7 +1457,7 @@ If nil, input is in the `font-lock-variable-name-face'."
   ess-R-function-name-regexp ; since "_" is deprecated for S-plus as well
 )
 
-(defvar ess-R-mode-font-lock-keywords
+(defvar ess-R-common-font-lock-keywords
   (list
    (cons (regexp-opt ess-R-assign-ops)
 	 'font-lock-reference-face)	; assign
@@ -1466,15 +1466,19 @@ If nil, input is in the `font-lock-variable-name-face'."
    (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
 	 'font-lock-reference-face)	; modify search list or source
 					; new definitions
-   (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
-	 'font-lock-keyword-face)	; keywords
    (cons ess-R-function-name-regexp
 	 '(1 font-lock-function-name-face t))
 					; function name
    )
+  "Font-lock patterns used in `R-mode' and R-output buffers.")
+
+(defvar ess-R-mode-font-lock-keywords
+  (append ess-R-common-font-lock-keywords
+	  (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
+		'font-lock-keyword-face)) ; keywords
   "Font-lock patterns used in `R-mode' buffers.")
 
-(defvar ess-S-mode-font-lock-keywords
+(defvar ess-S-common-font-lock-keywords
   (list
    (cons (regexp-opt ess-S-assign-ops)
 	 'font-lock-reference-face)	; assign
@@ -1483,14 +1487,17 @@ If nil, input is in the `font-lock-variable-name-face'."
    (cons (concat "\\<" (regexp-opt ess-S-modifyiers 'enc-paren) "\\>")
 	 'font-lock-reference-face)	; modify search list or source
 					; new definitions
-   (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
-	 'font-lock-keyword-face)	; keywords
    (cons ess-S-function-name-regexp
 	 '(1 font-lock-function-name-face t))
 					; function name
    )
-  "Font-lock patterns used in `S-mode' buffers.")
+  "Font-lock patterns used in `S-mode' and S-output buffers.")
 
+(defvar ess-S-mode-font-lock-keywords
+  (append ess-S-common-font-lock-keywords
+	  (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
+		'font-lock-keyword-face))	; keywords
+  "Font-lock patterns used in `S-mode' buffers.")
 
 
 
@@ -1502,7 +1509,7 @@ If nil, input is in the `font-lock-variable-name-face'."
        (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
 		   '(1 font-lock-variable-name-face keep t))) )
 
-   ess-R-mode-font-lock-keywords
+   ess-R-common-font-lock-keywords
 
    (list
     (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
@@ -1522,7 +1529,7 @@ If nil, input is in the `font-lock-variable-name-face'."
        (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
 		   '(1 font-lock-variable-name-face keep t))) )
 
-   ess-S-mode-font-lock-keywords
+   ess-S-common-font-lock-keywords
 
    (list
     (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face) ; ess-mode msg

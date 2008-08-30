@@ -1,3 +1,10 @@
+2008-08-30  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (ess-R-common-font-lock-keywords): new variable for
+	better modularization
+	(inferior-ess-R-font-lock-keywords): now with*OUT* the keywords.
+	Ditto for -S- instead of -R- .
+
 2008-08-25  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el (ess-end-of-function): more careful final advance.

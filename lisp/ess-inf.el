@@ -1631,7 +1631,7 @@ to continue it."
 
   ;; SJE 2007-06-28: Emacs 22.1 has a bug in that comint-mode will set
   ;; this variable to t, when we need it to be nil.  The Emacs 22
-  ;; solution to this bug is to use define-dervied-mode to derive
+  ;; solution to this bug is to use define-derived-mode to derive
   ;; inferior-ess-mode from comint-mode.  Not sure if we can go down
   ;; that route yet.  I've used the when condition so that if the var
   ;; is nil, don't bother setting it -- as setting it will make a new
