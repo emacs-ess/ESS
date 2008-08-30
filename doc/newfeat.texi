@@ -2,6 +2,9 @@ Changes/New Features in 5.3.9:
 @itemize @bullet
 @item @ESS{[SAS]}: evince PDF viewer now supported as well; search order:
 evince, Xpdf, Adobe/Acrobat Reader
+@item @ESS{[R]}: support for Roxygen ... experimental ... not yet activated.
+@item @ESS{[S]} (and R): inferior (@code{*R*}) and transcript modes no longer
+fontify language keywords (such as @code{for}, @code{in}, etc).
 @end itemize
 
 Changes/New Features in 5.3.8:
