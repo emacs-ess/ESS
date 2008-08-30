@@ -1474,8 +1474,8 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 (defvar ess-R-mode-font-lock-keywords
   (append ess-R-common-font-lock-keywords
-	  (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
-		'font-lock-keyword-face)) ; keywords
+	  (list (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
+		      'font-lock-keyword-face))) ; keywords
   "Font-lock patterns used in `R-mode' buffers.")
 
 (defvar ess-S-common-font-lock-keywords
@@ -1495,8 +1495,8 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 (defvar ess-S-mode-font-lock-keywords
   (append ess-S-common-font-lock-keywords
-	  (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
-		'font-lock-keyword-face))	; keywords
+	  (list (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
+		'font-lock-keyword-face)))	; keywords
   "Font-lock patterns used in `S-mode' buffers.")
 
 
