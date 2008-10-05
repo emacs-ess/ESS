@@ -1,3 +1,9 @@
+ess (5.3.9~svn3950-1) unstable; urgency=low
+
+  * New packages based on svn revision 3950 approaching release 5.3.9.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 04 Oct 2008 18:41:09 -0500
+
 ess (5.3.8~svn3917-1) unstable; urgency=low
 
   * New upstream version based on svn revision 3917 approaching release 5.3.8.

@@ -14,8 +14,10 @@
 ##                  technically, this could be a native Debian package as
 ##                  the debian/ is in upstream SVN but it is easier to have
 ##                  another degree of freedom for Debian revisions
-#version := $(shell head -1 debian/changelog | perl -nle 'm/\((\S+)-\d\)/ && print $$1')
-version := $(shell svnversion)
+##                  if we used just the svn rev: version := $(shell svnversion)
+## edd 04 Oct 2008  use changelog entry instead
+version := $(shell head -1 debian/changelog | perl -nle 'm/\((\S+)-\d\)/ && print $$1')
+
 showversion:
 	@echo Version is ${version}
 
