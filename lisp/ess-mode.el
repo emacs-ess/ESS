@@ -170,7 +170,7 @@
   (define-key ess-mode-map "\C-\M-h"	'ess-mark-function)
   (if (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
       (define-key ess-mode-map [(meta backspace)] 'backward-kill-word))
-  (define-key ess-mode-map "\177"	'backward-delete-char-untabify)
+  (define-key ess-mode-map [delete]	'backward-delete-char-untabify)
   (define-key ess-mode-map "\t"		'ess-indent-command)
   (define-key ess-mode-map "\C-c\C-q"	'ess-quit)
   (define-key ess-mode-map "\C-c\C-e"	ess-eval-map))
