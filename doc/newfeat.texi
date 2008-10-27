@@ -1,3 +1,9 @@
+Changes/New Features in 5.3.10:
+@itemize @bullet
+@item @iESS{[Stata]}: Customize the @code{ess-sta-delimiter-friendly} setting 
+to t to convert embedded semi-colons to newlines for Stata processing.
+@end itemize
+
 Changes/New Features in 5.3.9:
 @itemize @bullet
 @item @ESS{[SAS]}: evince PDF viewer now supported as well; search order:

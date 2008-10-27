@@ -961,6 +961,11 @@ order for it to work right.  And Emacs is too smart for it."
   :group 'ess-Stata
   :type 'string)
 
+(defcustom ess-sta-delimiter-friendly nil
+  "*Set to t to convert embedded semi-colons to newlines for Stata processing."
+  :group 'ess-Stata
+  :type 'string)
+
 (defcustom inferior-OMG-program-name "omegahat"
   "*Program name for invoking an inferior ESS with omegahat()."
   :group 'ess-OMG

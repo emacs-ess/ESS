@@ -1050,6 +1050,9 @@ default 100 ms and be passed to \\[accept-process-output]."
 
       ;; the following is required to make sure things work!
       (if (string= ess-language "STA")
+; RAS 10/21/08:  mindless replacement of semi-colons
+          (if ess-sta-delimiter-friendly
+	    (setq text (ess-replace-in-string text ";" "\n")))
 	  (setq invisibly t))
       ;; dbg:
       ;; dbg(ess-write-to-dribble-buffer
