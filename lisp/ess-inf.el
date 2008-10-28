@@ -1049,11 +1049,10 @@ default 100 ms and be passed to \\[accept-process-output]."
       (set-buffer sbuffer)
 
       ;; the following is required to make sure things work!
-      (if (string= ess-language "STA")
-; RAS 10/21/08:  mindless replacement of semi-colons
-          (if ess-sta-delimiter-friendly
+      (when (string= ess-language "STA")
+	(if ess-sta-delimiter-friendly;; RAS: mindless replacement of semi-colons
 	    (setq text (ess-replace-in-string text ";" "\n")))
-	  (setq invisibly t))
+	(setq invisibly t))
       ;; dbg:
       ;; dbg(ess-write-to-dribble-buffer
       ;; dbg (format "(eval-visibly 1): lang %s (invis=%s, eob=%s, even-empty=%s)\n"
