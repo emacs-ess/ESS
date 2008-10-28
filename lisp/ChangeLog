@@ -1,3 +1,16 @@
+2008-10-28  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-cust.el (ess-sta-delimiter-friendly): see below
+
+	* ess-inf.el (ess-eval-linewise): Stata allows semi-colons to be
+	used in batch, but not interactive processing.  This leads to 
+	madness when you are trying to step through a file that was
+	written for batch with semi-colons.  Now, if you set
+	ess-sta-delimiter-friendly to t (in the ess-Stata group),
+	iESS[Stata] will convert semi-colons to newlines on-the-fly.
+	Beware if you have string literals with embedded semi-colons
+	as this simple fix does not check for such complexity.
+
 2008-08-30  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el (ess-R-common-font-lock-keywords): new variable for
