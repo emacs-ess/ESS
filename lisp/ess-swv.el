@@ -174,7 +174,10 @@ Sweave file buffer name) and display it."
     (if (not (= 0 pdf-status))
 	(message "** OOPS: error in 'pdflatex' (%d)!" pdf-status)
       ;; else: pdflatex probably ok
-      (shell-command (concat pdfviewer " " namestem ".pdf &")))
+      (shell-command (concat
+	(if (and ess-microsoft-p (w32-shell-dos-semantics))
+	    "start \"" pdfviewer "\" \"" namestem ".pdf\""
+	          "\"" pdfviewer "\" \"" namestem ".pdf\" &")))
     (switch-to-buffer buf)
     (display-buffer tex-buf)))
 

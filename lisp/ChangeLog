@@ -1,3 +1,7 @@
+2008-11-06  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-swv.el: fix for embedded blanks in PDF reader and PDF files
+
 2008-10-28  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-cust.el (ess-sta-delimiter-friendly): see below

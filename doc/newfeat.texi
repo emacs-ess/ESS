@@ -1,9 +1,3 @@
-Changes/New Features in 5.3.10:
-@itemize @bullet
-@item @iESS{[Stata]}: Customize the @code{ess-sta-delimiter-friendly} setting 
-to t to convert embedded semi-colons to newlines for Stata processing.
-@end itemize
-
 Changes/New Features in 5.3.9:
 @itemize @bullet
 @item @ESS{[SAS]}: evince PDF viewer now supported as well; search order:
@@ -11,6 +5,9 @@ evince, Xpdf, Adobe/Acrobat Reader
 @item @ESS{[R]}: support for Roxygen ... experimental ... not yet activated.
 @item @ESS{[S]} (and R): inferior (@code{*R*}) and transcript modes no longer
 fontify language keywords (such as @code{for}, @code{in}, etc).
+@item @iESS{[Stata]}: Customize the @code{ess-sta-delimiter-friendly} setting 
+to t to convert embedded semi-colons to newlines for Stata processing.
+@item Sweave fix for embedded blanks in PDF reader and PDF files
 @end itemize
 
 Changes/New Features in 5.3.8:
