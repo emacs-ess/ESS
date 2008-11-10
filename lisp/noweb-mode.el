@@ -411,6 +411,7 @@ Misc:
 ;        currently nil
 ; noweb-mode is nil if the argument was <= 0 or there
 ; was no argument and noweb-mode is currently `t'
+(kill-all-local-variables)
   (set (make-local-variable 'noweb-mode)
        (if arg
            (> (prefix-numeric-value arg) 0)

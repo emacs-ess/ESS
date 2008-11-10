@@ -5,10 +5,16 @@
 	in other modes.  Special thanks for the bug report/fix from
 	markus.triska@gmx.at 
 
+	* noweb-mode.el (noweb-mode):  By convention, every major mode 
+	starts by calling `kill-all-local-variables'. Importantly, this 
+	automatically calls `change-major-mode-hook'. This is documented 
+	in the "Major Mode Conventions" of the Elisp info manual. Special 
+	thanks (again :o) for the bug report/fix from markus.triska@gmx.at
+
 	* ess-mode.el (ess-mode): `ess-mode' should use `run-mode-hooks'
 	rather than `run-hooks', because it is a major mode.  This way,
 	you ensure that `change-major-mode-hook' is called (and everything
-	else).  Special thanks for the bug report/fix from 
+	else).  Special thanks for the bug report/fix from
 	david.reitter@gmail.com
 
 2008-11-06  Rodney Sparapani  <rsparapa@mcw.edu>
