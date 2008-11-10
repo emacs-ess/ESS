@@ -440,7 +440,12 @@ Misc:
           (font-lock-mode -1)
           (noweb-font-lock-mode 1)))
     (add-hook 'post-command-hook 'noweb-post-command-function)
-    (add-hook 'after-change-functions 'noweb-after-change-function)
+
+    (if (fboundp 'make-local-hook) (progn 
+        (make-local-hook 'after-change-functions)
+	(add-local-hook 'after-change-functions 'noweb-after-change-function))
+        (add-hook 'after-change-functions 'noweb-after-change-function nil t))
+
     (add-hook 'noweb-select-doc-mode-hook 'noweb-auto-fill-doc-mode)
     (add-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)
     (add-hook 'isearch-mode-hook 'noweb-note-isearch-mode)
@@ -453,7 +458,11 @@ Misc:
    ;; off, no matter what (hence the condition `t')
    (t
     (remove-hook 'post-command-hook 'noweb-post-command-function)
-    (remove-hook 'after-change-functions 'noweb-after-change-function)
+
+    (if (fboundp 'remove-local-hook) 
+	(remove-local-hook 'after-change-functions 'noweb-after-change-function) 
+	(remove-hook 'after-change-functions 'noweb-after-change-function t))
+
     (remove-hook 'noweb-select-doc-mode-hook 'noweb-auto-fill-doc-mode)
     (remove-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)
     (remove-hook 'isearch-mode-hook 'noweb-note-isearch-mode)
