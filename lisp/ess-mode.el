@@ -418,7 +418,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 	'(" [" (ess-local-process-name ess-local-process-name "none") "]"))
   ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
   ;; (ess-load-object-name-db-file)
-  (run-hooks 'ess-mode-hook)
+  (run-mode-hooks 'ess-mode-hook)
   (ess-write-to-dribble-buffer "\nFinished setting up ESS-mode.\n"))
 
 ;;*;; User commands in ess-mode

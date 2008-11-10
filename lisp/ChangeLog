@@ -1,3 +1,10 @@
+2008-11-10  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-mode.el (ess-mode): `ess-mode' should use `run-mode-hooks'
+	rather than `run-hooks', because it is a major mode.  This way,
+	you ensure that `change-major-mode-hook' is called (and everything
+	else).  Special thanks for the bug report/fix from david.reitter@gmail.com
+
 2008-11-06  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-swv.el: fix for embedded blanks in PDF reader and PDF files
