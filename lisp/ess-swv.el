@@ -177,7 +177,7 @@ Sweave file buffer name) and display it."
       (shell-command (concat
 	(if (and ess-microsoft-p (w32-shell-dos-semantics))
 	    "start \"" pdfviewer "\" \"" namestem ".pdf\""
-	          "\"" pdfviewer "\" \"" namestem ".pdf\" &")))
+	          "\"" pdfviewer "\" \"" namestem ".pdf\" &"))))
     (switch-to-buffer buf)
     (display-buffer tex-buf)))
 
