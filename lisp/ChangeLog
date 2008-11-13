@@ -1,3 +1,9 @@
+2008-11-13  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-editing-alist): M-x comment-region
+	was not using /* */ style comments for some reason that
+	I can't fathom.  It is now.
+
 2008-11-10  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* noweb-mode.el (noweb-mode): Only the local value of
