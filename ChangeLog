@@ -1,3 +1,7 @@
+2008-11-14  Stephen Eglen  <stephen@gnu.org>
+
+	* doc/ess.texi (Indenting): Describe roxygen
+
 2008-07-28  ESS Maintainers <ESS-core@stat.math.ethz.ch>
 
   * Version 5.3.8 released.
