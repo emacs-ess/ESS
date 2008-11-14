@@ -455,6 +455,9 @@ sending `inferior-ess-language-start' to S-Plus.")
 (autoload 'ess-rdired "ess-rdired"
   "View *R* objects in a dired-like buffer." t)
 
+(autoload 'ess-roxygen-fn "ess-roxygen"
+  "Insert roxygen tags for function definitions." t)
+
 ;;; On a PC, the default is S+6.
 ;; Elsewhere (unix and linux) the default is S+6
 (cond (ess-microsoft-p ; MS-Windows
