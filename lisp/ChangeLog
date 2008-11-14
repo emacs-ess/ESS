@@ -1,3 +1,9 @@
+2008-11-14  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-roxygen.el (ess-roxygen-fn): Ensure that newlines before and
+	after template are inserted correctly.  
+	
+
 2008-11-13  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-editing-alist): M-x comment-region
@@ -50,6 +56,11 @@
 2008-08-25  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el (ess-end-of-function): more careful final advance.
+
+2008-08-24  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-roxygen.el (ess-roxygen-fn): Use ##' for markup so that
+	comments don't move upon reindentation.
 
 2008-08-23  Stephen Eglen  <stephen@gnu.org>
 
