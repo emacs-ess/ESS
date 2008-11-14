@@ -176,6 +176,9 @@ to R, put them in the variable `inferior-R-args'."
 	     (ess-imenu-R)))
   ;; MM:      ^^^^^^^^^^^ should really use ess-imenu-mode-function from the
   ;;     alist above!
+  ;;
+  ;; SJE: set up roxygen-fn.  Perhaps we also need a hook here?
+  (local-set-key "\C-c\C-o" 'ess-roxygen-fn)
   )
 
 
