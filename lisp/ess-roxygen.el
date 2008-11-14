@@ -47,6 +47,7 @@ The template is currently inserted just before the function name."
 	   names
 	   args-beg args-end args-text
 	   args
+	   buffer-start
 	   name)
 
       ;; Go to start of function definition, read the name
@@ -75,12 +76,16 @@ The template is currently inserted just before the function name."
 	    (mapcar
 	     (lambda (x) (ess-replace-in-string x "=.*" "")) names))
 
-
       ;; Now insert the arguments ahead of the function.
       (goto-char (1- beg))
+      (setq buffer-start (equal (point) (point-min)))
+      (unless (or buffer-start (looking-at "^$"))
+	;; newline needed if there is no blank line above the function.
+	(insert "\n"))
       (mapc 'ess-roxygen-print-one-param args)
-      (insert "\n##' @return ...\n")
-      ;;(setq s args)
+      (insert "\n##' @return ...")
+      (when buffer-start 
+	  (insert "\n"))
       )))
 
 (defun ess-roxygen-print-one-param (p)
