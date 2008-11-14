@@ -1935,6 +1935,12 @@ behavior by adding the line
 @code{(setq ess-fancy-comments nil)} to your @file{.emacs} file.
 @vindex ess-fancy-comments
 
+@cindex roxygen
+ESS now has preliminary support for editing roxygen tags within R mode
+buffers.  In particular, when the function @code{ess-roxygen-fn} (bound
+to @kbd{C-c C-o}) is called with point inside a R function, the roxygen
+template for the function is added just above the function.
+
 The indentation commands provided by ESS are:
 @cindex indenting
 @cindex formatting source code
