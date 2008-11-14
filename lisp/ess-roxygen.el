@@ -2,9 +2,42 @@
 ;;; 2008-08-23
 ;;; Proof of concept, Stephen Eglen
 
+
+;;; Commentary:
+
+;; Within an R function, if you call M-x ess-roxygen-fn (bound to C-c
+;; C-o) the roxygen function template is added just before the start
+;; of the function, as shown below.  Note that two hashes are used for
+;; each comment, to ensure that the ESS indendation mechanism keeps
+;; the comments at the start of the line.
+
+;; ##' @param trials
+;; ##' @param verbose
+;; ##' @param new.arg
+
+;; ##' @return ...
+;; new.argmcpi <- function(trials, verbose=FALSE,
+;;                         new.arg=100) {
+;;     hits <- 0                             #' Number of successfull trials
+
+;;       for ( i in 1:trials ) {
+;;             print(i)
+;;           }
+;;   }
+
+;;; TODO:
+
+;; perhaps the template could be added within the function definition,
+;; so that by default the template is included within the range marked
+;; by ess-mark-function.  (Or that function can be amended to include
+;; the template.)
+
+;;; Linking in to this existing elisp code would be great:
+;; http://nschum.de/src/emacs/doc-mode/
+
 (defun ess-roxygen-fn ()
-  "Insert  argument list template for the current function.
-The template is inserted just before "
+  "Insert roxygen argument list template for the current function.
+The template is currently inserted just before the function name."
   (interactive)
     (save-excursion
     (let* ((beg-end (ess-end-of-function))
