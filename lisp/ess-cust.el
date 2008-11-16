@@ -751,7 +751,9 @@ file."
        "/Insightful/splus71"
        "/Insightful/splus8.0.1"
        "/Insightful/splus8.0.4"
-       "/Insightful/splus80"))
+       "/Insightful/splus80"
+       "/TIBCO/splus81"
+))
   "*List of possible values of the environment variable SHOME for recent
 releases of S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
@@ -855,16 +857,16 @@ different computer."
 
 (if ess-microsoft-p
     (defcustom inferior-S+6-program-name
-      (concat ess-program-files "/insigh~1/splus70/cmd/Splus.exe")
+      (concat ess-program-files "/TIBCO/splus81/cmd/Splus.exe")
       "*Program name for invoking an external GUI S+6 for Windows.
 The default value is correct for a default installation of
-S-Plus 7.0 and with bash as the shell.
+S-Plus 8.1 and with bash as the shell.
 For any other version or location, change this value in ess-site.el or
 site-start.el.  Use the 8.3 version of the pathname.
 Use double backslashes if you use the msdos shell."
       :group 'ess-SPLUS
       :type 'string)
-  (defcustom inferior-S+6-program-name "Splus6"
+  (defcustom inferior-S+6-program-name "Splus8"
     "*Program name for invoking an inferior ESS with S+6() for Unix."
     :group 'ess-SPLUS
     :type 'string))
@@ -894,16 +896,16 @@ in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
   :type 'string)
 
 (defcustom inferior-Sqpe+6-program-name
-  (concat ess-program-files "/insigh~1/splus70/cmd/Sqpe.exe")
+  (concat ess-program-files "/TIBCO/splus81/cmd/Sqpe.exe")
   "*Program name for invoking an inferior ESS with Sqpe+6() for Windows."
   :group 'ess-S
   :type 'string)
 
 (defcustom inferior-Sqpe+6-SHOME-name
-  (if ess-microsoft-p (concat ess-program-files "/insigh~1/splus70" ""))
+  (if ess-microsoft-p (concat ess-program-files "/TIBCO/splus81" ""))
   "*SHOME name for invoking an inferior ESS with Sqpe+6() for Windows.
 The default value is correct for a default installation of
-S-Plus 7.0.  For any other version or location,
+S-Plus 8.1.  For any other version or location,
 change this value in ess-site.el or site-start.el.  Use the 8.3
 version of the pathname."
   :group 'ess-SPLUS

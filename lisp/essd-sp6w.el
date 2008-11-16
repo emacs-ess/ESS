@@ -260,6 +260,8 @@ S-Plus, then a new one will be opened in the default directory.  The default
 is usually something like 'c:/Program Files/Insightful/splus70/users/yourname'
 for S-Plus before 8.0.4.  Beginning with 8.0.4, S-Plus uses the default directory
 'c:/Documents and Settings/yourname/My Documents/S-PLUS Projects/Project1'.
+Beginning with TIBCO Spotfire S+ Version 8.1.1 for Microsft Windows, the default
+directory is 'c:/DOCUME~1/yourname/MYDOCU~1/SPOTFI~1/Project1'.
 If you have a HOME environment variable, it will open it there."
   (interactive)
   (let* ((inferior-S+6-multipleinstances " & # ") ; Note: there is a final "&".
@@ -466,6 +468,8 @@ S-Plus, then a new one will be opened in the default directory.  The default
 is usually something like 'c:/Program Files/Insightful/splus70/users/yourname'
 for S-Plus before 8.0.4.  Beginning with 8.0.4, S-Plus uses the default directory
 'c:/Documents and Settings/yourname/My Documents/S-PLUS Projects/Project1'.
+Beginning with TIBCO Spotfire S+ Version 8.1.1 for Microsft Windows, the default
+directory is 'c:/DOCUME~1/yourname/MYDOCU~1/SPOTFI~1/Project1'.
 If you have a HOME environment variable, it will open it there."
   (interactive)
   (let* ((inferior-S+6-multipleinstances "")

@@ -281,6 +281,7 @@ between .s or .S files and assembly mode.
 ;;(setq-default inferior-S+4-program-name "Splus")
 ;;(setq-default inferior-S+5-program-name "Splus5")
 ;;(setq-default inferior-S+6-program-name "Splus7") ; unix systems
+;;(setq-default inferior-S+6-program-name "Splus8") ; unix systems
 ;;(setq-default inferior-R-program-name "R")	    ; unix systems
 ;;(setq-default inferior-R-program-name "Rterm")    ; MS Windows, see below for path as well
 ;;(setq-default inferior-R-program-name "C:\\Program Files\\R\\R-2.5.0\\bin\\Rterm.exe")
@@ -371,7 +372,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;(ess-message "[ess-site:] require 'essd-s3 ...")
 ;;(require 'essd-s3)  ; THIS IS RARE.  You probably do not have this.
 
-;; "sp" refers to S-PLUS (MathSoft/StatSci/Insightful):
+;; "sp" refers to S-PLUS (MathSoft/StatSci/Insightful/TIBCO):
 (ess-message "[ess-site:] require 'essd-sp3 ...")
 (require 'essd-sp3)
 
