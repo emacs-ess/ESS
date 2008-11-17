@@ -150,6 +150,16 @@ essl-sta.elc : essl-sta.el ess.elc
 
 essd-sta.elc : essd-sta.el ess.elc
 
+## BUGS
+
+essl-bugs.elc : essl-bugs.el ess-emcs.elc
+
+essd-bugs.elc : essd-bugs.el essl-bugs.elc
+
+## JAGS 
+
+essd-jags.elc : essd-jags.el essl-bugs.elc ess-utils.elc ess-inf.elc
+
 # Ignore this.
 #(defun S-insert-make-rule (file)
 #  (interactive "sFile:")
