@@ -140,7 +140,7 @@ essd-vst.elc : essd-vst.el essl-lsp.elc ess.elc
 
 ## SAS
 
-essl-sas.elc : essl-sas.el ess.elc
+essl-sas.elc : essl-sas.el essa-sas.el ess.elc
 
 essd-sas.elc : essd-sas.el essl-sas.elc ess.elc
 

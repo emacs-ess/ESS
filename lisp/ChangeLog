@@ -1,3 +1,8 @@
+2008-11-17  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* Makefile (essl-sas.elc): Added formerly
+	unaccounted for essa-sas.el dependency.
+
 2008-11-14  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-r.el (R-mode): Add keybinding (C-c C-o) for ess-roxygen-fn.
