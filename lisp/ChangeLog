@@ -1,8 +1,12 @@
+2008-11-20  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-swv.el (noweb-minor-mode-menu): add to "Noweb" menubar menu.
+
 2008-11-17  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* Makefile (essl-sas.elc): Added formerly
 	unaccounted for essa-sas.el dependency.
-	
+
 	* Makefile (essl-bugs.elc/essd-bugs.elc/essd-jags.elc): Added formerly
 	unaccounted for BUGS/JAGS targets/dependencies.
 
@@ -24,14 +28,14 @@
 2008-11-10  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* noweb-mode.el (noweb-mode): Only the local value of
-	after-change-functions should be modified to avoid problems 
+	after-change-functions should be modified to avoid problems
 	in other modes.  Special thanks for the bug report/fix from
-	markus.triska@gmx.at 
+	markus.triska@gmx.at
 
-	* noweb-mode.el (noweb-mode):  By convention, every major mode 
-	starts by calling `kill-all-local-variables'. Importantly, this 
-	automatically calls `change-major-mode-hook'. This is documented 
-	in the "Major Mode Conventions" of the Elisp info manual. Special 
+	* noweb-mode.el (noweb-mode):  By convention, every major mode
+	starts by calling `kill-all-local-variables'. Importantly, this
+	automatically calls `change-major-mode-hook'. This is documented
+	in the "Major Mode Conventions" of the Elisp info manual. Special
 	thanks (again :o) for the bug report/fix from markus.triska@gmx.at
 
 	* ess-mode.el (ess-mode): `ess-mode' should use `run-mode-hooks'
@@ -49,7 +53,7 @@
 	* ess-cust.el (ess-sta-delimiter-friendly): see below
 
 	* ess-inf.el (ess-eval-linewise): Stata allows semi-colons to be
-	used in batch, but not interactive processing.  This leads to 
+	used in batch, but not interactive processing.  This leads to
 	madness when you are trying to step through a file that was
 	written for batch with semi-colons.  Now, if you set
 	ess-sta-delimiter-friendly to t (in the ess-Stata group),

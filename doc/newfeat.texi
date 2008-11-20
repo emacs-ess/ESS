@@ -5,11 +5,13 @@ evince, Xpdf, Adobe/Acrobat Reader
 @item @ESS{[R]}: support for Roxygen ... experimental ... not yet activated.
 @item @ESS{[S]} (and R): inferior (@code{*R*}) and transcript modes no longer
 fontify language keywords (such as @code{for}, @code{in}, etc).
-@item @iESS{[Stata]}: Customize the @code{ess-sta-delimiter-friendly} setting 
+@item @iESS{[Stata]}: Customize the @code{ess-sta-delimiter-friendly} setting
 to t to convert embedded semi-colons to newlines for Stata processing.
 @item Sweave fix for embedded blanks in PDF reader and PDF files
 @item Several fixes for Major Mode Convention violations in @code{ess-mode}
 and @code{noweb-mode}.
+@item @ESS{[S]} The @code{ess-swv-*} commands (and keybindings) are now in
+a submenu of the ``Noweb'' menu, when editing Sweave files.
 @end itemize
 
 Changes/New Features in 5.3.8:
