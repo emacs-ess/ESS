@@ -1000,10 +1000,14 @@ order for it to work right.  And Emacs is too smart for it."
   :group 'ess
   :type '(choice (const nil) string))
 
+
+;; FIXME:  For GNU emacs, "emacsclient" (without ".exe") also works on Windoze
+;;   (if (>= emacs-major-version 22) "emacsclient" ; for all platforms
 (defcustom S-editor
   (if ess-microsoft-p "gnuclient.exe"
     (if (equal system-type 'Apple-Macintosh) nil
-      (if (featurep 'xemacs) "gnuclient" "emacsclient"))) ;; unix
+      ;; unix:
+      (if (featurep 'xemacs) "gnuclient" "emacsclient")))
   "*Editor called by S process with 'edit()' command."
   :group 'ess
   :type 'string)
