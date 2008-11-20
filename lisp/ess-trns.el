@@ -266,7 +266,10 @@ prompt from those lines that remain.  Prefix argument means to use
 	(goto-char (point-min))
 	(delete-non-matching-lines (concat "^" inferior-ess-prompt))
 	(goto-char (point-min))
-	(replace-regexp (concat "^" inferior-ess-prompt) ""))
+	;; (replace-regexp  *  * ) :
+	(while (re-search-forward (concat "^" inferior-ess-prompt) nil t)
+	  (replace-match "" nil nil)))
+
       (if do-toggle (toggle-read-only 1)))))
 
 (defun ess-transcript-DO-clean-region (beg end)
