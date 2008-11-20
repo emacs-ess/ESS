@@ -491,10 +491,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;;; Create functions for calling different (older or newer than default)
 ;;;  versions of R and S(qpe).
-(defvar ess-r-versions-created nil)
+(defvar ess-versions-created nil
+  "list of strings of all S- and R-versions found on the current computer environment")
 
 (let ( (ess-s-versions-created)
-       (ess-versions-created)
+       (ess-r-versions-created)
        (R-newest-list '("R-newest"))
        )
   (if ess-microsoft-p
@@ -509,7 +510,7 @@ sending `inferior-ess-language-start' to S-Plus.")
       )
 
   (setq ess-r-versions-created ;;  for Unix *and* Windows, using either
-	(ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths
+	(ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths (above!)
 
   ;; Add the new defuns, if any, to the menu.
   ;; Check that each variable exists, before adding.
