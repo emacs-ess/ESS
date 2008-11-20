@@ -82,8 +82,9 @@
 (eval-when-compile
   (require 'ess-cust)
   (require 'ess)
-  (require 'ess-noweb)
 )
+(require 'ess-noweb)
+(require 'easymenu)
 
 (defun ess-swv-run-in-R (cmd &optional choose-process)
   "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
@@ -224,7 +225,22 @@ Sweave file buffer name) and display it."
 
 (define-key noweb-minor-mode-map "\M-nx" 'ess-insert-Sexpr)
 
-
+;; AND add these to the noweb menu we have anyway ! :
+(easy-menu-add-item
+   noweb-minor-mode-menu
+   nil ;; <= path
+   ;; item :
+   '("Sweaving, Tangling, ..."
+     ["Sweave" ess-swv-weave   t]
+     ["Tangle" ess-swv-tangle  t]
+     ["LaTeX"  ess-swv-latex   t]
+     ["PDF(LaTeX)" ess-swv-PDF t]
+     ["PS (dvips)" ess-swv-PS  t]
+     ["Insert Sexpr" ess-insert-Sexpr t]
+     )
+   ;; (optional)  before --- this does not work yet
+   '("Help")
+   )
 
  ; provides
 
