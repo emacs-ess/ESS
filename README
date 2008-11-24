@@ -59,6 +59,22 @@ Changes/New Features in 5.3.9:
    * ESS[SAS]: evince PDF viewer now supported as well; search order:
      evince, Xpdf, Adobe/Acrobat Reader
 
+   * ESS[R]: support for Roxygen ... experimental ... not yet activated.
+
+   * ESS[S] (and R): inferior (`*R*') and transcript modes no longer
+     fontify language keywords (such as `for', `in', etc).
+
+   * iESS[Stata]: Customize the `ess-sta-delimiter-friendly' setting to
+     t to convert embedded semi-colons to newlines for Stata processing.
+
+   * Sweave fix for embedded blanks in PDF reader and PDF files
+
+   * Several fixes for Major Mode Convention violations in `ess-mode'
+     and `noweb-mode'.
+
+   * ESS[S] The `ess-swv-*' commands (and keybindings) are now in a
+     submenu of the "Noweb" menu, when editing Sweave files.
+
    Changes/New Features in 5.3.8:
    * ESS[JAGS]: more separation from ESS[BUGS] (as much as is currently
      planned); now `C-c C-c' on an empty `.jmd' creates a template as
