@@ -1,3 +1,16 @@
+2008-11-24  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essd-jags.el (ess-jags-mode): adding comment-region
+	functionality to ESS[JAGS]
+	
+	* essd-jags.el (ess-jags-switch-to-suffix): JAGS 1.0.3 is 
+	very finicky about monitor-ing AND thin-ing; the syntax
+	and semantics are primitive; most likely this will be 
+	re-visited in a future release of JAGS; in the time being,
+	a minor change to ESS[JAGS] and the recommendation that
+	variables be monitor-ed implicitly via the Local Variable
+	ess-jags-monitor
+
 2008-11-20  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-swv.el (noweb-minor-mode-menu): add to "Noweb" menubar menu.

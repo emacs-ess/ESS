@@ -127,13 +127,13 @@
 			(format "%d" jags-chains) ")\n"))
 		(setq jags-chains (- jags-chains 1)))
 
-	    (setq ess-jags-temp-monitor nil)
+	    (setq ess-jags-temp-monitor "")
 
 		(while (and (listp ess-jags-monitor) (consp ess-jags-monitor))
-		    (setq ess-jags-temp-monitor 
-			(concat ess-jags-temp-monitor 
-			    "monitor " (car ess-jags-monitor) 
-			    ", thin(" (format "%d" ess-jags-thin) ")\n"))
+		    (if (not (string-equal "" (car ess-jags-monitor)))
+			(setq ess-jags-temp-monitor 
+			    (concat ess-jags-temp-monitor "monitor " 
+				(car ess-jags-monitor) ", thin(" (format "%d" ess-jags-thin) ")\n")))
 		    (setq ess-jags-monitor (cdr ess-jags-monitor)))
 
 	    (insert "model in \"" ess-bugs-file-root ".bug\"\n")
@@ -248,6 +248,7 @@
    "ESS[JAGS]: Major mode for JAGS."
    (interactive)
    (kill-all-local-variables)
+   (ess-setq-vars-local '((comment-start . "#")))
    (setq major-mode 'ess-jags-mode)
    (setq mode-name "ESS[JAGS]")
    (use-local-map ess-bugs-mode-map)

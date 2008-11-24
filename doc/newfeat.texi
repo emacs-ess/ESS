@@ -10,6 +10,7 @@ to t to convert embedded semi-colons to newlines for Stata processing.
 @item Sweave fix for embedded blanks in PDF reader and PDF files
 @item Several fixes for Major Mode Convention violations in @code{ess-mode}
 and @code{noweb-mode}.
+@item @ESS{[JAGS]}: @code{M-x comment-region} now available!
 @item @ESS{[S]} The @code{ess-swv-*} commands (and keybindings) are now in
 a submenu of the ``Noweb'' menu, when editing Sweave files.
 @end itemize
