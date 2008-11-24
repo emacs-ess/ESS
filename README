@@ -59,7 +59,7 @@ Changes/New Features in 5.3.9:
    * ESS[SAS]: evince PDF viewer now supported as well; search order:
      evince, Xpdf, Adobe/Acrobat Reader
 
-   * ESS[R]: support for Roxygen ... experimental ... not yet activated.
+   * ESS[R]: added support for Roxygen, potentially to be extended.
 
    * ESS[S] (and R): inferior (`*R*') and transcript modes no longer
      fontify language keywords (such as `for', `in', etc).
