@@ -39,15 +39,16 @@ dist: VERSION RPM.spec
 	chmod a-w $(ESSDIR)/lisp/*.el
 #      should be newer than 'VERSION' :
 	touch $(ESSDIR)/lisp/ess-cust.el
-	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
+# Not really desirable in many cases -- commented 2008-11-24 (for ESS 5.3.9):
+#	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
 	@echo "** Creating .tgz file **"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
 	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
-#	Change of plans:  no longer think this is a good idea
-#	Rather, the improved installation docs for xemacs will serve us better
+# Change of plans:  no longer think this is a good idea
+# Rather, the improved installation docs for xemacs will serve us better
 #	@echo "** Creating .tgz and .zip files for the XEmacs Package System **"
 #	test -f $(ESSDIR)-xemacs-pkg.tgz && rm -rf $(ESSDIR)-xemacs-pkg.tgz || true
 #	test -f $(ESSDIR)-xemacs-pkg.zip && rm -rf $(ESSDIR)-xemacs-pkg.zip || true
