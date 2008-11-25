@@ -254,6 +254,8 @@ Changes/New Features in 5.3.9:
    * Several fixes for Major Mode Convention violations in `ess-mode'
      and `noweb-mode'.
 
+   * ESS[JAGS]: `M-x comment-region' now available!
+
    * ESS[S] The `ess-swv-*' commands (and keybindings) are now in a
      submenu of the "Noweb" menu, when editing Sweave files.
 
