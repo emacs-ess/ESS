@@ -1,3 +1,8 @@
+Changes/New Features in 5.3.10:
+@itemize @bullet
+None: Fixed noweb-mode bug accidentally introduced into 5.3.9
+@end itemize
+
 Changes/New Features in 5.3.9:
 @itemize @bullet
 @item @ESS{[SAS]}: evince PDF viewer now supported as well; search order:

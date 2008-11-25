@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.3.9
+   5.3.10
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -237,7 +237,10 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
-Changes/New Features in 5.3.9:
+Changes/New Features in 5.3.10:
+     None: Fixed noweb-mode bug accidentally introduced into 5.3.9
+
+   Changes/New Features in 5.3.9:
    * ESS[SAS]: evince PDF viewer now supported as well; search order:
      evince, Xpdf, Adobe/Acrobat Reader
 

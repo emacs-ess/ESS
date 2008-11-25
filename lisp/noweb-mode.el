@@ -90,7 +90,9 @@
 ;;     be removed
 ;;
 ;;   * ...
-;;
+
+;; Want to use these now in order to cater for all obscure kinds of emacsen
+(require 'ess-emcs)
 
 
 ;;; Variables
@@ -403,23 +405,23 @@ Misc:
 \\[noweb-describe-mode] \tdescribe noweb-mode
 \\[noweb-mode-version] \t\tshow noweb-mode's version in the minibuffer
 "  (interactive "P")
-; This bit is tricky: copied almost verbatim from bib-cite-mode.el
-; It seems to ensure that the variable noweb-mode is made
-; local to this buffer. It then sets noweb-mode to `t' if
-;     1) It was called with an argument greater than 0
-; or  2) It was called with no argument, and noweb-mode is
-;        currently nil
-; noweb-mode is nil if the argument was <= 0 or there
-; was no argument and noweb-mode is currently `t'
-(kill-all-local-variables)
+;; This bit is tricky: copied almost verbatim from bib-cite-mode.el
+;; It seems to ensure that the variable noweb-mode is made
+;; local to this buffer. It then sets noweb-mode to `t' if
+;;     1) It was called with an argument greater than 0
+;; or  2) It was called with no argument, and noweb-mode is
+;;        currently nil
+;; noweb-mode is nil if the argument was <= 0 or there
+;; was no argument and noweb-mode is currently `t'
+  (kill-all-local-variables)
   (set (make-local-variable 'noweb-mode)
        (if arg
            (> (prefix-numeric-value arg) 0)
          (not noweb-mode)))
-; Now, if noweb-mode is true, we want to turn
-; noweb-mode on
+  ;; Now, if noweb-mode is true, we want to turn
+  ;; noweb-mode on
   (cond
-   (noweb-mode                 ;Setup the minor-mode
+   (noweb-mode				;Setup the minor-mode
     (mapcar 'noweb-make-variable-permanent-local
             '(noweb-mode
               after-change-functions
@@ -442,10 +444,12 @@ Misc:
           (noweb-font-lock-mode 1)))
     (add-hook 'post-command-hook 'noweb-post-command-function)
 
-    (if (fboundp 'make-local-hook) (progn 
-        (make-local-hook 'after-change-functions)
-	(add-local-hook 'after-change-functions 'noweb-after-change-function))
-        (add-hook 'after-change-functions 'noweb-after-change-function nil t))
+    (if (and (>= emacs-major-version 21)
+	     (not (featurep 'xemacs)))
+	(add-hook 'after-change-functions 'noweb-after-change-function nil t)
+      ;; else Xemacs or very old GNU Emacs
+      (make-local-hook 'after-change-functions)
+      (add-hook 'after-change-functions 'noweb-after-change-function))
 
     (add-hook 'noweb-select-doc-mode-hook 'noweb-auto-fill-doc-mode)
     (add-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)
@@ -460,9 +464,9 @@ Misc:
    (t
     (remove-hook 'post-command-hook 'noweb-post-command-function)
 
-    (if (fboundp 'remove-local-hook) 
-	(remove-local-hook 'after-change-functions 'noweb-after-change-function) 
-	(remove-hook 'after-change-functions 'noweb-after-change-function t))
+    (if (fboundp 'remove-local-hook)
+	(remove-local-hook 'after-change-functions 'noweb-after-change-function)
+      (remove-hook 'after-change-functions 'noweb-after-change-function t))
 
     (remove-hook 'noweb-select-doc-mode-hook 'noweb-auto-fill-doc-mode)
     (remove-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)

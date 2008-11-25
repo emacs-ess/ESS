@@ -1,11 +1,16 @@
+2008-11-25  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* noweb-mode.el (noweb-mode): fix "add-local-hook" thinko;
+	also correctly indent (and use ';;' for full-line comments)
+
 2008-11-24  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essd-jags.el (ess-jags-mode): adding comment-region
 	functionality to ESS[JAGS]
-	
-	* essd-jags.el (ess-jags-switch-to-suffix): JAGS 1.0.3 is 
+
+	* essd-jags.el (ess-jags-switch-to-suffix): JAGS 1.0.3 is
 	very finicky about monitor-ing AND thin-ing; the syntax
-	and semantics are primitive; most likely this will be 
+	and semantics are primitive; most likely this will be
 	re-visited in a future release of JAGS; in the time being,
 	a minor change to ESS[JAGS] and the recommendation that
 	variables be monitor-ed implicitly via the Local Variable
