@@ -1,5 +1,8 @@
 2008-11-26  Martin Maechler  <maechler@stat.math.ethz.ch>
 
+	* ess-swv.el (ess-swv-menu): a version that "works" with Xemacs;
+	still with a FIXME.
+
 	* noweb-mode.el, ess-rdired.el: replace (next-line .) by
 	(forward-line .); also get rid of compilation warning about
 	noweb-font-lock-mode.
