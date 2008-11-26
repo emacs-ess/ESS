@@ -392,14 +392,14 @@ Rotate between the alternative sorting methods."
   "Move down lines then position at object.
 Optional prefix ARG says how many lines to move; default is one line."
   (interactive "p")
-  (next-line arg)
+  (forward-line arg)
   (ess-rdired-move-to-object))
 
 (defun ess-rdired-previous-line (arg)
   "Move up lines then position at object.
 Optional prefix ARG says how many lines to move; default is one line."
   (interactive "p")
-  (previous-line arg)
+  (forward-line (- (or arg 1))) ; -1 if arg was nil
   (ess-rdired-move-to-object))
 
 (defun ess-rdired-move-to-object ()

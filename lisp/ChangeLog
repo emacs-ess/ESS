@@ -1,3 +1,9 @@
+2008-11-26  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* noweb-mode.el, ess-rdired.el: replace (next-line .) by
+	(forward-line .); also get rid of compilation warning about
+	noweb-font-lock-mode.
+
 2008-11-25  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* noweb-mode.el (noweb-mode): fix "add-local-hook" thinko;

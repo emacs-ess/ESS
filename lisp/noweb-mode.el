@@ -7,8 +7,7 @@
 ;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; ESS-related Changes for ESS added by Mark Lunt and A.J. Rossini,
-;; starting March, 1999.
+;; ESS-related Changes first added by Mark Lunt and A.J. Rossini, March, 1999.
 
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
@@ -92,7 +91,9 @@
 ;;   * ...
 
 ;; Want to use these now in order to cater for all obscure kinds of emacsen
-(require 'ess-emcs)
+(eval-and-compile
+  (require 'ess-emcs))
+
 
 
 ;;; Variables
@@ -441,6 +442,7 @@ Misc:
     (if font-lock-mode
         (progn
           (font-lock-mode -1)
+	  (require 'noweb-font-lock-mode); which requires noweb-mode .. hmm..
           (noweb-font-lock-mode 1)))
     (add-hook 'post-command-hook 'noweb-post-command-function)
 
@@ -472,7 +474,8 @@ Misc:
     (remove-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)
     (remove-hook 'isearch-mode-hook 'noweb-note-isearch-mode)
     (remove-hook 'isearch-mode-end-hook 'noweb-note-isearch-mode-end)
-    (if noweb-font-lock-mode
+    (if (and (boundp 'noweb-font-lock-mode)
+	     noweb-font-lock-mode)
         (progn
           (noweb-font-lock-mode -1)
           (message "Noweb and Noweb-Font-Lock Modes Removed"))
@@ -535,9 +538,9 @@ Record them in NOWEB-CHUNK-VECTOR."
           ;; Scan forward either to !/^@ %def/, which will start a docs chunk,
           ;; or to /^<<.*>>=$/, which will start a code chunk.
           (progn
-            (next-line 1)
+            (forward-line 1)
             (while (looking-at "@ %def")
-              (next-line 1))
+              (forward-line 1))
             (setq chunk-list
                   ;; Now we can tell code vs docs
                   (cons (cons (if (looking-at "<<\\(.*\\)>>=")
@@ -546,7 +549,7 @@ Record them in NOWEB-CHUNK-VECTOR."
                                 'doc)
                               (point-marker))
                         chunk-list))))
-        (next-line 1))
+        (forward-line 1))
       (setq chunk-list (cons (cons 'doc (point-max-marker)) chunk-list))
       (setq noweb-chunk-vector (vconcat (reverse chunk-list))))))
 
@@ -999,7 +1002,7 @@ switch narrowing on."
         (setq start (+ (noweb-sign cnt) start)))
       (setq i (1+ i)))
     (goto-char (marker-position (cdr (noweb-chunk-vector-aref start))))
-    (next-line 1))
+    (forward-line 1))
   (if noweb-narrowing
       (noweb-narrow-to-chunk-pair)))
 
@@ -1093,7 +1096,7 @@ chunk from point, else goto to the -Nth code chunk from point."
             (setq i (1+ i)))
           (goto-char (marker-position
                       (cdr (noweb-chunk-vector-aref start))))
-          (next-line 1))))
+          (forward-line 1))))
   (if noweb-narrowing
       (noweb-narrow-to-chunk-pair)))
 
@@ -1675,7 +1678,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
                       (goto-char (point-min))
                       (while (re-search-forward thread-name-re nil t)
                         (noweb-tangle-chunk tangle-buffer pre-chunk)
-                        (next-line 1)))
+                        (forward-line 1)))
                     (if post-chunk
                         (save-excursion
                           (set-buffer tangle-buffer)
