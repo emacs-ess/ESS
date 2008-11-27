@@ -446,12 +446,10 @@ Misc:
           (noweb-font-lock-mode 1)))
     (add-hook 'post-command-hook 'noweb-post-command-function)
 
-    (if (and (>= emacs-major-version 21)
-	     (not (featurep 'xemacs)))
-	(add-hook 'after-change-functions 'noweb-after-change-function nil t)
-      ;; else Xemacs or very old GNU Emacs
-      (make-local-hook 'after-change-functions)
-      (add-hook 'after-change-functions 'noweb-after-change-function))
+    (if (or (<= emacs-major-version 20)
+	    (featurep 'xemacs)) ;; Xemacs or very old GNU Emacs
+	(make-local-hook 'after-change-functions))
+    (add-hook 'after-change-functions 'noweb-after-change-function nil t)
 
     (add-hook 'noweb-select-doc-mode-hook 'noweb-auto-fill-doc-mode)
     (add-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)
