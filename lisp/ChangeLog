@@ -1,3 +1,9 @@
+2008-11-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-emcs.el (ess-has-tooltip): move from ./ess-cust.el and test
+	for Emacs >= 21.x.
+	Consequently ESS works again in 'emacs-20.7 -nw'.
+
 2008-11-26  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-swv.el (ess-swv-menu): a version that "works" with Xemacs;

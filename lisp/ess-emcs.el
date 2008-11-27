@@ -232,6 +232,10 @@ and replace a sub-expression, e.g.
       "Non-nil means the buffer contents are regarded as multi-byte characters.
  This concept is handled completely differently on Xemacs."))
 
+(defvar ess-has-tooltip
+  (and (not (featurep 'xemacs))
+       (>= emacs-major-version 21))
+  "non-nil if 'tooltip can be required; typically nil for Xemacs.")
 
 ;; XEmacs on Windows needs this
 (if (and ess-microsoft-p
