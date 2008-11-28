@@ -240,7 +240,16 @@ and replace a sub-expression, e.g.
 ;; XEmacs on Windows needs this
 (if (and ess-microsoft-p
 	 (not (fboundp 'w32-short-file-name)))
-    (fset 'w32-short-file-name 'win32-short-file-name))
+    (cond ((fboundp 'win32-short-file-name)
+	   (fset 'w32-short-file-name 'win32-short-file-name))
+	  ((fboundp 'mswindows-short-file-name)
+	   (fset 'w32-short-file-name 'mswindows-short-file-name))
+	  (t
+	   (warn "None of 'w32-short-file-name, 'win32-short-file-name,
+or 'mswindows-short-file-name are defined!
+You will have to manually set   ess-program-files (in ess-cust.el) to
+the correct \"8.3\"-style directory name."))))
+
 
 (defun ess-sleep ()
   "Put emacs to sleep for `ess-sleep-for' seconds (floats work).

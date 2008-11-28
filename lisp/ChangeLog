@@ -1,3 +1,8 @@
+2008-11-28  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-emcs.el (w32-short-file-name): Xemacs 21.5(beta) on Windows
+	does not know win32-short-file-name anymore, but mswindows-*.
+
 2008-11-27  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-emcs.el (ess-has-tooltip): move from ./ess-cust.el and test
