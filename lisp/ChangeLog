@@ -1,5 +1,8 @@
 2008-11-28  Martin Maechler  <maechler@stat.math.ethz.ch>
 
+	* noweb-mode.el (noweb-electric-<): {from Markus Triska}: also
+	insert a (closing) "@".
+
 	* ess-emcs.el (w32-short-file-name): Xemacs 21.5(beta) on Windows
 	does not know win32-short-file-name anymore, but mswindows-*.
 

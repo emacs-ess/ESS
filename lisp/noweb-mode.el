@@ -1161,8 +1161,8 @@ insert \"@ \" and update the chunk vector."
   "Smart incarnation of `<', starting a new code chunk, maybe.
 If given an numerical argument, it will act just like the dumb `<'.
 Otherwise and if at the beginning of a line in a documentation chunk:
-insert \"<<>>=\" and a newline if necessary.  Leave point in the middle
-and and update the chunk vector."
+insert \"<<>>=\", a closing \"@\" and a newline if necessary.  Leave point
+in the middle and and update the chunk vector."
   (interactive "P")
   (if arg
       (self-insert-command (if (numberp arg) arg 1))
@@ -1171,7 +1171,7 @@ and and update the chunk vector."
         (progn
           (insert "<<")
           (save-excursion
-            (insert ">>=")
+            (insert ">>=\n@ ")
             (if (not (looking-at "\\s *$"))
                 (newline)))
           (noweb-update-chunk-vector))
