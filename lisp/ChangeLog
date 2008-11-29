@@ -1,3 +1,12 @@
+2008-11-29  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* noweb-mode.el: TODO cleanup; notably replacing more
+	(stringp (car (noweb-find-chunk))) by (noweb-in-code-chunk).
+
+	* noweb-mode.el (noweb-mode): use before-change-functions,
+	noweb-chunk-boundary-changed etc; code from Markus Triska.
+
+
 2008-11-28  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* noweb-mode.el (noweb-electric-<): {from Markus Triska}: also

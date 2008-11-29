@@ -56,7 +56,12 @@ shell, simply type `M-x S+6-msdos RET'.
 ================
 
 Changes/New Features in 5.3.10:
-     None: Fixed noweb-mode bug accidentally introduced into 5.3.9
+   * Fixed noweb-mode bug accidentally introduced into 5.3.9
+
+   * In noweb-mode, e.g., Rnw-mode, electric "<" also inserts closing
+     "@".   Further, the code chunk boundaries are better kept
+     up-to-date, such that  code[R] <-> text[LaTeX] minor mode
+     switching should happen more reliably.
 
    Changes/New Features in 5.3.9:
    * ESS[SAS]: evince PDF viewer now supported as well; search order:

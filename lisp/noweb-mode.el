@@ -67,11 +67,10 @@
 ;;
 ;;  * [tho] noweb-goto-chunk proposes a default
 ;;
+;;   * commands for tangling, weaving,.. for Sweave: --> ./ess-swv.el
+;;
 
 ;; TODO:
-;;
-;;   * replace obscure hacks like `(stringp (car (noweb-find-chunk)))'
-;;     by something more reasonable like `(noweb-code-chunkp)'.
 ;;
 ;;   * _maybe_ replace our `noweb-chunk-vector' by text properties.  We
 ;;     could then use highlighting to jazz up the visual appearance.
@@ -83,12 +82,9 @@
 ;;
 ;;   * more range checks and error exits
 ;;
-;;   * commands for tangling, weaving, etc.
-;;
 ;;   * `noweb-hide-code-quotes' should be superfluous now, and could
 ;;     be removed
-;;
-;;   * ...
+
 
 ;; Want to use these now in order to cater for all obscure kinds of emacsen
 (eval-and-compile
@@ -426,6 +422,7 @@ Misc:
     (mapcar 'noweb-make-variable-permanent-local
             '(noweb-mode
               after-change-functions
+              before-change-functions
               noweb-narrowing
               noweb-chunk-vector
               post-command-hook
@@ -446,10 +443,12 @@ Misc:
           (noweb-font-lock-mode 1)))
     (add-hook 'post-command-hook 'noweb-post-command-function)
 
-    (if (or (<= emacs-major-version 20)
-	    (featurep 'xemacs)) ;; Xemacs or very old GNU Emacs
-	(make-local-hook 'after-change-functions))
+    (when (or (<= emacs-major-version 20)
+              (featurep 'xemacs)) ;; Xemacs or very old GNU Emacs
+      (make-local-hook 'after-change-functions)
+      (make-local-hook 'before-change-functions))
     (add-hook 'after-change-functions 'noweb-after-change-function nil t)
+    (add-hook 'before-change-functions 'noweb-before-change-function nil t)
 
     (add-hook 'noweb-select-doc-mode-hook 'noweb-auto-fill-doc-mode)
     (add-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)
@@ -465,8 +464,11 @@ Misc:
     (remove-hook 'post-command-hook 'noweb-post-command-function)
 
     (if (fboundp 'remove-local-hook)
-	(remove-local-hook 'after-change-functions 'noweb-after-change-function)
-      (remove-hook 'after-change-functions 'noweb-after-change-function t))
+        (progn
+          (remove-local-hook 'after-change-functions 'noweb-after-change-function)
+          (remove-local-hook 'before-change-functions 'noweb-before-change-function))
+      (remove-hook 'after-change-functions 'noweb-after-change-function t)
+      (remove-hook 'before-change-functions 'noweb-before-change-function t))
 
     (remove-hook 'noweb-select-doc-mode-hook 'noweb-auto-fill-doc-mode)
     (remove-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)
@@ -497,14 +499,28 @@ by major mode changes."
   "The hook being run after each command in noweb mode."
   (noweb-select-mode))
 
-(defun noweb-after-change-function (begin end length)
-  "Function to run after every change in a noweb buffer.
-If the changed region contains a chunk start (^@ or ^<<), it will
-update the chunk vector"
+(defvar noweb-chunk-boundary-changed nil
+  "Whether the current change affects a chunk boundary.")
+
+(defvar noweb-chunk-boundary-regexp "^\\(@[^@]\\)\\|\\(<<\\)")
+
+(defun noweb-before-change-function (begin end)
+  "Record changes to chunk boundaries."
   (save-excursion
     (goto-char begin)
-    (if (re-search-forward "^\\(@[^@]\\)\\|\\(<<\\)" end t)
-      (noweb-update-chunk-vector))))
+    (setq noweb-chunk-boundary-changed
+          (re-search-forward noweb-chunk-boundary-regexp end t))))
+
+(defun noweb-after-change-function (begin end length)
+  "Function to run after every change in a noweb buffer.
+If the changed region contains a chunk boundary, it will update
+the chunk vector"
+  (save-excursion
+    (goto-char begin)
+    (when (or noweb-chunk-boundary-changed
+              (re-search-forward noweb-chunk-boundary-regexp end t))
+      (noweb-update-chunk-vector)
+      (setq noweb-chunk-boundary-changed nil))))
 
 
 ;;; Chunks
@@ -695,6 +711,8 @@ documentation and code chunks."
 (defun noweb-chunk-vector-aref (i)
   (if (< i 0)
       (error "Before first chunk."))
+  (if (not noweb-chunk-vector)
+      (noweb-update-chunk-vector))
   (if (>= i (length noweb-chunk-vector))
       (error "Beyond last chunk."))
   (aref noweb-chunk-vector i))
@@ -704,14 +722,14 @@ documentation and code chunks."
   (interactive)
   (if (noweb-in-code-chunk)
       (let ((end (point))
-      (beg (save-excursion
-            (if (re-search-backward "<<"
-                   (save-excursion
-                                             (beginning-of-line)
-                                             (point))
-                                           t)
-                       (match-end 0)
-                     nil))))
+	    (beg (save-excursion
+		   (if (re-search-backward "<<"
+					   (save-excursion
+					     (beginning-of-line)
+					     (point))
+					   t)
+		       (match-end 0)
+		     nil))))
         (if beg
             (let* ((pattern (buffer-substring beg end))
                    (alist (noweb-build-chunk-alist))
@@ -824,7 +842,7 @@ chunks."
   (interactive)
   (save-restriction
     (noweb-narrow-to-chunk)
-    (if (stringp (car (noweb-find-chunk)))
+    (if (noweb-in-code-chunk)
         (progn
           ;; Narrow to the code section proper; w/o the first and any
           ;; index declaration lines.
@@ -849,7 +867,7 @@ chunks."
   (save-excursion
     (save-restriction
       (noweb-narrow-to-chunk)
-      (if (stringp (car (noweb-find-chunk)))
+      (if (noweb-in-code-chunk)
           (progn
             ;; Narrow to the code section proper; w/o the first and any
             ;; index declaration lines.
@@ -1167,7 +1185,7 @@ in the middle and and update the chunk vector."
   (if arg
       (self-insert-command (if (numberp arg) arg 1))
     (if (and (noweb-at-beginning-of-line)
-             (not (stringp (car (noweb-find-chunk)))))
+             (not (noweb-in-code-chunk)))
         (progn
           (insert "<<")
           (save-excursion

@@ -1,6 +1,9 @@
 Changes/New Features in 5.3.10:
 @itemize @bullet
-None: Fixed noweb-mode bug accidentally introduced into 5.3.9
+@item Fixed noweb-mode bug accidentally introduced into 5.3.9
+@item In noweb-mode, e.g., Rnw-mode, electric ``<'' also inserts closing ``@@".
+ Further, the code chunk boundaries are better kept up-to-date, such that
+ code[R] <-> text[LaTeX] minor mode switching should happen more reliably.
 @end itemize
 
 Changes/New Features in 5.3.9:

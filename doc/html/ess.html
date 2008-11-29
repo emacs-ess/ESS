@@ -349,7 +349,10 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
 <p>Changes/New Features in 5.3.10:
      <ul>
-None: Fixed noweb-mode bug accidentally introduced into 5.3.9
+<li>Fixed noweb-mode bug accidentally introduced into 5.3.9
+<li>In noweb-mode, e.g., Rnw-mode, electric &ldquo;&lt;&rdquo; also inserts closing &ldquo;@". 
+ Further, the code chunk boundaries are better kept up-to-date, such that
+ code[R] &lt;-&gt; text[LaTeX] minor mode switching should happen more reliably. 
 </ul>
 
    <p>Changes/New Features in 5.3.9:
