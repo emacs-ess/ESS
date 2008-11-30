@@ -23,7 +23,7 @@ showversion:
 
 tarball:
 	(cd .. && \
-		tar czf ess_${version}.orig.tar.gz ess \
+		tar czf tarballs/ess_${version}.orig.tar.gz ess \
 			--exclude=.svn \
 			--exclude=.git \
 			--exclude=debian/)

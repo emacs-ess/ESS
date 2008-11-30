@@ -1,3 +1,11 @@
+ess (5.3.10-1) unstable; urgency=low
+
+  * New upstream release
+  
+  * Closes open bug 'emacs warning on upgrade'			(Closes: #507299)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 29 Nov 2008 20:39:02 -0600
+
 ess (5.3.9~svn3950-1) unstable; urgency=low
 
   * New packages based on svn revision 3950 approaching release 5.3.9.
