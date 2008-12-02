@@ -23,7 +23,7 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 	credits.texi currfeat.texi ess.texi ess-defs.texi getting.texi help-s.texi \
 	help-sas.texi inst_svn.texi inst_tar.texi license.texi mailing.texi \
 	newfeat.texi readme.texi requires.texi stabilty.texi help-bugs.texi \
-        ../VERSION
+        ../VERSION Makefile
 
 ESSINFONODE1='* ESS: (ess).'
 ESSINFONODE2='	        Emacs Speaks Statistics'
@@ -64,8 +64,9 @@ distclean : clean
 
 ../README: $(TEXISRC)
 	$(MAKETXT) readme.texi \
-	| perl -pe 'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' \
+	| perl -pe 'last if /^Concept Index/;' \
 	> ../README
+#	| perl -pe 'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' \
 
 ../ANNOUNCE: $(TEXISRC)
 	$(MAKETXT) announc.texi \

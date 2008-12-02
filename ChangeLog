@@ -1,3 +1,12 @@
+2008-12-02  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* doc/readme.texi and doc/Makefile (README re-organization):
+	re-arrange so that installation information comes in the
+	4/5th sections rather than much further down (7/8th); also
+	massaged wording in the intro which no longer requires as much
+	perl (which I never really understood since I don't speak perl;
+	shall we stick to what we all know: e-lisp/make/texi/not perl/etc.)
+
 2008-11-14  Stephen Eglen  <stephen@gnu.org>
 
 	* doc/ess.texi (Indenting): Describe roxygen

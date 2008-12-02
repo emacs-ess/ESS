@@ -13,24 +13,28 @@
 This is the README file for the distribution of ESS version
 @include ../VERSION
 
-ESS is a GNU Emacs and XEmacs mode for interactive statistical programming
-and data analysis.  Languages supported: the S family (S 3/4, S-PLUS
-3/4/5/6/7, and R), SAS, XLispStat, Stata and BUGS.  Installation help can
-be found in sections for both Unix and Windows.  ESS grew out of the desire
-for bug fixes and extensions to S-mode and SAS-mode as well as a consistent
-union of their features in one package.
+ESS is a GNU Emacs and XEmacs mode for interactive statistical
+programming and data analysis.  Languages supported: the S family (S,
+S-PLUS and R), SAS, BUGS/JAGS, Stata and XLispStat.  ESS grew out of the
+desire for bug fixes and extensions to S-mode and SAS-mode as well as a
+consistent union of their features in one package.
+
+Installation instructions are provided in sections for both Unix and
+Windows; see below.  
 
 The current development team is led by Martin Maechler since August
 2004. Former project leader A.J. (Tony) Rossini
-(@email{rossini@@blindglobe.net}) did the initial port to
-XEmacs and has been the primary coder.  Martin Maechler
+(@email{rossini@@blindglobe.net}) did the initial port to XEmacs and has
+been the primary coder.  Martin Maechler
 (@email{maechler@@stat.math.ethz.ch}) and Kurt Hornik
-(@email{Kurt.Hornik@@R-project.org}) have assisted with S-PLUS, S4, R, and
+(@email{Kurt.Hornik@@R-project.org}) have assisted with the S family and
 XLispStat.  Stephen Eglen (@email{stephen@@gnu.org}) has worked mostly
 on R support.  Richard M. Heiberger (@email{rmh@@temple.edu}) has
-assisted with S-PLUS and S4 development for Windows.  Richard and
-Rodney A. Sparapani (@email{rsparapa@@mcw.edu}) have done much of the work
-implementing interactive SAS (@iESS{[SAS]}) and batch SAS (@ESS{[SAS]}) support.
+assisted with S/S-PLUS development for Windows.  Richard and Rodney
+A. Sparapani (@email{rsparapa@@mcw.edu}) have done much of the work
+improving SAS batch and interactive support.  Rodney has also
+extended ESS to support BUGS/JAGS and has an interest in improving
+Stata support.
 
 We are grateful to the previous developers of S-mode (Doug Bates, Ed Kademan,
 Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and Stata-mode (Thomas
@@ -39,46 +43,25 @@ Lumley).
 
 @menu
 * License::
-* Starting an ESS Process::
-* New Features::
-* Current Features::
 * Stability::
 * Requirements::
 * Latest Version::
 * Installation::
+* Starting an ESS Process::
+* New Features::
+* Current Features::
 * Reporting Bugs::
 * Mailing Lists::
 * Authors::
 @end menu
 
-@node License, Starting up, General Information, General Information
+@node License, Stability, General Information, General Information
 @comment  node-name,  next,  previous,  up
 @section License
 
 @include license.texi
 
-@node Starting up, New Features, License, General Information
-@section Starting an ESS process
-To start an @Sl{} session on Unix or on Windows when you
-use the Cygwin bash shell, simply type @kbd{M-x S RET}.
-
-To start an @Sl{} session on Windows when you
-use the MSDOS prompt shell, simply type @kbd{M-x S+6-msdos RET}.
-
-
-@node New Features, Current Features, Starting up, General Information
-@comment  node-name,  next,  previous,  up
-@section New Features
-
-@include newfeat.texi
-
-@node Current Features, Stability, New Features, General Information
-@comment  node-name,  next,  previous,  up
-@section Current Features
-
-@include currfeat.texi
-
-@node Stability, Requirements, Current Features, General Information
+@node Stability, Requirements, License, General Information
 @comment  node-name,  next,  previous,  up
 @section Stability
 
@@ -98,13 +81,34 @@ use the MSDOS prompt shell, simply type @kbd{M-x S+6-msdos RET}.
 @c NOTE: The above INCLUDES inst_svn.texi (Subversion/SVN Installation)
 
 @c    vvvvvvvvvvvv node name  *must* match the one in ./ess.texi !
-@node Installation, Reporting Bugs, Latest Version, General Information
+@node Installation, Starting up, Latest Version, General Information
 @comment  node-name,  next,  previous,  up
 @section Installation (from tar file)
 
 @include inst_tar.texi
 
-@node Reporting Bugs, Mailing Lists, Installation, General Information
+@node Starting up, Current Features, Installation, General Information
+@comment  node-name,  next,  previous,  up
+@section Starting an ESS process
+To start an @Sl{} session on Unix or on Windows when you
+use the Cygwin bash shell, simply type @kbd{M-x S RET}.
+
+To start an @Sl{} session on Windows when you
+use the MSDOS prompt shell, simply type @kbd{M-x S+6-msdos RET}.
+
+@node Current Features, New Features, Starting up, General Information
+@comment  node-name,  next,  previous,  up
+@section Current Features
+
+@include currfeat.texi
+
+@node New Features, Reporting Bugs, Current Features, General Information
+@comment  node-name,  next,  previous,  up
+@section New Features
+
+@include newfeat.texi
+
+@node Reporting Bugs, Mailing Lists, New Features, General Information
 @comment  node-name,  next,  previous,  up
 @section Reporting Bugs
 
