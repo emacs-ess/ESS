@@ -53,7 +53,8 @@ SHELL = /bin/sh
 MAKEINFO = LC_ALL=C LANG=en makeinfo
 MAKEHTML = $(MAKEINFO) --html --no-split
 ##                            ^^^^^^^^^^ today's bandwidth is fast
-MAKETXT  = $(MAKEINFO) --no-validate --no-headers --no-split -o -
+#MAKETXT  = $(MAKEINFO) --no-validate --no-headers --no-split -o -
+MAKETXT  = $(MAKEINFO) --no-validate --plaintext --no-split -o -
 #
 INSTALLDIR = install -d
 #INSTALLDIR = mkdir -p

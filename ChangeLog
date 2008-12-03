@@ -1,3 +1,9 @@
+2008-12-03  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* Makeconf and doc/readme.texi (README re-organization): 
+	Add TOC for plaintext format only, requires re-defining MAKETXT
+	accordingly.
+
 2008-12-02  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* doc/readme.texi and doc/Makefile (README re-organization):

@@ -41,6 +41,24 @@ Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and Stata-mode (Thomas
 Lumley).
 @c The name is ESS.  Not ESS-mode.
 
+@ifplaintext
+Table of Contents
+
+@itemize @bullet
+@item License
+@item Stability
+@item Requirements
+@item Latest Version
+@item Installation
+@item Starting an ESS Process
+@item New Features
+@item Current Features
+@item Reporting Bugs
+@item Mailing Lists
+@item Authors
+@end itemize 
+@end ifplaintext
+
 @menu
 * License::
 * Stability::
