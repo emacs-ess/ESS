@@ -1,3 +1,8 @@
+2008-12-04  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-mode.el/ess-trns.el: delete key no longer
+	remapped to "backspace"
+
 2008-12-04  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-site.el: ess-r-versions-created currently needed too.

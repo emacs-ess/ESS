@@ -106,7 +106,7 @@
   (define-key ess-transcript-mode-map "}"	 'ess-electric-brace)
   (define-key ess-transcript-mode-map "\e\C-h"	 'ess-mark-function)
   (define-key ess-transcript-mode-map "\e\C-q"	 'ess-indent-exp)
-  (define-key ess-transcript-mode-map "\177"	 'backward-delete-char-untabify)
+  ;(define-key ess-transcript-mode-map "\177"	 'backward-delete-char-untabify)
   (define-key ess-transcript-mode-map "\t"	 'ess-indent-command)
 
   (define-key ess-transcript-mode-map "\C-c\C-p" 'comint-previous-prompt)
