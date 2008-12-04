@@ -6,29 +6,53 @@ This is the README file for the distribution of ESS version
    5.3.10
 
    ESS is a GNU Emacs and XEmacs mode for interactive statistical
-programming and data analysis.  Languages supported: the S family (S
-3/4, S-PLUS 3/4/5/6/7, and R), SAS, XLispStat, Stata and BUGS.
-Installation help can be found in sections for both Unix and Windows.
-For INSTALLATION, see way below.
+programming and data analysis.  Languages supported: the S family (S,
+S-PLUS and R), SAS, BUGS/JAGS, Stata and XLispStat.  ESS grew out of the
+desire for bug fixes and extensions to S-mode and SAS-mode as well as a
+consistent union of their features in one package.
 
-ESS grew out of the desire for bug fixes and extensions to S-mode and
-SAS-mode as well as a consistent union of their features in one package.
+   Installation instructions are provided in sections for both Unix and
+Windows; see below.
 
    The current development team is led by Martin Maechler since August
 2004. Former project leader A.J. (Tony) Rossini
 (<rossini@blindglobe.net>) did the initial port to XEmacs and has been
 the primary coder.  Martin Maechler (<maechler@stat.math.ethz.ch>) and
-Kurt Hornik (<Kurt.Hornik@R-project.org>) have assisted with S-PLUS,
-S4, R, and XLispStat.  Stephen Eglen (<stephen@gnu.org>) has worked
+Kurt Hornik (<Kurt.Hornik@R-project.org>) have assisted with the S
+family and XLispStat.  Stephen Eglen (<stephen@gnu.org>) has worked
 mostly on R support.  Richard M. Heiberger (<rmh@temple.edu>) has
-assisted with S-PLUS and S4 development for Windows.  Richard and
-Rodney A. Sparapani (<rsparapa@mcw.edu>) have done much of the work
-implementing interactive SAS (iESS[SAS]) and batch SAS (ESS[SAS])
-support.
+assisted with S/S-PLUS development for Windows.  Richard and Rodney A.
+Sparapani (<rsparapa@mcw.edu>) have done much of the work improving SAS
+batch and interactive support.  Rodney has also extended ESS to support
+BUGS/JAGS and has an interest in improving Stata support.
 
    We are grateful to the previous developers of S-mode (Doug Bates, Ed
 Kademan, Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and
 Stata-mode (Thomas Lumley).
+
+   Table of Contents
+
+   * License
+
+   * Stability
+
+   * Requirements
+
+   * Latest Version
+
+   * Installation
+
+   * Starting an ESS Process
+
+   * New Features
+
+   * Current Features
+
+   * Reporting Bugs
+
+   * Mailing Lists
+
+   * Authors
 
 1.1 License
 ===========
@@ -43,7 +67,313 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 in the file COPYING in the same directory as this file for more details.
 
-1.2 Starting an ESS process
+1.2 Stability
+=============
+
+Versions 5.3.x are meant to be release-quality versions.  While some
+new features are being introduced, we are cleaning up and improving the
+interface.  We know about some remaining documentation inconsistencies.
+Patches or suggested fixes with bug reports are much appreciated!
+
+1.3 Requirements
+================
+
+ESS has been tested with
+
+   * R >=0.49
+
+   * S-PLUS 3.3-4, 4.5, 2000, 5.0-1, 6.0-2, 7.0, 8.0
+
+   * S4
+
+   * SAS >=6.12
+
+   * BUGS 0.5, 0.6
+
+   * JAGS 1.0
+
+   * Stata >=6.0 (command line only)
+
+   on the following platforms
+
+   * Linux/x86 (all)
+
+   * Solaris (all)
+
+   * MS Windows 98/NT/2000/XP (R, S-PLUS, SAS interactive only, and
+     BUGS)
+
+   * Apple Mac OS X 10.4-5 (R, JAGS, Stata)
+
+   with the following versions of emacs
+
+   * GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1
+
+   * XEmacs 21.4.0-8, 21.4.9-13(1), 21.4.14-15, 21.4.17-21 (betas not
+     supported, but 21.5.23+ may work)
+
+   ---------- Footnotes ----------
+
+   (1) require the files.el patch to revert-buffer for the Local
+Variables updating problem
+
+1.4 Getting the Latest Version
+==============================
+
+The latest released version of ESS is always available on the web at:
+ESS web page (http://ess.r-project.org) or StatLib
+(http://lib.stat.cmu.edu/general/ESS/)
+
+   The latest development version of ESS is available via
+`https://svn.R-project.org/ESS/', the ESS Subversion repository.  If
+you have a Subversion client (see `http://subversion.tigris.org/'), you
+can download the sources using:
+     % svn checkout https://svn.r-project.org/ESS/trunk PATH
+   which will put the ESS files into directory PATH.  Later, within
+that directory, `svn update' will bring that directory up to date.
+Windows-based tools such as TortoiseSVN are also available for
+downloading the files.  Alternatively, you can browse the sources with a
+web browser at: ESS SVN site (https://svn.r-project.org/ESS/trunk).
+However, please use a subversion client instead to minimize the load
+when retrieving.
+
+   If you remove other versions of ESS from your emacs load-path, you
+can then use the development version by adding the following to .emacs:
+
+     (load "/path/to/ess-svn/lisp/ess-site.el")
+
+   Note that https is required, and that the SSL certificate for the
+Subversion server of the R project is
+
+     Certificate information:
+      - Hostname: svn.r-project.org
+      - Valid: from Jul 16 08:10:01 2004 GMT until Jul 14 08:10:01 2014 GMT
+      - Issuer: Department of Mathematics, ETH Zurich, Zurich, Switzerland, CH
+      - Fingerprint: c9:5d:eb:f9:f2:56:d1:04:ba:44:61:f8:64:6b:d9:33:3f:93:6e:ad
+
+(currently, there is no "trusted certificate").  You can accept this
+certificate permanently and will not be asked about it anymore.
+
+1.5 Installation (from tar file)
+================================
+
+1.6 Unix installation
+=====================
+
+  1.  `cd' to a directory where you keep emacs lisp files, or create a
+     new directory (for example, `$HOME/emacs') to hold the
+     distribution.  This directory will be referred to below as "the
+     ESS distribution directory".
+
+     _Note for XEmacs packages:_ ESS is no longer available as an
+     XEmacs package.  But, you can still install ESS into the XEmacs
+     package system by choosing
+     `ESSDIR'=`PREFIX/lib/xemacs/site-packages'.  ESS requires that the
+     XEmacs sumo tarball (all XEmacs packages combined) also be
+     installed.  For information on installing XEmacs packages, follow
+     this link: Quickstart Package Guide
+     (http://www.xemacs.org/Documentation/packageGuide.html).
+
+  2. Retrieve the latest version from ESS downloads area
+     (http://ess.r-project.org/downloads/ess) to `ESSDIR'.
+
+  3. Extract the files from the disribution.
+          If you are using GNU tar, `tar zxf ess-VERSION.tgz'.
+          Otherwise, `gunzip < ess-VERSION.tgz | tar xf -',
+
+     The `tar' command will create the subdirectory `ess-VERSION' and
+     install the files there.
+
+  4. Edit the file `ESSDIR/ess-VERSION/lisp/ess-site.el' as explained
+     in the comments section of that file.
+
+  5. If you are using GNU Emacs add the line
+          (load "ESSDIR/ess-VERSION/lisp/ess-site")
+     to `$HOME/.emacs'.  For XEmacs, if you followed the XEmacs package
+     system installation advice, add the line
+          (require 'ess-site)
+     to `$HOME/.xemacs/init.el'.  Otherwise, for XEmacs, add the line
+          (load "ESSDIR/ess-VERSION/lisp/ess-site")
+     to `$HOME/.xemacs/init.el'.
+
+  6. That's it!  ESS is now ready to use.  (The remaining step below is
+     only for a custom installation.)  To edit statistical programs,
+     just open files with the requisite extensions (`.R' for R, `.sas'
+     for SAS, `.bug' for BUGS, etc.).  To start a statistical process
+     within emacs, such as R, type `M-x R'.
+
+  7. (OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING:
+
+     If you want to place the compiled files in other locations edit the
+     `LISPDIR', `INFODIR' and `ETCDIR' entries in Section 1 of
+     `Makeconf' in the `ESSDIR/ess-VERSION' directory (if you are using
+     XEmacs, then uncomment the XEmacs subsection in Section 1).
+
+     You can compile those files by:
+          make all
+
+     When that completes successfully, install the compiled files:
+          make install
+
+
+1.7 Microsoft Windows installation
+==================================
+
+For Microsoft Windows installation, please follow the next steps.
+
+  1. `cd' to a directory where you keep emacs lisp files, or create a
+     new directory (for example, `c:\emacs\') to hold the distribution.
+     This directory will be referred to below as "the ESS distribution
+     directory".
+
+     _Note for XEmacs packages:_ ESS is no longer available as an XEmacs
+     package. But, you can still install ESS into the XEmacs package
+     system by choosing `ESSDIR'=`PREFIX\XEmacs\site-packages'.  ESS
+     requires that the XEmacs sumo tarball (all XEmacs packages
+     combined) also be installed.  For information on installing XEmacs
+     packages, follow this link: Quickstart Package Guide
+     (http://www.xemacs.org/Documentation/packageGuide.html).
+
+  2. Retrieve the latest zip file (`ess-VERSION.zip') from ESS
+     downloads area (http://ess.r-project.org/downloads/ess) and store
+     it in the ESS distribution directory.  Be aware that http browsers
+     on Windows frequently change the "." and "-" characters in
+     filenames to other punctuation.  Please change the names back to
+     their original form.
+
+  3. Extract all the files from `ess-VERSION.zip' into the ESS
+     distribution directory as `c:\emacs\ess-VERSION\'.  (It is possible
+     to unpack the zip archive in Windows Explorer by double clicking
+     on the folder; you should then see a new folder called
+     `ess-VERSION'.  Drag that folder into your ESS distribution
+     directory.)
+
+  4. If you are using GNU Emacs add the line
+          (load "ESSDIR/ess-VERSION/lisp/ess-site")
+     to `%HOME%/.emacs'.  For XEmacs, if you followed the XEmacs
+     package system installation advice, add the line
+          (require 'ess-site)
+     to `%HOME%/.xemacs/init.el'.  Otherwise, for XEmacs, add the line
+          (load "ESSDIR/ess-VERSION/lisp/ess-site")
+     to `%HOME%/.xemacs/init.el'.  _Note:_ Both GNU Emacs and XEmacs
+     require that the HOME environment variable be set on your system,
+     otherwise, your initialization file will not be utilized, and
+     therefore, ESS will not work.
+
+     After saving your initialization file, ESS is now installed.
+     Start a new emacs and you should be ready to use ESS.  For
+     example, to edit statistical programs, load the files with the
+     requisite extensions (".sas" for SAS, ".S" or "s" or "q" or "Q"
+     for S-PLUS, ".r" or ".R" for R, and ".lsp" for XLispStat).  One
+     further step is needed if you wish to run statistical processes,
+     see below.
+
+  5. To run statistical processes under ESS, Windows users will need to
+     make sure that the directories for the software they will be using
+     is in the PATH environment variable.  On Windows 9x, add lines
+     similar to the following to your `c:\autoexec.bat' file:
+          path=%PATH%;c:\progra~1\insightful\splus70\cmd
+     On Windows NT/2000/XP, add the directories to the PATH using the
+     `My Computer/Control Panel/System/Advanced/Environment Variables'
+     menu.  Note that the directory containing the program is added to
+     the PATH, not the program itself.  One such line is needed for
+     each software program.  Be sure to use the abbreviation `progra~1'
+     and not the long version with embedded blanks.  Use backslashes
+     "`\'".
+
+     An alternative, for R users, is that rather than adjusting the PATH
+     variable, you can add the following to your emacs initialization
+     file (and restart emacs):
+          (setq inferior-R-program-name "C:/progra~1/R/R-2.2.1/bin/Rterm.exe")
+     This assumes that you have installed R-2.2.1 in the default
+     location.  Change the path otherwise to point to other locations.
+
+     Windows users who place S-PLUS anywhere other than the default
+     location will also need to add the following three lines (properly
+     adjusted for their location) to their `%HOME%/.emacs' or
+     `%HOME%/.xemacs/init.el' file:
+          (setq-default inferior-S+6-program-name
+              "c:/progra~1/Insightful/SPLUS70/cmd/Splus")
+          (setq-default inferior-Sqpe+6-SHOME-name
+              "c:/progra~1/Insightful/SPLUS70")
+          (setq-default inferior-Sqpe+6-program-name
+              "c:/progra~1/Insightful/SPLUS70/cmd/Sqpe.exe")
+     The above example uses the default location of S-PLUS in
+     `c:/progra~1/Insightful'.  Please note that ESS considers S-PLUS
+     6, 7, and 8 to be variants of S+6.
+
+     These users may also need to modify the emacs variable
+     `ess-SHOME-versions' to match their installation in order to get
+     the full set of S-PLUS versions on their machine into the `ESS'
+     menu.
+
+     To start the S-PLUS [678].x GUI from ESS under emacs:
+       1. If you use Cygwin bash as your primary shell, then
+               M-x S
+               (or `M-x S+6').
+
+       2. If you use the MSDOS prompt window as your primary shell, then
+               M-x S+6-msdos
+          You will then be asked for a pathname ("S starting data
+     directory?"), from which to start the process.  The prompt will
+     propose your current directory as the default.  ESS will start the
+     S-PLUS GUI.  There will be slight delay during which emacs is
+     temporarily frozen.  ESS will arrange for communication with the
+     S-PLUS GUI using the DDE protocol.  Send lines or regions from the
+     emacs buffer containing your S program (for example, `myfile.s')
+     to the S-PLUS Commands Window with the `C-c C-n' or `C-c C-r' keys.
+     (If you are still using S-PLUS 4.x or 2000,\ then use `M-x S+4' or
+     `M-x S+4-msdos'.)
+
+     To start an S-PLUS [678].x session inside an emacs buffer--and
+     without the S-PLUS GUI:
+          M-x Sqpe
+          (or `M-x Sqpe+6').
+     This works with both the bash and msdos shells.  You will then be
+     asked for a pathname ("S starting data directory?"), from which to
+     start the process.  The prompt will propose your current directory
+     as the default.  You get Unix-like behavior, in particular the
+     entire transcript is available for emacs-style search commands.
+     Send lines or regions from the emacs buffer containing your S
+     program (for example, `myfile.s') to the *S+6* buffer with the
+     `C-c C-n' or `C-c C-r' keys.  Interactive graphics are available
+     with Sqpe by using the java library supplied with S-PLUS 6.1 and
+     newer releases.  Enter the commands:
+          library(winjava)
+          java.graph()
+     Graphs can be saved from the `java.graph' device in several
+     formats, but not PostScript.   If you need a PostScript file you
+     will need to open a separate `postscript' device.  (If you are
+     still using S-PLUS 4.x or 2000, then use `M-x Sqpe+4'.)
+
+     To connect to an already running S-PLUS GUI (started, for example,
+     from the S-PLUS icon):
+          M-x S+6-existing
+     or
+          M-x S+6-msdos-existing
+     You will then be asked for a pathname ("S starting data
+     directory?"), from which to start the process.  The prompt will
+     propose your current directory as the default.  ESS will arrange
+     for communication with the already running S-PLUS GUI using the
+     DDE protocol.  Send lines or regions from the emacs buffer
+     containing your S program (for example, `myfile.s') to the S-PLUS
+     Commands Window with the `C-c C-n' or `C-c C-r' keys.  (If you are
+     still using S-PLUS 4.x or 2000,  then use `M-x S+4-existing' or
+     `M-x S+4-msdos-existing'.)
+
+     If you wish to run R, you can start it with:
+          M-x R
+
+     XLispStat can not currently be run with
+          M-x XLS
+     Hopefully, this will change.  However, you can still edit with
+     emacs, and cut and paste the results into the XLispStat *Listener*
+     Window under Microsoft Windows.
+
+  6. That's it!
+
+
+1.8 Starting an ESS process
 ===========================
 
 To start an S session on Unix or on Windows when you use the Cygwin
@@ -52,8 +382,63 @@ bash shell, simply type `M-x S RET'.
    To start an S session on Windows when you use the MSDOS prompt
 shell, simply type `M-x S+6-msdos RET'.
 
-1.3 New Features
-================
+1.9 Current Features
+====================
+
+   * Languages Supported:
+        * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x/8.x, and R)
+
+        * SAS
+
+        * BUGS/JAGS
+
+        * Stata
+
+        * XLispStat including Arc and ViSta
+
+   * Editing source code (S family, SAS, BUGS/JAGS, XLispStat)
+        * Syntactic indentation and highlighting of source code
+
+        * Partial evaluation of code
+
+        * Loading and error-checking of code
+
+        * Source code revision maintenance
+
+        * Batch execution (SAS, BUGS/JAGS)
+
+        * Use of imenu to provide links to appropriate functions
+
+   * Interacting with the process (S family, SAS, XLispStat)
+        * Command-line editing
+
+        * Searchable Command history
+
+        * Command-line completion of S family object names and file
+          names
+
+        * Quick access to object lists and search lists
+
+        * Transcript recording
+
+        * Interface to the help system
+
+   * Transcript manipulation (S family, XLispStat)
+        * Recording and saving transcript files
+
+        * Manipulating and editing saved transcripts
+
+        * Re-evaluating commands from transcript files
+
+   * Help File Editing (R)
+        * Syntactic indentation and highlighting of source code.
+
+        * Sending Examples to running ESS process.
+
+        * Previewing
+
+1.10 New Features
+=================
 
 Changes/New Features in 5.3.10:
    * Fixed noweb-mode bug accidentally introduced into 5.3.9
@@ -763,367 +1148,6 @@ Changes/New Features in 5.3.10:
      three modes know the S language, syntax, and indentation patterns
      and provide the syntactic highlighting that eases the programming
      tasks.
-
-1.4 Current Features
-====================
-
-   * Languages Supported:
-        * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x/8.x, and R)
-
-        * SAS
-
-        * BUGS/JAGS
-
-        * Stata
-
-        * XLispStat including Arc and ViSta
-
-   * Editing source code (S family, SAS, BUGS/JAGS, XLispStat)
-        * Syntactic indentation and highlighting of source code
-
-        * Partial evaluation of code
-
-        * Loading and error-checking of code
-
-        * Source code revision maintenance
-
-        * Batch execution (SAS, BUGS/JAGS)
-
-        * Use of imenu to provide links to appropriate functions
-
-   * Interacting with the process (S family, SAS, XLispStat)
-        * Command-line editing
-
-        * Searchable Command history
-
-        * Command-line completion of S family object names and file
-          names
-
-        * Quick access to object lists and search lists
-
-        * Transcript recording
-
-        * Interface to the help system
-
-   * Transcript manipulation (S family, XLispStat)
-        * Recording and saving transcript files
-
-        * Manipulating and editing saved transcripts
-
-        * Re-evaluating commands from transcript files
-
-   * Help File Editing (R)
-        * Syntactic indentation and highlighting of source code.
-
-        * Sending Examples to running ESS process.
-
-        * Previewing
-
-1.5 Stability
-=============
-
-Versions 5.3.x are meant to be release-quality versions.  While some
-new features are being introduced, we are cleaning up and improving the
-interface.  We know about some remaining documentation inconsistencies.
-Patches or suggested fixes with bug reports are much appreciated!
-
-1.6 Requirements
-================
-
-ESS has been tested with
-
-   * R >=0.49
-
-   * S-PLUS 3.3-4, 4.5, 2000, 5.0-1, 6.0-2, 7.0, 8.0
-
-   * S4
-
-   * SAS >=6.12
-
-   * BUGS 0.5, 0.6
-
-   * JAGS 1.0
-
-   * Stata >=6.0 (command line only)
-
-   on the following platforms
-
-   * Linux/x86 (all)
-
-   * Solaris (all)
-
-   * MS Windows 98/NT/2000/XP (R, S-PLUS, SAS interactive only, and
-     BUGS)
-
-   * Apple Mac OS X 10.4-5 (R, JAGS, Stata)
-
-   with the following versions of emacs
-
-   * GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1
-
-   * XEmacs 21.4.0-8, 21.4.9-13(1), 21.4.14-15, 21.4.17-21 (betas not
-     supported, but 21.5.23+ may work)
-
-   ---------- Footnotes ----------
-
-   (1) require the files.el patch to revert-buffer for the Local
-Variables updating problem
-
-1.7 Getting the Latest Version
-==============================
-
-The latest released version of ESS is always available on the web at:
-ESS web page (http://ess.r-project.org) or StatLib
-(http://lib.stat.cmu.edu/general/ESS/)
-
-   The latest development version of ESS is available via
-`https://svn.R-project.org/ESS/', the ESS Subversion repository.  If
-you have a Subversion client (see `http://subversion.tigris.org/'), you
-can download the sources using:
-     % svn checkout https://svn.r-project.org/ESS/trunk PATH
-   which will put the ESS files into directory PATH.  Later, within
-that directory, `svn update' will bring that directory up to date.
-Windows-based tools such as TortoiseSVN are also available for
-downloading the files.  Alternatively, you can browse the sources with a
-web browser at: ESS SVN site (https://svn.r-project.org/ESS/trunk).
-However, please use a subversion client instead to minimize the load
-when retrieving.
-
-   If you remove other versions of ESS from your emacs load-path, you
-can then use the development version by adding the following to .emacs:
-
-     (load "/path/to/ess-svn/lisp/ess-site.el")
-
-   Note that https is required, and that the SSL certificate for the
-Subversion server of the R project is
-
-     Certificate information:
-      - Hostname: svn.r-project.org
-      - Valid: from Jul 16 08:10:01 2004 GMT until Jul 14 08:10:01 2014 GMT
-      - Issuer: Department of Mathematics, ETH Zurich, Zurich, Switzerland, CH
-      - Fingerprint: c9:5d:eb:f9:f2:56:d1:04:ba:44:61:f8:64:6b:d9:33:3f:93:6e:ad
-
-(currently, there is no "trusted certificate").  You can accept this
-certificate permanently and will not be asked about it anymore.
-
-1.8 Installation (from tar file)
-================================
-
-1.9 Unix installation
-=====================
-
-  1.  `cd' to a directory where you keep emacs lisp files, or create a
-     new directory (for example, `$HOME/emacs') to hold the
-     distribution.  This directory will be referred to below as "the
-     ESS distribution directory".
-
-     _Note for XEmacs packages:_ ESS is no longer available as an
-     XEmacs package.  But, you can still install ESS into the XEmacs
-     package system by choosing
-     `ESSDIR'=`PREFIX/lib/xemacs/site-packages'.  ESS requires that the
-     XEmacs sumo tarball (all XEmacs packages combined) also be
-     installed.  For information on installing XEmacs packages, follow
-     this link: Quickstart Package Guide
-     (http://www.xemacs.org/Documentation/packageGuide.html).
-
-  2. Retrieve the latest version from ESS downloads area
-     (http://ess.r-project.org/downloads/ess) to `ESSDIR'.
-
-  3. Extract the files from the disribution.
-          If you are using GNU tar, `tar zxf ess-VERSION.tgz'.
-          Otherwise, `gunzip < ess-VERSION.tgz | tar xf -',
-
-     The `tar' command will create the subdirectory `ess-VERSION' and
-     install the files there.
-
-  4. Edit the file `ESSDIR/ess-VERSION/lisp/ess-site.el' as explained
-     in the comments section of that file.
-
-  5. If you are using GNU Emacs add the line
-          (load "ESSDIR/ess-VERSION/lisp/ess-site")
-     to `$HOME/.emacs'.  For XEmacs, if you followed the XEmacs package
-     system installation advice, add the line
-          (require 'ess-site)
-     to `$HOME/.xemacs/init.el'.  Otherwise, for XEmacs, add the line
-          (load "ESSDIR/ess-VERSION/lisp/ess-site")
-     to `$HOME/.xemacs/init.el'.
-
-  6. That's it!  ESS is now ready to use.  (The remaining step below is
-     only for a custom installation.)  To edit statistical programs,
-     just open files with the requisite extensions (`.R' for R, `.sas'
-     for SAS, `.bug' for BUGS, etc.).  To start a statistical process
-     within emacs, such as R, type `M-x R'.
-
-  7. (OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING:
-
-     If you want to place the compiled files in other locations edit the
-     `LISPDIR', `INFODIR' and `ETCDIR' entries in Section 1 of
-     `Makeconf' in the `ESSDIR/ess-VERSION' directory (if you are using
-     XEmacs, then uncomment the XEmacs subsection in Section 1).
-
-     You can compile those files by:
-          make all
-
-     When that completes successfully, install the compiled files:
-          make install
-
-
-1.10 Microsoft Windows installation
-===================================
-
-For Microsoft Windows installation, please follow the next steps.
-
-  1. `cd' to a directory where you keep emacs lisp files, or create a
-     new directory (for example, `c:\emacs\') to hold the distribution.
-     This directory will be referred to below as "the ESS distribution
-     directory".
-
-     _Note for XEmacs packages:_ ESS is no longer available as an XEmacs
-     package. But, you can still install ESS into the XEmacs package
-     system by choosing `ESSDIR'=`PREFIX\XEmacs\site-packages'.  ESS
-     requires that the XEmacs sumo tarball (all XEmacs packages
-     combined) also be installed.  For information on installing XEmacs
-     packages, follow this link: Quickstart Package Guide
-     (http://www.xemacs.org/Documentation/packageGuide.html).
-
-  2. Retrieve the latest zip file (`ess-VERSION.zip') from ESS
-     downloads area (http://ess.r-project.org/downloads/ess) and store
-     it in the ESS distribution directory.  Be aware that http browsers
-     on Windows frequently change the "." and "-" characters in
-     filenames to other punctuation.  Please change the names back to
-     their original form.
-
-  3. Extract all the files from `ess-VERSION.zip' into the ESS
-     distribution directory as `c:\emacs\ess-VERSION\'.  (It is possible
-     to unpack the zip archive in Windows Explorer by double clicking
-     on the folder; you should then see a new folder called
-     `ess-VERSION'.  Drag that folder into your ESS distribution
-     directory.)
-
-  4. If you are using GNU Emacs add the line
-          (load "ESSDIR/ess-VERSION/lisp/ess-site")
-     to `%HOME%/.emacs'.  For XEmacs, if you followed the XEmacs
-     package system installation advice, add the line
-          (require 'ess-site)
-     to `%HOME%/.xemacs/init.el'.  Otherwise, for XEmacs, add the line
-          (load "ESSDIR/ess-VERSION/lisp/ess-site")
-     to `%HOME%/.xemacs/init.el'.  _Note:_ Both GNU Emacs and XEmacs
-     require that the HOME environment variable be set on your system,
-     otherwise, your initialization file will not be utilized, and
-     therefore, ESS will not work.
-
-     After saving your initialization file, ESS is now installed.
-     Start a new emacs and you should be ready to use ESS.  For
-     example, to edit statistical programs, load the files with the
-     requisite extensions (".sas" for SAS, ".S" or "s" or "q" or "Q"
-     for S-PLUS, ".r" or ".R" for R, and ".lsp" for XLispStat).  One
-     further step is needed if you wish to run statistical processes,
-     see below.
-
-  5. To run statistical processes under ESS, Windows users will need to
-     make sure that the directories for the software they will be using
-     is in the PATH environment variable.  On Windows 9x, add lines
-     similar to the following to your `c:\autoexec.bat' file:
-          path=%PATH%;c:\progra~1\insightful\splus70\cmd
-     On Windows NT/2000/XP, add the directories to the PATH using the
-     `My Computer/Control Panel/System/Advanced/Environment Variables'
-     menu.  Note that the directory containing the program is added to
-     the PATH, not the program itself.  One such line is needed for
-     each software program.  Be sure to use the abbreviation `progra~1'
-     and not the long version with embedded blanks.  Use backslashes
-     "`\'".
-
-     An alternative, for R users, is that rather than adjusting the PATH
-     variable, you can add the following to your emacs initialization
-     file (and restart emacs):
-          (setq inferior-R-program-name "C:/progra~1/R/R-2.2.1/bin/Rterm.exe")
-     This assumes that you have installed R-2.2.1 in the default
-     location.  Change the path otherwise to point to other locations.
-
-     Windows users who place S-PLUS anywhere other than the default
-     location will also need to add the following three lines (properly
-     adjusted for their location) to their `%HOME%/.emacs' or
-     `%HOME%/.xemacs/init.el' file:
-          (setq-default inferior-S+6-program-name
-              "c:/progra~1/Insightful/SPLUS70/cmd/Splus")
-          (setq-default inferior-Sqpe+6-SHOME-name
-              "c:/progra~1/Insightful/SPLUS70")
-          (setq-default inferior-Sqpe+6-program-name
-              "c:/progra~1/Insightful/SPLUS70/cmd/Sqpe.exe")
-     The above example uses the default location of S-PLUS in
-     `c:/progra~1/Insightful'.  Please note that ESS considers S-PLUS
-     6, 7, and 8 to be variants of S+6.
-
-     These users may also need to modify the emacs variable
-     `ess-SHOME-versions' to match their installation in order to get
-     the full set of S-PLUS versions on their machine into the `ESS'
-     menu.
-
-     To start the S-PLUS [678].x GUI from ESS under emacs:
-       1. If you use Cygwin bash as your primary shell, then
-               M-x S
-               (or `M-x S+6').
-
-       2. If you use the MSDOS prompt window as your primary shell, then
-               M-x S+6-msdos
-          You will then be asked for a pathname ("S starting data
-     directory?"), from which to start the process.  The prompt will
-     propose your current directory as the default.  ESS will start the
-     S-PLUS GUI.  There will be slight delay during which emacs is
-     temporarily frozen.  ESS will arrange for communication with the
-     S-PLUS GUI using the DDE protocol.  Send lines or regions from the
-     emacs buffer containing your S program (for example, `myfile.s')
-     to the S-PLUS Commands Window with the `C-c C-n' or `C-c C-r' keys.
-     (If you are still using S-PLUS 4.x or 2000,\ then use `M-x S+4' or
-     `M-x S+4-msdos'.)
-
-     To start an S-PLUS [678].x session inside an emacs buffer--and
-     without the S-PLUS GUI:
-          M-x Sqpe
-          (or `M-x Sqpe+6').
-     This works with both the bash and msdos shells.  You will then be
-     asked for a pathname ("S starting data directory?"), from which to
-     start the process.  The prompt will propose your current directory
-     as the default.  You get Unix-like behavior, in particular the
-     entire transcript is available for emacs-style search commands.
-     Send lines or regions from the emacs buffer containing your S
-     program (for example, `myfile.s') to the *S+6* buffer with the
-     `C-c C-n' or `C-c C-r' keys.  Interactive graphics are available
-     with Sqpe by using the java library supplied with S-PLUS 6.1 and
-     newer releases.  Enter the commands:
-          library(winjava)
-          java.graph()
-     Graphs can be saved from the `java.graph' device in several
-     formats, but not PostScript.   If you need a PostScript file you
-     will need to open a separate `postscript' device.  (If you are
-     still using S-PLUS 4.x or 2000, then use `M-x Sqpe+4'.)
-
-     To connect to an already running S-PLUS GUI (started, for example,
-     from the S-PLUS icon):
-          M-x S+6-existing
-     or
-          M-x S+6-msdos-existing
-     You will then be asked for a pathname ("S starting data
-     directory?"), from which to start the process.  The prompt will
-     propose your current directory as the default.  ESS will arrange
-     for communication with the already running S-PLUS GUI using the
-     DDE protocol.  Send lines or regions from the emacs buffer
-     containing your S program (for example, `myfile.s') to the S-PLUS
-     Commands Window with the `C-c C-n' or `C-c C-r' keys.  (If you are
-     still using S-PLUS 4.x or 2000,  then use `M-x S+4-existing' or
-     `M-x S+4-msdos-existing'.)
-
-     If you wish to run R, you can start it with:
-          M-x R
-
-     XLispStat can not currently be run with
-          M-x XLS
-     Hopefully, this will change.  However, you can still edit with
-     emacs, and cut and paste the results into the XLispStat *Listener*
-     Window under Microsoft Windows.
-
-  6. That's it!
-
 
 1.11 Reporting Bugs
 ===================
