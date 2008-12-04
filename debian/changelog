@@ -1,3 +1,10 @@
+ess (5.3.10-2) unstable; urgency=low
+
+  * Updated to SVN revision 4001 which addresses the bug report 
+    'ess: fails setting up' when no R version is present	(Closes: #507510)		
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 04 Dec 2008 09:25:16 -0600
+
 ess (5.3.10-1) unstable; urgency=low
 
   * New upstream release
