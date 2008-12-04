@@ -494,8 +494,15 @@ sending `inferior-ess-language-start' to S-Plus.")
 (defvar ess-versions-created nil
   "list of strings of all S- and R-versions found on the current computer environment")
 
+;; is currently used (updated) by ess-find-newest-R
+(defvar ess-r-versions-created nil
+  "list of strings of all R-versions found on the current computer environment")
+;; FIXME: should then update ess-versions-created as well (easy),
+;; -----  *and* update the "Start Process" menu (below)
+;;    -> To this: wrap the following in functions that can be re-called
+
 (let ( (ess-s-versions-created)
-       (ess-r-versions-created)
+       ;;(ess-r-versions-created)
        (R-newest-list '("R-newest"))
        )
   (if ess-microsoft-p

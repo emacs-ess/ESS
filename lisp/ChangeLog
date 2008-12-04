@@ -1,3 +1,7 @@
+2008-12-04  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-site.el: ess-r-versions-created currently needed too.
+
 2008-11-29  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* noweb-mode.el: TODO cleanup; notably replacing more
