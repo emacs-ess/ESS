@@ -95,6 +95,7 @@ install-info : info/ess.info
 	echo $(ESSINFONODE3) >> $(INFODIR)/dir)
 
 install-other-docs: pdf html
+	-$(INSTALLDIR) $(DOCDIR)
 	$(INSTALL) ess.dvi ess.pdf readme.dvi readme.pdf ../README ../ANNOUNCE $(DOCDIR)
 	$(INSTALL) html/ess.html html/readme.html $(DOCDIR)/html
 	$(INSTALL) refcard/refcard.pdf $(DOCDIR)/refcard
