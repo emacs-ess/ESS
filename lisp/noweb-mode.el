@@ -839,7 +839,7 @@ chunks."
 	    (let ((quote-list (noweb-hide-code-quotes)))
 	      (fill-region (point-min) (point-max))
 	      (noweb-restore-code-quotes quote-list))
-	  (fill-region (point-min) (point-max))))))
+	  (fill-region (point-min) (point-max)))))))
 
 (defun noweb-indent-line ()
   "Indent the current line according to mode, after narrowing to this chunk."
