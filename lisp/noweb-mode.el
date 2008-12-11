@@ -840,6 +840,7 @@ chunks."
 (defun noweb-indent-line ()
   "Indent the current line according to mode, after narrowing to this chunk."
   (interactive)
+  (noweb-update-chunk-vector)
   (save-restriction
     (noweb-narrow-to-chunk)
     (if (noweb-in-code-chunk)

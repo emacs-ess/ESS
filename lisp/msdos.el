@@ -48,7 +48,7 @@
 
 ;;; Code:
 
-(require 'shell)
+(require 'shell); and hence 'comint
 
 ;;; Customization and Buffer Variables
 
