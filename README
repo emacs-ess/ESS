@@ -448,6 +448,11 @@ Changes/New Features in 5.3.10:
      up-to-date, such that  code[R] <-> text[LaTeX] minor mode
      switching should happen more reliably.
 
+   * In noweb-mode, fix a buglet in rare [Enter] or [Tab] behavior;
+     further,  by default disable the former `[[' .. `]]'
+     code-protection-when-filling  behavior which has been found to be
+     buggy.
+
    Changes/New Features in 5.3.9:
    * ESS[SAS]: evince PDF viewer now supported as well; search order:
      evince, Xpdf, Adobe/Acrobat Reader

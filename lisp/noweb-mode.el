@@ -32,10 +32,6 @@
 ;; BASED ON: (from Mark Lunt).
 ;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; THIS IS UNRELEASED CODE: IT IS MISSING FUNCTIONALITY AND IT NEEDS CLEANUP ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Put this into your ~/.emacs to use this mode automagically.
 ;;
@@ -83,8 +79,9 @@
 ;;   * more range checks and error exits
 ;;
 ;;   * `noweb-hide-code-quotes' should be superfluous now, and could
-;;     be removed
-
+;;     be removed. For ESS 5.3.10, we disable these, using the new variable
+;;     noweb-code-quote-handling.  If nobody misses that code-protecting
+;;     behavior, all that should be removed entirely.
 
 ;; Want to use these now in order to cater for all obscure kinds of emacsen
 (eval-and-compile
@@ -177,7 +174,12 @@ to the next.
 Assumes mouse-1 is bound to mouse-set-point, so if you have rebound
 mouse-1, this will override your binding.")
 
-; 
+(defvar noweb-code-quotes-handling nil
+  "If not nil, the function pair  \\[noweb-hide-code-quotes] and
+\\[noweb-restore-code-quotes] are used to \"protect\" code inside
+\"[[\" .. \"]]\" pairs.  Note that rarely this has been found to be buggy
+with the \"catastrophic\" consequence of whole parts of your document being
+replaced by sequences of '*'.")
 
 ;; The following is apparently broken -- dangling code that was
 ;; commented out.  Need to see if we can get it working?
@@ -833,9 +835,11 @@ chunks."
             (if (or indent-region-function indent-line-function)
                 (indent-region (point-min) (point-max) nil)
               (error "No indentation functions defined in %s!" major-mode)))
-        (let ((quote-list (noweb-hide-code-quotes)))
-          (fill-region (point-min) (point-max))
-          (noweb-restore-code-quotes quote-list))))))
+	(if noweb-code-quotes-handling
+	    (let ((quote-list (noweb-hide-code-quotes)))
+	      (fill-region (point-min) (point-max))
+	      (noweb-restore-code-quotes quote-list))
+	  (fill-region (point-min) (point-max))))))
 
 (defun noweb-indent-line ()
   "Indent the current line according to mode, after narrowing to this chunk."
@@ -884,9 +888,11 @@ chunks."
                                 (forward-line 1)
                                 (point)))
             (fill-paragraph justify))
-        (let ((quote-list (noweb-hide-code-quotes)))
-          (fill-paragraph justify)
-          (noweb-restore-code-quotes quote-list))))))
+	(if noweb-code-quotes-handling
+	    (let ((quote-list (noweb-hide-code-quotes)))
+	      (fill-paragraph justify)
+	      (noweb-restore-code-quotes quote-list))
+          (fill-paragraph justify))))))
 
 (defun noweb-auto-fill-doc-chunk ()
   "Replacement for `do-auto-fill'."
@@ -895,9 +901,11 @@ chunks."
                       (save-excursion
                         (end-of-line)
                         (point)))
-    (let ((quote-list (noweb-hide-code-quotes)))
-      (do-auto-fill)
-      (noweb-restore-code-quotes quote-list))))
+    (if noweb-code-quotes-handling
+	(let ((quote-list (noweb-hide-code-quotes)))
+	  (do-auto-fill)
+	  (noweb-restore-code-quotes quote-list))
+      (do-auto-fill))))
 
 (defun noweb-auto-fill-doc-mode ()
   "Install the improved auto fill function, iff necessary."

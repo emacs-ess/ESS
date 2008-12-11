@@ -3,6 +3,10 @@
 	* noweb-mode.el (noweb-indent-line): update chunk vector first:
 	fixes buglet {[Enter] in almost empty *.Rnw buffer} reported by
 	Henric Nilsson.
+	(noweb-code-quotes-handling): now *disables* by default the calling
+	of the (noweb-hide-code-quotes) .. (noweb-restore-code-quotes) pair,
+	consequently preventing catastrophic behavior in large *.Rnw files
+	with "[[" in R output.
 
 2008-12-04  Rodney Sparapani  <rsparapa@mcw.edu>
 

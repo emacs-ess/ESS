@@ -4,6 +4,9 @@ Changes/New Features in 5.3.10:
 @item In noweb-mode, e.g., Rnw-mode, electric ``<'' also inserts closing ``@@".
  Further, the code chunk boundaries are better kept up-to-date, such that
  code[R] <-> text[LaTeX] minor mode switching should happen more reliably.
+@item In noweb-mode, fix a buglet in rare [Enter] or [Tab] behavior; further,
+ by default disable the former `[[' .. `]]'  code-protection-when-filling
+ behavior which has been found to be buggy.
 @end itemize
 
 Changes/New Features in 5.3.9:
