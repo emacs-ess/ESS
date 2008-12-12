@@ -1,3 +1,11 @@
+ess (5.3.10.1-1) unstable; urgency=low
+
+  * New upstream 5.3.10 
+  * This release is relabeled 5.3.10.1 as we used the 5.3.10 version number
+    for the bugfix release which turns out to have been a pre-release.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 12 Dec 2008 07:25:55 -0600
+
 ess (5.3.10-2) unstable; urgency=low
 
   * Updated to SVN revision 4001 which addresses the bug report 
