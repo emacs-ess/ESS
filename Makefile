@@ -87,7 +87,7 @@ ChangeLog: VERSION
 	@rm ChangeLog.old
 	svn commit -m 'Version $(ESSVERSION)' ChangeLog
 
-rel: ChangeLog dist tag
+rel: ChangeLog dist tag homepage
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
 	@echo "** Placing .tgz and .zip files **"
 	cp -p $(ESSDIR).tgz $(ESSDIR).zip $(UPLOAD_DIR)
@@ -99,6 +99,9 @@ rel: ChangeLog dist tag
 tag:
 	@echo "** Tagging the release **"
 	svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSIONTAG)
+homepage:
+	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
+	cd $(ESS_HOMEPAGE); ./update-VERSION $(ESSVERSION)
 
 ## TODO (when MM has GPG set up properly): add this to 'rel'
 .PHONY: buildrpm
