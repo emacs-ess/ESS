@@ -50,6 +50,12 @@
 (defvar ess-jags-chains 1 "Default number of chains.")
 (make-local-variable 'ess-jags-chains)
 
+(defvar ess-jags-burnin 10000 "Default burn-in.")
+(make-local-variable 'ess-jags-burnin)
+
+(defvar ess-jags-update 10000 "Default number of updates after burnin.")
+(make-local-variable 'ess-jags-update)
+
 (defvar ess-jags-system t "Default whether JAGS recognizes the system command.") 
 
 (defvar ess-jags-font-lock-keywords
@@ -89,7 +95,8 @@
     "ESS[JAGS]: Font lock keywords."
 )
 
-(defun ess-jags-switch-to-suffix (suffix &optional jags-chains jags-monitor jags-thin)
+(defun ess-jags-switch-to-suffix (suffix &optional jags-chains jags-monitor jags-thin 
+   jags-burnin jags-update)
    "ESS[JAGS]: Switch to file with suffix."
    (find-file (concat ess-bugs-file-dir ess-bugs-file-root suffix))
 
@@ -104,6 +111,8 @@
 	    (insert "#ess-jags-chains:1\n")
 	    (insert "#ess-jags-monitor:(\"\")\n")
 	    (insert "#ess-jags-thin:1\n")
+	    (insert "#ess-jags-burnin:10000\n")
+	    (insert "#ess-jags-update:10000\n")
 	    (insert "#End:\n")
 	))
 
@@ -140,9 +149,9 @@
 	    (insert "data in \"" ess-bugs-file-root ".txt\"\n")
 	    (insert (ess-replace-in-string ess-jags-temp-chains "##" "in"))
 	    (insert "initialize\n")
-	    (insert "update " ess-bugs-default-burn-in "\n")
+	    (insert "update " (format "%d" (* jags-thin jags-burnin)) "\n")
 	    (insert ess-jags-temp-monitor)
-	    (insert "update " ess-bugs-default-update "\n")
+	    (insert "update " (format "%d" (* jags-thin jags-update)) "\n")
 	    (insert (ess-replace-in-string 
 		(ess-replace-in-string ess-jags-temp-chains 
 		    "compile, nchains([0-9]+)" "#") "##" "to"))
@@ -218,9 +227,9 @@
 		(if (or (equal shell-file-name "/bin/csh") 
 			(equal shell-file-name "/bin/tcsh")
 			(equal shell-file-name "/bin/zsh")) 
-			    (concat ">& " ess-bugs-file-root ".out ")
+			    (concat ">& " ess-bugs-file-root ".jog ")
 		;else
-			    "> " ess-bugs-file-root ".out 2>&1 ") 
+			    "> " ess-bugs-file-root ".jog 2>&1 ") 
 
 ;		;.txt not recognized by BOA and impractical to over-ride
 ;		"&& (rm -f " ess-bugs-file-root ".ind; "
@@ -241,7 +250,7 @@
 	;else
 	    (ess-save-and-set-local-variables)
 	    (ess-jags-switch-to-suffix ".jmd" 
-		ess-jags-chains ess-jags-monitor ess-jags-thin))
+		ess-jags-chains ess-jags-monitor ess-jags-thin ess-jags-burnin ess-jags-update))
 )
 
 (defun ess-jags-mode ()
