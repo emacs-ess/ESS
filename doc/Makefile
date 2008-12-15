@@ -21,7 +21,7 @@ TEXI2PDF = LANG=C texi2dvi --pdf
 
 TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 	credits.texi currfeat.texi ess.texi ess-defs.texi getting.texi help-s.texi \
-	help-sas.texi inst_svn.texi inst_tar.texi license.texi mailing.texi \
+	help-sas.texi inst_svn.texi unixlike.texi windows.texi license.texi mailing.texi \
 	newfeat.texi readme.texi requires.texi stabilty.texi help-bugs.texi \
         ../VERSION Makefile
 
@@ -97,8 +97,8 @@ install-info : info/ess.info
 install-other-docs: pdf html
 	-$(INSTALLDIR) $(DOCDIR)
 	$(INSTALL) ess.dvi ess.pdf readme.dvi readme.pdf ../README ../ANNOUNCE $(DOCDIR)
-	$(INSTALL) html/ess.html html/readme.html $(DOCDIR)/html
-	$(INSTALL) refcard/refcard.pdf $(DOCDIR)/refcard
+	$(INSTALL) html/ess.html html/readme.html $(DOCDIR)
+	$(INSTALL) refcard/refcard.pdf $(DOCDIR)
 
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess.html: $(TEXISRC)
