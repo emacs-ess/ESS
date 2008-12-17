@@ -137,13 +137,13 @@ The extension, in a file name, is the part that follows the last `.'."
 ;; load code to figure out what version/strain of Emacs we are running
 ;; must come *AFTER* load-path is set !
 
-;;; The following require sets the following ess-local-custom-available to
-;;; true if custom is provided at this point.  If we think it will be,
-;;; then we can use the following (uncommented out) to make sure that
-;;; it will be.	 (AJR).
+;;; The following require sets ess-local-custom-available to
+;;; true if custom is provided at this point.  
 (require 'ess-emcs)
-;; This will override what Emacs thinks it can detect.
-;;(setq ess-local-custom-available t); if custom is available, uncomment
+;;; If it is not provided, but we think it will be available when necessary,
+;;; then we can use the following line (uncommented) to make sure that
+;;; it will be used.  If you have to ask, then you don't need this.
+;;(setq ess-local-custom-available t)
 
 ;; SJE Thu 13 May 2004
 ;; Maybe ess-etc-directory should not be defcustom, since its value
@@ -197,10 +197,9 @@ for ESS, such as icons.")
 ;;; Files ending in .St are considered to be S transcript files
 ;;;
 ;;; NB: in standard Emacs, files ending in .s are assembler files.  If you
-;;; want to use assembler, you can comment the appropriate line below.	Of
-;;; course, different users will want different modes.	If a user wants to
-;;; restore default the default modes for assembly file extensions, the
-;;; following can go into ~/.emacs:
+;;; want to use assembler.  If a user wants to
+;;; restore the default modes for assembly file extensions, the
+;;; following can go into ~/.emacs or ~/.xemacs/init.el
 ;;;
 ;;;  (add-hook 'ess-mode-hook 'ess-restore-asm-extns)
 ;;;  (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
@@ -292,16 +291,6 @@ between .s or .S files and assembly mode.
 ;;(setq-default inferior-OMG-program-name "/home/rossini/src/anoncvs/Omegahat/org/omegahat/bin/omegahat")
 (setq-default inferior-OMG-program-name "omegahat")
 
-;;; ESS on the Windows NT/95/98 assumes you have installed gnuclient
-;;; with your NTemacs.
-;;; http://www.cs.washington.edu/homes/voelker/ntemacs/contrib/gnuserv.zip
-;;; Should you choose not to use gnuclient, you will need to uncomment
-;;; the notepad definitions below.
-;;;
-;;; Send Print from S+4 GUI Commands window print icon to emacs.
-;;; StatSci's S+4 default print destination for the commands window is
-;;(setq-default inferior-S+4-print-command "notepad/p")
-;;;
 ;;; The line below is the ESS default and sends the commands window
 ;;; to emacs, giving the user the opportunity to
 ;;; (1) edit the output into a clean ess-transcript file before printing, or
@@ -428,9 +417,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;; (1.9) Toolbar support
 
-;; To remove toolbar support under ESS, either comment-out
-;; (require 'ess-toolbar) below, or add "(setq ess-use-toolbar nil)"
-;; to your .emacs before (require 'ess-site).
+;; To remove toolbar support under ESS, add "(setq ess-use-toolbar nil)"
+;; to your ~/.emacs or ~/.xemacs/init.el before (require 'ess-site)
 (require 'ess-toolbar)
 
 ;;; 2. Site Specific setup
@@ -542,13 +530,13 @@ sending `inferior-ess-language-start' to S-Plus.")
 (require 'essd-r)
 (ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./essd-r.el
 
-;;; 3. Customization (and commented out examples) for your site
+;;; 3. Customization (and examples) for your site
 ;;;; ===============================================
 
 
 ;;; (3.01) SOME PEOPLE (who will remain nameless) worry that novices
 ;;; won't like fancy buffer names for their first (and only :-)
-;;; process.  To number all processes, uncomment the next line.
+;;; process.  To number all processes:
 ;;(setq ess-plain-first-buffername nil)
 
 ;;; (3.02) Some people have requested using the program name as part
@@ -575,7 +563,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; often unnecessarily large. The framepop package makes such
 ;;; windows appear in a separate, shrink-wrapped frame. This will
 ;;; also affect other "temporary" windows such as those produced by
-;;; C-h k, etc.	 To enable, uncomment both lines of code below).
+;;; C-h k, etc.	 To enable:
 ;;;
 ;;; Works only with Emacs at this time.
 ;; (cond (window-system
@@ -646,8 +634,9 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;;; Formatting and indentation patterns are defined in ess-cust.el, please
 ;;; see ess-cust.el for exact definitions of these variable settings.
-;;; To change them, uncomment one or both of the following lines:
-;;; (eg, follow changes suggested by Terry Therneau)
+;;; To change them (eg, follow changes suggested by Terry Therneau), 
+;;; you need one or both of the following lines:
+;;; 
 ;;(setq ess-fancy-comments nil)
 ;;(setq ess-default-style 'CLB)
 
@@ -664,7 +653,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;;   1b. Optional: TAB is bound to tab-to-tab-stop and inserts up to 4
 ;;;	  columns at a time.  C-TAB moves backwards and deletes characters
 ;;;	  up to 4 columns at a time.
-;;;	  Uncomment the following line for the optional behavior.
+;;;	  The following line is for the optional behavior.
 ;;;(setq ess-sas-edit-keys-toggle t)   ;; optional TAB and C-TAB in sas-mode
 ;;;   Use the function call (ess-sas-edit-keys-toggle)
 ;;;   to change the setting after the first SAS-mode buffer has been created.
@@ -672,17 +661,17 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;;
 ;;;   2. Managing submitted SAS jobs with function keys.
 ;;;   2a. Default: To define the function keys in ESS[SAS] mode only,
-;;;   uncomment at most one of the following two lines.
+;;;   you will need, at most, one of the following two lines.
 ;;;(setq ess-sas-local-unix-keys t)  ;; F2-F12 bound in ESS[SAS] mode
 ;;;(setq ess-sas-local-pc-keys t)    ;; F2-F12 bound in ESS[SAS] mode
 ;;;
 ;;;   2b. Options: To define the function keys in all modes,
-;;;   uncomment at most one of the following two lines.
+;;;   you will need, at most, one of the following two lines.
 ;;;(setq ess-sas-global-unix-keys t) ;; F2-F12 bound in all modes
 ;;;(setq ess-sas-global-pc-keys t)   ;; F2-F12 bound in all modes
 ;;;
 ;;;   3. If it is more convenient to have "*Async Shell Command*"
-;;;	 in same-window-buffer-names, then uncomment the following line
+;;;	 in same-window-buffer-names, then:
 ;;;(ess-same-window-async)
 ;;;
 ;;;(defvar sas-program "sas" "*Name of program which runs sas.")

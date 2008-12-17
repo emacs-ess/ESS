@@ -1,3 +1,24 @@
+2008-12-17  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-site.el: we no longer should be encouraging
+	users to edit this file (except possibly in extraordinary 
+	circumstances in 2 places).  Therefore, I have removed
+	all but 2 references to uncommenting of code.  However,
+	the examples are instructive so they remain, but the
+	wording does not suggest uncommenting.  This is only a half-step
+	in the direction that we want to go.
+
+2008-12-15  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essd-jags.el (ess-jags-switch-to-suffix, ess-jags-na-bug): 
+	adding 2 new local variables:  ess-jags-burnin and
+	ess-jags-update.  ESS[BUGS] has similar variables, but
+	the modern defaults are an order of magnitude bigger, so
+	it seemed like creating new variables was warranted
+	also, the "log" of the run is now .jog (like BUGS which
+	is .bog); .out created too many problems since the BOA 
+	output files have that extension as well
+	
 2008-12-11  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* noweb-mode.el (noweb-indent-line): update chunk vector first:
