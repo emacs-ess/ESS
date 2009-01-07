@@ -198,7 +198,8 @@ Better logic needed!  (see 2 uses, in this file).")
 (defun SAS-mode (&optional proc-name)
   "Major mode for editing SAS source.  See ess-mode for more help."
   (interactive)
-  (setq-default font-lock-keywords-case-fold-search t)
+  ;bad idea: a workaround that may be worse than the bug
+  ;(setq-default font-lock-keywords-case-fold-search t)
   (setq ess-customize-alist SAS-customize-alist)
   (ess-mode SAS-customize-alist proc-name)
 
@@ -232,6 +233,10 @@ Better logic needed!  (see 2 uses, in this file).")
 ;  (define-key sas-mode-local-map "\C-c\C-y" 'ess-sas-goto-lst)
 
   (use-local-map sas-mode-local-map))
+
+;according to XEmacs docs, this is the way to font-lock case-agnostic modes
+;but, GNU Emacs 22.3.1 is where the bug exists, and this doesn't fix it
+;(put 'SAS-mode 'font-lock-defaults '('SAS-mode-font-lock-keywords nil t))
 
 ;; rmh Jul 10 2003
 (defun ess-electric-run-semicolon (arg)
