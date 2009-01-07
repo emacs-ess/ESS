@@ -1,3 +1,16 @@
+2009-01-07  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* doc/help-jags.texi 
+	(ESS(JAGS)--Log files): 
+	the "log" of the run is now .jog (like BUGS which
+	is .bog); .out created too many problems since the BOA 
+	output files have that extension as well
+	(ESS(JAGS)--Model files): 
+	adding 2 new local variables:  ess-jags-burnin and
+	ess-jags-update.  ESS[BUGS] has similar variables, but
+	the modern defaults are an order of magnitude bigger, so
+	it seemed like creating new variables was warranted
+
 2008-12-17  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* doc/windows.texi (Microsoft Windows installation): 
