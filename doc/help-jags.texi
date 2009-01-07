@@ -31,8 +31,9 @@ more elisp-ish approach was adopted for @ESS{[JAGS]}:  elisp local variables.
 These variables are
 created as part of the template, i.e. with the first press of @kbd{C-c C-c} 
 in an empty buffer.  For your @file{.bug} file, they are named 
-@code{ess-jags-chains}, @code{ess-jags-monitor} and @code{ess-jags-thin}, 
-and they appear in the @code{Local Variables} section.  When you are
+@code{ess-jags-chains}, @code{ess-jags-monitor}, @code{ess-jags-thin},  
+@code{ess-jags-burnin} and @code{ess-jags-update};
+they appear in the @code{Local Variables} section.  When you are
 finished editing your model file, pressing @kbd{C-c C-c} will perform
 the necessary actions to build your command file for you. 
 
@@ -46,6 +47,12 @@ list of variables.  By default, no variables are explicitly monitored
 which means JAGS will implicitly monitor all ``default'' variables. 
 The @code{ess-jags-thin} variable is the thinning parameter.  
 By default, the thinning parameter is set to 1, i.e. no thinning. 
+The @code{ess-jags-burnin} variable is the number of initial samples
+to discard.  By default, the burnin parameter is set to 10000.
+The @code{ess-jags-update} variable is the number of post-burnin samples
+to keep.  By default, the update parameter is set to 10000.  Both 
+@code{ess-jags-burnin} and @code{ess-jags-update} are multiplied by
+@code{ess-jags-thin} since JAGS does not do it automatically.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(JAGS)--Command files, ESS(JAGS)--Log files, ESS(JAGS)--Model files, ESS for JAGS
@@ -66,7 +73,7 @@ JAGS program to use to run your model; defaults to ``jags''.
 @node ESS(JAGS)--Log files, , ESS(JAGS)--Command files, ESS for JAGS
 @section ESS[JAGS]--Log files
 
-The @file{.out} extension is used for JAGS log
-files.  You may find @kbd{F2} useful to refresh the @file{.out} if the batch
+The @file{.jog} extension is used for JAGS log
+files.  You may find @kbd{F2} useful to refresh the @file{.jog} if the batch
 process over-writes or appends it.
 
