@@ -198,6 +198,7 @@ Better logic needed!  (see 2 uses, in this file).")
 (defun SAS-mode (&optional proc-name)
   "Major mode for editing SAS source.  See ess-mode for more help."
   (interactive)
+  (setq-default font-lock-keywords-case-fold-search t)
   (setq ess-customize-alist SAS-customize-alist)
   (ess-mode SAS-customize-alist proc-name)
 
