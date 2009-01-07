@@ -24,7 +24,7 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 	help-s.texi help-sas.texi inst_svn.texi inst_tar.texi windows.texi \
 	license.texi mailing.texi \
 	newfeat.texi readme.texi requires.texi stabilty.texi help-bugs.texi \
-        ../VERSION Makefile
+        help-jags.texi ../VERSION Makefile
 
 ESSINFONODE1='* ESS: (ess).'
 ESSINFONODE2='	        Emacs Speaks Statistics'
