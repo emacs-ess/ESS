@@ -36,7 +36,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.3.10
+5.3.11
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -347,8 +347,16 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
 <h3 class="section">1.2 New features in ESS</h3>
 
-<p>Changes/New Features in 5.3.10:
      <ul>
+Changes/New Features in 5.3.11:
+          <ul>
+<li><acronym>ESS[SAS]</acronym>: work around buglet in Emacs 22.2 &amp; 22.3 which fails to
+ set case-fold fontification automatically. 
+<li>Rd mode: support new keyword 'Rdversion'
+</ul>
+
+     <p>Changes/New Features in 5.3.10:
+          <ul>
 <li>Fixed noweb-mode bug accidentally introduced into 5.3.9
 <li>In noweb-mode, e.g., Rnw-mode, electric &ldquo;&lt;&rdquo; also inserts closing &ldquo;@". 
  Further, the code chunk boundaries are better kept up-to-date, such that
@@ -358,8 +366,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
  behavior which has been found to be buggy. 
 </ul>
 
-   <p>Changes/New Features in 5.3.9:
-     <ul>
+     <p>Changes/New Features in 5.3.9:
+          <ul>
 <li><acronym>ESS[SAS]</acronym>: evince PDF viewer now supported as well; search order:
 evince, Xpdf, Adobe/Acrobat Reader
 <li><acronym>ESS[R]</acronym>: added support for Roxygen, potentially to be extended. 
@@ -375,8 +383,8 @@ and <code>noweb-mode</code>.
 a submenu of the &ldquo;Noweb&rdquo; menu, when editing Sweave files. 
 </ul>
 
-   <p>Changes/New Features in 5.3.8:
-     <ul>
+     <p>Changes/New Features in 5.3.8:
+          <ul>
 <li><acronym>ESS[JAGS]</acronym>: more separation from <acronym>ESS[BUGS]</acronym> (as much as is currently planned);
 now <kbd>C-c C-c</kbd> on an empty <samp><span class="file">.jmd</span></samp> creates a template as it should;
 symbolic links are created for CODA output so BOA is happy:
@@ -399,8 +407,8 @@ present, then no links are created so that the <code>*shell*</code>
 buffer does not become unresponsive during the batch run
 </ul>
 
-   <p>Changes/New Features in 5.3.7:
-     <ul>
+     <p>Changes/New Features in 5.3.7:
+          <ul>
 <li><acronym>ESS</acronym>: <code>ess-default-style</code> now *is* customizable, i.e.,
   changing its value in <samp><span class="file">~/.emacs</span></samp> now does have the desired effect. 
 <li><acronym>ESS</acronym>: <code>ess-font-lock-mode</code> is a new variable (default: t)
@@ -425,8 +433,8 @@ to <code>Rgui</code> is available in file <code>lisp/essd-rgui.el</code>.
 Preliminary documentation is in file <code>doc/rgui-doc.txt</code>. 
 </ul>
 
-   <p>Changes/New Features in 5.3.6:
-     <ul>
+     <p>Changes/New Features in 5.3.6:
+          <ul>
 <li><acronym>ESS</acronym>: for XEmacs, using &ldquo;gnuclient&rdquo; (without a &ldquo;-q&rdquo;) works for
  things like fix() after M-x gnuserv-start has been done. 
 <li><acronym title="[S]">ESS[R]</acronym>: M-x R-newest should now work in more situations on MS
@@ -436,8 +444,8 @@ Preliminary documentation is in file <code>doc/rgui-doc.txt</code>.
 <li><acronym title="[S]">ESS[R]</acronym>: For XEmacs, startup (with new tooltip code) works again. 
 </ul>
 
-   <p>Changes/New Features in 5.3.5:
-     <ul>
+     <p>Changes/New Features in 5.3.5:
+          <ul>
 <li><acronym title="[S]">ESS[R]</acronym> a new defun is available, <kbd>M-x R-newest</kbd>, which will start
 the newest version of R that it can find on your system. 
 <li><acronym title="[S]">ESS[R]</acronym> add Sven Hartenstein's &ldquo;R function arguments tips&rdquo;
@@ -459,16 +467,16 @@ the newest version of R that it can find on your system.
  is only one. 
 </ul>
 
-   <p>Changes/New Features in 5.3.4:
-     <ul>
+     <p>Changes/New Features in 5.3.4:
+          <ul>
 <li><acronym title="[S]">ESS[R]</acronym> now better work with options(error=recover); and the
 new default of CHM help files on windows. 
 <li><acronym title="[S]">ESS[R]</acronym> some more cleanup in the &ldquo;sweave&rdquo; functions
 <li>miscellaneous fixes
 </ul>
 
-   <p>Changes/New Features in 5.3.3:
-     <ul>
+     <p>Changes/New Features in 5.3.3:
+          <ul>
 <li><acronym>ESS[S]</acronym> fix buglet (5.3.2 only) which left command prompt in
 &ldquo;execute buffer&rdquo; and hence help files. 
 <li>new customizable variable <code>ess-display-buffer-reuse-frames</code>
@@ -476,8 +484,8 @@ set to true (which changes default behavior) such that execution or
 help *frames* are reused. 
 </ul>
 
-   <p>Changes/New Features in 5.3.2:
-     <ul>
+     <p>Changes/New Features in 5.3.2:
+          <ul>
 <li>Classic BUGS now supported by <code>(require 'essd-bugs)</code> with <acronym>ESS[BUGS]</acronym>
       and JAGS by <code>(require 'essd-jags)</code> with <acronym>ESS[JAGS]</acronym>.  But, only one
       of them can be used at a time since they don't play nice together.  Also,
@@ -489,17 +497,17 @@ help *frames* are reused.
 <li><acronym>ESS[S]</acronym> No longer mess with .Last.value (nor in other &ldquo;languages&rdquo;). 
 </ul>
 
-   <p>Changes/New Features in 5.3.1:
-     <ul>
+     <p>Changes/New Features in 5.3.1:
+          <ul>
 <li>See the docs for 2 ways to install <acronym>ESS</acronym> for XEmacs
-          <ol type=1 start=1>
+               <ol type=1 start=1>
       <li>by uncommenting the XEmacs part of
             Section 1 of <samp><span class="file">Makeconf</span></samp> and performing <code>make install</code>
       <li>by unpacking either
             <samp><span class="file">ess-5.3.1.tgz</span></samp> or <samp><span class="file">ess-5.3.1.zip</span></samp> into
             <samp><span class="file">PREFIX/lib/xemacs/site-packages</span></samp> on unix or
             <samp><span class="file">PREFIX\XEmacs\site-packages</span></samp> on windows
-          </ol>
+               </ol>
 <li><acronym title="[S]">ESS[R]</acronym>: fixed bugs so that Rterm.exe can be found by XEmacs
 <li><acronym>ESS[S]</acronym>: <kbd>ess-toggle-S-assign-key</kbd> is slightly changed; in
  particular, the default <code>ess-assign-key</code> is now <kbd>C-x =</kbd>. 
@@ -508,8 +516,8 @@ help *frames* are reused.
  using Emacs' preferred browser, see <code>browse-url-browser-function</code>
 </ul>
 
-   <p>Changes/New Features in 5.3.0:
-     <ul>
+     <p>Changes/New Features in 5.3.0:
+          <ul>
 <li><acronym>ESS[BUGS]</acronym>: sanely re-format statistical output, <samp><span class="file">.bog</span></samp>,
 from scientific notation to numbers rounded with 4 decimal places
 with <kbd>M-x ess-bugs-sci-round-to-4-dp</kbd>. 
@@ -534,8 +542,8 @@ than one S buffer.
 assign the &ldquo; &lt;- &rdquo; insertion to an arbitrary key. 
 </ul>
 
-   <p>Changes/New Features in 5.2.12:
-     <ul>
+     <p>Changes/New Features in 5.2.12:
+          <ul>
 <li><acronym>ESS[SAS]</acronym>: <kbd>M-;</kbd> fixed, but the XEmacs function <code>comment-dwim</code>
 may be broken, if so, use <kbd>M-x comment-region</kbd> and <kbd>M-x
 uncomment-region</kbd> instead; only valid PROCs are fontified which is very
@@ -551,8 +559,8 @@ define 'baseenv' where needed.
 <samp><span class="file">lisp/ess-install.el</span></samp>. 
 </ul>
 
-   <p>Changes/New Features in 5.2.11:
-     <ul>
+     <p>Changes/New Features in 5.2.11:
+          <ul>
 <li>ESS Info entry and <samp><span class="file">dir</span></samp> handled more effectively for GNU Emacs users
 <li><acronym>ESS[SAS]</acronym>: temporary files created for batch submission of a
 region are now named based on the current file; see <code>ess-sas-file-root</code>
@@ -565,8 +573,8 @@ added for unix.  Two new variables, <code>ess-s-versions</code> and
 Splus you would like to run. 
 </ul>
 
-   <p>Changes/New Features in 5.2.10:
-     <ul>
+     <p>Changes/New Features in 5.2.10:
+          <ul>
 <li><acronym title="[S]">ESS[R]</acronym>: ess-r-versions can no longer be customized (since the
 customization was not taking effect unless customizations were loaded
 before ESS).  Its value has been changed so that it will also find R
@@ -583,8 +591,8 @@ XEmacs for R and S-plus.
 <!-- working around a bug in XEmacs -->
 </ul>
 
-   <p>Changes/New Features in 5.2.9:
-     <ul>
+     <p>Changes/New Features in 5.2.9:
+          <ul>
 <li><acronym title="[S]">ESS[R]</acronym> for Windows:  the \ directory character bug
 with respect to ess-load-file has been eradicated. 
 <li>i<acronym>ESS[SAS]</acronym><!-- /@w -->: <kbd>C-c C-r</kbd> and <kbd>C-c C-b</kbd> once again
@@ -605,14 +613,14 @@ work as intended and documented.
 <li><acronym>ESS[STA]</acronym>: add &ldquo;//&rdquo; as comment starting character to syntax-table. 
 </ul>
 
-   <p>Changes/New Features in 5.2.8:
-     <ul>
+     <p>Changes/New Features in 5.2.8:
+          <ul>
 <li>iESS: [Tab] completes <strong>file</strong> names &ldquo;inside string&rdquo; as in
 earlier (&lt;= 5.2.3) ESS versions. 
 </ul>
 
-   <p>Changes/New Features in 5.2.7:
-     <ul>
+     <p>Changes/New Features in 5.2.7:
+          <ul>
 <li>If you use Custom to change the variable ess-toolbar-items,
 the new toolbar is used in all subsequent ESS buffers. 
 <li><acronym>ESS[SAS]</acronym>: new feature:  if ess-sas-log-max &gt;0 and
@@ -625,8 +633,8 @@ either one or two hashes depending on context.
 are now available (from ess-swv.el loaded by default). 
 </ul>
 
-   <p>Changes/New Features in 5.2.6:
-     <ul>
+     <p>Changes/New Features in 5.2.6:
+          <ul>
 <li>Removed non-ASCII characters in a few files. 
 <li><acronym title="[S]">ESS[R]</acronym>: now works better when UTF-8 locale is active; in
  particular, you get correct directional quotes in R's startup message
@@ -644,8 +652,8 @@ modes: When \a is output &ldquo;to the the console&rdquo; at the beginning of a 
 the bell is rung. 
 </ul>
 
-   <p>Changes/New Features in 5.2.5:
-     <ul>
+     <p>Changes/New Features in 5.2.5:
+          <ul>
 <li><acronym title="[S]">ESS[R]</acronym>: <kbd>C-c C-q</kbd> or `<samp><span class="samp">Quit S</span></samp>' from the menu now should work
 (again and less klunkily) and do not append `<samp><span class="samp">-exited</span></samp>' to the
 buffer name.  Further, the behavior of <code>(ess-cleanup)</code>, called from
@@ -658,8 +666,8 @@ with the <code>recode</code> application as well which is available on many plat
 <li><acronym>ESS[S]</acronym> (incl. R): Name completion for slots of S4 objects now works! 
 </ul>
 
-   <p>Changes/New Features in 5.2.4:
-     <ul>
+     <p>Changes/New Features in 5.2.4:
+          <ul>
 <li>The documentation now includes an overview of how to use the emacs
 TAGS facility for S functions.  (The distribution also used to contain a
 directory <samp><span class="file">etc/other/Tags</span></samp> where a ~1990 version of <samp><span class="file">etags.c</span></samp> was
@@ -685,8 +693,8 @@ object appears more than once in the search path.
 starting with &ldquo;.&rdquo;. 
 </ul>
 
-   <p>Changes/New Features in 5.2.3:
-     <ul>
+     <p>Changes/New Features in 5.2.3:
+          <ul>
 <li>ESS: When new inferior ESS processes are created, by default they
 will replace the current buffer (this restores behavior from pre
 5.2.0). If you wish new ESS processes to start in another window of the
@@ -695,8 +703,8 @@ current frame, set inferior-ess-same-window to nil.
 way to pass command line arguments to starting S and R processes. 
 </ul>
 
-   <p>Changes/New Features in 5.2.2:
-     <ul>
+     <p>Changes/New Features in 5.2.2:
+          <ul>
 <li>bug-fixes for 5.2.1 (require 'executable), html docs, etc. 
 <li>ess-lisp-directory/../doc/info added to Info-directory-list
 if ess-info not found by info
@@ -726,8 +734,8 @@ inferior R process, when issued from either the inferior buffer, or from
 a .R buffer. 
 </ul>
 
-   <p>Changes/New Features in 5.2.1:
-     <ul>
+     <p>Changes/New Features in 5.2.1:
+          <ul>
 <li><acronym>ESS[S]</acronym> (R and S-plus): now have toolbar support
 with icons to evaluate code in the inferior process or to switch
 there.  This code is experimental and likely to change as XEmacs/Emacs
@@ -741,8 +749,8 @@ by image-mode on XEmacs, if available, otherwise by graphics
 primitives as before
 </ul>
 
-   <p>Changes/New Features in 5.2.0:
-     <ul>
+     <p>Changes/New Features in 5.2.0:
+          <ul>
 <li><acronym>ESS[BUGS]</acronym>:  new info documentation!  now supports interactive
 processing thanks to <a href="mailto:Aki.Vehtari@hut.fi">Aki Vehtari</a>;
 new architecture-independent unix support as well as support for BUGS v. 0.5
@@ -781,18 +789,18 @@ new frames; see the documentation for ess-help-own-frame for details.
 (Thanks to Kevin Rodgers for contributing code.) 
 </ul>
 
-   <p>Changes/New Features in 5.1.24:
-     <ul>
+     <p>Changes/New Features in 5.1.24:
+          <ul>
 <li>The version number is now correct even inside ESS/Emacs
 </ul>
 
-   <p>Changes/New Features in 5.1.23:
-     <ul>
+     <p>Changes/New Features in 5.1.23:
+          <ul>
 <li>Minor more Makefile clean up. 
 </ul>
 
-   <p>Changes/New Features in 5.1.22:
-     <ul>
+     <p>Changes/New Features in 5.1.22:
+          <ul>
 <li>Besides info documentation, PDF and HTML
 documentation are also provided (instead of built using "make") and available
 on the web as well; see <a href="http://ess.r-project.org/">ESS web page</a> and <a href="http://lib.stat.cmu.edu/general/ESS/doc">StatLib</a>
@@ -811,8 +819,8 @@ ess-sas-shell-buffer to unique buffer names.
 <li>Major re-vamping of Makefile/Makeconf. 
 </ul>
 
-   <p>Changes/New Features in 5.1.21:
-     <ul>
+     <p>Changes/New Features in 5.1.21:
+          <ul>
 <li><acronym>ESS[SAS]</acronym>: info documentation now available!, see
 ESS-&gt;Help for SAS; <kbd>F12</kbd> opens GSASFILE nearest point for viewing
 either within emacs, when available, or via an external viewer;
@@ -825,8 +833,8 @@ ESS-&gt;Help for the S family
 made by doc/Makefile and installed in new info sub-directory
 </ul>
 
-   <p>Changes/New Features in 5.1.20:
-     <ul>
+     <p>Changes/New Features in 5.1.20:
+          <ul>
 <li>New `options()$STERM' in the S dialects (S, S-Plus, R). 
 The S program can determine the environment in which it is
 currently running.  ESS sets the option to `iESS' or `ddeESS'
@@ -869,8 +877,8 @@ ess-directory &lt;-&gt; default-directory logic (Jeff Mincy).
 <li>Re-organized Makefile and fixed a few bugs. 
 </ul>
 
-   <p>Changes/New Features in 5.1.19:
-     <ul>
+     <p>Changes/New Features in 5.1.19:
+          <ul>
 <li>S+6 now supported (Tony Rossini (Unix) and Rich Heiberger (Windows))
 <li>New BUGS support through <acronym>ESS[BUGS]</acronym> mode (Rodney Sparapani)
 Templates assist you in writing .bug and .cmd code (.cmd and .log
@@ -896,16 +904,16 @@ and other <acronym>ESS[SAS]</acronym> variables (Rodney Sparapani)
 <li>Improved manual a bit by including things that were only in `README'. 
 </ul>
 
-   <p>Changes/New Features in 5.1.18:
-     <ul>
+     <p>Changes/New Features in 5.1.18:
+          <ul>
 <li>New `ess-smart-underscore' function, now assigned to "_" by default. 
 Inserts `ess-S-assign' (customizable " &lt;- "), unless inside string
 and comments where plain "_" is used instead. (MM)
 <li>Fixes for longstanding interactive SAS breakage (RMH)
 </ul>
 
-   <p>Changes/New Features in 5.1.17:
-     <ul>
+     <p>Changes/New Features in 5.1.17:
+          <ul>
 <li>Documentation for Windows Installation (Rich Heiberger)
 <li>removal of ess-vars, finalization of customize support (in the
 sense that there is no more use of ess-vars, but that we need to
@@ -916,41 +924,41 @@ a way to remap "_" to `ess-S-assign', typically " &lt;- ", but
 customizable. (MMaechler)
 </ul>
 
-   <p>Changes/New Features in 5.1.16:
-     <ul>
+     <p>Changes/New Features in 5.1.16:
+          <ul>
 <li>BUG FIXES
 <li>Better SAS support
 </ul>
 
-   <p>Changes/New Features in 5.1.15:
-     <ul>
+     <p>Changes/New Features in 5.1.15:
+          <ul>
 <li>BUG FIXES
 </ul>
 
-   <p>Changes/New Features in 5.1.14:
-     <ul>
+     <p>Changes/New Features in 5.1.14:
+          <ul>
 <li>Yet more fixes to SAS mode, (Rich Heiberger and Rodney Sparapani)
 <li>Customize support (for most Emacsen which support it) (AJRossini)
 <li>ARC and ViSta support out of the box, and fixes for XLispStat (AJRossini)
 </ul>
 
-   <p>Changes/New Features in 5.1.13:
-     <ul>
+     <p>Changes/New Features in 5.1.13:
+          <ul>
 <li>Version numbering finally all depending on the ./VERSION file,
 thanks to Martin Maechler. 
 <li>Yet more fixes to SAS mode, thanks to Rich Heiberger. 
 </ul>
 
-   <p>Changes/New Features in 5.1.12:
-     <ul>
+     <p>Changes/New Features in 5.1.12:
+          <ul>
 <li>Splus 5.1 stabilized, thanks to Martin Maechler, Bill Venables,
 Chuck Taylor, and others. 
 <li>More fixes to SAS mode, thanks to Rodney Sparapani
 and Rich Heiberger. 
 </ul>
 
-   <p>Changes/New Features in 5.1.11:
-     <ul>
+     <p>Changes/New Features in 5.1.11:
+          <ul>
 <li>More fixes to Stata mode, thanks to
 <a href="mailto:brendan@essex.ac.uk">Brendan Halpin</a>. 
 <li>fixed bugs in ESS-elsewhere, thanks to many testers
@@ -959,27 +967,27 @@ to <a href="mailto:brahm@alum.mit.edu">David Brahm</a>.
 <li>Fixes to SAS mode, thanks to Rodney Sparapani
 </ul>
 
-   <p>Changes/New Features in 5.1.10:
-     <ul>
+     <p>Changes/New Features in 5.1.10:
+          <ul>
 <li>More fixes to Stata mode
 <li>primitive generic version of ESS-elsewhere
 <li>Small fixes to SAS/Stata. 
 </ul>
 
-   <p>Changes/New Features in 5.1.9:
-     <ul>
+     <p>Changes/New Features in 5.1.9:
+          <ul>
 <li>Stata mode works
 <li>Literate Data Analysis using Noweb works
 </ul>
 
-   <p>Changes/New Features in 5.1.8:
-     <ul>
+     <p>Changes/New Features in 5.1.8:
+          <ul>
 <li>Bug fixes
 <li>R documentation mode defaults changed
 </ul>
 
-   <p>Changes/New Features in 5.1.2:
-     <ul>
+     <p>Changes/New Features in 5.1.2:
+          <ul>
 <li>able to use inferior iESS mode to
 communicate directly with a running S-Plus 4.x process using the
 Microsoft DDE protocol.  We use the familiar (from Unix ESS) <kbd>C-c C-n</kbd>
@@ -988,6 +996,8 @@ inferior S process.  We continue to edit S input files in <acronym>ESS[S]</acron
 and transcripts of previous S sessions in ESS Transcript mode.  All
 three modes know the S language, syntax, and indentation patterns and
 provide the syntactic highlighting that eases the programming tasks. 
+</ul>
+
 </ul>
 
 <!-- node-name,  next,  previous,  up -->
@@ -4895,8 +4905,9 @@ more elisp-ish approach was adopted for <acronym>ESS[JAGS]</acronym>:  elisp loc
 These variables are
 created as part of the template, i.e. with the first press of <kbd>C-c C-c</kbd>
 in an empty buffer.  For your <samp><span class="file">.bug</span></samp> file, they are named
-<code>ess-jags-chains</code>, <code>ess-jags-monitor</code> and <code>ess-jags-thin</code>,
-and they appear in the <code>Local Variables</code> section.  When you are
+<code>ess-jags-chains</code>, <code>ess-jags-monitor</code>, <code>ess-jags-thin</code>,
+<code>ess-jags-burnin</code> and <code>ess-jags-update</code>;
+they appear in the <code>Local Variables</code> section.  When you are
 finished editing your model file, pressing <kbd>C-c C-c</kbd> will perform
 the necessary actions to build your command file for you.
 
@@ -4909,7 +4920,13 @@ appropriate statements are created in the command file to monitor the
 list of variables.  By default, no variables are explicitly monitored
 which means JAGS will implicitly monitor all &ldquo;default&rdquo; variables. 
 The <code>ess-jags-thin</code> variable is the thinning parameter. 
-By default, the thinning parameter is set to 1, i.e. no thinning.
+By default, the thinning parameter is set to 1, i.e. no thinning. 
+The <code>ess-jags-burnin</code> variable is the number of initial samples
+to discard.  By default, the burnin parameter is set to 10000. 
+The <code>ess-jags-update</code> variable is the number of post-burnin samples
+to keep.  By default, the update parameter is set to 10000.  Both
+<code>ess-jags-burnin</code> and <code>ess-jags-update</code> are multiplied by
+<code>ess-jags-thin</code> since JAGS does not do it automatically.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
@@ -4947,8 +4964,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-JAGS">ESS for JAGS</a>
 
 <h3 class="section">12.3 ESS[JAGS]&ndash;Log files</h3>
 
-<p>The <samp><span class="file">.out</span></samp> extension is used for JAGS log
-files.  You may find <kbd>F2</kbd> useful to refresh the <samp><span class="file">.out</span></samp> if the batch
+<p>The <samp><span class="file">.jog</span></samp> extension is used for JAGS log
+files.  You may find <kbd>F2</kbd> useful to refresh the <samp><span class="file">.jog</span></samp> if the batch
 process over-writes or appends it.
 
 <!-- node-name,  next,  previous,  up -->

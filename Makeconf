@@ -74,6 +74,7 @@ DOCDIR=$(PREFIX)/share/doc/ess
 ## GNUTAR          the name of GNU tar to support the z option
 ## SVN_URL         repository URL
 ## UPLOAD_DIR      Martin's upload directory
+## ESS_HOMEPAGE    Martin's svn co https://svn.r-project.org/ESS-web/trunk
 ##
 ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 ESSDIR=ess-$(ESSVERSION)
@@ -81,5 +82,6 @@ ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
 GNUTAR=tar
 SVN_URL = https://svn.R-project.org/ESS
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess
+ESS_HOMEPAGE = /u/maechler/emacs/ESS-web
 
 .SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el .elc

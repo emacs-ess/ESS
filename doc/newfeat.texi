@@ -1,3 +1,11 @@
+@itemize @w
+Changes/New Features in 5.3.11:
+@itemize @bullet
+@item @ESS{[SAS]}: work around buglet in Emacs 22.2 & 22.3 which fails to
+ set case-fold fontification automatically.
+@item Rd mode: support new keyword 'Rdversion'
+@end itemize
+
 Changes/New Features in 5.3.10:
 @itemize @bullet
 @item Fixed noweb-mode bug accidentally introduced into 5.3.9
@@ -640,4 +648,6 @@ inferior S process.  We continue to edit S input files in @ESS{[S]} mode
 and transcripts of previous S sessions in ESS Transcript mode.  All
 three modes know the S language, syntax, and indentation patterns and
 provide the syntactic highlighting that eases the programming tasks.
+@end itemize
+
 @end itemize
