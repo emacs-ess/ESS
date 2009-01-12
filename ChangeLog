@@ -1,3 +1,11 @@
+2009-01-12  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* doc/Makefile, doc/ess.texi, doc/readme.texi,
+	  doc/windows.texi, doc/unixlike.texi (Installation): 
+	new simplified installation instructions for Windows
+	and Unix/Unix-like including Mac OS X (major changes
+	now complete)
+
 2009-01-07  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* doc/Makefile (TEXISRC): add help-jags.texi to list

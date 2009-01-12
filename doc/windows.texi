@@ -6,9 +6,9 @@
 
 For @b{Microsoft Windows installation}, please follow the next steps.
 Retrieve the latest zip file (@file{ess-VERSION.zip}) from
-@uref{http://ess.r-project.org/downloads/ess, ESS downloads area}.
+@uref{http://ess.r-project.org/index.php?Section=download, ESS downloads area}.
 
-@emph{GNU Emacs Simple Instructions:} for recent versions of Emacs (22.x)
+@emph{GNU Emacs Simple Instructions:} for recent versions of Emacs (22.x or higher)
 and ESS, the installation process is simple.
 
 @enumerate
@@ -56,7 +56,7 @@ explicitly describing your problem and your environment
 including operating system, Emacs version, @ESS{} version, etc.
 @end enumerate
  
-@emph{XEmacs Simple Instructions:} for recent versions of XEmacs (21.x),
+@emph{XEmacs Simple Instructions:} for recent versions of XEmacs (21.x or higher),
 the installation process is much simpler.  Hopefully, these
 simple instructions will work for you.  If not, then more 
 detailed, manual instructions follow.  

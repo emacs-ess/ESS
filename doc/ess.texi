@@ -470,7 +470,10 @@ on your system.
 @c FIXME: the following contains @node s  *and* is also included by readme.texi
 @c -----  which does *not* include 'requires.texi'
 @c         ==> *must* give node pointer problems!
-@include inst_tar.texi
+@c @include inst_tar.texi
+
+@include unixlike.texi
+@include windows.texi
 
 @node Requirements, , Microsoft Windows installation, Installation
 @comment node-name,  next,  previous,  up

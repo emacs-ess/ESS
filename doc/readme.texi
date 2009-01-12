@@ -101,9 +101,10 @@ Table of Contents
 @c    vvvvvvvvvvvv node name  *must* match the one in ./ess.texi !
 @node Installation, Starting up, Latest Version, General Information
 @comment  node-name,  next,  previous,  up
-@section Installation (from tar file)
+@section Installation
 
-@include inst_tar.texi
+@include unixlike.texi
+@include windows.texi
 
 @node Starting up, Current Features, Installation, General Information
 @comment  node-name,  next,  previous,  up
