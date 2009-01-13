@@ -44,7 +44,7 @@ or @file{/usr/local/ess} and unpack @ESS{} there.  That way, your changes to
 @item
 Replace the line above with
 @example
-(load ``~/ess/ess-VERSION/lisp/ess-site'')
+(load "~/ess/ess-VERSION/lisp/ess-site")
 @end example
 in @file{~/.emacs} and restart Emacs.
 
@@ -93,7 +93,7 @@ or @file{/usr/local/ess} and unpack @ESS{} there.  That way, your changes to
 @item
 Replace the line above with
 @example
-(load ``~/ess/ess-VERSION/lisp/ess-site'')
+(load "~/ess/ess-VERSION/lisp/ess-site")
 @end example
 in @file{~/.xemacs/init.el} and restart XEmacs.
 

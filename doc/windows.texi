@@ -44,7 +44,7 @@ will not be lost if you update Emacs later.
 @item
 Replace the line above with
 @example
-(load ``C:/ess/ess-VERSION/lisp/ess-site'')
+(load "C:/ess/ess-VERSION/lisp/ess-site")
 @end example
 in @file{~/.emacs} and restart Emacs.
 
@@ -109,7 +109,7 @@ will not be lost if you update XEmacs later.
 @item
 Replace the line above with
 @example
-(load ``C:/ess/ess-VERSION/lisp/ess-site'')
+(load "C:/ess/ess-VERSION/lisp/ess-site")
 @end example
 in @file{~/.xemacs/init.el} and restart XEmacs.
 
