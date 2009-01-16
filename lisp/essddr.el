@@ -129,7 +129,7 @@ All Rd mode abbrevs start with a grave accent (`).")
   (modify-syntax-entry ?\] "_" Rd-mode-parse-syntax-table))
 
 (defvar Rd-section-names
-  '("arguments" "alias" "author" "concept" "describe" "description"
+  '("Rdversion" "arguments" "alias" "author" "concept" "describe" "description"
     "details" "docType" "encoding" "enumerate" "examples" "format"
     "itemize" "keyword" "name" "note" "preformatted" "references"
     "seealso" "section" "source" "synopsis" "tabular" "title" "usage"
@@ -141,7 +141,7 @@ All Rd mode abbrevs start with a grave accent (`).")
     "Alpha" "Gamma" "alpha" "beta" "epsilon" "lambda" "mu" "pi" "sigma"
     "ge" "le" "left" "right"
     ;;
-    "R" "Rdversion" "S3method" "S4method" "acronym"
+    "R" "S3method" "S4method" "acronym"
     "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dontrun"
     "dontshow" "dots" "email" "emph" "env" "eqn" "file"
     "item" "kbd" "ldots" "linkS4class" "link" "method"
