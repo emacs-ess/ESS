@@ -6,7 +6,10 @@ include ./Makeconf
 ## This is the default target, i.e. 'make' and 'make all' are the same.
 
 all install clean distclean:
-	@for D in lisp doc etc; do cd $$D; $(MAKE) $@; cd ..; done
+	cd etc; $(MAKE) $@
+	cd lisp; $(MAKE) $@
+	cd doc; $(MAKE) $@
+#bad dog@for D in lisp doc etc; do cd $$D; $(MAKE) $@; cd ..; done
 
 ## the rest of the targets are for ESS developer's use only :
 

@@ -1,3 +1,9 @@
+2009-01-21  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* Makefile (all install clean distclean): @for
+	loop throws away exit code, probably due to cd .. 
+	which always returns 0; @for no longer used
+
 2009-01-13  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* doc/windows.texi and doc/unixlike.texi
