@@ -4,6 +4,7 @@ Changes/New Features in 5.3.11:
 @item @ESS{[SAS]}: work around buglet in Emacs 22.2 & 22.3 which fails to
  set case-fold fontification automatically.
 @item Rd mode: support new keyword 'Rdversion'
+@item @ESS{[R]}: now again works with Emacs 21.x
 @end itemize
 
 Changes/New Features in 5.3.10:

@@ -1,3 +1,7 @@
+2009-01-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-mode.el (ess-mode): use run-mode-hooks only in newer Emacsen
+
 2009-01-08  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essddr.el (Rd-keywords): new + shuffling + comment
