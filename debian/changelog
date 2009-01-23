@@ -1,6 +1,12 @@
+ess (5.3.11-2) unstable; urgency=low
+
+  * New upstream release 
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 23 Jan 2009 12:00:52 -0600
+
 ess (5.3.10.1-1) unstable; urgency=low
 
-  * New upstream 5.3.10 
+  * New upstream release 5.3.10 
   * This release is relabeled 5.3.10.1 as we used the 5.3.10 version number
     for the bugfix release which turns out to have been a pre-release.
 
