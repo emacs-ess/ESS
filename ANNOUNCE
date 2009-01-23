@@ -243,6 +243,8 @@ in the file COPYING in the same directory as this file for more details.
 
         * Rd mode: support new keyword 'Rdversion'
 
+        * ESS[R]: now again works with Emacs 21.x
+
      Changes/New Features in 5.3.10:
         * Fixed noweb-mode bug accidentally introduced into 5.3.9
 
