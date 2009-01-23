@@ -1,3 +1,7 @@
+2009-01-23  ESS Maintainers <ESS-core@stat.math.ethz.ch>
+
+  * Version 5.3.11 released.
+
 2009-01-21  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* Makefile (all install clean distclean): @for
