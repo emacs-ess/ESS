@@ -353,6 +353,7 @@ Changes/New Features in 5.3.11:
 <li><acronym>ESS[SAS]</acronym>: work around buglet in Emacs 22.2 &amp; 22.3 which fails to
  set case-fold fontification automatically. 
 <li>Rd mode: support new keyword 'Rdversion'
+<li><acronym>ESS[R]</acronym>: now again works with Emacs 21.x
 </ul>
 
      <p>Changes/New Features in 5.3.10:
@@ -1226,6 +1227,7 @@ on your system.
 <!-- FIXME: the following contains @node s  *and* is also included by readme.texi -->
 <!--   which does *not* include 'requires.texi' -->
 <!-- ==> *must* give node pointer problems! -->
+<!-- @include inst_tar.texi -->
 <div class="node">
 <p><hr>
 <a name="Unix-installation"></a>
@@ -1237,102 +1239,95 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">2.1 Unix installation</h3>
 
+<!-- THIS IS A REPLACEMENT FOR THE UNIX PORTION OF inst_tar.texi -->
+<p>For a <b>Unix or Unix-like installation</b>, please follow the next steps. 
+Retrieve the latest tgz file (<samp><span class="file">ess-VERSION.tgz</span></samp>) from
+<a href="http://ess.r-project.org/index.php?Section=download">ESS downloads area</a>.
+
+   <p><em>GNU Emacs Simple Instructions:</em> for recent versions of Emacs (22.x or higher)
+and ESS, the installation process is simple.
+
      <ol type=1 start=1>
-
-     <li>
-<code>cd</code> to a directory where you keep emacs lisp files, or create a
-new directory (for example, <samp><span class="file">$HOME/emacs</span></samp>) to hold the distribution. 
-This directory will be referred to below as "the ESS distribution
-directory".
-
-     <p><em>Note for XEmacs packages:</em> ESS is no longer available as an XEmacs package. 
-But, you can still install ESS into the XEmacs package system by choosing
-<samp><span class="file">ESSDIR</span></samp>=<samp><span class="file">PREFIX/lib/xemacs/site-packages</span></samp>. 
-ESS requires that the XEmacs sumo tarball (all XEmacs packages combined) also
-be installed.  For information on installing XEmacs packages, follow this link:
-<a href="http://www.xemacs.org/Documentation/packageGuide.html">Quickstart Package Guide</a>.
-
-     <!-- It will contain, -->
-<!-- at the end, the tar file @file{ess-VERSION.tar.gz}, and a directory for -->
-<!-- the ESS source, which will be termed "the ESS-VERSION source directory". -->
-<!-- Note that the .elc files may be installed elsewhere (as specified in the -->
-<!-- Makefile) if desired. -->
-<li>Retrieve the latest version from
-<a href="http://ess.r-project.org/downloads/ess">ESS downloads area</a>
-to <samp><span class="file">ESSDIR</span></samp>.
-
-     <li>Extract the files from the disribution.
-     <pre class="display">          If you are using GNU tar, <code>tar zxf ess-VERSION.tgz</code>.
-          Otherwise, <code>gunzip &lt; ess-VERSION.tgz | tar xf -</code>,
+<li>Extract all the files from <samp><span class="file">ess-VERSION.tgz</span></samp> when you are in
+the current working directory of <samp><span class="file">/usr/local/share/emacs/site-lisp</span></samp>
+which exists for packages like <acronym>ESS</acronym>
+(or for Mac OS X <samp><span class="file">/Applications/Emacs.app/Contents/MacOS/Resources/site-lisp</span></samp>):
+     <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
+          %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
      </pre>
-     <p>The <code>tar</code> command will create the subdirectory <samp><span class="file">ess-VERSION</span></samp> and install
-the files there.
-
-     <!-- If you are using GNU Emacs 19.29, decompress/unarchive -->
-<!-- @file{ESSDIR/ess-VERSION/lisp/19.29.tar.gz}, -->
-<!-- read @file{ESSDIR/ess-VERSION/lisp/19.29/README}, follow the instructions -->
-<!-- and you might be able to get ESS to work. -->
-<!-- @emph{Please note that GNU Emacs 19.29 is no longer supported}. -->
-<!-- For a list of supported versions of emacs, see @xref{Requirements}. -->
-<li>Edit the file <samp><span class="file">ESSDIR/ess-VERSION/lisp/ess-site.el</span></samp> as explained in the
-comments section of that file. 
-<!-- Installations that are using ESS only for S-Plus -->
-<!-- 6.x will probably not need to make any changes.  Installations that also -->
-<!-- have one or more of (S4, S+3/4/5/6/7/8, R, SAS, BUGS, XLispStat, Stata) -->
-<!-- may need to uncomment corresponding lines in @file{ESSDIR/ess-VERSION/lisp/ess-site.el}. -->
-
-     <li>If you are using GNU Emacs add the line
-     <pre class="example">          (load "ESSDIR/ess-VERSION/lisp/ess-site")
-     </pre>
-     <p>to <samp><span class="file">$HOME/.emacs</span></samp>.  For XEmacs, if you followed the XEmacs package system
-installation advice, add the line
+     <li>Then, add the line
      <pre class="example">          (require 'ess-site)
      </pre>
-     <p>to <samp><span class="file">$HOME/.xemacs/init.el</span></samp>.  Otherwise, for XEmacs, add the line
-     <pre class="example">          (load "ESSDIR/ess-VERSION/lisp/ess-site")
+     <p>to <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
+were most likely successful.  If not, then read further.
+
+     <li>It could be that you have an older version of Emacs, some other problem
+with your installation or you are not a sysadmin.  Whatever the case,
+you may need to edit <samp><span class="file">ess-site.el</span></samp> manually.  If that is the case,
+then you should create a directory just for <acronym>ESS</acronym> like <samp><span class="file">~/ess</span></samp>
+or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS</acronym> there.  That way, your changes to
+<samp><span class="file">ess-site.el</span></samp> will not be lost if you update Emacs later.
+
+     <li>Replace the line above with
+     <pre class="example">          (load "~/ess/ess-VERSION/lisp/ess-site")
      </pre>
-     <p>to <samp><span class="file">$HOME/.xemacs/init.el</span></samp>.
+     <p>in <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
 
-     <!-- GNU Emacs uses @file{default.el} or -->
-<!-- @file{site-init.el} and XEmacs uses @file{site-start.el} for the system -->
-<!-- installation file). -->
-<!-- Alternatively, if @file{ess-site.el} is in your current @code{load-path}, then: -->
-<!-- @example -->
-<!-- (require 'ess-site) -->
-<!-- @end example -->
-<!-- to configure emacs for ESS. -->
-<li>That's it!  ESS is now ready to use.  (The remaining step below is only for a
-custom installation.)  To edit statistical programs, just open files with the
-requisite extensions (<samp><span class="file">.R</span></samp> for R, <samp><span class="file">.sas</span></samp> for SAS, <samp><span class="file">.bug</span></samp> for BUGS,
-etc.).  To start a statistical process within emacs, such as R, type <code>M-x R</code>.
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
+were most likely successful.  If not, then send a query to
+<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+explicitly describing your problem and your environment
+including operating system, Emacs version, <acronym>ESS</acronym> version, etc.
+        </ol>
 
-     <!-- @item -->
-<!-- (OPTIONAL) If you are running S-PLUS or R, you might consider -->
-<!-- installing the database files.  From within emacs, @code{C-x d} to the -->
-<!-- directory containing ESS.  Now: -->
-<!-- @example -->
-<!-- M-x S+6 -->
-<!-- @end example -->
-<!-- to get S running.  Once you see the SPLUS prompt, do: -->
-<!-- @example -->
-<!-- M-x ess-create-object-name-db -->
-<!-- @end example -->
-<!-- (this will create the file @file{ess-sp6-namedb.el}; if it isn't in the -->
-<!-- ESS directory, move it there). -->
-<!-- Then, completions will be autoloaded and will not be regenerated for -->
-<!-- every session. -->
-<!-- For R, do the same, using -->
-<!-- @example -->
-<!-- M-x R -->
-<!-- @end example -->
-<!-- and then @code{M-x ess-create-object-name-db} creating -->
-<!-- @file{ess-r-namedb.el}; if it isn't in the ESS directory, move it there). -->
-<li><b>(OPTIONAL) READ THIS ITEM THOROUGHLY BEFORE STARTING</b>:
+   <p><em>XEmacs Simple Instructions:</em> for recent versions of XEmacs (21.x or higher)
+and ESS, the installation process is simple.
 
-     <p>If you want to place the compiled files in other locations edit the
-<code>LISPDIR</code>, <code>INFODIR</code> and <code>ETCDIR</code> entries in Section 1 of
-<samp><span class="file">Makeconf</span></samp> in the <samp><span class="file">ESSDIR/ess-VERSION</span></samp> directory (if you are
-using XEmacs, then uncomment the XEmacs subsection in Section 1).
+     <ol type=1 start=1>
+<li>Extract all the files from <samp><span class="file">ess-VERSION.tgz</span></samp> when you are in
+the current working directory of <samp><span class="file">/usr/local/LOCATION/xemacs/site-packages</span></samp>
+which exists for packages like <acronym>ESS</acronym>
+where <samp><span class="file">LOCATION</span></samp> is <samp><span class="file">lib</span></samp> for legacy installations and <samp><span class="file">share</span></samp>
+now (or for Mac OS X <samp><span class="file">/Applications/XEmacs.app/Contents/MacOS/Resources/site-packages</span></samp>):
+     <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
+          %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
+     </pre>
+     <li>Then, add the line
+     <pre class="example">          (require 'ess-site)
+     </pre>
+     <p>to <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
+were most likely successful.  If not, then read further.
+
+     <li>It could be that you have an older version of XEmacs, some other problem
+with your installation or you are not a sysadmin.  Whatever the case,
+you may need to edit <samp><span class="file">ess-site.el</span></samp> manually.  If that is the case,
+then you should create a directory just for <acronym>ESS</acronym> like <samp><span class="file">~/ess</span></samp>
+or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS</acronym> there.  That way, your changes to
+<samp><span class="file">ess-site.el</span></samp> will not be lost if you update XEmacs later.
+
+     <li>Replace the line above with
+     <pre class="example">          (load "~/ess/ess-VERSION/lisp/ess-site")
+     </pre>
+     <p>in <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
+were most likely successful.  If not, then send a query to
+<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+explicitly describing your problem and your environment
+including operating system, XEmacs version, <acronym>ESS</acronym> version, etc.
+        </ol>
+
+     <ol type=1 start=1>
+
+     <li><b>(OPTIONAL) COMPILING E-LISP</b>:
+
+     <p>Edit the default locations of <code>LISPDIR</code>, <code>INFODIR</code> and
+<code>ETCDIR</code> in Section 1 of <samp><span class="file">Makeconf</span></samp> (if you are
+using XEmacs, then edit the XEmacs subsection in Section 1).
 
      <p>You can compile those files by:
      <pre class="example">          make all
@@ -1340,21 +1335,8 @@ using XEmacs, then uncomment the XEmacs subsection in Section 1).
      <p>When that completes successfully, install the compiled files:
      <pre class="example">          make install
      </pre>
-     <!-- This will install the compiled info files and lisp files.  If you are an -->
-<!-- XEmacs user, then you should be done.  If not, then you may have to -->
-<!-- edit/create the file @file{dir} that is found in the directory specified -->
-<!-- by @code{INFODIR}: see the sample @file{dir} in ESSDIR/ess-VERSION/doc/info. -->
-<!-- If @file{dir} does not exist in @code{INFODIR}, then the sample -->
-<!-- @file{dir} will be installed. -->
-<!-- An alternative, if you are running XEmacs and have access to the -->
-<!-- XEmacs system directories, would be to place the directory in the -->
-<!-- site-lisp directory, and simply type @code{make all} (and copy the -->
-<!-- documentation as appropriate). -->
-<!-- For GNU Emacs, you would still have to move the files into the top level -->
-<!-- site-lisp directory. -->
-</ol>
+        </ol>
 
-<!-- >>>> FIXME (see comment in ess.texi): error in ``makeinfo readme.texi'' -->
 <!-- @node Microsoft Windows installation, , Unix installation, Installation -->
 <div class="node">
 <p><hr>
@@ -1368,121 +1350,161 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">2.2 Microsoft Windows installation</h3>
 
-<p>For <b>Microsoft Windows installation</b>, please follow the next steps.
+<!-- THIS IS A REPLACEMENT FOR THE WINDOWS PORTION OF inst_tar.texi -->
+<p>For <b>Microsoft Windows installation</b>, please follow the next steps. 
+Retrieve the latest zip file (<samp><span class="file">ess-VERSION.zip</span></samp>) from
+<a href="http://ess.r-project.org/index.php?Section=download">ESS downloads area</a>.
+
+   <p><em>GNU Emacs Simple Instructions:</em> for recent versions of Emacs (22.x or higher)
+and ESS, the installation process is simple.
 
      <ol type=1 start=1>
+<li>Extract all the files from <samp><span class="file">ess-VERSION.zip</span></samp> (by
+double clicking on it and selecting &ldquo;Extract all files&rdquo;
+which launches the Folders Extraction Wizard)
+into the <samp><span class="file">site-lisp</span></samp> directory that exists for packages like <acronym>ESS</acronym>. 
+If GNU Emacs was installed in the default location, then this
+directory can be found somewhere like
+<samp><span class="file">C:\Program Files\GNU Emacs\emacs-22.x\site-lisp</span></samp>.
 
-     <li><code>cd</code> to a directory where you keep emacs lisp files, or create a
-new directory (for example, <samp><span class="file">c:\emacs\</span></samp>) to hold the distribution. 
-This directory will be referred to below as "the ESS distribution
-directory".
-
-     <p><em>Note for XEmacs packages:</em> ESS is no longer available as an XEmacs
-package. But, you can still install ESS into the XEmacs package system
-by choosing <samp><span class="file">ESSDIR</span></samp>=<samp><span class="file">PREFIX\XEmacs\site-packages</span></samp>.  ESS
-requires that the XEmacs sumo tarball (all XEmacs packages combined)
-also be installed.  For information on installing XEmacs packages,
-follow this link:
-<a href="http://www.xemacs.org/Documentation/packageGuide.html">Quickstart Package Guide</a>.
-
-     <li>Retrieve the latest zip file (<samp><span class="file">ess-VERSION.zip</span></samp>) from
-<a href="http://ess.r-project.org/downloads/ess">ESS downloads area</a> and
-store it in the ESS distribution directory.  Be aware that http browsers
-on Windows frequently change the "." and "-" characters in filenames to
-other punctuation.  Please change the names back to their original form.
-
-     <li>Extract all the files from <samp><span class="file">ess-VERSION.zip</span></samp> into the ESS
-distribution directory as <samp><span class="file">c:\emacs\ess-VERSION\</span></samp>.  (It is possible
-to unpack the zip archive in Windows Explorer by double clicking on the
-folder; you should then see a new folder called <samp><span class="file">ess-VERSION</span></samp>. 
-Drag that folder into your ESS distribution directory.)
-
-     <!-- @item -->
-<!-- Add the line -->
-<!-- @example -->
-<!-- (load "C:/emacs/ess-VERSION/lisp/ess-site") -->
-<!-- @end example -->
-<!-- to your emacs initialization file.  (GNU Emacs uses the filename -->
-<!-- @file{~/.emacs} and XEmacs uses the filename -->
-<!-- @file{~/.xemacs/init.el} for the initialization file.  The tilde is -->
-<!-- recognised by emacs as your HOME directory, i.e. the value of your HOME -->
-<!-- environment variable.)  Replace -->
-<!-- @code{VERSION} above with the version number of ESS.  Remember to use -->
-<!-- forwardslashes @code{/}, rather than backslashes @code{\}, in your filename -->
-<!-- inside emacs code files. -->
-<li>If you are using GNU Emacs add the line
-     <pre class="example">          (load "ESSDIR/ess-VERSION/lisp/ess-site")
-     </pre>
-     <p>to <samp><span class="file">%HOME%/.emacs</span></samp>.  For XEmacs, if you followed the XEmacs package system
-installation advice, add the line
+     <li>Add the line
      <pre class="example">          (require 'ess-site)
      </pre>
-     <p>to <samp><span class="file">%HOME%/.xemacs/init.el</span></samp>.  Otherwise, for XEmacs, add the line
-     <pre class="example">          (load "ESSDIR/ess-VERSION/lisp/ess-site")
-     </pre>
-     <p>to <samp><span class="file">%HOME%/.xemacs/init.el</span></samp>. 
-<em>Note:</em> Both GNU Emacs and XEmacs require that the HOME environment
-variable be set on your system, otherwise, your initialization file will
-not be utilized, and therefore, ESS will not work.
+     <p>to <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
 
-     <p>After saving your initialization file, ESS is now installed.  Start a
-new emacs and you should be ready to use ESS.  For example, to edit
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
+were most likely successful.  If not, then read further.
+
+     <li>It could be you have an older version of Emacs or some other problem
+with your installation.  Either way, you may need to edit
+<samp><span class="file">C:\ess\ess-VERSION\lisp\ess-site.el</span></samp> manually.  If that is the case,
+then you should create a directory just for <acronym>ESS</acronym> like <samp><span class="file">C:\ess</span></samp> and
+unpack <acronym>ESS</acronym> there.  That way, your changes to
+<samp><span class="file">C:\ess\ess-VERSION\lisp\ess-site.el</span></samp>
+will not be lost if you update Emacs later.
+
+     <li>Replace the line above with
+     <pre class="example">          (load "C:/ess/ess-VERSION/lisp/ess-site")
+     </pre>
+     <p>in <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
+were most likely successful.  If not, then send a query to
+<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+explicitly describing your problem and your environment
+including operating system, Emacs version, <acronym>ESS</acronym> version, etc.
+        </ol>
+
+   <p><em>XEmacs Simple Instructions:</em> for recent versions of XEmacs (21.x or higher),
+the installation process is much simpler.  Hopefully, these
+simple instructions will work for you.  If not, then more
+detailed, manual instructions follow.
+
+     <ol type=1 start=1>
+<li>Extract all the files from <samp><span class="file">ess-VERSION.zip</span></samp> (by
+double clicking on it and selecting &ldquo;Extract all files&rdquo;
+which launches the Folders Extraction Wizard)
+into the <samp><span class="file">site-packages</span></samp> directory that exists for packages like <acronym>ESS</acronym>. 
+If XEmacs was installed in the default location, then this
+directory can be found at
+<samp><span class="file">C:\Program Files\XEmacs\site-packages</span></samp>.
+
+     <li>XEmacs requires the <code>HOME</code> environment variable to be defined.  You can
+create it by visiting the following dialog:
+<code>My Computer-&gt;Control Panel-&gt;System-&gt;Advanced-&gt;Environment Variables</code>
+In the User variables window, press New.  And create a variable
+named <code>HOME</code> with a value something like (you must
+use forward slashes <code>/</code> rather than backslashes <code>\</code>)
+<code>c:/Documents and Settings/%USERNAME%/Application Data</code>.  Then press OK for that
+window and press OK for the main window.  <em>If you also have GNU Emacs
+installed, GNU Emacs will recognize </em><code>HOME</code><em> and expand </em><code>~</code><em> accordingly.</em>
+
+     <li>Now launch XEmacs and do a <code>C-x C-f</code> followed by a <code>~</code>. 
+From the Subdir menu, select Create Directory, and enter <code>.xemacs</code>
+
+     <li>Add the line
+     <pre class="example">          (require 'ess-site)
+     </pre>
+     <p>to <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
+were most likely successful.  If not, then read further.
+
+     <li>It could be you have an older version of XEmacs or some other problem
+with your installation.  Either way, you may need to edit
+<samp><span class="file">C:\ess\ess-VERSION\lisp\ess-site.el</span></samp> manually.  If that is the case,
+then you should create a directory just for <acronym>ESS</acronym> like <samp><span class="file">C:\ess</span></samp> and
+unpack <acronym>ESS</acronym> there.  That way, your changes to
+<samp><span class="file">C:\ess\ess-VERSION\lisp\ess-site.el</span></samp>
+will not be lost if you update XEmacs later.
+
+     <li>Replace the line above with
+     <pre class="example">          (load "C:/ess/ess-VERSION/lisp/ess-site")
+     </pre>
+     <p>in <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
+were most likely successful.  If not, then send a query to
+<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+explicitly describing your problem and your environment
+including operating system, XEmacs version, <acronym>ESS</acronym> version, etc.
+        </ol>
+
+   <p>Now, you should be ready to use <acronym>ESS</acronym>.  For example, to edit
 statistical programs, load the files with the requisite extensions
 (".sas" for SAS, ".S" or "s" or "q" or "Q" for S-PLUS, ".r" or ".R" for
 R, and ".lsp" for XLispStat).  One further step is needed if you wish to
 run statistical processes, see below.
 
-     <li>To run statistical processes under ESS, Windows users will need to make
+   <p>To run statistical processes under <acronym>ESS</acronym>, Windows users will need to make
 sure that the directories for the software they will be using is in the
-PATH environment variable.  On Windows 9x, add lines similar to the
-following to your <samp><span class="file">c:\autoexec.bat</span></samp> file:
-     <pre class="example">          path=%PATH%;c:\progra~1\insightful\splus70\cmd
-     </pre>
-     <p>On Windows NT/2000/XP, add the directories to the PATH using the
-<code>My Computer/Control Panel/System/Advanced/Environment Variables</code> menu. 
+PATH environment variable.
+
+   <p>On Windows NT/2000/XP, add the directories to the PATH using the
+<code>My Computer-&gt;Control Panel-&gt;System-&gt;Advanced-&gt;Environment Variables</code> menu. 
 Note that the directory containing the program is
 added to the PATH, not the program itself.  One such line is needed
 for each software program.  Be sure to use the abbreviation
-<code>progra~1</code> and not the long version with embedded blanks.  Use
-backslashes "<code>\</code>".
+<code>progra~1</code> and not the long version with embedded blanks as
+this may cause problems.  Also, make sure to use backslashes <code>\</code>
+since Windows requires them.
 
-     <p>An alternative, for R users, is that rather than adjusting the PATH
+   <p>An alternative, for R users, is that rather than adjusting the PATH
 variable, you can add the following to your emacs initialization file
 (and restart emacs):
-     <pre class="example">          (setq inferior-R-program-name "C:/progra~1/R/R-2.2.1/bin/Rterm.exe")
-     </pre>
-     <p>This assumes that you have installed R-2.2.1 in the default location. 
+<pre class="example">     (setq inferior-R-program-name "c:/progra~1/R/R-2.2.1/bin/Rterm.exe")
+</pre>
+   <p>This assumes that you have installed R-2.2.1 in the default location. 
 Change the path otherwise to point to other locations.
 
-     <p>Windows users who place S-PLUS anywhere other than the default
+   <p>Windows users who place S-PLUS anywhere other than the default
 location will also need to add the following three lines (properly
-adjusted for their location) to their <samp><span class="file">%HOME%/.emacs</span></samp> or
-<samp><span class="file">%HOME%/.xemacs/init.el</span></samp> file:
-     <pre class="example">          (setq-default inferior-S+6-program-name
-              "c:/progra~1/Insightful/SPLUS70/cmd/Splus")
-          (setq-default inferior-Sqpe+6-SHOME-name
-              "c:/progra~1/Insightful/SPLUS70")
-          (setq-default inferior-Sqpe+6-program-name
-              "c:/progra~1/Insightful/SPLUS70/cmd/Sqpe.exe")
-     </pre>
-     <p>The above example uses the default location of S-PLUS in
-<code>c:/progra~1/Insightful</code>.  Please note that ESS
+adjusted for their location):
+<pre class="example">     (setq-default inferior-S+6-program-name
+         "c:/progra~1/Insightful/SPLUS70/cmd/Splus")
+     (setq-default inferior-Sqpe+6-SHOME-name
+         "c:/progra~1/Insightful/SPLUS70")
+     (setq-default inferior-Sqpe+6-program-name
+         "c:/progra~1/Insightful/SPLUS70/cmd/Sqpe.exe")
+</pre>
+   <p>The above example uses the default location of S-PLUS in
+<code>c:\progra~1\Insightful</code>.  Please note that <acronym>ESS</acronym>
 considers S-PLUS 6, 7, and 8 to be variants of S+6.
 
-     <p>These users may also need to modify the emacs variable <code>ess-SHOME-versions</code>
+   <p>These users may also need to modify the emacs variable <code>ess-SHOME-versions</code>
 to match their installation in order to get the full set of S-PLUS versions
-on their machine into the <code>ESS</code> menu.
+on their machine into the <acronym>ESS</acronym> menu.
 
-     <p>To start the S-PLUS [678].x GUI from ESS under emacs:
-          <ol type=1 start=1>
+   <p>To start the S-PLUS [678].x GUI from ESS under emacs:
+     <ol type=1 start=1>
 <li>If you use Cygwin bash as your primary shell, then
-          <pre class="example">               M-x S
-               (or <code>M-x S+6</code>).
-          </pre>
-          <li>If you use the MSDOS prompt window as your primary shell, then
-          <pre class="example">               M-x S+6-msdos
-          </pre>
-          </ol>
+     <pre class="example">          M-x S
+          (or <code>M-x S+6</code>).
+     </pre>
+     <li>If you use the MSDOS prompt window as your primary shell, then
+     <pre class="example">          M-x S+6-msdos
+     </pre>
+     </ol>
 You will then be
 asked for a pathname ("S starting data directory?"), from which to
 start the process.  The prompt will propose your current directory
@@ -1496,12 +1518,12 @@ from the emacs buffer containing your S program (for example,
 (If you are still using S-PLUS 4.x or 2000,\
 then use <code>M-x S+4</code> or <code>M-x S+4-msdos</code>.)
 
-     <p>To start an S-PLUS [678].x session inside an emacs buffer&mdash;and
+   <p>To start an S-PLUS [678].x session inside an emacs buffer&mdash;and
 without the S-PLUS GUI:
-     <pre class="example">          M-x Sqpe
-          (or <code>M-x Sqpe+6</code>).
-     </pre>
-     <p>This works with both the bash and msdos shells. 
+<pre class="example">     M-x Sqpe
+     (or <code>M-x Sqpe+6</code>).
+</pre>
+   <p>This works with both the bash and msdos shells. 
 You will then be asked for a pathname ("S starting data
 directory?"), from which to start the process.  The prompt will
 propose your current directory as the default. 
@@ -1513,23 +1535,23 @@ program (for example, <samp><span class="file">myfile.s</span></samp>) to the *S
 Interactive graphics are available with Sqpe by using the java
 library supplied with S-PLUS 6.1 and newer releases. 
 Enter the commands:
-     <pre class="example">          library(winjava)
-          java.graph()
-     </pre>
-     <p>Graphs can be saved from the <code>java.graph</code> device
+<pre class="example">     library(winjava)
+     java.graph()
+</pre>
+   <p>Graphs can be saved from the <code>java.graph</code> device
 in several formats, but not PostScript.   If you
 need a PostScript file you will need to open a separate
 <code>postscript</code> device. 
 (If you are still using S-PLUS 4.x or 2000, then use <code>M-x Sqpe+4</code>.)
 
-     <p>To connect to an already running S-PLUS GUI (started, for example,
+   <p>To connect to an already running S-PLUS GUI (started, for example,
 from the S-PLUS icon):
-     <pre class="example">          M-x S+6-existing
-     </pre>
-     <p>or
-     <pre class="example">          M-x S+6-msdos-existing
-     </pre>
-     <p>You will then be
+<pre class="example">     M-x S+6-existing
+</pre>
+   <p>or
+<pre class="example">     M-x S+6-msdos-existing
+</pre>
+   <p>You will then be
 asked for a pathname ("S starting data directory?"), from which to
 start the process.  The prompt will propose your current directory
 as the default.  ESS will arrange for
@@ -1541,58 +1563,15 @@ from the emacs buffer containing your S program (for example,
 (If you are still using S-PLUS 4.x or 2000,
  then use <code>M-x S+4-existing</code> or <code>M-x S+4-msdos-existing</code>.)
 
-     <p>If you wish to run R, you can start it with:
-     <pre class="example">          M-x R
-     </pre>
-     <p>XLispStat can not currently be run with
-     <pre class="example">          M-x XLS
-     </pre>
-     <p>Hopefully, this will change.  However, you can still edit with
+   <p>If you wish to run R, you can start it with:
+<pre class="example">     M-x R
+</pre>
+   <p>XLispStat can not currently be run with
+<pre class="example">     M-x XLS
+</pre>
+   <p>Hopefully, this will change.  However, you can still edit with
 emacs, and cut and paste the results into the XLispStat
 *Listener* Window under Microsoft Windows.
-
-     <!-- SAS for Windows uses the batch access with function keys that is -->
-<!-- described in -->
-<!-- @file{doc/README.SAS}. -->
-<!-- @xref{ESS(SAS)-MS Windows}. -->
-<!-- The user can also edit SAS files -->
-<!-- in an @code{ESS[SAS]} buffer and than manually copy and paste them into -->
-<!-- an Editor window in the SAS Display Manager. -->
-<!-- For Windows, inferior SAS in an @code{iESS{[SAS]}} buffer does not work -->
-<!-- on the local machine.  It does work over a network connection to -->
-<!-- SAS running on a remote Unix computer. -->
-<!-- Reason:  we use ddeclient to interface with programs and SAS doesn't -->
-<!-- provide the corresponding ddeserver capability. -->
-<!-- @item -->
-<!-- (OPTIONAL) If you are running Sqpe or R, you might consider -->
-<!-- installing the database files.  From within emacs, @code{C-x d} to -->
-<!-- the   directory containing ESS.  Now: -->
-<!-- @example -->
-<!-- M-x Sqpe+6 -->
-<!-- @end example -->
-<!-- to get S running.  Once you see the SPLUS prompt, do: -->
-<!-- @example -->
-<!-- M-x ess-create-object-name-db -->
-<!-- @end example -->
-<!-- (this will create the file @file{ess-s+6-namedb.el}; if it isn't in the -->
-<!-- ESS directory, move it there). -->
-<!-- Then, completions will be autoloaded and will not be regenerated -->
-<!-- for every session. -->
-<!-- For R, do the same, using -->
-<!-- @example -->
-<!-- M-x R -->
-<!-- @end example -->
-<!-- and then @code{M-x ess-create-object-name-db} creating -->
-<!-- @file{ess-r-namedb.el}; if it isn't in the ESS directory, move it -->
-<!-- there). -->
-<li>That's it!
-
-        </ol>
-<!-- Requirements duplicated? -->
-<!-- @node Requirements, , Microsoft Windows installation, Installation -->
-<!-- node-name,  next,  previous,  up -->
-<!-- @section Requirements -->
-<!-- @include requires.texi -->
 
 <div class="node">
 <p><hr>
