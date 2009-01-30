@@ -75,8 +75,8 @@
 ;; (setq ess-r-args-noargsmsg "No args found.")
 ;;
 ;; ;; ess-r-args-show-as determines how (where) the information is
-;; ;; displayed. Set it to "tooltip" for little tooltip windows or to
-;; ;; nil (the default) which will use the echo area at the bottom of
+;; ;; displayed. Set it to 'tooltip little tooltip windows or to
+;; ;; 'message (the default) which will use the echo area at the bottom of
 ;; ;; your Emacs frame.
 ;; (setq ess-r-args-show-as nil)
 ;;
@@ -125,6 +125,7 @@
 ;; from the upper left corner of the screen, please let me know. It
 ;; would then be possible to show the tooltip near the point, which I
 ;; would consider preferably.
+;; SJE: see code at bottom 2009-01-30...
 
 ;; ;; Put mouse away when using keyboard
 ;; (mouse-avoidance-mode 'banish)
@@ -247,7 +248,12 @@ ess-r-args-current-function if no argument given."
 	(if (and (equal ess-r-args-show-as 'tooltip)
 		 ess-has-tooltip)
 	    (progn (require 'tooltip)
-		   (tooltip-show (concat ess-r-args-show-prefix args)))
+		   ;; value of 30 in next call is just a guess, 
+                   ;; should really be based 
+		   ;; on something like pixel height of 1-2 vertical 
+                   ;; lines of text
+		   (tooltip-show-at-point 
+		    (concat ess-r-args-show-prefix args) 0 30))
 	  (message (concat ess-r-args-show-prefix args)))))))
 
 (defun ess-r-args-auto-show ()
@@ -281,5 +287,70 @@ ess-r-args-current-function if no argument given."
 ;;     (add-hook 'ess-mode-hook
 ;; 	      (lambda ()
 ;; 		(define-key ess-mode-map "(" 'ess-r-args-auto-show))))
+
+
+;; SJE: 2009-01-30 -- this contribution from 
+;; Erik Iverson <iverson@biostat.wisc.edu>
+(require 'assoc)			;needed for aput, below.
+(defun tooltip-show-at-point (text xo yo)
+  "Show a tooltip displaying 'text' at (around) point, xo and yo are x-
+and y-offsets for the toolbar from point."
+  (let (
+	(fx (frame-parameter nil 'left))
+	(fy (frame-parameter nil 'top))
+	(fw (frame-pixel-width))
+	(fh (frame-pixel-height))
+	frame-left frame-top)
+
+    ;; The following comment was found before code looking much like that
+    ;; of frame-left and frame-top below in the file
+    ;; tooltip-help.el. I include it here for acknowledgement, and I did observe 
+    ;; the same behavior with the Emacs window maximized under Windows XP. 
+    
+    ;; -----original comment--------
+    ;; handles the case where (frame-parameter nil 'top) or
+    ;; (frame-parameter nil 'left) return something like (+ -4).
+    ;; This was the case where e.g. Emacs window is maximized, at
+    ;; least on Windows XP. The handling code is "shamelessly
+    ;; stolen" from cedet/speedbar/dframe.el
+    ;; (contributed by Andrey Grigoriev)
+    
+    (setq frame-left (if (not (consp fx))
+			 fx
+		       (if (eq (car fx) '-)
+			   (- (x-display-pixel-width) (car (cdr fx)) fw)
+			 (car (cdr fx)))))
+    
+    (setq frame-top (if (not (consp fy))
+			fy
+		      (if (eq (car fy) '-)
+			  (- (x-display-pixel-height) (car (cdr fy)) fh)
+			(car (cdr fy)))))
+    
+    ;; calculate the offset from point, use xo and yo to adjust to preference
+    (setq my-x-offset (+ (car(window-inside-pixel-edges))
+			 (car(posn-x-y (posn-at-point)))
+			 frame-left xo))
+    
+    (setq my-y-offset (+ (cadr(window-inside-pixel-edges))
+			 (cdr(posn-x-y (posn-at-point)))
+			 frame-top yo))
+    
+    ;; this clobbers current tooltip-frame-parameters 'top' and 'left',
+    ;; which are not set by default.  use push/pop instead of aput/adelete?
+    ;; the problem with using aput again is that if top/left were nil, aput'ing
+    ;; nil will have no effect. 
+    
+    (aput 'tooltip-frame-parameters 'top my-y-offset)
+    (aput 'tooltip-frame-parameters 'left my-x-offset)
+    
+    (tooltip-show text)
+    
+    ;; remove parameters so that further tooltip-show calls aren't shown in 
+    ;; odd place (i.e., wherever point happened to be the last time this was 
+    ;; called
+    (adelete 'tooltip-frame-parameters 'top)
+    (adelete 'tooltip-frame-parameters 'left)
+    ))
 
 (provide 'essd-r-args)
