@@ -1,3 +1,9 @@
+2009-01-30  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-r-args.el (tooltip-show-at-point): New function.
+	Contributed by Erik Iverson <iverson@biostat.wisc.edu>.
+	(ess-r-args-show): Use tooltip-show-at-point.
+
 2009-01-22  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el (ess-mode): use run-mode-hooks only in newer Emacsen
