@@ -26,10 +26,10 @@ INFODIR=$(PREFIX)/info
 ETCDIR =$(PREFIX)/share/emacs/etc/ess
 
 ## XEmacs
-#EMACS=xemacs
-#LISPDIR=$(PREFIX)/lib/xemacs/xemacs-packages/lisp/ess
-#INFODIR=$(PREFIX)/lib/xemacs/xemacs-packages/info
-#ETCDIR =$(PREFIX)/lib/xemacs/xemacs-packages/etc/ess
+EMACS=xemacs
+#LISPDIR=$(PREFIX)/share/xemacs/site-packages/lisp/ess
+#INFODIR=$(PREFIX)/share/xemacs/site-packages/info
+#ETCDIR =$(PREFIX)/share/xemacs/site-packages/etc/ess
 #
 ## the following command is the same for recent versions of both Emacs and XEmacs
 EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file

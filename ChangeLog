@@ -1,3 +1,15 @@
+2009-02-23  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* Makeconf: update LISPDIR, INFODIR, ETCDIR
+	for XEmacs.  Use the modern default
+	/usr/local/share/xemacs rather than the
+	deprecated /usr/local/lib/xemacs.  Also, 
+	default to the site-packages subdirectory
+	rather than xemacs-packages, this allows
+	you more freedom to update the SUMO packages
+	without touching your ESS installation and
+	vice versa.
+
 2009-01-23  ESS Maintainers <ESS-core@stat.math.ethz.ch>
 
   * Version 5.3.11 released.
