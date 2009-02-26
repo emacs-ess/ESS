@@ -1,3 +1,8 @@
+2009-02-26  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-bugs.el (ess-bugs-hot-arrow): 
+	Substitute <- for = key press
+
 2009-01-30  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-r-args.el (tooltip-show-at-point): New function.
