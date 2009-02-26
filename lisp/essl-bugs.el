@@ -133,6 +133,7 @@ Users whose default is not 'sh, but are accessing a remote machine with
 (define-key ess-bugs-mode-map (quote [f2])  'ess-revert-wisely)
 ;(define-key ess-bugs-mode-map (quote [f12]) 'ess-bugs-next-action)
 (define-key ess-bugs-mode-map "\C-c\C-c" 'ess-bugs-next-action)
+(define-key ess-bugs-mode-map "=" 'ess-bugs-hot-arrow)
 
 (defvar ess-bugs-syntax-table nil
    "ESS[BUGS]: Syntax table for mode.")
@@ -173,6 +174,11 @@ and `ess-bugs-file-dir'."
   (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
 	 (beg (string-match exit-done string)))
     (if beg (message (substring string beg (match-end 0))))))
+
+(defun ess-bugs-hot-arrow ()
+    "*ESS[BUGS]: Substitute <- for = key press"
+    (interactive)
+    (insert "<-"))
 
 (defun ess-bugs-sci-to-round-4-dp () 
     "ESS[BUGS]: round output from +/-0.000E+/-0 to 4 decimal places."
