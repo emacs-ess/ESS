@@ -1,4 +1,10 @@
 @itemize @w
+
+Changes/New Features in 5.3.12:
+@itemize @bullet
+@item @ESS{[BUGS]} and @ESS{[JAGS]}: typing = now results in <- 
+@end itemize
+
 Changes/New Features in 5.3.11:
 @itemize @bullet
 @item @ESS{[SAS]}: work around buglet in Emacs 22.2 & 22.3 which fails to
