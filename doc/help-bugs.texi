@@ -19,11 +19,12 @@ interactive submission of BUGS commands is also supported.
 Model files with the @file{.bug} extension are edited in @ESS{[BUGS]} mode
 if @code{(require 'essd-bugs)} was performed or edited in @ESS{[JAGS]} mode
 if @code{(require 'essd-jags)}.
-Two keys are bound for your use in @ESS{[BUGS]}, @kbd{F2} and @kbd{C-c C-c}.  
+Three keys are bound for your use in @ESS{[BUGS]}, @kbd{F2}, @kbd{C-c C-c} and @kbd{=}.  
 @kbd{F2} performs the same action as it does in @ESS{[SAS]},
 @xref{ESS(SAS)--Function keys for batch processing}.  @kbd{C-c C-c} performs the
 function @code{ess-bugs-next-action} which you will use a lot.  Pressing it
-in an empty buffer for a model file will produce a template for you.
+in an empty buffer for a model file will produce a template for you.  @kbd{=}
+inserts the set operator, @code{<-}.
 
 @ESS{[BUGS]} supports "replacement" variables.  These variables are
 created as part of the template, i.e. with the first press of @kbd{C-c C-c} 
