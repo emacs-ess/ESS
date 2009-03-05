@@ -882,7 +882,8 @@ optional argument is non-nil, then set-buffer rather than switch."
 
         (while (replace-regexp "\\\\fs[0-9]+" (concat "\\\\fs" ess-tmp-font-size)) nil)
 
-        (save-buffer)))
+        (save-buffer)
+	(kill-buffer (current-buffer))))
 
 (defun ess-sas-rtf-us-landscape ()
 "Creates an MS RTF US landscape file from the current buffer."
@@ -894,7 +895,8 @@ optional argument is non-nil, then set-buffer rather than switch."
     (insert (concat "{\\*\\pgdsctbl\n"
 "{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
 "\\landscape\\paperh12240\\paperw15840\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
-    (save-buffer))
+    (save-buffer)
+    (kill-buffer (current-buffer)))
 
 (defun ess-sas-rtf-a4-landscape ()
 "Creates an MS RTF A4 landscape file from the current buffer."
@@ -906,7 +908,8 @@ optional argument is non-nil, then set-buffer rather than switch."
     (insert (concat "{\\*\\pgdsctbl\n"
 "{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
 "\\landscape\\paperh11905\\paperw16837\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
-    (save-buffer))
+    (save-buffer)
+    (kill-buffer (current-buffer)))
 ))
     (error nil)) ;)
 
