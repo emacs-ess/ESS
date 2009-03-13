@@ -1,3 +1,8 @@
+2009-03-13  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-bugs.el (ess-bugs-mode): Set comment-start to provide basic
+	comment functionality.
+
 2009-03-05  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essa-sas.el (ess-sas-rtf-portrait, ess-sas-rtf-us-landscape,
