@@ -303,6 +303,8 @@
    (setq font-lock-auto-fontify t)
    (make-local-variable 'font-lock-defaults)
    (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
+   ;; SJE: Basic comment functionality.
+   (setq comment-start "#")
    (run-hooks 'ess-bugs-mode-hook)
 
    (if (not (w32-shell-dos-semantics))
