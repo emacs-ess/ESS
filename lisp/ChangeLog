@@ -1,3 +1,9 @@
+2009-03-16  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-toolbar.el (ess-make-toolbar-emacs): For Emacs 23, images
+	need to be on image-load-path.  This variable is set at bottom of
+	the file.
+
 2009-03-13  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-bugs.el (ess-bugs-mode): Set comment-start to provide basic
