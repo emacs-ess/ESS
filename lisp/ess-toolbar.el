@@ -4,7 +4,8 @@
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: Stephen Eglen
-;; Created: 06 May 2004
+;; Created: 2004-05-06
+;; Revised: 2009-03-16
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; This file is part of ESS
@@ -39,10 +40,9 @@
 ;; that will make the toolbar code more portable.  So, for now the
 ;; code should be regarded as proof of concept.
 
-;; Also, I think the CVS GNU Emacs now has tool-bar support for the
-;; Mac OS X.
-
-;;; Code:
+;; 2009-03-16: toolbar code in Emacs 23 has changed slightly to 22,
+;; and presumably once Emacs 22 is no longer supported, this code can
+;; be cleaned up a bit (i.e. no need to set load-path.)
 
 (defgroup ess-toolbar nil
   "ESS: toolbar support."
@@ -139,9 +139,9 @@ If `ess-icon-directory' is invalid, please report a bug.")
 	  (copy-keymap tool-bar-map)))
   (let ((tool-bar-map ess-toolbar)
 	(load-path (list ess-icon-directory)))
-
-    ;; icons are found by examining load-path; hence by temporarily setting
-    ;; load-path to our icons directory, they will be found.
+    ;; in Emacs 22, icons are found by examining load-path, bound here
+    ;; whereas Emacs 23 seems to want them in image-load-path, set at the
+    ;; bottom of this file.
     (mapc 'ess-add-icon-emacs ess-toolbar-items)))
 
 (defun ess-add-icon-emacs (x)
@@ -226,5 +226,9 @@ is added globally when ess-toolbar.el is loaded."
 	 ;;(sit-for 2)
 	 ))
       ))
+
+;; Following needed for Emacs 23, not Emacs 22 (nor XEmacs).
+(when (boundp 'image-load-path)
+    (add-to-list 'image-load-path ess-icon-directory))
 
 (provide 'ess-toolbar)
