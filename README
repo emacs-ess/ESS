@@ -3,7 +3,7 @@
 
 This is the README file for the distribution of ESS version
 
-   5.3.11
+   5.3.12
 
    ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
@@ -510,6 +510,9 @@ shell, simply type `M-x S+6-msdos RET'.
 
 1.10 New Features
 =================
+
+     Changes/New Features in 5.3.12:
+        * ESS[BUGS] and ESS[JAGS]: typing = now results in <-
 
      Changes/New Features in 5.3.11:
         * ESS[SAS]: work around buglet in Emacs 22.2 & 22.3 which fails

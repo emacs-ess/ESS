@@ -36,7 +36,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.3.11
+5.3.12
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -348,7 +348,12 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 <h3 class="section">1.2 New features in ESS</h3>
 
      <ul>
-Changes/New Features in 5.3.11:
+Changes/New Features in 5.3.12:
+          <ul>
+<li><acronym>ESS[BUGS]</acronym> and <acronym>ESS[JAGS]</acronym>: typing = now results in &lt;-
+</ul>
+
+     <p>Changes/New Features in 5.3.11:
           <ul>
 <li><acronym>ESS[SAS]</acronym>: work around buglet in Emacs 22.2 &amp; 22.3 which fails to
  set case-fold fontification automatically. 
@@ -4716,11 +4721,12 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-BUGS">ESS for BUGS</a>
 <p>Model files with the <samp><span class="file">.bug</span></samp> extension are edited in <acronym>ESS[BUGS]</acronym> mode
 if <code>(require 'essd-bugs)</code> was performed or edited in <acronym>ESS[JAGS]</acronym> mode
 if <code>(require 'essd-jags)</code>. 
-Two keys are bound for your use in <acronym>ESS[BUGS]</acronym>, <kbd>F2</kbd> and <kbd>C-c C-c</kbd>. 
+Three keys are bound for your use in <acronym>ESS[BUGS]</acronym>, <kbd>F2</kbd>, <kbd>C-c C-c</kbd> and <kbd>=</kbd>. 
 <kbd>F2</kbd> performs the same action as it does in <acronym>ESS[SAS]</acronym>,
 See <a href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">ESS(SAS)&ndash;Function keys for batch processing</a>.  <kbd>C-c C-c</kbd> performs the
 function <code>ess-bugs-next-action</code> which you will use a lot.  Pressing it
-in an empty buffer for a model file will produce a template for you.
+in an empty buffer for a model file will produce a template for you.  <kbd>=</kbd>
+inserts the set operator, <code>&lt;-</code>.
 
    <p><acronym>ESS[BUGS]</acronym> supports "replacement" variables.  These variables are
 created as part of the template, i.e. with the first press of <kbd>C-c C-c</kbd>
@@ -4871,11 +4877,12 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-JAGS">ESS for JAGS</a>
 <p>Model files with the <samp><span class="file">.bug</span></samp> extension are edited in <acronym>ESS[BUGS]</acronym> mode
 if <code>(require 'essd-bugs)</code> was performed or edited in <acronym>ESS[JAGS]</acronym> mode
 if <code>(require 'essd-jags)</code>. 
-Two keys are bound for your use in <acronym>ESS[JAGS]</acronym>, <kbd>F2</kbd> and <kbd>C-c C-c</kbd>. 
+Three keys are bound for your use in <acronym>ESS[BUGS]</acronym>, <kbd>F2</kbd>, <kbd>C-c C-c</kbd> and <kbd>=</kbd>. 
 <kbd>F2</kbd> performs the same action as it does in <acronym>ESS[SAS]</acronym>,
 See <a href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">ESS(SAS)&ndash;Function keys for batch processing</a>.  <kbd>C-c C-c</kbd> performs the
 function <code>ess-bugs-next-action</code> which you will use a lot.  Pressing it
-in an empty buffer for a model file will produce a template for you.
+in an empty buffer for a model file will produce a template for you.  <kbd>=</kbd>
+inserts the set operator, <code>&lt;-</code>.
 
    <p><acronym>ESS[JAGS]</acronym> does not support "replacement" variables which were part of
 <acronym>ESS[BUGS]</acronym>.  Although, "replacement" variables are an extremely convenient
