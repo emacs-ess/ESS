@@ -514,6 +514,11 @@ shell, simply type `M-x S+6-msdos RET'.
      Changes/New Features in 5.3.12:
         * ESS[BUGS] and ESS[JAGS]: typing = now results in <-
 
+        * ESS[R] function arguments "show" (ess-r-args-show) now uses
+          the  new (tooltip-show-at-point) contributed by Erik Iverson.
+
+        * Toolbar icons now also work in (beta) Emacs 23
+
      Changes/New Features in 5.3.11:
         * ESS[SAS]: work around buglet in Emacs 22.2 & 22.3 which fails
           to  set case-fold fontification automatically.
