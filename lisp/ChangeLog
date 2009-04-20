@@ -1,3 +1,17 @@
+2009-04-20  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (ess-sas-run-regexp-opt): the long overdue change
+	from make-regexp to regexp-opt is under way.  Setting
+	ess-sas-run-regexp-opt to something other than nil will result 
+	in the old make-regexp code to be used by regexp-opt.  This is
+	a half-step in the right direction.  The regexp-opt code will 
+	be easier to maintain than the hand-coded regexps.  However,
+	this means that the font-locking will revert to what it was
+	circa 2001-2 :o(  Over time, this code will be upgraded so
+	that the font-locking will be up-to-date with what is 
+	currently available and incorporate the changes necessary for
+	v. 9.2 and beyond.
+
 2009-04-01  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): add PROC MAPIMPORT
