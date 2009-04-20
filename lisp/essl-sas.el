@@ -200,8 +200,8 @@ number."
   :group 'ess-sas
   :type  'string)
 
-(defcustom ess-sas-run-make-regexp nil
-  "If you do not want to run make-regexp, then set to nil."
+(defcustom ess-sas-run-regexp-opt nil
+  "If you do not want to run regexp-opt, then set to nil."
   :group 'ess-sas
   :type '(choice (const nil) string))
 
@@ -246,7 +246,7 @@ number."
 
 
 (defvar SAS-mode-font-lock-keywords
-  (if ess-sas-run-make-regexp
+  (if ess-sas-run-regexp-opt
       (list
        ;; SAS comments
        (cons "^[ \t]*%?\\*.*;"		font-lock-comment-face)
@@ -261,13 +261,13 @@ number."
 
        (cons (concat
 	      "\\<"
-	      "%?do[ \t]*" (make-regexp '("over" "%?until" "%?while") t) "?"
+	      "%?do[ \t]*" (regexp-opt '("over" "%?until" "%?while") t) "?"
 	      "\\>")
 	     font-lock-keyword-face)
 
        (cons (concat
-	      "\\<"
-	      (make-regexp
+	      ;"\\<"
+	      (regexp-opt
 	       '(
 		 "abort" "array" "attrib" "by" "delete" "display" "dm"
 		 "drop" "error" "file" "filename" "footnote\\(10?\\|[2-9]\\)?"
@@ -284,25 +284,26 @@ number."
 		 "manova" "repeated" "value" "random" "means" "lsmeans"
 		 ;; SAS macro statements not handled above
 		 "%global" "%include" "%local" "%let" "%sysexec"
-		 ) t) "\\>")
+		 ) 'words)) ;"\\>")
 	     font-lock-keyword-face)
 
        ;; SAS statements that must be followed by a semi-colon
        (cons (concat
-	      "\\<"
-	      (make-regexp
+	      ;"\\<"
+	      (regexp-opt
 	       '(
 		 "cards4?" "end" "%end" "endsas" "list" "lostcard" "page"
 		 "return" "stop"
-		 ) t) "\\>" "[ \t]*;")
+		 ) 'words) ;"\\>" 
+		"[ \t]*;")
 	     font-lock-keyword-face)
 
        ;; SAS/GRAPH statements not handled above
        (cons (concat
-	      "\\<"
-	      (make-regexp
-	       '("axis" "legend" "pattern" "symbol") t) "\\([1-9][0-9]?\\)?"
-	      "\\>")
+	      ;"\\<"
+	      (regexp-opt
+	       '("axis" "legend" "pattern" "symbol") 'words) "\\([1-9][0-9]?\\)?"
+	      ) ;"\\>")
 	     font-lock-keyword-face)
 
        ;; SAS functions and SAS macro functions
@@ -312,8 +313,8 @@ number."
 	     font-lock-function-name-face)
 
        (cons (concat
-	      "\\<"
-	      (make-regexp
+	      ;"\\<"
+	      (regexp-opt
 	       '(
 		 "abs" "arcos" "arsin" "atan" "betainv" "byte" "ceil" "cinv"
 		 "collate" "compress" "cosh?" "css" "cv"
@@ -330,7 +331,7 @@ number."
 ;;;      font-lock-function-name-face)
 ;;;
 ;;;    (cons (concat "\\<"
-;;;(make-regexp '(
+;;;(regexp-opt '(
 		 "probbeta" "probbnml" "probchi" "probf" "probgam" "probhypr"
 		 "probit" "probnegb" "probnorm" "probt"
 		 "ordinal" "poisson" "put" "qtr" "range" "rank" "repeat"
@@ -349,7 +350,7 @@ number."
 ;;;    ;; SAS functions introduced in Technical Report P-222
 ;;;    ;; SCL functions that are known to work with SAS macro function %sysfunc
 ;;;    (cons (concat "\\<"
-;;;(make-regexp '(
+;;;(regexp-opt '(
 		 "airy" "band" "blshift" "brshift" "bnot" "bor" "bxor"
 		 "cnonct" "fnonct" "tnonct" "compbl" "dairy" "dequote"
 		 "ibessel" "jbessel"
@@ -361,7 +362,8 @@ number."
 		 "finfo" "fopen" "fput" "fwrite" "getoption"
 		 "getvarc" "getvarn" "libname" "libref" "open" "optgetn" "optsetn"
 		 "pathname" "sysmsg" "varfmt" "varlabel" "varnum" "vartype"
-		 ) t) "\\>" "[ \t]*(")
+		 ) 'words) ;"\\>" 
+		"[ \t]*(")
 	     font-lock-function-name-face)
        )
     (list
