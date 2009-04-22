@@ -1,3 +1,7 @@
+2009-04-22  Stephen Eglen  <stephen@gnu.org>
+
+	* doc/ess.texi (TAGS): Describe R CMD rtags.
+
 2009-03-05  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* doc/newfeat.texi, doc/help-bugs.tex, doc/help-jags.texi: 
