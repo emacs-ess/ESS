@@ -2763,6 +2763,16 @@ some.name <- function
 with the function name starting in column 0.  Windows users may need to
 change the single quotes to double quotes.
 
+R version 2.9.0 introduced a front-end script for finding R tags (which
+calls the @samp{rtags()} function), so an alternative way of generating
+the TAGS file is to use:
+
+@example
+R CMD rtags
+@end example
+
+
+
 @comment  node-name,  next,  previous,  up
 @node Rdired, , TAGS, Miscellaneous
 @section Rdired
