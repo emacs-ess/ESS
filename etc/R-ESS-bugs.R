@@ -1,4 +1,5 @@
-#### File showing off  things that go wrong -- with R-mode
+#### File showing off  things that go wrong or *went* wrong in the past
+#### -- with R-mode (mostly coded in ../lisp/ess-mode.el )
 
 ### -------- 1 ---------  extraneous comment chars :  This seems fixed
 
