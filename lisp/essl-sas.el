@@ -248,20 +248,92 @@ number."
 (defvar SAS-mode-font-lock-keywords
   (if ess-sas-run-regexp-opt
       (list
-       ;; SAS comments
-       (cons "^[ \t]*%?\\*.*;"		font-lock-comment-face)
-       (cons ";[ \t]*%?\\*.*;"		font-lock-comment-face)
-       (list "/\\*\\([^*/]\\)*\\*/"      0  font-lock-comment-face t)
+       ;; old SAS comment code
+;       (cons "^[ \t]*%?\\*.*;"		font-lock-comment-face)
+;       (cons ";[ \t]*%?\\*.*;"		font-lock-comment-face)
+;       (list "/\\*\\([^*/]\\)*\\*/"      0  font-lock-comment-face t)
+    
+     ;; .log NOTE: messages
+     (cons "^NOTE: .*$"                         font-lock-constant-face)
+     (cons "This may cause NOTE: No observations in data set."     
+						font-lock-constant-face)
 
-       ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND
-       (cons "\\<\\(data\\|run\\|%macro\\|%mend\\)\\>" font-lock-constant-face)
-       (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"            font-lock-constant-face)
+     ;; .log ERROR: messages
+     (cons "^ERROR .*$"                         font-lock-keyword-face)
 
+     ;; .log WARNING: messages
+     (cons "^WARNING: .*$"                      font-lock-function-name-face)
+
+     ;; SAS comments
+     ;; /* */ handled by grammar above
+     (cons "\\(^[0-9]*\\|;\\)[ \t]*\\(%?\\*\\|comment\\).*\\(;\\|$\\)" font-lock-comment-face)
+    
+     ; this exception needs to come before "data" below
+     (cons "data=" font-lock-keyword-face)
+
+; SAS procedure names circa v. 9.2
+; this code doesn't actually work, but why ?!?
+;
+;       (cons (concat "proc" (regexp-opt '(
+;		    "append"
+;		    "bgenmod" "blifereg" "bphreg"
+;		    "genmod" "lifereg" "phreg" "tphreg"
+;		    "calendar" "catalog" "cport" "compare" "contents" "copy" "corr" 
+;		    "cimport" "gimport" "import" 
+;		    "datasets" "dbcstab" "display"
+;		    "explode" "export"
+;		    "format" "forms" "freq" "fsbrowse" "fsedit" "fsletter" "fslist" "fsview"
+;		    "gchart" "gplot" "gprint" 
+;		    "chart" "plot" "print" 
+;		    "ganno" "gcontour" "gdevice" "geocode" "gfont" "ginside"
+;		    "gkeymap" "gmap" 
+;		    "goptions" "options"
+;		    "gproject" "greduce" "gremove" "greplay" "gslide"
+;		    "gtestit" "g3d" "g3grid" 
+;		    "iml" "insight"
+;		    "mapimport" "means"
+;		    "pmenu" "printto"
+;		    "rank" "registry" "report"
+;		    "sort" "sql" "standard" "summary"
+;		    "tabulate" "template" "timeplot" "transpose" "trantab"
+;		    "univariate"
+;		   ;;SAS/Stat and SAS/ETS
+;		    "aceclus" "anova" "arima" "autoreg"
+;		    "boxplot"
+;		    "calis" "cancorr" "candisc" "catmod" "citibase" "cluster" "computab" "corresp"
+;		    "discrim"
+;		    "expand"
+;		    "factor" "fastclus" "forecast"
+;		    "glimmix" "glm" "glmmod" "glmpower" "glmselect"
+;		    "inbreed"
+;		    "kde" "krige2d"
+;		    "lattice" "lifetest" "loess" "logistic"
+;		    "mds" "mixed" "modeclus" "model" "mortgage" "multtest"
+;		    "nested" "nlin" "nlmixed" "npar1way"
+;		    "orthoreg"
+;		    "pdlreg" "plan" "pls" "power" "princomp" "prinqual" "probit"
+;		    "reg" "rsreg"
+;		    "score" "sim2d" "simlin" "spectra" "statespace" "stdize" "stepdisc" 
+;		    "surveymeans" "surveyreg" "surveyselect" "syslin"
+;		    "tpspline" "transreg" "tree" "ttest"
+;		    "varclus" "varcomp" "variogram"
+;		    "x11"
+;		) 'words)) font-lock-constant-face)
+  
+       ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND, etc.
+       (cons (regexp-opt '(
+		 "data" "run" "proc" "endsas" "%macro" "%mend"
+		 "%do" "%to" "%by" "%end" 
+		 "%goto" "%go to" 
+		 "%if" "%then" "%else"
+		 "%global" "%include" "%input" "%local" "%let" "%put" "%sysexec"
+	    ) 'words) font-lock-constant-face)
+    
        ;; SAS statements
 
        (cons (concat
 	      "\\<"
-	      "%?do[ \t]*" (regexp-opt '("over" "%?until" "%?while") t) "?"
+	      "do[ \t]*" (regexp-opt '("over" "until" "while") t) "?"
 	      "\\>")
 	     font-lock-keyword-face)
 
@@ -270,20 +342,22 @@ number."
 	      (regexp-opt
 	       '(
 		 "abort" "array" "attrib" "by" "delete" "display" "dm"
-		 "drop" "error" "file" "filename" "footnote\\(10?\\|[2-9]\\)?"
+		 "drop" "error" "file" "filename" 
+		 "footnote" "footnote1" "footnote2" "footnote3" "footnote4" "footnote5" 
+		 "footnote6" "footnote7" "footnote8" "footnote9" "footnote10"
 		 "format"
-		 "%go[ \t]*to" "%if" "%then" "%else"
-		 "go[ \t]*to" "if" "then" "else"
-		 "infile" "informat" "input" "%input" "keep" "label"
+		 "goto" "go to" "if" "then" "else"
+		 "infile" "informat" "input" "keep" "label"
 		 "length" "libname" "link"
 		 "merge" "missing" "modify" "note" "options" "goptions" "output"
-		 "otherwise" "put" "%put" "rename" "retain" "select" "when" "set"
-		 "skip" "title\\(10?\\|[2-9]\\)?" "where" "window" "update" "out"
+		 "otherwise" "put" "rename" "retain" "select" "when" "set"
+		 "skip" 
+		 "title" "title1" "title2" "title3" "title4" "title5" 
+		 "title6" "title7" "title8" "title9" "title10"
+		 "where" "window" "update" "out"
 		 "change" "class" "exchange" "exclude" "freq" "id" "index"
 		 "model" "plot" "save" "sum" "tables?" "var" "weight" "with"
 		 "manova" "repeated" "value" "random" "means" "lsmeans"
-		 ;; SAS macro statements not handled above
-		 "%global" "%include" "%local" "%let" "%sysexec"
 		 ) 'words)) ;"\\>")
 	     font-lock-keyword-face)
 
@@ -292,7 +366,7 @@ number."
 	      ;"\\<"
 	      (regexp-opt
 	       '(
-		 "cards4?" "end" "%end" "endsas" "list" "lostcard" "page"
+		 "cards4?" "end" "list" "lostcard" "page"
 		 "return" "stop"
 		 ) 'words) ;"\\>" 
 		"[ \t]*;")
