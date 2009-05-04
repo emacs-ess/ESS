@@ -1,3 +1,14 @@
+2009-05-04  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): 3/4's of the way
+	there.  regexp-opt code updated to a reasonable fax of the
+	font-lock code it replaced.  There are certainly some special
+	cases missed (bug reports and patches welcome!).  One thing that 
+	is still not implemented:  font-locking the PROC names (PROC is 
+	highlighted only).  Maybe it is fine this way; we were constantly 
+	behind the times with the new PROC names since the academic
+	release of SAS sadly lags behind the commercial release.
+
 2009-04-20  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (ess-sas-run-regexp-opt): the long overdue change
