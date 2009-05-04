@@ -1118,7 +1118,9 @@ Keep in mind that the maximum command line length in MS-DOS is
 (defun ess-sas-toggle-sas-log-mode ()
   "Toggle SAS-log-mode for .log files."
   (interactive)
-  (ess-sas-goto-log t)
+  
+  (ess-sas-goto "log" nil t)
+  (kill-buffer nil)  
 
   (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode) (progn
       (setq auto-mode-alist (delete '("\\.[lL][oO][gG]\\'" . SAS-log-mode) auto-mode-alist))
@@ -1129,7 +1131,9 @@ Keep in mind that the maximum command line length in MS-DOS is
       (setq buffer-read-only t)
       (ess-transcript-minor-mode 1)
       (font-lock-mode 1)
-      (font-lock-fontify-buffer)))
+      (font-lock-fontify-buffer))
+
+  (ess-sas-goto-log))
 
 (defun ess-sas-versions-create ()
   "Generate the `M-x SASV' functions for starting other versions of SAS.
