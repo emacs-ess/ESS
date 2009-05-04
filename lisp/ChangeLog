@@ -1,5 +1,9 @@
 2009-05-04  Rodney Sparapani  <rsparapa@mcw.edu>
 
+	* essa-sas.el (ess-sas-toggle-sas-log-mode): to re-font-lock,
+	reverting may not be enough; killing buffer and re-opening is
+	necessary in some circumstances
+
 	* essl-sas.el (SAS-mode-font-lock-keywords): 3/4's of the way
 	there.  regexp-opt code updated to a reasonable fax of the
 	font-lock code it replaced.  There are certainly some special
