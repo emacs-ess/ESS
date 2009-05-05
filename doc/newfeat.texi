@@ -1,7 +1,8 @@
 @itemize @w
 
 Changes/New Features in 5.4:
-@itemize @bullet @ESS{[SAS]}: The long overdue change
+@itemize @bullet 
+@item @ESS{[SAS]}: The long overdue change
 from make-regexp to regexp-opt for font-locking is under way.  Setting
 @code{ess-sas-run-regexp-opt} to @code{t} will result 
 in the new regexp-opt code being used.  The regexp-opt code will 
