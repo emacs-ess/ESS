@@ -356,7 +356,7 @@ number."
 		 "title6" "title7" "title8" "title9" "title10"
 		 "where" "window" "update" "out"
 		 "change" "class" "exchange" "exclude" "freq" "id" "index"
-		 "model" "plot" "save" "sum" "tables?" "var" "weight" "with"
+		 "model" "plot" "save" "sum" "table" "tables" "var" "weight" "with"
 		 "manova" "repeated" "value" "random" "means" "lsmeans"
 		 ) 'words)) ;"\\>")
 	     font-lock-keyword-face)
@@ -366,7 +366,7 @@ number."
 	      ;"\\<"
 	      (regexp-opt
 	       '(
-		 "cards4?" "end" "list" "lostcard" "page"
+		 "cards" "cards4" "end" "list" "lostcard" "page"
 		 "return" "stop"
 		 ) 'words) ;"\\>" 
 		"[ \t]*;")
@@ -391,13 +391,13 @@ number."
 	      (regexp-opt
 	       '(
 		 "abs" "arcos" "arsin" "atan" "betainv" "byte" "ceil" "cinv"
-		 "collate" "compress" "cosh?" "css" "cv"
+		 "collate" "compress" "cos" "cosh" "css" "cv"
 		 "daccdb" "daccdbsl" "daccsl" "daccsyd" "dacctab"
 		 "depdb" "depdbsl" "depsl" "depsyd" "deptab"
 		 "date" "datejul" "datepart" "datetime" "day" "hms" "dhms" "dif"
-		 "digamma" "dim" "erfc?" "exp" "finv"
-		 "fipnamel?" "fipstate" "floor" "fuzz" "gaminv" "gamma"
-		 "hbound" "hour" "indexc?" "input" "int" "intck" "intnx" "intrr"
+		 "digamma" "dim" "erf" "erfc" "exp" "finv"
+		 "fipname" "fipnamel" "fipstate" "floor" "fuzz" "gaminv" "gamma"
+		 "hbound" "hour" "index" "indexc" "input" "int" "intck" "intnx" "intrr"
 		 "irr" "juldate" "kurtosis" "lag" "lbound" "left" "length"
 		 "lgamma" "log" "log10" "log2" "max" "mdy" "mean" "min" "minute"
 		 "mod" "month" "mort" "n" "netpv" "nmiss" "normal" "npv"
@@ -411,12 +411,12 @@ number."
 		 "ordinal" "poisson" "put" "qtr" "range" "rank" "repeat"
 		 "ranbin" "rancau" "ranexp" "rangam" "rannor" "ranpoi"
 		 "rantbl" "rantri" "ranuni"
-		 "reverse" "right" "round" "saving" "scan" "second" "sign" "sinh?"
-		 "sqrt" "std" "stderr" "stfips" "stnamel?" "substr" "sum"
-		 "symget" "tanh?" "time" "timepart" "tinv" "today" "translate"
+		 "reverse" "right" "round" "saving" "scan" "second" "sign" "sin" "sinh"
+		 "sqrt" "std" "stderr" "stfips" "stname" "stnamel" "substr" "sum"
+		 "symget" "tan" "tanh" "time" "timepart" "tinv" "today" "translate"
 		 "trigamma" "trim" "trunc" "uniform" "upcase" "uss" "var"
 		 "verify" "weekday" "year" "yyq"
-		 "zipfips" "zipnamel?" "zipstate"
+		 "zipfips" "zipname" "zipnamel" "zipstate"
 ;;;) t) "\\>" "[ \t]*(")
 ;;;      font-lock-function-name-face)
 ;;;
