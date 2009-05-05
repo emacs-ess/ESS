@@ -15,15 +15,15 @@ behind the times with the new PROC names anyways.
 
 Changes/New Features in 5.3.12:
 @itemize @bullet
-@item @ESS{[BUGS]} and @ESS{[JAGS]}: typing = now results in <-
-@item @ESS{[R]} function arguments ``show'' (ess-r-args-show) now uses the
- new (tooltip-show-at-point) contributed by Erik Iverson.
+@item @ESS{[BUGS]} and @ESS{[JAGS]}: typing @code{=} now results in @code{<-}
+@item @ESS{[R]} function arguments ``show'' @code{(ess-r-args-show)} now uses the
+ new @code{(tooltip-show-at-point)} contributed by Erik Iverson.
 @item Toolbar icons now also work in (beta) Emacs 23
 @end itemize
 
 Changes/New Features in 5.3.11:
 @itemize @bullet
-@item @ESS{[SAS]}: work around buglet in Emacs 22.2 & 22.3 which fails to
+@item @ESS{[SAS]}: work around bug in Emacs 22.2 & 22.3 which fails to
  set case-fold fontification automatically.
 @item Rd mode: support new keyword 'Rdversion'
 @item @ESS{[R]}: now again works with Emacs 21.x
@@ -48,7 +48,7 @@ evince, Xpdf, Adobe/Acrobat Reader
 @item @ESS{[S]} (and R): inferior (@code{*R*}) and transcript modes no longer
 fontify language keywords (such as @code{for}, @code{in}, etc).
 @item @iESS{[Stata]}: Customize the @code{ess-sta-delimiter-friendly} setting
-to t to convert embedded semi-colons to newlines for Stata processing.
+to @code{t} to convert embedded semi-colons to newlines for Stata processing.
 @item Sweave fix for embedded blanks in PDF reader and PDF files
 @item Several fixes for Major Mode Convention violations in @code{ess-mode}
 and @code{noweb-mode}.
