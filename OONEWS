@@ -1,0 +1,237 @@
+== Changes up to version 5.0 :
+
+* Works with XLispStat, R, and S(plus).
+
+
+
+== Changes up to version 4.8.MM6.XE3 :
+
+* inferior S-mode:
+	C-c C-a is comint-bol (not attach directories)
+	Output cleaned up (thanks to PD).
+
+* Code cleaned up, more according to Emacs-Lisp Style Guide.
+
+* Added some code for S4 (not activated yet). (thanks to JMC).
+
+* Added some extra configuration code (not activated yet) (thanks to MM).
+
+* reports to proper authority (Hornik/Maechler/Rossini).
+
+* Makefile updated (i.e. Unpacks into a subdirectory (this has been
+  true for all XE versions, etc)).
+
+* Fixed up output from R (KH).
+
+
+
+== Changes up to version 4.8.MM6.XE2 :
+
+* Works with Emacs and XEmacs.  I think.  Documentation needs to be
+  updated .
+
+
+
+== Changes up to version 4.8.MM6.XE1 :
+
+* XEmacs compatibility added, Emacs compatibility broken.  Easymenu
+  now in use.
+
+
+
+== Changes up to version 4.8.MM6 :
+
+* Lots of patches by Martin.  S-eval, right? (AJR: I don't know).
+
+
+
+== Changes up to version 4.8:
+
+* Keybinding changes in S Transcript Mode.  RET now simply executes
+  the current commant.  M-RET executes and moves, C-c RET copies,
+  leaving you in the process buffer.  These bindings mirror those in
+  Inferior S mode. 
+
+* If S-source-directory is a lambda expression, it is evaluated with
+  the process buffer as the current buffer.
+
+* The default starting directory is always your home directory.  Set
+  S-directory to `nil' to get the old behaviour (use the current
+  buffer's default directory).
+
+* In Inferior S mode, S mode and S transcript mode, M-? is now bound
+  to the new function S-list-object-completions.  Also, S-resynch is
+  available from the Inf-S menu.
+
+* S-request-a-process is now bound to C-c C-k.  This frees C-c C-p for
+  the standard comint binding of comint-previous-prompt.
+
+* Massive manual update.
+
+
+
+== Changes in version 4.7:
+
+* Probably *only* works with Emacs 19.29
+
+* New semantics for S-keep-dump-files.  Values may be nil, check, ask
+  or t; the default is 'check.  It's also now buffer-local.  See the
+  info file for more details.
+
+* New hook, S-post-run-hook, run just after the S process starts.  Use
+  this to evaluate code at the start of a session.
+
+
+
+== Changes in version 4.6:
+
+* Works with Emacs 19.29
+
+* Font-lock support in S-mode, inferior-S-mode and S-transcript-mode buffers
+
+* M-RET in inferior-S-mode is bound to S-transcript-send-command-and-move
+
+* S-site now much more lightweight to load.
+
+
+
+== Changes in version 4.5:
+
+* New, and hopefully simpler, installation procedure.
+
+
+
+== Changes in version 4.4:
+
+* There is now a command to send bug reports: S-submit-bug-report.  It
+  is also available from menus (Send bug report).
+
+* Keybinding changes: S-view-at-bottom (on C-c C-v) has been deleted.
+  It's functionality is provided by comint's
+  comint-show-maximum-output, on C-c C-e.  S-display-help-on-object
+  has moved from C-c C-h onto C-c C-v (and now has an alias, M-x
+  S-help), and S-execute (S-execute-in-tb in S-mode) has moved from
+  C-c C-e to C-c C-t.
+
+
+
+== Changes in version 4.3:
+
+* The variable S-source-directory-generator has been deleted.  It's
+  functionality has been subsumed into the variable
+  S-source-directory; if this is not a string it is assumed to be a
+  lambda expression, and behaves in the same was as S-source-directory
+  used to.
+
+* New user option S-delete-dump-files.
+
+
+
+== Changes in version 4.2:
+
+* New user variable S-inf-filenames-map.  Set this to nil if you are
+  using DOS or some other system with limited filename lengths.
+
+* S-local-variables-string and S-temp-buffer-p have been deleted.
+  S-mode no longer adds a local variables section to source files.
+  You should use file extensions to set the major mode.
+
+* S-insert-function-templates has been deleted. Its functionality has
+  been taken over by the user variable S-function-template.
+
+* S.el has been divided into four separate files, with autoloads.
+
+* New file S-site.el for site-level customizations.
+
+* S-ask-about-display and X-displays-list have been removed.
+
+* User variable: S-ask-about-transfile. If non-nil, asks for a
+  transcript file to use.
+
+
+
+== Changes in version 4.0:
+
+* The TAB key in inferior-S-mode is more versatile; it completes S
+  object names when point follows an object name, and completes
+  filenames when point is in a string.
+
+* New mode: S-transcript-mode, for dealing with S transcript files.
+
+* Multi-line inputs are now evaluated neatly
+
+* inferior-S-prompt is no longer a user variable. Instead, set
+  inferior-S-primary-prompt and inferior-S-secondary-prompt
+
+* Uses the comint.el supplied with Emacs 19.20 onwards. 
+
+* Hook: S-send-input-hook
+
+* Emacs version 18 is no longer supported (sorry).  Works with Emacs
+  19 (and, unfortunately, only Emacs 19)
+
+* S-tek is no longer supported, and has been removed from the
+  distribution
+
+* Works with S version 3.1
+
+
+
+== Changes in version 3.5:
+
+* Support for multiple S processes.  Pass a numeric argument to M-x S
+  to start a new S process.  The name of the process associated with
+  the cuurent buffer is shown in the mode line like this: [S2]
+
+* In the process buffer, a paragraph is a prompt, a command and its
+  output, to make the paragraph functions useful.  Multiple S sessions
+  are delimited by ^L, to make the page functions useful
+
+* User variable S-synchronize-evals
+
+* New function S-request-a-process, bound to C-c C-p
+
+* New function S-clean-region
+
+
+
+== RELEASE 3.4 INFORMATION
+
+* Works with version 3.0 S
+
+* Command-line completion of S object names
+
+* Recognition of attached data frames 
+
+* Dedicated S Help mode
+
+* Tek graphics support
+
+* Several bugfixes and code cleanups
+
+* Texinfo documentation
+
+
+
+== RELEASE 2.1 INFORMATION
+
+Improvements since last release (unnumbered of Summer 1990):
+
+* Better description provided of functions loaded.
+
+* Better header for this file.
+
+* S-directory is now a prescriptive rather than just 
+  descriptive variable.  
+
+* better syntax table, so |#; are better recognized and
+  commands using them work better.
+
+* we have a version number.
+
+
+
+Local Variables:
+mode: text
+fill-prefix: "  "
+End:
