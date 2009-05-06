@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.3.12
+   5.4
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -237,17 +237,28 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
-     Changes/New Features in 5.3.12:
-        * ESS[BUGS] and ESS[JAGS]: typing = now results in <-
+     Changes/New Features in 5.4:
+        * ESS[SAS]: The long overdue change from make-regexp to
+          regexp-opt for font-locking is under way.  Setting
+          `ess-sas-run-regexp-opt' to `t' will result in the new
+          regexp-opt code being used.  The regexp-opt code will be
+          easier to maintain.  There are certainly some special cases
+          missed (bug reports and patches welcome!).  One thing that is
+          still not implemented:  font-locking the PROC names (PROC is
+          highlighted only).  Maybe it is fine this way; we were
+          constantly behind the times with the new PROC names anyways.
 
-        * ESS[R] function arguments "show" (ess-r-args-show) now uses
-          the  new (tooltip-show-at-point) contributed by Erik Iverson.
+        * ESS[BUGS] and ESS[JAGS]: typing `=' now results in `<-'
+
+        * ESS[R] function arguments "show" `(ess-r-args-show)' now uses
+          the  new `(tooltip-show-at-point)' contributed by Erik
+          Iverson.
 
         * Toolbar icons now also work in (beta) Emacs 23
 
      Changes/New Features in 5.3.11:
-        * ESS[SAS]: work around buglet in Emacs 22.2 & 22.3 which fails
-          to  set case-fold fontification automatically.
+        * ESS[SAS]: work around bug in Emacs 22.2 & 22.3 which fails to
+          set case-fold fontification automatically.
 
         * Rd mode: support new keyword 'Rdversion'
 
@@ -276,8 +287,8 @@ in the file COPYING in the same directory as this file for more details.
           longer fontify language keywords (such as `for', `in', etc).
 
         * iESS[Stata]: Customize the `ess-sta-delimiter-friendly'
-          setting to t to convert embedded semi-colons to newlines for
-          Stata processing.
+          setting to `t' to convert embedded semi-colons to newlines
+          for Stata processing.
 
         * Sweave fix for embedded blanks in PDF reader and PDF files
 

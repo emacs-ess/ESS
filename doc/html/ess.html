@@ -3,7 +3,7 @@
 <title>ESS -- Emacs Speaks Statistics</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ESS -- Emacs Speaks Statistics">
-<meta name="generator" content="makeinfo 4.8">
+<meta name="generator" content="makeinfo 4.13">
 <link title="Top" rel="top" href="#Top">
 <link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
 <meta http-equiv="Content-Style-Type" content="text/css">
@@ -25,8 +25,8 @@
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Top"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Introduction">Introduction</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#dir">(dir)</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
@@ -36,7 +36,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.3.12
+5.4
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -47,7 +47,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 </pre>
    <!-- (Formerly: Doug -->
 <!-- Bates, Ed Kademan, Frank Ritter and David Smith). -->
-<blockquote>
+   <blockquote>
 Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
 SAS, S-PLUS, R, BUGS/JAGS and other statistical analysis packages under
@@ -172,8 +172,8 @@ statements written in these statistical analysis languages.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Introduction"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Installation">Installation</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Top">Top</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -241,8 +241,8 @@ your S functions in specified source directories.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Features"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#New-features">New features</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Introduction">Introduction</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
@@ -265,14 +265,14 @@ package which is waiting for you to input commands).  These include:
 
      <ul>
 <li><b>Command-line editing</b> for fixing mistakes in commands before they are
-entered.  The `<samp><span class="samp">-e</span></samp>' flag for S-plus provides something similar to
+entered.  The &lsquo;<samp><span class="samp">-e</span></samp>&rsquo; flag for S-plus provides something similar to
 this, but here you have the full range of Emacs commands rather than a
 limited subset.  However, other packages such as XLisp-Stat and S3 do not
 necessarily have features like this built-in. 
 See <a href="#Command_002dline-editing">Command-line editing</a>.
 
      <li><b>Searchable command history</b> for recalling previously-submitted
-commands.  This provides all the features of the `<samp><span class="samp">Splus -e</span></samp>' history
+commands.  This provides all the features of the &lsquo;<samp><span class="samp">Splus -e</span></samp>&rsquo; history
 mechanism, plus added features such as history searching. 
 See <a href="#Command-History">Command History</a>.
 
@@ -296,7 +296,7 @@ See <a href="#Help">Help</a>.
    </ul>
 
    <p>If you commonly create or modify S functions, you will have found
-the standard facilities for this (the `<samp><span class="samp">fix()</span></samp>' function, for
+the standard facilities for this (the &lsquo;<samp><span class="samp">fix()</span></samp>&rsquo; function, for
 example) severely limiting.  Using S's standard features, one can only
 edit one function at a time, and you can't continue to use S while
 editing.  ESS corrects these problems by introducing the following
@@ -337,8 +337,8 @@ See <a href="#Transcript-resubmit">Transcript resubmit</a>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="New-features"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Credits">Credits</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Features">Features</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
@@ -348,17 +348,26 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 <h3 class="section">1.2 New features in ESS</h3>
 
      <ul>
-Changes/New Features in 5.3.12:
+Changes/New Features in 5.4:
           <ul>
-<li><acronym>ESS[BUGS]</acronym> and <acronym>ESS[JAGS]</acronym>: typing = now results in &lt;-
-<li><acronym>ESS[R]</acronym> function arguments &ldquo;show&rdquo; (ess-r-args-show) now uses the
- new (tooltip-show-at-point) contributed by Erik Iverson. 
+<li><acronym>ESS[SAS]</acronym>: The long overdue change
+from make-regexp to regexp-opt for font-locking is under way.  Setting
+<code>ess-sas-run-regexp-opt</code> to <code>t</code> will result
+in the new regexp-opt code being used.  The regexp-opt code will
+be easier to maintain.  There are certainly some special
+cases missed (bug reports and patches welcome!).  One thing that
+is still not implemented:  font-locking the PROC names (PROC is
+highlighted only).  Maybe it is fine this way; we were constantly
+behind the times with the new PROC names anyways. 
+<li><acronym>ESS[BUGS]</acronym> and <acronym>ESS[JAGS]</acronym>: typing <code>=</code> now results in <code>&lt;-</code>
+<li><acronym>ESS[R]</acronym> function arguments &ldquo;show&rdquo; <code>(ess-r-args-show)</code> now uses the
+ new <code>(tooltip-show-at-point)</code> contributed by Erik Iverson. 
 <li>Toolbar icons now also work in (beta) Emacs 23
 </ul>
 
      <p>Changes/New Features in 5.3.11:
           <ul>
-<li><acronym>ESS[SAS]</acronym>: work around buglet in Emacs 22.2 &amp; 22.3 which fails to
+<li><acronym>ESS[SAS]</acronym>: work around bug in Emacs 22.2 &amp; 22.3 which fails to
  set case-fold fontification automatically. 
 <li>Rd mode: support new keyword 'Rdversion'
 <li><acronym>ESS[R]</acronym>: now again works with Emacs 21.x
@@ -383,7 +392,7 @@ evince, Xpdf, Adobe/Acrobat Reader
 <li><acronym>ESS[S]</acronym> (and R): inferior (<code>*R*</code>) and transcript modes no longer
 fontify language keywords (such as <code>for</code>, <code>in</code>, etc). 
 <li>i<acronym>ESS[Stata]</acronym><!-- /@w -->: Customize the <code>ess-sta-delimiter-friendly</code> setting
-to t to convert embedded semi-colons to newlines for Stata processing. 
+to <code>t</code> to convert embedded semi-colons to newlines for Stata processing. 
 <li>Sweave fix for embedded blanks in PDF reader and PDF files
 <li>Several fixes for Major Mode Convention violations in <code>ess-mode</code>
 and <code>noweb-mode</code>. 
@@ -663,8 +672,8 @@ the bell is rung.
 
      <p>Changes/New Features in 5.2.5:
           <ul>
-<li><acronym title="[S]">ESS[R]</acronym>: <kbd>C-c C-q</kbd> or `<samp><span class="samp">Quit S</span></samp>' from the menu now should work
-(again and less klunkily) and do not append `<samp><span class="samp">-exited</span></samp>' to the
+<li><acronym title="[S]">ESS[R]</acronym>: <kbd>C-c C-q</kbd> or &lsquo;<samp><span class="samp">Quit S</span></samp>&rsquo; from the menu now should work
+(again and less klunkily) and do not append &lsquo;<samp><span class="samp">-exited</span></samp>&rsquo; to the
 buffer name.  Further, the behavior of <code>(ess-cleanup)</code>, called from
 ess-quit, now depends on the new customizable variable
 <code>ess-S-quit-kill-buffers-p</code> which defaults to <code>nil</code>. 
@@ -1011,8 +1020,8 @@ provide the syntactic highlighting that eases the programming tasks.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Credits"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Latest-version">Latest version</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#New-features">New features</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
@@ -1108,8 +1117,8 @@ contributors to the ESS mailing lists.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Latest-version"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Manual">Manual</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Credits">Credits</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
@@ -1125,7 +1134,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 <!-- There no longer is an anonymous CVS repository for ESS, due to lack of -->
 <!-- interest, little demand, and problems with security. -->
 <!-- text below modified from R-admin.texi (thanks to Kurt for the tip). -->
-<p>The latest development version of ESS is available via
+   <p>The latest development version of ESS is available via
 <a href="https://svn.R-project.org/ESS/">https://svn.R-project.org/ESS/</a>, the ESS Subversion repository.  If
 you have a Subversion client (see <a href="http://subversion.tigris.org/">http://subversion.tigris.org/</a>),
 you can download the sources using:
@@ -1157,8 +1166,8 @@ certificate permanently and will not be asked about it anymore.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Manual"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Latest-version">Latest version</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
@@ -1212,8 +1221,8 @@ defer this section until you are more familiar with ESS.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Installation"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Interactive-ESS">Interactive ESS</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Introduction">Introduction</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -1237,8 +1246,8 @@ on your system.
 <!-- ==> *must* give node pointer problems! -->
 <!-- @include inst_tar.texi -->
 <div class="node">
-<p><hr>
 <a name="Unix-installation"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Microsoft-Windows-installation">Microsoft Windows installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 
@@ -1262,10 +1271,10 @@ which exists for packages like <acronym>ESS</acronym>
 (or for Mac OS X <samp><span class="file">/Applications/Emacs.app/Contents/MacOS/Resources/site-lisp</span></samp>):
      <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
           %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
-     </pre>
+</pre>
      <li>Then, add the line
      <pre class="example">          (require 'ess-site)
-     </pre>
+</pre>
      <p>to <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
@@ -1280,7 +1289,7 @@ or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS
 
      <li>Replace the line above with
      <pre class="example">          (load "~/ess/ess-VERSION/lisp/ess-site")
-     </pre>
+</pre>
      <p>in <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
@@ -1301,10 +1310,10 @@ where <samp><span class="file">LOCATION</span></samp> is <samp><span class="file
 now (or for Mac OS X <samp><span class="file">/Applications/XEmacs.app/Contents/MacOS/Resources/site-packages</span></samp>):
      <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
           %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
-     </pre>
+</pre>
      <li>Then, add the line
      <pre class="example">          (require 'ess-site)
-     </pre>
+</pre>
      <p>to <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
@@ -1319,7 +1328,7 @@ or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS
 
      <li>Replace the line above with
      <pre class="example">          (load "~/ess/ess-VERSION/lisp/ess-site")
-     </pre>
+</pre>
      <p>in <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
@@ -1339,16 +1348,16 @@ using XEmacs, then edit the XEmacs subsection in Section 1).
 
      <p>You can compile those files by:
      <pre class="example">          make all
-     </pre>
+</pre>
      <p>When that completes successfully, install the compiled files:
      <pre class="example">          make install
-     </pre>
+</pre>
         </ol>
 
 <!-- @node Microsoft Windows installation, , Unix installation, Installation -->
 <div class="node">
-<p><hr>
 <a name="Microsoft-Windows-installation"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Unix-installation">Unix installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
@@ -1377,7 +1386,7 @@ directory can be found somewhere like
 
      <li>Add the line
      <pre class="example">          (require 'ess-site)
-     </pre>
+</pre>
      <p>to <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
@@ -1393,7 +1402,7 @@ will not be lost if you update Emacs later.
 
      <li>Replace the line above with
      <pre class="example">          (load "C:/ess/ess-VERSION/lisp/ess-site")
-     </pre>
+</pre>
      <p>in <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
@@ -1432,7 +1441,7 @@ From the Subdir menu, select Create Directory, and enter <code>.xemacs</code>
 
      <li>Add the line
      <pre class="example">          (require 'ess-site)
-     </pre>
+</pre>
      <p>to <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
@@ -1448,7 +1457,7 @@ will not be lost if you update XEmacs later.
 
      <li>Replace the line above with
      <pre class="example">          (load "C:/ess/ess-VERSION/lisp/ess-site")
-     </pre>
+</pre>
      <p>in <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
@@ -1508,10 +1517,10 @@ on their machine into the <acronym>ESS</acronym> menu.
 <li>If you use Cygwin bash as your primary shell, then
      <pre class="example">          M-x S
           (or <code>M-x S+6</code>).
-     </pre>
+</pre>
      <li>If you use the MSDOS prompt window as your primary shell, then
      <pre class="example">          M-x S+6-msdos
-     </pre>
+</pre>
      </ol>
 You will then be
 asked for a pathname ("S starting data directory?"), from which to
@@ -1582,8 +1591,8 @@ emacs, and cut and paste the results into the XLispStat
 *Listener* Window under Microsoft Windows.
 
 <div class="node">
-<p><hr>
 <a name="Requirements"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Microsoft-Windows-installation">Microsoft Windows installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 
@@ -1631,8 +1640,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Interactive-ESS"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Entering-commands">Entering commands</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Installation">Installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -1660,8 +1669,8 @@ with statistical programs.
 </ul>
 
 <div class="node">
-<p><hr>
 <a name="Starting-up"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Multiple-ESS-processes">Multiple ESS processes</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Interactive-ESS">Interactive ESS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
@@ -1687,13 +1696,13 @@ the directory you would have <code>cd</code>'d to before starting S from
 the shell).  This directory should have a <samp><span class="file">.Data</span></samp> subdirectory.
 
    <p>You will then be popped into a buffer
-<a name="index-ESS-process-buffer-17"></a><a name="index-process-buffer-18"></a>with name `<samp><span class="samp">*S*</span></samp>' which will be used
+<a name="index-ESS-process-buffer-17"></a><a name="index-process-buffer-18"></a>with name &lsquo;<samp><span class="samp">*S*</span></samp>&rsquo; which will be used
 for interacting with the ESS process, and you can start entering commands.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Multiple-ESS-processes"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Starting-up">Starting up</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
@@ -1705,20 +1714,20 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
 <p><a name="index-Multiple-ESS-processes-19"></a>
 ESS allows you to run more than one ESS process simultaneously in the
 same session.  Each process has a name and a number; the initial process
-<a name="index-process-names-20"></a>(process 1) is simply named (using S-PLUS as an example) `<samp><span class="samp">S+3:1</span></samp>'. 
+<a name="index-process-names-20"></a>(process 1) is simply named (using S-PLUS as an example) &lsquo;<samp><span class="samp">S+3:1</span></samp>&rsquo;. 
 <!-- You may start a new process by passing a numeric argument to -->
 <!-- @kbd{M-x S}.  For example, typing @kbd{ESC 2 M-x S} starts up -->
 <!-- an ESS process with name @samp{S2}, in a buffer whose name -->
 <!-- is initially @samp{*S2*}. -->
 The name of the process is shown in the mode line in square brackets
-(for example, `<samp><span class="samp">[S+3:2]</span></samp>'); this is useful if the process buffer is
+(for example, &lsquo;<samp><span class="samp">[S+3:2]</span></samp>&rsquo;); this is useful if the process buffer is
 renamed.  Without a prefix argument, <kbd>M-x S</kbd> starts a new ESS
 process, using the first available process number.  With a prefix
 argument (for R), <kbd>C-u M-x R</kbd> allows for the specification of
 command line options.
 
    <p><a name="index-ess_002drequest_002da_002dprocess-21"></a>You can switch to any active ESS process with the command
-`<samp><span class="samp">M-x ess-request-a-process</span></samp>'.  Just enter the name of the process
+&lsquo;<samp><span class="samp">M-x ess-request-a-process</span></samp>&rsquo;.  Just enter the name of the process
 you require; completion is provided over the names of all running S
 processes.  This is a good command to consider binding to a global key.
 
@@ -1731,8 +1740,8 @@ processes.  This is a good command to consider binding to a global key.
 <!-- to @code{t}.  See @file{ess-site} for how to set this for all users. -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS-processes-on-Remote-Computers"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#S_002belsewhere-and-ESS_002delsewhere">S+elsewhere and ESS-elsewhere</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Multiple-ESS-processes">Multiple ESS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
@@ -1749,20 +1758,20 @@ ssh buffer and then connect ESS to that buffer.
 
      <ol type=1 start=1>
 <li>Start a new telnet or ssh buffer and connect to the remote computer
-(e.g. use `<samp><span class="samp">M-x telnet</span></samp>' or `<samp><span class="samp">M-x ssh</span></samp>'; ssh.el is available at
+(e.g. use &lsquo;<samp><span class="samp">M-x telnet</span></samp>&rsquo; or &lsquo;<samp><span class="samp">M-x ssh</span></samp>&rsquo;; ssh.el is available at
 <a href="ftp://ftp.splode.com/pub/users/friedman/emacs-lisp/ssh.el">ftp://ftp.splode.com/pub/users/friedman/emacs-lisp/ssh.el</a>).
 
      <li>Start the ESS process on the remote machine, for example with one of
-the commands `<samp><span class="samp">Splus</span></samp>', or `<samp><span class="samp">R</span></samp>', or `<samp><span class="samp">sas -stdio</span></samp>'.
+the commands &lsquo;<samp><span class="samp">Splus</span></samp>&rsquo;, or &lsquo;<samp><span class="samp">R</span></samp>&rsquo;, or &lsquo;<samp><span class="samp">sas -stdio</span></samp>&rsquo;.
 
-     <li>Enter the ESS command `<samp><span class="samp">M-x ess-remote</span></samp>'.  You will be prompted for
-a program name.  Enter `<samp><span class="samp">sp6</span></samp>' or `<samp><span class="samp">r</span></samp>' or `<samp><span class="samp">sas</span></samp>' or another
+     <li>Enter the ESS command &lsquo;<samp><span class="samp">M-x ess-remote</span></samp>&rsquo;.  You will be prompted for
+a program name.  Enter &lsquo;<samp><span class="samp">sp6</span></samp>&rsquo; or &lsquo;<samp><span class="samp">r</span></samp>&rsquo; or &lsquo;<samp><span class="samp">sas</span></samp>&rsquo; or another
 valid name.  Your telnet process is now known to ESS.  All the usual
-ESS commands (`<samp><span class="samp">C-c C-n</span></samp>' and its relatives) now work with the S
+ESS commands (&lsquo;<samp><span class="samp">C-c C-n</span></samp>&rsquo; and its relatives) now work with the S
 language processes.  For SAS you need to use a different command
-`<samp><span class="samp">C-c i</span></samp>' (that is a regular `<samp><span class="samp">i</span></samp>', not a `<samp><span class="samp">C-i</span></samp>') to send
+&lsquo;<samp><span class="samp">C-c i</span></samp>&rsquo; (that is a regular &lsquo;<samp><span class="samp">i</span></samp>&rsquo;, not a &lsquo;<samp><span class="samp">C-i</span></samp>&rsquo;) to send
 lines from your <samp><span class="file">myfile.sas</span></samp> to the remote SAS process. 
-`<samp><span class="samp">C-c i</span></samp>' sends lines over invisibly. 
+&lsquo;<samp><span class="samp">C-c i</span></samp>&rsquo; sends lines over invisibly. 
 <!-- and lets SAS display them formatted correctly as in a SAS log file. -->
 With ess-remote you get teletype behavior&mdash;the data input, the
 log, and the listing all appear in the same buffer.  To make this work,
@@ -1773,8 +1782,8 @@ input statements.
      <li>Graphics (interactive) on the remote machine.  If you run X11
 (See <a href="#X11">X11</a>, X-windows)
 on both the local and remote machines then you should be able to
-display the graphs locally by setting the `<samp><span class="samp">DISPLAY</span></samp>' environment
-variable appropriately.  Windows users can download `<samp><span class="samp">xfree86</span></samp>'
+display the graphs locally by setting the &lsquo;<samp><span class="samp">DISPLAY</span></samp>&rsquo; environment
+variable appropriately.  Windows users can download &lsquo;<samp><span class="samp">xfree86</span></samp>&rsquo;
 from cygwin.
 
      <li>Graphics (static) on the remote machine. 
@@ -1783,17 +1792,17 @@ graphics to a file on the remote machine, and display the file in
 a graphics viewer on the local machine.  Most statistical software can
 write one or more of postscript, GIF, or JPEG files. 
 Depending on the versions of emacs and the operating system that you
-are running, emacs itself may display `<samp><span class="samp">.gif</span></samp>' and `<samp><span class="samp">.jpg</span></samp>'
+are running, emacs itself may display &lsquo;<samp><span class="samp">.gif</span></samp>&rsquo; and &lsquo;<samp><span class="samp">.jpg</span></samp>&rsquo;
 files.  Otherwise, a graphics file viewer will be needed. 
-Ghostscript/ghostview may be downloaded to display `<samp><span class="samp">.ps</span></samp>' and
-`<samp><span class="samp">.eps</span></samp>' files.  Viewers for GIF and JPEG are usually included with
+Ghostscript/ghostview may be downloaded to display &lsquo;<samp><span class="samp">.ps</span></samp>&rsquo; and
+&lsquo;<samp><span class="samp">.eps</span></samp>&rsquo; files.  Viewers for GIF and JPEG are usually included with
 operating systems.  See <a href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">ESS(SAS)&ndash;Function keys for batch processing</a>,
 for more information on using the F12 key for displaying graphics files
 with SAS.
         </ol>
 
    <p>Should you or a colleague inadvertently start a statistical process in
-an ordinary `<samp><span class="samp">*shell*</span></samp>' buffer, the `<samp><span class="samp">ess-remote</span></samp>' command can
+an ordinary &lsquo;<samp><span class="samp">*shell*</span></samp>&rsquo; buffer, the &lsquo;<samp><span class="samp">ess-remote</span></samp>&rsquo; command can
 be used to convert it to an ESS buffer and allow you to use the ESS
 commands with it.
 
@@ -1803,9 +1812,9 @@ See <a href="#S_002belsewhere-and-ESS_002delsewhere">S+elsewhere and ESS-elsewhe
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="S+elsewhere-and-ESS-elsewhere"></a>
 <a name="S_002belsewhere-and-ESS_002delsewhere"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Customizing-startup">Customizing startup</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
@@ -1814,62 +1823,62 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
 
 <h3 class="section">3.4 S+elsewhere and ESS-elsewhere</h3>
 
-<p>These commands are now deprecated.  We recommend `<samp><span class="samp">ess-remote</span></samp>'.  We
-have two versions of the elsewhere function.  `<samp><span class="samp">S+elsewhere</span></samp>' is
+<p>These commands are now deprecated.  We recommend &lsquo;<samp><span class="samp">ess-remote</span></samp>&rsquo;.  We
+have two versions of the elsewhere function.  &lsquo;<samp><span class="samp">S+elsewhere</span></samp>&rsquo; is
 specific for the S-Plus program.  The more general function
-`<samp><span class="samp">ESS-elsewhere</span></samp>' is not as stable.
+&lsquo;<samp><span class="samp">ESS-elsewhere</span></samp>&rsquo; is not as stable.
 
      <ol type=1 start=1>
-<li>Enter `<samp><span class="samp">M-x S+elsewhere</span></samp>'. 
+<li>Enter &lsquo;<samp><span class="samp">M-x S+elsewhere</span></samp>&rsquo;. 
 You will be prompted for a starting directory.  I usually give it my
-project directory on the local machine, say  `<samp><span class="samp">~myname/myproject/</span></samp>'
+project directory on the local machine, say  &lsquo;<samp><span class="samp">~myname/myproject/</span></samp>&rsquo;
 
-     <p>Or enter `<samp><span class="samp">M-x ESS-elsewhere</span></samp>'.  You will be prompted for an ESS
+     <p>Or enter &lsquo;<samp><span class="samp">M-x ESS-elsewhere</span></samp>&rsquo;.  You will be prompted for an ESS
 program and for a starting directory.  I usually give it my project
-directory on the local machine, say `<samp><span class="samp">~myname/myproject/</span></samp>'
+directory on the local machine, say &lsquo;<samp><span class="samp">~myname/myproject/</span></samp>&rsquo;
 
-     <li>The `<samp><span class="samp">*S+3*</span></samp>' buffer will appear with a prompt from the
+     <li>The &lsquo;<samp><span class="samp">*S+3*</span></samp>&rsquo; buffer will appear with a prompt from the
 local operating system (the unix prompt on a unix workstation or with
 cygwin bash on a PC, or the msdos prompt on a PC without bash).  emacs
 may freeze because the cursor is at the wrong place.  Unfreeze it with
-`<samp><span class="samp">C-g</span></samp>' then move the cursor to the end with `<samp><span class="samp">M-&gt;</span></samp>'. 
-With `<samp><span class="samp">S+elsewhere</span></samp>' the buffer name is based on the name of the ESS program. 
+&lsquo;<samp><span class="samp">C-g</span></samp>&rsquo; then move the cursor to the end with &lsquo;<samp><span class="samp">M-&gt;</span></samp>&rsquo;. 
+With &lsquo;<samp><span class="samp">S+elsewhere</span></samp>&rsquo; the buffer name is based on the name of the ESS program. 
 <li>Enter
-`<samp><span class="samp">telnet myname@other.machine</span></samp>' (or `<samp><span class="samp">ssh myname@other.machine</span></samp>'). 
+&lsquo;<samp><span class="samp">telnet myname@other.machine</span></samp>&rsquo; (or &lsquo;<samp><span class="samp">ssh myname@other.machine</span></samp>&rsquo;). 
 You will be prompted for your password on the remote machine. 
 Use
-`<samp><span class="samp">M-x send-invisible</span></samp>'
+&lsquo;<samp><span class="samp">M-x send-invisible</span></samp>&rsquo;
 before typing the password itself.
 
-     <li>Before starting the ESS process, type `<samp><span class="samp">stty -echo nl</span></samp>'
-at the unix prompt.  The `<samp><span class="samp">-echo</span></samp>' turns off the echo, the
-`<samp><span class="samp">nl</span></samp>' turns off the newline that you see as `<samp><span class="samp">^M</span></samp>'.
+     <li>Before starting the ESS process, type &lsquo;<samp><span class="samp">stty -echo nl</span></samp>&rsquo;
+at the unix prompt.  The &lsquo;<samp><span class="samp">-echo</span></samp>&rsquo; turns off the echo, the
+&lsquo;<samp><span class="samp">nl</span></samp>&rsquo; turns off the newline that you see as &lsquo;<samp><span class="samp">^M</span></samp>&rsquo;.
 
      <li>You are now talking to the unix prompt on the other machine in the
-`<samp><span class="samp">*S+3*</span></samp>' buffer.  cd into the directory for the current project and start
+&lsquo;<samp><span class="samp">*S+3*</span></samp>&rsquo; buffer.  cd into the directory for the current project and start
 the ESS process by entering
-`<samp><span class="samp">Splus</span></samp>' or `<samp><span class="samp">R</span></samp>' or `<samp><span class="samp">sas -stdio</span></samp>'
+&lsquo;<samp><span class="samp">Splus</span></samp>&rsquo; or &lsquo;<samp><span class="samp">R</span></samp>&rsquo; or &lsquo;<samp><span class="samp">sas -stdio</span></samp>&rsquo;
 as appropriate.  If you can login remotely to your Windows 2000, then
-you should be able to run `<samp><span class="samp">Sqpe</span></samp>' on the Windows machine.  I haven't
+you should be able to run &lsquo;<samp><span class="samp">Sqpe</span></samp>&rsquo; on the Windows machine.  I haven't
 tested this and noone has reported their tests to me.  You will not be
 able to run the GUI through this text-only connection.
 
      <li>Once you get the S or R or SAS prompt, then you are completely connected. 
-All the `<samp><span class="samp">C-c C-n</span></samp>' and related commands work correctly in sending
-commands from `<samp><span class="samp">myfile.s</span></samp>' or `<samp><span class="samp">myfile.r</span></samp>' on the PC to the
-`<samp><span class="samp">*S+3*</span></samp>' buffer running the S or R or SAS program on the remote machine.
+All the &lsquo;<samp><span class="samp">C-c C-n</span></samp>&rsquo; and related commands work correctly in sending
+commands from &lsquo;<samp><span class="samp">myfile.s</span></samp>&rsquo; or &lsquo;<samp><span class="samp">myfile.r</span></samp>&rsquo; on the PC to the
+&lsquo;<samp><span class="samp">*S+3*</span></samp>&rsquo; buffer running the S or R or SAS program on the remote machine.
 
      <li>Graphics on the remote machine works fine.  If you run the X window
 system on the remote unix machine you should be able to display them in
-`<samp><span class="samp">xfree86</span></samp>' on your PC.  If you don't run X11, then you can write
+&lsquo;<samp><span class="samp">xfree86</span></samp>&rsquo; on your PC.  If you don't run X11, then you can write
 graphics to the postscript device and copy it to your PC with dired and
 display it with ghostscript.
         </ol>
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Customizing-startup"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#S_002belsewhere-and-ESS_002delsewhere">S+elsewhere and ESS-elsewhere</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
 
@@ -1914,7 +1923,7 @@ transcript.
 
    <p><a name="index-transcript-file-28"></a>Enter the name of a file in which to save the transcript at the prompt. 
 If the file doesn't exist it will be created (and you should give it a
-file name ending in `<samp><span class="samp">.St</span></samp>'); if the file already exists the
+file name ending in &lsquo;<samp><span class="samp">.St</span></samp>&rsquo;); if the file already exists the
 transcript will be appended to the file.  (Note: if you don't set this
 variable but you still want to save the transcript, you can still do it
 later &mdash; see <a href="#Saving-transcripts">Saving transcripts</a>.)
@@ -1927,7 +1936,7 @@ in the variable <code>inferior-</code><var>S_program_name</var><code>-args</code
 <code>inferior-ess-program</code> is <code>"S+"</code> then the variable to set is
 <code>inferior-S+-args</code>. 
 <a name="index-arguments-to-S-program-30"></a>It is not normally necessary to pass arguments to the S program; in
-particular do not pass the `<samp><span class="samp">-e</span></samp>' option to <code>Splus</code>, since ESS
+particular do not pass the &lsquo;<samp><span class="samp">-e</span></samp>&rsquo; option to <code>Splus</code>, since ESS
 provides its own command history mechanism.
 
    <p>By default, the new process will be displayed in the same window in the
@@ -1938,8 +1947,8 @@ process to appear within another window of the current frame.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Entering-commands"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Transcript-Mode">Transcript Mode</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Interactive-ESS">Interactive ESS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -1973,9 +1982,9 @@ typing.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Command-line-editing"></a>
 <a name="Command_002dline-editing"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Completion">Completion</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Entering-commands">Entering commands</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2019,8 +2028,8 @@ commands relevant to entering input.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Completion"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Completion-details">Completion details</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Command_002dline-editing">Command-line editing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2055,10 +2064,10 @@ command
    <p>For example, consider the three functions (available in Splus version
 3.0) called <code>binomplot()</code>, <code>binom.test()</code> and
 <code>binomial()</code>.  Typing <kbd>bin TAB</kbd> after the S prompt will
-insert the characters `<samp><span class="samp">om</span></samp>', completing the longest prefix
-(`<samp><span class="samp">binom</span></samp>') which distinguishes these three commands.  Pressing
+insert the characters &lsquo;<samp><span class="samp">om</span></samp>&rsquo;, completing the longest prefix
+(&lsquo;<samp><span class="samp">binom</span></samp>&rsquo;) which distinguishes these three commands.  Pressing
 <kbd>TAB</kbd> once more provides a list of the three commands which have
-this prefix, allowing you to add more characters (say, `<samp><span class="samp">.</span></samp>') which
+this prefix, allowing you to add more characters (say, &lsquo;<samp><span class="samp">.</span></samp>&rsquo;) which
 specify the function you desire.  After entering more characters
 pressing <kbd>TAB</kbd> yet again will complete the object name up to
 uniqueness, etc.  If you just wish to see what completions exist without
@@ -2070,17 +2079,17 @@ adding any extra characters, type <kbd>M-?</kbd>.
 </ul>
 
    <p>ESS also provides completion over the components of named lists accessed
-using the `<samp><span class="samp">$</span></samp>' notation, to any level of nested lists.  This feature
+using the &lsquo;<samp><span class="samp">$</span></samp>&rsquo; notation, to any level of nested lists.  This feature
 is particularly useful for checking what components of a list object
 exist while partway through entering a command: simply type the object
-name and `<samp><span class="samp">$</span></samp>' and press <kbd>TAB</kbd> to see the names of existing list
+name and &lsquo;<samp><span class="samp">$</span></samp>&rsquo; and press <kbd>TAB</kbd> to see the names of existing list
 components for that object. 
 <a name="index-lists_002c-completion-on-46"></a><a name="index-completion-on-lists-47"></a>
 <a name="index-completion-on-file-names-48"></a>Completion is also provided over file names, which is particularly
 useful when using S functions such as <code>get()</code> or <code>scan()</code>
 which require fully expanded file names.  Whenever the cursor is within
 an S string, pressing <kbd>TAB</kbd> completes the file name before
-point, and also expands any `<samp><span class="samp">~</span></samp>' or environment variable references.
+point, and also expands any &lsquo;<samp><span class="samp">~</span></samp>&rsquo; or environment variable references.
 
    <p>If the cursor is not in a string and does not follow a (partial) object
 name, the &lt;TAB&gt; key has a third use: it expands history references. 
@@ -2088,8 +2097,8 @@ See <a href="#History-expansion">History expansion</a>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Completion-details"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Transcript">Transcript</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Completion">Completion</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2121,7 +2130,7 @@ list.
 <!-- session; if it has not been created you will get a warning like -->
 <!-- `S-namedb.el does not exist'.  @xref{Installation}, for information on -->
 <!-- how to create this database. -->
-<p>Efficiency in completion is gained by maintaining a cache of objects
+   <p>Efficiency in completion is gained by maintaining a cache of objects
 currently known to S; when a new object becomes available or is deleted,
 only one component of the cache corresponding to the associated
 directory needs to be refreshed.  If ESS ever becomes confused about
@@ -2133,8 +2142,8 @@ problem.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Transcript"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Command-History">Command History</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Completion-details">Completion details</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2161,7 +2170,7 @@ see <a href="emacs.html#Paragraphs">Paragraphs</a>.
 
    <p>If an ESS process finishes and you restart it in the same process
 buffer, the output from the new ESS process appears after the output
-from the first ESS process separated by a form-feed (`<samp><span class="samp">^L</span></samp>')
+from the first ESS process separated by a form-feed (&lsquo;<samp><span class="samp">^L</span></samp>&rsquo;)
 character.  Thus pages in the ESS
 <a name="index-pages-in-the-process-buffer-53"></a>process buffer correspond to ESS sessions.  Thus, for example, you may
 use <kbd>C-x [</kbd> and <kbd>C-x ]</kbd> to move backward and forwards through
@@ -2177,8 +2186,8 @@ page commands, see <a href="emacs.html#Pages">Pages</a>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Last-command"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Process-buffer-motion">Process buffer motion</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Transcript">Transcript</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript">Transcript</a>
@@ -2233,8 +2242,8 @@ more manageable size.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Process-buffer-motion"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Transcript-resubmit">Transcript resubmit</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Last-command">Last command</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript">Transcript</a>
@@ -2276,8 +2285,8 @@ is the prefix argument; <var>regexp</var> is prompted for in the minibuffer.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Transcript-resubmit"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Saving-transcripts">Saving transcripts</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Process-buffer-motion">Process buffer motion</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript">Transcript</a>
@@ -2324,7 +2333,7 @@ you re-submitted.  Thus by using <kbd>M-RET</kbd> repeatedly, you can
 re-submit a whole series of commands.
 
    <p>These commands work even if if the current line is a continuation line
-(i.e. the prompt is `<samp><span class="samp">+</span></samp>' instead of `<samp><span class="samp">&gt;</span></samp>') &mdash; in this case all
+(i.e. the prompt is &lsquo;<samp><span class="samp">+</span></samp>&rsquo; instead of &lsquo;<samp><span class="samp">&gt;</span></samp>&rsquo;) &mdash; in this case all
 the lines that form the multi-line command are concatenated together and
 the resulting command is sent to the ESS process (currently this is
 the only way to resubmit a multi-line command to the ESS process in
@@ -2336,8 +2345,8 @@ mechanism, however, which is described in <a href="#Command-History">Command His
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Saving-transcripts"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Transcript-resubmit">Transcript resubmit</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript">Transcript</a>
 
@@ -2355,7 +2364,7 @@ which to save the transcript every time you start S by setting the
 variable
 <a name="index-ess_002dask_002dabout_002dtransfile-67"></a><code>ess-ask-about-transfile</code> to <code>t</code>; see <a href="#Customizing-startup">Customizing startup</a>. 
 <a name="index-transcript-file-names-68"></a>We recommend you save your transcripts with filenames that end in
-`<samp><span class="samp">.St</span></samp>'.  There is a special mode (ESS transcript mode &mdash;
+&lsquo;<samp><span class="samp">.St</span></samp>&rsquo;.  There is a special mode (ESS transcript mode &mdash;
 see <a href="#Transcript-Mode">Transcript Mode</a>) for editing transcript files which is
 automatically selected for files with this suffix.
 
@@ -2380,8 +2389,8 @@ only the commands.  Don't forget to remove any erroneous commands first!
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Command-History"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#History-expansion">History expansion</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Transcript">Transcript</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2452,8 +2461,8 @@ keys.)
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="History-expansion"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Hot-keys">Hot keys</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Command-History">Command History</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2465,17 +2474,17 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</
 <p>Instead of searching through the command history using the command
 described in the previous section, you can alternatively refer to a
 historical command directly using a notation very similar to that used
-in <code>csh</code>.  History references are introduced by a `<samp><span class="samp">!</span></samp>' or
-`<samp><span class="samp">^</span></samp>' character and have meanings as follows:
+in <code>csh</code>.  History references are introduced by a &lsquo;<samp><span class="samp">!</span></samp>&rsquo; or
+&lsquo;<samp><span class="samp">^</span></samp>&rsquo; character and have meanings as follows:
 
      <dl>
-<dt>`<samp><span class="samp">!!</span></samp>'<dd>The immediately previous command
+<dt>&lsquo;<samp><span class="samp">!!</span></samp>&rsquo;<dd>The immediately previous command
 
-     <br><dt>`<samp><span class="samp">!-</span><var>N</var></samp>'<dd>The <var>N</var>th previous command
+     <br><dt>&lsquo;<samp><span class="samp">!-</span><var>N</var></samp>&rsquo;<dd>The <var>N</var>th previous command
 
-     <br><dt>`<samp><span class="samp">!text</span></samp>'<dd>The last command beginning with the string `<samp><span class="samp">text</span></samp>'
+     <br><dt>&lsquo;<samp><span class="samp">!text</span></samp>&rsquo;<dd>The last command beginning with the string &lsquo;<samp><span class="samp">text</span></samp>&rsquo;
 
-     <br><dt>`<samp><span class="samp">!?text</span></samp>'<dd>The last command containing the string `<samp><span class="samp">text</span></samp>'
+     <br><dt>&lsquo;<samp><span class="samp">!?text</span></samp>&rsquo;<dd>The last command containing the string &lsquo;<samp><span class="samp">text</span></samp>&rsquo;
 </dl>
 
    <p>In addition, you may follow the reference with a <dfn>word designator</dfn>
@@ -2484,44 +2493,44 @@ sequence of characters separated by whitespace.  (You can modify this
 definition by setting the value of <code>comint-delimiter-argument-list</code>
 to a list of characters that are allowed to separate words and
 <a name="index-comint_002ddelimiter_002dargument_002dlist-81"></a>themselves form words.)  Words are numbered beginning with zero.  The
-word designator usually begins with a `<samp><span class="samp">:</span></samp>' (colon) character;
-however it may be omitted if the word reference begins with a `<samp><span class="samp">^</span></samp>',
-`<samp><span class="samp">$</span></samp>', `<samp><span class="samp">*</span></samp>' or `<samp><span class="samp">-</span></samp>'.  If the word is to be selected from the
-previous command, the second `<samp><span class="samp">!</span></samp>'  character can be omitted from the
-event specification.  For instance, `<samp><span class="samp">!!:1</span></samp>' and `<samp><span class="samp">!:1</span></samp>' both
-refer to the first word of the previous command, while `<samp><span class="samp">!!$</span></samp>' and
-`<samp><span class="samp">!$</span></samp>' both refer to the last word in the previous command.  The
+word designator usually begins with a &lsquo;<samp><span class="samp">:</span></samp>&rsquo; (colon) character;
+however it may be omitted if the word reference begins with a &lsquo;<samp><span class="samp">^</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">$</span></samp>&rsquo;, &lsquo;<samp><span class="samp">*</span></samp>&rsquo; or &lsquo;<samp><span class="samp">-</span></samp>&rsquo;.  If the word is to be selected from the
+previous command, the second &lsquo;<samp><span class="samp">!</span></samp>&rsquo;  character can be omitted from the
+event specification.  For instance, &lsquo;<samp><span class="samp">!!:1</span></samp>&rsquo; and &lsquo;<samp><span class="samp">!:1</span></samp>&rsquo; both
+refer to the first word of the previous command, while &lsquo;<samp><span class="samp">!!$</span></samp>&rsquo; and
+&lsquo;<samp><span class="samp">!$</span></samp>&rsquo; both refer to the last word in the previous command.  The
 format of word designators is as follows:
 
      <dl>
-<dt>`<samp><span class="samp">0</span></samp>'<dd>The zeroth word (i.e. the first one on the command line)
+<dt>&lsquo;<samp><span class="samp">0</span></samp>&rsquo;<dd>The zeroth word (i.e. the first one on the command line)
 
-     <br><dt>`<samp><var>n</var></samp>'<dd>The <var>n</var>th word, where <var>n</var> is a number
+     <br><dt>&lsquo;<samp><var>n</var></samp>&rsquo;<dd>The <var>n</var>th word, where <var>n</var> is a number
 
-     <br><dt>`<samp><span class="samp">^</span></samp>'<dd>The first word (i.e. the second one on the command line)
+     <br><dt>&lsquo;<samp><span class="samp">^</span></samp>&rsquo;<dd>The first word (i.e. the second one on the command line)
 
-     <br><dt>`<samp><span class="samp">$</span></samp>'<dd>The last word
+     <br><dt>&lsquo;<samp><span class="samp">$</span></samp>&rsquo;<dd>The last word
 
-     <br><dt>`<samp><var>x</var><span class="samp">-</span><var>y</var></samp>'<dd>A range of words; `<samp><span class="samp">-</span><var>y</var></samp>' abbreviates `<samp><span class="samp">0-</span><var>y</var></samp>'
+     <br><dt>&lsquo;<samp><var>x</var><span class="samp">-</span><var>y</var></samp>&rsquo;<dd>A range of words; &lsquo;<samp><span class="samp">-</span><var>y</var></samp>&rsquo; abbreviates &lsquo;<samp><span class="samp">0-</span><var>y</var></samp>&rsquo;
 
-     <br><dt>`<samp><span class="samp">*</span></samp>'<dd>All the words except the zeroth word, or nothing if the command had just
+     <br><dt>&lsquo;<samp><span class="samp">*</span></samp>&rsquo;<dd>All the words except the zeroth word, or nothing if the command had just
 one word (the zeroth)
 
-     <br><dt>`<samp><var>x</var><span class="samp">*</span></samp>'<dd>Abbreviates <var>x</var>-$
+     <br><dt>&lsquo;<samp><var>x</var><span class="samp">*</span></samp>&rsquo;<dd>Abbreviates <var>x</var>-$
 
-     <br><dt>`<samp><var>x</var><span class="samp">-</span></samp>'<dd>Like `<samp><var>x</var><span class="samp">*</span></samp>', but omitting the last word
+     <br><dt>&lsquo;<samp><var>x</var><span class="samp">-</span></samp>&rsquo;<dd>Like &lsquo;<samp><var>x</var><span class="samp">*</span></samp>&rsquo;, but omitting the last word
 </dl>
 
    <p>In addition, you may surround the entire reference except for the first
-`<samp><span class="samp">!</span></samp>' by braces to allow it to be followed by other (non-whitespace)
+&lsquo;<samp><span class="samp">!</span></samp>&rsquo; by braces to allow it to be followed by other (non-whitespace)
 characters (which will be appended to the expanded reference).
 
    <p>Finally, ESS also provides quick substitution; a reference like
-`<samp><span class="samp">^old^new^</span></samp>' means &ldquo;the last command, but with the first occurrence
-of the string `<samp><span class="samp">old</span></samp>' replaced with the string `<samp><span class="samp">new</span></samp>'&rdquo; (the last
-`<samp><span class="samp">^</span></samp>' is optional).  Similarly, `<samp><span class="samp">^old^</span></samp>' means &ldquo;the last
-command, with the first occurrence of the string `<samp><span class="samp">old</span></samp>' deleted&rdquo;
-(again, the last `<samp><span class="samp">^</span></samp>' is optional).
+&lsquo;<samp><span class="samp">^old^new^</span></samp>&rsquo; means &ldquo;the last command, but with the first occurrence
+of the string &lsquo;<samp><span class="samp">old</span></samp>&rsquo; replaced with the string &lsquo;<samp><span class="samp">new</span></samp>&rsquo;&rdquo; (the last
+&lsquo;<samp><span class="samp">^</span></samp>&rsquo; is optional).  Similarly, &lsquo;<samp><span class="samp">^old^</span></samp>&rsquo; means &ldquo;the last
+command, with the first occurrence of the string &lsquo;<samp><span class="samp">old</span></samp>&rsquo; deleted&rdquo;
+(again, the last &lsquo;<samp><span class="samp">^</span></samp>&rsquo; is optional).
 
    <p>To convert a history reference as described above to an input suitable
 for S, you need to <dfn>expand</dfn> the history reference, using the
@@ -2537,8 +2546,8 @@ then edit or press &lt;RET&gt; to execute.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Hot-keys"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Statistical-Process-running-in-ESS_003f">Statistical Process running in ESS?</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#History-expansion">History expansion</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2622,9 +2631,9 @@ have been saved, and that all the temporary buffers have been killed.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Statistical-Process-running-in-ESS%3f"></a>
 <a name="Statistical-Process-running-in-ESS_003f"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Emacsclient">Emacsclient</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Hot-keys">Hot keys</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2665,8 +2674,8 @@ under the control of ESS.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Emacsclient"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Other">Other</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Statistical-Process-running-in-ESS_003f">Statistical Process running in ESS?</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2690,8 +2699,8 @@ Emacs buffer.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Other"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Emacsclient">Emacsclient</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
 
@@ -2723,8 +2732,8 @@ you want to quit from S, use <kbd>C-c C-q</kbd> (<code>ess-quit</code>) instead.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Transcript-Mode"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS-for-the-S-family">ESS for the S family</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Entering-commands">Entering commands</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -2756,8 +2765,8 @@ and <kbd>C-c C-n</kbd>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Resubmit"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Clean">Clean</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Transcript-Mode">Transcript Mode</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript-Mode">Transcript Mode</a>
@@ -2790,8 +2799,8 @@ prompt is automatically removed before the command is submitted.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Clean"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Resubmit">Resubmit</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript-Mode">Transcript Mode</a>
 
@@ -2816,8 +2825,8 @@ from S mode, also available in S Transcript Mode.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS-for-the-S-family"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Editing">Editing</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Transcript-Mode">Transcript Mode</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -2836,9 +2845,9 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 </ul>
 
 <div class="node">
-<p><hr>
 <a name="ESS(S)--Editing-files"></a>
 <a name="ESS_0028S_0029_002d_002dEditing-files"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#iESS_0028S_0029_002d_002dInferior-ESS-processes">iESS(S)--Inferior ESS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
 
@@ -2868,9 +2877,9 @@ will have to start up an inferior process to take advantage of the
 interactive features.
 
 <div class="node">
-<p><hr>
 <a name="iESS(S)--Inferior-ESS-processes"></a>
 <a name="iESS_0028S_0029_002d_002dInferior-ESS-processes"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_002dhelp_002d_002dassistance-with-viewing-help">ESS-help--assistance with viewing help</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028S_0029_002d_002dEditing-files">ESS(S)--Editing files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
@@ -2927,7 +2936,7 @@ wish to always call R with certain arguments, set the variable
 <code>inferior-R-args</code> accordingly.
 
 <!-- Menubar access to other versions of R and Sqpe -->
-<p>If you have other versions of R or S-Plus available on the system, ESS
+   <p>If you have other versions of R or S-Plus available on the system, ESS
 is also able to start those versions.  How this works depend on which OS
 you are using:
 
@@ -3001,9 +3010,9 @@ for particular versions of S-Plus have been created.  These other versions of
 S-Plus can also be started from the "ESS-&gt;Start Process-&gt;Other" menu.
 
 <div class="node">
-<p><hr>
 <a name="ESS-help--assistance-with-viewing-help"></a>
 <a name="ESS_002dhelp_002d_002dassistance-with-viewing-help"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Philosophies-for-using-ESS_0028S_0029">Philosophies for using ESS(S)</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#iESS_0028S_0029_002d_002dInferior-ESS-processes">iESS(S)--Inferior ESS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
@@ -3016,9 +3025,9 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S fa
 <p>ESS has built-in facilities for viewing help files from S.  See <a href="#Help">Help</a>.
 
 <div class="node">
-<p><hr>
 <a name="Philosophies-for-using-ESS(S)"></a>
 <a name="Philosophies-for-using-ESS_0028S_0029"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Scenarios-for-use-_0028possibilities_002d_002dbased-on-actual-usage_0029">Scenarios for use (possibilities--based on actual usage)</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_002dhelp_002d_002dassistance-with-viewing-help">ESS-help--assistance with viewing help</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
@@ -3047,9 +3056,9 @@ retrieved again, by changing emacs variables.
 better portability as well as external version control for code.
 
 <div class="node">
-<p><hr>
 <a name="Scenarios-for-use-(possibilities--based-on-actual-usage)"></a>
 <a name="Scenarios-for-use-_0028possibilities_002d_002dbased-on-actual-usage_0029"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Customization-Examples-and-Solutions-to-Problems">Customization Examples and Solutions to Problems</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Philosophies-for-using-ESS_0028S_0029">Philosophies for using ESS(S)</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
@@ -3177,8 +3186,8 @@ prefixed by "##").
          ## instead of entering:   help("rchisq")
 </pre>
    <div class="node">
-<p><hr>
 <a name="Customization-Examples-and-Solutions-to-Problems"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Scenarios-for-use-_0028possibilities_002d_002dbased-on-actual-usage_0029">Scenarios for use (possibilities--based on actual usage)</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
 
@@ -3211,8 +3220,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S fa
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Editing"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Editing-R-documentation-files">Editing R documentation files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-the-S-family">ESS for the S family</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -3243,8 +3252,8 @@ into the ESS process.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Edit-buffer"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Loading">Loading</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Editing">Editing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3295,8 +3304,8 @@ S's idea of the object's definition) pass a prefix argument to
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Loading"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Error-Checking">Error Checking</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Edit-buffer">Edit buffer</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3327,8 +3336,8 @@ returned to the ESS process.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Error-Checking"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Evaluating-code">Evaluating code</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Loading">Loading</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3356,8 +3365,8 @@ with <kbd>C-u C-c `</kbd>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Evaluating-code"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Indenting">Indenting</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Error-Checking">Error Checking</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3444,8 +3453,8 @@ of the window, you will need to set the variable
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Indenting"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Other-edit-buffer-commands">Other edit buffer commands</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Evaluating-code">Evaluating code</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3456,7 +3465,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
 
 <p>ESS now provides a sophisticated mechanism for indenting S source
 code (thanks to Ken'ichi Shibayama).  Compound statements (delimited by
-`<samp><span class="samp">{</span></samp>' and `<samp><span class="samp">}</span></samp>') are indented relative to their enclosing block. 
+&lsquo;<samp><span class="samp">{</span></samp>&rsquo; and &lsquo;<samp><span class="samp">}</span></samp>&rsquo;) are indented relative to their enclosing block. 
 In addition, the braces have been electrified to automatically indent to
 the correct position when inserted, and optionally insert a newline at
 the appropriate place as well.  Lines which continue an incomplete
@@ -3469,10 +3478,10 @@ choose from.
 
    <p><a name="index-comments-in-S-154"></a>Comments are also handled specially by ESS, using an idea borrowed from
 the Emacs-Lisp indentation style.  By default,
-comments beginning with `<samp><span class="samp">###</span></samp>'
+comments beginning with &lsquo;<samp><span class="samp">###</span></samp>&rsquo;
 are aligned to the beginning of the line.  Comments beginning with
-`<samp><span class="samp">##</span></samp>' are aligned to the current level of indentation for the block
-containing the comment.  Finally, comments beginning with `<samp><span class="samp">#</span></samp>' are
+&lsquo;<samp><span class="samp">##</span></samp>&rsquo; are aligned to the current level of indentation for the block
+containing the comment.  Finally, comments beginning with &lsquo;<samp><span class="samp">#</span></samp>&rsquo; are
 aligned to a column on the right (the 40th column by default, but this
 value is controlled by the variable <code>comment-column</code>,)
 <a name="index-comment_002dcolumn-155"></a>or just after the expression on the line containing the comment if it
@@ -3519,8 +3528,8 @@ variables (unless they have been modified in your <samp><span class="file">.emac
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Other-edit-buffer-commands"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Source-Files">Source Files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Indenting">Indenting</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3572,8 +3581,8 @@ for more details on these commands.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Source-Files"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Source-Directories">Source Directories</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Other-edit-buffer-commands">Other edit buffer commands</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3667,8 +3676,8 @@ if you happen to quit Emacs before correcting the error.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Source-Directories"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Source-Files">Source Files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
 
@@ -3685,8 +3694,8 @@ object name with some additions.
 object name. 
 </p></blockquote></div>
 
-<p class="noindent">By default, dump file names are the user name, followed by `<samp><span class="samp">.</span></samp>' and
-the object and ending with `<samp><span class="samp">.S</span></samp>'.  Thus if user <code>joe</code> dumps the
+<p class="noindent">By default, dump file names are the user name, followed by &lsquo;<samp><span class="samp">.</span></samp>&rsquo; and
+the object and ending with &lsquo;<samp><span class="samp">.S</span></samp>&rsquo;.  Thus if user <code>joe</code> dumps the
 object <code>myfun</code> the dump file will have name <samp><span class="file">joe.myfun.S</span></samp>. 
 The username part is included to avoid clashes when dumping into a
 publicly-writable directory, such as <samp><span class="file">/tmp</span></samp>; you may wish to remove
@@ -3746,8 +3755,8 @@ If you choose not to, or the directory cannot be created, you will not
 be able to edit functions.
 
 <div class="node">
-<p><hr>
 <a name="Editing-R-documentation-files"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Help">Help</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Editing">Editing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -3805,7 +3814,7 @@ currently, not all of the Rd text markup as described in section
 &ldquo;Marking text&rdquo; of &ldquo;Writing R Extensions&rdquo; can be accessed via
 <kbd>C-c C-f</kbd>.
 
-     <br><dt><kbd>C-c C-j</kbd><dd>Insert a suitably indented  `<samp><span class="samp">\item{</span></samp>' on the next line
+     <br><dt><kbd>C-c C-j</kbd><dd>Insert a suitably indented  &lsquo;<samp><span class="samp">\item{</span></samp>&rsquo; on the next line
 (<code>Rd-mode-insert-item</code>).
 
      <br><dt><kbd>C-c C-p</kbd><dd>Preview a plain text version (&ldquo;help file&rdquo;, see <a href="#Help">Help</a>) generated
@@ -3831,7 +3840,7 @@ accent.
 <br><dt><code>Rd-indent-level</code><dd>The indentation of Rd code with respect to containing blocks.  Default
 is 2. 
 <br><dt><code>Rd-to-help-command</code><dd>The shell command used for converting Rd source to help text.  Default
-is `<samp><span class="samp">R CMD Rd2txt</span></samp>'. 
+is &lsquo;<samp><span class="samp">R CMD Rd2txt</span></samp>&rsquo;. 
 </dl>
 
    <p>To automatically turn on the abbrev and font-lock features of Rd mode,
@@ -3844,8 +3853,8 @@ add the following lines to one of your Emacs startup files:
 </pre>
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Help"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS-for-SAS">ESS for SAS</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Editing-R-documentation-files">Editing R documentation files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -3900,10 +3909,10 @@ consists of a number of capitalized words, followed by a colon.
      <p>In addition, the <kbd>s</kbd> key followed by one of the following letters
 will jump to a particular section in the help file. 
 Note that R uses capitalized instead of all-capital section headers,
-e.g., `<samp><span class="samp">Description:</span></samp>' instead of  `<samp><span class="samp">DESCRIPTION:</span></samp>' and also
+e.g., &lsquo;<samp><span class="samp">Description:</span></samp>&rsquo; instead of  &lsquo;<samp><span class="samp">DESCRIPTION:</span></samp>&rsquo; and also
 only some versions of S(-plus) have
-sections `<samp><span class="samp">BACKGROUND</span></samp>', `<samp><span class="samp">BUGS</span></samp>', `<samp><span class="samp">OPTIONAL ARGUMENTS</span></samp>',
-`<samp><span class="samp">REQUIRED ARGUMENTS</span></samp>', and `<samp><span class="samp">SIDE EFFECTS</span></samp>'. 
+sections &lsquo;<samp><span class="samp">BACKGROUND</span></samp>&rsquo;, &lsquo;<samp><span class="samp">BUGS</span></samp>&rsquo;, &lsquo;<samp><span class="samp">OPTIONAL ARGUMENTS</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">REQUIRED ARGUMENTS</span></samp>&rsquo;, and &lsquo;<samp><span class="samp">SIDE EFFECTS</span></samp>&rsquo;. 
 <!-- The bindings are all in ../lisp/essl-s.el -->
 <!-- ess-help-*-sec-keys-alist -->
 <!-- S-plus only: -->
@@ -3913,43 +3922,43 @@ sections `<samp><span class="samp">BACKGROUND</span></samp>', `<samp><span class
 <!-- @item R			REQUIRED ARGUMENTS: -->
 
      <!-- S and S-plus only: -->
-<!-- @item S			SIDE EFFECTS: -->
-<p>Do use <kbd>s ?</kbd> to get the current list of active key bindings. 
+     <!-- @item S			SIDE EFFECTS: -->
+     <p>Do use <kbd>s ?</kbd> to get the current list of active key bindings. 
 <a name="index-ess_002dskip_002dto_002dhelp_002dsection-189"></a>
           <dl>
-<dt>`<samp><span class="samp">a</span></samp>'<dd>ARGUMENTS:
+<dt>&lsquo;<samp><span class="samp">a</span></samp>&rsquo;<dd>ARGUMENTS:
 
-          <br><dt>`<samp><span class="samp">b</span></samp>'<dd>BACKGROUND:
+          <br><dt>&lsquo;<samp><span class="samp">b</span></samp>&rsquo;<dd>BACKGROUND:
 
-          <br><dt>`<samp><span class="samp">B</span></samp>'<dd>BUGS:
+          <br><dt>&lsquo;<samp><span class="samp">B</span></samp>&rsquo;<dd>BUGS:
 
-          <br><dt>`<samp><span class="samp">d</span></samp>'<dd>DESCRIPTION:
+          <br><dt>&lsquo;<samp><span class="samp">d</span></samp>&rsquo;<dd>DESCRIPTION:
 
-          <br><dt>`<samp><span class="samp">D</span></samp>'<dd>DETAILS:
+          <br><dt>&lsquo;<samp><span class="samp">D</span></samp>&rsquo;<dd>DETAILS:
 
-          <br><dt>`<samp><span class="samp">e</span></samp>'<dd>EXAMPLES:
+          <br><dt>&lsquo;<samp><span class="samp">e</span></samp>&rsquo;<dd>EXAMPLES:
 
-          <br><dt>`<samp><span class="samp">n</span></samp>'<dd>NOTE:
+          <br><dt>&lsquo;<samp><span class="samp">n</span></samp>&rsquo;<dd>NOTE:
 
-          <br><dt>`<samp><span class="samp">O</span></samp>'<dd>OPTIONAL ARGUMENTS:
+          <br><dt>&lsquo;<samp><span class="samp">O</span></samp>&rsquo;<dd>OPTIONAL ARGUMENTS:
 
-          <br><dt>`<samp><span class="samp">R</span></samp>'<dd>REQUIRED ARGUMENTS:
+          <br><dt>&lsquo;<samp><span class="samp">R</span></samp>&rsquo;<dd>REQUIRED ARGUMENTS:
 
-          <br><dt>`<samp><span class="samp">r</span></samp>'<dd>REFERENCES:
+          <br><dt>&lsquo;<samp><span class="samp">r</span></samp>&rsquo;<dd>REFERENCES:
 
-          <br><dt>`<samp><span class="samp">s</span></samp>'<dd>SEE ALSO:
+          <br><dt>&lsquo;<samp><span class="samp">s</span></samp>&rsquo;<dd>SEE ALSO:
 
-          <br><dt>`<samp><span class="samp">S</span></samp>'<dd>SIDE EFFECTS:
+          <br><dt>&lsquo;<samp><span class="samp">S</span></samp>&rsquo;<dd>SIDE EFFECTS:
 
-          <br><dt>`<samp><span class="samp">u</span></samp>'<dd>USAGE:
+          <br><dt>&lsquo;<samp><span class="samp">u</span></samp>&rsquo;<dd>USAGE:
 
-          <br><dt>`<samp><span class="samp">v</span></samp>'<dd>VALUE:
+          <br><dt>&lsquo;<samp><span class="samp">v</span></samp>&rsquo;<dd>VALUE:
 
-          <br><dt>`<samp><span class="samp">&lt;</span></samp>'<dd>Jumps to beginning of file
+          <br><dt>&lsquo;<samp><span class="samp">&lt;</span></samp>&rsquo;<dd>Jumps to beginning of file
 
-          <br><dt>`<samp><span class="samp">&gt;</span></samp>'<dd>Jumps to end of file
+          <br><dt>&lsquo;<samp><span class="samp">&gt;</span></samp>&rsquo;<dd>Jumps to end of file
 
-          <br><dt>`<samp><span class="samp">?</span></samp>'<dd>Pops up a help buffer with a list of the defined section motion keys. 
+          <br><dt>&lsquo;<samp><span class="samp">?</span></samp>&rsquo;<dd>Pops up a help buffer with a list of the defined section motion keys. 
 </dl>
 
      <p>Miscellaneous:
@@ -4000,8 +4009,8 @@ variable <code>ess-help-own-frame</code>.
    <p><a name="index-ess_002dquit-193"></a><a name="index-ess_002dcleanup-194"></a><a name="index-temporary-buffers-195"></a>
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS-for-SAS"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS-for-BUGS">ESS for BUGS</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Help">Help</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -4030,9 +4039,9 @@ and the <acronym>SAS</acronym><!-- /@w --> Display Manager.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(SAS)--Design-philosophy"></a>
 <a name="ESS_0028SAS_0029_002d_002dDesign-philosophy"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dEditing-files">ESS(SAS)--Editing files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-SAS">ESS for SAS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4059,9 +4068,9 @@ advanced <acronym>ESS[SAS]</acronym> users.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(SAS)--Editing-files"></a>
 <a name="ESS_0028SAS_0029_002d_002dEditing-files"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dTAB-key">ESS(SAS)--TAB key</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dDesign-philosophy">ESS(SAS)--Design philosophy</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4104,9 +4113,9 @@ iterative <code>DO</code> statement, <code>TO</code> and <code>BY</code> are not
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(SAS)--TAB-key"></a>
 <a name="ESS_0028SAS_0029_002d_002dTAB-key"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dBatch-SAS-processes">ESS(SAS)--Batch SAS processes</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dEditing-files">ESS(SAS)--Editing files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4137,9 +4146,9 @@ and the stops are defined by <code>ess-sas-tab-stop-list</code>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(SAS)--Batch-SAS-processes"></a>
 <a name="ESS_0028SAS_0029_002d_002dBatch-SAS-processes"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">ESS(SAS)--Function keys for batch processing</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dTAB-key">ESS(SAS)--TAB key</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4243,7 +4252,7 @@ taken to the first error message, if any.
    <p>Goto the next error message, if any.
 <pre class="example">     &lt;F5&gt; (&lt;F6&gt;)
 </pre>
-   <p>Now, `<samp><span class="samp">refresh</span></samp>' the <samp><span class="file">.lst</span></samp> and go to it's buffer.
+   <p>Now, &lsquo;<samp><span class="samp">refresh</span></samp>&rsquo; the <samp><span class="file">.lst</span></samp> and go to it's buffer.
 <pre class="example">     &lt;F6&gt; (&lt;F7&gt;)
 </pre>
    <p>If you wish to make changes, go to the <samp><span class="file">.sas</span></samp> file with.
@@ -4254,9 +4263,9 @@ taken to the first error message, if any.
 </pre>
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(SAS)--Function-keys-for-batch-processing"></a>
 <a name="ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#iESS_0028SAS_0029_002d_002dInteractive-SAS-processes">iESS(SAS)--Interactive SAS processes</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dBatch-SAS-processes">ESS(SAS)--Batch SAS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4307,7 +4316,7 @@ you uncomment 4 or 5:
           ;;3; (setq ess-sas-local-pc-keys t)
           ;;4; (setq ess-sas-global-unix-keys t)
           ;;5; (setq ess-sas-global-pc-keys t)
-     </pre>
+</pre>
      <p>The names <code>-unix-</code> and <code>-pc-</code> have nothing to do with the operating system
 that you are running.  Rather, they mimic the definitions that the <acronym>SAS</acronym><!-- /@w -->
 Display Manager uses by default on those platforms.
@@ -4316,7 +4325,7 @@ Display Manager uses by default on those platforms.
 liking, then you must call the appropriate function.
      <pre class="example">           (load "ess-site") ;; local-unix-keys
            (ess-sas-global-pc-keys)
-     </pre>
+</pre>
      </ol>
 
    <p>Finally, we get to what the function keys actually do.  You may recognize
@@ -4324,7 +4333,7 @@ some of the nicknames as <acronym>SAS</acronym><!-- /@w --> Display Manager comm
 capitals).
 
    <p><table summary=""><tr align="left"><td valign="top"><acronym>UNIX</acronym> </td><td valign="top"><acronym>PC</acronym> </td><td valign="top">Nickname
-<br></td></tr><tr align="left"><td valign="top">&lt;F2&gt; </td><td valign="top">&lt;F2&gt; </td><td valign="top">`<samp><span class="samp">refresh</span></samp>'
+<br></td></tr><tr align="left"><td valign="top">&lt;F2&gt; </td><td valign="top">&lt;F2&gt; </td><td valign="top">&lsquo;<samp><span class="samp">refresh</span></samp>&rsquo;
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     revert the current buffer with the file of the same
                     name if the file is newer than the buffer
@@ -4339,16 +4348,16 @@ capitals).
                     switch buffer to <samp><span class="file">.sas</span></samp> file
 <br></td></tr><tr align="left"><td valign="top">&lt;F5&gt; </td><td valign="top">&lt;F6&gt; </td><td valign="top"><code>LOG</code>
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
-                    switch buffer to <samp><span class="file">.log</span></samp> file, `<samp><span class="samp">refresh</span></samp>' and goto next
+                    switch buffer to <samp><span class="file">.log</span></samp> file, &lsquo;<samp><span class="samp">refresh</span></samp>&rsquo; and goto next
                     error message, if any
 <br></td></tr><tr align="left"><td valign="top">&lt;F6&gt; </td><td valign="top">&lt;F7&gt; </td><td valign="top"><code>OUTPUT</code>
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
-                    switch buffer to <samp><span class="file">.lst</span></samp> file and `<samp><span class="samp">refresh</span></samp>'
-<br></td></tr><tr align="left"><td valign="top">&lt;F7&gt; </td><td valign="top">&lt;F4&gt; </td><td valign="top">`<samp><span class="samp">filetype-1</span></samp>'
+                    switch buffer to <samp><span class="file">.lst</span></samp> file and &lsquo;<samp><span class="samp">refresh</span></samp>&rsquo;
+<br></td></tr><tr align="left"><td valign="top">&lt;F7&gt; </td><td valign="top">&lt;F4&gt; </td><td valign="top">&lsquo;<samp><span class="samp">filetype-1</span></samp>&rsquo;
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
-                    switch buffer to `<samp><span class="samp">filetype-1</span></samp>' (defaults to <samp><span class="file">.txt</span></samp>) file
-                    and `<samp><span class="samp">refresh</span></samp>'
-<br></td></tr><tr align="left"><td valign="top">&lt;F8&gt; </td><td valign="top">&lt;F3&gt; </td><td valign="top">`<samp><span class="samp">shell</span></samp>'
+                    switch buffer to &lsquo;<samp><span class="samp">filetype-1</span></samp>&rsquo; (defaults to <samp><span class="file">.txt</span></samp>) file
+                    and &lsquo;<samp><span class="samp">refresh</span></samp>&rsquo;
+<br></td></tr><tr align="left"><td valign="top">&lt;F8&gt; </td><td valign="top">&lt;F3&gt; </td><td valign="top">&lsquo;<samp><span class="samp">shell</span></samp>&rsquo;
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     switch buffer to <samp><span class="file">*shell*</span></samp>
 <br></td></tr><tr align="left"><td valign="top">&lt;F9&gt; </td><td valign="top">&lt;F9&gt; </td><td valign="top"><code>VIEWTABLE</code>
@@ -4359,10 +4368,10 @@ capitals).
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     toggle <acronym>ESS[SAS]</acronym> for <samp><span class="file">.log</span></samp> files; useful for certain
                     debugging situations
-<br></td></tr><tr align="left"><td valign="top">&lt;F11&gt; </td><td valign="top">&lt;F11&gt; </td><td valign="top">`<samp><span class="samp">filetype-2</span></samp>'
+<br></td></tr><tr align="left"><td valign="top">&lt;F11&gt; </td><td valign="top">&lt;F11&gt; </td><td valign="top">&lsquo;<samp><span class="samp">filetype-2</span></samp>&rsquo;
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
-                    switch buffer to `<samp><span class="samp">filetype-2</span></samp>' (defaults to <samp><span class="file">.dat</span></samp>) file
-                    and `<samp><span class="samp">refresh</span></samp>'
+                    switch buffer to &lsquo;<samp><span class="samp">filetype-2</span></samp>&rsquo; (defaults to <samp><span class="file">.dat</span></samp>) file
+                    and &lsquo;<samp><span class="samp">refresh</span></samp>&rsquo;
 <br></td></tr><tr align="left"><td valign="top">&lt;F12&gt; </td><td valign="top">&lt;F12&gt; </td><td valign="top">viewgraph
 <br></td></tr><tr align="left"><td valign="top"></td><td valign="top"></td><td valign="top">
                     open a <code>GSASFILE</code> near point for viewing either in emacs
@@ -4399,7 +4408,7 @@ explanation since they mimic the <acronym>SAS</acronym><!-- /@w --> Display Mana
 related function key definitions.  However, six other keys have been
 provided for convenience and are described below.
 
-   <p>`<samp><span class="samp">shell</span></samp>' switches you to the <samp><span class="file">*shell*</span></samp> buffer where you can
+   <p>&lsquo;<samp><span class="samp">shell</span></samp>&rsquo; switches you to the <samp><span class="file">*shell*</span></samp> buffer where you can
 interact with your operating system.  This is especially helpful if you
 would like to kill a <acronym>SAS</acronym><!-- /@w --> batch job.  You can specify a different buffer
 name to associate with a <acronym>SAS</acronym><!-- /@w --> batch job (besides <samp><span class="file">*shell*</span></samp>) with the
@@ -4408,15 +4417,15 @@ multiple buffers running <acronym>SAS</acronym><!-- /@w --> batch jobs on multip
 computers that may rely on different methods specified by the buffer-local
 variable <code>ess-sas-submit-method</code>.
 
-   <p>&lt;F2&gt; performs the `<samp><span class="samp">refresh</span></samp>' operation on the current buffer. 
-`<samp><span class="samp">refresh</span></samp>' compares the buffer's last modified date/time with the
+   <p>&lt;F2&gt; performs the &lsquo;<samp><span class="samp">refresh</span></samp>&rsquo; operation on the current buffer. 
+&lsquo;<samp><span class="samp">refresh</span></samp>&rsquo; compares the buffer's last modified date/time with the
 file's last modified date/time and replaces the buffer with the file if the
 file is newer.  This is the same operation that is automatically performed
-when <code>LOG</code>, <code>OUTPUT</code>, `<samp><span class="samp">filetype-1</span></samp>' or &lt;F11&gt; are pressed.
+when <code>LOG</code>, <code>OUTPUT</code>, &lsquo;<samp><span class="samp">filetype-1</span></samp>&rsquo; or &lt;F11&gt; are pressed.
 
-   <p>`<samp><span class="samp">filetype-1</span></samp>' switches you to a file with the same file name as your <samp><span class="file">.sas</span></samp>
+   <p>&lsquo;<samp><span class="samp">filetype-1</span></samp>&rsquo; switches you to a file with the same file name as your <samp><span class="file">.sas</span></samp>
 file, but with a different extension (<samp><span class="file">.txt</span></samp> by default) and performs
-`<samp><span class="samp">refresh</span></samp>'.  You can over-ride the default extension; for example in your
+&lsquo;<samp><span class="samp">refresh</span></samp>&rsquo;.  You can over-ride the default extension; for example in your
 <samp><span class="file">~/.emacs</span></samp> or <samp><span class="file">~/.xemacs/init.el</span></samp> file:
 <pre class="example">     (setq ess-sas-suffix-1 "csv") ; for example
 </pre>
@@ -4443,7 +4452,7 @@ variable <code>ess-sas-data-view-insight-statement</code>.
 highlighting can be helpful in certain debugging situations, but large
 <samp><span class="file">.log</span></samp> files may take a long time to highlight.
 
-   <p>&lt;F11&gt; is the same as `<samp><span class="samp">filetype-1</span></samp>' except it is <samp><span class="file">.dat</span></samp> by default.
+   <p>&lt;F11&gt; is the same as &lsquo;<samp><span class="samp">filetype-1</span></samp>&rsquo; except it is <samp><span class="file">.dat</span></samp> by default.
 
    <p>&lt;F12&gt; will prompt you for the name of a <code>GSASFILE</code> near the point in <samp><span class="file">.log</span></samp> to
 be opened for viewing either with emacs or with an external viewer. 
@@ -4471,9 +4480,9 @@ landscape (first line for "global" key mapping, second for "local"):
 </pre>
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="iESS(SAS)--Interactive-SAS-processes"></a>
 <a name="iESS_0028SAS_0029_002d_002dInteractive-SAS-processes"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#iESS_0028SAS_0029_002d_002dCommon-problems">iESS(SAS)--Common problems</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">ESS(SAS)--Function keys for batch processing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4502,19 +4511,19 @@ with the <acronym>SAS</acronym><!-- /@w --> command-line option settings
 <pre class="example">        <kbd>M-x&nbsp;SAS</kbd><!-- /@w -->
 </pre>
    <p>The <samp><span class="file">*SAS:1.log*</span></samp> buffer in <code>ESStr</code> mode corresponds to the file
-<samp><var>foo</var><span class="file">.log</span></samp> in <acronym>SAS</acronym><!-- /@w --> batch usage and to the `<samp><span class="samp">SAS: LOG</span></samp>' window in the
+<samp><var>foo</var><span class="file">.log</span></samp> in <acronym>SAS</acronym><!-- /@w --> batch usage and to the &lsquo;<samp><span class="samp">SAS: LOG</span></samp>&rsquo; window in the
 <acronym>SAS</acronym><!-- /@w --> Display Manager.  All commands submitted to <acronym>SAS</acronym><!-- /@w -->, informative
 messages, warnings, and errors appear here.
 
    <p>The <samp><span class="file">*SAS:1.lst*</span></samp> buffer in <code>ESSlst</code> mode corresponds to the file
-<samp><var>foo</var><span class="file">.lst</span></samp> in <acronym>SAS</acronym><!-- /@w --> batch usage and to the `<samp><span class="samp">SAS: OUTPUT</span></samp>' window in the
+<samp><var>foo</var><span class="file">.lst</span></samp> in <acronym>SAS</acronym><!-- /@w --> batch usage and to the &lsquo;<samp><span class="samp">SAS: OUTPUT</span></samp>&rsquo; window in the
 <acronym>SAS</acronym><!-- /@w --> Display Manager.  All printed output appears in this window.
 
    <p>The <samp><span class="file">*SAS:1*</span></samp> buffer exists solely as a communications buffer. 
 The user should never use this buffer directly. 
 Files are edited in the <samp><var>foo</var><span class="file">.sas</span></samp> buffer.  The <kbd>C-c&nbsp;C-r</kbd><!-- /@w --> key in
 <acronym>ESS[SAS]</acronym> is the functional equivalent of bringing a file into the
-`<samp><span class="samp">SAS: PROGRAM EDITOR</span></samp>' window followed by <code>SUBMIT</code>.
+&lsquo;<samp><span class="samp">SAS: PROGRAM EDITOR</span></samp>&rsquo; window followed by <code>SUBMIT</code>.
 
    <p>For example, open the file you want to work with.
 <pre class="example">     <kbd>C-x&nbsp;C-f&nbsp;foo.sas</kbd><!-- /@w -->
@@ -4566,9 +4575,9 @@ never need to read it or write to it.  Refer to the <samp><span class="file">.ls
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="iESS(SAS)--Common-problems"></a>
 <a name="iESS_0028SAS_0029_002d_002dCommon-problems"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dGraphics">ESS(SAS)--Graphics</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#iESS_0028SAS_0029_002d_002dInteractive-SAS-processes">iESS(SAS)--Interactive SAS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4586,11 +4595,11 @@ an emacs buffer, it is necessary to start <acronym>SAS</acronym><!-- /@w --> wit
 <li>you are running Windows:  see 1. 
 <li><samp><span class="file">ess-sas-sh-command</span></samp> (from the <acronym>ESS</acronym> <samp><span class="file">etc</span></samp> directory) needs to be
 executable; too check, type <kbd>M-x&nbsp;dired</kbd><!-- /@w -->; if not, fix it as follows,
-type <kbd>M-:</kbd>, then at the minibuffer prompt `<samp><span class="samp">Eval:</span></samp>'<!-- /@w -->,
+type <kbd>M-:</kbd>, then at the minibuffer prompt &lsquo;<samp><span class="samp">Eval:</span></samp>&rsquo;<!-- /@w -->,
 type <code>(set-file-modes "ess-sas-sh-command" 493)</code>. 
 <!-- (solution: @code{chmod ugo+rx ess-sas-sh-command}). -->
 <li><code>sas</code> isn't in your executable path; to verify, type
-<kbd>M-:</kbd> and at the minibuffer prompt `<samp><span class="samp">Eval:</span></samp>', type
+<kbd>M-:</kbd> and at the minibuffer prompt &lsquo;<samp><span class="samp">Eval:</span></samp>&rsquo;, type
 <code>(executable-find "sas")</code>
 </ul>
      <li><kbd>M-x&nbsp;SAS</kbd><!-- /@w --> starts <acronym>SAS</acronym><!-- /@w -->&nbsp;Display<!-- /@w --> Manager.  Probably, the command <code>sas</code>
@@ -4598,12 +4607,12 @@ on your system calls a shell script.  In that case you will need to locate
 the real  <code>sas</code> executable and link to it. 
 You can execute the <acronym>UNIX</acronym> command:
      <pre class="example">          find / -name sas -print
-     </pre>
+</pre>
      <p>Now place a soft link to the real <code>sas</code> executable in your <code>~/bin</code>
 directory, with for example
      <pre class="example">          cd ~/bin
           ln -s /usr/local/sas9/sas sas
-     </pre>
+</pre>
      </ol>
 Check your <code>PATH</code> environment variable to confirm that
 <code>~/bin</code> appears before the directory in which the <code>sas</code>
@@ -4621,9 +4630,9 @@ shell script appears.
 <!-- @end enumerate -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(SAS)--Graphics"></a>
 <a name="ESS_0028SAS_0029_002d_002dGraphics"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dWindows">ESS(SAS)--Windows</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#iESS_0028SAS_0029_002d_002dCommon-problems">iESS(SAS)--Common problems</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4649,9 +4658,9 @@ to be visible on screen, for example:
 </pre>
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(SAS)--Windows"></a>
 <a name="ESS_0028SAS_0029_002d_002dWindows"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dGraphics">ESS(SAS)--Graphics</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
 
@@ -4678,8 +4687,8 @@ You can use batch.  See <a href="#ESS_0028SAS_0029_002d_002dBatch-SAS-processes"
 <!-- End: -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS-for-BUGS"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS-for-JAGS">ESS for JAGS</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-SAS">ESS for SAS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -4710,9 +4719,9 @@ interactive submission of BUGS commands is also supported.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(BUGS)--Model-files"></a>
 <a name="ESS_0028BUGS_0029_002d_002dModel-files"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028BUGS_0029_002d_002dCommand-files">ESS(BUGS)--Command files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-BUGS">ESS for BUGS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-BUGS">ESS for BUGS</a>
@@ -4780,9 +4789,9 @@ press of <kbd>C-c C-c</kbd> if you re-visit the model file.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(BUGS)--Command-files"></a>
 <a name="ESS_0028BUGS_0029_002d_002dCommand-files"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028BUGS_0029_002d_002dLog-files">ESS(BUGS)--Log files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028BUGS_0029_002d_002dModel-files">ESS(BUGS)--Model files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-BUGS">ESS for BUGS</a>
@@ -4815,9 +4824,9 @@ are not readily available with the batch scripts that come with BUGS.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(BUGS)--Log-files"></a>
 <a name="ESS_0028BUGS_0029_002d_002dLog-files"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028BUGS_0029_002d_002dCommand-files">ESS(BUGS)--Command files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-BUGS">ESS for BUGS</a>
 
@@ -4835,8 +4844,8 @@ process over-writes or appends it.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS-for-JAGS"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Miscellaneous">Miscellaneous</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-BUGS">ESS for BUGS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -4866,9 +4875,9 @@ create a command file and submit a JAGS batch process.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(JAGS)--Model-files"></a>
 <a name="ESS_0028JAGS_0029_002d_002dModel-files"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028JAGS_0029_002d_002dCommand-files">ESS(JAGS)--Command files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-JAGS">ESS for JAGS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-JAGS">ESS for JAGS</a>
@@ -4919,9 +4928,9 @@ to keep.  By default, the update parameter is set to 10000.  Both
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(JAGS)--Command-files"></a>
 <a name="ESS_0028JAGS_0029_002d_002dCommand-files"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028JAGS_0029_002d_002dLog-files">ESS(JAGS)--Log files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028JAGS_0029_002d_002dModel-files">ESS(JAGS)--Model files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-JAGS">ESS for JAGS</a>
@@ -4943,9 +4952,9 @@ JAGS program to use to run your model; defaults to &ldquo;jags&rdquo;.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="ESS(JAGS)--Log-files"></a>
 <a name="ESS_0028JAGS_0029_002d_002dLog-files"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028JAGS_0029_002d_002dCommand-files">ESS(JAGS)--Command files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-JAGS">ESS for JAGS</a>
 
@@ -4959,8 +4968,8 @@ process over-writes or appends it.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Miscellaneous"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-JAGS">ESS for JAGS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -4983,8 +4992,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Highlighting"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Parens">Parens</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Miscellaneous">Miscellaneous</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5010,7 +5019,7 @@ emacs for your changes to take effect.
 <!-- @code{ess-mode-hook} and @code{ess-transcript-mode-hook}.  Your systems -->
 <!-- administrator may have done this for you in @file{ess-site.el} -->
 <!-- (@pxref{Customization}). -->
-<p>The font-lock patterns are defined in the following variables, which you
+   <p>The font-lock patterns are defined in the following variables, which you
 may modify if desired:
 
 <div class="defun">
@@ -5019,7 +5028,7 @@ may modify if desired:
 corresponding <code>inferior-ess-S-font-lock-keywords</code> for *S*
 processes.) The default value highlights prompts, inputs, assignments,
 output messages, vector and matrix labels, and literals such as
-`<samp><span class="samp">NA</span></samp>' and <code>TRUE</code>. 
+&lsquo;<samp><span class="samp">NA</span></samp>&rsquo; and <code>TRUE</code>. 
 </p></blockquote></div>
 
 <div class="defun">
@@ -5037,8 +5046,8 @@ functions and reserved words.
 <!-- @end defvar -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Parens"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Graphics">Graphics</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Highlighting">Highlighting</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5059,8 +5068,8 @@ initialisation file:
 </pre>
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Graphics"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Imenu">Imenu</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Parens">Parens</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5081,8 +5090,8 @@ features for dealing with such plots.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="printer"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#X11">X11</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Graphics">Graphics</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
@@ -5105,8 +5114,8 @@ is issued, which displays the current figure.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="X11"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#winjava">winjava</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#printer">printer</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
@@ -5125,8 +5134,8 @@ DISPLAY before the ESS process is started if the variable
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="winjava"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#X11">X11</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
 
@@ -5147,8 +5156,8 @@ this information.)
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Imenu"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Toolbar">Toolbar</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Graphics">Graphics</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5172,8 +5181,8 @@ by various ESS variables such as <code>ess-imenu-S-generic-expression</code>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Toolbar"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#TAGS">TAGS</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Imenu">Imenu</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5190,8 +5199,8 @@ to change the toolbar.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="TAGS"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Rdired">Rdired</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Toolbar">Toolbar</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5222,10 +5231,18 @@ be appropriate.
    <p>with the function name starting in column 0.  Windows users may need to
 change the single quotes to double quotes.
 
-<!-- node-name,  next,  previous,  up -->
+   <p>R version 2.9.0 introduced a front-end script for finding R tags, which
+calls the &lsquo;<samp><span class="samp">rtags()</span></samp>&rsquo; function).  By default, this script will
+recursively search the directories for relevant tags in R/C/Rd files. 
+To use this script from the command line, try the following to get
+started:
+
+<pre class="example">     R CMD rtags --help
+</pre>
+   <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Rdired"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#TAGS">TAGS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 
@@ -5266,9 +5283,9 @@ deletion (`x' will actually perform the deletion).
 
 <!-- node-name,  next,  previous,  up@chapter Using S4 -->
 <div class="node">
-<p><hr>
 <a name="Mailing-lists%2fbug-reports"></a>
 <a name="Mailing-lists_002fbug-reports"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Customization">Customization</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Miscellaneous">Miscellaneous</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -5285,8 +5302,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 </ul>
 
 <div class="node">
-<p><hr>
 <a name="Bugs"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Reporting-Bugs">Reporting Bugs</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>
@@ -5335,8 +5352,8 @@ accordingly the value of <code>inferior-ess-secondary-prompt</code> in
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Reporting-Bugs"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Mailing-Lists">Mailing Lists</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Bugs">Bugs</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>
@@ -5367,8 +5384,8 @@ donations are also more than welcome.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Mailing-Lists"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Help-with-emacs">Help with emacs</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Reporting-Bugs">Reporting Bugs</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>
@@ -5396,8 +5413,8 @@ low-volume mailing list.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Help-with-emacs"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-Lists">Mailing Lists</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>
 
@@ -5424,8 +5441,8 @@ ESS.
 <!-- _not_yet_ @end menu -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Customization"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Key-Index">Key Index</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -5449,8 +5466,8 @@ to make it easy to find related variables.
 
 <!-- Stephen deleted incomplete variable list Wed 25 Aug 2004. -->
 <div class="node">
-<p><hr>
 <a name="Key-Index"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Concept-Index">Concept Index</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Customization">Customization</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -5465,8 +5482,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <!-- @printindex fn -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<p><hr>
 <a name="Concept-Index"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Variable-and-command-index">Variable and command index</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Key-Index">Key Index</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -5581,8 +5598,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-working-directory-15">working directory</a>: <a href="#Starting-up">Starting up</a></li>
 <li><a href="#index-X-windows-202">X windows</a>: <a href="#X11">X11</a></li>
    </ul><div class="node">
-<p><hr>
 <a name="Variable-and-command-index"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Concept-Index">Concept Index</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
@@ -5833,7 +5850,7 @@ need to modify this variable if you have defined custom commands (other
 than <code>attach</code>, <code>detach</code>, <code>collection</code> or <code>library</code>)
 which modify the search list.</p>
 
-   <p><hr></div>
+   <hr></div>
 
 </body></html>
 

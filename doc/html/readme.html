@@ -3,7 +3,7 @@
 <title>ESS --- Emacs Speaks Statistics</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ESS --- Emacs Speaks Statistics">
-<meta name="generator" content="makeinfo 4.8">
+<meta name="generator" content="makeinfo 4.13">
 <link title="Top" rel="top" href="#Top">
 <link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
 <meta http-equiv="Content-Style-Type" content="text/css">
@@ -21,8 +21,8 @@
 </head>
 <body>
 <div class="node">
-<p><hr>
 <a name="General-Information"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#dir">(dir)</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 
@@ -34,7 +34,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <p><a name="index-README-1"></a>
 This is the README file for the distribution of ESS version
 
-   <p>5.3.12
+   <p>5.4
 
    <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
@@ -79,8 +79,8 @@ Lumley).
 </ul>
 
 <div class="node">
-<p><hr>
 <a name="License"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Stability">Stability</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#General-Information">General Information</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -102,8 +102,8 @@ in the file COPYING in the same directory as this file for more
 details.
 
 <div class="node">
-<p><hr>
 <a name="Stability"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#License">License</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -119,8 +119,8 @@ the interface.  We know about some remaining documentation inconsistencies.
 Patches or suggested fixes with bug reports are much appreciated!
 
 <div class="node">
-<p><hr>
 <a name="Requirements"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Latest-Version">Latest Version</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Stability">Stability</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -168,8 +168,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 </ul>
 
 <div class="node">
-<p><hr>
 <a name="Latest-Version"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Installation">Installation</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Requirements">Requirements</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -186,7 +186,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <!-- There no longer is an anonymous CVS repository for ESS, due to lack of -->
 <!-- interest, little demand, and problems with security. -->
 <!-- text below modified from R-admin.texi (thanks to Kurt for the tip). -->
-<p>The latest development version of ESS is available via
+   <p>The latest development version of ESS is available via
 <a href="https://svn.R-project.org/ESS/">https://svn.R-project.org/ESS/</a>, the ESS Subversion repository.  If
 you have a Subversion client (see <a href="http://subversion.tigris.org/">http://subversion.tigris.org/</a>),
 you can download the sources using:
@@ -219,8 +219,8 @@ certificate permanently and will not be asked about it anymore.
 <!-- NOTE: The above INCLUDES inst_svn.texi (Subversion/SVN Installation) -->
 <!-- vvvvvvvvvvvv node name  *must* match the one in ./ess.texi ! -->
 <div class="node">
-<p><hr>
 <a name="Installation"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Starting-up">Starting up</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Latest-Version">Latest Version</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -231,8 +231,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <h3 class="section">1.5 Installation</h3>
 
 <div class="node">
-<p><hr>
 <a name="Unix-installation"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Microsoft-Windows-installation">Microsoft Windows installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 
@@ -256,10 +256,10 @@ which exists for packages like <acronym>ESS</acronym>
 (or for Mac OS X <samp><span class="file">/Applications/Emacs.app/Contents/MacOS/Resources/site-lisp</span></samp>):
      <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
           %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
-     </pre>
+</pre>
      <li>Then, add the line
      <pre class="example">          (require 'ess-site)
-     </pre>
+</pre>
      <p>to <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
@@ -274,7 +274,7 @@ or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS
 
      <li>Replace the line above with
      <pre class="example">          (load "~/ess/ess-VERSION/lisp/ess-site")
-     </pre>
+</pre>
      <p>in <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
@@ -295,10 +295,10 @@ where <samp><span class="file">LOCATION</span></samp> is <samp><span class="file
 now (or for Mac OS X <samp><span class="file">/Applications/XEmacs.app/Contents/MacOS/Resources/site-packages</span></samp>):
      <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
           %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
-     </pre>
+</pre>
      <li>Then, add the line
      <pre class="example">          (require 'ess-site)
-     </pre>
+</pre>
      <p>to <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
@@ -313,7 +313,7 @@ or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS
 
      <li>Replace the line above with
      <pre class="example">          (load "~/ess/ess-VERSION/lisp/ess-site")
-     </pre>
+</pre>
      <p>in <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
@@ -333,16 +333,16 @@ using XEmacs, then edit the XEmacs subsection in Section 1).
 
      <p>You can compile those files by:
      <pre class="example">          make all
-     </pre>
+</pre>
      <p>When that completes successfully, install the compiled files:
      <pre class="example">          make install
-     </pre>
+</pre>
         </ol>
 
 <!-- @node Microsoft Windows installation, , Unix installation, Installation -->
 <div class="node">
-<p><hr>
 <a name="Microsoft-Windows-installation"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Unix-installation">Unix installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
@@ -371,7 +371,7 @@ directory can be found somewhere like
 
      <li>Add the line
      <pre class="example">          (require 'ess-site)
-     </pre>
+</pre>
      <p>to <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
@@ -387,7 +387,7 @@ will not be lost if you update Emacs later.
 
      <li>Replace the line above with
      <pre class="example">          (load "C:/ess/ess-VERSION/lisp/ess-site")
-     </pre>
+</pre>
      <p>in <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
@@ -426,7 +426,7 @@ From the Subdir menu, select Create Directory, and enter <code>.xemacs</code>
 
      <li>Add the line
      <pre class="example">          (require 'ess-site)
-     </pre>
+</pre>
      <p>to <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
@@ -442,7 +442,7 @@ will not be lost if you update XEmacs later.
 
      <li>Replace the line above with
      <pre class="example">          (load "C:/ess/ess-VERSION/lisp/ess-site")
-     </pre>
+</pre>
      <p>in <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
@@ -502,10 +502,10 @@ on their machine into the <acronym>ESS</acronym> menu.
 <li>If you use Cygwin bash as your primary shell, then
      <pre class="example">          M-x S
           (or <code>M-x S+6</code>).
-     </pre>
+</pre>
      <li>If you use the MSDOS prompt window as your primary shell, then
      <pre class="example">          M-x S+6-msdos
-     </pre>
+</pre>
      </ol>
 You will then be
 asked for a pathname ("S starting data directory?"), from which to
@@ -576,8 +576,8 @@ emacs, and cut and paste the results into the XLispStat
 *Listener* Window under Microsoft Windows.
 
 <div class="node">
-<p><hr>
 <a name="Starting-up"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Current-Features">Current Features</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Installation">Installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -594,8 +594,8 @@ use the Cygwin bash shell, simply type <kbd>M-x S RET</kbd>.
 use the MSDOS prompt shell, simply type <kbd>M-x S+6-msdos RET</kbd>.
 
 <div class="node">
-<p><hr>
 <a name="Current-Features"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#New-Features">New Features</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Starting-up">Starting up</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -647,8 +647,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
      </ul>
 
 <div class="node">
-<p><hr>
 <a name="New-Features"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Reporting-Bugs">Reporting Bugs</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Current-Features">Current Features</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -659,17 +659,26 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <h3 class="section">1.10 New Features</h3>
 
      <ul>
-Changes/New Features in 5.3.12:
+Changes/New Features in 5.4:
           <ul>
-<li><acronym>ESS[BUGS]</acronym> and <acronym>ESS[JAGS]</acronym>: typing = now results in &lt;-
-<li><acronym>ESS[R]</acronym> function arguments &ldquo;show&rdquo; (ess-r-args-show) now uses the
- new (tooltip-show-at-point) contributed by Erik Iverson. 
+<li><acronym>ESS[SAS]</acronym>: The long overdue change
+from make-regexp to regexp-opt for font-locking is under way.  Setting
+<code>ess-sas-run-regexp-opt</code> to <code>t</code> will result
+in the new regexp-opt code being used.  The regexp-opt code will
+be easier to maintain.  There are certainly some special
+cases missed (bug reports and patches welcome!).  One thing that
+is still not implemented:  font-locking the PROC names (PROC is
+highlighted only).  Maybe it is fine this way; we were constantly
+behind the times with the new PROC names anyways. 
+<li><acronym>ESS[BUGS]</acronym> and <acronym>ESS[JAGS]</acronym>: typing <code>=</code> now results in <code>&lt;-</code>
+<li><acronym>ESS[R]</acronym> function arguments &ldquo;show&rdquo; <code>(ess-r-args-show)</code> now uses the
+ new <code>(tooltip-show-at-point)</code> contributed by Erik Iverson. 
 <li>Toolbar icons now also work in (beta) Emacs 23
 </ul>
 
      <p>Changes/New Features in 5.3.11:
           <ul>
-<li><acronym>ESS[SAS]</acronym>: work around buglet in Emacs 22.2 &amp; 22.3 which fails to
+<li><acronym>ESS[SAS]</acronym>: work around bug in Emacs 22.2 &amp; 22.3 which fails to
  set case-fold fontification automatically. 
 <li>Rd mode: support new keyword 'Rdversion'
 <li><acronym>ESS[R]</acronym>: now again works with Emacs 21.x
@@ -694,7 +703,7 @@ evince, Xpdf, Adobe/Acrobat Reader
 <li><acronym>ESS[S]</acronym> (and R): inferior (<code>*R*</code>) and transcript modes no longer
 fontify language keywords (such as <code>for</code>, <code>in</code>, etc). 
 <li>i<acronym>ESS[Stata]</acronym><!-- /@w -->: Customize the <code>ess-sta-delimiter-friendly</code> setting
-to t to convert embedded semi-colons to newlines for Stata processing. 
+to <code>t</code> to convert embedded semi-colons to newlines for Stata processing. 
 <li>Sweave fix for embedded blanks in PDF reader and PDF files
 <li>Several fixes for Major Mode Convention violations in <code>ess-mode</code>
 and <code>noweb-mode</code>. 
@@ -974,8 +983,8 @@ the bell is rung.
 
      <p>Changes/New Features in 5.2.5:
           <ul>
-<li><acronym title="[S]">ESS[R]</acronym>: <kbd>C-c C-q</kbd> or `<samp><span class="samp">Quit S</span></samp>' from the menu now should work
-(again and less klunkily) and do not append `<samp><span class="samp">-exited</span></samp>' to the
+<li><acronym title="[S]">ESS[R]</acronym>: <kbd>C-c C-q</kbd> or &lsquo;<samp><span class="samp">Quit S</span></samp>&rsquo; from the menu now should work
+(again and less klunkily) and do not append &lsquo;<samp><span class="samp">-exited</span></samp>&rsquo; to the
 buffer name.  Further, the behavior of <code>(ess-cleanup)</code>, called from
 ess-quit, now depends on the new customizable variable
 <code>ess-S-quit-kill-buffers-p</code> which defaults to <code>nil</code>. 
@@ -1321,8 +1330,8 @@ provide the syntactic highlighting that eases the programming tasks.
 </ul>
 
 <div class="node">
-<p><hr>
 <a name="Reporting-Bugs"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Mailing-Lists">Mailing Lists</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#New-Features">New Features</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -1351,8 +1360,8 @@ containing debug information; send us that buffer.
 donations are also more than welcome.
 
 <div class="node">
-<p><hr>
 <a name="Mailing-Lists"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Authors">Authors</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Reporting-Bugs">Reporting Bugs</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -1380,8 +1389,8 @@ low-volume mailing list.
 </ul>
 
 <div class="node">
-<p><hr>
 <a name="Authors"></a>
+<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-Lists">Mailing Lists</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 
@@ -1416,7 +1425,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 require the files.el patch to revert-buffer for the Local Variables
 updating problem</p>
 
-   <p><hr></div>
+   <hr></div>
 
 </body></html>
 
