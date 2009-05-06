@@ -22,7 +22,7 @@ TEXI2PDF = LANG=C texi2dvi --pdf
 TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 	credits.texi currfeat.texi ess.texi ess-defs.texi getting.texi \
 	help-s.texi help-sas.texi inst_svn.texi unixlike.texi windows.texi \
-	license.texi mailing.texi \
+	license.texi mailing.texi onewfeat.texi \
 	newfeat.texi readme.texi requires.texi stabilty.texi help-bugs.texi \
         help-jags.texi ../VERSION Makefile
 
@@ -38,7 +38,7 @@ TXTs = ../README ../ANNOUNCE
 all  : info text html dvi pdf
 docs : info text html
 info : info/ess.info
-text : $(TXTs)
+text : $(TXTs) ../NEWS ../ONEWS
 html : html/ess.html html/readme.html
 dvi  : $(DVIs)
 pdf  : $(PDFs)
@@ -61,7 +61,7 @@ clean: cleanaux
 
 ## this removes also things in VC (when they are remade by "make"):
 distclean : clean
-	-@rm -f $(TXTs) html/*
+	-@rm -f $(TXTs) ../NEWS ../ONEWS html/*
 
 ../README: $(TEXISRC)
 	$(MAKETXT) readme.texi \
@@ -76,6 +76,12 @@ distclean : clean
 README.Microsoft : README.Microsoft.texi
 	$(MAKETXT) README.Microsoft.texi \
 	| perl -pe 'last if /^Concept Index/;' > README.Microsoft
+
+../NEWS: Makefile ess-defs.texi newfeat.texi news.texi
+	$(MAKETXT) news.texi > ../NEWS 
+
+../ONEWS: Makefile ess-defs.texi onewfeat.texi onews.texi
+	$(MAKETXT) onews.texi > ../ONEWS 
 
 ### File Dependencies
 
