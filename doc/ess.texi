@@ -392,6 +392,7 @@ unnecessary prompts.
 @section New features in ESS
 
 @include newfeat.texi
+@include onewfeat.texi
 
 @comment  node-name,  next,  previous,  up
 @node Credits, Latest version, New features, Introduction
