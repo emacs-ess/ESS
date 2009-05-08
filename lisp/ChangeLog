@@ -1,3 +1,9 @@
+2009-05-08  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): more fixes
+	and some alphabetizing (seriously, let's keep these in
+	order, otherwise, it is very difficult to maintain)
+
 2009-05-04  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essa-sas.el (ess-sas-toggle-sas-log-mode): to re-font-lock,
