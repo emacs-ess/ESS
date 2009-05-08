@@ -254,9 +254,20 @@ number."
 ;       (list "/\\*\\([^*/]\\)*\\*/"      0  font-lock-comment-face t)
     
      ;; .log NOTE: messages
-     (cons "^NOTE: .*$"                         font-lock-constant-face)
+     (cons "^NOTE: .*$"                          font-lock-constant-face)
      (cons "This may cause NOTE: No observations in data set."     
-						font-lock-constant-face)
+						 font-lock-constant-face)
+     (cons "^1[ ]+The SAS System.*$"             font-lock-constant-face)
+     (cons "^\014.*$"                            font-lock-constant-face)
+     (cons "[ ]*Licensed to .+, Site [0-9]+[.]$" font-lock-constant-face)
+     (cons "[ ]*Engine:[ ]+V.+$"                 font-lock-constant-face)
+     (cons "[ ]*Physical Name:[ ]+.+$"           font-lock-constant-face)
+     (cons "[ ]*For further information on ANNOTATE macros, enter,"     
+						 font-lock-constant-face)
+     (cons "[ ]*real time[ ]+[.0-9]+ seconds$"   font-lock-constant-face)
+     (cons "[ ]*cpu time[ ]+[.0-9]+ seconds$"    font-lock-constant-face)
+     (cons "^Local Variables:$"                  font-lock-constant-face)
+     (cons "^End:$"                              font-lock-constant-face)
 
      ;; .log ERROR: messages
      (cons "^ERROR .*$"                         font-lock-keyword-face)
@@ -341,21 +352,21 @@ number."
 	      ;"\\<"
 	      (regexp-opt
 	       '(
-		"abort" "array" "attrib" 
+		"abort" "and" "array" "attrib" 
 		"by" 
 		"change" "class" 
 		"delete" "display" "dm" "drop"
-		"else" "error" "exchange" "exclude" 
+		"else" "eq" "error" "exchange" "exclude" 
 		"file" "filename" "format" "freq"
 		 "footnote" "footnote1" "footnote2" "footnote3" "footnote4" "footnote5" 
 		 "footnote6" "footnote7" "footnote8" "footnote9" "footnote10"
-		"goto" "go to" "goptions"
+		"ge" "goto" "go to" "goptions"
 		"id" "if" "in" "index" "infile" "informat" "input" 
 		"keep" 
-		"label" "length" "libname" "link" "lsmeans"
+		"label" "le" "length" "libname" "link" "lsmeans"
 		"manova" "means" "model" "merge" "missing" "modify" 
-		"note" 
-		"options" "out" "output" "otherwise" 
+		"neq" "not" "note" 
+		"options" "or" "out" "output" "otherwise" 
 		"plot" "put" 
 		"random" "rename" "repeated" "retain" 
 		"save" "select" "set" "skip" "sum"
@@ -398,7 +409,7 @@ number."
 	      ;"\\<"
 	      (regexp-opt
 	       '(
-		 "abs" "arcos" "arsin" "atan" "betainv" "byte" "ceil" "cinv"
+		 "abs" "and" "arcos" "arsin" "atan" "betainv" "byte" "ceil" "cinv"
 		 "collate" "compress" "cos" "cosh" "css" "cv"
 		 "daccdb" "daccdbsl" "daccsl" "daccsyd" "dacctab"
 		 "depdb" "depdbsl" "depsl" "depsyd" "deptab"
@@ -408,7 +419,7 @@ number."
 		 "hbound" "hour" "in" "index" "indexc" "input" "int" "intck" "intnx" "intrr"
 		 "irr" "juldate" "kurtosis" "lag" "lbound" "left" "length"
 		 "lgamma" "log" "log10" "log2" "max" "mdy" "mean" "min" "minute"
-		 "mod" "month" "mort" "n" "netpv" "nmiss" "not" "normal" "npv"
+		 "mod" "month" "mort" "n" "netpv" "nmiss" "not" "normal" "npv" "or"
 ;;;) t) "\\>" "[ \t]*(")
 ;;;      font-lock-function-name-face)
 ;;;
