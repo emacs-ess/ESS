@@ -57,8 +57,10 @@
   "Set font-lock colors to Richard Heiberger's usual choice."
   (interactive)
 
+(if (featurep 'xemacs) nil
   (set-foreground-color "Black")
-  (set-background-color "lightcyan")
+  (set-background-color "lightcyan"))
+
   (set-face-background 'modeline "lightskyblue")
   (set-face-foreground 'modeline "midnightblue")
 
@@ -76,8 +78,10 @@
   "Set font-lock colors to Richard Heiberger's blue color scheme."
   (interactive)
 
+(if (featurep 'xemacs) nil
   (set-foreground-color "Black")
-  (set-background-color "LightBlue")
+  (set-background-color "LightBlue"))
+
   (set-face-foreground 'modeline "LightBlue")
   (set-face-background 'modeline "DarkSlateBlue")
 
@@ -95,8 +99,10 @@
   "Set font-lock colors to Richard Heiberger's wheat color scheme."
   (interactive)
 
+(if (featurep 'xemacs) nil
   (set-foreground-color "Black")
-  (set-background-color "Wheat")
+  (set-background-color "Wheat"))
+
   (set-face-foreground 'modeline "Wheat")
   (set-face-background 'modeline "Sienna")
 
@@ -115,8 +121,10 @@
   "Set font-lock colors to Richard Heiberger's black and white color scheme."
   (interactive)
 
+(if (featurep 'xemacs) nil
   (set-foreground-color "Black")
-  (set-background-color "white")
+  (set-background-color "white"))
+
   (set-face-foreground 'modeline "gray10")
   (set-face-background 'modeline "gray90")
 
