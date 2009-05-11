@@ -2,6 +2,7 @@
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): more
 	simplification/alphabetization
+	99% complete
 
 2009-05-08  Rodney Sparapani  <rsparapa@mcw.edu>
 
@@ -11,7 +12,7 @@
 	* essl-sas.el (SAS-mode-font-lock-keywords): more fixes
 	and some alphabetizing (seriously, let's keep these in
 	order, otherwise, it is very difficult to maintain)
-	99% of the hand-coded regexps now handled by regexp-opt,
+	95% of the hand-coded regexps now handled by regexp-opt,
 	but there are certainly going to be some special cases
 	needed for false positives/negatives
 
