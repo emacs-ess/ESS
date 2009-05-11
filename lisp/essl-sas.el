@@ -333,7 +333,7 @@ number."
   
        ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND, etc.
        (cons (regexp-opt '(
-		 "data" "run" "proc" "endsas" "%macro" "%mend"
+		 "data" "run" "quit" "proc" "endsas" "%macro" "%mend"
 		 "%do" "%to" "%by" "%end" 
 		 "%goto" "%go to" 
 		 "%if" "%then" "%else"
@@ -341,12 +341,12 @@ number."
 	    ) 'words) font-lock-constant-face)
     
        ;; SAS statements
-
-       (cons (concat
-	      "\\<"
-	      "do[ \t]*" (regexp-opt '("over" "until" "while") t) "?"
-	      "\\>")
-	     font-lock-keyword-face)
+;
+;       (cons (concat
+;	      "\\<"
+;	      "do[ \t]*" (regexp-opt '("over" "until" "while") t) "?"
+;	      "\\>")
+;	     font-lock-keyword-face)
 
        (cons (concat
 	      ;"\\<"
@@ -355,12 +355,12 @@ number."
 		"abort" "and" "array" "attrib" 
 		"by" 
 		"change" "class" 
-		"delete" "display" "dm" "drop"
+		"delete" "display" "dm" "do" "drop"
 		"else" "eq" "error" "exchange" "exclude" 
 		"file" "filename" "format" "freq"
 		 "footnote" "footnote1" "footnote2" "footnote3" "footnote4" "footnote5" 
 		 "footnote6" "footnote7" "footnote8" "footnote9" "footnote10"
-		"ge" "goto" "go to" "goptions"
+		"ge" "go" "goto" "goptions"
 		"id" "if" "in" "index" "infile" "informat" "input" 
 		"keep" 
 		"label" "le" "length" "libname" "link" "lsmeans"
@@ -370,7 +370,7 @@ number."
 		"plot" "put" 
 		"random" "rename" "repeated" "retain" 
 		"save" "select" "set" "skip" "sum"
-		"table" "tables" "then" 
+		"table" "tables" "then" "to"
 		 "title" "title1" "title2" "title3" "title4" "title5" 
 		 "title6" "title7" "title8" "title9" "title10"
 		"weight" "where" "window" "with" 
@@ -409,52 +409,67 @@ number."
 	      ;"\\<"
 	      (regexp-opt
 	       '(
-		 "abs" "and" "arcos" "arsin" "atan" "betainv" "byte" "ceil" "cinv"
-		 "collate" "compress" "cos" "cosh" "css" "cv"
+		 "abs" "and" "arcos" "arsin" "atan" 
+		"betainv" "byte" 
+		"ceil" "cinv" "collate" "compress" "cos" "cosh" "css" "cv"
 		 "daccdb" "daccdbsl" "daccsl" "daccsyd" "dacctab"
-		 "depdb" "depdbsl" "depsl" "depsyd" "deptab"
-		 "date" "datejul" "datepart" "datetime" "day" "hms" "dhms" "dif"
-		 "digamma" "dim" "erf" "erfc" "exp" "finv"
-		 "fipname" "fipnamel" "fipstate" "floor" "fuzz" "gaminv" "gamma"
-		 "hbound" "hour" "in" "index" "indexc" "input" "int" "intck" "intnx" "intrr"
-		 "irr" "juldate" "kurtosis" "lag" "lbound" "left" "length"
-		 "lgamma" "log" "log10" "log2" "max" "mdy" "mean" "min" "minute"
-		 "mod" "month" "mort" "n" "netpv" "nmiss" "not" "normal" "npv" "or"
-;;;) t) "\\>" "[ \t]*(")
-;;;      font-lock-function-name-face)
-;;;
-;;;    (cons (concat "\\<"
-;;;(regexp-opt '(
-		 "probbeta" "probbnml" "probchi" "probf" "probgam" "probhypr"
-		 "probit" "probnegb" "probnorm" "probt"
-		 "ordinal" "poisson" "put" "qtr" "range" "rank" "repeat"
-		 "ranbin" "rancau" "ranexp" "rangam" "rannor" "ranpoi"
-		 "rantbl" "rantri" "ranuni"
-		 "reverse" "right" "round" "saving" "scan" "second" "sign" "sin" "sinh"
-		 "sqrt" "std" "stderr" "stfips" "stname" "stnamel" "substr" "sum"
-		 "symget" "tan" "tanh" "time" "timepart" "tinv" "today" "translate"
-		 "trigamma" "trim" "trunc" "uniform" "upcase" "uss" "var"
-		 "verify" "weekday" "when" "year" "yyq"
+		 "depdb" "depdbsl" "depsl" "depsyd" "deptab" "date" "datejul" "datepart" "datetime" "day" "dhms" "dif" "digamma" "dim" 
+		"erf" "erfc" "exp" 
+		"finv" "fipname" "fipnamel" "fipstate" "floor" "fuzz" 
+		"gaminv" "gamma"
+		 "hbound" "hms" "hour" 
+		"in" "index" "indexc" "input" "int" "intck" "intnx" "intrr" "irr" 
+		"juldate" 
+		"kurtosis" 
+		"lag" "lbound" "left" "length" "lgamma" "log" "log10" "log2" 
+		"max" "mdy" "mean" "min" "minute" "mod" "month" "mort" 
+		"n" "netpv" "nmiss" "not" "normal" "npv" 
+		"or" "ordinal"
+		 "probbeta" "probbnml" "probchi" "probf" "probgam" "probhypr" "probit" "probnegb" "probnorm" "probt"
+		 "poisson" "put" 
+		"qtr" 
+		"range" "rank" "repeat" "reverse" "right" "round" 
+		"ranbin" "rancau" "ranexp" "rangam" "rannor" "ranpoi" "rantbl" "rantri" "ranuni"
+		 "saving" "scan" "second" "sign" "sin" "sinh" "sqrt" "std" "stderr" "stfips" "stname" "stnamel" "substr" "sum" "symget" 
+		"tan" "tanh" "time" "timepart" "tinv" "today" "translate" "trigamma" "trim" "trunc" 
+		"uniform" "until" "upcase" "uss" 
+		"var" "verify" 
+		"weekday" "when" "while" 
+		"year" "yyq"
 		 "zipfips" "zipname" "zipnamel" "zipstate"
 ;;;) t) "\\>" "[ \t]*(")
 ;;;      font-lock-function-name-face)
 ;;;
 ;;;
 ;;;    ;; SAS functions introduced in Technical Report P-222
-;;;    ;; SCL functions that are known to work with SAS macro function %sysfunc
 ;;;    (cons (concat "\\<"
 ;;;(regexp-opt '(
-		 "airy" "band" "blshift" "brshift" "bnot" "bor" "bxor"
-		 "cnonct" "fnonct" "tnonct" "compbl" "dairy" "dequote"
-		 "ibessel" "jbessel"
-		 "indexw" "inputc" "inputn"  "lowcase"
-		 "putc" "putn" "quote" "resolve" "soundex" "sysprod"
-		 "tranwrd" "trimn"
-		 "%sysfunc" "attrc" "attrn" "cexist" "close" "dclose" "dnum"
-		 "dopen" "dread" "exist" "fclose" "fetchobs" "fileexist"
-		 "finfo" "fopen" "fput" "fwrite" "getoption"
-		 "getvarc" "getvarn" "libname" "libref" "open" "optgetn" "optsetn"
-		 "pathname" "sysmsg" "varfmt" "varlabel" "varnum" "vartype"
+		 "airy" 
+		"band" "blshift" "brshift" "bnot" "bor" "bxor"
+		 "cnonct" "compbl"
+		"dairy" "dequote"
+		"fnonct"  
+		 "ibessel" "indexw" "inputc" "inputn" 
+		"jbessel" 
+		"lowcase"
+		 "putc" "putn" 
+		"quote" 
+		"resolve" 
+		"soundex" "sysprod"
+		"tnonct" "tranwrd" "trimn"
+
+;;;    ;; SCL functions that are known to work with SAS macro function %sysfunc
+		 "attrc" "attrn" 
+		"cexist" "close" 
+		"dclose" "dnum" "dopen" "dread" 
+		"exist" 
+		"fclose" "fetchobs" "fileexist" "finfo" "fopen" "fput" "fwrite" 
+		"getoption" "getvarc" "getvarn" 
+		"libname" "libref" 
+		"open" "optgetn" "optsetn"
+		 "pathname" 
+		"sysmsg" 
+		"varfmt" "varlabel" "varnum" "vartype"
 		 ) 'words) ;"\\>" 
 		"[ \t]*(")
 	     font-lock-function-name-face)
