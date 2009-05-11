@@ -264,8 +264,8 @@ number."
      (cons "[ ]*Physical Name:[ ]+.+$"           font-lock-constant-face)
      (cons "[ ]*For further information on ANNOTATE macros, enter,"     
 						 font-lock-constant-face)
-     (cons "[ ]*real time[ ]+[.0-9]+ seconds$"   font-lock-constant-face)
-     (cons "[ ]*cpu time[ ]+[.0-9]+ seconds$"    font-lock-constant-face)
+     (cons "[ ]*real time[ ]+[0-9].*$"           font-lock-constant-face)
+     (cons "[ ]*cpu time[ ]+[0-9].*$"            font-lock-constant-face)
      (cons "^Local Variables:$"                  font-lock-constant-face)
      (cons "^End:$"                              font-lock-constant-face)
 
@@ -279,9 +279,20 @@ number."
      ;; /* */ handled by grammar above
      (cons "\\(^[0-9]*\\|;\\)[ \t]*\\(%?\\*\\|comment\\).*\\(;\\|$\\)" font-lock-comment-face)
     
-     ; this exception needs to come before "data" below
-     (cons "data=" font-lock-keyword-face)
+     ; these exceptions need to come before their more general declarations
+     (cons "data="     font-lock-keyword-face)
+     (cons "and("      font-lock-function-name-face)
+     (cons "input("    font-lock-function-name-face)
+     (cons "not("      font-lock-function-name-face)
+     (cons "or("       font-lock-function-name-face)
+     (cons "put("      font-lock-function-name-face)
 
+    ; other idiosyncratic keywords
+     (cons "in="       font-lock-keyword-face)
+     (cons "sortedby=" font-lock-keyword-face)
+     (cons "key="      font-lock-keyword-face)
+     (cons "/unique"   font-lock-keyword-face)
+    
 ; SAS procedure names circa v. 9.2
 ; this code doesn't actually work, but why ?!?
 ;
@@ -353,23 +364,23 @@ number."
 	      (regexp-opt
 	       '(
 		"abort" "and" "array" "attrib" 
-		"by" 
-		"change" "class" 
+		"between" "by" 
+		"change" "class" "contains"
 		"delete" "display" "dm" "do" "drop"
 		"else" "eq" "error" "exchange" "exclude" 
 		"file" "filename" "format" "freq"
 		 "footnote" "footnote1" "footnote2" "footnote3" "footnote4" "footnote5" 
 		 "footnote6" "footnote7" "footnote8" "footnote9" "footnote10"
-		"ge" "go" "goto" "goptions"
-		"id" "if" "in" "index" "infile" "informat" "input" 
+		"ge" "go" "goto" "goptions" "gt"
+		"id" "if" "index" "infile" "informat" "input" "is" 
 		"keep" 
-		"label" "le" "length" "libname" "link" "lsmeans"
-		"manova" "means" "model" "merge" "missing" "modify" 
-		"neq" "not" "note" 
+		"label" "le" "length" "libname" "like" "link" "lsmeans" "lt"
+		"manova" "means" "merge" "missing" "model" "modify" 
+		"ne" "not" "note" "null" 
 		"options" "or" "out" "output" "otherwise" 
 		"plot" "put" 
 		"random" "rename" "repeated" "retain" 
-		"save" "select" "set" "skip" "sum"
+		"same" "save" "select" "set" "skip" "sum"
 		"table" "tables" "then" "to"
 		 "title" "title1" "title2" "title3" "title4" "title5" 
 		 "title6" "title7" "title8" "title9" "title10"
@@ -409,7 +420,7 @@ number."
 	      ;"\\<"
 	      (regexp-opt
 	       '(
-		 "abs" "and" "arcos" "arsin" "atan" 
+		 "abs" "arcos" "arsin" "atan" 
 		"betainv" "byte" 
 		"ceil" "cinv" "collate" "compress" "cos" "cosh" "css" "cv"
 		 "daccdb" "daccdbsl" "daccsl" "daccsyd" "dacctab"
@@ -423,8 +434,8 @@ number."
 		"kurtosis" 
 		"lag" "lbound" "left" "length" "lgamma" "log" "log10" "log2" 
 		"max" "mdy" "mean" "min" "minute" "mod" "month" "mort" 
-		"n" "netpv" "nmiss" "not" "normal" "npv" 
-		"or" "ordinal"
+		"n" "netpv" "nmiss" "normal" "npv" 
+		"ordinal"
 		 "probbeta" "probbnml" "probchi" "probf" "probgam" "probhypr" "probit" "probnegb" "probnorm" "probt"
 		 "poisson" "put" 
 		"qtr" 
