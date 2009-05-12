@@ -254,20 +254,20 @@ number."
 ;       (list "/\\*\\([^*/]\\)*\\*/"      0  font-lock-comment-face t)
     
      ;; .log NOTE: messages
-     (cons "^NOTE: .*$"                          font-lock-constant-face)
+     (cons "^NOTE: .*$"                          font-lock-comment-face)
      (cons "This may cause NOTE: No observations in data set."     
-						 font-lock-constant-face)
-     (cons "^1[ ]+The SAS System.*$"             font-lock-constant-face)
-     (cons "^\014.*$"                            font-lock-constant-face)
-     (cons "[ ]*Licensed to .+, Site [0-9]+[.]$" font-lock-constant-face)
-     (cons "[ ]*Engine:[ ]+V.+$"                 font-lock-constant-face)
-     (cons "[ ]*Physical Name:[ ]+.+$"           font-lock-constant-face)
+						 font-lock-comment-face)
+     (cons "^1[ ]+The SAS System.*$"             font-lock-comment-face)
+     (cons "^\014.*$"                            font-lock-comment-face)
+     (cons "[ ]*Licensed to .+, Site [0-9]+[.]$" font-lock-comment-face)
+     (cons "[ ]*Engine:[ ]+V.+$"                 font-lock-comment-face)
+     (cons "[ ]*Physical Name:[ ]+.+$"           font-lock-comment-face)
      (cons "[ ]*For further information on ANNOTATE macros, enter,"     
-						 font-lock-constant-face)
-     (cons "[ ]*real time[ ]+[0-9].*$"           font-lock-constant-face)
-     (cons "[ ]*cpu time[ ]+[0-9].*$"            font-lock-constant-face)
-     (cons "^Local Variables:$"                  font-lock-constant-face)
-     (cons "^End:$"                              font-lock-constant-face)
+						 font-lock-comment-face)
+     (cons "[ ]*real time[ ]+[0-9].*$"           font-lock-comment-face)
+     (cons "[ ]*cpu time[ ]+[0-9].*$"            font-lock-comment-face)
+     (cons "^Local Variables:$"                  font-lock-comment-face)
+     (cons "^End:$"                              font-lock-comment-face)
 
      ;; .log ERROR: messages
      (cons "^ERROR .*$"                         font-lock-keyword-face)
@@ -283,6 +283,7 @@ number."
      (cons "data="     font-lock-keyword-face)
      (cons "and("      font-lock-function-name-face)
      (cons "input("    font-lock-function-name-face)
+     (cons "libname("  font-lock-function-name-face)
      (cons "not("      font-lock-function-name-face)
      (cons "or("       font-lock-function-name-face)
      (cons "put("      font-lock-function-name-face)
@@ -351,16 +352,14 @@ number."
 		 "%global" "%include" "%input" "%local" "%let" "%put" "%sysexec"
 	    ) 'words) font-lock-constant-face)
     
-       ;; SAS statements
-;
 ;       (cons (concat
 ;	      "\\<"
 ;	      "do[ \t]*" (regexp-opt '("over" "until" "while") t) "?"
 ;	      "\\>")
 ;	     font-lock-keyword-face)
-
-       (cons (concat
-	      ;"\\<"
+;
+       ;; SAS statements
+       (cons (concat ;"\\<"
 	      (regexp-opt
 	       '(
 		"abort" "and" "array" "attrib" 
@@ -384,9 +383,9 @@ number."
 		"table" "tables" "then" "to"
 		 "title" "title1" "title2" "title3" "title4" "title5" 
 		 "title6" "title7" "title8" "title9" "title10"
-		"weight" "where" "window" "with" 
 		"update"
 		"value" "var"
+		"weight" "where" "window" "with" 
 		"x"
 		 ) 'words)) ;"\\>")
 	     font-lock-keyword-face)
@@ -424,12 +423,13 @@ number."
 		"betainv" "byte" 
 		"ceil" "cinv" "collate" "compress" "cos" "cosh" "css" "cv"
 		 "daccdb" "daccdbsl" "daccsl" "daccsyd" "dacctab"
-		 "depdb" "depdbsl" "depsl" "depsyd" "deptab" "date" "datejul" "datepart" "datetime" "day" "dhms" "dif" "digamma" "dim" 
+		 "depdb" "depdbsl" "depsl" "depsyd" "deptab" 
+		"date" "datejul" "datepart" "datetime" "day" "dhms" "dif" "digamma" "dim" 
 		"erf" "erfc" "exp" 
 		"finv" "fipname" "fipnamel" "fipstate" "floor" "fuzz" 
 		"gaminv" "gamma"
 		 "hbound" "hms" "hour" 
-		"in" "index" "indexc" "input" "int" "intck" "intnx" "intrr" "irr" 
+		"in" "in:" "index" "indexc" "input" "int" "intck" "intnx" "intrr" "irr" 
 		"juldate" 
 		"kurtosis" 
 		"lag" "lbound" "left" "length" "lgamma" "log" "log10" "log2" 
