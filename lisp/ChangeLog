@@ -1,3 +1,9 @@
+2009-05-13  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): a
+	few more keywords, a bug-fix and some comment 
+	re-organization, 99.5%
+
 2009-05-12  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): even
