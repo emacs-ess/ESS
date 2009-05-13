@@ -277,7 +277,7 @@ number."
 
      ;; SAS comments
      ;; /* */ handled by grammar above
-     (cons "\\(^[0-9]*\\|;\\)[ \t]*\\(%?\\*\\|comment\\).*\\(;\\|$\\)" font-lock-comment-face)
+     (cons "\\(^[0-9]*\\|;\\)[ \t]*\\(%?\\*\\|comment\\)[^;]*\\(;\\|$\\)" font-lock-comment-face)
     
      ; these exceptions need to come before their more general declarations
      (cons "data="     font-lock-keyword-face)
@@ -343,14 +343,31 @@ number."
 ;		    "x11"
 ;		) 'words)) font-lock-constant-face)
   
-       ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND, etc.
+       ;; SAS execution blocks, DATA/PROC, %MACRO/%MEND, etc.
        (cons (regexp-opt '(
-		 "data" "run" "quit" "proc" "endsas" "%macro" "%mend"
+		 "data" "proc" "%macro" "%mend"
 		 "%do" "%to" "%by" "%end" 
 		 "%goto" "%go to" 
 		 "%if" "%then" "%else"
 		 "%global" "%include" "%input" "%local" "%let" "%put" "%sysexec"
 	    ) 'words) font-lock-constant-face)
+
+       ;; SAS execution blocks that must be followed by a semi-colon
+       (cons (concat "\\<"
+	      (regexp-opt
+	       '(
+		 "run" "quit" "endsas"
+		 "cards" "cards4" "datalines" "datalines4" "lines" "lines4"
+		 )) ";")
+	     font-lock-constant-face)
+           
+       ;; SAS statements that must be followed by a semi-colon
+       (cons (concat "\\<"
+	      (regexp-opt
+	       '(
+		 "end" "list" "lostcard" "page" "return" "stop"
+		 )) ";")
+	     font-lock-keyword-face)
     
 ;       (cons (concat
 ;	      "\\<"
@@ -362,15 +379,16 @@ number."
        (cons (concat ;"\\<"
 	      (regexp-opt
 	       '(
+		 "do" "to" "by" "go" "goto"
 		"abort" "and" "array" "attrib" 
-		"between" "by" 
+		"between" 
 		"change" "class" "contains"
-		"delete" "display" "dm" "do" "drop"
+		"delete" "display" "dm" "drop"
 		"else" "eq" "error" "exchange" "exclude" 
 		"file" "filename" "format" "freq"
 		 "footnote" "footnote1" "footnote2" "footnote3" "footnote4" "footnote5" 
 		 "footnote6" "footnote7" "footnote8" "footnote9" "footnote10"
-		"ge" "go" "goto" "goptions" "gt"
+		"ge" "goptions" "gt"
 		"id" "if" "index" "infile" "informat" "input" "is" 
 		"keep" 
 		"label" "le" "length" "libname" "like" "link" "lsmeans" "lt"
@@ -378,9 +396,9 @@ number."
 		"ne" "not" "note" "null" 
 		"options" "or" "out" "output" "otherwise" 
 		"plot" "put" 
-		"random" "rename" "repeated" "retain" 
+		"random" "rename" "repeated" "retain"
 		"same" "save" "select" "set" "skip" "sum"
-		"table" "tables" "then" "to"
+		"table" "tables" "then"
 		 "title" "title1" "title2" "title3" "title4" "title5" 
 		 "title6" "title7" "title8" "title9" "title10"
 		"update"
@@ -390,20 +408,8 @@ number."
 		 ) 'words)) ;"\\>")
 	     font-lock-keyword-face)
 
-       ;; SAS statements that must be followed by a semi-colon
-       (cons (concat
-	      ;"\\<"
-	      (regexp-opt
-	       '(
-		 "cards" "cards4" "end" "list" "lostcard" "page"
-		 "return" "stop"
-		 ) 'words) ;"\\>" 
-		"[ \t]*;")
-	     font-lock-keyword-face)
-
        ;; SAS/GRAPH statements not handled above
-       (cons (concat
-	      ;"\\<"
+       (cons (concat ;"\\<"
 	      (regexp-opt
 	       '("axis" "legend" "pattern" "symbol") 'words) "\\([1-9][0-9]?\\)?"
 	      ) ;"\\>")
@@ -415,8 +421,7 @@ number."
        (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
 	     font-lock-function-name-face)
 
-       (cons (concat
-	      ;"\\<"
+       (cons (concat ;"\\<"
 	      (regexp-opt
 	       '(
 		 "abs" "arcos" "arsin" "atan" 
@@ -451,10 +456,10 @@ number."
 ;;;) t) "\\>" "[ \t]*(")
 ;;;      font-lock-function-name-face)
 ;;;
-;;;
-;;;    ;; SAS functions introduced in Technical Report P-222
 ;;;    (cons (concat "\\<"
 ;;;(regexp-opt '(
+;;;
+;;;    ;; SAS functions introduced in Technical Report P-222
 		 "airy" 
 		"band" "blshift" "brshift" "bnot" "bor" "bxor"
 		 "cnonct" "compbl"
