@@ -1119,7 +1119,7 @@ Keep in mind that the maximum command line length in MS-DOS is
   "Toggle SAS-log-mode for .log files."
   (interactive)
   
-  (ess-sas-goto "log" nil t)
+  (ess-sas-goto-log)
   (kill-buffer nil)  
 
   (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode) (progn
