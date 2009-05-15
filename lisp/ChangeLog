@@ -1,12 +1,16 @@
 2009-05-14  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): 
-	fixed some semantic bugs, made a few
-	more false positive corrections, added
-	a few more keywords (however, lots of
+	major overhaul complete (99.9%)
+	PROCs now highlighted
+	most keywords recognized (however, some
 	dataset options are still needed)
-	also, NOTEs and WARNINGs better detected
-	in .log
+	NOTEs and WARNINGs better detected in .log
+	
+	(ess-sas-run-regexp-opt): the new font-locking
+	is better in many ways than the old font-locking
+	so the default is now to use it; set this 
+	variable to nil to use the old font-lock code
 
 	* essa-sas.el (ess-sas-toggle-sas-log-mode): 
 	still trying to get this right, first kill
