@@ -1,6 +1,27 @@
 ;;; ess-eldoc.el --- Use eldoc to report R function names.
-;;; 2007-06-30 Stephen Eglen
-;;; GPL.
+
+;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
+;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+
+;; Original Author: Stephen Eglen
+;; Created: 2007-06-30
+;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+
+;; This file is part of ESS
+
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
 
@@ -16,7 +37,6 @@
 ;; Sven's code, in that you just need to have the point over the name
 ;; of an R function, or inside its arguments list, for eldoc to show
 ;; the arg list.
-
 
 ;; To use this functionality, simply add 
 ;;
