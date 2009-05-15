@@ -251,6 +251,7 @@ number."
      ;; .log NOTE: messages
      (cons "^NOTE: .*$"                          font-lock-comment-face)
      (cons "^      [^ ].*[.]$"                   font-lock-comment-face)
+     (cons "^      [a-z].*[a-z][ ]?$"            font-lock-comment-face)
      (cons "^      Engine:[ ]+V.+$"              font-lock-comment-face)
      (cons "^      Physical Name:[ ]+.+$"        font-lock-comment-face)
      (cons "^      \\(cpu\\|real\\) time[ ]+[0-9].*$"
@@ -297,7 +298,7 @@ number."
      ;(cons "key="      font-lock-keyword-face)
      ;(cons "/unique"   font-lock-keyword-face)
 
-       ;; SAS execution blocks, DATA/PROC, %MACRO/%MEND, etc.
+       ;; SAS execution blocks, DATA/RUN, %MACRO/%MEND, etc.
        (cons (regexp-opt '(
 		 "data" ;"proc" 
 		"%macro" "%mend"
@@ -332,8 +333,9 @@ number."
 		 )))
 	     font-lock-keyword-face)
      
-;;;    ;; SAS procedure names: EXPERIMENTAL
-       (cons (concat "proc " (regexp-opt '(
+;;;    ;; SAS procedure names
+       (cons (concat "proc " 
+		(regexp-opt '(
 		    "append"
 		    "bgenmod" "blifereg" "bphreg"
 		    "genmod" "lifereg" "phreg" "tphreg"
@@ -419,17 +421,15 @@ number."
 	     font-lock-keyword-face)
 
        ;; SAS/GRAPH statements not handled above
-       (cons (concat ;"\\<"
+       (cons (concat "\\<"
 	      (regexp-opt
-	       '("axis" "legend" "pattern" "symbol") 'words) "\\([1-9][0-9]?\\)?"
-	      ) ;"\\>")
+	       '("axis" "legend" "pattern" "symbol")) "\\([1-9][0-9]?\\)?"
+		"\\>")
 	     font-lock-keyword-face)
 
        ;; SAS functions and SAS macro functions
-       (cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
-	     font-lock-function-name-face)
-       (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
-	     font-lock-function-name-face)
+       (cons "%[a-z_][a-z_0-9]*[(;]"                  font-lock-function-name-face)
+       (cons "\\<call[ \t]+[a-z]+("                   font-lock-function-name-face)
 
        (cons (concat "\\<"
 	      (regexp-opt
