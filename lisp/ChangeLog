@@ -1,5 +1,8 @@
 2009-05-15  Rodney Sparapani  <rsparapa@mcw.edu>
 
+	* ess-eldoc.el/ess-roxygen.el/ess-toolbar.el:
+	added GPLv2 or later header, etc.
+
 	* essl-sas.el (SAS-mode-font-lock-keywords): 
 	a few fixes for functions and a missed NOTE
 
