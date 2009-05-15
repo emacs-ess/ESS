@@ -200,7 +200,7 @@ number."
   :group 'ess-sas
   :type  'string)
 
-(defcustom ess-sas-run-regexp-opt nil
+(defcustom ess-sas-run-regexp-opt t
   "If you do not want to run regexp-opt, then set to nil."
   :group 'ess-sas
   :type '(choice (const nil) string))
@@ -248,29 +248,23 @@ number."
 (defvar SAS-mode-font-lock-keywords
   (if ess-sas-run-regexp-opt
       (list
-       ;; old SAS comment code
-;       (cons "^[ \t]*%?\\*.*;"		font-lock-comment-face)
-;       (cons ";[ \t]*%?\\*.*;"		font-lock-comment-face)
-;       (list "/\\*\\([^*/]\\)*\\*/"      0  font-lock-comment-face t)
-    
      ;; .log NOTE: messages
      (cons "^NOTE: .*$"                          font-lock-comment-face)
      (cons "^      [^ ].*[.]$"                   font-lock-comment-face)
-;     (cons "This may cause NOTE: No observations in data set."     
-;						 font-lock-comment-face)
+     (cons "^      Engine:[ ]+V.+$"              font-lock-comment-face)
+     (cons "^      Physical Name:[ ]+.+$"        font-lock-comment-face)
+     (cons "^      \\(cpu\\|real\\) time[ ]+[0-9].*$"
+                                                 font-lock-comment-face)
+     (cons "^NOTE: PROC LOGISTIC is modeling the probability that"
+                                                 font-lock-comment-face) 
      (cons "^1[ ]+The SAS System.*$"             font-lock-comment-face)
      (cons "^\014.*$"                            font-lock-comment-face)
-;     (cons "[ ]*Licensed to .+, Site [0-9]+[.]$" font-lock-comment-face)
-     (cons "[ ]*Engine:[ ]+V.+$"                 font-lock-comment-face)
-     (cons "[ ]*Physical Name:[ ]+.+$"           font-lock-comment-face)
      (cons "[*][*][*] ANNOTATE macros are now available [*][*][*]"
 						 font-lock-comment-face)
      (cons "For further information on ANNOTATE macros, enter,"     
 						 font-lock-comment-face)
      (cons "\\(or \\)?%HELPANO.*$" 
 						 font-lock-comment-face)
-     (cons "[ ]*real time[ ]+[0-9].*$"           font-lock-comment-face)
-     (cons "[ ]*cpu time[ ]+[0-9].*$"            font-lock-comment-face)
      (cons "^Local Variables:$"                  font-lock-comment-face)
      (cons "^End:$"                              font-lock-comment-face)
 
@@ -283,8 +277,7 @@ number."
      (cons "^         [^ ].*[.]$"                font-lock-function-name-face)
 
      ;; SAS comments
-     ;; /* */ handled by grammar above
-     ;(cons "\\(^[0-9]*\\|;\\)[ \t]*\\(%?\\*\\|comment\\)[^;]*\\(;\\|$\\)" font-lock-comment-face)
+     ;; /* */ style handled by grammar above
      (cons "\\(^[0-9]*\\|;\\)[ \t]*%?\\*[^;]*;" font-lock-comment-face)
     
      ; these exceptions need to come before their more general declarations
@@ -306,7 +299,8 @@ number."
 
        ;; SAS execution blocks, DATA/PROC, %MACRO/%MEND, etc.
        (cons (regexp-opt '(
-		 "data" "proc" "%macro" "%mend"
+		 "data" ;"proc" 
+		"%macro" "%mend"
 		 "%do" "%to" "%by" "%end" 
 		 "%goto" "%go to" 
 		 "%if" "%then" "%else"
@@ -337,7 +331,54 @@ number."
 		 "compress=" "in=" "out=" "sortedby="
 		 )))
 	     font-lock-keyword-face)
-    
+     
+;;;    ;; SAS procedure names: EXPERIMENTAL
+       (cons (concat "proc " (regexp-opt '(
+		    "append"
+		    "bgenmod" "blifereg" "bphreg"
+		    "genmod" "lifereg" "phreg" "tphreg"
+		    "calendar" "catalog" "cport" "compare" "contents" "copy" "corr" 
+		    "cimport" "gimport" "import" 
+		    "datasets" "dbcstab" "display"
+		    "explode" "export"
+		    "format" "forms" "freq" "fsbrowse" "fsedit" "fsletter" "fslist" "fsview"
+		    "gchart" "gplot" "gprint" 
+		    "chart" "plot" "print" 
+		    "ganno" "gcontour" "gdevice" "geocode" "gfont" "ginside"
+		    "gkeymap" "gmap" 
+		    "goptions" "options"
+		    "gproject" "greduce" "gremove" "greplay" "gslide"
+		    "gtestit" "g3d" "g3grid" 
+		    "iml" "insight"
+		    "mapimport" "means"
+		    "pmenu" "printto"
+		    "rank" "registry" "report"
+		    "sort" "sql" "standard" "summary"
+		    "tabulate" "template" "timeplot" "transpose" "trantab"
+		    "univariate"
+		   ;;SAS/Stat and SAS/ETS
+		    "aceclus" "anova" "arima" "autoreg"
+		    "boxplot"
+		    "calis" "cancorr" "candisc" "catmod" "citibase" "cluster" "computab" "corresp"
+		    "discrim"
+		    "expand"
+		    "factor" "fastclus" "forecast"
+		    "glimmix" "glm" "glmmod" "glmpower" "glmselect"
+		    "inbreed"
+		    "kde" "krige2d"
+		    "lattice" "lifetest" "loess" "logistic"
+		    "mds" "mixed" "modeclus" "model" "mortgage" "multtest"
+		    "nested" "nlin" "nlmixed" "npar1way"
+		    "orthoreg"
+		    "pdlreg" "plan" "pls" "power" "princomp" "prinqual" "probit"
+		    "reg" "rsreg"
+		    "score" "sim2d" "simlin" "spectra" "statespace" "stdize" "stepdisc" 
+		    "surveymeans" "surveyreg" "surveyselect" "syslin"
+		    "tpspline" "transreg" "tree" "ttest"
+		    "varclus" "varcomp" "variogram"
+		    "x11"
+		) 'words)) font-lock-constant-face)   
+
 ;       (cons (concat
 ;	      "\\<"
 ;	      "do[ \t]*" (regexp-opt '("over" "until" "while") t) "?"
@@ -453,55 +494,6 @@ number."
 		 )) ;"\\>" 
 		); "[ \t]*(")
 	     font-lock-function-name-face)
-    
-; SAS procedure names circa v. 9.2
-; this code doesn't actually work, but why ?!?
-;
-;       (cons (concat "proc" (regexp-opt '(
-;		    "append"
-;		    "bgenmod" "blifereg" "bphreg"
-;		    "genmod" "lifereg" "phreg" "tphreg"
-;		    "calendar" "catalog" "cport" "compare" "contents" "copy" "corr" 
-;		    "cimport" "gimport" "import" 
-;		    "datasets" "dbcstab" "display"
-;		    "explode" "export"
-;		    "format" "forms" "freq" "fsbrowse" "fsedit" "fsletter" "fslist" "fsview"
-;		    "gchart" "gplot" "gprint" 
-;		    "chart" "plot" "print" 
-;		    "ganno" "gcontour" "gdevice" "geocode" "gfont" "ginside"
-;		    "gkeymap" "gmap" 
-;		    "goptions" "options"
-;		    "gproject" "greduce" "gremove" "greplay" "gslide"
-;		    "gtestit" "g3d" "g3grid" 
-;		    "iml" "insight"
-;		    "mapimport" "means"
-;		    "pmenu" "printto"
-;		    "rank" "registry" "report"
-;		    "sort" "sql" "standard" "summary"
-;		    "tabulate" "template" "timeplot" "transpose" "trantab"
-;		    "univariate"
-;		   ;;SAS/Stat and SAS/ETS
-;		    "aceclus" "anova" "arima" "autoreg"
-;		    "boxplot"
-;		    "calis" "cancorr" "candisc" "catmod" "citibase" "cluster" "computab" "corresp"
-;		    "discrim"
-;		    "expand"
-;		    "factor" "fastclus" "forecast"
-;		    "glimmix" "glm" "glmmod" "glmpower" "glmselect"
-;		    "inbreed"
-;		    "kde" "krige2d"
-;		    "lattice" "lifetest" "loess" "logistic"
-;		    "mds" "mixed" "modeclus" "model" "mortgage" "multtest"
-;		    "nested" "nlin" "nlmixed" "npar1way"
-;		    "orthoreg"
-;		    "pdlreg" "plan" "pls" "power" "princomp" "prinqual" "probit"
-;		    "reg" "rsreg"
-;		    "score" "sim2d" "simlin" "spectra" "statespace" "stdize" "stepdisc" 
-;		    "surveymeans" "surveyreg" "surveyselect" "syslin"
-;		    "tpspline" "transreg" "tree" "ttest"
-;		    "varclus" "varcomp" "variogram"
-;		    "x11"
-;		) 'words)) font-lock-constant-face)
          )
     (list
      ;; .log NOTE: messages
