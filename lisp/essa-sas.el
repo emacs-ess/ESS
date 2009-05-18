@@ -1122,17 +1122,20 @@ Keep in mind that the maximum command line length in MS-DOS is
   (ess-sas-goto-log)
   (kill-buffer nil)  
 
-  (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode) (progn
-      (setq auto-mode-alist (delete '("\\.[lL][oO][gG]\\'" . SAS-log-mode) auto-mode-alist))
-      (setq buffer-read-only nil)
-      (ess-transcript-minor-mode 0)
-      (font-lock-mode 0))
-      (setq auto-mode-alist (append '(("\\.[lL][oO][gG]\\'" . SAS-log-mode)) auto-mode-alist))
-      (setq buffer-read-only t)
-      (ess-transcript-minor-mode 1)
-      (font-lock-mode 1)
-      (font-lock-fontify-buffer))
+;  (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode) (progn
+;      (setq auto-mode-alist (delete '("\\.[lL][oO][gG]\\'" . SAS-log-mode) auto-mode-alist))
+;      (setq buffer-read-only nil)
+;      (ess-transcript-minor-mode 0)
+;      (font-lock-mode 0))
+;      (setq auto-mode-alist (append '(("\\.[lL][oO][gG]\\'" . SAS-log-mode)) auto-mode-alist))
+;      (setq buffer-read-only t)
+;      (ess-transcript-minor-mode 1)
+;      (font-lock-mode 1)
+;      (font-lock-fontify-buffer))
 
+  (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode) 
+      (setq auto-mode-alist (delete '("\\.[lL][oO][gG]\\'" . SAS-log-mode) auto-mode-alist))
+      (setq auto-mode-alist (append '(("\\.[lL][oO][gG]\\'" . SAS-log-mode)) auto-mode-alist)))
   (ess-sas-goto-log))
 
 (defun ess-sas-versions-create ()
