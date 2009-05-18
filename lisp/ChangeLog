@@ -1,3 +1,8 @@
+2009-05-18  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essa-sas.el (ess-sas-toggle-sas-log-mode): really,
+	really fixed now (3rd times a charm)
+
 2009-05-15  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-eldoc.el/ess-roxygen.el/ess-toolbar.el:
