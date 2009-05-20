@@ -271,6 +271,7 @@ number."
 
      ;; .log ERROR: messages
      (cons "^ERROR[ :].*$"                       font-lock-keyword-face)
+     (cons "^       [^ ].*[.]$"                  font-lock-keyword-face)
      (cons "[ ][_]+$"                            font-lock-keyword-face)
 
      ;; .log WARNING: messages
@@ -279,7 +280,7 @@ number."
 
      ;; SAS comments
      ;; /* */ style handled by grammar above
-     (cons "\\(^[0-9]*\\|;\\)[ \t]*%?\\*[^;]*;" font-lock-comment-face)
+     (cons "\\(^[0-9]*\\|;\\)[ \t]*%?\\*[^;/][^;]*;" font-lock-comment-face)
     
      ; these exceptions need to come before their more general declarations
      (cons "data="     font-lock-keyword-face)
