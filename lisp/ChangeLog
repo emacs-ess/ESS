@@ -1,7 +1,7 @@
 2009-05-21  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): a few
-	minor changes
+	minor changes, ERRORs/NOTEs/WARNINGs
 
 2009-05-20  Rodney Sparapani  <rsparapa@mcw.edu>
 
