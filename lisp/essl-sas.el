@@ -272,17 +272,23 @@ number."
      ;; .log ERROR: messages
      (cons "^ERROR[ :].*$"                       font-lock-keyword-face)
      (cons "^       [^ ].*[.]$"                  font-lock-keyword-face)
+     (cons "^              [ ]?[^ ].*[.]$"       font-lock-keyword-face)
+     (cons "^              a format name."       font-lock-keyword-face)
+     (cons "^       where a numeric operand is required. The condition was: "
+                                                 font-lock-keyword-face)
      (cons "[ ][_]+$"                            font-lock-keyword-face)
 
      ;; .log WARNING: messages
      (cons "^WARNING: .*$"                       font-lock-function-name-face)
      (cons "^         [^ ].*[.]$"                font-lock-function-name-face)
+     (cons "^         [a-z].*[a-z][ ]?$"         font-lock-function-name-face)
 
      ;; SAS comments
      ;; /* */ style handled by grammar above
-     (cons "\\(^[0-9]*\\|;\\)[ \t]*%?\\*[^;/][^;]*;" font-lock-comment-face)
+     (cons "\\(^[0-9]*\\|;\\)[ \t]*%?\\*[^;/][^;]*;" 
+					         font-lock-comment-face)
     
-     ; these exceptions need to come before their more general declarations
+     ; these over-rides need to come before the more general declarations
      (cons "data="     font-lock-keyword-face)
      (cons "and("      font-lock-function-name-face)
      (cons "index("    font-lock-function-name-face)
@@ -290,16 +296,16 @@ number."
      (cons "libname("  font-lock-function-name-face)
      (cons "not("      font-lock-function-name-face)
      (cons "or("       font-lock-function-name-face)
+     (cons "call symput("      
+		       font-lock-function-name-face)
      (cons "put("      font-lock-function-name-face)
      (cons "sum("      font-lock-function-name-face)
 
     ; other idiosyncratic keywords
-     ;(cons "in="       font-lock-keyword-face)
-     ;(cons "sortedby=" font-lock-keyword-face)
      ;(cons "key="      font-lock-keyword-face)
      ;(cons "/unique"   font-lock-keyword-face)
 
-       ;; SAS execution blocks, DATA/RUN, %MACRO/%MEND, etc.
+       ;; SAS execution blocks: DATA, %MACRO/%MEND, %DO/%END, etc.
        (cons (regexp-opt '(
 		 "data" ;"proc" 
 		"%macro" "%mend"
@@ -393,13 +399,13 @@ number."
 		"bayes" "between" 
 		"change" "class" "contains"
 		"delete" "display" "dm" "drop"
-		"else" "eq" "error" "exchange" "exclude" 
+		"else" "error" "exchange" "exclude" 
 		"file" "filename" "format" "freq"
 		 "footnote" "footnote1" "footnote2" "footnote3" "footnote4" "footnote5" 
 		 "footnote6" "footnote7" "footnote8" "footnote9" "footnote10"
 		"ge" "goptions" "gt"
 		"hazardratio"
-		"id" "if" "index" "infile" "informat" "input" "is" 
+		"id" "if" "index" "infile" "informat" "input" ; "is" rarely used, but common false pos.
 		"keep" 
 		"label" "le" "length" "libname" "like" "link" "lsmeans" "lt"
 		"manova" "means" "merge" "missing" "model" "modify" 
