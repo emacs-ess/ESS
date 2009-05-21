@@ -256,6 +256,23 @@ number."
      (cons "^      Physical Name:[ ]+.+$"        font-lock-comment-face)
      (cons "^      \\(cpu\\|real\\) time[ ]+[0-9].*$"
                                                  font-lock-comment-face)
+     (cons "^      decimal may be shifted by the"
+                                                 font-lock-comment-face)
+     (cons "^NOTE: The infile "                  font-lock-comment-face) 
+     (cons "^NOTE: 1 record was read from the infile " 
+				                 font-lock-comment-face) 
+     (cons "^NOTE: [1-9][0-9]* records were read from the infile " 
+				                 font-lock-comment-face) 
+     (cons "^      Filename=.*,$"                font-lock-comment-face)
+     (cons "^      Owner Name=.*,$"              font-lock-comment-face)
+     (cons "^      Access Permission=.*,$"       font-lock-comment-face)
+     (cons "^      Last Modified=.*,?$"          font-lock-comment-face)
+     (cons "^      File Size (bytes)=[0-9]+$"    font-lock-comment-face)
+     (cons "^NOTE: The file "                    font-lock-comment-face) 
+     (cons "^NOTE: 1 record was written to the file " 
+				                 font-lock-comment-face) 
+     (cons "^NOTE: [1-9][0-9]* records were written to the file " 
+				                 font-lock-comment-face) 
      (cons "^NOTE: PROC LOGISTIC is modeling the probability that"
                                                  font-lock-comment-face) 
      (cons "^1[ ]+The SAS System.*$"             font-lock-comment-face)
