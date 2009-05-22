@@ -1,9 +1,9 @@
 ;;; essd-jags.el -- ESS[JAGS] dialect
 
-;; Copyright (C) 2006-2008 Rodney Sparapani
+;; Copyright (C) 2008-2009 Rodney Sparapani
 
-;; Original Author: Rodney Sparapani <rsparapa@mcw.edu>
-;; Created: 16 August 2006
+;; Original Author: Rodney Sparapani
+;; Created: 13 March 2008
 ;; Maintainers: ESS-help <ess-help@stat.math.ethz.ch>
 
 ;; This file is part of ESS
