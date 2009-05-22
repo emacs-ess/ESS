@@ -1,8 +1,8 @@
 ;;; essl-bugs.el -- ESS[BUGS] languages
 
-;; Copyright (C) 2006 Rodney Sparapani
+;; Copyright (C) 2006-2009 Rodney Sparapani
 
-;; Original Author: Rodney Sparapani <rsparapa@mcw.edu>
+;; Original Author: Rodney Sparapani
 ;; Created: 16 August 2006
 ;; Maintainers: ESS-help <ess-help@stat.math.ethz.ch>
 
