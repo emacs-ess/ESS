@@ -1,11 +1,11 @@
 ;;; essl-sas.el --- SAS customization
 
-;; Copyright (C) 1997--2008 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Authors: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
-;;          A.J. Rossini <rossini@u.washington.edu>,
-;;          Rodney Sparapani <rsparap@mcw.edu>
+;; Original Authors: Richard M. Heiberger,
+;;          A.J. Rossini,
+;;          Rodney Sparapani
 ;; Created: 20 Aug 1997
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
@@ -275,6 +275,8 @@ number."
 				                 font-lock-comment-face) 
      (cons "^NOTE: PROC LOGISTIC is modeling the probability that"
                                                  font-lock-comment-face) 
+     (cons "^NOTE: PROC GENMOD is modeling the probability that"
+                                                 font-lock-comment-face) 
      (cons "^1[ ]+The SAS System.*$"             font-lock-comment-face)
      (cons "^\014.*$"                            font-lock-comment-face)
      (cons "[*][*][*] ANNOTATE macros are now available [*][*][*]"
@@ -287,18 +289,40 @@ number."
      (cons "^End:$"                              font-lock-comment-face)
 
      ;; .log ERROR: messages
-     (cons "^ERROR[ :].*$"                       font-lock-keyword-face)
-     (cons "^       [^ ].*[.]$"                  font-lock-keyword-face)
-     (cons "^              [ ]?[^ ].*[.]$"       font-lock-keyword-face)
+     (cons "^ERROR\\( [0-9]+-[1-9][0-9][0-9]\\)?: .*$"   
+                                                 font-lock-keyword-face)
+     ;       ERROR:
+     (cons "^       [^ ].*\\([.][ ]?\\|,[ ]?\\|[a-z]\\)[ ]?$"  
+                                                 font-lock-keyword-face)
+     ;       ERROR #-###:
+     (cons "^             [^ ].*\\([.][ ]?\\|,[ ]?\\|[a-z]\\)[ ]?$"
+                                                 font-lock-keyword-face)
+     ;       ERROR ##-###:
+     (cons "^              [^ ].*\\([.][ ]?\\|,[ ]?\\|[a-z]\\)[ ]?$" 
+						 font-lock-keyword-face)
+     ;       ERROR ###-###:
+     (cons "^               [^ ].*\\([.][ ]?\\|,[ ]?\\|[a-z]\\)[ ]?$" 
+						 font-lock-keyword-face)
      (cons "^              a format name."       font-lock-keyword-face)
      (cons "^       where a numeric operand is required. The condition was: "
                                                  font-lock-keyword-face)
      (cons "[ ][_]+$"                            font-lock-keyword-face)
 
-     ;; .log WARNING: messages
-     (cons "^WARNING: .*$"                       font-lock-function-name-face)
-     (cons "^         [^ ].*[.]$"                font-lock-function-name-face)
-     (cons "^         [a-z].*[a-z][ ]?$"         font-lock-function-name-face)
+     ;; .log WARNING: messages 
+     (cons "^WARNING\\( [0-9]+-[1-9][0-9][0-9]\\)?: .*$"  
+                                                 font-lock-function-name-face)
+     ;       WARNING:
+     (cons "^         [^ ].*\\([.][ ]?\\|,[ ]?\\|[a-z]\\)[ ]?$"
+                                                 font-lock-function-name-face)
+     ;       WARNING #-###:
+     (cons "^               [^ ].*\\([.][ ]?\\|,[ ]?\\|[a-z]\\)[ ]?$"
+                                                 font-lock-function-name-face)
+     ;       WARNING ##-###:
+     (cons "^                [^ ].*\\([.][ ]?\\|,[ ]?\\|[a-z]\\)[ ]?$"
+                                                 font-lock-function-name-face)
+     ;       WARNING ###-###:
+     (cons "^                 [^ ].*\\([.][ ]?\\|,[ ]?\\|[a-z]\\)[ ]?$"
+                                                 font-lock-function-name-face)
 
      ;; SAS comments
      ;; /* */ style handled by grammar above
