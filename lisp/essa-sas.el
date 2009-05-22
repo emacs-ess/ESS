@@ -1,9 +1,9 @@
 ;;; essa-sas.el -- clean-room implementation of many SAS-mode features
 
-;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Rodney A. Sparapani <rsparapa@mcw.edu>
+;; Original Author: Rodney A. Sparapani
 ;; Maintainer: ESS-core@stat.math.ethz.ch
 ;; Created: 17 November 1999
 ;; Keywords: SAS
