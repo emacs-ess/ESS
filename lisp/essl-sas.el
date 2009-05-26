@@ -287,7 +287,8 @@ number."
 						 font-lock-comment-face)
      (cons "^Local Variables:$"                  font-lock-comment-face)
      (cons "^End:$"                              font-lock-comment-face)
-
+     (cons "^MPRINT(.*): "                       font-lock-comment-face)
+   
      ;; .log ERROR: messages
      (cons "^ERROR\\( [0-9]+-[1-9][0-9][0-9]\\)?: .*$"   
                                                  font-lock-keyword-face)
