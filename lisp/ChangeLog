@@ -4,6 +4,10 @@
 	functions explicit, correct a few omissions, add RX
 	functions...  note that not all functions are yet on
 	the list as there are LOTS of functions
+	also, fixing a bug... int( should only be matched
+	at the beginning of a word, however, it seems to
+	also be finding MPRINT(.  there must be a bug
+	in the font-locking code somewhere
 
 2009-05-22  Rodney Sparapani  <rsparapa@mcw.edu>
 
