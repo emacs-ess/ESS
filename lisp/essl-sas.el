@@ -330,17 +330,15 @@ number."
 					         font-lock-comment-face)
     
      ; these over-rides need to come before the more general declarations
-     (cons "data="     font-lock-keyword-face)
-     (cons "and("      font-lock-function-name-face)
-     (cons "index("    font-lock-function-name-face)
-     (cons "input("    font-lock-function-name-face)
-     (cons "libname("  font-lock-function-name-face)
-     (cons "not("      font-lock-function-name-face)
-     (cons "or("       font-lock-function-name-face)
-     (cons "call symput("      
-		       font-lock-function-name-face)
-     (cons "put("      font-lock-function-name-face)
-     (cons "sum("      font-lock-function-name-face)
+     (cons "\\<and("      font-lock-function-name-face)
+     (cons "\\<data="     font-lock-keyword-face)
+     (cons "\\<index("    font-lock-function-name-face)
+     (cons "\\<input("    font-lock-function-name-face)
+     (cons "\\<libname("  font-lock-function-name-face)
+     (cons "\\<not("      font-lock-function-name-face)
+     (cons "\\<or("       font-lock-function-name-face)
+     (cons "\\<put("      font-lock-function-name-face)
+     (cons "\\<sum("      font-lock-function-name-face)
 
     ; other idiosyncratic keywords
      ;(cons "key="      font-lock-keyword-face)
@@ -382,7 +380,7 @@ number."
 	     font-lock-keyword-face)
      
 ;;;    ;; SAS procedure names
-       (cons (concat "proc[ ]+"
+       (cons (concat "\\<proc[ ]+"
 		(regexp-opt '(
 		    ;; SAS base and SAS/Graph 
 		    "append"
@@ -474,14 +472,19 @@ number."
 
        ;; SAS functions and SAS macro functions
        (cons "%[a-z_][a-z_0-9]*[(;]"                  font-lock-function-name-face)
-       (cons "\\<call[ \t]+[a-z]+("                   font-lock-function-name-face)
+       ;(cons "\\<call[ \t]+[a-z]+("                   font-lock-function-name-face)
 
        (cons (concat "\\<"
 	      (regexp-opt
 	       '(
 		 "abs(" "arcos(" "arsin(" "atan(" 
 		"betainv(" "byte(" 
-		"ceil(" "cinv(" "collate(" "compress(" "cos(" "cosh(" "css(" "cv("
+		"call execute(" "call label(" "call module(" "call modulei("
+		"call poke(" "call ranbin(" "call rancau(" "call ranexp("
+		"call rangam(" "call rannor(" "call ranpoi(" "call rantbl("
+		"call rantri(" "call ranuni(" "call rxchange(" "call rxfree("
+		"call rxsubstr(" "call set(" "call symput(" "call system("
+		"cdf" "ceil(" "cinv(" "collate(" "compress(" "convx(" "convxp(" "cos(" "cosh(" "css(" "cv("
 		 "daccdb(" "daccdbsl(" "daccsl(" "daccsyd(" "dacctab("
 		 "depdb(" "depdbsl(" "depsl(" "depsyd(" "deptab(" 
 		"date(" "datejul(" "datepart(" "datetime(" "day(" "dhms(" "dif(" "digamma(" "dim(" 
@@ -499,7 +502,7 @@ number."
 		 "probbeta(" "probbnml(" "probchi(" "probf(" "probgam(" "probhypr(" "probit(" "probnegb(" "probnorm(" "probt("
 		 "poisson(" "put(" 
 		"qtr(" 
-		"range(" "rank(" "repeat(" "reverse(" "right(" "round(" 
+		"range(" "rank(" "repeat(" "reverse(" "right(" "round(" "rxmatch(" "rxparse("
 		"ranbin(" "rancau(" "ranexp(" "rangam(" "rannor(" "ranpoi(" "rantbl(" "rantri(" "ranuni("
 		"saving(" "scan(" "second(" "sign(" "sin(" "sinh(" "sqrt(" 
 		"std(" "stderr(" "stfips(" "stname(" "stnamel(" "substr(" "sum(" "symget(" 
