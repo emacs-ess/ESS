@@ -1,3 +1,10 @@
+2009-05-26  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): make call
+	functions explicit, correct a few omissions, add RX
+	functions...  note that not all functions are yet on
+	the list as there are LOTS of functions
+
 2009-05-22  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-bugs.el, essd-bugs.el, essd-jags.el, essl-sas.el, 
