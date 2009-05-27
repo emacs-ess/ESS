@@ -1,3 +1,8 @@
+2009-05-27  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* Makefile (downloads): new target for
+	creation of .tgz and .zip only
+
 2009-04-22  Stephen Eglen  <stephen@gnu.org>
 
 	* doc/ess.texi (TAGS): Describe R CMD rtags.
