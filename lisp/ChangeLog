@@ -1,3 +1,20 @@
+2009-05-28  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): last tweak to
+	comment statement identification (very optimistic)
+
+	* essa-sas.el (ess-sas-goto-log): no longer highlighting error messages
+ this feature never worked quite right (and was XEmacs only which is worse)
+ after highlighting an error message, moving point would cause an unwanted
+ highlighting between point and mark; why god, why?!?
+
+2009-05-27  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): 
+	get MPRINT right in the case where it is
+	followed by a comment and add Pipe command=
+	and fix functions finally
+
 2009-05-26  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): make call
