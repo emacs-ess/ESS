@@ -268,6 +268,7 @@ number."
      (cons "^      Access Permission=.*,$"       font-lock-comment-face)
      (cons "^      Last Modified=.*,?$"          font-lock-comment-face)
      (cons "^      File Size (bytes)=[0-9]+$"    font-lock-comment-face)
+     (cons "^      Pipe command="                font-lock-comment-face)
      (cons "^NOTE: The file "                    font-lock-comment-face) 
      (cons "^NOTE: 1 record was written to the file " 
 				                 font-lock-comment-face) 
@@ -287,7 +288,7 @@ number."
 						 font-lock-comment-face)
      (cons "^Local Variables:$"                  font-lock-comment-face)
      (cons "^End:$"                              font-lock-comment-face)
-     (cons "^MPRINT(.*): "                       font-lock-comment-face)
+     (cons "^MPRINT([_A-Z0-9]+)"                 font-lock-comment-face)
    
      ;; .log ERROR: messages
      (cons "^ERROR\\( [0-9]+-[1-9][0-9][0-9]\\)?: .*$"   
@@ -327,7 +328,7 @@ number."
 
      ;; SAS comments
      ;; /* */ style handled by grammar above
-     (cons "\\(^[0-9]*\\|;\\)[ \t]*%?\\*[^;/][^;]*;" 
+     (cons "\\(^[0-9]*\\|[:;!]\\)[ \t]*%?\\*[^;/][^;]*;" 
 					         font-lock-comment-face)
     
      ; these over-rides need to come before the more general declarations
@@ -475,74 +476,74 @@ number."
        (cons "%[a-z_][a-z_0-9]*[(;]"                  font-lock-function-name-face)
        ;(cons "\\<call[ \t]+[a-z]+("                   font-lock-function-name-face)
 
-       (cons (concat "\\<"
+       (cons (concat ;"\\<"
 	      (regexp-opt
 	       '(
-		 "abs(" "arcos(" "arsin(" "atan(" 
-		"betainv(" "byte(" 
-		"call execute(" "call label(" "call module(" "call modulei("
-		"call poke(" "call ranbin(" "call rancau(" "call ranexp("
-		"call rangam(" "call rannor(" "call ranpoi(" "call rantbl("
-		"call rantri(" "call ranuni(" "call rxchange(" "call rxfree("
-		"call rxsubstr(" "call set(" "call symput(" "call system("
-		"cdf" "ceil(" "cinv(" "collate(" "compress(" "convx(" "convxp(" "cos(" "cosh(" "css(" "cv("
-		 "daccdb(" "daccdbsl(" "daccsl(" "daccsyd(" "dacctab("
-		 "depdb(" "depdbsl(" "depsl(" "depsyd(" "deptab(" 
-		"date(" "datejul(" "datepart(" "datetime(" "day(" "dhms(" "dif(" "digamma(" "dim(" 
-		"erf(" "erfc(" "exp(" 
-		"finv(" "fipname(" "fipnamel(" "fipstate(" "floor(" "fuzz(" 
-		"gaminv(" "gamma("
-		 "hbound(" "hms(" "hour(" 
-		"in(" "in:(" "index(" "indexc(" "input(" "int(" "intck(" "intnx(" "intrr(" "irr(" 
-		"juldate(" 
-		"kurtosis(" 
-		"lag(" "lbound(" "left(" "length(" "lgamma(" "log(" "log10(" "log2(" 
-		"max(" "mdy(" "mean(" "min(" "minute(" "mod(" "month(" "mort(" 
-		"n(" "netpv(" "nmiss(" "normal(" "npv(" 
-		"ordinal("
-		 "probbeta(" "probbnml(" "probchi(" "probf(" "probgam(" "probhypr(" "probit(" "probnegb(" "probnorm(" "probt("
-		 "poisson(" "put(" 
-		"qtr(" 
-		"range(" "rank(" "repeat(" "reverse(" "right(" "round(" "rxmatch(" "rxparse("
-		"ranbin(" "rancau(" "ranexp(" "rangam(" "rannor(" "ranpoi(" "rantbl(" "rantri(" "ranuni("
-		"saving(" "scan(" "second(" "sign(" "sin(" "sinh(" "sqrt(" 
-		"std(" "stderr(" "stfips(" "stname(" "stnamel(" "substr(" "sum(" "symget(" 
-		"tan(" "tanh(" "time(" "timepart(" "tinv(" "today(" "translate(" "trigamma(" "trim(" "trunc(" 
-		"uniform(" "until(" "upcase(" "uss(" 
-		"var(" "verify(" 
-		"weekday(" "when(" "while(" 
-		"year(" "yyq("
-		 "zipfips(" "zipname(" "zipnamel(" "zipstate("
+		 "abs" "arcos" "arsin" "atan" 
+		"betainv" "byte" 
+		"call execute" "call label" "call module" "call modulei"
+		"call poke" "call ranbin" "call rancau" "call ranexp"
+		"call rangam" "call rannor" "call ranpoi" "call rantbl"
+		"call rantri" "call ranuni" "call rxchange" "call rxfree"
+		"call rxsubstr" "call set" "call symput" "call system"
+		"cdf" "ceil" "cinv" "collate" "compress" "convx" "convxp" "cos" "cosh" "css" "cv"
+		 "daccdb" "daccdbsl" "daccsl" "daccsyd" "dacctab"
+		 "depdb" "depdbsl" "depsl" "depsyd" "deptab" 
+		"date" "datejul" "datepart" "datetime" "day" "dhms" "dif" "digamma" "dim" 
+		"erf" "erfc" "exp" 
+		"finv" "fipname" "fipnamel" "fipstate" "floor" "fuzz" 
+		"gaminv" "gamma"
+		 "hbound" "hms" "hour" 
+		"in" "in:" "index" "indexc" "input" "int" "intck" "intnx" "intrr" "irr" 
+		"juldate" 
+		"kurtosis" 
+		"lag" "lbound" "left" "length" "lgamma" "log" "log10" "log2" 
+		"max" "mdy" "mean" "min" "minute" "mod" "month" "mort" 
+		"n" "netpv" "nmiss" "normal" "npv" 
+		"ordinal"
+		 "probbeta" "probbnml" "probchi" "probf" "probgam" "probhypr" "probit" "probnegb" "probnorm" "probt"
+		 "poisson" "put" 
+		"qtr" 
+		"range" "rank" "repeat" "reverse" "right" "round" "rxmatch" "rxparse"
+		"ranbin" "rancau" "ranexp" "rangam" "rannor" "ranpoi" "rantbl" "rantri" "ranuni"
+		"saving" "scan" "second" "sign" "sin" "sinh" "sqrt" 
+		"std" "stderr" "stfips" "stname" "stnamel" "substr" "sum" "symget" 
+		"tan" "tanh" "time" "timepart" "tinv" "today" "translate" "trigamma" "trim" "trunc" 
+		"uniform" "until" "upcase" "uss" 
+		"var" "verify" 
+		"weekday" "when" "while" 
+		"year" "yyq"
+		 "zipfips" "zipname" "zipnamel" "zipstate"
 
 ;;;    ;; SAS functions introduced in Technical Report P-222
-		 "airy(" 
-		"band(" "blshift(" "brshift(" "bnot(" "bor(" "bxor("
-		 "cnonct(" "compbl("
-		"dairy(" "dequote("
-		"fnonct("  
-		 "ibessel(" "indexw(" "inputc(" "inputn(" 
-		"jbessel(" 
-		"lowcase("
-		 "putc(" "putn(" 
-		"quote(" 
-		"resolve(" 
-		"soundex(" "sysprod("
-		"tnonct(" "tranwrd(" "trimn("
+		 "airy" 
+		"band" "blshift" "brshift" "bnot" "bor" "bxor"
+		 "cnonct" "compbl"
+		"dairy" "dequote"
+		"fnonct"  
+		 "ibessel" "indexw" "inputc" "inputn" 
+		"jbessel" 
+		"lowcase"
+		 "putc" "putn" 
+		"quote" 
+		"resolve" 
+		"soundex" "sysprod"
+		"tnonct" "tranwrd" "trimn"
 
 ;;;    ;; SCL functions that are known to work with SAS macro function %sysfunc
-		 "attrc(" "attrn(" 
-		"cexist(" "close(" 
-		"dclose(" "dnum(" "dopen(" "dread(" 
-		"exist(" 
-		"fclose(" "fetchobs(" "fileexist(" "finfo(" "fopen(" "fput(" "fwrite(" 
-		"getoption(" "getvarc(" "getvarn(" 
-		"libname(" "libref(" 
-		"open(" "optgetn(" "optsetn("
-		 "pathname(" 
-		"sysmsg(" 
-		"varfmt(" "varlabel(" "varnum(" "vartype("
-		 )) ;"\\>" 
-		); "[ \t]*(")
+		 "attrc" "attrn" 
+		"cexist" "close" 
+		"dclose" "dnum" "dopen" "dread" 
+		"exist" 
+		"fclose" "fetchobs" "fileexist" "finfo" "fopen" "fput" "fwrite" 
+		"getoption" "getvarc" "getvarn" 
+		"libname" "libref" 
+		"open" "optgetn" "optsetn"
+		 "pathname" 
+		"sysmsg" 
+		"varfmt" "varlabel" "varnum" "vartype"
+		 ) 'words) ;"\\>" 
+		"("); "[ \t]*(")
 	     font-lock-function-name-face)
          )
     (list
