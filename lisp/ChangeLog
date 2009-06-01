@@ -1,3 +1,8 @@
+2009-06-01  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): in:
+	needs to be a special case for some reason
+
 2009-05-28  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): last tweak to
