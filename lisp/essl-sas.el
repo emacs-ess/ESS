@@ -334,6 +334,7 @@ number."
      ; these over-rides need to come before the more general declarations
      (cons "\\<and("      font-lock-function-name-face)
      (cons "\\<data="     font-lock-keyword-face)
+     (cons "\\<in:("      font-lock-function-name-face)
      (cons "\\<index("    font-lock-function-name-face)
      (cons "\\<input("    font-lock-function-name-face)
      (cons "\\<libname("  font-lock-function-name-face)
@@ -494,7 +495,7 @@ number."
 		"finv" "fipname" "fipnamel" "fipstate" "floor" "fuzz" 
 		"gaminv" "gamma"
 		 "hbound" "hms" "hour" 
-		"in" "in:" "index" "indexc" "input" "int" "intck" "intnx" "intrr" "irr" 
+		"in" "index" "indexc" "input" "int" "intck" "intnx" "intrr" "irr" 
 		"juldate" 
 		"kurtosis" 
 		"lag" "lbound" "left" "length" "lgamma" "log" "log10" "log2" 
