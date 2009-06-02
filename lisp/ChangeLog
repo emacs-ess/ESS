@@ -1,3 +1,8 @@
+2009-06-02  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): kill a
+	false positive bug for ERRORs/WARNINGs
+
 2009-06-01  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): in:
