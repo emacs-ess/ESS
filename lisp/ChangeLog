@@ -1,3 +1,9 @@
+2009-06-03  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-mode.el (ess-mode): turn off annoying
+	message by default, pass nil to turn it back on
+	(ess-set-style something nil)
+
 2009-06-02  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): kill a
