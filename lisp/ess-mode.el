@@ -382,7 +382,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 	   ess-mode-editing-alist))
   (ess-setq-vars-local ess-mode-editing-alist)
 
-  (ess-set-style ess-style)
+  (ess-set-style ess-style t)
   (use-local-map ess-mode-map)
   (set-syntax-table ess-mode-syntax-table)
 
