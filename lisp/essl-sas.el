@@ -264,6 +264,11 @@ number."
      (cons "^NOTE: [1-9][0-9]* records were read from the infile " 
 				                 font-lock-comment-face) 
      (cons "^      Filename=.*,$"                font-lock-comment-face)
+     (cons "^      File Name=.*,$"               font-lock-comment-face)
+     (cons "^      File $"                       font-lock-comment-face)
+     (cons "^      Name=.*,$"                    font-lock-comment-face)
+     (cons "^      File List=("                  font-lock-comment-face)
+     (cons "^      List=("                       font-lock-comment-face)
      (cons "^      Owner Name=.*,$"              font-lock-comment-face)
      (cons "^      Access Permission=.*,$"       font-lock-comment-face)
      (cons "^      Last Modified=.*,?$"          font-lock-comment-face)
