@@ -677,4 +677,8 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 
            (replace-match ess-temp-replacement-string))))))
 
+(defun ess-num-or-zero (arg)
+"*If a number, then return that number, otherwise return 0."
+(or (and (numberp arg) arg) 0))
+
 (provide 'ess-utils)
