@@ -1,3 +1,13 @@
+2009-06-04  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-utils.el (ess-num-or-zero): 
+	added (ess-num-or-zero arg)
+	If arg is a number, then return that number, otherwise return 0
+
+	* essa-sas.el (ess-sas-goto): fix the long-time
+	bug of generating an error in (ess-sas-goto "log")
+	when .log does not exist
+
 2009-06-03  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): 
