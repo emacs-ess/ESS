@@ -663,7 +663,7 @@ current buffer if nil."
 
 	      (if revert
 		  (if (and (> ess-sas-log-max 0) (string-equal suffix "log")
-			   (> (nth 7 (file-attributes ess-sas-temp-file))
+			   (> (ess-num-or-zero (nth 7 (file-attributes ess-sas-temp-file))) 
 			      ess-sas-log-max))
 		      (progn
 			(insert-file-contents ess-sas-temp-file nil 0
@@ -719,13 +719,14 @@ current buffer if nil."
     "\\|WARNING: RUN statement ignored due to previous errors."
     "\\|WARNING: Values exist outside the axis range"
     "\\|Bus Error In Task\\|Segmentation Violation In Task"))
-	(ess-sas-save-point nil) (ess-sas-pop-mark nil))
+	(ess-sas-save-point nil)); (ess-sas-pop-mark nil))
 
   (if (ess-sas-goto "log" 'revert) (progn
 	(setq ess-sas-save-point (point))
 	(goto-char (point-min)))
     (setq ess-sas-save-point (point)))
 
+;(if (number-char-or-marker-p ess-sas-save-point) (progn
 (if ess-tmp-no-error-check (goto-char ess-sas-save-point)
   (if (or (search-forward-regexp ess-sas-error nil t)
 	(and (goto-char (point-min))
