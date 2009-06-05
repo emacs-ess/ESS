@@ -1,3 +1,7 @@
+2009-06-05  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-utils.el (ess-change-directory): New function.
+
 2009-06-04  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-utils.el (ess-num-or-zero): 
