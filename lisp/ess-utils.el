@@ -681,4 +681,13 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 "*If a number, then return that number, otherwise return 0."
 (or (and (numberp arg) arg) 0))
 
+(defun ess-change-directory (path)
+  "Set the current working directory to PATH for both *R* and Emacs."
+  (interactive "DDirectory to change to: ")
+
+  (when (file-exists-p path)
+    (ess-command (concat "setwd(\"" path "\")\n"))
+    ;; use file-name-as-directory to ensure it has trailing /
+    (setq default-directory (file-name-as-directory path))))
+
 (provide 'ess-utils)
