@@ -359,7 +359,7 @@ number."
 		 "%do" "%to" "%by" "%end" 
 		 "%goto" "%go to" 
 		 "%if" "%then" "%else"
-		 "%global" "%include" "%input" "%local" "%let" "%put" "%sysexec"
+		 "%global" "%inc" "%include" "%input" "%local" "%let" "%put" "%sysexec"
 	    ) 'words) font-lock-constant-face)
 
        ;; SAS execution blocks that must be followed by a semi-colon
