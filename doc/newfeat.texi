@@ -13,7 +13,9 @@ in the old code being used.
 @item @ESS{[BUGS]} and @ESS{[JAGS]}: typing @code{=} now results in @code{<-}
 @item @ESS{[R]} function arguments ``show'' @code{(ess-r-args-show)} now uses the
  new @code{(tooltip-show-at-point)} contributed by Erik Iverson.
-@item Toolbar icons now also work in (beta) Emacs 23
+@item Toolbar icons now also work in (beta) Emacs 2
+@item @ESS{[S]}: New function @code{ess-change-directory} for setting both
+emacs' current directory and the directory of an *R* or *S* buffer.
 @end itemize
 
 Changes/New Features in 5.3.11:
