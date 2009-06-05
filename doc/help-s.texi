@@ -349,3 +349,11 @@ prefixed by "##").
 
    Solution: add a " at the end of the "Dumped..." statement, to
    revert the font-lock face back to normal.
+
+4. When you change directory within a *R* or *S* session using the
+setwd() command, emacs does not recognise that you have changed the
+current directory.  
+
+Solution: Use @kbd{M-x ess-change-directory}.  This will
+ensure that Emacs will know that you have changed the directory, and
+update the emacs variable @code{default-directory}.
