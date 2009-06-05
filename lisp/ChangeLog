@@ -1,3 +1,8 @@
+2009-06-05  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): 
+	missed an abbreviated keyword
+
 2009-06-05  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-utils.el (ess-change-directory): New function.
