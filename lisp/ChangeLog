@@ -1,6 +1,10 @@
+2009-06-08  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-eval-linewise): keep deactivate-mark local
+
 2009-06-05  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* essl-sas.el (SAS-mode-font-lock-keywords): 
+	* essl-sas.el (SAS-mode-font-lock-keywords):
 	missed an abbreviated keyword
 
 2009-06-05  Stephen Eglen  <stephen@gnu.org>
@@ -9,7 +13,7 @@
 
 2009-06-04  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-utils.el (ess-num-or-zero): 
+	* ess-utils.el (ess-num-or-zero):
 	added (ess-num-or-zero arg)
 	If arg is a number, then return that number, otherwise return 0
 
@@ -19,7 +23,7 @@
 
 2009-06-03  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* essl-sas.el (SAS-mode-font-lock-keywords): 
+	* essl-sas.el (SAS-mode-font-lock-keywords):
 	adding a few more rare NOTES
 
 	* ess-mode.el (ess-mode): turn off annoying
@@ -48,7 +52,7 @@
 
 2009-05-27  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* essl-sas.el (SAS-mode-font-lock-keywords): 
+	* essl-sas.el (SAS-mode-font-lock-keywords):
 	get MPRINT right in the case where it is
 	followed by a comment and add Pipe command=
 	and fix functions finally
@@ -66,12 +70,12 @@
 
 2009-05-22  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* essl-bugs.el, essd-bugs.el, essd-jags.el, essl-sas.el, 
+	* essl-bugs.el, essd-bugs.el, essd-jags.el, essl-sas.el,
 	essa-sas.el: update headers/copyrights
-	
-	* essl-sas.el (SAS-mode-font-lock-keywords): 
+
+	* essl-sas.el (SAS-mode-font-lock-keywords):
 	fine-tuning ERRORs/WARNINGs
-	
+
 2009-05-21  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): a few
@@ -80,14 +84,14 @@
 2009-05-20  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): fix
-	error messages that go to two lines and kill a 
+	error messages that go to two lines and kill a
 	long-running bug biting adjacent comments
-	/* comment type 1 */ followed by 
+	/* comment type 1 */ followed by
 	* comment type 2 ;
 	migration complete! (should have done it 9 years ago)
 	there are certainly going to be some special/missed
 	cases of false positives/negatives
-	(bug reports and patches welcome!) 
+	(bug reports and patches welcome!)
 
 2009-05-19  Rodney Sparapani  <rsparapa@mcw.edu>
 
@@ -104,38 +108,38 @@
 	* ess-eldoc.el/ess-roxygen.el/ess-toolbar.el:
 	added GPLv2 or later header, etc.
 
-	* essl-sas.el (SAS-mode-font-lock-keywords): 
+	* essl-sas.el (SAS-mode-font-lock-keywords):
 	a few fixes for functions and a missed NOTE
 
 2009-05-14  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* essl-sas.el (SAS-mode-font-lock-keywords): 
+	* essl-sas.el (SAS-mode-font-lock-keywords):
 	major overhaul complete (99.9%)
 	PROCs now highlighted
 	most keywords recognized (however, some
 	dataset options are still needed)
 	NOTEs and WARNINGs better detected in .log
-	
+
 	(ess-sas-run-regexp-opt): the new font-locking
 	is better in many ways than the old font-locking
-	so the default is now to use it; set this 
+	so the default is now to use it; set this
 	variable to nil to use the old font-lock code
 
-	* essa-sas.el (ess-sas-toggle-sas-log-mode): 
+	* essa-sas.el (ess-sas-toggle-sas-log-mode):
 	still trying to get this right, first kill
 	.log buffer, then re-open (see below)
 
 2009-05-13  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): a
-	few more keywords, a bug-fix and some comment 
+	few more keywords, a bug-fix and some comment
 	re-organization, 99.5%
 
 2009-05-12  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): even
 	more fixes
-	
+
 2009-05-11  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): more
@@ -159,19 +163,19 @@
 
 	* essl-sas.el (SAS-mode-font-lock-keywords): 3/4's of the way
 	there.  regexp-opt code updated to a reasonable fax of the
-	font-lock code it replaced.  
-	
+	font-lock code it replaced.
+
 2009-04-20  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-sas.el (ess-sas-run-regexp-opt): the long overdue change
 	from make-regexp to regexp-opt is under way.  Setting
-	ess-sas-run-regexp-opt to something other than nil will result 
+	ess-sas-run-regexp-opt to something other than nil will result
 	in the old make-regexp code to be used by regexp-opt.  This is
-	a half-step in the right direction.  The regexp-opt code will 
+	a half-step in the right direction.  The regexp-opt code will
 	be easier to maintain than the hand-coded regexps.  However,
 	this means that the font-locking will revert to what it was
 	circa 2001-2 :o(  Over time, this code will be upgraded so
-	that the font-locking will be up-to-date with what is 
+	that the font-locking will be up-to-date with what is
 	currently available and incorporate the changes necessary for
 	v. 9.2 and beyond.
 
@@ -198,7 +202,7 @@
 
 2009-02-26  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* essl-bugs.el (ess-bugs-hot-arrow): 
+	* essl-bugs.el (ess-bugs-hot-arrow):
 	Substitute <- for = key press
 
 2009-01-30  Stephen Eglen  <stephen@gnu.org>

@@ -1035,7 +1035,8 @@ default 100 ms and be passed to \\[accept-process-output]."
     ;; else: "normal", non-DDE behavior:
 
     ;; Use this to evaluate some code, but don't wait for output.
-    (let* ((cbuffer (current-buffer))
+    (let* ((deactivate-mark); keep local {do *not* deactivate wrongly}
+	   (cbuffer (current-buffer))
 	   (sprocess (get-ess-process ess-current-process-name))
 	   (sbuffer (process-buffer sprocess))
 	   (text (ess-replace-in-string text-withtabs "\t" " "))

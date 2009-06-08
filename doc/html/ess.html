@@ -351,18 +351,22 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 Changes/New Features in 5.4:
           <ul>
 <li><acronym>ESS[SAS]</acronym>: The long overdue change
-from make-regexp to regexp-opt for font-locking is under way.  Setting
-<code>ess-sas-run-regexp-opt</code> to <code>t</code> will result
-in the new regexp-opt code being used.  The regexp-opt code will
-be easier to maintain.  There are certainly some special
-cases missed (bug reports and patches welcome!).  One thing that
-is still not implemented:  font-locking the PROC names (PROC is
-highlighted only).  Maybe it is fine this way; we were constantly
-behind the times with the new PROC names anyways. 
-<li><acronym>ESS[BUGS]</acronym> and <acronym>ESS[JAGS]</acronym>: typing <code>=</code> now results in <code>&lt;-</code>
-<li><acronym>ESS[R]</acronym> function arguments &ldquo;show&rdquo; <code>(ess-r-args-show)</code> now uses the
- new <code>(tooltip-show-at-point)</code> contributed by Erik Iverson. 
-<li>Toolbar icons now also work in (beta) Emacs 23
+from <code>make-regexp</code> to <code>regexp-opt</code> for font-locking is
+complete.  The new <code>regexp-opt</code> is now the default since
+it is better than the old code in many ways (and especially more
+maintainable).  However, there are certainly some special
+cases missed (bug reports and patches welcome!). 
+Setting <code>ess-sas-run-regexp-opt</code> to <code>nil</code> will result
+in the old code being used. 
+<li><acronym>ESS[BUGS]</acronym> and <acronym>ESS[JAGS]</acronym>: typing <code>=</code> now results in
+ <code>&lt;-</code>. 
+<li><acronym>ESS[R]</acronym> function arguments &ldquo;show&rdquo; <code>(ess-r-args-show)</code> now
+ uses the new <code>(tooltip-show-at-point)</code> contributed by Erik Iverson. 
+<li>Toolbar icons now also work in (beta) Emacs 23. 
+<li><acronym>ESS[S]</acronym>: New function <code>ess-change-directory</code> for setting both
+ emacs' current directory and the directory of an *R* or *S* buffer. 
+<li><acronym>ESS[S]</acronym> when transient-mark-mode is true, the mark is now kept,
+ rather than deactivated, thanks to a patch from David Reitter. 
 </ul>
 
      <p>Changes/New Features in 5.3.11:
@@ -560,7 +564,10 @@ than one S buffer.
 assign the &ldquo; &lt;- &rdquo; insertion to an arbitrary key. 
 </ul>
 
-     <p>Changes/New Features in 5.2.12:
+</ul>
+
+     <ul>
+Changes/New Features in 5.2.12:
           <ul>
 <li><acronym>ESS[SAS]</acronym>: <kbd>M-;</kbd> fixed, but the XEmacs function <code>comment-dwim</code>
 may be broken, if so, use <kbd>M-x comment-region</kbd> and <kbd>M-x
@@ -1016,7 +1023,7 @@ three modes know the S language, syntax, and indentation patterns and
 provide the syntactic highlighting that eases the programming tasks. 
 </ul>
 
-</ul>
+   </ul>
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
@@ -1601,43 +1608,47 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">2.3 Requirements</h3>
 
-<p>ESS has been tested with
+<p>ESS is most likely to work with current/recent versions of the following
+statistical packages: R/S-PLUS, SAS, Stata and JAGS. The one exception
+is BUGS which is quite old, but should still work.
 
-     <ul>
-<li>R &gt;=0.49
-<li>S-PLUS 3.3-4, 4.5, 2000, 5.0-1, 6.0-2, 7.0, 8.0
-<li>S4
-<li>SAS &gt;=6.12
-<li>BUGS 0.5, 0.6
-<li>JAGS 1.0
-<li>Stata &gt;=6.0 (command line only)
-<!-- is anyone still using this? @item XLispStat >=3.50 -->
-</ul>
+   <p>ESS supports current/recent versions of GNU Emacs and XEmacs. 
+Most notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
+(beta/pre-release versions are NOT SUPPORTED).
 
-   <p>on the following platforms
-
-     <ul>
-<li>Linux/x86 (all)
-<li>Solaris (all)
-<!-- cannot confirm this right now @item SGI (all) -->
-<li>MS Windows 98/NT/2000/XP (R, S-PLUS, SAS interactive only, and BUGS)
-<li>Apple Mac OS X 10.4-5 (R, JAGS, Stata)
-</ul>
-
-   <p>with the following versions of emacs
-
-     <ul>
-<li>GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1
-<li>XEmacs 21.4.0-8, 21.4.9-13<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, 21.4.14-15, 21.4.17-21 (betas not supported, but 21.5.23+ may work)
-<!-- @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no -->
-<!-- longer supported, so an upgrade is recommended if you plan to use ESS. -->
-<!-- If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note -->
-<!-- that the `custom' library bundled with Emacs 19.34 is too _old_, its API is -->
-<!-- incompatible with the `new custom' bundled with recent Emacsen. -->
-<!-- The `new custom' for Emacs 19.34 is available for download -->
-<!-- @uref{ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz, here}.} -->
-</ul>
-
+<!-- ESS has been tested with -->
+<!-- @itemize @bullet -->
+<!-- @item R >=0.49 -->
+<!-- @item S-PLUS 3.3-4, 4.5, 2000, 5.0-1, 6.0-2, 7.0, 8.0 -->
+<!-- @item S4 -->
+<!-- @item SAS >=9.1 -->
+<!-- @item BUGS 0.5, 0.6 -->
+<!-- @item JAGS 1.0 -->
+<!-- @item Stata >=10.0 (command line only) -->
+<!-- @c is anyone still using this? @item XLispStat >=3.50 -->
+<!-- @end itemize -->
+<!-- on the following platforms -->
+<!-- @itemize @bullet -->
+<!-- @item Linux/x86 (all but BUGS) -->
+<!-- @item Solaris/x86 (all but BUGS and S-PLUS) -->
+<!-- @c cannot confirm this right now @item SGI (all) -->
+<!-- @item MS Windows 98/NT/2000/XP (R, S-PLUS, SAS interactive only, and BUGS) -->
+<!-- @item Apple Mac OS X 10.4-5 (R, JAGS, Stata) -->
+<!-- @end itemize -->
+<!-- with the following versions of emacs -->
+<!-- @itemize @bullet -->
+<!-- @item GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1 -->
+<!-- @item XEmacs 21.4.0-8, 21.4.9-13@footnote{ -->
+<!-- require the files.el patch to revert-buffer for the Local Variables -->
+<!-- updating problem}, 21.4.14-15, 21.4.17-22 (betas not supported, but 21.5.23+ may work) -->
+<!-- @c @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no -->
+<!-- @c longer supported, so an upgrade is recommended if you plan to use ESS. -->
+<!-- @c If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note -->
+<!-- @c that the `custom' library bundled with Emacs 19.34 is too _old_, its API is -->
+<!-- @c incompatible with the `new custom' bundled with recent Emacsen. -->
+<!-- @c The `new custom' for Emacs 19.34 is available for download -->
+<!-- @c @uref{ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz, here}.} -->
+<!-- @end itemize -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
 <a name="Interactive-ESS"></a>
@@ -2111,7 +2122,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</
 system (such as new objects created, or directories added to the search
 list) to make completion as accurate as possible.  Whenever ESS notices
 that search list has changed
-<a name="index-ess_002dchange_002dsp_002dregexp-49"></a><a rel="footnote" href="#fn-2" name="fnd-2"><sup>2</sup></a>  when you attach a directory or data
+<a name="index-ess_002dchange_002dsp_002dregexp-49"></a><a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>  when you attach a directory or data
 frame, the objects associated with it immediately become available for a
 completion; when it is detached completion is no longer available on
 those objects.
@@ -3217,6 +3228,14 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S fa
 
    <p>Solution: add a " at the end of the "Dumped..." statement, to
    revert the font-lock face back to normal.
+
+   <p>4. When you change directory within a *R* or *S* session using the
+setwd() command, emacs does not recognise that you have changed the
+current directory.
+
+   <p>Solution: Use <kbd>M-x ess-change-directory</kbd>.  This will
+ensure that Emacs will know that you have changed the directory, and
+update the emacs variable <code>default-directory</code>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
@@ -5840,11 +5859,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <div class="footnote">
 <hr>
-<a name="texinfo-footnotes-in-document"></a><h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> 
-require the files.el patch to revert-buffer for the Local Variables
-updating problem</p>
-
-   <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> The variable <code>ess-change-sp-regexp</code> is a regular
+<a name="texinfo-footnotes-in-document"></a><h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> The variable <code>ess-change-sp-regexp</code> is a regular
 expression matching commands which change the search list.  You will
 need to modify this variable if you have defined custom commands (other
 than <code>attach</code>, <code>detach</code>, <code>collection</code> or <code>library</code>)
