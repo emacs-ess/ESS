@@ -1,3 +1,17 @@
+ess (5.4-1) unstable; urgency=low
+
+  * New upstream version released today
+
+  * etc/config.guess: Switched to current version /usr/share/misc/config.guess
+
+  * debian/control enhancements suggested by Debian bugreport #529914
+  * debian/control: Increased Standards-Version: to 3.8.1
+  * debian/control: Added Homepage: fields
+  * debian/compat: Increased to level 7, increaded Build-Depends accordingly
+  * debian/rules: Use dh_prep in cleaning step
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 08 Jun 2009 15:19:01 -0500
+
 ess (5.3.11-1) unstable; urgency=low
 
   * New upstream release 

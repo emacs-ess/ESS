@@ -26,7 +26,7 @@ tarball:
 		tar czf tarballs/ess_${version}.orig.tar.gz ess \
 			--exclude=.svn \
 			--exclude=.git \
-			--exclude=debian/)
+			--exclude=debian )
 
 build: build-stamp
 build-stamp:
@@ -58,7 +58,7 @@ install: install-stamp
 install-stamp: build-stamp
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep 
 	dh_installdirs
 
 #	cd doc ; $(MAKE) install PREFIX=`pwd`/debian/ess
