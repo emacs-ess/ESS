@@ -1,3 +1,7 @@
+2009-06-08  ESS Maintainers <ESS-core@stat.math.ethz.ch>
+
+  * Version 5.4 released.
+
 2009-05-27  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* Makefile (downloads): new target for
