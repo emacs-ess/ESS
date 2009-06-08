@@ -2,10 +2,6 @@
 
   * Version 5.4 released.
 
-2009-06-08  ESS Maintainers <ESS-core@stat.math.ethz.ch>
-
-  * Version 5.4 released.
-
 2009-05-27  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* Makefile (downloads): new target for
@@ -18,7 +14,7 @@
 
 2009-03-05  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* doc/newfeat.texi, doc/help-bugs.tex, doc/help-jags.texi: 
+	* doc/newfeat.texi, doc/help-bugs.tex, doc/help-jags.texi:
 	ESS[BUGS] and ESS[JAGS]: typing = now results in <-
 
 2009-02-23  Rodney Sparapani  <rsparapa@mcw.edu>
@@ -26,7 +22,7 @@
 	* Makeconf: update LISPDIR, INFODIR, ETCDIR
 	for XEmacs.  Use the modern default
 	/usr/local/share/xemacs rather than the
-	deprecated /usr/local/lib/xemacs.  Also, 
+	deprecated /usr/local/lib/xemacs.  Also,
 	default to the site-packages subdirectory
 	rather than xemacs-packages, this allows
 	you more freedom to update the SUMO packages
@@ -40,7 +36,7 @@
 2009-01-21  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* Makefile (all install clean distclean): @for
-	loop throws away exit code, probably due to cd .. 
+	loop throws away exit code, probably due to cd ..
 	which always returns 0; @for no longer used
 
 2009-01-13  Rodney Sparapani  <rsparapa@mcw.edu>
@@ -52,7 +48,7 @@
 2009-01-12  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* doc/Makefile, doc/ess.texi, doc/readme.texi,
-	  doc/windows.texi, doc/unixlike.texi (Installation): 
+	  doc/windows.texi, doc/unixlike.texi (Installation):
 	new simplified installation instructions for Windows
 	and Unix/Unix-like including Mac OS X (major changes
 	now complete)
@@ -61,12 +57,12 @@
 
 	* doc/Makefile (TEXISRC): add help-jags.texi to list
 
-	* doc/help-jags.texi 
-	(ESS(JAGS)--Log files): 
+	* doc/help-jags.texi
+	(ESS(JAGS)--Log files):
 	the "log" of the run is now .jog (like BUGS which
-	is .bog); .out created too many problems since the BOA 
+	is .bog); .out created too many problems since the BOA
 	output files have that extension as well
-	(ESS(JAGS)--Model files): 
+	(ESS(JAGS)--Model files):
 	adding 2 new local variables:  ess-jags-burnin and
 	ess-jags-update.  ESS[BUGS] has similar variables, but
 	the modern defaults are an order of magnitude bigger, so
@@ -74,7 +70,7 @@
 
 2008-12-17  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* doc/windows.texi (Microsoft Windows installation): 
+	* doc/windows.texi (Microsoft Windows installation):
 	this file will replace the Windows portion of inst_tar.texi
 
 2008-12-15  Rodney Sparapani  <rsparapa@mcw.edu>
@@ -90,7 +86,7 @@
 
 2008-12-03  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* Makeconf and doc/readme.texi (README re-organization): 
+	* Makeconf and doc/readme.texi (README re-organization):
 	Add TOC for plaintext format only, requires re-defining MAKETXT
 	accordingly.
 
