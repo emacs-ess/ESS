@@ -1,3 +1,10 @@
+2009-06-16  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-trns.el (ess-transcript-send-command-and-move): 
+	patch supplied by tyler.smith@mail.mcgill.ca
+	see the related discussion at
+	https://stat.ethz.ch/pipermail/ess-bugs/2008q1/000489.html
+
 2009-06-08  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-eval-linewise): keep deactivate-mark local
