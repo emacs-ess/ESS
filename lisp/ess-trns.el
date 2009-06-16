@@ -230,7 +230,20 @@ is not already."
 (defun ess-transcript-send-command-and-move ()
   "Send the command on this line, and move point to the next command."
   (interactive)
-  (ess-transcript-send-command)
+;; (ess-transcript-send-command) ;; This doesn't work properly
+;; replacement code begins
+   (let* ((proc (or ess-local-process-name
+ 		   (ess-request-a-process "Evaluate into which process? " t)))
+ 	 (ess-buf (get-ess-buffer proc)))
+     (setq ess-local-process-name proc)
+     (if (get-buffer-window ess-buf) nil
+       (display-buffer ess-buf t))
+     (let ((input (inferior-ess-get-old-input)))
+       (save-excursion
+ 	(set-buffer ess-buf)
+ 	(goto-char (point-max))
+ 	(ess-eval-linewise input nil nil nil 1)))) 
+;; replacement code ends
   (goto-char ess-temp-point)
   (comint-next-prompt 1))
 
