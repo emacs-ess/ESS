@@ -20,7 +20,7 @@ ESS @w{version @ESSVER}
 @c @end ifhtml
 @c
 @author Current Documentation by The ESS Developers
-@author Copyright @copyright{} 2002--2006 The ESS Developers
+@author Copyright @copyright{} 2002--2009 The ESS Developers
 @author Copyright @copyright{} 1996--2001 A.J. Rossini
 @c (@email{rossini@@biostat.washington.edu})
 @c @author Department of Biostatistics
@@ -2582,7 +2582,7 @@ Mode, and @Sl{} Transcript Mode buffers.
 @cindex highlighting
 
 Syntax highlighting within ESS buffers is controlled by the variable
-@code{ess-font-lock-mode}, which by default is true.  
+@code{ess-font-lock-mode}, which by default is true.
 Input to inferior ESS processes is also highlighted syntactically if
 @code{inferior-ess-font-lock-input} is non-nil (the default).
 If you change the value of either of these varibles, you need to restart
