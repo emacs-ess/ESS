@@ -16,7 +16,8 @@ and ESS, the installation process is simple.
 Extract all the files from @file{ess-VERSION.tgz} when you are in
 the current working directory of @file{/usr/local/share/emacs/site-lisp}
 which exists for packages like @ESS{}
-(or for Mac OS X @file{/Applications/Emacs.app/Contents/MacOS/Resources/site-lisp}):
+(and for Mac OS X create a link to it from the directory
+@file{/Applications/Emacs.app/Contents/Resources/site-lisp}):
 @example
 %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
 %prompt gunzip < ess-VERSION.tgz | tar xf - # for Unix tar
@@ -65,7 +66,8 @@ Extract all the files from @file{ess-VERSION.tgz} when you are in
 the current working directory of @file{/usr/local/LOCATION/xemacs/site-packages}
 which exists for packages like @ESS{}
 where @file{LOCATION} is @file{lib} for legacy installations and @file{share}
-now (or for Mac OS X @file{/Applications/XEmacs.app/Contents/MacOS/Resources/site-packages}):
+now (and for Mac OS X create a link to it from the directory
+@file{/Applications/XEmacs.app/Contents/Resources/site-lisp}):
 @example
 %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
 %prompt gunzip < ess-VERSION.tgz | tar xf - # for Unix tar
