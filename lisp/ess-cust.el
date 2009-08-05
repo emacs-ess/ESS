@@ -1634,7 +1634,7 @@ Defaults to `ess-S-non-functions'."
   :group 'ess-R
   :type '(repeat string))
 
-(defcustom ess-r-args-electric-paren t
+(defcustom ess-r-args-electric-paren nil
   "*non-nil means re-assign \"(\" to \\[ess-r-args-auto-show]."
   :group 'ess-R
   :type 'boolean)
