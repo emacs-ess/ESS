@@ -1,3 +1,12 @@
+2009-08-05  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-cust.el (ess-r-args-electric-paren): must default to nil
+	requires a conscious decision to turn on since it will
+	mysteriously override smart-paren features like skeleton-pair
+
+	* ess-mode.el (ess-mode): define "(" key only when
+	ess-r-args-electric-paren is t for similar reasons
+
 2009-06-16  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-trns.el (ess-transcript-send-command-and-move): 
