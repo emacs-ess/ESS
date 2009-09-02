@@ -884,6 +884,8 @@ optional argument is non-nil, then set-buffer rather than switch."
 	(ess-sas-goto "rtf" t)
 	(goto-char (point-min))
 	(replace-regexp "\\\\fmodern .*;" "\\\\fmodern courier;" )
+	(goto-line 2)
+	(insert "\\margl720\\margr720\\margt720\\margb720\n")
         (goto-char (point-min))
 
         (while (replace-regexp "\\\\fs[0-9]+" (concat "\\\\fs" ess-tmp-font-size)) nil)
