@@ -281,6 +281,12 @@ between .s or .S files and assembly mode.
 ;;(setq-default inferior-S+5-program-name "Splus5")
 ;;(setq-default inferior-S+6-program-name "Splus7") ; unix systems
 ;;(setq-default inferior-S+6-program-name "Splus8") ; unix systems
+;;
+;; If you wish to call other versions of R on a Unix system, ESS
+;; should auto-detect other versions of R, according to matches to the
+;; variable `ess-r-versions' as described in its docstring.  Consider
+;; changing that variable rather than changing inferior-R-program-name
+;; if your version of R is not already auto-detected.
 ;;(setq-default inferior-R-program-name "R")	    ; unix systems
 ;;(setq-default inferior-R-program-name "Rterm")    ; MS Windows, see below for path as well
 ;;(setq-default inferior-R-program-name "C:\\Program Files\\R\\R-2.5.0\\bin\\Rterm.exe")
