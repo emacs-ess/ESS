@@ -1415,6 +1415,7 @@ If nil, input is in the `font-lock-variable-name-face'."
   :group 'ess
   :type 'boolean)
 
+;; "Reserved Words" -- part 1 --
 (defvar ess-RS-constants
   '("TRUE" "FALSE" "NA" "NULL" "Inf" "NaN"))
 (defvar ess-R-constants
@@ -1424,21 +1425,23 @@ If nil, input is in the `font-lock-variable-name-face'."
   (append ess-RS-constants
 	  '("T" "F")))
 
-;; first the common ones
-(defvar ess-S-modifyiers
-  '("library" "attach" "detach" "source" "module"))
-(defvar ess-R-modifyiers
-  '("library" "attach" "detach" "source" "require"))
-
 (defvar ess-R-keywords
-  '("while" "for" "in" "repeat" "if" "else" "switch" "break" "next"
-    "function" "return" "message" "warning" "stop"))
+  ;; "Reserved Words" -- part 2 --
+  '("while" "for" "in" "repeat" "if" "else" "switch" "break" "next" "function"
+    ;; note that these are *NOT* reserved words in R:
+    "return" "message" "warning" "stop"))
 (defvar ess-S-keywords
   (append ess-R-keywords '("terminate")))
 
 ;; only some of these keywords "look like functions but are not":
 (defvar ess-S-non-functions
   '("if" "for" "function" "while"))
+
+;; first the common ones
+(defvar ess-S-modifyiers
+  '("library" "attach" "detach" "source" "module"))
+(defvar ess-R-modifyiers
+  '("library" "attach" "detach" "source" "require"))
 
 
 (defvar ess-R-message-prefixes
