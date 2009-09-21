@@ -1,3 +1,8 @@
+2009-09-21  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-mode.el (ess-electric-brace): skeleton-pair
+	takes precedence
+
 2009-09-02  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essa-sas.el (ess-sas-rtf-portrait): OpenOffice Writer
