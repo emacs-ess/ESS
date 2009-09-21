@@ -736,6 +736,10 @@ With prefix argument, only shows the errors ESS reported."
 (defun ess-electric-brace (arg)
   "Insert character and correct line's indentation."
   (interactive "P")
+;; skeleton-pair takes precedence
+(if (and (boundp 'skeleton-pair) skeleton-pair (fboundp 'skeleton-pair-insert-maybe))
+  (skeleton-pair-insert-maybe "{")
+;; else
   (let (insertpos)
     (if (and (not arg)
 	     (eolp)
@@ -759,7 +763,7 @@ With prefix argument, only shows the errors ESS reported."
 	(save-excursion
 	  (goto-char insertpos)
 	  (self-insert-command (prefix-numeric-value arg)))
-      (self-insert-command (prefix-numeric-value arg)))))
+      (self-insert-command (prefix-numeric-value arg))))))
 
 (defun ess-indent-command (&optional whole-exp)
   "Indent current line as ESS code, or in some cases insert a tab character.
