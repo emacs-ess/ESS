@@ -13,12 +13,12 @@ and ESS, the installation process is simple.
 
 @enumerate
 @item
-Extract all the files from @file{ess-VERSION.zip} (by 
+Extract all the files from @file{ess-VERSION.zip} (by
 double clicking on it and selecting ``Extract all files''
 which launches the Folders Extraction Wizard)
 into the @file{site-lisp} directory that exists for packages like @ESS{}.
 If GNU Emacs was installed in the default location, then this
-directory can be found somewhere like 
+directory can be found somewhere like
 @file{C:\Program Files\GNU Emacs\emacs-22.x\site-lisp}.
 
 @item
@@ -28,16 +28,16 @@ Add the line
 @end example
 to @file{~/.emacs} and restart Emacs.
 
-@item 
+@item
 If you see a buffer named @file{*ESS*}, then the simple instructions
 were most likely successful.  If not, then read further.
 
 @item
 It could be you have an older version of Emacs or some other problem
-with your installation.  Either way, you may need to edit 
-@file{C:\ess\ess-VERSION\lisp\ess-site.el} manually.  If that is the case, 
-then you should create a directory just for @ESS{} like @file{C:\ess} and 
-unpack @ESS{} there.  That way, your changes to 
+with your installation.  Either way, you may need to edit
+@file{C:\ess\ess-VERSION\lisp\ess-site.el} manually.  If that is the case,
+then you should create a directory just for @ESS{} like @file{C:\ess} and
+unpack @ESS{} there.  That way, your changes to
 @file{C:\ess\ess-VERSION\lisp\ess-site.el}
 will not be lost if you update Emacs later.
 
@@ -48,35 +48,35 @@ Replace the line above with
 @end example
 in @file{~/.emacs} and restart Emacs.
 
-@item 
+@item
 If you see a buffer named @file{*ESS*}, then the manual instructions
-were most likely successful.  If not, then send a query to 
-@email{ess-help-request@@stat.math.ethz.ch}
+were most likely successful.  If not, then send a query to
+@email{ess-help@@stat.math.ethz.ch}
 explicitly describing your problem and your environment
 including operating system, Emacs version, @ESS{} version, etc.
 @end enumerate
- 
+
 @emph{XEmacs Simple Instructions:} for recent versions of XEmacs (21.x or higher),
 the installation process is much simpler.  Hopefully, these
-simple instructions will work for you.  If not, then more 
-detailed, manual instructions follow.  
+simple instructions will work for you.  If not, then more
+detailed, manual instructions follow.
 
 @enumerate
 @item
-Extract all the files from @file{ess-VERSION.zip} (by 
+Extract all the files from @file{ess-VERSION.zip} (by
 double clicking on it and selecting ``Extract all files''
 which launches the Folders Extraction Wizard)
 into the @file{site-packages} directory that exists for packages like @ESS{}.
 If XEmacs was installed in the default location, then this
-directory can be found at 
+directory can be found at
 @file{C:\Program Files\XEmacs\site-packages}.
 
 @item
 XEmacs requires the @code{HOME} environment variable to be defined.  You can
 create it by visiting the following dialog:
-@code{My Computer->Control Panel->System->Advanced->Environment Variables} 
+@code{My Computer->Control Panel->System->Advanced->Environment Variables}
 In the User variables window, press New.  And create a variable
-named @code{HOME} with a value something like (you must 
+named @code{HOME} with a value something like (you must
 use forward slashes @code{/} rather than backslashes @code{\})
 @code{c:/Documents and Settings/%USERNAME%/Application Data}.  Then press OK for that
 window and press OK for the main window.  @emph{If you also have GNU Emacs
@@ -93,16 +93,16 @@ Add the line
 @end example
 to @file{~/.xemacs/init.el} and restart XEmacs.
 
-@item 
+@item
 If you see a buffer named @file{*ESS*}, then the simple instructions
 were most likely successful.  If not, then read further.
 
 @item
 It could be you have an older version of XEmacs or some other problem
-with your installation.  Either way, you may need to edit 
-@file{C:\ess\ess-VERSION\lisp\ess-site.el} manually.  If that is the case, 
-then you should create a directory just for @ESS{} like @file{C:\ess} and 
-unpack @ESS{} there.  That way, your changes to 
+with your installation.  Either way, you may need to edit
+@file{C:\ess\ess-VERSION\lisp\ess-site.el} manually.  If that is the case,
+then you should create a directory just for @ESS{} like @file{C:\ess} and
+unpack @ESS{} there.  That way, your changes to
 @file{C:\ess\ess-VERSION\lisp\ess-site.el}
 will not be lost if you update XEmacs later.
 
@@ -113,10 +113,10 @@ Replace the line above with
 @end example
 in @file{~/.xemacs/init.el} and restart XEmacs.
 
-@item 
+@item
 If you see a buffer named @file{*ESS*}, then the manual instructions
 were most likely successful.  If not, then send a query to
-@email{ess-help-request@@stat.math.ethz.ch}
+@email{ess-help@@stat.math.ethz.ch}
 explicitly describing your problem and your environment
 including operating system, XEmacs version, @ESS{} version, etc.
 @end enumerate
@@ -129,7 +129,7 @@ run statistical processes, see below.
 
 To run statistical processes under @ESS{}, Windows users will need to make
 sure that the directories for the software they will be using is in the
-PATH environment variable.  
+PATH environment variable.
 
 On Windows NT/2000/XP, add the directories to the PATH using the
 @code{My Computer->Control Panel->System->Advanced->Environment Variables} menu.
@@ -167,7 +167,7 @@ considers S-PLUS 6, 7, and 8 to be variants of S+6.
 These users may also need to modify the emacs variable @code{ess-SHOME-versions}
 to match their installation in order to get the full set of S-PLUS versions
 on their machine into the @ESS{} menu.
- 
+
 To start the S-PLUS [678].x GUI from ESS under emacs:
 @enumerate
 @item
