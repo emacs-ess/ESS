@@ -3,7 +3,7 @@
 <title>ESS -- Emacs Speaks Statistics</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ESS -- Emacs Speaks Statistics">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.12">
 <link title="Top" rel="top" href="#Top">
 <link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
 <meta http-equiv="Content-Style-Type" content="text/css">
@@ -25,8 +25,8 @@
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Top"></a>
 <p><hr>
+<a name="Top"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Introduction">Introduction</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#dir">(dir)</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
@@ -36,7 +36,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.4
+5.5
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -172,8 +172,8 @@ statements written in these statistical analysis languages.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Introduction"></a>
 <p><hr>
+<a name="Introduction"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Installation">Installation</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Top">Top</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -241,8 +241,8 @@ your S functions in specified source directories.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Features"></a>
 <p><hr>
+<a name="Features"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#New-features">New features</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Introduction">Introduction</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
@@ -337,8 +337,8 @@ See <a href="#Transcript-resubmit">Transcript resubmit</a>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="New-features"></a>
 <p><hr>
+<a name="New-features"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Credits">Credits</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Features">Features</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
@@ -1027,8 +1027,8 @@ provide the syntactic highlighting that eases the programming tasks.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Credits"></a>
 <p><hr>
+<a name="Credits"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Latest-version">Latest version</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#New-features">New features</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
@@ -1124,8 +1124,8 @@ contributors to the ESS mailing lists.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Latest-version"></a>
 <p><hr>
+<a name="Latest-version"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Manual">Manual</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Credits">Credits</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
@@ -1173,8 +1173,8 @@ certificate permanently and will not be asked about it anymore.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Manual"></a>
 <p><hr>
+<a name="Manual"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Latest-version">Latest version</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 
@@ -1228,8 +1228,8 @@ defer this section until you are more familiar with ESS.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Installation"></a>
 <p><hr>
+<a name="Installation"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Interactive-ESS">Interactive ESS</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Introduction">Introduction</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -1253,8 +1253,8 @@ on your system.
 <!-- ==> *must* give node pointer problems! -->
 <!-- @include inst_tar.texi -->
 <div class="node">
-<a name="Unix-installation"></a>
 <p><hr>
+<a name="Unix-installation"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Microsoft-Windows-installation">Microsoft Windows installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 
@@ -1275,7 +1275,8 @@ and ESS, the installation process is simple.
 <li>Extract all the files from <samp><span class="file">ess-VERSION.tgz</span></samp> when you are in
 the current working directory of <samp><span class="file">/usr/local/share/emacs/site-lisp</span></samp>
 which exists for packages like <acronym>ESS</acronym>
-(or for Mac OS X <samp><span class="file">/Applications/Emacs.app/Contents/MacOS/Resources/site-lisp</span></samp>):
+(and for Mac OS X create a link to it from the directory
+<samp><span class="file">/Applications/Emacs.app/Contents/Resources/site-lisp</span></samp>):
      <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
           %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
 </pre>
@@ -1301,7 +1302,7 @@ or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
 were most likely successful.  If not, then send a query to
-<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+<a href="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</a>
 explicitly describing your problem and your environment
 including operating system, Emacs version, <acronym>ESS</acronym> version, etc.
         </ol>
@@ -1314,7 +1315,8 @@ and ESS, the installation process is simple.
 the current working directory of <samp><span class="file">/usr/local/LOCATION/xemacs/site-packages</span></samp>
 which exists for packages like <acronym>ESS</acronym>
 where <samp><span class="file">LOCATION</span></samp> is <samp><span class="file">lib</span></samp> for legacy installations and <samp><span class="file">share</span></samp>
-now (or for Mac OS X <samp><span class="file">/Applications/XEmacs.app/Contents/MacOS/Resources/site-packages</span></samp>):
+now (and for Mac OS X create a link to it from the directory
+<samp><span class="file">/Applications/XEmacs.app/Contents/Resources/site-lisp</span></samp>):
      <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
           %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
 </pre>
@@ -1340,7 +1342,7 @@ or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
 were most likely successful.  If not, then send a query to
-<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+<a href="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</a>
 explicitly describing your problem and your environment
 including operating system, XEmacs version, <acronym>ESS</acronym> version, etc.
         </ol>
@@ -1363,8 +1365,8 @@ using XEmacs, then edit the XEmacs subsection in Section 1).
 
 <!-- @node Microsoft Windows installation, , Unix installation, Installation -->
 <div class="node">
-<a name="Microsoft-Windows-installation"></a>
 <p><hr>
+<a name="Microsoft-Windows-installation"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Unix-installation">Unix installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
@@ -1414,7 +1416,7 @@ will not be lost if you update Emacs later.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
 were most likely successful.  If not, then send a query to
-<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+<a href="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</a>
 explicitly describing your problem and your environment
 including operating system, Emacs version, <acronym>ESS</acronym> version, etc.
         </ol>
@@ -1469,7 +1471,7 @@ will not be lost if you update XEmacs later.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
 were most likely successful.  If not, then send a query to
-<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+<a href="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</a>
 explicitly describing your problem and your environment
 including operating system, XEmacs version, <acronym>ESS</acronym> version, etc.
         </ol>
@@ -1598,8 +1600,8 @@ emacs, and cut and paste the results into the XLispStat
 *Listener* Window under Microsoft Windows.
 
 <div class="node">
-<a name="Requirements"></a>
 <p><hr>
+<a name="Requirements"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Microsoft-Windows-installation">Microsoft Windows installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 
@@ -1651,8 +1653,8 @@ Most notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
 <!-- @end itemize -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Interactive-ESS"></a>
 <p><hr>
+<a name="Interactive-ESS"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Entering-commands">Entering commands</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Installation">Installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -1680,8 +1682,8 @@ with statistical programs.
 </ul>
 
 <div class="node">
-<a name="Starting-up"></a>
 <p><hr>
+<a name="Starting-up"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Multiple-ESS-processes">Multiple ESS processes</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Interactive-ESS">Interactive ESS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
@@ -1712,8 +1714,8 @@ for interacting with the ESS process, and you can start entering commands.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Multiple-ESS-processes"></a>
 <p><hr>
+<a name="Multiple-ESS-processes"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Starting-up">Starting up</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
@@ -1751,8 +1753,8 @@ processes.  This is a good command to consider binding to a global key.
 <!-- to @code{t}.  See @file{ess-site} for how to set this for all users. -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="ESS-processes-on-Remote-Computers"></a>
 <p><hr>
+<a name="ESS-processes-on-Remote-Computers"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#S_002belsewhere-and-ESS_002delsewhere">S+elsewhere and ESS-elsewhere</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Multiple-ESS-processes">Multiple ESS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
@@ -1823,9 +1825,9 @@ See <a href="#S_002belsewhere-and-ESS_002delsewhere">S+elsewhere and ESS-elsewhe
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="S+elsewhere-and-ESS-elsewhere"></a>
 <a name="S_002belsewhere-and-ESS_002delsewhere"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Customizing-startup">Customizing startup</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-processes-on-Remote-Computers">ESS processes on Remote Computers</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
@@ -1888,8 +1890,8 @@ display it with ghostscript.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Customizing-startup"></a>
 <p><hr>
+<a name="Customizing-startup"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#S_002belsewhere-and-ESS_002delsewhere">S+elsewhere and ESS-elsewhere</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Interactive-ESS">Interactive ESS</a>
 
@@ -1958,8 +1960,8 @@ process to appear within another window of the current frame.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Entering-commands"></a>
 <p><hr>
+<a name="Entering-commands"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Transcript-Mode">Transcript Mode</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Interactive-ESS">Interactive ESS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -1993,9 +1995,9 @@ typing.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="Command-line-editing"></a>
 <a name="Command_002dline-editing"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Completion">Completion</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Entering-commands">Entering commands</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2039,8 +2041,8 @@ commands relevant to entering input.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Completion"></a>
 <p><hr>
+<a name="Completion"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Completion-details">Completion details</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Command_002dline-editing">Command-line editing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2108,8 +2110,8 @@ See <a href="#History-expansion">History expansion</a>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Completion-details"></a>
 <p><hr>
+<a name="Completion-details"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Transcript">Transcript</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Completion">Completion</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2153,8 +2155,8 @@ problem.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Transcript"></a>
 <p><hr>
+<a name="Transcript"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Command-History">Command History</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Completion-details">Completion details</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2197,8 +2199,8 @@ page commands, see <a href="emacs.html#Pages">Pages</a>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Last-command"></a>
 <p><hr>
+<a name="Last-command"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Process-buffer-motion">Process buffer motion</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Transcript">Transcript</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript">Transcript</a>
@@ -2253,8 +2255,8 @@ more manageable size.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Process-buffer-motion"></a>
 <p><hr>
+<a name="Process-buffer-motion"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Transcript-resubmit">Transcript resubmit</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Last-command">Last command</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript">Transcript</a>
@@ -2296,8 +2298,8 @@ is the prefix argument; <var>regexp</var> is prompted for in the minibuffer.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Transcript-resubmit"></a>
 <p><hr>
+<a name="Transcript-resubmit"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Saving-transcripts">Saving transcripts</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Process-buffer-motion">Process buffer motion</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript">Transcript</a>
@@ -2356,8 +2358,8 @@ mechanism, however, which is described in <a href="#Command-History">Command His
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Saving-transcripts"></a>
 <p><hr>
+<a name="Saving-transcripts"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Transcript-resubmit">Transcript resubmit</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript">Transcript</a>
 
@@ -2400,8 +2402,8 @@ only the commands.  Don't forget to remove any erroneous commands first!
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Command-History"></a>
 <p><hr>
+<a name="Command-History"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#History-expansion">History expansion</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Transcript">Transcript</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2472,8 +2474,8 @@ keys.)
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="History-expansion"></a>
 <p><hr>
+<a name="History-expansion"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Hot-keys">Hot keys</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Command-History">Command History</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2557,8 +2559,8 @@ then edit or press &lt;RET&gt; to execute.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Hot-keys"></a>
 <p><hr>
+<a name="Hot-keys"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Statistical-Process-running-in-ESS_003f">Statistical Process running in ESS?</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#History-expansion">History expansion</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2642,9 +2644,9 @@ have been saved, and that all the temporary buffers have been killed.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="Statistical-Process-running-in-ESS%3f"></a>
 <a name="Statistical-Process-running-in-ESS_003f"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Emacsclient">Emacsclient</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Hot-keys">Hot keys</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2685,8 +2687,8 @@ under the control of ESS.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Emacsclient"></a>
 <p><hr>
+<a name="Emacsclient"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Other">Other</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Statistical-Process-running-in-ESS_003f">Statistical Process running in ESS?</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
@@ -2710,8 +2712,8 @@ Emacs buffer.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Other"></a>
 <p><hr>
+<a name="Other"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Emacsclient">Emacsclient</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</a>
 
@@ -2743,8 +2745,8 @@ you want to quit from S, use <kbd>C-c C-q</kbd> (<code>ess-quit</code>) instead.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Transcript-Mode"></a>
 <p><hr>
+<a name="Transcript-Mode"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS-for-the-S-family">ESS for the S family</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Entering-commands">Entering commands</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -2776,8 +2778,8 @@ and <kbd>C-c C-n</kbd>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Resubmit"></a>
 <p><hr>
+<a name="Resubmit"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Clean">Clean</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Transcript-Mode">Transcript Mode</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript-Mode">Transcript Mode</a>
@@ -2810,8 +2812,8 @@ prompt is automatically removed before the command is submitted.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Clean"></a>
 <p><hr>
+<a name="Clean"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Resubmit">Resubmit</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Transcript-Mode">Transcript Mode</a>
 
@@ -2836,8 +2838,8 @@ from S mode, also available in S Transcript Mode.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="ESS-for-the-S-family"></a>
 <p><hr>
+<a name="ESS-for-the-S-family"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Editing">Editing</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Transcript-Mode">Transcript Mode</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -2856,9 +2858,9 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 </ul>
 
 <div class="node">
+<p><hr>
 <a name="ESS(S)--Editing-files"></a>
 <a name="ESS_0028S_0029_002d_002dEditing-files"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#iESS_0028S_0029_002d_002dInferior-ESS-processes">iESS(S)--Inferior ESS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
 
@@ -2888,9 +2890,9 @@ will have to start up an inferior process to take advantage of the
 interactive features.
 
 <div class="node">
+<p><hr>
 <a name="iESS(S)--Inferior-ESS-processes"></a>
 <a name="iESS_0028S_0029_002d_002dInferior-ESS-processes"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_002dhelp_002d_002dassistance-with-viewing-help">ESS-help--assistance with viewing help</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028S_0029_002d_002dEditing-files">ESS(S)--Editing files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
@@ -3021,9 +3023,9 @@ for particular versions of S-Plus have been created.  These other versions of
 S-Plus can also be started from the "ESS-&gt;Start Process-&gt;Other" menu.
 
 <div class="node">
+<p><hr>
 <a name="ESS-help--assistance-with-viewing-help"></a>
 <a name="ESS_002dhelp_002d_002dassistance-with-viewing-help"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Philosophies-for-using-ESS_0028S_0029">Philosophies for using ESS(S)</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#iESS_0028S_0029_002d_002dInferior-ESS-processes">iESS(S)--Inferior ESS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
@@ -3036,9 +3038,9 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S fa
 <p>ESS has built-in facilities for viewing help files from S.  See <a href="#Help">Help</a>.
 
 <div class="node">
+<p><hr>
 <a name="Philosophies-for-using-ESS(S)"></a>
 <a name="Philosophies-for-using-ESS_0028S_0029"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Scenarios-for-use-_0028possibilities_002d_002dbased-on-actual-usage_0029">Scenarios for use (possibilities--based on actual usage)</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_002dhelp_002d_002dassistance-with-viewing-help">ESS-help--assistance with viewing help</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
@@ -3067,9 +3069,9 @@ retrieved again, by changing emacs variables.
 better portability as well as external version control for code.
 
 <div class="node">
+<p><hr>
 <a name="Scenarios-for-use-(possibilities--based-on-actual-usage)"></a>
 <a name="Scenarios-for-use-_0028possibilities_002d_002dbased-on-actual-usage_0029"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Customization-Examples-and-Solutions-to-Problems">Customization Examples and Solutions to Problems</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Philosophies-for-using-ESS_0028S_0029">Philosophies for using ESS(S)</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
@@ -3197,8 +3199,8 @@ prefixed by "##").
          ## instead of entering:   help("rchisq")
 </pre>
    <div class="node">
-<a name="Customization-Examples-and-Solutions-to-Problems"></a>
 <p><hr>
+<a name="Customization-Examples-and-Solutions-to-Problems"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Scenarios-for-use-_0028possibilities_002d_002dbased-on-actual-usage_0029">Scenarios for use (possibilities--based on actual usage)</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S family</a>
 
@@ -3239,8 +3241,8 @@ update the emacs variable <code>default-directory</code>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Editing"></a>
 <p><hr>
+<a name="Editing"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Editing-R-documentation-files">Editing R documentation files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-the-S-family">ESS for the S family</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -3271,8 +3273,8 @@ into the ESS process.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Edit-buffer"></a>
 <p><hr>
+<a name="Edit-buffer"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Loading">Loading</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Editing">Editing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3323,8 +3325,8 @@ S's idea of the object's definition) pass a prefix argument to
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Loading"></a>
 <p><hr>
+<a name="Loading"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Error-Checking">Error Checking</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Edit-buffer">Edit buffer</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3355,8 +3357,8 @@ returned to the ESS process.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Error-Checking"></a>
 <p><hr>
+<a name="Error-Checking"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Evaluating-code">Evaluating code</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Loading">Loading</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3384,8 +3386,8 @@ with <kbd>C-u C-c `</kbd>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Evaluating-code"></a>
 <p><hr>
+<a name="Evaluating-code"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Indenting">Indenting</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Error-Checking">Error Checking</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3472,8 +3474,8 @@ of the window, you will need to set the variable
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Indenting"></a>
 <p><hr>
+<a name="Indenting"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Other-edit-buffer-commands">Other edit buffer commands</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Evaluating-code">Evaluating code</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3547,8 +3549,8 @@ variables (unless they have been modified in your <samp><span class="file">.emac
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Other-edit-buffer-commands"></a>
 <p><hr>
+<a name="Other-edit-buffer-commands"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Source-Files">Source Files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Indenting">Indenting</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3600,8 +3602,8 @@ for more details on these commands.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Source-Files"></a>
 <p><hr>
+<a name="Source-Files"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Source-Directories">Source Directories</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Other-edit-buffer-commands">Other edit buffer commands</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
@@ -3695,8 +3697,8 @@ if you happen to quit Emacs before correcting the error.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Source-Directories"></a>
 <p><hr>
+<a name="Source-Directories"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Source-Files">Source Files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
 
@@ -3774,8 +3776,8 @@ If you choose not to, or the directory cannot be created, you will not
 be able to edit functions.
 
 <div class="node">
-<a name="Editing-R-documentation-files"></a>
 <p><hr>
+<a name="Editing-R-documentation-files"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Help">Help</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Editing">Editing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -3872,8 +3874,8 @@ add the following lines to one of your Emacs startup files:
 </pre>
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Help"></a>
 <p><hr>
+<a name="Help"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS-for-SAS">ESS for SAS</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Editing-R-documentation-files">Editing R documentation files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -4028,8 +4030,8 @@ variable <code>ess-help-own-frame</code>.
    <p><a name="index-ess_002dquit-193"></a><a name="index-ess_002dcleanup-194"></a><a name="index-temporary-buffers-195"></a>
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="ESS-for-SAS"></a>
 <p><hr>
+<a name="ESS-for-SAS"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS-for-BUGS">ESS for BUGS</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Help">Help</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -4058,9 +4060,9 @@ and the <acronym>SAS</acronym><!-- /@w --> Display Manager.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(SAS)--Design-philosophy"></a>
 <a name="ESS_0028SAS_0029_002d_002dDesign-philosophy"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dEditing-files">ESS(SAS)--Editing files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-SAS">ESS for SAS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4087,9 +4089,9 @@ advanced <acronym>ESS[SAS]</acronym> users.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(SAS)--Editing-files"></a>
 <a name="ESS_0028SAS_0029_002d_002dEditing-files"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dTAB-key">ESS(SAS)--TAB key</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dDesign-philosophy">ESS(SAS)--Design philosophy</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4132,9 +4134,9 @@ iterative <code>DO</code> statement, <code>TO</code> and <code>BY</code> are not
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(SAS)--TAB-key"></a>
 <a name="ESS_0028SAS_0029_002d_002dTAB-key"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dBatch-SAS-processes">ESS(SAS)--Batch SAS processes</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dEditing-files">ESS(SAS)--Editing files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4165,9 +4167,9 @@ and the stops are defined by <code>ess-sas-tab-stop-list</code>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(SAS)--Batch-SAS-processes"></a>
 <a name="ESS_0028SAS_0029_002d_002dBatch-SAS-processes"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">ESS(SAS)--Function keys for batch processing</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dTAB-key">ESS(SAS)--TAB key</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4282,9 +4284,9 @@ taken to the first error message, if any.
 </pre>
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(SAS)--Function-keys-for-batch-processing"></a>
 <a name="ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#iESS_0028SAS_0029_002d_002dInteractive-SAS-processes">iESS(SAS)--Interactive SAS processes</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dBatch-SAS-processes">ESS(SAS)--Batch SAS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4499,9 +4501,9 @@ landscape (first line for "global" key mapping, second for "local"):
 </pre>
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="iESS(SAS)--Interactive-SAS-processes"></a>
 <a name="iESS_0028SAS_0029_002d_002dInteractive-SAS-processes"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#iESS_0028SAS_0029_002d_002dCommon-problems">iESS(SAS)--Common problems</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dFunction-keys-for-batch-processing">ESS(SAS)--Function keys for batch processing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4594,9 +4596,9 @@ never need to read it or write to it.  Refer to the <samp><span class="file">.ls
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="iESS(SAS)--Common-problems"></a>
 <a name="iESS_0028SAS_0029_002d_002dCommon-problems"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dGraphics">ESS(SAS)--Graphics</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#iESS_0028SAS_0029_002d_002dInteractive-SAS-processes">iESS(SAS)--Interactive SAS processes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4649,9 +4651,9 @@ shell script appears.
 <!-- @end enumerate -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(SAS)--Graphics"></a>
 <a name="ESS_0028SAS_0029_002d_002dGraphics"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028SAS_0029_002d_002dWindows">ESS(SAS)--Windows</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#iESS_0028SAS_0029_002d_002dCommon-problems">iESS(SAS)--Common problems</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
@@ -4677,9 +4679,9 @@ to be visible on screen, for example:
 </pre>
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(SAS)--Windows"></a>
 <a name="ESS_0028SAS_0029_002d_002dWindows"></a>
-<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028SAS_0029_002d_002dGraphics">ESS(SAS)--Graphics</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-SAS">ESS for SAS</a>
 
@@ -4706,8 +4708,8 @@ You can use batch.  See <a href="#ESS_0028SAS_0029_002d_002dBatch-SAS-processes"
 <!-- End: -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="ESS-for-BUGS"></a>
 <p><hr>
+<a name="ESS-for-BUGS"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS-for-JAGS">ESS for JAGS</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-SAS">ESS for SAS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -4738,9 +4740,9 @@ interactive submission of BUGS commands is also supported.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(BUGS)--Model-files"></a>
 <a name="ESS_0028BUGS_0029_002d_002dModel-files"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028BUGS_0029_002d_002dCommand-files">ESS(BUGS)--Command files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-BUGS">ESS for BUGS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-BUGS">ESS for BUGS</a>
@@ -4808,9 +4810,9 @@ press of <kbd>C-c C-c</kbd> if you re-visit the model file.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(BUGS)--Command-files"></a>
 <a name="ESS_0028BUGS_0029_002d_002dCommand-files"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028BUGS_0029_002d_002dLog-files">ESS(BUGS)--Log files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028BUGS_0029_002d_002dModel-files">ESS(BUGS)--Model files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-BUGS">ESS for BUGS</a>
@@ -4843,9 +4845,9 @@ are not readily available with the batch scripts that come with BUGS.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(BUGS)--Log-files"></a>
 <a name="ESS_0028BUGS_0029_002d_002dLog-files"></a>
-<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028BUGS_0029_002d_002dCommand-files">ESS(BUGS)--Command files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-BUGS">ESS for BUGS</a>
 
@@ -4863,8 +4865,8 @@ process over-writes or appends it.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="ESS-for-JAGS"></a>
 <p><hr>
+<a name="ESS-for-JAGS"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Miscellaneous">Miscellaneous</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-BUGS">ESS for BUGS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -4894,9 +4896,9 @@ create a command file and submit a JAGS batch process.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(JAGS)--Model-files"></a>
 <a name="ESS_0028JAGS_0029_002d_002dModel-files"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028JAGS_0029_002d_002dCommand-files">ESS(JAGS)--Command files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-JAGS">ESS for JAGS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-JAGS">ESS for JAGS</a>
@@ -4947,9 +4949,9 @@ to keep.  By default, the update parameter is set to 10000.  Both
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(JAGS)--Command-files"></a>
 <a name="ESS_0028JAGS_0029_002d_002dCommand-files"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#ESS_0028JAGS_0029_002d_002dLog-files">ESS(JAGS)--Log files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028JAGS_0029_002d_002dModel-files">ESS(JAGS)--Model files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-JAGS">ESS for JAGS</a>
@@ -4971,9 +4973,9 @@ JAGS program to use to run your model; defaults to &ldquo;jags&rdquo;.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
+<p><hr>
 <a name="ESS(JAGS)--Log-files"></a>
 <a name="ESS_0028JAGS_0029_002d_002dLog-files"></a>
-<p><hr>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS_0028JAGS_0029_002d_002dCommand-files">ESS(JAGS)--Command files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-JAGS">ESS for JAGS</a>
 
@@ -4987,8 +4989,8 @@ process over-writes or appends it.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Miscellaneous"></a>
 <p><hr>
+<a name="Miscellaneous"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#ESS-for-JAGS">ESS for JAGS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -5011,8 +5013,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Highlighting"></a>
 <p><hr>
+<a name="Highlighting"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Parens">Parens</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Miscellaneous">Miscellaneous</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5065,8 +5067,8 @@ functions and reserved words.
 <!-- @end defvar -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Parens"></a>
 <p><hr>
+<a name="Parens"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Graphics">Graphics</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Highlighting">Highlighting</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5087,8 +5089,8 @@ initialisation file:
 </pre>
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Graphics"></a>
 <p><hr>
+<a name="Graphics"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Imenu">Imenu</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Parens">Parens</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5109,8 +5111,8 @@ features for dealing with such plots.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="printer"></a>
 <p><hr>
+<a name="printer"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#X11">X11</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Graphics">Graphics</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
@@ -5133,8 +5135,8 @@ is issued, which displays the current figure.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="X11"></a>
 <p><hr>
+<a name="X11"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#winjava">winjava</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#printer">printer</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
@@ -5153,8 +5155,8 @@ DISPLAY before the ESS process is started if the variable
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="winjava"></a>
 <p><hr>
+<a name="winjava"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#X11">X11</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
 
@@ -5175,8 +5177,8 @@ this information.)
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Imenu"></a>
 <p><hr>
+<a name="Imenu"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Toolbar">Toolbar</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Graphics">Graphics</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5200,8 +5202,8 @@ by various ESS variables such as <code>ess-imenu-S-generic-expression</code>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Toolbar"></a>
 <p><hr>
+<a name="Toolbar"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#TAGS">TAGS</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Imenu">Imenu</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5218,8 +5220,8 @@ to change the toolbar.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="TAGS"></a>
 <p><hr>
+<a name="TAGS"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Rdired">Rdired</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Toolbar">Toolbar</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
@@ -5260,8 +5262,8 @@ started:
 </pre>
    <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Rdired"></a>
 <p><hr>
+<a name="Rdired"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#TAGS">TAGS</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 
@@ -5302,9 +5304,9 @@ deletion (`x' will actually perform the deletion).
 
 <!-- node-name,  next,  previous,  up@chapter Using S4 -->
 <div class="node">
+<p><hr>
 <a name="Mailing-lists%2fbug-reports"></a>
 <a name="Mailing-lists_002fbug-reports"></a>
-<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Customization">Customization</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Miscellaneous">Miscellaneous</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -5321,8 +5323,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 </ul>
 
 <div class="node">
-<a name="Bugs"></a>
 <p><hr>
+<a name="Bugs"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Reporting-Bugs">Reporting Bugs</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>
@@ -5371,8 +5373,8 @@ accordingly the value of <code>inferior-ess-secondary-prompt</code> in
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Reporting-Bugs"></a>
 <p><hr>
+<a name="Reporting-Bugs"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Mailing-Lists">Mailing Lists</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Bugs">Bugs</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>
@@ -5403,8 +5405,8 @@ donations are also more than welcome.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Mailing-Lists"></a>
 <p><hr>
+<a name="Mailing-Lists"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Help-with-emacs">Help with emacs</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Reporting-Bugs">Reporting Bugs</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>
@@ -5432,8 +5434,8 @@ low-volume mailing list.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Help-with-emacs"></a>
 <p><hr>
+<a name="Help-with-emacs"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-Lists">Mailing Lists</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>
 
@@ -5460,8 +5462,8 @@ ESS.
 <!-- _not_yet_ @end menu -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Customization"></a>
 <p><hr>
+<a name="Customization"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Key-Index">Key Index</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-lists_002fbug-reports">Mailing lists/bug reports</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -5485,8 +5487,8 @@ to make it easy to find related variables.
 
 <!-- Stephen deleted incomplete variable list Wed 25 Aug 2004. -->
 <div class="node">
-<a name="Key-Index"></a>
 <p><hr>
+<a name="Key-Index"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Concept-Index">Concept Index</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Customization">Customization</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -5501,8 +5503,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <!-- @printindex fn -->
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
-<a name="Concept-Index"></a>
 <p><hr>
+<a name="Concept-Index"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Variable-and-command-index">Variable and command index</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Key-Index">Key Index</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -5617,8 +5619,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#index-working-directory-15">working directory</a>: <a href="#Starting-up">Starting up</a></li>
 <li><a href="#index-X-windows-202">X windows</a>: <a href="#X11">X11</a></li>
    </ul><div class="node">
-<a name="Variable-and-command-index"></a>
 <p><hr>
+<a name="Variable-and-command-index"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Concept-Index">Concept Index</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 

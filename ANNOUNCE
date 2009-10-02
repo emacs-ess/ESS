@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.4
+   5.5
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -127,10 +127,11 @@ notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
 1.4 Stability
 =============
 
-Versions 5.3.x are meant to be release-quality versions.  While some
-new features are being introduced, we are cleaning up and improving the
-interface.  We know about some remaining documentation inconsistencies.
-Patches or suggested fixes with bug reports are much appreciated!
+All released versions (5.x, x >= 4) are meant to be release-quality
+versions.  While some new features are being introduced, we are
+cleaning up and improving the interface.  We know about some remaining
+documentation inconsistencies.  Patches or suggested fixes with bug
+reports are much appreciated!
 
 1.5 Mailing List
 ================

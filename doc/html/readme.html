@@ -3,7 +3,7 @@
 <title>ESS --- Emacs Speaks Statistics</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ESS --- Emacs Speaks Statistics">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.12">
 <link title="Top" rel="top" href="#Top">
 <link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
 <meta http-equiv="Content-Style-Type" content="text/css">
@@ -21,8 +21,8 @@
 </head>
 <body>
 <div class="node">
-<a name="General-Information"></a>
 <p><hr>
+<a name="General-Information"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#dir">(dir)</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 
@@ -34,7 +34,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <p><a name="index-README-1"></a>
 This is the README file for the distribution of ESS version
 
-   <p>5.4
+   <p>5.5
 
    <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
@@ -79,8 +79,8 @@ Lumley).
 </ul>
 
 <div class="node">
-<a name="License"></a>
 <p><hr>
+<a name="License"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Stability">Stability</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#General-Information">General Information</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -102,8 +102,8 @@ in the file COPYING in the same directory as this file for more
 details.
 
 <div class="node">
-<a name="Stability"></a>
 <p><hr>
+<a name="Stability"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#License">License</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -113,14 +113,15 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">1.2 Stability</h3>
 
-<p>Versions 5.3.x are meant to be release-quality versions.  While some
-new features are being introduced, we are cleaning up and improving
-the interface.  We know about some remaining documentation inconsistencies. 
+<p>All released versions (5.x, x &gt;= 4) are meant to be release-quality
+versions.  While some new features are being introduced, we are cleaning up
+and improving the interface.  We know about some remaining documentation
+inconsistencies. 
 Patches or suggested fixes with bug reports are much appreciated!
 
 <div class="node">
-<a name="Requirements"></a>
 <p><hr>
+<a name="Requirements"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Latest-Version">Latest Version</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Stability">Stability</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -172,8 +173,8 @@ Most notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
 <!-- @c @uref{ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz, here}.} -->
 <!-- @end itemize -->
 <div class="node">
-<a name="Latest-Version"></a>
 <p><hr>
+<a name="Latest-Version"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Installation">Installation</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Requirements">Requirements</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -223,8 +224,8 @@ certificate permanently and will not be asked about it anymore.
 <!-- NOTE: The above INCLUDES inst_svn.texi (Subversion/SVN Installation) -->
 <!-- vvvvvvvvvvvv node name  *must* match the one in ./ess.texi ! -->
 <div class="node">
-<a name="Installation"></a>
 <p><hr>
+<a name="Installation"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Starting-up">Starting up</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Latest-Version">Latest Version</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -235,8 +236,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <h3 class="section">1.5 Installation</h3>
 
 <div class="node">
-<a name="Unix-installation"></a>
 <p><hr>
+<a name="Unix-installation"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Microsoft-Windows-installation">Microsoft Windows installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 
@@ -257,7 +258,8 @@ and ESS, the installation process is simple.
 <li>Extract all the files from <samp><span class="file">ess-VERSION.tgz</span></samp> when you are in
 the current working directory of <samp><span class="file">/usr/local/share/emacs/site-lisp</span></samp>
 which exists for packages like <acronym>ESS</acronym>
-(or for Mac OS X <samp><span class="file">/Applications/Emacs.app/Contents/MacOS/Resources/site-lisp</span></samp>):
+(and for Mac OS X create a link to it from the directory
+<samp><span class="file">/Applications/Emacs.app/Contents/Resources/site-lisp</span></samp>):
      <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
           %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
 </pre>
@@ -283,7 +285,7 @@ or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
 were most likely successful.  If not, then send a query to
-<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+<a href="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</a>
 explicitly describing your problem and your environment
 including operating system, Emacs version, <acronym>ESS</acronym> version, etc.
         </ol>
@@ -296,7 +298,8 @@ and ESS, the installation process is simple.
 the current working directory of <samp><span class="file">/usr/local/LOCATION/xemacs/site-packages</span></samp>
 which exists for packages like <acronym>ESS</acronym>
 where <samp><span class="file">LOCATION</span></samp> is <samp><span class="file">lib</span></samp> for legacy installations and <samp><span class="file">share</span></samp>
-now (or for Mac OS X <samp><span class="file">/Applications/XEmacs.app/Contents/MacOS/Resources/site-packages</span></samp>):
+now (and for Mac OS X create a link to it from the directory
+<samp><span class="file">/Applications/XEmacs.app/Contents/Resources/site-lisp</span></samp>):
      <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
           %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
 </pre>
@@ -322,7 +325,7 @@ or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
 were most likely successful.  If not, then send a query to
-<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+<a href="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</a>
 explicitly describing your problem and your environment
 including operating system, XEmacs version, <acronym>ESS</acronym> version, etc.
         </ol>
@@ -345,8 +348,8 @@ using XEmacs, then edit the XEmacs subsection in Section 1).
 
 <!-- @node Microsoft Windows installation, , Unix installation, Installation -->
 <div class="node">
-<a name="Microsoft-Windows-installation"></a>
 <p><hr>
+<a name="Microsoft-Windows-installation"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Unix-installation">Unix installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
@@ -396,7 +399,7 @@ will not be lost if you update Emacs later.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
 were most likely successful.  If not, then send a query to
-<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+<a href="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</a>
 explicitly describing your problem and your environment
 including operating system, Emacs version, <acronym>ESS</acronym> version, etc.
         </ol>
@@ -451,7 +454,7 @@ will not be lost if you update XEmacs later.
 
      <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
 were most likely successful.  If not, then send a query to
-<a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>
+<a href="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</a>
 explicitly describing your problem and your environment
 including operating system, XEmacs version, <acronym>ESS</acronym> version, etc.
         </ol>
@@ -580,8 +583,8 @@ emacs, and cut and paste the results into the XLispStat
 *Listener* Window under Microsoft Windows.
 
 <div class="node">
-<a name="Starting-up"></a>
 <p><hr>
+<a name="Starting-up"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Current-Features">Current Features</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Installation">Installation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -598,8 +601,8 @@ use the Cygwin bash shell, simply type <kbd>M-x S RET</kbd>.
 use the MSDOS prompt shell, simply type <kbd>M-x S+6-msdos RET</kbd>.
 
 <div class="node">
-<a name="Current-Features"></a>
 <p><hr>
+<a name="Current-Features"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#New-Features">New Features</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Starting-up">Starting up</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -651,8 +654,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
      </ul>
 
 <div class="node">
-<a name="New-Features"></a>
 <p><hr>
+<a name="New-Features"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Reporting-Bugs">Reporting Bugs</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Current-Features">Current Features</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -882,8 +885,8 @@ assign the &ldquo; &lt;- &rdquo; insertion to an arbitrary key.
 </ul>
 
 <div class="node">
-<a name="Reporting-Bugs"></a>
 <p><hr>
+<a name="Reporting-Bugs"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Mailing-Lists">Mailing Lists</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#New-Features">New Features</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -912,8 +915,8 @@ containing debug information; send us that buffer.
 donations are also more than welcome.
 
 <div class="node">
-<a name="Mailing-Lists"></a>
 <p><hr>
+<a name="Mailing-Lists"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Authors">Authors</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Reporting-Bugs">Reporting Bugs</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
@@ -941,8 +944,8 @@ low-volume mailing list.
 </ul>
 
 <div class="node">
-<a name="Authors"></a>
 <p><hr>
+<a name="Authors"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-Lists">Mailing Lists</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
 

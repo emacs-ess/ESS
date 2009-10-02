@@ -3,7 +3,7 @@
 
 This is the README file for the distribution of ESS version
 
-   5.4
+   5.5
 
    ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
@@ -70,10 +70,11 @@ in the file COPYING in the same directory as this file for more details.
 1.2 Stability
 =============
 
-Versions 5.3.x are meant to be release-quality versions.  While some
-new features are being introduced, we are cleaning up and improving the
-interface.  We know about some remaining documentation inconsistencies.
-Patches or suggested fixes with bug reports are much appreciated!
+All released versions (5.x, x >= 4) are meant to be release-quality
+versions.  While some new features are being introduced, we are
+cleaning up and improving the interface.  We know about some remaining
+documentation inconsistencies.  Patches or suggested fixes with bug
+reports are much appreciated!
 
 1.3 Requirements
 ================
@@ -138,8 +139,9 @@ or higher) and ESS, the installation process is simple.
 
   1. Extract all the files from `ess-VERSION.tgz' when you are in the
      current working directory of `/usr/local/share/emacs/site-lisp'
-     which exists for packages like ESS (or for Mac OS X
-     `/Applications/Emacs.app/Contents/MacOS/Resources/site-lisp'):
+     which exists for packages like ESS (and for Mac OS X create a link
+     to it from the directory
+     `/Applications/Emacs.app/Contents/Resources/site-lisp'):
           %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
           %prompt gunzip < ess-VERSION.tgz | tar xf - # for Unix tar
 
@@ -164,9 +166,9 @@ or higher) and ESS, the installation process is simple.
 
   6. If you see a buffer named `*ESS*', then the manual instructions
      were most likely successful.  If not, then send a query to
-     <ess-help-request@stat.math.ethz.ch> explicitly describing your
-     problem and your environment including operating system, Emacs
-     version, ESS version, etc.
+     <ess-help@stat.math.ethz.ch> explicitly describing your problem
+     and your environment including operating system, Emacs version,
+     ESS version, etc.
 
    _XEmacs Simple Instructions:_ for recent versions of XEmacs (21.x or
 higher) and ESS, the installation process is simple.
@@ -175,8 +177,9 @@ higher) and ESS, the installation process is simple.
      current working directory of
      `/usr/local/LOCATION/xemacs/site-packages' which exists for
      packages like ESS where `LOCATION' is `lib' for legacy
-     installations and `share' now (or for Mac OS X
-     `/Applications/XEmacs.app/Contents/MacOS/Resources/site-packages'):
+     installations and `share' now (and for Mac OS X create a link to
+     it from the directory
+     `/Applications/XEmacs.app/Contents/Resources/site-lisp'):
           %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
           %prompt gunzip < ess-VERSION.tgz | tar xf - # for Unix tar
 
@@ -201,9 +204,9 @@ higher) and ESS, the installation process is simple.
 
   6. If you see a buffer named `*ESS*', then the manual instructions
      were most likely successful.  If not, then send a query to
-     <ess-help-request@stat.math.ethz.ch> explicitly describing your
-     problem and your environment including operating system, XEmacs
-     version, ESS version, etc.
+     <ess-help@stat.math.ethz.ch> explicitly describing your problem
+     and your environment including operating system, XEmacs version,
+     ESS version, etc.
 
   1. (OPTIONAL) COMPILING E-LISP:
 
@@ -256,9 +259,9 @@ or higher) and ESS, the installation process is simple.
 
   6. If you see a buffer named `*ESS*', then the manual instructions
      were most likely successful.  If not, then send a query to
-     <ess-help-request@stat.math.ethz.ch> explicitly describing your
-     problem and your environment including operating system, Emacs
-     version, ESS version, etc.
+     <ess-help@stat.math.ethz.ch> explicitly describing your problem
+     and your environment including operating system, Emacs version,
+     ESS version, etc.
 
    _XEmacs Simple Instructions:_ for recent versions of XEmacs (21.x or
 higher), the installation process is much simpler.  Hopefully, these
@@ -307,9 +310,9 @@ manual instructions follow.
 
   8. If you see a buffer named `*ESS*', then the manual instructions
      were most likely successful.  If not, then send a query to
-     <ess-help-request@stat.math.ethz.ch> explicitly describing your
-     problem and your environment including operating system, XEmacs
-     version, ESS version, etc.
+     <ess-help@stat.math.ethz.ch> explicitly describing your problem
+     and your environment including operating system, XEmacs version,
+     ESS version, etc.
 
    Now, you should be ready to use ESS.  For example, to edit
 statistical programs, load the files with the requisite extensions

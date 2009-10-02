@@ -1,3 +1,7 @@
+2009-10-02  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* doc/{windows|unixlike}.texi: fix *wrong* e-mail for ess-help
+
 2009-06-08  ESS Maintainers <ESS-core@stat.math.ethz.ch>
 
   * Version 5.4 released.
