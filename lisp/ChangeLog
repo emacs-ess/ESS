@@ -1,3 +1,9 @@
+2009-10-06  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-cust.el (inferior-ess-r-help-command): New variable to allow
+	htmlhelp to be set.
+	* essd-r.el (R-customize-alist): Use above var.
+
 2009-09-21  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-mode.el (ess-electric-brace): skeleton-pair
