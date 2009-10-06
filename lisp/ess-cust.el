@@ -1220,6 +1220,15 @@ This format string should use %s to substitute an object name."
 (make-variable-buffer-local 'inferior-ess-help-command)
 (setq-default inferior-ess-help-command "help(\"%s\")\n")
 
+(defcustom inferior-ess-r-help-command "help(\"%s\", htmlhelp=FALSE)\n"
+  "Format-string for building the R command to ask for help on an object.
+
+This format string should use %s to substitute an object name.
+If set, changes will take effect when next R session is started."
+  :group 'ess-command
+  :type 'string)
+
+
 (defcustom inferior-ess-exit-command "q()\n"
   "Format-string for building the ess command to exit.
 
