@@ -124,6 +124,11 @@ or `ess-sas-data-view-insight'."
   :group 'ess-sas
   :type  'integer)
 
+(defcustom ess-sas-rtf-font-name "Lucida Sans Typewriter"
+  "*Name of font to create MS RTF with"
+  :group 'ess-sas
+  :type  'string)
+
 (defcustom ess-sas-shell-buffer "*shell*"
   "*Name that you want to use for the shell buffer; buffer-local."
   :group 'ess-sas
@@ -883,7 +888,7 @@ optional argument is non-nil, then set-buffer rather than switch."
 	(rtf-export ess-temp-rtf-file)
 	(ess-sas-goto "rtf" t)
 	(goto-char (point-min))
-	(replace-regexp "\\\\fmodern .*;" "\\\\fmodern courier;" )
+	(replace-regexp "\\\\fmodern .*;" (concat "\\\\fmodern " ess-sas-rtf-font-name ";"))
 	(goto-line 2)
 	(insert "\\margl720\\margr720\\margt720\\margb720\n")
         (goto-char (point-min))
