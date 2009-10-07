@@ -1,3 +1,10 @@
+2009-10-07  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essa-sas.el (ess-sas-rtf-font-name): now you can
+	specify the font that MS RTF are created with; previously,
+	these were created with courier, however, this font is
+	thin and hard to read with MS Office and OpenOffice
+
 2009-10-06  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-cust.el (inferior-ess-r-help-command): New variable to allow
