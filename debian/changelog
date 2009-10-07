@@ -1,3 +1,16 @@
+ess (5.5-1) unstable; urgency=low
+
+  * New upstream version released today
+
+  * debian/control: Updated Depends: list by adding 'emacs23' to list
+  * debian/control: Updated Homepage: URL to 'ess.r-project.org'
+  
+  * debian/control: Increased Standards-Version: to 3.8.1
+    + debian/control: Added '${misc:Depends}' to Depends 
+    + debian/control: Added 'dpkg (>= 1.15.4) | install-info' 
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 07 Oct 2009 09:31:55 -0500
+
 ess (5.4-1) unstable; urgency=low
 
   * New upstream version released today
