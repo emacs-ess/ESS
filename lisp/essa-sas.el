@@ -880,7 +880,7 @@ optional argument is non-nil, then set-buffer rather than switch."
     (ess-sas-file-path)
 
     (if (equal ess-tmp-font-size nil)
-	(setq ess-tmp-font-size "18"))
+	(setq ess-tmp-font-size "22"))
 
     (let
 	((ess-temp-rtf-file (replace-in-string ess-sas-file-path "[.][^.]*$" ".rtf")))
