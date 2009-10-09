@@ -1,3 +1,8 @@
+2009-10-09  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essa-sas.el (ess-sas-rtf-portrait): boost portrait font
+	point size to 11
+
 2009-10-07  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essa-sas.el (ess-sas-rtf-font-name): now you can
