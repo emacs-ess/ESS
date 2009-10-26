@@ -149,7 +149,18 @@ to R, put them in the variable `inferior-R-args'."
 	  (if ess-use-R-completion ;; use R's completion mechanism (pkg "rcompgen" or "utils")
 	      (progn ; nothing to happen here -- is all in ess-complete-object-name
 		(ess-write-to-dribble-buffer "resetting completion to 'ess-R-complete-object-name")
-		)))
+		))
+	  ;; problem with ess-help-command
+	  (let ((my-R-help-cmd
+		 (if (ess-current-R-at-least '2.10.0)
+		     "help"
+		   ;; else R version <= 2.9.2
+		   "function(..., help_type) help(..., htmlhelp= (help_type==\"html\"))")))
+
+	    (ess-eval-linewise
+	     (concat ".help.ESS <- " my-R-help-cmd) nil nil nil 'wait-prompt)
+	  ))
+
       ;; else R version <= 2.4.1
 
       ;; for R <= 2.1.x : define baseenv() :

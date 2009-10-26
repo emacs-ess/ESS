@@ -1,3 +1,9 @@
+2009-10-26  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (inferior-ess-r-help-command): use .help.ESS() now
+
+	* essd-r.el (R): define .help.ESS(), R-version dependently
+
 2009-10-09  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essa-sas.el (ess-sas-rtf-portrait): boost portrait font
@@ -41,7 +47,7 @@
 
 2009-06-16  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-trns.el (ess-transcript-send-command-and-move): 
+	* ess-trns.el (ess-transcript-send-command-and-move):
 	patch supplied by tyler.smith@mail.mcgill.ca
 	see the related discussion at
 	https://stat.ethz.ch/pipermail/ess-bugs/2008q1/000489.html
