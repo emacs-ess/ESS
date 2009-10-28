@@ -128,7 +128,7 @@ Uses the variable `inferior-ess-help-command' for the actual help command.
 Prompts for the object name based on the cursor location for all cases
 except the S-Plus GUI.  With S-Plus on Windows (both GUI and in an inferior
 emacs buffer) the GUI help window is used."
-  (interactive 
+  (interactive
    (if (ess-ddeclient-p)
        (list (read-string "Help on: "))
      (ess-find-help-file "Help on: ")))
@@ -419,10 +419,10 @@ to see which keystrokes find which sections."
   (let ((old-point (point))
 	(case-fold-search nil))
     (goto-char (point-min))
-    (let ((the-sec (cdr (assoc last-command-char
+    (let ((the-sec (cdr (assoc last-command-event
 			       ess-help-sec-keys-alist))))
       (if (not the-sec) (error "Invalid section key: %c"
-			       last-command-char)
+			       last-command-event)
 	(if (re-search-forward (concat "^" the-sec) nil t) nil
 	    (message "No %s section in this help. Sorry." the-sec)
 	    (goto-char old-point))))))
@@ -589,8 +589,8 @@ Stata or XLispStat for additional information."
 	   'ess-keep-dump-files
 	   'ess-source-directory)
      nil
-     (lambda () 
-       ;;(goto-char (point-max)) 
+     (lambda ()
+       ;;(goto-char (point-max))
        (rfc822-goto-eoh)
        (forward-line 1)
        (insert "\nThis bug report will be sent to the ESS bugs email list\n")
