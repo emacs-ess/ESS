@@ -258,7 +258,7 @@ Better logic needed!  (see 2 uses, in this file).")
 			      (skip-chars-backward " \t")
 			  (bolp)))))
 	(progn
-	  (insert last-command-char)
+	  (insert last-command-event)
 	  (ess-indent-line)
 	  (save-excursion
 	    (if insertpos (goto-char (1+ insertpos)))
