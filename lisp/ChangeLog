@@ -1,3 +1,8 @@
+2009-10-28  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-site.el (ess-microsoft-p): add 'help_type = "text"' to
+	post-run-hook in the microsoft case.
+
 2009-10-26  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-cust.el (inferior-ess-r-help-command): use .help.ESS() now

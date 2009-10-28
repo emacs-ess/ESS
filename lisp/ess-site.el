@@ -138,7 +138,7 @@ The extension, in a file name, is the part that follows the last `.'."
 ;; must come *AFTER* load-path is set !
 
 ;;; The following require sets ess-local-custom-available to
-;;; true if custom is provided at this point.  
+;;; true if custom is provided at this point.
 (require 'ess-emcs)
 ;;; If it is not provided, but we think it will be available when necessary,
 ;;; then we can use the following line (uncommented) to make sure that
@@ -632,7 +632,7 @@ sending `inferior-ess-language-start' to S-Plus.")
     (add-hook 'ess-post-run-hook
 	      '(lambda()
 		 (if (string= ess-dialect "R")
-		     (ess-eval-linewise "options(chmhelp = FALSE)"
+		     (ess-eval-linewise "options(chmhelp = FALSE, help_type = \"text\")"
 					nil nil nil 'wait)))))
 
 
@@ -640,9 +640,9 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;;; Formatting and indentation patterns are defined in ess-cust.el, please
 ;;; see ess-cust.el for exact definitions of these variable settings.
-;;; To change them (eg, follow changes suggested by Terry Therneau), 
+;;; To change them (eg, follow changes suggested by Terry Therneau),
 ;;; you need one or both of the following lines:
-;;; 
+;;;
 ;;(setq ess-fancy-comments nil)
 ;;(setq ess-default-style 'CLB)
 
