@@ -80,7 +80,7 @@ ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 ESSDIR=ess-$(ESSVERSION)
 ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
 GNUTAR=tar
-SVN_URL = https://svn.R-project.org/ESS
+SVN_URL = https://svn.r-project.org/ESS
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess
 ESS_HOMEPAGE = /u/maechler/emacs/ESS-web
 
