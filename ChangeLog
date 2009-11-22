@@ -1,3 +1,9 @@
+2009-11-22  Stephen Eglen  <stephen@gnu.org>
+
+	* doc/help-s.texi (iESS(S)--Inferior ESS processes): Add
+	documentation about how exec-path determines which directories are
+	searched to find R versions.
+
 2009-10-07  ESS Maintainers <ESS-core@stat.math.ethz.ch>
 
   * Version 5.5 released.
