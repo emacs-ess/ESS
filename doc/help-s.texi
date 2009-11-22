@@ -90,47 +90,44 @@ wish to always call R with certain arguments, set the variable
 @comment Menubar access to other versions of R and Sqpe
 
 If you have other versions of R or S-Plus available on the system, ESS
-is also able to start those versions.  How this works depend on which OS
-you are using:
+is also able to start those versions.  How this exactly works depend on
+which OS you are using, as described in the following paragraphs.  The
+general principle, regardless of OS, is that ESS searches the paths
+listed in the variable @code{exec-path} for R binaries.  If ESS cannot
+find your R binaries, on Unix you can change the unix environment
+variable @code{PATH}, as this variable is used to set @code{exec-path}.
 
+R on Unix systems: If you have "R-1.8.1" on your @code{exec-path}, it
+can be started using @kbd{M-x R-1.8.1}.  By default, ESS will find
+versions of R beginning "R-1" or "R-2".  If your versions of R are
+called other names, consider renaming them with a symbolic link or
+change the variable @code{ess-r-versions}.  To see which functions have
+been created for starting different versions of R, type @kbd{M-x R-} and
+then hit [Tab].  These other versions of R can also be started from the
+"ESS->Start Process->Other" menu.
 
-R on Unix systems:
-If you have "R-1.8.1" on
-your `exec-path', it can be started using @kbd{M-x R-1.8.1}.  By
-default, ESS will find versions of R beginning "R-1" or "R-2".  If your
-versions of R are called other names, consider renaming them with a
-symbolic link or change the variable @code{ess-r-versions}.  To see
-which defuns have been created for starting different versions of R,
-type @kbd{M-x R-} and then hit [Tab].  You will then see if any defuns
-for particular versions of R have been created.  These other versions of
-R can also be started from the "ESS->Start Process->Other" menu.
-
-R on Windows systems:
-If you have "rw1081" on
-your `exec-path', it can be started using @kbd{M-x rw1081}.  By
-default, ESS will find versions of R located in directories
-parallel to the version of R in your @code{PATH}.  If your
-versions of R are called other names, you will need to change the variable
-@code{ess-rterm-versions}.  To see
-which defuns have been created for starting different versions of R,
-type @kbd{M-x rw} and then hit [Tab].  You will then see if any defuns
-for particular versions of R have been created.  These other versions of
+R on Windows systems: If you have "rw1081" on your @code{exec-path}, it
+can be started using @kbd{M-x rw1081}.  By default, ESS will find
+versions of R located in directories parallel to the version of R in
+your @code{PATH}.  If your versions of R are called other names, you
+will need to change the variable @code{ess-rterm-versions}.  To see
+which functions have been created for starting different versions of R,
+type @kbd{M-x rw} and then hit [Tab].  These other versions of
 R can also be started from the "ESS->Start Process->Other" menu.
 
 Once ESS has found these extra versions of R, it will then create a new
-defun, called @kbd{M-x R-newest}, which will call the newest version of
-R that it found.  (ESS examines the date in the first line of
+function, called @kbd{M-x R-newest}, which will call the newest version
+of R that it found.  (ESS examines the date in the first line of
 information from @code{R --version} to determine which is newest.)
 
-S on Unix systems: If you have "Splus7" on your `exec-path', it can be
-started using @kbd{M-x Splus7}.  By default, ESS will find all
+S on Unix systems: If you have "Splus7" on your @code{exec-path}, it can
+be started using @kbd{M-x Splus7}.  By default, ESS will find all
 executables beginning "Splus" on your path.  If your versions of S are
 called other names, consider renaming them with a symbolic link or
-change the variable @code{ess-s-versions}.  To see which defuns have
+change the variable @code{ess-s-versions}.  To see which functions have
 been created for starting different versions of Splus, type @kbd{M-x
-Splus} and then hit [Tab].  You will then see if any defuns for
-particular versions of Splus have been created.  These other versions of
-Splus can also be started from the "ESS->Start Process->Other" menu.
+Splus} and then hit [Tab].  These other versions of Splus can also be
+started from the "ESS->Start Process->Other" menu.
 
 A second mechanim is also available for running other versions of Splus.
 The variable @code{ess-s-versions-list} is a list of lists; each sublist
@@ -156,17 +153,16 @@ is loaded.
 
 
 
-Sqpe (S-Plus running inside an emacs buffer) on Windows systems:
-If you have an older version of S-Plus (S-Plus 6.1 for example) on your system,
+Sqpe (S-Plus running inside an emacs buffer) on Windows systems: If you
+have an older version of S-Plus (S-Plus 6.1 for example) on your system,
 ir can be started inside an emacs buffer with @kbd{M-x splus61}.  By
 default, ESS will find versions of S-Plus located in the installation
-directories that Insightful uses by default.  If your
-versions of S-Plus are anywhere else, you will need to change the variable
-@code{ess-SHOME-versions}.  To see
-which defuns have been created for starting different versions of S-Plus,
-type @kbd{M-x spl} and then hit [Tab].  You will then see if any defuns
-for particular versions of S-Plus have been created.  These other versions of
-S-Plus can also be started from the "ESS->Start Process->Other" menu.
+directories that Insightful uses by default.  If your versions of S-Plus
+are anywhere else, you will need to change the variable
+@code{ess-SHOME-versions}.  To see which functions have been created for
+starting different versions of S-Plus, type @kbd{M-x spl} and then hit
+[Tab].  These other versions of S-Plus can also be started from the
+"ESS->Start Process->Other" menu.
 
 
 @node ESS-help--assistance with viewing help, Philosophies for using ESS(S),iESS(S)--Inferior ESS processes,ESS for the S family
