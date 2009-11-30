@@ -878,9 +878,10 @@ optional argument is non-nil, then set-buffer rather than switch."
 "Creates an MS RTF portrait file from the current buffer."
     (interactive)
     (ess-sas-file-path)
+    (ess-revert-wisely)
 
     (if (equal ess-tmp-font-size nil)
-	(setq ess-tmp-font-size "22"))
+	(setq ess-tmp-font-size "21"))
 
     (let
 	((ess-temp-rtf-file (replace-in-string ess-sas-file-path "[.][^.]*$" ".rtf")))
