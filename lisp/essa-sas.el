@@ -199,7 +199,7 @@ should set this variable to 'sh regardless of their local shell
 (make-variable-buffer-local 'ess-sas-submit-method)
 
 (defcustom ess-sas-graph-view-viewer-default
-  (if ess-microsoft-p "kodakimg"
+  (if ess-microsoft-p "explorer"
     (if (equal ess-sas-submit-method 'sh) "sdtimage"))
   "*Default graphics image file viewer."
   :group 'ess-sas
