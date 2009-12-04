@@ -718,13 +718,13 @@ made current."
 (defun update-ess-process-name-list ()
   "Remove names with no process."
   (let (defunct)
-    (mapcar
+    (mapc
      '(lambda (conselt)
 	(let ((proc (get-process (car conselt))))
 	  (if (and proc (eq (process-status proc) 'run)) nil
 	    (setq defunct (cons conselt defunct)))))
      ess-process-name-list)
-    (mapcar
+    (mapc
      '(lambda (pointer)
 	(setq ess-process-name-list (delq pointer ess-process-name-list)))
      defunct))
@@ -1342,7 +1342,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 		 (expand-file-name
 		  (read-file-name "Load S file: " nil nil t)))))
   (ess-make-buffer-current)
-  (if (ess-ddeclient-p);; << FIXME: rather  ess-microsoft-p
+  (if ess-microsoft-p;; was (if (ess-ddeclient-p) ..)
       (setq filename (ess-replace-in-string filename "[\\]" "/")))
   (let ((source-buffer (get-file-buffer filename)))
     (if (ess-check-source filename)
@@ -1994,16 +1994,16 @@ before you quit.  It is run automatically by \\[ess-quit]."
 	      (format
 	       "Delete all buffers associated with process %s? " the-procname))))
 	(save-excursion
-	  (mapcar '(lambda (buf)
-		     (set-buffer buf)
-		     ;; Consider buffers for which
-		     ;; ess-local-process-name is the same as
-		     ;; the-procname
-		     (if (and (not (get-buffer-process buf))
-			      ess-local-process-name
-			      (equal ess-local-process-name the-procname))
-			 (kill-buffer buf)))
-		  (buffer-list))))
+	  (mapc '(lambda (buf)
+		   (set-buffer buf)
+		   ;; Consider buffers for which
+		   ;; ess-local-process-name is the same as
+		   ;; the-procname
+		   (if (and (not (get-buffer-process buf))
+			    ess-local-process-name
+			    (equal ess-local-process-name the-procname))
+		       (kill-buffer buf)))
+		(buffer-list))))
     (ess-switch-to-ESS nil)))
 
 (defun ess-kill-buffer-function nil
