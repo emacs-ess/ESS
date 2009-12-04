@@ -483,6 +483,11 @@ shell, simply type `M-x S+6-msdos RET'.
 1.10 New Features
 =================
 
+     Changes/New Features in 5.6:
+        * ESS[R]: help() calls have to differ from old default, with
+          newer  versions of R; currently via .help.ESS <-
+          function(...) hack.
+
      Changes/New Features in 5.4:
         * ESS[SAS]: The long overdue change from `make-regexp' to
           `regexp-opt' for font-locking is complete.  The new
