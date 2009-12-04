@@ -1,3 +1,9 @@
+ess (5.6-1) unstable; urgency=low
+
+  * New upstream version released this morning
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 04 Dec 2009 11:46:57 -0600
+
 ess (5.5-1) unstable; urgency=low
 
   * New upstream version released today
