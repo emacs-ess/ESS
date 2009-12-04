@@ -1,3 +1,7 @@
+2009-12-04  ESS Maintainers <ESS-core@stat.math.ethz.ch>
+
+  * Version 5.6 released.
+
 2009-11-22  Stephen Eglen  <stephen@gnu.org>
 
 	* doc/help-s.texi (iESS(S)--Inferior ESS processes): Add
