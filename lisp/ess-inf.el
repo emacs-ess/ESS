@@ -1348,7 +1348,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
     (if (ess-check-source filename)
 	(error "Buffer %s has not been saved" (buffer-name source-buffer)))
     ;; else
-    (if (ess-ddeclient-p)
+    (if ess-microsoft-p;; was (ess-ddeclient-p)
 	(ess-load-file-ddeclient filename)
 
       ;; else: "normal", non-DDE behavior:
