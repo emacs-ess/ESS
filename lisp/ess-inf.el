@@ -827,6 +827,9 @@ inferior-ess-ddeclient, and nil if the ess-process is running as an
 ordinary inferior process.  Alway nil on Unix machines."
   (interactive)
   (if ess-microsoft-p
+      ;; Debug: C-c C-l fails (to start R or give good message) in Windows
+      (ess-write-to-dribble-buffer
+       (format "*ddeclient-p: ess-loc-proc-name is '%s'" ess-local-process-name))
       (not (equal (ess-get-process-variable
 		   ess-local-process-name 'inferior-ess-ddeclient)
 		  (default-value 'inferior-ess-ddeclient)))))
@@ -1342,13 +1345,13 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 		 (expand-file-name
 		  (read-file-name "Load S file: " nil nil t)))))
   (ess-make-buffer-current)
-  (if ess-microsoft-p;; was (if (ess-ddeclient-p) ..)
+  (if ess-microsoft-p
       (setq filename (ess-replace-in-string filename "[\\]" "/")))
   (let ((source-buffer (get-file-buffer filename)))
     (if (ess-check-source filename)
 	(error "Buffer %s has not been saved" (buffer-name source-buffer)))
     ;; else
-    (if ess-microsoft-p;; was (ess-ddeclient-p)
+    (if (ess-ddeclient-p)
 	(ess-load-file-ddeclient filename)
 
       ;; else: "normal", non-DDE behavior:
