@@ -207,6 +207,11 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
+     Changes/New Features in 5.7:
+        * ESS[R]: loading a source file (`C-c C-l') now works in
+          Windows, similarly to other platforms;  (further; it had
+          accidentally been broken in ESS 5.6 on all platforms)
+
      Changes/New Features in 5.6:
         * ESS[R]: help() calls have to differ from old default, with
           newer  versions of R; currently via .help.ESS <-
