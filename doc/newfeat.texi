@@ -1,5 +1,12 @@
 @itemize @w{}
 
+Changes/New Features in 5.7:
+@itemize @bullet
+@item @ESS{[R]}: loading a source file (@kbd{C-c C-l}) now works in
+ Windows, similarly to other platforms;
+ (further; it had accidentally been broken in ESS 5.6 on all platforms)
+@end itemize
+
 Changes/New Features in 5.6:
 @itemize @bullet
 @item @ESS{[R]}: help() calls have to differ from old default, with newer
