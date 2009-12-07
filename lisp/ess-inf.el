@@ -826,13 +826,15 @@ Assumes that buffer has not already been in found in current frame."
 inferior-ess-ddeclient, and nil if the ess-process is running as an
 ordinary inferior process.  Alway nil on Unix machines."
   (interactive)
-  (if ess-microsoft-p
-      ;; Debug: C-c C-l fails (to start R or give good message) in Windows
-      (ess-write-to-dribble-buffer
-       (format "*ddeclient-p: ess-loc-proc-name is '%s'" ess-local-process-name))
-      (not (equal (ess-get-process-variable
-		   ess-local-process-name 'inferior-ess-ddeclient)
-		  (default-value 'inferior-ess-ddeclient)))))
+  (if ess-microsoft-p 
+      (progn
+	;; Debug: C-c C-l fails (to start R or give good message) in Windows
+	(ess-write-to-dribble-buffer
+	 (format "*ddeclient-p: ess-loc-proc-name is '%s'" ess-local-process-name))
+	(ess-force-buffer-current "Process to load into: ")
+	(not (equal (ess-get-process-variable
+		     ess-local-process-name 'inferior-ess-ddeclient)
+		    (default-value 'inferior-ess-ddeclient))))))
 
 (defun ess-prompt-wait (proc &optional start-of-output sleep)
   "Wait for a prompt to appear at BOL of current buffer.

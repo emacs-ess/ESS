@@ -1,3 +1,8 @@
+2009-12-07  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-ddeclient-p): fix blunder; add
+	(ess-force-buffer-current) for now.
+
 2009-12-04  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-load-file): use microsoft-p instead of
