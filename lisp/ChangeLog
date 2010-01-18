@@ -1,3 +1,8 @@
+2010-01-18  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-els.el (ess-remote): Use `ess-current-process-name' as the
+	local process name if none passed to ess-remote.
+
 2010-01-18  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* essd-r.el (ess-r-versions-create): no longer use ess-chop1

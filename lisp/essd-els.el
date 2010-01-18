@@ -192,7 +192,7 @@ C-n to send lines over.  With SAS, use C-c i
 	     (current-buffer)))
     (ess-setq-vars-local ess-customize-alist)
     (inferior-ess-mode)
-    (setq ess-local-process-name proc-name)
+    (setq ess-local-process-name (or proc-name ess-current-process-name))
     (goto-char (point-max))
     (if (equal ess-language "S")
 	(if inferior-ess-language-start
