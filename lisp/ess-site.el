@@ -383,22 +383,22 @@ sending `inferior-ess-language-start' to S-Plus.")
   (ess-message "[ess-site:] require 'essd-sp6 ...")
   (require 'essd-sp6))
 
-(ess-message "[ess-site:] require 'essd-sta ...")
-(require 'essd-sta)  ;; for Stata.
+(ess-message "[ess-site:] require 'ess-sta-d ...")
+(require 'ess-sta-d)  ;; for Stata.
 (ess-message "[ess-site:] require 'essd-xls ...")
 (require 'essd-xls)  ;; XLispStat
 (ess-message "[ess-site:] require 'essd-vst ...")
 (require 'essd-vst)  ;; ViSta
 (ess-message "[ess-site:] require 'essd-arc ...")
 (require 'essd-arc)  ;; Arc
-(ess-message "[ess-site:] require 'essd-sas ...")
-(require 'essd-sas)
+(ess-message "[ess-site:] require 'ess-sas-d ...")
+(require 'ess-sas-d)
 (ess-message "[ess-site:] require 'essd-els ...")
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 (ess-message "[ess-site:] require 'essd-omg ...")
 (require 'essd-omg)  ;; for omegahat
-(ess-message "[ess-site:] require 'essl-bugs ...")
-(require 'essl-bugs)  ;; for batch BUGS
+(ess-message "[ess-site:] require 'ess-bugs-l ...")
+(require 'ess-bugs-l)  ;; for batch BUGS
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el]: ess-customize-alist=%s \n"
