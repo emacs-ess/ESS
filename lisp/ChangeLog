@@ -1,3 +1,14 @@
+2010-01-18  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-bugs.el renamed to ess-bugs-l.el 
+	* essd-bugs.el renamed to ess-bugs-d.el 
+	* essd-jags.el renamed to ess-jags-d.el 
+	* essl-sas.el renamed to ess-sas-l.el 
+	* essd-sas.el renamed to ess-sas-d.el 
+	* essa-sas.el renamed to ess-sas-a.el 
+	* essl-sta.el renamed to ess-sta-l.el 
+	* essd-sta.el renamed to ess-sta-d.el 
+
 2010-01-18  Stephen Eglen  <stephen@gnu.org>
 
 	* essd-els.el (ess-remote): Use `ess-current-process-name' as the
