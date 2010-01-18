@@ -46,10 +46,10 @@ ELC = $(CORE) ess-comp.elc ess-cust.elc \
 	essd-r.elc ess-rdired.elc essd-r-args.elc \
 	essd-els.elc \
 	essl-lsp.elc essd-xls.elc essd-vst.elc essd-arc.elc \
-	essl-sas.elc essd-sas.elc essa-sas.elc \
-	essl-sta.elc essd-sta.elc make-regexp.elc \
+	ess-sas-l.elc ess-sas-d.elc ess-sas-a.elc \
+	ess-sta-l.elc ess-sta-d.elc make-regexp.elc \
 	essl-omg.elc essd-omg.elc \
-	essl-bugs.elc essd-bugs.elc essd-jags.elc \
+	ess-bugs-l.elc ess-bugs-d.elc ess-jags-d.elc \
 	ess-noweb.elc noweb-mode.elc noweb-font-lock-mode.elc \
 	essa-r.elc essddr.elc ess-eldoc.elc ess-roxygen.elc \
 	essd-sp6w.elc msdos.elc
@@ -118,7 +118,7 @@ ess-help.elc: ess-help.el $(CORE)
 
 essl-s.elc : essl-s.el ess.elc
 
-essd-sas.elc : essd-sas.el ess.elc
+ess-sas-d.elc : ess-sas-d.el ess.elc
 
 essd-s3.elc : essd-s3.el essl-s.elc ess.elc
 
@@ -140,25 +140,25 @@ essd-vst.elc : essd-vst.el essl-lsp.elc ess.elc
 
 ## SAS
 
-essl-sas.elc : essl-sas.el essa-sas.el ess.elc
+ess-sas-l.elc : ess-sas-l.el ess-sas-a.el ess.elc
 
-essd-sas.elc : essd-sas.el essl-sas.elc ess.elc
+ess-sas-d.elc : ess-sas-d.el ess-sas-l.elc ess.elc
 
 ## Stata
 
-essl-sta.elc : essl-sta.el ess.elc
+ess-sta-l.elc : ess-sta-l.el ess.elc
 
-essd-sta.elc : essd-sta.el ess.elc
+ess-sta-d.elc : ess-sta-d.el ess.elc
 
 ## BUGS
 
-essl-bugs.elc : essl-bugs.el ess-emcs.elc
+ess-bugs-l.elc : ess-bugs-l.el ess-emcs.elc
 
-essd-bugs.elc : essd-bugs.el essl-bugs.elc
+ess-bugs-d.elc : ess-bugs-d.el ess-bugs-l.elc
 
 ## JAGS 
 
-essd-jags.elc : essd-jags.el essl-bugs.elc ess-utils.elc ess-inf.elc
+ess-jags-d.elc : ess-jags-d.el ess-bugs-l.elc ess-utils.elc ess-inf.elc
 
 # Ignore this.
 #(defun S-insert-make-rule (file)
