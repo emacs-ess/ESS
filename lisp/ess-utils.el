@@ -449,10 +449,6 @@ This function will work even if LIST is unsorted.  See also `uniq'."
   "Drop all entries that do not \"look like\" directories."
   (ess-flatten-list (mapcar 'file-name-directory file-strings)))
 
-(defun ess-chop1 (string)
-  "chop last character; typically to remove trailing \"/\"."
- (substring string 0 -1))
-
 
 (defun ess-flatten-list (&rest list)
   "Take the arguments and flatten them into one long list.
