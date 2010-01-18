@@ -1,3 +1,7 @@
+2010-01-18  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essd-r.el (ess-r-versions-create): no longer use ess-chop1
+
 2009-12-07  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-ddeclient-p): fix blunder; add
