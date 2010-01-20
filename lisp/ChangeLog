@@ -2,6 +2,8 @@
 
 	* ess-sas-l.el (SAS-mode-font-lock-keywords): add some common
 	survival analysis statements to keywords
+	(SAS-mode-font-lock-keywords): remove some common false positives
+	for 1 and 2 letter SAS statements
 
 	* Makefile (clean): remove old-fashioned names too (see below)
 
