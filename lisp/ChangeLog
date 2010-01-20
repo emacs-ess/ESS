@@ -1,3 +1,10 @@
+2010-01-20  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): add some common
+	survival analysis statements to keywords
+
+	* Makefile (clean): remove old-fashioned names too (see below)
+
 2010-01-18  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* essl-bugs.el renamed to ess-bugs-l.el 
