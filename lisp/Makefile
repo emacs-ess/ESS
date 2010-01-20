@@ -70,7 +70,8 @@ dist: ess-cust.el
 ## svn committing happens in ../Makefile
 
 clean:
-	rm -f $(ELC)
+	rm -f $(ELC) essl-sas.elc essd-sas.elc essa-sas.elc \
+	    essl-bugs.elc essd-bugs.elc essd-jags.elc essl-sta.elc essd-sta.elc
 
 distclean: clean
 # and potentially more
