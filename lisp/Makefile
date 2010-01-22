@@ -51,7 +51,7 @@ ELC = $(CORE) ess-comp.elc ess-cust.elc \
 	essl-omg.elc essd-omg.elc \
 	ess-bugs-l.elc ess-bugs-d.elc ess-jags-d.elc \
 	ess-noweb.elc noweb-mode.elc noweb-font-lock-mode.elc \
-	essa-r.elc essddr.elc ess-eldoc.elc ess-roxygen.elc \
+	essa-r.elc essddr.elc ess-eldoc.elc ess-roxygen.elc ess-roxy.elc \
 	essd-sp6w.elc msdos.elc
 ##      ^^^^^^^^^^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
 
@@ -157,7 +157,7 @@ ess-bugs-l.elc : ess-bugs-l.el ess-emcs.elc
 
 ess-bugs-d.elc : ess-bugs-d.el ess-bugs-l.elc
 
-## JAGS 
+## JAGS
 
 ess-jags-d.elc : ess-jags-d.el ess-bugs-l.elc ess-utils.elc ess-inf.elc
 

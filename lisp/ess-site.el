@@ -452,6 +452,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (autoload 'ess-roxygen-fn "ess-roxygen"
   "Insert roxygen tags for function definitions." t)
+;; Newer, eventually *instead* of the above
+(autoload 'ess-roxy-mode "ess-roxy"
+  "Insert and edit Roxygen tags for function definitions." t)
+(add-hook 'ess-mode-hook 'ess-roxy-mode)
+
 
 ;;; On a PC, the default is S+6.
 ;; Elsewhere (unix and linux) the default is S+6

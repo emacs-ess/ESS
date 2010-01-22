@@ -110,6 +110,13 @@
   :group 'ess
   :prefix "ess-")
 
+(defgroup ess-roxy nil
+  "Mode for editing in-code Roxygen documentation."
+  :group 'ess
+  :group 'convenience
+  :prefix "ess-" ;; << -- added for ESS integration  FIXME??
+  :group 'tools)
+
 ;; Variables (not user-changeable)
 
 (defvar ess-version "5.8"
@@ -613,6 +620,36 @@ from a list."
 If nil, ESS will try finding one from a list."
   :type '(choice (const nil) string)
   :group 'ess)
+
+;; ---- ./ess-roxy.el : ------------
+
+(defcustom ess-roxy-hide-show-p t
+  "Should ess-roxy switch on hs-minor-mode to enable block hiding with TAB"
+  :group 'ess-roxy
+  :type '(choice (const :tag "Off" nil)
+                 (const :tag "On" t)))
+
+(defcustom ess-roxy-start-hidden-p t
+  "Should all blocks be hidden from start"
+  :group 'ess-roxy
+  :type '(choice (const :tag "Off" nil)
+                 (const :tag "On" t)))
+
+(defcustom ess-roxy-str "##'"
+  "*The string to insert before each line in a roxygen block"
+  :group 'ess-roxy
+  :type 'string)
+
+(defcustom ess-roxy-author "<customize me>"
+  "*The string to insert after the @author field"
+  :group 'ess-roxy
+  :type 'string)
+
+(defcustom ess-roxy-template-fields '("title" "param" "return" "export" "author")
+  "*The fields to insert when creating empty templates. param is
+a place holder for where to enter parameters"
+  :group 'ess-roxy
+  :type '(repeat string))
 
 
  ; System variables

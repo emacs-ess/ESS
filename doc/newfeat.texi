@@ -1,5 +1,12 @@
 @itemize @w{}
 
+Changes/New Features in 5.8:
+@itemize @bullet
+@item @ESS{[R]}: much more extensive Roxygen interface, via ess-roxy.el
+ from Henning Redestig.
+@item Emacs lisp files have got better names (partly, for now).
+@end itemize
+
 Changes/New Features in 5.7:
 @itemize @bullet
 @item @ESS{[R]}: loading a source file (@kbd{C-c C-l}) now works in

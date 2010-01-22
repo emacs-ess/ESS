@@ -483,6 +483,12 @@ shell, simply type `M-x S+6-msdos RET'.
 1.10 New Features
 =================
 
+     Changes/New Features in 5.8:
+        * ESS[R]: much more extensive Roxygen interface, via ess-roxy.el
+          from Henning Redestig.
+
+        * Emacs lisp files have got better names (partly, for now).
+
      Changes/New Features in 5.7:
         * ESS[R]: loading a source file (`C-c C-l') now works in
           Windows, similarly to other platforms;  (further; it had
