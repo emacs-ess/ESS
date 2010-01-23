@@ -1,14 +1,9 @@
-;;; ess-roxy.el --- convenient editing of in-code roxygen
-;;; documentation
+;;; ess-roxy.el --- convenient editing of in-code roxygen documentation
 ;;
 ;; Copyright (C) 2009 Henning Redestig
 ;;
 ;; Author: Henning Redestig <henning.red * go0glemail c-m>
 ;; Keywords: convenience tools
-;;
-;; http://www.metabolome.jp/download/ess-roxy/
-;;
-;; This file not a part of ESS (Emacs speaks statistics)
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -49,9 +44,10 @@
 ;; 	  (lambda () (ess-roxy-mode) ))
 
 (require 'ess-cust); which now contains the customizables
+(require 'hideshow)
 
 ;; ------------------
-(defconst ess-roxy-version "0.1-1"
+(defconst ess-roxy-version "0.1-2"
   "Current version of ess-roxy.el.")
 
 (defvar ess-roxy-mode-map nil
@@ -73,13 +69,11 @@
 (defconst ess-roxy-font-lock-keywords
   (eval-when-compile
     `((,(concat ess-roxy-str " *\\([@\\]"
-		(regexp-opt '("author" "aliases" "concept" "example"
+		(regexp-opt '("author" "aliases" "concept"
 			      "examples" "format" "keywords" "method"
-			      "name" "note" "param" "export"
-			      "include"
-			      "references" "return" "seealso"
-			      "source"
-			      "title" "TODO" "usage") t)
+			      "exportMethod" "name" "note" "param" "export"
+			      "include" "references" "return" "seealso"
+			      "source" "docType" "title" "TODO" "usage") t)
 		"\\)\\>")
        (1 font-lock-keyword-face prepend))
       (,(concat ess-roxy-str " *\\([@\\]"
@@ -120,71 +114,76 @@
 (defun ess-roxy-beg-of-entry ()
   "Get point number at start of current entry, 0 if not in entry"
   (save-excursion
-    (beginning-of-line)
-    (setq beg -1)
-    (if (not (ess-roxy-entry-p))
-	(setq beg 0)
-      (setq beg (point)))
-    (while (and (= (forward-line -1) 0) (ess-roxy-entry-p))
-      (setq beg (point)))
-    beg))
+    (let (beg)
+      (beginning-of-line)
+      (setq beg -1)
+      (if (not (ess-roxy-entry-p))
+	  (setq beg 0)
+	(setq beg (point)))
+      (while (and (= (forward-line -1) 0) (ess-roxy-entry-p))
+	(setq beg (point)))
+      beg)))
 
 (defun ess-roxy-beg-of-field ()
   "Get point number at beginning of current field, 0 if not in entry"
   (save-excursion
-    (beginning-of-line)
-    (setq beg 0)
-    (setq cont t)
-    (while (and (ess-roxy-entry-p) cont)
-      (setq beg (point))
-      (if (looking-at-p (concat "^" ess-roxy-str " *[@].+"))
-	(setq cont nil))
-      (if (looking-at-p (concat "^" ess-roxy-str " *$"))
-	  (progn
-	    (forward-line 1)
-	    (setq beg (point))
-	    (setq cont nil)))
-      (if cont (setq cont (= (forward-line -1) 0))))
-    ) beg)
+    (let (cont beg)
+      (beginning-of-line)
+      (setq beg 0)
+      (setq cont t)
+      (while (and (ess-roxy-entry-p) cont)
+	(setq beg (point))
+	(if (looking-at (concat "^" ess-roxy-str " *[@].+"))
+	    (setq cont nil))
+	(if (looking-at (concat "^" ess-roxy-str " *$"))
+	    (progn
+	      (forward-line 1)
+	      (setq beg (point))
+	      (setq cont nil)))
+	(if cont (setq cont (= (forward-line -1) 0))))
+      beg)))
 
 (defun ess-roxy-end-of-entry ()
   " get point number at end of current entry, 0 if not in entry"
   (save-excursion
-    (end-of-line)
-    (setq end -1)
-    (if (not (ess-roxy-entry-p))
-	(setq end 0)
-      (setq end (point)))
-    (while (and (= (forward-line 1) 0) (ess-roxy-entry-p))
+    (let ((end))
       (end-of-line)
-      (setq end (point)))
-    end))
+      (setq end -1)
+      (if (not (ess-roxy-entry-p))
+	  (setq end 0)
+	(setq end (point)))
+      (while (and (= (forward-line 1) 0) (ess-roxy-entry-p))
+	(end-of-line)
+	(setq end (point)))
+      end)))
 
 (defun ess-roxy-end-of-field ()
   "get point number at end of current field, 0 if not in entry"
   (save-excursion
-    (setq end 0)
-    (if (ess-roxy-entry-p) (progn (end-of-line) (setq end (point))))
-    (beginning-of-line)
-    (forward-line 1)
-    (setq cont t)
-    (while (and (ess-roxy-entry-p) cont)
-      (setq end (point))
-      (if (or (looking-at-p (concat "^" ess-roxy-str " *$"))
-	      (looking-at-p (concat "^" ess-roxy-str " *[@].+")))
-	  (progn
-	    (forward-line -1)
-	    (end-of-line)
-	    (setq end (point))
-	    (setq cont nil)))
-      (if cont (setq cont (= (forward-line 1) 0))))
-    ) end)
+    (let ((end nil)
+	  (cont nil))
+      (setq end 0)
+      (if (ess-roxy-entry-p) (progn (end-of-line) (setq end (point))))
+      (beginning-of-line)
+      (forward-line 1)
+      (setq cont t)
+      (while (and (ess-roxy-entry-p) cont)
+	(setq end (point))
+	(if (or (looking-at (concat "^" ess-roxy-str " *$"))
+		(looking-at (concat "^" ess-roxy-str " *[@].+")))
+	    (progn
+	      (forward-line -1)
+	      (end-of-line)
+	      (setq end (point))
+	      (setq cont nil)))
+	(if cont (setq cont (= (forward-line 1) 0))))
+      end)))
 
 (defun ess-roxy-entry-p ()
   "True if point is in a roxy entry"
   (save-excursion
     (beginning-of-line)
-    (looking-at-p (concat "^" ess-roxy-str))))
+    (looking-at (concat "^" ess-roxy-str))))
 
 (defun ess-roxy-narrow-to-field ()
   "Go to to the start of current field"
@@ -203,9 +202,20 @@
 	      (fill-prefix (concat ess-roxy-str " ")))
 	  (fill-region beg end nil t)))))
 
+(defun ess-roxy-goto-func-def ()
+  "put point at start of function either that the point is in or
+below the current roxygen entry, error otherwise"
+  (if (ess-roxy-entry-p)
+      (progn
+	(ess-roxy-goto-end-of-entry)
+	(forward-line 1)
+	(beginning-of-line))
+    (goto-char (car (ess-end-of-function)))))
+
 (defun ess-roxy-get-args-list-from-def ()
   "get args list for current function"
   (save-excursion
+    (ess-roxy-goto-func-def)
     (let* ((args (ess-roxy-get-function-args)))
       (mapcar (lambda (x) (cons x '(""))) args))))
 
@@ -218,7 +228,7 @@ here is supplied start inputting at here - 1"
 	  (progn
 	    (ess-roxy-goto-end-of-entry)
 	    (beginning-of-line)
-	    (if (not (looking-at-p "\="))
+	    (if (not (looking-at "\="))
 		(progn
 		  (end-of-line))))
 	(goto-char (- here 1)))
@@ -233,7 +243,8 @@ here is supplied start inputting at here - 1"
   "Take two args lists (alists) and return their union. Result
 holds all keys from both fun and ent but no duplicates and
 association from ent are preferred over entries from fun"
-  (let ((res-arg nil))
+  (let ((res-arg nil)
+	(arg-des))
     (while (stringp (car (car fun)))
       (setq arg-des (pop fun))
       (if (assoc (car arg-des) ent)
@@ -247,17 +258,16 @@ association from ent are preferred over entries from fun"
     (nreverse res-arg)))
 
 (defun ess-roxy-update-entry ()
-  "Update the entry above the function at point. Add basic
-roxygen documentation"
+  "Update the current entry or the entry above the function which
+the point is in. Add basic roxygen documentation if no roxygen
+entry is available."
   (interactive)
   (save-excursion
     (let* ((args-fun (ess-roxy-get-args-list-from-def))
 	   (args-ent (ess-roxy-get-args-list-from-entry))
 	   (args (ess-roxy-merge-args args-fun args-ent))
-	   (beg-end (ess-end-of-function))
-	   (beg (nth 0 beg-end))
-	   keywords key)
-      (goto-char beg)
+	   here key keywords)
+      (ess-roxy-goto-func-def)
       (if (not (= (forward-line -1) 0))
       	  (progn
 	    (insert "\n")
@@ -280,8 +290,10 @@ roxygen documentation"
 	      (insert ess-roxy-author)))))))
 
 (defun ess-roxy-goto-end-of-entry ()
-  "put point at the top of the entry at point or above the
-function at point"
+  "Put point at the top of the entry at point or above the
+function at point. Return t if the point is left in a roxygen
+entry, otherwise nil. Error if point is not in function or
+roxygen entry."
   (if (not (ess-roxy-entry-p))
       (progn
 	(goto-char (nth 0 (ess-end-of-function)))
@@ -293,7 +305,9 @@ function at point"
 
 (defun ess-roxy-goto-beg-of-entry ()
   "put point at the top of the entry at point or above the
-function at point"
+function at point. Return t if the point is left in a roxygen
+entry, otherwise nil. Error if point is not in function or
+roxygen entry."
   (if (not (ess-roxy-entry-p))
       (progn
 	(goto-char (nth 0 (ess-end-of-function)))
@@ -310,14 +324,15 @@ at where the last deletion ended"
   (save-excursion
     (let* ((args nil)
 	   (cont t)
-	   (field-beg 0))
+	   (field-beg 0)
+	   entry-beg entry-end field-end)
       (ess-roxy-goto-end-of-entry)
       (setq entry-beg (ess-roxy-beg-of-entry))
       (setq entry-end (ess-roxy-end-of-entry))
       (goto-char entry-end)
       (beginning-of-line)
       (while (and (<= entry-beg (point)) (> entry-beg 0) cont)
-	(if (looking-at-p
+	(if (looking-at
 	     (concat "^" ess-roxy-str " *@param"))
 	    (progn
 	      (setq field-beg (ess-roxy-beg-of-field))
@@ -332,13 +347,14 @@ at where the last deletion ended"
   "fill an args list from the entry above the function where the
 point is"
   (save-excursion
-    (let* ((args nil))
+    (let* (args entry-beg field-beg field-end args-text arg-name
+	   desc)
       (if (ess-roxy-goto-end-of-entry)
 	  (progn
 	    (beginning-of-line)
 	    (setq entry-beg (ess-roxy-beg-of-entry))
 	    (while (and (< entry-beg (point)) (> entry-beg 0))
-	      (if (looking-at-p
+	      (if (looking-at
 		   (concat "^" ess-roxy-str " *@param"))
 		  (progn
 		    (setq field-beg (ess-roxy-beg-of-field))
@@ -372,20 +388,27 @@ point is"
 region, otherwise prefix all lines with the roxy
 string. Convenient for editing example fields."
   (interactive "r")
-  (unless (region-active-p)
-    (error "The mark is not set now, so there is no region to operate on"))
+  (condition-case nil
+      (if (not (ess-roxy-mark-active))
+  	  (error "region is not active")))
   (save-excursion
     (let (RE to-string)
+      (narrow-to-region beg end)
       (if (ess-roxy-entry-p)
 	  (progn (setq RE (concat "^" ess-roxy-str " *"))
 		 (setq to-string ""))
-	;; else
 	(setq RE "^")
 	(setq to-string (concat ess-roxy-str " ")))
-
       (goto-char beg)
-      (while (re-search-forward RE end 'noerror)
-	(replace-match to-string)))))
+      (while (re-search-forward RE (point-max) 'noerror)
+	(replace-match to-string))
+      (widen))))
+
+(defun ess-roxy-mark-active ()
+  "Is region active, GNU-Emacs & XEmacs."
+  (if (fboundp 'region-active-p)
+      (region-active-p)
+    (and transient-mark-mode mark-active)))
 
 (defun ess-roxy-hide-all ()
   "Hide all Roxygen entries in current buffer. "
@@ -422,7 +445,8 @@ string. Convenient for editing example fields."
   "Return the arguments specified for the current function as a
 list of strings."
   (save-excursion
-    (let ((args-txt
+    (let ((result)
+	  (args-txt
 	   (progn
 	     (ess-beginning-of-function)
 	     (buffer-substring-no-properties
@@ -490,5 +514,3 @@ list of strings."
 (ad-activate 'newline-and-indent)
 
 (provide 'ess-roxy)
-
-
