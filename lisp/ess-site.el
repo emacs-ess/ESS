@@ -139,7 +139,7 @@ The extension, in a file name, is the part that follows the last `.'."
 
 ;;; The following require sets ess-local-custom-available to
 ;;; true if custom is provided at this point.
-(require 'ess-emcs)
+(require 'ess-compat)
 ;;; If it is not provided, but we think it will be available when necessary,
 ;;; then we can use the following line (uncommented) to make sure that
 ;;; it will be used.  If you have to ask, then you don't need this.

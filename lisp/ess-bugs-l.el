@@ -30,7 +30,7 @@
 
 (require 'font-lock)
 (require 'comint)
-(require 'ess-emcs)
+(require 'ess-compat)
 
 (defgroup ess-bugs nil
   "ESS: BUGS."

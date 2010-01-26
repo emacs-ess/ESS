@@ -36,7 +36,7 @@ CORE = ess.elc ess-site.elc
 ### DEPRECATED:  essl-bug.el
 ##
 ELC = $(CORE) ess-comp.elc ess-cust.elc \
-	ess-dde.elc ess-emcs.elc ess-font-lock.elc \
+	ess-dde.elc ess-compat.elc ess-font-lock.elc \
 	ess-help.elc ess-inf.elc ess-mode.elc \
 	ess-menu.elc ess-mous.elc mouseme.elc \
 	ess-swv.elc ess-toolbar.elc \
@@ -70,8 +70,8 @@ dist: ess-cust.el
 ## svn committing happens in ../Makefile
 
 clean:
-	rm -f $(ELC) essl-sas.elc essd-sas.elc essa-sas.elc \
-	    essl-bugs.elc essd-bugs.elc essd-jags.elc essl-sta.elc essd-sta.elc
+	rm -f $(ELC) \
+	ess-emcs.elc essl-bug.elc essl-sas.elc essd-sas.elc essa-sas.elc essl-bugs.elc essd-bugs.elc essd-jags.elc essl-sta.elc essd-sta.elc
 
 distclean: clean
 # and potentially more
@@ -153,7 +153,7 @@ ess-sta-d.elc : ess-sta-d.el ess.elc
 
 ## BUGS
 
-ess-bugs-l.elc : ess-bugs-l.el ess-emcs.elc
+ess-bugs-l.elc : ess-bugs-l.el ess-compat.elc
 
 ess-bugs-d.elc : ess-bugs-d.el ess-bugs-l.elc
 

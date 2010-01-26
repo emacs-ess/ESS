@@ -45,7 +45,7 @@
   (if ess-show-load-messages (message format-string args)))
 
 ;; These are required by every other file.
-(ess-message "loading 'ess-emcs ..")  (require 'ess-emcs) ;set Emacsen diffs
+(ess-message "loading 'ess-compat ..")  (require 'ess-compat) ;set Emacsen diffs
 (ess-message "loading 'ess-cust ..")  (require 'ess-cust) ;set variables
 (ess-message "loading 'ess ..")	      (require 'ess)      ;configure
 (ess-message "loading 'ess-site ..")  (require 'ess-site) ;overload defaults
