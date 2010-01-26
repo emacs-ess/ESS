@@ -50,7 +50,7 @@
 (require 'ess)
 (ess-message "[ess-sas-l:] (require 'ess-mode) ...")
 (require 'ess-mode)
-(require 'ess-cust)
+(require 'ess-custom)
 
 (ess-message "[ess-sas-l:] (autoload ..) (def** ..) etc ...")
 

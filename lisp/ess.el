@@ -111,7 +111,7 @@
 (require 'ess-emcs)
 
 (eval-and-compile
-  (require 'ess-cust))
+  (require 'ess-custom))
 
  ; ess-mode: editing S/R/XLS/SAS source
 
@@ -190,7 +190,7 @@
 Use `ess-ps-viewer-pref' when that is executably found by \\[executable-find].
 Otherwise try a list of fixed known viewers."
   (file-name-nondirectory
-   (or (and ess-ps-viewer-pref		; -> ./ess-cust.el
+   (or (and ess-ps-viewer-pref		; -> ./ess-custom.el
 	    (executable-find ess-ps-viewer-pref))
        (executable-find "gv")
        (executable-find "evince")
@@ -201,7 +201,7 @@ Otherwise try a list of fixed known viewers."
 Use `ess-pdf-viewer-pref' when that is executably found by \\[executable-find].
 Otherwise try a list of fixed known viewers."
   (file-name-nondirectory
-   (or (and ess-pdf-viewer-pref		; -> ./ess-cust.el
+   (or (and ess-pdf-viewer-pref		; -> ./ess-custom.el
 	    (executable-find ess-pdf-viewer-pref))
        (car (ess-get-words-from-vector
 	     "getOption(\"pdfviewer\")\n"))

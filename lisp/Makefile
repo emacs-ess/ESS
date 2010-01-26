@@ -35,7 +35,7 @@ CORE = ess.elc ess-site.elc
 ###		  ess-send.el , ess-send2.el
 ### DEPRECATED:  essl-bug.el
 ##
-ELC = $(CORE) ess-comp.elc ess-cust.elc \
+ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-dde.elc ess-compat.elc ess-font-lock.elc \
 	ess-help.elc ess-inf.elc ess-mode.elc \
 	ess-menu.elc ess-mous.elc mouseme.elc \
@@ -65,13 +65,16 @@ install: $(ELC)
 	export J; for I in *.elc; do J=$$I; $(INSTALL) `basename $$J .elc`.el $(LISPDIR); done
 #	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
 
-dist: ess-cust.el
+dist: ess-custom.el
 	@touch dist
 ## svn committing happens in ../Makefile
 
 clean:
 	rm -f $(ELC) \
-	ess-emcs.elc essl-bug.elc essl-sas.elc essd-sas.elc essa-sas.elc essl-bugs.elc essd-bugs.elc essd-jags.elc essl-sta.elc essd-sta.elc
+	ess-cust.elc ess-emcs.elc essl-bug.elc \
+	essl-sas.elc essd-sas.elc essa-sas.elc \
+	essl-bugs.elc essd-bugs.elc essd-jags.elc \
+	essl-sta.elc essd-sta.elc
 
 distclean: clean
 # and potentially more
@@ -80,7 +83,7 @@ distclean: clean
 ### Targets below here are only for developers - and these must have perl
 
 ### Replace Version numbers (as in ../doc/Makefile !):
-ess-cust.el: ../VERSION
+ess-custom.el: ../VERSION
 	perl -pi -e 's/".*"/"$(ESSVERSION)"/ if /ess-version/' $@
 
 
@@ -90,11 +93,11 @@ ess-cust.el: ../VERSION
 	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile $<
 
 
-ess-cust.elc:	ess-cust.el
-	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-cust.el
+ess-custom.elc:	ess-custom.el
+	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-custom.el
 
-ess.elc: ess.el ess-cust.elc
-	$(EMACSBATCH) $(PRELOADS) -l ess-cust.elc -f batch-byte-compile ess.el
+ess.elc: ess.el ess-custom.elc
+	$(EMACSBATCH) $(PRELOADS) -l ess-custom.elc -f batch-byte-compile ess.el
 
 ess-site.elc: ess-site.el ess.elc
 

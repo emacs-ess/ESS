@@ -182,7 +182,7 @@
 ;; ==================================================
 
 (eval-and-compile
-  (require 'ess-cust))
+  (require 'ess-custom))
 
 (eval-when-compile
   (if ess-has-tooltip
@@ -283,7 +283,7 @@ ess-r-args-current-function if no argument given."
 
 ;; ;; call ess-r-args-show automatically --- this should be optional
 ;; now in ess-mode.el :
-;; (if ess-r-args-electric-paren ; <<- in ./ess-cust.el -- default nil
+;; (if ess-r-args-electric-paren ; <<- in ./ess-custom.el -- default nil
 ;;     (add-hook 'ess-mode-hook
 ;; 	      (lambda ()
 ;; 		(define-key ess-mode-map "(" 'ess-r-args-auto-show))))

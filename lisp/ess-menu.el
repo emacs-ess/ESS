@@ -36,7 +36,7 @@
 ;;*;; Requires and autoloads
 ;;;=====================================================
 
-(require 'ess-cust)
+(require 'ess-custom)
 (if (and (featurep 'xemacs); need this, since require in XEmacs has only 2 arg
 	 (not (require 'imenu "imenu.elc")))
     (message "** warning: 'imenu not available for this version of XEmacs"))

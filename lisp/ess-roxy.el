@@ -43,7 +43,7 @@
 ;; (add-hook 'ess-mode-hook
 ;; 	  (lambda () (ess-roxy-mode) ))
 
-(require 'ess-cust); which now contains the customizables
+(require 'ess-custom); which now contains the customizables
 (require 'hideshow)
 
 ;; ------------------

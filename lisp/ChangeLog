@@ -1,5 +1,7 @@
 2010-01-26  Rodney Sparapani  <rsparapa@mcw.edu>
 
+	* ess-cust.el: renamed to ess-custom.el
+
 	* ess-emcs.el renamed to ess-compat.el 
 
 2010-01-22  Martin Maechler  <maechler@stat.math.ethz.ch>
