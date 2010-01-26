@@ -82,7 +82,7 @@
   (require 'ess)
 )
 (require 'noweb-mode)
-(require 'essd-r); for Rnw-mode
+(require 'ess-r-d); for Rnw-mode
 (require 'easymenu)
 
 (defun ess-swv-run-in-R (cmd &optional choose-process)

@@ -1,8 +1,20 @@
 2010-01-26  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-cust.el: renamed to ess-custom.el
-
-	* ess-emcs.el renamed to ess-compat.el 
+	* renamed essl-s.el to ess-s-l.el
+	* renamed essddr.el to ess-rd.el
+	* renamed essd-sp6w.el to ess-sp6w-d.el
+	* renamed essd-sp6.el to ess-sp6-d.el
+	* renamed essd-sp5.el to ess-sp5-d.el
+	* renamed essd-sp4.el to ess-sp4-d.el
+	* renamed essd-sp3.el to ess-sp3-d.el
+	* renamed essd-s4.el to ess-s4-d.el
+	* renamed essd-s3.el to ess-s3-d.el
+	* renamed essd-rgui.el to ess-r-gui.el
+	* renamed essd-r.el to ess-r-d.el
+	* renamed essd-r-args.el to ess-r-args.el
+	* renamed essa-r.el to ess-r-a.el 
+	* renamed ess-cust.el to ess-custom.el
+	* renamed ess-emcs.el to ess-compat.el 
 
 2010-01-22  Martin Maechler  <maechler@stat.math.ethz.ch>
 

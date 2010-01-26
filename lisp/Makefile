@@ -41,9 +41,6 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-menu.elc ess-mous.elc mouseme.elc \
 	ess-swv.elc ess-toolbar.elc \
 	ess-trns.elc ess-utils.elc \
-	essl-s.elc essd-s3.elc essd-s4.elc \
-	essd-sp3.elc essd-sp4.elc essd-sp5.elc essd-sp6.elc \
-	essd-r.elc ess-rdired.elc essd-r-args.elc \
 	essd-els.elc \
 	essl-lsp.elc essd-xls.elc essd-vst.elc essd-arc.elc \
 	ess-sas-l.elc ess-sas-d.elc ess-sas-a.elc \
@@ -51,8 +48,11 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	essl-omg.elc essd-omg.elc \
 	ess-bugs-l.elc ess-bugs-d.elc ess-jags-d.elc \
 	ess-noweb.elc noweb-mode.elc noweb-font-lock-mode.elc \
-	essa-r.elc essddr.elc ess-eldoc.elc ess-roxygen.elc ess-roxy.elc \
-	essd-sp6w.elc msdos.elc
+	ess-eldoc.elc ess-roxygen.elc ess-roxy.elc \
+	ess-s-l.elc ess-s3-d.elc ess-s4-d.elc \
+	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
+	ess-r-d.elc ess-rdired.elc ess-r-args.elc ess-r-d.elc ess-rd.elc \
+	ess-sp6w-d.elc msdos.elc
 ##      ^^^^^^^^^^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
 
 ### Targets
@@ -74,7 +74,11 @@ clean:
 	ess-cust.elc ess-emcs.elc essl-bug.elc \
 	essl-sas.elc essd-sas.elc essa-sas.elc \
 	essl-bugs.elc essd-bugs.elc essd-jags.elc \
-	essl-sta.elc essd-sta.elc
+	essl-sta.elc essd-sta.elc \
+	essl-s.elc essd-s3.elc essd-s4.elc \
+	essd-sp3.elc essd-sp4.elc essd-sp5.elc essd-sp6.elc \
+	essd-r.elc ess-rdired.elc essd-r-args.elc essa-r.elc essddr.elc \
+	essd-sp6w.elc 
 
 distclean: clean
 # and potentially more
@@ -120,17 +124,17 @@ ess-help.elc: ess-help.el $(CORE)
 
 ## S languages
 
-essl-s.elc : essl-s.el ess.elc
+ess-s-l.elc : ess-s-l.el ess.elc
 
 ess-sas-d.elc : ess-sas-d.el ess.elc
 
-essd-s3.elc : essd-s3.el essl-s.elc ess.elc
+ess-s3-d.elc : ess-s3-d.el ess-s-l.elc ess.elc
 
-essd-sp3.elc : essd-sp3.el essl-s.elc ess.elc
+ess-sp3-d.elc : ess-sp3-d.el ess-s-l.elc ess.elc
 
-essd-s4.elc : essd-s4.el essl-s.elc ess.elc
+ess-s4-d.elc : ess-s4-d.el ess-s-l.elc ess.elc
 
-essd-r.elc : essd-r.el essl-s.elc ess.elc
+ess-r-d.elc : ess-r-d.el ess-s-l.elc ess.elc
 
 ess-swv.elc: ess-swv.el ess-noweb.elc
 

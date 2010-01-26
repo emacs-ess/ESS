@@ -32,7 +32,7 @@
 
 ;;; Requires and Autoloads:
 
-(require 'essl-s)
+(require 'ess-s-l)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")

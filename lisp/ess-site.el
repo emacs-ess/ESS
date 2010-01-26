@@ -204,7 +204,7 @@ for ESS, such as icons.")
 ;;;  (add-hook 'ess-mode-hook 'ess-restore-asm-extns)
 ;;;  (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
 
-(autoload 'Rd-mode "essddr" "Major mode for editing R documentation." t)
+(autoload 'Rd-mode "ess-rd" "Major mode for editing R documentation." t)
 
 ;; This is thanks to  Ed L Cashin <ecashin@uga.edu>, 03 Mar 2004 :
 (defun ess-restore-asm-extns ()
@@ -317,7 +317,7 @@ between .s or .S files and assembly mode.
 ;;; S+6 in an emacs buffer, using the same technology as ESS uses for
 ;;; Unix S-Plus.  Interactive graphics with javagraph are available
 ;;; in this mode beginning with S-Plus 6.1.
-;;; See essd-sp4.el or essd-sp6w.el
+;;; See ess-sp4-d.el or ess-sp6w-d.el
 
 ;;; -----> configuration now via custom, see ./ess-cust.el and look for
 ;;;        inferior-Sqpe+... e.g. inferior-Sqpe+6-program-name
@@ -358,30 +358,30 @@ sending `inferior-ess-language-start' to S-Plus.")
 (if (< max-specpdl-size 700)	 ;;; ESS won't load at the default of 600
     (setq max-specpdl-size 700))
 
-(ess-message "[ess-site:] Before requiring dialect 'essd-** ....")
-(ess-message "[ess-site:] require 'essd-r ...")
-(require 'essd-r)    ;; R
-;; (ess-message "[ess-site:] require 'essd-s4 ...")
-;; (require 'essd-s4) ; has become VERY RARE ..
+(ess-message "[ess-site:] Before requiring dialect 'ess-*-d ....")
+(ess-message "[ess-site:] require 'ess-r-d ...")
+(require 'ess-r-d)    ;; R
+;; (ess-message "[ess-site:] require 'ess-s4-d ...")
+;; (require 'ess-s4-d) ; has become VERY RARE ..
 
-;;(ess-message "[ess-site:] require 'essd-s3 ...")
-;;(require 'essd-s3)  ; THIS IS RARE.  You probably do not have this.
+;;(ess-message "[ess-site:] require 'ess-s3-d ...")
+;;(require 'ess-s3-d)  ; THIS IS RARE.  You probably do not have this.
 
 ;; "sp" refers to S-PLUS (MathSoft/StatSci/Insightful/TIBCO):
-(ess-message "[ess-site:] require 'essd-sp3 ...")
-(require 'essd-sp3)
+(ess-message "[ess-site:] require 'ess-sp3-d ...")
+(require 'ess-sp3-d)
 
 (if ess-microsoft-p
     (progn
-      (ess-message "[ess-site:] require 'essd-sp4 ...")
-      (require 'essd-sp4)
-      (ess-message "[ess-site:] require 'essd-sp6w ...")
-      (require 'essd-sp6w))
+      (ess-message "[ess-site:] require 'ess-sp4-d ...")
+      (require 'ess-sp4-d)
+      (ess-message "[ess-site:] require 'ess-sp6w-d ...")
+      (require 'ess-sp6w-d))
   ;; else: decent OS
-  (ess-message "[ess-site:] require 'essd-sp5 ...")
-  (require 'essd-sp5)
-  (ess-message "[ess-site:] require 'essd-sp6 ...")
-  (require 'essd-sp6))
+  (ess-message "[ess-site:] require 'ess-sp5-d ...")
+  (require 'ess-sp5-d)
+  (ess-message "[ess-site:] require 'ess-sp6-d ...")
+  (require 'ess-sp6-d))
 
 (ess-message "[ess-site:] require 'ess-sta-d ...")
 (require 'ess-sta-d)  ;; for Stata.
@@ -538,8 +538,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;; Check to see that inferior-R-program-name points to a working version
 ;; of R; if not, try to find the newest version:
-(require 'essd-r)
-(ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./essd-r.el
+(require 'ess-r-d)
+(ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./ess-r-d.el
 
 ;;; 3. Customization (and examples) for your site
 ;;;; ===============================================
