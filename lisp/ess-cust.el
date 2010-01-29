@@ -645,7 +645,7 @@ If nil, ESS will try finding one from a list."
   :group 'ess-roxy
   :type 'string)
 
-(defcustom ess-roxy-template-fields '("title" "param" "return" "export" "author")
+(defcustom ess-roxy-template-fields '("title" "param" "return" "author")
   "*The fields to insert when creating empty templates. param is
 a place holder for where to enter parameters"
   :group 'ess-roxy
