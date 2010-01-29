@@ -623,13 +623,13 @@ If nil, ESS will try finding one from a list."
 
 ;; ---- ./ess-roxy.el : ------------
 
-(defcustom ess-roxy-hide-show-p t
+(defcustom ess-roxy-hide-show-p nil
   "Should ess-roxy switch on hs-minor-mode to enable block hiding with TAB"
   :group 'ess-roxy
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)))
 
-(defcustom ess-roxy-start-hidden-p t
+(defcustom ess-roxy-start-hidden-p nil
   "Should all blocks be hidden from start"
   :group 'ess-roxy
   :type '(choice (const :tag "Off" nil)

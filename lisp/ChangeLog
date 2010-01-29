@@ -1,3 +1,11 @@
+2010-01-29  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-indent-command): hs-minor-mode related advice
+	is not activated unless ess-roxy-hide-show-p has been set
+
+	* ess-cust.el: ess-roxy now doesnt load hs-minor-mode per default,
+	this must be set manually.
+
 2010-01-27  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-keywords): new

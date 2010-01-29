@@ -56,7 +56,8 @@
     nil
 
   (setq ess-roxy-mode-map (make-sparse-keymap))
-  (define-key ess-roxy-mode-map (kbd "C-c C-e C-h") 'ess-roxy-hide-all)
+  (if ess-roxy-hide-show-p
+      (define-key ess-roxy-mode-map (kbd "C-c C-e C-h") 'ess-roxy-hide-all))
   (define-key ess-roxy-mode-map (kbd "C-c C-e n")   'ess-roxy-next-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e p")   'ess-roxy-previous-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-o") 'ess-roxy-update-entry)
@@ -102,10 +103,11 @@
 		  (hs-minor-mode))
 	      (if ess-roxy-start-hidden-p
 		  (ess-roxy-hide-all)))))
-    (if hs-minor-mode
-	(progn
-	  (hs-show-all)
-	  (hs-minor-mode)))
+    (if ess-roxy-hide-show-p
+	(if hs-minor-mode
+	    (progn
+	      (hs-show-all)
+	      (hs-minor-mode))))
     (font-lock-remove-keywords nil ess-roxy-font-lock-keywords))
   (when font-lock-mode
     (font-lock-fontify-buffer)))
@@ -484,7 +486,8 @@ list of strings."
   (if (ess-roxy-entry-p)
       (progn (hs-toggle-hiding))
     ad-do-it))
-(ad-activate 'ess-indent-command)
+(if ess-roxy-hide-show-p
+    (ad-activate 'ess-indent-command))
 
 (defadvice fill-paragraph (around ess-roxy-fill-advise)
   "Fill the current roxygen field."
