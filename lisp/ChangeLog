@@ -1,3 +1,8 @@
+2010-01-30  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-complete-tag): advice ess completion to
+	complete roxygen tag names inc case point is in a roxygen field
+
 2010-01-29  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-indent-command): hs-minor-mode related advice

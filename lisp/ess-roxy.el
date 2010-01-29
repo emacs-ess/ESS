@@ -47,14 +47,13 @@
 (require 'hideshow)
 
 ;; ------------------
-(defconst ess-roxy-version "0.1-2"
+(defconst ess-roxy-version "0.1-3"
   "Current version of ess-roxy.el.")
 
 (defvar ess-roxy-mode-map nil
   "Keymap for `ess-roxy' mode.")
 (if ess-roxy-mode-map
     nil
-
   (setq ess-roxy-mode-map (make-sparse-keymap))
   (if ess-roxy-hide-show-p
       (define-key ess-roxy-mode-map (kbd "C-c C-e C-h") 'ess-roxy-hide-all))
@@ -62,19 +61,13 @@
   (define-key ess-roxy-mode-map (kbd "C-c C-e p")   'ess-roxy-previous-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-o") 'ess-roxy-update-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-c") 'ess-roxy-toggle-roxy-region)
-
   ;; this one, at least, more directly [compatibly to "old" ess-roxygen-fn]:
-  (define-key ess-roxy-mode-map (kbd "C-c C-o") 'ess-roxy-update-entry)
-  )
+  (define-key ess-roxy-mode-map (kbd "C-c C-o") 'ess-roxy-update-entry))
 
 (defconst ess-roxy-font-lock-keywords
   (eval-when-compile
     `((,(concat ess-roxy-str " *\\([@\\]"
-		(regexp-opt '("author" "aliases" "concept"
-			      "examples" "format" "keywords" "method"
-			      "exportMethod" "name" "note" "param" "export"
-			      "include" "references" "return" "seealso"
-			      "source" "docType" "title" "TODO" "usage") t)
+		(regexp-opt ess-roxy-tags-param t)
 		"\\)\\>")
        (1 font-lock-keyword-face prepend))
       (,(concat ess-roxy-str " *\\([@\\]"
@@ -82,8 +75,8 @@
          "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
        (1 font-lock-keyword-face prepend)
        (3 font-lock-variable-name-face prepend))
-      (,(concat "[@\\]" (regexp-opt '("export") t) "\\>")
-       (0 font-lock-warning-face prepend))
+      (,(concat "[@\\]" (regexp-opt ess-roxy-tags-noparam t) "\\>")
+       (0 font-lock-variable-name-face prepend))
       (,(concat ess-roxy-str)
        (0 'bold prepend)))))
 
@@ -255,7 +248,7 @@ association from ent are preferred over entries from fun"
 	(setq res-arg (cons (cons (car arg-des) '("")) res-arg))))
     (while (stringp (car (car ent)))
       (setq arg-des (pop ent))
-      (if (not (assoc (car arg-des) res-arg))
+      (if (and (not (assoc (car arg-des) res-arg)) (not (string= (car (cdr arg-des)) "")))
 	  (setq res-arg (cons (cons (car arg-des) (cdr arg-des)) res-arg))))
     (nreverse res-arg)))
 
@@ -470,7 +463,27 @@ list of strings."
   (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
         ((looking-at "\\s\)") (forward-char 1) (backward-list 1))))
 
+(defun ess-roxy-complete-tag ()
+  "complete the tag at point"
+  (let ((token-string (thing-at-point 'symbol)))
+    (if (string-match-p "@.+" token-string)
+	(progn 
+	  (comint-dynamic-simple-complete 
+	   (replace-regexp-in-string "^@" "" token-string)
+	   (append ess-roxy-tags-noparam ess-roxy-tags-param))))))
+
 ;; advices
+(defadvice ess-R-complete-object-name (around ess-roxy-complete-tag)
+  (if (ess-roxy-entry-p)
+      (ess-roxy-complete-tag)
+    ad-do-it))
+(defadvice ess-internal-complete-object-name (around ess-roxy-complete-tag)
+  (if (ess-roxy-entry-p)
+      (ess-roxy-complete-tag)
+    ad-do-it))
+(ad-activate 'ess-internal-complete-object-name)
+(ad-activate 'ess-R-complete-object-name)
+
 (defadvice mark-paragraph (around ess-roxy-mark-field)
   "mark this field"
   (if (and (ess-roxy-entry-p) (not mark-active))
@@ -482,8 +495,9 @@ list of strings."
 (ad-activate 'mark-paragraph)
 
 (defadvice ess-indent-command (around ess-roxy-toggle-hiding)
-  "hide this block if we are the top level of the block"
-  (if (ess-roxy-entry-p)
+  "hide this block if we are at the beginning of the line"
+  (if (and 'ess-roxy-entry-p 
+	   (or (looking-back (concat ess-roxy-str " *")) (= (point) (point-at-bol))))
       (progn (hs-toggle-hiding))
     ad-do-it))
 (if ess-roxy-hide-show-p

@@ -623,14 +623,30 @@ If nil, ESS will try finding one from a list."
 
 ;; ---- ./ess-roxy.el : ------------
 
+(defcustom ess-roxy-tags-noparam '("export")
+  "*The tags used in roxygen fields that can be used alone"
+  :group 'ess-roxy
+  :type '(repeat string))
+
+(defcustom ess-roxy-tags-param '("author" "aliases" "concept"
+				 "examples" "format" "keywords" 
+				 "method" "exportMethod" 
+				 "name" "note" "param"
+				 "include" "references" "return" 
+				 "seealso" "source" "docType" 
+				 "title" "TODO" "usage")
+  "*The tags used in roxygen fields that require a parameter"
+  :group 'ess-roxy
+  :type '(repeat string))
+
 (defcustom ess-roxy-hide-show-p nil
-  "Should ess-roxy switch on hs-minor-mode to enable block hiding with TAB"
+  "*Should ess-roxy switch on hs-minor-mode to enable block hiding with TAB"
   :group 'ess-roxy
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)))
 
 (defcustom ess-roxy-start-hidden-p nil
-  "Should all blocks be hidden from start"
+  "*Should all blocks be hidden from start"
   :group 'ess-roxy
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)))
