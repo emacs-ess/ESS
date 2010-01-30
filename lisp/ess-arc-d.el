@@ -1,11 +1,11 @@
-;;; essd-vst.el --- ViSta customization
+;;; ess-arc-d.el --- ARC customization
 
-;; Copyright (C) 1997 A. J. Rossini
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2000 A. J. Rossini
+;; Copyright (C) 2001--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@u.washington.edu>
-;; Created: 26 Aug 1997
+;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
+;; Created: 30 Jun 2000
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
 ;; Keywords: start up, configuration.
@@ -27,57 +27,60 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file extends the XLispStat configuration for ViSta.
-
+;;; This file extends the XLispStat configuration for ARC, the
+;;; extension of the R-Code.
+;;;
 
 ;;; Requires and Autoloads:
 
-(require 'essl-lsp)
+(require 'ess-lsp-l)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 
 ;;; Code:
 
-(defvar VST-customize-alist
-  '((ess-customize-alist           .  VST-customize-alist )
+(defvar ARC-customize-alist
+  '((ess-customize-alist           .  ARC-customize-alist )
     (ess-language                  .  "XLS"               )
-    (ess-dialect                   .  "ViSta"             )
+    (ess-dialect                   .  "ARC"               )
     (ess-loop-timeout              .  ess-XLS-loop-timeout)
     (ess-object-name-db-file       .  "ess-xls-namedb.el" )
     (ess-help-sec-regex            .  " ")
     (ess-help-sec-keys-alist       .  " ")
     (inferior-ess-primary-prompt   .  "> ?"               )
     (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
-    (inferior-ess-program          .  inferior-VST-program-name)
+    (inferior-ess-program          .  inferior-ARC-program-name)
     (inferior-ess-help-command     .  "(help '%s)\n"      )
     (inferior-ess-objects-command  .  "(variables)\n"     )
     (inferior-ess-exit-command     .  "(exit)\n"          )
-    (inferior-ess-start-file       . nil) ;"~/.ess-VST")
     ;;(inferior-ess-start-args       . nil)
-    )
-  "Variables to customize for XLS.")
+    (inferior-ess-start-file       .  nil)) ; "~/.ess-ARC")
+
+  "Variables to customize for ARC, a dialect of XLS.")
 
 
-(defun VST-mode (&optional proc-name)
-  "Major mode for editing ViSta source.  NOT EVEN STARTED."
+(defun ARC-mode (&optional proc-name)
+  "Major mode for editing ARC source.  NOT EVEN STARTED."
   (interactive)
-  (setq ess-customize-alist VST-customize-alist)
+  (setq ess-customize-alist ARC-customize-alist)
   (lisp-mode))
 
 
-(defun ViSta ()
-  "Call 'ViSta', the extend XLispStat statistical system, from Forrest Young."
+(defun ARC ()
+  "Call 'ARC', the extend XLispStat statistical system, from Forrest Young."
 
   (interactive)
-  (setq ess-customize-alist VST-customize-alist)
+  (setq ess-customize-alist ARC-customize-alist)
   (ess-write-to-dribble-buffer
-   (format "(ViSta): ess-dialect=%s , buf=%s\n"
+   (format "(ARC): ess-dialect=%s , buf=%s\n"
   	   ess-dialect (current-buffer)))
   (inferior-ess))
 
+(fset 'arc 'ARC)
+
  ; Provide package
 
-(provide 'essd-vst)
+(provide 'ess-arc-d)
 
  ; Local variables section
 

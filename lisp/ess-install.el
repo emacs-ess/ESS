@@ -134,11 +134,11 @@ ignored."
 
 
 ;; Get the version number of the new software.  Open the file
-;; ess-cust.el and then find the definition of the variable
+;; ess-custom.el and then find the definition of the variable
 ;; ess-version.  
 (save-window-excursion
   (let ((beg))
-    (find-file (concat ess-lisp-dir "ess-cust.el"))
+    (find-file (concat ess-lisp-dir "ess-custom.el"))
     ;; go back to start, just in case file was previously open.
     (goto-char (point-min))
     (search-forward "defvar ess-version \"")

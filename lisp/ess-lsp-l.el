@@ -1,4 +1,4 @@
-;;; essl-lsp.el --- Support for editing Lisp source code
+;;; ess-lsp-l.el --- Support for editing Lisp source code
 
 ;; Copyright (C) 1997 A.J. Rossini.
 ;; Copyright (C) 1998--2004 A.J. Rossini, Rich M. Heiberger, Martin
@@ -61,7 +61,7 @@
     (font-lock-defaults           . '(lisp-font-lock-keywords)))
   "General options for editing LispStat, XLispStat, and ViSta source files.")
 
-(provide 'essl-lsp)
+(provide 'ess-lsp-l)
 
  ; Local variables section
 
@@ -80,4 +80,4 @@
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; essl-lsp.el ends here
+;;; ess-lsp-l.el ends here

@@ -1,4 +1,4 @@
-;;; essl-omg.el --- Support for editing Omega source code
+;;; ess-omg-l.el --- Support for editing Omega source code
 
 ;; Copyright (C) 1999--2001 A.J. Rossini.
 ;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
@@ -274,7 +274,7 @@ Returns nil if line starts inside a string, t if in a comment."
   "General options for Omegahat source files.")
 
 
-;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in essl-s!).
+;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in ess-s-l.el !).
 
 (defconst OMG-help-sec-keys-alist
   '((?a . "ARGUMENTS:")
@@ -303,7 +303,7 @@ Returns nil if line starts inside a string, t if in a comment."
 
 ;;>> Moved things into --> ./ess-utils.el
 
-(provide 'essl-omg)
+(provide 'ess-omg-l)
 
  ; Local variables section
 
@@ -322,5 +322,5 @@ Returns nil if line starts inside a string, t if in a comment."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; essl-omg.el ends here
+;;; ess-omg-l.el ends here
 

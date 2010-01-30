@@ -1712,7 +1712,7 @@ Defaults to `ess-S-non-functions'."
 
 ;;*;; Variables relating to ess-help-mode
 
-;;-- ess-help-S-.. and  ess-help-R-.. : in  essl-s.el (are used in ess-inf).
+;;-- ess-help-S-.. and  ess-help-R-.. : in  ess-s-l.el (are used in ess-inf).
 
 (defvar ess-help-sec-keys-alist nil
   "Alist of (key . string) pairs for use in section searching.")

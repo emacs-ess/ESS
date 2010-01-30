@@ -32,7 +32,7 @@
 
  ; Requires and autoloads
 
-(require 'ess); includes ess-cust.el
+(require 'ess); includes ess-custom.el
 
 ;;; AJR: THIS IS GROSS AND DISGUSTING (but I wrote it).
 ;;; MM:	 and I had to add all other 'ess-eval-*** ...

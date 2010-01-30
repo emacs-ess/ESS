@@ -247,7 +247,7 @@ and replace a sub-expression, e.g.
 	  (t
 	   (warn "None of 'w32-short-file-name, 'win32-short-file-name,
 or 'mswindows-short-file-name are defined!
-You will have to manually set   ess-program-files (in ess-cust.el) to
+You will have to manually set   ess-program-files (in ess-custom.el) to
 the correct \"8.3\"-style directory name."))))
 
 

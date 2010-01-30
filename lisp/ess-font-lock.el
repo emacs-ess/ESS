@@ -44,7 +44,7 @@
 
 ;; font-lock faces are defined in /emacs/emacs-20.5/lisp/font-lock.el
 ;; The font-lock faces are applied to ESS buffers by
-;; ess-mode.el ess-inf.el ess-trns.el ess-cust.el
+;; ess-mode.el ess-inf.el ess-trns.el ess-custom.el
 ;; The keywords for faces are defined in the ess[dl]*.el files.
 ;; All faces can be looked at, under Emacs 20.x, with
 ;;        [menu-bar] [Edit] [Text Properties] [Display Faces}

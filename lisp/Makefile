@@ -42,10 +42,10 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-swv.elc ess-toolbar.elc \
 	ess-trns.elc ess-utils.elc \
 	essd-els.elc \
-	essl-lsp.elc essd-xls.elc essd-vst.elc essd-arc.elc \
+	ess-lsp-l.elc ess-xls-d.elc ess-vst-d.elc ess-arc-d.elc \
 	ess-sas-l.elc ess-sas-d.elc ess-sas-a.elc \
 	ess-sta-l.elc ess-sta-d.elc make-regexp.elc \
-	essl-omg.elc essd-omg.elc \
+	ess-omg-l.elc ess-omg-d.elc \
 	ess-bugs-l.elc ess-bugs-d.elc ess-jags-d.elc \
 	ess-noweb.elc noweb-mode.elc noweb-font-lock-mode.elc \
 	ess-eldoc.elc ess-roxygen.elc ess-roxy.elc \
@@ -78,7 +78,7 @@ clean:
 	essl-s.elc essd-s3.elc essd-s4.elc \
 	essd-sp3.elc essd-sp4.elc essd-sp5.elc essd-sp6.elc \
 	essd-r.elc ess-rdired.elc essd-r-args.elc essa-r.elc essddr.elc \
-	essd-sp6w.elc 
+	essd-sp6w.elc
 
 distclean: clean
 # and potentially more
@@ -140,11 +140,11 @@ ess-swv.elc: ess-swv.el ess-noweb.elc
 
 ## Lisp Languages
 
-essl-lsp.elc : essl-lsp.el ess.elc
+ess-lsp-l.elc : ess-lsp-l.el ess.elc
 
-essd-xls.elc : essd-xls.el essl-lsp.elc ess.elc
+essd-xls.elc : essd-xls.el ess-lsp-l.elc ess.elc
 
-essd-vst.elc : essd-vst.el essl-lsp.elc ess.elc
+essd-vst.elc : essd-vst.el ess-lsp-l.elc ess.elc
 
 ## SAS
 

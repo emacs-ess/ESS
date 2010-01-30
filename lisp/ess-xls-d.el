@@ -1,4 +1,4 @@
-;;; essd-xls.el --- XLispStat customization for ESS.
+;;; ess-xls-d.el --- XLispStat customization for ESS.
 
 ;; Copyright (C) 1997 A. J. Rossini
 ;; Copyright (C) 1998--2004 A.J. Rossini, Rich M. Heiberger, Martin
@@ -28,11 +28,11 @@
 
 ;;; Commentary:
 ;;; This file defines all the XLispStat customizations for ESS.  See
-;;; essl-lsp for general Lisp modifications.
+;;; ess-lsp-l.el for general Lisp modifications.
 
 ;;; Requires and Autoloads:
 
-(require 'essl-lsp)
+(require 'ess-lsp-l)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 
@@ -94,7 +94,7 @@
 
  ; Provide package
 
-(provide 'essd-xls)
+(provide 'ess-xls-d)
 
  ; Local variables section
 
@@ -113,4 +113,4 @@
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; essd-xls.el ends here
+;;; ess-xls-d.el ends here

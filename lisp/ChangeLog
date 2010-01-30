@@ -1,3 +1,9 @@
+2010-01-30  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* Makefile, ess-site.el, *.el: remove(!!) the renamed files that should
+	not have been here by now; complete renaming (*omg, *xls ..)
+	adapt ess-site (!) and  Makefile (apart from *.elc in 'clean', for now).
+
 2010-01-30  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-roxy-complete-tag): advice ess completion to
@@ -8,7 +14,7 @@
 	* ess-roxy.el (ess-indent-command): hs-minor-mode related advice
 	is not activated unless ess-roxy-hide-show-p has been set
 
-	* ess-cust.el: ess-roxy now doesnt load hs-minor-mode per default,
+	* ess-custom.el: ess-roxy now doesnt load hs-minor-mode per default,
 	this must be set manually.
 
 2010-01-27  Rodney Sparapani  <rsparapa@mcw.edu>
@@ -30,9 +36,9 @@
 	* renamed essd-rgui.el to ess-r-gui.el
 	* renamed essd-r.el to ess-r-d.el
 	* renamed essd-r-args.el to ess-r-args.el
-	* renamed essa-r.el to ess-r-a.el 
+	* renamed essa-r.el to ess-r-a.el
 	* renamed ess-cust.el to ess-custom.el
-	* renamed ess-emcs.el to ess-compat.el 
+	* renamed ess-emcs.el to ess-compat.el
 
 2010-01-22  Martin Maechler  <maechler@stat.math.ethz.ch>
 

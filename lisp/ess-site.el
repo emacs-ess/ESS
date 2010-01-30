@@ -319,7 +319,7 @@ between .s or .S files and assembly mode.
 ;;; in this mode beginning with S-Plus 6.1.
 ;;; See ess-sp4-d.el or ess-sp6w-d.el
 
-;;; -----> configuration now via custom, see ./ess-cust.el and look for
+;;; -----> configuration now via custom, see ./ess-custom.el and look for
 ;;;        inferior-Sqpe+... e.g. inferior-Sqpe+6-program-name
 
 ;;; These ddeclient values will be buffer-local on MS-Windows 9x/NT
@@ -385,18 +385,18 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (ess-message "[ess-site:] require 'ess-sta-d ...")
 (require 'ess-sta-d)  ;; for Stata.
-(ess-message "[ess-site:] require 'essd-xls ...")
-(require 'essd-xls)  ;; XLispStat
-(ess-message "[ess-site:] require 'essd-vst ...")
-(require 'essd-vst)  ;; ViSta
-(ess-message "[ess-site:] require 'essd-arc ...")
-(require 'essd-arc)  ;; Arc
+(ess-message "[ess-site:] require 'ess-xls-d ...")
+(require 'ess-xls-d)  ;; XLispStat
+(ess-message "[ess-site:] require 'ess-vst-d ...")
+(require 'ess-vst-d)  ;; ViSta
+(ess-message "[ess-site:] require 'ess-arc-d ...")
+(require 'ess-arc-d)  ;; Arc
 (ess-message "[ess-site:] require 'ess-sas-d ...")
 (require 'ess-sas-d)
-(ess-message "[ess-site:] require 'essd-els ...")
-(require 'essd-els)  ;; S-elsewhere, on another machine by telnet
-(ess-message "[ess-site:] require 'essd-omg ...")
-(require 'essd-omg)  ;; for omegahat
+;; (ess-message "[ess-site:] require 'essd-els ...")
+;; (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
+;; (ess-message "[ess-site:] require 'essd-omg ...")
+;; (require 'essd-omg)  ;; for omegahat
 (ess-message "[ess-site:] require 'ess-bugs-l ...")
 (require 'ess-bugs-l)  ;; for batch BUGS
 
@@ -410,7 +410,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;; ALWAYS:
 (ess-message "[ess-site:] require 'ess   *ITSELF* ...")
-(require 'ess); -> loads ess-cust.el and more
+(require 'ess); -> loads ess-custom.el and more
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
@@ -603,7 +603,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; (3.4) ess-ask-for-ess-directory
 ;;; If t, will ask for the directory to use.  If nil, assumes the
 ;;; default (usually, the users home directory...).
-;;now rather in ./ess-cust.el : (setq ess-ask-for-ess-directory t)
+;;now rather in ./ess-custom.el : (setq ess-ask-for-ess-directory t)
 
 ;;; (3.5) ess-directory default	 (correlated with above)
 ;;; The default location for running the subprocess is configurable.
@@ -643,8 +643,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;;; 3.6 Example of formatting changes
 
-;;; Formatting and indentation patterns are defined in ess-cust.el, please
-;;; see ess-cust.el for exact definitions of these variable settings.
+;;; Formatting and indentation patterns are defined in ess-custom.el, please
+;;; see ess-custom.el for exact definitions of these variable settings.
 ;;; To change them (eg, follow changes suggested by Terry Therneau),
 ;;; you need one or both of the following lines:
 ;;;

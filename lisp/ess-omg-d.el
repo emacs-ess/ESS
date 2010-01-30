@@ -1,4 +1,4 @@
-;;; essd-omg.el --- Omega customization
+;;; ess-omg-d.el --- Omega customization
 
 ;; Copyright (C) 1999 A. J. Rossini
 ;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
@@ -31,7 +31,7 @@
 
 ;;; Requires and Autoloads:
 
-(require 'essl-omg)
+(require 'ess-omg-l)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
@@ -104,7 +104,7 @@
 
  ; Provide package
 
-(provide 'essd-omg)
+(provide 'ess-omg-d)
 
  ; Local variables section
 
@@ -123,4 +123,4 @@
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; essd-omg.el ends here
+;;; ess-omg-d.el ends here
