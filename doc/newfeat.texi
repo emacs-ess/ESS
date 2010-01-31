@@ -3,7 +3,7 @@
 Changes/New Features in 5.8:
 @itemize @bullet
 @item @ESS{[R]}: much more extensive Roxygen interface, via ess-roxy.el
- from Henning Redestig.
+ from Henning Redestig. Ess-roxy supports filling of roxygen fields, generation and updating roxygen templates, completion of roxygen tags, basic navigation (marking and moving between entries), foling using hs-minor-mode and preview of the Rd file.
 @item Emacs lisp files have got better names (partly, for now).
 @end itemize
 
