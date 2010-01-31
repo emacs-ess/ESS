@@ -624,7 +624,8 @@ If nil, ESS will try finding one from a list."
 ;; ---- ./ess-roxy.el : ------------
 
 (defcustom ess-roxy-tags-noparam '("export")
-  "*The tags used in roxygen fields that can be used alone"
+  "*The tags used in roxygen fields that can be used alone. Used
+to decide highlighting and tag completion."
   :group 'ess-roxy
   :type '(repeat string))
 
@@ -635,9 +636,24 @@ If nil, ESS will try finding one from a list."
 				 "include" "references" "return" 
 				 "seealso" "source" "docType" 
 				 "title" "TODO" "usage")
-  "*The tags used in roxygen fields that require a parameter"
+  "*The tags used in roxygen fields that require a
+parameter. Used to decide highlighting and tag completion."
   :group 'ess-roxy
   :type '(repeat string))
+
+(defcustom ess-roxy-template-alist '(("description" "<description>")
+				     ("details" "<details>")
+				     ("title" "")
+				     ("param" "")
+				     ("return" "")
+				     ("author" "<customize me>"))
+  "*The tags and defaults to insert when creating empty
+templates. Param is a place holder for where to enter
+parameters. Description and details do not use @ tags, but are
+instead placed at the beginning of the entry (and should
+therefore also be at the beginning of this template)"
+  :group 'ess-roxy
+  :type '(alist :value-type (group string)))
 
 (defcustom ess-roxy-hide-show-p nil
   "*Should ess-roxy switch on hs-minor-mode to enable block hiding with TAB"
@@ -655,18 +671,6 @@ If nil, ESS will try finding one from a list."
   "*The string to insert before each line in a roxygen block"
   :group 'ess-roxy
   :type 'string)
-
-(defcustom ess-roxy-author "<customize me>"
-  "*The string to insert after the @author field"
-  :group 'ess-roxy
-  :type 'string)
-
-(defcustom ess-roxy-template-fields '("title" "param" "return" "author")
-  "*The fields to insert when creating empty templates. param is
-a place holder for where to enter parameters"
-  :group 'ess-roxy
-  :type '(repeat string))
-
 
  ; System variables
 

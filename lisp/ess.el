@@ -108,7 +108,7 @@
 	)
     (require 'font-lock))
 
-(require 'ess-emcs)
+(require 'ess-compat)
 
 (eval-and-compile
   (require 'ess-custom))

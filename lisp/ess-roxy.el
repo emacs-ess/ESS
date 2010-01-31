@@ -5,6 +5,8 @@
 ;; Author: Henning Redestig <henning.red * go0glemail c-m>
 ;; Keywords: convenience tools
 ;;
+;; This file is (soon?) part of ESS
+;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
 ;; published by the Free Software Foundation; either version 3 of the
@@ -25,16 +27,18 @@
 ;;
 ;; Features::
 ;;
-;; - basic higlighting
-;; - generating and updating templates from function definition
+;; - basic highlighting
+;; - generating and updating templates from function definition and customized default template
 ;;   - C-c C-e C-o :: update template
 ;; - navigating and filling roxygen fields
-;;   - M-q, C-a, ENTER, M-h :: advised fill-paragraph,
+;;   - C-c TAB, M-q, C-a, ENTER, M-h :: advised tag completion, fill-paragraph,
 ;;        move-beginning-of-line, newline-and-indent, mark-paragraph
 ;;   - C-c C-e n,p :: next, previous roxygen entry
 ;;   - C-c C-e C-c :: Unroxygen region. Convenient for editing examples.
 ;; - folding visibility using hs-minor-mode
 ;;   - TAB :: advised ess-ident-command, hide entry if in roxygen doc.
+;; - preview
+;;   - C-c C-e C-r :: create a preview of the Rd file as generated using roxygen
 ;;
 ;; To enable it for ESS, put something like
 ;;
@@ -43,7 +47,7 @@
 ;; (add-hook 'ess-mode-hook
 ;; 	  (lambda () (ess-roxy-mode) ))
 
-(require 'ess-custom); which now contains the customizables
+(require 'ess-custom)
 (require 'hideshow)
 
 ;; ------------------
@@ -59,9 +63,9 @@
       (define-key ess-roxy-mode-map (kbd "C-c C-e C-h") 'ess-roxy-hide-all))
   (define-key ess-roxy-mode-map (kbd "C-c C-e n")   'ess-roxy-next-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e p")   'ess-roxy-previous-entry)
-  (define-key ess-roxy-mode-map (kbd "C-c C-e C-o") 'ess-roxy-update-entry)
+  (define-key ess-roxy-mode-map (kbd "C-c C-e C-r")   'ess-roxy-preview-Rd)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-c") 'ess-roxy-toggle-roxy-region)
-  ;; this one, at least, more directly [compatibly to "old" ess-roxygen-fn]:
+  (define-key ess-roxy-mode-map (kbd "C-c C-e C-o") 'ess-roxy-update-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-o") 'ess-roxy-update-entry))
 
 (defconst ess-roxy-font-lock-keywords
@@ -215,29 +219,31 @@ below the current roxygen entry, error otherwise"
       (mapcar (lambda (x) (cons x '(""))) args))))
 
 (defun ess-roxy-insert-args (args &optional here)
-  "Insert an args list to the end of entry function at point. if
-here is supplied start inputting at here - 1"
-  (save-excursion
-    (let* ((arg-des nil))
-      (if (or (not here) (< here 1))
-	  (progn
-	    (ess-roxy-goto-end-of-entry)
-	    (beginning-of-line)
-	    (if (not (looking-at "\="))
-		(progn
-		  (end-of-line))))
-	(goto-char (- here 1)))
-      (while (stringp (car (car args)))
-	(setq arg-des (pop args))
-	(insert (concat "\n"
-			ess-roxy-str " @param " (car arg-des) " "))
-	(insert (concat (car (cdr arg-des))))
-	(ess-roxy-fill-field)))))
+  "Insert an args list to the end of the roxygen entry for the
+function at point. if here is supplied start inputting
+`here'. Finish at end of line."
+  (let* ((arg-des nil))
+    (if (or (not here) (< here 1))
+	(progn
+	  (ess-roxy-goto-end-of-entry)
+	  (beginning-of-line)
+	  (if (not (looking-at "\="))
+	      (progn
+		(end-of-line))))
+      (goto-char here))
+    (while (stringp (car (car args)))
+      (setq arg-des (pop args))
+      (insert (concat "\n"
+		      ess-roxy-str " @param " (car arg-des) " "))
+      (insert (concat (car (cdr arg-des))))
+      (ess-roxy-fill-field))))
 
 (defun ess-roxy-merge-args (fun ent)
   "Take two args lists (alists) and return their union. Result
 holds all keys from both fun and ent but no duplicates and
-association from ent are preferred over entries from fun"
+association from ent are preferred over entries from fun. Also,
+drop entries from ent that are not in fun and are associated with
+the empty string."
   (let ((res-arg nil)
 	(arg-des))
     (while (stringp (car (car fun)))
@@ -261,7 +267,7 @@ entry is available."
     (let* ((args-fun (ess-roxy-get-args-list-from-def))
 	   (args-ent (ess-roxy-get-args-list-from-entry))
 	   (args (ess-roxy-merge-args args-fun args-ent))
-	   here key keywords)
+	   here key template tag-def)
       (ess-roxy-goto-func-def)
       (if (not (= (forward-line -1) 0))
       	  (progn
@@ -269,20 +275,20 @@ entry is available."
 	    (forward-line -1)))
       (if (ess-roxy-entry-p)
 	  (progn
-	    (setq here (ess-roxy-delete-args))
+	    (setq here (1- (ess-roxy-delete-args)))
 	    (ess-roxy-insert-args args here))
-	(insert (concat ess-roxy-str " <description>\n"))
-	(insert (concat ess-roxy-str "\n"))
-	(insert (concat ess-roxy-str " <details>"))
-	(setq keywords (copy-sequence ess-roxy-template-fields))
-	(while (stringp (car keywords))
-	  (setq key (pop keywords))
-	  (if (string= key "param")
-	      (progn
-		(ess-roxy-insert-args args (point)))
-	    (insert (concat "\n" ess-roxy-str " @" key " ")))
-	  (if (string= key "author")
-	      (insert ess-roxy-author)))))))
+	(setq template (copy-sequence ess-roxy-template-alist))
+	(while (stringp (car (car template)))
+	  (setq tag-def (pop template))
+	  (if (string= (car tag-def) "param")
+	      (ess-roxy-insert-args args (point))
+	    (if (string= (car tag-def) "description")
+		(insert (concat "\n" ess-roxy-str " " (car (cdr tag-def)) "\n" ess-roxy-str))
+	      (if (string= (car tag-def) "details")
+		  (insert (concat "\n" ess-roxy-str " " (car (cdr tag-def))))
+		(insert (concat "\n" ess-roxy-str " @" (car tag-def) " " (car (cdr tag-def)))))
+		))
+	  )))))
 
 (defun ess-roxy-goto-end-of-entry ()
   "Put point at the top of the entry at point or above the
@@ -399,8 +405,43 @@ string. Convenient for editing example fields."
 	(replace-match to-string))
       (widen))))
 
+(defun ess-roxy-preview-Rd (&optional arg)
+  "Use the connected R session and the roxygen package to create
+a preview of the Rd file of the entry at point. If called with
+`arg' is non-nil (e.g. called with the universal argument), also
+set the visited file name of the created buffer to allow for
+saving (and using Rd-modes preview function) of the file."
+  (interactive "P")
+  (let ((beg (ess-roxy-beg-of-entry))
+	(roxy-tmp (make-temp-file "ess-roxy"))
+	(roxy-buf (get-buffer-create " *RoxygenPreview*"))
+	beg-end)
+    (if (= beg 0)
+	(error "Point is not in a Roxygen entry"))
+    (save-excursion
+      (goto-char (ess-roxy-end-of-entry))
+      (forward-line 1)
+      (setq beg-end (ess-end-of-function))
+      (append-to-file beg (car (cdr beg-end)) roxy-tmp)
+      (ess-command "library(roxygen)\n" roxy-buf)
+      (save-excursion
+	(set-buffer roxy-buf)
+	(goto-char 1)
+	(if (search-forward-regexp "Error in library(roxygen)" nil t)
+	    (error "Failed to load the roxygen package")))
+      (ess-command ".ess_roxy_roclet <- make.Rd.roclet(NULL)\n")
+      (ess-command (concat ".ess_roxy_roclet$parse(\"" roxy-tmp "\")\n") roxy-buf)
+      (delete-file roxy-tmp))
+    (pop-to-buffer roxy-buf)
+    (if arg
+	(save-excursion
+	  (goto-char 1)
+	  (search-forward-regexp "name{\\(.+\\)}")
+	  (set-visited-file-name (concat (match-string 1) ".Rd"))))
+    )(Rd-mode))
+
 (defun ess-roxy-mark-active ()
-  "Is region active, GNU-Emacs & XEmacs."
+  "True if region is active and transient mark mode activated"
   (if (fboundp 'region-active-p)
       (region-active-p)
     (and transient-mark-mode mark-active)))
@@ -489,7 +530,7 @@ list of strings."
   (if (and (ess-roxy-entry-p) (not mark-active))
       (progn
 	(push-mark (point))
-	(push-mark (ess-roxy-end-of-field) nil t)
+	(push-mark (1+ (ess-roxy-end-of-field)) nil t)
 	(goto-char (ess-roxy-beg-of-field)))
     ad-do-it))
 (ad-activate 'mark-paragraph)

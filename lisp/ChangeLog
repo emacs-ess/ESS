@@ -1,3 +1,11 @@
+2010-01-31  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess.el (ess-compat): Reflect the name change
+
+	* ess-roxy.el (ess-roxy-preview-Rd): New feature that allow for
+	previewing the Rd file that is created by calling roxygen on the
+	current entry
+
 2010-01-30  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* Makefile, ess-site.el, *.el: remove(!!) the renamed files that should
