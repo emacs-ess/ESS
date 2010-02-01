@@ -67,6 +67,22 @@ plot(Speed, Distance,
 ## Note: We now at least C-c C-c {ess-eval-function-or-paragraph-and-step}
 
 
+###--- This one (from the Matrix package) is for testing ess-roxy...,
+## i.e.,  C-c C-o
+
+## not exported but used more than once for "dimnames<-" method :
+## -- or do only once for all "Matrix" classes ??
+dimnamesGets <- function (x, value) {
+    d <- dim(x)
+    if (!is.list(value) || length(value) != 2 ||
+	!(is.null(v1 <- value[[1]]) || length(v1) == d[1]) ||
+	!(is.null(v2 <- value[[2]]) || length(v2) == d[2]))
+	stop(gettextf("invalid dimnames given for '%s' object", class(x)))
+    x@Dimnames <- list(if(!is.null(v1)) as.character(v1),
+		       if(!is.null(v2)) as.character(v2))
+    x
+}
+
 
 ### Here, the indentation is wrong ... rather an Emacs buglet ?
 
@@ -212,3 +228,4 @@ setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
     class(x) <- cl
     return(x)
 }
+
