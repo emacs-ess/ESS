@@ -97,15 +97,15 @@ ess-custom.el: ../VERSION
 	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile $<
 
 
-ess-custom.elc:	ess-custom.el
+ess-custom.elc: ess-custom.el ess-comp.el
 	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-custom.el
 
-ess.elc: ess.el ess-custom.elc
+ess.elc: ess.el ess-comp.el ess-custom.elc
 	$(EMACSBATCH) $(PRELOADS) -l ess-custom.elc -f batch-byte-compile ess.el
 
 ess-site.elc: ess-site.el ess.elc
 
-ess-inf.elc: ess-inf.el $(CORE)
+ess-inf.elc: ess-inf.el ess-comp.el $(CORE)
 # 	@echo " "
 # 	@echo "For the next compile, please disregard the messages"
 # 	@echo " ** the function set-keymap-parent is not known to be defined."
@@ -114,10 +114,10 @@ ess-inf.elc: ess-inf.el $(CORE)
 	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-inf.el
 
 
-ess-mode.elc: ess-mode.el $(CORE)
+ess-mode.elc: ess-mode.el ess-comp.el $(CORE)
 	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-mode.el
 
-ess-trns.elc: ess-trns.el $(CORE)
+ess-trns.elc: ess-trns.el ess-comp.el $(CORE)
 	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-trns.el
 
 ess-help.elc: ess-help.el $(CORE)

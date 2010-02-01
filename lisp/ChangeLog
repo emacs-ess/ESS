@@ -1,29 +1,7 @@
-2010-01-31  Henning Redestig  <henning@psc.riken.jp>
+2010-02-01  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess.el (ess-compat): Reflect the name change
-
-	* ess-roxy.el (ess-roxy-preview-Rd): New feature that allow for
-	previewing the Rd file that is created by calling roxygen on the
-	current entry
-
-2010-01-30  Martin Maechler  <maechler@stat.math.ethz.ch>
-
-	* Makefile, ess-site.el, *.el: remove(!!) the renamed files that should
-	not have been here by now; complete renaming (*omg, *xls ..)
-	adapt ess-site (!) and  Makefile (apart from *.elc in 'clean', for now).
-
-2010-01-30  Henning Redestig  <henning@psc.riken.jp>
-
-	* ess-roxy.el (ess-roxy-complete-tag): advice ess completion to
-	complete roxygen tag names inc case point is in a roxygen field
-
-2010-01-29  Henning Redestig  <henning@psc.riken.jp>
-
-	* ess-roxy.el (ess-indent-command): hs-minor-mode related advice
-	is not activated unless ess-roxy-hide-show-p has been set
-
-	* ess-custom.el: ess-roxy now doesnt load hs-minor-mode per default,
-	this must be set manually.
+	* Makefile: add ess-comp.el to dependencies
+	for targets with PRELOAD (as it should be)
 
 2010-01-27  Rodney Sparapani  <rsparapa@mcw.edu>
 
