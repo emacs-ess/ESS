@@ -5,7 +5,7 @@
 ;; Author: Henning Redestig <henning.red * go0glemail c-m>
 ;; Keywords: convenience tools
 ;;
-;; This file is (soon?) part of ESS
+;; This file is part of ESS
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -38,7 +38,8 @@
 ;; - folding visibility using hs-minor-mode
 ;;   - TAB :: advised ess-ident-command, hide entry if in roxygen doc.
 ;; - preview
-;;   - C-c C-e C-r :: create a preview of the Rd file as generated using roxygen
+;;   - C-c C-e C-r :: create a preview of the Rd file as generated
+;;     using roxygen
 ;;
 ;; To enable it for ESS, put something like
 ;;
@@ -51,7 +52,7 @@
 (require 'hideshow)
 
 ;; ------------------
-(defconst ess-roxy-version "0.1-3"
+(defconst ess-roxy-version "0.2"
   "Current version of ess-roxy.el.")
 
 (defvar ess-roxy-mode-map nil
@@ -65,7 +66,6 @@
   (define-key ess-roxy-mode-map (kbd "C-c C-e p")   'ess-roxy-previous-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-r")   'ess-roxy-preview-Rd)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-c") 'ess-roxy-toggle-roxy-region)
-  (define-key ess-roxy-mode-map (kbd "C-c C-e C-o") 'ess-roxy-update-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-o") 'ess-roxy-update-entry))
 
 (defconst ess-roxy-font-lock-keywords
@@ -267,12 +267,17 @@ entry is available."
     (let* ((args-fun (ess-roxy-get-args-list-from-def))
 	   (args-ent (ess-roxy-get-args-list-from-entry))
 	   (args (ess-roxy-merge-args args-fun args-ent))
+	   (line-break "")
 	   here key template tag-def)
       (ess-roxy-goto-func-def)
       (if (not (= (forward-line -1) 0))
       	  (progn
 	    (insert "\n")
 	    (forward-line -1)))
+      (if (and (not (looking-at "^\n")) (not (ess-roxy-entry-p)))
+	  (progn
+	    (end-of-line)
+	    (insert "\n")))
       (if (ess-roxy-entry-p)
 	  (progn
 	    (setq here (1- (ess-roxy-delete-args)))
@@ -283,11 +288,14 @@ entry is available."
 	  (if (string= (car tag-def) "param")
 	      (ess-roxy-insert-args args (point))
 	    (if (string= (car tag-def) "description")
-		(insert (concat "\n" ess-roxy-str " " (car (cdr tag-def)) "\n" ess-roxy-str))
+		(insert (concat line-break ess-roxy-str " " 
+				(car (cdr tag-def)) "\n" ess-roxy-str))
 	      (if (string= (car tag-def) "details")
-		  (insert (concat "\n" ess-roxy-str " " (car (cdr tag-def))))
-		(insert (concat "\n" ess-roxy-str " @" (car tag-def) " " (car (cdr tag-def)))))
+		  (insert (concat line-break ess-roxy-str " " (car (cdr tag-def))))
+		(insert (concat line-break ess-roxy-str " @" 
+				(car tag-def) " " (car (cdr tag-def)))))
 		))
+	  (setq line-break "\n")
 	  )))))
 
 (defun ess-roxy-goto-end-of-entry ()
@@ -507,7 +515,7 @@ list of strings."
 (defun ess-roxy-complete-tag ()
   "complete the tag at point"
   (let ((token-string (thing-at-point 'symbol)))
-    (if (string-match-p "@.+" token-string)
+    (if (string-match "@.+" token-string)
 	(progn 
 	  (comint-dynamic-simple-complete 
 	   (replace-regexp-in-string "^@" "" token-string)
@@ -537,8 +545,7 @@ list of strings."
 
 (defadvice ess-indent-command (around ess-roxy-toggle-hiding)
   "hide this block if we are at the beginning of the line"
-  (if (and 'ess-roxy-entry-p 
-	   (or (looking-back (concat ess-roxy-str " *")) (= (point) (point-at-bol))))
+  (if (and (ess-roxy-entry-p) 'ess-roxy-hide-show-p)
       (progn (hs-toggle-hiding))
     ad-do-it))
 (if ess-roxy-hide-show-p

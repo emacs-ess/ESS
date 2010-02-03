@@ -450,9 +450,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 (autoload 'ess-rdired "ess-rdired"
   "View *R* objects in a dired-like buffer." t)
 
-(autoload 'ess-roxygen-fn "ess-roxygen"
-  "Insert roxygen tags for function definitions." t)
-;; Newer, eventually *instead* of the above
 (autoload 'ess-roxy-mode "ess-roxy"
   "Insert and edit Roxygen tags for function definitions." t)
 (add-hook 'ess-mode-hook 'ess-roxy-mode)

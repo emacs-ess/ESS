@@ -1,3 +1,8 @@
+2010-02-02  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-update-entry): corrected behavior when
+	adding roxygen entries to function with preceeding comments
+
 2010-02-01  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* Makefile: add ess-comp.el to dependencies
