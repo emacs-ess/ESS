@@ -419,7 +419,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;; (1.8) Speedbar and mouse
 
 (require 'ess-menu)
-(require 'ess-mous)
+(require 'ess-mouse)
 
 ;; (1.9) Toolbar support
 

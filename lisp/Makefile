@@ -38,7 +38,7 @@ CORE = ess.elc ess-site.elc
 ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-dde.elc ess-compat.elc ess-font-lock.elc \
 	ess-help.elc ess-inf.elc ess-mode.elc \
-	ess-menu.elc ess-mous.elc mouseme.elc \
+	ess-menu.elc ess-mouse.elc mouseme.elc \
 	ess-swv.elc ess-toolbar.elc \
 	ess-trns.elc ess-utils.elc \
 	essd-els.elc \
@@ -78,7 +78,8 @@ clean:
 	essl-s.elc essd-s3.elc essd-s4.elc \
 	essd-sp3.elc essd-sp4.elc essd-sp5.elc essd-sp6.elc \
 	essd-r.elc ess-rdired.elc essd-r-args.elc essa-r.elc essddr.elc \
-	essd-sp6w.elc
+	essd-sp6w.elc \
+	essd-arc.elc essd-omg.elc essd-vst.elc essd-xls.elc essl-lsp.elc essl-omg.elc ess-mous.elc
 
 distclean: clean
 # and potentially more
