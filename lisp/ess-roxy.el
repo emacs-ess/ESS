@@ -93,11 +93,13 @@
         (font-lock-add-keywords nil ess-roxy-font-lock-keywords)
 	(if ess-roxy-hide-show-p
 	    (progn
+	      ;(setq hs-c-start-regexp "s")
 	      (if (condition-case nil
 		      (if (and (symbolp hs-minor-mode)
 			       (symbol-value hs-minor-mode))
 			  nil t) (error t) )
-		  (hs-minor-mode))
+		  (progn
+		    (hs-minor-mode)))
 	      (if ess-roxy-start-hidden-p
 		  (ess-roxy-hide-all)))))
     (if ess-roxy-hide-show-p
@@ -108,6 +110,12 @@
     (font-lock-remove-keywords nil ess-roxy-font-lock-keywords))
   (when font-lock-mode
     (font-lock-fontify-buffer)))
+
+
+;; (setq hs-c-start-regexp ess-roxy-str)
+;; (make-variable-buffer-local 'hs-c-start-regexp)
+
+
 
 ;; Function definitions
 (defun ess-roxy-beg-of-entry ()
@@ -289,11 +297,11 @@ entry is available."
 	      (ess-roxy-insert-args args (point))
 	    (if (string= (car tag-def) "description")
 		(insert (concat line-break ess-roxy-str " " 
-				(car (cdr tag-def)) "\n" ess-roxy-str))
+				(cdr tag-def) "\n" ess-roxy-str))
 	      (if (string= (car tag-def) "details")
-		  (insert (concat line-break ess-roxy-str " " (car (cdr tag-def))))
+		  (insert (concat line-break ess-roxy-str " " (cdr tag-def)))
 		(insert (concat line-break ess-roxy-str " @" 
-				(car tag-def) " " (car (cdr tag-def)))))
+				(car tag-def) " " (cdr tag-def))))
 		))
 	  (setq line-break "\n")
 	  )))))

@@ -160,6 +160,11 @@ as `ess-imenu-use-S'."
 
 ;;
 
+(defcustom ess-user-full-name (user-full-name)
+  "*The full name of the user"
+  :group 'ess
+  :type 'string)
+
 (defcustom ess-ask-for-ess-directory t
   "*Non-nil means request the process directory each time S is run."
   :group 'ess
@@ -641,12 +646,13 @@ parameter. Used to decide highlighting and tag completion."
   :group 'ess-roxy
   :type '(repeat string))
 
-(defcustom ess-roxy-template-alist '(("description" "<description>")
-				     ("details" "<details>")
-				     ("title" "")
-				     ("param" "")
-				     ("return" "")
-				     ("author" "<customize me>"))
+(defcustom ess-roxy-template-alist 
+  (list (cons "description"  "<description>")
+	(cons "details" "<details>")
+	(cons "title" "")
+	(cons "param"  "")
+	(cons "return" "")
+	(cons "author" ess-user-full-name))
   "*The tags and defaults to insert when creating empty
 templates. Param is a place holder for where to enter
 parameters. Description and details do not use @ tags, but are
