@@ -1,3 +1,9 @@
+2010-02-05  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-custom.el: Tidy up docstrings for defcustom items.
+	Asterisk is not used at start of docstring; prefer 'Non-nil means
+	...' notation for binary variables.
+
 2010-02-04  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-rutils.el: New file
