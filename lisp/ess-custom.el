@@ -657,7 +657,8 @@ Used to decide highlighting and tag completion."
 Param is a place holder for where to enter
 parameters. Description and details do not use @ tags, but are
 instead placed at the beginning of the entry (and should
-therefore also be at the beginning of this template)"
+therefore also be at the beginning of this template to give
+syntactically correct roxygen entries)"
   :group 'ess-roxy
   :type '(alist :value-type (group string)))
 
