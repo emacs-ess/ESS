@@ -1,3 +1,7 @@
+2010-02-04  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: New file
+
 2010-02-05  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-custom.el (ess-user-full-name): defines the user name which
@@ -2993,5 +2997,3 @@ Fri Dec	 5 10:12:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Fri Dec	 5 10:09:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* CVS (ChangeLog): Starting 5.1 series.
-
-
