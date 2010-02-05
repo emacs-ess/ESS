@@ -3,7 +3,7 @@
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
 ;; Last-Updated: Thu Feb  4 23:43:16 2010 (UTC)
 ;;           By: Sebastian P. Luque
-;; Version: $Id: $
+;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
 ;; copyright (c) 2005, 2006, 2007, 2008, 2009, 2010 Sebastian P. Luque
 ;; This program is free software; you can redistribute it and/or modify
