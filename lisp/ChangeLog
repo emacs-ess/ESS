@@ -4,14 +4,19 @@
 	Asterisk is not used at start of docstring; prefer 'Non-nil means
 	...' notation for binary variables.
 
-2010-02-04  Sebastian P. Luque  <spluque@gmail.com>
+2010-02-05  Sebastian P. Luque  <spluque@gmail.com>
 
-	* ess-rutils.el: New file
+	* ess-rutils.el: 4265 Placed `ess-rutils-keys' under the ess-R
+	customization group, not under the inexistent ess-r.
 
 2010-02-05  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-custom.el (ess-user-full-name): defines the user name which
 	is also becomes default for the author field in roxy entries
+
+2010-02-04  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: New file
 
 2010-02-03  Rodney Sparapani  <rsparapa@mcw.edu>
 

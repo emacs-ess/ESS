@@ -1,7 +1,7 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Thu Feb  4 23:43:16 2010 (UTC)
+;; Last-Updated: Fri Feb  5 14:31:03 2010 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
@@ -365,7 +365,7 @@ Options should be separated by value of `crm-default-separator'."
 ;; Suggested by Rich Heiberger. Not sure how to implement this.
 (defcustom ess-rutils-keys nil
   "Non-nil means activate ess-rutils keybindings and menu."
-  :group 'ess-r
+  :group 'ess-R
   :type 'boolean)
 
 ;; Keybindings and associated menu.
@@ -426,7 +426,6 @@ Options should be separated by value of `crm-default-separator'."
 	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils objs]
 	  '("Manage objects" . ess-rutils-objs)))))
 
-;; I don't know if this should be here or let the user do it, e.g., in .emacs.
 (add-hook 'inferior-ess-mode-hook 'ess-rutils-keys t)
 
 
