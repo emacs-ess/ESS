@@ -393,8 +393,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 (require 'ess-arc-d)  ;; Arc
 (ess-message "[ess-site:] require 'ess-sas-d ...")
 (require 'ess-sas-d)
-;; (ess-message "[ess-site:] require 'essd-els ...")
-;; (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
+(ess-message "[ess-site:] require 'essd-els ...")
+(require 'essd-els)  ;; S-elsewhere, on another machine by telnet
 ;; (ess-message "[ess-site:] require 'essd-omg ...")
 ;; (require 'essd-omg)  ;; for omegahat
 (ess-message "[ess-site:] require 'ess-bugs-l ...")
