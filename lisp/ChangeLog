@@ -1,3 +1,8 @@
+2010-02-15  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): more statement
+	names 
+
 2010-02-05  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-custom.el: Tidy up docstrings for defcustom items.
