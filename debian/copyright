@@ -7,7 +7,9 @@ Upstream Authors: A.J. Rossini <rossini@stat.sc.edu>,
                   Kurt Hornik <kurt.hornik@R-project.org>,
                   Martin Maechler <maechler@stat.math.ethz.ch>,
                   Rodney A. Sparapani <rsparapa@mcw.edu>,
-		  Stephen Eglen <stephen@gnu.org>
+		  Stephen Eglen <stephen@gnu.org>,
+		  Sebastian P. Luque <spluque@gmail.com>,
+		  Henning Redestig <henning.red@googlemail.com>
 
 ESS has a home page at `http://ESS.R-project.org/'. It is free software
 distributed under a GNU-style copyleft.
@@ -22,12 +24,15 @@ Sources were downloaded from http://ESS.R-project.org/downloads/ess/ and
 changes, typically only to files in the Debian/ directory are fully documented
 in the file /usr/share/doc/ess/changelog.Debian.gz
 
-Copyright (C) 1994 - 2008 Martin Maechler
-Copyright (C) 1994 - 2008 A.J. Rossini
-Copyright (C) 1994 - 2008 Richard M. Heiberger
-Copyright (C) 1994 - 2008 Kurt Hornik
-Copyright (C) 1999 - 2008 Rodney A. Sparapani
-Copyright (C) 2002 - 2008 Stephen Eglen
+Copyright (C) 1994 - 2010 Martin Maechler
+Copyright (C) 1994 - 2010 A.J. Rossini
+Copyright (C) 1994 - 2010 Richard M. Heiberger
+Copyright (C) 1994 - 2010 Kurt Hornik
+Copyright (C) 1999 - 2010 Rodney A. Sparapani
+Copyright (C) 2002 - 2010 Stephen Eglen
+Copyright (C) 2010        Sebastian P. Luque
+Copyright (C) 2010        Henning Redestig
+
 
 License: GPL
 

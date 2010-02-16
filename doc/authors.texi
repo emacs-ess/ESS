@@ -22,4 +22,10 @@
 @item
 @c @uref{http://www.damtp.cam.ac.uk/user/eglen,Stephen Eglen}
 @uref{mailto:stephen@@gnu.org, Stephen Eglen}
+@item
+@c @uref{http://www.ucs.mun.ca/~sluque,Sebastian P. Luque}
+@uref{mailto:spluque@@gmail.com, Sebastian P. Luque}
+@item
+@c @uref{http://www.google.com,Henning Redestig}
+@uref{mailto:henning.red@@googlemail.com, Henning Redestig}
 @end itemize

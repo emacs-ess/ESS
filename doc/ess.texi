@@ -12,7 +12,8 @@
 ESS @w{version @ESSVER}
 
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
-@author M. Maechler, R.A. Sparapani  and S.J. Eglen)
+@author M. Maechler, R.A. Sparapani, S.J. Eglen,
+@author S.P. Luque and H. Redestig)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @c @author                and David Smith)
 @c @ifhtml
@@ -20,7 +21,7 @@ ESS @w{version @ESSVER}
 @c @end ifhtml
 @c
 @author Current Documentation by The ESS Developers
-@author Copyright @copyright{} 2002--2009 The ESS Developers
+@author Copyright @copyright{} 2002--2010 The ESS Developers
 @author Copyright @copyright{} 1996--2001 A.J. Rossini
 @c (@email{rossini@@biostat.washington.edu})
 @c @author Department of Biostatistics
@@ -62,8 +63,10 @@ by  A.J. Rossini,
     R.M. Heiberger,
     K. Hornik,
     M. Maechler,
-    R.A. Sparapani
-and S.J. Eglen.
+    R.A. Sparapani,
+    S.J. Eglen,
+    S.P. Luque
+and H. Redestig.
 @end display
 
 @c (Formerly: Doug
