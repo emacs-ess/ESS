@@ -1,7 +1,7 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Fri Feb  5 14:31:03 2010 (UTC)
+;; Last-Updated: Tue Feb 16 18:27:56 2010 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
@@ -269,14 +269,6 @@ File extension not required."
   (interactive "FSave workspace to file (no extension): ")
   (ess-execute (concat "save.image('" file ".RData')") 'buffer))
 
-(defun ess-rutils-chgdir (dir)
-  "Change to DIR working directory."
-  (interactive "DChange directory to: ")
-  (when (file-exists-p dir)
-    (ess-command (concat "setwd(\"" dir "\")\n"))
-    ;; use file-name-as-directory to ensure it has trailing /
-    (setq default-directory (file-name-as-directory dir))))
-
 (defun ess-rutils-quit ()
   "Kill the ess-rutils buffer and return to the iESS buffer."
   (interactive)
@@ -392,7 +384,7 @@ Options should be separated by value of `crm-default-separator'."
 	(define-key inferior-ess-mode-map [(control c) (c) (s)]
 	  'ess-rutils-savewkspc)
 	(define-key inferior-ess-mode-map [(control c) (c) (d)]
-	  'ess-rutils-chgdir)
+	  'ess-change-directory)
 	(define-key inferior-ess-mode-map [(control c) (c) (H)]
 	  'ess-rutils-htmldocs)
 	;; Menu, as suggested by Martin Maechler.
@@ -410,7 +402,7 @@ Options should be separated by value of `crm-default-separator'."
 	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils apropos]
 	  '("Apropos" . ess-rutils-apropos))
 	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils chgdir]
-	  '("Change directory" . ess-rutils-chgdir))
+	  '("Change directory" . ess-change-directory))
 	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils savewkspc]
 	  '("Save workspace" . ess-rutils-savewkspc))
 	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils loadwkspc]

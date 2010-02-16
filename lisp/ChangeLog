@@ -1,7 +1,13 @@
+2010-02-16  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: 4268 Removed `ess-rutils-chgdir', already
+	available as `ess-change-directory' in ess-utils.el, and rebound
+	key to that function in menu and optional key bindings.
+
 2010-02-15  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-keywords): more statement
-	names 
+	names
 
 2010-02-05  Stephen Eglen  <stephen@gnu.org>
 
