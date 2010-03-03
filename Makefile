@@ -37,7 +37,7 @@ downloads:
 	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
 	chmod a-w $(ESSDIR)/lisp/*.el
 #      should be newer than 'VERSION' :
-	touch $(ESSDIR)/lisp/ess-cust.el
+	touch $(ESSDIR)/lisp/ess-custom.el
 # Not really desirable in many cases -- commented 2008-11-24 (for ESS 5.3.9):
 #	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
 	@echo "** Creating .tgz file **"
@@ -58,13 +58,13 @@ downloads:
 
 dist: VERSION RPM.spec downloads
 	cd doc;  $(MAKE) docs; cd ..
-	cd lisp; $(MAKE) dist; grep 'ess-version' ess-cust.el; cd ..
+	cd lisp; $(MAKE) dist; grep 'ess-version' ess-custom.el; cd ..
 	$(MAKE) cleanup-dist
 	svn cleanup
 	@echo "** Committing VERSION, README, ANNOUNCE, info etc **"
 	svn commit -m "Updating toplevel files for new version" \
 		VERSION README ANNOUNCE RPM.spec
-	svn commit -m "Updating ess-version, info & html for new version" lisp/ess-cust.el doc/info doc/html
+	svn commit -m "Updating ess-version, info & html for new version" lisp/ess-custom.el doc/info doc/html
 	$(MAKE) downloads
 	$(MAKE) cleanup-dist
 	touch $@

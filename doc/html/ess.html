@@ -42,8 +42,10 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
          R.M. Heiberger,
          K. Hornik,
          M. Maechler,
-         R.A. Sparapani
-     and S.J. Eglen.
+         R.A. Sparapani,
+         S.J. Eglen,
+         S.P. Luque
+     and H. Redestig.
 </pre>
    <!-- (Formerly: Doug -->
 <!-- Bates, Ed Kademan, Frank Ritter and David Smith). -->
@@ -350,8 +352,16 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
      <ul>
 Changes/New Features in 5.8:
           <ul>
+<li><acronym>ESS[R]</acronym>: New ess-rutils.el with utilities for listing, loading,
+installing, and updating packages, as well as object manipulation
+(listing, viewing, and deleting).  It also provides an alternative to
+RSiteSearch() that uses the browse-url function, so results can be
+viewed in an Emacs web browser. 
 <li><acronym>ESS[R]</acronym>: much more extensive Roxygen interface, via ess-roxy.el
- from Henning Redestig. 
+ from Henning Redestig. Ess-roxy supports filling of roxygen fields,
+ generation and updating roxygen templates, completion of roxygen tags,
+ basic navigation (marking and moving between entries), foling using
+ hs-minor-mode and preview of the Rd file. 
 <li>Emacs lisp files have got better names (partly, for now). 
 </ul>
 
@@ -1140,6 +1150,10 @@ contributors to the ESS mailing lists.
 <!--  -->
 <li><!-- @uref{http://www.damtp.cam.ac.uk/user/eglen,Stephen Eglen} -->
 <a href="mailto:stephen@gnu.org">Stephen Eglen</a>
+<li><!-- @uref{http://www.ucs.mun.ca/~sluque,Sebastian P. Luque} -->
+<a href="mailto:spluque@gmail.com">Sebastian P. Luque</a>
+<li><!-- @uref{http://www.google.com,Henning Redestig} -->
+<a href="mailto:henning.red@googlemail.com">Henning Redestig</a>
 </ul>
 
 <!-- node-name,  next,  previous,  up -->
@@ -3951,7 +3965,7 @@ e.g., &lsquo;<samp><span class="samp">Description:</span></samp>&rsquo; instead 
 only some versions of S(-plus) have
 sections &lsquo;<samp><span class="samp">BACKGROUND</span></samp>&rsquo;, &lsquo;<samp><span class="samp">BUGS</span></samp>&rsquo;, &lsquo;<samp><span class="samp">OPTIONAL ARGUMENTS</span></samp>&rsquo;,
 &lsquo;<samp><span class="samp">REQUIRED ARGUMENTS</span></samp>&rsquo;, and &lsquo;<samp><span class="samp">SIDE EFFECTS</span></samp>&rsquo;. 
-<!-- The bindings are all in ../lisp/essl-s.el -->
+<!-- The bindings are all in ../lisp/ess-s-l.el -->
 <!-- ess-help-*-sec-keys-alist -->
 <!-- S-plus only: -->
 <!-- @item b			BACKGROUND: -->
