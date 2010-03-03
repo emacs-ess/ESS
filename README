@@ -484,8 +484,19 @@ shell, simply type `M-x S+6-msdos RET'.
 =================
 
      Changes/New Features in 5.8:
+        * ESS[R]: New ess-rutils.el with utilities for listing, loading,
+          installing, and updating packages, as well as object
+          manipulation (listing, viewing, and deleting).  It also
+          provides an alternative to RSiteSearch() that uses the
+          browse-url function, so results can be viewed in an Emacs web
+          browser.
+
         * ESS[R]: much more extensive Roxygen interface, via ess-roxy.el
-          from Henning Redestig.
+          from Henning Redestig. Ess-roxy supports filling of roxygen
+          fields,  generation and updating roxygen templates,
+          completion of roxygen tags,  basic navigation (marking and
+          moving between entries), foling using  hs-minor-mode and
+          preview of the Rd file.
 
         * Emacs lisp files have got better names (partly, for now).
 
@@ -816,4 +827,8 @@ low-volume mailing list.
    * Rodney A. Sparapani (mailto:rsparapa@mcw.edu)
 
    * Stephen Eglen (mailto:stephen@gnu.org)
+
+   * Sebastian P. Luque (mailto:spluque@gmail.com)
+
+   * Henning Redestig (mailto:henning.red@googlemail.com)
 
