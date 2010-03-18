@@ -176,7 +176,7 @@ as `ess-imenu-use-S'."
   :type 'boolean)
 
 (defcustom ess-display-buffer-reuse-frames t
-  "Non-nil means \[[display-buffer] reuses existing frames; see
+  "Non-nil means \\[display-buffer] reuses existing frames; see
 `display-buffer-reuse-frames'."
   :group 'ess
   :type 'boolean)
@@ -635,18 +635,18 @@ to decide highlighting and tag completion."
   :type '(repeat string))
 
 (defcustom ess-roxy-tags-param '("author" "aliases" "concept"
-				 "examples" "format" "keywords" 
-				 "method" "exportMethod" 
+				 "examples" "format" "keywords"
+				 "method" "exportMethod"
 				 "name" "note" "param"
-				 "include" "references" "return" 
-				 "seealso" "source" "docType" 
+				 "include" "references" "return"
+				 "seealso" "source" "docType"
 				 "title" "TODO" "usage")
-  "The tags used in roxygen fields that require a parameter. 
+  "The tags used in roxygen fields that require a parameter.
 Used to decide highlighting and tag completion."
   :group 'ess-roxy
   :type '(repeat string))
 
-(defcustom ess-roxy-template-alist 
+(defcustom ess-roxy-template-alist
   (list (cons "description"  "<description>")
 	(cons "details" "<details>")
 	(cons "title" "")
@@ -1204,13 +1204,14 @@ Otherwise, they get their own temporary buffer."
   :type 'boolean)
 
 (defcustom ess-eval-visibly-p t
-  "Non-nil means ess-eval- commands display commands in the process buffer."
+  "Non-nil means ess-eval- commands display commands in the process buffer.
+Experienced users often change / customize it to 'nil'."
   :group 'ess-proc
   :type 'boolean)
 
 (defcustom ess-eval-deactivate-mark nil
   "Non-nil means that after ess-eval- commands the mark is deactivated,
- (see \[[deactivate-mark]).  This only affects the situation where
+ (see \\[deactivate-mark]).  This only affects the situation where
 `transient-mark-mode' is non-nil."
   :group 'ess-proc
   :type 'boolean)
@@ -1237,7 +1238,7 @@ of Emacs until the code has been successfully evaluated."
 
 (defcustom ess-eval-ddeclient-sleep 0.06
   "If non-nil, a number specifying *seconds* to wait after certain
-\[[ess-eval-linewise-ddeclient] calls, such as those at startup."
+\\[ess-eval-linewise-ddeclient] calls, such as those at startup."
 ;; i.e this currently only applies to (if microsoft-p ...) !
   :group 'ess-proc
   :type '(choice (const nil) number))
