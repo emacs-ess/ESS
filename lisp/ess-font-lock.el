@@ -57,9 +57,9 @@
   "Set font-lock colors to Richard Heiberger's usual choice."
   (interactive)
 
-(if (featurep 'xemacs) nil
-  (set-foreground-color "Black")
-  (set-background-color "lightcyan"))
+  (if (featurep 'xemacs) nil
+    (set-foreground-color "Black")
+    (set-background-color "lightcyan"))
 
   (set-face-background 'modeline "lightskyblue")
   (set-face-foreground 'modeline "midnightblue")
@@ -67,9 +67,7 @@
   (set-face-foreground 'font-lock-comment-face "Firebrick")
   (set-face-foreground 'font-lock-function-name-face "Blue")
   (set-face-foreground 'font-lock-keyword-face "Purple")
-  (if (eq font-lock-reference-face 'font-lock-constant-face )
-      (set-face-foreground 'font-lock-constant-face  "Brown")
-    (set-face-foreground   'font-lock-reference-face "Brown"))
+  (set-face-foreground 'font-lock-constant-face "Brown")
   (set-face-foreground 'font-lock-string-face "VioletRed")
   (set-face-foreground 'font-lock-type-face "Sienna")
   (set-face-foreground 'font-lock-variable-name-face "Black"))
@@ -78,9 +76,9 @@
   "Set font-lock colors to Richard Heiberger's blue color scheme."
   (interactive)
 
-(if (featurep 'xemacs) nil
-  (set-foreground-color "Black")
-  (set-background-color "LightBlue"))
+  (if (featurep 'xemacs) nil
+    (set-foreground-color "Black")
+    (set-background-color "LightBlue"))
 
   (set-face-foreground 'modeline "LightBlue")
   (set-face-background 'modeline "DarkSlateBlue")
@@ -88,9 +86,7 @@
   (set-face-foreground 'font-lock-comment-face "Firebrick")
   (set-face-foreground 'font-lock-function-name-face "Blue")
   (set-face-foreground 'font-lock-keyword-face "Purple")
-  (if (eq font-lock-reference-face 'font-lock-constant-face )
-      (set-face-foreground 'font-lock-constant-face  "Brown")
-    (set-face-foreground   'font-lock-reference-face "Brown"))
+  (set-face-foreground 'font-lock-constant-face "Brown")
   (set-face-foreground 'font-lock-string-face "VioletRed")
   (set-face-foreground 'font-lock-type-face "Sienna")
   (set-face-foreground 'font-lock-variable-name-face "Black"))
@@ -99,9 +95,9 @@
   "Set font-lock colors to Richard Heiberger's wheat color scheme."
   (interactive)
 
-(if (featurep 'xemacs) nil
-  (set-foreground-color "Black")
-  (set-background-color "Wheat"))
+  (if (featurep 'xemacs) nil
+    (set-foreground-color "Black")
+    (set-background-color "Wheat"))
 
   (set-face-foreground 'modeline "Wheat")
   (set-face-background 'modeline "Sienna")
@@ -109,9 +105,7 @@
   (set-face-foreground 'font-lock-comment-face "Firebrick")
   (set-face-foreground 'font-lock-function-name-face "Blue")
   (set-face-foreground 'font-lock-keyword-face "Purple")
-  (if (eq font-lock-reference-face 'font-lock-constant-face )
-      (set-face-foreground 'font-lock-constant-face "Brown")
-    (set-face-foreground 'font-lock-reference-face "Brown"))
+  (set-face-foreground 'font-lock-constant-face "Brown")
   (set-face-foreground 'font-lock-string-face "VioletRed")
   (set-face-foreground 'font-lock-type-face "Sienna")
   (set-face-foreground 'font-lock-variable-name-face "Black"))
@@ -137,9 +131,7 @@
   (modify-face 'font-lock-comment-face	     "black"	"white"	   nil	   nil	  t	   nil	     )
   (modify-face 'font-lock-function-name-face "black"	"white"	   nil	   t	  nil	   nil	     )
   (modify-face 'font-lock-keyword-face	     "black"	"white"	   nil	   nil	  nil	   t	     )
-  (if (eq font-lock-reference-face 'font-lock-constant-face )
-      (modify-face 'font-lock-constant-face  "black"    "white"    nil     t      nil      nil       )
-    (modify-face 'font-lock-reference-face   "black"	"white"	   nil	   t	  nil	   nil	     ))
+  (modify-face 'font-lock-constant-face      "black"    "white"    nil     t      nil      nil       )
   (modify-face 'font-lock-string-face	     "black"	"white"	   nil	   nil	  t	   t	     )
   (modify-face 'font-lock-type-face	     "black"	"white"	   nil	   t	  t	   nil	     )
   (modify-face 'font-lock-variable-name-face "black"	"white"	   nil	   nil	  nil	   nil	     )
@@ -149,7 +141,7 @@
   (modify-face 'show-paren-mismatch-face     "white"	"gray40"   nil	   t	  t	   nil	     ))
 
 (defun ess-font-lock-db ()
-  "Set font-lock colors (leave fore-/back-ground alone) courtesy David Brahm <David.Brahm@fmr.com>" 
+  "Set font-lock colors (leave fore-/back-ground alone) courtesy David Brahm <David.Brahm@fmr.com>"
   (interactive)
   (set-face-foreground 'font-lock-comment-face	     "Firebrick")  ; #...    %...
   (set-face-foreground 'font-lock-string-face	     "SeaGreen")   ; "..."   "..."
@@ -157,9 +149,7 @@
   (set-face-foreground 'font-lock-function-name-face "VioletRed")  ; talk<-  {center}
   (set-face-foreground 'font-lock-variable-name-face "Blue")	   ; xv
   (set-face-foreground 'font-lock-type-face	     "Goldenrod")  ; T,F       ?
-  (if (eq font-lock-reference-face 'font-lock-constant-face )
-      (set-face-foreground 'font-lock-constant-face "Magenta")     ; <-	     {eq1}
-    (set-face-foreground 'font-lock-reference-face "Magenta"))
+  (set-face-foreground 'font-lock-constant-face      "Magenta")    ; <-	     {eq1}
 )
 
 (provide 'ess-font-lock)

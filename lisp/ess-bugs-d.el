@@ -71,7 +71,7 @@
 		"dexp\\|dirch\\|exp\\|gamma\\|lnorm\\|logis\\|"
 		"mnorm\\|multi\\|negbin\\|norm\\|par\\|pois\\|"
 		"t\\|unif\\|weib\\|wish\\)[ \t\n]*(")
-					font-lock-reference-face)
+					font-lock-constant-face)
 
 	(cons (concat "\\<\\(for\\|cloglog\\|equals\\|exp\\|inprod\\|"
 		"inverse\\|log\\(det\\|fact\\|gam\\|it\\)?\\|max\\|"

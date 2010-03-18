@@ -748,7 +748,7 @@ With prefix argument, only shows the errors ESS reported."
 		   (bolp))
 		 (if ess-auto-newline (progn (ess-indent-line) (newline) t) nil)))
 	(progn
-	  (insert last-command-char)
+	  (insert last-command-event)
 	  (ess-indent-line)
 	  (if ess-auto-newline
 	      (progn

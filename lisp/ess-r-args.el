@@ -300,7 +300,7 @@ and y-offsets for the toolbar from point."
 	(fy (frame-parameter nil 'top))
 	(fw (frame-pixel-width))
 	(fh (frame-pixel-height))
-	frame-left frame-top)
+	frame-left frame-top my-x-offset my-y-offset)
 
     ;; The following comment was found before code looking much like that
     ;; of frame-left and frame-top below in the file

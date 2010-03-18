@@ -372,6 +372,7 @@ Return the name of the newest version of R."
   (let ((rtimes (mapcar 'ess-r-version-date rvers)))
     ;; SJE: 2007-07-13 -- following line is a temp var to check that
     ;; the newest version of R is found correctly.
+    ;; (nowadays gives a compile warning)
     (setq ess-temp-newest rtimes)
     (ess-find-newest-date rtimes)))
 

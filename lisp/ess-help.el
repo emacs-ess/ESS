@@ -397,10 +397,10 @@ Other keybindings are as follows:
   ;; section headings.
 
   (setq ess-help-sec-map (make-sparse-keymap))
-  (mapcar '(lambda (key)
-	    (define-key ess-help-sec-map (char-to-string key)
-	      'ess-skip-to-help-section))
-	    (mapcar 'car ess-help-sec-keys-alist))
+  (mapc '(lambda (key)
+	   (define-key ess-help-sec-map (char-to-string key)
+	     'ess-skip-to-help-section))
+	(mapcar 'car ess-help-sec-keys-alist))
   (define-key ess-help-sec-map "?" 'ess-describe-sec-map)
   (define-key ess-help-sec-map ">" 'end-of-buffer)
   (define-key ess-help-sec-map "<" 'beginning-of-buffer)
@@ -465,11 +465,11 @@ to see which keystrokes find which sections."
 
 Keystroke    Section
 ---------    -------\n")
-      (mapcar '(lambda (cs) (insert "	 "
-				    (car cs)
-				    "	   "
-				    (cdr cs) "\n"))
-	      keys-alist)
+      (mapc '(lambda (cs) (insert "    "
+				  (car cs)
+				  "      "
+				  (cdr cs) "\n"))
+	    keys-alist)
       (insert "\nFull list of key definitions:\n"
 	      (substitute-command-keys
 	       "\\{ess-help-sec-map}")))))

@@ -246,11 +246,11 @@ Otherwise try a list of fixed known viewers."
 (defun ess-setq-vars-local (alist &optional buf)
   "Set language variables from ALIST, in buffer BUF, if desired."
   (if buf (set-buffer buf))
-  (mapcar (lambda (pair)
-	    (make-local-variable (car pair))
-	    (if (cdr pair)
-		(set (car pair) (eval (cdr pair)))))
-	  alist)
+  (mapc (lambda (pair)
+	  (make-local-variable (car pair))
+	  (if (cdr pair)
+	      (set (car pair) (eval (cdr pair)))))
+	alist)
   (ess-write-to-dribble-buffer
    (format "(ess-setq-vars-LOCAL): language=%s, dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
 	   ess-language ess-dialect buf comint-process-echoes comint-input-sender)))
@@ -261,9 +261,9 @@ Otherwise try a list of fixed known viewers."
    (format "ess-setq-vars-default 0: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
 	   ess-language ess-dialect buf comint-process-echoes comint-input-sender))
   (if buf (set-buffer buf))
-  (mapcar (lambda (pair)
-	    (set-default (car pair) (eval (cdr pair))))
-	  alist)
+  (mapc (lambda (pair)
+	  (set-default (car pair) (eval (cdr pair))))
+	alist)
   (ess-write-to-dribble-buffer
    (format "ess-setq-vars-default 1: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
 	   ess-language ess-dialect buf comint-process-echoes comint-input-sender))
