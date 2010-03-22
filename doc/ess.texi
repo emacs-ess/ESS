@@ -2395,7 +2395,7 @@ e.g., @samp{Description:} instead of  @samp{DESCRIPTION:} and also
 only some versions of S(-plus) have
 sections @samp{BACKGROUND}, @samp{BUGS}, @samp{OPTIONAL ARGUMENTS},
 @samp{REQUIRED ARGUMENTS}, and @samp{SIDE EFFECTS}.
-@c The bindings are all in ../lisp/essl-s.el
+@c The bindings are all in ../lisp/ess-s-l.el
 @c  ess-help-*-sec-keys-alist
 @c
 @c S-plus only:

@@ -1,3 +1,7 @@
+2010-03-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-custom.el (ess-eval-deactivate-mark): change default to t
+
 2010-02-16  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-rutils.el: 4268 Removed `ess-rutils-chgdir', already

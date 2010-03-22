@@ -119,7 +119,7 @@
 
 ;; Variables (not user-changeable)
 
-(defvar ess-version "5.8"
+(defvar ess-version "5.9"
   "Version of ESS currently loaded.")
 
 (defvar no-doc
@@ -1209,10 +1209,10 @@ Experienced users often change / customize it to 'nil'."
   :group 'ess-proc
   :type 'boolean)
 
-(defcustom ess-eval-deactivate-mark nil
+(defcustom ess-eval-deactivate-mark t; was nil till 2010-03-22
   "Non-nil means that after ess-eval- commands the mark is deactivated,
- (see \\[deactivate-mark]).  This only affects the situation where
-`transient-mark-mode' is non-nil."
+ (see \\[deactivate-mark]).  The default is true since ESS version 5.9 and
+ only affects the situation where `transient-mark-mode' is non-nil."
   :group 'ess-proc
   :type 'boolean)
 
