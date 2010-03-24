@@ -1,3 +1,10 @@
+2010-03-24  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): although note
+	is a keyword in SAS/GRAPH, it is not used very much, but
+	the false positive %put note: ...; is used quite often;
+	therefore, the note statement is no longer fontified
+
 2010-03-24  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-roxy.el (ess-roxy-mode): font-lock-add-keywords etc is not
