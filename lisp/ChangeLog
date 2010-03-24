@@ -1,3 +1,8 @@
+2010-03-24  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-roxy.el (ess-roxy-mode): font-lock-add-keywords etc is not
+	available and hence not called for XEmacs.
+
 2010-03-22  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-custom.el (ess-eval-deactivate-mark): change default to t

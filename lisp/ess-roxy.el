@@ -40,13 +40,8 @@
 ;; - preview
 ;;   - C-c C-e C-r :: create a preview of the Rd file as generated
 ;;     using roxygen
-;;
-;; To enable it for ESS, put something like
-;;
-;; (add-to-list 'load-path "/path/to/dir/with/ess-roxy")
-;; (require 'ess-roxy)
-;; (add-hook 'ess-mode-hook
-;; 	  (lambda () (ess-roxy-mode) ))
+
+;; this *is* enabled now via ess-mode-hook in ./ess-site.el
 
 (require 'ess-custom)
 (require 'hideshow)
@@ -90,7 +85,8 @@
   :keymap ess-roxy-mode-map
   (if ess-roxy-mode
       (progn
-        (font-lock-add-keywords nil ess-roxy-font-lock-keywords)
+	(unless 'xemacs-p ;; does not exist in xemacs:
+	  (font-lock-add-keywords nil ess-roxy-font-lock-keywords))
 	(if ess-roxy-hide-show-p
 	    (progn
 	      ;(setq hs-c-start-regexp "s")
@@ -107,7 +103,8 @@
 	    (progn
 	      (hs-show-all)
 	      (hs-minor-mode))))
-    (font-lock-remove-keywords nil ess-roxy-font-lock-keywords))
+    (unless 'xemacs-p
+      (font-lock-remove-keywords nil ess-roxy-font-lock-keywords)))
   (when font-lock-mode
     (font-lock-fontify-buffer)))
 
@@ -296,11 +293,11 @@ entry is available."
 	  (if (string= (car tag-def) "param")
 	      (ess-roxy-insert-args args (point))
 	    (if (string= (car tag-def) "description")
-		(insert (concat line-break ess-roxy-str " " 
+		(insert (concat line-break ess-roxy-str " "
 				(cdr tag-def) "\n" ess-roxy-str))
 	      (if (string= (car tag-def) "details")
 		  (insert (concat line-break ess-roxy-str " " (cdr tag-def)))
-		(insert (concat line-break ess-roxy-str " @" 
+		(insert (concat line-break ess-roxy-str " @"
 				(car tag-def) " " (cdr tag-def))))
 		))
 	  (setq line-break "\n")
@@ -524,8 +521,8 @@ list of strings."
   "complete the tag at point"
   (let ((token-string (thing-at-point 'symbol)))
     (if (string-match "@.+" token-string)
-	(progn 
-	  (comint-dynamic-simple-complete 
+	(progn
+	  (comint-dynamic-simple-complete
 	   (replace-regexp-in-string "^@" "" token-string)
 	   (append ess-roxy-tags-noparam ess-roxy-tags-param))))))
 
