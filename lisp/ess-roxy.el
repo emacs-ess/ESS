@@ -85,7 +85,7 @@
   :keymap ess-roxy-mode-map
   (if ess-roxy-mode
       (progn
-	(unless 'xemacs-p ;; does not exist in xemacs:
+	(unless (featurep 'xemacs) ;; does not exist in xemacs:
 	  (font-lock-add-keywords nil ess-roxy-font-lock-keywords))
 	(if ess-roxy-hide-show-p
 	    (progn
@@ -103,7 +103,7 @@
 	    (progn
 	      (hs-show-all)
 	      (hs-minor-mode))))
-    (unless 'xemacs-p
+    (unless (featurep 'xemacs)
       (font-lock-remove-keywords nil ess-roxy-font-lock-keywords)))
   (when font-lock-mode
     (font-lock-fontify-buffer)))

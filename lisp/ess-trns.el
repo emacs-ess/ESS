@@ -242,7 +242,7 @@ is not already."
        (save-excursion
  	(set-buffer ess-buf)
  	(goto-char (point-max))
- 	(ess-eval-linewise input nil nil nil 1)))) 
+ 	(ess-eval-linewise input nil nil nil 1))))
 ;; replacement code ends
   (goto-char ess-temp-point)
   (comint-next-prompt 1))
@@ -273,7 +273,7 @@ prompt from those lines that remain.  Prefix argument means to use
     (save-excursion
       (if do-toggle (toggle-read-only 0))
       (save-restriction
-	(unless 'xemacs-p ;; does not exist in xemacs:
+	(unless (featurep 'xemacs) ;; does not exist in xemacs:
 	  (deactivate-mark))
 	(narrow-to-region beg end)
 	(goto-char (point-min))
