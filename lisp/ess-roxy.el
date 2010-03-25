@@ -494,8 +494,7 @@ saving (and using Rd-modes preview function) of the file."
   "Return the arguments specified for the current function as a
 list of strings."
   (save-excursion
-    (let ((result)
-	  (args-txt
+    (let ((args-txt
 	   (progn
 	     (ess-beginning-of-function)
 	     (buffer-substring-no-properties
@@ -505,12 +504,10 @@ list of strings."
 	      (progn
 		(ess-roxy-match-paren)
 		(point))))))
-      (setq args-txt (replace-regexp-in-string "([^)]*)" "" args-txt))
-      (setq args-txt (replace-regexp-in-string "=[^,]*" "" args-txt))
-      (setq args-txt (replace-regexp-in-string "\n*" "" args-txt))
-      (setq args-txt (replace-regexp-in-string " *" "" args-txt))
-      (setq result (split-string args-txt ","))
-       result)))
+      (setq args-txt (replace-regexp-in-string "([^)]+)" "" args-txt))
+      (setq args-txt (replace-regexp-in-string "=[^,]+" "" args-txt))
+      (setq args-txt (replace-regexp-in-string "[ \t\n]+" "" args-txt))
+      (split-string args-txt ","))))
 
 (defun ess-roxy-match-paren ()
   "Go to the matching parenthesis"
