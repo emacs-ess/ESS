@@ -1,0 +1,240 @@
+/* 6 January 2007: 
+ - minor cleanup
+ - add CSS3 selectors
+*/
+
+html {
+	margin: 0px;
+	padding: 0px;
+	border-top: 1.4em #000033 solid;
+	font-size: 12px;
+
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: top left;
+
+	background-color: white;
+}
+
+body { 
+	margin: 0px;
+	padding: 0px;
+	font-family: "Trebuchet MS", Arial, sans-serif; 
+	
+	color: #171717;
+	
+	line-height: 1.45; /* something smart Eric Meyer said: no unit here */
+	text-align: justify;
+
+	width: 40em;
+	padding-left: 15em;
+	padding-right: 2em;
+	border-right: 1px #000033 dotted;
+}
+
+h1 { 
+	padding: 2em 1em 2em 1em;
+
+	font-size: 2em;
+	color: white;
+
+	text-align: right;
+
+	margin-left: -10em;
+	margin-top: 0em; 
+	margin-right: -1em;
+	
+	background-image: url(../images/skyline.jpg);
+	background-position: left 25%;
+	
+	-o-background-size: 100% auto;
+	background-size: 100% auto;
+	background-origin: content;
+
+	border-bottom: 0.4em #000033 solid;
+	border-left: 0.1em #000033 solid;
+	
+	text-transform: uppercase;
+	
+	text-shadow: white 0px 0px 10px, black 3px 3px 5px;
+}
+	
+
+h2 { 
+	font-size: 1.4em;
+	border-left: 0.6em black solid; 
+	padding-left: 0.3em; 
+	border-bottom: 1px black solid; 
+	padding-bottom: 0.1em; 
+	margin-top: 1.5em;
+	letter-spacing: 0.1em;
+}
+
+h3 {  margin-bottom: 0em; }
+
+h2,h3 { clear: both; }
+h1 span { font-size: 0.7em; color: #EFEFEF; }
+h2 span { font-size: 0.7em; color: gray; }
+
+h2[id]:hover::after, h3[id]:hover::after { content: "#" attr(id); float:right; font-size:0.7em; /*line-height:2em;*/ color: maroon; padding-left: 1em;} 
+
+p { margin-top: 0px; margin-bottom: 0.5em;}
+
+dt {
+	font-weight: bold;
+	margin: 10px 0px 2px 0px;
+	padding: 2px 0px;
+	border-top: 1px black solid;
+	border-bottom: 1px black solid;
+	text-indent: 1em;
+	letter-spacing: 0.1em;
+	position: relative;
+}
+dd + dd { margin-top: 0.7em; }
+
+table { font-size: inherit; } /* so that the font-size is inherited into table */
+
+small { margin-top: 2em; display:block; clear: both; }
+
+pre { padding: 0.5em; border: 1px gray solid; overflow:auto; background-color: #EFEFEF; }
+
+kbd { border: 2px gray outset; padding: 0em 0.1em; background-color: white; }
+kbd:active { border: 2px gray inset;}
+
+img.left { float: left; clear: both; margin-right: 1em; margin-bottom: 0.5em; margin-top: 0.3em; max-width: 45%; }
+img.right { float: right; clear: both; margin-left: 1em; margin-bottom: 0.5em; margin-top: 0.3em; max-width: 45%; }
+
+/* link styles */
+a:link, a:visited {color: navy; text-decoration: none; font-weight: bold;} 
+p:hover a, p:hover + p a, ul:hover a, dl:hover a, table:hover a { text-decoration: underline; } 
+a:hover { text-decoration: none !important; border-width: 1px 0px; border-style: none; color: green; background-color: #efefef;} 
+
+
+/* navigation menu */
+#navmenu {
+	width: 150px;
+	position: fixed; /* f*ck, Opera 8 'loses' abs positioned content within fixed */
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 0px;
+	margin: 0px;
+	display: none; /* the TOC script will make it appear */
+	text-align: left;
+}
+
+#navmenu > li:first-child { font-weight: bold; color: white; background-color: #000033; }
+
+#navmenu li {
+	line-height: 1.4em; 
+	padding-left: 3px;
+	list-style-type: none; 
+	background-color: #2E2E58;
+	color: white;
+	margin: 0px 0px 1px 0px;
+	position: relative;
+}
+
+#navmenu li:hover {  background-color: maroon; color: white; }
+
+#navmenu > li:first-child:hover { width: auto; right: 0px; }
+#navmenu > li:hover { width: 298px; position: relative; right: 151px; font-weight: bold; }
+
+#navmenu li:hover > ul { display: block; }
+
+#navmenu li ul { 
+	margin: 0px; 
+	padding: 0px;
+
+	position: absolute;
+	top: 1.4em;
+	right: 141px;
+	width: 150px;
+	margin-top: -9px; /* 1px between list, but with 10px padding */
+	padding-top: 10px;
+	padding-right: 10px; /* so that the box still overlap; helps with hovering */
+	font-weight: normal; 
+	display:none; 
+}
+
+#navmenu li ul li { padding-left: 0px; } /*the links should fill to full size of list item  */
+
+#navmenu li a { display: block;  text-decoration:none !important; color:white; padding-left: 3px; }
+#navmenu li a:hover { border-style: none !important; background-color: inherit !important;}
+
+#navmenu #toc li.h2 a { padding-left: 0.3em; font-size: 0.9em; font-weight:bold;}
+#navmenu #toc li.h3 a { padding-left: 0.8em; font-size: 0.8em;}
+#navmenu #toc li.h4 a { padding-left: 1.2em; font-size: 0.8em; font-style: italic; }
+
+/* for IE: with some scripting and these styles the menus also work in IE  */
+/* Do not put complex selectors IE does not understand in same style declaration!! */
+#navmenu li.first { color: white; background-color: #000033; }
+#navmenu li.expand ul { display: block; }
+#navmenu li.expand { width: 299px; position: relative; margin-left: -152px; font-weight: bold; background-color: maroon; color: white; }
+#navmenu li.expand a:hover { background-color: maroon; } 
+#navmenu ul.ulhover { display:block; background-color: #CDD5DD; /* background-color so there's a background so hovering works... */ padding-top: 1px; margin-top: 0px; margin-right: 0em;}
+
+/* -------- Requires CSS3 Selectors (O9, IE7, FF, SF) -------- */
+/* well implemented by http://www.askthecssguy.com/2006/12/showing_hyperlink_cues_with_cs_1.html */
+
+a[href$='.pdf'], a[rel='pdf'], a[rel*='pdf'], a[rel~='pdf'] { padding-right: 18px; background: transparent url(../images/icons/icon_pdf.png) no-repeat center right; }
+a[href^="mailto:"] { padding-right: 18px; background: transparent url(../images/icons/icon_mailto.png) no-repeat center right; }
+a[class ="popup"] { padding-right: 18px; background: transparent url(../images/icons/icon_popup.png) no-repeat center right; }
+a[href$='.doc'] { padding-right: 18px; background: transparent url(../images/icons/icon_doc.png) no-repeat center right; }
+a[href$='.xls'] { padding-right: 18px; background: transparent url(../images/icons/icon_xls.png) no-repeat center right; }
+a[href$='.ppt'] { padding-right: 18px; background: transparent url(../images/icons/icon_ppt.png) no-repeat center right; }
+a[rel ~='external'] { padding-right: 18px; background: transparent url(../images/icons/icon_external.png) no-repeat center right; }
+
+/* faviconize script needs some styling */
+img.faviconimg {
+	max-width: 1.1em;
+	margin: 0;
+	padding: 0;
+	margin-left: 2px;
+	border-width: 0px;
+	vertical-align: top;
+	opacity: 0.5;
+}
+
+a:hover img.faviconimg { opacity:1; }
+
+p:hover a img, p:hover + p a img, ul:hover a img, dl:hover a img, table:hover a img{ opacity:1; } 
+
+
+/* -------- page specific stuff -------- */
+
+/* Sortable tables */
+table.sortable span.sortarrow { color: black; padding-left: 0.5em; font-family: sans-serif; }
+table.sortable th { vertical-align: middle; cursor: pointer; }
+
+/* CSS Exp style */
+dt span.expdate { font-size: 0.7em; line-height: 2em; color:gray; position:absolute;right:0em;}
+
+
+/* -------- various media styles -------- */
+
+@media print {
+	html, body { border-style:none; margin: 0px; padding: 0px; font-size: 10pt; width: 100%; background-color: transparent;}
+	h1 { border-style: none; }
+	h1:first-letter { margin: 0px; border-style: none; }
+	#navmenu { display:none !important; }
+	h1, h2, h3 { page-break-after: avoid; }
+	img { width: auto; max-width: 100%; }
+}
+
+@media projection {
+	html { font-size: 1.2em; }
+	body { width: auto; padding-left: 3em; }
+	}
+
+/* voice styles */
+@media speech {
+title { display:block; speak:normal; }
+
+h1, h2, h3 { voice-family: female; }
+p, dl, ul, ol { voice-family: male; }
+
+acronym { speak:spell-out; voice-family: female; }
+abbr[title]::after { content: "This abbreviation means" attr(title); speak:normal; }
+acronym[title]::after { content: "This acronym means" attr(title); speak:normal; }
+}
